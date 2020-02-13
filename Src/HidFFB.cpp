@@ -207,6 +207,7 @@ void HidFFB::set_periodic(FFB_SetPeriodic_Data_t* report){
 	effect->magnitude = report->magnitude;
 	effect->offset = report->offset;
 	effect->phase = report->phase;
+	effect->counter = 0;
 }
 
 uint8_t HidFFB::find_free_effect(uint8_t type){ //Will return the first effect index which is empty or the same type
@@ -261,7 +262,7 @@ int32_t HidFFB::calculateEffects(int32_t pos,uint8_t axis=1){
 			}else{
 				force = clip<int32_t,int32_t>(((int32_t)(effect->positiveCoefficient>>3) * (pos - (effect->offset))) >> 6,-effect->negativeSaturation,effect->positiveSaturation);
 			}
-			result_torque -= force;
+			result_torque -= (force * effect->magnitude) >> 8;
 			break;
 		}
 		case FFB_EFFECT_FRICTION:
@@ -274,12 +275,19 @@ int32_t HidFFB::calculateEffects(int32_t pos,uint8_t axis=1){
 			}else{
 				force = clip<int32_t,int32_t>((effect->positiveCoefficient>>4) * speed,-effect->negativeSaturation,effect->positiveSaturation);
 			}
+			result_torque -= (force * effect->magnitude) >> 8;
+			break;
+		}
+		case FFB_EFFECT_SQUARE:
+		{
+
+			int32_t force =  ((effect->counter + effect->phase) % ((uint32_t)effect->period+2)) < (uint32_t)(effect->period+2)/2 ? -effect->magnitude : effect->magnitude;
+			force += effect->offset;
 			result_torque -= force;
 			break;
 		}
 		case FFB_EFFECT_SINE:
 		{
-
 			uint16_t t = effect->counter;
 			float freq = 1.0f/(float)(std::max<uint16_t>(effect->period,2));
 			float phase = (float)effect->phase/(float)35999; //degrees
@@ -287,7 +295,6 @@ int32_t HidFFB::calculateEffects(int32_t pos,uint8_t axis=1){
 			int32_t force = (int32_t)(effect->offset + sine);
 
 			result_torque -= force;
-
 			break;
 		}
 		default:
