@@ -142,13 +142,6 @@ void FFBoardMain::exti(uint16_t GPIO_Pin){
 
 }
 
-void FFBoardMain::hidGet(uint8_t id,uint16_t len,uint8_t** return_buf){
-
-}
-
-void FFBoardMain::hidOut(uint8_t* report){
-
-}
 
 void FFBoardMain::timerElapsed(TIM_HandleTypeDef* htim){
 

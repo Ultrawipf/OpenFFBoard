@@ -20,7 +20,17 @@ extern ADC_HandleTypeDef hadc1;
 #define ADC_PINS 6
 #define ADC_CHAN_FPIN 0
 #define VOLTAGE_MULT 25 // Voltage in mV = adc*VOLTAGE_MULT (24-26 for 1M/33k divider)
+
 #define HSPIDRV hspi1
+extern SPI_HandleTypeDef HSPIDRV;
 #define HSPI2 hspi2
+extern SPI_HandleTypeDef HSPI2;
+
+
+#define CDC_INTERFACE 0x00
+#define CDC_INTERFACE_DATA 0x01
+
+#define CDC_IDX 0
+#define HID_IDX 1
 
 #endif

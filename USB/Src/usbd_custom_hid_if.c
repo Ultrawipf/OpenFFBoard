@@ -267,7 +267,7 @@ __ALIGN_BEGIN static uint8_t CUSTOM_HID_ReportDesc_FS[USBD_CUSTOM_HID_REPORT_DES
 			   0x66,0x00,0x00,    //    Unit 0
 			   0x09,0x52,         //    Usage Gain
 			   0x15,0x00,         //    Logical Minimum 0
-			   0x26,0xFF,0x00,    //    Logical Maximum FFh (255d)
+			   0x26,0xFF,0x00,    //    Logical Maximum FFh (255d) // TODO scaling?
 			   0x35,0x00,         //    Physical Minimum 0
 			   0x46,0x10,0x27,    //    Physical Maximum 2710h (10000d)
 			   0x75,0x08,         //    Report Size 8
@@ -293,7 +293,6 @@ __ALIGN_BEGIN static uint8_t CUSTOM_HID_ReportDesc_FS[USBD_CUSTOM_HID_REPORT_DES
 			      0x95,0x02,    //    Report Count 2
 			      0x91,0x02,    //    Output (Variable)
 			   0xC0     ,    // End Collection
-
 			   0x05,0x0F,    //    Usage Page Physical Interface
 			   0x09,0x56,    //    Usage Direction Enable
 			   0x95,0x01,    //    Report Count 1

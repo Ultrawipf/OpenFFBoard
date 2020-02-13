@@ -20,6 +20,7 @@ const FFBoardMainIdentifier FFBWheel::getInfo(){
 
 
 FFBWheel::FFBWheel() {
+	this->ffb = new HidFFB();
 	// Setup a timer
 	extern TIM_HandleTypeDef htim4;
 	this->timer_update = &htim4; // Timer setup with prescaler of sysclock
@@ -53,9 +54,7 @@ FFBWheel::FFBWheel() {
 		this->aconf = FFBWheel::decodeAnalogConfFromInt(aconfint);
 	}
 
-
 	// Home
-
 
 }
 
@@ -76,74 +75,94 @@ void FFBWheel::saveFlash(){
 }
 
 void FFBWheel::update(){
-	torque = 0;
+	int16_t lasttorque = endstopTorque;
 	bool updateTorque = false;
 
-	if(usb_update_flag){
-		updateTorque = true;
-		usb_update_flag = false;
-		torque = calculateEffects();
+	if(usb_update_flag || update_flag){
 
-		// Read buttons
-		// Read Encoder
-		// Send report
-		this->send_report();
+		torque = 0;
+		scaledEnc = getEncValue(enc,degreesOfRotation);
 
-		// Check if motor driver is even ready
+		update_flag = false;
+
+		if(abs(scaledEnc) > 0xffff){
+			// We are way off. Shut down
+			drv->stop();
+			pulseErrLed();
+		}
+		endstopTorque = updateEndstop();
+
 		if(this->conf.drvtype == MotorDriverType::TMC4671_type){
 			TMC4671* drv = static_cast<TMC4671*>(this->drv);
+			drv->update();
 
-			if(getIntV() < 8000){ // low voltage
+//			drv->nextFlux = 500-clip<int32_t,int16_t>(abs(torque),0,power);//500-clip<int32_t,int16_t>(abs(speed)*30,0,power);
+
+			uint16_t vint = getIntV();
+			if(vint>78000){ // Voltage exceeds maximum for components. stop!
+				pulseErrLed();
+				drv->emergencyStop();
+				drv->initialized = false;
+				HAL_Delay(500);
+
+			}
+
+			if(vint < 8000){ // low voltage
 				drv->initialized = false;
 			}else{
-				if(!drv->initialized){
+				if(!drv->initialized && usb_update_flag && vint < 70000){
 					drv->initialize();
 				}
 			}
 		}
 	}
-	// Calculate endstop effect
-	if(update_flag){
-		update_flag = false;
 
-		lastRawEnc = getEncValue();
-		if(abs(lastRawEnc) > 0xffff){
-			// We are way off. Shut down
-			drv->stop();
-			pulseErrLed();
-		}
-		int16_t endstopTorque = updateEndstop();
-		if(endstopTorque != 0){
-			updateTorque = true;
-			torque += endstopTorque;
-		}
-	}
 
-	if(updateTorque){
-		// Update torque
-		if(abs(torque) >= this->power){
+	if(usb_update_flag){
+		speed = scaledEnc - lastScaledEnc;
+		lastScaledEnc = scaledEnc;
+
+		usb_update_flag = false;
+		torque = ffb->calculateEffects(scaledEnc,1);
+		if(abs(torque) >= 0x7fff){
 			pulseClipLed();
 		}
+		if(endstopTorque == 0 || (endstopTorque > 0 && torque > 0) || (endstopTorque < 0 && torque < 0))
+		{
+			torque *= 0.8*((float)this->power / (float)0x7fff); // Scale for power
+			updateTorque = true;
+		}
+		this->send_report();
+	}
+
+
+
+	if(endstopTorque!=lasttorque || updateTorque){
+		// Update torque
+		torque = torque+endstopTorque;
 		//Invert direction for now
-		torque = -clip<int16_t,int16_t>(torque, -this->power, this->power);
+		torque = clip<int32_t,int16_t>(torque, -this->power, this->power);
+		if(abs(torque) == power){
+			pulseClipLed();
+		}
 		drv->turn(torque);
 	}
 }
 
 
 int16_t FFBWheel::updateEndstop(){
-	int8_t clipval = cliptest(lastRawEnc, -0x7fff, 0x7fff);
+	int8_t clipval = cliptest<int32_t,int32_t>(lastScaledEnc, -0x7fff, 0x7fff);
 	if(clipval == 0){
 		return 0;
 	}
-	int32_t addtorque = 500;
+	int32_t addtorque = 0;
 
-	addtorque = clip<int32_t,int32_t>(abs(lastRawEnc) - 0x7fff,-0x7fff,0x7fff);
-	addtorque *= 10;
-	addtorque *= clipval;
+	addtorque += clip<int32_t,int32_t>(abs(lastScaledEnc)-0x7fff,-0x7fff,0x7fff);
+	addtorque *= 40;
+	addtorque *= -clipval;
 
 
-	return clip(addtorque,-0x7fff,0x7fff);
+	return clip<int32_t,int32_t>(addtorque,-0x7fff,0x7fff);
 }
 
 
@@ -160,11 +179,19 @@ void FFBWheel::setupTMC4671(){
 	tmcconf.motconf = motconf;
 	this->drv = new TMC4671(&HSPIDRV,SPI1_SS1_GPIO_Port,SPI1_SS1_Pin,tmcconf);
 	TMC4671* drv = static_cast<TMC4671*>(this->drv);
+	drv->setPids(tmcpids);
+	if(tmcFeedForward){
+		drv->setupFeedForwardTorque(torqueFFgain, torqueFFconst);
+		drv->setupFeedForwardVelocity(velocityFFgain, velocityFFconst);
+		drv->setFFMode(FFMode::torque);
+	}
+
+
 	drv->initialize();
 
 	setupTMC4671_enc(this->conf.enctype);
 
-	drv->setMotionMode(MotionMode::stop);
+	drv->setMotionMode(MotionMode::torque);
 
 }
 FFBWheelConfig FFBWheel::decodeConfFromInt(uint16_t val){
@@ -367,9 +394,9 @@ void FFBWheel::adcUpd(volatile uint32_t* ADC_BUF){
 	}
 }
 
-int32_t FFBWheel::getEncValue(){
+int32_t FFBWheel::getEncValue(Encoder* enc,uint16_t degrees){
 	float angle = 360.0*((float)enc->getPos()/(float)enc->getPosCpr());
-	int32_t val = (0xffff / (float)degreesOfRotation) * angle;
+	int32_t val = (0xffff / (float)degrees) * angle;
 	return val;
 }
 
@@ -382,7 +409,7 @@ void FFBWheel::send_report(){
 	btn->readButtons((uint8_t*)&buttons, btn->getBtnNum());
 	reportHID.buttons = buttons & buttonMask;
 	// Encoder
-	reportHID.X = clip(lastRawEnc,-0x7fff,0x7fff);
+	reportHID.X = clip(lastScaledEnc,-0x7fff,0x7fff);
 	// Analog values read by DMA
 	uint16_t analogMask = this->aconf.analogmask;
 	reportHID.Y 	=  (analogMask & 0x01) ? ((adc_buf[0] & 0xFFF) << 4)-0x7fff : 0;

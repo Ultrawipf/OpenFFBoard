@@ -9,7 +9,6 @@
 #include "usbd_custom_hid_if.h"
 #include "usbd_cdc.h"
 #include "usbd_ctlreq.h"
-#include "usb_descriptors.h"
 #include "usbd_core.h"
 
 static uint8_t USBD_Composite_Init (USBD_HandleTypeDef *pdev, uint8_t cfgidx);

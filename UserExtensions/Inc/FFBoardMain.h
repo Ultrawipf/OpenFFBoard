@@ -38,8 +38,6 @@ public:
 	virtual void SOF();
 	virtual void adcUpd(volatile uint32_t* ADC_BUF);
 	virtual void exti(uint16_t GPIO_Pin); // External Interrupt
-	virtual void hidOut(uint8_t* report);
-	virtual void hidGet(uint8_t id,uint16_t len,uint8_t** return_buf);
 	virtual void timerElapsed(TIM_HandleTypeDef* htim);
 
 private:

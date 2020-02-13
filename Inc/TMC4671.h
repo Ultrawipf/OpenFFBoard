@@ -20,7 +20,7 @@ extern SPI_HandleTypeDef HSPIDRV;
 enum class MotorType : uint8_t {NONE=0,DC=1,STEPPER=2,BLDC=3,ERR};
 enum class PhiE : uint8_t {ext=1,openloop=2,abn=3,hall=5,aenc=6,aencE=7,NONE};
 enum class MotionMode : uint8_t {stop=0,torque=1,velocity=2,position=3,prbsflux=4,prbstorque=5,prbsvelocity=6,uqudext=8,encminimove=9,NONE};
-
+enum class FFMode : uint8_t {none=0,velocity=1,torque=2};
 struct TMC4671MotConf{
 	MotorType motor_type = MotorType::NONE;
 	PhiE phiEsource 	= PhiE::ext;
@@ -46,7 +46,7 @@ struct TMC4671MainConfig{
 
 struct TMC4671PIDConf{
 	uint16_t fluxI		= 512;
-	uint16_t fluxP		= 256;
+	uint16_t fluxP		= 128;
 	uint16_t torqueI	= 512;
 	uint16_t torqueP	= 128;
 	uint16_t velocityI	= 0;
@@ -98,6 +98,7 @@ public:
 
 	bool initialize();
 	bool initialized = false;
+	void update();
 
 	uint32_t readReg(uint8_t reg);
 	void writeReg(uint8_t reg,uint32_t dat);
@@ -119,12 +120,21 @@ public:
 	void setAdcOffset(uint32_t adc_I0_offset,uint32_t adc_I1_offset);
 	void setAdcScale(uint32_t adc_I0_scale,uint32_t adc_I1_scale);
 
+	void setupFeedForwardTorque(int32_t gain, int32_t constant);
+	void setupFeedForwardVelocity(int32_t gain, int32_t constant);
+	void setFFMode(FFMode mode);
+	bool feedforward = false;
 
 	void stop();
 	void start();
+	bool active = false;
+	void emergencyStop();
+	bool emergency = false;
+	void turn(int16_t power);
+	int16_t nextFlux = 0;
 
 	void setTorque(int16_t torque);
-	void turn(int16_t power);
+
 	void setTargetPos(int32_t pos);
 	int32_t getTargetPos();
 	void setTargetVelocity(int32_t vel);
@@ -138,7 +148,6 @@ public:
 	void setPhiEtype(PhiE type);
 	PhiE getPhiEtype();
 	void setPhiE_ext(int16_t phiE);
-
 
 	void setMotionMode(MotionMode mode);
 	MotionMode getMotionMode();

@@ -7,7 +7,6 @@
 #include "constants.h"
 #include "usbd_composite.h"
 #include "usbd_customhid.h"
-#include "usb_descriptors.h"
 
 USBD_HandleTypeDef hUsbDeviceFS;
 

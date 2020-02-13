@@ -116,7 +116,9 @@ typedef struct
 	uint8_t		triggerButton = 0;	// button ID (0..8)
 	uint8_t		enableAxis = 0; // bits: 0=X, 1=Y, 2=DirectionEnable
 	uint8_t		directionX = 0;	// angle (0=0 .. 255=360deg)
-	uint8_t		directionY = 0;	// angle (0=0 .. 255=360deg
+	uint8_t		directionY = 0;	// angle (0=0 .. 255=360deg)
+//	uint16_t	typeSpecificBlockOffsetX = 0; // Needed?
+//	uint16_t	typeSpecificBlockOffsetY = 0;
 //	uint16_t	startDelay;	// 0..32767 ms
 } __attribute__((packed)) FFB_SetEffect_t;
 

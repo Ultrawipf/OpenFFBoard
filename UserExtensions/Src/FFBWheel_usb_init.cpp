@@ -6,6 +6,7 @@
  */
 
 #include "FFBWheel_usb_init.h"
+#include "usbd_desc.h"
 
 USBD_HandleTypeDef hUsbDeviceFS;
 USBD_ClassTypeDef* handles[2];

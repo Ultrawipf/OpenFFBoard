@@ -7,6 +7,7 @@
 
 #include "TMC4671.h"
 #include "ledEffects.h"
+#include "voltagesense.h"
 
 TMC4671::TMC4671(SPI_HandleTypeDef* spi,GPIO_TypeDef* csport,uint16_t cspin,TMC4671MainConfig conf) {
 	this->cspin = cspin;
@@ -21,7 +22,7 @@ TMC4671::~TMC4671() {
 }
 
 bool TMC4671::initialize(){
-
+	active = true;
 	// Check if a TMC4671 is active and replies correctly
 	writeReg(1, 0);
 	if(readReg(0) != 0x34363731){// 4671
@@ -68,7 +69,17 @@ bool TMC4671::initialize(){
 	// Run in direction of N pulse. Enable flag/interrupt
 	//runOpenLoop(3000, 0, 5, 100);
 	initialized = true;
+
 	return initialized;
+
+}
+
+void TMC4671::update(){
+	// Optional update methods for safety
+
+	if(!initialized && active){
+		initialize();
+	}
 
 }
 
@@ -307,17 +318,30 @@ void TMC4671::setUdUq(uint16_t ud,uint16_t uq){
 void TMC4671::stop(){
 	// Stop driver instantly
 	HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_RESET);
+	active = false;
 }
 void TMC4671::start(){
 	if(!initialized){
 		initialize();
 	}else{
+		if(emergency){
+			// Reenable foc
+			updateReg(0x1A,7,0xff,0);
+			emergency = false;
+		}
 		HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_SET);
+		active = true;
 	}
+
+}
+
+void TMC4671::emergencyStop(){
+	updateReg(0x1A,1,0xff,0); // Short low side for instant stop
+	emergency = true;
 }
 
 void TMC4671::turn(int16_t power){
-	setFluxTorque(idleFluxOffset-abs(power), power);
+	setFluxTorque(500-clip<int32_t,int16_t>(abs(power),0,3000), power);
 	//setTorque(power);
 }
 
@@ -369,6 +393,29 @@ void TMC4671::setAdcScale(uint32_t adc_I0_scale,uint32_t adc_I1_scale){
 	updateReg(0x08, adc_I1_scale, 0xffff, 16);
 }
 
+void TMC4671::setupFeedForwardTorque(int32_t gain, int32_t constant){
+	writeReg(0x4E, 42);
+	writeReg(0x4D, gain);
+	writeReg(0x4E, 43);
+	writeReg(0x4D, constant);
+}
+void TMC4671::setupFeedForwardVelocity(int32_t gain, int32_t constant){
+	writeReg(0x4E, 40);
+	writeReg(0x4D, gain);
+	writeReg(0x4E, 41);
+	writeReg(0x4D, constant);
+}
+
+void TMC4671::setFFMode(FFMode mode){
+	updateReg(0x63, (uint8_t)mode, 0xff, 16);
+	if(mode!=FFMode::none){
+		feedforward = true;
+		updateReg(0x63, 1, 0x1, 31);
+	}else{
+		feedforward = false;
+	}
+}
+
 void TMC4671::setMotorType(MotorType motor,uint16_t poles){
 	conf.motconf.motor_type = motor;
 	conf.motconf.pole_pairs = poles;
@@ -399,7 +446,12 @@ void TMC4671::setFluxTorque(int16_t flux, int16_t torque){
 	if(curMotionMode != MotionMode::torque){
 		setMotionMode(MotionMode::torque);
 	}
-	writeReg(0x64, (flux & 0xffff) | (torque << 16));
+
+	if(feedforward)
+		writeReg(0x65, (flux & 0xffff) | (torque << 16));
+	else
+		writeReg(0x64, (flux & 0xffff) | (torque << 16));
+
 }
 
 void TMC4671::setPids(TMC4671PIDConf pids){
