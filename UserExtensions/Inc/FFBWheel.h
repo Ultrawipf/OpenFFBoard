@@ -12,6 +12,7 @@
 #include "flash_helpers.h"
 #include "ButtonSource.h"
 #include "LocalButtons.h"
+#include "SPIButtons.h"
 #include "cppmain.h"
 #include "HidFFB.h"
 
@@ -95,7 +96,7 @@ private:
 	FFBWheelConfig conf;
 	MotorDriver* drv;
 	Encoder* enc;
-	ButtonSource* btn;
+	ButtonSource* btn = nullptr;
 	uint16_t buttonMask = 0xffff;
 	FFBWheelAnalogConfig aconf;
 	volatile uint16_t adc_buf[ADC_PINS];

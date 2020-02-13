@@ -67,6 +67,7 @@ void FFBWheel::saveFlash(){
 
 
 	}
+	Flash_Write(ADR_FFBWHEEL_CONFIG,FFBWheel::encodeConfToInt(this->conf));
 	Flash_Write(ADR_TMC1_PPR, enc->getPpr());
 	Flash_Write(ADR_FFBWHEEL_POWER, this->power);
 	Flash_Write(ADR_FFBWHEEL_BUTTONMASK,this->buttonMask);
@@ -264,8 +265,13 @@ void FFBWheel::setEncType(EncoderType enctype){
 
 void FFBWheel::setBtnType(ButtonSourceType btntype){
 	this->conf.btcsrctype = btntype;
+	if(this->btn != nullptr){
+		delete this->btn;
+	}
 	if(btntype == ButtonSourceType::LOCAL){
 		this->btn = new LocalButtons();
+	}else if(btntype == ButtonSourceType::SPI_TM){
+		this->btn = new SPI_Buttons();
 	}
 }
 
@@ -287,6 +293,14 @@ bool FFBWheel::executeUserCommand(ParsedCommand* cmd,std::string* reply){
 			setDrvType(MotorDriverType(cmd->val));
 		}else{
 			*reply += "TMC4671_type=0,PPM_type=1";
+		}
+	}else if(cmd->cmd == "btntype"){
+		if(cmd->type == get){
+			*reply+=std::to_string((uint8_t)this->conf.btcsrctype);
+		}else if(cmd->type == set && cmd->val < (uint8_t)ButtonSourceType::NONE){
+			setBtnType(ButtonSourceType(cmd->val));
+		}else{
+			*reply += "LOCAL=0,SPI_TM=1,I2C=2";
 		}
 	}else if(cmd->cmd == "power"){
 		if(cmd->type == get){
@@ -323,14 +337,6 @@ bool FFBWheel::executeUserCommand(ParsedCommand* cmd,std::string* reply){
 			this->enc->setPos(cmd->val);
 		}else{
 			*reply += "Err. Setup enctype first";
-		}
-	}else if(cmd->cmd == "btntype"){
-		if(cmd->type == get){
-			*reply+=std::to_string((uint8_t)this->conf.btcsrctype);
-		}else if(cmd->type == set && cmd->val < (uint8_t)ButtonSourceType::NONE){
-			setBtnType(ButtonSourceType(cmd->val));
-		}else{
-			*reply += "LOCAL=0,SPI_TM=1,I2C=2";
 		}
 	}else if(cmd->cmd == "help"){
 		*reply += "<HELP>"; // TODO
@@ -405,7 +411,7 @@ void FFBWheel::send_report(){
 	extern USBD_HandleTypeDef hUsbDeviceFS;
 
 	// Read buttons
-	uint16_t buttons = 0;
+	uint32_t buttons = 0;
 	btn->readButtons((uint8_t*)&buttons, btn->getBtnNum());
 	reportHID.buttons = buttons & buttonMask;
 	// Encoder

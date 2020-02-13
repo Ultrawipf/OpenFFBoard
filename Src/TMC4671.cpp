@@ -38,7 +38,7 @@ bool TMC4671::initialize(){
 		 * This can cause problems for some operations.
 		 */
 		pulseClipLed();
-		this->spi->Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_64;
+		this->spi->Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_32;
 		HAL_SPI_Init(this->spi);
 		oldTMCdetected = true;
 	}
