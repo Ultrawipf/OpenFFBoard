@@ -111,10 +111,10 @@ private:
 
 
 	TMC4671PIDConf tmcpids = TMC4671PIDConf({
-		.fluxI		= 1000,
+		.fluxI		= 800,
 		.fluxP		= 256,
-		.torqueI	= 1800,
-		.torqueP	= 700,
+		.torqueI	= 1200,
+		.torqueP	= 500,
 		.velocityI	= 0,
 		.velocityP	= 128,
 		.positionI	= 0,

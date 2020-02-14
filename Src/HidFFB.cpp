@@ -67,6 +67,8 @@ void HidFFB::hidOut(uint8_t* report){
 			effects[id].state = 0; //Stop
 		}else{
 			effects[id].state = 1; //Start
+			effects[id].counter = 0; // When an effect was stopped reset all parameters that could cause jerking
+			set_filters(&effects[id]);
 		}
 		break;
 	}
@@ -191,6 +193,8 @@ void HidFFB::set_effect(FFB_SetEffect_t* effect){
 		effect_p->axis = effect->enableAxis;
 	}
 	if(effect_p->type != effect->effectType){
+		effect_p->counter = 0;
+		effect_p->last_value = 0;
 		set_filters(effect_p);
 	}
 
@@ -322,10 +326,15 @@ int32_t HidFFB::calculateEffects(int32_t pos,uint8_t axis=1){
 		case FFB_EFFECT_DAMPER:
 		{
 			int32_t force = 0;
+			if(effect->counter == 0){
+				effect->last_value = pos;
+				break;
+			}
 			int32_t speed = pos - effect->last_value;
 			effect->last_value = pos;
+
 			float val = effect->filter->process(speed);
-			force = clip<int32_t,int32_t>((effect->positiveCoefficient>>3) * val,-effect->negativeSaturation,effect->positiveSaturation);
+			force = clip<int32_t,int32_t>((int32_t)((effect->positiveCoefficient) * val) >> 4,-effect->negativeSaturation,effect->positiveSaturation);
 
 			result_torque -= force;
 			break;
