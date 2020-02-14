@@ -32,7 +32,7 @@ std::string printAvailableClasses(){
 			continue;
 		}
 		ret+= std::to_string(cls.info.id);
-		ret+= " : ";
+		ret+= ":";
 		ret+= cls.info.name;
 		ret+='\n';
 	}

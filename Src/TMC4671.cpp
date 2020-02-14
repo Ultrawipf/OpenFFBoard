@@ -38,7 +38,7 @@ bool TMC4671::initialize(){
 		 * This can cause problems for some operations.
 		 */
 		pulseClipLed();
-		this->spi->Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_32;
+		this->spi->Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_64;
 		HAL_SPI_Init(this->spi);
 		oldTMCdetected = true;
 	}
@@ -341,7 +341,7 @@ void TMC4671::emergencyStop(){
 }
 
 void TMC4671::turn(int16_t power){
-	setFluxTorque(500-clip<int32_t,int16_t>(abs(power),0,3000), power);
+	setFluxTorque(idleFlux-clip<int32_t,int16_t>(abs(power),0,maxOffsetFlux), power);
 	//setTorque(power);
 }
 

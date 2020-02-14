@@ -10,6 +10,7 @@
 
 UsbHidHandler::UsbHidHandler() {
 	// Don't auto register. Call registerCallback()
+	// There should only be one hid handler for now
 }
 
 UsbHidHandler::~UsbHidHandler() {

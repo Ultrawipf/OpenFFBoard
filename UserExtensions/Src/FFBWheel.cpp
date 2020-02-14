@@ -24,7 +24,7 @@ FFBWheel::FFBWheel() {
 	// Setup a timer
 	extern TIM_HandleTypeDef htim4;
 	this->timer_update = &htim4; // Timer setup with prescaler of sysclock
-	this->timer_update->Instance->ARR = 100;
+	this->timer_update->Instance->ARR = 250;
 	this->timer_update->Instance->CR1 = 1;
 	HAL_TIM_Base_Start_IT(this->timer_update);
 
@@ -286,54 +286,67 @@ bool FFBWheel::executeUserCommand(ParsedCommand* cmd,std::string* reply){
 	// ------------ General commands ----------------
 	if(cmd->cmd == "save"){
 		this->saveFlash();
+		*reply+=">saved";
 	}else if(cmd->cmd == "drvtype"){
-		if(cmd->type == get){
+		if(cmd->type == CMDtype::get){
 			*reply+=std::to_string((uint8_t)this->conf.drvtype);
-		}else if(cmd->type == set && cmd->val < (uint8_t)MotorDriverType::NONE){
+		}else if(cmd->type == CMDtype::set && cmd->val < (uint8_t)MotorDriverType::NONE){
 			setDrvType(MotorDriverType(cmd->val));
 		}else{
-			*reply += "TMC4671_type=0,PPM_type=1";
+			*reply += "0:TMC4671";
 		}
 	}else if(cmd->cmd == "btntype"){
-		if(cmd->type == get){
+		if(cmd->type == CMDtype::get){
 			*reply+=std::to_string((uint8_t)this->conf.btcsrctype);
-		}else if(cmd->type == set && cmd->val < (uint8_t)ButtonSourceType::NONE){
+		}else if(cmd->type == CMDtype::set && cmd->val < (uint8_t)ButtonSourceType::NONE){
 			setBtnType(ButtonSourceType(cmd->val));
 		}else{
-			*reply += "LOCAL=0,SPI_TM=1,I2C=2";
+			*reply += "0:LOCAL\n1:SPI_TM";
 		}
 	}else if(cmd->cmd == "power"){
-		if(cmd->type == get){
+		if(cmd->type == CMDtype::get){
 			*reply+=std::to_string(power);
-		}else if(cmd->type == set){
+		}else if(cmd->type == CMDtype::set){
 			this->power = cmd->val;
 		}
 	}else if(cmd->cmd == "degrees"){
-		if(cmd->type == get){
+		if(cmd->type == CMDtype::get){
 			*reply+=std::to_string(this->degreesOfRotation);
-		}else if(cmd->type == set){
+		}else if(cmd->type == CMDtype::set){
 			this->degreesOfRotation = cmd->val;
 		}
 	}else if(cmd->cmd == "enctype"){
-		if(cmd->type == get){
+		if(cmd->type == CMDtype::get){
 			*reply+=std::to_string((uint8_t)this->conf.enctype);
-		}else if(cmd->type == set && cmd->val < (uint8_t)EncoderType::NONE){
+		}else if(cmd->type == CMDtype::set && cmd->val < (uint8_t)EncoderType::NONE){
 			setEncType(EncoderType(cmd->val));
 		}else{
-			*reply += "ABN_LOCAL=0,ABN_TMC=1,HALL_TMC=2";
+			*reply += "0:ABN_LOCAL\nA1:BN_TMC\n2:HALL_TMC";
+		}
+	}else if(cmd->cmd == "axismask"){
+		if(cmd->type == CMDtype::get){
+			*reply+=std::to_string(aconf.analogmask);
+		}else if(cmd->type == CMDtype::set){
+			aconf.analogmask = cmd->val;
+		}
+	}else if(cmd->cmd == "btnmask"){
+		if(cmd->type == CMDtype::get){
+			*reply+=std::to_string(buttonMask);
+		}else if(cmd->type == CMDtype::set){
+			this->buttonMask = cmd->val;
 		}
 	}else if(cmd->cmd == "ppr"){
-		if(cmd->type == get){
+		if(cmd->type == CMDtype::get){
 			*reply+=std::to_string(this->enc->getPpr());
-		}else if(cmd->type == set && this->enc != nullptr){
+		}else if(cmd->type == CMDtype::set && this->enc != nullptr){
 			this->enc->setPpr(cmd->val);
 		}else{
 			*reply += "Err. Setup enctype first";
 		}
 	}else if(cmd->cmd == "pos"){
-		if(cmd->type == get){
+		if(cmd->type == CMDtype::get){
 			*reply+=std::to_string(this->enc->getPos());
-		}else if(cmd->type == set && this->enc != nullptr){
+		}else if(cmd->type == CMDtype::set && this->enc != nullptr){
 			this->enc->setPos(cmd->val);
 		}else{
 			*reply += "Err. Setup enctype first";
@@ -346,36 +359,36 @@ bool FFBWheel::executeUserCommand(ParsedCommand* cmd,std::string* reply){
 	if(this->conf.drvtype == MotorDriverType::TMC4671_type){
 		TMC4671* drv = static_cast<TMC4671*>(this->drv);
 		if(cmd->cmd == "mtype"){
-			if(cmd->type == get){
+			if(cmd->type == CMDtype::get){
 				*reply+=std::to_string((uint8_t)drv->conf.motconf.motor_type);
-			}else if(cmd->type == set && cmd->type < (uint8_t)MotorType::ERR){
+			}else if(cmd->type == CMDtype::set && (uint8_t)cmd->type < (uint8_t)MotorType::ERR){
 				drv->setMotorType((MotorType)cmd->val, drv->conf.motconf.pole_pairs);
 			}
 
 		}else if(cmd->cmd == "encalign"){
-			if(cmd->type == get){
+			if(cmd->type == CMDtype::get){
 				drv->bangInitABN(3000);
-			}else if(cmd->type == set){
+			}else if(cmd->type ==CMDtype:: set){
 				drv->bangInitABN(cmd->val);
 			}
 		}else if(cmd->cmd == "poles"){
-			if(cmd->type == get){
+			if(cmd->type == CMDtype::get){
 				*reply+=std::to_string(drv->conf.motconf.pole_pairs);
-			}else if(cmd->type == set){
+			}else if(cmd->type == CMDtype::set){
 				drv->setMotorType(drv->conf.motconf.motor_type,cmd->val);
 			}
 
 		}else if(cmd->cmd == "phiesrc"){
-			if(cmd->type == get){
+			if(cmd->type == CMDtype::get){
 				*reply+=std::to_string((uint8_t)drv->conf.motconf.phiEsource);
-			}else if(cmd->type == set){
+			}else if(cmd->type == CMDtype::set){
 				drv->setPhiEtype((PhiE)cmd->val);
 			}
 
 		}else if(cmd->cmd == "reg"){
-			if(cmd->type == getat){
+			if(cmd->type == CMDtype::getat){
 				*reply+=std::to_string(drv->readReg(cmd->val));
-			}else if(cmd->type == setat){
+			}else if(cmd->type == CMDtype::setat){
 				drv->writeReg(cmd->adr,cmd->val);
 			}
 

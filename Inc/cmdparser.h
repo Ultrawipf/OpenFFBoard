@@ -14,23 +14,23 @@
 
 
 
-enum CMDtype{
-	set,setat,get,getat,none,err
+enum class CMDtype{
+	set,setat,get,getat,none,help,err
 };
 struct ParsedCommand
 {
     std::string cmd;
     uint16_t adr = 0;
     int32_t val = 0;
-    CMDtype type = none;
+    CMDtype type = CMDtype::none;
 
 };
 
 template<class T> std::string cmdSetGet(ParsedCommand* cmd,T* val){
-	if(cmd->type == set){
+	if(cmd->type == CMDtype::set){
 		val = cmd->val;
 		return "";
-	}else if(cmd->type == get){
+	}else if(cmd->type == CMDtype::get){
 		std::string ret = std::to_string(*val);
 		return ret;
 	}

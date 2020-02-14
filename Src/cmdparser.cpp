@@ -60,44 +60,44 @@ std::vector<ParsedCommand> cmdparser::parse(){
 		ParsedCommand cmd;
 
 		if(word.back() == '?'){ // <cmd>?
-			cmd.type = get;
+			cmd.type = CMDtype::get;
 			cmd.cmd = word.substr(0, word.length()-1);
 		}else if(word.back() == '!'){
 			cmd.cmd = word.length()-1;
-			cmd.type = get;
+			cmd.type = CMDtype::help;
 
 		}else if(word.back() == '='){
 			cmd.cmd = word;
-			cmd.type = err;
+			cmd.type = CMDtype::err;
 
 		}else{ // More complex
 			uint32_t peq = word.find('=', 0); // set
-			uint32_t pex = word.find('!', 0); // dual val
+			//uint32_t pex = word.find('!', 0); // dual val
 			uint32_t pqm = word.find('?', 0); // read with var
-			if(pex!=std::string::npos && pex < peq && pqm == std::string::npos){ // <cmd>!<int>=<int>
+			if(pqm!=std::string::npos && pqm < peq && peq != std::string::npos){ // <cmd>?<int>=<int>
 				// Dual
-				int32_t val = (int32_t)std::stol(word.substr(pex+1, peq-pex));
+				int32_t val = (int32_t)std::stol(word.substr(pqm+1, peq-pqm));
 				int32_t val2 = (int32_t)std::stol(word.substr(peq+1, word.npos));
-				cmd.cmd = word.substr(0, pex);
-				cmd.type = setat;
+				cmd.cmd = word.substr(0, pqm);
+				cmd.type = CMDtype::setat;
 				cmd.val = val2;
 				cmd.adr = val;
 
 			}else if(pqm != std::string::npos && (std::isdigit(word[pqm+1]) || (std::isdigit(word[pqm+2]) && (word[pqm+1] == '-' || word[pqm+1] == '+')))){ // <cmd>?<int>
 				int32_t val = (int32_t)std::stol(word.substr(pqm+1, word.npos));
 				cmd.val = val;
-				cmd.type = getat;
+				cmd.type = CMDtype::getat;
 				cmd.cmd = word.substr(0, pqm);
 
 			}else if(peq != std::string::npos && (std::isdigit(word[peq+1]) || (std::isdigit(word[peq+2]) && (word[peq+1] == '-' || word[peq+1] == '+')))){ // <cmd>=<int>
 				int32_t val = (int32_t)std::stol(word.substr(peq+1, word.npos));
 				cmd.val = val;
-				cmd.type = set;
+				cmd.type = CMDtype::set;
 				cmd.cmd = word.substr(0, peq);
 
 			}else{
 				cmd.cmd = word;
-				cmd.type = get;
+				cmd.type = CMDtype::get;
 			}
 
 		}

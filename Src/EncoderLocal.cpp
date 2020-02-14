@@ -23,7 +23,7 @@ int32_t EncoderLocal::getPos(){
 }
 void EncoderLocal::setPos(int32_t pos){
 	this->pos = pos;
-	 htim->CNT = 0;
+	htim->CNT = pos % htim->ARR;
 }
 
 void EncoderLocal::setOffset(int32_t offset){
@@ -31,13 +31,19 @@ void EncoderLocal::setOffset(int32_t offset){
 }
 
 void EncoderLocal::setPeriod(uint32_t period){
-	this->htim->ARR = period;
+	this->htim->ARR = period-1;
+}
+
+void EncoderLocal::exti(uint16_t GPIO_Pin){
+	if(GPIO_Pin == ENCODER_Z_Pin){
+		overflowCallback();
+	}
 }
 
 void EncoderLocal::overflowCallback(){
 	if(htim->CNT > this->htim->ARR/2){
-		pos -= htim->ARR;
+		pos -= htim->ARR+1;
 	}else{
-		pos += htim->ARR;
+		pos += htim->ARR+1;
 	}
 }

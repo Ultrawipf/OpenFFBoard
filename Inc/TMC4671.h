@@ -132,6 +132,8 @@ public:
 	bool emergency = false;
 	void turn(int16_t power);
 	int16_t nextFlux = 0;
+	int16_t idleFlux = 0;
+	int16_t maxOffsetFlux = 3000;
 
 	void setTorque(int16_t torque);
 

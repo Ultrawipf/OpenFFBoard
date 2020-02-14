@@ -39,59 +39,59 @@ void TMCDebugBridge::tmcReadRegRaw(uint8_t reg,uint8_t* buf){
 bool TMCDebugBridge::executeUserCommand(ParsedCommand* cmd,std::string* reply){
 	bool flag = true;
 	if(cmd->cmd == "mtype"){
-		if(cmd->type == get){
+		if(cmd->type == CMDtype::get){
 			*reply+=std::to_string((uint8_t)drv->conf.motconf.motor_type);
-		}else if(cmd->type == set){
+		}else if(cmd->type == CMDtype::set){
 			drv->setMotorType((MotorType)cmd->val, drv->conf.motconf.pole_pairs);
 		}
 	}else if(cmd->cmd == "poles"){
-		if(cmd->type == get){
+		if(cmd->type == CMDtype::get){
 			*reply+=std::to_string(drv->conf.motconf.pole_pairs);
-		}else if(cmd->type == set){
+		}else if(cmd->type == CMDtype::set){
 			drv->setMotorType(drv->conf.motconf.motor_type,cmd->val);
 		}
 	}else if(cmd->cmd == "encalign"){
-		if(cmd->type == get){
+		if(cmd->type == CMDtype::get){
 			drv->bangInitABN(3000);
-		}else if(cmd->type == set){
+		}else if(cmd->type == CMDtype::set){
 			drv->bangInitABN(cmd->val);
 		}
 	}else if(cmd->cmd == "ppr"){
-		if(cmd->type == get){
+		if(cmd->type == CMDtype::get){
 			*reply += std::to_string(drv->getPpr());
-		}else if(cmd->type == set){
+		}else if(cmd->type == CMDtype::set){
 			drv->setPpr(cmd->val);
 		}
 	}else if(cmd->cmd == "torque"){
-		if(cmd->type == get){
+		if(cmd->type == CMDtype::get){
 			*reply+=std::to_string(drv->getTorque());
-		}else if(cmd->type == set){
+		}else if(cmd->type == CMDtype::set){
 			drv->turn(cmd->val);
 		}
 	}else if(cmd->cmd == "pos"){
-		if(cmd->type == get){
+		if(cmd->type == CMDtype::get){
 			*reply+=std::to_string(drv->getPos());
-		}else if(cmd->type == set){
+		}else if(cmd->type == CMDtype::set){
 			drv->setTargetPos(cmd->val);
 		}
 	}else if(cmd->cmd == "speed"){
-		if(cmd->type == get){
+		if(cmd->type == CMDtype::get){
 			*reply+=std::to_string(drv->getVelocity());
-		}else if(cmd->type == set){
+		}else if(cmd->type == CMDtype::set){
 			drv->setTargetVelocity(cmd->val);
 		}
 	}else if(cmd->cmd == "mode"){
-		if(cmd->type == get){
+		if(cmd->type == CMDtype::get){
 			*reply+=std::to_string((uint8_t)drv->getMotionMode());
-		}else if(cmd->type == set && cmd->val < (uint8_t)MotionMode::NONE){
+		}else if(cmd->type == CMDtype::set && cmd->val < (uint8_t)MotionMode::NONE){
 			drv->setMotionMode(MotionMode(cmd->val));
 		}else{
 			*reply+="stop=0,torque=1,velocity=2,position=3,prbsflux=4,prbstorque=5,prbsvelocity=6,uqudext=8,encminimove=9";
 		}
 	}else if(cmd->cmd == "reg"){
-		if(cmd->type == getat){
+		if(cmd->type == CMDtype::getat){
 			*reply+=std::to_string(drv->readReg(cmd->val));
-		}else if(cmd->type == setat){
+		}else if(cmd->type == CMDtype::setat){
 			drv->writeReg(cmd->adr,cmd->val);
 		}
 	}else{

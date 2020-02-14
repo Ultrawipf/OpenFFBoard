@@ -9,6 +9,7 @@
 #define FFB_DEFS_H_
 
 #include "cppmain.h"
+#include "Filters.h"
 
 #define FFB_ID_OFFSET 0x00
 #define MAX_EFFECTS 40
@@ -184,6 +185,7 @@ typedef struct
 	int16_t phase=0;
 	int16_t offset=0;
 	int32_t last_value = 0;
+	Biquad* filter = nullptr;
 	uint16_t counter=0;						// ms
 	uint16_t period=0;							// ms
 	uint16_t duration=0,fadeTime=0,attackTime=0;	// ms

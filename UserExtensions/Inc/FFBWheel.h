@@ -15,6 +15,8 @@
 #include "SPIButtons.h"
 #include "cppmain.h"
 #include "HidFFB.h"
+#include "AdcHandler.h"
+#include "TimerHandler.h"
 
 enum class EncoderType : uint8_t{
 	ABN_LOCAL = 0,ABN_TMC=1,HALL_TMC=2,NONE
@@ -44,7 +46,7 @@ struct FFBWheelAnalogConfig{
 
 };
 
-class FFBWheel: public FFBoardMain , public UsbHidHandler {
+class FFBWheel: public FFBoardMain, UsbHidHandler, AdcHandler, TimerHandler{
 public:
 	FFBWheel();
 	virtual ~FFBWheel();
@@ -109,9 +111,9 @@ private:
 
 
 	TMC4671PIDConf tmcpids = TMC4671PIDConf({
-		.fluxI		= 1300,
+		.fluxI		= 1000,
 		.fluxP		= 256,
-		.torqueI	= 2000,
+		.torqueI	= 1800,
 		.torqueP	= 700,
 		.velocityI	= 0,
 		.velocityP	= 128,

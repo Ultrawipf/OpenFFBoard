@@ -72,10 +72,7 @@ void HidFFB::hidOut(uint8_t* report){
 	}
 	case HID_ID_BLKFRREP: // Free a block
 	{
-		uint8_t id = report[1]-1;
-		if(id < MAX_EFFECTS){
-			effects[id].type=FFB_EFFECT_NONE;
-		}
+		free_effect(report[1]-1);
 		break;
 	}
 
@@ -84,6 +81,16 @@ void HidFFB::hidOut(uint8_t* report){
 		break;
 	}
 
+}
+
+void HidFFB::free_effect(uint16_t idx){
+	if(idx < MAX_EFFECTS){
+		effects[idx].type=FFB_EFFECT_NONE;
+		if(effects[idx].filter != nullptr){
+			delete effects[idx].filter;
+			effects[idx].filter = nullptr;
+		}
+	}
 }
 
 
@@ -156,6 +163,8 @@ void HidFFB::new_effect(FFB_CreateNewEffect_Feature_Data_t* effect){
 	FFB_Effect new_effect;
 	new_effect.type = effect->effectType;
 
+	set_filters(&new_effect);
+
 	effects[index-1] = new_effect;
 	// Set block load report
 	reportFFBStatus.effectBlockIndex = index;
@@ -163,6 +172,7 @@ void HidFFB::new_effect(FFB_CreateNewEffect_Feature_Data_t* effect){
 	used_effects++;
 	blockLoad_report.ramPoolAvailable = MAX_EFFECTS-used_effects;
 	blockLoad_report.loadStatus = 1;
+
 
 }
 void HidFFB::set_effect(FFB_SetEffect_t* effect){
@@ -180,6 +190,9 @@ void HidFFB::set_effect(FFB_SetEffect_t* effect){
 	}else{
 		effect_p->axis = effect->enableAxis;
 	}
+	if(effect_p->type != effect->effectType){
+		set_filters(effect_p);
+	}
 
 	effect_p->duration = effect->duration;
 	//printf("SetEffect: %d, Axis: %d,Type: %d\n",effect->effectType,effect->enableAxis,effect->effectType);
@@ -187,17 +200,38 @@ void HidFFB::set_effect(FFB_SetEffect_t* effect){
 		start_FFB();
 }
 
+void HidFFB::set_filters(FFB_Effect* effect){
+	switch(effect->type){
+		case FFB_EFFECT_DAMPER:
+			if(effect->filter != nullptr)
+				effect->filter->setBiquad(damper_type,(float)damper_f/frequency, damper_q, (float)0.0);
+			else
+				effect->filter = new Biquad(damper_type,(float)damper_f/frequency, damper_q, (float)0.0);
+			break;
+		case FFB_EFFECT_FRICTION:
+			if(effect->filter != nullptr)
+				effect->filter->setBiquad(friction_type,(float)friction_f/frequency, friction_q, (float)0.0);
+			else
+				effect->filter = new Biquad(friction_type,(float)friction_f/frequency, friction_q, (float)0.0);
+			break;
+	}
+}
+
 void HidFFB::set_condition(FFB_SetCondition_Data_t* cond){
 	if(cond->parameterBlockOffset != 0) //TODO if more axes are needed. Only X Axis is implemented now for the wheel.
 		return;
 
 	FFB_Effect* effect = &effects[cond->effectBlockIndex-1];
+
 	effect->offset = cond->cpOffset;
 	effect->negativeCoefficient = cond->negativeCoefficient;
 	effect->positiveCoefficient = cond->positiveCoefficient;
 	effect->negativeSaturation = cond->negativeSaturation;
 	effect->positiveSaturation = cond->positiveSaturation;
 	effect->deadBand = cond->deadBand;
+
+
+
 }
 
 void HidFFB::set_periodic(FFB_SetPeriodic_Data_t* report){
@@ -223,8 +257,7 @@ uint8_t HidFFB::find_free_effect(uint8_t type){ //Will return the first effect i
 
 void HidFFB::reset_ffb(){
 	for(uint8_t i=0;i<MAX_EFFECTS;i++){
-		effects[i].type=FFB_EFFECT_NONE;
-		effects[i].state=0;
+		free_effect(i);
 	}
 	this->reportFFBStatus.effectBlockIndex = 1;
 	this->reportFFBStatus.status = (HID_ACTUATOR_POWER) | (HID_ENABLE_ACTUATORS);
@@ -262,22 +295,10 @@ int32_t HidFFB::calculateEffects(int32_t pos,uint8_t axis=1){
 			}else{
 				force = clip<int32_t,int32_t>(((int32_t)(effect->positiveCoefficient>>3) * (pos - (effect->offset))) >> 6,-effect->negativeSaturation,effect->positiveSaturation);
 			}
-			result_torque -= (force * effect->magnitude) >> 8;
+			result_torque -= force;
 			break;
 		}
-		case FFB_EFFECT_FRICTION:
-		{
-			int32_t force = 0;
-			int32_t speed = pos - effect->last_value;
-			effect->last_value = pos;
-			if(speed<0){
-				force = clip<int32_t,int32_t>((effect->negativeCoefficient>>4) * speed,-effect->negativeSaturation,effect->positiveSaturation);
-			}else{
-				force = clip<int32_t,int32_t>((effect->positiveCoefficient>>4) * speed,-effect->negativeSaturation,effect->positiveSaturation);
-			}
-			result_torque -= (force * effect->magnitude) >> 8;
-			break;
-		}
+
 		case FFB_EFFECT_SQUARE:
 		{
 
@@ -293,6 +314,18 @@ int32_t HidFFB::calculateEffects(int32_t pos,uint8_t axis=1){
 			float phase = (float)effect->phase/(float)35999; //degrees
 			float sine =  sinf(2.0*(float)M_PI*(t*freq+phase)) * effect->magnitude;
 			int32_t force = (int32_t)(effect->offset + sine);
+
+			result_torque -= force;
+			break;
+		}
+		case FFB_EFFECT_FRICTION:
+		case FFB_EFFECT_DAMPER:
+		{
+			int32_t force = 0;
+			int32_t speed = pos - effect->last_value;
+			effect->last_value = pos;
+			float val = effect->filter->process(speed);
+			force = clip<int32_t,int32_t>((effect->positiveCoefficient>>3) * val,-effect->negativeSaturation,effect->positiveSaturation);
 
 			result_torque -= force;
 			break;

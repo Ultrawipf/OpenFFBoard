@@ -14,7 +14,10 @@
 extern ADC_HandleTypeDef hadc1;
 #define HADC hadc1	// main adc for analog pins
 
-#define UART huart1 // main uart port
+extern UART_HandleTypeDef huart1;
+#define UART &huart1 // main uart port
+#define UART_BUF_SIZE 1 // How many bytes to expect via DMA
+
 #define ADC_CHAN_VINT 7
 #define ADC_CHAN_VEXT 6
 #define ADC_PINS 6

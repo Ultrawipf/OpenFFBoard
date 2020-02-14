@@ -227,25 +227,25 @@ void SystemClock_Config(void)
 static void MX_NVIC_Init(void)
 {
   /* USART1_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(USART1_IRQn, 5, 0);
+  HAL_NVIC_SetPriority(USART1_IRQn, 6, 0);
   HAL_NVIC_EnableIRQ(USART1_IRQn);
   /* DMA2_Stream0_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(DMA2_Stream0_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(DMA2_Stream0_IRQn);
   /* TIM4_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(TIM4_IRQn, 2, 0);
+  HAL_NVIC_SetPriority(TIM4_IRQn, 3, 0);
   HAL_NVIC_EnableIRQ(TIM4_IRQn);
   /* TIM3_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(TIM3_IRQn, 7, 0);
+  HAL_NVIC_SetPriority(TIM3_IRQn, 4, 0);
   HAL_NVIC_EnableIRQ(TIM3_IRQn);
   /* TIM2_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(TIM2_IRQn, 3, 0);
+  HAL_NVIC_SetPriority(TIM2_IRQn, 5, 0);
   HAL_NVIC_EnableIRQ(TIM2_IRQn);
   /* EXTI9_5_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(EXTI9_5_IRQn, 13, 0);
   HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
   /* ADC_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(ADC_IRQn, 6, 0);
+  HAL_NVIC_SetPriority(ADC_IRQn, 1, 0);
   HAL_NVIC_EnableIRQ(ADC_IRQn);
   /* TIM5_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(TIM5_IRQn, 8, 0);

@@ -30,9 +30,16 @@ void SPI_Buttons::readButtons(uint8_t* buf ,uint16_t len){
 	HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_RESET);
 	HAL_SPI_Receive(this->spi,buf,len,5);
 	HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_SET);
-	for(uint8_t i=0;i<len;i++){
-		buf[i] = ~(buf[i]);
+
+	if(this->invert){
+		for(uint8_t i=0;i<len;i++){
+			buf[i] = ~(buf[i]);
+		}
 	}
+}
+
+void SPI_Buttons::setInvert(bool invert){
+	this->invert = invert;
 }
 
 

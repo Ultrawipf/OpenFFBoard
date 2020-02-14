@@ -34,11 +34,7 @@ public:
 	// Callbacks
 	virtual void update();
 	virtual void cdcRcv(char* Buf, uint32_t *Len);
-	virtual void uartRcv(UART_HandleTypeDef *huart);
 	virtual void SOF();
-	virtual void adcUpd(volatile uint32_t* ADC_BUF);
-	virtual void exti(uint16_t GPIO_Pin); // External Interrupt
-	virtual void timerElapsed(TIM_HandleTypeDef* htim);
 
 private:
 

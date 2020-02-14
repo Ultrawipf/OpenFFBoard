@@ -29,3 +29,20 @@ ExampleMain::~ExampleMain() {
 	// TODO Auto-generated destructor stub
 }
 
+bool ExampleMain::executeUserCommand(ParsedCommand* cmd,std::string* reply){
+	bool flag = true; // Valid command found
+
+	// ------------ commands ----------------
+	if(cmd->cmd == "command"){ // Example: command=1337\n
+		if(cmd->type == CMDtype::get){
+			*reply+= std::to_string(examplevar);
+		}else if(cmd->type == CMDtype::set){
+			examplevar = cmd->val;
+		}else{
+			*reply += "Err";
+		}
+	}else{
+		flag = false; // No valid command
+	}
+	return flag;
+}

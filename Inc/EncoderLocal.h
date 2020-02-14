@@ -11,10 +11,11 @@
 #include "cppmain.h"
 #include <Encoder.h>
 #include "constants.h"
+#include "ExtiHandler.h"
 
 extern TIM_TypeDef TIM_ENC;
 
-class EncoderLocal: public Encoder {
+class EncoderLocal: public Encoder,public ExtiHandler {
 public:
 	EncoderLocal();
 	virtual ~EncoderLocal();
@@ -24,6 +25,7 @@ public:
 	void setOffset(int32_t offset);
 	void setPeriod(uint32_t period);
 	void overflowCallback();
+	void exti(uint16_t GPIO_Pin);
 	//void zpinCallback();
 
 private:

@@ -21,11 +21,18 @@ public:
 	int32_t calculateEffects(int32_t pos,uint8_t axis); //Axis: 1/2 pos: current position scaled from -0x7fff to 0x7fff
 	bool idlecenter = true;
 
+	float damper_f = 50 , damper_q = 0.2;
+	BiquadType damper_type = BiquadType::lowpass;
+	float friction_f = 50 , friction_q = 0.2;
+	BiquadType friction_type = BiquadType::lowpass;
+	const uint16_t frequency = 1000;
+
 private:
 	// HID
 
 	uint8_t find_free_effect(uint8_t type);
 	void new_effect(FFB_CreateNewEffect_Feature_Data_t* effect);
+	void free_effect(uint16_t id);
 	void ffb_control(uint8_t cmd);
 	void reset_ffb();
 	void set_effect(FFB_SetEffect_t* effect);
@@ -35,6 +42,8 @@ private:
 	void set_periodic(FFB_SetPeriodic_Data_t* report);
 	void start_FFB();
 	void stop_FFB();
+
+	void set_filters(FFB_Effect* effect);
 
 	uint8_t report_counter = 0;
 	uint16_t report_counter_hid = 0;

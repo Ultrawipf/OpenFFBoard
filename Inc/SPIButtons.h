@@ -20,12 +20,12 @@ public:
 	void readButtons(uint8_t* buf ,uint16_t len);
 	uint16_t getBtnNum(); // Amount of readable buttons
 	void setBtnNum(uint16_t num);
-
+	void setInvert(bool invert);
 private:
 	SPI_HandleTypeDef* spi;
 	uint16_t cspin;
 	GPIO_TypeDef* csport;
-
+	bool invert = true;
 	uint16_t buttons=16;
 };
 

@@ -55,41 +55,41 @@ bool FFBoardMain::executeSysCommand(ParsedCommand* cmd,std::string* reply){
 		NVIC_SystemReset();
 
 	}else if(cmd->cmd == "vint"){
-		if(cmd->type==get){
+		if(cmd->type==CMDtype::get){
 			*reply+=std::to_string(getIntV());
 		}
 
 	}else if(cmd->cmd == "vext"){
-		if(cmd->type==get){
+		if(cmd->type==CMDtype::get){
 			*reply+=std::to_string(getExtV());
 		}
 
 	}else if(cmd->cmd == "swver"){
 		*reply += std::to_string(SW_VERSION);
 
-	}else if(cmd->type!=set &&cmd->cmd == "lsconf"){
+	}else if(cmd->type!=CMDtype::set &&cmd->cmd == "lsconf"){
 		*reply += printAvailableClasses();
 
 	}else if(cmd->cmd == "id"){
 		*reply+=std::to_string(this->getInfo().id);
 	}else if(cmd->cmd == "config"){
-		if(cmd->type == get || cmd->type == none){
+		if(cmd->type == CMDtype::get || cmd->type == CMDtype::none){
 			uint16_t buf=this->getInfo().id;
 			Flash_Read(ADR_CURRENT_CONFIG, &buf);
 			*reply+=std::to_string(buf);
 
-		}else if(cmd->type == set){
+		}else if(cmd->type == CMDtype::set){
 			if(isValidClassId(cmd->val)){
 				Flash_Write(ADR_CURRENT_CONFIG, (uint16_t)cmd->val);
 				if(cmd->val != this->getInfo().id){
 					NVIC_SystemReset(); // Reboot
 				}
-			}else if(cmd->type == err){
+			}else if(cmd->type == CMDtype::err){
 				*reply += "Err";
 			}
 		}
 	}else if(cmd->cmd == "format"){
-		if(cmd->type == set && cmd->val==1){
+		if(cmd->type == CMDtype::set && cmd->val==1){
 			EE_Format();
 		}else{
 			*reply += "format=1 will ERASE ALL stored variables. Be careful!";
@@ -107,16 +107,13 @@ void FFBoardMain::executeCommands(std::vector<ParsedCommand> commands){
 	for(ParsedCommand cmd : commands){
 		if(!executeSysCommand(&cmd,&reply)){
 			executeUserCommand(&cmd,&reply);
-
 		}
 		if(!reply.empty() && reply.back()!='\n'){
 			reply+='\n';
 		}
 	}
 	if(reply.length()>0){
-
 		CDC_Transmit_FS(reply.c_str(), reply.length());
-
 	}
 }
 
@@ -134,28 +131,6 @@ void FFBoardMain::update(){
 
 }
 
-void FFBoardMain::adcUpd(volatile uint32_t* ADC_BUF){
-
-}
-
-void FFBoardMain::exti(uint16_t GPIO_Pin){
-
-}
-
-
-void FFBoardMain::timerElapsed(TIM_HandleTypeDef* htim){
-
-}
-
-void FFBoardMain::uartRcv(UART_HandleTypeDef *huart){
-	// Example
-//	extern UART_HandleTypeDef UART;
-//  if(huart == &UART)....
-//	if(HAL_UART_Receive_IT(huart,(uint8_t*)&uart_buf,1) != HAL_OK){
-//
-//	  	  return;
-//	}
-}
 
 void FFBoardMain::SOF(){
 
