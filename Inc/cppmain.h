@@ -16,6 +16,8 @@
 #include "FFBoardMain.h"
 #include <memory>
 #include "ledEffects.h"
+#include "ClassChooser.h"
+
 extern "C" {
 #endif
 
@@ -30,8 +32,6 @@ void cppmain();
 }
 
 //extern std::unique_ptr<FFBoardMain> mainclass;
-extern FFBoardMain* mainclass;
-
 
 template<class T,class C>
 int8_t cliptest(T v, C l, C h)
@@ -52,7 +52,5 @@ T clip(T v, C l, C h)
 }
 
 #endif
-
-
 
 #endif /* CPPMAIN_H_ */

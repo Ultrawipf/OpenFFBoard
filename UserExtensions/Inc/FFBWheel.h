@@ -17,7 +17,7 @@
 #include "HidFFB.h"
 #include "AdcHandler.h"
 #include "TimerHandler.h"
-
+#include "ClassChooser.h"
 enum class EncoderType : uint8_t{
 	ABN_LOCAL = 0,ABN_TMC=1,HALL_TMC=2,NONE
 };
@@ -26,14 +26,12 @@ enum class MotorDriverType : uint8_t{
 	TMC4671_type=0,PPM_type=1,NONE // Only tmc implemented
 };
 
-enum class ButtonSourceType : uint8_t{
-	LOCAL=0,SPI_TM=1,I2C=2,NONE // Only local implemented
-};
+
 
 struct FFBWheelConfig{
 	MotorDriverType drvtype=MotorDriverType::TMC4671_type;
 	EncoderType enctype=EncoderType::ABN_TMC;
-	ButtonSourceType btcsrctype=ButtonSourceType::LOCAL;
+
 };
 
 enum class AnalogOffset : uint8_t{
@@ -46,13 +44,14 @@ struct FFBWheelAnalogConfig{
 
 };
 
+
 class FFBWheel: public FFBoardMain, UsbHidHandler, AdcHandler, TimerHandler{
 public:
 	FFBWheel();
 	virtual ~FFBWheel();
 
-	static FFBoardMainIdentifier info;
-	const FFBoardMainIdentifier getInfo();
+	static ClassIdentifier info;
+	const ClassIdentifier getInfo();
 
 	void setupTMC4671();
 	void setupTMC4671_enc(EncoderType enctype);
@@ -60,7 +59,9 @@ public:
 
 	void setDrvType(MotorDriverType drvtype);
 	void setEncType(EncoderType enctype);
-	void setBtnType(ButtonSourceType btntype);
+	void setBtnTypes(uint16_t btntypes);
+	void addBtnType(uint16_t id);
+	void clearBtnTypes();
 
 	void SOF();
 	void usbInit(); // initialize a composite usb device
@@ -87,6 +88,7 @@ public:
 	uint16_t power = 0xffff;
 
 
+
 private:
 	void send_report();
 	int16_t updateEndstop();
@@ -98,8 +100,7 @@ private:
 	FFBWheelConfig conf;
 	MotorDriver* drv;
 	Encoder* enc;
-	ButtonSource* btn = nullptr;
-	uint16_t buttonMask = 0xffff;
+	std::vector<ButtonSource*> btns;
 	FFBWheelAnalogConfig aconf;
 	volatile uint16_t adc_buf[ADC_PINS];
 	reportHID_t reportHID;
@@ -108,9 +109,11 @@ private:
 	int32_t scaledEnc = 0;
 	int32_t speed = 0;
 	bool tmcFeedForward = true;
+	uint16_t btnsources = 1; // Default ID1 = local buttons
 
 
 	TMC4671PIDConf tmcpids = TMC4671PIDConf({
+
 		.fluxI		= 800,
 		.fluxP		= 256,
 		.torqueI	= 1200,

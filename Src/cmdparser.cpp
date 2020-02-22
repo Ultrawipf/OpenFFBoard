@@ -62,8 +62,9 @@ std::vector<ParsedCommand> cmdparser::parse(){
 		if(word.back() == '?'){ // <cmd>?
 			cmd.type = CMDtype::get;
 			cmd.cmd = word.substr(0, word.length()-1);
+
 		}else if(word.back() == '!'){
-			cmd.cmd = word.length()-1;
+			cmd.cmd = word.substr(0, word.length()-1);
 			cmd.type = CMDtype::help;
 
 		}else if(word.back() == '='){

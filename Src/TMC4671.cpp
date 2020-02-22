@@ -59,9 +59,9 @@ bool TMC4671::initialize(){
 	HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_SET);
 	writeReg(0x64, 0); // No flux/torque
 
-	if(this->conf.motconf.phiEsource == PhiE::abn){
-		setup_ABN_Enc(this->abnconf);
-	}
+//	if(this->conf.motconf.phiEsource == PhiE::abn){
+//		setup_ABN_Enc(this->abnconf);
+//	}
 	//TODO
 	// Initialize Encoder/Hall
 
@@ -69,7 +69,7 @@ bool TMC4671::initialize(){
 	// Run in direction of N pulse. Enable flag/interrupt
 	//runOpenLoop(3000, 0, 5, 100);
 	initialized = true;
-
+	initTime = HAL_GetTick();
 	return initialized;
 
 }
@@ -77,8 +77,21 @@ bool TMC4671::initialize(){
 void TMC4671::update(){
 	// Optional update methods for safety
 
-	if(!initialized && active){
-		initialize();
+	uint16_t vint = getIntV();
+
+	if(vint < 8000 || vint>78000){ // low voltage or overvoltage
+		initialized = false;
+		initTime = HAL_GetTick();
+		pulseErrLed();
+		if(!emergency)
+			emergencyStop();
+	}
+
+	if(!initialized && active && vint > 9000 && vint < 75000){
+		if(HAL_GetTick() - initTime > (emergency ? 5000 : 1000)){
+			emergency = false;
+			initialize();
+		}
 	}
 
 }
@@ -126,12 +139,15 @@ void TMC4671::setPhiE_ext(int16_t phiE){
 void TMC4671::bangInitABN(int16_t power){
 	PhiE lastphie = getPhiEtype();
 	MotionMode lastmode = getMotionMode();
-
+	setPhiE_ext(0x3fff);
 	setUdUq(power, 0);
+
 	setPhiEtype(PhiE::ext);
-	setPhiE_ext(0x7fff);
-	updateReg(0x2A, 0, 0xffff, 16);
+	updateReg(0x29, 0, 0xffff, 16);
 	setMotionMode(MotionMode::uqudext);
+
+	HAL_Delay(100);
+	setPhiE_ext(0x7fff);
 
 	HAL_Delay(250);
 
@@ -161,6 +177,7 @@ void TMC4671::setup_ABN_Enc(TMC4671ABNConf encconf){
 
 	//conf.motconf.phiEsource = PhiE::abn;
 	this->setPhiEtype(PhiE::abn);
+
 	bangInitABN(encconf.bangInitPower);
 }
 void TMC4671::setup_HALL(TMC4671HALLConf hallconf){
@@ -364,8 +381,12 @@ uint32_t TMC4671::getPpr(){
 	return abnconf.ppr;
 }
 void TMC4671::setPpr(uint32_t cpr){
+	bool reinit = cpr != abnconf.ppr;
 	this->abnconf.ppr = cpr;
 	writeReg(0x26, abnconf.ppr);
+
+	if(reinit)
+		bangInitABN(this->abnconf.bangInitPower);
 }
 
 uint32_t TMC4671::encToPos(uint32_t enc){
@@ -495,10 +516,10 @@ bool TMC4671::findABNPol(){
 	setMotionMode(lastmode);
 
 	bool npol = highcount > count/2;
-	abnconf.apol = npol;
-	abnconf.bpol = npol;
-	abnconf.npol = npol;
-	setup_ABN_Enc(this->abnconf);
+//	abnconf.apol = npol;
+//	abnconf.bpol = npol;
+//	abnconf.npol = npol;
+//	setup_ABN_Enc(this->abnconf);
 	return npol;
 }
 

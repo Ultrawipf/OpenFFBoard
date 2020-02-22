@@ -8,13 +8,13 @@
 #include <ExampleMain.h>
 
 // Change this
-FFBoardMainIdentifier ExampleMain::info = {
+ClassIdentifier ExampleMain::info = {
 		 .name = "Custom" ,
 		 .id=1337,
 		 .hidden=true //Set false to list in "lsconf"
  };
 // Copy this to your class for identification
-const FFBoardMainIdentifier ExampleMain::getInfo(){
+const ClassIdentifier ExampleMain::getInfo(){
 	return info;
 }
 

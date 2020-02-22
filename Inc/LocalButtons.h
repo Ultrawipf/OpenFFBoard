@@ -9,14 +9,17 @@
 #define LOCALBUTTONS_H_
 
 #include <ButtonSource.h>
+#include "ChoosableClass.h"
 
-class LocalButtons: public ButtonSource {
+class LocalButtons: public ButtonSource{
 public:
 	LocalButtons();
 	virtual ~LocalButtons();
+	void readButtons(uint32_t* buf);
+	const ClassIdentifier getInfo();
+	static ClassIdentifier info;
 
-	void readButtons(uint8_t* buf ,uint16_t len);
-	uint16_t getBtnNum();
+	const uint16_t maxButtons = 8;
 
 private:
 	const uint16_t button_pins[8] = {DIN0_Pin,DIN1_Pin,DIN2_Pin,DIN3_Pin,DIN4_Pin,DIN5_Pin,DIN6_Pin,DIN7_Pin};

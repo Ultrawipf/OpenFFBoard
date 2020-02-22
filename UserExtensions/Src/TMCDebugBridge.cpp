@@ -9,13 +9,13 @@
 #include "ledEffects.h"
 
 // Change this
-FFBoardMainIdentifier TMCDebugBridge::info = {
+ClassIdentifier TMCDebugBridge::info = {
 		 .name = "TMC Debug Bridge" ,
 		 .id=11,
 		 .hidden=false //Set false to list in "lsconf"
  };
 // Copy this to your class for identification
-const FFBoardMainIdentifier TMCDebugBridge::getInfo(){
+const ClassIdentifier TMCDebugBridge::getInfo(){
 	return info;
 }
 

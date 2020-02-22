@@ -9,14 +9,22 @@
 #include "FFBWheel_usb_init.h"
 #include "voltagesense.h"
 
-FFBoardMainIdentifier FFBWheel::info = {
+ClassIdentifier FFBWheel::info = {
 		 .name = "FFB Wheel" ,
 		 .id=1
  };
 
-const FFBoardMainIdentifier FFBWheel::getInfo(){
+const ClassIdentifier FFBWheel::getInfo(){
 	return info;
 }
+
+// Register possible button sources (id 0-15)
+const std::vector<class_entry<ButtonSource>> button_sources =
+{
+		add_class<LocalButtons,ButtonSource>(),
+		add_class<SPI_Buttons,ButtonSource>()
+};
+ClassChooser<ButtonSource> btn_chooser(button_sources);
 
 
 FFBWheel::FFBWheel() {
@@ -38,7 +46,8 @@ FFBWheel::FFBWheel() {
 
 
 	setDrvType(this->conf.drvtype);
-	setBtnType(this->conf.btcsrctype);
+	Flash_Read(ADR_FFBWHEEL_BUTTONCONF, &this->btnsources);
+	setBtnTypes(this->btnsources);
 
 	uint16_t ppr = 0;
 	if(Flash_Read(ADR_TMC1_PPR, &ppr)){
@@ -48,7 +57,7 @@ FFBWheel::FFBWheel() {
 	}
 
 	Flash_Read(ADR_FFBWHEEL_POWER, &this->power);
-	Flash_Read(ADR_FFBWHEEL_BUTTONMASK, &this->buttonMask);
+
 	uint16_t aconfint;
 	if(Flash_Read(ADR_FFBWHEEL_ANALOGCONF,&aconfint)){
 		this->aconf = FFBWheel::decodeAnalogConfFromInt(aconfint);
@@ -58,6 +67,7 @@ FFBWheel::FFBWheel() {
 
 }
 
+// Saves parameters to flash
 void FFBWheel::saveFlash(){
 	if(this->conf.drvtype == MotorDriverType::TMC4671_type){
 		TMC4671* drv = static_cast<TMC4671*>(this->drv);
@@ -70,7 +80,7 @@ void FFBWheel::saveFlash(){
 	Flash_Write(ADR_FFBWHEEL_CONFIG,FFBWheel::encodeConfToInt(this->conf));
 	Flash_Write(ADR_TMC1_PPR, enc->getPpr());
 	Flash_Write(ADR_FFBWHEEL_POWER, this->power);
-	Flash_Write(ADR_FFBWHEEL_BUTTONMASK,this->buttonMask);
+	Flash_Write(ADR_FFBWHEEL_BUTTONCONF,this->btnsources);
 	Flash_Write(ADR_FFBWHEEL_ANALOGCONF, FFBWheel::encodeAnalogConfToInt(this->aconf));
 
 }
@@ -96,29 +106,8 @@ void FFBWheel::update(){
 		if(this->conf.drvtype == MotorDriverType::TMC4671_type){
 			TMC4671* drv = static_cast<TMC4671*>(this->drv);
 			drv->update();
-
-//			drv->nextFlux = 500-clip<int32_t,int16_t>(abs(torque),0,power);//500-clip<int32_t,int16_t>(abs(speed)*30,0,power);
-
-			uint16_t vint = getIntV();
-			if(vint>78000){ // Voltage exceeds maximum for components. stop!
-				pulseErrLed();
-				drv->emergencyStop();
-				drv->initialized = false;
-				HAL_Delay(500);
-
-			}
-
-			if(vint < 8000){ // low voltage
-				drv->initialized = false;
-			}else{
-				if(!drv->initialized && usb_update_flag && vint < 70000){
-					drv->initialize();
-				}
-			}
 		}
 	}
-
-
 	if(usb_update_flag){
 		speed = scaledEnc - lastScaledEnc;
 		lastScaledEnc = scaledEnc;
@@ -200,13 +189,13 @@ FFBWheelConfig FFBWheel::decodeConfFromInt(uint16_t val){
 	FFBWheelConfig conf;
 	conf.enctype = EncoderType((val) & 0x07);
 	conf.drvtype = MotorDriverType((val >> 3) & 0x07);
-	conf.btcsrctype = ButtonSourceType((val >> 6) & 0x07);
+
 	return conf;
 }
 uint16_t FFBWheel::encodeConfToInt(FFBWheelConfig conf){
 	uint16_t val = (uint8_t)conf.enctype & 0x7;
 	val |= ((uint8_t)conf.drvtype & 0x7) << 3;
-	val |= ((uint8_t)conf.btcsrctype & 0x7) << 6;
+
 	return val;
 }
 FFBWheelAnalogConfig FFBWheel::decodeAnalogConfFromInt(uint16_t val){
@@ -263,19 +252,36 @@ void FFBWheel::setEncType(EncoderType enctype){
 	}
 }
 
-void FFBWheel::setBtnType(ButtonSourceType btntype){
-	this->conf.btcsrctype = btntype;
-	if(this->btn != nullptr){
-		delete this->btn;
+void FFBWheel::clearBtnTypes(){
+	// Destruct all button sources
+	for(ButtonSource* btn : this->btns){
+		delete btn;
 	}
-	if(btntype == ButtonSourceType::LOCAL){
-		this->btn = new LocalButtons();
-	}else if(btntype == ButtonSourceType::SPI_TM){
-		this->btn = new SPI_Buttons();
-	}
+	this->btns.clear();
 }
 
-
+void FFBWheel::setBtnTypes(uint16_t btntypes){
+	this->btnsources = btntypes;
+	clearBtnTypes();
+	for(uint8_t id = 0;id<16;id++){
+		if((btntypes >> id) & 0x1){
+			// Matching flag
+			ButtonSource* btn = btn_chooser.Create(id);
+			if(btn!=nullptr)
+				this->btns.push_back(btn);
+		}
+	}
+}
+void FFBWheel::addBtnType(uint16_t id){
+	for(ButtonSource* btn : this->btns){
+		if(btn->getInfo().id == id){
+			return;
+		}
+	}
+	ButtonSource* btn = btn_chooser.Create(id);
+	if(btn!=nullptr)
+		this->btns.push_back(btn);
+}
 
 FFBWheel::~FFBWheel() {
 
@@ -295,14 +301,32 @@ bool FFBWheel::executeUserCommand(ParsedCommand* cmd,std::string* reply){
 		}else{
 			*reply += "0:TMC4671";
 		}
-	}else if(cmd->cmd == "btntype"){
+	}else if(cmd->cmd == "btntypes"){
 		if(cmd->type == CMDtype::get){
-			*reply+=std::to_string((uint8_t)this->conf.btcsrctype);
-		}else if(cmd->type == CMDtype::set && cmd->val < (uint8_t)ButtonSourceType::NONE){
-			setBtnType(ButtonSourceType(cmd->val));
+			*reply+=std::to_string(this->btnsources);
+		}else if(cmd->type == CMDtype::set){
+			setBtnTypes(cmd->val);
 		}else{
-			*reply += "0:LOCAL\n1:SPI_TM";
+			*reply += "bin flag encoded list of button sources. (3 = source 1 & 2 active). See lsbtn for sources";
 		}
+	}else if(cmd->cmd == "lsbtn"){
+		if(cmd->type == CMDtype::get){
+			*reply += btn_chooser.printAvailableClasses();
+		}
+	}else if(cmd->cmd == "addbtn"){
+		if(cmd->type == CMDtype::set){
+			this->addBtnType(cmd->val);
+		}
+	}else if(cmd->cmd == "numspibuttons"){
+		if(cmd->type == CMDtype::set){
+			SPI_Buttons::writeConfNumButtons(cmd->val);
+			this->setBtnTypes(this->btnsources); // Reload sources
+		}else if(cmd->type == CMDtype::get){
+			*reply+=std::to_string(SPI_Buttons::readConfNumButtons());
+		}else{
+			*reply+="Read or store global spi button number. Negative to cut left side";
+		}
+
 	}else if(cmd->cmd == "power"){
 		if(cmd->type == CMDtype::get){
 			*reply+=std::to_string(power);
@@ -329,12 +353,6 @@ bool FFBWheel::executeUserCommand(ParsedCommand* cmd,std::string* reply){
 		}else if(cmd->type == CMDtype::set){
 			aconf.analogmask = cmd->val;
 		}
-	}else if(cmd->cmd == "btnmask"){
-		if(cmd->type == CMDtype::get){
-			*reply+=std::to_string(buttonMask);
-		}else if(cmd->type == CMDtype::set){
-			this->buttonMask = cmd->val;
-		}
 	}else if(cmd->cmd == "ppr"){
 		if(cmd->type == CMDtype::get){
 			*reply+=std::to_string(this->enc->getPpr());
@@ -351,6 +369,10 @@ bool FFBWheel::executeUserCommand(ParsedCommand* cmd,std::string* reply){
 		}else{
 			*reply += "Err. Setup enctype first";
 		}
+
+	}else if(cmd->cmd == "hidrate" && cmd->type == CMDtype::get){
+		*reply+=std::to_string(1000/ffb->hid_out_period);
+
 	}else if(cmd->cmd == "help"){
 		*reply += "<HELP>"; // TODO
 	}
@@ -424,9 +446,17 @@ void FFBWheel::send_report(){
 	extern USBD_HandleTypeDef hUsbDeviceFS;
 
 	// Read buttons
-	uint32_t buttons = 0;
-	btn->readButtons((uint8_t*)&buttons, btn->getBtnNum());
-	reportHID.buttons = buttons & buttonMask;
+	reportHID.buttons = 0; // Reset buttons
+	uint8_t shift = 0;
+	if(btns.size() != 0)
+		for(ButtonSource* btn : btns){
+			uint32_t buf = 0;
+			btn->readButtons(&buf);
+			reportHID.buttons |= buf << shift;
+			shift += btn->getBtnNum();
+		}
+	//btn->readButtons(&reportHID.buttons);
+
 	// Encoder
 	reportHID.X = clip(lastScaledEnc,-0x7fff,0x7fff);
 	// Analog values read by DMA

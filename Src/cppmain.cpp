@@ -5,11 +5,12 @@
 #include <memory>
 #include "global_callbacks.h"
 
+
 bool running = true;
 
 uint16_t main_id = 0;
 FFBoardMain* mainclass;
-
+ClassChooser<FFBoardMain> mainchooser(class_registry);
 extern uint32_t ADC_BUF[ADC_CHANNELS];
 
 void cppmain() {
@@ -27,7 +28,8 @@ void cppmain() {
 	extern volatile char uart_buf[UART_BUF_SIZE];
 	HAL_UART_Receive_IT(UART,(uint8_t*)uart_buf,1);
 
-	mainclass = (SelectMain(main_id));
+
+	mainclass = mainchooser.Create(main_id);//(SelectMain(main_id));
 	mainclass->usbInit();
 
 	while(running){

@@ -18,16 +18,18 @@
 #include "eeprom.h"
 #include "voltagesense.h"
 
+#include "ClassChooser.h"
+extern ClassChooser<FFBoardMain> mainchooser;
 
 
-FFBoardMainIdentifier FFBoardMain::info ={.name = "Basic" , .id=0};
+ClassIdentifier FFBoardMain::info ={.name = "Basic" , .id=0};
 
 FFBoardMain::FFBoardMain() {
 
 
 }
 
-const FFBoardMainIdentifier FFBoardMain::getInfo(){
+const ClassIdentifier FFBoardMain::getInfo(){
 	return info;
 }
 
@@ -68,7 +70,7 @@ bool FFBoardMain::executeSysCommand(ParsedCommand* cmd,std::string* reply){
 		*reply += std::to_string(SW_VERSION);
 
 	}else if(cmd->type!=CMDtype::set &&cmd->cmd == "lsconf"){
-		*reply += printAvailableClasses();
+		*reply += mainchooser.printAvailableClasses();
 
 	}else if(cmd->cmd == "id"){
 		*reply+=std::to_string(this->getInfo().id);
@@ -79,7 +81,7 @@ bool FFBoardMain::executeSysCommand(ParsedCommand* cmd,std::string* reply){
 			*reply+=std::to_string(buf);
 
 		}else if(cmd->type == CMDtype::set){
-			if(isValidClassId(cmd->val)){
+			if(mainchooser.isValidClassId(cmd->val)){
 				Flash_Write(ADR_CURRENT_CONFIG, (uint16_t)cmd->val);
 				if(cmd->val != this->getInfo().id){
 					NVIC_SystemReset(); // Reboot

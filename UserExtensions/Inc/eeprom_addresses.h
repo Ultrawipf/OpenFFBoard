@@ -34,14 +34,15 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_CURRENT_CONFIG 	10
 
 // FFBWheel 100-200 // TODO ADD
-#define ADR_FFBWHEEL_CONFIG				0x101 // 0-2 ENC, 3-5 DRV, 6-8 BTN
+#define ADR_FFBWHEEL_CONFIG				0x101 // 0-2 ENC, 3-5 DRV
 #define ADR_FFBWHEEL_POWER				0x102
-#define ADR_FFBWHEEL_BUTTONMASK 		0x105
+#define ADR_FFBWHEEL_BUTTONCONF 		0x105
 #define ADR_FFBWHEEL_ANALOGCONF 		0x106 // lower 8 bit mask, 8-9 offsetmode
 #define ADR_TMC1_POLES_MOTTYPE_PHIE 	0x110 // 0-2: MotType 3-5: PhiE source 6-15: Poles
 #define ADR_TMC1_PPR					0x111
 #define ADR_TMC1_MISC					0x112
 
-
+// Button Sources:
+#define ADR_SPI_BTN_CONF				0x201
 
 #endif /* EEPROM_ADDRESSES_H_ */

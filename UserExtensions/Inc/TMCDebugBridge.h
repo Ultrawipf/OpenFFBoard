@@ -26,8 +26,8 @@ public:
 	TMCDebugBridge();
 	virtual ~TMCDebugBridge();
 
-	static FFBoardMainIdentifier info;
-	const FFBoardMainIdentifier getInfo();
+	static ClassIdentifier info;
+	const ClassIdentifier getInfo();
 
 	void cdcRcv(char* Buf, uint32_t *Len);
 	bool executeUserCommand(ParsedCommand* cmd,std::string* reply);

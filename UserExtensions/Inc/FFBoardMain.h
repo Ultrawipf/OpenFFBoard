@@ -8,23 +8,18 @@
 #ifndef FFBOARDMAIN_H_
 #define FFBOARDMAIN_H_
 
+#include "cppmain.h"
 #include "main.h"
 #include <string>
 #include "cmdparser.h"
 #include "usbd_cdc_if.h"
-
-struct FFBoardMainIdentifier {
-	const char* name;
-	uint16_t id;
-	bool hidden = false;
-};
+#include "ChoosableClass.h"
 
 
-
-class FFBoardMain {
+class FFBoardMain : public ChoosableClass {
 public:
-	static FFBoardMainIdentifier info;
-	virtual const FFBoardMainIdentifier getInfo();
+	static ClassIdentifier info;
+	virtual const ClassIdentifier getInfo();
 
 	FFBoardMain();
 	virtual ~FFBoardMain();
@@ -45,5 +40,7 @@ protected:
 	cmdparser parser = cmdparser();
 
 };
+
+
 
 #endif /* FFBOARDMAIN_H_ */

@@ -50,7 +50,7 @@ public:
 	bool add(char* Buf, uint32_t *Len);
 	std::vector<ParsedCommand> parse();
 
-	const std::string helpstring = "Parser usage:\n Set <cmd>=<int>/<cmd>!<adr>=<var>\n Get: <cmd>?/<cmd>?<var>\n \ndelims: [;/CR/NL/SPACE]";
+	const std::string helpstring = "Parser usage:\n Set <cmd>=<int>/<cmd>?<adr>=<var>\n Get: <cmd>?/<cmd>?<var>\nInfo: <cmd>!\ndelims: [;/CR/NL/SPACE]";
 };
 
 #endif /* CMDPARSER_H_ */

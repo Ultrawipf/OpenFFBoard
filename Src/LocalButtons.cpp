@@ -7,24 +7,30 @@
 
 #include <LocalButtons.h>
 
-LocalButtons::LocalButtons() {
-	// TODO Auto-generated constructor stub
+ClassIdentifier LocalButtons::info = {
+	 .name = "D-Pins" ,
+	 .id=0
+};
 
+LocalButtons::LocalButtons() {
+	// Limit amount of buttons
+	conf.numButtons = MIN(this->maxButtons, conf.numButtons);
 }
 
 LocalButtons::~LocalButtons() {
 	// TODO Auto-generated destructor stub
 }
 
-void LocalButtons::readButtons(uint8_t* buf ,uint16_t len){
-	len = MIN(len,8);
+const ClassIdentifier LocalButtons::getInfo(){
+	return info;
+}
 
-	for(uint8_t i = 0;i<len;i++){
+
+void LocalButtons::readButtons(uint32_t* buf){
+	uint8_t buttons = MIN(this->maxButtons, conf.numButtons);
+	for(uint8_t i = 0;i<buttons;i++){
 		*buf |= !HAL_GPIO_ReadPin(button_ports[i],button_pins[i]) << i;
 	}
 
 }
 
-uint16_t LocalButtons::getBtnNum(){
-	return 8;
-}

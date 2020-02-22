@@ -18,6 +18,8 @@ HidFFB::~HidFFB() {
 
 
 void HidFFB::hidOut(uint8_t* report){
+	hid_out_period = HAL_GetTick() - lastOut; // For measuring update rate
+	lastOut = HAL_GetTick();
 	// FFB Output Message
 	report[0] -= FFB_ID_OFFSET;// if offset id was set correct this
 	uint8_t event_idx = report[0];
@@ -208,15 +210,15 @@ void HidFFB::set_filters(FFB_Effect* effect){
 	switch(effect->type){
 		case FFB_EFFECT_DAMPER:
 			if(effect->filter != nullptr)
-				effect->filter->setBiquad(damper_type,(float)damper_f/frequency, damper_q, (float)0.0);
+				effect->filter->setBiquad(damper_type,(float)damper_f/calcfrequency, damper_q, (float)0.0);
 			else
-				effect->filter = new Biquad(damper_type,(float)damper_f/frequency, damper_q, (float)0.0);
+				effect->filter = new Biquad(damper_type,(float)damper_f/calcfrequency, damper_q, (float)0.0);
 			break;
 		case FFB_EFFECT_FRICTION:
 			if(effect->filter != nullptr)
-				effect->filter->setBiquad(friction_type,(float)friction_f/frequency, friction_q, (float)0.0);
+				effect->filter->setBiquad(friction_type,(float)friction_f/calcfrequency, friction_q, (float)0.0);
 			else
-				effect->filter = new Biquad(friction_type,(float)friction_f/frequency, friction_q, (float)0.0);
+				effect->filter = new Biquad(friction_type,(float)friction_f/calcfrequency, friction_q, (float)0.0);
 			break;
 	}
 }
@@ -270,7 +272,6 @@ void HidFFB::reset_ffb(){
 
 int32_t HidFFB::calculateEffects(int32_t pos,uint8_t axis=1){
 	if(!ffb_active){ // Don't calculate effects if clipping occured
-		// TODO weak center spring? when FFB off?
 		if(idlecenter){
 			return clip<int32_t,int32_t>(-pos,-5000,5000);
 		}else{
@@ -326,6 +327,7 @@ int32_t HidFFB::calculateEffects(int32_t pos,uint8_t axis=1){
 		case FFB_EFFECT_DAMPER:
 		{
 			int32_t force = 0;
+
 			if(effect->counter == 0){
 				effect->last_value = pos;
 				break;

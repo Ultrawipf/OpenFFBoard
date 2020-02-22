@@ -25,7 +25,9 @@ public:
 	BiquadType damper_type = BiquadType::lowpass;
 	float friction_f = 50 , friction_q = 0.2;
 	BiquadType friction_type = BiquadType::lowpass;
-	const uint16_t frequency = 1000;
+	const uint16_t calcfrequency = 1000;
+
+	uint32_t hid_out_period = 0; // ms since last out report for measuring update rate
 
 private:
 	// HID
@@ -57,6 +59,7 @@ private:
 	reportFFB_status_t reportFFBStatus;
 	FFB_Effect effects[MAX_EFFECTS];
 
+	uint32_t lastOut = 0;
 
 };
 

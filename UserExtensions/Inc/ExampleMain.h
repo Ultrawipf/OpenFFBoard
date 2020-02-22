@@ -17,8 +17,8 @@ public:
 	ExampleMain();
 	virtual ~ExampleMain();
 
-	static FFBoardMainIdentifier info;
-	const FFBoardMainIdentifier getInfo();
+	static ClassIdentifier info;
+	const ClassIdentifier getInfo();
 	bool executeUserCommand(ParsedCommand* cmd,std::string* reply);
 
 

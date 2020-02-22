@@ -188,6 +188,8 @@ private:
 	void setPwm(uint8_t val,uint16_t maxcnt,uint8_t bbmL,uint8_t bbmH);// 100MHz/maxcnt+1
 	void encInit();
 
+	uint32_t initTime = 0;
+
 };
 
 #endif /* TMC4671_H_ */
