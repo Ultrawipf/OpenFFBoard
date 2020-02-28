@@ -17,6 +17,15 @@ TMC4671::TMC4671(SPI_HandleTypeDef* spi,GPIO_TypeDef* csport,uint16_t cspin,TMC4
 
 }
 
+ClassIdentifier TMC4671::info = {
+		 .name = "TMC4671" ,
+		 .id=1
+ };
+const ClassIdentifier TMC4671::getInfo(){
+	return info;
+}
+
+
 TMC4671::~TMC4671() {
 	HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_RESET);
 }
@@ -58,7 +67,7 @@ bool TMC4671::initialize(){
 	updateReg(0x1A,7,0xff,0); // Enable FOC PWM
 	HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_SET);
 	writeReg(0x64, 0); // No flux/torque
-
+	setStatusMask(0); // Disable status output by default.
 //	if(this->conf.motconf.phiEsource == PhiE::abn){
 //		setup_ABN_Enc(this->abnconf);
 //	}
@@ -523,6 +532,9 @@ bool TMC4671::findABNPol(){
 	return npol;
 }
 
+void TMC4671::setStatusMask(uint32_t mask){
+	writeReg(0x7D, mask);
+}
 
 
 void TMC4671::setPwm(uint8_t val,uint16_t maxcnt,uint8_t bbmL,uint8_t bbmH){

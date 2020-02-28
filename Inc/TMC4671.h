@@ -73,7 +73,7 @@ struct TMC4671HALLConf{
 	bool polarity = false;
 	bool interpolation = true;
 	bool direction = false;
-	uint16_t blank = 0;
+	uint16_t blank = 100;
 	int16_t pos0 = 0;
 	int16_t pos60 = 10922;
 	int16_t pos120 = 21845;
@@ -95,6 +95,9 @@ public:
 	TMC4671(SPI_HandleTypeDef* spi,GPIO_TypeDef* csport,uint16_t cspin,TMC4671MainConfig conf);
 	virtual ~TMC4671();
 	TMC4671MainConfig conf;
+
+	const ClassIdentifier getInfo();
+	static ClassIdentifier info;
 
 	bool initialize();
 	bool initialized = false;
@@ -157,6 +160,8 @@ public:
 	void setUdUq(uint16_t ud,uint16_t uq);
 
 	bool reachedPosition(uint16_t tolerance);
+	void setStatusMask(uint32_t mask); // Mask for status pin. If multiple are parallel disable this for now
+
 
 
 	// Pids

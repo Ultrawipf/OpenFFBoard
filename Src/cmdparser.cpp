@@ -89,6 +89,7 @@ std::vector<ParsedCommand> cmdparser::parse(){
 				cmd.val = val;
 				cmd.type = CMDtype::getat;
 				cmd.cmd = word.substr(0, pqm);
+				cmd.adr = val;
 
 			}else if(peq != std::string::npos && (std::isdigit(word[peq+1]) || (std::isdigit(word[peq+2]) && (word[peq+1] == '-' || word[peq+1] == '+')))){ // <cmd>=<int>
 				int32_t val = (int32_t)std::stol(word.substr(peq+1, word.npos));

@@ -9,7 +9,9 @@
 #define MOTORDRIVER_H_
 
 #include "cppmain.h"
-class MotorDriver {
+#include "ChoosableClass.h"
+
+class MotorDriver : public ChoosableClass {
 public:
 	MotorDriver();
 	virtual ~MotorDriver();

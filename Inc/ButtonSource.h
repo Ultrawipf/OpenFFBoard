@@ -10,6 +10,7 @@
 
 #include "cppmain.h"
 #include "ChoosableClass.h"
+#include "PersistentStorage.h"
 
 struct ButtonSourceConfig{
 	uint8_t numButtons = 32;
@@ -17,7 +18,7 @@ struct ButtonSourceConfig{
 	bool invert = false;
 };
 
-class ButtonSource : public ChoosableClass {
+class ButtonSource : public ChoosableClass, public PersistentStorage {
 public:
 	ButtonSource();
 	virtual ~ButtonSource();
@@ -35,6 +36,7 @@ public:
 
 	const virtual ClassIdentifier getInfo() = 0;
 	static ClassIdentifier info;
+
 
 protected:
 	virtual void process(uint32_t* buf);

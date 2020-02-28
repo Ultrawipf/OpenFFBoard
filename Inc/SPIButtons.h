@@ -19,13 +19,13 @@ public:
 	virtual ~SPI_Buttons();
 	const ClassIdentifier getInfo();
 	static ClassIdentifier info;
-	void setConfig(ButtonSourceConfig config);
-	
+
 	void readButtons(uint32_t* buf);
 	void setInvert(bool invert);
 
-	static int16_t readConfNumButtons();
-	static void writeConfNumButtons(int16_t num);
+
+	void saveFlash();
+	void restoreFlash();
 private:
 	SPI_HandleTypeDef* spi;
 	uint16_t cspin;

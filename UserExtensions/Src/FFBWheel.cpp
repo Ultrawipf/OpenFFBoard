@@ -9,6 +9,7 @@
 #include "FFBWheel_usb_init.h"
 #include "voltagesense.h"
 
+// Unique identifier for listing
 ClassIdentifier FFBWheel::info = {
 		 .name = "FFB Wheel" ,
 		 .id=1
@@ -22,12 +23,14 @@ const ClassIdentifier FFBWheel::getInfo(){
 const std::vector<class_entry<ButtonSource>> button_sources =
 {
 		add_class<LocalButtons,ButtonSource>(),
-		add_class<SPI_Buttons,ButtonSource>()
+		add_class<SPI_Buttons,ButtonSource>(),
+		add_class<ShifterG29,ButtonSource>()
 };
-ClassChooser<ButtonSource> btn_chooser(button_sources);
 
 
-FFBWheel::FFBWheel() {
+
+FFBWheel::FFBWheel() : btn_chooser(button_sources) {
+
 	this->ffb = new HidFFB();
 	// Setup a timer
 	extern TIM_HandleTypeDef htim4;
@@ -36,6 +39,10 @@ FFBWheel::FFBWheel() {
 	this->timer_update->Instance->CR1 = 1;
 	HAL_TIM_Base_Start_IT(this->timer_update);
 
+	restoreFlash();
+}
+
+void FFBWheel::restoreFlash(){
 	// read all constants
 	uint16_t confint;
 	if(Flash_Read(ADR_FFBWHEEL_CONFIG, &confint)){
@@ -62,11 +69,7 @@ FFBWheel::FFBWheel() {
 	if(Flash_Read(ADR_FFBWHEEL_ANALOGCONF,&aconfint)){
 		this->aconf = FFBWheel::decodeAnalogConfFromInt(aconfint);
 	}
-
-	// Home
-
 }
-
 // Saves parameters to flash
 void FFBWheel::saveFlash(){
 	if(this->conf.drvtype == MotorDriverType::TMC4671_type){
@@ -83,6 +86,10 @@ void FFBWheel::saveFlash(){
 	Flash_Write(ADR_FFBWHEEL_BUTTONCONF,this->btnsources);
 	Flash_Write(ADR_FFBWHEEL_ANALOGCONF, FFBWheel::encodeAnalogConfToInt(this->aconf));
 
+	// Call save methods for active button sources
+	for(ButtonSource* btn : this->btns){
+		btn->saveFlash();
+	}
 }
 
 void FFBWheel::update(){
@@ -252,6 +259,15 @@ void FFBWheel::setEncType(EncoderType enctype){
 	}
 }
 
+ButtonSource* FFBWheel::getBtnSrc(uint16_t id){
+	for(ButtonSource* btn : this->btns){
+		if(btn->getInfo().id == id){
+			return btn;
+		}
+	}
+	return nullptr;
+}
+
 void FFBWheel::clearBtnTypes(){
 	// Destruct all button sources
 	for(ButtonSource* btn : this->btns){
@@ -287,140 +303,7 @@ FFBWheel::~FFBWheel() {
 
 }
 
-bool FFBWheel::executeUserCommand(ParsedCommand* cmd,std::string* reply){
-	bool flag = true;
-	// ------------ General commands ----------------
-	if(cmd->cmd == "save"){
-		this->saveFlash();
-		*reply+=">saved";
-	}else if(cmd->cmd == "drvtype"){
-		if(cmd->type == CMDtype::get){
-			*reply+=std::to_string((uint8_t)this->conf.drvtype);
-		}else if(cmd->type == CMDtype::set && cmd->val < (uint8_t)MotorDriverType::NONE){
-			setDrvType(MotorDriverType(cmd->val));
-		}else{
-			*reply += "0:TMC4671";
-		}
-	}else if(cmd->cmd == "btntypes"){
-		if(cmd->type == CMDtype::get){
-			*reply+=std::to_string(this->btnsources);
-		}else if(cmd->type == CMDtype::set){
-			setBtnTypes(cmd->val);
-		}else{
-			*reply += "bin flag encoded list of button sources. (3 = source 1 & 2 active). See lsbtn for sources";
-		}
-	}else if(cmd->cmd == "lsbtn"){
-		if(cmd->type == CMDtype::get){
-			*reply += btn_chooser.printAvailableClasses();
-		}
-	}else if(cmd->cmd == "addbtn"){
-		if(cmd->type == CMDtype::set){
-			this->addBtnType(cmd->val);
-		}
-	}else if(cmd->cmd == "numspibuttons"){
-		if(cmd->type == CMDtype::set){
-			SPI_Buttons::writeConfNumButtons(cmd->val);
-			this->setBtnTypes(this->btnsources); // Reload sources
-		}else if(cmd->type == CMDtype::get){
-			*reply+=std::to_string(SPI_Buttons::readConfNumButtons());
-		}else{
-			*reply+="Read or store global spi button number. Negative to cut left side";
-		}
 
-	}else if(cmd->cmd == "power"){
-		if(cmd->type == CMDtype::get){
-			*reply+=std::to_string(power);
-		}else if(cmd->type == CMDtype::set){
-			this->power = cmd->val;
-		}
-	}else if(cmd->cmd == "degrees"){
-		if(cmd->type == CMDtype::get){
-			*reply+=std::to_string(this->degreesOfRotation);
-		}else if(cmd->type == CMDtype::set){
-			this->degreesOfRotation = cmd->val;
-		}
-	}else if(cmd->cmd == "enctype"){
-		if(cmd->type == CMDtype::get){
-			*reply+=std::to_string((uint8_t)this->conf.enctype);
-		}else if(cmd->type == CMDtype::set && cmd->val < (uint8_t)EncoderType::NONE){
-			setEncType(EncoderType(cmd->val));
-		}else{
-			*reply += "0:ABN_LOCAL\nA1:BN_TMC\n2:HALL_TMC";
-		}
-	}else if(cmd->cmd == "axismask"){
-		if(cmd->type == CMDtype::get){
-			*reply+=std::to_string(aconf.analogmask);
-		}else if(cmd->type == CMDtype::set){
-			aconf.analogmask = cmd->val;
-		}
-	}else if(cmd->cmd == "ppr"){
-		if(cmd->type == CMDtype::get){
-			*reply+=std::to_string(this->enc->getPpr());
-		}else if(cmd->type == CMDtype::set && this->enc != nullptr){
-			this->enc->setPpr(cmd->val);
-		}else{
-			*reply += "Err. Setup enctype first";
-		}
-	}else if(cmd->cmd == "pos"){
-		if(cmd->type == CMDtype::get){
-			*reply+=std::to_string(this->enc->getPos());
-		}else if(cmd->type == CMDtype::set && this->enc != nullptr){
-			this->enc->setPos(cmd->val);
-		}else{
-			*reply += "Err. Setup enctype first";
-		}
-
-	}else if(cmd->cmd == "hidrate" && cmd->type == CMDtype::get){
-		*reply+=std::to_string(1000/ffb->hid_out_period);
-
-	}else if(cmd->cmd == "help"){
-		*reply += "<HELP>"; // TODO
-	}
-
-	// ----------- TMC 4671 specific commands-------------
-	if(this->conf.drvtype == MotorDriverType::TMC4671_type){
-		TMC4671* drv = static_cast<TMC4671*>(this->drv);
-		if(cmd->cmd == "mtype"){
-			if(cmd->type == CMDtype::get){
-				*reply+=std::to_string((uint8_t)drv->conf.motconf.motor_type);
-			}else if(cmd->type == CMDtype::set && (uint8_t)cmd->type < (uint8_t)MotorType::ERR){
-				drv->setMotorType((MotorType)cmd->val, drv->conf.motconf.pole_pairs);
-			}
-
-		}else if(cmd->cmd == "encalign"){
-			if(cmd->type == CMDtype::get){
-				drv->bangInitABN(3000);
-			}else if(cmd->type ==CMDtype:: set){
-				drv->bangInitABN(cmd->val);
-			}
-		}else if(cmd->cmd == "poles"){
-			if(cmd->type == CMDtype::get){
-				*reply+=std::to_string(drv->conf.motconf.pole_pairs);
-			}else if(cmd->type == CMDtype::set){
-				drv->setMotorType(drv->conf.motconf.motor_type,cmd->val);
-			}
-
-		}else if(cmd->cmd == "phiesrc"){
-			if(cmd->type == CMDtype::get){
-				*reply+=std::to_string((uint8_t)drv->conf.motconf.phiEsource);
-			}else if(cmd->type == CMDtype::set){
-				drv->setPhiEtype((PhiE)cmd->val);
-			}
-
-		}else if(cmd->cmd == "reg"){
-			if(cmd->type == CMDtype::getat){
-				*reply+=std::to_string(drv->readReg(cmd->val));
-			}else if(cmd->type == CMDtype::setat){
-				drv->writeReg(cmd->adr,cmd->val);
-			}
-
-		}else{
-			flag=false;
-		}
-	}
-
-	return flag;
-}
 
 void FFBWheel::adcUpd(volatile uint32_t* ADC_BUF){
 	for(uint8_t i = 0;i<ADC_PINS;i++){
@@ -455,7 +338,6 @@ void FFBWheel::send_report(){
 			reportHID.buttons |= buf << shift;
 			shift += btn->getBtnNum();
 		}
-	//btn->readButtons(&reportHID.buttons);
 
 	// Encoder
 	reportHID.X = clip(lastScaledEnc,-0x7fff,0x7fff);

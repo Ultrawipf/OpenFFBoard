@@ -10,9 +10,13 @@
 #include <FFBoardMain.h>
 #include "TMC4671.h"
 #include "flash_helpers.h"
+#include "cmdparser.h"
+
 #include "ButtonSource.h"
 #include "LocalButtons.h"
 #include "SPIButtons.h"
+#include "ShifterG29.h"
+
 #include "cppmain.h"
 #include "HidFFB.h"
 #include "AdcHandler.h"
@@ -45,7 +49,7 @@ struct FFBWheelAnalogConfig{
 };
 
 
-class FFBWheel: public FFBoardMain, UsbHidHandler, AdcHandler, TimerHandler{
+class FFBWheel: public FFBoardMain, UsbHidHandler, AdcHandler, TimerHandler, PersistentStorage{
 public:
 	FFBWheel();
 	virtual ~FFBWheel();
@@ -62,11 +66,13 @@ public:
 	void setBtnTypes(uint16_t btntypes);
 	void addBtnType(uint16_t id);
 	void clearBtnTypes();
+	ButtonSource* getBtnSrc(uint16_t id);
 
 	void SOF();
 	void usbInit(); // initialize a composite usb device
 
 	void saveFlash();
+	void restoreFlash();
 
 	void update();
 
@@ -127,6 +133,8 @@ private:
 	int32_t torqueFFconst = 0;
 	int32_t velocityFFgain = 300000;
 	int32_t velocityFFconst = 0;
+
+	ClassChooser<ButtonSource> btn_chooser;
 };
 
 #endif /* SRC_FFBWHEEL_H_ */

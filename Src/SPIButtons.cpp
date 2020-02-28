@@ -8,17 +8,17 @@
 #include "constants.h"
 #include <SPIButtons.h>
 #include "eeprom_addresses.h"
-#include "flash_helpers.h"
 
 ClassIdentifier SPI_Buttons::info = {
 		 .name = "SPI" ,
 		 .id=1
  };
+const ClassIdentifier SPI_Buttons::getInfo(){
+	return info;
+}
 
 SPI_Buttons::SPI_Buttons() {
-	uint16_t confint = 0;
-	Flash_Read(ADR_SPI_BTN_CONF, &confint);
-	this->setConfig(decodeIntToConf(confint));
+	restoreFlash();
 	this->conf.invert = true;
 	spi = &HSPI2;
 	cspin = SPI2_NSS_Pin;
@@ -34,47 +34,15 @@ SPI_Buttons::~SPI_Buttons() {
 
 }
 
-// Overload and save to flash
-void SPI_Buttons::setConfig(ButtonSourceConfig config){
-	ButtonSource::setConfig(config);
-	Flash_Write(ADR_SPI_BTN_CONF, encodeConfToInt(config));
+void SPI_Buttons::saveFlash(){
+	Flash_Write(ADR_SPI_BTN_CONF, encodeConfToInt(conf));
 }
 
-const ClassIdentifier SPI_Buttons::getInfo(){
-	return info;
-}
-
-
-// Static flash helpers
-void SPI_Buttons::writeConfNumButtons(int16_t num){
+void SPI_Buttons::restoreFlash(){
 	uint16_t confint = 0;
 	Flash_Read(ADR_SPI_BTN_CONF, &confint);
-	ButtonSourceConfig conf = ButtonSource::decodeIntToConf(confint);
-
-	if(num < 0){
-		num = -num;
-		conf.cutRight = true;
-	}else{
-		conf.cutRight = false;
-	}
-	num = MIN(num,32);
-
-	conf.numButtons = num;
-	confint = ButtonSource::encodeConfToInt(conf);
-	Flash_Write(ADR_SPI_BTN_CONF, confint);
+	this->setConfig(decodeIntToConf(confint));
 }
-
-int16_t SPI_Buttons::readConfNumButtons(){
-	uint16_t confint = 0;
-	Flash_Read(ADR_SPI_BTN_CONF, &confint);
-	ButtonSourceConfig conf = ButtonSource::decodeIntToConf(confint);
-
-	if(conf.cutRight)
-		return -conf.numButtons;
-	else
-		return conf.numButtons;
-}
-
 
 
 void SPI_Buttons::readButtons(uint32_t* buf){

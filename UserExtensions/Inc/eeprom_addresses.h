@@ -10,7 +10,7 @@
 
 #include "main.h"
 // Change this to the amount of currently registered variables
-#define NB_OF_VAR	10
+#define NB_OF_VAR	11
 
 extern uint16_t VirtAddVarTab[NB_OF_VAR];
 
@@ -44,5 +44,6 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 
 // Button Sources:
 #define ADR_SPI_BTN_CONF				0x201
+#define ADR_SHIFTER_BTN_CONF			0x202
 
 #endif /* EEPROM_ADDRESSES_H_ */
