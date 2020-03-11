@@ -235,9 +235,6 @@ void HidFFB::set_condition(FFB_SetCondition_Data_t* cond){
 	effect->negativeSaturation = cond->negativeSaturation;
 	effect->positiveSaturation = cond->positiveSaturation;
 	effect->deadBand = cond->deadBand;
-
-
-
 }
 
 void HidFFB::set_periodic(FFB_SetPeriodic_Data_t* report){
@@ -252,7 +249,7 @@ void HidFFB::set_periodic(FFB_SetPeriodic_Data_t* report){
 
 uint8_t HidFFB::find_free_effect(uint8_t type){ //Will return the first effect index which is empty or the same type
 	for(uint8_t i=0;i<MAX_EFFECTS;i++){
-		if(effects[i].type == FFB_EFFECT_NONE || effects[i].type == type){
+		if(effects[i].type == FFB_EFFECT_NONE){
 			return(i+1);
 		}
 	}
@@ -271,7 +268,7 @@ void HidFFB::reset_ffb(){
 }
 
 int32_t HidFFB::calculateEffects(int32_t pos,uint8_t axis=1){
-	if(!ffb_active){ // Don't calculate effects if clipping occured
+	if(!ffb_active){
 		if(idlecenter){
 			return clip<int32_t,int32_t>(-pos,-5000,5000);
 		}else{

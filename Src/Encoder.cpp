@@ -7,6 +7,12 @@
 
 #include "Encoder.h"
 
+ClassIdentifier Encoder::info ={.name = "None" , .id=0, .hidden = true};
+
+const ClassIdentifier Encoder::getInfo(){
+	return info;
+}
+
 Encoder::Encoder() {
 	// TODO Auto-generated constructor stub
 
@@ -27,9 +33,9 @@ uint32_t Encoder::getPosCpr(){
 void Encoder::setPpr(uint32_t ppr){
 	this->ppr = ppr;
 }
-//int32_t Encoder::getPos(){
-//	return 0;
-//}
-//void Encoder::setPos(int32_t pos){
-//
-//}
+int32_t Encoder::getPos(){
+	return 0;
+}
+void Encoder::setPos(int32_t pos){
+
+}

@@ -85,7 +85,7 @@ static void MX_SPI1_Init(void);
 void MX_USB_OTG_FS_PCD_Init(void);
 static void MX_NVIC_Init(void);
 /* USER CODE BEGIN PFP */
-
+uint32_t dfu_reset_to_bootloader_magic;
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -918,7 +918,10 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+void RebootDFU(void) {
+	*((unsigned long *)0x2001FFF0) = 0xDEADBEEF; // End of RAM
+	NVIC_SystemReset();
+}
 /* USER CODE END 4 */
 
 /**

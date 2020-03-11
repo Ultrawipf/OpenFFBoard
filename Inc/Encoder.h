@@ -9,14 +9,17 @@
 #define ENCODER_H_
 
 #include "FFBoardMain.h"
+#include "ChoosableClass.h"
 
-class Encoder {
+class Encoder : public ChoosableClass {
 public:
 	Encoder();
 	virtual ~Encoder();
+	static ClassIdentifier info;
+	const ClassIdentifier getInfo();
 
-	virtual int32_t getPos() = 0;
-	virtual void setPos(int32_t pos) = 0;
+	virtual int32_t getPos();
+	virtual void setPos(int32_t pos);
 	virtual uint32_t getPosCpr(); // Position counts per rotation
 
 	virtual uint32_t getPpr(); // Encoder counts per rotation

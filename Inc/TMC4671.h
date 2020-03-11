@@ -12,7 +12,8 @@
 #include "cppmain.h"
 #include "MotorDriver.h"
 #include "Encoder.h"
-
+#include "ChoosableClass.h"
+#include "PersistentStorage.h"
 
 #define SPITIMEOUT 100
 extern SPI_HandleTypeDef HSPIDRV;
@@ -86,18 +87,25 @@ struct TMC4671HALLConf{
 };
 
 
-class TMC4671 : public MotorDriver, public Encoder{
+class TMC4671 : public MotorDriver, public Encoder, public PersistentStorage{
 public:
+
+	static ClassIdentifier info;
+	const ClassIdentifier getInfo();
+
 	static TMC4671MotConf decodeMotFromInt(uint16_t val);
 	static uint16_t encodeMotToInt(TMC4671MotConf mconf);
 
 	//SPI_HandleTypeDef* spi = &HSPIDRV,GPIO_TypeDef* csport=SPI1_SS1_GPIO_Port,uint16_t cspin=SPI1_SS1_Pin
 	TMC4671(SPI_HandleTypeDef* spi,GPIO_TypeDef* csport,uint16_t cspin,TMC4671MainConfig conf);
-	virtual ~TMC4671();
-	TMC4671MainConfig conf;
+	TMC4671();
 
-	const ClassIdentifier getInfo();
-	static ClassIdentifier info;
+	void setAddress(uint8_t addr);
+	uint8_t getAddress();
+
+	virtual ~TMC4671();
+
+	TMC4671MainConfig conf;
 
 	bool initialize();
 	bool initialized = false;
@@ -158,11 +166,10 @@ public:
 	MotionMode getMotionMode();
 
 	void setUdUq(uint16_t ud,uint16_t uq);
+	void setBrakeLimits(uint16_t low, uint16_t high); // Raw brake resistor limits (see tmc reg 0x75)
 
 	bool reachedPosition(uint16_t tolerance);
 	void setStatusMask(uint32_t mask); // Mask for status pin. If multiple are parallel disable this for now
-
-
 
 	// Pids
 	void setPids(TMC4671PIDConf pids);
@@ -182,12 +189,19 @@ public:
 	uint32_t posToEnc(uint32_t pos);
 	uint32_t encToPos(uint32_t enc);
 
+
+	void saveFlash();
+	void restoreFlash();
+
 private:
 	MotionMode curMotionMode = MotionMode::stop;
 	bool oldTMCdetected = false;
-	SPI_HandleTypeDef* spi;
-	uint16_t cspin;
-	GPIO_TypeDef* csport;
+
+	uint8_t address = 1;
+
+	SPI_HandleTypeDef* spi = &HSPIDRV;
+	GPIO_TypeDef* csport=SPI1_SS1_GPIO_Port;
+	uint16_t cspin=SPI1_SS1_Pin;
 
 	void initAdc(uint16_t mdecA, uint16_t mdecB,uint32_t mclkA,uint32_t mclkB);
 	void setPwm(uint8_t val,uint16_t maxcnt,uint8_t bbmL,uint8_t bbmH);// 100MHz/maxcnt+1

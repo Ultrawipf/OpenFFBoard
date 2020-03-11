@@ -7,6 +7,14 @@
 
 #include "EncoderLocal.h"
 
+ClassIdentifier EncoderLocal::info = {
+		 .name = "Local" ,
+		 .id=2
+ };
+const ClassIdentifier EncoderLocal::getInfo(){
+	return info;
+}
+
 EncoderLocal::EncoderLocal() {
 	this->htim = &TIM_ENC;
 

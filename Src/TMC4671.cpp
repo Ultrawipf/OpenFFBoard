@@ -9,14 +9,6 @@
 #include "ledEffects.h"
 #include "voltagesense.h"
 
-TMC4671::TMC4671(SPI_HandleTypeDef* spi,GPIO_TypeDef* csport,uint16_t cspin,TMC4671MainConfig conf) {
-	this->cspin = cspin;
-	this->csport = csport;
-	this->spi = spi;
-	this->conf = conf;
-
-}
-
 ClassIdentifier TMC4671::info = {
 		 .name = "TMC4671" ,
 		 .id=1
@@ -25,9 +17,82 @@ const ClassIdentifier TMC4671::getInfo(){
 	return info;
 }
 
+TMC4671::TMC4671(SPI_HandleTypeDef* spi,GPIO_TypeDef* csport,uint16_t cspin,TMC4671MainConfig conf) {
+	this->cspin = cspin;
+	this->csport = csport;
+	this->spi = spi;
+	this->conf = conf;
+}
+
+TMC4671::TMC4671(){
+	this->address = 1;
+	this->cspin = SPI1_SS1_Pin;
+	this->csport = SPI1_SS1_GPIO_Port;
+	this->spi = &HSPIDRV;
+}
+
 
 TMC4671::~TMC4671() {
 	HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_RESET);
+}
+
+/*
+ * Address can be set to automatically setup spi and
+ * load constants from flash
+ */
+void TMC4671::setAddress(uint8_t addr){
+	this->address = addr;
+
+	// Auto setup spi
+	if(addr == 1){
+		this->cspin = SPI1_SS1_Pin;
+		this->csport = SPI1_SS1_GPIO_Port;
+		this->spi = &HSPIDRV;
+	}else if(addr == 2){
+		this->cspin = SPI1_SS2_Pin;
+		this->csport = SPI1_SS2_GPIO_Port;
+		this->spi = &HSPIDRV;
+	}else if(addr == 3){
+		this->cspin = SPI1_SS3_Pin;
+		this->csport = SPI1_SS3_GPIO_Port;
+		this->spi = &HSPIDRV;
+	}
+}
+
+uint8_t TMC4671::getAddress(){
+	return this->address;
+}
+
+
+void TMC4671::saveFlash(){
+	uint16_t mconfint = TMC4671::encodeMotToInt(this->conf.motconf);
+	uint16_t ppr = this->abnconf.ppr;
+
+	// Save flash
+	if(address == 1){
+		Flash_Read(ADR_TMC1_MOTCONF, &mconfint);
+		Flash_Read(ADR_TMC1_PPR, &ppr);
+	}else if(address == 2){
+
+	}else if(address == 3){
+
+	}
+}
+void TMC4671::restoreFlash(){
+	uint16_t mconfint;
+	uint16_t ppr = 0;
+
+	// Read flash
+	if(address == 1){
+		Flash_Read(ADR_TMC1_MOTCONF, &mconfint);
+		Flash_Read(ADR_TMC1_PPR, &ppr);
+	}else if(address == 2){
+
+	}else if(address == 3){
+
+	}
+	this->conf.motconf = TMC4671::decodeMotFromInt(mconfint);
+	this->abnconf.ppr = ppr;
 }
 
 bool TMC4671::initialize(){
@@ -62,15 +127,29 @@ bool TMC4671::initialize(){
 	setAdcOffset(conf.adc_I0_offset, conf.adc_I1_offset);
 	setAdcScale(conf.adc_I0_scale, conf.adc_I1_scale);
 
+	// brake res failsafe TODO
+	setBrakeLimits(62000,63000);
+
+	bool npol = findABNPol();
+	abnconf.apol = npol;
+	abnconf.bpol = npol;
+	abnconf.npol = npol;
+
+	setPos(0);
+
 	setPids(curPids); // Write basic pids
 	// Enable driver
 	updateReg(0x1A,7,0xff,0); // Enable FOC PWM
 	HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_SET);
 	writeReg(0x64, 0); // No flux/torque
 	setStatusMask(0); // Disable status output by default.
-//	if(this->conf.motconf.phiEsource == PhiE::abn){
-//		setup_ABN_Enc(this->abnconf);
-//	}
+	if(this->conf.motconf.phiEsource == PhiE::abn){
+		// Not initialized if ppr not set
+		if(this->abnconf.ppr == 0){
+			return false;
+		}
+		setup_ABN_Enc(this->abnconf);
+	}
 	//TODO
 	// Initialize Encoder/Hall
 
@@ -164,7 +243,7 @@ void TMC4671::bangInitABN(int16_t power){
 	abnconf.phiEoffset = 0x7fff-(readReg(0x2A)>>16);
 	updateReg(0x29, abnconf.phiEoffset, 0xffff, 16);
 	setUdUq(0, 0);
-
+	setPhiE_ext(0);
 	setPhiEtype(lastphie);
 	setMotionMode(lastmode);
 }
@@ -186,7 +265,6 @@ void TMC4671::setup_ABN_Enc(TMC4671ABNConf encconf){
 
 	//conf.motconf.phiEsource = PhiE::abn;
 	this->setPhiEtype(PhiE::abn);
-
 	bangInitABN(encconf.bangInitPower);
 }
 void TMC4671::setup_HALL(TMC4671HALLConf hallconf){
@@ -372,11 +450,8 @@ void TMC4671::turn(int16_t power){
 }
 
 int32_t TMC4671::getPos(){
-	//return readReg(0x6B);
 
 	return readReg(0x6B);
-
-
 }
 void TMC4671::setPos(int32_t pos){
 	//writeReg(0x27, pos);
@@ -451,6 +526,7 @@ void TMC4671::setMotorType(MotorType motor,uint16_t poles){
 	conf.motconf.pole_pairs = poles;
 	uint32_t mtype = poles | ( ((uint8_t)motor&0xff) << 16);
 	writeReg(0x1B, mtype);
+	initialize(); //reinit for safety
 }
 
 void TMC4671::setTorque(int16_t torque){
@@ -492,7 +568,6 @@ void TMC4671::setPids(TMC4671PIDConf pids){
 	writeReg(0x5A, pids.positionI | (pids.positionP << 16));
 }
 
-
 TMC4671PIDConf TMC4671::getPids(){
 	uint32_t f = readReg(0x54);
 	uint32_t t = readReg(0x56);
@@ -501,6 +576,17 @@ TMC4671PIDConf TMC4671::getPids(){
 	// Update pid storage
 	curPids = {(uint16_t)(f&0xffff),(uint16_t)(f>>16),(uint16_t)(t&0xffff),(uint16_t)(t>>16),(uint16_t)(v&0xffff),(uint16_t)(v>>16),(uint16_t)(p&0xffff),(uint16_t)(p>>16)};
 	return curPids;
+}
+
+
+/*
+ *  Sets the raw brake resistor limits.
+ *  Centered at 0x7fff
+ *  Set both 0 to deactivate
+ */
+void TMC4671::setBrakeLimits(uint16_t low,uint16_t high){
+	uint32_t val = low | (high << 16);
+	writeReg(0x75,val);
 }
 
 bool TMC4671::findABNPol(){

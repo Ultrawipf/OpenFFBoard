@@ -17,6 +17,10 @@ extern TIM_TypeDef TIM_ENC;
 
 class EncoderLocal: public Encoder,public ExtiHandler {
 public:
+
+	static ClassIdentifier info;
+	const ClassIdentifier getInfo();
+
 	EncoderLocal();
 	virtual ~EncoderLocal();
 

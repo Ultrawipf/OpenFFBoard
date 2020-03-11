@@ -11,7 +11,7 @@
 ClassIdentifier ExampleMain::info = {
 		 .name = "Custom" ,
 		 .id=1337,
-		 .hidden=true //Set false to list in "lsconf"
+		 .hidden=true //Set false to list
  };
 // Copy this to your class for identification
 const ClassIdentifier ExampleMain::getInfo(){

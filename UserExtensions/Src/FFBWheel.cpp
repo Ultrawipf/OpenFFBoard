@@ -19,6 +19,10 @@ const ClassIdentifier FFBWheel::getInfo(){
 	return info;
 }
 
+//////////////////////////////////////////////
+/*
+ * Sources for class choosers here
+ */
 // Register possible button sources (id 0-15)
 const std::vector<class_entry<ButtonSource>> button_sources =
 {
@@ -27,11 +31,24 @@ const std::vector<class_entry<ButtonSource>> button_sources =
 		add_class<ShifterG29,ButtonSource>()
 };
 
+// 0-63 valid ids
+const std::vector<class_entry<MotorDriver>> motor_sources =
+{
+		add_class<TMC4671,MotorDriver>(),
+};
+// 0-63 valid ids
+std::vector<class_entry<Encoder>> encoder_sources =
+{
+		add_class<Encoder,Encoder>(),
+		add_class<EncoderLocal,Encoder>()
+};
+//////////////////////////////////////////////
 
+FFBWheel::FFBWheel() : btn_chooser(button_sources),drv_chooser(motor_sources),enc_chooser(encoder_sources) {
 
-FFBWheel::FFBWheel() : btn_chooser(button_sources) {
-
+	// Create HID FFB handler. Will receive all usb messages directly
 	this->ffb = new HidFFB();
+
 	// Setup a timer
 	extern TIM_HandleTypeDef htim4;
 	this->timer_update = &htim4; // Timer setup with prescaler of sysclock
@@ -39,8 +56,15 @@ FFBWheel::FFBWheel() : btn_chooser(button_sources) {
 	this->timer_update->Instance->CR1 = 1;
 	HAL_TIM_Base_Start_IT(this->timer_update);
 
-	restoreFlash();
+	restoreFlash(); // Load parameters
 }
+
+FFBWheel::~FFBWheel() {
+	clearBtnTypes();
+	delete drv;
+	delete enc;
+}
+
 
 void FFBWheel::restoreFlash(){
 	// read all constants
@@ -51,10 +75,16 @@ void FFBWheel::restoreFlash(){
 		pulseErrLed();
 	}
 
-
 	setDrvType(this->conf.drvtype);
+	setEncType(this->conf.enctype);
+
 	Flash_Read(ADR_FFBWHEEL_BUTTONCONF, &this->btnsources);
 	setBtnTypes(this->btnsources);
+
+	// Call restore methods for active button sources
+	for(ButtonSource* btn : this->btns){
+		btn->restoreFlash();
+	}
 
 	uint16_t ppr = 0;
 	if(Flash_Read(ADR_TMC1_PPR, &ppr)){
@@ -64,6 +94,7 @@ void FFBWheel::restoreFlash(){
 	}
 
 	Flash_Read(ADR_FFBWHEEL_POWER, &this->power);
+	Flash_Read(ADR_FFBWHEEL_DEGREES, &this->degreesOfRotation);
 
 	uint16_t aconfint;
 	if(Flash_Read(ADR_FFBWHEEL_ANALOGCONF,&aconfint)){
@@ -72,17 +103,18 @@ void FFBWheel::restoreFlash(){
 }
 // Saves parameters to flash
 void FFBWheel::saveFlash(){
-	if(this->conf.drvtype == MotorDriverType::TMC4671_type){
+	if(this->conf.drvtype == TMC4671::info.id){
 		TMC4671* drv = static_cast<TMC4671*>(this->drv);
 		//save motor config
 		uint16_t motint = TMC4671::encodeMotToInt(drv->conf.motconf);
-		Flash_Write(ADR_TMC1_POLES_MOTTYPE_PHIE, motint);
+		Flash_Write(ADR_TMC1_MOTCONF, motint);
 
 
 	}
 	Flash_Write(ADR_FFBWHEEL_CONFIG,FFBWheel::encodeConfToInt(this->conf));
 	Flash_Write(ADR_TMC1_PPR, enc->getPpr());
 	Flash_Write(ADR_FFBWHEEL_POWER, this->power);
+	Flash_Write(ADR_FFBWHEEL_DEGREES, this->degreesOfRotation);
 	Flash_Write(ADR_FFBWHEEL_BUTTONCONF,this->btnsources);
 	Flash_Write(ADR_FFBWHEEL_ANALOGCONF, FFBWheel::encodeAnalogConfToInt(this->aconf));
 
@@ -90,11 +122,24 @@ void FFBWheel::saveFlash(){
 	for(ButtonSource* btn : this->btns){
 		btn->saveFlash();
 	}
+
+	if(drv->getInfo().id == TMC4671::info.id){
+		TMC4671* drv = static_cast<TMC4671*>(this->drv);
+		drv->saveFlash();
+	}
 }
 
+/*
+ * Periodical update method. Called from main loop
+ */
 void FFBWheel::update(){
 	int16_t lasttorque = endstopTorque;
 	bool updateTorque = false;
+
+	if(drv == nullptr || enc == nullptr){
+		pulseErrLed();
+		return;
+	}
 
 	if(usb_update_flag || update_flag){
 
@@ -110,7 +155,7 @@ void FFBWheel::update(){
 		}
 		endstopTorque = updateEndstop();
 
-		if(this->conf.drvtype == MotorDriverType::TMC4671_type){
+		if(this->conf.drvtype == TMC4671::info.id){
 			TMC4671* drv = static_cast<TMC4671*>(this->drv);
 			drv->update();
 		}
@@ -148,114 +193,89 @@ void FFBWheel::update(){
 
 
 int16_t FFBWheel::updateEndstop(){
-	int8_t clipval = cliptest<int32_t,int32_t>(lastScaledEnc, -0x7fff, 0x7fff);
-	if(clipval == 0){
+	int8_t clipdir = cliptest<int32_t,int32_t>(lastScaledEnc, -0x7fff, 0x7fff);
+	if(clipdir == 0){
 		return 0;
 	}
 	int32_t addtorque = 0;
 
 	addtorque += clip<int32_t,int32_t>(abs(lastScaledEnc)-0x7fff,-0x7fff,0x7fff);
-	addtorque *= 40;
-	addtorque *= -clipval;
+	addtorque *= endstop_gain;
+	addtorque *= -clipdir;
 
 
 	return clip<int32_t,int32_t>(addtorque,-0x7fff,0x7fff);
 }
 
 
+// create and setup a motor driver
+void FFBWheel::setDrvType(uint8_t drvtype){
 
-void FFBWheel::setupTMC4671(){
-	this->conf.drvtype = MotorDriverType::TMC4671_type;
-	TMC4671MainConfig tmcconf;
-	uint16_t mconfint;
-	TMC4671MotConf motconf;
-	if(Flash_Read(ADR_TMC1_POLES_MOTTYPE_PHIE, &mconfint)){
-		motconf = TMC4671::decodeMotFromInt(mconfint);
+	if(!drv_chooser.isValidClassId(drvtype)){
+		return;
 	}
 
-	tmcconf.motconf = motconf;
-	this->drv = new TMC4671(&HSPIDRV,SPI1_SS1_GPIO_Port,SPI1_SS1_Pin,tmcconf);
+	if(drv != nullptr){
+		delete drv;
+		drv = nullptr;
+	}
+
+	//
+	this->drv = drv_chooser.Create((uint16_t)drvtype);
+	if(this->drv == nullptr){
+		return;
+	}
+	this->conf.drvtype = drvtype;
+
+	// Special handling for tmc4671.
+	if(this->conf.drvtype == TMC4671::info.id){
+		setupTMC4671();
+
+		// Add tmc to encoder sources if not present
+		if(!enc_chooser.isValidClassId(TMC4671::info.id)){
+			TMC4671* drv = static_cast<TMC4671*>(this->drv);
+			encoder_sources.push_back(add_class_ref<TMC4671,Encoder>(static_cast<Encoder*>(drv)));
+		}
+	}else{
+		// Check if encoder sources must be removed
+		for (auto it = encoder_sources.begin(); it != encoder_sources.end(); it++) {
+			// Delete tmc from encoder sources if present
+			if(it->info.id == TMC4671::info.id){
+				encoder_sources.erase(it);
+				break;
+			}
+		}
+	}
+}
+
+// Special tmc setup methods
+void FFBWheel::setupTMC4671(){
+
 	TMC4671* drv = static_cast<TMC4671*>(this->drv);
+	drv->setAddress(1);
 	drv->setPids(tmcpids);
+	drv->restoreFlash();
+
 	if(tmcFeedForward){
 		drv->setupFeedForwardTorque(torqueFFgain, torqueFFconst);
 		drv->setupFeedForwardVelocity(velocityFFgain, velocityFFconst);
 		drv->setFFMode(FFMode::torque);
 	}
-
-
+	drv->setPhiEtype(PhiE::abn);
 	drv->initialize();
-
-	setupTMC4671_enc(this->conf.enctype);
-
 	drv->setMotionMode(MotionMode::torque);
-
-}
-FFBWheelConfig FFBWheel::decodeConfFromInt(uint16_t val){
-	// 0-2 ENC, 3-5 DRV, 6-8 BTN
-	FFBWheelConfig conf;
-	conf.enctype = EncoderType((val) & 0x07);
-	conf.drvtype = MotorDriverType((val >> 3) & 0x07);
-
-	return conf;
-}
-uint16_t FFBWheel::encodeConfToInt(FFBWheelConfig conf){
-	uint16_t val = (uint8_t)conf.enctype & 0x7;
-	val |= ((uint8_t)conf.drvtype & 0x7) << 3;
-
-	return val;
-}
-FFBWheelAnalogConfig FFBWheel::decodeAnalogConfFromInt(uint16_t val){
-	FFBWheelAnalogConfig aconf;
-	aconf.analogmask = val & 0xff;
-	aconf.offsetmode = AnalogOffset((val >> 8) & 0x3);
-	return aconf;
-}
-uint16_t FFBWheel::encodeAnalogConfToInt(FFBWheelAnalogConfig conf){
-	uint16_t val = conf.analogmask & 0xff;
-	val |= (conf.analogmask & 0x3) << 8;
-	return val;
 }
 
+void FFBWheel::setEncType(uint8_t enctype){
 
 
-void FFBWheel::setupTMC4671_enc(EncoderType enctype){
-	this->conf.enctype = enctype;
-	TMC4671* drv = static_cast<TMC4671*>(this->drv);
-	this->enc = static_cast<Encoder*>(drv);
-
-	//TODO
-	if(this->conf.enctype == EncoderType::ABN_TMC){
-		uint16_t ppr = 0;
-		Flash_Read(ADR_TMC1_PPR, &ppr);
-		TMC4671ABNConf encconf;
-		encconf.ppr = ppr;
-		bool npol = drv->findABNPol();
-		encconf.apol = npol;
-		encconf.bpol = npol;
-		encconf.npol = npol;
-		drv->setup_ABN_Enc(encconf);
-		drv->setPhiEtype(PhiE::abn);
-
-	}else if(this->conf.enctype == EncoderType::HALL_TMC){
-		TMC4671HALLConf hallconf;
-		drv->setup_HALL(hallconf);
-		drv->setPhiEtype(PhiE::hall);
-	}
-}
-
-void FFBWheel::setDrvType(MotorDriverType drvtype){
-	if(drvtype < MotorDriverType::NONE){
-		this->conf.drvtype = drvtype;
-	}
-	if(this->conf.drvtype == MotorDriverType::TMC4671_type){
-		setupTMC4671();
-	}
-}
-
-void FFBWheel::setEncType(EncoderType enctype){
-	if(this->conf.drvtype == MotorDriverType::TMC4671_type){
-		setupTMC4671_enc(enctype);
+	if(enc_chooser.isValidClassId(enctype)){
+		if(enc != nullptr){
+			delete enc;
+			enc = nullptr;
+		}
+		this->conf.enctype = (enctype);
+		this->enc = enc_chooser.Create(enctype);
 	}
 }
 
@@ -299,11 +319,6 @@ void FFBWheel::addBtnType(uint16_t id){
 		this->btns.push_back(btn);
 }
 
-FFBWheel::~FFBWheel() {
-
-}
-
-
 
 void FFBWheel::adcUpd(volatile uint32_t* ADC_BUF){
 	for(uint8_t i = 0;i<ADC_PINS;i++){
@@ -319,6 +334,9 @@ void FFBWheel::adcUpd(volatile uint32_t* ADC_BUF){
 }
 
 int32_t FFBWheel::getEncValue(Encoder* enc,uint16_t degrees){
+	if(enc == nullptr){
+		return 0x7fff; // Return center if no encoder present
+	}
 	float angle = 360.0*((float)enc->getPos()/(float)enc->getPosCpr());
 	int32_t val = (0xffff / (float)degrees) * angle;
 	return val;
@@ -343,12 +361,12 @@ void FFBWheel::send_report(){
 	reportHID.X = clip(lastScaledEnc,-0x7fff,0x7fff);
 	// Analog values read by DMA
 	uint16_t analogMask = this->aconf.analogmask;
-	reportHID.Y 	=  (analogMask & 0x01) ? ((adc_buf[0] & 0xFFF) << 4)-0x7fff : 0;
-	reportHID.Z		=  (analogMask & 0x01<<1) ? ((adc_buf[1] & 0xFFF) << 4)-0x7fff : 0;
-	reportHID.RX	=  (analogMask & 0x01<<2) ? ((adc_buf[2] & 0xFFF) << 4)-0x7fff : 0;
-	reportHID.RY	=  (analogMask & 0x01<<3) ? ((adc_buf[3] & 0xFFF) << 4)-0x7fff : 0;
-	reportHID.RZ	=  (analogMask & 0x01<<4) ? ((adc_buf[4] & 0xFFF) << 4)-0x7fff : 0;
-	reportHID.Slider=  (analogMask & 0x01<<5) ? ((adc_buf[5] & 0xFFF) << 4)-0x7fff : 0;
+	reportHID.Y 	=  (analogMask & 0x01) ? ((adc_buf[0] & 0xFFF) << 4)	-0x7fff : 0;
+	reportHID.Z		=  (analogMask & 0x01<<1) ? ((adc_buf[1] & 0xFFF) << 4)	-0x7fff : 0;
+	reportHID.RX	=  (analogMask & 0x01<<2) ? ((adc_buf[2] & 0xFFF) << 4)	-0x7fff : 0;
+	reportHID.RY	=  (analogMask & 0x01<<3) ? ((adc_buf[3] & 0xFFF) << 4)	-0x7fff : 0;
+	reportHID.RZ	=  (analogMask & 0x01<<4) ? ((adc_buf[4] & 0xFFF) << 4)	-0x7fff : 0;
+	reportHID.Slider=  (analogMask & 0x01<<5) ? ((adc_buf[5] & 0xFFF) << 4)	-0x7fff : 0;
 
 	USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS, reinterpret_cast<uint8_t*>(&reportHID), sizeof(reportHID_t));
 
@@ -367,3 +385,30 @@ void FFBWheel::SOF(){
 	usb_update_flag = true;
 	// USB clocked update callback
 }
+
+FFBWheelConfig FFBWheel::decodeConfFromInt(uint16_t val){
+	// 0-7 Enc 8-15 Mot
+	FFBWheelConfig conf;
+	conf.enctype = ((val) & 0x3f);
+	conf.drvtype = ((val >> 6) & 0x3f);
+	conf.axes = (val >> 12) & 0x3;
+	return conf;
+}
+uint16_t FFBWheel::encodeConfToInt(FFBWheelConfig conf){
+	uint16_t val = (uint8_t)conf.enctype & 0x3f;
+	val |= ((uint8_t)conf.drvtype & 0x3f) << 6;
+	val |= (conf.axes & 0x03) << 12;
+	return val;
+}
+FFBWheelAnalogConfig FFBWheel::decodeAnalogConfFromInt(uint16_t val){
+	FFBWheelAnalogConfig aconf;
+	aconf.analogmask = val & 0xff;
+	aconf.offsetmode = AnalogOffset((val >> 8) & 0x3);
+	return aconf;
+}
+uint16_t FFBWheel::encodeAnalogConfToInt(FFBWheelAnalogConfig conf){
+	uint16_t val = conf.analogmask & 0xff;
+	val |= (conf.analogmask & 0x3) << 8;
+	return val;
+}
+

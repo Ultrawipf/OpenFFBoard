@@ -11,19 +11,27 @@
 #include "vector"
 #include "cppmain.h"
 #include "ChoosableClass.h"
-
+#include <functional>
 
 template<class T>
 struct class_entry
 {
 	ClassIdentifier info;
-	T* (*create)();
+	std::function<T *()> create;
 };
+
 template<class T,class B>
 class_entry<B> add_class()
 {
   return { T::info, []() -> B * { return new T; } };
 }
+
+template<class T,class B>
+class_entry<B> add_class_ref(B* ref)
+{
+	return { T::info, [ref]() -> B * { return  ref; } };
+}
+
 template<class T>
 class ClassChooser {
 public:

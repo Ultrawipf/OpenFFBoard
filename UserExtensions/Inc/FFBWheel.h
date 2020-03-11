@@ -17,25 +17,28 @@
 #include "SPIButtons.h"
 #include "ShifterG29.h"
 
+#include "EncoderLocal.h"
+
 #include "cppmain.h"
 #include "HidFFB.h"
 #include "AdcHandler.h"
 #include "TimerHandler.h"
 #include "ClassChooser.h"
+
 enum class EncoderType : uint8_t{
-	ABN_LOCAL = 0,ABN_TMC=1,HALL_TMC=2,NONE
+	ABN_LOCAL = 0,TMC=1,NONE
 };
 
-enum class MotorDriverType : uint8_t{
-	TMC4671_type=0,PPM_type=1,NONE // Only tmc implemented
-};
+//enum class MotorDriverType : uint8_t{
+//	TMC4671_type=TMC4671::info.id,NONE // Only tmc implemented
+//};
 
 
 
 struct FFBWheelConfig{
-	MotorDriverType drvtype=MotorDriverType::TMC4671_type;
-	EncoderType enctype=EncoderType::ABN_TMC;
-
+	uint8_t drvtype = 0;
+	uint8_t enctype = 0;
+	uint8_t axes = 1;
 };
 
 enum class AnalogOffset : uint8_t{
@@ -58,11 +61,11 @@ public:
 	const ClassIdentifier getInfo();
 
 	void setupTMC4671();
-	void setupTMC4671_enc(EncoderType enctype);
+	void setupTMC4671_enc(PhiE enctype);
 	bool executeUserCommand(ParsedCommand* cmd,std::string* reply);
 
-	void setDrvType(MotorDriverType drvtype);
-	void setEncType(EncoderType enctype);
+	void setDrvType(uint8_t drvtype);
+	void setEncType(uint8_t enctype);
 	void setBtnTypes(uint16_t btntypes);
 	void addBtnType(uint16_t id);
 	void clearBtnTypes();
@@ -91,9 +94,9 @@ public:
 	uint16_t degreesOfRotation = 900; // TODO save in flash
 	int32_t getEncValue(Encoder* enc,uint16_t degrees);
 
-	uint16_t power = 0xffff;
+	uint16_t power = 2000;
 
-
+	float endstop_gain = 20;
 
 private:
 	void send_report();
@@ -104,8 +107,10 @@ private:
 	int32_t torque = 0; // last torque
 	int32_t endstopTorque = 0; // last torque
 	FFBWheelConfig conf;
-	MotorDriver* drv;
-	Encoder* enc;
+
+	MotorDriver* drv = nullptr;
+	Encoder* enc = nullptr;
+
 	std::vector<ButtonSource*> btns;
 	FFBWheelAnalogConfig aconf;
 	volatile uint16_t adc_buf[ADC_PINS];
@@ -135,6 +140,8 @@ private:
 	int32_t velocityFFconst = 0;
 
 	ClassChooser<ButtonSource> btn_chooser;
+	ClassChooser<MotorDriver> drv_chooser;
+	ClassChooser<Encoder> enc_chooser;
 };
 
 #endif /* SRC_FFBWHEEL_H_ */

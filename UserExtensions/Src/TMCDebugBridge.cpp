@@ -12,7 +12,7 @@
 ClassIdentifier TMCDebugBridge::info = {
 		 .name = "TMC Debug Bridge" ,
 		 .id=11,
-		 .hidden=false //Set false to list in "lsconf"
+		 .hidden=false
  };
 // Copy this to your class for identification
 const ClassIdentifier TMCDebugBridge::getInfo(){
@@ -168,16 +168,7 @@ void TMCDebugBridge::cdcRcv(char* Buf, uint32_t *Len){
 
 
 TMCDebugBridge::TMCDebugBridge() {
-	// Slow down SPI
-//	tmcWriteReg(1,1); // Read HW Version
-//	uint8_t buf[5];
-//	tmcReadRegRaw(0, buf);
-//	if(buf[2] == 1 && buf[3] == 0 && buf[4] == 0){
-//		pulseClipLed();
-//		this->spi->Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_64;
-//		HAL_SPI_Init(this->spi);
-//	}
-//	HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_SET);
+
 	TMC4671MainConfig tmcconf;
 	tmcconf.motconf.motor_type = MotorType::STEPPER;
 	tmcconf.motconf.pole_pairs = 50;
@@ -185,7 +176,7 @@ TMCDebugBridge::TMCDebugBridge() {
 	drv->initialize();
 	drv->calibrateAdcOffset();
 	TMC4671ABNConf encconf;
-	encconf.ppr=10000;
+	encconf.ppr=8192;
 	drv->setup_ABN_Enc(encconf);
 	drv->findABNPol();
 	//drv->stop();

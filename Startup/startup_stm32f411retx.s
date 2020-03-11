@@ -62,19 +62,44 @@ defined in linker script */
 .word  _ebss
 /* stack used for SystemInit_ExtMemCtl; always internal RAM used */
 
+// Reboot to bootloader function
+   	.align 2
+    .thumb_func
+    .globl   Reboot_Loader
+    .type    Reboot_Loader, %function
+Reboot_Loader:
+    LDR     R0, =0x40023844 // RCC_APB2ENR
+    LDR     R1, =0x00004000 // ENABLE SYSCFG CLOCK
+    STR     R1, [R0, #0]
+    LDR     R0, =0x40013800 // SYSCFG_MEMRMP
+    LDR     R1, =0x00000001 // MAP ROM AT ZERO
+    STR     R1, [R0, #0]
+    LDR     R0, =0x1FFF0000 // ROM BASE
+    LDR     SP,[R0, #0]     // SP @ +0
+    LDR     R0,[R0, #4]     // PC @ +4
+    BX      R0
+ .pool
+.size Reboot_Loader, . - Reboot_Loader
+
 /**
  * @brief  This is the code that gets called when the processor first
  *          starts execution following a reset event. Only the absolutely
  *          necessary set is performed, after which the application
- *          supplied main() routine is called. 
+ *          supplied main() routine is called.
  * @param  None
  * @retval : None
 */
 
-    .section  .text.Reset_Handler
+  .section  .text.Reset_Handler
   .weak  Reset_Handler
   .type  Reset_Handler, %function
 Reset_Handler:  
+  	LDR     R0, =0x2001FFF0 // End of SRAM for your CPU
+	LDR     R1, =0xDEADBEEF
+	LDR     R2, [R0, #0]
+	STR     R0, [R0, #0] // Invalidate
+	CMP     R2, R1
+    BEQ     Reboot_Loader
   ldr   sp, =_estack    		 /* set stack pointer */
 
 /* Copy the data segment initializers from flash to SRAM */  

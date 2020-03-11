@@ -57,21 +57,16 @@ void ShifterG29::readButtons(uint32_t* buf){
 
 		  if(y_val < Y_246)
 			  gear=4;       // 4th gear
-
 		}
 
 		if(gear == 6 && (HAL_GPIO_ReadPin(rev_port,rev_pin) == GPIO_PIN_SET)){
 			gear = 7; // Reverse
 		}
-
-
 	}
 
 	if(gear > 0){
 		*buf = 1 << (gear-1);
 	}
-
-
 }
 
 uint16_t ShifterG29::getBtnNum(){

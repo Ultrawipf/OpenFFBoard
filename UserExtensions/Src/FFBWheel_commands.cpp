@@ -18,10 +18,10 @@ bool FFBWheel::executeUserCommand(ParsedCommand* cmd,std::string* reply){
 	}else if(cmd->cmd == "drvtype"){
 		if(cmd->type == CMDtype::get){
 			*reply+=std::to_string((uint8_t)this->conf.drvtype);
-		}else if(cmd->type == CMDtype::set && cmd->val < (uint8_t)MotorDriverType::NONE){
-			setDrvType(MotorDriverType(cmd->val));
+		}else if(cmd->type == CMDtype::set && this->drv_chooser.isValidClassId(cmd->val)){
+			setDrvType((cmd->val));
 		}else{
-			*reply += "0:TMC4671";
+			*reply += drv_chooser.printAvailableClasses();
 		}
 	}else if(cmd->cmd == "btntypes"){
 		if(cmd->type == CMDtype::get){
@@ -108,10 +108,10 @@ bool FFBWheel::executeUserCommand(ParsedCommand* cmd,std::string* reply){
 	}else if(cmd->cmd == "enctype"){
 		if(cmd->type == CMDtype::get){
 			*reply+=std::to_string((uint8_t)this->conf.enctype);
-		}else if(cmd->type == CMDtype::set && cmd->val < (uint8_t)EncoderType::NONE){
-			setEncType(EncoderType(cmd->val));
+		}else if(cmd->type == CMDtype::set && enc_chooser.isValidClassId(cmd->val)){
+			setEncType((cmd->val));
 		}else{
-			*reply += "0:ABN_LOCAL\nA1:BN_TMC\n2:HALL_TMC";
+			*reply += enc_chooser.printAvailableClasses();
 		}
 	}else if(cmd->cmd == "axismask"){
 		if(cmd->type == CMDtype::get){
@@ -149,13 +149,15 @@ bool FFBWheel::executeUserCommand(ParsedCommand* cmd,std::string* reply){
 	}
 
 	// ----------- TMC 4671 specific commands-------------
-	if(this->conf.drvtype == MotorDriverType::TMC4671_type){
+	if(this->conf.drvtype == TMC4671::info.id){
 		TMC4671* drv = static_cast<TMC4671*>(this->drv);
 		if(cmd->cmd == "mtype"){
 			if(cmd->type == CMDtype::get){
 				*reply+=std::to_string((uint8_t)drv->conf.motconf.motor_type);
 			}else if(cmd->type == CMDtype::set && (uint8_t)cmd->type < (uint8_t)MotorType::ERR){
 				drv->setMotorType((MotorType)cmd->val, drv->conf.motconf.pole_pairs);
+			}else{
+				*reply+="NONE=0,DC=1,STEPPER=2,BLDC=3";
 			}
 
 		}else if(cmd->cmd == "encalign"){
@@ -173,7 +175,7 @@ bool FFBWheel::executeUserCommand(ParsedCommand* cmd,std::string* reply){
 
 		}else if(cmd->cmd == "phiesrc"){
 			if(cmd->type == CMDtype::get){
-				*reply+=std::to_string((uint8_t)drv->conf.motconf.phiEsource);
+				*reply+=std::to_string((uint8_t)drv->getPhiEtype());
 			}else if(cmd->type == CMDtype::set){
 				drv->setPhiEtype((PhiE)cmd->val);
 			}

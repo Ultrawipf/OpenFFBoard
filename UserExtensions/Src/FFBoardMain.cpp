@@ -51,11 +51,12 @@ bool FFBoardMain::executeSysCommand(ParsedCommand* cmd,std::string* reply){
 	bool flag = true;
 	if(cmd->cmd == "help"){
 		*reply += parser.helpstring;
-		*reply += "\nSystem Commands: reboot,help,swver (Version),lsconf (List configs),id,config (Set config),vint,vext,format (Erase flash)\n";
+		*reply += "\nSystem Commands: reboot,help,dfu,swver (Version),lsmain (List configs),id,main (Set main config),vint,vext,format (Erase flash)\n";
 		flag = false; // Continue to user commands
 	}else if(cmd->cmd == "reboot"){
 		NVIC_SystemReset();
-
+	}else if(cmd->cmd == "dfu"){
+		RebootDFU();
 	}else if(cmd->cmd == "vint"){
 		if(cmd->type==CMDtype::get){
 			*reply+=std::to_string(getIntV());
@@ -69,12 +70,13 @@ bool FFBoardMain::executeSysCommand(ParsedCommand* cmd,std::string* reply){
 	}else if(cmd->cmd == "swver"){
 		*reply += std::to_string(SW_VERSION);
 
-	}else if(cmd->type!=CMDtype::set &&cmd->cmd == "lsconf"){
+	}else if(cmd->type!=CMDtype::set &&cmd->cmd == "lsmain"){
 		*reply += mainchooser.printAvailableClasses();
 
 	}else if(cmd->cmd == "id"){
 		*reply+=std::to_string(this->getInfo().id);
-	}else if(cmd->cmd == "config"){
+
+	}else if(cmd->cmd == "main"){
 		if(cmd->type == CMDtype::get || cmd->type == CMDtype::none){
 			uint16_t buf=this->getInfo().id;
 			Flash_Read(ADR_CURRENT_CONFIG, &buf);
@@ -92,7 +94,9 @@ bool FFBoardMain::executeSysCommand(ParsedCommand* cmd,std::string* reply){
 		}
 	}else if(cmd->cmd == "format"){
 		if(cmd->type == CMDtype::set && cmd->val==1){
+			HAL_FLASH_Unlock();
 			EE_Format();
+			HAL_FLASH_Lock();
 		}else{
 			*reply += "format=1 will ERASE ALL stored variables. Be careful!";
 		}
