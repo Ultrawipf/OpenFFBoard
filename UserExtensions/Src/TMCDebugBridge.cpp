@@ -173,11 +173,9 @@ TMCDebugBridge::TMCDebugBridge() {
 	tmcconf.motconf.motor_type = MotorType::STEPPER;
 	tmcconf.motconf.pole_pairs = 50;
 	this->drv = new TMC4671(&HSPIDRV,SPI1_SS1_GPIO_Port,SPI1_SS1_Pin,tmcconf);
+	drv->restoreFlash();
 	drv->initialize();
 	drv->calibrateAdcOffset();
-	TMC4671ABNConf encconf;
-	encconf.ppr=8192;
-	drv->setup_ABN_Enc(encconf);
 	drv->findABNPol();
 	//drv->stop();
 }

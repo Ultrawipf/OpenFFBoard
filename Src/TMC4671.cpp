@@ -526,7 +526,6 @@ void TMC4671::setMotorType(MotorType motor,uint16_t poles){
 	conf.motconf.pole_pairs = poles;
 	uint32_t mtype = poles | ( ((uint8_t)motor&0xff) << 16);
 	writeReg(0x1B, mtype);
-	initialize(); //reinit for safety
 }
 
 void TMC4671::setTorque(int16_t torque){
