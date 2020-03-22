@@ -123,20 +123,58 @@ private:
 	uint16_t btnsources = 1; // Default ID1 = local buttons
 
 
+//	TMC4671PIDConf tmcpids = TMC4671PIDConf({
+//
+//		.fluxI		= 2,
+//		.fluxP		= 3000,
+//		.torqueI	= 1500,
+//		.torqueP	= 600,
+//		.velocityI	= 0,
+//		.velocityP	= 128,
+//		.positionI	= 0,
+//		.positionP	= 64
+//	});
 	TMC4671PIDConf tmcpids = TMC4671PIDConf({
-
-		.fluxI		= 800,
-		.fluxP		= 256,
-		.torqueI	= 1200,
-		.torqueP	= 500,
+		.fluxI		= 20,
+		.fluxP		= 3000,
+		.torqueI	= 2000,
+		.torqueP	= 650,
 		.velocityI	= 0,
 		.velocityP	= 128,
 		.positionI	= 0,
 		.positionP	= 64
 	});
-	int32_t torqueFFgain = 500000;
+	TMC4671Limits tmclimits = TMC4671Limits({
+		.pid_torque_flux_ddt	= 10000,
+		.pid_uq_ud				= 24575,
+		.pid_torque_flux		= 32767,
+		.pid_acc_lim			= 2147483647,
+		.pid_vel_lim			= 2147483647,
+		.pid_pos_low			= -2147483647,
+		.pid_pos_high			= 2147483647
+	});
+
+	// Lowpass 1KHZ
+	TMC4671Biquad fluxbq = TMC4671Biquad({
+		.a1 = -134913,
+		.a2 = 536735999,
+		.b0 = 67457,
+		.b1 = 134913,
+		.b2 = 67457,
+		.enable = true
+	});
+//	TMC4671Biquad fluxbq = TMC4671Biquad({
+//			.a1 = -269793,
+//			.a2 = 536601119,
+//			.b0 = 134896,
+//			.b1 = 269793,
+//			.b2 = 134896,
+//			.enable = true
+//		});
+
+	int32_t torqueFFgain = 50000;
 	int32_t torqueFFconst = 0;
-	int32_t velocityFFgain = 300000;
+	int32_t velocityFFgain = 30000;
 	int32_t velocityFFconst = 0;
 
 	ClassChooser<ButtonSource> btn_chooser;

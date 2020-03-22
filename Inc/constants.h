@@ -7,7 +7,7 @@
 // Timer 3 is used by the encoder. All other timers are free to use
 
 
-#define SW_VERSION 1
+#define SW_VERSION 2
 
 #define ADC_CHANNELS 9 	// how many analog input values to be read by dma
 

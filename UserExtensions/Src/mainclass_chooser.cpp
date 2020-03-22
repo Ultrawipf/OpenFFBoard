@@ -11,7 +11,7 @@
 #include "FFBWheel.h"
 #include "FFBoardMain.h"
 #include "TMCDebugBridge.h"
-
+#include "MidiMain.h"
 
 // Add all classes here
 const std::vector<class_entry<FFBoardMain>> class_registry =
@@ -19,8 +19,8 @@ const std::vector<class_entry<FFBoardMain>> class_registry =
 		add_class<FFBoardMain,FFBoardMain>(),
 		add_class<FFBWheel,FFBoardMain>(),
 		add_class<ExampleMain,FFBoardMain>(),
-		add_class<TMCDebugBridge,FFBoardMain>()
-
+		add_class<TMCDebugBridge,FFBoardMain>(),
+		add_class<MidiMain,FFBoardMain>()
 };
 
 

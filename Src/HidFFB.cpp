@@ -244,7 +244,7 @@ void HidFFB::set_periodic(FFB_SetPeriodic_Data_t* report){
 	effect->magnitude = report->magnitude;
 	effect->offset = report->offset;
 	effect->phase = report->phase;
-	effect->counter = 0;
+	//effect->counter = 0;
 }
 
 uint8_t HidFFB::find_free_effect(uint8_t type){ //Will return the first effect index which is empty or the same type

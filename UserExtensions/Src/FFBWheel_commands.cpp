@@ -151,49 +151,11 @@ bool FFBWheel::executeUserCommand(ParsedCommand* cmd,std::string* reply){
 	// ----------- TMC 4671 specific commands-------------
 	if(this->conf.drvtype == TMC4671::info.id){
 		TMC4671* drv = static_cast<TMC4671*>(this->drv);
-		if(cmd->cmd == "mtype"){
-			if(cmd->type == CMDtype::get){
-				*reply+=std::to_string((uint8_t)drv->conf.motconf.motor_type);
-			}else if(cmd->type == CMDtype::set && (uint8_t)cmd->type < (uint8_t)MotorType::ERR){
-				drv->setMotorType((MotorType)cmd->val, drv->conf.motconf.pole_pairs);
-			}else{
-				*reply+="NONE=0,DC=1,STEPPER=2,BLDC=3";
-			}
-
-		}else if(cmd->cmd == "encalign"){
-			if(cmd->type == CMDtype::get){
-				drv->bangInitABN(3000);
-			}else if(cmd->type ==CMDtype:: set){
-				drv->bangInitABN(cmd->val);
-			}
-		}else if(cmd->cmd == "poles"){
-			if(cmd->type == CMDtype::get){
-				*reply+=std::to_string(drv->conf.motconf.pole_pairs);
-			}else if(cmd->type == CMDtype::set){
-				drv->setMotorType(drv->conf.motconf.motor_type,cmd->val);
-			}
-
-		}else if(cmd->cmd == "phiesrc"){
-			if(cmd->type == CMDtype::get){
-				*reply+=std::to_string((uint8_t)drv->getPhiEtype());
-			}else if(cmd->type == CMDtype::set){
-				drv->setPhiEtype((PhiE)cmd->val);
-			}
-
-		}else if(cmd->cmd == "reg"){
-			if(cmd->type == CMDtype::getat){
-				*reply+=std::to_string(drv->readReg(cmd->val));
-			}else if(cmd->type == CMDtype::setat){
-				drv->writeReg(cmd->adr,cmd->val);
-			}
-
-		}else if(cmd->cmd == "help"){
-			*reply += "TMC4671 commands:\n"
-					"mtype,encalign,poles,phiesrc,reg\n";
-		}else{
-			flag=false;
-		}
+		flag = drv->command(cmd, reply);
+	}else{
+		flag=false;
 	}
+
 
 	return flag;
 }

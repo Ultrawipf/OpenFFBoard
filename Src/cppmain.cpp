@@ -13,6 +13,8 @@ FFBoardMain* mainclass;
 ClassChooser<FFBoardMain> mainchooser(class_registry);
 extern uint32_t ADC_BUF[ADC_CHANNELS];
 
+USBD_HandleTypeDef hUsbDeviceFS;
+
 void cppmain() {
 	HAL_ADC_Start_DMA(&HADC, ADC_BUF, ADC_CHANNELS);
 

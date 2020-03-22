@@ -88,6 +88,11 @@ static uint8_t USBD_Composite_IsoOUTIncomplete  (USBD_HandleTypeDef *pdev , uint
 	return USBD_OK;
 }
 static uint8_t  USBD_Composite_SOF (USBD_HandleTypeDef *pdev){
+	for(int cls = 0; cls < classes; cls++) {
+		if(USBD_Classes[cls]->SOF){
+			USBD_Classes[cls]->SOF(pdev);
+		}
+	}
 	USB_SOF();
 	return USBD_OK;
 }
@@ -277,20 +282,3 @@ void USBD_Composite_InterfaceToClass(uint8_t ifid, uint8_t clsid){
 	interface_to_class[ifid] = clsid;
 }
 
-
-uint8_t  USBD_Composite_RegisterInterface  (USBD_HandleTypeDef   *pdev)
-{
-
-
-
-	interface_to_class[CDC_INTERFACE] = CDC_IDX;
-	interface_to_class[CDC_INTERFACE_DATA] = CDC_IDX;
-
-	USBD_CDC_RegisterInterface(pdev, &USBD_Interface_fops_FS);
-	USBD_CUSTOM_HID_RegisterInterface(pdev, &USBD_CustomHID_fops_FS);
-
-	interface_to_class[HID_INTERFACE] = HID_IDX;
-
-
-	return USBD_OK;
-}

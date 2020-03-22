@@ -99,6 +99,7 @@ int _write(int file, char *ptr, int len)
 
   return len;
 }
+
 /* USER CODE END 0 */
 
 /**
@@ -106,7 +107,7 @@ int _write(int file, char *ptr, int len)
   * @retval int
   */
 int main(void)
-{
+	{
   /* USER CODE BEGIN 1 */
 
   /* USER CODE END 1 */
@@ -239,7 +240,7 @@ static void MX_NVIC_Init(void)
   HAL_NVIC_SetPriority(TIM3_IRQn, 4, 0);
   HAL_NVIC_EnableIRQ(TIM3_IRQn);
   /* TIM2_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(TIM2_IRQn, 5, 0);
+  HAL_NVIC_SetPriority(TIM2_IRQn, 7, 0);
   HAL_NVIC_EnableIRQ(TIM2_IRQn);
   /* EXTI9_5_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(EXTI9_5_IRQn, 13, 0);
@@ -681,7 +682,7 @@ static void MX_TIM5_Init(void)
 
   /* USER CODE END TIM5_Init 1 */
   htim5.Instance = TIM5;
-  htim5.Init.Prescaler = 96;
+  htim5.Init.Prescaler = 96-1;
   htim5.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim5.Init.Period = 300;
   htim5.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;

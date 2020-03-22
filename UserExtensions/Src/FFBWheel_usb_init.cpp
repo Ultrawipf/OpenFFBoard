@@ -8,9 +8,8 @@
 #include "FFBWheel_usb_init.h"
 #include "usbd_desc.h"
 
-USBD_HandleTypeDef hUsbDeviceFS;
+extern USBD_HandleTypeDef hUsbDeviceFS;
 USBD_ClassTypeDef* handles[2];
-
 
 void usbInit_HID_Wheel(){
 	handles[CDC_IDX] = &USBD_CDC;
@@ -53,7 +52,6 @@ void usbInit_HID_Wheel(){
 
 	USBD_RegisterClass(&hUsbDeviceFS, &USBD_Composite);
 
-	//USBD_Composite_RegisterInterface(&hUsbDeviceFS);
 	USBD_CDC_RegisterInterface(&hUsbDeviceFS, &USBD_Interface_fops_FS);
 	USBD_CUSTOM_HID_RegisterInterface(&hUsbDeviceFS, &USBD_CustomHID_fops_FS);
 

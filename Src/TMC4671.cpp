@@ -48,14 +48,17 @@ void TMC4671::setAddress(uint8_t addr){
 		this->cspin = SPI1_SS1_Pin;
 		this->csport = SPI1_SS1_GPIO_Port;
 		this->spi = &HSPIDRV;
+		this->flashAddrs = TMC4671FlashAddrs({ADR_TMC1_MOTCONF,ADR_TMC1_PPR,ADR_TMC1_ENCA,ADR_TMC1_ENCOFFSET});
 	}else if(addr == 2){
 		this->cspin = SPI1_SS2_Pin;
 		this->csport = SPI1_SS2_GPIO_Port;
 		this->spi = &HSPIDRV;
+		//TODO addr
 	}else if(addr == 3){
 		this->cspin = SPI1_SS3_Pin;
 		this->csport = SPI1_SS3_GPIO_Port;
 		this->spi = &HSPIDRV;
+		//TODO addr
 	}
 }
 
@@ -67,32 +70,62 @@ uint8_t TMC4671::getAddress(){
 void TMC4671::saveFlash(){
 	uint16_t mconfint = TMC4671::encodeMotToInt(this->conf.motconf);
 	uint16_t ppr = this->abnconf.ppr;
-
+	int16_t encoffset = this->abnconf.phiEoffset;
 	// Save flash
-	if(address == 1){
-		Flash_Read(ADR_TMC1_MOTCONF, &mconfint);
-		Flash_Read(ADR_TMC1_PPR, &ppr);
-	}else if(address == 2){
-
-	}else if(address == 3){
-
-	}
+	Flash_Write(flashAddrs.mconf, mconfint);
+	Flash_Write(flashAddrs.ppr, ppr);
+	Flash_Write(flashAddrs.encOffset,encoffset);
+	Flash_Write(flashAddrs.offsetFlux,maxOffsetFlux);
+	Flash_Write(flashAddrs.encA,encodeEncHallMisc());
 }
+
 void TMC4671::restoreFlash(){
 	uint16_t mconfint;
 	uint16_t ppr = 0;
+	uint16_t encoffset;
 
 	// Read flash
-	if(address == 1){
-		Flash_Read(ADR_TMC1_MOTCONF, &mconfint);
-		Flash_Read(ADR_TMC1_PPR, &ppr);
-	}else if(address == 2){
+	if(Flash_Read(flashAddrs.mconf, &mconfint))
+		this->conf.motconf = TMC4671::decodeMotFromInt(mconfint);
 
-	}else if(address == 3){
+	if(Flash_Read(flashAddrs.ppr, &ppr))
+		this->abnconf.ppr = ppr;
 
+	if(Flash_Read(flashAddrs.encOffset, &encoffset))
+		this->abnconf.phiEoffset = (int16_t)encoffset;
+
+	Flash_Read(flashAddrs.offsetFlux, (uint16_t*)&this->maxOffsetFlux);
+
+	uint16_t encval;
+	if(Flash_Read(flashAddrs.encA, &encval)){
+		restoreEncHallMisc(encval);
 	}
-	this->conf.motconf = TMC4671::decodeMotFromInt(mconfint);
-	this->abnconf.ppr = ppr;
+
+}
+
+bool TMC4671::hasPower(){
+	uint16_t intV = getIntV();
+	return (intV > 10000) && (getExtV() > 10000) && (intV < 78000);
+}
+
+// Checks if important parameters are set to valid values
+bool TMC4671::isSetUp(){
+
+	if(this->conf.motconf.motor_type == MotorType::NONE){
+		return false;
+	}
+
+	// Encoder
+	if(this->conf.motconf.phiEsource == PhiE::abn){
+		if(abnconf.ppr == 0){
+			return false;
+		}
+		if(!abnconf.initialized){
+			return false;
+		}
+	}
+
+	return true;
 }
 
 bool TMC4671::initialize(){
@@ -105,8 +138,8 @@ bool TMC4671::initialize(){
 	}
 
 	writeReg(1, 1);
-	if(readReg(0) == 0x00010000){
-		/* Slow down SPI if old TMC detected
+	if(readReg(0) == 0x00010000 && allowSlowSPI){
+		/* Slow down SPI if old TMC engineering sample is detected
 		 * The first version has a high chance of glitches of the MSB
 		 * when high spi speeds are used.
 		 * This can cause problems for some operations.
@@ -143,6 +176,7 @@ bool TMC4671::initialize(){
 	HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_SET);
 	writeReg(0x64, 0); // No flux/torque
 	setStatusMask(0); // Disable status output by default.
+
 	if(this->conf.motconf.phiEsource == PhiE::abn){
 		// Not initialized if ppr not set
 		if(this->abnconf.ppr == 0){
@@ -165,9 +199,7 @@ bool TMC4671::initialize(){
 void TMC4671::update(){
 	// Optional update methods for safety
 
-	uint16_t vint = getIntV();
-
-	if(vint < 8000 || vint>78000){ // low voltage or overvoltage
+	if(!hasPower()){ // low voltage or overvoltage
 		initialized = false;
 		initTime = HAL_GetTick();
 		pulseErrLed();
@@ -175,11 +207,16 @@ void TMC4671::update(){
 			emergencyStop();
 	}
 
-	if(!initialized && active && vint > 9000 && vint < 75000){
+	if(!initialized && active && hasPower()){
 		if(HAL_GetTick() - initTime > (emergency ? 5000 : 1000)){
 			emergency = false;
 			initialize();
 		}
+	}
+
+	if(!isSetUp()){
+		pulseErrLed();
+		initialized = false;
 	}
 
 }
@@ -224,28 +261,77 @@ void TMC4671::setPhiE_ext(int16_t phiE){
 	writeReg(0x1C, phiE);
 }
 
+/*
+ * Aligns ABN encoders by forcing an angle with high current and calculating the offset
+ */
 void TMC4671::bangInitABN(int16_t power){
+	if(!hasPower()){
+		return;
+	}
 	PhiE lastphie = getPhiEtype();
 	MotionMode lastmode = getMotionMode();
-	setPhiE_ext(0x3fff);
+	setPhiE_ext(0);
 	setUdUq(power, 0);
 
 	setPhiEtype(PhiE::ext);
-	updateReg(0x29, 0, 0xffff, 16);
+	int32_t encpos = readReg(0x28);
+	writeReg(0x28,0); //Zero encoder
+	updateReg(0x29, 0, 0xffff, 16); // Set phiE offset to zero
 	setMotionMode(MotionMode::uqudext);
 
 	HAL_Delay(100);
-	setPhiE_ext(0x7fff);
-
+	setPhiE_ext(4096);
 	HAL_Delay(250);
-
 	//Write offset
-	abnconf.phiEoffset = 0x7fff-(readReg(0x2A)>>16);
+	int16_t phiE_abn = readReg(0x2A)>>16;
+	abnconf.phiEoffset = 4096-phiE_abn;
 	updateReg(0x29, abnconf.phiEoffset, 0xffff, 16);
+
 	setUdUq(0, 0);
 	setPhiE_ext(0);
 	setPhiEtype(lastphie);
 	setMotionMode(lastmode);
+	writeReg(0x28,encpos+(int32_t)readReg(0x28)); //Restore encoder
+}
+
+
+bool TMC4671::checkABN(){
+
+	bool result = true;
+	PhiE lastphie = getPhiEtype();
+	MotionMode lastmode = getMotionMode();
+	setUdUq(abnconf.bangInitPower, 0);
+	setPhiEtype(PhiE::ext);
+	setMotionMode(MotionMode::uqudext);
+
+	int16_t phiE_abn_start = readReg(0x2A)>>16;
+
+	for(int16_t angle = -0x3fff;angle<0x3fff;angle+=0x0fff){
+		setPhiE_ext(angle);
+		HAL_Delay(100);
+		int16_t phiE_abn = readReg(0x2A)>>16;
+		// High difference?
+		uint16_t err = abs(phiE_abn - angle);
+		if(err > 4000){
+			result = false;
+			break;
+		}
+	}
+	// Encoder did not move at all
+	int16_t phiE_abn = readReg(0x2A)>>16;
+	if(phiE_abn_start ==  phiE_abn){
+		result = false;
+	}
+
+	setUdUq(0, 0);
+	setPhiE_ext(0);
+	setPhiEtype(lastphie);
+	setMotionMode(lastmode);
+
+	if(result){
+		abnconf.initialized = true;
+	}
+	return result;
 }
 
 void TMC4671::setup_ABN_Enc(TMC4671ABNConf encconf){
@@ -262,10 +348,16 @@ void TMC4671::setup_ABN_Enc(TMC4671ABNConf encconf){
 	writeReg(0x25, abnmode);
 	writeReg(0x26, encconf.ppr);
 	writeReg(0x29, (encconf.phiEoffset << 16) | encconf.phiMoffset);
-
+	writeReg(0x28,0); //Zero encoder
 	//conf.motconf.phiEsource = PhiE::abn;
 	this->setPhiEtype(PhiE::abn);
-	bangInitABN(encconf.bangInitPower);
+	if(hasPower() && !encconf.initialized){
+		bangInitABN(encconf.bangInitPower);
+		// Check if aligned
+		if(checkABN()){
+			abnconf.initialized = true;
+		}
+	}
 }
 void TMC4671::setup_HALL(TMC4671HALLConf hallconf){
 	this->hallconf = hallconf;
@@ -289,6 +381,7 @@ void TMC4671::setup_HALL(TMC4671HALLConf hallconf){
 
 	//conf.motconf.phiEsource = PhiE::hall;
 }
+
 
 void TMC4671::calibrateAdcScale(){
 
@@ -415,7 +508,7 @@ void TMC4671::runOpenLoop(uint16_t ud,uint16_t uq,int32_t speed,int32_t accel){
 	setOpenLoopSpeedAccel(speed, accel);
 }
 
-void TMC4671::setUdUq(uint16_t ud,uint16_t uq){
+void TMC4671::setUdUq(int16_t ud,int16_t uq){
 	writeReg(0x24, ud | (uq << 16));
 }
 
@@ -445,7 +538,13 @@ void TMC4671::emergencyStop(){
 }
 
 void TMC4671::turn(int16_t power){
-	setFluxTorque(idleFlux-clip<int32_t,int16_t>(abs(power),0,maxOffsetFlux), power);
+	//
+	if(feedforward){
+		setFluxTorque(idleFlux-clip<int32_t,int16_t>(abs(power),0,maxOffsetFlux), power/2);
+		setFluxTorqueFF(0, power/2);
+	}else{
+		setFluxTorque(idleFlux-clip<int32_t,int16_t>(abs(power),0,maxOffsetFlux), power);
+	}
 	//setTorque(power);
 }
 
@@ -551,13 +650,16 @@ void TMC4671::setFluxTorque(int16_t flux, int16_t torque){
 	if(curMotionMode != MotionMode::torque){
 		setMotionMode(MotionMode::torque);
 	}
-
-	if(feedforward)
-		writeReg(0x65, (flux & 0xffff) | (torque << 16));
-	else
-		writeReg(0x64, (flux & 0xffff) | (torque << 16));
-
+	writeReg(0x64, (flux & 0xffff) | (torque << 16));
 }
+
+void TMC4671::setFluxTorqueFF(int16_t flux, int16_t torque){
+	if(curMotionMode != MotionMode::torque){
+		setMotionMode(MotionMode::torque);
+	}
+	writeReg(0x65, (flux & 0xffff) | (torque << 16));
+}
+
 
 void TMC4671::setPids(TMC4671PIDConf pids){
 	curPids = pids;
@@ -577,6 +679,84 @@ TMC4671PIDConf TMC4671::getPids(){
 	return curPids;
 }
 
+void TMC4671::setLimits(TMC4671Limits limits){
+	this->curLimits = limits;
+	writeReg(0x5C, limits.pid_torque_flux_ddt);
+	writeReg(0x5D, limits.pid_uq_ud);
+	writeReg(0x5E, limits.pid_torque_flux);
+	writeReg(0x5F, limits.pid_acc_lim);
+	writeReg(0x60, limits.pid_vel_lim);
+	writeReg(0x61, limits.pid_pos_low);
+	writeReg(0x62, limits.pid_pos_high);
+}
+
+TMC4671Limits TMC4671::getLimits(){
+	curLimits.pid_acc_lim = readReg(0x5F);
+	curLimits.pid_torque_flux = readReg(0x5E);
+	curLimits.pid_torque_flux_ddt = readReg(0x5C);
+	curLimits.pid_uq_ud= readReg(0x5D);
+	curLimits.pid_vel_lim = readReg(0x60);
+	curLimits.pid_pos_low = readReg(0x61);
+	curLimits.pid_pos_high = readReg(0x62);
+	return curLimits;
+}
+
+void TMC4671::setBiquadFlux(TMC4671Biquad bq){
+	writeReg(0x4E, 25);
+	writeReg(0x4D, bq.a1);
+	writeReg(0x4E, 26);
+	writeReg(0x4D, bq.a2);
+	writeReg(0x4E, 28);
+	writeReg(0x4D, bq.b0);
+	writeReg(0x4E, 29);
+	writeReg(0x4D, bq.b1);
+	writeReg(0x4E, 30);
+	writeReg(0x4D, bq.b2);
+	writeReg(0x4E, 31);
+	writeReg(0x4D, bq.enable & 0x1);
+}
+void TMC4671::setBiquadPos(TMC4671Biquad bq){
+	writeReg(0x4E, 1);
+	writeReg(0x4D, bq.a1);
+	writeReg(0x4E, 2);
+	writeReg(0x4D, bq.a2);
+	writeReg(0x4E, 4);
+	writeReg(0x4D, bq.b0);
+	writeReg(0x4E, 5);
+	writeReg(0x4D, bq.b1);
+	writeReg(0x4E, 6);
+	writeReg(0x4D, bq.b2);
+	writeReg(0x4E, 7);
+	writeReg(0x4D, bq.enable & 0x1);
+}
+void TMC4671::setBiquadVel(TMC4671Biquad bq){
+	writeReg(0x4E, 9);
+	writeReg(0x4D, bq.a1);
+	writeReg(0x4E, 10);
+	writeReg(0x4D, bq.a2);
+	writeReg(0x4E, 12);
+	writeReg(0x4D, bq.b0);
+	writeReg(0x4E, 13);
+	writeReg(0x4D, bq.b1);
+	writeReg(0x4E, 14);
+	writeReg(0x4D, bq.b2);
+	writeReg(0x4E, 15);
+	writeReg(0x4D, bq.enable & 0x1);
+}
+void TMC4671::setBiquadTorque(TMC4671Biquad bq){
+	writeReg(0x4E, 17);
+	writeReg(0x4D, bq.a1);
+	writeReg(0x4E, 18);
+	writeReg(0x4D, bq.a2);
+	writeReg(0x4E, 20);
+	writeReg(0x4D, bq.b0);
+	writeReg(0x4E, 21);
+	writeReg(0x4D, bq.b1);
+	writeReg(0x4E, 22);
+	writeReg(0x4D, bq.b2);
+	writeReg(0x4E, 23);
+	writeReg(0x4D, bq.enable & 0x1);
+}
 
 /*
  *  Sets the raw brake resistor limits.
@@ -588,6 +768,9 @@ void TMC4671::setBrakeLimits(uint16_t low,uint16_t high){
 	writeReg(0x75,val);
 }
 
+/*
+ * Detect encoder polarity by blocking motor and checking N channel.
+ */
 bool TMC4671::findABNPol(){
 	PhiE lastphie = getPhiEtype();
 	MotionMode lastmode = getMotionMode();
@@ -650,7 +833,7 @@ uint32_t TMC4671::readReg(uint8_t reg){
 
 	uint8_t req[5] = {(uint8_t)(0x7F & reg),0,0,0,0};
 	uint8_t tbuf[5];
-
+	// 500ns delay after sending first byte already satisfied by STM
 	HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_RESET);
 	HAL_SPI_TransmitReceive(this->spi,req,tbuf,5,SPITIMEOUT);
 	HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_SET);
@@ -695,5 +878,116 @@ uint16_t TMC4671::encodeMotToInt(TMC4671MotConf mconf){
 	return val;
 }
 
+uint16_t TMC4671::encodeEncHallMisc(){
+	uint16_t val = 0;
+	val |= (this->abnconf.npol) & 0x01;
+	val |= (this->abnconf.rdir <<1) & 0x01; // Direction
+	val |= (this->abnconf.ab_as_n <<2) & 0x01;
+
+	val |= (this->hallconf.direction << 8) & 0x01;
+	val |= (this->hallconf.interpolation << 9) & 0x01;
+
+	return val;
+}
+
+void TMC4671::restoreEncHallMisc(uint16_t val){
+
+	this->abnconf.apol = (val) & 0x01;
+	this->abnconf.bpol = this->abnconf.apol;
+	this->abnconf.npol = this->abnconf.apol;
+	this->abnconf.rdir = (val>>1) & 0x01; // Direction
+	this->abnconf.ab_as_n = (val>>2) & 0x01;
+	this->hallconf.direction = (val>>8) & 0x01;
+	this->hallconf.interpolation = (val>>9) & 0x01;
+}
 
 
+bool TMC4671::command(ParsedCommand* cmd,std::string* reply){
+	bool flag = true;
+	if(cmd->cmd == "mtype"){
+		if(cmd->type == CMDtype::get){
+			*reply+=std::to_string((uint8_t)this->conf.motconf.motor_type);
+		}else if(cmd->type == CMDtype::set && (uint8_t)cmd->type < (uint8_t)MotorType::ERR){
+			this->setMotorType((MotorType)cmd->val, this->conf.motconf.pole_pairs);
+		}else{
+			*reply+="NONE=0,DC=1,STEPPER=2,BLDC=3";
+		}
+
+	}else if(cmd->cmd == "encalign"){
+		if(cmd->type == CMDtype::get){
+			this->bangInitABN(5000);
+		}else if(cmd->type ==CMDtype:: set){
+			this->bangInitABN(cmd->val);
+		}else{
+			return false;
+		}
+		if(this->checkABN()){
+			*reply+=">Aligned";
+		}else{
+			*reply+="Encoder error";
+		}
+	}else if(cmd->cmd == "poles"){
+		if(cmd->type == CMDtype::get){
+			*reply+=std::to_string(this->conf.motconf.pole_pairs);
+		}else if(cmd->type == CMDtype::set){
+			this->setMotorType(this->conf.motconf.motor_type,cmd->val);
+		}
+
+	}else if(cmd->cmd == "torqueP"){
+		if(cmd->type == CMDtype::get){
+			*reply+=std::to_string(this->curPids.torqueP);
+		}else if(cmd->type == CMDtype::set){
+			this->curPids.torqueP = cmd->val;
+			setPids(curPids);
+		}
+	}else if(cmd->cmd == "torqueI"){
+		if(cmd->type == CMDtype::get){
+			*reply+=std::to_string(this->curPids.torqueI);
+		}else if(cmd->type == CMDtype::set){
+			this->curPids.torqueI = cmd->val;
+			setPids(curPids);
+		}
+	}else if(cmd->cmd == "fluxP"){
+		if(cmd->type == CMDtype::get){
+			*reply+=std::to_string(this->curPids.fluxP);
+		}else if(cmd->type == CMDtype::set){
+			this->curPids.fluxP = cmd->val;
+			setPids(curPids);
+		}
+	}else if(cmd->cmd == "fluxI"){
+		if(cmd->type == CMDtype::get){
+			*reply+=std::to_string(this->curPids.fluxI);
+		}else if(cmd->type == CMDtype::set){
+			this->curPids.fluxI = cmd->val;
+			setPids(curPids);
+		}
+	}else if(cmd->cmd == "phiesrc"){
+		if(cmd->type == CMDtype::get){
+			*reply+=std::to_string((uint8_t)this->getPhiEtype());
+		}else if(cmd->type == CMDtype::set){
+			this->setPhiEtype((PhiE)cmd->val);
+		}
+
+	}else if(cmd->cmd == "fluxoffset"){
+		if(cmd->type == CMDtype::get){
+			*reply+=std::to_string(this->maxOffsetFlux);
+		}else if(cmd->type == CMDtype::set){
+			this->maxOffsetFlux = cmd->val;
+		}
+
+	}else if(cmd->cmd == "reg"){
+		if(cmd->type == CMDtype::getat){
+			*reply+=std::to_string(this->readReg(cmd->val));
+		}else if(cmd->type == CMDtype::setat){
+			this->writeReg(cmd->adr,cmd->val);
+		}
+
+	}else if(cmd->cmd == "help"){
+		*reply += "TMC4671 commands:\n"
+				"mtype,encalign,poles,phiesrc,reg,fluxoffset\n"
+				"torqueP,torqueI,fluxP,fluxI\n";
+	}else{
+		flag = false;
+	}
+	return flag;
+}

@@ -22,6 +22,7 @@ enum class MotorType : uint8_t {NONE=0,DC=1,STEPPER=2,BLDC=3,ERR};
 enum class PhiE : uint8_t {ext=1,openloop=2,abn=3,hall=5,aenc=6,aencE=7,NONE};
 enum class MotionMode : uint8_t {stop=0,torque=1,velocity=2,position=3,prbsflux=4,prbstorque=5,prbsvelocity=6,uqudext=8,encminimove=9,NONE};
 enum class FFMode : uint8_t {none=0,velocity=1,torque=2};
+
 struct TMC4671MotConf{
 	MotorType motor_type = MotorType::NONE;
 	PhiE phiEsource 	= PhiE::ext;
@@ -56,6 +57,24 @@ struct TMC4671PIDConf{
 	uint16_t positionP	= 64;
 };
 
+struct TMC4671Limits{
+	uint16_t pid_torque_flux_ddt	= 32767;
+	uint16_t pid_uq_ud				= 23169;
+	uint16_t pid_torque_flux		= 32767;
+	uint32_t pid_acc_lim			= 2147483647;
+	uint32_t pid_vel_lim			= 2147483647;
+	int32_t pid_pos_low				= -2147483647;
+	int32_t pid_pos_high			= 2147483647;
+};
+
+struct TMC4671FlashAddrs{
+	uint16_t mconf = ADR_TMC1_MOTCONF;
+	uint16_t ppr = ADR_TMC1_PPR;
+	uint16_t encA = ADR_TMC1_ENCA;
+	uint16_t encOffset = ADR_TMC1_ENCOFFSET;
+	uint16_t offsetFlux = ADR_TMC1_OFFSETFLUX;
+};
+
 struct TMC4671ABNConf{
 	uint32_t ppr = 8192;
 	bool apol 	= true;
@@ -68,6 +87,7 @@ struct TMC4671ABNConf{
 	int16_t phiEoffset = 0;
 	int16_t phiMoffset = 0;
 	int16_t bangInitPower = 8000;
+	bool initialized = false;
 };
 
 struct TMC4671HALLConf{
@@ -84,6 +104,15 @@ struct TMC4671HALLConf{
 	int16_t phiEoffset = 0;
 	int16_t phiMoffset = 0;
 	uint16_t dPhiMax = 10922;
+};
+
+struct TMC4671Biquad{
+	int32_t a1 = 0;
+	int32_t a2 = 0;
+	int32_t b0 = 0;
+	int32_t b1 = 0;
+	int32_t b2 = 0;
+	bool enable = false;
 };
 
 
@@ -111,6 +140,9 @@ public:
 	bool initialized = false;
 	void update();
 
+	bool hasPower();
+	bool isSetUp();
+
 	uint32_t readReg(uint8_t reg);
 	void writeReg(uint8_t reg,uint32_t dat);
 	void updateReg(uint8_t reg,uint32_t dat,uint32_t mask,uint8_t shift);
@@ -127,6 +159,7 @@ public:
 	void setup_HALL(TMC4671HALLConf hallconf);
 	void bangInitABN(int16_t power);
 	bool findABNPol();
+	bool checkABN();
 
 	void setAdcOffset(uint32_t adc_I0_offset,uint32_t adc_I1_offset);
 	void setAdcScale(uint32_t adc_I0_scale,uint32_t adc_I1_scale);
@@ -136,6 +169,11 @@ public:
 	void setFFMode(FFMode mode);
 	bool feedforward = false;
 
+	void setBiquadFlux(TMC4671Biquad bq);
+	void setBiquadTorque(TMC4671Biquad bq);
+	void setBiquadPos(TMC4671Biquad bq);
+	void setBiquadVel(TMC4671Biquad bq);
+
 	void stop();
 	void start();
 	bool active = false;
@@ -144,7 +182,7 @@ public:
 	void turn(int16_t power);
 	int16_t nextFlux = 0;
 	int16_t idleFlux = 0;
-	int16_t maxOffsetFlux = 3000;
+	uint16_t maxOffsetFlux = 2000;
 
 	void setTorque(int16_t torque);
 
@@ -157,6 +195,7 @@ public:
 	void setFlux(int16_t flux);
 	int16_t getFlux();
 	void setFluxTorque(int16_t flux, int16_t torque);
+	void setFluxTorqueFF(int16_t flux, int16_t torque);
 
 	void setPhiEtype(PhiE type);
 	PhiE getPhiEtype();
@@ -165,7 +204,7 @@ public:
 	void setMotionMode(MotionMode mode);
 	MotionMode getMotionMode();
 
-	void setUdUq(uint16_t ud,uint16_t uq);
+	void setUdUq(int16_t ud,int16_t uq);
 	void setBrakeLimits(uint16_t low, uint16_t high); // Raw brake resistor limits (see tmc reg 0x75)
 
 	bool reachedPosition(uint16_t tolerance);
@@ -175,6 +214,10 @@ public:
 	void setPids(TMC4671PIDConf pids);
 	TMC4671PIDConf getPids();
 	TMC4671PIDConf curPids;
+
+	TMC4671Limits curLimits;
+	void setLimits(TMC4671Limits limits);
+	TMC4671Limits getLimits();
 
 	TMC4671ABNConf abnconf;
 	TMC4671HALLConf hallconf;
@@ -192,6 +235,14 @@ public:
 
 	void saveFlash();
 	void restoreFlash();
+	TMC4671FlashAddrs flashAddrs;
+
+	uint16_t encodeEncHallMisc();
+	void restoreEncHallMisc(uint16_t val);
+
+	bool allowSlowSPI = true; // For engineering sample
+
+	bool command(ParsedCommand* cmd,std::string* reply);
 
 private:
 	MotionMode curMotionMode = MotionMode::stop;
