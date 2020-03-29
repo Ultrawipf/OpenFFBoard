@@ -16,6 +16,37 @@ extern TIM_HandleTypeDef htim2;
 void pwmInitTimer(TIM_HandleTypeDef* timer,uint32_t channel,uint32_t period);
 void setPWM(uint16_t value,TIM_HandleTypeDef* timer,uint32_t channel,uint32_t period);
 
+
+
+/*
+ * Generates a classic RC 20ms 1000-2000µs signal
+ * Centered at 1500µs for bidirectional RC ESCs and similiar stuff
+ */
+class MotorPWM_RC: public MotorDriver {
+public:
+	MotorPWM_RC();
+	virtual ~MotorPWM_RC();
+
+	static ClassIdentifier info;
+	const ClassIdentifier getInfo();
+
+	void turn(int16_t power);
+	void stop();
+	void start();
+
+private:
+	const uint32_t period = 20000;
+	bool active = false;
+	const uint32_t channel = TIM_CHANNEL_3; // Motor port CS3
+
+	TIM_HandleTypeDef* timer = &htim2;
+};
+
+/*
+ * Generates a 0-100% PWM signal on CS3
+ * and outputs complementary direction signals on CS1 and CS2
+ * Can be used with cheap halfbridge modules and DC motors
+ */
 class MotorPWM_HB: public MotorDriver {
 public:
 	MotorPWM_HB();
@@ -38,29 +69,6 @@ private:
 
 	GPIO_TypeDef* rightPort=SPI1_SS2_GPIO_Port;
 	const uint16_t rightPin=SPI1_SS2_Pin;
-
-	TIM_HandleTypeDef* timer = &htim2;
-};
-
-/*
- * Generates a classic RC 20ms 1000-2000µs signal
- */
-class MotorPWM_RC: public MotorDriver {
-public:
-	MotorPWM_RC();
-	virtual ~MotorPWM_RC();
-
-	static ClassIdentifier info;
-	const ClassIdentifier getInfo();
-
-	void turn(int16_t power);
-	void stop();
-	void start();
-
-private:
-	const uint32_t period = 20000;
-	bool active = false;
-	const uint32_t channel = TIM_CHANNEL_3; // Motor port CS3
 
 	TIM_HandleTypeDef* timer = &htim2;
 };

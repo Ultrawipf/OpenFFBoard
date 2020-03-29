@@ -32,12 +32,11 @@ public:
 	void overflowCallback();
 	void exti(uint16_t GPIO_Pin);
 	void timerElapsed(TIM_HandleTypeDef* htim);
-	//void zpinCallback();
 
 private:
 	TIM_HandleTypeDef* htim;
 	int32_t offset = 0;
-	int32_t pos = 0;
+	int32_t pos = 0; // Extra position counter for overflows
 };
 
 #endif /* ENCODERLOCAL_H_ */

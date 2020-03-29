@@ -20,7 +20,7 @@ public:
 	const ClassIdentifier getInfo();
 
 
-	virtual void turn(int16_t power); // Turn the motor with positive/negative power
+	virtual void turn(int16_t power); // Turn the motor with positive/negative power. Range should be full signed 16 bit
 	virtual void stop();
 	virtual void start();
 };
