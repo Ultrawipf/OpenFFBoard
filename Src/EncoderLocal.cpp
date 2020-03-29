@@ -17,7 +17,10 @@ const ClassIdentifier EncoderLocal::getInfo(){
 
 EncoderLocal::EncoderLocal() {
 	this->htim = &TIM_ENC;
+	setPos(0);
+	HAL_TIM_Base_Start_IT(htim);
 
+	this->htim->Instance->CR1 = 1;
 }
 
 EncoderLocal::~EncoderLocal() {
@@ -26,12 +29,12 @@ EncoderLocal::~EncoderLocal() {
 
 
 int32_t EncoderLocal::getPos(){
-
-	return htim->CNT + pos + offset;
+	int32_t timpos = htim->Instance->CNT - 0x7fff;
+	return timpos + offset;
 }
 void EncoderLocal::setPos(int32_t pos){
 	this->pos = pos;
-	htim->CNT = pos % htim->ARR;
+	htim->Instance->CNT = pos+0x7fff;
 }
 
 void EncoderLocal::setOffset(int32_t offset){
@@ -39,7 +42,7 @@ void EncoderLocal::setOffset(int32_t offset){
 }
 
 void EncoderLocal::setPeriod(uint32_t period){
-	this->htim->ARR = period-1;
+	this->htim->Instance->ARR = period-1;
 }
 
 void EncoderLocal::exti(uint16_t GPIO_Pin){
@@ -48,10 +51,16 @@ void EncoderLocal::exti(uint16_t GPIO_Pin){
 	}
 }
 
+void EncoderLocal::timerElapsed(TIM_HandleTypeDef* htim){
+	if(htim == this->htim){
+		overflowCallback();
+	}
+}
+
 void EncoderLocal::overflowCallback(){
-	if(htim->CNT > this->htim->ARR/2){
-		pos -= htim->ARR+1;
+	if(htim->Instance->CNT > this->htim->Instance->ARR/2){
+		pos -= htim->Instance->ARR+1;
 	}else{
-		pos += htim->ARR+1;
+		pos += htim->Instance->ARR+1;
 	}
 }

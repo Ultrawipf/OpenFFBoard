@@ -8,6 +8,7 @@
 #ifndef SRC_FFBWHEEL_H_
 #define SRC_FFBWHEEL_H_
 #include <FFBoardMain.h>
+#include <MotorPWM.h>
 #include "TMC4671.h"
 #include "flash_helpers.h"
 #include "cmdparser.h"

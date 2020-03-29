@@ -28,7 +28,7 @@ public:
 
 	//virtual void registerCallback(FFBoardMain);
 private:
-	int32_t ppr = 0;
+	int32_t ppr = 10000;
 
 };
 

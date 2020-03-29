@@ -16,9 +16,13 @@ public:
 	MotorDriver();
 	virtual ~MotorDriver();
 
-	virtual void turn(int16_t power) = 0; // Turn the motor with positive/negative power
-	virtual void stop() = 0;
-	virtual void start() = 0;
+	static ClassIdentifier info;
+	const ClassIdentifier getInfo();
+
+
+	virtual void turn(int16_t power); // Turn the motor with positive/negative power
+	virtual void stop();
+	virtual void start();
 };
 
 #endif /* MOTORDRIVER_H_ */

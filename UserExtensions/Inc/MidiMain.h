@@ -60,6 +60,8 @@ public:
 
 	TMC4671* drv;
 
+	uint32_t movementrange = 0x3fff;
+
 	static int8_t Midi_Receive(uint8_t *msg, uint32_t len);
 	USBD_ClassTypeDef* handles[2];
 	USBD_Midi_ItfTypeDef USBD_Midi_fops = {

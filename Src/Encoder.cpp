@@ -7,7 +7,7 @@
 
 #include "Encoder.h"
 
-ClassIdentifier Encoder::info ={.name = "None" , .id=0, .hidden = true};
+ClassIdentifier Encoder::info ={.name = "None" , .id=0, .hidden = false};
 
 const ClassIdentifier Encoder::getInfo(){
 	return info;

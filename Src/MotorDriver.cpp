@@ -7,6 +7,12 @@
 
 #include "MotorDriver.h"
 
+ClassIdentifier MotorDriver::info ={.name = "None" , .id=0, .hidden = false};
+
+const ClassIdentifier MotorDriver::getInfo(){
+	return info;
+}
+
 MotorDriver::MotorDriver() {
 	// TODO Auto-generated constructor stub
 
@@ -17,9 +23,13 @@ MotorDriver::~MotorDriver() {
 }
 
 
-//void setTorque(int16_t torque){
-//
-//}
-//	void stop(){
-//
-//}
+void MotorDriver::turn(int16_t val){
+
+}
+
+void MotorDriver::start(){
+
+}
+void MotorDriver::stop(){
+
+}

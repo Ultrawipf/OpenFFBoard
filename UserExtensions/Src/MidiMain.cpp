@@ -9,6 +9,7 @@
 #include "usbd_desc.h"
 #include "usbd_composite.h"
 #include "math.h"
+#include "ledEffects.h"
 
 ClassIdentifier MidiMain::info = {
 		 .name = "MIDI :)" ,
@@ -41,6 +42,10 @@ MidiMain::MidiMain() {
 	drv->setAddress(1);
 	drv->restoreFlash(); // load motor type
 	//drv->setMotorType(MotorType::STEPPER, 50);
+	if(drv->conf.motconf.motor_type == MotorType::NONE){
+		pulseErrLed();
+		printf(">Please select a mottype\n");
+	}
 	drv->setPhiEtype(PhiE::ext);
 	drv->setUdUq(0, 0);
 	drv->allowSlowSPI = false; // Force higher speed
@@ -94,7 +99,7 @@ void MidiMain::play(){
 		float volume = note->volume / 127.0f;
 		float p = (note->counter*freq);
 		float sine =  sinf(M_PI*p) * volume;
-		int16_t val = (sine * 0x3fff); // 180° phase range
+		int16_t val = (sine * movementrange); // 180° phase range
 
 		drv->setPhiE_ext(val); // Wobble motor
 	}
@@ -140,7 +145,12 @@ bool MidiMain::executeUserCommand(ParsedCommand* cmd,std::string* reply){
 			*reply+=std::to_string(power);
 		}else if(cmd->type == CMDtype::set){
 			this->power = cmd->val;
-			drv->setUdUq(power, 0);
+		}
+	}if(cmd->cmd == "range"){
+		if(cmd->type == CMDtype::get){
+			*reply+=std::to_string(movementrange);
+		}else if(cmd->type == CMDtype::set){
+			this->movementrange = cmd->val;
 		}
 	}else if(cmd->cmd == "err"){
 		if(cmd->type == CMDtype::get){
@@ -156,7 +166,7 @@ bool MidiMain::executeUserCommand(ParsedCommand* cmd,std::string* reply){
 int8_t MidiMain::Midi_Receive(uint8_t *msg, uint32_t len) {
 	extern FFBoardMain* mainclass;
 	MidiMain* midi_p = static_cast<MidiMain*>(mainclass);
-
+	pulseSysLed();
 	uint8_t chan = msg[1] & 0xf;
 	uint8_t msgtype = msg[1] & 0xf0;
 	uint8_t b1 =  msg[2];

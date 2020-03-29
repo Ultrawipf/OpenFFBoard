@@ -12,10 +12,11 @@
 #include <Encoder.h>
 #include "constants.h"
 #include "ExtiHandler.h"
+#include "TimerHandler.h"
 
-extern TIM_TypeDef TIM_ENC;
+extern TIM_HandleTypeDef TIM_ENC;
 
-class EncoderLocal: public Encoder,public ExtiHandler {
+class EncoderLocal: public Encoder,public ExtiHandler,TimerHandler {
 public:
 
 	static ClassIdentifier info;
@@ -30,10 +31,11 @@ public:
 	void setPeriod(uint32_t period);
 	void overflowCallback();
 	void exti(uint16_t GPIO_Pin);
+	void timerElapsed(TIM_HandleTypeDef* htim);
 	//void zpinCallback();
 
 private:
-	TIM_TypeDef* htim;
+	TIM_HandleTypeDef* htim;
 	int32_t offset = 0;
 	int32_t pos = 0;
 };

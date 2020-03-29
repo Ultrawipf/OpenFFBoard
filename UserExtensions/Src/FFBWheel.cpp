@@ -34,7 +34,10 @@ const std::vector<class_entry<ButtonSource>> button_sources =
 // 0-63 valid ids
 const std::vector<class_entry<MotorDriver>> motor_sources =
 {
+		add_class<MotorDriver,MotorDriver>(),
 		add_class<TMC4671,MotorDriver>(),
+		add_class<MotorPWM_RC,MotorDriver>(),
+		add_class<MotorPWM_HB,MotorDriver>(),
 };
 // 0-63 valid ids
 std::vector<class_entry<Encoder>> encoder_sources =
@@ -211,7 +214,18 @@ void FFBWheel::setDrvType(uint8_t drvtype){
 		return;
 	}
 
+	Encoder* drvenc = dynamic_cast<Encoder*>(drv); // Cast old driver to encoder
 	if(drv != nullptr){
+		if(enc != nullptr && drvenc!=nullptr){
+			for (auto it = encoder_sources.begin(); it != encoder_sources.end(); it++) {
+				// Delete drv from encoder sources if present
+				if(drvenc->getInfo().id == it->info.id){
+					encoder_sources.erase(it);
+					setEncType(0); // reset encoder
+					break;
+				}
+			}
+		}
 		delete drv;
 		drv = nullptr;
 	}
@@ -221,30 +235,23 @@ void FFBWheel::setDrvType(uint8_t drvtype){
 		return;
 	}
 	this->conf.drvtype = drvtype;
-
+	drvenc = dynamic_cast<Encoder*>(drv); // Cast new driver to encoder
 	// Special handling for tmc4671.
 	if(this->conf.drvtype == TMC4671::info.id){
 		setupTMC4671();
 	}
+
 	// Add driver to encoder sources if also implements encoder
-	Encoder* drvenc = dynamic_cast<Encoder*>(drv);
+
 	if(drvenc != nullptr){
 		if(!enc_chooser.isValidClassId(drv->getInfo().id)){
 			//TMC4671* drv = static_cast<TMC4671*>(this->drv);
 			//encoder_sources.push_back(add_class_ref<TMC4671,Encoder>(static_cast<Encoder*>(drv)));
 			encoder_sources.push_back(make_class_entry<Encoder>(drv->getInfo(),drvenc));
 			setEncType(drv->getInfo().id); // Auto preset driver as encoder
-		}else{
-			for (auto it = encoder_sources.begin(); it != encoder_sources.end(); it++) {
-				// Delete drv from encoder sources if present
-				if(it->info.id == drv->getInfo().id){
-					encoder_sources.erase(it);
-					setEncType(0); // reset encoder
-					break;
-				}
-			}
 		}
 	}
+	drv->start();
 }
 
 // Special tmc setup methods
@@ -273,10 +280,13 @@ void FFBWheel::setEncType(uint8_t enctype){
 	if(enc_chooser.isValidClassId(enctype)){
 		if(enc != nullptr && enc->getInfo().id != enctype && enctype != drv->getInfo().id){
 			delete enc;
-			enc = nullptr;
 		}
 		this->conf.enctype = (enctype);
 		this->enc = enc_chooser.Create(enctype);
+	}
+	uint16_t ppr=0;
+	if(Flash_Read(ADR_TMC1_PPR, &ppr)){
+		this->enc->setPpr(ppr);
 	}
 }
 

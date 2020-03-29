@@ -160,6 +160,9 @@ bool TMC4671::initialize(){
 	setAdcOffset(conf.adc_I0_offset, conf.adc_I1_offset);
 	setAdcScale(conf.adc_I0_scale, conf.adc_I1_scale);
 
+	// Calibrate ADC every time for now
+	calibrateAdcOffset();
+
 	// brake res failsafe TODO
 	setBrakeLimits(62000,63000);
 
@@ -436,7 +439,6 @@ void TMC4671::calibrateAdcScale(){
 
 void TMC4671::calibrateAdcOffset(){
 
-	// Estimate ADC Parameters by running openloop
 	uint16_t measuretime_idle = 500;
 	uint32_t measurements_idle = 0;
 	uint64_t totalA=0;
@@ -445,6 +447,7 @@ void TMC4671::calibrateAdcOffset(){
 	writeReg(0x03, 0); // Read raw adc
 	PhiE lastphie = getPhiEtype();
 	MotionMode lastmode = getMotionMode();
+
 
 	uint16_t lastrawA=conf.adc_I0_offset, lastrawB=conf.adc_I1_offset;
 
@@ -483,7 +486,7 @@ void TMC4671::setPhiEtype(PhiE type){
 	writeReg(0x52, (uint8_t)type & 0xff);
 }
 PhiE TMC4671::getPhiEtype(){
-	return PhiE(readReg(0x52) & 0xff);
+	return PhiE(readReg(0x52) & 0x7);
 }
 
 void TMC4671::setMotionMode(MotionMode mode){

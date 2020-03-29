@@ -35,6 +35,11 @@ bool FFBWheel::executeUserCommand(ParsedCommand* cmd,std::string* reply){
 		if(cmd->type == CMDtype::get){
 			*reply += btn_chooser.printAvailableClasses();
 		}
+	}else if(cmd->cmd == "zeroenc"){
+		if(cmd->type == CMDtype::get){
+			this->enc->setPos(0);
+			*reply += "Zeroed";
+		}
 	}else if(cmd->cmd == "addbtn"){
 		if(cmd->type == CMDtype::set){
 			this->addBtnType(cmd->val);
@@ -145,7 +150,7 @@ bool FFBWheel::executeUserCommand(ParsedCommand* cmd,std::string* reply){
 
 	}else if(cmd->cmd == "help"){
 		*reply += "FFBWheel commands:\n"
-				"power,enctype,degrees,ppr,drvtype,btntype,lsbtn,btnnum,btntypes,btnpol,btncut,axismask\n"; // TODO
+				"power,zeroenc,enctype,degrees,ppr,drvtype,btntype,lsbtn,btnnum,btntypes,btnpol,btncut,axismask\n"; // TODO
 	}
 
 	// ----------- TMC 4671 specific commands-------------

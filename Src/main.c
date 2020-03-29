@@ -107,7 +107,7 @@ int _write(int file, char *ptr, int len)
   * @retval int
   */
 int main(void)
-	{
+{
   /* USER CODE BEGIN 1 */
 
   /* USER CODE END 1 */
@@ -811,7 +811,7 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOC, DRV_ENABLE_Pin|LED_CLIP_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, DRV_BRAKE_Pin|SPI2_NSS_Pin|LED_SYS_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, DRV_BRAKE_Pin|SPI2_NSS_Pin|GP4_Pin|LED_SYS_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, SPI1_SS2_Pin|SPI1_SS3_Pin, GPIO_PIN_SET);
@@ -897,6 +897,13 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(LED_ERR_GPIO_Port, &GPIO_InitStruct);
 
+  /*Configure GPIO pins : GP4_Pin LED_SYS_Pin */
+  GPIO_InitStruct.Pin = GP4_Pin|LED_SYS_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
   /*Configure GPIO pins : DIN7_Pin DIN6_Pin DIN5_Pin DIN4_Pin 
                            DIN3_Pin */
   GPIO_InitStruct.Pin = DIN7_Pin|DIN6_Pin|DIN5_Pin|DIN4_Pin 
@@ -904,13 +911,6 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : LED_SYS_Pin */
-  GPIO_InitStruct.Pin = LED_SYS_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(LED_SYS_GPIO_Port, &GPIO_InitStruct);
 
   /* EXTI interrupt init*/
   HAL_NVIC_SetPriority(EXTI2_IRQn, 14, 0);
