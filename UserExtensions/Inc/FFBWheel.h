@@ -7,12 +7,11 @@
 
 #ifndef SRC_FFBWHEEL_H_
 #define SRC_FFBWHEEL_H_
+#include <CmdParser.h>
 #include <FFBoardMain.h>
 #include <MotorPWM.h>
 #include "TMC4671.h"
 #include "flash_helpers.h"
-#include "cmdparser.h"
-
 #include "ButtonSource.h"
 #include "LocalButtons.h"
 #include "SPIButtons.h"
@@ -53,7 +52,7 @@ struct FFBWheelAnalogConfig{
 };
 
 
-class FFBWheel: public FFBoardMain, UsbHidHandler, AdcHandler, TimerHandler, PersistentStorage{
+class FFBWheel: public FFBoardMain, AdcHandler, TimerHandler, PersistentStorage{
 public:
 	FFBWheel();
 	virtual ~FFBWheel();
@@ -63,7 +62,7 @@ public:
 
 	void setupTMC4671();
 	void setupTMC4671_enc(PhiE enctype);
-	bool executeUserCommand(ParsedCommand* cmd,std::string* reply);
+	bool command(ParsedCommand* cmd,std::string* reply);
 
 	void setDrvType(uint8_t drvtype);
 	void setEncType(uint8_t enctype);
@@ -136,9 +135,9 @@ private:
 //		.positionP	= 64
 //	});
 	TMC4671PIDConf tmcpids = TMC4671PIDConf({
-		.fluxI		= 20,
-		.fluxP		= 3000,
-		.torqueI	= 2000,
+		.fluxI		= 50,
+		.fluxP		= 2000,
+		.torqueI	= 1500,
 		.torqueP	= 650,
 		.velocityI	= 0,
 		.velocityP	= 128,

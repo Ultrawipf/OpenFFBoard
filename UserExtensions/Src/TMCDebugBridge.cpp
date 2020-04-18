@@ -36,7 +36,7 @@ void TMCDebugBridge::tmcReadRegRaw(uint8_t reg,uint8_t* buf){
 	HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_SET);
 }
 
-bool TMCDebugBridge::executeUserCommand(ParsedCommand* cmd,std::string* reply){
+bool TMCDebugBridge::command(ParsedCommand* cmd,std::string* reply){
 	bool flag = true;
 	if(cmd->cmd == "mtype"){
 		if(cmd->type == CMDtype::get){

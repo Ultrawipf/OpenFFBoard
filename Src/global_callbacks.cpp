@@ -20,12 +20,15 @@
 #include "UartHandler.h"
 #include "AdcHandler.h"
 #include "TimerHandler.h"
+#include "CommandHandler.h"
 
 extern FFBoardMain* mainclass;
 volatile uint32_t ADC_BUF[ADC_CHANNELS] = {0};
 volatile char uart_buf[UART_BUF_SIZE] = {0}; //
 bool braking_flag = false;
 
+// Externally stored so it can be used before the main class is initialized
+std::vector<CommandHandler*> cmdHandlers;
 
 uint32_t maxVoltage = 75000; // Force braking
 uint32_t voltageDiffActivate = 8000;
@@ -42,8 +45,6 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc){
 	for(AdcHandler* c : adcHandlers){
 		c->adcUpd(ADC_BUF);
 	}
-//	if(mainclass!=nullptr)
-//		mainclass->adcUpd(ADC_BUF);
 }
 
 std::vector<TimerHandler*> timerHandlers;
@@ -51,8 +52,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim) {
 	for(TimerHandler* c : timerHandlers){
 		c->timerElapsed(htim);
 	}
-//	if(mainclass!=nullptr)
-//		mainclass->timerElapsed(htim);
 }
 
 
@@ -61,8 +60,6 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 	for(ExtiHandler* c : extiHandlers){
 		c->exti(GPIO_Pin);
 	}
-	//if(mainclass!=nullptr)
-		//mainclass->exti(GPIO_Pin);
 }
 
 std::vector<UartHandler*> uartHandlers;
@@ -78,9 +75,6 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
 			c->uartRcv((char*)uart_buf);
 		}
 	  }
-
-//	if(mainclass!=nullptr)
-//		mainclass->uartRcv(huart);
 }
 
 

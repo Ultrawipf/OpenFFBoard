@@ -10,7 +10,7 @@
 
 #include "main.h"
 // Change this to the amount of currently registered variables
-#define NB_OF_VAR	14
+#define NB_OF_VAR	18
 
 extern uint16_t VirtAddVarTab[NB_OF_VAR];
 
@@ -39,11 +39,17 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_FFBWHEEL_DEGREES			0x103
 #define ADR_FFBWHEEL_BUTTONCONF 		0x105
 #define ADR_FFBWHEEL_ANALOGCONF 		0x106 // lower 8 bit mask, 8-9 offsetmode
+// TMC
 #define ADR_TMC1_MOTCONF 				0x110 // 0-2: MotType 3-5: PhiE source 6-15: Poles
 #define ADR_TMC1_PPR					0x111
 #define ADR_TMC1_ENCA					0x112
 #define ADR_TMC1_ENCOFFSET				0x115
 #define ADR_TMC1_OFFSETFLUX				0x116
+#define ADR_TMC1_TORQUE_P				0x117
+#define ADR_TMC1_TORQUE_I				0x118
+#define ADR_TMC1_FLUX_P					0x119
+#define ADR_TMC1_FLUX_I					0x120
+
 
 // Button Sources:
 #define ADR_SPI_BTN_CONF				0x201

@@ -5,24 +5,24 @@
  *      Author: Yannick
  */
 
-#include "cmdparser.h"
+#include <CmdParser.h>
 
 
-cmdparser::cmdparser() {
+CmdParser::CmdParser() {
 	// TODO Auto-generated constructor stub
 
 }
 
-cmdparser::~cmdparser() {
+CmdParser::~CmdParser() {
 	// TODO Auto-generated destructor stub
 }
 
-void cmdparser::clear(){
+void CmdParser::clear(){
 	buffer.clear();
 }
 
 
-bool cmdparser::add(char* Buf, uint32_t *Len){
+bool CmdParser::add(char* Buf, uint32_t *Len){
 	bool flag = false;
 	for(uint32_t i=0;i<*Len;i++){
 		// Replace end markers
@@ -37,11 +37,9 @@ bool cmdparser::add(char* Buf, uint32_t *Len){
 	return flag;
 }
 
-//void execGetSet(ParsedCommand cmd,std::string* reply,){
-// TODO?
-//}
 
-std::vector<ParsedCommand> cmdparser::parse(){
+
+std::vector<ParsedCommand> CmdParser::parse(){
 
 	std::vector<ParsedCommand> commands;
 	std::vector<std::string> tokens;

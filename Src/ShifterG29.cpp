@@ -84,7 +84,7 @@ void ShifterG29::adcUpd(volatile uint32_t* ADC_BUF){
 
 
 void ShifterG29::saveFlash(){
-	Flash_Write(ADR_SHIFTER_BTN_CONF, encodeConfToInt(conf));
+	Flash_Write(ADR_SHIFTER_BTN_CONF, encodeConfToInt(this->getConfig()));
 }
 
 void ShifterG29::restoreFlash(){

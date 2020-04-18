@@ -21,11 +21,9 @@
 #include "ClassChooser.h"
 extern ClassChooser<FFBoardMain> mainchooser;
 
-
 ClassIdentifier FFBoardMain::info ={.name = "Basic" , .id=0};
 
 FFBoardMain::FFBoardMain() {
-
 
 }
 
@@ -42,7 +40,7 @@ void FFBoardMain::cdcRcv(char* Buf, uint32_t *Len){
 	}
 }
 
-bool FFBoardMain::executeUserCommand(ParsedCommand *cmd,std::string* reply){
+bool FFBoardMain::command(ParsedCommand *cmd,std::string* reply){
 
 	return false;
 }
@@ -108,11 +106,22 @@ bool FFBoardMain::executeSysCommand(ParsedCommand* cmd,std::string* reply){
 	return flag;
 }
 
+/*
+ * Executes parsed commands and calls other command handlers.
+ * Not global so it can be overridden by main classes to change behaviour or suppress outputs.
+ */
 void FFBoardMain::executeCommands(std::vector<ParsedCommand> commands){
 	std::string reply;
+	extern std::vector<CommandHandler*> cmdHandlers;
 	for(ParsedCommand cmd : commands){
 		if(!executeSysCommand(&cmd,&reply)){
-			executeUserCommand(&cmd,&reply);
+			// Call all command handlers
+			for(CommandHandler* handler : cmdHandlers){
+				if(handler->hasCommands())
+					if(handler->command(&cmd,&reply))
+						break; // Stop after this class if finished flag is returned
+			}
+
 		}
 		if(!reply.empty() && reply.back()!='\n'){
 			reply+='\n';
@@ -122,7 +131,6 @@ void FFBoardMain::executeCommands(std::vector<ParsedCommand> commands){
 		CDC_Transmit_FS(reply.c_str(), reply.length());
 	}
 }
-
 
 void FFBoardMain::usbInit(){
 

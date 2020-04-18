@@ -29,7 +29,7 @@ ExampleMain::~ExampleMain() {
 	// TODO Auto-generated destructor stub
 }
 
-bool ExampleMain::executeUserCommand(ParsedCommand* cmd,std::string* reply){
+bool ExampleMain::command(ParsedCommand* cmd,std::string* reply){
 	bool flag = true; // Valid command found
 
 	// ------------ commands ----------------

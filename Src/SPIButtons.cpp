@@ -28,6 +28,7 @@ SPI_Buttons::SPI_Buttons() {
 	this->spi->Init.CLKPhase = SPI_PHASE_1EDGE;
 	this->spi->Init.CLKPolarity = SPI_POLARITY_LOW;
 	HAL_SPI_Init(this->spi);
+	this->setCommandsEnabled(true);
 }
 
 SPI_Buttons::~SPI_Buttons() {
@@ -35,13 +36,13 @@ SPI_Buttons::~SPI_Buttons() {
 }
 
 void SPI_Buttons::saveFlash(){
-	Flash_Write(ADR_SPI_BTN_CONF, encodeConfToInt(conf));
+	Flash_Write(ADR_SPI_BTN_CONF, ButtonSource::encodeConfToInt(this->getConfig()));
 }
 
 void SPI_Buttons::restoreFlash(){
 	uint16_t confint = 0;
 	Flash_Read(ADR_SPI_BTN_CONF, &confint);
-	this->setConfig(decodeIntToConf(confint));
+	this->setConfig(ButtonSource::decodeIntToConf(confint));
 }
 
 

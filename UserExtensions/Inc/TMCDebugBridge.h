@@ -30,7 +30,7 @@ public:
 	const ClassIdentifier getInfo();
 
 	void cdcRcv(char* Buf, uint32_t *Len);
-	bool executeUserCommand(ParsedCommand* cmd,std::string* reply);
+	bool command(ParsedCommand* cmd,std::string* reply);
 
 
 private:

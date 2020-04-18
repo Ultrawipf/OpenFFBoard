@@ -45,6 +45,8 @@ std::vector<class_entry<Encoder>> encoder_sources =
 		add_class<Encoder,Encoder>(),
 		add_class<EncoderLocal,Encoder>()
 };
+
+// TODO class type for parser? (Simhub for example)
 //////////////////////////////////////////////
 
 FFBWheel::FFBWheel() : btn_chooser(button_sources),drv_chooser(motor_sources),enc_chooser(encoder_sources) {

@@ -138,7 +138,7 @@ void MidiMain::pitchBend(uint8_t chan, int16_t val){
 	}
 }
 
-bool MidiMain::executeUserCommand(ParsedCommand* cmd,std::string* reply){
+bool MidiMain::command(ParsedCommand* cmd,std::string* reply){
 	bool flag = true; // Valid command found
 	if(cmd->cmd == "power"){
 		if(cmd->type == CMDtype::get){

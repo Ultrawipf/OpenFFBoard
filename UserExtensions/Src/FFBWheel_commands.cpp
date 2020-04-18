@@ -9,7 +9,7 @@
 #include "FFBWheel.h"
 
 
-bool FFBWheel::executeUserCommand(ParsedCommand* cmd,std::string* reply){
+bool FFBWheel::command(ParsedCommand* cmd,std::string* reply){
 	bool flag = true;
 	// ------------ General commands ----------------
 	if(cmd->cmd == "save"){
@@ -44,60 +44,7 @@ bool FFBWheel::executeUserCommand(ParsedCommand* cmd,std::string* reply){
 		if(cmd->type == CMDtype::set){
 			this->addBtnType(cmd->val);
 		}
-	}else if(cmd->cmd == "btnnum"){
-		if(cmd->type == CMDtype::setat){
-			ButtonSource* btn = this->getBtnSrc(cmd->adr);
-			if(btn){
-				ButtonSourceConfig c = btn->getConfig();
-				c.numButtons = cmd->val;
-				btn->setConfig(c);
-			}
 
-		}else if(cmd->type == CMDtype::getat){
-			ButtonSource* btn = this->getBtnSrc(cmd->adr);
-			if(btn){
-
-				*reply+=std::to_string(btn->getBtnNum());
-			}
-		}else{
-			*reply+="Err. Supply number of buttons for button source id as <c>?<id>=<num>";
-		}
-	}else if(cmd->cmd == "btnpol"){
-		if(cmd->type == CMDtype::setat){
-			ButtonSource* btn = this->getBtnSrc(cmd->adr);
-			if(btn){
-				ButtonSourceConfig c = btn->getConfig();
-				c.invert = cmd->val == 0 ? false : true;
-				btn->setConfig(c);
-			}
-
-		}else if(cmd->type == CMDtype::getat){
-			ButtonSource* btn = this->getBtnSrc(cmd->adr);
-			if(btn){
-				ButtonSourceConfig c = btn->getConfig();
-				*reply+=std::to_string(c.invert);
-			}
-		}else{
-			*reply+="Err. invert: 1 else 0 for button source id as <c>?<id>=<pol>";
-		}
-	}else if(cmd->cmd == "btncut"){
-		if(cmd->type == CMDtype::setat){
-			ButtonSource* btn = this->getBtnSrc(cmd->adr);
-			if(btn){
-				ButtonSourceConfig c = btn->getConfig();
-				c.cutRight = cmd->val == 0 ? false : true;
-				btn->setConfig(c);
-			}
-
-		}else if(cmd->type == CMDtype::getat){
-			ButtonSource* btn = this->getBtnSrc(cmd->adr);
-			if(btn){
-				ButtonSourceConfig c = btn->getConfig();
-				*reply+=std::to_string(c.cutRight);
-			}
-		}else{
-			*reply+="Err. cut right: 1 else 0 for button source id as <c>?<id>=<cut>";
-		}
 	}else if(cmd->cmd == "power"){
 		if(cmd->type == CMDtype::get){
 			*reply+=std::to_string(power);
@@ -149,17 +96,21 @@ bool FFBWheel::executeUserCommand(ParsedCommand* cmd,std::string* reply){
 		}
 
 	}else if(cmd->cmd == "help"){
+		flag = false;
 		*reply += "FFBWheel commands:\n"
 				"power,zeroenc,enctype,degrees,ppr,drvtype,btntype,lsbtn,btnnum,btntypes,btnpol,btncut,axismask\n"; // TODO
+	}else{
+		flag = false;
 	}
+	// Additional commands
 
 	// ----------- TMC 4671 specific commands-------------
-	if(this->conf.drvtype == TMC4671::info.id){
-		TMC4671* drv = static_cast<TMC4671*>(this->drv);
-		flag = drv->command(cmd, reply);
-	}else{
-		flag=false;
-	}
+//	if(this->conf.drvtype == TMC4671::info.id){
+//		TMC4671* drv = static_cast<TMC4671*>(this->drv);
+//		flag = drv->command(cmd, reply);
+//	}else{
+//		flag=false;
+//	}
 
 
 	return flag;

@@ -14,6 +14,7 @@
 #include "Encoder.h"
 #include "ChoosableClass.h"
 #include "PersistentStorage.h"
+#include "CommandHandler.h"
 
 #define SPITIMEOUT 100
 extern SPI_HandleTypeDef HSPIDRV;
@@ -73,6 +74,10 @@ struct TMC4671FlashAddrs{
 	uint16_t encA = ADR_TMC1_ENCA;
 	uint16_t encOffset = ADR_TMC1_ENCOFFSET;
 	uint16_t offsetFlux = ADR_TMC1_OFFSETFLUX;
+	uint16_t torque_p = ADR_TMC1_TORQUE_P;
+	uint16_t torque_i = ADR_TMC1_TORQUE_I;
+	uint16_t flux_p = ADR_TMC1_FLUX_P;
+	uint16_t flux_i = ADR_TMC1_FLUX_I;
 };
 
 struct TMC4671ABNConf{
@@ -86,7 +91,7 @@ struct TMC4671ABNConf{
 	bool latch_on_N = false; // Latch offsets on n pulse
 	int16_t phiEoffset = 0;
 	int16_t phiMoffset = 0;
-	int16_t bangInitPower = 8000;
+	int16_t bangInitPower = 4000;
 	bool initialized = false;
 };
 
@@ -116,7 +121,7 @@ struct TMC4671Biquad{
 };
 
 
-class TMC4671 : public MotorDriver, public Encoder, public PersistentStorage{
+class TMC4671 : public MotorDriver, public Encoder, public PersistentStorage, public CommandHandler{
 public:
 
 	static ClassIdentifier info;

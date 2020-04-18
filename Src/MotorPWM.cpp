@@ -79,12 +79,11 @@ void MotorPWM_HB::turn(int16_t power){
 		return;
 
 	if(power < 0){
-		HAL_GPIO_WritePin(leftPort, leftPin, GPIO_PIN_SET);
 		HAL_GPIO_WritePin(rightPort, rightPin, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(leftPort, leftPin, GPIO_PIN_SET);
 	}else{
 		HAL_GPIO_WritePin(leftPort, leftPin, GPIO_PIN_RESET);
 		HAL_GPIO_WritePin(rightPort, rightPin, GPIO_PIN_SET);
-
 	}
 	int32_t val = (uint32_t)((abs(power) * period)/0xffff);
 	setPWM(val,timer,channel,period);

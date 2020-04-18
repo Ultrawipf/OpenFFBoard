@@ -38,10 +38,10 @@ template<class T> std::string cmdSetGet(ParsedCommand* cmd,T* val){
 }
 
 
-class cmdparser {
+class CmdParser {
 public:
-	cmdparser();
-	virtual ~cmdparser();
+	CmdParser();
+	virtual ~CmdParser();
 
 	void clear();
 

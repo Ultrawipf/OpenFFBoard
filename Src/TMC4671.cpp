@@ -77,6 +77,11 @@ void TMC4671::saveFlash(){
 	Flash_Write(flashAddrs.encOffset,encoffset);
 	Flash_Write(flashAddrs.offsetFlux,maxOffsetFlux);
 	Flash_Write(flashAddrs.encA,encodeEncHallMisc());
+
+	Flash_Write(flashAddrs.torque_p, curPids.torqueP);
+	Flash_Write(flashAddrs.torque_i, curPids.torqueI);
+	Flash_Write(flashAddrs.flux_p, curPids.fluxP);
+	Flash_Write(flashAddrs.flux_i, curPids.fluxI);
 }
 
 void TMC4671::restoreFlash(){
@@ -93,6 +98,13 @@ void TMC4671::restoreFlash(){
 
 	if(Flash_Read(flashAddrs.encOffset, &encoffset))
 		this->abnconf.phiEoffset = (int16_t)encoffset;
+
+	// Pids
+	Flash_Read(flashAddrs.torque_p, &this->curPids.torqueP);
+	Flash_Read(flashAddrs.torque_i, &this->curPids.torqueI);
+	Flash_Read(flashAddrs.flux_p, &this->curPids.fluxP);
+	Flash_Read(flashAddrs.flux_i, &this->curPids.fluxI);
+	setPids(curPids);
 
 	Flash_Read(flashAddrs.offsetFlux, (uint16_t*)&this->maxOffsetFlux);
 
@@ -283,11 +295,11 @@ void TMC4671::bangInitABN(int16_t power){
 	setMotionMode(MotionMode::uqudext);
 
 	HAL_Delay(100);
-	setPhiE_ext(4096);
+	setPhiE_ext(0x7fff);
 	HAL_Delay(250);
 	//Write offset
 	int16_t phiE_abn = readReg(0x2A)>>16;
-	abnconf.phiEoffset = 4096-phiE_abn;
+	abnconf.phiEoffset = 0x7fff-phiE_abn;
 	updateReg(0x29, abnconf.phiEoffset, 0xffff, 16);
 
 	setUdUq(0, 0);
@@ -986,6 +998,7 @@ bool TMC4671::command(ParsedCommand* cmd,std::string* reply){
 		}
 
 	}else if(cmd->cmd == "help"){
+		flag = false; // Set flag false to continue parsing
 		*reply += "TMC4671 commands:\n"
 				"mtype,encalign,poles,phiesrc,reg,fluxoffset\n"
 				"torqueP,torqueI,fluxP,fluxI\n";

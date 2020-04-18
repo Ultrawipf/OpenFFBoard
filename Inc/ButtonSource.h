@@ -11,26 +11,34 @@
 #include "cppmain.h"
 #include "ChoosableClass.h"
 #include "PersistentStorage.h"
+#include "CommandHandler.h"
 
 struct ButtonSourceConfig{
 	uint8_t numButtons = 32;
 	bool cutRight = false; // if num buttons to read are not byte aligned specify where to shift
 	bool invert = false;
+	uint8_t extraOptions = 0; // Save anything extra here like special flags
 };
 
-class ButtonSource : public ChoosableClass, public PersistentStorage {
+
+/*
+ * All button sources have the ability to parse commands.
+ * If a command is supported set "commandsEnabled(true)" and implement command function from CommandHandler
+ */
+class ButtonSource : public ChoosableClass, public PersistentStorage,public CommandHandler {
 public:
 	ButtonSource();
 	virtual ~ButtonSource();
 
 	static ButtonSourceConfig decodeIntToConf(uint16_t val);
-	static uint16_t encodeConfToInt(ButtonSourceConfig conf);
+	static uint16_t encodeConfToInt(ButtonSourceConfig* c);
 
 	virtual void readButtons(uint32_t* buf) = 0;
 	virtual uint16_t getBtnNum(); // Amount of readable buttons
+	virtual bool command(ParsedCommand* cmd,std::string* reply);
 
 	void setConfig(ButtonSourceConfig config);
-	virtual ButtonSourceConfig getConfig();
+	virtual ButtonSourceConfig* getConfig();
 
 	const uint16_t maxButtons = 32;
 
