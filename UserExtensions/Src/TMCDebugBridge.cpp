@@ -58,9 +58,9 @@ bool TMCDebugBridge::command(ParsedCommand* cmd,std::string* reply){
 		}
 	}else if(cmd->cmd == "ppr"){
 		if(cmd->type == CMDtype::get){
-			*reply += std::to_string(drv->getPpr());
+			*reply += std::to_string(drv->getCpr());
 		}else if(cmd->type == CMDtype::set){
-			drv->setPpr(cmd->val);
+			drv->setCpr(cmd->val);
 		}
 	}else if(cmd->cmd == "torque"){
 		if(cmd->type == CMDtype::get){

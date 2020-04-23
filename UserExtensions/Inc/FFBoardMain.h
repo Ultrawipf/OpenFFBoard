@@ -18,7 +18,7 @@
 
 #include <vector>
 
-class FFBoardMain : public ChoosableClass, CommandHandler {
+class FFBoardMain : virtual ChoosableClass, public CommandHandler {
 public:
 	static ClassIdentifier info;
 	virtual const ClassIdentifier getInfo();

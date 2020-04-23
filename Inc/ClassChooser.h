@@ -9,7 +9,6 @@
 #define CLASSCHOOSER_H_
 
 #include "vector"
-#include "cppmain.h"
 #include "ChoosableClass.h"
 #include <functional>
 

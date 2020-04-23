@@ -14,6 +14,7 @@ ClassIdentifier ButtonSource::info = {
 	 .hidden = true
 };
 
+
 ButtonSource::ButtonSource() {
 	// TODO Auto-generated constructor stub
 

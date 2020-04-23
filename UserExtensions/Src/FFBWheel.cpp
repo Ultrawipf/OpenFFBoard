@@ -93,7 +93,7 @@ void FFBWheel::restoreFlash(){
 
 	uint16_t ppr = 0;
 	if(Flash_Read(ADR_TMC1_PPR, &ppr)){
-		this->enc->setPpr(ppr);
+		this->enc->setCpr(ppr);
 	}else{
 		pulseErrLed();
 	}
@@ -110,7 +110,7 @@ void FFBWheel::restoreFlash(){
 void FFBWheel::saveFlash(){
 
 	Flash_Write(ADR_FFBWHEEL_CONFIG,FFBWheel::encodeConfToInt(this->conf));
-	Flash_Write(ADR_TMC1_PPR, enc->getPpr());
+	Flash_Write(ADR_TMC1_PPR, enc->getCpr());
 	Flash_Write(ADR_FFBWHEEL_POWER, this->power);
 	Flash_Write(ADR_FFBWHEEL_DEGREES, this->degreesOfRotation);
 	Flash_Write(ADR_FFBWHEEL_BUTTONCONF,this->btnsources);
@@ -288,8 +288,9 @@ void FFBWheel::setEncType(uint8_t enctype){
 	}
 	uint16_t ppr=0;
 	if(Flash_Read(ADR_TMC1_PPR, &ppr)){
-		this->enc->setPpr(ppr);
+		this->enc->setCpr(ppr);
 	}
+	this->enc->setPos(0); //Zero encoder
 }
 
 ButtonSource* FFBWheel::getBtnSrc(uint16_t id){
@@ -350,7 +351,7 @@ int32_t FFBWheel::getEncValue(Encoder* enc,uint16_t degrees){
 	if(enc == nullptr){
 		return 0x7fff; // Return center if no encoder present
 	}
-	float angle = 360.0*((float)enc->getPos()/(float)enc->getPosCpr());
+	float angle = 360.0*((float)enc->getPos()/(float)enc->getCpr());
 	int32_t val = (0xffff / (float)degrees) * angle;
 	return val;
 }

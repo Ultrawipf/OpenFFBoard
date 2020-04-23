@@ -564,21 +564,25 @@ void TMC4671::turn(int16_t power){
 }
 
 int32_t TMC4671::getPos(){
-
-	return readReg(0x6B);
+	//int64_t cpr = conf.motconf.pole_pairs << 16;
+	int32_t mpos = (int32_t)readReg(0x6B) / ((int32_t)conf.motconf.pole_pairs);
+	int32_t pos = ((int32_t)abnconf.ppr * mpos) >> 16;
+	return pos;
 }
 void TMC4671::setPos(int32_t pos){
-	//writeReg(0x27, pos);
-	writeReg(0x6B, pos);
+	// Cpr = poles * 0xffff
+	int32_t cpr = (conf.motconf.pole_pairs << 16) / abnconf.ppr;
+	int32_t mpos = (cpr * pos);
+	writeReg(0x6B, mpos);
 }
-uint32_t TMC4671::getPosCpr(){
-	return conf.motconf.pole_pairs << 16; // PhiE = 0xffff
-}
+//uint32_t TMC4671::getPosCpr(){
+//	return conf.motconf.pole_pairs << 16; // 1 rotation = poles * PhiE (0xffff)
+//}
 
-uint32_t TMC4671::getPpr(){
+uint32_t TMC4671::getCpr(){
 	return abnconf.ppr;
 }
-void TMC4671::setPpr(uint32_t cpr){
+void TMC4671::setCpr(uint32_t cpr){
 	bool reinit = cpr != abnconf.ppr;
 	this->abnconf.ppr = cpr;
 	writeReg(0x26, abnconf.ppr);
@@ -592,6 +596,10 @@ uint32_t TMC4671::encToPos(uint32_t enc){
 }
 uint32_t TMC4671::posToEnc(uint32_t pos){
 	return pos/((0xffff / abnconf.ppr)*(conf.motconf.pole_pairs)) % abnconf.ppr;
+}
+
+EncoderType TMC4671::getType(){
+	return EncoderType::incremental;
 }
 
 

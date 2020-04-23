@@ -17,29 +17,31 @@ const ClassIdentifier EncoderLocal::getInfo(){
 
 EncoderLocal::EncoderLocal() {
 	this->htim = &TIM_ENC;
-	setPos(0);
-	HAL_TIM_Base_Start_IT(htim);
-
 	this->htim->Instance->CR1 = 1;
+	HAL_TIM_Base_Start_IT(htim);
+	setPos(0);
 }
+
 
 EncoderLocal::~EncoderLocal() {
 	this->htim->Instance->CR1 = 0;
 }
 
+EncoderType EncoderLocal::getType(){
+	return EncoderType::incremental;
+}
+
 
 int32_t EncoderLocal::getPos(){
-	int32_t timpos = htim->Instance->CNT - 0x7fff;
-	return timpos + pos + offset;
+	int32_t timpos = htim->Instance->CNT - (int32_t)0x7fff;
+	return timpos + pos;
 }
 void EncoderLocal::setPos(int32_t pos){
 	this->pos = pos;
 	htim->Instance->CNT = pos+0x7fff;
 }
 
-void EncoderLocal::setOffset(int32_t offset){
-	this->offset = offset;
-}
+
 
 void EncoderLocal::setPeriod(uint32_t period){
 	this->htim->Instance->ARR = period-1;

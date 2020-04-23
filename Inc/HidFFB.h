@@ -27,7 +27,7 @@ public:
 	BiquadType friction_type = BiquadType::lowpass;
 	const uint16_t calcfrequency = 1000;
 
-	uint32_t hid_out_period = 0; // ms since last out report for measuring update rate
+	uint32_t getRate(); // Returns an estimate of the hid effect update speed in hz
 
 private:
 	// HID
@@ -46,6 +46,8 @@ private:
 	void stop_FFB();
 
 	void set_filters(FFB_Effect* effect);
+
+	uint32_t hid_out_period = 0; // ms since last out report for measuring update rate
 
 	uint8_t report_counter = 0;
 	uint16_t report_counter_hid = 0;

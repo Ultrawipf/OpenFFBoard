@@ -26,6 +26,12 @@ void CommandHandler::setCommandsEnabled(bool enable){
 }
 
 /*
+ * Implemented by other classes
+ */
+const ClassIdentifier CommandHandler::getInfo(){
+	return ClassIdentifier{.name="",.id=0,.hidden=true}; // Empty hidden identifier
+}
+/*
  * Implement this function
  * MUST return false when no valid command was found or if a help command or similar was parsed
  * When it returns true parsing is normally stopped after this class and not sent to others

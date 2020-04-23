@@ -8,6 +8,7 @@
 #ifndef COMMANDHANDLER_H_
 #define COMMANDHANDLER_H_
 #include <CmdParser.h>
+#include "ClassChooser.h"
 
 /*
  * Implements an interface for parsed command handlers
@@ -21,6 +22,7 @@ public:
 	virtual bool hasCommands();
 	virtual void setCommandsEnabled(bool enable);
 	virtual bool command(ParsedCommand* cmd,std::string* reply);
+	virtual const ClassIdentifier getInfo() = 0;
 protected:
 	bool commandsEnabled = true;
 	virtual void addCommandHandler();

@@ -25,7 +25,7 @@ struct ButtonSourceConfig{
  * All button sources have the ability to parse commands.
  * If a command is supported set "commandsEnabled(true)" and implement command function from CommandHandler
  */
-class ButtonSource : public ChoosableClass, public PersistentStorage,public CommandHandler {
+class ButtonSource : virtual ChoosableClass, public PersistentStorage,public CommandHandler {
 public:
 	ButtonSource();
 	virtual ~ButtonSource();

@@ -11,7 +11,7 @@
 #include "cppmain.h"
 #include "ChoosableClass.h"
 
-class MotorDriver : public ChoosableClass {
+class MotorDriver : virtual ChoosableClass {
 public:
 	MotorDriver();
 	virtual ~MotorDriver();

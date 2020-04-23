@@ -231,9 +231,10 @@ public:
 	//Encoder
 	int32_t getPos();
 	void setPos(int32_t pos);
-	uint32_t getPosCpr();
-	uint32_t getPpr();
-	void setPpr(uint32_t cpr);
+	//uint32_t getPosCpr();
+	uint32_t getCpr();
+	void setCpr(uint32_t cpr);
+	EncoderType getType();
 	uint32_t posToEnc(uint32_t pos);
 	uint32_t encToPos(uint32_t enc);
 

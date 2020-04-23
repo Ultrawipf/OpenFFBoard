@@ -49,7 +49,7 @@ bool FFBoardMain::executeSysCommand(ParsedCommand* cmd,std::string* reply){
 	bool flag = true;
 	if(cmd->cmd == "help"){
 		*reply += parser.helpstring;
-		*reply += "\nSystem Commands: reboot,help,dfu,swver (Version),lsmain (List configs),id,main (Set main config),vint,vext,format (Erase flash)\n";
+		*reply += "\nSystem Commands: reboot,help,dfu,swver (Version),lsmain (List configs),id,main (Set main config),lsactive (print command handlers),vint,vext,format (Erase flash)\n";
 		flag = false; // Continue to user commands
 	}else if(cmd->cmd == "reboot"){
 		NVIC_SystemReset();
@@ -73,6 +73,16 @@ bool FFBoardMain::executeSysCommand(ParsedCommand* cmd,std::string* reply){
 
 	}else if(cmd->cmd == "id"){
 		*reply+=std::to_string(this->getInfo().id);
+
+	}else if(cmd->cmd == "lsactive"){ // Prints all active command handlers that have a name
+		extern std::vector<CommandHandler*> cmdHandlers;
+		for(CommandHandler* handler : cmdHandlers){
+			if(handler->hasCommands()){
+				ClassIdentifier i = handler->getInfo();
+				if(!i.hidden)
+					*reply += std::string(i.name) + ":" + std::to_string(i.id) + "\n";
+			}
+		}
 
 	}else if(cmd->cmd == "main"){
 		if(cmd->type == CMDtype::get || cmd->type == CMDtype::none){

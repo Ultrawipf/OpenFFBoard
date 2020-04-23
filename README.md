@@ -1,13 +1,15 @@
 # Open FFBoard
 The Open FFBoard is an open source force feedback interface with the goal of creating a platform for highly compatible simulation devices.
 
-This firmware is optimized for the Open FFBoard. 
+This firmware is optimized for the Open FFBoard.
 At the moment the software is far from finished. Features may not work completely or contain errors.
 
-More documentation about this project is on the [hackaday.io page](https://hackaday.io/project/163904-open-ffboard)
+More documentation about this project is on the [hackaday.io page](https://hackaday.io/project/163904-open-ffboard).
+
+The hardware designs are found under [OpenFFBoard-hardware](https://github.com/Ultrawipf/OpenFFBoard-hardware).
 
 ## Extensions
-The modular structure means you are free to implement your own main classes. 
+The modular structure means you are free to implement your own main classes.
 Take a look into the FFBoardMain and ExampleMain class files in the UserExtensions folder.
 Helper functions for parsing CDC commands and accessing the flash are included.
 

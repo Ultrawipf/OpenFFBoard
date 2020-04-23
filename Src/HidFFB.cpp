@@ -17,8 +17,16 @@ HidFFB::~HidFFB() {
 }
 
 
+uint32_t HidFFB::getRate(){
+	if(HAL_GetTick() - lastOut > 1000 || hid_out_period == 0){
+		return 0;
+	}else{
+		return (1000/hid_out_period);
+	}
+}
+
 void HidFFB::hidOut(uint8_t* report){
-	hid_out_period = HAL_GetTick() - lastOut; // For measuring update rate
+	hid_out_period = (HAL_GetTick() - lastOut + hid_out_period) / 2; // For measuring update rate
 	lastOut = HAL_GetTick();
 	// FFB Output Message
 	report[0] -= FFB_ID_OFFSET;// if offset id was set correct this

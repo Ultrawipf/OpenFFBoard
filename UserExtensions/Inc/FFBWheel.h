@@ -25,15 +25,6 @@
 #include "TimerHandler.h"
 #include "ClassChooser.h"
 
-enum class EncoderType : uint8_t{
-	ABN_LOCAL = 0,TMC=1,NONE
-};
-
-//enum class MotorDriverType : uint8_t{
-//	TMC4671_type=TMC4671::info.id,NONE // Only tmc implemented
-//};
-
-
 
 struct FFBWheelConfig{
 	uint8_t drvtype = 0;

@@ -9,6 +9,7 @@
 
 ClassIdentifier Encoder::info ={.name = "None" , .id=0, .hidden = false};
 
+
 const ClassIdentifier Encoder::getInfo(){
 	return info;
 }
@@ -22,15 +23,16 @@ Encoder::~Encoder() {
 	// TODO Auto-generated destructor stub
 }
 
-uint32_t Encoder::getPpr(){
+EncoderType Encoder::getType(){
+	return EncoderType::NONE;
+}
+
+uint32_t Encoder::getCpr(){
 	return this->ppr;
 }
 
-uint32_t Encoder::getPosCpr(){
-	return this->ppr;
-}
 
-void Encoder::setPpr(uint32_t ppr){
+void Encoder::setCpr(uint32_t ppr){
 	this->ppr = ppr;
 }
 int32_t Encoder::getPos(){

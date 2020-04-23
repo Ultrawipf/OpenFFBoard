@@ -73,9 +73,9 @@ bool FFBWheel::command(ParsedCommand* cmd,std::string* reply){
 		}
 	}else if(cmd->cmd == "ppr"){
 		if(cmd->type == CMDtype::get){
-			*reply+=std::to_string(this->enc->getPpr());
+			*reply+=std::to_string(this->enc->getCpr());
 		}else if(cmd->type == CMDtype::set && this->enc != nullptr){
-			this->enc->setPpr(cmd->val);
+			this->enc->setCpr(cmd->val);
 		}else{
 			*reply += "Err. Setup enctype first";
 		}
@@ -89,11 +89,7 @@ bool FFBWheel::command(ParsedCommand* cmd,std::string* reply){
 		}
 
 	}else if(cmd->cmd == "hidrate" && cmd->type == CMDtype::get){
-		if(ffb->hid_out_period != 0){
-			*reply+=std::to_string(1000/ffb->hid_out_period);
-		}else{
-			*reply+="0";
-		}
+		*reply+=std::to_string(ffb->getRate());
 
 	}else if(cmd->cmd == "help"){
 		flag = false;
@@ -102,16 +98,6 @@ bool FFBWheel::command(ParsedCommand* cmd,std::string* reply){
 	}else{
 		flag = false;
 	}
-	// Additional commands
-
-	// ----------- TMC 4671 specific commands-------------
-//	if(this->conf.drvtype == TMC4671::info.id){
-//		TMC4671* drv = static_cast<TMC4671*>(this->drv);
-//		flag = drv->command(cmd, reply);
-//	}else{
-//		flag=false;
-//	}
-
 
 	return flag;
 }

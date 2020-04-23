@@ -11,25 +11,26 @@
 #include "FFBoardMain.h"
 #include "ChoosableClass.h"
 
-class Encoder : public ChoosableClass {
+enum class EncoderType : uint8_t {NONE=0,incremental=1,incrementalIndex=2,absolute=3};
+
+class Encoder : virtual ChoosableClass {
 public:
 	Encoder();
 	virtual ~Encoder();
 	static ClassIdentifier info;
 	const ClassIdentifier getInfo();
 
+	virtual EncoderType getType();
+
 	virtual int32_t getPos();
 	virtual void setPos(int32_t pos);
-	virtual uint32_t getPosCpr(); // Position counts per rotation
 
-	virtual uint32_t getPpr(); // Encoder counts per rotation
-	virtual void setPpr(uint32_t ppr);	// Encoder counts per rotation
-	//virtual void setOffset(int32_t offset);
 
-	//virtual void registerCallback(FFBoardMain);
+	virtual uint32_t getCpr(); // Encoder counts per rotation
+	virtual void setCpr(uint32_t ppr);	// Encoder counts per rotation
+
 private:
-	int32_t ppr = 10000;
-
+	uint32_t ppr = 0;
 };
 
 #endif /* ENCODER_H_ */

@@ -25,6 +25,8 @@ public:
 	EncoderLocal();
 	virtual ~EncoderLocal();
 
+	EncoderType getType();
+
 	int32_t getPos();
 	void setPos(int32_t pos);
 	void setOffset(int32_t offset);
