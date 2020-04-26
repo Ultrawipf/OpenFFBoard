@@ -57,6 +57,18 @@ bool FFBWheel::command(ParsedCommand* cmd,std::string* reply){
 		}else if(cmd->type == CMDtype::set){
 			this->degreesOfRotation = cmd->val;
 		}
+	}else if(cmd->cmd == "idlespring"){
+		if(cmd->type == CMDtype::get){
+			*reply+=std::to_string(this->ffb->getIdleSpringStrength());
+		}else if(cmd->type == CMDtype::set){
+			this->ffb->setIdleSpringStrength(cmd->val);
+		}
+	}else if(cmd->cmd == "friction"){
+		if(cmd->type == CMDtype::get){
+			*reply+=std::to_string(this->ffb->getFrictionStrength());
+		}else if(cmd->type == CMDtype::set){
+			this->ffb->setFrictionStrength(cmd->val);
+		}
 	}else if(cmd->cmd == "enctype"){
 		if(cmd->type == CMDtype::get){
 			*reply+=std::to_string((uint8_t)this->conf.enctype);
@@ -94,7 +106,7 @@ bool FFBWheel::command(ParsedCommand* cmd,std::string* reply){
 	}else if(cmd->cmd == "help"){
 		flag = false;
 		*reply += "FFBWheel commands:\n"
-				"power,zeroenc,enctype,degrees,ppr,drvtype,btntype,lsbtn,btnnum,btntypes,btnpol,btncut,axismask\n"; // TODO
+				"power,zeroenc,enctype,degrees,idlespring,friction,ppr,drvtype,btntype,lsbtn,btnnum,btntypes,btnpol,btncut,axismask\n"; // TODO
 	}else{
 		flag = false;
 	}

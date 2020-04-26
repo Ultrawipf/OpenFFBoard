@@ -72,7 +72,6 @@ struct TMC4671FlashAddrs{
 	uint16_t mconf = ADR_TMC1_MOTCONF;
 	uint16_t ppr = ADR_TMC1_PPR;
 	uint16_t encA = ADR_TMC1_ENCA;
-	uint16_t encOffset = ADR_TMC1_ENCOFFSET;
 	uint16_t offsetFlux = ADR_TMC1_OFFSETFLUX;
 	uint16_t torque_p = ADR_TMC1_TORQUE_P;
 	uint16_t torque_i = ADR_TMC1_TORQUE_I;
@@ -163,8 +162,10 @@ public:
 	void setup_ABN_Enc(TMC4671ABNConf encconf);
 	void setup_HALL(TMC4671HALLConf hallconf);
 	void bangInitABN(int16_t power);
+	void alignABN();
 	bool findABNPol();
 	bool checkABN();
+	bool findABNDir();
 
 	void setAdcOffset(uint32_t adc_I0_offset,uint32_t adc_I1_offset);
 	void setAdcScale(uint32_t adc_I0_scale,uint32_t adc_I1_scale);
@@ -187,7 +188,7 @@ public:
 	void turn(int16_t power);
 	int16_t nextFlux = 0;
 	int16_t idleFlux = 0;
-	uint16_t maxOffsetFlux = 2000;
+	uint16_t maxOffsetFlux = 0;
 
 	void setTorque(int16_t torque);
 
@@ -226,7 +227,6 @@ public:
 
 	TMC4671ABNConf abnconf;
 	TMC4671HALLConf hallconf;
-	int16_t idleFluxOffset = 500;
 
 	//Encoder
 	int32_t getPos();

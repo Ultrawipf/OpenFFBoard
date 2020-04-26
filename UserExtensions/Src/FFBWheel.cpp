@@ -105,6 +105,8 @@ void FFBWheel::restoreFlash(){
 	if(Flash_Read(ADR_FFBWHEEL_ANALOGCONF,&aconfint)){
 		this->aconf = FFBWheel::decodeAnalogConfFromInt(aconfint);
 	}
+
+	ffb->restoreFlash();
 }
 // Saves parameters to flash
 void FFBWheel::saveFlash(){
@@ -116,6 +118,7 @@ void FFBWheel::saveFlash(){
 	Flash_Write(ADR_FFBWHEEL_BUTTONCONF,this->btnsources);
 	Flash_Write(ADR_FFBWHEEL_ANALOGCONF, FFBWheel::encodeAnalogConfToInt(this->aconf));
 
+
 	// Call save methods for active button sources
 	for(ButtonSource* btn : this->btns){
 		btn->saveFlash();
@@ -125,6 +128,8 @@ void FFBWheel::saveFlash(){
 		TMC4671* drv = static_cast<TMC4671*>(this->drv);
 		drv->saveFlash();
 	}
+
+	ffb->saveFlash();
 }
 
 /*

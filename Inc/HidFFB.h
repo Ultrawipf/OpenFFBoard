@@ -10,8 +10,9 @@
 
 #include <UsbHidHandler.h>
 #include "ffb_defs.h"
+#include "PersistentStorage.h"
 
-class HidFFB: public UsbHidHandler {
+class HidFFB: public UsbHidHandler, PersistentStorage {
 public:
 	HidFFB();
 	virtual ~HidFFB();
@@ -27,7 +28,16 @@ public:
 	BiquadType friction_type = BiquadType::lowpass;
 	const uint16_t calcfrequency = 1000;
 
+
+	void setIdleSpringStrength(uint8_t spring);
+	uint8_t getIdleSpringStrength();
+	void setFrictionStrength(uint8_t strength);
+	uint8_t getFrictionStrength();
+
 	uint32_t getRate(); // Returns an estimate of the hid effect update speed in hz
+
+	void restoreFlash();
+	void saveFlash();
 
 private:
 	// HID
@@ -49,8 +59,9 @@ private:
 
 	uint32_t hid_out_period = 0; // ms since last out report for measuring update rate
 
-	uint8_t report_counter = 0;
-	uint16_t report_counter_hid = 0;
+	uint8_t idlespringstregth = 127;
+	uint8_t frictionscale = 127;
+
 	uint8_t last_effect_id = 0;
 	uint16_t used_effects = 0;
 	uint8_t gain = 0xff;

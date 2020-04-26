@@ -7,7 +7,7 @@
 
 #include "HidFFB.h"
 #include "math.h"
-
+#include "flash_helpers.h"
 HidFFB::HidFFB() {
 	this->registerHidCallback();
 }
@@ -16,6 +16,17 @@ HidFFB::~HidFFB() {
 
 }
 
+void HidFFB::saveFlash(){
+	uint16_t effects1 = this->getIdleSpringStrength() | (this->getFrictionStrength() << 8);
+	Flash_Write(ADR_FFB_EFFECTS1, effects1);
+}
+void HidFFB::restoreFlash(){
+	uint16_t effects1 = 0;
+	if(Flash_Read(ADR_FFB_EFFECTS1, &effects1)){
+		this->setFrictionStrength((effects1 >> 8) & 0xff);
+		this->setIdleSpringStrength(effects1 & 0xff);
+	}
+}
 
 uint32_t HidFFB::getRate(){
 	if(HAL_GetTick() - lastOut > 1000 || hid_out_period == 0){
@@ -125,14 +136,9 @@ void HidFFB::hidGet(uint8_t id,uint16_t len,uint8_t** return_buf){
 
 void HidFFB::start_FFB(){
 	ffb_active = true;
-
-
 }
 void HidFFB::stop_FFB(){
 	ffb_active = false;
-
-
-	//TODO Callbacks?
 }
 
 void HidFFB::ffb_control(uint8_t cmd){
@@ -275,10 +281,42 @@ void HidFFB::reset_ffb(){
 	used_effects = 0;
 }
 
+/*
+ * Set the strength of the spring effect if FFB is disabled
+ */
+void HidFFB::setIdleSpringStrength(uint8_t spring){
+	this->idlespringstregth = spring;
+	if(spring == 0){
+		idlecenter = false;
+	}else{
+		idlecenter = true;
+	}
+}
+uint8_t HidFFB::getIdleSpringStrength(){
+	return this->idlespringstregth;
+}
+/*
+ * Set the intensity of friction effects
+ */
+void HidFFB::setFrictionStrength(uint8_t strength){
+	this->frictionscale = strength;
+}
+uint8_t HidFFB::getFrictionStrength(){
+	return this->frictionscale;
+}
+
+/*
+ * Calculates the resulting torque for FFB effects
+ * Takes current position input scaled from -0x7fff to 0x7fff
+ * Outputs a torque value from -0x7fff to 0x7fff (not yet clipped)
+ */
 int32_t HidFFB::calculateEffects(int32_t pos,uint8_t axis=1){
 	if(!ffb_active){
+		// Center when FFB is turned of with a spring effect
 		if(idlecenter){
-			return clip<int32_t,int32_t>(-pos,-5000,5000);
+			int16_t idlespringclip = clip<int32_t,int32_t>((int32_t)idlespringstregth*35,0,10000);
+			float idlespringscale = 0.5f + (idlespringstregth * 0.005f);
+			return clip<int32_t,int32_t>((int32_t)(-pos*idlespringscale),-idlespringclip,idlespringclip);
 		}else{
 			return 0;
 		}
@@ -299,12 +337,15 @@ int32_t HidFFB::calculateEffects(int32_t pos,uint8_t axis=1){
 
 		case FFB_EFFECT_SPRING:
 		{
-			int32_t force = 0;
+			float scale = 0;
+			// Scale ramp. max coeff = 10000
 			if(pos<effect->offset){
-				force = clip<int32_t,int32_t>(((int32_t)(effect->negativeCoefficient>>3) * (pos - (effect->offset))) >> 6,-effect->negativeSaturation,effect->positiveSaturation);
+				scale = effect->negativeCoefficient * 0.0004f;
 			}else{
-				force = clip<int32_t,int32_t>(((int32_t)(effect->positiveCoefficient>>3) * (pos - (effect->offset))) >> 6,-effect->negativeSaturation,effect->positiveSaturation);
+				scale = effect->positiveCoefficient * 0.0004f;
 			}
+
+			int32_t force = clip<int32_t,int32_t>((scale * (pos - (effect->offset))),-effect->negativeSaturation,effect->positiveSaturation);
 			result_torque -= force;
 			break;
 		}
@@ -340,9 +381,9 @@ int32_t HidFFB::calculateEffects(int32_t pos,uint8_t axis=1){
 			int32_t speed = pos - effect->last_value;
 			effect->last_value = pos;
 
-			float val = effect->filter->process(speed);
-			force = clip<int32_t,int32_t>((int32_t)((effect->positiveCoefficient) * val) >> 4,-effect->negativeSaturation,effect->positiveSaturation);
-
+			float val = effect->filter->process(speed) * 0.0625f;
+			force = clip<int32_t,int32_t>((int32_t)((effect->positiveCoefficient) * val),-effect->negativeSaturation,effect->positiveSaturation);
+			force = (frictionscale * force) / 255;
 			result_torque -= force;
 			break;
 		}

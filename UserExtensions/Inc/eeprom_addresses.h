@@ -39,11 +39,11 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_FFBWHEEL_DEGREES			0x103
 #define ADR_FFBWHEEL_BUTTONCONF 		0x105
 #define ADR_FFBWHEEL_ANALOGCONF 		0x106 // lower 8 bit mask, 8-9 offsetmode
+
 // TMC
 #define ADR_TMC1_MOTCONF 				0x110 // 0-2: MotType 3-5: PhiE source 6-15: Poles
 #define ADR_TMC1_PPR					0x111
 #define ADR_TMC1_ENCA					0x112
-#define ADR_TMC1_ENCOFFSET				0x115
 #define ADR_TMC1_OFFSETFLUX				0x116
 #define ADR_TMC1_TORQUE_P				0x117
 #define ADR_TMC1_TORQUE_I				0x118
@@ -54,5 +54,8 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 // Button Sources:
 #define ADR_SPI_BTN_CONF				0x201
 #define ADR_SHIFTER_BTN_CONF			0x202
+
+// FFB
+#define ADR_FFB_EFFECTS1				0x210 // 0-7 spring, 8-15 friction
 
 #endif /* EEPROM_ADDRESSES_H_ */

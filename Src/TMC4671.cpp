@@ -48,7 +48,7 @@ void TMC4671::setAddress(uint8_t addr){
 		this->cspin = SPI1_SS1_Pin;
 		this->csport = SPI1_SS1_GPIO_Port;
 		this->spi = &HSPIDRV;
-		this->flashAddrs = TMC4671FlashAddrs({ADR_TMC1_MOTCONF,ADR_TMC1_PPR,ADR_TMC1_ENCA,ADR_TMC1_ENCOFFSET});
+		this->flashAddrs = TMC4671FlashAddrs({ADR_TMC1_MOTCONF,ADR_TMC1_PPR,ADR_TMC1_ENCA,ADR_TMC1_OFFSETFLUX,ADR_TMC1_TORQUE_P,ADR_TMC1_TORQUE_I,ADR_TMC1_FLUX_P,ADR_TMC1_FLUX_I});
 	}else if(addr == 2){
 		this->cspin = SPI1_SS2_Pin;
 		this->csport = SPI1_SS2_GPIO_Port;
@@ -70,11 +70,9 @@ uint8_t TMC4671::getAddress(){
 void TMC4671::saveFlash(){
 	uint16_t mconfint = TMC4671::encodeMotToInt(this->conf.motconf);
 	uint16_t ppr = this->abnconf.ppr;
-	int16_t encoffset = this->abnconf.phiEoffset;
 	// Save flash
 	Flash_Write(flashAddrs.mconf, mconfint);
 	Flash_Write(flashAddrs.ppr, ppr);
-	Flash_Write(flashAddrs.encOffset,encoffset);
 	Flash_Write(flashAddrs.offsetFlux,maxOffsetFlux);
 	Flash_Write(flashAddrs.encA,encodeEncHallMisc());
 
@@ -87,17 +85,14 @@ void TMC4671::saveFlash(){
 void TMC4671::restoreFlash(){
 	uint16_t mconfint;
 	uint16_t ppr = 0;
-	uint16_t encoffset;
 
 	// Read flash
 	if(Flash_Read(flashAddrs.mconf, &mconfint))
 		this->conf.motconf = TMC4671::decodeMotFromInt(mconfint);
 
 	if(Flash_Read(flashAddrs.ppr, &ppr))
-		this->abnconf.ppr = ppr;
+		this->abnconf.ppr = ppr == 0 ? 1 : ppr;
 
-	if(Flash_Read(flashAddrs.encOffset, &encoffset))
-		this->abnconf.phiEoffset = (int16_t)encoffset;
 
 	// Pids
 	Flash_Read(flashAddrs.torque_p, &this->curPids.torqueP);
@@ -178,10 +173,8 @@ bool TMC4671::initialize(){
 	// brake res failsafe TODO
 	setBrakeLimits(62000,63000);
 
-	bool npol = findABNPol();
-	abnconf.apol = npol;
-	abnconf.bpol = npol;
-	abnconf.npol = npol;
+
+
 
 	setPos(0);
 
@@ -197,6 +190,11 @@ bool TMC4671::initialize(){
 		if(this->abnconf.ppr == 0){
 			return false;
 		}
+		bool npol = findABNPol();
+		abnconf.apol = npol;
+		abnconf.bpol = npol;
+		abnconf.npol = npol;
+		abnconf.rdir = findABNDir();
 		setup_ABN_Enc(this->abnconf);
 	}
 	//TODO
@@ -295,11 +293,20 @@ void TMC4671::bangInitABN(int16_t power){
 	setMotionMode(MotionMode::uqudext);
 
 	HAL_Delay(100);
-	setPhiE_ext(0x7fff);
-	HAL_Delay(250);
-	//Write offset
+	setPhiE_ext(0x3fff);
 	int16_t phiE_abn = readReg(0x2A)>>16;
-	abnconf.phiEoffset = 0x7fff-phiE_abn;
+	HAL_Delay(250);
+	int16_t phiE_abn_old = 0;
+	int16_t c = 0;
+	while(phiE_abn != phiE_abn_old && c++ < 100){
+		phiE_abn_old = phiE_abn;
+		phiE_abn=readReg(0x2A)>>16;
+		HAL_Delay(100);
+	}
+
+	//Write offset
+	//int16_t phiE_abn = readReg(0x2A)>>16;
+	abnconf.phiEoffset = 0x3fff-phiE_abn;
 	updateReg(0x29, abnconf.phiEoffset, 0xffff, 16);
 
 	setUdUq(0, 0);
@@ -309,8 +316,17 @@ void TMC4671::bangInitABN(int16_t power){
 	writeReg(0x28,encpos+(int32_t)readReg(0x28)); //Restore encoder
 }
 
+void TMC4671::alignABN(){
+	if(!hasPower()){
+		return;
+	}
+
+	// Flux ramping
+}
+
 
 bool TMC4671::checkABN(){
+	// TODO redo for 3 phase!
 
 	bool result = true;
 	PhiE lastphie = getPhiEtype();
@@ -319,21 +335,29 @@ bool TMC4671::checkABN(){
 	setPhiEtype(PhiE::ext);
 	setMotionMode(MotionMode::uqudext);
 
-	int16_t phiE_abn_start = readReg(0x2A)>>16;
+	int16_t phiE_abn_start = (int16_t)(readReg(0x2A)>>16);
+	int16_t phiE_abn = 0;
 
 	for(int16_t angle = -0x3fff;angle<0x3fff;angle+=0x0fff){
+		uint16_t c = 0;
 		setPhiE_ext(angle);
 		HAL_Delay(100);
-		int16_t phiE_abn = readReg(0x2A)>>16;
-		// High difference?
-		uint16_t err = abs(phiE_abn - angle);
+		phiE_abn = (int16_t)(readReg(0x2A)>>16);
+		int16_t err = abs(phiE_abn - angle);
+		// Wait more
+		while(err > 4000 && c++ < 100){
+			phiE_abn = (int16_t)(readReg(0x2A)>>16);
+			err = abs(phiE_abn - angle);
+			HAL_Delay(10);
+		}
+		// still high difference?
 		if(err > 4000){
 			result = false;
 			break;
 		}
 	}
 	// Encoder did not move at all
-	int16_t phiE_abn = readReg(0x2A)>>16;
+	phiE_abn = (int16_t)(readReg(0x2A)>>16);
 	if(phiE_abn_start ==  phiE_abn){
 		result = false;
 	}
@@ -357,8 +381,8 @@ void TMC4671::setup_ABN_Enc(TMC4671ABNConf encconf){
 			(encconf.bpol << 1) |
 			(encconf.npol << 2) |
 			(encconf.ab_as_n << 3) |
-			(encconf.latch_on_N << 4) |
-			(encconf.rdir << 5));
+			(encconf.latch_on_N << 8) |
+			(encconf.rdir << 12));
 
 	writeReg(0x25, abnmode);
 	writeReg(0x26, encconf.ppr);
@@ -553,12 +577,17 @@ void TMC4671::emergencyStop(){
 }
 
 void TMC4671::turn(int16_t power){
-	//
+	int32_t flux = 0;
+
+	// Flux offset only helpful for steppers
+	if(this->conf.motconf.motor_type == MotorType::STEPPER){
+		flux = idleFlux-clip<int32_t,int16_t>(abs(power),0,maxOffsetFlux);
+	}
 	if(feedforward){
-		setFluxTorque(idleFlux-clip<int32_t,int16_t>(abs(power),0,maxOffsetFlux), power/2);
+		setFluxTorque(flux, power/2);
 		setFluxTorqueFF(0, power/2);
 	}else{
-		setFluxTorque(idleFlux-clip<int32_t,int16_t>(abs(power),0,maxOffsetFlux), power);
+		setFluxTorque(flux, power);
 	}
 	//setTorque(power);
 }
@@ -583,6 +612,8 @@ uint32_t TMC4671::getCpr(){
 	return abnconf.ppr;
 }
 void TMC4671::setCpr(uint32_t cpr){
+	if(cpr == 0)
+		cpr = 1;
 	bool reinit = cpr != abnconf.ppr;
 	this->abnconf.ppr = cpr;
 	writeReg(0x26, abnconf.ppr);
@@ -647,6 +678,9 @@ void TMC4671::setMotorType(MotorType motor,uint16_t poles){
 	conf.motconf.motor_type = motor;
 	conf.motconf.pole_pairs = poles;
 	uint32_t mtype = poles | ( ((uint8_t)motor&0xff) << 16);
+	if(motor != MotorType::STEPPER){
+		maxOffsetFlux = 0; // Offsetflux only helpful for steppers. Has no effect otherwise
+	}
 	writeReg(0x1B, mtype);
 }
 
@@ -798,13 +832,14 @@ bool TMC4671::findABNPol(){
 	PhiE lastphie = getPhiEtype();
 	MotionMode lastmode = getMotionMode();
 
-	setUdUq(3000, 0);
+	setUdUq(abnconf.bangInitPower, 0);
 	setMotionMode(MotionMode::uqudext);
 	setPhiEtype(PhiE::ext);
 	uint16_t count=0;
 	uint16_t highcount = 0;
 	for(uint16_t p = 0;p<0x0fff;p+=0xf){
 		HAL_Delay(1);
+		setPhiE_ext(p);
 		count++;
 		if((readReg(0x76) & 0x04) >> 2){
 			highcount++;
@@ -821,6 +856,35 @@ bool TMC4671::findABNPol(){
 //	abnconf.npol = npol;
 //	setup_ABN_Enc(this->abnconf);
 	return npol;
+}
+
+bool TMC4671::findABNDir(){
+	PhiE lastphie = getPhiEtype();
+	MotionMode lastmode = getMotionMode();
+	updateReg(0x25, 0,0x1000,12);
+	setPhiE_ext(0);
+	setUdUq(abnconf.bangInitPower,0);
+	setMotionMode(MotionMode::uqudext);
+	setPhiEtype(PhiE::ext);
+	int16_t phiE_abn = readReg(0x2A)>>16;
+	int16_t phiE_abn_old = 0;
+	int16_t rcount=0,c = 0;
+	for(uint16_t p = 0;p<0x0fff;p+=0xff){
+		setPhiE_ext(p);
+		HAL_Delay(50);
+		c++;
+		phiE_abn_old = phiE_abn;
+		phiE_abn = readReg(0x2A)>>16;
+		if(phiE_abn < phiE_abn_old){
+			rcount++;
+		}
+	}
+
+	setUdUq(0, 0);
+	setPhiEtype(lastphie);
+	setMotionMode(lastmode);
+
+	return(rcount > c/2);
 }
 
 void TMC4671::setStatusMask(uint32_t mask){
@@ -1003,6 +1067,14 @@ bool TMC4671::command(ParsedCommand* cmd,std::string* reply){
 			*reply+=std::to_string(this->readReg(cmd->val));
 		}else if(cmd->type == CMDtype::setat){
 			this->writeReg(cmd->adr,cmd->val);
+		}
+
+	}else if(cmd->cmd == "encdir"){
+		if(cmd->type == CMDtype::get){
+			*reply+=std::to_string(this->abnconf.rdir);
+		}else if(cmd->type == CMDtype::set){
+			this->abnconf.rdir = cmd->val != 0;
+			this->setup_ABN_Enc(this->abnconf);
 		}
 
 	}else if(cmd->cmd == "help"){
