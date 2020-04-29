@@ -16,6 +16,10 @@ HidFFB::~HidFFB() {
 
 }
 
+bool HidFFB::getFfbActive(){
+	return this->ffb_active;
+}
+
 void HidFFB::saveFlash(){
 	uint16_t effects1 = this->getIdleSpringStrength() | (this->getFrictionStrength() << 8);
 	Flash_Write(ADR_FFB_EFFECTS1, effects1);
@@ -28,6 +32,9 @@ void HidFFB::restoreFlash(){
 	}
 }
 
+/*
+ * Calculates the frequency of hid out reports
+ */
 uint32_t HidFFB::getRate(){
 	if(HAL_GetTick() - lastOut > 1000 || hid_out_period == 0){
 		return 0;
@@ -36,6 +43,9 @@ uint32_t HidFFB::getRate(){
 	}
 }
 
+/*
+ * Called when HID OUT data is received via USB
+ */
 void HidFFB::hidOut(uint8_t* report){
 	hid_out_period = (HAL_GetTick() - lastOut + hid_out_period) / 2; // For measuring update rate
 	lastOut = HAL_GetTick();
@@ -55,10 +65,10 @@ void HidFFB::hidOut(uint8_t* report){
 	case HID_ID_CTRLREP: // Control report. 1=Enable Actuators, 2=Disable Actuators, 4=Stop All Effects, 8=Reset, 16=Pause, 32=Continue
 		ffb_control(report[1]);
 		break;
-	case HID_ID_GAINREP:
+	case HID_ID_GAINREP: // Set global gain
 		gain = report[1];
 		break;
-	case HID_ID_ENVREP:
+	case HID_ID_ENVREP: // Envelope TODO?
 		printf("Envrep");
 		break;
 	case HID_ID_CONDREP:
@@ -71,10 +81,10 @@ void HidFFB::hidOut(uint8_t* report){
 	case HID_ID_CONSTREP: // Constant
 		set_constant_effect((FFB_SetConstantForce_Data_t*)report);
 		break;
-	case HID_ID_RAMPREP: // Ramp
+	case HID_ID_RAMPREP: // Ramp TODO
 		printf("Ramprep");
 		break;
-	case HID_ID_CSTMREP: // Custom. TODO
+	case HID_ID_CSTMREP: // Custom. TODO? pretty much never used
 		printf("Customrep");
 		break;
 	case HID_ID_SMPLREP: // Download sample
@@ -116,7 +126,12 @@ void HidFFB::free_effect(uint16_t idx){
 	}
 }
 
-
+/*
+ * Called on HID feature GET events
+ * Any reply is assigned to the return_buf
+ *
+ * Handles block load reports and pool status which are requested after a new effect has been created
+ */
 void HidFFB::hidGet(uint8_t id,uint16_t len,uint8_t** return_buf){
 	// Feature gets go here
 
@@ -146,7 +161,7 @@ void HidFFB::ffb_control(uint8_t cmd){
 	if(cmd & 0x01){ //enable
 		start_FFB();
 	}if(cmd & 0x02){ //disable
-		ffb_active = false;
+		stop_FFB();
 	}if(cmd & 0x04){ //stop TODO Some games send wrong commands?
 		stop_FFB();
 		//start_FFB();
@@ -156,9 +171,9 @@ void HidFFB::ffb_control(uint8_t cmd){
 		reset_ffb();
 		// reset effects
 	}if(cmd & 0x10){ //pause
-		ffb_active = false;
+		stop_FFB();
 	}if(cmd & 0x20){ //continue
-		ffb_active = true;
+		start_FFB();
 	}
 	Bchg(this->reportFFBStatus.status,HID_ENABLE_ACTUATORS & ffb_active);
 }
@@ -176,7 +191,7 @@ void HidFFB::new_effect(FFB_CreateNewEffect_Feature_Data_t* effect){
 		blockLoad_report.loadStatus = 2;
 		return;
 	}
-	printf("Creating Effect: %d with size %d at %d\n",effect->effectType,effect->byteCount,index);
+	printf("Creating Effect: %d at %d\n",effect->effectType,index);
 
 	FFB_Effect new_effect;
 	new_effect.type = effect->effectType;
@@ -314,8 +329,8 @@ int32_t HidFFB::calculateEffects(int32_t pos,uint8_t axis=1){
 	if(!ffb_active){
 		// Center when FFB is turned of with a spring effect
 		if(idlecenter){
-			int16_t idlespringclip = clip<int32_t,int32_t>((int32_t)idlespringstregth*35,0,10000);
-			float idlespringscale = 0.5f + (idlespringstregth * 0.005f);
+			int16_t idlespringclip = clip<int32_t,int32_t>((int32_t)idlespringstregth*50,0,10000);
+			float idlespringscale = 0.5f + (idlespringstregth * 0.01f);
 			return clip<int32_t,int32_t>((int32_t)(-pos*idlespringscale),-idlespringclip,idlespringclip);
 		}else{
 			return 0;

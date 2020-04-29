@@ -103,10 +103,13 @@ bool FFBWheel::command(ParsedCommand* cmd,std::string* reply){
 	}else if(cmd->cmd == "hidrate" && cmd->type == CMDtype::get){
 		*reply+=std::to_string(ffb->getRate());
 
+	}else if(cmd->cmd == "ffbactive" && cmd->type == CMDtype::get){
+		*reply+=std::to_string(ffb->getFfbActive() ? 1 : 0);
+
 	}else if(cmd->cmd == "help"){
 		flag = false;
 		*reply += "FFBWheel commands:\n"
-				"power,zeroenc,enctype,degrees,idlespring,friction,ppr,drvtype,btntype,lsbtn,btnnum,btntypes,btnpol,btncut,axismask\n"; // TODO
+				"power,zeroenc,enctype,degrees,idlespring,friction,ppr,drvtype,btntype,lsbtn,btnnum,btntypes,btnpol,btncut,axismask,ffbactive\n"; // TODO
 	}else{
 		flag = false;
 	}

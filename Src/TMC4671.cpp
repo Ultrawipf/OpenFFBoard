@@ -173,10 +173,7 @@ bool TMC4671::initialize(){
 	// brake res failsafe TODO
 	setBrakeLimits(62000,63000);
 
-
-
-
-	setPos(0);
+	//setPos(0);
 
 	setPids(curPids); // Write basic pids
 	// Enable driver
@@ -190,12 +187,22 @@ bool TMC4671::initialize(){
 		if(this->abnconf.ppr == 0){
 			return false;
 		}
-		bool npol = findABNPol();
-		abnconf.apol = npol;
-		abnconf.bpol = npol;
-		abnconf.npol = npol;
-		abnconf.rdir = findABNDir();
+
+		writeReg(0x26, abnconf.ppr); // we need ppr to be set first
+		int32_t pos = getPos();
+		setPos(0);
+		bool olddir = abnconf.rdir;
+		estimateABNparams();
+
+		if(olddir != this->abnconf.rdir){ // Last measurement should be reversed
+			pos = -getPos()-pos;
+		}
+		setPos(pos);
+		//int32_t newpos = pos+getPos();
+		//setPos(newpos);
 		setup_ABN_Enc(this->abnconf);
+
+
 	}
 	//TODO
 	// Initialize Encoder/Hall
@@ -285,10 +292,11 @@ void TMC4671::bangInitABN(int16_t power){
 	MotionMode lastmode = getMotionMode();
 	setPhiE_ext(0);
 	setUdUq(power, 0);
+	int32_t pos = getPos();
 
 	setPhiEtype(PhiE::ext);
-	int32_t encpos = readReg(0x28);
-	writeReg(0x28,0); //Zero encoder
+	writeReg(0x27,0); //Zero encoder
+	setPos(0);
 	updateReg(0x29, 0, 0xffff, 16); // Set phiE offset to zero
 	setMotionMode(MotionMode::uqudext);
 
@@ -313,20 +321,13 @@ void TMC4671::bangInitABN(int16_t power){
 	setPhiE_ext(0);
 	setPhiEtype(lastphie);
 	setMotionMode(lastmode);
-	writeReg(0x28,encpos+(int32_t)readReg(0x28)); //Restore encoder
+	setPos(pos+getPos());
 }
 
-void TMC4671::alignABN(){
-	if(!hasPower()){
-		return;
-	}
-
-	// Flux ramping
-}
-
-
+/*
+ * Steps the motor a few times to check if the encoder follows correctly
+ */
 bool TMC4671::checkABN(){
-	// TODO redo for 3 phase!
 
 	bool result = true;
 	PhiE lastphie = getPhiEtype();
@@ -385,9 +386,11 @@ void TMC4671::setup_ABN_Enc(TMC4671ABNConf encconf){
 			(encconf.rdir << 12));
 
 	writeReg(0x25, abnmode);
+	int32_t pos = getPos();
 	writeReg(0x26, encconf.ppr);
 	writeReg(0x29, (encconf.phiEoffset << 16) | encconf.phiMoffset);
-	writeReg(0x28,0); //Zero encoder
+	setPos(pos);
+	//writeReg(0x27,0); //Zero encoder
 	//conf.motconf.phiEsource = PhiE::abn;
 	this->setPhiEtype(PhiE::abn);
 	if(hasPower() && !encconf.initialized){
@@ -397,6 +400,7 @@ void TMC4671::setup_ABN_Enc(TMC4671ABNConf encconf){
 			abnconf.initialized = true;
 		}
 	}
+
 }
 void TMC4671::setup_HALL(TMC4671HALLConf hallconf){
 	this->hallconf = hallconf;
@@ -473,6 +477,9 @@ void TMC4671::calibrateAdcScale(){
 	setMotionMode(lastmode);
 }
 
+/*
+ * Calibrates the ADC by disabling the power stage and sampling a mean value
+ */
 void TMC4671::calibrateAdcOffset(){
 
 	uint16_t measuretime_idle = 500;
@@ -576,6 +583,9 @@ void TMC4671::emergencyStop(){
 	emergency = true;
 }
 
+/*
+ * Sets a torque in positive or negative direction
+ */
 void TMC4671::turn(int16_t power){
 	int32_t flux = 0;
 
@@ -589,7 +599,6 @@ void TMC4671::turn(int16_t power){
 	}else{
 		setFluxTorque(flux, power);
 	}
-	//setTorque(power);
 }
 
 int32_t TMC4671::getPos(){
@@ -826,49 +835,26 @@ void TMC4671::setBrakeLimits(uint16_t low,uint16_t high){
 }
 
 /*
- * Detect encoder polarity by blocking motor and checking N channel.
+ * Moves the rotor and estimates polarity and direction of the encoder
+ * Polarity is found by measuring the n pulse.
+ * If polarity was found to be reversed during the test direction will be reversed again to account for that
  */
-bool TMC4671::findABNPol(){
+void TMC4671::estimateABNparams(){
+	int32_t pos = getPos();
+	setPos(0);
 	PhiE lastphie = getPhiEtype();
 	MotionMode lastmode = getMotionMode();
-
-	setUdUq(abnconf.bangInitPower, 0);
-	setMotionMode(MotionMode::uqudext);
-	setPhiEtype(PhiE::ext);
-	uint16_t count=0;
-	uint16_t highcount = 0;
-	for(uint16_t p = 0;p<0x0fff;p+=0xf){
-		HAL_Delay(1);
-		setPhiE_ext(p);
-		count++;
-		if((readReg(0x76) & 0x04) >> 2){
-			highcount++;
-		}
-	}
-
-	setUdUq(0, 0);
-	setPhiEtype(lastphie);
-	setMotionMode(lastmode);
-
-	bool npol = highcount > count/2;
-//	abnconf.apol = npol;
-//	abnconf.bpol = npol;
-//	abnconf.npol = npol;
-//	setup_ABN_Enc(this->abnconf);
-	return npol;
-}
-
-bool TMC4671::findABNDir(){
-	PhiE lastphie = getPhiEtype();
-	MotionMode lastmode = getMotionMode();
-	updateReg(0x25, 0,0x1000,12);
+	updateReg(0x25, 0,0x1000,12); // Set dir normal
 	setPhiE_ext(0);
 	setUdUq(abnconf.bangInitPower,0);
 	setMotionMode(MotionMode::uqudext);
 	setPhiEtype(PhiE::ext);
 	int16_t phiE_abn = readReg(0x2A)>>16;
 	int16_t phiE_abn_old = 0;
-	int16_t rcount=0,c = 0;
+	int16_t rcount=0,c = 0; // Count how often direction was in reverse
+	uint16_t highcount = 0; // Count high state of n pulse for polarity estimation
+
+	// Rotate a bit
 	for(uint16_t p = 0;p<0x0fff;p+=0xff){
 		setPhiE_ext(p);
 		HAL_Delay(50);
@@ -878,14 +864,26 @@ bool TMC4671::findABNDir(){
 		if(phiE_abn < phiE_abn_old){
 			rcount++;
 		}
+		if((readReg(0x76) & 0x04) >> 2){
+			highcount++;
+		}
 	}
+	setPos(pos+getPos());
 
 	setUdUq(0, 0);
 	setPhiEtype(lastphie);
 	setMotionMode(lastmode);
 
-	return(rcount > c/2);
+	bool npol = highcount > c/2;
+	abnconf.rdir = rcount > c/2;
+	if(npol != abnconf.npol) // Invert dir if polarity was reversed
+		abnconf.rdir = !abnconf.rdir;
+
+	abnconf.apol = npol;
+	abnconf.bpol = npol;
+	abnconf.npol = npol;
 }
+
 
 void TMC4671::setStatusMask(uint32_t mask){
 	writeReg(0x7D, mask);

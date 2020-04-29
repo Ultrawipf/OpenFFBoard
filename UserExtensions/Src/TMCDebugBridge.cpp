@@ -175,13 +175,11 @@ TMCDebugBridge::TMCDebugBridge() {
 	this->drv = new TMC4671(&HSPIDRV,SPI1_SS1_GPIO_Port,SPI1_SS1_Pin,tmcconf);
 	drv->restoreFlash();
 	drv->initialize();
-	drv->calibrateAdcOffset();
-	drv->findABNPol();
 	//drv->stop();
 }
 
 TMCDebugBridge::~TMCDebugBridge() {
 	HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_RESET);
-	free(this->drv);
+	delete this->drv;
 }
 

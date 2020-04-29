@@ -90,7 +90,7 @@ struct TMC4671ABNConf{
 	bool latch_on_N = false; // Latch offsets on n pulse
 	int16_t phiEoffset = 0;
 	int16_t phiMoffset = 0;
-	int16_t bangInitPower = 4000;
+	int16_t bangInitPower = 6000;
 	bool initialized = false;
 };
 
@@ -162,10 +162,8 @@ public:
 	void setup_ABN_Enc(TMC4671ABNConf encconf);
 	void setup_HALL(TMC4671HALLConf hallconf);
 	void bangInitABN(int16_t power);
-	void alignABN();
-	bool findABNPol();
+	void estimateABNparams();
 	bool checkABN();
-	bool findABNDir();
 
 	void setAdcOffset(uint32_t adc_I0_offset,uint32_t adc_I1_offset);
 	void setAdcScale(uint32_t adc_I0_scale,uint32_t adc_I1_scale);

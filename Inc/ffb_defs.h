@@ -83,6 +83,8 @@
 
 // Only include these for cpp
 #ifdef __cplusplus
+
+// HID gamepad report
 struct  __attribute__((__packed__)) reportHID_t {
 		uint8_t id = 1;
 		uint32_t buttons = 0;
@@ -109,12 +111,12 @@ typedef struct
 	{ // FFB: Set Effect Output Report
 	uint8_t		reportId = 1;	// =1
 	uint8_t		effectBlockIndex = 0;	// 1..max_effects
-	uint8_t		effectType = 0;	// 1..12 (effect usages: 26,27,30,31,32,33,34,40,41,42,43,28)
+	uint8_t		effectType = 0;
 	uint16_t	duration = 0; // 0..32767 ms
 	uint16_t	triggerRepeatInterval = 0; // 0..32767 ms
 	uint16_t	samplePeriod = 0;	// 0..32767 ms
-	uint8_t		gain = 255;	// 0..255	 (physical 0..10000)
-	uint8_t		triggerButton = 0;	// button ID (0..8)
+	uint8_t		gain = 255;	// 0..255 scaler
+	uint8_t		triggerButton = 0;	// button ID. unused
 	uint8_t		enableAxis = 0; // bits: 0=X, 1=Y, 2=DirectionEnable
 	uint8_t		directionX = 0;	// angle (0=0 .. 255=360deg)
 	uint8_t		directionY = 0;	// angle (0=0 .. 255=360deg)
@@ -125,13 +127,13 @@ typedef struct
 
 typedef struct
 	{ // FFB: Set Condition Output Report
-	uint8_t	reportId;	//
-	uint8_t	effectBlockIndex;	// 1..40
-	uint8_t	parameterBlockOffset;	// bits: 0..3=parameterBlockOffset, 4..5=instance1, 6..7=instance2
-	int16_t  cpOffset;	// -128..127
-	int16_t	positiveCoefficient;
-	int16_t	negativeCoefficient;
-	uint16_t	positiveSaturation;
+	uint8_t		reportId;
+	uint8_t		effectBlockIndex;	// 1..40
+	uint8_t		parameterBlockOffset;	// bits: 0..3=parameterBlockOffset, 4..5=instance1, 6..7=instance2
+	int16_t  	cpOffset;	// Center
+	int16_t		positiveCoefficient; // Scaler for positive range
+	int16_t		negativeCoefficient;
+	uint16_t	positiveSaturation;	// Clipping point for positive range
 	uint16_t	negativeSaturation;
 	uint16_t	deadBand;
 } __attribute__((packed)) FFB_SetCondition_Data_t;
@@ -143,14 +145,14 @@ typedef struct
 	uint8_t	reportId = HID_ID_BLKLDREP;	// =2
 	uint8_t effectBlockIndex;	// 1..40
 	uint8_t	loadStatus;	// 1=Success,2=Full,3=Error
-	uint16_t	ramPoolAvailable;	// =0 or 0xFFFF?
+	uint16_t	ramPoolAvailable;
 } __attribute__((packed)) FFB_BlockLoad_Feature_Data_t;
 
 typedef struct
 	{ // FFB: Create New Effect Feature Report
 	uint8_t		reportId;
-	uint8_t	effectType;	// Enum (1..12): ET 26,27,30,31,32,33,34,40,41,42,43,28
-	uint16_t	byteCount;	// 0..511
+	uint8_t	effectType;
+	uint16_t	byteCount;	// Size of custom effects
 } __attribute__((packed)) FFB_CreateNewEffect_Feature_Data_t;
 
 typedef struct
@@ -172,25 +174,26 @@ typedef struct
 	uint16_t	period;	// 0..32767 ms
 } __attribute__((packed)) FFB_SetPeriodic_Data_t;
 
+// Internal struct for storing effects
 typedef struct
 {
 	volatile uint8_t state = 0;
-	uint8_t type=FFB_EFFECT_NONE;
-	uint8_t gain=255;
-	int16_t	positiveCoefficient=0;
-	int16_t	negativeCoefficient=0;
+	uint8_t 	type=FFB_EFFECT_NONE; // Type
+	uint8_t 	gain=255;	// Scaler. often unused
+	int16_t		positiveCoefficient=0;
+	int16_t		negativeCoefficient=0;
 	uint16_t	positiveSaturation=0;
 	uint16_t	negativeSaturation=0;
-	int16_t magnitude = 0;
-	int16_t phase=0;
-	int16_t offset=0;
-	int32_t last_value = 0;
-	Biquad* filter = nullptr;
-	uint16_t counter=0;						// ms
-	uint16_t period=0;							// ms
-	uint16_t duration=0,fadeTime=0,attackTime=0;	// ms
-	uint16_t samplePeriod = 0;
-	uint8_t axis = 0;
+	int16_t 	magnitude = 0;	// High res intensity of effect
+	int16_t 	phase=0;
+	int16_t 	offset=0;	// Center point
+	int32_t 	last_value = 0;
+	Biquad* 	filter = nullptr;	// Optional filter pointer for friction effect
+	uint16_t 	counter=0;	// Elapsed time in ms
+	uint16_t 	period=0;
+	uint16_t 	duration=0,fadeTime=0,attackTime=0;	// Duration in ms
+	uint16_t 	samplePeriod = 0;
+	uint8_t 	axis = 0;	// Active axis
 	uint16_t	deadBand = 0;
 } FFB_Effect;
 
@@ -201,7 +204,7 @@ typedef struct
 	{ // FFB: Set ConstantForce Output Report
 	uint8_t	reportId;	// =5
 	uint8_t	effectBlockIndex;	// 1..40
-	int16_t magnitude;	// -10000..10000 (set by hid descriptor report)
+	int16_t magnitude;	// High res intensity
 } __attribute__((packed)) FFB_SetConstantForce_Data_t;
 
 #endif //c++

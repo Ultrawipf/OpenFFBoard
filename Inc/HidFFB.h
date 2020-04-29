@@ -35,6 +35,7 @@ public:
 	uint8_t getFrictionStrength();
 
 	uint32_t getRate(); // Returns an estimate of the hid effect update speed in hz
+	bool getFfbActive();
 
 	void restoreFlash();
 	void saveFlash();

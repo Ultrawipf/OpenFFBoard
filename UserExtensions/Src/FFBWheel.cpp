@@ -197,7 +197,9 @@ void FFBWheel::update(){
 	}
 }
 
-
+/*
+ * Calculate soft endstop effect
+ */
 int16_t FFBWheel::updateEndstop(){
 	int8_t clipdir = cliptest<int32_t,int32_t>(lastScaledEnc, -0x7fff, 0x7fff);
 	if(clipdir == 0){
@@ -208,7 +210,6 @@ int16_t FFBWheel::updateEndstop(){
 	addtorque += clip<int32_t,int32_t>(abs(lastScaledEnc)-0x7fff,-0x7fff,0x7fff);
 	addtorque *= endstop_gain;
 	addtorque *= -clipdir;
-
 
 	return clip<int32_t,int32_t>(addtorque,-0x7fff,0x7fff);
 }
@@ -295,7 +296,7 @@ void FFBWheel::setEncType(uint8_t enctype){
 	if(Flash_Read(ADR_TMC1_PPR, &ppr)){
 		this->enc->setCpr(ppr);
 	}
-	this->enc->setPos(0); //Zero encoder
+	//this->enc->setPos(0); //Zero encoder
 }
 
 ButtonSource* FFBWheel::getBtnSrc(uint16_t id){
@@ -338,7 +339,7 @@ void FFBWheel::addBtnType(uint16_t id){
 		this->btns.push_back(btn);
 }
 
-
+// Called when the adc finishes a conversion
 void FFBWheel::adcUpd(volatile uint32_t* ADC_BUF){
 	for(uint8_t i = 0;i<ADC_PINS;i++){
 		this->adc_buf[i] = ADC_BUF[i+ADC_CHAN_FPIN];
@@ -352,6 +353,9 @@ void FFBWheel::adcUpd(volatile uint32_t* ADC_BUF){
 	}
 }
 
+/*
+ * Returns a scaled encoder value between -0x7fff and 0x7fff with a range of degrees
+ */
 int32_t FFBWheel::getEncValue(Encoder* enc,uint16_t degrees){
 	if(enc == nullptr){
 		return 0x7fff; // Return center if no encoder present
@@ -361,7 +365,9 @@ int32_t FFBWheel::getEncValue(Encoder* enc,uint16_t degrees){
 	return val;
 }
 
-
+/*
+ * Sends periodic gamepad reports of buttons and analog axes
+ */
 void FFBWheel::send_report(){
 	extern USBD_HandleTypeDef hUsbDeviceFS;
 
@@ -400,11 +406,15 @@ void FFBWheel::timerElapsed(TIM_HandleTypeDef* htim){
 void FFBWheel::usbInit(){
 	usbInit_HID_Wheel();
 }
+// Called at 1khz. Triggers effect updates
 void FFBWheel::SOF(){
 	usb_update_flag = true;
 	// USB clocked update callback
 }
 
+/*
+ * Helper functions for encoding and decoding flash variables
+ */
 FFBWheelConfig FFBWheel::decodeConfFromInt(uint16_t val){
 	// 0-7 Enc 8-15 Mot
 	FFBWheelConfig conf;
