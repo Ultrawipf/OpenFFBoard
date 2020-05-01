@@ -9,8 +9,10 @@
 #define SHIFTERG29_H_
 #include "ButtonSource.h"
 #include "AdcHandler.h"
+#include "CommandHandler.h"
+#include "vector"
 
-class ShifterG29 : public ButtonSource, AdcHandler {
+class ShifterG29 : public ButtonSource, AdcHandler,CommandHandler {
 
 /*
  * Button mapper for Logitech G29 shifters (6 gears + reverse)
@@ -21,6 +23,9 @@ class ShifterG29 : public ButtonSource, AdcHandler {
  *
  * Invert flag switches between H-mode and sequential mode (90° rotated)
  */
+
+enum class ShifterMode : uint8_t {G29_H=0,G29_seq=1};
+std::vector<std::string> mode_names = {"G29-H","G29 Sequential"};
 
 public:
 	ShifterG29();
@@ -37,8 +42,12 @@ public:
 	void saveFlash();
 	void restoreFlash();
 
-	const uint16_t maxButtons = 7;
+	void printModes(std::string* reply);
+
+	bool command(ParsedCommand* cmd,std::string* reply);
+
 private:
+	ShifterMode mode;
 	volatile uint32_t ADC_BUF[ADC_CHANNELS] = {0};
 
 	const uint8_t x_chan = 5;
@@ -57,6 +66,9 @@ private:
 	uint16_t y_val = 0;
 
 	uint8_t gear = 0;
+
+
+
 };
 
 #endif /* SHIFTERG29_H_ */

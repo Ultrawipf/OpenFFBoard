@@ -22,7 +22,7 @@ public:
 	virtual bool hasCommands();
 	virtual void setCommandsEnabled(bool enable);
 	virtual bool command(ParsedCommand* cmd,std::string* reply);
-	virtual const ClassIdentifier getInfo() = 0;
+	virtual const ClassIdentifier getInfo() = 0; // Command handlers always have class infos. Works well with ChoosableClass
 protected:
 	bool commandsEnabled = true;
 	virtual void addCommandHandler();
