@@ -331,6 +331,7 @@ uint8_t * USBD_FS_ManufacturerStrDescriptor(USBD_SpeedTypeDef speed, uint16_t *l
   */
 uint8_t * USBD_FS_SerialStrDescriptor(USBD_SpeedTypeDef speed, uint16_t *length)
 {
+	/*
   if(speed == USBD_SPEED_HIGH)
   {
     USBD_GetString((uint8_t *)USBD_SERIALNUMBER_STRING_FS, USBD_StrDesc, length);
@@ -338,8 +339,16 @@ uint8_t * USBD_FS_SerialStrDescriptor(USBD_SpeedTypeDef speed, uint16_t *length)
   else
   {
     USBD_GetString((uint8_t *)USBD_SERIALNUMBER_STRING_FS, USBD_StrDesc, length);
-  }
-  return USBD_StrDesc;
+  }*/
+
+	// Will roll over but generates a likely unique id
+	uint32_t serial = HAL_GetUIDw0() + HAL_GetUIDw1() + HAL_GetUIDw2();
+	char snum[11] = {0};
+	utoa(serial,snum,10);
+
+	USBD_GetString((uint8_t *)snum, USBD_StrDesc, length);
+
+	return USBD_StrDesc;
 }
 
 /**

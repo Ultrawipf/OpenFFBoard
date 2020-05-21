@@ -100,3 +100,18 @@ void USB_SOF(){
 	if(mainclass!=nullptr)
 		mainclass->SOF();
 }
+
+
+/*
+ * Called on usb disconnect and suspend
+ */
+void USBD_Suspend(){
+	mainclass->usbSuspend();
+}
+
+/*
+ * Called on usb resume. Not called on connect... use SOF instead to detect first activity
+ */
+void USBD_Resume(){
+	mainclass->usbResume();
+}

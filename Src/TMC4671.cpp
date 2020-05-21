@@ -187,7 +187,7 @@ bool TMC4671::initialize(){
 		if(this->abnconf.ppr == 0){
 			return false;
 		}
-
+		setPosSel(PosSelection::PhiM_abn); // Mechanical Angle
 		writeReg(0x26, abnconf.ppr); // we need ppr to be set first
 		int32_t pos = getPos();
 		setPos(0);
@@ -204,8 +204,7 @@ bool TMC4671::initialize(){
 
 
 	}
-	//TODO
-	// Initialize Encoder/Hall
+
 
 	// Home?
 	// Run in direction of N pulse. Enable flag/interrupt
@@ -276,6 +275,9 @@ int32_t TMC4671::getVelocity(){
 	return readReg(0x6A);
 }
 
+void TMC4671::setPositionExt(int32_t pos){
+	writeReg(0x1E, pos);
+}
 
 void TMC4671::setPhiE_ext(int16_t phiE){
 	writeReg(0x1C, phiE);
@@ -346,22 +348,18 @@ bool TMC4671::checkABN(){
 		phiE_abn = (int16_t)(readReg(0x2A)>>16);
 		int16_t err = abs(phiE_abn - angle);
 		// Wait more
-		while(err > 4000 && c++ < 100){
+		while(err > 6000 && c++ < 500){
 			phiE_abn = (int16_t)(readReg(0x2A)>>16);
 			err = abs(phiE_abn - angle);
 			HAL_Delay(10);
 		}
 		// still high difference?
-		if(err > 4000){
+		if(err > 8000){
 			result = false;
 			break;
 		}
 	}
-	// Encoder did not move at all
-	phiE_abn = (int16_t)(readReg(0x2A)>>16);
-	if(phiE_abn_start ==  phiE_abn){
-		result = false;
-	}
+
 
 	setUdUq(0, 0);
 	setPhiE_ext(0);
@@ -398,6 +396,9 @@ void TMC4671::setup_ABN_Enc(TMC4671ABNConf encconf){
 		// Check if aligned
 		if(checkABN()){
 			abnconf.initialized = true;
+			printf("Initialized TMC %d\n",this->address);
+		}else{
+			printf("Encoder init failed. Check poles and PPR settings\n");
 		}
 	}
 
@@ -601,16 +602,27 @@ void TMC4671::turn(int16_t power){
 	}
 }
 
+void TMC4671::setPosSel(PosSelection psel){
+	writeReg(0x51, (uint8_t)psel);
+	this->conf.motconf.pos_sel = psel;
+}
+
 int32_t TMC4671::getPos(){
 	//int64_t cpr = conf.motconf.pole_pairs << 16;
+	/*
 	int32_t mpos = (int32_t)readReg(0x6B) / ((int32_t)conf.motconf.pole_pairs);
-	int32_t pos = ((int32_t)abnconf.ppr * mpos) >> 16;
+	int32_t pos = ((int32_t)abnconf.ppr * mpos) >> 16;*/
+	int32_t mpos = (int32_t)readReg(0x6B);
+	int64_t tmpos = ( (int64_t)mpos * (int64_t)abnconf.ppr);
+	int32_t pos = tmpos / 0xffff;
 	return pos;
 }
 void TMC4671::setPos(int32_t pos){
 	// Cpr = poles * 0xffff
+	/*
 	int32_t cpr = (conf.motconf.pole_pairs << 16) / abnconf.ppr;
-	int32_t mpos = (cpr * pos);
+	int32_t mpos = (cpr * pos);*/
+	int32_t mpos = ((int64_t)0xffff / (int64_t)abnconf.ppr) * (int64_t)pos;
 	writeReg(0x6B, mpos);
 }
 //uint32_t TMC4671::getPosCpr(){

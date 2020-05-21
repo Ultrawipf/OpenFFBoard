@@ -159,6 +159,12 @@ void FFBoardMain::update(){
 void FFBoardMain::SOF(){
 
 }
+void FFBoardMain::usbSuspend(){
+
+}
+void FFBoardMain::usbResume(){
+
+}
 
 
 FFBoardMain::~FFBoardMain() {

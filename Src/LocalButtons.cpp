@@ -13,6 +13,7 @@ ClassIdentifier LocalButtons::info = {
 };
 
 LocalButtons::LocalButtons() {
+	setMask(mask); // Initialize button count
 	restoreFlash();
 }
 

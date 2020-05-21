@@ -36,10 +36,12 @@ void HidFFB::restoreFlash(){
  * Calculates the frequency of hid out reports
  */
 uint32_t HidFFB::getRate(){
-	if(HAL_GetTick() - lastOut > 1000 || hid_out_period == 0){
+
+	if(micros() - lastOut > 1000000 || hid_out_period == 0){
+		hid_out_period = 0;
 		return 0;
 	}else{
-		return (1000/hid_out_period);
+		return (1000000/hid_out_period);
 	}
 }
 
@@ -47,8 +49,8 @@ uint32_t HidFFB::getRate(){
  * Called when HID OUT data is received via USB
  */
 void HidFFB::hidOut(uint8_t* report){
-	hid_out_period = (HAL_GetTick() - lastOut + hid_out_period) / 2; // For measuring update rate
-	lastOut = HAL_GetTick();
+	hid_out_period = (micros() - lastOut); // For measuring update rate
+	lastOut = micros();
 	// FFB Output Message
 	report[0] -= FFB_ID_OFFSET;// if offset id was set correct this
 	uint8_t event_idx = report[0];
@@ -347,7 +349,7 @@ int32_t HidFFB::calculateEffects(int32_t pos,uint8_t axis=1){
 
 		switch(effect->type){
 		case FFB_EFFECT_CONSTANT:
-			result_torque -= (effect->magnitude * (1+effect->gain)) >> 8;
+			result_torque -= ((int32_t)effect->magnitude * (int32_t)(1+effect->gain)) / 256;
 			break;
 
 		case FFB_EFFECT_SPRING:

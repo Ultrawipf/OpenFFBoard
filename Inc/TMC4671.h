@@ -23,11 +23,13 @@ enum class MotorType : uint8_t {NONE=0,DC=1,STEPPER=2,BLDC=3,ERR};
 enum class PhiE : uint8_t {ext=1,openloop=2,abn=3,hall=5,aenc=6,aencE=7,NONE};
 enum class MotionMode : uint8_t {stop=0,torque=1,velocity=2,position=3,prbsflux=4,prbstorque=5,prbsvelocity=6,uqudext=8,encminimove=9,NONE};
 enum class FFMode : uint8_t {none=0,velocity=1,torque=2};
+enum class PosSelection : uint8_t {PhiE=0, PhiE_ext=1, PhiE_openloop=2, PhiE_abn=3, res1=4, PhiE_hal=5, PhiE_aenc=6, PhiA_aenc=7, res2=8, PhiM_abn=9, PhiM_abn2=10, PhiM_aenc=11, PhiM_hal=12};
 
 struct TMC4671MotConf{
 	MotorType motor_type = MotorType::NONE;
 	PhiE phiEsource 	= PhiE::ext;
 	uint16_t pole_pairs = 50;
+	PosSelection pos_sel = PosSelection::PhiE; // TODO save to flash
 };
 
 // Basic failsafe hardware boot config for inits
@@ -120,7 +122,7 @@ struct TMC4671Biquad{
 };
 
 
-class TMC4671 : public MotorDriver, public Encoder, public PersistentStorage, public CommandHandler{
+class TMC4671 : public MotorDriver, public Encoder, public CommandHandler{
 public:
 
 	static ClassIdentifier info;
@@ -178,6 +180,9 @@ public:
 	void setBiquadPos(TMC4671Biquad bq);
 	void setBiquadVel(TMC4671Biquad bq);
 
+	void setPositionExt(int32_t pos); // External position register (For external encoders. Choose external phiE).
+	// Contact me if external support has to be added via the FFB selection!
+
 	void stop();
 	void start();
 	bool active = false;
@@ -204,6 +209,8 @@ public:
 	void setPhiEtype(PhiE type);
 	PhiE getPhiEtype();
 	void setPhiE_ext(int16_t phiE);
+
+	void setPosSel(PosSelection psel);
 
 	void setMotionMode(MotionMode mode);
 	MotionMode getMotionMode();

@@ -467,7 +467,7 @@ static uint8_t  USBD_CDC_Setup (USBD_HandleTypeDef *pdev,
     case USB_REQ_SET_INTERFACE :
       break;
 
-    case USB_REQ_GET_DESCRIPTOR:  //TODO
+    case USB_REQ_GET_DESCRIPTOR:
     	/*
 	  if( req->wValue >> 8 == 0x22)
 	  {

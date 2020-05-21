@@ -5,6 +5,8 @@
 #include <memory>
 #include "global_callbacks.h"
 
+uint32_t clkmhz = HAL_RCC_GetHCLKFreq() / 100000;
+extern TIM_HandleTypeDef TIM_MICROS;
 
 bool running = true;
 
@@ -16,6 +18,8 @@ extern uint32_t ADC_BUF[ADC_CHANNELS];
 USBD_HandleTypeDef hUsbDeviceFS;
 
 void cppmain() {
+	TIM_MICROS.Instance->CR1 = 1; // Enable microsecond clock
+
 	HAL_ADC_Start_DMA(&HADC, ADC_BUF, ADC_CHANNELS);
 
 	// If switch pressed at boot select failsafe implementation
@@ -32,7 +36,7 @@ void cppmain() {
 
 
 	mainclass = mainchooser.Create(main_id);//(SelectMain(main_id));
-	mainclass->usbInit();
+	usb_init();
 
 	while(running){
 
@@ -42,7 +46,13 @@ void cppmain() {
 
 }
 
+void usb_init(){
+	mainclass->usbInit();
+}
 
 
-
+uint32_t micros(){
+	//return DWT->CYCCNT / clkmhz;
+	return TIM_MICROS.Instance->CNT;
+}
 

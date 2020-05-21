@@ -10,6 +10,7 @@
 #include <CmdParser.h>
 #include <FFBoardMain.h>
 #include <MotorPWM.h>
+#include "usbd_customhid.h"
 #include "TMC4671.h"
 #include "flash_helpers.h"
 #include "ButtonSource.h"
@@ -30,6 +31,7 @@ struct FFBWheelConfig{
 	uint8_t drvtype = 0;
 	uint8_t enctype = 0;
 	uint8_t axes = 1;
+
 };
 
 enum class AnalogOffset : uint8_t{
@@ -39,7 +41,7 @@ enum class AnalogOffset : uint8_t{
 struct FFBWheelAnalogConfig{
 	uint8_t analogmask = 0xff;
 	AnalogOffset offsetmode;
-
+	bool invertX = false;
 };
 
 
@@ -64,6 +66,8 @@ public:
 
 	void SOF();
 	void usbInit(); // initialize a composite usb device
+	void usbSuspend(); // Called on usb disconnect and suspend
+	void usbResume(); // Called on usb resume
 
 	void saveFlash();
 	void restoreFlash();
@@ -79,19 +83,25 @@ public:
 	void adcUpd(volatile uint32_t* ADC_BUF);
 	void timerElapsed(TIM_HandleTypeDef* htim);
 
-	bool usb_update_flag = false;
-	bool update_flag = false;
+	volatile bool usb_update_flag = false;
+	volatile bool update_flag = false;
 
-	uint16_t degreesOfRotation = 900; // TODO save in flash
+	uint16_t degreesOfRotation = 900;
 	int32_t getEncValue(Encoder* enc,uint16_t degrees);
 
-	uint16_t power = 2000;
+
+	void setPower(uint16_t power);
+	uint16_t getPower();
 
 	float endstop_gain = 20;
 
 private:
 	void send_report();
 	int16_t updateEndstop();
+
+	// USB Report rate
+	uint8_t usb_report_rate = HID_FS_BINTERVAL; // 1 = 1000hz, 2 = 500hz, 3 = 250hz etc...
+	uint8_t report_rate_cnt = 0;
 
 	HidFFB* ffb;
 	TIM_HandleTypeDef* timer_update;
@@ -107,11 +117,15 @@ private:
 	volatile uint16_t adc_buf[ADC_PINS];
 	reportHID_t reportHID;
 
+	uint16_t power = 2000;
+
 	int32_t lastScaledEnc = 0;
 	int32_t scaledEnc = 0;
 	int32_t speed = 0;
-	bool tmcFeedForward = true;
+	bool tmcFeedForward = false;
 	uint16_t btnsources = 1; // Default ID1 = local buttons
+
+	volatile bool usb_disabled = true;
 
 
 //	TMC4671PIDConf tmcpids = TMC4671PIDConf({
@@ -128,8 +142,8 @@ private:
 	TMC4671PIDConf tmcpids = TMC4671PIDConf({
 		.fluxI		= 50,
 		.fluxP		= 2000,
-		.torqueI	= 1500,
-		.torqueP	= 650,
+		.torqueI	= 500,
+		.torqueP	= 300,
 		.velocityI	= 0,
 		.velocityP	= 128,
 		.positionI	= 0,

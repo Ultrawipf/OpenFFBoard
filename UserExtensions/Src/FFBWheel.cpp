@@ -36,8 +36,7 @@ const std::vector<class_entry<MotorDriver>> motor_sources =
 {
 		add_class<MotorDriver,MotorDriver>(),
 		add_class<TMC4671,MotorDriver>(),
-		add_class<MotorPWM_RC,MotorDriver>(),
-		add_class<MotorPWM_HB,MotorDriver>(),
+		add_class<MotorPWM,MotorDriver>(),
 };
 // 0-63 valid ids
 std::vector<class_entry<Encoder>> encoder_sources =
@@ -57,7 +56,7 @@ FFBWheel::FFBWheel() : btn_chooser(button_sources),drv_chooser(motor_sources),en
 	// Setup a timer
 	extern TIM_HandleTypeDef htim4;
 	this->timer_update = &htim4; // Timer setup with prescaler of sysclock
-	this->timer_update->Instance->ARR = 250;
+	this->timer_update->Instance->ARR = 500; // 250 = 4khz, 500 = 2khz
 	this->timer_update->Instance->CR1 = 1;
 	HAL_TIM_Base_Start_IT(this->timer_update);
 
@@ -124,12 +123,8 @@ void FFBWheel::saveFlash(){
 		btn->saveFlash();
 	}
 
-	if(drv->getInfo().id == TMC4671::info.id){
-		TMC4671* drv = static_cast<TMC4671*>(this->drv);
-		drv->saveFlash();
-	}
-
-	ffb->saveFlash();
+	drv->saveFlash(); // Motor driver
+	ffb->saveFlash(); // FFB handler
 }
 
 /*
@@ -139,10 +134,11 @@ void FFBWheel::update(){
 	int16_t lasttorque = endstopTorque;
 	bool updateTorque = false;
 
-	if(drv == nullptr || enc == nullptr){
+	if(drv == nullptr || enc == nullptr ){
 		pulseErrLed();
 		return;
 	}
+
 
 	if(usb_update_flag || update_flag){
 
@@ -180,18 +176,24 @@ void FFBWheel::update(){
 			torque *= 0.8*((float)this->power / (float)0x7fff); // Scale for power
 			updateTorque = true;
 		}
-		this->send_report();
+		if(++report_rate_cnt >= usb_report_rate){
+			report_rate_cnt = 0;
+			this->send_report();
+		}
 	}
-
 
 
 	if(endstopTorque!=lasttorque || updateTorque){
 		// Update torque
 		torque = torque+endstopTorque;
-		//Invert direction for now
 		torque = clip<int32_t,int16_t>(torque, -this->power, this->power);
 		if(abs(torque) == power){
 			pulseClipLed();
+		}
+
+		// If encoder was inverted also invert torque again so effects are correct
+		if(aconf.invertX){
+			torque = -torque;
 		}
 		drv->turn(torque);
 	}
@@ -214,6 +216,20 @@ int16_t FFBWheel::updateEndstop(){
 	return clip<int32_t,int32_t>(addtorque,-0x7fff,0x7fff);
 }
 
+void FFBWheel::setPower(uint16_t power){
+	// Update hardware limits for TMC for safety
+//	if(this->conf.drvtype == TMC4671::info.id){
+//		TMC4671* drv = static_cast<TMC4671*>(this->drv);
+//		tmclimits.pid_uq_ud = power;
+//		tmclimits.pid_torque_flux = power;
+//		drv->setLimits(tmclimits);
+//	}
+
+	this->power = power;
+}
+uint16_t FFBWheel::getPower(){
+	return this->power;
+}
 
 // create and setup a motor driver
 void FFBWheel::setDrvType(uint8_t drvtype){
@@ -362,6 +378,11 @@ int32_t FFBWheel::getEncValue(Encoder* enc,uint16_t degrees){
 	}
 	float angle = 360.0*((float)enc->getPos()/(float)enc->getCpr());
 	int32_t val = (0xffff / (float)degrees) * angle;
+
+	// Flip encoder value (Also has to flip torque)
+	if(aconf.invertX){
+		val = -val;
+	}
 	return val;
 }
 
@@ -402,15 +423,37 @@ void FFBWheel::timerElapsed(TIM_HandleTypeDef* htim){
 		update_flag = true;
 	}
 }
+// Called at 1khz. Triggers effect updates
+void FFBWheel::SOF(){
+	if(usb_disabled) // If previously disabled reenable
+		usbResume();
+	usb_update_flag = true;
+	// USB clocked update callback
+}
+
+void FFBWheel::usbSuspend(){
+	if(usb_disabled)
+		return;
+	usb_disabled = true;
+	ffb->stop_FFB();
+	ffb->reset_ffb(); // Delete all effects
+	if(drv != nullptr){
+		drv->turn(0);
+		drv->stop();
+	}
+
+}
+void FFBWheel::usbResume(){
+	usb_disabled = false;
+	if(drv != nullptr){
+		drv->start();
+	}
+}
 
 void FFBWheel::usbInit(){
 	usbInit_HID_Wheel();
 }
-// Called at 1khz. Triggers effect updates
-void FFBWheel::SOF(){
-	usb_update_flag = true;
-	// USB clocked update callback
-}
+
 
 /*
  * Helper functions for encoding and decoding flash variables
@@ -432,12 +475,12 @@ uint16_t FFBWheel::encodeConfToInt(FFBWheelConfig conf){
 FFBWheelAnalogConfig FFBWheel::decodeAnalogConfFromInt(uint16_t val){
 	FFBWheelAnalogConfig aconf;
 	aconf.analogmask = val & 0xff;
-	aconf.offsetmode = AnalogOffset((val >> 8) & 0x3);
+	aconf.invertX = (val >> 8) & 0x1;
 	return aconf;
 }
 uint16_t FFBWheel::encodeAnalogConfToInt(FFBWheelAnalogConfig conf){
 	uint16_t val = conf.analogmask & 0xff;
-	val |= (conf.analogmask & 0x3) << 8;
+	val |= (conf.invertX & 0x1) << 8;
 	return val;
 }
 

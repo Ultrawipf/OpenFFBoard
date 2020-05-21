@@ -26,7 +26,7 @@ extern "C" {
 #include "eeprom_addresses.h"
 
 void cppmain();
-
+void usb_init();
 
 #ifdef __cplusplus
 }
@@ -50,6 +50,8 @@ T clip(T v, C l, C h)
 {
   return { v > h ? h : v < l ? l : v };
 }
+
+uint32_t micros(); // Returns microsecond scaled time
 
 #endif
 

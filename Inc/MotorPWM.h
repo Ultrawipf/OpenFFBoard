@@ -10,22 +10,23 @@
 
 #include <MotorDriver.h>
 #include "cppmain.h"
+#include "CommandHandler.h"
+#include "TimerHandler.h"
 
-extern TIM_HandleTypeDef htim2;
+extern TIM_HandleTypeDef htim2; // Htim2 is 32 bit
 
-void pwmInitTimer(TIM_HandleTypeDef* timer,uint32_t channel,uint32_t period);
-void setPWM(uint16_t value,TIM_HandleTypeDef* timer,uint32_t channel,uint32_t period);
+void pwmInitTimer(TIM_HandleTypeDef* timer,uint32_t channel,uint32_t period,uint32_t prescaler);
+void setPWM_HAL(uint32_t value,TIM_HandleTypeDef* timer,uint32_t channel,uint32_t period);
+
+enum class ModePWM_DRV : uint8_t {RC_PWM=0,CENTERED_PWM=1,PWM_DIR=2};
+
+enum class SpeedPWM_DRV : uint8_t {LOW=0,MID=1,HIGH=2,VERYHIGH=3};
 
 
-
-/*
- * Generates a classic RC 20ms 1000-2000µs signal
- * Centered at 1500µs for bidirectional RC ESCs and similiar stuff
- */
-class MotorPWM_RC: public MotorDriver {
+class MotorPWM: public MotorDriver,public CommandHandler{
 public:
-	MotorPWM_RC();
-	virtual ~MotorPWM_RC();
+	MotorPWM();
+	virtual ~MotorPWM();
 
 	static ClassIdentifier info;
 	const ClassIdentifier getInfo();
@@ -34,35 +35,33 @@ public:
 	void stop();
 	void start();
 
+	void setPwmSpeed(SpeedPWM_DRV spd);
+	SpeedPWM_DRV getPwmSpeed();
+
+	void setMode(ModePWM_DRV mode);
+	ModePWM_DRV getMode();
+
+	void saveFlash(); 		// Write to flash here
+	void restoreFlash();	// Load from flash
+
+	bool command(ParsedCommand* cmd,std::string* reply);
+
+	void setPWM(uint32_t value);
+
 private:
-	const uint32_t period = 20000;
+	const uint32_t basefreq = 96;
+	float tFreq = 1; // Frequency scaling. Timer freq in MHz
+	int32_t period = 20000;
+	int32_t prescaler = 95;
+
+
+	SpeedPWM_DRV pwmspeed = SpeedPWM_DRV::LOW;
+	ModePWM_DRV mode = ModePWM_DRV::RC_PWM;
+
 	bool active = false;
-	const uint32_t channel = TIM_CHANNEL_3; // Motor port CS3
+	const uint32_t channel = TIM_CHANNEL_3; // Motor port CS3 (also update pwm method)
 
 	TIM_HandleTypeDef* timer = &htim2;
-};
-
-/*
- * Generates a 0-100% PWM signal on CS3
- * and outputs complementary direction signals on CS1 and CS2
- * Can be used with cheap halfbridge modules and DC motors
- */
-class MotorPWM_HB: public MotorDriver {
-public:
-	MotorPWM_HB();
-	virtual ~MotorPWM_HB();
-
-	static ClassIdentifier info;
-	const ClassIdentifier getInfo();
-
-	void turn(int16_t power);
-	void stop();
-	void start();
-
-private:
-	const uint32_t period = 8192;
-	bool active = false;
-	const uint32_t channel = TIM_CHANNEL_3; // Motor port CS3
 
 	GPIO_TypeDef* leftPort=SPI1_SS1_GPIO_Port;
 	const uint16_t leftPin=SPI1_SS1_Pin;
@@ -70,6 +69,7 @@ private:
 	GPIO_TypeDef* rightPort=SPI1_SS2_GPIO_Port;
 	const uint16_t rightPin=SPI1_SS2_Pin;
 
-	TIM_HandleTypeDef* timer = &htim2;
 };
+
+
 #endif /* MOTORPWM_H_ */

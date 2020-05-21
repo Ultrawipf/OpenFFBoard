@@ -2,10 +2,11 @@
 #define __CONSTANTS_H
 
 #include "main.h"
+#include "system_stm32f4xx.h"
 
-#define TIM_ENC htim3;
+#define TIM_ENC htim3
 // Timer 3 is used by the encoder. All other timers are free to use
-
+#define TIM_MICROS htim5
 
 #define SW_VERSION 2
 

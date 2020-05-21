@@ -37,6 +37,10 @@ public:
 	uint32_t getRate(); // Returns an estimate of the hid effect update speed in hz
 	bool getFfbActive();
 
+	void reset_ffb();
+	void start_FFB();
+	void stop_FFB();
+
 	void restoreFlash();
 	void saveFlash();
 
@@ -47,14 +51,12 @@ private:
 	void new_effect(FFB_CreateNewEffect_Feature_Data_t* effect);
 	void free_effect(uint16_t id);
 	void ffb_control(uint8_t cmd);
-	void reset_ffb();
 	void set_effect(FFB_SetEffect_t* effect);
 	void set_condition(FFB_SetCondition_Data_t* cond);
 
 	void set_constant_effect(FFB_SetConstantForce_Data_t* effect);
 	void set_periodic(FFB_SetPeriodic_Data_t* report);
-	void start_FFB();
-	void stop_FFB();
+
 
 	void set_filters(FFB_Effect* effect);
 

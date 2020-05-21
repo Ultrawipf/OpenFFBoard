@@ -99,7 +99,7 @@ void ShifterG29::restoreFlash(){
 
 void ShifterG29::printModes(std::string* reply){
 	for(uint8_t i = 0; i<mode_names.size();i++){
-		*reply+= std::to_string(i) + ":" + mode_names[i]+"\n";
+		*reply+=  mode_names[i]  + ":" + std::to_string(i)+"\n";
 	}
 }
 

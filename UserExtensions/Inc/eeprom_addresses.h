@@ -10,7 +10,7 @@
 
 #include "main.h"
 // Change this to the amount of currently registered variables
-#define NB_OF_VAR	18
+#define NB_OF_VAR	21
 
 extern uint16_t VirtAddVarTab[NB_OF_VAR];
 
@@ -58,5 +58,8 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 
 // FFB
 #define ADR_FFB_EFFECTS1				0x210 // 0-7 spring, 8-15 friction
+
+// PWM
+#define ADR_PWM_MODE					0x220
 
 #endif /* EEPROM_ADDRESSES_H_ */

@@ -51,7 +51,7 @@
 /** @defgroup USBD_CUSTOM_HID_Exported_Defines
   * @{
   */ 
-#define HID_FS_BINTERVAL 0x01
+#define HID_FS_BINTERVAL 0x01 // 1 = 1khz; 2 = 500hz...
 
 
 #define CUSTOM_HID_EPIN_ADDR                 0x83

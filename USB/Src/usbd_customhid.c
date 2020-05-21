@@ -290,15 +290,18 @@ static uint8_t  USBD_CUSTOM_HID_Init (USBD_HandleTypeDef *pdev,
 static uint8_t  USBD_CUSTOM_HID_DeInit (USBD_HandleTypeDef *pdev, 
                                  uint8_t cfgidx)
 {
+
+
+	// Don't close EP... Fixes enumeration error after connecting.
+	// This method gets called on RECONNECT and not disconnect.
+
   /* Close CUSTOM_HID EP IN */
-  USBD_LL_CloseEP(pdev,
-                  CUSTOM_HID_EPIN_ADDR);
-  
+  //USBD_LL_CloseEP(pdev,CUSTOM_HID_EPIN_ADDR);
+
   /* Close CUSTOM_HID EP OUT */
-  USBD_LL_CloseEP(pdev,
-                  CUSTOM_HID_EPOUT_ADDR);
+  USBD_LL_CloseEP(pdev, CUSTOM_HID_EPOUT_ADDR);
   
-  /* FRee allocated memory */
+  /* Free allocated memory */
   if(hhid != NULL)
   {
     fops_hid_p->DeInit();

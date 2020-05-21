@@ -10,8 +10,9 @@
 
 #include "cppmain.h"
 #include "ChoosableClass.h"
+#include "PersistentStorage.h"
 
-class MotorDriver : virtual ChoosableClass {
+class MotorDriver : virtual ChoosableClass,public PersistentStorage {
 public:
 	MotorDriver();
 	virtual ~MotorDriver();

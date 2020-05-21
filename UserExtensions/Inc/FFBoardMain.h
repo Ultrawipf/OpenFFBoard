@@ -15,7 +15,6 @@
 #include "usbd_cdc_if.h"
 #include "ChoosableClass.h"
 #include "CommandHandler.h"
-
 #include <vector>
 
 class FFBoardMain : virtual ChoosableClass, public CommandHandler {
@@ -32,7 +31,8 @@ public:
 	virtual void update();
 	virtual void cdcRcv(char* Buf, uint32_t *Len);
 	virtual void SOF();
-
+	virtual void usbSuspend(); // Called on usb disconnect and suspend
+	virtual void usbResume(); // Called on usb resume
 
 
 private:
