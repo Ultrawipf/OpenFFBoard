@@ -5,17 +5,17 @@
  *      Author: Yannick
  */
 
-#ifndef SHIFTERG29_H_
-#define SHIFTERG29_H_
+#ifndef SHIFTERANALOG_H_
+#define SHIFTERANALOG_H_
 #include "ButtonSource.h"
 #include "AdcHandler.h"
 #include "CommandHandler.h"
 #include "vector"
 
-class ShifterG29 : public ButtonSource, AdcHandler,CommandHandler {
+class ShifterAnalog : public ButtonSource, AdcHandler,CommandHandler {
 
 /*
- * Button mapper for Logitech G29 shifters (6 gears + reverse)
+ * Button mapper for analog (Logitech G29) shifters (6 gears + reverse)
  * Connection:
  * X-Axis: A5
  * Y-Axis: A6
@@ -25,11 +25,12 @@ class ShifterG29 : public ButtonSource, AdcHandler,CommandHandler {
  */
 
 enum class ShifterMode : uint8_t {G29_H=0,G29_seq=1};
-std::vector<std::string> mode_names = {"G29-H","G29 Sequential"};
 
 public:
-	ShifterG29();
-	virtual ~ShifterG29();
+	const std::vector<std::string> mode_names = {"G29-H","G29 Sequential"};
+
+	ShifterAnalog();
+	virtual ~ShifterAnalog();
 
 	const ClassIdentifier getInfo();
 	static ClassIdentifier info;
@@ -71,4 +72,4 @@ private:
 
 };
 
-#endif /* SHIFTERG29_H_ */
+#endif /* SHIFTERANALOG_H_ */

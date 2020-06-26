@@ -13,15 +13,22 @@
 #include "ChoosableClass.h"
 #include "CommandHandler.h"
 
+enum class SPI_BtnMode : uint8_t {TM=0,PISOSR=1};
+
+
 struct ButtonSourceConfig{
-	uint8_t numButtons = 32;
+	uint8_t numButtons = 8;
 	bool cutRight = false; // if num buttons to read are not byte aligned specify where to shift
 	bool invert = false;
-	uint8_t extraOptions = 0; // Save anything extra here like special flags
+	SPI_BtnMode mode=SPI_BtnMode::TM; // Mode preset
+	bool cspol = false; // Set by preset
 };
+
 
 class SPI_Buttons: public ButtonSource,CommandHandler {
 public:
+	const std::vector<std::string> mode_names = {"Thrustmaster/HEF4021BT","Shift register (74HC165)"};
+
 	SPI_Buttons();
 	virtual ~SPI_Buttons();
 	const ClassIdentifier getInfo();
@@ -35,6 +42,10 @@ public:
 	void restoreFlash();
 
 	const uint8_t maxButtons = 32;
+	void printModes(std::string* reply);
+
+	void setMode(SPI_BtnMode mode);
+	void initSPI();
 
 private:
 	static ButtonSourceConfig decodeIntToConf(uint16_t val);
@@ -51,6 +62,8 @@ private:
 	uint8_t offset = 0;
 
 	ButtonSourceConfig conf;
+
+
 };
 
 #endif /* SPIBUTTONS_H_ */

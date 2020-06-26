@@ -10,14 +10,13 @@
 #include <CmdParser.h>
 #include <FFBoardMain.h>
 #include <MotorPWM.h>
+#include <ShifterAnalog.h>
 #include "usbd_customhid.h"
 #include "TMC4671.h"
 #include "flash_helpers.h"
 #include "ButtonSource.h"
 #include "LocalButtons.h"
 #include "SPIButtons.h"
-#include "ShifterG29.h"
-
 #include "EncoderLocal.h"
 
 #include "cppmain.h"
@@ -93,7 +92,7 @@ public:
 	void setPower(uint16_t power);
 	uint16_t getPower();
 
-	float endstop_gain = 20;
+	float endstop_gain = 10;
 
 private:
 	void send_report();
@@ -150,8 +149,8 @@ private:
 		.positionP	= 64
 	});
 	TMC4671Limits tmclimits = TMC4671Limits({
-		.pid_torque_flux_ddt	= 10000,
-		.pid_uq_ud				= 24575,
+		.pid_torque_flux_ddt	= 30000,
+		.pid_uq_ud				= 30000,
 		.pid_torque_flux		= 32767,
 		.pid_acc_lim			= 2147483647,
 		.pid_vel_lim			= 2147483647,

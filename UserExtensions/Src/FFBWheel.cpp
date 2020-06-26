@@ -28,7 +28,7 @@ const std::vector<class_entry<ButtonSource>> button_sources =
 {
 		add_class<LocalButtons,ButtonSource>(),
 		add_class<SPI_Buttons,ButtonSource>(),
-		add_class<ShifterG29,ButtonSource>()
+		add_class<ShifterAnalog,ButtonSource>()
 };
 
 // 0-63 valid ids
@@ -197,6 +197,12 @@ void FFBWheel::update(){
 		}
 		drv->turn(torque);
 	}
+
+
+	// Button:
+	if(usb_update_flag && HAL_GPIO_ReadPin(BUTTON_A_GPIO_Port, BUTTON_A_Pin)){
+		this->enc->setPos(0);
+	}
 }
 
 /*
@@ -285,7 +291,7 @@ void FFBWheel::setupTMC4671(){
 	drv->setAddress(1);
 	drv->setPids(tmcpids);
 	drv->setLimits(tmclimits);
-	//drv->setBiquadFlux(fluxbq); // No filter for more linear response. Set flux i zero
+	//drv->setBiquadFlux(fluxbq); // No filter for more linear response.
 	drv->restoreFlash();
 
 	if(tmcFeedForward){
@@ -293,7 +299,7 @@ void FFBWheel::setupTMC4671(){
 		drv->setupFeedForwardVelocity(velocityFFgain, velocityFFconst);
 		drv->setFFMode(FFMode::torque);
 	}
-	drv->setPhiEtype(PhiE::abn);
+	//drv->setPhiEtype(PhiE::abn);
 	drv->initialize();
 	drv->setMotionMode(MotionMode::torque);
 }

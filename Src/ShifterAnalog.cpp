@@ -5,27 +5,27 @@
  *      Author: Yannick
  */
 
-#include "ShifterG29.h"
+#include <ShifterAnalog.h>
 
-ClassIdentifier ShifterG29::info = {
-		 .name = "Shifter G29" ,
+ClassIdentifier ShifterAnalog::info = {
+		 .name = "Shifter Analog" ,
 		 .id=2
  };
-const ClassIdentifier ShifterG29::getInfo(){
+const ClassIdentifier ShifterAnalog::getInfo(){
 	return info;
 }
 
-ShifterG29::ShifterG29() {
+ShifterAnalog::ShifterAnalog() {
 	this->restoreFlash();
 }
 
-ShifterG29::~ShifterG29() {
+ShifterAnalog::~ShifterAnalog() {
 
 }
 
 
 
-void ShifterG29::readButtons(uint32_t* buf){
+void ShifterAnalog::readButtons(uint32_t* buf){
 	gear = 0;
 	*buf = 0;
 
@@ -69,7 +69,7 @@ void ShifterG29::readButtons(uint32_t* buf){
 	}
 }
 
-uint16_t ShifterG29::getBtnNum(){
+uint16_t ShifterAnalog::getBtnNum(){
 	if(mode == ShifterMode::G29_seq){
 		return 2;
 	}else if(mode == ShifterMode::G29_H){
@@ -80,30 +80,30 @@ uint16_t ShifterG29::getBtnNum(){
 }
 
 // Called when ADC conversion is done
-void ShifterG29::adcUpd(volatile uint32_t* ADC_BUF){
+void ShifterAnalog::adcUpd(volatile uint32_t* ADC_BUF){
 	x_val = ADC_BUF[ADC_CHAN_FPIN+x_chan];
 	y_val = ADC_BUF[ADC_CHAN_FPIN+y_chan];
 }
 
 
-void ShifterG29::saveFlash(){
+void ShifterAnalog::saveFlash(){
 	uint16_t val = (uint8_t)this->mode;
 	Flash_Write(ADR_SHIFTER_BTN_CONF, val);
 }
 
-void ShifterG29::restoreFlash(){
+void ShifterAnalog::restoreFlash(){
 	uint16_t confint = 0;
 	Flash_Read(ADR_SHIFTER_BTN_CONF, &confint);
 	this->mode = ShifterMode(confint);
 }
 
-void ShifterG29::printModes(std::string* reply){
+void ShifterAnalog::printModes(std::string* reply){
 	for(uint8_t i = 0; i<mode_names.size();i++){
 		*reply+=  mode_names[i]  + ":" + std::to_string(i)+"\n";
 	}
 }
 
-bool ShifterG29::command(ParsedCommand* cmd,std::string* reply){
+bool ShifterAnalog::command(ParsedCommand* cmd,std::string* reply){
 	bool result = true;
 	// use "shifter_mode!" to print a list of possible modes and choose one
 	if(cmd->cmd == "shifter_mode"){

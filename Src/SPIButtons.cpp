@@ -20,7 +20,13 @@ const ClassIdentifier SPI_Buttons::getInfo(){
 
 SPI_Buttons::SPI_Buttons() {
 	restoreFlash();
-	this->conf.invert = true;
+
+	initSPI();
+
+	this->setCommandsEnabled(true);
+}
+
+void SPI_Buttons::initSPI(){
 	spi = &HSPI2;
 	cspin = SPI2_NSS_Pin;
 	csport = SPI2_NSS_GPIO_Port;
@@ -28,13 +34,48 @@ SPI_Buttons::SPI_Buttons() {
 	this->spi->Init.FirstBit = SPI_FIRSTBIT_LSB;
 	this->spi->Init.CLKPhase = SPI_PHASE_1EDGE;
 	this->spi->Init.CLKPolarity = SPI_POLARITY_LOW;
+
+	// Setup presets
+	if(conf.mode == SPI_BtnMode::TM){
+		this->conf.cspol = false;
+
+		this->spi->Init.CLKPolarity = SPI_POLARITY_LOW;
+
+	}else if(conf.mode == SPI_BtnMode::PISOSR){
+		this->conf.cspol = true;
+		this->spi->Init.FirstBit = SPI_FIRSTBIT_MSB;
+		this->spi->Init.CLKPolarity = SPI_POLARITY_HIGH;
+	}
+
+
+
 	HAL_SPI_Init(this->spi);
-	this->setCommandsEnabled(true);
 }
 
 SPI_Buttons::~SPI_Buttons() {
 
 }
+
+/*
+ * Called on preset change
+ */
+void SPI_Buttons::setMode(SPI_BtnMode mode){
+	this->conf.mode = mode;
+
+	if(conf.mode == SPI_BtnMode::TM){
+		this->conf.cspol = false;
+		this->conf.cutRight = false;
+
+
+	}else if(conf.mode == SPI_BtnMode::PISOSR){
+		this->conf.cspol = true;
+
+	}
+
+	setConfig(conf);
+	initSPI(); // Reinit spi
+}
+
 void SPI_Buttons::setConfig(ButtonSourceConfig config){
 	config.numButtons = MIN(this->maxButtons, config.numButtons);
 	this->conf = config;
@@ -72,11 +113,17 @@ void SPI_Buttons::process(uint32_t* buf){
 }
 void SPI_Buttons::readButtons(uint32_t* buf){
 
-	HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(this->csport,this->cspin,conf.cspol ? GPIO_PIN_SET : GPIO_PIN_RESET);
 	HAL_SPI_Receive(this->spi,(uint8_t*)buf,MIN(this->bytes,4),5);
-	HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_SET);
+	HAL_GPIO_WritePin(this->csport,this->cspin,conf.cspol ? GPIO_PIN_RESET : GPIO_PIN_SET);
 
 	process(buf);
+}
+
+void SPI_Buttons::printModes(std::string* reply){
+	for(uint8_t i = 0; i<mode_names.size();i++){
+		*reply+=  mode_names[i]  + ":" + std::to_string(i)+"\n";
+	}
 }
 
 bool SPI_Buttons::command(ParsedCommand* cmd,std::string* reply){
@@ -117,6 +164,14 @@ bool SPI_Buttons::command(ParsedCommand* cmd,std::string* reply){
 		}else{
 			*reply+="Err. cut bytes right: 1 else 0";
 		}
+	}if(cmd->cmd == "spibtn_mode"){
+		if(cmd->type == CMDtype::set){
+			setMode((SPI_BtnMode)cmd->val);
+		}else if(cmd->type == CMDtype::get){
+			*reply += std::to_string((uint8_t)this->conf.mode);
+		}else{
+			printModes(reply);
+		}
 	}else{
 		result = false;
 	}
@@ -129,14 +184,14 @@ ButtonSourceConfig SPI_Buttons::decodeIntToConf(uint16_t val){
 	c.numButtons = val & 0x3F;
 	c.invert = (val >> 6) & 0x1;
 	c.cutRight = (val >> 7) & 0x1;
-	c.extraOptions = (val >> 8);
+	c.mode = SPI_BtnMode(val >> 8);
 	return c;
 }
 uint16_t SPI_Buttons::encodeConfToInt(ButtonSourceConfig* c){
 	uint16_t val = c->numButtons & 0x3F;
 	val |= c->invert << 6;
 	val |= c->cutRight << 7;
-	val |= c->extraOptions << 8;
+	val |= (uint8_t)c->mode << 8;
 	return val;
 }
 

@@ -52,9 +52,9 @@ bool TMCDebugBridge::command(ParsedCommand* cmd,std::string* reply){
 		}
 	}else if(cmd->cmd == "encalign"){
 		if(cmd->type == CMDtype::get){
-			drv->bangInitABN(3000);
+			drv->bangInitEnc(3000);
 		}else if(cmd->type == CMDtype::set){
-			drv->bangInitABN(cmd->val);
+			drv->bangInitEnc(cmd->val);
 		}
 	}else if(cmd->cmd == "ppr"){
 		if(cmd->type == CMDtype::get){

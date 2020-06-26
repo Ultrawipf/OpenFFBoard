@@ -24,12 +24,14 @@ enum class PhiE : uint8_t {ext=1,openloop=2,abn=3,hall=5,aenc=6,aencE=7,NONE};
 enum class MotionMode : uint8_t {stop=0,torque=1,velocity=2,position=3,prbsflux=4,prbstorque=5,prbsvelocity=6,uqudext=8,encminimove=9,NONE};
 enum class FFMode : uint8_t {none=0,velocity=1,torque=2};
 enum class PosSelection : uint8_t {PhiE=0, PhiE_ext=1, PhiE_openloop=2, PhiE_abn=3, res1=4, PhiE_hal=5, PhiE_aenc=6, PhiA_aenc=7, res2=8, PhiM_abn=9, PhiM_abn2=10, PhiM_aenc=11, PhiM_hal=12};
+enum class EncoderType_TMC : uint8_t {NONE=0,abn=1,sincos=2,uvw=3,hall=4,ext=5}; // max 7
 
 struct TMC4671MotConf{
-	MotorType motor_type = MotorType::NONE;
+	MotorType motor_type = MotorType::NONE; //saved
+	EncoderType_TMC enctype = EncoderType_TMC::NONE; //saved
 	PhiE phiEsource 	= PhiE::ext;
-	uint16_t pole_pairs = 50;
-	PosSelection pos_sel = PosSelection::PhiE; // TODO save to flash
+	uint16_t pole_pairs = 4; //saved
+	PosSelection pos_sel = PosSelection::PhiE;
 };
 
 // Basic failsafe hardware boot config for inits
@@ -37,12 +39,12 @@ struct TMC4671MainConfig{
 
 	TMC4671MotConf motconf;
 	uint16_t pwmcnt = 3999;
-	uint8_t bbmL	= 5;
-	uint8_t bbmH	= 5;
-	uint16_t mdecA 	= 668; // 334 default
-	uint16_t mdecB 	= 0;
+	uint8_t bbmL	= 10;
+	uint8_t bbmH	= 10;
+	uint16_t mdecA 	= 334; // 334 default
+	uint16_t mdecB 	= 668;
 	uint32_t mclkA	= 0x20000000; //0x20000000 default
-	uint32_t mclkB	= 0;
+	uint32_t mclkB	= 0x20000000; // For AENC
 	uint32_t adc_I0_offset 	= 33415;
 	uint32_t adc_I1_offset 	= 33415;
 	uint32_t adc_I0_scale	= 256;
@@ -92,8 +94,28 @@ struct TMC4671ABNConf{
 	bool latch_on_N = false; // Latch offsets on n pulse
 	int16_t phiEoffset = 0;
 	int16_t phiMoffset = 0;
-	int16_t bangInitPower = 6000;
-	bool initialized = false;
+};
+
+struct TMC4671AENCConf{
+	uint32_t ppr = 1; //0x40
+	int16_t phiAoffset = 0; // Main offset. 0x3e
+
+	int16_t phiEoffset = 0; // 0x45&0xffff
+	int16_t phiMoffset = 0;	// 0x45&0xffff0000
+
+	uint16_t AENC0_offset = 0x3fff;
+	int16_t AENC0_scale = 256;
+	uint16_t AENC1_offset = 0x3fff;
+	int16_t AENC1_scale = 256;
+	uint16_t AENC2_offset = 20000;
+	int16_t AENC2_scale = 256;
+
+	int16_t nMask = 0; // 0x3c0xffff0000
+	int16_t nThreshold = 0; // 0x3c&0xffff
+	// 0x3b
+	bool uvwmode = false; // 0 = sincos, 1 = uvw
+	bool rdir = false;
+
 };
 
 struct TMC4671HALLConf{
@@ -160,12 +182,16 @@ public:
 
 	// Setup routines
 	void calibrateAdcOffset();
-	void calibrateAdcScale();
 	void setup_ABN_Enc(TMC4671ABNConf encconf);
+	void setup_AENC(TMC4671AENCConf encconf);
 	void setup_HALL(TMC4671HALLConf hallconf);
-	void bangInitABN(int16_t power);
+	void bangInitEnc(int16_t power);
 	void estimateABNparams();
-	bool checkABN();
+	bool checkEncoder();
+	void calibrateAenc();
+
+	void setEncoderType(EncoderType_TMC type);
+	uint32_t getEncPpr();
 
 	void setAdcOffset(uint32_t adc_I0_offset,uint32_t adc_I1_offset);
 	void setAdcScale(uint32_t adc_I0_scale,uint32_t adc_I1_scale);
@@ -192,6 +218,9 @@ public:
 	int16_t nextFlux = 0;
 	int16_t idleFlux = 0;
 	uint16_t maxOffsetFlux = 0;
+
+	int16_t bangInitPower = 5000;
+	bool encoderInitialized = false;
 
 	void setTorque(int16_t torque);
 
@@ -232,6 +261,7 @@ public:
 
 	TMC4671ABNConf abnconf;
 	TMC4671HALLConf hallconf;
+	TMC4671AENCConf aencconf;
 
 	//Encoder
 	int32_t getPos();
