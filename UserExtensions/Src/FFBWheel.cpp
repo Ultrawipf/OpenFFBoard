@@ -173,7 +173,7 @@ void FFBWheel::update(){
 		}
 		if(endstopTorque == 0 || (endstopTorque > 0 && torque > 0) || (endstopTorque < 0 && torque < 0))
 		{
-			torque *= 0.8*((float)this->power / (float)0x7fff); // Scale for power
+			torque *= 0.9*((float)this->power / (float)0x7fff); // Scale for power. Endstop margin
 			updateTorque = true;
 		}
 		if(++report_rate_cnt >= usb_report_rate){
@@ -199,10 +199,6 @@ void FFBWheel::update(){
 	}
 
 
-	// Button:
-	if(usb_update_flag && HAL_GPIO_ReadPin(BUTTON_A_GPIO_Port, BUTTON_A_Pin)){
-		this->enc->setPos(0);
-	}
 }
 
 /*
@@ -298,7 +294,10 @@ void FFBWheel::setupTMC4671(){
 		drv->setupFeedForwardTorque(torqueFFgain, torqueFFconst);
 		drv->setupFeedForwardVelocity(velocityFFgain, velocityFFconst);
 		drv->setFFMode(FFMode::torque);
+	}else{
+		drv->setSequentialPI(tmcSequentialPI);
 	}
+
 	//drv->setPhiEtype(PhiE::abn);
 	drv->initialize();
 	drv->setMotionMode(MotionMode::torque);
@@ -458,6 +457,16 @@ void FFBWheel::usbResume(){
 
 void FFBWheel::usbInit(){
 	usbInit_HID_Wheel();
+}
+
+// External interrupt pins
+void FFBWheel::exti(uint16_t GPIO_Pin){
+	if(GPIO_Pin == BUTTON_A_Pin){
+		// Button down?
+		if(HAL_GPIO_ReadPin(BUTTON_A_GPIO_Port, BUTTON_A_Pin) && this->enc != nullptr){
+			this->enc->setPos(0);
+		}
+	}
 }
 
 

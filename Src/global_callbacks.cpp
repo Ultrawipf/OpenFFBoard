@@ -32,7 +32,7 @@ std::vector<CommandHandler*> cmdHandlers;
 
 uint32_t maxVoltage = 75000; // Force braking
 uint32_t voltageDiffActivate = 8000;
-uint32_t voltageDiffDeactivate = 3000;
+uint32_t voltageDiffDeactivate = 2000;
 std::vector<AdcHandler*> adcHandlers;
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc){
 	//Pulse braking mosfet if internal voltage is higher than supply. Conversion: V = 1/36
@@ -115,3 +115,6 @@ void USBD_Suspend(){
 void USBD_Resume(){
 	mainclass->usbResume();
 }
+
+
+

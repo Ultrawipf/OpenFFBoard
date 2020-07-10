@@ -24,6 +24,7 @@
 #include "AdcHandler.h"
 #include "TimerHandler.h"
 #include "ClassChooser.h"
+#include "ExtiHandler.h"
 
 
 struct FFBWheelConfig{
@@ -44,7 +45,7 @@ struct FFBWheelAnalogConfig{
 };
 
 
-class FFBWheel: public FFBoardMain, AdcHandler, TimerHandler, PersistentStorage{
+class FFBWheel: public FFBoardMain, AdcHandler, TimerHandler, PersistentStorage,ExtiHandler{
 public:
 	FFBWheel();
 	virtual ~FFBWheel();
@@ -81,6 +82,7 @@ public:
 
 	void adcUpd(volatile uint32_t* ADC_BUF);
 	void timerElapsed(TIM_HandleTypeDef* htim);
+	void exti(uint16_t GPIO_Pin);
 
 	volatile bool usb_update_flag = false;
 	volatile bool update_flag = false;
@@ -121,7 +123,8 @@ private:
 	int32_t lastScaledEnc = 0;
 	int32_t scaledEnc = 0;
 	int32_t speed = 0;
-	bool tmcFeedForward = false;
+	bool tmcFeedForward = false; // Experimental
+	bool tmcSequentialPI = true;
 	uint16_t btnsources = 1; // Default ID1 = local buttons
 
 	volatile bool usb_disabled = true;
@@ -140,7 +143,7 @@ private:
 //	});
 	TMC4671PIDConf tmcpids = TMC4671PIDConf({
 		.fluxI		= 50,
-		.fluxP		= 2000,
+		.fluxP		= 500,
 		.torqueI	= 500,
 		.torqueP	= 300,
 		.velocityI	= 0,
@@ -151,7 +154,7 @@ private:
 	TMC4671Limits tmclimits = TMC4671Limits({
 		.pid_torque_flux_ddt	= 30000,
 		.pid_uq_ud				= 30000,
-		.pid_torque_flux		= 32767,
+		.pid_torque_flux		= 30000,
 		.pid_acc_lim			= 2147483647,
 		.pid_vel_lim			= 2147483647,
 		.pid_pos_low			= -2147483647,

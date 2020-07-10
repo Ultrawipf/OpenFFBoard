@@ -66,7 +66,7 @@ bool FFBoardMain::executeSysCommand(ParsedCommand* cmd,std::string* reply){
 		}
 
 	}else if(cmd->cmd == "swver"){
-		*reply += std::to_string(SW_VERSION);
+		*reply += (SW_VERSION);
 
 	}else if(cmd->type!=CMDtype::set &&cmd->cmd == "lsmain"){
 		*reply += mainchooser.printAvailableClasses();

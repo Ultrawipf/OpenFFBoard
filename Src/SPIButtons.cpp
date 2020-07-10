@@ -43,7 +43,6 @@ void SPI_Buttons::initSPI(){
 
 	}else if(conf.mode == SPI_BtnMode::PISOSR){
 		this->conf.cspol = true;
-		this->spi->Init.FirstBit = SPI_FIRSTBIT_MSB;
 		this->spi->Init.CLKPolarity = SPI_POLARITY_HIGH;
 	}
 
@@ -64,7 +63,7 @@ void SPI_Buttons::setMode(SPI_BtnMode mode){
 
 	if(conf.mode == SPI_BtnMode::TM){
 		this->conf.cspol = false;
-		this->conf.cutRight = false;
+		this->conf.cutRight = true;
 
 
 	}else if(conf.mode == SPI_BtnMode::PISOSR){

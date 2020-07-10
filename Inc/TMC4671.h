@@ -41,7 +41,7 @@ struct TMC4671MainConfig{
 	uint16_t pwmcnt = 3999;
 	uint8_t bbmL	= 10;
 	uint8_t bbmH	= 10;
-	uint16_t mdecA 	= 334; // 334 default
+	uint16_t mdecA 	= 668; // 334 default. 668 for lower noise
 	uint16_t mdecB 	= 668;
 	uint32_t mclkA	= 0x20000000; //0x20000000 default
 	uint32_t mclkB	= 0x20000000; // For AENC
@@ -122,6 +122,7 @@ struct TMC4671HALLConf{
 	bool polarity = false;
 	bool interpolation = true;
 	bool direction = false;
+	bool filter = true;
 	uint16_t blank = 100;
 	int16_t pos0 = 0;
 	int16_t pos60 = 10922;
@@ -199,6 +200,7 @@ public:
 	void setupFeedForwardTorque(int32_t gain, int32_t constant);
 	void setupFeedForwardVelocity(int32_t gain, int32_t constant);
 	void setFFMode(FFMode mode);
+	void setSequentialPI(bool sequential);
 	bool feedforward = false;
 
 	void setBiquadFlux(TMC4671Biquad bq);
@@ -219,6 +221,8 @@ public:
 	int16_t idleFlux = 0;
 	uint16_t maxOffsetFlux = 0;
 
+	bool useSvPwm = true;
+
 	int16_t bangInitPower = 5000;
 	bool encoderInitialized = false;
 
@@ -234,6 +238,7 @@ public:
 	int16_t getFlux();
 	void setFluxTorque(int16_t flux, int16_t torque);
 	void setFluxTorqueFF(int16_t flux, int16_t torque);
+	int32_t getActualCurrent();
 
 	void setPhiEtype(PhiE type);
 	PhiE getPhiEtype();
@@ -285,6 +290,9 @@ public:
 
 	bool command(ParsedCommand* cmd,std::string* reply);
 
+	void HAL_SPI_TXRX_COMPLETE();
+
+
 private:
 	MotionMode curMotionMode = MotionMode::stop;
 	bool oldTMCdetected = false;
@@ -297,6 +305,7 @@ private:
 
 	void initAdc(uint16_t mdecA, uint16_t mdecB,uint32_t mclkA,uint32_t mclkB);
 	void setPwm(uint8_t val,uint16_t maxcnt,uint8_t bbmL,uint8_t bbmH);// 100MHz/maxcnt+1
+	void setSvPwm(bool enable);
 	void encInit();
 
 	uint32_t initTime = 0;

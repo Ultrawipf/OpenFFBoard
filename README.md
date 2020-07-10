@@ -8,6 +8,10 @@ More documentation about this project is on the [hackaday.io page](https://hacka
 
 The hardware designs are found under [OpenFFBoard-hardware](https://github.com/Ultrawipf/OpenFFBoard-hardware).
 
+The GUI for configuration is found at [OpenFFBoard-configurator](https://github.com/Ultrawipf/OpenFFBoard-configurator).
+
+Updates often require matching firmware and GUI versions!
+
 ## Extensions
 The modular structure means you are free to implement your own main classes.
 Take a look into the FFBoardMain and ExampleMain class files in the UserExtensions folder.

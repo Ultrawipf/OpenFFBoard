@@ -8,6 +8,7 @@
 #include "TMC4671.h"
 #include "ledEffects.h"
 #include "voltagesense.h"
+#include "stm32f4xx_hal_spi.h"
 
 ClassIdentifier TMC4671::info = {
 		 .name = "TMC4671" ,
@@ -29,11 +30,16 @@ TMC4671::TMC4671(){
 	this->cspin = SPI1_SS1_Pin;
 	this->csport = SPI1_SS1_GPIO_Port;
 	this->spi = &HSPIDRV;
+
 }
 
 
 TMC4671::~TMC4671() {
 	HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_RESET);
+}
+
+void TMC4671::HAL_SPI_TXRX_COMPLETE(){
+
 }
 
 /*
@@ -69,7 +75,7 @@ uint8_t TMC4671::getAddress(){
 
 void TMC4671::saveFlash(){
 	uint16_t mconfint = TMC4671::encodeMotToInt(this->conf.motconf);
-	uint16_t ppr = this->abnconf.ppr;
+	uint16_t ppr = this->conf.motconf.enctype == EncoderType_TMC::abn ? this->abnconf.ppr : this->aencconf.ppr;
 	// Save flash
 	Flash_Write(flashAddrs.mconf, mconfint);
 	Flash_Write(flashAddrs.ppr, ppr);
@@ -91,7 +97,8 @@ void TMC4671::restoreFlash(){
 		this->conf.motconf = TMC4671::decodeMotFromInt(mconfint);
 
 	if(Flash_Read(flashAddrs.ppr, &ppr))
-		this->abnconf.ppr = ppr == 0 ? 1 : ppr;
+		setCpr(ppr);
+		//this->abnconf.ppr = ppr == 0 ? 1 : ppr;
 
 
 	// Pids
@@ -163,6 +170,7 @@ bool TMC4671::initialize(){
 	setPwm(0,conf.pwmcnt,conf.bbmL,conf.bbmH); // Enable FOC @ 25khz
 	setMotorType(conf.motconf.motor_type,conf.motconf.pole_pairs);
 	setPhiEtype(conf.motconf.phiEsource);
+	setup_HALL(hallconf); // Enables hall filter and masking
 
 	initAdc(conf.mdecA,conf.mdecB,conf.mclkA,conf.mclkB);
 	setAdcOffset(conf.adc_I0_offset, conf.adc_I1_offset);
@@ -171,8 +179,21 @@ bool TMC4671::initialize(){
 	// Calibrate ADC every time for now
 	calibrateAdcOffset();
 
-	// brake res failsafe TODO
-	setBrakeLimits(62000,63000);
+	// brake res failsafe.
+	/*
+	 * Single ended input raw value
+	 * 0V = 0x7fff
+	 * 4.7k / (360k+4.7k) Divider on old board.
+	 * 1V ~ 169 counts.
+	 * 100V VM => 1.29V
+	 * Divider still too high. ADC pulls voltage up!
+	 */
+	if(oldTMCdetected){
+		setBrakeLimits(52400,52800);
+	}else{
+		setBrakeLimits(51400,51800); // Activates around 60V as last resort failsave
+	}
+
 
 	//setPos(0);
 
@@ -200,10 +221,11 @@ void TMC4671::update(){
 
 	if(!hasPower()){ // low voltage or overvoltage
 		initialized = false;
-		initTime = HAL_GetTick();
 		pulseErrLed();
-		if(!emergency)
+		if(!emergency && HAL_GetTick() - initTime > 100)
 			emergencyStop();
+		else
+			initTime = HAL_GetTick();
 	}
 
 	if(!initialized && active && hasPower()){
@@ -288,6 +310,7 @@ void TMC4671::bangInitEnc(int16_t power){
 	}else if(conf.motconf.enctype == EncoderType_TMC::sincos || conf.motconf.enctype == EncoderType_TMC::uvw){
 		phiEreg = 0x46;
 		writeReg(0x41,0); //Zero encoder
+		writeReg(0x47,0); //Zero encoder
 		phiEoffsetReg = 0x45;
 	}
 
@@ -316,7 +339,8 @@ void TMC4671::bangInitEnc(int16_t power){
 	setPhiE_ext(0);
 	setPhiEtype(lastphie);
 	setMotionMode(lastmode);
-	setPos(pos+getPos());
+	//setPos(pos+getPos());
+	setPos(0);
 }
 
 // Rotates motor to find min and max values of the encoder
@@ -347,6 +371,7 @@ void TMC4671::calibrateAenc(){
 			stage = 2;
 		}else if(getPos() > 0 && stage == 2){
 			stage = 3;
+			runOpenLoop(0, 0, 0, 100);
 		}
 		writeReg(0x03,2);
 		uint32_t aencUX = readReg(0x02)>>16;
@@ -450,7 +475,7 @@ void TMC4671::setup_ABN_Enc(TMC4671ABNConf encconf){
 	writeReg(0x25, abnmode);
 	int32_t pos = getPos();
 	writeReg(0x26, encconf.ppr);
-	writeReg(0x29, (encconf.phiEoffset << 16) | encconf.phiMoffset);
+	writeReg(0x29, ((uint16_t)encconf.phiEoffset << 16) | (uint16_t)encconf.phiMoffset);
 	setPos(pos);
 	//writeReg(0x27,0); //Zero encoder
 	//conf.motconf.phiEsource = PhiE::abn;
@@ -460,14 +485,14 @@ void TMC4671::setup_ABN_Enc(TMC4671ABNConf encconf){
 void TMC4671::setup_AENC(TMC4671AENCConf encconf){
 
 	// offsets
-	writeReg(0x0D,encconf.AENC0_offset | (encconf.AENC0_scale << 16));
-	writeReg(0x0E,encconf.AENC1_offset | (encconf.AENC1_scale << 16));
-	writeReg(0x0F,encconf.AENC2_offset | (encconf.AENC2_scale << 16));
+	writeReg(0x0D,encconf.AENC0_offset | ((uint16_t)encconf.AENC0_scale << 16));
+	writeReg(0x0E,encconf.AENC1_offset | ((uint16_t)encconf.AENC1_scale << 16));
+	writeReg(0x0F,encconf.AENC2_offset | ((uint16_t)encconf.AENC2_scale << 16));
 
 	writeReg(0x40,encconf.ppr);
-	writeReg(0x3e,encconf.phiAoffset);
-	writeReg(0x45,encconf.phiEoffset | (encconf.phiMoffset << 16));
-	writeReg(0x3c,encconf.nThreshold | (encconf.nMask << 16));
+	writeReg(0x3e,(uint16_t)encconf.phiAoffset);
+	writeReg(0x45,(uint16_t)encconf.phiEoffset | ((uint16_t)encconf.phiMoffset << 16));
+	writeReg(0x3c,(uint16_t)encconf.nThreshold | ((uint16_t)encconf.nMask << 16));
 
 	uint32_t mode = encconf.uvwmode & 0x1;
 	mode |= (encconf.rdir & 0x1) << 12;
@@ -479,18 +504,20 @@ void TMC4671::setup_HALL(TMC4671HALLConf hallconf){
 
 	uint32_t hallmode =
 			hallconf.polarity |
+			hallconf.filter << 4 |
 			hallconf.interpolation << 8 |
 			hallconf.direction << 12 |
 			(hallconf.blank & 0xfff) << 16;
 	writeReg(0x33, hallmode);
 	// Positions
-	uint32_t posA = hallconf.pos0 | hallconf.pos60 << 16;
+	uint32_t posA = (uint16_t)hallconf.pos0 | (uint16_t)hallconf.pos60 << 16;
 	writeReg(0x34, posA);
-	uint32_t posB = hallconf.pos120 | hallconf.pos180 << 16;
+	uint32_t posB = (uint16_t)hallconf.pos120 | (uint16_t)hallconf.pos180 << 16;
 	writeReg(0x35, posB);
-	uint32_t posC = hallconf.pos240 | hallconf.pos300 << 16;
+	uint32_t posC = (uint16_t)hallconf.pos240 | (uint16_t)hallconf.pos300 << 16;
 	writeReg(0x36, posC);
-	uint32_t phiOffsets = hallconf.phiMoffset | hallconf.phiEoffset << 16;
+
+	uint32_t phiOffsets = (uint16_t)hallconf.phiMoffset | (uint16_t)hallconf.phiEoffset << 16;
 	writeReg(0x37, phiOffsets);
 	writeReg(0x38, hallconf.dPhiMax);
 
@@ -553,7 +580,7 @@ void TMC4671::setEncoderType(EncoderType_TMC type){
 	this->conf.motconf.enctype = type;
 
 	if(type == EncoderType_TMC::abn){
-
+		encoderInitialized = false;
 		// Not initialized if ppr not set
 		if(this->abnconf.ppr == 0){
 			return;
@@ -590,6 +617,7 @@ void TMC4671::setEncoderType(EncoderType_TMC type){
 	// SinCos encoder
 	}else if(type == EncoderType_TMC::sincos){
 		setPosSel(PosSelection::PhiM_aenc);
+		setPos(0);
 		this->aencconf.uvwmode = false; // sincos mode
 		setup_AENC(this->aencconf);
 
@@ -700,14 +728,15 @@ void TMC4671::emergencyStop(){
 
 /*
  * Sets a torque in positive or negative direction
+ * For ADC linearity reasons under 25000 is recommended
  */
 void TMC4671::turn(int16_t power){
 	int32_t flux = 0;
 
-	// Flux offset only helpful for steppers
-	if(this->conf.motconf.motor_type == MotorType::STEPPER){
-		flux = idleFlux-clip<int32_t,int16_t>(abs(power),0,maxOffsetFlux);
-	}
+	// Flux offset for field weakening
+	//if(this->conf.motconf.motor_type == MotorType::STEPPER){
+	flux = idleFlux-clip<int32_t,int16_t>(abs(power),0,maxOffsetFlux);
+	//}
 	if(feedforward){
 		setFluxTorque(flux, power/2);
 		setFluxTorqueFF(0, power/2);
@@ -817,10 +846,14 @@ void TMC4671::setFFMode(FFMode mode){
 	updateReg(0x63, (uint8_t)mode, 0xff, 16);
 	if(mode!=FFMode::none){
 		feedforward = true;
-		updateReg(0x63, 1, 0x1, 31);
+		setSequentialPI(true);
 	}else{
 		feedforward = false;
 	}
+}
+
+void TMC4671::setSequentialPI(bool sequential){
+	updateReg(0x63, sequential ? 1 : 0, 0x1, 31);
 }
 
 void TMC4671::setMotorType(MotorType motor,uint16_t poles){
@@ -831,6 +864,9 @@ void TMC4671::setMotorType(MotorType motor,uint16_t poles){
 		maxOffsetFlux = 0; // Offsetflux only helpful for steppers. Has no effect otherwise
 	}
 	writeReg(0x1B, mtype);
+	if(motor == MotorType::BLDC && !oldTMCdetected){
+		setSvPwm(useSvPwm); // Higher speed for BLDC motors. Not available in engineering samples
+	}
 }
 
 void TMC4671::setTorque(int16_t torque){
@@ -1038,6 +1074,10 @@ void TMC4671::setPwm(uint8_t val,uint16_t maxcnt,uint8_t bbmL,uint8_t bbmH){
 	writeReg(0x17,0); //Polarity
 }
 
+void TMC4671::setSvPwm(bool enable){
+	updateReg(0x1A,enable,0x01,8);
+}
+
 
 void TMC4671::initAdc(uint16_t mdecA, uint16_t mdecB,uint32_t mclkA,uint32_t mclkB){
 	uint32_t dat = mdecA | (mdecB << 16);
@@ -1052,16 +1092,25 @@ void TMC4671::initAdc(uint16_t mdecA, uint16_t mdecB,uint32_t mclkA,uint32_t mcl
 	writeReg(0x0A,0x18000100); // ADC Selection
 }
 
-
+int32_t TMC4671::getActualCurrent(){
+	uint32_t tfluxa = readReg(0x69);
+	int16_t af = (tfluxa & 0xffff);
+	int16_t at = (tfluxa >> 16);
+	return abs(at);
+}
 
 uint32_t TMC4671::readReg(uint8_t reg){
-
 	uint8_t req[5] = {(uint8_t)(0x7F & reg),0,0,0,0};
 	uint8_t tbuf[5];
-	// 500ns delay after sending first byte already satisfied by STM
+	// 500ns delay after sending first byte
+
+	__disable_irq();
 	HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_RESET);
+	//HAL_SPI_Transmit(this->spi,req,1,SPITIMEOUT); // pause
+	//HAL_SPI_Receive(this->spi,tbuf,4,SPITIMEOUT);
 	HAL_SPI_TransmitReceive(this->spi,req,tbuf,5,SPITIMEOUT);
 	HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_SET);
+	__enable_irq();
 
 	uint32_t ret;
 	memcpy(&ret,tbuf+1,4);
@@ -1070,15 +1119,15 @@ uint32_t TMC4671::readReg(uint8_t reg){
 }
 
 void TMC4671::writeReg(uint8_t reg,uint32_t dat){
-
 	uint8_t req[5] = {(uint8_t)(0x80 | reg),0,0,0,0};
 	dat =__REV(dat);
 	memcpy(req+1,&dat,4);
 
+	__disable_irq();
 	HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_RESET);
 	HAL_SPI_Transmit(this->spi,req,5,SPITIMEOUT);
 	HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_SET);
-
+	__enable_irq();
 }
 
 void TMC4671::updateReg(uint8_t reg,uint32_t dat,uint32_t mask,uint8_t shift){
@@ -1174,6 +1223,11 @@ bool TMC4671::command(ParsedCommand* cmd,std::string* reply){
 			this->setCpr(cmd->val);
 		}
 
+	}else if(cmd->cmd == "acttorque"){
+		if(cmd->type == CMDtype::get){
+			*reply+=std::to_string(getActualCurrent());
+		}
+
 	}else if(cmd->cmd == "torqueP"){
 		if(cmd->type == CMDtype::get){
 			*reply+=std::to_string(this->curPids.torqueP);
@@ -1241,3 +1295,4 @@ bool TMC4671::command(ParsedCommand* cmd,std::string* reply){
 	}
 	return flag;
 }
+

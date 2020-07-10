@@ -38,31 +38,7 @@ void TMCDebugBridge::tmcReadRegRaw(uint8_t reg,uint8_t* buf){
 
 bool TMCDebugBridge::command(ParsedCommand* cmd,std::string* reply){
 	bool flag = true;
-	if(cmd->cmd == "mtype"){
-		if(cmd->type == CMDtype::get){
-			*reply+=std::to_string((uint8_t)drv->conf.motconf.motor_type);
-		}else if(cmd->type == CMDtype::set){
-			drv->setMotorType((MotorType)cmd->val, drv->conf.motconf.pole_pairs);
-		}
-	}else if(cmd->cmd == "poles"){
-		if(cmd->type == CMDtype::get){
-			*reply+=std::to_string(drv->conf.motconf.pole_pairs);
-		}else if(cmd->type == CMDtype::set){
-			drv->setMotorType(drv->conf.motconf.motor_type,cmd->val);
-		}
-	}else if(cmd->cmd == "encalign"){
-		if(cmd->type == CMDtype::get){
-			drv->bangInitEnc(3000);
-		}else if(cmd->type == CMDtype::set){
-			drv->bangInitEnc(cmd->val);
-		}
-	}else if(cmd->cmd == "ppr"){
-		if(cmd->type == CMDtype::get){
-			*reply += std::to_string(drv->getCpr());
-		}else if(cmd->type == CMDtype::set){
-			drv->setCpr(cmd->val);
-		}
-	}else if(cmd->cmd == "torque"){
+	if(cmd->cmd == "torque"){
 		if(cmd->type == CMDtype::get){
 			*reply+=std::to_string(drv->getTorque());
 		}else if(cmd->type == CMDtype::set){
@@ -170,8 +146,7 @@ void TMCDebugBridge::cdcRcv(char* Buf, uint32_t *Len){
 TMCDebugBridge::TMCDebugBridge() {
 
 	TMC4671MainConfig tmcconf;
-	tmcconf.motconf.motor_type = MotorType::STEPPER;
-	tmcconf.motconf.pole_pairs = 50;
+
 	this->drv = new TMC4671(&HSPIDRV,SPI1_SS1_GPIO_Port,SPI1_SS1_Pin,tmcconf);
 	drv->restoreFlash();
 	drv->initialize();
