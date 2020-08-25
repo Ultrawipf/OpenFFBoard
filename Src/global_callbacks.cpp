@@ -30,9 +30,9 @@ bool braking_flag = false;
 // Externally stored so it can be used before the main class is initialized
 std::vector<CommandHandler*> cmdHandlers;
 
-uint32_t maxVoltage = 75000; // Force braking
+uint32_t maxVoltage = 60000; // Force braking
 uint32_t voltageDiffActivate = 8000;
-uint32_t voltageDiffDeactivate = 2000;
+uint32_t voltageDiffDeactivate = 7000;
 std::vector<AdcHandler*> adcHandlers;
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc){
 	//Pulse braking mosfet if internal voltage is higher than supply. Conversion: V = 1/36

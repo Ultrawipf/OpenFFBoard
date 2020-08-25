@@ -106,15 +106,15 @@ void TMC4671::restoreFlash(){
 	Flash_Read(flashAddrs.torque_i, &this->curPids.torqueI);
 	Flash_Read(flashAddrs.flux_p, &this->curPids.fluxP);
 	Flash_Read(flashAddrs.flux_i, &this->curPids.fluxI);
-	setPids(curPids);
 
 	Flash_Read(flashAddrs.offsetFlux, (uint16_t*)&this->maxOffsetFlux);
 
-	uint16_t encval;
-	if(Flash_Read(flashAddrs.encA, &encval)){
-		restoreEncHallMisc(encval);
+	uint16_t miscval;
+	if(Flash_Read(flashAddrs.encA, &miscval)){
+		restoreEncHallMisc(miscval);
 	}
 
+	setPids(curPids); // Write pid values to tmc
 }
 
 bool TMC4671::hasPower(){
@@ -297,7 +297,7 @@ void TMC4671::bangInitEnc(int16_t power){
 	MotionMode lastmode = getMotionMode();
 	setPhiE_ext(0);
 	setUdUq(power, 0);
-	int32_t pos = getPos();
+	//int32_t pos = getPos();
 
 	setPhiEtype(PhiE::ext);
 
@@ -853,6 +853,7 @@ void TMC4671::setFFMode(FFMode mode){
 }
 
 void TMC4671::setSequentialPI(bool sequential){
+	curPids.sequentialPI = sequential;
 	updateReg(0x63, sequential ? 1 : 0, 0x1, 31);
 }
 
@@ -909,6 +910,7 @@ void TMC4671::setPids(TMC4671PIDConf pids){
 	writeReg(0x56, pids.torqueI | (pids.torqueP << 16));
 	writeReg(0x58, pids.velocityI | (pids.velocityP << 16));
 	writeReg(0x5A, pids.positionI | (pids.positionP << 16));
+	setSequentialPI(pids.sequentialPI);
 }
 
 TMC4671PIDConf TMC4671::getPids(){
@@ -1094,7 +1096,7 @@ void TMC4671::initAdc(uint16_t mdecA, uint16_t mdecB,uint32_t mclkA,uint32_t mcl
 
 int32_t TMC4671::getActualCurrent(){
 	uint32_t tfluxa = readReg(0x69);
-	int16_t af = (tfluxa & 0xffff);
+	//int16_t af = (tfluxa & 0xffff);
 	int16_t at = (tfluxa >> 16);
 	return abs(at);
 }
@@ -1155,11 +1157,13 @@ uint16_t TMC4671::encodeMotToInt(TMC4671MotConf mconf){
 uint16_t TMC4671::encodeEncHallMisc(){
 	uint16_t val = 0;
 	val |= (this->abnconf.npol) & 0x01;
-	val |= (this->abnconf.rdir <<1) & 0x01; // Direction
-	val |= (this->abnconf.ab_as_n <<2) & 0x01;
+	val |= (this->abnconf.rdir & 0x01)  << 1; // Direction
+	val |= (this->abnconf.ab_as_n & 0x01) << 2;
 
-	val |= (this->hallconf.direction << 8) & 0x01;
-	val |= (this->hallconf.interpolation << 9) & 0x01;
+	val |= (this->hallconf.direction & 0x01) << 8;
+	val |= (this->hallconf.interpolation & 0x01) << 9;
+
+	val |= (this->curPids.sequentialPI & 0x01) << 10;
 
 	return val;
 }
@@ -1173,6 +1177,8 @@ void TMC4671::restoreEncHallMisc(uint16_t val){
 	this->abnconf.ab_as_n = (val>>2) & 0x01;
 	this->hallconf.direction = (val>>8) & 0x01;
 	this->hallconf.interpolation = (val>>9) & 0x01;
+
+	this->curPids.sequentialPI = (val>>10) & 0x01;
 }
 
 
@@ -1275,6 +1281,13 @@ bool TMC4671::command(ParsedCommand* cmd,std::string* reply){
 			*reply+=std::to_string(this->readReg(cmd->val));
 		}else if(cmd->type == CMDtype::setat){
 			this->writeReg(cmd->adr,cmd->val);
+		}
+
+	}else if(cmd->cmd == "seqpi"){
+		if(cmd->type == CMDtype::get){
+			*reply+=std::to_string(this->curPids.sequentialPI);
+		}else if(cmd->type == CMDtype::set){
+			this->setSequentialPI(cmd->val != 0);
 		}
 
 	}else if(cmd->cmd == "encdir"){

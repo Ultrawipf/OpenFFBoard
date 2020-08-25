@@ -53,10 +53,11 @@ FFBWheel::FFBWheel() : btn_chooser(button_sources),drv_chooser(motor_sources),en
 	// Create HID FFB handler. Will receive all usb messages directly
 	this->ffb = new HidFFB();
 
-	// Setup a timer
+	// Setup a timer for updates faster than USB SOF
 	extern TIM_HandleTypeDef htim4;
 	this->timer_update = &htim4; // Timer setup with prescaler of sysclock
-	this->timer_update->Instance->ARR = 500; // 250 = 4khz, 500 = 2khz
+	this->timer_update->Instance->PSC = 95;
+	this->timer_update->Instance->ARR = 500; // 250 = 4khz, 500 = 2khz...
 	this->timer_update->Instance->CR1 = 1;
 	HAL_TIM_Base_Start_IT(this->timer_update);
 
@@ -104,6 +105,11 @@ void FFBWheel::restoreFlash(){
 	if(Flash_Read(ADR_FFBWHEEL_ANALOGCONF,&aconfint)){
 		this->aconf = FFBWheel::decodeAnalogConfFromInt(aconfint);
 	}
+	uint16_t esval;
+	if(Flash_Read(ADR_FFBWHEEL_ENDSTOP,&esval)){
+		this->fx_ratio_i = esval & 0xff;
+		this->endstop_gain_i = (esval >> 8) & 0xff;
+	}
 
 	ffb->restoreFlash();
 }
@@ -116,7 +122,7 @@ void FFBWheel::saveFlash(){
 	Flash_Write(ADR_FFBWHEEL_DEGREES, this->degreesOfRotation);
 	Flash_Write(ADR_FFBWHEEL_BUTTONCONF,this->btnsources);
 	Flash_Write(ADR_FFBWHEEL_ANALOGCONF, FFBWheel::encodeAnalogConfToInt(this->aconf));
-
+	Flash_Write(ADR_FFBWHEEL_ENDSTOP,this->fx_ratio_i | (this->endstop_gain_i << 8));
 
 	// Call save methods for active button sources
 	for(ButtonSource* btn : this->btns){
@@ -131,18 +137,17 @@ void FFBWheel::saveFlash(){
  * Periodical update method. Called from main loop
  */
 void FFBWheel::update(){
-	int16_t lasttorque = endstopTorque;
-	bool updateTorque = false;
 
 	if(drv == nullptr || enc == nullptr ){
 		pulseErrLed();
 		return;
 	}
-
-
+	// If either usb SOF or timer triggered
 	if(usb_update_flag || update_flag){
+		int32_t lastTorque = torque;
 
 		torque = 0;
+		// Scale encoder value to set rotation range
 		scaledEnc = getEncValue(enc,degreesOfRotation);
 
 		update_flag = false;
@@ -152,7 +157,6 @@ void FFBWheel::update(){
 			drv->stop();
 			pulseErrLed();
 		}
-		endstopTorque = updateEndstop();
 
 		if(this->conf.drvtype == TMC4671::info.id){
 			TMC4671* drv = static_cast<TMC4671*>(this->drv);
@@ -161,43 +165,48 @@ void FFBWheel::update(){
 				return;
 			}
 		}
-	}
-	if(usb_update_flag){
+
 		speed = scaledEnc - lastScaledEnc;
 		lastScaledEnc = scaledEnc;
 
-		usb_update_flag = false;
-		torque = ffb->calculateEffects(scaledEnc,1);
-		if(abs(torque) >= 0x7fff){
-			pulseClipLed();
-		}
-		if(endstopTorque == 0 || (endstopTorque > 0 && torque > 0) || (endstopTorque < 0 && torque < 0))
-		{
-			torque *= 0.9*((float)this->power / (float)0x7fff); // Scale for power. Endstop margin
-			updateTorque = true;
-		}
-		if(++report_rate_cnt >= usb_report_rate){
-			report_rate_cnt = 0;
-			this->send_report();
-		}
-	}
+		// Update USB Effects only on SOF
+		if(usb_update_flag){
 
+			usb_update_flag = false;
+			effectTorque = ffb->calculateEffects(scaledEnc,1);
 
-	if(endstopTorque!=lasttorque || updateTorque){
-		// Update torque
-		torque = torque+endstopTorque;
-		torque = clip<int32_t,int16_t>(torque, -this->power, this->power);
-		if(abs(torque) == power){
-			pulseClipLed();
+			if(abs(effectTorque) >= 0x7fff){
+				pulseClipLed();
+			}
+			// Scale for power and endstop margin
+			float effect_margin_scaler = 1.0-(((float)(255-fx_ratio_i)/255.0) * endstop_margin_scale);
+			effectTorque *= ((float)this->power / (float)0x7fff) * effect_margin_scaler;
+			//Send usb gamepad report
+			if(++report_rate_cnt >= usb_report_rate){
+				report_rate_cnt = 0;
+				this->send_report();
+			}
 		}
+		// Always check if endstop reached
+		int32_t endstopTorque = updateEndstop();
 
-		// If encoder was inverted also invert torque again so effects are correct
-		if(aconf.invertX){
+		// Calculate total torque
+		torque += effectTorque + endstopTorque;
+		if(aconf.invertX){ // Invert output torque if axis is flipped
 			torque = -torque;
 		}
-		drv->turn(torque);
-	}
 
+		// Torque changed
+		if(torque != lastTorque){
+			// Update torque and clip
+			torque = clip<int32_t,int32_t>(torque, -this->power, this->power);
+			if(abs(torque) == power){
+				pulseClipLed();
+			}
+			// Send to motor driver
+			drv->turn(torque);
+		}
+	}
 
 }
 
@@ -212,7 +221,7 @@ int16_t FFBWheel::updateEndstop(){
 	int32_t addtorque = 0;
 
 	addtorque += clip<int32_t,int32_t>(abs(lastScaledEnc)-0x7fff,-0x7fff,0x7fff);
-	addtorque *= endstop_gain;
+	addtorque *= (float)endstop_gain_i * 0.3f; // Apply endstop gain for stiffness
 	addtorque *= -clipdir;
 
 	return clip<int32_t,int32_t>(addtorque,-0x7fff,0x7fff);
@@ -220,12 +229,12 @@ int16_t FFBWheel::updateEndstop(){
 
 void FFBWheel::setPower(uint16_t power){
 	// Update hardware limits for TMC for safety
-//	if(this->conf.drvtype == TMC4671::info.id){
-//		TMC4671* drv = static_cast<TMC4671*>(this->drv);
-//		tmclimits.pid_uq_ud = power;
-//		tmclimits.pid_torque_flux = power;
-//		drv->setLimits(tmclimits);
-//	}
+	if(this->conf.drvtype == TMC4671::info.id){
+		TMC4671* drv = static_cast<TMC4671*>(this->drv);
+		//tmclimits.pid_uq_ud = power;
+		tmclimits.pid_torque_flux = power;
+		drv->setLimits(tmclimits);
+	}
 
 	this->power = power;
 }
@@ -287,18 +296,15 @@ void FFBWheel::setupTMC4671(){
 	drv->setAddress(1);
 	drv->setPids(tmcpids);
 	drv->setLimits(tmclimits);
-	//drv->setBiquadFlux(fluxbq); // No filter for more linear response.
+	//drv->setBiquadFlux(fluxbq);
 	drv->restoreFlash();
 
 	if(tmcFeedForward){
 		drv->setupFeedForwardTorque(torqueFFgain, torqueFFconst);
 		drv->setupFeedForwardVelocity(velocityFFgain, velocityFFconst);
 		drv->setFFMode(FFMode::torque);
-	}else{
-		drv->setSequentialPI(tmcSequentialPI);
 	}
-
-	//drv->setPhiEtype(PhiE::abn);
+	// Enable driver
 	drv->initialize();
 	drv->setMotionMode(MotionMode::torque);
 }
@@ -378,7 +384,7 @@ void FFBWheel::adcUpd(volatile uint32_t* ADC_BUF){
  * Returns a scaled encoder value between -0x7fff and 0x7fff with a range of degrees
  */
 int32_t FFBWheel::getEncValue(Encoder* enc,uint16_t degrees){
-	if(enc == nullptr){
+	if(enc == nullptr || degrees == 0){
 		return 0x7fff; // Return center if no encoder present
 	}
 	float angle = 360.0*((float)enc->getPos()/(float)enc->getCpr());

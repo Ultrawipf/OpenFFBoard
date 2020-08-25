@@ -63,6 +63,18 @@ bool FFBWheel::command(ParsedCommand* cmd,std::string* reply){
 		}else if(cmd->type == CMDtype::set){
 			this->ffb->setIdleSpringStrength(cmd->val);
 		}
+	}else if(cmd->cmd == "esgain"){
+		if(cmd->type == CMDtype::get){
+			*reply+=std::to_string(this->endstop_gain_i);
+		}else if(cmd->type == CMDtype::set){
+			this->endstop_gain_i = cmd->val;
+		}
+	}else if(cmd->cmd == "fxratio"){
+		if(cmd->type == CMDtype::get){
+			*reply+=std::to_string(this->fx_ratio_i);
+		}else if(cmd->type == CMDtype::set){
+			this->fx_ratio_i = clip(cmd->val,0,255);
+		}
 	}else if(cmd->cmd == "friction"){
 		if(cmd->type == CMDtype::get){
 			*reply+=std::to_string(this->ffb->getFrictionStrength());
@@ -115,7 +127,7 @@ bool FFBWheel::command(ParsedCommand* cmd,std::string* reply){
 	}else if(cmd->cmd == "help"){
 		flag = false;
 		*reply += "FFBWheel commands:\n"
-				"power,zeroenc,enctype,degrees,idlespring,friction,invertx,ppr,drvtype,btntype,lsbtn,btnnum,btntypes,btnpol,btncut,axismask,ffbactive\n"; // TODO
+				"power,zeroenc,enctype,degrees,esgain,fxratio,idlespring,friction,invertx,ppr,drvtype,btntype,lsbtn,btnnum,btntypes,btnpol,btncut,axismask,ffbactive\n"; // TODO
 	}else{
 		flag = false;
 	}

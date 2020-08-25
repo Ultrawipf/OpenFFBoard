@@ -87,14 +87,12 @@ public:
 	volatile bool usb_update_flag = false;
 	volatile bool update_flag = false;
 
-	uint16_t degreesOfRotation = 900;
+	uint16_t degreesOfRotation = 900; // How many degrees of range for the full gamepad range
 	int32_t getEncValue(Encoder* enc,uint16_t degrees);
 
 
 	void setPower(uint16_t power);
 	uint16_t getPower();
-
-	float endstop_gain = 10;
 
 private:
 	void send_report();
@@ -104,10 +102,15 @@ private:
 	uint8_t usb_report_rate = HID_FS_BINTERVAL; // 1 = 1000hz, 2 = 500hz, 3 = 250hz etc...
 	uint8_t report_rate_cnt = 0;
 
+	const float endstop_margin_scale = 0.7f; // How much to reduce the effect range at full endstop margin
+
+	uint8_t endstop_gain_i = 128; // Sets how much extra torque per count above endstop is added. High = stiff endstop. Low = softer
+	uint8_t fx_ratio_i = 182; // Reduce effects to a certain ratio of the total power
+
 	HidFFB* ffb;
 	TIM_HandleTypeDef* timer_update;
 	int32_t torque = 0; // last torque
-	int32_t endstopTorque = 0; // last torque
+	int32_t effectTorque = 0; // last torque
 	FFBWheelConfig conf;
 
 	MotorDriver* drv = nullptr;
@@ -124,7 +127,6 @@ private:
 	int32_t scaledEnc = 0;
 	int32_t speed = 0;
 	bool tmcFeedForward = false; // Experimental
-	bool tmcSequentialPI = true;
 	uint16_t btnsources = 1; // Default ID1 = local buttons
 
 	volatile bool usb_disabled = true;
@@ -149,10 +151,11 @@ private:
 		.velocityI	= 0,
 		.velocityP	= 128,
 		.positionI	= 0,
-		.positionP	= 64
+		.positionP	= 64,
+		.sequentialPI = true
 	});
 	TMC4671Limits tmclimits = TMC4671Limits({
-		.pid_torque_flux_ddt	= 30000,
+		.pid_torque_flux_ddt	= 32767,
 		.pid_uq_ud				= 30000,
 		.pid_torque_flux		= 30000,
 		.pid_acc_lim			= 2147483647,
