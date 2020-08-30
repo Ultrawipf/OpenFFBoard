@@ -102,10 +102,8 @@ private:
 	uint8_t usb_report_rate = HID_FS_BINTERVAL; // 1 = 1000hz, 2 = 500hz, 3 = 250hz etc...
 	uint8_t report_rate_cnt = 0;
 
-	const float endstop_margin_scale = 0.7f; // How much to reduce the effect range at full endstop margin
-
 	uint8_t endstop_gain_i = 128; // Sets how much extra torque per count above endstop is added. High = stiff endstop. Low = softer
-	uint8_t fx_ratio_i = 182; // Reduce effects to a certain ratio of the total power
+	uint8_t fx_ratio_i = 204; // Reduce effects to a certain ratio of the total power to have a margin for the endstop
 
 	HidFFB* ffb;
 	TIM_HandleTypeDef* timer_update;

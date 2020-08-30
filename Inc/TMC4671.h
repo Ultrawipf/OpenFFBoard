@@ -75,7 +75,7 @@ struct TMC4671Limits{
 
 struct TMC4671FlashAddrs{
 	uint16_t mconf = ADR_TMC1_MOTCONF;
-	uint16_t ppr = ADR_TMC1_PPR;
+	uint16_t cpr = ADR_TMC1_CPR;
 	uint16_t encA = ADR_TMC1_ENCA;
 	uint16_t offsetFlux = ADR_TMC1_OFFSETFLUX;
 	uint16_t torque_p = ADR_TMC1_TORQUE_P;
@@ -85,7 +85,7 @@ struct TMC4671FlashAddrs{
 };
 
 struct TMC4671ABNConf{
-	uint32_t ppr = 8192;
+	uint32_t cpr = 8192;
 	bool apol 	= true;
 	bool bpol 	= true;
 	bool npol	= true;
@@ -98,7 +98,7 @@ struct TMC4671ABNConf{
 };
 
 struct TMC4671AENCConf{
-	uint32_t ppr = 1; //0x40
+	uint32_t cpr = 1; //0x40
 	int16_t phiAoffset = 0; // Main offset. 0x3e
 
 	int16_t phiEoffset = 0; // 0x45&0xffff
@@ -193,7 +193,7 @@ public:
 	void calibrateAenc();
 
 	void setEncoderType(EncoderType_TMC type);
-	uint32_t getEncPpr();
+	uint32_t getEncCpr();
 
 	void setAdcOffset(uint32_t adc_I0_offset,uint32_t adc_I1_offset);
 	void setAdcScale(uint32_t adc_I0_scale,uint32_t adc_I1_scale);

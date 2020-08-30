@@ -54,7 +54,7 @@ void TMC4671::setAddress(uint8_t addr){
 		this->cspin = SPI1_SS1_Pin;
 		this->csport = SPI1_SS1_GPIO_Port;
 		this->spi = &HSPIDRV;
-		this->flashAddrs = TMC4671FlashAddrs({ADR_TMC1_MOTCONF,ADR_TMC1_PPR,ADR_TMC1_ENCA,ADR_TMC1_OFFSETFLUX,ADR_TMC1_TORQUE_P,ADR_TMC1_TORQUE_I,ADR_TMC1_FLUX_P,ADR_TMC1_FLUX_I});
+		this->flashAddrs = TMC4671FlashAddrs({ADR_TMC1_MOTCONF,ADR_TMC1_CPR,ADR_TMC1_ENCA,ADR_TMC1_OFFSETFLUX,ADR_TMC1_TORQUE_P,ADR_TMC1_TORQUE_I,ADR_TMC1_FLUX_P,ADR_TMC1_FLUX_I});
 	}else if(addr == 2){
 		this->cspin = SPI1_SS2_Pin;
 		this->csport = SPI1_SS2_GPIO_Port;
@@ -75,10 +75,10 @@ uint8_t TMC4671::getAddress(){
 
 void TMC4671::saveFlash(){
 	uint16_t mconfint = TMC4671::encodeMotToInt(this->conf.motconf);
-	uint16_t ppr = this->conf.motconf.enctype == EncoderType_TMC::abn ? this->abnconf.ppr : this->aencconf.ppr;
+	uint16_t abncpr = this->conf.motconf.enctype == EncoderType_TMC::abn ? this->abnconf.cpr : this->aencconf.cpr;
 	// Save flash
 	Flash_Write(flashAddrs.mconf, mconfint);
-	Flash_Write(flashAddrs.ppr, ppr);
+	Flash_Write(flashAddrs.cpr, abncpr);
 	Flash_Write(flashAddrs.offsetFlux,maxOffsetFlux);
 	Flash_Write(flashAddrs.encA,encodeEncHallMisc());
 
@@ -90,16 +90,14 @@ void TMC4671::saveFlash(){
 
 void TMC4671::restoreFlash(){
 	uint16_t mconfint;
-	uint16_t ppr = 0;
+	uint16_t abncpr = 0;
 
 	// Read flash
 	if(Flash_Read(flashAddrs.mconf, &mconfint))
 		this->conf.motconf = TMC4671::decodeMotFromInt(mconfint);
 
-	if(Flash_Read(flashAddrs.ppr, &ppr))
-		setCpr(ppr);
-		//this->abnconf.ppr = ppr == 0 ? 1 : ppr;
-
+	if(Flash_Read(flashAddrs.cpr, &abncpr))
+		setCpr(abncpr);
 
 	// Pids
 	Flash_Read(flashAddrs.torque_p, &this->curPids.torqueP);
@@ -131,7 +129,7 @@ bool TMC4671::isSetUp(){
 
 	// Encoder
 	if(this->conf.motconf.phiEsource == PhiE::abn){
-		if(abnconf.ppr == 0){
+		if(abnconf.cpr == 0){
 			return false;
 		}
 		if(!encoderInitialized){
@@ -474,7 +472,7 @@ void TMC4671::setup_ABN_Enc(TMC4671ABNConf encconf){
 
 	writeReg(0x25, abnmode);
 	int32_t pos = getPos();
-	writeReg(0x26, encconf.ppr);
+	writeReg(0x26, encconf.cpr);
 	writeReg(0x29, ((uint16_t)encconf.phiEoffset << 16) | (uint16_t)encconf.phiMoffset);
 	setPos(pos);
 	//writeReg(0x27,0); //Zero encoder
@@ -489,7 +487,7 @@ void TMC4671::setup_AENC(TMC4671AENCConf encconf){
 	writeReg(0x0E,encconf.AENC1_offset | ((uint16_t)encconf.AENC1_scale << 16));
 	writeReg(0x0F,encconf.AENC2_offset | ((uint16_t)encconf.AENC2_scale << 16));
 
-	writeReg(0x40,encconf.ppr);
+	writeReg(0x40,encconf.cpr);
 	writeReg(0x3e,(uint16_t)encconf.phiAoffset);
 	writeReg(0x45,(uint16_t)encconf.phiEoffset | ((uint16_t)encconf.phiMoffset << 16));
 	writeReg(0x3c,(uint16_t)encconf.nThreshold | ((uint16_t)encconf.nMask << 16));
@@ -581,12 +579,12 @@ void TMC4671::setEncoderType(EncoderType_TMC type){
 
 	if(type == EncoderType_TMC::abn){
 		encoderInitialized = false;
-		// Not initialized if ppr not set
-		if(this->abnconf.ppr == 0){
+		// Not initialized if cpr not set
+		if(this->abnconf.cpr == 0){
 			return;
 		}
 		setPosSel(PosSelection::PhiM_abn); // Mechanical Angle
-		writeReg(0x26, abnconf.ppr); // we need ppr to be set first
+		writeReg(0x26, abnconf.cpr); // we need cpr to be set first
 		int32_t pos = getPos();
 		setPos(0);
 		bool olddir = abnconf.rdir;
@@ -607,7 +605,7 @@ void TMC4671::setEncoderType(EncoderType_TMC type){
 				encoderInitialized = true;
 				printf("Initialized TMC %d\n",this->address);
 			}else{
-				printf("Encoder init failed. Check poles and PPR settings\n");
+				printf("Encoder init failed. Check poles and CPR settings\n");
 			}
 		}
 
@@ -655,12 +653,12 @@ void TMC4671::setEncoderType(EncoderType_TMC type){
 	}
 }
 
-uint32_t TMC4671::getEncPpr(){
+uint32_t TMC4671::getEncCpr(){
 	EncoderType_TMC type = conf.motconf.enctype;
 	if(type == EncoderType_TMC::abn){
-		return abnconf.ppr;
+		return abnconf.cpr;
 	}else if(type == EncoderType_TMC::sincos || type == EncoderType_TMC::uvw){
-		return aencconf.ppr;
+		return aencconf.cpr;
 	}
 	else{
 		return getCpr();
@@ -754,10 +752,10 @@ int32_t TMC4671::getPos(){
 	//int64_t cpr = conf.motconf.pole_pairs << 16;
 	/*
 	int32_t mpos = (int32_t)readReg(0x6B) / ((int32_t)conf.motconf.pole_pairs);
-	int32_t pos = ((int32_t)abnconf.ppr * mpos) >> 16;*/
+	int32_t pos = ((int32_t)abnconf.cpr * mpos) >> 16;*/
 	int32_t pos = (int32_t)readReg(0x6B);
 	if(this->conf.motconf.phiEsource == PhiE::abn){
-		int64_t tmpos = ( (int64_t)pos * (int64_t)abnconf.ppr);
+		int64_t tmpos = ( (int64_t)pos * (int64_t)abnconf.cpr);
 		pos = tmpos / 0xffff;
 	}
 
@@ -766,21 +764,19 @@ int32_t TMC4671::getPos(){
 void TMC4671::setPos(int32_t pos){
 	// Cpr = poles * 0xffff
 	/*
-	int32_t cpr = (conf.motconf.pole_pairs << 16) / abnconf.ppr;
+	int32_t cpr = (conf.motconf.pole_pairs << 16) / abnconf.cpr;
 	int32_t mpos = (cpr * pos);*/
 	if(this->conf.motconf.phiEsource == PhiE::abn){
-		pos = ((int64_t)0xffff / (int64_t)abnconf.ppr) * (int64_t)pos;
+		pos = ((int64_t)0xffff / (int64_t)abnconf.cpr) * (int64_t)pos;
 
 	}
 	writeReg(0x6B, pos);
 }
-//uint32_t TMC4671::getPosCpr(){
-//	return conf.motconf.pole_pairs << 16; // 1 rotation = poles * PhiE (0xffff)
-//}
+
 
 uint32_t TMC4671::getCpr(){
 	if(this->conf.motconf.phiEsource == PhiE::abn){
-		return abnconf.ppr;
+		return abnconf.cpr;
 	}else{
 		return 0xffff;
 	}
@@ -790,21 +786,21 @@ void TMC4671::setCpr(uint32_t cpr){
 	if(cpr == 0)
 		cpr = 1;
 
-	bool reinit = cpr != abnconf.ppr;
-	this->abnconf.ppr = cpr;
-	this->aencconf.ppr = cpr;
-	writeReg(0x26, abnconf.ppr); //ABN
-	writeReg(0x40, aencconf.ppr); //AENC
+	bool reinit = cpr != abnconf.cpr;
+	this->abnconf.cpr = cpr;
+	this->aencconf.cpr = cpr;
+	writeReg(0x26, abnconf.cpr); //ABN
+	writeReg(0x40, aencconf.cpr); //AENC
 
 	if(reinit && (this->conf.motconf.phiEsource == PhiE::abn))
 		bangInitEnc(this->bangInitPower);
 }
 
 uint32_t TMC4671::encToPos(uint32_t enc){
-	return enc*(0xffff / abnconf.ppr)*(conf.motconf.pole_pairs);
+	return enc*(0xffff / abnconf.cpr)*(conf.motconf.pole_pairs);
 }
 uint32_t TMC4671::posToEnc(uint32_t pos){
-	return pos/((0xffff / abnconf.ppr)*(conf.motconf.pole_pairs)) % abnconf.ppr;
+	return pos/((0xffff / abnconf.cpr)*(conf.motconf.pole_pairs)) % abnconf.cpr;
 }
 
 EncoderType TMC4671::getType(){
@@ -1222,9 +1218,9 @@ bool TMC4671::command(ParsedCommand* cmd,std::string* reply){
 			this->setMotorType(this->conf.motconf.motor_type,cmd->val);
 		}
 
-	}else if(cmd->cmd == "pprtmc"){
+	}else if(cmd->cmd == "cprtmc"){
 		if(cmd->type == CMDtype::get){
-			*reply+=std::to_string(getEncPpr());
+			*reply+=std::to_string(getEncCpr());
 		}else if(cmd->type == CMDtype::set){
 			this->setCpr(cmd->val);
 		}
@@ -1302,7 +1298,8 @@ bool TMC4671::command(ParsedCommand* cmd,std::string* reply){
 		flag = false; // Set flag false to continue parsing
 		*reply += "TMC4671 commands:\n"
 				"mtype,encsrc,encalign,poles,phiesrc,reg,fluxoffset\n"
-				"torqueP,torqueI,fluxP,fluxI\n";
+				"torqueP,torqueI,fluxP,fluxI\n"
+				"acttorque,seqpi\n";
 	}else{
 		flag = false;
 	}

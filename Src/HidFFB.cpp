@@ -332,7 +332,7 @@ int32_t HidFFB::calculateEffects(int32_t pos,uint8_t axis=1){
 		// Center when FFB is turned of with a spring effect
 		if(idlecenter){
 			int16_t idlespringclip = clip<int32_t,int32_t>((int32_t)idlespringstregth*50,0,10000);
-			float idlespringscale = 0.5f + (idlespringstregth * 0.01f);
+			float idlespringscale = 0.5f + ((float)idlespringstregth * 0.01f);
 			return clip<int32_t,int32_t>((int32_t)(-pos*idlespringscale),-idlespringclip,idlespringclip);
 		}else{
 			return 0;

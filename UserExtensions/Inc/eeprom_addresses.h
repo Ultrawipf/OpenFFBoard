@@ -44,7 +44,7 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 
 // TMC
 #define ADR_TMC1_MOTCONF 				0x110 // 0-2: MotType 3-5: PhiE source 6-15: Poles
-#define ADR_TMC1_PPR					0x111
+#define ADR_TMC1_CPR					0x111
 #define ADR_TMC1_ENCA					0x112
 #define ADR_TMC1_OFFSETFLUX				0x116
 #define ADR_TMC1_TORQUE_P				0x117
