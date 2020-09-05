@@ -123,19 +123,27 @@ bool FFBoardMain::executeSysCommand(ParsedCommand* cmd,std::string* reply){
 void FFBoardMain::executeCommands(std::vector<ParsedCommand> commands){
 	std::string reply;
 	extern std::vector<CommandHandler*> cmdHandlers;
+	bool found = false;
 	for(ParsedCommand cmd : commands){
-		if(!executeSysCommand(&cmd,&reply)){
+		found = executeSysCommand(&cmd,&reply);
+		if(!found){
 			// Call all command handlers
 			for(CommandHandler* handler : cmdHandlers){
-				if(handler->hasCommands())
-					if(handler->command(&cmd,&reply))
+				if(handler->hasCommands()){
+					found = handler->command(&cmd,&reply);
+					if(found)
 						break; // Stop after this class if finished flag is returned
+				}
+
 			}
 
 		}
 		if(!reply.empty() && reply.back()!='\n'){
 			reply+='\n';
 		}
+	}
+	if(!found && reply.empty()){
+		reply = "Err. Unknown command\n";
 	}
 	if(reply.length()>0){
 		CDC_Transmit_FS(reply.c_str(), reply.length());

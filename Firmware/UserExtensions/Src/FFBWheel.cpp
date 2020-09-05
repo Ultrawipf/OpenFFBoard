@@ -406,13 +406,14 @@ void FFBWheel::send_report(){
 	// Read buttons
 	reportHID.buttons = 0; // Reset buttons
 	uint8_t shift = 0;
-	if(btns.size() != 0)
+	if(btns.size() != 0){
 		for(ButtonSource* btn : btns){
 			uint32_t buf = 0;
 			btn->readButtons(&buf);
 			reportHID.buttons |= buf << shift;
 			shift += btn->getBtnNum();
 		}
+	}
 
 	// Encoder
 	reportHID.X = clip(lastScaledEnc,-0x7fff,0x7fff);

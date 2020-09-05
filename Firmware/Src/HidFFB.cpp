@@ -112,7 +112,7 @@ void HidFFB::hidOut(uint8_t* report){
 	}
 
 	default:
-		printf("Got unknown command: %d",event_idx);
+		printf("Got unknown HID command: %d",event_idx);
 		break;
 	}
 
@@ -159,7 +159,7 @@ void HidFFB::stop_FFB(){
 }
 
 void HidFFB::ffb_control(uint8_t cmd){
-	printf("Got Control signal: %d\n",cmd);
+	//printf("Got Control signal: %d\n",cmd);
 	if(cmd & 0x01){ //enable
 		start_FFB();
 	}if(cmd & 0x02){ //disable
@@ -193,7 +193,7 @@ void HidFFB::new_effect(FFB_CreateNewEffect_Feature_Data_t* effect){
 		blockLoad_report.loadStatus = 2;
 		return;
 	}
-	printf("Creating Effect: %d at %d\n",effect->effectType,index);
+	//printf("Creating Effect: %d at %d\n",effect->effectType,index);
 
 	FFB_Effect new_effect;
 	new_effect.type = effect->effectType;

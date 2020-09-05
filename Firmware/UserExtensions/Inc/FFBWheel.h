@@ -142,9 +142,9 @@ private:
 //		.positionP	= 64
 //	});
 	TMC4671PIDConf tmcpids = TMC4671PIDConf({
-		.fluxI		= 50,
-		.fluxP		= 500,
-		.torqueI	= 500,
+		.fluxI		= 100,
+		.fluxP		= 400,
+		.torqueI	= 400,
 		.torqueP	= 300,
 		.velocityI	= 0,
 		.velocityP	= 128,
