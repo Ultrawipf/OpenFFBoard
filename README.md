@@ -1,3 +1,19 @@
+<div align="center">
+    <a href="https://github.com/Ultrawipf/OpenFFBoard">
+        <img width="200" height="200" src="doc/img/ffboard_logo.svg">
+    </a>
+	<br>
+	<br>
+	<div style="display: flex;">
+		<a href="https://discord.gg/gHtnEcP">
+            <img src="https://img.shields.io/discord/704355326291607614">
+		</a>
+		<a href="https://github.com/Ultrawipf/OpenFFBoard/stargazers">
+            <img src="https://img.shields.io/github/stars/Ultrawipf/OpenFFBoard">
+		</a>
+	</div>
+</div>
+
 # Open FFBoard
 The Open FFBoard is an open source force feedback interface with the goal of creating a platform for highly compatible simulation devices.
 
@@ -10,9 +26,16 @@ The hardware designs are found under [OpenFFBoard-hardware](https://github.com/U
 
 The GUI for configuration is found at [OpenFFBoard-configurator](https://github.com/Ultrawipf/OpenFFBoard-configurator).
 
+These git submodules can be pulled with `git submodule init` and `git submodule update`
+
 Updates often require matching firmware and GUI versions!
 
-## Extensions
+## Documentation
+Documentation will be added in the [GitHub Wiki](https://github.com/Ultrawipf/OpenFFBoard/wiki)
+
+For discussion and progress updates we have a [Discord server](https://discord.com/invite/gHtnEcP).
+
+### Extensions
 The modular structure means you are free to implement your own main classes.
 Take a look into the FFBoardMain and ExampleMain class files in the UserExtensions folder.
 Helper functions for parsing CDC commands and accessing the flash are included.
@@ -24,6 +47,8 @@ For FFB the motor drivers, button sources or encoders also have their own interf
 A simplified command parser is available and recommended for setting parameters at runtime. (see `CmdParser.h` and `CommandHandler.h` and the example main)
 
 Callbacks like command parsers and timers or external interrupts are also based on virtual classes that can be implemented to add this functionality to any other module. Take a look at `global_callbacks.cpp` for some of them.
+
+
 
 ### Copyright notice:
 Some parts of this software may contain source code by ST.
