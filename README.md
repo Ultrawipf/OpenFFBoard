@@ -1,4 +1,19 @@
-![Logo](doc/ffboard_logo.svg)
+<div align="center">
+    <a href="https://github.com/Ultrawipf/OpenFFBoard">
+        <img width="200" height="200" src="doc/img/ffboard_logo.svg">
+    </a>
+	<br>
+	<br>
+	<div style="display: flex;">
+		<a href="https://discord.gg/gHtnEcP">
+            <img src="https://img.shields.io/discord/704355326291607614">
+		</a>
+		<a href="https://github.com/Ultrawipf/OpenFFBoard/stargazers">
+            <img src="https://img.shields.io/github/stars/Ultrawipf/OpenFFBoard">
+		</a>
+	</div>
+</div>
+
 # Open FFBoard
 The Open FFBoard is an open source force feedback interface with the goal of creating a platform for highly compatible simulation devices.
 
