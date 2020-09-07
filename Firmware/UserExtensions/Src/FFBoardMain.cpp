@@ -32,8 +32,6 @@ const ClassIdentifier FFBoardMain::getInfo(){
 }
 
 
-
-
 void FFBoardMain::cdcRcv(char* Buf, uint32_t *Len){
 	if(this->parser.add(Buf, Len)){
 		executeCommands(this->parser.parse());
@@ -53,7 +51,7 @@ bool FFBoardMain::executeSysCommand(ParsedCommand* cmd,std::string* reply){
 		flag = false; // Continue to user commands
 	}else if(cmd->cmd == "reboot"){
 		NVIC_SystemReset();
-	}else if(cmd->cmd == "dfu"){
+	}else if(cmd->cmd == "dfu"){ // Reboot into DFU bootloader mode
 		RebootDFU();
 	}else if(cmd->cmd == "vint"){
 		if(cmd->type==CMDtype::get){
@@ -71,7 +69,7 @@ bool FFBoardMain::executeSysCommand(ParsedCommand* cmd,std::string* reply){
 	}else if(cmd->type!=CMDtype::set &&cmd->cmd == "lsmain"){
 		*reply += mainchooser.printAvailableClasses();
 
-	}else if(cmd->cmd == "id"){
+	}else if(cmd->cmd == "id"){ // Report id of main class
 		*reply+=std::to_string(this->getInfo().id);
 
 	}else if(cmd->cmd == "lsactive"){ // Prints all active command handlers that have a name
@@ -109,9 +107,9 @@ bool FFBoardMain::executeSysCommand(ParsedCommand* cmd,std::string* reply){
 			*reply += "format=1 will ERASE ALL stored variables. Be careful!";
 		}
 	}else{
+		// No command found
 		flag = false;
 	}
-	// Append newline if reply is not empty
 
 	return flag;
 }
@@ -124,6 +122,7 @@ void FFBoardMain::executeCommands(std::vector<ParsedCommand> commands){
 	std::string reply;
 	extern std::vector<CommandHandler*> cmdHandlers;
 	bool found = false;
+
 	for(ParsedCommand cmd : commands){
 		found = executeSysCommand(&cmd,&reply);
 		if(!found){
@@ -134,15 +133,14 @@ void FFBoardMain::executeCommands(std::vector<ParsedCommand> commands){
 					if(found)
 						break; // Stop after this class if finished flag is returned
 				}
-
 			}
-
 		}
+		// Append newline if reply is not empty
 		if(!reply.empty() && reply.back()!='\n'){
 			reply+='\n';
 		}
 	}
-	if(!found && reply.empty()){
+	if(!found && reply.empty()){ //No class reported success. Show error
 		reply = "Err. Unknown command\n";
 	}
 	if(reply.length()>0){
@@ -176,6 +174,6 @@ void FFBoardMain::usbResume(){
 
 
 FFBoardMain::~FFBoardMain() {
-	// TODO Auto-generated destructor stub
+
 }
 

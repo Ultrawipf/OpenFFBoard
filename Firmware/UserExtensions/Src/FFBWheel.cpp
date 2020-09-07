@@ -70,7 +70,9 @@ FFBWheel::~FFBWheel() {
 	delete enc;
 }
 
-
+/*
+ * Read parameters from flash and restore settings
+ */
 void FFBWheel::restoreFlash(){
 	// read all constants
 	uint16_t confint;
@@ -443,6 +445,9 @@ void FFBWheel::SOF(){
 	// USB clocked update callback
 }
 
+/*
+ * USB unplugged
+ */
 void FFBWheel::usbSuspend(){
 	if(usb_disabled)
 		return;
