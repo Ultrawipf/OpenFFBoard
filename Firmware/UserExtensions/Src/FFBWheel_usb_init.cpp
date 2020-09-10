@@ -9,7 +9,7 @@
 #include "usbd_desc.h"
 
 extern USBD_HandleTypeDef hUsbDeviceFS;
-USBD_ClassTypeDef* handles[2];
+extern USBD_ClassTypeDef* handles[2];
 
 void usbInit_HID_Wheel(){
 	handles[CDC_IDX] = &USBD_CDC;
