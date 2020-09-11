@@ -38,7 +38,9 @@ MidiMain::MidiMain() {
 	HAL_TIM_Base_Start_IT(this->timer_update);
 
 	// Setup one TMC for first channel
-	this->drv = new TMC4671();
+ 	this->drv = new TMC4671();
+	TMC4671Limits limits;
+	drv->setLimits(limits);
 	drv->setAddress(1);
 	drv->restoreFlash(); // load motor type
 	//drv->setMotorType(MotorType::STEPPER, 50);
@@ -50,6 +52,7 @@ MidiMain::MidiMain() {
 	drv->setUdUq(0, 0);
 	drv->allowSlowSPI = false; // Force higher speed
 	drv->initialize();
+	drv->setPhiEtype(PhiE::ext);
 	drv->setMotionMode(MotionMode::uqudext);
 
 	if(!drv->initialized){
@@ -146,7 +149,7 @@ bool MidiMain::command(ParsedCommand* cmd,std::string* reply){
 		}else if(cmd->type == CMDtype::set){
 			this->power = cmd->val;
 		}
-	}if(cmd->cmd == "range"){
+	}else if(cmd->cmd == "range"){
 		if(cmd->type == CMDtype::get){
 			*reply+=std::to_string(movementrange);
 		}else if(cmd->type == CMDtype::set){

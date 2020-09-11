@@ -14,7 +14,6 @@
 #ifdef __cplusplus
 
 #include "FFBoardMain.h"
-#include <memory>
 #include "ledEffects.h"
 #include "ClassChooser.h"
 
