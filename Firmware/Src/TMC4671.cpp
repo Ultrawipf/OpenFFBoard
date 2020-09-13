@@ -1178,8 +1178,8 @@ void TMC4671::restoreEncHallMisc(uint16_t val){
 }
 
 
-bool TMC4671::command(ParsedCommand* cmd,std::string* reply){
-	bool flag = true;
+ParseStatus TMC4671::command(ParsedCommand* cmd,std::string* reply){
+	ParseStatus flag = ParseStatus::OK;
 	if(cmd->cmd == "mtype"){
 		if(cmd->type == CMDtype::get){
 			*reply+=std::to_string((uint8_t)this->conf.motconf.motor_type);
@@ -1204,7 +1204,7 @@ bool TMC4671::command(ParsedCommand* cmd,std::string* reply){
 		}else if(cmd->type ==CMDtype:: set){
 			this->bangInitEnc(cmd->val);
 		}else{
-			return false;
+			return ParseStatus::OK_CONTINUE;
 		}
 		if(this->checkEncoder()){
 			*reply+=">Aligned";
@@ -1295,13 +1295,13 @@ bool TMC4671::command(ParsedCommand* cmd,std::string* reply){
 		}
 
 	}else if(cmd->cmd == "help"){
-		flag = false; // Set flag false to continue parsing
+		flag = ParseStatus::OK_CONTINUE; // Set flag false to continue parsing
 		*reply += "TMC4671 commands:\n"
 				"mtype,encsrc,encalign,poles,phiesrc,reg,fluxoffset\n"
 				"torqueP,torqueI,fluxP,fluxI\n"
 				"acttorque,seqpi\n";
 	}else{
-		flag = false;
+		flag = ParseStatus::NOT_FOUND;
 	}
 	return flag;
 }

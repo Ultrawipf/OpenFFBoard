@@ -55,7 +55,7 @@ public:
 
 	void setupTMC4671();
 	void setupTMC4671_enc(PhiE enctype);
-	bool command(ParsedCommand* cmd,std::string* reply);
+	ParseStatus command(ParsedCommand* cmd,std::string* reply);
 
 	void setDrvType(uint8_t drvtype);
 	void setEncType(uint8_t enctype);

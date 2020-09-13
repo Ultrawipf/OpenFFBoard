@@ -10,6 +10,8 @@
 #include <CmdParser.h>
 #include "ClassChooser.h"
 
+enum class ParseStatus : uint8_t {NOT_FOUND,OK,ERR,OK_CONTINUE};
+
 /*
  * Implements an interface for parsed command handlers
  * Adds itself to a global vector of handlers that can be called from the main class when a command gets parsed
@@ -21,7 +23,7 @@ public:
 	virtual ~CommandHandler();
 	virtual bool hasCommands();
 	virtual void setCommandsEnabled(bool enable);
-	virtual bool command(ParsedCommand* cmd,std::string* reply);
+	virtual ParseStatus command(ParsedCommand* cmd,std::string* reply);
 	virtual const ClassIdentifier getInfo() = 0; // Command handlers always have class infos. Works well with ChoosableClass
 protected:
 	bool commandsEnabled = true;

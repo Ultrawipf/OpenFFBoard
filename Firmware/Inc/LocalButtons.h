@@ -22,7 +22,7 @@ public:
 
 	const uint16_t maxButtons = 8;
 
-	bool command(ParsedCommand* cmd,std::string* reply);
+	ParseStatus command(ParsedCommand* cmd,std::string* reply);
 
 	void saveFlash(); 		// Write to flash here
 	void restoreFlash();	// Load from flash

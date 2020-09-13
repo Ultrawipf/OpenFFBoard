@@ -44,7 +44,7 @@ public:
 
 	static ClassIdentifier info;
 	const ClassIdentifier getInfo();
-	bool command(ParsedCommand* cmd,std::string* reply);
+	ParseStatus command(ParsedCommand* cmd,std::string* reply);
 	void usbInit();
 	void update();
 	void  SOF();

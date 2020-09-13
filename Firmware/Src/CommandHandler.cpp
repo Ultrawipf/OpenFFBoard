@@ -13,6 +13,7 @@ CommandHandler::CommandHandler() {
 	addCommandHandler();
 }
 
+
 CommandHandler::~CommandHandler() {
 	// Remove from global list when deleted
 	removeCommandHandler();
@@ -33,14 +34,14 @@ const ClassIdentifier CommandHandler::getInfo(){
 }
 /*
  * Implement this function
- * MUST return false when no valid command was found or if a help command or similar was parsed
- * When it returns true parsing is normally stopped after this class and not sent to others
+ * MUST return not found when no valid command was found or if a help command or similar was parsed
+ * When it returns OK or FAIL parsing is normally stopped after this class and the command is not sent to others
  */
-bool CommandHandler::command(ParsedCommand* cmd,std::string* reply){
+ParseStatus CommandHandler::command(ParsedCommand* cmd,std::string* reply){
 	if(!this->commandsEnabled){
-		return false;
+		return ParseStatus::NOT_FOUND;
 	}
-	return false;
+	return ParseStatus::NOT_FOUND;
 }
 
 

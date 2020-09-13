@@ -289,7 +289,7 @@ public:
 
 	bool allowSlowSPI = true; // For engineering sample
 
-	bool command(ParsedCommand* cmd,std::string* reply);
+	ParseStatus command(ParsedCommand* cmd,std::string* reply);
 
 	void HAL_SPI_TXRX_COMPLETE();
 

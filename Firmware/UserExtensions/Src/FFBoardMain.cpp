@@ -38,17 +38,18 @@ void FFBoardMain::cdcRcv(char* Buf, uint32_t *Len){
 	}
 }
 
-bool FFBoardMain::command(ParsedCommand *cmd,std::string* reply){
+ParseStatus FFBoardMain::command(ParsedCommand *cmd,std::string* reply){
 
-	return false;
+	return ParseStatus::NOT_FOUND;
 }
 
-bool FFBoardMain::executeSysCommand(ParsedCommand* cmd,std::string* reply){
-	bool flag = true;
+ParseStatus FFBoardMain::executeSysCommand(ParsedCommand* cmd,std::string* reply){
+	ParseStatus flag = ParseStatus::OK;
+
 	if(cmd->cmd == "help"){
 		*reply += parser.helpstring;
 		*reply += "\nSystem Commands: reboot,help,dfu,swver (Version),lsmain (List configs),id,main (Set main config),lsactive (print command handlers),vint,vext,format (Erase flash)\n";
-		flag = false; // Continue to user commands
+		flag = ParseStatus::OK_CONTINUE; // Continue to user commands
 	}else if(cmd->cmd == "reboot"){
 		NVIC_SystemReset();
 	}else if(cmd->cmd == "dfu"){ // Reboot into DFU bootloader mode
@@ -95,7 +96,7 @@ bool FFBoardMain::executeSysCommand(ParsedCommand* cmd,std::string* reply){
 					NVIC_SystemReset(); // Reboot
 				}
 			}else if(cmd->type == CMDtype::err){
-				*reply += "Err";
+				flag = ParseStatus::ERR;
 			}
 		}
 	}else if(cmd->cmd == "format"){
@@ -108,7 +109,7 @@ bool FFBoardMain::executeSysCommand(ParsedCommand* cmd,std::string* reply){
 		}
 	}else{
 		// No command found
-		flag = false;
+		flag = ParseStatus::NOT_FOUND;
 	}
 
 	return flag;
@@ -121,27 +122,33 @@ bool FFBoardMain::executeSysCommand(ParsedCommand* cmd,std::string* reply){
 void FFBoardMain::executeCommands(std::vector<ParsedCommand> commands){
 	std::string reply;
 	extern std::vector<CommandHandler*> cmdHandlers;
-	bool found = false;
+	ParseStatus status = ParseStatus::NOT_FOUND;
 
 	for(ParsedCommand cmd : commands){
-		found = executeSysCommand(&cmd,&reply);
-		if(!found){
+		status = executeSysCommand(&cmd,&reply);
+		if(status == ParseStatus::NOT_FOUND || status == ParseStatus::OK_CONTINUE){
 			// Call all command handlers
 			for(CommandHandler* handler : cmdHandlers){
 				if(handler->hasCommands()){
-					found = handler->command(&cmd,&reply);
-					if(found)
+					status = handler->command(&cmd,&reply);
+					if(status != ParseStatus::NOT_FOUND || status == ParseStatus::OK_CONTINUE)
 						break; // Stop after this class if finished flag is returned
 				}
 			}
+		}
+		if(reply.empty() && status == ParseStatus::OK){
+			reply = "OK";
 		}
 		// Append newline if reply is not empty
 		if(!reply.empty() && reply.back()!='\n'){
 			reply+='\n';
 		}
+		reply = '>'+reply; // Start marker
 	}
-	if(!found && reply.empty()){ //No class reported success. Show error
-		reply = "Err. Unknown command\n";
+	if(status == ParseStatus::NOT_FOUND){ //No class reported success. Show error
+		reply = ">Err. Unknown command\n";
+	}else if(status == ParseStatus::ERR){
+		reply += "Err. Execution error\n";
 	}
 	if(reply.length()>0){
 		CDC_Transmit_FS(reply.c_str(), reply.length());

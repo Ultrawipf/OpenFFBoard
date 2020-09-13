@@ -103,8 +103,8 @@ void ShifterAnalog::printModes(std::string* reply){
 	}
 }
 
-bool ShifterAnalog::command(ParsedCommand* cmd,std::string* reply){
-	bool result = true;
+ParseStatus ShifterAnalog::command(ParsedCommand* cmd,std::string* reply){
+	ParseStatus result = ParseStatus::OK;
 	// use "shifter_mode!" to print a list of possible modes and choose one
 	if(cmd->cmd == "shifter_mode"){
 		if(cmd->type == CMDtype::set){
@@ -115,7 +115,7 @@ bool ShifterAnalog::command(ParsedCommand* cmd,std::string* reply){
 			printModes(reply);
 		}
 	}else{
-		result = false;
+		result = ParseStatus::NOT_FOUND;
 	}
 	return result;
 }

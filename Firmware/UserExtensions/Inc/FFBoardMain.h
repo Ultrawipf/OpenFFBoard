@@ -39,8 +39,8 @@ private:
 
 protected:
 	virtual void executeCommands(std::vector<ParsedCommand> commands);
-	virtual bool command(ParsedCommand* cmd,std::string* reply); // Append reply strings to reply buffer
-	virtual bool executeSysCommand(ParsedCommand* cmd,std::string* reply);
+	virtual ParseStatus command(ParsedCommand* cmd,std::string* reply); // Append reply strings to reply buffer
+	virtual ParseStatus executeSysCommand(ParsedCommand* cmd,std::string* reply);
 	CmdParser parser = CmdParser();
 };
 

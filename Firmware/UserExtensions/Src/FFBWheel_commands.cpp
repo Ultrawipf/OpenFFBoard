@@ -9,8 +9,8 @@
 #include "FFBWheel.h"
 
 
-bool FFBWheel::command(ParsedCommand* cmd,std::string* reply){
-	bool flag = true;
+ParseStatus FFBWheel::command(ParsedCommand* cmd,std::string* reply){
+	ParseStatus flag = ParseStatus::OK;
 	// ------------ General commands ----------------
 	if(cmd->cmd == "save"){
 		this->saveFlash();
@@ -21,6 +21,7 @@ bool FFBWheel::command(ParsedCommand* cmd,std::string* reply){
 		}else if(cmd->type == CMDtype::set && this->drv_chooser.isValidClassId(cmd->val)){
 			setDrvType((cmd->val));
 		}else{
+
 			*reply += drv_chooser.printAvailableClasses();
 		}
 	}else if(cmd->cmd == "btntypes"){
@@ -29,6 +30,7 @@ bool FFBWheel::command(ParsedCommand* cmd,std::string* reply){
 		}else if(cmd->type == CMDtype::set){
 			setBtnTypes(cmd->val);
 		}else{
+			flag = ParseStatus::ERR;
 			*reply += "bin flag encoded list of button sources. (3 = source 1 & 2 active). See lsbtn for sources";
 		}
 	}else if(cmd->cmd == "lsbtn"){
@@ -107,6 +109,7 @@ bool FFBWheel::command(ParsedCommand* cmd,std::string* reply){
 		}else if(cmd->type == CMDtype::set && this->enc != nullptr){
 			this->enc->setCpr(cmd->val);
 		}else{
+			flag = ParseStatus::ERR;
 			*reply += "Err. Setup enctype first";
 		}
 	}else if(cmd->cmd == "pos"){
@@ -115,6 +118,7 @@ bool FFBWheel::command(ParsedCommand* cmd,std::string* reply){
 		}else if(cmd->type == CMDtype::set && this->enc != nullptr){
 			this->enc->setPos(cmd->val);
 		}else{
+			flag = ParseStatus::ERR;
 			*reply += "Err. Setup enctype first";
 		}
 
@@ -125,11 +129,11 @@ bool FFBWheel::command(ParsedCommand* cmd,std::string* reply){
 		*reply+=std::to_string(ffb->getFfbActive() ? 1 : 0);
 
 	}else if(cmd->cmd == "help"){
-		flag = false;
+		flag = ParseStatus::OK_CONTINUE;
 		*reply += "FFBWheel commands:\n"
 				"power,zeroenc,enctype,degrees,esgain,fxratio,idlespring,friction,invertx,cpr,drvtype,btntype,lsbtn,btnnum,btntypes,btnpol,btncut,axismask,ffbactive\n"; // TODO
 	}else{
-		flag = false;
+		flag = ParseStatus::NOT_FOUND;
 	}
 
 	return flag;
