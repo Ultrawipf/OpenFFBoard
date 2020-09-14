@@ -120,13 +120,19 @@ ParseStatus FFBoardMain::executeSysCommand(ParsedCommand* cmd,std::string* reply
  * Not global so it can be overridden by main classes to change behaviour or suppress outputs.
  */
 void FFBoardMain::executeCommands(std::vector<ParsedCommand> commands){
-	std::string reply;
+	std::string full_reply;
 	extern std::vector<CommandHandler*> cmdHandlers;
-	ParseStatus status = ParseStatus::NOT_FOUND;
 
 	for(ParsedCommand cmd : commands){
+		ParseStatus status = ParseStatus::NOT_FOUND;
+		if(cmd.cmd.empty())
+			continue; // Empty command
+
+		full_reply+='>'; // Start marker
+
+		std::string reply; // Reply of current command
 		status = executeSysCommand(&cmd,&reply);
-		if(status == ParseStatus::NOT_FOUND || status == ParseStatus::OK_CONTINUE){
+		if(status == ParseStatus::NOT_FOUND || status == ParseStatus::OK_CONTINUE){ // Not a system command
 			// Call all command handlers
 			for(CommandHandler* handler : cmdHandlers){
 				if(handler->hasCommands()){
@@ -143,15 +149,16 @@ void FFBoardMain::executeCommands(std::vector<ParsedCommand> commands){
 		if(!reply.empty() && reply.back()!='\n'){
 			reply+='\n';
 		}
-		reply = '>'+reply; // Start marker
+		if(status == ParseStatus::NOT_FOUND){ //No class reported success. Show error
+			reply = "Err. Unknown command: " + cmd.cmd + "\n";
+		}else if(status == ParseStatus::ERR){ //Error reported in command
+			reply += "Err. Execution error\n";
+		}
+		full_reply+=reply;
 	}
-	if(status == ParseStatus::NOT_FOUND){ //No class reported success. Show error
-		reply = ">Err. Unknown command\n";
-	}else if(status == ParseStatus::ERR){
-		reply += "Err. Execution error\n";
-	}
-	if(reply.length()>0){
-		CDC_Transmit_FS(reply.c_str(), reply.length());
+
+	if(full_reply.length()>0){
+		CDC_Transmit_FS(full_reply.c_str(), full_reply.length());
 	}
 }
 
