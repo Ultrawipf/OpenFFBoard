@@ -163,7 +163,7 @@ ParseStatus SPI_Buttons::command(ParsedCommand* cmd,std::string* reply){
 		}else{
 			*reply+="Err. cut bytes right: 1 else 0";
 		}
-	}if(cmd->cmd == "spibtn_mode"){
+	}else if(cmd->cmd == "spibtn_mode"){
 		if(cmd->type == CMDtype::set){
 			setMode((SPI_BtnMode)cmd->val);
 		}else if(cmd->type == CMDtype::get){
