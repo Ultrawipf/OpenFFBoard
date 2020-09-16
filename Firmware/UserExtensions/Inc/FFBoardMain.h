@@ -31,11 +31,14 @@ public:
 	virtual void update();
 	virtual void cdcRcv(char* Buf, uint32_t *Len);
 	virtual void SOF();
+	virtual void cdcFinished();
 	virtual void usbSuspend(); // Called on usb disconnect and suspend
 	virtual void usbResume(); // Called on usb resume
 
 
 private:
+	bool usb_busy_retry = false;
+	std::string cmd_reply;
 
 protected:
 	virtual void executeCommands(std::vector<ParsedCommand> commands);

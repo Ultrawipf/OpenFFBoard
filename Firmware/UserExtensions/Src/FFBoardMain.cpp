@@ -120,7 +120,9 @@ ParseStatus FFBoardMain::executeSysCommand(ParsedCommand* cmd,std::string* reply
  * Not global so it can be overridden by main classes to change behaviour or suppress outputs.
  */
 void FFBoardMain::executeCommands(std::vector<ParsedCommand> commands){
-	std::string full_reply;
+	if(!usb_busy_retry){
+		this->cmd_reply.clear();
+	}
 	extern std::vector<CommandHandler*> cmdHandlers;
 
 	for(ParsedCommand cmd : commands){
@@ -128,7 +130,7 @@ void FFBoardMain::executeCommands(std::vector<ParsedCommand> commands){
 		if(cmd.cmd.empty())
 			continue; // Empty command
 
-		full_reply+='>'; // Start marker
+		this->cmd_reply+='>'; // Start marker
 
 		std::string reply; // Reply of current command
 		status = executeSysCommand(&cmd,&reply);
@@ -154,11 +156,25 @@ void FFBoardMain::executeCommands(std::vector<ParsedCommand> commands){
 		}else if(status == ParseStatus::ERR){ //Error reported in command
 			reply += "Err. Execution error\n";
 		}
-		full_reply+=reply;
+		this->cmd_reply+=reply;
 	}
 
-	if(full_reply.length()>0){
-		CDC_Transmit_FS(full_reply.c_str(), full_reply.length());
+	if(this->cmd_reply.length()>0){ // Check if cdc busy
+		if(CDC_Transmit_FS(this->cmd_reply.c_str(), this->cmd_reply.length()) != USBD_OK){
+			pulseErrLed();
+			this->usb_busy_retry = true;
+		}
+	}
+}
+
+/*
+ * Global callback if cdc transfer is finished. Used to retry a failed transfer
+ */
+void FFBoardMain::cdcFinished(){
+	if(this->usb_busy_retry){
+		if(CDC_Transmit_FS(this->cmd_reply.c_str(), this->cmd_reply.length()) == USBD_OK){
+			this->usb_busy_retry = false;
+		}
 	}
 }
 
@@ -174,8 +190,6 @@ void FFBoardMain::usbInit(){
 void FFBoardMain::update(){
 
 }
-
-
 void FFBoardMain::SOF(){
 
 }
