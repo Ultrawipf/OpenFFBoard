@@ -337,10 +337,6 @@ uint8_t CDC_Transmit_FS(const char* Buf, uint16_t Len)
 	  return USBD_FAIL;
   uint8_t result = USBD_OK;
   uint32_t size = sizeof(uint8_t) * Len;
-//  uint32_t additional_length = 0;
-
-//  if(hcdc->TxState != 0)
-//	  additional_length = hcdc->TxLength;
 
   size = size < APP_TX_DATA_SIZE ? size : APP_TX_DATA_SIZE;
 

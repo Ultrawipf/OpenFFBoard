@@ -12,7 +12,7 @@
 #include "ledEffects.h"
 
 ClassIdentifier MidiMain::info = {
-		 .name = "MIDI :)" ,
+		 .name = "MIDI" ,
 		 .id=64,
 		 .hidden=false //Set false to list
  };

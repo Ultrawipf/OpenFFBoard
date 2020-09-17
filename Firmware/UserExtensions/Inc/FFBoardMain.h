@@ -31,7 +31,7 @@ public:
 	virtual void update();
 	virtual void cdcRcv(char* Buf, uint32_t *Len);
 	virtual void SOF();
-	virtual void cdcFinished();
+	virtual void cdcFinished(); // Cdc send transfer complete
 	virtual void usbSuspend(); // Called on usb disconnect and suspend
 	virtual void usbResume(); // Called on usb resume
 

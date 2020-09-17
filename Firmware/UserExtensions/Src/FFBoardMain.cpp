@@ -152,16 +152,15 @@ void FFBoardMain::executeCommands(std::vector<ParsedCommand> commands){
 			reply+='\n';
 		}
 		if(status == ParseStatus::NOT_FOUND){ //No class reported success. Show error
-			reply = "Err. Unknown command: " + cmd.cmd + "\n";
+			reply = "Err(0). Unknown command: " + cmd.cmd + "\n";
 		}else if(status == ParseStatus::ERR){ //Error reported in command
-			reply += "Err. Execution error\n";
+			reply += "Err(1). Execution error\n";
 		}
 		this->cmd_reply+=reply;
 	}
 
 	if(this->cmd_reply.length()>0){ // Check if cdc busy
 		if(CDC_Transmit_FS(this->cmd_reply.c_str(), this->cmd_reply.length()) != USBD_OK){
-			pulseErrLed();
 			this->usb_busy_retry = true;
 		}
 	}
