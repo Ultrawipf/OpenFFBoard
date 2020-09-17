@@ -1225,7 +1225,7 @@ ParseStatus TMC4671::command(ParsedCommand* cmd,std::string* reply){
 			this->setCpr(cmd->val);
 		}
 
-	}else if(cmd->cmd == "acttorque"){
+	}else if(cmd->cmd == "acttrq"){
 		if(cmd->type == CMDtype::get){
 			*reply+=std::to_string(getActualCurrent());
 		}
@@ -1299,7 +1299,7 @@ ParseStatus TMC4671::command(ParsedCommand* cmd,std::string* reply){
 		*reply += "TMC4671 commands:\n"
 				"mtype,encsrc,encalign,poles,phiesrc,reg,fluxoffset\n"
 				"torqueP,torqueI,fluxP,fluxI\n"
-				"acttorque,seqpi\n";
+				"acttrq,seqpi\n";
 	}else{
 		flag = ParseStatus::NOT_FOUND;
 	}
