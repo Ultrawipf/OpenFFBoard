@@ -125,8 +125,8 @@ void SPI_Buttons::printModes(std::string* reply){
 	}
 }
 
-bool SPI_Buttons::command(ParsedCommand* cmd,std::string* reply){
-	bool result = true;
+ParseStatus SPI_Buttons::command(ParsedCommand* cmd,std::string* reply){
+	ParseStatus result = ParseStatus::OK;
 	if(cmd->cmd == "spi_btnnum"){
 		if(cmd->type == CMDtype::set){
 			ButtonSourceConfig* c = this->getConfig();
@@ -163,7 +163,7 @@ bool SPI_Buttons::command(ParsedCommand* cmd,std::string* reply){
 		}else{
 			*reply+="Err. cut bytes right: 1 else 0";
 		}
-	}if(cmd->cmd == "spibtn_mode"){
+	}else if(cmd->cmd == "spibtn_mode"){
 		if(cmd->type == CMDtype::set){
 			setMode((SPI_BtnMode)cmd->val);
 		}else if(cmd->type == CMDtype::get){
@@ -172,7 +172,7 @@ bool SPI_Buttons::command(ParsedCommand* cmd,std::string* reply){
 			printModes(reply);
 		}
 	}else{
-		result = false;
+		result = ParseStatus::NOT_FOUND;
 	}
 	return result;
 }

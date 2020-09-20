@@ -29,11 +29,10 @@ bool CmdParser::add(char* Buf, uint32_t *Len){
 		if(*(Buf+i) == '\n' || *(Buf+i) == '\r' || *(Buf+i) == ';'|| *(Buf+i) == ' '){
 			*(Buf+i) = (uint8_t)';';
 			flag = true;
+
 		}
 	}
-
 	this->buffer.append((char*)Buf,*Len);
-
 	return flag;
 }
 
@@ -44,15 +43,16 @@ std::vector<ParsedCommand> CmdParser::parse(){
 	std::vector<ParsedCommand> commands;
 	std::vector<std::string> tokens;
 
-    uint16_t pos = 0;
-    uint16_t lpos = 0;
+    uint32_t pos = 0;
+    uint32_t lpos = 0;
 	while(pos < buffer.length()-1){
 		pos = buffer.find(';',lpos);
-		std::string token = buffer.substr(lpos,pos-lpos);
-		lpos = pos+1;
-		tokens.push_back(token);
+		if(pos != std::string::npos){
+			std::string token = buffer.substr(lpos,pos-lpos);
+			lpos = pos+1;
+			tokens.push_back(token);
+		}
 	}
-
 	for(std::string word : tokens){
 
 		ParsedCommand cmd;
@@ -104,6 +104,7 @@ std::vector<ParsedCommand> CmdParser::parse(){
 
 		commands.push_back(cmd);
 	}
-	buffer.clear();
+
+	buffer.erase(0,lpos); // Clear parsed portion from buffer
 	return commands;
 }

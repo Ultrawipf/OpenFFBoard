@@ -57,8 +57,8 @@ void LocalButtons::restoreFlash(){
 	}
 }
 
-bool LocalButtons::command(ParsedCommand* cmd,std::string* reply){
-	bool result = true;
+ParseStatus LocalButtons::command(ParsedCommand* cmd,std::string* reply){
+	ParseStatus result = ParseStatus::OK;
 	// mask is a bitfield of 8 bits enabling or disabling specific pins
 	if(cmd->cmd == "local_btnmask"){
 		if(cmd->type == CMDtype::set){
@@ -67,7 +67,7 @@ bool LocalButtons::command(ParsedCommand* cmd,std::string* reply){
 			*reply += std::to_string(this->mask);
 		}
 	}else{
-		result = false; // No valid command
+		result = ParseStatus::NOT_FOUND; // No valid command
 	}
 
 	return result;

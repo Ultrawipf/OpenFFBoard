@@ -135,7 +135,7 @@ extern uint8_t cdc_dtr;
 uint8_t CDC_Transmit_FS(const char* Buf, uint16_t Len);
 
 /* USER CODE BEGIN EXPORTED_FUNCTIONS */
-
+void CDC_Finished();
 /* USER CODE END EXPORTED_FUNCTIONS */
 
 /**

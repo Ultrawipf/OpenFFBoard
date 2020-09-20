@@ -36,7 +36,7 @@ public:
 
 	void readButtons(uint32_t* buf);
 
-	bool command(ParsedCommand* cmd,std::string* reply);
+	ParseStatus command(ParsedCommand* cmd,std::string* reply);
 
 	void saveFlash();
 	void restoreFlash();

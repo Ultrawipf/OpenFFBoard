@@ -502,6 +502,7 @@ static uint8_t  USBD_CDC_DataIn (USBD_HandleTypeDef *pdev, uint8_t epnum)
   {
     
     hcdc->TxState = 0;
+    CDC_Finished();
 
     return USBD_OK;
   }

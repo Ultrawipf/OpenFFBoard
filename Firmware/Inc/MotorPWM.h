@@ -44,7 +44,7 @@ public:
 	void saveFlash(); 		// Write to flash here
 	void restoreFlash();	// Load from flash
 
-	bool command(ParsedCommand* cmd,std::string* reply);
+	ParseStatus command(ParsedCommand* cmd,std::string* reply);
 
 	void setPWM(uint32_t value);
 

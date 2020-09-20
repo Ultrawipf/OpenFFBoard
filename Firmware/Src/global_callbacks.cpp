@@ -84,6 +84,10 @@ void CDC_Callback(uint8_t* Buf, uint32_t *Len){
 	if(mainclass!=nullptr)
 		mainclass->cdcRcv((char*)Buf,Len);
 }
+void CDC_Finished(){
+	if(mainclass!=nullptr)
+		mainclass->cdcFinished();
+}
 
 // USB Out Endpoint callback
 UsbHidHandler* globalHidHandler = nullptr;

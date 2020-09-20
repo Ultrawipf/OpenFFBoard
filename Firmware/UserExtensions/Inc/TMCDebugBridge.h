@@ -30,7 +30,7 @@ public:
 	const ClassIdentifier getInfo();
 
 	void cdcRcv(char* Buf, uint32_t *Len);
-	bool command(ParsedCommand* cmd,std::string* reply);
+	ParseStatus command(ParsedCommand* cmd,std::string* reply);
 
 
 private:

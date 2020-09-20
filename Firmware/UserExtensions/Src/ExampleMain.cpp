@@ -29,8 +29,8 @@ ExampleMain::~ExampleMain() {
 	// TODO Auto-generated destructor stub
 }
 
-bool ExampleMain::command(ParsedCommand* cmd,std::string* reply){
-	bool flag = true; // Valid command found
+ParseStatus ExampleMain::command(ParsedCommand* cmd,std::string* reply){
+	ParseStatus flag = ParseStatus::OK; // Valid command found
 
 	// ------------ commands ----------------
 	if(cmd->cmd == "command"){ // Example: command=1337\n
@@ -39,10 +39,10 @@ bool ExampleMain::command(ParsedCommand* cmd,std::string* reply){
 		}else if(cmd->type == CMDtype::set){
 			examplevar = cmd->val;
 		}else{
-			*reply += "Err";
+			flag = ParseStatus::ERR;
 		}
 	}else{
-		flag = false; // No valid command
+		flag = ParseStatus::NOT_FOUND; // No valid command
 	}
 	return flag;
 }

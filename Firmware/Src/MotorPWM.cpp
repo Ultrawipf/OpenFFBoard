@@ -196,8 +196,8 @@ ModePWM_DRV MotorPWM::getMode(){
 
 
 
-bool MotorPWM::command(ParsedCommand* cmd,std::string* reply){
-	bool result = true;
+ParseStatus MotorPWM::command(ParsedCommand* cmd,std::string* reply){
+	ParseStatus result = ParseStatus::OK;
 
 	if(cmd->cmd == "pwm_mode"){
 		if(cmd->type == CMDtype::set){
@@ -226,7 +226,7 @@ bool MotorPWM::command(ParsedCommand* cmd,std::string* reply){
 			}
 		}
 	}else{
-		result = false; // No valid command
+		result = ParseStatus::NOT_FOUND; // No valid command
 	}
 
 	return result;

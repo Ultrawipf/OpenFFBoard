@@ -36,8 +36,8 @@ void TMCDebugBridge::tmcReadRegRaw(uint8_t reg,uint8_t* buf){
 	HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_SET);
 }
 
-bool TMCDebugBridge::command(ParsedCommand* cmd,std::string* reply){
-	bool flag = true;
+ParseStatus TMCDebugBridge::command(ParsedCommand* cmd,std::string* reply){
+	ParseStatus flag = ParseStatus::OK;
 	if(cmd->cmd == "torque"){
 		if(cmd->type == CMDtype::get){
 			*reply+=std::to_string(drv->getTorque());
@@ -71,7 +71,7 @@ bool TMCDebugBridge::command(ParsedCommand* cmd,std::string* reply){
 			drv->writeReg(cmd->adr,cmd->val);
 		}
 	}else{
-		flag = false;
+		flag = ParseStatus::NOT_FOUND;
 	}
 	return flag;
 }

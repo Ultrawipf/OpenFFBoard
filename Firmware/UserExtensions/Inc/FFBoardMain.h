@@ -31,16 +31,19 @@ public:
 	virtual void update();
 	virtual void cdcRcv(char* Buf, uint32_t *Len);
 	virtual void SOF();
+	virtual void cdcFinished(); // Cdc send transfer complete
 	virtual void usbSuspend(); // Called on usb disconnect and suspend
 	virtual void usbResume(); // Called on usb resume
 
 
 private:
+	bool usb_busy_retry = false;
+	std::string cmd_reply;
 
 protected:
 	virtual void executeCommands(std::vector<ParsedCommand> commands);
-	virtual bool command(ParsedCommand* cmd,std::string* reply); // Append reply strings to reply buffer
-	virtual bool executeSysCommand(ParsedCommand* cmd,std::string* reply);
+	virtual ParseStatus command(ParsedCommand* cmd,std::string* reply); // Append reply strings to reply buffer
+	virtual ParseStatus executeSysCommand(ParsedCommand* cmd,std::string* reply);
 	CmdParser parser = CmdParser();
 };
 

@@ -45,7 +45,7 @@ public:
 
 	void printModes(std::string* reply);
 
-	bool command(ParsedCommand* cmd,std::string* reply);
+	ParseStatus command(ParsedCommand* cmd,std::string* reply);
 
 private:
 	ShifterMode mode;
