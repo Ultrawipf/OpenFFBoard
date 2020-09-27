@@ -25,22 +25,16 @@
 extern FFBoardMain* mainclass;
 volatile uint32_t ADC_BUF[ADC_CHANNELS] = {0};
 volatile char uart_buf[UART_BUF_SIZE] = {0}; //
-bool braking_flag = false;
+
 
 // Externally stored so it can be used before the main class is initialized
 std::vector<CommandHandler*> cmdHandlers;
 
-uint32_t maxVoltage = 60000; // Force braking
-uint32_t voltageDiffActivate = 8000;
-uint32_t voltageDiffDeactivate = 7000;
+
 std::vector<AdcHandler*> adcHandlers;
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc){
 	//Pulse braking mosfet if internal voltage is higher than supply. Conversion: V = 1/36
-	uint16_t vint = getIntV();
-	uint16_t vext = getExtV();
-	braking_flag = (vint > vext + voltageDiffActivate) || vint > maxVoltage || (braking_flag && (vint > vext + voltageDiffDeactivate));
-			//(ADC_BUF[ADC_CHAN_VINT] > ADC_BUF[ADC_CHAN_VEXT]+400 || (ADC_BUF[ADC_CHAN_VINT] > 3000));
-	HAL_GPIO_WritePin(DRV_BRAKE_GPIO_Port,DRV_BRAKE_Pin, braking_flag ? GPIO_PIN_SET:GPIO_PIN_RESET);
+	brakeCheck();
 
 	for(AdcHandler* c : adcHandlers){
 		c->adcUpd(ADC_BUF);

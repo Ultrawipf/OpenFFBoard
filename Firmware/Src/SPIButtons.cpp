@@ -30,7 +30,7 @@ void SPI_Buttons::initSPI(){
 	spi = &HSPI2;
 	cspin = SPI2_NSS_Pin;
 	csport = SPI2_NSS_GPIO_Port;
-	this->spi->Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_64;
+	this->spi->Init.BaudRatePrescaler = SPIBUTTONS_SPEED;
 	this->spi->Init.FirstBit = SPI_FIRSTBIT_LSB;
 	this->spi->Init.CLKPhase = SPI_PHASE_1EDGE;
 	this->spi->Init.CLKPolarity = SPI_POLARITY_LOW;

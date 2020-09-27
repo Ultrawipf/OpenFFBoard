@@ -23,7 +23,7 @@ extern UART_HandleTypeDef huart1;
 #define ADC_CHAN_VEXT 6
 #define ADC_PINS 6
 #define ADC_CHAN_FPIN 0
-#define VOLTAGE_MULT 24.6 // Voltage in mV = adc*VOLTAGE_MULT (24.6 for 976k/33k divider)
+#define VOLTAGE_MULT_DEFAULT 24.6 // Voltage in mV = adc*VOLTAGE_MULT (24.6 for 976k/33k divider)
 
 #define HSPIDRV hspi1
 extern SPI_HandleTypeDef HSPIDRV;

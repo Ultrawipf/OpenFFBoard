@@ -13,6 +13,9 @@
 #include "ChoosableClass.h"
 #include "CommandHandler.h"
 
+// Set this to 64, 128 or 256 to slow down SPI if unstable.
+#define SPIBUTTONS_SPEED SPI_BAUDRATEPRESCALER_32
+
 enum class SPI_BtnMode : uint8_t {TM=0,PISOSR=1};
 
 
