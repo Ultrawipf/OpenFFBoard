@@ -1032,6 +1032,7 @@ void TMC4671::estimateABNparams(){
 	for(uint16_t p = 0;p<0x0fff;p+=0xff){
 		setPhiE_ext(p);
 		HAL_Delay(50);
+		refreshWatchdog(); // Keep board from resetting
 		c++;
 		phiE_abn_old = phiE_abn;
 		phiE_abn = readReg(0x2A)>>16;

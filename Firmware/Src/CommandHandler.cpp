@@ -26,12 +26,7 @@ void CommandHandler::setCommandsEnabled(bool enable){
 	this->commandsEnabled = enable;
 }
 
-/*
- * Implemented by other classes
- */
-const ClassIdentifier CommandHandler::getInfo(){
-	return ClassIdentifier{.name="",.id=0,.hidden=true}; // Empty hidden identifier
-}
+
 /*
  * Implement this function
  * MUST return not found when no valid command was found or if a help command or similar was parsed
@@ -48,19 +43,10 @@ ParseStatus CommandHandler::command(ParsedCommand* cmd,std::string* reply){
 void CommandHandler::addCommandHandler(){
 	// If already added return
 	extern std::vector<CommandHandler*> cmdHandlers;
-	for(uint8_t i = 0; i < cmdHandlers.size(); i++){
-		if(cmdHandlers[i] == this)
-			return;
-	}
-	cmdHandlers.push_back(this);
+	addCallbackHandler(&cmdHandlers, this);
 }
 
 void CommandHandler::removeCommandHandler(){
 	extern std::vector<CommandHandler*> cmdHandlers;
-	for (uint8_t i = 0; i < cmdHandlers.size(); i++){
-		if(cmdHandlers[i] == this){
-			cmdHandlers.erase(cmdHandlers.begin()+i);
-			break;
-		}
-	}
+	removeCallbackHandler(&cmdHandlers, this);
 }

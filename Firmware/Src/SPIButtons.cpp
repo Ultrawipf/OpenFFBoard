@@ -35,6 +35,8 @@ void SPI_Buttons::initSPI(){
 	this->spi->Init.CLKPhase = SPI_PHASE_1EDGE;
 	this->spi->Init.CLKPolarity = SPI_POLARITY_LOW;
 
+
+
 	// Setup presets
 	if(conf.mode == SPI_BtnMode::TM){
 		this->conf.cspol = false;
@@ -149,6 +151,7 @@ ParseStatus SPI_Buttons::command(ParsedCommand* cmd,std::string* reply){
 			*reply+=std::to_string(c->invert);
 		}else{
 			*reply+="Err. invert: 1 else 0";
+			result = ParseStatus::ERR;
 		}
 	}else if(cmd->cmd == "spi_btncut"){
 		if(cmd->type == CMDtype::set){

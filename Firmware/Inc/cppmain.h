@@ -52,6 +52,8 @@ T clip(T v, C l, C h)
 
 uint32_t micros(); // Returns microsecond scaled time
 
+void refreshWatchdog(); // Refreshes the watchdog
+
 #endif
 
 #endif /* CPPMAIN_H_ */

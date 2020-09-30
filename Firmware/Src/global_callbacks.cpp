@@ -21,6 +21,7 @@
 #include "AdcHandler.h"
 #include "TimerHandler.h"
 #include "CommandHandler.h"
+#include "SpiHandler.h"
 
 extern FFBoardMain* mainclass;
 volatile uint32_t ADC_BUF[ADC_CHANNELS] = {0};
@@ -70,6 +71,52 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
 		}
 	  }
 }
+
+
+// SPI
+std::vector<SpiHandler*> spiHandlers;
+void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef *hspi){
+	for(SpiHandler* c : spiHandlers){
+		c->SpiTxCplt(hspi);
+	}
+}
+
+void HAL_SPI_RxCpltCallback(SPI_HandleTypeDef *hspi){
+	for(SpiHandler* c : spiHandlers){
+		c->SpiRxCplt(hspi);
+	}
+}
+
+void HAL_SPI_TxRxCpltCallback(SPI_HandleTypeDef *hspi){
+	for(SpiHandler* c : spiHandlers){
+		c->SpiTxRxCplt(hspi);
+	}
+}
+
+void HAL_SPI_TxHalfCpltCallback(SPI_HandleTypeDef *hspi){
+	for(SpiHandler* c : spiHandlers){
+		c->SpiTxHalfCplt(hspi);
+	}
+}
+
+void HAL_SPI_RxHalfCpltCallback(SPI_HandleTypeDef *hspi){
+	for(SpiHandler* c : spiHandlers){
+		c->SpiRxHalfCplt(hspi);
+	}
+}
+
+void HAL_SPI_TxRxHalfCpltCallback(SPI_HandleTypeDef *hspi){
+	for(SpiHandler* c : spiHandlers){
+		c->SpiTxRxHalfCplt(hspi);
+	}
+}
+
+void HAL_SPI_ErrorCallback(SPI_HandleTypeDef *hspi){
+	for(SpiHandler* c : spiHandlers){
+		c->SpiError(hspi);
+	}
+}
+
 
 
 // USB Specific callbacks
