@@ -20,9 +20,10 @@
 extern "C" {
 #endif
 
+#include "eeprom_addresses.h"
 #include "main.h"
 #include "usb_device.h"
-#include "eeprom_addresses.h"
+
 
 void cppmain();
 void usb_init();

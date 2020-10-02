@@ -36,6 +36,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include  "usbd_ioreq.h"
 #include "constants.h"
+//#include "global_callbacks.h"
 
 /** @addtogroup STM32_USB_DEVICE_LIBRARY
   * @{
