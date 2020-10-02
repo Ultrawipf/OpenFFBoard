@@ -52,7 +52,7 @@
 #include "stm32f4xx_hal.h"
 #include "usbd_def.h"
 #include "usbd_core.h"
-
+#include <global_callbacks.h>
 /* USER CODE BEGIN Includes */
 
 /* USER CODE END Includes */

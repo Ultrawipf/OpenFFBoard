@@ -22,10 +22,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "eeprom.h"
 #include <cppmain.h>
-#include "usb_device.h"
-#include "stm32_hal_legacy.h"
 #include "usbd_cdc_if.h"
 /* USER CODE END Includes */
 
@@ -92,15 +89,7 @@ uint32_t dfu_reset_to_bootloader_magic;
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-int _write(int file, char *ptr, int len)
-{
-  /* Implement your write code here, this is used by puts and printf for example. Only for infrequent debug messages */
 
-  CDC_Transmit_FS(ptr, len);
-  //HAL_UART_Transmit(&huart1, (uint8_t *)ptr, len, 100);
-
-  return len;
-}
 
 /* USER CODE END 0 */
 
@@ -155,12 +144,6 @@ int main(void)
   HAL_GPIO_WritePin(LED_ERR_GPIO_Port, LED_ERR_Pin, GPIO_PIN_SET);
   HAL_Delay(100);
 
-  // Flash init
-  HAL_FLASH_Unlock();
-  if( EE_Init() != EE_OK){
-	Error_Handler();
-  }
-  HAL_FLASH_Lock();
 
   /* USER CODE END 2 */
 

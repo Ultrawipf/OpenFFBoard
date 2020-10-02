@@ -19,6 +19,13 @@ extern uint32_t ADC_BUF[ADC_CHANNELS];
 USBD_HandleTypeDef hUsbDeviceFS;
 
 void cppmain() {
+	// Flash init
+	HAL_FLASH_Unlock();
+	if( EE_Init() != EE_OK){
+		Error_Handler();
+	}
+	HAL_FLASH_Lock();
+
 	TIM_MICROS.Instance->CR1 = 1; // Enable microsecond clock
 
 	HAL_ADC_Start_DMA(&HADC, ADC_BUF, ADC_CHANNELS);

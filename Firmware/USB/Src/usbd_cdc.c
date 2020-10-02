@@ -62,6 +62,7 @@
 #include "usbd_cdc.h"
 #include "usbd_desc.h"
 #include "usbd_ctlreq.h"
+#include <global_callbacks.h>
 
 /** @addtogroup STM32_USB_DEVICE_LIBRARY
   * @{
