@@ -22,8 +22,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include <cppmain.h>
-#include "usbd_cdc_if.h"
+//#include <cppmain.h>
+extern void cppmain();
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -89,7 +89,10 @@ uint32_t dfu_reset_to_bootloader_magic;
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+// dummy main
+__attribute__((weak)) void cppmain(){
+	Error_Handler();
+}
 
 /* USER CODE END 0 */
 
