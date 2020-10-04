@@ -419,6 +419,8 @@ void FFBWheel::send_report(){
 
 	// Encoder
 	reportHID.X = clip(lastScaledEnc,-0x7fff,0x7fff);
+
+	// TODO analog sources as classes (like buttons)? Autoranging
 	// Analog values read by DMA
 	uint16_t analogMask = this->aconf.analogmask;
 	reportHID.Y 	=  (analogMask & 0x01) ? ((adc_buf[0] & 0xFFF) << 4)	-0x7fff : 0;

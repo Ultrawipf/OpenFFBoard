@@ -8,7 +8,7 @@
 // Timer 3 is used by the encoder. All other timers are free to use
 #define TIM_MICROS htim5
 
-#define SW_VERSION "1.1.0" // Version string
+#define SW_VERSION "1.1.1" // Version string
 
 #define ADC_CHANNELS 9 	// how many analog input values to be read by dma
 

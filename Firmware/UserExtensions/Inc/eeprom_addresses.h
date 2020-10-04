@@ -10,7 +10,7 @@
 
 #include "main.h"
 // Change this to the amount of currently registered variables
-#define NB_OF_VAR	22
+#define NB_OF_VAR	23
 
 extern uint16_t VirtAddVarTab[NB_OF_VAR];
 
@@ -57,6 +57,7 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_SPI_BTN_CONF				0x201
 #define ADR_SHIFTER_BTN_CONF			0x202
 #define ADR_LOCAL_BTN_CONF				0x203
+#define ADR_LOCAL_BTN_CONF_2			0x204
 
 // FFB
 #define ADR_FFB_EFFECTS1				0x210 // 0-7 spring, 8-15 friction
