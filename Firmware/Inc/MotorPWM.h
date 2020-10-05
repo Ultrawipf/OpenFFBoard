@@ -18,7 +18,7 @@ extern TIM_HandleTypeDef htim2; // Htim2 is 32 bit
 void pwmInitTimer(TIM_HandleTypeDef* timer,uint32_t channel,uint32_t period,uint32_t prescaler);
 void setPWM_HAL(uint32_t value,TIM_HandleTypeDef* timer,uint32_t channel,uint32_t period);
 
-enum class ModePWM_DRV : uint8_t {RC_PWM=0,CENTERED_PWM=1,PWM_DIR=2};
+enum class ModePWM_DRV : uint8_t {RC_PWM=0,CENTERED_PWM=1,PWM_DIR=2,PWM_DUAL=3};
 
 enum class SpeedPWM_DRV : uint8_t {LOW=0,MID=1,HIGH=2,VERYHIGH=3};
 
@@ -46,7 +46,7 @@ public:
 
 	ParseStatus command(ParsedCommand* cmd,std::string* reply);
 
-	void setPWM(uint32_t value);
+	void setPWM(uint32_t value,uint8_t ccr);
 
 private:
 	const uint32_t basefreq = 96;
@@ -59,9 +59,18 @@ private:
 	ModePWM_DRV mode = ModePWM_DRV::RC_PWM;
 
 	bool active = false;
-	const uint32_t channel = TIM_CHANNEL_3; // Motor port CS3 (also update pwm method)
+	const uint32_t channel_1 = TIM_CHANNEL_3; // Motor port CS3 (also update pwm method)
+	const uint32_t channel_2 = TIM_CHANNEL_2;
+	const uint8_t ccr_1 = 3;
+	const uint8_t ccr_2 = 2;
 
 	TIM_HandleTypeDef* timer = &htim2;
+
+	GPIO_TypeDef* pwm1Port=SPI1_SS3_GPIO_Port;
+	const uint16_t pwm1Pin=SPI1_SS3_Pin;
+
+	GPIO_TypeDef* pwm2Port=GP4_GPIO_Port;
+	const uint16_t pwm2Pin=GP4_Pin;
 
 	GPIO_TypeDef* leftPort=SPI1_SS1_GPIO_Port;
 	const uint16_t leftPin=SPI1_SS1_Pin;

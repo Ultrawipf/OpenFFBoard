@@ -17,7 +17,7 @@
 const std::vector<std::string> RC_SpeedNames = {"20ms","15ms:1","10ms","5ms"};
 const std::vector<std::string> PWM_SpeedNames = {"3khz","6khz:1","12khz","23.5khz"};
 // Names of SpeedPWM_DRV
-const std::vector<std::string> PwmModeNames = {"RC PPM","0%-50%-100% Centered","0-100% PWM/DIR (HB)"};
+const std::vector<std::string> PwmModeNames = {"RC PPM","0%-50%-100% Centered","0-100% PWM/DIR","0-100% dual PWM"};
 
 
 ClassIdentifier MotorPWM::info = {
@@ -40,7 +40,7 @@ void MotorPWM::turn(int16_t power){
 		int32_t pval = power;
 		float val = ((pval * 1000)/0x7fff)*tFreq;
 		val = clip((1500*tFreq)-val,1000*tFreq, 2000*tFreq);
-		setPWM(val);
+		setPWM(val,ccr_1);
 
 	/*
 	 * Generates a 0-100% PWM signal on CS3
@@ -56,12 +56,21 @@ void MotorPWM::turn(int16_t power){
 			HAL_GPIO_WritePin(rightPort, rightPin, GPIO_PIN_SET);
 		}
 		int32_t val = (uint32_t)((abs(power) * period)/0x7fff);
-		setPWM(val);
+		setPWM(val,ccr_1);
 
 	}else if(mode == ModePWM_DRV::CENTERED_PWM){
 		int32_t pval = 0x7fff+power;
 		int32_t val = (pval * period)/0xffff;
-		setPWM(val);
+		setPWM(val,ccr_1);
+	}else if(mode == ModePWM_DRV::PWM_DUAL){
+		int32_t val = (uint32_t)((abs(power) * period)/0x7fff);
+		if(power < 0){
+			setPWM(0,ccr_1);
+			setPWM(val,ccr_2);
+		}else{
+			setPWM(0,ccr_2);
+			setPWM(val,ccr_1);
+		}
 	}
 }
 
@@ -116,17 +125,33 @@ void MotorPWM::setPwmSpeed(SpeedPWM_DRV spd){
 	if(ok){
 		this->pwmspeed = spd;
 		tFreq = (float)basefreq/(float)(prescaler+1);
-		pwmInitTimer(timer, channel,period,prescaler);
-		setPWM_HAL(0, timer, channel, period);
+		if(mode == ModePWM_DRV::PWM_DUAL){
+			pwmInitTimer(timer, channel_1,period,prescaler);
+			setPWM_HAL(0, timer, channel_1, period);
+			pwmInitTimer(timer, channel_2,period,prescaler);
+			setPWM_HAL(0, timer, channel_2, period);
+		}else{
+			pwmInitTimer(timer, channel_1,period,prescaler);
+			setPWM_HAL(0, timer, channel_1, period);
+		}
+
 	}
 }
 
 /*
  * Updates pwm pulse length
  */
-void MotorPWM::setPWM(uint32_t value){
+void MotorPWM::setPWM(uint32_t value,uint8_t ccr){
+	if(ccr == 1){
+		timer->Instance->CCR1 = value; // Set next CCR for channel 1
+	}else if(ccr == 2){
+		timer->Instance->CCR2 = value; // Set next CCR for channel 2
+	}else if(ccr == 3){
+		timer->Instance->CCR3 = value; // Set next CCR for channel 3
+	}else if(ccr == 4){
+		timer->Instance->CCR4 = value; // Set next CCR for channel 4
+	}
 
-	timer->Instance->CCR3 = value; // Set next CCR for channel 3
 }
 
 SpeedPWM_DRV MotorPWM::getPwmSpeed(){
@@ -135,15 +160,6 @@ SpeedPWM_DRV MotorPWM::getPwmSpeed(){
 
 
 MotorPWM::MotorPWM() {
-	// Setup PWM timer (timer2!) on CS3 pin
-	HAL_GPIO_DeInit(SPI1_SS3_GPIO_Port, SPI1_SS3_Pin);
-	GPIO_InitTypeDef GPIO_InitStruct = {0};
-	GPIO_InitStruct.Pin = SPI1_SS3_Pin;
-	GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-	GPIO_InitStruct.Pull = GPIO_NOPULL;
-	GPIO_InitStruct.Alternate = GPIO_AF1_TIM2;
-	GPIO_InitStruct.Speed = GPIO_SPEED_LOW;
-	HAL_GPIO_Init(SPI1_SS3_GPIO_Port, &GPIO_InitStruct);
 
 	restoreFlash();
 	//HAL_TIM_Base_Start_IT(timer);
@@ -161,17 +177,35 @@ void MotorPWM::restoreFlash(){
 	uint16_t var = 0;
 	if(Flash_Read(ADR_PWM_MODE, &var)){
 		uint8_t m = var & 0xf;
-		this->mode = ModePWM_DRV(m);
+		this->setMode(ModePWM_DRV(m));
 
 		uint8_t s = (var >> 4) & 0x7;
-		this->pwmspeed = SpeedPWM_DRV(s);
+		this->setPwmSpeed(SpeedPWM_DRV(s));
 	}
 }
 
 
 MotorPWM::~MotorPWM() {
-	HAL_TIM_PWM_Stop(timer, channel);
+	HAL_TIM_PWM_Stop(timer, channel_1);
+	HAL_TIM_PWM_Stop(timer, channel_2);
 	HAL_TIM_Base_Stop_IT(timer);
+
+	// reset gpio remap
+	GPIO_InitTypeDef GPIO_InitStruct = {0};
+	GPIO_InitStruct.Pin = pwm1Pin;
+	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+	HAL_GPIO_Init(pwm1Port, &GPIO_InitStruct);
+	GPIO_InitStruct = {0};
+	GPIO_InitStruct.Pin = pwm2Pin;
+	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+	HAL_GPIO_Init(pwm2Port, &GPIO_InitStruct);
+
+	HAL_GPIO_WritePin(pwm1Port,pwm1Pin , GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(pwm2Port,pwm2Pin , GPIO_PIN_RESET);
 }
 
 
@@ -188,6 +222,48 @@ void MotorPWM::stop(){
 void MotorPWM::setMode(ModePWM_DRV mode){
 	this->mode = mode;
 	setPwmSpeed(pwmspeed); // Reinit timer
+
+	if(mode == ModePWM_DRV::PWM_DUAL){
+		// SS3 to PWM
+		HAL_GPIO_DeInit(pwm1Port, pwm1Pin);
+		GPIO_InitTypeDef GPIO_InitStruct = {0};
+		GPIO_InitStruct.Pin = pwm1Pin;
+		GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+		GPIO_InitStruct.Pull = GPIO_NOPULL;
+		GPIO_InitStruct.Alternate = GPIO_AF1_TIM2;
+		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+		HAL_GPIO_Init(pwm1Port, &GPIO_InitStruct);
+
+		// SS2 to PWM
+		HAL_GPIO_DeInit(pwm2Port, pwm2Pin);
+		GPIO_InitStruct = {0};
+		GPIO_InitStruct.Pin = pwm2Pin;
+		GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+		GPIO_InitStruct.Pull = GPIO_NOPULL;
+		GPIO_InitStruct.Alternate = GPIO_AF1_TIM2;
+		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+		HAL_GPIO_Init(pwm2Port, &GPIO_InitStruct);
+	}else{
+		// SS2 as digital out
+		HAL_GPIO_DeInit(pwm2Port, pwm2Pin);
+		GPIO_InitTypeDef GPIO_InitStruct = {0};
+		GPIO_InitStruct.Pin = pwm2Pin;
+		GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+		GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+		GPIO_InitStruct.Alternate = GPIO_AF1_TIM2;
+		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+		HAL_GPIO_Init(pwm2Port, &GPIO_InitStruct);
+
+		// Setup PWM timer (timer2!) on CS3 pin
+		HAL_GPIO_DeInit(pwm1Port, pwm1Pin);
+		GPIO_InitStruct = {0};
+		GPIO_InitStruct.Pin = pwm1Pin;
+		GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+		GPIO_InitStruct.Pull = GPIO_NOPULL;
+		GPIO_InitStruct.Alternate = GPIO_AF1_TIM2;
+		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+		HAL_GPIO_Init(pwm1Port, &GPIO_InitStruct);
+	}
 }
 
 ModePWM_DRV MotorPWM::getMode(){
