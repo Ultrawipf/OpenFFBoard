@@ -7,6 +7,10 @@
 
 #include "FFBoardMain.h"
 
+#include <malloc.h>
+#include <stdint.h>
+#include <stdio.h>
+
 #include "usbd_core.h"
 #include "usbd_cdc.h"
 #include "constants.h"
@@ -48,7 +52,7 @@ ParseStatus FFBoardMain::executeSysCommand(ParsedCommand* cmd,std::string* reply
 
 	if(cmd->cmd == "help"){
 		*reply += parser.helpstring;
-		*reply += "\nSystem Commands: reboot,help,dfu,swver (Version),lsmain (List configs),id,main (Set main config),lsactive (print command handlers),vint,vext,format (Erase flash)\n";
+		*reply += "\nSystem Commands: reboot,help,dfu,swver (Version),lsmain (List configs),id,main (Set main config),lsactive (print command handlers),vint,vext,format (Erase flash),mallinfo (Mem usage)\n";
 		flag = ParseStatus::OK_CONTINUE; // Continue to user commands
 	}else if(cmd->cmd == "reboot"){
 		NVIC_SystemReset();
@@ -72,6 +76,13 @@ ParseStatus FFBoardMain::executeSysCommand(ParsedCommand* cmd,std::string* reply
 
 	}else if(cmd->cmd == "id"){ // Report id of main class
 		*reply+=std::to_string(this->getInfo().id);
+
+	}else if(cmd->cmd == "mallinfo"){ // Report id of main class
+		struct mallinfo info = mallinfo();
+		*reply+="Usage: ";
+		*reply+=std::to_string(info.uordblks);
+		*reply+=" Size: ";
+		*reply+=std::to_string(info.arena);
 
 	}else if(cmd->cmd == "lsactive"){ // Prints all active command handlers that have a name
 		extern std::vector<CommandHandler*> cmdHandlers;

@@ -855,11 +855,11 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : FLAG_Pin */
-  GPIO_InitStruct.Pin = FLAG_Pin;
+  /*Configure GPIO pins : FLAG_Pin ENCODER_Z_Pin */
+  GPIO_InitStruct.Pin = FLAG_Pin|ENCODER_Z_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(FLAG_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
   /*Configure GPIO pin : DRV_BRAKE_Pin */
   GPIO_InitStruct.Pin = DRV_BRAKE_Pin;
@@ -887,12 +887,6 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
   HAL_GPIO_Init(SPI2_NSS_GPIO_Port, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : ENCODER_Z_Pin */
-  GPIO_InitStruct.Pin = ENCODER_Z_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
-  GPIO_InitStruct.Pull = GPIO_PULLUP;
-  HAL_GPIO_Init(ENCODER_Z_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : GP3_Pin */
   GPIO_InitStruct.Pin = GP3_Pin;
