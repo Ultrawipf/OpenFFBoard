@@ -16,12 +16,7 @@ ExtiHandler::ExtiHandler() {
 
 ExtiHandler::~ExtiHandler() {
 	extern std::vector<ExtiHandler*> extiHandlers;
-	for (uint8_t i = 0; i < extiHandlers.size(); i++){
-		if(extiHandlers[i] == this){
-			extiHandlers.erase(extiHandlers.begin()+i);
-			break;
-		}
-	}
+	removeCallbackHandler(&extiHandlers, this);
 }
 
 void ExtiHandler::exti(uint16_t GPIO_Pin){

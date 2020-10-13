@@ -20,31 +20,31 @@ SpiHandler::~SpiHandler() {
 
 
 
-void SpiTxCplt(SPI_HandleTypeDef *hspi){
+void SpiHandler::SpiTxCplt(SPI_HandleTypeDef *hspi){
 
 }
 
-void SpiRxCplt(SPI_HandleTypeDef *hspi){
+void SpiHandler::SpiRxCplt(SPI_HandleTypeDef *hspi){
 
 }
 
-void SpiTxRxCplt(SPI_HandleTypeDef *hspi){
+void SpiHandler::SpiTxRxCplt(SPI_HandleTypeDef *hspi){
 
 }
 
-void SpiRxHalfCplt(SPI_HandleTypeDef *hspi){
+void SpiHandler::SpiRxHalfCplt(SPI_HandleTypeDef *hspi){
 
 }
 
-void SpiTxHalfCplt(SPI_HandleTypeDef *hspi){
+void SpiHandler::SpiTxHalfCplt(SPI_HandleTypeDef *hspi){
 
 }
 
-void SpiTxRxHalfCplt(SPI_HandleTypeDef *hspi){
+void SpiHandler::SpiTxRxHalfCplt(SPI_HandleTypeDef *hspi){
 
 }
 
-void SpiError(SPI_HandleTypeDef *hspi){
+void SpiHandler::SpiError(SPI_HandleTypeDef *hspi){
 
 }
 

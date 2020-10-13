@@ -1103,13 +1103,13 @@ uint32_t TMC4671::readReg(uint8_t reg){
 	uint8_t tbuf[5];
 	// 500ns delay after sending first byte
 
-	__disable_irq();
+	//__disable_irq();
 	HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_RESET);
 	//HAL_SPI_Transmit(this->spi,req,1,SPITIMEOUT); // pause
 	//HAL_SPI_Receive(this->spi,tbuf,4,SPITIMEOUT);
 	HAL_SPI_TransmitReceive(this->spi,req,tbuf,5,SPITIMEOUT);
 	HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_SET);
-	__enable_irq();
+	//__enable_irq();
 
 	uint32_t ret;
 	memcpy(&ret,tbuf+1,4);
@@ -1122,11 +1122,12 @@ void TMC4671::writeReg(uint8_t reg,uint32_t dat){
 	dat =__REV(dat);
 	memcpy(req+1,&dat,4);
 
-	__disable_irq();
+	//__disable_irq();
+	this->spi_transferring = true;
 	HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_RESET);
-	HAL_SPI_Transmit(this->spi,req,5,SPITIMEOUT);
-	HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_SET);
-	__enable_irq();
+	HAL_SPI_Transmit_DMA(this->spi,req,5);
+	//HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_SET);
+	//__enable_irq();
 }
 
 void TMC4671::updateReg(uint8_t reg,uint32_t dat,uint32_t mask,uint8_t shift){
@@ -1134,6 +1135,11 @@ void TMC4671::updateReg(uint8_t reg,uint32_t dat,uint32_t mask,uint8_t shift){
 	uint32_t t = readReg(reg) & ~(mask << shift);
 	t |= ((dat & mask) << shift);
 	writeReg(reg, t);
+}
+void TMC4671::SpiTxCplt(SPI_HandleTypeDef *hspi){
+	if(hspi == this->spi && this->spi_transferring){
+		HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_SET); // unselect
+	}
 }
 
 TMC4671MotConf TMC4671::decodeMotFromInt(uint16_t val){

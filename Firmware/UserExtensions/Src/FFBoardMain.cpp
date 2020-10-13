@@ -38,13 +38,20 @@ const ClassIdentifier FFBoardMain::getInfo(){
 
 void FFBoardMain::cdcRcv(char* Buf, uint32_t *Len){
 	if(this->parser.add(Buf, Len)){
-		executeCommands(this->parser.parse());
+		this->parserReady = true; // Set flag to call outside of interrupt later
 	}
 }
 
 ParseStatus FFBoardMain::command(ParsedCommand *cmd,std::string* reply){
 
 	return ParseStatus::NOT_FOUND;
+}
+
+void FFBoardMain::updateSys(){
+	if(this->parserReady){
+		this->parserReady = false;
+		executeCommands(this->parser.parse()); // Don't call this in interrupts!
+	}
 }
 
 ParseStatus FFBoardMain::executeSysCommand(ParsedCommand* cmd,std::string* reply){

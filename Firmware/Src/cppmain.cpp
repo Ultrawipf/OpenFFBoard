@@ -47,8 +47,9 @@ void cppmain() {
 	usb_init();
 
 	while(running){
-
+		// TODO dynamically add functions to loop
 		mainclass->update();
+		mainclass->updateSys();
 		updateLeds();
 
 		refreshWatchdog();

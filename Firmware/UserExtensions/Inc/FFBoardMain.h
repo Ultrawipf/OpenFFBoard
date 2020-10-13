@@ -34,7 +34,7 @@ public:
 	virtual void cdcFinished(); // Cdc send transfer complete
 	virtual void usbSuspend(); // Called on usb disconnect and suspend
 	virtual void usbResume(); // Called on usb resume
-
+	virtual void updateSys();
 
 private:
 	bool usb_busy_retry = false;
@@ -45,6 +45,7 @@ protected:
 	virtual ParseStatus command(ParsedCommand* cmd,std::string* reply); // Append reply strings to reply buffer
 	virtual ParseStatus executeSysCommand(ParsedCommand* cmd,std::string* reply);
 	CmdParser parser = CmdParser();
+	bool parserReady = false;
 };
 
 

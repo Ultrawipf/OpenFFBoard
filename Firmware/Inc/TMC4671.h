@@ -15,6 +15,7 @@
 #include "ChoosableClass.h"
 #include "PersistentStorage.h"
 #include "CommandHandler.h"
+#include "SpiHandler.h"
 
 #define SPITIMEOUT 100
 extern SPI_HandleTypeDef HSPIDRV;
@@ -146,7 +147,7 @@ struct TMC4671Biquad{
 };
 
 
-class TMC4671 : public MotorDriver, public Encoder, public CommandHandler{
+class TMC4671 : public MotorDriver, public Encoder, public CommandHandler, public SpiHandler{
 public:
 
 	static ClassIdentifier info;
@@ -176,6 +177,7 @@ public:
 	uint32_t readReg(uint8_t reg);
 	void writeReg(uint8_t reg,uint32_t dat);
 	void updateReg(uint8_t reg,uint32_t dat,uint32_t mask,uint8_t shift);
+	void SpiTxCplt(SPI_HandleTypeDef *hspi);
 
 	void setMotorType(MotorType motor,uint16_t poles);
 
@@ -310,6 +312,8 @@ private:
 	void encInit();
 
 	uint32_t initTime = 0;
+
+	bool spi_transferring = false;
 
 };
 
