@@ -9,6 +9,7 @@
 #include "ledEffects.h"
 #include "voltagesense.h"
 #include "stm32f4xx_hal_spi.h"
+#include <math.h>
 
 ClassIdentifier TMC4671::info = {
 		 .name = "TMC4671" ,
@@ -38,9 +39,7 @@ TMC4671::~TMC4671() {
 	HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_RESET);
 }
 
-void TMC4671::HAL_SPI_TXRX_COMPLETE(){
 
-}
 
 /*
  * Address can be set to automatically setup spi and
@@ -142,6 +141,9 @@ bool TMC4671::isSetUp(){
 
 bool TMC4671::initialize(){
 	active = true;
+	if(state == TMC_ControlState::uninitialized){
+		state = TMC_ControlState::Init_wait;
+	}
 	// Check if a TMC4671 is active and replies correctly
 	writeReg(1, 0);
 	if(readReg(0) != 0x34363731){// 4671
@@ -171,7 +173,7 @@ bool TMC4671::initialize(){
 	setup_HALL(hallconf); // Enables hall filter and masking
 
 	initAdc(conf.mdecA,conf.mdecB,conf.mclkA,conf.mclkB);
-	setAdcOffset(conf.adc_I0_offset, conf.adc_I1_offset);
+	//setAdcOffset(conf.adc_I0_offset, conf.adc_I1_offset);
 	setAdcScale(conf.adc_I0_scale, conf.adc_I1_scale);
 
 	// Calibrate ADC every time for now
@@ -214,10 +216,89 @@ bool TMC4671::initialize(){
 
 }
 
+// TODO
+/*
+ * Not calibrated.
+ */
+float TMC4671::getTemp(){
+
+	writeReg(0x03, 2);
+	int32_t adcval = ((readReg(0x02)) & 0xffff) - 0x7fff; // Center offset
+	adcval -= tmcOffset;
+	float r = thermistor_R2 * (((float)43252 / (float)adcval) -1.0); //43252 equivalent ADC count if it was 3.3V and not 2.5V
+
+	// Beta
+	r = 1.0 / 298.15 + log(r / thermistor_R) / thermistor_Beta;
+	r = 1.0 / r;
+	r -= 273.15;
+	return r;
+
+}
+// R / R2 * 10k
+
 void TMC4671::update(){
+	// Main state machine
+	switch(this->state){
+
+
+	case TMC_ControlState::Running:
+	{
+		// Check status, Temps, Everything alright?
+		uint32_t tick = HAL_GetTick();
+		if(tick - lastStatTime > 2000){ // Every 2s
+			lastStatTime = tick;
+
+			// Temperature sense
+			#ifdef TMCTEMP
+			float temp = getTemp();
+			if(temp > temp_limit){
+				state = TMC_ControlState::OverTemp;
+				pulseErrLed();
+			}
+			#endif
+
+		}
+	}
+	break;
+
+	case TMC_ControlState::Init_wait:
+		if(active && hasPower()){
+			if(HAL_GetTick() - initTime > (emergency ? 5000 : 1000)){
+				emergency = false;
+				if(!initialize()){
+					pulseErrLed();
+				}
+			}
+		}
+
+	break;
+
+	case TMC_ControlState::ABN_init:
+		ABN_init();
+	break;
+
+	case TMC_ControlState::AENC_init:
+		AENC_init();
+	break;
+
+	case TMC_ControlState::HardError:
+
+	break; // Broken
+
+	case TMC_ControlState::OverTemp:
+		this->stop();
+		state = TMC_ControlState::HardError; // Block
+	break;
+
+	default:
+
+	break;
+	}
+
 	// Optional update methods for safety
 
 	if(!hasPower()){ // low voltage or overvoltage
+		state = TMC_ControlState::Init_wait;
 		initialized = false;
 		pulseErrLed();
 		if(!emergency && HAL_GetTick() - initTime > 100)
@@ -226,17 +307,11 @@ void TMC4671::update(){
 			initTime = HAL_GetTick();
 	}
 
-	if(!initialized && active && hasPower()){
-		if(HAL_GetTick() - initTime > (emergency ? 5000 : 1000)){
-			emergency = false;
-			initialize();
-		}
-	}
 
-	if(!isSetUp()){
-		pulseErrLed();
-		initialized = false;
-	}
+//	if(!isSetUp()){
+//		pulseErrLed();
+//		initialized = false;
+//	}
 
 }
 
@@ -361,6 +436,7 @@ void TMC4671::calibrateAenc(){
 	int32_t poles = conf.motconf.pole_pairs;
 	while(stage != 3){
 		HAL_Delay(2);
+		refreshWatchdog(); // Don't let the dog get any sleep
 		if(getPos() > 0x8fff*poles && stage == 0){
 			runOpenLoop(3000, 0, -20, 100);
 			stage = 1;
@@ -524,7 +600,7 @@ void TMC4671::setup_HALL(TMC4671HALLConf hallconf){
 
 
 /*
- * Calibrates the ADC by disabling the power stage and sampling a mean value
+ * Calibrates the ADC by disabling the power stage and sampling a mean value. Takes time!
  */
 void TMC4671::calibrateAdcOffset(){
 
@@ -540,15 +616,15 @@ void TMC4671::calibrateAdcOffset(){
 
 	uint16_t lastrawA=conf.adc_I0_offset, lastrawB=conf.adc_I1_offset;
 
-	pulseClipLed(); // Turn on led
+	//pulseClipLed(); // Turn on led
 	// Disable drivers and measure many samples of zero current
 	HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_RESET);
 	uint32_t tick = HAL_GetTick();
-	while(tick + measuretime_idle > HAL_GetTick()){ // Measure idle
+	while(HAL_GetTick() - tick < measuretime_idle){ // Measure idle
 		uint32_t adcraw = readReg(0x02);
 		uint16_t rawA = adcraw & 0xffff;
 		uint16_t rawB = (adcraw >> 16) & 0xffff;
-		// Signflip filter
+		// Signflip filter for SPI bug
 		if(abs(lastrawA-rawA) < 10000 && abs(lastrawB-rawB) < 10000){
 			totalA += rawA;
 			totalB += rawB;
@@ -569,6 +645,105 @@ void TMC4671::calibrateAdcOffset(){
 	setPhiEtype(lastphie);
 	setMotionMode(lastmode);
 }
+
+
+void TMC4671::ABN_init(){
+	switch(encstate){
+		case ENC_InitState::uninitialized:
+			setPosSel(PosSelection::PhiM_abn); // Mechanical Angle
+			writeReg(0x26, abnconf.cpr); // we need cpr to be set first
+			encstate = ENC_InitState::estimating;
+		break;
+
+		case ENC_InitState::estimating:
+		{
+			if(!hasPower())
+				break;
+			int32_t pos = getPos();
+			setPos(0);
+			bool olddir = abnconf.rdir;
+			estimateABNparams();
+
+			if(olddir != this->abnconf.rdir){ // Last measurement should be reversed
+				pos = -getPos()-pos;
+			}
+
+			setPos(pos);
+			setup_ABN_Enc(this->abnconf);
+			encstate = ENC_InitState::aligning;
+		}
+		break;
+
+		case ENC_InitState::aligning:
+			if(hasPower() && !encoderInitialized){
+				bangInitEnc(bangInitPower);
+				encstate = ENC_InitState::checking;
+			}
+		break;
+
+		case ENC_InitState::checking:
+			if(checkEncoder()){
+				encstate =ENC_InitState::OK;
+				encoderInitialized = true;
+				setPhiEtype(PhiE::abn);
+				state = TMC_ControlState::Running;
+				enc_retry = 0;
+
+			}else{
+				if(enc_retry++ > enc_retry_max){
+					state = TMC_ControlState::HardError;
+				}
+				encstate = ENC_InitState::uninitialized; // Retry
+			}
+		break;
+		case ENC_InitState::OK:
+			break;
+	}
+}
+
+void TMC4671::AENC_init(){
+	switch(encstate){
+		case ENC_InitState::uninitialized:
+			setPosSel(PosSelection::PhiM_aenc);
+			setPos(0);
+			setup_AENC(this->aencconf);
+			encstate = ENC_InitState::estimating;
+		break;
+
+		case ENC_InitState::estimating:
+			if(!hasPower())
+				break;
+			calibrateAenc();
+			encstate = ENC_InitState::aligning;
+		break;
+
+		case ENC_InitState::aligning:
+			if(!hasPower())
+				break;
+			bangInitEnc(bangInitPower);
+			encstate = ENC_InitState::checking;
+		break;
+
+		case ENC_InitState::checking:
+			if(checkEncoder()){
+				encstate =ENC_InitState::OK;
+				encoderInitialized = true;
+				setPhiEtype(PhiE::aenc);
+				state = TMC_ControlState::Running;
+				enc_retry = 0;
+
+			}else{
+				if(enc_retry++ > enc_retry_max){
+					state = TMC_ControlState::HardError;
+				}
+				encstate = ENC_InitState::uninitialized; // Retry
+			}
+		break;
+		case ENC_InitState::OK:
+			break;
+	}
+}
+
 //TODO
 /*
  * Changes the encoder type and calls init methods for the encoder types.
@@ -578,78 +753,27 @@ void TMC4671::setEncoderType(EncoderType_TMC type){
 	this->conf.motconf.enctype = type;
 
 	if(type == EncoderType_TMC::abn){
-		encoderInitialized = false;
+
 		// Not initialized if cpr not set
 		if(this->abnconf.cpr == 0){
 			return;
 		}
-		setPosSel(PosSelection::PhiM_abn); // Mechanical Angle
-		writeReg(0x26, abnconf.cpr); // we need cpr to be set first
-		int32_t pos = getPos();
-		setPos(0);
-		bool olddir = abnconf.rdir;
-		estimateABNparams();
 
-		if(olddir != this->abnconf.rdir){ // Last measurement should be reversed
-			pos = -getPos()-pos;
-		}
-		setPos(pos);
-
-		setup_ABN_Enc(this->abnconf);
-
-		this->setPhiEtype(PhiE::abn);
-		if(hasPower() && !encoderInitialized){
-			bangInitEnc(bangInitPower);
-			// Check if aligned
-			if(checkEncoder()){
-				encoderInitialized = true;
-				printf("Initialized TMC %d\n",this->address);
-			}else{
-				printf("Encoder init failed. Check poles and CPR settings\n");
-			}
-		}
-
-		setPhiEtype(PhiE::abn);
+		state = TMC_ControlState::ABN_init;
+		encstate = ENC_InitState::uninitialized;
 
 	// Todo align aenc
 	// SinCos encoder
 	}else if(type == EncoderType_TMC::sincos){
-		setPosSel(PosSelection::PhiM_aenc);
-		setPos(0);
+		state = TMC_ControlState::AENC_init;
+		encstate = ENC_InitState::uninitialized;
 		this->aencconf.uvwmode = false; // sincos mode
-		setup_AENC(this->aencconf);
 
-
-		if(hasPower() && !encoderInitialized){
-			calibrateAenc();
-			bangInitEnc(bangInitPower);
-			// Check if aligned
-			if(checkEncoder()){
-				encoderInitialized = true;
-			}else{
-				return;
-			}
-		}
-
-		setPhiEtype(PhiE::aenc);
 	// Analog UVW encoder
 	}else if(type == EncoderType_TMC::uvw){
-		setPosSel(PosSelection::PhiM_aenc);
+		state = TMC_ControlState::AENC_init;
+		encstate = ENC_InitState::uninitialized;
 		this->aencconf.uvwmode = true; // uvw mode
-		setup_AENC(this->aencconf);
-		calibrateAenc();
-
-		if(hasPower() && !encoderInitialized){
-			bangInitEnc(bangInitPower);
-			// Check if aligned
-			if(checkEncoder()){
-				encoderInitialized = true;
-			}else{
-				return;
-			}
-		}
-
-		setPhiEtype(PhiE::aenc);
 	}
 }
 
@@ -1104,6 +1228,7 @@ uint32_t TMC4671::readReg(uint8_t reg){
 	// 500ns delay after sending first byte
 
 	//__disable_irq();
+	//while(this->spi_busy){} // wait if a tx was just started
 	HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_RESET);
 	//HAL_SPI_Transmit(this->spi,req,1,SPITIMEOUT); // pause
 	//HAL_SPI_Receive(this->spi,tbuf,4,SPITIMEOUT);
@@ -1123,10 +1248,11 @@ void TMC4671::writeReg(uint8_t reg,uint32_t dat){
 	memcpy(req+1,&dat,4);
 
 	//__disable_irq();
-	this->spi_transferring = true;
+	//while(this->spi_busy){}
+	//this->spi_busy = true;
 	HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_RESET);
-	HAL_SPI_Transmit_DMA(this->spi,req,5);
-	//HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_SET);
+	HAL_SPI_Transmit(this->spi,req,5,SPITIMEOUT);
+	HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_SET);
 	//__enable_irq();
 }
 
@@ -1137,7 +1263,8 @@ void TMC4671::updateReg(uint8_t reg,uint32_t dat,uint32_t mask,uint8_t shift){
 	writeReg(reg, t);
 }
 void TMC4671::SpiTxCplt(SPI_HandleTypeDef *hspi){
-	if(hspi == this->spi && this->spi_transferring){
+	if(hspi == this->spi && this->spi_busy){
+		this->spi_busy = false;
 		HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_SET); // unselect
 	}
 }
@@ -1299,6 +1426,11 @@ ParseStatus TMC4671::command(ParsedCommand* cmd,std::string* reply){
 		}else if(cmd->type == CMDtype::set){
 			this->abnconf.rdir = cmd->val != 0;
 			this->setup_ABN_Enc(this->abnconf);
+		}
+
+	}else if(cmd->cmd == "tmctemp"){
+		if(cmd->type == CMDtype::get){
+			*reply+=std::to_string(this->getTemp());
 		}
 
 	}else if(cmd->cmd == "help"){

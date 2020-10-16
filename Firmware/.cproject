@@ -109,7 +109,7 @@
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="Src"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Startup"/>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="Targets"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="Targets/F411RE"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="USB/Src"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="UserExtensions/Src"/>
 					</sourceEntries>

@@ -20,6 +20,9 @@
 #define SPITIMEOUT 100
 extern SPI_HandleTypeDef HSPIDRV;
 
+enum class TMC_ControlState {uninitialized,No_power,Shutdown,Running,Init_wait,ABN_init,AENC_init,Enc_bang,HardError,OverTemp};
+enum class ENC_InitState {uninitialized,estimating,aligning,checking,OK};
+
 enum class MotorType : uint8_t {NONE=0,DC=1,STEPPER=2,BLDC=3,ERR};
 enum class PhiE : uint8_t {ext=1,openloop=2,abn=3,hall=5,aenc=6,aencE=7,NONE};
 enum class MotionMode : uint8_t {stop=0,torque=1,velocity=2,position=3,prbsflux=4,prbstorque=5,prbsvelocity=6,uqudext=8,encminimove=9,NONE};
@@ -34,6 +37,15 @@ struct TMC4671MotConf{
 	uint16_t pole_pairs = 4; //saved
 	PosSelection pos_sel = PosSelection::PhiE;
 };
+
+
+#define TMCTEMP
+
+const int thermistor_R2 = 1500, tmcOffset = 393; // Offset is how many ADC counts too high does the tmc read due to current flowing from the ADC. Can be calculated by measuring the pin voltage with adc on and off.
+
+// Beta-Model
+const float thermistor_Beta = 4250, thermistor_R = 22000;
+const float temp_limit = 90; //°C
 
 // Basic failsafe hardware boot config for inits
 struct TMC4671MainConfig{
@@ -243,6 +255,8 @@ public:
 	void setFluxTorqueFF(int16_t flux, int16_t torque);
 	int32_t getActualCurrent();
 
+	float getTemp();
+
 	void setPhiEtype(PhiE type);
 	PhiE getPhiEtype();
 	void setPhiE_ext(int16_t phiE);
@@ -293,12 +307,17 @@ public:
 
 	ParseStatus command(ParsedCommand* cmd,std::string* reply);
 
-	void HAL_SPI_TXRX_COMPLETE();
-
 
 private:
+	ENC_InitState encstate = ENC_InitState::uninitialized;
+	TMC_ControlState state = TMC_ControlState::uninitialized;
 	MotionMode curMotionMode = MotionMode::stop;
 	bool oldTMCdetected = false;
+
+	uint8_t enc_retry = 0;
+	uint8_t enc_retry_max = 5;
+
+	uint32_t lastStatTime = 0;
 
 	uint8_t address = 1;
 
@@ -311,9 +330,14 @@ private:
 	void setSvPwm(bool enable);
 	void encInit();
 
+
+// state machine
+	void ABN_init();
+	void AENC_init();
+
 	uint32_t initTime = 0;
 
-	bool spi_transferring = false;
+	bool spi_busy = false;
 
 };
 
