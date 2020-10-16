@@ -39,7 +39,7 @@ struct TMC4671MotConf{
 };
 
 
-#define TMCTEMP
+//#define TMCTEMP
 
 const int thermistor_R2 = 1500, tmcOffset = 393; // Offset is how many ADC counts too high does the tmc read due to current flowing from the ADC. Can be calculated by measuring the pin voltage with adc on and off.
 

@@ -184,14 +184,15 @@ bool TMC4671::initialize(){
 	 * Single ended input raw value
 	 * 0V = 0x7fff
 	 * 4.7k / (360k+4.7k) Divider on old board.
+	 * 1.5k / (71.5k+1.5k) 16.121 counts 60V new. 100V VM => 2V
 	 * 1V ~ 169 counts.
-	 * 100V VM => 1.29V
+	 * 13106 counts/V input.
 	 * Divider still too high. ADC pulls voltage up!
 	 */
 	if(oldTMCdetected){
 		setBrakeLimits(52400,52800);
 	}else{
-		setBrakeLimits(51400,51800); // Activates around 60V as last resort failsave
+		setBrakeLimits(50400,50800); // Activates around 60V as last resort failsave
 	}
 
 
