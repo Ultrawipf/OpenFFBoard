@@ -43,7 +43,7 @@ void cppmain() {
 	HAL_UART_Receive_IT(UART,(uint8_t*)uart_buf,1);
 
 
-	mainclass = mainchooser.Create(main_id);//(SelectMain(main_id));
+	mainclass = mainchooser.Create(main_id);
 	usb_init();
 
 	while(running){

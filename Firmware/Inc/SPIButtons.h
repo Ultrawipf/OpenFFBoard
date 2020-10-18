@@ -12,6 +12,7 @@
 #include "cppmain.h"
 #include "ChoosableClass.h"
 #include "CommandHandler.h"
+#include "SpiHandler.h"
 
 // TODO interrupts
 
@@ -30,7 +31,7 @@ struct ButtonSourceConfig{
 };
 
 
-class SPI_Buttons: public ButtonSource,CommandHandler {
+class SPI_Buttons: public ButtonSource,public CommandHandler,public SpiHandler {
 public:
 	const std::vector<std::string> mode_names = {"Thrustmaster/HEF4021BT","Shift register (74HC165)"};
 
@@ -52,6 +53,8 @@ public:
 	void setMode(SPI_BtnMode mode);
 	void initSPI();
 
+	void SpiRxCplt(SPI_HandleTypeDef *hspi);
+
 private:
 	static ButtonSourceConfig decodeIntToConf(uint16_t val);
 	static uint16_t encodeConfToInt(ButtonSourceConfig* c);
@@ -68,7 +71,8 @@ private:
 
 	ButtonSourceConfig conf;
 
-
+	uint8_t spi_buf[4] = {0};
+	volatile bool spibusy = false;
 };
 
 #endif /* SPIBUTTONS_H_ */

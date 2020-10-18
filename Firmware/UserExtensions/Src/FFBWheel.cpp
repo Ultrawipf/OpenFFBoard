@@ -163,9 +163,9 @@ void FFBWheel::update(){
 		if(this->conf.drvtype == TMC4671::info.id){
 			TMC4671* drv = static_cast<TMC4671*>(this->drv);
 			drv->update();
-			if(!drv->initialized){
-				return;
-			}
+//			if(!drv->initialized){
+//				return;
+//			}
 		}
 
 		speed = scaledEnc - lastScaledEnc;

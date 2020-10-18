@@ -324,6 +324,7 @@ private:
 	SPI_HandleTypeDef* spi = &HSPIDRV;
 	GPIO_TypeDef* csport=SPI1_SS1_GPIO_Port;
 	uint16_t cspin=SPI1_SS1_Pin;
+	uint8_t spi_buf[5];
 
 	void initAdc(uint16_t mdecA, uint16_t mdecB,uint32_t mclkA,uint32_t mclkB);
 	void setPwm(uint8_t val,uint16_t maxcnt,uint8_t bbmL,uint8_t bbmH);// 100MHz/maxcnt+1
@@ -337,7 +338,7 @@ private:
 
 	uint32_t initTime = 0;
 
-	bool spi_busy = false;
+	volatile bool spi_busy = false;
 
 };
 

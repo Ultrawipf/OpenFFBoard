@@ -48,8 +48,6 @@ void SPI_Buttons::initSPI(){
 		this->spi->Init.CLKPolarity = SPI_POLARITY_HIGH;
 	}
 
-
-
 	HAL_SPI_Init(this->spi);
 }
 
@@ -112,13 +110,27 @@ void SPI_Buttons::process(uint32_t* buf){
 		*buf = (~*buf);
 	*buf = *buf  & mask;
 }
+
+__attribute__((optimize("-Ofast")))
 void SPI_Buttons::readButtons(uint32_t* buf){
 
-	HAL_GPIO_WritePin(this->csport,this->cspin,conf.cspol ? GPIO_PIN_SET : GPIO_PIN_RESET);
-	HAL_SPI_Receive(this->spi,(uint8_t*)buf,MIN(this->bytes,4),5);
-	HAL_GPIO_WritePin(this->csport,this->cspin,conf.cspol ? GPIO_PIN_RESET : GPIO_PIN_SET);
+	memcpy(buf,this->spi_buf,MIN(this->bytes,4));
+	process(buf); // give back last buffer
 
-	process(buf);
+	if(this->spibusy)
+		return;	// Don't wait.
+
+	// Get next buffer
+	HAL_GPIO_WritePin(this->csport,this->cspin,conf.cspol ? GPIO_PIN_SET : GPIO_PIN_RESET);
+	spibusy = true;
+	HAL_SPI_Receive_DMA(this->spi,spi_buf, MIN(this->bytes,4));
+}
+
+void SPI_Buttons::SpiRxCplt(SPI_HandleTypeDef *hspi){
+	if(hspi == this->spi && spibusy){
+		spibusy = false;
+		HAL_GPIO_WritePin(this->csport,this->cspin,conf.cspol ? GPIO_PIN_RESET : GPIO_PIN_SET);
+	}
 }
 
 void SPI_Buttons::printModes(std::string* reply){
