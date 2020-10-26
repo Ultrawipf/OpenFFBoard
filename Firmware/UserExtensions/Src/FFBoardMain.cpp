@@ -59,7 +59,7 @@ ParseStatus FFBoardMain::executeSysCommand(ParsedCommand* cmd,std::string* reply
 
 	if(cmd->cmd == "help"){
 		*reply += parser.helpstring;
-		*reply += "\nSystem Commands: reboot,help,dfu,swver (Version),lsmain (List configs),id,main (Set main config),lsactive (print command handlers),vint,vext,format (Erase flash),mallinfo (Mem usage)\n";
+		*reply += "\nSystem Commands: reboot,help,dfu,swver (Version),hwtype,lsmain (List configs),id,main (Set main config),lsactive (print command handlers),vint,vext,format (Erase flash),mallinfo (Mem usage)\n";
 		flag = ParseStatus::OK_CONTINUE; // Continue to user commands
 	}else if(cmd->cmd == "reboot"){
 		NVIC_SystemReset();
@@ -77,6 +77,9 @@ ParseStatus FFBoardMain::executeSysCommand(ParsedCommand* cmd,std::string* reply
 
 	}else if(cmd->cmd == "swver"){
 		*reply += (SW_VERSION);
+
+	}else if(cmd->cmd == "hwtype"){
+		*reply += (HW_TYPE);
 
 	}else if(cmd->type!=CMDtype::set &&cmd->cmd == "lsmain"){
 		*reply += mainchooser.printAvailableClasses();

@@ -363,7 +363,7 @@ void TMC4671::setPhiE_ext(int16_t phiE){
  * Aligns ABN encoders by forcing an angle with high current and calculating the offset
  */
 void TMC4671::bangInitEnc(int16_t power){
-	if(!hasPower()){
+	if(!hasPower() || (this->conf.motconf.motor_type != MotorType::STEPPER && this->conf.motconf.motor_type != MotorType::BLDC)){ // If not stepper or bldc return
 		return;
 	}
 
@@ -399,6 +399,7 @@ void TMC4671::bangInitEnc(int16_t power){
 	int16_t phiE_abn_old = 0;
 	int16_t c = 0;
 	while(abs(phiE_abn - phiE_abn_old) > 100 && c++ < 50){
+		refreshWatchdog();
 		phiE_abn_old = phiE_abn;
 		phiE_abn=readReg(phiEreg)>>16;
 		HAL_Delay(100);
@@ -649,6 +650,10 @@ void TMC4671::calibrateAdcOffset(){
 
 
 void TMC4671::ABN_init(){
+	if(this->conf.motconf.motor_type != MotorType::STEPPER && this->conf.motconf.motor_type != MotorType::BLDC){
+		encstate = ENC_InitState::OK;
+		return;
+	}
 	switch(encstate){
 		case ENC_InitState::uninitialized:
 			setPosSel(PosSelection::PhiM_abn); // Mechanical Angle
@@ -684,7 +689,7 @@ void TMC4671::ABN_init(){
 
 		case ENC_InitState::checking:
 			if(checkEncoder()){
-				encstate =ENC_InitState::OK;
+				encstate = ENC_InitState::OK;
 				encoderInitialized = true;
 				setPhiEtype(PhiE::abn);
 				state = TMC_ControlState::Running;
@@ -698,11 +703,16 @@ void TMC4671::ABN_init(){
 			}
 		break;
 		case ENC_InitState::OK:
+			state = TMC_ControlState::Running;
 			break;
 	}
 }
 
 void TMC4671::AENC_init(){
+	if(this->conf.motconf.motor_type != MotorType::STEPPER && this->conf.motconf.motor_type != MotorType::BLDC){
+		encstate = ENC_InitState::OK;
+		return;
+	}
 	switch(encstate){
 		case ENC_InitState::uninitialized:
 			setPosSel(PosSelection::PhiM_aenc);
@@ -741,6 +751,7 @@ void TMC4671::AENC_init(){
 			}
 		break;
 		case ENC_InitState::OK:
+			state = TMC_ControlState::Running;
 			break;
 	}
 }

@@ -41,11 +41,11 @@ struct TMC4671MotConf{
 
 //#define TMCTEMP
 
-const int thermistor_R2 = 1500, tmcOffset = 393; // Offset is how many ADC counts too high does the tmc read due to current flowing from the ADC. Can be calculated by measuring the pin voltage with adc on and off.
+const int thermistor_R2 = 1500, tmcOffset = 1000; //400? Offset is how many ADC counts too high does the tmc read due to current flowing from the ADC. Can be calculated by measuring the pin voltage with adc on and off.
 
 // Beta-Model
-const float thermistor_Beta = 4250, thermistor_R = 22000;
-const float temp_limit = 90; //°C
+const float thermistor_Beta = 4300, thermistor_R = 22000;
+const float temp_limit = 100; //°C
 
 // Basic failsafe hardware boot config for inits
 struct TMC4671MainConfig{
@@ -117,9 +117,9 @@ struct TMC4671AENCConf{
 	int16_t phiEoffset = 0; // 0x45&0xffff
 	int16_t phiMoffset = 0;	// 0x45&0xffff0000
 
-	uint16_t AENC0_offset = 0x3fff;
+	uint16_t AENC0_offset = 0x7fff;
 	int16_t AENC0_scale = 256;
-	uint16_t AENC1_offset = 0x3fff;
+	uint16_t AENC1_offset = 0x7fff;
 	int16_t AENC1_scale = 256;
 	uint16_t AENC2_offset = 20000;
 	int16_t AENC2_scale = 256;
