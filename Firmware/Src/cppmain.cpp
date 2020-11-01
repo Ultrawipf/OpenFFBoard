@@ -15,7 +15,6 @@ FFBoardMain* mainclass;
 ClassChooser<FFBoardMain> mainchooser(class_registry);
 extern uint32_t ADC_BUF[ADC_CHANNELS];
 
-USBD_HandleTypeDef hUsbDeviceFS;
 
 void cppmain() {
 	TIM_MICROS.Instance->CR1 = 1; // Enable microsecond clock
