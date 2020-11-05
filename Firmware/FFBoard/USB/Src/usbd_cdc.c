@@ -501,9 +501,14 @@ static uint8_t  USBD_CDC_DataIn (USBD_HandleTypeDef *pdev, uint8_t epnum)
   
   if(hcdc != NULL)
   {
-    
-    hcdc->TxState = 0;
-    CDC_Finished();
+	if((hcdc->TxLength) && ((hcdc->TxLength & 63) == 0)){
+		hcdc->TxLength = 0;
+		USBD_LL_Transmit(pdev, CDC_IN_EP, NULL, 0);
+	}
+	else{
+		hcdc->TxState = 0;
+		CDC_Finished();
+	}
 
     return USBD_OK;
   }

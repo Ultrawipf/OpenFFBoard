@@ -309,11 +309,6 @@ void TMC4671::update(){
 	}
 
 
-//	if(!isSetUp()){
-//		pulseErrLed();
-//		initialized = false;
-//	}
-
 }
 
 bool TMC4671::reachedPosition(uint16_t tolerance){
