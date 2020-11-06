@@ -49,7 +49,7 @@ public:
 
 private:
 	ShifterMode mode;
-	volatile uint32_t ADC_BUF[ADC_CHANNELS] = {0};
+	volatile uint32_t ADC_BUF[ADC1_CHANNELS] = {0};
 
 	const uint8_t x_chan = 5;
 	const uint8_t y_chan = 4;

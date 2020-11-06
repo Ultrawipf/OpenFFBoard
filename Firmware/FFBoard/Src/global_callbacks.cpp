@@ -24,7 +24,17 @@
 #include "SpiHandler.h"
 
 extern FFBoardMain* mainclass;
-volatile uint32_t ADC_BUF[ADC_CHANNELS] = {0};
+
+#ifdef ADC1_CHANNELS
+volatile uint32_t ADC1_BUF[ADC1_CHANNELS] = {0};
+#endif
+#ifdef ADC2_CHANNELS
+volatile uint32_t ADC2_BUF[ADC2_CHANNELS] = {0};
+#endif
+#ifdef ADC3_CHANNELS
+volatile uint32_t ADC3_BUF[ADC3_CHANNELS] = {0};
+#endif
+
 volatile char uart_buf[UART_BUF_SIZE] = {0}; //
 
 
@@ -40,11 +50,11 @@ int _write(int file, char *ptr, int len)
 
 std::vector<AdcHandler*> adcHandlers;
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc){
-	//Pulse braking mosfet if internal voltage is higher than supply. Conversion: V = 1/36
+	//Pulse braking mosfet if internal voltage is higher than supply.
 	brakeCheck();
 
 	for(AdcHandler* c : adcHandlers){
-		c->adcUpd(ADC_BUF);
+		c->adcUpd(ADC1_BUF);
 	}
 }
 

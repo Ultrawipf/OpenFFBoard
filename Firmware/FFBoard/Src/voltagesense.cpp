@@ -9,7 +9,7 @@
 #include "constants.h"
 #include "voltagesense.h"
 
-extern uint32_t ADC_BUF[ADC_CHANNELS];
+extern uint32_t ADC1_BUF[ADC1_CHANNELS];
 bool braking_flag = false;
 uint32_t maxVoltage = 60000; // Force braking
 uint32_t voltageDiffActivate = 8000;
@@ -37,11 +37,11 @@ void setupBrakePin(uint32_t vdiffAct,uint32_t vdiffDeact,uint32_t vMax){
 }
 
 uint16_t getIntV(){
-	return ADC_BUF[ADC_CHAN_VINT] * vSenseMult;
+	return ADC1_BUF[ADC_CHAN_VINT] * vSenseMult;
 }
 
 uint16_t getExtV(){
-	return ADC_BUF[ADC_CHAN_VEXT] * vSenseMult;
+	return ADC1_BUF[ADC_CHAN_VEXT] * vSenseMult;
 }
 
 void brakeCheck(){
