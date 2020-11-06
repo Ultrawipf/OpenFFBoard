@@ -512,6 +512,7 @@ bool TMC4671::checkEncoder(){
 			phiE_enc = (int16_t)(readReg(phiEreg)>>16);
 			err = abs(phiE_enc - angle);
 			HAL_Delay(10);
+			refreshWatchdog();
 		}
 		// still high difference?
 		if(err > 8000){
