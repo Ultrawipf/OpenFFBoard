@@ -57,7 +57,7 @@ ParseStatus FFBWheel::command(ParsedCommand* cmd,std::string* reply){
 		if(cmd->type == CMDtype::get){
 			*reply+=std::to_string(this->degreesOfRotation);
 		}else if(cmd->type == CMDtype::set){
-			this->degreesOfRotation = cmd->val;
+			this->nextDegreesOfRotation = cmd->val;
 		}
 	}else if(cmd->cmd == "idlespring"){
 		if(cmd->type == CMDtype::get){

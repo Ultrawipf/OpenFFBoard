@@ -147,9 +147,13 @@ void FFBWheel::update(){
 	// If either usb SOF or timer triggered
 	if(usb_update_flag || update_flag){
 		int32_t lastTorque = torque;
-
 		torque = 0;
+
 		// Scale encoder value to set rotation range
+		// Update a change of range only when new range is within valid range
+		if(nextDegreesOfRotation != degreesOfRotation && abs(getEncValue(enc,nextDegreesOfRotation)) < 0x7fff){
+			degreesOfRotation = nextDegreesOfRotation;
+		}
 		scaledEnc = getEncValue(enc,degreesOfRotation);
 
 		update_flag = false;

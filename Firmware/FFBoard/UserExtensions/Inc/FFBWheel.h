@@ -88,6 +88,7 @@ public:
 	volatile bool update_flag = false;
 
 	uint16_t degreesOfRotation = 900; // How many degrees of range for the full gamepad range
+	uint16_t nextDegreesOfRotation = degreesOfRotation; // Buffer when changing range
 	int32_t getEncValue(Encoder* enc,uint16_t degrees);
 
 
