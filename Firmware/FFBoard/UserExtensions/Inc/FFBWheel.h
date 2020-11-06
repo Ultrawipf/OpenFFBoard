@@ -117,8 +117,8 @@ private:
 	FFBWheelAnalogConfig aconf;
 
 	reportHID_t reportHID;
-	int16_t* analogAxesReport[7] = {&reportHID.X,&reportHID.Y,&reportHID.Z,&reportHID.RX,&reportHID.RY,&reportHID.RZ,&reportHID.Slider};
-	const uint8_t analogAxisCount = 7;
+	int16_t* analogAxesReport[8] = {&reportHID.X,&reportHID.Y,&reportHID.Z,&reportHID.RX,&reportHID.RY,&reportHID.RZ,&reportHID.Slider,&reportHID.Dial};
+	const uint8_t analogAxisCount = 8;
 	uint16_t power = 2000;
 
 	int32_t lastScaledEnc = 0;

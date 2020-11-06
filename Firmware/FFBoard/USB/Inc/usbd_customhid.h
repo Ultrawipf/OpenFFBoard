@@ -84,7 +84,7 @@
 
  /*---------- -----------*/
 
-#define USBD_CUSTOM_HID_REPORT_DESC_SIZE     1267//1290//68//
+#define USBD_CUSTOM_HID_REPORT_DESC_SIZE     1269//1290//68//
 
 
 
