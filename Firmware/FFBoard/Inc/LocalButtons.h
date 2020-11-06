@@ -17,6 +17,7 @@ public:
 	LocalButtons();
 	virtual ~LocalButtons();
 	void readButtons(uint32_t* buf);
+
 	const ClassIdentifier getInfo();
 	static ClassIdentifier info;
 

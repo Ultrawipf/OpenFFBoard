@@ -7,6 +7,7 @@
 
 #include "LocalAnalog.h"
 #include "global_callbacks.h"
+#include "flash_helpers.h"
 
 ClassIdentifier LocalAnalog::info = {
 	 .name = "AIN-Pins" ,
@@ -15,7 +16,7 @@ ClassIdentifier LocalAnalog::info = {
 
 
 LocalAnalog::LocalAnalog() {
-
+	restoreFlash();
 }
 
 LocalAnalog::~LocalAnalog() {
@@ -26,10 +27,21 @@ const ClassIdentifier LocalAnalog::getInfo(){
 	return info;
 }
 
+void LocalAnalog::saveFlash(){
+	Flash_Write(ADR_LOCALANALOG_MASK, LocalAnalog::encodeAnalogConfToInt(this->aconf));
+}
+
+void LocalAnalog::restoreFlash(){
+	uint16_t aconfint;
+	if(Flash_Read(ADR_LOCALANALOG_MASK,&aconfint)){
+		this->aconf = LocalAnalog::decodeAnalogConfFromInt(aconfint);
+	}
+}
+
 
 //TODO auto ranging, settings
 
-std::vector<uint32_t>* LocalAnalog::getAxes(){
+std::vector<int32_t>* LocalAnalog::getAxes(){
 	uint8_t chans = 0;
 	this->buf.clear();
 	volatile uint32_t* adcbuf = getAnalogBuffer(&AIN_HADC,&chans);
@@ -37,8 +49,41 @@ std::vector<uint32_t>* LocalAnalog::getAxes(){
 	uint8_t axes = MIN(chans-ADC_CHAN_FPIN,ADC_PINS);
 
 	for(uint8_t i = 0;i<axes;i++){
-		uint32_t val = adcbuf[ADC_CHAN_FPIN + i];
+		if(!(aconf.analogmask & 0x01 << i))
+			continue;
+
+		int32_t val = ((adcbuf[i+ADC_CHAN_FPIN] & 0xFFF) << 4)-0x7fff;
 		this->buf.push_back(val);
 	}
 	return &this->buf;
+}
+
+ParseStatus LocalAnalog::command(ParsedCommand* cmd,std::string* reply){
+	ParseStatus flag = ParseStatus::OK;
+	if(cmd->cmd == "axismask"){
+		if(cmd->type == CMDtype::get){
+			*reply+=std::to_string(aconf.analogmask);
+		}else if(cmd->type == CMDtype::set){
+			aconf.analogmask = cmd->val;
+		}
+	}else if(cmd->cmd == "help"){
+		flag = ParseStatus::OK_CONTINUE;
+		*reply += "Analog pins: axismask\n";
+	}else{
+		flag = ParseStatus::NOT_FOUND;
+	}
+	return flag;
+}
+
+
+FFBWheelAnalogConfig LocalAnalog::decodeAnalogConfFromInt(uint16_t val){
+	FFBWheelAnalogConfig aconf;
+	aconf.analogmask = val & 0xff;
+	aconf.invertX = (val >> 8) & 0x1;
+	return aconf;
+}
+uint16_t LocalAnalog::encodeAnalogConfToInt(FFBWheelAnalogConfig conf){
+	uint16_t val = conf.analogmask & 0xff;
+	val |= (conf.invertX & 0x1) << 8;
+	return val;
 }

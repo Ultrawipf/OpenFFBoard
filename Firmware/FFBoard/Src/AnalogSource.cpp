@@ -14,14 +14,13 @@ ClassIdentifier AnalogSource::info = {
 };
 
 AnalogSource::AnalogSource() {
-	// TODO Auto-generated constructor stub
 
 }
 
 AnalogSource::~AnalogSource() {
-	// TODO Auto-generated destructor stub
+
 }
 
-std::vector<uint32_t>* AnalogSource::getAxes(){
+std::vector<int32_t>* AnalogSource::getAxes(){
 	return &this->buf;
 }

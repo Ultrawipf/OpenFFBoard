@@ -83,10 +83,10 @@ void HidFFB::hidOut(uint8_t* report){
 	case HID_ID_CONSTREP: // Constant
 		set_constant_effect((FFB_SetConstantForce_Data_t*)report);
 		break;
-	case HID_ID_RAMPREP: // Ramp TODO
+	case HID_ID_RAMPREP: // Ramp
 		printf("Ramprep");
 		break;
-	case HID_ID_CSTMREP: // Custom. TODO? pretty much never used
+	case HID_ID_CSTMREP: // Custom. pretty much never used
 		printf("Customrep");
 		break;
 	case HID_ID_SMPLREP: // Download sample

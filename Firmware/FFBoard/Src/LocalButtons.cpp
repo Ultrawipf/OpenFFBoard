@@ -18,7 +18,7 @@ LocalButtons::LocalButtons() {
 }
 
 LocalButtons::~LocalButtons() {
-	// TODO Auto-generated destructor stub
+
 }
 
 const ClassIdentifier LocalButtons::getInfo(){

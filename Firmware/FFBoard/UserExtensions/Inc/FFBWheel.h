@@ -23,7 +23,6 @@
 
 #include "cppmain.h"
 #include "HidFFB.h"
-#include "AdcHandler.h"
 #include "TimerHandler.h"
 #include "ClassChooser.h"
 #include "ExtiHandler.h"
@@ -37,18 +36,9 @@ struct FFBWheelConfig{
 
 };
 
-enum class AnalogOffset : uint8_t{
-	FULL=0,LOWER=1,UPPER=2,NONE
-};
-
-struct FFBWheelAnalogConfig{
-	uint8_t analogmask = 0xff;
-	AnalogOffset offsetmode;
-	bool invertX = false;
-};
 
 
-class FFBWheel: public FFBoardMain, AdcHandler, TimerHandler, PersistentStorage,ExtiHandler{
+class FFBWheel: public FFBoardMain, TimerHandler, PersistentStorage,ExtiHandler{
 public:
 	FFBWheel();
 	virtual ~FFBWheel();
@@ -60,12 +50,18 @@ public:
 	void setupTMC4671_enc(PhiE enctype);
 	ParseStatus command(ParsedCommand* cmd,std::string* reply);
 
+	// Dynamic classes
 	void setDrvType(uint8_t drvtype);
 	void setEncType(uint8_t enctype);
+
 	void setBtnTypes(uint16_t btntypes);
 	void addBtnType(uint16_t id);
 	void clearBtnTypes();
-	ButtonSource* getBtnSrc(uint16_t id);
+
+	void setAinTypes(uint16_t aintypes);
+	void addAinType(uint16_t id);
+	void clearAinTypes();
+
 
 	void SOF();
 	void usbInit(); // initialize a composite usb device
@@ -79,11 +75,8 @@ public:
 
 	static FFBWheelConfig decodeConfFromInt(uint16_t val);
 	static uint16_t encodeConfToInt(FFBWheelConfig conf);
-	static FFBWheelAnalogConfig decodeAnalogConfFromInt(uint16_t val);
-	static uint16_t encodeAnalogConfToInt(FFBWheelAnalogConfig conf);
 
 
-	void adcUpd(volatile uint32_t* ADC_BUF, uint8_t chans, ADC_HandleTypeDef* hadc);
 	void timerElapsed(TIM_HandleTypeDef* htim);
 	void exti(uint16_t GPIO_Pin);
 
@@ -119,17 +112,21 @@ private:
 	Encoder* enc = nullptr;
 
 	std::vector<ButtonSource*> btns;
-	FFBWheelAnalogConfig aconf;
-	volatile uint16_t adc_buf[ADC_PINS];
-	reportHID_t reportHID;
+	std::vector<AnalogSource*> analog_inputs;
 
+	FFBWheelAnalogConfig aconf;
+
+	reportHID_t reportHID;
+	int16_t* analogAxesReport[7] = {&reportHID.X,&reportHID.Y,&reportHID.Z,&reportHID.RX,&reportHID.RY,&reportHID.RZ,&reportHID.Slider};
+	const uint8_t analogAxisCount = 7;
 	uint16_t power = 2000;
 
 	int32_t lastScaledEnc = 0;
 	int32_t scaledEnc = 0;
 	int32_t speed = 0;
 	bool tmcFeedForward = false; // Experimental
-	uint16_t btnsources = 1; // Default ID1 = local buttons
+	uint16_t btnsources = 1; // Default ID0 = local buttons
+	uint16_t ainsources = 1;
 
 	volatile bool usb_disabled = true;
 

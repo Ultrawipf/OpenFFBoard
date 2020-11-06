@@ -55,7 +55,9 @@ std::vector<class_entry<Encoder>> encoder_sources =
 // TODO class type for parser? (Simhub for example)
 //////////////////////////////////////////////
 
-FFBWheel::FFBWheel() : btn_chooser(button_sources),drv_chooser(motor_sources),enc_chooser(encoder_sources),analog_chooser(analog_sources) {
+FFBWheel::FFBWheel() :
+		btn_chooser(button_sources),drv_chooser(motor_sources),enc_chooser(encoder_sources),analog_chooser(analog_sources)
+{
 
 	// Create HID FFB handler. Will receive all usb messages directly
 	this->ffb = new HidFFB();
@@ -95,6 +97,9 @@ void FFBWheel::restoreFlash(){
 	Flash_Read(ADR_FFBWHEEL_BUTTONCONF, &this->btnsources);
 	setBtnTypes(this->btnsources);
 
+	Flash_Read(ADR_FFBWHEEL_ANALOGCONF, &this->ainsources);
+	setAinTypes(this->ainsources);
+
 	// Call restore methods for active button sources
 	for(ButtonSource* btn : this->btns){
 		btn->restoreFlash();
@@ -110,10 +115,6 @@ void FFBWheel::restoreFlash(){
 	Flash_Read(ADR_FFBWHEEL_POWER, &this->power);
 	Flash_Read(ADR_FFBWHEEL_DEGREES, &this->degreesOfRotation);
 
-	uint16_t aconfint;
-	if(Flash_Read(ADR_FFBWHEEL_ANALOGCONF,&aconfint)){
-		this->aconf = FFBWheel::decodeAnalogConfFromInt(aconfint);
-	}
 	uint16_t esval;
 	if(Flash_Read(ADR_FFBWHEEL_ENDSTOP,&esval)){
 		this->fx_ratio_i = esval & 0xff;
@@ -130,14 +131,19 @@ void FFBWheel::saveFlash(){
 	Flash_Write(ADR_FFBWHEEL_POWER, this->power);
 	Flash_Write(ADR_FFBWHEEL_DEGREES, this->degreesOfRotation);
 	Flash_Write(ADR_FFBWHEEL_BUTTONCONF,this->btnsources);
-	Flash_Write(ADR_FFBWHEEL_ANALOGCONF, FFBWheel::encodeAnalogConfToInt(this->aconf));
+	Flash_Write(ADR_FFBWHEEL_ANALOGCONF,this->ainsources);
 	Flash_Write(ADR_FFBWHEEL_ENDSTOP,this->fx_ratio_i | (this->endstop_gain_i << 8));
 
+
+	// TODO saving directly in persistenstorage
 	// Call save methods for active button sources
 	for(ButtonSource* btn : this->btns){
 		btn->saveFlash();
 	}
 
+	for(AnalogSource* ain : this->analog_inputs){
+		ain->saveFlash();
+	}
 	drv->saveFlash(); // Motor driver
 	ffb->saveFlash(); // FFB handler
 }
@@ -339,15 +345,7 @@ void FFBWheel::setEncType(uint8_t enctype){
 	//this->enc->setPos(0); //Zero encoder
 }
 
-ButtonSource* FFBWheel::getBtnSrc(uint16_t id){
-	for(ButtonSource* btn : this->btns){
-		if(btn->getInfo().id == id){
-			return btn;
-		}
-	}
-	return nullptr;
-}
-
+// Buttons
 void FFBWheel::clearBtnTypes(){
 	// Destruct all button sources
 	for(ButtonSource* btn : this->btns){
@@ -368,6 +366,7 @@ void FFBWheel::setBtnTypes(uint16_t btntypes){
 		}
 	}
 }
+
 void FFBWheel::addBtnType(uint16_t id){
 	for(ButtonSource* btn : this->btns){
 		if(btn->getInfo().id == id){
@@ -379,22 +378,38 @@ void FFBWheel::addBtnType(uint16_t id){
 		this->btns.push_back(btn);
 }
 
-// Called when the adc finishes a conversion
-void FFBWheel::adcUpd(volatile uint32_t* ADC_BUF, uint8_t chans, ADC_HandleTypeDef* hadc){
-	if(hadc != &AIN_HADC)
-		return;
+// Analog
+void FFBWheel::clearAinTypes(){
+	// Destruct all button sources
+	for(AnalogSource* ain : this->analog_inputs){
+		delete ain;
+	}
+	this->analog_inputs.clear();
+}
 
-	for(uint8_t i = 0;i<ADC_PINS;i++){
-		this->adc_buf[i] = ADC_BUF[i+ADC_CHAN_FPIN];
-
-		if(this->aconf.offsetmode == AnalogOffset::LOWER){
-			this->adc_buf[i] = clip(this->adc_buf[i] << 5, 0, 0xfff);
-		}else if(this->aconf.offsetmode == AnalogOffset::UPPER){
-			this->adc_buf[i] = clip(this->adc_buf[i] - 0x7ff, 0, 0xfff) << 5;
+void FFBWheel::setAinTypes(uint16_t aintypes){
+	this->ainsources = aintypes;
+	clearAinTypes();
+	for(uint8_t id = 0;id<16;id++){
+		if((aintypes >> id) & 0x1){
+			// Matching flag
+			AnalogSource* ain = analog_chooser.Create(id);
+			if(ain!=nullptr)
+				this->analog_inputs.push_back(ain);
 		}
-
 	}
 }
+void FFBWheel::addAinType(uint16_t id){
+	for(AnalogSource* ain : this->analog_inputs){
+		if(ain->getInfo().id == id){
+			return;
+		}
+	}
+	AnalogSource* ain = analog_chooser.Create(id);
+	if(ain!=nullptr)
+		this->analog_inputs.push_back(ain);
+}
+
 
 /*
  * Returns a scaled encoder value between -0x7fff and 0x7fff with a range of degrees
@@ -431,18 +446,23 @@ void FFBWheel::send_report(){
 		}
 	}
 
+	uint8_t count = 0;
 	// Encoder
-	reportHID.X = clip(lastScaledEnc,-0x7fff,0x7fff);
+	if(this->enc != nullptr){
+		*(analogAxesReport[count++]) = clip(lastScaledEnc,-0x7fff,0x7fff);
+	}
 
-	// TODO analog sources as classes (like buttons)? Autoranging
-	// Analog values read by DMA
-	uint16_t analogMask = this->aconf.analogmask;
-	reportHID.Y 	=  (analogMask & 0x01) ? ((adc_buf[0] & 0xFFF) << 4)	-0x7fff : 0;
-	reportHID.Z		=  (analogMask & 0x01<<1) ? ((adc_buf[1] & 0xFFF) << 4)	-0x7fff : 0;
-	reportHID.RX	=  (analogMask & 0x01<<2) ? ((adc_buf[2] & 0xFFF) << 4)	-0x7fff : 0;
-	reportHID.RY	=  (analogMask & 0x01<<3) ? ((adc_buf[3] & 0xFFF) << 4)	-0x7fff : 0;
-	reportHID.RZ	=  (analogMask & 0x01<<4) ? ((adc_buf[4] & 0xFFF) << 4)	-0x7fff : 0;
-	reportHID.Slider=  (analogMask & 0x01<<5) ? ((adc_buf[5] & 0xFFF) << 4)	-0x7fff : 0;
+	for(AnalogSource* ain : analog_inputs){
+		std::vector<int32_t>* axes = ain->getAxes();
+		for(int32_t val : *axes){
+			if(count >= analogAxisCount)
+				break;
+			*analogAxesReport[count++] = val;
+		}
+	} // Fill rest
+	for(;count<analogAxisCount; count++){
+		*analogAxesReport[count] = 0;
+	}
 
 	USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS, reinterpret_cast<uint8_t*>(&reportHID), sizeof(reportHID_t));
 
@@ -515,15 +535,5 @@ uint16_t FFBWheel::encodeConfToInt(FFBWheelConfig conf){
 	val |= (conf.axes & 0x03) << 12;
 	return val;
 }
-FFBWheelAnalogConfig FFBWheel::decodeAnalogConfFromInt(uint16_t val){
-	FFBWheelAnalogConfig aconf;
-	aconf.analogmask = val & 0xff;
-	aconf.invertX = (val >> 8) & 0x1;
-	return aconf;
-}
-uint16_t FFBWheel::encodeAnalogConfToInt(FFBWheelAnalogConfig conf){
-	uint16_t val = conf.analogmask & 0xff;
-	val |= (conf.invertX & 0x1) << 8;
-	return val;
-}
+
 

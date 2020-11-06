@@ -44,13 +44,13 @@ USBD_ClassTypeDef USBD_Composite =
   USBD_Composite_Init,
   USBD_Composite_DeInit,
   USBD_Composite_Setup,
-  USBD_Composite_EP0_TxSent, //TODO
+  USBD_Composite_EP0_TxSent,
   USBD_Composite_EP0_RxReady,
   USBD_Composite_DataIn,
   USBD_Composite_DataOut,
   USBD_Composite_SOF,
-  USBD_Composite_IsoINIncomplete, //TODO
-  USBD_Composite_IsoOUTIncomplete, //TODO
+  USBD_Composite_IsoINIncomplete,
+  USBD_Composite_IsoOUTIncomplete,
   USBD_Composite_GetHSCfgDesc,
   USBD_Composite_GetFSCfgDesc,
   USBD_Composite_GetOtherSpeedCfgDesc,
@@ -178,7 +178,6 @@ static uint8_t USBD_Composite_Setup (USBD_HandleTypeDef *pdev, USBD_SetupReqType
 
   switch (req->bmRequest & USB_REQ_TYPE_MASK) {
     case USB_REQ_TYPE_CLASS:
-    	//TODO Correct class ids?
     	return USBD_Classes[idx]->Setup(pdev, req);
 
     case USB_REQ_TYPE_STANDARD:

@@ -38,7 +38,7 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_FFBWHEEL_POWER				0x102
 #define ADR_FFBWHEEL_DEGREES			0x103
 #define ADR_FFBWHEEL_BUTTONCONF 		0x105
-#define ADR_FFBWHEEL_ANALOGCONF 		0x106 // lower 8 bit mask, 8-9 offsetmode
+#define ADR_FFBWHEEL_ANALOGCONF 		0x106
 #define ADR_FFBWHEEL_ENDSTOP			0x107 // 0-7 endstop margin, 8-15 endstop stiffness
 
 
@@ -58,6 +58,9 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_SHIFTER_BTN_CONF			0x202
 #define ADR_LOCAL_BTN_CONF				0x203
 #define ADR_LOCAL_BTN_CONF_2			0x204
+
+// Local analog source
+#define ADR_LOCALANALOG_MASK			0x210
 
 // FFB
 #define ADR_FFB_EFFECTS1				0x210 // 0-7 spring, 8-15 friction

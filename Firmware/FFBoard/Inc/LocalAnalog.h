@@ -12,7 +12,12 @@
 #include "CommandHandler.h"
 #include <vector>
 
-class LocalAnalog : public AnalogSource {
+struct FFBWheelAnalogConfig{
+	uint8_t analogmask = 0xff;
+	bool invertX = false;
+};
+
+class LocalAnalog : public AnalogSource, public CommandHandler{
 public:
 	LocalAnalog();
 	virtual ~LocalAnalog();
@@ -20,10 +25,18 @@ public:
 	const ClassIdentifier getInfo();
 	static ClassIdentifier info;
 
-	std::vector<uint32_t>* getAxes();
+	void saveFlash(); 		// Write to flash here
+	void restoreFlash();	// Load from flash
+
+	std::vector<int32_t>* getAxes();
+
+	ParseStatus command(ParsedCommand* cmd,std::string* reply);
 
 private:
-	std::vector<uint32_t> buf;
+	static FFBWheelAnalogConfig decodeAnalogConfFromInt(uint16_t val);
+	static uint16_t encodeAnalogConfToInt(FFBWheelAnalogConfig conf);
+
+	FFBWheelAnalogConfig aconf;
 };
 
 
