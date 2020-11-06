@@ -6,6 +6,7 @@
  */
 
 #include <ShifterAnalog.h>
+#include "global_callbacks.h"
 
 ClassIdentifier ShifterAnalog::info = {
 		 .name = "Shifter Analog" ,
@@ -23,12 +24,17 @@ ShifterAnalog::~ShifterAnalog() {
 
 }
 
-
+void ShifterAnalog::updateAdc(){
+	uint8_t chans = 0;
+	volatile uint32_t* buf = getAnalogBuffer(&AIN_HADC,&chans);
+	x_val = buf[ADC_CHAN_FPIN+x_chan];
+	y_val = buf[ADC_CHAN_FPIN+y_chan];
+}
 
 void ShifterAnalog::readButtons(uint32_t* buf){
 	gear = 0;
 	*buf = 0;
-
+	updateAdc();
 	if(mode == ShifterMode::G29_seq){ // Sequential mode
 		if(x_val < X_12){
 			gear = 1;
@@ -79,14 +85,6 @@ uint16_t ShifterAnalog::getBtnNum(){
 	}
 }
 
-// Called when ADC conversion is done
-void ShifterAnalog::adcUpd(volatile uint32_t* ADC_BUF, uint8_t chans, ADC_HandleTypeDef* hadc){
-	if(hadc != &AIN_HADC)
-		return;
-
-	x_val = ADC_BUF[ADC_CHAN_FPIN+x_chan];
-	y_val = ADC_BUF[ADC_CHAN_FPIN+y_chan];
-}
 
 
 void ShifterAnalog::saveFlash(){

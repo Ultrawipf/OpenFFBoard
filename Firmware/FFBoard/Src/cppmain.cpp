@@ -14,8 +14,6 @@ bool running = true;
 uint16_t main_id = 0;
 FFBoardMain* mainclass;
 ClassChooser<FFBoardMain> mainchooser(class_registry);
-extern uint32_t ADC1_BUF[ADC1_CHANNELS];
-
 USBD_HandleTypeDef hUsbDeviceFS;
 
 void cppmain() {
@@ -28,7 +26,7 @@ void cppmain() {
 
 	TIM_MICROS.Instance->CR1 = 1; // Enable microsecond clock
 
-	HAL_ADC_Start_DMA(&AIN_HADC, ADC1_BUF, ADC1_CHANNELS);
+	startADC(); // enable ADC DMA
 
 	// If switch pressed at boot select failsafe implementation
 	if(HAL_GPIO_ReadPin(BUTTON_A_GPIO_Port, BUTTON_A_Pin) == 1){

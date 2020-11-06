@@ -6,7 +6,7 @@
 #include "target_constants.h" // To be defined in target include folder
 
 
-#define SW_VERSION "1.1.2" // Version string
+#define SW_VERSION "1.1.3" // Version string
 
 
 #define CDC_INTERFACE 0x00

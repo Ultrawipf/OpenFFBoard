@@ -36,7 +36,8 @@ template <class C> void removeCallbackHandler(std::vector<C>* vec, C instance){
 extern "C" {
 #endif
 
-
+void startADC();
+volatile uint32_t* getAnalogBuffer(ADC_HandleTypeDef* hadc,uint8_t* chans); // Returns the DMA buffer for a hadc reference
 void CDC_Callback(uint8_t* Buf, uint32_t *Len);
 void CDC_Finished();
 void USBD_OutEvent_HID(uint8_t* report);

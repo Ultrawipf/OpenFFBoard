@@ -48,27 +48,20 @@ int _write(int file, char *ptr, int len)
   return len;
 }
 
+
 std::vector<AdcHandler*> adcHandlers;
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc){
 	//Pulse braking mosfet if internal voltage is higher than supply.
 	if(hadc == &VSENSE_HADC)
 		brakeCheck();
 
+	uint8_t chans = 0;
+	volatile uint32_t* buf = getAnalogBuffer(hadc,&chans);
+	if(buf == NULL)
+		return;
+
 	for(AdcHandler* c : adcHandlers){
-		#ifdef ADC1_CHANNELS
-		if(hadc == &hadc1)
-			c->adcUpd(ADC1_BUF,ADC1_CHANNELS,hadc);
-		#endif
-
-		#ifdef ADC2_CHANNELS
-		if(hadc == &hadc2)
-			c->adcUpd(ADC2_BUF,ADC2_CHANNELS,hadc);
-		#endif
-
-		#ifdef ADC3_CHANNELS
-		if(hadc == &hadc3)
-			c->adcUpd(ADC3_BUF,ADC3_CHANNELS,hadc);
-		#endif
+		c->adcUpd(buf,chans,hadc);
 	}
 }
 
@@ -191,5 +184,41 @@ void USBD_Resume(){
 	mainclass->usbResume();
 }
 
+
+volatile uint32_t* getAnalogBuffer(ADC_HandleTypeDef* hadc,uint8_t* chans){
+	#ifdef ADC1_CHANNELS
+	if(hadc == &hadc1){
+		*chans = ADC1_CHANNELS;
+		return ADC1_BUF;
+	}
+	#endif
+
+	#ifdef ADC2_CHANNELS
+	if(hadc == &hadc2){
+		*chans = ADC2_CHANNELS;
+		return ADC2_BUF;
+	}
+	#endif
+
+	#ifdef ADC3_CHANNELS
+	if(hadc == &hadc3){
+		*chans = ADC3_CHANNELS;
+		return ADC3_BUF;
+	}
+	#endif
+	return NULL;
+}
+
+void startADC(){
+	#ifdef ADC1_CHANNELS
+	HAL_ADC_Start_DMA(&AIN_HADC, (uint32_t*)ADC1_BUF, ADC1_CHANNELS);
+	#endif
+	#ifdef ADC2_CHANNELS
+	HAL_ADC_Start_DMA(&AIN_HADC, (uint32_t*)ADC2_BUF, ADC2_CHANNELS);
+	#endif
+	#ifdef ADC3_CHANNELS
+	HAL_ADC_Start_DMA(&AIN_HADC, (uint32_t*)ADC3_BUF, ADC3_CHANNELS);
+	#endif
+}
 
 

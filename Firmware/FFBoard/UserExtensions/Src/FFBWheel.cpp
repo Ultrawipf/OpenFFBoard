@@ -31,6 +31,13 @@ const std::vector<class_entry<ButtonSource>> button_sources =
 		add_class<ShifterAnalog,ButtonSource>()
 };
 
+// Register possible analog sources (id 0-15)
+const std::vector<class_entry<AnalogSource>> analog_sources =
+{
+		add_class<LocalAnalog,AnalogSource>()
+};
+
+
 // 0-63 valid ids
 const std::vector<class_entry<MotorDriver>> motor_sources =
 {
@@ -48,7 +55,7 @@ std::vector<class_entry<Encoder>> encoder_sources =
 // TODO class type for parser? (Simhub for example)
 //////////////////////////////////////////////
 
-FFBWheel::FFBWheel() : btn_chooser(button_sources),drv_chooser(motor_sources),enc_chooser(encoder_sources) {
+FFBWheel::FFBWheel() : btn_chooser(button_sources),drv_chooser(motor_sources),enc_chooser(encoder_sources),analog_chooser(analog_sources) {
 
 	// Create HID FFB handler. Will receive all usb messages directly
 	this->ffb = new HidFFB();

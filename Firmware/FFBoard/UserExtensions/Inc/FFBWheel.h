@@ -18,6 +18,8 @@
 #include "LocalButtons.h"
 #include "SPIButtons.h"
 #include "EncoderLocal.h"
+#include "LocalAnalog.h"
+#include "AnalogSource.h"
 
 #include "cppmain.h"
 #include "HidFFB.h"
@@ -25,6 +27,7 @@
 #include "TimerHandler.h"
 #include "ClassChooser.h"
 #include "ExtiHandler.h"
+
 
 
 struct FFBWheelConfig{
@@ -189,6 +192,7 @@ private:
 	ClassChooser<ButtonSource> btn_chooser;
 	ClassChooser<MotorDriver> drv_chooser;
 	ClassChooser<Encoder> enc_chooser;
+	ClassChooser<AnalogSource> analog_chooser;
 };
 
 #endif /* SRC_FFBWHEEL_H_ */

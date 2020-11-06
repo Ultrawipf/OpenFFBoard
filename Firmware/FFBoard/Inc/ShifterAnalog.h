@@ -8,11 +8,10 @@
 #ifndef SHIFTERANALOG_H_
 #define SHIFTERANALOG_H_
 #include "ButtonSource.h"
-#include "AdcHandler.h"
 #include "CommandHandler.h"
 #include "vector"
 
-class ShifterAnalog : public ButtonSource, AdcHandler,CommandHandler {
+class ShifterAnalog : public ButtonSource,CommandHandler {
 
 /*
  * Button mapper for analog (Logitech G29) shifters (6 gears + reverse)
@@ -37,8 +36,6 @@ public:
 
 	void readButtons(uint32_t* buf);
 	uint16_t getBtnNum(); // Amount of readable buttons
-
-	void adcUpd(volatile uint32_t* ADC_BUF, uint8_t chans, ADC_HandleTypeDef* hadc);
 
 	void saveFlash();
 	void restoreFlash();
@@ -68,7 +65,7 @@ private:
 
 	uint8_t gear = 0;
 
-
+	void updateAdc();
 
 };
 
