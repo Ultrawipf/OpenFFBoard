@@ -80,7 +80,7 @@ public:
 	static uint16_t encodeAnalogConfToInt(FFBWheelAnalogConfig conf);
 
 
-	void adcUpd(volatile uint32_t* ADC_BUF);
+	void adcUpd(volatile uint32_t* ADC_BUF, uint8_t chans, ADC_HandleTypeDef* hadc);
 	void timerElapsed(TIM_HandleTypeDef* htim);
 	void exti(uint16_t GPIO_Pin);
 

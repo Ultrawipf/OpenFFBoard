@@ -17,10 +17,16 @@
 const std::vector<class_entry<FFBoardMain>> class_registry =
 {
 		add_class<FFBoardMain,FFBoardMain>(),
+#ifdef FFBWHEEL
 		add_class<FFBWheel,FFBoardMain>(),
-		add_class<ExampleMain,FFBoardMain>(),
+#endif
+#ifdef TMCDEBUG
 		add_class<TMCDebugBridge,FFBoardMain>(),
-		add_class<MidiMain,FFBoardMain>()
+#endif
+#ifdef MIDI
+		add_class<MidiMain,FFBoardMain>(),
+#endif
+		add_class<ExampleMain,FFBoardMain>()
 };
 
 

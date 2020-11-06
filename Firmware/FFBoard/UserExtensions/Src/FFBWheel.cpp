@@ -369,7 +369,10 @@ void FFBWheel::addBtnType(uint16_t id){
 }
 
 // Called when the adc finishes a conversion
-void FFBWheel::adcUpd(volatile uint32_t* ADC_BUF){
+void FFBWheel::adcUpd(volatile uint32_t* ADC_BUF, uint8_t chans, ADC_HandleTypeDef* hadc){
+	if(hadc != &AIN_HADC)
+		return;
+
 	for(uint8_t i = 0;i<ADC_PINS;i++){
 		this->adc_buf[i] = ADC_BUF[i+ADC_CHAN_FPIN];
 

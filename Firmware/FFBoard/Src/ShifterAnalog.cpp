@@ -80,7 +80,10 @@ uint16_t ShifterAnalog::getBtnNum(){
 }
 
 // Called when ADC conversion is done
-void ShifterAnalog::adcUpd(volatile uint32_t* ADC_BUF){
+void ShifterAnalog::adcUpd(volatile uint32_t* ADC_BUF, uint8_t chans, ADC_HandleTypeDef* hadc){
+	if(hadc != &AIN_HADC)
+		return;
+
 	x_val = ADC_BUF[ADC_CHAN_FPIN+x_chan];
 	y_val = ADC_BUF[ADC_CHAN_FPIN+y_chan];
 }

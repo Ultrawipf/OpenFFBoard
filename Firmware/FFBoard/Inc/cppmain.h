@@ -57,4 +57,11 @@ void refreshWatchdog(); // Refreshes the watchdog
 
 #endif
 
+// Extra
+
+#define Bset(data,val) data|=(val)
+#define Bclr(data,val) data&=~(val)
+#define Btest(data,val) ((data&(val))==(val))
+#define Bchg(data,val) if (Btest(data,val)) Bclr(data,val); else Bset(data,val)
+
 #endif /* CPPMAIN_H_ */

@@ -15,7 +15,7 @@ class AdcHandler {
 public:
 	AdcHandler();
 	virtual ~AdcHandler();
-	virtual void adcUpd(volatile uint32_t* ADC_BUF);
+	virtual void adcUpd(volatile uint32_t* ADC_BUF, uint8_t chans, ADC_HandleTypeDef* hadc);
 };
 
 #endif /* ADCHANDLER_H_ */

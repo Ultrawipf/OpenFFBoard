@@ -38,7 +38,7 @@ public:
 	void readButtons(uint32_t* buf);
 	uint16_t getBtnNum(); // Amount of readable buttons
 
-	void adcUpd(volatile uint32_t* ADC_BUF);
+	void adcUpd(volatile uint32_t* ADC_BUF, uint8_t chans, ADC_HandleTypeDef* hadc);
 
 	void saveFlash();
 	void restoreFlash();
@@ -49,7 +49,7 @@ public:
 
 private:
 	ShifterMode mode;
-	volatile uint32_t ADC_BUF[ADC1_CHANNELS] = {0};
+	//volatile uint32_t ADC_BUF[ADC1_CHANNELS] = {0};
 
 	const uint8_t x_chan = 5;
 	const uint8_t y_chan = 4;

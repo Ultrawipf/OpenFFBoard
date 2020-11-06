@@ -18,6 +18,7 @@ AdcHandler::~AdcHandler() {
 	removeCallbackHandler(&adcHandlers, this);
 }
 
-void AdcHandler::adcUpd(volatile uint32_t* ADC_BUF){
+// ADC updated
+void AdcHandler::adcUpd(volatile uint32_t* ADC_BUF, uint8_t chans, ADC_HandleTypeDef* hadc){
 
 }

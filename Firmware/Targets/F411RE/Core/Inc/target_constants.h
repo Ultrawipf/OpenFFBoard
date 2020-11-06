@@ -12,7 +12,21 @@
  * Add settings and peripheral maps for this specific target here
  */
 
+// Hardware name string
 #define HW_TYPE "F411RE"
+
+// Enabled features
+
+// Main classes
+#define FFBWHEEL
+#define MIDI
+#define TMCDEBUG
+
+// Extra features
+
+
+//----------------------
+
 
 #define TIM_ENC htim3
 // Timer 3 is used by the encoder.

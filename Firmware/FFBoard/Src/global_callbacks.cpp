@@ -51,10 +51,24 @@ int _write(int file, char *ptr, int len)
 std::vector<AdcHandler*> adcHandlers;
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc){
 	//Pulse braking mosfet if internal voltage is higher than supply.
-	brakeCheck();
+	if(hadc == &VSENSE_HADC)
+		brakeCheck();
 
 	for(AdcHandler* c : adcHandlers){
-		c->adcUpd(ADC1_BUF);
+		#ifdef ADC1_CHANNELS
+		if(hadc == &hadc1)
+			c->adcUpd(ADC1_BUF,ADC1_CHANNELS,hadc);
+		#endif
+
+		#ifdef ADC2_CHANNELS
+		if(hadc == &hadc2)
+			c->adcUpd(ADC2_BUF,ADC2_CHANNELS,hadc);
+		#endif
+
+		#ifdef ADC3_CHANNELS
+		if(hadc == &hadc3)
+			c->adcUpd(ADC3_BUF,ADC3_CHANNELS,hadc);
+		#endif
 	}
 }
 

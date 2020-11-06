@@ -46,10 +46,7 @@ extern "C" {
 
 /* Exported macro ------------------------------------------------------------*/
 /* USER CODE BEGIN EM */
-#define Bset(data,val) data|=(val)
-#define Bclr(data,val) data&=~(val)
-#define Btest(data,val) ((data&(val))==(val))
-#define Bchg(data,val) if (Btest(data,val)) Bclr(data,val); else Bset(data,val)
+
 /* USER CODE END EM */
 
 /* Exported functions prototypes ---------------------------------------------*/
