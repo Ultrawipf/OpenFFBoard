@@ -24,15 +24,4 @@
 		<nature>org.eclipse.cdt.core.cnature</nature>
 		<nature>com.st.stm32cube.ide.mcu.MCUCpuProjectNature</nature>
 	</natures>
-	<filteredResources>
-		<filter>
-			<id>1604603012360</id>
-			<name></name>
-			<type>14</type>
-			<matcher>
-				<id>org.eclipse.ui.ide.multiFilter</id>
-				<arguments>1.0-name-matches-false-true-FFBoard</arguments>
-			</matcher>
-		</filter>
-	</filteredResources>
 </projectDescription>

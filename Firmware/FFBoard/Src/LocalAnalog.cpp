@@ -60,15 +60,23 @@ std::vector<int32_t>* LocalAnalog::getAxes(){
 
 ParseStatus LocalAnalog::command(ParsedCommand* cmd,std::string* reply){
 	ParseStatus flag = ParseStatus::OK;
-	if(cmd->cmd == "axismask"){
+	if(cmd->cmd == "local_ain_mask"){
 		if(cmd->type == CMDtype::get){
 			*reply+=std::to_string(aconf.analogmask);
 		}else if(cmd->type == CMDtype::set){
 			aconf.analogmask = cmd->val;
+		}else{
+			flag = ParseStatus::ERR;
+		}
+	}else if(cmd->cmd == "local_ain_num"){
+		if(cmd->type == CMDtype::get){
+			*reply+=std::to_string(ADC_PINS); // Max num inputs
+		}else{
+			flag = ParseStatus::ERR;
 		}
 	}else if(cmd->cmd == "help"){
 		flag = ParseStatus::OK_CONTINUE;
-		*reply += "Analog pins: axismask\n";
+		*reply += "Analog pins: local_ain_mask,local_ain_num\n";
 	}else{
 		flag = ParseStatus::NOT_FOUND;
 	}

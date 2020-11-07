@@ -11,6 +11,7 @@
 #include <ButtonSource.h>
 #include "ChoosableClass.h"
 #include "CommandHandler.h"
+#include "constants.h"
 
 class LocalButtons: public ButtonSource,CommandHandler{
 public:
@@ -21,7 +22,7 @@ public:
 	const ClassIdentifier getInfo();
 	static ClassIdentifier info;
 
-	const uint16_t maxButtons = 8;
+	const uint16_t maxButtons = BUTTON_PINS;
 
 	ParseStatus command(ParsedCommand* cmd,std::string* reply);
 

@@ -143,7 +143,7 @@ ParseStatus FFBWheel::command(ParsedCommand* cmd,std::string* reply){
 	}else if(cmd->cmd == "help"){
 		flag = ParseStatus::OK_CONTINUE;
 		*reply += "FFBWheel commands:\n"
-				"power,zeroenc,enctype,degrees,esgain,fxratio,idlespring,friction,invertx,cpr,drvtype,btntype,lsbtn,btnnum,btntypes,btnpol,btncut,ffbactive\n";
+				"power,zeroenc,enctype,cpr,pos,degrees,esgain,fxratio,idlespring,friction,invertx,cpr,drvtype,lsbtn,btntypes,addbtn,lsain,aintypes,addain,ffbactive,hidrate\n";
 	}else{
 		flag = ParseStatus::NOT_FOUND;
 	}

@@ -47,6 +47,8 @@ extern ADC_HandleTypeDef hadc1;
 #define ADC_CHAN_FPIN 0 // First analog channel pin
 #define VOLTAGE_MULT_DEFAULT 24.6 // Voltage in mV = adc*VOLTAGE_MULT (24.6 for 976k/33k divider)
 
+#define BUTTON_PINS 8
+
 // ADC Channels
 #define ADC1_CHANNELS 9 	// how many analog input values to be read by dma
 

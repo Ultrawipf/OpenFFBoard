@@ -159,8 +159,12 @@ void FFBoardMain::executeCommands(std::vector<ParsedCommand> commands){
 			// Call all command handlers
 			for(CommandHandler* handler : cmdHandlers){
 				if(handler->hasCommands()){
-					status = handler->command(&cmd,&reply);
-					if(status != ParseStatus::NOT_FOUND || status == ParseStatus::OK_CONTINUE)
+					ParseStatus newstatus = handler->command(&cmd,&reply);
+					// If last class did not have commands but a previous one asked to continue keep continue status
+					if(!(status == ParseStatus::OK_CONTINUE && newstatus == ParseStatus::NOT_FOUND)){
+						status = newstatus;
+					}
+					if(status == ParseStatus::ERR || status == ParseStatus::OK)
 						break; // Stop after this class if finished flag is returned
 				}
 			}

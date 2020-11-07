@@ -77,13 +77,26 @@ ParseStatus LocalButtons::command(ParsedCommand* cmd,std::string* reply){
 			this->setMask(cmd->val);
 		}else if(cmd->type == CMDtype::get){
 			*reply += std::to_string(this->mask);
+		}else{
+			result = ParseStatus::ERR;
 		}
 	}else if(cmd->cmd == "local_btnpol"){
 		if(cmd->type == CMDtype::set){
 			this->polarity = cmd->val != 0;
 		}else if(cmd->type == CMDtype::get){
 			*reply += std::to_string(this->polarity ? 1 : 0);
+		}else{
+			result = ParseStatus::ERR;
 		}
+	}else if(cmd->cmd == "local_btnpins"){
+		if(cmd->type == CMDtype::get){
+			*reply += std::to_string(maxButtons);
+		}else{
+			result = ParseStatus::ERR;
+		}
+	}else if(cmd->cmd == "help"){
+		result = ParseStatus::OK_CONTINUE;
+		*reply += "Digital pins: local_btnmask,local_btnpol,local_btnpins\n";
 	}else{
 		result = ParseStatus::NOT_FOUND; // No valid command
 	}
