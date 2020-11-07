@@ -11,9 +11,9 @@
 
 extern uint32_t ADC1_BUF[ADC1_CHANNELS];
 bool braking_flag = false;
-uint32_t maxVoltage = 60000; // Force braking
-uint32_t voltageDiffActivate = 8000;
-uint32_t voltageDiffDeactivate = 7000;
+uint32_t maxVoltage = 61000; // Force braking
+uint32_t voltageDiffActivate = 5000;
+uint32_t voltageDiffDeactivate = 4000;
 float vSenseMult = VOLTAGE_MULT_DEFAULT;
 
 /*
