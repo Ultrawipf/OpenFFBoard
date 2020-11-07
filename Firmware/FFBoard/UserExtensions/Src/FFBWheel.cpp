@@ -26,30 +26,45 @@ const ClassIdentifier FFBWheel::getInfo(){
 // Register possible button sources (id 0-15)
 const std::vector<class_entry<ButtonSource>> button_sources =
 {
+#ifdef LOCALBUTTONS
 		add_class<LocalButtons,ButtonSource>(),
+#endif
+#ifdef SPIBUTTONS
 		add_class<SPI_Buttons,ButtonSource>(),
-		add_class<ShifterAnalog,ButtonSource>()
+#endif
+#ifdef SHIFTERBUTTONS
+		add_class<ShifterAnalog,ButtonSource>(),
+#endif
 };
 
 // Register possible analog sources (id 0-15)
 const std::vector<class_entry<AnalogSource>> analog_sources =
 {
-		add_class<LocalAnalog,AnalogSource>()
+#ifdef ANALOGAXES
+		add_class<LocalAnalog,AnalogSource>(),
+#endif
 };
 
 
 // 0-63 valid ids
 const std::vector<class_entry<MotorDriver>> motor_sources =
 {
+
 		add_class<MotorDriver,MotorDriver>(),
+#ifdef TMC4671DRIVER
 		add_class<TMC4671,MotorDriver>(),
+#endif
+#ifdef PWMDRIVER
 		add_class<MotorPWM,MotorDriver>(),
+#endif
 };
 // 0-63 valid ids
 std::vector<class_entry<Encoder>> encoder_sources =
 {
 		add_class<Encoder,Encoder>(),
-		add_class<EncoderLocal,Encoder>()
+#ifdef LOCALENCODER
+		add_class<EncoderLocal,Encoder>(),
+#endif
 };
 
 // TODO class type for parser? (Simhub for example)
@@ -211,7 +226,7 @@ void FFBWheel::update(){
 
 		// Calculate total torque
 		torque += effectTorque + endstopTorque;
-		if(aconf.invertX){ // Invert output torque if axis is flipped
+		if(conf.invertX){ // Invert output torque if axis is flipped
 			torque = -torque;
 		}
 
@@ -422,7 +437,7 @@ int32_t FFBWheel::getEncValue(Encoder* enc,uint16_t degrees){
 	int32_t val = (0xffff / (float)degrees) * angle;
 
 	// Flip encoder value (Also has to flip torque)
-	if(aconf.invertX){
+	if(conf.invertX){
 		val = -val;
 	}
 	return val;
@@ -527,12 +542,14 @@ FFBWheelConfig FFBWheel::decodeConfFromInt(uint16_t val){
 	conf.enctype = ((val) & 0x3f);
 	conf.drvtype = ((val >> 6) & 0x3f);
 	conf.axes = (val >> 12) & 0x3;
+	conf.invertX = (val >> 14) & 0x1;
 	return conf;
 }
 uint16_t FFBWheel::encodeConfToInt(FFBWheelConfig conf){
 	uint16_t val = (uint8_t)conf.enctype & 0x3f;
 	val |= ((uint8_t)conf.drvtype & 0x3f) << 6;
 	val |= (conf.axes & 0x03) << 12;
+	val |= (conf.invertX & 0x1) << 14;
 	return val;
 }
 

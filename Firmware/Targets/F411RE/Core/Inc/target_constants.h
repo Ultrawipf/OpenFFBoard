@@ -22,9 +22,15 @@
 #define MIDI
 #define TMCDEBUG
 
+
 // Extra features
-
-
+#define LOCALBUTTONS
+#define SPIBUTTONS
+#define SHIFTERBUTTONS
+#define ANALOGAXES
+#define TMC4671DRIVER
+#define PWMDRIVER
+#define LOCALENCODER
 //----------------------
 
 

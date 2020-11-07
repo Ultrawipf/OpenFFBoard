@@ -33,7 +33,7 @@ struct FFBWheelConfig{
 	uint8_t drvtype = 0;
 	uint8_t enctype = 0;
 	uint8_t axes = 1;
-
+	bool invertX = false;
 };
 
 
@@ -113,8 +113,6 @@ private:
 
 	std::vector<ButtonSource*> btns;
 	std::vector<AnalogSource*> analog_inputs;
-
-	FFBWheelAnalogConfig aconf;
 
 	reportHID_t reportHID;
 	int16_t* analogAxesReport[8] = {&reportHID.X,&reportHID.Y,&reportHID.Z,&reportHID.RX,&reportHID.RY,&reportHID.RZ,&reportHID.Slider,&reportHID.Dial};

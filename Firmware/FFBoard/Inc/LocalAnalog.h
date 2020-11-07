@@ -11,10 +11,16 @@
 #include "PersistentStorage.h"
 #include "CommandHandler.h"
 #include <vector>
+#include <limits.h>
 
-struct FFBWheelAnalogConfig{
+struct MinMaxPair{
+	int32_t min = INT_MAX;
+	int32_t max = INT_MIN;
+};
+
+struct LocalAnalogConfig{
 	uint8_t analogmask = 0xff;
-	bool invertX = false;
+	bool autorange = false;
 };
 
 class LocalAnalog : public AnalogSource, public CommandHandler{
@@ -31,12 +37,18 @@ public:
 	std::vector<int32_t>* getAxes();
 
 	ParseStatus command(ParsedCommand* cmd,std::string* reply);
+	void setAutorange(bool autorange);
+
 
 private:
-	static FFBWheelAnalogConfig decodeAnalogConfFromInt(uint16_t val);
-	static uint16_t encodeAnalogConfToInt(FFBWheelAnalogConfig conf);
+	bool autorange = false;
+	static LocalAnalogConfig decodeAnalogConfFromInt(uint16_t val);
+	static uint16_t encodeAnalogConfToInt(LocalAnalogConfig conf);
+	const uint8_t numPins = ADC_PINS;
+	MinMaxPair minMaxVals[ADC_PINS];
 
-	FFBWheelAnalogConfig aconf;
+
+	LocalAnalogConfig aconf;
 };
 
 

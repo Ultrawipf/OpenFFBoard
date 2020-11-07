@@ -111,9 +111,9 @@ ParseStatus FFBWheel::command(ParsedCommand* cmd,std::string* reply){
 		}
 	}else if(cmd->cmd == "invertx"){
 		if(cmd->type == CMDtype::get){
-			*reply+= aconf.invertX ? "1" : "0";
+			*reply+= conf.invertX ? "1" : "0";
 		}else if(cmd->type == CMDtype::set){
-			aconf.invertX = cmd->val >= 1 ? true : false;
+			conf.invertX = cmd->val >= 1 ? true : false;
 		}
 	}else if(cmd->cmd == "cpr"){
 		if(cmd->type == CMDtype::get){
