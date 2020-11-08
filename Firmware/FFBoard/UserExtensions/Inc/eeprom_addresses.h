@@ -33,10 +33,11 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_SW_VERSION 		2
 #define ADR_CURRENT_CONFIG 	10
 
-// FFBWheel 100-200 // TODO ADD
+// FFBWheel
 #define ADR_FFBWHEEL_CONFIG				0x101 // 0-2 ENC, 3-5 DRV
 #define ADR_FFBWHEEL_POWER				0x102
 #define ADR_FFBWHEEL_DEGREES			0x103
+
 #define ADR_FFBWHEEL_BUTTONCONF 		0x105
 #define ADR_FFBWHEEL_ANALOGCONF 		0x106
 #define ADR_FFBWHEEL_ENDSTOP			0x107 // 0-7 endstop margin, 8-15 endstop stiffness
@@ -46,11 +47,12 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_TMC1_MOTCONF 				0x110 // 0-2: MotType 3-5: PhiE source 6-15: Poles
 #define ADR_TMC1_CPR					0x111
 #define ADR_TMC1_ENCA					0x112
+
 #define ADR_TMC1_OFFSETFLUX				0x116
 #define ADR_TMC1_TORQUE_P				0x117
 #define ADR_TMC1_TORQUE_I				0x118
 #define ADR_TMC1_FLUX_P					0x119
-#define ADR_TMC1_FLUX_I					0x120
+#define ADR_TMC1_FLUX_I					0x11A
 
 
 // Button Sources:
@@ -59,13 +61,14 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_LOCAL_BTN_CONF				0x203
 #define ADR_LOCAL_BTN_CONF_2			0x204
 
-// Local analog source
-#define ADR_LOCALANALOG_MASK			0x210
 
 // FFB
 #define ADR_FFB_EFFECTS1				0x210 // 0-7 spring, 8-15 friction
 
 // PWM
 #define ADR_PWM_MODE					0x220
+
+// Local analog source
+#define ADR_LOCALANALOG_MASK			0x230
 
 #endif /* EEPROM_ADDRESSES_H_ */
