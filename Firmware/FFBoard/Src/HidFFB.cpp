@@ -354,15 +354,18 @@ int32_t HidFFB::calculateEffects(int32_t pos,uint8_t axis=1){
 
 		case FFB_EFFECT_SPRING:
 		{
-			float scale = 0;
-			// Scale ramp. max coeff = 10000
-			if(pos<effect->offset){
-				scale = effect->negativeCoefficient * 0.0004f;
-			}else{
-				scale = effect->positiveCoefficient * 0.0004f;
+			float scale = 0.0004f; // Tune for desired strength
+
+			int32_t force = 0;
+
+			if(abs(pos-effect->offset) > effect->deadBand){
+				if(pos < effect->offset){ // Deadband side
+					force = clip<int32_t,int32_t>((effect->negativeCoefficient * scale * (pos - (effect->offset - effect->deadBand))),-effect->negativeSaturation,effect->positiveSaturation);
+				}else{
+					force = clip<int32_t,int32_t>((effect->positiveCoefficient * scale * (pos - (effect->offset + effect->deadBand))),-effect->negativeSaturation,effect->positiveSaturation);
+				}
 			}
 
-			int32_t force = clip<int32_t,int32_t>((scale * (pos - (effect->offset))),-effect->negativeSaturation,effect->positiveSaturation);
 			result_torque -= force;
 			break;
 		}
@@ -389,6 +392,7 @@ int32_t HidFFB::calculateEffects(int32_t pos,uint8_t axis=1){
 		case FFB_EFFECT_FRICTION:
 		case FFB_EFFECT_DAMPER:
 		{
+
 			int32_t force = 0;
 
 			if(effect->counter == 0){
@@ -399,6 +403,12 @@ int32_t HidFFB::calculateEffects(int32_t pos,uint8_t axis=1){
 			effect->last_value = pos;
 
 			float val = effect->filter->process(speed) * 0.0625f;
+
+			// Only active outside deadband. Process filter always!
+			if(abs(pos-effect->offset) < effect->deadBand){
+				break;
+			}
+			// Calculate force
 			force = clip<int32_t,int32_t>((int32_t)((effect->positiveCoefficient) * val),-effect->negativeSaturation,effect->positiveSaturation);
 			force = (frictionscale * force) / 255;
 			result_torque -= force;
