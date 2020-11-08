@@ -190,7 +190,7 @@ bool TMC4671::initialize(){
 	if(oldTMCdetected){
 		setBrakeLimits(52400,52800);
 	}else{
-		setBrakeLimits(50700,50900); // Activates around 60V as last resort failsave
+		setBrakeLimits(50700,50900); // Activates around 60V as last resort failsave. Check offsets from tmc leakage
 	}
 
 
@@ -424,19 +424,20 @@ void TMC4671::calibrateAenc(){
 
 	uint32_t minVal_0 = 0xffff,	minVal_1 = 0xffff,	minVal_2 = 0xffff;
 	uint32_t maxVal_0 = 0,	maxVal_1 = 0,	maxVal_2 = 0;
-
-	runOpenLoop(3000, 0, 20, 100);
+	int32_t minpos = -0x8fff/MAX(1,this->aencconf.cpr/2), maxpos = 0x8fff/MAX(this->aencconf.cpr/2,1);
+	uint32_t speed = MAX(1,50/MAX(1,this->aencconf.cpr/5));
+	runOpenLoop(3000, 0, speed, 100);
 
 	uint8_t stage = 0;
 	int32_t poles = conf.motconf.pole_pairs;
 	while(stage != 3){
 		HAL_Delay(2);
 		refreshWatchdog(); // Don't let the dog get any sleep
-		if(getPos() > 0x8fff*poles && stage == 0){
-			runOpenLoop(3000, 0, -20, 100);
+		if(getPos() > maxpos*poles && stage == 0){
+			runOpenLoop(3000, 0, -speed, 100);
 			stage = 1;
-		}else if(getPos() < -0x8fff*poles && stage == 1){
-			runOpenLoop(3000, 0, 20, 100);
+		}else if(getPos() < minpos*poles && stage == 1){
+			runOpenLoop(3000, 0, speed, 100);
 			stage = 2;
 		}else if(getPos() > 0 && stage == 2){
 			stage = 3;
