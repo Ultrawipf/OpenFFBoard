@@ -11,6 +11,7 @@
 #include <UsbHidHandler.h>
 #include "ffb_defs.h"
 #include "PersistentStorage.h"
+#include "Filters.h"
 
 class HidFFB: public UsbHidHandler, PersistentStorage {
 public:
@@ -21,13 +22,6 @@ public:
 	void hidGet(uint8_t id,uint16_t len,uint8_t** return_buf);
 	int32_t calculateEffects(int32_t pos,uint8_t axis); //Axis: 1/2 pos: current position scaled from -0x7fff to 0x7fff
 	bool idlecenter = true;
-
-	float damper_f = 50 , damper_q = 0.2;
-	BiquadType damper_type = BiquadType::lowpass;
-	float friction_f = 50 , friction_q = 0.2;
-	BiquadType friction_type = BiquadType::lowpass;
-	const uint16_t calcfrequency = 1000;
-
 
 	void setIdleSpringStrength(uint8_t spring);
 	uint8_t getIdleSpringStrength();
@@ -43,6 +37,9 @@ public:
 
 	void restoreFlash();
 	void saveFlash();
+
+	void setCfFilter(uint32_t f); // Set output filter frequency
+	float getCfFilterFreq();
 
 private:
 	// HID
@@ -77,6 +74,13 @@ private:
 
 	uint32_t lastOut = 0;
 
+	// Filters
+	float damper_f = 50 , damper_q = 0.2;
+	float friction_f = 50 , friction_q = 0.2;
+	float inertia_f = 50 , inertia_q = 0.2;
+	uint32_t cfFilter_f = calcfrequency/2; // 500 = off
+	const float cfFilter_q = 0.2;
+	const uint32_t calcfrequency = 1000; // HID frequency 1khz
 };
 
 #endif /* HIDFFB_H_ */

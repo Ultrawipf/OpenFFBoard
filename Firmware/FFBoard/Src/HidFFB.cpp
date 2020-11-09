@@ -23,12 +23,17 @@ bool HidFFB::getFfbActive(){
 void HidFFB::saveFlash(){
 	uint16_t effects1 = this->getIdleSpringStrength() | (this->getFrictionStrength() << 8);
 	Flash_Write(ADR_FFB_EFFECTS1, effects1);
+	Flash_Write(ADR_FFB_EFFECTS2, this->cfFilter_f);
 }
 void HidFFB::restoreFlash(){
 	uint16_t effects1 = 0;
 	if(Flash_Read(ADR_FFB_EFFECTS1, &effects1)){
 		this->setFrictionStrength((effects1 >> 8) & 0xff);
 		this->setIdleSpringStrength(effects1 & 0xff);
+	}
+	effects1 = 0;
+	if(Flash_Read(ADR_FFB_EFFECTS2, &effects1)){
+		setCfFilter(effects1);
 	}
 }
 
@@ -237,20 +242,48 @@ void HidFFB::set_effect(FFB_SetEffect_t* effect){
 		start_FFB();
 }
 
+void HidFFB::setCfFilter(uint32_t freq){
+
+	cfFilter_f = clip<uint32_t,uint32_t>(freq,1,calcfrequency/2);
+	float f = (float)cfFilter_f/(float)calcfrequency;
+	for(FFB_Effect effect : effects){
+		if(effect.type == FFB_EFFECT_CONSTANT){
+			effect.filter->setFc(f);
+		}
+	}
+}
+
+float HidFFB::getCfFilterFreq(){
+	return cfFilter_f;
+}
+
 void HidFFB::set_filters(FFB_Effect* effect){
 	switch(effect->type){
 		case FFB_EFFECT_DAMPER:
 			if(effect->filter != nullptr)
-				effect->filter->setBiquad(damper_type,(float)damper_f/calcfrequency, damper_q, (float)0.0);
+				effect->filter->setBiquad(BiquadType::lowpass,(float)damper_f/(float)calcfrequency, damper_q, (float)0.0);
 			else
-				effect->filter = new Biquad(damper_type,(float)damper_f/calcfrequency, damper_q, (float)0.0);
+				effect->filter = new Biquad(BiquadType::lowpass,(float)damper_f/(float)calcfrequency, damper_q, (float)0.0);
 			break;
 		case FFB_EFFECT_FRICTION:
 			if(effect->filter != nullptr)
-				effect->filter->setBiquad(friction_type,(float)friction_f/calcfrequency, friction_q, (float)0.0);
+				effect->filter->setBiquad(BiquadType::lowpass,(float)friction_f/(float)calcfrequency, friction_q, (float)0.0);
 			else
-				effect->filter = new Biquad(friction_type,(float)friction_f/calcfrequency, friction_q, (float)0.0);
+				effect->filter = new Biquad(BiquadType::lowpass,(float)friction_f/(float)calcfrequency, friction_q, (float)0.0);
 			break;
+		case FFB_EFFECT_INERTIA:
+			if(effect->filter != nullptr)
+				effect->filter->setBiquad(BiquadType::lowpass,(float)inertia_f/(float)calcfrequency, inertia_q, (float)0.0);
+			else
+				effect->filter = new Biquad(BiquadType::lowpass,(float)inertia_f/(float)calcfrequency, inertia_q, (float)0.0);
+			break;
+		case FFB_EFFECT_CONSTANT:
+			if(effect->filter != nullptr)
+				effect->filter->setBiquad(BiquadType::lowpass,(float)cfFilter_f/(float)calcfrequency, cfFilter_q, (float)0.0);
+			else
+				effect->filter = new Biquad(BiquadType::lowpass,(float)cfFilter_f/(float)calcfrequency, cfFilter_q, (float)0.0);
+			break;
+
 	}
 }
 
@@ -349,9 +382,15 @@ int32_t HidFFB::calculateEffects(int32_t pos,uint8_t axis=1){
 
 		switch(effect->type){
 		case FFB_EFFECT_CONSTANT:
-			result_torque -= ((int32_t)effect->magnitude * (int32_t)(1+effect->gain)) / 256;
+		{	// Constant force is just the force
+			int32_t f = ((int32_t)effect->magnitude * (int32_t)(1+effect->gain)) / 256;
+			// Optional filtering to reduce spikes
+			if(cfFilter_f < calcfrequency/2){
+				f = effect->filter->process(f);
+			}
+			result_torque -= f;
 			break;
-
+		}
 		case FFB_EFFECT_SPRING:
 		{
 			float scale = 0.0004f; // Tune for desired strength
@@ -387,6 +426,11 @@ int32_t HidFFB::calculateEffects(int32_t pos,uint8_t axis=1){
 			int32_t force = (int32_t)(effect->offset + sine);
 
 			result_torque -= force;
+			break;
+		}
+		case FFB_EFFECT_INERTIA:
+		{
+			// Acceleration
 			break;
 		}
 		case FFB_EFFECT_FRICTION:
@@ -425,6 +469,8 @@ int32_t HidFFB::calculateEffects(int32_t pos,uint8_t axis=1){
 
 	}
 	result_torque = (result_torque * (gain+1)) >> 8; // Apply global gain
+
+
 
 	return result_torque; //clip(result_torque,-0x7fff,0x7fff);
 }

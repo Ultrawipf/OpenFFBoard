@@ -21,6 +21,7 @@ Biquad::~Biquad() {
 }
 
 void Biquad::setFc(float Fc) {
+	Fc = clip<float,float>(Fc,0,0.5);
     this->Fc = Fc;
     calcBiquad();
 }
@@ -33,6 +34,7 @@ float Biquad::process(float in) {
 }
 
 void Biquad::setBiquad(BiquadType type, float Fc, float Q, float peakGainDB) {
+	Fc = clip<float,float>(Fc,0,0.5);
     this->type = type;
     this->Q = Q;
     this->Fc = Fc;

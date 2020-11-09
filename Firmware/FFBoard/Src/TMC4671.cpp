@@ -424,7 +424,7 @@ void TMC4671::calibrateAenc(){
 
 	uint32_t minVal_0 = 0xffff,	minVal_1 = 0xffff,	minVal_2 = 0xffff;
 	uint32_t maxVal_0 = 0,	maxVal_1 = 0,	maxVal_2 = 0;
-	int32_t minpos = -0x8fff/MAX(1,this->aencconf.cpr/2), maxpos = 0x8fff/MAX(this->aencconf.cpr/2,1);
+	int32_t minpos = -0x8fff/MAX(1,MIN(this->aencconf.cpr/2,200)), maxpos = 0x8fff/MAX(1,MIN(this->aencconf.cpr/2,200));
 	uint32_t speed = MAX(1,50/MAX(1,this->aencconf.cpr/5));
 	runOpenLoop(3000, 0, speed, 100);
 

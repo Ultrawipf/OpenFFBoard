@@ -101,6 +101,12 @@ ParseStatus FFBWheel::command(ParsedCommand* cmd,std::string* reply){
 		}else if(cmd->type == CMDtype::set){
 			this->ffb->setFrictionStrength(cmd->val);
 		}
+	}else if(cmd->cmd == "ffbfiltercf"){
+		if(cmd->type == CMDtype::get){
+			*reply+=std::to_string((int)this->ffb->getCfFilterFreq());
+		}else if(cmd->type == CMDtype::set){
+			this->ffb->setCfFilter(cmd->val);
+		}
 	}else if(cmd->cmd == "enctype"){
 		if(cmd->type == CMDtype::get){
 			*reply+=std::to_string((uint8_t)this->conf.enctype);
@@ -143,7 +149,7 @@ ParseStatus FFBWheel::command(ParsedCommand* cmd,std::string* reply){
 	}else if(cmd->cmd == "help"){
 		flag = ParseStatus::OK_CONTINUE;
 		*reply += "FFBWheel commands:\n"
-				"power,zeroenc,enctype,cpr,pos,degrees,esgain,fxratio,idlespring,friction,invertx,cpr,drvtype,lsbtn,btntypes,addbtn,lsain,aintypes,addain,ffbactive,hidrate\n";
+				"power,zeroenc,enctype,cpr,pos,degrees,esgain,fxratio,idlespring,ffbfiltercf,friction,invertx,cpr,drvtype,lsbtn,btntypes,addbtn,lsain,aintypes,addain,ffbactive,hidrate\n";
 	}else{
 		flag = ParseStatus::NOT_FOUND;
 	}
