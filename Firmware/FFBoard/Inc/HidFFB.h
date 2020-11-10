@@ -30,6 +30,7 @@ public:
 
 	uint32_t getRate(); // Returns an estimate of the hid effect update speed in hz
 	bool getFfbActive();
+	static uint8_t HID_SendReport(uint8_t *report,uint16_t len);
 
 	void reset_ffb();
 	void start_FFB();
@@ -40,6 +41,8 @@ public:
 
 	void setCfFilter(uint32_t f); // Set output filter frequency
 	float getCfFilterFreq();
+
+	void sendStatusReport(uint8_t effect);
 
 private:
 	// HID
@@ -79,7 +82,7 @@ private:
 	float friction_f = 50 , friction_q = 0.2;
 	float inertia_f = 50 , inertia_q = 0.2;
 	uint32_t cfFilter_f = calcfrequency/2; // 500 = off
-	const float cfFilter_q = 0.2;
+	const float cfFilter_q = 0.8;
 	const uint32_t calcfrequency = 1000; // HID frequency 1khz
 };
 

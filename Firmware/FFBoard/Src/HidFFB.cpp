@@ -8,6 +8,11 @@
 #include "HidFFB.h"
 #include "math.h"
 #include "flash_helpers.h"
+#include "usbd_customhid.h"
+#include "cppmain.h"
+
+extern USBD_HandleTypeDef hUsbDeviceFS;
+
 HidFFB::HidFFB() {
 	this->registerHidCallback();
 }
@@ -37,6 +42,10 @@ void HidFFB::restoreFlash(){
 	}
 }
 
+uint8_t HidFFB::HID_SendReport(uint8_t *report,uint16_t len){
+	return USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS, report, len);
+}
+
 /*
  * Calculates the frequency of hid out reports
  */
@@ -48,6 +57,24 @@ uint32_t HidFFB::getRate(){
 	}else{
 		return (1000000/hid_out_period);
 	}
+}
+
+/*
+ * Sends a status report for a specific effect
+ */
+void HidFFB::sendStatusReport(uint8_t effect){
+	this->reportFFBStatus.effectBlockIndex = effect;
+	this->reportFFBStatus.status = HID_ACTUATOR_POWER;
+	if(this->ffb_active){
+		this->reportFFBStatus.status |= HID_ENABLE_ACTUATORS;
+		this->reportFFBStatus.status |= HID_EFFECT_PLAYING;
+	}else{
+		this->reportFFBStatus.status |= HID_EFFECT_PAUSE;
+	}
+	if(effect > 0 && effects[effect-1].state == 1)
+		this->reportFFBStatus.status |= HID_EFFECT_PLAYING;
+	//printf("Status: %d\n",reportFFBStatus.status);
+	HID_SendReport(reinterpret_cast<uint8_t*>(&this->reportFFBStatus), sizeof(reportFFB_status_t));
 }
 
 /*
@@ -71,6 +98,7 @@ void HidFFB::hidOut(uint8_t* report){
 		break;
 	case HID_ID_CTRLREP: // Control report. 1=Enable Actuators, 2=Disable Actuators, 4=Stop All Effects, 8=Reset, 16=Pause, 32=Continue
 		ffb_control(report[1]);
+		sendStatusReport(0);
 		break;
 	case HID_ID_GAINREP: // Set global gain
 		gain = report[1];
@@ -103,11 +131,16 @@ void HidFFB::hidOut(uint8_t* report){
 		uint8_t id = report[1]-1;
 		if(report[2] == 3){
 			effects[id].state = 0; //Stop
+			//printf("Stop %d\n",report[1]);
 		}else{
+			if(effects[id].state != 1){
+				set_filters(&effects[id]);
+				effects[id].counter = 0; // When an effect was stopped reset all parameters that could cause jerking
+			}
+			//printf("Start %d\n",report[1]);
 			effects[id].state = 1; //Start
-			effects[id].counter = 0; // When an effect was stopped reset all parameters that could cause jerking
-			set_filters(&effects[id]);
 		}
+		sendStatusReport(report[1]);
 		break;
 	}
 	case HID_ID_BLKFRREP: // Free a block
@@ -153,6 +186,9 @@ void HidFFB::hidGet(uint8_t id,uint16_t len,uint8_t** return_buf){
 		//printf("Get Pool Report\n");
 		*return_buf = (uint8_t*)(&this->pool_report);
 		break;
+	default:
+		printf("Unknown get\n");
+		break;
 	}
 }
 
@@ -182,7 +218,6 @@ void HidFFB::ffb_control(uint8_t cmd){
 	}if(cmd & 0x20){ //continue
 		start_FFB();
 	}
-	Bchg(this->reportFFBStatus.status,HID_ENABLE_ACTUATORS & ffb_active);
 }
 
 
@@ -237,9 +272,10 @@ void HidFFB::set_effect(FFB_SetEffect_t* effect){
 	}
 
 	effect_p->duration = effect->duration;
-	//printf("SetEffect: %d, Axis: %d,Type: %d\n",effect->effectType,effect->enableAxis,effect->effectType);
+	//printf("SetEffect: %d, Axis: %d,Type: %d\n",effect->effectBlockIndex,effect->enableAxis,effect->effectType);
 	if(!ffb_active)
 		start_FFB();
+	sendStatusReport(effect->effectBlockIndex);
 }
 
 void HidFFB::setCfFilter(uint32_t freq){

@@ -42,12 +42,6 @@ volatile char uart_buf[UART_BUF_SIZE] = {0}; //
 std::vector<CommandHandler*> cmdHandlers;
 
 
-int _write(int file, char *ptr, int len)
-{
-  CDC_Transmit_FS(ptr, len);
-  return len;
-}
-
 
 std::vector<AdcHandler*> adcHandlers;
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc){

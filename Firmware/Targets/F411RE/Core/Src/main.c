@@ -23,6 +23,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 //#include <cppmain.h>
+#include "usbd_cdc_if.h"
 extern void cppmain();
 /* USER CODE END Includes */
 
@@ -95,6 +96,11 @@ uint32_t dfu_reset_to_bootloader_magic;
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+int _write(int file, char *ptr, int len)
+{
+  CDC_Transmit_FS(ptr, len);
+  return len;
+}
 // dummy main
 __attribute__((weak)) void cppmain(){
 	Error_Handler();
