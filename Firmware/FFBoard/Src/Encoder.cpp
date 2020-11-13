@@ -15,12 +15,11 @@ const ClassIdentifier Encoder::getInfo(){
 }
 
 Encoder::Encoder() {
-	// TODO Auto-generated constructor stub
 
 }
 
 Encoder::~Encoder() {
-	// TODO Auto-generated destructor stub
+
 }
 
 EncoderType Encoder::getType(){

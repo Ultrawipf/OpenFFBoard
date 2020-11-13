@@ -215,9 +215,8 @@ bool TMC4671::initialize(){
 
 }
 
-// TODO
 /*
- * Not calibrated.
+ * Not calibrated perfectly!
  */
 float TMC4671::getTemp(){
 
@@ -751,7 +750,6 @@ void TMC4671::AENC_init(){
 	}
 }
 
-//TODO
 /*
  * Changes the encoder type and calls init methods for the encoder types.
  * Setup the specific parameters (abnconf, aencconf...) first.

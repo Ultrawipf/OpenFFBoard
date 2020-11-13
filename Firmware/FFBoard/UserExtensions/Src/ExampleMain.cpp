@@ -21,12 +21,11 @@ const ClassIdentifier ExampleMain::getInfo(){
 
 
 ExampleMain::ExampleMain() {
-	// TODO Auto-generated constructor stub
 
 }
 
 ExampleMain::~ExampleMain() {
-	// TODO Auto-generated destructor stub
+
 }
 
 ParseStatus ExampleMain::command(ParsedCommand* cmd,std::string* reply){

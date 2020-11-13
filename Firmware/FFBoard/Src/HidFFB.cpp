@@ -103,7 +103,7 @@ void HidFFB::hidOut(uint8_t* report){
 	case HID_ID_GAINREP: // Set global gain
 		gain = report[1];
 		break;
-	case HID_ID_ENVREP: // Envelope TODO?
+	case HID_ID_ENVREP: // TODO Envelope
 		printf("Envrep");
 		break;
 	case HID_ID_CONDREP:

@@ -14,7 +14,7 @@ UsbHidHandler::UsbHidHandler() {
 }
 
 UsbHidHandler::~UsbHidHandler() {
-	// TODO Auto-generated destructor stub
+
 }
 
 

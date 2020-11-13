@@ -43,8 +43,8 @@ void MotorPWM::turn(int16_t power){
 		setPWM(val,ccr_1);
 
 	/*
-	 * Generates a 0-100% PWM signal on CS3
-	 * and outputs complementary direction signals on CS1 and CS2
+	 * Generates a 0-100% PWM signal
+	 * and outputs complementary direction signals. TODO use timers
 	 * Can be used with cheap halfbridge modules and DC motors
 	 */
 	}else if(mode == ModePWM_DRV::PWM_DIR){
@@ -75,46 +75,47 @@ void MotorPWM::turn(int16_t power){
 }
 
 /*
- * Setup the timer for different frequency presets
+ * Setup the timer for different frequency presets.
  */
 void MotorPWM::setPwmSpeed(SpeedPWM_DRV spd){
 	bool ok = true;
 	switch(spd){
+
 	case SpeedPWM_DRV::LOW:
 		if(mode == ModePWM_DRV::RC_PWM){
-			period = 1900000;  //20ms (20000/95)
-			prescaler = 0;
+			period =  40000;  //20ms (40000/Sysclock/2)
+			prescaler = TIM_PWM_FREQ/500000;
 		}else{
-			period = 0x7fff;
+			period = TIM_PWM_FREQ/3000; // Check if timer can count high enough for very high clock speeds!
 			prescaler = 0;
 		}
 
 	break;
 	case SpeedPWM_DRV::MID:
 		if(mode == ModePWM_DRV::RC_PWM){
-			period = 1410000;//15ms(30000/47)
-			prescaler = 0;
+			period = 30000;//15ms(30000/47)
+			prescaler = TIM_PWM_FREQ/500000;
 		}else{
-			period = 0x3fff;
+			period = TIM_PWM_FREQ/6000;
 			prescaler = 0;
 		}
 
 	break;
 	case SpeedPWM_DRV::HIGH:
 		if(mode == ModePWM_DRV::RC_PWM){
-			period = 940000; //10ms (20000/47)
-			prescaler = 0;
+			period = 20000; //10ms (20000/47)
+			prescaler = TIM_PWM_FREQ/500000;
 		}else{
-			period = 0x1fff;
+			period = TIM_PWM_FREQ/12000;
 			prescaler = 0;
 		}
 	break;
 	case SpeedPWM_DRV::VERYHIGH:
 		if(mode == ModePWM_DRV::RC_PWM){
-			period = 460000; //5ms (20000/23)
-			prescaler = 0;
+			period = 10000; //5ms (20000/23)
+			prescaler = TIM_PWM_FREQ/500000;
 		}else{
-			period = 0x0fff;
+			period = TIM_PWM_FREQ/23500;
 			prescaler = 0;
 		}
 	break;

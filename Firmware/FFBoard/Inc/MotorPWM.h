@@ -13,7 +13,7 @@
 #include "CommandHandler.h"
 #include "TimerHandler.h"
 
-extern TIM_HandleTypeDef htim2; // Htim2 is 32 bit
+extern TIM_HandleTypeDef TIM_PWM; // Htim2 is 32 bit
 
 void pwmInitTimer(TIM_HandleTypeDef* timer,uint32_t channel,uint32_t period,uint32_t prescaler);
 void setPWM_HAL(uint32_t value,TIM_HandleTypeDef* timer,uint32_t channel,uint32_t period);
@@ -64,7 +64,7 @@ private:
 	const uint8_t ccr_1 = 3;
 	const uint8_t ccr_2 = 2;
 
-	TIM_HandleTypeDef* timer = &htim2;
+	TIM_HandleTypeDef* timer = &TIM_PWM;
 
 	GPIO_TypeDef* pwm1Port=SPI1_SS3_GPIO_Port;
 	const uint16_t pwm1Pin=SPI1_SS3_Pin;

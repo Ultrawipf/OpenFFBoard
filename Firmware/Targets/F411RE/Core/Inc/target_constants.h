@@ -29,13 +29,14 @@
 #define SHIFTERBUTTONS
 #define ANALOGAXES
 #define TMC4671DRIVER
-#define PWMDRIVER
 #define LOCALENCODER
+//#define PWMDRIVER // Not supported! No free timer
 //----------------------
 
 
 #define TIM_ENC htim3
 // Timer 3 is used by the encoder.
+#define TIM_PWM htim2
 
 #define TIM_MICROS htim10
 extern UART_HandleTypeDef huart1;
@@ -43,12 +44,12 @@ extern UART_HandleTypeDef huart1;
 #define UART_BUF_SIZE 1 // How many bytes to expect via DMA
 
 extern ADC_HandleTypeDef hadc1;
-#define AIN_HADC hadc1	// main adc for analog pins
 
 #define VSENSE_HADC hadc1
 #define ADC_CHAN_VINT 7	// adc buffer index of internal voltage sense
 #define ADC_CHAN_VEXT 6 // adc buffer index of supply voltage sense
 
+#define AIN_HADC hadc1	// main adc for analog pins
 #define ADC_PINS 6	// Amount of analog channel pins
 #define ADC_CHAN_FPIN 0 // First analog channel pin
 #define VOLTAGE_MULT_DEFAULT 24.6 // Voltage in mV = adc*VOLTAGE_MULT (24.6 for 976k/33k divider)

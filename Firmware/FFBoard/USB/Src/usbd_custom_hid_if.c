@@ -283,7 +283,7 @@ __ALIGN_BEGIN static uint8_t CUSTOM_HID_ReportDesc_FS[USBD_CUSTOM_HID_REPORT_DES
 			   0x95,0x01,         //    Report Count 1
 			   0x91,0x02,         //    Output (Variable)
 
-			   0x09,0x55,       //    Usage Axes Enable TODO
+			   0x09,0x55,       //    Usage Axes Enable TODO multi axis
 			   0xA1,0x02,       //    Collection Datalink
 			      0x05,0x01,    //    Usage Page Generic Desktop
 			      0x09,0x30,    //    Usage X

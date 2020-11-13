@@ -31,12 +31,14 @@
 #define TMC4671DRIVER
 #define PWMDRIVER
 #define LOCALENCODER
-#define CAN
+#define CANBUS
 //----------------------
 
 
 #define TIM_ENC htim3
 // Timer 3 is used by the encoder.
+#define TIM_PWM htim1
+#define TIM_PWM_FREQ 168000000
 
 #define TIM_MICROS htim10
 extern UART_HandleTypeDef huart1;

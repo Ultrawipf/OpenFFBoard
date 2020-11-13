@@ -9,12 +9,10 @@
 
 
 CmdParser::CmdParser() {
-	// TODO Auto-generated constructor stub
 
 }
 
 CmdParser::~CmdParser() {
-	// TODO Auto-generated destructor stub
 }
 
 void CmdParser::clear(){

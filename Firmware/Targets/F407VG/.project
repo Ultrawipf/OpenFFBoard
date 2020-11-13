@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>F407VG</name>
+	<name>OpenFFBoard_F407VG</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -38,4 +38,10 @@
 			<locationURI>PARENT-2-PROJECT_LOC/FFBoard</locationURI>
 		</link>
 	</linkedResources>
+	<variableList>
+		<variable>
+			<name>copy_PARENT</name>
+			<value>$%7BPARENT-1-PROJECT_LOC%7D/OpenFFBoard/Firmware</value>
+		</variable>
+	</variableList>
 </projectDescription>
