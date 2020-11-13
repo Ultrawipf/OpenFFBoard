@@ -2,7 +2,6 @@
 #define __CONSTANTS_H
 
 #include "main.h"
-#include "system_stm32f4xx.h"
 #include "target_constants.h" // To be defined in target include folder
 
 

@@ -5,11 +5,13 @@
  *      Author: Yannick
  */
 
+#include <MotorPWM.h>
+#ifdef PWMDRIVER
 
 /*
  * Contains motor drivers based on PWM generation
  */
-#include <MotorPWM.h>
+
 
 /*
  * Mapping of names for ModePWM_DRV
@@ -352,3 +354,4 @@ void setPWM_HAL(uint32_t value,TIM_HandleTypeDef* timer,uint32_t channel,uint32_
     HAL_TIM_PWM_ConfigChannel(timer, &sConfigOC, channel);
     HAL_TIM_PWM_Start(timer, channel);
 }
+#endif

@@ -31,21 +31,21 @@ ENTRY(Reset_Handler)
 /* Highest address of the user mode stack */
 _estack = ORIGIN(RAM) + LENGTH(RAM);	/* end of "RAM" Ram type memory */
 
-_Min_Heap_Size = 0x200 ;	/* required amount of heap  */
+_Min_Heap_Size = 0x400 ;	/* required amount of heap  */
 _Min_Stack_Size = 0x400 ;	/* required amount of stack */
 
 /* Memories definition */
 MEMORY
 {
-	CCMRAM    (xrw)    : ORIGIN = 0x10000000,   LENGTH = 64K
-	RAM    (xrw)       : ORIGIN = 0x20000000,   LENGTH = 128K
-	FLASH_BOOT (rx)         : ORIGIN = 0x8000000,
-	                          LENGTH = 32k
+  CCMRAM    (xrw)    : ORIGIN = 0x10000000,   LENGTH = 64K
+  RAM    (xrw)    : ORIGIN = 0x20000000,   LENGTH = 128K
+  FLASH_BOOT (rx)         : ORIGIN = 0x8000000,
+                              LENGTH = 32k
       
-	EMULATED_EEPROM (rwx)   : ORIGIN = ORIGIN(FLASH_BOOT) + LENGTH(FLASH_BOOT), 
-	                          LENGTH = 32k 
-	FLASH (rx)              : ORIGIN = ORIGIN(EMULATED_EEPROM) + LENGTH(EMULATED_EEPROM),
-	                          LENGTH = 1024k - LENGTH(FLASH_BOOT) - LENGTH(EMULATED_EEPROM)
+    EMULATED_EEPROM (rwx)   : ORIGIN = ORIGIN(FLASH_BOOT) + LENGTH(FLASH_BOOT), 
+                              LENGTH = 32k 
+    FLASH (rx)              : ORIGIN = ORIGIN(EMULATED_EEPROM) + LENGTH(EMULATED_EEPROM),
+                              LENGTH = 1024k - LENGTH(FLASH_BOOT) - LENGTH(EMULATED_EEPROM)
 }
 
 /* Sections */
@@ -57,7 +57,7 @@ SECTIONS
     . = ALIGN(4);
     KEEP(*(.isr_vector)) /* Startup code */
     . = ALIGN(4);
-  } >FLASH
+  } >FLASH_BOOT
 
   /* The program code and other data into "FLASH" Rom type memory */
   .text :
@@ -142,7 +142,7 @@ SECTIONS
     . = ALIGN(4);
     _edata = .;        /* define a global symbol at data end */
     
-  } >CCMRAM AT> FLASH
+  } >RAM AT> FLASH
 
   /* Uninitialized data section into "RAM" Ram type memory */
   . = ALIGN(4);
@@ -169,28 +169,6 @@ SECTIONS
     . = . + _Min_Heap_Size;
     . = . + _Min_Stack_Size;
     . = ALIGN(8);
-  } >RAM
-  
-  .ccmram :
-  {
-    . = ALIGN(4);
-    _sccmram = .;       /* create a global symbol at ccmram start */
-    *(.ccmram)
-    *(.ccmram*)
-    
-    . = ALIGN(4);
-    _eccmram = .;       /* create a global symbol at ccmram end */
-  } >CCMRAM
-  
-  .ram :
-  {
-    . = ALIGN(4);
-    _sram = .;       /* create a global symbol at ram start */
-    *(.ram)
-    *(.ram*)
-    
-    . = ALIGN(4);
-    _eram = .;       /* create a global symbol at ccmram end */
   } >RAM
 
   /* Remove information from the compiler libraries */

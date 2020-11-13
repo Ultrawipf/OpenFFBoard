@@ -46,10 +46,16 @@ extern UART_HandleTypeDef huart1;
 #define UART_BUF_SIZE 1 // How many bytes to expect via DMA
 
 
+// ADC Channels
+#define ADC1_CHANNELS 6 	// how many analog input values to be read by dma
+#define ADC2_CHANNELS 2		// VSENSE
+
 extern ADC_HandleTypeDef hadc2;
 #define VSENSE_HADC hadc2
 #define ADC_CHAN_VINT 1	// adc buffer index of internal voltage sense
 #define ADC_CHAN_VEXT 0 // adc buffer index of supply voltage sense
+extern volatile uint32_t ADC2_BUF[ADC2_CHANNELS]; // Buffer
+#define VSENSE_ADC_BUF ADC2_BUF
 
 extern ADC_HandleTypeDef hadc1;
 #define AIN_HADC hadc1	// main adc for analog pins
@@ -59,9 +65,6 @@ extern ADC_HandleTypeDef hadc1;
 
 #define BUTTON_PINS 8
 
-// ADC Channels
-#define ADC1_CHANNELS 6 	// how many analog input values to be read by dma
-#define ADC2_CHANNELS 2		// VSENSE
 
 #define HSPIDRV hspi1
 extern SPI_HandleTypeDef HSPIDRV;

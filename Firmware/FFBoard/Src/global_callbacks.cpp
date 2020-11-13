@@ -27,12 +27,15 @@ extern FFBoardMain* mainclass;
 
 #ifdef ADC1_CHANNELS
 volatile uint32_t ADC1_BUF[ADC1_CHANNELS] = {0};
+extern ADC_HandleTypeDef hadc1;
 #endif
 #ifdef ADC2_CHANNELS
 volatile uint32_t ADC2_BUF[ADC2_CHANNELS] = {0};
+extern ADC_HandleTypeDef hadc2;
 #endif
 #ifdef ADC3_CHANNELS
 volatile uint32_t ADC3_BUF[ADC3_CHANNELS] = {0};
+extern ADC_HandleTypeDef hadc3;
 #endif
 
 volatile char uart_buf[UART_BUF_SIZE] = {0}; //
@@ -58,6 +61,7 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc){
 		c->adcUpd(buf,chans,hadc);
 	}
 }
+
 
 std::vector<TimerHandler*> timerHandlers;
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim) {
@@ -207,13 +211,13 @@ volatile uint32_t* getAnalogBuffer(ADC_HandleTypeDef* hadc,uint8_t* chans){
 
 void startADC(){
 	#ifdef ADC1_CHANNELS
-	HAL_ADC_Start_DMA(&AIN_HADC, (uint32_t*)ADC1_BUF, ADC1_CHANNELS);
+	HAL_ADC_Start_DMA(&hadc1, (uint32_t*)ADC1_BUF, ADC1_CHANNELS);
 	#endif
 	#ifdef ADC2_CHANNELS
-	HAL_ADC_Start_DMA(&AIN_HADC, (uint32_t*)ADC2_BUF, ADC2_CHANNELS);
+	HAL_ADC_Start_DMA(&hadc2, (uint32_t*)ADC2_BUF, ADC2_CHANNELS);
 	#endif
 	#ifdef ADC3_CHANNELS
-	HAL_ADC_Start_DMA(&AIN_HADC, (uint32_t*)ADC3_BUF, ADC3_CHANNELS);
+	HAL_ADC_Start_DMA(&hadc3, (uint32_t*)ADC3_BUF, ADC3_CHANNELS);
 	#endif
 }
 

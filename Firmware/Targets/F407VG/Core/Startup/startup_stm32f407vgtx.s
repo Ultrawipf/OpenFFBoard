@@ -45,6 +45,15 @@ defined in linker script */
 /* end address for the .bss section. defined in linker script */
 .word  _ebss
 /* stack used for SystemInit_ExtMemCtl; always internal RAM used */
+
+/**
+ * @brief  This is the code that gets called when the processor first
+ *          starts execution following a reset event. Only the absolutely
+ *          necessary set is performed, after which the application
+ *          supplied main() routine is called. 
+ * @param  None
+ * @retval : None
+*/
 // Reboot to bootloader function
    	.align 2
     .thumb_func
@@ -63,26 +72,18 @@ Reboot_Loader:
     BX      R0
  .pool
 .size Reboot_Loader, . - Reboot_Loader
-/**
- * @brief  This is the code that gets called when the processor first
- *          starts execution following a reset event. Only the absolutely
- *          necessary set is performed, after which the application
- *          supplied main() routine is called. 
- * @param  None
- * @retval : None
-*/
 
     .section  .text.Reset_Handler
   .weak  Reset_Handler
   .type  Reset_Handler, %function
 Reset_Handler:  
-	LDR     R0, =0x40024000 // BKP
-	LDR     R1, =0xDEADBEEF
-	LDR     R2, [R0, #0]
-	STR     R0, [R0, #0] // Invalidate
-	CMP     R2, R1
-	BEQ     Reboot_Loader
-  	ldr   sp, =_estack     /* set stack pointer */
+LDR     R0, =0x2001FFF0 // End of SRAM for your CPU
+LDR     R1, =0xDEADBEEF
+LDR     R2, [R0, #0]
+STR     R0, [R0, #0] // Invalidate
+CMP     R2, R1
+BEQ     Reboot_Loader
+  ldr   sp, =_estack     /* set stack pointer */
 
 /* Copy the data segment initializers from flash to SRAM */  
   movs  r1, #0

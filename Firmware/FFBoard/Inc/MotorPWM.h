@@ -12,6 +12,7 @@
 #include "cppmain.h"
 #include "CommandHandler.h"
 #include "TimerHandler.h"
+#include "target_constants.h"
 
 extern TIM_HandleTypeDef TIM_PWM; // Htim2 is 32 bit
 
