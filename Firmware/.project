@@ -3,6 +3,7 @@
 	<name>OpenFFBoard</name>
 	<comment></comment>
 	<projects>
+		<project>F407VG</project>
 		<project>OpenFFBoard_F411RE</project>
 	</projects>
 	<buildSpec>
@@ -20,8 +21,13 @@
 	<natures>
 		<nature>com.st.stm32cube.ide.mcu.MCURootProjectNature</nature>
 		<nature>com.st.stm32cube.ide.mcu.MCUCubeProjectNature</nature>
-		<nature>org.eclipse.cdt.make.core.makeNature</nature>
-		<nature>org.eclipse.cdt.core.cnature</nature>
 		<nature>com.st.stm32cube.ide.mcu.MCUCpuProjectNature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>Targets/F407VG/FFBoard</name>
+			<type>2</type>
+			<location>F:/ST/OpenFFBoard/Firmware/FFBoard</location>
+		</link>
+	</linkedResources>
 </projectDescription>
