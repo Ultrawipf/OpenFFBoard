@@ -40,22 +40,23 @@ void MotorPWM::turn(int16_t power){
 	 */
 	if(mode == ModePWM_DRV::RC_PWM){
 		int32_t pval = power;
+
 		float val = ((pval * 1000)/0x7fff)*tFreq;
 		val = clip((1500*tFreq)-val,1000*tFreq, 2000*tFreq);
 		setPWM(val,ccr_1);
 
 	/*
 	 * Generates a 0-100% PWM signal
-	 * and outputs complementary direction signals. TODO use timers
+	 * and outputs complementary direction signals.
 	 * Can be used with cheap halfbridge modules and DC motors
 	 */
 	}else if(mode == ModePWM_DRV::PWM_DIR){
 		if(power < 0){
-			HAL_GPIO_WritePin(rightPort, rightPin, GPIO_PIN_RESET);
-			HAL_GPIO_WritePin(leftPort, leftPin, GPIO_PIN_SET);
+			setPWM(0,ccr_3);
+			setPWM(0xffff,ccr_4);
 		}else{
-			HAL_GPIO_WritePin(leftPort, leftPin, GPIO_PIN_RESET);
-			HAL_GPIO_WritePin(rightPort, rightPin, GPIO_PIN_SET);
+			setPWM(0,ccr_4);
+			setPWM(0xffff,ccr_3);
 		}
 		int32_t val = (uint32_t)((abs(power) * period)/0x7fff);
 		setPWM(val,ccr_1);
@@ -64,6 +65,7 @@ void MotorPWM::turn(int16_t power){
 		int32_t pval = 0x7fff+power;
 		int32_t val = (pval * period)/0xffff;
 		setPWM(val,ccr_1);
+
 	}else if(mode == ModePWM_DRV::PWM_DUAL){
 		int32_t val = (uint32_t)((abs(power) * period)/0x7fff);
 		if(power < 0){
@@ -85,8 +87,8 @@ void MotorPWM::setPwmSpeed(SpeedPWM_DRV spd){
 
 	case SpeedPWM_DRV::LOW:
 		if(mode == ModePWM_DRV::RC_PWM){
-			period =  40000;  //20ms (40000/Sysclock/2)
-			prescaler = TIM_PWM_FREQ/500000;
+			period =  40000;  //20ms (40000/Sysclock)
+			prescaler = TIM_PWM_FREQ/2000000;
 		}else{
 			period = TIM_PWM_FREQ/3000; // Check if timer can count high enough for very high clock speeds!
 			prescaler = 0;
@@ -96,7 +98,7 @@ void MotorPWM::setPwmSpeed(SpeedPWM_DRV spd){
 	case SpeedPWM_DRV::MID:
 		if(mode == ModePWM_DRV::RC_PWM){
 			period = 30000;//15ms(30000/47)
-			prescaler = TIM_PWM_FREQ/500000;
+			prescaler = TIM_PWM_FREQ/2000000;
 		}else{
 			period = TIM_PWM_FREQ/6000;
 			prescaler = 0;
@@ -106,7 +108,7 @@ void MotorPWM::setPwmSpeed(SpeedPWM_DRV spd){
 	case SpeedPWM_DRV::HIGH:
 		if(mode == ModePWM_DRV::RC_PWM){
 			period = 20000; //10ms (20000/47)
-			prescaler = TIM_PWM_FREQ/500000;
+			prescaler = TIM_PWM_FREQ/2000000;
 		}else{
 			period = TIM_PWM_FREQ/12000;
 			prescaler = 0;
@@ -115,7 +117,7 @@ void MotorPWM::setPwmSpeed(SpeedPWM_DRV spd){
 	case SpeedPWM_DRV::VERYHIGH:
 		if(mode == ModePWM_DRV::RC_PWM){
 			period = 10000; //5ms (20000/23)
-			prescaler = TIM_PWM_FREQ/500000;
+			prescaler = TIM_PWM_FREQ/2000000;
 		}else{
 			period = TIM_PWM_FREQ/23500;
 			prescaler = 0;
@@ -127,16 +129,17 @@ void MotorPWM::setPwmSpeed(SpeedPWM_DRV spd){
 
 	if(ok){
 		this->pwmspeed = spd;
-		tFreq = (float)basefreq/(float)(prescaler+1);
-		if(mode == ModePWM_DRV::PWM_DUAL){
-			pwmInitTimer(timer, channel_1,period,prescaler);
-			setPWM_HAL(0, timer, channel_1, period);
-			pwmInitTimer(timer, channel_2,period,prescaler);
-			setPWM_HAL(0, timer, channel_2, period);
-		}else{
-			pwmInitTimer(timer, channel_1,period,prescaler);
-			setPWM_HAL(0, timer, channel_1, period);
-		}
+		tFreq = (float)(TIM_PWM_FREQ/1000000)/(float)(prescaler+1);
+
+		pwmInitTimer(timer, channel_1,period,prescaler);
+		pwmInitTimer(timer, channel_2,period,prescaler);
+		pwmInitTimer(timer, channel_3,period,prescaler);
+		pwmInitTimer(timer, channel_4,period,prescaler);
+
+//		setPWM_HAL(0, timer, channel_1, period);
+//		pwmInitTimer(timer, channel_2,period,prescaler);
+//		setPWM_HAL(0, timer, channel_2, period);
+
 
 	}
 }
@@ -191,24 +194,9 @@ void MotorPWM::restoreFlash(){
 MotorPWM::~MotorPWM() {
 	HAL_TIM_PWM_Stop(timer, channel_1);
 	HAL_TIM_PWM_Stop(timer, channel_2);
+	HAL_TIM_PWM_Stop(timer, channel_3);
+	HAL_TIM_PWM_Stop(timer, channel_4);
 	HAL_TIM_Base_Stop_IT(timer);
-
-	// reset gpio remap
-	GPIO_InitTypeDef GPIO_InitStruct = {0};
-	GPIO_InitStruct.Pin = pwm1Pin;
-	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-	GPIO_InitStruct.Pull = GPIO_NOPULL;
-	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-	HAL_GPIO_Init(pwm1Port, &GPIO_InitStruct);
-	GPIO_InitStruct = {0};
-	GPIO_InitStruct.Pin = pwm2Pin;
-	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-	GPIO_InitStruct.Pull = GPIO_NOPULL;
-	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-	HAL_GPIO_Init(pwm2Port, &GPIO_InitStruct);
-
-	HAL_GPIO_WritePin(pwm1Port,pwm1Pin , GPIO_PIN_RESET);
-	HAL_GPIO_WritePin(pwm2Port,pwm2Pin , GPIO_PIN_RESET);
 }
 
 
@@ -225,48 +213,6 @@ void MotorPWM::stop(){
 void MotorPWM::setMode(ModePWM_DRV mode){
 	this->mode = mode;
 	setPwmSpeed(pwmspeed); // Reinit timer
-
-	if(mode == ModePWM_DRV::PWM_DUAL){
-		// SS3 to PWM
-		HAL_GPIO_DeInit(pwm1Port, pwm1Pin);
-		GPIO_InitTypeDef GPIO_InitStruct = {0};
-		GPIO_InitStruct.Pin = pwm1Pin;
-		GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-		GPIO_InitStruct.Pull = GPIO_NOPULL;
-		GPIO_InitStruct.Alternate = GPIO_AF1_TIM2;
-		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-		HAL_GPIO_Init(pwm1Port, &GPIO_InitStruct);
-
-		// SS2 to PWM
-		HAL_GPIO_DeInit(pwm2Port, pwm2Pin);
-		GPIO_InitStruct = {0};
-		GPIO_InitStruct.Pin = pwm2Pin;
-		GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-		GPIO_InitStruct.Pull = GPIO_NOPULL;
-		GPIO_InitStruct.Alternate = GPIO_AF1_TIM2;
-		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-		HAL_GPIO_Init(pwm2Port, &GPIO_InitStruct);
-	}else{
-		// SS2 as digital out
-		HAL_GPIO_DeInit(pwm2Port, pwm2Pin);
-		GPIO_InitTypeDef GPIO_InitStruct = {0};
-		GPIO_InitStruct.Pin = pwm2Pin;
-		GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-		GPIO_InitStruct.Pull = GPIO_PULLDOWN;
-		GPIO_InitStruct.Alternate = GPIO_AF1_TIM2;
-		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-		HAL_GPIO_Init(pwm2Port, &GPIO_InitStruct);
-
-		// Setup PWM timer (timer2!) on CS3 pin
-		HAL_GPIO_DeInit(pwm1Port, pwm1Pin);
-		GPIO_InitStruct = {0};
-		GPIO_InitStruct.Pin = pwm1Pin;
-		GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-		GPIO_InitStruct.Pull = GPIO_NOPULL;
-		GPIO_InitStruct.Alternate = GPIO_AF1_TIM2;
-		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-		HAL_GPIO_Init(pwm1Port, &GPIO_InitStruct);
-	}
 }
 
 ModePWM_DRV MotorPWM::getMode(){
@@ -320,21 +266,19 @@ ParseStatus MotorPWM::command(ParsedCommand* cmd,std::string* reply){
 
 
 void pwmInitTimer(TIM_HandleTypeDef* timer,uint32_t channel,uint32_t period,uint32_t prescaler){
-	HAL_TIM_PWM_DeInit(timer);
-	timer->Init.Prescaler = prescaler;
-	timer->Init.CounterMode = TIM_COUNTERMODE_UP;
-	timer->Init.Period = period;
-	timer->Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-	timer->Instance->CCMR1 |= TIM_CCMR1_OC1PE;
-	timer->Instance->CR1 = TIM_CR1_ARPE;
+	timer->Instance->ARR = period;
+	timer->Instance->PSC = prescaler;
+	TIM_OC_InitTypeDef sConfigOC = {0};
+	sConfigOC.OCMode = TIM_OCMODE_PWM1;
+	sConfigOC.Pulse = 0;
+	sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+	sConfigOC.OCNPolarity = TIM_OCNPOLARITY_HIGH;
+	sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+	sConfigOC.OCIdleState = TIM_OCIDLESTATE_RESET;
+	sConfigOC.OCNIdleState = TIM_OCNIDLESTATE_RESET;
+	HAL_TIM_PWM_ConfigChannel(timer, &sConfigOC, channel);
 
-	HAL_TIM_PWM_Init(timer);
-
-	TIM_OC_InitTypeDef oc_init;
-	oc_init.OCMode = TIM_OCMODE_PWM1;
-	oc_init.OCPolarity = TIM_OCPOLARITY_HIGH;
-	oc_init.Pulse = 0;
-	HAL_TIM_PWM_ConfigChannel(timer, &oc_init, channel);
+	//setPWM_HAL(0,timer,channel,period);
 	HAL_TIM_PWM_Start(timer, channel);
 
 }

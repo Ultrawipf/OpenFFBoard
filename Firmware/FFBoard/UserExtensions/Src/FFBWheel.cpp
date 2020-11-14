@@ -348,7 +348,7 @@ void FFBWheel::setEncType(uint8_t enctype){
 
 
 	if(enc_chooser.isValidClassId(enctype)){
-		if(enc != nullptr && enc->getInfo().id != enctype && enctype != drv->getInfo().id){
+		if(enc != nullptr && enc->getInfo().id != enctype && enctype != drv->getInfo().id && enc->getInfo().id != drv->getInfo().id){
 			delete enc;
 		}
 		this->conf.enctype = (enctype);

@@ -50,7 +50,6 @@ public:
 	void setPWM(uint32_t value,uint8_t ccr);
 
 private:
-	const uint32_t basefreq = 96;
 	float tFreq = 1; // Frequency scaling. Timer freq in MHz
 	int32_t period = 20000;
 	int32_t prescaler = 95;
@@ -60,25 +59,19 @@ private:
 	ModePWM_DRV mode = ModePWM_DRV::RC_PWM;
 
 	bool active = false;
-	const uint32_t channel_1 = TIM_CHANNEL_3; // Motor port CS3 (also update pwm method)
+
+	// CCR and channels must match!
+	const uint32_t channel_1 = TIM_CHANNEL_1;
 	const uint32_t channel_2 = TIM_CHANNEL_2;
-	const uint8_t ccr_1 = 3;
+	const uint32_t channel_3 = TIM_CHANNEL_3;
+	const uint32_t channel_4 = TIM_CHANNEL_4;
+
+	const uint8_t ccr_1 = 1;
 	const uint8_t ccr_2 = 2;
+	const uint8_t ccr_3 = 3;
+	const uint8_t ccr_4 = 4;
 
 	TIM_HandleTypeDef* timer = &TIM_PWM;
-
-	GPIO_TypeDef* pwm1Port=SPI1_SS3_GPIO_Port;
-	const uint16_t pwm1Pin=SPI1_SS3_Pin;
-
-	GPIO_TypeDef* pwm2Port=GP4_GPIO_Port;
-	const uint16_t pwm2Pin=GP4_Pin;
-
-	GPIO_TypeDef* leftPort=SPI1_SS1_GPIO_Port;
-	const uint16_t leftPin=SPI1_SS1_Pin;
-
-	GPIO_TypeDef* rightPort=SPI1_SS2_GPIO_Port;
-	const uint16_t rightPin=SPI1_SS2_Pin;
-
 };
 
 

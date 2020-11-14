@@ -158,10 +158,10 @@ void RebootDFU();
 #define GP2_GPIO_Port GPIOB
 #define GP3_Pin GPIO_PIN_5
 #define GP3_GPIO_Port GPIOB
-#define LED_ERR_Pin GPIO_PIN_0
-#define LED_ERR_GPIO_Port GPIOE
-#define LED_CLIP_Pin GPIO_PIN_1
+#define LED_CLIP_Pin GPIO_PIN_0
 #define LED_CLIP_GPIO_Port GPIOE
+#define LED_ERR_Pin GPIO_PIN_1
+#define LED_ERR_GPIO_Port GPIOE
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */

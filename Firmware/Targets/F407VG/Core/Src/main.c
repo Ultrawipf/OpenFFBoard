@@ -607,7 +607,7 @@ static void MX_TIM1_Init(void)
   htim1.Init.Period = 0xffff;
   htim1.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim1.Init.RepetitionCounter = 0;
-  htim1.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  htim1.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
   if (HAL_TIM_Base_Init(&htim1) != HAL_OK)
   {
     Error_Handler();
@@ -618,10 +618,6 @@ static void MX_TIM1_Init(void)
     Error_Handler();
   }
   if (HAL_TIM_PWM_Init(&htim1) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  if (HAL_TIM_OC_Init(&htim1) != HAL_OK)
   {
     Error_Handler();
   }
@@ -650,8 +646,7 @@ static void MX_TIM1_Init(void)
   {
     Error_Handler();
   }
-  sConfigOC.OCMode = TIM_OCMODE_TIMING;
-  if (HAL_TIM_OC_ConfigChannel(&htim1, &sConfigOC, TIM_CHANNEL_4) != HAL_OK)
+  if (HAL_TIM_PWM_ConfigChannel(&htim1, &sConfigOC, TIM_CHANNEL_4) != HAL_OK)
   {
     Error_Handler();
   }
@@ -1074,8 +1069,8 @@ static void MX_GPIO_Init(void)
                           |GP8_Pin|SPI2_NSS_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOE, DRV_ENABLE_Pin|DRV_BRAKE_Pin|DRV_GP1_Pin|LED_ERR_Pin
-                          |LED_CLIP_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOE, DRV_ENABLE_Pin|DRV_BRAKE_Pin|DRV_GP1_Pin|LED_CLIP_Pin
+                          |LED_ERR_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOD, SPI2_SS2_Pin|SPI2_SS3_Pin|SPI3_CS2_Pin|SPI3_CS3_Pin
@@ -1117,10 +1112,10 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : DRV_ENABLE_Pin DRV_BRAKE_Pin DRV_GP1_Pin LED_ERR_Pin
-                           LED_CLIP_Pin */
-  GPIO_InitStruct.Pin = DRV_ENABLE_Pin|DRV_BRAKE_Pin|DRV_GP1_Pin|LED_ERR_Pin
-                          |LED_CLIP_Pin;
+  /*Configure GPIO pins : DRV_ENABLE_Pin DRV_BRAKE_Pin DRV_GP1_Pin LED_CLIP_Pin
+                           LED_ERR_Pin */
+  GPIO_InitStruct.Pin = DRV_ENABLE_Pin|DRV_BRAKE_Pin|DRV_GP1_Pin|LED_CLIP_Pin
+                          |LED_ERR_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
