@@ -17,7 +17,7 @@
  * Mapping of names for ModePWM_DRV
  */
 const std::vector<std::string> RC_SpeedNames = {"20ms","15ms:1","10ms","5ms"};
-const std::vector<std::string> PWM_SpeedNames = {"3khz","6khz:1","12khz","23.5khz"};
+const std::vector<std::string> PWM_SpeedNames = {"3khz","9khz:1","17khz","24khz"};
 // Names of SpeedPWM_DRV
 const std::vector<std::string> PwmModeNames = {"RC PPM","0%-50%-100% Centered","0-100% PWM/DIR","0-100% dual PWM"};
 
@@ -100,7 +100,7 @@ void MotorPWM::setPwmSpeed(SpeedPWM_DRV spd){
 			period = 30000;//15ms(30000/47)
 			prescaler = TIM_PWM_FREQ/2000000;
 		}else{
-			period = TIM_PWM_FREQ/6000;
+			period = TIM_PWM_FREQ/9000;
 			prescaler = 0;
 		}
 
@@ -110,7 +110,7 @@ void MotorPWM::setPwmSpeed(SpeedPWM_DRV spd){
 			period = 20000; //10ms (20000/47)
 			prescaler = TIM_PWM_FREQ/2000000;
 		}else{
-			period = TIM_PWM_FREQ/12000;
+			period = TIM_PWM_FREQ/17000;
 			prescaler = 0;
 		}
 	break;
@@ -119,7 +119,7 @@ void MotorPWM::setPwmSpeed(SpeedPWM_DRV spd){
 			period = 10000; //5ms (20000/23)
 			prescaler = TIM_PWM_FREQ/2000000;
 		}else{
-			period = TIM_PWM_FREQ/23500;
+			period = TIM_PWM_FREQ/24000;
 			prescaler = 0;
 		}
 	break;

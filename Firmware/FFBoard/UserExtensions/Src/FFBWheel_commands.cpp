@@ -144,7 +144,12 @@ ParseStatus FFBWheel::command(ParsedCommand* cmd,std::string* reply){
 		*reply+=std::to_string(ffb->getRate());
 
 	}else if(cmd->cmd == "ffbactive" && cmd->type == CMDtype::get){
-		*reply+=std::to_string(ffb->getFfbActive() ? 1 : 0);
+		if(this->emergency){
+			*reply+="-1"; // Emergency
+		}else{
+			*reply+=std::to_string(ffb->getFfbActive() ? 1 : 0);
+		}
+
 
 	}else if(cmd->cmd == "help"){
 		flag = ParseStatus::OK_CONTINUE;

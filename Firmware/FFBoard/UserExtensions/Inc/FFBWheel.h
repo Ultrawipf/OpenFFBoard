@@ -73,6 +73,8 @@ public:
 
 	void update();
 
+	void emergencyStop();
+
 	static FFBWheelConfig decodeConfFromInt(uint16_t val);
 	static uint16_t encodeConfToInt(FFBWheelConfig conf);
 
@@ -92,6 +94,7 @@ public:
 	uint16_t getPower();
 
 private:
+	bool emergency = false;
 	void send_report();
 	int16_t updateEndstop();
 

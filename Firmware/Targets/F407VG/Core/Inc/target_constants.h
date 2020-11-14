@@ -72,6 +72,8 @@ extern SPI_HandleTypeDef HSPIDRV;
 extern SPI_HandleTypeDef HSPI2;
 
 
+// System
+#define VECT_TAB_CCMRAM
 
 
 #endif /* INC_TARGET_CONSTANTS_H_ */

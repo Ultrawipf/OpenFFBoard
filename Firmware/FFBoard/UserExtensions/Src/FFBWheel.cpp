@@ -168,7 +168,7 @@ void FFBWheel::saveFlash(){
  */
 void FFBWheel::update(){
 
-	if(drv == nullptr || enc == nullptr ){
+	if(drv == nullptr || enc == nullptr || emergency){
 		pulseErrLed();
 		return;
 	}
@@ -484,6 +484,11 @@ void FFBWheel::send_report(){
 
 }
 
+void FFBWheel::emergencyStop(){
+	drv->stop();
+	emergency = true;
+}
+
 void FFBWheel::timerElapsed(TIM_HandleTypeDef* htim){
 	if(htim == this->timer_update){
 		update_flag = true;
@@ -531,6 +536,13 @@ void FFBWheel::exti(uint16_t GPIO_Pin){
 			this->enc->setPos(0);
 		}
 	}
+#ifdef E_STOP_Pin
+	if(GPIO_Pin == E_STOP_Pin){ // Emergency stop. low active
+		if(HAL_GPIO_ReadPin(BUTTON_A_GPIO_Port, BUTTON_A_Pin) == GPIO_PIN_RESET){
+			emergencyStop();
+		}
+	}
+#endif
 }
 
 

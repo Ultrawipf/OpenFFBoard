@@ -90,7 +90,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
 		for(UartHandler* c : uartHandlers){
 			c->uartRcv((char*)uart_buf);
 		}
-	  }
+	}
 }
 
 
