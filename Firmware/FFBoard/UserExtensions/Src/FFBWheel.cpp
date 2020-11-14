@@ -129,6 +129,7 @@ void FFBWheel::restoreFlash(){
 
 	Flash_Read(ADR_FFBWHEEL_POWER, &this->power);
 	Flash_Read(ADR_FFBWHEEL_DEGREES, &this->degreesOfRotation);
+	nextDegreesOfRotation = degreesOfRotation;
 
 	uint16_t esval;
 	if(Flash_Read(ADR_FFBWHEEL_ENDSTOP,&esval)){

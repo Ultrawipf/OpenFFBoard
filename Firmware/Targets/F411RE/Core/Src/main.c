@@ -87,8 +87,8 @@ static void MX_TIM5_Init(void);
 static void MX_I2C3_Init(void);
 static void MX_SPI1_Init(void);
 void MX_USB_OTG_FS_PCD_Init(void);
-static void MX_IWDG_Init(void);
 static void MX_TIM10_Init(void);
+static void MX_IWDG_Init(void);
 static void MX_NVIC_Init(void);
 /* USER CODE BEGIN PFP */
 uint32_t dfu_reset_to_bootloader_magic;
@@ -147,8 +147,8 @@ int main(void)
   MX_TIM5_Init();
   MX_I2C3_Init();
   MX_SPI1_Init();
-  MX_IWDG_Init();
   MX_TIM10_Init();
+  MX_IWDG_Init();
 
   /* Initialize interrupts */
   MX_NVIC_Init();
@@ -412,14 +412,14 @@ static void MX_IWDG_Init(void)
 {
 
   /* USER CODE BEGIN IWDG_Init 0 */
-  __HAL_DBGMCU_FREEZE_IWDG(); // Debug freeze
+
   /* USER CODE END IWDG_Init 0 */
 
   /* USER CODE BEGIN IWDG_Init 1 */
 
   /* USER CODE END IWDG_Init 1 */
   hiwdg.Instance = IWDG;
-  hiwdg.Init.Prescaler = IWDG_PRESCALER_16;
+  hiwdg.Init.Prescaler = IWDG_PRESCALER_8;
   hiwdg.Init.Reload = 4095;
   if (HAL_IWDG_Init(&hiwdg) != HAL_OK)
   {

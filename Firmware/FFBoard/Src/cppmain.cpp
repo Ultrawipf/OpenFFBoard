@@ -7,7 +7,7 @@
 uint32_t clkmhz = HAL_RCC_GetHCLKFreq() / 100000;
 extern TIM_HandleTypeDef TIM_MICROS;
 
-//extern IWDG_HandleTypeDef hiwdg; // Watchdog
+extern IWDG_HandleTypeDef hiwdg; // Watchdog
 bool running = true;
 
 uint16_t main_id = 0;
@@ -55,7 +55,7 @@ void cppmain() {
 }
 
 void refreshWatchdog(){
-	//HAL_IWDG_Refresh(&hiwdg); // Refresh watchdog
+	HAL_IWDG_Refresh(&hiwdg); // Refresh watchdog
 }
 
 void usb_init(){
