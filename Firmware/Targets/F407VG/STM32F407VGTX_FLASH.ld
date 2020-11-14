@@ -29,7 +29,7 @@
 ENTRY(Reset_Handler)
 
 /* Highest address of the user mode stack */
-_estack = ORIGIN(RAM) + LENGTH(RAM);	/* end of "RAM" Ram type memory */
+_estack = ORIGIN(CCMRAM) + LENGTH(CCMRAM);	/* end of "RAM" Ram type memory */
 
 _Min_Heap_Size = 0x400 ;	/* required amount of heap  */
 _Min_Stack_Size = 0x400 ;	/* required amount of stack */
@@ -161,6 +161,7 @@ SECTIONS
   } >RAM
 
   /* User_heap_stack section, used to check that there is enough "RAM" Ram  type memory left */
+  /*. = . + _Min_Stack_Size;*/
   ._user_heap_stack :
   {
     . = ALIGN(8);
@@ -169,7 +170,7 @@ SECTIONS
     . = . + _Min_Heap_Size;
     . = . + _Min_Stack_Size;
     . = ALIGN(8);
-  } >RAM
+  } >CCMRAM
 
   /* Remove information from the compiler libraries */
   /DISCARD/ :
