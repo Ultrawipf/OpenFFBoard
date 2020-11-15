@@ -239,18 +239,12 @@ static void MX_NVIC_Init(void)
   /* TIM3_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(TIM3_IRQn, 4, 0);
   HAL_NVIC_EnableIRQ(TIM3_IRQn);
-  /* TIM2_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(TIM2_IRQn, 7, 0);
-  HAL_NVIC_EnableIRQ(TIM2_IRQn);
   /* EXTI9_5_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(EXTI9_5_IRQn, 13, 0);
   HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
   /* ADC_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(ADC_IRQn, 1, 0);
   HAL_NVIC_EnableIRQ(ADC_IRQn);
-  /* TIM5_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(TIM5_IRQn, 8, 0);
-  HAL_NVIC_EnableIRQ(TIM5_IRQn);
 }
 
 /**
@@ -800,11 +794,11 @@ static void MX_TIM3_Init(void)
   htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   sConfig.EncoderMode = TIM_ENCODERMODE_TI12;
-  sConfig.IC1Polarity = TIM_ICPOLARITY_RISING;
+  sConfig.IC1Polarity = TIM_ICPOLARITY_FALLING;
   sConfig.IC1Selection = TIM_ICSELECTION_DIRECTTI;
   sConfig.IC1Prescaler = TIM_ICPSC_DIV1;
   sConfig.IC1Filter = 0;
-  sConfig.IC2Polarity = TIM_ICPOLARITY_RISING;
+  sConfig.IC2Polarity = TIM_ICPOLARITY_FALLING;
   sConfig.IC2Selection = TIM_ICSELECTION_DIRECTTI;
   sConfig.IC2Prescaler = TIM_ICPSC_DIV1;
   sConfig.IC2Filter = 0;
@@ -1120,7 +1114,7 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pin = DIN7_Pin|DIN6_Pin|DIN5_Pin|DIN4_Pin
                           |DIN3_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
 
   /*Configure GPIO pins : DIN2_Pin DIN1_Pin DIN0_Pin */
@@ -1136,44 +1130,52 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
   HAL_GPIO_Init(SPI1_SS1_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : SPI1_SS2_Pin SPI1_SS3_Pin BUTTON_A_Pin GP7_Pin
-                           GP8_Pin */
-  GPIO_InitStruct.Pin = SPI1_SS2_Pin|SPI1_SS3_Pin|BUTTON_A_Pin|GP7_Pin
-                          |GP8_Pin;
+  /*Configure GPIO pins : SPI1_SS2_Pin SPI1_SS3_Pin SPI2_NSS_Pin */
+  GPIO_InitStruct.Pin = SPI1_SS2_Pin|SPI1_SS3_Pin|SPI2_NSS_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : BUTTON_A_Pin GP7_Pin GP8_Pin */
+  GPIO_InitStruct.Pin = BUTTON_A_Pin|GP7_Pin|GP8_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : DRV_ENABLE_Pin DRV_BRAKE_Pin DRV_GP1_Pin LED_CLIP_Pin
-                           LED_ERR_Pin */
-  GPIO_InitStruct.Pin = DRV_ENABLE_Pin|DRV_BRAKE_Pin|DRV_GP1_Pin|LED_CLIP_Pin
-                          |LED_ERR_Pin;
+  /*Configure GPIO pin : DRV_ENABLE_Pin */
+  GPIO_InitStruct.Pin = DRV_ENABLE_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(DRV_ENABLE_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : FLAG_Pin */
+  GPIO_InitStruct.Pin = FLAG_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+  HAL_GPIO_Init(FLAG_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : DRV_BRAKE_Pin */
+  GPIO_InitStruct.Pin = DRV_BRAKE_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_MEDIUM;
+  HAL_GPIO_Init(DRV_BRAKE_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : DRV_GP1_Pin LED_CLIP_Pin LED_ERR_Pin */
+  GPIO_InitStruct.Pin = DRV_GP1_Pin|LED_CLIP_Pin|LED_ERR_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : FLAG_Pin */
-  GPIO_InitStruct.Pin = FLAG_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(FLAG_GPIO_Port, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : SPI2_NSS_Pin */
-  GPIO_InitStruct.Pin = SPI2_NSS_Pin;
+  /*Configure GPIO pins : SPI2_SS2_Pin SPI2_SS3_Pin */
+  GPIO_InitStruct.Pin = SPI2_SS2_Pin|SPI2_SS3_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
-  HAL_GPIO_Init(SPI2_NSS_GPIO_Port, &GPIO_InitStruct);
-
-  /*Configure GPIO pins : SPI2_SS2_Pin SPI2_SS3_Pin SPI3_CS2_Pin SPI3_CS3_Pin
-                           CAN_S_Pin LED_SYS_Pin */
-  GPIO_InitStruct.Pin = SPI2_SS2_Pin|SPI2_SS3_Pin|SPI3_CS2_Pin|SPI3_CS3_Pin
-                          |CAN_S_Pin|LED_SYS_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_MEDIUM;
   HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
   /*Configure GPIO pin : ENCODER_Z_Pin */
@@ -1189,6 +1191,13 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(SPI3_CS1_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : SPI3_CS2_Pin SPI3_CS3_Pin CAN_S_Pin LED_SYS_Pin */
+  GPIO_InitStruct.Pin = SPI3_CS2_Pin|SPI3_CS3_Pin|CAN_S_Pin|LED_SYS_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
   /*Configure GPIO pin : E_STOP_Pin */
   GPIO_InitStruct.Pin = E_STOP_Pin;
