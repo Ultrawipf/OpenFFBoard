@@ -62,7 +62,7 @@ _Min_Stack_Size = 0x400 ;	/* required amount of stack */
 MEMORY
 {
     FLASH_BOOT (rx)         : ORIGIN = 0x8000000,
-                              LENGTH = 32k
+                              LENGTH = 16k
       
     EMULATED_EEPROM (rwx)   : ORIGIN = ORIGIN(FLASH_BOOT) + LENGTH(FLASH_BOOT), 
                               LENGTH = 32k 
