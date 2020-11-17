@@ -25,7 +25,7 @@ public:
 	FFBoardMain();
 	virtual ~FFBoardMain();
 
-	virtual void usbInit(); // initialize a composite usb device
+	virtual void usbInit(USBD_HandleTypeDef* hUsbDeviceFS); // initialize a composite usb device
 
 	// Callbacks
 	virtual void update();

@@ -19,6 +19,6 @@ extern "C"{
 }
 
 
-void usbInit_HID_Wheel();
+void usbInit_HID_Wheel(USBD_HandleTypeDef* hUsbDeviceFS);
 
 #endif /* INC_FFBWHEEL_USB_INIT_H_ */

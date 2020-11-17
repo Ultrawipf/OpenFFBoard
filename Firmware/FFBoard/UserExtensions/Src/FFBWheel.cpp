@@ -525,8 +525,8 @@ void FFBWheel::usbResume(){
 	}
 }
 
-void FFBWheel::usbInit(){
-	usbInit_HID_Wheel();
+void FFBWheel::usbInit(USBD_HandleTypeDef* hUsbDeviceFS){
+	usbInit_HID_Wheel(hUsbDeviceFS);
 }
 
 // External interrupt pins

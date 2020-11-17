@@ -64,7 +64,7 @@ public:
 
 
 	void SOF();
-	void usbInit(); // initialize a composite usb device
+	void usbInit(USBD_HandleTypeDef* hUsbDeviceFS); // initialize a composite usb device
 	void usbSuspend(); // Called on usb disconnect and suspend
 	void usbResume(); // Called on usb resume
 

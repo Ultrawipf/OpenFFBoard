@@ -11,7 +11,7 @@
 extern USBD_HandleTypeDef hUsbDeviceFS;
 extern USBD_ClassTypeDef* handles[2];
 
-void usbInit_HID_Wheel(){
+void usbInit_HID_Wheel(USBD_HandleTypeDef* hUsbDeviceFS){
 	handles[CDC_IDX] = &USBD_CDC;
 	handles[HID_IDX] = &USBD_CUSTOM_HID;
 
@@ -29,7 +29,7 @@ void usbInit_HID_Wheel(){
 
 	};
 
-	USBD_Init(&hUsbDeviceFS, &FS_Desc_Composite, DEVICE_FS);
+	USBD_Init(hUsbDeviceFS, &FS_Desc_Composite, DEVICE_FS);
 
 	// Add descriptors and class functions to composite device
 	USBD_Composite_Set_Classes(handles,2,&base_desc);
@@ -50,10 +50,10 @@ void usbInit_HID_Wheel(){
 	USBD_Composite_InterfaceToClass(CDC_INTERFACE_DATA,CDC_IDX);
 
 
-	USBD_RegisterClass(&hUsbDeviceFS, &USBD_Composite);
+	USBD_RegisterClass(hUsbDeviceFS, &USBD_Composite);
 
-	USBD_CDC_RegisterInterface(&hUsbDeviceFS, &USBD_Interface_fops_FS);
-	USBD_CUSTOM_HID_RegisterInterface(&hUsbDeviceFS, &USBD_CustomHID_fops_FS);
+	USBD_CDC_RegisterInterface(hUsbDeviceFS, &USBD_Interface_fops_FS);
+	USBD_CUSTOM_HID_RegisterInterface(hUsbDeviceFS, &USBD_CustomHID_fops_FS);
 
-	USBD_Start(&hUsbDeviceFS);
+	USBD_Start(hUsbDeviceFS);
 }

@@ -61,7 +61,7 @@
 #define HID_ID_BLKLDREP	0x12	// Usage Block Load Report
 #define HID_ID_POOLREP	0x13	// Usage PID Pool Report
 
-#define FFB_EFFECT_NONE		0x00
+#define FFB_EFFECT_NONE			0x00
 #define FFB_EFFECT_CONSTANT		0x01
 #define FFB_EFFECT_RAMP			0x02
 #define FFB_EFFECT_SQUARE 		0x03
@@ -73,14 +73,14 @@
 #define FFB_EFFECT_DAMPER		0x09
 #define FFB_EFFECT_INERTIA		0x0A
 #define FFB_EFFECT_FRICTION		0x0B
-#define FFB_EFFECT_CUSTOM	0x0C
+#define FFB_EFFECT_CUSTOM		0x0C
 
-#define HID_ACTUATOR_POWER 0x08
-#define HID_SAFETY_SWITCH 0x04
-#define HID_ENABLE_ACTUATORS 0x02
-#define HID_EFFECT_PAUSE 0x01
+#define HID_ACTUATOR_POWER 		0x08
+#define HID_SAFETY_SWITCH 		0x04
+#define HID_ENABLE_ACTUATORS 	0x02
+#define HID_EFFECT_PAUSE		0x01
 #define HID_ENABLE_ACTUATORS_MASK 0xFD
-#define HID_EFFECT_PLAYING 0x10
+#define HID_EFFECT_PLAYING 		0x10
 
 // Only include these for cpp
 #ifdef __cplusplus
@@ -110,8 +110,8 @@ typedef struct
 
 
 typedef struct
-	{ // FFB: Set Effect Output Report
-	uint8_t		reportId = 1;	// =1
+	{
+	uint8_t		reportId = 1;
 	uint8_t		effectBlockIndex = 0;	// 1..max_effects
 	uint8_t		effectType = 0;
 	uint16_t	duration = 0; // 0..32767 ms
@@ -128,9 +128,9 @@ typedef struct
 } __attribute__((packed)) FFB_SetEffect_t;
 
 typedef struct
-	{ // FFB: Set Condition Output Report
+	{
 	uint8_t		reportId;
-	uint8_t		effectBlockIndex;	// 1..40
+	uint8_t		effectBlockIndex;	// 1..max_effects
 	uint8_t		parameterBlockOffset;	// bits: 0..3=parameterBlockOffset, 4..5=instance1, 6..7=instance2
 	int16_t  	cpOffset;	// Center
 	int16_t		positiveCoefficient; // Scaler for positive range
@@ -143,32 +143,32 @@ typedef struct
 
 
 typedef struct
-	{ // FFB: PID Block Load Feature Report
-	uint8_t	reportId = HID_ID_BLKLDREP;	// =2
-	uint8_t effectBlockIndex;	// 1..40
+	{
+	uint8_t	reportId = HID_ID_BLKLDREP;
+	uint8_t effectBlockIndex;	// 1..max_effects
 	uint8_t	loadStatus;	// 1=Success,2=Full,3=Error
 	uint16_t	ramPoolAvailable;
 } __attribute__((packed)) FFB_BlockLoad_Feature_Data_t;
 
 typedef struct
-	{ // FFB: Create New Effect Feature Report
+	{
 	uint8_t		reportId;
-	uint8_t	effectType;
+	uint8_t	effectType;	// Effect type ID
 	uint16_t	byteCount;	// Size of custom effects
 } __attribute__((packed)) FFB_CreateNewEffect_Feature_Data_t;
 
 typedef struct
-	{ // FFB: PID Pool Feature Report
+	{
 	uint8_t	reportId = HID_ID_POOLREP;
 	uint16_t	ramPoolSize = MAX_EFFECTS;
 	uint8_t		maxSimultaneousEffects = MAX_EFFECTS;
-	uint8_t		memoryManagement = 3;	// Bits: 0=DeviceManagedPool, 1=SharedParameterBlocks
+	uint8_t		memoryManagement = 1;	// 0=DeviceManagedPool, 1=SharedParameterBlocks
 } __attribute__((packed)) FFB_PIDPool_Feature_Data_t;
 
 
 typedef struct
-	{ // FFB: Set Periodic Output Report
-	uint8_t	reportId;	// =4
+	{
+	uint8_t	reportId;
 	uint8_t	effectBlockIndex;
 	uint16_t magnitude;
 	int16_t	offset;
@@ -203,9 +203,9 @@ typedef struct
 
 // --------------- Effects------------------------
 typedef struct
-	{ // FFB: Set ConstantForce Output Report
-	uint8_t	reportId;	// =5
-	uint8_t	effectBlockIndex;	// 1..40
+	{
+	uint8_t	reportId;
+	uint8_t	effectBlockIndex;	// 1..max_effects
 	int16_t magnitude;	// High res intensity
 } __attribute__((packed)) FFB_SetConstantForce_Data_t;
 

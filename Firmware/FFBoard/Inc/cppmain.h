@@ -23,10 +23,11 @@ extern "C" {
 #include "eeprom_addresses.h"
 #include "main.h"
 #include "usb_device.h"
+#include "usbd_def.h"
 
 
 void cppmain();
-void usb_init();
+void usb_init(USBD_HandleTypeDef* hUsbDeviceFS);
 
 #ifdef __cplusplus
 }
@@ -57,11 +58,5 @@ void refreshWatchdog(); // Refreshes the watchdog
 
 #endif
 
-// Extra
-
-#define Bset(data,val) data|=(val)
-#define Bclr(data,val) data&=~(val)
-#define Btest(data,val) ((data&(val))==(val))
-#define Bchg(data,val) if (Btest(data,val)) Bclr(data,val); else Bset(data,val)
 
 #endif /* CPPMAIN_H_ */

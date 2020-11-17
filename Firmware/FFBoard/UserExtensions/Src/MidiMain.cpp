@@ -213,9 +213,7 @@ int8_t MidiMain::Midi_Receive(uint8_t *msg, uint32_t len) {
 	return 0;
 }
 
-void MidiMain::usbInit(){
-	extern USBD_HandleTypeDef hUsbDeviceFS;
-
+void MidiMain::usbInit(USBD_HandleTypeDef* hUsbDeviceFS){
 	handles[CDC_IDX] = &USBD_CDC;
 	handles[1] = &USBD_Midi_ClassDriver;
 
@@ -233,7 +231,7 @@ void MidiMain::usbInit(){
 
 	};
 
-	USBD_Init(&hUsbDeviceFS, &FS_Desc_Composite, DEVICE_FS);
+	USBD_Init(hUsbDeviceFS, &FS_Desc_Composite, DEVICE_FS);
 
 	// Add descriptors and class functions to composite device
 	USBD_Composite_Set_Classes(handles,2,&base_desc);
@@ -254,12 +252,12 @@ void MidiMain::usbInit(){
 	USBD_Composite_InterfaceToClass(CDC_INTERFACE,CDC_IDX);
 	USBD_Composite_InterfaceToClass(CDC_INTERFACE_DATA,CDC_IDX);
 
-	USBD_RegisterClass(&hUsbDeviceFS, &USBD_Composite);
+	USBD_RegisterClass(hUsbDeviceFS, &USBD_Composite);
 
-	USBD_CDC_RegisterInterface(&hUsbDeviceFS, &USBD_Interface_fops_FS);
+	USBD_CDC_RegisterInterface(hUsbDeviceFS, &USBD_Interface_fops_FS);
 
-	USBD_Midi_RegisterInterface(&hUsbDeviceFS, &USBD_Midi_fops);
-	USBD_Start(&hUsbDeviceFS);
+	USBD_Midi_RegisterInterface(hUsbDeviceFS, &USBD_Midi_fops);
+	USBD_Start(hUsbDeviceFS);
 }
 
 void MidiMain::SOF(){

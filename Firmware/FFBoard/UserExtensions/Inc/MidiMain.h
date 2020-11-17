@@ -45,7 +45,7 @@ public:
 	static ClassIdentifier info;
 	const ClassIdentifier getInfo();
 	ParseStatus command(ParsedCommand* cmd,std::string* reply);
-	void usbInit();
+	void usbInit(USBD_HandleTypeDef* hUsbDeviceFS);
 	void update();
 	void  SOF();
 

@@ -202,12 +202,12 @@ void FFBoardMain::cdcFinished(){
 	}
 }
 
-void FFBoardMain::usbInit(){
+void FFBoardMain::usbInit(USBD_HandleTypeDef* hUsbDeviceFS){
 
-	USBD_Init(&hUsbDeviceFS, &FS_Desc, DEVICE_FS);
-	USBD_RegisterClass(&hUsbDeviceFS, &USBD_CDC);
-	USBD_CDC_RegisterInterface(&hUsbDeviceFS, &USBD_Interface_fops_FS);
-	USBD_Start(&hUsbDeviceFS);
+	USBD_Init(hUsbDeviceFS, &FS_Desc, DEVICE_FS);
+	USBD_RegisterClass(hUsbDeviceFS, &USBD_CDC);
+	USBD_CDC_RegisterInterface(hUsbDeviceFS, &USBD_Interface_fops_FS);
+	USBD_Start(hUsbDeviceFS);
 }
 
 // Virtual stubs
