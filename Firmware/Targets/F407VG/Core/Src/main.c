@@ -427,7 +427,11 @@ static void MX_CAN1_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN CAN1_Init 2 */
-
+	if (HAL_CAN_ActivateNotification(&hcan1, CAN_IT_RX_FIFO0_MSG_PENDING) != HAL_OK)
+	{
+	  /* Notification Error */
+	  Error_Handler();
+	}
   /* USER CODE END CAN1_Init 2 */
 
 }

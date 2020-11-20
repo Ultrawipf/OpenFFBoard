@@ -20,7 +20,7 @@ enum class CMDtype{
 struct ParsedCommand
 {
     std::string cmd;
-    uint16_t adr = 0;
+    int32_t adr = 0;
     int32_t val = 0;
     CMDtype type = CMDtype::none;
 

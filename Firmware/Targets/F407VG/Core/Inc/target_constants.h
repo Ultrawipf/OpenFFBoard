@@ -14,6 +14,7 @@
 
 // Hardware name string
 #define HW_TYPE "F407VG"
+#include "main.h"
 
 // Enabled features
 
@@ -21,6 +22,7 @@
 #define FFBWHEEL
 #define MIDI
 #define TMCDEBUG
+#define CANBRIDGE
 
 
 // Extra features
@@ -44,7 +46,7 @@
 
 #define TIM_MICROS htim10
 extern UART_HandleTypeDef huart1;
-#define UART &huart1 // main uart port
+#define UART_PORT huart1 // main uart port
 #define UART_BUF_SIZE 1 // How many bytes to expect via DMA
 
 
@@ -71,6 +73,10 @@ extern SPI_HandleTypeDef hspi1;
 #define HSPIDRV hspi1
 extern SPI_HandleTypeDef hspi2;
 #define HSPI2 hspi2
+
+// CAN
+extern CAN_HandleTypeDef hcan1;
+#define CANPORT hcan1
 
 
 

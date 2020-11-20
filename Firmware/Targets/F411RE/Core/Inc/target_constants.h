@@ -7,7 +7,7 @@
 
 #ifndef INC_TARGET_CONSTANTS_H_
 #define INC_TARGET_CONSTANTS_H_
-
+#include "main.h"
 /*
  * Add settings and peripheral maps for this specific target here
  */
@@ -40,7 +40,7 @@
 
 #define TIM_MICROS htim10
 extern UART_HandleTypeDef huart1;
-#define UART &huart1 // main uart port
+#define UART_PORT huart1 // main uart port
 #define UART_BUF_SIZE 1 // How many bytes to expect via DMA
 
 extern ADC_HandleTypeDef hadc1;

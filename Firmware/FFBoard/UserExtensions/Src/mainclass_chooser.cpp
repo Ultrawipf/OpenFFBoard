@@ -6,12 +6,22 @@
  */
 #include "cppmain.h"
 #include "mainclass_chooser.h"
+#include "target_constants.h"
 
 #include "ExampleMain.h"
+#ifdef FFBWHEEL
 #include "FFBWheel.h"
+#endif
 #include "FFBoardMain.h"
+#ifdef TMCDEBUG
 #include "TMCDebugBridge.h"
+#endif
+#ifdef MIDI
 #include "MidiMain.h"
+#endif
+#ifdef CANBRIDGE
+#include "CanBridge.h"
+#endif
 
 // Add all classes here
 const std::vector<class_entry<FFBoardMain>> class_registry =
@@ -25,6 +35,9 @@ const std::vector<class_entry<FFBoardMain>> class_registry =
 #endif
 #ifdef MIDI
 		add_class<MidiMain,FFBoardMain>(),
+#endif
+#ifdef CANBRIDGE
+		add_class<CanBridge,FFBoardMain>(),
 #endif
 		add_class<ExampleMain,FFBoardMain>()
 };

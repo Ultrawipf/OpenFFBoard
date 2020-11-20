@@ -22,6 +22,10 @@
 #include "TimerHandler.h"
 #include "CommandHandler.h"
 #include "SpiHandler.h"
+#ifdef CANBUS
+#include "CanHandler.h"
+#endif
+
 
 extern FFBoardMain* mainclass;
 
@@ -80,9 +84,9 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 
 std::vector<UartHandler*> uartHandlers;
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
-	if(huart == UART){
+	if(huart == &UART_PORT){
 		  // Received uart data
-		if(HAL_UART_Receive_IT(UART,(uint8_t*)uart_buf,UART_BUF_SIZE) != HAL_OK){
+		if(HAL_UART_Receive_IT(&UART_PORT,(uint8_t*)uart_buf,UART_BUF_SIZE) != HAL_OK){
 			pulseErrLed(); // Should never happen
 			return;
 		}
@@ -93,8 +97,68 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
 	}
 }
 
+#ifdef CANBUS
+// CAN
+std::vector<CanHandler*> canHandlers;
+// RX
+void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan){
+	for(CanHandler* c : canHandlers){
+		c->canRxPendCallback(hcan,CAN_RX_FIFO0);
+	}
+}
+void HAL_CAN_RxFifo1MsgPendingCallback(CAN_HandleTypeDef *hcan){
+	for(CanHandler* c : canHandlers){
+		c->canRxPendCallback(hcan,CAN_RX_FIFO1);
+	}
+}
+void HAL_CAN_RxFifo0FullCallback(CAN_HandleTypeDef *hcan){
+	for(CanHandler* c : canHandlers){
+		c->canRxFullCallback(hcan,CAN_RX_FIFO0);
+	}
+}
+void HAL_CAN_RxFifo1FullCallback(CAN_HandleTypeDef *hcan){
+	for(CanHandler* c : canHandlers){
+		c->canRxFullCallback(hcan,CAN_RX_FIFO1);
+	}
+}
+// TX
+void HAL_CAN_TxMailbox0CompleteCallback(CAN_HandleTypeDef *hcan){
+	for(CanHandler* c : canHandlers){
+		c->canTxCpltCallback(hcan,CAN_TX_MAILBOX0);
+	}
+}
+void HAL_CAN_TxMailbox1CompleteCallback(CAN_HandleTypeDef *hcan){
+	for(CanHandler* c : canHandlers){
+		c->canTxCpltCallback(hcan,CAN_TX_MAILBOX1);
+	}
+}
+void HAL_CAN_TxMailbox2CompleteCallback(CAN_HandleTypeDef *hcan){
+	for(CanHandler* c : canHandlers){
+		c->canTxCpltCallback(hcan,CAN_TX_MAILBOX2);
+	}
+}
+void HAL_CAN_TxMailbox0AbortCallback(CAN_HandleTypeDef *hcan){
+	for(CanHandler* c : canHandlers){
+		c->canTxAbortCallback(hcan,CAN_TX_MAILBOX0);
+	}
+}
+void HAL_CAN_TxMailbox1AbortCallback(CAN_HandleTypeDef *hcan){
+	for(CanHandler* c : canHandlers){
+		c->canTxAbortCallback(hcan,CAN_TX_MAILBOX1);
+	}
+}
+void HAL_CAN_TxMailbox2AbortCallback(CAN_HandleTypeDef *hcan){
+	for(CanHandler* c : canHandlers){
+		c->canTxAbortCallback(hcan,CAN_TX_MAILBOX2);
+	}
+}
 
-
+void HAL_CAN_ErrorCallback(CAN_HandleTypeDef *hcan){
+	for(CanHandler* c : canHandlers){
+		c->canErrorCallback(hcan);
+	}
+}
+#endif
 
 // SPI
 std::vector<SpiHandler*> spiHandlers;
