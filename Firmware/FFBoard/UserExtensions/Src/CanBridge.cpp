@@ -36,7 +36,7 @@ CanBridge::CanBridge() {
 	sFilterConfig.SlaveStartFilterBank = 14;
 
 	txHeader.StdId = 12;
-	txHeader.ExtId = 0x01;
+	txHeader.ExtId = 0;
 	txHeader.RTR = CAN_RTR_DATA;
 	txHeader.IDE = CAN_ID_STD;	//Use std id
 	txHeader.DLC = 4;	// 4 bytes
@@ -71,7 +71,7 @@ void CanBridge::canErrorCallback(CAN_HandleTypeDef *hcan){
  * Sends the message stored in canBuf
  */
 void CanBridge::sendMessage(){
-	if (HAL_CAN_AddTxMessage(CanHandle, &txHeader, rxBuf, &txMailbox) != HAL_OK)
+	if (HAL_CAN_AddTxMessage(CanHandle, &txHeader, txBuf, &txMailbox) != HAL_OK)
 	{
 	  /* Transmission request Error */
 	  pulseErrLed();
@@ -79,7 +79,7 @@ void CanBridge::sendMessage(){
 }
 
 void CanBridge::sendMessage(uint32_t id, uint64_t msg){
-	memcpy(rxBuf,&msg,4);
+	memcpy(txBuf,&msg,4);
 	txHeader.StdId = id;
 	sendMessage();
 }

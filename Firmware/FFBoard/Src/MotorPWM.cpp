@@ -17,7 +17,7 @@
  * Mapping of names for ModePWM_DRV
  */
 const std::vector<std::string> RC_SpeedNames = {"20ms","15ms:1","10ms","5ms"};
-const std::vector<std::string> PWM_SpeedNames = {"3khz","9khz:1","17khz","24khz"};
+const std::vector<std::string> PWM_SpeedNames = {"3khz","9khz","17khz","24khz"};
 // Names of SpeedPWM_DRV
 const std::vector<std::string> PwmModeNames = {"RC PPM","0%-50%-100% Centered","0-100% PWM/DIR","0-100% dual PWM"};
 
