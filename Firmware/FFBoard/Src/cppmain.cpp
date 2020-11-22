@@ -14,9 +14,11 @@ extern IWDG_HandleTypeDef hiwdg; // Watchdog
 bool running = true;
 
 uint16_t main_id = 0;
-FFBoardMain* mainclass;
+
+FFBoardMain* mainclass __attribute__((section (".ccmram")));
 ClassChooser<FFBoardMain> mainchooser(class_registry);
-USBD_HandleTypeDef hUsbDeviceFS;
+
+USBD_HandleTypeDef hUsbDeviceFS __attribute__((section (".ccmram")));
 
 void cppmain() {
 	// Flash init
@@ -40,11 +42,11 @@ void cppmain() {
 	}
 	// Enable uart interrupt
 	extern volatile char uart_buf[UART_BUF_SIZE];
-	HAL_UART_Receive_IT(UART,(uint8_t*)uart_buf,1);
+	HAL_UART_Receive_IT(&UART_PORT,(uint8_t*)uart_buf,1);
 
 
 	mainclass = mainchooser.Create(main_id);
-	usb_init();
+	usb_init(&hUsbDeviceFS); // Init usb
 
 	while(running){
 		// TODO dynamically add functions to loop
@@ -63,8 +65,8 @@ void refreshWatchdog(){
 #endif
 }
 
-void usb_init(){
-	mainclass->usbInit();
+void usb_init(USBD_HandleTypeDef* hUsbDeviceFS){
+	mainclass->usbInit(hUsbDeviceFS); // Let mainclass initialize usb
 }
 
 
