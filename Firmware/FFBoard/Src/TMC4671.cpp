@@ -226,13 +226,12 @@ float TMC4671::getTemp(){
 	float r = thermistor_R2 * (((float)43252 / (float)adcval) -1.0); //43252 equivalent ADC count if it was 3.3V and not 2.5V
 
 	// Beta
-	r = 1.0 / 298.15 + log(r / thermistor_R) / thermistor_Beta;
+	r = (1.0 / 298.15) + log(r / thermistor_R) / thermistor_Beta;
 	r = 1.0 / r;
 	r -= 273.15;
 	return r;
 
 }
-// R / R2 * 10k
 
 void TMC4671::update(){
 	// Main state machine

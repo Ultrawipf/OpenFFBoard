@@ -24,6 +24,7 @@ const ClassIdentifier CanBridge::getInfo(){
 
 CanBridge::CanBridge() {
 	// Set up a filter to receive everything
+	CAN_FilterTypeDef sFilterConfig;
 	sFilterConfig.FilterBank = 0;
 	sFilterConfig.FilterMode = CAN_FILTERMODE_IDMASK;
 	sFilterConfig.FilterScale = CAN_FILTERSCALE_32BIT;
@@ -41,24 +42,15 @@ CanBridge::CanBridge() {
 	txHeader.IDE = CAN_ID_STD;	//Use std id
 	txHeader.DLC = 4;	// 4 bytes
 	txHeader.TransmitGlobalTime = DISABLE;
-	// Enable CAN transceiver
-	HAL_GPIO_WritePin(CAN_S_GPIO_Port, CAN_S_Pin, GPIO_PIN_RESET);
-	HAL_CAN_Start(CanHandle);
-	setupFilter();
+
+	this->filterId = addCanFilter(CanHandle, sFilterConfig);
+	// Interrupt start
 }
 
 CanBridge::~CanBridge() {
-	HAL_GPIO_WritePin(CAN_S_GPIO_Port, CAN_S_Pin, GPIO_PIN_SET); // Silence can transceiver
-	HAL_CAN_Stop(CanHandle);
+	removeCanFilter(CanHandle, filterId);
 }
 
-void CanBridge::setupFilter(){
-	if (HAL_CAN_ConfigFilter(CanHandle, &sFilterConfig) != HAL_OK)
-	{
-	/* Filter configuration Error */
-		pulseErrLed();
-	}
-}
 
 
 void CanBridge::canErrorCallback(CAN_HandleTypeDef *hcan){
@@ -97,14 +89,14 @@ std::string CanBridge::messageToString(){
 	return buf;
 }
 // Can only send and receive 32bit for now
-void CanBridge::canRxPendCallback(CAN_HandleTypeDef *hcan,uint32_t fifo){
+void CanBridge::canRxPendCallback(CAN_HandleTypeDef *hcan,uint8_t* rxBuf,CAN_RxHeaderTypeDef* rxHeader,uint32_t fifo){
 	if(fifo == rxfifo){
 		pulseSysLed();
+		memcpy(this->rxBuf,rxBuf,sizeof(this->rxBuf));
+		this->rxHeader = *rxHeader;
+		std::string buf = messageToString(); // Last message to string
+		CDC_Transmit_FS(buf.c_str(), buf.length());
 
-		if(HAL_CAN_GetRxMessage(hcan, rxfifo, &rxHeader, rxBuf) == HAL_OK){
-			std::string buf = messageToString(); // Last message to string
-			CDC_Transmit_FS(buf.c_str(), buf.length());
-		}
 
 	}
 }

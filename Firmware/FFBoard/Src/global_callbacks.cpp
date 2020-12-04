@@ -100,15 +100,23 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
 #ifdef CANBUS
 // CAN
 std::vector<CanHandler*> canHandlers;
+uint8_t canRxBuf0[8];
+CAN_RxHeaderTypeDef canRxHeader0; // Receive header 0
+uint8_t canRxBuf1[8];
+CAN_RxHeaderTypeDef canRxHeader1; // Receive header 1
 // RX
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan){
-	for(CanHandler* c : canHandlers){
-		c->canRxPendCallback(hcan,CAN_RX_FIFO0);
+	if(HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &canRxHeader0, canRxBuf0) == HAL_OK){
+		for(CanHandler* c : canHandlers){
+			c->canRxPendCallback(hcan,canRxBuf0,&canRxHeader0,CAN_RX_FIFO0);
+		}
 	}
 }
 void HAL_CAN_RxFifo1MsgPendingCallback(CAN_HandleTypeDef *hcan){
-	for(CanHandler* c : canHandlers){
-		c->canRxPendCallback(hcan,CAN_RX_FIFO1);
+	if(HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO1, &canRxHeader1, canRxBuf1) == HAL_OK){
+		for(CanHandler* c : canHandlers){
+			c->canRxPendCallback(hcan,canRxBuf1,&canRxHeader1,CAN_RX_FIFO1);
+		}
 	}
 }
 void HAL_CAN_RxFifo0FullCallback(CAN_HandleTypeDef *hcan){

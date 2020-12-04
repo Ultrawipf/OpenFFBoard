@@ -34,18 +34,18 @@ public:
 	ParseStatus command(ParsedCommand* cmd,std::string* reply);
 	void sendMessage(uint32_t id, uint64_t msg);
 	void sendMessage();
-	void setupFilter();
-	void canRxPendCallback(CAN_HandleTypeDef *hcan,uint32_t fifo);
+	void canRxPendCallback(CAN_HandleTypeDef *hcan,uint8_t* rxBuf,CAN_RxHeaderTypeDef* rxHeader,uint32_t fifo);
 	void canErrorCallback(CAN_HandleTypeDef *hcan);
 	std::string messageToString();
 	CAN_HandleTypeDef* CanHandle = &CANPORT;
 
 
 private:
-	CAN_FilterTypeDef  sFilterConfig;
+	int32_t filterId = -1;
 
 	CAN_TxHeaderTypeDef txHeader;
 	CAN_RxHeaderTypeDef rxHeader; // Receive header
+
 	uint8_t rxBuf[8] = {0};
 	uint8_t txBuf[8] = {0};
 	uint32_t txMailbox;

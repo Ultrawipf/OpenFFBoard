@@ -5,30 +5,30 @@
  *      Author: Yannick
  */
 
-#include <ExampleMain.h>
+#include <CustomMain.h>
 
 // Change this
-ClassIdentifier ExampleMain::info = {
+ClassIdentifier CustomMain::info = {
 		 .name = "Custom" ,
 		 .id=1337,
 		 .hidden=true //Set false to list
  };
 // Copy this to your class for identification
-const ClassIdentifier ExampleMain::getInfo(){
+const ClassIdentifier CustomMain::getInfo(){
 	return info;
 }
 
 
 
-ExampleMain::ExampleMain() {
+CustomMain::CustomMain() {
 
 }
 
-ExampleMain::~ExampleMain() {
+CustomMain::~CustomMain() {
 
 }
 
-ParseStatus ExampleMain::command(ParsedCommand* cmd,std::string* reply){
+ParseStatus CustomMain::command(ParsedCommand* cmd,std::string* reply){
 	ParseStatus flag = ParseStatus::OK; // Valid command found
 
 	// ------------ commands ----------------

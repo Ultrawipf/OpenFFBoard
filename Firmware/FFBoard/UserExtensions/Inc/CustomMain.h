@@ -5,17 +5,17 @@
  *      Author: Yannick
  */
 
-#ifndef EXAMPLEMAIN_H_
-#define EXAMPLEMAIN_H_
+#ifndef CUSTOMMAIN_H_
+#define CUSTOMMAIN_H_
 
 #include <FFBoardMain.h>
 
-class ExampleMain: public FFBoardMain {
+class CustomMain: public FFBoardMain {
 public:
 
 
-	ExampleMain();
-	virtual ~ExampleMain();
+	CustomMain();
+	virtual ~CustomMain();
 
 	static ClassIdentifier info;
 	const ClassIdentifier getInfo();
@@ -26,4 +26,4 @@ private:
 	int32_t examplevar = 0;
 };
 
-#endif /* EXAMPLEMAIN_H_ */
+#endif /* CUSTOMMAIN_H_ */

@@ -4,11 +4,11 @@
  *  Created on: 25.01.2020
  *      Author: Yannick
  */
+#include <CustomMain.h>
 #include "cppmain.h"
 #include "mainclass_chooser.h"
 #include "target_constants.h"
 
-#include "ExampleMain.h"
 #ifdef FFBWHEEL
 #include "FFBWheel.h"
 #endif
@@ -39,7 +39,7 @@ const std::vector<class_entry<FFBoardMain>> class_registry =
 #ifdef CANBRIDGE
 		add_class<CanBridge,FFBoardMain>(),
 #endif
-		add_class<ExampleMain,FFBoardMain>()
+		add_class<CustomMain,FFBoardMain>()
 };
 
 
