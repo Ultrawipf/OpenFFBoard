@@ -1164,9 +1164,9 @@ void TMC4671::estimateABNparams(){
 	uint16_t highcount = 0; // Count high state of n pulse for polarity estimation
 
 	// Rotate a bit
-	for(uint16_t p = 0;p<0x0fff;p+=0xff){
+	for(uint16_t p = 0;p<0x0fff;p+=0x2f){
 		setPhiE_ext(p);
-		HAL_Delay(50);
+		HAL_Delay(10);
 		refreshWatchdog(); // Keep board from resetting
 		c++;
 		phiE_abn_old = phiE_abn;
@@ -1186,8 +1186,8 @@ void TMC4671::estimateABNparams(){
 
 	bool npol = highcount > c/2;
 	abnconf.rdir = rcount > c/2;
-	if(npol != abnconf.npol) // Invert dir if polarity was reversed
-		abnconf.rdir = !abnconf.rdir;
+//	if(npol != abnconf.npol) // Invert dir if polarity was reversed TODO correct? likely wrong at the moment
+//		abnconf.rdir = !abnconf.rdir;
 
 	abnconf.apol = npol;
 	abnconf.bpol = npol;

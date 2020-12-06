@@ -104,6 +104,7 @@ void RebootDFU();
 #define SPI1_SS3_GPIO_Port GPIOB
 #define BUTTON_A_Pin GPIO_PIN_2
 #define BUTTON_A_GPIO_Port GPIOB
+#define BUTTON_A_EXTI_IRQn EXTI2_IRQn
 #define DRV_ENABLE_Pin GPIO_PIN_7
 #define DRV_ENABLE_GPIO_Port GPIOE
 #define FLAG_Pin GPIO_PIN_8
