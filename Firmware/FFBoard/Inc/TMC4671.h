@@ -231,6 +231,7 @@ public:
 	bool active = false;
 	void emergencyStop();
 	bool emergency = false;
+	bool estopTriggered = false;
 	void turn(int16_t power);
 	int16_t nextFlux = 0;
 	int16_t idleFlux = 0;

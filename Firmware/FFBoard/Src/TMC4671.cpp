@@ -245,6 +245,13 @@ void TMC4671::update(){
 		if(tick - lastStatTime > 2000){ // Every 2s
 			lastStatTime = tick;
 
+			// Get enable input
+			bool tmc_en = (readReg(0x76) >> 15) & 0x01;
+			if(!tmc_en){ // Hardware emergency
+				this->estopTriggered = true;
+				state = TMC_ControlState::HardError;
+			}
+
 			// Temperature sense
 			#ifdef TMCTEMP
 			float temp = getTemp();
