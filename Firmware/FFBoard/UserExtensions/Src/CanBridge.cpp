@@ -40,7 +40,7 @@ CanBridge::CanBridge() {
 	txHeader.ExtId = 0;
 	txHeader.RTR = CAN_RTR_DATA;
 	txHeader.IDE = CAN_ID_STD;	//Use std id
-	txHeader.DLC = 4;	// 4 bytes
+	txHeader.DLC = 8;	// 8 bytes
 	txHeader.TransmitGlobalTime = DISABLE;
 
 	this->filterId = addCanFilter(CanHandle, sFilterConfig);
@@ -71,7 +71,7 @@ void CanBridge::sendMessage(){
 }
 
 void CanBridge::sendMessage(uint32_t id, uint64_t msg){
-	memcpy(txBuf,&msg,4);
+	memcpy(txBuf,&msg,8);
 	txHeader.StdId = id;
 	sendMessage();
 }

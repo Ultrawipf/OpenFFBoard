@@ -134,9 +134,7 @@ void TMCDebugBridge::cdcRcv(char* Buf, uint32_t *Len){
 
 
 	}else{
-		if(this->parser.add(Buf, Len)){
-			executeCommands(this->parser.parse());
-		}
+		FFBoardMain::cdcRcv(Buf, Len);
 	}
 }
 

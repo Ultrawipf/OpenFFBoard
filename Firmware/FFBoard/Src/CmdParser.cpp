@@ -73,22 +73,45 @@ std::vector<ParsedCommand> CmdParser::parse(){
 			uint32_t pqm = word.find('?', 0); // read with var
 			if(pqm!=std::string::npos && pqm < peq && peq != std::string::npos){ // <cmd>?<int>=<int>
 				// Dual
-				int32_t val = (int32_t)std::stol(word.substr(pqm+1, peq-pqm));
-				int32_t val2 = (int32_t)std::stol(word.substr(peq+1, word.npos));
+				int32_t val;
+				if(word[pqm+1] == 'x'){
+					val = (int64_t)std::stoll(word.substr(pqm+2, peq-pqm),0,16);
+				}else{
+					val = (int64_t)std::stoll(word.substr(pqm+1, peq-pqm));
+				}
+				int64_t val2;
+				if(word[peq+1] == 'x'){
+					val2 = (int64_t)std::stoll(word.substr(peq+2, word.npos),0,16);
+				}else{
+					val2 = (int64_t)std::stoll(word.substr(peq+1, word.npos));
+				}
+
 				cmd.cmd = word.substr(0, pqm);
 				cmd.type = CMDtype::setat;
 				cmd.val = val2;
 				cmd.adr = val;
 
-			}else if(pqm != std::string::npos && (std::isdigit(word[pqm+1]) || (std::isdigit(word[pqm+2]) && (word[pqm+1] == '-' || word[pqm+1] == '+')))){ // <cmd>?<int>
-				int32_t val = (int32_t)std::stol(word.substr(pqm+1, word.npos));
+			}else if(pqm != std::string::npos && (std::isdigit(word[pqm+1]) || (std::isdigit(word[pqm+2]) && (word[pqm+1] == '-' || word[pqm+1] == '+' || word[pqm+1] == 'x')))){ // <cmd>?<int>
+				int64_t val;
+				if(word[pqm+1] == 'x'){
+					val = (int64_t)std::stoll(word.substr(pqm+1, word.npos),0,16);
+				}else{
+					val = (int64_t)std::stoll(word.substr(pqm+1, word.npos));
+				}
+
 				cmd.val = val;
 				cmd.type = CMDtype::getat;
 				cmd.cmd = word.substr(0, pqm);
 				cmd.adr = val;
 
-			}else if(peq != std::string::npos && (std::isdigit(word[peq+1]) || (std::isdigit(word[peq+2]) && (word[peq+1] == '-' || word[peq+1] == '+')))){ // <cmd>=<int>
-				int32_t val = (int32_t)std::stol(word.substr(peq+1, word.npos));
+			}else if(peq != std::string::npos && (std::isdigit(word[peq+1]) || (std::isdigit(word[peq+2]) && (word[peq+1] == '-' || word[peq+1] == '+' || word[peq+1] == 'x')))){ // <cmd>=<int>
+				int64_t val;
+				if(word[peq+1] == 'x'){
+					val = (int64_t)std::stoll(word.substr(peq+1, word.npos),0,16);
+				}else{
+					val = (int64_t)std::stoll(word.substr(peq+1, word.npos));
+				}
+
 				cmd.val = val;
 				cmd.type = CMDtype::set;
 				cmd.cmd = word.substr(0, peq);
