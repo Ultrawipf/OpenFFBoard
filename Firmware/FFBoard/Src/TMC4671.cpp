@@ -785,6 +785,12 @@ void TMC4671::setEncoderType(EncoderType_TMC type){
 		state = TMC_ControlState::AENC_init;
 		encstate = ENC_InitState::uninitialized;
 		this->aencconf.uvwmode = true; // uvw mode
+
+	}else if(type == EncoderType_TMC::hall){ // Hall sensor. Just trust it
+		state = TMC_ControlState::Running;
+		setPosSel(PosSelection::PhiM_hal);
+		encstate = ENC_InitState::OK;
+		setPhiEtype(PhiE::hall);
 	}
 }
 
@@ -1454,7 +1460,7 @@ ParseStatus TMC4671::command(ParsedCommand* cmd,std::string* reply){
 		*reply += "TMC4671 commands:\n"
 				"mtype,encsrc,encalign,poles,phiesrc,reg,fluxoffset\n"
 				"torqueP,torqueI,fluxP,fluxI\n"
-				"acttrq,seqpi\n";
+				"acttrq,seqpi,tmctemp\n";
 	}else{
 		flag = ParseStatus::NOT_FOUND;
 	}
