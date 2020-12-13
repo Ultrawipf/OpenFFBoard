@@ -140,7 +140,7 @@ void HidFFB::hidOut(uint8_t* report){
 			//printf("Start %d\n",report[1]);
 			effects[id].state = 1; //Start
 		}
-		sendStatusReport(report[1]);
+		//sendStatusReport(report[1]);
 		break;
 	}
 	case HID_ID_BLKFRREP: // Free a block
@@ -275,7 +275,7 @@ void HidFFB::set_effect(FFB_SetEffect_t* effect){
 	//printf("SetEffect: %d, Axis: %d,Type: %d\n",effect->effectBlockIndex,effect->enableAxis,effect->effectType);
 	if(!ffb_active)
 		start_FFB();
-	sendStatusReport(effect->effectBlockIndex);
+	//sendStatusReport(effect->effectBlockIndex);
 }
 
 void HidFFB::setCfFilter(uint32_t freq){
