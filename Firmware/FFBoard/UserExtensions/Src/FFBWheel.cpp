@@ -484,7 +484,14 @@ void FFBWheel::send_report(){
 		*analogAxesReport[count] = 0;
 	}
 
-	USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS, reinterpret_cast<uint8_t*>(&reportHID), sizeof(reportHID_t));
+	/*
+	 * Only send a new report if actually changed since last time or timeout
+	 */
+	if(reportSendCounter++ > 100 || (memcmp(&lastReportHID,&reportHID,sizeof(reportHID_t)) != 0) ){
+		USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS, reinterpret_cast<uint8_t*>(&reportHID), sizeof(reportHID_t));
+		lastReportHID = reportHID;
+		reportSendCounter = 0;
+	}
 
 }
 
