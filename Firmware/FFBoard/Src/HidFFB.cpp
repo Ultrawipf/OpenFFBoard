@@ -482,7 +482,7 @@ int32_t HidFFB::calculateEffects(int32_t pos,uint8_t axis=1){
 			int32_t speed = pos - effect->last_value;
 			effect->last_value = pos;
 
-			float val = effect->filter->process(speed) * 0.0625f;
+			float val = effect->filter->process(speed) * 0.035f; // TODO tune friction
 
 			// Only active outside deadband. Process filter always!
 			if(abs(pos-effect->offset) < effect->deadBand){
