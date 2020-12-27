@@ -80,7 +80,14 @@ void SPI_Buttons::setConfig(ButtonSourceConfig config){
 	this->conf = config;
 	mask = pow(2,config.numButtons)-1;
 	offset = 8 - (config.numButtons % 8);
-	bytes = 1+((config.numButtons-1)/8);
+
+	// Thrustmaster uses extra bits for IDs
+	if(config.mode == SPI_BtnMode::TM){
+		bytes = 1+((config.numButtons+2)/8);
+	}else{
+		bytes = 1+((config.numButtons-1)/8);
+	}
+
 	this->btnnum = config.numButtons;
 }
 
