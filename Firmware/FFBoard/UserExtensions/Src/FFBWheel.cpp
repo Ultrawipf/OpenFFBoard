@@ -30,7 +30,8 @@ const std::vector<class_entry<ButtonSource>> button_sources =
 		add_class<LocalButtons,ButtonSource>(),
 #endif
 #ifdef SPIBUTTONS
-		add_class<SPI_Buttons,ButtonSource>(),
+		add_class<SPI_Buttons_1,ButtonSource>(),
+		add_class<SPI_Buttons_2,ButtonSource>(),
 #endif
 #ifdef SHIFTERBUTTONS
 		add_class<ShifterAnalog,ButtonSource>(),

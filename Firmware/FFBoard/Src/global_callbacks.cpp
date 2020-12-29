@@ -169,45 +169,45 @@ void HAL_CAN_ErrorCallback(CAN_HandleTypeDef *hcan){
 #endif
 
 // SPI
-std::vector<SpiHandler*> spiHandlers;
+
 void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef *hspi){
-	for(SpiHandler* c : spiHandlers){
+	for(SpiHandler* c : SpiHandler::getSPIHandlers()){
 		c->SpiTxCplt(hspi);
 	}
 }
 
 void HAL_SPI_RxCpltCallback(SPI_HandleTypeDef *hspi){
-	for(SpiHandler* c : spiHandlers){
+	for(SpiHandler* c : SpiHandler::getSPIHandlers()){
 		c->SpiRxCplt(hspi);
 	}
 }
 
 void HAL_SPI_TxRxCpltCallback(SPI_HandleTypeDef *hspi){
-	for(SpiHandler* c : spiHandlers){
+	for(SpiHandler* c : SpiHandler::getSPIHandlers()){
 		c->SpiTxRxCplt(hspi);
 	}
 }
 
 void HAL_SPI_TxHalfCpltCallback(SPI_HandleTypeDef *hspi){
-	for(SpiHandler* c : spiHandlers){
+	for(SpiHandler* c : SpiHandler::getSPIHandlers()){
 		c->SpiTxHalfCplt(hspi);
 	}
 }
 
 void HAL_SPI_RxHalfCpltCallback(SPI_HandleTypeDef *hspi){
-	for(SpiHandler* c : spiHandlers){
+	for(SpiHandler* c : SpiHandler::getSPIHandlers()){
 		c->SpiRxHalfCplt(hspi);
 	}
 }
 
 void HAL_SPI_TxRxHalfCpltCallback(SPI_HandleTypeDef *hspi){
-	for(SpiHandler* c : spiHandlers){
+	for(SpiHandler* c : SpiHandler::getSPIHandlers()){
 		c->SpiTxRxHalfCplt(hspi);
 	}
 }
 
 void HAL_SPI_ErrorCallback(SPI_HandleTypeDef *hspi){
-	for(SpiHandler* c : spiHandlers){
+	for(SpiHandler* c : SpiHandler::getSPIHandlers()){
 		c->SpiError(hspi);
 	}
 }

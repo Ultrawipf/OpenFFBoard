@@ -5,50 +5,52 @@
  *      Author: Yannick
  */
 
+#include <math.h>
+
 #include "constants.h"
 #include <SPIButtons.h>
 #include "eeprom_addresses.h"
-#include "math.h"
 
-ClassIdentifier SPI_Buttons::info = {
-		 .name = "SPI" ,
+ClassIdentifier SPI_Buttons_1::info = {
+		 .name = "SPI 1" ,
 		 .id=1
  };
-const ClassIdentifier SPI_Buttons::getInfo(){
+const ClassIdentifier SPI_Buttons_1::getInfo(){
 	return info;
 }
 
-SPI_Buttons::SPI_Buttons() {
-	restoreFlash();
+ClassIdentifier SPI_Buttons_2::info = {
+		 .name = "SPI 2" ,
+		 .id=2
+ };
+const ClassIdentifier SPI_Buttons_2::getInfo(){
+	return info;
+}
 
+SPI_Buttons::SPI_Buttons(OutputPin &cs, uint16_t configuration_address)
+	: spi_config{cs}, configuration_address{configuration_address} {
+
+	this->spi_config.peripheral.BaudRatePrescaler = SPIBUTTONS_SPEED;
+	this->spi_config.peripheral.FirstBit = SPI_FIRSTBIT_LSB;
+	this->spi_config.peripheral.CLKPhase = SPI_PHASE_1EDGE;
+	this->spi_config.peripheral.CLKPolarity = SPI_POLARITY_LOW;
+
+	restoreFlash();
 	initSPI();
 
 	this->setCommandsEnabled(true);
 }
 
+const SPIConfig& SPI_Buttons::getConfig() const {
+	return spi_config;
+}
+
+void SPI_Buttons::beginRequest(SPIPort::Pipe& pipe) {
+	pipe.beginRx(spi_buf, MIN(bytes, 4));
+}
+
 void SPI_Buttons::initSPI(){
-	spi = &HSPI2;
-	cspin = SPI2_NSS_Pin;
-	csport = SPI2_NSS_GPIO_Port;
-	this->spi->Init.BaudRatePrescaler = SPIBUTTONS_SPEED;
-	this->spi->Init.FirstBit = SPI_FIRSTBIT_LSB;
-	this->spi->Init.CLKPhase = SPI_PHASE_1EDGE;
-	this->spi->Init.CLKPolarity = SPI_POLARITY_LOW;
-
-
-
-	// Setup presets
-	if(conf.mode == SPI_BtnMode::TM){
-		this->conf.cspol = false;
-
-		this->spi->Init.CLKPolarity = SPI_POLARITY_LOW;
-
-	}else if(conf.mode == SPI_BtnMode::PISOSR){
-		this->conf.cspol = true;
-		this->spi->Init.CLKPolarity = SPI_POLARITY_HIGH;
-	}
-
-	HAL_SPI_Init(this->spi);
+	attachToPort(external_spi);
 }
 
 SPI_Buttons::~SPI_Buttons() {
@@ -60,24 +62,25 @@ SPI_Buttons::~SPI_Buttons() {
  */
 void SPI_Buttons::setMode(SPI_BtnMode mode){
 	this->conf.mode = mode;
-
-	if(conf.mode == SPI_BtnMode::TM){
-		this->conf.cspol = false;
-		this->conf.cutRight = true;
-
-
-	}else if(conf.mode == SPI_BtnMode::PISOSR){
-		this->conf.cspol = true;
-
-	}
-
 	setConfig(conf);
-	initSPI(); // Reinit spi
 }
 
 void SPI_Buttons::setConfig(ButtonSourceConfig config){
 	config.numButtons = MIN(this->maxButtons, config.numButtons);
 	this->conf = config;
+
+	// Setup presets
+	if(conf.mode == SPI_BtnMode::TM){
+		this->conf.cspol = false;
+		this->conf.cutRight = true;
+		this->spi_config.peripheral.CLKPolarity = SPI_POLARITY_LOW;
+
+	}else if(conf.mode == SPI_BtnMode::PISOSR){
+		this->conf.cspol = true;
+		this->spi_config.peripheral.CLKPhase = SPI_PHASE_1EDGE;
+		this->spi_config.peripheral.CLKPolarity = SPI_POLARITY_LOW;
+	}
+
 	mask = pow(2,config.numButtons)-1;
 	offset = 8 - (config.numButtons % 8);
 	bytes = 1+((config.numButtons-1)/8);
@@ -89,12 +92,12 @@ ButtonSourceConfig* SPI_Buttons::getConfig(){
 }
 
 void SPI_Buttons::saveFlash(){
-	Flash_Write(ADR_SPI_BTN_CONF, SPI_Buttons::encodeConfToInt(this->getConfig()));
+	Flash_Write(configuration_address, SPI_Buttons::encodeConfToInt(this->getConfig()));
 }
 
 void SPI_Buttons::restoreFlash(){
 	uint16_t confint = 0;
-	Flash_Read(ADR_SPI_BTN_CONF, &confint);
+	Flash_Read(configuration_address, &confint);
 	this->setConfig(SPI_Buttons::decodeIntToConf(confint));
 }
 
@@ -113,24 +116,14 @@ void SPI_Buttons::process(uint32_t* buf){
 
 __attribute__((optimize("-Ofast")))
 void SPI_Buttons::readButtons(uint32_t* buf){
-
 	memcpy(buf,this->spi_buf,MIN(this->bytes,4));
 	process(buf); // give back last buffer
 
-	if(this->spibusy)
+	if(this->requestPending())
 		return;	// Don't wait.
 
 	// Get next buffer
-	HAL_GPIO_WritePin(this->csport,this->cspin,conf.cspol ? GPIO_PIN_SET : GPIO_PIN_RESET);
-	spibusy = true;
-	HAL_SPI_Receive_DMA(this->spi,spi_buf, MIN(this->bytes,4));
-}
-
-void SPI_Buttons::SpiRxCplt(SPI_HandleTypeDef *hspi){
-	if(hspi == this->spi && spibusy){
-		spibusy = false;
-		HAL_GPIO_WritePin(this->csport,this->cspin,conf.cspol ? GPIO_PIN_RESET : GPIO_PIN_SET);
-	}
+	requestPort();
 }
 
 void SPI_Buttons::printModes(std::string* reply){
@@ -141,7 +134,9 @@ void SPI_Buttons::printModes(std::string* reply){
 
 ParseStatus SPI_Buttons::command(ParsedCommand* cmd,std::string* reply){
 	ParseStatus result = ParseStatus::OK;
-	if(cmd->cmd == "spi_btnnum"){
+	auto prefix{"spi" + std::to_string(static_cast<CommandHandler&>(*this).getInfo().id) + "_"};
+
+	if(cmd->cmd == prefix + "btnnum"){
 		if(cmd->type == CMDtype::set){
 			ButtonSourceConfig* c = this->getConfig();
 			c->numButtons = cmd->val;
@@ -152,7 +147,7 @@ ParseStatus SPI_Buttons::command(ParsedCommand* cmd,std::string* reply){
 		}else{
 			*reply+="Err. Supply number of buttons";
 		}
-	}else if(cmd->cmd == "spi_btnpol"){
+	}else if(cmd->cmd == prefix + "btnpol"){
 		if(cmd->type == CMDtype::set){
 			ButtonSourceConfig* c = this->getConfig();
 			c->invert = cmd->val == 0 ? false : true;
@@ -165,7 +160,7 @@ ParseStatus SPI_Buttons::command(ParsedCommand* cmd,std::string* reply){
 			*reply+="Err. invert: 1 else 0";
 			result = ParseStatus::ERR;
 		}
-	}else if(cmd->cmd == "spi_btncut"){
+	}else if(cmd->cmd == prefix + "btncut"){
 		if(cmd->type == CMDtype::set){
 			ButtonSourceConfig* c = this->getConfig();
 			c->cutRight = cmd->val == 0 ? false : true;
@@ -178,7 +173,7 @@ ParseStatus SPI_Buttons::command(ParsedCommand* cmd,std::string* reply){
 		}else{
 			*reply+="Err. cut bytes right: 1 else 0";
 		}
-	}else if(cmd->cmd == "spibtn_mode"){
+	}else if(cmd->cmd == prefix + "btn_mode"){
 		if(cmd->type == CMDtype::set){
 			setMode((SPI_BtnMode)cmd->val);
 		}else if(cmd->type == CMDtype::get){
@@ -188,7 +183,7 @@ ParseStatus SPI_Buttons::command(ParsedCommand* cmd,std::string* reply){
 		}
 	}else if(cmd->cmd == "help"){
 		result = ParseStatus::OK_CONTINUE;
-		*reply += "SPI Button: spibtn_mode,spi_btncut,spi_btnpol,spi_btnnum\n";
+		*reply += "SPI Button: spi#_btn_mode,spi#_btncut,spi#_btnpol,spi#_btnnum\n";
 	}else{
 		result = ParseStatus::NOT_FOUND;
 	}
