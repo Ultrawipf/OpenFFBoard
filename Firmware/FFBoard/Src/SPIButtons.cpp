@@ -77,6 +77,7 @@ void SPI_Buttons::setConfig(ButtonSourceConfig config){
 
 	}else if(conf.mode == SPI_BtnMode::PISOSR){
 		this->conf.cspol = true;
+		this->conf.cutRight = false;
 		this->spi_config.peripheral.CLKPhase = SPI_PHASE_1EDGE;
 		this->spi_config.peripheral.CLKPolarity = SPI_POLARITY_LOW;
 	}
