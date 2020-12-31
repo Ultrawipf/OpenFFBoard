@@ -25,7 +25,9 @@ ShifterAnalog::ShifterAnalog() {
 }
 
 ShifterAnalog::~ShifterAnalog() {
-
+	if (g27ShifterButtonClient) {
+		delete g27ShifterButtonClient;
+	}
 }
 
 void ShifterAnalog::updateAdc(){
