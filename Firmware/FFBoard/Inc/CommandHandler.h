@@ -30,6 +30,18 @@ protected:
 	virtual void addCommandHandler();
 	virtual void removeCommandHandler();
 
+	template<typename TVal>
+ 	bool handleGetSet(ParsedCommand* cmd, std::string *reply, TVal& val) {
+ 		if (cmd->type == CMDtype::set) {
+ 			val = TVal(cmd->val);
+			return true;
+ 		} else if (cmd->type == CMDtype::get) {
+ 			*reply += std::to_string(val);
+ 		}
+
+		return false;
+ 	}
+
 private:
 
 };

@@ -24,6 +24,13 @@ bool Flash_Write(uint16_t adr,uint16_t dat); // Writes or updates only if change
 bool Flash_Read(uint16_t adr,uint16_t *buf); // returns true if found, false if error
 bool Flash_ReadWriteDefault(uint16_t adr,uint16_t *buf,uint16_t def); // returns and writes def if variable is missing
 
+template<typename TVal>
+ inline TVal Flash_Read(uint16_t adr, TVal def) {
+ 	uint16_t buf;
 
+  	return Flash_Read(adr, &buf)
+ 			? TVal(buf)
+ 			: def;
+ }
 
 #endif /* FLASH_HELPERS_H_ */

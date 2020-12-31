@@ -29,6 +29,7 @@ struct ButtonSourceConfig{
 	bool invert = false;
 	SPI_BtnMode mode=SPI_BtnMode::TM; // Mode preset
 	bool cspol = false; // Set by preset
+	uint8_t cs_num = 0;
 };
 
 
@@ -36,7 +37,6 @@ class SPI_Buttons: public ButtonSource,public CommandHandler,public SPIDevice {
 public:
 	const std::vector<std::string> mode_names = {"Thrustmaster/HEF4021BT","Shift register (74HC165)"};
 
-	SPI_Buttons(OutputPin &cs, uint16_t configuration_address);
 	virtual ~SPI_Buttons();
 
 	void readButtons(uint32_t* buf);
@@ -55,11 +55,12 @@ public:
 	const SPIConfig& getConfig() const override;
     void beginRequest(SPIPort::Pipe& pipe) override;
 
-private:
-	static ButtonSourceConfig decodeIntToConf(uint16_t val);
-	static uint16_t encodeConfToInt(ButtonSourceConfig* c);
+protected:
+	SPI_Buttons(uint16_t configuration_address, uint16_t configuration_address_2);
 
+private:
 	const uint16_t configuration_address;
+	const uint16_t configuration_address_2;
 
 	void setConfig(ButtonSourceConfig config);
 	virtual ButtonSourceConfig* getConfig();
@@ -77,7 +78,7 @@ private:
 class SPI_Buttons_1 : public SPI_Buttons {
 public:
 	SPI_Buttons_1()
-		: SPI_Buttons{external_spi_cs1, ADR_SPI_BTN_1_CONF} {}
+		: SPI_Buttons{ADR_SPI_BTN_1_CONF, ADR_SPI_BTN_1_CONF_2} {}
 
 	const ClassIdentifier getInfo() override;
 	static ClassIdentifier info;
@@ -86,7 +87,7 @@ public:
 class SPI_Buttons_2 : public SPI_Buttons {
 public:
 	SPI_Buttons_2()
-		: SPI_Buttons{external_spi_cs2, ADR_SPI_BTN_2_CONF} {}
+		: SPI_Buttons{ADR_SPI_BTN_2_CONF, ADR_SPI_BTN_2_CONF_2} {}
 
 	const ClassIdentifier getInfo() override;
 	static ClassIdentifier info;

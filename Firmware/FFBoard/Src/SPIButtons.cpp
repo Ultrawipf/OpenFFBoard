@@ -6,10 +6,14 @@
  */
 
 #include <math.h>
+#include <tuple>
 
 #include "constants.h"
 #include <SPIButtons.h>
 #include "eeprom_addresses.h"
+
+static ButtonSourceConfig decodeIntToConf(uint16_t config, uint16_t config_int_2);
+static std::tuple<uint16_t, uint16_t> encodeConfToInt(ButtonSourceConfig* c);
 
 ClassIdentifier SPI_Buttons_1::info = {
 		 .name = "SPI 1" ,
@@ -27,8 +31,8 @@ const ClassIdentifier SPI_Buttons_2::getInfo(){
 	return info;
 }
 
-SPI_Buttons::SPI_Buttons(OutputPin &cs, uint16_t configuration_address)
-	: spi_config{cs}, configuration_address{configuration_address} {
+SPI_Buttons::SPI_Buttons(uint16_t configuration_address, uint16_t configuration_address_2)
+	: configuration_address{configuration_address}, configuration_address_2{configuration_address_2}, spi_config{*getExternalSPI_CSPins()[0]} {
 
 	this->spi_config.peripheral.BaudRatePrescaler = SPIBUTTONS_SPEED;
 	this->spi_config.peripheral.FirstBit = SPI_FIRSTBIT_LSB;
@@ -68,6 +72,11 @@ void SPI_Buttons::setMode(SPI_BtnMode mode){
 void SPI_Buttons::setConfig(ButtonSourceConfig config){
 	config.numButtons = MIN(this->maxButtons, config.numButtons);
 	this->conf = config;
+	
+	auto cs_pins{getExternalSPI_CSPins()};
+	if (config.cs_num < cs_pins.size()) {
+		this->spi_config.cs = *cs_pins[config.cs_num - 1];
+	}
 
 	// Setup presets
 	if(conf.mode == SPI_BtnMode::TM){
@@ -93,13 +102,17 @@ ButtonSourceConfig* SPI_Buttons::getConfig(){
 }
 
 void SPI_Buttons::saveFlash(){
-	Flash_Write(configuration_address, SPI_Buttons::encodeConfToInt(this->getConfig()));
+	auto [configuration_int, cs_num_int] = encodeConfToInt(this->getConfig());
+
+	Flash_Write(configuration_address, configuration_int);
+	Flash_Write(configuration_address_2, cs_num_int);
 }
 
 void SPI_Buttons::restoreFlash(){
-	uint16_t confint = 0;
-	Flash_Read(configuration_address, &confint);
-	this->setConfig(SPI_Buttons::decodeIntToConf(confint));
+	uint16_t conf_int = Flash_Read(configuration_address, 0);
+	uint16_t cs_num_int = Flash_Read(configuration_address_2, 1);
+
+	setConfig(decodeIntToConf(conf_int, cs_num_int));
 }
 
 void SPI_Buttons::process(uint32_t* buf){
@@ -182,7 +195,11 @@ ParseStatus SPI_Buttons::command(ParsedCommand* cmd,std::string* reply){
 		}else{
 			printModes(reply);
 		}
-	}else if(cmd->cmd == "help"){
+	} else if (cmd->cmd == prefix + "btn_cs"){
+		if (handleGetSet(cmd, reply, this->conf.cs_num)) {
+			setConfig(this->conf);
+		}
+	} else if(cmd->cmd == "help"){
 		result = ParseStatus::OK_CONTINUE;
 		*reply += "SPI Button: spi#_btn_mode,spi#_btncut,spi#_btnpol,spi#_btnnum\n";
 	}else{
@@ -191,20 +208,20 @@ ParseStatus SPI_Buttons::command(ParsedCommand* cmd,std::string* reply){
 	return result;
 }
 
-
-ButtonSourceConfig SPI_Buttons::decodeIntToConf(uint16_t val){
+static ButtonSourceConfig decodeIntToConf(uint16_t config_int, uint16_t config_int_2){
 	ButtonSourceConfig c;
-	c.numButtons = val & 0x3F;
-	c.invert = (val >> 6) & 0x1;
-	c.cutRight = (val >> 7) & 0x1;
-	c.mode = SPI_BtnMode(val >> 8);
+	c.numButtons = config_int & 0x3F;
+	c.invert = (config_int >> 6) & 0x1;
+	c.cutRight = (config_int >> 7) & 0x1;
+	c.mode = SPI_BtnMode(config_int >> 8);
+	c.cs_num = static_cast<uint8_t>(config_int_2 & 0xF); // Leaving space for other use.
 	return c;
 }
-uint16_t SPI_Buttons::encodeConfToInt(ButtonSourceConfig* c){
+static std::tuple<uint16_t, uint16_t> encodeConfToInt(ButtonSourceConfig* c){
 	uint16_t val = c->numButtons & 0x3F;
 	val |= c->invert << 6;
 	val |= c->cutRight << 7;
 	val |= (uint8_t)c->mode << 8;
-	return val;
+	return { val, c->cs_num & 0xF };
 }
 

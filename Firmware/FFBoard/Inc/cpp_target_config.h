@@ -11,8 +11,7 @@
 #include "SPI.h"
 
 extern SPIPort external_spi;
-extern OutputPin external_spi_cs1;
-extern OutputPin external_spi_cs2;
-extern OutputPin external_spi_cs3;
+
+const std::vector<OutputPin*>& getExternalSPI_CSPins();
 
 #endif

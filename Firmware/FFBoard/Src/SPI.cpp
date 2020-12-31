@@ -2,13 +2,25 @@
 
 #include "SPI.h"
 
-static void assertChipSelect(const SPIConfig& config)
-{
+static bool operator==(const SPI_InitTypeDef& lhs, const SPI_InitTypeDef& rhs) {
+	return lhs.BaudRatePrescaler == rhs.BaudRatePrescaler
+		&& lhs.CLKPhase == rhs.CLKPhase
+		&& lhs.CLKPolarity == rhs.CLKPolarity
+		&& lhs.CRCCalculation == rhs.CRCCalculation
+		&& lhs.CRCPolynomial == rhs.CRCPolynomial
+		&& lhs.DataSize == rhs.DataSize
+		&& lhs.Direction == rhs.Direction
+		&& lhs.FirstBit == rhs.FirstBit
+		&& lhs.Mode == rhs.Mode
+		&& lhs.NSS == rhs.NSS
+		&& lhs.TIMode == rhs.TIMode;
+}
+
+static void assertChipSelect(const SPIConfig& config) {
 	config.cs.write(!config.cspol);
 }
 
-static void clearChipSelect(const SPIConfig& config)
-{
+static void clearChipSelect(const SPIConfig& config) {
 	config.cs.write(config.cspol);
 }
 
@@ -25,8 +37,11 @@ void SPIPort::process() {
 		if (device.requestPending()) {
 			current_device = &device;
 			auto &config{device.getConfig()};
-			hspi.Init = config.peripheral;
-			HAL_SPI_Init(&hspi);
+
+			if (need_to_reconfigure_peripheral) {
+				hspi.Init = config.peripheral;
+				HAL_SPI_Init(&hspi);
+			}
 
 			assertChipSelect(config);
 			device.beginRequest(pipe);
@@ -41,6 +56,19 @@ void SPIPort::process() {
 void SPIPort::addDevice(SPIDevice& device) {
 	if (std::find(devices.begin(), devices.end(), &device) == devices.end()) {
 		devices.push_back(&device);
+
+		if (!need_to_reconfigure_peripheral) {
+			if (devices.size() == 1) {
+				// First device, configure port for this device.
+				auto &config{device.getConfig()};
+				hspi.Init = config.peripheral;
+				HAL_SPI_Init(&hspi);
+			} else {
+				// Not the first device, see if peripheral config matches.
+				// If it does, we can avoid reconfiguring the peripheral.
+				need_to_reconfigure_peripheral = devices.front()->getConfig().peripheral == device.getConfig().peripheral;
+			}
+		}
 	}
 
 	clearChipSelect(device.getConfig());

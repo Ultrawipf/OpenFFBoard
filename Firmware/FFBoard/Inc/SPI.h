@@ -14,27 +14,7 @@
 #include "stm32f4xx_hal.h"
 
 #include "SpiHandler.h"
-
-class OutputPin {
-public:
-	OutputPin(GPIO_TypeDef &port, uint16_t pin)
-		: port{port}, pin{pin} {}
-
-	void set() const {
-		write(true);
-	}
-
-	void reset() const {
-		write(false);      
-	}
-
-	void write(bool state) const {
-		HAL_GPIO_WritePin(&port, pin, state ? GPIO_PIN_SET : GPIO_PIN_RESET);
-	}
-private:
-	GPIO_TypeDef &port;
-	const uint16_t pin;
-};
+#include "OutputPin.h"
 
 struct SPIConfig {
 	SPIConfig(OutputPin cs)
@@ -110,6 +90,7 @@ private:
 	std::atomic_flag port_busy{false};
 	Pipe pipe{*this};
 	SPIDevice* current_device{nullptr};
+	bool need_to_reconfigure_peripheral{false};
 };
 
 class SPIDevice {
