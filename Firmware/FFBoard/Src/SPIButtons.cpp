@@ -16,7 +16,7 @@ static ButtonSourceConfig decodeIntToConf(uint16_t config, uint16_t config_int_2
 static std::tuple<uint16_t, uint16_t> encodeConfToInt(ButtonSourceConfig* c);
 
 ClassIdentifier SPI_Buttons_1::info = {
-		 .name = "SPI 1" ,
+		 .name = "SPI Buttons 1" ,
 		 .id=1
  };
 const ClassIdentifier SPI_Buttons_1::getInfo(){
@@ -24,7 +24,7 @@ const ClassIdentifier SPI_Buttons_1::getInfo(){
 }
 
 ClassIdentifier SPI_Buttons_2::info = {
-		 .name = "SPI 2" ,
+		 .name = "SPI Buttons 2" ,
 		 .id=2
  };
 const ClassIdentifier SPI_Buttons_2::getInfo(){
@@ -89,7 +89,14 @@ void SPI_Buttons::setConfig(ButtonSourceConfig config){
 
 	mask = pow(2,config.numButtons)-1;
 	offset = 8 - (config.numButtons % 8);
-	bytes = 1+((config.numButtons-1)/8);
+
+	// Thrustmaster uses extra bits for IDs
+	if(config.mode == SPI_BtnMode::TM){
+		bytes = 1+((config.numButtons+2)/8);
+	}else{
+		bytes = 1+((config.numButtons-1)/8);
+	}
+
 	this->btnnum = config.numButtons;
 }
 

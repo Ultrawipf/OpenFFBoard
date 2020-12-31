@@ -260,7 +260,7 @@ int16_t FFBWheel::updateEndstop(){
 	int32_t addtorque = 0;
 
 	addtorque += clip<int32_t,int32_t>(abs(lastScaledEnc)-0x7fff,-0x7fff,0x7fff);
-	addtorque *= (float)endstop_gain_i * 0.3f; // Apply endstop gain for stiffness
+	addtorque *= (float)endstop_gain_i * 0.2f; // Apply endstop gain for stiffness
 	addtorque *= -clipdir;
 
 	return clip<int32_t,int32_t>(addtorque,-0x7fff,0x7fff);
@@ -485,7 +485,14 @@ void FFBWheel::send_report(){
 		*analogAxesReport[count] = 0;
 	}
 
-	USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS, reinterpret_cast<uint8_t*>(&reportHID), sizeof(reportHID_t));
+	/*
+	 * Only send a new report if actually changed since last time or timeout
+	 */
+	if(reportSendCounter++ > 100 || (memcmp(&lastReportHID,&reportHID,sizeof(reportHID_t)) != 0) ){
+		USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS, reinterpret_cast<uint8_t*>(&reportHID), sizeof(reportHID_t));
+		lastReportHID = reportHID;
+		reportSendCounter = 0;
+	}
 
 }
 
