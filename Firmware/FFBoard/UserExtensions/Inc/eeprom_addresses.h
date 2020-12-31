@@ -10,7 +10,7 @@
 
 #include "main.h"
 // Change this to the amount of currently registered variables
-#define NB_OF_VAR	28
+#define NB_OF_VAR	33
 
 extern uint16_t VirtAddVarTab[NB_OF_VAR];
 
@@ -73,5 +73,12 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 
 // Local analog source
 #define ADR_LOCALANALOG_MASK			0x230
+
+// Shifter Analog
+#define ADR_SHIFTERANALOG_X_12			0x240
+#define ADR_SHIFTERANALOG_X_56			0x241
+#define ADR_SHIFTERANALOG_Y_135			0x242
+#define ADR_SHIFTERANALOG_Y_246			0x243
+#define ADR_SHIFTERANALOG_REV_BTN		0x244
 
 #endif /* EEPROM_ADDRESSES_H_ */

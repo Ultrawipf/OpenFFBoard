@@ -8,6 +8,7 @@
 #include "FFBWheel.h"
 #include "FFBWheel_usb_init.h"
 #include "voltagesense.h"
+#include "ButtonSink.h"
 
 // Unique identifier for listing
 ClassIdentifier FFBWheel::info = {
@@ -465,6 +466,10 @@ void FFBWheel::send_report(){
 			reportHID.buttons |= buf << shift;
 			shift += btn->getBtnNum();
 		}
+	}
+
+	for (auto btnSink : ButtonSink::getButtonSinks()) {
+		btnSink->updateButtonState(&reportHID.buttons, MIN(shift, 32));
 	}
 
 	uint8_t count = 0;

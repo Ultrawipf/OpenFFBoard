@@ -1,11 +1,13 @@
 /*
- * ShifterG29.cpp
+ * ShifterAnalog.cpp
  *
  *  Created on: 27.02.2020
  *      Author: Yannick
  */
 
-#include <ShifterAnalog.h>
+#include <functional>
+
+#include "ShifterAnalog.h"
 #include "global_callbacks.h"
 
 ClassIdentifier ShifterAnalog::info = {
@@ -65,7 +67,7 @@ void ShifterAnalog::readButtons(uint32_t* buf){
 			  gear=4;       // 4th gear
 		}
 
-		if(gear == 6 && (HAL_GPIO_ReadPin(rev_port,rev_pin) == GPIO_PIN_SET)){
+		if(gear == 6 && reverseButtonState){
 			gear = 7; // Reverse
 		}
 	}
@@ -85,17 +87,26 @@ uint16_t ShifterAnalog::getBtnNum(){
 	}
 }
 
-
+void ShifterAnalog::updateButtonState(uint32_t* buf, uint16_t numButtons) {
+	reverseButtonState = getButtonState(buf, numButtons, reverseButtonNum);
+}
 
 void ShifterAnalog::saveFlash(){
-	uint16_t val = (uint8_t)this->mode;
-	Flash_Write(ADR_SHIFTER_BTN_CONF, val);
+	Flash_Write(ADR_SHIFTER_BTN_CONF, static_cast<uint8_t>(mode));
+	Flash_Write(ADR_SHIFTERANALOG_X_12, X_12);
+	Flash_Write(ADR_SHIFTERANALOG_X_56, X_56);
+	Flash_Write(ADR_SHIFTERANALOG_Y_135, Y_135);
+	Flash_Write(ADR_SHIFTERANALOG_Y_246, Y_246);
+	Flash_Write(ADR_SHIFTERANALOG_REV_BTN, reverseButtonNum);
 }
 
 void ShifterAnalog::restoreFlash(){
-	uint16_t confint = 0;
-	Flash_Read(ADR_SHIFTER_BTN_CONF, &confint);
-	this->mode = ShifterMode(confint);
+	mode = Flash_Read(ADR_SHIFTER_BTN_CONF, ShifterMode::G29_H);
+	X_12 = Flash_Read(ADR_SHIFTERANALOG_X_12, X_12);
+	X_56 = Flash_Read(ADR_SHIFTERANALOG_X_56, X_56);
+	Y_135 = Flash_Read(ADR_SHIFTERANALOG_Y_135, Y_135);
+	Y_246 = Flash_Read(ADR_SHIFTERANALOG_Y_246, Y_246);
+	reverseButtonNum = Flash_Read(ADR_SHIFTERANALOG_REV_BTN, reverseButtonNum);
 }
 
 void ShifterAnalog::printModes(std::string* reply){
@@ -115,6 +126,18 @@ ParseStatus ShifterAnalog::command(ParsedCommand* cmd,std::string* reply){
 		}else{
 			printModes(reply);
 		}
+	}else if (cmd->cmd == "shifter_x_12"){
+		handleGetSet(cmd, reply, X_12);
+	}else if (cmd->cmd == "shifter_x_56"){
+		handleGetSet(cmd, reply, X_56);
+	}else if(cmd->cmd == "shifter_y_135"){
+		handleGetSet(cmd, reply, Y_135);
+	}else if(cmd->cmd == "shifter_y_246"){
+		handleGetSet(cmd, reply, Y_246);
+	}else if (cmd->cmd == "shifter_rev_btn"){
+		handleGetSet(cmd, reply, reverseButtonNum);
+	}else if (cmd->cmd == "shifter_vals" && cmd->type == CMDtype::get){
+		*reply += std::to_string(x_val) + "," + std::to_string(y_val);
 	}else{
 		result = ParseStatus::NOT_FOUND;
 	}
