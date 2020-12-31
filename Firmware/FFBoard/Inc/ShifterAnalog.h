@@ -11,26 +11,28 @@
 #include <vector>
 
 #include "ButtonSource.h"
-#include "ButtonSink.h"
 #include "CommandHandler.h"
 #include "PersistentStorage.h"
-
-class ShifterAnalog : public ButtonSource,CommandHandler,ButtonSink {
+#include "SPI.h"
 
 /*
- * Button mapper for analog (Logitech G29) shifters (6 gears + reverse)
- * Connection:
- * X-Axis: A5
- * Y-Axis: A6
- * Reverse Button: D1
+ * Button mapper for analog (Logitech G2x) shifters (6 gears + reverse) optionally SPI buttons on G27.
  *
- * Invert flag switches between H-mode and sequential mode (90° rotated)
+ * Connection:
+ *  X-Axis: mappable analog
+ *  Y-Axis: mappable analog
+ *  Reverse Button: mappable digital for G29, SPI button for G27.
+ *
  */
+class ShifterAnalog : public ButtonSource,CommandHandler {
 
-enum class ShifterMode : uint8_t {G29_H=0,G29_seq=1};
+enum class ShifterMode : uint8_t {G29_H=0,G29_seq=1,G27_H=2,G27_seq=3};
 
 public:
-	const std::vector<std::string> mode_names = {"G2x-H","G2x Sequential"};
+	static constexpr int number_of_modes{4};
+	const std::array<std::string, number_of_modes> mode_names {"G29-H","G29 Sequential","G27-H","G27 Sequential"};
+	static constexpr std::array<bool, number_of_modes> mode_uses_spi {false, false, true, true};
+	static constexpr std::array<bool, number_of_modes> mode_uses_local_reverse {true, true, false, false};
 
 	ShifterAnalog();
 	virtual ~ShifterAnalog();
@@ -49,15 +51,36 @@ public:
 	ParseStatus command(ParsedCommand* cmd,std::string* reply);
 
 private:
+	class G27ShifterButtonClient : SPIDevice {
+	public:
+		G27ShifterButtonClient(const OutputPin& csPin);
+
+		static constexpr int numUserButtons{12};
+
+		void requestUpdate() {
+			requestPort();
+		}
+
+		void updateCSPin(const OutputPin& csPin);
+
+		uint16_t getUserButtons();
+		bool getReverseButton();
+	private:
+		SPIConfig config;
+		uint16_t buttonStates{0};
+
+		const SPIConfig& getConfig() const override;
+		void beginRequest(SPIPort::Pipe& pipe) override;
+	};
+
 	ShifterMode mode;
 
-	static constexpr uint8_t x_chan{5};
-	static constexpr uint8_t y_chan{4};
-
+	uint8_t x_chan{5};
+	uint8_t y_chan{4};
 	uint8_t reverseButtonNum{1};
-	bool reverseButtonState{false};
+	uint8_t cs_pin_num{1};
 
-	// H-Shifter axis values (Measured for G26)
+	// H-Shifter axis values (Measured for G29)
 	uint16_t X_12{1600};
 	uint16_t X_56{2500};
 	uint16_t Y_135{3200};
@@ -65,11 +88,19 @@ private:
 
 	uint16_t x_val{0};
 	uint16_t y_val{0};
-
+	bool reverseButtonState{false};
 	uint8_t gear{0};
 
+	G27ShifterButtonClient *g27ShifterButtonClient{nullptr};
+
+	static bool isG27Mode(ShifterMode m);
+
 	void updateAdc();
-	void updateButtonState(std::uint32_t* buf, std::uint16_t numButtons) override;
+	void setMode(ShifterMode newMode);
+	void setCSPin(uint8_t new_cs_pin_num);
+	void calculateGear();
+	void updateReverseState();
+	int getUserButtons(uint32_t* buf);
 };
 
 #endif /* SHIFTERANALOG_H_ */
