@@ -27,7 +27,7 @@
 		<link>
 			<name>Targets/F407VG/FFBoard</name>
 			<type>2</type>
-			<location>F:/ST/OpenFFBoard/Firmware/FFBoard</location>
+			<locationURI>PROJECT_LOC/FFBoard</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>

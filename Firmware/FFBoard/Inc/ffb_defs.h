@@ -97,7 +97,7 @@ struct  __attribute__((__packed__)) reportHID_t {
 		int16_t RZ = 0;
 		int16_t Dial = 0;
 		int16_t Slider = 0;
-	};
+};
 
 typedef struct
 {

@@ -118,6 +118,9 @@ private:
 	std::vector<AnalogSource*> analog_inputs;
 
 	reportHID_t reportHID;
+	reportHID_t lastReportHID;
+	uint8_t reportSendCounter = 0;
+
 	int16_t* analogAxesReport[8] = {&reportHID.X,&reportHID.Y,&reportHID.Z,&reportHID.RX,&reportHID.RY,&reportHID.RZ,&reportHID.Slider,&reportHID.Dial};
 	const uint8_t analogAxisCount = 8;
 	uint16_t power = 2000;

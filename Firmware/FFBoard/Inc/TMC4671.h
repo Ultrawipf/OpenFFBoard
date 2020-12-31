@@ -133,7 +133,7 @@ struct TMC4671AENCConf{
 };
 
 struct TMC4671HALLConf{
-	bool polarity = false;
+	bool polarity = true;
 	bool interpolation = true;
 	bool direction = false;
 	bool filter = true;
