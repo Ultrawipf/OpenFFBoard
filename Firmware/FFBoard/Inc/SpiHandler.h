@@ -22,6 +22,11 @@ public:
 	virtual void SpiRxHalfCplt(SPI_HandleTypeDef *hspi);
 	virtual void SpiTxRxHalfCplt(SPI_HandleTypeDef *hspi);
 	virtual void SpiError(SPI_HandleTypeDef *hspi);
+
+	static std::vector<SpiHandler*>& getSPIHandlers() {
+		static std::vector<SpiHandler*> spiHandlers{};
+		return spiHandlers;
+	}
 };
 
 #endif /* SPIHANDLER_H_ */
