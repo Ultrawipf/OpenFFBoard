@@ -28,7 +28,6 @@ struct ButtonSourceConfig{
 	bool cutRight = false; // if num buttons to read are not byte aligned specify where to shift
 	bool invert = false;
 	SPI_BtnMode mode=SPI_BtnMode::TM; // Mode preset
-	bool cspol = false; // Set by preset
 	uint8_t cs_num = 0;
 };
 
