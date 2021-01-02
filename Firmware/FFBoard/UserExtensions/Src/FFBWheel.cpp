@@ -31,6 +31,8 @@ const std::vector<class_entry<ButtonSource>> button_sources =
 #endif
 #ifdef SPIBUTTONS
 		add_class<SPI_Buttons_1,ButtonSource>(),
+#endif
+#ifdef SPIBUTTONS2
 		add_class<SPI_Buttons_2,ButtonSource>(),
 #endif
 #ifdef SHIFTERBUTTONS

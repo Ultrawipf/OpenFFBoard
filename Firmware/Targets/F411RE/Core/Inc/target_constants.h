@@ -26,6 +26,7 @@
 // Extra features
 #define LOCALBUTTONS
 #define SPIBUTTONS
+//#define SPIBUTTONS2 // Additional spi source
 #define SHIFTERBUTTONS
 #define ANALOGAXES
 #define TMC4671DRIVER
