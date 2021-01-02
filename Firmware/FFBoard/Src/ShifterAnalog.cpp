@@ -86,7 +86,7 @@ void ShifterAnalog::updateReverseState() {
 	if (g27ShifterButtonClient) {
 		reverseButtonState = g27ShifterButtonClient->getReverseButton();
 	} else {
-		reverseButtonState = LocalButtons::readButton(reverseButtonNum);
+		reverseButtonState = LocalButtons::readButton(reverseButtonNum-1);
 	}
 }
 

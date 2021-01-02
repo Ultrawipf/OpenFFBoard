@@ -30,12 +30,10 @@ public:
 	void restoreFlash();	// Load from flash
 
 	static inline bool readButton(int button_num) {
-		if (button_num > maxButtons) {
+		if (button_num >= maxButtons || button_num < 0) {
 			return false;
 		}
-
-		auto button_index{button_num - 1};
-		return HAL_GPIO_ReadPin(button_ports[button_index], button_pins[button_index]);
+		return HAL_GPIO_ReadPin(button_ports[button_num], button_pins[button_num]);
 	}
 
 private:
