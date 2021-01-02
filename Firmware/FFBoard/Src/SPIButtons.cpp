@@ -80,12 +80,12 @@ void SPI_Buttons::setConfig(ButtonSourceConfig config){
 
 	// Setup presets
 	if(conf.mode == SPI_BtnMode::TM){
-		this->conf.cspol = false;
+		this->spi_config.cspol = true;
 		this->conf.cutRight = true;
 		this->spi_config.peripheral.CLKPolarity = SPI_POLARITY_LOW;
 
 	}else if(conf.mode == SPI_BtnMode::PISOSR){
-		this->conf.cspol = true;
+		this->spi_config.cspol = false;
 		this->conf.cutRight = false;
 		this->spi_config.peripheral.CLKPhase = SPI_PHASE_1EDGE;
 		this->spi_config.peripheral.CLKPolarity = SPI_POLARITY_LOW;
