@@ -33,6 +33,8 @@ struct SPIConfig {
 	}
 
 	OutputPin cs;
+
+	/// CSPOL=true === active low
 	bool cspol;
 	SPI_InitTypeDef peripheral;
 };
