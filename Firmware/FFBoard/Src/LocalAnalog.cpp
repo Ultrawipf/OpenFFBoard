@@ -66,8 +66,8 @@ std::vector<int32_t>* LocalAnalog::getAxes(){
 			int32_t range = (minMaxVals[i].max - minMaxVals[i].min);
 			if(range > 1){
 				float scaler = ((float)0xffff / (float)range);
-				val = val - ((scaler*(float)minMaxVals[i].min) + 0x7fff);
 				val *= scaler;
+				val = val - ((scaler*(float)minMaxVals[i].min) + 0x7fff);
 				val = clip(val,-0x7fff,0x7fff); // Clip if slightly out of range because of inaccuracy
 			}
 		}
