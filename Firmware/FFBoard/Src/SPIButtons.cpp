@@ -72,11 +72,7 @@ void SPI_Buttons::setMode(SPI_BtnMode mode){
 void SPI_Buttons::setConfig(ButtonSourceConfig config){
 	config.numButtons = MIN(this->maxButtons, config.numButtons);
 	this->conf = config;
-	
-	auto cs_pins{getExternalSPI_CSPins()};
-	if (config.cs_num < cs_pins.size()) {
-		this->spi_config.cs = *cs_pins[config.cs_num - 1];
-	}
+	this->spi_config.cs = getExternalSPI_CSPin(config.cs_num);
 
 	// Setup presets
 	if(conf.mode == SPI_BtnMode::TM){

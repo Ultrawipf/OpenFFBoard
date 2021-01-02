@@ -14,4 +14,13 @@ extern SPIPort external_spi;
 
 const std::vector<OutputPin*>& getExternalSPI_CSPins();
 
+inline OutputPin& getExternalSPI_CSPin(unsigned pinNumber) {
+	auto csPins{getExternalSPI_CSPins()};
+	if (pinNumber > csPins.size()) {
+		return *csPins[0];
+	}
+
+	return *csPins[pinNumber - 1];
+}
+
 #endif

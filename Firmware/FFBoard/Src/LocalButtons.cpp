@@ -40,7 +40,7 @@ void LocalButtons::readButtons(uint32_t* buf){
 	uint8_t cur_btn = 0;
 	for(uint8_t i = 0;i<this->maxButtons;i++){
 		if(mask & (0x1 << i)){
-			GPIO_PinState b = HAL_GPIO_ReadPin(button_ports[i],button_pins[i]);
+			bool b{readButton(i)};
 			if(this->polarity){ // positive polarity
 				*buf |= b << cur_btn++;
 			}else{	// Negative polarity (normal)
