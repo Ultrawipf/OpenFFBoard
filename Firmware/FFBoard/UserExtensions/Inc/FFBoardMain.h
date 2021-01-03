@@ -35,6 +35,7 @@ public:
 	virtual void usbSuspend(); // Called on usb disconnect and suspend
 	virtual void usbResume(); // Called on usb resume
 	virtual void updateSys();
+	virtual void printFlashDump(std::string *reply);
 
 private:
 	bool usb_busy_retry = false;

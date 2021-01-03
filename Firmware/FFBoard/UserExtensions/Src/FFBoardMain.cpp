@@ -54,12 +54,29 @@ void FFBoardMain::updateSys(){
 	}
 }
 
+/*
+ * Prints a formatted flash dump to the reply string
+ */
+void FFBoardMain::printFlashDump(std::string *reply){
+	std::vector<std::tuple<uint16_t,uint16_t>> result;
+
+	Flash_Dump(&result);
+	uint16_t adr;
+	uint16_t val;
+
+	for(auto entry : result){
+		std::tie(adr,val) = entry;
+		*reply += std::to_string(adr) + ":" + std::to_string(val) + "\n";
+	}
+
+}
+
 ParseStatus FFBoardMain::executeSysCommand(ParsedCommand* cmd,std::string* reply){
 	ParseStatus flag = ParseStatus::OK;
 
 	if(cmd->cmd == "help"){
 		*reply += parser.helpstring;
-		*reply += "\nSystem Commands: reboot,help,dfu,swver (Version),hwtype,lsmain (List configs),id,main (Set main config),lsactive (print command handlers),vint,vext,format (Erase flash),mallinfo (Mem usage)\n";
+		*reply += "\nSystem Commands: reboot,help,dfu,swver (Version),hwtype,lsmain (List configs),id,main (Set main config),lsactive (print command handlers),vint,vext,format (Erase flash),mallinfo (Mem usage),dumpconf\n";
 		flag = ParseStatus::OK_CONTINUE; // Continue to user commands
 	}else if(cmd->cmd == "reboot"){
 		NVIC_SystemReset();
@@ -80,6 +97,9 @@ ParseStatus FFBoardMain::executeSysCommand(ParsedCommand* cmd,std::string* reply
 
 	}else if(cmd->cmd == "hwtype"){
 		*reply += (HW_TYPE);
+
+	}else if(cmd->cmd == "dumpconf"){ // TODO restore config
+		printFlashDump(reply);
 
 	}else if(cmd->type!=CMDtype::set &&cmd->cmd == "lsmain"){
 		*reply += mainchooser.printAvailableClasses();
