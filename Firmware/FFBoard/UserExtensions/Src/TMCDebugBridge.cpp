@@ -50,7 +50,14 @@ ParseStatus TMCDebugBridge::command(ParsedCommand* cmd,std::string* reply){
 		}else if(cmd->type == CMDtype::set){
 			drv->setTargetPos(cmd->val);
 		}
-	}else if(cmd->cmd == "speed"){
+	}else if(cmd->cmd == "openloopspeed"){
+		if(cmd->type == CMDtype::set){
+			drv->setOpenLoopSpeedAccel(cmd->val,100);
+
+		}else if(cmd->type == CMDtype::setat){
+			drv->runOpenLoop(cmd->adr,0,cmd->val,10);
+		}
+	}else if(cmd->cmd == "velocity"){
 		if(cmd->type == CMDtype::get){
 			*reply+=std::to_string(drv->getVelocity());
 		}else if(cmd->type == CMDtype::set){
@@ -70,6 +77,9 @@ ParseStatus TMCDebugBridge::command(ParsedCommand* cmd,std::string* reply){
 		}else if(cmd->type == CMDtype::setat){
 			drv->writeReg(cmd->adr,cmd->val);
 		}
+	}else if(cmd->cmd == "help"){
+		flag = ParseStatus::OK_CONTINUE;
+		*reply += "TMC Debug:torque,  openloopspeed,pos, velocity,mode,reg\n";
 	}else{
 		flag = ParseStatus::NOT_FOUND;
 	}
@@ -146,6 +156,7 @@ TMCDebugBridge::TMCDebugBridge() {
 	TMC4671MainConfig tmcconf;
 
 	this->drv = new TMC4671(&HSPIDRV,SPI1_SS1_GPIO_Port,SPI1_SS1_Pin,tmcconf);
+	drv->setAddress(1);
 	drv->restoreFlash();
 	drv->initialize();
 	//drv->stop();
