@@ -115,7 +115,7 @@ void ShifterAnalog::readButtons(uint32_t* buf){
 	auto numUserButtons{getUserButtons(buf)};
 
 	if(gear > 0){
-		*buf = 1 << (gear - 1 + numUserButtons);
+		*buf |= 1 << (gear - 1 + numUserButtons);
 	}
 }
 
@@ -251,7 +251,7 @@ bool ShifterAnalog::G27ShifterButtonClient::getReverseButton() {
 }
 
 uint16_t ShifterAnalog::G27ShifterButtonClient::getUserButtons() {
-	return buttonStates >> 2;
+	return buttonStates >> 4;
 }
 
 const SPIConfig& ShifterAnalog::G27ShifterButtonClient::getConfig() const {

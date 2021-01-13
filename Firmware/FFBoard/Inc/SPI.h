@@ -84,6 +84,7 @@ public:
 	void SpiTxCplt(SPI_HandleTypeDef *hspi) override;
 	void SpiRxCplt(SPI_HandleTypeDef *hspi) override;
 	void SpiTxRxCplt(SPI_HandleTypeDef *hspi) override;
+	void SpiError(SPI_HandleTypeDef *hspi) override;
 
 private:
 	SPI_HandleTypeDef &hspi;
@@ -105,6 +106,7 @@ public:
 	virtual void txCompleted(SPIPort::Pipe& pipe) { completeRequest(pipe); }
 	virtual void rxCompleted(SPIPort::Pipe& pipe) { completeRequest(pipe); }
 	virtual void txRxCompleted(SPIPort::Pipe& pipe) { completeRequest(pipe); }
+	virtual void requestError(SPIPort::Pipe& pipe) { completeRequest(pipe); }
 
 	bool requestPending() const { return request_port; }
 protected:

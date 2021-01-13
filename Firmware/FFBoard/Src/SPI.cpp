@@ -83,10 +83,18 @@ void SPIPort::SpiTxCplt(SPI_HandleTypeDef *hspi) {
 		return;
 	}
 
+	if (hspi->Instance != this->hspi.Instance) {
+		return;
+	}
+
 	current_device->txCompleted(pipe);
 }
 void SPIPort::SpiRxCplt(SPI_HandleTypeDef *hspi) {
 	if (current_device == nullptr) {
+		return;
+	}
+
+	if (hspi->Instance != this->hspi.Instance) {
 		return;
 	}
 
@@ -97,7 +105,23 @@ void SPIPort::SpiTxRxCplt(SPI_HandleTypeDef *hspi) {
 		return;
 	}
 
+	if (hspi->Instance != this->hspi.Instance) {
+		return;
+	}
+
 	current_device->txRxCompleted(pipe);
+}
+
+void SPIPort::SpiError(SPI_HandleTypeDef *hspi) {
+	if (current_device == nullptr) {
+		return;
+	}
+
+	if (hspi->Instance != this->hspi.Instance) {
+		return;
+	}
+
+	current_device->requestError(pipe);
 }
 
 void SPIPort::Pipe::beginTx(uint8_t *data, uint16_t size) {
