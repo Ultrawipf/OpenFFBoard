@@ -1254,7 +1254,7 @@ int32_t TMC4671::getActualCurrent(){
 	uint32_t tfluxa = readReg(0x69);
 	//int16_t af = (tfluxa & 0xffff);
 	int16_t at = (tfluxa >> 16);
-	return abs(at);
+	return (at);
 }
 
 __attribute__((optimize("-Ofast")))
@@ -1473,12 +1473,6 @@ ParseStatus TMC4671::command(ParsedCommand* cmd,std::string* reply){
 			*reply+=std::to_string(this->getTemp());
 		}
 
-	}else if(cmd->cmd == "help"){
-		flag = ParseStatus::OK_CONTINUE; // Set flag false to continue parsing
-		*reply += "TMC4671 commands:\n"
-				"mtype,encsrc,encalign,poles,phiesrc,reg,fluxoffset\n"
-				"torqueP,torqueI,fluxP,fluxI\n"
-				"acttrq,seqpi,tmctemp\n";
 	}else{
 		flag = ParseStatus::NOT_FOUND;
 	}

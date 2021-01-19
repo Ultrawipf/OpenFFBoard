@@ -71,13 +71,17 @@ void FFBoardMain::printFlashDump(std::string *reply){
 
 }
 
+
 ParseStatus FFBoardMain::executeSysCommand(ParsedCommand* cmd,std::string* reply){
 	ParseStatus flag = ParseStatus::OK;
 
 	if(cmd->cmd == "help"){
 		*reply += parser.helpstring;
-		*reply += "\nSystem Commands: reboot,help,dfu,swver (Version),hwtype,lsmain (List configs),id,main (Set main config),lsactive (print command handlers),vint,vext,format (Erase flash),mallinfo (Mem usage),dumpconf\n";
-		flag = ParseStatus::OK_CONTINUE; // Continue to user commands
+		extern std::vector<CommandHandler*> cmdHandlers;
+		for(CommandHandler* handler : cmdHandlers){
+			*reply += handler->getHelpstring();
+		}
+		flag = ParseStatus::OK;
 	}else if(cmd->cmd == "reboot"){
 		NVIC_SystemReset();
 	}else if(cmd->cmd == "dfu"){ // Reboot into DFU bootloader mode
@@ -171,7 +175,7 @@ void FFBoardMain::executeCommands(std::vector<ParsedCommand> commands){
 		if(cmd.cmd.empty())
 			continue; // Empty command
 
-		this->cmd_reply+='>'; // Start marker
+		this->cmd_reply+= ">" + cmd.cmd + "="; // Start marker. Echo command
 
 		std::string reply; // Reply of current command
 		status = executeSysCommand(&cmd,&reply);
@@ -197,7 +201,7 @@ void FFBoardMain::executeCommands(std::vector<ParsedCommand> commands){
 			reply+='\n';
 		}
 		if(status == ParseStatus::NOT_FOUND){ //No class reported success. Show error
-			reply = "Err(0). Unknown command: " + cmd.cmd + "\n";
+			reply = "Err(0). Unknown command\n";
 		}else if(status == ParseStatus::ERR){ //Error reported in command
 			reply += "Err(1). Execution error\n";
 		}

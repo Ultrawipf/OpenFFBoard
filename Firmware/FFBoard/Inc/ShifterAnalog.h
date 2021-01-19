@@ -49,6 +49,7 @@ public:
 	void printModes(std::string* reply);
 
 	ParseStatus command(ParsedCommand* cmd,std::string* reply);
+	virtual std::string getHelpstring(){return "Shifter analog: shifter_mode,shifter_x_12,shifter_x_56,shifter_y_135,shifter_y_246,shifter_rev_btn,shifter_cs_pin,shifter_x_chan,shifter_y_chan,shifter_vals,shifter_gear\n";}
 
 private:
 	class G27ShifterButtonClient : SPIDevice {

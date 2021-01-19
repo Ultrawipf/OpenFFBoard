@@ -25,6 +25,8 @@ public:
 	virtual void setCommandsEnabled(bool enable);
 	virtual ParseStatus command(ParsedCommand* cmd,std::string* reply);
 	virtual const ClassIdentifier getInfo() = 0; // Command handlers always have class infos. Works well with ChoosableClass
+	virtual std::string getHelpstring(); // Returns a help string if "help" command is sent
+
 protected:
 	bool commandsEnabled = true;
 	virtual void addCommandHandler();

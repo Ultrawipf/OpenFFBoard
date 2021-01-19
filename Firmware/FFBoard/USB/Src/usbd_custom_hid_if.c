@@ -153,13 +153,14 @@ __ALIGN_BEGIN static uint8_t CUSTOM_HID_ReportDesc_FS[USBD_CUSTOM_HID_REPORT_DES
 		    0xc0,                          //   END_COLLECTION
 
 
-			// Feature report (12)
+			// Feature report
 			/*
+			0x85,HID_ID_CUSTOMCMD+FFB_ID_OFFSET,    //    Report ID
 			0x09, 0x00,                    //   USAGE (Reserved (no event indicated))
-			0x75, 0x08,                    //   REPORT_SIZE (8)
+			0x75, 0x20,                    //   REPORT_SIZE (32)
 			0x95, 0x01,                    //   REPORT_COUNT (1)
 			0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
-			0x25, 0xff,                    //   LOGICAL_MAXIMUM (255)
+			0x27, 0xFF, 0xff, 0xff, 0xff,    //    Logical Maximum FFFFFFFFh (4294967295)
 			0xb1, 0x02,                    //   FEATURE (Data,Var,Abs)
 */
 

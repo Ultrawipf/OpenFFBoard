@@ -225,12 +225,17 @@ void CDC_Finished(){
 		mainclass->cdcFinished();
 }
 
-// USB Out Endpoint callback
+/* USB Out Endpoint callback
+ * HID Out and Set Feature
+ */
 UsbHidHandler* globalHidHandler = nullptr;
 void USBD_OutEvent_HID(uint8_t* report){
 	if(globalHidHandler!=nullptr)
 		globalHidHandler->hidOut(report);
 }
+/*
+ * HID Get Feature
+ */
 void USBD_GetEvent_HID(uint8_t id,uint16_t len,uint8_t** return_buf){
 	if(globalHidHandler!=nullptr)
 		globalHidHandler->hidGet(id, len, return_buf);

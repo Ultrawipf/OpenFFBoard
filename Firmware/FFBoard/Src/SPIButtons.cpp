@@ -202,9 +202,6 @@ ParseStatus SPI_Buttons::command(ParsedCommand* cmd,std::string* reply){
 		if (handleGetSet(cmd, reply, this->conf.cs_num)) {
 			setConfig(this->conf);
 		}
-	} else if(cmd->cmd == "help"){
-		result = ParseStatus::OK_CONTINUE;
-		*reply += "SPI Button: spi#_btn_mode,spi#_btncut,spi#_btnpol,spi#_btnnum\n";
 	}else{
 		result = ParseStatus::NOT_FOUND;
 	}

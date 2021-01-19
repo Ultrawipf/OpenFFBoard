@@ -359,7 +359,7 @@ static uint8_t  USBD_CUSTOM_HID_Setup (USBD_HandleTypeDef *pdev,
       
       break;
 
-    case CUSTOM_HID_REQ_GET_REPORT: //TODO: check get reports
+    case CUSTOM_HID_REQ_GET_REPORT:
     	get_feature_return_buf = 0;
     	fops_hid_p->GetEvent(req,&get_feature_return_buf);
     	// user must set return buffer in callback now
