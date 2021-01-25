@@ -247,7 +247,7 @@ void TMC4671::update(){
 
 			// Get enable input
 			bool tmc_en = (readReg(0x76) >> 15) & 0x01;
-			if(!tmc_en){ // Hardware emergency
+			if(!tmc_en && active){ // Hardware emergency
 				this->estopTriggered = true;
 				state = TMC_ControlState::HardError;
 			}

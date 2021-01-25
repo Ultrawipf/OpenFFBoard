@@ -327,7 +327,13 @@ void FFBWheel::setDrvType(uint8_t drvtype){
 			setEncType(drv->getInfo().id); // Auto preset driver as encoder
 		}
 	}
-	drv->start();
+	if(hUsbDeviceFS.dev_state != USBD_STATE_CONFIGURED){
+		usb_disabled = false;
+		this->usbSuspend();
+	}else{
+		drv->start();
+	}
+
 }
 
 // Special tmc setup methods
