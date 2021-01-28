@@ -83,7 +83,7 @@ FFBWheel::FFBWheel() :
 	// Setup a timer for updates faster than USB SOF
 	extern TIM_HandleTypeDef htim4;
 	this->timer_update = &htim4; // Timer setup with prescaler of sysclock
-	this->timer_update->Instance->PSC = 95;
+	this->timer_update->Instance->PSC = (SystemCoreClock / 1000000)-1;
 	this->timer_update->Instance->ARR = 500; // 250 = 4khz, 500 = 2khz...
 	this->timer_update->Instance->CR1 = 1;
 	HAL_TIM_Base_Start_IT(this->timer_update);
@@ -154,17 +154,6 @@ void FFBWheel::saveFlash(){
 	Flash_Write(ADR_FFBWHEEL_ENDSTOP,this->fx_ratio_i | (this->endstop_gain_i << 8));
 
 
-//	// TODO saving directly in persistenstorage
-//	// Call save methods for active button sources
-//	for(ButtonSource* btn : this->btns){
-//		btn->saveFlash();
-//	}
-//
-//	for(AnalogSource* ain : this->analog_inputs){
-//		ain->saveFlash();
-//	}
-//	drv->saveFlash(); // Motor driver
-//	ffb->saveFlash(); // FFB handler
 }
 
 /*
