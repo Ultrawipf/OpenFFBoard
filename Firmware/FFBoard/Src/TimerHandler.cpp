@@ -6,21 +6,17 @@
  */
 
 #include "TimerHandler.h"
+#include "global_callbacks.h"
 
 TimerHandler::TimerHandler() {
 	extern std::vector<TimerHandler*> timerHandlers;
-	timerHandlers.push_back(this);
+	addCallbackHandler(&timerHandlers,this);
 
 }
 
 TimerHandler::~TimerHandler() {
 	extern std::vector<TimerHandler*> timerHandlers;
-	for (uint8_t i = 0; i < timerHandlers.size(); i++){
-		if(timerHandlers[i] == this){
-			timerHandlers.erase(timerHandlers.begin()+i);
-			break;
-		}
-	}
+	removeCallbackHandler(&timerHandlers,this);
 }
 
 void TimerHandler::timerElapsed(TIM_HandleTypeDef* htim){

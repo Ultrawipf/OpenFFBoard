@@ -9,15 +9,23 @@
 #include "global_callbacks.h"
 
 UsbHidHandler::UsbHidHandler() {
-	// Don't auto register. Call registerCallback()
-	// There should only be one hid handler for now
+	/*
+	 * By default it will receive only the custom feature reports
+	 * You can override that to receive every HID command
+	 */
+	extern std::vector<UsbHidHandler*> hidCmdHandlers;
+	addCallbackHandler(&hidCmdHandlers,this);
 }
 
 UsbHidHandler::~UsbHidHandler() {
-
+	extern std::vector<UsbHidHandler*> hidCmdHandlers;
+	removeCallbackHandler(&hidCmdHandlers,this);
 }
 
 
+void UsbHidHandler::hidOutCmd(HID_Custom_Data_t* data){
+
+}
 
 void UsbHidHandler::hidGet(uint8_t id,uint16_t len,uint8_t** return_buf){
 

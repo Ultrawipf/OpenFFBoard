@@ -230,9 +230,16 @@ void CDC_Finished(){
  * HID Out and Set Feature
  */
 UsbHidHandler* globalHidHandler = nullptr;
+std::vector<UsbHidHandler*> hidCmdHandlers; // called only for custom cmd report ids
 void USBD_OutEvent_HID(uint8_t* report){
 	if(globalHidHandler!=nullptr)
 		globalHidHandler->hidOut(report);
+
+	if(report[0] == HID_ID_CUSTOMCMD){ // called only for the vendor defined report
+		for(UsbHidHandler* c : hidCmdHandlers){
+			c->hidOutCmd((HID_Custom_Data_t*)(report));
+		}
+	}
 }
 /*
  * HID Get Feature
@@ -240,6 +247,7 @@ void USBD_OutEvent_HID(uint8_t* report){
 void USBD_GetEvent_HID(uint8_t id,uint16_t len,uint8_t** return_buf){
 	if(globalHidHandler!=nullptr)
 		globalHidHandler->hidGet(id, len, return_buf);
+
 }
 
 void USB_SOF(){

@@ -153,16 +153,56 @@ __ALIGN_BEGIN static uint8_t CUSTOM_HID_ReportDesc_FS[USBD_CUSTOM_HID_REPORT_DES
 		    0xc0,                          //   END_COLLECTION
 
 
-			// Feature report
-			/*
-			0x85,HID_ID_CUSTOMCMD+FFB_ID_OFFSET,    //    Report ID
-			0x09, 0x00,                    //   USAGE (Reserved (no event indicated))
-			0x75, 0x20,                    //   REPORT_SIZE (32)
-			0x95, 0x01,                    //   REPORT_COUNT (1)
-			0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
-			0x27, 0xFF, 0xff, 0xff, 0xff,    //    Logical Maximum FFFFFFFFh (4294967295)
-			0xb1, 0x02,                    //   FEATURE (Data,Var,Abs)
-*/
+			// Control reports
+			0x06, 0x00, 0xFF,                    // USAGE_PAGE (Vendor)
+			0x09, 0x01,                    //   USAGE (Vendor)
+			0xA1, 0x01, // Collection (Application)
+				0x85,HID_ID_CUSTOMCMD, //    Report ID
+				0x09, 0x01,                    //   USAGE (Vendor)
+				0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
+				0x26, 0xFF,	0x00,			   //   Logical Maximum FFh (255)
+				0x75, 0x08,                    //   REPORT_SIZE (8)
+				0x95, 0x01,                    //   REPORT_COUNT (1)
+				0xb1, 0x02,                    //   FEATURE (Data,Var,Abs)
+				0x09, 0x01,                    //   USAGE (Vendor)
+				0x09, 0x01,                    //   USAGE (Vendor)
+				0x15, 0x00, 				   //   LOGICAL_MINIMUM (-2.147.483.648)
+				0x27, 0xFF, 0xFF, 0xFF, 0xFF,  //    Logical Maximum (2.147.483.648)
+				0x75, 0x20,                    //   REPORT_SIZE (32)
+				0x95, 0x02,                    //   REPORT_COUNT (2)
+				0xb1, 0x02,                    //   FEATURE (Data,Var,Abs)
+
+				0x85,HID_ID_CUSTOMCMD, //    Report ID
+				0x09, 0x01,                    //   USAGE (Vendor)
+				0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
+				0x26, 0xFF,	0x00,			   //   Logical Maximum FFh (255)
+				0x75, 0x08,                    //   REPORT_SIZE (8)
+				0x95, 0x01,                    //   REPORT_COUNT (1)
+				0x91, 0x02,                    //   OUTPUT (Data,Var,Abs)
+				0x09, 0x01,                    //   USAGE (Vendor)
+				0x09, 0x01,                    //   USAGE (Vendor)
+				0x15, 0x00, 				   //   LOGICAL_MINIMUM (-2.147.483.648)
+				0x27, 0xFF, 0xFF, 0xFF, 0xFF,  //    Logical Maximum (2.147.483.648)
+				0x75, 0x20,                    //   REPORT_SIZE (32)
+				0x95, 0x02,                    //   REPORT_COUNT (2)
+				0x91, 0x02,                    //   OUTPUT (Data,Var,Abs)
+
+				0x85,HID_ID_CUSTOMCMD, //    Report ID
+				0x09, 0x01,                    //   USAGE (Vendor)
+				0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
+				0x26, 0xFF,	0x00,			   //   Logical Maximum FFh (255)
+				0x75, 0x08,                    //   REPORT_SIZE (8)
+				0x95, 0x01,                    //   REPORT_COUNT (1)
+				0x81, 0x02,                    //   INPUT (Data,Var,Abs)
+				0x09, 0x01,                    //   USAGE (Vendor)
+				0x09, 0x01,                    //   USAGE (Vendor)
+				0x15, 0x00, 				   //   LOGICAL_MINIMUM (-2.147.483.648)
+				0x27, 0xFF, 0xFF, 0xFF, 0xFF,  //    Logical Maximum (2.147.483.648)
+				0x75, 0x20,                    //   REPORT_SIZE (32)
+				0x95, 0x02,                    //   REPORT_COUNT (2)
+				0x81, 0x02,                    //   INPUT (Data,Var,Abs)
+
+		  0xc0,                          //   END_COLLECTION
 
 
 		// BEGIN PID effects
