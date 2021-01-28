@@ -26,6 +26,7 @@
 #include "TimerHandler.h"
 #include "ClassChooser.h"
 #include "ExtiHandler.h"
+#include "UsbHidHandler.h"
 
 
 
@@ -38,7 +39,7 @@ struct FFBWheelConfig{
 
 
 
-class FFBWheel: public FFBoardMain, TimerHandler, PersistentStorage,ExtiHandler{
+class FFBWheel: public FFBoardMain, TimerHandler, PersistentStorage,ExtiHandler,UsbHidHandler{
 public:
 	FFBWheel();
 	virtual ~FFBWheel();
@@ -67,6 +68,7 @@ public:
 	void usbInit(USBD_HandleTypeDef* hUsbDeviceFS); // initialize a composite usb device
 	void usbSuspend(); // Called on usb disconnect and suspend
 	void usbResume(); // Called on usb resume
+	void hidOutCmd(HID_Custom_Data_t* data); // Usb hid commands
 
 	void saveFlash();
 	void restoreFlash();

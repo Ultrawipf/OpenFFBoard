@@ -7,7 +7,45 @@
 
 
 #include "FFBWheel.h"
+#include "hid_cmd_defs.h"
 
+void FFBWheel::hidOutCmd(HID_Custom_Data_t* data){
+	bool found = true;
+	switch(data->cmd){
+
+	case HID_CMD_FFB_STRENGTH:
+		if(data->type == HidCmdType::write)
+			this->setPower(data->data);
+
+		if(data->type == HidCmdType::request){
+			data->data = this->getPower();
+		}
+
+	break;
+
+	case HID_CMD_FFB_DEGREES:
+		if(data->type == HidCmdType::write)
+			this->nextDegreesOfRotation = data->data;
+
+		if(data->type == HidCmdType::request){
+			data->data = this->degreesOfRotation;
+		}
+	break;
+
+	case HID_CMD_FFB_ZERO:
+		if(data->type == HidCmdType::write)
+			this->enc->setPos(0);
+	break;
+
+
+	default:
+		found = false;
+		break;
+	}
+	if(found){
+		sendHidCmd(data);
+	}
+}
 
 ParseStatus FFBWheel::command(ParsedCommand* cmd,std::string* reply){
 	ParseStatus flag = ParseStatus::OK;

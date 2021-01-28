@@ -150,7 +150,6 @@ void HidFFB::hidOut(uint8_t* report){
 	}
 
 	default:
-		printf("Got unknown HID command: %d",event_idx);
 		break;
 	}
 
@@ -187,7 +186,6 @@ void HidFFB::hidGet(uint8_t id,uint16_t len,uint8_t** return_buf){
 		*return_buf = (uint8_t*)(&this->pool_report);
 		break;
 	default:
-		printf("Unknown get\n");
 		break;
 	}
 }
