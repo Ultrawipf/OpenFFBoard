@@ -16,6 +16,7 @@
 #include "constants.h"
 
 #include "UsbHidHandler.h"
+#include "PersistentStorage.h"
 #include "ExtiHandler.h"
 #include "UartHandler.h"
 #include "AdcHandler.h"
@@ -42,12 +43,12 @@ volatile uint32_t ADC3_BUF[ADC3_CHANNELS] = {0};
 extern ADC_HandleTypeDef hadc3;
 #endif
 
-volatile char uart_buf[UART_BUF_SIZE] = {0}; //
+volatile char uart_buf[UART_BUF_SIZE] = {0};
 
 
 // Externally stored so it can be used before the main class is initialized
 std::vector<CommandHandler*> cmdHandlers;
-
+std::vector<PersistentStorage*> flashHandlers;
 
 
 std::vector<AdcHandler*> adcHandlers;

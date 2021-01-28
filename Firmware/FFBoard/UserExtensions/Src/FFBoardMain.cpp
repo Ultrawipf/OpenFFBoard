@@ -21,6 +21,8 @@
 #include "flash_helpers.h"
 #include "eeprom.h"
 #include "voltagesense.h"
+#include "global_callbacks.h"
+#include "PersistentStorage.h"
 
 #include "ClassChooser.h"
 extern ClassChooser<FFBoardMain> mainchooser;
@@ -81,7 +83,13 @@ ParseStatus FFBoardMain::executeSysCommand(ParsedCommand* cmd,std::string* reply
 		for(CommandHandler* handler : cmdHandlers){
 			*reply += handler->getHelpstring();
 		}
-		flag = ParseStatus::OK;
+
+	}else if(cmd->cmd == "save"){
+		extern std::vector<PersistentStorage*> flashHandlers;
+		for(PersistentStorage* handler : flashHandlers){
+			handler->saveFlash();
+		}
+
 	}else if(cmd->cmd == "reboot"){
 		NVIC_SystemReset();
 	}else if(cmd->cmd == "dfu"){ // Reboot into DFU bootloader mode

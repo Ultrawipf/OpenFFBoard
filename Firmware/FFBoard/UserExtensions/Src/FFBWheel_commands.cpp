@@ -12,10 +12,7 @@
 ParseStatus FFBWheel::command(ParsedCommand* cmd,std::string* reply){
 	ParseStatus flag = ParseStatus::OK;
 	// ------------ General commands ----------------
-	if(cmd->cmd == "save"){
-		this->saveFlash();
-		*reply+=">saved";
-	}else if(cmd->cmd == "drvtype"){
+	if(cmd->cmd == "drvtype"){
 		if(cmd->type == CMDtype::get){
 			*reply+=std::to_string((uint8_t)this->conf.drvtype);
 		}else if(cmd->type == CMDtype::set && this->drv_chooser.isValidClassId(cmd->val)){

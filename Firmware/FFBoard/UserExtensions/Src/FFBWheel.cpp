@@ -154,17 +154,17 @@ void FFBWheel::saveFlash(){
 	Flash_Write(ADR_FFBWHEEL_ENDSTOP,this->fx_ratio_i | (this->endstop_gain_i << 8));
 
 
-	// TODO saving directly in persistenstorage
-	// Call save methods for active button sources
-	for(ButtonSource* btn : this->btns){
-		btn->saveFlash();
-	}
-
-	for(AnalogSource* ain : this->analog_inputs){
-		ain->saveFlash();
-	}
-	drv->saveFlash(); // Motor driver
-	ffb->saveFlash(); // FFB handler
+//	// TODO saving directly in persistenstorage
+//	// Call save methods for active button sources
+//	for(ButtonSource* btn : this->btns){
+//		btn->saveFlash();
+//	}
+//
+//	for(AnalogSource* ain : this->analog_inputs){
+//		ain->saveFlash();
+//	}
+//	drv->saveFlash(); // Motor driver
+//	ffb->saveFlash(); // FFB handler
 }
 
 /*

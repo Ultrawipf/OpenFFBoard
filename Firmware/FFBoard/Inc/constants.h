@@ -9,7 +9,7 @@
  */
 
 
-#define SW_VERSION "1.2.0" // Version string
+#define SW_VERSION "1.2.1" // Version string
 
 
 #define CDC_INTERFACE 0x00
