@@ -27,7 +27,7 @@
 #include "ClassChooser.h"
 #include "ExtiHandler.h"
 #include "UsbHidHandler.h"
-
+#include "hid_cmd_defs.h"
 
 
 struct FFBWheelConfig{
@@ -50,6 +50,7 @@ public:
 	void setupTMC4671();
 	void setupTMC4671_enc(PhiE enctype);
 	ParseStatus command(ParsedCommand* cmd,std::string* reply);
+
 
 	// Dynamic classes
 	void setDrvType(uint8_t drvtype);

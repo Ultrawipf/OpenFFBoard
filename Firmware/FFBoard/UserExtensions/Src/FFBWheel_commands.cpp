@@ -32,6 +32,16 @@ void FFBWheel::hidOutCmd(HID_Custom_Data_t* data){
 		}
 	break;
 
+
+	case HID_CMD_FFB_ESGAIN:
+		if(data->type == HidCmdType::write)
+			this->endstop_gain_i = data->data;
+
+		if(data->type == HidCmdType::request){
+			data->data = this->endstop_gain_i;
+		}
+	break;
+
 	case HID_CMD_FFB_ZERO:
 		if(data->type == HidCmdType::write)
 			this->enc->setPos(0);
@@ -46,6 +56,7 @@ void FFBWheel::hidOutCmd(HID_Custom_Data_t* data){
 		sendHidCmd(data);
 	}
 }
+
 
 ParseStatus FFBWheel::command(ParsedCommand* cmd,std::string* reply){
 	ParseStatus flag = ParseStatus::OK;

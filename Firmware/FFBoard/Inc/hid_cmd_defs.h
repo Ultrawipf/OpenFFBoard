@@ -18,6 +18,10 @@
 #define HID_CMD_FFB_STRENGTH 0x20
 #define HID_CMD_FFB_DEGREES 0x21
 #define HID_CMD_FFB_ZERO 0x22
+#define HID_CMD_FFB_IDLESPRING 0x23
+#define HID_CMD_FFB_ESGAIN 0x24
+#define HID_CMD_FFB_FRICTION 0x25
+#define HID_CMD_FFB_FXRATIO 0x26
 
 enum class HidCmdType : uint8_t {err = 0, write = 1, request = 2,stop_stream = 3, start_stream = 4};
 
