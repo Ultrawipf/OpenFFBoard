@@ -80,7 +80,7 @@ ParseStatus FFBWheel::command(ParsedCommand* cmd,std::string* reply){
 			*reply += "bin flag encoded list of button sources. (3 = source 1 & 2 active). See lsbtn for sources";
 		}
 	}else if(cmd->cmd == "lsbtn"){
-		if(cmd->type == CMDtype::get){
+		if(cmd->type == CMDtype::get || cmd->type == CMDtype::help){
 			*reply += btn_chooser.printAvailableClasses();
 		}
 	}else if(cmd->cmd == "zeroenc"){
@@ -103,7 +103,7 @@ ParseStatus FFBWheel::command(ParsedCommand* cmd,std::string* reply){
 			*reply += "bin flag encoded list of analog sources. (3 = source 1 & 2 active). See lsain for sources";
 		}
 	}else if(cmd->cmd == "lsain"){
-		if(cmd->type == CMDtype::get){
+		if(cmd->type == CMDtype::get || cmd->type == CMDtype::help){
 			*reply += analog_chooser.printAvailableClasses();
 		}
 	}else if(cmd->cmd == "addain"){

@@ -54,6 +54,7 @@ std::vector<ParsedCommand> CmdParser::parse(){
 	for(std::string word : tokens){
 
 		ParsedCommand cmd;
+		cmd.rawcmd = word;
 
 		if(word.back() == '?'){ // <cmd>?
 			cmd.type = CMDtype::get;
@@ -65,6 +66,7 @@ std::vector<ParsedCommand> CmdParser::parse(){
 
 		}else if(word.back() == '='){
 			cmd.cmd = word;
+
 			cmd.type = CMDtype::err;
 
 		}else{

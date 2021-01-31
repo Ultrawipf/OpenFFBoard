@@ -183,7 +183,8 @@ void FFBoardMain::executeCommands(std::vector<ParsedCommand> commands){
 		if(cmd.cmd.empty())
 			continue; // Empty command
 
-		this->cmd_reply+= ">" + cmd.cmd + "="; // Start marker. Echo command
+
+		this->cmd_reply+= ">" + cmd.rawcmd + ":"; // Start marker. Echo command
 
 		std::string reply; // Reply of current command
 		status = executeSysCommand(&cmd,&reply);
