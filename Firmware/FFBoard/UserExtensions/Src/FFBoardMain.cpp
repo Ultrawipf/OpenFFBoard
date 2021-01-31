@@ -110,8 +110,22 @@ ParseStatus FFBoardMain::executeSysCommand(ParsedCommand* cmd,std::string* reply
 	}else if(cmd->cmd == "hwtype"){
 		*reply += (HW_TYPE);
 
-	}else if(cmd->cmd == "dumpconf"){ // TODO restore config
+	}else if(cmd->cmd == "flashdump"){
 		printFlashDump(reply);
+
+	}else if(cmd->cmd == "flashraw"){ // Set and get flash eeprom emulation values
+		if(cmd->type == CMDtype::setat){
+			Flash_Write(cmd->adr, cmd->val);
+
+		}else if(cmd->type == CMDtype::getat){
+			uint16_t val;
+			if(Flash_Read(cmd->adr,&val)){
+				*reply+=std::to_string(val);
+			}
+			else{
+				flag = ParseStatus::ERR;
+			}
+		}
 
 	}else if(cmd->type!=CMDtype::set &&cmd->cmd == "lsmain"){
 		*reply += mainchooser.printAvailableClasses();
