@@ -97,6 +97,7 @@ public:
 	uint16_t getPower();
 
 private:
+	bool encResetFlag = false;
 	bool emergency = false;
 	void send_report();
 	int16_t updateEndstop();

@@ -165,6 +165,11 @@ void FFBWheel::update(){
 		pulseErrLed();
 		return;
 	}
+	if(encResetFlag){
+		encResetFlag = false;
+		this->enc->setPos(0);
+	}
+
 	// If either usb SOF or timer triggered
 	if(usb_update_flag || update_flag){
 		int32_t lastTorque = torque;
@@ -542,7 +547,7 @@ void FFBWheel::exti(uint16_t GPIO_Pin){
 	if(GPIO_Pin == BUTTON_A_Pin){
 		// Button down?
 		if(HAL_GPIO_ReadPin(BUTTON_A_GPIO_Port, BUTTON_A_Pin) && this->enc != nullptr){
-			this->enc->setPos(0);
+			this->encResetFlag = true;
 		}
 	}
 #ifdef E_STOP_Pin
