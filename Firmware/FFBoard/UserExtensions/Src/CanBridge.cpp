@@ -100,6 +100,71 @@ void CanBridge::canRxPendCallback(CAN_HandleTypeDef *hcan,uint8_t* rxBuf,CAN_RxH
 	}
 }
 
+void CanBridge::cdcRcv(char* Buf, uint32_t *Len){
+
+	// Not a gvret binary command
+	if(*Buf != 0xF1){
+		FFBoardMain::cdcRcv(Buf, Len);
+		return;
+	}
+
+
+	std::vector<uint8_t> dat;
+	dat.assign(Buf,Buf+*Len);
+
+	switch(dat[1]){
+	case(0): // send can
+		uint32_t id = (*Buf << 2) & 0xffff;
+	break;
+	case(1): // sync
+
+	break;
+
+	case(2): // get digital in
+
+	break;
+
+	case(3): // get analog in
+
+	break;
+
+	case(4): // set digital out
+
+	break;
+
+	case(5): // set can config
+
+	break;
+
+	case(6): // get can config
+
+	break;
+
+	case(7): // get device info
+
+	break;
+
+	case(8): // set single wire mode
+
+	break;
+
+	case(9):{ // keep alive
+		CDC_Transmit_FS(keepalivemsg, 4);
+		break;
+	}
+	case(10): // set system
+
+	break;
+
+	case(11): // echo can frame
+
+	break;
+	default:
+	break;
+	}
+
+}
+
 ParseStatus CanBridge::command(ParsedCommand* cmd,std::string* reply){
 	ParseStatus flag = ParseStatus::OK; // Valid command found
 
