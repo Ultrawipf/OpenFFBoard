@@ -250,9 +250,6 @@ ParseStatus MotorPWM::command(ParsedCommand* cmd,std::string* reply){
 				*reply+=  names[i]  + ":" + std::to_string(i)+"\n";
 			}
 		}
-	}else if(cmd->cmd == "help"){
-		result = ParseStatus::OK_CONTINUE;
-		*reply += "PWM: pwm_mode,pwm_speed\n";
 	}else{
 		result = ParseStatus::NOT_FOUND; // No valid command
 	}

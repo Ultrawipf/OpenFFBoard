@@ -41,7 +41,7 @@ private:
 	uint16_t cspin = SPI1_SS1_Pin;
 	GPIO_TypeDef* csport = SPI1_SS1_GPIO_Port;
 
-	uint8_t checksum(std::vector<uint8_t> *buffer);
+	uint8_t checksum(std::vector<uint8_t> *buffer,uint8_t len);
 	HAL_StatusTypeDef SPI_transmit_receive(uint8_t *tx_data,uint8_t *rx_data,uint16_t len,uint32_t timeout);
 };
 

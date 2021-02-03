@@ -38,7 +38,7 @@ public:
 
 	ParseStatus command(ParsedCommand* cmd,std::string* reply);
 	void setAutorange(bool autorange);
-
+	virtual std::string getHelpstring(){return "Analog pins: local_ain_mask,local_ain_num,local_ain_acal\n";}
 
 private:
 	bool autorange = false;

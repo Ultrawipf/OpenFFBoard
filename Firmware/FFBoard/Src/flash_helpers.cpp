@@ -5,6 +5,8 @@
  *      Author: Yannick
  */
 #include "flash_helpers.h"
+#include "eeprom_addresses.h"
+#include <vector>
 
 // Flash helpers
 
@@ -43,4 +45,22 @@ bool Flash_ReadWriteDefault(uint16_t adr,uint16_t *buf,uint16_t def){
 		return false;
 	}
 	return true;
+}
+
+/*
+ * Dumps all set variables from flash to a vector
+ */
+void Flash_Dump(std::vector<std::tuple<uint16_t,uint16_t>> *result){
+	extern uint16_t VirtAddVarTab[NB_OF_VAR];
+	//std::vector<std::pair<uint16_t,uint16_t>> result;
+
+	for(uint32_t i = 0;i<NB_OF_VAR ; i++){
+		uint16_t v;
+		uint16_t adr = VirtAddVarTab[i];
+
+		if(Flash_Read(adr,&v)){
+			result->push_back(std::tuple<uint16_t,uint16_t>{adr,v});
+		}
+
+	}
 }

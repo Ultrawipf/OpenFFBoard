@@ -133,7 +133,7 @@ struct TMC4671AENCConf{
 };
 
 struct TMC4671HALLConf{
-	bool polarity = false;
+	bool polarity = true;
 	bool interpolation = true;
 	bool direction = false;
 	bool filter = true;
@@ -307,6 +307,11 @@ public:
 	bool allowSlowSPI = true; // For engineering sample
 
 	ParseStatus command(ParsedCommand* cmd,std::string* reply);
+	virtual std::string getHelpstring(){
+		return "TMC4671 commands:\n"
+				"mtype,encsrc,encalign,poles,phiesrc,reg,fluxoffset\n"
+				"torqueP,torqueI,fluxP,fluxI\n"
+				"acttrq,seqpi,tmctemp\n";}
 
 
 private:

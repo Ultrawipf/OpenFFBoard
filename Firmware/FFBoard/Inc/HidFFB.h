@@ -20,6 +20,7 @@ public:
 
 	void hidOut(uint8_t* report);
 	void hidGet(uint8_t id,uint16_t len,uint8_t** return_buf);
+	void hidOutCmd(HID_Custom_Data_t* data);
 	int32_t calculateEffects(int32_t pos,uint8_t axis); //Axis: 1/2 pos: current position scaled from -0x7fff to 0x7fff
 	bool idlecenter = true;
 

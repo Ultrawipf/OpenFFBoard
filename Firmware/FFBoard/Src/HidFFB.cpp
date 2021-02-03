@@ -77,6 +77,46 @@ void HidFFB::sendStatusReport(uint8_t effect){
 	HID_SendReport(reinterpret_cast<uint8_t*>(&this->reportFFBStatus), sizeof(reportFFB_status_t));
 }
 
+void HidFFB::hidOutCmd(HID_Custom_Data_t* data){
+	bool found = true;
+	switch(data->cmd){
+		case HID_CMD_FFB_FRICTION:
+			if(data->type == HidCmdType::write)
+				this->setFrictionStrength(data->data);
+
+			if(data->type == HidCmdType::request){
+				data->data = this->getFrictionStrength();
+			}
+		break;
+
+		case HID_CMD_FFB_FXRATIO:
+			if(data->type == HidCmdType::write)
+				this->setFrictionStrength(data->data);
+
+			if(data->type == HidCmdType::request){
+				data->data = this->getFrictionStrength();
+			}
+		break;
+
+		case HID_CMD_FFB_IDLESPRING:
+			if(data->type == HidCmdType::write)
+				this->setIdleSpringStrength(data->data);
+
+			if(data->type == HidCmdType::request){
+				data->data = this->getIdleSpringStrength();
+			}
+		break;
+
+		default:
+			found = false;
+		break;
+	}
+
+	if(found){
+		sendHidCmd(data);
+	}
+}
+
 /*
  * Called when HID OUT data is received via USB
  */
@@ -140,7 +180,7 @@ void HidFFB::hidOut(uint8_t* report){
 			//printf("Start %d\n",report[1]);
 			effects[id].state = 1; //Start
 		}
-		sendStatusReport(report[1]);
+		//sendStatusReport(report[1]);
 		break;
 	}
 	case HID_ID_BLKFRREP: // Free a block
@@ -150,7 +190,6 @@ void HidFFB::hidOut(uint8_t* report){
 	}
 
 	default:
-		printf("Got unknown HID command: %d",event_idx);
 		break;
 	}
 
@@ -187,7 +226,6 @@ void HidFFB::hidGet(uint8_t id,uint16_t len,uint8_t** return_buf){
 		*return_buf = (uint8_t*)(&this->pool_report);
 		break;
 	default:
-		printf("Unknown get\n");
 		break;
 	}
 }
@@ -275,7 +313,7 @@ void HidFFB::set_effect(FFB_SetEffect_t* effect){
 	//printf("SetEffect: %d, Axis: %d,Type: %d\n",effect->effectBlockIndex,effect->enableAxis,effect->effectType);
 	if(!ffb_active)
 		start_FFB();
-	sendStatusReport(effect->effectBlockIndex);
+	//sendStatusReport(effect->effectBlockIndex);
 }
 
 void HidFFB::setCfFilter(uint32_t freq){
@@ -482,7 +520,7 @@ int32_t HidFFB::calculateEffects(int32_t pos,uint8_t axis=1){
 			int32_t speed = pos - effect->last_value;
 			effect->last_value = pos;
 
-			float val = effect->filter->process(speed) * 0.0625f;
+			float val = effect->filter->process(speed) * 0.035f; // TODO tune friction
 
 			// Only active outside deadband. Process filter always!
 			if(abs(pos-effect->offset) < effect->deadBand){

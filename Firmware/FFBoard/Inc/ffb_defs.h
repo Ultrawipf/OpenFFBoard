@@ -61,6 +61,12 @@
 #define HID_ID_BLKLDREP	0x12	// Usage Block Load Report
 #define HID_ID_POOLREP	0x13	// Usage PID Pool Report
 
+// Control
+#define HID_ID_CUSTOMCMD 0xAF   // Custom cmd
+//#define HID_ID_CUSTOMCMD_IN 0xA2   // Custom cmd in
+//#define HID_ID_CUSTOMCMD_OUT 0xA1   // Custom cmd out
+
+
 #define FFB_EFFECT_NONE			0x00
 #define FFB_EFFECT_CONSTANT		0x01
 #define FFB_EFFECT_RAMP			0x02
@@ -86,6 +92,8 @@
 #ifdef __cplusplus
 
 // HID gamepad report
+
+
 struct  __attribute__((__packed__)) reportHID_t {
 		uint8_t id = 1;
 		uint32_t buttons = 0;
@@ -97,12 +105,12 @@ struct  __attribute__((__packed__)) reportHID_t {
 		int16_t RZ = 0;
 		int16_t Dial = 0;
 		int16_t Slider = 0;
-	};
+};
 
 typedef struct
 {
 	const uint8_t	reportId = HID_ID_STATE+FFB_ID_OFFSET;
-	uint8_t	effectBlockIndex = 1;	//EffectId (1..40)
+	uint8_t	effectBlockIndex = 1;	//EffectId
 	uint8_t	status = (HID_ACTUATOR_POWER) | (HID_ENABLE_ACTUATORS);	// Bits: 0=Device Paused,1=Actuators Enabled,2=Safety Switch,3=Actuator Power, 4=Effect Playing
 
 } __attribute__((packed)) reportFFB_status_t;

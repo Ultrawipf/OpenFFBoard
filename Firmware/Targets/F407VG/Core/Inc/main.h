@@ -146,12 +146,12 @@ void RebootDFU();
 #define SWDIO_GPIO_Port GPIOA
 #define SWCLK_Pin GPIO_PIN_14
 #define SWCLK_GPIO_Port GPIOA
-#define SPI3_CS1_Pin GPIO_PIN_15
-#define SPI3_CS1_GPIO_Port GPIOA
-#define SPI3_CS2_Pin GPIO_PIN_2
-#define SPI3_CS2_GPIO_Port GPIOD
-#define SPI3_CS3_Pin GPIO_PIN_3
-#define SPI3_CS3_GPIO_Port GPIOD
+#define SPI3_SS1_Pin GPIO_PIN_15
+#define SPI3_SS1_GPIO_Port GPIOA
+#define SPI3_SS2_Pin GPIO_PIN_2
+#define SPI3_SS2_GPIO_Port GPIOD
+#define SPI3_SS3_Pin GPIO_PIN_3
+#define SPI3_SS3_GPIO_Port GPIOD
 #define CAN_S_Pin GPIO_PIN_4
 #define CAN_S_GPIO_Port GPIOD
 #define E_STOP_Pin GPIO_PIN_5
@@ -171,6 +171,7 @@ void RebootDFU();
 #define LED_CLIP_GPIO_Port GPIOE
 #define LED_ERR_Pin GPIO_PIN_1
 #define LED_ERR_GPIO_Port GPIOE
+void   MX_USB_OTG_FS_PCD_Init(void);
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */

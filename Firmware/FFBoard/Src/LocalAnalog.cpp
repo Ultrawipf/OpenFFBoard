@@ -102,9 +102,6 @@ ParseStatus LocalAnalog::command(ParsedCommand* cmd,std::string* reply){
 		}else{
 			flag = ParseStatus::ERR;
 		}
-	}else if(cmd->cmd == "help"){
-		flag = ParseStatus::OK_CONTINUE;
-		*reply += "Analog pins: local_ain_mask,local_ain_num,local_ain_acal\n";
 	}else{
 		flag = ParseStatus::NOT_FOUND;
 	}

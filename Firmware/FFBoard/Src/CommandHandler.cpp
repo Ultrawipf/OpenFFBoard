@@ -40,6 +40,10 @@ ParseStatus CommandHandler::command(ParsedCommand* cmd,std::string* reply){
 }
 
 
+std::string CommandHandler::getHelpstring(){
+	return std::string(this->getInfo().name) + ":No help\n";
+}
+
 void CommandHandler::addCommandHandler(){
 	// If already added return
 	extern std::vector<CommandHandler*> cmdHandlers;

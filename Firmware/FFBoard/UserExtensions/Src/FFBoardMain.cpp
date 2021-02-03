@@ -21,6 +21,8 @@
 #include "flash_helpers.h"
 #include "eeprom.h"
 #include "voltagesense.h"
+#include "global_callbacks.h"
+#include "PersistentStorage.h"
 
 #include "ClassChooser.h"
 extern ClassChooser<FFBoardMain> mainchooser;
@@ -54,13 +56,40 @@ void FFBoardMain::updateSys(){
 	}
 }
 
+/*
+ * Prints a formatted flash dump to the reply string
+ */
+void FFBoardMain::printFlashDump(std::string *reply){
+	std::vector<std::tuple<uint16_t,uint16_t>> result;
+
+	Flash_Dump(&result);
+	uint16_t adr;
+	uint16_t val;
+
+	for(auto entry : result){
+		std::tie(adr,val) = entry;
+		*reply += std::to_string(adr) + ":" + std::to_string(val) + "\n";
+	}
+
+}
+
+
 ParseStatus FFBoardMain::executeSysCommand(ParsedCommand* cmd,std::string* reply){
 	ParseStatus flag = ParseStatus::OK;
 
 	if(cmd->cmd == "help"){
 		*reply += parser.helpstring;
-		*reply += "\nSystem Commands: reboot,help,dfu,swver (Version),hwtype,lsmain (List configs),id,main (Set main config),lsactive (print command handlers),vint,vext,format (Erase flash),mallinfo (Mem usage)\n";
-		flag = ParseStatus::OK_CONTINUE; // Continue to user commands
+		extern std::vector<CommandHandler*> cmdHandlers;
+		for(CommandHandler* handler : cmdHandlers){
+			*reply += handler->getHelpstring();
+		}
+
+	}else if(cmd->cmd == "save"){
+		extern std::vector<PersistentStorage*> flashHandlers;
+		for(PersistentStorage* handler : flashHandlers){
+			handler->saveFlash();
+		}
+
 	}else if(cmd->cmd == "reboot"){
 		NVIC_SystemReset();
 	}else if(cmd->cmd == "dfu"){ // Reboot into DFU bootloader mode
@@ -80,6 +109,23 @@ ParseStatus FFBoardMain::executeSysCommand(ParsedCommand* cmd,std::string* reply
 
 	}else if(cmd->cmd == "hwtype"){
 		*reply += (HW_TYPE);
+
+	}else if(cmd->cmd == "flashdump"){
+		printFlashDump(reply);
+
+	}else if(cmd->cmd == "flashraw"){ // Set and get flash eeprom emulation values
+		if(cmd->type == CMDtype::setat){
+			Flash_Write(cmd->adr, cmd->val);
+
+		}else if(cmd->type == CMDtype::getat){
+			uint16_t val;
+			if(Flash_Read(cmd->adr,&val)){
+				*reply+=std::to_string(val);
+			}
+			else{
+				flag = ParseStatus::ERR;
+			}
+		}
 
 	}else if(cmd->type!=CMDtype::set &&cmd->cmd == "lsmain"){
 		*reply += mainchooser.printAvailableClasses();
@@ -151,7 +197,8 @@ void FFBoardMain::executeCommands(std::vector<ParsedCommand> commands){
 		if(cmd.cmd.empty())
 			continue; // Empty command
 
-		this->cmd_reply+='>'; // Start marker
+
+		this->cmd_reply+= ">" + cmd.rawcmd + ":"; // Start marker. Echo command
 
 		std::string reply; // Reply of current command
 		status = executeSysCommand(&cmd,&reply);
@@ -177,7 +224,7 @@ void FFBoardMain::executeCommands(std::vector<ParsedCommand> commands){
 			reply+='\n';
 		}
 		if(status == ParseStatus::NOT_FOUND){ //No class reported success. Show error
-			reply = "Err(0). Unknown command: " + cmd.cmd + "\n";
+			reply = "Err(0). Unknown command\n";
 		}else if(status == ParseStatus::ERR){ //Error reported in command
 			reply += "Err(1). Execution error\n";
 		}

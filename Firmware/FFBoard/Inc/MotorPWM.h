@@ -46,6 +46,7 @@ public:
 	void restoreFlash();	// Load from flash
 
 	ParseStatus command(ParsedCommand* cmd,std::string* reply);
+	virtual std::string getHelpstring(){return "PWM: pwm_mode,pwm_speed\n";}
 
 	void setPWM(uint32_t value,uint8_t ccr);
 

@@ -11,7 +11,7 @@
 
 ExtiHandler::ExtiHandler() {
 	extern std::vector<ExtiHandler*> extiHandlers;
-	extiHandlers.push_back(this);
+	addCallbackHandler(&extiHandlers,this);
 }
 
 ExtiHandler::~ExtiHandler() {

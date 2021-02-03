@@ -3,6 +3,7 @@
 #include "mainclass_chooser.h"
 #include "flash_helpers.h"
 #include "global_callbacks.h"
+#include "cpp_target_config.h"
 
 uint32_t clkmhz = HAL_RCC_GetHCLKFreq() / 100000;
 extern TIM_HandleTypeDef TIM_MICROS;
@@ -53,6 +54,8 @@ void cppmain() {
 		mainclass->update();
 		mainclass->updateSys();
 		updateLeds();
+
+		external_spi.process();
 
 		refreshWatchdog();
 	}

@@ -97,7 +97,6 @@ void CanBridge::canRxPendCallback(CAN_HandleTypeDef *hcan,uint8_t* rxBuf,CAN_RxH
 		std::string buf = messageToString(); // Last message to string
 		CDC_Transmit_FS(buf.c_str(), buf.length());
 
-
 	}
 }
 

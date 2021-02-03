@@ -7,15 +7,61 @@
 
 
 #include "FFBWheel.h"
+#include "hid_cmd_defs.h"
+
+void FFBWheel::hidOutCmd(HID_Custom_Data_t* data){
+	bool found = true;
+	switch(data->cmd){
+
+	case HID_CMD_FFB_STRENGTH:
+		if(data->type == HidCmdType::write)
+			this->setPower(data->data);
+
+		if(data->type == HidCmdType::request){
+			data->data = this->getPower();
+		}
+
+	break;
+
+	case HID_CMD_FFB_DEGREES:
+		if(data->type == HidCmdType::write)
+			this->nextDegreesOfRotation = data->data;
+
+		if(data->type == HidCmdType::request){
+			data->data = this->degreesOfRotation;
+		}
+	break;
+
+
+	case HID_CMD_FFB_ESGAIN:
+		if(data->type == HidCmdType::write)
+			this->endstop_gain_i = data->data;
+
+		if(data->type == HidCmdType::request){
+			data->data = this->endstop_gain_i;
+		}
+	break;
+
+	case HID_CMD_FFB_ZERO:
+		if(data->type == HidCmdType::write)
+			this->enc->setPos(0);
+	break;
+
+
+	default:
+		found = false;
+		break;
+	}
+	if(found){
+		sendHidCmd(data);
+	}
+}
 
 
 ParseStatus FFBWheel::command(ParsedCommand* cmd,std::string* reply){
 	ParseStatus flag = ParseStatus::OK;
 	// ------------ General commands ----------------
-	if(cmd->cmd == "save"){
-		this->saveFlash();
-		*reply+=">saved";
-	}else if(cmd->cmd == "drvtype"){
+	if(cmd->cmd == "drvtype"){
 		if(cmd->type == CMDtype::get){
 			*reply+=std::to_string((uint8_t)this->conf.drvtype);
 		}else if(cmd->type == CMDtype::set && this->drv_chooser.isValidClassId(cmd->val)){
@@ -34,7 +80,7 @@ ParseStatus FFBWheel::command(ParsedCommand* cmd,std::string* reply){
 			*reply += "bin flag encoded list of button sources. (3 = source 1 & 2 active). See lsbtn for sources";
 		}
 	}else if(cmd->cmd == "lsbtn"){
-		if(cmd->type == CMDtype::get){
+		if(cmd->type == CMDtype::get || cmd->type == CMDtype::help){
 			*reply += btn_chooser.printAvailableClasses();
 		}
 	}else if(cmd->cmd == "zeroenc"){
@@ -57,7 +103,7 @@ ParseStatus FFBWheel::command(ParsedCommand* cmd,std::string* reply){
 			*reply += "bin flag encoded list of analog sources. (3 = source 1 & 2 active). See lsain for sources";
 		}
 	}else if(cmd->cmd == "lsain"){
-		if(cmd->type == CMDtype::get){
+		if(cmd->type == CMDtype::get || cmd->type == CMDtype::help){
 			*reply += analog_chooser.printAvailableClasses();
 		}
 	}else if(cmd->cmd == "addain"){

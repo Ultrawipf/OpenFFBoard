@@ -16,6 +16,7 @@
 #include "constants.h"
 
 #include "UsbHidHandler.h"
+#include "PersistentStorage.h"
 #include "ExtiHandler.h"
 #include "UartHandler.h"
 #include "AdcHandler.h"
@@ -42,12 +43,12 @@ volatile uint32_t ADC3_BUF[ADC3_CHANNELS] = {0};
 extern ADC_HandleTypeDef hadc3;
 #endif
 
-volatile char uart_buf[UART_BUF_SIZE] = {0}; //
+volatile char uart_buf[UART_BUF_SIZE] = {0};
 
 
 // Externally stored so it can be used before the main class is initialized
 std::vector<CommandHandler*> cmdHandlers;
-
+std::vector<PersistentStorage*> flashHandlers;
 
 
 std::vector<AdcHandler*> adcHandlers;
@@ -169,45 +170,45 @@ void HAL_CAN_ErrorCallback(CAN_HandleTypeDef *hcan){
 #endif
 
 // SPI
-std::vector<SpiHandler*> spiHandlers;
+
 void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef *hspi){
-	for(SpiHandler* c : spiHandlers){
+	for(SpiHandler* c : SpiHandler::getSPIHandlers()){
 		c->SpiTxCplt(hspi);
 	}
 }
 
 void HAL_SPI_RxCpltCallback(SPI_HandleTypeDef *hspi){
-	for(SpiHandler* c : spiHandlers){
+	for(SpiHandler* c : SpiHandler::getSPIHandlers()){
 		c->SpiRxCplt(hspi);
 	}
 }
 
 void HAL_SPI_TxRxCpltCallback(SPI_HandleTypeDef *hspi){
-	for(SpiHandler* c : spiHandlers){
+	for(SpiHandler* c : SpiHandler::getSPIHandlers()){
 		c->SpiTxRxCplt(hspi);
 	}
 }
 
 void HAL_SPI_TxHalfCpltCallback(SPI_HandleTypeDef *hspi){
-	for(SpiHandler* c : spiHandlers){
+	for(SpiHandler* c : SpiHandler::getSPIHandlers()){
 		c->SpiTxHalfCplt(hspi);
 	}
 }
 
 void HAL_SPI_RxHalfCpltCallback(SPI_HandleTypeDef *hspi){
-	for(SpiHandler* c : spiHandlers){
+	for(SpiHandler* c : SpiHandler::getSPIHandlers()){
 		c->SpiRxHalfCplt(hspi);
 	}
 }
 
 void HAL_SPI_TxRxHalfCpltCallback(SPI_HandleTypeDef *hspi){
-	for(SpiHandler* c : spiHandlers){
+	for(SpiHandler* c : SpiHandler::getSPIHandlers()){
 		c->SpiTxRxHalfCplt(hspi);
 	}
 }
 
 void HAL_SPI_ErrorCallback(SPI_HandleTypeDef *hspi){
-	for(SpiHandler* c : spiHandlers){
+	for(SpiHandler* c : SpiHandler::getSPIHandlers()){
 		c->SpiError(hspi);
 	}
 }
@@ -225,15 +226,28 @@ void CDC_Finished(){
 		mainclass->cdcFinished();
 }
 
-// USB Out Endpoint callback
+/* USB Out Endpoint callback
+ * HID Out and Set Feature
+ */
 UsbHidHandler* globalHidHandler = nullptr;
+std::vector<UsbHidHandler*> hidCmdHandlers; // called only for custom cmd report ids
 void USBD_OutEvent_HID(uint8_t* report){
 	if(globalHidHandler!=nullptr)
 		globalHidHandler->hidOut(report);
+
+	if(report[0] == HID_ID_CUSTOMCMD){ // called only for the vendor defined report
+		for(UsbHidHandler* c : hidCmdHandlers){
+			c->hidOutCmd((HID_Custom_Data_t*)(report));
+		}
+	}
 }
+/*
+ * HID Get Feature
+ */
 void USBD_GetEvent_HID(uint8_t id,uint16_t len,uint8_t** return_buf){
 	if(globalHidHandler!=nullptr)
 		globalHidHandler->hidGet(id, len, return_buf);
+
 }
 
 void USB_SOF(){

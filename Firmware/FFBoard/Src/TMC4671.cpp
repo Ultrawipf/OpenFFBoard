@@ -247,7 +247,7 @@ void TMC4671::update(){
 
 			// Get enable input
 			bool tmc_en = (readReg(0x76) >> 15) & 0x01;
-			if(!tmc_en){ // Hardware emergency
+			if(!tmc_en && active){ // Hardware emergency
 				this->estopTriggered = true;
 				state = TMC_ControlState::HardError;
 			}
@@ -429,25 +429,44 @@ void TMC4671::calibrateAenc(){
 
 	uint32_t minVal_0 = 0xffff,	minVal_1 = 0xffff,	minVal_2 = 0xffff;
 	uint32_t maxVal_0 = 0,	maxVal_1 = 0,	maxVal_2 = 0;
-	int32_t minpos = -0x8fff/MAX(1,MIN(this->aencconf.cpr/2,200)), maxpos = 0x8fff/MAX(1,MIN(this->aencconf.cpr/2,200));
-	uint32_t speed = MAX(1,50/MAX(1,this->aencconf.cpr/5));
+	int32_t minpos = -0x8fff/MAX(1,MIN(this->aencconf.cpr/4,20)), maxpos = 0x8fff/MAX(1,MIN(this->aencconf.cpr/4,20));
+	uint32_t speed = MAX(1,20/MAX(1,this->aencconf.cpr/5));
 	runOpenLoop(3000, 0, speed, 100);
 
 	uint8_t stage = 0;
 	int32_t poles = conf.motconf.pole_pairs;
+	int32_t initialDirPos = 0;
 	while(stage != 3){
 		HAL_Delay(2);
 		refreshWatchdog(); // Don't let the dog get any sleep
 		if(getPos() > maxpos*poles && stage == 0){
-			runOpenLoop(3000, 0, -speed, 100);
+			runOpenLoop(bangInitPower, 0, -speed, 100);
 			stage = 1;
 		}else if(getPos() < minpos*poles && stage == 1){
-			runOpenLoop(3000, 0, speed, 100);
+			// Scale might still be wrong... maxVal-minVal is too high. In theory its 0xffff range and scaler /256. Leave some room to prevent clipping
+			aencconf.AENC0_offset = ((maxVal_0 + minVal_0) / 2);
+			aencconf.AENC0_scale = 0xF6FF00 / (maxVal_0 - minVal_0);
+			if(conf.motconf.enctype == EncoderType_TMC::uvw){
+				aencconf.AENC1_offset = ((maxVal_1 + minVal_1) / 2);
+				aencconf.AENC1_scale = 0xF6FF00 / (maxVal_1 - minVal_1);
+			}
+
+			aencconf.AENC2_offset = ((maxVal_2 + minVal_2) / 2);
+			aencconf.AENC2_scale = 0xF6FF00 / (maxVal_2 - minVal_2);
+			aencconf.rdir = false;
+			setup_AENC(aencconf);
+			runOpenLoop(0, 0, 0, 1000);
+			HAL_Delay(250);
+			// Zero aenc
+			writeReg(0x41, 0);
+			initialDirPos = readReg(0x41);
+			runOpenLoop(bangInitPower, 0, speed, 100);
 			stage = 2;
 		}else if(getPos() > 0 && stage == 2){
 			stage = 3;
-			runOpenLoop(0, 0, 0, 100);
+			runOpenLoop(0, 0, 0, 1000);
 		}
+
 		writeReg(0x03,2);
 		uint32_t aencUX = readReg(0x02)>>16;
 		writeReg(0x03,3);
@@ -463,24 +482,23 @@ void TMC4671::calibrateAenc(){
 		maxVal_1 = std::max(maxVal_1,aencVN);
 		maxVal_2 = std::max(maxVal_2,aencWY);
 	}
-	// Restore settings
-	setPhiEtype(lastphie);
-	setMotionMode(lastmode);
-	setPosSel(possel);
-	setPos(0);
 
-	// Scale might still be wrong... maxVal-minVal is too high. In theory its 0xffff range and scaler /256. Leave some room to prevent clipping
 	aencconf.AENC0_offset = ((maxVal_0 + minVal_0) / 2);
 	aencconf.AENC0_scale = 0xF6FF00 / (maxVal_0 - minVal_0);
 	if(conf.motconf.enctype == EncoderType_TMC::uvw){
 		aencconf.AENC1_offset = ((maxVal_1 + minVal_1) / 2);
 		aencconf.AENC1_scale = 0xF6FF00 / (maxVal_1 - minVal_1);
 	}
-
 	aencconf.AENC2_offset = ((maxVal_2 + minVal_2) / 2);
 	aencconf.AENC2_scale = 0xF6FF00 / (maxVal_2 - minVal_2);
-
+	int32_t newDirPos = readReg(0x41);
+	aencconf.rdir =  (initialDirPos - newDirPos) > 0;
 	setup_AENC(aencconf);
+	// Restore settings
+	setPhiEtype(lastphie);
+	setMotionMode(lastmode);
+	setPosSel(possel);
+	setPos(0);
 }
 
 /*
@@ -785,6 +803,12 @@ void TMC4671::setEncoderType(EncoderType_TMC type){
 		state = TMC_ControlState::AENC_init;
 		encstate = ENC_InitState::uninitialized;
 		this->aencconf.uvwmode = true; // uvw mode
+
+	}else if(type == EncoderType_TMC::hall){ // Hall sensor. Just trust it
+		state = TMC_ControlState::Running;
+		setPosSel(PosSelection::PhiM_hal);
+		encstate = ENC_InitState::OK;
+		setPhiEtype(PhiE::hall);
 	}
 }
 
@@ -1230,7 +1254,7 @@ int32_t TMC4671::getActualCurrent(){
 	uint32_t tfluxa = readReg(0x69);
 	//int16_t af = (tfluxa & 0xffff);
 	int16_t at = (tfluxa >> 16);
-	return abs(at);
+	return (at);
 }
 
 __attribute__((optimize("-Ofast")))
@@ -1258,7 +1282,7 @@ __attribute__((optimize("-Ofast")))
 void TMC4671::writeReg(uint8_t reg,uint32_t dat){
 
 	// wait until ready
-	while(this->spi_busy || this->spi->State != HAL_SPI_STATE_READY){}
+	while(this->spi_busy){}
 	this->spi_busy = true;
 
 	spi_buf[0] = (uint8_t)(0x80 | reg);
@@ -1449,12 +1473,6 @@ ParseStatus TMC4671::command(ParsedCommand* cmd,std::string* reply){
 			*reply+=std::to_string(this->getTemp());
 		}
 
-	}else if(cmd->cmd == "help"){
-		flag = ParseStatus::OK_CONTINUE; // Set flag false to continue parsing
-		*reply += "TMC4671 commands:\n"
-				"mtype,encsrc,encalign,poles,phiesrc,reg,fluxoffset\n"
-				"torqueP,torqueI,fluxP,fluxI\n"
-				"acttrq,seqpi\n";
 	}else{
 		flag = ParseStatus::NOT_FOUND;
 	}

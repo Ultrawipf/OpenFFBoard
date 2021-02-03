@@ -8,17 +8,13 @@
 #include "SpiHandler.h"
 
 SpiHandler::SpiHandler() {
-	extern std::vector<SpiHandler*> spiHandlers;
-	addCallbackHandler(&spiHandlers, this);
+	addCallbackHandler(&getSPIHandlers(), this);
 
 }
 
 SpiHandler::~SpiHandler() {
-	extern std::vector<SpiHandler*> spiHandlers;
-	removeCallbackHandler(&spiHandlers, this);
+	removeCallbackHandler(&getSPIHandlers(), this);
 }
-
-
 
 void SpiHandler::SpiTxCplt(SPI_HandleTypeDef *hspi){
 

@@ -12,7 +12,8 @@
 #include "cppmain.h"
 #include "ChoosableClass.h"
 #include "CommandHandler.h"
-#include "SpiHandler.h"
+#include "SPI.h"
+#include "cpp_target_config.h"
 
 // TODO interrupts
 
@@ -27,22 +28,20 @@ struct ButtonSourceConfig{
 	bool cutRight = false; // if num buttons to read are not byte aligned specify where to shift
 	bool invert = false;
 	SPI_BtnMode mode=SPI_BtnMode::TM; // Mode preset
-	bool cspol = false; // Set by preset
+	uint8_t cs_num = 0;
 };
 
 
-class SPI_Buttons: public ButtonSource,public CommandHandler,public SpiHandler {
+class SPI_Buttons: public ButtonSource,public CommandHandler,public SPIDevice {
 public:
 	const std::vector<std::string> mode_names = {"Thrustmaster/HEF4021BT","Shift register (74HC165)"};
 
-	SPI_Buttons();
 	virtual ~SPI_Buttons();
-	const ClassIdentifier getInfo();
-	static ClassIdentifier info;
 
 	void readButtons(uint32_t* buf);
 
 	ParseStatus command(ParsedCommand* cmd,std::string* reply);
+	virtual std::string getHelpstring(){return "SPI Button: spi#_btn_mode,spi#_btncut,spi#_btnpol,spi#_btnnum\n";}
 
 	void saveFlash();
 	void restoreFlash();
@@ -53,26 +52,45 @@ public:
 	void setMode(SPI_BtnMode mode);
 	void initSPI();
 
-	void SpiRxCplt(SPI_HandleTypeDef *hspi);
+	const SPIConfig& getConfig() const override;
+    void beginRequest(SPIPort::Pipe& pipe) override;
+
+protected:
+	SPI_Buttons(uint16_t configuration_address, uint16_t configuration_address_2);
 
 private:
-	static ButtonSourceConfig decodeIntToConf(uint16_t val);
-	static uint16_t encodeConfToInt(ButtonSourceConfig* c);
+	const uint16_t configuration_address;
+	const uint16_t configuration_address_2;
 
 	void setConfig(ButtonSourceConfig config);
 	virtual ButtonSourceConfig* getConfig();
 	void process(uint32_t* buf);
-	SPI_HandleTypeDef* spi;
-	uint16_t cspin;
-	GPIO_TypeDef* csport;
 	uint8_t bytes = 4;
 	uint16_t mask = 0xff;
 	uint8_t offset = 0;
 
 	ButtonSourceConfig conf;
+	SPIConfig spi_config;
 
 	uint8_t spi_buf[4] = {0};
-	volatile bool spibusy = false;
+};
+
+class SPI_Buttons_1 : public SPI_Buttons {
+public:
+	SPI_Buttons_1()
+		: SPI_Buttons{ADR_SPI_BTN_1_CONF, ADR_SPI_BTN_1_CONF_2} {}
+
+	const ClassIdentifier getInfo() override;
+	static ClassIdentifier info;
+};
+
+class SPI_Buttons_2 : public SPI_Buttons {
+public:
+	SPI_Buttons_2()
+		: SPI_Buttons{ADR_SPI_BTN_2_CONF, ADR_SPI_BTN_2_CONF_2} {}
+
+	const ClassIdentifier getInfo() override;
+	static ClassIdentifier info;
 };
 
 #endif /* SPIBUTTONS_H_ */

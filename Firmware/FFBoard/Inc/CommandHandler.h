@@ -25,10 +25,24 @@ public:
 	virtual void setCommandsEnabled(bool enable);
 	virtual ParseStatus command(ParsedCommand* cmd,std::string* reply);
 	virtual const ClassIdentifier getInfo() = 0; // Command handlers always have class infos. Works well with ChoosableClass
+	virtual std::string getHelpstring(); // Returns a help string if "help" command is sent
+
 protected:
 	bool commandsEnabled = true;
 	virtual void addCommandHandler();
 	virtual void removeCommandHandler();
+
+	template<typename TVal>
+ 	bool handleGetSet(ParsedCommand* cmd, std::string *reply, TVal& val) {
+ 		if (cmd->type == CMDtype::set) {
+ 			val = TVal(cmd->val);
+			return true;
+ 		} else if (cmd->type == CMDtype::get) {
+ 			*reply += std::to_string(val);
+ 		}
+
+		return false;
+ 	}
 
 private:
 

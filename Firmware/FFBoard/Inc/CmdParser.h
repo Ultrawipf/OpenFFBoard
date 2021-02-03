@@ -22,6 +22,7 @@ struct ParsedCommand
     std::string cmd;
     int64_t adr = 0;
     int64_t val = 0;
+    std::string rawcmd;
     CMDtype type = CMDtype::none;
 
 };
