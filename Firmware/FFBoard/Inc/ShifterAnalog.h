@@ -76,8 +76,8 @@ private:
 
 	ShifterMode mode;
 
-	uint8_t x_chan{5};
-	uint8_t y_chan{4};
+	uint8_t x_chan{6};
+	uint8_t y_chan{5};
 	uint8_t reverseButtonNum{1};
 	uint8_t cs_pin_num{1};
 
