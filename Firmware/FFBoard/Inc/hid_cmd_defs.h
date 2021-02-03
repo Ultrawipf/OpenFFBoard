@@ -28,9 +28,11 @@ enum class HidCmdType : uint8_t {err = 0, write = 1, request = 2,stop_stream = 3
 typedef struct
 {
 	uint8_t		reportId = HID_ID_CUSTOMCMD; //HID_ID_CUSTOMCMD_FEATURE
-	HidCmdType	type = HidCmdType::err;	// Type of report. 0 = error, 1 = write, 2 = request
-	uint32_t	cmd = 0;		// Use this as an identifier
-	uint64_t	data = 0;	// Use this to transfer data
+	HidCmdType	type = HidCmdType::err;	// 0x01. Type of report. 0 = error, 1 = write, 2 = request
+	uint32_t	cmd = 0;				// 0x02 Use this as an identifier for the command
+	uint32_t	addr = 0;				// 0x03 Use this to transfer an optional address (CAN for example)
+	uint64_t	data = 0;				// 0x04 Use this to transfer data
+
 } __attribute__((packed)) HID_Custom_Data_t;
 
 
