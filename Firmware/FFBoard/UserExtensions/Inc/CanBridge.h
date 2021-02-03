@@ -37,6 +37,7 @@ public:
 	void canRxPendCallback(CAN_HandleTypeDef *hcan,uint8_t* rxBuf,CAN_RxHeaderTypeDef* rxHeader,uint32_t fifo);
 	void canErrorCallback(CAN_HandleTypeDef *hcan);
 	std::string messageToString();
+	void cdcRcv(char* Buf, uint32_t *Len);
 	CAN_HandleTypeDef* CanHandle = &CANPORT;
 
 
@@ -50,6 +51,8 @@ private:
 	uint8_t txBuf[8] = {0};
 	uint32_t txMailbox;
 	uint32_t rxfifo = CAN_RX_FIFO0;
+
+	const char keepalivemsg[4] = {0xF1,0x09, 0xDE,0xAD};
 };
 #endif /* CANBRIDGE_H_ */
 #endif
