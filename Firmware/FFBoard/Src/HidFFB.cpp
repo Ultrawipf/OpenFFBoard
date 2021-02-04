@@ -27,17 +27,17 @@ bool HidFFB::getFfbActive(){
 
 void HidFFB::saveFlash(){
 	uint16_t effects1 = this->getIdleSpringStrength() | (this->getFrictionStrength() << 8);
-	Flash_Write(ADR_FFB_EFFECTS1, effects1);
-	Flash_Write(ADR_FFB_EFFECTS2, this->cfFilter_f);
+	Flash_Write(ADR_FFBAXIS1_EFFECTS1, effects1);
+	Flash_Write(ADR_FFBAXIS1_EFFECTS2, this->cfFilter_f);
 }
 void HidFFB::restoreFlash(){
 	uint16_t effects1 = 0;
-	if(Flash_Read(ADR_FFB_EFFECTS1, &effects1)){
+	if(Flash_Read(ADR_FFBAXIS1_EFFECTS1, &effects1)){
 		this->setFrictionStrength((effects1 >> 8) & 0xff);
 		this->setIdleSpringStrength(effects1 & 0xff);
 	}
 	effects1 = 0;
-	if(Flash_Read(ADR_FFB_EFFECTS2, &effects1)){
+	if(Flash_Read(ADR_FFBAXIS1_EFFECTS2, &effects1)){
 		setCfFilter(effects1);
 	}
 }

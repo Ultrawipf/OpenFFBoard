@@ -103,7 +103,7 @@ FFBWheel::~FFBWheel() {
 void FFBWheel::restoreFlash(){
 	// read all constants
 	uint16_t confint;
-	if(Flash_Read(ADR_FFBWHEEL_CONFIG, &confint)){
+	if(Flash_Read(ADR_FFBAXIS1_CONFIG, &confint)){
 		this->conf = FFBWheel::decodeConfFromInt(confint);
 	}else{
 		pulseErrLed();
@@ -130,12 +130,12 @@ void FFBWheel::restoreFlash(){
 		pulseErrLed();
 	}
 
-	Flash_Read(ADR_FFBWHEEL_POWER, &this->power);
-	Flash_Read(ADR_FFBWHEEL_DEGREES, &this->degreesOfRotation);
+	Flash_Read(ADR_FFBAXIS1_POWER, &this->power);
+	Flash_Read(ADR_FFBAXIS1_DEGREES, &this->degreesOfRotation);
 	nextDegreesOfRotation = degreesOfRotation;
 
 	uint16_t esval;
-	if(Flash_Read(ADR_FFBWHEEL_ENDSTOP,&esval)){
+	if(Flash_Read(ADR_FFBAXIS1_ENDSTOP,&esval)){
 		this->fx_ratio_i = esval & 0xff;
 		this->endstop_gain_i = (esval >> 8) & 0xff;
 	}
@@ -145,13 +145,13 @@ void FFBWheel::restoreFlash(){
 // Saves parameters to flash
 void FFBWheel::saveFlash(){
 
-	Flash_Write(ADR_FFBWHEEL_CONFIG,FFBWheel::encodeConfToInt(this->conf));
+	Flash_Write(ADR_FFBAXIS1_CONFIG,FFBWheel::encodeConfToInt(this->conf));
 	Flash_Write(ADR_TMC1_CPR, enc->getCpr());
-	Flash_Write(ADR_FFBWHEEL_POWER, this->power);
-	Flash_Write(ADR_FFBWHEEL_DEGREES, this->degreesOfRotation);
+	Flash_Write(ADR_FFBAXIS1_POWER, this->power);
+	Flash_Write(ADR_FFBAXIS1_DEGREES, this->degreesOfRotation);
 	Flash_Write(ADR_FFBWHEEL_BUTTONCONF,this->btnsources);
 	Flash_Write(ADR_FFBWHEEL_ANALOGCONF,this->ainsources);
-	Flash_Write(ADR_FFBWHEEL_ENDSTOP,this->fx_ratio_i | (this->endstop_gain_i << 8));
+	Flash_Write(ADR_FFBAXIS1_ENDSTOP,this->fx_ratio_i | (this->endstop_gain_i << 8));
 
 
 }

@@ -10,7 +10,7 @@
 
 #include "main.h"
 // Change this to the amount of currently registered variables
-#define NB_OF_VAR	34
+#define NB_OF_VAR	66
 
 extern uint16_t VirtAddVarTab[NB_OF_VAR];
 
@@ -33,26 +33,11 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_SW_VERSION 		2
 #define ADR_CURRENT_CONFIG 	10
 
-// FFBWheel
-#define ADR_FFBWHEEL_CONFIG				0x101 // 0-2 ENC, 3-5 DRV
-#define ADR_FFBWHEEL_POWER				0x102
-#define ADR_FFBWHEEL_DEGREES			0x103
+#define ADR_FFBWHEEL_BUTTONCONF 		0x101
+#define ADR_FFBWHEEL_ANALOGCONF 		0x102
 
-#define ADR_FFBWHEEL_BUTTONCONF 		0x105
-#define ADR_FFBWHEEL_ANALOGCONF 		0x106
-#define ADR_FFBWHEEL_ENDSTOP			0x107 // 0-7 endstop margin, 8-15 endstop stiffness
-
-
-// TMC
-#define ADR_TMC1_MOTCONF 				0x110 // 0-2: MotType 3-5: PhiE source 6-15: Poles
-#define ADR_TMC1_CPR					0x111
-#define ADR_TMC1_ENCA					0x112
-
-#define ADR_TMC1_OFFSETFLUX				0x116
-#define ADR_TMC1_TORQUE_P				0x117
-#define ADR_TMC1_TORQUE_I				0x118
-#define ADR_TMC1_FLUX_P					0x119
-#define ADR_TMC1_FLUX_I					0x11A
+#define ADR_FFBJOYSTICK_BUTTONCONF 		0x103
+#define ADR_FFBJOYSTICK_ANALOGCONF 		0x104
 
 
 // Button Sources:
@@ -63,10 +48,6 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_SPI_BTN_2_CONF				0x205
 #define ADR_SPI_BTN_1_CONF_2            0x206
 #define ADR_SPI_BTN_2_CONF_2            0x207
-
-// FFB
-#define ADR_FFB_EFFECTS1				0x210 // 0-7 spring, 8-15 friction
-#define ADR_FFB_EFFECTS2				0x211 // CF Lowpass
 
 // PWM
 #define ADR_PWM_MODE					0x220
@@ -81,5 +62,68 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_SHIFTERANALOG_Y_246			0x243
 #define ADR_SHIFTERANALOG_CONF_2		0x244
 #define ADR_SHIFTERANALOG_CONF_3		0x245
+
+// How many axis configured 1-3
+#define ADR_AXIS_COUNT					0x300
+
+// FFBAXIS1
+#define ADR_FFBAXIS1_CONFIG				0x301 // 0-2 ENC, 3-5 DRV
+#define ADR_FFBAXIS1_POWER				0x302
+#define ADR_FFBAXIS1_DEGREES			0x303
+#define ADR_FFBAXIS1_ENDSTOP			0x307 // 0-7 endstop margin, 8-15 endstop stiffness
+#define ADR_FFBAXIS1_EFFECTS1			0x310 // 0-7 spring, 8-15 friction
+#define ADR_FFBAXIS1_EFFECTS2			0x311 // CF Lowpass
+
+// TMC1
+#define ADR_TMC1_MOTCONF 				0x320 // 0-2: MotType 3-5: PhiE source 6-15: Poles
+#define ADR_TMC1_CPR					0x321
+#define ADR_TMC1_ENCA					0x322
+
+#define ADR_TMC1_OFFSETFLUX				0x326
+#define ADR_TMC1_TORQUE_P				0x327
+#define ADR_TMC1_TORQUE_I				0x328
+#define ADR_TMC1_FLUX_P					0x329
+#define ADR_TMC1_FLUX_I					0x32A
+
+
+// FFBAXIS2
+#define ADR_FFBAXIS2_CONFIG				0x341 // 0-2 ENC, 3-5 DRV
+#define ADR_FFBAXIS2_POWER				0x342
+#define ADR_FFBAXIS2_DEGREES			0x343
+#define ADR_FFBAXIS2_ENDSTOP			0x347 // 0-7 endstop margin, 8-15 endstop stiffness
+#define ADR_FFBAXIS2_EFFECTS1			0x350 // 0-7 spring, 8-15 friction
+#define ADR_FFBAXIS2_EFFECTS2			0x351 // CF Lowpass
+
+// TMC2
+#define ADR_TMC2_MOTCONF 				0x360 // 0-2: MotType 3-5: PhiE source 6-15: Poles
+#define ADR_TMC2_CPR					0x361
+#define ADR_TMC2_ENCA					0x362
+
+#define ADR_TMC2_OFFSETFLUX				0x366
+#define ADR_TMC2_TORQUE_P				0x367
+#define ADR_TMC2_TORQUE_I				0x368
+#define ADR_TMC2_FLUX_P					0x369
+#define ADR_TMC2_FLUX_I					0x36A
+
+
+// FFBAXIS3
+#define ADR_FFBAXIS3_CONFIG				0x381 // 0-2 ENC, 3-5 DRV
+#define ADR_FFBAXIS3_POWER				0x382
+#define ADR_FFBAXIS3_DEGREES			0x383
+#define ADR_FFBAXIS3_ENDSTOP			0x387 // 0-7 endstop margin, 8-15 endstop stiffness
+#define ADR_FFBAXIS3_EFFECTS1			0x390 // 0-7 spring, 8-15 friction
+#define ADR_FFBAXIS3_EFFECTS2			0x391 // CF Lowpass
+
+// TMC3
+#define ADR_TMC3_MOTCONF 				0x3A0 // 0-2: MotType 3-5: PhiE source 6-15: Poles
+#define ADR_TMC3_CPR					0x3A1
+#define ADR_TMC3_ENCA					0x3A2
+
+#define ADR_TMC3_OFFSETFLUX				0x3A6
+#define ADR_TMC3_TORQUE_P				0x3A7
+#define ADR_TMC3_TORQUE_I				0x3A8
+#define ADR_TMC3_FLUX_P					0x3A9
+#define ADR_TMC3_FLUX_I					0x3AA
+
 
 #endif /* EEPROM_ADDRESSES_H_ */
