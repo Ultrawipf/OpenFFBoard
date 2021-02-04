@@ -11,6 +11,7 @@
 #include "target_constants.h"
 #include "ledEffects.h"
 
+extern TIM_TypeDef TIM_MICROS;
 
 ClassIdentifier CanBridge::info = {
 		 .name = "CAN Bridge" ,
@@ -45,6 +46,7 @@ CanBridge::CanBridge() {
 
 	this->filterId = addCanFilter(CanHandle, sFilterConfig);
 	// Interrupt start
+	conf1.enabled = true;
 }
 
 CanBridge::~CanBridge() {
@@ -88,81 +90,187 @@ std::string CanBridge::messageToString(){
 	buf += "\n";
 	return buf;
 }
+
 // Can only send and receive 32bit for now
 void CanBridge::canRxPendCallback(CAN_HandleTypeDef *hcan,uint8_t* rxBuf,CAN_RxHeaderTypeDef* rxHeader,uint32_t fifo){
 	if(fifo == rxfifo){
 		pulseSysLed();
-		memcpy(this->rxBuf,rxBuf,sizeof(this->rxBuf));
-		this->rxHeader = *rxHeader;
-		std::string buf = messageToString(); // Last message to string
-		CDC_Transmit_FS(buf.c_str(), buf.length());
+
+		if(gvretMode){
+			uint32_t time = rxHeader->Timestamp;
+			uint32_t id = rxHeader->StdId;
+			if(rxHeader->ExtId != 0){
+				id = rxHeader->ExtId;
+				id |= 0x80000000;
+			}
+			std::vector<char> reply = {
+					0xF1,0,(char)(time & 0xff), (char)((time >> 8) & 0xff), (char)((time >> 16) & 0xff), (char)((time >> 24) & 0xff),
+					(char)(id & 0xff), (char)((id >> 8) & 0xff), (char)((id >> 16) & 0xff), (char)((id >> 24) & 0xff),
+					(char)((rxHeader->DLC & 0xf) | (1 >> 4))
+			};
+			for(uint8_t i = 0; i< rxHeader->DLC; i++){
+				reply.push_back(*(rxBuf+i));
+			}
+			reply.push_back(0);
+			CDC_Transmit_FS(reply.data(), reply.size());
+
+		}else{
+			memcpy(this->rxBuf,rxBuf,sizeof(this->rxBuf));
+			this->rxHeader = *rxHeader;
+			std::string buf = messageToString(); // Last message to string
+			CDC_Transmit_FS(buf.c_str(), buf.length());
+
+		}
 
 	}
 }
 
+//void CanBridge::sendGvretReply(std::vector<uint8_t>* dat, uint8_t cmd){
+//	CDC_Transmit_FS(data, len);
+//}
+
 void CanBridge::cdcRcv(char* Buf, uint32_t *Len){
 
 	// Not a gvret binary command
-	if(*Buf != 0xF1){
+
+	if(*Buf == 0xE7){
+		gvretMode = true;
+	}
+
+	if(gvretMode == false){
 		FFBoardMain::cdcRcv(Buf, Len);
 		return;
 	}
 
 
-	std::vector<uint8_t> dat;
-	dat.assign(Buf,Buf+*Len);
+	/*
+	 * Data format in buf:
+	 * 0xE1,0xE1,0xF1,cmd,data...
+	 * data = buf+2
+	 */
 
-	switch(dat[1]){
-	case(0): // send can
-		uint32_t id = (*Buf << 2) & 0xffff;
-	break;
-	case(1): // sync
-
-	break;
-
-	case(2): // get digital in
-
-	break;
-
-	case(3): // get analog in
-
-	break;
-
-	case(4): // set digital out
-
-	break;
-
-	case(5): // set can config
-
-	break;
-
-	case(6): // get can config
-
-	break;
-
-	case(7): // get device info
-
-	break;
-
-	case(8): // set single wire mode
-
-	break;
-
-	case(9):{ // keep alive
-		CDC_Transmit_FS(keepalivemsg, 4);
-		break;
-	}
-	case(10): // set system
-
-	break;
-
-	case(11): // echo can frame
-
-	break;
-	default:
-	break;
+	// Find start
+	uint8_t pos = 0;
+	for(uint8_t i = 0; i < *Len-pos; i++){
+		pos = i+1;
+		if((Buf[i]) == 0xF1){
+			break;
+		}
 	}
 
+	std::vector<char> reply;
+	while(pos < *Len){
+
+		uint8_t datalength = *Len;
+		uint8_t* data = (uint8_t*)(Buf+pos+1);
+		uint8_t cmd = *(Buf+pos);
+
+		// find next F1 or end
+		for(uint8_t i = 0; i < *Len-pos; i++){
+			datalength = i;
+			if((data[i]) == 0xF1){
+				break;
+			}
+		}
+		pos = pos+datalength+2; // Move offset
+
+
+		switch(cmd){
+
+			case(0):
+			{ // send can
+				if(*Len < 8)
+					break;
+				uint32_t id = *reinterpret_cast<uint32_t*>(data); // = dat[2] | dat[3] >> 8 | dat[3] >> 16 | dat[4] >> 21
+				uint64_t msg;
+				memcpy(&msg,data+4,std::min(datalength-4, 8)); // Copy variable length buffer
+				sendMessage(id, msg);
+				break;
+			}
+			case(1):
+			{	// sync. Microseconds since start up LSB to MSB
+				uint32_t time = HAL_GetTick()*1000;//HAL_CAN_GetTxTimestamp(CanHandle, txMailbox); // or use systick and scale.
+				std::vector<char> t = {0xF1,cmd,(char)(time & 0xff), (char)((time >> 8) & 0xff), (char)((time >> 16) & 0xff), (char)((time >> 24) & 0xff)};
+				reply.insert(reply.end(),t.begin(),t.end());
+
+				break;
+			}
+			case(2): // get digital in
+
+			break;
+
+			case(3): // get analog in
+
+			break;
+
+			case(4): // set digital out
+
+			break;
+
+			case(5): // set can config
+			{
+				uint32_t speed = *reinterpret_cast<uint32_t*>(data) & 0xffffffff;
+				if(speed & 0x80000000){
+					conf1.enabled = (speed & 0x40000000) != 0;
+					conf1.listenOnly = (speed & 0x20000000) != 0;
+				}
+				speed = speed & 0x1fffffff;
+				// TODO
+				break;
+			}
+			case(6): // get can config
+			{
+				std::vector<char> t =
+					{	0xF1,cmd,
+							(char)(conf1.enabled | conf1.listenOnly << 4),(char)(conf1.speed & 0xff), (char)((conf1.speed >> 8) & 0xff),(char)((conf1.speed >> 16) & 0xff),(char)((conf1.speed >> 24) & 0xff),
+							(char)(conf2.enabled | conf2.listenOnly << 4),(char)(conf2.speed & 0xff), (char)((conf2.speed >> 8) & 0xff),(char)((conf2.speed >> 16) & 0xff),(char)((conf2.speed >> 24) & 0xff),
+					};
+				reply.insert(reply.end(),t.begin(),t.end());
+				break;
+			}
+
+
+			case(7): // get device info
+			{
+				std::vector<char> t = {0xF1,cmd,1,1,1,0,0,0};
+				reply.insert(reply.end(),t.begin(),t.end());
+				break;
+			}
+
+
+			case(8): // set single wire mode
+
+			break;
+
+			case(9):{ // keep alive
+				reply.insert(reply.end(),keepalivemsg.begin(),keepalivemsg.end());
+				break;
+			}
+			case(10): // set system
+
+			break;
+
+			case(11): // echo can frame
+
+			break;
+
+			case(12): // Num buses
+			{
+				std::vector<char> t = {0xF1,cmd,numBuses};
+				reply.insert(reply.end(),t.begin(),t.end());
+			}
+			break;
+			case(13): // ext buses
+			break;
+			case(14): // set ext buses
+			break;
+			default:
+				// unknown command
+			break;
+		}
+
+	}
+	CDC_Transmit_FS(reply.data(), reply.size());
 }
 
 ParseStatus CanBridge::command(ParsedCommand* cmd,std::string* reply){

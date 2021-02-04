@@ -19,6 +19,13 @@ extern "C"{
 #include "stm32f4xx_hal_can.h"
 }
 
+
+typedef struct{
+	bool listenOnly = false;
+	uint32_t speed = 500000;
+	bool enabled = false;
+} CAN_Config_t;
+
 /*
  * A main class for testing CAN communication.
  * Sends CAN messages via CDC and can transmit CAN messages with 4 bytes
@@ -43,6 +50,7 @@ public:
 
 private:
 	int32_t filterId = -1;
+	const uint8_t numBuses = 1;
 
 	CAN_TxHeaderTypeDef txHeader;
 	CAN_RxHeaderTypeDef rxHeader; // Receive header
@@ -51,8 +59,10 @@ private:
 	uint8_t txBuf[8] = {0};
 	uint32_t txMailbox;
 	uint32_t rxfifo = CAN_RX_FIFO0;
-
-	const char keepalivemsg[4] = {0xF1,0x09, 0xDE,0xAD};
+	CAN_Config_t conf1;
+	CAN_Config_t conf2;
+	bool gvretMode = false;
+	const std::vector<char> keepalivemsg = {0xF1,0x09, 0xDE,0xAD};
 };
 #endif /* CANBRIDGE_H_ */
 #endif
