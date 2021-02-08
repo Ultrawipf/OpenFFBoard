@@ -75,9 +75,19 @@ extern SPI_HandleTypeDef hspi2;
 #define HSPI2 hspi2
 
 // CAN
+#ifdef CANBUS
 extern CAN_HandleTypeDef hcan1;
 #define CANPORT hcan1
 
+#define CANSPEEDPRESET_50 0
+#define CANSPEEDPRESET_100 1
+#define CANSPEEDPRESET_125 2
+#define CANSPEEDPRESET_250 3
+#define CANSPEEDPRESET_500 4
+#define CANSPEEDPRESET_1000 5
+
+extern const uint32_t canSpeedBTR_preset[];
+#endif
 
 
 //Flash. 2 pages used

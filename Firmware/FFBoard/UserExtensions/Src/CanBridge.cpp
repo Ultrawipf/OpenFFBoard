@@ -72,9 +72,10 @@ void CanBridge::sendMessage(){
 	}
 }
 
-void CanBridge::sendMessage(uint32_t id, uint64_t msg){
+void CanBridge::sendMessage(uint32_t id, uint64_t msg,uint8_t len = 8){
 	memcpy(txBuf,&msg,8);
 	txHeader.StdId = id;
+	txHeader.DLC = len;
 	sendMessage();
 }
 
@@ -89,6 +90,41 @@ std::string CanBridge::messageToString(){
 	buf += std::to_string(*(int32_t*)this->rxBuf);
 	buf += "\n";
 	return buf;
+}
+
+void CanBridge::setCanSpeed(uint32_t speed){
+	HAL_CAN_Stop(this->CanHandle);
+	this->speed = speed;
+	switch(speed){
+
+	case 50000:
+		this->CanHandle->Instance->BTR = canSpeedBTR_preset[CANSPEEDPRESET_50];
+	break;
+
+	case 100000:
+		this->CanHandle->Instance->BTR = canSpeedBTR_preset[CANSPEEDPRESET_100];
+	break;
+
+	case 125000:
+		this->CanHandle->Instance->BTR = canSpeedBTR_preset[CANSPEEDPRESET_125];
+	break;
+
+	case 250000:
+		this->CanHandle->Instance->BTR = canSpeedBTR_preset[CANSPEEDPRESET_250];
+	break;
+
+	case 500000:
+		this->CanHandle->Instance->BTR = canSpeedBTR_preset[CANSPEEDPRESET_500];
+	break;
+
+	case 1000000:
+		this->CanHandle->Instance->BTR = canSpeedBTR_preset[CANSPEEDPRESET_1000];
+	break;
+
+
+	}
+
+	HAL_CAN_Start(this->CanHandle);
 }
 
 // Can only send and receive 32bit for now
@@ -125,6 +161,7 @@ void CanBridge::canRxPendCallback(CAN_HandleTypeDef *hcan,uint8_t* rxBuf,CAN_RxH
 	}
 }
 
+
 //void CanBridge::sendGvretReply(std::vector<uint8_t>* dat, uint8_t cmd){
 //	CDC_Transmit_FS(data, len);
 //}
@@ -137,7 +174,7 @@ void CanBridge::cdcRcv(char* Buf, uint32_t *Len){
 		gvretMode = true;
 	}
 
-	if(gvretMode == false){
+	if(gvretMode == false || (*Buf != 0xE7 && *Buf != 0xF1)){ // Not gvret command
 		FFBoardMain::cdcRcv(Buf, Len);
 		return;
 	}
@@ -149,7 +186,7 @@ void CanBridge::cdcRcv(char* Buf, uint32_t *Len){
 	 * data = buf+2
 	 */
 
-	// Find start
+	// Find start marker
 	uint8_t pos = 0;
 	for(uint8_t i = 0; i < *Len-pos; i++){
 		pos = i+1;
@@ -172,7 +209,7 @@ void CanBridge::cdcRcv(char* Buf, uint32_t *Len){
 				break;
 			}
 		}
-		pos = pos+datalength+2; // Move offset
+		pos = pos+datalength+2; // Move offset for next loop
 
 
 		switch(cmd){
@@ -181,10 +218,15 @@ void CanBridge::cdcRcv(char* Buf, uint32_t *Len){
 			{ // send can
 				if(*Len < 8)
 					break;
-				uint32_t id = *reinterpret_cast<uint32_t*>(data); // = dat[2] | dat[3] >> 8 | dat[3] >> 16 | dat[4] >> 21
-				uint64_t msg;
-				memcpy(&msg,data+4,std::min(datalength-4, 8)); // Copy variable length buffer
-				sendMessage(id, msg);
+				uint32_t id = *data | (*(data+1) << 8) | (*(data+2) << 16) | (*(data+3) << 24); // = dat[2] | dat[3] >> 8 | dat[3] >> 16 | dat[4] >> 21
+				uint64_t msg = 0;
+				uint8_t bus = data[4];
+				uint8_t msgLen = data[5];
+				if(bus == 0){
+					memcpy(&msg,data+6,std::min<int>(msgLen, 8)); // Copy variable length buffer
+					sendMessage(id, msg,msgLen);
+				}
+
 				break;
 			}
 			case(1):
@@ -209,13 +251,14 @@ void CanBridge::cdcRcv(char* Buf, uint32_t *Len){
 
 			case(5): // set can config
 			{
-				uint32_t speed = *reinterpret_cast<uint32_t*>(data) & 0xffffffff;
-				if(speed & 0x80000000){
-					conf1.enabled = (speed & 0x40000000) != 0;
-					conf1.listenOnly = (speed & 0x20000000) != 0;
-				}
+				uint32_t speed = *data | (*(data+1) << 8) | (*(data+2) << 16) | (*(data+3) << 24);
 				speed = speed & 0x1fffffff;
-				// TODO
+				uint8_t b3 = *(data+3); // config byte
+				if(b3 & 0x80){
+					conf1.enabled = (b3 & 0x40) != 0;
+					conf1.listenOnly = (b3 & 0x20) != 0;
+				}
+				this->setCanSpeed(speed);
 				break;
 			}
 			case(6): // get can config
@@ -286,9 +329,12 @@ ParseStatus CanBridge::command(ParsedCommand* cmd,std::string* reply){
 			flag = ParseStatus::ERR;
 		}
 
-	}else if(cmd->cmd == "help"){
-		flag = ParseStatus::OK_CONTINUE;
-		*reply += "CAN commands:\ncan?<id>=<msgint> send message. Or can? (last received message)";
+	}else if(cmd->cmd == "canspd"){
+		if(cmd->type == CMDtype::get){
+			*reply += std::to_string(this->speed);
+		}else if(cmd->type == CMDtype::set){
+			this->setCanSpeed(cmd->val);
+		}
 	}else{
 		flag = ParseStatus::NOT_FOUND; // No valid command
 	}

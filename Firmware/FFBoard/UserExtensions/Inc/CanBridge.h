@@ -39,7 +39,7 @@ public:
 	static ClassIdentifier info;
 	const ClassIdentifier getInfo();
 	ParseStatus command(ParsedCommand* cmd,std::string* reply);
-	void sendMessage(uint32_t id, uint64_t msg);
+	void sendMessage(uint32_t id, uint64_t msg,uint8_t len);
 	void sendMessage();
 	void canRxPendCallback(CAN_HandleTypeDef *hcan,uint8_t* rxBuf,CAN_RxHeaderTypeDef* rxHeader,uint32_t fifo);
 	void canErrorCallback(CAN_HandleTypeDef *hcan);
@@ -47,10 +47,15 @@ public:
 	void cdcRcv(char* Buf, uint32_t *Len);
 	CAN_HandleTypeDef* CanHandle = &CANPORT;
 
+	void setCanSpeed(uint32_t speed);
+
+	virtual std::string getHelpstring(){return "CAN commands:\ncan?<id>=<msgint> send message. Or can? (last received message). canspd (speed)";}
+
 
 private:
 	int32_t filterId = -1;
 	const uint8_t numBuses = 1;
+	uint32_t speed = 500000; // default
 
 	CAN_TxHeaderTypeDef txHeader;
 	CAN_RxHeaderTypeDef rxHeader; // Receive header
