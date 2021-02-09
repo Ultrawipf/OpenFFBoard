@@ -42,7 +42,6 @@ MidiMain::MidiMain() {
 	TMC4671Limits limits;
 	drv->setLimits(limits);
 	drv->setAddress(1);
-	drv->restoreFlash(); // load motor type
 	//drv->setMotorType(MotorType::STEPPER, 50);
 	if(drv->conf.motconf.motor_type == MotorType::NONE){
 		pulseErrLed();
