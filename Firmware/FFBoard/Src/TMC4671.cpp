@@ -24,6 +24,7 @@ TMC4671::TMC4671(SPI_HandleTypeDef* spi,GPIO_TypeDef* csport,uint16_t cspin,TMC4
 	this->csport = csport;
 	this->spi = spi;
 	this->conf = conf;
+	this->restoreFlash();
 }
 
 TMC4671::TMC4671(){
@@ -31,7 +32,7 @@ TMC4671::TMC4671(){
 	this->cspin = SPI1_SS1_Pin;
 	this->csport = SPI1_SS1_GPIO_Port;
 	this->spi = &HSPIDRV;
-
+	this->restoreFlash();
 }
 
 

@@ -23,6 +23,7 @@
 #include "voltagesense.h"
 #include "global_callbacks.h"
 #include "PersistentStorage.h"
+#include "ErrorHandler.h"
 
 #include "ClassChooser.h"
 extern ClassChooser<FFBoardMain> mainchooser;
@@ -73,6 +74,21 @@ void FFBoardMain::printFlashDump(std::string *reply){
 
 }
 
+/*
+ * Prints a formatted list of error conditions
+ */
+void FFBoardMain::printErrors(std::string *reply){
+	std::vector<Error_t>* errors = ErrorHandler::getErrors();
+	if(errors->size() == 0){
+		*reply += "None";
+		return;
+	}
+
+	for(Error_t error : *errors){
+		*reply += std::to_string(error.code) + ":" + error.info +"\n";
+	}
+	ErrorHandler::clearTemp();
+}
 
 ParseStatus FFBoardMain::executeSysCommand(ParsedCommand* cmd,std::string* reply){
 	ParseStatus flag = ParseStatus::OK;
@@ -110,6 +126,9 @@ ParseStatus FFBoardMain::executeSysCommand(ParsedCommand* cmd,std::string* reply
 
 	}else if(cmd->cmd == "flashdump"){
 		printFlashDump(reply);
+
+	}else if(cmd->cmd == "errors"){
+		printErrors(reply);
 
 	}else if(cmd->cmd == "flashraw"){ // Set and get flash eeprom emulation values
 		if(cmd->type == CMDtype::setat){

@@ -192,7 +192,6 @@ TMCDebugBridge::TMCDebugBridge() {
 
 	this->drv = new TMC4671(&HSPIDRV,SPI1_SS1_GPIO_Port,SPI1_SS1_Pin,tmcconf);
 	drv->setAddress(1);
-	drv->restoreFlash();
 	drv->initialize();
 	//drv->stop();
 }

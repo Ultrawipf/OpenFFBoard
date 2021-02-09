@@ -30,10 +30,6 @@ struct Error_t{
 	std::string info = "";
 };
 
-/*
- * Errors are equivalent if their code and type match
- */
-bool operator ==(const Error_t &a, const Error_t &b){return (a.code == b.code && a.type == b.type);}
 
 class ErrorHandler {
 public:
@@ -43,8 +39,12 @@ public:
 	virtual ~ErrorHandler();
 	virtual void errorCallback(Error_t &error, bool cleared); // Called when a new error happened
 
-	void addError(Error_t &error);
-	void clearError(Error_t &error);
+	static void addError(Error_t &error);
+	static void clearError(Error_t &error);
+	static void clearTemp();
+	static void clearAll();
+
+	static std::vector<Error_t>* getErrors(); // Returns a vector of active errors
 
 protected:
 	static std::vector<Error_t> errors;

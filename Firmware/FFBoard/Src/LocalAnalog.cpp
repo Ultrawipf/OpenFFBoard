@@ -16,7 +16,7 @@ ClassIdentifier LocalAnalog::info = {
 
 
 LocalAnalog::LocalAnalog() {
-	restoreFlash();
+	this->restoreFlash();
 }
 
 LocalAnalog::~LocalAnalog() {

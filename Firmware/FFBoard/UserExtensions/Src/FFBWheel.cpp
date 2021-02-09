@@ -118,10 +118,6 @@ void FFBWheel::restoreFlash(){
 	Flash_Read(ADR_FFBWHEEL_ANALOGCONF, &this->ainsources);
 	setAinTypes(this->ainsources);
 
-	// Call restore methods for active button sources
-	for(ButtonSource* btn : this->btns){
-		btn->restoreFlash();
-	}
 
 	uint16_t cpr = 0;
 	if(Flash_Read(ADR_TMC1_CPR, &cpr)){
@@ -139,8 +135,6 @@ void FFBWheel::restoreFlash(){
 		this->fx_ratio_i = esval & 0xff;
 		this->endstop_gain_i = (esval >> 8) & 0xff;
 	}
-
-	ffb->restoreFlash();
 }
 // Saves parameters to flash
 void FFBWheel::saveFlash(){
@@ -262,6 +256,20 @@ int16_t FFBWheel::updateEndstop(){
 	return clip<int32_t,int32_t>(addtorque,-0x7fff,0x7fff);
 }
 
+/*
+ * Error handling
+ */
+void FFBWheel::errorCallback(Error_t &error, bool cleared){
+	if(error.type == ErrorType::critical){
+		if(!cleared){
+			this->emergencyStop();
+		}
+	}
+	if(!cleared){
+		pulseErrLed();
+	}
+}
+
 void FFBWheel::setPower(uint16_t power){
 	// Update hardware limits for TMC for safety
 	if(this->conf.drvtype == TMC4671::info.id){
@@ -339,7 +347,6 @@ void FFBWheel::setupTMC4671(){
 	drv->setPids(tmcpids);
 	drv->setLimits(tmclimits);
 	//drv->setBiquadFlux(fluxbq);
-	drv->restoreFlash();
 
 	if(tmcFeedForward){
 		drv->setupFeedForwardTorque(torqueFFgain, torqueFFconst);

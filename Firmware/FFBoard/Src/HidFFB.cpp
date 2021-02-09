@@ -15,6 +15,7 @@ extern USBD_HandleTypeDef hUsbDeviceFS;
 
 HidFFB::HidFFB() {
 	this->registerHidCallback();
+	this->restoreFlash();
 }
 
 HidFFB::~HidFFB() {
