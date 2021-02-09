@@ -79,14 +79,12 @@ ParseStatus FFBoardMain::executeSysCommand(ParsedCommand* cmd,std::string* reply
 
 	if(cmd->cmd == "help"){
 		*reply += parser.helpstring;
-		extern std::vector<CommandHandler*> cmdHandlers;
-		for(CommandHandler* handler : cmdHandlers){
+		for(CommandHandler* handler : CommandHandler::cmdHandlers){
 			*reply += handler->getHelpstring();
 		}
 
 	}else if(cmd->cmd == "save"){
-		extern std::vector<PersistentStorage*> flashHandlers;
-		for(PersistentStorage* handler : flashHandlers){
+		for(PersistentStorage* handler : PersistentStorage::flashHandlers){
 			handler->saveFlash();
 		}
 
@@ -141,8 +139,7 @@ ParseStatus FFBoardMain::executeSysCommand(ParsedCommand* cmd,std::string* reply
 		*reply+=std::to_string(info.arena);
 
 	}else if(cmd->cmd == "lsactive"){ // Prints all active command handlers that have a name
-		extern std::vector<CommandHandler*> cmdHandlers;
-		for(CommandHandler* handler : cmdHandlers){
+		for(CommandHandler* handler : CommandHandler::cmdHandlers){
 			if(handler->hasCommands()){
 				ClassIdentifier i = handler->getInfo();
 				if(!i.hidden)
@@ -190,8 +187,6 @@ void FFBoardMain::executeCommands(std::vector<ParsedCommand> commands){
 	if(!usb_busy_retry){
 		this->cmd_reply.clear();
 	}
-	extern std::vector<CommandHandler*> cmdHandlers;
-
 	for(ParsedCommand cmd : commands){
 		ParseStatus status = ParseStatus::NOT_FOUND;
 		if(cmd.cmd.empty())
@@ -204,7 +199,7 @@ void FFBoardMain::executeCommands(std::vector<ParsedCommand> commands){
 		status = executeSysCommand(&cmd,&reply);
 		if(status == ParseStatus::NOT_FOUND || status == ParseStatus::OK_CONTINUE){ // Not a system command
 			// Call all command handlers
-			for(CommandHandler* handler : cmdHandlers){
+			for(CommandHandler* handler : CommandHandler::cmdHandlers){
 				if(handler->hasCommands()){
 					ParseStatus newstatus = handler->command(&cmd,&reply);
 					// If last class did not have commands but a previous one asked to continue keep continue status

@@ -7,17 +7,15 @@
 #include "CanHandler.h"
 #ifdef CANBUS
 
-
+std::vector<CanHandler*> CanHandler::canHandlers;
 
 CanHandler::CanHandler() {
-	extern std::vector<CanHandler*> canHandlers;
-	addCallbackHandler(&canHandlers, this);
+	addCallbackHandler(canHandlers, this);
 
 }
 
 CanHandler::~CanHandler() {
-	extern std::vector<CanHandler*> canHandlers;
-	removeCallbackHandler(&canHandlers, this);
+	removeCallbackHandler(canHandlers, this);
 }
 
 /*

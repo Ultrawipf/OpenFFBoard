@@ -19,6 +19,8 @@ enum class ParseStatus : uint8_t {NOT_FOUND,OK,ERR,OK_CONTINUE};
  */
 class CommandHandler {
 public:
+	static std::vector<CommandHandler*> cmdHandlers;
+
 	CommandHandler();
 	virtual ~CommandHandler();
 	virtual bool hasCommands();

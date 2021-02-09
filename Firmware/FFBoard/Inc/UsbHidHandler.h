@@ -14,6 +14,8 @@
 
 class UsbHidHandler {
 public:
+	static UsbHidHandler* globalHidHandler;
+	static std::vector<UsbHidHandler*> hidCmdHandlers; // called only for custom cmd report ids
 	UsbHidHandler();
 	virtual ~UsbHidHandler();
 	virtual void hidOutCmd(HID_Custom_Data_t* data); // Called when the custom command report is received
