@@ -46,12 +46,6 @@ extern ADC_HandleTypeDef hadc3;
 volatile char uart_buf[UART_BUF_SIZE] = {0};
 
 
-// Externally stored so it can be used before the main class is initialized
-std::vector<CommandHandler*> cmdHandlers;
-std::vector<PersistentStorage*> flashHandlers;
-
-
-std::vector<AdcHandler*> adcHandlers;
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc){
 	//Pulse braking mosfet if internal voltage is higher than supply.
 	if(hadc == &VSENSE_HADC)
@@ -62,28 +56,24 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc){
 	if(buf == NULL)
 		return;
 
-	for(AdcHandler* c : adcHandlers){
+	for(AdcHandler* c : AdcHandler::adcHandlers){
 		c->adcUpd(buf,chans,hadc);
 	}
 }
 
-
-std::vector<TimerHandler*> timerHandlers;
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim) {
-	for(TimerHandler* c : timerHandlers){
+	for(TimerHandler* c : TimerHandler::timerHandlers){
 		c->timerElapsed(htim);
 	}
 }
 
 
-std::vector<ExtiHandler*> extiHandlers;
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
-	for(ExtiHandler* c : extiHandlers){
+	for(ExtiHandler* c : ExtiHandler::extiHandlers){
 		c->exti(GPIO_Pin);
 	}
 }
 
-std::vector<UartHandler*> uartHandlers;
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
 	if(huart == &UART_PORT){
 		  // Received uart data
@@ -92,7 +82,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
 			return;
 		}
 
-		for(UartHandler* c : uartHandlers){
+		for(UartHandler* c : UartHandler::uartHandlers){
 			c->uartRcv((char*)uart_buf);
 		}
 	}
@@ -100,7 +90,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
 
 #ifdef CANBUS
 // CAN
-std::vector<CanHandler*> canHandlers;
+
 uint8_t canRxBuf0[8];
 CAN_RxHeaderTypeDef canRxHeader0; // Receive header 0
 uint8_t canRxBuf1[8];
@@ -108,62 +98,62 @@ CAN_RxHeaderTypeDef canRxHeader1; // Receive header 1
 // RX
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan){
 	if(HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &canRxHeader0, canRxBuf0) == HAL_OK){
-		for(CanHandler* c : canHandlers){
+		for(CanHandler* c : CanHandler::canHandlers){
 			c->canRxPendCallback(hcan,canRxBuf0,&canRxHeader0,CAN_RX_FIFO0);
 		}
 	}
 }
 void HAL_CAN_RxFifo1MsgPendingCallback(CAN_HandleTypeDef *hcan){
 	if(HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO1, &canRxHeader1, canRxBuf1) == HAL_OK){
-		for(CanHandler* c : canHandlers){
+		for(CanHandler* c : CanHandler::canHandlers){
 			c->canRxPendCallback(hcan,canRxBuf1,&canRxHeader1,CAN_RX_FIFO1);
 		}
 	}
 }
 void HAL_CAN_RxFifo0FullCallback(CAN_HandleTypeDef *hcan){
-	for(CanHandler* c : canHandlers){
+	for(CanHandler* c : CanHandler::canHandlers){
 		c->canRxFullCallback(hcan,CAN_RX_FIFO0);
 	}
 }
 void HAL_CAN_RxFifo1FullCallback(CAN_HandleTypeDef *hcan){
-	for(CanHandler* c : canHandlers){
+	for(CanHandler* c : CanHandler::canHandlers){
 		c->canRxFullCallback(hcan,CAN_RX_FIFO1);
 	}
 }
 // TX
 void HAL_CAN_TxMailbox0CompleteCallback(CAN_HandleTypeDef *hcan){
-	for(CanHandler* c : canHandlers){
+	for(CanHandler* c : CanHandler::canHandlers){
 		c->canTxCpltCallback(hcan,CAN_TX_MAILBOX0);
 	}
 }
 void HAL_CAN_TxMailbox1CompleteCallback(CAN_HandleTypeDef *hcan){
-	for(CanHandler* c : canHandlers){
+	for(CanHandler* c : CanHandler::canHandlers){
 		c->canTxCpltCallback(hcan,CAN_TX_MAILBOX1);
 	}
 }
 void HAL_CAN_TxMailbox2CompleteCallback(CAN_HandleTypeDef *hcan){
-	for(CanHandler* c : canHandlers){
+	for(CanHandler* c : CanHandler::canHandlers){
 		c->canTxCpltCallback(hcan,CAN_TX_MAILBOX2);
 	}
 }
 void HAL_CAN_TxMailbox0AbortCallback(CAN_HandleTypeDef *hcan){
-	for(CanHandler* c : canHandlers){
+	for(CanHandler* c : CanHandler::canHandlers){
 		c->canTxAbortCallback(hcan,CAN_TX_MAILBOX0);
 	}
 }
 void HAL_CAN_TxMailbox1AbortCallback(CAN_HandleTypeDef *hcan){
-	for(CanHandler* c : canHandlers){
+	for(CanHandler* c : CanHandler::canHandlers){
 		c->canTxAbortCallback(hcan,CAN_TX_MAILBOX1);
 	}
 }
 void HAL_CAN_TxMailbox2AbortCallback(CAN_HandleTypeDef *hcan){
-	for(CanHandler* c : canHandlers){
+	for(CanHandler* c : CanHandler::canHandlers){
 		c->canTxAbortCallback(hcan,CAN_TX_MAILBOX2);
 	}
 }
 
 void HAL_CAN_ErrorCallback(CAN_HandleTypeDef *hcan){
-	for(CanHandler* c : canHandlers){
+	for(CanHandler* c : CanHandler::canHandlers){
 		c->canErrorCallback(hcan);
 	}
 }
@@ -229,14 +219,12 @@ void CDC_Finished(){
 /* USB Out Endpoint callback
  * HID Out and Set Feature
  */
-UsbHidHandler* globalHidHandler = nullptr;
-std::vector<UsbHidHandler*> hidCmdHandlers; // called only for custom cmd report ids
 void USBD_OutEvent_HID(uint8_t* report){
-	if(globalHidHandler!=nullptr)
-		globalHidHandler->hidOut(report);
+	if(UsbHidHandler::globalHidHandler!=nullptr)
+		UsbHidHandler::globalHidHandler->hidOut(report);
 
 	if(report[0] == HID_ID_CUSTOMCMD){ // called only for the vendor defined report
-		for(UsbHidHandler* c : hidCmdHandlers){
+		for(UsbHidHandler* c : UsbHidHandler::hidCmdHandlers){
 			c->hidOutCmd((HID_Custom_Data_t*)(report));
 		}
 	}
@@ -245,8 +233,8 @@ void USBD_OutEvent_HID(uint8_t* report){
  * HID Get Feature
  */
 void USBD_GetEvent_HID(uint8_t id,uint16_t len,uint8_t** return_buf){
-	if(globalHidHandler!=nullptr)
-		globalHidHandler->hidGet(id, len, return_buf);
+	if(UsbHidHandler::globalHidHandler != nullptr)
+		UsbHidHandler::globalHidHandler->hidGet(id, len, return_buf);
 
 }
 

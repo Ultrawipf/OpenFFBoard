@@ -13,6 +13,8 @@
 
 class AdcHandler {
 public:
+	static std::vector<AdcHandler*> adcHandlers;
+
 	AdcHandler();
 	virtual ~AdcHandler();
 	virtual void adcUpd(volatile uint32_t* ADC_BUF, uint8_t chans, ADC_HandleTypeDef* hadc);

@@ -10,19 +10,19 @@
 #include "usbd_customhid.h"
 
 extern USBD_HandleTypeDef hUsbDeviceFS;
+std::vector<UsbHidHandler*> UsbHidHandler::hidCmdHandlers; // called only for custom cmd report ids
+UsbHidHandler* UsbHidHandler::globalHidHandler = nullptr;
 
 UsbHidHandler::UsbHidHandler() {
 	/*
 	 * By default it will receive only the custom feature reports
 	 * You can override that to receive every HID command
 	 */
-	extern std::vector<UsbHidHandler*> hidCmdHandlers;
-	addCallbackHandler(&hidCmdHandlers,this);
+	addCallbackHandler(UsbHidHandler::hidCmdHandlers,this);
 }
 
 UsbHidHandler::~UsbHidHandler() {
-	extern std::vector<UsbHidHandler*> hidCmdHandlers;
-	removeCallbackHandler(&hidCmdHandlers,this);
+	removeCallbackHandler(UsbHidHandler::hidCmdHandlers,this);
 }
 
 
@@ -46,6 +46,5 @@ void UsbHidHandler::hidOut(uint8_t* report){
 }
 
 void UsbHidHandler::registerHidCallback(){
-	extern UsbHidHandler* globalHidHandler;
 	globalHidHandler = this;
 }

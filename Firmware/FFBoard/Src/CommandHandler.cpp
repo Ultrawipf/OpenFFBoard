@@ -9,6 +9,8 @@
 #include "global_callbacks.h"
 #include "FFBoardMain.h"
 
+std::vector<CommandHandler*> CommandHandler::cmdHandlers;
+
 CommandHandler::CommandHandler() {
 	addCommandHandler();
 }
@@ -45,12 +47,9 @@ std::string CommandHandler::getHelpstring(){
 }
 
 void CommandHandler::addCommandHandler(){
-	// If already added return
-	extern std::vector<CommandHandler*> cmdHandlers;
-	addCallbackHandler(&cmdHandlers, this);
+	addCallbackHandler(cmdHandlers, this);
 }
 
 void CommandHandler::removeCommandHandler(){
-	extern std::vector<CommandHandler*> cmdHandlers;
-	removeCallbackHandler(&cmdHandlers, this);
+	removeCallbackHandler(cmdHandlers, this);
 }

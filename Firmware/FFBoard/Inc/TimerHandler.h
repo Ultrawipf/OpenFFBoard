@@ -13,6 +13,8 @@
 
 class TimerHandler {
 public:
+	static std::vector<TimerHandler*> timerHandlers;
+
 	TimerHandler();
 	virtual ~TimerHandler();
 	virtual void timerElapsed(TIM_HandleTypeDef* htim);

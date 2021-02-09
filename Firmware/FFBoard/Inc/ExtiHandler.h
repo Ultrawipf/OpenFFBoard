@@ -11,6 +11,8 @@
 
 class ExtiHandler {
 public:
+	static std::vector<ExtiHandler*> extiHandlers;
+
 	ExtiHandler();
 	virtual ~ExtiHandler();
 	virtual void exti(uint16_t GPIO_Pin);

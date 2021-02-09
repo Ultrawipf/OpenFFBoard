@@ -9,14 +9,14 @@
 #include "global_callbacks.h"
 #include "vector"
 
+std::vector<ExtiHandler*> ExtiHandler::extiHandlers;
+
 ExtiHandler::ExtiHandler() {
-	extern std::vector<ExtiHandler*> extiHandlers;
-	addCallbackHandler(&extiHandlers,this);
+	addCallbackHandler(extiHandlers,this);
 }
 
 ExtiHandler::~ExtiHandler() {
-	extern std::vector<ExtiHandler*> extiHandlers;
-	removeCallbackHandler(&extiHandlers, this);
+	removeCallbackHandler(extiHandlers, this);
 }
 
 void ExtiHandler::exti(uint16_t GPIO_Pin){

@@ -8,12 +8,12 @@
 #include "SpiHandler.h"
 
 SpiHandler::SpiHandler() {
-	addCallbackHandler(&getSPIHandlers(), this);
+	addCallbackHandler(getSPIHandlers(), this);
 
 }
 
 SpiHandler::~SpiHandler() {
-	removeCallbackHandler(&getSPIHandlers(), this);
+	removeCallbackHandler(getSPIHandlers(), this);
 }
 
 void SpiHandler::SpiTxCplt(SPI_HandleTypeDef *hspi){
