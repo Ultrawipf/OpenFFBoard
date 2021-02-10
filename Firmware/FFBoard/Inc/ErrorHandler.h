@@ -87,4 +87,16 @@ protected:
 	static std::vector<Error_t> errors;
 };
 
+/*
+ * Can handle errors occuring in the main class
+ */
+class ErrorPrinter : ErrorHandler{
+public:
+	void errorCallback(Error_t &error, bool cleared);
+	void setEnabled(bool enable);
+	bool getEnabled();
+private:
+	bool enabled = true;
+};
+
 #endif /* SRC_ERRORHANDLER_H_ */

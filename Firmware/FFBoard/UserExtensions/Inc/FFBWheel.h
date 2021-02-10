@@ -201,6 +201,8 @@ private:
 	ClassChooser<MotorDriver> drv_chooser;
 	ClassChooser<Encoder> enc_chooser;
 	ClassChooser<AnalogSource> analog_chooser;
+
+	ErrorPrinter errorPrinter; // Prints errors to serial
 };
 
 #endif /* SRC_FFBWHEEL_H_ */

@@ -58,6 +58,23 @@ void FFBoardMain::updateSys(){
 }
 
 /*
+ * Formats a serial reply in command form
+ */
+void FFBoardMain::sendSerial(std::string cmd,std::string string){
+	std::string reply = ">" + cmd + ":" + string + "\n";
+	CDC_Transmit_FS(reply.c_str(), reply.length());
+}
+
+/*
+ * Sends log info
+ */
+void FFBoardMain::logSerial(std::string* string){
+	std::string reply = "!" + *string + "\n";
+	CDC_Transmit_FS(reply.c_str(), reply.length());
+}
+
+
+/*
  * Prints a formatted flash dump to the reply string
  */
 void FFBoardMain::printFlashDump(std::string *reply){
@@ -240,12 +257,16 @@ void FFBoardMain::executeCommands(std::vector<ParsedCommand> commands){
 		}
 		// Errors
 		if(status == ParseStatus::NOT_FOUND){ //No class reported success. Show error
-			reply = "Err:"+cmdNotFoundError.toString();
-			ErrorHandler::addError(cmdNotFoundError);
+			Error_t err = cmdNotFoundError;
+			reply = "Err. invalid";
+			err.info = cmd.rawcmd + " not found";
+			ErrorHandler::addError(err);
 
 		}else if(status == ParseStatus::ERR){ //Error reported in command
-			reply = "Err:"+cmdExecError.toString();
-			ErrorHandler::addError(cmdExecError);
+			reply = "Err. exec error";
+			Error_t err = cmdExecError;
+			err.info = "Error executing" + cmd.rawcmd;
+			ErrorHandler::addError(err);
 		}
 		this->cmd_reply+=reply;
 	}

@@ -18,6 +18,8 @@
 #include <vector>
 #include "ErrorHandler.h"
 
+
+
 class FFBoardMain : virtual ChoosableClass, public CommandHandler {
 public:
 	static ClassIdentifier info;
@@ -36,6 +38,10 @@ public:
 	virtual void usbSuspend(); // Called on usb disconnect and suspend
 	virtual void usbResume(); // Called on usb resume
 	virtual void updateSys();
+
+	static void sendSerial(std::string cmd,std::string string);
+	static void logSerial(std::string* string);
+
 	static void printFlashDump(std::string *reply);
 	static void printErrors(std::string *reply);
 
