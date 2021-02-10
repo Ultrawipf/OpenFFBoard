@@ -16,6 +16,7 @@
 #include "ChoosableClass.h"
 #include "CommandHandler.h"
 #include <vector>
+#include "ErrorHandler.h"
 
 class FFBoardMain : virtual ChoosableClass, public CommandHandler {
 public:
@@ -38,6 +39,17 @@ public:
 	static void printFlashDump(std::string *reply);
 	static void printErrors(std::string *reply);
 
+	Error_t cmdNotFoundError = {
+		code : ErrorCode::cmdNotFound,
+		type : ErrorType::temporary,
+		info : "Invalid command"
+	};
+
+	Error_t cmdExecError = {
+		code : ErrorCode::cmdExecutionError,
+		type : ErrorType::temporary,
+		info : "Error while executing command"
+	};
 private:
 	bool usb_busy_retry = false;
 	std::string cmd_reply;

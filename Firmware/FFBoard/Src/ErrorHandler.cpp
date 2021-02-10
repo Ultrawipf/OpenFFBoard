@@ -36,7 +36,7 @@ void ErrorHandler::clearAll(){
  */
 void ErrorHandler::clearTemp(){
 	for (uint8_t i = 0; i < errors.size(); i++){
-		if((errors)[i].type == ErrorType::temp){
+		if((errors)[i].type == ErrorType::temporary){
 			errors.erase(errors.begin()+i);
 			break;
 		}
