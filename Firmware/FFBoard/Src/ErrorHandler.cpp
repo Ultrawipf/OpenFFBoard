@@ -7,6 +7,7 @@
 
 #include "ErrorHandler.h"
 #include "global_callbacks.h"
+#include "FFBoardMain.h"
 
 std::vector<ErrorHandler*> ErrorHandler::errorHandlers;
 std::vector<Error_t> ErrorHandler::errors;
@@ -77,4 +78,29 @@ std::vector<Error_t>* ErrorHandler::getErrors(){
 
 void ErrorHandler::errorCallback(Error_t &error, bool cleared){
 
+}
+
+
+
+void ErrorPrinter::errorCallback(Error_t &error, bool cleared){
+	if(!cleared){
+		FFBoardMain::sendSerial("Err", error.toString());
+	}
+}
+
+void ErrorPrinter::setEnabled(bool enabled){
+	if(this->enabled == enabled){
+		return;
+	}
+
+	if(!enabled){
+		removeCallbackHandler(errorHandlers,static_cast<ErrorHandler*>(this));
+	}else{
+		addCallbackHandler(errorHandlers,static_cast<ErrorHandler*>(this));
+	}
+	this->enabled = enabled;
+}
+
+bool ErrorPrinter::getEnabled(){
+	return this->enabled;
 }
