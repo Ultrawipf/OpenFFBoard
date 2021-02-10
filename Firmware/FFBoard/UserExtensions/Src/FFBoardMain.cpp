@@ -85,8 +85,9 @@ void FFBoardMain::printErrors(std::string *reply){
 	}
 
 	for(Error_t error : *errors){
-		*reply += std::to_string(error.code) + ":" + error.info +"\n";
+		*reply += error.toString() + "\n";
 	}
+
 	ErrorHandler::clearTemp();
 }
 
@@ -237,10 +238,14 @@ void FFBoardMain::executeCommands(std::vector<ParsedCommand> commands){
 		if(!reply.empty() && reply.back()!='\n'){
 			reply+='\n';
 		}
+		// Errors
 		if(status == ParseStatus::NOT_FOUND){ //No class reported success. Show error
-			reply = "Err(0). Unknown command\n";
+			reply = "Err:"+cmdNotFoundError.toString();
+			ErrorHandler::addError(cmdNotFoundError);
+
 		}else if(status == ParseStatus::ERR){ //Error reported in command
-			reply += "Err(1). Execution error\n";
+			reply = "Err:"+cmdExecError.toString();
+			ErrorHandler::addError(cmdExecError);
 		}
 		this->cmd_reply+=reply;
 	}
