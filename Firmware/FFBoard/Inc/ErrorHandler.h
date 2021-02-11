@@ -78,6 +78,7 @@ public:
 
 	static void addError(Error_t &error);
 	static void clearError(Error_t &error);
+	static void clearError(ErrorCode errorcode);
 	static void clearTemp();
 	static void clearAll();
 
