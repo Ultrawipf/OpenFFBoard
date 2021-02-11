@@ -15,7 +15,7 @@ std::vector<Error_t> ErrorHandler::errors;
 /*
  * Errors are equivalent if their code and type match
  */
-bool operator ==(const Error_t &a, const Error_t &b){return (a.code == b.code && a.type == b.type);}
+bool operator ==(const Error_t &a, const Error_t &b){return (a.code == b.code && a.type == b.type && a.info == b.info);}
 
 ErrorHandler::ErrorHandler() {
 	addCallbackHandler(errorHandlers,this);
@@ -60,7 +60,7 @@ void ErrorHandler::addError(Error_t &error){
 
 void ErrorHandler::clearError(Error_t &error){
 	for (uint8_t i = 0; i < errors.size(); i++){
-		if((errors)[i] == error){
+		if(errors[i] == error){
 			errors.erase(errors.begin()+i);
 			break;
 		}
@@ -69,6 +69,20 @@ void ErrorHandler::clearError(Error_t &error){
 	// Call all error handler with this error and set clear flag
 	for(ErrorHandler* e : errorHandlers){
 		e->errorCallback(error, true);
+	}
+}
+
+/*
+ * Clears all errors with a specific errorcode
+ */
+void ErrorHandler::clearError(ErrorCode errorcode){
+	for (uint8_t i = 0; i < errors.size(); i++){
+		if(errors[i].code == errorcode){
+			errors.erase(errors.begin()+i);
+			for(ErrorHandler* e : errorHandlers){
+				e->errorCallback(errors[i], true);
+			}
+		}
 	}
 }
 
