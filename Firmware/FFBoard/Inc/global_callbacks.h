@@ -47,6 +47,8 @@ void USBD_GetEvent_HID(uint8_t id,uint16_t len,uint8_t** return_buf);
 void USBD_Suspend();
 void USBD_Resume();
 
+void HAL_TIM_PeriodElapsedCallback_CPP(TIM_HandleTypeDef* htim);
+
 
 #ifdef __cplusplus
 }

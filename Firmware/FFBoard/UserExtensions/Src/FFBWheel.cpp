@@ -8,6 +8,8 @@
 #include "FFBWheel.h"
 #include "FFBWheel_usb_init.h"
 #include "voltagesense.h"
+#include "FreeRTOS.h"
+#include "timers.h"
 
 // Unique identifier for listing
 ClassIdentifier FFBWheel::info = {
@@ -70,6 +72,9 @@ std::vector<class_entry<Encoder>> encoder_sources =
 #endif
 };
 
+volatile bool FFBWheel::update_flag = false;
+
+
 // TODO class type for parser? (Simhub for example)
 //////////////////////////////////////////////
 
@@ -90,6 +95,8 @@ FFBWheel::FFBWheel() :
 
 	restoreFlash(); // Load parameters
 }
+
+
 
 FFBWheel::~FFBWheel() {
 	clearBtnTypes();
@@ -184,6 +191,7 @@ void FFBWheel::update(){
 			pulseErrLed();
 		}
 
+		// TODO move to rtos
 		if(this->conf.drvtype == TMC4671::info.id){
 			TMC4671* drv = static_cast<TMC4671*>(this->drv);
 			drv->update();
@@ -515,6 +523,11 @@ void FFBWheel::timerElapsed(TIM_HandleTypeDef* htim){
 		update_flag = true;
 	}
 }
+
+void slowTimerCallback(void *argument){
+
+}
+
 // Called at 1khz. Triggers effect updates
 void FFBWheel::SOF(){
 	if(usb_disabled) // If previously disabled reenable
