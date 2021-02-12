@@ -81,13 +81,6 @@ const osThreadAttr_t defaultTask_attributes = {
   .priority = (osPriority_t) osPriorityNormal,
   .stack_size = 512 * 4
 };
-/* Definitions for testTask */
-osThreadId_t testTaskHandle;
-const osThreadAttr_t testTask_attributes = {
-  .name = "testTask",
-  .priority = (osPriority_t) osPriorityLow,
-  .stack_size = 128 * 4
-};
 /* USER CODE BEGIN PV */
 // dummy main
 __attribute__((weak)) void cppmain(){
@@ -114,7 +107,6 @@ static void MX_SPI3_Init(void);
 static void MX_USART1_UART_Init(void);
 static void MX_TIM10_Init(void);
 void StartDefaultTask(void *argument);
-void StartTask02(void *argument);
 
 static void MX_NVIC_Init(void);
 /* USER CODE BEGIN PFP */
@@ -202,9 +194,6 @@ int main(void)
   /* Create the thread(s) */
   /* creation of defaultTask */
   defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
-
-  /* creation of testTask */
-  testTaskHandle = osThreadNew(StartTask02, NULL, &testTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -1283,25 +1272,6 @@ __weak void StartDefaultTask(void *argument)
 	  cppmain();
   }
   /* USER CODE END 5 */
-}
-
-/* USER CODE BEGIN Header_StartTask02 */
-/**
-* @brief Function implementing the testTask thread.
-* @param argument: Not used
-* @retval None
-*/
-/* USER CODE END Header_StartTask02 */
-__weak void StartTask02(void *argument)
-{
-  /* USER CODE BEGIN StartTask02 */
-  /* Infinite loop */
-  for(;;)
-  {
-	  HAL_GPIO_TogglePin(LED_CLIP_GPIO_Port, LED_CLIP_Pin);
-      osDelay(500);
-  }
-  /* USER CODE END StartTask02 */
 }
 
  /**
