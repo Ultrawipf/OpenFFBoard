@@ -17,16 +17,18 @@
 #include "CommandHandler.h"
 #include <vector>
 #include "ErrorHandler.h"
+#include "Thread.h"
 
 
-
-class FFBoardMain : virtual ChoosableClass, public CommandHandler {
+class FFBoardMain : virtual ChoosableClass, public CommandHandler,public Thread {
 public:
 	static ClassIdentifier info;
 	virtual const ClassIdentifier getInfo();
 
 	FFBoardMain();
 	virtual ~FFBoardMain();
+
+	virtual void runThread();
 
 	virtual void usbInit(USBD_HandleTypeDef* hUsbDeviceFS); // initialize a composite usb device
 
