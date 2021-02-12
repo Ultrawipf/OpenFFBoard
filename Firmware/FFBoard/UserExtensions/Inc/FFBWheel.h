@@ -30,9 +30,6 @@
 #include "hid_cmd_defs.h"
 #include "ErrorHandler.h"
 
-#include "FreeRTOS.h"
-#include "timers.h"
-
 
 struct FFBWheelConfig{
 	uint8_t drvtype = 0;
@@ -103,8 +100,6 @@ public:
 	uint16_t getPower();
 
 private:
-
-
 	bool encResetFlag = false;
 	bool emergency = false;
 	void send_report();

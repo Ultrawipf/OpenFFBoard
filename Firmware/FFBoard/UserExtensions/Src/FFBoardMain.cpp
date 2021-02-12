@@ -10,7 +10,7 @@
 #include <malloc.h>
 #include <stdint.h>
 #include <stdio.h>
-
+#include <thread.hpp>
 #include "usbd_core.h"
 #include "usbd_cdc.h"
 #include "constants.h"
@@ -25,12 +25,13 @@
 #include "PersistentStorage.h"
 #include "ErrorHandler.h"
 #include "ClassChooser.h"
+
 extern ClassChooser<FFBoardMain> mainchooser;
 
 ClassIdentifier FFBoardMain::info ={.name = "Basic" , .id=0};
 
-FFBoardMain::FFBoardMain() : Thread(2048, osPriorityNormal, "Main") {
-
+FFBoardMain::FFBoardMain() : Thread("Main",512, 20) {
+	this->Start(); // Start thread
 }
 
 const ClassIdentifier FFBoardMain::getInfo(){
@@ -56,10 +57,10 @@ void FFBoardMain::updateSys(){
 	}
 }
 
-void FFBoardMain::runThread(){
+void FFBoardMain::Run(){
 	while(true){
 		updateSys();
-		delay(1);
+		Delay(5);
 	}
 }
 
