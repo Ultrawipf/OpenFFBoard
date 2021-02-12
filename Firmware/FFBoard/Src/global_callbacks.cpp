@@ -61,7 +61,11 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc){
 	}
 }
 
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim) {
+__weak void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim){
+	HAL_TIM_PeriodElapsedCallback_CPP(htim);
+}
+
+void HAL_TIM_PeriodElapsedCallback_CPP(TIM_HandleTypeDef* htim) {
 	for(TimerHandler* c : TimerHandler::timerHandlers){
 		c->timerElapsed(htim);
 	}

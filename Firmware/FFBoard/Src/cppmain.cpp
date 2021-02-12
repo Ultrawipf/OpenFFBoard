@@ -4,6 +4,7 @@
 #include "flash_helpers.h"
 #include "global_callbacks.h"
 #include "cpp_target_config.h"
+#include "cmsis_os.h"
 
 uint32_t clkmhz = HAL_RCC_GetHCLKFreq() / 100000;
 extern TIM_HandleTypeDef TIM_MICROS;
@@ -13,6 +14,7 @@ extern IWDG_HandleTypeDef hiwdg; // Watchdog
 #endif
 
 bool running = true;
+bool mainclassChosen = false;
 
 uint16_t main_id = 0;
 
@@ -47,17 +49,15 @@ void cppmain() {
 
 
 	mainclass = mainchooser.Create(main_id);
+	mainclassChosen = true;
 	usb_init(&hUsbDeviceFS); // Init usb
 
 	while(running){
-		// TODO dynamically add functions to loop
 		mainclass->update();
-		mainclass->updateSys();
 		updateLeds();
-
 		external_spi.process();
-
 		refreshWatchdog();
+		osDelay(1);
 	}
 
 }
@@ -72,6 +72,14 @@ void usb_init(USBD_HandleTypeDef* hUsbDeviceFS){
 	mainclass->usbInit(hUsbDeviceFS); // Let mainclass initialize usb
 }
 
+void StartTaskMainclass(void *argument){
+	while(running){
+		if(mainclassChosen){
+			mainclass->updateSys();
+		}
+		osDelay(1);
+	}
+}
 
 uint32_t micros(){
 	//return DWT->CYCCNT / clkmhz;

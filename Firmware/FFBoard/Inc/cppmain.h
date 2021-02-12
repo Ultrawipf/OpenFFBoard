@@ -27,6 +27,7 @@ extern "C" {
 
 
 void cppmain();
+void StartTaskMainclass(void *argument);
 void usb_init(USBD_HandleTypeDef* hUsbDeviceFS);
 
 #ifdef __cplusplus
