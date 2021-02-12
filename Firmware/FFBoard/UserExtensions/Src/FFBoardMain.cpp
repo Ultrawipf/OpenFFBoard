@@ -24,13 +24,12 @@
 #include "global_callbacks.h"
 #include "PersistentStorage.h"
 #include "ErrorHandler.h"
-
 #include "ClassChooser.h"
 extern ClassChooser<FFBoardMain> mainchooser;
 
 ClassIdentifier FFBoardMain::info ={.name = "Basic" , .id=0};
 
-FFBoardMain::FFBoardMain() {
+FFBoardMain::FFBoardMain() : Thread(2048, osPriorityNormal, "Main") {
 
 }
 
@@ -54,6 +53,13 @@ void FFBoardMain::updateSys(){
 	if(this->parserReady){
 		this->parserReady = false;
 		executeCommands(this->parser.parse()); // Don't call this in interrupts!
+	}
+}
+
+void FFBoardMain::runThread(){
+	while(true){
+		updateSys();
+		delay(1);
 	}
 }
 

@@ -30,6 +30,9 @@
 #include "hid_cmd_defs.h"
 #include "ErrorHandler.h"
 
+#include "FreeRTOS.h"
+#include "timers.h"
+
 
 struct FFBWheelConfig{
 	uint8_t drvtype = 0;
@@ -89,7 +92,7 @@ public:
 	void errorCallback(Error_t &error, bool cleared);
 
 	volatile bool usb_update_flag = false;
-	volatile bool update_flag = false;
+	static volatile bool update_flag;
 
 	uint16_t degreesOfRotation = 900; // How many degrees of range for the full gamepad range
 	uint16_t nextDegreesOfRotation = degreesOfRotation; // Buffer when changing range
@@ -100,6 +103,8 @@ public:
 	uint16_t getPower();
 
 private:
+
+
 	bool encResetFlag = false;
 	bool emergency = false;
 	void send_report();

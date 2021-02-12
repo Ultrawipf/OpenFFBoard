@@ -88,18 +88,6 @@ const osThreadAttr_t testTask_attributes = {
   .priority = (osPriority_t) osPriorityLow,
   .stack_size = 128 * 4
 };
-/* Definitions for mainclass */
-osThreadId_t mainclassHandle;
-const osThreadAttr_t mainclass_attributes = {
-  .name = "mainclass",
-  .priority = (osPriority_t) osPriorityLow,
-  .stack_size = 512 * 4
-};
-/* Definitions for timer1 */
-osTimerId_t timer1Handle;
-const osTimerAttr_t timer1_attributes = {
-  .name = "timer1"
-};
 /* USER CODE BEGIN PV */
 // dummy main
 __attribute__((weak)) void cppmain(){
@@ -127,8 +115,6 @@ static void MX_USART1_UART_Init(void);
 static void MX_TIM10_Init(void);
 void StartDefaultTask(void *argument);
 void StartTask02(void *argument);
-extern void StartTaskMainclass(void *argument);
-void Callback01(void *argument);
 
 static void MX_NVIC_Init(void);
 /* USER CODE BEGIN PFP */
@@ -205,10 +191,6 @@ int main(void)
   /* add semaphores, ... */
   /* USER CODE END RTOS_SEMAPHORES */
 
-  /* Create the timer(s) */
-  /* creation of timer1 */
-  timer1Handle = osTimerNew(Callback01, osTimerPeriodic, NULL, &timer1_attributes);
-
   /* USER CODE BEGIN RTOS_TIMERS */
   /* start timers, add new ones, ... */
   /* USER CODE END RTOS_TIMERS */
@@ -223,9 +205,6 @@ int main(void)
 
   /* creation of testTask */
   testTaskHandle = osThreadNew(StartTask02, NULL, &testTask_attributes);
-
-  /* creation of mainclass */
-  mainclassHandle = osThreadNew(StartTaskMainclass, NULL, &mainclass_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -1323,15 +1302,6 @@ __weak void StartTask02(void *argument)
       osDelay(500);
   }
   /* USER CODE END StartTask02 */
-}
-
-/* Callback01 function */
-void Callback01(void *argument)
-{
-  /* USER CODE BEGIN Callback01 */
-	HAL_GPIO_TogglePin(LED_SYS_GPIO_Port, LED_SYS_Pin);
-  osDelay(500);
-  /* USER CODE END Callback01 */
 }
 
  /**

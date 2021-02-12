@@ -72,14 +72,6 @@ void usb_init(USBD_HandleTypeDef* hUsbDeviceFS){
 	mainclass->usbInit(hUsbDeviceFS); // Let mainclass initialize usb
 }
 
-void StartTaskMainclass(void *argument){
-	while(running){
-		if(mainclassChosen){
-			mainclass->updateSys();
-		}
-		osDelay(1);
-	}
-}
 
 uint32_t micros(){
 	//return DWT->CYCCNT / clkmhz;
