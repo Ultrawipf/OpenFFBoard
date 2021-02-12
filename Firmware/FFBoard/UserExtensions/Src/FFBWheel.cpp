@@ -8,8 +8,7 @@
 #include "FFBWheel.h"
 #include "FFBWheel_usb_init.h"
 #include "voltagesense.h"
-#include "FreeRTOS.h"
-#include "timers.h"
+
 
 // Unique identifier for listing
 ClassIdentifier FFBWheel::info = {
