@@ -17,9 +17,11 @@
 #include "CommandHandler.h"
 #include <vector>
 #include "ErrorHandler.h"
-#include "thread.hpp"
 
-class FFBoardMain : virtual ChoosableClass, public CommandHandler,public cpp_freertos::Thread {
+#include "FFBoardMainCommandThread.h"
+
+class FFBoardMainCommandThread;
+class FFBoardMain : virtual ChoosableClass, public CommandHandler{
 public:
 	static ClassIdentifier info;
 	virtual const ClassIdentifier getInfo();
@@ -27,7 +29,7 @@ public:
 	FFBoardMain();
 	virtual ~FFBoardMain();
 
-	virtual void Run();
+	//virtual void Run();
 
 	virtual void usbInit(USBD_HandleTypeDef* hUsbDeviceFS); // initialize a composite usb device
 
@@ -38,37 +40,21 @@ public:
 	virtual void cdcFinished(); // Cdc send transfer complete
 	virtual void usbSuspend(); // Called on usb disconnect and suspend
 	virtual void usbResume(); // Called on usb resume
-	virtual void updateSys();
+	//virtual void updateSys();
 
 	static void sendSerial(std::string cmd,std::string string);
 	static void logSerial(std::string* string);
 
-	static void printFlashDump(std::string *reply);
-	static void printErrors(std::string *reply);
+	virtual void parserDone(std::string* reply, FFBoardMainCommandThread* parser);
 
-	Error_t cmdNotFoundError = {
-		code : ErrorCode::cmdNotFound,
-		type : ErrorType::temporary,
-		info : "Invalid command"
-	};
-
-	Error_t cmdExecError = {
-		code : ErrorCode::cmdExecutionError,
-		type : ErrorType::temporary,
-		info : "Error while executing command"
-	};
-private:
-	bool usb_busy_retry = false;
-	std::string cmd_reply;
-
-protected:
-	virtual std::string getHelpstring(){return "\nSystem Commands: errors,reboot,help,dfu,swver (Version),hwtype,lsmain (List configs),id,main (Set main config),lsactive (print command handlers),vint,vext,format (Erase flash),mallinfo (Mem usage),flashdump,flashraw\n";}
-
-	virtual void executeCommands(std::vector<ParsedCommand> commands);
 	virtual ParseStatus command(ParsedCommand* cmd,std::string* reply); // Append reply strings to reply buffer
-	virtual ParseStatus executeSysCommand(ParsedCommand* cmd,std::string* reply);
-	CmdParser parser = CmdParser();
-	bool parserReady = false;
+//	static void printFlashDump(std::string *reply);
+//	static void printErrors(std::string *reply);
+
+	virtual std::string getHelpstring();
+	FFBoardMainCommandThread* systemCommands;
+protected:
+	bool usb_busy_retry = false;
 };
 
 
