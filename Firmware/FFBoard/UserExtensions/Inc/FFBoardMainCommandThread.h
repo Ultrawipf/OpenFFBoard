@@ -48,6 +48,7 @@ public:
 	CmdParser parser = CmdParser();
 	bool parserReady = false;
 	std::string cmd_reply;
+	bool clearReply = true;
 
 	static std::string getHelpstring(){return "\nSystem Commands: errors,reboot,help,dfu,swver (Version),hwtype,lsmain (List configs),id,main (Set main config),lsactive (print command handlers),vint,vext,format (Erase flash),mallinfo (Mem usage),flashdump,flashraw\n";}
 protected:

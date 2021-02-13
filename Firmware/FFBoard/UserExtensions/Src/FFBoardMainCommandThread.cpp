@@ -56,10 +56,7 @@ bool FFBoardMainCommandThread::addBuf(char* Buf, uint32_t *Len,bool clearReply =
 	bool res = this->parser.add(Buf, Len);
 	if(res){
 		parserReady = true;
-
-		if(clearReply)
-			this->cmd_reply.clear();
-
+		this->clearReply = clearReply;
 	}
 	return res;
 }
@@ -212,11 +209,12 @@ ParseStatus FFBoardMainCommandThread::executeSysCommand(ParsedCommand* cmd,std::
  * Not global so it can be overridden by main classes to change behaviour or suppress outputs.
  */
 void FFBoardMainCommandThread::executeCommands(std::vector<ParsedCommand> commands){
+	if(clearReply)
+		this->cmd_reply.clear();
 	for(ParsedCommand cmd : commands){
 		ParseStatus status = ParseStatus::NOT_FOUND;
 		if(cmd.cmd.empty())
 			continue; // Empty command
-
 
 		this->cmd_reply+= ">" + cmd.rawcmd + ":"; // Start marker. Echo command
 
