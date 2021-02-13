@@ -23,7 +23,7 @@
 extern ClassChooser<FFBoardMain> mainchooser;
 
 
-FFBoardMainCommandThread::FFBoardMainCommandThread(FFBoardMain* mainclass) : Thread("main",512, 20) {
+FFBoardMainCommandThread::FFBoardMainCommandThread(FFBoardMain* mainclass) : Thread("cmdparser",512, 20) {
 	main = mainclass;
 	this->Start();
 }
@@ -56,10 +56,7 @@ bool FFBoardMainCommandThread::addBuf(char* Buf, uint32_t *Len,bool clearReply =
 	bool res = this->parser.add(Buf, Len);
 	if(res){
 		parserReady = true;
-
-		if(clearReply)
-			this->cmd_reply.clear();
-
+		this->clearReply = clearReply;
 	}
 	return res;
 }
@@ -159,12 +156,15 @@ ParseStatus FFBoardMainCommandThread::executeSysCommand(ParsedCommand* cmd,std::
 	}else if(cmd->cmd == "id"){ // Report id of main class
 		*reply+=std::to_string(main->getInfo().id);
 
-	}else if(cmd->cmd == "mallinfo"){ // Report id of main class
+	}else if(cmd->cmd == "mallinfo"){
 		struct mallinfo info = mallinfo();
 		*reply+="Usage: ";
 		*reply+=std::to_string(info.uordblks);
 		*reply+=" Size: ";
 		*reply+=std::to_string(info.arena);
+
+	}else if(cmd->cmd == "heapfree"){ // Free rtos memory
+		*reply+=std::to_string(xPortGetFreeHeapSize());
 
 	}else if(cmd->cmd == "lsactive"){ // Prints all active command handlers that have a name
 		for(CommandHandler* handler : CommandHandler::cmdHandlers){
@@ -212,11 +212,12 @@ ParseStatus FFBoardMainCommandThread::executeSysCommand(ParsedCommand* cmd,std::
  * Not global so it can be overridden by main classes to change behaviour or suppress outputs.
  */
 void FFBoardMainCommandThread::executeCommands(std::vector<ParsedCommand> commands){
+	if(clearReply)
+		this->cmd_reply.clear();
 	for(ParsedCommand cmd : commands){
 		ParseStatus status = ParseStatus::NOT_FOUND;
 		if(cmd.cmd.empty())
 			continue; // Empty command
-
 
 		this->cmd_reply+= ">" + cmd.rawcmd + ":"; // Start marker. Echo command
 

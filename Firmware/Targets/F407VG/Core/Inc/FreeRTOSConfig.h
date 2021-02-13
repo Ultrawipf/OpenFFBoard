@@ -64,7 +64,7 @@
 #define configTICK_RATE_HZ                       ((TickType_t)1000)
 #define configMAX_PRIORITIES                     ( 56 )
 #define configMINIMAL_STACK_SIZE                 ((uint16_t)128)
-#define configTOTAL_HEAP_SIZE                    ((size_t)32767)
+#define configTOTAL_HEAP_SIZE                    ((size_t)0xAfff)
 #define configMAX_TASK_NAME_LEN                  ( 16 )
 #define configUSE_TRACE_FACILITY                 1
 #define configUSE_16_BIT_TICKS                   0
@@ -153,6 +153,7 @@ standard names. */
 
 /* USER CODE BEGIN Defines */
 #define CPP_FREERTOS_NO_EXCEPTIONS // For freertos cpp addons
+#define configAPPLICATION_ALLOCATED_HEAP 1 // ucHeap allocated in freertos.c
 /* Section where parameter definitions can be added (for instance, to override default ones in FreeRTOS.h) */
 /* USER CODE END Defines */
 

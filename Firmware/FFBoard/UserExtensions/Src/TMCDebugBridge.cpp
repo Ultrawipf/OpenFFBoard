@@ -77,9 +77,6 @@ ParseStatus TMCDebugBridge::command(ParsedCommand* cmd,std::string* reply){
 		}else if(cmd->type == CMDtype::setat){
 			drv->writeReg(cmd->adr,cmd->val);
 		}
-	}else if(cmd->cmd == "help"){
-		flag = ParseStatus::OK_CONTINUE;
-		*reply += "TMC Debug:torque,  openloopspeed,pos, velocity,mode,reg\n";
 	}else{
 		flag = ParseStatus::NOT_FOUND;
 	}

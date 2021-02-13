@@ -31,6 +31,7 @@ public:
 
 	void cdcRcv(char* Buf, uint32_t *Len);
 	ParseStatus command(ParsedCommand* cmd,std::string* reply);
+	std::string getHelpstring(){return "TMC Debug:torque,openloopspeed,pos,velocity,mode,reg\n";}
 
 
 private:
