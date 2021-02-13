@@ -29,8 +29,6 @@ public:
 	FFBoardMain();
 	virtual ~FFBoardMain();
 
-	//virtual void Run();
-
 	virtual void usbInit(USBD_HandleTypeDef* hUsbDeviceFS); // initialize a composite usb device
 
 	// Callbacks
@@ -40,7 +38,6 @@ public:
 	virtual void cdcFinished(); // Cdc send transfer complete
 	virtual void usbSuspend(); // Called on usb disconnect and suspend
 	virtual void usbResume(); // Called on usb resume
-	//virtual void updateSys();
 
 	static void sendSerial(std::string cmd,std::string string);
 	static void logSerial(std::string* string);
@@ -48,8 +45,6 @@ public:
 	virtual void parserDone(std::string* reply, FFBoardMainCommandThread* parser);
 
 	virtual ParseStatus command(ParsedCommand* cmd,std::string* reply); // Append reply strings to reply buffer
-//	static void printFlashDump(std::string *reply);
-//	static void printErrors(std::string *reply);
 
 	virtual std::string getHelpstring();
 	FFBoardMainCommandThread* systemCommands;

@@ -79,3 +79,35 @@ uint32_t micros(){
 	return TIM_MICROS.Instance->CNT;
 }
 
+//void * operator new( size_t size )
+//{
+//    return pvPortMalloc( size );
+//}
+//
+//void * operator new[]( size_t size )
+//{
+//    return pvPortMalloc(size);
+//}
+//
+//void operator delete( void * ptr )
+//{
+//    vPortFree ( ptr );
+//}
+//
+//void operator delete[]( void * ptr )
+//{
+//    vPortFree ( ptr );
+//}
+
+
+//#if (configSUPPORT_DYNAMIC_ALLOCATION == 1)
+//void* malloc(size_t size)
+//{
+//    return pvPortMalloc(size);
+//}
+//
+//void free(void *p)
+//{
+//    vPortFree(p);
+//}
+//#endif /* (configSUPPORT_DYNAMIC_ALLOCATION == 1) */
