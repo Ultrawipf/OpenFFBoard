@@ -25,7 +25,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "FreeRTOSConfig.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -45,7 +45,7 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
-
+uint8_t ucHeap[ configTOTAL_HEAP_SIZE ] __attribute__((section (".ccmram"))); // rtos heap // __attribute__((section (".ccmram"))) causes copy from flash...
 /* USER CODE END Variables */
 
 /* Private function prototypes -----------------------------------------------*/

@@ -147,7 +147,7 @@ SECTIONS
   } >CCMRAM AT> FLASH
 
 _siccmram = LOADADDR(.ccmram);
-  .ccmram :
+  .ccmram (NOLOAD):
   {
   . = ALIGN(4);
   _sccmram = .;       /* create a global symbol at ccmram start */
@@ -156,7 +156,7 @@ _siccmram = LOADADDR(.ccmram);
   
   . = ALIGN(4);
   _eccmram = .;       /* create a global symbol at ccmram end */
-  } >CCMRAM AT> FLASH
+  } >CCMRAM
   /* Uninitialized data section into "RAM" Ram type memory */
   . = ALIGN(4);
   .bss :

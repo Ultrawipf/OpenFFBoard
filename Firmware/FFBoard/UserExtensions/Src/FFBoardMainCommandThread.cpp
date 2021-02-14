@@ -23,7 +23,7 @@
 extern ClassChooser<FFBoardMain> mainchooser;
 
 
-FFBoardMainCommandThread::FFBoardMainCommandThread(FFBoardMain* mainclass) : Thread("main",512, 20) {
+FFBoardMainCommandThread::FFBoardMainCommandThread(FFBoardMain* mainclass) : Thread("cmdparser",512, 20) {
 	main = mainclass;
 	this->Start();
 }
@@ -156,12 +156,15 @@ ParseStatus FFBoardMainCommandThread::executeSysCommand(ParsedCommand* cmd,std::
 	}else if(cmd->cmd == "id"){ // Report id of main class
 		*reply+=std::to_string(main->getInfo().id);
 
-	}else if(cmd->cmd == "mallinfo"){ // Report id of main class
+	}else if(cmd->cmd == "mallinfo"){
 		struct mallinfo info = mallinfo();
 		*reply+="Usage: ";
 		*reply+=std::to_string(info.uordblks);
 		*reply+=" Size: ";
 		*reply+=std::to_string(info.arena);
+
+	}else if(cmd->cmd == "heapfree"){ // Free rtos memory
+		*reply+=std::to_string(xPortGetFreeHeapSize());
 
 	}else if(cmd->cmd == "lsactive"){ // Prints all active command handlers that have a name
 		for(CommandHandler* handler : CommandHandler::cmdHandlers){
