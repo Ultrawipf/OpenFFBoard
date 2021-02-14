@@ -89,6 +89,9 @@
 #define configTIMER_QUEUE_LENGTH                 10
 #define configTIMER_TASK_STACK_DEPTH             256
 
+/* The following flag must be enabled only when using newlib */
+#define configUSE_NEWLIB_REENTRANT          1
+
 /* Set the following definitions to 1 to include the API function, or zero
 to exclude the API function. */
 #define INCLUDE_vTaskPrioritySet             1

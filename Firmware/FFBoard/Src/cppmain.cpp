@@ -5,6 +5,7 @@
 #include "global_callbacks.h"
 #include "cpp_target_config.h"
 #include "cmsis_os.h"
+#include "stm32f4xx_hal_flash.h"
 
 uint32_t clkmhz = HAL_RCC_GetHCLKFreq() / 100000;
 extern TIM_HandleTypeDef TIM_MICROS;
@@ -26,6 +27,7 @@ USBD_HandleTypeDef hUsbDeviceFS __attribute__((section (".ccmram")));
 void cppmain() {
 	// Flash init
 	HAL_FLASH_Unlock();
+	__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_PGPERR | FLASH_FLAG_PGSERR);
 	if( EE_Init() != EE_OK){
 		Error_Handler();
 	}

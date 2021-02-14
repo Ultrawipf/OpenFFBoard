@@ -74,7 +74,7 @@ osThreadId_t defaultTaskHandle;
 const osThreadAttr_t defaultTask_attributes = {
   .name = "defaultTask",
   .priority = (osPriority_t) osPriorityNormal,
-  .stack_size = 512 * 4
+  .stack_size = 1024 * 4
 };
 /* USER CODE BEGIN PV */
 
@@ -462,7 +462,7 @@ static void MX_IWDG_Init(void)
 
   /* USER CODE END IWDG_Init 1 */
   hiwdg.Instance = IWDG;
-  hiwdg.Init.Prescaler = IWDG_PRESCALER_16;
+  hiwdg.Init.Prescaler = IWDG_PRESCALER_4;
   hiwdg.Init.Reload = 4095;
   if (HAL_IWDG_Init(&hiwdg) != HAL_OK)
   {
@@ -1089,11 +1089,11 @@ void Error_Handler(void)
   /* USER CODE BEGIN Error_Handler_Debug */
 
 	// Blink Error led quickly
-	for(uint8_t i = 0; i< 10; i++){
+	for(uint8_t i = 0; i< 5; i++){
 		HAL_GPIO_WritePin(LED_ERR_GPIO_Port, LED_ERR_Pin, GPIO_PIN_SET);
-		HAL_Delay(50);
+		osDelay(50);
 		HAL_GPIO_WritePin(LED_ERR_GPIO_Port, LED_ERR_Pin, GPIO_PIN_RESET);
-		HAL_Delay(50);
+		osDelay(50);
 	}
   /* User can add his own implementation to report the HAL error return state */
 
