@@ -5,6 +5,7 @@
 #include "global_callbacks.h"
 #include "cpp_target_config.h"
 #include "cmsis_os.h"
+#include "stm32f4xx_hal_flash.h"
 
 uint32_t clkmhz = HAL_RCC_GetHCLKFreq() / 100000;
 extern TIM_HandleTypeDef TIM_MICROS;
