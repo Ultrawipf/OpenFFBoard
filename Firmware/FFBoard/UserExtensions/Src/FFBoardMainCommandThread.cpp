@@ -164,7 +164,7 @@ ParseStatus FFBoardMainCommandThread::executeSysCommand(ParsedCommand* cmd,std::
 		*reply+=std::to_string(info.arena);
 
 	}else if(cmd->cmd == "heapfree"){ // Free rtos memory
-		*reply+=std::to_string(xPortGetFreeHeapSize());
+		*reply+="";//std::to_string(xPortGetFreeHeapSize());
 
 	}else if(cmd->cmd == "lsactive"){ // Prints all active command handlers that have a name
 		for(CommandHandler* handler : CommandHandler::cmdHandlers){
