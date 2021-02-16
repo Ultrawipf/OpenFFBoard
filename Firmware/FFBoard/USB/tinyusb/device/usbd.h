@@ -35,6 +35,8 @@ extern "C" {
 #endif
 
 #include "common/tusb_common.h"
+#include "cdc.h"
+#include "hid.h"
 
 //--------------------------------------------------------------------+
 // Application API
