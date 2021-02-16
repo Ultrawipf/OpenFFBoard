@@ -7,6 +7,8 @@
 #include "cmsis_os.h"
 #include "stm32f4xx_hal_flash.h"
 
+#include "tusb.h"
+
 uint32_t clkmhz = HAL_RCC_GetHCLKFreq() / 100000;
 extern TIM_HandleTypeDef TIM_MICROS;
 
@@ -23,6 +25,12 @@ FFBoardMain* mainclass __attribute__((section (".ccmram")));
 ClassChooser<FFBoardMain> mainchooser(class_registry);
 
 USBD_HandleTypeDef hUsbDeviceFS __attribute__((section (".ccmram")));
+
+#define USBD_STACK_SIZE     (3*configMINIMAL_STACK_SIZE/2)
+StackType_t  usb_device_stack[USBD_STACK_SIZE];
+StaticTask_t usb_device_taskdef;
+
+
 
 void cppmain() {
 	// Flash init
@@ -52,7 +60,9 @@ void cppmain() {
 
 	mainclass = mainchooser.Create(main_id);
 	mainclassChosen = true;
-	usb_init(&hUsbDeviceFS); // Init usb
+
+	//usb_init(&hUsbDeviceFS); // Init usb
+	(void) xTaskCreateStatic( tudThread, "usbd", USBD_STACK_SIZE, NULL, configMAX_PRIORITIES-1, usb_device_stack, &usb_device_taskdef);
 
 	while(running){
 		mainclass->update();
@@ -74,6 +84,13 @@ void usb_init(USBD_HandleTypeDef* hUsbDeviceFS){
 	mainclass->usbInit(hUsbDeviceFS); // Let mainclass initialize usb
 }
 
+void tudThread(void *argument){
+
+	tusb_init();
+	while(1){
+		tud_task();
+	}
+}
 
 uint32_t micros(){
 	//return DWT->CYCCNT / clkmhz;
