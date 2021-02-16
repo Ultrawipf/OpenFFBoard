@@ -27,6 +27,8 @@
 #include "CanHandler.h"
 #endif
 
+#include "cdc_device.h"
+
 
 extern FFBoardMain* mainclass;
 
@@ -208,7 +210,13 @@ void HAL_SPI_ErrorCallback(SPI_HandleTypeDef *hspi){
 }
 
 
-
+void tud_cdc_rx_cb(uint8_t itf){
+	pulseSysLed();
+	uint8_t buf[64];
+	uint32_t count = tud_cdc_read(buf, sizeof(buf));
+	if(mainclass!=nullptr)
+		mainclass->cdcRcv((char*)buf,&count);
+}
 // USB Specific callbacks
 void CDC_Callback(uint8_t* Buf, uint32_t *Len){
 	pulseSysLed();

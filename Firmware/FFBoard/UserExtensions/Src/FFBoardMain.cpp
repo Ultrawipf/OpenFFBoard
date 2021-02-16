@@ -11,6 +11,8 @@
 #include "constants.h"
 #include "usbd_desc.h"
 
+#include "cdc_device.h"
+
 ClassIdentifier FFBoardMain::info ={.name = "Basic" , .id=0};
 
 
@@ -43,7 +45,7 @@ ParseStatus FFBoardMain::command(ParsedCommand *cmd,std::string* reply){
  */
 void FFBoardMain::sendSerial(std::string cmd,std::string string){
 	std::string reply = ">" + cmd + ":" + string + "\n";
-	CDC_Transmit_FS(reply.c_str(), reply.length());
+	tud_cdc_n_write(0,reply.c_str(), reply.length());
 }
 
 /*
@@ -51,7 +53,7 @@ void FFBoardMain::sendSerial(std::string cmd,std::string string){
  */
 void FFBoardMain::logSerial(std::string* string){
 	std::string reply = "!" + *string + "\n";
-	CDC_Transmit_FS(reply.c_str(), reply.length());
+	tud_cdc_n_write(0,reply.c_str(), reply.length());
 }
 
 
@@ -60,11 +62,11 @@ void FFBoardMain::logSerial(std::string* string){
  * Global callback if cdc transfer is finished. Used to retry a failed transfer
  */
 void FFBoardMain::cdcFinished(){
-	if(this->usb_busy_retry){
-		if(CDC_Transmit_FS(systemCommands->cmd_reply.c_str(), systemCommands->cmd_reply.length()) == USBD_OK){
-			this->usb_busy_retry = false;
-		}
-	}
+//	if(this->usb_busy_retry){
+//		if(CDC_Transmit_FS(systemCommands->cmd_reply.c_str(), systemCommands->cmd_reply.length()) == USBD_OK){
+//			this->usb_busy_retry = false;
+//		}
+//	}
 }
 
 void FFBoardMain::usbInit(USBD_HandleTypeDef* hUsbDeviceFS){
@@ -91,7 +93,7 @@ void FFBoardMain::usbResume(){
 
 void FFBoardMain::parserDone(std::string* reply, FFBoardMainCommandThread* parser){
 	if(parser == this->systemCommands){
-		if(CDC_Transmit_FS(reply->c_str(), reply->length()) != USBD_OK){
+		if(tud_cdc_n_write(0,reply->c_str(), reply->length()) == 0){
 			this->usb_busy_retry = true;
 		}
 	}

@@ -35,6 +35,8 @@
 //--------------------------------------------------------------------
 
 // defined by board.mk
+
+#define CFG_TUSB_MCU OPT_MCU_STM32F4 // target config
 #ifndef CFG_TUSB_MCU
   #error CFG_TUSB_MCU must be defined
 #endif
@@ -56,17 +58,10 @@
 #endif
 
 // Device mode with rhport and speed defined by board.mk
-#if   BOARD_DEVICE_RHPORT_NUM == 0
-  #define CFG_TUSB_RHPORT0_MODE     (OPT_MODE_DEVICE | BOARD_DEVICE_RHPORT_SPEED)
-#elif BOARD_DEVICE_RHPORT_NUM == 1
-  #define CFG_TUSB_RHPORT1_MODE     (OPT_MODE_DEVICE | BOARD_DEVICE_RHPORT_SPEED)
-#else
-  #error "Incorrect RHPort configuration"
-#endif
+#define CFG_TUSB_RHPORT0_MODE     (OPT_MODE_DEVICE | BOARD_DEVICE_RHPORT_SPEED)
 
-#ifndef CFG_TUSB_OS
-#define CFG_TUSB_OS               OPT_OS_NONE
-#endif
+
+#define CFG_TUSB_OS               OPT_OS_FREERTOS
 
 // CFG_TUSB_DEBUG is defined by compiler in DEBUG build
 // #define CFG_TUSB_DEBUG           0
@@ -95,14 +90,23 @@
 #endif
 
 //------------- CLASS -------------//
-#define CFG_TUD_HID               1
-#define CFG_TUD_CDC               1
+#define CFG_TUD_CDC               1 // Max 2 cdc ports
 #define CFG_TUD_MSC               0
 #define CFG_TUD_MIDI              0
+#define CFG_TUD_HID               0
 #define CFG_TUD_VENDOR            0
 
-// HID buffer size Should be sufficient to hold ID (if any) + Data
-#define CFG_TUD_HID_EP_BUFSIZE    16
+// CDC FIFO size of TX and RX
+#define CFG_TUD_CDC_RX_BUFSIZE    (TUD_OPT_HIGH_SPEED ? 512 : 64)
+#define CFG_TUD_CDC_TX_BUFSIZE    (TUD_OPT_HIGH_SPEED ? 512 : 64)
+
+// MIDI FIFO size of TX and RX
+#define CFG_TUD_MIDI_RX_BUFSIZE   (TUD_OPT_HIGH_SPEED ? 512 : 64)
+#define CFG_TUD_MIDI_TX_BUFSIZE   (TUD_OPT_HIGH_SPEED ? 512 : 64)
+
+// MSC Buffer size of Device Mass storage
+#define CFG_TUD_MSC_EP_BUFSIZE    512
+
 
 #ifdef __cplusplus
  }
