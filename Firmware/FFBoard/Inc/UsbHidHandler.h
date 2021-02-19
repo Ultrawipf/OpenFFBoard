@@ -19,9 +19,9 @@ public:
 	UsbHidHandler();
 	virtual ~UsbHidHandler();
 	virtual void hidOutCmd(HID_Custom_Data_t* data); // Called when the custom command report is received
-	virtual uint8_t sendHidCmd(HID_Custom_Data_t* data);
-	virtual void hidOut(uint8_t* report);
-	virtual void hidGet(uint8_t id,uint16_t len,uint8_t** return_buf);
+	virtual bool sendHidCmd(HID_Custom_Data_t* data);
+	virtual void hidOut(uint8_t report_id, hid_report_type_t report_type, uint8_t const* buffer, uint16_t bufsize);
+	virtual uint16_t hidGet(uint8_t report_id, hid_report_type_t report_type, uint8_t* buffer, uint16_t reqlen);
 	void registerHidCallback();
 };
 

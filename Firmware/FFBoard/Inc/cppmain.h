@@ -22,12 +22,10 @@ extern "C" {
 
 #include "eeprom_addresses.h"
 #include "main.h"
-#include "usb_device.h"
-#include "usbd_def.h"
 
 
 void cppmain();
-void usb_init(USBD_HandleTypeDef* hUsbDeviceFS);
+void usb_init();
 void tudThread(void *argument);
 
 #ifdef __cplusplus

@@ -5,6 +5,7 @@
  *      Author: Yannick
  */
 
+#ifdef MIDI
 #include <MidiMain.h>
 #include "usbd_desc.h"
 #include "usbd_composite.h"
@@ -272,3 +273,4 @@ void MidiMain::SOF(){
 		timersSinceSOF = 0;
 	}
 }
+#endif

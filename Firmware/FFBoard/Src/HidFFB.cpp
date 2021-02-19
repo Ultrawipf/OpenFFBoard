@@ -8,10 +8,9 @@
 #include "HidFFB.h"
 #include "math.h"
 #include "flash_helpers.h"
-#include "usbd_customhid.h"
+#include "hid_device.h"
 #include "cppmain.h"
 
-extern USBD_HandleTypeDef hUsbDeviceFS;
 
 HidFFB::HidFFB() {
 	this->registerHidCallback();
@@ -43,8 +42,9 @@ void HidFFB::restoreFlash(){
 	}
 }
 
-uint8_t HidFFB::HID_SendReport(uint8_t *report,uint16_t len){
-	return USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS, report, len);
+bool HidFFB::HID_SendReport(uint8_t *report,uint16_t len){
+	return tud_hid_report(0, report, len);
+
 }
 
 /*
@@ -121,13 +121,12 @@ void HidFFB::hidOutCmd(HID_Custom_Data_t* data){
 /*
  * Called when HID OUT data is received via USB
  */
-void HidFFB::hidOut(uint8_t* report){
+void HidFFB::hidOut(uint8_t report_id, hid_report_type_t report_type, uint8_t const* buffer, uint16_t bufsize){
 	hid_out_period = (micros() - lastOut); // For measuring update rate
 	lastOut = micros();
 	// FFB Output Message
-	report[0] -= FFB_ID_OFFSET;// if offset id was set correct this
-	uint8_t event_idx = report[0];
-
+	const uint8_t* report = buffer;
+	uint8_t event_idx = buffer[0] - FFB_ID_OFFSET;
 
 	// -------- Out Reports --------
 	switch(event_idx){
@@ -208,27 +207,30 @@ void HidFFB::free_effect(uint16_t idx){
 
 /*
  * Called on HID feature GET events
- * Any reply is assigned to the return_buf
+ * Any reply is assigned to the return buffer
  *
  * Handles block load reports and pool status which are requested after a new effect has been created
  */
-void HidFFB::hidGet(uint8_t id,uint16_t len,uint8_t** return_buf){
+uint16_t HidFFB::hidGet(uint8_t report_id, hid_report_type_t report_type, uint8_t* buffer, uint16_t reqlen){
 	// Feature gets go here
 
-	id = id - FFB_ID_OFFSET;
+	uint8_t id = report_id - FFB_ID_OFFSET;
 
 	switch(id){
 	case HID_ID_BLKLDREP:
 		//printf("Get Block Report\n");
-		*return_buf = (uint8_t*)(&this->blockLoad_report);
+		memcpy(buffer,&this->blockLoad_report,sizeof(FFB_BlockLoad_Feature_Data_t));
+		return sizeof(FFB_BlockLoad_Feature_Data_t);
 		break;
 	case HID_ID_POOLREP:
 		//printf("Get Pool Report\n");
-		*return_buf = (uint8_t*)(&this->pool_report);
+		memcpy(buffer,&this->pool_report,sizeof(FFB_PIDPool_Feature_Data_t));
+		return sizeof(FFB_PIDPool_Feature_Data_t);
 		break;
 	default:
 		break;
 	}
+	return 0;
 }
 
 void HidFFB::start_FFB(){

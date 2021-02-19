@@ -8,7 +8,6 @@
 #include "vector"
 #include <global_callbacks.h>
 #include "main.h"
-#include "usbd_cdc_if.h"
 #include "cppmain.h"
 #include "FFBoardMain.h"
 #include "ledEffects.h"
@@ -209,7 +208,7 @@ void HAL_SPI_ErrorCallback(SPI_HandleTypeDef *hspi){
 	}
 }
 
-
+// USB callbacks
 void tud_cdc_rx_cb(uint8_t itf){
 	pulseSysLed();
 	uint8_t buf[64];
@@ -217,56 +216,56 @@ void tud_cdc_rx_cb(uint8_t itf){
 	if(mainclass!=nullptr)
 		mainclass->cdcRcv((char*)buf,&count);
 }
-// USB Specific callbacks
-void CDC_Callback(uint8_t* Buf, uint32_t *Len){
-	pulseSysLed();
+
+void tud_cdc_tx_complete_cb(uint8_t itf){
 	if(mainclass!=nullptr)
-		mainclass->cdcRcv((char*)Buf,Len);
+		mainclass->cdcFinished(itf);
 }
-void CDC_Finished(){
-	if(mainclass!=nullptr)
-		mainclass->cdcFinished();
-}
+
+
 
 /* USB Out Endpoint callback
  * HID Out and Set Feature
  */
-void USBD_OutEvent_HID(uint8_t* report){
+void tud_hid_set_report_cb(uint8_t report_id, hid_report_type_t report_type, uint8_t const* buffer, uint16_t bufsize){
 	if(UsbHidHandler::globalHidHandler!=nullptr)
-		UsbHidHandler::globalHidHandler->hidOut(report);
+		UsbHidHandler::globalHidHandler->hidOut(report_id,report_type,buffer,bufsize);
 
-	if(report[0] == HID_ID_CUSTOMCMD){ // called only for the vendor defined report
+	if(report_id == HID_ID_CUSTOMCMD){ // called only for the vendor defined report
 		for(UsbHidHandler* c : UsbHidHandler::hidCmdHandlers){
-			c->hidOutCmd((HID_Custom_Data_t*)(report));
+			c->hidOutCmd((HID_Custom_Data_t*)(buffer));
 		}
 	}
+
 }
+
 /*
  * HID Get Feature
  */
-void USBD_GetEvent_HID(uint8_t id,uint16_t len,uint8_t** return_buf){
+uint16_t tud_hid_get_report_cb(uint8_t report_id, hid_report_type_t report_type, uint8_t* buffer, uint16_t reqlen){
 	if(UsbHidHandler::globalHidHandler != nullptr)
-		UsbHidHandler::globalHidHandler->hidGet(id, len, return_buf);
-
-}
-
-void USB_SOF(){
-	if(mainclass!=nullptr)
-		mainclass->SOF();
+		return UsbHidHandler::globalHidHandler->hidGet(report_id, report_type, buffer,reqlen);
+	return 0;
 }
 
 
 /*
  * Called on usb disconnect and suspend
  */
-void USBD_Suspend(){
+void tud_suspend_cb(){
+	mainclass->usbSuspend();
+}
+void tud_umount_cb(){
 	mainclass->usbSuspend();
 }
 
 /*
- * Called on usb resume. Not called on connect... use SOF instead to detect first activity
+ * Called on usb mount
  */
-void USBD_Resume(){
+void tud_mount_cb(){
+	mainclass->usbResume();
+}
+void tud_resume_cb(){
 	mainclass->usbResume();
 }
 
@@ -308,3 +307,19 @@ void startADC(){
 }
 
 
+USBdevice* usb_device;
+uint8_t const * tud_descriptor_device_cb(void){
+  return usb_device->getUsbDeviceDesc();
+}
+
+uint8_t const * tud_descriptor_configuration_cb(uint8_t index){
+	return usb_device->getUsbConfigurationDesc(index);
+}
+
+uint16_t const* tud_descriptor_string_cb(uint8_t index, uint16_t langid){
+	return usb_device->getUsbStringDesc(index, langid);
+}
+
+const uint8_t* tud_hid_descriptor_report_cb(){
+	return usb_device->getHidDesc();
+}
