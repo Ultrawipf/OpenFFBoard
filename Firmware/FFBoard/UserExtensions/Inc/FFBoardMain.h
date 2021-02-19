@@ -35,21 +35,24 @@ public:
 	virtual void update();
 	virtual void cdcRcv(char* Buf, uint32_t *Len);
 	virtual void SOF();
-	virtual void cdcFinished(); // Cdc send transfer complete
+	virtual void cdcFinished(uint8_t itf); // Cdc send transfer complete
 	virtual void usbSuspend(); // Called on usb disconnect and suspend
 	virtual void usbResume(); // Called on usb resume
 
 	static void sendSerial(std::string cmd,std::string string);
 	static void logSerial(std::string* string);
+	uint16_t cdcSend(std::string* reply, std::string* remaining,uint8_t itf = 0);// sends raw data via cdc. returns what was not sent as substring
 
 	virtual void parserDone(std::string* reply, FFBoardMainCommandThread* parser);
 
 	virtual ParseStatus command(ParsedCommand* cmd,std::string* reply); // Append reply strings to reply buffer
 
+
 	virtual std::string getHelpstring();
 	FFBoardMainCommandThread* systemCommands;
 protected:
 	bool usb_busy_retry = false;
+	std::string cdcRemaining;
 };
 
 

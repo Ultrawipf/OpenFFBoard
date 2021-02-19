@@ -223,9 +223,14 @@ void CDC_Callback(uint8_t* Buf, uint32_t *Len){
 	if(mainclass!=nullptr)
 		mainclass->cdcRcv((char*)Buf,Len);
 }
+void tud_cdc_tx_complete_cb(uint8_t itf){
+	if(mainclass!=nullptr)
+		mainclass->cdcFinished(itf);
+}
+
 void CDC_Finished(){
 	if(mainclass!=nullptr)
-		mainclass->cdcFinished();
+		mainclass->cdcFinished(0);
 }
 
 /* USB Out Endpoint callback

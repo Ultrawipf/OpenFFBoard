@@ -96,21 +96,12 @@ enum
 
 #define CONFIG_TOTAL_LEN    (TUD_CONFIG_DESC_LEN + 1 * TUD_CDC_DESC_LEN)
 
-#if CFG_TUSB_MCU == OPT_MCU_LPC175X_6X || CFG_TUSB_MCU == OPT_MCU_LPC177X_8X || CFG_TUSB_MCU == OPT_MCU_LPC40XX
-  // LPC 17xx and 40xx endpoint type (bulk/interrupt/iso) are fixed by its number
-  // 0 control, 1 In, 2 Bulk, 3 Iso, 4 In etc ...
-  #define EPNUM_CDC_0_NOTIF   0x81
-  #define EPNUM_CDC_0_DATA    0x02
+
+  #define EPNUM_CDC_0_NOTIF   0x82
+  #define EPNUM_CDC_0_DATA    0x01
 
   #define EPNUM_CDC_1_NOTIF   0x84
-  #define EPNUM_CDC_1_DATA    0x05
-#else
-  #define EPNUM_CDC_0_NOTIF   0x81
-  #define EPNUM_CDC_0_DATA    0x02
-
-  #define EPNUM_CDC_1_NOTIF   0x83
-  #define EPNUM_CDC_1_DATA    0x04
-#endif
+  #define EPNUM_CDC_1_DATA    0x03
 
 uint8_t const desc_fs_configuration[] =
 {
