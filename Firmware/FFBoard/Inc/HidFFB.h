@@ -18,8 +18,8 @@ public:
 	HidFFB();
 	virtual ~HidFFB();
 
-	void hidOut(uint8_t* report);
-	void hidGet(uint8_t id,uint16_t len,uint8_t** return_buf);
+	void hidOut(uint8_t report_id, hid_report_type_t report_type, uint8_t const* buffer, uint16_t bufsize);
+	uint16_t hidGet(uint8_t report_id, hid_report_type_t report_type, uint8_t* buffer, uint16_t reqlen);
 	void hidOutCmd(HID_Custom_Data_t* data);
 	int32_t calculateEffects(int32_t pos,uint8_t axis); //Axis: 1/2 pos: current position scaled from -0x7fff to 0x7fff
 	bool idlecenter = true;
@@ -31,7 +31,7 @@ public:
 
 	uint32_t getRate(); // Returns an estimate of the hid effect update speed in hz
 	bool getFfbActive();
-	static uint8_t HID_SendReport(uint8_t *report,uint16_t len);
+	static bool HID_SendReport(uint8_t *report,uint16_t len);
 
 	void reset_ffb();
 	void start_FFB();

@@ -12,10 +12,5 @@
 #define SW_VERSION "1.2.5" // Version string
 
 
-#define CDC_INTERFACE 0x00
-#define CDC_INTERFACE_DATA 0x01
-
-#define CDC_IDX 0
-#define HID_IDX 1
 
 #endif

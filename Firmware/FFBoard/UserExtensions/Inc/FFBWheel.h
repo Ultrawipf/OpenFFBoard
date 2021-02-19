@@ -11,7 +11,6 @@
 #include <FFBoardMain.h>
 #include <MotorPWM.h>
 #include <ShifterAnalog.h>
-#include "usbd_customhid.h"
 #include "TMC4671.h"
 #include "flash_helpers.h"
 #include "ButtonSource.h"
@@ -66,8 +65,7 @@ public:
 	void clearAinTypes();
 
 
-	void SOF();
-	void usbInit(USBD_HandleTypeDef* hUsbDeviceFS); // initialize a composite usb device
+	void usbInit(); // initialize a composite usb device
 	void usbSuspend(); // Called on usb disconnect and suspend
 	void usbResume(); // Called on usb resume
 	void hidOutCmd(HID_Custom_Data_t* data); // Usb hid commands
@@ -106,7 +104,7 @@ private:
 	int16_t updateEndstop();
 
 	// USB Report rate
-	uint8_t usb_report_rate = HID_FS_BINTERVAL; // 1 = 1000hz, 2 = 500hz, 3 = 250hz etc...
+	uint8_t usb_report_rate = HID_BINTERVAL; // 1 = 1000hz, 2 = 500hz, 3 = 250hz etc...
 	uint8_t report_rate_cnt = 0;
 
 	uint8_t endstop_gain_i = 128; // Sets how much extra torque per count above endstop is added. High = stiff endstop. Low = softer
@@ -142,17 +140,6 @@ private:
 	volatile bool usb_disabled = true;
 
 
-//	TMC4671PIDConf tmcpids = TMC4671PIDConf({
-//
-//		.fluxI		= 2,
-//		.fluxP		= 3000,
-//		.torqueI	= 1500,
-//		.torqueP	= 600,
-//		.velocityI	= 0,
-//		.velocityP	= 128,
-//		.positionI	= 0,
-//		.positionP	= 64
-//	});
 	TMC4671PIDConf tmcpids = TMC4671PIDConf({
 		.fluxI		= 100,
 		.fluxP		= 400,
@@ -203,6 +190,9 @@ private:
 	ClassChooser<AnalogSource> analog_chooser;
 
 	ErrorPrinter errorPrinter; // Prints errors to serial
+
+
+	uint32_t lastUsbReportTick = 0;
 };
 
 #endif /* SRC_FFBWHEEL_H_ */

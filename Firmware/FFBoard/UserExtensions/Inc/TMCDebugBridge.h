@@ -35,6 +35,7 @@ public:
 
 
 private:
+	static void sendCdc(char* dat, uint32_t len);
 	TMC4671* drv;
 	void tmcReadRegRaw(uint8_t reg,uint8_t* buf);
 	void tmcWriteReg(uint8_t reg,uint32_t dat);

@@ -13,7 +13,7 @@
 #include "cppmain.h"
 #include "main.h"
 #include <string>
-#include "usbd_cdc_if.h"
+#include "cdc_device.h"
 #include "ChoosableClass.h"
 #include "CommandHandler.h"
 #include <vector>

@@ -7,7 +7,7 @@
 
 #ifndef MidiMAIN_H_
 #define MidiMAIN_H_
-
+#ifdef #ifdef MIDI
 #include <FFBoardMain.h>
 #include "cppmain.h"
 #include "usbd_desc.h"
@@ -89,3 +89,4 @@ private:
 };
 
 #endif /* MidiMAIN_H_ */
+#endif

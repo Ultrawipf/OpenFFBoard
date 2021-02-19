@@ -51,7 +51,7 @@ std::vector<int32_t>* LocalAnalog::getAxes(){
 	this->buf.clear();
 	volatile uint32_t* adcbuf = getAnalogBuffer(&AIN_HADC,&chans);
 
-	uint8_t axes = MIN(chans-ADC_CHAN_FPIN,numPins);
+	uint8_t axes = std::min<uint8_t>(chans-ADC_CHAN_FPIN,numPins);
 
 	for(uint8_t i = 0;i<axes;i++){
 		if(!(aconf.analogmask & 0x01 << i))

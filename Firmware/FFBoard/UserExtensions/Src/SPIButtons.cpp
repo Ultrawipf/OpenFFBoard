@@ -50,7 +50,7 @@ const SPIConfig& SPI_Buttons::getConfig() const {
 }
 
 void SPI_Buttons::beginRequest(SPIPort::Pipe& pipe) {
-	pipe.beginRx(spi_buf, MIN(bytes, 4));
+	pipe.beginRx(spi_buf, std::min<uint8_t>(bytes, 4));
 }
 
 void SPI_Buttons::initSPI(){
@@ -70,7 +70,7 @@ void SPI_Buttons::setMode(SPI_BtnMode mode){
 }
 
 void SPI_Buttons::setConfig(ButtonSourceConfig config){
-	config.numButtons = MIN(this->maxButtons, config.numButtons);
+	config.numButtons = std::min<uint8_t>(this->maxButtons, config.numButtons);
 	this->conf = config;
 	this->spi_config.cs = getExternalSPI_CSPin(config.cs_num);
 
@@ -133,7 +133,7 @@ void SPI_Buttons::process(uint32_t* buf){
 
 __attribute__((optimize("-Ofast")))
 void SPI_Buttons::readButtons(uint32_t* buf){
-	memcpy(buf,this->spi_buf,MIN(this->bytes,4));
+	memcpy(buf,this->spi_buf,std::min<uint8_t>(this->bytes,4));
 	process(buf); // give back last buffer
 
 	if(this->requestPending())
