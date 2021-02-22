@@ -43,7 +43,7 @@ void HidFFB::restoreFlash(){
 }
 
 bool HidFFB::HID_SendReport(uint8_t *report,uint16_t len){
-	return tud_hid_report(0, (void const*) report, len);
+	return tud_hid_report(0, report, len);
 
 }
 
@@ -126,8 +126,7 @@ void HidFFB::hidOut(uint8_t report_id, hid_report_type_t report_type, uint8_t co
 	lastOut = micros();
 	// FFB Output Message
 	const uint8_t* report = buffer;
-	uint8_t event_idx = report_id - FFB_ID_OFFSET;
-
+	uint8_t event_idx = buffer[0] - FFB_ID_OFFSET;
 
 	// -------- Out Reports --------
 	switch(event_idx){
@@ -220,12 +219,12 @@ uint16_t HidFFB::hidGet(uint8_t report_id, hid_report_type_t report_type, uint8_
 	switch(id){
 	case HID_ID_BLKLDREP:
 		//printf("Get Block Report\n");
-		buffer = (uint8_t*)(&this->blockLoad_report);
+		memcpy(buffer,&this->blockLoad_report,sizeof(FFB_BlockLoad_Feature_Data_t));
 		return sizeof(FFB_BlockLoad_Feature_Data_t);
 		break;
 	case HID_ID_POOLREP:
 		//printf("Get Pool Report\n");
-		buffer = (uint8_t*)(&this->pool_report);
+		memcpy(buffer,&this->pool_report,sizeof(FFB_PIDPool_Feature_Data_t));
 		return sizeof(FFB_PIDPool_Feature_Data_t);
 		break;
 	default:

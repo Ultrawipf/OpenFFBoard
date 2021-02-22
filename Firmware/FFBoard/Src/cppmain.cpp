@@ -82,14 +82,6 @@ void refreshWatchdog(){
 
 
 
-void tudThread(void *argument){
-
-	tusb_init();
-	while(1){
-		tud_task();
-	}
-}
-
 uint32_t micros(){
 	//return DWT->CYCCNT / clkmhz;
 	return TIM_MICROS.Instance->CNT;
