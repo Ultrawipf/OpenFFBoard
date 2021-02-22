@@ -321,5 +321,5 @@ uint16_t const* tud_descriptor_string_cb(uint8_t index, uint16_t langid){
 }
 
 const uint8_t* tud_hid_descriptor_report_cb(){
-	return usb_device->getHidDesc();
+	return UsbHidHandler::getHidDesc();
 }

@@ -24,7 +24,6 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 //#include <cppmain.h>
-#include "usbd_cdc_if.h"
 extern void cppmain();
 /* USER CODE END Includes */
 
@@ -105,11 +104,7 @@ uint32_t dfu_reset_to_bootloader_magic;
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-int _write(int file, char *ptr, int len)
-{
-  CDC_Transmit_FS(ptr, len);
-  return len;
-}
+
 // dummy main
 __attribute__((weak)) void cppmain(){
 	Error_Handler();
@@ -162,7 +157,7 @@ int main(void)
   /* Initialize interrupts */
   MX_NVIC_Init();
   /* USER CODE BEGIN 2 */
-
+  MX_USB_OTG_FS_PCD_Init();
   //Test leds
   HAL_GPIO_WritePin(LED_SYS_GPIO_Port, LED_SYS_Pin, GPIO_PIN_SET);
   HAL_GPIO_WritePin(LED_CLIP_GPIO_Port, LED_CLIP_Pin, GPIO_PIN_SET);
@@ -853,8 +848,6 @@ void MX_USB_OTG_FS_PCD_Init(void)
 {
 
   /* USER CODE BEGIN USB_OTG_FS_Init 0 */
-	// Handled by USBD_LL_Init in usb_conf.c
-#if false
   /* USER CODE END USB_OTG_FS_Init 0 */
 
   /* USER CODE BEGIN USB_OTG_FS_Init 1 */
@@ -865,7 +858,7 @@ void MX_USB_OTG_FS_PCD_Init(void)
   hpcd_USB_OTG_FS.Init.speed = PCD_SPEED_FULL;
   hpcd_USB_OTG_FS.Init.dma_enable = DISABLE;
   hpcd_USB_OTG_FS.Init.phy_itface = PCD_PHY_EMBEDDED;
-  hpcd_USB_OTG_FS.Init.Sof_enable = ENABLE;
+  hpcd_USB_OTG_FS.Init.Sof_enable = DISABLE;
   hpcd_USB_OTG_FS.Init.low_power_enable = DISABLE;
   hpcd_USB_OTG_FS.Init.lpm_enable = DISABLE;
   hpcd_USB_OTG_FS.Init.vbus_sensing_enable = DISABLE;
@@ -875,7 +868,6 @@ void MX_USB_OTG_FS_PCD_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN USB_OTG_FS_Init 2 */
-#endif
   /* USER CODE END USB_OTG_FS_Init 2 */
 
 }

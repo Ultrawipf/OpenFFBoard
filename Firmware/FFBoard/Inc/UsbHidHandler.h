@@ -23,6 +23,12 @@ public:
 	virtual void hidOut(uint8_t report_id, hid_report_type_t report_type, uint8_t const* buffer, uint16_t bufsize);
 	virtual uint16_t hidGet(uint8_t report_id, hid_report_type_t report_type, uint8_t* buffer, uint16_t reqlen);
 	void registerHidCallback();
+
+	// HID report descriptor (For gamepad...)
+	static void setHidDesc(const uint8_t* desc);
+	static const uint8_t* getHidDesc();
+	static uint8_t* hid_desc;
+
 };
 
 
