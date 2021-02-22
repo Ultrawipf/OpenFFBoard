@@ -5,9 +5,10 @@
  *      Author: Yannick
  */
 
+// TODO rewrite for tinyusb!
 #ifndef MidiMAIN_H_
 #define MidiMAIN_H_
-#ifdef #ifdef MIDI
+#ifdef MIDI
 #include <FFBoardMain.h>
 #include "cppmain.h"
 #include "usbd_desc.h"
