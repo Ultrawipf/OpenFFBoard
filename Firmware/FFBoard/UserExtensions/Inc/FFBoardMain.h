@@ -12,7 +12,6 @@
 #include "cppmain.h"
 #include "main.h"
 #include <string>
-#include "usbd_cdc_if.h"
 #include "ChoosableClass.h"
 #include "CommandHandler.h"
 #include <vector>
@@ -37,7 +36,6 @@ public:
 	// Callbacks
 	virtual void update();
 	virtual void cdcRcv(char* Buf, uint32_t *Len);
-	virtual void SOF();
 	virtual void cdcFinished(uint8_t itf); // Cdc send transfer complete
 	virtual void usbSuspend(); // Called on usb disconnect and suspend
 	virtual void usbResume(); // Called on usb resume

@@ -89,11 +89,14 @@
 #define CFG_TUD_ENDPOINT0_SIZE    64
 #endif
 
+//#define USE_SOF 1 no sof for now
+
 //------------- CLASS -------------//
-#define CFG_TUD_CDC               1 // Max 2 cdc ports
+ // Which classes are compiled and available
+#define CFG_TUD_CDC               1
 #define CFG_TUD_MSC               0
 #define CFG_TUD_MIDI              0
-#define CFG_TUD_HID               0
+#define CFG_TUD_HID               1
 #define CFG_TUD_VENDOR            0
 
 // CDC FIFO size of TX and RX

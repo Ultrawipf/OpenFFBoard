@@ -10,6 +10,7 @@
 #ifdef CANBRIDGE
 #include "target_constants.h"
 #include "ledEffects.h"
+#include "cdc_device.h"
 
 extern TIM_TypeDef TIM_MICROS;
 
@@ -148,14 +149,14 @@ void CanBridge::canRxPendCallback(CAN_HandleTypeDef *hcan,uint8_t* rxBuf,CAN_RxH
 				reply.push_back(*(rxBuf+i));
 			}
 			reply.push_back(0);
-			CDC_Transmit_FS(reply.data(), reply.size());
-
+			tud_cdc_n_write(0,reply.data(), reply.size());
+			tud_cdc_write_flush();
 		}else{
 			memcpy(this->rxBuf,rxBuf,sizeof(this->rxBuf));
 			this->rxHeader = *rxHeader;
 			std::string buf = messageToString(); // Last message to string
-			CDC_Transmit_FS(buf.c_str(), buf.length());
-
+			tud_cdc_n_write(0,buf.c_str(), buf.length());
+			tud_cdc_write_flush();
 		}
 
 	}
@@ -313,7 +314,8 @@ void CanBridge::cdcRcv(char* Buf, uint32_t *Len){
 		}
 
 	}
-	CDC_Transmit_FS(reply.data(), reply.size());
+	tud_cdc_n_write(0,reply.data(), reply.size());
+	tud_cdc_write_flush();
 }
 
 ParseStatus CanBridge::command(ParsedCommand* cmd,std::string* reply){

@@ -6,9 +6,10 @@
  */
 
 #include "FFBWheel.h"
-#include "FFBWheel_usb_init.h"
 #include "voltagesense.h"
-
+#include "hid_device.h"
+#include "tusb.h"
+#include "usb_hid_ffb_desc.h"
 
 // Unique identifier for listing
 ClassIdentifier FFBWheel::info = {
@@ -85,12 +86,12 @@ FFBWheel::FFBWheel() :
 	this->ffb = new HidFFB();
 
 	// Setup a timer for updates faster than USB SOF
-	extern TIM_HandleTypeDef htim4;
-	this->timer_update = &htim4; // Timer setup with prescaler of sysclock
-	this->timer_update->Instance->PSC = (SystemCoreClock / 1000000)-1;
-	this->timer_update->Instance->ARR = 500; // 250 = 4khz, 500 = 2khz...
-	this->timer_update->Instance->CR1 = 1;
-	HAL_TIM_Base_Start_IT(this->timer_update);
+//	extern TIM_HandleTypeDef htim4;
+//	this->timer_update = &htim4; // Timer setup with prescaler of sysclock
+//	this->timer_update->Instance->PSC = (SystemCoreClock / 1000000)-1;
+//	this->timer_update->Instance->ARR = 500; // 250 = 4khz, 500 = 2khz...
+//	this->timer_update->Instance->CR1 = 1;
+//	HAL_TIM_Base_Start_IT(this->timer_update);
 
 	restoreFlash(); // Load parameters
 }
@@ -152,8 +153,6 @@ void FFBWheel::saveFlash(){
 	Flash_Write(ADR_FFBWHEEL_BUTTONCONF,this->btnsources);
 	Flash_Write(ADR_FFBWHEEL_ANALOGCONF,this->ainsources);
 	Flash_Write(ADR_FFBWHEEL_ENDSTOP,this->fx_ratio_i | (this->endstop_gain_i << 8));
-
-
 }
 
 /*
@@ -170,7 +169,13 @@ void FFBWheel::update(){
 		this->enc->setPos(0);
 	}
 
-	// If either usb SOF or timer triggered
+	// Emulate a SOF timer... TODO
+	if(HAL_GetTick() - lastUsbReportTick > 0 && !usb_disabled){
+		lastUsbReportTick = HAL_GetTick();
+		usb_update_flag  = true;
+	}
+
+	// If either usb or timer triggered
 	if(usb_update_flag || update_flag){
 		int32_t lastTorque = torque;
 		torque = 0;
@@ -336,7 +341,7 @@ void FFBWheel::setDrvType(uint8_t drvtype){
 			setEncType(drv->getInfo().id); // Auto preset driver as encoder
 		}
 	}
-	if(hUsbDeviceFS.dev_state != USBD_STATE_CONFIGURED){
+	if(!tud_connected()){
 		usb_disabled = false;
 		this->usbSuspend();
 	}else{
@@ -469,7 +474,6 @@ int32_t FFBWheel::getEncValue(Encoder* enc,uint16_t degrees){
  * Sends periodic gamepad reports of buttons and analog axes
  */
 void FFBWheel::send_report(){
-	extern USBD_HandleTypeDef hUsbDeviceFS;
 
 	// Read buttons
 	reportHID.buttons = 0; // Reset buttons
@@ -505,7 +509,7 @@ void FFBWheel::send_report(){
 	 * Only send a new report if actually changed since last time or timeout
 	 */
 	if(reportSendCounter++ > 100 || (memcmp(&lastReportHID,&reportHID,sizeof(reportHID_t)) != 0) ){
-		USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS, reinterpret_cast<uint8_t*>(&reportHID), sizeof(reportHID_t));
+		tud_hid_report(0, reinterpret_cast<uint8_t*>(&reportHID), sizeof(reportHID_t));
 		lastReportHID = reportHID;
 		reportSendCounter = 0;
 	}
@@ -525,14 +529,6 @@ void FFBWheel::timerElapsed(TIM_HandleTypeDef* htim){
 
 void slowTimerCallback(void *argument){
 
-}
-
-// Called at 1khz. Triggers effect updates
-void FFBWheel::SOF(){
-	if(usb_disabled) // If previously disabled reenable
-		usbResume();
-	usb_update_flag = true;
-	// USB clocked update callback
 }
 
 /*
@@ -557,8 +553,11 @@ void FFBWheel::usbResume(){
 	}
 }
 
-void FFBWheel::usbInit(USBD_HandleTypeDef* hUsbDeviceFS){
-	usbInit_HID_Wheel(hUsbDeviceFS);
+void FFBWheel::usbInit(){
+	//usbInit_HID_Wheel(hUsbDeviceFS);
+	this->usbdev = new USBdevice(&usb_devdesc_ffboard_composite,usb_cdc_hid_conf,&usb_ffboard_strings_cdc_hid);
+	usbdev->setHidDesc(hid_ffb_desc);
+	usbdev->registerUsb();
 }
 
 // External interrupt pins

@@ -8,6 +8,8 @@
 #include <TMCDebugBridge.h>
 #include "ledEffects.h"
 #include "voltagesense.h"
+#include "cdc_device.h"
+
 // Change this
 ClassIdentifier TMCDebugBridge::info = {
 		 .name = "TMC Debug Bridge" ,
@@ -83,6 +85,11 @@ ParseStatus TMCDebugBridge::command(ParsedCommand* cmd,std::string* reply){
 	return flag;
 }
 
+void TMCDebugBridge::sendCdc(char* dat, uint32_t len){
+	tud_cdc_n_write(0, dat, len);
+	tud_cdc_write_flush();
+}
+
 void TMCDebugBridge::cdcRcv(char* Buf, uint32_t *Len){
 	std::vector<uint8_t> dat;
 	dat.assign(Buf,Buf+*Len);
@@ -107,7 +114,7 @@ void TMCDebugBridge::cdcRcv(char* Buf, uint32_t *Len){
 			rx_data.insert(rx_data.begin(), &rpl[0],&rpl[4]);
 			rx_data.insert(rx_data.end(),buf+1, buf+5);
 			rx_data.push_back(checksum(&rx_data,8));
-			CDC_Transmit_FS((char*)rx_data.data(), 9);
+			sendCdc((char*)rx_data.data(), 9);
 
 		}else if(cmd == 146){ // write
 
@@ -116,7 +123,7 @@ void TMCDebugBridge::cdcRcv(char* Buf, uint32_t *Len){
 			drv->writeReg(addr,__REV(ndat));
 			std::vector<uint8_t> repl({2,1,0x64,0x92,dat[3],dat[4],dat[5],dat[6]});
 			repl.push_back(checksum(&repl,8));
-			CDC_Transmit_FS((char*)repl.data(), 9);
+			sendCdc((char*)repl.data(), 9);
 		}else if(cmd == 143){
 			std::vector<uint8_t> repl(8,0);
 			if(addr == 3){
@@ -125,7 +132,7 @@ void TMCDebugBridge::cdcRcv(char* Buf, uint32_t *Len){
 				repl.assign({2,1,40,0x8f,2,6,2,2});
 			}
 			repl.push_back(checksum(&repl,8));
-			CDC_Transmit_FS((char*)repl.data(), 9);
+			sendCdc((char*)repl.data(), 9);
 		}else if(cmd == 10){ // Get global parameter.
 			std::vector<uint8_t> repl({2,1,64,0x0A,0,0,0,0});
 			if(addr == 5){
@@ -134,7 +141,7 @@ void TMCDebugBridge::cdcRcv(char* Buf, uint32_t *Len){
 				repl[7] = 1; // active
 			}
 			repl.push_back(checksum(&repl,8));
-			CDC_Transmit_FS((char*)repl.data(), 9);
+			sendCdc((char*)repl.data(), 9);
 		}else if(cmd == 0x0F){ // Get input
 			std::vector<uint8_t> repl({2,1,64,0x0F,0,0,0,0});
 			if(addr == 5){  // Voltage
@@ -143,11 +150,11 @@ void TMCDebugBridge::cdcRcv(char* Buf, uint32_t *Len){
 				repl[6] = (v>>8) & 0xff;
 			}
 			repl.push_back(checksum(&repl,8));
-			CDC_Transmit_FS((char*)repl.data(), 9);
+			sendCdc((char*)repl.data(), 9);
 		}else if(cmd == 0x88){
 			char version[9] = {2,'0','0','1','5','V','3','0','7'}; // Version string
 			if(addr == 0){
-				CDC_Transmit_FS(version, 9);
+				sendCdc(version, 9);
 			}else if(addr == 1){ // Version binary
 				// module version high
 				uint32_t tmpVal = (uint8_t) version[1] - '0';
@@ -171,7 +178,7 @@ void TMCDebugBridge::cdcRcv(char* Buf, uint32_t *Len){
 				tmpVal += (uint8_t) version[8] - '0';
 				repl[7] = tmpVal;
 				repl.push_back(checksum(&repl,8));
-				CDC_Transmit_FS((char*)repl.data(), 9);
+				sendCdc((char*)repl.data(), 9);
 			}
 
 		}

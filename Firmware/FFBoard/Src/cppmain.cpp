@@ -24,7 +24,7 @@ uint16_t main_id = 0;
 FFBoardMain* mainclass __attribute__((section (".ccmram")));
 ClassChooser<FFBoardMain> mainchooser(class_registry);
 
-USBD_HandleTypeDef hUsbDeviceFS __attribute__((section (".ccmram")));
+//USBD_HandleTypeDef hUsbDeviceFS __attribute__((section (".ccmram")));
 
 #define USBD_STACK_SIZE     (3*configMINIMAL_STACK_SIZE/2)
 StackType_t  usb_device_stack[USBD_STACK_SIZE];
@@ -63,7 +63,6 @@ void cppmain() {
 
 	//usb_init(&hUsbDeviceFS); // Init usb
 	mainclass->usbInit(); // Let mainclass initialize usb
-	//(void) xTaskCreateStatic( tudThread, "usbd", USBD_STACK_SIZE, NULL, configMAX_PRIORITIES-1, usb_device_stack, &usb_device_taskdef);
 
 	while(running){
 		mainclass->update();

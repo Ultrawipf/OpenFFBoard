@@ -430,8 +430,8 @@ void TMC4671::calibrateAenc(){
 
 	uint32_t minVal_0 = 0xffff,	minVal_1 = 0xffff,	minVal_2 = 0xffff;
 	uint32_t maxVal_0 = 0,	maxVal_1 = 0,	maxVal_2 = 0;
-	int32_t minpos = -0x8fff/MAX(1,MIN(this->aencconf.cpr/4,20)), maxpos = 0x8fff/MAX(1,MIN(this->aencconf.cpr/4,20));
-	uint32_t speed = MAX(1,20/MAX(1,this->aencconf.cpr/5));
+	int32_t minpos = -0x8fff/std::min<int32_t>(1,std::min<int32_t>(this->aencconf.cpr/4,20)), maxpos = 0x8fff/std::max<int32_t>(1,std::min<int32_t>(this->aencconf.cpr/4,20));
+	uint32_t speed = std::max<uint32_t>(1,20/std::max<uint32_t>(1,this->aencconf.cpr/5));
 	runOpenLoop(3000, 0, speed, 100);
 
 	uint8_t stage = 0;

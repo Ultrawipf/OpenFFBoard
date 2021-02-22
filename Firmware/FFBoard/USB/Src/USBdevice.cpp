@@ -86,3 +86,12 @@ uint16_t* USBdevice::getUsbStringDesc(uint8_t index,uint16_t langid){
 
 	return _desc_str;
 }
+
+
+// Class specific report callbacks
+void USBdevice::setHidDesc(const uint8_t* desc){
+	this->hid_desc = desc;
+}
+const uint8_t* USBdevice::getHidDesc(){
+	return this->hid_desc;
+}

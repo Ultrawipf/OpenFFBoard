@@ -76,9 +76,7 @@ void FFBoardMain::usbInit(){
 void FFBoardMain::update(){
 
 }
-void FFBoardMain::SOF(){
 
-}
 void FFBoardMain::usbSuspend(){
 
 }

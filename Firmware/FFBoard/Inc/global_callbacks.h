@@ -41,7 +41,6 @@ volatile uint32_t* getAnalogBuffer(ADC_HandleTypeDef* hadc,uint8_t* chans); // R
 void CDC_Callback(uint8_t* Buf, uint32_t *Len);
 void CDC_Finished();
 void USBD_OutEvent_HID(uint8_t* report);
-void USB_SOF();
 void USBD_GetEvent_HID(uint8_t id,uint16_t len,uint8_t** return_buf);
 
 void USBD_Suspend();
