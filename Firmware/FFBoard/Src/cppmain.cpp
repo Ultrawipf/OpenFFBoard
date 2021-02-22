@@ -62,7 +62,8 @@ void cppmain() {
 	mainclassChosen = true;
 
 	//usb_init(&hUsbDeviceFS); // Init usb
-	(void) xTaskCreateStatic( tudThread, "usbd", USBD_STACK_SIZE, NULL, configMAX_PRIORITIES-1, usb_device_stack, &usb_device_taskdef);
+	mainclass->usbInit(); // Let mainclass initialize usb
+	//(void) xTaskCreateStatic( tudThread, "usbd", USBD_STACK_SIZE, NULL, configMAX_PRIORITIES-1, usb_device_stack, &usb_device_taskdef);
 
 	while(running){
 		mainclass->update();
@@ -80,9 +81,7 @@ void refreshWatchdog(){
 #endif
 }
 
-void usb_init(USBD_HandleTypeDef* hUsbDeviceFS){
-	mainclass->usbInit(hUsbDeviceFS); // Let mainclass initialize usb
-}
+
 
 void tudThread(void *argument){
 

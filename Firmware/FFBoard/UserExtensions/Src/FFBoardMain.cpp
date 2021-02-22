@@ -9,8 +9,7 @@
 
 #include <thread.hpp>
 #include "constants.h"
-#include "usbd_desc.h"
-
+#include "usb_descriptors.h"
 #include "cdc_device.h"
 
 ClassIdentifier FFBoardMain::info ={.name = "Basic" , .id=0};
@@ -18,7 +17,7 @@ ClassIdentifier FFBoardMain::info ={.name = "Basic" , .id=0};
 
 
 FFBoardMain::FFBoardMain() : systemCommands(new FFBoardMainCommandThread(this)){
-	//this->Start(); // Thread starts when parser is ready
+
 }
 
 const ClassIdentifier FFBoardMain::getInfo(){
@@ -67,12 +66,10 @@ void FFBoardMain::cdcFinished(uint8_t itf = 0){
 	}
 }
 
-void FFBoardMain::usbInit(USBD_HandleTypeDef* hUsbDeviceFS){
-
-	USBD_Init(hUsbDeviceFS, &FS_Desc, DEVICE_FS);
-	USBD_RegisterClass(hUsbDeviceFS, &USBD_CDC);
-	USBD_CDC_RegisterInterface(hUsbDeviceFS, &USBD_Interface_fops_FS);
-	USBD_Start(hUsbDeviceFS);
+void FFBoardMain::usbInit(){
+	// Create the usb config if this is not overridden
+	this->usbdev = new USBdevice(&usb_devdesc_ffboard_composite,usb_cdc_conf,&usb_ffboard_strings_cdc_hid);
+	usbdev->registerUsb();
 }
 
 // Virtual stubs

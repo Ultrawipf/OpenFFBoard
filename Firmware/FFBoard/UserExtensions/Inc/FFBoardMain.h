@@ -19,8 +19,11 @@
 #include "ErrorHandler.h"
 
 #include "FFBoardMainCommandThread.h"
+#include "USBdevice.h"
 
+class USBdevice;
 class FFBoardMainCommandThread;
+
 class FFBoardMain : virtual ChoosableClass, public CommandHandler{
 public:
 	static ClassIdentifier info;
@@ -29,7 +32,7 @@ public:
 	FFBoardMain();
 	virtual ~FFBoardMain();
 
-	virtual void usbInit(USBD_HandleTypeDef* hUsbDeviceFS); // initialize a composite usb device
+	virtual void usbInit(); // called before the mainloop to start the usb device
 
 	// Callbacks
 	virtual void update();
@@ -53,6 +56,8 @@ public:
 protected:
 	bool usb_busy_retry = false;
 	std::string cdcRemaining;
+
+	USBdevice* usbdev;
 };
 
 

@@ -313,3 +313,15 @@ void startADC(){
 }
 
 
+USBdevice* usb_device;
+uint8_t const * tud_descriptor_device_cb(void){
+  return usb_device->getUsbDeviceDesc();
+}
+
+uint8_t const * tud_descriptor_configuration_cb(uint8_t index){
+	return usb_device->getUsbConfigurationDesc(index);
+}
+
+uint16_t const* tud_descriptor_string_cb(uint8_t index, uint16_t langid){
+	return usb_device->getUsbStringDesc(index, langid);
+}
