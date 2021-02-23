@@ -20,6 +20,7 @@
 #include "FFBoardMainCommandThread.h"
 #include "USBdevice.h"
 
+
 class USBdevice;
 class FFBoardMainCommandThread;
 

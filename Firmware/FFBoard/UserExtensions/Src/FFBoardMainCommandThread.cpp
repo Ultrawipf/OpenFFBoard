@@ -23,7 +23,7 @@
 extern ClassChooser<FFBoardMain> mainchooser;
 
 
-FFBoardMainCommandThread::FFBoardMainCommandThread(FFBoardMain* mainclass) : Thread("cmdparser",512, 20) {
+FFBoardMainCommandThread::FFBoardMainCommandThread(FFBoardMain* mainclass) : Thread("cmdparser",512, 40) {
 	main = mainclass;
 	this->Start();
 }

@@ -33,8 +33,8 @@ public:
 	const ClassIdentifier getInfo();
 
 	void turn(int16_t power);
-	void stop();
-	void start();
+	void stopMotor();
+	void startMotor();
 
 	void setPwmSpeed(SpeedPWM_DRV spd);
 	SpeedPWM_DRV getPwmSpeed();

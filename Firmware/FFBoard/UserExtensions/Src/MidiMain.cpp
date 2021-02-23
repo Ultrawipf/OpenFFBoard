@@ -24,7 +24,7 @@ const ClassIdentifier MidiMain::getInfo(){
 }
 
 
-MidiMain::MidiMain() {
+MidiMain::MidiMain() : Thread("MIDI",512,50) {
 	// Generate notes
 	for(uint8_t i = 0;i<128;i++){
 		float f = std::pow(2, (i - 69) / 12.0) * 440.0;
@@ -58,22 +58,30 @@ MidiMain::MidiMain() {
 	if(!drv->initialized){
 		pulseErrLed();
 	}
+	this->Start();
+
 }
 
 MidiMain::~MidiMain() {
 
 }
 
-void MidiMain::update(){
-	if(updateflag){
-		updateflag = false;
+void MidiMain::Run(){
+	updateflag = true;
+	while(1){
 		play();
+		this->Suspend();
 	}
 }
 
+void MidiMain::update(){
+	//drv->Run();
+}
+
 void MidiMain::timerElapsed(TIM_HandleTypeDef* htim){
-	if(htim == this->timer_update){
-		updateflag = true;
+	if(htim == this->timer_update && updateflag){
+		//updateflag = true;
+		this->ResumeFromISR();
 	}
 }
 
@@ -95,8 +103,9 @@ void MidiMain::play(){
 		MidiNote* note = &notes[chan].back();
 		float freq = noteToFreq[note->note];
 		// Speed up period counter instead of changing frequency to prevent phase jumps
-
-		note->counter += periodf * note->pitchbend;
+		float time = ((uint16_t)this->timer_update->Instance->CNT - lastSystick) / 1000000.0;
+		lastSystick = this->timer_update->Instance->CNT;
+		note->counter += time * note->pitchbend;
 
 		float volume = note->volume / 127.0f;
 		float p = (note->counter*freq);
@@ -125,6 +134,7 @@ void MidiMain::noteOff(uint8_t chan, uint8_t note,uint8_t velocity){
 			break;
 		}
 	}
+
 }
 
 void MidiMain::controlChange(uint8_t chan, uint8_t c, uint8_t val){

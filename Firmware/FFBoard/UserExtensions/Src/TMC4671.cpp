@@ -19,7 +19,7 @@ const ClassIdentifier TMC4671::getInfo(){
 	return info;
 }
 
-TMC4671::TMC4671(SPI_HandleTypeDef* spi,GPIO_TypeDef* csport,uint16_t cspin,TMC4671MainConfig conf) {
+TMC4671::TMC4671(SPI_HandleTypeDef* spi,GPIO_TypeDef* csport,uint16_t cspin,TMC4671MainConfig conf) : Thread("TMC", TMC_THREAD_MEM, 21){
 	this->cspin = cspin;
 	this->csport = csport;
 	this->spi = spi;
@@ -27,7 +27,7 @@ TMC4671::TMC4671(SPI_HandleTypeDef* spi,GPIO_TypeDef* csport,uint16_t cspin,TMC4
 	this->restoreFlash();
 }
 
-TMC4671::TMC4671(){
+TMC4671::TMC4671() : Thread("TMC", TMC_THREAD_MEM, 30){
 	this->address = 1;
 	this->cspin = SPI1_SS1_Pin;
 	this->csport = SPI1_SS1_GPIO_Port;
@@ -234,85 +234,86 @@ float TMC4671::getTemp(){
 
 }
 
-void TMC4671::update(){
+void TMC4671::Run(){
 	// Main state machine
-	switch(this->state){
+	//while(1){
 
+		switch(this->state){
 
-	case TMC_ControlState::Running:
-	{
-		// Check status, Temps, Everything alright?
-		uint32_t tick = HAL_GetTick();
-		if(tick - lastStatTime > 2000){ // Every 2s
-			lastStatTime = tick;
+		case TMC_ControlState::Running:
+		{
+			// Check status, Temps, Everything alright?
+			uint32_t tick = HAL_GetTick();
+			if(tick - lastStatTime > 2000){ // Every 2s
+				lastStatTime = tick;
 
-			// Get enable input
-			bool tmc_en = (readReg(0x76) >> 15) & 0x01;
-			if(!tmc_en && active){ // Hardware emergency
-				this->estopTriggered = true;
-				state = TMC_ControlState::HardError;
-			}
+				// Get enable input
+				bool tmc_en = (readReg(0x76) >> 15) & 0x01;
+				if(!tmc_en && active){ // Hardware emergency
+					this->estopTriggered = true;
+					state = TMC_ControlState::HardError;
+				}
 
-			// Temperature sense
-			#ifdef TMCTEMP
-			float temp = getTemp();
-			if(temp > temp_limit){
-				state = TMC_ControlState::OverTemp;
-				pulseErrLed();
-			}
-			#endif
-
-		}
-	}
-	break;
-
-	case TMC_ControlState::Init_wait:
-		if(active && hasPower()){
-			if(HAL_GetTick() - initTime > (emergency ? 5000 : 1000)){
-				emergency = false;
-				if(!initialize()){
+				// Temperature sense
+				#ifdef TMCTEMP
+				float temp = getTemp();
+				if(temp > temp_limit){
+					state = TMC_ControlState::OverTemp;
 					pulseErrLed();
 				}
+				#endif
+
 			}
 		}
+		break;
 
-	break;
+		case TMC_ControlState::Init_wait:
+			if(active && hasPower()){
+				if(HAL_GetTick() - initTime > (emergency ? 5000 : 1000)){
+					emergency = false;
+					if(!initialize()){
+						pulseErrLed();
+					}
+				}
+			}
 
-	case TMC_ControlState::ABN_init:
-		ABN_init();
-	break;
+		break;
 
-	case TMC_ControlState::AENC_init:
-		AENC_init();
-	break;
+		case TMC_ControlState::ABN_init:
+			ABN_init();
+		break;
 
-	case TMC_ControlState::HardError:
+		case TMC_ControlState::AENC_init:
+			AENC_init();
+		break;
 
-	break; // Broken
+		case TMC_ControlState::HardError:
 
-	case TMC_ControlState::OverTemp:
-		this->stop();
-		state = TMC_ControlState::HardError; // Block
-	break;
+		break; // Broken
 
-	default:
+		case TMC_ControlState::OverTemp:
+			this->stopMotor();
+			state = TMC_ControlState::HardError; // Block
+		break;
 
-	break;
-	}
+		default:
 
-	// Optional update methods for safety
+		break;
+		}
 
-	if(!hasPower()){ // low voltage or overvoltage
-		state = TMC_ControlState::Init_wait;
-		initialized = false;
-		pulseErrLed();
-		if(!emergency && HAL_GetTick() - initTime > 100)
-			emergencyStop();
-		else
-			initTime = HAL_GetTick();
-	}
+		// Optional update methods for safety
 
-
+		if(!hasPower()){ // low voltage or overvoltage
+			state = TMC_ControlState::Init_wait;
+			initialized = false;
+			pulseErrLed();
+			if(!emergency && HAL_GetTick() - initTime > 100)
+				emergencyStop();
+			else
+				initTime = HAL_GetTick();
+		}
+		//Delay(10);
+	//} // End while
 }
 
 bool TMC4671::reachedPosition(uint16_t tolerance){
@@ -391,17 +392,17 @@ void TMC4671::bangInitEnc(int16_t power){
 	updateReg(phiEoffsetReg, 0, 0xffff, 16); // Set phiE offset to zero
 	setMotionMode(MotionMode::uqudext);
 
-	HAL_Delay(100);
+	Delay(100);
 	setPhiE_ext(0x3fff);
 	int16_t phiE_abn = readReg(phiEreg)>>16;
-	HAL_Delay(250);
+	Delay(250);
 	int16_t phiE_abn_old = 0;
 	int16_t c = 0;
 	while(abs(phiE_abn - phiE_abn_old) > 100 && c++ < 50){
 		refreshWatchdog();
 		phiE_abn_old = phiE_abn;
 		phiE_abn=readReg(phiEreg)>>16;
-		HAL_Delay(100);
+		Delay(100);
 	}
 
 	//Write offset
@@ -438,7 +439,7 @@ void TMC4671::calibrateAenc(){
 	int32_t poles = conf.motconf.pole_pairs;
 	int32_t initialDirPos = 0;
 	while(stage != 3){
-		HAL_Delay(2);
+		Delay(2);
 		refreshWatchdog(); // Don't let the dog get any sleep
 		if(getPos() > maxpos*poles && stage == 0){
 			runOpenLoop(bangInitPower, 0, -speed, 100);
@@ -457,7 +458,7 @@ void TMC4671::calibrateAenc(){
 			aencconf.rdir = false;
 			setup_AENC(aencconf);
 			runOpenLoop(0, 0, 0, 1000);
-			HAL_Delay(250);
+			Delay(250);
 			// Zero aenc
 			writeReg(0x41, 0);
 			initialDirPos = readReg(0x41);
@@ -527,14 +528,14 @@ bool TMC4671::checkEncoder(){
 	for(int16_t angle = -0x3fff;angle<0x3fff;angle+=0x0fff){
 		uint16_t c = 0;
 		setPhiE_ext(angle);
-		HAL_Delay(100);
+		Delay(100);
 		phiE_enc = (int16_t)(readReg(phiEreg)>>16);
 		int16_t err = abs(phiE_enc - angle);
 		// Wait more
 		while(err > 6000 && c++ < 500){
 			phiE_enc = (int16_t)(readReg(phiEreg)>>16);
 			err = abs(phiE_enc - angle);
-			HAL_Delay(10);
+			Delay(10);
 			refreshWatchdog();
 		}
 		// still high difference?
@@ -859,12 +860,12 @@ void TMC4671::setUdUq(int16_t ud,int16_t uq){
 	writeReg(0x24, ud | (uq << 16));
 }
 
-void TMC4671::stop(){
+void TMC4671::stopMotor(){
 	// Stop driver instantly
 	HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_RESET);
 	active = false;
 }
-void TMC4671::start(){
+void TMC4671::startMotor(){
 	if(!initialized){
 		initialize();
 	}else{
@@ -1191,8 +1192,7 @@ void TMC4671::estimateABNparams(){
 	// Rotate a bit
 	for(uint16_t p = 0;p<0x0fff;p+=0x2f){
 		setPhiE_ext(p);
-		HAL_Delay(10);
-		refreshWatchdog(); // Keep board from resetting
+		Delay(10);
 		c++;
 		phiE_abn_old = phiE_abn;
 		phiE_abn = readReg(0x2A)>>16;
@@ -1265,7 +1265,9 @@ uint32_t TMC4671::readReg(uint8_t reg){
 	// 500ns delay after sending first byte
 
 	//__disable_irq();
+	//spiMutex.Lock();
 	while(this->spi_busy){} // wait if a tx was just started
+
 	HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_RESET);
 	//HAL_SPI_Transmit(this->spi,req,1,SPITIMEOUT); // pause
 	//HAL_SPI_Receive(this->spi,tbuf,4,SPITIMEOUT);
@@ -1276,6 +1278,7 @@ uint32_t TMC4671::readReg(uint8_t reg){
 	uint32_t ret;
 	memcpy(&ret,tbuf+1,4);
 	ret = __REV(ret);
+	//spiMutex.Unlock();
 	return ret;
 }
 
@@ -1283,7 +1286,9 @@ __attribute__((optimize("-Ofast")))
 void TMC4671::writeReg(uint8_t reg,uint32_t dat){
 
 	// wait until ready
+
 	while(this->spi_busy){}
+	//spiMutex.Lock();
 	this->spi_busy = true;
 
 	spi_buf[0] = (uint8_t)(0x80 | reg);
@@ -1295,6 +1300,7 @@ void TMC4671::writeReg(uint8_t reg,uint32_t dat){
 	HAL_SPI_Transmit_DMA(this->spi,spi_buf,5);
 	//HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_SET);
 	//__enable_irq();
+	//spiMutex.Unlock();
 }
 
 void TMC4671::updateReg(uint8_t reg,uint32_t dat,uint32_t mask,uint8_t shift){

@@ -107,13 +107,13 @@ uint32_t micros(){
 
 
 //#if (configSUPPORT_DYNAMIC_ALLOCATION == 1)
-//void* malloc(size_t size)
-//{
-//    return pvPortMalloc(size);
-//}
-//
-//void free(void *p)
-//{
-//    vPortFree(p);
-//}
+void* malloc(size_t size)
+{
+    return pvPortMalloc(size);
+}
+
+void free(void *p)
+{
+    vPortFree(p);
+}
 //#endif /* (configSUPPORT_DYNAMIC_ALLOCATION == 1) */

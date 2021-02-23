@@ -16,7 +16,7 @@
 #include "TimerHandler.h"
 #include "vector"
 #include "MidiHandler.h"
-
+#include "thread.hpp"
 
 struct MidiNote{
 	uint8_t note = 0;
@@ -25,7 +25,7 @@ struct MidiNote{
 	float pitchbend = 1;
 };
 
-class MidiMain: public FFBoardMain, public MidiHandler,TimerHandler {
+class MidiMain: public FFBoardMain, public MidiHandler,TimerHandler, cpp_freertos::Thread {
 public:
 	MidiMain();
 	virtual ~MidiMain();
@@ -46,6 +46,7 @@ public:
 	void timerElapsed(TIM_HandleTypeDef* htim);
 
 	void play();
+	void Run();
 
 	TMC4671* drv;
 
@@ -59,10 +60,10 @@ private:
 	bool active[16] = {false};
 	uint32_t power = 4000;
 
-	const uint16_t period = 71;	// Microseconds
+	const uint16_t period = 100;//71;	// Microseconds
 	float periodf = period / 1000000.0; // seconds
 	float freqErr = 1;
-	uint32_t lastSystick = 0;
+	uint16_t lastSystick = 0;
 };
 
 #endif /* MidiMAIN_H_ */

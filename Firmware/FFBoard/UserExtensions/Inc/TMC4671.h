@@ -16,8 +16,12 @@
 #include "PersistentStorage.h"
 #include "CommandHandler.h"
 #include "SpiHandler.h"
+#include "thread.hpp"
+
+#include "mutex.hpp"
 
 #define SPITIMEOUT 100
+#define TMC_THREAD_MEM 512
 extern SPI_HandleTypeDef HSPIDRV;
 
 enum class TMC_ControlState {uninitialized,No_power,Shutdown,Running,Init_wait,ABN_init,AENC_init,Enc_bang,HardError,OverTemp};
@@ -159,7 +163,7 @@ struct TMC4671Biquad{
 };
 
 
-class TMC4671 : public MotorDriver, public Encoder, public CommandHandler, public SpiHandler{
+class TMC4671 : public MotorDriver, public Encoder, public CommandHandler, public SpiHandler, public cpp_freertos::Thread{
 public:
 
 	static ClassIdentifier info;
@@ -181,7 +185,7 @@ public:
 
 	bool initialize();
 	bool initialized = false;
-	void update();
+	void Run();
 
 	bool hasPower();
 	bool isSetUp();
@@ -226,8 +230,8 @@ public:
 	void setPositionExt(int32_t pos); // External position register (For external encoders. Choose external phiE).
 	// Contact me if external support has to be added via the FFB selection!
 
-	void stop();
-	void start();
+	void stopMotor();
+	void startMotor();
 	bool active = false;
 	void emergencyStop();
 	bool emergency = false;
@@ -345,6 +349,8 @@ private:
 	uint32_t initTime = 0;
 
 	volatile bool spi_busy = false;
+
+	cpp_freertos::MutexStandard spiMutex;
 
 };
 
