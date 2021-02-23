@@ -169,6 +169,8 @@ void FFBWheel::update(){
 		this->enc->setPos(0);
 	}
 
+	if(!drv->motorReady()) return;
+
 	// Emulate a SOF timer... TODO
 	if(HAL_GetTick() - lastUsbReportTick > 0 && !usb_disabled){
 		lastUsbReportTick = HAL_GetTick();
@@ -198,7 +200,7 @@ void FFBWheel::update(){
 		// TODO move to rtos
 		if(this->conf.drvtype == TMC4671::info.id){
 			TMC4671* drv = static_cast<TMC4671*>(this->drv);
-			drv->Run(); // TODO thread!
+			//drv->Run(); // TODO thread!
 			if(drv->estopTriggered){
 				emergencyStop();
 			}
@@ -368,7 +370,7 @@ void FFBWheel::setupTMC4671(){
 	// Enable driver
 
 	drv->setMotionMode(MotionMode::torque);
-	//drv->Start(); // Start thread
+	drv->Start(); // Start thread
 }
 
 void FFBWheel::setEncType(uint8_t enctype){

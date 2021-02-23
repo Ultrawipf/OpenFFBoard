@@ -234,9 +234,13 @@ float TMC4671::getTemp(){
 
 }
 
+bool TMC4671::motorReady(){
+	return this->state == TMC_ControlState::Running;
+}
+
 void TMC4671::Run(){
 	// Main state machine
-	//while(1){
+	while(1){
 
 		switch(this->state){
 
@@ -312,8 +316,8 @@ void TMC4671::Run(){
 			else
 				initTime = HAL_GetTick();
 		}
-		//Delay(10);
-	//} // End while
+		Delay(10);
+	} // End while
 }
 
 bool TMC4671::reachedPosition(uint16_t tolerance){

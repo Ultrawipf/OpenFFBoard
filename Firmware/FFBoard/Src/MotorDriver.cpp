@@ -32,3 +32,7 @@ void MotorDriver::startMotor(){
 void MotorDriver::stopMotor(){
 
 }
+
+bool MotorDriver::motorReady(){
+	return true;
+}

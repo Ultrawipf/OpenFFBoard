@@ -59,6 +59,9 @@ void cppmain() {
 
 
 	mainclass = mainchooser.Create(main_id);
+	if(mainclass == nullptr){ // invalid id
+		mainclass = mainchooser.Create(0); // Baseclass
+	}
 	mainclassChosen = true;
 
 	mainclass->usbInit(); // Let mainclass initialize usb

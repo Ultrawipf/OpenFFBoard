@@ -186,6 +186,7 @@ public:
 	bool initialize();
 	bool initialized = false;
 	void Run();
+	bool motorReady();
 
 	bool hasPower();
 	bool isSetUp();
