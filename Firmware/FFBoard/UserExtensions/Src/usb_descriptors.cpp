@@ -68,16 +68,29 @@ const uint8_t usb_cdc_hid_conf[] =
   TUD_HID_INOUT_DESCRIPTOR(2, 5, HID_PROTOCOL_NONE, USB_HID_FFB_REPORT_DESC_SIZE, 0x83, 0x02, 64, HID_BINTERVAL),
 };
 
+
+// Composite CDC and MIDI
+uint8_t const usb_cdc_midi_conf[] =
+{
+  // Config number, interface count, string index, total length, attribute, power in mA
+  TUD_CONFIG_DESCRIPTOR(1, 4, 0, TUD_CONFIG_DESC_LEN + TUD_CDC_DESC_LEN + TUD_MIDI_DESC_LEN, TUSB_DESC_CONFIG_ATT_REMOTE_WAKEUP, 100),
+  // 1st CDC: Interface number, string index, EP notification address and size, EP data address (out, in) and size.
+  TUD_CDC_DESCRIPTOR(0, 4, 0x82, 8, 0x01, 0x81, 64),
+  // Interface number, string index, EP Out & EP In address, EP size
+  TUD_MIDI_DESCRIPTOR(2, 6, 0x02, 0x83, 64)
+};
+
 //--------------------------------------------------------------------+
 // String Descriptors
 //--------------------------------------------------------------------+
 
 // Default ffboard names
-const usb_string_desc_t usb_ffboard_strings_cdc_hid = {
+const usb_string_desc_t usb_ffboard_strings_default = {
 	.langId = 0x0409,
 	.manufacturer = "Open FFBoard",
 	.product = "FFBoard",
-	.interfaces = {"FFBoard CDC", "FFBoard HID"}
+	// Interfaces start at index 4
+	.interfaces = {"FFBoard CDC", "FFBoard HID","FFBoard MIDI"}
 };
 
 

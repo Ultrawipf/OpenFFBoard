@@ -26,13 +26,18 @@ typedef struct usb_string_desc
 
 
 /*
- * Default CDC device
+ * Device descriptors
  */
 extern const tusb_desc_device_t usb_devdesc_ffboard_composite;
+
+/*
+ * Config descriptors
+ */
 extern const uint8_t usb_cdc_conf[];
 extern const uint8_t usb_cdc_hid_conf[];
+extern const uint8_t usb_cdc_midi_conf[];
 
 // Default strings
-extern const usb_string_desc_t usb_ffboard_strings_cdc_hid;
+extern const usb_string_desc_t usb_ffboard_strings_default;
 
 #endif /* USB_TINYUSB_USB_DESCRIPTORS_H_ */

@@ -26,6 +26,11 @@
 #include "CanHandler.h"
 #endif
 
+#ifdef MIDI
+#include "MidiHandler.h"
+#include "midi_device.h"
+#endif
+
 #include "cdc_device.h"
 
 
@@ -208,7 +213,24 @@ void HAL_SPI_ErrorCallback(SPI_HandleTypeDef *hspi){
 	}
 }
 
-// USB callbacks
+// USB Callbacks
+USBdevice* usb_device;
+uint8_t const * tud_descriptor_device_cb(void){
+  return usb_device->getUsbDeviceDesc();
+}
+
+uint8_t const * tud_descriptor_configuration_cb(uint8_t index){
+	return usb_device->getUsbConfigurationDesc(index);
+}
+
+uint16_t const* tud_descriptor_string_cb(uint8_t index, uint16_t langid){
+	return usb_device->getUsbStringDesc(index, langid);
+}
+
+const uint8_t* tud_hid_descriptor_report_cb(){
+	return UsbHidHandler::getHidDesc();
+}
+
 void tud_cdc_rx_cb(uint8_t itf){
 	pulseSysLed();
 	uint8_t buf[64];
@@ -248,6 +270,13 @@ uint16_t tud_hid_get_report_cb(uint8_t report_id, hid_report_type_t report_type,
 	return 0;
 }
 
+MidiHandler* midihandler = nullptr;
+void tud_midi_rx_cb(uint8_t itf){
+	if(!midihandler) return;
+	if(tud_midi_n_receive(itf,MidiHandler::buf)){
+		midihandler->midiRx(itf, MidiHandler::buf);
+	}
+}
 
 /*
  * Called on usb disconnect and suspend
@@ -304,22 +333,4 @@ void startADC(){
 	#ifdef ADC3_CHANNELS
 	HAL_ADC_Start_DMA(&hadc3, (uint32_t*)ADC3_BUF, ADC3_CHANNELS);
 	#endif
-}
-
-
-USBdevice* usb_device;
-uint8_t const * tud_descriptor_device_cb(void){
-  return usb_device->getUsbDeviceDesc();
-}
-
-uint8_t const * tud_descriptor_configuration_cb(uint8_t index){
-	return usb_device->getUsbConfigurationDesc(index);
-}
-
-uint16_t const* tud_descriptor_string_cb(uint8_t index, uint16_t langid){
-	return usb_device->getUsbStringDesc(index, langid);
-}
-
-const uint8_t* tud_hid_descriptor_report_cb(){
-	return UsbHidHandler::getHidDesc();
 }

@@ -555,7 +555,7 @@ void FFBWheel::usbResume(){
 
 void FFBWheel::usbInit(){
 	//usbInit_HID_Wheel(hUsbDeviceFS);
-	this->usbdev = new USBdevice(&usb_devdesc_ffboard_composite,usb_cdc_hid_conf,&usb_ffboard_strings_cdc_hid);
+	this->usbdev = new USBdevice(&usb_devdesc_ffboard_composite,usb_cdc_hid_conf,&usb_ffboard_strings_default);
 	UsbHidHandler::setHidDesc(hid_ffb_desc);
 	usbdev->registerUsb();
 }

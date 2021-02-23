@@ -61,7 +61,6 @@ void cppmain() {
 	mainclass = mainchooser.Create(main_id);
 	mainclassChosen = true;
 
-	//usb_init(&hUsbDeviceFS); // Init usb
 	mainclass->usbInit(); // Let mainclass initialize usb
 
 	while(running){
@@ -71,7 +70,6 @@ void cppmain() {
 		refreshWatchdog();
 		osDelay(1);
 	}
-
 }
 
 void refreshWatchdog(){
