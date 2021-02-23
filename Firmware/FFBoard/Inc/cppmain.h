@@ -22,6 +22,7 @@ extern "C" {
 
 #include "eeprom_addresses.h"
 #include "main.h"
+#include "cmsis_compiler.h"
 
 
 void cppmain();
@@ -31,7 +32,9 @@ void tudThread(void *argument);
 #ifdef __cplusplus
 }
 
-//extern std::unique_ptr<FFBoardMain> mainclass;
+static inline bool isIrq(){
+	return (__get_PRIMASK() != 0U) || (__get_IPSR() != 0U);
+}
 
 template<class T,class C>
 int8_t cliptest(T v, C l, C h)

@@ -68,7 +68,7 @@ void FFBoardMain::cdcFinished(uint8_t itf = 0){
 
 void FFBoardMain::usbInit(){
 	// Create the usb config if this is not overridden
-	this->usbdev = new USBdevice(&usb_devdesc_ffboard_composite,usb_cdc_conf,&usb_ffboard_strings_cdc_hid);
+	this->usbdev = new USBdevice(&usb_devdesc_ffboard_composite,usb_cdc_conf,&usb_ffboard_strings_default);
 	usbdev->registerUsb();
 }
 

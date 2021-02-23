@@ -22,8 +22,10 @@ public:
 
 
 	virtual void turn(int16_t power); // Turn the motor with positive/negative power. Range should be full signed 16 bit
-	virtual void stop();
-	virtual void start();
+	virtual void stopMotor();
+	virtual void startMotor();
+
+	virtual bool motorReady(); // Returns true if the driver is active and ready to receive commands
 };
 
 #endif /* MOTORDRIVER_H_ */
