@@ -1265,7 +1265,7 @@ uint32_t TMC4671::readReg(uint8_t reg){
 	// 500ns delay after sending first byte
 
 	//__disable_irq();
-	//spiMutex.Lock();
+	spiMutex.Lock();
 	while(this->spi_busy){} // wait if a tx was just started
 
 	HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_RESET);
@@ -1278,7 +1278,7 @@ uint32_t TMC4671::readReg(uint8_t reg){
 	uint32_t ret;
 	memcpy(&ret,tbuf+1,4);
 	ret = __REV(ret);
-	//spiMutex.Unlock();
+	spiMutex.Unlock();
 	return ret;
 }
 
@@ -1286,9 +1286,8 @@ __attribute__((optimize("-Ofast")))
 void TMC4671::writeReg(uint8_t reg,uint32_t dat){
 
 	// wait until ready
-
+	spiMutex.Lock();
 	while(this->spi_busy){}
-	//spiMutex.Lock();
 	this->spi_busy = true;
 
 	spi_buf[0] = (uint8_t)(0x80 | reg);
@@ -1300,7 +1299,7 @@ void TMC4671::writeReg(uint8_t reg,uint32_t dat){
 	HAL_SPI_Transmit_DMA(this->spi,spi_buf,5);
 	//HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_SET);
 	//__enable_irq();
-	//spiMutex.Unlock();
+	spiMutex.Unlock();
 }
 
 void TMC4671::updateReg(uint8_t reg,uint32_t dat,uint32_t mask,uint8_t shift){

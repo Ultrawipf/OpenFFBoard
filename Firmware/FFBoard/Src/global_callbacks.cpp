@@ -270,6 +270,7 @@ uint16_t tud_hid_get_report_cb(uint8_t report_id, hid_report_type_t report_type,
 	return 0;
 }
 
+#ifdef MIDI
 MidiHandler* midihandler = nullptr;
 void tud_midi_rx_cb(uint8_t itf){
 	if(!midihandler) return;
@@ -277,6 +278,7 @@ void tud_midi_rx_cb(uint8_t itf){
 		midihandler->midiRx(itf, MidiHandler::buf);
 	}
 }
+#endif
 
 /*
  * Called on usb disconnect and suspend
