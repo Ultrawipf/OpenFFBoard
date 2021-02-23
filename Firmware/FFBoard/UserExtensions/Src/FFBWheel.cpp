@@ -169,6 +169,8 @@ void FFBWheel::update(){
 		this->enc->setPos(0);
 	}
 
+	if(!drv->motorReady()) return;
+
 	// Emulate a SOF timer... TODO
 	if(HAL_GetTick() - lastUsbReportTick > 0 && !usb_disabled){
 		lastUsbReportTick = HAL_GetTick();
@@ -191,14 +193,14 @@ void FFBWheel::update(){
 
 		if(abs(scaledEnc) > 0xffff){
 			// We are way off. Shut down
-			drv->stop();
+			drv->stopMotor();
 			pulseErrLed();
 		}
 
 		// TODO move to rtos
 		if(this->conf.drvtype == TMC4671::info.id){
 			TMC4671* drv = static_cast<TMC4671*>(this->drv);
-			drv->update();
+			//drv->Run(); // TODO thread!
 			if(drv->estopTriggered){
 				emergencyStop();
 			}
@@ -345,7 +347,7 @@ void FFBWheel::setDrvType(uint8_t drvtype){
 		usb_disabled = false;
 		this->usbSuspend();
 	}else{
-		drv->start();
+		drv->startMotor();
 	}
 
 }
@@ -368,6 +370,7 @@ void FFBWheel::setupTMC4671(){
 	// Enable driver
 
 	drv->setMotionMode(MotionMode::torque);
+	drv->Start(); // Start thread
 }
 
 void FFBWheel::setEncType(uint8_t enctype){
@@ -517,7 +520,7 @@ void FFBWheel::send_report(){
 }
 
 void FFBWheel::emergencyStop(){
-	drv->stop();
+	drv->stopMotor();
 	emergency = true;
 }
 
@@ -542,20 +545,20 @@ void FFBWheel::usbSuspend(){
 	ffb->reset_ffb(); // Delete all effects
 	if(drv != nullptr){
 		drv->turn(0);
-		drv->stop();
+		drv->stopMotor();
 	}
 
 }
 void FFBWheel::usbResume(){
 	usb_disabled = false;
 	if(drv != nullptr){
-		drv->start();
+		drv->startMotor();
 	}
 }
 
 void FFBWheel::usbInit(){
 	//usbInit_HID_Wheel(hUsbDeviceFS);
-	this->usbdev = new USBdevice(&usb_devdesc_ffboard_composite,usb_cdc_hid_conf,&usb_ffboard_strings_cdc_hid);
+	this->usbdev = new USBdevice(&usb_devdesc_ffboard_composite,usb_cdc_hid_conf,&usb_ffboard_strings_default);
 	UsbHidHandler::setHidDesc(hid_ffb_desc);
 	usbdev->registerUsb();
 }

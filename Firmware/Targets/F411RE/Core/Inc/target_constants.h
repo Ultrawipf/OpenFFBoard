@@ -19,7 +19,7 @@
 
 // Main classes
 #define FFBWHEEL
-//#define MIDI
+#define MIDI
 #define TMCDEBUG
 
 
@@ -37,7 +37,6 @@
 
 #define TIM_ENC htim3
 // Timer 3 is used by the encoder.
-#define TIM_PWM htim2
 
 #define TIM_MICROS htim10
 extern UART_HandleTypeDef huart1;

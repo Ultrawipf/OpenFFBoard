@@ -59,9 +59,11 @@ void cppmain() {
 
 
 	mainclass = mainchooser.Create(main_id);
+	if(mainclass == nullptr){ // invalid id
+		mainclass = mainchooser.Create(0); // Baseclass
+	}
 	mainclassChosen = true;
 
-	//usb_init(&hUsbDeviceFS); // Init usb
 	mainclass->usbInit(); // Let mainclass initialize usb
 
 	while(running){
@@ -71,7 +73,6 @@ void cppmain() {
 		refreshWatchdog();
 		osDelay(1);
 	}
-
 }
 
 void refreshWatchdog(){
@@ -109,13 +110,14 @@ uint32_t micros(){
 
 
 //#if (configSUPPORT_DYNAMIC_ALLOCATION == 1)
-//void* malloc(size_t size)
-//{
-//    return pvPortMalloc(size);
-//}
-//
-//void free(void *p)
-//{
-//    vPortFree(p);
-//}
+void* malloc(size_t size)
+{
+    return pvPortMalloc(size);
+}
+
+void free(void *p)
+{
+    vPortFree(p);
+}
+
 //#endif /* (configSUPPORT_DYNAMIC_ALLOCATION == 1) */

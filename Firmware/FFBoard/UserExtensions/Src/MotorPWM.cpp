@@ -200,11 +200,11 @@ MotorPWM::~MotorPWM() {
 }
 
 
-void MotorPWM::start(){
+void MotorPWM::startMotor(){
 	active = true;
 }
 
-void MotorPWM::stop(){
+void MotorPWM::stopMotor(){
 	turn(0);
 	active = false;
 }
