@@ -19,7 +19,7 @@
 
 // Main classes
 #define FFBWHEEL
-//#define MIDI
+#define MIDI
 #define TMCDEBUG
 
 

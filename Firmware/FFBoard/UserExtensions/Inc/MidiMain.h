@@ -25,7 +25,7 @@ struct MidiNote{
 	float pitchbend = 1;
 };
 
-class MidiMain: public FFBoardMain, public MidiHandler,TimerHandler, cpp_freertos::Thread {
+class MidiMain: public FFBoardMain, public MidiHandler,TimerHandler {
 public:
 	MidiMain();
 	virtual ~MidiMain();
@@ -46,7 +46,6 @@ public:
 	void timerElapsed(TIM_HandleTypeDef* htim);
 
 	void play();
-	void Run();
 
 	TMC4671* drv;
 
@@ -62,8 +61,6 @@ private:
 
 	const uint16_t period = 100;//71;	// Microseconds
 	float periodf = period / 1000000.0; // seconds
-	float freqErr = 1;
-	uint16_t lastSystick = 0;
 };
 
 #endif /* MidiMAIN_H_ */

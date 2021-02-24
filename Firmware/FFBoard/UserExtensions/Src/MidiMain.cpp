@@ -12,6 +12,7 @@
 #include "math.h"
 #include "ledEffects.h"
 #include "USBdevice.h"
+#include "cmsis_os2.h"
 
 ClassIdentifier MidiMain::info = {
 		 .name = "MIDI" ,
@@ -24,7 +25,7 @@ const ClassIdentifier MidiMain::getInfo(){
 }
 
 
-MidiMain::MidiMain() : Thread("MIDI",512,50) {
+MidiMain::MidiMain(){
 	// Generate notes
 	for(uint8_t i = 0;i<128;i++){
 		float f = std::pow(2, (i - 69) / 12.0) * 440.0;
@@ -58,7 +59,7 @@ MidiMain::MidiMain() : Thread("MIDI",512,50) {
 	if(!drv->initialized){
 		pulseErrLed();
 	}
-	this->Start();
+	//this->Start();
 
 }
 
@@ -66,22 +67,14 @@ MidiMain::~MidiMain() {
 
 }
 
-void MidiMain::Run(){
-	updateflag = true;
-	while(1){
-		play();
-		this->Suspend();
-	}
-}
 
 void MidiMain::update(){
-	//drv->Run();
+	osDelay(50); // Slow down main thread
 }
 
 void MidiMain::timerElapsed(TIM_HandleTypeDef* htim){
-	if(htim == this->timer_update && updateflag){
-		//updateflag = true;
-		this->ResumeFromISR();
+	if(htim == this->timer_update){
+		play();
 	}
 }
 
@@ -103,8 +96,8 @@ void MidiMain::play(){
 		MidiNote* note = &notes[chan].back();
 		float freq = noteToFreq[note->note];
 		// Speed up period counter instead of changing frequency to prevent phase jumps
-		float time = ((uint16_t)this->timer_update->Instance->CNT - lastSystick) / 1000000.0;
-		lastSystick = this->timer_update->Instance->CNT;
+		float time = periodf;//(abs((uint16_t)this->timer_update->Instance->CNT - lastSystick)%period) / 1000000.0;
+		//lastSystick = this->timer_update->Instance->CNT;
 		note->counter += time * note->pitchbend;
 
 		float volume = note->volume / 127.0f;
@@ -163,10 +156,6 @@ ParseStatus MidiMain::command(ParsedCommand* cmd,std::string* reply){
 			*reply+=std::to_string(movementrange);
 		}else if(cmd->type == CMDtype::set){
 			this->movementrange = cmd->val;
-		}
-	}else if(cmd->cmd == "err"){
-		if(cmd->type == CMDtype::get){
-			*reply+=std::to_string(freqErr);
 		}
 	}else{
 		flag=drv->command(cmd, reply);
