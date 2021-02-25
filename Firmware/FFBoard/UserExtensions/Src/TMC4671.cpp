@@ -167,7 +167,7 @@ bool TMC4671::initialize(){
 
 	// Write main constants
 	setMotionMode(MotionMode::stop);
-	setUdUq(0, 0);
+	setFluxTorque(0, 0);
 	setPwm(0,conf.pwmcnt,conf.bbmL,conf.bbmH); // Enable FOC @ 25khz
 	setMotorType(conf.motconf.motor_type,conf.motconf.pole_pairs);
 	setPhiEtype(conf.motconf.phiEsource);
@@ -374,7 +374,7 @@ void TMC4671::bangInitEnc(int16_t power){
 	PhiE lastphie = getPhiEtype();
 	MotionMode lastmode = getMotionMode();
 	setPhiE_ext(0);
-	setUdUq(power, 0);
+	setFluxTorque(power, 0);
 	//int32_t pos = getPos();
 
 	setPhiEtype(PhiE::ext);
@@ -394,7 +394,7 @@ void TMC4671::bangInitEnc(int16_t power){
 
 	setPos(0);
 	updateReg(phiEoffsetReg, 0, 0xffff, 16); // Set phiE offset to zero
-	setMotionMode(MotionMode::uqudext);
+	//setMotionMode(MotionMode::uqudext);
 
 	Delay(100);
 	setPhiE_ext(0x3fff);
@@ -414,7 +414,7 @@ void TMC4671::bangInitEnc(int16_t power){
 	abnconf.phiEoffset = 0x3fff-phiE_abn;
 	updateReg(phiEoffsetReg, abnconf.phiEoffset, 0xffff, 16);
 
-	setUdUq(0, 0);
+	setFluxTorque(0, 0);
 	setPhiE_ext(0);
 	setPhiEtype(lastphie);
 	setMotionMode(lastmode);
@@ -522,9 +522,10 @@ bool TMC4671::checkEncoder(){
 	bool result = true;
 	PhiE lastphie = getPhiEtype();
 	MotionMode lastmode = getMotionMode();
-	setUdUq(bangInitPower, 0);
 	setPhiEtype(PhiE::ext);
-	setMotionMode(MotionMode::uqudext);
+	setFluxTorque(bangInitPower, 0);
+
+	//setMotionMode(MotionMode::uqudext);
 
 	//int16_t phiE_enc_start = (int16_t)(readReg(phiEreg)>>16);
 	int16_t phiE_enc = 0;
@@ -550,7 +551,7 @@ bool TMC4671::checkEncoder(){
 	}
 
 
-	setUdUq(0, 0);
+	setFluxTorque(0, 0);
 	setPhiE_ext(0);
 	setPhiEtype(lastphie);
 	setMotionMode(lastmode);
@@ -1185,7 +1186,7 @@ void TMC4671::estimateABNparams(){
 	MotionMode lastmode = getMotionMode();
 	updateReg(0x25, 0,0x1000,12); // Set dir normal
 	setPhiE_ext(0);
-	setUdUq(bangInitPower,0);
+	setFluxTorque(bangInitPower,0);
 	setMotionMode(MotionMode::uqudext);
 	setPhiEtype(PhiE::ext);
 	int16_t phiE_abn = readReg(0x2A)>>16;
@@ -1209,7 +1210,7 @@ void TMC4671::estimateABNparams(){
 	}
 	setPos(pos+getPos());
 
-	setUdUq(0, 0);
+	setFluxTorque(0, 0);
 	setPhiEtype(lastphie);
 	setMotionMode(lastmode);
 
