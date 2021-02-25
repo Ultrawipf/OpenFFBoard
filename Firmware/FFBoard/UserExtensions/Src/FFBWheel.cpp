@@ -528,9 +528,6 @@ void FFBWheel::timerElapsed(TIM_HandleTypeDef* htim){
 	}
 }
 
-void slowTimerCallback(void *argument){
-
-}
 
 /*
  * USB unplugged
