@@ -18,7 +18,7 @@
 #include "SpiHandler.h"
 #include "thread.hpp"
 
-#include "mutex.hpp"
+#include "semaphore.hpp"
 
 #define SPITIMEOUT 100
 #define TMC_THREAD_MEM 512
@@ -349,9 +349,8 @@ private:
 
 	uint32_t initTime = 0;
 
-	volatile bool spi_busy = false;
 
-	cpp_freertos::MutexStandard spiMutex;
+	cpp_freertos::BinarySemaphore spiSemaphore = cpp_freertos::BinarySemaphore(true);
 
 };
 
