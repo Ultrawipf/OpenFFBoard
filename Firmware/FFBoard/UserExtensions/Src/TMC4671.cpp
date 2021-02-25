@@ -1454,6 +1454,8 @@ ParseStatus TMC4671::command(ParsedCommand* cmd,std::string* reply){
 			*reply+=std::to_string((uint8_t)this->getPhiEtype());
 		}else if(cmd->type == CMDtype::set){
 			this->setPhiEtype((PhiE)cmd->val);
+		}else{
+			*reply+="ext=1,openloop=2,abn=3,hall=5,aenc=6,aencE=7";
 		}
 
 	}else if(cmd->cmd == "fluxoffset"){
