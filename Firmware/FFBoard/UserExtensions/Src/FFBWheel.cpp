@@ -85,13 +85,12 @@ FFBWheel::FFBWheel() :
 	// Create HID FFB handler. Will receive all usb messages directly
 	this->ffb = new HidFFB();
 
-	// Setup a timer for updates faster than USB SOF
-//	extern TIM_HandleTypeDef htim4;
-//	this->timer_update = &htim4; // Timer setup with prescaler of sysclock
+	// Set up a timer for effects
+//	extern TIM_HandleTypeDef TIM_USER;
+//	this->timer_update = &TIM_USER; // Timer setup with prescaler of sysclock
+//	this->timer_update->Instance->ARR = 1000; // 1khz
 //	this->timer_update->Instance->PSC = (SystemCoreClock / 1000000)-1;
-//	this->timer_update->Instance->ARR = 500; // 250 = 4khz, 500 = 2khz...
 //	this->timer_update->Instance->CR1 = 1;
-//	HAL_TIM_Base_Start_IT(this->timer_update);
 
 	restoreFlash(); // Load parameters
 }
