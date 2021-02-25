@@ -33,7 +33,7 @@ MidiMain::MidiMain(){
 	}
 
 	// Setup timer
-	extern TIM_HandleTypeDef htim4;
+	extern TIM_HandleTypeDef TIM_USER;
 	this->timer_update = &htim4; // Timer setup with prescaler of sysclock
 	this->timer_update->Instance->ARR = period;
 	this->timer_update->Instance->PSC = (SystemCoreClock / 1000000)-1;
