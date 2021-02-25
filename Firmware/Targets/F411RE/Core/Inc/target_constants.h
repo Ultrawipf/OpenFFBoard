@@ -37,6 +37,7 @@
 
 #define TIM_ENC htim3
 // Timer 3 is used by the encoder.
+#define TIM_USER htim4
 
 #define TIM_MICROS htim10
 extern UART_HandleTypeDef huart1;

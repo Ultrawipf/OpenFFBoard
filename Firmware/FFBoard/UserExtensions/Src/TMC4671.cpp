@@ -1269,9 +1269,10 @@ uint32_t TMC4671::readReg(uint8_t reg){
 	// 500ns delay after sending first byte
 
 	bool isirq = isIrq();
-	if(!isirq)
-		spiMutex.Lock();
-	while(this->spi_busy){} // wait if a tx was just started
+	if(isirq)
+		spiSemaphore.TakeFromISR(nullptr);
+	else
+		spiSemaphore.Take();
 
 	HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_RESET);
 	//HAL_SPI_Transmit(this->spi,req,1,SPITIMEOUT); // pause
@@ -1282,8 +1283,10 @@ uint32_t TMC4671::readReg(uint8_t reg){
 	uint32_t ret;
 	memcpy(&ret,tbuf+1,4);
 	ret = __REV(ret);
-	if(!isirq)
-		spiMutex.Unlock();
+	if(isirq)
+		spiSemaphore.GiveFromISR(nullptr);
+	else
+		spiSemaphore.Give();
 	return ret;
 }
 
@@ -1292,10 +1295,11 @@ void TMC4671::writeReg(uint8_t reg,uint32_t dat){
 
 	// wait until ready
 	bool isirq = isIrq();
-	if(!isirq)
-		spiMutex.Lock();
-	while(this->spi_busy){}
-	this->spi_busy = true;
+
+	if(isirq)
+		spiSemaphore.TakeFromISR(nullptr);
+	else
+		spiSemaphore.Take();
 
 	spi_buf[0] = (uint8_t)(0x80 | reg);
 	dat =__REV(dat);
@@ -1304,8 +1308,7 @@ void TMC4671::writeReg(uint8_t reg,uint32_t dat){
 	HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_RESET);
 	HAL_SPI_Transmit_DMA(this->spi,spi_buf,5);
 	//HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_SET);
-	if(!isirq)
-		spiMutex.Unlock();
+
 }
 
 void TMC4671::updateReg(uint8_t reg,uint32_t dat,uint32_t mask,uint8_t shift){
@@ -1315,11 +1318,12 @@ void TMC4671::updateReg(uint8_t reg,uint32_t dat,uint32_t mask,uint8_t shift){
 	writeReg(reg, t);
 }
 void TMC4671::SpiTxCplt(SPI_HandleTypeDef *hspi){
-	if(hspi == this->spi && this->spi_busy){
-		this->spi_busy = false;
+	if(hspi == this->spi){
 		HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_SET); // unselect
+		spiSemaphore.GiveFromISR(nullptr);
 	}
 }
+
 
 TMC4671MotConf TMC4671::decodeMotFromInt(uint16_t val){
 	// 0-2: MotType 3-5: Encoder source 6-15: Poles
