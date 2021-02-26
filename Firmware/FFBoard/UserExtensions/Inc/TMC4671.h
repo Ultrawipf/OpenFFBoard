@@ -244,7 +244,7 @@ public:
 
 	bool useSvPwm = true;
 
-	int16_t bangInitPower = 5000;
+	int16_t bangInitPower = 3000; // Default current in setup routines
 	bool encoderInitialized = false;
 
 	void setTorque(int16_t torque);
@@ -262,6 +262,7 @@ public:
 	int32_t getActualCurrent();
 
 	float getTemp();
+	TMC_ControlState getState();
 
 	void setPhiEtype(PhiE type);
 	PhiE getPhiEtype();

@@ -268,6 +268,7 @@ void TMC4671::Run(){
 				#endif
 
 			}
+			Delay(500);
 		}
 		break;
 
@@ -318,6 +319,13 @@ void TMC4671::Run(){
 		}
 		Delay(10);
 	} // End while
+}
+
+/*
+ * Returns the current state of the driver controller
+ */
+TMC_ControlState TMC4671::getState(){
+	return this->state;
 }
 
 bool TMC4671::reachedPosition(uint16_t tolerance){
