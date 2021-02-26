@@ -59,7 +59,7 @@ MidiMain::MidiMain(){
 	if(!drv->initialized){
 		pulseErrLed();
 	}
-	//this->Start();
+	//this->Start(); // We do not start the driver thread
 
 }
 

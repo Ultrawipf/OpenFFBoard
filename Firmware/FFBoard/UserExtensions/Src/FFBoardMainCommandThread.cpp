@@ -232,11 +232,14 @@ void FFBoardMainCommandThread::executeCommands(std::vector<ParsedCommand> comman
 					if(!(status == ParseStatus::OK_CONTINUE && newstatus == ParseStatus::NOT_FOUND)){
 						status = newstatus;
 					}
-					if(status == ParseStatus::ERR || status == ParseStatus::OK)
+					if(status == ParseStatus::ERR || status == ParseStatus::OK || status == ParseStatus::NO_REPLY)
 						break; // Stop after this class if finished flag is returned
 				}
 			}
 		}
+		if(status == ParseStatus::NO_REPLY){
+				continue; // don't send reply. Just continue
+			}
 		if(reply.empty() && status == ParseStatus::OK){
 			reply = "OK";
 		}

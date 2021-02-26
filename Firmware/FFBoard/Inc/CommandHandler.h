@@ -10,7 +10,7 @@
 #include <CmdParser.h>
 #include "ClassChooser.h"
 
-enum class ParseStatus : uint8_t {NOT_FOUND,OK,ERR,OK_CONTINUE};
+enum class ParseStatus : uint8_t {NOT_FOUND,OK,ERR,OK_CONTINUE,NO_REPLY};
 
 /*
  * Implements an interface for parsed command handlers
