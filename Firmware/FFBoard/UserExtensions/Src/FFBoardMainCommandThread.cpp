@@ -238,8 +238,10 @@ void FFBoardMainCommandThread::executeCommands(std::vector<ParsedCommand> comman
 			}
 		}
 		if(status == ParseStatus::NO_REPLY){
-				continue; // don't send reply. Just continue
-			}
+			cmd_reply.clear();
+			continue; // don't send reply. Just continue
+		}
+
 		if(reply.empty() && status == ParseStatus::OK){
 			reply = "OK";
 		}

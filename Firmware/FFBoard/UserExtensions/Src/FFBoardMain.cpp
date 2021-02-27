@@ -39,22 +39,6 @@ ParseStatus FFBoardMain::command(ParsedCommand *cmd,std::string* reply){
 
 
 
-/*
- * Formats a serial reply in command form
- */
-void FFBoardMain::sendSerial(std::string cmd,std::string string){
-	std::string reply = ">" + cmd + ":" + string + "\n";
-	tud_cdc_n_write(0,reply.c_str(), reply.length());
-}
-
-/*
- * Sends log info
- */
-void FFBoardMain::logSerial(std::string* string){
-	std::string reply = "!" + *string + "\n";
-	tud_cdc_n_write(0,reply.c_str(), reply.length());
-}
-
 
 
 /*

@@ -132,7 +132,7 @@ bool TMC4671::isSetUp(){
 		if(abnconf.cpr == 0){
 			return false;
 		}
-		if(!encoderInitialized){
+		if(this->encstate != ENC_InitState::OK){
 			return false;
 		}
 	}
@@ -570,7 +570,7 @@ bool TMC4671::checkEncoder(){
 	setMotionMode(lastmode);
 
 	if(result){
-		encoderInitialized = true;
+		encstate = ENC_InitState::OK;
 	}
 	return result;
 }
@@ -719,7 +719,7 @@ void TMC4671::ABN_init(){
 		break;
 
 		case ENC_InitState::aligning:
-			if(hasPower() && !encoderInitialized){
+			if(hasPower()){
 				bangInitEnc(bangInitPower);
 				encstate = ENC_InitState::checking;
 			}
@@ -728,14 +728,21 @@ void TMC4671::ABN_init(){
 		case ENC_InitState::checking:
 			if(checkEncoder()){
 				encstate = ENC_InitState::OK;
-				encoderInitialized = true;
 				setPhiEtype(PhiE::abn);
 				state = TMC_ControlState::Running;
 				enc_retry = 0;
+				if(manualEncAlign){
+					manualEncAlign = false;
+					CommandHandler::sendSerial("encalign","Aligned successfully");
+				}
 
 			}else{
 				if(enc_retry++ > enc_retry_max){
 					state = TMC_ControlState::HardError;
+					if(manualEncAlign){
+						manualEncAlign = false;
+						CommandHandler::sendSerial("encalign","Error aligning.\nPlease check settings and reset.");
+					}
 				}
 				encstate = ENC_InitState::uninitialized; // Retry
 			}
@@ -776,14 +783,22 @@ void TMC4671::AENC_init(){
 		case ENC_InitState::checking:
 			if(checkEncoder()){
 				encstate =ENC_InitState::OK;
-				encoderInitialized = true;
 				setPhiEtype(PhiE::aenc);
 				state = TMC_ControlState::Running;
 				enc_retry = 0;
+				if(manualEncAlign){
+					manualEncAlign = false;
+					CommandHandler::sendSerial("encalign","Aligned successfully");
+				}
+
 
 			}else{
 				if(enc_retry++ > enc_retry_max){
 					state = TMC_ControlState::HardError;
+					if(manualEncAlign){
+						manualEncAlign = false;
+						CommandHandler::sendSerial("encalign","Error aligning.\nPlease check settings and reset.");
+					}
 				}
 				encstate = ENC_InitState::uninitialized; // Retry
 			}
@@ -1404,16 +1419,10 @@ ParseStatus TMC4671::command(ParsedCommand* cmd,std::string* reply){
 
 	}else if(cmd->cmd == "encalign"){
 		if(cmd->type == CMDtype::get){
-			this->bangInitEnc(5000);
-		}else if(cmd->type ==CMDtype:: set){
-			this->bangInitEnc(cmd->val);
-		}else{
-			return ParseStatus::OK_CONTINUE;
-		}
-		if(this->checkEncoder()){
-			*reply+=">Aligned";
-		}else{
-			*reply+="Encoder error";
+			encstate = ENC_InitState::uninitialized;
+			this->setEncoderType(this->conf.motconf.enctype);
+			manualEncAlign = true;
+			flag = ParseStatus::NO_REPLY;
 		}
 	}else if(cmd->cmd == "poles"){
 		if(cmd->type == CMDtype::get){

@@ -245,7 +245,6 @@ public:
 	bool useSvPwm = true;
 
 	int16_t bangInitPower = 3000; // Default current in setup routines
-	bool encoderInitialized = false;
 
 	void setTorque(int16_t torque);
 
@@ -349,7 +348,7 @@ private:
 	void AENC_init();
 
 	uint32_t initTime = 0;
-
+	bool manualEncAlign = false;
 
 	cpp_freertos::BinarySemaphore spiSemaphore = cpp_freertos::BinarySemaphore(true);
 
