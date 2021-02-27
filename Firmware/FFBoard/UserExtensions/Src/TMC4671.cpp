@@ -382,10 +382,11 @@ void TMC4671::bangInitEnc(int16_t power){
 	PhiE lastphie = getPhiEtype();
 	MotionMode lastmode = getMotionMode();
 	setPhiE_ext(0);
+	setPhiEtype(PhiE::ext);
 	setFluxTorque(power, 0);
 	//int32_t pos = getPos();
 
-	setPhiEtype(PhiE::ext);
+
 
 	uint8_t phiEreg = 0;
 	uint8_t phiEoffsetReg = 0;
@@ -410,11 +411,17 @@ void TMC4671::bangInitEnc(int16_t power){
 	Delay(250);
 	int16_t phiE_abn_old = 0;
 	int16_t c = 0;
-	while(abs(phiE_abn - phiE_abn_old) > 100 && c++ < 50){
-		refreshWatchdog();
+	uint16_t still = 0;
+	while(still < 30 && c++ < 500){
+		// Wait for motor to stop moving
+		if(abs(phiE_abn - phiE_abn_old) < 100){
+			still++;
+		}else{
+			still = 0;
+		}
 		phiE_abn_old = phiE_abn;
 		phiE_abn=readReg(phiEreg)>>16;
-		Delay(100);
+		Delay(10);
 	}
 
 	//Write offset
@@ -452,7 +459,6 @@ void TMC4671::calibrateAenc(){
 	int32_t initialDirPos = 0;
 	while(stage != 3){
 		Delay(2);
-		refreshWatchdog(); // Don't let the dog get any sleep
 		if(getPos() > maxpos*poles && stage == 0){
 			runOpenLoop(bangInitPower, 0, -speed, 100);
 			stage = 1;
@@ -538,10 +544,10 @@ bool TMC4671::checkEncoder(){
 	//int16_t phiE_enc_start = (int16_t)(readReg(phiEreg)>>16);
 	int16_t phiE_enc = 0;
 
-	for(int16_t angle = -0x3fff;angle<0x3fff;angle+=0x0fff){
+	for(int16_t angle = -0x3fff;angle<0x3fff;angle+=0x00ff){
 		uint16_t c = 0;
 		setPhiE_ext(angle);
-		Delay(100);
+		Delay(10);
 		phiE_enc = (int16_t)(readReg(phiEreg)>>16);
 		int16_t err = abs(phiE_enc - angle);
 		// Wait more
@@ -549,7 +555,6 @@ bool TMC4671::checkEncoder(){
 			phiE_enc = (int16_t)(readReg(phiEreg)>>16);
 			err = abs(phiE_enc - angle);
 			Delay(10);
-			refreshWatchdog();
 		}
 		// still high difference?
 		if(err > 8000){
