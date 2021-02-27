@@ -28,6 +28,8 @@ public:
 	virtual ParseStatus command(ParsedCommand* cmd,std::string* reply);
 	virtual const ClassIdentifier getInfo() = 0; // Command handlers always have class infos. Works well with ChoosableClass
 	virtual std::string getHelpstring(); // Returns a help string if "help" command is sent
+	static void sendSerial(std::string cmd,std::string string); // Send a command reply formatted sequence
+	static void logSerial(std::string* string);	// Send a log formatted sequence
 
 protected:
 	bool commandsEnabled = true;

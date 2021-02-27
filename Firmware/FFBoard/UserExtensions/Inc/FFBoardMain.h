@@ -41,8 +41,6 @@ public:
 	virtual void usbSuspend(); // Called on usb disconnect and suspend
 	virtual void usbResume(); // Called on usb resume
 
-	static void sendSerial(std::string cmd,std::string string);
-	static void logSerial(std::string* string);
 	uint16_t cdcSend(std::string* reply, std::string* remaining,uint8_t itf = 0);// sends raw data via cdc. returns what was not sent as substring
 
 	virtual void parserDone(std::string* reply, FFBoardMainCommandThread* parser);

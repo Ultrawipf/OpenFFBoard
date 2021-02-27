@@ -8,6 +8,7 @@
 #include "CommandHandler.h"
 #include "global_callbacks.h"
 #include "FFBoardMain.h"
+#include "cdc_device.h"
 
 std::vector<CommandHandler*> CommandHandler::cmdHandlers;
 
@@ -39,6 +40,19 @@ ParseStatus CommandHandler::command(ParsedCommand* cmd,std::string* reply){
 		return ParseStatus::NOT_FOUND;
 	}
 	return ParseStatus::NOT_FOUND;
+}
+
+void CommandHandler::sendSerial(std::string cmd,std::string string){
+	std::string reply = ">" + cmd + ":" + string + "\n";
+	tud_cdc_n_write(0,reply.c_str(), reply.length());
+}
+
+/*
+ * Sends log info
+ */
+void CommandHandler::logSerial(std::string* string){
+	std::string reply = "!" + *string + "\n";
+	tud_cdc_n_write(0,reply.c_str(), reply.length());
 }
 
 
