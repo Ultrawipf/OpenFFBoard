@@ -25,7 +25,9 @@ enum class ErrorCode : uint32_t{
 			undervoltage = 10,
 			overvoltage = 11,
 
-			overtemp = 15
+			overtemp = 15,
+
+			encoderAlignmentFailed = 20
 };
 /*
  * Error type for severity
