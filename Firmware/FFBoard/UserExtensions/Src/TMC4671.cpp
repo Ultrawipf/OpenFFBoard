@@ -10,6 +10,7 @@
 #include "voltagesense.h"
 #include "stm32f4xx_hal_spi.h"
 #include <math.h>
+#include "ErrorHandler.h"
 
 ClassIdentifier TMC4671::info = {
 		 .name = "TMC4671" ,
@@ -739,6 +740,11 @@ void TMC4671::ABN_init(){
 			}else{
 				if(enc_retry++ > enc_retry_max){
 					state = TMC_ControlState::HardError;
+					Error_t err;
+					err.code = ErrorCode::encoderAlignmentFailed;
+					err.type = ErrorType::critical;
+					err.info = "Encoder alignment failed multiple times";
+					ErrorHandler::addError(err);
 					if(manualEncAlign){
 						manualEncAlign = false;
 						CommandHandler::sendSerial("encalign","Error aligning.\nPlease check settings and reset.");
@@ -795,6 +801,11 @@ void TMC4671::AENC_init(){
 			}else{
 				if(enc_retry++ > enc_retry_max){
 					state = TMC_ControlState::HardError;
+					Error_t err;
+					err.code = ErrorCode::encoderAlignmentFailed;
+					err.type = ErrorType::critical;
+					err.info = "Encoder alignment failed multiple times";
+					ErrorHandler::addError(err);
 					if(manualEncAlign){
 						manualEncAlign = false;
 						CommandHandler::sendSerial("encalign","Error aligning.\nPlease check settings and reset.");
@@ -826,7 +837,6 @@ void TMC4671::setEncoderType(EncoderType_TMC type){
 		state = TMC_ControlState::ABN_init;
 		encstate = ENC_InitState::uninitialized;
 
-	// Todo align aenc
 	// SinCos encoder
 	}else if(type == EncoderType_TMC::sincos){
 		state = TMC_ControlState::AENC_init;
