@@ -77,7 +77,7 @@ struct TMC4671PIDConf{
 	uint16_t velocityP	= 128;
 	uint16_t positionI	= 0;
 	uint16_t positionP	= 64;
-	bool sequentialPI	= true;
+	bool sequentialPI	= false; // Advanced pid
 };
 
 struct TMC4671Limits{
