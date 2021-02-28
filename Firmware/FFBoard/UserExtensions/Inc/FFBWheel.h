@@ -140,17 +140,17 @@ private:
 	volatile bool usb_disabled = true;
 
 
-	TMC4671PIDConf tmcpids = TMC4671PIDConf({
-		.fluxI		= 400,
-		.fluxP		= 400,
-		.torqueI	= 400,
-		.torqueP	= 300,
-		.velocityI	= 0,
-		.velocityP	= 128,
-		.positionI	= 0,
-		.positionP	= 64,
-		.sequentialPI = true
-	});
+//	TMC4671PIDConf tmcpids = TMC4671PIDConf({
+//		.fluxI		= 400,
+//		.fluxP		= 400,
+//		.torqueI	= 400,
+//		.torqueP	= 300,
+//		.velocityI	= 0,
+//		.velocityP	= 128,
+//		.positionI	= 0,
+//		.positionP	= 64,
+//		.sequentialPI = false
+//	});
 	TMC4671Limits tmclimits = TMC4671Limits({
 		.pid_torque_flux_ddt	= 32767,
 		.pid_uq_ud				= 30000,

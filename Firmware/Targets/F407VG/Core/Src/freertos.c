@@ -45,7 +45,7 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
-uint8_t ucHeap[ configTOTAL_HEAP_SIZE ] __attribute__((section (".ccmram"))); // rtos heap // __attribute__((section (".ccmram"))) causes copy from flash...
+uint8_t ucHeap[ configTOTAL_HEAP_SIZE ]; // rtos heap // __attribute__((section (".ccmram")))
 /* USER CODE END Variables */
 
 /* Private function prototypes -----------------------------------------------*/
