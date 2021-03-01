@@ -244,7 +244,7 @@ public:
 
 	bool useSvPwm = true;
 
-	int16_t bangInitPower = 3000; // Default current in setup routines
+	int16_t bangInitPower = 4000; // Default current in setup routines
 
 	void setTorque(int16_t torque);
 

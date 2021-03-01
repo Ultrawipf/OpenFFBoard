@@ -408,26 +408,26 @@ void TMC4671::bangInitEnc(int16_t power){
 
 	Delay(100);
 	setPhiE_ext(0x3fff);
-	int16_t phiE_abn = readReg(phiEreg)>>16;
+	int16_t phiE_enc = readReg(phiEreg)>>16;
 	Delay(250);
 	int16_t phiE_abn_old = 0;
 	int16_t c = 0;
 	uint16_t still = 0;
-	while(still < 30 && c++ < 500){
+	while(still < 30 && c++ < 4000){
 		// Wait for motor to stop moving
-		if(abs(phiE_abn - phiE_abn_old) < 100){
+		if(abs(phiE_enc - phiE_abn_old) < 200){
 			still++;
 		}else{
 			still = 0;
 		}
-		phiE_abn_old = phiE_abn;
-		phiE_abn=readReg(phiEreg)>>16;
+		phiE_abn_old = phiE_enc;
+		phiE_enc=readReg(phiEreg)>>16;
 		Delay(10);
 	}
 
 	//Write offset
 	//int16_t phiE_abn = readReg(0x2A)>>16;
-	abnconf.phiEoffset = 0x3fff-phiE_abn;
+	abnconf.phiEoffset = 0x3fff-phiE_enc;
 	updateReg(phiEoffsetReg, abnconf.phiEoffset, 0xffff, 16);
 
 	setFluxTorque(0, 0);
