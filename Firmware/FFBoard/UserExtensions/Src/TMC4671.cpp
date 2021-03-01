@@ -221,7 +221,6 @@ bool TMC4671::initialize(){
  * Not calibrated perfectly!
  */
 float TMC4671::getTemp(){
-
 	writeReg(0x03, 2);
 	int32_t adcval = ((readReg(0x02)) & 0xffff) - 0x7fff; // Center offset
 	adcval -= tmcOffset;
@@ -1004,14 +1003,11 @@ void TMC4671::setCpr(uint32_t cpr){
 	if(cpr == 0)
 		cpr = 1;
 
-	bool reinit = cpr != abnconf.cpr;
 	this->abnconf.cpr = cpr;
 	this->aencconf.cpr = cpr;
 	writeReg(0x26, abnconf.cpr); //ABN
 	writeReg(0x40, aencconf.cpr); //AENC
 
-	if(reinit && (this->conf.motconf.phiEsource == PhiE::abn))
-		bangInitEnc(this->bangInitPower);
 }
 
 uint32_t TMC4671::encToPos(uint32_t enc){
@@ -1238,9 +1234,15 @@ void TMC4671::estimateABNparams(){
 	MotionMode lastmode = getMotionMode();
 	updateReg(0x25, 0,0x1000,12); // Set dir normal
 	setPhiE_ext(0);
-	setFluxTorque(bangInitPower,0);
-	setMotionMode(MotionMode::uqudext);
 	setPhiEtype(PhiE::ext);
+	setFluxTorque(0, 0);
+	setMotionMode(MotionMode::torque);
+	for(int16_t flux = 0; flux <= bangInitPower; flux+=10){
+		setFluxTorque(flux, 0);
+		Delay(5);
+	}
+
+
 	int16_t phiE_abn = readReg(0x2A)>>16;
 	int16_t phiE_abn_old = 0;
 	int16_t rcount=0,c = 0; // Count how often direction was in reverse
