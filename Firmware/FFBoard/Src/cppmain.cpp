@@ -71,7 +71,7 @@ void cppmain() {
 		updateLeds();
 		external_spi.process();
 		refreshWatchdog();
-		osDelay(1);
+		taskYIELD();
 	}
 }
 

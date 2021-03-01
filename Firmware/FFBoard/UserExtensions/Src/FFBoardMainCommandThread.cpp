@@ -19,6 +19,7 @@
 #include "ClassChooser.h"
 #include <malloc.h>
 #include "FFBoardMain.h"
+#include "critical.hpp"
 
 extern ClassChooser<FFBoardMain> mainchooser;
 
@@ -225,6 +226,10 @@ void FFBoardMainCommandThread::executeCommands(std::vector<ParsedCommand> comman
 		status = executeSysCommand(&cmd,&reply);
 		if(status == ParseStatus::NOT_FOUND || status == ParseStatus::OK_CONTINUE){ // Not a system command
 			// Call all command handlers
+
+			// Prevent other threads from running while we call all command handlers
+			// TODO monitor if this causes problems or is really needed.
+			//cpp_freertos::CriticalSection::SuspendScheduler();
 			for(CommandHandler* handler : CommandHandler::cmdHandlers){
 				if(handler->hasCommands()){
 					ParseStatus newstatus = handler->command(&cmd,&reply);
@@ -236,6 +241,8 @@ void FFBoardMainCommandThread::executeCommands(std::vector<ParsedCommand> comman
 						break; // Stop after this class if finished flag is returned
 				}
 			}
+			// Resume scheduler
+			//cpp_freertos::CriticalSection::ResumeScheduler();
 		}
 		if(status == ParseStatus::NO_REPLY){
 			cmd_reply.clear();
