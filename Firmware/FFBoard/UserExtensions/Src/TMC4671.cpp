@@ -384,7 +384,7 @@ void TMC4671::bangInitEnc(int16_t power){
 	MotionMode lastmode = getMotionMode();
 	setPhiE_ext(0);
 	setPhiEtype(PhiE::ext);
-	setFluxTorque(power, 0);
+	//setFluxTorque(power, 0);
 	//int32_t pos = getPos();
 
 
@@ -406,8 +406,15 @@ void TMC4671::bangInitEnc(int16_t power){
 	updateReg(phiEoffsetReg, 0, 0xffff, 16); // Set phiE offset to zero
 	//setMotionMode(MotionMode::uqudext);
 
-	Delay(100);
-	setPhiE_ext(0x3fff);
+	//Delay(100);
+	int16_t phiEpos = -0x3fff; // This is where the check starts too
+	setPhiE_ext(phiEpos);
+	// Ramp up flux
+	for(int16_t flux = 0; flux <= power; flux+=10){
+		setFluxTorque(flux, 0);
+		Delay(5);
+	}
+
 	int16_t phiE_enc = readReg(phiEreg)>>16;
 	Delay(250);
 	int16_t phiE_abn_old = 0;
@@ -427,7 +434,7 @@ void TMC4671::bangInitEnc(int16_t power){
 
 	//Write offset
 	//int16_t phiE_abn = readReg(0x2A)>>16;
-	abnconf.phiEoffset = 0x3fff-phiE_enc;
+	abnconf.phiEoffset = phiEpos-phiE_enc;
 	updateReg(phiEoffsetReg, abnconf.phiEoffset, 0xffff, 16);
 
 	setFluxTorque(0, 0);
@@ -537,8 +544,15 @@ bool TMC4671::checkEncoder(){
 	bool result = true;
 	PhiE lastphie = getPhiEtype();
 	MotionMode lastmode = getMotionMode();
+	setFluxTorque(0, 0);
 	setPhiEtype(PhiE::ext);
-	setFluxTorque(bangInitPower, 0);
+
+	setPhiE_ext(-0x3fff);
+	// Ramp up flux
+	for(int16_t flux = 0; flux <= bangInitPower; flux+=10){
+		setFluxTorque(flux, 0);
+		Delay(2);
+	}
 
 	//setMotionMode(MotionMode::uqudext);
 
@@ -552,7 +566,7 @@ bool TMC4671::checkEncoder(){
 		phiE_enc = (int16_t)(readReg(phiEreg)>>16);
 		int16_t err = abs(phiE_enc - angle);
 		// Wait more
-		while(err > 6000 && c++ < 500){
+		while(err > 3000 && c++ < 500){
 			phiE_enc = (int16_t)(readReg(phiEreg)>>16);
 			err = abs(phiE_enc - angle);
 			Delay(10);
