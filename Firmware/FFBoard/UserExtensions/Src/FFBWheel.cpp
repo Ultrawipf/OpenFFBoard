@@ -356,7 +356,8 @@ void FFBWheel::setupTMC4671(){
 
 	TMC4671* drv = static_cast<TMC4671*>(this->drv);
 	drv->setAddress(1);
-	drv->initialize();
+//	drv->initialize();
+	drv->startMotor();
 	drv->setLimits(tmclimits);
 	//drv->setBiquadFlux(fluxbq);
 
