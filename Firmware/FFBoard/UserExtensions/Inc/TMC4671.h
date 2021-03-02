@@ -228,6 +228,10 @@ public:
 	void setBiquadPos(TMC4671Biquad bq);
 	void setBiquadVel(TMC4671Biquad bq);
 
+	bool pingDriver();
+
+	void changeState(TMC_ControlState newState);
+
 	void setPositionExt(int32_t pos); // External position register (For external encoders. Choose external phiE).
 	// Contact me if external support has to be added via the FFB selection!
 
@@ -322,6 +326,7 @@ public:
 private:
 	ENC_InitState encstate = ENC_InitState::uninitialized;
 	TMC_ControlState state = TMC_ControlState::uninitialized;
+	TMC_ControlState laststate = TMC_ControlState::uninitialized;
 	MotionMode curMotionMode = MotionMode::stop;
 	bool oldTMCdetected = false;
 
