@@ -20,7 +20,7 @@ const ClassIdentifier TMC4671::getInfo(){
 	return info;
 }
 
-TMC4671::TMC4671(SPI_HandleTypeDef* spi,GPIO_TypeDef* csport,uint16_t cspin,TMC4671MainConfig conf) : Thread("TMC", TMC_THREAD_MEM, 21){
+TMC4671::TMC4671(SPI_HandleTypeDef* spi,GPIO_TypeDef* csport,uint16_t cspin,TMC4671MainConfig conf) : Thread("TMC", TMC_THREAD_MEM, 30){
 	this->cspin = cspin;
 	this->csport = csport;
 	this->spi = spi;
@@ -141,15 +141,24 @@ bool TMC4671::isSetUp(){
 	return true;
 }
 
-bool TMC4671::initialize(){
-	active = true;
-	if(state == TMC_ControlState::uninitialized){
-		state = TMC_ControlState::Init_wait;
-	}
-	// Check if a TMC4671 is active and replies correctly
+/*
+ * Check if driver is responding
+ */
+bool TMC4671::pingDriver(){
 	writeReg(1, 0);
-	if(readReg(0) != 0x34363731){// 4671
-		pulseErrLed();
+	return(readReg(0) == 0x34363731);
+}
+
+/*
+ * Sets all parameters of the driver at startup
+ */
+bool TMC4671::initialize(){
+//	active = true;
+//	if(state == TMC_ControlState::uninitialized){
+//		state = TMC_ControlState::Init_wait;
+//	}
+	// Check if a TMC4671 is active and replies correctly
+	if(!pingDriver()){
 		return false;
 	}
 
@@ -169,7 +178,7 @@ bool TMC4671::initialize(){
 	// Write main constants
 	setMotionMode(MotionMode::stop);
 	setFluxTorque(0, 0);
-	setPwm(0,conf.pwmcnt,conf.bbmL,conf.bbmH); // Enable FOC @ 25khz
+	setPwm(0,conf.pwmcnt,conf.bbmL,conf.bbmH); // Set FOC @ 25khz but turn off pwm for now
 	setMotorType(conf.motconf.motor_type,conf.motconf.pole_pairs);
 	setPhiEtype(conf.motconf.phiEsource);
 	setup_HALL(hallconf); // Enables hall filter and masking
@@ -199,9 +208,13 @@ bool TMC4671::initialize(){
 	//setPos(0);
 
 	setPids(curPids); // Write basic pids
-	// Enable driver
-	updateReg(0x1A,7,0xff,0); // Enable FOC PWM
-	HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_SET);
+
+	if(hasPower()){
+		updateReg(0x1A,7,0xff,0);
+		HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_SET);
+		active = true;
+	}
+
 	writeReg(0x64, 0); // No flux/torque
 	setStatusMask(0); // Disable status output by default.
 
@@ -255,14 +268,14 @@ void TMC4671::Run(){
 				bool tmc_en = (readReg(0x76) >> 15) & 0x01;
 				if(!tmc_en && active){ // Hardware emergency
 					this->estopTriggered = true;
-					state = TMC_ControlState::HardError;
+					changeState(TMC_ControlState::HardError);
 				}
 
 				// Temperature sense
 				#ifdef TMCTEMP
 				float temp = getTemp();
 				if(temp > temp_limit){
-					state = TMC_ControlState::OverTemp;
+					changeState(TMC_ControlState::OverTemp);
 					pulseErrLed();
 				}
 				#endif
@@ -285,10 +298,12 @@ void TMC4671::Run(){
 		break;
 
 		case TMC_ControlState::ABN_init:
+			pulseClipLed();
 			ABN_init();
 		break;
 
 		case TMC_ControlState::AENC_init:
+			pulseClipLed();
 			AENC_init();
 		break;
 
@@ -298,7 +313,18 @@ void TMC4671::Run(){
 
 		case TMC_ControlState::OverTemp:
 			this->stopMotor();
-			state = TMC_ControlState::HardError; // Block
+			changeState(TMC_ControlState::HardError); // Block
+		break;
+
+		case TMC_ControlState::No_power:
+			if(hasPower()){
+				changeState(laststate);
+				HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_SET);
+			}else{
+				HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_RESET);
+			}
+			pulseErrLed();
+			Delay(100); // wait a bit more
 		break;
 
 		default:
@@ -309,13 +335,13 @@ void TMC4671::Run(){
 		// Optional update methods for safety
 
 		if(!hasPower()){ // low voltage or overvoltage
-			state = TMC_ControlState::Init_wait;
-			initialized = false;
-			pulseErrLed();
-			if(!emergency && HAL_GetTick() - initTime > 100)
-				emergencyStop();
-			else
-				initTime = HAL_GetTick();
+			changeState(TMC_ControlState::No_power);
+//			initialized = false;
+//			pulseErrLed();
+//			if(!emergency && HAL_GetTick() - initTime > 100)
+//				emergencyStop();
+//			else
+//				initTime = HAL_GetTick();
 		}
 		Delay(10);
 	} // End while
@@ -326,6 +352,13 @@ void TMC4671::Run(){
  */
 TMC_ControlState TMC4671::getState(){
 	return this->state;
+}
+
+inline void TMC4671::changeState(TMC_ControlState newState){
+	if(newState != this->state){
+		this->laststate = this->state; // save last state if new state wants to jump back
+	}
+	this->state = newState;
 }
 
 bool TMC4671::reachedPosition(uint16_t tolerance){
@@ -743,7 +776,7 @@ void TMC4671::ABN_init(){
 			if(checkEncoder()){
 				encstate = ENC_InitState::OK;
 				setPhiEtype(PhiE::abn);
-				state = TMC_ControlState::Running;
+				changeState(TMC_ControlState::Running);
 				enc_retry = 0;
 				if(manualEncAlign){
 					manualEncAlign = false;
@@ -752,7 +785,7 @@ void TMC4671::ABN_init(){
 
 			}else{
 				if(enc_retry++ > enc_retry_max){
-					state = TMC_ControlState::HardError;
+					changeState(TMC_ControlState::HardError);
 					Error_t err;
 					err.code = ErrorCode::encoderAlignmentFailed;
 					err.type = ErrorType::critical;
@@ -767,7 +800,7 @@ void TMC4671::ABN_init(){
 			}
 		break;
 		case ENC_InitState::OK:
-			state = TMC_ControlState::Running;
+			changeState(TMC_ControlState::Running);
 			break;
 	}
 }
@@ -803,7 +836,7 @@ void TMC4671::AENC_init(){
 			if(checkEncoder()){
 				encstate =ENC_InitState::OK;
 				setPhiEtype(PhiE::aenc);
-				state = TMC_ControlState::Running;
+				changeState(TMC_ControlState::Running);
 				enc_retry = 0;
 				if(manualEncAlign){
 					manualEncAlign = false;
@@ -813,7 +846,7 @@ void TMC4671::AENC_init(){
 
 			}else{
 				if(enc_retry++ > enc_retry_max){
-					state = TMC_ControlState::HardError;
+					changeState(TMC_ControlState::HardError);
 					Error_t err;
 					err.code = ErrorCode::encoderAlignmentFailed;
 					err.type = ErrorType::critical;
@@ -828,7 +861,7 @@ void TMC4671::AENC_init(){
 			}
 		break;
 		case ENC_InitState::OK:
-			state = TMC_ControlState::Running;
+			changeState(TMC_ControlState::Running);
 			break;
 	}
 }
@@ -847,23 +880,23 @@ void TMC4671::setEncoderType(EncoderType_TMC type){
 			return;
 		}
 
-		state = TMC_ControlState::ABN_init;
+		changeState(TMC_ControlState::ABN_init);
 		encstate = ENC_InitState::uninitialized;
 
 	// SinCos encoder
 	}else if(type == EncoderType_TMC::sincos){
-		state = TMC_ControlState::AENC_init;
+		changeState(TMC_ControlState::AENC_init);
 		encstate = ENC_InitState::uninitialized;
 		this->aencconf.uvwmode = false; // sincos mode
 
 	// Analog UVW encoder
 	}else if(type == EncoderType_TMC::uvw){
-		state = TMC_ControlState::AENC_init;
+		changeState(TMC_ControlState::AENC_init);
 		encstate = ENC_InitState::uninitialized;
 		this->aencconf.uvwmode = true; // uvw mode
 
 	}else if(type == EncoderType_TMC::hall){ // Hall sensor. Just trust it
-		state = TMC_ControlState::Running;
+		changeState(TMC_ControlState::Running);
 		setPosSel(PosSelection::PhiM_hal);
 		encstate = ENC_InitState::OK;
 		setPhiEtype(PhiE::hall);
@@ -922,16 +955,20 @@ void TMC4671::stopMotor(){
 	active = false;
 }
 void TMC4671::startMotor(){
+	active = true;
 	if(!initialized){
 		initialize();
-	}else{
-		if(emergency){
-			// Reenable foc
-			updateReg(0x1A,7,0xff,0);
-			emergency = false;
-		}
+	}
+	if(emergency){
+		// Reenable foc
+		emergency = false;
+	}
+	if(hasPower()){
+		updateReg(0x1A,7,0xff,0);
 		HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_SET);
-		active = true;
+
+	}else{
+		changeState(TMC_ControlState::Init_wait);
 	}
 
 }
@@ -1249,7 +1286,7 @@ void TMC4671::estimateABNparams(){
 	uint16_t highcount = 0; // Count high state of n pulse for polarity estimation
 
 	// Rotate a bit
-	for(uint16_t p = 0;p<0x0fff;p+=0x2f){
+	for(int16_t p = 0;p<0x0fff;p+=0x2f){
 		setPhiE_ext(p);
 		Delay(10);
 		c++;
