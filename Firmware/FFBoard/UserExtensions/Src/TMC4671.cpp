@@ -444,11 +444,11 @@ void TMC4671::bangInitEnc(int16_t power){
 	// Ramp up flux
 	for(int16_t flux = 0; flux <= power; flux+=10){
 		setFluxTorque(flux, 0);
-		Delay(5);
+		Delay(3);
 	}
 
 	int16_t phiE_enc = readReg(phiEreg)>>16;
-	Delay(250);
+	Delay(100);
 	int16_t phiE_abn_old = 0;
 	int16_t c = 0;
 	uint16_t still = 0;
@@ -584,7 +584,7 @@ bool TMC4671::checkEncoder(){
 
 	setPhiE_ext(-0x3fff);
 	// Ramp up flux
-	for(int16_t flux = 0; flux <= bangInitPower; flux+=10){
+	for(int16_t flux = 0; flux <= bangInitPower; flux+=20){
 		setFluxTorque(flux, 0);
 		Delay(2);
 	}
@@ -602,7 +602,7 @@ bool TMC4671::checkEncoder(){
 		phiE_enc = (int16_t)(readReg(phiEreg)>>16);
 		int16_t err = abs(phiE_enc - angle);
 		// Wait more
-		while(err > 3000 && c++ < 50){
+		while(err > 2500 && c++ < 50){
 			phiE_enc = (int16_t)(readReg(phiEreg)>>16);
 			err = abs(phiE_enc - angle);
 			Delay(10);
@@ -615,7 +615,7 @@ bool TMC4671::checkEncoder(){
 			}
 		}
 		// still high difference?
-		if(err > 8000){
+		if(err > 5000){
 			result = false;
 			break;
 		}
@@ -796,7 +796,9 @@ void TMC4671::ABN_init(){
 				}
 
 			}else{
+				blinkErrLed(100, 10);
 				if(enc_retry++ > enc_retry_max){
+					blinkErrLed(50, 50);
 					changeState(TMC_ControlState::HardError);
 					Error_t err;
 					err.code = ErrorCode::encoderAlignmentFailed;
@@ -857,7 +859,9 @@ void TMC4671::AENC_init(){
 
 
 			}else{
+				blinkErrLed(100, 10);
 				if(enc_retry++ > enc_retry_max){
+					blinkErrLed(50, 50);
 					changeState(TMC_ControlState::HardError);
 					Error_t err;
 					err.code = ErrorCode::encoderAlignmentFailed;
