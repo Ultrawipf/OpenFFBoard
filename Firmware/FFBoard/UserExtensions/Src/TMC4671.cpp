@@ -266,7 +266,7 @@ void TMC4671::Run(){
 
 				// Get enable input
 				bool tmc_en = (readReg(0x76) >> 15) & 0x01;
-				if(!tmc_en && active){ // Hardware emergency
+				if(!tmc_en && active){ // Hardware emergency. If tmc does not reply the enable will still read false
 					this->estopTriggered = true;
 					changeState(TMC_ControlState::HardError);
 				}
@@ -281,7 +281,7 @@ void TMC4671::Run(){
 				#endif
 
 			}
-			Delay(500);
+			Delay(200);
 		}
 		break;
 
@@ -590,7 +590,8 @@ bool TMC4671::checkEncoder(){
 
 	//int16_t phiE_enc_start = (int16_t)(readReg(phiEreg)>>16);
 	int16_t phiE_enc = 0;
-
+	uint16_t failcount = 0;
+	const uint16_t maxcount = 50;
 	for(int16_t angle = -0x3fff;angle<0x3fff;angle+=0x00ff){
 		uint16_t c = 0;
 		setPhiE_ext(angle);
@@ -598,10 +599,17 @@ bool TMC4671::checkEncoder(){
 		phiE_enc = (int16_t)(readReg(phiEreg)>>16);
 		int16_t err = abs(phiE_enc - angle);
 		// Wait more
-		while(err > 3000 && c++ < 500){
+		while(err > 3000 && c++ < 50){
 			phiE_enc = (int16_t)(readReg(phiEreg)>>16);
 			err = abs(phiE_enc - angle);
 			Delay(10);
+		}
+		if(c >= maxcount){
+			failcount++;
+			if(failcount > 10){
+				result = false;
+				break;
+			}
 		}
 		// still high difference?
 		if(err > 8000){
@@ -953,6 +961,7 @@ void TMC4671::stopMotor(){
 	// Stop driver instantly
 	HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_RESET);
 	active = false;
+	changeState(TMC_ControlState::Shutdown);
 }
 void TMC4671::startMotor(){
 	active = true;
@@ -962,6 +971,9 @@ void TMC4671::startMotor(){
 	if(emergency){
 		// Reenable foc
 		emergency = false;
+	}
+	if(state == TMC_ControlState::Shutdown){
+		changeState(laststate);
 	}
 	if(hasPower()){
 		updateReg(0x1A,7,0xff,0);
@@ -1574,7 +1586,12 @@ ParseStatus TMC4671::command(ParsedCommand* cmd,std::string* reply){
 
 	}else if(cmd->cmd == "tmctemp"){
 		if(cmd->type == CMDtype::get){
+#ifdef TMCTEMP
 			*reply+=std::to_string(this->getTemp());
+#else
+			*reply+="0";
+#endif
+
 		}
 
 	}else{

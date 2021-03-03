@@ -233,7 +233,6 @@ public:
 	void changeState(TMC_ControlState newState);
 
 	void setPositionExt(int32_t pos); // External position register (For external encoders. Choose external phiE).
-	// Contact me if external support has to be added via the FFB selection!
 
 	void stopMotor();
 	void startMotor();
@@ -248,7 +247,7 @@ public:
 
 	bool useSvPwm = true;
 
-	int16_t bangInitPower = 4000; // Default current in setup routines
+	int16_t bangInitPower = 5000; // Default current in setup routines
 
 	void setTorque(int16_t torque);
 
@@ -328,7 +327,7 @@ private:
 	TMC_ControlState state = TMC_ControlState::uninitialized;
 	TMC_ControlState laststate = TMC_ControlState::uninitialized;
 	MotionMode curMotionMode = MotionMode::stop;
-	bool oldTMCdetected = false;
+	bool oldTMCdetected = false; // ES versions should not exist anymore
 
 	uint8_t enc_retry = 0;
 	uint8_t enc_retry_max = 5;
