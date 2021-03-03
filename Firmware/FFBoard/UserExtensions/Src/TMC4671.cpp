@@ -298,12 +298,12 @@ void TMC4671::Run(){
 		break;
 
 		case TMC_ControlState::ABN_init:
-			pulseClipLed();
+			blinkClipLed(100, 0);
 			ABN_init();
 		break;
 
 		case TMC_ControlState::AENC_init:
-			pulseClipLed();
+			blinkClipLed(100, 0);
 			AENC_init();
 		break;
 
@@ -411,7 +411,7 @@ void TMC4671::bangInitEnc(int16_t power){
 	if(!hasPower() || (this->conf.motconf.motor_type != MotorType::STEPPER && this->conf.motconf.motor_type != MotorType::BLDC)){ // If not stepper or bldc return
 		return;
 	}
-
+	blinkClipLed(50, 0);
 	PhiE lastphie = getPhiEtype();
 	MotionMode lastmode = getMotionMode();
 	setPhiE_ext(0);
@@ -475,12 +475,14 @@ void TMC4671::bangInitEnc(int16_t power){
 	setMotionMode(lastmode);
 	//setPos(pos+getPos());
 	setPos(0);
+
+	blinkClipLed(0, 0);
 }
 
 // Rotates motor to find min and max values of the encoder
 void TMC4671::calibrateAenc(){
 	// Rotate and measure min/max
-
+	blinkClipLed(250, 0);
 	PhiE lastphie = getPhiEtype();
 	MotionMode lastmode = getMotionMode();
 	//int32_t pos = getPos();
@@ -559,13 +561,14 @@ void TMC4671::calibrateAenc(){
 	setMotionMode(lastmode);
 	setPosSel(possel);
 	setPos(0);
+	blinkClipLed(0, 0);
 }
 
 /*
  * Steps the motor a few times to check if the encoder follows correctly
  */
 bool TMC4671::checkEncoder(){
-
+	blinkClipLed(150, 0);
 	uint8_t phiEreg = 0;
 	if(conf.motconf.enctype == EncoderType_TMC::abn){
 		phiEreg = 0x2A;
@@ -627,6 +630,7 @@ bool TMC4671::checkEncoder(){
 	if(result){
 		encstate = ENC_InitState::OK;
 	}
+	blinkClipLed(0, 0);
 	return result;
 }
 
@@ -1277,6 +1281,7 @@ void TMC4671::setBrakeLimits(uint16_t low,uint16_t high){
  * If polarity was found to be reversed during the test direction will be reversed again to account for that
  */
 void TMC4671::estimateABNparams(){
+	blinkClipLed(100, 0);
 	int32_t pos = getPos();
 	setPos(0);
 	PhiE lastphie = getPhiEtype();
@@ -1325,6 +1330,7 @@ void TMC4671::estimateABNparams(){
 	abnconf.apol = npol;
 	abnconf.bpol = npol;
 	abnconf.npol = npol;
+	blinkClipLed(0, 0);
 }
 
 
