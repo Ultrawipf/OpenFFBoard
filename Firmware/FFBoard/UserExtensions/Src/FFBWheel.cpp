@@ -133,6 +133,8 @@ void FFBWheel::restoreFlash(){
 	}
 
 	Flash_Read(ADR_FFBWHEEL_POWER, &this->power);
+	setPower(power); // Set TMC limit if selected
+
 	Flash_Read(ADR_FFBWHEEL_DEGREES, &this->degreesOfRotation);
 	nextDegreesOfRotation = degreesOfRotation;
 
@@ -200,12 +202,9 @@ void FFBWheel::update(){
 		if(this->conf.drvtype == TMC4671::info.id){
 			TMC4671* drv = static_cast<TMC4671*>(this->drv);
 			//drv->Run(); // TODO thread!
-			if(drv->estopTriggered){
+			if(drv->getState() == TMC_ControlState::HardError || drv->estopTriggered){
 				emergencyStop();
 			}
-//			if(!drv->initialized){
-//				return;
-//			}
 		}
 
 		speed = scaledEnc - lastScaledEnc;
