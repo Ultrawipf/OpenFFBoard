@@ -7,19 +7,6 @@
 #include "ledEffects.h"
 #include "main.h"
 
-//uint32_t sysledtick=0;
-//uint32_t errledtick=0;
-//uint32_t clipledtick=0;
-//
-//uint16_t sysledperiod = 0;
-//uint16_t errledperiod = 0;
-//uint16_t clipledperiod = 0;
-//
-//int32_t sysledblinks = 0;
-//int32_t errledblinks = 0;
-//int32_t clipledblinks = 0;
-
-
 Ledstruct_t sysled{
 	0,0,0,LED_SYS_GPIO_Port,LED_SYS_Pin
 };
