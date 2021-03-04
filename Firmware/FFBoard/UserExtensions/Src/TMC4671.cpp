@@ -316,6 +316,17 @@ void TMC4671::Run(){
 			changeState(TMC_ControlState::HardError); // Block
 		break;
 
+		case TMC_ControlState::EncoderFinished:
+			CommandHandler::logSerial("Encoder alignment finished");
+			if(active){
+				startMotor();
+				changeState(TMC_ControlState::Running);
+			}else{
+				stopMotor();
+				laststate = TMC_ControlState::Running; // Go to running when starting again
+			}
+		break;
+
 		case TMC_ControlState::No_power:
 			if(hasPower()){
 				changeState(laststate);
@@ -788,7 +799,6 @@ void TMC4671::ABN_init(){
 			if(checkEncoder()){
 				encstate = ENC_InitState::OK;
 				setPhiEtype(PhiE::abn);
-				changeState(TMC_ControlState::Running);
 				enc_retry = 0;
 				if(manualEncAlign){
 					manualEncAlign = false;
@@ -814,7 +824,7 @@ void TMC4671::ABN_init(){
 			}
 		break;
 		case ENC_InitState::OK:
-			changeState(TMC_ControlState::Running);
+			changeState(TMC_ControlState::EncoderFinished);
 			break;
 	}
 }
@@ -850,7 +860,6 @@ void TMC4671::AENC_init(){
 			if(checkEncoder()){
 				encstate =ENC_InitState::OK;
 				setPhiEtype(PhiE::aenc);
-				changeState(TMC_ControlState::Running);
 				enc_retry = 0;
 				if(manualEncAlign){
 					manualEncAlign = false;
@@ -877,7 +886,7 @@ void TMC4671::AENC_init(){
 			}
 		break;
 		case ENC_InitState::OK:
-			changeState(TMC_ControlState::Running);
+			changeState(TMC_ControlState::EncoderFinished);
 			break;
 	}
 }
