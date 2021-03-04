@@ -549,6 +549,9 @@ void FFBWheel::usbSuspend(){
 
 }
 void FFBWheel::usbResume(){
+	if(emergency && HAL_GPIO_ReadPin(E_STOP_GPIO_Port, E_STOP_Pin) != GPIO_PIN_RESET){ // Reconnected after emergency stop
+		emergency = false;
+	}
 	usb_disabled = false;
 	if(drv != nullptr){
 		enc->setPos(0); // Reset position to avoid jumps
@@ -573,7 +576,7 @@ void FFBWheel::exti(uint16_t GPIO_Pin){
 	}
 #ifdef E_STOP_Pin
 	if(GPIO_Pin == E_STOP_Pin){ // Emergency stop. low active
-		if(HAL_GPIO_ReadPin(BUTTON_A_GPIO_Port, BUTTON_A_Pin) == GPIO_PIN_RESET){
+		if(HAL_GPIO_ReadPin(E_STOP_GPIO_Port, E_STOP_Pin) == GPIO_PIN_RESET){
 			emergencyStop();
 		}
 	}
