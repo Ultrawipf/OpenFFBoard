@@ -33,6 +33,10 @@ void MotorDriver::stopMotor(){
 
 }
 
+void MotorDriver::emergencyStop(){
+	stopMotor();
+}
+
 bool MotorDriver::motorReady(){
 	return true;
 }

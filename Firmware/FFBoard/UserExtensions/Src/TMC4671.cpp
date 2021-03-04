@@ -268,6 +268,7 @@ void TMC4671::Run(){
 				bool tmc_en = (readReg(0x76) >> 15) & 0x01;
 				if(!tmc_en && active){ // Hardware emergency. If tmc does not reply the enable will still read false
 					this->estopTriggered = true;
+					this->emergencyStop();
 					changeState(TMC_ControlState::HardError);
 				}
 
@@ -325,7 +326,7 @@ void TMC4671::Run(){
 		break;
 
 		case TMC_ControlState::No_power:
-			if(hasPower()){
+			if(hasPower() && !emergency){
 				changeState(laststate);
 				HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_SET);
 			}else{
@@ -725,7 +726,7 @@ void TMC4671::calibrateAdcOffset(){
 
 	//pulseClipLed(); // Turn on led
 	// Disable drivers and measure many samples of zero current
-	HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_RESET);
+	//HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_RESET);
 	uint32_t tick = HAL_GetTick();
 	while(HAL_GetTick() - tick < measuretime_idle){ // Measure idle
 		uint32_t adcraw = readReg(0x02);
@@ -740,7 +741,7 @@ void TMC4671::calibrateAdcOffset(){
 			lastrawB = rawB;
 		}
 	}
-	HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_SET);
+	//HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_SET);
 	uint32_t offsetAidle = totalA / (measurements_idle);
 	uint32_t offsetBidle = totalB / (measurements_idle);
 	totalA = 0, totalB=0;
@@ -973,9 +974,12 @@ void TMC4671::setUdUq(int16_t ud,int16_t uq){
 
 void TMC4671::stopMotor(){
 	// Stop driver instantly
-	HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_RESET);
+	turn(0);
+	updateReg(0x1A,0,0xff,0); // disable foc
+	//HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_RESET);
 	active = false;
-	changeState(TMC_ControlState::Shutdown);
+	if(state == TMC_ControlState::Running)
+		changeState(TMC_ControlState::Shutdown);
 }
 void TMC4671::startMotor(){
 	active = true;
@@ -986,12 +990,13 @@ void TMC4671::startMotor(){
 		// Reenable foc
 		emergency = false;
 	}
-	if(state == TMC_ControlState::Shutdown){
-		changeState(laststate);
+	if(state == TMC_ControlState::Shutdown && initialized && encstate == ENC_InitState::OK){
+		changeState(TMC_ControlState::Running);
 	}
+	// Start driver if powered
 	if(hasPower()){
-		updateReg(0x1A,7,0xff,0);
 		HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_SET);
+		updateReg(0x1A,7,0xff,0); // enable foc
 
 	}else{
 		changeState(TMC_ControlState::Init_wait);
@@ -1002,6 +1007,9 @@ void TMC4671::startMotor(){
 void TMC4671::emergencyStop(){
 	updateReg(0x1A,1,0xff,0); // Short low side for instant stop
 	emergency = true;
+	HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_RESET);
+	active = false;
+	changeState(TMC_ControlState::HardError);
 }
 
 /*
