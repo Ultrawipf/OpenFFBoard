@@ -81,7 +81,11 @@ volatile bool FFBWheel::update_flag = false;
 FFBWheel::FFBWheel() :
 		btn_chooser(button_sources),drv_chooser(motor_sources),enc_chooser(encoder_sources),analog_chooser(analog_sources)
 {
-
+//#ifdef E_STOP_Pin
+//	if(HAL_GPIO_ReadPin(E_STOP_GPIO_Port, E_STOP_Pin) == GPIO_PIN_RESET){
+//		this->emergency = true;
+//	}
+//#endif
 	// Create HID FFB handler. Will receive all usb messages directly
 	this->ffb = new HidFFB();
 
@@ -518,7 +522,7 @@ void FFBWheel::send_report(){
 }
 
 void FFBWheel::emergencyStop(){
-	drv->stopMotor();
+	drv->emergencyStop();
 	emergency = true;
 }
 
@@ -547,6 +551,7 @@ void FFBWheel::usbSuspend(){
 void FFBWheel::usbResume(){
 	usb_disabled = false;
 	if(drv != nullptr){
+		enc->setPos(0); // Reset position to avoid jumps
 		drv->startMotor();
 	}
 }

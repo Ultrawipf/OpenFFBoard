@@ -107,7 +107,7 @@ std::vector<ParsedCommand> CmdParser::parse(){
 				}else if(validPqm){ // <cmd>?<int>
 					int64_t val;
 					if(word[pqm+1] == 'x'){
-						val = (int64_t)std::stoll(word.substr(pqm+1, word.npos),0,16);
+						val = (int64_t)std::stoll(word.substr(pqm+2, word.npos),0,16);
 					}else{
 						val = (int64_t)std::stoll(word.substr(pqm+1, word.npos));
 					}
