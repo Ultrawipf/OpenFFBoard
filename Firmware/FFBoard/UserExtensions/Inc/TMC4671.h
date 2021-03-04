@@ -24,7 +24,7 @@
 #define TMC_THREAD_MEM 512
 extern SPI_HandleTypeDef HSPIDRV;
 
-enum class TMC_ControlState {uninitialized,No_power,Shutdown,Running,Init_wait,ABN_init,AENC_init,Enc_bang,HardError,OverTemp};
+enum class TMC_ControlState {uninitialized,No_power,Shutdown,Running,Init_wait,ABN_init,AENC_init,Enc_bang,HardError,OverTemp,EncoderFinished};
 enum class ENC_InitState {uninitialized,estimating,aligning,checking,OK};
 
 enum class MotorType : uint8_t {NONE=0,DC=1,STEPPER=2,BLDC=3,ERR};
