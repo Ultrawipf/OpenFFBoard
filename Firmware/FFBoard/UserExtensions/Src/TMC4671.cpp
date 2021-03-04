@@ -298,12 +298,10 @@ void TMC4671::Run(){
 		break;
 
 		case TMC_ControlState::ABN_init:
-			blinkClipLed(100, 0);
 			ABN_init();
 		break;
 
 		case TMC_ControlState::AENC_init:
-			blinkClipLed(100, 0);
 			AENC_init();
 		break;
 
@@ -317,7 +315,6 @@ void TMC4671::Run(){
 		break;
 
 		case TMC_ControlState::EncoderFinished:
-			CommandHandler::logSerial("Encoder alignment finished");
 			if(active){
 				startMotor();
 				changeState(TMC_ControlState::Running);
