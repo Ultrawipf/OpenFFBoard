@@ -448,7 +448,7 @@ void TMC4671::bangInitEnc(int16_t power){
 	//setMotionMode(MotionMode::uqudext);
 
 	//Delay(100);
-	int16_t phiEpos = -0x3fff; // This is where the check starts too
+	int16_t phiEpos = 0; // This is where the check starts too
 	setPhiE_ext(phiEpos);
 	// Ramp up flux
 	for(int16_t flux = 0; flux <= power; flux+=10){
@@ -585,26 +585,28 @@ bool TMC4671::checkEncoder(){
 		phiEreg = 0x46;
 	}
 
+	const uint16_t maxcount = 50;
+	const int16_t startAngle = 0;
+	const int16_t targetAngle = 0x3FFF;
+
 	bool result = true;
 	PhiE lastphie = getPhiEtype();
 	MotionMode lastmode = getMotionMode();
 	setFluxTorque(0, 0);
 	setPhiEtype(PhiE::ext);
 
-	setPhiE_ext(-0x3fff);
+	setPhiE_ext(startAngle);
 	// Ramp up flux
 	for(int16_t flux = 0; flux <= bangInitPower; flux+=20){
 		setFluxTorque(flux, 0);
 		Delay(2);
 	}
 
-	//setMotionMode(MotionMode::uqudext);
-
-	//int16_t phiE_enc_start = (int16_t)(readReg(phiEreg)>>16);
+	//Forward
 	int16_t phiE_enc = 0;
 	uint16_t failcount = 0;
-	const uint16_t maxcount = 50;
-	for(int16_t angle = -0x3fff;angle<0x3fff;angle+=0x00ff){
+
+	for(int16_t angle = startAngle;angle<targetAngle;angle+=0x00ff){
 		uint16_t c = 0;
 		setPhiE_ext(angle);
 		Delay(10);
@@ -623,13 +625,30 @@ bool TMC4671::checkEncoder(){
 				break;
 			}
 		}
-		// still high difference?
-		if(err > 5000){
-			result = false;
-			break;
+	}
+	// Backward
+	if(result){ // Only if not already failed
+		for(int16_t angle = targetAngle;angle>startAngle;angle -= 0x00ff){
+			uint16_t c = 0;
+			setPhiE_ext(angle);
+			Delay(10);
+			phiE_enc = (int16_t)(readReg(phiEreg)>>16);
+			int16_t err = abs(phiE_enc - angle);
+			// Wait more
+			while(err > 2500 && c++ < 50){
+				phiE_enc = (int16_t)(readReg(phiEreg)>>16);
+				err = abs(phiE_enc - angle);
+				Delay(10);
+			}
+			if(c >= maxcount){
+				failcount++;
+				if(failcount > 10){
+					result = false;
+					break;
+				}
+			}
 		}
 	}
-
 
 	setFluxTorque(0, 0);
 	setPhiE_ext(0);
@@ -983,13 +1002,11 @@ void TMC4671::stopMotor(){
 }
 void TMC4671::startMotor(){
 	active = true;
-	if(!initialized){
+	if(!initialized || emergency){
 		initialize();
-	}
-	if(emergency){
-		// Reenable foc
 		emergency = false;
 	}
+
 	if(state == TMC_ControlState::Shutdown && initialized && encstate == ENC_InitState::OK){
 		changeState(TMC_ControlState::Running);
 	}
