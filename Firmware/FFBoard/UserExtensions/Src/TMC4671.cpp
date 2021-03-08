@@ -20,7 +20,7 @@ const ClassIdentifier TMC4671::getInfo(){
 	return info;
 }
 
-TMC4671::TMC4671(SPI_HandleTypeDef* spi,GPIO_TypeDef* csport,uint16_t cspin,TMC4671MainConfig conf) : Thread("TMC", TMC_THREAD_MEM, 30){
+TMC4671::TMC4671(SPI_HandleTypeDef* spi,GPIO_TypeDef* csport,uint16_t cspin,TMC4671MainConfig conf) : Thread("TMC", TMC_THREAD_MEM, TMC_THREAD_PRIO){
 	this->cspin = cspin;
 	this->csport = csport;
 	this->spi = spi;
@@ -28,7 +28,7 @@ TMC4671::TMC4671(SPI_HandleTypeDef* spi,GPIO_TypeDef* csport,uint16_t cspin,TMC4
 	this->restoreFlash();
 }
 
-TMC4671::TMC4671() : Thread("TMC", TMC_THREAD_MEM, 30){
+TMC4671::TMC4671() : Thread("TMC", TMC_THREAD_MEM, TMC_THREAD_PRIO){
 	this->address = 1;
 	this->cspin = SPI1_SS1_Pin;
 	this->csport = SPI1_SS1_GPIO_Port;
@@ -313,7 +313,7 @@ void TMC4671::Run(){
 			changeState(TMC_ControlState::HardError); // Block
 		break;
 
-		case TMC_ControlState::EncoderFinished:
+		case TMC_ControlState::EncoderFinished: // Startup sequence done
 			if(active){
 				startMotor();
 				changeState(TMC_ControlState::Running);
@@ -325,7 +325,7 @@ void TMC4671::Run(){
 
 		case TMC_ControlState::No_power:
 			if(hasPower() && !emergency){
-				changeState(laststate);
+				changeState(laststateNopower);
 				setMotionMode(lastMotionMode);
 				HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_SET);
 			}
@@ -342,7 +342,8 @@ void TMC4671::Run(){
 
 		if(!hasPower() && state != TMC_ControlState::No_power){ // low voltage or overvoltage
 			lastMotionMode = curMotionMode;
-			setMotionMode(MotionMode::stop);
+			laststateNopower = state;
+			setMotionMode(MotionMode::stop); // Disable tmc
 			changeState(TMC_ControlState::No_power);
 			HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_RESET);
 		}
@@ -494,10 +495,12 @@ void TMC4671::calibrateAenc(){
 	setPos(0);
 	// Ramp up flux
 	setFluxTorque(0, 0);
+	writeReg(0x23,0); // set phie openloop 0
 	setPhiEtype(PhiE::openloop);
+	setMotionMode(MotionMode::torque);
 	for(int16_t flux = 0; flux <= 3000; flux+=10){
-		Delay(10);
 		setFluxTorque(flux, 0);
+		Delay(10);
 	}
 
 	uint32_t minVal_0 = 0xffff,	minVal_1 = 0xffff,	minVal_2 = 0xffff;
@@ -767,10 +770,10 @@ bool TMC4671::calibrateAdcOffset(uint16_t time){
 
 	// Check if offsets are in a valid range
 	if(totalA < 100 || totalB < 100 || (abs((int32_t)offsetAidle - 0x7fff) > 5000 || abs((int32_t)offsetBidle - 0x7fff) > 5000)){
-		ErrorHandler::addError(Error(ErrorCode::adcCalibrationError,ErrorType::critical,"Adc calibration failed"));
+		ErrorHandler::addError(Error(ErrorCode::adcCalibrationError,ErrorType::critical,"TMC Adc/Shunt offset calibration failed."));
 		blinkErrLed(100, 0); // Blink forever
 		this->changeState(TMC_ControlState::HardError);
-		return false; // An adc is likely broken. do not proceed.
+		return false; // An adc or shunt amp is likely broken. do not proceed.
 	}
 	conf.adc_I0_offset = offsetAidle;
 	conf.adc_I1_offset = offsetBidle;
@@ -1003,12 +1006,14 @@ void TMC4671::setUdUq(int16_t ud,int16_t uq){
 }
 
 void TMC4671::stopMotor(){
-	// Stop driver instantly
-	setPwm(0); // disable foc
+	// Stop driver if running
+
 	//HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_RESET);
 	active = false;
-	if(state == TMC_ControlState::Running)
+	if(state == TMC_ControlState::Running){
+		setPwm(0); // disable foc
 		changeState(TMC_ControlState::Shutdown);
+	}
 }
 void TMC4671::startMotor(){
 	active = true;
@@ -1413,11 +1418,15 @@ void TMC4671::initAdc(uint16_t mdecA, uint16_t mdecB,uint32_t mclkA,uint32_t mcl
 	writeReg(0x0A,0x18000100); // ADC Selection
 }
 
-int32_t TMC4671::getActualCurrent(){
+/*
+ * Returns measured flux and torque as a pair
+ * Flux is first, torque second item
+ */
+std::pair<int32_t,int32_t> TMC4671::getActualCurrent(){
 	uint32_t tfluxa = readReg(0x69);
-	//int16_t af = (tfluxa & 0xffff);
+	int16_t af = (tfluxa & 0xffff);
 	int16_t at = (tfluxa >> 16);
-	return (at);
+	return std::pair(af,at);
 }
 
 __attribute__((optimize("-Ofast")))
@@ -1569,7 +1578,7 @@ ParseStatus TMC4671::command(ParsedCommand* cmd,std::string* reply){
 
 	}else if(cmd->cmd == "acttrq"){
 		if(cmd->type == CMDtype::get){
-			*reply+=std::to_string(getActualCurrent());
+			*reply+=std::to_string(getActualCurrent().second);
 		}
 
 	}else if(cmd->cmd == "torqueP"){
