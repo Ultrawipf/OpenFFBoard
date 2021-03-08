@@ -275,7 +275,7 @@ int16_t FFBWheel::updateEndstop(){
 /*
  * Error handling
  */
-void FFBWheel::errorCallback(Error_t &error, bool cleared){
+void FFBWheel::errorCallback(Error &error, bool cleared){
 	if(error.type == ErrorType::critical){
 		if(!cleared){
 			this->emergencyStop();
