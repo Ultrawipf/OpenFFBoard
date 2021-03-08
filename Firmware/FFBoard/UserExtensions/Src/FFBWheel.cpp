@@ -345,12 +345,12 @@ void FFBWheel::setDrvType(uint8_t drvtype){
 			setEncType(drv->getInfo().id); // Auto preset driver as encoder
 		}
 	}
-	if(!tud_connected()){
-		usb_disabled = false;
-		this->usbSuspend();
-	}else{
-		drv->startMotor();
-	}
+//	if(!tud_connected()){
+//		usb_disabled = false;
+//		this->usbSuspend();
+//	}else{
+//		drv->startMotor();
+//	}
 
 }
 

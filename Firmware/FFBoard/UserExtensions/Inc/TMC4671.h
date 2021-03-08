@@ -22,6 +22,7 @@
 
 #define SPITIMEOUT 100
 #define TMC_THREAD_MEM 512
+#define TMC_THREAD_PRIO 41
 extern SPI_HandleTypeDef HSPIDRV;
 
 enum class TMC_ControlState {uninitialized,No_power,Shutdown,Running,Init_wait,ABN_init,AENC_init,Enc_bang,HardError,OverTemp,EncoderFinished};
@@ -261,7 +262,7 @@ public:
 	int16_t getFlux();
 	void setFluxTorque(int16_t flux, int16_t torque);
 	void setFluxTorqueFF(int16_t flux, int16_t torque);
-	int32_t getActualCurrent();
+	std::pair<int32_t,int32_t> getActualCurrent();
 
 	float getTemp();
 	TMC_ControlState getState();
@@ -326,6 +327,7 @@ private:
 	ENC_InitState encstate = ENC_InitState::uninitialized;
 	TMC_ControlState state = TMC_ControlState::uninitialized;
 	TMC_ControlState laststate = TMC_ControlState::uninitialized;
+	TMC_ControlState laststateNopower;
 	MotionMode curMotionMode = MotionMode::stop;
 	MotionMode lastMotionMode = MotionMode::stop;
 	bool oldTMCdetected = false; // ES versions should not exist anymore
