@@ -84,13 +84,13 @@ void FFBoardMainCommandThread::printFlashDump(std::string *reply){
  * Prints a formatted list of error conditions
  */
 void FFBoardMainCommandThread::printErrors(std::string *reply){
-	std::vector<Error_t>* errors = ErrorHandler::getErrors();
+	std::vector<Error>* errors = ErrorHandler::getErrors();
 	if(errors->size() == 0){
 		*reply += "None";
 		return;
 	}
 
-	for(Error_t error : *errors){
+	for(Error error : *errors){
 		*reply += error.toString() + "\n";
 	}
 
@@ -258,14 +258,14 @@ void FFBoardMainCommandThread::executeCommands(std::vector<ParsedCommand> comman
 		}
 		// Errors
 		if(status == ParseStatus::NOT_FOUND){ //No class reported success. Show error
-			Error_t err = cmdNotFoundError;
+			Error err = cmdNotFoundError;
 			reply = "Err. invalid";
 			err.info = cmd.rawcmd + " not found";
 			ErrorHandler::addError(err);
 
 		}else if(status == ParseStatus::ERR){ //Error reported in command
 			reply = "Err. exec error";
-			Error_t err = cmdExecError;
+			Error err = cmdExecError;
 			err.info = "Error executing" + cmd.rawcmd;
 			ErrorHandler::addError(err);
 		}

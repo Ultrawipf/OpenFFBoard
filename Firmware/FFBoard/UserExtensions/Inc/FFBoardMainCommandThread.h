@@ -33,17 +33,9 @@ public:
 	void Run();
 	FFBoardMain* main;
 
-	Error_t cmdNotFoundError = {
-		code : ErrorCode::cmdNotFound,
-		type : ErrorType::temporary,
-		info : "Invalid command"
-	};
+	Error cmdNotFoundError = Error(ErrorCode::cmdNotFound,ErrorType::temporary,"Invalid command");
 
-	Error_t cmdExecError = {
-		code : ErrorCode::cmdExecutionError,
-		type : ErrorType::temporary,
-		info : "Error while executing command"
-	};
+	Error cmdExecError = Error(ErrorCode::cmdExecutionError,ErrorType::temporary,"Error while executing command");
 
 	CmdParser parser = CmdParser();
 	bool parserReady = false;

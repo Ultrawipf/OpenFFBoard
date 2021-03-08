@@ -176,8 +176,8 @@ bool TMC4671::initialize(){
 	}
 
 	// Write main constants
-	setMotionMode(MotionMode::stop);
-	setFluxTorque(0, 0);
+
+	writeReg(0x64, 0); // No flux/torque
 	setPwm(0,conf.pwmcnt,conf.bbmL,conf.bbmH); // Set FOC @ 25khz but turn off pwm for now
 	setMotorType(conf.motconf.motor_type,conf.motconf.pole_pairs);
 	setPhiEtype(conf.motconf.phiEsource);
@@ -187,9 +187,12 @@ bool TMC4671::initialize(){
 	//setAdcOffset(conf.adc_I0_offset, conf.adc_I1_offset);
 	setAdcScale(conf.adc_I0_scale, conf.adc_I1_scale);
 
-	// Calibrate ADC every time for now
-	calibrateAdcOffset();
-
+	// Initial adc calibration
+	if(!calibrateAdcOffset(150)){
+		changeState(TMC_ControlState::HardError); // ADC or shunt amp is broken!
+		HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_RESET);
+		return false;
+	}
 	// brake res failsafe.
 	/*
 	 * Single ended input raw value
@@ -204,20 +207,16 @@ bool TMC4671::initialize(){
 		setBrakeLimits(50700,50900); // Activates around 60V as last resort failsave. Check offsets from tmc leakage
 	}
 
-
-	//setPos(0);
+	setStatusMask(0); // Disable status output by default.
 
 	setPids(curPids); // Write basic pids
 
 	if(hasPower()){
-		updateReg(0x1A,7,0xff,0);
 		HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_SET);
+		setPwm(7);
+		calibrateAdcOffset(400); // Calibrate ADC again with power
 		active = true;
 	}
-
-	writeReg(0x64, 0); // No flux/torque
-	setStatusMask(0); // Disable status output by default.
-
 	setEncoderType(conf.motconf.enctype);
 
 
@@ -227,7 +226,6 @@ bool TMC4671::initialize(){
 	initialized = true;
 	initTime = HAL_GetTick();
 	return initialized;
-
 }
 
 /*
@@ -328,9 +326,8 @@ void TMC4671::Run(){
 		case TMC_ControlState::No_power:
 			if(hasPower() && !emergency){
 				changeState(laststate);
+				setMotionMode(lastMotionMode);
 				HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_SET);
-			}else{
-				HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_RESET);
 			}
 			pulseErrLed();
 			Delay(100); // wait a bit more
@@ -343,14 +340,11 @@ void TMC4671::Run(){
 
 		// Optional update methods for safety
 
-		if(!hasPower()){ // low voltage or overvoltage
+		if(!hasPower() && state != TMC_ControlState::No_power){ // low voltage or overvoltage
+			lastMotionMode = curMotionMode;
+			setMotionMode(MotionMode::stop);
 			changeState(TMC_ControlState::No_power);
-//			initialized = false;
-//			pulseErrLed();
-//			if(!emergency && HAL_GetTick() - initTime > 100)
-//				emergencyStop();
-//			else
-//				initTime = HAL_GetTick();
+			HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_RESET);
 		}
 		Delay(10);
 	} // End while
@@ -498,12 +492,19 @@ void TMC4671::calibrateAenc(){
 	PosSelection possel = this->conf.motconf.pos_sel;
 	setPosSel(PosSelection::PhiE_openloop);
 	setPos(0);
+	// Ramp up flux
+	setFluxTorque(0, 0);
+	setPhiEtype(PhiE::openloop);
+	for(int16_t flux = 0; flux <= 3000; flux+=10){
+		Delay(10);
+		setFluxTorque(flux, 0);
+	}
 
 	uint32_t minVal_0 = 0xffff,	minVal_1 = 0xffff,	minVal_2 = 0xffff;
 	uint32_t maxVal_0 = 0,	maxVal_1 = 0,	maxVal_2 = 0;
 	int32_t minpos = -0x8fff/std::max<int32_t>(1,std::min<int32_t>(this->aencconf.cpr/4,20)), maxpos = 0x8fff/std::max<int32_t>(1,std::min<int32_t>(this->aencconf.cpr/4,20));
 	uint32_t speed = std::max<uint32_t>(1,20/std::max<uint32_t>(1,this->aencconf.cpr/10));
-	runOpenLoop(3000, 0, speed, 100);
+	runOpenLoop(3000, 0, speed, 100,true);
 
 	uint8_t stage = 0;
 	int32_t poles = conf.motconf.pole_pairs;
@@ -511,7 +512,7 @@ void TMC4671::calibrateAenc(){
 	while(stage != 3){
 		Delay(2);
 		if(getPos() > maxpos*poles && stage == 0){
-			runOpenLoop(bangInitPower, 0, -speed, 100);
+			runOpenLoop(bangInitPower, 0, -speed, 100,true);
 			stage = 1;
 		}else if(getPos() < minpos*poles && stage == 1){
 			// Scale might still be wrong... maxVal-minVal is too high. In theory its 0xffff range and scaler /256. Leave some room to prevent clipping
@@ -526,16 +527,16 @@ void TMC4671::calibrateAenc(){
 			aencconf.AENC2_scale = 0xF6FF00 / (maxVal_2 - minVal_2);
 			aencconf.rdir = false;
 			setup_AENC(aencconf);
-			runOpenLoop(0, 0, 0, 1000);
+			runOpenLoop(0, 0, 0, 1000,true);
 			Delay(250);
 			// Zero aenc
 			writeReg(0x41, 0);
 			initialDirPos = readReg(0x41);
-			runOpenLoop(bangInitPower, 0, speed, 100);
+			runOpenLoop(bangInitPower, 0, speed, 100,true);
 			stage = 2;
 		}else if(getPos() > 0 && stage == 2){
 			stage = 3;
-			runOpenLoop(0, 0, 0, 1000);
+			runOpenLoop(0, 0, 0, 1000,true);
 		}
 
 		writeReg(0x03,2);
@@ -729,9 +730,9 @@ void TMC4671::setup_HALL(TMC4671HALLConf hallconf){
 /*
  * Calibrates the ADC by disabling the power stage and sampling a mean value. Takes time!
  */
-void TMC4671::calibrateAdcOffset(){
+bool TMC4671::calibrateAdcOffset(uint16_t time){
 
-	uint16_t measuretime_idle = 500;
+	uint16_t measuretime_idle = time;
 	uint32_t measurements_idle = 0;
 	uint64_t totalA=0;
 	uint64_t totalB=0;
@@ -739,7 +740,7 @@ void TMC4671::calibrateAdcOffset(){
 	writeReg(0x03, 0); // Read raw adc
 	PhiE lastphie = getPhiEtype();
 	MotionMode lastmode = getMotionMode();
-
+	setMotionMode(MotionMode::stop);
 
 	uint16_t lastrawA=conf.adc_I0_offset, lastrawB=conf.adc_I1_offset;
 
@@ -763,7 +764,14 @@ void TMC4671::calibrateAdcOffset(){
 	//HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_SET);
 	uint32_t offsetAidle = totalA / (measurements_idle);
 	uint32_t offsetBidle = totalB / (measurements_idle);
-	totalA = 0, totalB=0;
+
+	// Check if offsets are in a valid range
+	if(totalA < 100 || totalB < 100 || (abs((int32_t)offsetAidle - 0x7fff) > 5000 || abs((int32_t)offsetBidle - 0x7fff) > 5000)){
+		ErrorHandler::addError(Error(ErrorCode::adcCalibrationError,ErrorType::critical,"Adc calibration failed"));
+		blinkErrLed(100, 0); // Blink forever
+		this->changeState(TMC_ControlState::HardError);
+		return false; // An adc is likely broken. do not proceed.
+	}
 	conf.adc_I0_offset = offsetAidle;
 	conf.adc_I1_offset = offsetBidle;
 	setAdcOffset(conf.adc_I0_offset, conf.adc_I1_offset);
@@ -771,6 +779,7 @@ void TMC4671::calibrateAdcOffset(){
 
 	setPhiEtype(lastphie);
 	setMotionMode(lastmode);
+	return true;
 }
 
 
@@ -827,10 +836,7 @@ void TMC4671::ABN_init(){
 				if(enc_retry++ > enc_retry_max){
 					blinkErrLed(50, 50);
 					changeState(TMC_ControlState::HardError);
-					Error_t err;
-					err.code = ErrorCode::encoderAlignmentFailed;
-					err.type = ErrorType::critical;
-					err.info = "Encoder alignment failed multiple times";
+					Error err = Error(ErrorCode::encoderAlignmentFailed,ErrorType::critical,"Encoder alignment failed multiple times");
 					ErrorHandler::addError(err);
 					if(manualEncAlign){
 						manualEncAlign = false;
@@ -889,10 +895,7 @@ void TMC4671::AENC_init(){
 				if(enc_retry++ > enc_retry_max){
 					blinkErrLed(50, 50);
 					changeState(TMC_ControlState::HardError);
-					Error_t err;
-					err.code = ErrorCode::encoderAlignmentFailed;
-					err.type = ErrorType::critical;
-					err.info = "Encoder alignment failed multiple times";
+					Error err = Error(ErrorCode::encoderAlignmentFailed,ErrorType::critical,"Encoder alignment failed multiple times");
 					ErrorHandler::addError(err);
 					if(manualEncAlign){
 						manualEncAlign = false;
@@ -966,6 +969,9 @@ PhiE TMC4671::getPhiEtype(){
 }
 
 void TMC4671::setMotionMode(MotionMode mode){
+	if(mode != curMotionMode){
+		lastMotionMode = curMotionMode;
+	}
 	curMotionMode = mode;
 	updateReg(0x63, (uint8_t)mode, 0xff, 0);
 }
@@ -980,10 +986,15 @@ void TMC4671::setOpenLoopSpeedAccel(int32_t speed,uint32_t accel){
 }
 
 
-void TMC4671::runOpenLoop(uint16_t ud,uint16_t uq,int32_t speed,int32_t accel){
+void TMC4671::runOpenLoop(uint16_t ud,uint16_t uq,int32_t speed,int32_t accel,bool torqueMode){
+	if(torqueMode){
+		setFluxTorque(ud, uq);
+	}else{
+		setMotionMode(MotionMode::uqudext);
+		setUdUq(ud,uq);
+	}
 	setPhiEtype(PhiE::openloop);
-	setMotionMode(MotionMode::uqudext);
-	setUdUq(ud,uq);
+
 	setOpenLoopSpeedAccel(speed, accel);
 }
 
@@ -993,8 +1004,7 @@ void TMC4671::setUdUq(int16_t ud,int16_t uq){
 
 void TMC4671::stopMotor(){
 	// Stop driver instantly
-	turn(0);
-	updateReg(0x1A,0,0xff,0); // disable foc
+	setPwm(0); // disable foc
 	//HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_RESET);
 	active = false;
 	if(state == TMC_ControlState::Running)
@@ -1013,7 +1023,7 @@ void TMC4671::startMotor(){
 	// Start driver if powered
 	if(hasPower()){
 		HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_SET);
-		updateReg(0x1A,7,0xff,0); // enable foc
+		setPwm(7); // enable foc
 
 	}else{
 		changeState(TMC_ControlState::Init_wait);
@@ -1022,7 +1032,7 @@ void TMC4671::startMotor(){
 }
 
 void TMC4671::emergencyStop(){
-	updateReg(0x1A,1,0xff,0); // Short low side for instant stop
+	setPwm(1); // Short low side for instant stop
 	emergency = true;
 	HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_RESET);
 	active = false;
@@ -1373,6 +1383,9 @@ void TMC4671::setStatusMask(uint32_t mask){
 	writeReg(0x7D, mask);
 }
 
+void TMC4671::setPwm(uint8_t val){
+	updateReg(0x1A,val,0xff,0);
+}
 
 void TMC4671::setPwm(uint8_t val,uint16_t maxcnt,uint8_t bbmL,uint8_t bbmH){
 	writeReg(0x18, maxcnt);

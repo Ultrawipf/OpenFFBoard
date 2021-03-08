@@ -84,7 +84,7 @@ public:
 	void timerElapsed(TIM_HandleTypeDef* htim);
 	void exti(uint16_t GPIO_Pin);
 
-	void errorCallback(Error_t &error, bool cleared);
+	void errorCallback(Error &error, bool cleared);
 
 	volatile bool usb_update_flag = false;
 	static volatile bool update_flag;
