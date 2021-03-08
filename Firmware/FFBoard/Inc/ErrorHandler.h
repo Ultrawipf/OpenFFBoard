@@ -9,7 +9,7 @@
 #define SRC_ERRORHANDLER_H_
 #include <vector>
 #include <string>
-
+#include "thread.hpp"
 
 /*
  * Error code definitions
@@ -18,6 +18,7 @@
 enum class ErrorCode : uint32_t{
 			none = 0,
 			shutdown = 1,
+			emergencyStop = 2,
 
 			cmdNotFound = 5,
 			cmdExecutionError = 6,
@@ -66,7 +67,7 @@ public:
 
 	ErrorHandler();
 	virtual ~ErrorHandler();
-	virtual void errorCallback(Error &error, bool cleared); // Called when a new error happened
+	virtual void errorCallback(Error &error, bool cleared); // Called when a new error happened. Warning: Could be called from ISR!
 
 	static void addError(Error error);
 	static void clearError(Error error);
@@ -83,13 +84,16 @@ protected:
 /*
  * Can handle errors occuring in the main class
  */
-class ErrorPrinter : ErrorHandler{
+class ErrorPrinter : ErrorHandler, cpp_freertos::Thread{
 public:
+	ErrorPrinter();
 	void errorCallback(Error &error, bool cleared);
 	void setEnabled(bool enable);
 	bool getEnabled();
+	void Run();
 private:
 	bool enabled = true;
+	std::vector<Error> errorsToPrint;
 };
 
 #endif /* SRC_ERRORHANDLER_H_ */
