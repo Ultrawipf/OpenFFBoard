@@ -111,11 +111,29 @@ void ErrorHandler::errorCallback(Error &error, bool cleared){
 
 }
 
+ErrorPrinter::ErrorPrinter() : Thread("errprint",128,10){
+	this->Start();
+}
 
+void ErrorPrinter::Run(){
+	while(1){
+		for(Error e : this->errorsToPrint){
+			FFBoardMain::sendSerial("Err", e.toString());
+		}
+		this->errorsToPrint.clear();
+		this->Suspend();
+	}
+}
 
+// TODO prints in thread when called from isr
 void ErrorPrinter::errorCallback(Error &error, bool cleared){
 	if(!cleared){
-		FFBoardMain::sendSerial("Err", error.toString());
+		if(isIrq()){
+			this->errorsToPrint.push_back(error);
+			this->ResumeFromISR();
+		}else{
+			FFBoardMain::sendSerial("Err", error.toString());
+		}
 	}
 }
 

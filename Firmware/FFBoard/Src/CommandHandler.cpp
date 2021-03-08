@@ -56,6 +56,8 @@ ParseStatus CommandHandler::command(ParsedCommand* cmd,std::string* reply){
 }
 
 void CommandHandler::sendSerial(std::string cmd,std::string string){
+	if(!tud_ready())
+		return;
 	std::string reply = ">" + cmd + ":" + string + "\n";
 	tud_cdc_n_write(0,reply.c_str(), reply.length());
 	tud_cdc_n_write_flush(0);
