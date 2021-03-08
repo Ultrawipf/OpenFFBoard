@@ -360,7 +360,8 @@ void FFBWheel::setupTMC4671(){
 	TMC4671* drv = static_cast<TMC4671*>(this->drv);
 	drv->setAddress(1);
 //	drv->initialize();
-	drv->startMotor();
+	drv->initialize();
+	tmclimits.pid_torque_flux = this->power;
 	drv->setLimits(tmclimits);
 	//drv->setBiquadFlux(fluxbq);
 
@@ -524,6 +525,7 @@ void FFBWheel::send_report(){
 void FFBWheel::emergencyStop(){
 	drv->emergencyStop();
 	emergency = true;
+
 }
 
 void FFBWheel::timerElapsed(TIM_HandleTypeDef* htim){
@@ -549,9 +551,11 @@ void FFBWheel::usbSuspend(){
 
 }
 void FFBWheel::usbResume(){
+#ifdef E_STOP_GPIO_Port
 	if(emergency && HAL_GPIO_ReadPin(E_STOP_GPIO_Port, E_STOP_Pin) != GPIO_PIN_RESET){ // Reconnected after emergency stop
 		emergency = false;
 	}
+#endif
 	usb_disabled = false;
 	if(drv != nullptr){
 		enc->setPos(0); // Reset position to avoid jumps
