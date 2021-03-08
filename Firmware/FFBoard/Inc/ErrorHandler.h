@@ -27,7 +27,8 @@ enum class ErrorCode : uint32_t{
 
 			overtemp = 15,
 
-			encoderAlignmentFailed = 20
+			encoderAlignmentFailed = 20,
+			adcCalibrationError = 21
 };
 /*
  * Error type for severity
@@ -38,34 +39,23 @@ enum class ErrorType : uint8_t{
 	warning,critical,temporary
 };
 
-struct Error_t{
+class Error{
+public:
+	Error();
+	Error(ErrorCode code, ErrorType type, std::string info) : code(code), type(type), info(info){};
 	ErrorCode code = ErrorCode::none;
 	ErrorType type = ErrorType::warning;
 	std::string info = "";
 
-	/*
-	 * Prints the error to a string
-	 */
-	std::string toString(){
-		std::string r = std::to_string((uint32_t)code) + ":";
-		switch(type){
-			case ErrorType::warning:
-				r += "warn";
-			break;
+	std::string toString();
 
-			case ErrorType::critical:
-				r += "crit";
-			break;
-			case ErrorType::temporary:
-				r += "info";
-			break;
-			default:
-				r += "err";
-		}
-		r += ":" + (info == "" ? "no info" : info);
-		return r;
-	}
+	/*
+	 * Errors are equivalent if their code and type match
+	 */
+	bool operator ==(const Error &b){return (this->code == b.code && this->type == b.type && this->info == b.info);}
+
 };
+
 
 
 
@@ -76,18 +66,18 @@ public:
 
 	ErrorHandler();
 	virtual ~ErrorHandler();
-	virtual void errorCallback(Error_t &error, bool cleared); // Called when a new error happened
+	virtual void errorCallback(Error &error, bool cleared); // Called when a new error happened
 
-	static void addError(Error_t &error);
-	static void clearError(Error_t &error);
+	static void addError(Error error);
+	static void clearError(Error error);
 	static void clearError(ErrorCode errorcode);
 	static void clearTemp();
 	static void clearAll();
 
-	static std::vector<Error_t>* getErrors(); // Returns a vector of active errors
+	static std::vector<Error>* getErrors(); // Returns a vector of active errors
 
 protected:
-	static std::vector<Error_t> errors;
+	static std::vector<Error> errors;
 };
 
 /*
@@ -95,7 +85,7 @@ protected:
  */
 class ErrorPrinter : ErrorHandler{
 public:
-	void errorCallback(Error_t &error, bool cleared);
+	void errorCallback(Error &error, bool cleared);
 	void setEnabled(bool enable);
 	bool getEnabled();
 private:
