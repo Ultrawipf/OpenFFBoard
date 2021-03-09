@@ -10,7 +10,7 @@
 
 #include "main.h"
 // Change this to the amount of currently registered variables
-#define NB_OF_VAR	66
+#define NB_OF_VAR	62
 
 extern uint16_t VirtAddVarTab[NB_OF_VAR];
 
@@ -33,11 +33,9 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_SW_VERSION 		2
 #define ADR_CURRENT_CONFIG 	10
 
+// FFBWheel
 #define ADR_FFBWHEEL_BUTTONCONF 		0x101
 #define ADR_FFBWHEEL_ANALOGCONF 		0x102
-
-#define ADR_FFBJOYSTICK_BUTTONCONF 		0x103
-#define ADR_FFBJOYSTICK_ANALOGCONF 		0x104
 
 
 // Button Sources:
@@ -63,16 +61,18 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_SHIFTERANALOG_CONF_2		0x244
 #define ADR_SHIFTERANALOG_CONF_3		0x245
 
+
+#define ADR_CF_FILTER       			0x280 // CF Lowpass
+
 // How many axis configured 1-3
 #define ADR_AXIS_COUNT					0x300
 
-// FFBAXIS1
-#define ADR_FFBAXIS1_CONFIG				0x301 // 0-2 ENC, 3-5 DRV
-#define ADR_FFBAXIS1_POWER				0x302
-#define ADR_FFBAXIS1_DEGREES			0x303
-#define ADR_FFBAXIS1_ENDSTOP			0x307 // 0-7 endstop margin, 8-15 endstop stiffness
-#define ADR_FFBAXIS1_EFFECTS1			0x310 // 0-7 spring, 8-15 friction
-#define ADR_FFBAXIS1_EFFECTS2			0x311 // CF Lowpass
+// AXIS1
+#define ADR_AXIS1_CONFIG				0x301 // 0-2 ENC, 3-5 DRV
+#define ADR_AXIS1_POWER			    	0x302
+#define ADR_AXIS1_DEGREES		    	0x303
+#define ADR_AXIS1_ENDSTOP		    	0x307 // 0-7 endstop margin, 8-15 endstop stiffness
+#define ADR_AXIS1_EFFECTS1			    0x310 // 0-7 spring, 8-15 friction
 
 // TMC1
 #define ADR_TMC1_MOTCONF 				0x320 // 0-2: MotType 3-5: PhiE source 6-15: Poles
@@ -86,13 +86,12 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_TMC1_FLUX_I					0x32A
 
 
-// FFBAXIS2
-#define ADR_FFBAXIS2_CONFIG				0x341 // 0-2 ENC, 3-5 DRV
-#define ADR_FFBAXIS2_POWER				0x342
-#define ADR_FFBAXIS2_DEGREES			0x343
-#define ADR_FFBAXIS2_ENDSTOP			0x347 // 0-7 endstop margin, 8-15 endstop stiffness
-#define ADR_FFBAXIS2_EFFECTS1			0x350 // 0-7 spring, 8-15 friction
-#define ADR_FFBAXIS2_EFFECTS2			0x351 // CF Lowpass
+// AXIS2
+#define ADR_AXIS2_CONFIG				0x341 // 0-2 ENC, 3-5 DRV
+#define ADR_AXIS2_POWER	    			0x342
+#define ADR_AXIS2_DEGREES	    		0x343
+#define ADR_AXIS2_ENDSTOP		    	0x347 // 0-7 endstop margin, 8-15 endstop stiffness
+#define ADR_AXIS2_EFFECTS1			    0x350 // 0-7 spring, 8-15 friction
 
 // TMC2
 #define ADR_TMC2_MOTCONF 				0x360 // 0-2: MotType 3-5: PhiE source 6-15: Poles
@@ -106,13 +105,12 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_TMC2_FLUX_I					0x36A
 
 
-// FFBAXIS3
-#define ADR_FFBAXIS3_CONFIG				0x381 // 0-2 ENC, 3-5 DRV
-#define ADR_FFBAXIS3_POWER				0x382
-#define ADR_FFBAXIS3_DEGREES			0x383
-#define ADR_FFBAXIS3_ENDSTOP			0x387 // 0-7 endstop margin, 8-15 endstop stiffness
-#define ADR_FFBAXIS3_EFFECTS1			0x390 // 0-7 spring, 8-15 friction
-#define ADR_FFBAXIS3_EFFECTS2			0x391 // CF Lowpass
+// AXIS3
+#define ADR_AXIS3_CONFIG				0x381 // 0-2 ENC, 3-5 DRV
+#define ADR_AXIS3_POWER			    	0x382
+#define ADR_AXIS3_DEGREES			    0x383
+#define ADR_AXIS3_ENDSTOP	    		0x387 // 0-7 endstop margin, 8-15 endstop stiffness
+#define ADR_AXIS3_EFFECTS1	    		0x390 // 0-7 spring, 8-15 friction
 
 // TMC3
 #define ADR_TMC3_MOTCONF 				0x3A0 // 0-2: MotType 3-5: PhiE source 6-15: Poles

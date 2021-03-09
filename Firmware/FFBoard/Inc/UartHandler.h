@@ -12,6 +12,8 @@
 
 class UartHandler {
 public:
+	static std::vector<UartHandler*> uartHandlers;
+
 	UartHandler();
 	virtual ~UartHandler();
 	virtual void uartRcv(char* buf);

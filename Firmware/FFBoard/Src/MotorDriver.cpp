@@ -26,9 +26,13 @@ void MotorDriver::turn(int16_t val){
 
 }
 
-void MotorDriver::start(){
+void MotorDriver::startMotor(){
 
 }
-void MotorDriver::stop(){
+void MotorDriver::stopMotor(){
 
+}
+
+bool MotorDriver::motorReady(){
+	return true;
 }

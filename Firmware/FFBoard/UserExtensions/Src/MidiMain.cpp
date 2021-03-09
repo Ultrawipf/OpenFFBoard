@@ -5,11 +5,14 @@
  *      Author: Yannick
  */
 
+#include "target_constants.h"
+#ifdef MIDI
 #include <MidiMain.h>
-#include "usbd_desc.h"
-#include "usbd_composite.h"
+
 #include "math.h"
 #include "ledEffects.h"
+#include "USBdevice.h"
+#include "cmsis_os2.h"
 
 ClassIdentifier MidiMain::info = {
 		 .name = "MIDI" ,
@@ -22,7 +25,7 @@ const ClassIdentifier MidiMain::getInfo(){
 }
 
 
-MidiMain::MidiMain() {
+MidiMain::MidiMain(){
 	// Generate notes
 	for(uint8_t i = 0;i<128;i++){
 		float f = std::pow(2, (i - 69) / 12.0) * 440.0;
@@ -30,8 +33,8 @@ MidiMain::MidiMain() {
 	}
 
 	// Setup timer
-	extern TIM_HandleTypeDef htim4;
-	this->timer_update = &htim4; // Timer setup with prescaler of sysclock
+	extern TIM_HandleTypeDef TIM_USER;
+	this->timer_update = &TIM_USER; // Timer setup with prescaler of sysclock
 	this->timer_update->Instance->ARR = period;
 	this->timer_update->Instance->PSC = (SystemCoreClock / 1000000)-1;
 	this->timer_update->Instance->CR1 = 1;
@@ -42,11 +45,9 @@ MidiMain::MidiMain() {
 	TMC4671Limits limits;
 	drv->setLimits(limits);
 	drv->setAddress(1);
-	drv->restoreFlash(); // load motor type
 	//drv->setMotorType(MotorType::STEPPER, 50);
 	if(drv->conf.motconf.motor_type == MotorType::NONE){
 		pulseErrLed();
-		printf(">Please select a mottype\n");
 	}
 	drv->setPhiEtype(PhiE::ext);
 	drv->setUdUq(0, 0);
@@ -58,23 +59,22 @@ MidiMain::MidiMain() {
 	if(!drv->initialized){
 		pulseErrLed();
 	}
+	//this->Start(); // We do not start the driver thread
+
 }
 
 MidiMain::~MidiMain() {
 
 }
 
+
 void MidiMain::update(){
-	if(updateflag){
-		updateflag = false;
-		timersSinceSOF++;
-		play();
-	}
+	osDelay(50); // Slow down main thread
 }
 
 void MidiMain::timerElapsed(TIM_HandleTypeDef* htim){
 	if(htim == this->timer_update){
-		updateflag = true;
+		play();
 	}
 }
 
@@ -96,8 +96,9 @@ void MidiMain::play(){
 		MidiNote* note = &notes[chan].back();
 		float freq = noteToFreq[note->note];
 		// Speed up period counter instead of changing frequency to prevent phase jumps
-
-		note->counter += periodf * note->pitchbend;
+		float time = periodf;//(abs((uint16_t)this->timer_update->Instance->CNT - lastSystick)%period) / 1000000.0;
+		//lastSystick = this->timer_update->Instance->CNT;
+		note->counter += time * note->pitchbend;
 
 		float volume = note->volume / 127.0f;
 		float p = (note->counter*freq);
@@ -126,6 +127,7 @@ void MidiMain::noteOff(uint8_t chan, uint8_t note,uint8_t velocity){
 			break;
 		}
 	}
+
 }
 
 void MidiMain::controlChange(uint8_t chan, uint8_t c, uint8_t val){
@@ -155,121 +157,17 @@ ParseStatus MidiMain::command(ParsedCommand* cmd,std::string* reply){
 		}else if(cmd->type == CMDtype::set){
 			this->movementrange = cmd->val;
 		}
-	}else if(cmd->cmd == "err"){
-		if(cmd->type == CMDtype::get){
-			*reply+=std::to_string(freqErr);
-		}
 	}else{
 		flag=drv->command(cmd, reply);
 	}
 	return flag;
 }
 
-// Static callback
-int8_t MidiMain::Midi_Receive(uint8_t *msg, uint32_t len) {
-	extern FFBoardMain* mainclass;
-	MidiMain* midi_p = static_cast<MidiMain*>(mainclass);
-	pulseSysLed();
-	uint8_t chan = msg[1] & 0xf;
-	uint8_t msgtype = msg[1] & 0xf0;
-	uint8_t b1 =  msg[2];
-	uint8_t b2 =  msg[3];
-	//MIDI_DataTx(msg,len); //TEST
 
-	switch (msgtype) {
-	case 0x80:
-		// Noteoff
-		midi_p->noteOff(chan, b1, b2);
-		break;
-	case 0x90:
-		// Noteon
-		if(b2 == 0){
-			midi_p->noteOff(chan, b1, b2);
-		}else{
-			midi_p->noteOn(chan, b1, b2);
-		}
-		break;
-	case 0xB0:
-		//cc
-		midi_p->controlChange(chan, b1,b2);
-		break;
-	case 0xC0:
-		//pc
-		break;
-	case 0xD0:
 
-		break;
-	case 0xE0:
-	{
-		//pb
-		int16_t pb = (b1 & 0x7f) | ((b2 & 0x7f) << 7);
-		midi_p->pitchBend(chan, pb-8192);
-		break;
-	}
-	default:
-		break;
-	}
-
-	return 0;
+void MidiMain::usbInit(){
+	this->usbdev = new USBdevice(&usb_devdesc_ffboard_composite,usb_cdc_midi_conf,&usb_ffboard_strings_default);
+	usbdev->registerUsb();
 }
 
-void MidiMain::usbInit(USBD_HandleTypeDef* hUsbDeviceFS){
-	handles[CDC_IDX] = &USBD_CDC;
-	handles[1] = &USBD_Midi_ClassDriver;
-
-	// Base Descriptor
-	USB_ConfigDescType base_desc = {
-		/*Configuration Descriptor*/
-		0x09,   /* bLength: Configuration Descriptor size */
-		USB_DESC_TYPE_CONFIGURATION,      /* bDescriptorType: Configuration */
-		0x00,                /* wTotalLength:no of returned bytes. Is set later by composite */
-		0x04,   /* bNumInterfaces */
-		0x01,   /* bConfigurationValue: Configuration value */
-		0x02,   /* iConfiguration: Index of string descriptor describing the configuration */
-		0xC0,   /* bmAttributes: self powered */
-		0x32,   /* MaxPower 100 mA */
-
-	};
-
-	USBD_Init(hUsbDeviceFS, &FS_Desc_Composite, DEVICE_FS);
-
-	// Add descriptors and class functions to composite device
-	USBD_Composite_Set_Classes(handles,2,&base_desc);
-
-	// Define endpoints
-
-	//MIDI
-	USBD_Composite_EPIN_To_Class(MIDI_IN_EP, 1);
-	USBD_Composite_EPOUT_To_Class(MIDI_OUT_EP, 1);
-	USBD_Composite_InterfaceToClass(MIDI_INTERFACE_A,1);
-	USBD_Composite_InterfaceToClass(MIDI_INTERFACE_B,1);
-
-	// CDC
-	USBD_Composite_EPIN_To_Class(CDC_CMD_EP, CDC_IDX);
-	USBD_Composite_EPIN_To_Class(CDC_IN_EP, CDC_IDX);
-	USBD_Composite_EPIN_To_Class(CDC_OUT_EP, CDC_IDX);
-
-	USBD_Composite_InterfaceToClass(CDC_INTERFACE,CDC_IDX);
-	USBD_Composite_InterfaceToClass(CDC_INTERFACE_DATA,CDC_IDX);
-
-	USBD_RegisterClass(hUsbDeviceFS, &USBD_Composite);
-
-	USBD_CDC_RegisterInterface(hUsbDeviceFS, &USBD_Interface_fops_FS);
-
-	USBD_Midi_RegisterInterface(hUsbDeviceFS, &USBD_Midi_fops);
-	USBD_Start(hUsbDeviceFS);
-}
-
-void MidiMain::SOF(){
-	// Correct for timer and clock errors by using USB 1khz SOF frames
-	if(correctFrequency){
-		if(timersSinceSOF==0){
-			return;
-		}
-
-		freqErr = (freqErr + (1000.0f/ (timersSinceSOF * period))) / 2.0f;
-		if(abs(freqErr-1) < 0.4) // Filter large errors
-			periodf = (period / 1000000.0f) * freqErr;
-		timersSinceSOF = 0;
-	}
-}
+#endif

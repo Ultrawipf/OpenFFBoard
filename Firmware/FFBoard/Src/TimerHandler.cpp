@@ -8,15 +8,14 @@
 #include "TimerHandler.h"
 #include "global_callbacks.h"
 
-TimerHandler::TimerHandler() {
-	extern std::vector<TimerHandler*> timerHandlers;
-	addCallbackHandler(&timerHandlers,this);
+std::vector<TimerHandler*> TimerHandler::timerHandlers;
 
+TimerHandler::TimerHandler() {
+	addCallbackHandler(timerHandlers,this);
 }
 
 TimerHandler::~TimerHandler() {
-	extern std::vector<TimerHandler*> timerHandlers;
-	removeCallbackHandler(&timerHandlers,this);
+	removeCallbackHandler(timerHandlers,this);
 }
 
 void TimerHandler::timerElapsed(TIM_HandleTypeDef* htim){

@@ -4,6 +4,10 @@
 #include "flash_helpers.h"
 #include "global_callbacks.h"
 #include "cpp_target_config.h"
+#include "cmsis_os.h"
+#include "stm32f4xx_hal_flash.h"
+
+#include "tusb.h"
 
 uint32_t clkmhz = HAL_RCC_GetHCLKFreq() / 100000;
 extern TIM_HandleTypeDef TIM_MICROS;
@@ -13,17 +17,25 @@ extern IWDG_HandleTypeDef hiwdg; // Watchdog
 #endif
 
 bool running = true;
+bool mainclassChosen = false;
 
 uint16_t main_id = 0;
 
 FFBoardMain* mainclass __attribute__((section (".ccmram")));
 ClassChooser<FFBoardMain> mainchooser(class_registry);
 
-USBD_HandleTypeDef hUsbDeviceFS __attribute__((section (".ccmram")));
+//USBD_HandleTypeDef hUsbDeviceFS __attribute__((section (".ccmram")));
+
+#define USBD_STACK_SIZE     (3*configMINIMAL_STACK_SIZE/2)
+StackType_t  usb_device_stack[USBD_STACK_SIZE];
+StaticTask_t usb_device_taskdef;
+
+
 
 void cppmain() {
 	// Flash init
 	HAL_FLASH_Unlock();
+	__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_PGPERR | FLASH_FLAG_PGSERR);
 	if( EE_Init() != EE_OK){
 		Error_Handler();
 	}
@@ -47,19 +59,20 @@ void cppmain() {
 
 
 	mainclass = mainchooser.Create(main_id);
-	usb_init(&hUsbDeviceFS); // Init usb
+	if(mainclass == nullptr){ // invalid id
+		mainclass = mainchooser.Create(0); // Baseclass
+	}
+	mainclassChosen = true;
+
+	mainclass->usbInit(); // Let mainclass initialize usb
 
 	while(running){
-		// TODO dynamically add functions to loop
 		mainclass->update();
-		mainclass->updateSys();
 		updateLeds();
-
 		external_spi.process();
-
 		refreshWatchdog();
+		taskYIELD();
 	}
-
 }
 
 void refreshWatchdog(){
@@ -68,9 +81,6 @@ void refreshWatchdog(){
 #endif
 }
 
-void usb_init(USBD_HandleTypeDef* hUsbDeviceFS){
-	mainclass->usbInit(hUsbDeviceFS); // Let mainclass initialize usb
-}
 
 
 uint32_t micros(){
@@ -78,3 +88,36 @@ uint32_t micros(){
 	return TIM_MICROS.Instance->CNT;
 }
 
+//void * operator new( size_t size )
+//{
+//    return pvPortMalloc( size );
+//}
+//
+//void * operator new[]( size_t size )
+//{
+//    return pvPortMalloc(size);
+//}
+//
+//void operator delete( void * ptr )
+//{
+//    vPortFree ( ptr );
+//}
+//
+//void operator delete[]( void * ptr )
+//{
+//    vPortFree ( ptr );
+//}
+
+
+//#if (configSUPPORT_DYNAMIC_ALLOCATION == 1)
+void* malloc(size_t size)
+{
+    return pvPortMalloc(size);
+}
+
+void free(void *p)
+{
+    vPortFree(p);
+}
+
+//#endif /* (configSUPPORT_DYNAMIC_ALLOCATION == 1) */

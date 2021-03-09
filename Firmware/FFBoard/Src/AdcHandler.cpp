@@ -7,15 +7,15 @@
 
 #include "AdcHandler.h"
 
+std::vector<AdcHandler*> AdcHandler::adcHandlers;
+
 AdcHandler::AdcHandler() {
-	extern std::vector<AdcHandler*> adcHandlers;
-	addCallbackHandler(&adcHandlers, this);
+	addCallbackHandler(adcHandlers, this);
 
 }
 
 AdcHandler::~AdcHandler() {
-	extern std::vector<AdcHandler*> adcHandlers;
-	removeCallbackHandler(&adcHandlers, this);
+	removeCallbackHandler(adcHandlers, this);
 }
 
 // ADC updated

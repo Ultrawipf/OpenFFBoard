@@ -7,15 +7,14 @@
 
 #include "UartHandler.h"
 #include "global_callbacks.h"
+std::vector<UartHandler*> UartHandler::uartHandlers;
 
 UartHandler::UartHandler() {
-	extern std::vector<UartHandler*> uartHandlers;
-	addCallbackHandler(&uartHandlers, this);
+	addCallbackHandler(uartHandlers, this);
 }
 
 UartHandler::~UartHandler() {
-	extern std::vector<UartHandler*> uartHandlers;
-	removeCallbackHandler(&uartHandlers, this);
+	removeCallbackHandler(uartHandlers, this);
 }
 
 

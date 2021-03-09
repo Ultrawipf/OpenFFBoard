@@ -8,7 +8,6 @@
 #include "vector"
 #include <global_callbacks.h>
 #include "main.h"
-#include "usbd_cdc_if.h"
 #include "cppmain.h"
 #include "FFBoardMain.h"
 #include "ledEffects.h"
@@ -22,10 +21,18 @@
 #include "AdcHandler.h"
 #include "TimerHandler.h"
 #include "CommandHandler.h"
+#include "EffectsCalculator.h"
 #include "SpiHandler.h"
 #ifdef CANBUS
 #include "CanHandler.h"
 #endif
+
+#ifdef MIDI
+#include "MidiHandler.h"
+#include "midi_device.h"
+#endif
+
+#include "cdc_device.h"
 
 
 extern FFBoardMain* mainclass;
@@ -46,12 +53,6 @@ extern ADC_HandleTypeDef hadc3;
 volatile char uart_buf[UART_BUF_SIZE] = {0};
 
 
-// Externally stored so it can be used before the main class is initialized
-std::vector<CommandHandler*> cmdHandlers;
-std::vector<PersistentStorage*> flashHandlers;
-
-
-std::vector<AdcHandler*> adcHandlers;
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc){
 	//Pulse braking mosfet if internal voltage is higher than supply.
 	if(hadc == &VSENSE_HADC)
@@ -62,28 +63,28 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc){
 	if(buf == NULL)
 		return;
 
-	for(AdcHandler* c : adcHandlers){
+	for(AdcHandler* c : AdcHandler::adcHandlers){
 		c->adcUpd(buf,chans,hadc);
 	}
 }
 
+__weak void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim){
+	HAL_TIM_PeriodElapsedCallback_CPP(htim);
+}
 
-std::vector<TimerHandler*> timerHandlers;
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim) {
-	for(TimerHandler* c : timerHandlers){
+void HAL_TIM_PeriodElapsedCallback_CPP(TIM_HandleTypeDef* htim) {
+	for(TimerHandler* c : TimerHandler::timerHandlers){
 		c->timerElapsed(htim);
 	}
 }
 
 
-std::vector<ExtiHandler*> extiHandlers;
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
-	for(ExtiHandler* c : extiHandlers){
+	for(ExtiHandler* c : ExtiHandler::extiHandlers){
 		c->exti(GPIO_Pin);
 	}
 }
 
-std::vector<UartHandler*> uartHandlers;
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
 	if(huart == &UART_PORT){
 		  // Received uart data
@@ -92,7 +93,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
 			return;
 		}
 
-		for(UartHandler* c : uartHandlers){
+		for(UartHandler* c : UartHandler::uartHandlers){
 			c->uartRcv((char*)uart_buf);
 		}
 	}
@@ -100,7 +101,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
 
 #ifdef CANBUS
 // CAN
-std::vector<CanHandler*> canHandlers;
+
 uint8_t canRxBuf0[8];
 CAN_RxHeaderTypeDef canRxHeader0; // Receive header 0
 uint8_t canRxBuf1[8];
@@ -108,62 +109,62 @@ CAN_RxHeaderTypeDef canRxHeader1; // Receive header 1
 // RX
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan){
 	if(HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &canRxHeader0, canRxBuf0) == HAL_OK){
-		for(CanHandler* c : canHandlers){
+		for(CanHandler* c : CanHandler::canHandlers){
 			c->canRxPendCallback(hcan,canRxBuf0,&canRxHeader0,CAN_RX_FIFO0);
 		}
 	}
 }
 void HAL_CAN_RxFifo1MsgPendingCallback(CAN_HandleTypeDef *hcan){
 	if(HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO1, &canRxHeader1, canRxBuf1) == HAL_OK){
-		for(CanHandler* c : canHandlers){
+		for(CanHandler* c : CanHandler::canHandlers){
 			c->canRxPendCallback(hcan,canRxBuf1,&canRxHeader1,CAN_RX_FIFO1);
 		}
 	}
 }
 void HAL_CAN_RxFifo0FullCallback(CAN_HandleTypeDef *hcan){
-	for(CanHandler* c : canHandlers){
+	for(CanHandler* c : CanHandler::canHandlers){
 		c->canRxFullCallback(hcan,CAN_RX_FIFO0);
 	}
 }
 void HAL_CAN_RxFifo1FullCallback(CAN_HandleTypeDef *hcan){
-	for(CanHandler* c : canHandlers){
+	for(CanHandler* c : CanHandler::canHandlers){
 		c->canRxFullCallback(hcan,CAN_RX_FIFO1);
 	}
 }
 // TX
 void HAL_CAN_TxMailbox0CompleteCallback(CAN_HandleTypeDef *hcan){
-	for(CanHandler* c : canHandlers){
+	for(CanHandler* c : CanHandler::canHandlers){
 		c->canTxCpltCallback(hcan,CAN_TX_MAILBOX0);
 	}
 }
 void HAL_CAN_TxMailbox1CompleteCallback(CAN_HandleTypeDef *hcan){
-	for(CanHandler* c : canHandlers){
+	for(CanHandler* c : CanHandler::canHandlers){
 		c->canTxCpltCallback(hcan,CAN_TX_MAILBOX1);
 	}
 }
 void HAL_CAN_TxMailbox2CompleteCallback(CAN_HandleTypeDef *hcan){
-	for(CanHandler* c : canHandlers){
+	for(CanHandler* c : CanHandler::canHandlers){
 		c->canTxCpltCallback(hcan,CAN_TX_MAILBOX2);
 	}
 }
 void HAL_CAN_TxMailbox0AbortCallback(CAN_HandleTypeDef *hcan){
-	for(CanHandler* c : canHandlers){
+	for(CanHandler* c : CanHandler::canHandlers){
 		c->canTxAbortCallback(hcan,CAN_TX_MAILBOX0);
 	}
 }
 void HAL_CAN_TxMailbox1AbortCallback(CAN_HandleTypeDef *hcan){
-	for(CanHandler* c : canHandlers){
+	for(CanHandler* c : CanHandler::canHandlers){
 		c->canTxAbortCallback(hcan,CAN_TX_MAILBOX1);
 	}
 }
 void HAL_CAN_TxMailbox2AbortCallback(CAN_HandleTypeDef *hcan){
-	for(CanHandler* c : canHandlers){
+	for(CanHandler* c : CanHandler::canHandlers){
 		c->canTxAbortCallback(hcan,CAN_TX_MAILBOX2);
 	}
 }
 
 void HAL_CAN_ErrorCallback(CAN_HandleTypeDef *hcan){
-	for(CanHandler* c : canHandlers){
+	for(CanHandler* c : CanHandler::canHandlers){
 		c->canErrorCallback(hcan);
 	}
 }
@@ -213,60 +214,90 @@ void HAL_SPI_ErrorCallback(SPI_HandleTypeDef *hspi){
 	}
 }
 
+// USB Callbacks
+USBdevice* usb_device;
+uint8_t const * tud_descriptor_device_cb(void){
+  return usb_device->getUsbDeviceDesc();
+}
 
+uint8_t const * tud_descriptor_configuration_cb(uint8_t index){
+	return usb_device->getUsbConfigurationDesc(index);
+}
 
-// USB Specific callbacks
-void CDC_Callback(uint8_t* Buf, uint32_t *Len){
+uint16_t const* tud_descriptor_string_cb(uint8_t index, uint16_t langid){
+	return usb_device->getUsbStringDesc(index, langid);
+}
+
+const uint8_t* tud_hid_descriptor_report_cb(){
+	return UsbHidHandler::getHidDesc();
+}
+
+void tud_cdc_rx_cb(uint8_t itf){
 	pulseSysLed();
+	uint8_t buf[64];
+	uint32_t count = tud_cdc_read(buf, sizeof(buf));
 	if(mainclass!=nullptr)
-		mainclass->cdcRcv((char*)Buf,Len);
+		mainclass->cdcRcv((char*)buf,&count);
 }
-void CDC_Finished(){
+
+void tud_cdc_tx_complete_cb(uint8_t itf){
 	if(mainclass!=nullptr)
-		mainclass->cdcFinished();
+		mainclass->cdcFinished(itf);
 }
+
+
 
 /* USB Out Endpoint callback
  * HID Out and Set Feature
  */
-UsbHidHandler* globalHidHandler = nullptr;
-std::vector<UsbHidHandler*> hidCmdHandlers; // called only for custom cmd report ids
-void USBD_OutEvent_HID(uint8_t* report){
-	if(globalHidHandler!=nullptr)
-		globalHidHandler->hidOut(report);
+void tud_hid_set_report_cb(uint8_t report_id, hid_report_type_t report_type, uint8_t const* buffer, uint16_t bufsize){
+	if(UsbHidHandler::globalHidHandler!=nullptr)
+		UsbHidHandler::globalHidHandler->hidOut(report_id,report_type,buffer,bufsize);
 
-	if(report[0] == HID_ID_CUSTOMCMD){ // called only for the vendor defined report
-		for(UsbHidHandler* c : hidCmdHandlers){
-			c->hidOutCmd((HID_Custom_Data_t*)(report));
+	if(report_id == HID_ID_CUSTOMCMD){ // called only for the vendor defined report
+		for(UsbHidHandler* c : UsbHidHandler::hidCmdHandlers){
+			c->hidOutCmd((HID_Custom_Data_t*)(buffer));
 		}
 	}
+
 }
+
 /*
  * HID Get Feature
  */
-void USBD_GetEvent_HID(uint8_t id,uint16_t len,uint8_t** return_buf){
-	if(globalHidHandler!=nullptr)
-		globalHidHandler->hidGet(id, len, return_buf);
-
+uint16_t tud_hid_get_report_cb(uint8_t report_id, hid_report_type_t report_type, uint8_t* buffer, uint16_t reqlen){
+	if(UsbHidHandler::globalHidHandler != nullptr)
+		return UsbHidHandler::globalHidHandler->hidGet(report_id, report_type, buffer,reqlen);
+	return 0;
 }
 
-void USB_SOF(){
-	if(mainclass!=nullptr)
-		mainclass->SOF();
+#ifdef MIDI
+MidiHandler* midihandler = nullptr;
+void tud_midi_rx_cb(uint8_t itf){
+	if(!midihandler) return;
+	if(tud_midi_n_receive(itf,MidiHandler::buf)){
+		midihandler->midiRx(itf, MidiHandler::buf);
+	}
 }
-
+#endif
 
 /*
  * Called on usb disconnect and suspend
  */
-void USBD_Suspend(){
+void tud_suspend_cb(){
+	mainclass->usbSuspend();
+}
+void tud_umount_cb(){
 	mainclass->usbSuspend();
 }
 
 /*
- * Called on usb resume. Not called on connect... use SOF instead to detect first activity
+ * Called on usb mount
  */
-void USBD_Resume(){
+void tud_mount_cb(){
+	mainclass->usbResume();
+}
+void tud_resume_cb(){
 	mainclass->usbResume();
 }
 
@@ -306,5 +337,3 @@ void startADC(){
 	HAL_ADC_Start_DMA(&hadc3, (uint32_t*)ADC3_BUF, ADC3_CHANNELS);
 	#endif
 }
-
-

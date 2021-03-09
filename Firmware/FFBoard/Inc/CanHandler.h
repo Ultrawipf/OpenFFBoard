@@ -17,6 +17,7 @@ class CanHandler {
 public:
 	CanHandler();
 	virtual ~CanHandler();
+	static std::vector<CanHandler*> canHandlers;
 
 	static int32_t addCanFilter(CAN_HandleTypeDef* CanHandle,CAN_FilterTypeDef sFilterConfig);
 	static void removeCanFilter(CAN_HandleTypeDef* CanHandle,uint8_t filterId);

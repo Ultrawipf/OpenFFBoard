@@ -22,7 +22,7 @@
 #define FFBWHEEL
 #define MIDI
 #define TMCDEBUG
-#define CANBRIDGE
+//#define CANBRIDGE
 
 
 // Extra features
@@ -45,6 +45,8 @@
 #define TIM_PWM_FREQ 168000000
 
 #define TIM_MICROS htim10
+#define TIM_USER htim9 // Timer with full core clock speed available for the mainclass
+
 extern UART_HandleTypeDef huart1;
 #define UART_PORT huart1 // main uart port
 #define UART_BUF_SIZE 1 // How many bytes to expect via DMA
@@ -75,9 +77,19 @@ extern SPI_HandleTypeDef hspi2;
 #define HSPI2 hspi2
 
 // CAN
+#ifdef CANBUS
 extern CAN_HandleTypeDef hcan1;
 #define CANPORT hcan1
 
+#define CANSPEEDPRESET_50 0
+#define CANSPEEDPRESET_100 1
+#define CANSPEEDPRESET_125 2
+#define CANSPEEDPRESET_250 3
+#define CANSPEEDPRESET_500 4
+#define CANSPEEDPRESET_1000 5
+
+extern const uint32_t canSpeedBTR_preset[];
+#endif
 
 
 //Flash. 2 pages used

@@ -10,7 +10,7 @@
 #include <CmdParser.h>
 #include "ClassChooser.h"
 
-enum class ParseStatus : uint8_t {NOT_FOUND,OK,ERR,OK_CONTINUE};
+enum class ParseStatus : uint8_t {NOT_FOUND,OK,ERR,OK_CONTINUE,NO_REPLY};
 
 /*
  * Implements an interface for parsed command handlers
@@ -19,6 +19,8 @@ enum class ParseStatus : uint8_t {NOT_FOUND,OK,ERR,OK_CONTINUE};
  */
 class CommandHandler {
 public:
+	static std::vector<CommandHandler*> cmdHandlers;
+
 	CommandHandler();
 	virtual ~CommandHandler();
 	virtual bool hasCommands();
@@ -26,6 +28,12 @@ public:
 	virtual ParseStatus command(ParsedCommand* cmd,std::string* reply);
 	virtual const ClassIdentifier getInfo() = 0; // Command handlers always have class infos. Works well with ChoosableClass
 	virtual std::string getHelpstring(); // Returns a help string if "help" command is sent
+	static void sendSerial(std::string cmd,std::string string); // Send a command reply formatted sequence
+	static void logSerial(std::string string);	// Send a log formatted sequence
+
+	static bool logEnabled;
+	static bool logsEnabled();
+	static void setLogsEnabled(bool enabled);
 
 protected:
 	bool commandsEnabled = true;

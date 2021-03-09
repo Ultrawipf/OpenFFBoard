@@ -23,4 +23,5 @@ inline OutputPin& getExternalSPI_CSPin(unsigned pinNumber) {
 	return *csPins[pinNumber - 1];
 }
 
+
 #endif
