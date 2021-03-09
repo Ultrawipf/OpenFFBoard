@@ -10,12 +10,29 @@
 #include "FFBoardMain.h"
 
 std::vector<ErrorHandler*> ErrorHandler::errorHandlers;
-std::vector<Error_t> ErrorHandler::errors;
+std::vector<Error> ErrorHandler::errors;
 
-/*
- * Errors are equivalent if their code and type match
- */
-bool operator ==(const Error_t &a, const Error_t &b){return (a.code == b.code && a.type == b.type && a.info == b.info);}
+
+std::string Error::toString(){
+	std::string r = std::to_string((uint32_t)code) + ":";
+	switch(type){
+		case ErrorType::warning:
+			r += "warn";
+		break;
+
+		case ErrorType::critical:
+			r += "crit";
+		break;
+		case ErrorType::temporary:
+			r += "info";
+		break;
+		default:
+			r += "err";
+	}
+	r += ":" + (info == "" ? "no info" : info);
+	return r;
+}
+
 
 ErrorHandler::ErrorHandler() {
 	addCallbackHandler(errorHandlers,this);
@@ -44,8 +61,8 @@ void ErrorHandler::clearTemp(){
 	}
 }
 
-void ErrorHandler::addError(Error_t &error){
-	for(Error_t e : errors){
+void ErrorHandler::addError(Error error){
+	for(Error e : errors){
 		if(error == e){
 			return;
 		}
@@ -58,7 +75,7 @@ void ErrorHandler::addError(Error_t &error){
 	}
 }
 
-void ErrorHandler::clearError(Error_t &error){
+void ErrorHandler::clearError(Error error){
 	for (uint8_t i = 0; i < errors.size(); i++){
 		if(errors[i] == error){
 			errors.erase(errors.begin()+i);
@@ -86,17 +103,17 @@ void ErrorHandler::clearError(ErrorCode errorcode){
 	}
 }
 
-std::vector<Error_t>* ErrorHandler::getErrors(){
+std::vector<Error>* ErrorHandler::getErrors(){
 	return &errors;
 }
 
-void ErrorHandler::errorCallback(Error_t &error, bool cleared){
+void ErrorHandler::errorCallback(Error &error, bool cleared){
 
 }
 
 
 
-void ErrorPrinter::errorCallback(Error_t &error, bool cleared){
+void ErrorPrinter::errorCallback(Error &error, bool cleared){
 	if(!cleared){
 		FFBoardMain::sendSerial("Err", error.toString());
 	}

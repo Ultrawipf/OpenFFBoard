@@ -73,7 +73,7 @@ public:
 	void timerElapsed(TIM_HandleTypeDef* htim);
 	void exti(uint16_t GPIO_Pin);
 
-	void errorCallback(Error_t &error, bool cleared);
+	void errorCallback(Error &error, bool cleared);
 
 	uint16_t degreesOfRotation = 900; // How many degrees of range for the full gamepad range
 	uint16_t nextDegreesOfRotation = degreesOfRotation; // Buffer when changing range

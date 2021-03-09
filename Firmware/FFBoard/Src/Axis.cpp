@@ -142,8 +142,7 @@ void Axis::prepareForUpdate(){
 		return;
 	}
 
-	if (!drv->motorReady())
-		return;
+	if (!drv->motorReady()) return;
 
 	// Scale encoder value to set rotation range
 	// Update a change of range only when new range is within valid range
@@ -164,13 +163,9 @@ void Axis::prepareForUpdate(){
 	if (this->conf.drvtype == TMC4671::info.id){
 		TMC4671 *drv = static_cast<TMC4671 *>(this->drv);
 		//drv->Run(); // TODO thread!
-		if(drv->getState() == TMC_ControlState::HardError || drv->estopTriggered)
-		{
+		if(drv->getState() == TMC_ControlState::HardError || drv->estopTriggered){
 			emergencyStop();
 		}
-//		if(!drv->initialized){
-//			return;
-//		}
 	}
 }
 
@@ -279,8 +274,7 @@ void Axis::setupTMC4671ForAddress(uint8_t addr)
 	drv->startMotor();
 	drv->setLimits(tmclimits);
 
-	if (tmcFeedForward)
-	{
+	if (tmcFeedForward){
 		drv->setupFeedForwardTorque(torqueFFgain, torqueFFconst);
 		drv->setupFeedForwardVelocity(velocityFFgain, velocityFFconst);
 		drv->setFFMode(FFMode::torque);

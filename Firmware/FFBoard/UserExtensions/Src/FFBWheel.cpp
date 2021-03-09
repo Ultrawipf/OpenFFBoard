@@ -297,6 +297,11 @@ void FFBWheel::usbSuspend(){
 }
 
 void FFBWheel::usbResume(){
+#ifdef E_STOP_Pin
+	if(control.emergency && HAL_GPIO_ReadPin(E_STOP_GPIO_Port, E_STOP_Pin) != GPIO_PIN_RESET){ // Reconnected after emergency stop
+		control.emergency = false;
+	}
+#endif
 	control.usb_disabled = false;
 	axes_manager->usbResume();
 }
@@ -318,7 +323,7 @@ void FFBWheel::exti(uint16_t GPIO_Pin){
 	}
 #ifdef E_STOP_Pin
 	if(GPIO_Pin == E_STOP_Pin){ // Emergency stop. low active
-		if(HAL_GPIO_ReadPin(BUTTON_A_GPIO_Port, BUTTON_A_Pin) == GPIO_PIN_RESET){
+		if(HAL_GPIO_ReadPin(E_STOP_GPIO_Port, E_STOP_Pin) == GPIO_PIN_RESET){
 			emergencyStop();
 		}
 	}
@@ -328,7 +333,7 @@ void FFBWheel::exti(uint16_t GPIO_Pin){
 /*
  * Error handling
  */
-void FFBWheel::errorCallback(Error_t &error, bool cleared){
+void FFBWheel::errorCallback(Error &error, bool cleared){
 	if(error.type == ErrorType::critical){
 		if(!cleared){
 			this->emergencyStop();

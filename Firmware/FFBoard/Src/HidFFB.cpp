@@ -78,7 +78,7 @@ void HidFFB::hidOutCmd(HID_Custom_Data_t *data){
 /*
  * Called when HID OUT data is received via USB
  */
-void HidFFB::hidOut(uint8_t report_id, hid_report_type_t report_type, uint8_t const *buffer, uint16_t bufsize){
+void HidFFB::hidOut(uint8_t report_id, hid_report_type_t report_type, uint8_t const* buffer, uint16_t bufsize){
 	hid_out_period = (micros() - lastOut); // For measuring update rate
 	lastOut = micros();
 	// FFB Output Message

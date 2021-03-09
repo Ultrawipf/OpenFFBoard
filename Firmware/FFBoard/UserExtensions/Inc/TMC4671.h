@@ -22,6 +22,7 @@
 
 #define SPITIMEOUT 100
 #define TMC_THREAD_MEM 512
+#define TMC_THREAD_PRIO 41
 extern SPI_HandleTypeDef HSPIDRV;
 
 enum class TMC_ControlState {uninitialized,No_power,Shutdown,Running,Init_wait,ABN_init,AENC_init,Enc_bang,HardError,OverTemp,EncoderFinished};
@@ -201,11 +202,11 @@ public:
 
 	void setMotorType(MotorType motor,uint16_t poles);
 
-	void runOpenLoop(uint16_t ud,uint16_t uq,int32_t speed,int32_t accel);
+	void runOpenLoop(uint16_t ud,uint16_t uq,int32_t speed,int32_t accel,bool torqueMode = false);
 	void setOpenLoopSpeedAccel(int32_t speed,uint32_t accel);
 
 	// Setup routines
-	void calibrateAdcOffset();
+	bool calibrateAdcOffset(uint16_t time = 500);
 	void setup_ABN_Enc(TMC4671ABNConf encconf);
 	void setup_AENC(TMC4671AENCConf encconf);
 	void setup_HALL(TMC4671HALLConf hallconf);
@@ -264,7 +265,7 @@ public:
 	int16_t getFlux();
 	void setFluxTorque(int16_t flux, int16_t torque);
 	void setFluxTorqueFF(int16_t flux, int16_t torque);
-	int32_t getActualCurrent();
+	std::pair<int32_t,int32_t> getActualCurrent();
 
 	float getTemp();
 	TMC_ControlState getState();
@@ -329,7 +330,9 @@ private:
 	ENC_InitState encstate = ENC_InitState::uninitialized;
 	TMC_ControlState state = TMC_ControlState::uninitialized;
 	TMC_ControlState laststate = TMC_ControlState::uninitialized;
+	TMC_ControlState laststateNopower;
 	MotionMode curMotionMode = MotionMode::stop;
+	MotionMode lastMotionMode = MotionMode::stop;
 	bool oldTMCdetected = false; // ES versions should not exist anymore
 
 	uint8_t enc_retry = 0;
@@ -346,6 +349,7 @@ private:
 
 	void initAdc(uint16_t mdecA, uint16_t mdecB,uint32_t mclkA,uint32_t mclkB);
 	void setPwm(uint8_t val,uint16_t maxcnt,uint8_t bbmL,uint8_t bbmH);// 100MHz/maxcnt+1
+	void setPwm(uint8_t val);// 100MHz/maxcnt+1
 	void setSvPwm(bool enable);
 	void encInit();
 

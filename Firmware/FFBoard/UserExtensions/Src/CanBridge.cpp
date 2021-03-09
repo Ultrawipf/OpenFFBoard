@@ -313,6 +313,162 @@ void CanBridge::cdcRcv(char* Buf, uint32_t *Len){
 			break;
 		}
 
+	}
+	tud_cdc_n_write(0,reply.data(), reply.size());
+	tud_cdc_write_flush();
+}
+
+
+//void CanBridge::sendGvretReply(std::vector<uint8_t>* dat, uint8_t cmd){
+//	CDC_Transmit_FS(data, len);
+//}
+
+void CanBridge::cdcRcv(char* Buf, uint32_t *Len){
+
+	// Not a gvret binary command
+
+	if(*Buf == 0xE7){
+		gvretMode = true;
+	}
+
+	if(gvretMode == false || (*Buf != 0xE7 && *Buf != 0xF1)){ // Not gvret command
+		FFBoardMain::cdcRcv(Buf, Len);
+		return;
+	}
+
+
+	/*
+	 * Data format in buf:
+	 * 0xE1,0xE1,0xF1,cmd,data...
+	 * data = buf+2
+	 */
+
+	// Find start marker
+	uint8_t pos = 0;
+	for(uint8_t i = 0; i < *Len-pos; i++){
+		pos = i+1;
+		if((Buf[i]) == 0xF1){
+			break;
+		}
+	}
+
+	std::vector<char> reply;
+	while(pos < *Len){
+
+		uint8_t datalength = *Len;
+		uint8_t* data = (uint8_t*)(Buf+pos+1);
+		uint8_t cmd = *(Buf+pos);
+
+		// find next F1 or end
+		for(uint8_t i = 0; i < *Len-pos; i++){
+			datalength = i;
+			if((data[i]) == 0xF1){
+				break;
+			}
+		}
+		pos = pos+datalength+2; // Move offset for next loop
+
+
+		switch(cmd){
+
+			case(0):
+			{ // send can
+				if(*Len < 8)
+					break;
+				uint32_t id = *data | (*(data+1) << 8) | (*(data+2) << 16) | (*(data+3) << 24); // = dat[2] | dat[3] >> 8 | dat[3] >> 16 | dat[4] >> 21
+				uint64_t msg = 0;
+				uint8_t bus = data[4];
+				uint8_t msgLen = data[5];
+				if(bus == 0){
+					memcpy(&msg,data+6,std::min<int>(msgLen, 8)); // Copy variable length buffer
+					sendMessage(id, msg,msgLen);
+				}
+
+				break;
+			}
+			case(1):
+			{	// sync. Microseconds since start up LSB to MSB
+				uint32_t time = HAL_GetTick()*1000;//HAL_CAN_GetTxTimestamp(CanHandle, txMailbox); // or use systick and scale.
+				std::vector<char> t = {0xF1,cmd,(char)(time & 0xff), (char)((time >> 8) & 0xff), (char)((time >> 16) & 0xff), (char)((time >> 24) & 0xff)};
+				reply.insert(reply.end(),t.begin(),t.end());
+
+				break;
+			}
+			case(2): // get digital in
+
+			break;
+
+			case(3): // get analog in
+
+			break;
+
+			case(4): // set digital out
+
+			break;
+
+			case(5): // set can config
+			{
+				uint32_t speed = *data | (*(data+1) << 8) | (*(data+2) << 16) | (*(data+3) << 24);
+				speed = speed & 0x1fffffff;
+				uint8_t b3 = *(data+3); // config byte
+				if(b3 & 0x80){
+					conf1.enabled = (b3 & 0x40) != 0;
+					conf1.listenOnly = (b3 & 0x20) != 0;
+				}
+				this->setCanSpeed(speed);
+				break;
+			}
+			case(6): // get can config
+			{
+				std::vector<char> t =
+					{	0xF1,cmd,
+							(char)(conf1.enabled | conf1.listenOnly << 4),(char)(conf1.speed & 0xff), (char)((conf1.speed >> 8) & 0xff),(char)((conf1.speed >> 16) & 0xff),(char)((conf1.speed >> 24) & 0xff),
+							(char)(conf2.enabled | conf2.listenOnly << 4),(char)(conf2.speed & 0xff), (char)((conf2.speed >> 8) & 0xff),(char)((conf2.speed >> 16) & 0xff),(char)((conf2.speed >> 24) & 0xff),
+					};
+				reply.insert(reply.end(),t.begin(),t.end());
+				break;
+			}
+
+
+			case(7): // get device info
+			{
+				std::vector<char> t = {0xF1,cmd,1,1,1,0,0,0};
+				reply.insert(reply.end(),t.begin(),t.end());
+				break;
+			}
+
+
+			case(8): // set single wire mode
+
+			break;
+
+			case(9):{ // keep alive
+				reply.insert(reply.end(),keepalivemsg.begin(),keepalivemsg.end());
+				break;
+			}
+			case(10): // set system
+
+			break;
+
+			case(11): // echo can frame
+
+			break;
+
+			case(12): // Num buses
+			{
+				std::vector<char> t = {0xF1,cmd,numBuses};
+				reply.insert(reply.end(),t.begin(),t.end());
+			}
+			break;
+			case(13): // ext buses
+			break;
+			case(14): // set ext buses
+			break;
+			default:
+				// unknown command
+			break;
+		}
+
 		if(gvretMode){
 			uint32_t time = rxHeader->Timestamp;
 			uint32_t id = rxHeader->StdId;

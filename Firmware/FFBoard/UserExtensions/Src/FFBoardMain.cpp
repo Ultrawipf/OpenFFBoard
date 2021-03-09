@@ -12,7 +12,6 @@
 #include "usb_descriptors.h"
 #include "cdc_device.h"
 
-
 ClassIdentifier FFBoardMain::info ={.name = "Basic" , .id=0};
 
 
