@@ -22,7 +22,7 @@
 
 #define SPITIMEOUT 100
 #define TMC_THREAD_MEM 512
-#define TMC_THREAD_PRIO 21
+#define TMC_THREAD_PRIO 25 // Must be higher than main thread
 extern SPI_HandleTypeDef HSPIDRV;
 
 enum class TMC_ControlState {uninitialized,No_power,Shutdown,Running,Init_wait,ABN_init,AENC_init,Enc_bang,HardError,OverTemp,EncoderFinished};
