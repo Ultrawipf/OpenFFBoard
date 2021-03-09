@@ -327,7 +327,7 @@ void TMC4671::Run(){
 			if(hasPower() && !emergency){
 				changeState(laststateNopower);
 				setMotionMode(lastMotionMode);
-				ErrorHandler::clearError(lowVoltageError);
+				ErrorHandler::clearError(ErrorCode::undervoltage);
 				HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_SET);
 			}
 			pulseErrLed();

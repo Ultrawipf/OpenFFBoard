@@ -9,7 +9,7 @@
  */
 
 
-#define SW_VERSION "1.2.6" // Version string
+#define SW_VERSION "1.2.7" // Version string
 
 
 
