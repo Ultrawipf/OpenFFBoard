@@ -196,6 +196,7 @@ __ALIGN_BEGIN const uint8_t hid_ffb_desc[USB_HID_FFB_REPORT_DESC_SIZE] __ALIGN_E
 			   0x09,0x50,         //    Usage Duration
 			   0x09,0x54,         //    Usage Trigger Repeat Interval
 			   0x09,0x51,         //    Usage Sample Period
+			   0x09,0xA7,         //    Usage Start Delay
 			   0x15,0x00,         //    Logical Minimum 0
 			   0x26,0xFF,0x7F,    //    Logical Maximum 7FFFh (32767d)
 			   0x35,0x00,         //    Physical Minimum 0
@@ -203,7 +204,7 @@ __ALIGN_BEGIN const uint8_t hid_ffb_desc[USB_HID_FFB_REPORT_DESC_SIZE] __ALIGN_E
 			   0x66,0x03,0x10,    //    Unit 1003h (4099d)
 			   0x55,0xFD,         //    Unit Exponent FDh (253d)
 			   0x75,0x10,         //    Report Size 10h (16d)
-			   0x95,0x03,         //    Report Count 3
+			   0x95,0x04,         //    Report Count 4
 			   0x91,0x02,         //    Output (Variable)
 			   0x55,0x00,         //    Unit Exponent 0
 			   0x66,0x00,0x00,    //    Unit 0
