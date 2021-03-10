@@ -83,7 +83,7 @@ struct TMC4671PIDConf{
 
 struct TMC4671Limits{
 	uint16_t pid_torque_flux_ddt	= 32767;
-	uint16_t pid_uq_ud				= 23169;
+	uint16_t pid_uq_ud				= 30000;
 	uint16_t pid_torque_flux		= 32767;
 	uint32_t pid_acc_lim			= 2147483647;
 	uint32_t pid_vel_lim			= 2147483647;
@@ -290,6 +290,9 @@ public:
 	TMC4671Limits curLimits;
 	void setLimits(TMC4671Limits limits);
 	TMC4671Limits getLimits();
+
+	void setUqUdLimit(uint16_t limit);
+	void setTorqueLimit(uint16_t limit);
 
 	TMC4671ABNConf abnconf;
 	TMC4671HALLConf hallconf;
