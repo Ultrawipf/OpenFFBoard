@@ -290,9 +290,9 @@ void FFBWheel::setPower(uint16_t power){
 	// Update hardware limits for TMC for safety
 	if(this->conf.drvtype == TMC4671::info.id){
 		TMC4671* drv = static_cast<TMC4671*>(this->drv);
-		//tmclimits.pid_uq_ud = power;
-		tmclimits.pid_torque_flux = power;
-		drv->setLimits(tmclimits);
+//		//tmclimits.pid_uq_ud = power;
+//		tmclimits.pid_torque_flux = power;
+		drv->setTorqeLimit(power);
 	}
 
 	this->power = power;
