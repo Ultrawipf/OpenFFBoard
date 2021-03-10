@@ -1240,6 +1240,20 @@ TMC4671PIDConf TMC4671::getPids(){
 	return curPids;
 }
 
+/*
+ * Limits the PWM value
+ */
+void TMC4671::setUqUdLimit(uint16_t limit){
+	this->curLimits.pid_uq_ud = limit;
+	writeReg(0x5D, limit);
+}
+
+void TMC4671::setTorqueLimit(uint16_t limit){
+	this->curLimits.pid_torque_flux = limit;
+	writeReg(0x5E, limit);
+}
+
+
 void TMC4671::setLimits(TMC4671Limits limits){
 	this->curLimits = limits;
 	writeReg(0x5C, limits.pid_torque_flux_ddt);
@@ -1583,6 +1597,13 @@ ParseStatus TMC4671::command(ParsedCommand* cmd,std::string* reply){
 	}else if(cmd->cmd == "acttrq"){
 		if(cmd->type == CMDtype::get){
 			*reply+=std::to_string(getActualCurrent().second);
+		}
+
+	}else if(cmd->cmd == "tmcpwmlim"){
+		if(cmd->type == CMDtype::get){
+			*reply+=std::to_string(this->curLimits.pid_uq_ud);
+		}else if(cmd->type == CMDtype::set){
+			this->setUqUdLimit(cmd->val);
 		}
 
 	}else if(cmd->cmd == "torqueP"){
