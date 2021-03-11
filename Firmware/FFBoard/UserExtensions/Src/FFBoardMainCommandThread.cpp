@@ -24,7 +24,7 @@
 extern ClassChooser<FFBoardMain> mainchooser;
 
 
-FFBoardMainCommandThread::FFBoardMainCommandThread(FFBoardMain* mainclass) : Thread("cmdparser",512, 40) {
+FFBoardMainCommandThread::FFBoardMainCommandThread(FFBoardMain* mainclass) : Thread("cmdparser",512, 39) {
 	main = mainclass;
 	this->Start();
 }
@@ -136,6 +136,9 @@ ParseStatus FFBoardMainCommandThread::executeSysCommand(ParsedCommand* cmd,std::
 
 	}else if(cmd->cmd == "errors"){
 		printErrors(reply);
+
+	}else if(cmd->cmd == "errorsclr"){
+		ErrorHandler::clearAll();
 
 	}else if(cmd->cmd == "flashraw"){ // Set and get flash eeprom emulation values
 		if(cmd->type == CMDtype::setat){

@@ -22,7 +22,7 @@
 
 #define SPITIMEOUT 100
 #define TMC_THREAD_MEM 512
-#define TMC_THREAD_PRIO 41
+#define TMC_THREAD_PRIO 25 // Must be higher than main thread
 extern SPI_HandleTypeDef HSPIDRV;
 
 enum class TMC_ControlState {uninitialized,No_power,Shutdown,Running,Init_wait,ABN_init,AENC_init,Enc_bang,HardError,OverTemp,EncoderFinished};
@@ -83,7 +83,7 @@ struct TMC4671PIDConf{
 
 struct TMC4671Limits{
 	uint16_t pid_torque_flux_ddt	= 32767;
-	uint16_t pid_uq_ud				= 23169;
+	uint16_t pid_uq_ud				= 30000;
 	uint16_t pid_torque_flux		= 32767;
 	uint32_t pid_acc_lim			= 2147483647;
 	uint32_t pid_vel_lim			= 2147483647;
@@ -294,6 +294,9 @@ public:
 	void setLimits(TMC4671Limits limits);
 	TMC4671Limits getLimits();
 
+	void setUqUdLimit(uint16_t limit);
+	void setTorqueLimit(uint16_t limit);
+
 	TMC4671ABNConf abnconf;
 	TMC4671HALLConf hallconf;
 	TMC4671AENCConf aencconf;
@@ -327,6 +330,7 @@ public:
 
 
 private:
+	Error lowVoltageError = Error(ErrorCode::undervoltage,ErrorType::warning,"Low motor voltage");
 	ENC_InitState encstate = ENC_InitState::uninitialized;
 	TMC_ControlState state = TMC_ControlState::uninitialized;
 	TMC_ControlState laststate = TMC_ControlState::uninitialized;

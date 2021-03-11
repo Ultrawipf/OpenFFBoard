@@ -53,7 +53,7 @@ const ClassIdentifier TMC4671::getInfo() {
 //	std::string axis_name = "TMC4671-";
 //	axis_name.push_back(axis_letter);
 //	return ClassIdentifier {.name = axis_name.c_str(), .id = 1, .instance = this->address, .hidden = false};
-	return ClassIdentifier {.name = TMC4671::info.name, .id = TMC4671::info.id, .unique = 'W'+this->address, .hidden = TMC4671::info.hidden};
+	return ClassIdentifier {.name = TMC4671::info.name, .id = TMC4671::info.id, .unique = (int8_t)('W'+this->address), .hidden = TMC4671::info.hidden};
 }
 
 // Returns channel if ok to use else 0
@@ -389,6 +389,7 @@ void TMC4671::Run(){
 			if(hasPower() && !emergency){
 				changeState(laststateNopower);
 				setMotionMode(lastMotionMode);
+				ErrorHandler::clearError(ErrorCode::undervoltage);
 				HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_SET);
 			}
 			pulseErrLed();
@@ -405,6 +406,7 @@ void TMC4671::Run(){
 		if(!hasPower() && state != TMC_ControlState::No_power){ // low voltage or overvoltage
 			lastMotionMode = curMotionMode;
 			laststateNopower = state;
+			ErrorHandler::addError(lowVoltageError);
 			setMotionMode(MotionMode::stop); // Disable tmc
 			changeState(TMC_ControlState::No_power);
 			HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_RESET);
@@ -560,7 +562,7 @@ void TMC4671::calibrateAenc(){
 	writeReg(0x23,0); // set phie openloop 0
 	setPhiEtype(PhiE::openloop);
 	setMotionMode(MotionMode::torque);
-	for(int16_t flux = 0; flux <= 3000; flux+=10){
+	for(int16_t flux = 0; flux <= bangInitPower; flux+=10){
 		setFluxTorque(flux, 0);
 		Delay(10);
 	}
@@ -569,7 +571,7 @@ void TMC4671::calibrateAenc(){
 	uint32_t maxVal_0 = 0,	maxVal_1 = 0,	maxVal_2 = 0;
 	int32_t minpos = -0x8fff/std::max<int32_t>(1,std::min<int32_t>(this->aencconf.cpr/4,20)), maxpos = 0x8fff/std::max<int32_t>(1,std::min<int32_t>(this->aencconf.cpr/4,20));
 	uint32_t speed = std::max<uint32_t>(1,20/std::max<uint32_t>(1,this->aencconf.cpr/10));
-	runOpenLoop(3000, 0, speed, 100,true);
+	runOpenLoop(bangInitPower, 0, speed, 100,true);
 
 	uint8_t stage = 0;
 	int32_t poles = conf.motconf.pole_pairs;
@@ -1073,7 +1075,8 @@ void TMC4671::stopMotor(){
 	//HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_RESET);
 	active = false;
 	if(state == TMC_ControlState::Running){
-		setPwm(0); // disable foc
+		setMotionMode(MotionMode::stop);
+		//setPwm(0); // disable foc
 		changeState(TMC_ControlState::Shutdown);
 	}
 }
@@ -1091,6 +1094,7 @@ void TMC4671::startMotor(){
 	if(hasPower()){
 		HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_SET);
 		setPwm(7); // enable foc
+		setMotionMode(lastMotionMode);
 
 	}else{
 		changeState(TMC_ControlState::Init_wait);
@@ -1297,6 +1301,20 @@ TMC4671PIDConf TMC4671::getPids(){
 	curPids = {(uint16_t)(f&0xffff),(uint16_t)(f>>16),(uint16_t)(t&0xffff),(uint16_t)(t>>16),(uint16_t)(v&0xffff),(uint16_t)(v>>16),(uint16_t)(p&0xffff),(uint16_t)(p>>16)};
 	return curPids;
 }
+
+/*
+ * Limits the PWM value
+ */
+void TMC4671::setUqUdLimit(uint16_t limit){
+	this->curLimits.pid_uq_ud = limit;
+	writeReg(0x5D, limit);
+}
+
+void TMC4671::setTorqueLimit(uint16_t limit){
+	this->curLimits.pid_torque_flux = limit;
+	writeReg(0x5E, limit);
+}
+
 
 void TMC4671::setLimits(TMC4671Limits limits){
 	this->curLimits = limits;
@@ -1645,6 +1663,13 @@ ParseStatus TMC4671::command(ParsedCommand* cmd,std::string* reply){
 	}else if(cmd->cmd == "acttrq"){
 		if(cmd->type == CMDtype::get){
 			*reply+=std::to_string(getActualCurrent().second);
+		}
+
+	}else if(cmd->cmd == "tmcpwmlim"){
+		if(cmd->type == CMDtype::get){
+			*reply+=std::to_string(this->curLimits.pid_uq_ud);
+		}else if(cmd->type == CMDtype::set){
+			this->setUqUdLimit(cmd->val);
 		}
 
 	}else if(cmd->cmd == "torqueP"){

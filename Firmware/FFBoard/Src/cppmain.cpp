@@ -71,7 +71,7 @@ void cppmain() {
 		updateLeds();
 		external_spi.process();
 		refreshWatchdog();
-		taskYIELD();
+		taskYIELD(); // Change task if higher priority task wants to run
 	}
 }
 

@@ -182,8 +182,8 @@ void Axis::setPower(uint16_t power)
 	{
 		TMC4671 *drv = static_cast<TMC4671 *>(this->drv);
 		//tmclimits.pid_uq_ud = power;
-		tmclimits.pid_torque_flux = power;
-		drv->setLimits(tmclimits);
+		//tmclimits.pid_torque_flux = power;
+		drv->setTorqueLimit(power);
 	}
 }
 
@@ -266,9 +266,11 @@ void Axis::setupTMC4671ForAxis(char axis)
 	TMC4671 *drv = static_cast<TMC4671 *>(this->drv);
 	drv->setAddress(this->conf.tmc_cs, (uint8_t)(axis-'W')); // X=1, Y=2, etc
 //	drv->initialize();
-	drv->startMotor();
+	drv->initialize();
+	tmclimits.pid_torque_flux = getPower();
 	drv->setLimits(tmclimits);
-
+	//drv->setBiquadFlux(fluxbq);
+	
 	if (tmcFeedForward){
 		drv->setupFeedForwardTorque(torqueFFgain, torqueFFconst);
 		drv->setupFeedForwardVelocity(velocityFFgain, velocityFFconst);
