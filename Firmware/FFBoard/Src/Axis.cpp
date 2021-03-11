@@ -34,32 +34,25 @@ std::vector<class_entry<Encoder> > encoder_sources =
 #endif
 };
 
-ClassIdentifier Axis::info = {
-	.name = "NONE",
-	.id = 0,
-	.hidden = true};
-const ClassIdentifier Axis::getInfo()
-{
-	return info;
-}
+
 
 // TODO class type for parser? (Simhub for example)
 //////////////////////////////////////////////
 
-Axis::Axis(uint8_t axis,volatile Control_t* control) : NormalizedAxis(axis), drv_chooser(motor_sources), enc_chooser(encoder_sources)
+Axis::Axis(char axis,volatile Control_t* control) : NormalizedAxis(axis), drv_chooser(motor_sources), enc_chooser(encoder_sources)
 {
 	// Create HID FFB handler. Will receive all usb messages directly
-	this->axis_no = axis; // Axis are indexed from 1-X to 3-Z
+//	this->axis = axis;
 	this->control = control;
-	if (axis == 1)
+	if (axis == 'X')
 	{
 		this->flashAddrs = AxisFlashAddrs({ADR_AXIS1_CONFIG, ADR_TMC1_CPR});
 	}
-	else if (axis == 2)
+	else if (axis == 'Y')
 	{
 		this->flashAddrs = AxisFlashAddrs({ADR_AXIS2_CONFIG, ADR_TMC2_CPR});
 	}
-	else if (axis == 3)
+	else if (axis == 'Z')
 	{
 		this->flashAddrs = AxisFlashAddrs({ADR_AXIS3_CONFIG, ADR_TMC3_CPR});
 	}
@@ -105,6 +98,8 @@ void Axis::saveFlash(){
 	}
 	drv->saveFlash(); // Motor driver
 }
+
+
 
 uint8_t Axis::getDrvType(){
 	return (uint8_t)this->conf.drvtype;
@@ -263,13 +258,13 @@ void Axis::setDrvType(uint8_t drvtype)
 // Special tmc setup methods
 void Axis::setupTMC4671()
 {
-	this->setupTMC4671ForAddress(this->axis_no);
+	this->setupTMC4671ForAxis(axis);
 }
 
-void Axis::setupTMC4671ForAddress(uint8_t addr)
+void Axis::setupTMC4671ForAxis(char axis)
 {
 	TMC4671 *drv = static_cast<TMC4671 *>(this->drv);
-	drv->setAddress(this->conf.tmc_cs, addr);
+	drv->setAddress(this->conf.tmc_cs, (uint8_t)(axis-'W')); // X=1, Y=2, etc
 //	drv->initialize();
 	drv->startMotor();
 	drv->setLimits(tmclimits);
@@ -375,6 +370,9 @@ bool Axis::processHidCommand(HID_Custom_Data_t *data){
 
 ParseStatus Axis::command(ParsedCommand *cmd, std::string *reply)
 {
+	if (cmd->axis != axis){
+		return ParseStatus::NOT_FOUND;
+	}
 
 	// Check the super class command handler first
 	ParseStatus flag = NormalizedAxis::command(cmd, reply);

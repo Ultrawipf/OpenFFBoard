@@ -7,7 +7,7 @@
 
 #include "MotorDriver.h"
 
-ClassIdentifier MotorDriver::info ={.name = "None" , .id=0, .hidden = false};
+ClassIdentifier MotorDriver::info ={.name = "None" , .id=0, .unique = '0', .hidden = false};
 
 const ClassIdentifier MotorDriver::getInfo(){
 	return info;

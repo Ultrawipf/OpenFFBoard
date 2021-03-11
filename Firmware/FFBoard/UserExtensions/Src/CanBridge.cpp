@@ -17,6 +17,7 @@ extern TIM_TypeDef TIM_MICROS;
 ClassIdentifier CanBridge::info = {
 		 .name = "CAN Bridge" ,
 		 .id=12,
+		 .unique = '0',
 		 .hidden=false //Set false to list
  };
 

@@ -14,7 +14,8 @@
 
 ClassIdentifier ShifterAnalog::info = {
 		 .name = "Shifter Analog" ,
-		 .id=3
+		 .id=3,
+		 .unique = '0'
  };
 const ClassIdentifier ShifterAnalog::getInfo(){
 	return info;

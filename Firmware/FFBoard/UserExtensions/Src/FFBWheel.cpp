@@ -14,7 +14,8 @@
 // Unique identifier for listing
 ClassIdentifier FFBWheel::info = {
 		 .name = "FFB Wheel" , // Leave as wheel for now
-		 .id=1
+		 .id=1,
+		 .unique = '0'
  };
 
 const ClassIdentifier FFBWheel::getInfo(){

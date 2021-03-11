@@ -172,7 +172,7 @@ ParseStatus FFBoardMainCommandThread::executeSysCommand(ParsedCommand* cmd,std::
 			if(handler->hasCommands()){
 				ClassIdentifier i = handler->getInfo();
 				if(!i.hidden)
-					*reply += std::string(i.name) + ":" + std::to_string(i.id) + "\n";
+					*reply += std::string(i.name) + ":" + std::to_string(i.id) + ":" + i.unique + "\n";
 			}
 		}
 

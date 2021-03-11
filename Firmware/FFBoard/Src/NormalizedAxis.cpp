@@ -7,16 +7,26 @@
 
 #include "NormalizedAxis.h"
 
+ClassIdentifier NormalizedAxis::info = {
+	.name = "Axis",
+	.id = 1,
+	.unique = 'X',
+	.hidden = false};
+//
+//const ClassIdentifier NormalizedAxis::getInfo()
+//{
+//	return info;
+//}
 
 
-NormalizedAxis::NormalizedAxis(uint8_t axis) {
-	axis_no = axis; // Axis are indexed from 1-X to 3-Z
+NormalizedAxis::NormalizedAxis(char axis) {
+	this->axis = axis; // Axis are indexed from 1-X to 3-Z
 
-	if(axis == 1){
+	if(axis == 'X'){
 		flashAddrs = NormalizedAxisFlashAddrs_t({ADR_AXIS1_ENDSTOP, ADR_AXIS1_EFFECTS1, ADR_AXIS1_POWER, ADR_AXIS1_DEGREES});
-	}else if(axis == 2){
+	}else if(axis == 'Y'){
 		flashAddrs = NormalizedAxisFlashAddrs_t({ADR_AXIS2_ENDSTOP, ADR_AXIS2_EFFECTS1, ADR_AXIS2_POWER, ADR_AXIS2_DEGREES});
-	}else if(axis == 3){
+	}else if(axis == 'Z'){
 		flashAddrs = NormalizedAxisFlashAddrs_t({ADR_AXIS3_ENDSTOP, ADR_AXIS3_EFFECTS1, ADR_AXIS3_POWER, ADR_AXIS3_DEGREES});
 	}
 
@@ -25,6 +35,13 @@ NormalizedAxis::NormalizedAxis(uint8_t axis) {
 
 NormalizedAxis::~NormalizedAxis() {
 //
+}
+
+const ClassIdentifier NormalizedAxis::getInfo() {
+//	char axis_letter = 'W' + axis_no;
+//	std::string axis_name = " Axis";
+//	axis_name.insert(0,1,axis_letter);
+	return ClassIdentifier {NormalizedAxis::info.name, NormalizedAxis::info.id, axis, NormalizedAxis::info.hidden};
 }
 
 effect_gain_t* NormalizedAxis::getEffectGains() {
@@ -256,7 +273,6 @@ bool NormalizedAxis::processHidCommand(HID_Custom_Data_t* data) {
 
 ParseStatus NormalizedAxis::command(ParsedCommand *cmd, std::string *reply)
 {
-
 	ParseStatus flag = ParseStatus::OK;
 	// ------------ General commands ----------------
 

@@ -11,6 +11,7 @@
 #include <CmdParser.h>
 #include <FFBoardMain.h>
 #include "PersistentStorage.h"
+#include "CommandHandler.h"
 
 #include "cppmain.h"
 #include "HidFFB.h"
@@ -51,10 +52,14 @@ struct axis_metric_t {
 };
 
 
-class NormalizedAxis: public PersistentStorage {
+class NormalizedAxis: public PersistentStorage, public CommandHandler {
 public:
-	NormalizedAxis(uint8_t axis);
+	NormalizedAxis(char axis);
 	virtual ~NormalizedAxis();
+
+	//ClassIdentifier getInfo() override;
+	static ClassIdentifier info;
+	const ClassIdentifier getInfo();
 
     virtual void saveFlash();
 	virtual void restoreFlash();
@@ -84,9 +89,9 @@ protected:
 	uint16_t getPower();
 	float getTorqueScaler();
 	bool isInverted();
+	char axis;
 
 private:
-	uint8_t axis_no;
 	axis_metric_t metric;
 	int32_t effectTorque = 0;
 	uint8_t idlespringstrength = 127;

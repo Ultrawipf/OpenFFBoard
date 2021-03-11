@@ -18,11 +18,12 @@ uint8_t TMC4671::UsedSPIChannels[MAX_AXIS + 1] = {0};
 
 ClassIdentifier TMC4671::info = {
 	.name = "TMC4671" ,
-	.id=1
+	.id=1,
+	.unique = '0'
 };
-const ClassIdentifier TMC4671::getInfo(){
-	return info;
-}
+//const ClassIdentifier TMC4671::getInfo(){
+//	return info;
+//}
 
 TMC4671::TMC4671(SPI_HandleTypeDef* spi,GPIO_TypeDef* csport,uint16_t cspin,TMC4671MainConfig conf) : Thread("TMC", TMC_THREAD_MEM, TMC_THREAD_PRIO){
 	this->cspin = cspin;
@@ -44,6 +45,15 @@ TMC4671::TMC4671() : Thread("TMC", TMC_THREAD_MEM, TMC_THREAD_PRIO){
 TMC4671::~TMC4671() {
 	HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_RESET);
 	UsedSPIChannels[this->address] = 0;
+}
+
+
+const ClassIdentifier TMC4671::getInfo() {
+//	char axis_letter = '0' + this->address;
+//	std::string axis_name = "TMC4671-";
+//	axis_name.push_back(axis_letter);
+//	return ClassIdentifier {.name = axis_name.c_str(), .id = 1, .instance = this->address, .hidden = false};
+	return ClassIdentifier {.name = TMC4671::info.name, .id = TMC4671::info.id, .unique = 'W'+this->address, .hidden = TMC4671::info.hidden};
 }
 
 // Returns channel if ok to use else 0
@@ -1588,6 +1598,10 @@ void TMC4671::restoreEncHallMisc(uint16_t val){
 
 
 ParseStatus TMC4671::command(ParsedCommand* cmd,std::string* reply){
+	if (cmd->axis-'W' != this->address){
+		return ParseStatus::NOT_FOUND;
+	}
+
 	ParseStatus flag = ParseStatus::OK;
 	if(cmd->cmd == "mtype"){
 		if(cmd->type == CMDtype::get){

@@ -26,6 +26,7 @@
 ClassIdentifier EffectsCalculator::info = {
 		.name 	= "NONE" ,
 			 .id	= 0,
+			 .unique = '0',
 			 .hidden = true
 };
 const ClassIdentifier EffectsCalculator::getInfo(){

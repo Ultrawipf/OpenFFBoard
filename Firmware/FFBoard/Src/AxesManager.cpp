@@ -12,14 +12,14 @@
 #include "AxesManager.h"
 
 
-ClassIdentifier AxesManager::info = {
-		.name 	= "NONE" ,
-			 .id	= 0,
-			 .hidden = true
-};
-const ClassIdentifier AxesManager::getInfo(){
-	return info;
-}
+//ClassIdentifier AxesManager::info = {
+//		.name 	= "NONE" ,
+//			 .id	= 0,
+//			 .hidden = true
+//};
+//const ClassIdentifier AxesManager::getInfo(){
+//	return info;
+//}
 
 AxesManager::AxesManager(volatile Control_t* control) {
 	this->control = control;
@@ -112,7 +112,7 @@ bool AxesManager::setAxisCount(int8_t count) {
 		axis_count--;
 	}
 	while (count > axis_count) {
-		Axis* axis = new Axis(axis_count+1, control);
+		Axis* axis = new Axis('X'+axis_count, control);
 		axes.push_back( axis ); // Axis are indexed from 1-X to 3-Z
 		axis_count++;
 	}
@@ -141,12 +141,12 @@ void AxesManager::resetPosZero() {
 
 // ---- AXis Commands ----
 
-ParseStatus AxesManager::command(ParsedCommand* cmd,std::string* reply){
-	if (cmd->axis >= 0 && cmd->axis < axes.size()) {
-		return axes[cmd->axis]->command(cmd, reply);
-	}
-	return ParseStatus::NOT_FOUND;
-}
+//ParseStatus AxesManager::command(ParsedCommand* cmd,std::string* reply){
+//	if (cmd->axis >= 0 && cmd->axis < axes.size()) {
+//		return axes[cmd->axis]->command(cmd, reply);
+//	}
+//	return ParseStatus::NOT_FOUND;
+//}
 
 bool AxesManager::processHidCommand(HID_Custom_Data_t *data){
 	uint8_t axis = (data->cmd >> 6) & 0x3;

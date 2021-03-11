@@ -56,12 +56,15 @@ struct AxisConfig
 class Axis : public NormalizedAxis
 {
 public:
-	Axis(uint8_t axis, volatile Control_t* control);
+	Axis(char axis, volatile Control_t* control);
 	virtual ~Axis();
 
 	static ClassIdentifier info;
-	const ClassIdentifier getInfo();
 
+
+	virtual std::string getHelpstring() { return "\nAxis commands: (Get: axis.cmd , Set: axis.cmd=var\nWhere axis = x-z e.g. y.power (omitting axis defaults to the X axis.\n"
+//												 "power,zeroenc,enctype,cpr,pos,degrees,esgain,fxratio,idlespring,spring.friction,damper,inertia,invert,drvtype,tmc.\n"; }
+												 "power,zeroenc,enctype,cpr,pos,degrees,esgain,fxratio,idlespring,friction,invert,drvtype,tmc.\n"; }
 	void setupTMC4671();
 	void setupTMC4671_enc(PhiE enctype);
 
@@ -103,7 +106,6 @@ public:
 
 private:
 	AxisFlashAddrs flashAddrs;
-	uint8_t axis_no; // FFB Channel (axis) 1,2,3
 	volatile Control_t* control;
 
 	void send_report();
@@ -116,7 +118,7 @@ private:
 
 	bool tmcFeedForward = false; // Experimental
 
-	void setupTMC4671ForAddress(uint8_t addr);
+	void setupTMC4671ForAxis(char axis);
 	static AxisConfig decodeConfFromInt(uint16_t val);
 	static uint16_t encodeConfToInt(AxisConfig conf);
 
