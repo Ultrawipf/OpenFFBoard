@@ -292,7 +292,7 @@ void FFBWheel::setPower(uint16_t power){
 		TMC4671* drv = static_cast<TMC4671*>(this->drv);
 //		//tmclimits.pid_uq_ud = power;
 //		tmclimits.pid_torque_flux = power;
-		drv->setTorqeLimit(power);
+		drv->setTorqueLimit(power);
 	}
 
 	this->power = power;

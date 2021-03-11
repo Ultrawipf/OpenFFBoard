@@ -125,6 +125,7 @@ typedef struct
 	uint16_t	duration = 0; // 0..32767 ms
 	uint16_t	triggerRepeatInterval = 0; // 0..32767 ms
 	uint16_t	samplePeriod = 0;	// 0..32767 ms
+	uint16_t	startDelay = 0;	// 0..32767 ms
 	uint8_t		gain = 255;	// 0..255 scaler
 	uint8_t		triggerButton = 0;	// button ID. unused
 	uint8_t		enableAxis = 0; // bits: 0=X, 1=Y, 2=DirectionEnable
