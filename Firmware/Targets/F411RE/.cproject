@@ -45,7 +45,6 @@
 									<listOptionValue builtIn="false" value="../../../FFBoard/Inc"/>
 									<listOptionValue builtIn="false" value="../../../FFBoard/USB"/>
 									<listOptionValue builtIn="false" value="../../../FFBoard/USB/device"/>
-									<listOptionValue builtIn="false" value="../../../FFBoard/USB/Inc"/>
 									<listOptionValue builtIn="false" value="../../../FFBoard/USB/common"/>
 									<listOptionValue builtIn="false" value="../../../FFBoard/USB/class/cdc"/>
 									<listOptionValue builtIn="false" value="../../../FFBoard/USB/class/hid"/>
@@ -69,7 +68,6 @@
 									<listOptionValue builtIn="false" value="../../../FFBoard/Inc"/>
 									<listOptionValue builtIn="false" value="../../../FFBoard/USB"/>
 									<listOptionValue builtIn="false" value="../../../FFBoard/USB/device"/>
-									<listOptionValue builtIn="false" value="../../../FFBoard/USB/Inc"/>
 									<listOptionValue builtIn="false" value="../../../FFBoard/USB/class/cdc"/>
 									<listOptionValue builtIn="false" value="../../../FFBoard/USB/class/hid"/>
 									<listOptionValue builtIn="false" value="../../../FFBoard/USB/class/midi"/>
@@ -121,9 +119,9 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Core"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Middlewares"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="FFBoard"/>
+						<entry excluding="Third_Party/FreeRTOS" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Middlewares"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="Middlewares/Third_Party/FreeRTOS"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="Startup"/>
 					</sourceEntries>

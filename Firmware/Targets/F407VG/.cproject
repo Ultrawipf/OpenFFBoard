@@ -47,7 +47,6 @@
 									<listOptionValue builtIn="false" value="../Core/Inc"/>
 									<listOptionValue builtIn="false" value="../../../FFBoard/Inc"/>
 									<listOptionValue builtIn="false" value="../../../FFBoard/USB"/>
-									<listOptionValue builtIn="false" value="../../../FFBoard/USB/Inc"/>
 									<listOptionValue builtIn="false" value="../../../FFBoard/USB/class/cdc"/>
 									<listOptionValue builtIn="false" value="../../../FFBoard/USB/class/hid"/>
 									<listOptionValue builtIn="false" value="../../../FFBoard/USB/class/midi"/>

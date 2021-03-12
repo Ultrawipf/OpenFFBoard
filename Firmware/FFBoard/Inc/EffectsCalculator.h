@@ -50,7 +50,7 @@ protected:
 
 private:
 // Filters
-	bool effects_active = true; // was ffb_active
+	bool effects_active = false; // was ffb_active
 	uint8_t global_gain = 0xff;
 	float damper_f = 50 , damper_q = 0.2;
 	float friction_f = 50 , friction_q = 0.2;

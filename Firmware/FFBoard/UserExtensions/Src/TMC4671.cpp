@@ -53,7 +53,7 @@ const ClassIdentifier TMC4671::getInfo() {
 //	std::string axis_name = "TMC4671-";
 //	axis_name.push_back(axis_letter);
 //	return ClassIdentifier {.name = axis_name.c_str(), .id = 1, .instance = this->address, .hidden = false};
-	return ClassIdentifier {.name = TMC4671::info.name, .id = TMC4671::info.id, .unique = (int8_t)('W'+this->address), .hidden = TMC4671::info.hidden};
+	return ClassIdentifier {.name = TMC4671::info.name, .id = TMC4671::info.id, .unique = (char)(this->address+'W'), .hidden = TMC4671::info.hidden};
 }
 
 // Returns channel if ok to use else 0

@@ -23,6 +23,7 @@ void HidFFB::setEffectsCalculator(EffectsCalculator *ec) {
 	this->effects_calc = ec;
 	assert(effects_calc != nullptr);
 	this->effects_calc->setEffectsArray(this->effects);
+	this->effects_calc->setActive(this->ffb_active);
 }
 
 void HidFFB::setHIDCommandHandler(HidCommandHandler *hch) {
