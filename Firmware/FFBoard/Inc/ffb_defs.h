@@ -188,7 +188,7 @@ typedef struct
 	uint16_t magnitude;
 	int16_t	offset;
 	uint16_t	phase;	// degrees
-	uint16_t	period;	// 0..32767 ms
+	uint32_t	period;	// 0..32767 ms
 } __attribute__((packed)) FFB_SetPeriodic_Data_t;
 
 typedef struct
@@ -197,8 +197,8 @@ typedef struct
 	uint8_t effectBlockIndex;
 	uint16_t attackLevel;
 	uint16_t fadeLevel;
-	uint16_t attackTime;
-	uint16_t fadeTime;
+	uint32_t attackTime;
+	uint32_t fadeTime;
 } __attribute__((packed)) FFB_SetEnvelope_Data_t;
 
 typedef struct
