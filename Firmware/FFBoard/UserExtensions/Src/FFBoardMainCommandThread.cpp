@@ -101,9 +101,14 @@ ParseStatus FFBoardMainCommandThread::executeSysCommand(ParsedCommand* cmd,std::
 	ParseStatus flag = ParseStatus::OK;
 
 	if(cmd->cmd == "help"){
+		std::string help, last_help = "";
 		*reply += parser.helpstring;
 		for(CommandHandler* handler : CommandHandler::cmdHandlers){
-			*reply += handler->getHelpstring();
+			help = handler->getHelpstring();
+			if (help != last_help) { // avoid duplicate help commands from multiple instances
+				*reply += help;
+				last_help = help;
+			}
 		}
 
 	}else if(cmd->cmd == "save"){
