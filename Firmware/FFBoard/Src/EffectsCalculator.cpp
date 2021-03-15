@@ -421,7 +421,7 @@ int32_t EffectsCalculator::applyEnvelope(FFB_Effect *effect, int32_t value)
 	}
 
 	newValue *= value;
-	newValue /= 255;
+	newValue /= 0xffff; // 16 bit
 	return newValue;
 }
 
