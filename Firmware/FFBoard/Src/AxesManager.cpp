@@ -108,7 +108,9 @@ bool AxesManager::setAxisCount(int8_t count) {
 //	}
 
 	while (count < axis_count) {
-		delete (Axis*)axes[axis_count-1];
+		uint8_t pos = axis_count-1;
+		delete axes[pos];
+		axes.erase(axes.begin()+pos);
 		axis_count--;
 	}
 	while (count > axis_count) {
