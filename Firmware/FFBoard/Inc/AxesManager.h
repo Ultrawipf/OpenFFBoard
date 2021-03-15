@@ -13,7 +13,7 @@
 #include "ffb_defs.h"
 #include "hid_cmd_defs.h"
 //#include "CommandHandler.h"
-#include "HidCommandHandler.h"
+//#include "HidCommandHandler.h"
 //#include "EffectsCalculator.h"
 #include "cmdParser.h"
 #include "vector"
@@ -25,7 +25,7 @@ class EffectsCalculator;
 
 
 
-class AxesManager : public PersistentStorage, public HidCommandHandler
+class AxesManager : public PersistentStorage
 {
 public:
 	AxesManager(volatile Control_t* control);
@@ -35,7 +35,7 @@ public:
 //	const ClassIdentifier getInfo();
 
 //	ParseStatus command(ParsedCommand *cmd, std::string *reply);
-	bool processHidCommand(HID_Custom_Data_t *data);
+//	void processHidCommand(HID_Custom_Data_t *data);
 	virtual std::string getHelpstring() { return "\nAxis commands: (Get: <axis>.<cmd> , Set: <axis>.<cmd>=<val>\nWhere <axis> = x-z e.g. y.power (omitting <axis>. defaults to the X axis.\n"
 //												 "power,zeroenc,enctype,cpr,pos,degrees,esgain,fxratio,idlespring,spring.friction,damper,inertia,invert,drvtype,tmc.\n"; }
 												 "power,zeroenc,enctype,cpr,pos,degrees,esgain,fxratio,idlespring,friction,invert,drvtype,tmc.\n"; }

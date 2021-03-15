@@ -26,9 +26,6 @@ void HidFFB::setEffectsCalculator(EffectsCalculator *ec) {
 	this->effects_calc->setActive(this->ffb_active);
 }
 
-void HidFFB::setHIDCommandHandler(HidCommandHandler *hch) {
-	this->hidCommandHandler = hch;
-}
 
 bool HidFFB::getFfbActive(){
 	return this->ffb_active;
@@ -69,12 +66,6 @@ void HidFFB::sendStatusReport(uint8_t effect){
 	HID_SendReport(reinterpret_cast<uint8_t*>(&this->reportFFBStatus), sizeof(reportFFB_status_t));
 }
 
-void HidFFB::hidOutCmd(HID_Custom_Data_t *data){
-	assert(hidCommandHandler != nullptr);
-	if(hidCommandHandler->processHidCommand(data)){
-		sendHidCmd(data);
-	}
-}
 
 /*
  * Called when HID OUT data is received via USB

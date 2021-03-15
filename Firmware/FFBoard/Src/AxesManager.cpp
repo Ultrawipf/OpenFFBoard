@@ -148,11 +148,11 @@ void AxesManager::resetPosZero() {
 //	return ParseStatus::NOT_FOUND;
 //}
 
-bool AxesManager::processHidCommand(HID_Custom_Data_t *data){
-	uint8_t axis = (data->cmd >> 6) & 0x3;
-	if(axis<axis_count) {
-		return axes[axis]->processHidCommand(data);
-	}else{
-		return false;
-	}
-}
+//void AxesManager::processHidCommand(HID_Custom_Data_t *data){
+//	uint8_t axis = (data->cmd >> 6) & 0x3;
+//	if(axis<axis_count) {
+//		return axes[axis]->processHidCommand(data);
+//	}else{
+//		return false;
+//	}
+//}

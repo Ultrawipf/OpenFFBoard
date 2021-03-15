@@ -10,32 +10,16 @@
 #include "hid_device.h"
 
 uint8_t* UsbHidHandler::hid_desc = nullptr;
-std::vector<UsbHidHandler*> UsbHidHandler::hidCmdHandlers; // called only for custom cmd report ids
 UsbHidHandler* UsbHidHandler::globalHidHandler = nullptr;
 
 UsbHidHandler::UsbHidHandler() {
-	/*
-	 * By default it will receive only the custom feature reports
-	 * You can override that to receive every HID command
-	 */
-	addCallbackHandler(UsbHidHandler::hidCmdHandlers,this);
+
 }
 
 UsbHidHandler::~UsbHidHandler() {
-	removeCallbackHandler(UsbHidHandler::hidCmdHandlers,this);
-}
-
-
-void UsbHidHandler::hidOutCmd(HID_Custom_Data_t* data){
 
 }
 
-/*
- * Send a custom transfer with the vendor defined IN report
- */
-bool UsbHidHandler::sendHidCmd(HID_Custom_Data_t* data){
-	return tud_hid_report(HID_ID_CUSTOMCMD, (void const*) data, sizeof(HID_Custom_Data_t));
-}
 
 // Returns length
 uint16_t UsbHidHandler::hidGet(uint8_t report_id, hid_report_type_t report_type, uint8_t* buffer, uint16_t reqlen){

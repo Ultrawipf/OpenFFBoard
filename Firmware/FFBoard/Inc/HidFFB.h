@@ -24,7 +24,6 @@ public:
 
 	void hidOut(uint8_t report_id, hid_report_type_t report_type, uint8_t const* buffer, uint16_t bufsize);
 	uint16_t hidGet(uint8_t report_id, hid_report_type_t report_type, uint8_t* buffer, uint16_t reqlen);
-	void hidOutCmd(HID_Custom_Data_t* data);
 
 	uint32_t getRate(); // Returns an estimate of the hid effect update speed in hz
 	bool getFfbActive();
@@ -38,12 +37,10 @@ public:
 	
 	void sendStatusReport(uint8_t effect);
 	void setEffectsCalculator(EffectsCalculator* ec);
-	void setHIDCommandHandler(HidCommandHandler *hch);
 	FFB_Effect effects[MAX_EFFECTS];
 private:
 	// HID
 	EffectsCalculator* effects_calc = nullptr;
-	HidCommandHandler* hidCommandHandler = nullptr;
 	uint8_t find_free_effect(uint8_t type);
 	void new_effect(FFB_CreateNewEffect_Feature_Data_t* effect);
 	void free_effect(uint16_t id);

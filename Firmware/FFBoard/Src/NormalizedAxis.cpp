@@ -215,8 +215,8 @@ bool NormalizedAxis::updateTorque(int32_t* totalTorque) {
 
 
 
-bool NormalizedAxis::processHidCommand(HID_Custom_Data_t* data) {
-	bool found = true;
+void NormalizedAxis::processHidCommand(HID_Custom_Data_t* data) {
+
 	switch (data->cmd&0x3F){
 		case HID_CMD_FFB_ESGAIN:
 			if(data->type == HidCmdType::write) {
@@ -264,10 +264,10 @@ bool NormalizedAxis::processHidCommand(HID_Custom_Data_t* data) {
 		break;
 		
 		default:
-			found = false;
+
 		break;
 		}
-	return found;
+	return;
 }
 
 

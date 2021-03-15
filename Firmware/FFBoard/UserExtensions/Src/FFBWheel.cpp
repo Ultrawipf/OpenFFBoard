@@ -61,7 +61,6 @@ FFBWheel::FFBWheel() :
 // Create the USB effects handler & pass in the effects calculator
 	this->ffb = new HidFFB();
 	this->ffb->setEffectsCalculator(effects_calc);
-	this->ffb->setHIDCommandHandler(axes_manager);
 	restoreFlash(); // Load parameters
 }
 

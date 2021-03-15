@@ -12,7 +12,7 @@
 #include <FFBoardMain.h>
 #include "PersistentStorage.h"
 #include "CommandHandler.h"
-
+#include "HidCommandHandler.h"
 #include "cppmain.h"
 #include "HidFFB.h"
 #include "ffb_defs.h"
@@ -52,7 +52,7 @@ struct axis_metric_t {
 };
 
 
-class NormalizedAxis: public PersistentStorage, public CommandHandler {
+class NormalizedAxis: public PersistentStorage, public CommandHandler,HidCommandHandler {
 public:
 	NormalizedAxis(char axis);
 	virtual ~NormalizedAxis();
@@ -78,7 +78,7 @@ public:
 	bool updateTorque(int32_t* totalTorque);
 	
 	virtual ParseStatus command(ParsedCommand* cmd,std::string* reply);
-    virtual bool processHidCommand(HID_Custom_Data_t* data);
+    virtual void processHidCommand(HID_Custom_Data_t* data);
 
 
 protected:
