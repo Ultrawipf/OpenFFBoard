@@ -116,13 +116,13 @@ void FFBWheel::saveFlash(){
 
 void FFBWheel::update(){
 	if(control.request_update_disabled) {
-		logSerial("request update disabled");
+		//logSerial("request update disabled");
 		control.update_disabled = true;
 		control.request_update_disabled = false;
 
 	}
 	if(control.update_disabled){
-		logSerial("Update disabled");
+		//logSerial("Update disabled");
 		return;
 	}
 	if(control.emergency){

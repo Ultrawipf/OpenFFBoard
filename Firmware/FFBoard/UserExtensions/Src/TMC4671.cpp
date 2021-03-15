@@ -1115,6 +1115,8 @@ void TMC4671::emergencyStop(){
  * For ADC linearity reasons under 25000 is recommended
  */
 void TMC4671::turn(int16_t power){
+	if(!(this->motorReady() && active))
+		return;
 	int32_t flux = 0;
 
 	// Flux offset for field weakening

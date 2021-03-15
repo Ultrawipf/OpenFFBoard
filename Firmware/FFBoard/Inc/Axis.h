@@ -122,7 +122,7 @@ private:
 	static AxisConfig decodeConfFromInt(uint16_t val);
 	static uint16_t encodeConfToInt(AxisConfig conf);
 
-	TMC4671PIDConf tmcpids = TMC4671PIDConf({.fluxI = 400,
+	const TMC4671PIDConf tmcpids = TMC4671PIDConf({.fluxI = 400,
 											 .fluxP = 400,
 											 .torqueI = 400,
 											 .torqueP = 300,
@@ -140,7 +140,7 @@ private:
 											 .pid_pos_high = 2147483647});
 
 	// Lowpass 1KHZ
-	TMC4671Biquad fluxbq = TMC4671Biquad({.a1 = -134913,
+	const TMC4671Biquad fluxbq = TMC4671Biquad({.a1 = -134913,
 										  .a2 = 536735999,
 										  .b0 = 67457,
 										  .b1 = 134913,

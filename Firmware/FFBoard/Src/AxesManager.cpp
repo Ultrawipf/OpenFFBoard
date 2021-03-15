@@ -98,7 +98,6 @@ bool AxesManager::setAxisCount(int8_t count) {
 	if (!this->validAxisRange(count)) {
 		return false; // invalid number of axis
 	}
-	// It'll probably crash if we reduce axis but at least will work on reboot
 	// Really need to use some form of mutex
 	Flash_Write(ADR_AXIS_COUNT, count);
 
