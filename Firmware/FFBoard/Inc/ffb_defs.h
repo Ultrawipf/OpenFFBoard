@@ -89,7 +89,7 @@
 #define HID_EFFECT_PLAYING 		0x10
 
 #define HID_DIRECTION_ENABLE 0x04
-#define FFB_EFFECT_DURATION_INFINITE 0x00
+#define FFB_EFFECT_DURATION_INFINITE 0xffff
 
 // Only include these for cpp
 #ifdef __cplusplus
