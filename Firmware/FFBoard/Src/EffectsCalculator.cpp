@@ -215,7 +215,7 @@ int32_t EffectsCalculator::calculateForce(FFB_Effect *effect, metric_t *metrics,
 
 	case FFB_EFFECT_SPRING:
 	{
-		int16_t metric = metrics->pos;
+		float metric = metrics->pos;
 		result_torque -= calcCondition(effect, metric, gain->spring, useForceDirectionForConditionEffect,
 									   con_idx, 0.0004f, angle_ratio);
 		break;
@@ -225,16 +225,16 @@ int32_t EffectsCalculator::calculateForce(FFB_Effect *effect, metric_t *metrics,
 	{
 		effect->conditions[con_idx].negativeSaturation = FRICTION_SATURATION;
 		effect->conditions[con_idx].positiveSaturation = FRICTION_SATURATION;
-		int16_t metric = effect->filter->process(metrics->speed) * .25;
+		float metric = effect->filter->process(metrics->speed) * .25;
 		result_torque -= calcCondition(effect, metric, gain->friction, useForceDirectionForConditionEffect,
-											   con_idx, .004f, angle_ratio);
+											   con_idx, .04f, angle_ratio);
 		break;
 	}
 	case FFB_EFFECT_DAMPER:
 	{
-		int16_t metric = effect->filter->process(metrics->speed) * .0625f;
+		float metric = effect->filter->process(metrics->speed) * .0625f;
 		result_torque -= calcCondition(effect, metric, gain->damper, useForceDirectionForConditionEffect,
-									   con_idx, 0.04f, angle_ratio);
+									   con_idx, 0.4f, angle_ratio);
 		break;
 	}
 
@@ -242,7 +242,7 @@ int32_t EffectsCalculator::calculateForce(FFB_Effect *effect, metric_t *metrics,
 	{
 		effect->conditions[con_idx].negativeSaturation = INERTIA_SATURATION;
 		effect->conditions[con_idx].positiveSaturation = INERTIA_SATURATION;
-		int16_t metric = effect->filter->process(metrics->accel) * 4;
+		float metric = effect->filter->process(metrics->accel*4);
 		result_torque -= calcCondition(effect, metric, gain->inertia, useForceDirectionForConditionEffect,
 									   con_idx, 0.4f, angle_ratio);
 		break;
@@ -366,7 +366,7 @@ int32_t EffectsCalculator::calculateForce(FFB_Effect *effect, metric_t *metrics,
 	return (result_torque * (global_gain+1)) >> 8; // Apply global gain
 }
 
-int32_t EffectsCalculator::calcCondition(FFB_Effect *effect, int16_t metric, uint8_t gain, bool useDir,
+int32_t EffectsCalculator::calcCondition(FFB_Effect *effect, float  metric, uint8_t gain, bool useDir,
 										 uint8_t idx, float scale, float angle_ratio)
 {
 	int16_t offset = effect->conditions[idx].cpOffset;
@@ -377,14 +377,14 @@ int32_t EffectsCalculator::calcCondition(FFB_Effect *effect, int16_t metric, uin
 		if (metric < offset)
 		{ // Deadband side
 			force = clip<int32_t, int32_t>((effect->conditions[idx].negativeCoefficient *
-											scale * (metric - (offset - deadBand))),
+											scale * (float)(metric - (offset - deadBand))),
 										   -effect->conditions[idx].negativeSaturation,
 										   effect->conditions[idx].positiveSaturation);
 		}
 		else
 		{
 			force = clip<int32_t, int32_t>((effect->conditions[idx].positiveCoefficient *
-											scale * (metric - (offset + deadBand))),
+											scale * (float)(metric - (offset + deadBand))),
 										   -effect->conditions[idx].negativeSaturation,
 										   effect->conditions[idx].positiveSaturation);
 		}
@@ -473,7 +473,7 @@ void EffectsCalculator::setEffectsArray(FFB_Effect *pEffects)
  */
 void EffectsCalculator::restoreFlash()
 {
-	uint16_t filter = 0;
+	uint16_t filter = calcfrequency / 2; // 500 = off
 	if (Flash_Read(ADR_CF_FILTER, &filter))
 	{
 		setCfFilter(filter);
@@ -488,6 +488,9 @@ void EffectsCalculator::saveFlash()
 
 void EffectsCalculator::setCfFilter(uint32_t freq)
 {
+	if(freq == 0){
+		freq = calcfrequency / 2;
+	}
 	cfFilter_f = clip<uint32_t, uint32_t>(freq, 1, calcfrequency / 2);
 	float f = (float)cfFilter_f / (float)calcfrequency;
 

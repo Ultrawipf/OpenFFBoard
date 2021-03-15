@@ -92,7 +92,7 @@ public:
 	void Run();
 private:
 	bool enabled = true;
-	std::vector<Error> errorsToPrint;
+	//std::vector<Error> errorsToPrint;
 };
 
 #endif /* SRC_ERRORHANDLER_H_ */

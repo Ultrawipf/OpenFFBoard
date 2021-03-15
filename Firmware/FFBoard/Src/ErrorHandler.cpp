@@ -111,16 +111,17 @@ void ErrorHandler::errorCallback(Error &error, bool cleared){
 
 }
 
-ErrorPrinter::ErrorPrinter() : Thread("errprint",128,10){
+ErrorPrinter::ErrorPrinter() : Thread("errprint",200,17){ // Higher than default task but low.
 	this->Start();
 }
 
 void ErrorPrinter::Run(){
 	while(1){
-		for(Error e : this->errorsToPrint){
+		std::vector<Error>* errors = ErrorHandler::getErrors();
+		for(Error e : *errors){
 			FFBoardMain::sendSerial("Err", e.toString());
 		}
-		this->errorsToPrint.clear();
+		ErrorHandler::clearTemp(); // Errors are sent. clear them
 		this->Suspend();
 	}
 }
@@ -128,11 +129,11 @@ void ErrorPrinter::Run(){
 // TODO prints in thread when called from isr
 void ErrorPrinter::errorCallback(Error &error, bool cleared){
 	if(!cleared){
+//		this->errorsToPrint.push_back(error); // Errors are stored in errorhandler
 		if(isIrq()){
-			this->errorsToPrint.push_back(error);
 			this->ResumeFromISR();
 		}else{
-			FFBoardMain::sendSerial("Err", error.toString());
+			this->Resume();
 		}
 	}
 }

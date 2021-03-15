@@ -54,13 +54,14 @@ private:
 	uint8_t global_gain = 0xff;
 	float damper_f = 50 , damper_q = 0.2;
 	float friction_f = 50 , friction_q = 0.2;
-	float inertia_f = 50 , inertia_q = 0.2;
+	float inertia_f = 25 , inertia_q = 0.2;
+	const uint32_t calcfrequency = 1000; // HID frequency 1khz
 	uint32_t cfFilter_f = calcfrequency/2; // 500 = off
 	const float cfFilter_q = 0.8;
-	const uint32_t calcfrequency = 1000; // HID frequency 1khz
+
 
 	int32_t calculateForce(FFB_Effect* effect, metric_t* metrics, effect_gain_t* gain, uint8_t axis, uint8_t axisCount);
-	int32_t calcCondition(FFB_Effect *effect, int16_t metric, uint8_t gain, bool useDir,
+	int32_t calcCondition(FFB_Effect *effect, float metric, uint8_t gain, bool useDir,
 			uint8_t idx, float scale, float angle_ratio);
 	int32_t applyEnvelope(FFB_Effect *effect, int32_t value);
 };

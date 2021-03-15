@@ -168,7 +168,7 @@ void Axis::updateDriveTorque(){
 	// totalTorque = effectTorque + endstopTorque
 	int32_t totalTorque;
 	bool torqueChanged = updateTorque(&totalTorque);
-	if (torqueChanged){
+	if (torqueChanged && drv->motorReady()){
 		// Send to motor driver
 		drv->turn(totalTorque);
 	}
