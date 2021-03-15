@@ -9,7 +9,8 @@
 
 ClassIdentifier LocalButtons::info = {
 	 .name = "D-Pins" ,
-	 .id=0
+	 .id=0,
+	 .unique = '0'
 };
 
 LocalButtons::LocalButtons() {

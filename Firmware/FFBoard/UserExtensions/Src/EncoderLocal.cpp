@@ -9,7 +9,8 @@
 
 ClassIdentifier EncoderLocal::info = {
 		 .name = "Local" ,
-		 .id=2
+		 .id=2,
+		 .unique = '0'
  };
 const ClassIdentifier EncoderLocal::getInfo(){
 	return info;

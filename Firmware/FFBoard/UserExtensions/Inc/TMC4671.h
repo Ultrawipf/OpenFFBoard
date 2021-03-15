@@ -167,6 +167,7 @@ struct TMC4671Biquad{
 class TMC4671 : public MotorDriver, public Encoder, public CommandHandler, public SpiHandler, public cpp_freertos::Thread{
 public:
 
+	static uint8_t UsedSPIChannels[];
 	static ClassIdentifier info;
 	const ClassIdentifier getInfo();
 
@@ -178,8 +179,10 @@ public:
 	TMC4671();
 
 	void setAddress(uint8_t addr);
+	void setAddress(uint8_t chan, uint8_t addr);
 	uint8_t getAddress();
-
+	uint8_t getCSchan();
+	uint8_t checkCSchanNotInUse(uint8_t requestedChannel);
 	virtual ~TMC4671();
 
 	TMC4671MainConfig conf;
@@ -228,7 +231,7 @@ public:
 	void setBiquadTorque(TMC4671Biquad bq);
 	void setBiquadPos(TMC4671Biquad bq);
 	void setBiquadVel(TMC4671Biquad bq);
-
+	
 	bool pingDriver();
 
 	void changeState(TMC_ControlState newState);
@@ -320,7 +323,7 @@ public:
 
 	ParseStatus command(ParsedCommand* cmd,std::string* reply);
 	virtual std::string getHelpstring(){
-		return "TMC4671 commands:\n"
+		return "\nTMC4671 commands:\n"
 				"mtype,encsrc,encalign,poles,phiesrc,reg,fluxoffset\n"
 				"torqueP,torqueI,fluxP,fluxI\n"
 				"acttrq,seqpi,tmctemp\n";}

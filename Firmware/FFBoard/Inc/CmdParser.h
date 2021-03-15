@@ -22,6 +22,7 @@ struct ParsedCommand
     std::string cmd;
     int64_t adr = 0;
     int64_t val = 0;
+    char axis = 'X';
     std::string rawcmd;
     CMDtype type = CMDtype::none;
 
@@ -51,7 +52,7 @@ public:
 	bool add(char* Buf, uint32_t *Len);
 	std::vector<ParsedCommand> parse();
 
-	const std::string helpstring = "Parser usage:\n Set cmd=int/cmd?adr=var\n Get: cmd?/cmd?var\nInfo: cmd!\ndelims: ;/CR/NL/SPACE";
+	const std::string helpstring = "Parser usage:\n Set cmd=int/cmd?adr=var\n Get: cmd?/cmd?var\nInfo: cmd!\ndelims: ;/CR/NL/SPACE\n";
 };
 
 #endif /* CMDPARSER_H_ */

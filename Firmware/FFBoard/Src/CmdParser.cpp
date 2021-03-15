@@ -41,8 +41,8 @@ std::vector<ParsedCommand> CmdParser::parse(){
 	std::vector<ParsedCommand> commands;
 	std::vector<std::string> tokens;
 
-    uint32_t pos = 0;
-    uint32_t lpos = 0;
+	uint32_t pos = 0;
+	uint32_t lpos = 0;
 	while(pos < buffer.length()-1){
 		pos = buffer.find(';',lpos);
 		if(pos != std::string::npos){
@@ -55,17 +55,25 @@ std::vector<ParsedCommand> CmdParser::parse(){
 
 		ParsedCommand cmd;
 		cmd.rawcmd = word;
+		uint8_t cmd_start = 0;
 
+		if(word[1] == '.'){ // Axis component
+			char axis = word.front() & 0x7df; //force UpperCase
+			cmd.axis = axis;
+			cmd_start = 2;
+		}else{
+			cmd.axis = 'X'; // default to X
+		}
 		if(word.back() == '?'){ // <cmd>?
 			cmd.type = CMDtype::get;
-			cmd.cmd = word.substr(0, word.length()-1);
-
+			cmd.cmd = word.substr(cmd_start, word.length()-cmd_start - 1);
+	
 		}else if(word.back() == '!'){
-			cmd.cmd = word.substr(0, word.length()-1);
+			cmd.cmd = word.substr(cmd_start, word.length()-cmd_start - 1);
 			cmd.type = CMDtype::help;
-
+		
 		}else if(word.back() == '='){
-			cmd.cmd = word;
+			cmd.cmd = word.substr(cmd_start, word.length()-cmd_start);
 
 			cmd.type = CMDtype::err;
 
@@ -75,7 +83,7 @@ std::vector<ParsedCommand> CmdParser::parse(){
 
 			// <cmd>\n
 			if(pqm == std::string::npos && peq == std::string::npos){
-				cmd.cmd = word;
+				cmd.cmd = word.substr(cmd_start, word.length()-cmd_start);
 				cmd.type = CMDtype::get;
 
 			}else{ // More complex
@@ -99,11 +107,11 @@ std::vector<ParsedCommand> CmdParser::parse(){
 						val2 = (int64_t)std::stoll(word.substr(peq+1, word.npos));
 					}
 
-					cmd.cmd = word.substr(0, pqm);
+					cmd.cmd = word.substr(cmd_start, pqm-cmd_start);
 					cmd.type = CMDtype::setat;
 					cmd.val = val2;
 					cmd.adr = val;
-
+				
 				}else if(validPqm){ // <cmd>?<int>
 					int64_t val;
 					if(word[pqm+1] == 'x'){
@@ -114,7 +122,7 @@ std::vector<ParsedCommand> CmdParser::parse(){
 
 					cmd.val = val;
 					cmd.type = CMDtype::getat;
-					cmd.cmd = word.substr(0, pqm);
+					cmd.cmd = word.substr(cmd_start, pqm-cmd_start);
 					cmd.adr = val;
 
 				}else if(validPeq){ // <cmd>=<int>
@@ -127,8 +135,8 @@ std::vector<ParsedCommand> CmdParser::parse(){
 
 					cmd.val = val;
 					cmd.type = CMDtype::set;
-					cmd.cmd = word.substr(0, peq);
-
+					cmd.cmd = word.substr(cmd_start, peq-cmd_start);
+				
 				}else{
 					continue;
 				}

@@ -22,7 +22,7 @@
 #define FFBWHEEL
 #define MIDI
 #define TMCDEBUG
-#define CANBRIDGE
+//#define CANBRIDGE
 
 
 // Extra features

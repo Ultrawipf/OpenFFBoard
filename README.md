@@ -14,6 +14,31 @@
 	</div>
 </div>
 
+
+# Multi-Axis branch (alpha)
+	Known issues: 
+		Condition block effects - Damper, Friction, Inertia need further tuning filtering to scale up the effect without getting strange high pitch 	noises 	from the motor.
+
+		'axis' command causes a panic & reboot but does work.
+
+		HID commands untested.
+
+		StartDelay not implemented
+
+		Trigger Button / Trigger Repeat not implemented
+
+		Configurator doesn't work correctly yet with multiple axis setup, use a normal serial terminal e.g. 'putty.exe', etc to communicate.
+
+	Type help for command hints:
+	Use 'axis=n' to set number of axis (Max 2 for now - should eventually be able to increase to 3 for Z axis - see MAX_AXIS in constants.h)
+	should probably 'save' & 'reboot' before configuring further.
+
+	Set axis params using the <axis>.<command>= format e.g. y.power=5000, omitting the axis specifier defaults to X i.e. power=5000 == x.power=5000
+
+	The tmcchan command is used to map an axis to a TMC driver board e.g. Assuming you only have one TMC board & the SPI solder jumper
+	on the bottom side is set to 1, then to use that board with the 'Y' axis the command is: y.tmcchan=1 
+
+	
 # Open FFBoard
 The Open FFBoard is an open source force feedback interface with the goal of creating a platform for highly compatible simulation devices.
 

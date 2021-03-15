@@ -17,7 +17,8 @@ static std::tuple<uint16_t, uint16_t> encodeConfToInt(ButtonSourceConfig* c);
 
 ClassIdentifier SPI_Buttons_1::info = {
 		 .name = "SPI Buttons 1" ,
-		 .id=1
+		 .id=1,
+		 .unique = '0'
  };
 const ClassIdentifier SPI_Buttons_1::getInfo(){
 	return info;
@@ -25,7 +26,8 @@ const ClassIdentifier SPI_Buttons_1::getInfo(){
 
 ClassIdentifier SPI_Buttons_2::info = {
 		 .name = "SPI Buttons 2" ,
-		 .id=2
+		 .id=2,
+		 .unique = '0'
  };
 const ClassIdentifier SPI_Buttons_2::getInfo(){
 	return info;

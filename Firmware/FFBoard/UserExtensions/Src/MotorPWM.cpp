@@ -24,7 +24,8 @@ const std::vector<std::string> PwmModeNames = {"RC PPM","0%-50%-100% Centered","
 
 ClassIdentifier MotorPWM::info = {
 		 .name = "PWM" ,
-		 .id=2
+		 .id=4,
+		 .unique = '0'
  };
 const ClassIdentifier MotorPWM::getInfo(){
 	return info;
