@@ -15,6 +15,7 @@
 #include "constants.h"
 
 #include "UsbHidHandler.h"
+#include "HidCommandHandler.h"
 #include "PersistentStorage.h"
 #include "ExtiHandler.h"
 #include "UartHandler.h"
@@ -255,8 +256,8 @@ void tud_hid_set_report_cb(uint8_t report_id, hid_report_type_t report_type, uin
 		UsbHidHandler::globalHidHandler->hidOut(report_id,report_type,buffer,bufsize);
 
 	if(report_id == HID_ID_CUSTOMCMD){ // called only for the vendor defined report
-		for(UsbHidHandler* c : UsbHidHandler::hidCmdHandlers){
-			c->hidOutCmd((HID_Custom_Data_t*)(buffer));
+		for(HidCommandHandler* c : HidCommandHandler::hidCmdHandlers){
+			c->processHidCommand((HID_Custom_Data_t*)(buffer));
 		}
 	}
 

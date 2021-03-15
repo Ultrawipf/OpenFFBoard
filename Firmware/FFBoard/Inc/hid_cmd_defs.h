@@ -8,7 +8,8 @@
 #ifndef INC_HID_CMD_DEFS_H_
 #define INC_HID_CMD_DEFS_H_
 
-
+#include "cppmain.h"
+#include "ffb_defs.h"
 /*
  * Define global HID command ids here to keep track
  */
@@ -22,6 +23,8 @@
 #define HID_CMD_FFB_ESGAIN 0x24
 #define HID_CMD_FFB_FRICTION 0x25
 #define HID_CMD_FFB_FXRATIO 0x26
+
+
 
 enum class HidCmdType : uint8_t {err = 0, write = 1, request = 2,stop_stream = 3, start_stream = 4};
 

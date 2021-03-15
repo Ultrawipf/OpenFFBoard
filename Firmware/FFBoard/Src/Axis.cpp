@@ -336,12 +336,12 @@ void Axis::usbResume(){
 	}
 }
 
-bool Axis::processHidCommand(HID_Custom_Data_t *data){
-	if (NormalizedAxis::processHidCommand(data)){
-		return true;
+void Axis::processHidCommand(HID_Custom_Data_t *data){
+	uint8_t axis = (data->cmd >> 6) & 0x3;
+	if(axis != this->axis){
+		return;
 	}
 
-	bool found = true;
 
 	switch (data->cmd&0x3F){
 		case HID_CMD_FFB_STRENGTH:
@@ -360,10 +360,10 @@ bool Axis::processHidCommand(HID_Custom_Data_t *data){
 		break;
 
 		default:
-			found = false;
+
 		break;
 	}
-	return found;
+	return;
 }
 
 

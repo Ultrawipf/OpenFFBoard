@@ -9,12 +9,19 @@
 #define INC_HIDCOMMANDHANDLER_H_
 
 #include "hid_cmd_defs.h"
+#include <vector>
 
 class HidCommandHandler {
 public:
-	HidCommandHandler() {};
-	~HidCommandHandler() {};
-	virtual bool processHidCommand(HID_Custom_Data_t *data) {return false;};
+	HidCommandHandler();
+	virtual ~HidCommandHandler();
+
+	static std::vector<HidCommandHandler*> hidCmdHandlers; // called only for custom cmd report ids
+
+	virtual void processHidCommand(HID_Custom_Data_t *data);
+	virtual bool sendHidCmd(HID_Custom_Data_t* data);
 };
 
 #endif /* INC_HIDCOMMANDHANDLER_H_ */
+
+

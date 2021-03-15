@@ -100,7 +100,7 @@ public:
 	int16_t updateEndstop();
 
 	ParseStatus command(ParsedCommand* cmd,std::string* reply) override;
-	bool processHidCommand(HID_Custom_Data_t *data) override;
+	void processHidCommand(HID_Custom_Data_t *data) override;
 	ClassChooser<MotorDriver> drv_chooser;
 	ClassChooser<Encoder> enc_chooser;
 
