@@ -114,11 +114,13 @@ void FFBWheel::saveFlash(){
 /*
  * Periodical update method. Called from main loop
  */
+
 void FFBWheel::update(){
 	if(control.request_update_disabled) {
 		logSerial("request update disabled");
 		control.update_disabled = true;
 		control.request_update_disabled = false;
+
 	}
 	if(control.update_disabled){
 		logSerial("Update disabled");
@@ -132,6 +134,7 @@ void FFBWheel::update(){
 		control.resetEncoder = false;
 		axes_manager->resetPosZero();
 	}
+
 
 
 	// Emulate a SOF timer... TODO
