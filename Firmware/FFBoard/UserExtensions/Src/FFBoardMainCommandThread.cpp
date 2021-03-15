@@ -101,9 +101,14 @@ ParseStatus FFBoardMainCommandThread::executeSysCommand(ParsedCommand* cmd,std::
 	ParseStatus flag = ParseStatus::OK;
 
 	if(cmd->cmd == "help"){
+		std::string help, last_help = "";
 		*reply += parser.helpstring;
 		for(CommandHandler* handler : CommandHandler::cmdHandlers){
-			*reply += handler->getHelpstring();
+			help = handler->getHelpstring();
+			if (help != last_help) { // avoid duplicate help commands from multiple instances
+				*reply += help;
+				last_help = help;
+			}
 		}
 
 	}else if(cmd->cmd == "save"){
@@ -175,7 +180,7 @@ ParseStatus FFBoardMainCommandThread::executeSysCommand(ParsedCommand* cmd,std::
 			if(handler->hasCommands()){
 				ClassIdentifier i = handler->getInfo();
 				if(!i.hidden)
-					*reply += std::string(i.name) + ":" + std::to_string(i.id) + "\n";
+					*reply += std::string(i.name) + ":" + std::to_string(i.id) + ":" + i.unique + "\n";
 			}
 		}
 

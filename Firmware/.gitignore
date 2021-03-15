@@ -1,5 +1,14 @@
 /*Debug/
-/.settings/
+**/Release/
+
+**/.settings/
 *.launch
 .mxproject
+.project
+.cproject
+.vscode
+.metadata
+fixlang
 /build/
+/OpenFFBoard/
+/*Targets/F407VG/*.cfg

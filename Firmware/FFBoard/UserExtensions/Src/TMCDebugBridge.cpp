@@ -14,6 +14,7 @@
 ClassIdentifier TMCDebugBridge::info = {
 		 .name = "TMC Debug Bridge" ,
 		 .id=11,
+		 .unique = '0',
 		 .hidden=false
  };
 // Copy this to your class for identification

@@ -11,6 +11,7 @@
 ClassIdentifier CustomMain::info = {
 		 .name = "Custom" ,
 		 .id=1337,
+		 .unique = '0',
 		 .hidden=true //Set false to list
  };
 // Copy this to your class for identification

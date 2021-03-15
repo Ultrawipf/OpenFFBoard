@@ -5,8 +5,8 @@
  *      Author: Yannick
  */
 
+#include <assert.h>
 #include "HidFFB.h"
-#include "math.h"
 #include "flash_helpers.h"
 #include "hid_device.h"
 #include "cppmain.h"
@@ -14,37 +14,28 @@
 
 HidFFB::HidFFB() {
 	this->registerHidCallback();
-	this->restoreFlash();
 }
 
 HidFFB::~HidFFB() {
+}
 
+void HidFFB::setEffectsCalculator(EffectsCalculator *ec) {
+	this->effects_calc = ec;
+	assert(effects_calc != nullptr);
+	this->effects_calc->setEffectsArray(this->effects);
+	this->effects_calc->setActive(this->ffb_active);
+}
+
+void HidFFB::setHIDCommandHandler(HidCommandHandler *hch) {
+	this->hidCommandHandler = hch;
 }
 
 bool HidFFB::getFfbActive(){
 	return this->ffb_active;
 }
 
-void HidFFB::saveFlash(){
-	uint16_t effects1 = this->getIdleSpringStrength() | (this->getFrictionStrength() << 8);
-	Flash_Write(ADR_FFB_EFFECTS1, effects1);
-	Flash_Write(ADR_FFB_EFFECTS2, this->cfFilter_f);
-}
-void HidFFB::restoreFlash(){
-	uint16_t effects1 = 0;
-	if(Flash_Read(ADR_FFB_EFFECTS1, &effects1)){
-		this->setFrictionStrength((effects1 >> 8) & 0xff);
-		this->setIdleSpringStrength(effects1 & 0xff);
-	}
-	effects1 = 0;
-	if(Flash_Read(ADR_FFB_EFFECTS2, &effects1)){
-		setCfFilter(effects1);
-	}
-}
-
 bool HidFFB::HID_SendReport(uint8_t *report,uint16_t len){
 	return tud_hid_report(0, report, len);
-
 }
 
 /*
@@ -78,42 +69,9 @@ void HidFFB::sendStatusReport(uint8_t effect){
 	HID_SendReport(reinterpret_cast<uint8_t*>(&this->reportFFBStatus), sizeof(reportFFB_status_t));
 }
 
-void HidFFB::hidOutCmd(HID_Custom_Data_t* data){
-	bool found = true;
-	switch(data->cmd){
-		case HID_CMD_FFB_FRICTION:
-			if(data->type == HidCmdType::write)
-				this->setFrictionStrength(data->data);
-
-			if(data->type == HidCmdType::request){
-				data->data = this->getFrictionStrength();
-			}
-		break;
-
-		case HID_CMD_FFB_FXRATIO:
-			if(data->type == HidCmdType::write)
-				this->setFrictionStrength(data->data);
-
-			if(data->type == HidCmdType::request){
-				data->data = this->getFrictionStrength();
-			}
-		break;
-
-		case HID_CMD_FFB_IDLESPRING:
-			if(data->type == HidCmdType::write)
-				this->setIdleSpringStrength(data->data);
-
-			if(data->type == HidCmdType::request){
-				data->data = this->getIdleSpringStrength();
-			}
-		break;
-
-		default:
-			found = false;
-		break;
-	}
-
-	if(found){
+void HidFFB::hidOutCmd(HID_Custom_Data_t *data){
+	assert(hidCommandHandler != nullptr);
+	if(hidCommandHandler->processHidCommand(data)){
 		sendHidCmd(data);
 	}
 }
@@ -141,13 +99,12 @@ void HidFFB::hidOut(uint8_t report_id, hid_report_type_t report_type, uint8_t co
 		sendStatusReport(0);
 		break;
 	case HID_ID_GAINREP: // Set global gain
-		gain = report[1];
+		set_gain(report[1]);
 		break;
-	case HID_ID_ENVREP: // TODO Envelope
-		printf("Envrep");
+	case HID_ID_ENVREP: // Envelope
+		set_envelope((FFB_SetEnvelope_Data_t *)report);
 		break;
-	case HID_ID_CONDREP:
-		//FFB_SetCondition_Data_t
+	case HID_ID_CONDREP: // Spring, Damper, Friction, Inertia
 		set_condition((FFB_SetCondition_Data_t*)report);
 		break;
 	case HID_ID_PRIDREP: // Periodic
@@ -157,7 +114,7 @@ void HidFFB::hidOut(uint8_t report_id, hid_report_type_t report_type, uint8_t co
 		set_constant_effect((FFB_SetConstantForce_Data_t*)report);
 		break;
 	case HID_ID_RAMPREP: // Ramp
-		printf("Ramprep");
+		set_ramp((FFB_SetRamp_Data_t *)report);
 		break;
 	case HID_ID_CSTMREP: // Custom. pretty much never used
 		printf("Customrep");
@@ -171,13 +128,14 @@ void HidFFB::hidOut(uint8_t report_id, hid_report_type_t report_type, uint8_t co
 		uint8_t id = report[1]-1;
 		if(report[2] == 3){
 			effects[id].state = 0; //Stop
-			//printf("Stop %d\n",report[1]);
+								   //printf("Stop %d\n",report[1]);
 		}else{
 			if(effects[id].state != 1){
 				set_filters(&effects[id]);
-				effects[id].counter = 0; // When an effect was stopped reset all parameters that could cause jerking
+				effects[id].startTime = 0; // When an effect was stopped reset all parameters that could cause jerking
 			}
 			//printf("Start %d\n",report[1]);
+			effects[id].startTime = HAL_GetTick(); // + effects[id].startDelay;
 			effects[id].state = 1; //Start
 		}
 		//sendStatusReport(report[1]);
@@ -234,10 +192,28 @@ uint16_t HidFFB::hidGet(uint8_t report_id, hid_report_type_t report_type, uint8_
 }
 
 void HidFFB::start_FFB(){
-	ffb_active = true;
+	this->set_FFB(true);
 }
+
 void HidFFB::stop_FFB(){
-	ffb_active = false;
+	this->set_FFB(false);
+}
+
+void HidFFB::set_FFB(bool state)
+{
+	assert(effects_calc != nullptr);
+	this->ffb_active = state;
+	effects_calc->setActive(state);
+}
+
+void HidFFB::set_gain(uint8_t gain){
+	assert(effects_calc != nullptr);
+	effects_calc->setGain(gain);
+}
+
+void HidFFB::set_filters(FFB_Effect *effect){
+	assert(effects_calc != nullptr);
+	effects_calc->setFilters(effect);
 }
 
 void HidFFB::ffb_control(uint8_t cmd){
@@ -288,7 +264,7 @@ void HidFFB::new_effect(FFB_CreateNewEffect_Feature_Data_t* effect){
 	blockLoad_report.ramPoolAvailable = MAX_EFFECTS-used_effects;
 	blockLoad_report.loadStatus = 1;
 
-
+	
 }
 void HidFFB::set_effect(FFB_SetEffect_t* effect){
 	uint8_t index = effect->effectBlockIndex;
@@ -296,85 +272,59 @@ void HidFFB::set_effect(FFB_SetEffect_t* effect){
 		return;
 
 	FFB_Effect* effect_p = &effects[index-1];
-	effect_p->gain = effect->gain;
-	effect_p->type = effect->effectType;
-	effect_p->samplePeriod = effect->samplePeriod;
-	if(effect->enableAxis & 0x4){
-		// All axes
-		effect_p->axis = 0x7;
-	}else{
-		effect_p->axis = effect->enableAxis;
-	}
-	if(effect_p->type != effect->effectType){
-		effect_p->counter = 0;
-		effect_p->last_value = 0;
+
+	if (effect_p->type != effect->effectType){
+		effect_p->startTime = 0;
 		set_filters(effect_p);
 	}
 
+	effect_p->gain = effect->gain;
+	effect_p->type = effect->effectType;
+	effect_p->samplePeriod = effect->samplePeriod;
+
+	effect_p->enableAxis = effect->enableAxis;
+	effect_p->directionX = effect->directionX;
+	effect_p->directionY = effect->directionY;
+#if MAX_AXIS == 3
+	effect_p->directionZ = effect->directionZ;
+#endif
+
 	effect_p->duration = effect->duration;
-	//printf("SetEffect: %d, Axis: %d,Type: %d\n",effect->effectBlockIndex,effect->enableAxis,effect->effectType);
+//	effect_p->startDelay = effect->startDelay;
 	if(!ffb_active)
 		start_FFB();
 	//sendStatusReport(effect->effectBlockIndex);
 }
 
-void HidFFB::setCfFilter(uint32_t freq){
-
-	cfFilter_f = clip<uint32_t,uint32_t>(freq,1,calcfrequency/2);
-	float f = (float)cfFilter_f/(float)calcfrequency;
-	for(FFB_Effect effect : effects){
-		if(effect.type == FFB_EFFECT_CONSTANT){
-			effect.filter->setFc(f);
-		}
+void HidFFB::set_condition(FFB_SetCondition_Data_t *cond){
+	uint8_t axis = cond->parameterBlockOffset;
+	if (axis >= MAX_AXIS){
+		return; // sanity check!
 	}
+	FFB_Effect *effect = &effects[cond->effectBlockIndex - 1];
+	effect->conditions[axis].cpOffset = cond->cpOffset;// * 256;
+	effect->conditions[axis].negativeCoefficient = cond->negativeCoefficient;// * 256;
+	effect->conditions[axis].positiveCoefficient = cond->positiveCoefficient;// * 256;
+	effect->conditions[axis].negativeSaturation = cond->negativeSaturation;// * 256;
+	effect->conditions[axis].positiveSaturation = cond->positiveSaturation;// * 256;
+	effect->conditions[axis].deadBand = cond->deadBand;
+	effect->conditionsCount++;
 }
 
-float HidFFB::getCfFilterFreq(){
-	return cfFilter_f;
+void HidFFB::set_envelope(FFB_SetEnvelope_Data_t *report){
+	FFB_Effect *effect = &effects[report->effectBlockIndex - 1];
+
+	effect->attackLevel = report->attackLevel;
+	effect->attackTime = report->attackTime;
+	effect->fadeLevel = report->fadeLevel;
+	effect->fadeTime = report->fadeTime;
+	effect->useEnvelope = true;
 }
+void HidFFB::set_ramp(FFB_SetRamp_Data_t *report){
+	FFB_Effect *effect = &effects[report->effectBlockIndex - 1];
 
-void HidFFB::set_filters(FFB_Effect* effect){
-	switch(effect->type){
-		case FFB_EFFECT_DAMPER:
-			if(effect->filter != nullptr)
-				effect->filter->setBiquad(BiquadType::lowpass,(float)damper_f/(float)calcfrequency, damper_q, (float)0.0);
-			else
-				effect->filter = new Biquad(BiquadType::lowpass,(float)damper_f/(float)calcfrequency, damper_q, (float)0.0);
-			break;
-		case FFB_EFFECT_FRICTION:
-			if(effect->filter != nullptr)
-				effect->filter->setBiquad(BiquadType::lowpass,(float)friction_f/(float)calcfrequency, friction_q, (float)0.0);
-			else
-				effect->filter = new Biquad(BiquadType::lowpass,(float)friction_f/(float)calcfrequency, friction_q, (float)0.0);
-			break;
-		case FFB_EFFECT_INERTIA:
-			if(effect->filter != nullptr)
-				effect->filter->setBiquad(BiquadType::lowpass,(float)inertia_f/(float)calcfrequency, inertia_q, (float)0.0);
-			else
-				effect->filter = new Biquad(BiquadType::lowpass,(float)inertia_f/(float)calcfrequency, inertia_q, (float)0.0);
-			break;
-		case FFB_EFFECT_CONSTANT:
-			if(effect->filter != nullptr)
-				effect->filter->setBiquad(BiquadType::lowpass,(float)cfFilter_f/(float)calcfrequency, cfFilter_q, (float)0.0);
-			else
-				effect->filter = new Biquad(BiquadType::lowpass,(float)cfFilter_f/(float)calcfrequency, cfFilter_q, (float)0.0);
-			break;
-
-	}
-}
-
-void HidFFB::set_condition(FFB_SetCondition_Data_t* cond){
-	if(cond->parameterBlockOffset != 0) //TODO if more axes are needed. Only X Axis is implemented now for the wheel.
-		return;
-
-	FFB_Effect* effect = &effects[cond->effectBlockIndex-1];
-
-	effect->offset = cond->cpOffset;
-	effect->negativeCoefficient = cond->negativeCoefficient;
-	effect->positiveCoefficient = cond->positiveCoefficient;
-	effect->negativeSaturation = cond->negativeSaturation;
-	effect->positiveSaturation = cond->positiveSaturation;
-	effect->deadBand = cond->deadBand;
+	effect->startLevel = report->startLevel;
+	effect->endLevel = report->endLevel;
 }
 
 void HidFFB::set_periodic(FFB_SetPeriodic_Data_t* report){
@@ -405,148 +355,4 @@ void HidFFB::reset_ffb(){
 	this->reportFFBStatus.effectBlockIndex = 1;
 	this->reportFFBStatus.status = (HID_ACTUATOR_POWER) | (HID_ENABLE_ACTUATORS);
 	used_effects = 0;
-}
-
-/*
- * Set the strength of the spring effect if FFB is disabled
- */
-void HidFFB::setIdleSpringStrength(uint8_t spring){
-	this->idlespringstregth = spring;
-	if(spring == 0){
-		idlecenter = false;
-	}else{
-		idlecenter = true;
-	}
-}
-uint8_t HidFFB::getIdleSpringStrength(){
-	return this->idlespringstregth;
-}
-/*
- * Set the intensity of friction effects
- */
-void HidFFB::setFrictionStrength(uint8_t strength){
-	this->frictionscale = strength;
-}
-uint8_t HidFFB::getFrictionStrength(){
-	return this->frictionscale;
-}
-
-/*
- * Calculates the resulting torque for FFB effects
- * Takes current position input scaled from -0x7fff to 0x7fff
- * Outputs a torque value from -0x7fff to 0x7fff (not yet clipped)
- */
-int32_t HidFFB::calculateEffects(int32_t pos,uint8_t axis=1){
-	if(!ffb_active){
-		// Center when FFB is turned of with a spring effect
-		if(idlecenter){
-			int16_t idlespringclip = clip<int32_t,int32_t>((int32_t)idlespringstregth*50,0,10000);
-			float idlespringscale = 0.5f + ((float)idlespringstregth * 0.01f);
-			return clip<int32_t,int32_t>((int32_t)(-pos*idlespringscale),-idlespringclip,idlespringclip);
-		}else{
-			return 0;
-		}
-	}
-
-	int32_t result_torque = 0;
-
-	for(uint8_t i = 0;i<MAX_EFFECTS;i++){
-		FFB_Effect* effect = &effects[i];
-		// Filter out inactive effects
-		if(effect->state == 0 || !(axis & effect->axis))
-			continue;
-
-		switch(effect->type){
-		case FFB_EFFECT_CONSTANT:
-		{	// Constant force is just the force
-			int32_t f = ((int32_t)effect->magnitude * (int32_t)(1+effect->gain)) / 256;
-			// Optional filtering to reduce spikes
-			if(cfFilter_f < calcfrequency/2){
-				f = effect->filter->process(f);
-			}
-			result_torque -= f;
-			break;
-		}
-		case FFB_EFFECT_SPRING:
-		{
-			float scale = 0.0004f; // Tune for desired strength
-
-			int32_t force = 0;
-
-			if(abs(pos-effect->offset) > effect->deadBand){
-				if(pos < effect->offset){ // Deadband side
-					force = clip<int32_t,int32_t>((effect->negativeCoefficient * scale * (pos - (effect->offset - effect->deadBand))),-effect->negativeSaturation,effect->positiveSaturation);
-				}else{
-					force = clip<int32_t,int32_t>((effect->positiveCoefficient * scale * (pos - (effect->offset + effect->deadBand))),-effect->negativeSaturation,effect->positiveSaturation);
-				}
-			}
-
-			result_torque -= force;
-			break;
-		}
-
-		case FFB_EFFECT_SQUARE:
-		{
-
-			int32_t force =  ((effect->counter + effect->phase) % ((uint32_t)effect->period+2)) < (uint32_t)(effect->period+2)/2 ? -effect->magnitude : effect->magnitude;
-			force += effect->offset;
-			result_torque -= force;
-			break;
-		}
-		case FFB_EFFECT_SINE:
-		{
-			uint16_t t = effect->counter;
-			float freq = 1.0f/(float)(std::max<uint16_t>(effect->period,2));
-			float phase = (float)effect->phase/(float)35999; //degrees
-			float sine =  sinf(2.0*(float)M_PI*(t*freq+phase)) * effect->magnitude;
-			int32_t force = (int32_t)(effect->offset + sine);
-
-			result_torque -= force;
-			break;
-		}
-		case FFB_EFFECT_INERTIA:
-		{
-			// Acceleration
-			break;
-		}
-		case FFB_EFFECT_FRICTION:
-		case FFB_EFFECT_DAMPER:
-		{
-
-			int32_t force = 0;
-
-			if(effect->counter == 0){
-				effect->last_value = pos;
-				break;
-			}
-			int32_t speed = pos - effect->last_value;
-			effect->last_value = pos;
-
-			float val = effect->filter->process(speed) * 0.035f; // TODO tune friction
-
-			// Only active outside deadband. Process filter always!
-			if(abs(pos-effect->offset) < effect->deadBand){
-				break;
-			}
-			// Calculate force
-			force = clip<int32_t,int32_t>((int32_t)((effect->positiveCoefficient) * val),-effect->negativeSaturation,effect->positiveSaturation);
-			force = (frictionscale * force) / 255;
-			result_torque -= force;
-			break;
-		}
-		default:
-			// Unsupported effect
-			break;
-		}
-
-		if(effect->counter++ > effect->duration){
-			effect->state = 0;
-		}
-
-	}
-	result_torque = (result_torque * (gain+1)) >> 8; // Apply global gain
-
-
-
-	return result_torque; //clip(result_torque,-0x7fff,0x7fff);
 }

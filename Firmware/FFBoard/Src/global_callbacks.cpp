@@ -21,6 +21,7 @@
 #include "AdcHandler.h"
 #include "TimerHandler.h"
 #include "CommandHandler.h"
+#include "EffectsCalculator.h"
 #include "SpiHandler.h"
 #ifdef CANBUS
 #include "CanHandler.h"

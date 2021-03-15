@@ -60,7 +60,6 @@ public:
 
 
 
-
 class ErrorHandler {
 public:
 	static std::vector<ErrorHandler*> errorHandlers;

@@ -11,6 +11,7 @@
 struct ClassIdentifier {
 	const char* name;
 	uint16_t id;
+	char unique;
 	bool hidden = false;
 };
 

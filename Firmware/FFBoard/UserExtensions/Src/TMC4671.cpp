@@ -12,13 +12,18 @@
 #include <math.h>
 #include "ErrorHandler.h"
 
+#define MAX_TMC_DRIVERS 3
+
+uint8_t TMC4671::UsedSPIChannels[MAX_AXIS + 1] = {0};
+
 ClassIdentifier TMC4671::info = {
-		 .name = "TMC4671" ,
-		 .id=1
- };
-const ClassIdentifier TMC4671::getInfo(){
-	return info;
-}
+	.name = "TMC4671" ,
+	.id=1,
+	.unique = '0'
+};
+//const ClassIdentifier TMC4671::getInfo(){
+//	return info;
+//}
 
 TMC4671::TMC4671(SPI_HandleTypeDef* spi,GPIO_TypeDef* csport,uint16_t cspin,TMC4671MainConfig conf) : Thread("TMC", TMC_THREAD_MEM, TMC_THREAD_PRIO){
 	this->cspin = cspin;
@@ -39,33 +44,80 @@ TMC4671::TMC4671() : Thread("TMC", TMC_THREAD_MEM, TMC_THREAD_PRIO){
 
 TMC4671::~TMC4671() {
 	HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_RESET);
+	UsedSPIChannels[this->address] = 0;
 }
 
 
+const ClassIdentifier TMC4671::getInfo() {
+//	char axis_letter = '0' + this->address;
+//	std::string axis_name = "TMC4671-";
+//	axis_name.push_back(axis_letter);
+//	return ClassIdentifier {.name = axis_name.c_str(), .id = 1, .instance = this->address, .hidden = false};
+	return ClassIdentifier {.name = TMC4671::info.name, .id = TMC4671::info.id, .unique = (char)(this->address+'W'), .hidden = TMC4671::info.hidden};
+}
+
+// Returns channel if ok to use else 0
+uint8_t TMC4671::checkCSchanNotInUse(uint8_t requestedChannel)
+{
+	if (requestedChannel > MAX_TMC_DRIVERS)
+		return 0;
+	uint8_t result = requestedChannel;
+	for (int i = 1; i <= MAX_AXIS; i++)
+	{
+		if (TMC4671::UsedSPIChannels[i] == requestedChannel)
+		{
+			result = 0;
+			break;
+		}
+	}
+	return result;
+}
+
+// Default to SPI CS channel 0 if only using the X axis
+void TMC4671::setAddress(uint8_t addr){
+	setAddress(0, addr); // Axis are indexed from 1-X to 3-Z
+}
 
 /*
  * Address can be set to automatically setup spi and
- * load constants from flash
- */
-void TMC4671::setAddress(uint8_t addr){
-	this->address = addr;
-
+ * load constants from flash.
+ * chan: SPI CS channel to use
+*/
+void TMC4671::setAddress(uint8_t chan, uint8_t addr){
+	this->address = addr & 0x3;
+	uint8_t valid_chan = this->checkCSchanNotInUse(chan);
+	if (valid_chan == 0)
+	{ // chan is the chip seleect for SPI - 1 - 1st board
+		valid_chan = addr;
+	}
+	TMC4671::UsedSPIChannels[addr] = valid_chan; // record this board as in use & unavailable for other channels
 	// Auto setup spi
-	if(addr == 1){
+	if (valid_chan == 1)
+	{
 		this->cspin = SPI1_SS1_Pin;
 		this->csport = SPI1_SS1_GPIO_Port;
 		this->spi = &HSPIDRV;
-		this->flashAddrs = TMC4671FlashAddrs({ADR_TMC1_MOTCONF,ADR_TMC1_CPR,ADR_TMC1_ENCA,ADR_TMC1_OFFSETFLUX,ADR_TMC1_TORQUE_P,ADR_TMC1_TORQUE_I,ADR_TMC1_FLUX_P,ADR_TMC1_FLUX_I});
-	}else if(addr == 2){
+	}
+	else if (valid_chan == 2)
+	{
 		this->cspin = SPI1_SS2_Pin;
 		this->csport = SPI1_SS2_GPIO_Port;
 		this->spi = &HSPIDRV;
-		//TODO addr
-	}else if(addr == 3){
+	}
+	else if (valid_chan == 3)
+	{
 		this->cspin = SPI1_SS3_Pin;
 		this->csport = SPI1_SS3_GPIO_Port;
 		this->spi = &HSPIDRV;
-		//TODO addr
+	}
+	if (addr == 1){
+		this->flashAddrs = TMC4671FlashAddrs({ADR_TMC1_MOTCONF, ADR_TMC1_CPR, ADR_TMC1_ENCA, ADR_TMC1_OFFSETFLUX, ADR_TMC1_TORQUE_P, ADR_TMC1_TORQUE_I, ADR_TMC1_FLUX_P, ADR_TMC1_FLUX_I});
+	}else if (addr == 2)
+	{
+		this->flashAddrs = TMC4671FlashAddrs({ADR_TMC2_MOTCONF, ADR_TMC2_CPR, ADR_TMC2_ENCA, ADR_TMC2_OFFSETFLUX, ADR_TMC2_TORQUE_P, ADR_TMC2_TORQUE_I, ADR_TMC2_FLUX_P, ADR_TMC2_FLUX_I});
+	}else if (addr == 3)
+	{
+		this->flashAddrs = TMC4671FlashAddrs({ADR_TMC3_MOTCONF, ADR_TMC3_CPR, ADR_TMC3_ENCA, ADR_TMC3_OFFSETFLUX, ADR_TMC3_TORQUE_P, ADR_TMC3_TORQUE_I, ADR_TMC3_FLUX_P, ADR_TMC3_FLUX_I});
 	}
 }
 
@@ -73,6 +125,16 @@ uint8_t TMC4671::getAddress(){
 	return this->address;
 }
 
+uint8_t TMC4671::getCSchan()
+{
+	if (this->cspin == SPI1_SS1_Pin)
+		return 1;
+	if (this->cspin == SPI1_SS2_Pin)
+		return 2;
+	if (this->cspin == SPI1_SS3_Pin)
+		return 3;
+	return 0;
+}
 
 void TMC4671::saveFlash(){
 	uint16_t mconfint = TMC4671::encodeMotToInt(this->conf.motconf);
@@ -1554,6 +1616,10 @@ void TMC4671::restoreEncHallMisc(uint16_t val){
 
 
 ParseStatus TMC4671::command(ParsedCommand* cmd,std::string* reply){
+	if (cmd->axis-'W' != this->address){
+		return ParseStatus::NOT_FOUND;
+	}
+
 	ParseStatus flag = ParseStatus::OK;
 	if(cmd->cmd == "mtype"){
 		if(cmd->type == CMDtype::get){
