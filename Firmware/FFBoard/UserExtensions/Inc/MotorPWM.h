@@ -57,7 +57,7 @@ private:
 
 
 	SpeedPWM_DRV pwmspeed = SpeedPWM_DRV::LOW;
-	ModePWM_DRV mode = ModePWM_DRV::RC_PWM;
+	ModePWM_DRV mode = ModePWM_DRV::CENTERED_PWM;
 
 	bool active = false;
 
