@@ -69,6 +69,8 @@ extern SPI_HandleTypeDef HSPIDRV;
 extern SPI_HandleTypeDef HSPI2;
 
 // Flash. 2 pages used
+#define PAGE0_ID               FLASH_SECTOR_1
+#define PAGE1_ID               FLASH_SECTOR_2
 #define EEPROM_START_ADDRESS  ((uint32_t)0x08004000) /* EEPROM emulation start address: from sector1*/
 #define PAGE_SIZE             (uint32_t)0x4000  /* Page size = 16KByte */
 

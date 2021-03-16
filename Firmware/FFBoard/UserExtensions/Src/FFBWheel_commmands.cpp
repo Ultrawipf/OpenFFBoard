@@ -12,10 +12,7 @@
 ParseStatus FFBWheel::command(ParsedCommand* cmd,std::string* reply){
 	ParseStatus flag = ParseStatus::OK;
 	// ------------ General commands ----------------
-	if(cmd->cmd == "save"){
-		this->saveFlash();
-		*reply+=">saved";
-	}else if(cmd->cmd == "axis"){
+	if(cmd->cmd == "axis"){
 		if(cmd->type == CMDtype::get){
 			*reply+=std::to_string(this->axes_manager->getAxisCount());
 		}else if(cmd->type == CMDtype::set){
