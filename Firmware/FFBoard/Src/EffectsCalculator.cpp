@@ -190,7 +190,7 @@ int32_t EffectsCalculator::calculateForce(FFB_Effect *effect, metric_t *metrics,
 		// Optional filtering to reduce spikes
 		if (cfFilter_f < calcfrequency / 2)
 		{
-			f = effect->filter->process(f);
+			f = effect->filter->process(f); // TODO fix updating at 1khz if multiple axes used
 		}
 		result_torque = -f * angle_ratio;
 		break;

@@ -93,7 +93,11 @@ extern const uint32_t canSpeedBTR_preset[];
 
 
 //Flash. 2 pages used
-/* EEPROM start address in Flash*/
+/* EEPROM start address in Flash
+ * PAGE_ID sectors 1 and 2!
+ * */
+#define PAGE0_ID               FLASH_SECTOR_1
+#define PAGE1_ID               FLASH_SECTOR_2
 #define EEPROM_START_ADDRESS  ((uint32_t)0x08004000) /* EEPROM emulation start address: from sector1*/
 #define PAGE_SIZE             (uint32_t)0x4000  /* Page size = 16KByte */
 
