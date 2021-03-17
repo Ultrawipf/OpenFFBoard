@@ -24,6 +24,7 @@ USBD_HandleTypeDef hUsbDeviceFS __attribute__((section (".ccmram")));
 void cppmain() {
 	// Flash init
 	HAL_FLASH_Unlock();
+	__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_PGPERR | FLASH_FLAG_PGSERR);
 	if( EE_Init() != EE_OK){
 		Error_Handler();
 	}
