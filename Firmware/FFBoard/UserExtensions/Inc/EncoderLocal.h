@@ -13,10 +13,12 @@
 #include "constants.h"
 #include "ExtiHandler.h"
 #include "TimerHandler.h"
+#include "CommandHandler.h"
+#include "PersistentStorage.h"
 
 extern TIM_HandleTypeDef TIM_ENC;
 
-class EncoderLocal: public Encoder,public ExtiHandler,TimerHandler {
+class EncoderLocal: public Encoder,public ExtiHandler,TimerHandler,public CommandHandler, public PersistentStorage{
 public:
 
 	static ClassIdentifier info;
@@ -34,6 +36,12 @@ public:
 	void overflowCallback();
 	void exti(uint16_t GPIO_Pin);
 	void timerElapsed(TIM_HandleTypeDef* htim);
+
+	ParseStatus command(ParsedCommand* cmd,std::string* reply);
+	std::string getHelpstring(){return "Local encoder: cpr\n";}
+	void saveFlash(); 		// Write to flash here
+	void restoreFlash();	// Load from flash
+
 
 private:
 	TIM_HandleTypeDef* htim;

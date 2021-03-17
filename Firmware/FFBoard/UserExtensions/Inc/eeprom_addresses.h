@@ -47,6 +47,8 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_SPI_BTN_1_CONF_2            0x206
 #define ADR_SPI_BTN_2_CONF_2            0x207
 
+#define ADR_ENCLOCAL_CPR				0x210
+
 // PWM
 #define ADR_PWM_MODE					0x220
 

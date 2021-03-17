@@ -34,6 +34,7 @@ uint32_t Encoder::getCpr(){
 void Encoder::setCpr(uint32_t cpr){
 	this->cpr = cpr;
 }
+
 int32_t Encoder::getPos(){
 	return 0;
 }

@@ -164,7 +164,7 @@ struct TMC4671Biquad{
 };
 
 
-class TMC4671 : public MotorDriver, public Encoder, public CommandHandler, public SpiHandler, public cpp_freertos::Thread{
+class TMC4671 : public MotorDriver, public PersistentStorage, public Encoder, public CommandHandler, public SpiHandler, public cpp_freertos::Thread{
 public:
 
 	static uint8_t UsedSPIChannels[];

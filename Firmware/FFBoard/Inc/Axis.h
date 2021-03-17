@@ -42,7 +42,6 @@ struct Control_t {
 struct AxisFlashAddrs
 {
 	uint16_t config = ADR_AXIS1_CONFIG;
-	uint16_t cpr = ADR_TMC1_CPR;
 };
 
 struct AxisConfig
@@ -64,7 +63,7 @@ public:
 
 	virtual std::string getHelpstring() { return "\nAxis commands: Get: axis.cmd , Set: axis.cmd=var\nWhere axis = x-z e.g. y.power (omitting axis defaults to the X axis).\n"
 //												 "power,zeroenc,enctype,cpr,pos,degrees,esgain,fxratio,idlespring,spring.friction,damper,inertia,invert,drvtype,tmc.\n"; }
-												 "power,zeroenc,enctype,cpr,pos,degrees,esgain,fxratio,idlespring,friction,invert,drvtype,tmc.\n"; }
+												 "power,zeroenc,enctype,pos,degrees,esgain,fxratio,idlespring,friction,invert,drvtype,tmc.\n"; }
 	void setupTMC4671();
 	void setupTMC4671_enc(PhiE enctype);
 
@@ -89,7 +88,6 @@ public:
 	bool hasEnc();
 	void zeroEnc();
 
-	void setCpr(uint16_t val);
 	void setPos(uint16_t val);
 
 	bool getFfbActive();
