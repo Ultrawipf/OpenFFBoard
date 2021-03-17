@@ -1,13 +1,10 @@
 /*Debug/
 **/Release/
-
 **/.settings/
 *.launch
-.mxproject
-.project
-.cproject
 .vscode
 .metadata
+.mxproject
 fixlang
 /build/
 /OpenFFBoard/
