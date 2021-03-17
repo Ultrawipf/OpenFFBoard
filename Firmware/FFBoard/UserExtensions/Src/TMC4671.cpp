@@ -10,6 +10,7 @@
 #include "voltagesense.h"
 #include "stm32f4xx_hal_spi.h"
 #include <math.h>
+#include "RessourceManager.h"
 #include "ErrorHandler.h"
 
 #define MAX_TMC_DRIVERS 3
@@ -1519,9 +1520,9 @@ uint32_t TMC4671::readReg(uint8_t reg){
 
 	bool isirq = isIrq();
 	if(isirq)
-		spiSemaphore.TakeFromISR(nullptr);
+		RessourceManager::getSpiSemaphore(1)->TakeFromISR(nullptr);
 	else
-		spiSemaphore.Take();
+		RessourceManager::getSpiSemaphore(1)->Take();
 
 	HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_RESET);
 	//HAL_SPI_Transmit(this->spi,req,1,SPITIMEOUT); // pause
@@ -1533,9 +1534,9 @@ uint32_t TMC4671::readReg(uint8_t reg){
 	memcpy(&ret,tbuf+1,4);
 	ret = __REV(ret);
 	if(isirq)
-		spiSemaphore.GiveFromISR(nullptr);
+		RessourceManager::getSpiSemaphore(1)->GiveFromISR(nullptr);
 	else
-		spiSemaphore.Give();
+		RessourceManager::getSpiSemaphore(1)->Give();
 	return ret;
 }
 
@@ -1546,9 +1547,9 @@ void TMC4671::writeReg(uint8_t reg,uint32_t dat){
 	bool isirq = isIrq();
 
 	if(isirq)
-		spiSemaphore.TakeFromISR(nullptr);
+		RessourceManager::getSpiSemaphore(1)->TakeFromISR(nullptr);
 	else
-		spiSemaphore.Take();
+		RessourceManager::getSpiSemaphore(1)->Take();
 
 	spi_buf[0] = (uint8_t)(0x80 | reg);
 	dat =__REV(dat);
@@ -1569,7 +1570,7 @@ void TMC4671::updateReg(uint8_t reg,uint32_t dat,uint32_t mask,uint8_t shift){
 void TMC4671::SpiTxCplt(SPI_HandleTypeDef *hspi){
 	if(hspi == this->spi){
 		HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_SET); // unselect
-		spiSemaphore.GiveFromISR(nullptr);
+		RessourceManager::getSpiSemaphore(1)->GiveFromISR(nullptr);
 	}
 }
 

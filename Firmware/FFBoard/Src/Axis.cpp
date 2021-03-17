@@ -278,11 +278,7 @@ void Axis::setEncType(uint8_t enctype)
 		this->enc = enc_chooser.Create(enctype);
 
 	}
-//	uint16_t cpr = 0;
-//	if (Flash_Read(flashAddrs.cpr, &cpr))
-//	{
-//		this->enc->setCpr(cpr);
-//	}
+
 	int32_t scaledEnc = getEncValue(enc, degreesOfRotation);
 	this->resetMetrics(scaledEnc);
 }

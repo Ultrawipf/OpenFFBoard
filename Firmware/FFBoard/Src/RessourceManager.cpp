@@ -7,12 +7,27 @@
 
 #include "RessourceManager.h"
 
-RessourceManager::RessourceManager() {
-	// TODO Auto-generated constructor stub
+cpp_freertos::BinarySemaphore RessourceManager::spiSemaphores[SPI_PORTS] = {
+		cpp_freertos::BinarySemaphore(true),
+		cpp_freertos::BinarySemaphore(true),
+		cpp_freertos::BinarySemaphore(true)
+};
 
+/*
+ * Do not create this anywhere else. Only a single instance in cppmain.
+ */
+RessourceManager::RessourceManager() {
+	RessourceManager::ressourceManager = this;
 }
 
 RessourceManager::~RessourceManager() {
-	// TODO Auto-generated destructor stub
+
 }
 
+cpp_freertos::BinarySemaphore* RessourceManager::getSpiSemaphore(uint8_t port){
+	port-=1;
+	if(port < SPI_PORTS){
+		return &(spiSemaphores[port]);
+	}
+	return nullptr;
+}

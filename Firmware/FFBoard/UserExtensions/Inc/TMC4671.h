@@ -365,7 +365,7 @@ private:
 	uint32_t initTime = 0;
 	bool manualEncAlign = false;
 
-	cpp_freertos::BinarySemaphore spiSemaphore = cpp_freertos::BinarySemaphore(true);
+	//cpp_freertos::BinarySemaphore spiSemaphore = cpp_freertos::BinarySemaphore(true);
 
 };
 
