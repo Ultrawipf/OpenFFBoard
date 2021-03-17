@@ -12,7 +12,7 @@
 #include "ChoosableClass.h"
 #include "PersistentStorage.h"
 
-class MotorDriver : virtual ChoosableClass,public PersistentStorage {
+class MotorDriver : virtual ChoosableClass{
 public:
 	MotorDriver();
 	virtual ~MotorDriver();

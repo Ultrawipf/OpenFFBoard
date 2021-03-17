@@ -1,5 +1,5 @@
 /*
- * exampleMain.h
+ * TMCDebugBridge.h
  *
  *  Created on: 23.01.2020
  *      Author: Yannick

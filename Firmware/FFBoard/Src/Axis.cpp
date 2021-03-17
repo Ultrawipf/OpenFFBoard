@@ -46,15 +46,15 @@ Axis::Axis(char axis,volatile Control_t* control) : NormalizedAxis(axis), drv_ch
 	this->control = control;
 	if (axis == 'X')
 	{
-		this->flashAddrs = AxisFlashAddrs({ADR_AXIS1_CONFIG, ADR_TMC1_CPR});
+		this->flashAddrs = AxisFlashAddrs({ADR_AXIS1_CONFIG});
 	}
 	else if (axis == 'Y')
 	{
-		this->flashAddrs = AxisFlashAddrs({ADR_AXIS2_CONFIG, ADR_TMC2_CPR});
+		this->flashAddrs = AxisFlashAddrs({ADR_AXIS2_CONFIG});
 	}
 	else if (axis == 'Z')
 	{
-		this->flashAddrs = AxisFlashAddrs({ADR_AXIS3_CONFIG, ADR_TMC3_CPR});
+		this->flashAddrs = AxisFlashAddrs({ADR_AXIS3_CONFIG});
 	}
 
 	restoreFlash(); // Load parameters
@@ -81,22 +81,10 @@ void Axis::restoreFlash(){
 
 	setDrvType(this->conf.drvtype);
 	setEncType(this->conf.enctype);
-
-	uint16_t cpr = 0;
-	if (Flash_Read(flashAddrs.cpr, &cpr)){
-		this->setCpr(cpr);
-	}else{
-		pulseErrLed();
-	}
 }
 // Saves parameters to flash
 void Axis::saveFlash(){
-	NormalizedAxis::saveFlash();
 	Flash_Write(flashAddrs.config, Axis::encodeConfToInt(this->conf));
-	if (hasEnc()){
-		Flash_Write(flashAddrs.cpr, enc->getCpr());
-	}
-	drv->saveFlash(); // Motor driver
 }
 
 
@@ -112,11 +100,6 @@ bool Axis::hasEnc(){
 	return (this->enc != nullptr);
 }
 
-void Axis::setCpr(uint16_t val){
-	if (hasEnc()){
-		this->enc->setCpr(val);
-	}
-}
 
 void Axis::setPos(uint16_t val)
 {
@@ -287,18 +270,19 @@ void Axis::setEncType(uint8_t enctype)
 
 	if (enc_chooser.isValidClassId(enctype))
 	{
-		if (enc != nullptr && enc->getInfo().id != enctype && enctype != drv->getInfo().id && enc->getInfo().id != drv->getInfo().id)
+		if (enc != nullptr && enctype != drv->getInfo().id && enc->getInfo().id != drv->getInfo().id)
 		{
 			delete enc;
 		}
 		this->conf.enctype = (enctype);
 		this->enc = enc_chooser.Create(enctype);
+
 	}
-	uint16_t cpr = 0;
-	if (Flash_Read(flashAddrs.cpr, &cpr))
-	{
-		this->enc->setCpr(cpr);
-	}
+//	uint16_t cpr = 0;
+//	if (Flash_Read(flashAddrs.cpr, &cpr))
+//	{
+//		this->enc->setCpr(cpr);
+//	}
 	int32_t scaledEnc = getEncValue(enc, degreesOfRotation);
 	this->resetMetrics(scaledEnc);
 }
