@@ -1619,7 +1619,7 @@ void TMC4671::restoreEncHallMisc(uint16_t val){
 
 
 ParseStatus TMC4671::command(ParsedCommand* cmd,std::string* reply){
-	if (cmd->axis-'W' != this->address){
+	if (cmd->prefix-'W' != this->address){
 		return ParseStatus::NOT_FOUND;
 	}
 

@@ -352,7 +352,7 @@ void Axis::processHidCommand(HID_Custom_Data_t *data){
 
 ParseStatus Axis::command(ParsedCommand *cmd, std::string *reply)
 {
-	if (cmd->axis != axis){
+	if (cmd->prefix != axis){
 		return ParseStatus::NOT_FOUND;
 	}
 

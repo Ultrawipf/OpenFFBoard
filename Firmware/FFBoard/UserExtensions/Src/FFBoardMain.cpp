@@ -28,7 +28,7 @@ const ClassIdentifier FFBoardMain::getInfo(){
 void FFBoardMain::cdcRcv(char* Buf, uint32_t *Len){
 	if(systemCommands->addBuf(Buf, Len,!usb_busy_retry)){
 		 // resume command execution
-		systemCommands->ResumeFromISR();
+			systemCommands->Resume();
 	}
 }
 

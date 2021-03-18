@@ -41,7 +41,7 @@ public:
 	void readButtons(uint32_t* buf);
 
 	ParseStatus command(ParsedCommand* cmd,std::string* reply);
-	virtual std::string getHelpstring(){return "SPI Button: spi#_btn_mode,spi#_btncut,spi#_btnpol,spi#_btnnum\n";}
+	virtual std::string getHelpstring(){return "SPI Button (#=id): #.spi_btn_mode,#.spi_btncut,#.spi_btnpol,#.spi_btnnum\n";}
 
 	void saveFlash();
 	void restoreFlash();
