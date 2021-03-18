@@ -58,11 +58,11 @@ std::vector<ParsedCommand> CmdParser::parse(){
 		uint8_t cmd_start = 0;
 
 		if(word[1] == '.'){ // Axis component
-			char axis = word.front() & 0x7df; //force UpperCase
-			cmd.axis = axis;
+			char axis = word.front();
+			cmd.prefix = axis;
 			cmd_start = 2;
 		}else{
-			cmd.axis = 'X'; // default to X
+			cmd.prefix = 'X'; // default to X
 		}
 		if(word.back() == '?'){ // <cmd>?
 			cmd.type = CMDtype::get;
