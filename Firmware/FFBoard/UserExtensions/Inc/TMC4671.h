@@ -91,6 +91,15 @@ struct TMC4671Limits{
 	int32_t pid_pos_high			= 2147483647;
 };
 
+struct TMC4671PidPrecision{ // Switch between Q8.8 (false) and Q4.12 (true) precision for pid controller
+	bool current_I	= false;
+	bool current_P	= false;
+	bool velocity_I	= false;
+	bool velocity_P	= false;
+	bool position_I	= false;
+	bool position_P	= false;
+};
+
 struct TMC4671FlashAddrs{
 	uint16_t mconf = ADR_TMC1_MOTCONF;
 	uint16_t cpr = ADR_TMC1_CPR;
@@ -297,6 +306,9 @@ public:
 	void setUqUdLimit(uint16_t limit);
 	void setTorqueLimit(uint16_t limit);
 
+	void setPidPrecision(TMC4671PidPrecision setting);
+	TMC4671PidPrecision pidPrecision;
+
 	TMC4671ABNConf abnconf;
 	TMC4671HALLConf hallconf;
 	TMC4671AENCConf aencconf;
@@ -325,7 +337,7 @@ public:
 	virtual std::string getHelpstring(){
 		return "\nTMC4671 commands:\n"
 				"mtype,encsrc,encalign,poles,phiesrc,reg,fluxoffset\n"
-				"torqueP,torqueI,fluxP,fluxI\n"
+				"torqueP,torqueI,fluxP,fluxI,pidPrec\n"
 				"acttrq,seqpi,tmctemp\n";}
 
 

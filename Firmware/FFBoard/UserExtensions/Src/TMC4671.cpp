@@ -238,6 +238,10 @@ bool TMC4671::initialize(){
 		oldTMCdetected = true;
 	}
 
+	if(!oldTMCdetected){
+		this->setPidPrecision(pidPrecision);
+	}
+
 	// Write main constants
 
 	writeReg(0x64, 0); // No flux/torque
@@ -1318,6 +1322,18 @@ void TMC4671::setTorqueLimit(uint16_t limit){
 	writeReg(0x5E, limit);
 }
 
+void TMC4671::setPidPrecision(TMC4671PidPrecision setting){
+
+	this->pidPrecision = setting;
+	uint16_t dat = setting.current_I;
+	dat |= setting.current_P << 1;
+	dat |= setting.velocity_I << 2;
+	dat |= setting.velocity_P << 3;
+	dat |= setting.position_I << 4;
+	dat |= setting.position_P << 5;
+	writeReg(0x4E, 62); // set config register address
+	writeReg(0x4D, dat);
+}
 
 void TMC4671::setLimits(TMC4671Limits limits){
 	this->curLimits = limits;
@@ -1595,6 +1611,8 @@ uint16_t TMC4671::encodeEncHallMisc(){
 	val |= (this->abnconf.npol) & 0x01;
 	val |= (this->abnconf.rdir & 0x01)  << 1; // Direction
 	val |= (this->abnconf.ab_as_n & 0x01) << 2;
+	val |= (this->pidPrecision.current_I) << 3;
+	val |= (this->pidPrecision.current_P) << 4;
 
 	val |= (this->hallconf.direction & 0x01) << 8;
 	val |= (this->hallconf.interpolation & 0x01) << 9;
@@ -1611,6 +1629,13 @@ void TMC4671::restoreEncHallMisc(uint16_t val){
 	this->abnconf.npol = this->abnconf.apol;
 	this->abnconf.rdir = (val>>1) & 0x01; // Direction
 	this->abnconf.ab_as_n = (val>>2) & 0x01;
+	this->pidPrecision.current_I = (val>>3) & 0x01;
+	this->pidPrecision.velocity_I = this->pidPrecision.current_I;
+	this->pidPrecision.position_I = this->pidPrecision.current_I;
+	this->pidPrecision.current_P = (val>>4) & 0x01;
+	this->pidPrecision.velocity_P = this->pidPrecision.current_P;
+	this->pidPrecision.velocity_P = this->pidPrecision.current_P;
+
 	this->hallconf.direction = (val>>8) & 0x01;
 	this->hallconf.interpolation = (val>>9) & 0x01;
 
@@ -1619,7 +1644,7 @@ void TMC4671::restoreEncHallMisc(uint16_t val){
 
 
 ParseStatus TMC4671::command(ParsedCommand* cmd,std::string* reply){
-	if (cmd->prefix-'W' != this->address){
+	if (cmd->prefix != 0 && cmd->prefix-'W' != this->address){
 		return ParseStatus::NOT_FOUND;
 	}
 
@@ -1703,6 +1728,17 @@ ParseStatus TMC4671::command(ParsedCommand* cmd,std::string* reply){
 			this->curPids.fluxI = cmd->val;
 			setPids(curPids);
 		}
+	}else if(cmd->cmd == "pidPrec"){
+		if(cmd->type == CMDtype::get){
+			*reply+=std::to_string(this->pidPrecision.current_I | (this->pidPrecision.current_P << 1));
+		}else if(cmd->type == CMDtype::set){
+			this->pidPrecision.current_I = cmd->val & 0x1;
+			this->pidPrecision.current_P = (cmd->val >> 1) & 0x1;
+			this->setPidPrecision(pidPrecision);
+		}else{
+			*reply+="bit0=I bit1=P. 0=Q8.8 1= Q4.12";
+		}
+
 	}else if(cmd->cmd == "phiesrc"){
 		if(cmd->type == CMDtype::get){
 			*reply+=std::to_string((uint8_t)this->getPhiEtype());
