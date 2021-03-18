@@ -61,8 +61,6 @@ std::vector<ParsedCommand> CmdParser::parse(){
 			char axis = word.front();
 			cmd.prefix = axis;
 			cmd_start = 2;
-		}else{
-			cmd.prefix = 'X'; // default to X
 		}
 		if(word.back() == '?'){ // <cmd>?
 			cmd.type = CMDtype::get;
