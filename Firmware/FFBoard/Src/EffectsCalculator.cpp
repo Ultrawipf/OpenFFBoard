@@ -19,8 +19,9 @@
 
 #define FRICTION_SATURATION 32767
 #define INERTIA_SATURATION 32767
+#define EFFECT_STATE_INACTIVE 0
 
-#define degreesToRadians(angleDegrees) ((angleDegrees)*M_PI / 180.0)
+//#define degreesToRadians(angleDegrees) ((angleDegrees)*M_PI / 180.0)
 
 
 ClassIdentifier EffectsCalculator::info = {
@@ -99,7 +100,10 @@ void EffectsCalculator::calculateEffects(std::vector<Axis *> axes)
 
 	int32_t forceX = 0;
 	int32_t forceY = 0;
-	//	int32_t_t forceZ = 0;
+#if MAX_AXIS == 3
+	int32_t forceZ = 0;
+#endif
+	int32_t forceVector = 0;
 	uint8_t axisCount = axes.size();
 	bool validY = axisCount > 1;
 #if MAX_AXIS == 3
@@ -109,23 +113,35 @@ void EffectsCalculator::calculateEffects(std::vector<Axis *> axes)
 	for (uint8_t i = 0; i < MAX_EFFECTS; i++)
 	{
 		FFB_Effect *effect = &effects[i];
-		// Filter out inactive effects
-		if (effect->state == 0)
+
+		// If effect has expired make inactive
+		if (effect->state != EFFECT_STATE_INACTIVE &&
+			effect->duration != FFB_EFFECT_DURATION_INFINITE &&
+			HAL_GetTick() > effect->startTime + effect->duration)
 		{
-			continue;
+			effect->state = EFFECT_STATE_INACTIVE;
 		}
-		if (effect->startTime > HAL_GetTick())
+
+
+		// Filter out inactive effects
+		if (effect->state == EFFECT_STATE_INACTIVE)
 		{
 			continue;
 		}
 
+
+		if (effect->conditionsCount == 0) {
+			forceVector = calcNonConditionEffectForce(effect);
+		}
+
+
 		if (effect->enableAxis == DIRECTION_ENABLE || effect->enableAxis & X_AXIS_ENABLE)
 		{
-			forceX += calculateForce(effect, axes[0]->getMetrics(), axes[0]->getEffectGains(), 0, axisCount);
+			forceX += calcComponentForce(effect, forceVector, axes[0]->getMetrics(), axes[0]->getEffectGains(), 0, axisCount);
 		}
 		if (validY && ((effect->enableAxis == DIRECTION_ENABLE) || effect->enableAxis & Y_AXIS_ENABLE))
 		{
-			forceY += calculateForce(effect, axes[1]->getMetrics(), axes[1]->getEffectGains(), 1, axisCount);
+			forceY += calcComponentForce(effect, forceVector, axes[1]->getMetrics(), axes[1]->getEffectGains(), 1, axisCount);
 		}
 
 		if (effect->duration != FFB_EFFECT_DURATION_INFINITE &&
@@ -142,109 +158,31 @@ void EffectsCalculator::calculateEffects(std::vector<Axis *> axes)
 	}
 }
 
-/*
- * If the number of Condition report blocks is equal to the number of axes for the effect, then the first report
-block applies to the first axis, the second applies to the second axis, and so on. For example, a two-axis
-spring condition with CP Offset set to zero in both Condition report blocks would have the same effect as
-the joystick self-centering spring. When a condition is defined for each axis in this way, the effect must
-not be rotated.
+int32_t EffectsCalculator::calcNonConditionEffectForce(FFB_Effect *effect) {
+	int32_t force_vector = 0;
+	switch (effect->type){
 
-If there is a single Condition report block for an effect with more than one axis, then the direction along
-which the parameters of the Condition report block are in effect is determined by the direction parameters
-passed in the Direction field of the Effect report block. For example, a friction condition rotated 45
-degrees (in polar coordinates) would resist joystick motion in the northeast-southwest direction but would
-have no effect on joystick motion in the northwest-southeast direction.
- */
-
-int32_t EffectsCalculator::calculateForce(FFB_Effect *effect, metric_t *metrics, effect_gain_t *gain, uint8_t axis, uint8_t axisCount)
-{
-	int32_t result_torque = 0;
-
-	uint8_t direction;
-	uint8_t con_idx = 0; // condition block index
-
-	if (effect->enableAxis == DIRECTION_ENABLE)
-	{
-		direction = effect->directionX;
-		if (effect->conditionsCount > 1)
-		{
-			con_idx = axis;
-		}
-	}
-	else
-	{
-		direction = axis == 0 ? effect->directionX : effect->directionY;
-		con_idx = axis;
-	}
-
-	bool useForceDirectionForConditionEffect = (effect->enableAxis == DIRECTION_ENABLE && axisCount > 1 && effect->conditionsCount == 1);
-
-	float angle = ((float)direction * 360.0 / 255.0) * DEG_TO_RAD;
-	float angle_ratio = axis == 0 ? sin(angle) : -1 * cos(angle);
-
-	switch (effect->type)
-	{
 	case FFB_EFFECT_CONSTANT:
 	{ // Constant force is just the force
-		int32_t f = ((int32_t)effect->magnitude * (int32_t)(1 + effect->gain)) / 256;
+		force_vector = ((int32_t)effect->magnitude * (int32_t)(1 + effect->gain)) >> 8;
 		// Optional filtering to reduce spikes
 		if (cfFilter_f < calcfrequency / 2)
 		{
-			f = effect->filter->process(f); // TODO fix updating at 1khz if multiple axes used
+			force_vector = effect->filter->process(force_vector);
 		}
-		result_torque = -f * angle_ratio;
 		break;
 	}
+
 	case FFB_EFFECT_RAMP:
 	{
 		uint32_t elapsed_time = HAL_GetTick() - effect->startTime;
 		uint32_t duration = effect->duration;
-		duration = (duration == 0) ? 0x7FFF : duration;
+		duration = (duration == 0) ? 0x7FFF : duration; // prevent div zero
 		float force = (int32_t)effect->startLevel + ((int32_t)elapsed_time * (effect->endLevel - effect->startLevel)) / duration;
-		force *= (int32_t)(1 + effect->gain) >> 8;
+		force_vector = (int32_t)(force * (1 + effect->gain)) >> 8;
 //		if(cfFilter_f < calcfrequency/2){
 //			f = effect->filter->process(f);
 //		}
-		if(effect->useEnvelope) {
-			result_torque -= applyEnvelope(effect, (int32_t)force * angle_ratio);
-		}else{
-			result_torque -= force * angle_ratio;
-		}
-		break;
-	}
-
-	case FFB_EFFECT_SPRING:
-	{
-		float metric = metrics->pos;
-		result_torque -= calcCondition(effect, metric, gain->spring, useForceDirectionForConditionEffect,
-									   con_idx, 0.0004f, angle_ratio);
-		break;
-	}
-
-	case FFB_EFFECT_FRICTION:
-	{
-		effect->conditions[con_idx].negativeSaturation = FRICTION_SATURATION;
-		effect->conditions[con_idx].positiveSaturation = FRICTION_SATURATION;
-		float metric = effect->filter->process(metrics->speed) * .25;
-		result_torque -= calcCondition(effect, metric, gain->friction, useForceDirectionForConditionEffect,
-											   con_idx, .04f, angle_ratio);
-		break;
-	}
-	case FFB_EFFECT_DAMPER:
-	{
-		float metric = effect->filter->process(metrics->speed) * .0625f;
-		result_torque -= calcCondition(effect, metric, gain->damper, useForceDirectionForConditionEffect,
-									   con_idx, 0.4f, angle_ratio);
-		break;
-	}
-
-	case FFB_EFFECT_INERTIA:
-	{
-		effect->conditions[con_idx].negativeSaturation = INERTIA_SATURATION;
-		effect->conditions[con_idx].positiveSaturation = INERTIA_SATURATION;
-		float metric = effect->filter->process(metrics->accel*4);
-		result_torque -= calcCondition(effect, metric, gain->inertia, useForceDirectionForConditionEffect,
-									   con_idx, 0.4f, angle_ratio);
 		break;
 	}
 
@@ -252,14 +190,10 @@ int32_t EffectsCalculator::calculateForce(FFB_Effect *effect, metric_t *metrics,
 	{
 		uint32_t elapsed_time = HAL_GetTick() - effect->startTime;
 		int32_t force = ((elapsed_time + effect->phase) % ((uint32_t)effect->period + 2)) < (uint32_t)(effect->period + 2) / 2 ? -effect->magnitude : effect->magnitude;
-		force += effect->offset;
-		if(effect->useEnvelope) {
-			result_torque -= applyEnvelope(effect, (int32_t)force * angle_ratio);
-		}else{
-			result_torque -= force * angle_ratio;
-		}
+		force_vector = force + effect->offset;
 		break;
 	}
+//TODO: fix div by zero if period = 0
 	case FFB_EFFECT_TRIANGLE:
 	{
 		int32_t force = 0;
@@ -281,17 +215,12 @@ int32_t EffectsCalculator::calculateForce(FFB_Effect *effect, metric_t *metrics,
 		else
 			force = slope * remainder;
 		force += minMagnitude;
-		if(effect->useEnvelope) {
-			result_torque -= applyEnvelope(effect, (int32_t)force * angle_ratio);
-		}else{
-			result_torque -= force * angle_ratio;
-		}
+		force_vector = force + minMagnitude;
 		break;
 	}
 
 	case FFB_EFFECT_SAWTOOTHUP:
 	{
-		int32_t force = 0;
 		float offset = effect->offset * 2;
 		float magnitude = effect->magnitude;
 		uint32_t elapsed_time = HAL_GetTick() - effect->startTime;
@@ -303,23 +232,14 @@ int32_t EffectsCalculator::calculateForce(FFB_Effect *effect, metric_t *metrics,
 		float minMagnitude = offset - magnitude;
 		int32_t phasetime = (phase * period) / 35999;
 		uint32_t timeTemp = elapsed_time + phasetime;
-		float reminder = timeTemp % period;
+		float remainder = timeTemp % period;
 		float slope = (maxMagnitude - minMagnitude) / periodF;
-		float tempforce = 0;
-		tempforce = slope * reminder;
-		tempforce += minMagnitude;
-		force = tempforce;
-		if(effect->useEnvelope) {
-			result_torque -= applyEnvelope(effect, (int32_t)force * angle_ratio);
-		}else{
-			result_torque -= force * angle_ratio;
-		}
+		force_vector = (int32_t)(minMagnitude + slope * (period - remainder));
 		break;
 	}
 
 	case FFB_EFFECT_SAWTOOTHDOWN:
 	{
-		int32_t force = 0;
 		float offset = effect->offset * 2;
 		float magnitude = effect->magnitude;
 		uint32_t elapsed_time = HAL_GetTick() - effect->startTime;
@@ -331,17 +251,9 @@ int32_t EffectsCalculator::calculateForce(FFB_Effect *effect, metric_t *metrics,
 		float minMagnitude = offset - magnitude;
 		int32_t phasetime = (phase * period) / 35999;
 		uint32_t timeTemp = elapsed_time + phasetime;
-		float reminder = timeTemp % period;
+		float remainder = timeTemp % period;
 		float slope = (maxMagnitude - minMagnitude) / periodF;
-		float tempforce = 0;
-		tempforce = slope * (period - reminder);
-		tempforce += minMagnitude;
-		force = tempforce;
-		if(effect->useEnvelope) {
-			result_torque -= applyEnvelope(effect, (int32_t)force * angle_ratio);
-		}else{
-			result_torque -= force * angle_ratio;
-		}
+		force_vector = (int32_t)(minMagnitude + slope * (period - remainder));
 		break;
 	}
 
@@ -351,14 +263,108 @@ int32_t EffectsCalculator::calculateForce(FFB_Effect *effect, metric_t *metrics,
 		float freq = 1.0f / (float)(std::max<uint16_t>(effect->period, 2));
 		float phase = (float)effect->phase / (float)35999; //degrees
 		float sine = sinf(2.0 * (float)M_PI * (t * freq + phase)) * effect->magnitude;
-		int32_t force = (int32_t)(effect->offset + sine);
-		if(effect->useEnvelope) {
-			result_torque -= applyEnvelope(effect, (int32_t)force * angle_ratio);
-		}else{
-			result_torque -= force * angle_ratio;
-		}
+		force_vector = (int32_t)(effect->offset + sine);
 		break;
 	}
+	default:
+		break;
+	}
+	if(effect->useEnvelope) {
+		force_vector = applyEnvelope(effect, (int32_t)force_vector);
+	}
+	return force_vector;
+}
+
+
+
+/*
+ * If the number of Condition report blocks is equal to the number of axes for the effect, then the first report
+block applies to the first axis, the second applies to the second axis, and so on. For example, a two-axis
+spring condition with CP Offset set to zero in both Condition report blocks would have the same effect as
+the joystick self-centering spring. When a condition is defined for each axis in this way, the effect must
+not be rotated.
+
+If there is a single Condition report block for an effect with more than one axis, then the direction along
+which the parameters of the Condition report block are in effect is determined by the direction parameters
+passed in the Direction field of the Effect report block. For example, a friction condition rotated 45
+degrees (in polar coordinates) would resist joystick motion in the northeast-southwest direction but would
+have no effect on joystick motion in the northwest-southeast direction.
+ */
+
+int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceVector, metric_t *metrics, effect_gain_t *gain, uint8_t axis, uint8_t axisCount)
+{
+	int32_t result_torque = 0;
+	uint8_t direction;
+	uint8_t con_idx = 0; // condition block index
+
+	if (effect->enableAxis == DIRECTION_ENABLE)
+	{
+		direction = effect->directionX;
+		if (effect->conditionsCount > 1)
+		{
+			con_idx = axis;
+		}
+	}
+	else
+	{
+		direction = axis == 0 ? effect->directionX : effect->directionY;
+		con_idx = axis;
+	}
+
+	//bool useForceDirectionForConditionEffect = (effect->enableAxis == DIRECTION_ENABLE && axisCount > 1 && effect->conditionsCount == 1);
+	bool rotateConditionForce = (axisCount > 1 && effect->conditionsCount == 1);
+	float angle = ((float)direction * 360.0 / 255.0) * DEG_TO_RAD;
+	float angle_ratio = axis == 0 ? sin(angle) : -1 * cos(angle);
+
+	switch (effect->type)
+	{
+	case FFB_EFFECT_CONSTANT:
+	case FFB_EFFECT_RAMP:
+	case FFB_EFFECT_SQUARE:
+	case FFB_EFFECT_TRIANGLE:
+	case FFB_EFFECT_SAWTOOTHUP:
+	case FFB_EFFECT_SAWTOOTHDOWN:
+	case FFB_EFFECT_SINE:
+	{
+		result_torque = -forceVector * angle_ratio;
+		break;
+	}
+
+	case FFB_EFFECT_SPRING:
+	{
+		float metric = metrics->pos;
+		result_torque -= calcConditionEffectForce(effect, metric, gain->spring, rotateConditionForce,
+									   con_idx, 0.0004f, angle_ratio);
+		break;
+	}
+
+	case FFB_EFFECT_FRICTION:
+	{
+		effect->conditions[con_idx].negativeSaturation = FRICTION_SATURATION;
+		effect->conditions[con_idx].positiveSaturation = FRICTION_SATURATION;
+		float metric = effect->filter->process(metrics->speed) * .25;
+		result_torque -= calcConditionEffectForce(effect, metric, gain->friction, rotateConditionForce,
+											   con_idx, .04f, angle_ratio);
+		break;
+	}
+	case FFB_EFFECT_DAMPER:
+	{
+		float metric = effect->filter->process(metrics->speed) * .0625f;
+		result_torque -= calcConditionEffectForce(effect, metric, gain->damper, rotateConditionForce,
+									   con_idx, 0.4f, angle_ratio);
+		break;
+	}
+
+	case FFB_EFFECT_INERTIA:
+	{
+		effect->conditions[con_idx].negativeSaturation = INERTIA_SATURATION;
+		effect->conditions[con_idx].positiveSaturation = INERTIA_SATURATION;
+		float metric = effect->filter->process(metrics->accel*4);
+		result_torque -= calcConditionEffectForce(effect, metric, gain->inertia, rotateConditionForce,
+									   con_idx, 0.4f, angle_ratio);
+		break;
+	}
+
 	default:
 		// Unsupported effect
 		break;
@@ -366,7 +372,7 @@ int32_t EffectsCalculator::calculateForce(FFB_Effect *effect, metric_t *metrics,
 	return (result_torque * (global_gain+1)) >> 8; // Apply global gain
 }
 
-int32_t EffectsCalculator::calcCondition(FFB_Effect *effect, float  metric, uint8_t gain, bool useDir,
+int32_t EffectsCalculator::calcConditionEffectForce(FFB_Effect *effect, float  metric, uint8_t gain, bool rotateConditionForce,
 										 uint8_t idx, float scale, float angle_ratio)
 {
 	int16_t offset = effect->conditions[idx].cpOffset;
@@ -390,7 +396,7 @@ int32_t EffectsCalculator::calcCondition(FFB_Effect *effect, float  metric, uint
 		}
 	}
 	force = ((gain+1) * force) >> 8;
-	if (useDir) {
+	if (rotateConditionForce) {
 		return force * angle_ratio;
 	}
 	else {
@@ -401,6 +407,7 @@ int32_t EffectsCalculator::calcCondition(FFB_Effect *effect, float  metric, uint
 // From YukMingLaw ArduinoJoystickWithFFBLibrary
 int32_t EffectsCalculator::applyEnvelope(FFB_Effect *effect, int32_t value)
 {
+//TODO:  I don't think these are supposed to be attenuated by effect gain
 	int32_t magnitude = (effect->magnitude * (int32_t)(1 + effect->gain)) >> 8;
 	int32_t attackLevel = (effect->attackLevel * (int32_t)(1 + effect->gain)) >> 8;
 	int32_t fadeLevel = (effect->fadeLevel * (int32_t)(1 + effect->gain)) >> 8;
@@ -427,9 +434,11 @@ int32_t EffectsCalculator::applyEnvelope(FFB_Effect *effect, int32_t value)
 
 void EffectsCalculator::setFilters(FFB_Effect *effect)
 {
+
 	switch (effect->type)
 	{
 	case FFB_EFFECT_DAMPER:
+
 		if (effect->filter != nullptr)
 			effect->filter->setBiquad(BiquadType::lowpass, (float)damper_f / (float)calcfrequency, damper_q, (float)0.0);
 		else
