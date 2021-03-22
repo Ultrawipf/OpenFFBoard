@@ -62,7 +62,7 @@ private:
 
 	int32_t calcComponentForce(FFB_Effect* effect, int32_t forceVector, metric_t* metrics, effect_gain_t* gain, uint8_t axis, uint8_t axisCount);
 	int32_t calcNonConditionEffectForce(FFB_Effect* effect);
-	int32_t calcConditionEffectForce(FFB_Effect *effect, float metric, uint8_t gain, bool useDir,
+	int32_t calcConditionEffectForce(FFB_Effect *effect, float metric, uint8_t gain,
 			uint8_t idx, float scale, float angle_ratio);
 	int32_t applyEnvelope(FFB_Effect *effect, int32_t value);
 };

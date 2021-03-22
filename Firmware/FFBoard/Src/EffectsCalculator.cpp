@@ -168,7 +168,7 @@ int32_t EffectsCalculator::calcNonConditionEffectForce(FFB_Effect *effect) {
 		// Optional filtering to reduce spikes
 		if (cfFilter_f < calcfrequency / 2)
 		{
-			force_vector = effect->filter->process(force_vector);
+			force_vector = effect->filter[0]->process(force_vector);
 		}
 		break;
 	}
@@ -315,6 +315,7 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 	bool rotateConditionForce = (axisCount > 1 && effect->conditionsCount == 1);
 	float angle = ((float)direction * 360.0 / 255.0) * DEG_TO_RAD;
 	float angle_ratio = axis == 0 ? sin(angle) : -1 * cos(angle);
+	angle_ratio = rotateConditionForce ? angle_ratio : 1.0;
 
 	switch (effect->type)
 	{
@@ -333,7 +334,7 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 	case FFB_EFFECT_SPRING:
 	{
 		float metric = metrics->pos;
-		result_torque -= calcConditionEffectForce(effect, metric, gain->spring, rotateConditionForce,
+		result_torque -= calcConditionEffectForce(effect, metric, gain->spring,
 									   con_idx, 0.0004f, angle_ratio);
 		break;
 	}
@@ -342,15 +343,15 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 	{
 		effect->conditions[con_idx].negativeSaturation = FRICTION_SATURATION;
 		effect->conditions[con_idx].positiveSaturation = FRICTION_SATURATION;
-		float metric = effect->filter->process(metrics->speed) * .25;
-		result_torque -= calcConditionEffectForce(effect, metric, gain->friction, rotateConditionForce,
+		float metric = effect->filter[con_idx]->process(metrics->speed) * .25;
+		result_torque -= calcConditionEffectForce(effect, metric, gain->friction,
 											   con_idx, .04f, angle_ratio);
 		break;
 	}
 	case FFB_EFFECT_DAMPER:
 	{
-		float metric = effect->filter->process(metrics->speed) * .0625f;
-		result_torque -= calcConditionEffectForce(effect, metric, gain->damper, rotateConditionForce,
+		float metric = effect->filter[con_idx]->process(metrics->speed) * .0625f;
+		result_torque -= calcConditionEffectForce(effect, metric, gain->damper,
 									   con_idx, 0.4f, angle_ratio);
 		break;
 	}
@@ -359,8 +360,8 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 	{
 		effect->conditions[con_idx].negativeSaturation = INERTIA_SATURATION;
 		effect->conditions[con_idx].positiveSaturation = INERTIA_SATURATION;
-		float metric = effect->filter->process(metrics->accel*4);
-		result_torque -= calcConditionEffectForce(effect, metric, gain->inertia, rotateConditionForce,
+		float metric = effect->filter[con_idx]->process(metrics->accel*4);
+		result_torque -= calcConditionEffectForce(effect, metric, gain->inertia,
 									   con_idx, 0.4f, angle_ratio);
 		break;
 	}
@@ -372,7 +373,7 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 	return (result_torque * (global_gain+1)) >> 8; // Apply global gain
 }
 
-int32_t EffectsCalculator::calcConditionEffectForce(FFB_Effect *effect, float  metric, uint8_t gain, bool rotateConditionForce,
+int32_t EffectsCalculator::calcConditionEffectForce(FFB_Effect *effect, float  metric, uint8_t gain,
 										 uint8_t idx, float scale, float angle_ratio)
 {
 	int16_t offset = effect->conditions[idx].cpOffset;
@@ -396,12 +397,7 @@ int32_t EffectsCalculator::calcConditionEffectForce(FFB_Effect *effect, float  m
 		}
 	}
 	force = ((gain+1) * force) >> 8;
-	if (rotateConditionForce) {
-		return force * angle_ratio;
-	}
-	else {
-		return force;
-	}
+	return force * angle_ratio;
 }
 
 // From YukMingLaw ArduinoJoystickWithFFBLibrary
@@ -432,38 +428,52 @@ int32_t EffectsCalculator::applyEnvelope(FFB_Effect *effect, int32_t value)
 	return newValue;
 }
 
-void EffectsCalculator::setFilters(FFB_Effect *effect)
-{
+void EffectsCalculator::setFilters(FFB_Effect *effect){
+
+	std::function<void(Biquad *)> fnptr = [=](Biquad *filter){};
 
 	switch (effect->type)
 	{
 	case FFB_EFFECT_DAMPER:
-
-		if (effect->filter != nullptr)
-			effect->filter->setBiquad(BiquadType::lowpass, (float)damper_f / (float)calcfrequency, damper_q, (float)0.0);
-		else
-			effect->filter = new Biquad(BiquadType::lowpass, (float)damper_f / (float)calcfrequency, damper_q, (float)0.0);
+		fnptr = [=](Biquad *filter){
+			if (filter != nullptr)
+				filter->setBiquad(BiquadType::lowpass, (float)damper_f / (float)calcfrequency, damper_q, (float)0.0);
+			else
+				filter = new Biquad(BiquadType::lowpass, (float)damper_f / (float)calcfrequency, damper_q, (float)0.0);
+		};
 		break;
 	case FFB_EFFECT_FRICTION:
-		if (effect->filter != nullptr)
-			effect->filter->setBiquad(BiquadType::lowpass, (float)friction_f / (float)calcfrequency, friction_q, (float)0.0);
-		else
-			effect->filter = new Biquad(BiquadType::lowpass, (float)friction_f / (float)calcfrequency, friction_q, (float)0.0);
+		fnptr = [=](Biquad *filter){
+			if (filter != nullptr)
+				filter->setBiquad(BiquadType::lowpass, (float)friction_f / (float)calcfrequency, friction_q, (float)0.0);
+			else
+				filter = new Biquad(BiquadType::lowpass, (float)friction_f / (float)calcfrequency, friction_q, (float)0.0);
+		};
 		break;
 	case FFB_EFFECT_INERTIA:
-		if (effect->filter != nullptr)
-			effect->filter->setBiquad(BiquadType::lowpass, (float)inertia_f / (float)calcfrequency, inertia_q, (float)0.0);
-		else
-			effect->filter = new Biquad(BiquadType::lowpass, (float)inertia_f / (float)calcfrequency, inertia_q, (float)0.0);
+		fnptr = [=](Biquad *filter){
+			if (filter != nullptr)
+				filter->setBiquad(BiquadType::lowpass, (float)inertia_f / (float)calcfrequency, inertia_q, (float)0.0);
+			else
+				filter = new Biquad(BiquadType::lowpass, (float)inertia_f / (float)calcfrequency, inertia_q, (float)0.0);
+		};
 		break;
 	case FFB_EFFECT_CONSTANT:
-		if (effect->filter != nullptr)
-			effect->filter->setBiquad(BiquadType::lowpass, (float)cfFilter_f / (float)calcfrequency, cfFilter_q, (float)0.0);
-		else
-			effect->filter = new Biquad(BiquadType::lowpass, (float)cfFilter_f / (float)calcfrequency, cfFilter_q, (float)0.0);
+		fnptr = [=](Biquad *filter){
+			if (filter != nullptr)
+				filter->setBiquad(BiquadType::lowpass, (float)cfFilter_f / (float)calcfrequency, cfFilter_q, (float)0.0);
+			else
+				filter = new Biquad(BiquadType::lowpass, (float)cfFilter_f / (float)calcfrequency, cfFilter_q, (float)0.0);
+		};
 		break;
 	}
+
+
+	for (int i=0; i<MAX_AXIS; i++) {
+		fnptr(effect->filter[i]);
+	}
 }
+
 
 void EffectsCalculator::setGain(uint8_t gain)
 {
@@ -507,7 +517,7 @@ void EffectsCalculator::setCfFilter(uint32_t freq)
 	{
 		if (effects[i].type == FFB_EFFECT_CONSTANT)
 		{
-			effects[i].filter->setFc(f);
+			effects[i].filter[0]->setFc(f);
 		}
 	}
 }
