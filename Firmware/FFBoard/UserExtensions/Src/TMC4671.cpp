@@ -222,6 +222,7 @@ bool TMC4671::initialize(){
 //	}
 	// Check if a TMC4671 is active and replies correctly
 	if(!pingDriver()){
+		ErrorHandler::addError(Error(ErrorCode::tmcCommunicationError, ErrorType::warning, std::string(this->getInfo().name) + " " + this->getInfo().unique + " not responding"));
 		return false;
 	}
 

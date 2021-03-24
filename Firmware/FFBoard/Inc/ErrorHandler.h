@@ -25,6 +25,7 @@ enum class ErrorCode : uint32_t{
 
 			undervoltage = 10,
 			overvoltage = 11,
+			tmcCommunicationError = 12,
 
 			overtemp = 15,
 

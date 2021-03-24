@@ -25,7 +25,6 @@ uint16_t main_id = 0;
 FFBoardMain* mainclass __attribute__((section (".ccmram")));
 ClassChooser<FFBoardMain> mainchooser(class_registry);
 
-//USBD_HandleTypeDef hUsbDeviceFS __attribute__((section (".ccmram")));
 
 #define USBD_STACK_SIZE     (3*configMINIMAL_STACK_SIZE/2)
 StackType_t  usb_device_stack[USBD_STACK_SIZE];
@@ -89,28 +88,7 @@ uint32_t micros(){
 	return TIM_MICROS.Instance->CNT;
 }
 
-//void * operator new( size_t size )
-//{
-//    return pvPortMalloc( size );
-//}
-//
-//void * operator new[]( size_t size )
-//{
-//    return pvPortMalloc(size);
-//}
-//
-//void operator delete( void * ptr )
-//{
-//    vPortFree ( ptr );
-//}
-//
-//void operator delete[]( void * ptr )
-//{
-//    vPortFree ( ptr );
-//}
 
-
-//#if (configSUPPORT_DYNAMIC_ALLOCATION == 1)
 void* malloc(size_t size)
 {
     return pvPortMalloc(size);
@@ -121,4 +99,4 @@ void free(void *p)
     vPortFree(p);
 }
 
-//#endif /* (configSUPPORT_DYNAMIC_ALLOCATION == 1) */
+
