@@ -52,7 +52,7 @@ struct axis_metric_t {
 };
 
 
-class NormalizedAxis: public PersistentStorage, public CommandHandler,HidCommandHandler {
+class NormalizedAxis: public PersistentStorage, public CommandHandler,public HidCommandHandler {
 public:
 	NormalizedAxis(char axis);
 	virtual ~NormalizedAxis();
@@ -61,8 +61,8 @@ public:
 	static ClassIdentifier info;
 	const ClassIdentifier getInfo();
 
-    virtual void saveFlash();
-	virtual void restoreFlash();
+    void saveFlash();
+	void restoreFlash();
 
 	int32_t getLastScaledEnc();
 	void resetMetrics(int32_t new_pos);
