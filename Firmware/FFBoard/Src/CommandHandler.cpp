@@ -55,10 +55,17 @@ ParseStatus CommandHandler::command(ParsedCommand* cmd,std::string* reply){
 	return ParseStatus::NOT_FOUND;
 }
 
-void CommandHandler::sendSerial(std::string cmd,std::string string){
+void CommandHandler::sendSerial(std::string cmd,std::string string, char prefix){
 	if(!tud_ready())
 		return;
-	std::string reply = ">" + cmd + ":" + string + "\n";
+	std::string reply = ">";
+	if(prefix){
+		std::string t;
+		t.assign(1,prefix); // Workaround for chars
+		reply += t + ".";
+	}
+	reply += cmd + ":" + string + "\n";
+
 	tud_cdc_n_write(0,reply.c_str(), reply.length());
 	tud_cdc_n_write_flush(0);
 }

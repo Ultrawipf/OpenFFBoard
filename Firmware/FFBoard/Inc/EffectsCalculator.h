@@ -41,7 +41,7 @@ public:
 	float getCfFilterFreq();
 
 	ParseStatus command(ParsedCommand *cmd, std::string *reply);
-		virtual std::string getHelpstring() { return "\nEffect commands: ffbfiltercf.\n"; }
+	virtual std::string getHelpstring() { return "\nEffect commands: ffbfiltercf.\n"; }
 
 	void setEffectsArray(FFB_Effect* pEffects);
 	FFB_Effect* effects = nullptr; // ptr to effects array in HidFFB
