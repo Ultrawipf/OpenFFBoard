@@ -84,6 +84,7 @@ void Axis::restoreFlash(){
 }
 // Saves parameters to flash
 void Axis::saveFlash(){
+	NormalizedAxis::saveFlash();
 	Flash_Write(flashAddrs.config, Axis::encodeConfToInt(this->conf));
 }
 
