@@ -555,6 +555,35 @@ void TMC4671::bangInitEnc(int16_t power){
 
 // Rotates motor to find min and max values of the encoder
 void TMC4671::calibrateAenc(){
+
+
+	// static offset estimation. not exact
+//	blinkClipLed(250, 0);
+//	uint32_t offset = 0;
+//	uint32_t samples = 0;
+//	for(uint16_t i = 0;i<500;i++){
+//		Delay(1);
+//		writeReg(0x03,2);
+//		uint32_t aencUX = readReg(0x02)>>16;
+//		aencUX *= aencUX;
+//		writeReg(0x03,3);
+//		uint32_t aencWY_VN = readReg(0x02) ;
+//		uint32_t aencWY = aencWY_VN >> 16;
+//		aencWY *= aencWY;
+//		uint32_t aencVN = aencWY_VN & 0xffff;
+//		aencVN *= aencVN;
+//
+//		offset += std::sqrt((aencUX+aencWY) / 2);
+//		samples++;
+//	}
+//	offset = offset/samples;
+//	aencconf.AENC0_offset = offset;
+//	aencconf.AENC1_offset = offset;
+//	aencconf.AENC2_offset = offset;
+//	setup_AENC(aencconf);
+//	blinkClipLed(0, 0);
+
+
 	// Rotate and measure min/max
 	blinkClipLed(250, 0);
 	PhiE lastphie = getPhiEtype();
@@ -568,15 +597,22 @@ void TMC4671::calibrateAenc(){
 	writeReg(0x23,0); // set phie openloop 0
 	setPhiEtype(PhiE::openloop);
 	setMotionMode(MotionMode::torque);
-	for(int16_t flux = 0; flux <= bangInitPower; flux+=10){
-		setFluxTorque(flux, 0);
-		Delay(10);
-	}
+
+	if(this->conf.motconf.motor_type == MotorType::STEPPER || this->conf.motconf.motor_type == MotorType::BLDC)
+		for(int16_t flux = 0; flux <= bangInitPower; flux+=10){
+			setFluxTorque(flux, 0);
+			Delay(10);
+		}
 
 	uint32_t minVal_0 = 0xffff,	minVal_1 = 0xffff,	minVal_2 = 0xffff;
 	uint32_t maxVal_0 = 0,	maxVal_1 = 0,	maxVal_2 = 0;
 	int32_t minpos = -0x8fff/std::max<int32_t>(1,std::min<int32_t>(this->aencconf.cpr/4,20)), maxpos = 0x8fff/std::max<int32_t>(1,std::min<int32_t>(this->aencconf.cpr/4,20));
 	uint32_t speed = std::max<uint32_t>(1,20/std::max<uint32_t>(1,this->aencconf.cpr/10));
+
+	if(this->conf.motconf.motor_type != MotorType::STEPPER && this->conf.motconf.motor_type != MotorType::BLDC){
+		speed*=10; // dc motors turn at a random speed. reduce the rotation time a bit by increasing openloop speed
+	}
+
 	runOpenLoop(bangInitPower, 0, speed, 100,true);
 
 	uint8_t stage = 0;
@@ -644,6 +680,7 @@ void TMC4671::calibrateAenc(){
 	setMotionMode(lastmode);
 	setPosSel(possel);
 	setPos(0);
+
 	blinkClipLed(0, 0);
 }
 
@@ -651,6 +688,9 @@ void TMC4671::calibrateAenc(){
  * Steps the motor a few times to check if the encoder follows correctly
  */
 bool TMC4671::checkEncoder(){
+	if(this->conf.motconf.motor_type != MotorType::STEPPER && this->conf.motconf.motor_type != MotorType::BLDC){ // If not stepper or bldc return
+		return true;
+	}
 	blinkClipLed(150, 0);
 	uint8_t phiEreg = 0;
 	if(conf.motconf.enctype == EncoderType_TMC::abn){
@@ -679,18 +719,23 @@ bool TMC4671::checkEncoder(){
 	//Forward
 	int16_t phiE_enc = 0;
 	uint16_t failcount = 0;
-
+	int16_t revCount = 0;
 	for(int16_t angle = startAngle;angle<targetAngle;angle+=0x00ff){
 		uint16_t c = 0;
 		setPhiE_ext(angle);
 		Delay(10);
 		phiE_enc = (int16_t)(readReg(phiEreg)>>16);
 		int16_t err = abs(phiE_enc - angle);
+		int16_t nErr = abs(phiE_enc + angle);
 		// Wait more
-		while(err > 2500 && c++ < 50){
+		while(err > 2500 && nErr > 2500 && c++ < 50){
 			phiE_enc = (int16_t)(readReg(phiEreg)>>16);
 			err = abs(phiE_enc - angle);
+			nErr = abs(angle - phiE_enc);
 			Delay(10);
+		}
+		if(err > nErr){
+			revCount++;
 		}
 		if(c >= maxcount){
 			failcount++;
@@ -700,6 +745,7 @@ bool TMC4671::checkEncoder(){
 			}
 		}
 	}
+
 	// Backward
 	if(result){ // Only if not already failed
 		for(int16_t angle = targetAngle;angle>startAngle;angle -= 0x00ff){
@@ -708,11 +754,16 @@ bool TMC4671::checkEncoder(){
 			Delay(10);
 			phiE_enc = (int16_t)(readReg(phiEreg)>>16);
 			int16_t err = abs(phiE_enc - angle);
+			int16_t nErr = abs(phiE_enc + angle);
 			// Wait more
-			while(err > 2500 && c++ < 50){
+			while(err > 2500 && nErr > 2500 && c++ < 50){
 				phiE_enc = (int16_t)(readReg(phiEreg)>>16);
 				err = abs(phiE_enc - angle);
+				nErr = abs(angle - phiE_enc);
 				Delay(10);
+			}
+			if(err > nErr){
+				revCount++;
 			}
 			if(c >= maxcount){
 				failcount++;
@@ -721,6 +772,16 @@ bool TMC4671::checkEncoder(){
 					break;
 				}
 			}
+		}
+	}
+	if(revCount > maxcount){ // Encoder seems reversed
+		// reverse encoder
+		if(this->conf.motconf.enctype == EncoderType_TMC::abn){
+			this->abnconf.rdir = !this->abnconf.rdir;
+			setup_ABN_Enc(abnconf);
+		}else if(this->conf.motconf.enctype == EncoderType_TMC::sincos || this->conf.motconf.enctype == EncoderType_TMC::uvw){
+			this->aencconf.rdir = !this->aencconf.rdir;
+			setup_AENC(aencconf);
 		}
 	}
 
@@ -858,8 +919,10 @@ bool TMC4671::calibrateAdcOffset(uint16_t time){
 
 void TMC4671::ABN_init(){
 	if(this->conf.motconf.motor_type != MotorType::STEPPER && this->conf.motconf.motor_type != MotorType::BLDC){
-		encstate = ENC_InitState::OK;
-		return;
+		encstate = ENC_InitState::OK; // Skip for DC motors
+		if(manualEncAlign){
+			CommandHandler::sendSerial("encalign","DC motors don't support alignment",this->getInfo().unique);
+		}
 	}
 	switch(encstate){
 		case ENC_InitState::uninitialized:
@@ -901,7 +964,7 @@ void TMC4671::ABN_init(){
 				enc_retry = 0;
 				if(manualEncAlign){
 					manualEncAlign = false;
-					CommandHandler::sendSerial("encalign","Aligned successfully");
+					CommandHandler::sendSerial("encalign","Aligned successfully",this->getInfo().unique);
 				}
 
 			}else{
@@ -913,7 +976,7 @@ void TMC4671::ABN_init(){
 					ErrorHandler::addError(err);
 					if(manualEncAlign){
 						manualEncAlign = false;
-						CommandHandler::sendSerial("encalign","Error aligning.\nPlease check settings and reset.");
+						CommandHandler::sendSerial("encalign","Error aligning.\nPlease check settings and reset.",this->getInfo().unique);
 					}
 				}
 				encstate = ENC_InitState::uninitialized; // Retry
@@ -926,9 +989,8 @@ void TMC4671::ABN_init(){
 }
 
 void TMC4671::AENC_init(){
-	if(this->conf.motconf.motor_type != MotorType::STEPPER && this->conf.motconf.motor_type != MotorType::BLDC){
+	if(this->conf.motconf.motor_type == MotorType::NONE){
 		encstate = ENC_InitState::OK;
-		return;
 	}
 	switch(encstate){
 		case ENC_InitState::uninitialized:
@@ -959,7 +1021,7 @@ void TMC4671::AENC_init(){
 				enc_retry = 0;
 				if(manualEncAlign){
 					manualEncAlign = false;
-					CommandHandler::sendSerial("encalign","Aligned successfully");
+					CommandHandler::sendSerial("encalign","Aligned successfully",this->getInfo().unique);
 				}
 
 
@@ -972,7 +1034,7 @@ void TMC4671::AENC_init(){
 					ErrorHandler::addError(err);
 					if(manualEncAlign){
 						manualEncAlign = false;
-						CommandHandler::sendSerial("encalign","Error aligning.\nPlease check settings and reset.");
+						CommandHandler::sendSerial("encalign","Error aligning.\nPlease check settings and reset.",this->getInfo().unique);
 					}
 				}
 				encstate = ENC_InitState::uninitialized; // Retry
@@ -1061,6 +1123,9 @@ void TMC4671::setOpenLoopSpeedAccel(int32_t speed,uint32_t accel){
 
 void TMC4671::runOpenLoop(uint16_t ud,uint16_t uq,int32_t speed,int32_t accel,bool torqueMode){
 	if(torqueMode){
+		if(this->conf.motconf.motor_type == MotorType::DC){
+			uq = ud+uq; // dc motor has no flux. add to torque
+		}
 		setFluxTorque(ud, uq);
 	}else{
 		setMotionMode(MotionMode::uqudext);
@@ -1245,6 +1310,9 @@ void TMC4671::setSequentialPI(bool sequential){
 }
 
 void TMC4671::setMotorType(MotorType motor,uint16_t poles){
+	if(motor == MotorType::DC){
+		poles = 1;
+	}
 	conf.motconf.motor_type = motor;
 	conf.motconf.pole_pairs = poles;
 	uint32_t mtype = poles | ( ((uint8_t)motor&0xff) << 16);

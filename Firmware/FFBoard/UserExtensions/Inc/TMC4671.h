@@ -138,8 +138,8 @@ struct TMC4671AENCConf{
 	uint16_t AENC2_offset = 20000;
 	int16_t AENC2_scale = 256;
 
-	int16_t nMask = 0; // 0x3c0xffff0000
-	int16_t nThreshold = 0; // 0x3c&0xffff
+	int16_t nMask = 0; // 0x3c & 0xffff0000
+	int16_t nThreshold = 0; // 0x3c & 0xffff
 	// 0x3b
 	bool uvwmode = false; // 0 = sincos, 1 = uvw
 	bool rdir = false;
