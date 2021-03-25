@@ -244,7 +244,7 @@ typedef struct
 	uint16_t attackLevel = 0, fadeLevel = 0; // Envelope effect
 	uint32_t attackTime = 0, fadeTime = 0;	 // Envelope effect
 
-	Biquad *filter[MAX_AXIS]; // = [nullptr; MAX_AXIS]; // Optional filter pointer for friction effect
+	Biquad *filter[MAX_AXIS] = { nullptr };  // Optional filter pointer for friction effect
 	uint16_t startDelay = 0;
 	uint32_t startTime = 0;	  // Elapsed time in ms before effect starts
 	uint16_t samplePeriod = 0;

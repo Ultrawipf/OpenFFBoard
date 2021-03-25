@@ -38,9 +38,6 @@ NormalizedAxis::~NormalizedAxis() {
 }
 
 const ClassIdentifier NormalizedAxis::getInfo() {
-//	char axis_letter = 'W' + axis_no;
-//	std::string axis_name = " Axis";
-//	axis_name.insert(0,1,axis_letter);
 	return ClassIdentifier {NormalizedAxis::info.name, NormalizedAxis::info.id, axis, NormalizedAxis::info.hidden};
 }
 

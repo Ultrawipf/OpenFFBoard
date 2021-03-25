@@ -123,7 +123,7 @@ void HidFFB::hidOut(uint8_t report_id, hid_report_type_t report_type, uint8_t co
 		}else{
 			if(effects[id].state != 1){
 				set_filters(&effects[id]);
-				effects[id].startTime = 0; // When an effect was stopped reset all parameters that could cause jerking
+				//effects[id].startTime = 0; // When an effect was stopped reset all parameters that could cause jerking
 			}
 			//printf("Start %d\n",report[1]);
 			effects[id].startTime = HAL_GetTick(); // + effects[id].startDelay;
