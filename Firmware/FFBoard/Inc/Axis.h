@@ -61,9 +61,9 @@ public:
 	static ClassIdentifier info;
 
 
-	virtual std::string getHelpstring() { return "\nAxis commands: Get: axis.cmd , Set: axis.cmd=var\nWhere axis = x-z e.g. y.power (omitting axis defaults to the X axis).\n"
+	virtual std::string getHelpstring() { return "\nAxis commands: Get: axis.cmd , Set: axis.cmd=var, where axis = x-z e.g. y.power\n"
 //												 "power,zeroenc,enctype,cpr,pos,degrees,esgain,fxratio,idlespring,spring.friction,damper,inertia,invert,drvtype,tmc.\n"; }
-												 "power,zeroenc,enctype,pos,degrees,esgain,fxratio,idlespring,friction,invert,drvtype,tmc.\n"; }
+												 "power,zeroenc,enctype,pos,degrees,esgain,fxratio,invert,drvtype,tmc.\n"; }
 	void setupTMC4671();
 	void setupTMC4671_enc(PhiE enctype);
 

@@ -88,10 +88,10 @@ have no effect on joystick motion in the northwest-southeast direction.
 void EffectsCalculator::calculateEffects(std::vector<Axis *> axes)
 {
 
-	 if(!isActive()){
+	 if(!isActive() && idle_center){
 	 	// Center when FFB is turned of with a spring effect
 		 for (auto axis : axes) {
-		 	axis->updateIdleSpringForce();
+		 	axis->updateIdleSpringForce(idlespringscale, idlespringclip);
 	 	}
 		 return;
 	 }
@@ -133,11 +133,11 @@ void EffectsCalculator::calculateEffects(std::vector<Axis *> axes)
 
 		if (effect->enableAxis == DIRECTION_ENABLE || effect->enableAxis & X_AXIS_ENABLE)
 		{
-			forceX += calcComponentForce(effect, forceVector, axes[0]->getMetrics(), axes[0]->getEffectGains(), 0, axisCount);
+			forceX += calcComponentForce(effect, forceVector, axes[0]->getMetrics(), 0, axisCount);
 		}
 		if (validY && ((effect->enableAxis == DIRECTION_ENABLE) || effect->enableAxis & Y_AXIS_ENABLE))
 		{
-			forceY += calcComponentForce(effect, forceVector, axes[1]->getMetrics(), axes[1]->getEffectGains(), 1, axisCount);
+			forceY += calcComponentForce(effect, forceVector, axes[1]->getMetrics(), 1, axisCount);
 		}
 
 //		if (effect->duration != FFB_EFFECT_DURATION_INFINITE &&
@@ -287,7 +287,7 @@ degrees (in polar coordinates) would resist joystick motion in the northeast-sou
 have no effect on joystick motion in the northwest-southeast direction.
  */
 
-int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceVector, metric_t *metrics, effect_gain_t *gain, uint8_t axis, uint8_t axisCount)
+int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceVector, metric_t *metrics, uint8_t axis, uint8_t axisCount)
 {
 	int32_t result_torque = 0;
 	uint8_t direction;
@@ -330,7 +330,7 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 	case FFB_EFFECT_SPRING:
 	{
 		float metric = metrics->pos;
-		result_torque -= calcConditionEffectForce(effect, metric, gain->spring,
+		result_torque -= calcConditionEffectForce(effect, metric, gain.spring,
 									   con_idx, 0.0004f, angle_ratio);
 		break;
 	}
@@ -340,14 +340,14 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 //		effect->conditions[con_idx].negativeSaturation = FRICTION_SATURATION;
 //		effect->conditions[con_idx].positiveSaturation = FRICTION_SATURATION;
 		float metric = effect->filter[con_idx]->process(metrics->speed) * .25;
-		result_torque -= calcConditionEffectForce(effect, metric, gain->friction,
+		result_torque -= calcConditionEffectForce(effect, metric, gain.friction,
 											   con_idx, .04f, angle_ratio);
 		break;
 	}
 	case FFB_EFFECT_DAMPER:
 	{
 		float metric = effect->filter[con_idx]->process(metrics->speed) * .0625f;
-		result_torque -= calcConditionEffectForce(effect, metric, gain->damper,
+		result_torque -= calcConditionEffectForce(effect, metric, gain.damper,
 									   con_idx, 0.4f, angle_ratio);
 		break;
 	}
@@ -357,7 +357,7 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 //		effect->conditions[con_idx].negativeSaturation = INERTIA_SATURATION;
 //		effect->conditions[con_idx].positiveSaturation = INERTIA_SATURATION;
 		float metric = effect->filter[con_idx]->process(metrics->accel*4);
-		result_torque -= calcConditionEffectForce(effect, metric, gain->inertia,
+		result_torque -= calcConditionEffectForce(effect, metric, gain.inertia,
 									   con_idx, 0.4f, angle_ratio);
 		break;
 	}
@@ -484,6 +484,20 @@ void EffectsCalculator::setEffectsArray(FFB_Effect *pEffects)
 }
 
 /*
+ * Set the strength of the spring effect if FFB is disabled
+ */
+void EffectsCalculator::setIdleSpringStrength(uint8_t spring){
+	idlespringstrength = spring;
+	if(spring == 0){
+		idle_center = false;
+	}else{
+		idle_center = true;
+	}
+	idlespringclip = clip<int32_t,int32_t>((int32_t)spring*50,0,10000);
+	idlespringscale = 0.5f + ((float)spring * 0.01f);
+}
+
+/*
  * Read parameters from flash and restore settings
  */
 void EffectsCalculator::restoreFlash()
@@ -493,12 +507,29 @@ void EffectsCalculator::restoreFlash()
 	{
 		setCfFilter(filter);
 	}
+	uint16_t effects = 0;
+	if(Flash_Read(ADR_AXIS_EFFECTS1, &effects)){
+		gain.friction = (effects >> 8) & 0xff;
+		setIdleSpringStrength(effects & 0xff);
+	}
+	if(Flash_Read(ADR_AXIS_EFFECTS2, &effects)){
+		gain.damper = (effects >> 8) & 0xff;
+		gain.spring = (effects & 0xff);
+	}
+	if(Flash_Read(ADR_AXIS_EFFECTS3, &effects)){
+		gain.inertia = (effects & 0xff);
+	}
 }
 
 // Saves parameters to flash
 void EffectsCalculator::saveFlash()
 {
 	Flash_Write(ADR_CF_FILTER, cfFilter_f);
+	uint16_t effects = idlespringstrength | (gain.friction << 8);
+	Flash_Write(ADR_AXIS_EFFECTS1, effects);
+	effects = gain.spring | (gain.damper << 8);
+	Flash_Write(ADR_AXIS_EFFECTS2, effects);
+	Flash_Write(ADR_AXIS_EFFECTS3, gain.inertia);
 }
 
 void EffectsCalculator::setCfFilter(uint32_t freq)
@@ -545,6 +576,34 @@ std::string EffectsCalculator::listEffectsUsed(){
 }
 
 
+void EffectsCalculator::processHidCommand(HID_Custom_Data_t* data) {
+
+	switch (data->cmd&0x3F){
+		case HID_CMD_FFB_FRICTION:
+			if(data->type == HidCmdType::write) {
+				gain.friction = data->data;
+			}
+			else if(data->type == HidCmdType::request){
+				data->data = gain.friction;
+			}
+			break;
+
+		case HID_CMD_FFB_IDLESPRING:
+					if(data->type == HidCmdType::write) {
+						setIdleSpringStrength(data->data);
+					}
+					else if(data->type == HidCmdType::request){
+						data->data = idlespringstrength;
+					}
+				break;
+
+		default:
+
+			break;
+		}
+	return;
+}
+
 ParseStatus EffectsCalculator::command(ParsedCommand *cmd, std::string *reply)
 {
 	ParseStatus flag = ParseStatus::OK;
@@ -571,6 +630,61 @@ ParseStatus EffectsCalculator::command(ParsedCommand *cmd, std::string *reply)
 		else
 		{
 			*reply += "List effects used.";
+		}
+	}
+	else if (cmd->cmd == "idlespring")
+	{
+		if (cmd->type == CMDtype::get)
+		{
+			*reply += std::to_string(idlespringstrength);
+		}
+		else if (cmd->type == CMDtype::set)
+		{
+			setIdleSpringStrength(cmd->val);
+		}
+	}
+	else if(cmd->cmd == "spring")
+	{
+		if(cmd->type == CMDtype::get)
+		{
+			*reply+=std::to_string(gain.spring);
+		}
+		else if(cmd->type == CMDtype::set)
+		{
+			gain.spring = cmd->val;
+		}
+	}
+	else if(cmd->cmd == "friction")
+	{
+		if(cmd->type == CMDtype::get)
+		{
+			*reply+=std::to_string(gain.friction);
+		}
+		else if(cmd->type == CMDtype::set)
+		{
+			gain.friction = cmd->val;
+		}
+	}
+	else if(cmd->cmd == "damper")
+	{
+		if(cmd->type == CMDtype::get)
+		{
+			*reply+=std::to_string(gain.damper);
+		}
+		else if(cmd->type == CMDtype::set)
+		{
+			gain.damper = cmd->val;
+		}
+	}
+	else if(cmd->cmd == "inertia")
+	{
+		if(cmd->type == CMDtype::get)
+		{
+			*reply+=std::to_string(gain.inertia);
+		}
+		else if(cmd->type == CMDtype::set)
+		{
+			gain.inertia = cmd->val;
 		}
 	}else{
 		flag = ParseStatus::NOT_FOUND;
