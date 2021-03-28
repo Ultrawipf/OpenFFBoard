@@ -101,11 +101,6 @@ bool AxesManager::setAxisCount(int8_t count) {
 	// Really need to use some form of mutex
 	Flash_Write(ADR_AXIS_COUNT, count);
 
-//	control->request_update_disabled = true;
-//	while(control->update_disabled == false) {
-//		osDelay(100);
-//	}
-
 	while (count < axis_count) {
 		uint8_t pos = axis_count-1;
 		delete axes[pos];
