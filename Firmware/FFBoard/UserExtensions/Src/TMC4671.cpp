@@ -1126,6 +1126,9 @@ void TMC4671::runOpenLoop(uint16_t ud,uint16_t uq,int32_t speed,int32_t accel,bo
 		uq = ud+uq; // dc motor has no flux. add to torque
 	}
 	if(torqueMode){
+		if(this->conf.motconf.motor_type == MotorType::DC){
+			uq = ud+uq; // dc motor has no flux. add to torque
+		}
 		setFluxTorque(ud, uq);
 	}else{
 		setMotionMode(MotionMode::uqudext);
@@ -1713,7 +1716,8 @@ void TMC4671::restoreEncHallMisc(uint16_t val){
 
 
 ParseStatus TMC4671::command(ParsedCommand* cmd,std::string* reply){
-	if (cmd->prefix != 0 && cmd->prefix-'W' != this->address){
+	char axis = cmd->prefix & 0xDF;
+	if (axis != 0 && axis-'W' != this->address){
 		return ParseStatus::NOT_FOUND;
 	}
 

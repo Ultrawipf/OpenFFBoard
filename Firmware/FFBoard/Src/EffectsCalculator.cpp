@@ -17,8 +17,6 @@
 #define DEG_TO_RAD ((float)((float)3.14159265 / 180.0))
 #define DIRECTION_ENABLE (1 << MAX_AXIS)
 
-#define FRICTION_SATURATION 32767
-#define INERTIA_SATURATION 32767
 #define EFFECT_STATE_INACTIVE 0
 
 //#define degreesToRadians(angleDegrees) ((angleDegrees)*M_PI / 180.0)
@@ -100,13 +98,11 @@ void EffectsCalculator::calculateEffects(std::vector<Axis *> axes)
 
 	int32_t forceX = 0;
 	int32_t forceY = 0;
-#if MAX_AXIS == 3
-	int32_t forceZ = 0;
-#endif
 	int32_t forceVector = 0;
 	uint8_t axisCount = axes.size();
 	bool validY = axisCount > 1;
 #if MAX_AXIS == 3
+	int32_t forceZ = 0;
 	bool validZ = axisCount > 2;
 #endif
 
@@ -144,13 +140,13 @@ void EffectsCalculator::calculateEffects(std::vector<Axis *> axes)
 			forceY += calcComponentForce(effect, forceVector, axes[1]->getMetrics(), axes[1]->getEffectGains(), 1, axisCount);
 		}
 
-		if (effect->duration != FFB_EFFECT_DURATION_INFINITE &&
-		HAL_GetTick() > effect->startTime + effect->duration)
-		{
-			effect->state = 0;
-		}
+//		if (effect->duration != FFB_EFFECT_DURATION_INFINITE &&
+//		HAL_GetTick() > effect->startTime + effect->duration)
+//		{
+//			effect->state = 0;
+//		}
 	}
-	// Set axisEffectParams torque
+
 	axes[0]->setEffectTorque(forceX);
 	if (validY)
 	{
@@ -341,8 +337,8 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 
 	case FFB_EFFECT_FRICTION:
 	{
-		effect->conditions[con_idx].negativeSaturation = FRICTION_SATURATION;
-		effect->conditions[con_idx].positiveSaturation = FRICTION_SATURATION;
+//		effect->conditions[con_idx].negativeSaturation = FRICTION_SATURATION;
+//		effect->conditions[con_idx].positiveSaturation = FRICTION_SATURATION;
 		float metric = effect->filter[con_idx]->process(metrics->speed) * .25;
 		result_torque -= calcConditionEffectForce(effect, metric, gain->friction,
 											   con_idx, .04f, angle_ratio);
@@ -358,8 +354,8 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 
 	case FFB_EFFECT_INERTIA:
 	{
-		effect->conditions[con_idx].negativeSaturation = INERTIA_SATURATION;
-		effect->conditions[con_idx].positiveSaturation = INERTIA_SATURATION;
+//		effect->conditions[con_idx].negativeSaturation = INERTIA_SATURATION;
+//		effect->conditions[con_idx].positiveSaturation = INERTIA_SATURATION;
 		float metric = effect->filter[con_idx]->process(metrics->accel*4);
 		result_torque -= calcConditionEffectForce(effect, metric, gain->inertia,
 									   con_idx, 0.4f, angle_ratio);
@@ -524,6 +520,31 @@ void EffectsCalculator::setCfFilter(uint32_t freq)
 
 float EffectsCalculator::getCfFilterFreq() { return cfFilter_f; }
 
+
+void EffectsCalculator::logEffectType(uint8_t type){
+	if(type > 0 && type < 32){
+		effects_used |= 1<<(type-1);
+	}
+}
+
+std::string EffectsCalculator::listEffectsUsed(){
+	std::string effects_list = "";
+	static const char *effects[12] = {"Constant,","Ramp,","Square,","Sine,","Triangle,","Sawtooth Up,","Sawtooth Down,","Spring,","Damper,","Inertia,","Friction,","Custom,"};
+
+	if(effects_used == 0){
+		return "None";
+	}
+
+	for (int i=0;i < 12; i++) {
+		if((effects_used >> i) & 1) {
+			effects_list += effects[i];
+		}
+	}
+	effects_list.pop_back();
+	return effects_list;
+}
+
+
 ParseStatus EffectsCalculator::command(ParsedCommand *cmd, std::string *reply)
 {
 	ParseStatus flag = ParseStatus::OK;
@@ -536,6 +557,20 @@ ParseStatus EffectsCalculator::command(ParsedCommand *cmd, std::string *reply)
 		else if (cmd->type == CMDtype::set)
 		{
 			setCfFilter(cmd->val);
+		}
+	}else if (cmd->cmd == "effects")
+	{
+		if (cmd->type == CMDtype::get)
+		{
+			*reply += listEffectsUsed();
+		}
+		else if (cmd->type == CMDtype::set)
+		{
+			effects_used = 0;
+		}
+		else
+		{
+			*reply += "List effects used.";
 		}
 	}else{
 		flag = ParseStatus::NOT_FOUND;

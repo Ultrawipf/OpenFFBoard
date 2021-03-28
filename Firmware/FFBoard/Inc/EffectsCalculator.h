@@ -39,9 +39,10 @@ public:
 	uint8_t getGain();
 	void setCfFilter(uint32_t f); // Set output filter frequency
 	float getCfFilterFreq();
+	void logEffectType(uint8_t type);
 
 	ParseStatus command(ParsedCommand *cmd, std::string *reply);
-	virtual std::string getHelpstring() { return "\nEffect commands: ffbfiltercf.\n"; }
+	virtual std::string getHelpstring() { return "\nEffect commands: effects, ffbfiltercf.\n"; }
 
 	void setEffectsArray(FFB_Effect* pEffects);
 	FFB_Effect* effects = nullptr; // ptr to effects array in HidFFB
@@ -58,12 +59,13 @@ private:
 	const uint32_t calcfrequency = 1000; // HID frequency 1khz
 	uint32_t cfFilter_f = calcfrequency/2; // 500 = off
 	const float cfFilter_q = 0.8;
-
+	uint32_t effects_used = 0;
 
 	int32_t calcComponentForce(FFB_Effect* effect, int32_t forceVector, metric_t* metrics, effect_gain_t* gain, uint8_t axis, uint8_t axisCount);
 	int32_t calcNonConditionEffectForce(FFB_Effect* effect);
 	int32_t calcConditionEffectForce(FFB_Effect *effect, float metric, uint8_t gain,
 			uint8_t idx, float scale, float angle_ratio);
 	int32_t applyEnvelope(FFB_Effect *effect, int32_t value);
+	std::string listEffectsUsed();
 };
 #endif /* EFFECTSCALCULATOR_H_ */
