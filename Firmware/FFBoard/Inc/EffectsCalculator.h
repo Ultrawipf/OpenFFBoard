@@ -12,14 +12,21 @@
 #include "ffb_defs.h"
 #include "PersistentStorage.h"
 #include "CommandHandler.h"
+#include "HidCommandHandler.h"
 #include <vector>
 //#include "hid_cmd_defs.h"
 
 class Axis;
-struct effect_gain_t;
 struct metric_t;
 
-class EffectsCalculator: public PersistentStorage, public CommandHandler {
+struct effect_gain_t {
+	uint8_t friction = 127;
+	uint8_t spring = 127;
+	uint8_t damper = 127;
+	uint8_t inertia = 127;
+};
+
+class EffectsCalculator: public PersistentStorage, public CommandHandler,public HidCommandHandler {
 public:
 	EffectsCalculator();
 	virtual ~EffectsCalculator();
@@ -41,8 +48,9 @@ public:
 	float getCfFilterFreq();
 	void logEffectType(uint8_t type);
 
-	ParseStatus command(ParsedCommand *cmd, std::string *reply);
-	virtual std::string getHelpstring() { return "\nEffect commands: effects, ffbfiltercf.\n"; }
+	virtual ParseStatus command(ParsedCommand *cmd, std::string *reply);
+	virtual void processHidCommand(HID_Custom_Data_t* data);
+	virtual std::string getHelpstring() { return "\nEffect commands: effects,ffbfiltercf,idlespring,spring,damper,friction,inertia.\n"; }
 
 	void setEffectsArray(FFB_Effect* pEffects);
 	FFB_Effect* effects = nullptr; // ptr to effects array in HidFFB
@@ -59,13 +67,20 @@ private:
 	const uint32_t calcfrequency = 1000; // HID frequency 1khz
 	uint32_t cfFilter_f = calcfrequency/2; // 500 = off
 	const float cfFilter_q = 0.8;
+	uint8_t idlespringstrength = 127;
+	int16_t idlespringclip;
+	float idlespringscale;
+	bool idle_center = false;
+	effect_gain_t gain;
+
 	uint32_t effects_used = 0;
 
-	int32_t calcComponentForce(FFB_Effect* effect, int32_t forceVector, metric_t* metrics, effect_gain_t* gain, uint8_t axis, uint8_t axisCount);
+	int32_t calcComponentForce(FFB_Effect* effect, int32_t forceVector, metric_t* metrics, uint8_t axis, uint8_t axisCount);
 	int32_t calcNonConditionEffectForce(FFB_Effect* effect);
 	int32_t calcConditionEffectForce(FFB_Effect *effect, float metric, uint8_t gain,
 			uint8_t idx, float scale, float angle_ratio);
 	int32_t applyEnvelope(FFB_Effect *effect, int32_t value);
+	 void setIdleSpringStrength(uint8_t spring);
 	std::string listEffectsUsed();
 };
 #endif /* EFFECTSCALCULATOR_H_ */

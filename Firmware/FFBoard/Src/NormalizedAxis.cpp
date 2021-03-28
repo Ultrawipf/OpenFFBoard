@@ -23,11 +23,11 @@ NormalizedAxis::NormalizedAxis(char axis) {
 	this->axis = axis; // Axis are indexed from 1-X to 3-Z
 
 	if(axis == 'X'){
-		flashAddrs = NormalizedAxisFlashAddrs_t({ADR_AXIS1_ENDSTOP, ADR_AXIS1_EFFECTS1, ADR_AXIS1_POWER, ADR_AXIS1_DEGREES});
+		flashAddrs = NormalizedAxisFlashAddrs_t({ADR_AXIS1_ENDSTOP, ADR_AXIS1_POWER, ADR_AXIS1_DEGREES});
 	}else if(axis == 'Y'){
-		flashAddrs = NormalizedAxisFlashAddrs_t({ADR_AXIS2_ENDSTOP, ADR_AXIS2_EFFECTS1, ADR_AXIS2_POWER, ADR_AXIS2_DEGREES});
+		flashAddrs = NormalizedAxisFlashAddrs_t({ADR_AXIS2_ENDSTOP, ADR_AXIS2_POWER, ADR_AXIS2_DEGREES});
 	}else if(axis == 'Z'){
-		flashAddrs = NormalizedAxisFlashAddrs_t({ADR_AXIS3_ENDSTOP, ADR_AXIS3_EFFECTS1, ADR_AXIS3_POWER, ADR_AXIS3_DEGREES});
+		flashAddrs = NormalizedAxisFlashAddrs_t({ADR_AXIS3_ENDSTOP, ADR_AXIS3_POWER, ADR_AXIS3_DEGREES});
 	}
 
 //	restoreFlash();
@@ -39,10 +39,6 @@ NormalizedAxis::~NormalizedAxis() {
 
 const ClassIdentifier NormalizedAxis::getInfo() {
 	return ClassIdentifier {NormalizedAxis::info.name, NormalizedAxis::info.id, axis, NormalizedAxis::info.hidden};
-}
-
-effect_gain_t* NormalizedAxis::getEffectGains() {
-	return &gain;
 }
 
 metric_t* NormalizedAxis::getMetrics() {
@@ -61,14 +57,9 @@ void NormalizedAxis::restoreFlash(){
 	uint16_t esval, power;
 	if(Flash_Read(flashAddrs.endstop, &esval)) {
 		fx_ratio_i = esval & 0xff;
-		gain.endstop = (esval >> 8) & 0xff;
+		endstop_gain = (esval >> 8) & 0xff;
 	}
 
-	uint16_t effects1 = 0;
-		if(Flash_Read(flashAddrs.effects1, &effects1)){
-			gain.friction = (effects1 >> 8) & 0xff;
-			setIdleSpringStrength(effects1 & 0xff);
-		}
 
 	Flash_Read(flashAddrs.power, &power);
 	setPower(power);
@@ -79,33 +70,15 @@ void NormalizedAxis::restoreFlash(){
 
 // Saves parameters to flash
 void NormalizedAxis::saveFlash(){
-	Flash_Write(flashAddrs.endstop, fx_ratio_i | (gain.endstop << 8));
+	Flash_Write(flashAddrs.endstop, fx_ratio_i | (endstop_gain << 8));
 
-	uint16_t effects1 = idlespringstrength | (gain.friction << 8);
-	Flash_Write(flashAddrs.effects1, effects1);
 	Flash_Write(flashAddrs.power, power);
 	Flash_Write(flashAddrs.degrees, degreesOfRotation);
 }
 
 
-/*
- * Set the strength of the spring effect if FFB is disabled
- */
-void NormalizedAxis::setIdleSpringStrength(uint8_t spring){
-	idlespringstrength = spring;
-	if(spring == 0){
-		idle_center = false;
-	}else{
-		idle_center = true;
-	}
-	idlespringclip = clip<int32_t,int32_t>((int32_t)spring*50,0,10000);
-	idlespringscale = 0.5f + ((float)spring * 0.01f);
-}
-
-void NormalizedAxis::updateIdleSpringForce() {
-	if (idle_center){
-		effectTorque = clip<int32_t,int32_t>((int32_t)(-metric.current.pos*idlespringscale),-idlespringclip,idlespringclip);
-	}
+void NormalizedAxis::updateIdleSpringForce(float idlespringscale, int16_t idlespringclip) {
+	effectTorque = clip<int32_t,int32_t>((int32_t)(-metric.current.pos*idlespringscale),-idlespringclip,idlespringclip);
 }
 
 void NormalizedAxis::setFxRatio(uint8_t val) {
@@ -169,7 +142,7 @@ int16_t NormalizedAxis::updateEndstop(){
 		return 0;
 	}
 	int32_t addtorque = clip<int32_t,int32_t>(abs(metric.current.pos)-0x7fff,-0x7fff,0x7fff);
-	addtorque *= (float)gain.endstop * 0.2f; // Apply endstop gain for stiffness
+	addtorque *= (float)endstop_gain * 0.2f; // Apply endstop gain for stiffness
 	addtorque *= -clipdir;
 
 	return clip<int32_t,int32_t>(addtorque,-0x7fff,0x7fff);
@@ -217,19 +190,10 @@ void NormalizedAxis::processHidCommand(HID_Custom_Data_t* data) {
 	switch (data->cmd&0x3F){
 		case HID_CMD_FFB_ESGAIN:
 			if(data->type == HidCmdType::write) {
-				gain.endstop = data->data;
+				endstop_gain = data->data;
 			}
 			if(data->type == HidCmdType::request){
-				data->data = gain.endstop;
-			}
-		break;
-
-		case HID_CMD_FFB_FRICTION:
-			if(data->type == HidCmdType::write) {
-				gain.friction = data->data;
-			}
-			else if(data->type == HidCmdType::request){
-				data->data = gain.friction;
+				data->data = endstop_gain;
 			}
 		break;
 
@@ -239,15 +203,6 @@ void NormalizedAxis::processHidCommand(HID_Custom_Data_t* data) {
 			}
 			else if(data->type == HidCmdType::request){
 				data->data = fx_ratio_i;
-			}
-		break;
-
-		case HID_CMD_FFB_IDLESPRING:
-			if(data->type == HidCmdType::write) {
-				setIdleSpringStrength(data->data);
-			}
-			else if(data->type == HidCmdType::request){
-				data->data = idlespringstrength;
 			}
 		break;
 
@@ -310,66 +265,11 @@ ParseStatus NormalizedAxis::command(ParsedCommand *cmd, std::string *reply)
 	{
 		if (cmd->type == CMDtype::get)
 		{
-			*reply += std::to_string(gain.endstop);
+			*reply += std::to_string(endstop_gain);
 		}
 		else if (cmd->type == CMDtype::set)
 		{
-			gain.endstop = cmd->val;
-		}
-	}
-	else if (cmd->cmd == "idlespring")
-	{
-		if (cmd->type == CMDtype::get)
-		{
-			*reply += std::to_string(idlespringstrength);
-		}
-		else if (cmd->type == CMDtype::set)
-		{
-			setIdleSpringStrength(cmd->val);
-		}
-	}
-	else if(cmd->cmd == "spring")
-	{
-		if(cmd->type == CMDtype::get)
-		{
-			*reply+=std::to_string(gain.spring);
-		}
-		else if(cmd->type == CMDtype::set)
-		{
-			gain.spring = cmd->val;
-		}
-	}
-	else if(cmd->cmd == "friction")
-	{
-		if(cmd->type == CMDtype::get)
-		{
-			*reply+=std::to_string(gain.friction);
-		}
-		else if(cmd->type == CMDtype::set)
-		{
-			gain.friction = cmd->val;
-		}
-	}
-	else if(cmd->cmd == "damper")
-	{
-		if(cmd->type == CMDtype::get)
-		{
-			*reply+=std::to_string(gain.damper);
-		}
-		else if(cmd->type == CMDtype::set)
-		{
-			gain.damper = cmd->val;
-		}
-	}
-	else if(cmd->cmd == "inertia")
-	{
-		if(cmd->type == CMDtype::get)
-		{
-			*reply+=std::to_string(gain.inertia);
-		}
-		else if(cmd->type == CMDtype::set)
-		{
-			gain.inertia = cmd->val;
+			endstop_gain = cmd->val;
 		}
 	}
 	else if (cmd->cmd == "invert")
