@@ -394,7 +394,7 @@ void TMC4671::Run(){
 		case TMC_ControlState::No_power:
 			if(hasPower() && !emergency){
 				changeState(laststateNopower);
-				setMotionMode(lastMotionMode);
+				setMotionMode(lastMotionMode,true);
 				ErrorHandler::clearError(ErrorCode::undervoltage);
 				HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_SET);
 			}
@@ -413,7 +413,7 @@ void TMC4671::Run(){
 			lastMotionMode = curMotionMode;
 			laststateNopower = state;
 			ErrorHandler::addError(lowVoltageError);
-			setMotionMode(MotionMode::stop); // Disable tmc
+			setMotionMode(MotionMode::stop,true); // Disable tmc
 			changeState(TMC_ControlState::No_power);
 			HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_RESET);
 		}
@@ -447,7 +447,7 @@ bool TMC4671::reachedPosition(uint16_t tolerance){
 
 void TMC4671::setTargetPos(int32_t pos){
 	if(curMotionMode != MotionMode::position){
-		setMotionMode(MotionMode::position);
+		setMotionMode(MotionMode::position,true);
 	}
 	writeReg(0x68,pos);
 }
@@ -459,7 +459,7 @@ int32_t TMC4671::getTargetPos(){
 
 void TMC4671::setTargetVelocity(int32_t vel){
 	if(curMotionMode != MotionMode::velocity){
-		setMotionMode(MotionMode::velocity);
+		setMotionMode(MotionMode::velocity,true);
 	}
 	writeReg(0x66,vel);
 }
@@ -546,7 +546,7 @@ void TMC4671::bangInitEnc(int16_t power){
 	setFluxTorque(0, 0);
 	setPhiE_ext(0);
 	setPhiEtype(lastphie);
-	setMotionMode(lastmode);
+	setMotionMode(lastmode,true);
 	//setPos(pos+getPos());
 	setPos(0);
 
@@ -596,7 +596,7 @@ void TMC4671::calibrateAenc(){
 	setFluxTorque(0, 0);
 	writeReg(0x23,0); // set phie openloop 0
 	setPhiEtype(PhiE::openloop);
-	setMotionMode(MotionMode::torque);
+	setMotionMode(MotionMode::torque,true);
 
 	if(this->conf.motconf.motor_type == MotorType::STEPPER || this->conf.motconf.motor_type == MotorType::BLDC)
 		for(int16_t flux = 0; flux <= bangInitPower; flux+=10){
@@ -677,7 +677,7 @@ void TMC4671::calibrateAenc(){
 	setup_AENC(aencconf);
 	// Restore settings
 	setPhiEtype(lastphie);
-	setMotionMode(lastmode);
+	setMotionMode(lastmode,true);
 	setPosSel(possel);
 	setPos(0);
 
@@ -788,7 +788,7 @@ bool TMC4671::checkEncoder(){
 	setFluxTorque(0, 0);
 	setPhiE_ext(0);
 	setPhiEtype(lastphie);
-	setMotionMode(lastmode);
+	setMotionMode(lastmode,true);
 
 	if(result){
 		encstate = ENC_InitState::OK;
@@ -874,7 +874,7 @@ bool TMC4671::calibrateAdcOffset(uint16_t time){
 	writeReg(0x03, 0); // Read raw adc
 	PhiE lastphie = getPhiEtype();
 	MotionMode lastmode = getMotionMode();
-	setMotionMode(MotionMode::stop);
+	setMotionMode(MotionMode::stop,true);
 
 	uint16_t lastrawA=conf.adc_I0_offset, lastrawB=conf.adc_I1_offset;
 
@@ -912,23 +912,28 @@ bool TMC4671::calibrateAdcOffset(uint16_t time){
 	// ADC Offsets should now be close to perfect
 
 	setPhiEtype(lastphie);
-	setMotionMode(lastmode);
+	setMotionMode(lastmode,true);
 	return true;
 }
 
 
 void TMC4671::ABN_init(){
-	if(this->conf.motconf.motor_type != MotorType::STEPPER && this->conf.motconf.motor_type != MotorType::BLDC){
-		encstate = ENC_InitState::OK; // Skip for DC motors
-		if(manualEncAlign){
-			CommandHandler::sendSerial("encalign","DC motors don't support alignment",this->getInfo().unique);
-		}
-	}
+
 	switch(encstate){
 		case ENC_InitState::uninitialized:
 			setPosSel(PosSelection::PhiM_abn); // Mechanical Angle
 			writeReg(0x26, abnconf.cpr); // we need cpr to be set first
-			encstate = ENC_InitState::estimating;
+
+			if(this->conf.motconf.motor_type != MotorType::STEPPER && this->conf.motconf.motor_type != MotorType::BLDC){
+				setPhiEtype(PhiE::abn);
+				encstate = ENC_InitState::OK; // Skip for DC motors
+				if(manualEncAlign){
+					CommandHandler::sendSerial("encalign","DC motors don't support alignment",this->getInfo().unique);
+				}
+			}else{
+				encstate = ENC_InitState::estimating;
+			}
+
 		break;
 
 		case ENC_InitState::estimating:
@@ -1103,7 +1108,11 @@ PhiE TMC4671::getPhiEtype(){
 	return PhiE(readReg(0x52) & 0x7);
 }
 
-void TMC4671::setMotionMode(MotionMode mode){
+void TMC4671::setMotionMode(MotionMode mode, bool force){
+	if(!force){
+		nextMotionMode = mode;
+		return;
+	}
 	if(mode != curMotionMode){
 		lastMotionMode = curMotionMode;
 	}
@@ -1131,7 +1140,7 @@ void TMC4671::runOpenLoop(uint16_t ud,uint16_t uq,int32_t speed,int32_t accel,bo
 		}
 		setFluxTorque(ud, uq);
 	}else{
-		setMotionMode(MotionMode::uqudext);
+		setMotionMode(MotionMode::uqudext,true);
 		setUdUq(ud,uq);
 	}
 	setPhiEtype(PhiE::openloop);
@@ -1149,7 +1158,7 @@ void TMC4671::stopMotor(){
 	//HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_RESET);
 	active = false;
 	if(state == TMC_ControlState::Running){
-		setMotionMode(MotionMode::stop);
+		setMotionMode(MotionMode::stop,true);
 		//setPwm(0); // disable foc
 		changeState(TMC_ControlState::Shutdown);
 	}
@@ -1168,7 +1177,7 @@ void TMC4671::startMotor(){
 	if(hasPower()){
 		HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_SET);
 		setPwm(7); // enable foc
-		setMotionMode(lastMotionMode);
+		setMotionMode(nextMotionMode,true);
 
 	}else{
 		changeState(TMC_ControlState::Init_wait);
@@ -1330,7 +1339,7 @@ void TMC4671::setMotorType(MotorType motor,uint16_t poles){
 
 void TMC4671::setTorque(int16_t torque){
 	if(curMotionMode != MotionMode::torque){
-		setMotionMode(MotionMode::torque);
+		setMotionMode(MotionMode::torque,true);
 	}
 	updateReg(0x64,torque,0xffff,16);
 }
@@ -1340,7 +1349,7 @@ int16_t TMC4671::getTorque(){
 
 void TMC4671::setFlux(int16_t flux){
 	if(curMotionMode != MotionMode::torque){
-		setMotionMode(MotionMode::torque);
+		setMotionMode(MotionMode::torque,true);
 	}
 	updateReg(0x64,flux,0xffff,0);
 }
@@ -1349,14 +1358,14 @@ int16_t TMC4671::getFlux(){
 }
 void TMC4671::setFluxTorque(int16_t flux, int16_t torque){
 	if(curMotionMode != MotionMode::torque){
-		setMotionMode(MotionMode::torque);
+		setMotionMode(MotionMode::torque,true);
 	}
 	writeReg(0x64, (flux & 0xffff) | (torque << 16));
 }
 
 void TMC4671::setFluxTorqueFF(int16_t flux, int16_t torque){
 	if(curMotionMode != MotionMode::torque){
-		setMotionMode(MotionMode::torque);
+		setMotionMode(MotionMode::torque,true);
 	}
 	writeReg(0x65, (flux & 0xffff) | (torque << 16));
 }
@@ -1511,7 +1520,7 @@ void TMC4671::estimateABNparams(){
 	setPhiE_ext(0);
 	setPhiEtype(PhiE::ext);
 	setFluxTorque(0, 0);
-	setMotionMode(MotionMode::torque);
+	setMotionMode(MotionMode::torque,true);
 	for(int16_t flux = 0; flux <= bangInitPower; flux+=10){
 		setFluxTorque(flux, 0);
 		Delay(5);
@@ -1541,7 +1550,7 @@ void TMC4671::estimateABNparams(){
 
 	setFluxTorque(0, 0);
 	setPhiEtype(lastphie);
-	setMotionMode(lastmode);
+	setMotionMode(lastmode,true);
 
 	bool npol = highcount > c/2;
 	abnconf.rdir = rcount > c/2;

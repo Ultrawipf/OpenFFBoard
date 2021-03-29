@@ -285,7 +285,7 @@ public:
 
 	void setPosSel(PosSelection psel);
 
-	void setMotionMode(MotionMode mode);
+	void setMotionMode(MotionMode mode,bool force = false); // force true sets it immediately. use false to change mode when tmc is ready on startMotor
 	MotionMode getMotionMode();
 
 	void setUdUq(int16_t ud,int16_t uq);
@@ -349,6 +349,7 @@ private:
 	TMC_ControlState laststateNopower;
 	MotionMode curMotionMode = MotionMode::stop;
 	MotionMode lastMotionMode = MotionMode::stop;
+	MotionMode nextMotionMode = MotionMode::stop;
 	bool oldTMCdetected = false; // ES versions should not exist anymore
 
 	uint8_t enc_retry = 0;
