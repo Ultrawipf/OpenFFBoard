@@ -341,14 +341,14 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 //		effect->conditions[con_idx].positiveSaturation = FRICTION_SATURATION;
 		float metric = effect->filter[con_idx]->process(metrics->speed) * .25;
 		result_torque -= calcConditionEffectForce(effect, metric, gain.friction,
-											   con_idx, .04f, angle_ratio);
+											   con_idx, .08f, angle_ratio);
 		break;
 	}
 	case FFB_EFFECT_DAMPER:
 	{
 		float metric = effect->filter[con_idx]->process(metrics->speed) * .0625f;
 		result_torque -= calcConditionEffectForce(effect, metric, gain.damper,
-									   con_idx, 0.4f, angle_ratio);
+									   con_idx, 0.6f, angle_ratio);
 		break;
 	}
 
@@ -358,7 +358,7 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 //		effect->conditions[con_idx].positiveSaturation = INERTIA_SATURATION;
 		float metric = effect->filter[con_idx]->process(metrics->accel*4);
 		result_torque -= calcConditionEffectForce(effect, metric, gain.inertia,
-									   con_idx, 0.4f, angle_ratio);
+									   con_idx, 0.5f, angle_ratio);
 		break;
 	}
 
