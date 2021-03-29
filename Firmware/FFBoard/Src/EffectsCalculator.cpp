@@ -589,13 +589,13 @@ void EffectsCalculator::processHidCommand(HID_Custom_Data_t* data) {
 			break;
 
 		case HID_CMD_FFB_IDLESPRING:
-					if(data->type == HidCmdType::write) {
-						setIdleSpringStrength(data->data);
-					}
-					else if(data->type == HidCmdType::request){
-						data->data = idlespringstrength;
-					}
-				break;
+			if(data->type == HidCmdType::write) {
+				setIdleSpringStrength(data->data);
+			}
+			else if(data->type == HidCmdType::request){
+				data->data = idlespringstrength;
+			}
+		break;
 
 		default:
 
