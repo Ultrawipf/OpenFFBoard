@@ -55,7 +55,7 @@ MidiMain::MidiMain(){
 	drv->allowSlowSPI = false; // Force higher speed
 	drv->initialize();
 	drv->setPhiEtype(PhiE::ext);
-	drv->setMotionMode(MotionMode::uqudext);
+	drv->setMotionMode(MotionMode::uqudext,true);
 
 	if(!drv->initialized){
 		pulseErrLed();

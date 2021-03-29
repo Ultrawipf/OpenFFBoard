@@ -23,11 +23,11 @@ NormalizedAxis::NormalizedAxis(char axis) {
 	this->axis = axis; // Axis are indexed from 1-X to 3-Z
 
 	if(axis == 'X'){
-		flashAddrs = NormalizedAxisFlashAddrs_t({ADR_AXIS1_ENDSTOP, ADR_AXIS1_POWER, ADR_AXIS1_DEGREES});
+		flashAddrs = NormalizedAxisFlashAddrs_t({ADR_AXIS1_ENDSTOP, ADR_AXIS1_POWER, ADR_AXIS1_DEGREES,ADR_AXIS1_EFFECTS1});
 	}else if(axis == 'Y'){
-		flashAddrs = NormalizedAxisFlashAddrs_t({ADR_AXIS2_ENDSTOP, ADR_AXIS2_POWER, ADR_AXIS2_DEGREES});
+		flashAddrs = NormalizedAxisFlashAddrs_t({ADR_AXIS2_ENDSTOP, ADR_AXIS2_POWER, ADR_AXIS2_DEGREES,ADR_AXIS2_EFFECTS1});
 	}else if(axis == 'Z'){
-		flashAddrs = NormalizedAxisFlashAddrs_t({ADR_AXIS3_ENDSTOP, ADR_AXIS3_POWER, ADR_AXIS3_DEGREES});
+		flashAddrs = NormalizedAxisFlashAddrs_t({ADR_AXIS3_ENDSTOP, ADR_AXIS3_POWER, ADR_AXIS3_DEGREES,ADR_AXIS3_EFFECTS1});
 	}
 
 //	restoreFlash();
@@ -61,24 +61,70 @@ void NormalizedAxis::restoreFlash(){
 	}
 
 
-	Flash_Read(flashAddrs.power, &power);
-	setPower(power);
+	if(Flash_Read(flashAddrs.power, &power)){
+		setPower(power);
+	}
+
 	Flash_Read(flashAddrs.degrees, &degreesOfRotation);
 	nextDegreesOfRotation = degreesOfRotation;
+
+	uint16_t effects;
+	if(Flash_Read(flashAddrs.effects1, &effects)){
+		setIdleSpringStrength(effects & 0xff);
+		setDamperStrength((effects >> 8) & 0xff);
+	}
 }
 
 
 // Saves parameters to flash
 void NormalizedAxis::saveFlash(){
 	Flash_Write(flashAddrs.endstop, fx_ratio_i | (endstop_gain << 8));
-
 	Flash_Write(flashAddrs.power, power);
 	Flash_Write(flashAddrs.degrees, degreesOfRotation);
+	Flash_Write(flashAddrs.effects1, idlespringstrength | (damperIntensity << 8));
 }
 
 
-void NormalizedAxis::updateIdleSpringForce(float idlespringscale, int16_t idlespringclip) {
-	effectTorque = clip<int32_t,int32_t>((int32_t)(-metric.current.pos*idlespringscale),-idlespringclip,idlespringclip);
+int32_t NormalizedAxis::updateIdleSpringForce() {
+	return clip<int32_t,int32_t>((int32_t)(-metric.current.pos*idlespringscale),-idlespringclip,idlespringclip);
+}
+/*
+ * Set the strength of the spring effect if FFB is disabled
+ */
+void NormalizedAxis::setIdleSpringStrength(uint8_t spring){
+	idlespringstrength = spring;
+	if(spring == 0){
+		idle_center = false;
+	}else{
+		idle_center = true;
+	}
+	idlespringclip = clip<int32_t,int32_t>((int32_t)spring*50,0,10000);
+	idlespringscale = 0.5f + ((float)spring * 0.01f);
+}
+
+void NormalizedAxis::setDamperStrength(uint8_t damper){
+	if(damperIntensity == 0) // Was off before. reinit filter
+		this->damperFilter.calcBiquad(); // Reset Filter
+
+	this->damperIntensity = damper;
+}
+
+/*
+ * Called before HID effects are calculated
+ * Should calculate always on and idle effects specific to the axis like idlespring and friction
+ */
+void NormalizedAxis::calculateAxisEffects(bool ffb_on){
+	axisEffectTorque = 0;
+
+	if(!ffb_on){
+		axisEffectTorque += updateIdleSpringForce();
+	}
+
+	// Always active damper
+	if(damperIntensity != 0){
+		float speedFiltered = damperFilter.process(metric.current.speed) * (float)damperIntensity;
+		axisEffectTorque -= clip<float, int32_t>(speedFiltered, -damperClip, damperClip);
+	}
 }
 
 void NormalizedAxis::setFxRatio(uint8_t val) {
@@ -149,7 +195,7 @@ int16_t NormalizedAxis::updateEndstop(){
 }
 
 void NormalizedAxis::setEffectTorque(int32_t torque) {
-	effectTorque= torque;
+	effectTorque = torque;
 }
 
 // pass in ptr to receive the sum of the effects + endstop torque
@@ -166,6 +212,7 @@ bool NormalizedAxis::updateTorque(int32_t* totalTorque) {
 	effectTorque  *= torqueScaler;
 
 	int32_t torque = effectTorque + updateEndstop();
+	torque += axisEffectTorque * torqueScaler; // Updated from effect calculator
 	
 	torque = (invertAxis) ? -torque : torque;
 	metric.current.torque = torque;
@@ -212,6 +259,14 @@ void NormalizedAxis::processHidCommand(HID_Custom_Data_t* data) {
 			}
 			else if (data->type == HidCmdType::request){
 				data->data = degreesOfRotation;
+			}
+		break;
+		case HID_CMD_FFB_IDLESPRING:
+			if(data->type == HidCmdType::write) {
+				setIdleSpringStrength(data->data);
+			}
+			else if(data->type == HidCmdType::request){
+				data->data = idlespringstrength;
 			}
 		break;
 		
@@ -281,6 +336,28 @@ ParseStatus NormalizedAxis::command(ParsedCommand *cmd, std::string *reply)
 		else if (cmd->type == CMDtype::set)
 		{
 			invertAxis = cmd->val >= 1 ? true : false;
+		}
+	}
+	else if (cmd->cmd == "idlespring")
+	{
+		if (cmd->type == CMDtype::get)
+		{
+			*reply += std::to_string(idlespringstrength);
+		}
+		else if (cmd->type == CMDtype::set)
+		{
+			setIdleSpringStrength(cmd->val);
+		}
+	}
+	else if (cmd->cmd == "axisdamper")
+	{
+		if (cmd->type == CMDtype::get)
+		{
+			*reply += std::to_string(damperIntensity);
+		}
+		else if (cmd->type == CMDtype::set)
+		{
+			setDamperStrength(cmd->val);
 		}
 	}else{
 		flag = ParseStatus::NOT_FOUND;

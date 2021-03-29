@@ -29,9 +29,9 @@ public:
     float process(float in);
     void setBiquad(BiquadType type, float Fc, float Q, float peakGain);
     void setFc(float Fc); //frequency
+    void calcBiquad(void);
 
 protected:
-    void calcBiquad(void);
 
     BiquadType type;
     float a0, a1, a2, b1, b2;

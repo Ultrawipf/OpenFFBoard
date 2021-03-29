@@ -42,6 +42,9 @@ void Biquad::setBiquad(BiquadType type, float Fc, float Q, float peakGainDB) {
     calcBiquad();
 }
 
+/*
+ * Updates parameters and resets the biquad filter
+ */
 void Biquad::calcBiquad(void) {
 	z1 = 0.0;
 	z2 = 0.0;
