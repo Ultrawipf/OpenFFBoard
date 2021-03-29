@@ -30,7 +30,9 @@ enum class ErrorCode : uint32_t{
 			overtemp = 15,
 
 			encoderAlignmentFailed = 20,
-			adcCalibrationError = 21
+			adcCalibrationError = 21,
+
+			axisOutOfRange = 31
 };
 /*
  * Error type for severity
