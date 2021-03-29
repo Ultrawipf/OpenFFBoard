@@ -60,9 +60,8 @@ void CommandHandler::sendSerial(std::string cmd,std::string string, char prefix)
 		return;
 	std::string reply = ">";
 	if(prefix){
-		std::string t;
-		t.assign(1,prefix); // Workaround for chars
-		reply += t + ".";
+		reply.push_back(prefix);
+		reply += ".";
 	}
 	reply += cmd + ":" + string + "\n";
 

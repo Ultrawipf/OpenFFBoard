@@ -663,7 +663,7 @@ void TMC4671::calibrateAenc(){
 		maxVal_1 = std::max(maxVal_1,aencVN);
 		maxVal_2 = std::max(maxVal_2,aencWY);
 	}
-
+	// Scale is not actually important. but offset must be perfect
 	aencconf.AENC0_offset = ((maxVal_0 + minVal_0) / 2);
 	aencconf.AENC0_scale = 0xF6FF00 / (maxVal_0 - minVal_0);
 	if(conf.motconf.enctype == EncoderType_TMC::uvw){
@@ -1122,10 +1122,10 @@ void TMC4671::setOpenLoopSpeedAccel(int32_t speed,uint32_t accel){
 
 
 void TMC4671::runOpenLoop(uint16_t ud,uint16_t uq,int32_t speed,int32_t accel,bool torqueMode){
+	if(this->conf.motconf.motor_type == MotorType::DC){
+		uq = ud+uq; // dc motor has no flux. add to torque
+	}
 	if(torqueMode){
-		if(this->conf.motconf.motor_type == MotorType::DC){
-			uq = ud+uq; // dc motor has no flux. add to torque
-		}
 		setFluxTorque(ud, uq);
 	}else{
 		setMotionMode(MotionMode::uqudext);
