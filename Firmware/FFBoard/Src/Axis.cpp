@@ -292,7 +292,7 @@ int32_t Axis::getEncValue(Encoder *enc, uint16_t degrees){
 	if (enc == nullptr || degrees == 0){
 		return 0x7fff; // Return center if no encoder present
 	}
-	float angle = 360.0 * ((float)enc->getPos() / (float)enc->getCpr());
+	float angle = 360.0 * enc->getPos_f();
 	int32_t val = (0xffff / (float)degrees) * angle;
 	if (isInverted()){
 		val= -val;
@@ -401,22 +401,6 @@ ParseStatus Axis::command(ParsedCommand *cmd, std::string *reply)
 		else
 		{
 			*reply += enc_chooser.printAvailableClasses();
-		}
-	}
-	else if (cmd->cmd == "cpr")
-	{
-		if (cmd->type == CMDtype::get)
-		{
-			*reply += std::to_string(this->enc->getCpr());
-		}
-		else if (cmd->type == CMDtype::set && this->enc != nullptr)
-		{
-			this->enc->setCpr(cmd->val);
-		}
-		else
-		{
-			flag = ParseStatus::ERR;
-			*reply += "Err. Setup enctype first";
 		}
 	}
 	else if (cmd->cmd == "pos")

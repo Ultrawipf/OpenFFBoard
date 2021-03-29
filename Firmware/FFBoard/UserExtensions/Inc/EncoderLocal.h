@@ -37,6 +37,8 @@ public:
 	void exti(uint16_t GPIO_Pin);
 	void timerElapsed(TIM_HandleTypeDef* htim);
 
+	void setCpr(uint32_t cpr);	// Encoder counts per rotation
+
 	ParseStatus command(ParsedCommand* cmd,std::string* reply);
 	std::string getHelpstring(){return "Local encoder: cpr\n";}
 	void saveFlash(); 		// Write to flash here
