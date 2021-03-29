@@ -10,7 +10,7 @@
 
 #include "main.h"
 // Change this to the amount of currently registered variables
-#define NB_OF_VAR	62
+#define NB_OF_VAR	63
 
 extern uint16_t VirtAddVarTab[NB_OF_VAR];
 
@@ -68,15 +68,16 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 
 // How many axis configured 1-3
 #define ADR_AXIS_COUNT					0x300
-#define ADR_AXIS_EFFECTS1			    0x310 // 0-7 idlespring, 8-15 friction
+#define ADR_AXIS_EFFECTS1			    0x310 // 0-7 inertia, 8-15 friction
 #define ADR_AXIS_EFFECTS2			    0x350 // 0-7 spring, 8-15 damper
-#define ADR_AXIS_EFFECTS3	    		0x390 // 0-7 inertia, 8-15 unused
+//#define ADR_AXIS_EFFECTS3	    		0x390 // unused
 
 // AXIS1
 #define ADR_AXIS1_CONFIG				0x301 // 0-2 ENC, 3-5 DRV
 #define ADR_AXIS1_POWER			    	0x302
 #define ADR_AXIS1_DEGREES		    	0x303
 #define ADR_AXIS1_ENDSTOP		    	0x307 // 0-7 endstop margin, 8-15 endstop stiffness
+#define ADR_AXIS1_EFFECTS1		    	0x308 // 0-7 idlespring, 8-15 damper
 
 // TMC1
 #define ADR_TMC1_MOTCONF 				0x320 // 0-2: MotType 3-5: PhiE source 6-15: Poles
@@ -95,6 +96,7 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_AXIS2_POWER	    			0x342
 #define ADR_AXIS2_DEGREES	    		0x343
 #define ADR_AXIS2_ENDSTOP		    	0x347 // 0-7 endstop margin, 8-15 endstop stiffness
+#define ADR_AXIS2_EFFECTS1		    	0x348 // 0-7 idlespring, 8-15 damper
 
 // TMC2
 #define ADR_TMC2_MOTCONF 				0x360 // 0-2: MotType 3-5: PhiE source 6-15: Poles
@@ -113,6 +115,7 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_AXIS3_POWER			    	0x382
 #define ADR_AXIS3_DEGREES			    0x383
 #define ADR_AXIS3_ENDSTOP	    		0x387 // 0-7 endstop margin, 8-15 endstop stiffness
+#define ADR_AXIS3_EFFECTS1		    	0x388 // 0-7 idlespring, 8-15 damper
 
 // TMC3
 #define ADR_TMC3_MOTCONF 				0x3A0 // 0-2: MotType 3-5: PhiE source 6-15: Poles

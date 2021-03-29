@@ -87,14 +87,14 @@ have no effect on joystick motion in the northwest-southeast direction.
  */
 void EffectsCalculator::calculateEffects(std::vector<Axis *> axes)
 {
+	for (auto axis : axes) {
+	//axis->updateIdleSpringForce(idlespringscale, idlespringclip);
+		axis->calculateAxisEffects(isActive());
+	}
 
-	 if(!isActive() && idle_center){
-	 	// Center when FFB is turned of with a spring effect
-		 for (auto axis : axes) {
-		 	axis->updateIdleSpringForce(idlespringscale, idlespringclip);
-	 	}
-		 return;
-	 }
+	if(!isActive()){
+	 return;
+	}
 
 	int32_t forceX = 0;
 	int32_t forceY = 0;
@@ -483,19 +483,7 @@ void EffectsCalculator::setEffectsArray(FFB_Effect *pEffects)
 	effects = pEffects;
 }
 
-/*
- * Set the strength of the spring effect if FFB is disabled
- */
-void EffectsCalculator::setIdleSpringStrength(uint8_t spring){
-	idlespringstrength = spring;
-	if(spring == 0){
-		idle_center = false;
-	}else{
-		idle_center = true;
-	}
-	idlespringclip = clip<int32_t,int32_t>((int32_t)spring*50,0,10000);
-	idlespringscale = 0.5f + ((float)spring * 0.01f);
-}
+
 
 /*
  * Read parameters from flash and restore settings
@@ -510,26 +498,24 @@ void EffectsCalculator::restoreFlash()
 	uint16_t effects = 0;
 	if(Flash_Read(ADR_AXIS_EFFECTS1, &effects)){
 		gain.friction = (effects >> 8) & 0xff;
-		setIdleSpringStrength(effects & 0xff);
+		gain.inertia = (effects & 0xff);
 	}
 	if(Flash_Read(ADR_AXIS_EFFECTS2, &effects)){
 		gain.damper = (effects >> 8) & 0xff;
 		gain.spring = (effects & 0xff);
 	}
-	if(Flash_Read(ADR_AXIS_EFFECTS3, &effects)){
-		gain.inertia = (effects & 0xff);
-	}
+
 }
 
 // Saves parameters to flash
 void EffectsCalculator::saveFlash()
 {
 	Flash_Write(ADR_CF_FILTER, cfFilter_f);
-	uint16_t effects = idlespringstrength | (gain.friction << 8);
+	uint16_t effects = gain.inertia | (gain.friction << 8);
 	Flash_Write(ADR_AXIS_EFFECTS1, effects);
 	effects = gain.spring | (gain.damper << 8);
 	Flash_Write(ADR_AXIS_EFFECTS2, effects);
-	Flash_Write(ADR_AXIS_EFFECTS3, gain.inertia);
+
 }
 
 void EffectsCalculator::setCfFilter(uint32_t freq)
@@ -588,15 +574,6 @@ void EffectsCalculator::processHidCommand(HID_Custom_Data_t* data) {
 			}
 			break;
 
-		case HID_CMD_FFB_IDLESPRING:
-			if(data->type == HidCmdType::write) {
-				setIdleSpringStrength(data->data);
-			}
-			else if(data->type == HidCmdType::request){
-				data->data = idlespringstrength;
-			}
-		break;
-
 		default:
 
 			break;
@@ -630,17 +607,6 @@ ParseStatus EffectsCalculator::command(ParsedCommand *cmd, std::string *reply)
 		else
 		{
 			*reply += "List effects used.";
-		}
-	}
-	else if (cmd->cmd == "idlespring")
-	{
-		if (cmd->type == CMDtype::get)
-		{
-			*reply += std::to_string(idlespringstrength);
-		}
-		else if (cmd->type == CMDtype::set)
-		{
-			setIdleSpringStrength(cmd->val);
 		}
 	}
 	else if(cmd->cmd == "spring")
