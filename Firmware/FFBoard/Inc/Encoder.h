@@ -23,13 +23,13 @@ public:
 	virtual EncoderType getType();
 
 	virtual int32_t getPos();
+	virtual float getPos_f();
+
 	virtual void setPos(int32_t pos);
 
-
 	virtual uint32_t getCpr(); // Encoder counts per rotation
-	virtual void setCpr(uint32_t cpr);	// Encoder counts per rotation
 
-private:
+protected:
 	uint32_t cpr = 0;
 };
 

@@ -82,6 +82,9 @@ void EncoderLocal::overflowCallback(){
 	}
 }
 
+void EncoderLocal::setCpr(uint32_t cpr){
+	this->cpr = cpr;
+}
 
 ParseStatus EncoderLocal::command(ParsedCommand* cmd,std::string* reply){
 	if(cmd->cmd == "cpr"){
