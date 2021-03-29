@@ -379,14 +379,14 @@ int32_t EffectsCalculator::calcConditionEffectForce(FFB_Effect *effect, float  m
 	{
 		if (metric < offset)
 		{ // Deadband side
-			force = clip<int32_t, int32_t>((effect->conditions[idx].negativeCoefficient *
+			force = clip<int32_t, int32_t>(((float)effect->conditions[idx].negativeCoefficient *
 											scale * (float)(metric - (offset - deadBand))),
 										   -effect->conditions[idx].negativeSaturation,
 										   effect->conditions[idx].positiveSaturation);
 		}
 		else
 		{
-			force = clip<int32_t, int32_t>((effect->conditions[idx].positiveCoefficient *
+			force = clip<int32_t, int32_t>(((float)effect->conditions[idx].positiveCoefficient *
 											scale * (float)(metric - (offset + deadBand))),
 										   -effect->conditions[idx].negativeSaturation,
 										   effect->conditions[idx].positiveSaturation);
@@ -426,12 +426,12 @@ int32_t EffectsCalculator::applyEnvelope(FFB_Effect *effect, int32_t value)
 
 void EffectsCalculator::setFilters(FFB_Effect *effect){
 
-	std::function<void(Biquad *)> fnptr = [=](Biquad *filter){};
+	std::function<void(Biquad *&)> fnptr = [=](Biquad *&filter){};
 
 	switch (effect->type)
 	{
 	case FFB_EFFECT_DAMPER:
-		fnptr = [=](Biquad *filter){
+		fnptr = [=](Biquad *&filter){
 			if (filter != nullptr)
 				filter->setBiquad(BiquadType::lowpass, (float)damper_f / (float)calcfrequency, damper_q, (float)0.0);
 			else
@@ -439,7 +439,7 @@ void EffectsCalculator::setFilters(FFB_Effect *effect){
 		};
 		break;
 	case FFB_EFFECT_FRICTION:
-		fnptr = [=](Biquad *filter){
+		fnptr = [=](Biquad *&filter){
 			if (filter != nullptr)
 				filter->setBiquad(BiquadType::lowpass, (float)friction_f / (float)calcfrequency, friction_q, (float)0.0);
 			else
@@ -447,7 +447,7 @@ void EffectsCalculator::setFilters(FFB_Effect *effect){
 		};
 		break;
 	case FFB_EFFECT_INERTIA:
-		fnptr = [=](Biquad *filter){
+		fnptr = [=](Biquad *&filter){
 			if (filter != nullptr)
 				filter->setBiquad(BiquadType::lowpass, (float)inertia_f / (float)calcfrequency, inertia_q, (float)0.0);
 			else
@@ -455,7 +455,7 @@ void EffectsCalculator::setFilters(FFB_Effect *effect){
 		};
 		break;
 	case FFB_EFFECT_CONSTANT:
-		fnptr = [=](Biquad *filter){
+		fnptr = [=](Biquad *&filter){
 			if (filter != nullptr)
 				filter->setBiquad(BiquadType::lowpass, (float)cfFilter_f / (float)calcfrequency, cfFilter_q, (float)0.0);
 			else
