@@ -34,11 +34,11 @@ TMC4671::TMC4671(SPI_HandleTypeDef* spi,GPIO_TypeDef* csport,uint16_t cspin,TMC4
 	this->restoreFlash();
 }
 
-TMC4671::TMC4671() : Thread("TMC", TMC_THREAD_MEM, TMC_THREAD_PRIO){
-	this->address = 1;
-	this->cspin = SPI1_SS1_Pin;
-	this->csport = SPI1_SS1_GPIO_Port;
-	this->spi = &HSPIDRV;
+TMC4671::TMC4671(uint8_t address) : Thread("TMC", TMC_THREAD_MEM, TMC_THREAD_PRIO){
+	setAddress(address);
+//	this->cspin = SPI1_SS1_Pin;
+//	this->csport = SPI1_SS1_GPIO_Port;
+//	this->spi = &HSPIDRV;
 	this->restoreFlash();
 }
 

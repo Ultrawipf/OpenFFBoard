@@ -185,7 +185,7 @@ public:
 
 	//SPI_HandleTypeDef* spi = &HSPIDRV,GPIO_TypeDef* csport=SPI1_SS1_GPIO_Port,uint16_t cspin=SPI1_SS1_Pin
 	TMC4671(SPI_HandleTypeDef* spi,GPIO_TypeDef* csport,uint16_t cspin,TMC4671MainConfig conf);
-	TMC4671();
+	TMC4671(uint8_t address = 1);
 
 	void setAddress(uint8_t addr);
 	void setAddress(uint8_t chan, uint8_t addr);
