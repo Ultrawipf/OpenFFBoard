@@ -14,13 +14,10 @@
 #define X_AXIS_ENABLE 1
 #define Y_AXIS_ENABLE 2
 #define Z_AXIS_ENABLE 4
-#define DEG_TO_RAD ((float)((float)3.14159265 / 180.0))
+//#define DEG_TO_RAD ((float)((float)M_PI / 180.0))
 #define DIRECTION_ENABLE (1 << MAX_AXIS)
 
 #define EFFECT_STATE_INACTIVE 0
-
-//#define degreesToRadians(angleDegrees) ((angleDegrees)*M_PI / 180.0)
-
 
 ClassIdentifier EffectsCalculator::info = {
 		.name 	= "NONE" ,
@@ -290,7 +287,7 @@ have no effect on joystick motion in the northwest-southeast direction.
 int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceVector, metric_t *metrics, uint8_t axis, uint8_t axisCount)
 {
 	int32_t result_torque = 0;
-	uint8_t direction;
+	uint16_t direction;
 	uint8_t con_idx = 0; // condition block index
 
 	if (effect->enableAxis == DIRECTION_ENABLE)
@@ -309,7 +306,7 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 
 	//bool useForceDirectionForConditionEffect = (effect->enableAxis == DIRECTION_ENABLE && axisCount > 1 && effect->conditionsCount == 1);
 	bool rotateConditionForce = (axisCount > 1 && effect->conditionsCount == 1);
-	float angle = ((float)direction * 360.0 / 255.0) * DEG_TO_RAD;
+	float angle = ((float)direction * (2*M_PI) / 36000.0);
 	float angle_ratio = axis == 0 ? sin(angle) : -1 * cos(angle);
 	angle_ratio = rotateConditionForce ? angle_ratio : 1.0;
 

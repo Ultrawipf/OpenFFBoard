@@ -132,8 +132,8 @@ typedef struct
 	uint8_t		gain = 255;	// 0..255 scaler
 	uint8_t		triggerButton = 0;	// button ID. unused
 	uint8_t		enableAxis = 0; // bits: 0=X, 1=Y, 2=DirectionEnable
-	uint8_t		directionX = 0;	// angle (0=0 .. 255=360deg)
-	uint8_t		directionY = 0;	// angle (0=0 .. 255=360deg)
+	uint16_t	directionX = 0;	// angle (0=0 .. 36000=360deg)
+	uint16_t	directionY = 0;	// angle (0=0 .. 36000=360deg)
 #if MAX_AXIS == 3
 	uint8_t directionZ = 0; // angle (0=0 .. 255=360deg)
 #endif
@@ -231,8 +231,8 @@ typedef struct
 	int16_t startLevel = 0;			// Ramp effect
 	int16_t endLevel = 0;			// Ramp effect
 	uint8_t enableAxis = 0;			// Active axis
-	uint8_t directionX = 0;			// angle (0=0 .. 255=360deg)
-	uint8_t directionY = 0;			// angle (0=0 .. 255=360deg)
+	uint16_t directionX = 0;		// angle (0=0 .. 36000=360deg)
+	uint16_t directionY = 0;		// angle (0=0 .. 36000=360deg)
 #if MAX_AXIS == 3
 	uint8_t directionZ = 0; // angle (0=0 .. 255=360deg)
 #endif
