@@ -377,6 +377,7 @@ private:
 
 	uint32_t initTime = 0;
 	bool manualEncAlign = false;
+	bool spiActive = false; // Flag for tx interrupt that the transfer was started by this instance
 
 	//cpp_freertos::BinarySemaphore spiSemaphore = cpp_freertos::BinarySemaphore(true);
 

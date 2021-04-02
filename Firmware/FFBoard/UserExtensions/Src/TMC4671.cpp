@@ -1651,7 +1651,7 @@ void TMC4671::writeReg(uint8_t reg,uint32_t dat){
 	spi_buf[0] = (uint8_t)(0x80 | reg);
 	dat =__REV(dat);
 	memcpy(spi_buf+1,&dat,4);
-
+	spiActive = true; // Signal the dma callback that this class actually used the port
 	HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_RESET);
 	HAL_SPI_Transmit_DMA(this->spi,spi_buf,5);
 	//HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_SET);
@@ -1665,7 +1665,8 @@ void TMC4671::updateReg(uint8_t reg,uint32_t dat,uint32_t mask,uint8_t shift){
 	writeReg(reg, t);
 }
 void TMC4671::SpiTxCplt(SPI_HandleTypeDef *hspi){
-	if(hspi == this->spi){
+	if(this->spiActive && hspi == this->spi){
+		spiActive = false;
 		HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_SET); // unselect
 		RessourceManager::getSpiSemaphore(1)->GiveFromISR(nullptr);
 	}
