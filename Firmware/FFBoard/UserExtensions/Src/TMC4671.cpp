@@ -1905,7 +1905,8 @@ ParseStatus TMC4671::command(ParsedCommand* cmd,std::string* reply){
 			*reply += std::to_string(getSpiAddr());
 		}else if (cmd->type == CMDtype::set){
 			if(!setSpiAddr(cmd->val & 0x3)){
-				*reply += "ERROR: SPI chip_select address already in use by another board.";
+				*reply +=  "ERROR: SPI chip_select address already in use by another axis";
+				ErrorHandler::addError(Error(ErrorCode::cmdExecutionError, ErrorType::warning, std::string(this->getInfo().name) + " " + this->getInfo().unique + " SPI chip_select address already in use by another axis"));
 			}
 		}else{
 			*reply += "Set which SPI chip_select address to use.\ne.g. If you a TMC board with the SPI solder jumper set to 1 & want to use it for FFB on the Y axis - use: y.tmc=1 .";
