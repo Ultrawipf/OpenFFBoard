@@ -48,7 +48,6 @@ struct AxisConfig
 {
 	uint8_t drvtype = 0;
 	uint8_t enctype = 0;
-	uint8_t tmc_cs = 0; // the channel select i.e. physical board to use.
 	bool invert = false;
 };
 
@@ -63,7 +62,7 @@ public:
 
 	virtual std::string getHelpstring() { return "\nAxis commands: Get: axis.cmd , Set: axis.cmd=var, where axis = x-z e.g. y.power\n"
 //												 "power,zeroenc,enctype,cpr,pos,degrees,esgain,fxratio,idlespring,spring.friction,damper,inertia,invert,drvtype,tmc.\n"; }
-												 "power,zeroenc,enctype,pos,degrees,esgain,fxratio,invert,drvtype,tmc,idlespring,axisdamper\n"; }
+												 "power,zeroenc,enctype,pos,degrees,esgain,fxratio,invert,drvtype,idlespring,axisdamper\n"; }
 	void setupTMC4671();
 	void setupTMC4671_enc(PhiE enctype);
 

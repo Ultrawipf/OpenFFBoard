@@ -1192,9 +1192,6 @@ static void MX_GPIO_Init(void)
                           |CAN_S_Pin|LED_SYS_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(ENCODER_Z_GPIO_Port, ENCODER_Z_Pin, GPIO_PIN_RESET);
-
-  /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(SPI3_SS1_GPIO_Port, SPI3_SS1_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pins : DIN7_Pin DIN6_Pin DIN5_Pin DIN4_Pin
@@ -1274,10 +1271,15 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pin : ENCODER_Z_Pin */
   GPIO_InitStruct.Pin = ENCODER_Z_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(ENCODER_Z_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : ENCODER_Z_1_2_1_Pin */
+  GPIO_InitStruct.Pin = ENCODER_Z_1_2_1_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(ENCODER_Z_1_2_1_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : SPI3_SS1_Pin */
   GPIO_InitStruct.Pin = SPI3_SS1_Pin;
@@ -1379,7 +1381,7 @@ void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
   /* User can add his own implementation to report the HAL error return state */
-
+	HAL_GPIO_WritePin(LED_ERR_GPIO_Port, LED_ERR_Pin, GPIO_PIN_RESET);
   /* USER CODE END Error_Handler_Debug */
 }
 

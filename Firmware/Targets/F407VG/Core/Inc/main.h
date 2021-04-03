@@ -132,12 +132,14 @@ void RebootDFU();
 #define SPI2_SS2_GPIO_Port GPIOD
 #define SPI2_SS3_Pin GPIO_PIN_9
 #define SPI2_SS3_GPIO_Port GPIOD
+#define ENCODER_Z_Pin GPIO_PIN_15
+#define ENCODER_Z_GPIO_Port GPIOD
 #define ENCODER_A_Pin GPIO_PIN_6
 #define ENCODER_A_GPIO_Port GPIOC
 #define ENCODER_B_Pin GPIO_PIN_7
 #define ENCODER_B_GPIO_Port GPIOC
-#define ENCODER_Z_Pin GPIO_PIN_8
-#define ENCODER_Z_GPIO_Port GPIOC
+#define ENCODER_Z_1_2_1_Pin GPIO_PIN_8
+#define ENCODER_Z_1_2_1_GPIO_Port GPIOC
 #define OTG_FS_DM_Pin GPIO_PIN_11
 #define OTG_FS_DM_GPIO_Port GPIOA
 #define OTG_FS_DP_Pin GPIO_PIN_12

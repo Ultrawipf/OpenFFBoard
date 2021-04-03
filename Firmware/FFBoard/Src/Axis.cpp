@@ -212,10 +212,6 @@ void Axis::setDrvType(uint8_t drvtype)
 	{
 		setupTMC4671();
 	}
-	else
-	{ // reset the tmc channel info if not a TMC drive
-		this->conf.tmc_cs = 0;
-	}
 
 	// Add driver to encoder sources if also implements encoder
 
@@ -248,9 +244,8 @@ void Axis::setupTMC4671()
 void Axis::setupTMC4671ForAxis(char axis)
 {
 	TMC4671 *drv = static_cast<TMC4671 *>(this->drv);
-	drv->setAddress(this->conf.tmc_cs, (uint8_t)(axis-'W')); // X=1, Y=2, etc
-//	drv->initialize();
-	drv->initialize();
+	drv->setAxis(axis);
+	drv->restoreFlash();
 	tmclimits.pid_torque_flux = getPower();
 	drv->setLimits(tmclimits);
 	//drv->setBiquadFlux(fluxbq);
@@ -419,34 +414,7 @@ ParseStatus Axis::command(ParsedCommand *cmd, std::string *reply)
 			*reply += "Err. Setup enctype first";
 		}
 	}
-	else if (cmd->cmd == "tmc")
-	{
-		if (cmd->type == CMDtype::get)
-		{
-			if (this->getDrvType() == 1)
-			{
-				TMC4671 *drv = static_cast<TMC4671 *>(this->drv);
-				*reply += std::to_string(drv->getCSchan());
-			}
-			else
-			{
-				flag = ParseStatus::ERR;
-				*reply += "Err. Drive not TMC type";
-			}
-		}
-		else if (cmd->type == CMDtype::set)
-		{
-			this->conf.tmc_cs = cmd->val & 0x3;
-			if (this->getDrvType() == 1)
-			{
-				this->setupTMC4671();
-			}
-		}
-		else
-		{
-			*reply += "Set the TMC Board channel for this axis.\ne.g. If you have one TMC board & want to use it for FFB on the Y axis - use: y.tmc=1 .";
-		}
-	}else{
+	else{
 		flag = ParseStatus::NOT_FOUND;
 	}
 
@@ -463,13 +431,11 @@ AxisConfig Axis::decodeConfFromInt(uint16_t val)
 	AxisConfig conf;
 	conf.enctype = ((val)&0x3f);
 	conf.drvtype = ((val >> 6) & 0x3f);
-	conf.tmc_cs = (val >> 12) & 0x3;
 	return conf;
 }
 uint16_t Axis::encodeConfToInt(AxisConfig conf)
 {
 	uint16_t val = (uint8_t)conf.enctype & 0x3f;
 	val |= ((uint8_t)conf.drvtype & 0x3f) << 6;
-	val |= (conf.tmc_cs & 0x3) << 12;
 	return val;
 }

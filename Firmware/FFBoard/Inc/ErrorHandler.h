@@ -19,6 +19,7 @@ enum class ErrorCode : uint32_t{
 			none = 0,
 			shutdown = 1,
 			emergencyStop = 2,
+			systemError = 5,
 
 			cmdNotFound = 5,
 			cmdExecutionError = 6,
