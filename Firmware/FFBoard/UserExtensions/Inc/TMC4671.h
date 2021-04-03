@@ -176,7 +176,6 @@ struct TMC4671Biquad{
 class TMC4671 : public MotorDriver, public PersistentStorage, public Encoder, public CommandHandler, public SpiHandler, public cpp_freertos::Thread{
 public:
 
-	static uint8_t UsedSPIChannels[];
 	static ClassIdentifier info;
 	const ClassIdentifier getInfo();
 
@@ -187,11 +186,11 @@ public:
 	TMC4671(SPI_HandleTypeDef* spi,GPIO_TypeDef* csport,uint16_t cspin,TMC4671MainConfig conf);
 	TMC4671(uint8_t address = 1);
 
-	void setAddress(uint8_t addr);
-	void setAddress(uint8_t chan, uint8_t addr);
-	uint8_t getAddress();
-	uint8_t getCSchan();
-	uint8_t checkCSchanNotInUse(uint8_t requestedChannel);
+	void setAddress(uint8_t address);
+	void setAxis(char axis);
+	uint8_t getAxis();
+	uint8_t getSpiAddr();
+	bool setSpiAddr(uint8_t chan);
 	virtual ~TMC4671();
 
 	TMC4671MainConfig conf;
@@ -338,10 +337,11 @@ public:
 		return "\nTMC4671 commands:\n"
 				"mtype,encsrc,encalign,poles,phiesrc,reg,fluxoffset\n"
 				"torqueP,torqueI,fluxP,fluxI,pidPrec\n"
-				"acttrq,seqpi,tmctemp\n";}
+				"acttrq,seqpi,tmctemp,tmc\n";}
 
 
 private:
+	static uint16_t UsedSPIChannels;
 	Error lowVoltageError = Error(ErrorCode::undervoltage,ErrorType::warning,"Low motor voltage");
 	ENC_InitState encstate = ENC_InitState::uninitialized;
 	TMC_ControlState state = TMC_ControlState::uninitialized;
@@ -357,13 +357,16 @@ private:
 
 	uint32_t lastStatTime = 0;
 
-	uint8_t address = 1;
+	char axis = 'X';
 
 	SPI_HandleTypeDef* spi = &HSPIDRV;
 	GPIO_TypeDef* csport=SPI1_SS1_GPIO_Port;
 	uint16_t cspin=SPI1_SS1_Pin;
 	uint8_t spi_buf[5];
 
+	uint8_t checkSpiAddrNotInUse(uint8_t requestedChannel);
+	void recordSpiAddrUsed(uint8_t chan);
+	uint8_t getSpiAddrInUseForAxis(char axis);
 	void initAdc(uint16_t mdecA, uint16_t mdecB,uint32_t mclkA,uint32_t mclkB);
 	void setPwm(uint8_t val,uint16_t maxcnt,uint8_t bbmL,uint8_t bbmH);// 100MHz/maxcnt+1
 	void setPwm(uint8_t val);// 100MHz/maxcnt+1

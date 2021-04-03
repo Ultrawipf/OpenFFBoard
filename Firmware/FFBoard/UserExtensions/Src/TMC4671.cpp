@@ -10,12 +10,13 @@
 #include "voltagesense.h"
 #include "stm32f4xx_hal_spi.h"
 #include <math.h>
+#include <assert.h>
 #include "RessourceManager.h"
 #include "ErrorHandler.h"
 
 #define MAX_TMC_DRIVERS 3
 
-uint8_t TMC4671::UsedSPIChannels[MAX_AXIS + 1] = {0};
+uint16_t TMC4671::UsedSPIChannels = 1; // Default for X Axis
 
 ClassIdentifier TMC4671::info = {
 	.name = "TMC4671" ,
@@ -45,28 +46,38 @@ TMC4671::TMC4671(uint8_t address) : Thread("TMC", TMC_THREAD_MEM, TMC_THREAD_PRI
 
 TMC4671::~TMC4671() {
 	HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_RESET);
-	UsedSPIChannels[this->address] = 0;
+	recordSpiAddrUsed(0);
 }
 
 
 const ClassIdentifier TMC4671::getInfo() {
-//	char axis_letter = '0' + this->address;
+//	char axis_letter = '0' + this->axis;
 //	std::string axis_name = "TMC4671-";
 //	axis_name.push_back(axis_letter);
-//	return ClassIdentifier {.name = axis_name.c_str(), .id = 1, .instance = this->address, .hidden = false};
-	return ClassIdentifier {.name = TMC4671::info.name, .id = TMC4671::info.id, .unique = (char)(this->address+'W'), .hidden = TMC4671::info.hidden};
+//	return ClassIdentifier {.name = axis_name.c_str(), .id = 1, .instance = this->axis, .hidden = false};
+	return ClassIdentifier {.name = TMC4671::info.name, .id = TMC4671::info.id, .unique = this->axis, .hidden = TMC4671::info.hidden};
+}
+
+void TMC4671::recordSpiAddrUsed(uint8_t chan){
+	uint8_t axis_as_index = (uint8_t)(this->axis-'X') << 1; // X=0,Y=2,Z=4
+	TMC4671::UsedSPIChannels &= (0xffff - (3 << axis_as_index)); // clear the bits
+	TMC4671::UsedSPIChannels |= ((chan & 0x3) << axis_as_index);
+}
+
+uint8_t TMC4671::getSpiAddrInUseForAxis(char axis){
+	uint8_t axis_as_index = (uint8_t)(axis-'X') << 1; // X=0,Y=2,Z=4
+	return (TMC4671::UsedSPIChannels >> axis_as_index) & 0x3;
 }
 
 // Returns channel if ok to use else 0
-uint8_t TMC4671::checkCSchanNotInUse(uint8_t requestedChannel)
+uint8_t TMC4671::checkSpiAddrNotInUse(uint8_t requestedChannel)
 {
-	if (requestedChannel > MAX_TMC_DRIVERS)
+	if (requestedChannel > MAX_TMC_DRIVERS){
 		return 0;
+	}
 	uint8_t result = requestedChannel;
-	for (int i = 1; i <= MAX_AXIS; i++)
-	{
-		if (TMC4671::UsedSPIChannels[i] == requestedChannel)
-		{
+	for (char i = 'X'; i <= 'Z'; i++){
+		if (getSpiAddrInUseForAxis(i) == requestedChannel){
 			result = 0;
 			break;
 		}
@@ -74,25 +85,46 @@ uint8_t TMC4671::checkCSchanNotInUse(uint8_t requestedChannel)
 	return result;
 }
 
-// Default to SPI CS channel 0 if only using the X axis
-void TMC4671::setAddress(uint8_t addr){
-	setAddress(0, addr); // Axis are indexed from 1-X to 3-Z
+void TMC4671::setAddress(uint8_t address){
+	this->setAxis((char)('W'+address));
 }
 
-/*
- * Address can be set to automatically setup spi and
- * load constants from flash.
- * chan: SPI CS channel to use
-*/
-void TMC4671::setAddress(uint8_t chan, uint8_t addr){
-	this->address = addr & 0x3;
-	uint8_t valid_chan = this->checkCSchanNotInUse(chan);
-	if (valid_chan == 0)
-	{ // chan is the chip seleect for SPI - 1 - 1st board
-		valid_chan = addr;
+// Default to SPI CS channel 0 if only using the X axis
+void TMC4671::setAxis(char axis){
+	this->axis = axis;
+	if (axis == 'X'){
+		this->flashAddrs = TMC4671FlashAddrs({ADR_TMC1_MOTCONF, ADR_TMC1_CPR, ADR_TMC1_ENCA, ADR_TMC1_OFFSETFLUX, ADR_TMC1_TORQUE_P, ADR_TMC1_TORQUE_I, ADR_TMC1_FLUX_P, ADR_TMC1_FLUX_I});
+	}else if (axis == 'Y')
+	{
+		this->flashAddrs = TMC4671FlashAddrs({ADR_TMC2_MOTCONF, ADR_TMC2_CPR, ADR_TMC2_ENCA, ADR_TMC2_OFFSETFLUX, ADR_TMC2_TORQUE_P, ADR_TMC2_TORQUE_I, ADR_TMC2_FLUX_P, ADR_TMC2_FLUX_I});
+	}else if (axis == 'Z')
+	{
+		this->flashAddrs = TMC4671FlashAddrs({ADR_TMC3_MOTCONF, ADR_TMC3_CPR, ADR_TMC3_ENCA, ADR_TMC3_OFFSETFLUX, ADR_TMC3_TORQUE_P, ADR_TMC3_TORQUE_I, ADR_TMC3_FLUX_P, ADR_TMC3_FLUX_I});
 	}
-	TMC4671::UsedSPIChannels[addr] = valid_chan; // record this board as in use & unavailable for other channels
-	// Auto setup spi
+}
+
+uint8_t TMC4671::getAxis(){
+	return this->axis;
+}
+
+// Returns true if able to set CS channel, false if CS channel already in use
+bool TMC4671::setSpiAddr(uint8_t chan){
+	uint8_t axis_as_num = (uint8_t)(this->axis-'W');
+	uint8_t requested_chan = chan & 0x3;
+
+	if(requested_chan == 0){
+		requested_chan = axis_as_num; // X -> 1, etc
+	}
+	// Are we already set to this CS chan
+	if(requested_chan == getSpiAddr()) {
+		return true;
+	}
+	uint8_t valid_chan = this->checkSpiAddrNotInUse(requested_chan);
+	if (valid_chan == 0){ // chan is the chip seleect for SPI - 1 - 1st board
+		return false;
+	}
+	recordSpiAddrUsed(valid_chan); // record this board as in use & unavailable for other channels
+
 	if (valid_chan == 1)
 	{
 		this->cspin = SPI1_SS1_Pin;
@@ -111,23 +143,10 @@ void TMC4671::setAddress(uint8_t chan, uint8_t addr){
 		this->csport = SPI1_SS3_GPIO_Port;
 		this->spi = &HSPIDRV;
 	}
-	if (addr == 1){
-		this->flashAddrs = TMC4671FlashAddrs({ADR_TMC1_MOTCONF, ADR_TMC1_CPR, ADR_TMC1_ENCA, ADR_TMC1_OFFSETFLUX, ADR_TMC1_TORQUE_P, ADR_TMC1_TORQUE_I, ADR_TMC1_FLUX_P, ADR_TMC1_FLUX_I});
-	}else if (addr == 2)
-	{
-		this->flashAddrs = TMC4671FlashAddrs({ADR_TMC2_MOTCONF, ADR_TMC2_CPR, ADR_TMC2_ENCA, ADR_TMC2_OFFSETFLUX, ADR_TMC2_TORQUE_P, ADR_TMC2_TORQUE_I, ADR_TMC2_FLUX_P, ADR_TMC2_FLUX_I});
-	}else if (addr == 3)
-	{
-		this->flashAddrs = TMC4671FlashAddrs({ADR_TMC3_MOTCONF, ADR_TMC3_CPR, ADR_TMC3_ENCA, ADR_TMC3_OFFSETFLUX, ADR_TMC3_TORQUE_P, ADR_TMC3_TORQUE_I, ADR_TMC3_FLUX_P, ADR_TMC3_FLUX_I});
-	}
+	return true;
 }
 
-uint8_t TMC4671::getAddress(){
-	return this->address;
-}
-
-uint8_t TMC4671::getCSchan()
-{
+uint8_t TMC4671::getSpiAddr(){
 	if (this->cspin == SPI1_SS1_Pin)
 		return 1;
 	if (this->cspin == SPI1_SS2_Pin)
@@ -303,7 +322,10 @@ float TMC4671::getTemp(){
 	writeReg(0x03, 2);
 	int32_t adcval = ((readReg(0x02)) & 0xffff) - 0x7fff; // Center offset
 	adcval -= tmcOffset;
-	float r = thermistor_R2 * (((float)43252 / (float)adcval) -1.0); //43252 equivalent ADC count if it was 3.3V and not 2.5V
+	if(adcval == 0){
+		return 0.0;
+	}
+	float r = thermistor_R2 * (((float)43252 / (float)adcval)); //43252 equivalent ADC count if it was 3.3V and not 2.5V
 
 	// Beta
 	r = (1.0 / 298.15) + log(r / thermistor_R) / thermistor_Beta;
@@ -1637,6 +1659,7 @@ uint32_t TMC4671::readReg(uint8_t reg){
 	return ret;
 }
 
+// TODO debug possible deadlock if multiple threads access spi port
 __attribute__((optimize("-Ofast")))
 void TMC4671::writeReg(uint8_t reg,uint32_t dat){
 
@@ -1648,10 +1671,10 @@ void TMC4671::writeReg(uint8_t reg,uint32_t dat){
 	else
 		RessourceManager::getSpiSemaphore(1)->Take();
 
+	spiActive = true; // Signal the dma callback that this class actually used the port
 	spi_buf[0] = (uint8_t)(0x80 | reg);
 	dat =__REV(dat);
 	memcpy(spi_buf+1,&dat,4);
-	spiActive = true; // Signal the dma callback that this class actually used the port
 	HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_RESET);
 	HAL_SPI_Transmit_DMA(this->spi,spi_buf,5);
 	//HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_SET);
@@ -1701,6 +1724,7 @@ uint16_t TMC4671::encodeEncHallMisc(){
 
 	val |= (this->curPids.sequentialPI & 0x01) << 10;
 
+	val |= (this->getSpiAddr() << 14);
 	return val;
 }
 
@@ -1722,12 +1746,19 @@ void TMC4671::restoreEncHallMisc(uint16_t val){
 	this->hallconf.interpolation = (val>>9) & 0x01;
 
 	this->curPids.sequentialPI = (val>>10) & 0x01;
+
+	uint8_t chip_sel = (val>>14) & 0x03;
+	// try to set the CS to the stored value
+	if(!setSpiAddr(chip_sel)){
+		// else try the default value, else panic!
+		assert(setSpiAddr(0));
+	}
 }
 
 
 ParseStatus TMC4671::command(ParsedCommand* cmd,std::string* reply){
 	char axis = cmd->prefix & 0xDF;
-	if (axis != 0 && axis-'W' != this->address){
+	if (axis != 0 && axis != this->axis){
 		return ParseStatus::NOT_FOUND;
 	}
 
@@ -1869,7 +1900,16 @@ ParseStatus TMC4671::command(ParsedCommand* cmd,std::string* reply){
 #endif
 
 		}
-
+	}else if (cmd->cmd == "tmc"){
+		if (cmd->type == CMDtype::get){
+			*reply += std::to_string(getSpiAddr());
+		}else if (cmd->type == CMDtype::set){
+			if(!setSpiAddr(cmd->val & 0x3)){
+				*reply += "ERROR: SPI chip_select address already in use by another board.";
+			}
+		}else{
+			*reply += "Set which SPI chip_select address to use.\ne.g. If you a TMC board with the SPI solder jumper set to 1 & want to use it for FFB on the Y axis - use: y.tmc=1 .";
+		}
 	}else{
 		flag = ParseStatus::NOT_FOUND;
 	}

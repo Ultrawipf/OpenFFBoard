@@ -21,7 +21,7 @@ struct metric_t;
 
 struct effect_gain_t {
 	uint8_t friction = 127;
-	uint8_t spring = 127;
+	uint8_t spring = 255;
 	uint8_t damper = 127;
 	uint8_t inertia = 127;
 };
