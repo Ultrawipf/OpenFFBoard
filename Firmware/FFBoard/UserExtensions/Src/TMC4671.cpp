@@ -1642,7 +1642,7 @@ uint32_t TMC4671::readReg(uint8_t reg){
 		RessourceManager::getSpiSemaphore(1)->TakeFromISR(nullptr);
 	else
 		RessourceManager::getSpiSemaphore(1)->Take();
-
+	vTaskSuspendAll(); // Suspend scheduler to prevent task switching
 	HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_RESET);
 	//HAL_SPI_Transmit(this->spi,req,1,SPITIMEOUT); // pause
 	//HAL_SPI_Receive(this->spi,tbuf,4,SPITIMEOUT);
@@ -1656,6 +1656,7 @@ uint32_t TMC4671::readReg(uint8_t reg){
 		RessourceManager::getSpiSemaphore(1)->GiveFromISR(nullptr);
 	else
 		RessourceManager::getSpiSemaphore(1)->Give();
+	xTaskResumeAll();
 	return ret;
 }
 
@@ -1670,6 +1671,7 @@ void TMC4671::writeReg(uint8_t reg,uint32_t dat){
 		RessourceManager::getSpiSemaphore(1)->TakeFromISR(nullptr);
 	else
 		RessourceManager::getSpiSemaphore(1)->Take();
+	vTaskSuspendAll(); // Suspend scheduler to prevent task switching
 
 	spiActive = true; // Signal the dma callback that this class actually used the port
 	spi_buf[0] = (uint8_t)(0x80 | reg);
@@ -1678,7 +1680,7 @@ void TMC4671::writeReg(uint8_t reg,uint32_t dat){
 	HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_RESET);
 	HAL_SPI_Transmit_DMA(this->spi,spi_buf,5);
 	//HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_SET);
-
+	xTaskResumeAll(); // This should be after the actual dma transfer is done.
 }
 
 void TMC4671::updateReg(uint8_t reg,uint32_t dat,uint32_t mask,uint8_t shift){
@@ -1687,6 +1689,7 @@ void TMC4671::updateReg(uint8_t reg,uint32_t dat,uint32_t mask,uint8_t shift){
 	t |= ((dat & mask) << shift);
 	writeReg(reg, t);
 }
+//TODO maybe use blocking SPI instead again. This interrupt can sometimes get lost because of freertos -> causing a deadlock!
 void TMC4671::SpiTxCplt(SPI_HandleTypeDef *hspi){
 	if(this->spiActive && hspi == this->spi){
 		spiActive = false;
@@ -1900,7 +1903,7 @@ ParseStatus TMC4671::command(ParsedCommand* cmd,std::string* reply){
 #endif
 
 		}
-	}else if (cmd->cmd == "tmc"){
+	}else if (cmd->cmd == "tmccs"){
 		if (cmd->type == CMDtype::get){
 			*reply += std::to_string(getSpiAddr());
 		}else if (cmd->type == CMDtype::set){
@@ -1909,7 +1912,7 @@ ParseStatus TMC4671::command(ParsedCommand* cmd,std::string* reply){
 				ErrorHandler::addError(Error(ErrorCode::cmdExecutionError, ErrorType::warning, std::string(this->getInfo().name) + " " + this->getInfo().unique + " SPI chip_select address already in use by another axis"));
 			}
 		}else{
-			*reply += "Set which SPI chip_select address to use.\ne.g. If you a TMC board with the SPI solder jumper set to 1 & want to use it for FFB on the Y axis - use: y.tmc=1 .";
+			*reply += "Set which SPI chip_select address to use.\ne.g. If you a TMC board with the SPI solder jumper set to 1 & want to use it for FFB on the Y axis - use: y.tmccs=1 .";
 		}
 	}else{
 		flag = ParseStatus::NOT_FOUND;

@@ -337,7 +337,7 @@ public:
 		return "\nTMC4671 commands:\n"
 				"mtype,encsrc,encalign,poles,phiesrc,reg,fluxoffset\n"
 				"torqueP,torqueI,fluxP,fluxI,pidPrec\n"
-				"acttrq,seqpi,tmctemp,tmc\n";}
+				"acttrq,seqpi,tmctemp,tmccs\n";}
 
 
 private:
