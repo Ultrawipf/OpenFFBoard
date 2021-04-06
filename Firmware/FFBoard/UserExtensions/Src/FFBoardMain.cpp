@@ -26,10 +26,11 @@ const ClassIdentifier FFBoardMain::getInfo(){
 
 
 void FFBoardMain::cdcRcv(char* Buf, uint32_t *Len){
-	if(systemCommands->addBuf(Buf, Len,!usb_busy_retry)){
-		 // resume command execution
-			systemCommands->Resume();
-	}
+//	if(systemCommands->addBuf(Buf, Len,!usb_busy_retry)){
+//		 // resume command execution
+//			//systemCommands->Resume();
+//	}
+	systemCommands->addBuf(Buf, Len,!usb_busy_retry);
 }
 
 ParseStatus FFBoardMain::command(ParsedCommand *cmd,std::string* reply){

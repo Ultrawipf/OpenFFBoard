@@ -330,7 +330,7 @@ void HidFFB::set_ramp(FFB_SetRamp_Data_t *report){
 void HidFFB::set_periodic(FFB_SetPeriodic_Data_t* report){
 	FFB_Effect* effect = &effects[report->effectBlockIndex-1];
 
-	effect->period = report->period;
+	effect->period = clip(report->period,1,0x7fff); // Period is never 0
 	effect->magnitude = report->magnitude;
 	effect->offset = report->offset;
 	effect->phase = report->phase;
