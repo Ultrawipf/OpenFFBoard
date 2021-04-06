@@ -207,8 +207,6 @@ bool NormalizedAxis::updateTorque(int32_t* totalTorque) {
 	}
 
 	// Scale effect torque
-	// float effect_margin_scaler = ((float)fx_ratio_i/255.0);
-	// effectTorque *= ((float)power / (float)0x7fff) * effect_margin_scaler;
 	effectTorque  *= torqueScaler;
 
 	int32_t torque = effectTorque + updateEndstop();
@@ -216,15 +214,14 @@ bool NormalizedAxis::updateTorque(int32_t* totalTorque) {
 	
 	torque = (invertAxis) ? -torque : torque;
 	metric.current.torque = torque;
+	torque = clip<int32_t, int32_t>(torque, -power, power);
 
-	// Torque changed
 	bool torqueChanged = torque != metric.previous.torque;
-	if(torqueChanged) {
-		torque = clip<int32_t, int32_t>(torque, -power, power);
-		if (abs(torque) == power){
-			pulseClipLed();
-		}
+
+	if (abs(torque) == power){
+		pulseClipLed();
 	}
+
 	*totalTorque = torque;
 	return (torqueChanged);
 }
