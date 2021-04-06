@@ -335,8 +335,8 @@ __ALIGN_BEGIN const uint8_t hid_ffb_desc[USB_HID_FFB_REPORT_DESC_SIZE] __ALIGN_E
 			      0x95,0x02,                   //    Report Count 2
 			      0x91,0x02,                   //    Output (Variable)
 			   0xC0     ,         //    End Collection
-			 0x16,0x00, 0x80,    //    Logical Minimum 7FFFh (-32767d)
-			 0x26,0xff, 0x7f,    //    Logical Maximum 7FFFh (32767d)
+			   0x16,0x00, 0x80,    //    Logical Minimum 7FFFh (-32767d)
+			   0x26,0xff, 0x7f,    //    Logical Maximum 7FFFh (32767d)
 			   0x36,0x00, 0x80,    //    Physical Minimum 7FFFh (-32767d)
 			   0x46,0xff, 0x7f,    //    Physical Maximum 7FFFh (32767d)
 
@@ -384,10 +384,10 @@ __ALIGN_BEGIN const uint8_t hid_ffb_desc[USB_HID_FFB_REPORT_DESC_SIZE] __ALIGN_E
 			   0x95,0x01,                   //    Report Count 1
 			   0x91,0x02,                   //    Output (Variable)
 			 0x09, 0x6F,                   //    Usage Offset
-			 0x16, 0xF0, 0xD8,             //    Logical Minimum D8F0h (-10000d)
-			 0x26, 0x10, 0x27,             //    Logical Maximum D8F0h (-10000d)
-			 0x36, 0xF0, 0xD8,              //    Physical Minimum D8F0h (-10000d)
-			 0x46, 0x10, 0x27,              //    Physical Maximum D8F0h (-10000d)
+			 0x16,0x00, 0x80,    //    Logical Minimum 7FFFh (-32767d)
+		     0x26,0xff, 0x7f,    //    Logical Maximum 7FFFh (32767d)
+		     0x36,0x00, 0x80,    //    Physical Minimum 7FFFh (-32767d)
+		     0x46,0xff, 0x7f,    //    Physical Maximum 7FFFh (32767d)
 			 0x95, 0x01,                   //    Report Count 1
 			 0x75, 0x10,                   //    Report Size 16
 			 0x91, 0x02,                   //    Output (Variable)
@@ -402,9 +402,9 @@ __ALIGN_BEGIN const uint8_t hid_ffb_desc[USB_HID_FFB_REPORT_DESC_SIZE] __ALIGN_E
 			 0x95, 0x01,                   //    Report Count 1
 			 0x91, 0x02,                   //    Output (Variable)
 			 0x09, 0x72,                   //    Usage Period
-			 0x15, 0x00,                   //    Logical Minimum 0
+			 0x15, 0x01,                   //    Logical Minimum 1
 			 0x27, 0xFF, 0x7F, 0x00, 0x00, //    Logical Maximum 7FFFh (32K)
-			 0x35, 0x00,                   //    Physical Minimum 0
+			 0x35, 0x01,                   //    Physical Minimum 1
 			 0x47, 0xFF, 0x7F, 0x00, 0x00, //    Physical Maximum 7FFFh (32K)
 			 0x66, 0x03, 0x10,             //    Unit 1003h (English Linear, Seconds)
 			 0x55, 0xFD,                   //    Unit Exponent FDh (X10^-3 ==> Milisecond)

@@ -186,11 +186,11 @@ int32_t EffectsCalculator::calcNonConditionEffectForce(FFB_Effect *effect) {
 		force_vector = force + effect->offset;
 		break;
 	}
-//TODO: fix div by zero if period = 0
+
 	case FFB_EFFECT_TRIANGLE:
-	{
+	{ // TODO fix this effect
 		int32_t force = 0;
-		int32_t offset = effect->offset * 2;
+		int32_t offset = effect->offset;
 		int32_t magnitude = effect->magnitude;
 		uint32_t elapsed_time = HAL_GetTick() - effect->startTime;
 		uint32_t phase = effect->phase;
@@ -208,13 +208,13 @@ int32_t EffectsCalculator::calcNonConditionEffectForce(FFB_Effect *effect) {
 		else
 			force = slope * remainder;
 		force += minMagnitude;
-		force_vector = force + minMagnitude;
+		force_vector = force;
 		break;
 	}
 
 	case FFB_EFFECT_SAWTOOTHUP:
 	{
-		float offset = effect->offset * 2;
+		float offset = effect->offset;
 		float magnitude = effect->magnitude;
 		uint32_t elapsed_time = HAL_GetTick() - effect->startTime;
 		uint32_t phase = effect->phase;
@@ -233,7 +233,7 @@ int32_t EffectsCalculator::calcNonConditionEffectForce(FFB_Effect *effect) {
 
 	case FFB_EFFECT_SAWTOOTHDOWN:
 	{
-		float offset = effect->offset * 2;
+		float offset = effect->offset;
 		float magnitude = effect->magnitude;
 		uint32_t elapsed_time = HAL_GetTick() - effect->startTime;
 		float phase = effect->phase;

@@ -20,6 +20,7 @@
 #include "ErrorHandler.h"
 #include "thread.hpp"
 #include "FFBoardMain.h"
+#include "semaphore.hpp"
 
 class FFBoardMain;
 class FFBoardMainCommandThread : public cpp_freertos::Thread
@@ -51,6 +52,7 @@ protected:
 	virtual void executeCommands(std::vector<ParsedCommand> commands);
 	virtual ParseStatus executeSysCommand(ParsedCommand* cmd,std::string* reply);
 
+	cpp_freertos::CountingSemaphore parserSem = cpp_freertos::CountingSemaphore(10,0);
 };
 
 #endif /* USEREXTENSIONS_SRC_FFBOARDMAINCOMMANDTHREAD_H_ */

@@ -39,7 +39,7 @@ void FFBoardMainCommandThread::updateSys(){
 		this->parserReady = false;
 		executeCommands(this->parser.parse()); // Don't call this in interrupts!
 	}
-	this->Suspend(); // Stop thread again. will be resumed when parser ready
+	this->parserSem.Take(); // Stop thread again. will be resumed when parser ready
 }
 
 void FFBoardMainCommandThread::Run(){
@@ -58,6 +58,7 @@ bool FFBoardMainCommandThread::addBuf(char* Buf, uint32_t *Len,bool clearReply =
 	if(res){
 		parserReady = true;
 		this->clearReply = clearReply;
+		this->parserSem.Give();
 	}
 	return res;
 }
