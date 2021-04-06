@@ -290,9 +290,9 @@ __ALIGN_BEGIN const uint8_t hid_ffb_desc[USB_HID_FFB_REPORT_DESC_SIZE] __ALIGN_E
 			   0x09,0x5B,         //    Usage Attack Level
 			   0x09,0x5D,         //    Usage Fade Level
 			 0x16,0x00,0x00,    //    Logical Minimum 0
-			 0x26,0x10,0x27,    //    Logical Maximum 2710h (10000d)
+			 0x26,0xFF,0x7F,    //    Logical Maximum 7FFFh (32767d)
 			 0x36,0x00,0x00,    //    Physical Minimum 0
-			   0x46,0x10,0x27,    //    Physical Maximum 2710h (10000d)
+			 0x46,0xFF,0x7F,    //    Physical Maximum 7FFFh (32767d)
 			 0x75,0x10,         //    Report Size 16
 			 0x95,0x02,         //    Report Count 2
 			   0x91,0x02,         //    Output (Variable)
