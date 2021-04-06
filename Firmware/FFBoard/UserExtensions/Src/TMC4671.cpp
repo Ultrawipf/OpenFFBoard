@@ -1631,7 +1631,7 @@ std::pair<int32_t,int32_t> TMC4671::getActualCurrent(){
 	return std::pair(af,at);
 }
 
-__attribute__((optimize("-Ofast")))
+//__attribute__((optimize("-Ofast")))
 uint32_t TMC4671::readReg(uint8_t reg){
 	uint8_t req[5] = {(uint8_t)(0x7F & reg),0,0,0,0};
 	uint8_t tbuf[5];
@@ -1661,7 +1661,7 @@ uint32_t TMC4671::readReg(uint8_t reg){
 }
 
 // TODO debug possible deadlock if multiple threads access spi port
-__attribute__((optimize("-Ofast")))
+//__attribute__((optimize("-Ofast")))
 void TMC4671::writeReg(uint8_t reg,uint32_t dat){
 
 	// wait until ready
@@ -1678,8 +1678,16 @@ void TMC4671::writeReg(uint8_t reg,uint32_t dat){
 	dat =__REV(dat);
 	memcpy(spi_buf+1,&dat,4);
 	HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_RESET);
-	HAL_SPI_Transmit_DMA(this->spi,spi_buf,5);
-	//HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_SET);
+	HAL_SPI_Transmit(this->spi,spi_buf,5,SPITIMEOUT);
+	//HAL_SPI_Transmit_DMA(this->spi,spi_buf,5);
+	// -- If blocking
+	HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_SET);
+	if(isirq)
+		RessourceManager::getSpiSemaphore(1)->GiveFromISR(nullptr);
+	else
+		RessourceManager::getSpiSemaphore(1)->Give();
+
+	// -----
 	xTaskResumeAll(); // This should be after the actual dma transfer is done.
 }
 
@@ -1691,11 +1699,15 @@ void TMC4671::updateReg(uint8_t reg,uint32_t dat,uint32_t mask,uint8_t shift){
 }
 //TODO maybe use blocking SPI instead again. This interrupt can sometimes get lost because of freertos -> causing a deadlock!
 void TMC4671::SpiTxCplt(SPI_HandleTypeDef *hspi){
-	if(this->spiActive && hspi == this->spi){
-		spiActive = false;
-		HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_SET); // unselect
-		RessourceManager::getSpiSemaphore(1)->GiveFromISR(nullptr);
-	}
+//	if(this->spiActive && hspi == this->spi){
+//		spiActive = false;
+//		BaseType_t taskWoken = 0;
+//		HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_SET); // unselect
+//		RessourceManager::getSpiSemaphore(1)->GiveFromISR(&taskWoken);
+//
+//		portYIELD_FROM_ISR(taskWoken);
+//
+//	}
 }
 
 
