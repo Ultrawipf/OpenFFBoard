@@ -127,14 +127,15 @@ void EffectsCalculator::calculateEffects(std::vector<Axis *> axes)
 			forceVector = calcNonConditionEffectForce(effect);
 		}
 
-
 		if (effect->enableAxis == DIRECTION_ENABLE || effect->enableAxis & X_AXIS_ENABLE)
 		{
 			forceX += calcComponentForce(effect, forceVector, axes[0]->getMetrics(), 0, axisCount);
+			forceX = clip<int32_t, int32_t>(forceX, -0x7fff, 0x7fff); // Clip
 		}
 		if (validY && ((effect->enableAxis == DIRECTION_ENABLE) || effect->enableAxis & Y_AXIS_ENABLE))
 		{
 			forceY += calcComponentForce(effect, forceVector, axes[1]->getMetrics(), 1, axisCount);
+			forceY = clip<int32_t, int32_t>(forceY, -0x7fff, 0x7fff); // Clip
 		}
 
 //		if (effect->duration != FFB_EFFECT_DURATION_INFINITE &&
@@ -188,7 +189,7 @@ int32_t EffectsCalculator::calcNonConditionEffectForce(FFB_Effect *effect) {
 	}
 
 	case FFB_EFFECT_TRIANGLE:
-	{ // TODO fix this effect
+	{
 		int32_t force = 0;
 		int32_t offset = effect->offset;
 		int32_t magnitude = effect->magnitude;
@@ -246,7 +247,7 @@ int32_t EffectsCalculator::calcNonConditionEffectForce(FFB_Effect *effect) {
 		uint32_t timeTemp = elapsed_time + phasetime;
 		float remainder = timeTemp % period;
 		float slope = (maxMagnitude - minMagnitude) / periodF;
-		force_vector = (int32_t)(minMagnitude + slope * (period - remainder));
+		force_vector = (int32_t)(minMagnitude + slope * (remainder)); // reverse time
 		break;
 	}
 
@@ -417,7 +418,7 @@ int32_t EffectsCalculator::applyEnvelope(FFB_Effect *effect, int32_t value)
 	}
 
 	newValue *= value;
-	newValue /= 0xffff; // 16 bit
+	newValue /= 0x7fff; // 16 bit
 	return newValue;
 }
 
