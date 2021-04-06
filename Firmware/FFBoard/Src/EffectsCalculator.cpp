@@ -394,26 +394,25 @@ int32_t EffectsCalculator::calcConditionEffectForce(FFB_Effect *effect, float  m
 	return force * angle_ratio;
 }
 
-// From YukMingLaw ArduinoJoystickWithFFBLibrary
+// Check correct levels. Looks reasonable compared with fedit preview
 int32_t EffectsCalculator::applyEnvelope(FFB_Effect *effect, int32_t value)
 {
-//TODO:  I don't think these are supposed to be attenuated by effect gain
-	int32_t magnitude = (effect->magnitude * (int32_t)(1 + effect->gain)) >> 8;
-	int32_t attackLevel = (effect->attackLevel * (int32_t)(1 + effect->gain)) >> 8;
-	int32_t fadeLevel = (effect->fadeLevel * (int32_t)(1 + effect->gain)) >> 8;
+	int32_t magnitude = (effect->magnitude);
+	int32_t attackLevel = (effect->attackLevel);
+	int32_t fadeLevel = (effect->fadeLevel);
 	int32_t newValue = magnitude;
 	uint32_t elapsed_time = HAL_GetTick() - effect->startTime;
 	if (elapsed_time < effect->attackTime)
 	{
 		newValue = (magnitude - attackLevel) * elapsed_time;
-		newValue /= effect->attackTime;
+		newValue /= (int32_t)effect->attackTime;
 		newValue += attackLevel;
 	}
 	if (effect->duration != FFB_EFFECT_DURATION_INFINITE &&
 		elapsed_time > (effect->duration - effect->fadeTime))
 	{
 		newValue = (magnitude - fadeLevel) * (effect->duration - elapsed_time);
-		newValue /= effect->fadeTime;
+		newValue /= (int32_t)effect->fadeTime;
 		newValue += fadeLevel;
 	}
 
