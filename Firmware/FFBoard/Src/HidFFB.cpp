@@ -126,7 +126,7 @@ void HidFFB::hidOut(uint8_t report_id, hid_report_type_t report_type, uint8_t co
 				//effects[id].startTime = 0; // When an effect was stopped reset all parameters that could cause jerking
 			}
 			//printf("Start %d\n",report[1]);
-			effects[id].startTime = HAL_GetTick(); // + effects[id].startDelay;
+			effects[id].startTime = HAL_GetTick() + effects[id].startDelay; // + effects[id].startDelay;
 			effects[id].state = 1; //Start
 		}
 		//sendStatusReport(report[1]);
@@ -322,7 +322,7 @@ void HidFFB::set_envelope(FFB_SetEnvelope_Data_t *report){
 }
 void HidFFB::set_ramp(FFB_SetRamp_Data_t *report){
 	FFB_Effect *effect = &effects[report->effectBlockIndex - 1];
-
+	effect->magnitude = 0x7fff; // Full magnitude for envelope calculation. This effect does not have a periodic report
 	effect->startLevel = report->startLevel;
 	effect->endLevel = report->endLevel;
 }
@@ -330,7 +330,7 @@ void HidFFB::set_ramp(FFB_SetRamp_Data_t *report){
 void HidFFB::set_periodic(FFB_SetPeriodic_Data_t* report){
 	FFB_Effect* effect = &effects[report->effectBlockIndex-1];
 
-	effect->period = clip(report->period,1,0x7fff); // Period is never 0
+	effect->period = clip<uint32_t,uint32_t>(report->period,1,0x7fff); // Period is never 0
 	effect->magnitude = report->magnitude;
 	effect->offset = report->offset;
 	effect->phase = report->phase;

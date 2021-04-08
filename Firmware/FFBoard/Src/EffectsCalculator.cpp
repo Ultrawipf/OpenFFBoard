@@ -107,14 +107,18 @@ void EffectsCalculator::calculateEffects(std::vector<Axis *> axes)
 	{
 		FFB_Effect *effect = &effects[i];
 
-		// If effect has expired make inactive
-		if (effect->state != EFFECT_STATE_INACTIVE &&
-			effect->duration != FFB_EFFECT_DURATION_INFINITE &&
-			HAL_GetTick() > effect->startTime + effect->duration)
-		{
-			effect->state = EFFECT_STATE_INACTIVE;
+		// Effect activated and not infinite
+		if (effect->state != EFFECT_STATE_INACTIVE && effect->duration != FFB_EFFECT_DURATION_INFINITE){
+			// Start delay not yet reached
+			if(HAL_GetTick() < effect->startTime){
+				continue;
+			}
+			// If effect has expired make inactive
+			if (HAL_GetTick() > effect->startTime + effect->duration)
+			{
+				effect->state = EFFECT_STATE_INACTIVE;
+			}
 		}
-
 
 		// Filter out inactive effects
 		if (effect->state == EFFECT_STATE_INACTIVE)
@@ -138,11 +142,6 @@ void EffectsCalculator::calculateEffects(std::vector<Axis *> axes)
 			forceY = clip<int32_t, int32_t>(forceY, -0x7fff, 0x7fff); // Clip
 		}
 
-//		if (effect->duration != FFB_EFFECT_DURATION_INFINITE &&
-//		HAL_GetTick() > effect->startTime + effect->duration)
-//		{
-//			effect->state = 0;
-//		}
 	}
 
 	axes[0]->setEffectTorque(forceX);
@@ -170,8 +169,7 @@ int32_t EffectsCalculator::calcNonConditionEffectForce(FFB_Effect *effect) {
 	case FFB_EFFECT_RAMP:
 	{
 		uint32_t elapsed_time = HAL_GetTick() - effect->startTime;
-		uint32_t duration = effect->duration;
-		duration = (duration == 0) ? 0x7FFF : duration; // prevent div zero
+		int32_t duration = effect->duration;
 		float force = (int32_t)effect->startLevel + ((int32_t)elapsed_time * (effect->endLevel - effect->startLevel)) / duration;
 		force_vector = (int32_t)(force * (1 + effect->gain)) >> 8;
 //		if(cfFilter_f < calcfrequency/2){
