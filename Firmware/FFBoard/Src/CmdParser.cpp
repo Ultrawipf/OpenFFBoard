@@ -52,6 +52,8 @@ std::vector<ParsedCommand> CmdParser::parse(){
 		}
 	}
 	for(std::string word : tokens){
+		if(word.length() < 2)
+			continue;
 
 		ParsedCommand cmd;
 		cmd.rawcmd = word;
