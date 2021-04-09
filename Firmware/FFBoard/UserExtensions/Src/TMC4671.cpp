@@ -1631,7 +1631,7 @@ std::pair<int32_t,int32_t> TMC4671::getActualCurrent(){
 	return std::pair(af,at);
 }
 
-//__attribute__((optimize("-Ofast")))
+__attribute__((optimize("-Ofast")))
 uint32_t TMC4671::readReg(uint8_t reg){
 	uint8_t req[5] = {(uint8_t)(0x7F & reg),0,0,0,0};
 	uint8_t tbuf[5];
@@ -1659,8 +1659,7 @@ uint32_t TMC4671::readReg(uint8_t reg){
 	return ret;
 }
 
-// TODO debug possible deadlock if multiple threads access spi port
-//__attribute__((optimize("-Ofast")))
+__attribute__((optimize("-Ofast")))
 void TMC4671::writeReg(uint8_t reg,uint32_t dat){
 
 	// wait until ready
