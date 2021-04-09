@@ -578,38 +578,38 @@ __ALIGN_BEGIN const uint8_t hid_ffb_desc[USB_HID_FFB_REPORT_DESC_SIZE] __ALIGN_E
 			   0x95,0x01,         //    Report Count 1
 			   0x91,0x02,         //    Output (Variable)
 			0xC0     ,            //    End Collection
-			0x09,0x6B,    //    Usage Set Custom Force Report
-			0xA1,0x02,    //    Collection Datalink
-			   0x85,HID_ID_SETCREP+FFB_ID_OFFSET,         //    Report ID Eh (14d)
-			   0x09,0x22,         //    Usage Effect Block Index
-			   0x15,0x01,         //    Logical Minimum 1
-			   0x25,MAX_EFFECTS,         //    Logical Maximum 28h (40d)
-			   0x35,0x01,         //    Physical Minimum 1
-			   0x45,MAX_EFFECTS,         //    Physical Maximum 28h (40d)
-			   0x75,0x08,         //    Report Size 8
-			   0x95,0x01,         //    Report Count 1
-			   0x91,0x02,         //    Output (Variable)
-			   0x09,0x6D,         //    Usage Sample Count
-			   0x15,0x00,         //    Logical Minimum 0
-			   0x26,0xFF,0x00,    //    Logical Maximum FFh (255d)
-			   0x35,0x00,         //    Physical Minimum 0
-			   0x46,0xFF,0x00,    //    Physical Maximum FFh (255d)
-			   0x75,0x08,         //    Report Size 8
-			   0x95,0x01,         //    Report Count 1
-			   0x91,0x02,         //    Output (Variable)
-			   0x09,0x51,         //    Usage Sample Period
-			   0x66,0x03,0x10,    //    Unit 1003h (4099d)
-			   0x55,0xFD,         //    Unit Exponent FDh (253d)
-			   0x15,0x00,         //    Logical Minimum 0
-			   0x26,0xFF,0x7F,    //    Logical Maximum 7FFFh (32767d)
-			   0x35,0x00,         //    Physical Minimum 0
-			   0x46,0xFF,0x7F,    //    Physical Maximum 7FFFh (32767d)
-			   0x75,0x10,         //    Report Size 10h (16d)
-			   0x95,0x01,         //    Report Count 1
-			   0x91,0x02,         //    Output (Variable)
-			   0x55,0x00,         //    Unit Exponent 0
-			   0x66,0x00,0x00,    //    Unit 0
-			0xC0     ,    //    End Collection
+//			0x09,0x6B,    //    Usage Set Custom Force Report
+//			0xA1,0x02,    //    Collection Datalink
+//			   0x85,HID_ID_SETCREP+FFB_ID_OFFSET,         //    Report ID Eh (14d)
+//			   0x09,0x22,         //    Usage Effect Block Index
+//			   0x15,0x01,         //    Logical Minimum 1
+//			   0x25,MAX_EFFECTS,         //    Logical Maximum 28h (40d)
+//			   0x35,0x01,         //    Physical Minimum 1
+//			   0x45,MAX_EFFECTS,         //    Physical Maximum 28h (40d)
+//			   0x75,0x08,         //    Report Size 8
+//			   0x95,0x01,         //    Report Count 1
+//			   0x91,0x02,         //    Output (Variable)
+//			   0x09,0x6D,         //    Usage Sample Count
+//			   0x15,0x00,         //    Logical Minimum 0
+//			   0x26,0xFF,0x00,    //    Logical Maximum FFh (255d)
+//			   0x35,0x00,         //    Physical Minimum 0
+//			   0x46,0xFF,0x00,    //    Physical Maximum FFh (255d)
+//			   0x75,0x08,         //    Report Size 8
+//			   0x95,0x01,         //    Report Count 1
+//			   0x91,0x02,         //    Output (Variable)
+//			   0x09,0x51,         //    Usage Sample Period
+//			   0x66,0x03,0x10,    //    Unit 1003h (4099d)
+//			   0x55,0xFD,         //    Unit Exponent FDh (253d)
+//			   0x15,0x00,         //    Logical Minimum 0
+//			   0x26,0xFF,0x7F,    //    Logical Maximum 7FFFh (32767d)
+//			   0x35,0x00,         //    Physical Minimum 0
+//			   0x46,0xFF,0x7F,    //    Physical Maximum 7FFFh (32767d)
+//			   0x75,0x10,         //    Report Size 10h (16d)
+//			   0x95,0x01,         //    Report Count 1
+//			   0x91,0x02,         //    Output (Variable)
+//			   0x55,0x00,         //    Unit Exponent 0
+//			   0x66,0x00,0x00,    //    Unit 0
+//			0xC0     ,    //    End Collection
 			0x09,0xAB,    //    Usage Create New Effect Report
 			0xA1,0x02,    //    Collection Datalink
 			   0x85,HID_ID_NEWEFREP+FFB_ID_OFFSET,    //    Report ID 1
@@ -626,11 +626,11 @@ __ALIGN_BEGIN const uint8_t hid_ffb_desc[USB_HID_FFB_REPORT_DESC_SIZE] __ALIGN_E
 			 0x09, HID_USAGE_DMPR,    //    Usage ET Damper
 			 0x09, HID_USAGE_INRT,    //    Usage ET Inertia
 			 0x09, HID_USAGE_FRIC,    //    Usage ET Friction
-			 0x09, 0x28,    //    Usage ET Custom Force Data
-			   0x25,0x0C,    //    Logical Maximum Ch (12d)
+//			 0x09, 0x28,    //    Usage ET Custom Force Data
+			   0x25,0x0B,    //    Logical Maximum Ch (11d)
 			   0x15,0x01,    //    Logical Minimum 1
 			   0x35,0x01,    //    Physical Minimum 1
-			   0x45,0x0C,    //    Physical Maximum Ch (12d)
+			   0x45,0x0B,    //    Physical Maximum Ch (11d)
 			   0x75,0x08,    //    Report Size 8
 			   0x95,0x01,    //    Report Count 1
 			   0xB1,0x00,    //    Feature

@@ -85,7 +85,6 @@ have no effect on joystick motion in the northwest-southeast direction.
 void EffectsCalculator::calculateEffects(std::vector<Axis *> axes)
 {
 	for (auto axis : axes) {
-	//axis->updateIdleSpringForce(idlespringscale, idlespringclip);
 		axis->calculateAxisEffects(isActive());
 	}
 
@@ -172,9 +171,6 @@ int32_t EffectsCalculator::calcNonConditionEffectForce(FFB_Effect *effect) {
 		int32_t duration = effect->duration;
 		float force = (int32_t)effect->startLevel + ((int32_t)elapsed_time * (effect->endLevel - effect->startLevel)) / duration;
 		force_vector = (int32_t)(force * (1 + effect->gain)) >> 8;
-//		if(cfFilter_f < calcfrequency/2){
-//			f = effect->filter->process(f);
-//		}
 		break;
 	}
 
