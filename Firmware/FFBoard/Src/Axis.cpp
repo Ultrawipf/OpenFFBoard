@@ -274,6 +274,11 @@ void Axis::setEncType(uint8_t enctype)
 		this->enc = enc_chooser.Create(enctype);
 
 	}
+	//TODO: A QUICK FIX TO FORCE THE ENCODER TO POINT TO THE CORRECT TMC DRIVER INSTANCE
+	if (this->conf.drvtype == TMC4671::info.id)
+	{
+		this->enc = dynamic_cast<Encoder *>(this->drv);
+	}
 
 	int32_t scaledEnc = getEncValue(enc, degreesOfRotation);
 	this->resetMetrics(scaledEnc);
