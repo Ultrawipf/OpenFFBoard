@@ -86,7 +86,7 @@ void FFBWheel::restoreFlash(){
 	setAinTypes(this->ainsources);
 
 	// Call restore methods for active button sources
-	for(ButtonSource* btn : this->btns){
+	for(auto &btn : this->btns){
 		btn->restoreFlash();
 	}
 }
@@ -98,11 +98,11 @@ void FFBWheel::saveFlash(){
 
 	// TODO saving directly in persistenstorage
 	// Call save methods for active button sources
-	for(ButtonSource* btn : this->btns){
+	for(auto &btn : this->btns){
 		btn->saveFlash();
 	}
 
-	for(AnalogSource* ain : this->analog_inputs){
+	for(auto &ain : this->analog_inputs){
 		ain->saveFlash();
 	}
 
@@ -162,9 +162,9 @@ void FFBWheel::update(){
 // Buttons
 void FFBWheel::clearBtnTypes(){
 	// Destruct all button sources
-	for(ButtonSource* btn : this->btns){
-		delete btn;
-	}
+//	for(ButtonSource* btn : this->btns){
+//		delete btn;
+//	}
 	this->btns.clear();
 }
 
@@ -176,28 +176,28 @@ void FFBWheel::setBtnTypes(uint16_t btntypes){
 			// Matching flag
 			ButtonSource* btn = btn_chooser.Create(id);
 			if(btn!=nullptr)
-				this->btns.push_back(btn);
+				this->btns.push_back(std::unique_ptr<ButtonSource>(btn));
 		}
 	}
 }
 
 void FFBWheel::addBtnType(uint16_t id){
-	for(ButtonSource* btn : this->btns){
+	for(auto &btn : this->btns){
 		if(btn->getInfo().id == id){
 			return;
 		}
 	}
 	ButtonSource* btn = btn_chooser.Create(id);
 	if(btn!=nullptr)
-		this->btns.push_back(btn);
+		this->btns.push_back(std::unique_ptr<ButtonSource>(btn));
 }
 
 // Analog
 void FFBWheel::clearAinTypes(){
 	// Destruct all button sources
-	for(AnalogSource* ain : this->analog_inputs){
-		delete ain;
-	}
+//	for(auto &ain : this->analog_inputs){
+//		delete ain;
+//	}
 	this->analog_inputs.clear();
 }
 
@@ -209,19 +209,19 @@ void FFBWheel::setAinTypes(uint16_t aintypes){
 			// Matching flag
 			AnalogSource* ain = analog_chooser.Create(id);
 			if(ain!=nullptr)
-				this->analog_inputs.push_back(ain);
+				this->analog_inputs.push_back(std::unique_ptr<AnalogSource>(ain));
 		}
 	}
 }
 void FFBWheel::addAinType(uint16_t id){
-	for(AnalogSource* ain : this->analog_inputs){
+	for(auto &ain : this->analog_inputs){
 		if(ain->getInfo().id == id){
 			return;
 		}
 	}
 	AnalogSource* ain = analog_chooser.Create(id);
 	if(ain!=nullptr)
-		this->analog_inputs.push_back(ain);
+		this->analog_inputs.push_back(std::unique_ptr<AnalogSource>(ain));
 }
 
 uint32_t FFBWheel::getRate() {
@@ -241,7 +241,7 @@ void FFBWheel::send_report(){
 	reportHID.buttons = 0; // Reset buttons
 	uint8_t shift = 0;
 	if(btns.size() != 0){
-		for(ButtonSource* btn : btns){
+		for(auto &btn : btns){
 			uint32_t buf = 0;
 			btn->readButtons(&buf);
 			reportHID.buttons |= buf << shift;
@@ -253,7 +253,7 @@ void FFBWheel::send_report(){
 	// Encoder
 	axes_manager->addAxesToReport(analogAxesReport, &count);
 
-	for(AnalogSource* ain : analog_inputs){
+	for(auto &ain : analog_inputs){
 		std::vector<int32_t>* axes = ain->getAxes();
 		for(int32_t val : *axes){
 			if(count >= analogAxisCount)
