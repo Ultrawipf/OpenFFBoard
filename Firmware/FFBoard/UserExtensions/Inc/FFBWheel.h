@@ -33,7 +33,7 @@
 #include "UsbHidHandler.h"
 #include "hid_cmd_defs.h"
 #include "ErrorHandler.h"
-
+#include "memory"
 
 class FFBWheel: public FFBoardMain, TimerHandler, PersistentStorage,ExtiHandler,UsbHidHandler, ErrorHandler{
 public:
@@ -91,8 +91,8 @@ private:
 	AxesManager* axes_manager;
 	TIM_HandleTypeDef* timer_update;
 
-	std::vector<ButtonSource*> btns;
-	std::vector<AnalogSource*> analog_inputs;
+	std::vector<std::unique_ptr<ButtonSource>> btns;
+	std::vector<std::unique_ptr<AnalogSource>> analog_inputs;
 
 	reportHID_t reportHID;
 	reportHID_t lastReportHID;
