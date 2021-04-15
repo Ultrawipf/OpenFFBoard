@@ -11,6 +11,11 @@
 #include "vector"
 #include "ChoosableClass.h"
 #include <functional>
+#include "Singleton.h"
+
+
+// If the class is a singleton do not create a new instance if one already exists. Return the existing pointer.
+
 
 template<class T>
 struct class_entry
@@ -20,9 +25,14 @@ struct class_entry
 };
 
 template<class T,class B>
-class_entry<B> add_class()
+constexpr class_entry<B> add_class()
 {
-  return { T::info, []() -> B * { return new T; } };
+	if constexpr(std::is_base_of<Singleton<T>, T>::value){
+		return { T::info, []() -> B * { return Singleton<T>::getInstance(); } };
+	}else{
+		return { T::info, []() -> B * { return new T; } };
+	}
+
 }
 
 template<class T,class B>
@@ -54,6 +64,7 @@ public:
 	T* Create(uint16_t id){
 		T* cls = nullptr;
 		for(class_entry<T> e : class_registry){
+
 			if(e.info.id == id){
 				cls = e.create();
 			}
