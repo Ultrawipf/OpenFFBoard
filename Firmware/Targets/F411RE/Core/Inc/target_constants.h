@@ -61,6 +61,11 @@ extern volatile uint32_t ADC1_BUF[ADC1_CHANNELS]; // Buffer
 
 #define BUTTON_PINS 8
 
+/*
+ * Scaler to convert from ADC counts to amps
+ * Depends on shunt and amplifier values
+ */
+#define TMC_CURRENTSCALER 2.5 / (0x7fff * 60.0 * 0.0015)
 
 
 #define HSPIDRV hspi1

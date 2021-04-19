@@ -91,6 +91,12 @@ extern CAN_HandleTypeDef hcan1;
 extern const uint32_t canSpeedBTR_preset[];
 #endif
 
+/*
+ * Scaler to convert from ADC counts to amps
+ * Depends on shunt and amplifier values
+ */
+#define TMC_CURRENTSCALER 2.5 / (0x7fff * 60.0 * 0.0015)
+
 
 //Flash. 2 pages used
 /* EEPROM start address in Flash
