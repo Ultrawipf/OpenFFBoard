@@ -149,8 +149,7 @@ void HidFFB::free_effect(uint16_t idx){
 		effects[idx].type=FFB_EFFECT_NONE;
 		for(int i=0; i< MAX_AXIS; i++) {
 			if(effects[idx].filter[i] != nullptr){
-				delete effects[idx].filter[i];
-				effects[idx].filter[i] = nullptr;
+				effects[idx].filter[i].reset(nullptr);
 			}
 		}
 	}
@@ -250,7 +249,7 @@ void HidFFB::new_effect(FFB_CreateNewEffect_Feature_Data_t* effect){
 
 	set_filters(&new_effect);
 
-	effects[index-1] = new_effect;
+	effects[index-1] = std::move(new_effect);
 	// Set block load report
 	reportFFBStatus.effectBlockIndex = index;
 	blockLoad_report.effectBlockIndex = index;

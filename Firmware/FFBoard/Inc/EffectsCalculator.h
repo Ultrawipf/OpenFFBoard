@@ -40,7 +40,7 @@ public:
 //	virtual bool processHidCommand(HID_Custom_Data_t* data);
 	bool isActive();
 	void setActive(bool active);
-	void calculateEffects(std::vector<Axis*> axes);
+	void calculateEffects(std::vector<std::unique_ptr<Axis>> &axes);
 	virtual void setFilters(FFB_Effect* effect);
 	void setGain(uint8_t gain);
 	uint8_t getGain();

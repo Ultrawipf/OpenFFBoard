@@ -167,7 +167,7 @@ ParseStatus MidiMain::command(ParsedCommand* cmd,std::string* reply){
 
 
 void MidiMain::usbInit(){
-	this->usbdev = new USBdevice(&usb_devdesc_ffboard_composite,usb_cdc_midi_conf,&usb_ffboard_strings_default);
+	this->usbdev = std::make_unique<USBdevice>(&usb_devdesc_ffboard_composite,usb_cdc_midi_conf,&usb_ffboard_strings_default);
 	usbdev->registerUsb();
 }
 

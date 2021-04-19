@@ -80,15 +80,15 @@ public:
 
 private:
 	volatile Control_t control;
-	EffectsCalculator *effects_calc;
+	std::unique_ptr<EffectsCalculator> effects_calc;
 	void send_report();
 
 	// USB Report rate
 	uint8_t usb_report_rate = HID_BINTERVAL; // 1 = 1000hz, 2 = 500hz, 3 = 250hz etc...
 	uint8_t report_rate_cnt = 0;
 
-	HidFFB* ffb;
-	AxesManager* axes_manager;
+	std::unique_ptr<HidFFB> ffb;
+	std::unique_ptr<AxesManager> axes_manager;
 	TIM_HandleTypeDef* timer_update;
 
 	std::vector<std::unique_ptr<ButtonSource>> btns;

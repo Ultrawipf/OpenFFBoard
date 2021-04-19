@@ -36,9 +36,9 @@ AxesManager::~AxesManager() {
 }
 
 void AxesManager::deleteAxes(){
-	for (auto axis : axes) {
-		delete axis;
-	}
+//	for (auto axis : axes) {
+//		delete axis;
+//	}
 	axes.clear();
 	axis_count = 0;
 }
@@ -48,20 +48,20 @@ void AxesManager::setEffectsCalculator(EffectsCalculator* calc) {
 }
 
 void AxesManager::restoreFlash() {
-	for (auto axis : axes) {
+	for (auto &axis : axes) {
 		axis->restoreFlash();
 	}
 }
 
 void AxesManager::saveFlash() {
 	Flash_Write(ADR_AXIS_COUNT, this->axis_count);
-	for (auto axis : axes) {
+	for (auto &axis : axes) {
 		axis->saveFlash();
 	}
 }
 
 void AxesManager::update() {
-	for (auto axis: axes) {
+	for (auto &axis: axes) {
 		axis->prepareForUpdate();
 	}
 	if (control->usb_update_flag) {
@@ -70,7 +70,7 @@ void AxesManager::update() {
 }
 
 void AxesManager::updateTorque() {
-	for (auto axis: axes) {
+	for (auto &axis: axes) {
 		// New torque stored in normalizedAxes.encoderTorque;
 		axis->updateDriveTorque();
 	}
@@ -83,7 +83,7 @@ void AxesManager::addAxesToReport(int16_t** report, uint8_t* pCount) {
 }
 
 void AxesManager::emergencyStop() {
-	for (auto axis : axes) {
+	for (auto &axis : axes) {
 		axis->emergencyStop();
 	}
 }
@@ -103,13 +103,11 @@ bool AxesManager::setAxisCount(int8_t count) {
 
 	while (count < axis_count) {
 		uint8_t pos = axis_count-1;
-		delete axes[pos];
 		axes.erase(axes.begin()+pos);
 		axis_count--;
 	}
 	while (count > axis_count) {
-		Axis* axis = new Axis('X'+axis_count, control);
-		axes.push_back( axis ); // Axis are indexed from 1-X to 3-Z
+		axes.push_back( std::make_unique<Axis>('X'+axis_count, control) ); // Axis are indexed from 1-X to 3-Z
 		axis_count++;
 	}
 	control->update_disabled = false;
@@ -117,19 +115,19 @@ bool AxesManager::setAxisCount(int8_t count) {
 }
 
 void AxesManager::usbSuspend() {
-		for (auto axis : axes) {
+		for (auto &axis : axes) {
 			axis->usbSuspend();
 		}
 }
 
 void AxesManager::usbResume() {
-		for (auto axis : axes) {
+		for (auto &axis : axes) {
 			axis->usbResume();
 		}
 }
 
 void AxesManager::resetPosZero() {
-		for (auto axis : axes) {
+		for (auto &axis : axes) {
 			axis->setPos(0);
 		}
 }

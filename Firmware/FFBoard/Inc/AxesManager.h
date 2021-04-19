@@ -18,6 +18,7 @@
 #include "cmdParser.h"
 #include "vector"
 #include "map"
+#include <memory>
 
 class EffectsCalculator;
 //struct Control_t;
@@ -64,7 +65,7 @@ private:
 	volatile bool *p_emergency;
 	EffectsCalculator *effects_calc;
 	uint16_t axis_count = 0;
-	std::vector<Axis *> axes;
+	std::vector<std::unique_ptr<Axis>> axes;
 	//	std::vector<NormalizedAxis*> normalizedAxes;
 
 	void deleteAxes();

@@ -55,12 +55,12 @@ FFBWheel::FFBWheel() :
 		btn_chooser(button_sources),analog_chooser(analog_sources) // axes(1),
 {
 	// Creates the required no of axis (Default 1)
-	effects_calc = new EffectsCalculator();
-	axes_manager = new AxesManager(&control);
-	axes_manager->setEffectsCalculator(effects_calc);
+	effects_calc = std::make_unique<EffectsCalculator>();
+	axes_manager = std::make_unique<AxesManager>(&control);
+	axes_manager->setEffectsCalculator(effects_calc.get());
 // Create the USB effects handler & pass in the effects calculator
-	this->ffb = new HidFFB();
-	this->ffb->setEffectsCalculator(effects_calc);
+	this->ffb = std::make_unique<HidFFB>();
+	this->ffb->setEffectsCalculator(effects_calc.get());
 	restoreFlash(); // Load parameters
 }
 
@@ -68,9 +68,6 @@ FFBWheel::FFBWheel() :
 
 FFBWheel::~FFBWheel() {
 	clearBtnTypes();
-	delete axes_manager;
-	delete ffb;
-	delete effects_calc;
 }
 
 /*
@@ -311,7 +308,7 @@ void FFBWheel::usbResume(){
 
 void FFBWheel::usbInit(){
 	//usbInit_HID_Wheel(hUsbDeviceFS);
-	this->usbdev = new USBdevice(&usb_devdesc_ffboard_composite,usb_cdc_hid_conf,&usb_ffboard_strings_default);
+	this->usbdev = std::make_unique<USBdevice>(&usb_devdesc_ffboard_composite,usb_cdc_hid_conf,&usb_ffboard_strings_default);
 	UsbHidHandler::setHidDesc(hid_ffb_desc);
 	usbdev->registerUsb();
 }

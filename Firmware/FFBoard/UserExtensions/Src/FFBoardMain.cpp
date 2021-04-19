@@ -16,7 +16,7 @@ ClassIdentifier FFBoardMain::info ={.name = "Basic" , .id=0, .unique = '0'};
 
 
 
-FFBoardMain::FFBoardMain() : systemCommands(new FFBoardMainCommandThread(this)){
+FFBoardMain::FFBoardMain() : systemCommands(std::make_unique<FFBoardMainCommandThread>(this)){
 
 }
 
@@ -53,7 +53,7 @@ void FFBoardMain::cdcFinished(uint8_t itf = 0){
 
 void FFBoardMain::usbInit(){
 	// Create the usb config if this is not overridden
-	this->usbdev = new USBdevice(&usb_devdesc_ffboard_composite,usb_cdc_conf,&usb_ffboard_strings_default);
+	this->usbdev = std::make_unique<USBdevice>(&usb_devdesc_ffboard_composite,usb_cdc_conf,&usb_ffboard_strings_default);
 	usbdev->registerUsb();
 }
 
@@ -70,7 +70,7 @@ void FFBoardMain::usbResume(){
 }
 
 void FFBoardMain::parserDone(std::string* reply, FFBoardMainCommandThread* parser){
-	if(parser == this->systemCommands){
+	if(parser == this->systemCommands.get()){
 		cdcSend(reply,&this->cdcRemaining, 0);
 	}
 }
@@ -95,6 +95,6 @@ std::string FFBoardMain::getHelpstring(){
 }
 
 FFBoardMain::~FFBoardMain() {
-	delete systemCommands;
+
 }
 
