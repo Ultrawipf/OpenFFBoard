@@ -82,9 +82,9 @@ have no effect on joystick motion in the northwest-southeast direction.
  * Takes current position input scaled from -0x7fff to 0x7fff
  * Outputs a torque value from -0x7fff to 0x7fff (not yet clipped)
  */
-void EffectsCalculator::calculateEffects(std::vector<Axis *> axes)
+void EffectsCalculator::calculateEffects(std::vector<std::unique_ptr<Axis>> &axes)
 {
-	for (auto axis : axes) {
+	for (auto &axis : axes) {
 		axis->calculateAxisEffects(isActive());
 	}
 
@@ -417,40 +417,40 @@ int32_t EffectsCalculator::applyEnvelope(FFB_Effect *effect, int32_t value)
 
 void EffectsCalculator::setFilters(FFB_Effect *effect){
 
-	std::function<void(Biquad *&)> fnptr = [=](Biquad *&filter){};
+	std::function<void(std::unique_ptr<Biquad> &)> fnptr = [=](std::unique_ptr<Biquad> &filter){};
 
 	switch (effect->type)
 	{
 	case FFB_EFFECT_DAMPER:
-		fnptr = [=](Biquad *&filter){
+		fnptr = [=](std::unique_ptr<Biquad> &filter){
 			if (filter != nullptr)
 				filter->setBiquad(BiquadType::lowpass, (float)damper_f / (float)calcfrequency, damper_q, (float)0.0);
 			else
-				filter = new Biquad(BiquadType::lowpass, (float)damper_f / (float)calcfrequency, damper_q, (float)0.0);
+				filter = std::make_unique<Biquad>(BiquadType::lowpass, (float)damper_f / (float)calcfrequency, damper_q, (float)0.0);
 		};
 		break;
 	case FFB_EFFECT_FRICTION:
-		fnptr = [=](Biquad *&filter){
+		fnptr = [=](std::unique_ptr<Biquad> &filter){
 			if (filter != nullptr)
 				filter->setBiquad(BiquadType::lowpass, (float)friction_f / (float)calcfrequency, friction_q, (float)0.0);
 			else
-				filter = new Biquad(BiquadType::lowpass, (float)friction_f / (float)calcfrequency, friction_q, (float)0.0);
+				filter = std::make_unique<Biquad>(BiquadType::lowpass, (float)friction_f / (float)calcfrequency, friction_q, (float)0.0);
 		};
 		break;
 	case FFB_EFFECT_INERTIA:
-		fnptr = [=](Biquad *&filter){
+		fnptr = [=](std::unique_ptr<Biquad> &filter){
 			if (filter != nullptr)
 				filter->setBiquad(BiquadType::lowpass, (float)inertia_f / (float)calcfrequency, inertia_q, (float)0.0);
 			else
-				filter = new Biquad(BiquadType::lowpass, (float)inertia_f / (float)calcfrequency, inertia_q, (float)0.0);
+				filter = std::make_unique<Biquad>(BiquadType::lowpass, (float)inertia_f / (float)calcfrequency, inertia_q, (float)0.0);
 		};
 		break;
 	case FFB_EFFECT_CONSTANT:
-		fnptr = [=](Biquad *&filter){
+		fnptr = [=](std::unique_ptr<Biquad> &filter){
 			if (filter != nullptr)
 				filter->setBiquad(BiquadType::lowpass, (float)cfFilter_f / (float)calcfrequency, cfFilter_q, (float)0.0);
 			else
-				filter = new Biquad(BiquadType::lowpass, (float)cfFilter_f / (float)calcfrequency, cfFilter_q, (float)0.0);
+				filter = std::make_unique<Biquad>(BiquadType::lowpass, (float)cfFilter_f / (float)calcfrequency, cfFilter_q, (float)0.0);
 		};
 		break;
 	}

@@ -16,6 +16,7 @@
 #include "CommandHandler.h"
 #include <vector>
 #include "ErrorHandler.h"
+#include <memory>
 
 #include "FFBoardMainCommandThread.h"
 #include "USBdevice.h"
@@ -49,12 +50,12 @@ public:
 
 
 	virtual std::string getHelpstring();
-	FFBoardMainCommandThread* systemCommands;
+	std::unique_ptr<FFBoardMainCommandThread> systemCommands;
 protected:
 	bool usb_busy_retry = false;
 	std::string cdcRemaining;
 
-	USBdevice* usbdev;
+	std::unique_ptr<USBdevice> usbdev;
 };
 
 
