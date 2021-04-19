@@ -23,6 +23,11 @@
 #define SPITIMEOUT 500
 #define TMC_THREAD_MEM 512
 #define TMC_THREAD_PRIO 25 // Must be higher than main thread
+
+#ifndef TMC_CURRENTSCALER
+#define TMC_CURRENTSCALER 0
+#endif
+
 extern SPI_HandleTypeDef HSPIDRV;
 
 enum class TMC_ControlState {uninitialized,No_power,Shutdown,Running,Init_wait,ABN_init,AENC_init,Enc_bang,HardError,OverTemp,EncoderFinished};
@@ -337,7 +342,7 @@ public:
 		return "\nTMC4671 commands:\n"
 				"mtype,encsrc,encalign,poles,phiesrc,reg,fluxoffset\n"
 				"torqueP,torqueI,fluxP,fluxI,pidPrec\n"
-				"acttrq,seqpi,tmctemp,tmccs\n";}
+				"acttrq,seqpi,tmctemp,tmccs,tmcIscale\n";}
 
 
 private:
@@ -356,6 +361,8 @@ private:
 	uint8_t enc_retry_max = 5;
 
 	uint32_t lastStatTime = 0;
+
+	const float currentScaler = TMC_CURRENTSCALER; // read only current scaler for current readouts
 
 	char axis = 'X';
 

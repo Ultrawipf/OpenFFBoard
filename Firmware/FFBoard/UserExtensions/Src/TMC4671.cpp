@@ -1895,6 +1895,10 @@ ParseStatus TMC4671::command(ParsedCommand* cmd,std::string* reply){
 			this->setSequentialPI(cmd->val != 0);
 		}
 
+	}else if(cmd->cmd == "tmcIscale"){
+		if(cmd->type == CMDtype::get){
+			*reply+=std::to_string(this->currentScaler);
+		}
 	}else if(cmd->cmd == "encdir"){
 		if(cmd->type == CMDtype::get){
 			*reply+=std::to_string(this->abnconf.rdir);
