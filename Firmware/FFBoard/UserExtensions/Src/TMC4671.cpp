@@ -16,6 +16,40 @@
 
 #define MAX_TMC_DRIVERS 3
 
+ClassIdentifier TMC_1::info = {
+	.name = "TMC4671_1" ,
+	.id=1,
+	.unique = 'X'
+};
+
+const ClassIdentifier TMC_1::getInfo(){
+	return info;
+}
+
+
+bool TMC_1::isCreatable() {
+	return TMC4671::checkSpiAddrNotInUse(1);
+}
+
+
+ClassIdentifier TMC_2::info = {
+	.name = "TMC4671_2" ,
+	.id=1,
+	.unique = 'Y'
+};
+
+const ClassIdentifier TMC_2::getInfo(){
+	return info;
+}
+
+
+bool TMC_2::isCreatable() {
+	return TMC4671::checkSpiAddrNotInUse(2);
+}
+
+
+
+
 uint16_t TMC4671::UsedSPIChannels = 1; // Default for X Axis
 
 ClassIdentifier TMC4671::info = {
@@ -77,7 +111,7 @@ uint8_t TMC4671::checkSpiAddrNotInUse(uint8_t requestedChannel)
 	}
 	uint8_t result = requestedChannel;
 	for (char i = 'X'; i <= 'Z'; i++){
-		if (getSpiAddrInUseForAxis(i) == requestedChannel){
+		if (TMC4671::getSpiAddrInUseForAxis(i) == requestedChannel){
 			result = 0;
 			break;
 		}
@@ -119,11 +153,11 @@ bool TMC4671::setSpiAddr(uint8_t chan){
 	if(requested_chan == getSpiAddr()) {
 		return true;
 	}
-	uint8_t valid_chan = this->checkSpiAddrNotInUse(requested_chan);
+	uint8_t valid_chan = TMC4671::checkSpiAddrNotInUse(requested_chan);
 	if (valid_chan == 0){ // chan is the chip seleect for SPI - 1 - 1st board
 		return false;
 	}
-	recordSpiAddrUsed(valid_chan); // record this board as in use & unavailable for other channels
+	TMC4671::recordSpiAddrUsed(valid_chan); // record this board as in use & unavailable for other channels
 
 	if (valid_chan == 1)
 	{

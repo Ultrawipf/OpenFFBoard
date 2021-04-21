@@ -28,6 +28,7 @@ public:
 
 	static ClassIdentifier info;
 	const ClassIdentifier getInfo();
+	static bool isCreatable() {return true;};
 
 	void cdcRcv(char* Buf, uint32_t *Len);
 	ParseStatus command(ParsedCommand* cmd,std::string* reply);

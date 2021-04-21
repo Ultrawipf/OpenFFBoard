@@ -21,6 +21,7 @@ public:
 
 	const ClassIdentifier getInfo();
 	static ClassIdentifier info;
+	static bool isCreatable() {return true;};
 
 	static constexpr uint16_t maxButtons{BUTTON_PINS};
 

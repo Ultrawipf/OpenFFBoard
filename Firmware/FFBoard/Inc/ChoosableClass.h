@@ -19,7 +19,9 @@ class ChoosableClass {
 public:
 
 	static ClassIdentifier info;
+	static bool isCreatable() {return true;};
 	virtual const ClassIdentifier getInfo() = 0;
+
 };
 
 #endif /* CHOOSABLECLASS_H_ */

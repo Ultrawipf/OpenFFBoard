@@ -30,6 +30,7 @@ public:
 
 	const ClassIdentifier getInfo();
 	static ClassIdentifier info;
+	static bool isCreatable() {return true;};
 
 	void saveFlash(); 		// Write to flash here
 	void restoreFlash();	// Load from flash

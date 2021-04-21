@@ -23,6 +23,7 @@ public:
 
 	static ClassIdentifier info;
 	const ClassIdentifier getInfo();
+	static bool isCreatable() {return true;};
 
 	EncoderLocal();
 	virtual ~EncoderLocal();

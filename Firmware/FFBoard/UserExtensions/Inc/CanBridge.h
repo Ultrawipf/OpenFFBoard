@@ -38,6 +38,7 @@ public:
 
 	static ClassIdentifier info;
 	const ClassIdentifier getInfo();
+	static bool isCreatable() {return true;};
 	ParseStatus command(ParsedCommand* cmd,std::string* reply);
 	void sendMessage(uint32_t id, uint64_t msg,uint8_t len);
 	void sendMessage();

@@ -29,6 +29,7 @@ class FFBoardMain : virtual ChoosableClass, public CommandHandler{
 public:
 	static ClassIdentifier info;
 	virtual const ClassIdentifier getInfo();
+	static bool isCreatable() {return true;};
 
 	FFBoardMain();
 	virtual ~FFBoardMain();
