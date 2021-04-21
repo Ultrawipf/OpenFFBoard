@@ -187,6 +187,10 @@ public:
 	static TMC4671MotConf decodeMotFromInt(uint16_t val);
 	static uint16_t encodeMotToInt(TMC4671MotConf mconf);
 
+	static uint8_t checkSpiAddrNotInUse(uint8_t requestedChannel);
+	void recordSpiAddrUsed(uint8_t chan);
+	static uint8_t getSpiAddrInUseForAxis(char axis);
+
 	//SPI_HandleTypeDef* spi = &HSPIDRV,GPIO_TypeDef* csport=SPI1_SS1_GPIO_Port,uint16_t cspin=SPI1_SS1_Pin
 	TMC4671(SPI_HandleTypeDef* spi,GPIO_TypeDef* csport,uint16_t cspin,TMC4671MainConfig conf);
 	TMC4671(uint8_t address = 1);
@@ -371,9 +375,6 @@ private:
 	uint16_t cspin=SPI1_SS1_Pin;
 	uint8_t spi_buf[5];
 
-	uint8_t checkSpiAddrNotInUse(uint8_t requestedChannel);
-	void recordSpiAddrUsed(uint8_t chan);
-	uint8_t getSpiAddrInUseForAxis(char axis);
 	void initAdc(uint16_t mdecA, uint16_t mdecB,uint32_t mclkA,uint32_t mclkB);
 	void setPwm(uint8_t val,uint16_t maxcnt,uint8_t bbmL,uint8_t bbmH);// 100MHz/maxcnt+1
 	void setPwm(uint8_t val);// 100MHz/maxcnt+1
@@ -391,6 +392,26 @@ private:
 
 	//cpp_freertos::BinarySemaphore spiSemaphore = cpp_freertos::BinarySemaphore(true);
 
+};
+
+
+class TMC_1 : public TMC4671 {
+public:
+	static TMC4671* create();
+	TMC_1() : TMC4671{1} {}
+
+	const ClassIdentifier getInfo() override;
+	static bool isCreatable();
+	static ClassIdentifier info;
+};
+
+class TMC_2 : public TMC4671 {
+public:
+	TMC_2() : TMC4671{2} {}
+
+	const ClassIdentifier getInfo() override;
+	static bool isCreatable();
+	static ClassIdentifier info;
 };
 
 #endif /* TMC4671_H_ */

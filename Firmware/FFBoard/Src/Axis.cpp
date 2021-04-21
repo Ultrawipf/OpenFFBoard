@@ -18,8 +18,11 @@ const std::vector<class_entry<MotorDriver> > motor_sources =
 	{
 		add_class<MotorDriver, MotorDriver>(),
 #ifdef TMC4671DRIVER
-		add_class<TMC4671, MotorDriver>(),
-#endif
+//		add_class<TMC4671, MotorDriver>(),
+		add_class<TMC_1, MotorDriver>(),
+		add_class<TMC_2, MotorDriver>(),
+//		add_class<TMC_3, MotorDriver>(),
+#endif	
 #ifdef PWMDRIVER
 		add_class<MotorPWM, MotorDriver>(),
 #endif

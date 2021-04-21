@@ -34,6 +34,7 @@ public:
 
 	static ClassIdentifier info;
 	const ClassIdentifier getInfo();
+	static bool isCreatable() {return true;};
 	ParseStatus command(ParsedCommand* cmd,std::string* reply);
 	void usbInit();
 	void update();

@@ -39,6 +39,7 @@ public:
 
 	const ClassIdentifier getInfo();
 	static ClassIdentifier info;
+	static bool isCreatable() {return true;};
 
 	void readButtons(uint32_t* buf);
 	uint16_t getBtnNum(); // Amount of readable buttons

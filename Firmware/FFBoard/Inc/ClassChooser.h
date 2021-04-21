@@ -22,6 +22,8 @@ struct class_entry
 {
 	ClassIdentifier info;
 	std::function<T *()> create;
+	std::function<bool ()> isCreatable;
+//	std::function<bool (T cls)> isCreatable = [](T cls){ ChoosableClass* c = dynamic_cast<ChoosableClass*>(cls); return (c != NULL) ? c::isCreatable() : true;}
 };
 
 template<class T,class B>
@@ -30,7 +32,8 @@ constexpr class_entry<B> add_class()
 	if constexpr(std::is_base_of<Singleton<T>, T>::value){
 		return { T::info, []() -> B * { return Singleton<T>::getInstance(); } };
 	}else{
-		return { T::info, []() -> B * { return new T; } };
+//		return { T::info, []() -> B * { return new T; } };
+		return { T::info, []() -> B * { return new T; } , T::isCreatable()};
 	}
 
 }
@@ -38,7 +41,8 @@ constexpr class_entry<B> add_class()
 template<class T,class B>
 class_entry<B> add_class_ref(B* ref)
 {
-	return { T::info, [ref]() -> B * { return  ref; } };
+//	return { T::info, [ref]() -> B * { return  ref; } };
+	return { T::info, [ref]() -> B * { return ref; } ,T::isCreatable()};
 }
 template<class B>
 class_entry<B> make_class_entry(ClassIdentifier info,B* ref)
@@ -65,7 +69,7 @@ public:
 		T* cls = nullptr;
 		for(class_entry<T> e : class_registry){
 
-			if(e.info.id == id){
+			if(e.info.id == id && e.isCreatable()){
 				cls = e.create();
 			}
 		}
@@ -76,7 +80,7 @@ public:
 	std::string printAvailableClasses(){
 		std::string ret;
 		for(class_entry<T> cls : class_registry){
-			if(cls.info.hidden){
+			if(cls.info.hidden || !cls.isCreatable()){
 				continue;
 			}
 			ret+= std::to_string(cls.info.id);

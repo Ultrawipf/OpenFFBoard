@@ -32,6 +32,7 @@ public:
 
 	static ClassIdentifier info;
 	const ClassIdentifier getInfo();
+	static bool isCreatable() {return true;};
 
 	void turn(int16_t power);
 	void stopMotor();
