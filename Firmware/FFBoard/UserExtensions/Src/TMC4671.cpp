@@ -34,7 +34,7 @@ bool TMC_1::isCreatable() {
 
 ClassIdentifier TMC_2::info = {
 	.name = "TMC4671_2" ,
-	.id=1,
+	.id=2,
 	.unique = 'Y'
 };
 
@@ -54,7 +54,7 @@ uint16_t TMC4671::UsedSPIChannels = 1; // Default for X Axis
 
 ClassIdentifier TMC4671::info = {
 	.name = "TMC4671" ,
-	.id=1,
+	.id=3,
 	.unique = '0'
 };
 //const ClassIdentifier TMC4671::getInfo(){
