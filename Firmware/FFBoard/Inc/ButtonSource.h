@@ -19,7 +19,7 @@
  * All button sources have the ability to parse commands.
  * If a command is supported set "commandsEnabled(true)" and implement command function from CommandHandler
  */
-class ButtonSource : virtual ChoosableClass,public PersistentStorage {
+class ButtonSource : public virtual ChoosableClass,public PersistentStorage {
 public:
 	ButtonSource();
 	virtual ~ButtonSource();

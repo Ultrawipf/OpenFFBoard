@@ -13,16 +13,15 @@
 #include <functional>
 #include "Singleton.h"
 
-
 // If the class is a singleton do not create a new instance if one already exists. Return the existing pointer.
 
 
-template<class T>
+template<class B>
 struct class_entry
 {
 	ClassIdentifier info;
-	std::function<T *()> create;
-	std::function<bool ()> isCreatable;
+	std::function<B *()> create;
+	std::function<bool ()> isCreatable = []() -> bool { return true; };
 //	std::function<bool (T cls)> isCreatable = [](T cls){ ChoosableClass* c = dynamic_cast<ChoosableClass*>(cls); return (c != NULL) ? c::isCreatable() : true;}
 };
 
@@ -30,10 +29,10 @@ template<class T,class B>
 constexpr class_entry<B> add_class()
 {
 	if constexpr(std::is_base_of<Singleton<T>, T>::value){
-		return { T::info, []() -> B * { return Singleton<T>::getInstance(); } };
+		return { T::info, []() -> B * { return Singleton<T>::getInstance(); },T::isCreatable };
 	}else{
 //		return { T::info, []() -> B * { return new T; } };
-		return { T::info, []() -> B * { return new T; } , T::isCreatable()};
+		return { T::info, []() -> B * { return new T; } , T::isCreatable};
 	}
 
 }
@@ -74,6 +73,16 @@ public:
 			}
 		}
 		return cls;
+	}
+
+	// Check if class can be created
+	bool isCreatable(uint16_t id){
+		for(class_entry<T> e : class_registry){
+			if(e.info.id == id && e.isCreatable()){
+				return true;
+			}
+		}
+		return false;
 	}
 
 
