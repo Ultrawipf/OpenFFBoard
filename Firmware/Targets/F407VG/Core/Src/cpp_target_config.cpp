@@ -4,6 +4,9 @@ extern SPI_HandleTypeDef hspi2;
 
 SPIPort external_spi{hspi2};
 
+extern SPI_HandleTypeDef hspi1;
+SPIPort motor_spi{hspi1};
+
 const std::vector<OutputPin*>& getExternalSPI_CSPins() {
     static OutputPin cs1{*SPI2_NSS_GPIO_Port, SPI2_NSS_Pin};
     static OutputPin cs2{*SPI2_SS2_GPIO_Port, SPI2_SS2_Pin};

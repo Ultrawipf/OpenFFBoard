@@ -397,7 +397,6 @@ private:
 
 class TMC_1 : public TMC4671 {
 public:
-	static TMC4671* create();
 	TMC_1() : TMC4671{1} {}
 
 	const ClassIdentifier getInfo() override;

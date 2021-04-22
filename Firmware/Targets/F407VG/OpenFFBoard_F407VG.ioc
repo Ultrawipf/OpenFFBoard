@@ -895,4 +895,3 @@ VP_TIM5_VS_ClockSourceINT.Signal=TIM5_VS_ClockSourceINT
 VP_TIM9_VS_ClockSourceINT.Mode=Internal
 VP_TIM9_VS_ClockSourceINT.Signal=TIM9_VS_ClockSourceINT
 board=custom
-isbadioc=false
