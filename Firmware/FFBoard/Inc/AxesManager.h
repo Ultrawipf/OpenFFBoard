@@ -54,7 +54,8 @@ public:
 
 	void update();
 	void updateTorque();
-	void addAxesToReport(int16_t **report, uint8_t *pCount);
+	//void addAxesToReport(int16_t **report, uint8_t *pCount);
+	std::vector<int32_t>* getAxisValues();
 
 	void emergencyStop();
 	void resetPosZero();
@@ -66,6 +67,7 @@ private:
 	EffectsCalculator *effects_calc;
 	uint16_t axis_count = 0;
 	std::vector<std::unique_ptr<Axis>> axes;
+	std::vector<int32_t> axisValues = std::vector<int32_t>(1,0);
 	//	std::vector<NormalizedAxis*> normalizedAxes;
 
 	void deleteAxes();

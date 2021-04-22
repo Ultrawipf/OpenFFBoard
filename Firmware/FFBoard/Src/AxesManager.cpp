@@ -76,10 +76,16 @@ void AxesManager::updateTorque() {
 	}
 }
 
-void AxesManager::addAxesToReport(int16_t** report, uint8_t* pCount) {
+//void AxesManager::addAxesToReport(int16_t** report, uint8_t* pCount) {
+//	for (std::size_t i=0; i < axes.size(); i++) {
+//			*(report[(*pCount)++]) = (int32_t)axes[i]->getLastScaledEnc();
+//	}
+//}
+std::vector<int32_t>* AxesManager::getAxisValues(){
 	for (std::size_t i=0; i < axes.size(); i++) {
-			*(report[(*pCount)++]) = (int32_t)axes[i]->getLastScaledEnc();
+		this->axisValues[i] = axes[i]->getLastScaledEnc();
 	}
+	return &this->axisValues;
 }
 
 void AxesManager::emergencyStop() {
@@ -111,6 +117,10 @@ bool AxesManager::setAxisCount(int8_t count) {
 		axis_count++;
 	}
 	control->update_disabled = false;
+
+	// Allocate axis value buffer
+	this->axisValues = std::vector<int32_t>(axis_count,0);
+
 	return true;
 }
 
