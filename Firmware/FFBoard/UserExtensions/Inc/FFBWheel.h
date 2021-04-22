@@ -99,7 +99,6 @@ private:
 	reportHID_t lastReportHID;
 	uint8_t reportSendCounter = 0;
 
-	int16_t* analogAxesReport[8] = {&reportHID.X,&reportHID.Y,&reportHID.Z,&reportHID.RX,&reportHID.RY,&reportHID.RZ,&reportHID.Slider,&reportHID.Dial};
 	const uint8_t analogAxisCount = 8;
 	uint16_t btnsources = 1; // Default ID0 = local buttons
 	uint16_t ainsources = 1;

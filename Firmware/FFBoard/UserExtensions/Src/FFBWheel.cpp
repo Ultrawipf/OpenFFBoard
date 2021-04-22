@@ -246,20 +246,23 @@ void FFBWheel::send_report(){
 		}
 	}
 
-	uint8_t count = 0;
-	// Encoder
-	axes_manager->addAxesToReport(analogAxesReport, &count);
 
+	// Encoder
+	//axes_manager->addAxesToReport(analogAxesReport, &count);
+
+	std::vector<int32_t>* axes = axes_manager->getAxisValues();
+	uint8_t count = axes->size();
+	// Fill remaining values with analog inputs
 	for(auto &ain : analog_inputs){
 		std::vector<int32_t>* axes = ain->getAxes();
 		for(int32_t val : *axes){
 			if(count >= analogAxisCount)
 				break;
-			*analogAxesReport[count++] = val;
+			setHidReportAxis(&reportHID,count++,val);
 		}
 	} // Fill rest
 	for(;count<analogAxisCount; count++){
-		*analogAxesReport[count] = 0;
+		setHidReportAxis(&reportHID,count++,0);
 	}
 
 	/*

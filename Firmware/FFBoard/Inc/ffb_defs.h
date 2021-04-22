@@ -110,6 +110,40 @@ struct  __attribute__((__packed__)) reportHID_t {
 		int16_t Slider = 0;
 };
 
+/*
+ * Helper function to access analog axes in packed HID report struct
+ */
+inline void setHidReportAxis(reportHID_t *report, uint8_t idx, int16_t val){
+	switch(idx){
+	case 0:
+		report->X = val;
+		break;
+	case 1:
+		report->Y = val;
+		break;
+	case 2:
+		report->Z = val;
+		break;
+	case 3:
+		report->RX = val;
+		break;
+	case 4:
+		report->RY = val;
+		break;
+	case 5:
+		report->RZ = val;
+		break;
+	case 6:
+		report->Dial = val;
+		break;
+	case 7:
+		report->Slider = val;
+		break;
+	default:
+		return;
+	}
+}
+
 typedef struct
 {
 	const uint8_t	reportId = HID_ID_STATE+FFB_ID_OFFSET;
