@@ -13,7 +13,7 @@
 
 enum class EncoderType : uint8_t {NONE=0,incremental=1,incrementalIndex=2,absolute=3};
 
-class Encoder : virtual ChoosableClass {
+class Encoder : public virtual ChoosableClass {
 public:
 	Encoder();
 	virtual ~Encoder();

@@ -14,7 +14,7 @@
 #include "vector"
 #include "CommandHandler.h"
 
-class AnalogSource : virtual ChoosableClass, public PersistentStorage{
+class AnalogSource : public virtual ChoosableClass, public PersistentStorage{
 public:
 	AnalogSource();
 	virtual ~AnalogSource();
