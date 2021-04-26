@@ -17,8 +17,11 @@
 #include "CommandHandler.h"
 #include "SpiHandler.h"
 #include "thread.hpp"
+#include "SPI.h"
 
 #include "semaphore.hpp"
+#include "OutputPin.h"
+#include "cpp_target_config.h"
 
 #define SPITIMEOUT 500
 #define TMC_THREAD_MEM 512
@@ -178,7 +181,7 @@ struct TMC4671Biquad{
 };
 
 
-class TMC4671 : public MotorDriver, public PersistentStorage, public Encoder, public CommandHandler, public SpiHandler, public cpp_freertos::Thread{
+class TMC4671 : public MotorDriver, public PersistentStorage, public Encoder, public CommandHandler, public SPIDevice, public cpp_freertos::Thread{
 public:
 
 	static ClassIdentifier info;
@@ -187,13 +190,13 @@ public:
 	static TMC4671MotConf decodeMotFromInt(uint16_t val);
 	static uint16_t encodeMotToInt(TMC4671MotConf mconf);
 
-	static uint8_t checkSpiAddrNotInUse(uint8_t requestedChannel);
-	void recordSpiAddrUsed(uint8_t chan);
-	static uint8_t getSpiAddrInUseForAxis(char axis);
+//	static uint8_t checkSpiAddrNotInUse(uint8_t requestedChannel);
+//	void recordSpiAddrUsed(uint8_t chan);
+//	static uint8_t getSpiAddrInUseForAxis(char axis);
 
 	//SPI_HandleTypeDef* spi = &HSPIDRV,GPIO_TypeDef* csport=SPI1_SS1_GPIO_Port,uint16_t cspin=SPI1_SS1_Pin
-	TMC4671(SPI_HandleTypeDef* spi,GPIO_TypeDef* csport,uint16_t cspin,TMC4671MainConfig conf);
-	TMC4671(uint8_t address = 1);
+	//TMC4671(SPI_HandleTypeDef* spi,GPIO_TypeDef* csport,uint16_t cspin,TMC4671MainConfig conf);
+	TMC4671(SPIPort& spiport,OutputPin cspin = OutputPin(*SPI1_SS1_GPIO_Port, SPI1_SS1_Pin),uint8_t address=1);
 
 	void setAddress(uint8_t address);
 	void setAxis(char axis);
@@ -215,7 +218,7 @@ public:
 	uint32_t readReg(uint8_t reg);
 	void writeReg(uint8_t reg,uint32_t dat);
 	void updateReg(uint8_t reg,uint32_t dat,uint32_t mask,uint8_t shift);
-	void SpiTxCplt(SPI_HandleTypeDef *hspi);
+	//void SpiTxCplt(SPI_HandleTypeDef *hspi);
 
 	void setMotorType(MotorType motor,uint16_t poles);
 
@@ -340,17 +343,20 @@ public:
 	void restoreEncHallMisc(uint16_t val);
 
 	bool allowSlowSPI = true; // For engineering sample
+	//const SPIConfig& getConfig() const override; // For spi port
 
 	ParseStatus command(ParsedCommand* cmd,std::string* reply);
 	virtual std::string getHelpstring(){
 		return "\nTMC4671 commands:\n"
 				"mtype,encsrc,encalign,poles,phiesrc,reg,fluxoffset\n"
 				"torqueP,torqueI,fluxP,fluxI,pidPrec\n"
-				"acttrq,seqpi,tmctemp,tmccs,tmcIscale\n";}
+				"acttrq,seqpi,tmctemp,tmcIscale\n";}
 
 
 private:
-	static uint16_t UsedSPIChannels;
+	OutputPin enablePin = OutputPin(*DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin);
+
+
 	Error lowVoltageError = Error(ErrorCode::undervoltage,ErrorType::warning,"Low motor voltage");
 	ENC_InitState encstate = ENC_InitState::uninitialized;
 	TMC_ControlState state = TMC_ControlState::uninitialized;
@@ -370,9 +376,6 @@ private:
 
 	char axis = 'X';
 
-	SPI_HandleTypeDef* spi = &HSPIDRV;
-	GPIO_TypeDef* csport=SPI1_SS1_GPIO_Port;
-	uint16_t cspin=SPI1_SS1_Pin;
 	uint8_t spi_buf[5];
 
 	void initAdc(uint16_t mdecA, uint16_t mdecB,uint32_t mclkA,uint32_t mclkB);
@@ -397,7 +400,7 @@ private:
 
 class TMC_1 : public TMC4671 {
 public:
-	TMC_1() : TMC4671{1} {}
+	TMC_1() : TMC4671{motor_spi,OutputPin(*SPI1_SS1_GPIO_Port, SPI1_SS1_Pin),1} {}
 
 	const ClassIdentifier getInfo() override;
 	static bool isCreatable();
@@ -406,7 +409,7 @@ public:
 
 class TMC_2 : public TMC4671 {
 public:
-	TMC_2() : TMC4671{2} {}
+	TMC_2() : TMC4671{motor_spi,OutputPin(*SPI1_SS2_GPIO_Port, SPI1_SS2_Pin),2} {}
 
 	const ClassIdentifier getInfo() override;
 	static bool isCreatable();

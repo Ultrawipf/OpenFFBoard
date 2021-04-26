@@ -34,12 +34,14 @@ const ClassIdentifier SPI_Buttons_2::getInfo(){
 }
 
 SPI_Buttons::SPI_Buttons(uint16_t configuration_address, uint16_t configuration_address_2)
-	: configuration_address{configuration_address}, configuration_address_2{configuration_address_2}, spi_config{*getExternalSPI_CSPins()[0]} {
+	: SPIDevice(external_spi,external_spi.getFreeCsPins()[0]){
 
-	this->spi_config.peripheral.BaudRatePrescaler = SPIBUTTONS_SPEED;
-	this->spi_config.peripheral.FirstBit = SPI_FIRSTBIT_LSB;
-	this->spi_config.peripheral.CLKPhase = SPI_PHASE_1EDGE;
-	this->spi_config.peripheral.CLKPolarity = SPI_POLARITY_LOW;
+	this->configuration_address = configuration_address;
+	this->configuration_address_2 = configuration_address_2;
+	this->spiConfig.peripheral.BaudRatePrescaler = SPIBUTTONS_SPEED;
+	this->spiConfig.peripheral.FirstBit = SPI_FIRSTBIT_LSB;
+	this->spiConfig.peripheral.CLKPhase = SPI_PHASE_1EDGE;
+	this->spiConfig.peripheral.CLKPolarity = SPI_POLARITY_LOW;
 
 	restoreFlash();
 	initSPI();
@@ -47,16 +49,18 @@ SPI_Buttons::SPI_Buttons(uint16_t configuration_address, uint16_t configuration_
 	this->setCommandsEnabled(true);
 }
 
-const SPIConfig& SPI_Buttons::getConfig() const {
-	return spi_config;
-}
-
-void SPI_Buttons::beginRequest(SPIPort::Pipe& pipe) {
-	pipe.beginRx(spi_buf, std::min<uint8_t>(bytes, 4));
-}
+//const SPIConfig& SPI_Buttons::getConfig() const {
+//	return spiConfig;
+//}
+//
+//void SPI_Buttons::beginRequest(SPIPort::Pipe& pipe) {
+//	pipe.beginRx(spi_buf, std::min<uint8_t>(bytes, 4));
+//}
 
 void SPI_Buttons::initSPI(){
-	attachToPort(external_spi);
+	spiPort.takeSemaphore();
+	spiPort.configurePort(&this->spiConfig.peripheral);
+	spiPort.giveSemaphore();
 }
 
 SPI_Buttons::~SPI_Buttons() {
@@ -74,20 +78,26 @@ void SPI_Buttons::setMode(SPI_BtnMode mode){
 void SPI_Buttons::setConfig(ButtonSourceConfig config){
 	config.numButtons = std::min<uint8_t>(this->maxButtons, config.numButtons);
 	this->conf = config;
-	this->spi_config.cs = getExternalSPI_CSPin(config.cs_num);
+
+	spiPort.freeCsPin(this->spiConfig.cs);
+	this->spiConfig.cs = *spiPort.getCsPin(config.cs_num); // TODO check if pin free
+	spiPort.reserveCsPin(this->spiConfig.cs);
 
 	// Setup presets
 	if(conf.mode == SPI_BtnMode::TM){
-		this->spi_config.cspol = true;
+		this->spiConfig.cspol = true;
 		this->conf.cutRight = true;
-		this->spi_config.peripheral.CLKPolarity = SPI_POLARITY_LOW;
+		this->spiConfig.peripheral.CLKPolarity = SPI_POLARITY_LOW;
 
 	}else if(conf.mode == SPI_BtnMode::PISOSR){
-		this->spi_config.cspol = false;
+		this->spiConfig.cspol = false;
 		this->conf.cutRight = false;
-		this->spi_config.peripheral.CLKPhase = SPI_PHASE_1EDGE;
-		this->spi_config.peripheral.CLKPolarity = SPI_POLARITY_LOW;
+		this->spiConfig.peripheral.CLKPhase = SPI_PHASE_1EDGE;
+		this->spiConfig.peripheral.CLKPolarity = SPI_POLARITY_LOW;
 	}
+	spiPort.takeSemaphore();
+	spiPort.configurePort(&this->spiConfig.peripheral);
+	spiPort.giveSemaphore();
 
 	mask = pow(2,config.numButtons)-1;
 	offset = 8 - (config.numButtons % 8);
@@ -138,11 +148,12 @@ void SPI_Buttons::readButtons(uint32_t* buf){
 	memcpy(buf,this->spi_buf,std::min<uint8_t>(this->bytes,4));
 	process(buf); // give back last buffer
 
-	if(this->requestPending())
+	if(spiPort.isTaken())
 		return;	// Don't wait.
 
-	// Get next buffer
-	requestPort();
+	// CS pin and semaphore managed by spi port
+	spiPort.receive_DMA(spi_buf, bytes, this);
+
 }
 
 void SPI_Buttons::printModes(std::string* reply){

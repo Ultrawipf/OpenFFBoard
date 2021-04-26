@@ -55,24 +55,23 @@ public:
 private:
 	class G27ShifterButtonClient : SPIDevice {
 	public:
-		G27ShifterButtonClient(const OutputPin& csPin);
+		G27ShifterButtonClient(OutputPin& csPin);
 
 		static constexpr int numUserButtons{12};
 
-		void requestUpdate() {
-			requestPort();
-		}
+//		void requestUpdate() {
+//			requestPort();
+//		}
 
-		void updateCSPin(const OutputPin& csPin);
+		void updateCSPin(OutputPin& csPin);
 
 		uint16_t getUserButtons();
 		bool getReverseButton();
 	private:
-		SPIConfig config;
 		uint16_t buttonStates{0};
 
-		const SPIConfig& getConfig() const override;
-		void beginRequest(SPIPort::Pipe& pipe) override;
+//		const SPIConfig& getConfig() const override;
+//		void beginRequest(SPIPort::Pipe& pipe) override;
 	};
 
 	ShifterMode mode;
@@ -93,7 +92,7 @@ private:
 	bool reverseButtonState{false};
 	uint8_t gear{0};
 
-	G27ShifterButtonClient *g27ShifterButtonClient{nullptr};
+	std::unique_ptr<G27ShifterButtonClient> g27ShifterButtonClient;
 
 	static bool isG27Mode(ShifterMode m);
 

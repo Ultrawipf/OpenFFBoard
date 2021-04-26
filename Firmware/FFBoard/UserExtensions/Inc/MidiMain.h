@@ -48,7 +48,7 @@ public:
 
 	void play();
 
-	TMC4671* drv;
+	std::unique_ptr<TMC4671> drv;
 
 	uint32_t movementrange = 0x3fff;
 

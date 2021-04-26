@@ -75,35 +75,18 @@ FFBWheel::~FFBWheel() {
  */
 void FFBWheel::restoreFlash(){
 
-	axes_manager->restoreFlash();
 	Flash_Read(ADR_FFBWHEEL_BUTTONCONF, &this->btnsources);
 	setBtnTypes(this->btnsources);
 
 	Flash_Read(ADR_FFBWHEEL_ANALOGCONF, &this->ainsources);
 	setAinTypes(this->ainsources);
 
-	// Call restore methods for active button sources
-	for(auto &btn : this->btns){
-		btn->restoreFlash();
-	}
 }
 // Saves parameters to flash
 void FFBWheel::saveFlash(){
 
 	Flash_Write(ADR_FFBWHEEL_BUTTONCONF,this->btnsources);
 	Flash_Write(ADR_FFBWHEEL_ANALOGCONF,this->ainsources);
-
-	// TODO saving directly in persistenstorage
-	// Call save methods for active button sources
-	for(auto &btn : this->btns){
-		btn->saveFlash();
-	}
-
-	for(auto &ain : this->analog_inputs){
-		ain->saveFlash();
-	}
-
-	axes_manager->saveFlash();
 }
 
 

@@ -11,17 +11,19 @@
 #include "SPI.h"
 
 extern SPIPort external_spi;
+extern SPIPort motor_spi;
 
-const std::vector<OutputPin*>& getExternalSPI_CSPins();
 
-inline OutputPin& getExternalSPI_CSPin(unsigned pinNumber) {
-	auto csPins{getExternalSPI_CSPins()};
-	if (pinNumber > csPins.size()) {
-		return *csPins[0];
-	}
+//const std::vector<OutputPin*>& getExternalSPI_CSPins();
 
-	return *csPins[pinNumber - 1];
-}
+//inline OutputPin& getExternalSPI_CSPin(unsigned pinNumber) {
+//	auto csPins{getExternalSPI_CSPins()};
+//	if (pinNumber > csPins.size()) {
+//		return *csPins[0];
+//	}
+//
+//	return *csPins[pinNumber - 1];
+//}
 
 
 #endif

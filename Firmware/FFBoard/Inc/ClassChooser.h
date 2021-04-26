@@ -41,12 +41,12 @@ template<class T,class B>
 class_entry<B> add_class_ref(B* ref)
 {
 //	return { T::info, [ref]() -> B * { return  ref; } };
-	return { T::info, [ref]() -> B * { return ref; } ,T::isCreatable()};
+	return { T::info, [ref]() -> B * { return ref; } ,T::isCreatable};
 }
 template<class B>
 class_entry<B> make_class_entry(ClassIdentifier info,B* ref)
 {
-	return { info, [ref]() -> B * { return  ref; } };
+	return { info, [ref]() -> B * { return  ref; },ref->isCreatable };
 }
 
 template<class T>

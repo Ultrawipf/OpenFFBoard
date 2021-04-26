@@ -195,7 +195,8 @@ TMCDebugBridge::TMCDebugBridge() {
 
 	TMC4671MainConfig tmcconf;
 
-	this->drv = new TMC4671(&HSPIDRV,SPI1_SS1_GPIO_Port,SPI1_SS1_Pin,tmcconf);
+	this->drv = std::make_unique<TMC_1>();
+	drv->conf = tmcconf;
 	drv->setAddress(1);
 	drv->initialize();
 	//drv->stop();
@@ -203,6 +204,5 @@ TMCDebugBridge::TMCDebugBridge() {
 
 TMCDebugBridge::~TMCDebugBridge() {
 	HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_RESET);
-	delete this->drv;
 }
 

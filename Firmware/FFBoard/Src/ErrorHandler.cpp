@@ -8,6 +8,7 @@
 #include "ErrorHandler.h"
 #include "global_callbacks.h"
 #include "FFBoardMain.h"
+#include "cppmain.h"
 
 std::vector<ErrorHandler*> ErrorHandler::errorHandlers;
 std::vector<Error> ErrorHandler::errors;
@@ -130,7 +131,7 @@ void ErrorPrinter::Run(){
 void ErrorPrinter::errorCallback(Error &error, bool cleared){
 	if(!cleared){
 //		this->errorsToPrint.push_back(error); // Errors are stored in errorhandler
-		if(isIrq()){
+		if(inIsr()){
 			this->ResumeFromISR();
 		}else{
 			this->Resume();

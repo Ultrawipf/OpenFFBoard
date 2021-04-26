@@ -7,7 +7,9 @@
 #include "flash_helpers.h"
 #include "eeprom_addresses.h"
 #include <vector>
+#include "mutex.hpp"
 
+cpp_freertos::MutexStandard flashMutex;
 // Flash helpers
 
 /*
@@ -15,22 +17,29 @@
  * Returns true on success or false if variable is the same or error
  */
 bool Flash_Write(uint16_t adr,uint16_t dat){
+	//flashMutex.Lock();
 	uint16_t buf;
 	uint16_t readRes = EE_ReadVariable(adr, &buf);
+	bool res = false;
 	if(readRes == 1 || (readRes == 0 && buf != dat) ){ // Only write if var updated
 		HAL_FLASH_Unlock();
 		EE_WriteVariable(adr, dat);
 		HAL_FLASH_Lock();
-		return true;
+		res = true;
 	}
-	return false;
+	//flashMutex.Unlock();
+	return res;
+
 }
 
 /*
  * Reads a variable from eeprom emulation and returns true on success
  */
 bool Flash_Read(uint16_t adr,uint16_t *buf){
-	return(EE_ReadVariable(adr, buf) == 0);
+	//flashMutex.Lock();
+	bool res = EE_ReadVariable(adr, buf) == 0;
+	//flashMutex.Unlock();
+	return res;
 }
 
 /*

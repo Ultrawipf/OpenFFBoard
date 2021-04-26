@@ -23,12 +23,7 @@
 
 AxesManager::AxesManager(volatile Control_t* control) {
 	this->control = control;
-	uint16_t val;
-	Flash_Read(ADR_AXIS_COUNT, &val);
-	if (!this->validAxisRange(val)) {
-		val = 1;
-	}
-	this->setAxisCount(val);
+	this->restoreFlash();
 }
 
 AxesManager::~AxesManager() {
@@ -48,6 +43,13 @@ void AxesManager::setEffectsCalculator(EffectsCalculator* calc) {
 }
 
 void AxesManager::restoreFlash() {
+	uint16_t val;
+	bool res = (Flash_Read(ADR_AXIS_COUNT, &val));
+
+	if (!res || !this->validAxisRange(val)) {
+		val = 1;
+	}
+	this->setAxisCount(val);
 	for (auto &axis : axes) {
 		axis->restoreFlash();
 	}

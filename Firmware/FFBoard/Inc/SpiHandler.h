@@ -10,6 +10,11 @@
 #include "cppmain.h"
 #include "global_callbacks.h"
 
+/*
+ * Spi Handlers get called when SPI interrupts happen.
+ * Use SPI port and spi device wrappers instead when using SPI ports in a custom class
+ */
+
 class SpiHandler {
 public:
 	SpiHandler();

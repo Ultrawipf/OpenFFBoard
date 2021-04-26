@@ -32,7 +32,7 @@ void tudThread(void *argument);
 #ifdef __cplusplus
 }
 
-static inline bool isIrq(){
+static inline bool inIsr(){
 	return (__get_PRIMASK() != 0U) || (__get_IPSR() != 0U);
 }
 

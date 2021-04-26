@@ -1,6 +1,8 @@
 #include <algorithm>
 
 #include "SPI.h"
+#include "semaphore.hpp"
+#include "cppmain.h"
 
 static bool operator==(const SPI_InitTypeDef& lhs, const SPI_InitTypeDef& rhs) {
 	return lhs.BaudRatePrescaler == rhs.BaudRatePrescaler
@@ -16,67 +18,158 @@ static bool operator==(const SPI_InitTypeDef& lhs, const SPI_InitTypeDef& rhs) {
 		&& lhs.TIMode == rhs.TIMode;
 }
 
-static void assertChipSelect(const SPIConfig& config) {
-	config.cs.write(!config.cspol);
+
+
+SPIPort::SPIPort(SPI_HandleTypeDef &hspi,const std::vector<OutputPin>& csPins,bool allowReconfigure)
+: hspi{hspi}{
+	this->allowReconfigure = allowReconfigure;
+	this->csPins = csPins;
+	this->freePins = csPins;
 }
 
-static void clearChipSelect(const SPIConfig& config) {
-	config.cs.write(config.cspol);
-}
-
-void SPIPort::process() {
-	if (port_busy.test_and_set(std::memory_order_acquire)) {
-		return;
+// ----------------------------------
+//CS pins
+bool SPIPort::reserveCsPin(OutputPin pin){
+	auto it = std::find(csPins.begin(), csPins.end(), pin);
+	if(it != freePins.end()){
+		csPins.erase(it);
+		return true;
 	}
+	// Pin not found or not free
+	return false;
+}
 
-	for (std::size_t i=0; i < devices.size(); ++i) {
-		next_device_index %= devices.size();
-		auto &device = *devices[next_device_index];
-		++next_device_index;
 
-		if (device.requestPending()) {
-			current_device = &device;
-			auto &config{device.getConfig()};
 
-			if (need_to_reconfigure_peripheral) {
-				hspi.Init = config.peripheral;
-				HAL_SPI_Init(&hspi);
-			}
-
-			assertChipSelect(config);
-			device.beginRequest(pipe);
-			return;
+bool SPIPort::freeCsPin(OutputPin pin){
+	// is in pins
+	if(std::find(csPins.begin(),csPins.end(), pin) != csPins.end()){
+		// is not in free pins
+		if(std::find(freePins.begin(),freePins.end(), pin) == freePins.end()){
+			freePins.push_back(pin);
+			return true;
 		}
 	}
 
-	// No requests found, port is free.
-	port_busy.clear(std::memory_order_release);
+	// Pin not found
+	return false;
 }
 
-void SPIPort::addDevice(SPIDevice& device) {
-	if (std::find(devices.begin(), devices.end(), &device) == devices.end()) {
-		devices.push_back(&device);
+bool SPIPort::isPinFree(OutputPin pin){
+	return(std::find(freePins.begin(),freePins.end(), pin) != freePins.end());
+}
 
-		if (!need_to_reconfigure_peripheral) {
-			if (devices.size() == 1) {
-				// First device, configure port for this device.
-				auto &config{device.getConfig()};
-				hspi.Init = config.peripheral;
-				HAL_SPI_Init(&hspi);
-			} else {
-				// Not the first device, see if peripheral config matches.
-				// If it does, we can avoid reconfiguring the peripheral.
-				need_to_reconfigure_peripheral = devices.front()->getConfig().peripheral == device.getConfig().peripheral;
-			}
-		}
+std::vector<OutputPin>& SPIPort::getFreeCsPins(){
+
+	return freePins;
+}
+
+
+std::vector<OutputPin>& SPIPort::getCsPins(){
+	return csPins;
+}
+
+OutputPin* SPIPort::getCsPin(uint16_t idx){
+	if(idx < csPins.size()){
+		return &csPins[idx];
 	}
-
-	clearChipSelect(device.getConfig());
+	return nullptr;
 }
 
-void SPIPort::removeDevice(SPIDevice& device) {
-	devices.erase(std::remove(devices.begin(), devices.end(), &device), devices.end());
+void SPIPort::configurePort(SPI_InitTypeDef* config){
+	if(config == nullptr || hspi.Init == *config){
+		return; // No need to reconfigure
+	}
+	hspi.Init = *config;
+	HAL_SPI_Init(&hspi);
 }
+
+// ----------------------------------
+
+void SPIPort::transmit_DMA(uint8_t* buf,uint16_t size,SPIDevice* device){
+	device->beginSpiTransfer(this);
+	current_device = device; // Will call back this device
+	if(this->allowReconfigure){
+		this->configurePort(&device->getSpiConfig()->peripheral);
+	}
+	HAL_SPI_Transmit_DMA(&this->hspi,buf,size);
+	// Request completes in tx complete callback
+}
+
+void SPIPort::transmitReceive_DMA(uint8_t* txbuf,uint8_t* rxbuf,uint16_t size,SPIDevice* device){
+	device->beginSpiTransfer(this);
+	if(this->allowReconfigure){
+		this->configurePort(&device->getSpiConfig()->peripheral);
+	}
+	current_device = device; // Will call back this device
+	HAL_SPI_TransmitReceive_DMA(&this->hspi,txbuf,rxbuf,size);
+	// Request completes in rxtx complete callback
+}
+
+void SPIPort::receive_DMA(uint8_t* buf,uint16_t size,SPIDevice* device){
+	device->beginSpiTransfer(this);
+	if(this->allowReconfigure){
+		this->configurePort(&device->getSpiConfig()->peripheral);
+	}
+	current_device = device;
+	HAL_SPI_Receive_DMA(&this->hspi,buf,size);
+	// Request completes in rx complete callback
+}
+
+void SPIPort::transmit(uint8_t* buf,uint16_t size,SPIDevice* device,uint16_t timeout){
+	device->beginSpiTransfer(this);
+	if(this->allowReconfigure){
+		this->configurePort(&device->getSpiConfig()->peripheral);
+	}
+	HAL_SPI_Transmit(&this->hspi,buf,size,timeout);
+	device->endSpiTransfer(this);
+}
+
+void SPIPort::receive(uint8_t* buf,uint16_t size,SPIDevice* device,int16_t timeout){
+	device->beginSpiTransfer(this);
+	if(this->allowReconfigure){
+		this->configurePort(&device->getSpiConfig()->peripheral);
+	}
+	HAL_SPI_Receive(&this->hspi,buf,size,timeout);
+	device->endSpiTransfer(this);
+}
+
+void SPIPort::transmitReceive(uint8_t* txbuf,uint8_t* rxbuf,uint16_t size,SPIDevice* device,uint16_t timeout){
+	device->beginSpiTransfer(this);
+	if(this->allowReconfigure){
+		this->configurePort(&device->getSpiConfig()->peripheral);
+	}
+	HAL_SPI_TransmitReceive(&this->hspi,txbuf,rxbuf,size,timeout);
+	device->endSpiTransfer(this);
+}
+// --------------------------------
+
+void SPIPort::takeSemaphore(){
+	bool isIsr = inIsr();
+	BaseType_t taskWoken = 0;
+	if(isIsr)
+		this->semaphore.TakeFromISR(&taskWoken);
+	else
+		this->semaphore.Take();
+	isTakenFlag = true;
+	portYIELD_FROM_ISR(taskWoken);
+}
+
+void SPIPort::giveSemaphore(){
+	bool isIsr = inIsr();
+	BaseType_t taskWoken = 0;
+	if(isIsr)
+		this->semaphore.GiveFromISR(&taskWoken);
+	else
+		this->semaphore.Give();
+	isTakenFlag = false;
+	portYIELD_FROM_ISR(taskWoken);
+}
+
+bool SPIPort::isTaken(){
+	return isTakenFlag;
+}
+
 
 void SPIPort::SpiTxCplt(SPI_HandleTypeDef *hspi) {
 	if (current_device == nullptr) {
@@ -86,8 +179,10 @@ void SPIPort::SpiTxCplt(SPI_HandleTypeDef *hspi) {
 	if (hspi->Instance != this->hspi.Instance) {
 		return;
 	}
+	current_device->spiTxCompleted(this);
+	current_device->endSpiTransfer(this);
+	current_device = nullptr;
 
-	current_device->txCompleted(pipe);
 }
 void SPIPort::SpiRxCplt(SPI_HandleTypeDef *hspi) {
 	if (current_device == nullptr) {
@@ -97,8 +192,9 @@ void SPIPort::SpiRxCplt(SPI_HandleTypeDef *hspi) {
 	if (hspi->Instance != this->hspi.Instance) {
 		return;
 	}
-
-	current_device->rxCompleted(pipe);
+	current_device->spiRxCompleted(this);
+	current_device->endSpiTransfer(this);
+	current_device = nullptr;
 }
 void SPIPort::SpiTxRxCplt(SPI_HandleTypeDef *hspi) {
 	if (current_device == nullptr) {
@@ -108,8 +204,9 @@ void SPIPort::SpiTxRxCplt(SPI_HandleTypeDef *hspi) {
 	if (hspi->Instance != this->hspi.Instance) {
 		return;
 	}
-
-	current_device->txRxCompleted(pipe);
+	current_device->spiTxRxCompleted(this);
+	current_device->endSpiTransfer(this);
+	current_device = nullptr;
 }
 
 void SPIPort::SpiError(SPI_HandleTypeDef *hspi) {
@@ -121,36 +218,44 @@ void SPIPort::SpiError(SPI_HandleTypeDef *hspi) {
 		return;
 	}
 
-	current_device->requestError(pipe);
+	current_device->spiRequestError(this);
+	current_device->endSpiTransfer(this);
+	current_device = nullptr;
 }
 
-void SPIPort::Pipe::beginTx(uint8_t *data, uint16_t size) {
-	HAL_SPI_Transmit_DMA(&port.hspi, data, size);
+SPIDevice::SPIDevice(SPIPort& port,SPIConfig& spiConfig) :  spiPort{port},spiConfig{spiConfig}{
+	spiPort.reserveCsPin(spiConfig.cs);
 }
-
-void SPIPort::Pipe::beginRx(uint8_t *data, uint16_t size) {
-	HAL_SPI_Receive_DMA(&port.hspi, data, size);
+SPIDevice::SPIDevice(SPIPort& port,OutputPin csPin) : spiPort{port},spiConfig{csPin}{
+	this->spiConfig.cs = csPin;
+	spiPort.reserveCsPin(spiConfig.cs);
 }
-
-void SPIPort::Pipe::beginTxRx(uint8_t *txData, uint8_t *rxData, uint16_t size) {
-	HAL_SPI_TransmitReceive_DMA(&port.hspi, txData, rxData, size);
-}
-
-void SPIPort::Pipe::close() {
-	clearChipSelect(port.current_device->getConfig());
-
-	port.current_device = nullptr;
-	port.port_busy.clear(std::memory_order_release);
-	port.process();
-}
-
-void SPIDevice::attachToPort(SPIPort &port) {
-	port.addDevice(*this);
-	this->port = &port;
-}
-
 SPIDevice::~SPIDevice() {
-	if (port != nullptr) {
-		port->removeDevice(*this);
-	}
+	spiPort.freeCsPin(spiConfig.cs);
+}
+
+/*
+ * Called before the spi transfer starts.
+ * Can be used to take the semaphore and set CS pins by default
+ */
+void SPIDevice::beginSpiTransfer(SPIPort* port){
+	port->takeSemaphore();
+	assertChipSelect();
+}
+
+/*
+ * Called after a transfer is finished
+ * Gives a semaphore back and resets the CS pin
+ */
+void SPIDevice::endSpiTransfer(SPIPort* port){
+	clearChipSelect();
+	port->giveSemaphore();
+}
+
+inline void SPIDevice::assertChipSelect() {
+	spiConfig.cs.write(!spiConfig.cspol);
+}
+
+inline void SPIDevice::clearChipSelect() {
+	spiConfig.cs.write(spiConfig.cspol);
 }
