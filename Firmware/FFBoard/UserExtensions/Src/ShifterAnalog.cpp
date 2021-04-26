@@ -26,9 +26,7 @@ ShifterAnalog::ShifterAnalog() {
 }
 
 ShifterAnalog::~ShifterAnalog() {
-	if (g27ShifterButtonClient) {
-		delete g27ShifterButtonClient;
-	}
+
 }
 
 void ShifterAnalog::updateAdc(){
@@ -103,9 +101,9 @@ int ShifterAnalog::getUserButtons(uint32_t* buf) {
 void ShifterAnalog::readButtons(uint32_t* buf){
 	updateAdc();
 
-	if (g27ShifterButtonClient) {
-		g27ShifterButtonClient->requestUpdate();
-	}
+//	if (g27ShifterButtonClient) {
+//		g27ShifterButtonClient->requestUpdate();
+//	}
 
 	updateReverseState();
 	calculateGear();
@@ -173,10 +171,10 @@ bool ShifterAnalog::isG27Mode(ShifterMode m) {
 
 void ShifterAnalog::setMode(ShifterMode newMode) {
 	if (g27ShifterButtonClient && !isG27Mode(newMode)) {
-		delete g27ShifterButtonClient;
+		g27ShifterButtonClient.reset();
 		g27ShifterButtonClient = nullptr;
 	} else if (!g27ShifterButtonClient && isG27Mode(newMode)) {
-		g27ShifterButtonClient = new G27ShifterButtonClient(getExternalSPI_CSPin(cs_pin_num));
+		g27ShifterButtonClient = std::make_unique<G27ShifterButtonClient>(external_spi.getFreeCsPins()[0]);
 	}
 
 	mode = newMode;
@@ -190,7 +188,7 @@ void ShifterAnalog::setCSPin(uint8_t new_cs_pin_num) {
 	cs_pin_num = new_cs_pin_num;
 
 	if (g27ShifterButtonClient) {
-		g27ShifterButtonClient->updateCSPin(getExternalSPI_CSPin(cs_pin_num));
+		g27ShifterButtonClient->updateCSPin(*external_spi.getCsPin(cs_pin_num));
 	}
 }
 
@@ -233,22 +231,24 @@ ParseStatus ShifterAnalog::command(ParsedCommand* cmd,std::string* reply){
 	return result;
 }
 
-ShifterAnalog::G27ShifterButtonClient::G27ShifterButtonClient(const OutputPin& csPin)
-	:config{csPin} {
-	config.peripheral.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_64;
-	config.peripheral.FirstBit = SPI_FIRSTBIT_LSB;
-	config.peripheral.CLKPhase = SPI_PHASE_1EDGE;
-	config.peripheral.CLKPolarity = SPI_POLARITY_LOW;
+ShifterAnalog::G27ShifterButtonClient::G27ShifterButtonClient(OutputPin& csPin)
+	:SPIDevice(external_spi,csPin) {
+	spiConfig.peripheral.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_64;
+	spiConfig.peripheral.FirstBit = SPI_FIRSTBIT_LSB;
+	spiConfig.peripheral.CLKPhase = SPI_PHASE_1EDGE;
+	spiConfig.peripheral.CLKPolarity = SPI_POLARITY_LOW;
 
-	attachToPort(external_spi);
 }
 
-void ShifterAnalog::G27ShifterButtonClient::updateCSPin(const OutputPin& csPin) {
-	config.cs = csPin;
+void ShifterAnalog::G27ShifterButtonClient::updateCSPin(OutputPin& csPin) {
+	external_spi.freeCsPin(spiConfig.cs);
+	spiConfig.cs = csPin;
+	external_spi.reserveCsPin(csPin);
 }
 
 
 bool ShifterAnalog::G27ShifterButtonClient::getReverseButton() {
+	external_spi.receive_DMA(reinterpret_cast<uint8_t*>(&buttonStates), sizeof(buttonStates),this);
 	return buttonStates & 0x02;
 }
 
@@ -256,10 +256,10 @@ uint16_t ShifterAnalog::G27ShifterButtonClient::getUserButtons() {
 	return buttonStates >> 4;
 }
 
-const SPIConfig& ShifterAnalog::G27ShifterButtonClient::getConfig() const {
-	return config;
-}
-
-void ShifterAnalog::G27ShifterButtonClient::beginRequest(SPIPort::Pipe& pipe) {
-	pipe.beginRx(reinterpret_cast<uint8_t*>(&buttonStates), sizeof(buttonStates));
-}
+//const SPIConfig& ShifterAnalog::G27ShifterButtonClient::getConfig() const {
+//	return config;
+//}
+//
+//void ShifterAnalog::G27ShifterButtonClient::beginRequest(SPIPort::Pipe& pipe) {
+//	pipe.beginRx(reinterpret_cast<uint8_t*>(&buttonStates), sizeof(buttonStates));
+//}

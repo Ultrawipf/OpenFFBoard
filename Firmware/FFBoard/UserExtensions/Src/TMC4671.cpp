@@ -13,7 +13,7 @@
 #include <assert.h>
 #include "RessourceManager.h"
 #include "ErrorHandler.h"
-
+#include "cpp_target_config.h"
 #define MAX_TMC_DRIVERS 3
 
 ClassIdentifier TMC_1::info = {
@@ -28,7 +28,7 @@ const ClassIdentifier TMC_1::getInfo(){
 
 
 bool TMC_1::isCreatable() {
-	return TMC4671::checkSpiAddrNotInUse(1);
+	return motor_spi.isPinFree(OutputPin(*SPI1_SS1_GPIO_Port, SPI1_SS1_Pin));
 }
 
 
@@ -44,13 +44,11 @@ const ClassIdentifier TMC_2::getInfo(){
 
 
 bool TMC_2::isCreatable() {
-	return TMC4671::checkSpiAddrNotInUse(2);
+	return motor_spi.isPinFree(OutputPin(*SPI1_SS2_GPIO_Port, SPI1_SS2_Pin));
 }
 
 
 
-
-uint16_t TMC4671::UsedSPIChannels = 1; // Default for X Axis
 
 ClassIdentifier TMC4671::info = {
 	.name = "TMC4671" ,
@@ -61,26 +59,43 @@ ClassIdentifier TMC4671::info = {
 //	return info;
 //}
 
-TMC4671::TMC4671(SPI_HandleTypeDef* spi,GPIO_TypeDef* csport,uint16_t cspin,TMC4671MainConfig conf) : Thread("TMC", TMC_THREAD_MEM, TMC_THREAD_PRIO){
-	this->cspin = cspin;
-	this->csport = csport;
-	this->spi = spi;
-	this->conf = conf;
-	this->restoreFlash();
-}
+//TMC4671::TMC4671(SPI_HandleTypeDef* spi,OutputPin cspin,TMC4671MainConfig conf) : Thread("TMC", TMC_THREAD_MEM, TMC_THREAD_PRIO){
+////	this->cspin = cspin;
+////	this->csport = csport;
+////	this->spi = spi;
+//	this->conf = conf;
+//	spi_config.cs = cspin;
+//	this->restoreFlash();
+//}
 
-TMC4671::TMC4671(uint8_t address) : Thread("TMC", TMC_THREAD_MEM, TMC_THREAD_PRIO){
+TMC4671::TMC4671(SPIPort& spiport,OutputPin cspin,uint8_t address) : SPIDevice{motor_spi,cspin},Thread("TMC", TMC_THREAD_MEM, TMC_THREAD_PRIO){
 	setAddress(address);
 //	this->cspin = SPI1_SS1_Pin;
 //	this->csport = SPI1_SS1_GPIO_Port;
 //	this->spi = &HSPIDRV;
+
+	spiConfig.peripheral.Mode = SPI_MODE_MASTER;
+	spiConfig.peripheral.Direction = SPI_DIRECTION_2LINES;
+	spiConfig.peripheral.DataSize = SPI_DATASIZE_8BIT;
+	spiConfig.peripheral.CLKPolarity = SPI_POLARITY_HIGH;
+	spiConfig.peripheral.CLKPhase = SPI_PHASE_2EDGE;
+	spiConfig.peripheral.NSS = SPI_NSS_SOFT;
+	spiConfig.peripheral.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_16;
+	spiConfig.peripheral.FirstBit = SPI_FIRSTBIT_MSB;
+	spiConfig.peripheral.TIMode = SPI_TIMODE_DISABLE;
+	spiConfig.peripheral.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
+	spiConfig.peripheral.CRCPolynomial = 10;
+	spiConfig.cspol = true;
+
+	spiPort.configurePort(&spiConfig.peripheral);
+	//attachToPort(motor_spi);
 	this->restoreFlash();
 }
 
 
 TMC4671::~TMC4671() {
-	HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_RESET);
-	recordSpiAddrUsed(0);
+	enablePin.reset();
+	//recordSpiAddrUsed(0);
 }
 
 
@@ -92,32 +107,32 @@ const ClassIdentifier TMC4671::getInfo() {
 	return ClassIdentifier {.name = TMC4671::info.name, .id = TMC4671::info.id, .unique = this->axis, .hidden = TMC4671::info.hidden};
 }
 
-void TMC4671::recordSpiAddrUsed(uint8_t chan){
-	uint8_t axis_as_index = (uint8_t)(this->axis-'X') << 1; // X=0,Y=2,Z=4
-	TMC4671::UsedSPIChannels &= (0xffff - (3 << axis_as_index)); // clear the bits
-	TMC4671::UsedSPIChannels |= ((chan & 0x3) << axis_as_index);
-}
+//void TMC4671::recordSpiAddrUsed(uint8_t chan){
+//	uint8_t axis_as_index = (uint8_t)(this->axis-'X') << 1; // X=0,Y=2,Z=4
+//	TMC4671::UsedSPIChannels &= (0xffff - (3 << axis_as_index)); // clear the bits
+//	TMC4671::UsedSPIChannels |= ((chan & 0x3) << axis_as_index);
+//}
 
-uint8_t TMC4671::getSpiAddrInUseForAxis(char axis){
-	uint8_t axis_as_index = (uint8_t)(axis-'X') << 1; // X=0,Y=2,Z=4
-	return (TMC4671::UsedSPIChannels >> axis_as_index) & 0x3;
-}
+//uint8_t TMC4671::getSpiAddrInUseForAxis(char axis){
+//	uint8_t axis_as_index = (uint8_t)(axis-'X') << 1; // X=0,Y=2,Z=4
+//	return (TMC4671::UsedSPIChannels >> axis_as_index) & 0x3;
+//}
 
-// Returns channel if ok to use else 0
-uint8_t TMC4671::checkSpiAddrNotInUse(uint8_t requestedChannel)
-{
-	if (requestedChannel > MAX_TMC_DRIVERS){
-		return 0;
-	}
-	uint8_t result = requestedChannel;
-	for (char i = 'X'; i <= 'Z'; i++){
-		if (TMC4671::getSpiAddrInUseForAxis(i) == requestedChannel){
-			result = 0;
-			break;
-		}
-	}
-	return result;
-}
+// //uint8_t TMC4671::checkSpiAddrNotInUse(uint8_t requestedChannel)
+//{
+//	if (requestedChannel > MAX_TMC_DRIVERS){
+//		return 0;
+//	}
+//	uint8_t result = requestedChannel;
+//	for (char i = 'X'; i <= 'Z'; i++){
+//		if (TMC4671::getSpiAddrInUseForAxis(i) == requestedChannel){
+//			result = 0;
+//			break;
+//		}
+//	}
+//	return result;
+//}Returns channel if ok to use else 0
+
 
 void TMC4671::setAddress(uint8_t address){
 	this->setAxis((char)('W'+address));
@@ -141,54 +156,54 @@ uint8_t TMC4671::getAxis(){
 	return this->axis;
 }
 
-// Returns true if able to set CS channel, false if CS channel already in use
-bool TMC4671::setSpiAddr(uint8_t chan){
-	uint8_t axis_as_num = (uint8_t)(this->axis-'W');
-	uint8_t requested_chan = chan & 0x3;
-
-	if(requested_chan == 0){
-		requested_chan = axis_as_num; // X -> 1, etc
-	}
-	// Are we already set to this CS chan
-	if(requested_chan == getSpiAddr()) {
-		return true;
-	}
-	uint8_t valid_chan = TMC4671::checkSpiAddrNotInUse(requested_chan);
-	if (valid_chan == 0){ // chan is the chip seleect for SPI - 1 - 1st board
-		return false;
-	}
-	TMC4671::recordSpiAddrUsed(valid_chan); // record this board as in use & unavailable for other channels
-
-	if (valid_chan == 1)
-	{
-		this->cspin = SPI1_SS1_Pin;
-		this->csport = SPI1_SS1_GPIO_Port;
-		this->spi = &HSPIDRV;
-	}
-	else if (valid_chan == 2)
-	{
-		this->cspin = SPI1_SS2_Pin;
-		this->csport = SPI1_SS2_GPIO_Port;
-		this->spi = &HSPIDRV;
-	}
-	else if (valid_chan == 3)
-	{
-		this->cspin = SPI1_SS3_Pin;
-		this->csport = SPI1_SS3_GPIO_Port;
-		this->spi = &HSPIDRV;
-	}
-	return true;
-}
-
-uint8_t TMC4671::getSpiAddr(){
-	if (this->cspin == SPI1_SS1_Pin)
-		return 1;
-	if (this->cspin == SPI1_SS2_Pin)
-		return 2;
-	if (this->cspin == SPI1_SS3_Pin)
-		return 3;
-	return 0;
-}
+//// Returns true if able to set CS channel, false if CS channel already in use
+//bool TMC4671::setSpiAddr(uint8_t chan){
+//	uint8_t axis_as_num = (uint8_t)(this->axis-'W');
+//	uint8_t requested_chan = chan & 0x3;
+//
+//	if(requested_chan == 0){
+//		requested_chan = axis_as_num; // X -> 1, etc
+//	}
+//	// Are we already set to this CS chan
+//	if(requested_chan == getSpiAddr()) {
+//		return true;
+//	}
+//	uint8_t valid_chan = TMC4671::checkSpiAddrNotInUse(requested_chan);
+//	if (valid_chan == 0){ // chan is the chip seleect for SPI - 1 - 1st board
+//		return false;
+//	}
+//	TMC4671::recordSpiAddrUsed(valid_chan); // record this board as in use & unavailable for other channels
+//
+//	if (valid_chan == 1)
+//	{
+//		this->cspin = SPI1_SS1_Pin;
+//		this->csport = SPI1_SS1_GPIO_Port;
+//		this->spi = &HSPIDRV;
+//	}
+//	else if (valid_chan == 2)
+//	{
+//		this->cspin = SPI1_SS2_Pin;
+//		this->csport = SPI1_SS2_GPIO_Port;
+//		this->spi = &HSPIDRV;
+//	}
+//	else if (valid_chan == 3)
+//	{
+//		this->cspin = SPI1_SS3_Pin;
+//		this->csport = SPI1_SS3_GPIO_Port;
+//		this->spi = &HSPIDRV;
+//	}
+//	return true;
+//}
+//
+//uint8_t TMC4671::getSpiAddr(){
+//	if (this->cspin == SPI1_SS1_Pin)
+//		return 1;
+//	if (this->cspin == SPI1_SS2_Pin)
+//		return 2;
+//	if (this->cspin == SPI1_SS3_Pin)
+//		return 3;
+//	return 0;
+//}
 
 void TMC4671::saveFlash(){
 	uint16_t mconfint = TMC4671::encodeMotToInt(this->conf.motconf);
@@ -265,6 +280,7 @@ bool TMC4671::pingDriver(){
 	return(readReg(0) == 0x34363731);
 }
 
+
 /*
  * Sets all parameters of the driver at startup
  */
@@ -287,8 +303,9 @@ bool TMC4671::initialize(){
 		 * This can cause problems for some operations.
 		 */
 		pulseClipLed();
-		this->spi->Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_64;
-		HAL_SPI_Init(this->spi);
+
+		this->spiConfig.peripheral.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_64;
+		spiPort.configurePort(&this->spiConfig.peripheral);
 		oldTMCdetected = true;
 	}
 
@@ -311,7 +328,7 @@ bool TMC4671::initialize(){
 	// Initial adc calibration
 	if(!calibrateAdcOffset(150)){
 		changeState(TMC_ControlState::HardError); // ADC or shunt amp is broken!
-		HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_RESET);
+		enablePin.reset();
 		return false;
 	}
 	// brake res failsafe.
@@ -333,7 +350,7 @@ bool TMC4671::initialize(){
 	setPids(curPids); // Write basic pids
 
 	if(hasPower()){
-		HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_SET);
+		enablePin.set();
 		setPwm(7);
 		calibrateAdcOffset(400); // Calibrate ADC again with power
 		active = true;
@@ -452,7 +469,7 @@ void TMC4671::Run(){
 				changeState(laststateNopower);
 				setMotionMode(lastMotionMode,true);
 				ErrorHandler::clearError(ErrorCode::undervoltage);
-				HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_SET);
+				enablePin.set();
 			}
 			pulseErrLed();
 			Delay(100); // wait a bit more
@@ -471,7 +488,7 @@ void TMC4671::Run(){
 			ErrorHandler::addError(lowVoltageError);
 			setMotionMode(MotionMode::stop,true); // Disable tmc
 			changeState(TMC_ControlState::No_power);
-			HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_RESET);
+			enablePin.reset();
 		}
 		Delay(10);
 	} // End while
@@ -936,7 +953,7 @@ bool TMC4671::calibrateAdcOffset(uint16_t time){
 
 	//pulseClipLed(); // Turn on led
 	// Disable drivers and measure many samples of zero current
-	//HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_RESET);
+	//enablePin.reset();
 	uint32_t tick = HAL_GetTick();
 	while(HAL_GetTick() - tick < measuretime_idle){ // Measure idle
 		uint32_t adcraw = readReg(0x02);
@@ -951,7 +968,7 @@ bool TMC4671::calibrateAdcOffset(uint16_t time){
 			lastrawB = rawB;
 		}
 	}
-	//HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_SET);
+	//enablePin.set();
 	uint32_t offsetAidle = totalA / (measurements_idle);
 	uint32_t offsetBidle = totalB / (measurements_idle);
 
@@ -1211,7 +1228,7 @@ void TMC4671::setUdUq(int16_t ud,int16_t uq){
 void TMC4671::stopMotor(){
 	// Stop driver if running
 
-	//HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_RESET);
+	//enablePin.reset();
 	active = false;
 	if(state == TMC_ControlState::Running){
 		setMotionMode(MotionMode::stop,true);
@@ -1231,7 +1248,7 @@ void TMC4671::startMotor(){
 	}
 	// Start driver if powered
 	if(hasPower()){
-		HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_SET);
+		enablePin.set();
 		setPwm(7); // enable foc
 		setMotionMode(nextMotionMode,true);
 
@@ -1244,7 +1261,7 @@ void TMC4671::startMotor(){
 void TMC4671::emergencyStop(){
 	setPwm(1); // Short low side for instant stop
 	emergency = true;
-	HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_RESET);
+	enablePin.reset();
 	active = false;
 	changeState(TMC_ControlState::HardError);
 }
@@ -1662,7 +1679,7 @@ std::pair<int32_t,int32_t> TMC4671::getActualCurrent(){
 	uint32_t tfluxa = readReg(0x69);
 	int16_t af = (tfluxa & 0xffff);
 	int16_t at = (tfluxa >> 16);
-	return std::pair(af,at);
+	return std::pair<int16_t,int16_t>(af,at);
 }
 
 __attribute__((optimize("-Ofast")))
@@ -1671,24 +1688,26 @@ uint32_t TMC4671::readReg(uint8_t reg){
 	uint8_t tbuf[5];
 	// 500ns delay after sending first byte
 
-	bool isirq = isIrq();
-	if(isirq)
-		RessourceManager::getSpiSemaphore(1)->TakeFromISR(nullptr);
-	else
-		RessourceManager::getSpiSemaphore(1)->Take();
-	HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_RESET);
-	//HAL_SPI_Transmit(this->spi,req,1,SPITIMEOUT); // pause
-	//HAL_SPI_Receive(this->spi,tbuf,4,SPITIMEOUT);
-	HAL_SPI_TransmitReceive(this->spi,req,tbuf,5,SPITIMEOUT);
-	HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_SET);
+//	bool isIsr = isIsr();
+//	if(isIsr)
+//		RessourceManager::getSpiSemaphore(1)->TakeFromISR(nullptr);
+//	else
+//		RessourceManager::getSpiSemaphore(1)->Take();
+//	HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_RESET);
+//	//HAL_SPI_Transmit(this->spi,req,1,SPITIMEOUT); // pause
+//	//HAL_SPI_Receive(this->spi,tbuf,4,SPITIMEOUT);
+//	HAL_SPI_TransmitReceive(this->spi,req,tbuf,5,SPITIMEOUT);
+//	HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_SET);
+//
 
+	spiPort.transmitReceive(req, tbuf, 5,this, SPITIMEOUT);
 	uint32_t ret;
 	memcpy(&ret,tbuf+1,4);
 	ret = __REV(ret);
-	if(isirq)
-		RessourceManager::getSpiSemaphore(1)->GiveFromISR(nullptr);
-	else
-		RessourceManager::getSpiSemaphore(1)->Give();
+//	if(isIsr)
+//		RessourceManager::getSpiSemaphore(1)->GiveFromISR(nullptr);
+//	else
+//		RessourceManager::getSpiSemaphore(1)->Give();
 
 	return ret;
 }
@@ -1697,19 +1716,19 @@ __attribute__((optimize("-Ofast")))
 void TMC4671::writeReg(uint8_t reg,uint32_t dat){
 
 	// wait until ready
-	bool isirq = isIrq();
-
-	if(isirq)
-		RessourceManager::getSpiSemaphore(1)->TakeFromISR(nullptr);
-	else
-		RessourceManager::getSpiSemaphore(1)->Take();
-	spiActive = true; // Signal the dma callback that this class actually used the port
+//	bool isIsr = isIsr();
+//
+//	if(isIsr)
+//		RessourceManager::getSpiSemaphore(1)->TakeFromISR(nullptr);
+//	else
+//		RessourceManager::getSpiSemaphore(1)->Take();
+//	spiActive = true; // Signal the dma callback that this class actually used the port
 	spi_buf[0] = (uint8_t)(0x80 | reg);
 	dat =__REV(dat);
 	memcpy(spi_buf+1,&dat,4);
-	HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_RESET);
-
-	HAL_SPI_Transmit_DMA(this->spi,spi_buf,5);
+//	HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_RESET);
+//
+//	HAL_SPI_Transmit_DMA(this->spi,spi_buf,5);
 
 	// -- If blocking
 	//HAL_SPI_Transmit(this->spi,spi_buf,5,SPITIMEOUT);
@@ -1720,6 +1739,7 @@ void TMC4671::writeReg(uint8_t reg,uint32_t dat){
 //		RessourceManager::getSpiSemaphore(1)->Give();
 
 	// -----
+	spiPort.transmit_DMA(spi_buf, 5, this);
 }
 
 void TMC4671::updateReg(uint8_t reg,uint32_t dat,uint32_t mask,uint8_t shift){
@@ -1729,17 +1749,17 @@ void TMC4671::updateReg(uint8_t reg,uint32_t dat,uint32_t mask,uint8_t shift){
 	writeReg(reg, t);
 }
 //TODO maybe use blocking SPI instead again. This interrupt can sometimes get lost because of freertos -> causing a deadlock!
-void TMC4671::SpiTxCplt(SPI_HandleTypeDef *hspi){
-	if(this->spiActive && hspi == this->spi){
-		spiActive = false;
-		BaseType_t taskWoken = 0;
-		HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_SET); // unselect
-		RessourceManager::getSpiSemaphore(1)->GiveFromISR(&taskWoken);
-
-		portYIELD_FROM_ISR(taskWoken);
-
-	}
-}
+//void TMC4671::SpiTxCplt(SPI_HandleTypeDef *hspi){
+//	if(this->spiActive && hspi == this->spi){
+//		spiActive = false;
+//		BaseType_t taskWoken = 0;
+//		HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_SET); // unselect
+//		RessourceManager::getSpiSemaphore(1)->GiveFromISR(&taskWoken);
+//
+//		portYIELD_FROM_ISR(taskWoken);
+//
+//	}
+//}
 
 
 TMC4671MotConf TMC4671::decodeMotFromInt(uint16_t val){
@@ -1770,7 +1790,7 @@ uint16_t TMC4671::encodeEncHallMisc(){
 
 	val |= (this->curPids.sequentialPI & 0x01) << 10;
 
-	val |= (this->getSpiAddr() << 14);
+	//val |= (this->getSpiAddr() << 14);
 	return val;
 }
 
@@ -1793,12 +1813,12 @@ void TMC4671::restoreEncHallMisc(uint16_t val){
 
 	this->curPids.sequentialPI = (val>>10) & 0x01;
 
-	uint8_t chip_sel = (val>>14) & 0x03;
-	// try to set the CS to the stored value
-	if(!setSpiAddr(chip_sel)){
-		// else try the default value, else panic!
-		assert(setSpiAddr(0));
-	}
+//	uint8_t chip_sel = (val>>14) & 0x03;
+//	// try to set the CS to the stored value
+//	if(!setSpiAddr(chip_sel)){
+//		// else try the default value, else panic!
+//		assert(setSpiAddr(0));
+//	}
 }
 
 
@@ -1949,17 +1969,6 @@ ParseStatus TMC4671::command(ParsedCommand* cmd,std::string* reply){
 			*reply+="0";
 #endif
 
-		}
-	}else if (cmd->cmd == "tmccs"){
-		if (cmd->type == CMDtype::get){
-			*reply += std::to_string(getSpiAddr());
-		}else if (cmd->type == CMDtype::set){
-			if(!setSpiAddr(cmd->val & 0x3)){
-				*reply +=  "ERROR: SPI chip_select address already in use by another axis";
-				ErrorHandler::addError(Error(ErrorCode::cmdExecutionError, ErrorType::warning, std::string(this->getInfo().name) + " " + this->getInfo().unique + " SPI chip_select address already in use by another axis"));
-			}
-		}else{
-			*reply += "Set which SPI chip_select address to use.\ne.g. If you a TMC board with the SPI solder jumper set to 1 & want to use it for FFB on the Y axis - use: y.tmccs=1 .";
 		}
 	}else{
 		flag = ParseStatus::NOT_FOUND;

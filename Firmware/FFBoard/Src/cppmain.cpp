@@ -69,7 +69,7 @@ void cppmain() {
 	while(running){
 		mainclass->update();
 		updateLeds();
-		external_spi.process();
+		//external_spi.process();
 		refreshWatchdog();
 		taskYIELD(); // Change task if higher priority task wants to run
 	}

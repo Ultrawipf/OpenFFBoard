@@ -42,7 +42,7 @@ MidiMain::MidiMain(){
 	HAL_TIM_Base_Start_IT(this->timer_update);
 
 	// Setup one TMC for first channel
- 	this->drv = new TMC4671();
+ 	this->drv = std::make_unique<TMC_1>();
 	TMC4671Limits limits;
 	drv->setLimits(limits);
 	drv->setAddress(1);

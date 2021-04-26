@@ -16,9 +16,11 @@
 #include "SpiHandler.h"
 #include "OutputPin.h"
 
+#include "semaphore.hpp"
+
 struct SPIConfig {
-	SPIConfig(OutputPin cs)
-		:cs{cs}, cspol{false} {
+	SPIConfig(OutputPin cs,bool cspol = true)
+		:cs{cs}, cspol{false}{
 		peripheral.Mode = SPI_MODE_MASTER;
 		peripheral.Direction = SPI_DIRECTION_2LINES;
 		peripheral.DataSize = SPI_DATASIZE_8BIT;
@@ -43,83 +45,73 @@ class SPIDevice;
 
 class SPIPort: public SpiHandler {
 public:
-	SPIPort(SPI_HandleTypeDef &hspi)
-		: hspi{hspi} {}
+	SPIPort(SPI_HandleTypeDef &hspi,const std::vector<OutputPin>& csPins,bool allowReconfigure = true);
 
-	class Pipe {
-	public:
-		friend SPIPort; // Only allow the port to create a pipe.
+	void takeSemaphore(); // Call before accessing this port
+	void giveSemaphore(); // Call when finished using this port
 
-		 /// Begin a transmission.
-		void beginTx(uint8_t *data, uint16_t size);
+	void configurePort(SPI_InitTypeDef* config); // Reconfigures the spi port
 
-		/// Begin a receive.
-		void beginRx(uint8_t *data, uint16_t size);
+	std::vector<OutputPin>& getCsPins();
+	OutputPin* getCsPin(uint16_t idx);
+	std::vector<OutputPin>& getFreeCsPins(); // Returns a vector of cs pins assigned to this port that are not reserved
+	bool reserveCsPin(OutputPin pin); // Signals that this pin is now in use
+	bool freeCsPin(OutputPin pin); // Signals that this cs pin is not used anymore. Call this in the destructor
+	bool isPinFree(OutputPin pin); // Returns if a pin is assigned to this port and not in use
 
-		/// Begin a transmit and receive.
-		void beginTxRx(uint8_t *txData, uint8_t *rxData, uint16_t size);
-
-		/// Close the pipe. This allows other devices to use the port.
-		void close();
-	private:
-		Pipe(SPIPort& port)
-			: port{port} {}
-
-		SPIPort& port;
-	};
-
-	/// Devices should be added during system initialization.
-	/// Thread-safety is not guaranteed if the SPI port is in use
-	/// when a device is added.
-	/// Also, it's recommended that SPIDevice::attachToPort() be used rather
-	/// than calling this directly so that the SPIDevice is automatically
-	/// removed if deleted.
-	void addDevice(SPIDevice& device);
-	void removeDevice(SPIDevice& device);
-
-	/// Call from the main loop to check for pending requests.
-	/// Will also be called when a request completes.
-	void process();
+	void transmit_DMA(uint8_t* buf,uint16_t size,SPIDevice* device);
+	void transmitReceive_DMA(uint8_t* txbuf,uint8_t* rxbuf,uint16_t size,SPIDevice* device);
+	void receive_DMA(uint8_t* buf,uint16_t size,SPIDevice* device);
+	void transmit(uint8_t* buf,uint16_t size,SPIDevice* device,uint16_t timeout);
+	void receive(uint8_t* buf,uint16_t size,SPIDevice* device,int16_t timeout);
+	void transmitReceive(uint8_t* txbuf,uint8_t* rxbuf,uint16_t size,SPIDevice* device,uint16_t timeout);
 
 	void SpiTxCplt(SPI_HandleTypeDef *hspi) override;
 	void SpiRxCplt(SPI_HandleTypeDef *hspi) override;
 	void SpiTxRxCplt(SPI_HandleTypeDef *hspi) override;
 	void SpiError(SPI_HandleTypeDef *hspi) override;
 
+	bool isTaken(); // Returns true if semaphore was taken by another task
+
 private:
+	void beginTransfer(SPIConfig* config);
+	void endTransfer(SPIConfig* config);
+
 	SPI_HandleTypeDef &hspi;
-	std::vector<SPIDevice*> devices;
-	std::size_t next_device_index{0};
-	std::atomic_flag port_busy{false};
-	Pipe pipe{*this};
-	SPIDevice* current_device{nullptr};
-	bool need_to_reconfigure_peripheral{false};
+	SPIDevice* current_device;
+	std::vector<OutputPin> csPins; // cs pins and bool true if pin is reserved
+	std::vector<OutputPin> freePins;
+
+	cpp_freertos::BinarySemaphore semaphore = cpp_freertos::BinarySemaphore(true);
+	bool allowReconfigure = false; // Allow reconfiguration at runtime. Can reduce performance a lot
+	bool isTakenFlag = false;
 };
 
 class SPIDevice {
 public:
+	SPIDevice(SPIPort& port,OutputPin csPin);
+	SPIDevice(SPIPort& port,SPIConfig& spiConfig);
 	virtual ~SPIDevice();
 
-	virtual const SPIConfig& getConfig() const = 0;
-	virtual void beginRequest(SPIPort::Pipe& pipe) = 0;
+//	virtual const SPIConfig& getConfig(SPIPort& port);
+	void assertChipSelect();
+	void clearChipSelect();
 
-	virtual void txCompleted(SPIPort::Pipe& pipe) { completeRequest(pipe); }
-	virtual void rxCompleted(SPIPort::Pipe& pipe) { completeRequest(pipe); }
-	virtual void txRxCompleted(SPIPort::Pipe& pipe) { completeRequest(pipe); }
-	virtual void requestError(SPIPort::Pipe& pipe) { completeRequest(pipe); }
 
-	bool requestPending() const { return request_port; }
+	virtual void spiTxCompleted(SPIPort* port) { }
+	virtual void spiRxCompleted(SPIPort* port) { }
+	virtual void spiTxRxCompleted(SPIPort* port) { }
+	virtual void spiRequestError(SPIPort* port) { }
+
+	virtual void beginSpiTransfer(SPIPort* port);
+	virtual void endSpiTransfer(SPIPort* port);
+
+	virtual SPIConfig* getSpiConfig(){return &this->spiConfig;}
+
 protected:
-	void requestPort() { request_port = true; }
-	void completeRequest(SPIPort::Pipe& pipe) {
-		request_port = false;
-		pipe.close();
-	}
-
-	void attachToPort(SPIPort &port);
-private:
-	volatile bool request_port{false};
-	SPIPort* port{nullptr};
+	virtual void setSpiConfig(SPIConfig config){spiConfig = config;}
+	SPIPort& spiPort;
+	SPIConfig spiConfig;
 };
 
 #endif

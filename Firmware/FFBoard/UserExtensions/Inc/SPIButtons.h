@@ -15,8 +15,6 @@
 #include "SPI.h"
 #include "cpp_target_config.h"
 
-// TODO interrupts
-
 // Set this to 64, 128 or 256 to slow down SPI if unstable.
 #define SPIBUTTONS_SPEED SPI_BAUDRATEPRESCALER_64
 
@@ -52,15 +50,13 @@ public:
 	void setMode(SPI_BtnMode mode);
 	void initSPI();
 
-	const SPIConfig& getConfig() const override;
-    void beginRequest(SPIPort::Pipe& pipe) override;
 
 protected:
 	SPI_Buttons(uint16_t configuration_address, uint16_t configuration_address_2);
 
 private:
-	const uint16_t configuration_address;
-	const uint16_t configuration_address_2;
+	uint16_t configuration_address;
+	uint16_t configuration_address_2;
 
 	void setConfig(ButtonSourceConfig config);
 	virtual ButtonSourceConfig* getConfig();
@@ -70,7 +66,6 @@ private:
 	uint8_t offset = 0;
 
 	ButtonSourceConfig conf;
-	SPIConfig spi_config;
 
 	uint8_t spi_buf[4] = {0};
 };
