@@ -322,7 +322,7 @@ bool TMC4671::initialize(){
 	setup_HALL(hallconf); // Enables hall filter and masking
 
 	initAdc(conf.mdecA,conf.mdecB,conf.mclkA,conf.mclkB);
-	//setAdcOffset(conf.adc_I0_offset, conf.adc_I1_offset);
+	setAdcOffset(conf.adc_I0_offset, conf.adc_I1_offset);
 	setAdcScale(conf.adc_I0_scale, conf.adc_I1_scale);
 
 	// Initial adc calibration
@@ -1682,64 +1682,32 @@ std::pair<int32_t,int32_t> TMC4671::getActualCurrent(){
 	return std::pair<int16_t,int16_t>(af,at);
 }
 
-__attribute__((optimize("-Ofast")))
+//__attribute__((optimize("-Ofast")))
 uint32_t TMC4671::readReg(uint8_t reg){
+	spiPort.takeSemaphore();
 	uint8_t req[5] = {(uint8_t)(0x7F & reg),0,0,0,0};
 	uint8_t tbuf[5];
 	// 500ns delay after sending first byte
-
-//	bool isIsr = isIsr();
-//	if(isIsr)
-//		RessourceManager::getSpiSemaphore(1)->TakeFromISR(nullptr);
-//	else
-//		RessourceManager::getSpiSemaphore(1)->Take();
-//	HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_RESET);
-//	//HAL_SPI_Transmit(this->spi,req,1,SPITIMEOUT); // pause
-//	//HAL_SPI_Receive(this->spi,tbuf,4,SPITIMEOUT);
-//	HAL_SPI_TransmitReceive(this->spi,req,tbuf,5,SPITIMEOUT);
-//	HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_SET);
-//
-
 	spiPort.transmitReceive(req, tbuf, 5,this, SPITIMEOUT);
 	uint32_t ret;
 	memcpy(&ret,tbuf+1,4);
 	ret = __REV(ret);
-//	if(isIsr)
-//		RessourceManager::getSpiSemaphore(1)->GiveFromISR(nullptr);
-//	else
-//		RessourceManager::getSpiSemaphore(1)->Give();
 
 	return ret;
 }
 
-__attribute__((optimize("-Ofast")))
+//__attribute__((optimize("-Ofast")))
 void TMC4671::writeReg(uint8_t reg,uint32_t dat){
 
 	// wait until ready
-//	bool isIsr = isIsr();
-//
-//	if(isIsr)
-//		RessourceManager::getSpiSemaphore(1)->TakeFromISR(nullptr);
-//	else
-//		RessourceManager::getSpiSemaphore(1)->Take();
-//	spiActive = true; // Signal the dma callback that this class actually used the port
+	spiPort.takeSemaphore();
 	spi_buf[0] = (uint8_t)(0x80 | reg);
 	dat =__REV(dat);
 	memcpy(spi_buf+1,&dat,4);
-//	HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_RESET);
-//
-//	HAL_SPI_Transmit_DMA(this->spi,spi_buf,5);
-
-	// -- If blocking
-	//HAL_SPI_Transmit(this->spi,spi_buf,5,SPITIMEOUT);
-//	HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_SET);
-//	if(isirq)
-//		RessourceManager::getSpiSemaphore(1)->GiveFromISR(nullptr);
-//	else
-//		RessourceManager::getSpiSemaphore(1)->Give();
 
 	// -----
-	spiPort.transmit_DMA(spi_buf, 5, this);
+	//spiPort.transmit_DMA(this->spi_buf, 5, this);
+	spiPort.transmit(spi_buf, 5, this, SPITIMEOUT);
 }
 
 void TMC4671::updateReg(uint8_t reg,uint32_t dat,uint32_t mask,uint8_t shift){
@@ -1748,18 +1716,14 @@ void TMC4671::updateReg(uint8_t reg,uint32_t dat,uint32_t mask,uint8_t shift){
 	t |= ((dat & mask) << shift);
 	writeReg(reg, t);
 }
-//TODO maybe use blocking SPI instead again. This interrupt can sometimes get lost because of freertos -> causing a deadlock!
-//void TMC4671::SpiTxCplt(SPI_HandleTypeDef *hspi){
-//	if(this->spiActive && hspi == this->spi){
-//		spiActive = false;
-//		BaseType_t taskWoken = 0;
-//		HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_SET); // unselect
-//		RessourceManager::getSpiSemaphore(1)->GiveFromISR(&taskWoken);
-//
-//		portYIELD_FROM_ISR(taskWoken);
-//
-//	}
-//}
+
+void TMC4671::beginSpiTransfer(SPIPort* port){
+	assertChipSelect();
+}
+void TMC4671::endSpiTransfer(SPIPort* port){
+	clearChipSelect();
+	port->giveSemaphore();
+}
 
 
 TMC4671MotConf TMC4671::decodeMotFromInt(uint16_t val){
