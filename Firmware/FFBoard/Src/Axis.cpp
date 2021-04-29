@@ -211,7 +211,7 @@ void Axis::setDrvType(uint8_t drvtype)
 	this->conf.drvtype = drvtype;
 	drvenc = dynamic_cast<Encoder *>(drv); // Cast new driver to encoder
 	// Special handling for tmc4671.
-	if (this->conf.drvtype == TMC4671::info.id)
+	if (dynamic_cast<TMC4671 *>(drv))
 	{
 		setupTMC4671();
 	}

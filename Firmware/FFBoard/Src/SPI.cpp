@@ -30,9 +30,9 @@ SPIPort::SPIPort(SPI_HandleTypeDef &hspi,const std::vector<OutputPin>& csPins,bo
 // ----------------------------------
 //CS pins
 bool SPIPort::reserveCsPin(OutputPin pin){
-	auto it = std::find(csPins.begin(), csPins.end(), pin);
+	auto it = std::find(freePins.begin(), freePins.end(), pin);
 	if(it != freePins.end()){
-		csPins.erase(it);
+		freePins.erase(it);
 		return true;
 	}
 	// Pin not found or not free
@@ -252,10 +252,10 @@ void SPIDevice::endSpiTransfer(SPIPort* port){
 	port->giveSemaphore();
 }
 
-inline void SPIDevice::assertChipSelect() {
+void SPIDevice::assertChipSelect() {
 	spiConfig.cs.write(!spiConfig.cspol);
 }
 
-inline void SPIDevice::clearChipSelect() {
+void SPIDevice::clearChipSelect() {
 	spiConfig.cs.write(spiConfig.cspol);
 }

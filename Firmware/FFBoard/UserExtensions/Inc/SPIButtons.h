@@ -57,7 +57,7 @@ protected:
 private:
 	uint16_t configuration_address;
 	uint16_t configuration_address_2;
-
+	bool ready = false;
 	void setConfig(ButtonSourceConfig config);
 	virtual ButtonSourceConfig* getConfig();
 	void process(uint32_t* buf);
