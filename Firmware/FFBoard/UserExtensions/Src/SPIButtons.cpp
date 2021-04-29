@@ -47,6 +47,7 @@ SPI_Buttons::SPI_Buttons(uint16_t configuration_address, uint16_t configuration_
 	initSPI();
 
 	this->setCommandsEnabled(true);
+	ready  = true;
 }
 
 //const SPIConfig& SPI_Buttons::getConfig() const {
@@ -80,9 +81,12 @@ void SPI_Buttons::setConfig(ButtonSourceConfig config){
 	this->conf = config;
 
 	spiPort.freeCsPin(this->spiConfig.cs);
-	this->spiConfig.cs = *spiPort.getCsPin(config.cs_num); // TODO check if pin free
-	spiPort.reserveCsPin(this->spiConfig.cs);
+	OutputPin* newPin = spiPort.getCsPin(config.cs_num-1); // TODO update internal pin number if requested pin is blocked
+	if(newPin != nullptr){
+		this->spiConfig.cs = *newPin;
 
+	}
+	spiPort.reserveCsPin(this->spiConfig.cs);
 	// Setup presets
 	if(conf.mode == SPI_BtnMode::TM){
 		this->spiConfig.cspol = true;
@@ -148,7 +152,7 @@ void SPI_Buttons::readButtons(uint32_t* buf){
 	memcpy(buf,this->spi_buf,std::min<uint8_t>(this->bytes,4));
 	process(buf); // give back last buffer
 
-	if(spiPort.isTaken())
+	if(spiPort.isTaken() || !ready)
 		return;	// Don't wait.
 
 	// CS pin and semaphore managed by spi port
