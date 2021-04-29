@@ -9,7 +9,7 @@
 #define SPI_H_
 
 #include <vector>
-#include <atomic>
+#include "cppmain.h"
 
 #include "stm32f4xx_hal.h"
 
@@ -59,12 +59,12 @@ public:
 	bool freeCsPin(OutputPin pin); // Signals that this cs pin is not used anymore. Call this in the destructor
 	bool isPinFree(OutputPin pin); // Returns if a pin is assigned to this port and not in use
 
-	void transmit_DMA(uint8_t* buf,uint16_t size,SPIDevice* device);
-	void transmitReceive_DMA(uint8_t* txbuf,uint8_t* rxbuf,uint16_t size,SPIDevice* device);
+	void transmit_DMA(const uint8_t* buf,uint16_t size,SPIDevice* device);
+	void transmitReceive_DMA(const uint8_t* txbuf,uint8_t* rxbuf,uint16_t size,SPIDevice* device);
 	void receive_DMA(uint8_t* buf,uint16_t size,SPIDevice* device);
-	void transmit(uint8_t* buf,uint16_t size,SPIDevice* device,uint16_t timeout);
+	void transmit(const uint8_t* buf,uint16_t size,SPIDevice* device,uint16_t timeout);
 	void receive(uint8_t* buf,uint16_t size,SPIDevice* device,int16_t timeout);
-	void transmitReceive(uint8_t* txbuf,uint8_t* rxbuf,uint16_t size,SPIDevice* device,uint16_t timeout);
+	void transmitReceive(const uint8_t* txbuf,uint8_t* rxbuf,uint16_t size,SPIDevice* device,uint16_t timeout);
 
 	void SpiTxCplt(SPI_HandleTypeDef *hspi) override;
 	void SpiRxCplt(SPI_HandleTypeDef *hspi) override;

@@ -86,23 +86,23 @@ void SPIPort::configurePort(SPI_InitTypeDef* config){
 
 // ----------------------------------
 
-void SPIPort::transmit_DMA(uint8_t* buf,uint16_t size,SPIDevice* device){
+void SPIPort::transmit_DMA(const uint8_t* buf,uint16_t size,SPIDevice* device){
 	device->beginSpiTransfer(this);
 	current_device = device; // Will call back this device
 	if(this->allowReconfigure){
 		this->configurePort(&device->getSpiConfig()->peripheral);
 	}
-	HAL_SPI_Transmit_DMA(&this->hspi,buf,size);
+	HAL_SPI_Transmit_DMA(&this->hspi,const_cast<uint8_t*>(buf),size);
 	// Request completes in tx complete callback
 }
 
-void SPIPort::transmitReceive_DMA(uint8_t* txbuf,uint8_t* rxbuf,uint16_t size,SPIDevice* device){
+void SPIPort::transmitReceive_DMA(const uint8_t* txbuf,uint8_t* rxbuf,uint16_t size,SPIDevice* device){
 	device->beginSpiTransfer(this);
 	if(this->allowReconfigure){
 		this->configurePort(&device->getSpiConfig()->peripheral);
 	}
 	current_device = device; // Will call back this device
-	HAL_SPI_TransmitReceive_DMA(&this->hspi,txbuf,rxbuf,size);
+	HAL_SPI_TransmitReceive_DMA(&this->hspi,const_cast<uint8_t*>(txbuf),rxbuf,size);
 	// Request completes in rxtx complete callback
 }
 
@@ -116,12 +116,12 @@ void SPIPort::receive_DMA(uint8_t* buf,uint16_t size,SPIDevice* device){
 	// Request completes in rx complete callback
 }
 
-void SPIPort::transmit(uint8_t* buf,uint16_t size,SPIDevice* device,uint16_t timeout){
+void SPIPort::transmit(const uint8_t* buf,uint16_t size,SPIDevice* device,uint16_t timeout){
 	device->beginSpiTransfer(this);
 	if(this->allowReconfigure){
 		this->configurePort(&device->getSpiConfig()->peripheral);
 	}
-	HAL_SPI_Transmit(&this->hspi,buf,size,timeout);
+	HAL_SPI_Transmit(&this->hspi,const_cast<uint8_t*>(buf),size,timeout);
 	device->endSpiTransfer(this);
 }
 
@@ -134,12 +134,12 @@ void SPIPort::receive(uint8_t* buf,uint16_t size,SPIDevice* device,int16_t timeo
 	device->endSpiTransfer(this);
 }
 
-void SPIPort::transmitReceive(uint8_t* txbuf,uint8_t* rxbuf,uint16_t size,SPIDevice* device,uint16_t timeout){
+void SPIPort::transmitReceive(const uint8_t* txbuf,uint8_t* rxbuf,uint16_t size,SPIDevice* device,uint16_t timeout){
 	device->beginSpiTransfer(this);
 	if(this->allowReconfigure){
 		this->configurePort(&device->getSpiConfig()->peripheral);
 	}
-	HAL_SPI_TransmitReceive(&this->hspi,txbuf,rxbuf,size,timeout);
+	HAL_SPI_TransmitReceive(&this->hspi,const_cast<uint8_t*>(txbuf),rxbuf,size,timeout);
 	device->endSpiTransfer(this);
 }
 // --------------------------------
@@ -223,7 +223,7 @@ void SPIPort::SpiError(SPI_HandleTypeDef *hspi) {
 	current_device = nullptr;
 }
 
-SPIDevice::SPIDevice(SPIPort& port,SPIConfig& spiConfig) :  spiPort{port},spiConfig{spiConfig}{
+SPIDevice::SPIDevice(SPIPort& port,SPIConfig& spiConfig) : spiPort{port},spiConfig{spiConfig}{
 	spiPort.reserveCsPin(spiConfig.cs);
 }
 SPIDevice::SPIDevice(SPIPort& port,OutputPin csPin) : spiPort{port},spiConfig{csPin}{
@@ -239,7 +239,7 @@ SPIDevice::~SPIDevice() {
  * Can be used to take the semaphore and set CS pins by default
  */
 void SPIDevice::beginSpiTransfer(SPIPort* port){
-	port->takeSemaphore();
+
 	assertChipSelect();
 }
 

@@ -343,7 +343,10 @@ public:
 	void restoreEncHallMisc(uint16_t val);
 
 	bool allowSlowSPI = true; // For engineering sample
-	//const SPIConfig& getConfig() const override; // For spi port
+
+	void beginSpiTransfer(SPIPort* port);
+	void endSpiTransfer(SPIPort* port);
+	//void spiTxCompleted(SPIPort* port);
 
 	ParseStatus command(ParsedCommand* cmd,std::string* reply);
 	virtual std::string getHelpstring(){
@@ -376,7 +379,7 @@ private:
 
 	char axis = 'X';
 
-	uint8_t spi_buf[5];
+	uint8_t spi_buf[5] = {0};
 
 	void initAdc(uint16_t mdecA, uint16_t mdecB,uint32_t mclkA,uint32_t mclkB);
 	void setPwm(uint8_t val,uint16_t maxcnt,uint8_t bbmL,uint8_t bbmH);// 100MHz/maxcnt+1
