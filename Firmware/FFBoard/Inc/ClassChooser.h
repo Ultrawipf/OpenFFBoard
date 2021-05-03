@@ -89,11 +89,13 @@ public:
 	std::string printAvailableClasses(){
 		std::string ret;
 		for(class_entry<T> cls : class_registry){
-			if(cls.info.hidden || !cls.isCreatable()){
+			if(cls.info.hidden){
 				continue;
 			}
 			ret+= std::to_string(cls.info.id);
 			ret+= ":";
+//			ret+= cls.isCreatable() ? "1" : "0"; // TODO check if creatable
+//			ret+= ":";
 			ret+= cls.info.name;
 			ret+='\n';
 		}
