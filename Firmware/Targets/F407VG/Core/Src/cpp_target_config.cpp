@@ -14,7 +14,7 @@ SPIPort external_spi{hspi2,external_spi_cspins,true};
 //    return cs_pins;
 //}
 
-static const std::vector<OutputPin> motor_spi_cspins{OutputPin(*SPI1_SS1_GPIO_Port, SPI1_SS1_Pin), OutputPin(*SPI1_SS1_GPIO_Port, SPI1_SS2_Pin),OutputPin(*SPI1_SS3_GPIO_Port, SPI1_SS3_Pin)};
+static const std::vector<OutputPin> motor_spi_cspins{OutputPin(*SPI1_SS1_GPIO_Port, SPI1_SS1_Pin), OutputPin(*SPI1_SS2_GPIO_Port, SPI1_SS2_Pin),OutputPin(*SPI1_SS3_GPIO_Port, SPI1_SS3_Pin)};
 extern SPI_HandleTypeDef hspi1;
 SPIPort motor_spi{hspi1,motor_spi_cspins,false};
 //const std::vector<OutputPin*>& getMotorSPI_CSPins() {

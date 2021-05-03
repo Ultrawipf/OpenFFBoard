@@ -239,7 +239,7 @@ SPIDevice::~SPIDevice() {
  * Can be used to take the semaphore and set CS pins by default
  */
 void SPIDevice::beginSpiTransfer(SPIPort* port){
-
+	port->takeSemaphore();
 	assertChipSelect();
 }
 

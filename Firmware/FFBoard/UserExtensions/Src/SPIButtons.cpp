@@ -33,6 +33,7 @@ const ClassIdentifier SPI_Buttons_2::getInfo(){
 	return info;
 }
 
+// TODO check if pin is free
 SPI_Buttons::SPI_Buttons(uint16_t configuration_address, uint16_t configuration_address_2)
 	: SPIDevice(external_spi,external_spi.getFreeCsPins()[0]){
 
@@ -50,13 +51,7 @@ SPI_Buttons::SPI_Buttons(uint16_t configuration_address, uint16_t configuration_
 	ready  = true;
 }
 
-//const SPIConfig& SPI_Buttons::getConfig() const {
-//	return spiConfig;
-//}
-//
-//void SPI_Buttons::beginRequest(SPIPort::Pipe& pipe) {
-//	pipe.beginRx(spi_buf, std::min<uint8_t>(bytes, 4));
-//}
+
 
 void SPI_Buttons::initSPI(){
 	spiPort.takeSemaphore();

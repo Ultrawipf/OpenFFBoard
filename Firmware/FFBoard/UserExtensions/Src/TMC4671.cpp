@@ -87,7 +87,10 @@ TMC4671::TMC4671(SPIPort& spiport,OutputPin cspin,uint8_t address) : SPIDevice{m
 	spiConfig.peripheral.CRCPolynomial = 10;
 	spiConfig.cspol = true;
 
+	spiPort.takeSemaphore();
 	spiPort.configurePort(&spiConfig.peripheral);
+	spiPort.giveSemaphore();
+
 	//attachToPort(motor_spi);
 	this->restoreFlash();
 }
@@ -107,31 +110,6 @@ const ClassIdentifier TMC4671::getInfo() {
 	return ClassIdentifier {.name = TMC4671::info.name, .id = TMC4671::info.id, .unique = this->axis, .hidden = TMC4671::info.hidden};
 }
 
-//void TMC4671::recordSpiAddrUsed(uint8_t chan){
-//	uint8_t axis_as_index = (uint8_t)(this->axis-'X') << 1; // X=0,Y=2,Z=4
-//	TMC4671::UsedSPIChannels &= (0xffff - (3 << axis_as_index)); // clear the bits
-//	TMC4671::UsedSPIChannels |= ((chan & 0x3) << axis_as_index);
-//}
-
-//uint8_t TMC4671::getSpiAddrInUseForAxis(char axis){
-//	uint8_t axis_as_index = (uint8_t)(axis-'X') << 1; // X=0,Y=2,Z=4
-//	return (TMC4671::UsedSPIChannels >> axis_as_index) & 0x3;
-//}
-
-// //uint8_t TMC4671::checkSpiAddrNotInUse(uint8_t requestedChannel)
-//{
-//	if (requestedChannel > MAX_TMC_DRIVERS){
-//		return 0;
-//	}
-//	uint8_t result = requestedChannel;
-//	for (char i = 'X'; i <= 'Z'; i++){
-//		if (TMC4671::getSpiAddrInUseForAxis(i) == requestedChannel){
-//			result = 0;
-//			break;
-//		}
-//	}
-//	return result;
-//}Returns channel if ok to use else 0
 
 
 void TMC4671::setAddress(uint8_t address){
@@ -156,54 +134,6 @@ uint8_t TMC4671::getAxis(){
 	return this->axis;
 }
 
-//// Returns true if able to set CS channel, false if CS channel already in use
-//bool TMC4671::setSpiAddr(uint8_t chan){
-//	uint8_t axis_as_num = (uint8_t)(this->axis-'W');
-//	uint8_t requested_chan = chan & 0x3;
-//
-//	if(requested_chan == 0){
-//		requested_chan = axis_as_num; // X -> 1, etc
-//	}
-//	// Are we already set to this CS chan
-//	if(requested_chan == getSpiAddr()) {
-//		return true;
-//	}
-//	uint8_t valid_chan = TMC4671::checkSpiAddrNotInUse(requested_chan);
-//	if (valid_chan == 0){ // chan is the chip seleect for SPI - 1 - 1st board
-//		return false;
-//	}
-//	TMC4671::recordSpiAddrUsed(valid_chan); // record this board as in use & unavailable for other channels
-//
-//	if (valid_chan == 1)
-//	{
-//		this->cspin = SPI1_SS1_Pin;
-//		this->csport = SPI1_SS1_GPIO_Port;
-//		this->spi = &HSPIDRV;
-//	}
-//	else if (valid_chan == 2)
-//	{
-//		this->cspin = SPI1_SS2_Pin;
-//		this->csport = SPI1_SS2_GPIO_Port;
-//		this->spi = &HSPIDRV;
-//	}
-//	else if (valid_chan == 3)
-//	{
-//		this->cspin = SPI1_SS3_Pin;
-//		this->csport = SPI1_SS3_GPIO_Port;
-//		this->spi = &HSPIDRV;
-//	}
-//	return true;
-//}
-//
-//uint8_t TMC4671::getSpiAddr(){
-//	if (this->cspin == SPI1_SS1_Pin)
-//		return 1;
-//	if (this->cspin == SPI1_SS2_Pin)
-//		return 2;
-//	if (this->cspin == SPI1_SS3_Pin)
-//		return 3;
-//	return 0;
-//}
 
 void TMC4671::saveFlash(){
 	uint16_t mconfint = TMC4671::encodeMotToInt(this->conf.motconf);

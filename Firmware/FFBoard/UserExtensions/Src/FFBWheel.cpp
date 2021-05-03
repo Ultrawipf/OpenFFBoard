@@ -116,7 +116,7 @@ void FFBWheel::update(){
 
 
 
-	// Emulate a SOF timer... TODO
+	// TODO Emulate a SOF timer...
 	if(HAL_GetTick() - lastUsbReportTick > 0 && !control.usb_disabled){
 		lastUsbReportTick = HAL_GetTick();
 		control.usb_update_flag  = true;
