@@ -6,18 +6,21 @@
  */
 
 #include "UartHandler.h"
-#include "global_callbacks.h"
-std::vector<UartHandler*> UartHandler::uartHandlers;
 
 UartHandler::UartHandler() {
-	addCallbackHandler(uartHandlers, this);
+	addCallbackHandler(getUARTHandlers(), this);
 }
 
 UartHandler::~UartHandler() {
-	removeCallbackHandler(uartHandlers, this);
+	removeCallbackHandler(getUARTHandlers(), this);
 }
 
 
-void UartHandler::uartRcv(char* buf){
+void UartHandler::uartRxComplete(UART_HandleTypeDef *huart){
+
+}
+
+
+void UartHandler::uartTxComplete(UART_HandleTypeDef *huart){
 
 }

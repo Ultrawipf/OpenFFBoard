@@ -53,10 +53,6 @@ void cppmain() {
 			Error_Handler();
 		}
 	}
-	// Enable uart interrupt
-	extern volatile char uart_buf[UART_BUF_SIZE];
-	HAL_UART_Receive_IT(&UART_PORT,(uint8_t*)uart_buf,1);
-
 
 	mainclass = mainchooser.Create(main_id);
 	if(mainclass == nullptr){ // invalid id

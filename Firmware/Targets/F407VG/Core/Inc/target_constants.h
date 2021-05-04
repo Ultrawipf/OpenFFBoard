@@ -48,7 +48,11 @@
 #define TIM_USER htim9 // Timer with full core clock speed available for the mainclass
 
 extern UART_HandleTypeDef huart1;
-#define UART_PORT huart1 // main uart port
+#define UART_PORT_EXT huart1 // main uart port
+
+extern UART_HandleTypeDef huart3;
+#define UART_PORT_MOTOR huart3 // motor uart port
+
 #define UART_BUF_SIZE 1 // How many bytes to expect via DMA
 
 

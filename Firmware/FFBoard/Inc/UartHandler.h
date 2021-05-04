@@ -9,14 +9,20 @@
 #define UARTHANDLER_H_
 
 #include "cppmain.h"
+#include "global_callbacks.h"
 
 class UartHandler {
 public:
-	static std::vector<UartHandler*> uartHandlers;
+	static std::vector<UartHandler*>& getUARTHandlers() {
+		static std::vector<UartHandler*> uartHandlers{};
+		return uartHandlers;
+	}
 
 	UartHandler();
 	virtual ~UartHandler();
-	virtual void uartRcv(char* buf);
+	virtual void uartRxComplete(UART_HandleTypeDef *huart);
+	virtual void uartTxComplete(UART_HandleTypeDef *huart);
+
 };
 
 #endif /* UARTHANDLER_H_ */
