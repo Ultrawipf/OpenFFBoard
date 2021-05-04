@@ -51,9 +51,6 @@ volatile uint32_t ADC3_BUF[ADC3_CHANNELS] = {0};
 extern ADC_HandleTypeDef hadc3;
 #endif
 
-volatile char uart_buf[UART_BUF_SIZE] = {0};
-
-
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc){
 	//Pulse braking mosfet if internal voltage is higher than supply.
 	if(hadc == &VSENSE_HADC)
@@ -87,16 +84,14 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 }
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
-	if(huart == &UART_PORT){
-		  // Received uart data
-		if(HAL_UART_Receive_IT(&UART_PORT,(uint8_t*)uart_buf,UART_BUF_SIZE) != HAL_OK){
-			pulseErrLed(); // Should never happen
-			return;
-		}
+	for(UartHandler* c : UartHandler::getUARTHandlers()){
+		c->uartRxComplete(huart);
+	}
+}
 
-		for(UartHandler* c : UartHandler::uartHandlers){
-			c->uartRcv((char*)uart_buf);
-		}
+void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart){
+	for(UartHandler* c : UartHandler::getUARTHandlers()){
+		c->uartTxComplete(huart);
 	}
 }
 
