@@ -234,7 +234,11 @@ void FFBWheel::send_report(){
 	//axes_manager->addAxesToReport(analogAxesReport, &count);
 
 	std::vector<int32_t>* axes = axes_manager->getAxisValues();
-	uint8_t count = axes->size();
+	uint8_t count = 0;
+	for(auto val : *axes){
+		setHidReportAxis(&reportHID,count++,val);
+	}
+
 	// Fill remaining values with analog inputs
 	for(auto &ain : analog_inputs){
 		std::vector<int32_t>* axes = ain->getAxes();
@@ -245,7 +249,7 @@ void FFBWheel::send_report(){
 		}
 	} // Fill rest
 	for(;count<analogAxisCount; count++){
-		setHidReportAxis(&reportHID,count++,0);
+		setHidReportAxis(&reportHID,count,0);
 	}
 
 	/*

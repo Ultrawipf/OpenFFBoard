@@ -188,7 +188,7 @@ int16_t NormalizedAxis::updateEndstop(){
 		return 0;
 	}
 	int32_t addtorque = clip<int32_t,int32_t>(abs(metric.current.pos)-0x7fff,-0x7fff,0x7fff);
-	addtorque *= (float)endstop_gain * 0.2f; // Apply endstop gain for stiffness
+	addtorque *= (float)endstop_gain * 0.15f; // Apply endstop gain for stiffness
 	addtorque *= -clipdir;
 
 	return clip<int32_t,int32_t>(addtorque,-0x7fff,0x7fff);

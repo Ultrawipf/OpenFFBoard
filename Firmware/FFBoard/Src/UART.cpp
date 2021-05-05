@@ -124,7 +124,6 @@ bool UARTPort::isTaken(){
 }
 
 
-
 void UARTPort::uartRxComplete(UART_HandleTypeDef *huart){
 	// Check if port matches this port
 	if(huart == &this->huart){
