@@ -29,8 +29,12 @@ public:
 
 	virtual uint32_t getCpr(); // Encoder counts per rotation
 
+
+	static const std::vector<class_entry<Encoder> > all_encoders;
+
 protected:
 	uint32_t cpr = 0;
 };
+
 
 #endif /* ENCODER_H_ */

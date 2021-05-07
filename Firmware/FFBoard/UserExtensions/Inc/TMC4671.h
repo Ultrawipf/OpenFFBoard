@@ -325,18 +325,20 @@ public:
 	TMC4671AENCConf aencconf;
 
 	//Encoder
-	int32_t getPos();
-	void setPos(int32_t pos);
+	Encoder* getEncoder() override;
+	bool hasIntegratedEncoder() override;
+	int32_t getPos() override;
+	void setPos(int32_t pos) override;
 	//uint32_t getPosCpr();
 	uint32_t getCpr();
 	void setCpr(uint32_t cpr);
-	EncoderType getType();
+	EncoderType getType() override;
 	uint32_t posToEnc(uint32_t pos);
 	uint32_t encToPos(uint32_t enc);
 
 
-	void saveFlash();
-	void restoreFlash();
+	void saveFlash() override;
+	void restoreFlash() override;
 	TMC4671FlashAddrs flashAddrs;
 
 	uint16_t encodeEncHallMisc();
@@ -395,8 +397,6 @@ private:
 	uint32_t initTime = 0;
 	bool manualEncAlign = false;
 	bool spiActive = false; // Flag for tx interrupt that the transfer was started by this instance
-
-	//cpp_freertos::BinarySemaphore spiSemaphore = cpp_freertos::BinarySemaphore(true);
 
 };
 
