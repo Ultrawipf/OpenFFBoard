@@ -6,6 +6,18 @@
  */
 
 #include "Encoder.h"
+#include "ClassChooser.h"
+#include "EncoderLocal.h"
+
+// 0-63 valid ids
+std::vector<class_entry<Encoder>> const Encoder::all_encoders =
+	{
+		add_class<Encoder, Encoder>(),
+#ifdef LOCALENCODER
+
+		add_class<EncoderLocal, Encoder>(),
+#endif
+};
 
 ClassIdentifier Encoder::info ={.name = "None" , .id=0, .unique = '0', .hidden = false};
 
@@ -58,3 +70,7 @@ float Encoder::getPos_f(){
 void Encoder::setPos(int32_t pos){
 
 }
+
+
+
+

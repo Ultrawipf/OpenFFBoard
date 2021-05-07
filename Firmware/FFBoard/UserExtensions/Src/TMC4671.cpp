@@ -1235,6 +1235,15 @@ int32_t TMC4671::getPos(){
 
 	return pos;
 }
+
+Encoder* TMC4671::getEncoder(){
+	return static_cast<Encoder*>(this);
+}
+
+bool TMC4671::hasIntegratedEncoder(){
+	return true;
+}
+
 void TMC4671::setPos(int32_t pos){
 	// Cpr = poles * 0xffff
 	/*

@@ -48,7 +48,7 @@ struct AxisConfig
 {
 	uint8_t drvtype = 0;
 	uint8_t enctype = 0;
-	bool invert = false;
+	//bool invert = false;
 };
 
 class Axis : public NormalizedAxis
@@ -66,7 +66,7 @@ public:
 	void setupTMC4671();
 	void setupTMC4671_enc(PhiE enctype);
 
-	void buildReply(std::string *reply, std::string r);
+	//void buildReply(std::string *reply, std::string r);
 
 	// Dynamic classes
 	void setDrvType(uint8_t drvtype);
@@ -94,7 +94,7 @@ public:
 	int32_t getEncValue(Encoder *enc, uint16_t degrees);
 
 	void setPower(uint16_t power) override;
-	int16_t updateEndstop();
+	//int16_t updateEndstop();
 
 	ParseStatus command(ParsedCommand* cmd,std::string* reply) override;
 	void processHidCommand(HID_Custom_Data_t *data) override;
@@ -110,8 +110,8 @@ private:
 	TIM_HandleTypeDef *timer_update;
 	AxisConfig conf;
 
-	MotorDriver *drv = nullptr;
-	Encoder *enc = nullptr;
+	std::unique_ptr<MotorDriver> drv = nullptr;
+	std::shared_ptr<Encoder> enc = nullptr;
 
 	bool tmcFeedForward = false; // Experimental
 

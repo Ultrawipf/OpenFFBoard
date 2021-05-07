@@ -64,8 +64,10 @@ void NormalizedAxis::restoreFlash(){
 	if(Flash_Read(flashAddrs.power, &power)){
 		setPower(power);
 	}
-
-	Flash_Read(flashAddrs.degrees, &degreesOfRotation);
+	uint16_t deg_t;
+	Flash_Read(flashAddrs.degrees, &deg_t);
+	this->degreesOfRotation = deg_t & 0x7fff;
+	this->invertAxis = (deg_t >> 15) & 0x1;
 	nextDegreesOfRotation = degreesOfRotation;
 
 	uint16_t effects;
@@ -80,7 +82,7 @@ void NormalizedAxis::restoreFlash(){
 void NormalizedAxis::saveFlash(){
 	Flash_Write(flashAddrs.endstop, fx_ratio_i | (endstop_gain << 8));
 	Flash_Write(flashAddrs.power, power);
-	Flash_Write(flashAddrs.degrees, degreesOfRotation);
+	Flash_Write(flashAddrs.degrees, (degreesOfRotation & 0x7fff) | (invertAxis << 15));
 	Flash_Write(flashAddrs.effects1, idlespringstrength | (damperIntensity << 8));
 }
 
@@ -176,7 +178,7 @@ float NormalizedAxis::getTorqueScaler(){
 int32_t NormalizedAxis::getTorque() { return metric.current.torque; }
 
 bool NormalizedAxis::isInverted() {
-	return invertAxis;
+	return invertAxis; // TODO store in flash
 }
 
 /*

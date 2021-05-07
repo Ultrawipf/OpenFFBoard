@@ -8,41 +8,17 @@
 #include "Axis.h"
 #include "voltagesense.h"
 
+
 //////////////////////////////////////////////
 /*
- * Sources for class choosers here
+ * Sources for class choosers are defined in MotorDriver and Encoder
  */
-
-// 0-63 valid ids
-const std::vector<class_entry<MotorDriver> > motor_sources =
-	{
-		add_class<MotorDriver, MotorDriver>(),
-#ifdef TMC4671DRIVER
-//		add_class<TMC4671, MotorDriver>(),
-		add_class<TMC_1, MotorDriver>(),
-		add_class<TMC_2, MotorDriver>(),
-//		add_class<TMC_3, MotorDriver>(),
-#endif	
-#ifdef PWMDRIVER
-		add_class<MotorPWM, MotorDriver>(),
-#endif
-};
-
-// 0-63 valid ids
-std::vector<class_entry<Encoder> > encoder_sources =
-	{
-		add_class<Encoder, Encoder>(),
-#ifdef LOCALENCODER
-		add_class<EncoderLocal, Encoder>(),
-#endif
-};
-
 
 
 // TODO class type for parser? (Simhub for example)
 //////////////////////////////////////////////
 
-Axis::Axis(char axis,volatile Control_t* control) : NormalizedAxis(axis), drv_chooser(motor_sources), enc_chooser(encoder_sources)
+Axis::Axis(char axis,volatile Control_t* control) : NormalizedAxis(axis), drv_chooser(MotorDriver::all_drivers),enc_chooser{Encoder::all_encoders}
 {
 	// Create HID FFB handler. Will receive all usb messages directly
 //	this->axis = axis;
@@ -65,8 +41,7 @@ Axis::Axis(char axis,volatile Control_t* control) : NormalizedAxis(axis), drv_ch
 
 Axis::~Axis()
 {
-	delete drv;
-	delete enc;
+
 }
 
 /*
@@ -96,22 +71,19 @@ void Axis::saveFlash(){
 uint8_t Axis::getDrvType(){
 	return (uint8_t)this->conf.drvtype;
 }
-uint8_t Axis::getEncType(){
-	return (uint8_t)this->conf.enctype;
-}
 
-bool Axis::hasEnc(){
-	return (this->enc != nullptr);
+uint8_t Axis::getEncType(){
+	if(drv->hasIntegratedEncoder()){
+		return 255;
+	}
+	return (uint8_t)this->conf.enctype;
 }
 
 
 void Axis::setPos(uint16_t val)
 {
-	if (hasEnc())
-	{
-		this->enc->setPos(val);
-		int32_t scaledEnc = getEncValue(enc, degreesOfRotation);
-		this->resetMetrics(scaledEnc);
+	if(this->drv != nullptr){
+		drv->getEncoder()->setPos(val);
 	}
 }
 
@@ -119,7 +91,7 @@ void Axis::setPos(uint16_t val)
  * Called from FFBWheel->Update() via AxesManager->Update()
  */
 void Axis::prepareForUpdate(){
-	if (drv == nullptr || enc == nullptr){
+	if (drv == nullptr){
 		pulseErrLed();
 		return;
 	}
@@ -128,11 +100,11 @@ void Axis::prepareForUpdate(){
 
 	// Scale encoder value to set rotation range
 	// Update a change of range only when new range is within valid range
-	if (nextDegreesOfRotation != degreesOfRotation && abs(getEncValue(enc, nextDegreesOfRotation)) < 0x7fff){
+	if (nextDegreesOfRotation != degreesOfRotation && abs(getEncValue(drv->getEncoder(), nextDegreesOfRotation)) < 0x7fff){
 		degreesOfRotation = nextDegreesOfRotation;
 	}
 	// scaledEnc now gets inverted if necessary in updateMetrics
-	int32_t scaledEnc = getEncValue(enc, degreesOfRotation);
+	int32_t scaledEnc = getEncValue(drv->getEncoder(), degreesOfRotation);
 
 	if (abs(scaledEnc) > 0xffff){
 		// We are way off. Shut down
@@ -142,13 +114,6 @@ void Axis::prepareForUpdate(){
 
 	this->updateMetrics(scaledEnc);
 
-	if (this->conf.drvtype == TMC4671::info.id){
-		TMC4671 *drv = static_cast<TMC4671 *>(this->drv);
-		//drv->Run(); // TODO thread!
-		if(drv->getState() == TMC_ControlState::HardError || drv->estopTriggered){
-			emergencyStop();
-		}
-	}
 }
 
 void Axis::updateDriveTorque(){
@@ -167,64 +132,33 @@ void Axis::setPower(uint16_t power)
 	// Update hardware limits for TMC for safety
 	if (this->conf.drvtype == TMC4671::info.id)
 	{
-		TMC4671 *drv = static_cast<TMC4671 *>(this->drv);
+		TMC4671 *drv = static_cast<TMC4671 *>(this->drv.get());
 		//tmclimits.pid_uq_ud = power;
 		//tmclimits.pid_torque_flux = power;
 		drv->setTorqueLimit(power);
 	}
 }
 
+
 // create and setup a motor driver
 void Axis::setDrvType(uint8_t drvtype)
 {
-	//	extern USBD_HandleTypeDef hUsbDeviceFS;
 	if (!drv_chooser.isValidClassId(drvtype))
 	{
 		return;
 	}
-
-	Encoder *drvenc = dynamic_cast<Encoder *>(drv); // Cast old driver to encoder
-	if (drv != nullptr)
-	{
-		if (enc != nullptr && drvenc != nullptr)
-		{
-			for (auto it = encoder_sources.begin(); it != encoder_sources.end(); it++)
-			{
-				// Delete drv from encoder sources if present
-				if (drvenc->getInfo().id == it->info.id)
-				{
-					encoder_sources.erase(it);
-					setEncType(0); // reset encoder
-					break;
-				}
-			}
-		}
-		delete drv;
-		drv = nullptr;
-	}
-
-	this->drv = drv_chooser.Create((uint16_t)drvtype);
-	if (this->drv == nullptr)
+	this->drv.reset(nullptr);
+	MotorDriver* drv = drv_chooser.Create((uint16_t)drvtype);
+	if (drv == nullptr)
 	{
 		return;
 	}
+	this->drv = std::unique_ptr<MotorDriver>(drv);
 	this->conf.drvtype = drvtype;
-	drvenc = dynamic_cast<Encoder *>(drv); // Cast new driver to encoder
-	// Special handling for tmc4671.
+
 	if (dynamic_cast<TMC4671 *>(drv))
 	{
 		setupTMC4671();
-	}
-
-	// Add driver to encoder sources if also implements encoder
-
-	if (drvenc != nullptr)
-	{
-		if (!enc_chooser.isValidClassId(drv->getInfo().id))
-		{
-			encoder_sources.push_back(make_class_entry<Encoder>(drv->getInfo(), drvenc));
-			setEncType(drv->getInfo().id); // Auto preset driver as encoder
-		}
 	}
 
 	if (!tud_connected())
@@ -246,7 +180,7 @@ void Axis::setupTMC4671()
 
 void Axis::setupTMC4671ForAxis(char axis)
 {
-	TMC4671 *drv = static_cast<TMC4671 *>(this->drv);
+	TMC4671 *drv = static_cast<TMC4671 *>(this->drv.get());
 	drv->setAxis(axis);
 	drv->restoreFlash();
 	tmclimits.pid_torque_flux = getPower();
@@ -267,23 +201,17 @@ void Axis::setupTMC4671ForAxis(char axis)
 void Axis::setEncType(uint8_t enctype)
 {
 
-	if (enc_chooser.isValidClassId(enctype))
+	if (enc_chooser.isValidClassId(enctype) && !drv->hasIntegratedEncoder())
 	{
-		if (enc != nullptr && enctype != drv->getInfo().id && enc->getInfo().id != drv->getInfo().id)
-		{
-			delete enc;
-		}
+
 		this->conf.enctype = (enctype);
-		this->enc = enc_chooser.Create(enctype);
-
-	}
-	//TODO: A QUICK FIX TO FORCE THE ENCODER TO POINT TO THE CORRECT TMC DRIVER INSTANCE
-	if (this->conf.drvtype == TMC4671::info.id)
-	{
-		this->enc = dynamic_cast<Encoder *>(this->drv);
+		this->enc = std::shared_ptr<Encoder>(enc_chooser.Create(enctype)); // Make new encoder
+		if(drv && !drv->hasIntegratedEncoder())
+			this->drv->setEncoder(this->enc);
 	}
 
-	int32_t scaledEnc = getEncValue(enc, degreesOfRotation);
+
+	int32_t scaledEnc = getEncValue(this->drv->getEncoder(), degreesOfRotation);
 	this->resetMetrics(scaledEnc);
 }
 
@@ -397,29 +325,34 @@ ParseStatus Axis::command(ParsedCommand *cmd, std::string *reply)
 		{
 			*reply += std::to_string(this->getEncType());
 		}
-		else if (cmd->type == CMDtype::set && enc_chooser.isValidClassId(cmd->val))
+		else if (cmd->type == CMDtype::set)
 		{
-			setEncType((cmd->val));
+			setEncType(cmd->val);
 		}
 		else
 		{
-			*reply += enc_chooser.printAvailableClasses();
+			if(this->drv->hasIntegratedEncoder()){
+				*reply += "255:"+std::string(this->drv->getInfo().name); // TODO dynamic?
+			}else{
+				*reply += enc_chooser.printAvailableClasses();
+			}
+
 		}
 	}
 	else if (cmd->cmd == "pos")
 	{
 		if (cmd->type == CMDtype::get)
 		{
-			*reply += std::to_string(this->enc->getPos());
+			*reply += std::to_string(this->drv->getEncoder()->getPos());
 		}
-		else if (cmd->type == CMDtype::set && this->enc != nullptr)
+		else if (cmd->type == CMDtype::set && this->drv->getEncoder() != nullptr)
 		{
-			this->enc->setPos(cmd->val);
+			this->drv->getEncoder()->setPos(cmd->val);
 		}
 		else
 		{
 			flag = ParseStatus::ERR;
-			*reply += "Err. Setup enctype first";
+			*reply += "Err. Setup encoder first";
 		}
 	}
 	else{
@@ -435,7 +368,7 @@ ParseStatus Axis::command(ParsedCommand *cmd, std::string *reply)
  */
 AxisConfig Axis::decodeConfFromInt(uint16_t val)
 {
-	// 0-7 Enc 8-15 Mot
+	// 0-6 enc, 7-12 Mot
 	AxisConfig conf;
 	conf.enctype = ((val)&0x3f);
 	conf.drvtype = ((val >> 6) & 0x3f);
