@@ -239,12 +239,6 @@ ShifterAnalog::G27ShifterButtonClient::G27ShifterButtonClient(OutputPin& csPin)
 
 }
 
-void ShifterAnalog::G27ShifterButtonClient::updateCSPin(OutputPin& csPin) {
-	external_spi.freeCsPin(spiConfig.cs);
-	spiConfig.cs = csPin;
-	external_spi.reserveCsPin(csPin);
-}
-
 
 bool ShifterAnalog::G27ShifterButtonClient::getReverseButton() {
 	external_spi.receive_DMA(reinterpret_cast<uint8_t*>(&buttonStates), sizeof(buttonStates),this);
@@ -255,10 +249,3 @@ uint16_t ShifterAnalog::G27ShifterButtonClient::getUserButtons() {
 	return buttonStates >> 4;
 }
 
-//const SPIConfig& ShifterAnalog::G27ShifterButtonClient::getConfig() const {
-//	return config;
-//}
-//
-//void ShifterAnalog::G27ShifterButtonClient::beginRequest(SPIPort::Pipe& pipe) {
-//	pipe.beginRx(reinterpret_cast<uint8_t*>(&buttonStates), sizeof(buttonStates));
-//}

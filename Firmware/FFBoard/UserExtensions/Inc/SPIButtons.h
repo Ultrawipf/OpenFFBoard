@@ -77,6 +77,7 @@ public:
 
 	const ClassIdentifier getInfo() override;
 	static ClassIdentifier info;
+	static bool isCreatable();
 };
 
 class SPI_Buttons_2 : public SPI_Buttons {
@@ -86,6 +87,7 @@ public:
 
 	const ClassIdentifier getInfo() override;
 	static ClassIdentifier info;
+	static bool isCreatable();
 };
 
 #endif /* SPIBUTTONS_H_ */

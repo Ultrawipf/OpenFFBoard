@@ -24,6 +24,10 @@ const ClassIdentifier SPI_Buttons_1::getInfo(){
 	return info;
 }
 
+bool SPI_Buttons_1::isCreatable(){
+	return (external_spi.getFreeCsPins().size() > 0);
+}
+
 ClassIdentifier SPI_Buttons_2::info = {
 		 .name = "SPI Buttons 2" ,
 		 .id=2,
@@ -32,6 +36,11 @@ ClassIdentifier SPI_Buttons_2::info = {
 const ClassIdentifier SPI_Buttons_2::getInfo(){
 	return info;
 }
+
+bool SPI_Buttons_2::isCreatable(){
+	return false;//(external_spi.getFreeCsPins().size() > 0);
+}
+
 
 // TODO check if pin is free
 SPI_Buttons::SPI_Buttons(uint16_t configuration_address, uint16_t configuration_address_2)

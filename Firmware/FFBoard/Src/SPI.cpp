@@ -234,6 +234,21 @@ SPIDevice::~SPIDevice() {
 	spiPort.freeCsPin(spiConfig.cs);
 }
 
+bool SPIDevice::updateCSPin(OutputPin& csPin){
+	if(csPin == spiConfig.cs){
+		return true;
+	}
+	if(!spiPort.isPinFree(csPin)){
+		return false;
+	}
+
+	if(!spiPort.freeCsPin(spiConfig.cs)){
+		return false;
+	}
+	spiConfig.cs = csPin;
+	return spiPort.reserveCsPin(csPin);
+}
+
 /*
  * Called before the spi transfer starts.
  * Can be used to take the semaphore and set CS pins by default

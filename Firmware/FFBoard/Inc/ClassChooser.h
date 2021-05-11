@@ -85,8 +85,8 @@ public:
 		return false;
 	}
 
-
-	std::string printAvailableClasses(){
+	// ignoredCreatableId will list as creatable even if it is not. Useful to make a single class list as valid if it was already chosen
+	std::string printAvailableClasses(int16_t ignoredCreatableId = 255){
 		std::string ret;
 		for(class_entry<T> cls : class_registry){
 			if(cls.info.hidden){
@@ -94,8 +94,8 @@ public:
 			}
 			ret+= std::to_string(cls.info.id);
 			ret+= ":";
-//			ret+= cls.isCreatable() ? "1" : "0"; // TODO check if creatable
-//			ret+= ":";
+			ret+= (cls.isCreatable() || ignoredCreatableId == cls.info.id) ? "1" : "0";
+			ret+= ":";
 			ret+= cls.info.name;
 			ret+='\n';
 		}

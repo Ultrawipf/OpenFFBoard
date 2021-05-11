@@ -97,6 +97,7 @@ public:
 	void assertChipSelect();
 	void clearChipSelect();
 
+	virtual bool updateCSPin(OutputPin& csPin);
 
 	virtual void spiTxCompleted(SPIPort* port) { }
 	virtual void spiRxCompleted(SPIPort* port) { }
