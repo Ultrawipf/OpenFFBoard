@@ -222,10 +222,10 @@ void FFBWheel::send_report(){
 	uint8_t shift = 0;
 	if(btns.size() != 0){
 		for(auto &btn : btns){
-			uint32_t buf = 0;
-			btn->readButtons(&buf);
+			uint64_t buf = 0;
+			uint8_t amount = btn->readButtons(&buf);
 			reportHID.buttons |= buf << shift;
-			shift += btn->getBtnNum();
+			shift += amount;
 		}
 	}
 

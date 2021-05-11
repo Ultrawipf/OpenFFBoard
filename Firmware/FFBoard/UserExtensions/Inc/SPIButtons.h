@@ -36,7 +36,7 @@ public:
 
 	virtual ~SPI_Buttons();
 
-	void readButtons(uint32_t* buf);
+	uint8_t readButtons(uint64_t* buf);
 
 	ParseStatus command(ParsedCommand* cmd,std::string* reply);
 	virtual std::string getHelpstring(){return "SPI Button (#=id): #.spi_btn_mode,#.spi_btncut,#.spi_btnpol,#.spi_btnnum\n";}
@@ -44,7 +44,7 @@ public:
 	void saveFlash();
 	void restoreFlash();
 
-	const uint8_t maxButtons = 32;
+	const uint8_t maxButtons = 64;
 	void printModes(std::string* reply);
 
 	void setMode(SPI_BtnMode mode);
@@ -60,9 +60,9 @@ private:
 	bool ready = false;
 	void setConfig(ButtonSourceConfig config);
 	virtual ButtonSourceConfig* getConfig();
-	void process(uint32_t* buf);
+	void process(uint64_t* buf);
 	uint8_t bytes = 4;
-	uint16_t mask = 0xff;
+	uint64_t mask = 0xff;
 	uint8_t offset = 0;
 
 	ButtonSourceConfig conf;

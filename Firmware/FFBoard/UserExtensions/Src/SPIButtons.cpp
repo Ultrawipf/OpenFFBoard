@@ -129,7 +129,7 @@ void SPI_Buttons::restoreFlash(){
 	setConfig(decodeIntToConf(conf_int, cs_num_int));
 }
 
-void SPI_Buttons::process(uint32_t* buf){
+void SPI_Buttons::process(uint64_t* buf){
 	if(offset){
 		if(this->conf.cutRight){
 			*buf = *buf >> offset;
@@ -143,16 +143,17 @@ void SPI_Buttons::process(uint32_t* buf){
 }
 
 __attribute__((optimize("-Ofast")))
-void SPI_Buttons::readButtons(uint32_t* buf){
-	memcpy(buf,this->spi_buf,std::min<uint8_t>(this->bytes,4));
+uint8_t SPI_Buttons::readButtons(uint64_t* buf){
+	memcpy(buf,this->spi_buf,std::min<uint8_t>(this->bytes,8));
 	process(buf); // give back last buffer
 
 	if(spiPort.isTaken() || !ready)
-		return;	// Don't wait.
+		return this->btnnum;	// Don't wait.
 
 	// CS pin and semaphore managed by spi port
 	spiPort.receive_DMA(spi_buf, bytes, this);
 
+	return this->btnnum;
 }
 
 void SPI_Buttons::printModes(std::string* reply){

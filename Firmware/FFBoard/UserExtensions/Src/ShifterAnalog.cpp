@@ -89,7 +89,7 @@ void ShifterAnalog::updateReverseState() {
 	}
 }
 
-int ShifterAnalog::getUserButtons(uint32_t* buf) {
+int ShifterAnalog::getUserButtons(uint64_t* buf) {
 	if (g27ShifterButtonClient) {
 		*buf = g27ShifterButtonClient->getUserButtons();
 		return g27ShifterButtonClient->numUserButtons;
@@ -98,12 +98,8 @@ int ShifterAnalog::getUserButtons(uint32_t* buf) {
 	return 0;
 }
 
-void ShifterAnalog::readButtons(uint32_t* buf){
+uint8_t ShifterAnalog::readButtons(uint64_t* buf){
 	updateAdc();
-
-//	if (g27ShifterButtonClient) {
-//		g27ShifterButtonClient->requestUpdate();
-//	}
 
 	updateReverseState();
 	calculateGear();
@@ -116,6 +112,8 @@ void ShifterAnalog::readButtons(uint32_t* buf){
 	if(gear > 0){
 		*buf |= 1 << (gear - 1 + numUserButtons);
 	}
+
+	return this->btnnum;
 }
 
 uint16_t ShifterAnalog::getBtnNum(){
@@ -178,6 +176,7 @@ void ShifterAnalog::setMode(ShifterMode newMode) {
 	}
 
 	mode = newMode;
+	this->btnnum = getBtnNum(); // Update amount
 }
 
 void ShifterAnalog::setCSPin(uint8_t new_cs_pin_num) {
