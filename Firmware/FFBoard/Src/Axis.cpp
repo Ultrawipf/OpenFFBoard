@@ -308,7 +308,7 @@ ParseStatus Axis::command(ParsedCommand *cmd, std::string *reply)
 		}
 		else
 		{
-			*reply += drv_chooser.printAvailableClasses();
+			*reply += drv_chooser.printAvailableClasses(this->conf.drvtype);
 		}
 	}
 	else if (cmd->cmd == "zeroenc")
@@ -332,9 +332,9 @@ ParseStatus Axis::command(ParsedCommand *cmd, std::string *reply)
 		else
 		{
 			if(this->drv->hasIntegratedEncoder()){
-				*reply += "255:"+std::string(this->drv->getInfo().name); // TODO dynamic?
+				*reply += "255:0:"+std::string(this->drv->getInfo().name); // TODO dynamic?
 			}else{
-				*reply += enc_chooser.printAvailableClasses();
+				*reply += enc_chooser.printAvailableClasses(this->conf.enctype);
 			}
 
 		}

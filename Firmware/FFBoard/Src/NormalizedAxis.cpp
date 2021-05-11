@@ -124,7 +124,7 @@ void NormalizedAxis::calculateAxisEffects(bool ffb_on){
 
 	// Always active damper
 	if(damperIntensity != 0){
-		float speedFiltered = damperFilter.process(metric.current.speed) * (float)damperIntensity;
+		float speedFiltered = damperFilter.process(metric.current.speed) * (float)damperIntensity * 1.5;
 		axisEffectTorque -= clip<float, int32_t>(speedFiltered, -damperClip, damperClip);
 	}
 }
