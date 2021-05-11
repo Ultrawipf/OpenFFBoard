@@ -37,7 +37,7 @@ void LocalButtons::setMask(uint32_t mask){
 	}
 }
 
-void LocalButtons::readButtons(uint32_t* buf){
+uint8_t LocalButtons::readButtons(uint64_t* buf){
 	uint8_t cur_btn = 0;
 	for(uint8_t i = 0;i<this->maxButtons;i++){
 		if(mask & (0x1 << i)){
@@ -49,6 +49,7 @@ void LocalButtons::readButtons(uint32_t* buf){
 			}
 		}
 	}
+	return this->btnnum;
 }
 
 void LocalButtons::saveFlash(){

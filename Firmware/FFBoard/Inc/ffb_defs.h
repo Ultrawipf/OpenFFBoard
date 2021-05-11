@@ -99,7 +99,7 @@
 
 struct  __attribute__((__packed__)) reportHID_t {
 		uint8_t id = 1;
-		uint32_t buttons = 0;
+		uint64_t buttons = 0;
 		int16_t X = 0;
 		int16_t Y = 0;
 		int16_t Z = 0;

@@ -17,7 +17,7 @@ class LocalButtons: public ButtonSource,CommandHandler{
 public:
 	LocalButtons();
 	virtual ~LocalButtons();
-	void readButtons(uint32_t* buf);
+	uint8_t readButtons(uint64_t* buf);
 
 	const ClassIdentifier getInfo();
 	static ClassIdentifier info;

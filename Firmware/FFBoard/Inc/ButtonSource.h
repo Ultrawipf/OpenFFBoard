@@ -24,7 +24,7 @@ public:
 	ButtonSource();
 	virtual ~ButtonSource();
 
-	virtual void readButtons(uint32_t* buf) = 0; // Return a bit field without offset of pressed buttons
+	virtual uint8_t readButtons(uint64_t* buf) = 0; // Return a bit field without offset of pressed buttons. Returns amount of button read
 	virtual uint16_t getBtnNum(); // Amount of readable buttons
 
 	const virtual ClassIdentifier getInfo() = 0;

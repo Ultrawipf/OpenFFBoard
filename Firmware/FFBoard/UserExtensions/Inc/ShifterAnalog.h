@@ -41,7 +41,7 @@ public:
 	static ClassIdentifier info;
 	static bool isCreatable() {return true;};
 
-	void readButtons(uint32_t* buf);
+	uint8_t readButtons(uint64_t* buf) override;
 	uint16_t getBtnNum(); // Amount of readable buttons
 
 	void saveFlash() override;
@@ -101,7 +101,7 @@ private:
 	void setCSPin(uint8_t new_cs_pin_num);
 	void calculateGear();
 	void updateReverseState();
-	int getUserButtons(uint32_t* buf);
+	int getUserButtons(uint64_t* buf);
 };
 
 #endif /* SHIFTERANALOG_H_ */
