@@ -448,9 +448,9 @@ void EffectsCalculator::setFilters(FFB_Effect *effect){
 	case FFB_EFFECT_CONSTANT:
 		fnptr = [=](std::unique_ptr<Biquad> &filter){
 			if (filter != nullptr)
-				filter->setBiquad(BiquadType::lowpass, (float)cfFilter_f / (float)calcfrequency, cfFilter_q, (float)0.0);
+				filter->setBiquad(BiquadType::lowpass, (float)cfFilter_f / (float)calcfrequency, cfFilter_qfloatScaler * (cfFilter_q+1), (float)0.0);
 			else
-				filter = std::make_unique<Biquad>(BiquadType::lowpass, (float)cfFilter_f / (float)calcfrequency, cfFilter_q, (float)0.0);
+				filter = std::make_unique<Biquad>(BiquadType::lowpass, (float)cfFilter_f / (float)calcfrequency, cfFilter_qfloatScaler * (cfFilter_q+1), (float)0.0);
 		};
 		break;
 	}
@@ -481,11 +481,14 @@ void EffectsCalculator::setEffectsArray(FFB_Effect *pEffects)
  */
 void EffectsCalculator::restoreFlash()
 {
-	uint16_t filter = calcfrequency / 2; // 500 = off
+	uint16_t filter;
 	if (Flash_Read(ADR_CF_FILTER, &filter))
 	{
-		setCfFilter(filter);
+		this->cfFilter_f = filter & 0x1FF;
+		this->cfFilter_q = (filter >> 9) & 0x7F;
 	}
+	setCfFilter(this->cfFilter_f,this->cfFilter_q);
+
 	uint16_t effects = 0;
 	if(Flash_Read(ADR_AXIS_EFFECTS1, &effects)){
 		gain.friction = (effects >> 8) & 0xff;
@@ -501,7 +504,8 @@ void EffectsCalculator::restoreFlash()
 // Saves parameters to flash
 void EffectsCalculator::saveFlash()
 {
-	Flash_Write(ADR_CF_FILTER, cfFilter_f);
+	uint16_t cffilter = (cfFilter_f & 0x1FF) | ((cfFilter_q & 0x7F) << 9);
+	Flash_Write(ADR_CF_FILTER, cffilter);
 	uint16_t effects = gain.inertia | (gain.friction << 8);
 	Flash_Write(ADR_AXIS_EFFECTS1, effects);
 	effects = gain.spring | (gain.damper << 8);
@@ -509,8 +513,10 @@ void EffectsCalculator::saveFlash()
 
 }
 
-void EffectsCalculator::setCfFilter(uint32_t freq)
+void EffectsCalculator::setCfFilter(uint32_t freq,uint8_t q)
 {
+	this->cfFilter_q = clip<uint8_t, uint8_t>(q,0,127);
+
 	if(freq == 0){
 		freq = calcfrequency / 2;
 	}
@@ -522,12 +528,10 @@ void EffectsCalculator::setCfFilter(uint32_t freq)
 		if (effects[i].type == FFB_EFFECT_CONSTANT)
 		{
 			effects[i].filter[0]->setFc(f);
+			effects[i].filter[0]->setQ(cfFilter_qfloatScaler * (cfFilter_q+1));
 		}
 	}
 }
-
-float EffectsCalculator::getCfFilterFreq() { return cfFilter_f; }
-
 
 void EffectsCalculator::logEffectType(uint8_t type){
 	if(type > 0 && type < 32){
@@ -579,13 +583,28 @@ ParseStatus EffectsCalculator::command(ParsedCommand *cmd, std::string *reply)
 	{
 		if (cmd->type == CMDtype::get)
 		{
-			*reply += std::to_string((int)getCfFilterFreq());
+			*reply += std::to_string(cfFilter_f);
 		}
 		else if (cmd->type == CMDtype::set)
 		{
-			setCfFilter(cmd->val);
+			setCfFilter(cmd->val,this->cfFilter_q);
 		}
-	}else if (cmd->cmd == "effects")
+	}
+	else if (cmd->cmd == "ffbfiltercf_q")
+	{
+		if (cmd->type == CMDtype::get)
+		{
+			*reply += std::to_string(cfFilter_q);
+		}
+		else if (cmd->type == CMDtype::set)
+		{
+			setCfFilter(this->cfFilter_f,cmd->val);
+		}else
+		{
+			*reply += "CF Q 0-127 = 0.01 - 1.28";
+		}
+	}
+	else if (cmd->cmd == "effects")
 	{
 		if (cmd->type == CMDtype::get)
 		{
