@@ -44,13 +44,12 @@ public:
 	virtual void setFilters(FFB_Effect* effect);
 	void setGain(uint8_t gain);
 	uint8_t getGain();
-	void setCfFilter(uint32_t f); // Set output filter frequency
-	float getCfFilterFreq();
+	void setCfFilter(uint32_t f,uint8_t q); // Set output filter frequency
 	void logEffectType(uint8_t type);
 
 	virtual ParseStatus command(ParsedCommand *cmd, std::string *reply);
 	virtual void processHidCommand(HID_Custom_Data_t* data);
-	virtual std::string getHelpstring() { return "\nEffect commands: effects,ffbfiltercf,spring,damper,friction,inertia.\n"; }
+	virtual std::string getHelpstring() { return "\nEffect commands: effects,ffbfiltercf,ffbfiltercf_q,spring,damper,friction,inertia.\n"; }
 
 	void setEffectsArray(FFB_Effect* pEffects);
 	FFB_Effect* effects = nullptr; // ptr to effects array in HidFFB
@@ -66,7 +65,9 @@ private:
 	float inertia_f = 20 , inertia_q = 0.2;
 	const uint32_t calcfrequency = 1000; // HID frequency 1khz
 	uint32_t cfFilter_f = calcfrequency/2; // 500 = off
-	const float cfFilter_q = 0.8;
+	uint8_t cfFilter_q = 70; // User settable
+	const float cfFilter_qfloatScaler = 0.01;
+
 	effect_gain_t gain;
 
 	uint32_t effects_used = 0;

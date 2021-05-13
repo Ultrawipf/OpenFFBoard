@@ -26,6 +26,11 @@ void Biquad::setFc(float Fc) {
     calcBiquad();
 }
 
+void Biquad::setQ(float Q) {
+    this->Q = Q;
+    calcBiquad();
+}
+
 float Biquad::process(float in) {
 	float out = in * a0 + z1;
     z1 = in * a1 + z2 - b1 * out;
