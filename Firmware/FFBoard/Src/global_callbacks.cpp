@@ -224,14 +224,14 @@ uint16_t const* tud_descriptor_string_cb(uint8_t index, uint16_t langid){
 	return usb_device->getUsbStringDesc(index, langid);
 }
 
-const uint8_t* tud_hid_descriptor_report_cb(){
+uint8_t const * tud_hid_descriptor_report_cb(uint8_t itf){
 	return UsbHidHandler::getHidDesc();
 }
 
 void tud_cdc_rx_cb(uint8_t itf){
 	pulseSysLed();
 	uint8_t buf[64];
-	uint32_t count = tud_cdc_read(buf, sizeof(buf));
+	uint32_t count = tud_cdc_n_read(itf,buf, sizeof(buf));
 	if(mainclass!=nullptr)
 		mainclass->cdcRcv((char*)buf,&count);
 }
@@ -246,7 +246,7 @@ void tud_cdc_tx_complete_cb(uint8_t itf){
 /* USB Out Endpoint callback
  * HID Out and Set Feature
  */
-void tud_hid_set_report_cb(uint8_t report_id, hid_report_type_t report_type, uint8_t const* buffer, uint16_t bufsize){
+void tud_hid_set_report_cb(uint8_t itf, uint8_t report_id, hid_report_type_t report_type, uint8_t const* buffer, uint16_t bufsize){
 	if(UsbHidHandler::globalHidHandler!=nullptr)
 		UsbHidHandler::globalHidHandler->hidOut(report_id,report_type,buffer,bufsize);
 
@@ -261,17 +261,16 @@ void tud_hid_set_report_cb(uint8_t report_id, hid_report_type_t report_type, uin
 /*
  * HID Get Feature
  */
-uint16_t tud_hid_get_report_cb(uint8_t report_id, hid_report_type_t report_type, uint8_t* buffer, uint16_t reqlen){
+uint16_t tud_hid_get_report_cb(uint8_t itf, uint8_t report_id, hid_report_type_t report_type,uint8_t* buffer, uint16_t reqlen){
 	if(UsbHidHandler::globalHidHandler != nullptr)
 		return UsbHidHandler::globalHidHandler->hidGet(report_id, report_type, buffer,reqlen);
 	return 0;
 }
-
 #ifdef MIDI
 MidiHandler* midihandler = nullptr;
 void tud_midi_rx_cb(uint8_t itf){
 	if(!midihandler) return;
-	if(tud_midi_n_receive(itf,MidiHandler::buf)){
+	if(tud_midi_n_receive(0,MidiHandler::buf)){
 		midihandler->midiRx(itf, MidiHandler::buf);
 	}
 }

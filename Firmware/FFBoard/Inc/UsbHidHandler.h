@@ -19,7 +19,7 @@ public:
 	UsbHidHandler();
 	virtual ~UsbHidHandler();
 	virtual void hidOut(uint8_t report_id, hid_report_type_t report_type, uint8_t const* buffer, uint16_t bufsize);
-	virtual uint16_t hidGet(uint8_t report_id, hid_report_type_t report_type, uint8_t* buffer, uint16_t reqlen);
+	virtual uint16_t hidGet(uint8_t report_id, hid_report_type_t report_type,uint8_t* buffer, uint16_t reqlen);
 	void registerHidCallback();
 
 	// HID report descriptor (For gamepad...)

@@ -65,10 +65,12 @@ void NormalizedAxis::restoreFlash(){
 		setPower(power);
 	}
 	uint16_t deg_t;
-	Flash_Read(flashAddrs.degrees, &deg_t);
-	this->degreesOfRotation = deg_t & 0x7fff;
-	this->invertAxis = (deg_t >> 15) & 0x1;
-	nextDegreesOfRotation = degreesOfRotation;
+	if(Flash_Read(flashAddrs.degrees, &deg_t)){
+		this->degreesOfRotation = deg_t & 0x7fff;
+		this->invertAxis = (deg_t >> 15) & 0x1;
+		nextDegreesOfRotation = degreesOfRotation;
+	}
+
 
 	uint16_t effects;
 	if(Flash_Read(flashAddrs.effects1, &effects)){

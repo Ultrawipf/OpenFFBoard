@@ -90,7 +90,7 @@ private:
 
 	std::unique_ptr<HidFFB> ffb;
 	std::unique_ptr<AxesManager> axes_manager;
-	TIM_HandleTypeDef* timer_update;
+	//TIM_HandleTypeDef* timer_update;
 
 	std::vector<std::unique_ptr<ButtonSource>> btns;
 	std::vector<std::unique_ptr<AnalogSource>> analog_inputs;

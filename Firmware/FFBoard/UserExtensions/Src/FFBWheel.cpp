@@ -268,9 +268,9 @@ void FFBWheel::emergencyStop(){
 }
 
 void FFBWheel::timerElapsed(TIM_HandleTypeDef* htim){
-	if(htim == this->timer_update){
-		control.update_flag = true;
-	}
+//	if(htim == this->timer_update){
+//		control.update_flag = true;
+//	}
 }
 
 
@@ -297,7 +297,6 @@ void FFBWheel::usbResume(){
 }
 
 void FFBWheel::usbInit(){
-	//usbInit_HID_Wheel(hUsbDeviceFS);
 	this->usbdev = std::make_unique<USBdevice>(&usb_devdesc_ffboard_composite,usb_cdc_hid_conf,&usb_ffboard_strings_default);
 	UsbHidHandler::setHidDesc(hid_ffb_desc);
 	usbdev->registerUsb();
