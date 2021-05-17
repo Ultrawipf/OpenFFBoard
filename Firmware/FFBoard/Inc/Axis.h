@@ -64,7 +64,6 @@ public:
 //												 "power,zeroenc,enctype,cpr,pos,degrees,esgain,fxratio,idlespring,spring.friction,damper,inertia,invert,drvtype,tmc.\n"; }
 												 "power,zeroenc,enctype,pos,degrees,esgain,fxratio,invert,drvtype,idlespring,axisdamper\n"; }
 	void setupTMC4671();
-	void setupTMC4671_enc(PhiE enctype);
 
 	//void buildReply(std::string *reply, std::string r);
 
@@ -107,7 +106,7 @@ private:
 
 	void send_report();
 
-	TIM_HandleTypeDef *timer_update;
+	//TIM_HandleTypeDef *timer_update;
 	AxisConfig conf;
 
 	std::unique_ptr<MotorDriver> drv = nullptr;

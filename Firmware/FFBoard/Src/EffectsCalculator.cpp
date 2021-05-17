@@ -130,12 +130,12 @@ void EffectsCalculator::calculateEffects(std::vector<std::unique_ptr<Axis>> &axe
 			forceVector = calcNonConditionEffectForce(effect);
 		}
 
-		if (effect->enableAxis == DIRECTION_ENABLE || effect->enableAxis & X_AXIS_ENABLE)
+		if (effect->enableAxis == DIRECTION_ENABLE || (effect->enableAxis & X_AXIS_ENABLE))
 		{
 			forceX += calcComponentForce(effect, forceVector, axes[0]->getMetrics(), 0, axisCount);
 			forceX = clip<int32_t, int32_t>(forceX, -0x7fff, 0x7fff); // Clip
 		}
-		if (validY && ((effect->enableAxis == DIRECTION_ENABLE) || effect->enableAxis & Y_AXIS_ENABLE))
+		if (validY && ((effect->enableAxis == DIRECTION_ENABLE) || (effect->enableAxis & Y_AXIS_ENABLE)))
 		{
 			forceY += calcComponentForce(effect, forceVector, axes[1]->getMetrics(), 1, axisCount);
 			forceY = clip<int32_t, int32_t>(forceY, -0x7fff, 0x7fff); // Clip

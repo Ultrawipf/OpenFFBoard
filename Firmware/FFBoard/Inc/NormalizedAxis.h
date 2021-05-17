@@ -93,7 +93,7 @@ private:
 	int32_t axisEffectTorque = 0;
 	uint8_t fx_ratio_i = 204; // Reduce effects to a certain ratio of the total power to have a margin for the endstop
 	uint16_t power = 2000;
-	float torqueScaler; // power * fx_ratio as a ratio between 0 & 1
+	float torqueScaler = 0; // power * fx_ratio as a ratio between 0 & 1
 	bool invertAxis = false;
 	uint8_t endstop_gain = 128; // Sets how much extra torque per count above endstop is added. High = stiff endstop. Low = softer
 

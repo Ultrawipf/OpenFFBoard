@@ -22,7 +22,7 @@ UsbHidHandler::~UsbHidHandler() {
 
 
 // Returns length
-uint16_t UsbHidHandler::hidGet(uint8_t report_id, hid_report_type_t report_type, uint8_t* buffer, uint16_t reqlen){
+uint16_t UsbHidHandler::hidGet(uint8_t report_id, hid_report_type_t report_type,uint8_t* buffer, uint16_t reqlen){
 	return 0;
 }
 

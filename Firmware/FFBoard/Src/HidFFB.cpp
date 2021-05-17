@@ -161,7 +161,7 @@ void HidFFB::free_effect(uint16_t idx){
  *
  * Handles block load reports and pool status which are requested after a new effect has been created
  */
-uint16_t HidFFB::hidGet(uint8_t report_id, hid_report_type_t report_type, uint8_t* buffer, uint16_t reqlen){
+uint16_t HidFFB::hidGet(uint8_t report_id, hid_report_type_t report_type,uint8_t* buffer, uint16_t reqlen){
 	// Feature gets go here
 
 	uint8_t id = report_id - FFB_ID_OFFSET;

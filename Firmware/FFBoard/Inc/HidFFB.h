@@ -22,8 +22,8 @@ public:
 	HidFFB();
 	virtual ~HidFFB();
 
-	void hidOut(uint8_t report_id, hid_report_type_t report_type, uint8_t const* buffer, uint16_t bufsize);
-	uint16_t hidGet(uint8_t report_id, hid_report_type_t report_type, uint8_t* buffer, uint16_t reqlen);
+	void hidOut(uint8_t report_id, hid_report_type_t report_type,const uint8_t* buffer, uint16_t bufsize) override;
+	uint16_t hidGet(uint8_t report_id, hid_report_type_t report_type,uint8_t* buffer, uint16_t reqlen) override;
 
 	uint32_t getRate(); // Returns an estimate of the hid effect update speed in hz
 	bool getFfbActive();
