@@ -50,16 +50,16 @@ void AxesManager::restoreFlash() {
 		val = 1;
 	}
 	this->setAxisCount(val);
-	for (auto &axis : axes) {
-		axis->restoreFlash();
-	}
+//	for (auto &axis : axes) {
+//		axis->restoreFlash();
+//	}
 }
 
 void AxesManager::saveFlash() {
 	Flash_Write(ADR_AXIS_COUNT, this->axis_count);
-	for (auto &axis : axes) {
-		axis->saveFlash();
-	}
+//	for (auto &axis : axes) {
+//		axis->saveFlash();
+//	}
 }
 
 void AxesManager::update() {
@@ -78,11 +78,7 @@ void AxesManager::updateTorque() {
 	}
 }
 
-//void AxesManager::addAxesToReport(int16_t** report, uint8_t* pCount) {
-//	for (std::size_t i=0; i < axes.size(); i++) {
-//			*(report[(*pCount)++]) = (int32_t)axes[i]->getLastScaledEnc();
-//	}
-//}
+
 std::vector<int32_t>* AxesManager::getAxisValues(){
 	for (std::size_t i=0; i < axes.size(); i++) {
 		this->axisValues[i] = axes[i]->getLastScaledEnc();

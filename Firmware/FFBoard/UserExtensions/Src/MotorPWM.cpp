@@ -20,7 +20,7 @@ const std::vector<std::string> RC_SpeedNames = {"20ms","15ms:1","10ms","5ms"};
 const std::vector<std::string> PWM_SpeedNames = {"3khz","9khz","17khz","24khz"};
 // Names of SpeedPWM_DRV
 const std::vector<std::string> PwmModeNames = {"RC PPM","0%-50%-100% Centered","0-100% PWM/DIR","0-100% dual PWM"};
-
+bool MotorPWM::pwmDriverInUse = false;
 
 ClassIdentifier MotorPWM::info = {
 		 .name = "PWM" ,
@@ -29,6 +29,10 @@ ClassIdentifier MotorPWM::info = {
  };
 const ClassIdentifier MotorPWM::getInfo(){
 	return info;
+}
+
+bool MotorPWM::isCreatable(){
+	return !MotorPWM::pwmDriverInUse; // Creatable if not already in use for example by another axis
 }
 
 void MotorPWM::turn(int16_t power){
@@ -167,7 +171,7 @@ SpeedPWM_DRV MotorPWM::getPwmSpeed(){
 
 
 MotorPWM::MotorPWM() {
-
+	MotorPWM::pwmDriverInUse = true;
 	restoreFlash();
 	//HAL_TIM_Base_Start_IT(timer);
 	setPwmSpeed(pwmspeed);
@@ -193,6 +197,7 @@ void MotorPWM::restoreFlash(){
 
 
 MotorPWM::~MotorPWM() {
+	MotorPWM::pwmDriverInUse = false;
 	HAL_TIM_PWM_Stop(timer, channel_1);
 	HAL_TIM_PWM_Stop(timer, channel_2);
 	HAL_TIM_PWM_Stop(timer, channel_3);

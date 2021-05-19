@@ -32,7 +32,7 @@ public:
 
 	static ClassIdentifier info;
 	const ClassIdentifier getInfo();
-	static bool isCreatable() {return true;};
+	static bool isCreatable();
 
 	void turn(int16_t power);
 	void stopMotor();
@@ -51,6 +51,8 @@ public:
 	virtual std::string getHelpstring(){return "PWM: pwm_mode,pwm_speed\n";}
 
 	void setPWM(uint32_t value,uint8_t ccr);
+
+	static bool pwmDriverInUse;
 
 private:
 	float tFreq = 1; // Frequency scaling. Timer freq in MHz
