@@ -109,7 +109,7 @@ private:
 	//TIM_HandleTypeDef *timer_update;
 	AxisConfig conf;
 
-	std::unique_ptr<MotorDriver> drv = nullptr;
+	std::unique_ptr<MotorDriver> drv = std::make_unique<MotorDriver>(); // dummy
 	std::shared_ptr<Encoder> enc = nullptr;
 
 	bool tmcFeedForward = false; // Experimental

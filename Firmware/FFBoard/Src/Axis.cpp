@@ -36,7 +36,7 @@ Axis::Axis(char axis,volatile Control_t* control) : NormalizedAxis(axis), drv_ch
 		this->flashAddrs = AxisFlashAddrs({ADR_AXIS3_CONFIG});
 	}
 
-//	restoreFlash(); // Load parameters (Don't call called later from FFBWheel)
+	restoreFlash(); // Load parameters
 }
 
 Axis::~Axis()
@@ -60,12 +60,11 @@ void Axis::restoreFlash(){
 	setDrvType(this->conf.drvtype);
 	setEncType(this->conf.enctype);
 }
-// Saves parameters to flash
+// Saves parameters to flash. Inherited via Normalized Axis. Must call parent too
 void Axis::saveFlash(){
 	NormalizedAxis::saveFlash();
 	Flash_Write(flashAddrs.config, Axis::encodeConfToInt(this->conf));
 }
-
 
 
 uint8_t Axis::getDrvType(){

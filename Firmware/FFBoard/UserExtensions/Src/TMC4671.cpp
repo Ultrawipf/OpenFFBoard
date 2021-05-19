@@ -22,9 +22,7 @@ ClassIdentifier TMC_1::info = {
 	.unique = 'X'
 };
 
-const ClassIdentifier TMC_1::getInfo(){
-	return info;
-}
+
 
 
 bool TMC_1::isCreatable() {
@@ -38,9 +36,7 @@ ClassIdentifier TMC_2::info = {
 	.unique = 'Y'
 };
 
-const ClassIdentifier TMC_2::getInfo(){
-	return info;
-}
+
 
 
 bool TMC_2::isCreatable() {
@@ -111,23 +107,23 @@ const ClassIdentifier TMC4671::getInfo() {
 }
 
 
-
 void TMC4671::setAddress(uint8_t address){
-	this->setAxis((char)('W'+address));
-}
-
-// Default to SPI CS channel 0 if only using the X axis
-void TMC4671::setAxis(char axis){
-	this->axis = axis;
-	if (axis == 'X'){
+	if (address == 1){
 		this->flashAddrs = TMC4671FlashAddrs({ADR_TMC1_MOTCONF, ADR_TMC1_CPR, ADR_TMC1_ENCA, ADR_TMC1_OFFSETFLUX, ADR_TMC1_TORQUE_P, ADR_TMC1_TORQUE_I, ADR_TMC1_FLUX_P, ADR_TMC1_FLUX_I});
-	}else if (axis == 'Y')
+	}else if (address == 2)
 	{
 		this->flashAddrs = TMC4671FlashAddrs({ADR_TMC2_MOTCONF, ADR_TMC2_CPR, ADR_TMC2_ENCA, ADR_TMC2_OFFSETFLUX, ADR_TMC2_TORQUE_P, ADR_TMC2_TORQUE_I, ADR_TMC2_FLUX_P, ADR_TMC2_FLUX_I});
-	}else if (axis == 'Z')
+	}else if (address == 3)
 	{
 		this->flashAddrs = TMC4671FlashAddrs({ADR_TMC3_MOTCONF, ADR_TMC3_CPR, ADR_TMC3_ENCA, ADR_TMC3_OFFSETFLUX, ADR_TMC3_TORQUE_P, ADR_TMC3_TORQUE_I, ADR_TMC3_FLUX_P, ADR_TMC3_FLUX_I});
 	}
+	//this->setAxis((char)('W'+address));
+}
+
+
+void TMC4671::setAxis(char axis){
+	this->axis = axis;
+	this->info.unique = axis;
 }
 
 uint8_t TMC4671::getAxis(){

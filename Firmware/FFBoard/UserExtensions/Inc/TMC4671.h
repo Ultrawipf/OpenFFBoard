@@ -405,7 +405,7 @@ class TMC_1 : public TMC4671 {
 public:
 	TMC_1() : TMC4671{motor_spi,OutputPin(*SPI1_SS1_GPIO_Port, SPI1_SS1_Pin),1} {}
 
-	const ClassIdentifier getInfo() override;
+	//const ClassIdentifier getInfo() override;
 	static bool isCreatable();
 	static ClassIdentifier info;
 };
@@ -414,7 +414,7 @@ class TMC_2 : public TMC4671 {
 public:
 	TMC_2() : TMC4671{motor_spi,OutputPin(*SPI1_SS2_GPIO_Port, SPI1_SS2_Pin),2} {}
 
-	const ClassIdentifier getInfo() override;
+	//const ClassIdentifier getInfo() override;
 	static bool isCreatable();
 	static ClassIdentifier info;
 };

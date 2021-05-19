@@ -12,18 +12,13 @@
 #include "PersistentStorage.h"
 #include "ffb_defs.h"
 #include "hid_cmd_defs.h"
-//#include "CommandHandler.h"
-//#include "HidCommandHandler.h"
-//#include "EffectsCalculator.h"
+
 #include "cmdParser.h"
 #include "vector"
 #include "map"
 #include <memory>
 
 class EffectsCalculator;
-//struct Control_t;
-
-
 
 
 class AxesManager : public PersistentStorage
@@ -54,7 +49,7 @@ public:
 
 	void update();
 	void updateTorque();
-	//void addAxesToReport(int16_t **report, uint8_t *pCount);
+
 	std::vector<int32_t>* getAxisValues();
 
 	void emergencyStop();
