@@ -37,7 +37,7 @@ public:
 	virtual ~CanBridge();
 
 	static ClassIdentifier info;
-	const ClassIdentifier getInfo();
+	const ClassIdentifier getInfo() override;
 	static bool isCreatable() {return true;};
 	ParseStatus command(ParsedCommand* cmd,std::string* reply);
 	void sendMessage(uint32_t id, uint64_t msg,uint8_t len);
@@ -45,12 +45,12 @@ public:
 	void canRxPendCallback(CAN_HandleTypeDef *hcan,uint8_t* rxBuf,CAN_RxHeaderTypeDef* rxHeader,uint32_t fifo);
 	void canErrorCallback(CAN_HandleTypeDef *hcan);
 	std::string messageToString();
-	void cdcRcv(char* Buf, uint32_t *Len);
+	void cdcRcv(char* Buf, uint32_t *Len) override;
 	CAN_HandleTypeDef* CanHandle = &CANPORT;
 
 	void setCanSpeed(uint32_t speed);
 
-	virtual std::string getHelpstring(){return "CAN commands:\ncan?<id>=<msgint> send message. Or can? (last received message). canspd (speed)";}
+	virtual std::string getHelpstring(){return "CAN commands:\ncan?[id]=[msgint] send message. Or can? (last received message). canspd (speed).\nThis class is GVRET/SavvyCAN compatible!";}
 
 
 private:
