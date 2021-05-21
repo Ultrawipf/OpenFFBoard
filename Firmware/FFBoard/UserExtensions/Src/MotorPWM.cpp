@@ -140,12 +140,11 @@ void MotorPWM::setPwmSpeed(SpeedPWM_DRV spd){
 		pwmInitTimer(timer, channel_2,period,prescaler);
 		pwmInitTimer(timer, channel_3,period,prescaler);
 		pwmInitTimer(timer, channel_4,period,prescaler);
-
+		HAL_TIM_MspPostInit(timer);
 //		setPWM_HAL(0, timer, channel_1, period);
 //		pwmInitTimer(timer, channel_2,period,prescaler);
 //		setPWM_HAL(0, timer, channel_2, period);
-
-
+		turn(0);
 	}
 }
 
@@ -208,6 +207,7 @@ MotorPWM::~MotorPWM() {
 
 void MotorPWM::startMotor(){
 	active = true;
+	turn(0);
 }
 
 void MotorPWM::stopMotor(){
@@ -265,9 +265,7 @@ ParseStatus MotorPWM::command(ParsedCommand* cmd,std::string* reply){
 
 
 
-
-
-
+cpp_freertos::MutexStandard pwmTimMutex;
 void pwmInitTimer(TIM_HandleTypeDef* timer,uint32_t channel,uint32_t period,uint32_t prescaler){
 	timer->Instance->ARR = period;
 	timer->Instance->PSC = prescaler;
@@ -279,10 +277,12 @@ void pwmInitTimer(TIM_HandleTypeDef* timer,uint32_t channel,uint32_t period,uint
 	sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
 	sConfigOC.OCIdleState = TIM_OCIDLESTATE_RESET;
 	sConfigOC.OCNIdleState = TIM_OCNIDLESTATE_RESET;
+	pwmTimMutex.Lock();
+	HAL_TIM_PWM_Stop(timer, channel);
 	HAL_TIM_PWM_ConfigChannel(timer, &sConfigOC, channel);
-
 	//setPWM_HAL(0,timer,channel,period);
 	HAL_TIM_PWM_Start(timer, channel);
+	pwmTimMutex.Unlock();
 
 }
 

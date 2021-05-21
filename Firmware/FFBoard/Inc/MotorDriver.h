@@ -24,7 +24,7 @@ public:
 	const ClassIdentifier getInfo();
 	static const std::vector<class_entry<MotorDriver>> all_drivers;
 
-	virtual void turn(int16_t power); // Turn the motor with positive/negative power. Range should be full signed 16 bit
+	virtual void turn(int16_t power);
 	virtual void stopMotor();
 	virtual void startMotor();
 	virtual void emergencyStop();
