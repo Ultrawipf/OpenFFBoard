@@ -9,11 +9,6 @@
 #ifdef PWMDRIVER
 
 /*
- * Contains motor drivers based on PWM generation
- */
-
-
-/*
  * Mapping of names for ModePWM_DRV
  */
 const std::vector<std::string> RC_SpeedNames = {"20ms","15ms:1","10ms","5ms"};

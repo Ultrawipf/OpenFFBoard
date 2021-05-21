@@ -34,7 +34,7 @@ bool CommandHandler::logsEnabled(){
 	return logEnabled;
 }
 
-/*
+/**
  * Enables or disables logs sent by "logSerial"
  */
 void CommandHandler::setLogsEnabled(bool enable){
@@ -42,10 +42,10 @@ void CommandHandler::setLogsEnabled(bool enable){
 }
 
 
-/*
- * Implement this function
- * MUST return not found when no valid command was found or if a help command or similar was parsed
- * When it returns OK or FAIL parsing is normally stopped after this class and the command is not sent to others
+/**
+ * Implement this function.
+ * MUST return not found when no valid command was found or if a help command or similar was parsed.
+ * When it returns OK or FAIL parsing is normally stopped after this class and the command is not sent to others.
  * A command can not start with "!" or contain ">" anywhere in the reply or command name.
  */
 ParseStatus CommandHandler::command(ParsedCommand* cmd,std::string* reply){
@@ -55,6 +55,10 @@ ParseStatus CommandHandler::command(ParsedCommand* cmd,std::string* reply){
 	return ParseStatus::NOT_FOUND;
 }
 
+/**
+ * Sends a formatted reply without being prompted by a command.
+ * Useful for sending periodic data or with a large delay to a listener on the PC
+ */
 void CommandHandler::sendSerial(std::string cmd,std::string string, char prefix){
 	if(!tud_ready())
 		return;
@@ -70,8 +74,8 @@ void CommandHandler::sendSerial(std::string cmd,std::string string, char prefix)
 	tud_cdc_n_write_flush(0);
 }
 
-/*
- * Sends log info
+/**
+ * Sends log info back
  */
 void CommandHandler::logSerial(std::string string){
 	if(!tud_ready() || !logEnabled)

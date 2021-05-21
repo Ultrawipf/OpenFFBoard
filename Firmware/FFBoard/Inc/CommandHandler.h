@@ -12,9 +12,11 @@
 
 enum class ParseStatus : uint8_t {NOT_FOUND,OK,ERR,OK_CONTINUE,NO_REPLY};
 
-/*
- * Implements an interface for parsed command handlers
- * Adds itself to a global vector of handlers that can be called from the main class when a command gets parsed
+/**
+ * Implements an interface for parsed command handlers.
+ *
+ * Adds itself to a global vector of handlers that can be called from the main class when a command gets parsed.
+ *
  * For example motor drivers and button sources can implement this to easily get serial commands
  */
 class CommandHandler {

@@ -13,7 +13,7 @@
 
 ClassIdentifier MotorDriver::info ={.name = "None" , .id=0, .unique = '0', .hidden = false};
 
-/*
+/**
  * Add available motor drivers here.
  * ID must be unique to a motor driver. 0-63
  */

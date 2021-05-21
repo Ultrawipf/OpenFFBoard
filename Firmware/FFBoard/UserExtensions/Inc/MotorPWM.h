@@ -25,6 +25,12 @@ enum class ModePWM_DRV : uint8_t {RC_PWM=0,CENTERED_PWM=1,PWM_DIR=2,PWM_DUAL=3};
 enum class SpeedPWM_DRV : uint8_t {LOW=0,MID=1,HIGH=2,VERYHIGH=3};
 
 
+/**
+ * Contains motor drivers methods based on PWM generation.
+ *
+ * Can output different types of PWM signals based on a torque input.
+ */
+
 class MotorPWM: public MotorDriver,public CommandHandler,public PersistentStorage{
 public:
 	MotorPWM();

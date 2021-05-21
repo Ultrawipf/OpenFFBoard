@@ -15,7 +15,7 @@
 #include "PersistentStorage.h"
 #include "SPI.h"
 
-/*
+/**
  * Button mapper for analog (Logitech G2x) shifters (6 gears + reverse) optionally SPI buttons on G27.
  *
  * Connection:

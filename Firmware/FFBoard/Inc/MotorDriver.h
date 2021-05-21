@@ -33,7 +33,7 @@ public:
 
 	virtual Encoder* getEncoder(); // Encoder is managed by the motor driver. Must always return an encoder
 
-	/*
+	/**
 	 * Can pass an external encoder if driver has no integrated encoder
 	 * This allows a driver to get an external encoder assigned if it requires one and has the capability of using external encoders
 	 */

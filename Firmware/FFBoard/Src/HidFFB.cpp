@@ -35,7 +35,7 @@ bool HidFFB::HID_SendReport(uint8_t *report,uint16_t len){
 	return tud_hid_report(0, report, len);
 }
 
-/*
+/**
  * Calculates the frequency of hid out reports
  */
 uint32_t HidFFB::getRate(){
@@ -48,7 +48,7 @@ uint32_t HidFFB::getRate(){
 	}
 }
 
-/*
+/**
  * Sends a status report for a specific effect
  */
 void HidFFB::sendStatusReport(uint8_t effect){
@@ -67,7 +67,7 @@ void HidFFB::sendStatusReport(uint8_t effect){
 }
 
 
-/*
+/**
  * Called when HID OUT data is received via USB
  */
 void HidFFB::hidOut(uint8_t report_id, hid_report_type_t report_type, uint8_t const* buffer, uint16_t bufsize){
@@ -155,7 +155,7 @@ void HidFFB::free_effect(uint16_t idx){
 	}
 }
 
-/*
+/**
  * Called on HID feature GET events
  * Any reply is assigned to the return buffer
  *
