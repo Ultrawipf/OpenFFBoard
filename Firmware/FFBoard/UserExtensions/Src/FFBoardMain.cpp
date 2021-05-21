@@ -24,7 +24,9 @@ const ClassIdentifier FFBoardMain::getInfo(){
 	return info;
 }
 
-
+/**
+ * Called by the CDC serial port when data is received
+ */
 void FFBoardMain::cdcRcv(char* Buf, uint32_t *Len){
 
 	systemCommands->addBuf(Buf, Len,!usb_busy_retry);
@@ -39,7 +41,7 @@ ParseStatus FFBoardMain::command(ParsedCommand *cmd,std::string* reply){
 
 
 
-/*
+/**
  * Global callback if cdc transfer is finished. Used to retry a failed transfer
  */
 void FFBoardMain::cdcFinished(uint8_t itf = 0){
@@ -48,20 +50,34 @@ void FFBoardMain::cdcFinished(uint8_t itf = 0){
 	}
 }
 
+/**
+ * Called during the startup
+ * Should initialize a USBdevice and call registerUsb()
+ */
 void FFBoardMain::usbInit(){
 	// Create the usb config if this is not overridden
 	this->usbdev = std::make_unique<USBdevice>(&usb_devdesc_ffboard_composite,usb_cdc_conf,&usb_ffboard_strings_default);
 	usbdev->registerUsb();
 }
 
-// Virtual stubs
+/**
+ * Called in the default thread with no delay
+ * Can be reimplemented by custom main classes but should not block
+ */
 void FFBoardMain::update(){
 
 }
 
+/**
+ * Called when the usb port is disconnected
+ */
 void FFBoardMain::usbSuspend(){
 
 }
+
+/**
+ * Called when the usb port is connected
+ */
 void FFBoardMain::usbResume(){
 
 }

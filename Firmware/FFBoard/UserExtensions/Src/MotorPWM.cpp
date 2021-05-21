@@ -83,7 +83,7 @@ void MotorPWM::turn(int16_t power){
 	}
 }
 
-/*
+/**
  * Setup the timer for different frequency presets.
  */
 void MotorPWM::setPwmSpeed(SpeedPWM_DRV spd){
@@ -149,7 +149,7 @@ void MotorPWM::setPwmSpeed(SpeedPWM_DRV spd){
 	}
 }
 
-/*
+/**
  * Updates pwm pulse length
  */
 void MotorPWM::setPWM(uint32_t value,uint8_t ccr){

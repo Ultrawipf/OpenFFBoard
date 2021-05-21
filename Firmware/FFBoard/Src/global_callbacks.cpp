@@ -51,6 +51,9 @@ volatile uint32_t ADC3_BUF[ADC3_CHANNELS] = {0};
 extern ADC_HandleTypeDef hadc3;
 #endif
 
+/**
+ * Callback after an adc finished conversion
+ */
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc){
 	//Pulse braking mosfet if internal voltage is higher than supply.
 	if(hadc == &VSENSE_HADC)
@@ -76,7 +79,9 @@ void HAL_TIM_PeriodElapsedCallback_CPP(TIM_HandleTypeDef* htim) {
 	}
 }
 
-
+/**
+ * Callback for GPIO interrupts
+ */
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 	for(ExtiHandler* c : ExtiHandler::extiHandlers){
 		c->exti(GPIO_Pin);
@@ -243,7 +248,8 @@ void tud_cdc_tx_complete_cb(uint8_t itf){
 
 
 
-/* USB Out Endpoint callback
+/**
+ * USB Out Endpoint callback
  * HID Out and Set Feature
  */
 void tud_hid_set_report_cb(uint8_t itf, uint8_t report_id, hid_report_type_t report_type, uint8_t const* buffer, uint16_t bufsize){
@@ -258,7 +264,7 @@ void tud_hid_set_report_cb(uint8_t itf, uint8_t report_id, hid_report_type_t rep
 
 }
 
-/*
+/**
  * HID Get Feature
  */
 uint16_t tud_hid_get_report_cb(uint8_t itf, uint8_t report_id, hid_report_type_t report_type,uint8_t* buffer, uint16_t reqlen){
@@ -268,6 +274,9 @@ uint16_t tud_hid_get_report_cb(uint8_t itf, uint8_t report_id, hid_report_type_t
 }
 #ifdef MIDI
 MidiHandler* midihandler = nullptr;
+/**
+ * Midi receive callback
+ */
 void tud_midi_rx_cb(uint8_t itf){
 	if(!midihandler) return;
 	if(tud_midi_n_receive(0,MidiHandler::buf)){
@@ -276,7 +285,7 @@ void tud_midi_rx_cb(uint8_t itf){
 }
 #endif
 
-/*
+/**
  * Called on usb disconnect and suspend
  */
 void tud_suspend_cb(){
@@ -286,7 +295,7 @@ void tud_umount_cb(){
 	mainclass->usbSuspend();
 }
 
-/*
+/**
  * Called on usb mount
  */
 void tud_mount_cb(){

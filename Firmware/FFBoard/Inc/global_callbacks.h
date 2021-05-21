@@ -15,7 +15,10 @@
 
 #include <vector>
 
-// Helper to add a class to a handler
+/**
+ * Helper function to add an instance pointer to a callback vector
+ * Will check if it is already present and return with no change
+ */
 template <class C> void addCallbackHandler(std::vector<C>& vec, C instance){
 	for(uint8_t i = 0; i < vec.size(); i++){
 		if( (vec)[i] == instance)
@@ -24,6 +27,9 @@ template <class C> void addCallbackHandler(std::vector<C>& vec, C instance){
 	vec.push_back(instance);
 }
 
+/**
+ * Helper function to remove an instance pointer from a callback vector
+ */
 template <class C> void removeCallbackHandler(std::vector<C>& vec, C instance){
 	for (uint8_t i = 0; i < vec.size(); i++){
 		if( (vec)[i] == instance){
