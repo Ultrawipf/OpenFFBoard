@@ -17,7 +17,8 @@ Ledstruct_t clipled{
 	0,0,0,LED_CLIP_GPIO_Port,LED_CLIP_Pin
 };
 
-/* Blinks led x times with period in ms
+/**
+ * Blinks led x times with period in ms
  * 0 blinks causes led to blink forever.
  * To stop blinking set period and blinks to 0
  */
@@ -62,7 +63,6 @@ void blinkClipLed(uint16_t period,uint16_t blinks){
 }
 
 
-
 void updateLed(Ledstruct* led){
 	// If led has an effect (period != 0) and time is up do something
 	if(led->period != 0 && HAL_GetTick() > led->tick+led->period){
@@ -80,6 +80,9 @@ void updateLed(Ledstruct* led){
 	}
 }
 
+/**
+ * Must be called periodically to update the state of LEDs
+ */
 void updateLeds(){
 	updateLed(&clipled);
 	updateLed(&errled);

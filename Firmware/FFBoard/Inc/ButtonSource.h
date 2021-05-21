@@ -11,20 +11,20 @@
 #include "cppmain.h"
 #include "ChoosableClass.h"
 #include "PersistentStorage.h"
-//#include "CommandHandler.h"
 
 
-
-/*
- * All button sources have the ability to parse commands.
- * If a command is supported set "commandsEnabled(true)" and implement command function from CommandHandler
+/**
+ * A button source can return up to 64 buttons
  */
 class ButtonSource : public virtual ChoosableClass,public PersistentStorage {
 public:
 	ButtonSource();
 	virtual ~ButtonSource();
-
-	virtual uint8_t readButtons(uint64_t* buf) = 0; // Return a bit field without offset of pressed buttons. Returns amount of button read
+	/**
+	 * Return a bit field without offset of pressed buttons in the supplied buffer.
+	 * Returns amount of button read.
+	 */
+	virtual uint8_t readButtons(uint64_t* buf) = 0;
 	virtual uint16_t getBtnNum(); // Amount of readable buttons
 
 	const virtual ClassIdentifier getInfo() = 0;

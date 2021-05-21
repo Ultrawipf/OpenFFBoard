@@ -19,8 +19,8 @@ USBdevice::~USBdevice() {
 
 }
 
-/*
- * Registers the usb callbacks and starts the tinyusb thread
+/**
+ * Registers the usb callbacks and starts the tinyusb main thread
  */
 void USBdevice::registerUsb(){
 	// Global callback pointer
@@ -38,7 +38,9 @@ void USBdevice::Run(){
 	}
 }
 
-// Generates a unique id string from the hardware id
+/**
+ *  Generates a unique id string from the hardware id
+ */
 std::string USBdevice::getUsbSerial(){
 	std::string serial = std::to_string(HAL_GetUIDw0()) + std::to_string(HAL_GetUIDw1()) + std::to_string(HAL_GetUIDw2());
 
@@ -53,6 +55,9 @@ const uint8_t* USBdevice::getUsbConfigurationDesc(uint8_t index){
 	return desc_conf;
 }
 
+/**
+ * Returns a usb formatted string from the stringtable
+ */
 uint16_t* USBdevice::getUsbStringDesc(uint8_t index,uint16_t langid){
 	(void) langid;
 	uint16_t chr_count = 0;
