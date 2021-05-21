@@ -70,7 +70,7 @@ FFBWheel::~FFBWheel() {
 	clearBtnTypes();
 }
 
-/*
+/**
  * Read parameters from flash and restore settings
  */
 void FFBWheel::restoreFlash(){
@@ -90,7 +90,7 @@ void FFBWheel::saveFlash(){
 }
 
 
-/*
+/**
  * Periodical update method. Called from main loop
  */
 
@@ -212,7 +212,7 @@ bool FFBWheel::getFfbActive(){
 	return this->ffb->getFfbActive();
 }
 
-/*
+/**
  * Sends periodic gamepad reports of buttons and analog axes
  */
 void FFBWheel::send_report(){
