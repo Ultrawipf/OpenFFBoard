@@ -271,7 +271,15 @@ bool TMC4671::initialize(){
 		setBrakeLimits(50700,50900); // Activates around 60V as last resort failsave. Check offsets from tmc leakage
 	}
 
-	setStatusMask(0); // Disable status output by default.
+	// Status mask
+	if(oldTMCdetected){
+		setStatusMask(0); // ES Version status output is broken
+	}else{
+		statusMask.asInt = 0;
+		statusMask.flags.adc_i_clipped = 1;
+		statusMask.flags.not_PLL_locked = 1;
+		setStatusMask(statusMask);
+	}
 
 	setPids(curPids); // Write basic pids
 
@@ -283,7 +291,8 @@ bool TMC4671::initialize(){
 	}
 	setEncoderType(conf.motconf.enctype);
 
-
+	// Update flags
+	readFlags(false); // Read all flags
 	// Home?
 	// Run in direction of N pulse. Enable flag/interrupt
 	//runOpenLoop(3000, 0, 5, 100);
@@ -328,7 +337,7 @@ void TMC4671::Run(){
 			uint32_t tick = HAL_GetTick();
 			if(tick - lastStatTime > 2000){ // Every 2s
 				lastStatTime = tick;
-
+				statusCheck();
 				// Get enable input
 				bool tmc_en = (readReg(0x76) >> 15) & 0x01;
 				if(!tmc_en && active){ // Hardware emergency. If tmc does not reply the enable will still read false
@@ -381,6 +390,7 @@ void TMC4671::Run(){
 		break;
 
 		case TMC_ControlState::EncoderFinished: // Startup sequence done
+			setEncoderIndexFlagEnabled(true); // TODO
 			if(active){
 				startMotor();
 				changeState(TMC_ControlState::Running);
@@ -442,6 +452,12 @@ bool TMC4671::reachedPosition(uint16_t tolerance){
 	}else{
 		return false;
 	}
+}
+
+void TMC4671::setEncoderIndexFlagEnabled(bool enabled){
+	this->statusMask.flags.AENC_N = this->conf.motconf.enctype == EncoderType_TMC::sincos && enabled;
+	this->statusMask.flags.ENC_N = this->conf.motconf.enctype == EncoderType_TMC::abn && enabled;
+	setStatusMask(statusMask); // Enable flag output for encoder
 }
 
 void TMC4671::setTargetPos(int32_t pos){
@@ -1056,14 +1072,16 @@ void TMC4671::AENC_init(){
  */
 void TMC4671::setEncoderType(EncoderType_TMC type){
 	this->conf.motconf.enctype = type;
-
+	this->statusMask.flags.AENC_N = 0;
+	this->statusMask.flags.ENC_N = 0;
+	setStatusMask(statusMask);
 	if(type == EncoderType_TMC::abn){
 
 		// Not initialized if cpr not set
 		if(this->abnconf.cpr == 0){
 			return;
 		}
-
+		this->statusMask.flags.ENC_N = 1;
 		changeState(TMC_ControlState::ABN_init);
 		encstate = ENC_InitState::uninitialized;
 
@@ -1072,7 +1090,7 @@ void TMC4671::setEncoderType(EncoderType_TMC type){
 		changeState(TMC_ControlState::AENC_init);
 		encstate = ENC_InitState::uninitialized;
 		this->aencconf.uvwmode = false; // sincos mode
-
+		this->statusMask.flags.AENC_N = 1;
 	// Analog UVW encoder
 	}else if(type == EncoderType_TMC::uvw){
 		changeState(TMC_ControlState::AENC_init);
@@ -1085,6 +1103,7 @@ void TMC4671::setEncoderType(EncoderType_TMC type){
 		encstate = ENC_InitState::OK;
 		setPhiEtype(PhiE::hall);
 	}
+
 }
 
 uint32_t TMC4671::getEncCpr(){
@@ -1572,9 +1591,7 @@ void TMC4671::estimateABNparams(){
 }
 
 
-void TMC4671::setStatusMask(uint32_t mask){
-	writeReg(0x7D, mask);
-}
+
 
 void TMC4671::setPwm(uint8_t val){
 	updateReg(0x1A,val,0xff,0);
@@ -1660,6 +1677,62 @@ void TMC4671::endSpiTransfer(SPIPort* port){
 	port->giveSemaphore();
 }
 
+/**
+ * Reads status flags
+ * @param maskedOnly Masks flags by previously set flag mask that would trigger an interrupt. False to read all flags
+ */
+StatusFlags TMC4671::readFlags(bool maskedOnly){
+	uint32_t flags = readReg(0x7C);
+	if(maskedOnly){
+		flags = flags & this->statusMask.asInt;
+	}
+	this->statusFlags.asInt = flags; // Only set flags that are marked to trigger a notification
+	return statusFlags;
+}
+
+void TMC4671::setStatusMask(StatusFlags mask){
+	writeReg(0x7D, mask.asInt);
+}
+
+void TMC4671::setStatusMask(uint32_t mask){
+	writeReg(0x7D, mask);
+}
+
+void TMC4671::setStatusFlags(uint32_t flags){
+	writeReg(0x7C, flags);
+}
+
+void TMC4671::setStatusFlags(StatusFlags flags){
+	writeReg(0x7C, flags.asInt);
+}
+
+/**
+ * Reads and resets all status flags and executes depending on status flags
+ */
+void TMC4671::statusCheck(){
+	statusFlags = readFlags(); // Update current flags
+	setStatusFlags(0); // Reset flags
+
+	// encoder index flag was set since last check. Check if the flag matching the current encoder is set
+	if( (statusFlags.flags.ENC_N && this->conf.motconf.enctype == EncoderType_TMC::abn) || (statusFlags.flags.AENC_N && this->conf.motconf.enctype == EncoderType_TMC::sincos) ){
+		encoderIndexHit();
+	}
+
+	if(statusFlags.flags.not_PLL_locked){
+		// Critical error. PLL not locked
+		ErrorHandler::addError(Error(ErrorCode::tmcPLLunlocked, ErrorType::critical, "TMC PLL not locked"));
+	}
+}
+
+void TMC4671::exti(uint16_t GPIO_Pin){
+	if(GPIO_Pin == FLAG_Pin){ // Flag pin went high
+		statusCheck();
+	}
+}
+
+void TMC4671::encoderIndexHit(){
+
+}
 
 TMC4671MotConf TMC4671::decodeMotFromInt(uint16_t val){
 	// 0-2: MotType 3-5: Encoder source 6-15: Poles
