@@ -17,6 +17,7 @@
 #include "CommandHandler.h"
 #include "SpiHandler.h"
 #include "thread.hpp"
+#include "ExtiHandler.h"
 #include "SPI.h"
 
 #include "semaphore.hpp"
@@ -59,6 +60,47 @@ const int thermistor_R2 = 1500, tmcOffset = 1000; //400? Offset is how many ADC 
 // Beta-Model
 const float thermistor_Beta = 4300, thermistor_R = 22000;
 const float temp_limit = 100; //°C
+
+// Mapping of bits in status flag register and mask
+union StatusFlags {
+	struct StatusFlags_s {
+		uint32_t pid_x_target_limit : 1,
+		pid_x_target_ddt_limit : 1,
+		pid_x_errsum_limit : 1,
+		pid_x_output_limit : 1,
+		pid_v_target_limit : 1,
+		pid_v_target_ddt_limit : 1,
+		pid_v_errsum_limit : 1,
+		pid_v_output_limit : 1,
+		pid_id_target_limit : 1,
+		pid_id_target_ddt_limit : 1,
+		pid_id_errsum_limit : 1,
+		pid_id_output_limit : 1,
+		pid_iq_target_limit : 1,
+		pid_iq_target_ddt_limit : 1,
+		pid_iq_errsum_limit : 1,
+		pid_iq_output_limit : 1,
+		ipark_cirlim_limit_u_d : 1,
+		ipark_cirlim_limit_u_q : 1,
+		ipark_cirlim_limit_u_r : 1,
+		not_PLL_locked : 1,
+		ref_sw_r : 1,
+		ref_sw_h : 1,
+		ref_sw_l : 1,
+		res1:1,
+		pwm_min : 1,
+		pwm_max : 1,
+		adc_i_clipped : 1,
+		adc_aenc_clipped : 1,
+		ENC_N : 1,
+		ENC2_N : 1,
+		AENC_N : 1,
+		wd_err : 1;
+	};
+    uint32_t asInt;
+    StatusFlags_s flags;
+};
+
 
 // Basic failsafe hardware boot config for inits
 struct TMC4671MainConfig{
@@ -181,7 +223,7 @@ struct TMC4671Biquad{
 };
 
 
-class TMC4671 : public MotorDriver, public PersistentStorage, public Encoder, public CommandHandler, public SPIDevice, public cpp_freertos::Thread{
+class TMC4671 : public MotorDriver, public PersistentStorage, public Encoder, public CommandHandler, public SPIDevice, public ExtiHandler, public cpp_freertos::Thread{
 public:
 
 	static ClassIdentifier info;
@@ -303,7 +345,6 @@ public:
 	void setBrakeLimits(uint16_t low, uint16_t high); // Raw brake resistor limits (see tmc reg 0x75)
 
 	bool reachedPosition(uint16_t tolerance);
-	void setStatusMask(uint32_t mask); // Mask for status pin. If multiple are parallel disable this for now
 
 	// Pids
 	void setPids(TMC4671PIDConf pids);
@@ -336,6 +377,18 @@ public:
 	uint32_t posToEnc(uint32_t pos);
 	uint32_t encToPos(uint32_t enc);
 
+	void exti(uint16_t GPIO_Pin);
+	void encoderIndexHit();
+
+	StatusFlags readFlags(bool maskedOnly = true);
+	void setStatusMask(StatusFlags mask);
+	void setStatusMask(uint32_t mask); // Mask for status pin.
+	void setStatusFlags(uint32_t flags);
+	void setStatusFlags(StatusFlags flags);
+	void setEncoderIndexFlagEnabled(bool enabled);
+	void statusCheck();
+	StatusFlags statusFlags = {0};
+	StatusFlags statusMask = {0};
 
 	void saveFlash() override;
 	void restoreFlash() override;
