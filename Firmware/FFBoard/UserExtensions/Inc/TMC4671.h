@@ -387,6 +387,7 @@ public:
 	void setStatusFlags(StatusFlags flags);
 	void setEncoderIndexFlagEnabled(bool enabled);
 	void statusCheck();
+	bool flagCheckInProgress = false;
 	StatusFlags statusFlags = {0};
 	StatusFlags statusMask = {0};
 

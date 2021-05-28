@@ -426,6 +426,11 @@ void TMC4671::Run(){
 			changeState(TMC_ControlState::No_power);
 			enablePin.reset();
 		}
+
+		if(flagCheckInProgress){ // cause some delay until reenabling the status interrupt checking
+			setStatusFlags(0);
+			flagCheckInProgress = false;
+		}
 		Delay(10);
 	} // End while
 }
@@ -455,9 +460,11 @@ bool TMC4671::reachedPosition(uint16_t tolerance){
 }
 
 void TMC4671::setEncoderIndexFlagEnabled(bool enabled){
+	setStatusFlags(0); // Reset flags
 	this->statusMask.flags.AENC_N = this->conf.motconf.enctype == EncoderType_TMC::sincos && enabled;
 	this->statusMask.flags.ENC_N = this->conf.motconf.enctype == EncoderType_TMC::abn && enabled;
 	setStatusMask(statusMask); // Enable flag output for encoder
+
 }
 
 void TMC4671::setTargetPos(int32_t pos){
@@ -1710,8 +1717,8 @@ void TMC4671::setStatusFlags(StatusFlags flags){
  * Reads and resets all status flags and executes depending on status flags
  */
 void TMC4671::statusCheck(){
+	flagCheckInProgress = true;
 	statusFlags = readFlags(); // Update current flags
-	setStatusFlags(0); // Reset flags
 
 	// encoder index flag was set since last check. Check if the flag matching the current encoder is set
 	if( (statusFlags.flags.ENC_N && this->conf.motconf.enctype == EncoderType_TMC::abn) || (statusFlags.flags.AENC_N && this->conf.motconf.enctype == EncoderType_TMC::sincos) ){
@@ -1722,16 +1729,23 @@ void TMC4671::statusCheck(){
 		// Critical error. PLL not locked
 		ErrorHandler::addError(Error(ErrorCode::tmcPLLunlocked, ErrorType::critical, "TMC PLL not locked"));
 	}
+
+
+	setStatusFlags(0); // Reset flags
+	if(readFlags().asInt != statusFlags.asInt){ // Condition is cleared. if not we will reset it in the main loop later to get out of the isr and cause some delay
+		flagCheckInProgress = false;
+	}
 }
 
 void TMC4671::exti(uint16_t GPIO_Pin){
-	if(GPIO_Pin == FLAG_Pin){ // Flag pin went high
-		statusCheck();
+	if(GPIO_Pin == FLAG_Pin && !flagCheckInProgress){ // Flag pin went high and flag check is currently not in progress (prevents interrupt flooding)
+		statusCheck(); // In isr!
 	}
 }
 
 void TMC4671::encoderIndexHit(){
-
+	//pulseClipLed();
+	setEncoderIndexFlagEnabled(false); // Found the index. disable flag
 }
 
 TMC4671MotConf TMC4671::decodeMotFromInt(uint16_t val){
