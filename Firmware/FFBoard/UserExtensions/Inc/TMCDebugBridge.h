@@ -36,6 +36,15 @@ public:
 
 
 private:
+	const TMC4671PIDConf tmcpids = TMC4671PIDConf({.fluxI = 400,
+												 .fluxP = 400,
+												 .torqueI = 400,
+												 .torqueP = 300,
+												 .velocityI = 64,
+												 .velocityP = 256,
+												 .positionI = 0,
+												 .positionP = 64,
+												 .sequentialPI = true});
 	static void sendCdc(char* dat, uint32_t len);
 	std::unique_ptr<TMC4671> drv;
 	void tmcReadRegRaw(uint8_t reg,uint8_t* buf);
