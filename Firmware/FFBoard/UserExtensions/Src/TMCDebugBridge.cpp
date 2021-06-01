@@ -71,6 +71,7 @@ ParseStatus TMCDebugBridge::command(ParsedCommand* cmd,std::string* reply){
 			*reply+=std::to_string((uint8_t)drv->getMotionMode());
 		}else if(cmd->type == CMDtype::set && cmd->val < (uint8_t)MotionMode::NONE){
 			drv->setMotionMode(MotionMode(cmd->val));
+			drv->startMotor();
 		}else{
 			*reply+="stop=0,torque=1,velocity=2,position=3,prbsflux=4,prbstorque=5,prbsvelocity=6,uqudext=8,encminimove=9";
 		}
@@ -198,7 +199,11 @@ TMCDebugBridge::TMCDebugBridge() {
 	this->drv = std::make_unique<TMC_1>();
 	drv->conf = tmcconf;
 	drv->setAddress(1);
+	drv->setPids(tmcpids); // load some basic pids
+	drv->restoreFlash(); // before initialize!
+	drv->setEncoderType(EncoderType_TMC::NONE); // Set encoder to none to prevent alignment
 	drv->initialize();
+	drv->Start();
 	//drv->stop();
 }
 

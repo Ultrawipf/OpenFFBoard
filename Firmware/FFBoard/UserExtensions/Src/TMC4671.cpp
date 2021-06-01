@@ -470,6 +470,7 @@ void TMC4671::setEncoderIndexFlagEnabled(bool enabled){
 void TMC4671::setTargetPos(int32_t pos){
 	if(curMotionMode != MotionMode::position){
 		setMotionMode(MotionMode::position,true);
+		setPhiEtype(this->conf.motconf.phiEsource);
 	}
 	writeReg(0x68,pos);
 }
@@ -482,6 +483,7 @@ int32_t TMC4671::getTargetPos(){
 void TMC4671::setTargetVelocity(int32_t vel){
 	if(curMotionMode != MotionMode::velocity){
 		setMotionMode(MotionMode::velocity,true);
+		setPhiEtype(this->conf.motconf.phiEsource);
 	}
 	writeReg(0x66,vel);
 }
@@ -1115,7 +1117,7 @@ void TMC4671::setEncoderType(EncoderType_TMC type){
 
 uint32_t TMC4671::getEncCpr(){
 	EncoderType_TMC type = conf.motconf.enctype;
-	if(type == EncoderType_TMC::abn){
+	if(type == EncoderType_TMC::abn || type == EncoderType_TMC::NONE){
 		return abnconf.cpr;
 	}else if(type == EncoderType_TMC::sincos || type == EncoderType_TMC::uvw){
 		return aencconf.cpr;
@@ -1892,6 +1894,34 @@ ParseStatus TMC4671::command(ParsedCommand* cmd,std::string* reply){
 			*reply+=std::to_string(this->curPids.fluxI);
 		}else if(cmd->type == CMDtype::set){
 			this->curPids.fluxI = cmd->val;
+			setPids(curPids);
+		}
+	}else if(cmd->cmd == "velocityP"){
+		if(cmd->type == CMDtype::get){
+			*reply+=std::to_string(this->curPids.velocityP);
+		}else if(cmd->type == CMDtype::set){
+			this->curPids.velocityP = cmd->val;
+			setPids(curPids);
+		}
+	}else if(cmd->cmd == "velocityI"){
+		if(cmd->type == CMDtype::get){
+			*reply+=std::to_string(this->curPids.velocityI);
+		}else if(cmd->type == CMDtype::set){
+			this->curPids.velocityI = cmd->val;
+			setPids(curPids);
+		}
+	}else if(cmd->cmd == "posP"){
+		if(cmd->type == CMDtype::get){
+			*reply+=std::to_string(this->curPids.positionP);
+		}else if(cmd->type == CMDtype::set){
+			this->curPids.positionP = cmd->val;
+			setPids(curPids);
+		}
+	}else if(cmd->cmd == "posI"){
+		if(cmd->type == CMDtype::get){
+			*reply+=std::to_string(this->curPids.positionI);
+		}else if(cmd->type == CMDtype::set){
+			this->curPids.positionI = cmd->val;
 			setPids(curPids);
 		}
 	}else if(cmd->cmd == "pidPrec"){

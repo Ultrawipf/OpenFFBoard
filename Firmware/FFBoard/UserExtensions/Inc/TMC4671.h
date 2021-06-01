@@ -125,9 +125,9 @@ struct TMC4671PIDConf{
 	uint16_t torqueI	= 512;
 	uint16_t torqueP	= 128;
 	uint16_t velocityI	= 0;
-	uint16_t velocityP	= 128;
+	uint16_t velocityP	= 256;
 	uint16_t positionI	= 0;
-	uint16_t positionP	= 64;
+	uint16_t positionP	= 128;
 	bool sequentialPI	= false; // Advanced pid
 };
 
@@ -408,7 +408,7 @@ public:
 	virtual std::string getHelpstring(){
 		return "\nTMC4671 commands:\n"
 				"mtype,encsrc,encalign,poles,phiesrc,reg,fluxoffset\n"
-				"torqueP,torqueI,fluxP,fluxI,pidPrec\n"
+				"torqueP,torqueI,fluxP,fluxI,velocityP,velocityI,posP,posI,pidPrec\n"
 				"acttrq,seqpi,tmctemp,tmcIscale\n";}
 
 
