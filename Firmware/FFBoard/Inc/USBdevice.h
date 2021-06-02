@@ -17,7 +17,7 @@
 
 
 
-/*
+/**
  * This class defines a usb device and implements callbacks for getting the basic
  * usb descriptors for tinyusb.
  * Different usb configurations are predefined in usb_descriptors.c

@@ -62,8 +62,9 @@ public:
 
 	const std::vector<class_entry<T>>& class_registry;
 
-	// Create class
-
+	/**
+	 * Creates a new instance of class
+	 */
 	T* Create(uint16_t id){
 		T* cls = nullptr;
 		for(class_entry<T> e : class_registry){
@@ -75,7 +76,10 @@ public:
 		return cls;
 	}
 
-	// Check if class can be created
+	/**
+	 * Check if class can be created
+	 * Checks the isCreatable() function
+	 */
 	bool isCreatable(uint16_t id){
 		for(class_entry<T> e : class_registry){
 			if(e.info.id == id && e.isCreatable()){
@@ -85,7 +89,10 @@ public:
 		return false;
 	}
 
-	// ignoredCreatableId will list as creatable even if it is not. Useful to make a single class list as valid if it was already chosen
+	/**
+	 * Returns a string of classes available to this classchooser
+	 * ignoredCreatableId will list as creatable even if it is not. Useful to make a single class list as valid if it was already chosen
+	 */
 	std::string printAvailableClasses(int16_t ignoredCreatableId = 255){
 		std::string ret;
 		for(class_entry<T> cls : class_registry){
@@ -103,7 +110,9 @@ public:
 	}
 
 
-
+	/**
+	 * Returns if this id is actually in the list of possible classes
+	 */
 	bool isValidClassId(uint16_t id){
 		for(class_entry<T> cls : class_registry){
 			if(cls.info.id == id){

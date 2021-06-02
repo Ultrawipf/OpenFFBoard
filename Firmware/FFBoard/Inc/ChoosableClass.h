@@ -19,6 +19,12 @@ class ChoosableClass {
 public:
 
 	static ClassIdentifier info;
+
+	/**
+	 * Returns true if a new instance can be created.
+	 * Use this to do prechecks if ressources are available
+	 * If it returns false this can signal the classchooser that at this time a new instance can not be created.
+	 */
 	static bool isCreatable() {return true;};
 	virtual const ClassIdentifier getInfo() = 0;
 
