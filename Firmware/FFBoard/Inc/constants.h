@@ -9,7 +9,7 @@
  */
 
 
-#define SW_VERSION "1.3.10" // Version string
+#define SW_VERSION "1.3.11" // Version string
 
 #define MAX_AXIS 2 // ONLY USE 2 for now else screws HID Reports
 

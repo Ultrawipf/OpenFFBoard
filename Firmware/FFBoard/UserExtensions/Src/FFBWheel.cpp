@@ -253,9 +253,9 @@ void FFBWheel::send_report(){
 	}
 
 	/*
-	 * Only send a new report if actually changed since last time or timeout
+	 * Only send a new report if actually changed since last time or timeout and hid is ready
 	 */
-	if(reportSendCounter++ > 100 || (memcmp(&lastReportHID,&reportHID,sizeof(reportHID_t)) != 0) ){
+	if( (reportSendCounter++ > 100 || (memcmp(&lastReportHID,&reportHID,sizeof(reportHID_t)) != 0) ) && tud_hid_n_ready(0)){
 		tud_hid_report(0, reinterpret_cast<uint8_t*>(&reportHID), sizeof(reportHID_t));
 		lastReportHID = reportHID;
 		reportSendCounter = 0;
