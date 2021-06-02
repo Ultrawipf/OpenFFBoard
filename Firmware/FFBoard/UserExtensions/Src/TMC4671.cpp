@@ -146,6 +146,10 @@ void TMC4671::saveFlash(){
 	Flash_Write(flashAddrs.flux_i, curPids.fluxI);
 }
 
+/**
+ * Restores saved parameters
+ * Call initialize() to apply some of the settings
+ */
 void TMC4671::restoreFlash(){
 	uint16_t mconfint;
 	uint16_t abncpr = 0;
@@ -198,7 +202,7 @@ bool TMC4671::isSetUp(){
 	return true;
 }
 
-/*
+/**
  * Check if driver is responding
  */
 bool TMC4671::pingDriver(){
@@ -207,8 +211,9 @@ bool TMC4671::pingDriver(){
 }
 
 
-/*
+/**
  * Sets all parameters of the driver at startup
+ * restoreFlash() should be called before this to restore settings!
  */
 bool TMC4671::initialize(){
 //	active = true;
@@ -301,7 +306,8 @@ bool TMC4671::initialize(){
 	return initialized;
 }
 
-/*
+/**
+ * Reads a temperature from a thermistor connected to AGPI_B
  * Not calibrated perfectly!
  */
 float TMC4671::getTemp(){
@@ -459,6 +465,9 @@ bool TMC4671::reachedPosition(uint16_t tolerance){
 	}
 }
 
+/**
+ * Enables or disables the encoder index interruption on the flag pin depending on the selected encoder
+ */
 void TMC4671::setEncoderIndexFlagEnabled(bool enabled){
 	setStatusFlags(0); // Reset flags
 	this->statusMask.flags.AENC_N = this->conf.motconf.enctype == EncoderType_TMC::sincos && enabled;
@@ -467,6 +476,9 @@ void TMC4671::setEncoderIndexFlagEnabled(bool enabled){
 
 }
 
+/**
+ * Enables position mode and sets a target position
+ */
 void TMC4671::setTargetPos(int32_t pos){
 	if(curMotionMode != MotionMode::position){
 		setMotionMode(MotionMode::position,true);
@@ -480,6 +492,9 @@ int32_t TMC4671::getTargetPos(){
 }
 
 
+/**
+ * Enables velocity mode and sets a velocity target
+ */
 void TMC4671::setTargetVelocity(int32_t vel){
 	if(curMotionMode != MotionMode::velocity){
 		setMotionMode(MotionMode::velocity,true);
@@ -502,7 +517,7 @@ void TMC4671::setPhiE_ext(int16_t phiE){
 	writeReg(0x1C, phiE);
 }
 
-/*
+/**
  * Aligns ABN encoders by forcing an angle with high current and calculating the offset
  */
 void TMC4671::bangInitEnc(int16_t power){
@@ -579,34 +594,6 @@ void TMC4671::bangInitEnc(int16_t power){
 
 // Rotates motor to find min and max values of the encoder
 void TMC4671::calibrateAenc(){
-
-
-	// static offset estimation. not exact
-//	blinkClipLed(250, 0);
-//	uint32_t offset = 0;
-//	uint32_t samples = 0;
-//	for(uint16_t i = 0;i<500;i++){
-//		Delay(1);
-//		writeReg(0x03,2);
-//		uint32_t aencUX = readReg(0x02)>>16;
-//		aencUX *= aencUX;
-//		writeReg(0x03,3);
-//		uint32_t aencWY_VN = readReg(0x02) ;
-//		uint32_t aencWY = aencWY_VN >> 16;
-//		aencWY *= aencWY;
-//		uint32_t aencVN = aencWY_VN & 0xffff;
-//		aencVN *= aencVN;
-//
-//		offset += std::sqrt((aencUX+aencWY) / 2);
-//		samples++;
-//	}
-//	offset = offset/samples;
-//	aencconf.AENC0_offset = offset;
-//	aencconf.AENC1_offset = offset;
-//	aencconf.AENC2_offset = offset;
-//	setup_AENC(aencconf);
-//	blinkClipLed(0, 0);
-
 
 	// Rotate and measure min/max
 	blinkClipLed(250, 0);
@@ -708,7 +695,7 @@ void TMC4671::calibrateAenc(){
 	blinkClipLed(0, 0);
 }
 
-/*
+/**
  * Steps the motor a few times to check if the encoder follows correctly
  */
 bool TMC4671::checkEncoder(){
@@ -885,7 +872,7 @@ void TMC4671::setup_HALL(TMC4671HALLConf hallconf){
 }
 
 
-/*
+/**
  * Calibrates the ADC by disabling the power stage and sampling a mean value. Takes time!
  */
 bool TMC4671::calibrateAdcOffset(uint16_t time){
@@ -1075,7 +1062,7 @@ void TMC4671::AENC_init(){
 	}
 }
 
-/*
+/**
  * Changes the encoder type and calls init methods for the encoder types.
  * Setup the specific parameters (abnconf, aencconf...) first.
  */
@@ -1090,7 +1077,6 @@ void TMC4671::setEncoderType(EncoderType_TMC type){
 		if(this->abnconf.cpr == 0){
 			return;
 		}
-		this->statusMask.flags.ENC_N = 1;
 		changeState(TMC_ControlState::ABN_init);
 		encstate = ENC_InitState::uninitialized;
 
@@ -1099,7 +1085,7 @@ void TMC4671::setEncoderType(EncoderType_TMC type){
 		changeState(TMC_ControlState::AENC_init);
 		encstate = ENC_InitState::uninitialized;
 		this->aencconf.uvwmode = false; // sincos mode
-		this->statusMask.flags.AENC_N = 1;
+
 	// Analog UVW encoder
 	}else if(type == EncoderType_TMC::uvw){
 		changeState(TMC_ControlState::AENC_init);
@@ -1220,7 +1206,7 @@ void TMC4671::emergencyStop(){
 	changeState(TMC_ControlState::HardError);
 }
 
-/*
+/**
  * Sets a torque in positive or negative direction
  * For ADC linearity reasons under 25000 is recommended
  */
@@ -1426,7 +1412,7 @@ TMC4671PIDConf TMC4671::getPids(){
 	return curPids;
 }
 
-/*
+/**
  * Limits the PWM value
  */
 void TMC4671::setUqUdLimit(uint16_t limit){
@@ -1531,7 +1517,7 @@ void TMC4671::setBiquadTorque(TMC4671Biquad bq){
 	writeReg(0x4D, bq.enable & 0x1);
 }
 
-/*
+/**
  *  Sets the raw brake resistor limits.
  *  Centered at 0x7fff
  *  Set both 0 to deactivate
@@ -1541,7 +1527,7 @@ void TMC4671::setBrakeLimits(uint16_t low,uint16_t high){
 	writeReg(0x75,val);
 }
 
-/*
+/**
  * Moves the rotor and estimates polarity and direction of the encoder
  * Polarity is found by measuring the n pulse.
  * If polarity was found to be reversed during the test direction will be reversed again to account for that
@@ -1632,7 +1618,7 @@ void TMC4671::initAdc(uint16_t mdecA, uint16_t mdecB,uint32_t mclkA,uint32_t mcl
 	writeReg(0x0A,0x18000100); // ADC Selection
 }
 
-/*
+/**
  * Returns measured flux and torque as a pair
  * Flux is first, torque second item
  */
