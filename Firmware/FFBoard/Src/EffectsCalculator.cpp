@@ -321,35 +321,38 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 
 	case FFB_EFFECT_SPRING:
 	{
-		float metric = metrics->pos;
-		result_torque -= calcConditionEffectForce(effect, metric, gain.spring,
+		int32_t pos = metrics->pos;
+		int16_t offset = effect->conditions[con_idx].cpOffset;
+		int16_t deadBand = effect->conditions[con_idx].deadBand;
+		// Spring effect must also use deadband and offset so that it begins gradually from the sides of the deadband
+		float metric = metrics->pos - (offset + (deadBand * (pos < offset ? -1 : 1)) );
+		result_torque -= calcConditionEffectForce(effect, metric, gain.spring,pos,
 									   con_idx, 0.0004f, angle_ratio);
 		break;
 	}
 
 	case FFB_EFFECT_FRICTION:
 	{
-//		effect->conditions[con_idx].negativeSaturation = FRICTION_SATURATION;
-//		effect->conditions[con_idx].positiveSaturation = FRICTION_SATURATION;
+
 		float metric = effect->filter[con_idx]->process(metrics->speed) * .25;
-		result_torque -= calcConditionEffectForce(effect, metric, gain.friction,
+		result_torque -= calcConditionEffectForce(effect, metric, gain.friction,metrics->pos,
 											   con_idx, .08f, angle_ratio);
 		break;
 	}
 	case FFB_EFFECT_DAMPER:
 	{
+
 		float metric = effect->filter[con_idx]->process(metrics->speed) * .0625f;
-		result_torque -= calcConditionEffectForce(effect, metric, gain.damper,
+		result_torque -= calcConditionEffectForce(effect, metric, gain.damper,metrics->pos,
 									   con_idx, 0.6f, angle_ratio);
 		break;
 	}
 
 	case FFB_EFFECT_INERTIA:
 	{
-//		effect->conditions[con_idx].negativeSaturation = INERTIA_SATURATION;
-//		effect->conditions[con_idx].positiveSaturation = INERTIA_SATURATION;
+
 		float metric = effect->filter[con_idx]->process(metrics->accel*4);
-		result_torque -= calcConditionEffectForce(effect, metric, gain.inertia,
+		result_torque -= calcConditionEffectForce(effect, metric, gain.inertia,metrics->pos,
 									   con_idx, 0.5f, angle_ratio);
 		break;
 	}
@@ -361,29 +364,20 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 	return (result_torque * (global_gain+1)) >> 8; // Apply global gain
 }
 
-int32_t EffectsCalculator::calcConditionEffectForce(FFB_Effect *effect, float  metric, uint8_t gain,
+int32_t EffectsCalculator::calcConditionEffectForce(FFB_Effect *effect, float  metric, uint8_t gain,int32_t pos,
 										 uint8_t idx, float scale, float angle_ratio)
 {
 	int16_t offset = effect->conditions[idx].cpOffset;
 	int16_t deadBand = effect->conditions[idx].deadBand;
 	int32_t force = 0;
-	if (abs(metric - offset) > deadBand)
-	{
-		if (metric < offset)
-		{ // Deadband side
-			force = clip<int32_t, int32_t>(((float)effect->conditions[idx].negativeCoefficient *
-											scale * (float)(metric - (offset - deadBand))),
+	// Effect is only active outside deadband + offset
+	if (abs(pos - offset) > deadBand){
+		force = clip<int32_t, int32_t>(((float)effect->conditions[idx].negativeCoefficient *
+											scale * (float)(metric)),
 										   -effect->conditions[idx].negativeSaturation,
 										   effect->conditions[idx].positiveSaturation);
-		}
-		else
-		{
-			force = clip<int32_t, int32_t>(((float)effect->conditions[idx].positiveCoefficient *
-											scale * (float)(metric - (offset + deadBand))),
-										   -effect->conditions[idx].negativeSaturation,
-										   effect->conditions[idx].positiveSaturation);
-		}
 	}
+
 	force = ((gain+1) * force) >> 8;
 	return force * angle_ratio;
 }
