@@ -914,6 +914,7 @@ bool TMC4671::calibrateAdcOffset(uint16_t time){
 	if(totalA < 100 || totalB < 100 || (abs((int32_t)offsetAidle - 0x7fff) > 5000 || abs((int32_t)offsetBidle - 0x7fff) > 5000)){
 		ErrorHandler::addError(Error(ErrorCode::adcCalibrationError,ErrorType::critical,"TMC Adc/Shunt offset calibration failed."));
 		blinkErrLed(100, 0); // Blink forever
+		setPwm(0); //Disable pwm
 		this->changeState(TMC_ControlState::HardError);
 		return false; // An adc or shunt amp is likely broken. do not proceed.
 	}
@@ -1350,12 +1351,14 @@ void TMC4671::setMotorType(MotorType motor,uint16_t poles){
 	conf.motconf.motor_type = motor;
 	conf.motconf.pole_pairs = poles;
 	uint32_t mtype = poles | ( ((uint8_t)motor&0xff) << 16);
-	if(motor != MotorType::STEPPER){
-		maxOffsetFlux = 0; // Offsetflux only helpful for steppers. Has no effect otherwise
-	}
+//	if(motor != MotorType::STEPPER){
+//		maxOffsetFlux = 0; // Offsetflux only helpful for steppers. Has no effect otherwise
+//	}
 	writeReg(0x1B, mtype);
 	if(motor == MotorType::BLDC && !oldTMCdetected){
 		setSvPwm(useSvPwm); // Higher speed for BLDC motors. Not available in engineering samples
+	}else{
+		setSvPwm(false);
 	}
 }
 
@@ -1587,7 +1590,17 @@ void TMC4671::estimateABNparams(){
 
 
 
-
+/**
+ * Sets pwm mode: \n
+ * 0 = pwm off \n
+ * 1 = pwm off, HS low, LS high \n
+ * 2 = pwm off, HS high, LS low \n
+ * 3 = pwm off \n
+ * 4 = pwm off \n
+ * 5 = pwm LS only \n
+ * 6 = pwm HS only \n
+ * 7 = pwm on centered, FOC mode
+ */
 void TMC4671::setPwm(uint8_t val){
 	updateReg(0x1A,val,0xff,0);
 }
@@ -1600,6 +1613,10 @@ void TMC4671::setPwm(uint8_t val,uint16_t maxcnt,uint8_t bbmL,uint8_t bbmH){
 	writeReg(0x17,0); //Polarity
 }
 
+/**
+ * Enable or disable space vector pwm for 3 phase motors
+ * Normally active but should be disabled if the motor has no isolated star point
+ */
 void TMC4671::setSvPwm(bool enable){
 	updateReg(0x1A,enable,0x01,8);
 }

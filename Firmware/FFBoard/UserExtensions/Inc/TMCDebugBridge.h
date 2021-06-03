@@ -32,7 +32,7 @@ public:
 
 	void cdcRcv(char* Buf, uint32_t *Len);
 	ParseStatus command(ParsedCommand* cmd,std::string* reply);
-	std::string getHelpstring(){return "TMC Debug:torque,openloopspeed,pos,velocity,mode,reg\n";}
+	std::string getHelpstring(){return "TMC Debug:torque,openloopspeed,pos,velocity,mode,reg\nTo use the FOC modes position, velocity and torque you first must manually select the encoder and wait for alignment.";}
 
 
 private:
@@ -40,11 +40,21 @@ private:
 												 .fluxP = 400,
 												 .torqueI = 400,
 												 .torqueP = 300,
-												 .velocityI = 64,
-												 .velocityP = 256,
+												 .velocityI = 10,
+												 .velocityP = 500,
 												 .positionI = 0,
-												 .positionP = 64,
+												 .positionP = 40,
 												 .sequentialPI = true});
+
+	const TMC4671Limits tmclimits = TMC4671Limits({
+		.pid_torque_flux_ddt	= 32767,
+		.pid_uq_ud				= 30000,
+		.pid_torque_flux		= 32767,
+		.pid_acc_lim			= 50, // Safety
+		.pid_vel_lim			= 2147483647,
+		.pid_pos_low				= -2147483647,
+		.pid_pos_high			= 2147483647
+	});
 	static void sendCdc(char* dat, uint32_t len);
 	std::unique_ptr<TMC4671> drv;
 	void tmcReadRegRaw(uint8_t reg,uint8_t* buf);
