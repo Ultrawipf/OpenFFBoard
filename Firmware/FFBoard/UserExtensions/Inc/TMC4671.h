@@ -295,6 +295,7 @@ public:
 	void setBiquadVel(TMC4671Biquad bq);
 	
 	bool pingDriver();
+	std::string getTmcType();
 
 	void changeState(TMC_ControlState newState);
 
@@ -407,7 +408,7 @@ public:
 	ParseStatus command(ParsedCommand* cmd,std::string* reply);
 	virtual std::string getHelpstring(){
 		return "\nTMC4671 commands:\n"
-				"mtype,encsrc,encalign,poles,phiesrc,reg,fluxoffset\n"
+				"tmctype,mtype,encsrc,encalign,poles,phiesrc,reg,fluxoffset\n"
 				"torqueP,torqueI,fluxP,fluxI,velocityP,velocityI,posP,posI,pidPrec\n"
 				"acttrq,seqpi,tmctemp,tmcIscale\n";}
 

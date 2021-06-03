@@ -134,6 +134,9 @@ ParseStatus FFBoardMainCommandThread::executeSysCommand(ParsedCommand* cmd,std::
 	}else if(cmd->cmd == "swver"){
 		*reply += (SW_VERSION);
 
+	}else if(cmd->cmd == "minVerGui"){
+		*reply += (MIN_SW_CONFIGURATOR);
+
 	}else if(cmd->cmd == "hwtype"){
 		*reply += (HW_TYPE);
 

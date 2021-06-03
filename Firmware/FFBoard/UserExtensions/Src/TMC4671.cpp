@@ -1247,6 +1247,30 @@ int32_t TMC4671::getPos(){
 	return pos;
 }
 
+/**
+ * Returns a string with the name and version of the chip
+ */
+std::string TMC4671::getTmcType(){
+	std::string reply = "";
+	writeReg(1, 0);
+	uint32_t nameInt = readReg(0);
+	if(nameInt == 0){
+		reply = "No driver connected";
+		return reply;
+	}
+
+	nameInt = __REV(nameInt);
+	char* name = reinterpret_cast<char*>(&nameInt);
+	std::string namestring = std::string(name,sizeof(nameInt));
+
+	writeReg(1, 1);
+	uint32_t versionInt = readReg(0);
+	std::string versionstring = std::to_string((versionInt >> 16) && 0xffff) + "." + std::to_string((versionInt) && 0xffff);
+
+	reply += "TMC" + namestring + " v" + versionstring;
+	return reply;
+}
+
 Encoder* TMC4671::getEncoder(){
 	return static_cast<Encoder*>(this);
 }
@@ -1926,6 +1950,10 @@ ParseStatus TMC4671::command(ParsedCommand* cmd,std::string* reply){
 		}else if(cmd->type == CMDtype::set){
 			this->curPids.positionI = cmd->val;
 			setPids(curPids);
+		}
+	}else if(cmd->cmd == "tmctype"){
+		if(cmd->type == CMDtype::get){
+			*reply+=getTmcType();
 		}
 	}else if(cmd->cmd == "pidPrec"){
 		if(cmd->type == CMDtype::get){
