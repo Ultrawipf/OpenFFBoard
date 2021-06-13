@@ -13,7 +13,7 @@
 #include "ffb_defs.h"
 #include "hid_cmd_defs.h"
 
-#include "cmdParser.h"
+#include "CmdParser.h"
 #include "vector"
 #include "map"
 #include <memory>
