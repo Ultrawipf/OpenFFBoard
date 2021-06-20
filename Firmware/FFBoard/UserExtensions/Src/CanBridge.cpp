@@ -74,22 +74,23 @@ void CanBridge::sendMessage(){
 	}
 }
 
-void CanBridge::sendMessage(uint32_t id, uint64_t msg,uint8_t len = 8){
+void CanBridge::sendMessage(uint32_t id, uint64_t msg,uint8_t len = 8,bool rtr = false){
 	memcpy(txBuf,&msg,8);
 	txHeader.StdId = id;
 	txHeader.DLC = len;
+	txHeader.RTR = rtr;
 	sendMessage();
 }
 
 /*
  * Returns last received can message as string
  */
-std::string CanBridge::messageToString(){
+std::string CanBridge::messageToString(CAN_rx_msg msg){
 	std::string buf;
 	buf = "!CAN:";
-	buf += std::to_string(rxHeader.StdId);
+	buf += std::to_string(msg.header.StdId);
 	buf += ":";
-	buf += std::to_string(*(int32_t*)this->rxBuf);
+	buf += std::to_string(*(int32_t*)msg.data);
 	buf += "\n";
 	return buf;
 }
@@ -131,42 +132,63 @@ void CanBridge::setCanSpeed(uint32_t speed){
 
 // Can only send and receive 32bit for now
 void CanBridge::canRxPendCallback(CAN_HandleTypeDef *hcan,uint8_t* rxBuf,CAN_RxHeaderTypeDef* rxHeader,uint32_t fifo){
-	if(fifo == rxfifo){
-		pulseSysLed();
 
+	if(fifo == rxfifo){
+//		memcpy(this->rxBuf,rxBuf,sizeof(this->rxBuf));
+//		this->rxHeader = *rxHeader;
+		memcpy(&lastmsg.data,rxBuf,8);
+		lastmsg.header = *rxHeader;
+		pulseSysLed();
+//		if(this->rxmessages.size() >= 32){
+//			return;
+//		}
+
+		//this->rxmessages.push_back(lastmsg); // causes reset
+
+		replyPending = true;
+	}
+}
+
+
+
+void CanBridge::update(){
+	if(replyPending){
+		CAN_rx_msg msg = lastmsg;
 		if(gvretMode){
-			uint32_t time = rxHeader->Timestamp;
-			uint32_t id = rxHeader->StdId;
-			if(rxHeader->ExtId != 0){
-				id = rxHeader->ExtId;
+			CAN_RxHeaderTypeDef rxHeader = msg.header;
+			uint32_t time = rxHeader.Timestamp;
+			uint32_t id = rxHeader.StdId;
+			if(rxHeader.ExtId != 0){
+				id = rxHeader.ExtId;
 				id |= 0x80000000;
 			}
 			std::vector<char> reply = {
 					0xF1,0,(char)(time & 0xff), (char)((time >> 8) & 0xff), (char)((time >> 16) & 0xff), (char)((time >> 24) & 0xff),
 					(char)(id & 0xff), (char)((id >> 8) & 0xff), (char)((id >> 16) & 0xff), (char)((id >> 24) & 0xff),
-					(char)((rxHeader->DLC & 0xf) | (1 >> 4))
+					(char)((rxHeader.DLC & 0xf) | (1 >> 4))
 			};
-			for(uint8_t i = 0; i< rxHeader->DLC; i++){
-				reply.push_back(*(rxBuf+i));
+
+			for(uint8_t i = 0; i< rxHeader.DLC; i++){
+				reply.push_back(msg.data[i]);
 			}
+
 			reply.push_back(0);
+//			for(char c : reply){
+//				replystr.push_back(c);
+//			}
 			tud_cdc_n_write(0,reply.data(), reply.size());
 			tud_cdc_write_flush();
 		}else{
-			memcpy(this->rxBuf,rxBuf,sizeof(this->rxBuf));
-			this->rxHeader = *rxHeader;
-			std::string buf = messageToString(); // Last message to string
-			tud_cdc_n_write(0,buf.c_str(), buf.length());
+			std::string replystr = messageToString(msg);
+
+			tud_cdc_n_write(0,replystr.c_str(), replystr.length());
 			tud_cdc_write_flush();
 		}
 
+		replyPending = false;
 	}
 }
 
-
-//void CanBridge::sendGvretReply(std::vector<uint8_t>* dat, uint8_t cmd){
-//	CDC_Transmit_FS(data, len);
-//}
 
 void CanBridge::cdcRcv(char* Buf, uint32_t *Len){
 
@@ -327,14 +349,25 @@ ParseStatus CanBridge::command(ParsedCommand* cmd,std::string* reply){
 	// ------------ commands ----------------
 	if(cmd->cmd == "can"){ //
 		if(cmd->type == CMDtype::get){
-			*reply+= messageToString();
+			*reply+= messageToString(lastmsg);
 		}else if(cmd->type == CMDtype::setat){
 			sendMessage(cmd->adr,cmd->val);
 		}else{
 			flag = ParseStatus::ERR;
 		}
 
-	}else if(cmd->cmd == "canspd"){
+	}
+	else if(cmd->cmd == "canrtr"){ //
+		if(cmd->type == CMDtype::get){
+			*reply+= messageToString(lastmsg);
+		}else if(cmd->type == CMDtype::setat){
+			sendMessage(cmd->adr,cmd->val,8,true); // msg with rtr bit
+		}else{
+			flag = ParseStatus::ERR;
+		}
+
+	}
+	else if(cmd->cmd == "canspd"){
 		if(cmd->type == CMDtype::get){
 			*reply += std::to_string(this->speed);
 		}else if(cmd->type == CMDtype::set){
