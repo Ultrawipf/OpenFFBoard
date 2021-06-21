@@ -34,7 +34,8 @@ const std::vector<class_entry<MotorDriver>> MotorDriver::all_drivers =
 	add_class<MotorPWM, MotorDriver>(),
 #endif
 #ifdef ODRIVE
-	add_class<OdriveCAN,MotorDriver>(),
+	add_class<OdriveCAN1,MotorDriver>(),
+	add_class<OdriveCAN2,MotorDriver>(),
 #endif
 };
 

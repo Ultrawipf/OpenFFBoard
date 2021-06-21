@@ -80,11 +80,10 @@ void CanBridge::sendMessage(uint32_t id, uint64_t msg,uint8_t len = 8,bool rtr =
  */
 std::string CanBridge::messageToString(CAN_rx_msg msg){
 	std::string buf;
-	buf = "!CAN:";
+	buf = "CAN:";
 	buf += std::to_string(msg.header.StdId);
 	buf += ":";
 	buf += std::to_string(*(int32_t*)msg.data);
-	buf += "\n";
 	return buf;
 }
 
@@ -139,9 +138,10 @@ void CanBridge::update(){
 			tud_cdc_write_flush();
 		}else{
 			std::string replystr = messageToString(msg);
+			CommandHandler::logSerial(replystr);
 
-			tud_cdc_n_write(0,replystr.c_str(), replystr.length());
-			tud_cdc_write_flush();
+//			tud_cdc_n_write(0,replystr.c_str(), replystr.length());
+//			tud_cdc_write_flush();
 		}
 
 		replyPending = false;

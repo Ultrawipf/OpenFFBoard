@@ -11,34 +11,42 @@
 #include "cpp_target_config.h"
 #include "CAN.h"
 #include "Encoder.h"
+#include "thread.hpp"
 #include "CanHandler.h"
+#include "CommandHandler.h"
+#include "PersistentStorage.h"
 
 #ifdef ODRIVE
+#define ODRIVE_THREAD_MEM 512
+#define ODRIVE_THREAD_PRIO 25 // Must be higher than main thread
 
 enum class OdriveState : uint32_t {AXIS_STATE_UNDEFINED=0,AXIS_STATE_IDLE=1,AXIS_STATE_STARTUP_SEQUENCE=2,AXIS_STATE_FULL_CALIBRATION_SEQUENCE=3,AXIS_STATE_MOTOR_CALIBRATION=4,AXIS_STATE_ENCODER_INDEX_SEARCH=6,AXIS_STATE_ENCODER_OFFSET_CALIBRATION=7,AXIS_STATE_CLOSED_LOOP_CONTROL=8,AXIS_STATE_LOCKIN_SPIN=9,AXIS_STATE_ENCODER_DIR_FIND=10,AXIS_STATE_HOMING=11,AXIS_STATE_ENCODER_HALL_POLARITY_CALIBRATION=12,AXIS_STATE_ENCODER_HALL_PHASE_CALIBRATION=13};
 enum class OdriveControlMode : uint32_t {CONTROL_MODE_VOLTAGE_CONTROL = 0,CONTROL_MODE_TORQUE_CONTROL = 1,CONTROL_MODE_VELOCITY_CONTROL = 2,CONTROL_MODE_POSITION_CONTROL = 3};
+enum class OdriveInputMode : uint32_t {INPUT_MODE_INACTIVE = 0,INPUT_MODE_PASSTHROUGH = 1,INPUT_MODE_VEL_RAMP = 2,INPUT_MODE_POS_FILTER = 3,INPUT_MODE_MIX_CHANNELS = 4,INPUT_MODE_TRAP_TRAJ = 5,INPUT_MODE_TORQUE_RAMP =6,INPUT_MODE_MIRROR =7};
 
-class OdriveCAN : public MotorDriver, public Encoder, public CanHandler{
+class OdriveCAN : public MotorDriver,public PersistentStorage, public Encoder, public CanHandler, public CommandHandler, cpp_freertos::Thread{
 public:
-	OdriveCAN();
+	OdriveCAN(uint8_t id);
 	virtual ~OdriveCAN();
 
 
-	static ClassIdentifier info;
-	const ClassIdentifier getInfo();
-	static bool isCreatable();
+	//static ClassIdentifier info;
+	const ClassIdentifier getInfo() = 0;
+	//static bool isCreatable();
 
 	void turn(int16_t power) override;
 	void stopMotor() override;
 	void startMotor() override;
-	Encoder* getEncoder();
+	Encoder* getEncoder() override;
 	bool hasIntegratedEncoder() {return true;}
 
 	void sendMsg(uint8_t cmd,uint64_t value);
 	void sendMsg(uint8_t cmd,uint32_t value);
 	void sendMsg(uint8_t cmd,float value);
 	void requestMsg(uint8_t cmd);
-	bool motorReady();
+	bool motorReady() override;
+
+	void Run();
 
 	void setTorque(float torque);
 
@@ -47,24 +55,64 @@ public:
 	float getPos_f() override;
 	uint32_t getCpr() override;
 	int32_t getPos() override;
+	void setPos(int32_t pos) override;
 
-	void setMode(OdriveControlMode mode);
+	void setMode(OdriveControlMode controlMode,OdriveInputMode inputMode);
+	void setState(OdriveState state);
+
+	void readyCb();
+
+	void setCanRate(uint8_t canRate);
+
+	void saveFlash() override; 		// Write to flash here
+	void restoreFlash() override;	// Load from flash
+
+	ParseStatus command(ParsedCommand* cmd,std::string* reply) override;
+	std::string getHelpstring(){return "Odrive: odriveCanId,odriveCanSpd (3=250k,4=500k,5=1M),odriveErrors,odriveState, (Nm*100, scaler),odriveVbus\n";};
 
 private:
-	static bool inUse;
 	CANPort* port = &canport;
 	float lastPos = 0;
-	int8_t shadowCount = 0;
-	int8_t nodeId = 0;
+	float lastSpeed = 0;
+	float posOffset = 0;
+	float lastVoltage = 0;
+	uint32_t lastVoltageUpdate = 0;
 
-	uint8_t status = 0;
-	uint8_t errors = 0;
+	int8_t nodeId = 0; // 6 bits can ID
+	int8_t motorId = 0;
 
-	float torqueConstant = 0.04;
+	volatile OdriveState currentState = OdriveState::AXIS_STATE_UNDEFINED;
+	volatile uint32_t errors = 0;
+
 	float maxTorque = 1.0; // range how to scale the torque output
 	bool ready = false;
+	bool waitReady = true;
+	volatile bool requestFirstRun = false;
+	bool active = false;
 
 	int32_t filterId = 0;
+
+	uint8_t baudrate = CANSPEEDPRESET_500; // 250000, 500000, 1M
+};
+
+class OdriveCAN1 : public OdriveCAN{
+public:
+	OdriveCAN1() : OdriveCAN{0} {inUse = true;}
+	const ClassIdentifier getInfo();
+	~OdriveCAN1(){inUse = false;}
+	static bool isCreatable();
+	static ClassIdentifier info;
+	static bool inUse;
+};
+
+class OdriveCAN2 : public OdriveCAN{
+public:
+	OdriveCAN2() : OdriveCAN{1} {inUse = true;}
+	const ClassIdentifier getInfo();
+	~OdriveCAN2(){inUse = false;}
+	static bool isCreatable();
+	static ClassIdentifier info;
+	static bool inUse;
 };
 
 #endif /* USEREXTENSIONS_SRC_ODRIVECAN_H_ */
