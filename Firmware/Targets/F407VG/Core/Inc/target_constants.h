@@ -34,6 +34,7 @@
 #define PWMDRIVER
 #define LOCALENCODER
 #define CANBUS
+#define ODRIVE
 
 #define TMCTEMP // Enable tmc temperature shutdown
 //----------------------

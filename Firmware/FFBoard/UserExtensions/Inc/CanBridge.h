@@ -9,11 +9,12 @@
 #ifndef CANBRIDGE_H_
 #define CANBRIDGE_H_
 
-#include "target_constants.h"
+#include "cpp_target_config.h"
 #ifdef CANBRIDGE
 #include <FFBoardMain.h>
 #include "cppmain.h"
 #include "CanHandler.h"
+#include "CAN.h"
 
 extern "C"{
 #include "stm32f4xx_hal_can.h"
@@ -25,16 +26,6 @@ typedef struct{
 	uint32_t speed = 500000;
 	bool enabled = false;
 } CAN_Config_t;
-
-typedef struct{
-	uint8_t data[8];
-	CAN_RxHeaderTypeDef header;
-} CAN_rx_msg;
-
-typedef struct{
-	uint8_t data[8];
-	CAN_TxHeaderTypeDef header;
-} CAN_tx_msg;
 
 
 
@@ -60,7 +51,7 @@ public:
 	void cdcRcv(char* Buf, uint32_t *Len) override;
 	CAN_HandleTypeDef* CanHandle = &CANPORT;
 
-	void setCanSpeed(uint32_t speed);
+
 	void update(); // Main loop
 	volatile bool replyPending = false;
 
@@ -68,11 +59,12 @@ public:
 
 
 private:
+	CANPort* port = &canport;
 	std::vector<CAN_rx_msg> rxmessages;
 	CAN_rx_msg lastmsg;
 	int32_t filterId = -1;
 	const uint8_t numBuses = 1;
-	uint32_t speed = 500000; // default
+
 
 	CAN_TxHeaderTypeDef txHeader;
 	//CAN_RxHeaderTypeDef rxHeader; // Receive header

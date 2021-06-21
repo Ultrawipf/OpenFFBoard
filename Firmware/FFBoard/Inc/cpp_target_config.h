@@ -11,6 +11,7 @@
 #include "SPI.h"
 #include "UART.h"
 #include "target_constants.h"
+#include "CAN.h"
 
 extern SPIPort external_spi;
 extern SPIPort motor_spi;
@@ -21,6 +22,10 @@ extern UARTPort motor_uart;
 
 #ifdef UART_PORT_EXT
 extern UARTPort external_uart;
+#endif
+
+#ifdef CANBUS
+extern CANPort canport;
 #endif
 
 #endif

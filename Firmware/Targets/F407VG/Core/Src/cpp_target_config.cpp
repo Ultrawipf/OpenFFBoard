@@ -25,6 +25,7 @@ UARTPort external_uart{UART_PORT_EXT};
  * Can BTR register for different speed configs
  * 50, 100, 125, 250, 500, 1000 kbit
  */
+CANPort canport{CANPORT};
 
 const uint32_t canSpeedBTR_preset[] = { 0x001b0037,0x001b001b,0x001c0014,0x001a000b,0x001a0005,0x001a0002};
 
