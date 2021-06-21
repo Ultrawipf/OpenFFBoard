@@ -26,7 +26,7 @@ typedef struct{
 
 
 
-class CANPort : public CanHandler {
+class CANPort { //  : public CanHandler if interrupt callbacks needed
 public:
 	CANPort(CAN_HandleTypeDef &hcan);
 	virtual ~CANPort();
@@ -38,18 +38,26 @@ public:
 	void removeCanFilter(uint8_t filterId);
 
 	void setSpeed(uint32_t speed);
+	void setSpeedPreset(uint8_t preset);
 	uint32_t getSpeed();
+	uint8_t getSpeedPreset();
 
-	void canRxPendCallback(CAN_HandleTypeDef *hcan,uint8_t* rxBuf,CAN_RxHeaderTypeDef* rxHeader,uint32_t fifo);
-	void canErrorCallback(CAN_HandleTypeDef *hcan);
-	void canRxFullCallback(CAN_HandleTypeDef *hcan,uint32_t fifo);
-	void canTxCpltCallback(CAN_HandleTypeDef *hcan,uint32_t mailbox);
-	void canTxAbortCallback(CAN_HandleTypeDef *hcan,uint32_t mailbox);
+	void giveSemaphore();
+	void takeSemaphore();
+
+//	void canRxPendCallback(CAN_HandleTypeDef *hcan,uint8_t* rxBuf,CAN_RxHeaderTypeDef* rxHeader,uint32_t fifo);
+//	void canErrorCallback(CAN_HandleTypeDef *hcan);
+//	void canRxFullCallback(CAN_HandleTypeDef *hcan,uint32_t fifo);
+//	void canTxCpltCallback(CAN_HandleTypeDef *hcan,uint32_t mailbox);
+//	void canTxAbortCallback(CAN_HandleTypeDef *hcan,uint32_t mailbox);
 
 	static const uint8_t slaveFilterStart = 14;
 
+	static uint8_t speedToPreset(uint32_t speed);
+	static uint32_t presetToSpeed(uint8_t preset);
+
 private:
-	uint32_t speed = 500000; // default
+	uint8_t speedPreset = CANSPEEDPRESET_500; // default
 	bool isTakenFlag = false;
 	CAN_HandleTypeDef *hcan = nullptr;
 	std::vector<CAN_FilterTypeDef> canFilters;
