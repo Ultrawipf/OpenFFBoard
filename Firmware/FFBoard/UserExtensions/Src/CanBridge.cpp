@@ -8,7 +8,7 @@
 
 #include <CanBridge.h>
 #ifdef CANBRIDGE
-#include "target_constants.h"
+
 #include "ledEffects.h"
 #include "cdc_device.h"
 
@@ -26,6 +26,8 @@ const ClassIdentifier CanBridge::getInfo(){
 }
 
 CanBridge::CanBridge() {
+	this->port  = &canport;
+
 	// Set up a filter to receive everything
 	CAN_FilterTypeDef sFilterConfig;
 	sFilterConfig.FilterBank = 0;
@@ -46,13 +48,13 @@ CanBridge::CanBridge() {
 	txHeader.DLC = 8;	// 8 bytes
 	txHeader.TransmitGlobalTime = DISABLE;
 
-	this->filterId = addCanFilter(CanHandle, sFilterConfig);
+	this->filterId = this->port->addCanFilter(sFilterConfig);
 	// Interrupt start
 	conf1.enabled = true;
 }
 
 CanBridge::~CanBridge() {
-	removeCanFilter(CanHandle, filterId);
+	this->port->removeCanFilter(filterId);
 }
 
 
@@ -63,23 +65,14 @@ void CanBridge::canErrorCallback(CAN_HandleTypeDef *hcan){
 	}
 }
 
-/*
- * Sends the message stored in canBuf
- */
-void CanBridge::sendMessage(){
-	if (HAL_CAN_AddTxMessage(CanHandle, &txHeader, txBuf, &txMailbox) != HAL_OK)
-	{
-	  /* Transmission request Error */
-	  pulseErrLed();
-	}
-}
-
 void CanBridge::sendMessage(uint32_t id, uint64_t msg,uint8_t len = 8,bool rtr = false){
 	memcpy(txBuf,&msg,8);
 	txHeader.StdId = id;
 	txHeader.DLC = len;
-	txHeader.RTR = rtr;
-	sendMessage();
+	txHeader.RTR = rtr ? CAN_RTR_DATA : CAN_RTR_REMOTE;
+	if(!this->port->sendMessage(&txHeader, txBuf, &this->txMailbox)){
+		pulseErrLed();
+	}
 }
 
 /*
@@ -95,40 +88,6 @@ std::string CanBridge::messageToString(CAN_rx_msg msg){
 	return buf;
 }
 
-void CanBridge::setCanSpeed(uint32_t speed){
-	HAL_CAN_Stop(this->CanHandle);
-	this->speed = speed;
-	switch(speed){
-
-	case 50000:
-		this->CanHandle->Instance->BTR = canSpeedBTR_preset[CANSPEEDPRESET_50];
-	break;
-
-	case 100000:
-		this->CanHandle->Instance->BTR = canSpeedBTR_preset[CANSPEEDPRESET_100];
-	break;
-
-	case 125000:
-		this->CanHandle->Instance->BTR = canSpeedBTR_preset[CANSPEEDPRESET_125];
-	break;
-
-	case 250000:
-		this->CanHandle->Instance->BTR = canSpeedBTR_preset[CANSPEEDPRESET_250];
-	break;
-
-	case 500000:
-		this->CanHandle->Instance->BTR = canSpeedBTR_preset[CANSPEEDPRESET_500];
-	break;
-
-	case 1000000:
-		this->CanHandle->Instance->BTR = canSpeedBTR_preset[CANSPEEDPRESET_1000];
-	break;
-
-
-	}
-
-	HAL_CAN_Start(this->CanHandle);
-}
 
 // Can only send and receive 32bit for now
 void CanBridge::canRxPendCallback(CAN_HandleTypeDef *hcan,uint8_t* rxBuf,CAN_RxHeaderTypeDef* rxHeader,uint32_t fifo){
@@ -282,7 +241,7 @@ void CanBridge::cdcRcv(char* Buf, uint32_t *Len){
 					conf1.enabled = (b3 & 0x40) != 0;
 					conf1.listenOnly = (b3 & 0x20) != 0;
 				}
-				this->setCanSpeed(speed);
+				this->port->setSpeed(speed);
 				break;
 			}
 			case(6): // get can config
@@ -369,9 +328,9 @@ ParseStatus CanBridge::command(ParsedCommand* cmd,std::string* reply){
 	}
 	else if(cmd->cmd == "canspd"){
 		if(cmd->type == CMDtype::get){
-			*reply += std::to_string(this->speed);
+			*reply += std::to_string(this->port->getSpeed());
 		}else if(cmd->type == CMDtype::set){
-			this->setCanSpeed(cmd->val);
+			this->port->setSpeed(cmd->val);
 		}
 	}else{
 		flag = ParseStatus::NOT_FOUND; // No valid command

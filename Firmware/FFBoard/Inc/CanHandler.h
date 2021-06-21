@@ -19,8 +19,8 @@ public:
 	virtual ~CanHandler();
 	static std::vector<CanHandler*> canHandlers;
 
-	static int32_t addCanFilter(CAN_HandleTypeDef* CanHandle,CAN_FilterTypeDef sFilterConfig);
-	static void removeCanFilter(CAN_HandleTypeDef* CanHandle,uint8_t filterId);
+//	static int32_t addCanFilter(CAN_HandleTypeDef* CanHandle,CAN_FilterTypeDef sFilterConfig);
+//	static void removeCanFilter(CAN_HandleTypeDef* CanHandle,uint8_t filterId);
 
 
 	virtual void canRxPendCallback(CAN_HandleTypeDef *hcan,uint8_t* rxBuf,CAN_RxHeaderTypeDef* rxHeader,uint32_t fifo);
@@ -29,9 +29,9 @@ public:
 	virtual void canTxCpltCallback(CAN_HandleTypeDef *hcan,uint32_t mailbox);
 	virtual void canTxAbortCallback(CAN_HandleTypeDef *hcan,uint32_t mailbox);
 
-private:
-	static std::vector<CAN_FilterTypeDef> canFilters;
-	static const uint8_t slaveFilterStart = 14;
+//private:
+//	//static std::vector<CAN_FilterTypeDef> canFilters;
+//
 
 };
 
