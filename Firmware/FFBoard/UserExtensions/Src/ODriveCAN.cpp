@@ -6,40 +6,40 @@
  */
 #include "target_constants.h"
 #ifdef ODRIVE
-#include "OdriveCAN.h"
+#include <ODriveCAN.h>
 
-bool OdriveCAN1::inUse = false;
-ClassIdentifier OdriveCAN1::info = {
-		 .name = "Odrive (M0)" ,
+bool ODriveCAN1::inUse = false;
+ClassIdentifier ODriveCAN1::info = {
+		 .name = "ODrive (M0)" ,
 		 .id=5,
 		 .unique = '0'
 };
-bool OdriveCAN2::inUse = false;
-ClassIdentifier OdriveCAN2::info = {
-		 .name = "Odrive (M1)" ,
+bool ODriveCAN2::inUse = false;
+ClassIdentifier ODriveCAN2::info = {
+		 .name = "ODrive (M1)" ,
 		 .id=6,
 		 .unique = '1'
 };
 
 
 
-const ClassIdentifier OdriveCAN1::getInfo(){
+const ClassIdentifier ODriveCAN1::getInfo(){
 	return info;
 }
 
-const ClassIdentifier OdriveCAN2::getInfo(){
+const ClassIdentifier ODriveCAN2::getInfo(){
 	return info;
 }
 
-bool OdriveCAN1::isCreatable(){
-	return !OdriveCAN1::inUse; // Creatable if not already in use for example by another axis
+bool ODriveCAN1::isCreatable(){
+	return !ODriveCAN1::inUse; // Creatable if not already in use for example by another axis
 }
 
-bool OdriveCAN2::isCreatable(){
-	return !OdriveCAN2::inUse; // Creatable if not already in use for example by another axis
+bool ODriveCAN2::isCreatable(){
+	return !ODriveCAN2::inUse; // Creatable if not already in use for example by another axis
 }
 
-OdriveCAN::OdriveCAN(uint8_t id)  : Thread("ODRIVE", ODRIVE_THREAD_MEM, ODRIVE_THREAD_PRIO), motorId(id) {
+ODriveCAN::ODriveCAN(uint8_t id)  : Thread("ODRIVE", ODRIVE_THREAD_MEM, ODRIVE_THREAD_PRIO), motorId(id) {
 
 	if(motorId == 0){
 		nodeId = 0;
@@ -67,11 +67,11 @@ OdriveCAN::OdriveCAN(uint8_t id)  : Thread("ODRIVE", ODRIVE_THREAD_MEM, ODRIVE_T
 	this->Start();
 }
 
-OdriveCAN::~OdriveCAN() {
+ODriveCAN::~ODriveCAN() {
 	this->setTorque(0.0);
 }
 
-void OdriveCAN::restoreFlash(){
+void ODriveCAN::restoreFlash(){
 	uint16_t canIds = 0x3040;
 	if(Flash_Read(ADR_ODRIVE_CANID, &canIds)){
 		if(motorId == 0){
@@ -89,7 +89,7 @@ void OdriveCAN::restoreFlash(){
 	}
 }
 
-void OdriveCAN::saveFlash(){
+void ODriveCAN::saveFlash(){
 	uint16_t canIds = 0x3040;
 	Flash_Read(ADR_ODRIVE_CANID, &canIds); // Read again
 	if(motorId == 0){
@@ -107,7 +107,7 @@ void OdriveCAN::saveFlash(){
 	Flash_Write(ADR_ODRIVE_SETTING1, settings1);
 }
 
-void OdriveCAN::Run(){
+void ODriveCAN::Run(){
 	while(true){
 		this->Delay(500);
 		if(requestFirstRun){
@@ -127,61 +127,53 @@ void OdriveCAN::Run(){
 	}
 }
 
-void OdriveCAN::stopMotor(){
+void ODriveCAN::stopMotor(){
 	active = false;
 	this->setTorque(0.0);
-	if(currentState == OdriveState::AXIS_STATE_CLOSED_LOOP_CONTROL)
-		this->setState(OdriveState::AXIS_STATE_IDLE);
+	if(currentState == ODriveState::AXIS_STATE_CLOSED_LOOP_CONTROL)
+		this->setState(ODriveState::AXIS_STATE_IDLE);
 }
 
-void OdriveCAN::startMotor(){
+void ODriveCAN::startMotor(){
 	active = true;
-	if(currentState == OdriveState::AXIS_STATE_IDLE)
-		this->setState(OdriveState::AXIS_STATE_CLOSED_LOOP_CONTROL);
+	if(currentState == ODriveState::AXIS_STATE_IDLE)
+		this->setState(ODriveState::AXIS_STATE_CLOSED_LOOP_CONTROL);
 }
 
-Encoder* OdriveCAN::getEncoder(){
+Encoder* ODriveCAN::getEncoder(){
 	return static_cast<Encoder*>(this);
 }
 
 /**
  * Must be in encoder cpr if not just used to zero the axis
  */
-void OdriveCAN::setPos(int32_t pos){
+void ODriveCAN::setPos(int32_t pos){
 	// Only change encoder count internally as offset
 	posOffset = lastPos - ((float)pos / (float)getCpr());
 }
 
-void OdriveCAN::sendMsg(uint8_t cmd,uint32_t value){
-	CAN_tx_msg msg;
 
-	memcpy(&msg.data,&value,4);
-	msg.header.RTR = CAN_RTR_DATA;
-	msg.header.DLC = 4;
-	msg.header.StdId = cmd | (nodeId << 5);
-	port->sendMessage(msg);
-}
 
-void OdriveCAN::sendMsg(uint8_t cmd,uint64_t value){
-	CAN_tx_msg msg;
-	memcpy(&msg.data,&value,8);
-	msg.header.RTR = CAN_RTR_DATA;
-	msg.header.DLC = 8;
-	msg.header.StdId = cmd | (nodeId << 5);
-	port->sendMessage(msg);
-}
+//void ODriveCAN::sendMsg(uint8_t cmd,uint64_t value){
+//	CAN_tx_msg msg;
+//	memcpy(&msg.data,&value,8);
+//	msg.header.RTR = CAN_RTR_DATA;
+//	msg.header.DLC = 8;
+//	msg.header.StdId = cmd | (nodeId << 5);
+//	port->sendMessage(msg);
+//}
 
-void OdriveCAN::sendMsg(uint8_t cmd,float value){
-	CAN_tx_msg msg;
+//void ODriveCAN::sendMsg(uint8_t cmd,float value){
+//	CAN_tx_msg msg;
+//
+//	memcpy(&msg.data,&value,4);
+//	msg.header.RTR = CAN_RTR_DATA;
+//	msg.header.DLC = 4;
+//	msg.header.StdId = cmd | (nodeId << 5);
+//	port->sendMessage(msg);
+//}
 
-	memcpy(&msg.data,&value,4);
-	msg.header.RTR = CAN_RTR_DATA;
-	msg.header.DLC = 4;
-	msg.header.StdId = cmd | (nodeId << 5);
-	port->sendMessage(msg);
-}
-
-void OdriveCAN::requestMsg(uint8_t cmd){
+void ODriveCAN::requestMsg(uint8_t cmd){
 	CAN_tx_msg msg;
 
 	msg.header.RTR = CAN_RTR_REMOTE;
@@ -190,61 +182,68 @@ void OdriveCAN::requestMsg(uint8_t cmd){
 	port->sendMessage(msg);
 }
 
-float OdriveCAN::getPos_f(){
+float ODriveCAN::getPos_f(){
 	if(motorReady())
 		requestMsg(0x09);
 	return lastPos-posOffset;
 }
 
-bool OdriveCAN::motorReady(){
-	return ready && (currentState == OdriveState::AXIS_STATE_CLOSED_LOOP_CONTROL);
+bool ODriveCAN::motorReady(){
+	return ready && (currentState == ODriveState::AXIS_STATE_CLOSED_LOOP_CONTROL);
 }
-int32_t OdriveCAN::getPos(){
+int32_t ODriveCAN::getPos(){
 	return getCpr() * getPos_f();
 }
 
 
-uint32_t OdriveCAN::getCpr(){
+uint32_t ODriveCAN::getCpr(){
 	return 0xffff;
 }
-void OdriveCAN::setTorque(float torque){
+void ODriveCAN::setTorque(float torque){
 	if(motorReady())
-		sendMsg(0x0E,torque);
+		sendMsg<float>(0x0E,torque);
 }
 
-void OdriveCAN::setMode(OdriveControlMode controlMode,OdriveInputMode inputMode){
+void ODriveCAN::setMode(ODriveControlMode controlMode,ODriveInputMode inputMode){
 	uint64_t mode = (uint64_t) controlMode | ((uint64_t)inputMode << 32);
 	sendMsg(0x0B,mode);
 }
 
-void OdriveCAN::setState(OdriveState state){
+void ODriveCAN::setState(ODriveState state){
 	sendMsg(0x07,(uint32_t)state);
 }
 
 
-void OdriveCAN::turn(int16_t power){
+void ODriveCAN::turn(int16_t power){
 	float torque = ((float)power / (float)0x7fff) * maxTorque;
 	this->setTorque(torque);
 }
 
-void OdriveCAN::setCanRate(uint8_t canRate){
+void ODriveCAN::setCanRate(uint8_t canRate){
 	baudrate = clip<uint8_t,uint8_t>(canRate, 3, 5);
 	port->setSpeedPreset(baudrate);
 }
 
 /**
+ * Sends the start anticogging command
+ */
+void ODriveCAN::startAnticogging(){
+	sendMsg(0x10, (uint8_t)0);
+}
+
+/**
  * Called after the first status message is received
  */
-void OdriveCAN::readyCb(){
+void ODriveCAN::readyCb(){
 	ready = true; // waits for first reply
 	this->setPos(0);
-	setMode(OdriveControlMode::CONTROL_MODE_TORQUE_CONTROL, OdriveInputMode::INPUT_MODE_PASSTHROUGH);
+	setMode(ODriveControlMode::CONTROL_MODE_TORQUE_CONTROL, ODriveInputMode::INPUT_MODE_PASSTHROUGH);
 	//this->setTorque(0.0);
 	//this->setState(OdriveState::AXIS_STATE_FULL_CALIBRATION_SEQUENCE);
 
 }
 
-ParseStatus OdriveCAN::command(ParsedCommand* cmd,std::string* reply){
+ParseStatus ODriveCAN::command(ParsedCommand* cmd,std::string* reply){
 	 // Prefix set but not our prefix
 	if(cmd->prefix != this->getInfo().unique && cmd->prefix != '\0'){
 		return ParseStatus::NOT_FOUND;
@@ -272,6 +271,12 @@ ParseStatus OdriveCAN::command(ParsedCommand* cmd,std::string* reply){
 			*reply += std::to_string(errors);
 		}
 
+	}else if(cmd->cmd == "odriveAnticogging"){
+		if(cmd->type == CMDtype::set && cmd->val == 1){
+			this->startAnticogging();
+		}else{
+			*reply+="=1 to start calibration sequence";
+		}
 	}else if(cmd->cmd == "odriveState"){
 		if(cmd->type == CMDtype::get){
 			*reply += std::to_string((uint32_t)currentState);
@@ -290,7 +295,7 @@ ParseStatus OdriveCAN::command(ParsedCommand* cmd,std::string* reply){
 }
 
 
-void OdriveCAN::canRxPendCallback(CAN_HandleTypeDef *hcan,uint8_t* rxBuf,CAN_RxHeaderTypeDef* rxHeader,uint32_t fifo){
+void ODriveCAN::canRxPendCallback(CAN_HandleTypeDef *hcan,uint8_t* rxBuf,CAN_RxHeaderTypeDef* rxHeader,uint32_t fifo){
 
 	uint16_t node = (rxHeader->StdId >> 5) & 0x3F;
 	if(node != this->nodeId){
@@ -304,7 +309,7 @@ void OdriveCAN::canRxPendCallback(CAN_HandleTypeDef *hcan,uint8_t* rxBuf,CAN_RxH
 	{
 		// TODO error handling
 		errors = msg & 0xffffffff;
-		currentState = (OdriveState)( (msg >> 32) & 0xffffffff);
+		currentState = (ODriveState)( (msg >> 32) & 0xffffffff);
 		if(waitReady){
 			waitReady = false;
 			requestFirstRun = true;
