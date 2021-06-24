@@ -5,13 +5,13 @@
  *      Author: Yannick
  */
 
+#include <ODriveCAN.h>
 #include "MotorDriver.h"
 #include "ClassChooser.h"
 
 #include "TMC4671.h"
 #include "MotorPWM.h"
 
-#include "OdriveCAN.h"
 
 ClassIdentifier MotorDriver::info ={.name = "None" , .id=0, .unique = '0', .hidden = false};
 
@@ -34,8 +34,8 @@ const std::vector<class_entry<MotorDriver>> MotorDriver::all_drivers =
 	add_class<MotorPWM, MotorDriver>(),
 #endif
 #ifdef ODRIVE
-	add_class<OdriveCAN1,MotorDriver>(),
-	add_class<OdriveCAN2,MotorDriver>(),
+	add_class<ODriveCAN1,MotorDriver>(),
+	add_class<ODriveCAN2,MotorDriver>(),
 #endif
 };
 
