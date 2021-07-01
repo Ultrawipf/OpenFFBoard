@@ -101,8 +101,9 @@ void CANPort::setSpeedPreset(uint8_t preset){
 
 	takeSemaphore();
 	HAL_CAN_Stop(this->hcan);
-
+	HAL_CAN_AbortTxRequest(hcan, txMailbox);
 	this->hcan->Instance->BTR = canSpeedBTR_preset[preset];
+	HAL_CAN_ResetError(hcan);
 
 	HAL_CAN_Start(this->hcan);
 	giveSemaphore();

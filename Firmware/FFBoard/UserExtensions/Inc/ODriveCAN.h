@@ -23,6 +23,7 @@
 enum class ODriveState : uint32_t {AXIS_STATE_UNDEFINED=0,AXIS_STATE_IDLE=1,AXIS_STATE_STARTUP_SEQUENCE=2,AXIS_STATE_FULL_CALIBRATION_SEQUENCE=3,AXIS_STATE_MOTOR_CALIBRATION=4,AXIS_STATE_ENCODER_INDEX_SEARCH=6,AXIS_STATE_ENCODER_OFFSET_CALIBRATION=7,AXIS_STATE_CLOSED_LOOP_CONTROL=8,AXIS_STATE_LOCKIN_SPIN=9,AXIS_STATE_ENCODER_DIR_FIND=10,AXIS_STATE_HOMING=11,AXIS_STATE_ENCODER_HALL_POLARITY_CALIBRATION=12,AXIS_STATE_ENCODER_HALL_PHASE_CALIBRATION=13};
 enum class ODriveControlMode : uint32_t {CONTROL_MODE_VOLTAGE_CONTROL = 0,CONTROL_MODE_TORQUE_CONTROL = 1,CONTROL_MODE_VELOCITY_CONTROL = 2,CONTROL_MODE_POSITION_CONTROL = 3};
 enum class ODriveInputMode : uint32_t {INPUT_MODE_INACTIVE = 0,INPUT_MODE_PASSTHROUGH = 1,INPUT_MODE_VEL_RAMP = 2,INPUT_MODE_POS_FILTER = 3,INPUT_MODE_MIX_CHANNELS = 4,INPUT_MODE_TRAP_TRAJ = 5,INPUT_MODE_TORQUE_RAMP =6,INPUT_MODE_MIRROR =7};
+enum class ODriveLocalState : uint32_t {IDLE,WAIT_READY,WAIT_CALIBRATION,RUNNING,START_RUNNING};
 
 class ODriveCAN : public MotorDriver,public PersistentStorage, public Encoder, public CanHandler, public CommandHandler, cpp_freertos::Thread{
 public:
@@ -90,16 +91,18 @@ private:
 	int8_t nodeId = 0; // 6 bits can ID
 	int8_t motorId = 0;
 
-	volatile ODriveState currentState = ODriveState::AXIS_STATE_UNDEFINED;
+	ODriveState odriveCurrentState = ODriveState::AXIS_STATE_UNDEFINED;
 	volatile uint32_t errors = 0;
 
 	float maxTorque = 1.0; // range how to scale the torque output
-	bool ready = false;
-	bool waitReady = true;
-	volatile bool requestFirstRun = false;
+	//bool ready = false;
+	volatile bool waitReady = true;
+
+	//volatile bool requestFirstRun = false;
 	bool active = false;
 
 	int32_t filterId = 0;
+	volatile ODriveLocalState state = ODriveLocalState::IDLE;
 
 	uint8_t baudrate = CANSPEEDPRESET_500; // 250000, 500000, 1M
 };

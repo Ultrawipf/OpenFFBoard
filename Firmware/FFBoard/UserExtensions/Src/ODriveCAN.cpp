@@ -110,17 +110,52 @@ void ODriveCAN::saveFlash(){
 void ODriveCAN::Run(){
 	while(true){
 		this->Delay(500);
-		if(requestFirstRun){
-			requestFirstRun = false;
-			readyCb();
+
+		switch(state){
+		case ODriveLocalState::WAIT_READY:
+			if(this->odriveCurrentState == ODriveState::AXIS_STATE_IDLE){
+				this->state = ODriveLocalState::WAIT_CALIBRATION;
+				this->setState(ODriveState::AXIS_STATE_FULL_CALIBRATION_SEQUENCE);
+			}
+
+		break;
+
+		// Calibration in progress. wait until its finished to enter torque mode
+		case ODriveLocalState::WAIT_CALIBRATION:
+			if(odriveCurrentState == ODriveState::AXIS_STATE_IDLE){
+				setState(ODriveState::AXIS_STATE_CLOSED_LOOP_CONTROL);
+				state = ODriveLocalState::START_RUNNING;
+
+			}else if(odriveCurrentState == ODriveState::AXIS_STATE_CLOSED_LOOP_CONTROL){
+				state = ODriveLocalState::START_RUNNING;
+			}
+		break;
+
+		case ODriveLocalState::START_RUNNING:
+			state = ODriveLocalState::RUNNING;
+			// Odrive is active,
+			// enable torque mode
+			if(odriveCurrentState == ODriveState::AXIS_STATE_CLOSED_LOOP_CONTROL){
+				this->setPos(0);
+				setMode(ODriveControlMode::CONTROL_MODE_TORQUE_CONTROL, ODriveInputMode::INPUT_MODE_PASSTHROUGH);
+			}
+
+		break;
+		default:
+
+		break;
 		}
-//		else if(active && ready){
-//
-//			if(currentState == OdriveState::AXIS_STATE_IDLE){
-//				this->setState(OdriveState::AXIS_STATE_CLOSED_LOOP_CONTROL);
-//			}
-//
-//			}
+
+		// If odrive is currently performing any calibration task wait until finished
+		if(odriveCurrentState == ODriveState::AXIS_STATE_FULL_CALIBRATION_SEQUENCE || odriveCurrentState == ODriveState::AXIS_STATE_MOTOR_CALIBRATION || odriveCurrentState == ODriveState::AXIS_STATE_ENCODER_OFFSET_CALIBRATION || odriveCurrentState == ODriveState::AXIS_STATE_ENCODER_HALL_PHASE_CALIBRATION || odriveCurrentState == ODriveState::AXIS_STATE_ENCODER_INDEX_SEARCH){
+			if(state != ODriveLocalState::WAIT_CALIBRATION)
+				state = ODriveLocalState::WAIT_CALIBRATION;
+		// If closed loop mode is on assume its ready and already calibrated
+		}else if(odriveCurrentState == ODriveState::AXIS_STATE_CLOSED_LOOP_CONTROL){
+			if(state != ODriveLocalState::START_RUNNING && state != ODriveLocalState::RUNNING)
+				state = ODriveLocalState::RUNNING;
+		}
+
 		if(HAL_GetTick() - lastVoltageUpdate > 1000){
 			requestMsg(0x17); // Update voltage
 		}
@@ -130,13 +165,13 @@ void ODriveCAN::Run(){
 void ODriveCAN::stopMotor(){
 	active = false;
 	this->setTorque(0.0);
-	if(currentState == ODriveState::AXIS_STATE_CLOSED_LOOP_CONTROL)
+	if(odriveCurrentState == ODriveState::AXIS_STATE_CLOSED_LOOP_CONTROL)
 		this->setState(ODriveState::AXIS_STATE_IDLE);
 }
 
 void ODriveCAN::startMotor(){
 	active = true;
-	if(currentState == ODriveState::AXIS_STATE_IDLE)
+	if(odriveCurrentState == ODriveState::AXIS_STATE_IDLE)
 		this->setState(ODriveState::AXIS_STATE_CLOSED_LOOP_CONTROL);
 }
 
@@ -152,26 +187,6 @@ void ODriveCAN::setPos(int32_t pos){
 	posOffset = lastPos - ((float)pos / (float)getCpr());
 }
 
-
-
-//void ODriveCAN::sendMsg(uint8_t cmd,uint64_t value){
-//	CAN_tx_msg msg;
-//	memcpy(&msg.data,&value,8);
-//	msg.header.RTR = CAN_RTR_DATA;
-//	msg.header.DLC = 8;
-//	msg.header.StdId = cmd | (nodeId << 5);
-//	port->sendMessage(msg);
-//}
-
-//void ODriveCAN::sendMsg(uint8_t cmd,float value){
-//	CAN_tx_msg msg;
-//
-//	memcpy(&msg.data,&value,4);
-//	msg.header.RTR = CAN_RTR_DATA;
-//	msg.header.DLC = 4;
-//	msg.header.StdId = cmd | (nodeId << 5);
-//	port->sendMessage(msg);
-//}
 
 void ODriveCAN::requestMsg(uint8_t cmd){
 	CAN_tx_msg msg;
@@ -189,7 +204,7 @@ float ODriveCAN::getPos_f(){
 }
 
 bool ODriveCAN::motorReady(){
-	return ready && (currentState == ODriveState::AXIS_STATE_CLOSED_LOOP_CONTROL);
+	return state == ODriveLocalState::RUNNING && (odriveCurrentState == ODriveState::AXIS_STATE_CLOSED_LOOP_CONTROL);
 }
 int32_t ODriveCAN::getPos(){
 	return getCpr() * getPos_f();
@@ -231,17 +246,6 @@ void ODriveCAN::startAnticogging(){
 	sendMsg(0x10, (uint8_t)0);
 }
 
-/**
- * Called after the first status message is received
- */
-void ODriveCAN::readyCb(){
-	ready = true; // waits for first reply
-	this->setPos(0);
-	setMode(ODriveControlMode::CONTROL_MODE_TORQUE_CONTROL, ODriveInputMode::INPUT_MODE_PASSTHROUGH);
-	//this->setTorque(0.0);
-	//this->setState(OdriveState::AXIS_STATE_FULL_CALIBRATION_SEQUENCE);
-
-}
 
 ParseStatus ODriveCAN::command(ParsedCommand* cmd,std::string* reply){
 	 // Prefix set but not our prefix
@@ -279,7 +283,7 @@ ParseStatus ODriveCAN::command(ParsedCommand* cmd,std::string* reply){
 		}
 	}else if(cmd->cmd == "odriveState"){
 		if(cmd->type == CMDtype::get){
-			*reply += std::to_string((uint32_t)currentState);
+			*reply += std::to_string((uint32_t)odriveCurrentState);
 		}
 
 	}else if(cmd->cmd == "odriveCanSpd"){
@@ -309,10 +313,10 @@ void ODriveCAN::canRxPendCallback(CAN_HandleTypeDef *hcan,uint8_t* rxBuf,CAN_RxH
 	{
 		// TODO error handling
 		errors = msg & 0xffffffff;
-		currentState = (ODriveState)( (msg >> 32) & 0xffffffff);
+		odriveCurrentState = (ODriveState)( (msg >> 32) & 0xffffffff);
 		if(waitReady){
 			waitReady = false;
-			requestFirstRun = true;
+			state = ODriveLocalState::WAIT_READY;
 		}
 		break;
 	}
