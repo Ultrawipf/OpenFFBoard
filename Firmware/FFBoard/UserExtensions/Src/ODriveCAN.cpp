@@ -85,7 +85,7 @@ void ODriveCAN::restoreFlash(){
 
 	uint16_t settings1 = 0;
 	if(Flash_Read(ADR_ODRIVE_SETTING1, &settings1)){
-		maxTorque = (float)clip(settings1 & 0xfff, 0, 100) / 100.0;
+		maxTorque = (float)clip(settings1 & 0xfff, 0, 0xfff) / 100.0;
 	}
 }
 
@@ -261,7 +261,7 @@ ParseStatus ODriveCAN::command(ParsedCommand* cmd,std::string* reply){
 			int32_t val = maxTorque*100;
 			*reply += std::to_string(val);
 		}else if(cmd->type == CMDtype::set){
-			maxTorque = (float)clip(cmd->val, 0, 100) / 100.0;
+			maxTorque = (float)clip(cmd->val, 0, 0xfff) / 100.0;
 		}
 	}else if(cmd->cmd == "odriveVbus"){
 		if(cmd->type == CMDtype::get){

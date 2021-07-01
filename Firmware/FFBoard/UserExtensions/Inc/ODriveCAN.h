@@ -78,7 +78,7 @@ public:
 	void restoreFlash() override;	// Load from flash
 
 	ParseStatus command(ParsedCommand* cmd,std::string* reply) override;
-	std::string getHelpstring(){return "ODrive: odriveCanId,odriveCanSpd (3=250k,4=500k,5=1M),odriveErrors,odriveState, (Nm*100, scaler),odriveVbus,odriveAnticogging\n";};
+	std::string getHelpstring(){return "ODrive: odriveCanId,odriveCanSpd (3=250k,4=500k,5=1M),odriveErrors,odriveState,odriveMaxTorque (Nm*100, scaler),odriveVbus,odriveAnticogging\n";};
 
 private:
 	CANPort* port = &canport;
