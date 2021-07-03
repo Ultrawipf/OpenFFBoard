@@ -45,11 +45,6 @@ public:
 	void giveSemaphore();
 	void takeSemaphore();
 
-//	void canRxPendCallback(CAN_HandleTypeDef *hcan,uint8_t* rxBuf,CAN_RxHeaderTypeDef* rxHeader,uint32_t fifo);
-//	void canErrorCallback(CAN_HandleTypeDef *hcan);
-//	void canRxFullCallback(CAN_HandleTypeDef *hcan,uint32_t fifo);
-//	void canTxCpltCallback(CAN_HandleTypeDef *hcan,uint32_t mailbox);
-//	void canTxAbortCallback(CAN_HandleTypeDef *hcan,uint32_t mailbox);
 
 	static const uint8_t slaveFilterStart = 14;
 
