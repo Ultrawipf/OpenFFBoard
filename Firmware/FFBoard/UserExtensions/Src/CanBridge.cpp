@@ -75,7 +75,7 @@ void CanBridge::sendMessage(uint32_t id, uint64_t msg,uint8_t len = 8,bool rtr =
 	}
 }
 
-/*
+/**
  * Returns last received can message as string
  */
 std::string CanBridge::messageToString(CAN_rx_msg msg){
@@ -92,16 +92,10 @@ std::string CanBridge::messageToString(CAN_rx_msg msg){
 void CanBridge::canRxPendCallback(CAN_HandleTypeDef *hcan,uint8_t* rxBuf,CAN_RxHeaderTypeDef* rxHeader,uint32_t fifo){
 
 	if(fifo == rxfifo){
-//		memcpy(this->rxBuf,rxBuf,sizeof(this->rxBuf));
-//		this->rxHeader = *rxHeader;
+
 		memcpy(&lastmsg.data,rxBuf,8);
 		lastmsg.header = *rxHeader;
 		pulseSysLed();
-//		if(this->rxmessages.size() >= 32){
-//			return;
-//		}
-
-		//this->rxmessages.push_back(lastmsg); // causes reset
 
 		replyPending = true;
 	}

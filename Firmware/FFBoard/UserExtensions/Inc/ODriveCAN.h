@@ -107,6 +107,10 @@ private:
 	uint8_t baudrate = CANSPEEDPRESET_500; // 250000, 500000, 1M
 };
 
+/**
+ * Instance 1 of ODrive
+ * Use for M0 output
+ */
 class ODriveCAN1 : public ODriveCAN{
 public:
 	ODriveCAN1() : ODriveCAN{0} {inUse = true;}
@@ -117,6 +121,10 @@ public:
 	static bool inUse;
 };
 
+/**
+ * Instance 2 of ODrive
+ * Use for M1 output
+ */
 class ODriveCAN2 : public ODriveCAN{
 public:
 	ODriveCAN2() : ODriveCAN{1} {inUse = true;}

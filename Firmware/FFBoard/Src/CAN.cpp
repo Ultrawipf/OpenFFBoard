@@ -33,6 +33,9 @@ uint8_t CANPort::getSpeedPreset(){
 	return (speedPreset);
 }
 
+/**
+ * Converts a numeric speed in bits/s to the matching preset ID
+ */
 uint8_t CANPort::speedToPreset(uint32_t speed){
 	uint8_t preset = 255;
 	switch(speed){
@@ -67,6 +70,9 @@ uint8_t CANPort::speedToPreset(uint32_t speed){
 	return preset;
 }
 
+/**
+ * Converts a preset to bits/s
+ */
 uint32_t CANPort::presetToSpeed(uint8_t preset){
 	uint32_t speed = 0;
 	switch(preset){
@@ -94,6 +100,9 @@ uint32_t CANPort::presetToSpeed(uint8_t preset){
 	return speed;
 }
 
+/**
+ * Changes the speed of the CAN port to a preset
+ */
 void CANPort::setSpeedPreset(uint8_t preset){
 	if(preset > 5 || preset == this->speedPreset)
 		return;
@@ -109,7 +118,10 @@ void CANPort::setSpeedPreset(uint8_t preset){
 	giveSemaphore();
 }
 
-
+/**
+ * Changes the speed of the CAN port in bits/s
+ * Must match a preset speed
+ */
 void CANPort::setSpeed(uint32_t speed){
 	uint8_t preset = speedToPreset(speed);
 	setSpeedPreset(preset);
@@ -157,54 +169,9 @@ bool CANPort::sendMessage(CAN_TxHeaderTypeDef *pHeader, uint8_t aData[],uint32_t
 	return true;
 }
 
-///**
-// * RX FiFo is full
-// */
-//void CANPort::canRxFullCallback(CAN_HandleTypeDef *hcan,uint32_t fifo){
-//	if(hcan != this->hcan){
-//		return;
-//	}
-//}
-//
-///**
-// * New message received in fifo number
-// */
-//void CANPort::canRxPendCallback(CAN_HandleTypeDef *hcan,uint8_t* rxBuf,CAN_RxHeaderTypeDef* rxHeader,uint32_t fifo){
-//	if(hcan != this->hcan){
-//		return;
-//	}
-//}
-//
-///**
-// * Error during can transfer
-// */
-//void CANPort::canErrorCallback(CAN_HandleTypeDef *hcan){
-//	if(hcan != this->hcan){
-//		return;
-//	}
-//}
-//
-///**
-// * CAN transmission complete
-// */
-//void CANPort::canTxCpltCallback(CAN_HandleTypeDef *hcan,uint32_t mailbox){
-//	if(hcan != this->hcan){
-//		return;
-//	}
-//
-//}
-//
-///**
-// * CAN transmission aborted
-// */
-//void CANPort::canTxAbortCallback(CAN_HandleTypeDef *hcan,uint32_t mailbox){
-//	if(hcan != this->hcan){
-//		return;
-//	}
-//}
 
 
-/*
+/**
  * Adds a filter to the can handle
  * Returns a free bank id if successfull and -1 if all banks are full
  * Use the returned id to disable the filter again
@@ -232,7 +199,7 @@ int32_t CANPort::addCanFilter(CAN_FilterTypeDef sFilterConfig){
 	return foundId;
 }
 
-/*
+/**
  * Disables a can filter
  * Use the id returned by the addCanFilter function
  */

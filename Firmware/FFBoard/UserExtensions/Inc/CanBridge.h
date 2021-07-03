@@ -29,7 +29,7 @@ typedef struct{
 
 
 
-/*
+/**
  * A main class for testing CAN communication.
  * Sends CAN messages via CDC and can transmit CAN messages with 4 bytes
  */
@@ -67,9 +67,7 @@ private:
 
 
 	CAN_TxHeaderTypeDef txHeader;
-	//CAN_RxHeaderTypeDef rxHeader; // Receive header
 
-	//uint8_t rxBuf[8] = {0};
 	uint8_t txBuf[8] = {0};
 	uint32_t txMailbox;
 	uint32_t rxfifo = CAN_RX_FIFO0;
