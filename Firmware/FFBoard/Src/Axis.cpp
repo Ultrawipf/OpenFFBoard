@@ -129,9 +129,9 @@ void Axis::setPower(uint16_t power)
 {
 	NormalizedAxis::setPower(power);
 	// Update hardware limits for TMC for safety
-	if (this->conf.drvtype == TMC4671::info.id)
+	TMC4671 *drv = dynamic_cast<TMC4671 *>(this->drv.get());
+	if (drv != nullptr)
 	{
-		TMC4671 *drv = static_cast<TMC4671 *>(this->drv.get());
 		//tmclimits.pid_uq_ud = power;
 		//tmclimits.pid_torque_flux = power;
 		drv->setTorqueLimit(power);
