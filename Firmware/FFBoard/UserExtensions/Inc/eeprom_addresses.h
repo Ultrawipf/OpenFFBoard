@@ -10,7 +10,7 @@
 
 #include "main.h"
 // Change this to the amount of currently registered variables
-#define NB_OF_VAR	65
+#define NB_OF_VAR	66
 
 extern uint16_t VirtAddVarTab[NB_OF_VAR];
 
@@ -133,5 +133,7 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_ODRIVE_CANID				0x3D0 //0-6 ID M0, 7-12 ID M1, 13-15 can speed
 #define ADR_ODRIVE_SETTING1				0x3D1
 
+// Vesc
+#define ADR_VESC_CANDATA				0x3E0 //0-8 AxisCanID , 9-11 can speed
 
 #endif /* EEPROM_ADDRESSES_H_ */

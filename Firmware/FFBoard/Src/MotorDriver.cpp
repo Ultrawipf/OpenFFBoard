@@ -11,6 +11,7 @@
 
 #include "TMC4671.h"
 #include "MotorPWM.h"
+#include "VescCAN.h"
 
 
 ClassIdentifier MotorDriver::info ={.name = "None" , .id=0, .unique = '0', .hidden = false};
@@ -36,6 +37,9 @@ const std::vector<class_entry<MotorDriver>> MotorDriver::all_drivers =
 #ifdef ODRIVE
 	add_class<ODriveCAN1,MotorDriver>(),
 	add_class<ODriveCAN2,MotorDriver>(),
+#endif
+#ifdef VESC
+	add_class<VescCAN,MotorDriver>(),
 #endif
 };
 

@@ -17,6 +17,7 @@
 
 #ifndef CANBUS
 #undef ODRIVE
+#undef VESC
 #endif
 
 #endif
