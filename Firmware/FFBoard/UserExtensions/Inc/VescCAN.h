@@ -34,7 +34,7 @@ enum class VescCANMsg : uint8_t {
 	CAN_PACKET_SET_CURRENT_REL = 10,
 	CAN_PACKET_PING = 17,
 	CAN_PACKET_PONG = 18,
-	CAN_PACKET_GET_ROTOR_POS = 56
+	CAN_PACKET_POLL_ROTOR_POS = 56
 };
 
 enum class VescCmd : uint8_t {
@@ -86,9 +86,9 @@ public:
 	ParseStatus command(ParsedCommand *cmd, std::string *reply) override;
 	virtual std::string getHelpstring() {
 		return "Vesc: "
-				"vescCanId,vescCanSpd (3=250k,4=500k,5=1M),"
-				"vescErrors,vescState,"
-				"vescEncState (1=start, 0=stop),vescEncRate\n";
+				"vescCanId, vescCanSpd (3=250k,4=500k,5=1M), "
+				"vescState, vescErrorFlag, "
+				"vescEncRate, vescPos, vescTorque\n";
 	};
 
 	// Thread impl
@@ -105,17 +105,15 @@ private:
 
 	// Encoder section
 
-	bool activeEnc = false;
+	//bool activeEnc = false;
 	float lastPos = 0;				// last motor position known in "turn unit"
 	float mtPos = 0;				// number of turn known
 	float prevPos360 = 0;			// previous position in [0-360] position
 	float posOffset = 0;			// used to center the wheel
-	uint32_t encCount = 0;			// count incoming message
-	uint32_t encStartPeriod = 0;	// start time of period to compute encoder Rate
-	float encRate = 0;				// encoder rate to test if can speed setting is OK
-	uint32_t lastVescResponse = 0;	// record last time when vesc respond
-
-	void setEncoderMode(VescEncoderMode mode);
+	volatile uint32_t encCount = 0;			// count incoming message
+	volatile uint32_t encStartPeriod = 0;	// start time of period to compute encoder Rate
+	volatile float encRate = 0;				// encoder rate to test if can speed setting is OK
+	volatile uint32_t lastVescResponse = 0;	// record last time when vesc respond
 
 	// CAN section
 
@@ -124,13 +122,13 @@ private:
 	uint8_t baudrate = CANSPEEDPRESET_500; 	// 250000, 500000, 1M
 	int8_t nodeId = 0x40; 					// Default OpenFFBoard CAN ID
 	const uint8_t VESC_CAN_ID = 0xFF;		// Default VESC CAN id
-	uint8_t buffer_rx[BUFFER_RX_SIZE];					// Used to store multimessage buffer
+	uint8_t buffer_rx[BUFFER_RX_SIZE];		// Used to store multi-frame can message
 
 	void setCanRate(uint8_t canRate);
 	void sendPing();
 	void setTorque(float torque);
 	void decodeEncoderPosition(float newPos);
-	void askPositionEncoderWithState();
+	void askGetValue();
 	void askPositionEncoder();
 	void sendMsg(uint8_t cmd, uint8_t *buffer, uint8_t len);
 	void decode_buffer(uint8_t *buffer, uint8_t len);
