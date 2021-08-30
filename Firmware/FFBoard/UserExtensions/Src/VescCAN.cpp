@@ -37,7 +37,7 @@ VescCAN::VescCAN() :
 VescCAN::~VescCAN() {
 	VescCAN::vescInUse = false;
 	this->stopMotor();
-	this->setEncoderMode(VescEncoderMode::ENCODER_OFF);
+	//this->setEncoderMode(VescEncoderMode::ENCODER_OFF);
 	this->state = VescState::VESC_STATE_UNKNOWN;
 }
 
@@ -132,27 +132,15 @@ ParseStatus VescCAN::command(ParsedCommand *cmd, std::string *reply) {
 		if (cmd->type == CMDtype::get) {
 			*reply += std::to_string(vescErrorFlag);
 		}
-
 	} else if (cmd->cmd == "vescState") {
 		if (cmd->type == CMDtype::get) {
 			*reply += std::to_string((uint32_t) state);
 		}
-
 	} else if (cmd->cmd == "vescCanSpd") {
 		if (cmd->type == CMDtype::get) {
 			*reply += std::to_string(baudrate);
 		} else if (cmd->type == CMDtype::set) {
 			this->setCanRate(cmd->val);
-		}
-	} else if (cmd->cmd == "vescEncState") {
-		if (cmd->type == CMDtype::get) {
-			*reply += std::to_string(activeEnc);
-		} else if (cmd->type == CMDtype::set) {
-			if (cmd->val) {
-				this->setEncoderMode(VescEncoderMode::ENCODER_ON);
-			} else {
-				this->setEncoderMode(VescEncoderMode::ENCODER_OFF);
-			}
 		}
 	} else if (cmd->cmd == "vescEncRate") {
 		if (cmd->type == CMDtype::get) {
@@ -160,11 +148,15 @@ ParseStatus VescCAN::command(ParsedCommand *cmd, std::string *reply) {
 		}
 	} else if (cmd->cmd == "vescPos") {
 		if (cmd->type == CMDtype::get) {
-			*reply += std::to_string((int32_t) (lastPos * 10000));
+			*reply += std::to_string((int32_t) ((lastPos - posOffset) * 1000000000));
 		}
 	} else if (cmd->cmd == "vescTorque") {
 		if (cmd->type == CMDtype::get) {
 			*reply += std::to_string((int32_t) (lastTorque * 10000));
+		}
+	} else if (cmd->cmd == "vescPosReadForce") {
+		if(cmd->type == CMDtype::set){
+			this->askPositionEncoder();
 		}
 	} else {
 		status = ParseStatus::NOT_FOUND;
@@ -186,33 +178,23 @@ ParseStatus VescCAN::command(ParsedCommand *cmd, std::string *reply) {
 void VescCAN::Run() {
 
 	while (true) {
-		this->Delay(500);
+		Delay(500);
 
 		// check the vesc status each 500ms
-		//this->askPositionEncoderWithState();
+		this->askGetValue();
 
-		switch (state) {
-
-			case VescState::VESC_STATE_UNKNOWN : {
-				this->sendPing();
-				break;
-			}
-			case VescState::VESC_STATE_PONG : {
-				this->askPositionEncoderWithState();
-				break;
-			}
-			case VescState::VESC_STATE_ERROR: {
-				this->askPositionEncoderWithState();
-				break;
-			}
-			default:
-				break;
-
+		// if no vesc response since 1000ms, there is a problem
+		uint32_t period = HAL_GetTick() - lastVescResponse;
+		if ( state != VescState::VESC_STATE_UNKNOWN && period > 1000) {
+			state = VescState::VESC_STATE_UNKNOWN;
 		}
 
-		// if no response since 600ms, there is a problem
-		if ((HAL_GetTick() - lastVescResponse) > 600) {
-			state = VescState::VESC_STATE_UNKNOWN;
+		// compute encoderRate each second
+		period = HAL_GetTick() - encStartPeriod;
+		if (period > 1000) {
+			encRate = encCount / (period / 1000.0);
+			encCount = 0;
+			encStartPeriod = HAL_GetTick();
 		}
 
 		// when motor is active we call vesc each 500ms, to disable the vesc watchdog
@@ -250,42 +232,34 @@ void VescCAN::sendPing() {
  * in the vesc fw.
  */
 void VescCAN::setTorque(float torque) {
+
+	// Check if vesc CAN is ok, if it is, send a message
+	if (!this->motorReady()) return;
+
 	uint8_t buffer[4];
 	int32_t send_index = 0;
 	this->buffer_append_float32(buffer, torque, 1e5, &send_index);
-	if (motorReady()) {
-		this->sendMsg((uint8_t) VescCANMsg::CAN_PACKET_SET_CURRENT_REL, buffer,
-				sizeof(buffer));
-	}
+
+	this->sendMsg((uint8_t) VescCANMsg::CAN_PACKET_SET_CURRENT_REL, buffer,
+			sizeof(buffer));
+
 }
 
-/**
- * This method send a CAN message  and the sub command COMM_SET_DETECT with encoder position.
- */
-void VescCAN::setEncoderMode(VescEncoderMode mode) {
-	uint8_t msg[4];
-	msg[0] = nodeId;
-	msg[1] = 0x00;					// ask vesc to process the msg
-	msg[2] = 11;					// sub action is COMM_SET_DETECT : start pull data over CAN
-	msg[3] = (uint8_t) mode;		// Pull encoder data
-
-	this->sendMsg((uint8_t) VescCANMsg::CAN_PACKET_PROCESS_SHORT_BUFFER, msg,
-			sizeof(msg));
-}
-
-void VescCAN::askPositionEncoderWithState() {
-	uint8_t msg[8];
+void VescCAN::askGetValue() {
+    uint8_t msg[8];
 	msg[0] =  nodeId;
 	msg[1] =  0x00;					// ask vesc to process the msg
 	msg[2] =  50;					// sub action is COMM_GET_VALUES_SELECTIVE : ask wanted data
-	uint32_t mask = ((uint32_t)1 << 15); 	// bit 15 = ask vesc status (1byte)
-	mask |= ((uint32_t)1 << 16);	// bit 16 = ask position	(4byte)
+	uint32_t request = ((uint32_t)1 << 15); 	// bit 15 = ask vesc status (1byte)
+	//mask |= ((uint32_t)1 << 16);	// bit 16 = ask position	(4byte)
 
-	int32_t index;
-	this->buffer_append_uint32(msg + 3, mask, &index);
+	int32_t index = 3;
+	this->buffer_append_uint32(msg, request, &index);
 
 	this->sendMsg((uint8_t) VescCANMsg::CAN_PACKET_PROCESS_SHORT_BUFFER, msg,
 			sizeof(msg));
+
+
 }
 
 /**
@@ -293,7 +267,7 @@ void VescCAN::askPositionEncoderWithState() {
  * Call the new short response command with a 2 messages communications
  */
 void VescCAN::askPositionEncoder() {
-	this->sendMsg((uint8_t) VescCANMsg::CAN_PACKET_GET_ROTOR_POS, nullptr, 0);
+	this->sendMsg((uint8_t) VescCANMsg::CAN_PACKET_POLL_ROTOR_POS, nullptr, 0);
 }
 
 
@@ -316,12 +290,6 @@ void VescCAN::decodeEncoderPosition(const float newPos) {
 	prevPos360 = newPos;
 
 	encCount++;
-	uint32_t period = HAL_GetTick() - encStartPeriod;
-	if (period > 1000) {
-		encRate = encCount / (period / 1000.0);
-		encCount = 0;
-		encStartPeriod = HAL_GetTick();
-	}
 }
 
 /**
@@ -348,12 +316,6 @@ void VescCAN::decode_buffer(uint8_t *buffer, uint8_t len) {
 	len--;
 
 	switch (command) {
-		case VescCmd::COMM_ROTOR_POSITION : { // get encoder data
-			int32_t index = 0;
-			float pos = this->buffer_get_int32(buffer, &index) / 100000.0; // extract the 0-360 float position
-			this->decodeEncoderPosition(pos);
-			break;
-		}
 
 		case VescCmd::COMM_GET_VALUES_SELECTIVE : {
 			int32_t ind = 0;
@@ -386,12 +348,19 @@ void VescCAN::decode_buffer(uint8_t *buffer, uint8_t len) {
 }
 
 /*
+ *	Process the received message on the CAN bus.
+ *	Message have several struct, depends on message type, check the comm_can.c and
+ *	command.c in the vesc source project to identify the struct format.
  *
+ *	Quick tips :
  *	Msg struct for CAN_PACKET_PROCESS_RX_BUFFER and CAN_PACKET_PROCESS_SHORT_BUFFER :
  *	uint8_t[0] => can_emitter_id (vesc id)
  *	uint8_t[1] => send bool
  *	uint8_t[2] => COMM_PACKET_ID command
  *	uint8_t[3] -> uint8_t[7] => DATA (5 bytes)
+ *
+ *	Msg struct for CAN_PACKET_POLL_ROTOR_POS
+ *	uint8_t[0]..uint8_t[3] : uint32 f_pos / 10000
  *
  */
 void VescCAN::canRxPendCallback(CAN_HandleTypeDef *hcan, uint8_t *rxBuf,
@@ -402,12 +371,14 @@ void VescCAN::canRxPendCallback(CAN_HandleTypeDef *hcan, uint8_t *rxBuf,
 
 	// Check if message is for the openFFBoard
 	uint16_t node = rxHeader->ExtId & 0xFF;
-	if (node != this->nodeId) {
-		return;
-	}
 
 	// Extract the command encoded in the ExtId
 	VescCANMsg cmd = (VescCANMsg) (rxHeader->ExtId >> 8);
+
+	// if msg is not for this node && mesg not a poll result, bypass
+	if ((node != this->nodeId) && (cmd != VescCANMsg::CAN_PACKET_POLL_ROTOR_POS )) {
+		return;
+	}
 
 	// Process the CAN message received
 	switch (cmd) {
@@ -457,9 +428,16 @@ void VescCAN::canRxPendCallback(CAN_HandleTypeDef *hcan, uint8_t *rxBuf,
 			break;
 		}
 
-		case VescCANMsg::CAN_PACKET_PONG:         // TODO Unused
+		case VescCANMsg::CAN_PACKET_PONG:
 			state = VescState::VESC_STATE_PONG;
 			break;
+
+		case VescCANMsg::CAN_PACKET_POLL_ROTOR_POS : { // decode encoder data
+			int32_t index = 0;
+			float pos = this->buffer_get_int32(rxBuf, &index) / 100000.0; // extract the 0-360 float position
+			this->decodeEncoderPosition(pos);
+			break;
+		}
 
 		default:
 			break;
