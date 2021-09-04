@@ -88,7 +88,8 @@ public:
 		return "Vesc: "
 				"vescCanId, vescCanSpd (3=250k,4=500k,5=1M), "
 				"vescState, vescErrorFlag, "
-				"vescEncRate, vescUseEncoder, vescPos, vescTorque\n";
+				"vescEncRate, vescUseEncoder, vescPos, vescTorque, "
+				"vescOffset, vescVoltage\n";
 	};
 
 	// Thread impl
@@ -102,6 +103,7 @@ private:
 	volatile uint8_t vescErrorFlag;
 	bool activeMotor = false;
 	float lastTorque;
+	float voltage;
 
 	// Encoder section
 
@@ -140,6 +142,8 @@ private:
 	void buffer_append_uint32(uint8_t* buffer, uint32_t number, int32_t *index);
 	uint32_t buffer_get_uint32(const uint8_t *buffer, int32_t *index);
 	int32_t buffer_get_int32(const uint8_t *buffer, int32_t *index);
+	int16_t buffer_get_int16(const uint8_t *buffer, int32_t *index);
+	float buffer_get_float16(const uint8_t *buffer, float scale, int32_t *index);
 	float buffer_get_float32(const uint8_t *buffer, float scale, int32_t *index);
 	unsigned short crc16(unsigned char *buf, unsigned int len);
 
