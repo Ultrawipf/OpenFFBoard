@@ -64,7 +64,7 @@ public:
 	void stopMotor() override;
 	void startMotor() override;
 	Encoder* getEncoder() override;
-	bool hasIntegratedEncoder() { return true; }
+	bool hasIntegratedEncoder() override;
 	bool motorReady() override;
 
 	// PersistentStorage impl
@@ -88,7 +88,7 @@ public:
 		return "Vesc: "
 				"vescCanId, vescCanSpd (3=250k,4=500k,5=1M), "
 				"vescState, vescErrorFlag, "
-				"vescEncRate, vescPos, vescTorque\n";
+				"vescEncRate, vescUseEncoder, vescPos, vescTorque\n";
 	};
 
 	// Thread impl
@@ -105,7 +105,7 @@ private:
 
 	// Encoder section
 
-	//bool activeEnc = false;
+	bool useEncoder = true;
 	float lastPos = 0;				// last motor position known in "turn unit"
 	float mtPos = 0;				// number of turn known
 	float prevPos360 = 0;			// previous position in [0-360] position
@@ -114,6 +114,8 @@ private:
 	volatile uint32_t encStartPeriod = 0;	// start time of period to compute encoder Rate
 	volatile float encRate = 0;				// encoder rate to test if can speed setting is OK
 	volatile uint32_t lastVescResponse = 0;	// record last time when vesc respond
+
+	void saveFlashOffset();
 
 	// CAN section
 
