@@ -213,6 +213,10 @@ ParseStatus VescCAN::command(ParsedCommand *cmd, std::string *reply) {
 			posOffset = 0;
 			this->saveFlashOffset();
 		}
+	} else if (cmd->cmd == "vescVoltage") {
+		if (cmd->type == CMDtype::get) {
+			*reply += std::to_string((int32_t) (voltage * 100));
+		}
 	} else {
 		status = ParseStatus::NOT_FOUND;
 	}
@@ -305,8 +309,8 @@ void VescCAN::askGetValue() {
 	msg[0] =  nodeId;
 	msg[1] =  0x00;					// ask vesc to process the msg
 	msg[2] =  50;					// sub action is COMM_GET_VALUES_SELECTIVE : ask wanted data
-	uint32_t request = ((uint32_t)1 << 15); 	// bit 15 = ask vesc status (1byte)
-	//mask |= ((uint32_t)1 << 16);	// bit 16 = ask position	(4byte)
+	uint32_t request = ((uint32_t)1 << 15); // bit 15 = ask vesc status (1byte)
+	request |= ((uint32_t)1 << 8);				// bit 8  = ask voltage	(2byte)
 
 	int32_t index = 3;
 	this->buffer_append_uint32(msg, request, &index);
@@ -376,6 +380,9 @@ void VescCAN::decode_buffer(uint8_t *buffer, uint8_t len) {
 			int32_t ind = 0;
 			uint32_t mask = this->buffer_get_uint32(buffer, &ind);
 
+			if (mask & ((uint32_t)1 << 8)) {
+				voltage = this->buffer_get_float16(buffer, 1e1, &ind);
+			}
 			if (mask & ((uint32_t)1 << 15)) {
 				vescErrorFlag = buffer[ind++];
 
@@ -539,9 +546,20 @@ int32_t VescCAN::buffer_get_int32(const uint8_t *buffer, int32_t *index) {
 	return res;
 }
 
+int16_t VescCAN::buffer_get_int16(const uint8_t *buffer, int32_t *index) {
+	int16_t res =	((uint16_t) buffer[*index]) << 8 |
+					((uint16_t) buffer[*index + 1]);
+	*index += 2;
+	return res;
+}
+
 
 float VescCAN::buffer_get_float32(const uint8_t *buffer, float scale, int32_t *index) {
     return (float)buffer_get_int32(buffer, index) / scale;
+}
+
+float VescCAN::buffer_get_float16(const uint8_t *buffer, float scale, int32_t *index) {
+    return (float)buffer_get_int16(buffer, index) / scale;
 }
 
 unsigned short VescCAN::crc16(unsigned char *buf, unsigned int len) {
