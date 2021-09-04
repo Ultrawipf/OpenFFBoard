@@ -37,7 +37,6 @@ VescCAN::VescCAN() :
 VescCAN::~VescCAN() {
 	VescCAN::vescInUse = false;
 	this->stopMotor();
-	//this->setEncoderMode(VescEncoderMode::ENCODER_OFF);
 	this->state = VescState::VESC_STATE_UNKNOWN;
 }
 
@@ -71,31 +70,69 @@ Encoder* VescCAN::getEncoder() {
 	return static_cast<Encoder*>(this);
 }
 
+bool VescCAN::hasIntegratedEncoder() {
+	return useEncoder;
+}
+
 bool VescCAN::motorReady() {
 	return state == VescState::VESC_STATE_READY;
 }
 
 void VescCAN::restoreFlash() {
-	uint16_t canIds = 0x0340;
+	uint16_t canIds = 0x0D40;
 	if (Flash_Read(ADR_VESC_CANDATA, &canIds)) {
 		nodeId = canIds & 0xFF;
 
-		uint8_t canspd = (canIds >> 8) & 0x5;
+		uint8_t canspd = (canIds >> 8) & 0x7;
 		this->setCanRate(canspd);
+
+		useEncoder = (canIds >> 11) & 0x1;
 	}
+
+	uint16_t offset = 0;
+	if(Flash_Read(ADR_VESC_OFFSET, &offset)){
+		posOffset = (float) ((int16_t)offset / 10000.0);
+
+		posOffset = posOffset - (int)posOffset;	// Remove the multi-turn value
+		bool moreThanHalfTurn = fabs(posOffset) > 0.5 ? 1 : 0;
+		if (moreThanHalfTurn) {
+			// if delta is neg, turn is CCW, decrement multi turn pos... else increment it
+			posOffset += (posOffset > 0) ? -1.0 : 1.0;
+		}
+	}
+
 }
 
 void VescCAN::saveFlash() {
-	uint16_t canIds = 0x0340;
+	uint16_t canIds = 0x0D40;
 	Flash_Read(ADR_VESC_CANDATA, &canIds); // Read again
-	canIds &= ~0xFF; // reset bits
-	canIds |= nodeId & 0xFF;
+	canIds &= ~0xFF; 			// reset bits for nodeId
+	canIds |= nodeId & 0xFF;	// set the nodeId
 
-	canIds &= ~0x700;
+	canIds &= ~0x700;			// reset and set the baudrate
 	canIds |= (this->baudrate & 0x7) << 8;
+
+	canIds &= ~0x800;			// reset and set the useEncoder
+	canIds |= (useEncoder & 0x1) << 11;
 	Flash_Write(ADR_VESC_CANDATA, canIds);
+
+	saveFlashOffset();
 }
 
+void VescCAN::saveFlashOffset() {
+
+	// store the -180°/180°offset
+	float storedOffset = posOffset - (int)posOffset;	// Remove the multi-turn value
+	bool moreThanHalfTurn = fabs(storedOffset) > 0.5 ? 1 : 0;
+	if (moreThanHalfTurn) {
+		// if delta is neg, turn is CCW, decrement multi turn pos... else increment it
+		storedOffset += (storedOffset > 0) ? -1.0 : 1.0;
+	}
+
+	uint16_t settings1 = ((int16_t)(storedOffset*10000) & 0xFFFF);
+	Flash_Write(ADR_VESC_OFFSET, settings1);
+
+}
 
 /**
  * Must be in encoder cpr if not just used to zero the axis
@@ -103,6 +140,8 @@ void VescCAN::saveFlash() {
 void VescCAN::setPos(int32_t pos) {
 	// Only change encoder count internally as offset
 	posOffset = lastPos - ((float) pos / (float) getCpr());
+
+	saveFlashOffset(); // save the new offset for next restart
 }
 
 float VescCAN::getPos_f() {
@@ -157,6 +196,19 @@ ParseStatus VescCAN::command(ParsedCommand *cmd, std::string *reply) {
 	} else if (cmd->cmd == "vescPosReadForce") {
 		if(cmd->type == CMDtype::set){
 			this->askPositionEncoder();
+		}
+	} else if (cmd->cmd == "vescUseEncoder") {
+		if (cmd->type == CMDtype::get) {
+			*reply += std::to_string((int32_t) useEncoder);
+		} else if(cmd->type == CMDtype::set){
+			useEncoder = cmd->val;
+		}
+	} else if (cmd->cmd == "vescOffset") {
+		if (cmd->type == CMDtype::get) {
+			*reply += std::to_string((int32_t) (posOffset * 10000));
+		} else if(cmd->type == CMDtype::set){
+			posOffset = 0;
+			this->saveFlashOffset();
 		}
 	} else {
 		status = ParseStatus::NOT_FOUND;
