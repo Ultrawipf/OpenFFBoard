@@ -67,7 +67,10 @@ void VescCAN::startMotor() {
 }
 
 Encoder* VescCAN::getEncoder() {
-	return static_cast<Encoder*>(this);
+	if (useEncoder)
+		return static_cast<Encoder*>(this);
+	else
+		return MotorDriver::getEncoder();
 }
 
 bool VescCAN::hasIntegratedEncoder() {
