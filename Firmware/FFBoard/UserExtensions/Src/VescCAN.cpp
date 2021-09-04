@@ -289,7 +289,7 @@ void VescCAN::sendPing() {
 void VescCAN::setTorque(float torque) {
 
 	// Check if vesc CAN is ok, if it is, send a message
-	if (!this->motorReady()) return;
+	if (!this->motorReady() || !activeMotor) return;
 
 	uint8_t buffer[4];
 	int32_t send_index = 0;
