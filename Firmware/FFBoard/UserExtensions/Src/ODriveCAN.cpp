@@ -72,39 +72,45 @@ ODriveCAN::~ODriveCAN() {
 }
 
 void ODriveCAN::restoreFlash(){
+	uint16_t setting1addr = ADR_ODRIVE_SETTING1_M0;
+
 	uint16_t canIds = 0x3040;
 	if(Flash_Read(ADR_ODRIVE_CANID, &canIds)){
 		if(motorId == 0){
 			nodeId = canIds & 0x3f;
 		}else if(motorId == 1){
 			nodeId = (canIds >> 6) & 0x3f;
+			setting1addr = ADR_ODRIVE_SETTING1_M1;
 		}
-		uint8_t canspd = canIds >> 12 & 0x7;
+		uint8_t canspd = (canIds >> 12) & 0x7;
 		this->setCanRate(canspd);
 	}
 
 	uint16_t settings1 = 0;
-	if(Flash_Read(ADR_ODRIVE_SETTING1, &settings1)){
+	if(Flash_Read(setting1addr, &settings1)){
 		maxTorque = (float)clip(settings1 & 0xfff, 0, 0xfff) / 100.0;
 	}
 }
 
 void ODriveCAN::saveFlash(){
+	uint16_t setting1addr = ADR_ODRIVE_SETTING1_M0;
+
 	uint16_t canIds = 0x3040;
 	Flash_Read(ADR_ODRIVE_CANID, &canIds); // Read again
 	if(motorId == 0){
 		canIds &= ~0x3F; // reset bits
 		canIds |= nodeId & 0x3f;
 	}else if(motorId == 1){
+		setting1addr = ADR_ODRIVE_SETTING1_M1;
 		canIds &= ~0xFC0; // reset bits
-		nodeId = (canIds & 0x3f) << 6;
+		canIds |= (nodeId & 0x3f) << 6;
 	}
 	canIds &= ~0x7000; // reset bits
 	canIds |= (this->baudrate & 0x7) << 12;
 	Flash_Write(ADR_ODRIVE_CANID,canIds);
 
 	uint16_t settings1 = ((int32_t)(maxTorque*100) & 0xfff);
-	Flash_Write(ADR_ODRIVE_SETTING1, settings1);
+	Flash_Write(setting1addr, settings1);
 }
 
 void ODriveCAN::Run(){
