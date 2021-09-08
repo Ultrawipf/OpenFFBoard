@@ -25,6 +25,10 @@ enum class ODriveControlMode : uint32_t {CONTROL_MODE_VOLTAGE_CONTROL = 0,CONTRO
 enum class ODriveInputMode : uint32_t {INPUT_MODE_INACTIVE = 0,INPUT_MODE_PASSTHROUGH = 1,INPUT_MODE_VEL_RAMP = 2,INPUT_MODE_POS_FILTER = 3,INPUT_MODE_MIX_CHANNELS = 4,INPUT_MODE_TRAP_TRAJ = 5,INPUT_MODE_TORQUE_RAMP =6,INPUT_MODE_MIRROR =7};
 enum class ODriveLocalState : uint32_t {IDLE,WAIT_READY,WAIT_CALIBRATION_DONE,WAIT_CALIBRATION,RUNNING,START_RUNNING};
 
+enum class ODriveEncoderFlags : uint32_t {ERROR_NONE = 0,ERROR_UNSTABLE_GAIN = 0x01,ERROR_CPR_POLEPAIRS_MISMATCH = 0x02, ERROR_NO_RESPONSE = 0x04, ERROR_UNSUPPORTED_ENCODER_MODE = 0x08, ERROR_ILLEGAL_HALL_STATE = 0x10, ERROR_INDEX_NOT_FOUND_YET = 0x20, ERROR_ABS_SPI_TIMEOUT = 0x40, ERROR_ABS_SPI_COM_FAIL = 0x80, ERROR_ABS_SPI_NOT_READY = 0x100, ERROR_HALL_NOT_CALIBRATED_YET = 0x200};
+enum class ODriveAxisError : uint32_t {AXIS_ERROR_NONE = 0x00000000,AXIS_ERROR_INVALID_STATE  = 0x00000001, AXIS_ERROR_WATCHDOG_TIMER_EXPIRED = 0x00000800,AXIS_ERROR_MIN_ENDSTOP_PRESSED = 0x00001000, AXIS_ERROR_MAX_ENDSTOP_PRESSED = 0x00002000,AXIS_ERROR_ESTOP_REQUESTED = 0x00004000,AXIS_ERROR_HOMING_WITHOUT_ENDSTOP = 0x00020000,AXIS_ERROR_OVER_TEMP = 0x00040000,AXIS_ERROR_UNKNOWN_POSITION = 0x00080000};
+
+
 class ODriveCAN : public MotorDriver,public PersistentStorage, public Encoder, public CanHandler, public CommandHandler, cpp_freertos::Thread{
 public:
 	ODriveCAN(uint8_t id);
@@ -92,7 +96,7 @@ private:
 	int8_t motorId = 0;
 
 	ODriveState odriveCurrentState = ODriveState::AXIS_STATE_UNDEFINED;
-	volatile uint32_t errors = 0;
+	volatile ODriveAxisError errors = ODriveAxisError::AXIS_ERROR_NONE;
 
 	float maxTorque = 1.0; // range how to scale the torque output
 	//bool ready = false;
@@ -103,6 +107,7 @@ private:
 
 	int32_t filterId = 0;
 	volatile ODriveLocalState state = ODriveLocalState::IDLE;
+	//volatile ODriveEncoderFlags encoderFlags = ODriveEncoderFlags::ERROR_NONE;
 
 	uint8_t baudrate = CANSPEEDPRESET_500; // 250000, 500000, 1M
 };

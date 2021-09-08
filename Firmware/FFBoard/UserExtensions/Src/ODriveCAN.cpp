@@ -278,7 +278,7 @@ ParseStatus ODriveCAN::command(ParsedCommand* cmd,std::string* reply){
 
 	}else if(cmd->cmd == "odriveErrors"){
 		if(cmd->type == CMDtype::get){
-			*reply += std::to_string(errors);
+			*reply += std::to_string((uint32_t)errors);
 		}
 
 	}else if(cmd->cmd == "odriveAnticogging"){
@@ -318,8 +318,11 @@ void ODriveCAN::canRxPendCallback(CAN_HandleTypeDef *hcan,uint8_t* rxBuf,CAN_RxH
 	case 1:
 	{
 		// TODO error handling
-		errors = msg & 0xffffffff;
-		odriveCurrentState = (ODriveState)( (msg >> 32) & 0xffffffff);
+		errors = (ODriveAxisError) (msg & 0xffffffff);
+		odriveCurrentState = (ODriveState)( (msg >> 32) & 0xff); // only 8 bit since 0.5.3
+
+		//encoderFlags =  (ODriveState)( (msg >> 48) & 0xff);
+
 		if(waitReady){
 			waitReady = false;
 			state = ODriveLocalState::WAIT_READY;
