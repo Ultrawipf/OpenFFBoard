@@ -74,7 +74,7 @@ public:
 	bool updateTorque(int32_t* totalTorque);
 	
 	virtual ParseStatus command(ParsedCommand* cmd,std::string* reply);
-    virtual void processHidCommand(HID_Custom_Data_t* data);
+    void processHidCommand(HID_Custom_Data_t* data);
 
 
 protected:
