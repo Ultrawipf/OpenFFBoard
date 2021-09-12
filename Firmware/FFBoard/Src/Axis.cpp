@@ -248,13 +248,15 @@ void Axis::usbResume(){
 }
 
 void Axis::processHidCommand(HID_Custom_Data_t *data){
-	uint8_t axis = (data->cmd >> 6) & 0x3;
-	if(axis != this->axis){
+
+	uint8_t axis = (data->addr);
+	if(axis != this->axis && axis != this->axis - 'X'){
 		return;
 	}
 
+	NormalizedAxis::processHidCommand(data);
 
-	switch (data->cmd&0x3F){
+	switch (data->cmd){
 		case HID_CMD_FFB_STRENGTH:
 			if (data->type == HidCmdType::write){
 				setPower(data->data);

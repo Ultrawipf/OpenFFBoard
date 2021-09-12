@@ -235,7 +235,7 @@ bool NormalizedAxis::updateTorque(int32_t* totalTorque) {
 
 void NormalizedAxis::processHidCommand(HID_Custom_Data_t* data) {
 
-	switch (data->cmd&0x3F){
+	switch (data->cmd){
 		case HID_CMD_FFB_ESGAIN:
 			if(data->type == HidCmdType::write) {
 				endstop_gain = data->data;
