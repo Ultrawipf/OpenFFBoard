@@ -277,6 +277,19 @@ void VescCAN::setCanRate(uint8_t canRate) {
 }
 
 /**
+ * Get the firmware vesc information
+ */
+void VescCAN::getFirmwareInfo() {
+    uint8_t msg[3];
+	msg[0] =  nodeId;
+	msg[1] =  0x00;							// ask vesc to process the msg
+	msg[2] =  (uint8_t)VescCmd::COMM_FW_VERSION;		// sub action is to get FW version
+
+	this->sendMsg((uint8_t) VescCANMsg::CAN_PACKET_PROCESS_SHORT_BUFFER, msg,
+			sizeof(msg));
+}
+
+/**
  * Send a ping command to the vesc to check if it's here.
  */
 void VescCAN::sendPing() {
@@ -304,11 +317,14 @@ void VescCAN::setTorque(float torque) {
 
 }
 
+/*
+ * Get the telemetry : Status & Value
+ */
 void VescCAN::askGetValue() {
     uint8_t msg[8];
 	msg[0] =  nodeId;
 	msg[1] =  0x00;					// ask vesc to process the msg
-	msg[2] =  50;					// sub action is COMM_GET_VALUES_SELECTIVE : ask wanted data
+	msg[2] =  (uint8_t)VescCmd::COMM_GET_VALUES_SELECTIVE;					// sub action is COMM_GET_VALUES_SELECTIVE : ask wanted data
 	uint32_t request = ((uint32_t)1 << 15); // bit 15 = ask vesc status (1byte)
 	request |= ((uint32_t)1 << 8);				// bit 8  = ask voltage	(2byte)
 
@@ -317,8 +333,6 @@ void VescCAN::askGetValue() {
 
 	this->sendMsg((uint8_t) VescCANMsg::CAN_PACKET_PROCESS_SHORT_BUFFER, msg,
 			sizeof(msg));
-
-
 }
 
 /**
@@ -376,34 +390,59 @@ void VescCAN::decode_buffer(uint8_t *buffer, uint8_t len) {
 
 	switch (command) {
 
-		case VescCmd::COMM_GET_VALUES_SELECTIVE : {
-			int32_t ind = 0;
-			uint32_t mask = this->buffer_get_uint32(buffer, &ind);
+	case VescCmd::COMM_FW_VERSION : {
+		int32_t ind = 0;
+		uint8_t fw_major 	= buffer[ind++];
+		uint8_t fw_min 		= buffer[ind++];
 
-			if (mask & ((uint32_t)1 << 8)) {
-				voltage = this->buffer_get_float16(buffer, 1e1, &ind);
-			}
-			if (mask & ((uint32_t)1 << 15)) {
-				vescErrorFlag = buffer[ind++];
+		std::string test ((char *)buffer[ind]);
+		ind += test.length() + 1;
 
-				// if the vesc respond but with an error, we put the vesc in error flag
-				if (vescErrorFlag) {
-					state = VescState::VESC_STATE_ERROR;
-				} else {
-					state = VescState::VESC_STATE_READY;
-				}
+		uint8_t uuid[12];
+		memcpy(buffer + ind, uuid, 12);
+		ind += 12;
 
+		bool isPaired = buffer[ind++];
+		bool isTestFw = buffer[ind++];
+
+		uint8_t hwType = buffer[ind++];
+		uint8_t customConfig = buffer[ind++];
+
+		bool hasPhaseFilters = buffer[ind++];
+
+		bool firmware_compatible = ((fw_major * 1000000) + (fw_min * 1000) + isTestFw) > 5003051;
+
+		break;
+	}
+
+	case VescCmd::COMM_GET_VALUES_SELECTIVE : {
+		int32_t ind = 0;
+		uint32_t mask = this->buffer_get_uint32(buffer, &ind);
+
+		if (mask & ((uint32_t)1 << 8)) {
+			voltage = this->buffer_get_float16(buffer, 1e1, &ind);
+		}
+		if (mask & ((uint32_t)1 << 15)) {
+			vescErrorFlag = buffer[ind++];
+
+			// if the vesc respond but with an error, we put the vesc in error flag
+			if (vescErrorFlag) {
+				state = VescState::VESC_STATE_ERROR;
+			} else {
+				state = VescState::VESC_STATE_READY;
 			}
-			if (mask & ((uint32_t)1 << 16)) {
-				float pos = this->buffer_get_float32(buffer, 1e6, &ind);
-				this->decodeEncoderPosition(pos);
-			}
-			break;
 
 		}
+		if (mask & ((uint32_t)1 << 16)) {
+			float pos = this->buffer_get_float32(buffer, 1e6, &ind);
+			this->decodeEncoderPosition(pos);
+		}
+		break;
 
-		default:
-			break;
+	}
+
+	default:
+		break;
 
 	}
 

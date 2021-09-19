@@ -23,7 +23,11 @@
 #define BUFFER_RX_SIZE	32
 
 enum class VescState : uint32_t {
-	VESC_STATE_UNKNOWN = 0, VESC_STATE_PONG = 1, VESC_STATE_READY = 2, VESC_STATE_ERROR = 3
+	VESC_STATE_UNKNOWN = 0,
+	VESC_STATE_PONG = 1,
+	VESC_STATE_COMPATIBLE = 2,
+	VESC_STATE_READY = 3,
+	VESC_STATE_ERROR = 4
 };
 
 enum class VescCANMsg : uint8_t {
@@ -38,6 +42,7 @@ enum class VescCANMsg : uint8_t {
 };
 
 enum class VescCmd : uint8_t {
+	COMM_FW_VERSION = 0,
 	COMM_ROTOR_POSITION = 22,
 	COMM_GET_VALUES_SELECTIVE = 50
 };
@@ -129,6 +134,7 @@ private:
 	uint8_t buffer_rx[BUFFER_RX_SIZE];		// Used to store multi-frame can message
 
 	void setCanRate(uint8_t canRate);
+	void getFirmwareInfo();
 	void sendPing();
 	void setTorque(float torque);
 	void decodeEncoderPosition(float newPos);
