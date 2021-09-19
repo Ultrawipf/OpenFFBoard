@@ -239,13 +239,32 @@ void VescCAN::Run() {
 	while (true) {
 		Delay(500);
 
-		// check the vesc status each 500ms
-		this->askGetValue();
+		// if status is UNKNOW, ask firmware info and wait next 500ms
+		if (state == VescState::VESC_STATE_UNKNOWN) {
+			this->getFirmwareInfo();
+			// the return of getFirmwareInfo change the state to COMPATIBLE/INCOMPATIBLE
+			// skip the follow control if we don't change from unknown state
+			continue;
+		}
 
-		// if no vesc response since 1000ms, there is a problem
+		// if vesc is compatible, ready or in error => check the status
+		if (state >= VescState::VESC_STATE_COMPATIBLE) {
+			this->askGetValue();
+			// the return of askGetValue put the state in READY or ERROR is vesc respond to status
+		}
+
+		// test is a ready/error vesc is always respond
 		uint32_t period = HAL_GetTick() - lastVescResponse;
-		if ( state != VescState::VESC_STATE_UNKNOWN && period > 1000) {
+		if ( (state == VescState::VESC_STATE_READY || state == VescState::VESC_STATE_ERROR)
+				&& period > 1000) {
 			state = VescState::VESC_STATE_UNKNOWN;
+		}
+
+
+		// when motor is active we call vesc each 500ms, to disable the vesc watchdog
+		// (if vesc not received message in 1sec, it cut off motor)
+		if (lastTorque != 0.0 && activeMotor && state == VescState::VESC_STATE_READY) {
+			this->setTorque(lastTorque);
 		}
 
 		// compute encoderRate each second
@@ -255,13 +274,6 @@ void VescCAN::Run() {
 			encCount = 0;
 			encStartPeriod = HAL_GetTick();
 		}
-
-		// when motor is active we call vesc each 500ms, to disable the vesc watchdog
-		// (if vesc not received message in 1sec, it cut off motor)
-		if (lastTorque != 0.0 && activeMotor && state == VescState::VESC_STATE_READY) {
-			this->setTorque(lastTorque);
-		}
-
 
 	}
 }
@@ -395,7 +407,7 @@ void VescCAN::decode_buffer(uint8_t *buffer, uint8_t len) {
 		uint8_t fw_major 	= buffer[ind++];
 		uint8_t fw_min 		= buffer[ind++];
 
-		std::string test ((char *)buffer[ind]);
+		std::string test ((char *)buffer + ind);
 		ind += test.length() + 1;
 
 		uint8_t uuid[12];
@@ -403,14 +415,25 @@ void VescCAN::decode_buffer(uint8_t *buffer, uint8_t len) {
 		ind += 12;
 
 		bool isPaired = buffer[ind++];
-		bool isTestFw = buffer[ind++];
+		uint8_t isTestFw = buffer[ind++];
 
-		uint8_t hwType = buffer[ind++];
-		uint8_t customConfig = buffer[ind++];
+		//uint8_t hwType = buffer[ind++];			// Comment because unused
+		//uint8_t customConfig = buffer[ind++];		// Comment because unused
 
-		bool hasPhaseFilters = buffer[ind++];
+		// bool hasPhaseFilters = buffer[ind++];	// Comment because unused
 
-		bool firmware_compatible = ((fw_major * 1000000) + (fw_min * 1000) + isTestFw) > 5003051;
+
+		bool compatible = false;
+		if (!isTestFw)
+			compatible = ((fw_major << 8) | fw_min) >= (FW_MIN_RELEASE >> 8);
+		else
+			compatible = ((fw_major << 16) | (fw_min << 8) | isTestFw) >= FW_MIN_RELEASE;
+
+		if (compatible) {
+			this->state = VescState::VESC_STATE_COMPATIBLE;
+		} else {
+			this->state = VescState::VESC_STATE_INCOMPATIBLE;
+		}
 
 		break;
 	}

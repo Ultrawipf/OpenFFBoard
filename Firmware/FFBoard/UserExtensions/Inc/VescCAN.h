@@ -22,12 +22,16 @@
 #define VESC_THREAD_PRIO 25 // Must be higher than main thread
 #define BUFFER_RX_SIZE	32
 
+#define FW_MIN_RELEASE ((5 << 16) | (3 << 8) | 51)
+
 enum class VescState : uint32_t {
 	VESC_STATE_UNKNOWN = 0,
-	VESC_STATE_PONG = 1,
-	VESC_STATE_COMPATIBLE = 2,
-	VESC_STATE_READY = 3,
-	VESC_STATE_ERROR = 4
+	VESC_STATE_INCOMPATIBLE = 1,
+	VESC_STATE_PONG = 2,
+	VESC_STATE_COMPATIBLE = 3,
+	VESC_STATE_READY = 4,
+	VESC_STATE_ERROR = 5
+
 };
 
 enum class VescCANMsg : uint8_t {
@@ -103,6 +107,7 @@ public:
 private:
 
 	// Vesc interface and motor state
+
 	static bool vescInUse;
 	volatile VescState state = VescState::VESC_STATE_UNKNOWN;
 	volatile uint8_t vescErrorFlag;
@@ -135,6 +140,7 @@ private:
 
 	void setCanRate(uint8_t canRate);
 	void getFirmwareInfo();
+	bool isFirmwareCompatible();
 	void sendPing();
 	void setTorque(float torque);
 	void decodeEncoderPosition(float newPos);
