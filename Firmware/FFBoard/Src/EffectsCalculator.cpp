@@ -371,9 +371,13 @@ int32_t EffectsCalculator::calcConditionEffectForce(FFB_Effect *effect, float  m
 	int16_t deadBand = effect->conditions[idx].deadBand;
 	int32_t force = 0;
 	// Effect is only active outside deadband + offset
+
 	if (abs(pos - offset) > deadBand){
-		force = clip<int32_t, int32_t>(((float)effect->conditions[idx].negativeCoefficient *
-											scale * (float)(metric)),
+		float coefficient = effect->conditions[idx].negativeCoefficient;
+		if(pos > offset){
+			coefficient = effect->conditions[idx].positiveCoefficient;
+		}
+		force = clip<int32_t, int32_t>((coefficient * scale * (float)(metric)),
 										   -effect->conditions[idx].negativeSaturation,
 										   effect->conditions[idx].positiveSaturation);
 	}
