@@ -68,7 +68,7 @@ void NormalizedAxis::restoreFlash(){
 	if(Flash_Read(flashAddrs.degrees, &deg_t)){
 		this->degreesOfRotation = deg_t & 0x7fff;
 		this->invertAxis = (deg_t >> 15) & 0x1;
-		nextDegreesOfRotation = degreesOfRotation;
+		setDegrees(degreesOfRotation);
 	}
 
 
@@ -231,6 +231,17 @@ bool NormalizedAxis::updateTorque(int32_t* totalTorque) {
 }
 
 
+void NormalizedAxis::setDegrees(uint16_t degrees){
+
+	degrees &= 0x7fff;
+	if(degrees == 0){
+		nextDegreesOfRotation = lastdegreesOfRotation;
+	}else{
+		lastdegreesOfRotation = degreesOfRotation;
+		nextDegreesOfRotation = degrees;
+	}
+
+}
 
 
 void NormalizedAxis::processHidCommand(HID_Custom_Data_t* data) {
@@ -256,7 +267,10 @@ void NormalizedAxis::processHidCommand(HID_Custom_Data_t* data) {
 
 		case HID_CMD_FFB_DEGREES:
 			if (data->type == HidCmdType::write){
-				nextDegreesOfRotation = data->data;
+
+
+				setDegrees(data->data);
+
 			}
 			else if (data->type == HidCmdType::request){
 				data->data = degreesOfRotation;
@@ -314,7 +328,7 @@ ParseStatus NormalizedAxis::command(ParsedCommand *cmd, std::string *reply)
 		}
 		else if (cmd->type == CMDtype::set)
 		{
-			nextDegreesOfRotation = cmd->val;
+			setDegrees(cmd->val);
 		}
 	}	
 	else if (cmd->cmd == "esgain")
