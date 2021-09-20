@@ -47,7 +47,7 @@ public:
 	ParseStatus command(ParsedCommand* cmd,std::string* reply);
 	virtual std::string getHelpstring(){
 		return "\nFFBWheel commands:\n"
-			   "axis,lsbtn,btntypes,addbtn,lsain,aintypes,addain,ffbactive,hidrate.\n";
+			   "axis,lsbtn,btntypes,addbtn,lsain,aintypes,addain,ffbactive,hidrate,hidsendspd.\n";
 	}
 	void setBtnTypes(uint16_t btntypes);
 	void addBtnType(uint16_t id);
@@ -76,16 +76,19 @@ public:
 
 	void errorCallback(Error &error, bool cleared);
 
-	uint16_t degreesOfRotation = 900; // How many degrees of range for the full gamepad range
-	uint16_t nextDegreesOfRotation = degreesOfRotation; // Buffer when changing range
-
 private:
 	volatile Control_t control;
 	std::unique_ptr<EffectsCalculator> effects_calc;
 	void send_report();
 
-	// USB Report rate
-	uint8_t usb_report_rate = HID_BINTERVAL; // 1 = 1000hz, 2 = 500hz, 3 = 250hz etc...
+	/* USB Report rate
+	 * Warning: Report rate initialized by bInterval is overridden by saved speed preset at startup!
+	 */
+	void setReportRate(uint8_t rateidx);
+	uint8_t usb_report_rate = HID_BINTERVAL; //1 = 1000hz, 2 = 500hz, 3 = 333hz 4 = 250hz, 5 = 200hz 6 = 166hz, 8 = 125hz etc...
+	uint8_t usb_report_rate_idx = 0;
+	const uint8_t usb_report_rates[4] = {1,2,4,8}; // Maps stored hid speed to report rates
+	const std::string usb_report_rates_names = "1kHz:0,500Hz:1,250Hz:2,125Hz:3"; // Strings to display to the user
 	uint8_t report_rate_cnt = 0;
 
 	std::unique_ptr<HidFFB> ffb;

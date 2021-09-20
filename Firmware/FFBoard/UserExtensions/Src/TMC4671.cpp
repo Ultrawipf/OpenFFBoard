@@ -273,7 +273,7 @@ bool TMC4671::initialize(){
 	if(oldTMCdetected){
 		setBrakeLimits(52400,52800);
 	}else{
-		setBrakeLimits(50700,50900); // Activates around 60V as last resort failsave. Check offsets from tmc leakage
+		setBrakeLimits(50700,50900); // Activates around 60V as last resort failsave. Check offsets from tmc leakage. ~ 1.426V
 	}
 
 	// Status mask
@@ -314,7 +314,7 @@ float TMC4671::getTemp(){
 	writeReg(0x03, 2);
 	int32_t adcval = ((readReg(0x02)) & 0xffff) - 0x7fff; // Center offset
 	adcval -= tmcOffset;
-	if(adcval == 0){
+	if(adcval <= 0){
 		return 0.0;
 	}
 	float r = thermistor_R2 * (((float)43252 / (float)adcval)); //43252 equivalent ADC count if it was 3.3V and not 2.5V

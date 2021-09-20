@@ -10,7 +10,7 @@
 
 #include "main.h"
 // Change this to the amount of currently registered variables
-#define NB_OF_VAR	68
+#define NB_OF_VAR	69
 
 extern uint16_t VirtAddVarTab[NB_OF_VAR];
 
@@ -36,6 +36,7 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 // FFBWheel
 #define ADR_FFBWHEEL_BUTTONCONF 		0x101
 #define ADR_FFBWHEEL_ANALOGCONF 		0x102
+#define ADR_FFBWHEEL_CONF1		 		0x103
 
 
 // Button Sources:
