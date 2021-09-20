@@ -81,12 +81,22 @@ void FFBWheel::restoreFlash(){
 	Flash_Read(ADR_FFBWHEEL_ANALOGCONF, &this->ainsources);
 	setAinTypes(this->ainsources);
 
+	uint16_t conf1 = 0;
+	if(Flash_Read(ADR_FFBWHEEL_CONF1,&conf1)){
+		uint8_t rateidx = conf1 & 0x2;
+		setReportRate(rateidx);
+	}
+
 }
 // Saves parameters to flash
 void FFBWheel::saveFlash(){
 
 	Flash_Write(ADR_FFBWHEEL_BUTTONCONF,this->btnsources);
 	Flash_Write(ADR_FFBWHEEL_ANALOGCONF,this->ainsources);
+
+	uint8_t conf1 = 0;
+	conf1 |= usb_report_rate_idx & 0x2;
+	Flash_Write(ADR_FFBWHEEL_CONF1,conf1);
 }
 
 
@@ -124,7 +134,6 @@ void FFBWheel::update(){
 
 	// If either usb or timer triggered
 	if(control.usb_update_flag || control.update_flag){
-//		logSerial("Updating");
 		axes_manager->update();
 		control.update_flag = false;
 		if(control.usb_update_flag){
@@ -255,12 +264,21 @@ void FFBWheel::send_report(){
 	/*
 	 * Only send a new report if actually changed since last time or timeout and hid is ready
 	 */
-	if( (reportSendCounter++ > 100 || (memcmp(&lastReportHID,&reportHID,sizeof(reportHID_t)) != 0) ) && tud_hid_n_ready(0)){
+	if( (reportSendCounter++ > 100/usb_report_rate || (memcmp(&lastReportHID,&reportHID,sizeof(reportHID_t)) != 0) ) && tud_hid_n_ready(0)){
 		tud_hid_report(0, reinterpret_cast<uint8_t*>(&reportHID), sizeof(reportHID_t));
 		lastReportHID = reportHID;
 		reportSendCounter = 0;
 	}
 
+}
+
+/**
+ * Changes the hid report rate based on the index for usb_report_rates
+ */
+void FFBWheel::setReportRate(uint8_t rateidx){
+	rateidx = clip<uint8_t,uint8_t>(rateidx, 0,sizeof(usb_report_rates));
+	usb_report_rate_idx = rateidx;
+	usb_report_rate = usb_report_rates[rateidx];
 }
 
 void FFBWheel::emergencyStop(){
@@ -274,8 +292,9 @@ void FFBWheel::timerElapsed(TIM_HandleTypeDef* htim){
 }
 
 
-/*
+/**
  * USB unplugged
+ * Deactivates FFB
  */
 void FFBWheel::usbSuspend(){
 	if(control.usb_disabled)
@@ -286,6 +305,9 @@ void FFBWheel::usbSuspend(){
 	axes_manager->usbSuspend();
 }
 
+/**
+ * USB plugged in
+ */
 void FFBWheel::usbResume(){
 #ifdef E_STOP_Pin
 	if(control.emergency && HAL_GPIO_ReadPin(E_STOP_GPIO_Port, E_STOP_Pin) != GPIO_PIN_RESET){ // Reconnected after emergency stop

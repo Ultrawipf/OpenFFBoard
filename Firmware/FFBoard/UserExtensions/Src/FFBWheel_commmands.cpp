@@ -58,6 +58,15 @@ ParseStatus FFBWheel::command(ParsedCommand* cmd,std::string* reply){
 		if(cmd->type == CMDtype::set){
 			this->addAinType(cmd->val);
 		}
+	}else if(cmd->cmd == "hidsendspd"){
+		if(cmd->type == CMDtype::get){
+			*reply+=std::to_string(usb_report_rate_idx);
+		}else if(cmd->type == CMDtype::set){
+			setReportRate(cmd->val);
+		}else{
+			*reply+=usb_report_rates_names;
+		}
+
 	}else if(cmd->cmd == "hidrate" && cmd->type == CMDtype::get){
 		*reply += std::to_string(this->getRate());
 	}else if(cmd->cmd == "ffbactive" && cmd->type == CMDtype::get){
