@@ -42,6 +42,8 @@ struct Control_t {
 struct AxisFlashAddrs
 {
 	uint16_t config = ADR_AXIS1_CONFIG;
+	uint16_t maxSpeed = ADR_AXIS1_MAX_SPEED;
+	uint16_t maxAccel = ADR_AXIS1_MAX_ACCEL;
 };
 
 struct AxisConfig
@@ -91,6 +93,11 @@ public:
 	bool getFfbActive();
 
 	int32_t getEncValue(Encoder *enc, uint16_t degrees);
+	float	getNormalizedSpeedScaler(uint16_t maxSpeedRpm, uint16_t degrees);
+	float	getNormalizedAccelScaler(uint16_t maxAccelRpm, uint16_t degrees);
+	float	getSpeedFromNormalized(uint16_t speedNormalized, uint16_t degrees);
+	float	getAccelFromNormalized(uint16_t accelNormalized, uint16_t degrees);
+
 
 	void setPower(uint16_t power) override;
 	//int16_t updateEndstop();
@@ -147,6 +154,9 @@ private:
 	int32_t torqueFFconst = 0;
 	int32_t velocityFFgain = 30000;
 	int32_t velocityFFconst = 0;
+
+	uint16_t maxHumanSpeedRpm 	= 200;
+	float	 maxHumanAccelRpmm 	= 30.0;
 };
 
 #endif /* SRC_AXIS_H_ */
