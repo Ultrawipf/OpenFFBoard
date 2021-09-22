@@ -20,6 +20,7 @@
 #include "TimerHandler.h"
 #include "ClassChooser.h"
 #include "Filters.h"
+#include "FastAvg.h"
 //#include "EffectsCalculator.h"
 
 //#define NORMALIZED_AXIS_CMDS	esgain,fxratio,invert
@@ -32,15 +33,15 @@ struct NormalizedAxisFlashAddrs_t {
 };
 
 struct metric_t {
-	int32_t accel = 0;
-	int32_t speed = 0;
+	float accel = 0;
+	float speed = 0;
+	int32_t speedInstant = 0;
 	int32_t pos = 0;
 	int32_t torque = 0; // total of effect + endstop torque
 };
 
 
 struct axis_metric_t {
-
 	metric_t current;
 	metric_t previous;
 };
@@ -67,7 +68,12 @@ public:
 	void calculateAxisEffects(bool ffb_on);
 	int32_t getTorque(); // current torque scaled as a 32 bit signed value
 	int16_t updateEndstop();
+
 	metric_t* getMetrics();
+	float 	 getSpeedScalerNormalized();
+	float	 getAccelScalerNormalized();
+	uint16_t getSpeedRPMFromEncValue(uint16_t speedNormalized, uint16_t degrees);
+	float 	 getAccelFromEncValue(float accelNormalized, uint16_t degrees);
 
 	
 	void setEffectTorque(int32_t torque);
@@ -81,6 +87,16 @@ protected:
 	uint16_t degreesOfRotation = 900;					// How many degrees of range for the full gamepad range
 	uint16_t lastdegreesOfRotation = degreesOfRotation; // Used to store the previous value
 	uint16_t nextDegreesOfRotation = degreesOfRotation; // Buffer when changing range
+
+	float speedScalerNormalized = 1;
+	float accelScalerNormalized = 1;
+
+	FastAvg	 speed_avg;
+	FastAvg  accel_avg;
+
+	bool	 calibrationInProgress;
+	uint16_t calibMaxSpeedNormalized;
+	float	 calibMaxAccelNormalized;
 
 	void setDegrees(uint16_t degrees);
 
