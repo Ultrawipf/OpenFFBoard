@@ -45,6 +45,37 @@ metric_t* NormalizedAxis::getMetrics() {
 	return &metric.current;
 }
 
+float NormalizedAxis::getSpeedScalerNormalized() {
+	return speedScalerNormalized;
+}
+
+float	 NormalizedAxis::getAccelScalerNormalized() {
+	return accelScalerNormalized;
+}
+
+/**
+ * Reverse function of Axis::getNormalizedSpeedScaler(uint16_t maxSpeedRpm, uint16_t degrees)
+ */
+uint16_t NormalizedAxis::getSpeedRPMFromEncValue(uint16_t speedEncoder_StepMS, uint16_t degrees) {
+
+	// Convert speed encoder/ms in speed encoder/s
+	float speedEncoder_StepS = speedEncoder_StepMS * 1000.0;
+
+	// Convert the speed : form "step" encoder unit to "turn" unit
+	float speedEncoder_RPS = speedEncoder_StepS * degrees / (360.0 * 0xFFFF);
+
+	// map to RPS
+	float rpm = speedEncoder_RPS * 60.0;
+
+	return (uint16_t) rpm;
+
+}
+
+float NormalizedAxis::getAccelFromEncValue(float accelNormalized, uint16_t degrees) {
+	return accelNormalized;
+	//TODO VMA
+}
+
 int32_t NormalizedAxis::getLastScaledEnc() {
 	return  clip(metric.current.pos,-0x7fff,0x7fff);
 }
@@ -139,23 +170,44 @@ void NormalizedAxis::setFxRatio(uint8_t val) {
 
 void NormalizedAxis::resetMetrics(int32_t new_pos= 0) { // pos is scaledEnc
 	metric.current.pos = new_pos;
-	metric.previous.pos = metric.current.pos;
+	metric.current.speedInstant = 0;
 	metric.current.speed = 0;
 	metric.current.accel = 0;
+
+	metric.previous.pos = new_pos;
+	metric.previous.speedInstant = 0;
 	metric.previous.speed = 0;
 	metric.previous.torque = 0;
+
 	metric.current.torque = 0;
 }
 
 
 void NormalizedAxis::updateMetrics(int32_t new_pos) { // pos is scaledEnc
 	metric.current.pos = new_pos;
-	metric.current.speed = metric.current.pos - metric.previous.pos;
-	metric.current.accel = metric.current.speed - metric.previous.speed;
+
+	// Use speed fastAvg object to get an average speed on 36 element
+	metric.current.speedInstant = new_pos - metric.previous.pos;
+	speed_avg.addValue(metric.current.speedInstant);
+	metric.current.speed = speed_avg.getAverage();
+
+	// Use speed fastAvg object to get an average accel on 36 element
+	float newaccel = metric.current.speedInstant - metric.previous.speedInstant;
+	accel_avg.addValue(newaccel);// TODO VMA REMOVE ?
+	metric.current.accel = newaccel; //accel_avg.getAverage();
+
+
+	// store old value for next metric's computing
 	metric.previous.pos = metric.current.pos;
+	metric.previous.speedInstant =
 	metric.previous.speed = metric.current.speed;
 	metric.previous.torque = metric.current.torque;
 	metric.current.torque = 0;
+
+	if (calibrationInProgress) {
+		calibMaxSpeedNormalized = abs(metric.current.speed) > calibMaxSpeedNormalized ? abs(metric.current.speed) : calibMaxSpeedNormalized;
+		calibMaxAccelNormalized = abs(metric.current.accel) > calibMaxAccelNormalized ? abs(metric.current.accel) : calibMaxAccelNormalized;
+	}
 }
 
 void NormalizedAxis::setPower(uint16_t val){
@@ -230,7 +282,6 @@ bool NormalizedAxis::updateTorque(int32_t* totalTorque) {
 	return (torqueChanged);
 }
 
-
 void NormalizedAxis::setDegrees(uint16_t degrees){
 
 	degrees &= 0x7fff;
@@ -242,7 +293,6 @@ void NormalizedAxis::setDegrees(uint16_t degrees){
 	}
 
 }
-
 
 void NormalizedAxis::processHidCommand(HID_Custom_Data_t* data) {
 
@@ -374,7 +424,26 @@ ParseStatus NormalizedAxis::command(ParsedCommand *cmd, std::string *reply)
 		{
 			setDamperStrength(cmd->val);
 		}
-	}else{
+	}
+	else if (cmd->cmd == "calibmetrics")
+	{
+		if (cmd->type == CMDtype::get)
+		{
+			*reply += std::to_string(getSpeedRPMFromEncValue(calibMaxSpeedNormalized, degreesOfRotation)) + ':'
+					+ std::to_string(getAccelFromEncValue(calibMaxAccelNormalized, degreesOfRotation));
+		}
+		else if (cmd->type == CMDtype::set)
+		{
+			if (cmd->val == 1) {
+				calibrationInProgress = true;
+				calibMaxAccelNormalized = 0.0;
+				calibMaxSpeedNormalized = 0;
+			} else {
+				calibrationInProgress = false;
+			}
+		}
+	}
+	else{
 		flag = ParseStatus::NOT_FOUND;
 	}
 

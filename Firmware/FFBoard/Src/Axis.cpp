@@ -25,15 +25,15 @@ Axis::Axis(char axis,volatile Control_t* control) : NormalizedAxis(axis), drv_ch
 	this->control = control;
 	if (axis == 'X')
 	{
-		this->flashAddrs = AxisFlashAddrs({ADR_AXIS1_CONFIG});
+		this->flashAddrs = AxisFlashAddrs({ADR_AXIS1_CONFIG, ADR_AXIS1_MAX_SPEED, ADR_AXIS1_MAX_ACCEL});
 	}
 	else if (axis == 'Y')
 	{
-		this->flashAddrs = AxisFlashAddrs({ADR_AXIS2_CONFIG});
+		this->flashAddrs = AxisFlashAddrs({ADR_AXIS2_CONFIG, ADR_AXIS2_MAX_SPEED, ADR_AXIS2_MAX_ACCEL});
 	}
 	else if (axis == 'Z')
 	{
-		this->flashAddrs = AxisFlashAddrs({ADR_AXIS3_CONFIG});
+		this->flashAddrs = AxisFlashAddrs({ADR_AXIS3_CONFIG, ADR_AXIS3_MAX_SPEED, ADR_AXIS3_MAX_ACCEL});
 	}
 
 	restoreFlash(); // Load parameters
@@ -50,20 +50,38 @@ Axis::~Axis()
 void Axis::restoreFlash(){
 	NormalizedAxis::restoreFlash();
 	// read all constants
-	uint16_t confint;
-	if (Flash_Read(flashAddrs.config, &confint)){
-		this->conf = Axis::decodeConfFromInt(confint);
+	uint16_t value;
+	if (Flash_Read(flashAddrs.config, &value)){
+		this->conf = Axis::decodeConfFromInt(value);
 	}else{
 		pulseErrLed();
 	}
 
 	setDrvType(this->conf.drvtype);
 	setEncType(this->conf.enctype);
+
+	if (Flash_Read(flashAddrs.maxSpeed, &value)){
+		this->maxHumanSpeedRpm = value;
+	}else{
+		pulseErrLed();
+	}
+
+	if (Flash_Read(flashAddrs.maxAccel, &value)){
+		this->maxHumanAccelRpmm = value / 100.0;
+	}else{
+		pulseErrLed();
+	}
+
+	NormalizedAxis::speedScalerNormalized = getNormalizedSpeedScaler(maxHumanSpeedRpm, degreesOfRotation);
+	NormalizedAxis::accelScalerNormalized = getNormalizedAccelScaler(maxHumanAccelRpmm, degreesOfRotation);
+
 }
 // Saves parameters to flash. Inherited via Normalized Axis. Must call parent too
 void Axis::saveFlash(){
 	NormalizedAxis::saveFlash();
 	Flash_Write(flashAddrs.config, Axis::encodeConfToInt(this->conf));
+	Flash_Write(flashAddrs.maxSpeed, this->maxHumanSpeedRpm);
+	Flash_Write(flashAddrs.maxAccel, (uint16_t)(this->maxHumanAccelRpmm * 100));
 }
 
 
@@ -99,9 +117,17 @@ void Axis::prepareForUpdate(){
 
 	// Scale encoder value to set rotation range
 	// Update a change of range only when new range is within valid range
+	// if degree change, compute the SpeedScaler, it depends on degreesOfRotation
 	if (nextDegreesOfRotation != degreesOfRotation && abs(getEncValue(drv->getEncoder(), nextDegreesOfRotation)) < 0x7fff){
 		degreesOfRotation = nextDegreesOfRotation;
+
+		NormalizedAxis::speedScalerNormalized = getNormalizedSpeedScaler(maxHumanSpeedRpm, degreesOfRotation);
+		NormalizedAxis::accelScalerNormalized = getNormalizedAccelScaler(maxHumanAccelRpmm, degreesOfRotation);
 	}
+
+
+
+
 	// scaledEnc now gets inverted if necessary in updateMetrics
 	int32_t scaledEnc = getEncValue(drv->getEncoder(), degreesOfRotation);
 
@@ -197,6 +223,9 @@ void Axis::setupTMC4671ForAxis(char axis)
 	drv->Start(); // Start thread
 }
 
+/**
+ * Init the encoder and reset metrics
+ */
 void Axis::setEncType(uint8_t enctype)
 {
 
@@ -211,7 +240,12 @@ void Axis::setEncType(uint8_t enctype)
 
 
 	int32_t scaledEnc = getEncValue(this->drv->getEncoder(), degreesOfRotation);
+	// reset metrics
 	this->resetMetrics(scaledEnc);
+
+	// init the speed/accel factor from default value
+	NormalizedAxis::speedScalerNormalized = getNormalizedSpeedScaler(maxHumanSpeedRpm, degreesOfRotation);
+	NormalizedAxis::accelScalerNormalized = getNormalizedAccelScaler(maxHumanAccelRpmm, degreesOfRotation);
 }
 
 /*
@@ -230,6 +264,43 @@ int32_t Axis::getEncValue(Encoder *enc, uint16_t degrees){
 	return val;
 }
 
+/**
+ * Compute the normalized speed scale factor to map max human speed in RPM on -0x7FFF..0x7FFF encoder speed
+ * This scale is used by effect
+ * uint16_t maxSpeedRpm : maximum speed accessible
+ * uint16_t degrees : the maximum range of degree
+ * return the normalized scale for the speed
+ */
+float Axis::getNormalizedSpeedScaler(uint16_t maxSpeedRpm, uint16_t degrees) {
+
+	// First compute the max speed in turn / second
+	float maxSpeedRPS = maxSpeedRpm / 60.0f;
+
+	// compute the encoder step per turn in the full range
+	float stepsPerTurn = (float)0xFFFF * 360.0 / (float) degrees;
+
+	// compute the maxSpeed in step encoder / ms (unit read in metrics)
+	// i.e. translate the speed in turn / sec => step encoder / ms
+	float maxSpeed_StepPerMs = maxSpeedRPS * stepsPerTurn / 1000.0;
+
+	// scale the max speed on -0x7FFF..0x7FFF normalized speed
+	uint16_t scale = (uint16_t) ((float)0x7FFF / maxSpeed_StepPerMs);
+
+	return scale;
+}
+
+/**
+ * Compute the scale factor for accel from :
+ * uint16_t maxAccelRpm : maximum accel accessible
+ * uint16_t degrees : the maximum range of degree
+ * return the normalized scale for the accel
+ */
+float Axis::getNormalizedAccelScaler(uint16_t maxAccelRpm, uint16_t degrees) {
+	//TODO VMA
+	return (float)0x7FFF / maxAccelRpm;
+}
+
+
 void Axis::emergencyStop(){
 	drv->stopMotor();
 	control->emergency = true;
@@ -241,6 +312,7 @@ void Axis::usbSuspend(){
 		drv->stopMotor();
 	}
 }
+
 void Axis::usbResume(){
 	if (drv != nullptr){
 		drv->startMotor();
@@ -337,7 +409,6 @@ ParseStatus Axis::command(ParsedCommand *cmd, std::string *reply)
 			}else{
 				*reply += enc_chooser.printAvailableClasses(this->conf.enctype);
 			}
-
 		}
 	}
 	else if (cmd->cmd == "pos")
@@ -354,6 +425,31 @@ ParseStatus Axis::command(ParsedCommand *cmd, std::string *reply)
 		{
 			flag = ParseStatus::ERR;
 			*reply += "Err. Setup encoder first";
+		}
+	}
+	else if (cmd->cmd == "maxspeed")
+	{
+		if (cmd->type == CMDtype::get)
+		{
+			*reply += std::to_string(maxHumanSpeedRpm);
+		}
+		else if (cmd->type == CMDtype::set)
+		{
+			maxHumanSpeedRpm = cmd->val;
+			NormalizedAxis::speedScalerNormalized = getNormalizedSpeedScaler(maxHumanSpeedRpm, degreesOfRotation);
+
+		}
+	}
+	else if (cmd->cmd == "maxaccel")
+	{
+		if (cmd->type == CMDtype::get)
+		{
+			*reply += std::to_string((uint16_t)(maxHumanAccelRpmm*100));
+		}
+		else if (cmd->type == CMDtype::set)
+		{
+			maxHumanAccelRpmm = cmd->val / 100.0;
+			NormalizedAxis::accelScalerNormalized = getNormalizedAccelScaler(maxHumanAccelRpmm, degreesOfRotation);
 		}
 	}
 	else{
@@ -375,6 +471,7 @@ AxisConfig Axis::decodeConfFromInt(uint16_t val)
 	conf.drvtype = ((val >> 6) & 0x3f);
 	return conf;
 }
+
 uint16_t Axis::encodeConfToInt(AxisConfig conf)
 {
 	uint16_t val = (uint8_t)conf.enctype & 0x3f;

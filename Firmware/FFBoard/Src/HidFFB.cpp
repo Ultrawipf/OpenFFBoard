@@ -283,7 +283,7 @@ void HidFFB::set_effect(FFB_SetEffect_t* effect){
 #endif
 
 	effect_p->duration = effect->duration;
-//	effect_p->startDelay = effect->startDelay;
+	effect_p->startDelay = effect->startDelay;
 	if(!ffb_active)
 		start_FFB();
 	//sendStatusReport(effect->effectBlockIndex);

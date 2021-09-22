@@ -132,12 +132,12 @@ void EffectsCalculator::calculateEffects(std::vector<std::unique_ptr<Axis>> &axe
 
 		if (effect->enableAxis == DIRECTION_ENABLE || (effect->enableAxis & X_AXIS_ENABLE))
 		{
-			forceX += calcComponentForce(effect, forceVector, axes[0]->getMetrics(), 0, axisCount);
+			forceX += calcComponentForce(effect, forceVector, axes, 0);
 			forceX = clip<int32_t, int32_t>(forceX, -0x7fff, 0x7fff); // Clip
 		}
 		if (validY && ((effect->enableAxis == DIRECTION_ENABLE) || (effect->enableAxis & Y_AXIS_ENABLE)))
 		{
-			forceY += calcComponentForce(effect, forceVector, axes[1]->getMetrics(), 1, axisCount);
+			forceY += calcComponentForce(effect, forceVector, axes, 1);
 			forceY = clip<int32_t, int32_t>(forceY, -0x7fff, 0x7fff); // Clip
 		}
 
@@ -279,11 +279,16 @@ degrees (in polar coordinates) would resist joystick motion in the northeast-sou
 have no effect on joystick motion in the northwest-southeast direction.
  */
 
-int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceVector, metric_t *metrics, uint8_t axis, uint8_t axisCount)
+int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceVector, std::vector<std::unique_ptr<Axis>> &axes, uint8_t axis)
 {
 	int32_t result_torque = 0;
 	uint16_t direction;
 	uint8_t con_idx = 0; // condition block index
+
+	metric_t *metrics = axes[axis]->getMetrics();
+	uint8_t axisCount = axes.size();
+	float scaleSpeed = axes[axis]->getSpeedScalerNormalized();
+	float scaleAccel = axes[axis]->getAccelScalerNormalized();
 
 	if (effect->enableAxis == DIRECTION_ENABLE)
 	{
@@ -321,39 +326,93 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 
 	case FFB_EFFECT_SPRING:
 	{
-		int32_t pos = metrics->pos;
-		int16_t offset = effect->conditions[con_idx].cpOffset;
-		int16_t deadBand = effect->conditions[con_idx].deadBand;
-		// Spring effect must also use deadband and offset so that it begins gradually from the sides of the deadband
-		float metric = metrics->pos - (offset + (deadBand * (pos < offset ? -1 : 1)) );
-		result_torque -= calcConditionEffectForce(effect, metric, gain.spring,pos,
-									   con_idx, 0.0004f, angle_ratio);
+		float pos = metrics->pos;
+		result_torque -= calcConditionEffectForce(effect, pos, gain.spring, con_idx, spring_scaler, angle_ratio);
 		break;
 	}
 
+
+	/** 	      |	  (rampup is from 0..5% of max velocity)
+	 * 			  |	  __________ (after use max coefficient)
+	 * 			  |	 /
+	 *			  |	/
+	 *			  |-
+	 * ------------------------  Velocity
+	 * 			 -|
+	 *			/ |
+	 * 		   /  |
+	 * 	-------   |
+	 * 			  |
+	 */
 	case FFB_EFFECT_FRICTION:
 	{
+		// TODO check if another filter can be usefull
+		float speed = metrics->speed * scaleSpeed;//effect->filter[con_idx]->process(metrics->speed) ;
 
-		float metric = effect->filter[con_idx]->process(metrics->speed) * .25;
-		result_torque -= calcConditionEffectForce(effect, metric, gain.friction,metrics->pos,
-											   con_idx, .08f, angle_ratio);
+		int16_t offset = effect->conditions[con_idx].cpOffset;
+		int16_t deadBand = effect->conditions[con_idx].deadBand;
+		int32_t force = 0;
+
+		// Effect is only active outside deadband + offset
+		if (abs((int32_t)speed - offset) > deadBand){
+
+			// remove offset/deadband from metric to compute force
+			speed -= (offset + (deadBand * (speed < offset ? -1 : 1)) );
+
+			// check if speed is in the 0..x% to rampup, if is this range, apply a sinusoidale function to smooth the torque (slow near 0, slow around the X% rampup
+			float rampupFactor = 1.0;
+			if (fabs (speed) < speedRampupPct) {								// if speed in the range to rampup we apply a sinus curbe to ramup
+
+				float phaseRad = M_PI * ((fabs (speed) / speedRampupPct) - 0.5);// we start to compute the normalized angle (speed / normalizedSpeed@5%) and translate it of -1/2PI to translate sin on 1/2 periode
+				rampupFactor = ( 1 + sin(phaseRad ) ) / 2;						// sin value is -1..1 range, we translate it to 0..2 and we scale it by 2
+
+			}
+
+			int8_t sign = speed >= 0 ? 1 : -1;
+			uint16_t coeff = speed < 0 ? effect->conditions[con_idx].negativeCoefficient : effect->conditions[con_idx].positiveCoefficient;
+			force = coeff * rampupFactor * sign;
+
+			//if there is a saturation, used it to clip result
+			if (effect->conditions[con_idx].negativeSaturation !=0 || effect->conditions[con_idx].positiveSaturation !=0) {
+				force = clip<int32_t, int32_t>(force, -effect->conditions[con_idx].negativeSaturation, effect->conditions[con_idx].positiveSaturation);
+			}
+
+			static int32_t last_force = 0;
+
+			// if there is 2 successive torque with a different direction, we ignore the first one to remove oscillation
+			if (last_force * force >=0) {
+				force = ((gain.friction + 1) * force) >> 7;
+				result_torque -=  force * angle_ratio;
+			}
+			last_force = force;
+
+		}
+
+
 		break;
 	}
 	case FFB_EFFECT_DAMPER:
 	{
 
-		float metric = effect->filter[con_idx]->process(metrics->speed) * .0625f;
-		result_torque -= calcConditionEffectForce(effect, metric, gain.damper,metrics->pos,
-									   con_idx, 0.6f, angle_ratio);
+		float speed = metrics->speed * scaleSpeed;// TODO VMA check if mandatory to restore filter : effect->filter[con_idx]->process(metrics->speed * scaleSpeed);
+		result_torque -= calcConditionEffectForce(effect, speed, gain.damper, con_idx, damper_scaler, angle_ratio);
+
 		break;
 	}
 
 	case FFB_EFFECT_INERTIA:
 	{
 
-		float metric = effect->filter[con_idx]->process(metrics->accel*4);
-		result_torque -= calcConditionEffectForce(effect, metric, gain.inertia,metrics->pos,
-									   con_idx, 0.5f, angle_ratio);
+		float accel = effect->filter[con_idx]->process(metrics->accel* scaleAccel);
+		int32_t force = calcConditionEffectForce(effect, accel, gain.inertia, con_idx, inertia_scaler, angle_ratio); // Bump *60 the inertia feedback
+
+		static int32_t last_force = 0;
+		// if there is 2 successive torque with a different direction, we ignore the first one to remove oscillation
+		if ( last_force * force >=0 ) {
+			result_torque -=  force;
+		}
+		last_force = force;
+
 		break;
 	}
 
@@ -364,25 +423,30 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 	return (result_torque * (global_gain+1)) >> 8; // Apply global gain
 }
 
-int32_t EffectsCalculator::calcConditionEffectForce(FFB_Effect *effect, float  metric, uint8_t gain,int32_t pos,
+int32_t EffectsCalculator::calcConditionEffectForce(FFB_Effect *effect, float  metric, uint8_t gain,
 										 uint8_t idx, float scale, float angle_ratio)
 {
 	int16_t offset = effect->conditions[idx].cpOffset;
 	int16_t deadBand = effect->conditions[idx].deadBand;
 	int32_t force = 0;
-	// Effect is only active outside deadband + offset
 
-	if (abs(pos - offset) > deadBand){
+	// Effect is only active outside deadband + offset
+	if (abs(metric - offset) > deadBand){
 		float coefficient = effect->conditions[idx].negativeCoefficient;
-		if(pos > offset){
+		if(metric > offset){
 			coefficient = effect->conditions[idx].positiveCoefficient;
 		}
+		coefficient /= 0x7fff; // rescale the coefficient of effect
+
+		// remove offset/deadband from metric to compute force
+		metric = metric - (offset + (deadBand * (metric < offset ? -1 : 1)) );
+
 		force = clip<int32_t, int32_t>((coefficient * scale * (float)(metric)),
-										   -effect->conditions[idx].negativeSaturation,
-										   effect->conditions[idx].positiveSaturation);
+										-effect->conditions[idx].negativeSaturation,
+										 effect->conditions[idx].positiveSaturation);
 	}
 
-	force = ((gain+1) * force) >> 8;
+	force = ((gain+1) * force) >> 7;
 	return force * angle_ratio;
 }
 
@@ -665,4 +729,3 @@ ParseStatus EffectsCalculator::command(ParsedCommand *cmd, std::string *reply)
 	}
 	return flag;
 };
-
