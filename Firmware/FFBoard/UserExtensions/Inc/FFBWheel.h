@@ -88,7 +88,9 @@ private:
 	uint8_t usb_report_rate = HID_BINTERVAL; //1 = 1000hz, 2 = 500hz, 3 = 333hz 4 = 250hz, 5 = 200hz 6 = 166hz, 8 = 125hz etc...
 	uint8_t usb_report_rate_idx = 0;
 	const uint8_t usb_report_rates[4] = {1,2,4,8}; // Maps stored hid speed to report rates
-	const std::string usb_report_rates_names = "1kHz:0,500Hz:1,250Hz:2,125Hz:3"; // Strings to display to the user
+	//"1kHz:0,500Hz:1,250Hz:2,125Hz:3"; // Strings to display to the user
+	std::string usb_report_rates_names();
+
 	uint8_t report_rate_cnt = 0;
 
 	std::unique_ptr<HidFFB> ffb;

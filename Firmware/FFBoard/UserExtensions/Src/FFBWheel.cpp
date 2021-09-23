@@ -278,8 +278,21 @@ void FFBWheel::send_report(){
 void FFBWheel::setReportRate(uint8_t rateidx){
 	rateidx = clip<uint8_t,uint8_t>(rateidx, 0,sizeof(usb_report_rates));
 	usb_report_rate_idx = rateidx;
-	usb_report_rate = usb_report_rates[rateidx];
+	usb_report_rate = usb_report_rates[rateidx]*HID_BINTERVAL;
 }
+
+/**
+ * Generates the speed strings to display to the user
+ */
+std::string FFBWheel::usb_report_rates_names() {
+		std::string s = "";
+		for(uint8_t i = 0 ; i < sizeof(usb_report_rates);i++){
+			s += std::to_string(1000/(HID_BINTERVAL*usb_report_rates[i])) + "Hz:"+std::to_string(i);
+			if(i < sizeof(usb_report_rates)-1)
+				s += ",";
+		}
+		return s;
+	}
 
 void FFBWheel::emergencyStop(){
 	axes_manager->emergencyStop();

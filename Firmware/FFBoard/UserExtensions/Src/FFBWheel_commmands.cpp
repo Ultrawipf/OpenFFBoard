@@ -64,7 +64,7 @@ ParseStatus FFBWheel::command(ParsedCommand* cmd,std::string* reply){
 		}else if(cmd->type == CMDtype::set){
 			setReportRate(cmd->val);
 		}else{
-			*reply+=usb_report_rates_names;
+			*reply+=usb_report_rates_names();
 		}
 
 	}else if(cmd->cmd == "hidrate" && cmd->type == CMDtype::get){
