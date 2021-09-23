@@ -83,7 +83,7 @@ void FFBWheel::restoreFlash(){
 
 	uint16_t conf1 = 0;
 	if(Flash_Read(ADR_FFBWHEEL_CONF1,&conf1)){
-		uint8_t rateidx = conf1 & 0x2;
+		uint8_t rateidx = conf1 & 0x3;
 		setReportRate(rateidx);
 	}
 
@@ -95,7 +95,7 @@ void FFBWheel::saveFlash(){
 	Flash_Write(ADR_FFBWHEEL_ANALOGCONF,this->ainsources);
 
 	uint8_t conf1 = 0;
-	conf1 |= usb_report_rate_idx & 0x2;
+	conf1 |= usb_report_rate_idx & 0x3;
 	Flash_Write(ADR_FFBWHEEL_CONF1,conf1);
 }
 
