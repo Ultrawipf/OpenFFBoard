@@ -7,15 +7,25 @@
 
 #include "Encoder.h"
 #include "ClassChooser.h"
+
+#ifdef LOCALENCODER
 #include "EncoderLocal.h"
+#endif
+
+#ifdef BISSCENCODER
+#include "EncoderBissC.h"
+#endif
 
 // 0-63 valid ids
 std::vector<class_entry<Encoder>> const Encoder::all_encoders =
 	{
 		add_class<Encoder, Encoder>(),
 #ifdef LOCALENCODER
-
 		add_class<EncoderLocal, Encoder>(),
+#endif
+
+#ifdef BISSCENCODER
+		add_class<EncoderBissC, Encoder>(),
 #endif
 };
 

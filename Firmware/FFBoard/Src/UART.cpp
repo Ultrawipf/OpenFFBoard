@@ -50,10 +50,18 @@ UART_InitTypeDef& UARTPort::getConfig(){
 	return huart.Init;
 }
 
-void UARTPort::registerInterrupt(){
-	HAL_UART_Receive_IT(&this->huart,(uint8_t*)this->uart_buf,UART_BUF_SIZE);
+void UARTPort::registerInterrupt(uint16_t size){
+	if (size > UART_BUF_SIZE) size = UART_BUF_SIZE;
+	HAL_UART_Receive_IT(&this->huart,(uint8_t*)this->uart_buf,size);
 }
 
+/**
+ * register DMA for UART1, no DMA on UART3 for the moment
+ */
+void UARTPort::registerDMA(uint16_t size){
+	if (size > UART_BUF_SIZE) size = UART_BUF_SIZE;
+	HAL_UART_Receive_DMA(&this->huart,(uint8_t*)this->uart_buf,size);
+}
 
 void UARTPort::transmit_DMA(const char* txbuf,uint16_t size){
 	if(this->device)
@@ -130,7 +138,7 @@ void UARTPort::uartRxComplete(UART_HandleTypeDef *huart){
 		if(this->device != nullptr){
 			device->uartRcv((char&)*this->uart_buf);
 		}
-		registerInterrupt();
+		//registerInterrupt();
 	}
 }
 
@@ -146,16 +154,12 @@ void UARTPort::uartTxComplete(UART_HandleTypeDef *huart){
 
 // UART Device
 
-UARTDevice::UARTDevice(){
-
-}
-
-UARTDevice::UARTDevice(UARTPort& port) : uartport{&port}{
-	uartport->reservePort(this);
+UARTDevice::UARTDevice(UARTPort& port) : uartport{port}{
+	uartport.reservePort(this);
 }
 
 UARTDevice::~UARTDevice(){
-	uartport->freePort(this);
+	uartport.freePort(this);
 }
 
 

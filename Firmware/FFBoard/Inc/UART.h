@@ -50,7 +50,8 @@ public:
 	bool reservePort(UARTDevice* device);
 	bool freePort(UARTDevice* device);
 
-	void registerInterrupt();
+	void registerInterrupt(uint16_t size);	// Call it to enable IT response
+	void registerDMA(uint16_t size);			// Call it to enable DMA response
 
 private:
 	cpp_freertos::BinarySemaphore semaphore = cpp_freertos::BinarySemaphore(true);
@@ -64,15 +65,14 @@ private:
 
 class UARTDevice{
 public:
-	UARTDevice();
 	UARTDevice(UARTPort& port);
 	~UARTDevice();
-	virtual void uartRcv(char& buf){}; //Warning: called by interrupts!
+	virtual void uartRcv(char& buf){}; //Warning: called by interrupts! or DMA
 
 	virtual void startUartTransfer(UARTPort* port);
 	virtual void endUartTransfer(UARTPort* port);
 protected:
-	UARTPort* uartport = nullptr;
+	UARTPort& uartport;
 };
 
 #endif /* SRC_UART_H_ */

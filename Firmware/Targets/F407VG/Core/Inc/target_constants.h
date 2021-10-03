@@ -33,6 +33,7 @@
 #define TMC4671DRIVER
 #define PWMDRIVER
 #define LOCALENCODER
+#define BISSCENCODER
 #define CANBUS
 #define ODRIVE
 #define VESC
@@ -55,7 +56,7 @@ extern UART_HandleTypeDef huart1;
 extern UART_HandleTypeDef huart3;
 #define UART_PORT_MOTOR huart3 // motor uart port
 
-#define UART_BUF_SIZE 1 // How many bytes to expect via DMA
+#define UART_BUF_SIZE 16 // How many bytes to expect via DMA or IT at maximum
 
 
 // ADC Channels

@@ -15,6 +15,7 @@
 
 extern SPIPort external_spi;
 extern SPIPort motor_spi;
+extern SPIPort extra_stuff_spi;
 
 #ifdef UART_PORT_MOTOR
 extern UARTPort motor_uart;
