@@ -33,16 +33,23 @@ public:
 	uint32_t getCpr();
 
 	ParseStatus command(ParsedCommand* cmd,std::string* reply);
+	virtual std::string getHelpstring() {
+			return "BissC Encoder: bissCnbBitData, bissCsetSpeed, bissCnbError, bissCgetRawPos\n";
+		};
 
+	void configSPI();
 	void acquirePosition();
 	void spiRxCompleted(SPIPort* port) override;
 
 
 private:
+	int lenghtDataBit = 22;
+	int spiSpeed = 3;
 	bool waitData = false;
 
-	int32_t pos = 0;
+	int32_t pos = 0, posOffset = 0;
 	int32_t mtpos = 0;
+	bool crc_ok = false;
 	const static uint8_t bytes = 8;
 	uint8_t spi_buf[bytes] = {0}, decod_buf[bytes] = {0};
 
