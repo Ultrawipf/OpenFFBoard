@@ -18,23 +18,31 @@
 // TODO class type for parser? (Simhub for example)
 //////////////////////////////////////////////
 
-Axis::Axis(char axis,volatile Control_t* control) : NormalizedAxis(axis), drv_chooser(MotorDriver::all_drivers),enc_chooser{Encoder::all_encoders}
+ClassIdentifier Axis::info = {
+	.name = "Axis",
+	.id = 1,
+	.unique = 'X',
+	.hidden = false};
+
+Axis::Axis(char axis,volatile Control_t* control) : drv_chooser(MotorDriver::all_drivers),enc_chooser{Encoder::all_encoders}
 {
 	// Create HID FFB handler. Will receive all usb messages directly
-//	this->axis = axis;
+	this->axis = axis;
 	this->control = control;
 	if (axis == 'X')
 	{
-		this->flashAddrs = AxisFlashAddrs({ADR_AXIS1_CONFIG, ADR_AXIS1_MAX_SPEED, ADR_AXIS1_MAX_ACCEL});
+		this->flashAddrs = AxisFlashAddrs({ADR_AXIS1_CONFIG, ADR_AXIS1_MAX_SPEED, ADR_AXIS1_MAX_ACCEL,ADR_AXIS1_ENDSTOP, ADR_AXIS1_POWER, ADR_AXIS1_DEGREES,ADR_AXIS1_EFFECTS1});
 	}
 	else if (axis == 'Y')
 	{
-		this->flashAddrs = AxisFlashAddrs({ADR_AXIS2_CONFIG, ADR_AXIS2_MAX_SPEED, ADR_AXIS2_MAX_ACCEL});
+		this->flashAddrs = AxisFlashAddrs({ADR_AXIS2_CONFIG, ADR_AXIS2_MAX_SPEED, ADR_AXIS2_MAX_ACCEL,ADR_AXIS2_ENDSTOP, ADR_AXIS2_POWER, ADR_AXIS2_DEGREES,ADR_AXIS2_EFFECTS1});
 	}
 	else if (axis == 'Z')
 	{
-		this->flashAddrs = AxisFlashAddrs({ADR_AXIS3_CONFIG, ADR_AXIS3_MAX_SPEED, ADR_AXIS3_MAX_ACCEL});
+		this->flashAddrs = AxisFlashAddrs({ADR_AXIS3_CONFIG, ADR_AXIS3_MAX_SPEED, ADR_AXIS3_MAX_ACCEL,ADR_AXIS3_ENDSTOP, ADR_AXIS3_POWER, ADR_AXIS3_DEGREES,ADR_AXIS3_EFFECTS1});
 	}
+
+
 
 	restoreFlash(); // Load parameters
 }
@@ -44,11 +52,15 @@ Axis::~Axis()
 
 }
 
+const ClassIdentifier Axis::getInfo() {
+	return ClassIdentifier {Axis::info.name, Axis::info.id, axis, Axis::info.hidden};
+}
+
 /*
  * Read parameters from flash and restore settings
  */
 void Axis::restoreFlash(){
-	NormalizedAxis::restoreFlash();
+	//NormalizedAxis::restoreFlash();
 	// read all constants
 	uint16_t value;
 	if (Flash_Read(flashAddrs.config, &value)){
@@ -72,16 +84,47 @@ void Axis::restoreFlash(){
 		pulseErrLed();
 	}
 
-	NormalizedAxis::speedScalerNormalized = getNormalizedSpeedScaler(maxHumanSpeedRpm, degreesOfRotation);
-	NormalizedAxis::accelScalerNormalized = getNormalizedAccelScaler(maxHumanAccelRpmm, degreesOfRotation);
+	// TODO Check if needed
+	speedScalerNormalized = getNormalizedSpeedScaler(maxHumanSpeedRpm, degreesOfRotation);
+	accelScalerNormalized = getNormalizedAccelScaler(maxHumanAccelRpmm, degreesOfRotation);
+
+
+	uint16_t esval, power;
+	if(Flash_Read(flashAddrs.endstop, &esval)) {
+		fx_ratio_i = esval & 0xff;
+		endstop_gain = (esval >> 8) & 0xff;
+	}
+
+
+	if(Flash_Read(flashAddrs.power, &power)){
+		setPower(power);
+	}
+	uint16_t deg_t;
+	if(Flash_Read(flashAddrs.degrees, &deg_t)){
+		this->degreesOfRotation = deg_t & 0x7fff;
+		this->invertAxis = (deg_t >> 15) & 0x1;
+		setDegrees(degreesOfRotation);
+	}
+
+
+	uint16_t effects;
+	if(Flash_Read(flashAddrs.effects1, &effects)){
+		setIdleSpringStrength(effects & 0xff);
+		setDamperStrength((effects >> 8) & 0xff);
+	}
 
 }
 // Saves parameters to flash. Inherited via Normalized Axis. Must call parent too
 void Axis::saveFlash(){
-	NormalizedAxis::saveFlash();
+	//NormalizedAxis::saveFlash();
 	Flash_Write(flashAddrs.config, Axis::encodeConfToInt(this->conf));
 	Flash_Write(flashAddrs.maxSpeed, this->maxHumanSpeedRpm);
 	Flash_Write(flashAddrs.maxAccel, (uint16_t)(this->maxHumanAccelRpmm * 100));
+
+	Flash_Write(flashAddrs.endstop, fx_ratio_i | (endstop_gain << 8));
+	Flash_Write(flashAddrs.power, power);
+	Flash_Write(flashAddrs.degrees, (degreesOfRotation & 0x7fff) | (invertAxis << 15));
+	Flash_Write(flashAddrs.effects1, idlespringstrength | (damperIntensity << 8));
 }
 
 
@@ -123,8 +166,8 @@ void Axis::prepareForUpdate(){
 	if (nextDegreesOfRotation != degreesOfRotation && abs(scaleEncValue(angle, nextDegreesOfRotation)) < 0x7fff){
 		degreesOfRotation = nextDegreesOfRotation;
 
-		NormalizedAxis::speedScalerNormalized = getNormalizedSpeedScaler(maxHumanSpeedRpm, degreesOfRotation);
-		NormalizedAxis::accelScalerNormalized = getNormalizedAccelScaler(maxHumanAccelRpmm, degreesOfRotation);
+		speedScalerNormalized = getNormalizedSpeedScaler(maxHumanSpeedRpm, degreesOfRotation);
+		accelScalerNormalized = getNormalizedAccelScaler(maxHumanAccelRpmm, degreesOfRotation);
 	}
 
 
@@ -137,7 +180,7 @@ void Axis::prepareForUpdate(){
 		pulseErrLed();
 	}
 
-	this->updateMetrics(scaledEnc);
+	this->updateMetrics(angle);
 
 }
 
@@ -153,7 +196,8 @@ void Axis::updateDriveTorque(){
 
 void Axis::setPower(uint16_t power)
 {
-	NormalizedAxis::setPower(power);
+	this->power = power;
+	updateTorqueScaler();
 	// Update hardware limits for TMC for safety
 	TMC4671 *drv = dynamic_cast<TMC4671 *>(this->drv.get());
 	if (drv != nullptr)
@@ -200,11 +244,6 @@ void Axis::setDrvType(uint8_t drvtype)
 // Special tmc setup methods
 void Axis::setupTMC4671()
 {
-	this->setupTMC4671ForAxis(axis);
-}
-
-void Axis::setupTMC4671ForAxis(char axis)
-{
 	TMC4671 *drv = static_cast<TMC4671 *>(this->drv.get());
 	drv->setAxis(axis);
 	drv->restoreFlash();
@@ -223,6 +262,8 @@ void Axis::setupTMC4671ForAxis(char axis)
 	drv->Start(); // Start thread
 }
 
+
+
 /**
  * Init the encoder and reset metrics
  */
@@ -239,13 +280,13 @@ void Axis::setEncType(uint8_t enctype)
 	}
 
 	float angle = getEncAngle(this->drv->getEncoder());
-	int32_t scaledEnc = scaleEncValue(angle, degreesOfRotation);
+	//int32_t scaledEnc = scaleEncValue(angle, degreesOfRotation);
 	// reset metrics
-	this->resetMetrics(scaledEnc);
+	this->resetMetrics(angle);
 
 	// init the speed/accel factor from default value
-	NormalizedAxis::speedScalerNormalized = getNormalizedSpeedScaler(maxHumanSpeedRpm, degreesOfRotation);
-	NormalizedAxis::accelScalerNormalized = getNormalizedAccelScaler(maxHumanAccelRpmm, degreesOfRotation);
+	speedScalerNormalized = getNormalizedSpeedScaler(maxHumanSpeedRpm, degreesOfRotation);
+	accelScalerNormalized = getNormalizedAccelScaler(maxHumanAccelRpmm, degreesOfRotation);
 }
 
 /**
@@ -330,6 +371,229 @@ void Axis::usbResume(){
 	}
 }
 
+
+
+metric_t* Axis::getMetrics() {
+	return &metric.current;
+}
+
+float Axis::getSpeedScalerNormalized() {
+	return speedScalerNormalized;
+}
+
+float	 Axis::getAccelScalerNormalized() {
+	return accelScalerNormalized;
+}
+
+/**
+ * Reverse function of Axis::getNormalizedSpeedScaler(uint16_t maxSpeedRpm, uint16_t degrees)
+ */
+uint16_t Axis::getSpeedRPMFromEncValue(uint16_t speedEncoder_StepMS, uint16_t degrees) {
+
+	// Convert speed encoder/ms in speed encoder/s
+	float speedEncoder_StepS = speedEncoder_StepMS * 1000.0;
+
+	// Convert the speed : form "step" encoder unit to "turn" unit
+	float speedEncoder_RPS = speedEncoder_StepS * degrees / (360.0 * 0xFFFF);
+
+	// map to RPS
+	float rpm = speedEncoder_RPS * 60.0;
+
+	return (uint16_t) rpm;
+
+}
+
+float Axis::getAccelFromEncValue(float accelNormalized, uint16_t degrees) {
+	return accelNormalized;
+	//TODO VMA
+}
+
+int32_t Axis::getLastScaledEnc() {
+	return  clip(metric.current.pos,-0x7fff,0x7fff);
+}
+
+
+
+
+
+int32_t Axis::updateIdleSpringForce() {
+	return clip<int32_t,int32_t>((int32_t)(-metric.current.pos*idlespringscale),-idlespringclip,idlespringclip);
+}
+/*
+ * Set the strength of the spring effect if FFB is disabled
+ */
+void Axis::setIdleSpringStrength(uint8_t spring){
+	idlespringstrength = spring;
+	if(spring == 0){
+		idle_center = false;
+	}else{
+		idle_center = true;
+	}
+	idlespringclip = clip<int32_t,int32_t>((int32_t)spring*50,0,10000);
+	idlespringscale = 0.5f + ((float)spring * 0.01f);
+}
+
+void Axis::setDamperStrength(uint8_t damper){
+	if(damperIntensity == 0) // Was off before. reinit filter
+		this->damperFilter.calcBiquad(); // Reset Filter
+
+	this->damperIntensity = damper;
+}
+
+/*
+ * Called before HID effects are calculated
+ * Should calculate always on and idle effects specific to the axis like idlespring and friction
+ */
+void Axis::calculateAxisEffects(bool ffb_on){
+	axisEffectTorque = 0;
+
+	if(!ffb_on){
+		axisEffectTorque += updateIdleSpringForce();
+	}
+
+	// Always active damper
+	if(damperIntensity != 0){
+		float speedFiltered = damperFilter.process(metric.current.speed) * (float)damperIntensity * 1.5;
+		axisEffectTorque -= clip<float, int32_t>(speedFiltered, -damperClip, damperClip);
+	}
+}
+
+void Axis::setFxRatio(uint8_t val) {
+	fx_ratio_i = val;
+	updateTorqueScaler();
+}
+
+
+void Axis::resetMetrics(float new_pos= 0) { // pos is degrees
+	metric.current.posDegrees = new_pos;
+	int32_t scaled_pos = scaleEncValue(new_pos, degreesOfRotation);
+	metric.current.pos = scaled_pos;
+	metric.current.speedInstant = 0;
+	metric.current.speed = 0;
+	metric.current.accel = 0;
+
+	metric.previous.pos = scaled_pos;
+	metric.previous.speedInstant = 0;
+	metric.previous.speed = 0;
+	metric.previous.torque = 0;
+
+	metric.current.torque = 0;
+}
+
+
+void Axis::updateMetrics(float new_pos) { // pos is degrees
+	// store old value for next metric's computing
+	metric.previous = metric.current;
+
+	metric.current.posDegrees = new_pos;
+	int32_t scaled_pos = scaleEncValue(new_pos, degreesOfRotation);
+	metric.current.pos = scaled_pos;
+
+	// Use speed fastAvg object to get an average speed
+	metric.current.speedInstant = (new_pos - metric.previous.posDegrees) * 1000.0; // deg/s
+	speed_avg.addValue(metric.current.speedInstant);
+	metric.current.speed = speed_avg.getAverage();
+
+	// Use speed fastAvg object to get an average accel
+	float newaccel = metric.current.speedInstant - metric.previous.speedInstant;
+	accel_avg.addValue(newaccel);// TODO VMA REMOVE ?
+	metric.current.accel = newaccel; //accel_avg.getAverage();
+
+
+
+//	metric.previous.pos = metric.current.pos;
+//	metric.previous.speedInstant =
+//	metric.previous.speed = metric.current.speed;
+//	metric.previous.torque = metric.current.torque;
+	metric.current.torque = 0;
+
+	if (calibrationInProgress) {
+		calibMaxSpeedNormalized = abs(metric.current.speed) > calibMaxSpeedNormalized ? abs(metric.current.speed) : calibMaxSpeedNormalized;
+		calibMaxAccelNormalized = abs(metric.current.accel) > calibMaxAccelNormalized ? abs(metric.current.accel) : calibMaxAccelNormalized;
+	}
+}
+
+
+
+uint16_t Axis::getPower(){
+	return power;
+}
+
+void  Axis::updateTorqueScaler() {
+	float effect_margin_scaler = ((float)fx_ratio_i/255.0);
+	torqueScaler = ((float)power / (float)0x7fff) * effect_margin_scaler;
+}
+
+float Axis::getTorqueScaler(){
+	return torqueScaler;
+}
+
+
+int32_t Axis::getTorque() { return metric.current.torque; }
+
+bool Axis::isInverted() {
+	return invertAxis; // TODO store in flash
+}
+
+/*
+ * Calculate soft endstop effect
+ */
+int16_t Axis::updateEndstop(){
+	int8_t clipdir = cliptest<int32_t,int32_t>(metric.current.pos, -0x7fff, 0x7fff);
+	if(clipdir == 0){
+		return 0;
+	}
+	int32_t addtorque = clip<int32_t,int32_t>(abs(metric.current.pos)-0x7fff,-0x7fff,0x7fff);
+	addtorque *= (float)endstop_gain * 0.15f; // Apply endstop gain for stiffness
+	addtorque *= -clipdir;
+
+	return clip<int32_t,int32_t>(addtorque,-0x7fff,0x7fff);
+}
+
+void Axis::setEffectTorque(int32_t torque) {
+	effectTorque = torque;
+}
+
+// pass in ptr to receive the sum of the effects + endstop torque
+// return true if torque is clipping
+bool Axis::updateTorque(int32_t* totalTorque) {
+
+	if(abs(effectTorque) >= 0x7fff){
+		pulseClipLed();
+	}
+
+	// Scale effect torque
+	effectTorque  *= torqueScaler;
+
+	int32_t torque = effectTorque + updateEndstop();
+	torque += axisEffectTorque * torqueScaler; // Updated from effect calculator
+
+	torque = (invertAxis) ? -torque : torque;
+	metric.current.torque = torque;
+	torque = clip<int32_t, int32_t>(torque, -power, power);
+
+	bool torqueChanged = torque != metric.previous.torque;
+
+	if (abs(torque) == power){
+		pulseClipLed();
+	}
+
+	*totalTorque = torque;
+	return (torqueChanged);
+}
+
+void Axis::setDegrees(uint16_t degrees){
+
+	degrees &= 0x7fff;
+	if(degrees == 0){
+		nextDegreesOfRotation = lastdegreesOfRotation;
+	}else{
+		lastdegreesOfRotation = degreesOfRotation;
+		nextDegreesOfRotation = degrees;
+	}
+}
+
+
 void Axis::processHidCommand(HID_Custom_Data_t *data){
 
 	uint8_t axis = (data->addr);
@@ -337,7 +601,7 @@ void Axis::processHidCommand(HID_Custom_Data_t *data){
 		return;
 	}
 
-	NormalizedAxis::processHidCommand(data);
+	//NormalizedAxis::processHidCommand(data);
 
 	switch (data->cmd){
 		case HID_CMD_FFB_STRENGTH:
@@ -352,6 +616,44 @@ void Axis::processHidCommand(HID_Custom_Data_t *data){
 		case HID_CMD_FFB_ZERO:
 			if (data->type == HidCmdType::write){
 				this->setPos(0);
+			}
+		break;
+
+		case HID_CMD_FFB_ESGAIN:
+			if(data->type == HidCmdType::write) {
+				endstop_gain = data->data;
+			}
+			if(data->type == HidCmdType::request){
+				data->data = endstop_gain;
+			}
+		break;
+
+		case HID_CMD_FFB_FXRATIO:
+			if(data->type == HidCmdType::write) {
+				setFxRatio(data->data);
+			}
+			else if(data->type == HidCmdType::request){
+				data->data = fx_ratio_i;
+			}
+		break;
+
+		case HID_CMD_FFB_DEGREES:
+			if (data->type == HidCmdType::write){
+
+
+				setDegrees(data->data);
+
+			}
+			else if (data->type == HidCmdType::request){
+				data->data = degreesOfRotation;
+			}
+		break;
+		case HID_CMD_FFB_IDLESPRING:
+			if(data->type == HidCmdType::write) {
+				setIdleSpringStrength(data->data);
+			}
+			else if(data->type == HidCmdType::request){
+				data->data = idlespringstrength;
 			}
 		break;
 
@@ -373,12 +675,12 @@ ParseStatus Axis::command(ParsedCommand *cmd, std::string *reply)
 	}
 
 	// Check the super class command handler first
-	ParseStatus flag = NormalizedAxis::command(cmd, reply);
-	if ( flag == ParseStatus::OK) {
-		return flag;
-	}
+	//ParseStatus flag = NormalizedAxis::command(cmd, reply);
+//	if ( flag == ParseStatus::OK) {
+//		return flag;
+//	}
 
-	flag = ParseStatus::OK;
+	ParseStatus flag = ParseStatus::OK;
 
 	if (cmd->cmd == "drvtype")
 	{
@@ -447,7 +749,7 @@ ParseStatus Axis::command(ParsedCommand *cmd, std::string *reply)
 		else if (cmd->type == CMDtype::set)
 		{
 			maxHumanSpeedRpm = cmd->val;
-			NormalizedAxis::speedScalerNormalized = getNormalizedSpeedScaler(maxHumanSpeedRpm, degreesOfRotation);
+			speedScalerNormalized = getNormalizedSpeedScaler(maxHumanSpeedRpm, degreesOfRotation);
 
 		}
 	}
@@ -460,7 +762,102 @@ ParseStatus Axis::command(ParsedCommand *cmd, std::string *reply)
 		else if (cmd->type == CMDtype::set)
 		{
 			maxHumanAccelRpmm = cmd->val / 100.0;
-			NormalizedAxis::accelScalerNormalized = getNormalizedAccelScaler(maxHumanAccelRpmm, degreesOfRotation);
+			accelScalerNormalized = getNormalizedAccelScaler(maxHumanAccelRpmm, degreesOfRotation);
+		}
+	}
+	else if (cmd->cmd == "fxratio")
+	{
+		if (cmd->type == CMDtype::get)
+		{
+			*reply += std::to_string(fx_ratio_i);
+		}
+		else if (cmd->type == CMDtype::set)
+		{
+			setFxRatio(cmd->val);
+		}
+	}
+	else if (cmd->cmd == "power")
+	{
+		if (cmd->type == CMDtype::get)
+		{
+			*reply += std::to_string(power);
+		}
+		else if (cmd->type == CMDtype::set)
+		{
+			setPower(cmd->val);
+		}
+	}
+	else if (cmd->cmd == "degrees")
+	{
+		if (cmd->type == CMDtype::get)
+		{
+			*reply += std::to_string(degreesOfRotation);
+		}
+		else if (cmd->type == CMDtype::set)
+		{
+			setDegrees(cmd->val);
+		}
+	}
+	else if (cmd->cmd == "esgain")
+	{
+		if (cmd->type == CMDtype::get)
+		{
+			*reply += std::to_string(endstop_gain);
+		}
+		else if (cmd->type == CMDtype::set)
+		{
+			endstop_gain = cmd->val;
+		}
+	}
+	else if (cmd->cmd == "invert")
+	{
+		if (cmd->type == CMDtype::get)
+		{
+			*reply += invertAxis ? "1" : "0";
+		}
+		else if (cmd->type == CMDtype::set)
+		{
+			invertAxis = cmd->val >= 1 ? true : false;
+		}
+	}
+	else if (cmd->cmd == "idlespring")
+	{
+		if (cmd->type == CMDtype::get)
+		{
+			*reply += std::to_string(idlespringstrength);
+		}
+		else if (cmd->type == CMDtype::set)
+		{
+			setIdleSpringStrength(cmd->val);
+		}
+	}
+	else if (cmd->cmd == "axisdamper")
+	{
+		if (cmd->type == CMDtype::get)
+		{
+			*reply += std::to_string(damperIntensity);
+		}
+		else if (cmd->type == CMDtype::set)
+		{
+			setDamperStrength(cmd->val);
+		}
+	}
+	else if (cmd->cmd == "calibmetrics")
+	{
+		if (cmd->type == CMDtype::get)
+		{
+			*reply += std::to_string(getSpeedRPMFromEncValue(calibMaxSpeedNormalized, degreesOfRotation)) + ':'
+					+ std::to_string(getAccelFromEncValue(calibMaxAccelNormalized, degreesOfRotation));
+		}
+		else if (cmd->type == CMDtype::set)
+		{
+			if (cmd->val == 1) {
+				calibrationInProgress = true;
+				calibMaxAccelNormalized = 0.0;
+				calibMaxSpeedNormalized = 0;
+			} else {
+				calibrationInProgress = false;
+			}
 		}
 	}
 	else{
