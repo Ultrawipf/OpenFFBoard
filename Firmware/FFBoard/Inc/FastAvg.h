@@ -9,20 +9,37 @@
 #define FAST_AVERAGE_H_
 
 #include <FFBoardMain.h>
-#define NB_SPEED_SAMPLE 36
 
+template <std::size_t LEN>
 class FastAvg {
 
 public:
-	FastAvg();
-	~FastAvg();
-	void addValue(float value);
-	float getAverage();
+	FastAvg(){};
+	~FastAvg(){};
+
+	void addValue(float value) {
+
+		// Add the new value
+		samples[currentIndex] = value;
+		sumOfSamples += value;
+
+		// remove the previous value
+		int indexRemove = (currentIndex + 1) % (LEN+1);
+		sumOfSamples -= samples[indexRemove];
+
+		// prepare the next add
+		currentIndex = indexRemove;
+	}
+
+	float getAverage() {
+		return sumOfSamples / LEN;
+	}
 
 private:
-	float samples[NB_SPEED_SAMPLE+1];
+	float samples[LEN+1];
 	int currentIndex = 0;
 	float sumOfSamples = 0;
+
 };
 
 

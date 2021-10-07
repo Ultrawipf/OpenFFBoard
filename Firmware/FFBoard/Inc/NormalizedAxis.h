@@ -91,8 +91,8 @@ protected:
 	float speedScalerNormalized = 1;
 	float accelScalerNormalized = 1;
 
-	FastAvg	 speed_avg;
-	FastAvg  accel_avg;
+	FastAvg<10> speed_avg;
+	FastAvg<10>  accel_avg;
 
 	bool	 calibrationInProgress;
 	uint16_t calibMaxSpeedNormalized;
