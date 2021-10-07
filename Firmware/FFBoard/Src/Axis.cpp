@@ -115,10 +115,12 @@ void Axis::prepareForUpdate(){
 
 	if (!drv->motorReady()) return;
 
+	float angle = getEncAngle(this->drv->getEncoder());
+
 	// Scale encoder value to set rotation range
 	// Update a change of range only when new range is within valid range
 	// if degree change, compute the SpeedScaler, it depends on degreesOfRotation
-	if (nextDegreesOfRotation != degreesOfRotation && abs(getEncValue(drv->getEncoder(), nextDegreesOfRotation)) < 0x7fff){
+	if (nextDegreesOfRotation != degreesOfRotation && abs(scaleEncValue(angle, nextDegreesOfRotation)) < 0x7fff){
 		degreesOfRotation = nextDegreesOfRotation;
 
 		NormalizedAxis::speedScalerNormalized = getNormalizedSpeedScaler(maxHumanSpeedRpm, degreesOfRotation);
@@ -126,10 +128,8 @@ void Axis::prepareForUpdate(){
 	}
 
 
-
-
 	// scaledEnc now gets inverted if necessary in updateMetrics
-	int32_t scaledEnc = getEncValue(drv->getEncoder(), degreesOfRotation);
+	int32_t scaledEnc = scaleEncValue(angle, degreesOfRotation);
 
 	if (abs(scaledEnc) > 0xffff){
 		// We are way off. Shut down
@@ -238,8 +238,8 @@ void Axis::setEncType(uint8_t enctype)
 			this->drv->setEncoder(this->enc);
 	}
 
-
-	int32_t scaledEnc = getEncValue(this->drv->getEncoder(), degreesOfRotation);
+	float angle = getEncAngle(this->drv->getEncoder());
+	int32_t scaledEnc = scaleEncValue(angle, degreesOfRotation);
 	// reset metrics
 	this->resetMetrics(scaledEnc);
 
@@ -248,20 +248,31 @@ void Axis::setEncType(uint8_t enctype)
 	NormalizedAxis::accelScalerNormalized = getNormalizedAccelScaler(maxHumanAccelRpmm, degreesOfRotation);
 }
 
-/*
+/**
  * Returns a scaled encoder value between -0x7fff and 0x7fff with a range of degrees
+ * Takes an encoder angle in degrees
  */
-//TODO JL - use a precalc scaler to make this more efficient
-int32_t Axis::getEncValue(Encoder *enc, uint16_t degrees){
-	if (enc == nullptr || degrees == 0){
-		return 0x7fff; // Return center if no encoder present
+
+int32_t Axis::scaleEncValue(float angle, uint16_t degrees){
+	if (degrees == 0){
+		return 0x7fff;
 	}
-	float angle = 360.0 * enc->getPos_f();
+
 	int32_t val = (0xffff / (float)degrees) * angle;
 	if (isInverted()){
 		val= -val;
 	}
 	return val;
+}
+
+/**
+ * Returns the encoder position in degrees
+ */
+float Axis::getEncAngle(Encoder *enc){
+	if(enc != nullptr)
+		return 360.0 * enc->getPos_f();
+	else
+		return 0;
 }
 
 /**

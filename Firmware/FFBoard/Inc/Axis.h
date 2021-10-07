@@ -92,7 +92,8 @@ public:
 
 	bool getFfbActive();
 
-	int32_t getEncValue(Encoder *enc, uint16_t degrees);
+	int32_t scaleEncValue(float angle, uint16_t degrees);
+	float 	getEncAngle(Encoder *enc);
 	float	getNormalizedSpeedScaler(uint16_t maxSpeedRpm, uint16_t degrees);
 	float	getNormalizedAccelScaler(uint16_t maxAccelRpm, uint16_t degrees);
 	float	getSpeedFromNormalized(uint16_t speedNormalized, uint16_t degrees);
