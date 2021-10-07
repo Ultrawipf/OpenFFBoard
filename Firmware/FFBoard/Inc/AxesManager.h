@@ -8,7 +8,7 @@
 #ifndef AXESMANAGER_H_
 #define AXESMANAGER_H_
 #include "Axis.h"
-#include "NormalizedAxis.h"
+//#include "NormalizedAxis.h"
 #include "PersistentStorage.h"
 #include "ffb_defs.h"
 #include "hid_cmd_defs.h"
@@ -33,7 +33,6 @@ public:
 //	ParseStatus command(ParsedCommand *cmd, std::string *reply);
 //	void processHidCommand(HID_Custom_Data_t *data);
 	virtual std::string getHelpstring() { return "\nAxis commands: (Get: <axis>.<cmd> , Set: <axis>.<cmd>=<val>\nWhere <axis> = x-z e.g. y.power (omitting <axis>. defaults to the X axis.\n"
-//												 "power,zeroenc,enctype,cpr,pos,degrees,esgain,fxratio,idlespring,spring.friction,damper,inertia,invert,drvtype,tmc.\n"; }
 												 "power,zeroenc,enctype,cpr,pos,degrees,esgain,fxratio,idlespring,friction,invert,drvtype,tmc.\n"; }
 
 	void setEffectsCalculator(EffectsCalculator *ec);

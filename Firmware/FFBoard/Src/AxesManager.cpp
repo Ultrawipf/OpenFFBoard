@@ -57,9 +57,6 @@ void AxesManager::restoreFlash() {
 
 void AxesManager::saveFlash() {
 	Flash_Write(ADR_AXIS_COUNT, this->axis_count);
-//	for (auto &axis : axes) {
-//		axis->saveFlash();
-//	}
 }
 
 void AxesManager::update() {
@@ -73,7 +70,6 @@ void AxesManager::update() {
 
 void AxesManager::updateTorque() {
 	for (auto &axis: axes) {
-		// New torque stored in normalizedAxes.encoderTorque;
 		axis->updateDriveTorque();
 	}
 }
