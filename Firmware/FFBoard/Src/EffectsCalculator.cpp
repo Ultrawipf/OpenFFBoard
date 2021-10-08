@@ -287,8 +287,8 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 
 	metric_t *metrics = axes[axis]->getMetrics();
 	uint8_t axisCount = axes.size();
-	float scaleSpeed = axes[axis]->getSpeedScalerNormalized();
-	float scaleAccel = axes[axis]->getAccelScalerNormalized();
+	float scaleSpeed = 20;//axes[axis]->getSpeedScalerNormalized(); // TODO decide if scalers are useful or not
+	float scaleAccel = 20;//axes[axis]->getAccelScalerNormalized();
 
 	if (effect->enableAxis == DIRECTION_ENABLE)
 	{
@@ -344,10 +344,10 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 	 * 	-------   |
 	 * 			  |
 	 */
-	case FFB_EFFECT_FRICTION:
+	case FFB_EFFECT_FRICTION: // TODO unstable. Too strong
 	{
 		// TODO check if another filter can be usefull
-		float speed = metrics->speed * scaleSpeed;//effect->filter[con_idx]->process(metrics->speed) ;
+		float speed = metrics->speed * scaleSpeed;//effect->filter[con_idx]->process()
 
 		int16_t offset = effect->conditions[con_idx].cpOffset;
 		int16_t deadBand = effect->conditions[con_idx].deadBand;
@@ -377,17 +377,18 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 				force = clip<int32_t, int32_t>(force, -effect->conditions[con_idx].negativeSaturation, effect->conditions[con_idx].positiveSaturation);
 			}
 
-			static int32_t last_force = 0;
-
-			// if there is 2 successive torque with a different direction, we ignore the first one to remove oscillation
-			if (last_force * force >=0) {
-				force = ((gain.friction + 1) * force) >> 7;
-				result_torque -=  force * angle_ratio;
-			}
-			last_force = force;
-
+//			static int32_t last_force = 0;
+//
+//			// if there is 2 successive torque with a different direction, we ignore the first one to remove oscillation
+//			if (last_force * force >=0) {
+//				force = ((gain.friction + 1) * force) >> 7;
+//				result_torque -=  force * angle_ratio;
+//			}
+//			last_force = force;
+			result_torque -= effect->filter[con_idx]->process( (((gain.friction + 1) * force) >> 8) * angle_ratio * friction_scaler);
 		}
-
+//			float accel = metrics->accel * scaleAccel;
+//			result_torque -= calcConditionEffectForce(effect, accel, gain.friction, con_idx, friction_scaler, angle_ratio);
 
 		break;
 	}
@@ -395,7 +396,7 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 	{
 
 		float speed = metrics->speed * scaleSpeed;// TODO VMA check if mandatory to restore filter : effect->filter[con_idx]->process(metrics->speed * scaleSpeed);
-		result_torque -= calcConditionEffectForce(effect, speed, gain.damper, con_idx, damper_scaler, angle_ratio);
+		result_torque -= effect->filter[con_idx]->process(calcConditionEffectForce(effect, speed, gain.damper, con_idx, damper_scaler, angle_ratio));
 
 		break;
 	}
@@ -403,15 +404,14 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 	case FFB_EFFECT_INERTIA:
 	{
 
-		float accel = effect->filter[con_idx]->process(metrics->accel* scaleAccel);
-		int32_t force = calcConditionEffectForce(effect, accel, gain.inertia, con_idx, inertia_scaler, angle_ratio); // Bump *60 the inertia feedback
-
-		static int32_t last_force = 0;
-		// if there is 2 successive torque with a different direction, we ignore the first one to remove oscillation
-		if ( last_force * force >=0 ) {
-			result_torque -=  force;
-		}
-		last_force = force;
+		float accel = metrics->accel* scaleAccel;
+		result_torque -= effect->filter[con_idx]->process(calcConditionEffectForce(effect, accel, gain.inertia, con_idx, inertia_scaler, angle_ratio)); // Bump *60 the inertia feedback
+//		static int32_t last_force = 0;
+//		// if there is 2 successive torque with a different direction, we ignore the first one to remove oscillation
+//		if ( last_force * force >=0 ) {
+//			result_torque -=  force;
+//		}
+		//last_force = force;
 
 		break;
 	}
@@ -423,12 +423,18 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 	return (result_torque * (global_gain+1)) >> 8; // Apply global gain
 }
 
+/**
+ * Calculates a conditional effect
+ * Takes care of deadband and offsets and scalers
+ * Gain of 255 = 1x. Prescale with scale factor
+ */
 int32_t EffectsCalculator::calcConditionEffectForce(FFB_Effect *effect, float  metric, uint8_t gain,
 										 uint8_t idx, float scale, float angle_ratio)
 {
 	int16_t offset = effect->conditions[idx].cpOffset;
 	int16_t deadBand = effect->conditions[idx].deadBand;
 	int32_t force = 0;
+	float gainfactor = (float)(gain+1) / 256.0;
 
 	// Effect is only active outside deadband + offset
 	if (abs(metric - offset) > deadBand){
@@ -441,12 +447,12 @@ int32_t EffectsCalculator::calcConditionEffectForce(FFB_Effect *effect, float  m
 		// remove offset/deadband from metric to compute force
 		metric = metric - (offset + (deadBand * (metric < offset ? -1 : 1)) );
 
-		force = clip<int32_t, int32_t>((coefficient * scale * (float)(metric)),
+		force = clip<int32_t, int32_t>((coefficient * gainfactor * scale * (float)(metric)),
 										-effect->conditions[idx].negativeSaturation,
 										 effect->conditions[idx].positiveSaturation);
 	}
 
-	force = ((gain+1) * force) >> 7;
+
 	return force * angle_ratio;
 }
 
@@ -582,7 +588,7 @@ void EffectsCalculator::setCfFilter(uint32_t freq,uint8_t q)
 	if(freq == 0){
 		freq = calcfrequency / 2;
 	}
-	cfFilter_f = clip<uint32_t, uint32_t>(freq, 1, calcfrequency / 2);
+	cfFilter_f = clip<uint32_t, uint32_t>(freq, 1, (calcfrequency / 2) -1);
 	float f = (float)cfFilter_f / (float)calcfrequency;
 
 	for (uint8_t i = 0; i < MAX_EFFECTS; i++)

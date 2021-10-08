@@ -60,19 +60,19 @@ private:
 // Filters
 	bool effects_active = false; // was ffb_active
 	uint8_t global_gain = 0xff;
-	float damper_f = 500 , damper_q = 0.2;
+	float damper_f = 30 , damper_q = 0.4;
 	float friction_f = 50 , friction_q = 0.2; //50 0.2
-	float inertia_f = 5 , inertia_q = 0.2;
+	float inertia_f = 15 , inertia_q = 0.2;
 	const uint32_t calcfrequency = 1000; // HID frequency 1khz
 	uint32_t cfFilter_f = calcfrequency/2; // 500 = off
-	uint8_t cfFilter_q = 70; // User settable
+	uint8_t cfFilter_q = 70; // User settable. q * 10
 	const float cfFilter_qfloatScaler = 0.01;
 
-	// Rescale factor for conditional effect to boos or slow them
-	const float spring_scaler = 1.0f;
-	const float friction_scaler = 1.0f;
-	const float damper_scaler = 1.6f;
-	const float inertia_scaler = 10.0f;
+	// Rescale factor for conditional effect to boost or decrease the intensity
+	const float spring_scaler = 4.0f;
+	const float friction_scaler = 0.2f;
+	const float damper_scaler = 2.0f;
+	const float inertia_scaler = 200.0f;
 	const int frictionPctSpeedToRampup = 5;										// define the max value of the range (0..5% of maxspeed) where torque is rampup on friction
 	const float speedRampupPct = (frictionPctSpeedToRampup / 100.0) * 32767;	// compute the normalizedSpeed of pctToRampup factor
 

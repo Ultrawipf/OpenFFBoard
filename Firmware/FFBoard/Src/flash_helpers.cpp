@@ -12,6 +12,8 @@
 cpp_freertos::MutexStandard flashMutex;
 // Flash helpers
 
+
+
 /*
  * Writes a variable to eeprom emulation adr
  * Returns true on success or false if variable is the same or error

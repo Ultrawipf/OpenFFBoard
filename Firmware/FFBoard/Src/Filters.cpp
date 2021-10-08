@@ -20,6 +20,11 @@ Biquad::Biquad(BiquadType type, float Fc, float Q, float peakGainDB) {
 Biquad::~Biquad() {
 }
 
+/**
+ * Sets the frequency
+ * Calculate as Fc = f/samplerate
+ * Must be lower than 0.5
+ */
 void Biquad::setFc(float Fc) {
 	Fc = clip<float,float>(Fc,0,0.5);
     this->Fc = Fc;
