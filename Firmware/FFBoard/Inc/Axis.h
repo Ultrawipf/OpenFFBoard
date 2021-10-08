@@ -60,6 +60,7 @@ struct AxisConfig
 };
 struct metric_t {
 	float accel = 0;	// in deg/s²
+	float accelInstant = 0;
 	float speed = 0;
 	float speedInstant = 0; // in deg/s
 	int32_t pos = 0;
@@ -109,10 +110,10 @@ public:
 
 	int32_t scaleEncValue(float angle, uint16_t degrees);
 	float 	getEncAngle(Encoder *enc);
-	float	getNormalizedSpeedScaler(uint16_t maxSpeedRpm, uint16_t degrees);
-	float	getNormalizedAccelScaler(uint16_t maxAccelRpm, uint16_t degrees);
-	float	getSpeedFromNormalized(uint16_t speedNormalized, uint16_t degrees);
-	float	getAccelFromNormalized(uint16_t accelNormalized, uint16_t degrees);
+//	float	getNormalizedSpeedScaler(uint16_t maxSpeedRpm, uint16_t degrees);
+//	float	getNormalizedAccelScaler(uint16_t maxAccelRpm, uint16_t degrees);
+//	float	getSpeedFromNormalized(uint16_t speedNormalized, uint16_t degrees);
+//	float	getAccelFromNormalized(uint16_t accelNormalized, uint16_t degrees);
 
 
 	void setPower(uint16_t power);
@@ -135,9 +136,6 @@ public:
 	metric_t* getMetrics();
 	float 	 getSpeedScalerNormalized();
 	float	 getAccelScalerNormalized();
-	uint16_t getSpeedRPMFromEncValue(uint16_t speedNormalized, uint16_t degrees);
-	float 	 getAccelFromEncValue(float accelNormalized, uint16_t degrees);
-
 
 	void setEffectTorque(int32_t torque);
 	bool updateTorque(int32_t* totalTorque);
@@ -193,13 +191,8 @@ private:
 	uint16_t nextDegreesOfRotation = degreesOfRotation; // Buffer when changing range
 
 	// Check if all of these are needed:
-	float speedScalerNormalized = 1;
-	float accelScalerNormalized = 1;
-	uint16_t maxHumanSpeedRpm 	= 200;
-	float	 maxHumanAccelRpmm 	= 30.0;
-
-	FastAvg<10> speed_avg;
-	FastAvg<10> accel_avg;
+	uint16_t maxSpeedDegS 	= 1000;
+	float	 maxAccelDegSS = 80.0;
 
 	bool	 calibrationInProgress;
 	uint16_t calibMaxSpeedNormalized;
@@ -228,11 +221,13 @@ private:
 	float idlespringscale = 0;
 	bool idle_center = false;
 
-	float damper_f = 25 , damper_q = 0.2;
-	const float filter_f = 500; // 1khz/2
+	float speed_f = 25 , speed_q = 0.6;
+	float accel_f = 120 , accel_q = 0.3;
+	const float filter_f = 1000; // 1khz
 	const int32_t damperClip = 10000;
 	uint8_t damperIntensity = 0;
-	Biquad damperFilter = Biquad(BiquadType::lowpass, damper_f/filter_f, damper_q, 0.0);
+	Biquad speedFilter = Biquad(BiquadType::lowpass, speed_f/filter_f, speed_q, 0.0);
+	Biquad accelFilter = Biquad(BiquadType::lowpass, accel_f/filter_f, accel_q, 0.0);
 
 	void setFxRatio(uint8_t val);
 	void updateTorqueScaler();
