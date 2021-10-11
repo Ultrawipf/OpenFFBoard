@@ -316,42 +316,6 @@ float Axis::getEncAngle(Encoder *enc){
 		return 0;
 }
 
-/**
- * Compute the normalized speed scale factor to map max human speed in RPM on -0x7FFF..0x7FFF encoder speed
- * This scale is used by effect
- * uint16_t maxSpeedRpm : maximum speed accessible
- * uint16_t degrees : the maximum range of degree
- * return the normalized scale for the speed
- */
-//float Axis::getNormalizedSpeedScaler(uint16_t maxSpeedRpm, uint16_t degrees) {
-//
-//	// First compute the max speed in turn / second
-//	float maxSpeedRPS = maxSpeedRpm / 60.0f;
-//
-//	// compute the encoder step per turn in the full range
-//	float stepsPerTurn = (float)0xFFFF * 360.0 / (float) degrees;
-//
-//	// compute the maxSpeed in step encoder / ms (unit read in metrics)
-//	// i.e. translate the speed in turn / sec => step encoder / ms
-//	float maxSpeed_StepPerMs = maxSpeedRPS * stepsPerTurn / 1000.0;
-//
-//	// scale the max speed on -0x7FFF..0x7FFF normalized speed
-//	uint16_t scale = (uint16_t) ((float)0x7FFF / maxSpeed_StepPerMs);
-//
-//	return scale;
-//}
-
-/**
- * Compute the scale factor for accel from :
- * uint16_t maxAccelRpm : maximum accel accessible
- * uint16_t degrees : the maximum range of degree
- * return the normalized scale for the accel
- */
-//float Axis::getNormalizedAccelScaler(uint16_t maxAccelRpm, uint16_t degrees) {
-//	//TODO VMA
-//	return (float)0x7FFF / maxAccelRpm;
-//}
-
 
 void Axis::emergencyStop(){
 	drv->stopMotor();
@@ -387,28 +351,6 @@ float	 Axis::getAccelScalerNormalized() {
 	return (float)0x7FFF / maxAccelDegSS;
 }
 
-/**
- * Reverse function of Axis::getNormalizedSpeedScaler(uint16_t maxSpeedRpm, uint16_t degrees)
- */
-//uint16_t Axis::getSpeedRPMFromEncValue(uint16_t speedEncoder_StepMS, uint16_t degrees) {
-//
-//	// Convert speed encoder/ms in speed encoder/s
-//	float speedEncoder_StepS = speedEncoder_StepMS * 1000.0;
-//
-//	// Convert the speed : form "step" encoder unit to "turn" unit
-//	float speedEncoder_RPS = speedEncoder_StepS * degrees / (360.0 * 0xFFFF);
-//
-//	// map to RPS
-//	float rpm = speedEncoder_RPS * 60.0;
-//
-//	return (uint16_t) rpm;
-//
-//}
-
-//float Axis::getAccelFromEncValue(float accelNormalized, uint16_t degrees) {
-//	return accelNormalized;
-//	//TODO VMA
-//}
 
 int32_t Axis::getLastScaledEnc() {
 	return  clip(metric.current.pos,-0x7fff,0x7fff);
@@ -436,9 +378,6 @@ void Axis::setIdleSpringStrength(uint8_t spring){
 }
 
 void Axis::setDamperStrength(uint8_t damper){
-//	if(damperIntensity == 0) // Was off before. reinit filter
-//		this->speedFilter.calcBiquad(); // Reset Filter
-
 	this->damperIntensity = damper;
 }
 
@@ -471,19 +410,7 @@ void Axis::resetMetrics(float new_pos= 0) { // pos is degrees
 	metric.current.posDegrees = new_pos;
 	metric.current.pos = scaleEncValue(new_pos, degreesOfRotation);
 	metric.previous = metric_t();
-//	metric.current.posDegrees = new_pos;
-//	int32_t scaled_pos = scaleEncValue(new_pos, degreesOfRotation);
-//	metric.current.pos = scaled_pos;
-//	metric.current.speedInstant = 0;
-//	metric.current.speed = 0;
-//	metric.current.accel = 0;
-//
-//	metric.previous.pos = scaled_pos;
-//	metric.previous.speedInstant = 0;
-//	metric.previous.speed = 0;
-//	metric.previous.torque = 0;
-//
-//	metric.current.torque = 0;
+
 }
 
 
@@ -502,12 +429,6 @@ void Axis::updateMetrics(float new_pos) { // pos is degrees
 	metric.current.accelInstant = metric.current.speedInstant - metric.previous.speedInstant;
 	metric.current.accel = accelFilter.process(metric.current.accelInstant); //accel_avg.getAverage(); //accel_avg.getAverage();
 
-
-
-//	metric.previous.pos = metric.current.pos;
-//	metric.previous.speedInstant =
-//	metric.previous.speed = metric.current.speed;
-//	metric.previous.torque = metric.current.torque;
 	metric.current.torque = 0;
 
 	if (calibrationInProgress) {
@@ -612,8 +533,6 @@ void Axis::processHidCommand(HID_Custom_Data_t *data){
 		return;
 	}
 
-	//NormalizedAxis::processHidCommand(data);
-
 	switch (data->cmd){
 		case HID_CMD_FFB_STRENGTH:
 			if (data->type == HidCmdType::write){
@@ -676,20 +595,11 @@ void Axis::processHidCommand(HID_Custom_Data_t *data){
 }
 
 
-// { drvtype, power, zeroenc, enctype, cpr, pos, degrees
-//, esgain, fxratio, idlespring, friction, invert,  };
-
 ParseStatus Axis::command(ParsedCommand *cmd, std::string *reply)
 {
 	if ((cmd->prefix & 0xDF) != axis){
 		return ParseStatus::NOT_FOUND;
 	}
-
-	// Check the super class command handler first
-	//ParseStatus flag = NormalizedAxis::command(cmd, reply);
-//	if ( flag == ParseStatus::OK) {
-//		return flag;
-//	}
 
 	ParseStatus flag = ParseStatus::OK;
 
