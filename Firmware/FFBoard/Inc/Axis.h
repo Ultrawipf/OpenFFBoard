@@ -193,10 +193,11 @@ private:
 	// Check if all of these are needed:
 	uint16_t maxSpeedDegS 	= 1000;
 	float	 maxAccelDegSS = 80.0;
+	bool	 useLimiters = true; // Enables speed&accel limits
 
-	bool	 calibrationInProgress;
-	uint16_t calibMaxSpeedNormalized;
-	float	 calibMaxAccelNormalized;
+//	bool	 calibrationInProgress;
+//	uint16_t calibMaxSpeedNormalized;
+//	float	 calibMaxAccelNormalized;
 
 	void setDegrees(uint16_t degrees);
 
@@ -228,6 +229,8 @@ private:
 	uint8_t damperIntensity = 0;
 	Biquad speedFilter = Biquad(BiquadType::lowpass, speed_f/filter_f, speed_q, 0.0);
 	Biquad accelFilter = Biquad(BiquadType::lowpass, accel_f/filter_f, accel_q, 0.0);
+	Biquad limitsFilter = Biquad(BiquadType::lowpass, 50/filter_f, 0.4, 0.0);
+	//FastAvg<32> limiterAvg;
 
 	void setFxRatio(uint8_t val);
 	void updateTorqueScaler();
