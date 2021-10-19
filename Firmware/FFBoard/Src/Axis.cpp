@@ -72,21 +72,17 @@ void Axis::restoreFlash(){
 	setDrvType(this->conf.drvtype);
 	setEncType(this->conf.enctype);
 
-	if (Flash_Read(flashAddrs.maxSpeed, &value)){
-		this->maxSpeedDegS = value;
-	}else{
-		pulseErrLed();
-	}
-
-	if (Flash_Read(flashAddrs.maxAccel, &value)){
-		this->maxAccelDegSS = value / 100.0;
-	}else{
-		pulseErrLed();
-	}
-
-	// TODO Check if needed
-//	speedScalerNormalized = getNormalizedSpeedScaler(maxSpeedDegS, degreesOfRotation);
-//	accelScalerNormalized = getNormalizedAccelScaler(maxAccelDegSS, degreesOfRotation);
+//	if (Flash_Read(flashAddrs.maxSpeed, &value)){
+//		this->maxSpeedDegS = value;
+//	}else{
+//		pulseErrLed();
+//	}
+//
+//	if (Flash_Read(flashAddrs.maxAccel, &value)){
+//		this->maxAccelDegSS = value / accelFactor;
+//	}else{
+//		pulseErrLed();
+//	}
 
 
 	uint16_t esval, power;
@@ -118,8 +114,8 @@ void Axis::restoreFlash(){
 void Axis::saveFlash(){
 	//NormalizedAxis::saveFlash();
 	Flash_Write(flashAddrs.config, Axis::encodeConfToInt(this->conf));
-	Flash_Write(flashAddrs.maxSpeed, this->maxSpeedDegS);
-	Flash_Write(flashAddrs.maxAccel, (uint16_t)(this->maxAccelDegSS * 100));
+//	Flash_Write(flashAddrs.maxSpeed, this->maxSpeedDegS);
+//	Flash_Write(flashAddrs.maxAccel, (uint16_t)(this->maxAccelDegSS * accelFactor));
 
 	Flash_Write(flashAddrs.endstop, fx_ratio_i | (endstop_gain << 8));
 	Flash_Write(flashAddrs.power, power);
@@ -499,25 +495,28 @@ bool Axis::updateTorque(int32_t* totalTorque) {
 	torque += axisEffectTorque * torqueScaler; // Updated from effect calculator
 
 	// TODO speed and accel limiters
-	if(useLimiters){
-		float torqueReduction = 0;
-		if(abs(metric.current.speed) > maxSpeedDegS){
-			float speedreducer = (abs(metric.current.speed) - (float)maxSpeedDegS);
-			speedreducer = speedreducer * speedreducer;
-			torqueReduction += speedreducer * 1.0;
-		}
-//		if(abs(metric.current.accel) > maxAccelDegSS){
-//			torqueReduction += (abs(metric.current.accel) - (float)maxAccelDegSS) * 20.0;
-//		}
+	if(maxSpeedDegS > 0 || maxAccelDegSS > 0){
+
+		float torqueSign = torque > 0 ? 1 : -1; // Used to prevent metrics against the force to go into the limiter
+		// Speed. Mostly tuned...
+		spdlimiterAvg.addValue(metric.current.speedInstant);
+		float speedreducer = (float)((spdlimiterAvg.getAverage()*torqueSign) - (float)maxSpeedDegS) * getSpeedScalerNormalized();
+		spdlimitreducerI = clip<float,int32_t>( spdlimitreducerI + ((speedreducer * 0.015) * torqueScaler),0,power);
+
+		// Accel limit. Not really useful. Maybe replace with torque slew rate limit?
+		float accreducer = (float)((metric.current.accel*torqueSign) - (float)maxAccelDegSS) * getAccelScalerNormalized();
+		acclimitreducerI = clip<float,int32_t>( acclimitreducerI + ((accreducer * 0.02) * torqueScaler),0,power);
+
+
 		// Only reduce torque. Don't invert it to prevent oscillation
-		torqueReduction *= torqueScaler;
+		float torqueReduction = spdlimitreducerI + speedreducer * 0.025 + accreducer * 0.025 + acclimitreducerI;//limitsFilter.process(limitreducerI);
 		if(torque > 0){
 			torqueReduction = clip<float,int32_t>(torqueReduction,0,torque);
 		}else{
 			torqueReduction = clip<float,int32_t>(-torqueReduction,torque,0);
 		}
-		//limiterAvg.addValue(torqueReduction);
-		torque -= torqueReduction;//limiterAvg.getAverage();//limitsFilter.process(torqueReduction);
+
+		torque -= torqueReduction;
 	}
 
 	// Torque calculated. Now sending to driver
@@ -699,11 +698,11 @@ ParseStatus Axis::command(ParsedCommand *cmd, std::string *reply)
 	{
 		if (cmd->type == CMDtype::get)
 		{
-			*reply += std::to_string((uint16_t)(maxAccelDegSS*100));
+			*reply += std::to_string((uint16_t)(maxAccelDegSS*accelFactor));
 		}
 		else if (cmd->type == CMDtype::set)
 		{
-			maxAccelDegSS = cmd->val / 100.0;
+			maxAccelDegSS = cmd->val / accelFactor;
 			//accelScalerNormalized = getNormalizedAccelScaler(maxAccelDegSS, degreesOfRotation);
 		}
 	}

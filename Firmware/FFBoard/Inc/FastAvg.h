@@ -2,7 +2,7 @@
  * FastAvg.h
  *
  *  Created on: Sept 28, 2021
- *      Author: Vincent Manoukian
+ *      Author: Vincent Manoukian + Yannick Richter
  */
 
 #ifndef FAST_AVERAGE_H_
@@ -17,6 +17,7 @@ public:
 	FastAvg(){};
 	~FastAvg(){};
 
+	__attribute__((optimize("-Ofast")))
 	void addValue(float value) {
 
 		// Add the new value
@@ -32,6 +33,11 @@ public:
 	}
 
 	float getAverage() {
+		return sumOfSamples / LEN;
+	}
+
+	float process(float value) {
+		addValue(value);
 		return sumOfSamples / LEN;
 	}
 

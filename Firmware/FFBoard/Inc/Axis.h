@@ -190,10 +190,13 @@ private:
 	uint16_t lastdegreesOfRotation = degreesOfRotation; // Used to store the previous value
 	uint16_t nextDegreesOfRotation = degreesOfRotation; // Buffer when changing range
 
-	// Check if all of these are needed:
-	uint16_t maxSpeedDegS 	= 1000;
-	float	 maxAccelDegSS = 80.0;
-	bool	 useLimiters = true; // Enables speed&accel limits
+	// Limiters
+	uint16_t maxSpeedDegS 	= 0; // Set to non zero to enable. example 1000
+	float	 maxAccelDegSS = 0;
+	//bool	 useLimiters = false; // Enables speed&accel limits
+	float spdlimitreducerI = 0;
+	float acclimitreducerI = 0;
+	const uint8_t accelFactor = 10.0; // Conversion factor between internal and external acc limit
 
 //	bool	 calibrationInProgress;
 //	uint16_t calibMaxSpeedNormalized;
@@ -229,8 +232,8 @@ private:
 	uint8_t damperIntensity = 0;
 	Biquad speedFilter = Biquad(BiquadType::lowpass, speed_f/filter_f, speed_q, 0.0);
 	Biquad accelFilter = Biquad(BiquadType::lowpass, accel_f/filter_f, accel_q, 0.0);
-	Biquad limitsFilter = Biquad(BiquadType::lowpass, 50/filter_f, 0.4, 0.0);
-	//FastAvg<32> limiterAvg;
+	//Biquad limitsFilter = Biquad(BiquadType::lowpass, 20/filter_f, 0.4, 0.0);
+	FastAvg<8> spdlimiterAvg;
 
 	void setFxRatio(uint8_t val);
 	void updateTorqueScaler();
