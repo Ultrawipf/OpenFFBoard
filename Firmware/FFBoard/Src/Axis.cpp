@@ -85,8 +85,8 @@ void Axis::restoreFlash(){
 	}
 
 	// TODO Check if needed
-//	speedScalerNormalized = getNormalizedSpeedScaler(maxHumanSpeedDegS, degreesOfRotation);
-//	accelScalerNormalized = getNormalizedAccelScaler(maxHumanAccelDegSS, degreesOfRotation);
+//	speedScalerNormalized = getNormalizedSpeedScaler(maxSpeedDegS, degreesOfRotation);
+//	accelScalerNormalized = getNormalizedAccelScaler(maxAccelDegSS, degreesOfRotation);
 
 
 	uint16_t esval, power;
@@ -166,8 +166,8 @@ void Axis::prepareForUpdate(){
 	if (nextDegreesOfRotation != degreesOfRotation && abs(scaleEncValue(angle, nextDegreesOfRotation)) < 0x7fff){
 		degreesOfRotation = nextDegreesOfRotation;
 
-//		speedScalerNormalized = getNormalizedSpeedScaler(maxHumanSpeedDegS, degreesOfRotation);
-//		accelScalerNormalized = getNormalizedAccelScaler(maxHumanAccelDegSS, degreesOfRotation);
+//		speedScalerNormalized = getNormalizedSpeedScaler(maxSpeedDegS, degreesOfRotation);
+//		accelScalerNormalized = getNormalizedAccelScaler(maxAccelDegSS, degreesOfRotation);
 	}
 
 
@@ -285,8 +285,8 @@ void Axis::setEncType(uint8_t enctype)
 	this->resetMetrics(angle);
 
 //	// init the speed/accel factor from default value
-//	speedScalerNormalized = getNormalizedSpeedScaler(maxHumanSpeedDegS, degreesOfRotation);
-//	accelScalerNormalized = getNormalizedAccelScaler(maxHumanAccelDegSS, degreesOfRotation);
+//	speedScalerNormalized = getNormalizedSpeedScaler(maxSpeedDegS, degreesOfRotation);
+//	accelScalerNormalized = getNormalizedAccelScaler(maxAccelDegSS, degreesOfRotation);
 }
 
 /**
@@ -437,10 +437,10 @@ void Axis::updateMetrics(float new_pos) { // pos is degrees
 
 	metric.current.torque = 0;
 
-	if (calibrationInProgress) {
-		calibMaxSpeedNormalized = abs(metric.current.speed) > calibMaxSpeedNormalized ? abs(metric.current.speed) : calibMaxSpeedNormalized;
-		calibMaxAccelNormalized = abs(metric.current.accel) > calibMaxAccelNormalized ? abs(metric.current.accel) : calibMaxAccelNormalized;
-	}
+//	if (calibrationInProgress) {
+//		calibMaxSpeedNormalized = abs(metric.current.speed) > calibMaxSpeedNormalized ? abs(metric.current.speed) : calibMaxSpeedNormalized;
+//		calibMaxAccelNormalized = abs(metric.current.accel) > calibMaxAccelNormalized ? abs(metric.current.accel) : calibMaxAccelNormalized;
+//	}
 }
 
 
@@ -499,13 +499,28 @@ bool Axis::updateTorque(int32_t* totalTorque) {
 	torque += axisEffectTorque * torqueScaler; // Updated from effect calculator
 
 	// TODO speed and accel limiters
-//	if(abs(metric.current.speed) > maxHumanSpeedDegS){
-//		torque -= (abs(metric.current.speedFiltered) - maxHumanSpeedDegS) * getSpeedScalerNormalized() * 0.25 * torqueScaler * (metric.current.speedFiltered > 0 ? 1 : -1);
-//	}
-//	if(abs(metric.current.accel) > maxHumanAccelDegSS){
-//		torque -= (abs(metric.current.accel) - maxHumanAccelDegSS) * 0.5 * torqueScaler;
-//	}
+	if(useLimiters){
+		float torqueReduction = 0;
+		if(abs(metric.current.speed) > maxSpeedDegS){
+			float speedreducer = (abs(metric.current.speed) - (float)maxSpeedDegS);
+			speedreducer = speedreducer * speedreducer;
+			torqueReduction += speedreducer * 1.0;
+		}
+//		if(abs(metric.current.accel) > maxAccelDegSS){
+//			torqueReduction += (abs(metric.current.accel) - (float)maxAccelDegSS) * 20.0;
+//		}
+		// Only reduce torque. Don't invert it to prevent oscillation
+		torqueReduction *= torqueScaler;
+		if(torque > 0){
+			torqueReduction = clip<float,int32_t>(torqueReduction,0,torque);
+		}else{
+			torqueReduction = clip<float,int32_t>(-torqueReduction,torque,0);
+		}
+		//limiterAvg.addValue(torqueReduction);
+		torque -= torqueReduction;//limiterAvg.getAverage();//limitsFilter.process(torqueReduction);
+	}
 
+	// Torque calculated. Now sending to driver
 	torque = (invertAxis) ? -torque : torque;
 	metric.current.torque = torque;
 	torque = clip<int32_t, int32_t>(torque, -power, power);
@@ -676,7 +691,7 @@ ParseStatus Axis::command(ParsedCommand *cmd, std::string *reply)
 		else if (cmd->type == CMDtype::set)
 		{
 			maxSpeedDegS = cmd->val;
-			//speedScalerNormalized = getNormalizedSpeedScaler(maxHumanSpeedDegS, degreesOfRotation);
+			//speedScalerNormalized = getNormalizedSpeedScaler(maxSpeedDegS, degreesOfRotation);
 
 		}
 	}
@@ -689,7 +704,7 @@ ParseStatus Axis::command(ParsedCommand *cmd, std::string *reply)
 		else if (cmd->type == CMDtype::set)
 		{
 			maxAccelDegSS = cmd->val / 100.0;
-			//accelScalerNormalized = getNormalizedAccelScaler(maxHumanAccelDegSS, degreesOfRotation);
+			//accelScalerNormalized = getNormalizedAccelScaler(maxAccelDegSS, degreesOfRotation);
 		}
 	}
 	else if (cmd->cmd == "fxratio")
