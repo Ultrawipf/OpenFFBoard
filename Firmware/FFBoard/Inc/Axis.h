@@ -191,12 +191,13 @@ private:
 	uint16_t nextDegreesOfRotation = degreesOfRotation; // Buffer when changing range
 
 	// Limiters
-	uint16_t maxSpeedDegS 	= 0; // Set to non zero to enable. example 1000
-	float	 maxAccelDegSS = 0;
-	//bool	 useLimiters = false; // Enables speed&accel limits
+	uint16_t maxSpeedDegS  = 0; // Set to non zero to enable. example 1000. 8b * 10?
+	//float	 maxAccelDegSS = 0;
+	uint32_t maxTorqueRateMS = 0; // 8b * 128?
+
 	float spdlimitreducerI = 0;
-	float acclimitreducerI = 0;
-	const uint8_t accelFactor = 10.0; // Conversion factor between internal and external acc limit
+	//float acclimitreducerI = 0;
+	//const uint8_t accelFactor = 10.0; // Conversion factor between internal and external acc limit
 
 //	bool	 calibrationInProgress;
 //	uint16_t calibMaxSpeedNormalized;
@@ -214,7 +215,7 @@ private:
 	axis_metric_t metric;
 	int32_t effectTorque = 0;
 	int32_t axisEffectTorque = 0;
-	uint8_t fx_ratio_i = 204; // Reduce effects to a certain ratio of the total power to have a margin for the endstop
+	uint8_t fx_ratio_i = 204; // Reduce effects to a certain ratio of the total power to have a margin for the endstop. 80% = 204
 	uint16_t power = 2000;
 	float torqueScaler = 0; // power * fx_ratio as a ratio between 0 & 1
 	bool invertAxis = false;

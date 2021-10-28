@@ -79,7 +79,7 @@ void Axis::restoreFlash(){
 //	}
 //
 //	if (Flash_Read(flashAddrs.maxAccel, &value)){
-//		this->maxAccelDegSS = value / accelFactor;
+//		this->maxTorqueRateMS = value;
 //	}else{
 //		pulseErrLed();
 //	}
@@ -115,7 +115,7 @@ void Axis::saveFlash(){
 	//NormalizedAxis::saveFlash();
 	Flash_Write(flashAddrs.config, Axis::encodeConfToInt(this->conf));
 //	Flash_Write(flashAddrs.maxSpeed, this->maxSpeedDegS);
-//	Flash_Write(flashAddrs.maxAccel, (uint16_t)(this->maxAccelDegSS * accelFactor));
+//	Flash_Write(flashAddrs.maxAccel, (uint16_t)(this->maxTorqueRateMS));
 
 	Flash_Write(flashAddrs.endstop, fx_ratio_i | (endstop_gain << 8));
 	Flash_Write(flashAddrs.power, power);
@@ -359,12 +359,10 @@ int32_t Axis::getLastScaledEnc() {
 }
 
 
-
-
-
 int32_t Axis::updateIdleSpringForce() {
 	return clip<int32_t,int32_t>((int32_t)(-metric.current.pos*idlespringscale),-idlespringclip,idlespringclip);
 }
+
 /*
  * Set the strength of the spring effect if FFB is disabled
  */
@@ -495,7 +493,7 @@ bool Axis::updateTorque(int32_t* totalTorque) {
 	torque += axisEffectTorque * torqueScaler; // Updated from effect calculator
 
 	// TODO speed and accel limiters
-	if(maxSpeedDegS > 0 || maxAccelDegSS > 0){
+	if(maxSpeedDegS > 0){
 
 		float torqueSign = torque > 0 ? 1 : -1; // Used to prevent metrics against the force to go into the limiter
 		// Speed. Mostly tuned...
@@ -504,12 +502,12 @@ bool Axis::updateTorque(int32_t* totalTorque) {
 		spdlimitreducerI = clip<float,int32_t>( spdlimitreducerI + ((speedreducer * 0.015) * torqueScaler),0,power);
 
 		// Accel limit. Not really useful. Maybe replace with torque slew rate limit?
-		float accreducer = (float)((metric.current.accel*torqueSign) - (float)maxAccelDegSS) * getAccelScalerNormalized();
-		acclimitreducerI = clip<float,int32_t>( acclimitreducerI + ((accreducer * 0.02) * torqueScaler),0,power);
+//		float accreducer = (float)((metric.current.accel*torqueSign) - (float)maxAccelDegSS) * getAccelScalerNormalized();
+//		acclimitreducerI = clip<float,int32_t>( acclimitreducerI + ((accreducer * 0.02) * torqueScaler),0,power);
 
 
 		// Only reduce torque. Don't invert it to prevent oscillation
-		float torqueReduction = spdlimitreducerI + speedreducer * 0.025 + accreducer * 0.025 + acclimitreducerI;//limitsFilter.process(limitreducerI);
+		float torqueReduction = spdlimitreducerI + speedreducer * 0.025;// accreducer * 0.025 + acclimitreducerI
 		if(torque > 0){
 			torqueReduction = clip<float,int32_t>(torqueReduction,0,torque);
 		}else{
@@ -518,6 +516,11 @@ bool Axis::updateTorque(int32_t* totalTorque) {
 
 		torque -= torqueReduction;
 	}
+	// Torque slew rate limiter
+	if(maxTorqueRateMS > 0){
+		torque = clip<int32_t,int32_t>(torque, metric.previous.torque - maxTorqueRateMS,metric.previous.torque + maxTorqueRateMS);
+	}
+	if(torque - metric.previous.torque)
 
 	// Torque calculated. Now sending to driver
 	torque = (invertAxis) ? -torque : torque;
@@ -589,10 +592,7 @@ void Axis::processHidCommand(HID_Custom_Data_t *data){
 
 		case HID_CMD_FFB_DEGREES:
 			if (data->type == HidCmdType::write){
-
-
 				setDegrees(data->data);
-
 			}
 			else if (data->type == HidCmdType::request){
 				data->data = degreesOfRotation;
@@ -693,19 +693,31 @@ ParseStatus Axis::command(ParsedCommand *cmd, std::string *reply)
 			//speedScalerNormalized = getNormalizedSpeedScaler(maxSpeedDegS, degreesOfRotation);
 
 		}
-	}
-	else if (cmd->cmd == "maxaccel")
+	}else if (cmd->cmd == "maxtorquerate")
 	{
 		if (cmd->type == CMDtype::get)
 		{
-			*reply += std::to_string((uint16_t)(maxAccelDegSS*accelFactor));
+			*reply += std::to_string(maxTorqueRateMS);
 		}
 		else if (cmd->type == CMDtype::set)
 		{
-			maxAccelDegSS = cmd->val / accelFactor;
-			//accelScalerNormalized = getNormalizedAccelScaler(maxAccelDegSS, degreesOfRotation);
+			maxTorqueRateMS = cmd->val;
+			//speedScalerNormalized = getNormalizedSpeedScaler(maxSpeedDegS, degreesOfRotation);
+
 		}
 	}
+//	else if (cmd->cmd == "maxaccel")
+//	{
+//		if (cmd->type == CMDtype::get)
+//		{
+//			*reply += std::to_string((uint16_t)(maxAccelDegSS*accelFactor));
+//		}
+//		else if (cmd->type == CMDtype::set)
+//		{
+//			maxAccelDegSS = cmd->val / accelFactor;
+//			//accelScalerNormalized = getNormalizedAccelScaler(maxAccelDegSS, degreesOfRotation);
+//		}
+//	}
 	else if (cmd->cmd == "fxratio")
 	{
 		if (cmd->type == CMDtype::get)
