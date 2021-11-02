@@ -36,6 +36,7 @@
 #define CANBUS
 #define ODRIVE
 #define VESC
+#define MTENCODERSPI // requires SPI3
 
 #define TMCTEMP // Enable tmc temperature shutdown
 //----------------------
@@ -56,6 +57,8 @@ extern UART_HandleTypeDef huart3;
 #define UART_PORT_MOTOR huart3 // motor uart port
 
 #define UART_BUF_SIZE 1 // How many bytes to expect via DMA
+
+
 
 
 // ADC Channels
@@ -81,6 +84,8 @@ extern SPI_HandleTypeDef hspi1;
 #define HSPIDRV hspi1
 extern SPI_HandleTypeDef hspi2;
 #define HSPI2 hspi2
+extern SPI_HandleTypeDef hspi3;
+#define EXT3_SPI_PORT hspi3
 
 // CAN
 #ifdef CANBUS

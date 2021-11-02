@@ -20,7 +20,7 @@
 
 struct SPIConfig {
 	SPIConfig(OutputPin cs,bool cspol = true)
-		:cs{cs}, cspol{false}{
+		:cs{cs}, cspol{cspol}{
 		peripheral.Mode = SPI_MODE_MASTER;
 		peripheral.Direction = SPI_DIRECTION_2LINES;
 		peripheral.DataSize = SPI_DATASIZE_8BIT;

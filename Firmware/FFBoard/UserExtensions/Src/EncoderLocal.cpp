@@ -8,6 +8,7 @@
 #include "EncoderLocal.h"
 #include "flash_helpers.h"
 
+bool EncoderLocal::inUse = false;
 ClassIdentifier EncoderLocal::info = {
 		 .name = "Local" ,
 		 .id=2,
@@ -18,6 +19,7 @@ const ClassIdentifier EncoderLocal::getInfo(){
 }
 
 EncoderLocal::EncoderLocal() {
+	EncoderLocal::inUse = true;
 	this->restoreFlash();
 	this->htim = &TIM_ENC;
 	this->htim->Instance->CR1 = 1;
@@ -27,6 +29,7 @@ EncoderLocal::EncoderLocal() {
 
 
 EncoderLocal::~EncoderLocal() {
+	EncoderLocal::inUse = false;
 	this->htim->Instance->CR1 = 0;
 }
 
