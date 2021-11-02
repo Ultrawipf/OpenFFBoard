@@ -310,10 +310,16 @@ int32_t Axis::scaleEncValue(float angle, uint16_t degrees){
  * Returns the encoder position in degrees
  */
 float Axis::getEncAngle(Encoder *enc){
-	if(enc != nullptr)
-		return 360.0 * enc->getPos_f();
-	else
+	if(enc != nullptr){
+		float pos = 360.0 * enc->getPos_f();
+		if (isInverted()){
+			pos= -pos;
+		}
+		return pos;
+	}
+	else{
 		return 0;
+	}
 }
 
 
@@ -346,10 +352,10 @@ float Axis::getSpeedScalerNormalized() {
 	return (float)0x7FFF / maxSpeedDegS;
 }
 
-float	 Axis::getAccelScalerNormalized() {
-	//return accelScalerNormalized;
-	return (float)0x7FFF / maxAccelDegSS;
-}
+//float	 Axis::getAccelScalerNormalized() {
+//	//return accelScalerNormalized;
+//	return (float)0x7FFF / maxAccelDegSS;
+//}
 
 
 int32_t Axis::getLastScaledEnc() {

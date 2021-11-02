@@ -135,7 +135,7 @@ public:
 
 	metric_t* getMetrics();
 	float 	 getSpeedScalerNormalized();
-	float	 getAccelScalerNormalized();
+	//float	 getAccelScalerNormalized();
 
 	void setEffectTorque(int32_t torque);
 	bool updateTorque(int32_t* totalTorque);
