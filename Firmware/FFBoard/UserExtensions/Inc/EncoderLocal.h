@@ -20,10 +20,10 @@ extern TIM_HandleTypeDef TIM_ENC;
 
 class EncoderLocal: public Encoder,public ExtiHandler,TimerHandler,public CommandHandler, public PersistentStorage{
 public:
-
+	static bool inUse;
 	static ClassIdentifier info;
 	const ClassIdentifier getInfo();
-	static bool isCreatable() {return true;};
+	static bool isCreatable() {return !inUse;};
 
 	EncoderLocal();
 	virtual ~EncoderLocal();

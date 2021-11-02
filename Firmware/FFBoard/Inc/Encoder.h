@@ -11,6 +11,15 @@
 #include "FFBoardMain.h"
 #include "ChoosableClass.h"
 
+/*
+ * Info about used ids:
+ * 0: none
+ * 1: tmc reserved
+ * 2: local/tmc1
+ * 3: tmc3
+ * 4: mt encoder
+ */
+
 enum class EncoderType : uint8_t {NONE=0,incremental=1,incrementalIndex=2,absolute=3};
 
 class Encoder : public virtual ChoosableClass {
@@ -24,6 +33,9 @@ public:
 
 	virtual int32_t getPos();
 	virtual float getPos_f();
+
+	virtual int32_t getPosAbs();
+	virtual float getPosAbs_f();
 
 	virtual void setPos(int32_t pos);
 

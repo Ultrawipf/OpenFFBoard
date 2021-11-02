@@ -10,6 +10,12 @@ static const std::vector<OutputPin> motor_spi_cspins{OutputPin(*SPI1_SS1_GPIO_Po
 extern SPI_HandleTypeDef hspi1;
 SPIPort motor_spi{hspi1,motor_spi_cspins,false};
 
+#ifdef EXT3_SPI_PORT
+static const std::vector<OutputPin> ext3_spi_cspins{OutputPin(*SPI3_SS1_GPIO_Port, SPI3_SS1_Pin), OutputPin(*SPI3_SS2_GPIO_Port, SPI3_SS2_Pin),OutputPin(*SPI3_SS3_GPIO_Port, SPI3_SS3_Pin)};
+extern SPI_HandleTypeDef EXT3_SPI_PORT;
+SPIPort ext3_spi{hspi3,ext3_spi_cspins,true};
+#endif
+
 #ifdef UART_PORT_MOTOR
 extern UART_HandleTypeDef UART_PORT_MOTOR;
 UARTPort motor_uart{UART_PORT_MOTOR};
