@@ -296,9 +296,7 @@ int32_t Axis::scaleEncValue(float angle, uint16_t degrees){
 	}
 
 	int32_t val = (0xffff / (float)degrees) * angle;
-	if (isInverted()){
-		val= -val;
-	}
+
 	return val;
 }
 
