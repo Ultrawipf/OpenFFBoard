@@ -158,7 +158,7 @@ int32_t EffectsCalculator::calcNonConditionEffectForce(FFB_Effect *effect) {
 	{ // Constant force is just the force
 		force_vector = ((int32_t)effect->magnitude * (int32_t)(1 + effect->gain)) >> 8;
 		// Optional filtering to reduce spikes
-		if (cfFilter_f < calcfrequency / 2)
+		if (cfFilter_f < calcfrequency / 2 && cfFilter_f != 0 )
 		{
 			force_vector = effect->filter[0]->process(force_vector);
 		}
@@ -588,7 +588,7 @@ void EffectsCalculator::setCfFilter(uint32_t freq,uint8_t q)
 	if(freq == 0){
 		freq = calcfrequency / 2;
 	}
-	cfFilter_f = clip<uint32_t, uint32_t>(freq, 1, (calcfrequency / 2) -1);
+	cfFilter_f = clip<uint32_t, uint32_t>(freq, 1, (calcfrequency / 2));
 	float f = (float)cfFilter_f / (float)calcfrequency;
 
 	for (uint8_t i = 0; i < MAX_EFFECTS; i++)
