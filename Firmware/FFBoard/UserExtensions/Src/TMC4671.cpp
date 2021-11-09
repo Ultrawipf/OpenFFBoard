@@ -311,16 +311,18 @@ bool TMC4671::initialize(){
  * Not calibrated perfectly!
  */
 float TMC4671::getTemp(){
+	TMC4671HardwareTypeConf* hwconf = &conf.hwconf;
+
 	writeReg(0x03, 2);
 	int32_t adcval = ((readReg(0x02)) & 0xffff) - 0x7fff; // Center offset
-	adcval -= tmcOffset;
+	adcval -= hwconf->adcOffset;
 	if(adcval <= 0){
 		return 0.0;
 	}
-	float r = thermistor_R2 * (((float)43252 / (float)adcval)); //43252 equivalent ADC count if it was 3.3V and not 2.5V
+	float r = hwconf->thermistor_R2 * (((float)43252 / (float)adcval)); //43252 equivalent ADC count if it was 3.3V and not 2.5V
 
 	// Beta
-	r = (1.0 / 298.15) + log(r / thermistor_R) / thermistor_Beta;
+	r = (1.0 / 298.15) + log(r / hwconf->thermistor_R) / hwconf->thermistor_Beta;
 	r = 1.0 / r;
 	r -= 273.15;
 	return r;
@@ -353,13 +355,13 @@ void TMC4671::Run(){
 				}
 
 				// Temperature sense
-				#ifdef TMCTEMP
-				float temp = getTemp();
-				if(temp > temp_limit){
-					changeState(TMC_ControlState::OverTemp);
-					pulseErrLed();
+				if(conf.hwconf.temperatureEnabled){
+					float temp = getTemp();
+					if(temp > conf.hwconf.temp_limit){
+						changeState(TMC_ControlState::OverTemp);
+						pulseErrLed();
+					}
 				}
-				#endif
 
 			}
 			Delay(200);
@@ -1799,13 +1801,15 @@ uint16_t TMC4671::encodeEncHallMisc(){
 	val |= (this->abnconf.ab_as_n & 0x01) << 2;
 	val |= (this->pidPrecision.current_I) << 3;
 	val |= (this->pidPrecision.current_P) << 4;
-
+	// 5,6,7 free
 	val |= (this->hallconf.direction & 0x01) << 8;
 	val |= (this->hallconf.interpolation & 0x01) << 9;
 
 	val |= (this->curPids.sequentialPI & 0x01) << 10;
 
-	//val |= (this->getSpiAddr() << 14);
+	//11,12,13,14,15 hw version
+	val |= ((uint8_t)this->conf.hwconf.hwVersion & 0x1F) << 11;
+
 	return val;
 }
 
@@ -1825,17 +1829,101 @@ void TMC4671::restoreEncHallMisc(uint16_t val){
 
 	this->hallconf.direction = (val>>8) & 0x01;
 	this->hallconf.interpolation = (val>>9) & 0x01;
-
 	this->curPids.sequentialPI = (val>>10) & 0x01;
 
-//	uint8_t chip_sel = (val>>14) & 0x03;
-//	// try to set the CS to the stored value
-//	if(!setSpiAddr(chip_sel)){
-//		// else try the default value, else panic!
-//		assert(setSpiAddr(0));
-//	}
+	setHwType((TMC_HW_Ver)((val >> 11) & 0x1F));
+
 }
 
+/**
+ * Sets some constants and features depending on the hardware version of the driver
+ */
+void TMC4671::setHwType(TMC_HW_Ver type){
+	//TMC4671HardwareTypeConf newHwConf;
+	switch(type){
+	case TMC_HW_Ver::v1_2_1_TMCS:
+	{
+		TMC4671HardwareTypeConf newHwConf = {
+			.hwVersion = TMC_HW_Ver::v1_2_1_TMCS,
+			.adcOffset = 0,
+			.thermistor_R2 = 1500,
+			.thermistor_R = 10000,
+			.thermistor_Beta = 4300,
+			.temperatureEnabled = true,
+			.temp_limit = 90,
+			.currentScaler = 2.5 / (0x7fff * 0.1), // w. TMCS1100A2 sensor 100mV/A
+		};
+		this->conf.hwconf = newHwConf;
+		setBrakeLimits(50700,50900);
+	break;
+	}
+	case TMC_HW_Ver::v1_2_1:
+	{
+		// TODO possibly lower PWM limit because of lower valid sensor range
+		TMC4671HardwareTypeConf newHwConf = {
+			.hwVersion = TMC_HW_Ver::v1_2_1,
+			.adcOffset = 0,
+			.thermistor_R2 = 1500,
+			.thermistor_R = 10000,
+			.thermistor_Beta = 4300,
+			.temperatureEnabled = true,
+			.temp_limit = 90,
+			.currentScaler = 2.5 / (0x7fff * 0.08), // w. LEM sensor 80mV/A
+		};
+		this->conf.hwconf = newHwConf;
+		setBrakeLimits(50700,50900);
+	break;
+	}
+
+	case TMC_HW_Ver::v1_2:
+	{
+		TMC4671HardwareTypeConf newHwConf = {
+			.hwVersion = TMC_HW_Ver::v1_2,
+			.adcOffset = 1000,
+			.thermistor_R2 = 1500,
+			.thermistor_R = 22000,
+			.thermistor_Beta = 4300,
+			.temperatureEnabled = true,
+			.temp_limit = 90,
+			.currentScaler = 2.5 / (0x7fff * 60.0 * 0.0015), // w. 60x 1.5mOhm sensor
+		};
+		this->conf.hwconf = newHwConf;
+		setBrakeLimits(50700,50900); // Activates around 60V as last resort failsave. Check offsets from tmc leakage. ~ 1.426V
+
+	break;
+	}
+
+
+	case TMC_HW_Ver::v1_0:
+	{
+		TMC4671HardwareTypeConf newHwConf = {
+			.hwVersion = TMC_HW_Ver::v1_0,
+			.adcOffset = 0,
+			.thermistor_R2 = 0,
+			.thermistor_R = 0,
+			.thermistor_Beta = 0,
+			.temperatureEnabled = false,
+			.temp_limit = 90,
+			.currentScaler = 2.5 / (0x7fff * 60.0 * 0.0015), // w. 60x 1.5mOhm sensor
+		};
+		this->conf.hwconf = newHwConf;
+		setBrakeLimits(52400,52800);
+	break;
+	}
+
+	case TMC_HW_Ver::NONE:
+	{
+	default:
+		TMC4671HardwareTypeConf newHwConf;
+		newHwConf.temperatureEnabled = false;
+		newHwConf.hwVersion = TMC_HW_Ver::NONE;
+		newHwConf.currentScaler = 0;
+		this->conf.hwconf = newHwConf;
+		setBrakeLimits(0,0); // Disables internal brake resistor activation. DANGER!
+		break;
+	}
+	}
+}
 
 ParseStatus TMC4671::command(ParsedCommand* cmd,std::string* reply){
 	char axis = cmd->prefix & 0xDF;
@@ -1860,6 +1948,22 @@ ParseStatus TMC4671::command(ParsedCommand* cmd,std::string* reply){
 			this->setEncoderType((EncoderType_TMC)cmd->val);
 		}else{
 			*reply+="NONE=0,ABN=1,SinCos=2,Analog UVW=3,Hall=4";
+		}
+
+	}else if(cmd->cmd == "tmcHwType"){
+		if(cmd->type == CMDtype::get){
+			*reply+=std::to_string((uint8_t)conf.hwconf.hwVersion);
+		}else if(cmd->type == CMDtype::set){
+			if(conf.canChangeHwType)
+				setHwType((TMC_HW_Ver)(cmd->val & 0x1F));
+		}else{
+			// List known hardware versions
+			for(auto v : tmcHwVersionNames){
+				if(conf.canChangeHwType || v.first == conf.hwconf.hwVersion){
+					*reply += std::to_string((uint8_t)v.first) + ":" + v.second + "\n";
+				}
+
+			}
 		}
 
 	}else if(cmd->cmd == "encalign"){
@@ -1998,7 +2102,7 @@ ParseStatus TMC4671::command(ParsedCommand* cmd,std::string* reply){
 
 	}else if(cmd->cmd == "tmcIscale"){
 		if(cmd->type == CMDtype::get){
-			*reply+=std::to_string(this->currentScaler);
+			*reply+=std::to_string(this->conf.hwconf.currentScaler);
 		}
 	}else if(cmd->cmd == "encdir"){
 		if(cmd->type == CMDtype::get){
@@ -2010,11 +2114,10 @@ ParseStatus TMC4671::command(ParsedCommand* cmd,std::string* reply){
 
 	}else if(cmd->cmd == "tmctemp"){
 		if(cmd->type == CMDtype::get){
-#ifdef TMCTEMP
-			*reply+=std::to_string(this->getTemp());
-#else
-			*reply+="0";
-#endif
+			if(this->conf.hwconf.temperatureEnabled)
+				*reply+=std::to_string(this->getTemp());
+			else
+				*reply+="0";
 
 		}
 	}else{
