@@ -28,10 +28,6 @@
 #define TMC_THREAD_MEM 512
 #define TMC_THREAD_PRIO 25 // Must be higher than main thread
 
-#ifndef TMC_CURRENTSCALER
-#define TMC_CURRENTSCALER 0
-#endif
-
 extern SPI_HandleTypeDef HSPIDRV;
 
 enum class TMC_ControlState {uninitialized,No_power,Shutdown,Running,Init_wait,ABN_init,AENC_init,Enc_bang,HardError,OverTemp,EncoderFinished};
@@ -44,6 +40,16 @@ enum class FFMode : uint8_t {none=0,velocity=1,torque=2};
 enum class PosSelection : uint8_t {PhiE=0, PhiE_ext=1, PhiE_openloop=2, PhiE_abn=3, res1=4, PhiE_hal=5, PhiE_aenc=6, PhiA_aenc=7, res2=8, PhiM_abn=9, PhiM_abn2=10, PhiM_aenc=11, PhiM_hal=12};
 enum class EncoderType_TMC : uint8_t {NONE=0,abn=1,sincos=2,uvw=3,hall=4,ext=5}; // max 7
 
+enum class TMC_HW_Ver : uint8_t {NONE=0,v1_0,v1_2,v1_2_1,v1_2_1_TMCS};
+// Selectable version names to be listed in commands
+const std::vector<std::pair<TMC_HW_Ver,std::string>> tmcHwVersionNames{
+			std::make_pair(TMC_HW_Ver::NONE,"Undefined"), // Do not select. Default but disables some safety features
+			std::make_pair(TMC_HW_Ver::v1_0,"v1.0"),
+			std::make_pair(TMC_HW_Ver::v1_2,"v1.2"),
+			std::make_pair(TMC_HW_Ver::v1_2_1,"v1.2.1 LEM GO 10"),
+			std::make_pair(TMC_HW_Ver::v1_2_1_TMCS,"v1.2.1 TMCS1100A2")
+};
+
 struct TMC4671MotConf{
 	MotorType motor_type = MotorType::NONE; //saved
 	EncoderType_TMC enctype = EncoderType_TMC::NONE; //saved
@@ -52,14 +58,29 @@ struct TMC4671MotConf{
 	PosSelection pos_sel = PosSelection::PhiE;
 };
 
+/**
+ * Settings that depend on the hardware version
+ */
+struct TMC4671HardwareTypeConf{
+	TMC_HW_Ver hwVersion = TMC_HW_Ver::NONE;
+	int adcOffset = 0;
+	float thermistor_R2 = 1500;
+	float thermistor_R = 22000;
+	float thermistor_Beta = 4300;
+	bool temperatureEnabled = false; // Enables temperature readings
+	float temp_limit = 90;
+	float currentScaler = 2.5 / (0x7fff * 60.0 * 0.0015); // Converts from adc counts to current in Amps
+
+	// Todo restrict allowed motor and encoder types
+};
 
 //#define TMCTEMP
-
-const int thermistor_R2 = 1500, tmcOffset = 1000; //400? Offset is how many ADC counts too high does the tmc read due to current flowing from the ADC. Can be calculated by measuring the pin voltage with adc on and off.
-
-// Beta-Model
-const float thermistor_Beta = 4300, thermistor_R = 22000;
-const float temp_limit = 100; //°C
+//TODO make this depend on the hw version
+//int thermistor_R2 = 1500, tmcOffset = 1000; //400? Offset is how many ADC counts too high does the tmc read due to current flowing from the ADC. Can be calculated by measuring the pin voltage with adc on and off.
+//
+//// Beta-Model
+//float thermistor_Beta = 4300, thermistor_R = 22000;
+//const float temp_limit = 100; //°C
 
 // Mapping of bits in status flag register and mask
 union StatusFlags {
@@ -104,7 +125,7 @@ union StatusFlags {
 
 // Basic failsafe hardware boot config for inits
 struct TMC4671MainConfig{
-
+	TMC4671HardwareTypeConf hwconf;
 	TMC4671MotConf motconf;
 	uint16_t pwmcnt = 3999;
 	uint8_t bbmL	= 10;
@@ -117,6 +138,8 @@ struct TMC4671MainConfig{
 	uint32_t adc_I1_offset 	= 33415;
 	uint32_t adc_I0_scale	= 256;
 	uint32_t adc_I1_scale	= 256;
+
+	bool canChangeHwType = true; // Allows changing the hardware version by commands
 };
 
 struct TMC4671PIDConf{
@@ -239,6 +262,8 @@ public:
 	//SPI_HandleTypeDef* spi = &HSPIDRV,GPIO_TypeDef* csport=SPI1_SS1_GPIO_Port,uint16_t cspin=SPI1_SS1_Pin
 	//TMC4671(SPI_HandleTypeDef* spi,GPIO_TypeDef* csport,uint16_t cspin,TMC4671MainConfig conf);
 	TMC4671(SPIPort& spiport,OutputPin cspin = OutputPin(*SPI1_SS1_GPIO_Port, SPI1_SS1_Pin),uint8_t address=1);
+
+	void setHwType(TMC_HW_Ver type);
 
 	void setAddress(uint8_t address);
 	void setAxis(char axis);
@@ -431,8 +456,6 @@ private:
 	uint8_t enc_retry_max = 5;
 
 	uint32_t lastStatTime = 0;
-
-	const float currentScaler = TMC_CURRENTSCALER; // read only current scaler for current readouts
 
 	char axis = 'X';
 

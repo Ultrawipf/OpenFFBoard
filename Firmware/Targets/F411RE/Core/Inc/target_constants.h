@@ -26,7 +26,7 @@
 // Extra features
 #define LOCALBUTTONS
 #define SPIBUTTONS
-//#define SPIBUTTONS2 // Additional spi source
+//#define SPIBUTTONS2 // Additional spi source. Not supported
 #define SHIFTERBUTTONS
 #define ANALOGAXES
 #define TMC4671DRIVER
@@ -62,11 +62,6 @@ extern volatile uint32_t ADC1_BUF[ADC1_CHANNELS]; // Buffer
 
 #define BUTTON_PINS 8
 
-/*
- * Scaler to convert from ADC counts to amps
- * Depends on shunt and amplifier values
- */
-#define TMC_CURRENTSCALER 2.5 / (0x7fff * 60.0 * 0.0015)
 
 
 #define HSPIDRV hspi1
