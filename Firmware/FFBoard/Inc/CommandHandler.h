@@ -9,6 +9,8 @@
 #define COMMANDHANDLER_H_
 #include <CmdParser.h>
 #include "ClassChooser.h"
+#include <set>
+#include "mutex.hpp"
 
 enum class ParseStatus : uint8_t {NOT_FOUND,OK,ERR,OK_CONTINUE,NO_REPLY};
 
@@ -22,6 +24,7 @@ enum class ParseStatus : uint8_t {NOT_FOUND,OK,ERR,OK_CONTINUE,NO_REPLY};
 class CommandHandler {
 public:
 	static std::vector<CommandHandler*> cmdHandlers;
+	static std::set<uint16_t> cmdHandlerIDs;
 
 	CommandHandler();
 	virtual ~CommandHandler();
@@ -36,8 +39,11 @@ public:
 	static bool logEnabled;
 	static bool logsEnabled();
 	static void setLogsEnabled(bool enabled);
+	uint16_t getCommandHandlerID(){return this->commandHandlerID;}
 
 protected:
+
+
 	bool commandsEnabled = true;
 	virtual void addCommandHandler();
 	virtual void removeCommandHandler();
@@ -53,6 +59,9 @@ protected:
 
 		return false;
  	}
+
+	uint16_t commandHandlerID = 0;
+	cpp_freertos::MutexStandard cmdHandlerListMutex;
 
 private:
 

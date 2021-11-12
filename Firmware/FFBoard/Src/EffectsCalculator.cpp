@@ -20,7 +20,7 @@
 #define EFFECT_STATE_INACTIVE 0
 
 ClassIdentifier EffectsCalculator::info = {
-		.name 	= "NONE" ,
+			  .name = "Effects" ,
 			 .id	= 0,
 			 .unique = '0',
 			 .hidden = true

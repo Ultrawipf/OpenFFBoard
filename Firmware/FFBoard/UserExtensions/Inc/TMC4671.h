@@ -40,13 +40,15 @@ enum class FFMode : uint8_t {none=0,velocity=1,torque=2};
 enum class PosSelection : uint8_t {PhiE=0, PhiE_ext=1, PhiE_openloop=2, PhiE_abn=3, res1=4, PhiE_hal=5, PhiE_aenc=6, PhiA_aenc=7, res2=8, PhiM_abn=9, PhiM_abn2=10, PhiM_aenc=11, PhiM_hal=12};
 enum class EncoderType_TMC : uint8_t {NONE=0,abn=1,sincos=2,uvw=3,hall=4,ext=5}; // max 7
 
-enum class TMC_HW_Ver : uint8_t {NONE=0,v1_0,v1_2,v1_2_1,v1_2_1_TMCS};
+// Hardware versions for identifying different types
+enum class TMC_HW_Ver : uint8_t {NONE=0,v1_0,v1_2,v1_2_1,v1_2_1_LEM20,v1_2_1_TMCS};
 // Selectable version names to be listed in commands
 const std::vector<std::pair<TMC_HW_Ver,std::string>> tmcHwVersionNames{
 			std::make_pair(TMC_HW_Ver::NONE,"Undefined"), // Do not select. Default but disables some safety features
 			std::make_pair(TMC_HW_Ver::v1_0,"v1.0"),
 			std::make_pair(TMC_HW_Ver::v1_2,"v1.2"),
 			std::make_pair(TMC_HW_Ver::v1_2_1,"v1.2.1 LEM GO 10"),
+			std::make_pair(TMC_HW_Ver::v1_2_1_LEM20,"v1.2.1 LEM GO 20"),
 			std::make_pair(TMC_HW_Ver::v1_2_1_TMCS,"v1.2.1 TMCS1100A2")
 };
 
@@ -130,8 +132,8 @@ struct TMC4671MainConfig{
 	uint16_t pwmcnt = 3999;
 	uint8_t bbmL	= 10;
 	uint8_t bbmH	= 10;
-	uint16_t mdecA 	= 668; // 334 default. 668 for lower noise
-	uint16_t mdecB 	= 668;
+	uint16_t mdecA 	= 660; // 334 default. 331 recommended by datasheet,662 double. 660 lowest noise
+	uint16_t mdecB 	= 660;
 	uint32_t mclkA	= 0x20000000; //0x20000000 default
 	uint32_t mclkB	= 0x20000000; // For AENC
 	uint32_t adc_I0_offset 	= 33415;
