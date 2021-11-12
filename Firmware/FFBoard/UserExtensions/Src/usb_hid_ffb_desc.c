@@ -12,7 +12,7 @@
 __ALIGN_BEGIN const uint8_t hid_ffb_desc[USB_HID_FFB_REPORT_DESC_SIZE] __ALIGN_END =
 {
 		   0x05, 0x01,                    // USAGE_PAGE (Generic Desktop)
-		    0x09, 0x05,                    // USAGE (Joystick)
+		    0x09, 0x04,                    // USAGE (Joystick)
 		    0xa1, 0x01,                    // COLLECTION (Application)
 		    0xa1, 0x00,                    //   COLLECTION (Physical)
 		    0x85, 0x01,                    //     REPORT_ID (1)
@@ -33,7 +33,7 @@ __ALIGN_BEGIN const uint8_t hid_ffb_desc[USB_HID_FFB_REPORT_DESC_SIZE] __ALIGN_E
 			0x09, HID_USAGE_RZ,            //     USAGE (Rz)
 			0x09, HID_USAGE_SL1,           //     USAGE (Dial)
 			0x09, HID_USAGE_SL0,           //     USAGE (Slider)
-		    0x16, 0x00, 0x80,              //     LOGICAL_MINIMUM (-32768)
+		    0x16, 0x01, 0x80,              //     LOGICAL_MINIMUM (-32767)
 		    0x26, 0xff, 0x7f,              //     LOGICAL_MAXIMUM (32767)
 		    0x75, 0x10,                    //     REPORT_SIZE (16)
 		    0x95, 0x08,                    //     REPORT_COUNT (8)
