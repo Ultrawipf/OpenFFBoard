@@ -1590,6 +1590,7 @@ void TMC4671::estimateABNparams(){
 		c++;
 		phiE_abn_old = phiE_abn;
 		phiE_abn = readReg(0x2A)>>16;
+		// Count how often the new position was lower than the previous indicating a reversed encoder or motor direction
 		if(phiE_abn < phiE_abn_old){
 			rcount++;
 		}
@@ -1857,6 +1858,23 @@ void TMC4671::setHwType(TMC_HW_Ver type){
 		setBrakeLimits(50700,50900);
 	break;
 	}
+	case TMC_HW_Ver::v1_2_1_LEM20:
+	{
+		// TODO possibly lower PWM limit because of lower valid sensor range
+		TMC4671HardwareTypeConf newHwConf = {
+			.hwVersion = TMC_HW_Ver::v1_2_1,
+			.adcOffset = 0,
+			.thermistor_R2 = 1500,
+			.thermistor_R = 10000,
+			.thermistor_Beta = 4300,
+			.temperatureEnabled = true,
+			.temp_limit = 90,
+			.currentScaler = 2.5 / (0x7fff * 0.04), // w. LEM 20 sensor 40mV/A
+		};
+		this->conf.hwconf = newHwConf;
+		setBrakeLimits(50700,50900);
+	break;
+	}
 	case TMC_HW_Ver::v1_2_1:
 	{
 		// TODO possibly lower PWM limit because of lower valid sensor range
@@ -1868,7 +1886,7 @@ void TMC4671::setHwType(TMC_HW_Ver type){
 			.thermistor_Beta = 4300,
 			.temperatureEnabled = true,
 			.temp_limit = 90,
-			.currentScaler = 2.5 / (0x7fff * 0.08), // w. LEM sensor 80mV/A
+			.currentScaler = 2.5 / (0x7fff * 0.08), // w. LEM 10 sensor 80mV/A
 		};
 		this->conf.hwconf = newHwConf;
 		setBrakeLimits(50700,50900);

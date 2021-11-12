@@ -9,8 +9,10 @@
 #include "global_callbacks.h"
 #include "FFBoardMain.h"
 #include "cdc_device.h"
+#include <set>
 
 std::vector<CommandHandler*> CommandHandler::cmdHandlers;
+std::set<uint16_t> CommandHandler::cmdHandlerIDs;
 bool CommandHandler::logEnabled = true; // If logs are sent by default
 
 CommandHandler::CommandHandler() {
@@ -91,9 +93,21 @@ std::string CommandHandler::getHelpstring(){
 }
 
 void CommandHandler::addCommandHandler(){
+	cmdHandlerListMutex.Lock();
+	while(this->commandHandlerID != 0xffff){
+		auto res = CommandHandler::cmdHandlerIDs.insert(this->commandHandlerID);
+		if(res.second){ // Element was inserted
+			break;
+		}
+		this->commandHandlerID++; // Try next id
+	}
 	addCallbackHandler(cmdHandlers, this);
+	cmdHandlerListMutex.Unlock();
 }
 
 void CommandHandler::removeCommandHandler(){
+	cmdHandlerListMutex.Lock();
+	cmdHandlerIDs.erase(this->commandHandlerID); // removes id from list of reserved ids
 	removeCallbackHandler(cmdHandlers, this);
+	cmdHandlerListMutex.Unlock();
 }
