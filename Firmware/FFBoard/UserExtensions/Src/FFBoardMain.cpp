@@ -16,7 +16,7 @@ ClassIdentifier FFBoardMain::info ={.name = "Basic" , .id=0, .unique = '0'};
 
 
 
-FFBoardMain::FFBoardMain() : systemCommands(std::make_unique<FFBoardMainCommandThread>(this)){
+FFBoardMain::FFBoardMain() : commandThread(std::make_unique<FFBoardMainCommandThread>(this)){
 
 }
 
@@ -29,7 +29,7 @@ const ClassIdentifier FFBoardMain::getInfo(){
  */
 void FFBoardMain::cdcRcv(char* Buf, uint32_t *Len){
 
-	systemCommands->addBuf(Buf, Len,!usb_busy_retry);
+	cdcCmdInterface->addBuf(Buf, Len);
 }
 
 ParseStatus FFBoardMain::command(ParsedCommand *cmd,std::string* reply){
@@ -41,14 +41,16 @@ ParseStatus FFBoardMain::command(ParsedCommand *cmd,std::string* reply){
 
 
 
-/**
- * Global callback if cdc transfer is finished. Used to retry a failed transfer
- */
-void FFBoardMain::cdcFinished(uint8_t itf = 0){
-	if(usb_busy_retry && this->cdcRemaining.length() > 0){
-		cdcSend(&this->cdcRemaining,&this->cdcRemaining, itf); // Retry with remaining string
-	}
-}
+///**
+// * Global callback if cdc transfer is finished. Used to retry a failed transfer
+// */
+//void FFBoardMain::cdcFinished(uint8_t itf = 0){
+//	if(usb_busy_retry && this->cdcRemaining.length() > 0){
+//		cdcSend(&this->cdcRemaining,&this->cdcRemaining, itf); // Retry with remaining string
+//	}
+//}
+
+
 
 /**
  * Called during the startup
@@ -82,29 +84,31 @@ void FFBoardMain::usbResume(){
 
 }
 
-void FFBoardMain::parserDone(std::string* reply, FFBoardMainCommandThread* parser){
-	if(parser == this->systemCommands.get()){
-		cdcSend(reply,&this->cdcRemaining, 0);
-	}
-}
 
-uint16_t FFBoardMain::cdcSend(std::string* reply, std::string* remaining,uint8_t itf){
-
-	uint16_t cdc_sent = tud_cdc_n_write(itf,reply->c_str(), std::min<uint16_t>(reply->length(),CFG_TUD_CDC_TX_BUFSIZE));
-	tud_cdc_n_write_flush(itf);
-	// If we can't write the whole reply copy remainder to send later
-	if(cdc_sent < reply->length()){
-		cdcRemaining.assign(reply->substr(cdc_sent));
-		usb_busy_retry = true;
-	}else{
-		usb_busy_retry = false;
-		this->cdcRemaining.clear();
-	}
-	return cdc_sent;
-}
+//TODO move to cdc class
+//void FFBoardMain::parserDone(std::string* reply, FFBoardMainCommandThread* parser){
+//	if(parser == this->systemCommands.get()){
+//		cdcSend(reply,&this->cdcRemaining, 0);
+//	}
+//}
+// TODO move to class
+//uint16_t FFBoardMain::cdcSend(std::string* reply, std::string* remaining,uint8_t itf){
+//
+//	uint16_t cdc_sent = tud_cdc_n_write(itf,reply->c_str(), std::min<uint16_t>(reply->length(),CFG_TUD_CDC_TX_BUFSIZE));
+//	tud_cdc_n_write_flush(itf);
+//	// If we can't write the whole reply copy remainder to send later
+//	if(cdc_sent < reply->length()){
+//		cdcRemaining.assign(reply->substr(cdc_sent));
+//		usb_busy_retry = true;
+//	}else{
+//		usb_busy_retry = false;
+//		this->cdcRemaining.clear();
+//	}
+//	return cdc_sent;
+//}
 
 std::string FFBoardMain::getHelpstring(){
-	return FFBoardMainCommandThread::getHelpstring();
+	return "None for mainclass. TODO";
 }
 
 FFBoardMain::~FFBoardMain() {
