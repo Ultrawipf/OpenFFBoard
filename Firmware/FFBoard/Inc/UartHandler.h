@@ -8,7 +8,7 @@
 #ifndef UARTHANDLER_H_
 #define UARTHANDLER_H_
 
-#include "cppmain.h"
+#include "main.h"
 #include "global_callbacks.h"
 
 class UartHandler {

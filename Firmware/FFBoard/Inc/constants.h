@@ -9,7 +9,7 @@
  */
 
 
-#define SW_VERSION "1.4.6" // Version string
+#define SW_VERSION "1.4.7" // Version string
 #define MIN_SW_CONFIGURATOR "1.4.0" // Minimal supported configurator version. to be removed in a later version!
 
 #define MAX_AXIS 2 // ONLY USE 2 for now else screws HID Reports

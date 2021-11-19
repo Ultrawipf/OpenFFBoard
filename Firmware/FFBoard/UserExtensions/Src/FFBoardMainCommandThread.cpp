@@ -23,6 +23,8 @@
 
 extern ClassChooser<FFBoardMain> mainchooser;
 
+cpp_freertos::BinarySemaphore FFBoardMainCommandThread::threadSem = cpp_freertos::BinarySemaphore();
+
 
 FFBoardMainCommandThread::FFBoardMainCommandThread(FFBoardMain* mainclass) : Thread("cmdparser",512, 39) {
 	main = mainclass;
@@ -35,11 +37,17 @@ FFBoardMainCommandThread::~FFBoardMainCommandThread() {
 
 
 void FFBoardMainCommandThread::updateSys(){
-	if(this->parserReady){
-		this->parserReady = false;
-		executeCommands(this->parser.parse()); // Don't call this in interrupts!
+//	if(this->parserReady){
+//		this->parserReady = false;
+//		executeCommands(this->parser.parse()); // Don't call this in interrupts!
+//	}
+	// Ask command interfaces if new commands are available if woken up
+	for(CommandInterface* itf : CommandInterface::cmdInterfaces){
+		if(itf->hasNewCommands()){
+			this->executeCommands(itf->getNewCommands(), itf);
+		}
 	}
-	this->parserSem.Take(); // Stop thread again. will be resumed when parser ready
+	FFBoardMainCommandThread::threadSem.Take(); // Stop thread again. will be resumed when parser ready
 }
 
 void FFBoardMainCommandThread::Run(){
@@ -49,18 +57,16 @@ void FFBoardMainCommandThread::Run(){
 	}
 }
 
-/*
- * Adds a buffer to the parser
- * if it returns true resume the thread
- */
-bool FFBoardMainCommandThread::addBuf(char* Buf, uint32_t *Len,bool clearReply = true){
-	bool res = this->parser.add(Buf, Len);
-	if(res){
-		parserReady = true;
-		this->clearReply = clearReply;
-		this->parserSem.Give();
+void FFBoardMainCommandThread::wakeUp(){
+
+	if(inIsr()){
+		BaseType_t pxHigherPriorityTaskWoken;
+		FFBoardMainCommandThread::threadSem.GiveFromISR(&pxHigherPriorityTaskWoken);
+		portYIELD_FROM_ISR(pxHigherPriorityTaskWoken);
+	}else{
+		FFBoardMainCommandThread::threadSem.Give();
 	}
-	return res;
+
 }
 
 
@@ -98,12 +104,12 @@ void FFBoardMainCommandThread::printErrors(std::string *reply){
 	ErrorHandler::clearTemp();
 }
 
-ParseStatus FFBoardMainCommandThread::executeSysCommand(ParsedCommand* cmd,std::string* reply){
+ParseStatus FFBoardMainCommandThread::executeSysCommand(ParsedCommand* cmd,std::string* reply,CommandInterface* commandInterface){
 	ParseStatus flag = ParseStatus::OK;
 
 	if(cmd->cmd == "help"){
 		std::string help, last_help = "";
-		*reply += parser.helpstring;
+		*reply += commandInterface->getHelpstring();
 		for(CommandHandler* handler : CommandHandler::cmdHandlers){
 			help = handler->getHelpstring();
 			if (help != last_help) { // avoid duplicate help commands from multiple instances
@@ -220,11 +226,11 @@ ParseStatus FFBoardMainCommandThread::executeSysCommand(ParsedCommand* cmd,std::
 	return flag;
 }
 
-/*
+/**
  * Executes parsed commands and calls other command handlers.
  * Not global so it can be overridden by main classes to change behaviour or suppress outputs.
  */
-void FFBoardMainCommandThread::executeCommands(std::vector<ParsedCommand> commands){
+void FFBoardMainCommandThread::executeCommands(std::vector<ParsedCommand> commands,CommandInterface* commandInterface){
 	if(clearReply)
 		this->cmd_reply.clear();
 	for(ParsedCommand cmd : commands){
@@ -235,7 +241,7 @@ void FFBoardMainCommandThread::executeCommands(std::vector<ParsedCommand> comman
 		this->cmd_reply+= ">" + cmd.rawcmd + ":"; // Start marker. Echo command
 
 		std::string reply; // Reply of current command
-		status = executeSysCommand(&cmd,&reply);
+		status = executeSysCommand(&cmd,&reply,commandInterface);
 		if(status == ParseStatus::NOT_FOUND || status == ParseStatus::OK_CONTINUE){ // Not a system command
 			// Call all command handlers
 
@@ -284,7 +290,7 @@ void FFBoardMainCommandThread::executeCommands(std::vector<ParsedCommand> comman
 		this->cmd_reply+=reply;
 	}
 
-	if(this->cmd_reply.length()>0){ // Check if cdc busy
-		this->main->parserDone(&cmd_reply, this);
+	if(this->cmd_reply.length()>0){
+		commandInterface->commandsDone(&cmd_reply, this); // TODO call the calling parser instance. or call all interfaces?
 	}
 }

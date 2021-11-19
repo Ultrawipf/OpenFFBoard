@@ -8,10 +8,10 @@
 #ifndef SRC_UART_H_
 #define SRC_UART_H_
 
-#include "cppmain.h"
+//#include "cppmain.h"
 #include "semaphore.hpp"
 #include "UartHandler.h"
-
+#include "target_constants.h"
 
 /*
  * Example to use the port:
@@ -23,7 +23,6 @@
  * port->transmit(x, sizeof(x), 1000); // Transmits a string blocking
  * port->transmit_IT(x, sizeof(x)); // Transmit non blocking
  */
-
 class UARTDevice;
 class UARTPort : public UartHandler {
 public:
@@ -74,5 +73,6 @@ public:
 protected:
 	UARTPort* uartport = nullptr;
 };
+
 
 #endif /* SRC_UART_H_ */
