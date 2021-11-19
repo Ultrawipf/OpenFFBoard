@@ -23,8 +23,6 @@ ClassIdentifier TMC_1::info = {
 };
 
 
-
-
 bool TMC_1::isCreatable() {
 	return motor_spi.isPinFree(OutputPin(*SPI1_SS1_GPIO_Port, SPI1_SS1_Pin));
 }
@@ -35,8 +33,6 @@ ClassIdentifier TMC_2::info = {
 	.id=2,
 	.unique = 'Y'
 };
-
-
 
 
 bool TMC_2::isCreatable() {
@@ -87,7 +83,6 @@ TMC4671::TMC4671(SPIPort& spiport,OutputPin cspin,uint8_t address) : SPIDevice{m
 	spiPort.configurePort(&spiConfig.peripheral);
 	spiPort.giveSemaphore();
 
-	//attachToPort(motor_spi);
 	this->restoreFlash();
 }
 
@@ -99,10 +94,7 @@ TMC4671::~TMC4671() {
 
 
 const ClassIdentifier TMC4671::getInfo() {
-//	char axis_letter = '0' + this->axis;
-//	std::string axis_name = "TMC4671-";
-//	axis_name.push_back(axis_letter);
-//	return ClassIdentifier {.name = axis_name.c_str(), .id = 1, .instance = this->axis, .hidden = false};
+
 	return ClassIdentifier {.name = TMC4671::info.name, .id = TMC4671::info.id, .unique = this->axis, .hidden = TMC4671::info.hidden};
 }
 

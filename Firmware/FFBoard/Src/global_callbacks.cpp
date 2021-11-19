@@ -34,6 +34,7 @@
 #endif
 
 #include "cdc_device.h"
+#include "CDCcomm.h"
 
 
 extern FFBoardMain* mainclass;
@@ -242,8 +243,9 @@ void tud_cdc_rx_cb(uint8_t itf){
 }
 
 void tud_cdc_tx_complete_cb(uint8_t itf){
-	if(mainclass!=nullptr)
-		mainclass->cdcFinished(itf);
+	//if(mainclass!=nullptr)
+		//mainclass->cdcFinished(itf);
+	CDCcomm::cdcFinished(itf);
 }
 
 

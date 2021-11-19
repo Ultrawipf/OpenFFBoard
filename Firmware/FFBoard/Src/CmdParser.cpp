@@ -20,6 +20,7 @@ void CmdParser::clear(){
 }
 
 
+// TODO: when called from interrupts quickly it might interfere with the parsing. Use double buffers or create tokens in this function
 bool CmdParser::add(char* Buf, uint32_t *Len){
 	bool flag = false;
 	for(uint32_t i=0;i<*Len;i++){
@@ -51,6 +52,7 @@ std::vector<ParsedCommand> CmdParser::parse(){
 			tokens.push_back(token);
 		}
 	}
+	buffer.erase(0,lpos); // Clear parsed portion from buffer
 	for(std::string word : tokens){
 		if(word.length() < 2)
 			continue;
@@ -146,6 +148,6 @@ std::vector<ParsedCommand> CmdParser::parse(){
 		commands.push_back(cmd);
 	}
 
-	buffer.erase(0,lpos); // Clear parsed portion from buffer
+
 	return commands;
 }

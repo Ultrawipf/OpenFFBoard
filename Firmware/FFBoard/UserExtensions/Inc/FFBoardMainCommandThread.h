@@ -22,7 +22,11 @@
 #include "FFBoardMain.h"
 #include "semaphore.hpp"
 
+#include "CommandInterface.h"
+
 class FFBoardMain;
+class CommandInterface;
+
 class FFBoardMainCommandThread : public cpp_freertos::Thread
 {
 public:
@@ -32,27 +36,28 @@ public:
 	bool addBuf(char* Buf, uint32_t *Len,bool clearReply);
 
 	void Run();
+
+	static void wakeUp();
+
 	FFBoardMain* main;
 
 	Error cmdNotFoundError = Error(ErrorCode::cmdNotFound,ErrorType::temporary,"Invalid command");
 
 	Error cmdExecError = Error(ErrorCode::cmdExecutionError,ErrorType::temporary,"Error while executing command");
 
-	CmdParser parser = CmdParser();
-	bool parserReady = false;
 	std::string cmd_reply;
 	bool clearReply = true;
 
-	static std::string getHelpstring(){return "\nSystem Commands: errors,reboot,help,dfu,swver (Version),hwtype,minVerGui,lsmain (List configs),id,main (Set main config),lsactive (print command handlers),vint,vext,format (Erase flash),mallinfo,heapfree (Mem usage),flashdump,flashraw\n";}
 protected:
 	virtual void updateSys();
 	static void printFlashDump(std::string *reply);
 	static void printErrors(std::string *reply);
 
-	virtual void executeCommands(std::vector<ParsedCommand> commands);
-	virtual ParseStatus executeSysCommand(ParsedCommand* cmd,std::string* reply);
+	virtual void executeCommands(std::vector<ParsedCommand> commands,CommandInterface* commandInterface);
+	virtual ParseStatus executeSysCommand(ParsedCommand* cmd,std::string* reply,CommandInterface* commandInterface);
 
-	cpp_freertos::CountingSemaphore parserSem = cpp_freertos::CountingSemaphore(10,0);
+	static cpp_freertos::BinarySemaphore threadSem; // Blocks this thread. more efficient than suspending/waking
+	//static cpp_freertos::MutexStandard commandMutex;
 };
 
 #endif /* USEREXTENSIONS_SRC_FFBOARDMAINCOMMANDTHREAD_H_ */
