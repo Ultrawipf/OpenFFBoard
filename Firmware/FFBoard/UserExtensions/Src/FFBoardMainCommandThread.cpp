@@ -232,13 +232,14 @@ ParseStatus FFBoardMainCommandThread::executeSysCommand(ParsedCommand* cmd,std::
  */
 void FFBoardMainCommandThread::executeCommands(std::vector<ParsedCommand> commands,CommandInterface* commandInterface){
 	if(clearReply)
-		this->cmd_reply.clear();
+		this->results.clear();
+		//this->cmd_reply.clear();
 	for(ParsedCommand cmd : commands){
 		ParseStatus status = ParseStatus::NOT_FOUND;
 		if(cmd.cmd.empty())
 			continue; // Empty command
 
-		this->cmd_reply+= ">" + cmd.rawcmd + ":"; // Start marker. Echo command
+		//this->cmd_reply+= ">" + cmd.rawcmd + ":"; // Start marker. Echo command
 
 		std::string reply; // Reply of current command
 		status = executeSysCommand(&cmd,&reply,commandInterface);
@@ -267,30 +268,18 @@ void FFBoardMainCommandThread::executeCommands(std::vector<ParsedCommand> comman
 			continue; // don't send reply. Just continue
 		}
 
-		if(reply.empty() && status == ParseStatus::OK){
-			reply = "OK";
-		}
-		// Append newline if reply is not empty
-		if(!reply.empty() && reply.back()!='\n'){
-			reply+='\n';
-		}
-		// Errors
-		if(status == ParseStatus::NOT_FOUND){ //No class reported success. Show error
-			Error err = cmdNotFoundError;
-			reply = "Err. invalid";
-			err.info = cmd.rawcmd + " not found";
-			ErrorHandler::addError(err);
+		CommandReply replyObj;
+		replyObj.reply = reply;
+		replyObj.prefix = cmd.prefix;
+		replyObj.rawcmd = cmd.rawcmd;
+		replyObj.result = status;
 
-		}else if(status == ParseStatus::ERR){ //Error reported in command
-			reply = "Err. exec error";
-			Error err = cmdExecError;
-			err.info = "Error executing" + cmd.rawcmd;
-			ErrorHandler::addError(err);
+		this->results.push_back(replyObj);
+	}
+	if(!this->results.empty()){
+		for(CommandInterface* itf : CommandInterface::cmdInterfaces){
+			itf->sendReplies(results, commandInterface);
 		}
-		this->cmd_reply+=reply;
 	}
 
-	if(this->cmd_reply.length()>0){
-		commandInterface->commandsDone(&cmd_reply, this); // TODO call the calling parser instance. or call all interfaces?
-	}
 }

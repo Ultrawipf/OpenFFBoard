@@ -6,6 +6,7 @@
  */
 
 #include <CmdParser.h>
+#include "ErrorHandler.h"
 
 
 CmdParser::CmdParser() {
@@ -150,4 +151,34 @@ std::vector<ParsedCommand> CmdParser::parse(){
 
 
 	return commands;
+}
+
+
+std::string CmdParser::formatReply(CommandReply& reply){
+
+	std::string replystr = reply.reply;
+	ParseStatus status = reply.result;
+	if(replystr.empty() && status == ParseStatus::OK){
+		replystr = "OK";
+	}
+	// Append newline if reply is not empty
+	if(!replystr.empty() && replystr.back()!='\n'){
+		replystr+='\n';
+	}
+	// Errors
+	if(status == ParseStatus::NOT_FOUND){ //No class reported success. Show error
+		Error err = cmdNotFoundError;
+		replystr = "Err. invalid";
+		err.info = reply.rawcmd + " not found";
+		ErrorHandler::addError(err);
+
+	}else if(status == ParseStatus::ERR){ //Error reported in command
+		replystr = "Err. exec error";
+		Error err = cmdExecError;
+		err.info = "Error executing" + reply.rawcmd;
+		ErrorHandler::addError(err);
+	}
+
+	std::string formattedReply = ">" + reply.rawcmd + ":" + replystr;
+	return formattedReply;
 }

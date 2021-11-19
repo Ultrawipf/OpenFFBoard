@@ -12,7 +12,7 @@
 #include <set>
 #include "mutex.hpp"
 
-enum class ParseStatus : uint8_t {NOT_FOUND,OK,ERR,OK_CONTINUE,NO_REPLY};
+
 
 /**
  * Implements an interface for parsed command handlers.
@@ -31,6 +31,7 @@ public:
 	virtual bool hasCommands();
 	virtual void setCommandsEnabled(bool enable);
 	virtual ParseStatus command(ParsedCommand* cmd,std::string* reply);
+	//virtual CommandReply command(ParsedCommand& cmd); // TODO NEW
 	virtual const ClassIdentifier getInfo() = 0; // Command handlers always have class infos. Works well with ChoosableClass
 	virtual std::string getHelpstring(); // Returns a help string if "help" command is sent
 	static void sendSerial(std::string cmd,std::string string,char prefix = 0); // Send a command reply formatted sequence

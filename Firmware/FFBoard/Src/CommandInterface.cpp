@@ -22,7 +22,7 @@ CommandInterface::~CommandInterface() {
 /**
  * A batch of commands has been executed and a reply returned
  */
-void CommandInterface::commandsDone(std::string* reply,FFBoardMainCommandThread* parser){
+void CommandInterface::sendReplies(std::vector<CommandReply>& results,CommandInterface* originalInterface){
 
 }
 
@@ -64,10 +64,14 @@ bool CDC_CommandInterface::addBuf(char* Buf, uint32_t *Len){
 	return res;
 }
 
-void CDC_CommandInterface::commandsDone(std::string* reply,FFBoardMainCommandThread* parser){
-	//if(parser == this->systemCommands.get()){
-	CDCcomm::cdcSend(reply, 0);
-	//}
+void CDC_CommandInterface::sendReplies(std::vector<CommandReply>& results,CommandInterface* originalInterface){
+	if(originalInterface != this && originalInterface != nullptr)
+		return;
+	std::string replystr = "";
+	for(CommandReply& reply : results){
+		replystr += parser.formatReply(reply);
+	}
+	CDCcomm::cdcSend(&replystr, 0);
 }
 
 std::vector<ParsedCommand> CDC_CommandInterface::getNewCommands(){
@@ -108,10 +112,14 @@ bool UART_CommandInterface::addBuf(char* Buf, uint32_t *Len){
 	return res;
 }
 
-void UART_CommandInterface::commandsDone(std::string* reply,FFBoardMainCommandThread* parser){
-	//if(parser == this->systemCommands.get()){
-	uartport->transmit_IT(reply->c_str(), reply->size());
-	//}
+void UART_CommandInterface::sendReplies(std::vector<CommandReply>& results,CommandInterface* originalInterface){
+	if(originalInterface != this && originalInterface != nullptr)
+		return;
+	std::string replystr = "";
+	for(CommandReply& reply : results){
+		replystr += parser.formatReply(reply);
+	}
+	uartport->transmit_IT(replystr.c_str(), replystr.size());
 }
 
 /**
