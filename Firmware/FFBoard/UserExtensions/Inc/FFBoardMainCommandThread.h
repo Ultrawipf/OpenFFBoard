@@ -41,11 +41,9 @@ public:
 
 	FFBoardMain* main;
 
-	Error cmdNotFoundError = Error(ErrorCode::cmdNotFound,ErrorType::temporary,"Invalid command");
-
-	Error cmdExecError = Error(ErrorCode::cmdExecutionError,ErrorType::temporary,"Error while executing command");
-
 	std::string cmd_reply;
+	std::vector<CommandReply> results; // Stores the results until the next batch to pass back to the interface
+
 	bool clearReply = true;
 
 protected:
