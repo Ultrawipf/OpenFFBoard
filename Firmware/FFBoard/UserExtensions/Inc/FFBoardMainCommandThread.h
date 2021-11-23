@@ -42,7 +42,7 @@ public:
 	FFBoardMain* main;
 
 	std::string cmd_reply;
-	std::vector<CommandReply> results; // Stores the results until the next batch to pass back to the interface
+	std::vector<CommandResult> results; // Stores the results until the next batch to pass back to the interface
 
 	bool clearReply = true;
 

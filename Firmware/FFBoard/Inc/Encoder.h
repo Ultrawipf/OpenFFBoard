@@ -43,6 +43,7 @@ public:
 
 
 	static const std::vector<class_entry<Encoder> > all_encoders;
+	static ClassType getClassType() override {return ClassType::Encoder;};
 
 protected:
 	uint32_t cpr = 0;

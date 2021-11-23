@@ -22,7 +22,7 @@ CommandInterface::~CommandInterface() {
 /**
  * A batch of commands has been executed and a reply returned
  */
-void CommandInterface::sendReplies(std::vector<CommandReply>& results,CommandInterface* originalInterface){
+void CommandInterface::sendReplies(std::vector<CommandResult>& results,CommandInterface* originalInterface){
 
 }
 
@@ -64,12 +64,12 @@ bool CDC_CommandInterface::addBuf(char* Buf, uint32_t *Len){
 	return res;
 }
 
-void CDC_CommandInterface::sendReplies(std::vector<CommandReply>& results,CommandInterface* originalInterface){
+void CDC_CommandInterface::sendReplies(std::vector<CommandResult>& results,CommandInterface* originalInterface){
 	if(originalInterface != this && originalInterface != nullptr)
 		return;
 	std::string replystr = "";
-	for(CommandReply& reply : results){
-		replystr += parser.formatReply(reply);
+	for(CommandResult& result : results){
+		replystr += parser.formatReply(result);
 	}
 	CDCcomm::cdcSend(&replystr, 0);
 }
@@ -112,12 +112,12 @@ bool UART_CommandInterface::addBuf(char* Buf, uint32_t *Len){
 	return res;
 }
 
-void UART_CommandInterface::sendReplies(std::vector<CommandReply>& results,CommandInterface* originalInterface){
+void UART_CommandInterface::sendReplies(std::vector<CommandResult>& results,CommandInterface* originalInterface){
 	if(originalInterface != this && originalInterface != nullptr)
 		return;
 	std::string replystr = "";
-	for(CommandReply& reply : results){
-		replystr += parser.formatReply(reply);
+	for(CommandResult& result : results){
+		replystr += parser.formatReply(result);
 	}
 	uartport->transmit_IT(replystr.c_str(), replystr.size());
 }

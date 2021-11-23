@@ -41,7 +41,7 @@ VescCAN::~VescCAN() {
 }
 
 bool VescCAN::vescInUse = false;
-ClassIdentifier VescCAN::info = { .name = "VESC", .id = 7, .unique = '1' };
+ClassIdentifier VescCAN::info = { .name = "VESC", .id = 7, .unique = '0', .clsname = "vesc" };
 
 const ClassIdentifier VescCAN::getInfo() {
 	return info;

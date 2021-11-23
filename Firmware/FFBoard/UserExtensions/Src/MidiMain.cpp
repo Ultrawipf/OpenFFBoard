@@ -17,6 +17,7 @@
 ClassIdentifier MidiMain::info = {
 		 .name = "MIDI" ,
 		 .id=64,
+		 .clsname = "main",
 		 .unique = '0',
 		 .hidden=false //Set false to list
  };

@@ -15,6 +15,7 @@
 ClassIdentifier FFBWheel::info = {
 		 .name = "FFB Wheel" , // Leave as wheel for now
 		 .id=1,
+		 .clsname = "main",
 		 .unique = '0'
  };
 

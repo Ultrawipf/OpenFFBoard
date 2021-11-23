@@ -20,6 +20,7 @@ template<class B>
 struct class_entry
 {
 	ClassIdentifier info;
+	uint8_t selectionId;
 	std::function<B *()> create;
 	std::function<bool ()> isCreatable = []() -> bool { return true; };
 //	std::function<bool (T cls)> isCreatable = [](T cls){ ChoosableClass* c = dynamic_cast<ChoosableClass*>(cls); return (c != NULL) ? c::isCreatable() : true;}
@@ -29,24 +30,45 @@ template<class T,class B>
 constexpr class_entry<B> add_class()
 {
 	if constexpr(std::is_base_of<Singleton<T>, T>::value){
-		return { T::info, []() -> B * { return Singleton<T>::getInstance(); },T::isCreatable };
+		return { T::info,T::info.id, []() -> B * { return Singleton<T>::getInstance(); },T::isCreatable };
 	}else{
 //		return { T::info, []() -> B * { return new T; } };
-		return { T::info, []() -> B * { return new T; } , T::isCreatable};
+		return { T::info,T::info.id, []() -> B * { return new T; } , T::isCreatable};
 	}
-
 }
+
+template<class T,class B>
+constexpr class_entry<B> add_class(uint8_t selectionId)
+{
+	if constexpr(std::is_base_of<Singleton<T>, T>::value){
+		return { T::info,selectionId, []() -> B * { return Singleton<T>::getInstance(); },T::isCreatable };
+	}else{
+//		return { T::info, []() -> B * { return new T; } };
+		return { T::info,selectionId, []() -> B * { return new T; } , T::isCreatable};
+	}
+}
+
 
 template<class T,class B>
 class_entry<B> add_class_ref(B* ref)
 {
-//	return { T::info, [ref]() -> B * { return  ref; } };
-	return { T::info, [ref]() -> B * { return ref; } ,T::isCreatable};
+	return { T::info,T::info.id, [ref]() -> B * { return ref; } ,T::isCreatable};
 }
 template<class B>
 class_entry<B> make_class_entry(ClassIdentifier info,B* ref)
 {
-	return { info, [ref]() -> B * { return  ref; },ref->isCreatable };
+	return { info,T::info.id, [ref]() -> B * { return  ref; },ref->isCreatable };
+}
+// Override selection id for internal lists
+template<class T,class B>
+class_entry<B> add_class_ref(B* ref,uint8_t selectionId)
+{
+	return { T::info,selectionId, [ref]() -> B * { return ref; } ,T::isCreatable};
+}
+template<class B>
+class_entry<B> make_class_entry(ClassIdentifier info,B* ref,uint8_t selectionId)
+{
+	return { info,selectionId, [ref]() -> B * { return  ref; },ref->isCreatable };
 }
 
 template<class T>
@@ -69,7 +91,7 @@ public:
 		T* cls = nullptr;
 		for(class_entry<T> e : class_registry){
 
-			if(e.info.id == id && e.isCreatable()){
+			if(e.selectionId == id && e.isCreatable()){
 				cls = e.create();
 			}
 		}
@@ -82,7 +104,7 @@ public:
 	 */
 	bool isCreatable(uint16_t id){
 		for(class_entry<T> e : class_registry){
-			if(e.info.id == id && e.isCreatable()){
+			if(e.selectionId == id && e.isCreatable()){
 				return true;
 			}
 		}
@@ -99,9 +121,9 @@ public:
 			if(cls.info.hidden){
 				continue;
 			}
-			ret+= std::to_string(cls.info.id);
+			ret+= std::to_string(e.selectionId);
 			ret+= ":";
-			ret+= (cls.isCreatable() || ignoredCreatableId == cls.info.id) ? "1" : "0";
+			ret+= (cls.isCreatable() || ignoredCreatableId == e.selectionId) ? "1" : "0";
 			ret+= ":";
 			ret+= cls.info.name;
 			ret+='\n';
@@ -115,7 +137,7 @@ public:
 	 */
 	bool isValidClassId(uint16_t id){
 		for(class_entry<T> cls : class_registry){
-			if(cls.info.id == id){
+			if(e.selectionId == id){
 				return true;
 			}
 		}

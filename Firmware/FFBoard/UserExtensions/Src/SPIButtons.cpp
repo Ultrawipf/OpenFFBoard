@@ -17,6 +17,7 @@ static std::tuple<uint16_t, uint16_t> encodeConfToInt(ButtonSourceConfig* c);
 
 ClassIdentifier SPI_Buttons_1::info = {
 		 .name = "SPI Buttons 1" ,
+		 .clsname = "spibtn1",
 		 .id=1,
 		 .unique = '0'
  };
@@ -30,6 +31,7 @@ bool SPI_Buttons_1::isCreatable(){
 
 ClassIdentifier SPI_Buttons_2::info = {
 		 .name = "SPI Buttons 2" ,
+		 .clsname = "spibtn2",
 		 .id=2,
 		 .unique = '0'
  };

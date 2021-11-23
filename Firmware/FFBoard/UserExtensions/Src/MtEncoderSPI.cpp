@@ -12,6 +12,7 @@ bool MtEncoderSPI::inUse = false;
 
 ClassIdentifier MtEncoderSPI::info = {
 		 .name = "MT6825 SPI3" ,
+		 .clsname = "mtenc",
 		 .id=4,
 		 .unique = '0'
  };

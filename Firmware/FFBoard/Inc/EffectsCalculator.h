@@ -34,6 +34,7 @@ public:
 
 	static ClassIdentifier info;
 	const ClassIdentifier getInfo();
+	static ClassType getClassType() override {return ClassType::Internal;};
 
 	void saveFlash();
 	void restoreFlash();

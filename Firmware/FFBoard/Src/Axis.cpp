@@ -20,7 +20,7 @@
 
 ClassIdentifier Axis::info = {
 	.name = "Axis",
-	.id = 1,
+	.id = CLSID_AXIS, // 1
 	.unique = 'X',
 	.hidden = false};
 
