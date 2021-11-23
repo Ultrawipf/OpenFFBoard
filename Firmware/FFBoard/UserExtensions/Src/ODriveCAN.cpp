@@ -11,13 +11,15 @@
 bool ODriveCAN1::inUse = false;
 ClassIdentifier ODriveCAN1::info = {
 		 .name = "ODrive (M0)" ,
-		 .id=5,
+		 .clsname ="odrv",
+		 .id=CLSID_MOT_ODRV0,	// 5
 		 .unique = '0'
 };
 bool ODriveCAN2::inUse = false;
 ClassIdentifier ODriveCAN2::info = {
 		 .name = "ODrive (M1)" ,
-		 .id=6,
+		 .clsname = "odrv",
+		 .id=CLSID_MOT_ODRV1,	// 6
 		 .unique = '1'
 };
 

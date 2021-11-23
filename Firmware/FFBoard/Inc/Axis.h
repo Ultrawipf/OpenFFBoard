@@ -81,6 +81,7 @@ public:
 
 	static ClassIdentifier info;
 	const ClassIdentifier getInfo();
+	static ClassType getClassType() override {return ClassType::Axis;};
 
 	// TODO add new commands
 	virtual std::string getHelpstring() { return "\nAxis commands: Get: axis.cmd , Set: axis.cmd=var, where axis = x-z e.g. y.power\n"

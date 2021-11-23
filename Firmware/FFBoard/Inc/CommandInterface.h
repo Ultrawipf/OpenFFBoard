@@ -24,7 +24,7 @@ public:
 	static std::string getHelpstring(){return "";}
 	virtual std::vector<ParsedCommand> getNewCommands() = 0;
 	virtual bool hasNewCommands();
-	virtual void sendReplies(std::vector<CommandReply>& results,CommandInterface* originalInterface); // All commands from batch done
+	virtual void sendReplies(std::vector<CommandResult>& results,CommandInterface* originalInterface); // All commands from batch done
 
 protected:
 	bool parserReady = false;
@@ -39,7 +39,7 @@ public:
 	virtual ~CDC_CommandInterface();
 
 	std::vector<ParsedCommand> getNewCommands() override;
-	void sendReplies(std::vector<CommandReply>& results,CommandInterface* originalInterface) override;
+	void sendReplies(std::vector<CommandResult>& results,CommandInterface* originalInterface) override;
 
 	static std::string getHelpstring(){return "\nCDC interface. System Commands: errors,reboot,help,dfu,swver (Version),hwtype,minVerGui,lsmain (List configs),id,main (Set main config),lsactive (print command handlers),vint,vext,format (Erase flash),mallinfo,heapfree (Mem usage),flashdump,flashraw\n";}
 
@@ -57,7 +57,7 @@ public:
 	virtual ~UART_CommandInterface();
 
 	std::vector<ParsedCommand> getNewCommands() override;
-	void sendReplies(std::vector<CommandReply>& results,CommandInterface* originalInterface) override;
+	void sendReplies(std::vector<CommandResult>& results,CommandInterface* originalInterface) override;
 
 	static std::string getHelpstring(){return "\nUART interface. System Commands: errors,reboot,help,dfu,swver (Version),hwtype,minVerGui,lsmain (List configs),id,main (Set main config),lsactive (print command handlers),vint,vext,format (Erase flash),mallinfo,heapfree (Mem usage),flashdump,flashraw\n";}
 

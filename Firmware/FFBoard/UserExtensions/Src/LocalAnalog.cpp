@@ -11,7 +11,8 @@
 
 ClassIdentifier LocalAnalog::info = {
 	 .name = "AIN-Pins" ,
-	 .id=0,
+	 .clsname = "Apin",
+	 .id=CLSID_ANALOG_LOCAL, //0
 	 .unique = '0'
 };
 

@@ -30,6 +30,7 @@ public:
 	const virtual ClassIdentifier getInfo() = 0;
 	static ClassIdentifier info;
 	static bool isCreatable() {return true;};
+	static ClassType getClassType() override {return ClassType::Buttonsource;};
 
 protected:
 	uint16_t btnnum = 0; // Amount of active buttons (valid bitfield length) to report

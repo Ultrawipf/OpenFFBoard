@@ -33,6 +33,7 @@ public:
 	static ClassIdentifier info;
 	virtual const ClassIdentifier getInfo();
 	static bool isCreatable() {return true;};
+	static ClassType getClassType() override {return ClassType::Mainclass;};
 
 	FFBoardMain();
 	virtual ~FFBoardMain();

@@ -14,17 +14,19 @@
 #include "ErrorHandler.h"
 
 enum class ParseStatus : uint8_t {NOT_FOUND,OK,ERR,OK_CONTINUE,NO_REPLY};
+enum class CommmandReplyType : uint8_t {NOT_FOUND,ACK,INT,STRING,NO_REPLY,STRING_OR_INT,FLOAT};
 
 enum class CMDtype{
 	set,setat,get,getat,none,help,err
 };
 struct ParsedCommand
 {
-    std::string cmd;
+	std::string cls = ""; // classname
+    std::string cmd = "";
     int64_t adr = 0;
     int64_t val = 0;
     char prefix = '\0';
-    std::string rawcmd;
+    //std::string rawcmd;
     CMDtype type = CMDtype::none;
 
 };
@@ -32,12 +34,19 @@ struct ParsedCommand
 struct CommandReply
 {
     std::string reply="";
-//    int64_t adr = 0;
-//    int64_t val = 0;
-    char prefix = '\0';
+    int64_t adr = 0;
+    int64_t val = 0;
+    //char prefix = '\0';
     std::string rawcmd = "";
     ParseStatus result = ParseStatus::NOT_FOUND;
+    CommmandReplyType type = CommmandReplyType::NOT_FOUND;
 };
+
+struct CommandResult {
+	CommandReply reply;
+	ParsedCommand originalCommand;
+};
+
 
 template<class T> std::string cmdSetGet(ParsedCommand* cmd,T* val){
 	if(cmd->type == CMDtype::set){
@@ -63,7 +72,7 @@ public:
 	bool add(char* Buf, uint32_t *Len);
 	std::vector<ParsedCommand> parse();
 
-	std::string formatReply(CommandReply& reply);
+	std::string formatReply(CommandResult& reply);
 	const std::string helpstring = "Parser usage:\n Set cmd=int/cmd?adr=var\n Get: cmd?/cmd?var\nInfo: cmd!\ndelims: ;/CR/NL/SPACE\n";
 private:
 	Error cmdNotFoundError = Error(ErrorCode::cmdNotFound,ErrorType::temporary,"Invalid command");

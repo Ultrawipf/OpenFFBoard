@@ -20,10 +20,11 @@
 #define EFFECT_STATE_INACTIVE 0
 
 ClassIdentifier EffectsCalculator::info = {
-			  .name = "Effects" ,
-			 .id	= 0,
-			 .unique = '0',
-			 .hidden = true
+		  .name = "Effects" ,
+		  .clsname = "fx"
+		  .id	= CLSID_EFFECTSCALC,
+		  .unique = '0',
+		  .hidden = true
 };
 const ClassIdentifier EffectsCalculator::getInfo(){
 	return info;

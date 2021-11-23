@@ -10,6 +10,7 @@
 // Change this
 ClassIdentifier CustomMain::info = {
 		 .name = "Custom" ,
+		 .clsname = "main",
 		 .id=1337,
 		 .unique = '0',
 		 .hidden=true //Set false to list
