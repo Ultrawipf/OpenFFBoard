@@ -37,7 +37,7 @@ bool CmdParser::add(char* Buf, uint32_t *Len){
 }
 
 
-
+// Format: cls.instance.cmd<=|?|!><val?>
 std::vector<ParsedCommand> CmdParser::parse(){
 
 	std::vector<ParsedCommand> commands;
@@ -62,11 +62,25 @@ std::vector<ParsedCommand> CmdParser::parse(){
 		cmd.rawcmd = word;
 		uint8_t cmd_start = 0;
 
-		if(word[1] == '.'){ // Axis component
-			char axis = word.front();
-			cmd.prefix = axis;
-			cmd_start = 2;
+		uint32_t point1 = word.find('.', 0);
+		uint32_t point2 = word.find('.', point1); // if has unique instance char
+
+//		if(word[1] == '.'){ // Axis component
+//			char axis = word.front();
+//			cmd.prefix = axis;
+//			cmd_start = 2;
+//		}
+		// cmdstart = <cls>.
+		if(point1 != std::string::npos){
+			cmd_start = point1+1;
+			cmd.cls = word.substr(0, point1);
 		}
+		// cmdstart = <cls>.x.
+		if(point2 != std::string::npos){
+			cmd.prefix = word[point1+1];
+			cmd_start = point2+1; // after second point
+		}
+
 		if(word.back() == '?'){ // <cmd>?
 			cmd.type = CMDtype::get;
 			cmd.cmd = word.substr(cmd_start, word.length()-cmd_start - 1);
@@ -154,10 +168,9 @@ std::vector<ParsedCommand> CmdParser::parse(){
 }
 
 
-std::string CmdParser::formatReply(CommandReply& reply){
-
-	std::string replystr = reply.reply;
-	ParseStatus status = reply.result;
+std::string CmdParser::formatReply(CommandResult& result){
+	std::string replystr = result.reply.reply;
+	ParseStatus status = result.reply.result;
 	if(replystr.empty() && status == ParseStatus::OK){
 		replystr = "OK";
 	}
@@ -169,16 +182,16 @@ std::string CmdParser::formatReply(CommandReply& reply){
 	if(status == ParseStatus::NOT_FOUND){ //No class reported success. Show error
 		Error err = cmdNotFoundError;
 		replystr = "Err. invalid";
-		err.info = reply.rawcmd + " not found";
+		err.info = result.originalCommand.rawcmd + " not found";
 		ErrorHandler::addError(err);
 
 	}else if(status == ParseStatus::ERR){ //Error reported in command
 		replystr = "Err. exec error";
 		Error err = cmdExecError;
-		err.info = "Error executing" + reply.rawcmd;
+		err.info = "Error executing" + result.originalCommand.rawcmd;
 		ErrorHandler::addError(err);
 	}
 
-	std::string formattedReply = ">" + reply.rawcmd + ":" + replystr;
+	std::string formattedReply = ">" + result.originalCommand.rawcmd + ":" + replystr;
 	return formattedReply;
 }

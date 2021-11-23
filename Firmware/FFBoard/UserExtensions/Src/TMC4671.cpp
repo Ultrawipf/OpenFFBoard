@@ -18,8 +18,9 @@
 
 ClassIdentifier TMC_1::info = {
 	.name = "TMC4671_1" ,
-	.id=1,
-	.unique = 'X'
+	.clsname "tmc0",
+	.id=CLSID_MOT_TMC0, // 1
+	.unique = '0'
 };
 
 
@@ -30,8 +31,9 @@ bool TMC_1::isCreatable() {
 
 ClassIdentifier TMC_2::info = {
 	.name = "TMC4671_2" ,
-	.id=2,
-	.unique = 'Y'
+	.clsname = "tmc1",
+	.id=CLSID_MOT_TMC1, // 2
+	.unique = '1'
 };
 
 
@@ -43,9 +45,10 @@ bool TMC_2::isCreatable() {
 
 
 ClassIdentifier TMC4671::info = {
-	.name = "TMC4671" ,
-	.id=3,
-	.unique = '0'
+	.name = "TMC4671_3" ,
+	.clsname = "tmc2"
+	.id=CLSID_MOT_TMC2, // 3
+	.unique = '2'
 };
 //const ClassIdentifier TMC4671::getInfo(){
 //	return info;

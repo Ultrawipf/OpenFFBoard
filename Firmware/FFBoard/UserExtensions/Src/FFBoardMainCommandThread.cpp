@@ -268,13 +268,17 @@ void FFBoardMainCommandThread::executeCommands(std::vector<ParsedCommand> comman
 			continue; // don't send reply. Just continue
 		}
 
+		// Make the reply object. TODO let class do this
 		CommandReply replyObj;
 		replyObj.reply = reply;
-		replyObj.prefix = cmd.prefix;
-		replyObj.rawcmd = cmd.rawcmd;
 		replyObj.result = status;
 
-		this->results.push_back(replyObj);
+		// The result to be returned to the interfaces
+		CommandResult resultObj = {
+				.reply = replyObj,
+				.originalCommand = cmd
+		};
+		this->results.push_back(resultObj);
 	}
 	if(!this->results.empty()){
 		for(CommandInterface* itf : CommandInterface::cmdInterfaces){

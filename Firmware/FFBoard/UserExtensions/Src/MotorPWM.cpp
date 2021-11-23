@@ -19,6 +19,7 @@ bool MotorPWM::pwmDriverInUse = false;
 
 ClassIdentifier MotorPWM::info = {
 		 .name = "PWM" ,
+		 .clsname = "pwmdrv"
 		 .id=4,
 		 .unique = '0'
  };

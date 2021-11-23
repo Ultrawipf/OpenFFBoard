@@ -57,6 +57,16 @@ ParseStatus CommandHandler::command(ParsedCommand* cmd,std::string* reply){
 	return ParseStatus::NOT_FOUND;
 }
 
+
+CommandReply CommandHandler::command(ParsedCommand& cmd){
+	CommandReply reply;
+	reply.type = CommmandReplyType::NOT_FOUND;
+	if(!this->commandsEnabled){
+		return reply;
+	}
+	return reply;
+}
+
 /**
  * Sends a formatted reply without being prompted by a command.
  * Useful for sending periodic data or with a large delay to a listener on the PC
