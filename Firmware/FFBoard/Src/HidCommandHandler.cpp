@@ -8,6 +8,8 @@
 #include "HidCommandHandler.h"
 #include "global_callbacks.h"
 
+
+// TODO REMOVE and replace with new command system
 std::vector<HidCommandHandler*> HidCommandHandler::hidCmdHandlers; // called only for custom cmd report ids
 
 HidCommandHandler::HidCommandHandler(){

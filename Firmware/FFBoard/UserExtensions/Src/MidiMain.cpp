@@ -16,9 +16,7 @@
 
 ClassIdentifier MidiMain::info = {
 		 .name = "MIDI" ,
-		 .id=64,
-		 .clsname = "main",
-		 .unique = '0',
+		 .id=CLSID_MAIN_MIDI, // 64 prev
 		 .hidden=false //Set false to list
  };
 
@@ -62,6 +60,9 @@ MidiMain::MidiMain(){
 		pulseErrLed();
 	}
 	//this->Start(); // We do not start the driver thread
+	//CommandHandler::registerCommands();
+	registerCommand("power", MidiMain_commands::power, "Intensity");
+	registerCommand("range", MidiMain_commands::range, "Range of phase change");
 
 }
 
@@ -145,26 +146,23 @@ void MidiMain::pitchBend(uint8_t chan, int16_t val){
 	}
 }
 
-ParseStatus MidiMain::command(ParsedCommand* cmd,std::string* reply){
-	ParseStatus flag = ParseStatus::OK; // Valid command found
-	if(cmd->cmd == "power"){
-		if(cmd->type == CMDtype::get){
-			*reply+=std::to_string(power);
-		}else if(cmd->type == CMDtype::set){
-			this->power = cmd->val;
-		}
-	}else if(cmd->cmd == "range"){
-		if(cmd->type == CMDtype::get){
-			*reply+=std::to_string(movementrange);
-		}else if(cmd->type == CMDtype::set){
-			this->movementrange = cmd->val;
-		}
-	}else{
-		flag=drv->command(cmd, reply);
-	}
-	return flag;
-}
+CommandStatus MidiMain::command(const ParsedCommand& cmd,std::vector<CommandReply>& replies){
+	CommandStatus result = CommandStatus::OK;
+	switch(static_cast<MidiMain_commands>(cmd.cmdId)){
 
+	case MidiMain_commands::power:
+		handleGetSet(cmd, replies, this->power);
+		break;
+	case MidiMain_commands::range:
+		handleGetSet(cmd, replies, this->movementrange);
+		break;
+
+	default:
+		result = CommandStatus::NOT_FOUND;
+		break;
+	}
+	return result;
+}
 
 
 void MidiMain::usbInit(){

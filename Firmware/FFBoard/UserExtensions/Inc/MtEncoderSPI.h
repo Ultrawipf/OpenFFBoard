@@ -18,6 +18,9 @@
 #define MAGNTEK_READ 0x80
 
 class MtEncoderSPI: public Encoder, public SPIDevice, public PersistentStorage, public CommandHandler{
+	enum class MtEncoderSPI_commands : uint32_t{
+		cspin
+	};
 public:
 	MtEncoderSPI();
 	virtual ~MtEncoderSPI();
@@ -42,9 +45,9 @@ public:
 	void initSPI();
 	void updateAngleStatus();
 
-	ParseStatus command(ParsedCommand* cmd,std::string* reply);
+	CommandStatus command(const ParsedCommand& cmd,std::vector<CommandReply>& replies);
 	void setCsPin(uint8_t cspin);
-
+	//virtual const ClassType getClassType() override {return ClassType::Encoder;};
 private:
 	uint8_t readSpi(uint8_t addr);
 	void writeSpi(uint8_t addr,uint8_t data);

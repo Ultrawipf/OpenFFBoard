@@ -11,6 +11,9 @@
 #include <FFBoardMain.h>
 
 class CustomMain: public FFBoardMain {
+	enum class CustomMain_commands : uint32_t{
+		command=0
+	};
 public:
 
 
@@ -19,8 +22,9 @@ public:
 
 	static ClassIdentifier info;
 	const ClassIdentifier getInfo();
-	ParseStatus command(ParsedCommand* cmd,std::string* reply);
-
+	CommandStatus command(const ParsedCommand& cmd,std::vector<CommandReply>& replies);
+	void registerCommands();
+	std::string getHelpstring();
 
 private:
 	int32_t examplevar = 0;

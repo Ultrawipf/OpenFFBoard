@@ -10,6 +10,7 @@
 
 
 #define SW_VERSION "1.4.7" // Version string
+static const uint8_t SW_VERSION_INT[3] = {1,4,7}; // Version as array. 8 bit each!
 #define MIN_SW_CONFIGURATOR "1.4.0" // Minimal supported configurator version. to be removed in a later version!
 
 #define MAX_AXIS 2 // ONLY USE 2 for now else screws HID Reports

@@ -17,10 +17,8 @@
 #define MAX_TMC_DRIVERS 3
 
 ClassIdentifier TMC_1::info = {
-	.name = "TMC4671_1" ,
-	.clsname "tmc0",
+	.name = "TMC4671_1",
 	.id=CLSID_MOT_TMC0, // 1
-	.unique = '0'
 };
 
 
@@ -31,9 +29,7 @@ bool TMC_1::isCreatable() {
 
 ClassIdentifier TMC_2::info = {
 	.name = "TMC4671_2" ,
-	.clsname = "tmc1",
-	.id=CLSID_MOT_TMC1, // 2
-	.unique = '1'
+	.id=CLSID_MOT_TMC0, // 2
 };
 
 
@@ -45,10 +41,8 @@ bool TMC_2::isCreatable() {
 
 
 ClassIdentifier TMC4671::info = {
-	.name = "TMC4671_3" ,
-	.clsname = "tmc2"
-	.id=CLSID_MOT_TMC2, // 3
-	.unique = '2'
+	.name = "TMC4671" ,
+	.id=CLSID_MOT_TMC0, // 3
 };
 //const ClassIdentifier TMC4671::getInfo(){
 //	return info;
@@ -63,8 +57,9 @@ ClassIdentifier TMC4671::info = {
 //	this->restoreFlash();
 //}
 
-TMC4671::TMC4671(SPIPort& spiport,OutputPin cspin,uint8_t address) : SPIDevice{motor_spi,cspin},Thread("TMC", TMC_THREAD_MEM, TMC_THREAD_PRIO){
+TMC4671::TMC4671(SPIPort& spiport,OutputPin cspin,uint8_t address) :CommandHandler("tmc", CLSID_MOT_TMC0), SPIDevice{motor_spi,cspin},Thread("TMC", TMC_THREAD_MEM, TMC_THREAD_PRIO){
 	setAddress(address);
+	setInstance(address-1);
 //	this->cspin = SPI1_SS1_Pin;
 //	this->csport = SPI1_SS1_GPIO_Port;
 //	this->spi = &HSPIDRV;
@@ -87,6 +82,7 @@ TMC4671::TMC4671(SPIPort& spiport,OutputPin cspin,uint8_t address) : SPIDevice{m
 	spiPort.giveSemaphore();
 
 	this->restoreFlash();
+	registerCommands();
 }
 
 
@@ -98,7 +94,7 @@ TMC4671::~TMC4671() {
 
 const ClassIdentifier TMC4671::getInfo() {
 
-	return ClassIdentifier {.name = TMC4671::info.name, .id = TMC4671::info.id, .unique = this->axis, .hidden = TMC4671::info.hidden};
+	return info;//ClassIdentifier {.name = TMC4671::info.name, .id = TMC4671::info.id, .unique = this->axis, .hidden = TMC4671::info.hidden};
 }
 
 
@@ -113,16 +109,6 @@ void TMC4671::setAddress(uint8_t address){
 		this->flashAddrs = TMC4671FlashAddrs({ADR_TMC3_MOTCONF, ADR_TMC3_CPR, ADR_TMC3_ENCA, ADR_TMC3_OFFSETFLUX, ADR_TMC3_TORQUE_P, ADR_TMC3_TORQUE_I, ADR_TMC3_FLUX_P, ADR_TMC3_FLUX_I});
 	}
 	//this->setAxis((char)('W'+address));
-}
-
-
-void TMC4671::setAxis(char axis){
-	this->axis = axis;
-	this->info.unique = axis;
-}
-
-uint8_t TMC4671::getAxis(){
-	return this->axis;
 }
 
 
@@ -217,7 +203,7 @@ bool TMC4671::initialize(){
 //	}
 	// Check if a TMC4671 is active and replies correctly
 	if(!pingDriver()){
-		ErrorHandler::addError(Error(ErrorCode::tmcCommunicationError, ErrorType::warning, std::string(this->getInfo().name) + " " + this->getInfo().unique + " not responding"));
+		ErrorHandler::addError(Error(ErrorCode::tmcCommunicationError, ErrorType::warning, std::string(this->getInfo().name) + " " + std::to_string(this->getCommandHandlerInfo()->instance) + " not responding"));
 		return false;
 	}
 
@@ -306,6 +292,9 @@ bool TMC4671::initialize(){
  * Not calibrated perfectly!
  */
 float TMC4671::getTemp(){
+	if(!this->conf.hwconf.temperatureEnabled){
+		return 0;
+	}
 	TMC4671HardwareTypeConf* hwconf = &conf.hwconf;
 
 	writeReg(0x03, 2);
@@ -937,7 +926,7 @@ void TMC4671::ABN_init(){
 				setPhiEtype(PhiE::abn);
 				encstate = ENC_InitState::OK; // Skip for DC motors
 				if(manualEncAlign){
-					CommandHandler::sendSerial("encalign","DC motors don't support alignment",this->getInfo().unique);
+					CommandHandler::sendSerial(this->getCommandHandlerInfo()->clsname,"encalign","DC motors don't support alignment",this->getCommandHandlerInfo()->instance);
 				}
 			}else{
 				encstate = ENC_InitState::estimating;
@@ -978,7 +967,7 @@ void TMC4671::ABN_init(){
 				enc_retry = 0;
 				if(manualEncAlign){
 					manualEncAlign = false;
-					CommandHandler::sendSerial("encalign","Aligned successfully",this->getInfo().unique);
+					CommandHandler::sendSerial(this->getCommandHandlerInfo()->clsname,"encalign","Aligned successfully",this->getCommandHandlerInfo()->instance);
 				}
 
 			}else{
@@ -990,7 +979,7 @@ void TMC4671::ABN_init(){
 					ErrorHandler::addError(err);
 					if(manualEncAlign){
 						manualEncAlign = false;
-						CommandHandler::sendSerial("encalign","Error aligning.\nPlease check settings and reset.",this->getInfo().unique);
+						CommandHandler::sendSerial(this->getCommandHandlerInfo()->clsname,"encalign","Error aligning.\nPlease check settings and reset.",this->getCommandHandlerInfo()->instance);
 					}
 				}
 				encstate = ENC_InitState::uninitialized; // Retry
@@ -1035,7 +1024,7 @@ void TMC4671::AENC_init(){
 				enc_retry = 0;
 				if(manualEncAlign){
 					manualEncAlign = false;
-					CommandHandler::sendSerial("encalign","Aligned successfully",this->getInfo().unique);
+					CommandHandler::sendSerial(this->getCommandHandlerInfo()->clsname,"encalign","Aligned successfully",this->getCommandHandlerInfo()->instance);
 				}
 
 
@@ -1048,7 +1037,7 @@ void TMC4671::AENC_init(){
 					ErrorHandler::addError(err);
 					if(manualEncAlign){
 						manualEncAlign = false;
-						CommandHandler::sendSerial("encalign","Error aligning.\nPlease check settings and reset.",this->getInfo().unique);
+						CommandHandler::sendSerial(this->getCommandHandlerInfo()->clsname,"encalign","Error aligning.\nPlease check settings and reset.",this->getCommandHandlerInfo()->instance);
 					}
 				}
 				encstate = ENC_InitState::uninitialized; // Retry
@@ -1247,13 +1236,14 @@ int32_t TMC4671::getPos(){
 /**
  * Returns a string with the name and version of the chip
  */
-std::string TMC4671::getTmcType(){
+std::pair<uint32_t,std::string> TMC4671::getTmcType(){
+
 	std::string reply = "";
 	writeReg(1, 0);
 	uint32_t nameInt = readReg(0);
 	if(nameInt == 0){
 		reply = "No driver connected";
-		return reply;
+		return std::pair<uint32_t,std::string>(0,reply);
 	}
 
 	nameInt = __REV(nameInt);
@@ -1265,7 +1255,7 @@ std::string TMC4671::getTmcType(){
 	std::string versionstring = std::to_string((versionInt >> 16) && 0xffff) + "." + std::to_string((versionInt) && 0xffff);
 
 	reply += "TMC" + namestring + " v" + versionstring;
-	return reply;
+	return std::pair<uint32_t,std::string>(versionInt,reply);
 }
 
 Encoder* TMC4671::getEncoder(){
@@ -1938,204 +1928,231 @@ void TMC4671::setHwType(TMC_HW_Ver type){
 	}
 }
 
-ParseStatus TMC4671::command(ParsedCommand* cmd,std::string* reply){
-	char axis = cmd->prefix & 0xDF;
-	if (axis != 0 && axis != this->axis){
-		return ParseStatus::NOT_FOUND;
-	}
+void TMC4671::registerCommands(){
+	CommandHandler::registerCommands();
 
-	ParseStatus flag = ParseStatus::OK;
-	if(cmd->cmd == "mtype"){
-		if(cmd->type == CMDtype::get){
-			*reply+=std::to_string((uint8_t)this->conf.motconf.motor_type);
-		}else if(cmd->type == CMDtype::set && (uint8_t)cmd->type < (uint8_t)MotorType::ERR){
-			this->setMotorType((MotorType)cmd->val, this->conf.motconf.pole_pairs);
+	registerCommand("cpr", TMC4671_commands::cpr, "CPR in TMC");
+	registerCommand("mtype", TMC4671_commands::mtype, "Motor type");
+	registerCommand("encsrc", TMC4671_commands::encsrc, "Encoder source");
+	registerCommand("tmcHwType", TMC4671_commands::tmcHwType, "Version of TMC board");
+	registerCommand("encalign", TMC4671_commands::encalign, "Align encoder");
+	registerCommand("poles", TMC4671_commands::poles, "Motor pole pairs");
+	registerCommand("acttrq", TMC4671_commands::acttrq, "Read torque");
+	registerCommand("pwmlim", TMC4671_commands::pwmlim, "PWM limit");
+	registerCommand("torqueP", TMC4671_commands::torqueP, "Torque P");
+	registerCommand("torqueI", TMC4671_commands::torqueI, "Torque I");
+	registerCommand("fluxP", TMC4671_commands::fluxP, "Flux P");
+	registerCommand("fluxI", TMC4671_commands::fluxI, "Flux I");
+	registerCommand("velocityP", TMC4671_commands::velocityP, "Velocity P");
+	registerCommand("velocityI", TMC4671_commands::velocityI, "Velocity I");
+	registerCommand("posP", TMC4671_commands::posP, "Pos P");
+	registerCommand("posI", TMC4671_commands::posI, "Pos I");
+	registerCommand("tmctype", TMC4671_commands::tmctype, "Version of TMC chip");
+	registerCommand("pidPrec", TMC4671_commands::pidPrec, "PID precision bit0=I bit1=P. 0=Q8.8 1= Q4.12");
+	registerCommand("phiesrc", TMC4671_commands::phiesrc, "PhiE source");
+	registerCommand("fluxoffset", TMC4671_commands::fluxoffset, "Offset flux scale for field weakening");
+	registerCommand("seqpi", TMC4671_commands::seqpi, "Sequential PI");
+	registerCommand("iScale", TMC4671_commands::tmcIscale, "Counts per A");
+	registerCommand("encdir", TMC4671_commands::encdir, "Encoder dir");
+	registerCommand("temp", TMC4671_commands::temp, "Temperature in C * 100");
+	registerCommand("reg", TMC4671_commands::reg, "Read or write a TMC register at adr");
+
+}
+
+CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply>& replies){
+	switch(static_cast<TMC4671_commands>(cmd.cmdId)){
+
+	case TMC4671_commands::cpr:
+		handleGetFuncSetFunc(cmd, replies, &TMC4671::getEncCpr, &TMC4671::setCpr, this);
+	break;
+
+	case TMC4671_commands::mtype:
+		if(cmd.type == CMDtype::get){
+			replies.push_back(CommandReply((uint8_t)this->conf.motconf.motor_type));
+		}else if(cmd.type == CMDtype::set && (uint8_t)cmd.type < (uint8_t)MotorType::ERR){
+			this->setMotorType((MotorType)cmd.val, this->conf.motconf.pole_pairs);
 		}else{
-			*reply+="NONE=0,DC=1,STEPPER=2,BLDC=3";
+			replies.push_back(CommandReply("NONE=0,DC=1,STEPPER=2,BLDC=3"));
 		}
+		break;
 
-	}else if(cmd->cmd == "encsrc"){
-		if(cmd->type == CMDtype::get){
-			*reply+=std::to_string((uint8_t)this->conf.motconf.enctype);
-		}else if(cmd->type == CMDtype::set){
-			this->setEncoderType((EncoderType_TMC)cmd->val);
+	case TMC4671_commands::encsrc:
+		if(cmd.type == CMDtype::get){
+			replies.push_back(CommandReply((uint8_t)this->conf.motconf.enctype));
+		}else if(cmd.type == CMDtype::set){
+			this->setEncoderType((EncoderType_TMC)cmd.val);
 		}else{
-			*reply+="NONE=0,ABN=1,SinCos=2,Analog UVW=3,Hall=4";
+			replies.push_back(CommandReply("NONE=0,ABN=1,SinCos=2,Analog UVW=3,Hall=4"));
 		}
+		break;
 
-	}else if(cmd->cmd == "tmcHwType"){
-		if(cmd->type == CMDtype::get){
-			*reply+=std::to_string((uint8_t)conf.hwconf.hwVersion);
-		}else if(cmd->type == CMDtype::set){
+	case TMC4671_commands::tmcHwType:
+		if(cmd.type == CMDtype::get){
+			replies.push_back((uint8_t)conf.hwconf.hwVersion);
+		}else if(cmd.type == CMDtype::set){
 			if(conf.canChangeHwType)
-				setHwType((TMC_HW_Ver)(cmd->val & 0x1F));
+				setHwType((TMC_HW_Ver)(cmd.val & 0x1F));
 		}else{
 			// List known hardware versions
 			for(auto v : tmcHwVersionNames){
 				if(conf.canChangeHwType || v.first == conf.hwconf.hwVersion){
-					*reply += std::to_string((uint8_t)v.first) + ":" + v.second + "\n";
+					replies.push_back(CommandReply( std::to_string((uint8_t)v.first) + ":" + v.second + "\n",(uint8_t)v.first));
 				}
 
 			}
 		}
+		break;
 
-	}else if(cmd->cmd == "encalign"){
-		if(cmd->type == CMDtype::get){
+	case TMC4671_commands::encalign:
+		if(cmd.type == CMDtype::get){
 			encstate = ENC_InitState::uninitialized;
 			this->setEncoderType(this->conf.motconf.enctype);
 			manualEncAlign = true;
-			flag = ParseStatus::NO_REPLY;
+			return CommandStatus::NO_REPLY;
+		}else{
+			return CommandStatus::ERR;
 		}
-	}else if(cmd->cmd == "poles"){
-		if(cmd->type == CMDtype::get){
-			*reply+=std::to_string(this->conf.motconf.pole_pairs);
-		}else if(cmd->type == CMDtype::set){
-			this->setMotorType(this->conf.motconf.motor_type,cmd->val);
-		}
+		break;
 
-	}else if(cmd->cmd == "cprtmc"){
-		if(cmd->type == CMDtype::get){
-			*reply+=std::to_string(getEncCpr());
-		}else if(cmd->type == CMDtype::set){
-			this->setCpr(cmd->val);
+	case TMC4671_commands::poles:
+		if(cmd.type == CMDtype::get){
+			replies.push_back(CommandReply(this->conf.motconf.pole_pairs));
+		}else if(cmd.type == CMDtype::set){
+			this->setMotorType(this->conf.motconf.motor_type,cmd.val);
 		}
+		break;
 
-	}else if(cmd->cmd == "acttrq"){
-		if(cmd->type == CMDtype::get){
-			*reply+=std::to_string(getActualCurrent().second);
+	case TMC4671_commands::acttrq:
+		if(cmd.type == CMDtype::get){
+			replies.push_back(CommandReply(getActualCurrent().second));
 		}
+		break;
 
-	}else if(cmd->cmd == "tmcpwmlim"){
-		if(cmd->type == CMDtype::get){
-			*reply+=std::to_string(this->curLimits.pid_uq_ud);
-		}else if(cmd->type == CMDtype::set){
-			this->setUqUdLimit(cmd->val);
+	case TMC4671_commands::pwmlim:
+		if(cmd.type == CMDtype::get){
+			replies.push_back(CommandReply(this->curLimits.pid_uq_ud));
+		}else if(cmd.type == CMDtype::set){
+			this->setUqUdLimit(cmd.val);
 		}
+		break;
 
-	}else if(cmd->cmd == "torqueP"){
-		if(cmd->type == CMDtype::get){
-			*reply+=std::to_string(this->curPids.torqueP);
-		}else if(cmd->type == CMDtype::set){
-			this->curPids.torqueP = cmd->val;
+	case TMC4671_commands::torqueP:
+		handleGetSet(cmd, replies, this->curPids.torqueP);
+		if(cmd.type == CMDtype::set)
 			setPids(curPids);
-		}
-	}else if(cmd->cmd == "torqueI"){
-		if(cmd->type == CMDtype::get){
-			*reply+=std::to_string(this->curPids.torqueI);
-		}else if(cmd->type == CMDtype::set){
-			this->curPids.torqueI = cmd->val;
+		break;
+
+	case TMC4671_commands::torqueI:
+		handleGetSet(cmd, replies, this->curPids.torqueI);
+		if(cmd.type == CMDtype::set)
 			setPids(curPids);
-		}
-	}else if(cmd->cmd == "fluxP"){
-		if(cmd->type == CMDtype::get){
-			*reply+=std::to_string(this->curPids.fluxP);
-		}else if(cmd->type == CMDtype::set){
-			this->curPids.fluxP = cmd->val;
+		break;
+
+	case TMC4671_commands::fluxP:
+		handleGetSet(cmd, replies, this->curPids.fluxP);
+		if(cmd.type == CMDtype::set)
 			setPids(curPids);
-		}
-	}else if(cmd->cmd == "fluxI"){
-		if(cmd->type == CMDtype::get){
-			*reply+=std::to_string(this->curPids.fluxI);
-		}else if(cmd->type == CMDtype::set){
-			this->curPids.fluxI = cmd->val;
+		break;
+
+	case TMC4671_commands::fluxI:
+		handleGetSet(cmd, replies, this->curPids.fluxI);
+		if(cmd.type == CMDtype::set)
 			setPids(curPids);
-		}
-	}else if(cmd->cmd == "velocityP"){
-		if(cmd->type == CMDtype::get){
-			*reply+=std::to_string(this->curPids.velocityP);
-		}else if(cmd->type == CMDtype::set){
-			this->curPids.velocityP = cmd->val;
+		break;
+
+	case TMC4671_commands::velocityP:
+		handleGetSet(cmd, replies, this->curPids.velocityP);
+		if(cmd.type == CMDtype::set)
 			setPids(curPids);
-		}
-	}else if(cmd->cmd == "velocityI"){
-		if(cmd->type == CMDtype::get){
-			*reply+=std::to_string(this->curPids.velocityI);
-		}else if(cmd->type == CMDtype::set){
-			this->curPids.velocityI = cmd->val;
+		break;
+
+	case TMC4671_commands::velocityI:
+		handleGetSet(cmd, replies, this->curPids.velocityI);
+		if(cmd.type == CMDtype::set)
 			setPids(curPids);
-		}
-	}else if(cmd->cmd == "posP"){
-		if(cmd->type == CMDtype::get){
-			*reply+=std::to_string(this->curPids.positionP);
-		}else if(cmd->type == CMDtype::set){
-			this->curPids.positionP = cmd->val;
+		break;
+
+	case TMC4671_commands::posP:
+		handleGetSet(cmd, replies, this->curPids.positionP);
+		if(cmd.type == CMDtype::set)
 			setPids(curPids);
-		}
-	}else if(cmd->cmd == "posI"){
-		if(cmd->type == CMDtype::get){
-			*reply+=std::to_string(this->curPids.positionI);
-		}else if(cmd->type == CMDtype::set){
-			this->curPids.positionI = cmd->val;
+		break;
+
+	case TMC4671_commands::posI:
+		handleGetSet(cmd, replies, this->curPids.positionI);
+		if(cmd.type == CMDtype::set)
 			setPids(curPids);
-		}
-	}else if(cmd->cmd == "tmctype"){
-		if(cmd->type == CMDtype::get){
-			*reply+=getTmcType();
-		}
-	}else if(cmd->cmd == "pidPrec"){
-		if(cmd->type == CMDtype::get){
-			*reply+=std::to_string(this->pidPrecision.current_I | (this->pidPrecision.current_P << 1));
-		}else if(cmd->type == CMDtype::set){
-			this->pidPrecision.current_I = cmd->val & 0x1;
-			this->pidPrecision.current_P = (cmd->val >> 1) & 0x1;
+		break;
+
+	case TMC4671_commands::tmctype:
+	{
+		std::pair<uint32_t,std::string> ver = getTmcType();
+		replies.push_back(CommandReply(ver.second,ver.first));
+		break;
+	}
+
+	case TMC4671_commands::pidPrec:
+		if(cmd.type == CMDtype::get){
+			replies.push_back(CommandReply(this->pidPrecision.current_I | (this->pidPrecision.current_P << 1)));
+		}else if(cmd.type == CMDtype::set){
+			this->pidPrecision.current_I = cmd.val & 0x1;
+			this->pidPrecision.current_P = (cmd.val >> 1) & 0x1;
 			this->setPidPrecision(pidPrecision);
+		}
+		break;
+	case TMC4671_commands::phiesrc:
+		if(cmd.type == CMDtype::get){
+			replies.push_back(CommandReply((uint8_t)this->getPhiEtype()));
+		}else if(cmd.type == CMDtype::set){
+			this->setPhiEtype((PhiE)cmd.val);
 		}else{
-			*reply+="bit0=I bit1=P. 0=Q8.8 1= Q4.12";
+			replies.push_back(CommandReply("ext=1,openloop=2,abn=3,hall=5,aenc=6,aencE=7"));
 		}
-
-	}else if(cmd->cmd == "phiesrc"){
-		if(cmd->type == CMDtype::get){
-			*reply+=std::to_string((uint8_t)this->getPhiEtype());
-		}else if(cmd->type == CMDtype::set){
-			this->setPhiEtype((PhiE)cmd->val);
-		}else{
-			*reply+="ext=1,openloop=2,abn=3,hall=5,aenc=6,aencE=7";
+		break;
+	case TMC4671_commands::fluxoffset:
+		handleGetSet(cmd, replies, maxOffsetFlux);
+		break;
+	case TMC4671_commands::seqpi:
+		if(cmd.type == CMDtype::get){
+			replies.push_back(CommandReply(this->curPids.sequentialPI));
+		}else if(cmd.type == CMDtype::set){
+			this->setSequentialPI(cmd.val != 0);
 		}
-
-	}else if(cmd->cmd == "fluxoffset"){
-		if(cmd->type == CMDtype::get){
-			*reply+=std::to_string(this->maxOffsetFlux);
-		}else if(cmd->type == CMDtype::set){
-			this->maxOffsetFlux = cmd->val;
+		break;
+	case TMC4671_commands::tmcIscale:
+		if(cmd.type == CMDtype::get){
+			replies.push_back(CommandReply(this->conf.hwconf.currentScaler));
 		}
-
-	}else if(cmd->cmd == "reg"){
-		if(cmd->type == CMDtype::getat){
-			*reply+=std::to_string(this->readReg(cmd->val));
-		}else if(cmd->type == CMDtype::setat){
-			this->writeReg(cmd->adr,cmd->val);
-		}
-
-	}else if(cmd->cmd == "seqpi"){
-		if(cmd->type == CMDtype::get){
-			*reply+=std::to_string(this->curPids.sequentialPI);
-		}else if(cmd->type == CMDtype::set){
-			this->setSequentialPI(cmd->val != 0);
-		}
-
-	}else if(cmd->cmd == "tmcIscale"){
-		if(cmd->type == CMDtype::get){
-			*reply+=std::to_string(this->conf.hwconf.currentScaler);
-		}
-	}else if(cmd->cmd == "encdir"){
-		if(cmd->type == CMDtype::get){
-			*reply+=std::to_string(this->abnconf.rdir);
-		}else if(cmd->type == CMDtype::set){
-			this->abnconf.rdir = cmd->val != 0;
+		break;
+	case TMC4671_commands::encdir:
+		if(cmd.type == CMDtype::get){
+			replies.push_back(CommandReply(this->abnconf.rdir));
+		}else if(cmd.type == CMDtype::set){
+			this->abnconf.rdir = cmd.val != 0;
 			this->setup_ABN_Enc(this->abnconf);
 		}
-
-	}else if(cmd->cmd == "tmctemp"){
-		if(cmd->type == CMDtype::get){
-			if(this->conf.hwconf.temperatureEnabled)
-				*reply+=std::to_string(this->getTemp());
-			else
-				*reply+="0";
-
+		break;
+	case TMC4671_commands::temp:
+		if(cmd.type == CMDtype::get){
+			replies.push_back(CommandReply((int32_t)this->getTemp()*100));
 		}
-	}else{
-		flag = ParseStatus::NOT_FOUND;
+		break;
+	case TMC4671_commands::reg:
+		if(cmd.type == CMDtype::getat){
+			replies.push_back(CommandReply(readReg(cmd.val)));
+		}else if(cmd.type == CMDtype::setat){
+			writeReg(cmd.adr,cmd.val);
+		}else{
+			return CommandStatus::ERR;
+		}
+		break;
+
+	default:
+		return CommandStatus::NOT_FOUND;
 	}
-	return flag;
+
+	return CommandStatus::OK;
+
+
 }
 

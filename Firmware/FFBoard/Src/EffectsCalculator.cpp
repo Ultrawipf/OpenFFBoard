@@ -21,9 +21,7 @@
 
 ClassIdentifier EffectsCalculator::info = {
 		  .name = "Effects" ,
-		  .clsname = "fx"
 		  .id	= CLSID_EFFECTSCALC,
-		  .unique = '0',
 		  .hidden = true
 };
 const ClassIdentifier EffectsCalculator::getInfo(){
@@ -31,9 +29,18 @@ const ClassIdentifier EffectsCalculator::getInfo(){
 }
 
 
-EffectsCalculator::EffectsCalculator()
+EffectsCalculator::EffectsCalculator() : CommandHandler("fx", CLSID_EFFECTSCALC)
 {
 	restoreFlash();
+
+	CommandHandler::registerCommands();
+	registerCommand("filterCfFreq", EffectsCalculator_commands::ffbfiltercf, "Constant force filter frequency", CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("filterCfQ", EffectsCalculator_commands::ffbfiltercf_q, "Constant force filter Q-factor", CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("spring", EffectsCalculator_commands::spring, "Spring gain", CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("friction", EffectsCalculator_commands::friction, "Friction gain", CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("damper", EffectsCalculator_commands::damper, "Damper gain", CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("inertia", EffectsCalculator_commands::inertia, "Inertia gain", CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("effects", EffectsCalculator_commands::effects, "List effects", CMDFLAG_GET | CMDFLAG_STR_ONLY);
 }
 
 EffectsCalculator::~EffectsCalculator()
@@ -626,113 +633,168 @@ std::string EffectsCalculator::listEffectsUsed(){
 }
 
 
-void EffectsCalculator::processHidCommand(HID_Custom_Data_t* data) {
+//void EffectsCalculator::processHidCommand(HID_Custom_Data_t* data) {
+//
+//	switch (data->cmd&0x3F){
+//		case HID_CMD_FFB_FRICTION:
+//			if(data->type == HidCmdType::write) {
+//				gain.friction = data->data;
+//			}
+//			else if(data->type == HidCmdType::request){
+//				data->data = gain.friction;
+//			}
+//			break;
+//
+//		default:
+//
+//			break;
+//		}
+//	return;
+//}
 
-	switch (data->cmd&0x3F){
-		case HID_CMD_FFB_FRICTION:
-			if(data->type == HidCmdType::write) {
-				gain.friction = data->data;
-			}
-			else if(data->type == HidCmdType::request){
-				data->data = gain.friction;
-			}
-			break;
+CommandStatus EffectsCalculator::command(const ParsedCommand& cmd,std::vector<CommandReply>& replies){
+	switch(static_cast<EffectsCalculator_commands>(cmd.cmdId)){
 
-		default:
+	case EffectsCalculator_commands::ffbfiltercf:
+		if (cmd.type == CMDtype::get)
+		{
+			replies.push_back(CommandReply(cfFilter_f));
+		}
+		else if (cmd.type == CMDtype::set)
+		{
+			setCfFilter(cmd.val,this->cfFilter_q);
+		}
+		break;
 
-			break;
+	case EffectsCalculator_commands::ffbfiltercf_q:
+		if (cmd.type == CMDtype::get)
+		{
+			replies.push_back(CommandReply(cfFilter_q));
 		}
-	return;
-}
+		else if (cmd.type == CMDtype::set)
+		{
+			setCfFilter(this->cfFilter_f,cmd.val);
+		}
+//		else
+//		{
+//			*reply += "CF Q 0-127 = 0.01 - 1.28";
+//		}
+		break;
 
-ParseStatus EffectsCalculator::command(ParsedCommand *cmd, std::string *reply)
-{
-	ParseStatus flag = ParseStatus::OK;
-	if (cmd->cmd == "ffbfiltercf")
-	{
-		if (cmd->type == CMDtype::get)
+	case EffectsCalculator_commands::effects:
+		if (cmd.type == CMDtype::get)
 		{
-			*reply += std::to_string(cfFilter_f);
+			replies.push_back(CommandReply(listEffectsUsed()));
 		}
-		else if (cmd->type == CMDtype::set)
-		{
-			setCfFilter(cmd->val,this->cfFilter_q);
-		}
-	}
-	else if (cmd->cmd == "ffbfiltercf_q")
-	{
-		if (cmd->type == CMDtype::get)
-		{
-			*reply += std::to_string(cfFilter_q);
-		}
-		else if (cmd->type == CMDtype::set)
-		{
-			setCfFilter(this->cfFilter_f,cmd->val);
-		}else
-		{
-			*reply += "CF Q 0-127 = 0.01 - 1.28";
-		}
-	}
-	else if (cmd->cmd == "effects")
-	{
-		if (cmd->type == CMDtype::get)
-		{
-			*reply += listEffectsUsed();
-		}
-		else if (cmd->type == CMDtype::set)
+		else if (cmd.type == CMDtype::set)
 		{
 			effects_used = 0;
 		}
-		else
-		{
-			*reply += "List effects used.";
-		}
+		break;
+	case EffectsCalculator_commands::spring:
+		return handleGetSet(cmd, replies, this->gain.spring);
+	case EffectsCalculator_commands::friction:
+		return handleGetSet(cmd, replies, this->gain.friction);
+	case EffectsCalculator_commands::damper:
+		return handleGetSet(cmd, replies, this->gain.damper);
+	case EffectsCalculator_commands::inertia:
+		return handleGetSet(cmd, replies, this->gain.inertia);
+
+	default:
+		return CommandStatus::NOT_FOUND;
 	}
-	else if(cmd->cmd == "spring")
-	{
-		if(cmd->type == CMDtype::get)
-		{
-			*reply+=std::to_string(gain.spring);
-		}
-		else if(cmd->type == CMDtype::set)
-		{
-			gain.spring = cmd->val;
-		}
-	}
-	else if(cmd->cmd == "friction")
-	{
-		if(cmd->type == CMDtype::get)
-		{
-			*reply+=std::to_string(gain.friction);
-		}
-		else if(cmd->type == CMDtype::set)
-		{
-			gain.friction = cmd->val;
-		}
-	}
-	else if(cmd->cmd == "damper")
-	{
-		if(cmd->type == CMDtype::get)
-		{
-			*reply+=std::to_string(gain.damper);
-		}
-		else if(cmd->type == CMDtype::set)
-		{
-			gain.damper = cmd->val;
-		}
-	}
-	else if(cmd->cmd == "inertia")
-	{
-		if(cmd->type == CMDtype::get)
-		{
-			*reply+=std::to_string(gain.inertia);
-		}
-		else if(cmd->type == CMDtype::set)
-		{
-			gain.inertia = cmd->val;
-		}
-	}else{
-		flag = ParseStatus::NOT_FOUND;
-	}
-	return flag;
-};
+	return CommandStatus::OK;
+}
+
+//
+//ParseStatus EffectsCalculator::command(ParsedCommand_old *cmd, std::string *reply)
+//{
+//	ParseStatus flag = ParseStatus::OK;
+//	if (cmd->cmd == "ffbfiltercf")
+//	{
+//		if (cmd->type == CMDtype::get)
+//		{
+//			*reply += std::to_string(cfFilter_f);
+//		}
+//		else if (cmd->type == CMDtype::set)
+//		{
+//			setCfFilter(cmd->val,this->cfFilter_q);
+//		}
+//	}
+//	else if (cmd->cmd == "ffbfiltercf_q")
+//	{
+//		if (cmd->type == CMDtype::get)
+//		{
+//			*reply += std::to_string(cfFilter_q);
+//		}
+//		else if (cmd->type == CMDtype::set)
+//		{
+//			setCfFilter(this->cfFilter_f,cmd->val);
+//		}else
+//		{
+//			*reply += "CF Q 0-127 = 0.01 - 1.28";
+//		}
+//	}
+//	else if (cmd->cmd == "effects")
+//	{
+//		if (cmd->type == CMDtype::get)
+//		{
+//			*reply += listEffectsUsed();
+//		}
+//		else if (cmd->type == CMDtype::set)
+//		{
+//			effects_used = 0;
+//		}
+//		else
+//		{
+//			*reply += "List effects used.";
+//		}
+//	}
+//	else if(cmd->cmd == "spring")
+//	{
+//		if(cmd->type == CMDtype::get)
+//		{
+//			*reply+=std::to_string(gain.spring);
+//		}
+//		else if(cmd->type == CMDtype::set)
+//		{
+//			gain.spring = cmd->val;
+//		}
+//	}
+//	else if(cmd->cmd == "friction")
+//	{
+//		if(cmd->type == CMDtype::get)
+//		{
+//			*reply+=std::to_string(gain.friction);
+//		}
+//		else if(cmd->type == CMDtype::set)
+//		{
+//			gain.friction = cmd->val;
+//		}
+//	}
+//	else if(cmd->cmd == "damper")
+//	{
+//		if(cmd->type == CMDtype::get)
+//		{
+//			*reply+=std::to_string(gain.damper);
+//		}
+//		else if(cmd->type == CMDtype::set)
+//		{
+//			gain.damper = cmd->val;
+//		}
+//	}
+//	else if(cmd->cmd == "inertia")
+//	{
+//		if(cmd->type == CMDtype::get)
+//		{
+//			*reply+=std::to_string(gain.inertia);
+//		}
+//		else if(cmd->type == CMDtype::set)
+//		{
+//			gain.inertia = cmd->val;
+//		}
+//	}else{
+//		flag = ParseStatus::NOT_FOUND;
+//	}
+//	return flag;
+//};

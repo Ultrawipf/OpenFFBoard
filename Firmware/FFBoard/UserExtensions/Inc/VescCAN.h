@@ -54,6 +54,10 @@ enum class VescEncoderMode : uint8_t {
 	ENCODER_OFF = 0, ENCODER_ON = 3
 };
 
+enum class VescCAN_commands : uint32_t {
+	canid,canspd,errorflags,vescstate,voltage,encrate,pos,torque,forcePosRead,useEncoder,offset
+};
+
 class VescCAN: public MotorDriver,
 		public PersistentStorage,
 		public Encoder,
@@ -92,13 +96,10 @@ public:
 			CAN_RxHeaderTypeDef *rxHeader, uint32_t fifo) override;
 
 	// CommandHandler impl
-	ParseStatus command(ParsedCommand *cmd, std::string *reply) override;
+	CommandStatus command(const ParsedCommand& cmd,std::vector<CommandReply>& replies);
+	void registerCommands(); // Function reserved to register commands in the command list.
 	virtual std::string getHelpstring() {
-		return "Vesc: "
-				"vescCanId, vescCanSpd (3=250k,4=500k,5=1M), "
-				"vescState, vescErrorFlag, "
-				"vescEncRate, vescUseEncoder, vescPos, vescTorque, "
-				"vescOffset, vescVoltage\n";
+		return "VESC CAN interface";
 	};
 
 	// Thread impl

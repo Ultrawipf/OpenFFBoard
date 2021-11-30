@@ -14,7 +14,7 @@
 #include "VescCAN.h"
 
 
-ClassIdentifier MotorDriver::info ={.name = "None" , .id=0, .unique = '0', .hidden = false};
+ClassIdentifier MotorDriver::info ={.name = "None" , .id=CLSID_MOT_NONE, .hidden = false};
 
 /**
  * Add available motor drivers here.
@@ -22,24 +22,24 @@ ClassIdentifier MotorDriver::info ={.name = "None" , .id=0, .unique = '0', .hidd
  */
 const std::vector<class_entry<MotorDriver>> MotorDriver::all_drivers =
 {
-	add_class<MotorDriver, MotorDriver>(),
+	add_class<MotorDriver, MotorDriver>(0),
 
 #ifdef TMC4671DRIVER
 
 //		add_class<TMC4671, MotorDriver>(),
-	add_class<TMC_1, MotorDriver>(),
-	add_class<TMC_2, MotorDriver>(),
+	add_class<TMC_1, MotorDriver>(1),
+	add_class<TMC_2, MotorDriver>(2),
 //		add_class<TMC_3, MotorDriver>(),
 #endif
 #ifdef PWMDRIVER
-	add_class<MotorPWM, MotorDriver>(),
+	add_class<MotorPWM, MotorDriver>(4),
 #endif
 #ifdef ODRIVE
-	add_class<ODriveCAN1,MotorDriver>(),
-	add_class<ODriveCAN2,MotorDriver>(),
+	add_class<ODriveCAN1,MotorDriver>(5),
+	add_class<ODriveCAN2,MotorDriver>(6),
 #endif
 #ifdef VESC
-	add_class<VescCAN,MotorDriver>(),
+	add_class<VescCAN,MotorDriver>(7),
 #endif
 };
 

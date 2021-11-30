@@ -10,9 +10,7 @@
 // Change this
 ClassIdentifier CustomMain::info = {
 		 .name = "Custom" ,
-		 .clsname = "main",
-		 .id=1337,
-		 .unique = '0',
+		 .id=CLSID_CUSTOM,
 		 .hidden=true //Set false to list
  };
 // Copy this to your class for identification
@@ -23,27 +21,34 @@ const ClassIdentifier CustomMain::getInfo(){
 
 
 CustomMain::CustomMain() {
-
+	registerCommands(); // Register all the commands
 }
 
 CustomMain::~CustomMain() {
 
 }
 
-ParseStatus CustomMain::command(ParsedCommand* cmd,std::string* reply){
-	ParseStatus flag = ParseStatus::OK; // Valid command found
+void CustomMain::registerCommands(){
+	CommandHandler::registerCommands(); // Register internal commands for getting the id and help
+	registerCommand("command", CustomMain_commands::command, "Controls the example variable");
+}
 
-	// ------------ commands ----------------
-	if(cmd->cmd == "command"){ // Example: command=1337\n
-		if(cmd->type == CMDtype::get){
-			*reply+= std::to_string(examplevar);
-		}else if(cmd->type == CMDtype::set){
-			examplevar = cmd->val;
-		}else{
-			flag = ParseStatus::ERR;
-		}
-	}else{
-		flag = ParseStatus::NOT_FOUND; // No valid command
+std::string CustomMain::getHelpstring(){
+	return "This is a basic example mainclass with commands";
+}
+
+CommandStatus CustomMain::command(const ParsedCommand& cmd,std::vector<CommandReply>& replies){
+	switch(static_cast<CustomMain_commands>(cmd.cmdId))
+	{
+
+	case CustomMain_commands::command:
+		// Sets or gets the variable
+		handleGetSet(cmd, replies, this->examplevar);
+		break;
+
+
+	default:
+		return CommandStatus::NOT_FOUND;
 	}
-	return flag;
+	return CommandStatus::OK;
 }

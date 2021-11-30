@@ -22,7 +22,7 @@
 
 enum class EncoderType : uint8_t {NONE=0,incremental=1,incrementalIndex=2,absolute=3};
 
-class Encoder : public virtual ChoosableClass {
+class Encoder : public ChoosableClass {
 public:
 	Encoder();
 	virtual ~Encoder();
@@ -43,7 +43,7 @@ public:
 
 
 	static const std::vector<class_entry<Encoder> > all_encoders;
-	static ClassType getClassType() override {return ClassType::Encoder;};
+	virtual const ClassType getClassType() override {return ClassType::Encoder;};
 
 protected:
 	uint32_t cpr = 0;

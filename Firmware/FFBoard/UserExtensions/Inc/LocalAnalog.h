@@ -24,6 +24,9 @@ struct LocalAnalogConfig{
 };
 
 class LocalAnalog : public AnalogSource, public CommandHandler{
+	enum class LocalAnaloc_commands : uint32_t{
+		pinmask,autocal,pins
+	};
 public:
 	LocalAnalog();
 	virtual ~LocalAnalog();
@@ -37,10 +40,11 @@ public:
 
 	std::vector<int32_t>* getAxes();
 
-	ParseStatus command(ParsedCommand* cmd,std::string* reply);
+	CommandStatus command(const ParsedCommand& cmd,std::vector<CommandReply>& replies);
 	void setAutorange(bool autorange);
-	virtual std::string getHelpstring(){return "Analog pins: local_ain_mask,local_ain_num,local_ain_acal\n";}
+	virtual std::string getHelpstring(){return "Analog pins source\n";}
 
+	const ClassType getClassType() override {return ClassType::Analogsource;};
 private:
 	bool autorange = false;
 	static LocalAnalogConfig decodeAnalogConfFromInt(uint16_t val);

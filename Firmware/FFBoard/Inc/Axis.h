@@ -73,6 +73,12 @@ struct axis_metric_t {
 	metric_t current;
 	metric_t previous;
 };
+
+
+enum class Axis_commands : uint32_t{
+	power,degrees,esgain,zeroenc,invert,idlespring,axisdamper,enctype,drvtype,pos,maxspeed,maxtorquerate,fxratio
+};
+
 class Axis : public PersistentStorage, public CommandHandler,public HidCommandHandler
 {
 public:
@@ -81,7 +87,7 @@ public:
 
 	static ClassIdentifier info;
 	const ClassIdentifier getInfo();
-	static ClassType getClassType() override {return ClassType::Axis;};
+	const ClassType getClassType() override {return ClassType::Axis;};
 
 	// TODO add new commands
 	virtual std::string getHelpstring() { return "\nAxis commands: Get: axis.cmd , Set: axis.cmd=var, where axis = x-z e.g. y.power\n"
@@ -119,7 +125,10 @@ public:
 
 	void setPower(uint16_t power);
 
-	ParseStatus command(ParsedCommand* cmd,std::string* reply) override;
+	//ParseStatus command(ParsedCommand_old* cmd,std::string* reply) override;
+	void registerCommands();
+	CommandStatus command(const ParsedCommand& cmd,std::vector<CommandReply>& replies);
+
 	void processHidCommand(HID_Custom_Data_t *data) override;
 	ClassChooser<MotorDriver> drv_chooser;
 	ClassChooser<Encoder> enc_chooser;

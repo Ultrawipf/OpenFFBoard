@@ -9,9 +9,7 @@
 
 ClassIdentifier AnalogSource::info = {
 	 .name 	= "NONE" ,
-	 .clsname = "asource",
 	 .id	= CLSID_ANALOG_NONE, //0
-	 .unique = '0',
 	 .hidden = true
 };
 

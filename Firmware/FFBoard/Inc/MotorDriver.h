@@ -15,14 +15,14 @@
 #include "memory"
 
 class Encoder;
-class MotorDriver : public virtual ChoosableClass{
+class MotorDriver : public ChoosableClass{
 public:
 	MotorDriver(){};
 	virtual ~MotorDriver(){};
 
 	static ClassIdentifier info;
 	const ClassIdentifier getInfo();
-	static ClassType getClassType() override {return ClassType::Motordriver;};
+	const ClassType getClassType() override {return ClassType::Motordriver;};
 	static const std::vector<class_entry<MotorDriver>> all_drivers;
 
 	virtual void turn(int16_t power);

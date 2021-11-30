@@ -25,7 +25,8 @@
 #include "CommandInterface.h"
 
 class FFBoardMain;
-class CommandInterface;
+//class CommandInterface;
+
 
 class FFBoardMainCommandThread : public cpp_freertos::Thread
 {
@@ -33,26 +34,31 @@ public:
 	FFBoardMainCommandThread(FFBoardMain* mainclass);
 	virtual ~FFBoardMainCommandThread();
 
+//	const ClassIdentifier getInfo();
+//	static ClassIdentifier info;
+	const ClassType getClassType(){return ClassType::Internal;};
+
 	bool addBuf(char* Buf, uint32_t *Len,bool clearReply);
 
 	void Run();
 
 	static void wakeUp();
 
-	FFBoardMain* main;
+	//FFBoardMain* main;
 
 	std::string cmd_reply;
 	std::vector<CommandResult> results; // Stores the results until the next batch to pass back to the interface
-
+	std::vector<ParsedCommand> commands;
 	bool clearReply = true;
+
+	static Error cmdNotFoundError;
+	static Error cmdExecError;
 
 protected:
 	virtual void updateSys();
-	static void printFlashDump(std::string *reply);
-	static void printErrors(std::string *reply);
 
 	virtual void executeCommands(std::vector<ParsedCommand> commands,CommandInterface* commandInterface);
-	virtual ParseStatus executeSysCommand(ParsedCommand* cmd,std::string* reply,CommandInterface* commandInterface);
+
 
 	static cpp_freertos::BinarySemaphore threadSem; // Blocks this thread. more efficient than suspending/waking
 	//static cpp_freertos::MutexStandard commandMutex;

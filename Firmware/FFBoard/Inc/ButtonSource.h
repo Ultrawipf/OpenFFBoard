@@ -16,7 +16,7 @@
 /**
  * A button source can return up to 64 buttons
  */
-class ButtonSource : public virtual ChoosableClass,public PersistentStorage {
+class ButtonSource : public ChoosableClass,public PersistentStorage {
 public:
 	ButtonSource();
 	virtual ~ButtonSource();
@@ -30,7 +30,7 @@ public:
 	const virtual ClassIdentifier getInfo() = 0;
 	static ClassIdentifier info;
 	static bool isCreatable() {return true;};
-	static ClassType getClassType() override {return ClassType::Buttonsource;};
+	virtual const ClassType getClassType() {return ClassType::Buttonsource;};
 
 protected:
 	uint16_t btnnum = 0; // Amount of active buttons (valid bitfield length) to report

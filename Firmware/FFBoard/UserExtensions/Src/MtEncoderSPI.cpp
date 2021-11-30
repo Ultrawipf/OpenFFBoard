@@ -12,15 +12,13 @@ bool MtEncoderSPI::inUse = false;
 
 ClassIdentifier MtEncoderSPI::info = {
 		 .name = "MT6825 SPI3" ,
-		 .clsname = "mtenc",
-		 .id=4,
-		 .unique = '0'
+		 .id=CLSID_ENCODER_MTSPI,
  };
 const ClassIdentifier MtEncoderSPI::getInfo(){
 	return info;
 }
 
-MtEncoderSPI::MtEncoderSPI() : SPIDevice(ext3_spi,ext3_spi.getFreeCsPins()[0]) {
+MtEncoderSPI::MtEncoderSPI() : SPIDevice(ext3_spi,ext3_spi.getFreeCsPins()[0]), CommandHandler("mtenc",CLSID_ENCODER_MTSPI,0) {
 	MtEncoderSPI::inUse = true;
 	this->spiConfig.peripheral.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_4; // 10MHz
 	this->spiConfig.peripheral.FirstBit = SPI_FIRSTBIT_MSB;
@@ -28,6 +26,9 @@ MtEncoderSPI::MtEncoderSPI() : SPIDevice(ext3_spi,ext3_spi.getFreeCsPins()[0]) {
 	this->spiConfig.peripheral.CLKPolarity = SPI_POLARITY_HIGH;
 	this->spiConfig.cspol = true;
 	restoreFlash();
+
+	CommandHandler::registerCommands();
+	registerCommand("cs", MtEncoderSPI_commands::cspin, "CS pin");
 }
 
 MtEncoderSPI::~MtEncoderSPI() {
@@ -127,19 +128,21 @@ uint32_t MtEncoderSPI::getCpr(){
 
 
 
-ParseStatus MtEncoderSPI::command(ParsedCommand* cmd,std::string* reply){
-	ParseStatus result = ParseStatus::OK;
-
-	if (cmd->cmd == "mtenc_cs"){
-		if (cmd->type == CMDtype::set) {
-			setCsPin(cmd->val - 1);
-		}else if (cmd->type == CMDtype::get) {
-			*reply += std::to_string(this->cspin + 1);
+CommandStatus MtEncoderSPI::command(const ParsedCommand& cmd,std::vector<CommandReply>& replies){
+	switch(static_cast<MtEncoderSPI_commands>(cmd.cmdId)){
+	case MtEncoderSPI_commands::cspin:
+		if(cmd.type==CMDtype::get){
+			replies.push_back(CommandReply(this->cspin+1));
+		}else if(cmd.type==CMDtype::set){
+			this->setCsPin(cmd.val);
+		}else{
+			return CommandStatus::ERR;
 		}
-	}else{
-		result = ParseStatus::NOT_FOUND;
+	default:
+		return CommandStatus::NOT_FOUND;
 	}
-	return result;
+
+	return CommandStatus::OK;
 }
 
 #endif

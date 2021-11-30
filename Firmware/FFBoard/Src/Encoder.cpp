@@ -12,19 +12,19 @@
 // 0-63 valid ids
 std::vector<class_entry<Encoder>> const Encoder::all_encoders =
 	{
-		add_class<Encoder, Encoder>(),
+		add_class<Encoder, Encoder>(0),
 
 #ifdef LOCALENCODER
-		add_class<EncoderLocal, Encoder>(),
+		add_class<EncoderLocal, Encoder>(2),
 #endif
 
 #ifdef MTENCODERSPI
-		add_class<MtEncoderSPI, Encoder>(),
+		add_class<MtEncoderSPI, Encoder>(4),
 #endif
 
 };
 
-ClassIdentifier Encoder::info ={.name = "None" , .id=0, .unique = '0', .hidden = false};
+ClassIdentifier Encoder::info ={.name = "None" , .id=CLSID_ENCODER_NONE, .hidden = false};
 
 
 const ClassIdentifier Encoder::getInfo(){

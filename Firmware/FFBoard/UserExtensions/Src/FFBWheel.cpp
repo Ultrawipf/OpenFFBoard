@@ -14,9 +14,7 @@
 // Unique identifier for listing
 ClassIdentifier FFBWheel::info = {
 		 .name = "FFB Wheel" , // Leave as wheel for now
-		 .id=1,
-		 .clsname = "main",
-		 .unique = '0'
+		 .id=CLSID_MAIN_FFBWHEEL,
  };
 
 const ClassIdentifier FFBWheel::getInfo(){
@@ -31,16 +29,16 @@ const ClassIdentifier FFBWheel::getInfo(){
 const std::vector<class_entry<ButtonSource>> button_sources =
 {
 #ifdef LOCALBUTTONS
-		add_class<LocalButtons,ButtonSource>(),
+		add_class<LocalButtons,ButtonSource>(0),
 #endif
 #ifdef SPIBUTTONS
-		add_class<SPI_Buttons_1,ButtonSource>(),
+		add_class<SPI_Buttons_1,ButtonSource>(1),
 #endif
 #ifdef SPIBUTTONS2
-		add_class<SPI_Buttons_2,ButtonSource>(),
+		add_class<SPI_Buttons_2,ButtonSource>(2),
 #endif
 #ifdef SHIFTERBUTTONS
-		add_class<ShifterAnalog,ButtonSource>(),
+		add_class<ShifterAnalog,ButtonSource>(3),
 #endif
 };
 
@@ -48,7 +46,7 @@ const std::vector<class_entry<ButtonSource>> button_sources =
 const std::vector<class_entry<AnalogSource>> analog_sources =
 {
 #ifdef ANALOGAXES
-		add_class<LocalAnalog,AnalogSource>(),
+		add_class<LocalAnalog,AnalogSource>(0),
 #endif
 };
 
@@ -63,6 +61,7 @@ FFBWheel::FFBWheel() :
 	this->ffb = std::make_unique<HidFFB>();
 	this->ffb->setEffectsCalculator(effects_calc.get());
 	restoreFlash(); // Load parameters
+	registerCommands();
 }
 
 
