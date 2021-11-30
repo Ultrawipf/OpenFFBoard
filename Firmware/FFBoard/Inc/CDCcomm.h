@@ -10,6 +10,7 @@
 
 #include "tusb.h"
 #include "cppmain.h"
+#include "semaphore.hpp"
 
 class CDCcomm {
 public:
@@ -20,8 +21,10 @@ public:
 private:
 	static bool usb_busy_retry;
 	static std::string remainingStrs[CFG_TUD_CDC];
+	static std::string tString;
 	CDCcomm();
 	virtual ~CDCcomm();
+	static cpp_freertos::BinarySemaphore cdcSems[CFG_TUD_CDC];
 };
 
 #endif /* SRC_CDCCOMM_H_ */

@@ -11,22 +11,26 @@
 bool EncoderLocal::inUse = false;
 ClassIdentifier EncoderLocal::info = {
 		 .name = "Local" ,
-		 .id=2,
-		 .unique = '0'
+		 .id=CLSID_ENCODER_LOCAL,
  };
 const ClassIdentifier EncoderLocal::getInfo(){
 	return info;
 }
 
-EncoderLocal::EncoderLocal() {
+EncoderLocal::EncoderLocal() : CommandHandler("localenc",CLSID_ENCODER_LOCAL) {
 	EncoderLocal::inUse = true;
 	this->restoreFlash();
 	this->htim = &TIM_ENC;
 	this->htim->Instance->CR1 = 1;
 	HAL_TIM_Base_Start_IT(htim);
 	setPos(0);
+	registerCommands();
 }
 
+void EncoderLocal::registerCommands(){
+	CommandHandler::registerCommands();
+	registerCommand("cpr", EncoderLocal_commands::cpr, "CPR of encoder");
+}
 
 EncoderLocal::~EncoderLocal() {
 	EncoderLocal::inUse = false;
@@ -89,15 +93,24 @@ void EncoderLocal::setCpr(uint32_t cpr){
 	this->cpr = cpr;
 }
 
-ParseStatus EncoderLocal::command(ParsedCommand* cmd,std::string* reply){
-	if(cmd->cmd == "cpr"){
-		if(cmd->type == CMDtype::get){
-			*reply += std::to_string(this->getCpr());
-		}else if(cmd->type == CMDtype::set){
-			this->setCpr(cmd->val);
-		}
-	}else{
-		return ParseStatus::NOT_FOUND;
+CommandStatus EncoderLocal::command(const ParsedCommand& cmd,std::vector<CommandReply>& replies){
+	switch(static_cast<EncoderLocal_commands>(cmd.cmdId)){
+	case EncoderLocal_commands::cpr:
+		handleGetFuncSetFunc(cmd, replies, &EncoderLocal::getCpr,&EncoderLocal::setCpr,this);
+	break;
+	default:
+		return CommandStatus::NOT_FOUND;
 	}
-	return ParseStatus::OK;
+
+	return CommandStatus::OK;
+//	if(cmd->cmd == "cpr"){
+//		if(cmd->type == CMDtype::get){
+//			*reply += std::to_string(this->getCpr());
+//		}else if(cmd->type == CMDtype::set){
+//			this->setCpr(cmd->val);
+//		}
+//	}else{
+//		return ParseStatus::NOT_FOUND;
+//	}
+//	return ParseStatus::OK;
 }

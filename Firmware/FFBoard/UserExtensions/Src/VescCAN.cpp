@@ -7,10 +7,12 @@
 #include "target_constants.h"
 #ifdef VESC
 #include <VescCAN.h>
+#include "ClassIDs.h"
 
 
-VescCAN::VescCAN() :
-		Thread("VESC", VESC_THREAD_MEM, VESC_THREAD_PRIO) {
+VescCAN::VescCAN() : CommandHandler("vesc" ,CLSID_MOT_VESC),
+		Thread("VESC", VESC_THREAD_MEM, VESC_THREAD_PRIO)
+		{
 
 	VescCAN::vescInUse = true;
 	restoreFlash();
@@ -30,7 +32,7 @@ VescCAN::VescCAN() :
 	this->filterId = this->port->addCanFilter(sFilterConfig);
 
 	this->port->setSpeedPreset(baudrate);
-
+	registerCommands();
 	this->Start();
 }
 
@@ -41,7 +43,7 @@ VescCAN::~VescCAN() {
 }
 
 bool VescCAN::vescInUse = false;
-ClassIdentifier VescCAN::info = { .name = "VESC", .id = 7, .unique = '0', .clsname = "vesc" };
+ClassIdentifier VescCAN::info = { .name = "VESC",.id = CLSID_MOT_VESC};
 
 const ClassIdentifier VescCAN::getInfo() {
 	return info;
@@ -162,65 +164,87 @@ uint32_t VescCAN::getCpr() {
 	return 0xFFFF;
 }
 
-ParseStatus VescCAN::command(ParsedCommand *cmd, std::string *reply) {
-	// Prefix set but not our prefix
-	if (cmd->prefix != this->getInfo().unique && cmd->prefix != '\0') {
-		return ParseStatus::NOT_FOUND;
+void VescCAN::registerCommands(){
+	CommandHandler::registerCommands();
+	registerCommand("canid", VescCAN_commands::canid, "CAN id of VESC");
+	registerCommand("canspd", VescCAN_commands::canspd, "CAN baud (3=250k,4=500k,5=1M)");
+	registerCommand("errorflags", VescCAN_commands::errorflags, "VESC error state");
+	registerCommand("vescstate", VescCAN_commands::vescstate, "VESC state");
+	registerCommand("voltage", VescCAN_commands::voltage, "VESC supply voltage");
+	registerCommand("encrate", VescCAN_commands::encrate, "Encoder update rate");
+	registerCommand("pos", VescCAN_commands::pos, "VESC position");
+	registerCommand("torque", VescCAN_commands::torque, "Current VESC torque");
+	registerCommand("forceposread", VescCAN_commands::forcePosRead, "Force a position update");
+	registerCommand("useencoder", VescCAN_commands::useEncoder, "Enable VESC encoder");
+	registerCommand("offset", VescCAN_commands::offset, "Get or set encoder offset");
+}
+
+CommandStatus VescCAN::command(const ParsedCommand& cmd,std::vector<CommandReply>& replies) {
+
+	switch(static_cast<VescCAN_commands>(cmd.cmdId)){
+
+	case VescCAN_commands::canid:
+		return handleGetSet(cmd, replies, this->nodeId);
+	case VescCAN_commands::errorflags:
+		if(cmd.type == CMDtype::get)
+			replies.push_back(CommandReply(vescErrorFlag));
+		break;
+	case VescCAN_commands::canspd:
+		if(cmd.type == CMDtype::get){
+			replies.push_back(CommandReply(this->baudrate));
+		}else if(cmd.type == CMDtype::set){
+			this->setCanRate(cmd.val);
+		}
+		break;
+	case VescCAN_commands::vescstate:
+		if(cmd.type == CMDtype::get)
+			replies.push_back(CommandReply((uint32_t)this->state));
+	break;
+	case VescCAN_commands::encrate:
+		if(cmd.type == CMDtype::get)
+			replies.push_back(CommandReply((uint32_t)this->encRate));
+	break;
+	case VescCAN_commands::pos:
+		if(cmd.type == CMDtype::get){
+			replies.push_back(CommandReply((int32_t) ((lastPos - posOffset) * 1000000000)));
+		}
+	break;
+	case VescCAN_commands::torque:
+		if(cmd.type == CMDtype::get){
+			replies.push_back(CommandReply((int32_t) (lastTorque * 10000)));
+		}
+	break;
+	case VescCAN_commands::forcePosRead:
+		this->askPositionEncoder();
+	break;
+	case VescCAN_commands::useEncoder:
+		if (cmd.type == CMDtype::get) {
+			replies.push_back(CommandReply(useEncoder ? 1 : 0));
+		} else if(cmd.type == CMDtype::set){
+			useEncoder = cmd.val != 0;
+		}
+	break;
+	case VescCAN_commands::offset:
+	{
+		if (cmd.type == CMDtype::get) {
+			replies.push_back(CommandReply((int32_t) (posOffset * 10000)));
+		} else if(cmd.type == CMDtype::set){
+			posOffset = (float)cmd.val / 10000.0;
+			this->saveFlashOffset(); // Really save to flash?
+		}
 	}
-	ParseStatus status = ParseStatus::OK;
-	if (cmd->cmd == "vescCanId") {
-		handleGetSet(cmd, reply, this->nodeId);
-	} else if (cmd->cmd == "vescErrorFlag") {
-		if (cmd->type == CMDtype::get) {
-			*reply += std::to_string(vescErrorFlag);
-		}
-	} else if (cmd->cmd == "vescState") {
-		if (cmd->type == CMDtype::get) {
-			*reply += std::to_string((uint32_t) state);
-		}
-	} else if (cmd->cmd == "vescCanSpd") {
-		if (cmd->type == CMDtype::get) {
-			*reply += std::to_string(baudrate);
-		} else if (cmd->type == CMDtype::set) {
-			this->setCanRate(cmd->val);
-		}
-	} else if (cmd->cmd == "vescEncRate") {
-		if (cmd->type == CMDtype::get) {
-			*reply += std::to_string((uint32_t) encRate);
-		}
-	} else if (cmd->cmd == "vescPos") {
-		if (cmd->type == CMDtype::get) {
-			*reply += std::to_string((int32_t) ((lastPos - posOffset) * 1000000000));
-		}
-	} else if (cmd->cmd == "vescTorque") {
-		if (cmd->type == CMDtype::get) {
-			*reply += std::to_string((int32_t) (lastTorque * 10000));
-		}
-	} else if (cmd->cmd == "vescPosReadForce") {
-		if(cmd->type == CMDtype::set){
-			this->askPositionEncoder();
-		}
-	} else if (cmd->cmd == "vescUseEncoder") {
-		if (cmd->type == CMDtype::get) {
-			*reply += std::to_string((int32_t) useEncoder);
-		} else if(cmd->type == CMDtype::set){
-			useEncoder = cmd->val;
-		}
-	} else if (cmd->cmd == "vescOffset") {
-		if (cmd->type == CMDtype::get) {
-			*reply += std::to_string((int32_t) (posOffset * 10000));
-		} else if(cmd->type == CMDtype::set){
-			posOffset = 0;
-			this->saveFlashOffset();
-		}
-	} else if (cmd->cmd == "vescVoltage") {
-		if (cmd->type == CMDtype::get) {
-			*reply += std::to_string((int32_t) (voltage * 100));
-		}
-	} else {
-		status = ParseStatus::NOT_FOUND;
+	break;
+	case VescCAN_commands::voltage:
+		if(cmd.type == CMDtype::get)
+			replies.push_back(CommandReply(voltage * 100));
+	break;
+
+
+	default:
+		return CommandStatus::NOT_FOUND;
 	}
-	return status;
+
+	return CommandStatus::OK;
 }
 
 /*

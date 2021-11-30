@@ -7,7 +7,7 @@
 
 #ifndef SRC_FFBWHEEL_H_
 #define SRC_FFBWHEEL_H_
-#include <CmdParser.h>
+//#include <CmdParser.h>
 #include <FFBoardMain.h>
 #include <MotorPWM.h>
 #include <ShifterAnalog.h>
@@ -36,6 +36,9 @@
 #include "memory"
 
 class FFBWheel: public FFBoardMain, TimerHandler, PersistentStorage,ExtiHandler,UsbHidHandler, ErrorHandler{
+	enum class FFBWheel_commands : uint32_t{
+		ffbactive,axes,btntypes,lsbtn,addbtn,aintypes,lsain,addain,hidrate,hidsendspd
+	};
 public:
 	FFBWheel();
 	virtual ~FFBWheel();
@@ -44,10 +47,10 @@ public:
 	const ClassIdentifier getInfo();
 	static bool isCreatable() {return true;};
 
-	ParseStatus command(ParsedCommand* cmd,std::string* reply);
+	CommandStatus command(const ParsedCommand& cmd,std::vector<CommandReply>& replies);
+	void registerCommands();
 	virtual std::string getHelpstring(){
-		return "\nFFBWheel commands:\n"
-			   "axis,lsbtn,btntypes,addbtn,lsain,aintypes,addain,ffbactive,hidrate,hidsendspd.\n";
+		return "Force feedback HID game controller";
 	}
 	void setBtnTypes(uint16_t btntypes);
 	void addBtnType(uint16_t id);
@@ -112,7 +115,7 @@ private:
 	ClassChooser<ButtonSource> btn_chooser;
 	ClassChooser<AnalogSource> analog_chooser;
 
-	ErrorPrinter errorPrinter; // Prints errors to serial
+
 
 
 	uint32_t lastUsbReportTick = 0;

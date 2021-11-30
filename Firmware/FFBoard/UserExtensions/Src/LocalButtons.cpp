@@ -9,14 +9,17 @@
 
 ClassIdentifier LocalButtons::info = {
 	 .name = "D-Pins" ,
-	 .clsname = "dpin",
-	 .id=0,
-	 .unique = '0'
+	 .id=CLSID_BTN_LOCAL,
 };
 
-LocalButtons::LocalButtons() {
+LocalButtons::LocalButtons() : CommandHandler("dpin",CLSID_BTN_LOCAL,0) {
 	setMask(mask); // Initialize button count
 	restoreFlash();
+
+	CommandHandler::registerCommands();
+	registerCommand("mask", LocalButtons_commands::mask, "Enabled pins");
+	registerCommand("polarity", LocalButtons_commands::polarity, "Pin polarity");
+	registerCommand("pins", LocalButtons_commands::pins, "Available pins");
 }
 
 LocalButtons::~LocalButtons() {
@@ -72,38 +75,42 @@ void LocalButtons::restoreFlash(){
 	}
 }
 
-ParseStatus LocalButtons::command(ParsedCommand* cmd,std::string* reply){
-	ParseStatus result = ParseStatus::OK;
-	// mask is a bitfield of 8 bits enabling or disabling specific pins
-	if(cmd->cmd == "local_btnmask"){
-		if(cmd->type == CMDtype::set){
-			this->setMask(cmd->val);
-		}else if(cmd->type == CMDtype::get){
-			*reply += std::to_string(this->mask);
+CommandStatus LocalButtons::command(const ParsedCommand& cmd,std::vector<CommandReply>& replies){
+
+	switch(static_cast<LocalButtons_commands>(cmd.cmdId)){
+	case LocalButtons_commands::mask:
+		if(cmd.type == CMDtype::set){
+			this->setMask(cmd.val);
+		}else if(cmd.type == CMDtype::get){
+			replies.push_back(CommandReply(this->mask));
 		}else{
-			result = ParseStatus::ERR;
+			return CommandStatus::ERR;
 		}
-	}else if(cmd->cmd == "local_btnpol"){
-		if(cmd->type == CMDtype::set){
-			this->polarity = cmd->val != 0;
-		}else if(cmd->type == CMDtype::get){
-			*reply += std::to_string(this->polarity ? 1 : 0);
+	break;
+
+	case LocalButtons_commands::polarity:
+		if(cmd.type == CMDtype::set){
+			this->polarity = cmd.val != 0;
+		}else if(cmd.type == CMDtype::get){
+			replies.push_back(CommandReply(this->polarity ? 1 : 0));
 		}else{
-			result = ParseStatus::ERR;
+			return CommandStatus::ERR;
 		}
-	}else if(cmd->cmd == "local_btnpins"){
-		if(cmd->type == CMDtype::get){
-			*reply += std::to_string(maxButtons);
+	break;
+
+	case LocalButtons_commands::pins:
+		if(cmd.type == CMDtype::get){
+			replies.push_back(CommandReply(maxButtons));
 		}else{
-			result = ParseStatus::ERR;
+			return CommandStatus::ERR;
 		}
-	}else if(cmd->cmd == "help"){
-		result = ParseStatus::OK_CONTINUE;
-		*reply += "Digital pins: local_btnmask,local_btnpol,local_btnpins\n";
-	}else{
-		result = ParseStatus::NOT_FOUND; // No valid command
+	break;
+
+	default:
+		return CommandStatus::NOT_FOUND;
 	}
 
-	return result;
+	return CommandStatus::OK;
+
 }
 

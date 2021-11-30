@@ -19,9 +19,7 @@ bool MotorPWM::pwmDriverInUse = false;
 
 ClassIdentifier MotorPWM::info = {
 		 .name = "PWM" ,
-		 .clsname = "pwmdrv"
-		 .id=4,
-		 .unique = '0'
+		 .id=CLSID_MOT_PWM,
  };
 const ClassIdentifier MotorPWM::getInfo(){
 	return info;
@@ -30,6 +28,29 @@ const ClassIdentifier MotorPWM::getInfo(){
 bool MotorPWM::isCreatable(){
 	return !MotorPWM::pwmDriverInUse; // Creatable if not already in use for example by another axis
 }
+
+
+MotorPWM::MotorPWM() : CommandHandler("pwmdrv",CLSID_MOT_PWM) {
+	MotorPWM::pwmDriverInUse = true;
+	restoreFlash();
+	//HAL_TIM_Base_Start_IT(timer);
+	setPwmSpeed(pwmspeed);
+
+	CommandHandler::registerCommands();
+	registerCommand("freq", MotorPWM_commands::freq, "PWM period selection");
+	registerCommand("mode", MotorPWM_commands::mode, "PWM mode");
+}
+
+MotorPWM::~MotorPWM() {
+	MotorPWM::pwmDriverInUse = false;
+	HAL_TIM_PWM_Stop(timer, channel_1);
+	HAL_TIM_PWM_Stop(timer, channel_2);
+	HAL_TIM_PWM_Stop(timer, channel_3);
+	HAL_TIM_PWM_Stop(timer, channel_4);
+	HAL_TIM_Base_Stop_IT(timer);
+}
+
+
 
 void MotorPWM::turn(int16_t power){
 	if(!active)
@@ -165,12 +186,7 @@ SpeedPWM_DRV MotorPWM::getPwmSpeed(){
 }
 
 
-MotorPWM::MotorPWM() {
-	MotorPWM::pwmDriverInUse = true;
-	restoreFlash();
-	//HAL_TIM_Base_Start_IT(timer);
-	setPwmSpeed(pwmspeed);
-}
+
 
 void MotorPWM::saveFlash(){
 	// 0-3: mode
@@ -188,16 +204,6 @@ void MotorPWM::restoreFlash(){
 		uint8_t s = (var >> 4) & 0x7;
 		this->setPwmSpeed(SpeedPWM_DRV(s));
 	}
-}
-
-
-MotorPWM::~MotorPWM() {
-	MotorPWM::pwmDriverInUse = false;
-	HAL_TIM_PWM_Stop(timer, channel_1);
-	HAL_TIM_PWM_Stop(timer, channel_2);
-	HAL_TIM_PWM_Stop(timer, channel_3);
-	HAL_TIM_PWM_Stop(timer, channel_4);
-	HAL_TIM_Base_Stop_IT(timer);
 }
 
 
@@ -223,25 +229,17 @@ ModePWM_DRV MotorPWM::getMode(){
 
 
 
-ParseStatus MotorPWM::command(ParsedCommand* cmd,std::string* reply){
-	ParseStatus result = ParseStatus::OK;
+CommandStatus MotorPWM::command(const ParsedCommand& cmd,std::vector<CommandReply>& replies){
 
-	if(cmd->cmd == "pwm_mode"){
-		if(cmd->type == CMDtype::set){
-			this->setMode((ModePWM_DRV)cmd->val);
-		}else if(cmd->type == CMDtype::get){
-			*reply += std::to_string((uint8_t)this->getMode());
-		}else{
-			for(uint8_t i = 0; i<PwmModeNames.size();i++){
-				*reply+=  PwmModeNames[i]  + ":" + std::to_string(i)+"\n";
-			}
-		}
-	}else if(cmd->cmd == "pwm_speed"){
-		if(cmd->type == CMDtype::set){
-			this->setPwmSpeed((SpeedPWM_DRV)cmd->val);
-		}else if(cmd->type == CMDtype::get){
-			*reply += std::to_string((uint8_t)this->getPwmSpeed());
-		}else{
+	switch(static_cast<MotorPWM_commands>(cmd.cmdId)){
+
+	case MotorPWM_commands::freq:
+	{
+		if(cmd.type == CMDtype::set){
+			this->setPwmSpeed((SpeedPWM_DRV)cmd.val);
+		}else if(cmd.type == CMDtype::get){
+			replies.push_back(CommandReply((uint8_t)this->getPwmSpeed()));
+		}else if(cmd.type == CMDtype::info){
 			std::vector<std::string> names = PWM_SpeedNames;
 			if(this->mode == ModePWM_DRV::RC_PWM){
 				names = RC_SpeedNames;
@@ -249,14 +247,30 @@ ParseStatus MotorPWM::command(ParsedCommand* cmd,std::string* reply){
 				names = PWM_SpeedNames;
 			}
 			for(uint8_t i = 0; i<names.size();i++){
-				*reply+=  names[i]  + ":" + std::to_string(i)+"\n";
+				replies.push_back(CommandReply(names[i]  + ":" + std::to_string(i)+"\n"));
 			}
 		}
-	}else{
-		result = ParseStatus::NOT_FOUND; // No valid command
+		break;
+	}
+	case MotorPWM_commands::mode:
+	{
+		if(cmd.type == CMDtype::set){
+			this->setMode((ModePWM_DRV)cmd.val);
+		}else if(cmd.type == CMDtype::get){
+			replies.push_back(CommandReply((uint8_t)this->getMode()));
+		}else if(cmd.type == CMDtype::info){
+			for(uint8_t i = 0; i<PwmModeNames.size();i++){
+				replies.push_back(CommandReply(PwmModeNames[i]  + ":" + std::to_string(i)+"\n"));
+			}
+		}
+		break;
+	}
+	default:
+		return CommandStatus::NOT_FOUND;
 	}
 
-	return result;
+	return CommandStatus::OK;
+
 }
 
 

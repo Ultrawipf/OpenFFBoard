@@ -14,7 +14,7 @@
 
 // Hardware name string
 #define HW_TYPE "F411RE"
-
+#define HW_TYPE_INT 1
 // Enabled features
 
 // Main classes

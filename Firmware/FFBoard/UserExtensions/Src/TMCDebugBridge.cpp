@@ -13,9 +13,7 @@
 // Change this
 ClassIdentifier TMCDebugBridge::info = {
 		 .name = "TMC Debug Bridge" ,
-		 .id=11,
-		 .clsname = "main",
-		 .unique = '0',
+		 .id=CLSID_MAIN_TMCDBG, //11
 		 .hidden=false
  };
 // Copy this to your class for identification
@@ -32,6 +30,16 @@ uint8_t TMCDebugBridge::checksum(std::vector<uint8_t> *buffer,uint8_t len){
 	return sum;
 }
 
+void TMCDebugBridge::registerCommands(){
+	//CommandHandler::registerCommands();
+	//registerCommand("reg", TMCDebugBridge_commands::reg, "Read or write a TMC register at adr");
+	registerCommand("torque", TMCDebugBridge_commands::torque, "Change torque and enter torque mode");
+	registerCommand("pos", TMCDebugBridge_commands::pos, "Change pos and enter pos mode");
+	registerCommand("openloopspeed", TMCDebugBridge_commands::openloopspeed, "Move openloop. adr=strength,val=speed");
+	registerCommand("velocity", TMCDebugBridge_commands::velocity, "Change velocity and enter velocity mode");
+	registerCommand("mode", TMCDebugBridge_commands::mode, "Change motion mode");
+}
+
 void TMCDebugBridge::tmcReadRegRaw(uint8_t reg,uint8_t* buf){
 
 	uint8_t req[5] = {(uint8_t)(0x7F & reg),0,0,0,0};
@@ -40,52 +48,72 @@ void TMCDebugBridge::tmcReadRegRaw(uint8_t reg,uint8_t* buf){
 	HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_SET);
 }
 
-ParseStatus TMCDebugBridge::command(ParsedCommand* cmd,std::string* reply){
-	ParseStatus flag = ParseStatus::OK;
-	if(cmd->cmd == "torque"){
-		if(cmd->type == CMDtype::get){
-			*reply+=std::to_string(drv->getTorque());
-		}else if(cmd->type == CMDtype::set){
-			drv->turn(cmd->val);
+CommandStatus TMCDebugBridge::command(const ParsedCommand& cmd,std::vector<CommandReply>& replies){
+	switch(static_cast<TMCDebugBridge_commands>(cmd.cmdId)){
+	case TMCDebugBridge_commands::torque:
+		if(cmd.type == CMDtype::get){
+			replies.push_back(CommandReply(drv->getTorque()));
+		}else if(cmd.type == CMDtype::set){
+			drv->turn(cmd.val);
+		}else{
+			return CommandStatus::ERR;
 		}
-	}else if(cmd->cmd == "pos"){
-		if(cmd->type == CMDtype::get){
-			*reply+=std::to_string(drv->getPos());
-		}else if(cmd->type == CMDtype::set){
-			drv->setTargetPos(cmd->val);
-		}
-	}else if(cmd->cmd == "openloopspeed"){
-		if(cmd->type == CMDtype::set){
-			drv->setOpenLoopSpeedAccel(cmd->val,100);
+		break;
 
-		}else if(cmd->type == CMDtype::setat){
-			drv->runOpenLoop(cmd->adr,0,cmd->val,10);
+	case TMCDebugBridge_commands::pos:
+		if(cmd.type == CMDtype::get){
+			replies.push_back(CommandReply(drv->getPos()));
+		}else if(cmd.type == CMDtype::set){
+			drv->setTargetPos(cmd.val);
+		}else{
+			return CommandStatus::ERR;
 		}
-	}else if(cmd->cmd == "velocity"){
-		if(cmd->type == CMDtype::get){
-			*reply+=std::to_string(drv->getVelocity());
-		}else if(cmd->type == CMDtype::set){
-			drv->setTargetVelocity(cmd->val);
+		break;
+
+	case TMCDebugBridge_commands::openloopspeed:
+		if(cmd.type == CMDtype::set){
+			drv->setOpenLoopSpeedAccel(cmd.val,100);
+		}else if(cmd.type == CMDtype::setat){
+			drv->runOpenLoop(cmd.adr,0,cmd.val,10);
+		}else{
+			return CommandStatus::ERR;
 		}
-	}else if(cmd->cmd == "mode"){
-		if(cmd->type == CMDtype::get){
-			*reply+=std::to_string((uint8_t)drv->getMotionMode());
-		}else if(cmd->type == CMDtype::set && cmd->val < (uint8_t)MotionMode::NONE){
-			drv->setMotionMode(MotionMode(cmd->val));
+		break;
+
+	case TMCDebugBridge_commands::velocity:
+		if(cmd.type == CMDtype::get){
+			replies.push_back(CommandReply(drv->getVelocity()));
+		}else if(cmd.type == CMDtype::set){
+			drv->setTargetVelocity(cmd.val);
+		}else{
+			return CommandStatus::ERR;
+		}
+		break;
+
+	case TMCDebugBridge_commands::mode:
+		if(cmd.type == CMDtype::get){
+			replies.push_back(CommandReply((uint8_t)drv->getMotionMode()));
+		}else if(cmd.type == CMDtype::set && cmd.val < (uint8_t)MotionMode::NONE){
+			drv->setMotionMode(MotionMode(cmd.val));
 			drv->startMotor();
 		}else{
-			*reply+="stop=0,torque=1,velocity=2,position=3,prbsflux=4,prbstorque=5,prbsvelocity=6,uqudext=8,encminimove=9";
+			replies.push_back(CommandReply("stop=0,torque=1,velocity=2,position=3,prbsflux=4,prbstorque=5,prbsvelocity=6,uqudext=8,encminimove=9"));
 		}
-	}else if(cmd->cmd == "reg"){
-		if(cmd->type == CMDtype::getat){
-			*reply+=std::to_string(drv->readReg(cmd->val));
-		}else if(cmd->type == CMDtype::setat){
-			drv->writeReg(cmd->adr,cmd->val);
+		break;
+
+	case TMCDebugBridge_commands::reg:
+		if(cmd.type == CMDtype::getat){
+			replies.push_back(CommandReply(drv->readReg(cmd.val)));
+		}else if(cmd.type == CMDtype::setat){
+			drv->writeReg(cmd.adr,cmd.val);
+		}else{
+			return CommandStatus::ERR;
 		}
-	}else{
-		flag = ParseStatus::NOT_FOUND;
+		break;
+	default:
+		return CommandStatus::NOT_FOUND;
 	}
-	return flag;
+	return CommandStatus::OK;
 }
 
 void TMCDebugBridge::sendCdc(char* dat, uint32_t len){
@@ -196,6 +224,7 @@ void TMCDebugBridge::cdcRcv(char* Buf, uint32_t *Len){
 TMCDebugBridge::TMCDebugBridge() {
 
 	TMC4671MainConfig tmcconf;
+	registerCommands();
 
 	this->drv = std::make_unique<TMC_1>();
 	drv->conf = tmcconf;

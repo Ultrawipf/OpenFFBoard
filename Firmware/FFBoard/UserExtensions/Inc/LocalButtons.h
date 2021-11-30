@@ -14,6 +14,9 @@
 #include "constants.h"
 
 class LocalButtons: public ButtonSource,CommandHandler{
+	enum class LocalButtons_commands : uint32_t{
+		mask,polarity,pins
+	};
 public:
 	LocalButtons();
 	virtual ~LocalButtons();
@@ -25,7 +28,9 @@ public:
 
 	static constexpr uint16_t maxButtons{BUTTON_PINS};
 
-	ParseStatus command(ParsedCommand* cmd,std::string* reply);
+	CommandStatus command(const ParsedCommand& cmd,std::vector<CommandReply>& replies);
+
+	std::string getHelpstring(){return "Digital pin button source";};
 
 	void saveFlash(); 		// Write to flash here
 	void restoreFlash();	// Load from flash
@@ -36,7 +41,7 @@ public:
 		}
 		return HAL_GPIO_ReadPin(button_ports[button_num], button_pins[button_num]);
 	}
-
+	const ClassType getClassType() {return ClassType::Buttonsource;};
 private:
 	uint32_t mask = 0xff;
 	void setMask(uint32_t mask);

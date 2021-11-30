@@ -7,7 +7,7 @@
 
 #ifndef USEREXTENSIONS_INC_CLASSIDS_H_
 #define USEREXTENSIONS_INC_CLASSIDS_H_
-
+#include <stdint.h>
 // Type IDs
 enum class ClassType : uint16_t {
 	NONE=0,
@@ -17,18 +17,29 @@ enum class ClassType : uint16_t {
 	Buttonsource=4,
 	Analogsource=5,
 	Encoder=6,
-	Axis,
-	Extension
+	Axis=7,
+	Extension=8
 };
 
+// Mainclasses all have the name "main" in the commandhandler system for addressing and ID 0 but can have different display names
+// Other classes will use their unique ID in the command system
+#define CMDCLSID_MAIN		0x00
+#define CMDCLSTR_MAIN		"main"
+
+// The main command system can control the board independently. Normally called by the mainclass
+#define CMDCLSID_SYS		0x00
+#define CMDCLSTR_SYS		"sys"
 
 
-// Unique class IDs
+
+// Unique class IDs. 16 bits (0xFFFF max)
 #define CLSID_NONE			0	// Undefined IDs or failsafe main
 #define CLSID_MAIN_FFBWHEEL 0x1
 #define CLSID_MAIN_TMCDBG 	0xB
 #define CLSID_MAIN_CAN	 	0xC
 #define CLSID_MAIN_MIDI 	0xD
+#define CLSID_SYSTEM		0x10 // sys main command thread
+#define CLSID_ERRORS		0x11
 
 // Button sources for gamepad
 #define CLSID_BTN_NONE		0x20
@@ -54,11 +65,12 @@ enum class ClassType : uint16_t {
 #define CLSID_MOT_PWM		0x84
 #define CLSID_MOT_ODRV0		0x85
 #define CLSID_MOT_ODRV1		0x86
-#define CLSID_MOT_VESC		0x84
+#define CLSID_MOT_VESC		0x87
 
 // Internal classes
 #define CLSID_AXIS			0xA01
 #define CLSID_EFFECTSCALC	0xA02
 
+#define CLSID_CUSTOM		0x539 // Reserved for testing
 
 #endif /* USEREXTENSIONS_INC_CLASSIDS_H_ */

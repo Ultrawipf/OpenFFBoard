@@ -28,7 +28,9 @@ enum class ODriveLocalState : uint32_t {IDLE,WAIT_READY,WAIT_CALIBRATION_DONE,WA
 enum class ODriveEncoderFlags : uint32_t {ERROR_NONE = 0,ERROR_UNSTABLE_GAIN = 0x01,ERROR_CPR_POLEPAIRS_MISMATCH = 0x02, ERROR_NO_RESPONSE = 0x04, ERROR_UNSUPPORTED_ENCODER_MODE = 0x08, ERROR_ILLEGAL_HALL_STATE = 0x10, ERROR_INDEX_NOT_FOUND_YET = 0x20, ERROR_ABS_SPI_TIMEOUT = 0x40, ERROR_ABS_SPI_COM_FAIL = 0x80, ERROR_ABS_SPI_NOT_READY = 0x100, ERROR_HALL_NOT_CALIBRATED_YET = 0x200};
 enum class ODriveAxisError : uint32_t {AXIS_ERROR_NONE = 0x00000000,AXIS_ERROR_INVALID_STATE  = 0x00000001, AXIS_ERROR_WATCHDOG_TIMER_EXPIRED = 0x00000800,AXIS_ERROR_MIN_ENDSTOP_PRESSED = 0x00001000, AXIS_ERROR_MAX_ENDSTOP_PRESSED = 0x00002000,AXIS_ERROR_ESTOP_REQUESTED = 0x00004000,AXIS_ERROR_HOMING_WITHOUT_ENDSTOP = 0x00020000,AXIS_ERROR_OVER_TEMP = 0x00040000,AXIS_ERROR_UNKNOWN_POSITION = 0x00080000};
 
-
+enum class ODriveCAN_commands : uint32_t{
+	canid,canspd,errors,state,maxtorqe,vbus,anticogging
+};
 
 class ODriveCAN : public MotorDriver,public PersistentStorage, public Encoder, public CanHandler, public CommandHandler, cpp_freertos::Thread{
 public:
@@ -82,8 +84,9 @@ public:
 	void saveFlash() override; 		// Write to flash here
 	void restoreFlash() override;	// Load from flash
 
-	ParseStatus command(ParsedCommand* cmd,std::string* reply) override;
-	std::string getHelpstring(){return "ODrive: odriveCanId,odriveCanSpd (3=250k,4=500k,5=1M),odriveErrors,odriveState,odriveMaxTorque (Nm*100, scaler),odriveVbus,odriveAnticogging\n";};
+	CommandStatus command(const ParsedCommand& cmd,std::vector<CommandReply>& replies) override;
+	void registerCommands();
+	std::string getHelpstring(){return "ODrive motor driver with CAN";};
 
 private:
 	CANPort* port = &canport;
