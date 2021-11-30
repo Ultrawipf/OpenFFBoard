@@ -28,6 +28,10 @@ class ShifterAnalog : public ButtonSource,CommandHandler {
 
 enum class ShifterMode : uint8_t {G29_H=0,G29_seq=1,G27_H=2,G27_seq=3};
 
+enum class ShifterAnalog_commands : uint32_t{
+	mode,x12,x56,y135,y246,revbtn,cspin,xchan,ychan,vals,gear
+};
+
 public:
 	static constexpr int number_of_modes{4};
 	const std::array<std::string, number_of_modes> mode_names {"G29-H","G29 Sequential","G27-H","G27 Sequential"};
@@ -47,11 +51,12 @@ public:
 	void saveFlash() override;
 	void restoreFlash() override;
 
-	void printModes(std::string* reply);
+	std::string printModes();
 
-	ParseStatus command(ParsedCommand* cmd,std::string* reply);
-	virtual std::string getHelpstring(){return "Shifter analog: shifter_mode,shifter_x_12,shifter_x_56,shifter_y_135,shifter_y_246,shifter_rev_btn,shifter_cs_pin,shifter_x_chan,shifter_y_chan,shifter_vals,shifter_gear\n";}
-
+	CommandStatus command(const ParsedCommand& cmd,std::vector<CommandReply>& replies) override;
+	void registerCommands();
+	virtual std::string getHelpstring(){return "Analog 6+1 gear shifter button source";}
+	const ClassType getClassType() override {return ClassType::Buttonsource;};
 private:
 	class G27ShifterButtonClient : public SPIDevice {
 	public:

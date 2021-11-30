@@ -8,78 +8,95 @@
 
 #include "FFBWheel.h"
 
+void FFBWheel::registerCommands(){
+	//CommandHandler::registerCommands();
 
-ParseStatus FFBWheel::command(ParsedCommand* cmd,std::string* reply){
-	ParseStatus flag = ParseStatus::OK;
-	// ------------ General commands ----------------
-	if(cmd->cmd == "axis"){
-		if(cmd->type == CMDtype::get){
-			*reply+=std::to_string(this->axes_manager->getAxisCount());
-		}else if(cmd->type == CMDtype::set){
-			if (this->axes_manager->setAxisCount(cmd->val)) {
-				//Give the new axis effects handlers the effects array address
-			}else {
-				flag = ParseStatus::ERR;
-				*reply += "Invalid no' of axis - Range 1-3 (X-Z)";
-			}
-		}
-	}else if(cmd->cmd == "btntypes"){
-		if(cmd->type == CMDtype::get){
-			*reply+=std::to_string(this->btnsources);
-		}else if(cmd->type == CMDtype::set){
-			setBtnTypes(cmd->val);
-		}else{
-			flag = ParseStatus::ERR;
-			*reply += "bin flag encoded list of button sources. (3 = source 1 & 2 active). See lsbtn for sources";
-		}
-	}else if(cmd->cmd == "addbtn"){
-		if(cmd->type == CMDtype::set){
-			this->addBtnType(cmd->val);
-		}
+	registerCommand("axes", FFBWheel_commands::axes, "Number of axes (1-2)");
+	registerCommand("ffbactive", FFBWheel_commands::ffbactive, "FFB status");
 
-	}else if(cmd->cmd == "lsbtn"){
-		if(cmd->type == CMDtype::get){
-			*reply += btn_chooser.printAvailableClasses();
-		}
-	}else if(cmd->cmd == "aintypes"){
-		if(cmd->type == CMDtype::get){
-			*reply+=std::to_string(this->ainsources);
-		}else if(cmd->type == CMDtype::set){
-			setAinTypes(cmd->val);
-		}else{
-			flag = ParseStatus::ERR;
-			*reply += "bin flag encoded list of analog sources. (3 = source 1 & 2 active). See lsain for sources";
-		}
-	}else if(cmd->cmd == "lsain"){
-		if(cmd->type == CMDtype::get){
-			*reply += analog_chooser.printAvailableClasses();
-		}
-	}else if(cmd->cmd == "addain"){
-		if(cmd->type == CMDtype::set){
-			this->addAinType(cmd->val);
-		}
-	}else if(cmd->cmd == "hidsendspd"){
-		if(cmd->type == CMDtype::get){
-			*reply+=std::to_string(usb_report_rate_idx);
-		}else if(cmd->type == CMDtype::set){
-			setReportRate(cmd->val);
-		}else{
-			*reply+=usb_report_rates_names();
-		}
+	registerCommand("btntypes", FFBWheel_commands::btntypes, "Enabled button sources");
+	registerCommand("addbtn", FFBWheel_commands::addbtn, "Enable button source");
+	registerCommand("lsbtn", FFBWheel_commands::lsbtn, "Get available button sources");
 
-	}else if(cmd->cmd == "hidrate" && cmd->type == CMDtype::get){
-		*reply += std::to_string(this->getRate());
-	}else if(cmd->cmd == "ffbactive" && cmd->type == CMDtype::get){
+	registerCommand("aintypes", FFBWheel_commands::aintypes, "Enabled analog sources");
+	registerCommand("lsain", FFBWheel_commands::lsain, "Get available analog sources");
+	registerCommand("addain", FFBWheel_commands::addain, "Enable analog source");
+
+	registerCommand("hidrate", FFBWheel_commands::hidrate, "Get estimated effect update speed");
+	registerCommand("hidsendspd", FFBWheel_commands::hidsendspd, "Change HID gamepad update rate");
+}
+
+CommandStatus FFBWheel::command(const ParsedCommand& cmd,std::vector<CommandReply>& replies){
+	switch(static_cast<FFBWheel_commands>(cmd.cmdId)){
+	case FFBWheel_commands::ffbactive:
+	{
+		if(cmd.type != CMDtype::get)
+			return CommandStatus::ERR;
+
+		int8_t flag = this->getFfbActive() ? 1 : 0;
 		if(this->control.emergency){
-			*reply += "-1"; // Emergency
-		}else{
-			*reply += this->getFfbActive() ? "1" : "0";
+			flag = -1;
 		}
-	}else{
-		flag = ParseStatus::NOT_FOUND;
+		replies.push_back(CommandReply(flag));
+		break;
 	}
-
-	return flag;
+	case FFBWheel_commands::axes:
+		if(cmd.type == CMDtype::get){
+			replies.push_back(CommandReply(this->axes_manager->getAxisCount()));
+		}else if(cmd.type == CMDtype::set){
+			this->axes_manager->setAxisCount(cmd.val);
+		}
+		break;
+	case FFBWheel_commands::btntypes:
+		if(cmd.type == CMDtype::get){
+			replies.push_back(CommandReply(btnsources));
+		}else if(cmd.type == CMDtype::set){
+			setBtnTypes(cmd.val);
+		}
+		break;
+	case FFBWheel_commands::lsbtn:
+		btn_chooser.replyAvailableClasses(replies);
+		break;
+	case FFBWheel_commands::addbtn:
+		if(cmd.type == CMDtype::set){
+			this->addBtnType(cmd.val);
+		}
+		break;
+	case FFBWheel_commands::aintypes:
+		if(cmd.type == CMDtype::get){
+			replies.push_back(CommandReply(ainsources));
+		}else if(cmd.type == CMDtype::set){
+			setAinTypes(cmd.val);
+		}
+		break;
+	case FFBWheel_commands::lsain:
+		analog_chooser.replyAvailableClasses(replies);
+		break;
+	case FFBWheel_commands::addain:
+		if(cmd.type == CMDtype::set){
+			this->addAinType(cmd.val);
+		}
+		break;
+	case FFBWheel_commands::hidrate:
+		if(cmd.type == CMDtype::get){
+			replies.push_back(CommandReply(this->getRate()));
+		}else{
+			return CommandStatus::ERR;
+		}
+		break;
+	case FFBWheel_commands::hidsendspd:
+		if(cmd.type == CMDtype::get){
+			replies.push_back(CommandReply(usb_report_rate_idx));
+		}else if(cmd.type == CMDtype::set){
+			setReportRate(cmd.val);
+		}else if(cmd.type == CMDtype::info){
+			replies.push_back(CommandReply(usb_report_rates_names()));
+		}
+		break;
+	default:
+		return CommandStatus::NOT_FOUND;
+	}
+	return CommandStatus::OK;
 };
 
 

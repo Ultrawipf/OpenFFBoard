@@ -249,10 +249,18 @@ struct TMC4671Biquad{
 
 
 class TMC4671 : public MotorDriver, public PersistentStorage, public Encoder, public CommandHandler, public SPIDevice, public ExtiHandler, public cpp_freertos::Thread{
+
+	enum class TMC4671_commands : uint32_t{
+		cpr,mtype,encsrc,tmcHwType,encalign,poles,acttrq,pwmlim,
+		torqueP,torqueI,fluxP,fluxI,velocityP,velocityI,posP,posI,
+		tmctype,pidPrec,phiesrc,fluxoffset,seqpi,tmcIscale,encdir,temp,reg
+	};
+//pidprec "bit0=I bit1=P. 0=Q8.8 1= Q4.12";
 public:
 
 	static ClassIdentifier info;
 	const ClassIdentifier getInfo();
+	const ClassType getClassType() override {return ClassType::Motordriver;};
 
 	static TMC4671MotConf decodeMotFromInt(uint16_t val);
 	static uint16_t encodeMotToInt(TMC4671MotConf mconf);
@@ -268,8 +276,8 @@ public:
 	void setHwType(TMC_HW_Ver type);
 
 	void setAddress(uint8_t address);
-	void setAxis(char axis);
-	uint8_t getAxis();
+//	void setAxis(char axis);
+//	uint8_t getAxis();
 	uint8_t getSpiAddr();
 	bool setSpiAddr(uint8_t chan);
 	virtual ~TMC4671();
@@ -322,7 +330,7 @@ public:
 	void setBiquadVel(TMC4671Biquad bq);
 	
 	bool pingDriver();
-	std::string getTmcType();
+	std::pair<uint32_t,std::string> getTmcType();
 
 	void changeState(TMC_ControlState newState);
 
@@ -432,12 +440,10 @@ public:
 	void endSpiTransfer(SPIPort* port);
 	//void spiTxCompleted(SPIPort* port);
 
-	ParseStatus command(ParsedCommand* cmd,std::string* reply);
-	virtual std::string getHelpstring(){
-		return "\nTMC4671 commands:\n"
-				"tmctype,mtype,encsrc,encalign,poles,phiesrc,reg,fluxoffset\n"
-				"torqueP,torqueI,fluxP,fluxI,velocityP,velocityI,posP,posI,pidPrec\n"
-				"acttrq,seqpi,tmctemp,tmcIscale\n";}
+	CommandStatus command(const ParsedCommand& cmd,std::vector<CommandReply>& replies);
+	void registerCommands();
+
+	virtual std::string getHelpstring(){return "TMC4671 interface";}
 
 
 private:
@@ -459,7 +465,6 @@ private:
 
 	uint32_t lastStatTime = 0;
 
-	char axis = 'X';
 
 	uint8_t spi_buf[5] = {0};
 

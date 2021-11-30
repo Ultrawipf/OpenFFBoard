@@ -26,7 +26,7 @@
 // Add all classes here
 const std::vector<class_entry<FFBoardMain>> class_registry =
 {
-		add_class<FFBoardMain,FFBoardMain>(),
+		add_class<FFBoardMain,FFBoardMain>(0),
 #ifdef FFBWHEEL
 		add_class<FFBWheel,FFBoardMain>(),
 #endif

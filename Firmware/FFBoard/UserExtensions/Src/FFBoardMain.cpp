@@ -12,12 +12,12 @@
 #include "usb_descriptors.h"
 #include "cdc_device.h"
 
-ClassIdentifier FFBoardMain::info ={.name = "Basic" , .id=0, .unique = '0',.clsname = "main"};
+ClassIdentifier FFBoardMain::info ={.name = "Basic" ,.id=0};
 
 
 
-FFBoardMain::FFBoardMain() : commandThread(std::make_unique<FFBoardMainCommandThread>(this)){
-
+FFBoardMain::FFBoardMain() : CommandHandler(CMDCLSTR_MAIN,CMDCLSID_MAIN,0), commandThread(std::make_unique<FFBoardMainCommandThread>(this)){
+	CommandHandler::registerCommands(); // Register the internal system commands. Mainclasses always have these commands and should not call this function anywhere else
 }
 
 const ClassIdentifier FFBoardMain::getInfo(){
@@ -32,11 +32,10 @@ void FFBoardMain::cdcRcv(char* Buf, uint32_t *Len){
 	cdcCmdInterface->addBuf(Buf, Len);
 }
 
-ParseStatus FFBoardMain::command(ParsedCommand *cmd,std::string* reply){
 
-	return ParseStatus::NOT_FOUND;
+CommandStatus FFBoardMain::command(const ParsedCommand& cmd,std::vector<CommandReply>& replies){
+	return CommandStatus::NOT_FOUND;
 }
-
 
 
 
@@ -108,7 +107,7 @@ void FFBoardMain::usbResume(){
 //}
 
 std::string FFBoardMain::getHelpstring(){
-	return "None for mainclass. TODO";
+	return "Failsafe mainclass with no features. Choose a different mainclass. sys.lsmain to get a list";
 }
 
 FFBoardMain::~FFBoardMain() {

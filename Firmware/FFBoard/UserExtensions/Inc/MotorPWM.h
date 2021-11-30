@@ -21,7 +21,6 @@ void pwmInitTimer(TIM_HandleTypeDef* timer,uint32_t channel,uint32_t period,uint
 void setPWM_HAL(uint32_t value,TIM_HandleTypeDef* timer,uint32_t channel,uint32_t period);
 
 enum class ModePWM_DRV : uint8_t {RC_PWM=0,CENTERED_PWM=1,PWM_DIR=2,PWM_DUAL=3};
-
 enum class SpeedPWM_DRV : uint8_t {LOW=0,MID=1,HIGH=2,VERYHIGH=3};
 
 
@@ -32,6 +31,9 @@ enum class SpeedPWM_DRV : uint8_t {LOW=0,MID=1,HIGH=2,VERYHIGH=3};
  */
 
 class MotorPWM: public MotorDriver,public CommandHandler,public PersistentStorage{
+	enum class MotorPWM_commands : uint32_t {
+		mode,freq
+	};
 public:
 	MotorPWM();
 	virtual ~MotorPWM();
@@ -53,8 +55,8 @@ public:
 	void saveFlash(); 		// Write to flash here
 	void restoreFlash();	// Load from flash
 
-	ParseStatus command(ParsedCommand* cmd,std::string* reply);
-	virtual std::string getHelpstring(){return "PWM: pwm_mode,pwm_speed\n";}
+	CommandStatus command(const ParsedCommand& cmd,std::vector<CommandReply>& replies);
+	virtual std::string getHelpstring(){return "PWM output motor driver";}
 
 	void setPWM(uint32_t value,uint8_t ccr);
 

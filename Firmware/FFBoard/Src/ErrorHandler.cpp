@@ -35,7 +35,7 @@ std::string Error::toString(){
 }
 
 
-ErrorHandler::ErrorHandler() {
+ErrorHandler::ErrorHandler(){
 	addCallbackHandler(errorHandlers,this);
 }
 
@@ -112,15 +112,15 @@ void ErrorHandler::errorCallback(Error &error, bool cleared){
 
 }
 
-ErrorPrinter::ErrorPrinter() : Thread("errprint",200,17){ // Higher than default task but low.
+ErrorPrinter::ErrorPrinter() : Thread("errprint",256,17){ // Higher than default task but low.
 	this->Start();
 }
 
 void ErrorPrinter::Run(){
 	while(1){
 		std::vector<Error>* errors = ErrorHandler::getErrors();
-		for(Error e : *errors){
-			FFBoardMain::sendSerial("Err", e.toString());
+		for(Error& e : *errors){
+			CommandHandler::sendSerial("err","error", e.toString());
 		}
 		ErrorHandler::clearTemp(); // Errors are sent. clear them
 		this->Suspend();

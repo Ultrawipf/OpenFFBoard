@@ -21,6 +21,9 @@ extern "C"{
 extern SPI_HandleTypeDef HSPIDRV;
 
 class TMCDebugBridge: public FFBoardMain {
+	enum class TMCDebugBridge_commands : uint32_t{
+		torque,pos,openloopspeed,velocity,mode,reg
+	};
 public:
 
 	TMCDebugBridge();
@@ -31,20 +34,22 @@ public:
 	static bool isCreatable() {return true;};
 
 	void cdcRcv(char* Buf, uint32_t *Len);
-	ParseStatus command(ParsedCommand* cmd,std::string* reply);
-	std::string getHelpstring(){return "TMC Debug:torque,openloopspeed,pos,velocity,mode,reg\nTo use the FOC modes position, velocity and torque you first must manually select the encoder and wait for alignment.";}
+	CommandStatus command(const ParsedCommand& cmd,std::vector<CommandReply>& replies);
+	void registerCommands();
+	std::string getHelpstring(){return "Compatible with TMCL-IDE. To use the FOC modes position, velocity and torque you first must manually select the encoder and wait for alignment.";}
 
 
 private:
-	const TMC4671PIDConf tmcpids = TMC4671PIDConf({.fluxI = 400,
-												 .fluxP = 400,
-												 .torqueI = 400,
-												 .torqueP = 300,
-												 .velocityI = 10,
-												 .velocityP = 500,
-												 .positionI = 0,
-												 .positionP = 40,
-												 .sequentialPI = true});
+	const TMC4671PIDConf tmcpids = TMC4671PIDConf({
+		 .fluxI = 400,
+		 .fluxP = 400,
+		 .torqueI = 400,
+		 .torqueP = 300,
+		 .velocityI = 10,
+		 .velocityP = 500,
+		 .positionI = 0,
+		 .positionP = 40,
+		 .sequentialPI = true});
 
 	const TMC4671Limits tmclimits = TMC4671Limits({
 		.pid_torque_flux_ddt	= 32767,

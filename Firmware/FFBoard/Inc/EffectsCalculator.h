@@ -27,6 +27,10 @@ struct effect_gain_t {
 	uint8_t inertia = 127;
 };
 
+enum class EffectsCalculator_commands : uint32_t {
+	ffbfiltercf,ffbfiltercf_q,effects,spring,friction,damper,inertia
+};
+
 class EffectsCalculator: public PersistentStorage, public CommandHandler,public HidCommandHandler {
 public:
 	EffectsCalculator();
@@ -34,7 +38,7 @@ public:
 
 	static ClassIdentifier info;
 	const ClassIdentifier getInfo();
-	static ClassType getClassType() override {return ClassType::Internal;};
+	const ClassType getClassType() override {return ClassType::Internal;};
 
 	void saveFlash();
 	void restoreFlash();
@@ -49,9 +53,10 @@ public:
 	void setCfFilter(uint32_t f,uint8_t q); // Set output filter frequency
 	void logEffectType(uint8_t type);
 
-	virtual ParseStatus command(ParsedCommand *cmd, std::string *reply);
-	virtual void processHidCommand(HID_Custom_Data_t* data);
-	virtual std::string getHelpstring() { return "\nEffect commands: effects,ffbfiltercf,ffbfiltercf_q,spring,damper,friction,inertia.\n"; }
+	//virtual ParseStatus command(ParsedCommand_old *cmd, std::string *reply);
+	CommandStatus command(const ParsedCommand& cmd,std::vector<CommandReply>& replies);
+	//virtual void processHidCommand(HID_Custom_Data_t* data);
+	virtual std::string getHelpstring() { return "Controls internal FFB effects"; }
 
 	void setEffectsArray(FFB_Effect* pEffects);
 	FFB_Effect* effects = nullptr; // ptr to effects array in HidFFB

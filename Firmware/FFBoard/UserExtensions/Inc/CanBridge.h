@@ -34,6 +34,9 @@ typedef struct{
  * Sends CAN messages via CDC and can transmit CAN messages with 4 bytes
  */
 class CanBridge: public FFBoardMain, public CanHandler {
+	enum class CanBridge_commands : uint32_t{
+		can,canrtr,canspd
+	};
 public:
 
 	CanBridge();
@@ -42,20 +45,21 @@ public:
 	static ClassIdentifier info;
 	const ClassIdentifier getInfo() override;
 	static bool isCreatable() {return true;};
-	ParseStatus command(ParsedCommand* cmd,std::string* reply);
+	CommandStatus command(const ParsedCommand& cmd,std::vector<CommandReply>& replies);
 	void sendMessage(uint32_t id, uint64_t msg,uint8_t len,bool rtr);
 	void sendMessage();
 	void canRxPendCallback(CAN_HandleTypeDef *hcan,uint8_t* rxBuf,CAN_RxHeaderTypeDef* rxHeader,uint32_t fifo);
 	void canErrorCallback(CAN_HandleTypeDef *hcan);
-	std::string messageToString(CAN_rx_msg msg);
 	void cdcRcv(char* Buf, uint32_t *Len) override;
 	CAN_HandleTypeDef* CanHandle = &CANPORT;
 
+	std::string messageToString(CAN_rx_msg msg);
 
 	void update(); // Main loop
 	volatile bool replyPending = false;
 
-	virtual std::string getHelpstring(){return "CAN commands:\ncan?[id]=[msgint] send message (canrtr with rtr bit). Or can? (last received message). canspd (speed).\nThis class is GVRET/SavvyCAN compatible!";}
+	void registerCommands();
+	virtual std::string getHelpstring(){return "CAN commands:\ncan=(msgint)?(id) send message (canrtr with rtr bit). Or can? (last received message). canspd (speed).\nThis class is GVRET/SavvyCAN compatible!";}
 
 
 private:

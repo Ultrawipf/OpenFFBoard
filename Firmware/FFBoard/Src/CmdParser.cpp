@@ -7,7 +7,8 @@
 
 #include <CmdParser.h>
 #include "ErrorHandler.h"
-
+#include "CommandHandler.h"
+#include "FFBoardMainCommandThread.h"
 
 CmdParser::CmdParser() {
 
@@ -38,9 +39,9 @@ bool CmdParser::add(char* Buf, uint32_t *Len){
 
 
 // Format: cls.instance.cmd<=|?|!><val?>
-std::vector<ParsedCommand> CmdParser::parse(){
-
-	std::vector<ParsedCommand> commands;
+bool CmdParser::parse(std::vector<ParsedCommand>& commands){
+	bool found = false;
+	//std::vector<ParsedCommand> commands;
 	std::vector<std::string> tokens;
 
 	uint32_t pos = 0;
@@ -54,16 +55,19 @@ std::vector<ParsedCommand> CmdParser::parse(){
 		}
 	}
 	buffer.erase(0,lpos); // Clear parsed portion from buffer
+	if(buffer.capacity() > 100)
+		buffer.shrink_to_fit();
+
 	for(std::string word : tokens){
 		if(word.length() < 2)
 			continue;
 
 		ParsedCommand cmd;
-		cmd.rawcmd = word;
+		//cmd.rawcmd = word;
 		uint8_t cmd_start = 0;
 
 		uint32_t point1 = word.find('.', 0);
-		uint32_t point2 = word.find('.', point1); // if has unique instance char
+		uint32_t point2 = word.find('.', point1+1); // if has unique instance char
 
 //		if(word[1] == '.'){ // Axis component
 //			char axis = word.front();
@@ -71,26 +75,31 @@ std::vector<ParsedCommand> CmdParser::parse(){
 //			cmd_start = 2;
 //		}
 		// cmdstart = <cls>.
+		std::string clsname = "";
 		if(point1 != std::string::npos){
 			cmd_start = point1+1;
-			cmd.cls = word.substr(0, point1);
+			clsname = word.substr(0, point1);
+			// Get the class id from the command handler list
+			//cmd.classId = CommandHandler::getClassIdFromName(word.substr(0, point1));
 		}
 		// cmdstart = <cls>.x.
 		if(point2 != std::string::npos){
-			cmd.prefix = word[point1+1];
+			//cmd.prefix = word[point1+1];
+			cmd.instance = word[point1+1] >= '0' ? word[point1+1] - '0' : 0;
 			cmd_start = point2+1; // after second point
 		}
 
+		std::string cmdstring="";
 		if(word.back() == '?'){ // <cmd>?
 			cmd.type = CMDtype::get;
-			cmd.cmd = word.substr(cmd_start, word.length()-cmd_start - 1);
+			cmdstring = word.substr(cmd_start, word.length()-cmd_start - 1);
 	
 		}else if(word.back() == '!'){
-			cmd.cmd = word.substr(cmd_start, word.length()-cmd_start - 1);
-			cmd.type = CMDtype::help;
+			cmdstring = word.substr(cmd_start, word.length()-cmd_start - 1);
+			cmd.type = CMDtype::info;
 		
 		}else if(word.back() == '='){
-			cmd.cmd = word.substr(cmd_start, word.length()-cmd_start);
+			cmdstring = word.substr(cmd_start, word.length()-cmd_start);
 
 			cmd.type = CMDtype::err;
 
@@ -100,7 +109,7 @@ std::vector<ParsedCommand> CmdParser::parse(){
 
 			// <cmd>\n
 			if(pqm == std::string::npos && peq == std::string::npos){
-				cmd.cmd = word.substr(cmd_start, word.length()-cmd_start);
+				cmdstring = word.substr(cmd_start, word.length()-cmd_start);
 				cmd.type = CMDtype::get;
 
 			}else{ // More complex
@@ -109,25 +118,26 @@ std::vector<ParsedCommand> CmdParser::parse(){
 				bool validPqm = (pqm != std::string::npos && (std::isdigit(word[pqm+1]) || (std::isdigit(word[pqm+2]) && (word[pqm+1] == '-' || word[pqm+1] == '+' || word[pqm+1] == 'x'))));
 				bool validPeq = (peq != std::string::npos && (std::isdigit(word[peq+1]) || (std::isdigit(word[peq+2]) && (word[peq+1] == '-' || word[peq+1] == '+' || word[peq+1] == 'x'))));
 
-				if(validPqm && validPeq && pqm < peq && (abs(peq - pqm) > 1)){ // <cmd>?<int>=<int>
+				if(validPqm && validPeq && peq < pqm && (abs(pqm - peq) > 1)){ // <cmd>=<int>?<int>
 					// Dual
-					int32_t val;
-					if(word[pqm+1] == 'x'){
-						val = (int64_t)std::stoll(word.substr(pqm+2, peq-pqm),0,16);
-					}else{
-						val = (int64_t)std::stoll(word.substr(pqm+1, peq-pqm));
-					}
+					int64_t val;
 					int64_t val2;
-					if(word[peq+1] == 'x'){
-						val2 = (int64_t)std::stoll(word.substr(peq+2, word.npos),0,16);
+					if(word[pqm+1] == 'x'){
+						val2 = (int64_t)std::stoll(word.substr(pqm+2, word.npos),0,16);
 					}else{
-						val2 = (int64_t)std::stoll(word.substr(peq+1, word.npos));
+						val2 = (int64_t)std::stoll(word.substr(pqm+1, word.npos));
 					}
 
-					cmd.cmd = word.substr(cmd_start, pqm-cmd_start);
+					if(word[peq+1] == 'x'){
+						val = (int64_t)std::stoll(word.substr(peq+2, pqm-peq),0,16);
+					}else{
+						val = (int64_t)std::stoll(word.substr(peq+1, pqm-peq));
+					}
+
+					cmdstring = word.substr(cmd_start, peq-cmd_start);
 					cmd.type = CMDtype::setat;
-					cmd.val = val2;
-					cmd.adr = val;
+					cmd.val = val;
+					cmd.adr = val2;
 				
 				}else if(validPqm){ // <cmd>?<int>
 					int64_t val;
@@ -139,7 +149,7 @@ std::vector<ParsedCommand> CmdParser::parse(){
 
 					cmd.val = val;
 					cmd.type = CMDtype::getat;
-					cmd.cmd = word.substr(cmd_start, pqm-cmd_start);
+					cmdstring = word.substr(cmd_start, pqm-cmd_start);
 					cmd.adr = val;
 
 				}else if(validPeq){ // <cmd>=<int>
@@ -152,46 +162,96 @@ std::vector<ParsedCommand> CmdParser::parse(){
 
 					cmd.val = val;
 					cmd.type = CMDtype::set;
-					cmd.cmd = word.substr(cmd_start, peq-cmd_start);
+					cmdstring = word.substr(cmd_start, peq-cmd_start);
 				
 				}else{
 					continue;
 				}
 			}
 		}
+		//CommandHandler* handler = nullptr;
 
-		commands.push_back(cmd);
+		// TODO generate multiple command events if matching multiple targets
+		//handler = CommandHandler::getHandlerFromId(cmd.classId,cmd.instance);
+		if(clsname.empty()){
+			clsname = "sys"; // No name passed. fallback to system commands
+		}
+
+		if(cmd.instance != 0xFF){
+			cmd.target = (CommandHandler::getHandlerFromClassName(clsname,cmd.instance));
+			if(cmd.target == nullptr){
+				continue; // invalid class
+			}
+			CmdHandlerCommanddef* cmdDef = cmd.target->getCommandFromName(cmdstring,CMDFLAG_STR_ONLY);
+
+			if(cmdDef){
+				cmd.cmdId = cmdDef->cmdId;
+				commands.push_back(cmd);
+				found = true;
+			}
+
+
+		}else{
+			// Targeting all classes with this name. Need to get the command id from all of them
+			std::vector<CommandHandler*> targets = CommandHandler::getHandlersFromClassName(clsname);
+
+			for(CommandHandler* target : targets){
+				CmdHandlerInfo* cmdhandlerinfo = target->getCommandHandlerInfo();
+				ParsedCommand newCmd = cmd;
+				newCmd.target = target;
+
+				if(targets.size() > 1) // Get unique instance id if multiple results
+					newCmd.instance = cmdhandlerinfo->instance;
+
+				CmdHandlerCommanddef* cmdDef = newCmd.target->getCommandFromName(cmdstring,CMDFLAG_HID_ONLY);
+				if(cmdDef){
+					newCmd.cmdId = cmdDef->cmdId;
+					commands.push_back(newCmd);
+					found = true;
+				}
+			}
+		}
+		if(!found){
+			Error error = FFBoardMainCommandThread::cmdNotFoundError;
+			error.info += ":"+cmdstring;
+			ErrorHandler::addError(error);
+		}
 	}
 
-
-	return commands;
+	return found;
 }
 
 
-std::string CmdParser::formatReply(CommandResult& result){
-	std::string replystr = result.reply.reply;
-	ParseStatus status = result.reply.result;
-	if(replystr.empty() && status == ParseStatus::OK){
-		replystr = "OK";
-	}
-	// Append newline if reply is not empty
-	if(!replystr.empty() && replystr.back()!='\n'){
-		replystr+='\n';
-	}
-	// Errors
-	if(status == ParseStatus::NOT_FOUND){ //No class reported success. Show error
-		Error err = cmdNotFoundError;
-		replystr = "Err. invalid";
-		err.info = result.originalCommand.rawcmd + " not found";
-		ErrorHandler::addError(err);
 
-	}else if(status == ParseStatus::ERR){ //Error reported in command
-		replystr = "Err. exec error";
-		Error err = cmdExecError;
-		err.info = "Error executing" + result.originalCommand.rawcmd;
-		ErrorHandler::addError(err);
-	}
-
-	std::string formattedReply = ">" + result.originalCommand.rawcmd + ":" + replystr;
-	return formattedReply;
-}
+//std::string CmdParser::formatReply(const CommandResult& result){
+//
+//	std::string reply = ">";
+//	// The requesting command came originally from this interface
+//
+//
+////	std::string replystr = result.reply.reply;
+////	ParseStatus status = result.reply.result;
+////	if(replystr.empty() && status == ParseStatus::OK){
+////		replystr = "OK";
+////	}
+////	// Append newline if reply is not empty
+////	if(!replystr.empty() && replystr.back()!='\n'){
+////		replystr+='\n';
+////	}
+////	// Errors
+////	if(status == ParseStatus::NOT_FOUND){ //No class reported success. Show error
+////		Error err = cmdNotFoundError;
+////		replystr = "Err. invalid";
+////		err.info = result.originalCommand.rawcmd + " not found";
+////		ErrorHandler::addError(err);
+////
+////	}else if(status == ParseStatus::ERR){ //Error reported in command
+////		replystr = "Err. exec error";
+////		Error err = cmdExecError;
+////		err.info = "Error executing" + result.originalCommand.rawcmd;
+////		ErrorHandler::addError(err);
+////	}
+////
+////	std::string formattedReply = ">" + result.originalCommand.rawcmd + ":" + replystr;
+//	return formattedReply;
+//}

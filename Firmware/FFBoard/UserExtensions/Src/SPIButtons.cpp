@@ -17,9 +17,7 @@ static std::tuple<uint16_t, uint16_t> encodeConfToInt(ButtonSourceConfig* c);
 
 ClassIdentifier SPI_Buttons_1::info = {
 		 .name = "SPI Buttons 1" ,
-		 .clsname = "spibtn1",
-		 .id=1,
-		 .unique = '0'
+		 .id=CLSID_BTN_SPI,
  };
 const ClassIdentifier SPI_Buttons_1::getInfo(){
 	return info;
@@ -31,9 +29,7 @@ bool SPI_Buttons_1::isCreatable(){
 
 ClassIdentifier SPI_Buttons_2::info = {
 		 .name = "SPI Buttons 2" ,
-		 .clsname = "spibtn2",
-		 .id=2,
-		 .unique = '0'
+		 .id=CLSID_BTN_SPI,
  };
 const ClassIdentifier SPI_Buttons_2::getInfo(){
 	return info;
@@ -46,7 +42,7 @@ bool SPI_Buttons_2::isCreatable(){
 
 // TODO check if pin is free
 SPI_Buttons::SPI_Buttons(uint16_t configuration_address, uint16_t configuration_address_2)
-	: SPIDevice(external_spi,external_spi.getFreeCsPins()[0]){
+	: CommandHandler("spibtn",CLSID_BTN_SPI,0), SPIDevice(external_spi,external_spi.getFreeCsPins()[0]){
 
 	this->configuration_address = configuration_address;
 	this->configuration_address_2 = configuration_address_2;
@@ -58,6 +54,7 @@ SPI_Buttons::SPI_Buttons(uint16_t configuration_address, uint16_t configuration_
 	restoreFlash();
 	initSPI();
 
+	registerCommands();
 	this->setCommandsEnabled(true);
 	ready  = true;
 }
@@ -72,6 +69,16 @@ void SPI_Buttons::initSPI(){
 
 SPI_Buttons::~SPI_Buttons() {
 
+}
+
+
+void SPI_Buttons::registerCommands(){
+	CommandHandler::registerCommands();
+	registerCommand("mode", SPIButtons_commands::mode, "SPI mode",CMDFLAG_INFOSTRING);
+	registerCommand("btncut", SPIButtons_commands::btncut, "Cut buttons right");
+	registerCommand("btnpol", SPIButtons_commands::btnpol, "Invert");
+	registerCommand("btnnum", SPIButtons_commands::btnnum, "Number of buttons");
+	registerCommand("cs", SPIButtons_commands::cs, "SPI CS pin");
 }
 
 /*
@@ -167,72 +174,72 @@ uint8_t SPI_Buttons::readButtons(uint64_t* buf){
 	return this->btnnum;
 }
 
-void SPI_Buttons::printModes(std::string* reply){
+std::string SPI_Buttons::printModes(){
+	std::string reply;
 	for(uint8_t i = 0; i<mode_names.size();i++){
-		*reply+=  mode_names[i]  + ":" + std::to_string(i)+"\n";
+		reply+=  mode_names[i]  + ":" + std::to_string(i)+"\n";
 	}
+	return reply;
 }
 
-ParseStatus SPI_Buttons::command(ParsedCommand* cmd,std::string* reply){
-	ParseStatus result = ParseStatus::OK;
+CommandStatus SPI_Buttons::command(const ParsedCommand& cmd,std::vector<CommandReply>& replies){
 
-	if(cmd->prefix != static_cast<CommandHandler&>(*this).getInfo().id + '0'){ // #.cmd
-		return ParseStatus::NOT_FOUND;
-	}
-
-	if(cmd->cmd == "spi_btnnum"){
-		if(cmd->type == CMDtype::set){
+	switch(static_cast<SPIButtons_commands>(cmd.cmdId)){
+	case SPIButtons_commands::btnnum:
+		if(cmd.type == CMDtype::set){
 			ButtonSourceConfig* c = this->getConfig();
-			c->numButtons = cmd->val;
+			c->numButtons = cmd.val;
 			this->setConfig(*c);
-
-		}else if(cmd->type == CMDtype::get){
-			*reply+=std::to_string(this->getBtnNum());
+		}else if(cmd.type == CMDtype::get){
+			replies.push_back(CommandReply(this->getBtnNum()));
 		}else{
-			*reply+="Err. Supply number of buttons";
+			return CommandStatus::ERR;
 		}
-	}else if(cmd->cmd == "spi_btnpol"){
-		if(cmd->type == CMDtype::set){
+		break;
+	case SPIButtons_commands::btnpol:
+		if(cmd.type == CMDtype::set){
 			ButtonSourceConfig* c = this->getConfig();
-			c->invert = cmd->val == 0 ? false : true;
+			c->invert = cmd.val != 0;
 			this->setConfig(*c);
-
-		}else if(cmd->type == CMDtype::get){
-			ButtonSourceConfig* c = this->getConfig();
-			*reply+=std::to_string(c->invert);
+		}else if(cmd.type == CMDtype::get){
+			replies.push_back(CommandReply(this->getConfig()->invert ? 1 : 0));
 		}else{
-			*reply+="Err. invert: 1 else 0";
-			result = ParseStatus::ERR;
+			return CommandStatus::ERR;
 		}
-	}else if(cmd->cmd == "spi_btncut"){
-		if(cmd->type == CMDtype::set){
+		break;
+	case SPIButtons_commands::btncut:
+		if(cmd.type == CMDtype::set){
 			ButtonSourceConfig* c = this->getConfig();
-			c->cutRight = cmd->val == 0 ? false : true;
+			c->cutRight = cmd.val != 0;
 			this->setConfig(*c);
-
-		}else if(cmd->type == CMDtype::get){
-			ButtonSourceConfig* c = this->getConfig();
-			*reply+=std::to_string(c->cutRight);
-
+		}else if(cmd.type == CMDtype::get){
+			replies.push_back(CommandReply(this->getConfig()->cutRight ? 1 : 0));
 		}else{
-			*reply+="Err. cut bytes right: 1 else 0";
+			return CommandStatus::ERR;
 		}
-	}else if(cmd->cmd == "spi_btn_mode"){
-		if(cmd->type == CMDtype::set){
-			setMode((SPI_BtnMode)cmd->val);
-		}else if(cmd->type == CMDtype::get){
-			*reply += std::to_string((uint8_t)this->conf.mode);
+		break;
+	case SPIButtons_commands::mode:
+		if(cmd.type == CMDtype::set){
+			setMode((SPI_BtnMode)cmd.val);
+		}else if(cmd.type == CMDtype::get){
+			replies.push_back(CommandReply((uint8_t)this->conf.mode));
+		}else if(cmd.type == CMDtype::info){
+			replies.push_back(CommandReply(printModes()));
 		}else{
-			printModes(reply);
+			return CommandStatus::ERR;
 		}
-	} else if (cmd->cmd == "spi_btn_cs"){
-		if (handleGetSet(cmd, reply, this->conf.cs_num)) {
+		break;
+
+	case SPIButtons_commands::cs:
+		if (handleGetSet(cmd, replies, this->conf.cs_num) == CommandStatus::OK ) {
 			setConfig(this->conf);
 		}
-	}else{
-		result = ParseStatus::NOT_FOUND;
+
+	default:
+		return CommandStatus::NOT_FOUND;
 	}
-	return result;
+
+	return CommandStatus::OK;
 }
 
 static ButtonSourceConfig decodeIntToConf(uint16_t config_int, uint16_t config_int_2){
