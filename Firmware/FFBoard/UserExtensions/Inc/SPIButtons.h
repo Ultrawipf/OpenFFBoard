@@ -46,7 +46,7 @@ public:
 
 	CommandStatus command(const ParsedCommand& cmd,std::vector<CommandReply>& replies) override;
 	void registerCommands();
-	virtual std::string getHelpstring(){return "SPI Button (#=id): #.spi_btn_mode,#.spi_btncut,#.spi_btnpol,#.spi_btnnum\n";}
+	virtual std::string getHelpstring(){return "SPI 2 Button";}
 
 	void saveFlash();
 	void restoreFlash();
@@ -87,6 +87,7 @@ public:
 	const ClassIdentifier getInfo() override;
 	static ClassIdentifier info;
 	static bool isCreatable();
+	static bool exists;
 };
 
 class SPI_Buttons_2 : public SPI_Buttons {

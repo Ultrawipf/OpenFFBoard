@@ -96,12 +96,14 @@ CommandStatus LocalAnalog::command(const ParsedCommand& cmd,std::vector<CommandR
 			}else if(cmd.type == CMDtype::set){
 				setAutorange(cmd.val != 0);
 			}
+			break;
 		case LocalAnaloc_commands::pins:
 			if(cmd.type == CMDtype::get){
 				replies.push_back(CommandReply(numPins));
 			}else{
 				return CommandStatus::ERR;
 			}
+			break;
 
 		default:
 			return CommandStatus::NOT_FOUND;
