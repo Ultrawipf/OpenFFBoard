@@ -299,7 +299,7 @@ CommandStatus CanBridge::command(const ParsedCommand& cmd,std::vector<CommandRep
 	switch(static_cast<CanBridge_commands>(cmd.cmdId)){
 	case CanBridge_commands::can:
 		if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply(lastmsg.header.StdId,*(int64_t*)lastmsg.data));
+			replies.push_back(CommandReply(*(int64_t*)lastmsg.data,lastmsg.header.StdId));
 		}else if(cmd.type == CMDtype::setat){
 			sendMessage(cmd.adr,cmd.val);
 		}else{
@@ -310,7 +310,7 @@ CommandStatus CanBridge::command(const ParsedCommand& cmd,std::vector<CommandRep
 
 	case CanBridge_commands::canrtr:
 		if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply(lastmsg.header.StdId,*(int64_t*)lastmsg.data));
+			replies.push_back(CommandReply(*(int64_t*)lastmsg.data,lastmsg.header.StdId));
 		}else if(cmd.type == CMDtype::setat){
 			sendMessage(cmd.adr,cmd.val,8,true); // msg with rtr bit
 		}else{

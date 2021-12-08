@@ -169,16 +169,14 @@ bool CmdParser::parse(std::vector<ParsedCommand>& commands){
 				}
 			}
 		}
-		//CommandHandler* handler = nullptr;
 
-		// TODO generate multiple command events if matching multiple targets
-		//handler = CommandHandler::getHandlerFromId(cmd.classId,cmd.instance);
+
 		if(clsname.empty()){
 			clsname = "sys"; // No name passed. fallback to system commands
 		}
 
 		if(cmd.instance != 0xFF){
-			cmd.target = (CommandHandler::getHandlerFromClassName(clsname,cmd.instance));
+			cmd.target = (CommandHandler::getHandlerFromClassName(clsname.c_str(),cmd.instance));
 			if(cmd.target == nullptr){
 				continue; // invalid class
 			}
@@ -193,7 +191,7 @@ bool CmdParser::parse(std::vector<ParsedCommand>& commands){
 
 		}else{
 			// Targeting all classes with this name. Need to get the command id from all of them
-			std::vector<CommandHandler*> targets = CommandHandler::getHandlersFromClassName(clsname);
+			std::vector<CommandHandler*> targets = CommandHandler::getHandlersFromClassName(clsname.c_str());
 
 			for(CommandHandler* target : targets){
 				CmdHandlerInfo* cmdhandlerinfo = target->getCommandHandlerInfo();
