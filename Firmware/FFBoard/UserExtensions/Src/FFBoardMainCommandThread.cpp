@@ -40,10 +40,7 @@ FFBoardMainCommandThread::~FFBoardMainCommandThread() {
 
 
 void FFBoardMainCommandThread::updateSys(){
-//	if(this->parserReady){
-//		this->parserReady = false;
-//		executeCommands(this->parser.parse()); // Don't call this in interrupts!
-//	}
+
 	// Ask command interfaces if new commands are available if woken up
 	//cpp_freertos::CriticalSection::SuspendScheduler();
 	for(CommandInterface* itf : CommandInterface::cmdInterfaces){
@@ -122,7 +119,6 @@ void FFBoardMainCommandThread::executeCommands(std::vector<ParsedCommand> comman
 			resultObj.commandHandler = handler;
 			//this->results.push_back(resultObj);
 			// Not found if result is empty
-			sizeof(resultObj);
 			this->results.push_back(resultObj);
 		}
 		if(!this->results.empty()){
@@ -132,7 +128,4 @@ void FFBoardMainCommandThread::executeCommands(std::vector<ParsedCommand> comman
 		}
 	}
 	//cpp_freertos::CriticalSection::ResumeScheduler();
-
-
-
 }
