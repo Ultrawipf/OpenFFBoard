@@ -113,7 +113,7 @@ std::string StringCommandInterface::formatOriginalCommandFromResult(const Parsed
 	if(!cmdDef){
 		return ""; // can not find cmd. should never happen
 	}
-	cmdstring += cmdDef->cmd;
+	cmdstring += std::string(cmdDef->cmd);
 	if(originalCommand.type == CMDtype::get || (formatWriteAsRead && originalCommand.type == CMDtype::set)){
 		cmdstring += "?";
 

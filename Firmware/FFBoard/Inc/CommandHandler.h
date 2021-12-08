@@ -41,16 +41,19 @@ enum class CommandReplyType : uint8_t {NONE,ACK,INT,STRING,STRING_OR_INT,STRING_
 
 class CommandInterface;
 class CommandHandler; // defined lower
-struct CmdHandlerCommanddef{
-	std::string cmd;
-	std::string helpstring;
-	uint32_t cmdId;
-	uint32_t flags;
+
+struct CmdHandlerCommanddef
+{
+	const char* cmd = nullptr;
+	const char* helpstring = nullptr;
+	const uint32_t cmdId;
+	const uint32_t flags;
 };
 
-struct CmdHandlerInfo{
-	std::string clsname;
-	uint16_t clsTypeid;
+struct CmdHandlerInfo
+{
+	const char* clsname = nullptr;
+	const uint16_t clsTypeid;
 	uint8_t instance;
 	uint16_t commandHandlerID = 1;
 };
@@ -76,17 +79,16 @@ public:
 	CommandReply(){}; // empty
 	CommandReply(CommandReplyType type) : type(type){}; // empty
 	CommandReply(int64_t val) : val(val), type(CommandReplyType::INT){};
-	CommandReply(int64_t adr,int64_t val) : adr(adr),val(val),type(CommandReplyType::DOUBLEINTS){};
+	CommandReply(int64_t val,int64_t adr) : val(val),adr(adr),type(CommandReplyType::DOUBLEINTS){};
 	CommandReply(std::string reply) : reply(reply), type(CommandReplyType::STRING){};
 	CommandReply(std::string reply,int64_t val) : reply(reply),val(val), type(CommandReplyType::STRING_OR_INT){};
-	CommandReply(std::string reply,int64_t adr,int64_t val) : reply(reply),adr(adr),val(val), type(CommandReplyType::STRING_OR_DOUBLEINT){};
+	CommandReply(std::string reply,int64_t val,int64_t adr) : reply(reply),val(val),adr(adr), type(CommandReplyType::STRING_OR_DOUBLEINT){};
 
-    std::string reply="";
-    int64_t adr = 0;
+    std::string reply;
     int64_t val = 0;
+    int64_t adr = 0;
     CommandReplyType type = CommandReplyType::ACK;
 };
-
 
 struct CommandResult {
 	std::vector<CommandReply> reply;
@@ -113,14 +115,14 @@ class CommandHandler {
 public:
 	static std::vector<CommandHandler*> cmdHandlers; //!< List of all registered command handlers to be called on commands
 	static std::set<uint16_t> cmdHandlerIDs; //!< Reserves dynamic unique IDs to keep track of command handlers
-
+	static cpp_freertos::MutexStandard cmdHandlerListMutex;
 	/**
 	 * Type of this class. Mainclass, motordriver...
 	 * Should be implemented by the parent class so it is not in the info struct
 	 */
 	virtual const ClassType getClassType(){return ClassType::NONE;};
 
-	CommandHandler(std::string clsname,uint16_t clsid,uint8_t instance = 0);
+	CommandHandler(const char* clsname,uint16_t clsid,uint8_t instance = 0);
 	virtual ~CommandHandler();
 	virtual bool hasCommands();
 	virtual void setCommandsEnabled(bool enable);
@@ -132,35 +134,35 @@ public:
 	virtual const ClassIdentifier getInfo() = 0; //!< Command handlers always have class infos. Works well with ChoosableClass
 
 	virtual std::string getHelpstring(); // Returns a help string if "help" command is sent
-	std::string getCommandsHelpstring(); // Returns a list of the commands helpstrings
+	virtual std::string getCommandsHelpstring(); // Returns a list of the commands helpstrings
 	static void sendSerial(std::string cls,std::string cmd,std::string string,uint8_t prefix = 0xFF); //!< Send a command reply formatted sequence
 	static void logSerial(std::string string);	//!< Send a log formatted sequence
 
 	static bool logEnabled;
 	static bool logsEnabled();
 	static void setLogsEnabled(bool enabled);
-	uint16_t getCommandHandlerID(){return this->cmdHandlerInfo.commandHandlerID;}
+	virtual uint16_t getCommandHandlerID(){return this->cmdHandlerInfo.commandHandlerID;}
 	virtual uint16_t getSelectionID(){return this->getInfo().id;} //!< normally returns class id but for choosable classes this can be the id used to create the class
 
-	CmdHandlerInfo* getCommandHandlerInfo();
+	virtual CmdHandlerInfo* getCommandHandlerInfo();
 
 
 
-	static uint32_t getClassIdFromName(const std::string name);
+	static uint32_t getClassIdFromName(const char* name);
 	static const std::string getClassNameFromId(const uint32_t id);
 
 	static CommandHandler* getHandlerFromHandlerId(const uint16_t cmdhandlerID);
 	static CommandHandler* getHandlerFromId(const uint16_t id,const uint8_t instance=0xFF);
-	static CommandHandler* getHandlerFromClassName(const std::string name,const uint8_t instance=0xFF);
-	static std::vector<CommandHandler*> getHandlersFromClassName(const std::string name);
+	static CommandHandler* getHandlerFromClassName(const char* name,const uint8_t instance=0xFF);
+	static std::vector<CommandHandler*> getHandlersFromClassName(const char* name);
 	static bool isInHandlerList(CommandHandler* handler);
 
 	static std::string getAllHelpstrings();
 
-	bool isValidCommandId(uint32_t cmdid,uint32_t ignoredFlags=0,uint32_t requiredFlag=0);
+	virtual bool isValidCommandId(uint32_t cmdid,uint32_t ignoredFlags=0,uint32_t requiredFlag=0);
 
-	CmdHandlerCommanddef* getCommandFromName(const std::string cmd,uint32_t ignoredFlags=0);
-	CmdHandlerCommanddef* getCommandFromId(const uint32_t id,uint32_t ignoredFlags=0);
+	virtual CmdHandlerCommanddef* getCommandFromName(const std::string& cmd,uint32_t ignoredFlags=0);
+	virtual CmdHandlerCommanddef* getCommandFromId(const uint32_t id,uint32_t ignoredFlags=0);
 
 protected:
 	void setInstance(uint8_t instance);
@@ -218,26 +220,25 @@ protected:
 	}
 
 	//uint16_t commandHandlerID = 1; // 0 reserved for system
-	cpp_freertos::MutexStandard cmdHandlerListMutex;
+
 
 	std::vector<CmdHandlerCommanddef> registeredCommands;
 	//void registerCommand(std::string cmd,uint16_t cmdid, std::string help="");
 	// Helper to be used with class enums
 	template<typename ID>
-	void registerCommand(const std::string cmd,const ID cmdid,const std::string help="",uint32_t flags = 0){
+	void registerCommand(const char* cmd,const ID cmdid,const char* help=nullptr,uint32_t flags = 0){
 		for(CmdHandlerCommanddef& cmdDef : registeredCommands){
 			if(cmdDef.cmdId == static_cast<uint32_t>(cmdid))
 				return; //already present
 		}
 
 		CmdHandlerCommanddef cmddef = {
-				.cmd=cmd,
-				.helpstring = help,
-				.cmdId = static_cast<uint32_t>(cmdid),
-				.flags = flags
+			.cmd=cmd,
+			.helpstring = help,
+			.cmdId = static_cast<uint32_t>(cmdid),
+			.flags = flags
 		};
-		registeredCommands.push_back(cmddef);
-		//registerCommand(cmd,static_cast<uint16_t>(cmdid),help);
+		this->registeredCommands.push_back(cmddef);
 	}
 
 
