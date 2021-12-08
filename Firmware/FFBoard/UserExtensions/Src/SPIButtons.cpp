@@ -74,11 +74,11 @@ SPI_Buttons::~SPI_Buttons() {
 
 void SPI_Buttons::registerCommands(){
 	CommandHandler::registerCommands();
-	registerCommand("mode", SPIButtons_commands::mode, "SPI mode",CMDFLAG_INFOSTRING);
-	registerCommand("btncut", SPIButtons_commands::btncut, "Cut buttons right");
-	registerCommand("btnpol", SPIButtons_commands::btnpol, "Invert");
-	registerCommand("btnnum", SPIButtons_commands::btnnum, "Number of buttons");
-	registerCommand("cs", SPIButtons_commands::cs, "SPI CS pin");
+	registerCommand("mode", SPIButtons_commands::mode, "SPI mode",CMDFLAG_INFOSTRING | CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("btncut", SPIButtons_commands::btncut, "Cut buttons right",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("btnpol", SPIButtons_commands::btnpol, "Invert",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("btnnum", SPIButtons_commands::btnnum, "Number of buttons",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("cs", SPIButtons_commands::cs, "SPI CS pin",CMDFLAG_GET | CMDFLAG_SET);
 }
 
 /*
@@ -234,6 +234,7 @@ CommandStatus SPI_Buttons::command(const ParsedCommand& cmd,std::vector<CommandR
 		if (handleGetSet(cmd, replies, this->conf.cs_num) == CommandStatus::OK ) {
 			setConfig(this->conf);
 		}
+		break;
 
 	default:
 		return CommandStatus::NOT_FOUND;
