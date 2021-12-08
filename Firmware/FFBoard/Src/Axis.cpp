@@ -71,7 +71,7 @@ void Axis::registerCommands(){
 	registerCommand("idlespring", Axis_commands::idlespring, "Idle spring strength");
 	registerCommand("axisdamper", Axis_commands::axisdamper, "Independent damper effect");
 	registerCommand("enctype", Axis_commands::enctype, "Encoder type get/set/list");
-	registerCommand("drvtype", Axis_commands::enctype, "Motor driver type get/set/list");
+	registerCommand("drvtype", Axis_commands::drvtype, "Motor driver type get/set/list");
 	registerCommand("pos", Axis_commands::pos, "Axis position");
 	registerCommand("maxspeed", Axis_commands::maxspeed, "Speed limit in deg/s");
 	registerCommand("maxtorquerate", Axis_commands::maxtorquerate, "Torque rate limit in counts/ms");
