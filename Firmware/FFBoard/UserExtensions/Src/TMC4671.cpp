@@ -2121,7 +2121,7 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 		break;
 	case TMC4671_commands::tmcIscale:
 		if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply(this->conf.hwconf.currentScaler));
+			replies.push_back(CommandReply(std::to_string(this->conf.hwconf.currentScaler))); // TODO float as value?
 		}
 		break;
 	case TMC4671_commands::encdir:
