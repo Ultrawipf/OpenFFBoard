@@ -14,12 +14,13 @@
 
 std::vector<CommandHandler*> CommandHandler::cmdHandlers;
 std::set<uint16_t> CommandHandler::cmdHandlerIDs;
+cpp_freertos::MutexStandard CommandHandler::cmdHandlerListMutex;
 bool CommandHandler::logEnabled = true; // If logs are sent by default
 
 /**
  * clsname and clsid identify this class in commands additionally to the unique instance field which can be assigned at runtime
  */
-CommandHandler::CommandHandler(std::string clsname,uint16_t clsid,uint8_t instance) : cmdHandlerInfo({clsname,clsid,instance}) {
+CommandHandler::CommandHandler(const char* clsname,uint16_t clsid,uint8_t instance) : cmdHandlerInfo({clsname,clsid,instance}) {
 	addCommandHandler();
 }
 
@@ -33,7 +34,13 @@ CommandHandler::~CommandHandler() {
 std::string CommandHandler::getCommandsHelpstring(){
 	std::string helpstring;
 	ClassIdentifier info = this->getInfo();
-	helpstring = std::string(info.name) + "(" + cmdHandlerInfo.clsname + "." + std::to_string(cmdHandlerInfo.instance) + "):\n";
+	if(info.name == nullptr || cmdHandlerInfo.clsname == nullptr){
+		return "";
+	}
+	helpstring.append(info.name);
+	helpstring +=  "(";
+	helpstring.append(cmdHandlerInfo.clsname);
+	helpstring += "." + std::to_string(cmdHandlerInfo.instance) + "):\n";
 	std::string handlerHelp = getHelpstring();
 
 	if(!handlerHelp.empty()){
@@ -43,10 +50,14 @@ std::string CommandHandler::getCommandsHelpstring(){
 	if(registeredCommands.empty()){
 		helpstring += "No commands.";
 	}else{
-		helpstring += "Available commands with help:\n";
+		helpstring += "Commands with help:\n";
 		for(CmdHandlerCommanddef& cmd : registeredCommands){
-			if(!cmd.helpstring.empty())
-				helpstring += cmd.cmd + "," + std::to_string(cmd.cmdId) + "," + cmd.helpstring + "\n";
+			if(cmd.helpstring != nullptr && cmd.cmd != nullptr){
+				helpstring.append(cmd.cmd);
+				helpstring += "," + std::to_string(cmd.cmdId) + ",";
+				helpstring.append(cmd.helpstring);
+				helpstring += "\n";
+			}
 				//helpstring += cmd.cmd + ":" + cmd.helpstring+"\n";
 		}
 	}
@@ -67,7 +78,7 @@ void CommandHandler::registerCommands(){
  * Returns the ID of a command from a string
  * Ignores commands that match ignoredFlags
  */
-CmdHandlerCommanddef* CommandHandler::getCommandFromName(const std::string cmd,uint32_t ignoredFlags){
+CmdHandlerCommanddef* CommandHandler::getCommandFromName(const std::string& cmd,uint32_t ignoredFlags){
 	for(CmdHandlerCommanddef& cmdItem : registeredCommands){
 		if(cmdItem.cmd == cmd && !(cmdItem.flags & ignoredFlags)){
 			return &cmdItem;
@@ -158,11 +169,11 @@ void CommandHandler::setLogsEnabled(bool enable){
  * Searches cmd handlers and returns its class id if the classname matches
  * To be used to convert from string commands to ids
  */
-uint32_t CommandHandler::getClassIdFromName(const std::string name){
+uint32_t CommandHandler::getClassIdFromName(const char* name){
 
 	for(CommandHandler* cls : cmdHandlers){
 		CmdHandlerInfo* cmdhandlerinfo = cls->getCommandHandlerInfo();
-		if(cmdhandlerinfo->clsname == name){
+		if(strcmp(cmdhandlerinfo->clsname , name) == 0){
 			return cmdhandlerinfo->clsTypeid;
 		}
 	}
@@ -198,21 +209,21 @@ CommandHandler* CommandHandler::getHandlerFromId(const uint16_t id,const uint8_t
 	return nullptr;
 }
 
-CommandHandler* CommandHandler::getHandlerFromClassName(const std::string name,const uint8_t instance){
+CommandHandler* CommandHandler::getHandlerFromClassName(const char* name,const uint8_t instance){
 
 	for(CommandHandler* cls : cmdHandlers){
 		CmdHandlerInfo* cmdhandlerinfo = cls->getCommandHandlerInfo();
-		if(cmdhandlerinfo->clsname == name && (cmdhandlerinfo->instance == instance || instance == 0xFF)){
+		if(strcmp(cmdhandlerinfo->clsname, name) == 0 && (cmdhandlerinfo->instance == instance || instance == 0xFF)){
 			return cls;
 		}
 	}
 	return nullptr;
 }
-std::vector<CommandHandler*> CommandHandler::getHandlersFromClassName(const std::string name){
+std::vector<CommandHandler*> CommandHandler::getHandlersFromClassName(const char* name){
 	std::vector<CommandHandler*> reply;
 	for(CommandHandler* cls : cmdHandlers){
 		CmdHandlerInfo* cmdhandlerinfo = cls->getCommandHandlerInfo();
-		if(cmdhandlerinfo->clsname == name){
+		if(strcmp(cmdhandlerinfo->clsname, name) == 0){
 			reply.push_back(cls);
 		}
 	}

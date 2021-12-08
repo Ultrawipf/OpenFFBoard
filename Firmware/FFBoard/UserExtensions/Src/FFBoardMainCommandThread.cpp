@@ -28,8 +28,8 @@ Error FFBoardMainCommandThread::cmdExecError = Error(ErrorCode::cmdExecutionErro
 cpp_freertos::BinarySemaphore FFBoardMainCommandThread::threadSem = cpp_freertos::BinarySemaphore();
 
 
-
-FFBoardMainCommandThread::FFBoardMainCommandThread(FFBoardMain* mainclass) : Thread("cmdparser",512, 39) {
+// Note: allocate enough memory for the command thread to store replies
+FFBoardMainCommandThread::FFBoardMainCommandThread(FFBoardMain* mainclass) : Thread("cmdparser",1500, 39) {
 	//main = mainclass;
 	this->Start();
 }
@@ -122,6 +122,7 @@ void FFBoardMainCommandThread::executeCommands(std::vector<ParsedCommand> comman
 			resultObj.commandHandler = handler;
 			//this->results.push_back(resultObj);
 			// Not found if result is empty
+			sizeof(resultObj);
 			this->results.push_back(resultObj);
 		}
 		if(!this->results.empty()){

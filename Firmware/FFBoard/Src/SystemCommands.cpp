@@ -63,13 +63,13 @@ CommandStatus SystemCommands::internalCommand(const ParsedCommand& cmd,std::vect
 	{
 		case FFBoardMain_commands::help:
 		{// help
-			std::string reply =	interface->getHelpstring();
-			reply += "\n"+this->getCommandsHelpstring() + "\n";
-			reply += "\nAvailable classes (use cls.0.help for more info):\n";
+			std::string reply =	interface->getHelpstring() + "\nAvailable classes (use cls.0.help for more info):\n";
+			//std::string reply = "";
 			for(CommandHandler* handler : CommandHandler::cmdHandlers){
 				CmdHandlerInfo* info = handler->getCommandHandlerInfo();
-				reply += info->clsname + "." + std::to_string(info->instance)+"\n";
+				reply += std::string(info->clsname) + "." + std::to_string(info->instance)+"\n";
 			}
+			reply +=  "\n"+this->getCommandsHelpstring();
 			replies.push_back(CommandReply(reply));
 
 			break;
