@@ -1952,7 +1952,7 @@ void TMC4671::registerCommands(){
 	registerCommand("phiesrc", TMC4671_commands::phiesrc, "PhiE source");
 	registerCommand("fluxoffset", TMC4671_commands::fluxoffset, "Offset flux scale for field weakening");
 	registerCommand("seqpi", TMC4671_commands::seqpi, "Sequential PI");
-	registerCommand("iScale", TMC4671_commands::tmcIscale, "Counts per A");
+	registerCommand("iScale", TMC4671_commands::tmcIscale, "Counts per A",CMDFLAG_STR_ONLY);
 	registerCommand("encdir", TMC4671_commands::encdir, "Encoder dir");
 	registerCommand("temp", TMC4671_commands::temp, "Temperature in C * 100");
 	registerCommand("reg", TMC4671_commands::reg, "Read or write a TMC register at adr");
@@ -1996,7 +1996,7 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 			// List known hardware versions
 			for(auto v : tmcHwVersionNames){
 				if(conf.canChangeHwType || v.first == conf.hwconf.hwVersion){
-					replies.push_back(CommandReply( std::to_string((uint8_t)v.first) + ":" + v.second + "\n",(uint8_t)v.first));
+					replies.push_back(CommandReply( std::to_string((uint8_t)v.first) + ":" + v.second,(uint8_t)v.first));
 				}
 
 			}
