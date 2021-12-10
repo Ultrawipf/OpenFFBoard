@@ -71,27 +71,34 @@ void StringCommandInterface::formatReply(std::string& reply,const std::vector<Co
 		reply += StringCommandInterface::formatOriginalCommandFromResult(result.originalCommand,result.commandHandler, formatWriteAsRead);
 		reply += "|"; // Separator
 
-		if(result.type == CommandStatus::NOT_FOUND){
-			reply += "NOT_FOUND";
-			//ErrorHandler::addError(CommandInterface::cmdNotFoundError);
-		}else if(result.type == CommandStatus::OK){
-			if(result.reply.empty()){
-				reply += "OK";
-			}else{
-				uint16_t repliesRemaining = result.reply.size();
-				for(const CommandReply& cmdReply : result.reply){ // For all entries of this command. Normally just one
-					std::string tstr;
-					//TODO Long replies fail HERE while copying reply strings
-					StringCommandInterface::generateReplyValueString(tstr,cmdReply);
-					reply += tstr;
-					if(--repliesRemaining > 0){
-						reply += "\n"; // Separate replies with newlines
+		if(formatWriteAsRead){
+			std::string tstr;
+			StringCommandInterface::generateReplyFromCmd(tstr,result.originalCommand);
+			reply += tstr;
+		}else{
+			if(result.type == CommandStatus::NOT_FOUND){
+				reply += "NOT_FOUND";
+				//ErrorHandler::addError(CommandInterface::cmdNotFoundError);
+			}else if(result.type == CommandStatus::OK){
+				if(result.reply.empty()){
+					reply += "OK";
+				}else{
+					uint16_t repliesRemaining = result.reply.size();
+					for(const CommandReply& cmdReply : result.reply){ // For all entries of this command. Normally just one
+						std::string tstr;
+						//TODO Long replies fail HERE while copying reply strings
+						StringCommandInterface::generateReplyValueString(tstr,cmdReply);
+						reply += tstr;
+						if(--repliesRemaining > 0){
+							reply += "\n"; // Separate replies with newlines
+						}
 					}
 				}
+			}else if(result.type == CommandStatus::ERR){
+				reply += "ERR";
 			}
-		}else if(result.type == CommandStatus::ERR){
-			reply += "ERR";
 		}
+
 		reply += "]\n"; // end marker
 	}
 }
@@ -150,6 +157,16 @@ void StringCommandInterface::generateReplyValueString(std::string& replyPart,con
 	}
 }
 
+void StringCommandInterface::generateReplyFromCmd(std::string& replyPart,const ParsedCommand& originalCommand){
+	if(originalCommand.type == CMDtype::set){
+		replyPart = std::to_string(originalCommand.val);
+	}else if(originalCommand.type == CMDtype::setat){
+		replyPart = std::to_string(originalCommand.adr) + ":" + std::to_string(originalCommand.val);
+	}else{
+		replyPart = "OK";
+	}
+}
+
 
 /*
  *
@@ -167,26 +184,9 @@ CDC_CommandInterface::~CDC_CommandInterface() {
 }
 
 
-///**
-// * Adds a buffer to the parser
-// * if it returns true resume the thread
-// */
-//bool CDC_CommandInterface::addBuf(char* Buf, uint32_t *Len){
-//	bool res = this->parser.add(Buf, Len);
-//	if(res){
-//		parserReady = true; // Signals that we should execute commands in the thread
-//		FFBoardMainCommandThread::wakeUp();
-//	}
-//	return res;
-//}
 
 void CDC_CommandInterface::sendReplies(std::vector<CommandResult>& results,CommandInterface* originalInterface){
-//	if(originalInterface != this && originalInterface != nullptr)
-//		return;
-//	std::string replystr = "";
-//	for(CommandResult& result : results){
-//		replystr += parser.formatReply(result);
-//	}
+
 	std::string replystr;
 	StringCommandInterface::formatReply(replystr,results, originalInterface != this && originalInterface != nullptr);
 	CDCcomm::cdcSend(&replystr, 0);
@@ -233,6 +233,5 @@ void UART_CommandInterface::uartRcv(char& buf){
 	uint32_t len = 1;
 	StringCommandInterface::addBuf(&buf, &len);
 }
-
 
 

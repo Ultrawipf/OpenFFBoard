@@ -42,7 +42,6 @@ FFBoardMainCommandThread::~FFBoardMainCommandThread() {
 void FFBoardMainCommandThread::updateSys(){
 
 	// Ask command interfaces if new commands are available if woken up
-	//cpp_freertos::CriticalSection::SuspendScheduler();
 	for(CommandInterface* itf : CommandInterface::cmdInterfaces){
 		if(itf->hasNewCommands()){
 			itf->getNewCommands(commands);
@@ -52,7 +51,7 @@ void FFBoardMainCommandThread::updateSys(){
 				commands.shrink_to_fit();
 		}
 	}
-	//cpp_freertos::CriticalSection::ResumeScheduler();
+
 	FFBoardMainCommandThread::threadSem.Take(); // Stop thread again. will be resumed when parser ready
 }
 

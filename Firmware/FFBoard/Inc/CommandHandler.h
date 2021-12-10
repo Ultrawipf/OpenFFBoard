@@ -62,7 +62,6 @@ struct CmdHandlerInfo
 struct ParsedCommand
 {
 	uint32_t cmdId=0;
-	uint32_t classId=0;
     int64_t adr = 0;
     int64_t val = 0;
     uint8_t instance = 0xFF; // instance number. decided by the class. 0xFF if all instances are targeted
@@ -155,6 +154,7 @@ public:
 	static CommandHandler* getHandlerFromId(const uint16_t id,const uint8_t instance=0xFF);
 	static CommandHandler* getHandlerFromClassName(const char* name,const uint8_t instance=0xFF);
 	static std::vector<CommandHandler*> getHandlersFromClassName(const char* name);
+	static std::vector<CommandHandler*> getHandlersFromId(const uint16_t id);
 	static bool isInHandlerList(CommandHandler* handler);
 
 	static std::string getAllHelpstrings();

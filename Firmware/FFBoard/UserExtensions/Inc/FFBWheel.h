@@ -34,6 +34,7 @@
 #include "hid_cmd_defs.h"
 #include "ErrorHandler.h"
 #include "memory"
+#include "HidCommandInterface.h"
 
 class FFBWheel: public FFBoardMain, TimerHandler, PersistentStorage,ExtiHandler,UsbHidHandler, ErrorHandler{
 	enum class FFBWheel_commands : uint32_t{
@@ -115,8 +116,8 @@ private:
 	ClassChooser<ButtonSource> btn_chooser;
 	ClassChooser<AnalogSource> analog_chooser;
 
-
-
+	//HID_CommandInterface hidCommands; // Enables full HID control
+	std::unique_ptr<HID_CommandInterface> hidCommands = std::make_unique<HID_CommandInterface>();
 
 	uint32_t lastUsbReportTick = 0;
 };

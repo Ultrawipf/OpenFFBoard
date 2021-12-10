@@ -230,6 +230,17 @@ std::vector<CommandHandler*> CommandHandler::getHandlersFromClassName(const char
 	return reply;
 }
 
+std::vector<CommandHandler*> CommandHandler::getHandlersFromId(const uint16_t id){
+	std::vector<CommandHandler*> reply;
+	for(CommandHandler* cls : cmdHandlers){
+		CmdHandlerInfo* cmdhandlerinfo = cls->getCommandHandlerInfo();
+		if(id == cmdhandlerinfo->clsTypeid){
+			reply.push_back(cls);
+		}
+	}
+	return reply;
+}
+
 bool CommandHandler::isInHandlerList(CommandHandler* handler){
 	return std::find(cmdHandlers.begin(), cmdHandlers.end(), handler) != cmdHandlers.end();
 }
