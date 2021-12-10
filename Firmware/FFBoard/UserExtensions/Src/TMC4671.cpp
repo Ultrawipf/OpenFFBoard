@@ -926,7 +926,7 @@ void TMC4671::ABN_init(){
 				setPhiEtype(PhiE::abn);
 				encstate = ENC_InitState::OK; // Skip for DC motors
 				if(manualEncAlign){
-					CommandHandler::sendSerial(this->getCommandHandlerInfo()->clsname,"encalign","DC motors don't support alignment",this->getCommandHandlerInfo()->instance);
+					CommandHandler::sendSerial(this->getCommandHandlerInfo()->clsname,"encalign?","DC motors don't support alignment",this->getCommandHandlerInfo()->instance);
 				}
 			}else{
 				encstate = ENC_InitState::estimating;
@@ -967,7 +967,7 @@ void TMC4671::ABN_init(){
 				enc_retry = 0;
 				if(manualEncAlign){
 					manualEncAlign = false;
-					CommandHandler::sendSerial(this->getCommandHandlerInfo()->clsname,"encalign","Aligned successfully",this->getCommandHandlerInfo()->instance);
+					CommandHandler::sendSerial(this->getCommandHandlerInfo()->clsname,"encalign?","Aligned successfully",this->getCommandHandlerInfo()->instance);
 				}
 
 			}else{
@@ -979,7 +979,7 @@ void TMC4671::ABN_init(){
 					ErrorHandler::addError(err);
 					if(manualEncAlign){
 						manualEncAlign = false;
-						CommandHandler::sendSerial(this->getCommandHandlerInfo()->clsname,"encalign","Error aligning.\nPlease check settings and reset.",this->getCommandHandlerInfo()->instance);
+						CommandHandler::sendSerial(this->getCommandHandlerInfo()->clsname,"encalign?","Error aligning.\nPlease check settings and reset.",this->getCommandHandlerInfo()->instance);
 					}
 				}
 				encstate = ENC_InitState::uninitialized; // Retry
@@ -1024,7 +1024,7 @@ void TMC4671::AENC_init(){
 				enc_retry = 0;
 				if(manualEncAlign){
 					manualEncAlign = false;
-					CommandHandler::sendSerial(this->getCommandHandlerInfo()->clsname,"encalign","Aligned successfully",this->getCommandHandlerInfo()->instance);
+					CommandHandler::sendSerial(this->getCommandHandlerInfo()->clsname,"encalign?","Aligned successfully",this->getCommandHandlerInfo()->instance);
 				}
 
 
@@ -1037,7 +1037,7 @@ void TMC4671::AENC_init(){
 					ErrorHandler::addError(err);
 					if(manualEncAlign){
 						manualEncAlign = false;
-						CommandHandler::sendSerial(this->getCommandHandlerInfo()->clsname,"encalign","Error aligning.\nPlease check settings and reset.",this->getCommandHandlerInfo()->instance);
+						CommandHandler::sendSerial(this->getCommandHandlerInfo()->clsname,"encalign?","Error aligning.\nPlease check settings and reset.",this->getCommandHandlerInfo()->instance);
 					}
 				}
 				encstate = ENC_InitState::uninitialized; // Retry

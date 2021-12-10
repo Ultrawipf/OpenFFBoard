@@ -26,6 +26,7 @@ public:
 	static void setHidDesc(const uint8_t* desc);
 	static const uint8_t* getHidDesc();
 	static uint8_t* hid_desc;
+	void transferComplete(uint8_t itf, uint8_t const* report, uint8_t len){};
 
 };
 

@@ -24,6 +24,8 @@
 #include "CommandHandler.h"
 #include "EffectsCalculator.h"
 #include "SpiHandler.h"
+#include "HidCommandInterface.h"
+
 #ifdef CANBUS
 #include "CanHandler.h"
 #endif
@@ -246,6 +248,7 @@ void tud_cdc_tx_complete_cb(uint8_t itf){
 	//if(mainclass!=nullptr)
 		//mainclass->cdcFinished(itf);
 	CDCcomm::cdcFinished(itf);
+
 }
 
 
@@ -262,11 +265,17 @@ void tud_hid_set_report_cb(uint8_t itf, uint8_t report_id, hid_report_type_t rep
 	if(UsbHidHandler::globalHidHandler!=nullptr)
 		UsbHidHandler::globalHidHandler->hidOut(report_id,report_type,buffer,bufsize);
 
-	if(report_id == HID_ID_CUSTOMCMD){ // called only for the vendor defined report
-		for(HidCommandHandler* c : HidCommandHandler::hidCmdHandlers){
-			c->processHidCommand((HID_Custom_Data_t*)(buffer));
-		}
+	if(report_id == HID_ID_HIDCMD){
+		if(HID_CommandInterface::globalInterface != nullptr)
+			HID_CommandInterface::globalInterface->hidCmdCallback((HID_CMD_Data_t*)(buffer));
 	}
+
+	// TODO remove commandhandler:
+//	if(report_id == HID_ID_CUSTOMCMD){ // called only for the vendor defined report
+//		for(HidCommandHandler* c : HidCommandHandler::hidCmdHandlers){
+//			c->processHidCommand((HID_Custom_Data_t*)(buffer));
+//		}
+//	}
 
 }
 
@@ -278,6 +287,19 @@ uint16_t tud_hid_get_report_cb(uint8_t itf, uint8_t report_id, hid_report_type_t
 		return UsbHidHandler::globalHidHandler->hidGet(report_id, report_type, buffer,reqlen);
 	return 0;
 }
+
+/**
+ * HID transfer complete
+ */
+void tud_hid_report_complete_cb(uint8_t itf, uint8_t const* report, uint8_t len){
+	if(HID_CommandInterface::globalInterface != nullptr){
+		HID_CommandInterface::globalInterface->transferComplete(itf, report, len);
+	}
+	if(UsbHidHandler::globalHidHandler != nullptr){
+		UsbHidHandler::globalHidHandler->transferComplete(itf, report, len);
+	}
+}
+
 #ifdef MIDI
 MidiHandler* midihandler = nullptr;
 /**

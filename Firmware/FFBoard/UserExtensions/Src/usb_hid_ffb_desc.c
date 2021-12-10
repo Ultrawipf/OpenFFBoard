@@ -45,26 +45,63 @@ __ALIGN_BEGIN const uint8_t hid_ffb_desc[USB_HID_FFB_REPORT_DESC_SIZE] __ALIGN_E
 			0x06, 0x00, 0xFF,                    // USAGE_PAGE (Vendor)
 			0x09, 0x00,                    //   USAGE (Vendor)
 			0xA1, 0x01, // Collection (Application)
-				0x85,HID_ID_CUSTOMCMD, //    Report ID
-				0x09, 0x01,                    //   USAGE (Vendor) type
-				0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
-				0x26, 0x04,	0x00,			   //   Logical Maximum 4
-				0x75, 0x08,                    //   REPORT_SIZE (8)
-				0x95, 0x01,                    //   REPORT_COUNT (1)
-				0xb1, 0x02,                    //   FEATURE (Data,Var,Abs)
-
-				0x09, 0x02,                    //   USAGE (Vendor) cmd
-				0x09, 0x03,                    //   USAGE (Vendor) addr
-				0x75, 0x20,                    //   REPORT_SIZE (32)
-				0x95, 0x02,                    //   REPORT_COUNT (2)
-				0xb1, 0x02,                    //   FEATURE (Data,Var,Abs)
-
-				0x09, 0x04,                    //   USAGE (Vendor) data
-				0x75, 0x40,                    //   REPORT_SIZE (64)
-				0x95, 0x01,                    //   REPORT_COUNT (1)
-				0xb1, 0x02,                    //   FEATURE (Data,Var,Abs)
-
-				0x85,HID_ID_CUSTOMCMD, //    Report ID
+//				0x85,HID_ID_CUSTOMCMD, //    Report ID
+//				0x09, 0x01,                    //   USAGE (Vendor) type
+//				0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
+//				0x26, 0x04,	0x00,			   //   Logical Maximum 4
+//				0x75, 0x08,                    //   REPORT_SIZE (8)
+//				0x95, 0x01,                    //   REPORT_COUNT (1)
+//				0xb1, 0x02,                    //   FEATURE (Data,Var,Abs)
+//
+//				0x09, 0x02,                    //   USAGE (Vendor) cmd
+//				0x09, 0x03,                    //   USAGE (Vendor) addr
+//				0x75, 0x20,                    //   REPORT_SIZE (32)
+//				0x95, 0x02,                    //   REPORT_COUNT (2)
+//				0xb1, 0x02,                    //   FEATURE (Data,Var,Abs)
+//
+//				0x09, 0x04,                    //   USAGE (Vendor) data
+//				0x75, 0x40,                    //   REPORT_SIZE (64)
+//				0x95, 0x01,                    //   REPORT_COUNT (1)
+//				0xb1, 0x02,                    //   FEATURE (Data,Var,Abs)
+//
+//				0x85,HID_ID_CUSTOMCMD, //    Report ID
+//				0x09, 0x01,                    //   USAGE (Vendor)
+//				0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
+//				0x26, 0x04,	0x00,			   //   Logical Maximum 4
+//				0x75, 0x08,                    //   REPORT_SIZE (8)
+//				0x95, 0x01,                    //   REPORT_COUNT (1)
+//				0x91, 0x02,                    //   OUTPUT (Data,Var,Abs)
+//
+//				0x09, 0x02,                    //   USAGE (Vendor)
+//				0x09, 0x03,                    //   USAGE (Vendor)
+//				0x75, 0x20,                    //   REPORT_SIZE (32)
+//				0x95, 0x02,                    //   REPORT_COUNT (2)
+//				0x91, 0x02,                    //   OUTPUT (Data,Var,Abs)
+//
+//				0x09, 0x04,                    //   USAGE (Vendor)
+//				0x75, 0x40,                    //   REPORT_SIZE (64)
+//				0x95, 0x01,                    //   REPORT_COUNT (1)
+//				0x91, 0x02,                    //   OUTPUT (Data,Var,Abs)
+//
+//				0x85,HID_ID_CUSTOMCMD, //    Report ID
+//				0x09, 0x01,                    //   USAGE (Vendor)
+//				0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
+//				0x26, 0x04,	0x00,			   //   Logical Maximum 4
+//				0x75, 0x08,                    //   REPORT_SIZE (8)
+//				0x95, 0x01,                    //   REPORT_COUNT (1)
+//				0x81, 0x02,                    //   INPUT (Data,Var,Abs)
+//
+//				0x09, 0x02,                    //   USAGE (Vendor)
+//				0x09, 0x03,                    //   USAGE (Vendor)
+//				0x75, 0x20,                    //   REPORT_SIZE (32)
+//				0x95, 0x02,                    //   REPORT_COUNT (2)
+//				0x81, 0x02,                    //   INPUT (Data,Var,Abs)
+//
+//				0x09, 0x04,                    //   USAGE (Vendor)
+//				0x75, 0x40,                    //   REPORT_SIZE (64)
+//				0x95, 0x01,                    //   REPORT_COUNT (1)
+//				0x81, 0x02,                    //   INPUT (Data,Var,Abs)
+				0x85,HID_ID_HIDCMD, //    Report ID
 				0x09, 0x01,                    //   USAGE (Vendor)
 				0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
 				0x26, 0x04,	0x00,			   //   Logical Maximum 4
@@ -72,18 +109,32 @@ __ALIGN_BEGIN const uint8_t hid_ffb_desc[USB_HID_FFB_REPORT_DESC_SIZE] __ALIGN_E
 				0x95, 0x01,                    //   REPORT_COUNT (1)
 				0x91, 0x02,                    //   OUTPUT (Data,Var,Abs)
 
-				0x09, 0x02,                    //   USAGE (Vendor)
-				0x09, 0x03,                    //   USAGE (Vendor)
-				0x75, 0x20,                    //   REPORT_SIZE (32)
-				0x95, 0x02,                    //   REPORT_COUNT (2)
+				0x09, 0x02,                    //   USAGE (Vendor) class address
+				0x75, 0x10,                    //   REPORT_SIZE (16)
+				0x95, 0x01,                    //   REPORT_COUNT (1)
 				0x91, 0x02,                    //   OUTPUT (Data,Var,Abs)
 
-				0x09, 0x04,                    //   USAGE (Vendor)
+				0x09, 0x03,                    //   USAGE (Vendor) class instance
+				0x75, 0x08,                    //   REPORT_SIZE (8)
+				0x95, 0x01,                    //   REPORT_COUNT (1)
+				0x91, 0x02,                    //   OUTPUT (Data,Var,Abs)
+
+				0x09, 0x04,                    //   USAGE (Vendor) cmd
+				0x75, 0x20,                    //   REPORT_SIZE (32)
+				0x95, 0x01,                    //   REPORT_COUNT (1)
+				0x91, 0x02,                    //   OUTPUT (Data,Var,Abs)
+
+				0x09, 0x05,                    //   USAGE (Vendor)
+				0x75, 0x40,                    //   REPORT_SIZE (64) value
+				0x95, 0x01,                    //   REPORT_COUNT (1)
+				0x91, 0x02,                    //   OUTPUT (Data,Var,Abs)
+
+				0x09, 0x06,                    //   USAGE (Vendor) address
 				0x75, 0x40,                    //   REPORT_SIZE (64)
 				0x95, 0x01,                    //   REPORT_COUNT (1)
 				0x91, 0x02,                    //   OUTPUT (Data,Var,Abs)
 
-				0x85,HID_ID_CUSTOMCMD, //    Report ID
+				0x85,HID_ID_HIDCMD, //    Report ID
 				0x09, 0x01,                    //   USAGE (Vendor)
 				0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
 				0x26, 0x04,	0x00,			   //   Logical Maximum 4
@@ -91,16 +142,32 @@ __ALIGN_BEGIN const uint8_t hid_ffb_desc[USB_HID_FFB_REPORT_DESC_SIZE] __ALIGN_E
 				0x95, 0x01,                    //   REPORT_COUNT (1)
 				0x81, 0x02,                    //   INPUT (Data,Var,Abs)
 
-				0x09, 0x02,                    //   USAGE (Vendor)
-				0x09, 0x03,                    //   USAGE (Vendor)
-				0x75, 0x20,                    //   REPORT_SIZE (32)
-				0x95, 0x02,                    //   REPORT_COUNT (2)
+				0x09, 0x02,                    //   USAGE (Vendor) class address
+				0x75, 0x10,                    //   REPORT_SIZE (16)
+				0x95, 0x01,                    //   REPORT_COUNT (1)
 				0x81, 0x02,                    //   INPUT (Data,Var,Abs)
 
-				0x09, 0x04,                    //   USAGE (Vendor)
+				0x09, 0x03,                    //   USAGE (Vendor) class instance
+				0x75, 0x08,                    //   REPORT_SIZE (8)
+				0x95, 0x01,                    //   REPORT_COUNT (1)
+				0x81, 0x02,                    //   INPUT (Data,Var,Abs)
+
+				0x09, 0x04,                    //   USAGE (Vendor) cmd
+				0x75, 0x20,                    //   REPORT_SIZE (32)
+				0x95, 0x01,                    //   REPORT_COUNT (1)
+				0x81, 0x02,                    //   INPUT (Data,Var,Abs)
+
+				0x09, 0x05,                    //   USAGE (Vendor)
+				0x75, 0x40,                    //   REPORT_SIZE (64) value
+				0x95, 0x01,                    //   REPORT_COUNT (1)
+				0x81, 0x02,                    //   INPUT (Data,Var,Abs)
+
+				0x09, 0x06,                    //   USAGE (Vendor) address
 				0x75, 0x40,                    //   REPORT_SIZE (64)
 				0x95, 0x01,                    //   REPORT_COUNT (1)
 				0x81, 0x02,                    //   INPUT (Data,Var,Abs)
+
+
 
 		  0xc0,                          //   END_COLLECTION
 

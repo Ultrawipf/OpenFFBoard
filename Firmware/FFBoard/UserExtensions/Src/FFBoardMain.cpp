@@ -40,16 +40,6 @@ CommandStatus FFBoardMain::command(const ParsedCommand& cmd,std::vector<CommandR
 
 
 
-///**
-// * Global callback if cdc transfer is finished. Used to retry a failed transfer
-// */
-//void FFBoardMain::cdcFinished(uint8_t itf = 0){
-//	if(usb_busy_retry && this->cdcRemaining.length() > 0){
-//		cdcSend(&this->cdcRemaining,&this->cdcRemaining, itf); // Retry with remaining string
-//	}
-//}
-
-
 
 /**
  * Called during the startup

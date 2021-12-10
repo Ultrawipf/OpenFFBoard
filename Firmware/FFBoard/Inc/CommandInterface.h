@@ -12,8 +12,12 @@
 #include "FFBoardMainCommandThread.h"
 #include "UART.h"
 
+
 class FFBoardMainCommandThread;
 
+/**
+ * Different command interface implementations
+ */
 
 class CommandInterface {
 public:
@@ -39,7 +43,10 @@ public:
 	static void formatReply(std::string& reply,const std::vector<CommandResult>& results,const bool formatWriteAsRead=false);
 	static std::string formatOriginalCommandFromResult(const ParsedCommand& originalCommand,CommandHandler* commandHandler,const bool formatWriteAsRead=false);
 	static void generateReplyValueString(std::string& replyPart,const CommandReply& reply);
+	static void generateReplyFromCmd(std::string& replyPart,const ParsedCommand& originalCommand);
 	const std::string getHelpstring(){return "Syntax:\nGet: cls.(instance.)cmd? or cls.(instance.)cmd?adr\nSet: cls.(instance.)cmd=val or cls.(instance.)cmd=val?adr";};
+
+
 private:
 	CmdParser parser = CmdParser(); // String parser
 };
@@ -71,6 +78,7 @@ public:
 private:
 	UART_InitTypeDef uartconfig;
 };
+
 
 
 

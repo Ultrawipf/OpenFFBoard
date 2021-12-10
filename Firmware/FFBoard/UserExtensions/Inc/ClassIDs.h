@@ -23,10 +23,10 @@ enum class ClassType : uint16_t {
 
 // Mainclasses all have the name "main" in the commandhandler system for addressing and ID 0 but can have different display names
 // Other classes will use their unique ID in the command system
-#define CMDCLSID_MAIN		0x00
+#define CMDCLSID_MAIN		0x01
 #define CMDCLSTR_MAIN		"main"
 
-// The main command system can control the board independently. Normally called by the mainclass
+// The main command system can control the board independently.
 #define CMDCLSID_SYS		0x00
 #define CMDCLSTR_SYS		"sys"
 
