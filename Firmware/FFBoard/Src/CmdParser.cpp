@@ -180,7 +180,7 @@ bool CmdParser::parse(std::vector<ParsedCommand>& commands){
 			if(cmd.target == nullptr){
 				continue; // invalid class
 			}
-			CmdHandlerCommanddef* cmdDef = cmd.target->getCommandFromName(cmdstring,CMDFLAG_STR_ONLY);
+			CmdHandlerCommanddef* cmdDef = cmd.target->getCommandFromName(cmdstring,CMDFLAG_HID_ONLY);
 
 			if(cmdDef){
 				cmd.cmdId = cmdDef->cmdId;
