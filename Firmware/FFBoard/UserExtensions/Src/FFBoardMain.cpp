@@ -74,28 +74,6 @@ void FFBoardMain::usbResume(){
 }
 
 
-//TODO move to cdc class
-//void FFBoardMain::parserDone(std::string* reply, FFBoardMainCommandThread* parser){
-//	if(parser == this->systemCommands.get()){
-//		cdcSend(reply,&this->cdcRemaining, 0);
-//	}
-//}
-// TODO move to class
-//uint16_t FFBoardMain::cdcSend(std::string* reply, std::string* remaining,uint8_t itf){
-//
-//	uint16_t cdc_sent = tud_cdc_n_write(itf,reply->c_str(), std::min<uint16_t>(reply->length(),CFG_TUD_CDC_TX_BUFSIZE));
-//	tud_cdc_n_write_flush(itf);
-//	// If we can't write the whole reply copy remainder to send later
-//	if(cdc_sent < reply->length()){
-//		cdcRemaining.assign(reply->substr(cdc_sent));
-//		usb_busy_retry = true;
-//	}else{
-//		usb_busy_retry = false;
-//		this->cdcRemaining.clear();
-//	}
-//	return cdc_sent;
-//}
-
 std::string FFBoardMain::getHelpstring(){
 	return "Failsafe mainclass with no features. Choose a different mainclass. sys.lsmain to get a list";
 }

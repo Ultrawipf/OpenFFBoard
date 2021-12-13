@@ -16,20 +16,23 @@
 #include <optional>
 #include "CommandHandler.h"
 
+
 class CommandHandler;
 class CommandInterface;
 
 class CmdParser {
 public:
-	CmdParser();
+	CmdParser(uint32_t reservedBuffer = 16);
 	virtual ~CmdParser();
 
 	void clear();
 	bool add(char* Buf, uint32_t *Len);
 	bool parse(std::vector<ParsedCommand>& commands);
+	uint32_t bufferCapacity();
 
 private:
 	std::string buffer;
+	uint32_t reservedBuffer = 0;
 };
 
 #endif /* CMDPARSER_H_ */

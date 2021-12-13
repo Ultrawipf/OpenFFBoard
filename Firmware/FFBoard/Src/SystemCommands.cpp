@@ -43,8 +43,8 @@ void SystemCommands::registerCommands(){
 	CommandHandler::registerCommand("dfu", FFBoardMain_commands::dfu, "reboot into DFU bootloader",CMDFLAG_GET);
 	CommandHandler::registerCommand("lsmain", FFBoardMain_commands::lsmain, "List available mainclasses",CMDFLAG_GET);
 	CommandHandler::registerCommand("lsactive", FFBoardMain_commands::lsactive, "List active classes",CMDFLAG_GET);
-	CommandHandler::registerCommand("vint", FFBoardMain_commands::vint, "Internal voltage",CMDFLAG_GET);
-	CommandHandler::registerCommand("vext", FFBoardMain_commands::vext, "External voltage",CMDFLAG_GET);
+	CommandHandler::registerCommand("vint", FFBoardMain_commands::vint, "Internal voltage(mV)",CMDFLAG_GET);
+	CommandHandler::registerCommand("vext", FFBoardMain_commands::vext, "External voltage(mV)",CMDFLAG_GET);
 	CommandHandler::registerCommand("main", FFBoardMain_commands::main, "Query or change mainclass",CMDFLAG_GET | CMDFLAG_SET);
 	CommandHandler::registerCommand("swver", FFBoardMain_commands::swver, "Firmware version",CMDFLAG_GET);
 	CommandHandler::registerCommand("hwtype", FFBoardMain_commands::hwtype, "Hardware type",CMDFLAG_GET);
@@ -63,14 +63,18 @@ CommandStatus SystemCommands::internalCommand(const ParsedCommand& cmd,std::vect
 	{
 		case FFBoardMain_commands::help:
 		{// help
-			std::string reply =	interface->getHelpstring() + "\nAvailable classes (use cls.0.help for more info):\n";
-			//std::string reply = "";
-			for(CommandHandler* handler : CommandHandler::cmdHandlers){
-				CmdHandlerInfo* info = handler->getCommandHandlerInfo();
-				reply += std::string(info->clsname) + "." + std::to_string(info->instance)+"\n";
+			if(cmd.type == CMDtype::info){
+				replies.push_back(CommandReply(this->getCsvHelpstring()));
+			}else{
+				std::string reply =	interface->getHelpstring() + "\nAvailable classes (use cls.0.help for more info):\n";
+				//std::string reply = "";
+				for(CommandHandler* handler : CommandHandler::cmdHandlers){
+					CmdHandlerInfo* info = handler->getCommandHandlerInfo();
+					reply += std::string(info->clsname) + "." + std::to_string(info->instance)+"\n";
+				}
+				reply +=  "\n"+this->getCommandsHelpstring();
+				replies.push_back(CommandReply(reply));
 			}
-			reply +=  "\n"+this->getCommandsHelpstring();
-			replies.push_back(CommandReply(reply));
 
 			break;
 		}

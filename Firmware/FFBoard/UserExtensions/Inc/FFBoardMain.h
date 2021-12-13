@@ -9,8 +9,6 @@
 #define FFBOARDMAIN_H_
 
 #include <CmdParser.h>
-#include "cppmain.h"
-#include "main.h"
 #include <string>
 #include "ChoosableClass.h"
 #include "CommandHandler.h"
@@ -23,6 +21,7 @@
 #include "CommandInterface.h"
 
 #include "SystemCommands.h"
+#include "target_constants.h"
 
 
 class USBdevice;
@@ -57,7 +56,11 @@ public:
 	std::unique_ptr<CDC_CommandInterface> cdcCmdInterface = std::make_unique<CDC_CommandInterface>();
 	ErrorPrinter errorPrinter; // Prints errors to serial
 	SystemCommands systemCommands; //!< System command handler
-	//std::unique_ptr<UART_CommandInterface> uartCmdInterface = std::make_unique<UART_CommandInterface>(); // UART command interface
+
+#ifdef UARTCOMMANDS
+	std::unique_ptr<UART_CommandInterface> uartCmdInterface = std::make_unique<UART_CommandInterface>(500000); // UART command interface
+#endif
+
 protected:
 	std::unique_ptr<USBdevice> usbdev;
 };

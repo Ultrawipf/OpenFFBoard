@@ -9,8 +9,6 @@
 #define USBHIDHANDLER_H_
 #include "cppmain.h"
 #include "ffb_defs.h"
-#include "hid_cmd_defs.h"
-
 
 class UsbHidHandler {
 public:

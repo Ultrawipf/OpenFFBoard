@@ -11,7 +11,6 @@
 //#include "NormalizedAxis.h"
 #include "PersistentStorage.h"
 #include "ffb_defs.h"
-#include "hid_cmd_defs.h"
 
 #include "CmdParser.h"
 #include "vector"

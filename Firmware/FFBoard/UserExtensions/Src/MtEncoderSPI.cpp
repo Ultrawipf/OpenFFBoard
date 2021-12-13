@@ -138,6 +138,7 @@ CommandStatus MtEncoderSPI::command(const ParsedCommand& cmd,std::vector<Command
 		}else{
 			return CommandStatus::ERR;
 		}
+		break;
 	default:
 		return CommandStatus::NOT_FOUND;
 	}

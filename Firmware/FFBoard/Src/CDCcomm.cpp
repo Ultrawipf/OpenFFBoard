@@ -43,7 +43,7 @@ void CDCcomm::cdcFinished(uint8_t itf){
  * Sends a string via CDC
  */
 uint16_t CDCcomm::cdcSend(std::string* reply,uint8_t itf){
-	if(!tud_ready()){
+	if(!tud_ready() || reply->empty()){
 		return 0;
 	}
 	cdcSems[itf].Take();
@@ -61,6 +61,8 @@ uint16_t CDCcomm::cdcSend(std::string* reply,uint8_t itf){
 		usb_busy_retry = false;
 		remainingStrs[itf].clear();
 	}
+
+
 
 
 	return cdc_sent;

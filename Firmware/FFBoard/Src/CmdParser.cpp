@@ -9,9 +9,11 @@
 #include "ErrorHandler.h"
 #include "CommandHandler.h"
 #include "FFBoardMainCommandThread.h"
+#include "critical.hpp"
 
-CmdParser::CmdParser() {
-
+CmdParser::CmdParser(uint32_t reservedBuffer) {
+	this->reservedBuffer = reservedBuffer;
+	buffer.reserve(reservedBuffer);
 }
 
 CmdParser::~CmdParser() {
@@ -33,8 +35,13 @@ bool CmdParser::add(char* Buf, uint32_t *Len){
 
 		}
 	}
+
 	this->buffer.append((char*)Buf,*Len);
 	return flag;
+}
+
+uint32_t CmdParser::bufferCapacity(){
+	return buffer.capacity() - buffer.size();
 }
 
 
@@ -46,6 +53,8 @@ bool CmdParser::parse(std::vector<ParsedCommand>& commands){
 
 	uint32_t pos = 0;
 	uint32_t lpos = 0;
+
+	cpp_freertos::CriticalSection::Enter();
 	while(pos < buffer.length()-1){
 		pos = buffer.find(';',lpos);
 		if(pos != std::string::npos){
@@ -55,8 +64,8 @@ bool CmdParser::parse(std::vector<ParsedCommand>& commands){
 		}
 	}
 	buffer.erase(0,lpos); // Clear parsed portion from buffer
-	if(buffer.capacity() > 100)
-		buffer.shrink_to_fit();
+	buffer.reserve(reservedBuffer);
+	cpp_freertos::CriticalSection::Exit();
 
 	for(std::string word : tokens){
 		if(word.length() < 2)
@@ -155,7 +164,7 @@ bool CmdParser::parse(std::vector<ParsedCommand>& commands){
 				}else if(validPeq){ // <cmd>=<int>
 					int64_t val;
 					if(word[peq+1] == 'x'){
-						val = (int64_t)std::stoll(word.substr(peq+1, word.npos),0,16);
+						val = (int64_t)std::stoll(word.substr(peq+2, word.npos),0,16);
 					}else{
 						val = (int64_t)std::stoll(word.substr(peq+1, word.npos));
 					}
