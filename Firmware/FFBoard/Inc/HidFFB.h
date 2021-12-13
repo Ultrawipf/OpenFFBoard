@@ -13,9 +13,7 @@
 #include "PersistentStorage.h"
 #include "Filters.h"
 #include "EffectsCalculator.h"
-#include "HidCommandHandler.h"
 
-class HidCommandHandler;
 
 class HidFFB: public UsbHidHandler {
 public:

@@ -39,6 +39,8 @@
 #define VESC
 #define MTENCODERSPI // requires SPI3
 
+#define UARTCOMMANDS
+
 //#define TMCTEMP // Enable tmc temperature shutdown. replaced by hardware selection
 //----------------------
 

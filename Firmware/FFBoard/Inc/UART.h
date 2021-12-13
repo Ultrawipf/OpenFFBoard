@@ -8,7 +8,6 @@
 #ifndef SRC_UART_H_
 #define SRC_UART_H_
 
-//#include "cppmain.h"
 #include "semaphore.hpp"
 #include "UartHandler.h"
 #include "target_constants.h"
@@ -65,11 +64,12 @@ class UARTDevice{
 public:
 	UARTDevice();
 	UARTDevice(UARTPort& port);
-	~UARTDevice();
+	virtual ~UARTDevice();
 	virtual void uartRcv(char& buf){}; //Warning: called by interrupts!
 
 	virtual void startUartTransfer(UARTPort* port);
 	virtual void endUartTransfer(UARTPort* port);
+
 protected:
 	UARTPort* uartport = nullptr;
 };

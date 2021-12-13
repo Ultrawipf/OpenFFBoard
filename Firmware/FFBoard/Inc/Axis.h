@@ -7,7 +7,6 @@
 
 #ifndef SRC_AXIS_H_
 #define SRC_AXIS_H_
-#include <CmdParser.h>
 #include <FFBoardMain.h>
 #include <MotorPWM.h>
 #include "usb_hid_ffb_desc.h"
@@ -21,7 +20,6 @@
 #include "cppmain.h"
 #include "HidFFB.h"
 #include "ffb_defs.h"
-#include "hid_cmd_defs.h"
 #include "TimerHandler.h"
 #include "ClassChooser.h"
 #include "ExtiHandler.h"
@@ -76,10 +74,10 @@ struct axis_metric_t {
 
 
 enum class Axis_commands : uint32_t{
-	power,degrees,esgain,zeroenc,invert,idlespring,axisdamper,enctype,drvtype,pos,maxspeed,maxtorquerate,fxratio
+	power=0x00,degrees=0x01,esgain,zeroenc,invert,idlespring,axisdamper,enctype,drvtype,pos,maxspeed,maxtorquerate,fxratio
 };
 
-class Axis : public PersistentStorage, public CommandHandler,public HidCommandHandler
+class Axis : public PersistentStorage, public CommandHandler
 {
 public:
 	Axis(char axis, volatile Control_t* control);
@@ -90,9 +88,7 @@ public:
 	const ClassType getClassType() override {return ClassType::Axis;};
 
 	// TODO add new commands
-	virtual std::string getHelpstring() { return "\nAxis commands: Get: axis.cmd , Set: axis.cmd=var, where axis = x-z e.g. y.power\n"
-												 "power,zeroenc,enctype,pos,degrees,esgain,fxratio,invert,drvtype,idlespring,axisdamper\n"
-													;}
+	virtual std::string getHelpstring() { return "FFB axis"	;}
 	void setupTMC4671();
 
 	// Dynamic classes
@@ -129,7 +125,6 @@ public:
 	void registerCommands();
 	CommandStatus command(const ParsedCommand& cmd,std::vector<CommandReply>& replies);
 
-	void processHidCommand(HID_Custom_Data_t *data) override;
 	ClassChooser<MotorDriver> drv_chooser;
 	ClassChooser<Encoder> enc_chooser;
 

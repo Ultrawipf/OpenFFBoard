@@ -12,7 +12,6 @@
 #include "ffb_defs.h"
 #include "PersistentStorage.h"
 #include "CommandHandler.h"
-#include "HidCommandHandler.h"
 #include <vector>
 //#include "hid_cmd_defs.h"
 
@@ -31,7 +30,7 @@ enum class EffectsCalculator_commands : uint32_t {
 	ffbfiltercf,ffbfiltercf_q,effects,spring,friction,damper,inertia
 };
 
-class EffectsCalculator: public PersistentStorage, public CommandHandler,public HidCommandHandler {
+class EffectsCalculator: public PersistentStorage, public CommandHandler {
 public:
 	EffectsCalculator();
 	virtual ~EffectsCalculator();
@@ -55,7 +54,6 @@ public:
 
 	//virtual ParseStatus command(ParsedCommand_old *cmd, std::string *reply);
 	CommandStatus command(const ParsedCommand& cmd,std::vector<CommandReply>& replies);
-	//virtual void processHidCommand(HID_Custom_Data_t* data);
 	virtual std::string getHelpstring() { return "Controls internal FFB effects"; }
 
 	void setEffectsArray(FFB_Effect* pEffects);

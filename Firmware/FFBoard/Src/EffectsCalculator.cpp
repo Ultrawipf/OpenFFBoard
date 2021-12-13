@@ -633,25 +633,6 @@ std::string EffectsCalculator::listEffectsUsed(){
 }
 
 
-//void EffectsCalculator::processHidCommand(HID_Custom_Data_t* data) {
-//
-//	switch (data->cmd&0x3F){
-//		case HID_CMD_FFB_FRICTION:
-//			if(data->type == HidCmdType::write) {
-//				gain.friction = data->data;
-//			}
-//			else if(data->type == HidCmdType::request){
-//				data->data = gain.friction;
-//			}
-//			break;
-//
-//		default:
-//
-//			break;
-//		}
-//	return;
-//}
-
 CommandStatus EffectsCalculator::command(const ParsedCommand& cmd,std::vector<CommandReply>& replies){
 	switch(static_cast<EffectsCalculator_commands>(cmd.cmdId)){
 
