@@ -31,7 +31,6 @@
 #include "EffectsCalculator.h"
 #include "ffb_defs.h"
 #include "UsbHidHandler.h"
-#include "hid_cmd_defs.h"
 #include "ErrorHandler.h"
 #include "memory"
 #include "HidCommandInterface.h"

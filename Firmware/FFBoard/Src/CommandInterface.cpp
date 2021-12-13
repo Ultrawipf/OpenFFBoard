@@ -10,6 +10,7 @@
 #include "global_callbacks.h"
 #include "CommandHandler.h"
 #include <stdlib.h>
+#include "critical.hpp"
 
 std::vector<CommandInterface*> CommandInterface::cmdInterfaces;
 
@@ -66,6 +67,9 @@ bool StringCommandInterface::addBuf(char* Buf, uint32_t *Len){
 void StringCommandInterface::formatReply(std::string& reply,const std::vector<CommandResult>& results,const bool formatWriteAsRead){
 	//uint16_t lastId = 0xFFFF;
 	for(const CommandResult& result : results){ // All commands processed this batch
+		if(formatWriteAsRead && !(result.originalCommand.type == CMDtype::set || result.originalCommand.type == CMDtype::setat)){
+			return; // Ignore commands that should be formatted as read if they are not set commands
+		}
 
 		reply += "["; // Start marker
 		reply += StringCommandInterface::formatOriginalCommandFromResult(result.originalCommand,result.commandHandler, formatWriteAsRead);
@@ -162,8 +166,6 @@ void StringCommandInterface::generateReplyFromCmd(std::string& replyPart,const P
 		replyPart = std::to_string(originalCommand.val);
 	}else if(originalCommand.type == CMDtype::setat){
 		replyPart = std::to_string(originalCommand.adr) + ":" + std::to_string(originalCommand.val);
-	}else{
-		replyPart = "OK";
 	}
 }
 
@@ -175,7 +177,7 @@ void StringCommandInterface::generateReplyFromCmd(std::string& replyPart,const P
  */
 
 
-CDC_CommandInterface::CDC_CommandInterface() {
+CDC_CommandInterface::CDC_CommandInterface() : StringCommandInterface(32) {
 
 }
 
@@ -186,10 +188,13 @@ CDC_CommandInterface::~CDC_CommandInterface() {
 
 
 void CDC_CommandInterface::sendReplies(std::vector<CommandResult>& results,CommandInterface* originalInterface){
-
+	if( (!enableBroadcastFromOtherInterfaces && originalInterface != this) || !tud_ready() ){
+		return;
+	}
 	std::string replystr;
 	StringCommandInterface::formatReply(replystr,results, originalInterface != this && originalInterface != nullptr);
-	CDCcomm::cdcSend(&replystr, 0);
+	if(!replystr.empty())
+		CDCcomm::cdcSend(&replystr, 0);
 }
 
 
@@ -203,9 +208,15 @@ void CDC_CommandInterface::sendReplies(std::vector<CommandResult>& results,Comma
 
 
 extern UARTPort external_uart; // defined in cpp_target_config.cpp
-UART_CommandInterface::UART_CommandInterface() : UARTDevice(external_uart){
+UART_CommandInterface::UART_CommandInterface(uint32_t baud) : StringCommandInterface(128), UARTDevice(external_uart),Thread("UARTCMD", 256, 36), baud(baud){ //
 	uartconfig = uartport->getConfig();
+	if(baud != 0){
+		uartconfig.BaudRate = this->baud;
+		uartport->reconfigurePort(uartconfig);
+	}
+
 	uartport->registerInterrupt(); // enable port
+	this->Start();
 }
 
 UART_CommandInterface::~UART_CommandInterface() {
@@ -213,16 +224,43 @@ UART_CommandInterface::~UART_CommandInterface() {
 }
 
 
+void UART_CommandInterface::Run(){
+	while(true){
 
+		cmdUartSem.Take();
+		while(uartport->isTaken()){
+			Delay(1);
+		}
+		this->sendBuffer.clear();
+		if(this->sendBuffer.capacity() > 100){
+			this->sendBuffer.reserve(64);
+		}
+		StringCommandInterface::formatReply(sendBuffer,resultsBuffer,nextFormat);
+		resultsBuffer.clear();
+		if(!sendBuffer.empty())
+			uartport->transmit_IT(sendBuffer.c_str(), sendBuffer.size());
+	}
+}
+
+
+
+//void UART_CommandInterface::sendReplies(std::vector<CommandResult>& results,CommandInterface* originalInterface){
+//	if(!enableBroadcastFromOtherInterfaces && originalInterface != this){
+//		return;
+//	}
+//	StringCommandInterface::formatReply(sendBuffer,results, originalInterface != this && originalInterface != nullptr);
+//	cmdUartSem.Give();
+//}
 
 void UART_CommandInterface::sendReplies(std::vector<CommandResult>& results,CommandInterface* originalInterface){
-	if(originalInterface != this && originalInterface != nullptr)
+	if( (!enableBroadcastFromOtherInterfaces && originalInterface != this) || !tud_ready() ){
 		return;
-	std::string replystr = "";
-//	for(CommandResult& result : results){
-//		replystr += parser.formatReply(result);
-//	}
-	uartport->transmit_IT(replystr.c_str(), replystr.size());
+	}
+
+	resultsBuffer.assign(results.begin(), results.end());
+	resultsBuffer.shrink_to_fit();
+	nextFormat = originalInterface != this && originalInterface != nullptr;
+	cmdUartSem.Give();
 }
 
 /**
@@ -231,7 +269,16 @@ void UART_CommandInterface::sendReplies(std::vector<CommandResult>& results,Comm
  */
 void UART_CommandInterface::uartRcv(char& buf){
 	uint32_t len = 1;
-	StringCommandInterface::addBuf(&buf, &len);
+	BaseType_t savedInterruptStatus =  cpp_freertos::CriticalSection::EnterFromISR();
+	if(this->parser.bufferCapacity() > len) // Check buffer because we can't allocate more memory inside the ISR safely at the moment
+		StringCommandInterface::addBuf(&buf, &len);
+	cpp_freertos::CriticalSection::ExitFromISR(savedInterruptStatus);
 }
 
+//void UART_CommandInterface::endUartTransfer(UARTPort* port){
+//
+//	port->giveSemaphore();
+//
+//}
+//
 

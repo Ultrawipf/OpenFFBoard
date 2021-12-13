@@ -60,7 +60,7 @@ void HID_CommandInterface::sendReplies(std::vector<CommandResult>& results,Comma
 		if(result.type == CommandStatus::NO_REPLY) // Normally not possible at this point.
 			continue;
 
-		if(originalInterface != this && enableBroadcastFromOtherInterfaces){ // Request was sent by a different interface
+		if( (originalInterface != this && enableBroadcastFromOtherInterfaces) || ( result.type == CommandStatus::OK && replies.empty() ) ){ // Request was sent by a different interface
 			CommandReply reply; // Fake reply
 
 			// return original command as get value if it was a set command
@@ -77,6 +77,7 @@ void HID_CommandInterface::sendReplies(std::vector<CommandResult>& results,Comma
 			this->queueReplyValues(reply,result.originalCommand);
 		}
 
+
 		for(CommandReply reply : replies){
 			if(reply.type == CommandReplyType::STRING){
 				continue; // Ignore string only replies
@@ -87,6 +88,7 @@ void HID_CommandInterface::sendReplies(std::vector<CommandResult>& results,Comma
 	}
 	threadSem.Give();
 }
+
 
 void HID_CommandInterface::queueReplyValues(CommandReply& reply,ParsedCommand& command){
 	HID_CMD_Data_t hidReply;

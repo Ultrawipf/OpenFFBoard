@@ -62,7 +62,7 @@
 #define HID_ID_POOLREP	0x13	// Usage PID Pool Report
 
 // Control
-#define HID_ID_CUSTOMCMD 0xAF   // Custom cmd
+#define HID_ID_CUSTOMCMD 0xAF   // Custom cmd (old. reserved)
 #define HID_ID_HIDCMD	 0xA1   // HID cmd
 #define HID_ID_STRCMD	 0xAC   // HID cmd as string. reserved
 //#define HID_ID_CUSTOMCMD_IN 0xA2   // Custom cmd in. reserved

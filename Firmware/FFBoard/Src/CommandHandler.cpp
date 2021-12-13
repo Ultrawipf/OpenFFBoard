@@ -32,7 +32,7 @@ CommandHandler::~CommandHandler() {
 
 
 std::string CommandHandler::getCommandsHelpstring(){
-	std::string helpstring;
+	std::string helpstring = "\n";
 	ClassIdentifier info = this->getInfo();
 	if(info.name == nullptr || cmdHandlerInfo.clsname == nullptr){
 		return "";
@@ -41,6 +41,7 @@ std::string CommandHandler::getCommandsHelpstring(){
 	helpstring +=  "(";
 	helpstring.append(cmdHandlerInfo.clsname);
 	helpstring += "." + std::to_string(cmdHandlerInfo.instance) + "):\n";
+
 	std::string handlerHelp = getHelpstring();
 
 	if(!handlerHelp.empty()){
@@ -53,17 +54,57 @@ std::string CommandHandler::getCommandsHelpstring(){
 		helpstring += "Commands with help:\n";
 		for(CmdHandlerCommanddef& cmd : registeredCommands){
 			if(cmd.helpstring != nullptr && cmd.cmd != nullptr){
-				helpstring.append(cmd.cmd);
-				helpstring += "," + std::to_string(cmd.cmdId) + ",";
-				helpstring.append(cmd.helpstring);
-				helpstring += "\n";
+				helpstring += std::string(cmd.cmd) + ":\t" + std::string(cmd.helpstring)+"\n";
 			}
-				//helpstring += cmd.cmd + ":" + cmd.helpstring+"\n";
+
 		}
 	}
 
 	return helpstring;
 }
+
+std::string CommandHandler::getCsvHelpstring(){
+	std::string helpstring = "\nPrefix,Class ID, Class description\n";
+	ClassIdentifier info = this->getInfo();
+	if(info.name == nullptr || cmdHandlerInfo.clsname == nullptr){
+		return "";
+	}
+
+	helpstring.append(cmdHandlerInfo.clsname);
+	helpstring += "." + std::to_string(cmdHandlerInfo.instance) + ",";
+	char clshex[7];
+	std::snprintf(clshex,7,"0x%X",cmdHandlerInfo.clsTypeid);
+	helpstring += std::string(clshex) + ",";
+
+	helpstring.append(info.name);
+
+	std::string handlerHelp = getHelpstring();
+
+	if(!handlerHelp.empty()){
+		helpstring += ": " + handlerHelp + "\n";
+	}else{
+		helpstring += "\n";
+	}
+
+	if(registeredCommands.empty()){
+		helpstring += "No commands.";
+	}else{
+		helpstring += "Command name,CMD ID, Description\n";
+		for(CmdHandlerCommanddef& cmd : registeredCommands){
+			if(cmd.helpstring != nullptr && cmd.cmd != nullptr){
+				char cmdhex[11];
+				std::snprintf(cmdhex,11,"0x%lX",cmd.cmdId);
+				helpstring.append(cmd.cmd);
+				helpstring += "," + std::string(cmdhex) + ",";
+				helpstring.append(cmd.helpstring);
+				helpstring += "\n";
+			}
+		}
+	}
+
+	return helpstring;
+}
+
 
 void CommandHandler::registerCommands(){
 	registerCommand("id", CommandHandlerCommands::id, "ID of class");
@@ -124,7 +165,11 @@ CommandStatus CommandHandler::internalCommand(const ParsedCommand& cmd,std::vect
 		break;
 
 		case CommandHandlerCommands::help:
-			replies.push_back(CommandReply(this->getCommandsHelpstring()));
+			if(cmd.type == CMDtype::info){
+				replies.push_back(CommandReply(this->getCsvHelpstring()));
+			}else{
+				replies.push_back(CommandReply(this->getCommandsHelpstring()));
+			}
 		break;
 
 		case CommandHandlerCommands::cmdhandleruid:

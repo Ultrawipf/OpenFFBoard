@@ -134,6 +134,7 @@ public:
 
 	virtual std::string getHelpstring(); // Returns a help string if "help" command is sent
 	virtual std::string getCommandsHelpstring(); // Returns a list of the commands helpstrings
+	virtual std::string getCsvHelpstring(); // Returns a list of the commands helpstrings formatted for csv
 	static void sendSerial(std::string cls,std::string cmd,std::string string,uint8_t prefix = 0xFF); //!< Send a command reply formatted sequence
 	static void logSerial(std::string string);	//!< Send a log formatted sequence
 

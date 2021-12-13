@@ -11,6 +11,8 @@
 #include "CmdParser.h"
 #include "FFBoardMainCommandThread.h"
 #include "UART.h"
+#include "thread.hpp"
+#include "CommandHandler.h"
 
 
 class FFBoardMainCommandThread;
@@ -38,6 +40,7 @@ protected:
  */
 class StringCommandInterface : public CommandInterface{
 public:
+	StringCommandInterface(uint32_t reservedBuffer = 16) : parser(CmdParser(reservedBuffer)){}
 	bool addBuf(char* Buf, uint32_t *Len);
 	bool getNewCommands(std::vector<ParsedCommand>& commands) override;
 	static void formatReply(std::string& reply,const std::vector<CommandResult>& results,const bool formatWriteAsRead=false);
@@ -47,12 +50,12 @@ public:
 	const std::string getHelpstring(){return "Syntax:\nGet: cls.(instance.)cmd? or cls.(instance.)cmd?adr\nSet: cls.(instance.)cmd=val or cls.(instance.)cmd=val?adr";};
 
 
-private:
-	CmdParser parser = CmdParser(); // String parser
+protected:
+	CmdParser parser; // String parser
 };
 
 
-//TODO receives bytes from mainclass. calls its own parser instance, calls global parser thread, passes replies  back to cdc port.
+//receives bytes from mainclass. calls its own parser instance, calls global parser thread, passes replies  back to cdc port.
 class CDC_CommandInterface : public StringCommandInterface{
 public:
 	CDC_CommandInterface();
@@ -61,22 +64,34 @@ public:
 	void sendReplies(std::vector<CommandResult>& results,CommandInterface* originalInterface) override;
 	const std::string getHelpstring(){return "CDC interface. " + StringCommandInterface::getHelpstring();};
 
+private:
+	bool enableBroadcastFromOtherInterfaces = true;
+
 };
 
 
 
-class UART_CommandInterface : public StringCommandInterface,public UARTDevice{
+class UART_CommandInterface : public StringCommandInterface,public UARTDevice, public cpp_freertos::Thread{
 public:
-	UART_CommandInterface();
+	UART_CommandInterface(uint32_t baud = 115200);
 	virtual ~UART_CommandInterface();
 
-	//static std::string getHelpstring(){return "\nUART interface. System Commands: errors,reboot,help,dfu,swver (Version),hwtype,minVerGui,lsmain (List configs),id,main (Set main config),lsactive (print command handlers),vint,vext,format (Erase flash),mallinfo,heapfree (Mem usage),flashdump,flashraw\n";}
+	void Run();
+
 	void sendReplies(std::vector<CommandResult>& results,CommandInterface* originalInterface) override;
 	void uartRcv(char& buf);
 	const std::string getHelpstring(){return "UART interface. " + StringCommandInterface::getHelpstring();};
+	//void endUartTransfer(UARTPort* port) override;
 
 private:
 	UART_InitTypeDef uartconfig;
+	uint32_t baud = 115200;
+	std::string sendBuffer;
+	bool enableBroadcastFromOtherInterfaces = false; // uart is slow. do not broadcast other messages by default
+	cpp_freertos::BinarySemaphore cmdUartSem;
+	cpp_freertos::BinarySemaphore bufferSem;
+	std::vector<CommandResult> resultsBuffer;
+	bool nextFormat = false;
 };
 
 

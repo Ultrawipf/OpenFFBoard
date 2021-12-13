@@ -9,8 +9,28 @@
 #define INC_HIDCOMMANDINTERFACE_H_
 #include "CommandInterface.h"
 #include "semaphore.hpp"
-#include "hid_cmd_defs.h"
 #include "thread.hpp"
+#include "ffb_defs.h"
+#include "CommandHandler.h"
+
+enum class HidCmdType : uint8_t {write = 0, request = 1, info = 2, writeAddr = 3, requestAddr = 4,ACK = 10, notFound = 13, notification = 14, err = 15};
+
+
+
+// TODO: can only be 25B long. tinyusb will hang otherwise!
+typedef struct
+{
+	uint8_t		reportId = HID_ID_HIDCMD;
+	HidCmdType	type = HidCmdType::err;	// 0x01. Type of report. 0 = write, 1 = request, 2 = error
+	uint16_t	clsid = 0;
+	uint8_t 	instance = 0;		// Class ID. 16 bits class id, 8 bits used for unique instance number. 255 for broadcast
+	uint32_t	cmd = 0;				// 0x02 Use this as an identifier for the command. upper 16 bits for class type
+	uint64_t	data = 0;				// 0x03 Use this to transfer data or the primary value
+	uint64_t	addr = 0;				// 0x04 Use this to transfer an optional address or second value (CAN for example)
+
+} __attribute__((packed)) HID_CMD_Data_t;
+
+
 
 class HID_CommandInterface : public CommandInterface, public cpp_freertos::Thread{
 public:
@@ -19,7 +39,7 @@ public:
 
 	static HID_CommandInterface* globalInterface; // Pointer used to access the main hid command interface
 
-	const std::string getHelpstring(){return "HID interface";};
+	const std::string getHelpstring(){return "HID";}; // Not applicable here
 	bool getNewCommands(std::vector<ParsedCommand>& commands);
 	//bool hasNewCommands();
 	void sendReplies(std::vector<CommandResult>& results,CommandInterface* originalInterface); // All commands from batch done
@@ -29,10 +49,11 @@ public:
 	void transferComplete(uint8_t itf, uint8_t const* report, uint8_t len);
 
 	void Run();
+
 private:
 	std::vector<ParsedCommand> commands;
 	std::vector<HID_CMD_Data_t> outBuffer;
-	bool enableBroadcastFromOtherInterfaces = false;
+	bool enableBroadcastFromOtherInterfaces = false; // TODO make configurable via command
 	static cpp_freertos::BinarySemaphore threadSem;
 
 
