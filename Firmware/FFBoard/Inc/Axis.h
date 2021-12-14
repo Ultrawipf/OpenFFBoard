@@ -235,7 +235,7 @@ private:
 	float accel_f = 120 , accel_q = 0.3;
 	const float filter_f = 1000; // 1khz
 	const int32_t damperClip = 10000;
-	uint8_t damperIntensity = 0;
+	uint8_t damperIntensity = 30;
 	Biquad speedFilter = Biquad(BiquadType::lowpass, speed_f/filter_f, speed_q, 0.0);
 	Biquad accelFilter = Biquad(BiquadType::lowpass, accel_f/filter_f, accel_q, 0.0);
 	//Biquad limitsFilter = Biquad(BiquadType::lowpass, 20/filter_f, 0.4, 0.0);
