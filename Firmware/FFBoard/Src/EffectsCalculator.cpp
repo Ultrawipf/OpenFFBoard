@@ -295,8 +295,8 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 
 	metric_t *metrics = axes[axis]->getMetrics();
 	uint8_t axisCount = axes.size();
-	float scaleSpeed = 20;//axes[axis]->getSpeedScalerNormalized(); // TODO decide if scalers are useful or not
-	float scaleAccel = 20;//axes[axis]->getAccelScalerNormalized();
+	float scaleSpeed = 40;//axes[axis]->getSpeedScalerNormalized(); // TODO decide if scalers are useful or not
+	float scaleAccel = 40;//axes[axis]->getAccelScalerNormalized();
 
 	if (effect->enableAxis == DIRECTION_ENABLE)
 	{
@@ -687,95 +687,3 @@ CommandStatus EffectsCalculator::command(const ParsedCommand& cmd,std::vector<Co
 	return CommandStatus::OK;
 }
 
-//
-//ParseStatus EffectsCalculator::command(ParsedCommand_old *cmd, std::string *reply)
-//{
-//	ParseStatus flag = ParseStatus::OK;
-//	if (cmd->cmd == "ffbfiltercf")
-//	{
-//		if (cmd->type == CMDtype::get)
-//		{
-//			*reply += std::to_string(cfFilter_f);
-//		}
-//		else if (cmd->type == CMDtype::set)
-//		{
-//			setCfFilter(cmd->val,this->cfFilter_q);
-//		}
-//	}
-//	else if (cmd->cmd == "ffbfiltercf_q")
-//	{
-//		if (cmd->type == CMDtype::get)
-//		{
-//			*reply += std::to_string(cfFilter_q);
-//		}
-//		else if (cmd->type == CMDtype::set)
-//		{
-//			setCfFilter(this->cfFilter_f,cmd->val);
-//		}else
-//		{
-//			*reply += "CF Q 0-127 = 0.01 - 1.28";
-//		}
-//	}
-//	else if (cmd->cmd == "effects")
-//	{
-//		if (cmd->type == CMDtype::get)
-//		{
-//			*reply += listEffectsUsed();
-//		}
-//		else if (cmd->type == CMDtype::set)
-//		{
-//			effects_used = 0;
-//		}
-//		else
-//		{
-//			*reply += "List effects used.";
-//		}
-//	}
-//	else if(cmd->cmd == "spring")
-//	{
-//		if(cmd->type == CMDtype::get)
-//		{
-//			*reply+=std::to_string(gain.spring);
-//		}
-//		else if(cmd->type == CMDtype::set)
-//		{
-//			gain.spring = cmd->val;
-//		}
-//	}
-//	else if(cmd->cmd == "friction")
-//	{
-//		if(cmd->type == CMDtype::get)
-//		{
-//			*reply+=std::to_string(gain.friction);
-//		}
-//		else if(cmd->type == CMDtype::set)
-//		{
-//			gain.friction = cmd->val;
-//		}
-//	}
-//	else if(cmd->cmd == "damper")
-//	{
-//		if(cmd->type == CMDtype::get)
-//		{
-//			*reply+=std::to_string(gain.damper);
-//		}
-//		else if(cmd->type == CMDtype::set)
-//		{
-//			gain.damper = cmd->val;
-//		}
-//	}
-//	else if(cmd->cmd == "inertia")
-//	{
-//		if(cmd->type == CMDtype::get)
-//		{
-//			*reply+=std::to_string(gain.inertia);
-//		}
-//		else if(cmd->type == CMDtype::set)
-//		{
-//			gain.inertia = cmd->val;
-//		}
-//	}else{
-//		flag = ParseStatus::NOT_FOUND;
-//	}
-//	return flag;
-//};

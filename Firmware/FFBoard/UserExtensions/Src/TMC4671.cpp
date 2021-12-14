@@ -2134,7 +2134,7 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 		break;
 	case TMC4671_commands::temp:
 		if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply((int32_t)this->getTemp()*100));
+			replies.push_back(CommandReply((int32_t)(this->getTemp()*100.0)));
 		}
 		break;
 	case TMC4671_commands::reg:
