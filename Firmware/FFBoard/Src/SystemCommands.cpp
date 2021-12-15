@@ -42,7 +42,7 @@ void SystemCommands::registerCommands(){
 	CommandHandler::registerCommand("reboot", FFBoardMain_commands::reboot, "Reset chip",CMDFLAG_GET);
 	CommandHandler::registerCommand("dfu", FFBoardMain_commands::dfu, "reboot into DFU bootloader",CMDFLAG_GET);
 	CommandHandler::registerCommand("lsmain", FFBoardMain_commands::lsmain, "List available mainclasses",CMDFLAG_GET);
-	CommandHandler::registerCommand("lsactive", FFBoardMain_commands::lsactive, "List active classes",CMDFLAG_GET);
+	CommandHandler::registerCommand("lsactive", FFBoardMain_commands::lsactive, "List active classes (Fullname:clsname:inst:clsid:idx)",CMDFLAG_GET);
 	CommandHandler::registerCommand("vint", FFBoardMain_commands::vint, "Internal voltage(mV)",CMDFLAG_GET);
 	CommandHandler::registerCommand("vext", FFBoardMain_commands::vext, "External voltage(mV)",CMDFLAG_GET);
 	CommandHandler::registerCommand("main", FFBoardMain_commands::main, "Query or change mainclass",CMDFLAG_GET | CMDFLAG_SET);
@@ -204,7 +204,7 @@ CommandStatus SystemCommands::internalCommand(const ParsedCommand& cmd,std::vect
 					reply.type = CommandReplyType::STRING_OR_DOUBLEINT;
 					reply.adr = hi->instance;
 					reply.val = hi->clsTypeid;
-					reply.reply += std::string(i.name)+ ":" + hi->clsname + ":" + std::to_string(i.id) + ":" + std::to_string(hi->instance) + ":" + std::to_string(hi->commandHandlerID);
+					reply.reply += std::string(i.name)+ ":" + hi->clsname + ":" + std::to_string(hi->instance) + ":" + std::to_string(i.id) + ":" + std::to_string(hi->commandHandlerID);
 					replies.push_back(reply);
 				}
 			}
