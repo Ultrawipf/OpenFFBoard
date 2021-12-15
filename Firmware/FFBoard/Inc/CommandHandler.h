@@ -22,6 +22,7 @@
 #define CMDFLAG_GETADR	 	0x10
 #define CMDFLAG_SETADR	 	0x20
 #define CMDFLAG_HIDDEN	 0x40
+#define CMDFLAG_DEBUG	 0x80
 
 #define CMDFLAG_STR_ONLY 0x100
 #define CMDFLAG_HID_ONLY 0x200 // Command not available for string based parsers

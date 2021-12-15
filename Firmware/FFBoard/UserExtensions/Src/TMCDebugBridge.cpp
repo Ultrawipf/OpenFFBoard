@@ -32,7 +32,7 @@ uint8_t TMCDebugBridge::checksum(std::vector<uint8_t> *buffer,uint8_t len){
 
 void TMCDebugBridge::registerCommands(){
 	//CommandHandler::registerCommands();
-	//registerCommand("reg", TMCDebugBridge_commands::reg, "Read or write a TMC register at adr");
+	registerCommand("reg", TMCDebugBridge_commands::reg, "Read or write a TMC register at adr");
 	registerCommand("torque", TMCDebugBridge_commands::torque, "Change torque and enter torque mode");
 	registerCommand("pos", TMCDebugBridge_commands::pos, "Change pos and enter pos mode");
 	registerCommand("openloopspeed", TMCDebugBridge_commands::openloopspeed, "Move openloop. adr=strength,val=speed");
