@@ -240,6 +240,7 @@ protected:
 			.flags = flags
 		};
 		this->registeredCommands.push_back(cmddef);
+		this->registeredCommands.shrink_to_fit();
 	}
 
 

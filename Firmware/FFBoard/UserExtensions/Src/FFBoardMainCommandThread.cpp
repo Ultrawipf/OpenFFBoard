@@ -29,7 +29,7 @@ cpp_freertos::BinarySemaphore FFBoardMainCommandThread::threadSem = cpp_freertos
 
 
 // Note: allocate enough memory for the command thread to store replies
-FFBoardMainCommandThread::FFBoardMainCommandThread(FFBoardMain* mainclass) : Thread("cmdparser",1500, 35) {
+FFBoardMainCommandThread::FFBoardMainCommandThread(FFBoardMain* mainclass) : Thread("cmdparser",1024, 35) {
 	//main = mainclass;
 	this->Start();
 }

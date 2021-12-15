@@ -190,7 +190,7 @@ CommandStatus SystemCommands::internalCommand(const ParsedCommand& cmd,std::vect
 
 		case FFBoardMain_commands::heapfree:
 		{
-			replies.push_back(CommandReply(xPortGetFreeHeapSize()));
+			replies.push_back(CommandReply(xPortGetFreeHeapSize(),xPortGetMinimumEverFreeHeapSize()));
 			break;
 		}
 
