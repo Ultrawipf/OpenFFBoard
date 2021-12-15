@@ -44,18 +44,7 @@ ClassIdentifier TMC4671::info = {
 	.name = "TMC4671" ,
 	.id=CLSID_MOT_TMC0, // 3
 };
-//const ClassIdentifier TMC4671::getInfo(){
-//	return info;
-//}
 
-//TMC4671::TMC4671(SPI_HandleTypeDef* spi,OutputPin cspin,TMC4671MainConfig conf) : Thread("TMC", TMC_THREAD_MEM, TMC_THREAD_PRIO){
-////	this->cspin = cspin;
-////	this->csport = csport;
-////	this->spi = spi;
-//	this->conf = conf;
-//	spi_config.cs = cspin;
-//	this->restoreFlash();
-//}
 
 TMC4671::TMC4671(SPIPort& spiport,OutputPin cspin,uint8_t address) :CommandHandler("tmc", CLSID_MOT_TMC0), SPIDevice{motor_spi,cspin},Thread("TMC", TMC_THREAD_MEM, TMC_THREAD_PRIO){
 	setAddress(address);
@@ -94,7 +83,7 @@ TMC4671::~TMC4671() {
 
 const ClassIdentifier TMC4671::getInfo() {
 
-	return info;//ClassIdentifier {.name = TMC4671::info.name, .id = TMC4671::info.id, .unique = this->axis, .hidden = TMC4671::info.hidden};
+	return info;
 }
 
 
@@ -1938,7 +1927,7 @@ void TMC4671::registerCommands(){
 	registerCommand("encalign", TMC4671_commands::encalign, "Align encoder");
 	registerCommand("poles", TMC4671_commands::poles, "Motor pole pairs");
 	registerCommand("acttrq", TMC4671_commands::acttrq, "Read torque");
-	registerCommand("pwmlim", TMC4671_commands::pwmlim, "PWM limit");
+	registerCommand("pwmlim", TMC4671_commands::pwmlim, "PWM limit",CMDFLAG_DEBUG);
 	registerCommand("torqueP", TMC4671_commands::torqueP, "Torque P");
 	registerCommand("torqueI", TMC4671_commands::torqueI, "Torque I");
 	registerCommand("fluxP", TMC4671_commands::fluxP, "Flux P");
@@ -1949,13 +1938,13 @@ void TMC4671::registerCommands(){
 	registerCommand("posI", TMC4671_commands::posI, "Pos I");
 	registerCommand("tmctype", TMC4671_commands::tmctype, "Version of TMC chip");
 	registerCommand("pidPrec", TMC4671_commands::pidPrec, "PID precision bit0=I bit1=P. 0=Q8.8 1= Q4.12");
-	registerCommand("phiesrc", TMC4671_commands::phiesrc, "PhiE source");
+	registerCommand("phiesrc", TMC4671_commands::phiesrc, "PhiE source",CMDFLAG_DEBUG);
 	registerCommand("fluxoffset", TMC4671_commands::fluxoffset, "Offset flux scale for field weakening");
 	registerCommand("seqpi", TMC4671_commands::seqpi, "Sequential PI");
 	registerCommand("iScale", TMC4671_commands::tmcIscale, "Counts per A",CMDFLAG_STR_ONLY);
-	registerCommand("encdir", TMC4671_commands::encdir, "Encoder dir");
+	registerCommand("encdir", TMC4671_commands::encdir, "Encoder dir",CMDFLAG_DEBUG);
 	registerCommand("temp", TMC4671_commands::temp, "Temperature in C * 100");
-	registerCommand("reg", TMC4671_commands::reg, "Read or write a TMC register at adr");
+	registerCommand("reg", TMC4671_commands::reg, "Read or write a TMC register at adr",CMDFLAG_DEBUG);
 
 }
 

@@ -11,7 +11,7 @@
 #include "CommandHandler.h"
 
 enum class FFBoardMain_commands : uint32_t{
-	help=0,save=1,reboot=2,dfu=3,swver=4,hwtype=5,lsmain,main,lsactive,format,errors,errorsclr,flashdump,flashraw,vint,vext,mallinfo,heapfree,minVerGui
+	help=0,save=1,reboot=2,dfu=3,swver=4,hwtype=5,lsmain,main,lsactive,format,errors,errorsclr,flashdump,flashraw,vint,vext,mallinfo,heapfree,taskstats,debug,minVerGui
 };
 
 class SystemCommands : public CommandHandler {
@@ -30,6 +30,7 @@ public:
 	static void replyFlashDump(std::vector<CommandReply>& replies);
 	static void replyErrors(std::vector<CommandReply>& replies);
 
+	static bool allowDebugCommands; // Global flag that controls the debug mode
 };
 
 #endif /* SRC_SYSTEMCOMMANDS_H_ */
