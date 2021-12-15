@@ -11,9 +11,13 @@
 #include "voltagesense.h"
 #include <malloc.h>
 #include "constants.h"
+#include "task.h"
+#include "FreeRTOSConfig.h"
 extern ClassChooser<FFBoardMain> mainchooser;
 extern FFBoardMain* mainclass;
 //extern static const uint8_t SW_VERSION_INT[3];
+
+bool SystemCommands::allowDebugCommands = false;
 
 ClassIdentifier SystemCommands::info = {
 		 .name = "System Commands" ,
@@ -53,7 +57,11 @@ void SystemCommands::registerCommands(){
 	CommandHandler::registerCommand("errors", FFBoardMain_commands::errors, "Read error states",CMDFLAG_GET);
 	CommandHandler::registerCommand("errorsclr", FFBoardMain_commands::errorsclr, "Reset errors",CMDFLAG_GET);
 	CommandHandler::registerCommand("heapfree", FFBoardMain_commands::heapfree, "Memory info",CMDFLAG_GET);
+#if configUSE_STATS_FORMATTING_FUNCTIONS> 0
+	CommandHandler::registerCommand("taskstats", FFBoardMain_commands::taskstats, "Task stats",CMDFLAG_GET);
+#endif
 	CommandHandler::registerCommand("format", FFBoardMain_commands::format, "set format=1 to erase all stored values",CMDFLAG_SET);
+	CommandHandler::registerCommand("debug", FFBoardMain_commands::debug, "Enable or disable debug commands",CMDFLAG_SET | CMDFLAG_GET);
 }
 
 CommandStatus SystemCommands::internalCommand(const ParsedCommand& cmd,std::vector<CommandReply>& replies,CommandInterface* interface){
@@ -101,6 +109,9 @@ CommandStatus SystemCommands::internalCommand(const ParsedCommand& cmd,std::vect
 			replies.push_back(CommandReply(getIntV()));
 			break;
 		}
+
+		case FFBoardMain_commands::debug:
+			return handleGetSet(cmd, replies, SystemCommands::allowDebugCommands);
 
 		case FFBoardMain_commands::vext:
 		{
@@ -193,7 +204,15 @@ CommandStatus SystemCommands::internalCommand(const ParsedCommand& cmd,std::vect
 			replies.push_back(CommandReply(xPortGetFreeHeapSize(),xPortGetMinimumEverFreeHeapSize()));
 			break;
 		}
-
+#if configUSE_STATS_FORMATTING_FUNCTIONS>0
+		case FFBoardMain_commands::taskstats:
+		{
+			char repl[800];
+			vTaskGetRunTimeStats(repl);
+			replies.push_back(CommandReply("\n"+std::string(repl)));
+			break;
+		}
+#endif
 		case FFBoardMain_commands::lsactive:
 		{
 			for(CommandHandler* handler : CommandHandler::cmdHandlers){

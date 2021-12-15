@@ -54,7 +54,11 @@ std::string CommandHandler::getCommandsHelpstring(){
 		helpstring += "Commands with help:\n";
 		for(CmdHandlerCommanddef& cmd : registeredCommands){
 			if(cmd.helpstring != nullptr && cmd.cmd != nullptr){
-				helpstring += std::string(cmd.cmd) + ":\t" + std::string(cmd.helpstring)+"\n";
+				helpstring += std::string(cmd.cmd) + ":\t" + std::string(cmd.helpstring);
+				if(cmd.flags & CMDFLAG_DEBUG){
+					helpstring+= " (DEBUG MODE ONLY)";
+				}
+				helpstring += "\n";
 			}
 
 		}
@@ -97,6 +101,9 @@ std::string CommandHandler::getCsvHelpstring(){
 				helpstring.append(cmd.cmd);
 				helpstring += "," + std::string(cmdhex) + ",";
 				helpstring.append(cmd.helpstring);
+				if(cmd.flags & CMDFLAG_DEBUG){
+					helpstring+= " (DEBUG MODE ONLY)";
+				}
 				helpstring += "\n";
 			}
 		}
@@ -121,7 +128,7 @@ void CommandHandler::registerCommands(){
  */
 CmdHandlerCommanddef* CommandHandler::getCommandFromName(const std::string& cmd,uint32_t ignoredFlags){
 	for(CmdHandlerCommanddef& cmdItem : registeredCommands){
-		if(cmdItem.cmd == cmd && !(cmdItem.flags & ignoredFlags)){
+		if(cmdItem.cmd == cmd && !(cmdItem.flags & ignoredFlags) && (SystemCommands::allowDebugCommands || !(cmdItem.flags & CMDFLAG_DEBUG))){
 			return &cmdItem;
 		}
 	}
@@ -134,7 +141,7 @@ CmdHandlerCommanddef* CommandHandler::getCommandFromName(const std::string& cmd,
  */
 CmdHandlerCommanddef* CommandHandler::getCommandFromId(const uint32_t id,uint32_t ignoredFlags){
 	for(CmdHandlerCommanddef& cmdItem : registeredCommands){
-		if(cmdItem.cmdId == id && !(cmdItem.flags & ignoredFlags)){
+		if(cmdItem.cmdId == id && !(cmdItem.flags & ignoredFlags) && (SystemCommands::allowDebugCommands || !(cmdItem.flags & CMDFLAG_DEBUG))){
 			return &cmdItem;
 		}
 	}
@@ -292,7 +299,7 @@ bool CommandHandler::isInHandlerList(CommandHandler* handler){
 
 bool CommandHandler::isValidCommandId(uint32_t cmdid,uint32_t ignoredFlags,uint32_t requiredFlags){
 	for(CmdHandlerCommanddef& cmd : registeredCommands){
-		if(cmd.cmdId == cmdid && !(cmd.flags & ignoredFlags) && ((cmd.flags & requiredFlags) == requiredFlags)){
+		if(cmd.cmdId == cmdid && !(cmd.flags & ignoredFlags) && ((cmd.flags & requiredFlags) == requiredFlags) && (SystemCommands::allowDebugCommands || !(cmd.flags & CMDFLAG_DEBUG))){
 			return true;
 		}
 	}

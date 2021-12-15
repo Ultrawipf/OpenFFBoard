@@ -95,4 +95,7 @@ void free(void *p)
     vPortFree(p);
 }
 
+unsigned long getRunTimeCounterValue(void){
+	return micros();
+}
 
