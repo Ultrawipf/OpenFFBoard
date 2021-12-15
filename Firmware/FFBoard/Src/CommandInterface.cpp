@@ -155,7 +155,7 @@ void StringCommandInterface::generateReplyValueString(std::string& replyPart,con
 	}else if(reply.type == CommandReplyType::INT){
 		replyPart = std::to_string(reply.val);
 	}else if(reply.type == CommandReplyType::DOUBLEINTS){
-		replyPart = std::to_string(reply.adr) + ":" + std::to_string(reply.val);
+		replyPart = std::to_string(reply.val) + ":" + std::to_string(reply.adr);
 	}else if(reply.type == CommandReplyType::ACK){
 		replyPart = "OK";
 	}
@@ -165,7 +165,7 @@ void StringCommandInterface::generateReplyFromCmd(std::string& replyPart,const P
 	if(originalCommand.type == CMDtype::set){
 		replyPart = std::to_string(originalCommand.val);
 	}else if(originalCommand.type == CMDtype::setat){
-		replyPart = std::to_string(originalCommand.adr) + ":" + std::to_string(originalCommand.val);
+		replyPart = std::to_string(originalCommand.val) + ":" + std::to_string(originalCommand.adr);
 	}
 }
 

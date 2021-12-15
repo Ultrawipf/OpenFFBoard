@@ -11,7 +11,7 @@
 uint16_t _desc_str[USB_STRING_DESC_BUF_SIZE]; // String buffer
 
 USBdevice::USBdevice(const tusb_desc_device_t* deviceDesc,const uint8_t (*confDesc),const usb_string_desc_t* strings) :
-Thread("USB", 512, 40), desc_device(deviceDesc), desc_conf(confDesc), string_desc(strings) {
+Thread("USB", 256, 40), desc_device(deviceDesc), desc_conf(confDesc), string_desc(strings) {
 
 }
 
