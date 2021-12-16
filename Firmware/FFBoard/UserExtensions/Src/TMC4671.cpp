@@ -1230,7 +1230,7 @@ std::pair<uint32_t,std::string> TMC4671::getTmcType(){
 	std::string reply = "";
 	writeReg(1, 0);
 	uint32_t nameInt = readReg(0);
-	if(nameInt == 0){
+	if(nameInt == 0 || nameInt ==  0xffffffff){
 		reply = "No driver connected";
 		return std::pair<uint32_t,std::string>(0,reply);
 	}
@@ -1241,6 +1241,7 @@ std::pair<uint32_t,std::string> TMC4671::getTmcType(){
 
 	writeReg(1, 1);
 	uint32_t versionInt = readReg(0);
+
 	std::string versionstring = std::to_string((versionInt >> 16) && 0xffff) + "." + std::to_string((versionInt) && 0xffff);
 
 	reply += "TMC" + namestring + " v" + versionstring;
