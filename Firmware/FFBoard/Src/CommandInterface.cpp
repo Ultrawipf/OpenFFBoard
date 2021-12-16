@@ -178,7 +178,7 @@ void StringCommandInterface::generateReplyFromCmd(std::string& replyPart,const P
 
 
 CDC_CommandInterface::CDC_CommandInterface() : StringCommandInterface(32) {
-
+	parser.setClearBufferTimeout(parserTimeout);
 }
 
 CDC_CommandInterface::~CDC_CommandInterface() {
@@ -214,7 +214,7 @@ UART_CommandInterface::UART_CommandInterface(uint32_t baud) : StringCommandInter
 		uartconfig.BaudRate = this->baud;
 		uartport->reconfigurePort(uartconfig);
 	}
-
+	parser.setClearBufferTimeout(parserTimeout);
 	uartport->registerInterrupt(); // enable port
 	this->Start();
 }
