@@ -66,7 +66,7 @@ public:
 
 private:
 	bool enableBroadcastFromOtherInterfaces = true;
-
+	const uint32_t parserTimeout = 2000;
 };
 
 
@@ -84,6 +84,8 @@ public:
 	//void endUartTransfer(UARTPort* port) override;
 
 private:
+	const uint32_t parserTimeout = 2000;
+
 	UART_InitTypeDef uartconfig;
 	uint32_t baud = 115200;
 	std::string sendBuffer;

@@ -35,9 +35,22 @@ bool CmdParser::add(char* Buf, uint32_t *Len){
 
 		}
 	}
-
+	if(clearBufferTimeout > 0 && ((HAL_GetTick() - lastAddTime) > clearBufferTimeout)){
+		this->buffer.clear();
+		pulseClipLed();
+	}
+	lastAddTime = HAL_GetTick();
 	this->buffer.append((char*)Buf,*Len);
 	return flag;
+}
+
+/**
+ * If the last command was earlier than the timeout force clear the buffer before appending.
+ * Gets rid of unparsable parts in the buffer.
+ * Set 0 to never force clear the buffer automatically and only clear parsed portions (default).
+ */
+void CmdParser::setClearBufferTimeout(uint32_t timeout){
+	this->clearBufferTimeout = timeout;
 }
 
 uint32_t CmdParser::bufferCapacity(){
@@ -47,6 +60,7 @@ uint32_t CmdParser::bufferCapacity(){
 
 // Format: cls.instance.cmd<=|?|!><val?>
 bool CmdParser::parse(std::vector<ParsedCommand>& commands){
+
 	bool found = false;
 	//std::vector<ParsedCommand> commands;
 	std::vector<std::string> tokens;
