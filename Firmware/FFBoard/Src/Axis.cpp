@@ -430,7 +430,9 @@ void Axis::resetMetrics(float new_pos= 0) { // pos is degrees
 	metric.current.posDegrees = new_pos;
 	metric.current.pos = scaleEncValue(new_pos, degreesOfRotation);
 	metric.previous = metric_t();
-
+	// Reset filters
+	speedFilter.calcBiquad();
+	accelFilter.calcBiquad();
 }
 
 
@@ -612,6 +614,7 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 		else if (cmd.type == CMDtype::set)
 		{
 			invertAxis = cmd.val >= 1 ? true : false;
+			resetMetrics(-metric.current.posDegrees);
 		}
 		break;
 

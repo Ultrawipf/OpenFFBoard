@@ -18,6 +18,8 @@ extern FFBoardMain* mainclass;
 //extern static const uint8_t SW_VERSION_INT[3];
 
 bool SystemCommands::allowDebugCommands = false;
+bool SystemCommands::errorPrintingEnabled = true;
+SystemCommands* SystemCommands::systemCommandsInstance = nullptr;
 
 ClassIdentifier SystemCommands::info = {
 		 .name = "System Commands" ,
@@ -32,11 +34,12 @@ const ClassIdentifier SystemCommands::getInfo(){
 SystemCommands::SystemCommands() : CommandHandler(CMDCLSTR_SYS, CMDCLSID_SYS) {
 	registerCommands();
 	//CommandHandler::registerCommands();
+	systemCommandsInstance = this;
 
 }
 
 SystemCommands::~SystemCommands() {
-
+	systemCommandsInstance = nullptr;
 }
 
 

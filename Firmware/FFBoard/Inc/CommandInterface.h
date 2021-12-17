@@ -30,6 +30,7 @@ public:
 	const virtual std::string getHelpstring(){return "";};
 	virtual bool getNewCommands(std::vector<ParsedCommand>& commands) = 0;
 	virtual bool hasNewCommands();
+	static void broadcastCommandReplyAsync(std::vector<CommandReply>& reply,CommandHandler* handler, uint32_t cmdId,CMDtype type);
 	virtual void sendReplies(std::vector<CommandResult>& results,CommandInterface* originalInterface); // All commands from batch done
 protected:
 	bool parserReady = false;

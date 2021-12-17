@@ -25,12 +25,17 @@ public:
 	void registerCommands();
 	CommandStatus internalCommand(const ParsedCommand& cmd,std::vector<CommandReply>& replies,CommandInterface* interface);
 
+
 	const ClassType getClassType() {return ClassType::Internal;};
 
 	static void replyFlashDump(std::vector<CommandReply>& replies);
 	static void replyErrors(std::vector<CommandReply>& replies);
 
 	static bool allowDebugCommands; // Global flag that controls the debug mode
+
+	static bool errorPrintingEnabled;
+	static SystemCommands* systemCommandsInstance;
+
 };
 
 #endif /* SRC_SYSTEMCOMMANDS_H_ */

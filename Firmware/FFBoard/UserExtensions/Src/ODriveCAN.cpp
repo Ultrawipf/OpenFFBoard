@@ -75,7 +75,7 @@ void ODriveCAN::registerCommands(){
 	registerCommand("canspd", ODriveCAN_commands::canspd, "CAN baudrate");
 	registerCommand("errors", ODriveCAN_commands::errors, "ODrive error flags");
 	registerCommand("state", ODriveCAN_commands::state, "ODrive state");
-	registerCommand("maxtorqe", ODriveCAN_commands::maxtorqe, "Max torque to send for scaling");
+	registerCommand("maxtorque", ODriveCAN_commands::maxtorque, "Max torque to send for scaling");
 	registerCommand("vbus", ODriveCAN_commands::vbus, "ODrive Vbus");
 	registerCommand("anticogging", ODriveCAN_commands::anticogging, "Set 1 to start anticogging calibration");
 }
@@ -309,7 +309,7 @@ CommandStatus ODriveCAN::command(const ParsedCommand& cmd,std::vector<CommandRep
 			return CommandStatus::ERR;
 		}
 		break;
-	case ODriveCAN_commands::maxtorqe:
+	case ODriveCAN_commands::maxtorque:
 	{
 		if(cmd.type == CMDtype::get){
 			int32_t val = maxTorque*100;
