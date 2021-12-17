@@ -352,9 +352,8 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 	 * 	-------   |
 	 * 			  |
 	 */
-	case FFB_EFFECT_FRICTION: // TODO unstable. Too strong
+	case FFB_EFFECT_FRICTION: // TODO sometimes unstable.
 	{
-		// TODO check if another filter can be usefull
 		float speed = metrics->speed * scaleSpeed;//effect->filter[con_idx]->process()
 
 		int16_t offset = effect->conditions[con_idx].cpOffset;
@@ -403,7 +402,7 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 	case FFB_EFFECT_DAMPER:
 	{
 
-		float speed = metrics->speed * scaleSpeed;// TODO VMA check if mandatory to restore filter : effect->filter[con_idx]->process(metrics->speed * scaleSpeed);
+		float speed = metrics->speed * scaleSpeed;
 		result_torque -= effect->filter[con_idx]->process(calcConditionEffectForce(effect, speed, gain.damper, con_idx, damper_scaler, angle_ratio));
 
 		break;
@@ -411,15 +410,8 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 
 	case FFB_EFFECT_INERTIA:
 	{
-
 		float accel = metrics->accel* scaleAccel;
 		result_torque -= effect->filter[con_idx]->process(calcConditionEffectForce(effect, accel, gain.inertia, con_idx, inertia_scaler, angle_ratio)); // Bump *60 the inertia feedback
-//		static int32_t last_force = 0;
-//		// if there is 2 successive torque with a different direction, we ignore the first one to remove oscillation
-//		if ( last_force * force >=0 ) {
-//			result_torque -=  force;
-//		}
-		//last_force = force;
 
 		break;
 	}
@@ -615,6 +607,10 @@ void EffectsCalculator::logEffectType(uint8_t type){
 	}
 }
 
+/**
+ * Prints a list of effects that were active at some point
+ * Does not reset when an effect is deactivated
+ */
 std::string EffectsCalculator::listEffectsUsed(){
 	std::string effects_list = "";
 	static const char *effects[12] = {"Constant,","Ramp,","Square,","Sine,","Triangle,","Sawtooth Up,","Sawtooth Down,","Spring,","Damper,","Inertia,","Friction,","Custom,"};
@@ -656,10 +652,7 @@ CommandStatus EffectsCalculator::command(const ParsedCommand& cmd,std::vector<Co
 		{
 			setCfFilter(this->cfFilter_f,cmd.val);
 		}
-//		else
-//		{
-//			*reply += "CF Q 0-127 = 0.01 - 1.28";
-//		}
+
 		break;
 
 	case EffectsCalculator_commands::effects:

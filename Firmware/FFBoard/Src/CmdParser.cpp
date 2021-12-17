@@ -35,10 +35,7 @@ bool CmdParser::add(char* Buf, uint32_t *Len){
 
 		}
 	}
-	if(clearBufferTimeout > 0 && ((HAL_GetTick() - lastAddTime) > clearBufferTimeout)){
-		this->buffer.clear();
-		pulseClipLed();
-	}
+
 	lastAddTime = HAL_GetTick();
 	this->buffer.append((char*)Buf,*Len);
 	return flag;
@@ -92,11 +89,7 @@ bool CmdParser::parse(std::vector<ParsedCommand>& commands){
 		uint32_t point1 = word.find('.', 0);
 		uint32_t point2 = word.find('.', point1+1); // if has unique instance char
 
-//		if(word[1] == '.'){ // Axis component
-//			char axis = word.front();
-//			cmd.prefix = axis;
-//			cmd_start = 2;
-//		}
+
 		// cmdstart = <cls>.
 		std::string clsname = "";
 		if(point1 != std::string::npos){
@@ -241,38 +234,3 @@ bool CmdParser::parse(std::vector<ParsedCommand>& commands){
 
 	return found;
 }
-
-
-
-//std::string CmdParser::formatReply(const CommandResult& result){
-//
-//	std::string reply = ">";
-//	// The requesting command came originally from this interface
-//
-//
-////	std::string replystr = result.reply.reply;
-////	ParseStatus status = result.reply.result;
-////	if(replystr.empty() && status == ParseStatus::OK){
-////		replystr = "OK";
-////	}
-////	// Append newline if reply is not empty
-////	if(!replystr.empty() && replystr.back()!='\n'){
-////		replystr+='\n';
-////	}
-////	// Errors
-////	if(status == ParseStatus::NOT_FOUND){ //No class reported success. Show error
-////		Error err = cmdNotFoundError;
-////		replystr = "Err. invalid";
-////		err.info = result.originalCommand.rawcmd + " not found";
-////		ErrorHandler::addError(err);
-////
-////	}else if(status == ParseStatus::ERR){ //Error reported in command
-////		replystr = "Err. exec error";
-////		Error err = cmdExecError;
-////		err.info = "Error executing" + result.originalCommand.rawcmd;
-////		ErrorHandler::addError(err);
-////	}
-////
-////	std::string formattedReply = ">" + result.originalCommand.rawcmd + ":" + replystr;
-//	return formattedReply;
-//}

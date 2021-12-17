@@ -112,20 +112,33 @@ void ErrorHandler::errorCallback(Error &error, bool cleared){
 
 }
 
+
+//ClassIdentifier ErrorPrinter::info = {
+//	.name = "Errorprinter",
+//	.id=CLSID_ERRORS
+//};
+
+//ClassIdentifier ErrorPrinter::getInfo(){
+//	return info;
+//}
+
 ErrorPrinter::ErrorPrinter() : Thread("errprint",256,17){ // Higher than default task but low.
 	this->Start();
 }
 
 void ErrorPrinter::Run(){
 	while(1){
-		std::vector<Error>* errors = ErrorHandler::getErrors();
-		for(Error& e : *errors){
-			CommandHandler::sendSerial("err","error", e.toString());
+		if(SystemCommands::systemCommandsInstance && enabled){
+			std::vector<CommandReply> replies;
+			SystemCommands::systemCommandsInstance->replyErrors(replies);
+			CommandInterface::broadcastCommandReplyAsync(replies, SystemCommands::systemCommandsInstance, (uint32_t)FFBoardMain_commands::errors, CMDtype::get);
+
+			ErrorHandler::clearTemp(); // Errors are sent. clear them
 		}
-		ErrorHandler::clearTemp(); // Errors are sent. clear them
 		this->Suspend();
 	}
 }
+
 
 // TODO prints in thread when called from isr
 void ErrorPrinter::errorCallback(Error &error, bool cleared){

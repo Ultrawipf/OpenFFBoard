@@ -37,7 +37,7 @@ enum class CMDtype : uint32_t{
 			err = 0x1000
 };
 
-enum class CommandStatus : uint8_t {NOT_FOUND,OK,ERR,NO_REPLY};
+enum class CommandStatus : uint8_t {NOT_FOUND,OK,ERR,NO_REPLY,BROADCAST};
 enum class CommandReplyType : uint8_t {NONE,ACK,INT,STRING,STRING_OR_INT,STRING_OR_DOUBLEINT,DOUBLEINTS};
 
 class CommandInterface;
@@ -136,8 +136,10 @@ public:
 	virtual std::string getHelpstring(); // Returns a help string if "help" command is sent
 	virtual std::string getCommandsHelpstring(); // Returns a list of the commands helpstrings
 	virtual std::string getCsvHelpstring(); // Returns a list of the commands helpstrings formatted for csv
-	static void sendSerial(std::string cls,std::string cmd,std::string string,uint8_t prefix = 0xFF); //!< Send a command reply formatted sequence
+	//static void sendSerial(std::string cls,std::string cmd,std::string string,uint8_t prefix = 0xFF); //!< Send a command reply formatted sequence
 	static void logSerial(std::string string);	//!< Send a log formatted sequence
+
+	void broadcastCommandReply(CommandReply reply, uint32_t cmdId,CMDtype type);
 
 	static bool logEnabled;
 	static bool logsEnabled();
@@ -150,7 +152,7 @@ public:
 
 
 	static uint32_t getClassIdFromName(const char* name);
-	static const std::string getClassNameFromId(const uint32_t id);
+	static const char* getClassNameFromId(const uint32_t id);
 
 	static CommandHandler* getHandlerFromHandlerId(const uint16_t cmdhandlerID);
 	static CommandHandler* getHandlerFromId(const uint16_t id,const uint8_t instance=0xFF);
