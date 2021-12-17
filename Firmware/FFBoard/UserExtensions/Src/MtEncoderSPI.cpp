@@ -28,7 +28,7 @@ MtEncoderSPI::MtEncoderSPI() : SPIDevice(ext3_spi,ext3_spi.getFreeCsPins()[0]), 
 	restoreFlash();
 
 	CommandHandler::registerCommands();
-	registerCommand("cs", MtEncoderSPI_commands::cspin, "CS pin");
+	registerCommand("cs", MtEncoderSPI_commands::cspin, "CS pin",CMDFLAG_GET | CMDFLAG_SET);
 }
 
 MtEncoderSPI::~MtEncoderSPI() {

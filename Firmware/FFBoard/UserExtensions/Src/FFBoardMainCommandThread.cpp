@@ -62,6 +62,9 @@ void FFBoardMainCommandThread::Run(){
 	}
 }
 
+/**
+ * Signals the command thread that new commands are ready to be executed
+ */
 void FFBoardMainCommandThread::wakeUp(){
 
 	if(inIsr()){

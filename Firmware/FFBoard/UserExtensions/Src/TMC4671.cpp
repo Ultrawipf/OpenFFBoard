@@ -17,7 +17,7 @@
 #define MAX_TMC_DRIVERS 3
 
 ClassIdentifier TMC_1::info = {
-	.name = "TMC4671_1",
+	.name = "TMC4671 (CS 1)",
 	.id=CLSID_MOT_TMC0, // 1
 };
 
@@ -28,7 +28,7 @@ bool TMC_1::isCreatable() {
 
 
 ClassIdentifier TMC_2::info = {
-	.name = "TMC4671_2" ,
+	.name = "TMC4671 (CS 2)" ,
 	.id=CLSID_MOT_TMC0, // 2
 };
 
@@ -915,7 +915,8 @@ void TMC4671::ABN_init(){
 				setPhiEtype(PhiE::abn);
 				encstate = ENC_InitState::OK; // Skip for DC motors
 				if(manualEncAlign){
-					CommandHandler::sendSerial(this->getCommandHandlerInfo()->clsname,"encalign?","DC motors don't support alignment",this->getCommandHandlerInfo()->instance);
+					CommandHandler::broadcastCommandReply(CommandReply("DC motors don't support alignment",0), (uint32_t)TMC4671_commands::encalign, CMDtype::get);
+					//CommandHandler::sendSerial(this->getCommandHandlerInfo()->clsname,"encalign?","DC motors don't support alignment",this->getCommandHandlerInfo()->instance);
 				}
 			}else{
 				encstate = ENC_InitState::estimating;
@@ -956,7 +957,8 @@ void TMC4671::ABN_init(){
 				enc_retry = 0;
 				if(manualEncAlign){
 					manualEncAlign = false;
-					CommandHandler::sendSerial(this->getCommandHandlerInfo()->clsname,"encalign?","Aligned successfully",this->getCommandHandlerInfo()->instance);
+					CommandHandler::broadcastCommandReply(CommandReply("Aligned successfully",1), (uint32_t)TMC4671_commands::encalign, CMDtype::get);
+					//CommandHandler::sendSerial(this->getCommandHandlerInfo()->clsname,"encalign?","Aligned successfully",this->getCommandHandlerInfo()->instance);
 				}
 
 			}else{
@@ -968,7 +970,8 @@ void TMC4671::ABN_init(){
 					ErrorHandler::addError(err);
 					if(manualEncAlign){
 						manualEncAlign = false;
-						CommandHandler::sendSerial(this->getCommandHandlerInfo()->clsname,"encalign?","Error aligning.\nPlease check settings and reset.",this->getCommandHandlerInfo()->instance);
+						CommandHandler::broadcastCommandReply(CommandReply("Error aligning.\nPlease check settings and reset.",0), (uint32_t)TMC4671_commands::encalign, CMDtype::get);
+						//CommandHandler::sendSerial(this->getCommandHandlerInfo()->clsname,"encalign?","Error aligning.\nPlease check settings and reset.",this->getCommandHandlerInfo()->instance);
 					}
 				}
 				encstate = ENC_InitState::uninitialized; // Retry
@@ -1013,7 +1016,8 @@ void TMC4671::AENC_init(){
 				enc_retry = 0;
 				if(manualEncAlign){
 					manualEncAlign = false;
-					CommandHandler::sendSerial(this->getCommandHandlerInfo()->clsname,"encalign?","Aligned successfully",this->getCommandHandlerInfo()->instance);
+					CommandHandler::broadcastCommandReply(CommandReply("Aligned successfully",1), (uint32_t)TMC4671_commands::encalign, CMDtype::get);
+					//CommandHandler::sendSerial(this->getCommandHandlerInfo()->clsname,"encalign?","Aligned successfully",this->getCommandHandlerInfo()->instance);
 				}
 
 
@@ -1026,7 +1030,9 @@ void TMC4671::AENC_init(){
 					ErrorHandler::addError(err);
 					if(manualEncAlign){
 						manualEncAlign = false;
-						CommandHandler::sendSerial(this->getCommandHandlerInfo()->clsname,"encalign?","Error aligning.\nPlease check settings and reset.",this->getCommandHandlerInfo()->instance);
+						CommandHandler::broadcastCommandReply(CommandReply("Error aligning.\nPlease check settings and reset.",0), (uint32_t)TMC4671_commands::encalign, CMDtype::get);
+
+						//CommandHandler::sendSerial(this->getCommandHandlerInfo()->clsname,"encalign?","Error aligning.\nPlease check settings and reset.",this->getCommandHandlerInfo()->instance);
 					}
 				}
 				encstate = ENC_InitState::uninitialized; // Retry
@@ -1921,31 +1927,31 @@ void TMC4671::setHwType(TMC_HW_Ver type){
 void TMC4671::registerCommands(){
 	CommandHandler::registerCommands();
 
-	registerCommand("cpr", TMC4671_commands::cpr, "CPR in TMC");
-	registerCommand("mtype", TMC4671_commands::mtype, "Motor type");
-	registerCommand("encsrc", TMC4671_commands::encsrc, "Encoder source");
-	registerCommand("tmcHwType", TMC4671_commands::tmcHwType, "Version of TMC board");
-	registerCommand("encalign", TMC4671_commands::encalign, "Align encoder");
-	registerCommand("poles", TMC4671_commands::poles, "Motor pole pairs");
-	registerCommand("acttrq", TMC4671_commands::acttrq, "Read torque");
-	registerCommand("pwmlim", TMC4671_commands::pwmlim, "PWM limit",CMDFLAG_DEBUG);
-	registerCommand("torqueP", TMC4671_commands::torqueP, "Torque P");
-	registerCommand("torqueI", TMC4671_commands::torqueI, "Torque I");
-	registerCommand("fluxP", TMC4671_commands::fluxP, "Flux P");
-	registerCommand("fluxI", TMC4671_commands::fluxI, "Flux I");
-	registerCommand("velocityP", TMC4671_commands::velocityP, "Velocity P");
-	registerCommand("velocityI", TMC4671_commands::velocityI, "Velocity I");
-	registerCommand("posP", TMC4671_commands::posP, "Pos P");
-	registerCommand("posI", TMC4671_commands::posI, "Pos I");
-	registerCommand("tmctype", TMC4671_commands::tmctype, "Version of TMC chip");
-	registerCommand("pidPrec", TMC4671_commands::pidPrec, "PID precision bit0=I bit1=P. 0=Q8.8 1= Q4.12");
-	registerCommand("phiesrc", TMC4671_commands::phiesrc, "PhiE source",CMDFLAG_DEBUG);
-	registerCommand("fluxoffset", TMC4671_commands::fluxoffset, "Offset flux scale for field weakening");
-	registerCommand("seqpi", TMC4671_commands::seqpi, "Sequential PI");
+	registerCommand("cpr", TMC4671_commands::cpr, "CPR in TMC",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("mtype", TMC4671_commands::mtype, "Motor type",CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_INFOSTRING);
+	registerCommand("encsrc", TMC4671_commands::encsrc, "Encoder source",CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_INFOSTRING);
+	registerCommand("tmcHwType", TMC4671_commands::tmcHwType, "Version of TMC board",CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_INFOSTRING);
+	registerCommand("encalign", TMC4671_commands::encalign, "Align encoder",CMDFLAG_GET);
+	registerCommand("poles", TMC4671_commands::poles, "Motor pole pairs",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("acttrq", TMC4671_commands::acttrq, "Read torque",CMDFLAG_GET);
+	registerCommand("pwmlim", TMC4671_commands::pwmlim, "PWM limit",CMDFLAG_DEBUG | CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("torqueP", TMC4671_commands::torqueP, "Torque P",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("torqueI", TMC4671_commands::torqueI, "Torque I",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("fluxP", TMC4671_commands::fluxP, "Flux P",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("fluxI", TMC4671_commands::fluxI, "Flux I",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("velocityP", TMC4671_commands::velocityP, "Velocity P",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("velocityI", TMC4671_commands::velocityI, "Velocity I",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("posP", TMC4671_commands::posP, "Pos P",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("posI", TMC4671_commands::posI, "Pos I",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("tmctype", TMC4671_commands::tmctype, "Version of TMC chip",CMDFLAG_GET);
+	registerCommand("pidPrec", TMC4671_commands::pidPrec, "PID precision bit0=I bit1=P. 0=Q8.8 1= Q4.12",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("phiesrc", TMC4671_commands::phiesrc, "PhiE source",CMDFLAG_DEBUG | CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("fluxoffset", TMC4671_commands::fluxoffset, "Offset flux scale for field weakening",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("seqpi", TMC4671_commands::seqpi, "Sequential PI",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("iScale", TMC4671_commands::tmcIscale, "Counts per A",CMDFLAG_STR_ONLY);
-	registerCommand("encdir", TMC4671_commands::encdir, "Encoder dir",CMDFLAG_DEBUG);
-	registerCommand("temp", TMC4671_commands::temp, "Temperature in C * 100");
-	registerCommand("reg", TMC4671_commands::reg, "Read or write a TMC register at adr",CMDFLAG_DEBUG);
+	registerCommand("encdir", TMC4671_commands::encdir, "Encoder dir",CMDFLAG_DEBUG | CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("temp", TMC4671_commands::temp, "Temperature in C * 100",CMDFLAG_GET);
+	registerCommand("reg", TMC4671_commands::reg, "Read or write a TMC register at adr",CMDFLAG_DEBUG | CMDFLAG_GETADR | CMDFLAG_SETADR);
 
 }
 

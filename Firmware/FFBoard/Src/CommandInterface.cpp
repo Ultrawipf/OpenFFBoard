@@ -31,6 +31,30 @@ void CommandInterface::sendReplies(std::vector<CommandResult>& results,CommandIn
 }
 
 /**
+ * Broadcasts an unrequested reply to all command interfaces
+ */
+void CommandInterface::broadcastCommandReplyAsync(std::vector<CommandReply>& reply,CommandHandler* handler, uint32_t cmdId,CMDtype type){
+	ParsedCommand fakeCmd;
+	fakeCmd.target = handler;
+	fakeCmd.cmdId = cmdId;
+	fakeCmd.instance = handler->getCommandHandlerInfo()->instance;
+	fakeCmd.type = type;
+
+
+	CommandResult fakeResult;
+	fakeResult.type = CommandStatus::BROADCAST;
+	fakeResult.handlerId = fakeCmd.target->getCommandHandlerID();
+	fakeResult.originalCommand = fakeCmd;
+	fakeResult.reply = reply;
+	fakeResult.commandHandler = fakeCmd.target;
+	std::vector<CommandResult> results = {fakeResult};
+
+	for(CommandInterface* itf : CommandInterface::cmdInterfaces){
+		itf->sendReplies(results, nullptr);
+	}
+}
+
+/**
  * Command thread requests new commands
  * Return true if any are ready, false otherwise
  * If true it will request the vector of parsed commands
@@ -83,7 +107,7 @@ void StringCommandInterface::formatReply(std::string& reply,const std::vector<Co
 			if(result.type == CommandStatus::NOT_FOUND){
 				reply += "NOT_FOUND";
 				//ErrorHandler::addError(CommandInterface::cmdNotFoundError);
-			}else if(result.type == CommandStatus::OK){
+			}else if(result.type == CommandStatus::OK || result.type == CommandStatus::BROADCAST){
 				if(result.reply.empty()){
 					reply += "OK";
 				}else{
@@ -100,6 +124,8 @@ void StringCommandInterface::formatReply(std::string& reply,const std::vector<Co
 				}
 			}else if(result.type == CommandStatus::ERR){
 				reply += "ERR";
+			}else{
+				reply += "None";
 			}
 		}
 

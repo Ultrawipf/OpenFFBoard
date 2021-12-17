@@ -10,6 +10,7 @@
 #include <vector>
 #include <string>
 #include "thread.hpp"
+#include "CommandHandler.h"
 
 /*
  * Error code definitions
@@ -95,6 +96,11 @@ public:
 	void setEnabled(bool enable);
 	bool getEnabled();
 	void Run();
+
+//	static ClassIdentifier info;
+//	ClassIdentifier getInfo();
+//
+//	const ClassType getClassType(){return ClassType::Internal;};
 private:
 	bool enabled = true;
 	//std::vector<Error> errorsToPrint;
