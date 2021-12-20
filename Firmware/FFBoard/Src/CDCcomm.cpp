@@ -17,12 +17,11 @@ std::string CDCcomm::tString;
 cpp_freertos::BinarySemaphore CDCcomm::cdcSems[CFG_TUD_CDC] = {cpp_freertos::BinarySemaphore(true)};
 
 CDCcomm::CDCcomm() {
-	// TODO Auto-generated constructor stub
 
 }
 
 CDCcomm::~CDCcomm() {
-	// TODO Auto-generated destructor stub
+
 }
 
 
@@ -41,6 +40,7 @@ void CDCcomm::cdcFinished(uint8_t itf){
 
 /**
  * Sends a string via CDC
+ * If not everything can be sent it will be buffered for later in a new string
  */
 uint16_t CDCcomm::cdcSend(std::string* reply,uint8_t itf){
 	if(!tud_ready() || reply->empty()){
@@ -61,9 +61,6 @@ uint16_t CDCcomm::cdcSend(std::string* reply,uint8_t itf){
 		usb_busy_retry = false;
 		remainingStrs[itf].clear();
 	}
-
-
-
 
 	return cdc_sent;
 }

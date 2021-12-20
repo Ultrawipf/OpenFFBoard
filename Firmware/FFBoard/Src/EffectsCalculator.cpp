@@ -158,6 +158,10 @@ void EffectsCalculator::calculateEffects(std::vector<std::unique_ptr<Axis>> &axe
 	}
 }
 
+/**
+ * Calculates forces from a non conditional effect
+ * Periodic and constant effects
+ */
 int32_t EffectsCalculator::calcNonConditionEffectForce(FFB_Effect *effect) {
 	int32_t force_vector = 0;
 	switch (effect->type){

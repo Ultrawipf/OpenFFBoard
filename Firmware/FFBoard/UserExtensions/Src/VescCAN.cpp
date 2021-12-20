@@ -166,17 +166,17 @@ uint32_t VescCAN::getCpr() {
 
 void VescCAN::registerCommands(){
 	CommandHandler::registerCommands();
-	registerCommand("canid", VescCAN_commands::canid, "CAN id of VESC");
-	registerCommand("canspd", VescCAN_commands::canspd, "CAN baud (3=250k,4=500k,5=1M)");
-	registerCommand("errorflags", VescCAN_commands::errorflags, "VESC error state");
-	registerCommand("vescstate", VescCAN_commands::vescstate, "VESC state");
-	registerCommand("voltage", VescCAN_commands::voltage, "VESC supply voltage");
-	registerCommand("encrate", VescCAN_commands::encrate, "Encoder update rate");
-	registerCommand("pos", VescCAN_commands::pos, "VESC position");
-	registerCommand("torque", VescCAN_commands::torque, "Current VESC torque");
-	registerCommand("forceposread", VescCAN_commands::forcePosRead, "Force a position update");
-	registerCommand("useencoder", VescCAN_commands::useEncoder, "Enable VESC encoder");
-	registerCommand("offset", VescCAN_commands::offset, "Get or set encoder offset");
+	registerCommand("canid", VescCAN_commands::canid, "CAN id of VESC",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("canspd", VescCAN_commands::canspd, "CAN baud (3=250k,4=500k,5=1M)",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("errorflags", VescCAN_commands::errorflags, "VESC error state",CMDFLAG_GET);
+	registerCommand("vescstate", VescCAN_commands::vescstate, "VESC state",CMDFLAG_GET);
+	registerCommand("voltage", VescCAN_commands::voltage, "VESC supply voltage (mV)",CMDFLAG_GET);
+	registerCommand("encrate", VescCAN_commands::encrate, "Encoder update rate",CMDFLAG_GET);
+	registerCommand("pos", VescCAN_commands::pos, "VESC position",CMDFLAG_GET);
+	registerCommand("torque", VescCAN_commands::torque, "Current VESC torque",CMDFLAG_GET);
+	registerCommand("forceposread", VescCAN_commands::forcePosRead, "Force a position update",CMDFLAG_GET);
+	registerCommand("useencoder", VescCAN_commands::useEncoder, "Enable VESC encoder",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("offset", VescCAN_commands::offset, "Get or set encoder offset",CMDFLAG_GET | CMDFLAG_SET);
 }
 
 CommandStatus VescCAN::command(const ParsedCommand& cmd,std::vector<CommandReply>& replies) {
@@ -236,7 +236,7 @@ CommandStatus VescCAN::command(const ParsedCommand& cmd,std::vector<CommandReply
 	break;
 	case VescCAN_commands::voltage:
 		if(cmd.type == CMDtype::get)
-			replies.push_back(CommandReply(voltage * 100));
+			replies.push_back(CommandReply(voltage * 1000));
 	break;
 
 
@@ -434,11 +434,11 @@ void VescCAN::decode_buffer(uint8_t *buffer, uint8_t len) {
 		std::string test ((char *)buffer + ind);
 		ind += test.length() + 1;
 
-		uint8_t uuid[12];
+		uint8_t uuid[12] = {0};
 		memcpy(buffer + ind, uuid, 12);
 		ind += 12;
 
-		bool isPaired = buffer[ind++];
+		//bool isPaired = buffer[ind++];
 		uint8_t isTestFw = buffer[ind++];
 
 		//uint8_t hwType = buffer[ind++];			// Comment because unused

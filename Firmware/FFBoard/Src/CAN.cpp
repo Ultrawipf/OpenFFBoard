@@ -149,10 +149,17 @@ void CANPort::giveSemaphore(){
 	portYIELD_FROM_ISR(taskWoken);
 }
 
+/**
+ * Transmits a CAN frame on this port
+ * Wraps the internal transmit function
+ */
 bool CANPort::sendMessage(CAN_tx_msg msg){
 	return this->sendMessage(&msg.header,msg.data,&this->txMailbox);
 }
 
+/**
+ * Transmits a CAN frame with separate data and header settings
+ */
 bool CANPort::sendMessage(CAN_TxHeaderTypeDef *pHeader, uint8_t aData[],uint32_t *pTxMailbox){
 	if(pTxMailbox == nullptr){
 		pTxMailbox = &this->txMailbox;

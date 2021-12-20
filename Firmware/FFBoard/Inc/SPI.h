@@ -78,7 +78,7 @@ private:
 	void endTransfer(SPIConfig* config);
 
 	SPI_HandleTypeDef &hspi;
-	SPIDevice* current_device;
+	SPIDevice* current_device = nullptr;
 	std::vector<OutputPin> csPins; // cs pins and bool true if pin is reserved
 	std::vector<OutputPin> freePins;
 

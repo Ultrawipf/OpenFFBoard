@@ -81,7 +81,7 @@ void SPI_Buttons::registerCommands(){
 	registerCommand("cs", SPIButtons_commands::cs, "SPI CS pin",CMDFLAG_GET | CMDFLAG_SET);
 }
 
-/*
+/**
  * Called on preset change
  */
 void SPI_Buttons::setMode(SPI_BtnMode mode){

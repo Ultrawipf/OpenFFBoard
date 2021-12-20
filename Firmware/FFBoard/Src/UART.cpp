@@ -29,7 +29,7 @@ UARTPort::UARTPort(UART_HandleTypeDef& huart) : huart{huart} {
 }
 
 UARTPort::~UARTPort() {
-	// TODO Auto-generated destructor stub
+
 }
 
 bool UARTPort::reconfigurePort(UART_InitTypeDef& config){
