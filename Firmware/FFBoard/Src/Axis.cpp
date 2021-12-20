@@ -15,7 +15,6 @@
  */
 
 
-// TODO class type for parser? (Simhub for example)
 //////////////////////////////////////////////
 
 ClassIdentifier Axis::info = {
@@ -57,25 +56,24 @@ Axis::~Axis()
 }
 
 const ClassIdentifier Axis::getInfo() {
-//	ClassIdentifier newinfo = Axis::info;
-//	newinfo.unique = axis+'X';
+
 	return info;
 }
 
 void Axis::registerCommands(){
-	registerCommand("power", Axis_commands::power, "Overall force strength");
-	registerCommand("degrees", Axis_commands::degrees, "Rotation range in deg.");
-	registerCommand("esgain", Axis_commands::esgain, "Endstop stiffness");
-	registerCommand("zeroenc", Axis_commands::zeroenc, "Zero axis");
-	registerCommand("invert", Axis_commands::invert, "Invert axis");
-	registerCommand("idlespring", Axis_commands::idlespring, "Idle spring strength");
-	registerCommand("axisdamper", Axis_commands::axisdamper, "Independent damper effect");
-	registerCommand("enctype", Axis_commands::enctype, "Encoder type get/set/list");
-	registerCommand("drvtype", Axis_commands::drvtype, "Motor driver type get/set/list");
-	registerCommand("pos", Axis_commands::pos, "Axis position");
-	registerCommand("maxspeed", Axis_commands::maxspeed, "Speed limit in deg/s");
-	registerCommand("maxtorquerate", Axis_commands::maxtorquerate, "Torque rate limit in counts/ms");
-	registerCommand("fxratio", Axis_commands::fxratio, "Effect ratio. Reduces effects excluding endstop. 255=100%");
+	registerCommand("power", Axis_commands::power, "Overall force strength",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("degrees", Axis_commands::degrees, "Rotation range in deg",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("esgain", Axis_commands::esgain, "Endstop stiffness",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("zeroenc", Axis_commands::zeroenc, "Zero axis",CMDFLAG_GET);
+	registerCommand("invert", Axis_commands::invert, "Invert axis",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("idlespring", Axis_commands::idlespring, "Idle spring strength",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("axisdamper", Axis_commands::axisdamper, "Independent damper effect",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("enctype", Axis_commands::enctype, "Encoder type get/set/list",CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_INFOSTRING);
+	registerCommand("drvtype", Axis_commands::drvtype, "Motor driver type get/set/list",CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_INFOSTRING);
+	registerCommand("pos", Axis_commands::pos, "Axis position",CMDFLAG_GET);
+	registerCommand("maxspeed", Axis_commands::maxspeed, "Speed limit in deg/s",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("maxtorquerate", Axis_commands::maxtorquerate, "Torque rate limit in counts/ms",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("fxratio", Axis_commands::fxratio, "Effect ratio. Reduces effects excluding endstop. 255=100%",CMDFLAG_GET | CMDFLAG_SET);
 }
 
 /*
@@ -696,211 +694,7 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 	}
 	return CommandStatus::OK;
 }
-//
-//ParseStatus Axis::command(ParsedCommand_old *cmd, std::string *reply)
-//{
-//	if ((cmd->prefix & 0xDF) != axis){
-//		return ParseStatus::NOT_FOUND;
-//	}
-//
-//	ParseStatus flag = ParseStatus::OK;
-//
-//	if (cmd->cmd == "drvtype")
-//	{
-//		if (cmd->type == CMDtype::get)
-//		{
-//			*reply += std::to_string(this->getDrvType());
-//		}
-//		else if (cmd->type == CMDtype::set && this->drv_chooser.isValidClassId(cmd->val))
-//		{
-//			setDrvType((cmd->val));
-//		}
-//		else
-//		{
-//			*reply += drv_chooser.printAvailableClasses(this->conf.drvtype);
-//		}
-//	}
-//	else if (cmd->cmd == "zeroenc")
-//	{
-//		if (cmd->type == CMDtype::get)
-//		{
-//			this->setPos(0);
-//			*reply += "Zeroed";
-//		}
-//	}
-//	else if (cmd->cmd == "enctype")
-//	{
-//		if (cmd->type == CMDtype::get)
-//		{
-//			*reply += std::to_string(this->getEncType());
-//		}
-//		else if (cmd->type == CMDtype::set)
-//		{
-//			setEncType(cmd->val);
-//		}
-//		else
-//		{
-//			if(this->drv->hasIntegratedEncoder()){
-//				*reply += "255:0:"+std::string(this->drv->getInfo().name); // TODO dynamic?
-//			}else{
-//				*reply += enc_chooser.printAvailableClasses(this->conf.enctype);
-//			}
-//		}
-//	}
-//	else if (cmd->cmd == "pos")
-//	{
-//		if (cmd->type == CMDtype::get)
-//		{
-//			*reply += std::to_string(this->drv->getEncoder()->getPos());
-//		}
-//		else if (cmd->type == CMDtype::set && this->drv->getEncoder() != nullptr)
-//		{
-//			this->drv->getEncoder()->setPos(cmd->val);
-//		}
-//		else
-//		{
-//			flag = ParseStatus::ERR;
-//			*reply += "Err. Setup encoder first";
-//		}
-//	}
-//	else if (cmd->cmd == "maxspeed")
-//	{
-//		if (cmd->type == CMDtype::get)
-//		{
-//			*reply += std::to_string(maxSpeedDegS);
-//		}
-//		else if (cmd->type == CMDtype::set)
-//		{
-//			maxSpeedDegS = cmd->val;
-//			//speedScalerNormalized = getNormalizedSpeedScaler(maxSpeedDegS, degreesOfRotation);
-//
-//		}
-//	}else if (cmd->cmd == "maxtorquerate")
-//	{
-//		if (cmd->type == CMDtype::get)
-//		{
-//			*reply += std::to_string(maxTorqueRateMS);
-//		}
-//		else if (cmd->type == CMDtype::set)
-//		{
-//			maxTorqueRateMS = cmd->val;
-//			//speedScalerNormalized = getNormalizedSpeedScaler(maxSpeedDegS, degreesOfRotation);
-//
-//		}
-//	}
-////	else if (cmd->cmd == "maxaccel")
-////	{
-////		if (cmd->type == CMDtype::get)
-////		{
-////			*reply += std::to_string((uint16_t)(maxAccelDegSS*accelFactor));
-////		}
-////		else if (cmd->type == CMDtype::set)
-////		{
-////			maxAccelDegSS = cmd->val / accelFactor;
-////			//accelScalerNormalized = getNormalizedAccelScaler(maxAccelDegSS, degreesOfRotation);
-////		}
-////	}
-//	else if (cmd->cmd == "fxratio")
-//	{
-//		if (cmd->type == CMDtype::get)
-//		{
-//			*reply += std::to_string(fx_ratio_i);
-//		}
-//		else if (cmd->type == CMDtype::set)
-//		{
-//			setFxRatio(cmd->val);
-//		}
-//	}
-//	else if (cmd->cmd == "power")
-//	{
-//		if (cmd->type == CMDtype::get)
-//		{
-//			*reply += std::to_string(power);
-//		}
-//		else if (cmd->type == CMDtype::set)
-//		{
-//			setPower(cmd->val);
-//		}
-//	}
-//	else if (cmd->cmd == "degrees")
-//	{
-//		if (cmd->type == CMDtype::get)
-//		{
-//			*reply += std::to_string(degreesOfRotation);
-//		}
-//		else if (cmd->type == CMDtype::set)
-//		{
-//			setDegrees(cmd->val);
-//		}
-//	}
-//	else if (cmd->cmd == "esgain")
-//	{
-//		if (cmd->type == CMDtype::get)
-//		{
-//			*reply += std::to_string(endstop_gain);
-//		}
-//		else if (cmd->type == CMDtype::set)
-//		{
-//			endstop_gain = cmd->val;
-//		}
-//	}
-//	else if (cmd->cmd == "invert")
-//	{
-//		if (cmd->type == CMDtype::get)
-//		{
-//			*reply += invertAxis ? "1" : "0";
-//		}
-//		else if (cmd->type == CMDtype::set)
-//		{
-//			invertAxis = cmd->val >= 1 ? true : false;
-//		}
-//	}
-//	else if (cmd->cmd == "idlespring")
-//	{
-//		if (cmd->type == CMDtype::get)
-//		{
-//			*reply += std::to_string(idlespringstrength);
-//		}
-//		else if (cmd->type == CMDtype::set)
-//		{
-//			setIdleSpringStrength(cmd->val);
-//		}
-//	}
-//	else if (cmd->cmd == "axisdamper")
-//	{
-//		if (cmd->type == CMDtype::get)
-//		{
-//			*reply += std::to_string(damperIntensity);
-//		}
-//		else if (cmd->type == CMDtype::set)
-//		{
-//			setDamperStrength(cmd->val);
-//		}
-//	}
-////	else if (cmd->cmd == "calibmetrics")
-////	{
-////		if (cmd->type == CMDtype::get)
-////		{
-////			*reply += std::to_string(getSpeedRPMFromEncValue(calibMaxSpeedNormalized, degreesOfRotation)) + ':'
-////					+ std::to_string(getAccelFromEncValue(calibMaxAccelNormalized, degreesOfRotation));
-////		}
-////		else if (cmd->type == CMDtype::set)
-////		{
-////			if (cmd->val == 1) {
-////				calibrationInProgress = true;
-////				calibMaxAccelNormalized = 0.0;
-////				calibMaxSpeedNormalized = 0;
-////			} else {
-////				calibrationInProgress = false;
-////			}
-////		}
-////	}
-//	else{
-//		flag = ParseStatus::NOT_FOUND;
-//	}
-//
-//	return flag;
-//};
+
 
 
 /*

@@ -17,7 +17,6 @@
 #include "LocalAnalog.h"
 #include "AnalogSource.h"
 
-#include "cppmain.h"
 #include "HidFFB.h"
 #include "ffb_defs.h"
 #include "TimerHandler.h"
@@ -25,7 +24,6 @@
 #include "ExtiHandler.h"
 #include "EffectsCalculator.h"
 #include "FastAvg.h"
-//#include "NormalizedAxis.h"
 
 
 struct Control_t {
@@ -87,7 +85,6 @@ public:
 	const ClassIdentifier getInfo();
 	const ClassType getClassType() override {return ClassType::Axis;};
 
-	// TODO add new commands
 	virtual std::string getHelpstring() { return "FFB axis"	;}
 	void setupTMC4671();
 

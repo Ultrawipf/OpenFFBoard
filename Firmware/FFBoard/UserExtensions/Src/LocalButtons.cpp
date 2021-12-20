@@ -17,9 +17,9 @@ LocalButtons::LocalButtons() : CommandHandler("dpin",CLSID_BTN_LOCAL,0) {
 	restoreFlash();
 
 	CommandHandler::registerCommands();
-	registerCommand("mask", LocalButtons_commands::mask, "Enabled pins");
-	registerCommand("polarity", LocalButtons_commands::polarity, "Pin polarity");
-	registerCommand("pins", LocalButtons_commands::pins, "Available pins");
+	registerCommand("mask", LocalButtons_commands::mask, "Enabled pins",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("polarity", LocalButtons_commands::polarity, "Pin polarity",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("pins", LocalButtons_commands::pins, "Available pins",CMDFLAG_GET | CMDFLAG_SET);
 }
 
 LocalButtons::~LocalButtons() {

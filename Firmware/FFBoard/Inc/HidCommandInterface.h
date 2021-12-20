@@ -20,13 +20,13 @@ enum class HidCmdType : uint8_t {write = 0, request = 1, info = 2, writeAddr = 3
 // TODO: can only be 25B long. tinyusb will hang otherwise!
 typedef struct
 {
-	uint8_t		reportId = HID_ID_HIDCMD;
-	HidCmdType	type = HidCmdType::err;	// 0x01. Type of report. 0 = write, 1 = request, 2 = error
-	uint16_t	clsid = 0;
-	uint8_t 	instance = 0;		// Class ID. 16 bits class id, 8 bits used for unique instance number. 255 for broadcast
-	uint32_t	cmd = 0;				// 0x02 Use this as an identifier for the command. upper 16 bits for class type
-	uint64_t	data = 0;				// 0x03 Use this to transfer data or the primary value
-	uint64_t	addr = 0;				// 0x04 Use this to transfer an optional address or second value (CAN for example)
+	uint8_t		reportId = HID_ID_HIDCMD; // Report ID = 0xA1
+	HidCmdType	type = HidCmdType::err;	// 0x01. Type of report. 0 = write, 1 = request
+	uint16_t	clsid = 0;				// 0x02 Class ID identifies the target class type
+	uint8_t 	instance = 0;			// 0x03 Class instance number to target a specific instance (often 0). 0xff for broadcast to all instances
+	uint32_t	cmd = 0;				// 0x04 Use this as an identifier for the command. upper 16 bits for class type
+	uint64_t	data = 0;				// 0x05 Use this to transfer data or the primary value
+	uint64_t	addr = 0;				// 0x06 Use this to transfer an optional address or second value (CAN for example)
 
 } __attribute__((packed)) HID_CMD_Data_t;
 

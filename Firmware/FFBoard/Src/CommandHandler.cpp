@@ -31,7 +31,10 @@ CommandHandler::~CommandHandler() {
 	removeCommandHandler();
 }
 
-
+/**
+ * Generates a readable list of all commands with help information
+ * Warning: Large string returned
+ */
 std::string CommandHandler::getCommandsHelpstring(){
 	std::string helpstring = "\n";
 	ClassIdentifier info = this->getInfo();
@@ -68,6 +71,10 @@ std::string CommandHandler::getCommandsHelpstring(){
 	return helpstring;
 }
 
+/**
+ * Generates a csv list of all commands with help information
+ * Warning: Large string returned
+ */
 std::string CommandHandler::getCsvHelpstring(){
 	std::string helpstring = "\nPrefix,Class ID, Class description\n";
 	ClassIdentifier info = this->getInfo();
@@ -113,14 +120,16 @@ std::string CommandHandler::getCsvHelpstring(){
 	return helpstring;
 }
 
-
+/**
+ * Registers commonly used internal commands to identify a class
+ */
 void CommandHandler::registerCommands(){
-	registerCommand("id", CommandHandlerCommands::id, "ID of class");
-	registerCommand("name", CommandHandlerCommands::name, "name of class",CMDFLAG_STR_ONLY);
-	registerCommand("help", CommandHandlerCommands::help, "Prints help for commands",CMDFLAG_STR_ONLY);
-	registerCommand("cmduid", CommandHandlerCommands::cmdhandleruid, "Command handler index");
-	registerCommand("instance", CommandHandlerCommands::instance, "Command handler instance number");
-	registerCommand("selId", CommandHandlerCommands::selectionid, "Selection id used to create this class");
+	registerCommand("id", CommandHandlerCommands::id, "ID of class",CMDFLAG_GET);
+	registerCommand("name", CommandHandlerCommands::name, "name of class",CMDFLAG_GET|CMDFLAG_STR_ONLY);
+	registerCommand("help", CommandHandlerCommands::help, "Prints help for commands",CMDFLAG_GET | CMDFLAG_STR_ONLY | CMDFLAG_INFOSTRING);
+	registerCommand("cmduid", CommandHandlerCommands::cmdhandleruid, "Command handler index",CMDFLAG_GET);
+	registerCommand("instance", CommandHandlerCommands::instance, "Command handler instance number",CMDFLAG_GET);
+	registerCommand("selId", CommandHandlerCommands::selectionid, "Selection id used to create this class",CMDFLAG_GET);
 }
 
 /**
@@ -356,43 +365,35 @@ void CommandHandler::broadcastCommandReply(CommandReply reply, uint32_t cmdId,CM
 	CommandInterface::broadcastCommandReplyAsync(replies, this, cmdId, type);
 }
 
-/**
- * Sends a formatted reply without being prompted by a command.
- * Useful for sending periodic data or with a large delay to a listener on the PC
- * Only sends on CDC at the moment TODO: send on all command interfaces as reply
- */
-//void CommandHandler::sendSerial(std::string cls,std::string cmd,std::string string, uint8_t prefix){
-//
-//	std::string reply = "[" + cls + ".";
-//	if(prefix!=0xFF){
-//		reply += std::to_string(prefix) + ".";
-//	}
-//	reply += cmd + "|" + string + "]\n";
-//
-//	CDCcomm::cdcSend(&reply, 0);
-//
-//}
 
 /**
- * Sends log info back via cdc
+ * Sends log info back via cdc. UNUSED
  */
 void CommandHandler::logSerial(std::string string){
 	if( !logEnabled) // !tud_ready() ||
 		return;
-	std::string reply = ">!" + string + "\n";
+	std::string reply = "[>!" + string + "\n]";
 	CDCcomm::cdcSend(&reply, 0);
 
 }
 
-
+/**
+ * Returns a description of this class
+ */
 std::string CommandHandler::getHelpstring(){
 	return "";
 }
 
+/**
+ * Returns a pointer to this classes command handler info struct containing its name and ids
+ */
 CmdHandlerInfo* CommandHandler::getCommandHandlerInfo(){
 	return &cmdHandlerInfo;
 }
 
+/**
+ * Registers a command handler in the global callback list and assigns a unique index number
+ */
 void CommandHandler::addCommandHandler(){
 	cmdHandlerListMutex.Lock();
 	while(this->cmdHandlerInfo.commandHandlerID != 0xffff){
@@ -406,6 +407,9 @@ void CommandHandler::addCommandHandler(){
 	cmdHandlerListMutex.Unlock();
 }
 
+/**
+ * Removes a class from the global callback list and frees its id
+ */
 void CommandHandler::removeCommandHandler(){
 	cmdHandlerListMutex.Lock();
 	cmdHandlerIDs.erase(this->cmdHandlerInfo.commandHandlerID); // removes id from list of reserved ids
