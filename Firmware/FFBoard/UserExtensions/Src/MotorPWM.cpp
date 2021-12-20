@@ -37,8 +37,8 @@ MotorPWM::MotorPWM() : CommandHandler("pwmdrv",CLSID_MOT_PWM) {
 	setPwmSpeed(pwmspeed);
 
 	CommandHandler::registerCommands();
-	registerCommand("freq", MotorPWM_commands::freq, "PWM period selection");
-	registerCommand("mode", MotorPWM_commands::mode, "PWM mode");
+	registerCommand("freq", MotorPWM_commands::freq, "PWM period selection",CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_INFOSTRING);
+	registerCommand("mode", MotorPWM_commands::mode, "PWM mode",CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_INFOSTRING);
 }
 
 MotorPWM::~MotorPWM() {
@@ -297,7 +297,7 @@ void pwmInitTimer(TIM_HandleTypeDef* timer,uint32_t channel,uint32_t period,uint
 }
 
 
-/*
+/**
  * Changes the pwm value of the timer via HAL
  */
 void setPWM_HAL(uint32_t value,TIM_HandleTypeDef* timer,uint32_t channel,uint32_t period){

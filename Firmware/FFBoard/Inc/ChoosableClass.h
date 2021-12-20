@@ -11,12 +11,8 @@
 #include "string"
 
 struct ClassIdentifier {
-	//const std::string name;	// Display name of this class
-	const char* name = nullptr;
-//	const std::string clsname; // Classname for addressing with string based commands (main or pwmdriver...)
-	uint16_t id;	// TODO replace with classchooser id. Unique id for this class. If multiple instances set unique char at runtime
-//	uint16_t clstypeId; // The id equivalent to clsname. Classes with the same clsname must have the same clstypeId
-//	uint8_t unique;
+	const char* name = nullptr; // Display name of this class
+	uint16_t id;	// The id equivalent to clsname. Classes with the same clsname must have the same id in this field. Classchooser can use this or a separate id for selection
 	bool hidden = false;	// Hide from classchooser listings?
 };
 

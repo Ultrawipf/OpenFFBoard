@@ -31,11 +31,17 @@ void Biquad::setFc(float Fc) {
     calcBiquad();
 }
 
+/**
+ * Changes Q value and recalculaes filter
+ */
 void Biquad::setQ(float Q) {
     this->Q = Q;
     calcBiquad();
 }
 
+/**
+ * Calculates one step of the filter and returns the output
+ */
 float Biquad::process(float in) {
 	float out = in * a0 + z1;
     z1 = in * a1 + z2 - b1 * out;

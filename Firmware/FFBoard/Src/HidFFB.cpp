@@ -108,10 +108,10 @@ void HidFFB::hidOut(uint8_t report_id, hid_report_type_t report_type, uint8_t co
 		set_ramp((FFB_SetRamp_Data_t *)report);
 		break;
 	case HID_ID_CSTMREP: // Custom. pretty much never used
-		printf("Customrep");
+		//printf("Customrep");
 		break;
 	case HID_ID_SMPLREP: // Download sample
-		printf("Sampledl");
+		//printf("Sampledl");
 		break;
 	case HID_ID_EFOPREP: //Effect operation
 	{
