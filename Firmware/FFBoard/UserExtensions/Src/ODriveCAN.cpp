@@ -71,13 +71,14 @@ ODriveCAN::~ODriveCAN() {
 
 void ODriveCAN::registerCommands(){
 	CommandHandler::registerCommands();
-	registerCommand("canid", ODriveCAN_commands::canid, "CAN id of ODrive");
-	registerCommand("canspd", ODriveCAN_commands::canspd, "CAN baudrate");
-	registerCommand("errors", ODriveCAN_commands::errors, "ODrive error flags");
-	registerCommand("state", ODriveCAN_commands::state, "ODrive state");
-	registerCommand("maxtorque", ODriveCAN_commands::maxtorque, "Max torque to send for scaling");
-	registerCommand("vbus", ODriveCAN_commands::vbus, "ODrive Vbus");
-	registerCommand("anticogging", ODriveCAN_commands::anticogging, "Set 1 to start anticogging calibration");
+	registerCommand("canid", ODriveCAN_commands::canid, "CAN id of ODrive",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("canspd", ODriveCAN_commands::canspd, "CAN baudrate",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("errors", ODriveCAN_commands::errors, "ODrive error flags",CMDFLAG_GET);
+	registerCommand("state", ODriveCAN_commands::state, "ODrive state",CMDFLAG_GET);
+	registerCommand("maxtorque", ODriveCAN_commands::maxtorque, "Max torque to send for scaling",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("vbus", ODriveCAN_commands::vbus, "ODrive Vbus",CMDFLAG_GET);
+	registerCommand("anticogging", ODriveCAN_commands::anticogging, "Set 1 to start anticogging calibration",CMDFLAG_SET);
+	registerCommand("connected", ODriveCAN_commands::connected, "ODrive connection state",CMDFLAG_GET);
 }
 
 void ODriveCAN::restoreFlash(){
@@ -174,6 +175,16 @@ void ODriveCAN::Run(){
 		if(HAL_GetTick() - lastVoltageUpdate > 1000){
 			requestMsg(0x17); // Update voltage
 		}
+
+		if(HAL_GetTick() - lastCanMessage > 2000){ // Timeout
+			odriveCurrentState = ODriveState::AXIS_STATE_UNDEFINED;
+			state = ODriveLocalState::IDLE;
+			waitReady = true;
+			connected = false;
+		}else{
+			connected = true;
+		}
+
 	}
 }
 
@@ -282,9 +293,7 @@ CommandStatus ODriveCAN::command(const ParsedCommand& cmd,std::vector<CommandRep
 		break;
 
 	case ODriveCAN_commands::canid:
-		if(cmd.type == CMDtype::get){
-			return handleGetSet(cmd, replies, this->nodeId);
-		}
+		return handleGetSet(cmd, replies, this->nodeId);
 		break;
 	case ODriveCAN_commands::state:
 		if(cmd.type == CMDtype::get){
@@ -321,6 +330,11 @@ CommandStatus ODriveCAN::command(const ParsedCommand& cmd,std::vector<CommandRep
 		}
 		break;
 	}
+	case ODriveCAN_commands::connected:
+		if(cmd.type == CMDtype::get){
+			replies.push_back(CommandReply(connected ? 1 : 0));
+		}
+		break;
 
 	default:
 		return CommandStatus::NOT_FOUND;
@@ -339,6 +353,8 @@ void ODriveCAN::canRxPendCallback(CAN_HandleTypeDef *hcan,uint8_t* rxBuf,CAN_RxH
 	}
 	uint64_t msg = *reinterpret_cast<uint64_t*>(rxBuf);
 	uint8_t cmd = rxHeader->StdId & 0x1F;
+
+	lastCanMessage = HAL_GetTick();
 
 	switch(cmd){
 	case 1:
