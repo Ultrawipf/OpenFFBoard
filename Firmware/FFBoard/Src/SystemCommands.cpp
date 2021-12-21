@@ -56,7 +56,7 @@ void SystemCommands::registerCommands(){
 	CommandHandler::registerCommand("swver", FFBoardMain_commands::swver, "Firmware version",CMDFLAG_GET);
 	CommandHandler::registerCommand("hwtype", FFBoardMain_commands::hwtype, "Hardware type",CMDFLAG_GET);
 	CommandHandler::registerCommand("flashraw", FFBoardMain_commands::flashraw, "Write value to flash address",CMDFLAG_SETADR);
-	CommandHandler::registerCommand("flashdump", FFBoardMain_commands::flashdump, "Read all flash variables",CMDFLAG_GET);
+	CommandHandler::registerCommand("flashdump", FFBoardMain_commands::flashdump, "Read all flash variables (val:adr)",CMDFLAG_GET);
 	CommandHandler::registerCommand("errors", FFBoardMain_commands::errors, "Read error states",CMDFLAG_GET);
 	CommandHandler::registerCommand("errorsclr", FFBoardMain_commands::errorsclr, "Reset errors",CMDFLAG_GET);
 	CommandHandler::registerCommand("heapfree", FFBoardMain_commands::heapfree, "Memory info",CMDFLAG_GET);
