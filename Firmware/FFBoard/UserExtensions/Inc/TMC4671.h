@@ -72,17 +72,11 @@ struct TMC4671HardwareTypeConf{
 	bool temperatureEnabled = false; // Enables temperature readings
 	float temp_limit = 90;
 	float currentScaler = 2.5 / (0x7fff * 60.0 * 0.0015); // Converts from adc counts to current in Amps
-
+	uint16_t brakeLimLow = 50700;
+	uint16_t brakeLimHigh = 50900;
 	// Todo restrict allowed motor and encoder types
 };
 
-//#define TMCTEMP
-//TODO make this depend on the hw version
-//int thermistor_R2 = 1500, tmcOffset = 1000; //400? Offset is how many ADC counts too high does the tmc read due to current flowing from the ADC. Can be calculated by measuring the pin voltage with adc on and off.
-//
-//// Beta-Model
-//float thermistor_Beta = 4300, thermistor_R = 22000;
-//const float temp_limit = 100; //°C
 
 // Mapping of bits in status flag register and mask
 union StatusFlags {
@@ -187,7 +181,7 @@ struct TMC4671FlashAddrs{
 };
 
 struct TMC4671ABNConf{
-	uint32_t cpr = 8192;
+	uint32_t cpr = 10000;
 	bool apol 	= true;
 	bool bpol 	= true;
 	bool npol	= true;
@@ -255,7 +249,7 @@ class TMC4671 : public MotorDriver, public PersistentStorage, public Encoder, pu
 		torqueP,torqueI,fluxP,fluxI,velocityP,velocityI,posP,posI,
 		tmctype,pidPrec,phiesrc,fluxoffset,seqpi,tmcIscale,encdir,temp,reg
 	};
-//pidprec "bit0=I bit1=P. 0=Q8.8 1= Q4.12";
+
 public:
 
 	static ClassIdentifier info;
@@ -265,19 +259,13 @@ public:
 	static TMC4671MotConf decodeMotFromInt(uint16_t val);
 	static uint16_t encodeMotToInt(TMC4671MotConf mconf);
 
-//	static uint8_t checkSpiAddrNotInUse(uint8_t requestedChannel);
-//	void recordSpiAddrUsed(uint8_t chan);
-//	static uint8_t getSpiAddrInUseForAxis(char axis);
 
-	//SPI_HandleTypeDef* spi = &HSPIDRV,GPIO_TypeDef* csport=SPI1_SS1_GPIO_Port,uint16_t cspin=SPI1_SS1_Pin
-	//TMC4671(SPI_HandleTypeDef* spi,GPIO_TypeDef* csport,uint16_t cspin,TMC4671MainConfig conf);
 	TMC4671(SPIPort& spiport,OutputPin cspin = OutputPin(*SPI1_SS1_GPIO_Port, SPI1_SS1_Pin),uint8_t address=1);
 
 	void setHwType(TMC_HW_Ver type);
 
 	void setAddress(uint8_t address);
-//	void setAxis(char axis);
-//	uint8_t getAxis();
+
 	uint8_t getSpiAddr();
 	bool setSpiAddr(uint8_t chan);
 	virtual ~TMC4671();

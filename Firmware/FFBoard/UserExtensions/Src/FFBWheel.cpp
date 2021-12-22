@@ -88,7 +88,9 @@ void FFBWheel::restoreFlash(){
 	}
 
 }
-// Saves parameters to flash
+/**
+ * Save parameters to flash
+ */
 void FFBWheel::saveFlash(){
 
 	Flash_Write(ADR_FFBWHEEL_BUTTONCONF,this->btnsources);
@@ -151,9 +153,7 @@ void FFBWheel::update(){
 // Buttons
 void FFBWheel::clearBtnTypes(){
 	// Destruct all button sources
-//	for(ButtonSource* btn : this->btns){
-//		delete btn;
-//	}
+
 	this->btns.clear();
 }
 
@@ -184,9 +184,7 @@ void FFBWheel::addBtnType(uint16_t id){
 // Analog
 void FFBWheel::clearAinTypes(){
 	// Destruct all button sources
-//	for(auto &ain : this->analog_inputs){
-//		delete ain;
-//	}
+
 	this->analog_inputs.clear();
 }
 

@@ -135,22 +135,3 @@ void AxesManager::resetPosZero() {
 			axis->setPos(0);
 		}
 }
-
-
-// ---- AXis Commands ----
-
-//ParseStatus AxesManager::command(ParsedCommand* cmd,std::string* reply){
-//	if (cmd->axis >= 0 && cmd->axis < axes.size()) {
-//		return axes[cmd->axis]->command(cmd, reply);
-//	}
-//	return ParseStatus::NOT_FOUND;
-//}
-
-//void AxesManager::processHidCommand(HID_Custom_Data_t *data){
-//	uint8_t axis = (data->cmd >> 6) & 0x3;
-//	if(axis<axis_count) {
-//		return axes[axis]->processHidCommand(data);
-//	}else{
-//		return false;
-//	}
-//}

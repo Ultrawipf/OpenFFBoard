@@ -65,6 +65,7 @@ void SystemCommands::registerCommands(){
 #endif
 	CommandHandler::registerCommand("format", FFBoardMain_commands::format, "set format=1 to erase all stored values",CMDFLAG_SET);
 	CommandHandler::registerCommand("debug", FFBoardMain_commands::debug, "Enable or disable debug commands",CMDFLAG_SET | CMDFLAG_GET);
+	CommandHandler::registerCommand("devid", FFBoardMain_commands::devid, "Get chip dev id and rev id",CMDFLAG_GET);
 }
 
 CommandStatus SystemCommands::internalCommand(const ParsedCommand& cmd,std::vector<CommandReply>& replies,CommandInterface* interface){
@@ -184,8 +185,15 @@ CommandStatus SystemCommands::internalCommand(const ParsedCommand& cmd,std::vect
 		case FFBoardMain_commands::hwtype:
 		{
 			replies.push_back(CommandReply(HW_TYPE,HW_TYPE_INT));
+			//replies.push_back(CommandReply(HAL_GetDEVID()));
 			break;
 		}
+		case FFBoardMain_commands::devid:
+			{
+				replies.push_back(CommandReply(HAL_GetDEVID(),HAL_GetREVID()));
+				break;
+			}
+
 
 		case FFBoardMain_commands::mallinfo: // UNUSED since freertos
 		{
