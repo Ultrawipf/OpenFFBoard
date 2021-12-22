@@ -49,10 +49,6 @@ ClassIdentifier TMC4671::info = {
 TMC4671::TMC4671(SPIPort& spiport,OutputPin cspin,uint8_t address) :CommandHandler("tmc", CLSID_MOT_TMC0), SPIDevice{motor_spi,cspin},Thread("TMC", TMC_THREAD_MEM, TMC_THREAD_PRIO){
 	setAddress(address);
 	setInstance(address-1);
-//	this->cspin = SPI1_SS1_Pin;
-//	this->csport = SPI1_SS1_GPIO_Port;
-//	this->spi = &HSPIDRV;
-
 	spiConfig.peripheral.Mode = SPI_MODE_MASTER;
 	spiConfig.peripheral.Direction = SPI_DIRECTION_2LINES;
 	spiConfig.peripheral.DataSize = SPI_DATASIZE_8BIT;
@@ -233,23 +229,22 @@ bool TMC4671::initialize(){
 		return false;
 	}
 	// brake res failsafe.
-	/*
-	 * Single ended input raw value
-	 * 0V = 0x7fff
-	 * 4.7k / (360k+4.7k) Divider on old board.
-	 * 1.5k / (71.5k+1.5k) 16.121 counts 60V new. 100V VM => 2V
-	 * 13106 counts/V input.
-	 */
-	if(oldTMCdetected){
-		setBrakeLimits(52400,52800);
-	}else{
-		setBrakeLimits(50700,50900); // Activates around 60V as last resort failsave. Check offsets from tmc leakage. ~ 1.426V
-	}
+//	/*
+//	 * Single ended input raw value
+//	 * 0V = 0x7fff
+//	 * 4.7k / (360k+4.7k) Divider on old board.
+//	 * 1.5k / (71.5k+1.5k) 16.121 counts 60V new. 100V VM => 2V
+//	 * 13106 counts/V input.
+//	 */
+	setBrakeLimits(this->conf.hwconf.brakeLimLow,this->conf.hwconf.brakeLimHigh); // update limit from previously loaded constants or defaults
 
 	// Status mask
 	if(oldTMCdetected){
 		setStatusMask(0); // ES Version status output is broken
 	}else{
+		/*
+		 * Enable adc clipping and pll errors
+		 */
 		statusMask.asInt = 0;
 		statusMask.flags.adc_i_clipped = 1;
 		statusMask.flags.not_PLL_locked = 1;
@@ -319,9 +314,10 @@ void TMC4671::Run(){
 			if(tick - lastStatTime > 2000){ // Every 2s
 				lastStatTime = tick;
 				statusCheck();
-				// Get enable input
-				bool tmc_en = (readReg(0x76) >> 15) & 0x01;
-				if(!tmc_en && active){ // Hardware emergency. If tmc does not reply the enable will still read false
+				// Get enable input. If tmc does not reply the result will read 0 or 0xffffffff (not possible normally)
+				uint32_t pins = readReg(0x76);
+				bool tmc_en = ((pins >> 15) & 0x01) && pins != 0xffffffff;
+				if(!tmc_en && active){ // Hardware emergency.
 					this->estopTriggered = true;
 					this->emergencyStop();
 					changeState(TMC_ControlState::HardError);
@@ -1834,9 +1830,10 @@ void TMC4671::setHwType(TMC_HW_Ver type){
 			.temperatureEnabled = true,
 			.temp_limit = 90,
 			.currentScaler = 2.5 / (0x7fff * 0.1), // w. TMCS1100A2 sensor 100mV/A
+			.brakeLimLow = 50700,
+			.brakeLimHigh = 50900,
 		};
 		this->conf.hwconf = newHwConf;
-		setBrakeLimits(50700,50900);
 	break;
 	}
 	case TMC_HW_Ver::v1_2_1_LEM20:
@@ -1851,9 +1848,10 @@ void TMC4671::setHwType(TMC_HW_Ver type){
 			.temperatureEnabled = true,
 			.temp_limit = 90,
 			.currentScaler = 2.5 / (0x7fff * 0.04), // w. LEM 20 sensor 40mV/A
+			.brakeLimLow = 50700,
+			.brakeLimHigh = 50900
 		};
 		this->conf.hwconf = newHwConf;
-		setBrakeLimits(50700,50900);
 	break;
 	}
 	case TMC_HW_Ver::v1_2_1:
@@ -1868,9 +1866,10 @@ void TMC4671::setHwType(TMC_HW_Ver type){
 			.temperatureEnabled = true,
 			.temp_limit = 90,
 			.currentScaler = 2.5 / (0x7fff * 0.08), // w. LEM 10 sensor 80mV/A
+			.brakeLimLow = 50700,
+			.brakeLimHigh = 50900,
 		};
 		this->conf.hwconf = newHwConf;
-		setBrakeLimits(50700,50900);
 	break;
 	}
 
@@ -1885,10 +1884,11 @@ void TMC4671::setHwType(TMC_HW_Ver type){
 			.temperatureEnabled = true,
 			.temp_limit = 90,
 			.currentScaler = 2.5 / (0x7fff * 60.0 * 0.0015), // w. 60x 1.5mOhm sensor
+			.brakeLimLow = 50700,
+			.brakeLimHigh = 50900,
 		};
 		this->conf.hwconf = newHwConf;
-		setBrakeLimits(50700,50900); // Activates around 60V as last resort failsave. Check offsets from tmc leakage. ~ 1.426V
-
+		// Activates around 60V as last resort failsave. Check offsets from tmc leakage. ~ 1.426V
 	break;
 	}
 
@@ -1904,9 +1904,11 @@ void TMC4671::setHwType(TMC_HW_Ver type){
 			.temperatureEnabled = false,
 			.temp_limit = 90,
 			.currentScaler = 2.5 / (0x7fff * 60.0 * 0.0015), // w. 60x 1.5mOhm sensor
+			.brakeLimLow = 52400,
+			.brakeLimHigh = 52800,
 		};
 		this->conf.hwconf = newHwConf;
-		setBrakeLimits(52400,52800);
+
 	break;
 	}
 
@@ -1922,6 +1924,7 @@ void TMC4671::setHwType(TMC_HW_Ver type){
 		break;
 	}
 	}
+	setBrakeLimits(this->conf.hwconf.brakeLimLow,this->conf.hwconf.brakeLimHigh);
 }
 
 void TMC4671::registerCommands(){

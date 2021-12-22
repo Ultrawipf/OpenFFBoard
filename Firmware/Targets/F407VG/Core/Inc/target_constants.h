@@ -15,6 +15,8 @@
 // Hardware name string
 #define HW_TYPE "F407VG"
 #define HW_TYPE_INT 2
+#define FW_DEVID 0x413 // F407
+
 #include "main.h"
 
 // Enabled features

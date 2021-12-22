@@ -15,6 +15,9 @@
 // Hardware name string
 #define HW_TYPE "F411RE"
 #define HW_TYPE_INT 1
+#define FW_DEVID 0x431 // Firmware should run on this chip devid
+
+
 // Enabled features
 
 // Main classes

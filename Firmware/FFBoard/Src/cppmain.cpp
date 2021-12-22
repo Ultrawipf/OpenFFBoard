@@ -33,6 +33,19 @@ StaticTask_t usb_device_taskdef;
 RessourceManager ressourceManager = RessourceManager();
 
 void cppmain() {
+#ifdef FW_DEVID
+	if(HAL_GetDEVID() != FW_DEVID){
+		/**
+		 * Firmware is not intended for this chip!
+		 * This can be caused by accidentially flashing an incorrect firmware file and likely screws up clock and pin configs
+		 * Do not proceed.
+		 */
+		while(true){ // Block forever to prevent an incorrect firmware from damaging hardware
+			Error_Handler();
+		}
+	}
+#endif
+
 	// Flash init
 	HAL_FLASH_Unlock();
 	__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_PGPERR | FLASH_FLAG_PGSERR);
