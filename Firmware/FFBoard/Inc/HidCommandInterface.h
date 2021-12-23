@@ -53,7 +53,7 @@ public:
 private:
 	std::vector<ParsedCommand> commands;
 	std::vector<HID_CMD_Data_t> outBuffer;
-	bool enableBroadcastFromOtherInterfaces = false; // TODO make configurable via command
+	bool enableBroadcastFromOtherInterfaces = true; // TODO make configurable via command
 	static cpp_freertos::BinarySemaphore threadSem;
 
 
