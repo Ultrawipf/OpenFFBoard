@@ -9,6 +9,7 @@
 #include "global_callbacks.h"
 #include "FFBoardMain.h"
 #include "cppmain.h"
+#include "critical.hpp"
 
 std::vector<ErrorHandler*> ErrorHandler::errorHandlers;
 std::vector<Error> ErrorHandler::errors;
@@ -71,9 +72,11 @@ void ErrorHandler::addError(Error error){
 	errors.push_back(error);
 
 	// Call all error handler with this error
+	//cpp_freertos::CriticalSection::SuspendScheduler();
 	for(ErrorHandler* e : errorHandlers){
 		e->errorCallback(error, false);
 	}
+	//cpp_freertos::CriticalSection::ResumeScheduler();
 }
 
 void ErrorHandler::clearError(Error error){
@@ -122,7 +125,7 @@ void ErrorHandler::errorCallback(Error &error, bool cleared){
 //	return info;
 //}
 
-ErrorPrinter::ErrorPrinter() : Thread("errprint",256,17){ // Higher than default task but low.
+ErrorPrinter::ErrorPrinter() : Thread("errprint",512,19){ // Higher than default task but low.
 	this->Start();
 }
 

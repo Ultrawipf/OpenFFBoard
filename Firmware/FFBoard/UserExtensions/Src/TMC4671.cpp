@@ -29,7 +29,7 @@ bool TMC_1::isCreatable() {
 
 ClassIdentifier TMC_2::info = {
 	.name = "TMC4671 (CS 2)" ,
-	.id=CLSID_MOT_TMC0, // 2
+	.id=CLSID_MOT_TMC1,
 };
 
 
@@ -42,7 +42,7 @@ bool TMC_2::isCreatable() {
 
 ClassIdentifier TMC4671::info = {
 	.name = "TMC4671" ,
-	.id=CLSID_MOT_TMC0, // 3
+	.id=CLSID_MOT_TMC0,
 };
 
 
@@ -188,7 +188,7 @@ bool TMC4671::initialize(){
 //	}
 	// Check if a TMC4671 is active and replies correctly
 	if(!pingDriver()){
-		ErrorHandler::addError(Error(ErrorCode::tmcCommunicationError, ErrorType::warning, std::string(this->getInfo().name) + " " + std::to_string(this->getCommandHandlerInfo()->instance) + " not responding"));
+		ErrorHandler::addError(communicationError);
 		return false;
 	}
 
@@ -1157,8 +1157,10 @@ void TMC4671::stopMotor(){
 void TMC4671::startMotor(){
 	active = true;
 	if(!initialized || emergency){
-		initialize();
+		//initialize();
 		emergency = false;
+		if(state != TMC_ControlState::Init_wait)
+			changeState(TMC_ControlState::Init_wait);
 	}
 
 	if(state == TMC_ControlState::Shutdown && initialized && encstate == ENC_InitState::OK){

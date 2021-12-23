@@ -48,6 +48,7 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_SPI_BTN_1_CONF_2            0x206
 #define ADR_SPI_BTN_2_CONF_2            0x207
 
+// Local encoder
 #define ADR_ENCLOCAL_CPR				0x210
 
 // PWM
@@ -150,6 +151,6 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_VESC_OFFSET					0x3E1
 
 //MT Encoder
-#define ADR_MTENC_CONF1					0x3F0
+#define ADR_MTENC_CONF1					0x401
 
 #endif /* EEPROM_ADDRESSES_H_ */
