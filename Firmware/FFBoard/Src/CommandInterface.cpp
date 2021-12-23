@@ -218,6 +218,7 @@ void CDC_CommandInterface::sendReplies(std::vector<CommandResult>& results,Comma
 		return;
 	}
 	std::string replystr;
+	replystr.reserve(100);
 	StringCommandInterface::formatReply(replystr,results, originalInterface != this && originalInterface != nullptr);
 	if(!replystr.empty())
 		CDCcomm::cdcSend(&replystr, 0);
