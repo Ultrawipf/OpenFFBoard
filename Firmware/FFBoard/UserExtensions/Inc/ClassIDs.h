@@ -65,7 +65,8 @@ enum class ClassType : uint16_t {
 #define CLSID_MOT_PWM		0x84
 #define CLSID_MOT_ODRV0		0x85
 #define CLSID_MOT_ODRV1		0x86
-#define CLSID_MOT_VESC		0x87
+#define CLSID_MOT_VESC0		0x87
+#define CLSID_MOT_VESC1		0x88
 
 // Internal classes
 #define CLSID_AXIS			0xA01
