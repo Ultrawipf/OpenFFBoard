@@ -10,7 +10,7 @@
 
 #include "main.h"
 // Change this to the amount of currently registered variables
-#define NB_OF_VAR	76
+#define NB_OF_VAR	83
 
 extern uint16_t VirtAddVarTab[NB_OF_VAR];
 
@@ -146,8 +146,16 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 
 
 // Vesc
-#define ADR_VESC_CANDATA				0x3E0 //0-8 AxisCanID , 9-11 can speed, 12 useEncoder
-#define ADR_VESC_OFFSET					0x3E1
+#define ADR_VESC1_CANID					0x3E0 //0-7 AxisCanID, 8-16 VescCanId
+#define ADR_VESC1_DATA					0x3E1 //0-2 can speed, 3 useVescEncoder
+#define ADR_VESC1_OFFSET				0x3E2 //16b offset
+#define ADR_VESC2_CANID					0x3E3 //0-8 AxisCanID, 8-16 VescCanId
+#define ADR_VESC2_DATA					0x3E4 //0-2 can speed, 3 useVescEncoder
+#define ADR_VESC2_OFFSET				0x3E5 //16b offset
+#define ADR_VESC3_CANID					0x3E6 //0-8 AxisCanID, 8-16 VescCanId
+#define ADR_VESC3_DATA					0x3E7 //0-2 can speed, 3 useVescEncoder
+#define ADR_VESC3_OFFSET				0x3E8 //16b offset
+
 
 //MT Encoder
 #define ADR_MTENC_CONF1					0x3F0
