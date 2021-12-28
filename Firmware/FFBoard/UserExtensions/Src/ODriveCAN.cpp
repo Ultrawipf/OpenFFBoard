@@ -16,7 +16,7 @@ ClassIdentifier ODriveCAN1::info = {
 bool ODriveCAN2::inUse = false;
 ClassIdentifier ODriveCAN2::info = {
 		 .name = "ODrive (M1)" ,
-		 .id=CLSID_MOT_ODRV0,	// 6
+		 .id=CLSID_MOT_ODRV1,	// 6
 };
 
 
