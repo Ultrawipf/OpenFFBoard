@@ -36,10 +36,10 @@
  *
  ***************************************************************************/
 
-
+#include "target_constants.h"
 #include "tickhook.hpp"
 
-#if ( configUSE_TICK_HOOK == 1 )
+#if ( configUSE_TICK_HOOK == 1) && !defined(HW_ESP32SX)
 
 using namespace std;
 using namespace cpp_freertos;

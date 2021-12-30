@@ -11,8 +11,7 @@
 #include "voltagesense.h"
 #include <malloc.h>
 #include "constants.h"
-#include "task.h"
-#include "FreeRTOSConfig.h"
+
 extern ClassChooser<FFBoardMain> mainchooser;
 extern FFBoardMain* mainclass;
 //extern static const uint8_t SW_VERSION_INT[3];

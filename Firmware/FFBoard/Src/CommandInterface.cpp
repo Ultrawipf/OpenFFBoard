@@ -240,7 +240,7 @@ void StringCommandInterface::generateReplyFromCmd(std::string& replyPart,const P
  */
 
 
-CDC_CommandInterface::CDC_CommandInterface() : StringCommandInterface(1024), Thread("CDCCMD", 512, 37) {
+CDC_CommandInterface::CDC_CommandInterface() : StringCommandInterface(1024), Thread("CDCCMD", CDC_COMMANDINTERFACE_THREAD_MEM, CDC_COMMANDINTERFACE_THREAD_PRIO) {
 	parser.setClearBufferTimeout(parserTimeout);
 	this->Start();
 }
@@ -273,11 +273,13 @@ void CDC_CommandInterface::sendReplies(const std::vector<CommandResult>& results
 
 	if(HAL_GetTick() - lastSendTime > parserTimeout){
 		bufferLength = 0;
+		FFB_LOGE("parserTimeout");
 		resultsBuffer.clear(); // Empty buffer because we were not able to reply in time to prevent the full buffer from blocking future commands
 		//CDCcomm::clearRemainingBuffer(0);
 	}
 
 	if( (!enableBroadcastFromOtherInterfaces && originalInterface != this) ){
+		FFB_LOGW("not originalInterface");
 		return;
 	}
 	for(const CommandResult& r : results){
@@ -324,7 +326,7 @@ bool CDC_CommandInterface::readyToSend(){
  */
 
 extern UARTPort external_uart; // defined in cpp_target_config.cpp
-UART_CommandInterface::UART_CommandInterface(uint32_t baud) : UARTDevice(external_uart),Thread("UARTCMD", 150, 36),StringCommandInterface(512), baud(baud){ //
+UART_CommandInterface::UART_CommandInterface(uint32_t baud) : UARTDevice(external_uart),Thread("UARTCMD", UART_COMMANDINTERFACE_THREAD_MEM, UART_COMMANDINTERFACE_THREAD_PRIO),StringCommandInterface(512), baud(baud){ //
 	uartconfig = uartport->getConfig();
 	if(baud != 0){
 		uartconfig.BaudRate = this->baud;

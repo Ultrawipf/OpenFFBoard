@@ -44,7 +44,7 @@
 #include "task.h"
 #include <list>
 
-#if ( configUSE_TICK_HOOK == 1 )
+#if ( configUSE_TICK_HOOK == 1) && !defined(HW_ESP32SX)
 
 /**
  *  FreeRTOS expects this function to exist and requires it to be 

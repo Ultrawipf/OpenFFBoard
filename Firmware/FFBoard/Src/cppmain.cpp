@@ -5,12 +5,12 @@
 #include "global_callbacks.h"
 #include "cpp_target_config.h"
 #include "cmsis_os.h"
-#include "stm32f4xx_hal_flash.h"
 
+#ifndef HW_ESP32SX
 #include "tusb.h"
-
 uint32_t clkmhz = HAL_RCC_GetHCLKFreq() / 100000;
 extern TIM_HandleTypeDef TIM_MICROS;
+#endif
 
 #ifdef HAL_IWDG_MODULE_ENABLED
 extern IWDG_HandleTypeDef hiwdg; // Watchdog
@@ -21,7 +21,11 @@ bool mainclassChosen = false;
 
 uint16_t main_id = 0;
 
+#ifdef HW_ESP32SX
+FFBoardMain* mainclass;
+#else
 FFBoardMain* mainclass __attribute__((section (".ccmram")));
+#endif
 ClassChooser<FFBoardMain> mainchooser(class_registry);
 
 
@@ -30,6 +34,7 @@ StackType_t  usb_device_stack[USBD_STACK_SIZE];
 StaticTask_t usb_device_taskdef;
 
 
+#ifndef HW_ESP32SX
 void cppmain() {
 #ifdef FW_DEVID
 	if(HAL_GetDEVID() != FW_DEVID){
@@ -139,4 +144,42 @@ void free(void *p)
 unsigned long getRunTimeCounterValue(void){
 	return micros();
 }
+
+#else // For HW_ESP32SX
+static const char *TAG = "cppmain";
+void cppmain()
+{
+    if ( EE_Init() != HAL_OK) {
+        Error_Handler();
+    }
+
+    startADC(); // enable ADC DMA
+
+    // If switch pressed at boot select failsafe implementation
+    if (HAL_GPIO_ReadPin(BUTTON_A_GPIO_Port, BUTTON_A_Pin) == 0) {
+        ESP_LOGI(TAG, "button pressed, boot select failsafe implementation");
+        main_id = 0;
+    } else {
+        if (!Flash_ReadWriteDefault(ADR_CURRENT_CONFIG, &main_id, 0)) {
+            Error_Handler();
+        }
+    }
+
+    ESP_LOGI(TAG, "main_id=%d", main_id);
+    mainclass = mainchooser.Create(main_id);
+    if (mainclass == nullptr) { // invalid id
+        mainclass = mainchooser.Create(0); // Baseclass
+    }
+    mainclassChosen = true;
+
+    mainclass->usbInit(); // Let mainclass initialize usb
+
+    while (running) {
+        mainclass->update();
+        updateLeds();
+        //external_spi.process();
+        vTaskDelay(1);
+    }
+}
+#endif
 

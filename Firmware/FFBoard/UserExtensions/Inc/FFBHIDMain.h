@@ -33,6 +33,14 @@
 
 #include "thread.hpp"
 
+#ifdef HW_ESP32SX
+#define FFBHIDMAIN_THREAD_MEM 4096
+#define FFBHIDMAIN_THREAD_PRIO (30*25/56)
+#else
+#define FFBHIDMAIN_THREAD_MEM 256
+#define FFBHIDMAIN_THREAD_PRIO 30
+#endif
+
 class FFBHIDMain: public FFBoardMain, public cpp_freertos::Thread, PersistentStorage,ExtiHandler,public UsbHidHandler, ErrorHandler{
 	enum class FFBWheel_commands : uint32_t{
 		ffbactive,axes,btntypes,lsbtn,addbtn,aintypes,lsain,addain,hidrate,hidsendspd,estop,cfrate

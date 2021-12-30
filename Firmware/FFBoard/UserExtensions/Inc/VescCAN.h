@@ -18,8 +18,15 @@
 #include <math.h>
 
 #ifdef VESC
+
+#ifdef HW_ESP32SX
+#define VESC_THREAD_MEM (1024*3)
+#define VESC_THREAD_PRIO 25*25/56
+#else
 #define VESC_THREAD_MEM 512
 #define VESC_THREAD_PRIO 25 // Must be higher than main thread
+#endif
+
 #define BUFFER_RX_SIZE	32
 
 #define FW_MIN_RELEASE ((5 << 16) | (3 << 8) | 51)

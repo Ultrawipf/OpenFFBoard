@@ -22,7 +22,6 @@
 #include "ADS111X.h"
 
 #include "cmsis_os.h"
-extern osThreadId_t defaultTaskHandle;
 
 //////////////////////////////////////////////
 /*
@@ -69,7 +68,7 @@ const std::vector<class_entry<AnalogSource>> analog_sources =
  * setFFBEffectsCalc must be called in constructor of derived class to finish the setup
  */
 FFBHIDMain::FFBHIDMain(uint8_t axisCount) :
-		Thread("FFBMAIN", 256, 30),axisCount(axisCount),btn_chooser(button_sources),analog_chooser(analog_sources)
+		Thread("FFBMAIN", FFBHIDMAIN_THREAD_MEM, FFBHIDMAIN_THREAD_PRIO),axisCount(axisCount),btn_chooser(button_sources),analog_chooser(analog_sources)
 {
 
 	restoreFlash(); // Load parameters

@@ -28,8 +28,15 @@
 #include "Filters.h"
 
 #define SPITIMEOUT 500
+
+#ifdef HW_ESP32SX
+#define TMC_THREAD_MEM 4096
+#define TMC_THREAD_PRIO 25*25/56
+#else
 #define TMC_THREAD_MEM 256
 #define TMC_THREAD_PRIO 25 // Must be higher than main thread
+#endif
+
 #define TMC_ADCOFFSETFAIL 5000 // How much offset from 0x7fff to allow before a calibration is failed
 
 extern SPI_HandleTypeDef HSPIDRV;

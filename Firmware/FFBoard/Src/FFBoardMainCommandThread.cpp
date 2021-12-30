@@ -30,7 +30,7 @@ Error FFBoardMainCommandThread::cmdExecError = Error(ErrorCode::cmdExecutionErro
 FFBoardMainCommandThread* commandThread;
 
 // Note: allocate enough memory for the command thread to store replies
-FFBoardMainCommandThread::FFBoardMainCommandThread(FFBoardMain* mainclass) : Thread("CMD_MAIN",700, 32) {
+FFBoardMainCommandThread::FFBoardMainCommandThread(FFBoardMain* mainclass) : Thread("CMD_MAIN",FFBOARDMAINCOMMANDTHREAD_MEM, FFBOARDMAINCOMMANDTHREAD_PRIO) {
 	//main = mainclass;
 	commandThread = this;
 	this->Start();

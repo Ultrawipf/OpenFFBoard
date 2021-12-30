@@ -1,0 +1,10 @@
+/*Debug/
+**/Release/
+**/.settings/
+*.launch
+.vscode
+.metadata
+.mxproject
+/build/
+sdkconfig.old
+sdkconfig

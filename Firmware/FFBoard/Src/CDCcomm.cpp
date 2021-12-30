@@ -29,7 +29,12 @@ CDCcomm::~CDCcomm() {
  * Global callback if cdc transfer is finished. Used to retry a failed transfer
  */
 void CDCcomm::cdcFinished(uint8_t itf){
-	cdcSems[itf].Give();
+	bool ret = cdcSems[itf].Give();
+	if (true != ret){
+		// FFB_LOGE("cdcSem give error\n");
+		return;
+	}
+	
 	if(CDCcomm::usb_busy_retry && CDCcomm::remainingStrs[itf].length() > 0){
 		cdcSend(&CDCcomm::remainingStrs[itf], itf); // Retry with remaining string
 	}
@@ -67,8 +72,12 @@ uint16_t CDCcomm::cdcSend(std::string* reply,uint8_t itf){
 	cdcSems[itf].Take();
 	uint32_t bufferRemaining = tud_cdc_n_write_available(itf);
 	uint32_t cdc_sent = tud_cdc_n_write(itf,reply->c_str(), std::min<uint16_t>(reply->length(),bufferRemaining));
-	if(!usb_busy_retry) // We did not retransmit so flush now. otherwise TUD will flush if we were in the callback before
-		tud_cdc_n_write_flush(itf);
+	if(!usb_busy_retry){ // We did not retransmit so flush now. otherwise TUD will flush if we were in the callback before
+		int res = tud_cdc_n_write_flush(itf);
+        if (!res) {
+            FFB_LOGW("flush failed (res: %d, len=%d)", res, reply->length());
+		}
+	}
 
 	// If we can't write the whole reply copy remainder to send later
 	if(cdc_sent < reply->length()){

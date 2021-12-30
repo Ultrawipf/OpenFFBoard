@@ -13,6 +13,14 @@
 #include "ffb_defs.h"
 #include "CommandHandler.h"
 
+#ifdef HW_ESP32SX
+#define HID_COMMANDINTERFACE_MEM 2048
+#define HID_COMMANDINTERFACE_PRIO 18*25/56
+#else
+#define HID_COMMANDINTERFACE_MEM 128
+#define HID_COMMANDINTERFACE_PRIO 18
+#endif
+
 enum class HidCmdType : uint8_t {write = 0, request = 1, info = 2, writeAddr = 3, requestAddr = 4,ACK = 10, notFound = 13, notification = 14, err = 15};
 
 

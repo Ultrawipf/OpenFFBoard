@@ -20,12 +20,15 @@ const ClassIdentifier EncoderLocal::getInfo(){
 EncoderLocal::EncoderLocal() : CommandHandler("localenc",CLSID_ENCODER_LOCAL) {
 	EncoderLocal::inUse = true;
 	this->restoreFlash();
+#ifdef HW_ESP32SX
+	glue_pcnt_init();
+#else
 	this->htim = &TIM_ENC;
 	HAL_TIM_Base_Start_IT(htim); // May immediately call overflow. Initialize count again
 	this->htim->Instance->CNT = 0x7fff;
 	pos = 0;
 	this->htim->Instance->CR1 = 1;
-
+#endif
 	if(!useIndex)
 		setPos(0);
 
@@ -40,7 +43,11 @@ void EncoderLocal::registerCommands(){
 
 EncoderLocal::~EncoderLocal() {
 	EncoderLocal::inUse = false;
+#ifdef HW_ESP32SX
+	glue_pcnt_deinit();
+#else
 	this->htim->Instance->CR1 = 0;
+#endif
 }
 
 
@@ -64,7 +71,12 @@ void EncoderLocal::restoreFlash(){
 }
 
 int32_t EncoderLocal::getTimerCount(){
+#ifdef HW_ESP32SX
+	FFB_LOGW("Unsupport %s", __FUNCTION__);
+	return 0;
+#else
 	return (int32_t)htim->Instance->CNT - (int32_t)0x7fff;
+#endif
 }
 
 EncoderType EncoderLocal::getEncoderType(){
@@ -73,10 +85,18 @@ EncoderType EncoderLocal::getEncoderType(){
 
 
 int32_t EncoderLocal::getPos(){
+#ifdef HW_ESP32SX
+	pos += glue_pcnt_get_delta_value();
+	return pos;
+#else
 	return getTimerCount() + pos;
+#endif
 }
 
 void EncoderLocal::setPos(int32_t pos){
+#ifdef HW_ESP32SX
+	this->pos=pos;
+#else
 	int32_t cnt = getTimerCount();
 
 	this->pos = pos - cnt;
@@ -86,16 +106,23 @@ void EncoderLocal::setPos(int32_t pos){
 	}
 	//this->pos = pos - cnt;
 	//htim->Instance->CNT = 0x7fff; // Reset //pos+0x7fff;
-
+#endif
 
 }
 
 
 void EncoderLocal::setPeriod(uint32_t period){
+#ifdef HW_ESP32SX
+	FFB_LOGW("Unsupport %s", __FUNCTION__);
+#else
 	this->htim->Instance->ARR = period-1;
+#endif
 }
 
 void EncoderLocal::exti(uint16_t GPIO_Pin){
+#ifdef HW_ESP32SX
+	FFB_LOGW("Unsupport %s", __FUNCTION__);
+#else
 	if(GPIO_Pin == ENCODER_Z_Pin){
 		if(HAL_GPIO_ReadPin(ENCODER_Z_GPIO_Port, ENCODER_Z_Pin) == GPIO_PIN_RESET){
 		// Encoder Z pin activated
@@ -110,6 +137,7 @@ void EncoderLocal::exti(uint16_t GPIO_Pin){
 		}
 
 	}
+#endif
 }
 
 void EncoderLocal::timerElapsed(TIM_HandleTypeDef* htim){
@@ -119,11 +147,15 @@ void EncoderLocal::timerElapsed(TIM_HandleTypeDef* htim){
 }
 
 void EncoderLocal::overflowCallback(){
+#ifdef HW_ESP32SX
+	// nothing to do
+#else
 	if(htim->Instance->CNT > this->htim->Instance->ARR/2){
 		pos -= htim->Instance->ARR+1;
 	}else{
 		pos += htim->Instance->ARR+1;
 	}
+#endif
 }
 
 void EncoderLocal::setCpr(uint32_t cpr){

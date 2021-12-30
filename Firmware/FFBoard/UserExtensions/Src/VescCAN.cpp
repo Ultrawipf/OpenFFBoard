@@ -558,6 +558,15 @@ void VescCAN::decode_buffer(uint8_t *buffer, uint8_t len) {
 
 }
 
+#ifdef HW_ESP32SX
+extern "C" void glue_can_receive_msg(CAN_HandleTypeDef *hcan, uint8_t *rxBuf, CAN_RxHeaderTypeDef *rxHeader)
+{
+	for(CanHandler* c : CanHandler::canHandlers){
+		c->canRxPendCallback(hcan,rxBuf,rxHeader,CAN_RX_FIFO0);
+	}
+}
+#endif
+
 /*
  *	Process the received message on the CAN bus.
  *	Message have several struct, depends on message type, check the comm_can.c and

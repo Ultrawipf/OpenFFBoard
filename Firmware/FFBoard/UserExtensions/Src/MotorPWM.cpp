@@ -156,6 +156,13 @@ void MotorPWM::setPwmSpeed(SpeedPWM_DRV spd){
 		this->pwmspeed = spd;
 		tFreq = (float)(timerConfig.timerFreq/1000000)/(float)(prescaler+1);
 
+#ifdef HW_ESP32SX
+		glue_ledc_config((ledc_channel_t)timerConfig.channel_1, LEDC_TIMER_11_BIT, timerConfig.timerFreq/(prescaler+1)/period);
+		glue_ledc_config((ledc_channel_t)timerConfig.channel_2, LEDC_TIMER_11_BIT, timerConfig.timerFreq/(prescaler+1)/period);
+		glue_ledc_config((ledc_channel_t)timerConfig.channel_3, LEDC_TIMER_11_BIT, timerConfig.timerFreq/(prescaler+1)/period);
+		glue_ledc_config((ledc_channel_t)timerConfig.channel_4, LEDC_TIMER_11_BIT, timerConfig.timerFreq/(prescaler+1)/period);
+		period = 1UL << LEDC_TIMER_11_BIT;
+#else
 		pwmInitTimer(timerConfig.timer, timerConfig.channel_1,period,prescaler);
 		pwmInitTimer(timerConfig.timer, timerConfig.channel_2,period,prescaler);
 		pwmInitTimer(timerConfig.timer, timerConfig.channel_3,period,prescaler);
@@ -164,6 +171,7 @@ void MotorPWM::setPwmSpeed(SpeedPWM_DRV spd){
 //		setPWM_HAL(0, timer, channel_1, period);
 //		pwmInitTimer(timer, channel_2,period,prescaler);
 //		setPWM_HAL(0, timer, channel_2, period);
+#endif
 		turn(0);
 	}
 }
@@ -172,6 +180,17 @@ void MotorPWM::setPwmSpeed(SpeedPWM_DRV spd){
  * Updates pwm pulse length
  */
 void MotorPWM::setPWM(uint32_t value,uint8_t ccr){
+#ifdef HW_ESP32SX
+	if(ccr == 1){
+		glue_ledc_set_duty(LEDC_CHANNEL_0, value); // Set next CCR for channel 1
+	}else if(ccr == 2){
+		glue_ledc_set_duty(LEDC_CHANNEL_1, value); // Set next CCR for channel 2
+	}else if(ccr == 3){
+		glue_ledc_set_duty(LEDC_CHANNEL_2, value); // Set next CCR for channel 3
+	}else if(ccr == 4){
+		glue_ledc_set_duty(LEDC_CHANNEL_3, value); // Set next CCR for channel 4
+	}
+#else
 	if(ccr == 1){
 		timerConfig.timer->Instance->CCR1 = value; // Set next CCR for channel 1
 	}else if(ccr == 2){
@@ -181,7 +200,7 @@ void MotorPWM::setPWM(uint32_t value,uint8_t ccr){
 	}else if(ccr == 4){
 		timerConfig.timer->Instance->CCR4 = value; // Set next CCR for channel 4
 	}
-
+#endif
 }
 
 SpeedPWM_DRV MotorPWM::getPwmSpeed(){
@@ -277,7 +296,7 @@ CommandStatus MotorPWM::command(const ParsedCommand& cmd,std::vector<CommandRepl
 }
 
 
-
+#ifndef HW_ESP32SX
 cpp_freertos::MutexStandard pwmTimMutex;
 void pwmInitTimer(TIM_HandleTypeDef* timer,uint32_t channel,uint32_t period,uint32_t prescaler){
 	timer->Instance->ARR = period;
@@ -296,7 +315,6 @@ void pwmInitTimer(TIM_HandleTypeDef* timer,uint32_t channel,uint32_t period,uint
 	//setPWM_HAL(0,timer,channel,period);
 	HAL_TIM_PWM_Start(timer, channel);
 	pwmTimMutex.Unlock();
-
 }
 
 
@@ -314,4 +332,6 @@ void setPWM_HAL(uint32_t value,TIM_HandleTypeDef* timer,uint32_t channel,uint32_
     HAL_TIM_PWM_ConfigChannel(timer, &sConfigOC, channel);
     HAL_TIM_PWM_Start(timer, channel);
 }
+#endif // end of HW_ESP32SX
+
 #endif

@@ -18,6 +18,14 @@
 
 #define MAGNTEK_READ 0x80
 
+#ifdef HW_ESP32SX
+#define MTENCODERSPI_THREAD_MEM 4096
+#define MTENCODERSPI_THREAD_PRIO (42*25/56)
+#else
+#define MTENCODERSPI_THREAD_MEM 256
+#define MTENCODERSPI_THREAD_PRIO 42
+#endif
+
 class MtEncoderSPI: public Encoder, public SPIDevice, public PersistentStorage, public CommandHandler,cpp_freertos::Thread{
 	enum class MtEncoderSPI_commands : uint32_t{
 		cspin,pos,errors

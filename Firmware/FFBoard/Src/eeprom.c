@@ -49,6 +49,168 @@
 /* Includes ------------------------------------------------------------------*/
 #include "eeprom.h"
 #include "eeprom_addresses.h"
+
+#ifdef HW_ESP32SX
+
+#include <string.h>
+#include "esp_system.h"
+#include "esp_log.h"
+#include "nvs_flash.h"
+
+static const char *TAG = "eeprom";
+
+#define _VAL_NAMESPACE "DefParam"
+
+#define PARAM_CHECK(a, str, label) \
+    if (!(a)) { \
+        ESP_LOGE(TAG,"%s(%d): %s", __FUNCTION__, __LINE__, str); \
+        goto label; \
+    }
+
+static esp_err_t param_save(const char *space_name, const char *key, void *param, uint16_t len)
+{
+    esp_err_t ret = ESP_ERR_INVALID_ARG;
+    PARAM_CHECK(NULL != space_name, "Pointer of space_name is invalid", OPEN_FAIL);
+    PARAM_CHECK(NULL != key, "Pointer of key is invalid", OPEN_FAIL);
+    PARAM_CHECK(NULL != param, "Pointer of param is invalid", OPEN_FAIL);
+    nvs_handle_t my_handle;
+    ret = nvs_open(space_name, NVS_READWRITE, &my_handle);
+    PARAM_CHECK(ESP_OK == ret, "nvs open failed", OPEN_FAIL);
+    ret = nvs_set_blob(my_handle, key, param, len);
+    PARAM_CHECK(ESP_OK == ret, "nvs set blob failed", SAVE_FINISH);
+    ret = nvs_commit(my_handle);
+
+SAVE_FINISH:
+    nvs_close(my_handle);
+
+OPEN_FAIL:
+    return ret;
+}
+
+static esp_err_t param_load(const char *space_name, const char *key, void *dest)
+{
+    esp_err_t ret = ESP_ERR_INVALID_ARG;
+    PARAM_CHECK(NULL != space_name, "Pointer of space_name is invalid", OPEN_FAIL);
+    PARAM_CHECK(NULL != key, "Pointer of key is invalid", OPEN_FAIL);
+    PARAM_CHECK(NULL != dest, "Pointer of dest is invalid", OPEN_FAIL);
+    nvs_handle_t my_handle;
+    size_t required_size = 0;
+    ret = nvs_open(space_name, NVS_READWRITE, &my_handle);
+    PARAM_CHECK(ESP_OK == ret, "nvs open failed", OPEN_FAIL);
+    ret = nvs_get_blob(my_handle, key, NULL, &required_size);
+    PARAM_CHECK(ESP_OK == ret, "nvs get blob failed", LOAD_FINISH);
+    if (required_size == 0) {
+        ESP_LOGW(TAG, "the target you want to load has never been saved");
+        ret = ESP_FAIL;
+        goto LOAD_FINISH;
+    }
+    ret = nvs_get_blob(my_handle, key, dest, &required_size);
+
+LOAD_FINISH:
+    nvs_close(my_handle);
+
+OPEN_FAIL:
+    return ret;
+}
+
+__attribute__((__unused__)) 
+static esp_err_t param_erase(const char *space_name, const char *key)
+{
+    esp_err_t ret = ESP_ERR_INVALID_ARG;
+    PARAM_CHECK(NULL != space_name, "Pointer of space_name is invalid", OPEN_FAIL);
+    PARAM_CHECK(NULL != key, "Pointer of key is invalid", OPEN_FAIL);
+    nvs_handle_t my_handle;
+    ret = nvs_open(space_name, NVS_READWRITE, &my_handle);
+    PARAM_CHECK(ESP_OK == ret, "nvs open failed", OPEN_FAIL);
+    ret = nvs_erase_key(my_handle, key);
+    PARAM_CHECK(ESP_OK == ret, "nvs erase failed", ERASE_FINISH);
+    ret = nvs_commit(my_handle);
+
+ERASE_FINISH:
+    nvs_close(my_handle);
+
+OPEN_FAIL:
+    return ret;
+}
+
+/* Virtual address defined by the user: 0xFFFF value is prohibited */
+//extern uint16_t VirtAddVarTab[NB_OF_VAR];
+
+static void inline make_key(uint16_t addr, char *key)
+{
+    sprintf(key, "0x%x", addr);
+}
+/**
+  * @brief  Restore the pages to a known good state in case of page's status
+  *   corruption after a power loss.
+  * @param  None.
+  * @retval - Flash error code: on write Flash error
+  *         - FLASH_COMPLETE: on success
+  */
+uint16_t EE_Init(void)
+{
+    return HAL_OK;
+}
+
+
+/**
+  * @brief  Returns the last stored variable data, if found, which correspond to
+  *   the passed virtual address
+  * @param  VirtAddress: Variable virtual address
+  * @param  Data: Global variable contains the read variable value
+  * @retval Success or error status:
+  *           - 0: if variable was found
+  *           - 1: if the variable was not found
+  *           - NO_VALID_PAGE: if no valid page was found.
+  */
+uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t *Data)
+{
+    char key[16] = {0};
+    make_key(VirtAddress, key);
+    esp_err_t ret = param_load(_VAL_NAMESPACE, key, Data);
+    if (ESP_OK == ret) {
+        ESP_LOGI(TAG, "read nvs %s=%d", key, *Data);
+    } else {
+        ESP_LOGE(TAG, "read nvs %s error", key);
+    }
+    /* Return ReadStatus value: (0: variable exist, 1: variable doesn't exist) */
+    return ret == ESP_OK ? 0 : 1;
+}
+
+/**
+  * @brief  Writes/upadtes variable data in EEPROM.
+  * @param  VirtAddress: Variable virtual address
+  * @param  Data: 16 bit data to be written
+  * @retval Success or error status:
+  *           - FLASH_COMPLETE: on success
+  *           - PAGE_FULL: if valid page is full
+  *           - NO_VALID_PAGE: if no valid page was found
+  *           - Flash error code: on write Flash error
+  */
+uint16_t EE_WriteVariable(uint16_t VirtAddress, uint16_t Data)
+{
+    char key[16] = {0};
+    make_key(VirtAddress, key);
+    ESP_LOGI(TAG, "write nvs %s=%d", key, Data);
+    esp_err_t ret = param_save(_VAL_NAMESPACE, key, &Data, 2);
+
+    return ret == ESP_OK ? 0 : 1;
+}
+
+/**
+  * @brief  Erases PAGE and PAGE1 and writes VALID_PAGE header to PAGE
+  * @param  None
+  * @retval Status of the last operation (Flash write or erase) done during
+  *         EEPROM formating
+  */
+HAL_StatusTypeDef EE_Format(void)
+{
+    ESP_ERROR_CHECK(nvs_flash_erase());
+    return HAL_OK;
+}
+
+#else  // STM32 FLASH
+
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
@@ -729,6 +891,7 @@ static uint16_t EE_PageTransfer(uint16_t VirtAddress, uint16_t Data)
   /* Return last operation flash status */
   return FlashStatus;
 }
+#endif
 
 /**
   * @}

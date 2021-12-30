@@ -15,7 +15,13 @@
 
 #define USB_STRING_DESC_BUF_SIZE 32
 
-
+#ifdef HW_ESP32SX
+#define USBDEVICE_MEM 4096
+#define USBDEVICE_PRIO 40*25/56
+#else
+#define USBDEVICE_MEM 256
+#define USBDEVICE_PRIO 40
+#endif
 
 /**
  * This class defines a usb device and implements callbacks for getting the basic
