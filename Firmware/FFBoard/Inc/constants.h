@@ -9,9 +9,8 @@
  */
 
 
-//#define SW_VERSION "1.5.0" // Version string
-static const uint8_t SW_VERSION_INT[3] = {1,5,2}; // Version as array. 8 bit each!
-//#define MIN_SW_CONFIGURATOR "1.5.0" // Minimal supported configurator version. to be removed in a later version!
+
+static const uint8_t SW_VERSION_INT[3] = {1,6,0}; // Version as array. 8 bit each!
 
 #define MAX_AXIS 2 // ONLY USE 2 for now else screws HID Reports
 
