@@ -3,12 +3,12 @@
  *
  *  Created on: 27.01.21
  *      Author: Jon Lidgard
+ *      Yannick Richter
  */
 
 #include <stdint.h>
 #include "math.h"
 #include "EffectsCalculator.h"
-//#include "global_callbacks.h"
 #include "Axis.h"
 
 #define X_AXIS_ENABLE 1
@@ -45,13 +45,9 @@ EffectsCalculator::EffectsCalculator() : CommandHandler("fx", CLSID_EFFECTSCALC)
 
 EffectsCalculator::~EffectsCalculator()
 {
-	// Remove from global list when deleted
-	//	removeEffectsCalculator();
+
 }
 
-// bool EffectsCalculator::processHidCommand(HID_Custom_Data_t* data) {
-//  return false;
-// }
 
 bool EffectsCalculator::isActive()
 {
