@@ -87,8 +87,8 @@ void VescCAN::turn(int16_t power) {
 }
 
 void VescCAN::stopMotor() {
-	activeMotor = false;
 	this->setTorque(0.0);
+	activeMotor = false;
 }
 
 void VescCAN::startMotor() {

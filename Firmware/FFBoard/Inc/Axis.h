@@ -155,8 +155,12 @@ private:
 
 	bool tmcFeedForward = false; // Experimental
 
+	bool outOfBounds = false;
+
 	static AxisConfig decodeConfFromInt(uint16_t val);
 	static uint16_t encodeConfToInt(AxisConfig conf);
+
+	const Error outOfBoundsError = Error(ErrorCode::axisOutOfRange,ErrorType::warning,"Axis out of bounds");
 
 	const TMC4671PIDConf tmcpids = TMC4671PIDConf({.fluxI = 400,
 											 .fluxP = 400,
