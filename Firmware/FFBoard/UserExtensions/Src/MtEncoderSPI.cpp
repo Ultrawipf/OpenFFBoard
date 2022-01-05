@@ -134,7 +134,7 @@ CommandStatus MtEncoderSPI::command(const ParsedCommand& cmd,std::vector<Command
 		if(cmd.type==CMDtype::get){
 			replies.push_back(CommandReply(this->cspin+1));
 		}else if(cmd.type==CMDtype::set){
-			this->setCsPin(cmd.val);
+			this->setCsPin(cmd.val-1);
 		}else{
 			return CommandStatus::ERR;
 		}
