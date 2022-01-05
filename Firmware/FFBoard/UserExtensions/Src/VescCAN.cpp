@@ -71,11 +71,11 @@ VescCAN::~VescCAN() {
 }
 
 void VescCAN::setAddress(uint8_t address) {
-	if (address == 1) {
+	if (address == 0) {
 		this->flashAddrs = VescFlashAddrs( { ADR_VESC1_CANID, ADR_VESC1_DATA, ADR_VESC1_OFFSET });
-	} else if (address == 2) {
+	} else if (address == 1) {
 		this->flashAddrs = VescFlashAddrs( { ADR_VESC2_CANID, ADR_VESC2_DATA, ADR_VESC2_OFFSET });
-	} else if (address == 3) {
+	} else if (address == 2) {
 		this->flashAddrs = VescFlashAddrs( { ADR_VESC3_CANID, ADR_VESC3_DATA, ADR_VESC3_OFFSET });
 	}
 }
