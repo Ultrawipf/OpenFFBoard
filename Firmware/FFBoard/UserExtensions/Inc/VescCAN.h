@@ -197,7 +197,7 @@ private:
 // *** Creation of the first concrete class (VESC_1) used by OpenFFBoard of VescCan interface ***
 class VESC_1 : public VescCAN {
 public:
-	VESC_1() : VescCAN{1} { inUse = true; }
+	VESC_1() : VescCAN{0} { inUse = true; }
 	~VESC_1() { inUse = false; }
 
 	static ClassIdentifier info;
@@ -210,7 +210,7 @@ public:
 // *** Creation of the second concrete class (VESC_2) used by OpenFFBoard of VescCan interface ***
 /*class VESC_2 : public VescCAN {
 public:
-	VESC_2() : VescCAN{2} { inUse = true; }
+	VESC_2() : VescCAN{1} { inUse = true; }
 	~VESC_2() { inUse = false; }
 
 	static ClassIdentifier info;
