@@ -194,6 +194,13 @@ void Axis::prepareForUpdate(){
 		// We are way off. Shut down
 		drv->stopMotor();
 		pulseErrLed();
+		if(!outOfBounds){
+			outOfBounds = true;
+			ErrorHandler::addError(outOfBoundsError);
+		}
+
+	}else if(abs(scaledEnc) <= 0x7fff) {
+		outOfBounds = false;
 	}
 
 	this->updateMetrics(angle);
@@ -545,7 +552,10 @@ bool Axis::updateTorque(int32_t* totalTorque) {
 	if(maxTorqueRateMS > 0){
 		torque = clip<int32_t,int32_t>(torque, metric.previous.torque - maxTorqueRateMS,metric.previous.torque + maxTorqueRateMS);
 	}
-	if(torque - metric.previous.torque)
+//	if(torque - metric.previous.torque)
+	if(outOfBounds){
+		torque = 0;
+	}
 
 	// Torque calculated. Now sending to driver
 	torque = (invertAxis) ? -torque : torque;
