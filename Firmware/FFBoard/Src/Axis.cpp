@@ -172,7 +172,7 @@ void Axis::prepareForUpdate(){
 		return;
 	}
 
-	if (!drv->motorReady()) return;
+	//if (!drv->motorReady()) return;
 
 	float angle = getEncAngle(this->drv->getEncoder());
 
