@@ -241,6 +241,11 @@ void Axis::setDrvType(uint8_t drvtype)
 	this->drv = std::unique_ptr<MotorDriver>(drv);
 	this->conf.drvtype = drvtype;
 
+	// Pass encoder to driver again
+	if(!this->drv->hasIntegratedEncoder()){
+		this->drv->setEncoder(this->enc);
+	}
+
 	if (dynamic_cast<TMC4671 *>(drv))
 	{
 		setupTMC4671();
