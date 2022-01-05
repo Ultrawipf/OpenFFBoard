@@ -224,7 +224,7 @@ void ODriveCAN::requestMsg(uint8_t cmd){
 }
 
 float ODriveCAN::getPos_f(){
-	if(motorReady())
+	if(this->connected)
 		requestMsg(0x09);
 	return lastPos-posOffset;
 }
