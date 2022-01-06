@@ -74,7 +74,7 @@ private:
 	const float cfFilter_qfloatScaler = 0.01;
 
 	// Rescale factor for conditional effect to boost or decrease the intensity
-	const float spring_scaler = 4.0f;
+	const float spring_scaler = 16.0f;
 	const float friction_scaler = 0.4f;
 	const float damper_scaler = 2.0f;
 	const float inertia_scaler = 200.0f;
