@@ -1821,10 +1821,10 @@ void TMC4671::restoreEncHallMisc(uint16_t val){
 void TMC4671::setHwType(TMC_HW_Ver type){
 	//TMC4671HardwareTypeConf newHwConf;
 	switch(type){
-	case TMC_HW_Ver::v1_2_1_TMCS:
+	case TMC_HW_Ver::v1_2_2_TMCS:
 	{
 		TMC4671HardwareTypeConf newHwConf = {
-			.hwVersion = TMC_HW_Ver::v1_2_1_TMCS,
+			.hwVersion = TMC_HW_Ver::v1_2_2_TMCS,
 			.adcOffset = 0,
 			.thermistor_R2 = 1500,
 			.thermistor_R = 10000,
@@ -1838,11 +1838,11 @@ void TMC4671::setHwType(TMC_HW_Ver type){
 		this->conf.hwconf = newHwConf;
 	break;
 	}
-	case TMC_HW_Ver::v1_2_1_LEM20:
+	case TMC_HW_Ver::v1_2_2_LEM20:
 	{
 		// TODO possibly lower PWM limit because of lower valid sensor range
 		TMC4671HardwareTypeConf newHwConf = {
-			.hwVersion = TMC_HW_Ver::v1_2_1,
+			.hwVersion = TMC_HW_Ver::v1_2_2,
 			.adcOffset = 0,
 			.thermistor_R2 = 1500,
 			.thermistor_R = 10000,
@@ -1856,11 +1856,11 @@ void TMC4671::setHwType(TMC_HW_Ver type){
 		this->conf.hwconf = newHwConf;
 	break;
 	}
-	case TMC_HW_Ver::v1_2_1:
+	case TMC_HW_Ver::v1_2_2:
 	{
 		// TODO possibly lower PWM limit because of lower valid sensor range
 		TMC4671HardwareTypeConf newHwConf = {
-			.hwVersion = TMC_HW_Ver::v1_2_1,
+			.hwVersion = TMC_HW_Ver::v1_2_2,
 			.adcOffset = 0,
 			.thermistor_R2 = 1500,
 			.thermistor_R = 10000,

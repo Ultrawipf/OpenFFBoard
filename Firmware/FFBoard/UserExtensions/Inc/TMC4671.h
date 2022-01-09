@@ -41,15 +41,15 @@ enum class PosSelection : uint8_t {PhiE=0, PhiE_ext=1, PhiE_openloop=2, PhiE_abn
 enum class EncoderType_TMC : uint8_t {NONE=0,abn=1,sincos=2,uvw=3,hall=4,ext=5}; // max 7
 
 // Hardware versions for identifying different types
-enum class TMC_HW_Ver : uint8_t {NONE=0,v1_0,v1_2,v1_2_1,v1_2_1_LEM20,v1_2_1_TMCS};
+enum class TMC_HW_Ver : uint8_t {NONE=0,v1_0,v1_2,v1_2_2,v1_2_2_LEM20,v1_2_2_TMCS};
 // Selectable version names to be listed in commands
 const std::vector<std::pair<TMC_HW_Ver,std::string>> tmcHwVersionNames{
 			std::make_pair(TMC_HW_Ver::NONE,"Undefined"), // Do not select. Default but disables some safety features
 			std::make_pair(TMC_HW_Ver::v1_0,"v1.0"),
 			std::make_pair(TMC_HW_Ver::v1_2,"v1.2"),
-			std::make_pair(TMC_HW_Ver::v1_2_1,"v1.2.1 LEM GO 10"),
-			std::make_pair(TMC_HW_Ver::v1_2_1_LEM20,"v1.2.1 LEM GO 20"),
-			std::make_pair(TMC_HW_Ver::v1_2_1_TMCS,"v1.2.1 TMCS1100A2")
+			std::make_pair(TMC_HW_Ver::v1_2_2,"v1.2.2 LEM GO 10"),
+			std::make_pair(TMC_HW_Ver::v1_2_2_LEM20,"v1.2.2 LEM GO 20"),
+			std::make_pair(TMC_HW_Ver::v1_2_2_TMCS,"v1.2.2 TMCS1100A2")
 };
 
 struct TMC4671MotConf{
