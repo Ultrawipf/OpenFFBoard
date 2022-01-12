@@ -50,8 +50,8 @@ void CmdParser::setClearBufferTimeout(uint32_t timeout){
 	this->clearBufferTimeout = timeout;
 }
 
-uint32_t CmdParser::bufferCapacity(){
-	return buffer.capacity() - buffer.size();
+int32_t CmdParser::bufferCapacity(){
+	return std::max<int32_t>(bufferMaxCapacity - buffer.size(),0);
 }
 
 

@@ -32,6 +32,7 @@ public:
 	virtual bool hasNewCommands();
 	static void broadcastCommandReplyAsync(std::vector<CommandReply>& reply,CommandHandler* handler, uint32_t cmdId,CMDtype type);
 	virtual void sendReplies(std::vector<CommandResult>& results,CommandInterface* originalInterface); // All commands from batch done
+	virtual bool readyToSend();
 protected:
 	bool parserReady = false;
 };
@@ -43,6 +44,7 @@ class StringCommandInterface : public CommandInterface{
 public:
 	StringCommandInterface(uint32_t reservedBuffer = 16) : parser(CmdParser(reservedBuffer)){}
 	bool addBuf(char* Buf, uint32_t *Len);
+	uint32_t bufferCapacity();
 	bool getNewCommands(std::vector<ParsedCommand>& commands) override;
 	static void formatReply(std::string& reply,const std::vector<CommandResult>& results,const bool formatWriteAsRead=false);
 	static std::string formatOriginalCommandFromResult(const ParsedCommand& originalCommand,CommandHandler* commandHandler,const bool formatWriteAsRead=false);
@@ -64,7 +66,7 @@ public:
 
 	void sendReplies(std::vector<CommandResult>& results,CommandInterface* originalInterface) override;
 	const std::string getHelpstring(){return "CDC interface. " + StringCommandInterface::getHelpstring();};
-
+	bool readyToSend() override;
 private:
 	bool enableBroadcastFromOtherInterfaces = true;
 	const uint32_t parserTimeout = 2000;

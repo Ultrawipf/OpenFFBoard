@@ -125,7 +125,13 @@ void FFBoardMainCommandThread::executeCommands(std::vector<ParsedCommand> comman
 		}
 		if(!this->results.empty()){
 			for(CommandInterface* itf : CommandInterface::cmdInterfaces){
-				itf->sendReplies(results, commandInterface);
+				// Block until replies are sent
+				uint32_t remainingTime = 100;
+				while(!itf->readyToSend() && --remainingTime){
+					Delay(1);
+				}
+				if(remainingTime)
+					itf->sendReplies(results, commandInterface);
 			}
 		}
 	}

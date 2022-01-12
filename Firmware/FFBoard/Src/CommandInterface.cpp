@@ -63,6 +63,14 @@ bool CommandInterface::hasNewCommands(){
 	return parserReady;
 }
 
+/**
+ * Returns true if it can send replies.
+ * False if the command thread should wait until previous replies are processed
+ */
+bool CommandInterface::readyToSend(){
+	return true;
+}
+
 
 /*
  *
@@ -86,6 +94,10 @@ bool StringCommandInterface::addBuf(char* Buf, uint32_t *Len){
 		FFBoardMainCommandThread::wakeUp();
 	}
 	return res;
+}
+
+uint32_t StringCommandInterface::bufferCapacity(){
+	return parser.bufferCapacity();
 }
 
 void StringCommandInterface::formatReply(std::string& reply,const std::vector<CommandResult>& results,const bool formatWriteAsRead){
@@ -214,14 +226,22 @@ CDC_CommandInterface::~CDC_CommandInterface() {
 
 
 void CDC_CommandInterface::sendReplies(std::vector<CommandResult>& results,CommandInterface* originalInterface){
-	if( (!enableBroadcastFromOtherInterfaces && originalInterface != this) || !tud_ready() ){
+	if( (!enableBroadcastFromOtherInterfaces && originalInterface != this) ){
 		return;
 	}
+
 	std::string replystr;
 	replystr.reserve(100);
 	StringCommandInterface::formatReply(replystr,results, originalInterface != this && originalInterface != nullptr);
 	if(!replystr.empty())
 		CDCcomm::cdcSend(&replystr, 0);
+}
+
+/**
+ * Ready to send if there is no data in the backup buffer of the cdc port
+ */
+bool CDC_CommandInterface::readyToSend(){
+	return CDCcomm::remainingData(0) == 0;
 }
 
 
@@ -232,7 +252,6 @@ void CDC_CommandInterface::sendReplies(std::vector<CommandResult>& results,Comma
  * Takes bytes from a uart port
  *
  */
-
 
 extern UARTPort external_uart; // defined in cpp_target_config.cpp
 UART_CommandInterface::UART_CommandInterface(uint32_t baud) : StringCommandInterface(128), UARTDevice(external_uart),Thread("UARTCMD", 256, 36), baud(baud){ //
@@ -280,7 +299,7 @@ void UART_CommandInterface::Run(){
 //}
 
 void UART_CommandInterface::sendReplies(std::vector<CommandResult>& results,CommandInterface* originalInterface){
-	if( (!enableBroadcastFromOtherInterfaces && originalInterface != this) || !tud_ready() ){
+	if( (!enableBroadcastFromOtherInterfaces && originalInterface != this) ){
 		return;
 	}
 
@@ -297,7 +316,7 @@ void UART_CommandInterface::sendReplies(std::vector<CommandResult>& results,Comm
 void UART_CommandInterface::uartRcv(char& buf){
 	uint32_t len = 1;
 	BaseType_t savedInterruptStatus =  cpp_freertos::CriticalSection::EnterFromISR();
-	if(this->parser.bufferCapacity() > len) // Check buffer because we can't allocate more memory inside the ISR safely at the moment
+	if(this->parser.bufferCapacity() > (int32_t)len) // Check buffer because we can't allocate more memory inside the ISR safely at the moment
 		StringCommandInterface::addBuf(&buf, &len);
 	cpp_freertos::CriticalSection::ExitFromISR(savedInterruptStatus);
 }

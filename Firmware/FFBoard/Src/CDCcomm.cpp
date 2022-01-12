@@ -38,6 +38,10 @@ void CDCcomm::cdcFinished(uint8_t itf){
 	}
 }
 
+uint32_t CDCcomm::remainingData(uint8_t itf){
+	return CDCcomm::remainingStrs[itf].size();
+}
+
 /**
  * Sends a string via CDC
  * If not everything can be sent it will be buffered for later in a new string
