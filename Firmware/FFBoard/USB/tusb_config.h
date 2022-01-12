@@ -102,7 +102,7 @@
 #define CFG_TUD_DFU_RT            0
 
 // CDC FIFO size of TX and RX
-#define CFG_TUD_CDC_RX_BUFSIZE    1024//(TUD_OPT_HIGH_SPEED ? 512 : 64)
+#define CFG_TUD_CDC_RX_BUFSIZE    512//(TUD_OPT_HIGH_SPEED ? 512 : 64)
 #define CFG_TUD_CDC_TX_BUFSIZE    1024//(TUD_OPT_HIGH_SPEED ? 512 : 64)
 
 // MIDI FIFO size of TX and RX

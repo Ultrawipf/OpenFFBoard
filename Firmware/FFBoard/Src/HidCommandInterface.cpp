@@ -52,6 +52,9 @@ void HID_CommandInterface::Run(){
 	}
 }
 
+bool HID_CommandInterface::readyToSend(){
+	return this->outBuffer.size() < maxQueuedReplies;
+}
 
 void HID_CommandInterface::sendReplies(std::vector<CommandResult>& results,CommandInterface* originalInterface){
 
@@ -61,6 +64,10 @@ void HID_CommandInterface::sendReplies(std::vector<CommandResult>& results,Comma
 			continue;
 
 		if( (originalInterface != this && enableBroadcastFromOtherInterfaces) || ( result.type == CommandStatus::OK && replies.empty() ) ){ // Request was sent by a different interface
+			if(this->outBuffer.size() > maxQueuedRepliesBroadcast){
+				continue; // for now we just throw away broadcasts if the buffer contains too many pending replies.
+			}
+
 			CommandReply reply; // Fake reply
 
 			// return original command as get value if it was a set command

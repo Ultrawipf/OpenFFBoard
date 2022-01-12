@@ -47,7 +47,7 @@ public:
 	bool sendHidCmd(HID_CMD_Data_t* data);
 	void queueReplyValues(CommandReply& reply,ParsedCommand& command);
 	void transferComplete(uint8_t itf, uint8_t const* report, uint8_t len);
-
+	bool readyToSend();
 	void Run();
 
 private:
@@ -55,7 +55,8 @@ private:
 	std::vector<HID_CMD_Data_t> outBuffer;
 	bool enableBroadcastFromOtherInterfaces = true; // TODO make configurable via command
 	static cpp_freertos::BinarySemaphore threadSem;
-
+	const uint32_t maxQueuedReplies = 50;
+	const uint32_t maxQueuedRepliesBroadcast = 10; // Must be smaller than maxQueuedReplies
 
 };
 

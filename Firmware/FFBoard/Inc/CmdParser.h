@@ -28,13 +28,14 @@ public:
 	void clear();
 	bool add(char* Buf, uint32_t *Len);
 	bool parse(std::vector<ParsedCommand>& commands);
-	uint32_t bufferCapacity();
+	int32_t bufferCapacity();
 
 	void setClearBufferTimeout(uint32_t timeout);
 
 private:
 	std::string buffer;
-	uint32_t reservedBuffer = 0;
+	int32_t reservedBuffer = 100;
+	int32_t bufferMaxCapacity = 512;
 
 	uint32_t clearBufferTimeout = 0;
 	uint32_t lastAddTime = 0;

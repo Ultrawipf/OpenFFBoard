@@ -32,6 +32,17 @@ void FFBoardMain::cdcRcv(char* Buf, uint32_t *Len){
 	cdcCmdInterface->addBuf(Buf, Len);
 }
 
+/**
+ * Called by the CDC serial port when data is received
+ */
+void FFBoardMain::cdcRcvReady(uint8_t itf){
+
+	uint32_t bufferFree = std::min<uint32_t>(cdcCmdInterface->bufferCapacity(),sizeof(this->cdcbuf));
+	uint32_t count = tud_cdc_n_read(itf,this->cdcbuf, bufferFree);
+	this->cdcRcv(this->cdcbuf,&count);
+}
+
+
 
 CommandStatus FFBoardMain::command(const ParsedCommand& cmd,std::vector<CommandReply>& replies){
 	return CommandStatus::NOT_FOUND;
