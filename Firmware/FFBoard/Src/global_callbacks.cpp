@@ -237,20 +237,14 @@ uint8_t const * tud_hid_descriptor_report_cb(uint8_t itf){
 
 void tud_cdc_rx_cb(uint8_t itf){
 	pulseSysLed();
-//	uint8_t buf[64];
 	if(mainclass!=nullptr){
 		mainclass->cdcRcvReady(itf);
 	}
-//		uint32_t count = tud_cdc_n_read(itf,buf, std::min<uint32_t>(mainclass->cdcFree(),sizeof(buf)));
-//		mainclass->cdcRcv((char*)buf,&count);
-//	}
 }
 
 void tud_cdc_tx_complete_cb(uint8_t itf){
-	//if(mainclass!=nullptr)
-		//mainclass->cdcFinished(itf);
-	CDCcomm::cdcFinished(itf);
 
+	CDCcomm::cdcFinished(itf);
 }
 
 

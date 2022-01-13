@@ -45,7 +45,7 @@ public:
 	virtual void update();
 	virtual void cdcRcv(char* Buf, uint32_t *Len);
 	virtual void cdcRcvReady(uint8_t itf);
-	//virtual void cdcFinished(uint8_t itf); // Cdc send transfer complete
+
 	virtual void usbSuspend(); // Called on usb disconnect and suspend
 	virtual void usbResume(); // Called on usb resume
 
@@ -64,7 +64,7 @@ public:
 
 protected:
 	std::unique_ptr<USBdevice> usbdev;
-	char cdcbuf[64];
+	static char cdcbuf[]; // cdc buffer
 };
 
 
