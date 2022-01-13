@@ -7,13 +7,12 @@
 
 #ifndef COMMANDHANDLER_H_
 #define COMMANDHANDLER_H_
-//#include <CmdParser.h>
+
 #include "ChoosableClass.h"
 #include <set>
 #include "mutex.hpp"
 #include "ClassIDs.h"
 #include <vector>
-//#include "CommandInterface.h"
 
 
 #define CMDFLAG_GET	 	0x01
@@ -136,7 +135,7 @@ public:
 	virtual std::string getHelpstring(); // Returns a help string if "help" command is sent
 	virtual std::string getCommandsHelpstring(); // Returns a list of the commands helpstrings
 	virtual std::string getCsvHelpstring(); // Returns a list of the commands helpstrings formatted for csv
-	//static void sendSerial(std::string cls,std::string cmd,std::string string,uint8_t prefix = 0xFF); //!< Send a command reply formatted sequence
+
 	static void logSerial(std::string string);	//!< Send a log formatted sequence
 
 	void broadcastCommandReply(CommandReply reply, uint32_t cmdId,CMDtype type);
@@ -223,11 +222,8 @@ protected:
 		}
 	}
 
-	//uint16_t commandHandlerID = 1; // 0 reserved for system
-
-
 	std::vector<CmdHandlerCommanddef> registeredCommands;
-	//void registerCommand(std::string cmd,uint16_t cmdid, std::string help="");
+
 	// Helper to be used with class enums
 	template<typename ID>
 	void registerCommand(const char* cmd,const ID cmdid,const char* help=nullptr,uint32_t flags = 0){
@@ -246,10 +242,6 @@ protected:
 		this->registeredCommands.shrink_to_fit();
 	}
 
-
-//	std::string clsname;
-//	uint16_t clsid;
-//	uint8_t cmdHandlerInstance=0;
 
 	CmdHandlerInfo cmdHandlerInfo;
 

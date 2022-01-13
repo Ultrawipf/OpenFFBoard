@@ -14,7 +14,6 @@
 #define X_AXIS_ENABLE 1
 #define Y_AXIS_ENABLE 2
 #define Z_AXIS_ENABLE 4
-//#define DEG_TO_RAD ((float)((float)M_PI / 180.0))
 #define DIRECTION_ENABLE (1 << MAX_AXIS)
 
 #define EFFECT_STATE_INACTIVE 0
