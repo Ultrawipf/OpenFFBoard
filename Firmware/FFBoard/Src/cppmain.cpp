@@ -47,12 +47,25 @@ void cppmain() {
 #endif
 
 	// Flash init
+	// TODO verify why or if flash does not erase or initialize correctly on some new chips
 	HAL_FLASH_Unlock();
 	__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_PGPERR | FLASH_FLAG_PGSERR);
+
 	if( EE_Init() != EE_OK){
 		Error_Handler();
 	}
+	// Check if flash is initialized
+	uint16_t lastVersion = 0;
+	if(!Flash_Read(ADR_SW_VERSION, &lastVersion)){ // Version never written
+		Flash_Write(ADR_SW_VERSION, (SW_VERSION_INT[0]<<8) | SW_VERSION_INT[1]);
+	}
+	Flash_Read(ADR_SW_VERSION,&lastVersion);
+	if((lastVersion & 0xff00) != (SW_VERSION_INT[0]<<8)){
+		EE_Format(); // Major version changed or could not write initial value. force a format
+		Flash_Write(ADR_SW_VERSION, (SW_VERSION_INT[0]<<8) | SW_VERSION_INT[1]);
+	}
 	HAL_FLASH_Lock();
+	// ------------------------
 
 	TIM_MICROS.Instance->CR1 = 1; // Enable microsecond clock
 
