@@ -34,11 +34,29 @@ void CommandInterface::sendReplies(std::vector<CommandResult>& results,CommandIn
  * Broadcasts an unrequested reply to all command interfaces
  */
 void CommandInterface::broadcastCommandReplyAsync(std::vector<CommandReply>& reply,CommandHandler* handler, uint32_t cmdId,CMDtype type){
+
+	std::vector<CommandResult> results = {makeCommandReply(reply, handler, cmdId, type,nullptr)};
+
+	for(CommandInterface* itf : CommandInterface::cmdInterfaces){
+		itf->sendReplies(results, nullptr);
+	}
+}
+
+/**
+ * Sends an unrequested reply to this specific interface
+ */
+void CommandInterface::sendReplyAsync(std::vector<CommandReply>& reply,CommandHandler* handler, uint32_t cmdId,CMDtype type){
+	std::vector<CommandResult> results = {makeCommandReply(reply, handler, cmdId, type,this)};
+	this->sendReplies(results, this);
+}
+
+CommandResult CommandInterface::makeCommandReply(std::vector<CommandReply>& reply,CommandHandler* handler, uint32_t cmdId,CMDtype type,CommandInterface* originalInterface){
 	ParsedCommand fakeCmd;
 	fakeCmd.target = handler;
 	fakeCmd.cmdId = cmdId;
 	fakeCmd.instance = handler->getCommandHandlerInfo()->instance;
 	fakeCmd.type = type;
+	fakeCmd.originalInterface = originalInterface;
 
 
 	CommandResult fakeResult;
@@ -47,11 +65,7 @@ void CommandInterface::broadcastCommandReplyAsync(std::vector<CommandReply>& rep
 	fakeResult.originalCommand = fakeCmd;
 	fakeResult.reply = reply;
 	fakeResult.commandHandler = fakeCmd.target;
-	std::vector<CommandResult> results = {fakeResult};
-
-	for(CommandInterface* itf : CommandInterface::cmdInterfaces){
-		itf->sendReplies(results, nullptr);
-	}
+	return fakeResult;
 }
 
 /**

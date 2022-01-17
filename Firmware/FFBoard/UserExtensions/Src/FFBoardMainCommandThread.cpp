@@ -90,6 +90,7 @@ void FFBoardMainCommandThread::executeCommands(std::vector<ParsedCommand> comman
 
 	//cpp_freertos::CriticalSection::SuspendScheduler();
 	for(ParsedCommand& cmd : commands){
+		cmd.originalInterface = commandInterface;
 		this->results.clear();
 
 		CommandResult resultObj;
@@ -105,7 +106,7 @@ void FFBoardMainCommandThread::executeCommands(std::vector<ParsedCommand> comman
 		}
 		if(CommandHandler::isInHandlerList(handler)  && validFlags){ // check if pointer is still present in handler list
 			// Call internal commands first
-			status = handler->internalCommand(cmd,resultObj.reply,commandInterface);
+			status = handler->internalCommand(cmd,resultObj.reply);
 
 			// internal commands did not return anything call regular custom commands
 			if(status == CommandStatus::NOT_FOUND){

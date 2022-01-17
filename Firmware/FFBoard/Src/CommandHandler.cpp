@@ -169,7 +169,7 @@ void CommandHandler::setInstance(uint8_t instance){
 /**
  * Some standard commands most classes will need
  */
-CommandStatus CommandHandler::internalCommand(const ParsedCommand& cmd,std::vector<CommandReply>& replies,CommandInterface* interface){
+CommandStatus CommandHandler::internalCommand(const ParsedCommand& cmd,std::vector<CommandReply>& replies){
 	CommandStatus result = CommandStatus::OK;
 	switch(static_cast<CommandHandlerCommands>(cmd.cmdId)){
 
@@ -359,10 +359,30 @@ CommandStatus CommandHandler::command(const ParsedCommand& cmd,std::vector<Comma
 
 /**
  * Broadcasts an unrequested reply to all command interfaces in the name of this class
+ * @param[in]	reply	a command reply to be sent
+ * @param[in]	cmdId	the command id in which name to reply
+ * @param[in]	type	type of the command to create (normally get)
  */
 void CommandHandler::broadcastCommandReply(CommandReply reply, uint32_t cmdId,CMDtype type){
 	std::vector<CommandReply> replies = {reply};
 	CommandInterface::broadcastCommandReplyAsync(replies, this, cmdId, type);
+}
+
+/**
+ * Broadcasts an unrequested reply to a specific command interface in the name of this class
+ * @param[in]	interface	Must be a valid interface pointer from a previously received command or nullptr (treated like a broadcast)
+ * @param[in]	reply	a command reply to be sent
+ * @param[in]	cmdId	the command id in which name to reply
+ * @param[in]	type	type of the command to create (normally get)
+ */
+void CommandHandler::sendCommandReplyAsync(CommandReply reply, uint32_t cmdId,CMDtype type,CommandInterface* interface){
+	if(interface == nullptr){
+		broadcastCommandReply(reply, cmdId, type);
+		return;
+	}
+
+	std::vector<CommandReply> replies = {reply};
+	interface->sendReplyAsync(replies, this, cmdId, type);
 }
 
 

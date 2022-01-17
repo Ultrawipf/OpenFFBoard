@@ -67,6 +67,7 @@ struct ParsedCommand
     uint8_t instance = 0xFF; // instance number. decided by the class. 0xFF if all instances are targeted
     CommandHandler* target = nullptr; // Directly target a handler
     CMDtype type = CMDtype::none;
+    CommandInterface* originalInterface = nullptr; //!< Command interface on which this command was received. nullptr indicates a broadcast
 };
 
 
@@ -128,7 +129,7 @@ public:
 
 	virtual CommandStatus command(const ParsedCommand& cmd,std::vector<CommandReply>& replies);
 	void registerCommands(); // Function reserved to register commands in the command list.
-	virtual CommandStatus internalCommand(const ParsedCommand& cmd,std::vector<CommandReply>& replies,CommandInterface* interface = nullptr);
+	virtual CommandStatus internalCommand(const ParsedCommand& cmd,std::vector<CommandReply>& replies);
 
 	virtual const ClassIdentifier getInfo() = 0; //!< Command handlers always have class infos. Works well with ChoosableClass
 
@@ -139,6 +140,7 @@ public:
 	static void logSerial(std::string string);	//!< Send a log formatted sequence
 
 	void broadcastCommandReply(CommandReply reply, uint32_t cmdId,CMDtype type);
+	void sendCommandReplyAsync(CommandReply reply, uint32_t cmdId,CMDtype type,CommandInterface* interface = nullptr);
 
 	static bool logEnabled;
 	static bool logsEnabled();
