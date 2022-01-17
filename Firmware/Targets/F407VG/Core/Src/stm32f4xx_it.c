@@ -81,7 +81,7 @@ extern DMA_HandleTypeDef hdma_usart1_tx;
 extern UART_HandleTypeDef huart1;
 extern UART_HandleTypeDef huart3;
 extern PCD_HandleTypeDef hpcd_USB_OTG_FS;
-extern TIM_HandleTypeDef htim6;
+extern TIM_HandleTypeDef htim7;
 
 /* USER CODE BEGIN EV */
 
@@ -327,6 +327,20 @@ void TIM1_BRK_TIM9_IRQHandler(void)
 }
 
 /**
+  * @brief This function handles TIM1 trigger and commutation interrupts and TIM11 global interrupt.
+  */
+void TIM1_TRG_COM_TIM11_IRQHandler(void)
+{
+  /* USER CODE BEGIN TIM1_TRG_COM_TIM11_IRQn 0 */
+
+  /* USER CODE END TIM1_TRG_COM_TIM11_IRQn 0 */
+  HAL_TIM_IRQHandler(&htim1);
+  /* USER CODE BEGIN TIM1_TRG_COM_TIM11_IRQn 1 */
+
+  /* USER CODE END TIM1_TRG_COM_TIM11_IRQn 1 */
+}
+
+/**
   * @brief This function handles TIM2 global interrupt.
   */
 void TIM2_IRQHandler(void)
@@ -439,17 +453,17 @@ void SPI3_IRQHandler(void)
 }
 
 /**
-  * @brief This function handles TIM6 global interrupt, DAC1 and DAC2 underrun error interrupts.
+  * @brief This function handles TIM7 global interrupt.
   */
-void TIM6_DAC_IRQHandler(void)
+void TIM7_IRQHandler(void)
 {
-  /* USER CODE BEGIN TIM6_DAC_IRQn 0 */
+  /* USER CODE BEGIN TIM7_IRQn 0 */
 
-  /* USER CODE END TIM6_DAC_IRQn 0 */
-  HAL_TIM_IRQHandler(&htim6);
-  /* USER CODE BEGIN TIM6_DAC_IRQn 1 */
+  /* USER CODE END TIM7_IRQn 0 */
+  HAL_TIM_IRQHandler(&htim7);
+  /* USER CODE BEGIN TIM7_IRQn 1 */
 
-  /* USER CODE END TIM6_DAC_IRQn 1 */
+  /* USER CODE END TIM7_IRQn 1 */
 }
 
 /**

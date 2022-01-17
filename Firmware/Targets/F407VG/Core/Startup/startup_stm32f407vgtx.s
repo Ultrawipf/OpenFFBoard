@@ -60,6 +60,10 @@ defined in linker script */
     .globl   Reboot_Loader
     .type    Reboot_Loader, %function
 Reboot_Loader:
+	LDR     R0, =0x2001FFF0 // End of SRAM for your CPU
+	LDR     R1, =0xBAADF00D
+	STR     R1, [R0, #0]
+
     LDR     R0, =0x40023844 // RCC_APB2ENR
     LDR     R1, =0x00004000 // ENABLE SYSCFG CLOCK
     STR     R1, [R0, #0]
@@ -73,17 +77,23 @@ Reboot_Loader:
  .pool
 .size Reboot_Loader, . - Reboot_Loader
 
-    .section  .text.Reset_Handler
+
+  .section  .text.Reset_Handler
   .weak  Reset_Handler
   .type  Reset_Handler, %function
 Reset_Handler:  
-LDR     R0, =0x2001FFF0 // End of SRAM for your CPU
-LDR     R1, =0xDEADBEEF
-LDR     R2, [R0, #0]
-STR     R0, [R0, #0] // Invalidate
-CMP     R2, R1
-BEQ     Reboot_Loader
-  ldr   sp, =_estack     /* set stack pointer */
+	LDR     R0, =0x2001FFF0 // End of SRAM for your CPU
+	LDR     R1, =0xBAADF00D
+	LDR     R2, [R0, #0]
+	CMP     R2, R1
+	BEQ     ExitDFU // Call function to notify that the chip previously was in the bootloader
+
+	LDR     R1, =0xDEADBEEF
+	LDR     R2, [R0, #0]
+	STR     R0, [R0, #0] // Invalidate
+	CMP     R2, R1
+	BEQ     Reboot_Loader
+  	ldr   sp, =_estack     /* set stack pointer */
 
 /* Copy the data segment initializers from flash to SRAM */  
   movs  r1, #0

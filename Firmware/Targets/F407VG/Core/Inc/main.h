@@ -57,6 +57,7 @@ void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
 void RebootDFU();
+void ExitDFU();
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
