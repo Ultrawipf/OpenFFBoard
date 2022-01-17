@@ -23,7 +23,7 @@ public:
 	static ClassIdentifier info;
 
 	void registerCommands();
-	CommandStatus internalCommand(const ParsedCommand& cmd,std::vector<CommandReply>& replies,CommandInterface* interface);
+	CommandStatus internalCommand(const ParsedCommand& cmd,std::vector<CommandReply>& replies);
 
 
 	const ClassType getClassType() {return ClassType::Internal;};

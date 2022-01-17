@@ -68,7 +68,7 @@ void SystemCommands::registerCommands(){
 	CommandHandler::registerCommand("devid", FFBoardMain_commands::devid, "Get chip dev id and rev id",CMDFLAG_GET);
 }
 
-CommandStatus SystemCommands::internalCommand(const ParsedCommand& cmd,std::vector<CommandReply>& replies,CommandInterface* interface){
+CommandStatus SystemCommands::internalCommand(const ParsedCommand& cmd,std::vector<CommandReply>& replies){
 	CommandStatus flag = CommandStatus::OK;
 
 	switch((FFBoardMain_commands)cmd.cmdId)
@@ -78,7 +78,11 @@ CommandStatus SystemCommands::internalCommand(const ParsedCommand& cmd,std::vect
 			if(cmd.type == CMDtype::info){
 				replies.push_back(CommandReply(this->getCsvHelpstring()));
 			}else{
-				std::string reply =	interface->getHelpstring() + "\nAvailable classes (use cls.0.help for more info):\n";
+				std::string itfHelp = "";
+				if(cmd.originalInterface){
+					itfHelp = cmd.originalInterface->getHelpstring() + "\n";
+				}
+				std::string reply =	itfHelp + "Available classes (use cls.0.help for more info):\n";
 				//std::string reply = "";
 				for(CommandHandler* handler : CommandHandler::cmdHandlers){
 					CmdHandlerInfo* info = handler->getCommandHandlerInfo();
