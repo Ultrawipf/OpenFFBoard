@@ -149,7 +149,6 @@ int main(void)
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
-
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
@@ -1359,8 +1358,14 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+void ExitDFU(void){
+	*((unsigned long *)0x2001FFF0) = 0xD00FBEAD; // invalidate flag and reset clean again
+	NVIC_SystemReset();
+}
+
 void RebootDFU(void) {
-	*((unsigned long *)0x2001FFF0) = 0xDEADBEEF; // bkpsram. see startup assembly for jumps
+	__disable_irq();
+	*((unsigned long *)0x2001FFF0) = 0xDEADBEEF; // ram end. see startup assembly for jumps
 	NVIC_SystemReset();
 }
 /* USER CODE END 4 */
@@ -1388,7 +1393,7 @@ __weak void StartDefaultTask(void *argument)
 
 /**
   * @brief  Period elapsed callback in non blocking mode
-  * @note   This function is called  when TIM6 interrupt took place, inside
+  * @note   This function is called  when TIM7 interrupt took place, inside
   * HAL_TIM_IRQHandler(). It makes a direct call to HAL_IncTick() to increment
   * a global variable "uwTick" used as application time base.
   * @param  htim : TIM handle
@@ -1399,13 +1404,11 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   /* USER CODE BEGIN Callback 0 */
 
   /* USER CODE END Callback 0 */
-  if (htim->Instance == TIM6) {
+  if (htim->Instance == TIM7) {
     HAL_IncTick();
   }
   /* USER CODE BEGIN Callback 1 */
-  else{
-	  HAL_TIM_PeriodElapsedCallback_CPP(htim);
-  }
+
   /* USER CODE END Callback 1 */
 }
 

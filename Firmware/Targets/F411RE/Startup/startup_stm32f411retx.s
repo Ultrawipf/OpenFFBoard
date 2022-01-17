@@ -100,7 +100,7 @@ Reset_Handler:
 	STR     R0, [R0, #0] // Invalidate
 	CMP     R2, R1
     BEQ     Reboot_Loader
-  ldr   sp, =_estack    		 /* set stack pointer */
+  	ldr   sp, =_estack    		 /* set stack pointer */
 
 /* Copy the data segment initializers from flash to SRAM */  
   movs  r1, #0
