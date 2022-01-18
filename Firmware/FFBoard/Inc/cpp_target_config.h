@@ -9,6 +9,7 @@
 #define CPP_TARGET_CONFIG_H_
 
 #include "SPI.h"
+#include "MotorPWM.h"
 #include "UART.h"
 #include "target_constants.h"
 #include "CAN.h"
@@ -27,6 +28,10 @@ extern UARTPort external_uart;
 
 #ifdef CANBUS
 extern CANPort canport;
+#endif
+
+#ifdef PWMDRIVER
+extern const PWMConfig pwmTimerConfig;
 #endif
 
 #endif

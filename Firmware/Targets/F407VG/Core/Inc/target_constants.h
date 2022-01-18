@@ -50,7 +50,6 @@
 #define TIM_ENC htim3
 // Timer 3 is used by the encoder.
 #define TIM_PWM htim1
-#define TIM_PWM_FREQ 168000000
 
 #define TIM_MICROS htim10
 #define TIM_USER htim9 // Timer with full core clock speed available for the mainclass
