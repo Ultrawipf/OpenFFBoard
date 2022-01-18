@@ -1364,7 +1364,6 @@ void ExitDFU(void){
 }
 
 void RebootDFU(void) {
-	__disable_irq();
 	*((unsigned long *)0x2001FFF0) = 0xDEADBEEF; // ram end. see startup assembly for jumps
 	NVIC_SystemReset();
 }
