@@ -32,7 +32,7 @@ var searchData=
   ['cffilter_5fq_29',['cfFilter_q',['../class_effects_calculator.html#ab29b9b29517a3d154655f74e735ed15a',1,'EffectsCalculator']]],
   ['cffilter_5fqfloatscaler_30',['cfFilter_qfloatScaler',['../class_effects_calculator.html#a43c9cd847852a8f990f389c67c2213eb',1,'EffectsCalculator']]],
   ['cfg_5fnum_31',['cfg_num',['../structusbd__device__t.html#a7ac04dbc0e57299c0a7f45009bd4df3f',1,'usbd_device_t']]],
-  ['change_32',['change',['../structhub__port__status__response__t.html#a9e3090dc9c9340ee3255bd8a6f5233f9',1,'hub_port_status_response_t::change()'],['../structhub__status__response__t.html#ae054c53507416b1f758b52f6e59026d9',1,'hub_status_response_t::change()']]],
+  ['change_32',['change',['../structhub__port__status__response__t.html#a0e2fd69cd0019b756a2f08875468456f',1,'hub_port_status_response_t::change()'],['../structhub__status__response__t.html#acc3a74b5c6c1b0eb7bb10cb7d5de0e15',1,'hub_status_response_t::change()']]],
   ['channel_5f1_33',['channel_1',['../class_motor_p_w_m.html#a5e8ea7d888b8b51304a0eacd6f256b43',1,'MotorPWM']]],
   ['channel_5f2_34',['channel_2',['../class_motor_p_w_m.html#af53effb1e76617e299f45cc204382c03',1,'MotorPWM']]],
   ['channel_5f3_35',['channel_3',['../class_motor_p_w_m.html#a32b2f91f0e6ec42b0c78525500d5b81e',1,'MotorPWM']]],

@@ -2,15 +2,15 @@ var group___class_driver___hub =
 [
     [ "hub_status_response_t", "structhub__status__response__t.html", [
       [ "__pad0__", "structhub__status__response__t.html#a1668b2574123a00fa056a4d875273df5", null ],
-      [ "change", "structhub__status__response__t.html#ae054c53507416b1f758b52f6e59026d9", null ],
+      [ "change", "structhub__status__response__t.html#acc3a74b5c6c1b0eb7bb10cb7d5de0e15", null ],
       [ "local_power_source", "structhub__status__response__t.html#ab776438637a22d9432df9a72448dd61c", null ],
       [ "over_current", "structhub__status__response__t.html#ae1e0e79c620d9a93220cffd68f934a25", null ],
-      [ "status", "structhub__status__response__t.html#a0baf60d843db4868878449a74a4f0e9e", null ],
+      [ "status", "structhub__status__response__t.html#a76f731f7752a6f614392b4156ed2ef42", null ],
       [ "value", "structhub__status__response__t.html#aeb3e4a317583445868bfe67d77a53f15", null ]
     ] ],
     [ "hub_port_status_response_t", "structhub__port__status__response__t.html", [
       [ "__pad0__", "structhub__port__status__response__t.html#a2381a0935a83c6d7cb6c3592dccce7df", null ],
-      [ "change", "structhub__port__status__response__t.html#a9e3090dc9c9340ee3255bd8a6f5233f9", null ],
+      [ "change", "structhub__port__status__response__t.html#a0e2fd69cd0019b756a2f08875468456f", null ],
       [ "connection", "structhub__port__status__response__t.html#ae632796d212114bec85e12cf2995e755", null ],
       [ "high_speed", "structhub__port__status__response__t.html#af30806a710844e614298b7188c31c1fb", null ],
       [ "low_speed", "structhub__port__status__response__t.html#aca1c4fce456372a084aa75c25ac52a04", null ],
@@ -20,7 +20,7 @@ var group___class_driver___hub =
       [ "port_power", "structhub__port__status__response__t.html#a0b66c1429a3d29c02e693ea3df0c506e", null ],
       [ "port_test_mode", "structhub__port__status__response__t.html#adf4625e9608f68c57d5b41459e1350c8", null ],
       [ "reset", "structhub__port__status__response__t.html#a047303b6710f6a417dc94315d1b76ae4", null ],
-      [ "status", "structhub__port__status__response__t.html#ab5c333f4ff5c76cf518125e2a8345205", null ],
+      [ "status", "structhub__port__status__response__t.html#a302b8d556362f7f99f8ce3f995554960", null ],
       [ "suspend", "structhub__port__status__response__t.html#a9b211abcf5dd543b190d3d6f2832b94c", null ],
       [ "TU_RESERVED", "structhub__port__status__response__t.html#ac51e3ec63cad581a274628bdb0626233", null ],
       [ "value", "structhub__port__status__response__t.html#ad2b2341b1fb4535c6890008020a040af", null ],

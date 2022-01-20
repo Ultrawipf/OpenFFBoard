@@ -8,7 +8,7 @@ var searchData=
   ['requestaddr_5',['requestAddr',['../_hid_command_interface_8h.html#a3f333b1c841dda37afbc4c28598a6fc5a9e4a37d94de151b51e777f7e4f804784',1,'HidCommandInterface.h']]],
   ['res1_6',['res1',['../_t_m_c4671_8h.html#affe1640d3ae28fb6e7d823943b6b784ba91e7e433e34c3b8843334c1467001cb7',1,'TMC4671.h']]],
   ['res2_7',['res2',['../_t_m_c4671_8h.html#affe1640d3ae28fb6e7d823943b6b784ba3528579414912ea7816656ea7b96b29e',1,'TMC4671.h']]],
-  ['reset_5fdelay_8',['RESET_DELAY',['../usbh_8c.html#a16685eea158879e41b101ca3634de462a255e787af798f103692ae6a228b0600a',1,'usbh.c']]],
+  ['reset_5fdelay_8',['RESET_DELAY',['../usbh_8c.html#ab48899087cc647f0f791ed0c459adc53a255e787af798f103692ae6a228b0600a',1,'usbh.c']]],
   ['response_5favailable_9',['RESPONSE_AVAILABLE',['../group___class_driver___c_d_c.html#ggafe51e6ac2b0028e0d33de1cbb4739e6fa4fa6052a18b9742a8c5a321434a11fab',1,'cdc.h']]],
   ['revbtn_10',['revbtn',['../class_shifter_analog.html#a99c6ea60974ea937a349d12dcd599078a768906447f71e341504b453bfd33453a',1,'ShifterAnalog']]],
   ['ring_5fdetect_11',['RING_DETECT',['../group___class_driver___c_d_c.html#ggafe51e6ac2b0028e0d33de1cbb4739e6faa656b09593945174eccd36c41a7ac647',1,'cdc.h']]],

@@ -108,7 +108,7 @@ var searchData=
   ['usbdevice_2eh_105',['USBdevice.h',['../_u_s_bdevice_8h.html',1,'']]],
   ['usbh_2ec_106',['usbh.c',['../usbh_8c.html',1,'']]],
   ['usbh_2eh_107',['usbh.h',['../usbh_8h.html',1,'']]],
-  ['usbh_5fclass_5fdriver_5fcount_108',['USBH_CLASS_DRIVER_COUNT',['../usbh_8c.html#a77867ab4129f63159b37bca3b652a798a3d69eab44dbede9d61507ef234aea764',1,'usbh.c']]],
+  ['usbh_5fclass_5fdriver_5fcount_108',['USBH_CLASS_DRIVER_COUNT',['../usbh_8c.html#a96a58e29e8dbf2b5bdeb775cba46556ea3d69eab44dbede9d61507ef234aea764',1,'usbh.c']]],
   ['usbh_5fclass_5fdriver_5ft_109',['usbh_class_driver_t',['../structusbh__class__driver__t.html',1,'']]],
   ['usbh_5fclass_5fdrivers_110',['usbh_class_drivers',['../usbh_8c.html#a3a754c682df079789b197e50fc25d98d',1,'usbh.c']]],
   ['usbh_5fcontrol_2ec_111',['usbh_control.c',['../usbh__control_8c.html',1,'']]],
