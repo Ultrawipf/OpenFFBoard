@@ -70,10 +70,12 @@ void Axis::registerCommands(){
 	registerCommand("axisdamper", Axis_commands::axisdamper, "Independent damper effect",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("enctype", Axis_commands::enctype, "Encoder type get/set/list",CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_INFOSTRING);
 	registerCommand("drvtype", Axis_commands::drvtype, "Motor driver type get/set/list",CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_INFOSTRING);
-	registerCommand("pos", Axis_commands::pos, "Axis position",CMDFLAG_GET);
+	registerCommand("pos", Axis_commands::pos, "Encoder position",CMDFLAG_GET);
 	registerCommand("maxspeed", Axis_commands::maxspeed, "Speed limit in deg/s",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("maxtorquerate", Axis_commands::maxtorquerate, "Torque rate limit in counts/ms",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("fxratio", Axis_commands::fxratio, "Effect ratio. Reduces effects excluding endstop. 255=100%",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("curtorque", Axis_commands::curtorque, "Axis torque",CMDFLAG_GET);
+	registerCommand("curpos", Axis_commands::curpos, "Axis position",CMDFLAG_GET);
 }
 
 /*
@@ -702,6 +704,13 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 		}else if(cmd.type == CMDtype::set){
 			setFxRatio(cmd.val);
 		}
+		break;
+
+	case Axis_commands::curpos:
+		replies.push_back(CommandReply(this->metric.current.pos));
+		break;
+	case Axis_commands::curtorque:
+		replies.push_back(CommandReply(this->metric.current.torque));
 		break;
 
 	default:
