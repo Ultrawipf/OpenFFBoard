@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['edpt_5fctrl_5fin_0',['EDPT_CTRL_IN',['../usbd__control_8c.html#a39fca1837c5ce7715cbf571669660c13a8a1851cf1510242b761b5c12931b22e8',1,'usbd_control.c']]],
-  ['edpt_5fctrl_5fout_1',['EDPT_CTRL_OUT',['../usbd__control_8c.html#a39fca1837c5ce7715cbf571669660c13ad2c9d77df4e773f1efab6703daff69b1',1,'usbd_control.c']]],
+  ['edpt_5fctrl_5fin_0',['EDPT_CTRL_IN',['../usbd__control_8c.html#a94798fdadfbf49a7c658ace669a1d310a8a1851cf1510242b761b5c12931b22e8',1,'usbd_control.c']]],
+  ['edpt_5fctrl_5fout_1',['EDPT_CTRL_OUT',['../usbd__control_8c.html#a94798fdadfbf49a7c658ace669a1d310ad2c9d77df4e773f1efab6703daff69b1',1,'usbd_control.c']]],
   ['effects_2',['effects',['../_effects_calculator_8h.html#a8c1e274c9ae0e228a7e0a406bec8a694a2bb387c51f0ebdab53cc485d53694d37',1,'EffectsCalculator.h']]],
   ['emergencystop_3',['emergencyStop',['../_error_handler_8h.html#a6f3b1ba4fbf4167d3a58b0b331ddcfefaf295dcb7afd6ae61d4d7e5f99d9bf71a',1,'ErrorHandler.h']]],
   ['enc_5fbang_4',['Enc_bang',['../_t_m_c4671_8h.html#a08a7449bf7a92827d2af8ebebb8f218ea5d7785ab7289f008bd23c0ccf335eb22',1,'TMC4671.h']]],

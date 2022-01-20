@@ -133,7 +133,7 @@ var group___class_driver___m_s_c___common =
       [ "bmIntfcCapabilities", "struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a986ca63d2d14720d753e3abcde06eaa9", null ],
       [ "bmIntfcCapabilities488", "struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a7ca9f2245ea110491a6cf3d466df7184", null ],
       [ "bmRequestType", "struct_t_u___a_t_t_r___p_a_c_k_e_d.html#ad21fccd456640cfe9e822579ac510410", null ],
-      [ "bmRequestType_bit", "struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a2ffdf9220271f05aca975ed62cd95ae2", null ],
+      [ "bmRequestType_bit", "struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a840e65207ee03a571ad5d81fc0ec4fea", null ],
       [ "bmTransferAttributes", "struct_t_u___a_t_t_r___p_a_c_k_e_d.html#ac935679a3377b513254a77183b7425d2", null ],
       [ "bNotify1", "struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a43657f93ae8104dc60d54fd3a763dff6", null ],
       [ "bNrChannels", "struct_t_u___a_t_t_r___p_a_c_k_e_d.html#acd0f218c6d122f49520337ec19fb6cd3", null ],
@@ -327,8 +327,8 @@ var group___class_driver___m_s_c___common =
     [ "scsi_start_stop_unit_t", "group___class_driver___m_s_c___common.html#ga80fe4f493de3c359529e102e3adb0552", null ],
     [ "scsi_test_unit_ready_t", "group___class_driver___m_s_c___common.html#gacd41801e10c1ffe1f19d6779b01c91ea", null ],
     [ "scsi_write10_t", "group___class_driver___m_s_c___common.html#ga87709f2def5d51890e7f62bcc69943fa", [
-      [ "MSC_CBW_SIGNATURE", "group___class_driver___m_s_c___common.html#gga385c44f6fb256e5716a2302a5b940388a1d7a1491e63c8fa476a37677bd4defa9", null ],
-      [ "MSC_CSW_SIGNATURE", "group___class_driver___m_s_c___common.html#gga385c44f6fb256e5716a2302a5b940388a6a3e02fda8ecf085a11ec330d9a09d1a", null ]
+      [ "MSC_CBW_SIGNATURE", "group___class_driver___m_s_c___common.html#ggab04a0655cd1e3bcac5e8f48c18df1a57a1d7a1491e63c8fa476a37677bd4defa9", null ],
+      [ "MSC_CSW_SIGNATURE", "group___class_driver___m_s_c___common.html#ggab04a0655cd1e3bcac5e8f48c18df1a57a6a3e02fda8ecf085a11ec330d9a09d1a", null ]
     ] ],
     [ "msc_csw_status_t", "group___class_driver___m_s_c___common.html#gab78ea3586ce0c7a8bb2680d7fbcca3ae", [
       [ "MSC_CSW_STATUS_PASSED", "group___class_driver___m_s_c___common.html#ggab78ea3586ce0c7a8bb2680d7fbcca3aeafeaad74e991e7bbc602c60cfb2fef201", null ],

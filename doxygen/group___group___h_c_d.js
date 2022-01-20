@@ -1,21 +1,21 @@
 var group___group___h_c_d =
 [
     [ "hcd_event_t", "structhcd__event__t.html", [
-      [ "connection", "structhcd__event__t.html#a0b243f599112b4b56e2977c8bc343ec7", null ],
+      [ "connection", "structhcd__event__t.html#a1236a0acf26e7fcb75c874080ec6b04a", null ],
       [ "dev_addr", "structhcd__event__t.html#ad60257e01a8ddd467f1e181f9d4c21eb", null ],
       [ "ep_addr", "structhcd__event__t.html#a322c00e84336ba097ce129c6c9b1a5df", null ],
       [ "event_id", "structhcd__event__t.html#ae0b27f98f9ea659166be6ca91e4fd21f", null ],
       [ "func", "structhcd__event__t.html#a9d9de0e3ad07ee56f34040a8bfca6137", null ],
-      [ "func_call", "structhcd__event__t.html#a410eb01d45346fc5ed0247dddace5851", null ],
+      [ "func_call", "structhcd__event__t.html#aa2772dafdd5e4f7368581d41c7441b62", null ],
       [ "hub_addr", "structhcd__event__t.html#a5b930e759c251e453ffc467386bc0641", null ],
       [ "hub_port", "structhcd__event__t.html#a402ed40fc9b86b0510e76d4842eaf6dc", null ],
       [ "len", "structhcd__event__t.html#ab1b0ac3a2ec6d7c17c829dabf84eb064", null ],
       [ "param", "structhcd__event__t.html#a2b9934c37d40fa6b14689ece0b597c4b", null ],
       [ "result", "structhcd__event__t.html#ac2f509497de671a9fb9d3cb1e7fb5cd7", null ],
       [ "rhport", "structhcd__event__t.html#a2135b5f0aa6e7a8c62767556f050e898", null ],
-      [ "xfer_complete", "structhcd__event__t.html#a1dc8c1960e3a6acf45807e6c9dd40112", null ],
-      [ "HCD_MAX_ENDPOINT", "group___group___h_c_d.html#ggaaf8fd5f0e57d456151c951e0f3715fc4a51e209e23b136ec7cbe4fcb341d6a570", null ],
-      [ "HCD_MAX_XFER", "group___group___h_c_d.html#ggaaf8fd5f0e57d456151c951e0f3715fc4a13517cb32e54e1b0ea77bb23a2fd07bc", null ]
+      [ "xfer_complete", "structhcd__event__t.html#a841bfb7dd9f9182960fa58f8a890530e", null ],
+      [ "HCD_MAX_ENDPOINT", "group___group___h_c_d.html#ggae4d5251432e1a9e6803c0240cc492e18a51e209e23b136ec7cbe4fcb341d6a570", null ],
+      [ "HCD_MAX_XFER", "group___group___h_c_d.html#ggae4d5251432e1a9e6803c0240cc492e18a13517cb32e54e1b0ea77bb23a2fd07bc", null ]
     ] ],
     [ "hcd_device_close", "group___group___h_c_d.html#ga7c6ccf51f41f13d0e273f83dd4194abd", null ],
     [ "hcd_edpt_busy", "group___group___h_c_d.html#gac14921c3bd3f661684d0fcd4f2dc503e", null ],
