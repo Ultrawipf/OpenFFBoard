@@ -1,0 +1,25 @@
+var midi__device_8h =
+[
+    [ "midid_control_xfer_cb", "midi__device_8h.html#af909f14053ada6d6142e28ad2a03fc77", null ],
+    [ "midid_init", "midi__device_8h.html#a5807ad9ef77b35341944e974045cab9f", null ],
+    [ "midid_open", "midi__device_8h.html#a0efa0e418902a5af4343bd6a634cb3b0", null ],
+    [ "midid_reset", "midi__device_8h.html#ae2fe979f84a64ca2ab1341ac3bb24c56", null ],
+    [ "midid_xfer_cb", "midi__device_8h.html#a079eac1433087f225fc8601effb6d641", null ],
+    [ "tud_midi_available", "midi__device_8h.html#ad0bbe897e1ddaef12b3daee3d1a1f8a1", null ],
+    [ "tud_midi_mounted", "midi__device_8h.html#a73b4bd91c0f23d39d838a43d647663f8", null ],
+    [ "tud_midi_n_available", "midi__device_8h.html#a973511da5e026dd009673a6fece4001b", null ],
+    [ "tud_midi_n_read", "midi__device_8h.html#ae109fd38a566a4b301089e993fe456a2", null ],
+    [ "tud_midi_n_read_flush", "midi__device_8h.html#ac6b31c0a82608510c9256f6387bf3959", null ],
+    [ "tud_midi_n_receive", "midi__device_8h.html#a39f89c058782f58d47f0036f0a6d3ec8", null ],
+    [ "tud_midi_n_send", "midi__device_8h.html#a139b8d932812ac02266880d85ee2f51b", null ],
+    [ "tud_midi_n_write", "midi__device_8h.html#a39ae902f727de475e76880654ba5e7ee", null ],
+    [ "tud_midi_n_write24", "midi__device_8h.html#a3ff43f38e3a0a7a155e4f3d9c94eb422", null ],
+    [ "tud_midi_read", "midi__device_8h.html#a87728b0aba05d858641187bb7dfa0dfc", null ],
+    [ "tud_midi_read_flush", "midi__device_8h.html#ac60491fff8d49b374ed21bb0a35a2720", null ],
+    [ "tud_midi_receive", "midi__device_8h.html#a6729cd63ada068c1dd0adac97add4f10", null ],
+    [ "tud_midi_rx_cb", "midi__device_8h.html#a185841a3f68a14fd9e790c7edd37b8a0", null ],
+    [ "tud_midi_send", "midi__device_8h.html#ae0b55de06389f26a1a9404b51eaec727", null ],
+    [ "tud_midi_write", "midi__device_8h.html#afa1eeb7fbcf2b51848a281d07f45ae7a", null ],
+    [ "tud_midi_write24", "midi__device_8h.html#a7d830602468f5096118cf877f2565e85", null ],
+    [ "C", "midi__device_8h.html#aaa53ca0b650dfd85c4f59fa156f7a2cc", null ]
+];

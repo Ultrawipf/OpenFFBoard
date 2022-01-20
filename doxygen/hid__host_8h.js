@@ -1,0 +1,27 @@
+var hid__host_8h =
+[
+    [ "hidh_close", "hid__host_8h.html#a7110dba6dd4e9a49435d0a9fa17d2aeb", null ],
+    [ "hidh_init", "hid__host_8h.html#a8613f691fb2432217df3a2bbb246811b", null ],
+    [ "hidh_open_subtask", "hid__host_8h.html#ae6b360226c8016bf5cf3dc66b25fc613", null ],
+    [ "hidh_set_config", "hid__host_8h.html#a863f18453b95ee8031189c8439a67198", null ],
+    [ "hidh_xfer_cb", "hid__host_8h.html#af61e2d4615666dc6fb6b72a31968e093", null ],
+    [ "tuh_hid_generic_get_report", "group___generic___host.html#ga4c1e5beabd9a931d3e8670507f50b362", null ],
+    [ "tuh_hid_generic_get_status", "group___generic___host.html#ga940fcbde42612dcbeda6b8589ce8e18a", null ],
+    [ "tuh_hid_generic_is_mounted", "group___generic___host.html#gaec412ebaf9c4daf3f1b6400d792e416f", null ],
+    [ "tuh_hid_generic_isr", "group___generic___host.html#ga8828d6d16e2b7af5c254b95ea15ce759", null ],
+    [ "tuh_hid_generic_set_report", "group___generic___host.html#gaa4e41e700ddb70fc9a5f9036b44ac72b", null ],
+    [ "tuh_hid_generic_set_status", "group___generic___host.html#ga8f9bbce1c89897cdbcb10a06c1b909d3", null ],
+    [ "tuh_hid_keyboard_get_report", "group___class_driver___h_i_d.html#ga5b4e99881894c8038618a9f779a3ad52", null ],
+    [ "tuh_hid_keyboard_is_busy", "group___class_driver___h_i_d.html#ga3d98b1effaa8f898b068644fa857050c", null ],
+    [ "tuh_hid_keyboard_is_mounted", "group___class_driver___h_i_d.html#gaccce581a219b4aa8f66f16fbdd62a9dc", null ],
+    [ "tuh_hid_keyboard_isr", "group___class_driver___h_i_d.html#ga70671e5209f7d8086048c57e2ff2a3ac", null ],
+    [ "tuh_hid_keyboard_mounted_cb", "group___class_driver___h_i_d.html#gab2a18ce6bc9c294753866d3b34fd6b7c", null ],
+    [ "tuh_hid_keyboard_unmounted_cb", "group___class_driver___h_i_d.html#gaf0cd196f262c04a6de324aefc4100d1e", null ],
+    [ "tuh_hid_mouse_get_report", "group___mouse___host.html#ga976c91da6652c3dab75d188de3eb3c8a", null ],
+    [ "tuh_hid_mouse_is_busy", "group___mouse___host.html#gaf6261cf36ceea298f38a6639ee99475a", null ],
+    [ "tuh_hid_mouse_is_mounted", "group___mouse___host.html#ga2c1726f9a59504608f4f047763727749", null ],
+    [ "tuh_hid_mouse_isr", "group___mouse___host.html#ga932cc401dec8170ee58a0ba773f12099", null ],
+    [ "tuh_hid_mouse_mounted_cb", "group___mouse___host.html#ga4e48f6db3c3f9e25f5b03a79e76d8556", null ],
+    [ "tuh_hid_mouse_unmounted_cb", "group___mouse___host.html#ga23a035532887bb6ce0728c0a98b7c648", null ],
+    [ "C", "group___class_driver___h_i_d.html#gaaa53ca0b650dfd85c4f59fa156f7a2cc", null ]
+];

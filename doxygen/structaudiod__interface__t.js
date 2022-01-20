@@ -1,0 +1,27 @@
+var structaudiod__interface__t =
+[
+    [ "altSetting", "structaudiod__interface__t.html#a6f525368d2d6d9cf8416edc2a067c3b8", null ],
+    [ "ctrl_buf", "structaudiod__interface__t.html#a9ee6b0d8769bd26fb7d14414b54ac8eb", null ],
+    [ "ep_fb", "structaudiod__interface__t.html#a79b64e83989a2821c496dfad732563ef", null ],
+    [ "ep_in", "structaudiod__interface__t.html#a6d80c8df994755d6bda4b74c5feb4c55", null ],
+    [ "ep_in_as_intf_num", "structaudiod__interface__t.html#a4822da41b42dcf15bf73364bea0565f2", null ],
+    [ "ep_int_ctr", "structaudiod__interface__t.html#aabf94bbb03fb61a7f821cb3b19eee159", null ],
+    [ "ep_int_ctr_buf", "structaudiod__interface__t.html#a7847aaafa32aa3ef13f6b58fa747467b", null ],
+    [ "ep_out", "structaudiod__interface__t.html#ad6374eb5e7c83a8dec7a16bf7d61f199", null ],
+    [ "ep_out_as_intf_num", "structaudiod__interface__t.html#a0b6985b3138bea86dafe037071eff704", null ],
+    [ "epin_buf", "structaudiod__interface__t.html#a1e7250e29ffe799e7e614e7334299471", null ],
+    [ "epin_buf_cnt", "structaudiod__interface__t.html#a2d66b7cda27cdb10981693940bff5887", null ],
+    [ "epout_buf", "structaudiod__interface__t.html#a8cabd941c5539cb1f0a9b0b7621d4ae9", null ],
+    [ "fb_val", "structaudiod__interface__t.html#aca1971fc878ae5d0725d81a67ce83e29", null ],
+    [ "int_ctr_ff", "structaudiod__interface__t.html#aa718168a12b7112d4d9a4a6847d580e0", null ],
+    [ "int_ctr_ff_buf", "structaudiod__interface__t.html#a7a101747bf0a4cc519fc472c4fa683ef", null ],
+    [ "int_ctr_ff_mutex", "structaudiod__interface__t.html#a4d4468ca5402d897306f260a9d8fda16", null ],
+    [ "p_desc", "structaudiod__interface__t.html#a6447ba0d0c6f3c0387556a9d0b35f22e", null ],
+    [ "rhport", "structaudiod__interface__t.html#a26eadf826c08e25eced602925238224b", null ],
+    [ "rx_ff", "structaudiod__interface__t.html#ab0d6da4e705a63123e4d1170157231ff", null ],
+    [ "rx_ff_buf", "structaudiod__interface__t.html#a4803234e5365a68c80be0e704823bef1", null ],
+    [ "rx_ff_mutex", "structaudiod__interface__t.html#ac88cb4873bc4b6b55341a7356d8c74a1", null ],
+    [ "tx_ff", "structaudiod__interface__t.html#abae241b79effc5e4a34753cb5873fc09", null ],
+    [ "tx_ff_buf", "structaudiod__interface__t.html#ab86fe42db2fa6ef7d85918ecd302eaec", null ],
+    [ "tx_ff_mutex", "structaudiod__interface__t.html#aefbedc5757f6a36a611d84c54a787955", null ]
+];
