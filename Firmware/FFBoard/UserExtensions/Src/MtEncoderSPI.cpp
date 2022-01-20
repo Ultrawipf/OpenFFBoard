@@ -26,6 +26,7 @@ MtEncoderSPI::MtEncoderSPI() : SPIDevice(ext3_spi,ext3_spi.getFreeCsPins()[0]), 
 	this->spiConfig.peripheral.CLKPolarity = SPI_POLARITY_HIGH;
 	this->spiConfig.cspol = true;
 	restoreFlash();
+	spiPort.reserveCsPin(this->spiConfig.cs);
 
 	CommandHandler::registerCommands();
 	registerCommand("cs", MtEncoderSPI_commands::cspin, "CS pin",CMDFLAG_GET | CMDFLAG_SET);
