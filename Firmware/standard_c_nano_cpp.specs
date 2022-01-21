@@ -1,0 +1,12 @@
+%rename link                nano_link
+%rename link_gcc_c_sequence                hybrid_link_gcc_c_sequence
+
+*link_gcc_c_sequence:
+%(hybrid_link_gcc_c_sequence) --start-group %G -lc %{specs=rdimon.specs:-lrdimon} %{specs=nosys.specs:-lnosys} --end-group
+
+*link:
+%(nano_link) %:replace-outfile(-lstdc++ -lstdc++_nano) %:replace-outfile(-lsupc++ -lsupc++_nano)
+
+*lib:
+%{!shared:%{g*:-lg} %{!p:%{!pg:-lc}}%{p:-lc_p}%{pg:-lc_p}}
+

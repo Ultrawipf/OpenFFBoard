@@ -11,6 +11,9 @@
 		<a href="https://github.com/Ultrawipf/OpenFFBoard/stargazers">
             <img src="https://img.shields.io/github/stars/Ultrawipf/OpenFFBoard">
 		</a>
+		<a href="https://github.com/Ultrawipf/OpenFFBoard/actions/workflows/build-firmware.yml">
+            <img src="https://github.com/Ultrawipf/OpenFFBoard/actions/workflows/build-firmware.yml/badge.svg?branch=master">
+		</a>
 	</div>
 </div>
 
