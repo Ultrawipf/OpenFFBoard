@@ -7,19 +7,14 @@
 #   2015-07-22 - first version
 # ------------------------------------------------
 
-######################################
-# target
-######################################
-TARGET = OpenFFBoard
-
 
 ######################################
 # building variables
 ######################################
 # debug build?
-DEBUG = 1
+DEBUG = 0
 # optimization
-OPT = -Og
+OPT = -O2 # -mno-unaligned-access
 
 
 #######################################
@@ -37,8 +32,17 @@ MCU_TARGET=F407VG
 # The directory of mcu target
 TARGET_DIR = Targets/$(MCU_TARGET)
 
+######################################
+# target
+######################################
+TARGET = OpenFFBoard_$(MCU_TARGET)
+
+# Output directory for hex/bin files
+OUTPUT_DIR = $(BUILD_DIR)
+
 # C sources
 C_SOURCES = $(wildcard $(TARGET_DIR)/Core/Src/*.c)
+C_SOURCES += $(wildcard $(TARGET_DIR)/Core/ThreadSafe/*.c)
 C_SOURCES += $(wildcard $(TARGET_DIR)/Drivers/STM32F4xx_HAL_Driver/Src/*.c)
 C_SOURCES += $(wildcard $(TARGET_DIR)/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/*.c)
 C_SOURCES += $(wildcard $(TARGET_DIR)/Middlewares/Third_Party/FreeRTOS/Source/*.c)
@@ -65,14 +69,14 @@ C_SOURCES += $(wildcard FFBoard/USB/portable/st/synopsys/*.c)
 C_SOURCES += $(wildcard FFBoard/UserExtensions/Src/*.c)
 
 CPP_SOURCES = $(wildcard FFBoard/Src/*.cpp)
-CPP_SOURCES += $(wildcard $(wildcard $(TARGET_DIR)/Core/Src/*.cpp))
+CPP_SOURCES += $(wildcard $(TARGET_DIR)/Core/Src/*.cpp)
 CPP_SOURCES += $(wildcard FFBoard/UserExtensions/Src/*.cpp)
 
 # ASM sources
 ifeq ($(MCU_TARGET),F407VG)
 ASM_SOURCES = $(TARGET_DIR)/Core/Startup/startup_stm32f407vgtx.s
 else
-ASM_SOURCES = $(TARGET_DIR)/Startup/startup_stm32f411retx.s
+ASM_SOURCES = $(TARGET_DIR)/Core/Startup/startup_stm32f411retx.s
 endif
 
 
@@ -89,6 +93,7 @@ FFBoard/USB/class/cdc \
 FFBoard/USB/class/midi \
 FFBoard/USB/class/hid \
 $(TARGET_DIR)/Core/Inc \
+$(TARGET_DIR)/Core/Inc/ThreadSafe \
 $(TARGET_DIR)/Drivers/STM32F4xx_HAL_Driver/Inc \
 $(TARGET_DIR)/Drivers/STM32F4xx_HAL_Driver/Inc/Legacy \
 $(TARGET_DIR)/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 \
@@ -96,6 +101,7 @@ $(TARGET_DIR)/Middlewares/Third_Party/FreeRTOS/Source/include \
 $(TARGET_DIR)/Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F \
 $(TARGET_DIR)/Drivers/CMSIS/Device/ST/STM32F4xx/Include \
 $(TARGET_DIR)/Drivers/CMSIS/Include 
+
 
 C_INCLUDES := $(addprefix -I, $(C_INCLUDES))
 
@@ -142,6 +148,7 @@ AS_DEFS =
 
 # C defines
 C_DEFS =  \
+-DSTM32_THREAD_SAFE_STRATEGY=4 \
 -DUSE_HAL_DRIVER 
 ifeq ($(MCU_TARGET),F407VG)
 C_DEFS += -DSTM32F407xx
@@ -173,11 +180,11 @@ LDSCRIPT = $(TARGET_DIR)/STM32$(MCU_TARGET)TX_FLASH.ld
 # libraries
 LIBS = -lc -lm -lnosys 
 LIBDIR = 
-LDFLAGS = $(MCU) -specs=nano.specs -u _printf_float -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group -T$(LDSCRIPT) $(LIBDIR) $(LIBS) -Wl,-Map=$(BUILD_DIR)/$(TARGET).map,--cref -Wl,--gc-sections -static
+LDFLAGS = $(MCU) --specs=standard_c_nano_cpp.specs -u _printf_float -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group -T$(LDSCRIPT) $(LIBDIR) $(LIBS) -Wl,-Map=$(BUILD_DIR)/$(TARGET).map,--cref -Wl,--gc-sections -static
 # -mcpu=cortex-m4 -T"C:\Users\zhouli\Desktop\my-openffb\OpenFFBoard\Firmware\Targets\F407VG\STM32F407VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="OpenFFBoard_F407VG.map" -Wl,--cref -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
 
 # default action: build all
-all: $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).hex $(BUILD_DIR)/$(TARGET).bin
+all: $(BUILD_DIR)/$(TARGET).elf $(OUTPUT_DIR)/$(TARGET).hex $(OUTPUT_DIR)/$(TARGET).bin
 
 
 #######################################
@@ -209,14 +216,17 @@ $(BUILD_DIR)/$(TARGET).elf: $(OBJECTS) Makefile
 	$(CC) $(OBJECTS) $(LDFLAGS) -o $@
 	$(SZ) $@
 
-$(BUILD_DIR)/%.hex: $(BUILD_DIR)/%.elf | $(BUILD_DIR)
+$(OUTPUT_DIR)/%.hex: $(BUILD_DIR)/%.elf | $(OUTPUT_DIR)
 	$(HEX) $< $@
 	
-$(BUILD_DIR)/%.bin: $(BUILD_DIR)/%.elf | $(BUILD_DIR)
+$(OUTPUT_DIR)/%.bin: $(BUILD_DIR)/%.elf | $(OUTPUT_DIR)
 	$(BIN) $< $@	
 	
 $(BUILD_DIR):
-	mkdir $@		
+	-mkdir $@	
+	
+$(OUTPUT_DIR): $(BUILD_DIR)
+	-mkdir $@
 
 #######################################
 # clean up

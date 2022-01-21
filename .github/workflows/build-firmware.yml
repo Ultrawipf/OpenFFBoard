@@ -1,0 +1,73 @@
+name: Build FFBoard firmware
+
+# Controls when the workflow will run
+on:
+  push:
+    branches: 
+      - master
+      - development
+  pull_request:
+    branches:
+      - master
+      - development
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # Build F411 firmware
+  build_F411:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      # Setup toolchain
+      - name: Setup environment
+        run: | 
+          wget -q -O /tmp/gcc-arm-none-eabi.tar.bz2 https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2 
+          sudo tar xjf /tmp/gcc-arm-none-eabi.tar.bz2 -C /usr/share/
+          sudo ln -s /usr/share/gcc-arm-none-eabi-10.3-2021.10/bin/* /usr/bin/
+
+      - name: build F411RE
+        run: |
+          make -C ./Firmware clean
+          make -j16 -C ./Firmware MCU_TARGET=F411RE OUTPUT_DIR=Output
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: OpenFFBoard-Firmware-F411RE
+          path: ./Firmware/Output
+
+  # Build F407 firmware
+  build_F407:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      # Setup toolchain
+      - name: Setup environment
+        run: | 
+          wget -q -O /tmp/gcc-arm-none-eabi.tar.bz2 https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2 
+          sudo tar xjf /tmp/gcc-arm-none-eabi.tar.bz2 -C /usr/share/
+          sudo ln -s /usr/share/gcc-arm-none-eabi-10.3-2021.10/bin/* /usr/bin/
+
+      - name: build F407VG
+        run: | 
+          make -C ./Firmware clean
+          make -j16 -C ./Firmware MCU_TARGET=F407VG OUTPUT_DIR=Output
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: OpenFFBoard-Firmware-F407VG
+          path: ./Firmware/Output
+
+
+      
