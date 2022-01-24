@@ -36,6 +36,7 @@ jobs:
         id: cache
         with:
           path: /tmp/armtc
+          key: ${{ hashFiles('/tmp/armtc/') }}
 
       - name: Download toolchain
         if: steps.cache.outputs.cache-hit != 'true'
