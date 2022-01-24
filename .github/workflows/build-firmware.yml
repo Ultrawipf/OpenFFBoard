@@ -36,7 +36,7 @@ jobs:
         id: cache
         with:
           path: /tmp/armtc
-          key: ${{ hashFiles('/tmp/armtc/') }}
+          key: 'gcc-arm-none-eabi-10.3-2021.10-x86_64-linux'
 
       - name: Download toolchain
         if: steps.cache.outputs.cache-hit != 'true'
