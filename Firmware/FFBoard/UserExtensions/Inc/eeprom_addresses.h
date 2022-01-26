@@ -87,13 +87,18 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 // TMC1
 #define ADR_TMC1_MOTCONF 				0x320 // 0-2: MotType 3-5: PhiE source 6-15: Poles
 #define ADR_TMC1_CPR					0x321
-#define ADR_TMC1_ENCA					0x322
+#define ADR_TMC1_ENCA					0x322 // Misc
+
+#define ADR_TMC1_ADC_I0_OFS				0x323
+#define ADR_TMC1_ADC_I1_OFS				0x324
+#define ADR_TMC1_ENC_OFFSET				0x325
 
 #define ADR_TMC1_OFFSETFLUX				0x326
 #define ADR_TMC1_TORQUE_P				0x327
 #define ADR_TMC1_TORQUE_I				0x328
 #define ADR_TMC1_FLUX_P					0x329
 #define ADR_TMC1_FLUX_I					0x32A
+
 
 
 // AXIS2
@@ -110,7 +115,9 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_TMC2_MOTCONF 				0x360 // 0-2: MotType 3-5: PhiE source 6-15: Poles
 #define ADR_TMC2_CPR					0x361
 #define ADR_TMC2_ENCA					0x362
-
+#define ADR_TMC2_ADC_I0_OFS				0x363
+#define ADR_TMC2_ADC_I1_OFS				0x364
+#define ADR_TMC2_ENC_OFFSET				0x365
 #define ADR_TMC2_OFFSETFLUX				0x366
 #define ADR_TMC2_TORQUE_P				0x367
 #define ADR_TMC2_TORQUE_I				0x368
@@ -132,7 +139,9 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_TMC3_MOTCONF 				0x3A0 // 0-2: MotType 3-5: PhiE source 6-15: Poles
 #define ADR_TMC3_CPR					0x3A1
 #define ADR_TMC3_ENCA					0x3A2
-
+#define ADR_TMC3_ADC_I0_OFS				0x3A3
+#define ADR_TMC3_ADC_I1_OFS				0x3A4
+#define ADR_TMC3_ENC_OFFSET				0x3A5
 #define ADR_TMC3_OFFSETFLUX				0x3A6
 #define ADR_TMC3_TORQUE_P				0x3A7
 #define ADR_TMC3_TORQUE_I				0x3A8
