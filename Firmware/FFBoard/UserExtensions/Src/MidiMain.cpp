@@ -52,13 +52,14 @@ MidiMain::MidiMain(){
 	drv->setPhiEtype(PhiE::ext);
 	drv->setUdUq(0, 0);
 	drv->allowSlowSPI = false; // Force higher speed
-	drv->initialize();
+	if(!drv->initialize()){
+		pulseErrLed();
+	}
+
 	drv->setPhiEtype(PhiE::ext);
 	drv->setMotionMode(MotionMode::uqudext,true);
 
-	if(!drv->initialized){
-		pulseErrLed();
-	}
+
 	//this->Start(); // We do not start the driver thread
 	//CommandHandler::registerCommands();
 	registerCommand("power", MidiMain_commands::power, "Intensity");
