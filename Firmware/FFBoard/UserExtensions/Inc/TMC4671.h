@@ -19,6 +19,7 @@
 #include "thread.hpp"
 #include "ExtiHandler.h"
 #include "SPI.h"
+#include "TimerHandler.h"
 
 #include "semaphore.hpp"
 #include "OutputPin.h"
@@ -30,7 +31,15 @@
 
 extern SPI_HandleTypeDef HSPIDRV;
 
-enum class TMC_ControlState {uninitialized,No_power,Shutdown,Running,Init_wait,ABN_init,AENC_init,Enc_bang,HardError,OverTemp,EncoderFinished};
+#ifdef TIM_TMC
+extern TIM_HandleTypeDef TIM_TMC;
+#endif
+
+enum class TMC_ControlState {uninitialized,waitPower,Shutdown,Running,ABN_init,AENC_init,HardError,OverTemp,EncoderFinished};
+
+
+
+//enum class TMC_ControlState {uninitialized,No_power,Shutdown,Running,Init_wait,ABN_init,AENC_init,Enc_bang,HardError,OverTemp,EncoderFinished};
 enum class ENC_InitState {uninitialized,estimating,aligning,checking,OK};
 
 enum class MotorType : uint8_t {NONE=0,DC=1,STEPPER=2,BLDC=3,ERR};
@@ -38,6 +47,7 @@ enum class PhiE : uint8_t {ext=1,openloop=2,abn=3,hall=5,aenc=6,aencE=7,NONE};
 enum class MotionMode : uint8_t {stop=0,torque=1,velocity=2,position=3,prbsflux=4,prbstorque=5,prbsvelocity=6,uqudext=8,encminimove=9,NONE};
 enum class FFMode : uint8_t {none=0,velocity=1,torque=2};
 enum class PosSelection : uint8_t {PhiE=0, PhiE_ext=1, PhiE_openloop=2, PhiE_abn=3, res1=4, PhiE_hal=5, PhiE_aenc=6, PhiA_aenc=7, res2=8, PhiM_abn=9, PhiM_abn2=10, PhiM_aenc=11, PhiM_hal=12};
+enum class VelSelection : uint8_t {PhiE=0, PhiE_ext=1, PhiE_openloop=2, PhiE_abn=3, res1=4, PhiE_hal=5, PhiE_aenc=6, PhiA_aenc=7, res2=8, PhiM_abn=9, PhiM_abn2=10, PhiM_aenc=11, PhiM_hal=12};
 enum class EncoderType_TMC : uint8_t {NONE=0,abn=1,sincos=2,uvw=3,hall=4,ext=5}; // max 7
 
 // Hardware versions for identifying different types
@@ -46,7 +56,7 @@ enum class TMC_HW_Ver : uint8_t {NONE=0,v1_0,v1_2,v1_2_2,v1_2_2_LEM20,v1_2_2_TMC
 const std::vector<std::pair<TMC_HW_Ver,std::string>> tmcHwVersionNames{
 			std::make_pair(TMC_HW_Ver::NONE,"Undefined"), // Do not select. Default but disables some safety features
 			std::make_pair(TMC_HW_Ver::v1_0,"v1.0"),
-			std::make_pair(TMC_HW_Ver::v1_2,"v1.2"),
+			std::make_pair(TMC_HW_Ver::v1_2,"v1.2 AD8417"),
 			std::make_pair(TMC_HW_Ver::v1_2_2,"v1.2.2 LEM GO 10"),
 			std::make_pair(TMC_HW_Ver::v1_2_2_LEM20,"v1.2.2 LEM GO 20"),
 			std::make_pair(TMC_HW_Ver::v1_2_2_TMCS,"v1.2.2 TMCS1100A2")
@@ -58,6 +68,7 @@ struct TMC4671MotConf{
 	PhiE phiEsource 	= PhiE::ext;
 	uint16_t pole_pairs = 4; //saved
 	PosSelection pos_sel = PosSelection::PhiE;
+	VelSelection vel_sel = VelSelection::PhiE;
 };
 
 /**
@@ -123,26 +134,26 @@ union StatusFlags {
 struct TMC4671MainConfig{
 	TMC4671HardwareTypeConf hwconf;
 	TMC4671MotConf motconf;
-	uint16_t pwmcnt = 3999;
-	uint8_t bbmL	= 10;
-	uint8_t bbmH	= 10;
-	uint16_t mdecA 	= 660; // 334 default. 331 recommended by datasheet,662 double. 660 lowest noise
-	uint16_t mdecB 	= 660;
-	uint32_t mclkA	= 0x20000000; //0x20000000 default
-	uint32_t mclkB	= 0x20000000; // For AENC
+	uint16_t pwmcnt 		= 3999;
+	uint8_t bbmL			= 10;
+	uint8_t bbmH			= 10;
+	uint16_t mdecA 			= 660; // 334 default. 331 recommended by datasheet,662 double. 660 lowest noise
+	uint16_t mdecB 			= 660;
+	uint32_t mclkA			= 0x20000000; //0x20000000 default
+	uint32_t mclkB			= 0x20000000; // For AENC
 	uint32_t adc_I0_offset 	= 33415;
 	uint32_t adc_I1_offset 	= 33415;
 	uint32_t adc_I0_scale	= 256;
 	uint32_t adc_I1_scale	= 256;
-
-	bool canChangeHwType = true; // Allows changing the hardware version by commands
+	bool svpwm				= true; // enable space vector PWM for 3 phase motors
+	bool canChangeHwType 	= true; // Allows changing the hardware version by commands
 };
 
 struct TMC4671PIDConf{
 	uint16_t fluxI		= 512;
-	uint16_t fluxP		= 128;
+	uint16_t fluxP		= 256;
 	uint16_t torqueI	= 512;
-	uint16_t torqueP	= 128;
+	uint16_t torqueP	= 256;
 	uint16_t velocityI	= 0;
 	uint16_t velocityP	= 256;
 	uint16_t positionI	= 0;
@@ -178,6 +189,9 @@ struct TMC4671FlashAddrs{
 	uint16_t torque_i = ADR_TMC1_TORQUE_I;
 	uint16_t flux_p = ADR_TMC1_FLUX_P;
 	uint16_t flux_i = ADR_TMC1_FLUX_I;
+	uint16_t ADC_i0_ofs = ADR_TMC1_ADC_I0_OFS;
+	uint16_t ADC_i1_ofs = ADR_TMC1_ADC_I1_OFS;
+	uint16_t encOffset = ADR_TMC1_ENC_OFFSET;
 };
 
 struct TMC4671ABNConf{
@@ -216,6 +230,7 @@ struct TMC4671AENCConf{
 };
 
 struct TMC4671HALLConf{
+	bool hallEnabled = false;
 	bool polarity = true;
 	bool interpolation = true;
 	bool direction = false;
@@ -242,12 +257,19 @@ struct TMC4671Biquad{
 };
 
 
-class TMC4671 : public MotorDriver, public PersistentStorage, public Encoder, public CommandHandler, public SPIDevice, public ExtiHandler, public cpp_freertos::Thread{
+class TMC4671 :
+		public MotorDriver, public PersistentStorage, public Encoder,
+		public CommandHandler, public SPIDevice, public ExtiHandler, public cpp_freertos::Thread,
+#ifdef TIM_TMC
+		public TimerHandler
+#endif
+{
 
 	enum class TMC4671_commands : uint32_t{
 		cpr,mtype,encsrc,tmcHwType,encalign,poles,acttrq,pwmlim,
 		torqueP,torqueI,fluxP,fluxI,velocityP,velocityI,posP,posI,
-		tmctype,pidPrec,phiesrc,fluxoffset,seqpi,tmcIscale,encdir,temp,reg
+		tmctype,pidPrec,phiesrc,fluxoffset,seqpi,tmcIscale,encdir,temp,reg,
+		svpwm,fullCalibration
 	};
 
 public:
@@ -273,11 +295,12 @@ public:
 	TMC4671MainConfig conf;
 
 	bool initialize();
-	bool initialized = false;
+
 	void Run();
 	bool motorReady();
 
 	bool hasPower();
+	int32_t getTmcVM();
 	bool isSetUp();
 
 	uint32_t readReg(uint8_t reg);
@@ -317,16 +340,21 @@ public:
 	void setBiquadPos(TMC4671Biquad bq);
 	void setBiquadVel(TMC4671Biquad bq);
 	
+
 	bool pingDriver();
 	std::pair<uint32_t,std::string> getTmcType();
 
 	void changeState(TMC_ControlState newState);
 
+#ifdef TIM_TMC
+	void timerElapsed(TIM_HandleTypeDef* htim);
+#endif
+
 	void setPositionExt(int32_t pos); // External position register (For external encoders. Choose external phiE).
 
 	void stopMotor();
 	void startMotor();
-	bool active = false;
+
 	void emergencyStop();
 	bool emergency = false;
 	bool estopTriggered = false;
@@ -334,8 +362,6 @@ public:
 	int16_t nextFlux = 0;
 	int16_t idleFlux = 0;
 	uint16_t maxOffsetFlux = 0;
-
-	bool useSvPwm = true;
 
 	int16_t bangInitPower = 5000; // Default current in setup routines
 
@@ -361,6 +387,7 @@ public:
 	void setPhiE_ext(int16_t phiE);
 
 	void setPosSel(PosSelection psel);
+	void setVelSel(VelSelection vsel,uint8_t mode = 0);
 
 	void setMotionMode(MotionMode mode,bool force = false); // force true sets it immediately. use false to change mode when tmc is ready on startMotor
 	MotionMode getMotionMode();
@@ -403,6 +430,7 @@ public:
 
 	void exti(uint16_t GPIO_Pin);
 	void encoderIndexHit();
+	bool findEncoderIndex();
 
 	StatusFlags readFlags(bool maskedOnly = true);
 	void setStatusMask(StatusFlags mask);
@@ -449,6 +477,12 @@ private:
 	MotionMode nextMotionMode = MotionMode::stop;
 	bool oldTMCdetected = false; // ES versions should not exist anymore
 
+	bool encoderAligned = false;
+	bool initialized = false; // Init ran once
+	bool adcCalibrated = false;
+	bool motorEnabledRequested = false;
+	volatile bool encoderIndexHitFlag = false;
+
 	uint8_t enc_retry = 0;
 	uint8_t enc_retry_max = 5;
 
@@ -472,6 +506,14 @@ private:
 	bool manualEncAlign = false;
 	bool spiActive = false; // Flag for tx interrupt that the transfer was started by this instance
 
+	// External encoder timer fires interrupts to trigger a new commutation position update
+#ifdef TIM_TMC
+
+	TIM_HandleTypeDef* externalEncoderTimer = &TIM_TMC;
+#else
+	TIM_HandleTypeDef* externalEncoderTimer = nullptr;
+#endif
+	void setUpExtEncTimer();
 };
 
 
