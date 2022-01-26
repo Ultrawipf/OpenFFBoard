@@ -53,6 +53,7 @@
 
 #define TIM_MICROS htim10
 #define TIM_USER htim9 // Timer with full core clock speed available for the mainclass
+#define TIM_TMC htim6
 
 extern UART_HandleTypeDef huart1;
 #define UART_PORT_EXT huart1 // main uart port
