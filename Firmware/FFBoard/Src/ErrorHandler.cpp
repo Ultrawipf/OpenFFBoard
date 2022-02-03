@@ -48,6 +48,11 @@ ErrorHandler::~ErrorHandler() {
  * Clears ALL error conditions
  */
 void ErrorHandler::clearAll(){
+	// Call all error handlers
+	for(ErrorHandler* e : errorHandlers){
+		for(Error& error : errors)
+			e->errorCallback(error, true);
+	}
 	errors.clear();
 }
 
