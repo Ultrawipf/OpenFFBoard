@@ -360,6 +360,12 @@ void TMC4671::Run(){
 			break;
 		}
 
+		case TMC_ControlState::IndexSearch:
+			autohome();
+			changeState(laststate);
+
+			break;
+
 
 		/*new stuff
 		 *
@@ -472,6 +478,21 @@ void TMC4671::Run(){
 	} // End while
 }
 
+bool TMC4671::autohome(){
+
+	if(findEncoderIndex()){
+		int32_t npos = (int32_t)readReg(0x28);
+		int32_t phiM = (int32_t)(readReg(0x2A) & 0xffff);
+		int32_t npos_M = (npos * 0xffff) / abnconf.cpr;
+		// change index to zero
+		setPos(0);
+		updateReg(0x2A, -npos_M, 0xffff, 0);
+
+		return true;
+	}
+	return false;
+}
+
 /*
  * Returns the current state of the driver controller
  */
@@ -496,24 +517,44 @@ bool TMC4671::reachedPosition(uint16_t tolerance){
 	}
 }
 
+/**
+ * Rotates motor until the ABN index is found
+ */
 bool TMC4671::findEncoderIndex(){
-	return false; // TODO implement
 
+	if(conf.motconf.enctype != EncoderType_TMC::abn){
+		return false; // Only valid for ABN encoders
+	}
 
 	PhiE lastphie = getPhiEtype();
 	MotionMode lastmode = getMotionMode();
 	setPhiE_ext(0);
 
+//	abnconf.clear_on_N = true;
+//	setup_ABN_Enc(abnconf);
+
 	// Arm encoder signal
 	setEncoderIndexFlagEnabled(true);
 	// Rotate
-	while(!encoderIndexHitFlag){
+
+	//uint32_t mposStart = readReg(0x2A);
+	int32_t timeout = 1000; // 10s
+	runOpenLoop(bangInitPower/2, 0, 10, 10, true);
+	while(!encoderIndexHitFlag && timeout-- > 0){
 		Delay(10);
 	}
+	runOpenLoop(0, 0, 0, 10, true);
+	if(!encoderIndexHitFlag){
+		pulseErrLed();
+	}
+
+
+//	abnconf.clear_on_N = false;
+//	setup_ABN_Enc(abnconf);
 
 	setMotionMode(lastmode,true);
 	setPhiEtype(lastphie);
-
+	return encoderIndexHitFlag;
 }
 
 /**
@@ -868,7 +909,7 @@ void TMC4671::setup_ABN_Enc(TMC4671ABNConf encconf){
 			(encconf.bpol << 1) |
 			(encconf.npol << 2) |
 			(encconf.ab_as_n << 3) |
-			(encconf.latch_on_N << 8) |
+			(encconf.clear_on_N << 8) |
 			(encconf.rdir << 12));
 
 	writeReg(0x25, abnmode);
@@ -1019,6 +1060,11 @@ void TMC4671::ABN_init(){
 
 			setPos(pos);
 			setup_ABN_Enc(this->abnconf);
+
+			if(abnconf.hasIndex && !encoderIndexHitFlag){
+				autohome();
+			}
+
 			encstate = ENC_InitState::aligning;
 		}
 		break;
@@ -1889,7 +1935,9 @@ uint16_t TMC4671::encodeEncHallMisc(){
 	val |= (this->abnconf.ab_as_n & 0x01) << 2;
 	val |= (this->pidPrecision.current_I) << 3;
 	val |= (this->pidPrecision.current_P) << 4;
-	// 5,6,7 free
+
+	val |= (this->abnconf.hasIndex) << 5;
+	// 6,7 free
 	val |= (this->hallconf.direction & 0x01) << 8;
 	val |= (this->hallconf.interpolation & 0x01) << 9;
 
@@ -1914,6 +1962,8 @@ void TMC4671::restoreEncHallMisc(uint16_t val){
 	this->pidPrecision.current_P = (val>>4) & 0x01;
 	this->pidPrecision.velocity_P = this->pidPrecision.current_P;
 	this->pidPrecision.velocity_P = this->pidPrecision.current_P;
+
+	this->abnconf.hasIndex = (val>>5) & 0x01;
 
 	this->hallconf.direction = (val>>8) & 0x01;
 	this->hallconf.interpolation = (val>>9) & 0x01;
@@ -2066,6 +2116,8 @@ void TMC4671::registerCommands(){
 	registerCommand("temp", TMC4671_commands::temp, "Temperature in C * 100",CMDFLAG_GET);
 	registerCommand("reg", TMC4671_commands::reg, "Read or write a TMC register at adr",CMDFLAG_DEBUG | CMDFLAG_GETADR | CMDFLAG_SETADR);
 	registerCommand("svpwm", TMC4671_commands::svpwm, "Space-vector PWM",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("indexsearch", TMC4671_commands::findIndex, "Find abn index",CMDFLAG_GET);
+	registerCommand("abnindex", TMC4671_commands::abnindexenabled, "Enable ABN index",CMDFLAG_GET | CMDFLAG_SET);
 }
 
 CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply>& replies){
@@ -2193,6 +2245,12 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 			setPids(curPids);
 		break;
 
+	case TMC4671_commands::abnindexenabled:
+		handleGetSet(cmd, replies, this->abnconf.hasIndex);
+		if(cmd.type == CMDtype::set)
+			setup_ABN_Enc(abnconf);
+		break;
+
 	case TMC4671_commands::tmctype:
 	{
 		std::pair<uint32_t,std::string> ver = getTmcType();
@@ -2254,6 +2312,10 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 		}else{
 			return CommandStatus::ERR;
 		}
+		break;
+
+	case TMC4671_commands::findIndex:
+		changeState(TMC_ControlState::IndexSearch);
 		break;
 
 	case TMC4671_commands::svpwm:

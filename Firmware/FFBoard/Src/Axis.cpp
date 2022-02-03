@@ -192,7 +192,7 @@ void Axis::prepareForUpdate(){
 	// scaledEnc now gets inverted if necessary in updateMetrics
 	int32_t scaledEnc = scaleEncValue(angle, degreesOfRotation);
 
-	if (abs(scaledEnc) > 0xffff){
+	if (abs(scaledEnc) > 0xffff && drv->motorReady()){
 		// We are way off. Shut down
 		drv->stopMotor();
 		pulseErrLed();
@@ -203,6 +203,7 @@ void Axis::prepareForUpdate(){
 
 	}else if(abs(scaledEnc) <= 0x7fff) {
 		outOfBounds = false;
+		ErrorHandler::clearError(outOfBoundsError);
 	}
 
 	this->updateMetrics(angle);
