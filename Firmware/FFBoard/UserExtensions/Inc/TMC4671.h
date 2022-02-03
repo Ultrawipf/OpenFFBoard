@@ -35,7 +35,7 @@ extern SPI_HandleTypeDef HSPIDRV;
 extern TIM_HandleTypeDef TIM_TMC;
 #endif
 
-enum class TMC_ControlState {uninitialized,waitPower,Shutdown,Running,ABN_init,AENC_init,HardError,OverTemp,EncoderFinished};
+enum class TMC_ControlState {uninitialized,waitPower,Shutdown,Running,ABN_init,AENC_init,HardError,OverTemp,EncoderFinished,IndexSearch};
 
 
 
@@ -202,9 +202,10 @@ struct TMC4671ABNConf{
 	bool npos 	= false;
 	bool rdir 	= false;
 	bool ab_as_n = false;
-	bool latch_on_N = false; // Latch offsets on n pulse
+	bool clear_on_N = false; // Clear position on n pulse if true. Latch pos if false.
 	int16_t phiEoffset = 0;
 	int16_t phiMoffset = 0;
+	bool hasIndex = false;
 };
 
 struct TMC4671AENCConf{
@@ -269,7 +270,7 @@ class TMC4671 :
 		cpr,mtype,encsrc,tmcHwType,encalign,poles,acttrq,pwmlim,
 		torqueP,torqueI,fluxP,fluxI,velocityP,velocityI,posP,posI,
 		tmctype,pidPrec,phiesrc,fluxoffset,seqpi,tmcIscale,encdir,temp,reg,
-		svpwm,fullCalibration
+		svpwm,fullCalibration,abnindexenabled,findIndex
 	};
 
 public:
@@ -431,6 +432,7 @@ public:
 	void exti(uint16_t GPIO_Pin);
 	void encoderIndexHit();
 	bool findEncoderIndex();
+	bool autohome();
 
 	StatusFlags readFlags(bool maskedOnly = true);
 	void setStatusMask(StatusFlags mask);
@@ -478,6 +480,7 @@ private:
 	bool oldTMCdetected = false; // ES versions should not exist anymore
 
 	bool encoderAligned = false;
+	//bool encoderIndexFound = false;
 	bool initialized = false; // Init ran once
 	bool adcCalibrated = false;
 	bool motorEnabledRequested = false;
