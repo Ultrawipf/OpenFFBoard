@@ -203,12 +203,20 @@ void Axis::prepareForUpdate(){
 
 	}else if(abs(scaledEnc) <= 0x7fff) {
 		outOfBounds = false;
-		ErrorHandler::clearError(outOfBoundsError);
+		//ErrorHandler::clearError(outOfBoundsError);
 	}
 
 	this->updateMetrics(angle);
 
 }
+
+void Axis::errorCallback(Error &error, bool cleared){
+	if(cleared && error == this->outOfBoundsError){
+		drv->startMotor();
+		outOfBounds = false;
+	}
+}
+
 
 void Axis::updateDriveTorque(){
 	// totalTorque = effectTorque + endstopTorque
