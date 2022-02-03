@@ -75,7 +75,7 @@ enum class Axis_commands : uint32_t{
 	power=0x00,degrees=0x01,esgain,zeroenc,invert,idlespring,axisdamper,enctype,drvtype,pos,maxspeed,maxtorquerate,fxratio,curtorque,curpos
 };
 
-class Axis : public PersistentStorage, public CommandHandler
+class Axis : public PersistentStorage, public CommandHandler, public ErrorHandler
 {
 public:
 	Axis(char axis, volatile Control_t* control);
@@ -117,6 +117,9 @@ public:
 
 
 	void setPower(uint16_t power);
+
+
+	void errorCallback(Error &error, bool cleared) override;
 
 	//ParseStatus command(ParsedCommand_old* cmd,std::string* reply) override;
 	void registerCommands();
