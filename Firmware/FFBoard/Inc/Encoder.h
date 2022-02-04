@@ -20,6 +20,12 @@
  * 4: mt encoder
  */
 
+/*
+ * Info encoder type:
+ * Incremental: relative position with no homing
+ * Incremental with index: Absolute position available after homing
+ * Absolute: Absolute position always available
+ */
 enum class EncoderType : uint8_t {NONE=0,incremental=1,incrementalIndex=2,absolute=3};
 
 class Encoder : public ChoosableClass {
