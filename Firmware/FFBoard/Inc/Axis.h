@@ -105,6 +105,7 @@ public:
 	void emergencyStop();
 
 	void setPos(uint16_t val);
+	void zeroPos();
 
 	bool getFfbActive();
 
@@ -156,8 +157,6 @@ private:
 	std::unique_ptr<MotorDriver> drv = std::make_unique<MotorDriver>(); // dummy
 	std::shared_ptr<Encoder> enc = nullptr;
 
-	bool tmcFeedForward = false; // Experimental
-
 	bool outOfBounds = false;
 
 	static AxisConfig decodeConfFromInt(uint16_t val);
@@ -190,11 +189,8 @@ private:
 										  .b2 = 67457,
 										  .enable = true});
 
-	int32_t torqueFFgain = 50000;
-	int32_t torqueFFconst = 0;
-	int32_t velocityFFgain = 30000;
-	int32_t velocityFFconst = 0;
 
+	float encoderOffset = 0; // Offset for absolute encoders
 	uint16_t degreesOfRotation = 900;					// How many degrees of range for the full gamepad range
 	uint16_t lastdegreesOfRotation = degreesOfRotation; // Used to store the previous value
 	uint16_t nextDegreesOfRotation = degreesOfRotation; // Buffer when changing range

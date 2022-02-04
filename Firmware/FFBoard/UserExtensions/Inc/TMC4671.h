@@ -202,10 +202,12 @@ struct TMC4671ABNConf{
 	bool npos 	= false;
 	bool rdir 	= false;
 	bool ab_as_n = false;
-	bool clear_on_N = false; // Clear position on n pulse if true. Latch pos if false.
-	int16_t phiEoffset = 0;
+	bool latch_on_N = false; // Restore ABN_DECODER_COUNT_N into encoder count if true on pulse. otherwise store encoder count in ABN_DECODER_COUNT_N
+	int16_t phiEoffset = 0;	// Depends on phiM!
 	int16_t phiMoffset = 0;
-	bool hasIndex = false;
+	int16_t posOffsetFromPhiE = 0; // offset position to load after homing
+	bool useIndex = false;
+
 };
 
 struct TMC4671AENCConf{
@@ -421,7 +423,9 @@ public:
 	Encoder* getEncoder() override;
 	bool hasIntegratedEncoder() override;
 	int32_t getPos() override;
+	int32_t getPosAbs() override;
 	void setPos(int32_t pos) override;
+	void setTmcPos(int32_t pos);
 	//uint32_t getPosCpr();
 	uint32_t getCpr();
 	void setCpr(uint32_t cpr);
@@ -431,15 +435,16 @@ public:
 
 	void exti(uint16_t GPIO_Pin);
 	void encoderIndexHit();
-	bool findEncoderIndex();
+	bool findEncoderIndex(int32_t speed=10, uint16_t power=2500,bool offsetPhiM=false,bool zeroCount=false);
 	bool autohome();
+	void zeroAbnUsingPhiM();
 
 	StatusFlags readFlags(bool maskedOnly = true);
 	void setStatusMask(StatusFlags mask);
 	void setStatusMask(uint32_t mask); // Mask for status pin.
 	void setStatusFlags(uint32_t flags);
 	void setStatusFlags(StatusFlags flags);
-	void setEncoderIndexFlagEnabled(bool enabled);
+	void setEncoderIndexFlagEnabled(bool enabled,bool zeroEncoder = false);
 	void statusCheck();
 	bool flagCheckInProgress = false;
 	StatusFlags statusFlags = {0};
@@ -467,9 +472,9 @@ public:
 private:
 	OutputPin enablePin = OutputPin(*DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin);
 
-
 	const Error lowVoltageError = Error(ErrorCode::undervoltage,ErrorType::warning,"Low motor voltage");
 	const Error communicationError = Error(ErrorCode::tmcCommunicationError, ErrorType::warning, "TMC not responding");
+
 	ENC_InitState encstate = ENC_InitState::uninitialized;
 	TMC_ControlState state = TMC_ControlState::uninitialized;
 	TMC_ControlState laststate = TMC_ControlState::uninitialized;
@@ -485,18 +490,18 @@ private:
 	bool adcCalibrated = false;
 	bool motorEnabledRequested = false;
 	volatile bool encoderIndexHitFlag = false;
+	bool zeroEncoderOnIndexHit = false;
 
 	uint8_t enc_retry = 0;
 	uint8_t enc_retry_max = 5;
 
 	uint32_t lastStatTime = 0;
 
-
 	uint8_t spi_buf[5] = {0};
 
 	void initAdc(uint16_t mdecA, uint16_t mdecB,uint32_t mclkA,uint32_t mclkB);
 	void setPwm(uint8_t val,uint16_t maxcnt,uint8_t bbmL,uint8_t bbmH);// 100MHz/maxcnt+1
-	void setPwm(uint8_t val);// 100MHz/maxcnt+1
+	void setPwm(uint8_t val);// pwm mode
 	void setSvPwm(bool enable);
 	void encInit();
 

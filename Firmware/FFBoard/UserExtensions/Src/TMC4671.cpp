@@ -110,6 +110,7 @@ void TMC4671::saveFlash(){
 	Flash_Write(flashAddrs.torque_i, curPids.torqueI);
 	Flash_Write(flashAddrs.flux_p, curPids.fluxP);
 	Flash_Write(flashAddrs.flux_i, curPids.fluxI);
+	Flash_Write(flashAddrs.encOffset,(uint16_t)abnconf.posOffsetFromPhiE);
 }
 
 /**
@@ -132,6 +133,9 @@ void TMC4671::restoreFlash(){
 	Flash_Read(flashAddrs.torque_i, &this->curPids.torqueI);
 	Flash_Read(flashAddrs.flux_p, &this->curPids.fluxP);
 	Flash_Read(flashAddrs.flux_i, &this->curPids.fluxI);
+	uint16_t encofs;
+	Flash_Read(flashAddrs.encOffset,&encofs);
+	this->abnconf.posOffsetFromPhiE = (int16_t)encofs;
 
 	Flash_Read(flashAddrs.offsetFlux, (uint16_t*)&this->maxOffsetFlux);
 
@@ -151,7 +155,7 @@ bool TMC4671::hasPower(){
 // Checks if important parameters are set to valid values
 bool TMC4671::isSetUp(){
 
-	if(this->conf.motconf.motor_type == MotorType::NONE){
+	if(this->conf.motconf.motor_type == MotorType::NONE ||!adcCalibrated){
 		return false;
 	}
 
@@ -272,9 +276,7 @@ bool TMC4671::initialize(){
 
 	// Update flags
 	readFlags(false); // Read all flags
-	// Home?
-	// Run in direction of N pulse. Enable flag/interrupt
-	//runOpenLoop(3000, 0, 5, 100);
+
 	initialized = true;
 	initTime = HAL_GetTick();
 	return initialized;
@@ -432,7 +434,7 @@ void TMC4671::Run(){
 		break;
 
 		case TMC_ControlState::EncoderFinished: // Startup sequence done
-			setEncoderIndexFlagEnabled(true); // TODO
+			setEncoderIndexFlagEnabled(false); // TODO
 			encoderAligned = true;
 			if(motorEnabledRequested){
 				startMotor();
@@ -479,15 +481,11 @@ void TMC4671::Run(){
 }
 
 bool TMC4671::autohome(){
-
-	if(findEncoderIndex()){
-		int32_t npos = (int32_t)readReg(0x28);
-		int32_t phiM = (int32_t)(readReg(0x2A) & 0xffff);
-		int32_t npos_M = (npos * 0xffff) / abnconf.cpr;
-		// change index to zero
-		setPos(0);
-		updateReg(0x2A, -npos_M, 0xffff, 0);
-
+	// Moves motor to index
+	if(findEncoderIndex(abnconf.posOffsetFromPhiE < 0 ? 10 : -10,bangInitPower/2,false,false)){
+		// Load position offset
+		if(abnconf.useIndex)
+			setTmcPos(getPosAbs() - abnconf.posOffsetFromPhiE);
 		return true;
 	}
 	return false;
@@ -517,10 +515,19 @@ bool TMC4671::reachedPosition(uint16_t tolerance){
 	}
 }
 
+void TMC4671::zeroAbnUsingPhiM(){
+	int32_t npos = (int32_t)readReg(0x28); // raw encoder counts at index hit
+	int32_t npos_M = (npos * 0xffff) / abnconf.cpr; // Scaled encoder angle at index
+	abnconf.phiMoffset = -npos_M;
+	// change index to zero phiM
+	updateReg(0x29, abnconf.phiMoffset, 0xffff, 0);
+	setTmcPos(getPosAbs()); // Set position to absolute position = ~zero
+}
+
 /**
  * Rotates motor until the ABN index is found
  */
-bool TMC4671::findEncoderIndex(){
+bool TMC4671::findEncoderIndex(int32_t speed, uint16_t power,bool offsetPhiM,bool zeroCount){
 
 	if(conf.motconf.enctype != EncoderType_TMC::abn){
 		return false; // Only valid for ABN encoders
@@ -528,26 +535,38 @@ bool TMC4671::findEncoderIndex(){
 
 	PhiE lastphie = getPhiEtype();
 	MotionMode lastmode = getMotionMode();
+	setFluxTorque(0, 0);
 	setPhiE_ext(0);
+	setPhiEtype(PhiE::openloop);
 
 //	abnconf.clear_on_N = true;
 //	setup_ABN_Enc(abnconf);
 
 	// Arm encoder signal
-	setEncoderIndexFlagEnabled(true);
+	setEncoderIndexFlagEnabled(true,zeroCount);
 	// Rotate
 
 	//uint32_t mposStart = readReg(0x2A);
 	int32_t timeout = 1000; // 10s
-	runOpenLoop(bangInitPower/2, 0, 10, 10, true);
+	for(int16_t flux = 0; flux <= power; flux+=10){
+		setFluxTorque(flux, 0);
+		Delay(3);
+	}
+	runOpenLoop(power, 0, speed, 10, true);
 	while(!encoderIndexHitFlag && timeout-- > 0){
 		Delay(10);
 	}
+	//int32_t speed = 10;
+
 	runOpenLoop(0, 0, 0, 10, true);
 	if(!encoderIndexHitFlag){
 		pulseErrLed();
 	}
 
+	// If zero count on index write a phiM offset so that phiM is 0 on index and we don't need to change the raw encoder count (possible timing danger)
+	if(offsetPhiM){
+		zeroAbnUsingPhiM();
+	}
 
 //	abnconf.clear_on_N = false;
 //	setup_ABN_Enc(abnconf);
@@ -560,7 +579,14 @@ bool TMC4671::findEncoderIndex(){
 /**
  * Enables or disables the encoder index interruption on the flag pin depending on the selected encoder
  */
-void TMC4671::setEncoderIndexFlagEnabled(bool enabled){
+void TMC4671::setEncoderIndexFlagEnabled(bool enabled,bool zeroEncoder){
+	//zeroEncoderOnIndexHit = zeroEncoder;
+
+	updateReg(0x25, zeroEncoder ? 1 : 0, 0x1, 9); // Enable encoder clearing
+	if(zeroEncoder){
+		writeReg(0x28,0); // Preload 0 into n register
+	}
+
 	if(enabled)
 		encoderIndexHitFlag = false;
 	setStatusFlags(0); // Reset flags
@@ -632,7 +658,7 @@ void TMC4671::bangInitEnc(int16_t power){
 	if(conf.motconf.enctype == EncoderType_TMC::abn){
 		phiEreg = 0x2A;
 		phiEoffsetReg = 0x29;
-		writeReg(0x27,0); //Zero encoder
+		zeroAbnUsingPhiM();
 	}else if(conf.motconf.enctype == EncoderType_TMC::sincos || conf.motconf.enctype == EncoderType_TMC::uvw){
 		phiEreg = 0x46;
 		writeReg(0x41,0); //Zero encoder
@@ -640,7 +666,7 @@ void TMC4671::bangInitEnc(int16_t power){
 		phiEoffsetReg = 0x45;
 	}
 
-	setPos(0);
+	setTmcPos(0);
 	updateReg(phiEoffsetReg, 0, 0xffff, 16); // Set phiE offset to zero
 	//setMotionMode(MotionMode::uqudext);
 
@@ -679,8 +705,8 @@ void TMC4671::bangInitEnc(int16_t power){
 	setPhiE_ext(0);
 	setPhiEtype(lastphie);
 	setMotionMode(lastmode,true);
-	//setPos(pos+getPos());
-	setPos(0);
+	//setTmcPos(pos+getPos());
+	setTmcPos(0);
 
 	blinkClipLed(0, 0);
 }
@@ -695,7 +721,7 @@ void TMC4671::calibrateAenc(){
 	//int32_t pos = getPos();
 	PosSelection possel = this->conf.motconf.pos_sel;
 	setPosSel(PosSelection::PhiE_openloop);
-	setPos(0);
+	setTmcPos(0);
 	// Ramp up flux
 	setFluxTorque(0, 0);
 	writeReg(0x23,0); // set phie openloop 0
@@ -783,7 +809,7 @@ void TMC4671::calibrateAenc(){
 	setPhiEtype(lastphie);
 	setMotionMode(lastmode,true);
 	setPosSel(possel);
-	setPos(0);
+	setTmcPos(0);
 
 	blinkClipLed(0, 0);
 }
@@ -909,14 +935,14 @@ void TMC4671::setup_ABN_Enc(TMC4671ABNConf encconf){
 			(encconf.bpol << 1) |
 			(encconf.npol << 2) |
 			(encconf.ab_as_n << 3) |
-			(encconf.clear_on_N << 8) |
+			(encconf.latch_on_N << 8) |
 			(encconf.rdir << 12));
 
 	writeReg(0x25, abnmode);
-	int32_t pos = getPos();
+	//int32_t pos = getPos();
 	writeReg(0x26, encconf.cpr);
 	writeReg(0x29, ((uint16_t)encconf.phiEoffset << 16) | (uint16_t)encconf.phiMoffset);
-	setPos(pos);
+	//setTmcPos(pos);
 	//writeReg(0x27,0); //Zero encoder
 	//conf.motconf.phiEsource = PhiE::abn;
 
@@ -1050,7 +1076,7 @@ void TMC4671::ABN_init(){
 			if(!hasPower())
 				break;
 			int32_t pos = getPos();
-			setPos(0);
+			setTmcPos(0);
 			bool olddir = abnconf.rdir;
 			estimateABNparams();
 
@@ -1058,11 +1084,11 @@ void TMC4671::ABN_init(){
 				pos = -getPos()-pos;
 			}
 
-			setPos(pos);
+			setTmcPos(pos);
 			setup_ABN_Enc(this->abnconf);
 
-			if(abnconf.hasIndex && !encoderIndexHitFlag){
-				autohome();
+			if(abnconf.useIndex && !encoderIndexHitFlag){ // TODO changing direction might invalidate phiE offset because of index pulse width
+				findEncoderIndex(abnconf.posOffsetFromPhiE < 0 ? 10 : -10,bangInitPower/2,false,true); // Go to index and zero encoder
 			}
 
 			encstate = ENC_InitState::aligning;
@@ -1104,6 +1130,8 @@ void TMC4671::ABN_init(){
 			}
 		break;
 		case ENC_InitState::OK:
+			if(abnconf.useIndex)
+				setTmcPos(getPosAbs() - abnconf.posOffsetFromPhiE); // Load stored position
 			changeState(TMC_ControlState::EncoderFinished);
 			break;
 	}
@@ -1117,7 +1145,7 @@ void TMC4671::AENC_init(){
 		case ENC_InitState::uninitialized:
 			setVelSel(VelSelection::PhiM_abn);
 			setPosSel(PosSelection::PhiM_abn);
-			setPos(0);
+			setTmcPos(0);
 			setup_AENC(this->aencconf);
 			encstate = ENC_InitState::estimating;
 		break;
@@ -1361,19 +1389,6 @@ void TMC4671::setVelSel(VelSelection vsel,uint8_t mode){
 	this->conf.motconf.vel_sel = vsel;
 }
 
-int32_t TMC4671::getPos(){
-	//int64_t cpr = conf.motconf.pole_pairs << 16;
-	/*
-	int32_t mpos = (int32_t)readReg(0x6B) / ((int32_t)conf.motconf.pole_pairs);
-	int32_t pos = ((int32_t)abnconf.cpr * mpos) >> 16;*/
-	int32_t pos = (int32_t)readReg(0x6B);
-	if(this->conf.motconf.phiEsource == PhiE::abn){
-		int64_t tmpos = ( (int64_t)pos * (int64_t)abnconf.cpr);
-		pos = tmpos / 0xffff;
-	}
-
-	return pos;
-}
 
 /**
  * Returns a string with the name and version of the chip
@@ -1409,25 +1424,75 @@ bool TMC4671::hasIntegratedEncoder(){
 	return true;
 }
 
+/**
+ * Changes position using offset from index
+ */
 void TMC4671::setPos(int32_t pos){
+	if(this->conf.motconf.enctype == EncoderType_TMC::abn && abnconf.useIndex){
+
+		int32_t tmcpos = readReg(0x6B); // Current Position
+		int32_t offset = (tmcpos - pos) % 0xffff; // Difference between current position and target
+
+//		setup_ABN_Enc(abnconf);
+		abnconf.posOffsetFromPhiE += offset;
+		setTmcPos(getPosAbs() - abnconf.posOffsetFromPhiE);
+	}else{
+		setTmcPos(pos);
+	}
+
+}
+
+/**
+ * Changes position in tmc register
+ */
+void TMC4671::setTmcPos(int32_t pos){
 	// Cpr = poles * 0xffff
 	/*
 	int32_t cpr = (conf.motconf.pole_pairs << 16) / abnconf.cpr;
 	int32_t mpos = (cpr * pos);*/
-	if(this->conf.motconf.phiEsource == PhiE::abn){
-		pos = ((int64_t)0xffff / (int64_t)abnconf.cpr) * (int64_t)pos;
-
-	}
+//	if(this->conf.motconf.phiEsource == PhiE::abn){
+//		pos = ((int64_t)0xffff / (int64_t)abnconf.cpr) * (int64_t)pos;
+//
+//	}
 	writeReg(0x6B, pos);
+}
+
+int32_t TMC4671::getPos(){
+	//int64_t cpr = conf.motconf.pole_pairs << 16;
+	/*
+	int32_t mpos = (int32_t)readReg(0x6B) / ((int32_t)conf.motconf.pole_pairs);
+	int32_t pos = ((int32_t)abnconf.cpr * mpos) >> 16;*/
+	int32_t pos = (int32_t)readReg(0x6B);
+//	if(this->conf.motconf.phiEsource == PhiE::abn){
+//		int64_t tmpos = ( (int64_t)pos * (int64_t)abnconf.cpr);
+//		pos = tmpos / 0xffff;
+//	}
+
+	return pos;
+}
+
+int32_t TMC4671::getPosAbs(){
+	int16_t pos;
+	if(this->conf.motconf.enctype == EncoderType_TMC::abn){
+		pos = (int16_t)readReg(0x2A) & 0xffff; // read phiM
+	}else if(this->conf.motconf.enctype == EncoderType_TMC::hall){
+		pos = (int16_t)readReg(0x3A); // read phiM
+	}else if(this->conf.motconf.enctype == EncoderType_TMC::sincos || this->conf.motconf.enctype == EncoderType_TMC::uvw){
+		pos = (int16_t)readReg(0x46) & 0xffff; // read phiM
+	}else{
+		pos = getPos(); // read phiM
+	}
+
+	return pos;
 }
 
 
 uint32_t TMC4671::getCpr(){
-	if(this->conf.motconf.phiEsource == PhiE::abn){
-		return abnconf.cpr;
-	}else{
-		return 0xffff;
-	}
+//	if(this->conf.motconf.phiEsource == PhiE::abn){
+//		return abnconf.cpr;
+//	}else{
+	return 0xffff;
+//	}
 
 }
 void TMC4671::setCpr(uint32_t cpr){
@@ -1441,14 +1506,20 @@ void TMC4671::setCpr(uint32_t cpr){
 
 }
 
+/**
+ * Converts encoder counts to phiM
+ */
 uint32_t TMC4671::encToPos(uint32_t enc){
-	return enc*(0xffff / abnconf.cpr)*(conf.motconf.pole_pairs);
+	return enc*(0xffff / abnconf.cpr); //*(conf.motconf.pole_pairs)
 }
 uint32_t TMC4671::posToEnc(uint32_t pos){
-	return pos/((0xffff / abnconf.cpr)*(conf.motconf.pole_pairs)) % abnconf.cpr;
+	return pos/((0xffff / abnconf.cpr)) % abnconf.cpr; //(conf.motconf.pole_pairs)
 }
 
 EncoderType TMC4671::getType(){
+	if(conf.motconf.enctype == EncoderType_TMC::abn && abnconf.useIndex && encoderIndexHitFlag){
+		return EncoderType::incrementalIndex;
+	}
 	return EncoderType::incremental;
 }
 
@@ -1692,7 +1763,7 @@ void TMC4671::setBrakeLimits(uint16_t low,uint16_t high){
 void TMC4671::estimateABNparams(){
 	blinkClipLed(100, 0);
 	int32_t pos = getPos();
-	setPos(0);
+	setTmcPos(0);
 	PhiE lastphie = getPhiEtype();
 	MotionMode lastmode = getMotionMode();
 	updateReg(0x25, 0,0x1000,12); // Set dir normal
@@ -1726,7 +1797,7 @@ void TMC4671::estimateABNparams(){
 			highcount++;
 		}
 	}
-	setPos(pos+getPos());
+	setTmcPos(pos+getPos());
 
 	setFluxTorque(0, 0);
 	setPhiEtype(lastphie);
@@ -1909,7 +1980,10 @@ void TMC4671::exti(uint16_t GPIO_Pin){
 
 void TMC4671::encoderIndexHit(){
 	//pulseClipLed();
-	setEncoderIndexFlagEnabled(false); // Found the index. disable flag
+//	if(zeroEncoderOnIndexHit){
+//		writeReg(0x27, 0);
+//	}
+	setEncoderIndexFlagEnabled(false,false); // Found the index. disable flag
 	encoderIndexHitFlag = true;
 }
 
@@ -1936,7 +2010,7 @@ uint16_t TMC4671::encodeEncHallMisc(){
 	val |= (this->pidPrecision.current_I) << 3;
 	val |= (this->pidPrecision.current_P) << 4;
 
-	val |= (this->abnconf.hasIndex) << 5;
+	val |= (this->abnconf.useIndex) << 5;
 	// 6,7 free
 	val |= (this->hallconf.direction & 0x01) << 8;
 	val |= (this->hallconf.interpolation & 0x01) << 9;
@@ -1963,7 +2037,7 @@ void TMC4671::restoreEncHallMisc(uint16_t val){
 	this->pidPrecision.velocity_P = this->pidPrecision.current_P;
 	this->pidPrecision.velocity_P = this->pidPrecision.current_P;
 
-	this->abnconf.hasIndex = (val>>5) & 0x01;
+	this->abnconf.useIndex = (val>>5) & 0x01;
 
 	this->hallconf.direction = (val>>8) & 0x01;
 	this->hallconf.interpolation = (val>>9) & 0x01;
@@ -2116,7 +2190,7 @@ void TMC4671::registerCommands(){
 	registerCommand("temp", TMC4671_commands::temp, "Temperature in C * 100",CMDFLAG_GET);
 	registerCommand("reg", TMC4671_commands::reg, "Read or write a TMC register at adr",CMDFLAG_DEBUG | CMDFLAG_GETADR | CMDFLAG_SETADR);
 	registerCommand("svpwm", TMC4671_commands::svpwm, "Space-vector PWM",CMDFLAG_GET | CMDFLAG_SET);
-	registerCommand("indexsearch", TMC4671_commands::findIndex, "Find abn index",CMDFLAG_GET);
+	registerCommand("autohome", TMC4671_commands::findIndex, "Find abn index",CMDFLAG_GET);
 	registerCommand("abnindex", TMC4671_commands::abnindexenabled, "Enable ABN index",CMDFLAG_GET | CMDFLAG_SET);
 }
 
@@ -2246,7 +2320,7 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 		break;
 
 	case TMC4671_commands::abnindexenabled:
-		handleGetSet(cmd, replies, this->abnconf.hasIndex);
+		handleGetSet(cmd, replies, this->abnconf.useIndex);
 		if(cmd.type == CMDtype::set)
 			setup_ABN_Enc(abnconf);
 		break;

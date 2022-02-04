@@ -290,11 +290,7 @@ void Axis::setupTMC4671()
 	drv->setLimits(tmclimits);
 	//drv->setBiquadFlux(fluxbq);
 	
-	if (tmcFeedForward){
-		drv->setupFeedForwardTorque(torqueFFgain, torqueFFconst);
-		drv->setupFeedForwardVelocity(velocityFFgain, velocityFFconst);
-		drv->setFFMode(FFMode::torque);
-	}
+
 	// Enable driver
 
 	drv->setMotionMode(MotionMode::torque);
