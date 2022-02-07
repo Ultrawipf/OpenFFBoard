@@ -206,7 +206,7 @@ struct TMC4671ABNConf{
 	int16_t phiEoffset = 0;	// Depends on phiM!
 	int16_t phiMoffset = 0;
 	int16_t posOffsetFromPhiE = 0; // offset position to load after homing
-	bool hasIndex = false;
+	bool useIndex = false;
 
 };
 
@@ -435,9 +435,9 @@ public:
 
 	void exti(uint16_t GPIO_Pin);
 	void encoderIndexHit();
-	bool findEncoderIndex(bool zeroCount=false);
+	bool findEncoderIndex(int32_t speed=10, uint16_t power=2500,bool offsetPhiM=false,bool zeroCount=false);
 	bool autohome();
-	void zeroAbnUsingPhie();
+	void zeroAbnUsingPhiM();
 
 	StatusFlags readFlags(bool maskedOnly = true);
 	void setStatusMask(StatusFlags mask);
