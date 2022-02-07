@@ -368,12 +368,6 @@ void TMC4671::Run(){
 
 			break;
 
-
-		/*new stuff
-		 *
-		 *
-		 */
-
 		case TMC_ControlState::Running:
 		{
 			// Check status, Temps, Everything alright?
@@ -403,18 +397,6 @@ void TMC4671::Run(){
 			Delay(200);
 		}
 		break;
-		// remove
-//		case TMC_ControlState::Init_wait:
-//			if(active && hasPower()){
-//				if(HAL_GetTick() - initTime > (emergency ? 5000 : 1000)){
-//					emergency = false;
-//					if(!initialize()){
-//						pulseErrLed();
-//					}
-//				}
-//			}
-//
-//		break;
 
 		case TMC_ControlState::ABN_init:
 			ABN_init();
@@ -444,17 +426,6 @@ void TMC4671::Run(){
 				laststate = TMC_ControlState::Running; // Go to running when starting again
 			}
 		break;
-//		// removealso
-//		case TMC_ControlState::No_power:
-//			if(hasPower() && !emergency){
-//				changeState(laststateNopower);
-//				setMotionMode(lastMotionMode,true);
-//				ErrorHandler::clearError(ErrorCode::undervoltage);
-//				enablePin.set();
-//			}
-//			pulseErrLed();
-//			Delay(100); // wait a bit more
-//		break;
 
 		default:
 
@@ -1063,7 +1034,6 @@ void TMC4671::ABN_init(){
 				encstate = ENC_InitState::OK; // Skip for DC motors
 				if(manualEncAlign){
 					CommandHandler::broadcastCommandReply(CommandReply("DC motors don't support alignment",0), (uint32_t)TMC4671_commands::encalign, CMDtype::get);
-					//CommandHandler::sendSerial(this->getCommandHandlerInfo()->clsname,"encalign?","DC motors don't support alignment",this->getCommandHandlerInfo()->instance);
 				}
 			}else{
 				encstate = ENC_InitState::estimating;
@@ -1110,7 +1080,7 @@ void TMC4671::ABN_init(){
 				if(manualEncAlign){
 					manualEncAlign = false;
 					CommandHandler::broadcastCommandReply(CommandReply("Aligned successfully",1), (uint32_t)TMC4671_commands::encalign, CMDtype::get);
-					//CommandHandler::sendSerial(this->getCommandHandlerInfo()->clsname,"encalign?","Aligned successfully",this->getCommandHandlerInfo()->instance);
+
 				}
 
 			}else{
@@ -1123,14 +1093,13 @@ void TMC4671::ABN_init(){
 					if(manualEncAlign){
 						manualEncAlign = false;
 						CommandHandler::broadcastCommandReply(CommandReply("Error aligning.\nPlease check settings and reset.",0), (uint32_t)TMC4671_commands::encalign, CMDtype::get);
-						//CommandHandler::sendSerial(this->getCommandHandlerInfo()->clsname,"encalign?","Error aligning.\nPlease check settings and reset.",this->getCommandHandlerInfo()->instance);
 					}
 				}
 				encstate = ENC_InitState::uninitialized; // Retry
 			}
 		break;
 		case ENC_InitState::OK:
-			if(abnconf.useIndex)
+			if(abnconf.useIndex && encoderIndexHitFlag)
 				setTmcPos(getPosAbs() - abnconf.posOffsetFromPhiE); // Load stored position
 			changeState(TMC_ControlState::EncoderFinished);
 			break;
