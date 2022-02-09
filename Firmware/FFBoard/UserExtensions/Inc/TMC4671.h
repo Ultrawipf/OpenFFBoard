@@ -35,7 +35,7 @@ extern SPI_HandleTypeDef HSPIDRV;
 extern TIM_HandleTypeDef TIM_TMC;
 #endif
 
-enum class TMC_ControlState {uninitialized,waitPower,Shutdown,Running,ABN_init,AENC_init,HardError,OverTemp,EncoderFinished,IndexSearch};
+enum class TMC_ControlState {uninitialized,waitPower,Shutdown,Running,ABN_init,AENC_init,HardError,OverTemp,EncoderFinished,IndexSearch,FullCalibration};
 
 
 
@@ -205,7 +205,7 @@ struct TMC4671ABNConf{
 	bool latch_on_N = false; // Restore ABN_DECODER_COUNT_N into encoder count if true on pulse. otherwise store encoder count in ABN_DECODER_COUNT_N
 	int16_t phiEoffset = 0;	// Depends on phiM!
 	int16_t phiMoffset = 0;
-	int16_t posOffsetFromPhiE = 0; // offset position to load after homing
+	int16_t posOffsetFromIndex = 0; // offset position to load after homing
 	bool useIndex = false;
 
 };
@@ -491,6 +491,7 @@ private:
 	bool motorEnabledRequested = false;
 	volatile bool encoderIndexHitFlag = false;
 	bool zeroEncoderOnIndexHit = false;
+	bool fullCalibrationInProgress = false;
 
 	uint8_t enc_retry = 0;
 	uint8_t enc_retry_max = 5;
@@ -504,6 +505,8 @@ private:
 	void setPwm(uint8_t val);// pwm mode
 	void setSvPwm(bool enable);
 	void encInit();
+
+	void saveAdcParams();
 
 
 // state machine
