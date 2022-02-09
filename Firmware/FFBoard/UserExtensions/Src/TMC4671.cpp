@@ -110,7 +110,15 @@ void TMC4671::saveFlash(){
 	Flash_Write(flashAddrs.torque_i, curPids.torqueI);
 	Flash_Write(flashAddrs.flux_p, curPids.fluxP);
 	Flash_Write(flashAddrs.flux_i, curPids.fluxI);
-	Flash_Write(flashAddrs.encOffset,(uint16_t)abnconf.posOffsetFromPhiE);
+	Flash_Write(flashAddrs.encOffset,(uint16_t)abnconf.posOffsetFromIndex);
+}
+
+/**
+ * Writes ADC offsets into flash
+ */
+void TMC4671::saveAdcParams(){
+	Flash_Write(flashAddrs.ADC_i0_ofs, conf.adc_I0_offset);
+	Flash_Write(flashAddrs.ADC_i1_ofs, conf.adc_I1_offset);
 }
 
 /**
@@ -135,7 +143,7 @@ void TMC4671::restoreFlash(){
 	Flash_Read(flashAddrs.flux_i, &this->curPids.fluxI);
 	uint16_t encofs;
 	Flash_Read(flashAddrs.encOffset,&encofs);
-	this->abnconf.posOffsetFromPhiE = (int16_t)encofs;
+	this->abnconf.posOffsetFromIndex = (int16_t)encofs;
 
 	Flash_Read(flashAddrs.offsetFlux, (uint16_t*)&this->maxOffsetFlux);
 
@@ -362,6 +370,19 @@ void TMC4671::Run(){
 			break;
 		}
 
+		case TMC_ControlState::FullCalibration:
+			fullCalibrationInProgress = true;
+			/*
+			 * Wait for power
+			 * Calibrate ADC offsets
+			 * Measure motor response
+			 * depending on encoder do encoder parameter estimation
+			 * align and store phiE for single phase AENC or indexed ABN enc
+			 *
+			 * If at any point external movement is detected abort
+			 */
+			break;
+
 		case TMC_ControlState::IndexSearch:
 			autohome();
 			changeState(laststate);
@@ -453,10 +474,10 @@ void TMC4671::Run(){
 
 bool TMC4671::autohome(){
 	// Moves motor to index
-	if(findEncoderIndex(abnconf.posOffsetFromPhiE < 0 ? 10 : -10,bangInitPower/2,false,false)){
+	if(findEncoderIndex(abnconf.posOffsetFromIndex < 0 ? 10 : -10,bangInitPower/2,false,false)){
 		// Load position offset
 		if(abnconf.useIndex)
-			setTmcPos(getPosAbs() - abnconf.posOffsetFromPhiE);
+			setTmcPos(getPosAbs() - abnconf.posOffsetFromIndex);
 		return true;
 	}
 	return false;
@@ -1058,7 +1079,7 @@ void TMC4671::ABN_init(){
 			setup_ABN_Enc(this->abnconf);
 
 			if(abnconf.useIndex && !encoderIndexHitFlag){ // TODO changing direction might invalidate phiE offset because of index pulse width
-				findEncoderIndex(abnconf.posOffsetFromPhiE < 0 ? 10 : -10,bangInitPower/2,false,true); // Go to index and zero encoder
+				findEncoderIndex(abnconf.posOffsetFromIndex < 0 ? 10 : -10,bangInitPower/2,false,true); // Go to index and zero encoder
 			}
 
 			encstate = ENC_InitState::aligning;
@@ -1100,7 +1121,7 @@ void TMC4671::ABN_init(){
 		break;
 		case ENC_InitState::OK:
 			if(abnconf.useIndex && encoderIndexHitFlag)
-				setTmcPos(getPosAbs() - abnconf.posOffsetFromPhiE); // Load stored position
+				setTmcPos(getPosAbs() - abnconf.posOffsetFromIndex); // Load stored position
 			changeState(TMC_ControlState::EncoderFinished);
 			break;
 	}
@@ -1403,8 +1424,8 @@ void TMC4671::setPos(int32_t pos){
 		int32_t offset = (tmcpos - pos) % 0xffff; // Difference between current position and target
 
 //		setup_ABN_Enc(abnconf);
-		abnconf.posOffsetFromPhiE += offset;
-		setTmcPos(getPosAbs() - abnconf.posOffsetFromPhiE);
+		abnconf.posOffsetFromIndex += offset;
+		setTmcPos(getPosAbs() - abnconf.posOffsetFromIndex);
 	}else{
 		setTmcPos(pos);
 	}
@@ -2161,6 +2182,7 @@ void TMC4671::registerCommands(){
 	registerCommand("svpwm", TMC4671_commands::svpwm, "Space-vector PWM",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("autohome", TMC4671_commands::findIndex, "Find abn index",CMDFLAG_GET);
 	registerCommand("abnindex", TMC4671_commands::abnindexenabled, "Enable ABN index",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("calibrate", TMC4671_commands::fullCalibration, "Full calibration",CMDFLAG_GET);
 }
 
 CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply>& replies){
@@ -2170,13 +2192,18 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 		handleGetFuncSetFunc(cmd, replies, &TMC4671::getEncCpr, &TMC4671::setCpr, this);
 	break;
 
+	case TMC4671_commands::fullCalibration:
+		changeState(TMC_ControlState::FullCalibration);
+		// TODO start full calibration and save in flash
+		break;
+
 	case TMC4671_commands::mtype:
 		if(cmd.type == CMDtype::get){
 			replies.push_back(CommandReply((uint8_t)this->conf.motconf.motor_type));
 		}else if(cmd.type == CMDtype::set && (uint8_t)cmd.type < (uint8_t)MotorType::ERR){
 			this->setMotorType((MotorType)cmd.val, this->conf.motconf.pole_pairs);
 		}else{
-			replies.push_back(CommandReply("NONE=0,DC=1,STEPPER=2,BLDC=3"));
+			replies.push_back(CommandReply("NONE=0,DC=1,2Ph Stepper=2,3Ph BLDC=3"));
 		}
 		break;
 
