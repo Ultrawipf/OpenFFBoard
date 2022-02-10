@@ -11,8 +11,12 @@
 #include "main.h"
 // Change this to the amount of currently registered variables
 #define NB_OF_VAR	92
+extern const uint16_t VirtAddVarTab[NB_OF_VAR];
 
-extern uint16_t VirtAddVarTab[NB_OF_VAR];
+// Amount of variables in exportable list
+#define NB_EXPORTABLE_ADR 81
+extern const uint16_t exportableFlashAddresses[NB_EXPORTABLE_ADR];
+
 
 /* Add your addresses here. 0xffff is invalid as it marks an erased field.
 Anything below 0x00ff is reserved for system variables.
