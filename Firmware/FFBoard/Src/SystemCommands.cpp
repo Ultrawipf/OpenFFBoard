@@ -264,7 +264,7 @@ CommandStatus SystemCommands::internalCommand(const ParsedCommand& cmd,std::vect
  */
 void SystemCommands::replyFlashDump(std::vector<CommandReply>& replies){
 	std::vector<std::tuple<uint16_t,uint16_t>> result;
-	Flash_Dump(&result);
+	Flash_Dump(&result,false);
 
 	for(auto entry : result){
 		CommandReply reply;
