@@ -60,14 +60,21 @@ bool Flash_ReadWriteDefault(uint16_t adr,uint16_t *buf,uint16_t def){
 
 /*
  * Dumps all set variables from flash to a vector
+ * does by default not include certain calibration constants that could break something if imported on a different board
  */
-void Flash_Dump(std::vector<std::tuple<uint16_t,uint16_t>> *result){
-	extern uint16_t VirtAddVarTab[NB_OF_VAR];
+void Flash_Dump(std::vector<std::tuple<uint16_t,uint16_t>> *result,bool includeAll){
+	uint16_t amount = NB_EXPORTABLE_ADR;
+	const uint16_t* list = exportableFlashAddresses;
+	if(includeAll){
+		amount = NB_OF_VAR;
+		list = VirtAddVarTab;
+	}
+	//extern uint16_t VirtAddVarTab[NB_OF_VAR];
 	//std::vector<std::pair<uint16_t,uint16_t>> result;
 
-	for(uint32_t i = 0;i<NB_OF_VAR ; i++){
+	for(uint32_t i = 0;i<amount ; i++){
 		uint16_t v;
-		uint16_t adr = VirtAddVarTab[i];
+		uint16_t adr = list[i];
 
 		if(Flash_Read(adr,&v)){
 			result->push_back(std::tuple<uint16_t,uint16_t>{adr,v});
