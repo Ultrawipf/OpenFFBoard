@@ -10,11 +10,11 @@
 
 #include "main.h"
 // Change this to the amount of currently registered variables
-#define NB_OF_VAR	97
+#define NB_OF_VAR 113
 extern const uint16_t VirtAddVarTab[NB_OF_VAR];
 
 // Amount of variables in exportable list
-#define NB_EXPORTABLE_ADR 83
+#define NB_EXPORTABLE_ADR 99
 extern const uint16_t exportableFlashAddresses[NB_EXPORTABLE_ADR];
 
 
@@ -71,14 +71,17 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 
 #define ADR_PCFBTN_CONF1				0x250
 
-
-#define ADR_CF_FILTER       			0x280 // CF Lowpass
+// FFB Engine flash area
+#define ADR_FFB_CF_FILTER       		0x280 // Constant Force Lowpass
+#define ADR_FFB_FR_FILTER				0x281 // Friction Lowpass
+#define ADR_FFB_DA_FILTER				0x282 // Damper Lowpass
+#define ADR_FFB_IN_FILTER				0x283 // Inertia Filter
+#define ADR_FFB_EFFECTS1			    0x284 // 0-7 inertia, 8-15 friction
+#define ADR_FFB_EFFECTS2			    0x285 // 0-7 spring, 8-15 damper
+#define ADR_FFB_EFFECTS3	    		0x286 // 0-7 friction ramp up zone
 
 // How many axis configured 1-3
 #define ADR_AXIS_COUNT					0x300
-#define ADR_AXIS_EFFECTS1			    0x310 // 0-7 inertia, 8-15 friction
-#define ADR_AXIS_EFFECTS2			    0x350 // 0-7 spring, 8-15 damper
-//#define ADR_AXIS_EFFECTS3	    		0x390 // unused
 
 // AXIS1
 #define ADR_AXIS1_CONFIG				0x301 // 0-2 ENC, 3-5 DRV
@@ -89,16 +92,18 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_AXIS1_ENDSTOP		    	0x307 // 0-7 endstop margin, 8-15 endstop stiffness
 #define ADR_AXIS1_EFFECTS1		    	0x308 // 0-7 idlespring, 8-15 damper
 //#define ADR_AXIS1_ENC_OFFSET	    	0x309
+#define ADR_AXIS1_SPEED_FILTER       	0x309 // Speed filter Lowpass
+#define ADR_AXIS1_ACCEL_FILTER			0x30A // Accel filter Lowpass
+#define ADR_AXIS1_SCALER_SPEED			0x30B // Store the speed scaler
+#define ADR_AXIS1_SCALER_ACCEL			0x30C // Store the accel scaler
 
 // TMC1
 #define ADR_TMC1_MOTCONF 				0x320 // 0-2: MotType 3-5: PhiE source 6-15: Poles
 #define ADR_TMC1_CPR					0x321
 #define ADR_TMC1_ENCA					0x322 // Misc
-
 #define ADR_TMC1_ADC_I0_OFS				0x323
 #define ADR_TMC1_ADC_I1_OFS				0x324
 #define ADR_TMC1_ENC_OFFSET				0x325
-
 #define ADR_TMC1_OFFSETFLUX				0x326
 #define ADR_TMC1_TORQUE_P				0x327
 #define ADR_TMC1_TORQUE_I				0x328
@@ -117,6 +122,11 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_AXIS2_ENDSTOP		    	0x347 // 0-7 endstop margin, 8-15 endstop stiffness
 #define ADR_AXIS2_EFFECTS1		    	0x348 // 0-7 idlespring, 8-15 damper
 //#define ADR_AXIS2_ENC_OFFSET	    	0x349
+#define ADR_AXIS2_SPEED_FILTER       	0x349 // Speed filter Lowpass
+#define ADR_AXIS2_ACCEL_FILTER			0x34A // Accel filter Lowpass
+#define ADR_AXIS2_SCALER_SPEED			0x34B // Store the speed scaler
+#define ADR_AXIS2_SCALER_ACCEL			0x34C // Store the accel scaler
+
 
 // TMC2
 #define ADR_TMC2_MOTCONF 				0x360 // 0-2: MotType 3-5: PhiE source 6-15: Poles
@@ -142,6 +152,11 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_AXIS3_ENDSTOP	    		0x387 // 0-7 endstop margin, 8-15 endstop stiffness
 #define ADR_AXIS3_EFFECTS1		    	0x388 // 0-7 idlespring, 8-15 damper
 //#define ADR_AXIS3_ENC_OFFSET	    	0x389
+#define ADR_AXIS3_SPEED_FILTER       	0x389 // Speed filter Lowpass
+#define ADR_AXIS3_ACCEL_FILTER			0x38A // Accel filter Lowpass
+#define ADR_AXIS3_SCALER_SPEED			0x38B // Store the speed scaler
+#define ADR_AXIS3_SCALER_ACCEL			0x38C // Store the accel scaler
+
 
 // TMC3
 #define ADR_TMC3_MOTCONF 				0x3A0 // 0-2: MotType 3-5: PhiE source 6-15: Poles
