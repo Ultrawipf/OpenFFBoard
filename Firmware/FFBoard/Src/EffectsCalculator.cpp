@@ -7,7 +7,7 @@
  */
 
 #include <stdint.h>
-#include "math.h"
+#include <math.h>
 #include "EffectsCalculator.h"
 #include "Axis.h"
 
@@ -144,12 +144,16 @@ void EffectsCalculator::calculateEffects(std::vector<std::unique_ptr<Axis>> &axe
 
 		if (effect->enableAxis & directionEnableMask || (effect->enableAxis & X_AXIS_ENABLE))
 		{
-			forceX += calcComponentForce(effect, forceVector, axes, 0);
+			int32_t newEffectForce = calcComponentForce(effect, forceVector, axes, 0);
+			calcStatsEffectType(effect->type, newEffectForce);
+			forceX += newEffectForce;
 			forceX = clip<int32_t, int32_t>(forceX, -0x7fff, 0x7fff); // Clip
 		}
 		if (validY && (effect->enableAxis & directionEnableMask || (effect->enableAxis & Y_AXIS_ENABLE)))
 		{
-			forceY += calcComponentForce(effect, forceVector, axes, 1);
+			int32_t newEffectForce = calcComponentForce(effect, forceVector, axes, 0);
+			calcStatsEffectType(effect->type, newEffectForce);
+			forceY += newEffectForce;
 			forceY = clip<int32_t, int32_t>(forceY, -0x7fff, 0x7fff); // Clip
 		}
 
@@ -622,27 +626,57 @@ void EffectsCalculator::setCfFilter(uint32_t freq,uint8_t q)
 void EffectsCalculator::logEffectType(uint8_t type){
 	if(type > 0 && type < 32){
 		effects_used |= 1<<(type-1);
+		if( effects_stats[type-1].nb < 65535 ) {
+			effects_stats[type-1].nb ++;
+		}
+
 	}
 }
 
+void EffectsCalculator::calcStatsEffectType(uint8_t type, int16_t force){
+	if(type > 0 && type < 13) {
+		uint8_t arrayLocation = type - 1;
+		effects_stats[arrayLocation].current = force;
+		effects_stats[arrayLocation].min = std::min(effects_stats[arrayLocation].min, force);
+		effects_stats[arrayLocation].max = std::max(effects_stats[arrayLocation].max, force);
+	}
+}
 /**
  * Prints a list of effects that were active at some point
  * Does not reset when an effect is deactivated
  */
-std::string EffectsCalculator::listEffectsUsed(){
-	std::string effects_list = "";
-	static const char *effects[12] = {"Constant,","Ramp,","Square,","Sine,","Triangle,","Sawtooth Up,","Sawtooth Down,","Spring,","Damper,","Inertia,","Friction,","Custom,"};
+std::string EffectsCalculator::listEffectsUsed(bool details){
+	std::string effects_list = "[";
 
 	if(effects_used == 0){
 		return "None";
 	}
 
-	for (int i=0;i < 12; i++) {
-		if((effects_used >> i) & 1) {
-			effects_list += effects[i];
+	if (!details) {
+		static const char *effects[12] = {"Constant,","Ramp,","Square,","Sine,","Triangle,","Sawtooth Up,","Sawtooth Down,","Spring,","Damper,","Inertia,","Friction,","Custom,"};
+
+		for (int i=0;i < 12; i++) {
+			if((effects_used >> i) & 1) {
+				effects_list += effects[i];
+			}
 		}
+
+		effects_list.pop_back();
+	} else {
+
+		bool firstItem = true;
+		for (int i=0;i < 12; i++) {
+			if (!firstItem) effects_list += ", ";
+			effects_list += "{'min':" + std::to_string(effects_stats[i].min);
+			effects_list += ", 'max':" + std::to_string(effects_stats[i].max);
+			effects_list += ", 'curr':" + std::to_string(effects_stats[i].current);
+			effects_list += ", 'nb':" + std::to_string(effects_stats[i].nb)+"}";
+			firstItem = false;
+		}
+
 	}
-	effects_list.pop_back();
+	effects_list = "]";
+
 	return effects_list;
 }
 
@@ -676,7 +710,7 @@ CommandStatus EffectsCalculator::command(const ParsedCommand& cmd,std::vector<Co
 	case EffectsCalculator_commands::effects:
 		if (cmd.type == CMDtype::get)
 		{
-			replies.emplace_back(listEffectsUsed());
+			replies.emplace_back(CommandReply(listEffectsUsed(cmd.val)));
 		}
 		else if (cmd.type == CMDtype::set && cmd.val == 0)
 		{

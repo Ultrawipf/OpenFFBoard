@@ -26,6 +26,13 @@ struct effect_gain_t {
 	uint8_t inertia = 127;
 };
 
+struct effect_stat_t {
+	int16_t current;
+	int16_t min;
+	int16_t max;
+	uint16_t nb;
+};
+
 enum class EffectsCalculator_commands : uint32_t {
 	ffbfiltercf,ffbfiltercf_q,effects,spring,friction,damper,inertia
 };
@@ -60,6 +67,7 @@ public:
 	void setEffectsArray(FFB_Effect* pEffects);
 	FFB_Effect* effects = nullptr; // ptr to effects array in HidFFB
 
+
 protected:
 
 private:
@@ -86,11 +94,13 @@ private:
 	effect_gain_t gain;
 
 	uint32_t effects_used = 0;
+	effect_stat_t effects_stats[12]; // [0..12 effect types]
 
 	int32_t calcComponentForce(FFB_Effect *effect, int32_t forceVector, std::vector<std::unique_ptr<Axis>> &axes, uint8_t axis);
 	int32_t calcNonConditionEffectForce(FFB_Effect* effect);
 	int32_t calcConditionEffectForce(FFB_Effect *effect, float metric, uint8_t gain, uint8_t idx, float scale, float angle_ratio);
 	int32_t getEnvelopeMagnitude(FFB_Effect *effect);
-	std::string listEffectsUsed();
+	std::string listEffectsUsed(bool details = false);
+	void calcStatsEffectType(uint8_t type, int16_t force);
 };
 #endif /* EFFECTSCALCULATOR_H_ */
