@@ -41,11 +41,16 @@ struct AxisFlashAddrs
 	uint16_t config = ADR_AXIS1_CONFIG;
 	uint16_t maxSpeed = ADR_AXIS1_MAX_SPEED;
 	uint16_t maxAccel = ADR_AXIS1_MAX_ACCEL;
-	uint16_t endstop = ADR_AXIS1_ENDSTOP;
 
+	uint16_t endstop = ADR_AXIS1_ENDSTOP;
 	uint16_t power = ADR_AXIS1_POWER;
 	uint16_t degrees = ADR_AXIS1_DEGREES;
 	uint16_t effects1 = ADR_AXIS1_EFFECTS1;
+
+	uint16_t speedFilter = ADR_AXIS1_SPEED_FILTER;
+	uint16_t accelFilter = ADR_AXIS1_ACCEL_FILTER;
+	uint16_t speedScale = ADR_AXIS1_SCALER_SPEED;
+	uint16_t accelScale = ADR_AXIS1_SCALER_ACCEL;
 };
 
 struct AxisConfig
@@ -72,7 +77,8 @@ struct axis_metric_t {
 
 
 enum class Axis_commands : uint32_t{
-	power=0x00,degrees=0x01,esgain,zeroenc,invert,idlespring,axisdamper,enctype,drvtype,pos,maxspeed,maxtorquerate,fxratio,curtorque,curpos
+	power=0x00,degrees=0x01,esgain,zeroenc,invert,idlespring,axisdamper,enctype,drvtype,pos,maxspeed,maxtorquerate,fxratio,curtorque,curpos,
+	filterSpeed_freq, filterSpeed_q, filterAccel_freq, filterAccel_q, scaleSpeed, scaleAccel
 };
 
 class Axis : public PersistentStorage, public CommandHandler, public ErrorHandler
@@ -204,10 +210,6 @@ private:
 	//float acclimitreducerI = 0;
 	//const uint8_t accelFactor = 10.0; // Conversion factor between internal and external acc limit
 
-//	bool	 calibrationInProgress;
-//	uint16_t calibMaxSpeedNormalized;
-//	float	 calibMaxAccelNormalized;
-
 	void setDegrees(uint16_t degrees);
 
 	uint16_t getPower();
@@ -233,14 +235,17 @@ private:
 	float idlespringscale = 0;
 	bool idle_center = false;
 
-	float speed_f = 25 , speed_q = 0.6;
-	float accel_f = 120 , accel_q = 0.3;
+	// Scaler
+	float scaleSpeed = 40.0;
+	float scaleAccel = 40.0;
+
+	biquad_constant_t filterSpeedCst = { 25, 60 };
+	biquad_constant_t filterAccelCst = { 120, 30 };
 	const float filter_f = 1000; // 1khz
 	const int32_t damperClip = 10000;
 	uint8_t damperIntensity = 30;
-	Biquad speedFilter = Biquad(BiquadType::lowpass, speed_f/filter_f, speed_q, 0.0);
-	Biquad accelFilter = Biquad(BiquadType::lowpass, accel_f/filter_f, accel_q, 0.0);
-	//Biquad limitsFilter = Biquad(BiquadType::lowpass, 20/filter_f, 0.4, 0.0);
+	Biquad speedFilter = Biquad(BiquadType::lowpass, filterSpeedCst.freq/filter_f, filterSpeedCst.q/100.0, 0.0);
+	Biquad accelFilter = Biquad(BiquadType::lowpass, filterAccelCst.freq/filter_f, filterAccelCst.q/100.0, 0.0);
 	FastAvg<8> spdlimiterAvg;
 
 	void setFxRatio(uint8_t val);

@@ -259,7 +259,6 @@ void HidFFB::new_effect(FFB_CreateNewEffect_Feature_Data_t* effect){
 	}
 	FFB_Effect new_effect;
 	new_effect.type = effect->effectType;
-	this->effects_calc->logEffectType(effect->effectType);
 
 	set_filters(&new_effect);
 
@@ -375,6 +374,7 @@ void HidFFB::set_envelope(FFB_SetEnvelope_Data_t *report){
 	effect->fadeTime = report->fadeTime;
 	effect->useEnvelope = true;
 }
+
 void HidFFB::set_ramp(FFB_SetRamp_Data_t *report){
 	if(report->effectBlockIndex == 0 || report->effectBlockIndex > MAX_EFFECTS){
 		return;
@@ -406,8 +406,6 @@ uint8_t HidFFB::find_free_effect(uint8_t type){ //Will return the first effect i
 	}
 	return 0;
 }
-
-
 
 void HidFFB::reset_ffb(){
 	for(uint8_t i=0;i<MAX_EFFECTS;i++){

@@ -11,6 +11,11 @@
 
 #ifdef __cplusplus
 
+struct biquad_constant_t {
+	uint16_t freq;
+	uint8_t q;
+};
+
 enum class BiquadType : uint8_t {
     lowpass = 0,
     highpass,
@@ -29,7 +34,9 @@ public:
     float process(float in);
     void setBiquad(BiquadType type, float Fc, float Q, float peakGain);
     void setFc(float Fc); //frequency
+    float getFc();
     void setQ(float Q);
+    float getQ();
     void calcBiquad(void);
 
 protected:
