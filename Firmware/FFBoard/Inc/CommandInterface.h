@@ -32,7 +32,7 @@ public:
 	virtual bool hasNewCommands();
 	static CommandResult makeCommandReply(std::vector<CommandReply>& reply,CommandHandler* handler, uint32_t cmdId,CMDtype type = CMDtype::get,CommandInterface* originalInterface = nullptr);
 	static void broadcastCommandReplyAsync(std::vector<CommandReply>& reply,CommandHandler* handler, uint32_t cmdId,CMDtype type = CMDtype::get);
-	virtual void sendReplies(std::vector<CommandResult>& results,CommandInterface* originalInterface); // All commands from batch done
+	virtual void sendReplies(std::vector<CommandResult>& results,CommandInterface* originalInterface) = 0; // All commands from batch done
 	virtual void sendReplyAsync(std::vector<CommandReply>& reply,CommandHandler* handler, uint32_t cmdId,CMDtype type);
 	virtual bool readyToSend();
 protected:

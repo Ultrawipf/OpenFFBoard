@@ -23,12 +23,6 @@ CommandInterface::~CommandInterface() {
 	removeCallbackHandler(CommandInterface::cmdInterfaces, this);
 }
 
-/**
- * A batch of commands has been executed and a reply returned
- */
-void CommandInterface::sendReplies(std::vector<CommandResult>& results,CommandInterface* originalInterface){
-
-}
 
 /**
  * Broadcasts an unrequested reply to all command interfaces
