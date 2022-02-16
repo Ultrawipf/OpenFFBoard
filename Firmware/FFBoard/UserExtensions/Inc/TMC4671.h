@@ -37,10 +37,12 @@ extern TIM_HandleTypeDef TIM_TMC;
 
 enum class TMC_ControlState {uninitialized,waitPower,Shutdown,Running,ABN_init,AENC_init,HardError,OverTemp,EncoderFinished,IndexSearch,FullCalibration};
 
+enum class TMC_PwmMode : uint8_t {off = 0,HSlow_LShigh = 1, HShigh_LSlow = 2, res2 = 3, res3 = 4, PWM_LS = 5, PWM_HS = 6, PWM_FOC = 7};
 
 
 //enum class TMC_ControlState {uninitialized,No_power,Shutdown,Running,Init_wait,ABN_init,AENC_init,Enc_bang,HardError,OverTemp,EncoderFinished};
-enum class ENC_InitState {uninitialized,estimating,aligning,checking,OK};
+enum class ENC_InitState {startFullCalib,findIndex,uninitialized,estimating,aligning,checking,OK};
+enum class TMC_StartupType{NONE,coldStart,warmStart};
 
 enum class MotorType : uint8_t {NONE=0,DC=1,STEPPER=2,BLDC=3,ERR};
 enum class PhiE : uint8_t {ext=1,openloop=2,abn=3,hall=5,aenc=6,aencE=7,NONE};
@@ -325,6 +327,7 @@ public:
 	void estimateABNparams();
 	bool checkEncoder();
 	void calibrateAenc();
+	void calibrateEncoder();
 
 	void setEncoderType(EncoderType_TMC type);
 	uint32_t getEncCpr();
@@ -482,16 +485,22 @@ private:
 	MotionMode curMotionMode = MotionMode::stop;
 	MotionMode lastMotionMode = MotionMode::stop;
 	MotionMode nextMotionMode = MotionMode::stop;
-	bool oldTMCdetected = false; // ES versions should not exist anymore
+
+	TMC_StartupType startupType = TMC_StartupType::NONE;
+
+	bool ES_TMCdetected = false; // ES versions are not made anymore and have some critical issues
 
 	bool encoderAligned = false;
 	//bool encoderIndexFound = false;
 	bool initialized = false; // Init ran once
 	bool adcCalibrated = false;
+	bool adcSettingsRestored = false;
 	bool motorEnabledRequested = false;
 	volatile bool encoderIndexHitFlag = false;
 	bool zeroEncoderOnIndexHit = false;
 	bool fullCalibrationInProgress = false;
+
+
 
 	uint8_t enc_retry = 0;
 	uint8_t enc_retry_max = 5;
@@ -502,7 +511,7 @@ private:
 
 	void initAdc(uint16_t mdecA, uint16_t mdecB,uint32_t mclkA,uint32_t mclkB);
 	void setPwm(uint8_t val,uint16_t maxcnt,uint8_t bbmL,uint8_t bbmH);// 100MHz/maxcnt+1
-	void setPwm(uint8_t val);// pwm mode
+	void setPwm(TMC_PwmMode val);// pwm mode
 	void setSvPwm(bool enable);
 	void encInit();
 

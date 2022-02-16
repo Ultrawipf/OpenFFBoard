@@ -147,12 +147,16 @@ void TMC4671::restoreFlash(){
 
 	Flash_Read(flashAddrs.offsetFlux, (uint16_t*)&this->maxOffsetFlux);
 
+	// Restore ADC settings
+	if(Flash_Read(flashAddrs.ADC_i0_ofs,&conf.adc_I0_offset) &&	Flash_Read(flashAddrs.ADC_i1_ofs,&conf.adc_I1_offset)){
+		adcSettingsRestored = true; // Previous adc settings restored
+	}
+
 	uint16_t miscval;
 	if(Flash_Read(flashAddrs.encA, &miscval)){
 		restoreEncHallMisc(miscval);
 	}
 
-	setPids(curPids); // Write pid values to tmc
 }
 
 bool TMC4671::hasPower(){
@@ -224,10 +228,10 @@ bool TMC4671::initialize(){
 
 		this->spiConfig.peripheral.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_64;
 		spiPort.configurePort(&this->spiConfig.peripheral);
-		oldTMCdetected = true;
+		ES_TMCdetected = true;
 	}
 
-	if(!oldTMCdetected){
+	if(!ES_TMCdetected){
 		this->setPidPrecision(pidPrecision);
 	}
 
@@ -244,11 +248,11 @@ bool TMC4671::initialize(){
 	setAdcScale(conf.adc_I0_scale, conf.adc_I1_scale);
 
 	// Initial adc calibration
-	if(!calibrateAdcOffset(150)){
-		changeState(TMC_ControlState::HardError); // ADC or shunt amp is broken!
-		enablePin.reset();
-		return false;
-	}
+//	if(!calibrateAdcOffset(150)){
+//		changeState(TMC_ControlState::HardError); // ADC or shunt amp is broken!
+//		enablePin.reset();
+//		return false;
+//	}
 	// brake res failsafe.
 //	/*
 //	 * Single ended input raw value
@@ -260,7 +264,7 @@ bool TMC4671::initialize(){
 	setBrakeLimits(this->conf.hwconf.brakeLimLow,this->conf.hwconf.brakeLimHigh); // update limit from previously loaded constants or defaults
 
 	// Status mask
-	if(oldTMCdetected){
+	if(ES_TMCdetected){
 		setStatusMask(0); // ES Version status output is broken
 	}else{
 		/*
@@ -274,12 +278,12 @@ bool TMC4671::initialize(){
 
 	setPids(curPids); // Write basic pids
 
-	if(hasPower()){
-		enablePin.set();
-		setPwm(7);
-		calibrateAdcOffset(400); // Calibrate ADC again with power
-		motorEnabledRequested = true;
-	}
+//	if(hasPower()){
+//		enablePin.set();
+//		setPwm(TMC_PwmMode::PWM_FOC);
+//		calibrateAdcOffset(400); // Calibrate ADC again with power
+//		motorEnabledRequested = true;
+//	}
 	//setEncoderType(conf.motconf.enctype);
 
 	// Update flags
@@ -351,10 +355,17 @@ void TMC4671::Run(){
 				break;
 			}
 			if(++powerCheckCounter > 5){
+				if(startupType == TMC_StartupType::NONE){
+					if(getMotionMode() != MotionMode::stop){
+						startupType = TMC_StartupType::warmStart;
+					}else{
+						startupType = TMC_StartupType::coldStart;
+					}
+				}
 				// got power long enough. proceed to set up encoder
 				// if encoder not set up
 				enablePin.set();
-				setPwm(7); // enable foc
+				setPwm(TMC_PwmMode::PWM_FOC); // enable foc
 				if(!encoderAligned){
 					setEncoderType(conf.motconf.enctype);
 				}else{
@@ -381,6 +392,25 @@ void TMC4671::Run(){
 			 *
 			 * If at any point external movement is detected abort
 			 */
+			bool fail = false;
+			 // Wait for Power
+			while(!hasPower()){
+				Delay(100);
+			}
+
+			// Calibrate ADC
+			enablePin.set();
+			setPwm(TMC_PwmMode::PWM_FOC); // enable foc to calibrate adc
+			if(calibrateAdcOffset(500)){
+				saveAdcParams();
+			}else{
+				fail = true;
+			}
+
+			// Encoder
+			//calibrateEncoder();
+			setEncoderType(conf.motconf.enctype);
+
 			break;
 
 		case TMC_ControlState::IndexSearch:
@@ -470,6 +500,17 @@ void TMC4671::Run(){
 		}
 		Delay(10);
 	} // End while
+}
+
+bool TMC4671::calibrateEncoder(){
+//	if(conf.motconf.enctype == EncoderType_TMC::abn) {
+//		estimateABNparams();
+//		changeState(TMC_ControlState::ABN_init);
+//	}else if(conf.motconf.enctype == EncoderType_TMC::sincos || conf.motconf.enctype == EncoderType_TMC::uvw){
+//		calibrateAenc();
+//		changeState(TMC_ControlState::AENC_init);
+//	}
+	return true;
 }
 
 bool TMC4671::autohome(){
@@ -1025,7 +1066,7 @@ bool TMC4671::calibrateAdcOffset(uint16_t time){
 	if(totalA < 100 || totalB < 100 || (abs((int32_t)offsetAidle - 0x7fff) > 5000 || abs((int32_t)offsetBidle - 0x7fff) > 5000)){
 		ErrorHandler::addError(Error(ErrorCode::adcCalibrationError,ErrorType::critical,"TMC ADC offset calibration failed."));
 		blinkErrLed(100, 0); // Blink forever
-		setPwm(0); //Disable pwm
+		setPwm(TMC_PwmMode::off); //Disable pwm
 		this->changeState(TMC_ControlState::HardError);
 		adcCalibrated = false;
 		return false; // An adc or shunt amp is likely broken. do not proceed.
@@ -1045,6 +1086,13 @@ bool TMC4671::calibrateAdcOffset(uint16_t time){
 void TMC4671::ABN_init(){
 
 	switch(encstate){
+		case ENC_InitState::startFullCalib:
+			// Entry point to do a full calibration
+			// Reset params
+			encoderAligned = false;
+			encstate = ENC_InitState::uninitialized; // Start calibration
+			break;
+
 		case ENC_InitState::uninitialized:
 			setPosSel(PosSelection::PhiM_abn); // Mechanical Angle
 			setVelSel(VelSelection::PhiM_abn); // Mechanical Angle (RPM)
@@ -1078,13 +1126,22 @@ void TMC4671::ABN_init(){
 			setTmcPos(pos);
 			setup_ABN_Enc(this->abnconf);
 
+//			if(abnconf.useIndex && !encoderIndexHitFlag){ // TODO changing direction might invalidate phiE offset because of index pulse width
+//				findEncoderIndex(abnconf.posOffsetFromIndex < 0 ? 10 : -10,bangInitPower/2,false,true); // Go to index and zero encoder
+//			}
+			encstate = ENC_InitState::findIndex;
+
+
+		}
+		break;
+
+		case ENC_InitState::findIndex:
+			// Reset params
 			if(abnconf.useIndex && !encoderIndexHitFlag){ // TODO changing direction might invalidate phiE offset because of index pulse width
 				findEncoderIndex(abnconf.posOffsetFromIndex < 0 ? 10 : -10,bangInitPower/2,false,true); // Go to index and zero encoder
 			}
-
 			encstate = ENC_InitState::aligning;
-		}
-		break;
+			break;
 
 		case ENC_InitState::aligning:
 			if(hasPower()){
@@ -1322,7 +1379,7 @@ void TMC4671::startMotor(){
 	// Start driver if powered
 	if(hasPower()){
 		enablePin.set();
-		setPwm(7); // enable foc
+		setPwm(TMC_PwmMode::PWM_FOC); // enable foc
 		setMotionMode(nextMotionMode,true);
 
 	}
@@ -1333,7 +1390,7 @@ void TMC4671::startMotor(){
 }
 
 void TMC4671::emergencyStop(){
-	setPwm(1); // Short low side for instant stop
+	setPwm(TMC_PwmMode::HSlow_LShigh); // Short low side for instant stop
 	emergency = true;
 	enablePin.reset();
 	motorEnabledRequested = false;
@@ -1570,7 +1627,7 @@ void TMC4671::setMotorType(MotorType motor,uint16_t poles){
 //		maxOffsetFlux = 0; // Offsetflux only helpful for steppers. Has no effect otherwise
 //	}
 	writeReg(0x1B, mtype);
-	if(motor == MotorType::BLDC && !oldTMCdetected){
+	if(motor == MotorType::BLDC && !ES_TMCdetected){
 		setSvPwm(conf.svpwm); // Higher speed for BLDC motors. Not available in engineering samples
 	}else{
 		setSvPwm(false);
@@ -1817,8 +1874,8 @@ void TMC4671::estimateABNparams(){
  * 6 = pwm HS only \n
  * 7 = pwm on centered, FOC mode
  */
-void TMC4671::setPwm(uint8_t val){
-	updateReg(0x1A,val,0xff,0);
+void TMC4671::setPwm(TMC_PwmMode val){
+	updateReg(0x1A,(uint8_t)val,0xff,0);
 }
 
 void TMC4671::setPwm(uint8_t val,uint16_t maxcnt,uint8_t bbmL,uint8_t bbmH){
