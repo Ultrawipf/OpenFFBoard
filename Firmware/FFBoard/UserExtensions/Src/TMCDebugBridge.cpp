@@ -229,11 +229,11 @@ TMCDebugBridge::TMCDebugBridge() {
 	this->drv = std::make_unique<TMC_1>();
 	drv->conf = tmcconf;
 	drv->setAddress(1);
-	drv->setPids(tmcpids); // load some basic pids
+	//drv->setPids(tmcpids); // load some basic pids
 	drv->restoreFlash(); // before initialize!
 	drv->setLimits(tmclimits);
 	drv->setEncoderType(EncoderType_TMC::NONE); // Set encoder to none to prevent alignment
-	drv->initialize();
+	//drv->initialize();
 	drv->Start();
 	//drv->stop();
 }
