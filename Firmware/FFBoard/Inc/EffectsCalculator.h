@@ -2,7 +2,7 @@
  * EffectsCalculator.h
  *
  *  Created on: 27.01.2021
- *      Author: Yannick / Jon Lidgard
+ *      Author: Yannick / Jon Lidgard / Vincent Manoukian
  */
 
 #ifndef EFFECTSCALCULATOR_H_
@@ -15,6 +15,9 @@
 #include <vector>
 //#include "hid_cmd_defs.h"
 
+#define EFFECT_THREAD_MEM 32
+#define EFFECT_THREAD_PRIO 10 // Must be higher than main thread
+
 class Axis;
 struct metric_t;
 
@@ -26,18 +29,40 @@ struct effect_gain_t {
 	uint8_t inertia = 127;
 };
 
+struct effect_scaler_t {
+	float friction = 0.4; 	// 0.4 with speedScaler at 40 => if 1 => speedscaler = 100
+	float spring = 16.0;
+	float damper = 2.0;		// 2.0 with speedScaler at 40 => 5 with speedscaler = 100
+	float inertia = 200.0;  // 200 with accelScaler at 40 => if 1 => accelscaler = 8000
+};
+
+struct biquad_constant_t {
+	uint16_t freq;
+	uint8_t q;
+};
+
+struct effect_biquad_t {
+	biquad_constant_t constant	= { 500, 70 };
+	biquad_constant_t friction 	= { 50, 20 };
+	biquad_constant_t damper 	= { 30, 40 };
+	biquad_constant_t inertia	= { 15, 20 };
+};
+
 struct effect_stat_t {
 	int16_t current;
-	int16_t min;
 	int16_t max;
 	uint16_t nb;
 };
 
 enum class EffectsCalculator_commands : uint32_t {
-	ffbfiltercf,ffbfiltercf_q,effects,spring,friction,damper,inertia
+	ffbfiltercf,ffbfiltercf_q,effects,spring,friction,damper,inertia,
+	damper_f, damper_q, friction_f, friction_q, inertia_f, inertia_q,
+	frictionPctSpeedToRampup, scaleSpeed, scaleAccel
 };
 
-class EffectsCalculator: public PersistentStorage, public CommandHandler {
+class EffectsCalculator: public PersistentStorage,
+						 public CommandHandler,
+						 cpp_freertos::Thread {
 public:
 	EffectsCalculator();
 	virtual ~EffectsCalculator();
@@ -56,7 +81,7 @@ public:
 	virtual void setFilters(FFB_Effect* effect);
 	void setGain(uint8_t gain);
 	uint8_t getGain();
-	void setCfFilter(uint32_t f,uint8_t q); // Set output filter frequency
+	void setCfFilter(biquad_constant_t *filter); // Set output filter frequency for the constant effect
 	void logEffectType(uint8_t type);
 	void setDirectionEnableMask(uint8_t mask);
 
@@ -67,40 +92,39 @@ public:
 	void setEffectsArray(FFB_Effect* pEffects);
 	FFB_Effect* effects = nullptr; // ptr to effects array in HidFFB
 
+	// Thread impl
+	void Run();
+
 
 protected:
 
 private:
 	uint8_t directionEnableMask = 0;
-// Filters
-	bool effects_active = false; // was ffb_active
-	uint8_t global_gain = 0xff;
-	float damper_f = 30 , damper_q = 0.4;
-	float friction_f = 50 , friction_q = 0.2; //50 0.2
-	float inertia_f = 15 , inertia_q = 0.2;
-	const uint32_t calcfrequency = 1000; // HID frequency 1khz
-	uint32_t cfFilter_f = calcfrequency/2; // 500 = off
-	uint8_t cfFilter_q = 70; // User settable. q * 10
-	const float cfFilter_qfloatScaler = 0.01;
+	// Filters
+	effect_biquad_t filter;
+	const uint32_t calcfrequency = 1000; 		// HID frequency 1khz
+	const float qfloatScaler = 0.01;
 
 	// Rescale factor for conditional effect to boost or decrease the intensity
-	const float spring_scaler = 16.0f;
-	const float friction_scaler = 0.4f;
-	const float damper_scaler = 2.0f;
-	const float inertia_scaler = 200.0f;
-	const int frictionPctSpeedToRampup = 5;										// define the max value of the range (0..5% of maxspeed) where torque is rampup on friction
-	const float speedRampupPct = (frictionPctSpeedToRampup / 100.0) * 32767;	// compute the normalizedSpeed of pctToRampup factor
-
+	uint8_t global_gain = 0xff;
 	effect_gain_t gain;
+	effect_scaler_t scaler;
+	int frictionPctSpeedToRampup = 5;	// define the max value of the range (0..5% of maxspeed) where torque is rampup on friction
+	uint16_t scaleSpeed = 40;  		// TODO decide if scalers are useful or not
+	uint16_t scaleAccel = 40;
 
+	// FFB status
+	bool effects_active = false; // was ffb_active
 	uint32_t effects_used = 0;
 	effect_stat_t effects_stats[12]; // [0..12 effect types]
 
 	int32_t calcComponentForce(FFB_Effect *effect, int32_t forceVector, std::vector<std::unique_ptr<Axis>> &axes, uint8_t axis);
 	int32_t calcNonConditionEffectForce(FFB_Effect* effect);
+	float speedRampupPct();
 	int32_t calcConditionEffectForce(FFB_Effect *effect, float metric, uint8_t gain, uint8_t idx, float scale, float angle_ratio);
 	int32_t getEnvelopeMagnitude(FFB_Effect *effect);
 	std::string listEffectsUsed(bool details = false);
 	void calcStatsEffectType(uint8_t type, int16_t force);
+	void checkFilter(biquad_constant_t *filter, uint32_t freq,uint8_t q);
 };
 #endif /* EFFECTSCALCULATOR_H_ */
