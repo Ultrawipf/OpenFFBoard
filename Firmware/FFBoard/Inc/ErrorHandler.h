@@ -34,6 +34,8 @@ enum class ErrorCode : uint32_t{
 
 			encoderAlignmentFailed = 20,
 			adcCalibrationError = 21,
+			tmcCalibFail = 22,
+			encoderIndexMissed = 23,
 
 			axisOutOfRange = 31
 };

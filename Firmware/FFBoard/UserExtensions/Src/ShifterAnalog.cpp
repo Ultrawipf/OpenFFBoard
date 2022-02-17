@@ -162,15 +162,15 @@ void ShifterAnalog::saveFlash(){
 }
 
 void ShifterAnalog::restoreFlash(){
-	std::tie(x_chan, y_chan) = unpack(Flash_Read(ADR_SHIFTERANALOG_CONF_2, pack(x_chan, y_chan)));
-	std::tie(reverseButtonNum, cs_pin_num) = unpack(Flash_Read(ADR_SHIFTERANALOG_CONF_3, pack(reverseButtonNum, cs_pin_num)));
+	std::tie(x_chan, y_chan) = unpack(Flash_ReadDefault(ADR_SHIFTERANALOG_CONF_2, pack(x_chan, y_chan)));
+	std::tie(reverseButtonNum, cs_pin_num) = unpack(Flash_ReadDefault(ADR_SHIFTERANALOG_CONF_3, pack(reverseButtonNum, cs_pin_num)));
 
-	setMode(Flash_Read(ADR_SHIFTERANALOG_CONF, ShifterMode::G29_H));
+	setMode(Flash_ReadDefault(ADR_SHIFTERANALOG_CONF, ShifterMode::G29_H));
 
-	X_12 = Flash_Read(ADR_SHIFTERANALOG_X_12, X_12);
-	X_56 = Flash_Read(ADR_SHIFTERANALOG_X_56, X_56);
-	Y_135 = Flash_Read(ADR_SHIFTERANALOG_Y_135, Y_135);
-	Y_246 = Flash_Read(ADR_SHIFTERANALOG_Y_246, Y_246);
+	X_12 = Flash_ReadDefault(ADR_SHIFTERANALOG_X_12, X_12);
+	X_56 = Flash_ReadDefault(ADR_SHIFTERANALOG_X_56, X_56);
+	Y_135 = Flash_ReadDefault(ADR_SHIFTERANALOG_Y_135, Y_135);
+	Y_246 = Flash_ReadDefault(ADR_SHIFTERANALOG_Y_246, Y_246);
 }
 
 std::string ShifterAnalog::printModes(){

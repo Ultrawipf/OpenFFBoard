@@ -26,7 +26,7 @@
 #include "cpp_target_config.h"
 
 #define SPITIMEOUT 500
-#define TMC_THREAD_MEM 256
+#define TMC_THREAD_MEM 512
 #define TMC_THREAD_PRIO 25 // Must be higher than main thread
 
 extern SPI_HandleTypeDef HSPIDRV;
@@ -35,7 +35,7 @@ extern SPI_HandleTypeDef HSPIDRV;
 extern TIM_HandleTypeDef TIM_TMC;
 #endif
 
-enum class TMC_ControlState {uninitialized,waitPower,Shutdown,Running,ABN_init,AENC_init,HardError,OverTemp,EncoderFinished,IndexSearch,FullCalibration};
+enum class TMC_ControlState : uint32_t {uninitialized=0,waitPower=1,Shutdown=2,Running=3,ABN_init=4,AENC_init=5,HardError=6,OverTemp=7,EncoderFinished=8,IndexSearch=9,FullCalibration=10};
 
 enum class TMC_PwmMode : uint8_t {off = 0,HSlow_LShigh = 1, HShigh_LSlow = 2, res2 = 3, res3 = 4, PWM_LS = 5, PWM_HS = 6, PWM_FOC = 7};
 
@@ -143,10 +143,10 @@ struct TMC4671MainConfig{
 	uint16_t mdecB 			= 660;
 	uint32_t mclkA			= 0x20000000; //0x20000000 default
 	uint32_t mclkB			= 0x20000000; // For AENC
-	uint32_t adc_I0_offset 	= 33415;
-	uint32_t adc_I1_offset 	= 33415;
-	uint32_t adc_I0_scale	= 256;
-	uint32_t adc_I1_scale	= 256;
+	uint16_t adc_I0_offset 	= 33415;
+	uint16_t adc_I1_offset 	= 33415;
+	uint16_t adc_I0_scale	= 256;
+	uint16_t adc_I1_scale	= 256;
 	bool svpwm				= true; // enable space vector PWM for 3 phase motors
 	bool canChangeHwType 	= true; // Allows changing the hardware version by commands
 };
@@ -194,6 +194,7 @@ struct TMC4671FlashAddrs{
 	uint16_t ADC_i0_ofs = ADR_TMC1_ADC_I0_OFS;
 	uint16_t ADC_i1_ofs = ADR_TMC1_ADC_I1_OFS;
 	uint16_t encOffset = ADR_TMC1_ENC_OFFSET;
+	uint16_t phieOffset = ADR_TMC1_PHIE_OFS;
 };
 
 struct TMC4671ABNConf{
@@ -201,7 +202,6 @@ struct TMC4671ABNConf{
 	bool apol 	= true;
 	bool bpol 	= true;
 	bool npol	= true;
-	bool npos 	= false;
 	bool rdir 	= false;
 	bool ab_as_n = false;
 	bool latch_on_N = false; // Restore ABN_DECODER_COUNT_N into encoder count if true on pulse. otherwise store encoder count in ABN_DECODER_COUNT_N
@@ -274,7 +274,7 @@ class TMC4671 :
 		cpr,mtype,encsrc,tmcHwType,encalign,poles,acttrq,pwmlim,
 		torqueP,torqueI,fluxP,fluxI,velocityP,velocityI,posP,posI,
 		tmctype,pidPrec,phiesrc,fluxoffset,seqpi,tmcIscale,encdir,temp,reg,
-		svpwm,fullCalibration,abnindexenabled,findIndex
+		svpwm,fullCalibration,abnindexenabled,findIndex,getState,encpol
 	};
 
 public:
@@ -300,6 +300,7 @@ public:
 	TMC4671MainConfig conf;
 
 	bool initialize();
+	void initializeWithPower();
 
 	void Run();
 	bool motorReady();
@@ -324,6 +325,7 @@ public:
 	void setup_AENC(TMC4671AENCConf encconf);
 	void setup_HALL(TMC4671HALLConf hallconf);
 	void bangInitEnc(int16_t power);
+	void fluxRampAlignEncoder(int16_t maxPower);
 	void estimateABNparams();
 	bool checkEncoder();
 	void calibrateAenc();
@@ -339,7 +341,6 @@ public:
 	void setupFeedForwardVelocity(int32_t gain, int32_t constant);
 	void setFFMode(FFMode mode);
 	void setSequentialPI(bool sequential);
-	bool feedforward = false;
 
 	void setBiquadFlux(TMC4671Biquad bq);
 	void setBiquadTorque(TMC4671Biquad bq);
@@ -350,7 +351,7 @@ public:
 	bool pingDriver();
 	std::pair<uint32_t,std::string> getTmcType();
 
-	void changeState(TMC_ControlState newState);
+	void changeState(TMC_ControlState newState,bool force = false);
 
 #ifdef TIM_TMC
 	void timerElapsed(TIM_HandleTypeDef* htim);
@@ -385,12 +386,16 @@ public:
 	void setFluxTorqueFF(int16_t flux, int16_t torque);
 	std::pair<int32_t,int32_t> getActualCurrent();
 
+	bool checkAdc();
+
 	float getTemp();
 	TMC_ControlState getState();
 
 	void setPhiEtype(PhiE type);
 	PhiE getPhiEtype();
 	void setPhiE_ext(int16_t phiE);
+	int16_t getPhiE();
+
 
 	void setPosSel(PosSelection psel);
 	void setVelSel(VelSelection vsel,uint8_t mode = 0);
@@ -437,10 +442,10 @@ public:
 	uint32_t encToPos(uint32_t enc);
 
 	void exti(uint16_t GPIO_Pin);
-	void encoderIndexHit();
+
 	bool findEncoderIndex(int32_t speed=10, uint16_t power=2500,bool offsetPhiM=false,bool zeroCount=false);
 	bool autohome();
-	void zeroAbnUsingPhiM();
+	void zeroAbnUsingPhiM(bool offsetPhiE=false);
 
 	StatusFlags readFlags(bool maskedOnly = true);
 	void setStatusMask(StatusFlags mask);
@@ -474,14 +479,14 @@ public:
 
 private:
 	OutputPin enablePin = OutputPin(*DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin);
-
+	const Error indexNotHitError = Error(ErrorCode::encoderIndexMissed,ErrorType::critical,"Encoder index missed");
 	const Error lowVoltageError = Error(ErrorCode::undervoltage,ErrorType::warning,"Low motor voltage");
 	const Error communicationError = Error(ErrorCode::tmcCommunicationError, ErrorType::warning, "TMC not responding");
 
 	ENC_InitState encstate = ENC_InitState::uninitialized;
 	TMC_ControlState state = TMC_ControlState::uninitialized;
 	TMC_ControlState laststate = TMC_ControlState::uninitialized;
-	TMC_ControlState laststateNopower;
+	TMC_ControlState requestedState = TMC_ControlState::Shutdown;
 	MotionMode curMotionMode = MotionMode::stop;
 	MotionMode lastMotionMode = MotionMode::stop;
 	MotionMode nextMotionMode = MotionMode::stop;
@@ -493,17 +498,24 @@ private:
 	bool encoderAligned = false;
 	//bool encoderIndexFound = false;
 	bool initialized = false; // Init ran once
+	bool powerInitialized = false;
 	bool adcCalibrated = false;
 	bool adcSettingsRestored = false;
 	bool motorEnabledRequested = false;
 	volatile bool encoderIndexHitFlag = false;
 	bool zeroEncoderOnIndexHit = false;
 	bool fullCalibrationInProgress = false;
+	bool phiErestored = false;
+	bool encHallRestored = false;
+	//int32_t phiEOffsetRestored = 0; //-0x8000 to 0x7fff
+	uint8_t calibrationFailCount = 2;
+
+	bool allowStateChange = false;
 
 
 
 	uint8_t enc_retry = 0;
-	uint8_t enc_retry_max = 5;
+	uint8_t enc_retry_max = 3;
 
 	uint32_t lastStatTime = 0;
 
@@ -514,8 +526,9 @@ private:
 	void setPwm(TMC_PwmMode val);// pwm mode
 	void setSvPwm(bool enable);
 	void encInit();
-
+	void encoderIndexHit();
 	void saveAdcParams();
+	void calibFailCb();
 
 
 // state machine

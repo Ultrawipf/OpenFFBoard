@@ -141,8 +141,8 @@ void SPI_Buttons::saveFlash(){
 }
 
 void SPI_Buttons::restoreFlash(){
-	uint16_t conf_int = Flash_Read(configuration_address, 0);
-	uint16_t cs_num_int = Flash_Read(configuration_address_2, 1);
+	uint16_t conf_int = Flash_ReadDefault(configuration_address, 0);
+	uint16_t cs_num_int = Flash_ReadDefault(configuration_address_2, 1);
 
 	setConfig(decodeIntToConf(conf_int, cs_num_int));
 }
