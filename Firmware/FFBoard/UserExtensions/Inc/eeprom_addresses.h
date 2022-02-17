@@ -10,7 +10,7 @@
 
 #include "main.h"
 // Change this to the amount of currently registered variables
-#define NB_OF_VAR	92
+#define NB_OF_VAR	95
 extern const uint16_t VirtAddVarTab[NB_OF_VAR];
 
 // Amount of variables in exportable list
@@ -102,6 +102,7 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_TMC1_TORQUE_I				0x328
 #define ADR_TMC1_FLUX_P					0x329
 #define ADR_TMC1_FLUX_I					0x32A
+#define ADR_TMC1_PHIE_OFS				0x32B
 
 
 
@@ -127,6 +128,7 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_TMC2_TORQUE_I				0x368
 #define ADR_TMC2_FLUX_P					0x369
 #define ADR_TMC2_FLUX_I					0x36A
+#define ADR_TMC2_PHIE_OFS				0x36B
 
 
 // AXIS3
@@ -151,6 +153,7 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_TMC3_TORQUE_I				0x3A8
 #define ADR_TMC3_FLUX_P					0x3A9
 #define ADR_TMC3_FLUX_I					0x3AA
+#define ADR_TMC3_PHIE_OFS				0x3AB
 
 
 // Odrive
