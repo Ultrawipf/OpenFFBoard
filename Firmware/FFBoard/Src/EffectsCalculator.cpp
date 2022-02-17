@@ -28,18 +28,31 @@ const ClassIdentifier EffectsCalculator::getInfo(){
 }
 
 
-EffectsCalculator::EffectsCalculator() : CommandHandler("fx", CLSID_EFFECTSCALC)
+EffectsCalculator::EffectsCalculator() : CommandHandler("fx", CLSID_EFFECTSCALC),
+		Thread("EffectsCalculator", EFFECT_THREAD_MEM, EFFECT_THREAD_PRIO)
 {
 	restoreFlash();
 
 	CommandHandler::registerCommands();
 	registerCommand("filterCfFreq", EffectsCalculator_commands::ffbfiltercf, "Constant force filter frequency", CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("filterCfQ", EffectsCalculator_commands::ffbfiltercf_q, "Constant force filter Q-factor", CMDFLAG_GET | CMDFLAG_SET);
-	registerCommand("spring", EffectsCalculator_commands::spring, "Spring gain", CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_INFOSTRING);
-	registerCommand("friction", EffectsCalculator_commands::friction, "Friction gain", CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_INFOSTRING);
-	registerCommand("damper", EffectsCalculator_commands::damper, "Damper gain", CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_INFOSTRING);
-	registerCommand("inertia", EffectsCalculator_commands::inertia, "Inertia gain", CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_INFOSTRING);
-	registerCommand("effects", EffectsCalculator_commands::effects, "List effects. set 0 to reset", CMDFLAG_GET | CMDFLAG_SET  | CMDFLAG_STR_ONLY);
+	registerCommand("spring", EffectsCalculator_commands::spring, "Spring gain", CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("friction", EffectsCalculator_commands::friction, "Friction gain", CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("damper", EffectsCalculator_commands::damper, "Damper gain", CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("inertia", EffectsCalculator_commands::inertia, "Inertia gain", CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("effects", EffectsCalculator_commands::effects, "List effects (1 for details). set 0 to reset", CMDFLAG_GET | CMDFLAG_SET  | CMDFLAG_STR_ONLY);
+
+	registerCommand("damper_f", EffectsCalculator_commands::damper_f, "Damper biquad freq", CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("damper_q", EffectsCalculator_commands::damper_q, "Damper biquad q", CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_INFOSTRING);
+	registerCommand("friction_f", EffectsCalculator_commands::friction_f, "Friction biquad freq", CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("friction_q", EffectsCalculator_commands::friction_q, "Friction biquad q", CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_INFOSTRING);
+	registerCommand("inertia_f", EffectsCalculator_commands::inertia_f, "Inertia biquad freq", CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("inertia_q", EffectsCalculator_commands::inertia_q, "Inertia biquad q", CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_INFOSTRING);
+
+	registerCommand("frictionPctSpeedToRampup", EffectsCalculator_commands::frictionPctSpeedToRampup, "% of max speed during effect is slow", CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("scaleSpeed", EffectsCalculator_commands::scaleSpeed, "Scale to map SPEED on full range", CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("scaleAccel", EffectsCalculator_commands::scaleAccel, "Scale to map ACCEL on full range", CMDFLAG_GET | CMDFLAG_SET);
+
 }
 
 EffectsCalculator::~EffectsCalculator()
@@ -303,16 +316,11 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 
 	metric_t *metrics = axes[axis]->getMetrics();
 	uint8_t axisCount = axes.size();
-	float scaleSpeed = 40;//axes[axis]->getSpeedScalerNormalized(); // TODO decide if scalers are useful or not
-	float scaleAccel = 40;//axes[axis]->getAccelScalerNormalized();
 	uint8_t directionEnableMask = this->directionEnableMask ? this->directionEnableMask : DIRECTION_ENABLE(axisCount);
 	if (effect->enableAxis & directionEnableMask)
 	{
 		direction = effect->directionX;
-//		if (effect->conditionsCount > 1)
-//		{
-			con_idx = axis;
-//		}
+		con_idx = axis;
 	}
 	else
 	{
@@ -331,9 +339,12 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 	case FFB_EFFECT_CONSTANT:
 	{
 		// Optional filtering to reduce spikes
-		if (cfFilter_f < calcfrequency / 2 && cfFilter_f != 0 )
-		{
-			forceVector = effect->filter[con_idx]->process(forceVector);
+		if(effect->filter[con_idx] != nullptr) {
+			// if the filter is enabled we apply it
+			if (effect->filter[con_idx]->getFc() < 0.5 && effect->filter[0]->getFc() != 0.0)
+			{
+				result_torque = effect->filter[con_idx]->process(forceVector);
+			}
 		}
 	}
 	case FFB_EFFECT_RAMP:
@@ -350,7 +361,7 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 	case FFB_EFFECT_SPRING:
 	{
 		float pos = metrics->pos;
-		result_torque -= calcConditionEffectForce(effect, pos, gain.spring, con_idx, spring_scaler, angle_ratio);
+		result_torque -= calcConditionEffectForce(effect, pos, gain.spring, con_idx, scaler.spring, angle_ratio);
 		break;
 	}
 
@@ -383,9 +394,9 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 
 			// check if speed is in the 0..x% to rampup, if is this range, apply a sinusoidale function to smooth the torque (slow near 0, slow around the X% rampup
 			float rampupFactor = 1.0;
-			if (fabs (speed) < speedRampupPct) {								// if speed in the range to rampup we apply a sinus curbe to ramup
+			if (fabs (speed) < speedRampupPct()) {								// if speed in the range to rampup we apply a sinus curbe to ramup
 
-				float phaseRad = M_PI * ((fabs (speed) / speedRampupPct) - 0.5);// we start to compute the normalized angle (speed / normalizedSpeed@5%) and translate it of -1/2PI to translate sin on 1/2 periode
+				float phaseRad = M_PI * ((fabs (speed) / speedRampupPct()) - 0.5);// we start to compute the normalized angle (speed / normalizedSpeed@5%) and translate it of -1/2PI to translate sin on 1/2 periode
 				rampupFactor = ( 1 + sin(phaseRad ) ) / 2;						// sin value is -1..1 range, we translate it to 0..2 and we scale it by 2
 
 			}
@@ -399,18 +410,8 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 				force = clip<int32_t, int32_t>(force, -effect->conditions[con_idx].negativeSaturation, effect->conditions[con_idx].positiveSaturation);
 			}
 
-//			static int32_t last_force = 0;
-//
-//			// if there is 2 successive torque with a different direction, we ignore the first one to remove oscillation
-//			if (last_force * force >=0) {
-//				force = ((gain.friction + 1) * force) >> 7;
-//				result_torque -=  force * angle_ratio;
-//			}
-//			last_force = force;
-			result_torque -= effect->filter[con_idx]->process( (((gain.friction + 1) * force) >> 8) * angle_ratio * friction_scaler);
+			result_torque -= effect->filter[con_idx]->process( (((gain.friction + 1) * force) >> 8) * angle_ratio * scaler.friction);
 		}
-//			float accel = metrics->accel * scaleAccel;
-//			result_torque -= calcConditionEffectForce(effect, accel, gain.friction, con_idx, friction_scaler, angle_ratio);
 
 		break;
 	}
@@ -418,7 +419,7 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 	{
 
 		float speed = metrics->speed * scaleSpeed;
-		result_torque -= effect->filter[con_idx]->process(calcConditionEffectForce(effect, speed, gain.damper, con_idx, damper_scaler, angle_ratio));
+		result_torque -= effect->filter[con_idx]->process(calcConditionEffectForce(effect, speed, gain.damper, con_idx, scaler.damper, angle_ratio));
 
 		break;
 	}
@@ -426,7 +427,7 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 	case FFB_EFFECT_INERTIA:
 	{
 		float accel = metrics->accel* scaleAccel;
-		result_torque -= effect->filter[con_idx]->process(calcConditionEffectForce(effect, accel, gain.inertia, con_idx, inertia_scaler, angle_ratio)); // Bump *60 the inertia feedback
+		result_torque -= effect->filter[con_idx]->process(calcConditionEffectForce(effect, accel, gain.inertia, con_idx, scaler.inertia, angle_ratio)); // Bump *60 the inertia feedback
 
 		break;
 	}
@@ -437,6 +438,11 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 	}
 	return (result_torque * global_gain) / 255; // Apply global gain
 }
+
+float EffectsCalculator::speedRampupPct() {
+	return (frictionPctSpeedToRampup / 100.0) * 32767;	// compute the normalizedSpeed of pctToRampup factor
+}
+
 
 /**
  * Calculates a conditional effect
@@ -509,33 +515,33 @@ void EffectsCalculator::setFilters(FFB_Effect *effect){
 	case FFB_EFFECT_DAMPER:
 		fnptr = [=](std::unique_ptr<Biquad> &filter){
 			if (filter != nullptr)
-				filter->setBiquad(BiquadType::lowpass, (float)damper_f / (float)calcfrequency, damper_q, (float)0.0);
+				filter->setBiquad(BiquadType::lowpass, this->filter.damper.freq / (float)calcfrequency, this->filter.damper.q * qfloatScaler , (float)0.0);
 			else
-				filter = std::make_unique<Biquad>(BiquadType::lowpass, (float)damper_f / (float)calcfrequency, damper_q, (float)0.0);
+				filter = std::make_unique<Biquad>(BiquadType::lowpass, this->filter.damper.freq / (float)calcfrequency, this->filter.damper.q * qfloatScaler, (float)0.0);
 		};
 		break;
 	case FFB_EFFECT_FRICTION:
 		fnptr = [=](std::unique_ptr<Biquad> &filter){
 			if (filter != nullptr)
-				filter->setBiquad(BiquadType::lowpass, (float)friction_f / (float)calcfrequency, friction_q, (float)0.0);
+				filter->setBiquad(BiquadType::lowpass, this->filter.friction.freq / (float)calcfrequency, this->filter.friction.q * qfloatScaler, (float)0.0);
 			else
-				filter = std::make_unique<Biquad>(BiquadType::lowpass, (float)friction_f / (float)calcfrequency, friction_q, (float)0.0);
+				filter = std::make_unique<Biquad>(BiquadType::lowpass, this->filter.friction.freq / (float)calcfrequency, this->filter.friction.q * qfloatScaler, (float)0.0);
 		};
 		break;
 	case FFB_EFFECT_INERTIA:
 		fnptr = [=](std::unique_ptr<Biquad> &filter){
 			if (filter != nullptr)
-				filter->setBiquad(BiquadType::lowpass, (float)inertia_f / (float)calcfrequency, inertia_q, (float)0.0);
+				filter->setBiquad(BiquadType::lowpass, this->filter.inertia.freq / (float)calcfrequency, this->filter.inertia.q * qfloatScaler, (float)0.0);
 			else
-				filter = std::make_unique<Biquad>(BiquadType::lowpass, (float)inertia_f / (float)calcfrequency, inertia_q, (float)0.0);
+				filter = std::make_unique<Biquad>(BiquadType::lowpass, this->filter.inertia.freq / (float)calcfrequency, this->filter.inertia.q * qfloatScaler, (float)0.0);
 		};
 		break;
 	case FFB_EFFECT_CONSTANT:
 		fnptr = [=](std::unique_ptr<Biquad> &filter){
 			if (filter != nullptr)
-				filter->setBiquad(BiquadType::lowpass, (float)cfFilter_f / (float)calcfrequency, cfFilter_qfloatScaler * (cfFilter_q+1), (float)0.0);
+				filter->setBiquad(BiquadType::lowpass, this->filter.constant.freq / (float)calcfrequency, this->filter.constant.q * qfloatScaler, (float)0.0);
 			else
-				filter = std::make_unique<Biquad>(BiquadType::lowpass, (float)cfFilter_f / (float)calcfrequency, cfFilter_qfloatScaler * (cfFilter_q+1), (float)0.0);
+				filter = std::make_unique<Biquad>(BiquadType::lowpass, this->filter.constant.freq / (float)calcfrequency, this->filter.constant.q * qfloatScaler, (float)0.0);
 		};
 		break;
 	}
@@ -569,10 +575,11 @@ void EffectsCalculator::restoreFlash()
 	uint16_t filter;
 	if (Flash_Read(ADR_CF_FILTER, &filter))
 	{
-		this->cfFilter_f = filter & 0x1FF;
-		this->cfFilter_q = (filter >> 9) & 0x7F;
+		uint32_t freq = filter & 0x1FF;
+		uint8_t q = (filter >> 9) & 0x7F;
+		checkFilter(&(this->filter.constant), freq, q);
 	}
-	setCfFilter(this->cfFilter_f,this->cfFilter_q);
+	setCfFilter(&(this->filter.constant));
 
 	uint16_t effects = 0;
 	if(Flash_Read(ADR_AXIS_EFFECTS1, &effects)){
@@ -589,7 +596,8 @@ void EffectsCalculator::restoreFlash()
 // Saves parameters to flash
 void EffectsCalculator::saveFlash()
 {
-	uint16_t cffilter = (cfFilter_f & 0x1FF) | ((cfFilter_q & 0x7F) << 9);
+	uint16_t cffilter = (uint16_t)filter.constant.freq & 0x1FF;
+	cffilter |= ( (uint16_t)filter.constant.q & 0x7F ) << 9 ;
 	Flash_Write(ADR_CF_FILTER, cffilter);
 	uint16_t effects = gain.inertia | (gain.friction << 8);
 	Flash_Write(ADR_AXIS_EFFECTS1, effects);
@@ -598,30 +606,39 @@ void EffectsCalculator::saveFlash()
 
 }
 
-void EffectsCalculator::setCfFilter(uint32_t freq,uint8_t q)
+void EffectsCalculator::setCfFilter(biquad_constant_t *filter)
 {
-	this->cfFilter_q = clip<uint8_t, uint8_t>(q,0,127);
-
-	if(freq == 0){
-		freq = calcfrequency / 2;
+	// check if freq and q parameters are ok
+	if(filter->freq == 0){
+		filter->freq = calcfrequency / 2;
 	}
-	cfFilter_f = clip<uint32_t, uint32_t>(freq, 1, (calcfrequency / 2));
-	//float f = (float)cfFilter_f / (float)calcfrequency;
 
+	if(filter->q == 0) {
+		filter->q = 0.01;
+	}
+
+	// loop on all effect in memory and setup new constant filter
 	for (uint8_t i = 0; i < MAX_EFFECTS; i++)
 	{
 		if (effects[i].type == FFB_EFFECT_CONSTANT)
 		{
 			setFilters(&effects[i]);
-			//for(uint8_t ax = 0;ax<MAX_AXIS;ax++){
-
-//				effects[i].filter[ax]->setFc(f);
-//				effects[i].filter[ax]->setQ(cfFilter_qfloatScaler * (cfFilter_q+1));
-		//	}
-
 		}
 	}
 }
+
+void EffectsCalculator::checkFilter(biquad_constant_t *filter, uint32_t freq,uint8_t q)
+{
+	filter->q = clip<uint8_t, uint8_t>(q,0,127);
+
+	if(freq == 0){
+		freq = calcfrequency / 2;
+	}
+
+	filter->freq = clip<uint32_t, uint32_t>(freq, 1, (calcfrequency / 2));
+
+}
+
 
 void EffectsCalculator::logEffectType(uint8_t type){
 	if(type > 0 && type < 32){
@@ -637,8 +654,7 @@ void EffectsCalculator::calcStatsEffectType(uint8_t type, int16_t force){
 	if(type > 0 && type < 13) {
 		uint8_t arrayLocation = type - 1;
 		effects_stats[arrayLocation].current = force;
-		effects_stats[arrayLocation].min = std::min(effects_stats[arrayLocation].min, force);
-		effects_stats[arrayLocation].max = std::max(effects_stats[arrayLocation].max, force);
+		effects_stats[arrayLocation].max = std::max(effects_stats[arrayLocation].max, (int16_t)abs(force));
 	}
 }
 /**
@@ -667,8 +683,7 @@ std::string EffectsCalculator::listEffectsUsed(bool details){
 		bool firstItem = true;
 		for (int i=0;i < 12; i++) {
 			if (!firstItem) effects_list += ", ";
-			effects_list += "{'min':" + std::to_string(effects_stats[i].min);
-			effects_list += ", 'max':" + std::to_string(effects_stats[i].max);
+			effects_list += "{'max':" + std::to_string(effects_stats[i].max);
 			effects_list += ", 'curr':" + std::to_string(effects_stats[i].current);
 			effects_list += ", 'nb':" + std::to_string(effects_stats[i].nb)+"}";
 			firstItem = false;
@@ -687,22 +702,27 @@ CommandStatus EffectsCalculator::command(const ParsedCommand& cmd,std::vector<Co
 	case EffectsCalculator_commands::ffbfiltercf:
 		if (cmd.type == CMDtype::get)
 		{
-			replies.emplace_back(cfFilter_f);
+			replies.emplace_back(filter.constant.freq);
 		}
 		else if (cmd.type == CMDtype::set)
 		{
-			setCfFilter(cmd.val,this->cfFilter_q);
+			checkFilter(&filter.constant, cmd.val, filter.constant.q);
+			setCfFilter(&filter.constant);
 		}
 		break;
 
 	case EffectsCalculator_commands::ffbfiltercf_q:
-		if (cmd.type == CMDtype::get)
+		if(cmd.type == CMDtype::info){
+			replies.push_back(CommandReply("scale:"+std::to_string(this->qfloatScaler)));
+		}
+		else if (cmd.type == CMDtype::get)
 		{
-			replies.emplace_back(cfFilter_q);
+			replies.emplace_back(filter.constant.q);
 		}
 		else if (cmd.type == CMDtype::set)
 		{
-			setCfFilter(this->cfFilter_f,cmd.val);
+			checkFilter(&filter.constant, filter.constant.freq, cmd.val);
+			setCfFilter(&filter.constant);
 		}
 
 		break;
@@ -719,32 +739,153 @@ CommandStatus EffectsCalculator::command(const ParsedCommand& cmd,std::vector<Co
 		break;
 	case EffectsCalculator_commands::spring:
 		if(cmd.type == CMDtype::info){
-			replies.emplace_back("scale:"+std::to_string(this->spring_scaler));
+			replies.emplace_back("scale:"+std::to_string(this->scaler.spring));
 		}else
 			return handleGetSet(cmd, replies, this->gain.spring);
 		break;
 	case EffectsCalculator_commands::friction:
 		if(cmd.type == CMDtype::info){
-			replies.emplace_back("scale:"+std::to_string(2));
+			replies.emplace_back("scale:"+std::to_string(2)); //this->scaler.friction
 		}else
 			return handleGetSet(cmd, replies, this->gain.friction);
 		break;
 	case EffectsCalculator_commands::damper:
 		if(cmd.type == CMDtype::info){
-			replies.emplace_back("scale:"+std::to_string(2));
+			replies.emplace_back("scale:"+std::to_string(2)); //this->scaler.damper
 		}else
 			return handleGetSet(cmd, replies, this->gain.damper);
 		break;
 	case EffectsCalculator_commands::inertia:
 		if(cmd.type == CMDtype::info){
-			replies.emplace_back("scale:"+std::to_string(2));
+			replies.emplace_back("scale:"+std::to_string(2)); //this->scaler.inertias
 		}else
 			return handleGetSet(cmd, replies, this->gain.inertia);
 		break;
+	case EffectsCalculator_commands::damper_f:
+		if (cmd.type == CMDtype::get)
+		{
+			replies.push_back(CommandReply(filter.damper.freq));
+		}
+		else if (cmd.type == CMDtype::set)
+		{
+			checkFilter(&filter.damper, cmd.val, filter.damper.q);
+		}
+		break;
+	case EffectsCalculator_commands::damper_q:
+		if(cmd.type == CMDtype::info){
+			replies.push_back(CommandReply("scale:"+std::to_string(this->qfloatScaler)));
+		}
+		else if (cmd.type == CMDtype::get)
+		{
+			replies.push_back(CommandReply(filter.damper.q));
+		}
+		else if (cmd.type == CMDtype::set)
+		{
+			checkFilter(&filter.damper, filter.damper.freq, cmd.val);
+		}
+		break;
+	case EffectsCalculator_commands::friction_f:
+		if (cmd.type == CMDtype::get)
+		{
+			replies.push_back(CommandReply(filter.friction.freq));
+		}
+		else if (cmd.type == CMDtype::set)
+		{
+			checkFilter(&filter.friction, cmd.val, filter.friction.q);
+		}
+		break;
+	case EffectsCalculator_commands::friction_q:
+		if(cmd.type == CMDtype::info){
+			replies.push_back(CommandReply("scale:"+std::to_string(this->qfloatScaler)));
+		}
+		else if (cmd.type == CMDtype::get)
+		{
+			replies.push_back(CommandReply(filter.friction.q));
+		}
+		else if (cmd.type == CMDtype::set)
+		{
+			checkFilter(&filter.friction, filter.friction.freq, cmd.val);
+		}
+		break;
+	case EffectsCalculator_commands::inertia_f:
+		if (cmd.type == CMDtype::get)
+		{
+			replies.push_back(CommandReply(filter.inertia.freq));
+		}
+		else if (cmd.type == CMDtype::set)
+		{
+			checkFilter(&filter.inertia, cmd.val, filter.inertia.q);
+		}
+		break;
+	case EffectsCalculator_commands::inertia_q:
+		if(cmd.type == CMDtype::info){
+			replies.push_back(CommandReply("scale:"+std::to_string(this->qfloatScaler)));
+		}
+		else if (cmd.type == CMDtype::get)
+		{
+			replies.push_back(CommandReply(filter.inertia.q));
+		}
+		else if (cmd.type == CMDtype::set)
+		{
+			checkFilter(&filter.inertia, filter.inertia.freq, cmd.val);
+		}
+		break;
+
+	case EffectsCalculator_commands::frictionPctSpeedToRampup:
+		if (cmd.type == CMDtype::get)
+		{
+			replies.push_back(CommandReply(frictionPctSpeedToRampup));
+		}
+		else if (cmd.type == CMDtype::set)
+		{
+			uint8_t pct = clip<uint8_t, uint8_t>(cmd.val, 0, 100);
+			frictionPctSpeedToRampup = pct;
+		}
+		break;
+	case EffectsCalculator_commands::scaleSpeed:
+		if (cmd.type == CMDtype::get)
+		{
+			replies.push_back(CommandReply(scaleSpeed));
+		}
+		else if (cmd.type == CMDtype::set)
+		{
+			uint16_t value = clip<uint16_t, uint16_t>(cmd.val, 0, 200);
+			scaleSpeed = value;
+		}
+		break;
+	case EffectsCalculator_commands::scaleAccel:
+		if (cmd.type == CMDtype::get)
+		{
+			replies.push_back(CommandReply(scaleAccel));
+		}
+		else if (cmd.type == CMDtype::set)
+		{
+			uint16_t value = clip<uint16_t, uint16_t>(cmd.val, 0, 200);
+			scaleAccel = value;
+		}
+		break;
+
 
 	default:
 		return CommandStatus::NOT_FOUND;
 	}
 	return CommandStatus::OK;
+}
+
+/*
+ *
+ */
+void EffectsCalculator::Run() {
+	std::vector<CommandReply> replies;
+	while (true) {
+		Delay(500);
+
+		replies.push_back(CommandReply(listEffectsUsed(true)));
+		CommandInterface::broadcastCommandReplyAsync(replies,
+				this,
+				(uint32_t)EffectsCalculator_commands::effects,
+				CMDtype::get);
+	}
+
 }
 
