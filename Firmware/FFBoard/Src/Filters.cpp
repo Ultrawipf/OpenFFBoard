@@ -31,12 +31,20 @@ void Biquad::setFc(float Fc) {
     calcBiquad();
 }
 
+float Biquad::getFc() {
+	return this->Fc;
+}
+
 /**
  * Changes Q value and recalculaes filter
  */
 void Biquad::setQ(float Q) {
     this->Q = Q;
     calcBiquad();
+}
+
+float Biquad::getQ() {
+	return this->Q;
 }
 
 /**
