@@ -143,10 +143,10 @@ struct TMC4671MainConfig{
 	uint16_t mdecB 			= 660;
 	uint32_t mclkA			= 0x20000000; //0x20000000 default
 	uint32_t mclkB			= 0x20000000; // For AENC
-	uint32_t adc_I0_offset 	= 33415;
-	uint32_t adc_I1_offset 	= 33415;
-	uint32_t adc_I0_scale	= 256;
-	uint32_t adc_I1_scale	= 256;
+	uint16_t adc_I0_offset 	= 33415;
+	uint16_t adc_I1_offset 	= 33415;
+	uint16_t adc_I0_scale	= 256;
+	uint16_t adc_I1_scale	= 256;
 	bool svpwm				= true; // enable space vector PWM for 3 phase motors
 	bool canChangeHwType 	= true; // Allows changing the hardware version by commands
 };
@@ -194,6 +194,7 @@ struct TMC4671FlashAddrs{
 	uint16_t ADC_i0_ofs = ADR_TMC1_ADC_I0_OFS;
 	uint16_t ADC_i1_ofs = ADR_TMC1_ADC_I1_OFS;
 	uint16_t encOffset = ADR_TMC1_ENC_OFFSET;
+	uint16_t phieOffset = ADR_TMC1_PHIE_OFS;
 };
 
 struct TMC4671ABNConf{
@@ -300,6 +301,7 @@ public:
 	TMC4671MainConfig conf;
 
 	bool initialize();
+	void initializeWithPower();
 
 	void Run();
 	bool motorReady();
@@ -499,11 +501,13 @@ private:
 	volatile bool encoderIndexHitFlag = false;
 	bool zeroEncoderOnIndexHit = false;
 	bool fullCalibrationInProgress = false;
+	bool phiErestored = false;
+	//int32_t phiEOffsetRestored = 0; //-0x8000 to 0x7fff
 
 
 
 	uint8_t enc_retry = 0;
-	uint8_t enc_retry_max = 5;
+	uint8_t enc_retry_max = 3;
 
 	uint32_t lastStatTime = 0;
 

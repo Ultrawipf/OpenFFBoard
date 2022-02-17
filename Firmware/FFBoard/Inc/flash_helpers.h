@@ -29,7 +29,7 @@ bool Flash_ReadWriteDefault(uint16_t adr,uint16_t *buf,uint16_t def); // returns
 void Flash_Dump(std::vector<std::tuple<uint16_t,uint16_t>> *result,bool includeAll = false);
 
 template<typename TVal>
-inline TVal Flash_Read(uint16_t adr, TVal def) {
+inline TVal Flash_ReadDefault(uint16_t adr, TVal def) {
 	uint16_t buf;
 
 	return Flash_Read(adr, &buf)

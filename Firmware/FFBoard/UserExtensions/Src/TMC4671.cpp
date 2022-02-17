@@ -85,13 +85,13 @@ const ClassIdentifier TMC4671::getInfo() {
 
 void TMC4671::setAddress(uint8_t address){
 	if (address == 1){
-		this->flashAddrs = TMC4671FlashAddrs({ADR_TMC1_MOTCONF, ADR_TMC1_CPR, ADR_TMC1_ENCA, ADR_TMC1_OFFSETFLUX, ADR_TMC1_TORQUE_P, ADR_TMC1_TORQUE_I, ADR_TMC1_FLUX_P, ADR_TMC1_FLUX_I,ADR_TMC1_ADC_I0_OFS,ADR_TMC1_ADC_I1_OFS,ADR_TMC1_ENC_OFFSET});
+		this->flashAddrs = TMC4671FlashAddrs({ADR_TMC1_MOTCONF, ADR_TMC1_CPR, ADR_TMC1_ENCA, ADR_TMC1_OFFSETFLUX, ADR_TMC1_TORQUE_P, ADR_TMC1_TORQUE_I, ADR_TMC1_FLUX_P, ADR_TMC1_FLUX_I,ADR_TMC1_ADC_I0_OFS,ADR_TMC1_ADC_I1_OFS,ADR_TMC1_ENC_OFFSET,ADR_TMC1_PHIE_OFS});
 	}else if (address == 2)
 	{
-		this->flashAddrs = TMC4671FlashAddrs({ADR_TMC2_MOTCONF, ADR_TMC2_CPR, ADR_TMC2_ENCA, ADR_TMC2_OFFSETFLUX, ADR_TMC2_TORQUE_P, ADR_TMC2_TORQUE_I, ADR_TMC2_FLUX_P, ADR_TMC2_FLUX_I,ADR_TMC2_ADC_I0_OFS,ADR_TMC2_ADC_I1_OFS,ADR_TMC2_ENC_OFFSET});
+		this->flashAddrs = TMC4671FlashAddrs({ADR_TMC2_MOTCONF, ADR_TMC2_CPR, ADR_TMC2_ENCA, ADR_TMC2_OFFSETFLUX, ADR_TMC2_TORQUE_P, ADR_TMC2_TORQUE_I, ADR_TMC2_FLUX_P, ADR_TMC2_FLUX_I,ADR_TMC2_ADC_I0_OFS,ADR_TMC2_ADC_I1_OFS,ADR_TMC2_ENC_OFFSET,ADR_TMC2_PHIE_OFS});
 	}else if (address == 3)
 	{
-		this->flashAddrs = TMC4671FlashAddrs({ADR_TMC3_MOTCONF, ADR_TMC3_CPR, ADR_TMC3_ENCA, ADR_TMC3_OFFSETFLUX, ADR_TMC3_TORQUE_P, ADR_TMC3_TORQUE_I, ADR_TMC3_FLUX_P, ADR_TMC3_FLUX_I,ADR_TMC3_ADC_I0_OFS,ADR_TMC3_ADC_I1_OFS,ADR_TMC3_ENC_OFFSET});
+		this->flashAddrs = TMC4671FlashAddrs({ADR_TMC3_MOTCONF, ADR_TMC3_CPR, ADR_TMC3_ENCA, ADR_TMC3_OFFSETFLUX, ADR_TMC3_TORQUE_P, ADR_TMC3_TORQUE_I, ADR_TMC3_FLUX_P, ADR_TMC3_FLUX_I,ADR_TMC3_ADC_I0_OFS,ADR_TMC3_ADC_I1_OFS,ADR_TMC3_ENC_OFFSET,ADR_TMC3_PHIE_OFS});
 	}
 	//this->setAxis((char)('W'+address));
 }
@@ -111,6 +111,11 @@ void TMC4671::saveFlash(){
 	Flash_Write(flashAddrs.flux_p, curPids.fluxP);
 	Flash_Write(flashAddrs.flux_i, curPids.fluxI);
 	Flash_Write(flashAddrs.encOffset,(uint16_t)abnconf.posOffsetFromIndex);
+
+	// If encoder is ABN and uses index save the last configured offset
+//	if(this->conf.motconf.enctype == EncoderType_TMC::abn && this->abnconf.useIndex && encoderAligned){
+//		Flash_Write(flashAddrs.phieOffset, abnconf.phiEoffset);
+//	}
 }
 
 /**
@@ -150,6 +155,11 @@ void TMC4671::restoreFlash(){
 	// Restore ADC settings
 	if(Flash_Read(flashAddrs.ADC_i0_ofs,&conf.adc_I0_offset) &&	Flash_Read(flashAddrs.ADC_i1_ofs,&conf.adc_I1_offset)){
 		adcSettingsRestored = true; // Previous adc settings restored
+	}
+
+	abnconf.phiEoffset = Flash_ReadDefault(flashAddrs.phieOffset,0);
+	if(abnconf.phiEoffset != 0){
+		phiErestored = true;
 	}
 
 	uint16_t miscval;
@@ -235,6 +245,14 @@ bool TMC4671::initialize(){
 		this->setPidPrecision(pidPrecision);
 	}
 
+	if(startupType == TMC_StartupType::NONE){
+		if(getMotionMode() != MotionMode::stop){
+			startupType = TMC_StartupType::warmStart;
+		}else{
+			startupType = TMC_StartupType::coldStart;
+		}
+	}
+
 	// Write main constants
 
 	writeReg(0x64, 0); // No flux/torque
@@ -247,12 +265,14 @@ bool TMC4671::initialize(){
 	setAdcOffset(conf.adc_I0_offset, conf.adc_I1_offset);
 	setAdcScale(conf.adc_I0_scale, conf.adc_I1_scale);
 
-	// Initial adc calibration
-//	if(!calibrateAdcOffset(150)){
-//		changeState(TMC_ControlState::HardError); // ADC or shunt amp is broken!
-//		enablePin.reset();
-//		return false;
-//	}
+	// Initial adc calibration and check without PWM if power off to get basic offsets
+	if(startupType == TMC_StartupType::coldStart || !hasPower()){
+		if(!calibrateAdcOffset(150)){
+			changeState(TMC_ControlState::HardError); // ADC or shunt amp is broken!
+			enablePin.reset();
+			return false;
+		}
+	}
 	// brake res failsafe.
 //	/*
 //	 * Single ended input raw value
@@ -320,6 +340,31 @@ float TMC4671::getTemp(){
 
 }
 
+void TMC4671::initializeWithPower(){
+
+	// Load ADC settings
+	if(Flash_Read(flashAddrs.ADC_i0_ofs,&conf.adc_I0_offset) &&	Flash_Read(flashAddrs.ADC_i1_ofs,&conf.adc_I1_offset)){
+		adcSettingsRestored = true; // Previous adc settings restored
+		setAdcOffset(conf.adc_I0_offset, conf.adc_I1_offset);
+	}
+
+
+	// got power long enough. proceed to set up encoder
+	// if encoder not set up
+	enablePin.set();
+	setPwm(TMC_PwmMode::PWM_FOC); // enable foc
+	if(!encoderAligned){
+		setEncoderType(conf.motconf.enctype);
+	}else{
+		//last state
+		if(!emergency){
+			changeState(laststateNopower);
+			setMotionMode(lastMotionMode,true);
+			ErrorHandler::clearError(ErrorCode::undervoltage);
+		}
+	}
+}
+
 bool TMC4671::motorReady(){
 	return this->state == TMC_ControlState::Running && initialized && adcCalibrated && encoderAligned;
 }
@@ -355,37 +400,18 @@ void TMC4671::Run(){
 				break;
 			}
 			if(++powerCheckCounter > 5){
-				if(startupType == TMC_StartupType::NONE){
-					if(getMotionMode() != MotionMode::stop){
-						startupType = TMC_StartupType::warmStart;
-					}else{
-						startupType = TMC_StartupType::coldStart;
-					}
-				}
-				// got power long enough. proceed to set up encoder
-				// if encoder not set up
-				enablePin.set();
-				setPwm(TMC_PwmMode::PWM_FOC); // enable foc
-				if(!encoderAligned){
-					setEncoderType(conf.motconf.enctype);
-				}else{
-					//last state
-					if(!emergency){
-						changeState(laststateNopower);
-						setMotionMode(lastMotionMode,true);
-						ErrorHandler::clearError(ErrorCode::undervoltage);
-					}
-				}
+				initializeWithPower();
 			}
 			Delay(100);
 			break;
 		}
 
 		case TMC_ControlState::FullCalibration:
+		{
 			fullCalibrationInProgress = true;
 			/*
-			 * Wait for power
-			 * Calibrate ADC offsets
+			 * Wait for power (OK)
+			 * Calibrate ADC offsets (OK)
 			 * Measure motor response
 			 * depending on encoder do encoder parameter estimation
 			 * align and store phiE for single phase AENC or indexed ABN enc
@@ -412,6 +438,7 @@ void TMC4671::Run(){
 			setEncoderType(conf.motconf.enctype);
 
 			break;
+		}
 
 		case TMC_ControlState::IndexSearch:
 			autohome();
@@ -476,6 +503,8 @@ void TMC4671::Run(){
 				stopMotor();
 				laststate = TMC_ControlState::Running; // Go to running when starting again
 			}
+
+			fullCalibrationInProgress = false;
 		break;
 
 		default:
@@ -502,16 +531,16 @@ void TMC4671::Run(){
 	} // End while
 }
 
-bool TMC4671::calibrateEncoder(){
-//	if(conf.motconf.enctype == EncoderType_TMC::abn) {
-//		estimateABNparams();
-//		changeState(TMC_ControlState::ABN_init);
-//	}else if(conf.motconf.enctype == EncoderType_TMC::sincos || conf.motconf.enctype == EncoderType_TMC::uvw){
-//		calibrateAenc();
-//		changeState(TMC_ControlState::AENC_init);
-//	}
-	return true;
-}
+//bool TMC4671::calibrateEncoder(){
+////	if(conf.motconf.enctype == EncoderType_TMC::abn) {
+////		estimateABNparams();
+////		changeState(TMC_ControlState::ABN_init);
+////	}else if(conf.motconf.enctype == EncoderType_TMC::sincos || conf.motconf.enctype == EncoderType_TMC::uvw){
+////		calibrateAenc();
+////		changeState(TMC_ControlState::AENC_init);
+////	}
+//	return true;
+//}
 
 bool TMC4671::autohome(){
 	// Moves motor to index
@@ -691,7 +720,8 @@ void TMC4671::bangInitEnc(int16_t power){
 	if(conf.motconf.enctype == EncoderType_TMC::abn){
 		phiEreg = 0x2A;
 		phiEoffsetReg = 0x29;
-		zeroAbnUsingPhiM();
+		if(!encoderIndexHitFlag)
+			zeroAbnUsingPhiM();
 	}else if(conf.motconf.enctype == EncoderType_TMC::sincos || conf.motconf.enctype == EncoderType_TMC::uvw){
 		phiEreg = 0x46;
 		writeReg(0x41,0); //Zero encoder
@@ -704,7 +734,7 @@ void TMC4671::bangInitEnc(int16_t power){
 	//setMotionMode(MotionMode::uqudext);
 
 	//Delay(100);
-	int16_t phiEpos = 0; // This is where the check starts too
+	int16_t phiEpos = readReg(phiEreg)>>16; // starts at current encoder position
 	setPhiE_ext(phiEpos);
 	// Ramp up flux
 	for(int16_t flux = 0; flux <= power; flux+=10){
@@ -732,6 +762,9 @@ void TMC4671::bangInitEnc(int16_t power){
 	//Write offset
 	//int16_t phiE_abn = readReg(0x2A)>>16;
 	abnconf.phiEoffset = phiEpos-phiE_enc;
+	if(abnconf.phiEoffset == 0){ // 0 invalid
+		abnconf.phiEoffset = 1;
+	}
 	updateReg(phiEoffsetReg, abnconf.phiEoffset, 0xffff, 16);
 
 	setFluxTorque(0, 0);
@@ -862,7 +895,7 @@ bool TMC4671::checkEncoder(){
 		phiEreg = 0x46;
 	}
 
-	const uint16_t maxcount = 50;
+	const uint16_t maxcount = 10; // Allowed fails
 	const int16_t startAngle = 0;
 	const int16_t targetAngle = 0x3FFF;
 
@@ -1126,9 +1159,6 @@ void TMC4671::ABN_init(){
 			setTmcPos(pos);
 			setup_ABN_Enc(this->abnconf);
 
-//			if(abnconf.useIndex && !encoderIndexHitFlag){ // TODO changing direction might invalidate phiE offset because of index pulse width
-//				findEncoderIndex(abnconf.posOffsetFromIndex < 0 ? 10 : -10,bangInitPower/2,false,true); // Go to index and zero encoder
-//			}
 			encstate = ENC_InitState::findIndex;
 
 
@@ -1145,7 +1175,11 @@ void TMC4671::ABN_init(){
 
 		case ENC_InitState::aligning:
 			if(hasPower()){
-				bangInitEnc(bangInitPower);
+//				if(phiErestored && abnconf.useIndex && encoderIndexHitFlag &&!fullCalibrationInProgress){
+//					updateReg(0x29, abnconf.phiEoffset, 0xffff, 16); // Load previous phiE offset. else do flux ramp init
+//				}else{
+					bangInitEnc(bangInitPower);
+				//}
 				encstate = ENC_InitState::checking;
 			}
 		break;
@@ -1160,10 +1194,14 @@ void TMC4671::ABN_init(){
 					CommandHandler::broadcastCommandReply(CommandReply("Aligned successfully",1), (uint32_t)TMC4671_commands::encalign, CMDtype::get);
 
 				}
+				if(fullCalibrationInProgress && encoderIndexHitFlag && abnconf.useIndex){
+					Flash_Write(flashAddrs.phieOffset, abnconf.phiEoffset);
+				}
 
 			}else{
 				blinkErrLed(100, 10);
 				if(enc_retry++ > enc_retry_max){
+					Flash_Write(flashAddrs.phieOffset, 0); // Invalidate
 					blinkErrLed(50, 50);
 					changeState(TMC_ControlState::HardError);
 					Error err = Error(ErrorCode::encoderAlignmentFailed,ErrorType::critical,"Encoder alignment failed multiple times");
