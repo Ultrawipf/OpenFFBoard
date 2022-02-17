@@ -598,7 +598,7 @@ bool TMC4671::findEncoderIndex(int32_t speed, uint16_t power,bool offsetPhiM,boo
 	PhiE lastphie = getPhiEtype();
 	MotionMode lastmode = getMotionMode();
 	setFluxTorque(0, 0);
-	setPhiE_ext(0);
+	setPhiE_ext(getPhiE());
 	setPhiEtype(PhiE::openloop);
 
 //	abnconf.clear_on_N = true;
@@ -697,6 +697,15 @@ void TMC4671::setPositionExt(int32_t pos){
 void TMC4671::setPhiE_ext(int16_t phiE){
 	writeReg(0x1C, phiE);
 }
+
+int16_t TMC4671::getPhiE(){
+	return readReg(0x53);
+}
+
+void TMC4671::setPhiE(int16_t phiE){
+	writeReg(0x53,phiE);
+}
+
 
 /**
  * Aligns ABN encoders by forcing an angle with high current and calculating the offset
@@ -1382,7 +1391,9 @@ void TMC4671::runOpenLoop(uint16_t ud,uint16_t uq,int32_t speed,int32_t accel,bo
 		setMotionMode(MotionMode::uqudext,true);
 		setUdUq(ud,uq);
 	}
+	int16_t oldPhiE = getPhiE();
 	setPhiEtype(PhiE::openloop);
+	setPhiE(oldPhiE); // Start running at last phiE value
 
 	setOpenLoopSpeedAccel(speed, accel);
 }

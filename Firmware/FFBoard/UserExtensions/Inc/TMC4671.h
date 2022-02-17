@@ -393,6 +393,8 @@ public:
 	void setPhiEtype(PhiE type);
 	PhiE getPhiEtype();
 	void setPhiE_ext(int16_t phiE);
+	int16_t getPhiE();
+	void setPhiE(int16_t phiE);
 
 	void setPosSel(PosSelection psel);
 	void setVelSel(VelSelection vsel,uint8_t mode = 0);
