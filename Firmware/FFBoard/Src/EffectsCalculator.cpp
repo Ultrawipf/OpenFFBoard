@@ -2,8 +2,7 @@
  * EffectsCalculator.cpp
  *
  *  Created on: 27.01.21
- *      Author: Jon Lidgard
- *      Yannick Richter
+ *      Author: Jon Lidgard, Yannick Richter, Vincent Manoukian
  */
 
 #include <stdint.h>
@@ -27,7 +26,6 @@ const ClassIdentifier EffectsCalculator::getInfo(){
 	return info;
 }
 
-
 EffectsCalculator::EffectsCalculator() : CommandHandler("fx", CLSID_EFFECTSCALC),
 		Thread("EffectsCalculator", EFFECT_THREAD_MEM, EFFECT_THREAD_PRIO)
 {
@@ -40,7 +38,9 @@ EffectsCalculator::EffectsCalculator() : CommandHandler("fx", CLSID_EFFECTSCALC)
 	registerCommand("friction", EffectsCalculator_commands::friction, "Friction gain", CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("damper", EffectsCalculator_commands::damper, "Damper gain", CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("inertia", EffectsCalculator_commands::inertia, "Inertia gain", CMDFLAG_GET | CMDFLAG_SET);
-	registerCommand("effects", EffectsCalculator_commands::effects, "List effects (1 for details). set 0 to reset", CMDFLAG_GET | CMDFLAG_SET  | CMDFLAG_STR_ONLY);
+	registerCommand("effects", EffectsCalculator_commands::effects, "List effects. set 0 to reset", CMDFLAG_GET | CMDFLAG_SET  | CMDFLAG_STR_ONLY);
+	registerCommand("effectsDetails", EffectsCalculator_commands::effectsDetails, "List effects details. set 0 to reset", CMDFLAG_GET | CMDFLAG_SET  | CMDFLAG_STR_ONLY);
+	registerCommand("monitorEffect", EffectsCalculator_commands::monitorEffect, "Get monitoring status. set to 1 to enable.", CMDFLAG_GET | CMDFLAG_SET);
 
 	registerCommand("damper_f", EffectsCalculator_commands::damper_f, "Damper biquad freq", CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("damper_q", EffectsCalculator_commands::damper_q, "Damper biquad q", CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_INFOSTRING);
@@ -53,11 +53,12 @@ EffectsCalculator::EffectsCalculator() : CommandHandler("fx", CLSID_EFFECTSCALC)
 	registerCommand("scaleSpeed", EffectsCalculator_commands::scaleSpeed, "Scale to map SPEED on full range", CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("scaleAccel", EffectsCalculator_commands::scaleAccel, "Scale to map ACCEL on full range", CMDFLAG_GET | CMDFLAG_SET);
 
+	this->Start();
 }
 
 EffectsCalculator::~EffectsCalculator()
 {
-
+	this->Suspend();
 }
 
 
@@ -662,13 +663,13 @@ void EffectsCalculator::calcStatsEffectType(uint8_t type, int16_t force){
  * Does not reset when an effect is deactivated
  */
 std::string EffectsCalculator::listEffectsUsed(bool details){
-	std::string effects_list = "[";
-
-	if(effects_used == 0){
-		return "None";
-	}
+	std::string effects_list = "";
 
 	if (!details) {
+		if(effects_used == 0){
+			return "None";
+		}
+
 		static const char *effects[12] = {"Constant,","Ramp,","Square,","Sine,","Triangle,","Sawtooth Up,","Sawtooth Down,","Spring,","Damper,","Inertia,","Friction,","Custom,"};
 
 		for (int i=0;i < 12; i++) {
@@ -685,14 +686,14 @@ std::string EffectsCalculator::listEffectsUsed(bool details){
 			if (!firstItem) effects_list += ", ";
 			effects_list += "{'max':" + std::to_string(effects_stats[i].max);
 			effects_list += ", 'curr':" + std::to_string(effects_stats[i].current);
-			effects_list += ", 'nb':" + std::to_string(effects_stats[i].nb)+"}";
+			effects_list += ", 'nb':" + std::to_string(effects_stats[i].nb) + "}";
 			firstItem = false;
 		}
 
 	}
-	effects_list = "]";
 
-	return effects_list;
+
+	return effects_list.c_str();
 }
 
 
@@ -730,11 +731,26 @@ CommandStatus EffectsCalculator::command(const ParsedCommand& cmd,std::vector<Co
 	case EffectsCalculator_commands::effects:
 		if (cmd.type == CMDtype::get)
 		{
-			replies.emplace_back(CommandReply(listEffectsUsed(cmd.val)));
+			replies.emplace_back(listEffectsUsed(cmd.val));
 		}
 		else if (cmd.type == CMDtype::set && cmd.val == 0)
 		{
 			effects_used = 0;
+		}
+		break;
+	case EffectsCalculator_commands::effectsDetails:
+		if (cmd.type == CMDtype::get)
+		{
+			replies.push_back(CommandReply(listEffectsUsed(true)));
+		}
+		else if (cmd.type == CMDtype::set && cmd.val == 0)
+		{
+			effects_used = 0;
+			for (int i=0; i<12; i++) {
+				effects_stats[i].max = 0;
+				effects_stats[i].current = 0;
+				effects_stats[i].nb = 0;
+			}
 		}
 		break;
 	case EffectsCalculator_commands::spring:
@@ -864,7 +880,16 @@ CommandStatus EffectsCalculator::command(const ParsedCommand& cmd,std::vector<Co
 			scaleAccel = value;
 		}
 		break;
-
+	case EffectsCalculator_commands::monitorEffect:
+		if (cmd.type == CMDtype::get)
+		{
+			replies.push_back(CommandReply(isMonitorEffect));
+		}
+		else if (cmd.type == CMDtype::set)
+		{
+			isMonitorEffect = clip<uint8_t, uint8_t>(cmd.val, 0, 1);
+		}
+		break;
 
 	default:
 		return CommandStatus::NOT_FOUND;
@@ -877,14 +902,21 @@ CommandStatus EffectsCalculator::command(const ParsedCommand& cmd,std::vector<Co
  */
 void EffectsCalculator::Run() {
 	std::vector<CommandReply> replies;
+	Delay(500);
 	while (true) {
-		Delay(500);
+		Delay(3000);
 
-		replies.push_back(CommandReply(listEffectsUsed(true)));
-		CommandInterface::broadcastCommandReplyAsync(replies,
-				this,
-				(uint32_t)EffectsCalculator_commands::effects,
-				CMDtype::get);
+		if(isMonitorEffect) {
+
+			continue; // TODO uncomment when stream is ok
+			replies.push_back(CommandReply(listEffectsUsed(true)));
+			CommandInterface::broadcastCommandReplyAsync(replies,
+					this,
+					(uint32_t)EffectsCalculator_commands::effectsDetails,
+					CMDtype::get);
+
+		}
+
 	}
 
 }
