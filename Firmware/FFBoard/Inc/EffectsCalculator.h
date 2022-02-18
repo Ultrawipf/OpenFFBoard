@@ -15,8 +15,8 @@
 #include <vector>
 //#include "hid_cmd_defs.h"
 
-#define EFFECT_THREAD_MEM 32
-#define EFFECT_THREAD_PRIO 10 // Must be higher than main thread
+#define EFFECT_THREAD_MEM 128
+#define EFFECT_THREAD_PRIO 20 // low priority for stat
 
 class Axis;
 struct metric_t;
@@ -57,7 +57,8 @@ struct effect_stat_t {
 enum class EffectsCalculator_commands : uint32_t {
 	ffbfiltercf,ffbfiltercf_q,effects,spring,friction,damper,inertia,
 	damper_f, damper_q, friction_f, friction_q, inertia_f, inertia_q,
-	frictionPctSpeedToRampup, scaleSpeed, scaleAccel
+	frictionPctSpeedToRampup, scaleSpeed, scaleAccel,
+	monitorEffect, effectsDetails
 };
 
 class EffectsCalculator: public PersistentStorage,
@@ -117,6 +118,7 @@ private:
 	bool effects_active = false; // was ffb_active
 	uint32_t effects_used = 0;
 	effect_stat_t effects_stats[12]; // [0..12 effect types]
+	bool isMonitorEffect = false;
 
 	int32_t calcComponentForce(FFB_Effect *effect, int32_t forceVector, std::vector<std::unique_ptr<Axis>> &axes, uint8_t axis);
 	int32_t calcNonConditionEffectForce(FFB_Effect* effect);
