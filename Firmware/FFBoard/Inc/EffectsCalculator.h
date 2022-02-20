@@ -58,7 +58,7 @@ enum class EffectsCalculator_commands : uint32_t {
 	ffbfiltercf,ffbfiltercf_q,effects,spring,friction,damper,inertia,
 	damper_f, damper_q, friction_f, friction_q, inertia_f, inertia_q,
 	frictionPctSpeedToRampup, scaleSpeed, scaleAccel,
-	monitorEffect, effectsDetails
+	monitorEffect, effectsDetails, effectsForces
 };
 
 class EffectsCalculator: public PersistentStorage,
@@ -84,6 +84,7 @@ public:
 	uint8_t getGain();
 	void setCfFilter(biquad_constant_t *filter); // Set output filter frequency for the constant effect
 	void logEffectType(uint8_t type);
+	void calcStatsEffectType(uint8_t type, int16_t force);
 
 	//virtual ParseStatus command(ParsedCommand_old *cmd, std::string *reply);
 	CommandStatus command(const ParsedCommand& cmd,std::vector<CommandReply>& replies);
@@ -124,7 +125,7 @@ private:
 	int32_t calcConditionEffectForce(FFB_Effect *effect, float metric, uint8_t gain, uint8_t idx, float scale, float angle_ratio);
 	int32_t applyEnvelope(FFB_Effect *effect, int32_t value);
 	std::string listEffectsUsed(bool details = false);
-	void calcStatsEffectType(uint8_t type, int16_t force);
+	std::string listForceEffects();
 	void checkFilter(biquad_constant_t *filter, uint32_t freq,uint8_t q);
 };
 #endif /* EFFECTSCALCULATOR_H_ */

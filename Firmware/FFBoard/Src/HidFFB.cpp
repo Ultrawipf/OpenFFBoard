@@ -123,11 +123,13 @@ void HidFFB::hidOut(uint8_t report_id, hid_report_type_t report_type, uint8_t co
 		}else{
 			if(effects[id].state != 1){
 				set_filters(&effects[id]);
+				this->effects_calc->calcStatsEffectType(effects[id].type, 0); // record a 0 on the ended force
 				//effects[id].startTime = 0; // When an effect was stopped reset all parameters that could cause jerking
 			}
 			//printf("Start %d\n",report[1]);
 			effects[id].startTime = HAL_GetTick() + effects[id].startDelay; // + effects[id].startDelay;
 			effects[id].state = 1; //Start
+			this->effects_calc->logEffectType(effects[id].type); // log the effect status
 		}
 		//sendStatusReport(report[1]);
 		break;
@@ -245,7 +247,6 @@ void HidFFB::new_effect(FFB_CreateNewEffect_Feature_Data_t* effect){
 	//CommandHandler::logSerial("Creating Effect: " + std::to_string(effect->effectType) +  " at " + std::to_string(index) + "\n");
 	FFB_Effect new_effect;
 	new_effect.type = effect->effectType;
-	this->effects_calc->logEffectType(effect->effectType);
 
 	set_filters(&new_effect);
 
@@ -286,6 +287,7 @@ void HidFFB::set_effect(FFB_SetEffect_t* effect){
 	effect_p->startDelay = effect->startDelay;
 	if(!ffb_active)
 		start_FFB();
+
 	//sendStatusReport(effect->effectBlockIndex);
 }
 
@@ -319,6 +321,7 @@ void HidFFB::set_envelope(FFB_SetEnvelope_Data_t *report){
 	effect->fadeTime = report->fadeTime;
 	effect->useEnvelope = true;
 }
+
 void HidFFB::set_ramp(FFB_SetRamp_Data_t *report){
 	FFB_Effect *effect = &effects[report->effectBlockIndex - 1];
 	effect->magnitude = 0x7fff; // Full magnitude for envelope calculation. This effect does not have a periodic report
@@ -344,8 +347,6 @@ uint8_t HidFFB::find_free_effect(uint8_t type){ //Will return the first effect i
 	}
 	return 0;
 }
-
-
 
 void HidFFB::reset_ffb(){
 	for(uint8_t i=0;i<MAX_EFFECTS;i++){
