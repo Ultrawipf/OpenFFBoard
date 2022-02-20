@@ -40,6 +40,7 @@ EffectsCalculator::EffectsCalculator() : CommandHandler("fx", CLSID_EFFECTSCALC)
 	registerCommand("inertia", EffectsCalculator_commands::inertia, "Inertia gain", CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("effects", EffectsCalculator_commands::effects, "List effects. set 0 to reset", CMDFLAG_GET | CMDFLAG_SET  | CMDFLAG_STR_ONLY);
 	registerCommand("effectsDetails", EffectsCalculator_commands::effectsDetails, "List effects details. set 0 to reset", CMDFLAG_GET | CMDFLAG_SET  | CMDFLAG_STR_ONLY);
+	registerCommand("effectsForces", EffectsCalculator_commands::effectsForces, "List actual effects forces.", CMDFLAG_GET | CMDFLAG_STR_ONLY);
 	registerCommand("monitorEffect", EffectsCalculator_commands::monitorEffect, "Get monitoring status. set to 1 to enable.", CMDFLAG_GET | CMDFLAG_SET);
 
 	registerCommand("damper_f", EffectsCalculator_commands::damper_f, "Damper biquad freq", CMDFLAG_GET | CMDFLAG_SET);
@@ -140,6 +141,7 @@ void EffectsCalculator::calculateEffects(std::vector<std::unique_ptr<Axis>> &axe
 			if (HAL_GetTick() > effect->startTime + effect->duration)
 			{
 				effect->state = EFFECT_STATE_INACTIVE;
+				calcStatsEffectType(effect->type, 0); // record a 0 on the ended force
 			}
 		}
 
@@ -658,6 +660,7 @@ void EffectsCalculator::calcStatsEffectType(uint8_t type, int16_t force){
 		effects_stats[arrayLocation].max = std::max(effects_stats[arrayLocation].max, (int16_t)abs(force));
 	}
 }
+
 /**
  * Prints a list of effects that were active at some point
  * Does not reset when an effect is deactivated
@@ -684,14 +687,29 @@ std::string EffectsCalculator::listEffectsUsed(bool details){
 		bool firstItem = true;
 		for (int i=0;i < 12; i++) {
 			if (!firstItem) effects_list += ", ";
-			effects_list += "{'max':" + std::to_string(effects_stats[i].max);
-			effects_list += ", 'curr':" + std::to_string(effects_stats[i].current);
-			effects_list += ", 'nb':" + std::to_string(effects_stats[i].nb) + "}";
+			effects_list += "{\"max\":" + std::to_string(effects_stats[i].max);
+			effects_list += ", \"curr\":" + std::to_string(effects_stats[i].current);
+			effects_list += ", \"nb\":" + std::to_string(effects_stats[i].nb) + "}";
 			firstItem = false;
 		}
 
 	}
 
+	return effects_list.c_str();
+}
+
+/**
+ * Print return all current value effect
+ */
+std::string EffectsCalculator::listForceEffects() {
+	std::string effects_list = "";
+
+	bool firstItem = true;
+	for (int i=0; i < 12; i++) {
+		if (!firstItem) effects_list += ", ";
+		effects_list += std::to_string(effects_stats[i].current);
+		firstItem = false;
+	}
 
 	return effects_list.c_str();
 }
@@ -711,7 +729,6 @@ CommandStatus EffectsCalculator::command(const ParsedCommand& cmd,std::vector<Co
 			setCfFilter(&filter.constant);
 		}
 		break;
-
 	case EffectsCalculator_commands::ffbfiltercf_q:
 		if(cmd.type == CMDtype::info){
 			replies.push_back(CommandReply("scale:"+std::to_string(this->qfloatScaler)));
@@ -725,9 +742,7 @@ CommandStatus EffectsCalculator::command(const ParsedCommand& cmd,std::vector<Co
 			checkFilter(&filter.constant, filter.constant.freq, cmd.val);
 			setCfFilter(&filter.constant);
 		}
-
 		break;
-
 	case EffectsCalculator_commands::effects:
 		if (cmd.type == CMDtype::get)
 		{
@@ -751,6 +766,12 @@ CommandStatus EffectsCalculator::command(const ParsedCommand& cmd,std::vector<Co
 				effects_stats[i].current = 0;
 				effects_stats[i].nb = 0;
 			}
+		}
+		break;
+	case EffectsCalculator_commands::effectsForces:
+		if (cmd.type == CMDtype::get)
+		{
+			replies.push_back(CommandReply(listForceEffects()));
 		}
 		break;
 	case EffectsCalculator_commands::spring:
