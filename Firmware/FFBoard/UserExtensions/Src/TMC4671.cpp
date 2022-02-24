@@ -349,7 +349,7 @@ bool TMC4671::checkAdc(){
 	setFluxTorque(0, 0);
 	int32_t total = 0;
 	for(uint8_t i = 0;i<50;i++){
-		std::pair<int32_t,int32_t> ft = getActualCurrent();
+		std::pair<int32_t,int32_t> ft = getActualTorqueFlux();
 		total += (ft.first+ft.second);
 		Delay(2);
 	}
@@ -998,7 +998,7 @@ bool TMC4671::checkEncoder(){
 
 	setPhiE_ext(startAngle);
 	// Ramp up flux
-	for(int16_t flux = 0; flux <= bangInitPower; flux+=20){
+	for(int16_t flux = 0; flux <= bangInitPower/2; flux+=20){
 		setFluxTorque(flux, 0);
 		Delay(2);
 	}
@@ -1964,12 +1964,13 @@ void TMC4671::initAdc(uint16_t mdecA, uint16_t mdecB,uint32_t mclkA,uint32_t mcl
  * Returns measured flux and torque as a pair
  * Flux is first, torque second item
  */
-std::pair<int32_t,int32_t> TMC4671::getActualCurrent(){
+std::pair<int32_t,int32_t> TMC4671::getActualTorqueFlux(){
 	uint32_t tfluxa = readReg(0x69);
 	int16_t af = (tfluxa & 0xffff);
 	int16_t at = (tfluxa >> 16);
 	return std::pair<int16_t,int16_t>(af,at);
 }
+
 
 //__attribute__((optimize("-Ofast")))
 uint32_t TMC4671::readReg(uint8_t reg){
@@ -2369,7 +2370,8 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 
 	case TMC4671_commands::acttrq:
 		if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply(getActualCurrent().second));
+			std::pair<int32_t,int32_t> current = getActualTorqueFlux();
+			replies.push_back(CommandReply(current.second,current.first));
 		}
 		break;
 
