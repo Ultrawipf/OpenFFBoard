@@ -130,7 +130,7 @@ void ErrorHandler::errorCallback(Error &error, bool cleared){
 //	return info;
 //}
 
-ErrorPrinter::ErrorPrinter() : Thread("errprint",512,19){ // Higher than default task but low.
+ErrorPrinter::ErrorPrinter() : Thread("errprint",256,19){ // Higher than default task but low.
 	this->Start();
 }
 

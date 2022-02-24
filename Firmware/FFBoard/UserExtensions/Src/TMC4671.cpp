@@ -1038,7 +1038,7 @@ bool TMC4671::checkEncoder(){
 		for(int16_t angle = targetAngle;angle>0;angle -= 0x00ff){
 			uint16_t c = 0;
 			setPhiE_ext(angle+startAngle);
-			Delay(10);
+			Delay(5);
 			phiE_enc = (int16_t)((readReg(phiEreg)>>16) - startAngle);
 			int16_t err = abs(phiE_enc - angle);
 			int16_t nErr = abs(phiE_enc + angle);
