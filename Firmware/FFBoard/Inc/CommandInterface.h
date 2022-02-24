@@ -30,9 +30,9 @@ public:
 	const virtual std::string getHelpstring(){return "";};
 	virtual bool getNewCommands(std::vector<ParsedCommand>& commands) = 0;
 	virtual bool hasNewCommands();
-	static CommandResult makeCommandReply(std::vector<CommandReply>& reply,CommandHandler* handler, uint32_t cmdId,CMDtype type = CMDtype::get,CommandInterface* originalInterface = nullptr);
-	static void broadcastCommandReplyAsync(std::vector<CommandReply>& reply,CommandHandler* handler, uint32_t cmdId,CMDtype type = CMDtype::get);
-	virtual void sendReplies(std::vector<CommandResult>& results,CommandInterface* originalInterface); // All commands from batch done
+	static CommandResult makeCommandReply(const std::vector<CommandReply>& reply,CommandHandler* handler, uint32_t cmdId,CMDtype type = CMDtype::get,CommandInterface* originalInterface = nullptr);
+	static void broadcastCommandReplyAsync(const std::vector<CommandReply>& reply,CommandHandler* handler, uint32_t cmdId,CMDtype type = CMDtype::get);
+	virtual void sendReplies(const std::vector<CommandResult>& results,CommandInterface* originalInterface); // All commands from batch done
 	virtual void sendReplyAsync(std::vector<CommandReply>& reply,CommandHandler* handler, uint32_t cmdId,CMDtype type);
 	virtual bool readyToSend();
 protected:
@@ -61,17 +61,24 @@ protected:
 
 
 //receives bytes from mainclass. calls its own parser instance, calls global parser thread, passes replies  back to cdc port.
-class CDC_CommandInterface : public StringCommandInterface{
+class CDC_CommandInterface : public StringCommandInterface,public cpp_freertos::Thread{
 public:
 	CDC_CommandInterface();
 	virtual ~CDC_CommandInterface();
 
-	void sendReplies(std::vector<CommandResult>& results,CommandInterface* originalInterface) override;
+	void Run();
+
+	void sendReplies(const std::vector<CommandResult>& results,CommandInterface* originalInterface) override;
 	const std::string getHelpstring(){return "CDC interface. " + StringCommandInterface::getHelpstring();};
 	bool readyToSend() override;
+
 private:
 	bool enableBroadcastFromOtherInterfaces = true;
 	const uint32_t parserTimeout = 2000;
+	cpp_freertos::BinarySemaphore sendSem;
+	std::vector<CommandResult> resultsBuffer;
+	bool nextFormat = false;
+	std::string sendBuffer;
 };
 
 
@@ -83,7 +90,7 @@ public:
 
 	void Run();
 
-	void sendReplies(std::vector<CommandResult>& results,CommandInterface* originalInterface) override;
+	void sendReplies(const std::vector<CommandResult>& results,CommandInterface* originalInterface) override;
 	void uartRcv(char& buf);
 	const std::string getHelpstring(){return "UART interface. " + StringCommandInterface::getHelpstring();};
 	//void endUartTransfer(UARTPort* port) override;
@@ -96,7 +103,7 @@ private:
 	std::string sendBuffer;
 	bool enableBroadcastFromOtherInterfaces = false; // uart is slow. do not broadcast other messages by default
 	cpp_freertos::BinarySemaphore cmdUartSem;
-	cpp_freertos::BinarySemaphore bufferSem;
+	//cpp_freertos::BinarySemaphore bufferSem;
 	std::vector<CommandResult> resultsBuffer;
 	bool nextFormat = false;
 };
