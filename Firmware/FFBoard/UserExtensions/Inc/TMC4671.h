@@ -35,13 +35,10 @@ extern SPI_HandleTypeDef HSPIDRV;
 extern TIM_HandleTypeDef TIM_TMC;
 #endif
 
-enum class TMC_ControlState : uint32_t {uninitialized=0,waitPower=1,Shutdown=2,Running=3,ABN_init=4,AENC_init=5,HardError=6,OverTemp=7,EncoderFinished=8,IndexSearch=9,FullCalibration=10};
+enum class TMC_ControlState : uint32_t {uninitialized,waitPower,Shutdown,Running,EncoderInit,EncoderFinished,HardError,OverTemp,IndexSearch,FullCalibration};
 
 enum class TMC_PwmMode : uint8_t {off = 0,HSlow_LShigh = 1, HShigh_LSlow = 2, res2 = 3, res3 = 4, PWM_LS = 5, PWM_HS = 6, PWM_FOC = 7};
 
-
-//enum class TMC_ControlState {uninitialized,No_power,Shutdown,Running,Init_wait,ABN_init,AENC_init,Enc_bang,HardError,OverTemp,EncoderFinished};
-enum class ENC_InitState {startFullCalib,findIndex,uninitialized,estimating,aligning,checking,OK};
 enum class TMC_StartupType{NONE,coldStart,warmStart};
 
 enum class MotorType : uint8_t {NONE=0,DC=1,STEPPER=2,BLDC=3,ERR};
@@ -140,7 +137,7 @@ struct TMC4671MainConfig{
 	uint8_t bbmL			= 10;
 	uint8_t bbmH			= 10;
 	uint16_t mdecA 			= 660; // 334 default. 331 recommended by datasheet,662 double. 660 lowest noise
-	uint16_t mdecB 			= 660;
+	uint16_t mdecB 			= 334; // Encoder ADC faster rate
 	uint32_t mclkA			= 0x20000000; //0x20000000 default
 	uint32_t mclkB			= 0x20000000; // For AENC
 	uint16_t adc_I0_offset 	= 33415;
@@ -325,7 +322,6 @@ public:
 	void setup_AENC(TMC4671AENCConf encconf);
 	void setup_HALL(TMC4671HALLConf hallconf);
 	void bangInitEnc(int16_t power);
-	void fluxRampAlignEncoder(int16_t maxPower);
 	void estimateABNparams();
 	bool checkEncoder();
 	void calibrateAenc();
@@ -483,7 +479,6 @@ private:
 	const Error lowVoltageError = Error(ErrorCode::undervoltage,ErrorType::warning,"Low motor voltage");
 	const Error communicationError = Error(ErrorCode::tmcCommunicationError, ErrorType::warning, "TMC not responding");
 
-	ENC_InitState encstate = ENC_InitState::uninitialized;
 	TMC_ControlState state = TMC_ControlState::uninitialized;
 	TMC_ControlState laststate = TMC_ControlState::uninitialized;
 	TMC_ControlState requestedState = TMC_ControlState::Shutdown;
@@ -512,8 +507,6 @@ private:
 
 	bool allowStateChange = false;
 
-
-
 	uint8_t enc_retry = 0;
 	uint8_t enc_retry_max = 3;
 
@@ -532,8 +525,10 @@ private:
 
 
 // state machine
-	void ABN_init();
-	void AENC_init();
+//	void ABN_init();
+//	void AENC_init();
+
+	void encoderInit();
 
 	uint32_t initTime = 0;
 	bool manualEncAlign = false;
