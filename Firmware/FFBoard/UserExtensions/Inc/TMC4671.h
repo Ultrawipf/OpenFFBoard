@@ -26,7 +26,7 @@
 #include "cpp_target_config.h"
 
 #define SPITIMEOUT 500
-#define TMC_THREAD_MEM 512
+#define TMC_THREAD_MEM 256
 #define TMC_THREAD_PRIO 25 // Must be higher than main thread
 
 extern SPI_HandleTypeDef HSPIDRV;

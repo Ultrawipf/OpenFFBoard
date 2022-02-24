@@ -42,10 +42,10 @@ public:
 	const std::string getHelpstring(){return "HID";}; // Not applicable here
 	bool getNewCommands(std::vector<ParsedCommand>& commands);
 	//bool hasNewCommands();
-	void sendReplies(std::vector<CommandResult>& results,CommandInterface* originalInterface); // All commands from batch done
+	void sendReplies(const std::vector<CommandResult>& results,CommandInterface* originalInterface); // All commands from batch done
 	void hidCmdCallback(HID_CMD_Data_t* data);
 	bool sendHidCmd(HID_CMD_Data_t* data);
-	void queueReplyValues(CommandReply& reply,ParsedCommand& command);
+	void queueReplyValues(const CommandReply& reply,const ParsedCommand& command);
 	void transferComplete(uint8_t itf, uint8_t const* report, uint8_t len);
 	bool readyToSend();
 	void Run();

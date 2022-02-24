@@ -56,10 +56,10 @@ bool HID_CommandInterface::readyToSend(){
 	return this->outBuffer.size() < maxQueuedReplies;
 }
 
-void HID_CommandInterface::sendReplies(std::vector<CommandResult>& results,CommandInterface* originalInterface){
+void HID_CommandInterface::sendReplies(const std::vector<CommandResult>& results,CommandInterface* originalInterface){
 
-	for(CommandResult& result : results){
-		std::vector<CommandReply>& replies = result.reply;
+	for(const CommandResult& result : results){
+		const std::vector<CommandReply>& replies = result.reply;
 		if(result.type == CommandStatus::NO_REPLY) // Normally not possible at this point.
 			continue;
 
@@ -85,7 +85,7 @@ void HID_CommandInterface::sendReplies(std::vector<CommandResult>& results,Comma
 		}
 
 
-		for(CommandReply reply : replies){
+		for(const CommandReply reply : replies){
 			if(reply.type == CommandReplyType::STRING){
 				continue; // Ignore string only replies
 			}
@@ -97,7 +97,7 @@ void HID_CommandInterface::sendReplies(std::vector<CommandResult>& results,Comma
 }
 
 
-void HID_CommandInterface::queueReplyValues(CommandReply& reply,ParsedCommand& command){
+void HID_CommandInterface::queueReplyValues(const CommandReply& reply,const ParsedCommand& command){
 	HID_CMD_Data_t hidReply;
 	CmdHandlerInfo* info = command.target->getCommandHandlerInfo();
 	hidReply.addr = reply.adr;
