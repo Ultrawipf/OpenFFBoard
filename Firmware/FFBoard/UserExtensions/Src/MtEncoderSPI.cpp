@@ -38,7 +38,7 @@ MtEncoderSPI::~MtEncoderSPI() {
 }
 
 void MtEncoderSPI::restoreFlash(){
-	uint16_t conf_int = Flash_Read(ADR_MTENC_CONF1, 0);
+	uint16_t conf_int = Flash_ReadDefault(ADR_MTENC_CONF1, 0);
 	uint8_t cspin = conf_int & 0xF;
 	setCsPin(cspin);
 }
