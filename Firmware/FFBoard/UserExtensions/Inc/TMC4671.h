@@ -35,14 +35,14 @@ extern SPI_HandleTypeDef HSPIDRV;
 extern TIM_HandleTypeDef TIM_TMC;
 #endif
 
-enum class TMC_ControlState : uint32_t {uninitialized,waitPower,Shutdown,Running,EncoderInit,EncoderFinished,HardError,OverTemp,IndexSearch,FullCalibration};
+enum class TMC_ControlState : uint32_t {uninitialized,waitPower,Shutdown,Running,EncoderInit,EncoderFinished,HardError,OverTemp,IndexSearch,FullCalibration,ExternalEncoderInit};
 
 enum class TMC_PwmMode : uint8_t {off = 0,HSlow_LShigh = 1, HShigh_LSlow = 2, res2 = 3, res3 = 4, PWM_LS = 5, PWM_HS = 6, PWM_FOC = 7};
 
 enum class TMC_StartupType{NONE,coldStart,warmStart};
 
 enum class MotorType : uint8_t {NONE=0,DC=1,STEPPER=2,BLDC=3,ERR};
-enum class PhiE : uint8_t {ext=1,openloop=2,abn=3,hall=5,aenc=6,aencE=7,NONE};
+enum class PhiE : uint8_t {ext=1,openloop=2,abn=3,hall=5,aenc=6,aencE=7,NONE,extEncoder};
 enum class MotionMode : uint8_t {stop=0,torque=1,velocity=2,position=3,prbsflux=4,prbstorque=5,prbsvelocity=6,uqudext=8,encminimove=9,NONE};
 enum class FFMode : uint8_t {none=0,velocity=1,torque=2};
 enum class PosSelection : uint8_t {PhiE=0, PhiE_ext=1, PhiE_openloop=2, PhiE_abn=3, res1=4, PhiE_hal=5, PhiE_aenc=6, PhiA_aenc=7, res2=8, PhiM_abn=9, PhiM_abn2=10, PhiM_aenc=11, PhiM_hal=12};
@@ -391,6 +391,8 @@ public:
 	PhiE getPhiEtype();
 	void setPhiE_ext(int16_t phiE);
 	int16_t getPhiE();
+	int16_t getPhiEfromExternalEncoder();
+	int16_t getPhiE_Enc();
 
 
 	void setPosSel(PosSelection psel);
@@ -425,7 +427,9 @@ public:
 
 	//Encoder
 	Encoder* getEncoder() override;
+	void setEncoder(std::shared_ptr<Encoder>& encoder);
 	bool hasIntegratedEncoder() override;
+	inline bool usingExternalEncoder(){return conf.motconf.enctype == EncoderType_TMC::ext && drvEncoder != nullptr;}
 	int32_t getPos() override;
 	int32_t getPosAbs() override;
 	void setPos(int32_t pos) override;
@@ -438,6 +442,7 @@ public:
 	uint32_t encToPos(uint32_t enc);
 
 	void exti(uint16_t GPIO_Pin);
+
 
 	bool findEncoderIndex(int32_t speed=10, uint16_t power=2500,bool offsetPhiM=false,bool zeroCount=false);
 	bool autohome();
@@ -504,6 +509,8 @@ private:
 	bool encHallRestored = false;
 	//int32_t phiEOffsetRestored = 0; //-0x8000 to 0x7fff
 	uint8_t calibrationFailCount = 2;
+
+	int16_t externalEncoderPhieOffset = 0; // PhiE offset for external encoders
 
 	bool allowStateChange = false;
 

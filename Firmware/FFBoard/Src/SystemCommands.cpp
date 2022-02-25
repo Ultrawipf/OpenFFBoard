@@ -247,7 +247,11 @@ CommandStatus SystemCommands::internalCommand(const ParsedCommand& cmd,std::vect
 		case FFBoardMain_commands::format:
 			if(cmd.type == CMDtype::set && cmd.val==1){
 				HAL_FLASH_Unlock();
-				EE_Format();
+				if(EE_Format() == HAL_OK){
+					flag = CommandStatus::OK;
+				}else{
+					flag = CommandStatus::ERR;
+				}
 				HAL_FLASH_Lock();
 			}
 		break;

@@ -523,6 +523,11 @@ void TMC4671::Run(){
 				encoderInit();
 		break;
 
+		case TMC_ControlState::ExternalEncoderInit:
+			if(powerInitialized && hasPower() && drvEncoder != nullptr)
+				encoderInit();
+			break;
+
 		case TMC_ControlState::HardError:
 
 		break; // Broken
@@ -760,8 +765,15 @@ void TMC4671::setPhiE_ext(int16_t phiE){
 	writeReg(0x1C, phiE);
 }
 
+int16_t TMC4671::getPhiEfromExternalEncoder(){
+	return(drvEncoder.get()->getPosAbs_f() * 0x7fff * conf.motconf.pole_pairs) + externalEncoderPhieOffset;
+}
+
 // PhiE is read only
 int16_t TMC4671::getPhiE(){
+	if(usingExternalEncoder()){
+		return getPhiEfromExternalEncoder();
+	}
 	return readReg(0x53);
 }
 
@@ -780,25 +792,18 @@ void TMC4671::bangInitEnc(int16_t power){
 	PhiE lastphie = getPhiEtype();
 	MotionMode lastmode = getMotionMode();
 	setFluxTorque(0, 0);
-//	setPhiE_ext(0);
-//	setPhiEtype(PhiE::ext);
 
-	//int32_t pos = getPos();
-
-
-
-	uint8_t phiEreg = 0;
 	uint8_t phiEoffsetReg = 0;
 	if(conf.motconf.enctype == EncoderType_TMC::abn){
-		phiEreg = 0x2A;
 		phiEoffsetReg = 0x29;
 		if(!encoderIndexHitFlag)
 			zeroAbnUsingPhiM();
 	}else if(conf.motconf.enctype == EncoderType_TMC::sincos || conf.motconf.enctype == EncoderType_TMC::uvw){
-		phiEreg = 0x46;
 		writeReg(0x41,0); //Zero encoder
 		writeReg(0x47,0); //Zero encoder
 		phiEoffsetReg = 0x45;
+	}else if (usingExternalEncoder()){
+		externalEncoderPhieOffset = 0;
 	}else{
 		return; // Not relevant
 	}
@@ -817,8 +822,8 @@ void TMC4671::bangInitEnc(int16_t power){
 		setFluxTorque(flux, 0);
 		Delay(3);
 	}
+	int16_t phiE_enc = getPhiE_Enc();
 
-	int16_t phiE_enc = readReg(phiEreg)>>16;
 	Delay(50);
 	int16_t phiE_abn_old = 0;
 	int16_t c = 0;
@@ -831,7 +836,10 @@ void TMC4671::bangInitEnc(int16_t power){
 			still = 0;
 		}
 		phiE_abn_old = phiE_enc;
-		phiE_enc=readReg(phiEreg)>>16;
+
+		phiE_enc = getPhiE_Enc();
+
+		//phiE_enc=readReg(phiEreg)>>16;
 		Delay(10);
 	}
 	setFluxTorque(0, 0);
@@ -843,7 +851,11 @@ void TMC4671::bangInitEnc(int16_t power){
 	if(phiEoffset == 0){ // 0 invalid
 		phiEoffset = 1;
 	}
-	updateReg(phiEoffsetReg, phiEoffset, 0xffff, 16);
+	if (usingExternalEncoder()){
+		externalEncoderPhieOffset = phiEoffset;
+	}else{
+		updateReg(phiEoffsetReg, phiEoffset, 0xffff, 16);
+	}
 
 	if(conf.motconf.enctype == EncoderType_TMC::abn){
 		abnconf.phiEoffset = phiEoffset;
@@ -966,6 +978,22 @@ void TMC4671::calibrateAenc(){
 	blinkClipLed(0, 0);
 }
 
+/**
+ * Reads phiE directly from the encoder selection instead of the current phiE selection
+ */
+int16_t TMC4671::getPhiE_Enc(){
+	if(conf.motconf.enctype == EncoderType_TMC::abn){
+		return (int16_t)(readReg(0x2A)>>16);
+	}else if(conf.motconf.enctype == EncoderType_TMC::sincos || conf.motconf.enctype == EncoderType_TMC::uvw){
+		return (int16_t)(readReg(0x46)>>16);
+	}else if(conf.motconf.enctype == EncoderType_TMC::hall){
+		return (int16_t)(readReg(0x39)>>16);
+	}else if(usingExternalEncoder()){
+		return getPhiEfromExternalEncoder();
+	}else{
+		return getPhiE();
+	}
+}
 
 /**
  * Steps the motor a few times to check if the encoder follows correctly
@@ -977,17 +1005,9 @@ bool TMC4671::checkEncoder(){
 		return true;
 	}
 	blinkClipLed(150, 0);
-	uint8_t phiEreg = 0;
-	if(conf.motconf.enctype == EncoderType_TMC::abn){
-		phiEreg = 0x2A;
-	}else if(conf.motconf.enctype == EncoderType_TMC::sincos || conf.motconf.enctype == EncoderType_TMC::uvw){
-		phiEreg = 0x46;
-	}else if(conf.motconf.enctype ==EncoderType_TMC::ext){
-		phiEreg = 0x1C;
-	}
 
 	const uint16_t maxcount = 10; // Allowed fails
-	const int16_t startAngle = (int16_t)(readReg(phiEreg)>>16); // Start angle offsets all angles later so there is no jump if angle is already properly aligned
+	const int16_t startAngle = getPhiE_Enc(); // Start angle offsets all angles later so there is no jump if angle is already properly aligned
 	const int16_t targetAngle = 0x3FFF;
 
 	bool result = true;
@@ -1011,12 +1031,12 @@ bool TMC4671::checkEncoder(){
 		uint16_t c = 0;
 		setPhiE_ext(angle+startAngle);
 		Delay(5);
-		phiE_enc = (int16_t)((readReg(phiEreg)>>16) - startAngle);
+		phiE_enc = getPhiE_Enc() - startAngle;
 		int16_t err = abs(phiE_enc - angle);
 		int16_t nErr = abs(phiE_enc + angle);
 		// Wait more until encoder settles a bit
 		while(err > 2000 && nErr > 2000 && c++ < 50){
-			phiE_enc = (int16_t)((readReg(phiEreg)>>16) - startAngle);
+			phiE_enc = getPhiE_Enc() - startAngle;
 			err = abs(phiE_enc - angle);
 			nErr = abs(angle - phiE_enc);
 			Delay(10);
@@ -1039,12 +1059,12 @@ bool TMC4671::checkEncoder(){
 			uint16_t c = 0;
 			setPhiE_ext(angle+startAngle);
 			Delay(5);
-			phiE_enc = (int16_t)((readReg(phiEreg)>>16) - startAngle);
+			phiE_enc = getPhiE_Enc() - startAngle;
 			int16_t err = abs(phiE_enc - angle);
 			int16_t nErr = abs(phiE_enc + angle);
 			// Wait more
 			while(err > 2500 && nErr > 2500 && c++ < 50){
-				phiE_enc = (int16_t)((readReg(phiEreg)>>16) - startAngle);
+				phiE_enc = getPhiE_Enc() - startAngle;
 				err = abs(phiE_enc - angle);
 				nErr = abs(angle - phiE_enc);
 				Delay(10);
@@ -1253,7 +1273,9 @@ void TMC4671::encoderInit(){
 		setPhiE_ext(getPhiE());
 		setPhiEtype(PhiE::ext);
 	}
+
 	// Align encoder
+	// TODO handle absolute external encoders
 	bangInitEnc(bangInitPower);
 
 	// Check encoder
@@ -1290,6 +1312,10 @@ void TMC4671::encoderInit(){
 		setPhiEtype(PhiE::abn);
 	}else if(conf.motconf.enctype == EncoderType_TMC::sincos || conf.motconf.enctype == EncoderType_TMC::uvw){
 		setPhiEtype(PhiE::aenc);
+	}else if(usingExternalEncoder()){
+//		setPosSel(PosSelection::PhiE_ext);
+//		setVelSel(VelSelection::PhiE_ext); // Mechanical Angle (RPM)
+		setPhiEtype(PhiE::extEncoder);
 	}
 
 }
@@ -1299,6 +1325,10 @@ void TMC4671::encoderInit(){
  * Setup the specific parameters (abnconf, aencconf...) first.
  */
 void TMC4671::setEncoderType(EncoderType_TMC type){
+	// If no external timer is set external encoder is not valid
+	if(!externalEncoderTimer && type == EncoderType_TMC::ext){
+		type = EncoderType_TMC::NONE;
+	}
 	this->conf.motconf.enctype = type;
 	this->statusMask.flags.AENC_N = 0;
 	this->statusMask.flags.ENC_N = 0;
@@ -1335,10 +1365,13 @@ void TMC4671::setEncoderType(EncoderType_TMC type){
 		encoderAligned = true;
 		setPhiEtype(PhiE::hall);
 		setup_HALL(hallconf);
-	}else{
-		encoderAligned = true;
+	}else if(type == EncoderType_TMC::ext){
+		setUpExtEncTimer();
 		//changeState(TMC_ControlState::Shutdown);
+		changeState(TMC_ControlState::ExternalEncoderInit);
+	}else{
 		changeState(TMC_ControlState::Shutdown);
+		encoderAligned = true;
 	}
 
 }
@@ -1357,10 +1390,20 @@ uint32_t TMC4671::getEncCpr(){
 
 void TMC4671::setPhiEtype(PhiE type){
 	conf.motconf.phiEsource = type;
+
+	// External encoder is phiE ext but enables constant phiE updates too
+	if(type == PhiE::extEncoder){
+		type = PhiE::ext;
+	}
+
 	writeReg(0x52, (uint8_t)type & 0xff);
 }
 PhiE TMC4671::getPhiEtype(){
-	return PhiE(readReg(0x52) & 0x7);
+	PhiE phie = PhiE(readReg(0x52) & 0x7);
+	if(phie == PhiE::ext && conf.motconf.phiEsource == PhiE::extEncoder){
+		return PhiE::extEncoder;
+	}
+	return phie;
 }
 
 void TMC4671::setMotionMode(MotionMode mode, bool force){
@@ -1514,11 +1557,24 @@ std::pair<uint32_t,std::string> TMC4671::getTmcType(){
 }
 
 Encoder* TMC4671::getEncoder(){
-	return static_cast<Encoder*>(this);
+	if(conf.motconf.enctype == EncoderType_TMC::ext && externalEncoderTimer){
+		return MotorDriver::drvEncoder.get();
+	}else{
+		return static_cast<Encoder*>(this);
+	}
+}
+
+void TMC4671::setEncoder(std::shared_ptr<Encoder>& encoder){
+	MotorDriver::drvEncoder = encoder;
+	if(conf.motconf.enctype == EncoderType_TMC::ext && externalEncoderTimer){
+		// TODO Calibrate and align external encoder
+		changeState(TMC_ControlState::ExternalEncoderInit);
+	}
 }
 
 bool TMC4671::hasIntegratedEncoder(){
-	return true;
+	// Use internal encoder if not external encoder is selected
+	return conf.motconf.enctype != EncoderType_TMC::ext;
 }
 
 /**
@@ -1588,6 +1644,9 @@ uint32_t TMC4671::getCpr(){
 //	if(this->conf.motconf.phiEsource == PhiE::abn){
 //		return abnconf.cpr;
 //	}else{
+	if(usingExternalEncoder()){
+		return drvEncoder->getCpr();
+	}
 	return 0xffff;
 //	}
 
@@ -1595,6 +1654,7 @@ uint32_t TMC4671::getCpr(){
 void TMC4671::setCpr(uint32_t cpr){
 	if(cpr == 0)
 		cpr = 1;
+
 
 	this->abnconf.cpr = cpr;
 	this->aencconf.cpr = cpr;
@@ -2266,7 +2326,7 @@ void TMC4671::registerCommands(){
 	registerCommand("tmcHwType", TMC4671_commands::tmcHwType, "Version of TMC board",CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_INFOSTRING);
 	registerCommand("encalign", TMC4671_commands::encalign, "Align encoder",CMDFLAG_GET);
 	registerCommand("poles", TMC4671_commands::poles, "Motor pole pairs",CMDFLAG_GET | CMDFLAG_SET);
-	registerCommand("acttrq", TMC4671_commands::acttrq, "Read torque",CMDFLAG_GET);
+	registerCommand("acttrq", TMC4671_commands::acttrq, "Measure torque and flux",CMDFLAG_GET);
 	registerCommand("pwmlim", TMC4671_commands::pwmlim, "PWM limit",CMDFLAG_DEBUG | CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("torqueP", TMC4671_commands::torqueP, "Torque P",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("torqueI", TMC4671_commands::torqueI, "Torque I",CMDFLAG_GET | CMDFLAG_SET);
@@ -2328,7 +2388,11 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 		}else if(cmd.type == CMDtype::set){
 			this->setEncoderType((EncoderType_TMC)cmd.val);
 		}else{
+#ifdef TIM_TMC
+			replies.push_back(CommandReply("NONE=0,ABN=1,SinCos=2,Analog UVW=3,Hall=4,External=5"));
+#else
 			replies.push_back(CommandReply("NONE=0,ABN=1,SinCos=2,Analog UVW=3,Hall=4"));
+#endif
 		}
 		break;
 
@@ -2536,6 +2600,9 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 #ifdef TIM_TMC
 	void TMC4671::timerElapsed(TIM_HandleTypeDef* htim){
 		// Read encoder and send to tmc immediately
+		if(usingExternalEncoder() && this->conf.motconf.phiEsource == PhiE::extEncoder){
+			setPhiE_ext(getPhiEfromExternalEncoder());
+		}
 	}
 #endif
 
