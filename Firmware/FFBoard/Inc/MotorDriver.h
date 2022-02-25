@@ -42,7 +42,7 @@ public:
 	virtual bool hasIntegratedEncoder(); // Returns true if the driver has an integrated encoder. If false the axis will pass one to the driver
 
 
-private:
+protected:
 	std::shared_ptr<Encoder> drvEncoder = std::make_shared<Encoder>(); // Dummy encoder
 };
 
