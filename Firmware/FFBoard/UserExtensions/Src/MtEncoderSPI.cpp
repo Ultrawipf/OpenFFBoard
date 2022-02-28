@@ -85,29 +85,28 @@ void MtEncoderSPI::setPos(int32_t pos){
 }
 
 
-void MtEncoderSPI::endSpiTransfer(SPIPort* port){
+void MtEncoderSPI::spiTxRxCompleted(SPIPort* port){
 
-	clearChipSelect();
 	if(updateInProgress){
 		updateAngleStatusCb();
 	}
 
-	port->giveSemaphore();
 }
 
 /**
  * Reads the angle and diagnostic registers in burst mode
  */
 void MtEncoderSPI::updateAngleStatus(){
-	if(spiPort.isTaken()){
+	if(spiPort.isTaken() || this->updateInProgress){
 		return; // ignore this update
 	}
 	uint8_t txbufNew[4] = {0x03 | MAGNTEK_READ,0,0,0};
 	memcpy(this->txbuf,txbufNew,4);
-	this->updateInProgress = true;
-	spiPort.transmitReceive_DMA(txbuf, rxbuf, 4, this);
-	//while(spiPort.isTaken()){}
+//	this->updateInProgress = true;
+//	spiPort.transmitReceive_DMA(txbuf, rxbuf, 4, this);
 
+	spiPort.transmitReceive(txbuf, rxbuf, 4, this,100);
+	updateAngleStatusCb();
 
 }
 
@@ -136,13 +135,15 @@ void MtEncoderSPI::updateAngleStatusCb(){
 }
 
 int32_t MtEncoderSPI::getPos(){
+	int32_t returnpos = curPos - offset;
 	updateAngleStatus();
-	return curPos - offset;
+	return returnpos;
 }
 
 int32_t MtEncoderSPI::getPosAbs(){
+	int32_t returnpos = curAngleInt;
 	updateAngleStatus();
-	return curPos;
+	return returnpos;
 }
 
 uint32_t MtEncoderSPI::getCpr(){

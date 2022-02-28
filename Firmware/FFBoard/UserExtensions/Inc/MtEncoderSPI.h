@@ -52,14 +52,14 @@ public:
 private:
 	uint8_t readSpi(uint8_t addr);
 	void writeSpi(uint8_t addr,uint8_t data);
-	void endSpiTransfer(SPIPort* port);
+	void spiTxRxCompleted(SPIPort* port);
 
-	bool nomag = false; // Magnet lost in last report
-	bool overspeed = false; // Overspeed flag set in last report
-	int32_t lastAngleInt = 0;
-	int32_t curAngleInt = 0;
-	int32_t curPos = 0;
-	int32_t rotations = 0;
+	volatile bool nomag = false; // Magnet lost in last report
+	volatile bool overspeed = false; // Overspeed flag set in last report
+	volatile int32_t lastAngleInt = 0;
+	volatile int32_t curAngleInt = 0;
+	volatile int32_t curPos = 0;
+	volatile int32_t rotations = 0;
 	int32_t offset = 0;
 	uint8_t cspin = 0;
 	volatile bool updateInProgress = false;
