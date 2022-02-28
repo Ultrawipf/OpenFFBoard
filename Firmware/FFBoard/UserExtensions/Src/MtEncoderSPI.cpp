@@ -20,7 +20,7 @@ const ClassIdentifier MtEncoderSPI::getInfo(){
 
 MtEncoderSPI::MtEncoderSPI() : SPIDevice(ext3_spi,ext3_spi.getFreeCsPins()[0]), CommandHandler("mtenc",CLSID_ENCODER_MTSPI,0) {
 	MtEncoderSPI::inUse = true;
-	this->spiConfig.peripheral.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_4; // 10MHz
+	this->spiConfig.peripheral.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_8;
 	this->spiConfig.peripheral.FirstBit = SPI_FIRSTBIT_MSB;
 	this->spiConfig.peripheral.CLKPhase = SPI_PHASE_2EDGE;
 	this->spiConfig.peripheral.CLKPolarity = SPI_POLARITY_HIGH;

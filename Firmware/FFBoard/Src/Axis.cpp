@@ -304,7 +304,6 @@ void Axis::setupTMC4671()
  */
 void Axis::setEncType(uint8_t enctype)
 {
-
 	if (enc_chooser.isValidClassId(enctype) && !drv->hasIntegratedEncoder())
 	{
 
@@ -312,6 +311,8 @@ void Axis::setEncType(uint8_t enctype)
 		this->enc = std::shared_ptr<Encoder>(enc_chooser.Create(enctype)); // Make new encoder
 		if(drv && !drv->hasIntegratedEncoder())
 			this->drv->setEncoder(this->enc);
+	}else{
+		this->conf.enctype = 0; // None encoder
 	}
 
 	float angle = getEncAngle(this->drv->getEncoder());

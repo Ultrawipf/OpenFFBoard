@@ -46,7 +46,9 @@ ClassIdentifier TMC4671::info = {
 };
 
 
-TMC4671::TMC4671(SPIPort& spiport,OutputPin cspin,uint8_t address) :CommandHandler("tmc", CLSID_MOT_TMC0), SPIDevice{motor_spi,cspin},Thread("TMC", TMC_THREAD_MEM, TMC_THREAD_PRIO){
+TMC4671::TMC4671(SPIPort& spiport,OutputPin cspin,uint8_t address) :
+		CommandHandler("tmc", CLSID_MOT_TMC0), SPIDevice{motor_spi,cspin},Thread("TMC", TMC_THREAD_MEM, TMC_THREAD_PRIO)
+{
 	setAddress(address);
 	setInstance(address-1);
 	spiConfig.peripheral.Mode = SPI_MODE_MASTER;
@@ -766,14 +768,21 @@ void TMC4671::setPhiE_ext(int16_t phiE){
 }
 
 int16_t TMC4671::getPhiEfromExternalEncoder(){
-	return(drvEncoder.get()->getPosAbs_f() * 0x7fff * conf.motconf.pole_pairs) + externalEncoderPhieOffset;
+	int64_t phiE = (int64_t)drvEncoder->getPosAbs() * (int64_t)0xffff;
+	if(this->conf.encoderReversed){
+		phiE = -phiE;
+	}
+	phiE = (phiE / drvEncoder->getCpr());
+	phiE = ((phiE * conf.motconf.pole_pairs) & 0xffff) + externalEncoderPhieOffset; // Add offset and scale to pole pairs
+	//int16_t phiE = (drvEncoder->getPosAbs_f() * (float)0xffff) * conf.motconf.pole_pairs + externalEncoderPhieOffset;
+	return(phiE);
 }
 
 // PhiE is read only
 int16_t TMC4671::getPhiE(){
-	if(usingExternalEncoder()){
-		return getPhiEfromExternalEncoder();
-	}
+//	if(usingExternalEncoder()){
+//		return getPhiEfromExternalEncoder();
+//	}
 	return readReg(0x53);
 }
 
@@ -1006,7 +1015,8 @@ bool TMC4671::checkEncoder(){
 	}
 	blinkClipLed(150, 0);
 
-	const uint16_t maxcount = 10; // Allowed fails
+	const uint16_t maxcount = 50; // Allowed reversals
+	const uint16_t maxfail = 10; // Allowed fails
 	const int16_t startAngle = getPhiE_Enc(); // Start angle offsets all angles later so there is no jump if angle is already properly aligned
 	const int16_t targetAngle = 0x3FFF;
 
@@ -1046,7 +1056,7 @@ bool TMC4671::checkEncoder(){
 		}
 		if(c >= maxcount){
 			failcount++;
-			if(failcount > 10){
+			if(failcount > maxfail){
 				result = false;
 				break;
 			}
@@ -1074,7 +1084,7 @@ bool TMC4671::checkEncoder(){
 			}
 			if(c >= maxcount){
 				failcount++;
-				if(failcount > 10){
+				if(failcount > maxfail){
 					result = false;
 					break;
 				}
@@ -1091,6 +1101,8 @@ bool TMC4671::checkEncoder(){
 		}else if(this->conf.motconf.enctype == EncoderType_TMC::sincos || this->conf.motconf.enctype == EncoderType_TMC::uvw){
 			this->aencconf.rdir = !this->aencconf.rdir;
 			setup_AENC(aencconf);
+		}else if(this->conf.motconf.enctype == EncoderType_TMC::ext){
+			this->conf.encoderReversed = !this->conf.encoderReversed;
 		}
 		ErrorHandler::addError(Error(ErrorCode::encoderReversed,ErrorType::warning,"Encoder direction reversed during check"));
 	}
@@ -1109,7 +1121,7 @@ bool TMC4671::checkEncoder(){
 
 void TMC4671::setup_ABN_Enc(TMC4671ABNConf encconf){
 	this->abnconf = encconf;
-
+	this->conf.encoderReversed = encconf.rdir;
 	uint32_t abnmode =
 			(encconf.apol |
 			(encconf.bpol << 1) |
@@ -1132,7 +1144,7 @@ void TMC4671::setup_ABN_Enc(TMC4671ABNConf encconf){
 
 }
 void TMC4671::setup_AENC(TMC4671AENCConf encconf){
-
+	this->conf.encoderReversed = encconf.rdir;
 	// offsets
 	writeReg(0x0D,encconf.AENC0_offset | ((uint16_t)encconf.AENC0_scale << 16));
 	writeReg(0x0E,encconf.AENC1_offset | ((uint16_t)encconf.AENC1_scale << 16));
@@ -1334,6 +1346,10 @@ void TMC4671::setEncoderType(EncoderType_TMC type){
 	this->statusMask.flags.ENC_N = 0;
 	//encoderIndexHitFlag = false;
 	setStatusMask(statusMask);
+	encoderAligned = false;
+
+	abnconf.rdir = this->conf.encoderReversed;
+	aencconf.rdir = this->conf.encoderReversed;
 
 	if(type == EncoderType_TMC::abn){
 		encoderAligned = false;
@@ -1342,6 +1358,7 @@ void TMC4671::setEncoderType(EncoderType_TMC type){
 			return;
 		}
 		changeState(TMC_ControlState::EncoderInit);
+
 		setup_ABN_Enc(abnconf);
 
 	// SinCos encoder
@@ -1365,7 +1382,10 @@ void TMC4671::setEncoderType(EncoderType_TMC type){
 		encoderAligned = true;
 		setPhiEtype(PhiE::hall);
 		setup_HALL(hallconf);
-	}else if(type == EncoderType_TMC::ext){
+
+	}else if(type == EncoderType_TMC::ext && drvEncoder && drvEncoder->getType() != EncoderType::NONE){
+		// TODO check different encoder type
+		encoderAligned = false;
 		setUpExtEncTimer();
 		//changeState(TMC_ControlState::Shutdown);
 		changeState(TMC_ControlState::ExternalEncoderInit);
@@ -1507,7 +1527,9 @@ void TMC4671::turn(int16_t power){
 	// Flux offset for field weakening
 
 	flux = idleFlux-clip<int32_t,int16_t>(abs(power),0,maxOffsetFlux);
-
+	if(this->conf.encoderReversed && conf.motconf.enctype == EncoderType_TMC::ext){
+		power = -power; // Encoder does not match
+	}
 	setFluxTorque(flux, power);
 }
 
@@ -2161,7 +2183,9 @@ uint16_t TMC4671::encodeMotToInt(TMC4671MotConf mconf){
 uint16_t TMC4671::encodeEncHallMisc(){
 	uint16_t val = 0;
 	val |= (this->abnconf.npol) & 0x01;
-	val |= (this->abnconf.rdir & 0x01)  << 1; // Direction
+	val |= (this->conf.encoderReversed & 0x01)  << 1; // Direction
+
+
 	val |= (this->abnconf.ab_as_n & 0x01) << 2;
 	val |= (this->pidPrecision.current_I) << 3;
 	val |= (this->pidPrecision.current_P) << 4;
@@ -2182,9 +2206,14 @@ uint16_t TMC4671::encodeEncHallMisc(){
 void TMC4671::restoreEncHallMisc(uint16_t val){
 
 	this->abnconf.apol = (val) & 0x01;
+
 	this->abnconf.bpol = this->abnconf.apol;
 	this->abnconf.npol = this->abnconf.apol;
-	this->abnconf.rdir = (val>>1) & 0x01; // Direction
+
+	this->conf.encoderReversed = (val>>1) & 0x01;// Direction
+	this->abnconf.rdir = this->conf.encoderReversed;
+	this->aencconf.rdir = this->conf.encoderReversed;
+
 	this->abnconf.ab_as_n = (val>>2) & 0x01;
 	this->pidPrecision.current_I = (val>>3) & 0x01;
 	this->pidPrecision.velocity_I = this->pidPrecision.current_I;
@@ -2351,12 +2380,15 @@ void TMC4671::registerCommands(){
 	registerCommand("abnindex", TMC4671_commands::abnindexenabled, "Enable ABN index",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("calibrate", TMC4671_commands::fullCalibration, "Full calibration",CMDFLAG_GET);
 	registerCommand("state", TMC4671_commands::getState, "Get state",CMDFLAG_GET);
+	registerCommand("phiE", TMC4671_commands::phiE, "Get phiE",CMDFLAG_GET);
 
 }
 
 CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply>& replies){
 	switch(static_cast<TMC4671_commands>(cmd.cmdId)){
-
+	case TMC4671_commands::phiE:
+		replies.push_back(CommandReply(getPhiEfromExternalEncoder()));
+		break;
 	case TMC4671_commands::cpr:
 		handleGetFuncSetFunc(cmd, replies, &TMC4671::getEncCpr, &TMC4671::setCpr, this);
 	break;
@@ -2599,21 +2631,47 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 
 #ifdef TIM_TMC
 	void TMC4671::timerElapsed(TIM_HandleTypeDef* htim){
-		// Read encoder and send to tmc immediately
-		if(usingExternalEncoder() && this->conf.motconf.phiEsource == PhiE::extEncoder){
-			setPhiE_ext(getPhiEfromExternalEncoder());
+		// Read encoder and send to tmc
+		if(usingExternalEncoder() && this->conf.motconf.phiEsource == PhiE::extEncoder && extEncUpdater != nullptr){
+			//setPhiE_ext(getPhiEfromExternalEncoder());
+			// Signal phiE update
+			extEncUpdater->updateFromIsr(); // Use task so that the update is not being done inside an ISR
 		}
 	}
 #endif
 
 void TMC4671::setUpExtEncTimer(){
 #ifdef TIM_TMC
+	if(extEncUpdater == nullptr) // Create updater thread
+		extEncUpdater = std::make_unique<TMC_ExternalEncoderUpdateThread>(this);
 	// Setup timer
 	this->externalEncoderTimer = &TIM_TMC; // Timer setup with prescaler of sysclock
-	this->externalEncoderTimer->Instance->ARR = 500;
-	this->externalEncoderTimer->Instance->PSC = (SystemCoreClock / 1000000)-1;
+	this->externalEncoderTimer->Instance->ARR = 250;
+	this->externalEncoderTimer->Instance->PSC = (SystemCoreClock / 2000000)-1; // half clock
 	this->externalEncoderTimer->Instance->CR1 = 1;
 	HAL_TIM_Base_Start_IT(this->externalEncoderTimer);
 #endif
 }
+
+/**
+ * High priority task to update external encoders
+ */
+TMC4671::TMC_ExternalEncoderUpdateThread::TMC_ExternalEncoderUpdateThread(TMC4671* tmc) : cpp_freertos::Thread("TMCENC",128,50),tmc(tmc){
+	this->Start();
+}
+
+void TMC4671::TMC_ExternalEncoderUpdateThread::Run(){
+	while(true){
+		this->updateSem.Take();
+		if(tmc->usingExternalEncoder())
+			tmc->setPhiE_ext(tmc->getPhiEfromExternalEncoder());
+	}
+}
+
+void TMC4671::TMC_ExternalEncoderUpdateThread::updateFromIsr(){
+	BaseType_t pxHigherPriorityTaskWoken;
+	this->updateSem.GiveFromISR(&pxHigherPriorityTaskWoken);
+	portYIELD_FROM_ISR(pxHigherPriorityTaskWoken);
+}
+
 

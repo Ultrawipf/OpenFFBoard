@@ -146,6 +146,7 @@ struct TMC4671MainConfig{
 	uint16_t adc_I1_scale	= 256;
 	bool svpwm				= true; // enable space vector PWM for 3 phase motors
 	bool canChangeHwType 	= true; // Allows changing the hardware version by commands
+	bool encoderReversed	= false;
 };
 
 struct TMC4671PIDConf{
@@ -259,6 +260,7 @@ struct TMC4671Biquad{
 };
 
 
+
 class TMC4671 :
 		public MotorDriver, public PersistentStorage, public Encoder,
 		public CommandHandler, public SPIDevice, public ExtiHandler, public cpp_freertos::Thread,
@@ -271,7 +273,7 @@ class TMC4671 :
 		cpr,mtype,encsrc,tmcHwType,encalign,poles,acttrq,pwmlim,
 		torqueP,torqueI,fluxP,fluxI,velocityP,velocityI,posP,posI,
 		tmctype,pidPrec,phiesrc,fluxoffset,seqpi,tmcIscale,encdir,temp,reg,
-		svpwm,fullCalibration,abnindexenabled,findIndex,getState,encpol
+		svpwm,fullCalibration,abnindexenabled,findIndex,getState,encpol,phiE
 	};
 
 public:
@@ -427,9 +429,9 @@ public:
 
 	//Encoder
 	Encoder* getEncoder() override;
-	void setEncoder(std::shared_ptr<Encoder>& encoder);
+	void setEncoder(std::shared_ptr<Encoder>& encoder) override;
 	bool hasIntegratedEncoder() override;
-	inline bool usingExternalEncoder(){return conf.motconf.enctype == EncoderType_TMC::ext && drvEncoder != nullptr;}
+	inline bool usingExternalEncoder(){return conf.motconf.enctype == EncoderType_TMC::ext && drvEncoder != nullptr && drvEncoder->getType() != EncoderType::NONE;}
 	int32_t getPos() override;
 	int32_t getPosAbs() override;
 	void setPos(int32_t pos) override;
@@ -477,6 +479,18 @@ public:
 
 	virtual std::string getHelpstring(){return "TMC4671 interface";}
 
+protected:
+	class TMC_ExternalEncoderUpdateThread : public cpp_freertos::Thread{
+	public:
+		TMC_ExternalEncoderUpdateThread(TMC4671* tmc);
+		//~TMC_ExternalEncoderUpdateThread();
+		void Run();
+		void updateFromIsr();
+
+	private:
+		TMC4671* tmc;
+		cpp_freertos::BinarySemaphore updateSem;
+	};
 
 private:
 	OutputPin enablePin = OutputPin(*DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin);
@@ -545,11 +559,13 @@ private:
 #ifdef TIM_TMC
 
 	TIM_HandleTypeDef* externalEncoderTimer = &TIM_TMC;
+	std::unique_ptr<TMC_ExternalEncoderUpdateThread> extEncUpdater = nullptr;
 #else
 	TIM_HandleTypeDef* externalEncoderTimer = nullptr;
 #endif
 	void setUpExtEncTimer();
 };
+
 
 
 class TMC_1 : public TMC4671 {
