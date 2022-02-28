@@ -19,7 +19,7 @@
 
 class MtEncoderSPI: public Encoder, public SPIDevice, public PersistentStorage, public CommandHandler{
 	enum class MtEncoderSPI_commands : uint32_t{
-		cspin
+		cspin,pos
 	};
 public:
 	MtEncoderSPI();
@@ -44,6 +44,7 @@ public:
 
 	void initSPI();
 	void updateAngleStatus();
+	void updateAngleStatusCb();
 
 	CommandStatus command(const ParsedCommand& cmd,std::vector<CommandReply>& replies);
 	void setCsPin(uint8_t cspin);
@@ -51,6 +52,7 @@ public:
 private:
 	uint8_t readSpi(uint8_t addr);
 	void writeSpi(uint8_t addr,uint8_t data);
+	void endSpiTransfer(SPIPort* port);
 
 	bool nomag = false; // Magnet lost in last report
 	bool overspeed = false; // Overspeed flag set in last report
@@ -60,6 +62,11 @@ private:
 	int32_t rotations = 0;
 	int32_t offset = 0;
 	uint8_t cspin = 0;
+	volatile bool updateInProgress = false;
+
+	uint8_t txbuf[4] = {0x03 | MAGNTEK_READ,0,0,0};
+	uint8_t rxbuf[4] = {0,0,0,0};
+
 };
 
 #endif /* USEREXTENSIONS_SRC_MTENCODERSPI_H_ */

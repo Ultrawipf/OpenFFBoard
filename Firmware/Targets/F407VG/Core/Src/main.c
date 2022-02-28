@@ -1372,8 +1372,8 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : SPI2_SS2_Pin SPI2_SS3_Pin */
-  GPIO_InitStruct.Pin = SPI2_SS2_Pin|SPI2_SS3_Pin;
+  /*Configure GPIO pins : SPI2_SS2_Pin SPI2_SS3_Pin SPI3_SS2_Pin SPI3_SS3_Pin */
+  GPIO_InitStruct.Pin = SPI2_SS2_Pin|SPI2_SS3_Pin|SPI3_SS2_Pin|SPI3_SS3_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_MEDIUM;
@@ -1395,11 +1395,11 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pin = SPI3_SS1_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
   HAL_GPIO_Init(SPI3_SS1_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : SPI3_SS2_Pin SPI3_SS3_Pin CAN_S_Pin LED_SYS_Pin */
-  GPIO_InitStruct.Pin = SPI3_SS2_Pin|SPI3_SS3_Pin|CAN_S_Pin|LED_SYS_Pin;
+  /*Configure GPIO pins : CAN_S_Pin LED_SYS_Pin */
+  GPIO_InitStruct.Pin = CAN_S_Pin|LED_SYS_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
