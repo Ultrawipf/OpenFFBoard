@@ -71,6 +71,10 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc){
 	}
 }
 
+/**
+ * Note: this is normally generated in the main.c
+ * A call to HAL_TIM_PeriodElapsedCallback_CPP must be added there instead!
+ */
 __weak void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim){
 	HAL_TIM_PeriodElapsedCallback_CPP(htim);
 }

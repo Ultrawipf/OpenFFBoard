@@ -172,6 +172,8 @@ standard names. */
 /* USER CODE BEGIN Defines */
 #define CPP_FREERTOS_NO_EXCEPTIONS // For freertos cpp addons
 #define configAPPLICATION_ALLOCATED_HEAP 1 // ucHeap allocated in freertos.c
+#define CPP_FREERTOS_CONDITION_VARIABLES
+
 /* Section where parameter definitions can be added (for instance, to override default ones in FreeRTOS.h) */
 /* USER CODE END Defines */
 
