@@ -131,8 +131,8 @@ bool CmdParser::parse(std::vector<ParsedCommand>& commands){
 			}else{ // More complex
 
 				// Check if conversion is even possible
-				bool validPqm = (pqm != std::string::npos && (std::isdigit(word[pqm+1]) || (std::isdigit(word[pqm+2]) && (word[pqm+1] == '-' || word[pqm+1] == '+' || word[pqm+1] == 'x'))));
-				bool validPeq = (peq != std::string::npos && (std::isdigit(word[peq+1]) || (std::isdigit(word[peq+2]) && (word[peq+1] == '-' || word[peq+1] == '+' || word[peq+1] == 'x'))));
+				bool validPqm = (pqm != std::string::npos && (std::isdigit(word[pqm+1]) || (std::isdigit(word[pqm+2]) && (word[pqm+1] == '-' || word[pqm+1] == '+')) || ( std::isxdigit(word[pqm+2]) && word[pqm+1] == 'x')));
+				bool validPeq = (peq != std::string::npos && (std::isdigit(word[peq+1]) || (std::isdigit(word[peq+2]) && (word[peq+1] == '-' || word[peq+1] == '+')) || ( std::isxdigit(word[peq+2]) && word[peq+1] == 'x')));
 
 				if(validPqm && validPeq && peq < pqm && (abs(pqm - peq) > 1)){ // <cmd>=<int>?<int>
 					// Dual
