@@ -147,6 +147,7 @@ struct TMC4671MainConfig{
 	bool svpwm				= true; // enable space vector PWM for 3 phase motors
 	bool canChangeHwType 	= true; // Allows changing the hardware version by commands
 	bool encoderReversed	= false;
+	bool combineEncoder		= false;
 };
 
 struct TMC4671PIDConf{
@@ -273,7 +274,7 @@ class TMC4671 :
 		cpr,mtype,encsrc,tmcHwType,encalign,poles,acttrq,pwmlim,
 		torqueP,torqueI,fluxP,fluxI,velocityP,velocityI,posP,posI,
 		tmctype,pidPrec,phiesrc,fluxoffset,seqpi,tmcIscale,encdir,temp,reg,
-		svpwm,fullCalibration,abnindexenabled,findIndex,getState,encpol,phiE
+		svpwm,fullCalibration,abnindexenabled,findIndex,getState,encpol,combineEncoder
 	};
 
 public:
@@ -325,6 +326,7 @@ public:
 	void setup_HALL(TMC4671HALLConf hallconf);
 	void bangInitEnc(int16_t power);
 	void estimateABNparams();
+	void estimateExtEnc();
 	bool checkEncoder();
 	void calibrateAenc();
 	void calibrateEncoder();

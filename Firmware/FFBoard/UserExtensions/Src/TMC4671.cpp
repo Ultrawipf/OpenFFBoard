@@ -590,6 +590,8 @@ void TMC4671::calibrateEncoder(){
 		CommandHandler::broadcastCommandReply(CommandReply(abnconf.npol ? 1 : 0), (uint32_t)TMC4671_commands::encpol, CMDtype::get);
 	}else if(conf.motconf.enctype == EncoderType_TMC::sincos || conf.motconf.enctype == EncoderType_TMC::uvw){
 		calibrateAenc();
+	}else if(conf.motconf.enctype == EncoderType_TMC::ext){
+		calibrateAenc();
 	}
 	changeState(TMC_ControlState::EncoderInit);
 
@@ -1028,7 +1030,7 @@ bool TMC4671::checkEncoder(){
 
 	setPhiE_ext(startAngle);
 	// Ramp up flux
-	for(int16_t flux = 0; flux <= bangInitPower/2; flux+=20){
+	for(int16_t flux = 0; flux <= 2*bangInitPower/3; flux+=20){
 		setFluxTorque(flux, 0);
 		Delay(2);
 	}
@@ -1596,7 +1598,7 @@ void TMC4671::setEncoder(std::shared_ptr<Encoder>& encoder){
 
 bool TMC4671::hasIntegratedEncoder(){
 	// Use internal encoder if not external encoder is selected
-	return conf.motconf.enctype != EncoderType_TMC::ext;
+	return conf.motconf.enctype != EncoderType_TMC::ext && !this->conf.combineEncoder;
 }
 
 /**
@@ -1953,7 +1955,6 @@ void TMC4671::estimateABNparams(){
 		Delay(5);
 	}
 
-
 	int16_t phiE_abn = readReg(0x2A)>>16;
 	int16_t phiE_abn_old = 0;
 	int16_t rcount=0,c = 0; // Count how often direction was in reverse
@@ -1988,6 +1989,49 @@ void TMC4671::estimateABNparams(){
 	abnconf.apol = npol;
 	abnconf.bpol = npol;
 	abnconf.npol = npol;
+	blinkClipLed(0, 0);
+}
+
+/**
+ * Similar to the ABN calibration this moved the motor and measures the encoder direction
+ */
+void TMC4671::estimateExtEnc(){
+	blinkClipLed(100, 0);
+
+	PhiE lastphie = getPhiEtype();
+	MotionMode lastmode = getMotionMode();
+	int16_t oldPhiE = getPhiE();
+	setPhiE_ext(oldPhiE);
+	setPhiEtype(PhiE::ext);
+	setFluxTorque(0, 0);
+	setMotionMode(MotionMode::torque,true);
+	for(int16_t flux = 0; flux <= bangInitPower; flux+=10){
+		setFluxTorque(flux, 0);
+		Delay(5);
+	}
+
+	int16_t phiE_enc = getPhiEfromExternalEncoder();
+	int16_t phiE_enc_old = 0;
+	int16_t rcount=0,c = 0; // Count how often direction was in reverse
+
+	// Rotate a bit
+	for(int16_t p = 0;p<0x0fff;p+=0x2f){
+		setPhiE_ext(p+oldPhiE);
+		Delay(10);
+		c++;
+		phiE_enc_old = phiE_enc;
+		phiE_enc = getPhiEfromExternalEncoder();
+		// Count how often the new position was lower than the previous indicating a reversed encoder or motor direction
+		if(phiE_enc < phiE_enc_old){
+			rcount++;
+		}
+	}
+
+	setFluxTorque(0, 0);
+	setPhiEtype(lastphie);
+	setMotionMode(lastmode,true);
+
+	conf.encoderReversed = rcount > c/2;
 	blinkClipLed(0, 0);
 }
 
@@ -2191,7 +2235,9 @@ uint16_t TMC4671::encodeEncHallMisc(){
 	val |= (this->pidPrecision.current_P) << 4;
 
 	val |= (this->abnconf.useIndex) << 5;
-	// 6,7 free
+
+	val |= (this->conf.combineEncoder) << 6;
+	// 7 free
 	val |= (this->hallconf.direction & 0x01) << 8;
 	val |= (this->hallconf.interpolation & 0x01) << 9;
 
@@ -2223,6 +2269,7 @@ void TMC4671::restoreEncHallMisc(uint16_t val){
 	this->pidPrecision.velocity_P = this->pidPrecision.current_P;
 
 	this->abnconf.useIndex = (val>>5) & 0x01;
+	this->conf.combineEncoder = (val>>6) & 0x01;
 
 	this->hallconf.direction = (val>>8) & 0x01;
 	this->hallconf.interpolation = (val>>9) & 0x01;
@@ -2380,19 +2427,19 @@ void TMC4671::registerCommands(){
 	registerCommand("abnindex", TMC4671_commands::abnindexenabled, "Enable ABN index",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("calibrate", TMC4671_commands::fullCalibration, "Full calibration",CMDFLAG_GET);
 	registerCommand("state", TMC4671_commands::getState, "Get state",CMDFLAG_GET);
-	registerCommand("phiE", TMC4671_commands::phiE, "Get phiE",CMDFLAG_GET);
+	registerCommand("combineEncoder", TMC4671_commands::combineEncoder, "Use TMC for movement, external encoder for position",CMDFLAG_GET | CMDFLAG_SET);
 
 }
 
 CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply>& replies){
 	switch(static_cast<TMC4671_commands>(cmd.cmdId)){
-	case TMC4671_commands::phiE:
-		replies.push_back(CommandReply(getPhiEfromExternalEncoder()));
+	case TMC4671_commands::combineEncoder:
+		return handleGetSet(cmd, replies, this->conf.combineEncoder);
 		break;
+
 	case TMC4671_commands::cpr:
 		handleGetFuncSetFunc(cmd, replies, &TMC4671::getEncCpr, &TMC4671::setCpr, this);
 	break;
-
 
 	case TMC4671_commands::getState:
 		replies.push_back(CommandReply((uint32_t)getState()));
