@@ -663,7 +663,7 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 
 	case Axis_commands::enctype:
 		if(cmd.type == CMDtype::info){
-			enc_chooser.replyAvailableClasses(replies);
+			enc_chooser.replyAvailableClasses(replies,this->getEncType());
 		}else if(cmd.type == CMDtype::get){
 			replies.push_back(CommandReply(this->getEncType()));
 		}else if(cmd.type == CMDtype::set){
@@ -673,7 +673,7 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 
 	case Axis_commands::drvtype:
 		if(cmd.type == CMDtype::info){
-			drv_chooser.replyAvailableClasses(replies);
+			drv_chooser.replyAvailableClasses(replies,this->getDrvType());
 		}else if(cmd.type == CMDtype::get){
 			replies.push_back(CommandReply(this->getDrvType()));
 		}else if(cmd.type == CMDtype::set){
