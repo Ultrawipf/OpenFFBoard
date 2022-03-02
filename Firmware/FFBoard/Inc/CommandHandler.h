@@ -146,7 +146,7 @@ public:
 	static bool logsEnabled();
 	static void setLogsEnabled(bool enabled);
 	virtual uint16_t getCommandHandlerID(){return this->cmdHandlerInfo.commandHandlerID;}
-	virtual uint16_t getSelectionID(){return this->getInfo().id;} //!< normally returns class id but for choosable classes this can be the id used to create the class
+	//virtual uint16_t getSelectionID(){return this->getInfo().id;} //!< normally returns class id but for choosable classes this can be the id used to create the class
 
 	virtual CmdHandlerInfo* getCommandHandlerInfo();
 
