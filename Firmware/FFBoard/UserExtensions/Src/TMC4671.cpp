@@ -1034,7 +1034,6 @@ bool TMC4671::checkEncoder(){
 		setFluxTorque(flux, 0);
 		Delay(2);
 	}
-
 	//Forward
 	int16_t phiE_enc = 0;
 	uint16_t failcount = 0;
@@ -1064,8 +1063,19 @@ bool TMC4671::checkEncoder(){
 			}
 		}
 	}
+	/* If we are still at the start angle the encoder did not move at all.
+	 * Possible issues:
+	 * Encoder connection wrong
+	 * Wrong encoder selection
+	 * No motor movement
+	 * No encoder power
+	 */
+	if(startAngle == getPhiE_Enc()){
+		ErrorHandler::addError(Error(ErrorCode::encoderAlignmentFailed,ErrorType::critical,"Encoder did not move during alignment"));
+	}
 
 	// Backward
+
 	if(result){ // Only if not already failed
 		for(int16_t angle = targetAngle;angle>0;angle -= 0x00ff){
 			uint16_t c = 0;
@@ -1313,7 +1323,7 @@ void TMC4671::encoderInit(){
 
 
 
-	if(conf.motconf.enctype == EncoderType_TMC::abn && abnconf.useIndex && encoderIndexHitFlag && !manualEncAlign)
+	if(conf.motconf.enctype == EncoderType_TMC::abn && abnconf.useIndex && encoderIndexHitFlag)
 		setTmcPos(getPosAbs() - abnconf.posOffsetFromIndex); // Load stored position
 
 	if(manualEncAlign){
