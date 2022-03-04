@@ -21,7 +21,7 @@
 ClassIdentifier EffectsCalculator::info = {
 		  .name = "Effects" ,
 		  .id	= CLSID_EFFECTSCALC,
-		  .hidden = true
+		  .visibility = ClassVisibility::hidden
 };
 const ClassIdentifier EffectsCalculator::getInfo(){
 	return info;
