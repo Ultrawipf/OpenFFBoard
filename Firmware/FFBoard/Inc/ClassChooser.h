@@ -14,6 +14,7 @@
 #include "Singleton.h"
 #include <optional>
 #include "CommandHandler.h"
+#include "SystemCommands.h"
 
 // If the class is a singleton do not create a new instance if one already exists. Return the existing pointer.
 
@@ -129,9 +130,11 @@ public:
 	std::string printAvailableClasses(int16_t ignoredCreatableId = 255){
 		std::string ret;
 		for(class_entry<T> cls : class_registry){
-			if(cls.info.hidden){
-				continue;
+			if(cls.info.visibility == ClassVisibility::hidden || (cls.info.visibility == ClassVisibility::debug && !SystemCommands::allowDebugCommands)){
+				if(ignoredCreatableId != cls.selectionId)
+					continue;
 			}
+
 			ret+= std::to_string(cls.selectionId);
 			ret+= ":";
 			ret+= (cls.isCreatable() || ignoredCreatableId == cls.selectionId) ? "1" : "0";
@@ -147,8 +150,9 @@ public:
 	 */
 	void replyAvailableClasses(std::vector<CommandReply>& replies,int16_t ignoredCreatableId = 255){
 		for(class_entry<T> cls : class_registry){
-			if(cls.info.hidden){
-				continue;
+			if(cls.info.visibility == ClassVisibility::hidden || (cls.info.visibility == ClassVisibility::debug && !SystemCommands::allowDebugCommands)){
+				if(ignoredCreatableId != cls.selectionId)
+					continue;
 			}
 			std::string ret;
 			CommandReply replyObj;

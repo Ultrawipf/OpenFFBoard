@@ -12,7 +12,11 @@
 // *****    static initializer for the VESC_1 instance (extend VESC_CAN) *****
 
 bool VESC_1::inUse = false;
-ClassIdentifier VESC_1::info = { "VESC 1", CLSID_MOT_VESC0, false };
+
+ClassIdentifier VESC_1::info = {
+	 .name = "VESC 1" ,
+	 .id=CLSID_MOT_VESC0
+};
 
 bool VESC_1::isCreatable() {
 	return !VESC_1::inUse;

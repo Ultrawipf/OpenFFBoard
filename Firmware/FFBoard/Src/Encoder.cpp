@@ -24,7 +24,7 @@ std::vector<class_entry<Encoder>> const Encoder::all_encoders =
 
 };
 
-ClassIdentifier Encoder::info ={.name = "None" , .id=CLSID_ENCODER_NONE, .hidden = false};
+ClassIdentifier Encoder::info ={.name = "None" , .id=CLSID_ENCODER_NONE, .visibility = ClassVisibility::visible};
 
 
 const ClassIdentifier Encoder::getInfo(){
