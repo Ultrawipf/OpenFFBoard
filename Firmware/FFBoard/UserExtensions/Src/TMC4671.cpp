@@ -180,7 +180,7 @@ bool TMC4671::hasPower(){
 // Checks if important parameters are set to valid values
 bool TMC4671::isSetUp(){
 
-	if(this->conf.motconf.motor_type == MotorType::NONE ||!adcCalibrated || !initialized){
+	if(this->conf.motconf.motor_type == MotorType::NONE ||!adcCalibrated || !initialized || !powerInitialized){
 		return false;
 	}
 
@@ -189,9 +189,12 @@ bool TMC4671::isSetUp(){
 		return false;
 	}
 	if(this->conf.motconf.phiEsource == PhiE::abn || this->conf.motconf.phiEsource == PhiE::aenc){
-		if(encoderAligned){
+		if(!encoderAligned){
 			return false;
 		}
+	}
+	if(this->conf.motconf.phiEsource == PhiE::ext && drvEncoder->getType() == EncoderType::NONE && !encoderAligned){
+		return false;
 	}
 
 	return true;
@@ -359,7 +362,10 @@ bool TMC4671::checkAdc(){
 }
 
 void TMC4671::initializeWithPower(){
-
+	if(powerInitialized){
+		return;
+	}
+	powerInitialized = true;
 	// Load ADC settings
 	if(Flash_Read(flashAddrs.ADC_i0_ofs,&conf.adc_I0_offset) &&	Flash_Read(flashAddrs.ADC_i1_ofs,&conf.adc_I1_offset)){
 		adcSettingsRestored = true; // Previous adc settings restored
@@ -369,7 +375,10 @@ void TMC4671::initializeWithPower(){
 	if(adcSettingsRestored && checkAdc()){
 		adcCalibrated = true;
 	}else{
-		calibrateAdcOffset(300);
+		if(!calibrateAdcOffset(300)){
+			powerInitialized = false;
+			return; // Abort
+		}
 	}
 
 	// got power long enough. proceed to set up encoder
@@ -387,7 +396,7 @@ void TMC4671::initializeWithPower(){
 			ErrorHandler::clearError(ErrorCode::undervoltage);
 		}
 	}
-	powerInitialized = true;
+
 }
 
 bool TMC4671::motorReady(){
@@ -542,7 +551,7 @@ void TMC4671::Run(){
 		case TMC_ControlState::EncoderFinished: // Startup sequence done
 			//setEncoderIndexFlagEnabled(false); // TODO
 			encoderAligned = true;
-			if(motorEnabledRequested){
+			if(motorEnabledRequested && isSetUp()){
 				startMotor();
 				changeState(TMC_ControlState::Running);
 			}else{

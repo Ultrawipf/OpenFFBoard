@@ -64,7 +64,7 @@ private:
 	float noteToFreq[128] = {0};
 	std::vector<MidiNote> notes[16];
 	bool active[16] = {false};
-	uint32_t power = 4000;
+	uint32_t power = 2500;
 
 	const uint16_t period = 100;//71;	// Microseconds
 	float periodf = period / 1000000.0; // seconds
