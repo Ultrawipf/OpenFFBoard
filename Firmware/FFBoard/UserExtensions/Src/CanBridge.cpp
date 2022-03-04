@@ -17,7 +17,7 @@ extern TIM_TypeDef TIM_MICROS;
 ClassIdentifier CanBridge::info = {
 		 .name = "CAN Bridge (GVRET)" ,
 		 .id=CLSID_MAIN_CAN,
-		 .hidden=false //Set false to list
+		 .visibility = ClassVisibility::visible //Set false to list
  };
 
 const ClassIdentifier CanBridge::getInfo(){

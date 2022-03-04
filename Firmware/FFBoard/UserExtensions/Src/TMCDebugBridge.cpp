@@ -14,7 +14,7 @@
 ClassIdentifier TMCDebugBridge::info = {
 		 .name = "TMC Debug Bridge" ,
 		 .id=CLSID_MAIN_TMCDBG, //11
-		 .hidden=false
+		 .visibility = ClassVisibility::debug
  };
 // Copy this to your class for identification
 const ClassIdentifier TMCDebugBridge::getInfo(){

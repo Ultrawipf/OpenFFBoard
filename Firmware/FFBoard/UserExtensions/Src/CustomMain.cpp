@@ -11,7 +11,7 @@
 ClassIdentifier CustomMain::info = {
 		 .name = "Custom" ,
 		 .id=CLSID_CUSTOM,
-		 .hidden=true //Set false to list
+		 .visibility = ClassVisibility::hidden
  };
 // Copy this to your class for identification
 const ClassIdentifier CustomMain::getInfo(){

@@ -10,10 +10,12 @@
 #include "ClassIDs.h"
 #include "string"
 
+enum class ClassVisibility : uint8_t {visible,debug,hidden};
+
 struct ClassIdentifier {
 	const char* name = nullptr; // Display name of this class
 	uint16_t id;	// The id equivalent to clsname. Classes with the same clsname must have the same id in this field. Classchooser can use this or a separate id for selection
-	bool hidden = false;	// Hide from classchooser listings?
+	ClassVisibility visibility = ClassVisibility::visible;
 };
 
 template<class T>

@@ -24,7 +24,7 @@ SystemCommands* SystemCommands::systemCommandsInstance = nullptr;
 ClassIdentifier SystemCommands::info = {
 		 .name = "System Commands" ,
 		 .id = CLSID_SYSTEM,
-		 .hidden = true
+		 .visibility = ClassVisibility::hidden
  };
 
 const ClassIdentifier SystemCommands::getInfo(){
@@ -109,7 +109,7 @@ CommandStatus SystemCommands::internalCommand(const ParsedCommand& cmd,std::vect
 			RebootDFU();
 			break;
 		case FFBoardMain_commands::lsmain:
-			mainchooser.replyAvailableClasses(replies);
+			mainchooser.replyAvailableClasses(replies,mainclass->getSelectionID());
 			break;
 
 		case FFBoardMain_commands::vint:

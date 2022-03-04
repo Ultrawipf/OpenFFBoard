@@ -14,7 +14,7 @@
 #include "VescCAN.h"
 
 
-ClassIdentifier MotorDriver::info ={.name = "None" , .id=CLSID_MOT_NONE, .hidden = false};
+ClassIdentifier MotorDriver::info ={.name = "None" , .id=CLSID_MOT_NONE, .visibility = ClassVisibility::visible};
 
 /**
  * Add available motor drivers here.
