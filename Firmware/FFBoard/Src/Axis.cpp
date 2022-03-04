@@ -20,7 +20,7 @@
 ClassIdentifier Axis::info = {
 	.name = "Axis",
 	.id = CLSID_AXIS, // 1
-	.hidden = false};
+	.visibility = ClassVisibility::visible};
 
 Axis::Axis(char axis,volatile Control_t* control) :CommandHandler("axis", CLSID_AXIS), drv_chooser(MotorDriver::all_drivers),enc_chooser{Encoder::all_encoders}
 {

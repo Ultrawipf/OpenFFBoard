@@ -17,7 +17,7 @@
 ClassIdentifier MidiMain::info = {
 		 .name = "MIDI (TMC)" ,
 		 .id=CLSID_MAIN_MIDI, // 64 prev
-		 .hidden=false //Set false to list
+		 .visibility = ClassVisibility::debug
  };
 
 const ClassIdentifier MidiMain::getInfo(){
