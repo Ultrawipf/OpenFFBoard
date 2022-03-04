@@ -15,7 +15,7 @@
 #include "cmsis_os2.h"
 
 ClassIdentifier MidiMain::info = {
-		 .name = "MIDI" ,
+		 .name = "MIDI (TMC)" ,
 		 .id=CLSID_MAIN_MIDI, // 64 prev
 		 .hidden=false //Set false to list
  };
@@ -38,17 +38,20 @@ MidiMain::MidiMain(){
 	this->timer_update->Instance->ARR = period;
 	this->timer_update->Instance->PSC = (SystemCoreClock / 1000000)-1;
 	this->timer_update->Instance->CR1 = 1;
-	HAL_TIM_Base_Start_IT(this->timer_update);
+
 
 	// Setup one TMC for first channel
  	this->drv = std::make_unique<TMC_1>();
 	TMC4671Limits limits;
 	drv->setLimits(limits);
-	drv->setAddress(1);
+	drv->setEncoderType(EncoderType_TMC::NONE);
+
 	//drv->setMotorType(MotorType::STEPPER, 50);
 	if(drv->conf.motconf.motor_type == MotorType::NONE){
 		pulseErrLed();
 	}
+	//drv->Start(); // We do not start the driver thread
+
 	drv->setPhiEtype(PhiE::ext);
 	drv->setUdUq(0, 0);
 	drv->allowSlowSPI = false; // Force higher speed
@@ -60,11 +63,11 @@ MidiMain::MidiMain(){
 	drv->setMotionMode(MotionMode::uqudext,true);
 
 
-	//this->Start(); // We do not start the driver thread
 	//CommandHandler::registerCommands();
 	registerCommand("power", MidiMain_commands::power, "Intensity");
 	registerCommand("range", MidiMain_commands::range, "Range of phase change");
 
+	HAL_TIM_Base_Start_IT(this->timer_update);
 }
 
 MidiMain::~MidiMain() {
@@ -73,7 +76,10 @@ MidiMain::~MidiMain() {
 
 
 void MidiMain::update(){
-	osDelay(50); // Slow down main thread
+	osDelay(500); // Slow down main thread
+	if(drv->hasPower() &&!drv->isSetUp()){
+		drv->initializeWithPower();
+	}
 }
 
 void MidiMain::timerElapsed(TIM_HandleTypeDef* htim){
