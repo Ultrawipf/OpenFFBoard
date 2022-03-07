@@ -50,14 +50,15 @@ void MtEncoderSPI::saveFlash(){
 }
 
 void MtEncoderSPI::setCsPin(uint8_t cspin){
+	spiPort.freeCsPin(this->spiConfig.cs);
 	this->cspin = std::min<uint8_t>(spiPort.getCsPins().size(), cspin);
 	this->spiConfig.cs = *spiPort.getCsPin(this->cspin);
 	initSPI();
+	spiPort.reserveCsPin(this->spiConfig.cs);
 }
 
 void MtEncoderSPI::initSPI(){
 	spiPort.takeSemaphore();
-	spiPort.freeCsPin(this->spiConfig.cs);
 
 	spiPort.configurePort(&this->spiConfig.peripheral);
 	spiPort.giveSemaphore();
@@ -71,7 +72,7 @@ uint8_t MtEncoderSPI::readSpi(uint8_t addr){
 	uint8_t txbuf[2] = {(uint8_t)(addr | MAGNTEK_READ),0};
 	uint8_t rxbuf[2] = {0,0};
 	spiPort.transmitReceive(txbuf, rxbuf, 2, this,100);
-	//while(spiPort.isTaken()){}
+
 	return rxbuf[1];
 }
 
@@ -88,10 +89,12 @@ void MtEncoderSPI::setPos(int32_t pos){
 void MtEncoderSPI::spiTxRxCompleted(SPIPort* port){
 
 	if(updateInProgress){
+		blinkErrLed(0, 0);
 		updateAngleStatusCb();
 	}
 
 }
+
 
 /**
  * Reads the angle and diagnostic registers in burst mode
@@ -102,18 +105,23 @@ void MtEncoderSPI::updateAngleStatus(){
 	}
 	uint8_t txbufNew[4] = {0x03 | MAGNTEK_READ,0,0,0};
 	memcpy(this->txbuf,txbufNew,4);
-//	this->updateInProgress = true;
-//	spiPort.transmitReceive_DMA(txbuf, rxbuf, 4, this);
 
-	spiPort.transmitReceive(txbuf, rxbuf, 4, this,100);
-	updateAngleStatusCb();
+	if(useDMA){
+		this->updateInProgress = true;
+		spiPort.transmitReceive_DMA(txbuf, rxbuf, 4, this);
+
+
+	}else{
+		spiPort.transmitReceive(txbuf, rxbuf, 4, this,100);
+		updateAngleStatusCb();
+	}
 
 }
 
 void MtEncoderSPI::updateAngleStatusCb(){
-	uint32_t angle17_10 = rxbuf[1];
-	uint32_t angle9_4 = rxbuf[2];
-	uint32_t angle3_0 = rxbuf[3];
+	uint8_t angle17_10 = rxbuf[1];
+	uint8_t angle9_4 = rxbuf[2];
+	uint8_t angle3_0 = rxbuf[3];
 
 	nomag = 	(angle9_4 & 0x02) >> 1;
 	overspeed = (angle3_0 & 0x04) >> 2;
