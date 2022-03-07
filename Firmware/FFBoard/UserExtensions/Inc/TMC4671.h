@@ -54,7 +54,7 @@ enum class TMC_HW_Ver : uint8_t {NONE=0,v1_0,v1_2,v1_2_2,v1_2_2_LEM20,v1_2_2_TMC
 // Selectable version names to be listed in commands
 const std::vector<std::pair<TMC_HW_Ver,std::string>> tmcHwVersionNames{
 			std::make_pair(TMC_HW_Ver::NONE,"Undefined"), // Do not select. Default but disables some safety features
-			std::make_pair(TMC_HW_Ver::v1_0,"v1.0"),
+			std::make_pair(TMC_HW_Ver::v1_0,"v1.0 AD8417"),
 			std::make_pair(TMC_HW_Ver::v1_2,"v1.2 AD8417"),
 			std::make_pair(TMC_HW_Ver::v1_2_2,"v1.2.2 LEM GO 10"),
 			std::make_pair(TMC_HW_Ver::v1_2_2_LEM20,"v1.2.2 LEM GO 20"),

@@ -1081,6 +1081,8 @@ bool TMC4671::checkEncoder(){
 	 */
 	if(startAngle == getPhiE_Enc()){
 		ErrorHandler::addError(Error(ErrorCode::encoderAlignmentFailed,ErrorType::critical,"Encoder did not move during alignment"));
+		this->changeState(TMC_ControlState::HardError, true);
+		result = false;
 	}
 
 	// Backward
@@ -1642,28 +1644,13 @@ void TMC4671::setPos(int32_t pos){
  * Changes position in tmc register
  */
 void TMC4671::setTmcPos(int32_t pos){
-	// Cpr = poles * 0xffff
-	/*
-	int32_t cpr = (conf.motconf.pole_pairs << 16) / abnconf.cpr;
-	int32_t mpos = (cpr * pos);*/
-//	if(this->conf.motconf.phiEsource == PhiE::abn){
-//		pos = ((int64_t)0xffff / (int64_t)abnconf.cpr) * (int64_t)pos;
-//
-//	}
+
 	writeReg(0x6B, pos);
 }
 
 int32_t TMC4671::getPos(){
-	//int64_t cpr = conf.motconf.pole_pairs << 16;
-	/*
-	int32_t mpos = (int32_t)readReg(0x6B) / ((int32_t)conf.motconf.pole_pairs);
-	int32_t pos = ((int32_t)abnconf.cpr * mpos) >> 16;*/
-	int32_t pos = (int32_t)readReg(0x6B);
-//	if(this->conf.motconf.phiEsource == PhiE::abn){
-//		int64_t tmpos = ( (int64_t)pos * (int64_t)abnconf.cpr);
-//		pos = tmpos / 0xffff;
-//	}
 
+	int32_t pos = (int32_t)readReg(0x6B);
 	return pos;
 }
 
@@ -2141,7 +2128,7 @@ void TMC4671::writeReg(uint8_t reg,uint32_t dat){
 	memcpy(spi_buf+1,&dat,4);
 
 	// -----
-	//spiPort.transmit_DMA(this->spi_buf, 5, this);
+	//spiPort.transmit_DMA(this->spi_buf, 5, this); // not using DMA enforces the required delays
 	spiPort.transmit(spi_buf, 5, this, SPITIMEOUT);
 }
 
