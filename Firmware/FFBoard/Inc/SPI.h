@@ -84,7 +84,7 @@ private:
 
 	cpp_freertos::BinarySemaphore semaphore = cpp_freertos::BinarySemaphore(true);
 	bool allowReconfigure = false; // Allow reconfiguration at runtime. Can reduce performance a lot
-	bool isTakenFlag = false;
+	volatile bool isTakenFlag = false;
 };
 
 class SPIDevice {

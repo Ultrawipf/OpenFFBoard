@@ -170,7 +170,7 @@ bool SPIPort::isTaken(){
 	return isTakenFlag;
 }
 
-
+// interrupt callbacks
 void SPIPort::SpiTxCplt(SPI_HandleTypeDef *hspi) {
 	if (current_device == nullptr) {
 		return;
