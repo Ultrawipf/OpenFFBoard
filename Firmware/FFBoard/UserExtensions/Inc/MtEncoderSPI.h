@@ -48,11 +48,14 @@ public:
 
 	CommandStatus command(const ParsedCommand& cmd,std::vector<CommandReply>& replies);
 	void setCsPin(uint8_t cspin);
-	//virtual const ClassType getClassType() override {return ClassType::Encoder;};
+
+	bool useDMA = false; // if true uses DMA for angle updates instead of polling SPI. TODO when used with tmc external encoder using DMA will hang the interrupt randomly
+
 private:
 	uint8_t readSpi(uint8_t addr);
 	void writeSpi(uint8_t addr,uint8_t data);
 	void spiTxRxCompleted(SPIPort* port);
+
 
 	volatile bool nomag = false; // Magnet lost in last report
 	volatile bool overspeed = false; // Overspeed flag set in last report
