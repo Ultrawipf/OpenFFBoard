@@ -11,7 +11,6 @@
 #include "stm32f4xx_hal_spi.h"
 #include <math.h>
 #include <assert.h>
-#include "RessourceManager.h"
 #include "ErrorHandler.h"
 #include "cpp_target_config.h"
 #define MAX_TMC_DRIVERS 3
@@ -2709,22 +2708,21 @@ void TMC4671::setUpExtEncTimer(){
 /**
  * High priority task to update external encoders
  */
-TMC4671::TMC_ExternalEncoderUpdateThread::TMC_ExternalEncoderUpdateThread(TMC4671* tmc) : cpp_freertos::Thread("TMCENC",128,50),tmc(tmc){
+TMC4671::TMC_ExternalEncoderUpdateThread::TMC_ExternalEncoderUpdateThread(TMC4671* tmc) : cpp_freertos::Thread("TMCENC",128,40),tmc(tmc){
 	this->Start();
 }
 
 void TMC4671::TMC_ExternalEncoderUpdateThread::Run(){
 	while(true){
-		this->updateSem.Take();
-		if(tmc->usingExternalEncoder())
+		this->WaitForNotification();
+		if(tmc->usingExternalEncoder() && !tmc->spiPort.isTaken())
 			tmc->setPhiE_ext(tmc->getPhiEfromExternalEncoder());
 	}
 }
 
 void TMC4671::TMC_ExternalEncoderUpdateThread::updateFromIsr(){
-	BaseType_t pxHigherPriorityTaskWoken;
-	this->updateSem.GiveFromISR(&pxHigherPriorityTaskWoken);
-	portYIELD_FROM_ISR(pxHigherPriorityTaskWoken);
+
+	this->NotifyFromISR();
 }
 
 
