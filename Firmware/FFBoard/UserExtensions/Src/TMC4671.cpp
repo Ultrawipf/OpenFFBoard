@@ -1549,7 +1549,7 @@ void TMC4671::turn(int16_t power){
 	// Flux offset for field weakening
 
 	flux = idleFlux-clip<int32_t,int16_t>(abs(power),0,maxOffsetFlux);
-	if(this->conf.encoderReversed && conf.motconf.enctype == EncoderType_TMC::ext){
+	if((this->conf.encoderReversed && conf.motconf.enctype == EncoderType_TMC::ext) ^ conf.invertForce){
 		power = -power; // Encoder does not match
 	}
 	setFluxTorque(flux, power);
@@ -1601,7 +1601,7 @@ std::pair<uint32_t,std::string> TMC4671::getTmcType(){
 }
 
 Encoder* TMC4671::getEncoder(){
-	if(conf.motconf.enctype == EncoderType_TMC::ext && externalEncoderTimer){
+	if((conf.motconf.enctype == EncoderType_TMC::ext && externalEncoderTimer) || conf.combineEncoder){
 		return MotorDriver::drvEncoder.get();
 	}else{
 		return static_cast<Encoder*>(this);
@@ -2242,7 +2242,8 @@ uint16_t TMC4671::encodeEncHallMisc(){
 	val |= (this->abnconf.useIndex) << 5;
 
 	val |= (this->conf.combineEncoder) << 6;
-	// 7 free
+	val |= (this->conf.invertForce) << 7;
+
 	val |= (this->hallconf.direction & 0x01) << 8;
 	val |= (this->hallconf.interpolation & 0x01) << 9;
 
@@ -2275,6 +2276,7 @@ void TMC4671::restoreEncHallMisc(uint16_t val){
 
 	this->abnconf.useIndex = (val>>5) & 0x01;
 	this->conf.combineEncoder = (val>>6) & 0x01;
+	this->conf.invertForce = ((val>>7) & 0x01) && this->conf.combineEncoder;
 
 	this->hallconf.direction = (val>>8) & 0x01;
 	this->hallconf.interpolation = (val>>9) & 0x01;
@@ -2433,18 +2435,28 @@ void TMC4671::registerCommands(){
 	registerCommand("calibrate", TMC4671_commands::fullCalibration, "Full calibration",CMDFLAG_GET);
 	registerCommand("state", TMC4671_commands::getState, "Get state",CMDFLAG_GET);
 	registerCommand("combineEncoder", TMC4671_commands::combineEncoder, "Use TMC for movement, external encoder for position",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("invertForce", TMC4671_commands::invertForce, "Invert incoming forces",CMDFLAG_GET | CMDFLAG_SET);
 
 }
 
 CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply>& replies){
+	CommandStatus status = CommandStatus::OK;
 	switch(static_cast<TMC4671_commands>(cmd.cmdId)){
 	case TMC4671_commands::combineEncoder:
-		return handleGetSet(cmd, replies, this->conf.combineEncoder);
+		status = handleGetSet(cmd, replies, this->conf.combineEncoder);
+		if(!this->conf.combineEncoder){
+			this->conf.invertForce = false; // Force off
+		}
+
 		break;
 
 	case TMC4671_commands::cpr:
 		handleGetFuncSetFunc(cmd, replies, &TMC4671::getEncCpr, &TMC4671::setCpr, this);
 	break;
+
+	case TMC4671_commands::invertForce:
+		handleGetSet(cmd, replies, conf.invertForce);
+		break;
 
 	case TMC4671_commands::getState:
 		replies.push_back(CommandReply((uint32_t)getState()));
@@ -2676,7 +2688,7 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 		return CommandStatus::NOT_FOUND;
 	}
 
-	return CommandStatus::OK;
+	return status;
 
 
 }
