@@ -211,6 +211,42 @@ class Thread {
         }
 #endif
 
+	/**
+	 * Added from PR https://github.com/michaelbecker/freertos-addons/pull/40
+	 *
+	 */
+#ifdef configUSE_TASK_NOTIFICATIONS
+    /**
+     *  Notify a specific thread.
+     */
+    inline void Notify()
+    {
+        xTaskNotify( GetHandle(), 0, eNoAction );
+    }
+
+    /**
+     *  Notify a specific thread from ISR context.
+     */
+    inline void NotifyFromISR()
+    {
+        xTaskNotifyFromISR( GetHandle(), 0, eNoAction, pdFALSE );
+    }
+
+    /**
+     *  Have this thread wait until it gets notification.
+     *
+     *  @param Timeout Allows you to specify a timeout on the Wait,
+     *  if desired.
+     *
+     *  @return Notification Value, which can be set/modified when giving
+     *  a notification
+     */
+    inline uint32_t WaitForNotification( TickType_t Timeout = portMAX_DELAY )
+    {
+        return ulTaskNotifyTake( pdTRUE, Timeout );
+    }
+#endif
+
 #if (INCLUDE_uxTaskPriorityGet == 1)
         /**
          *  Get the priority of this Thread.
@@ -453,6 +489,7 @@ class Thread {
     friend class ConditionVariable;
 
 #endif
+
 
 };
 
