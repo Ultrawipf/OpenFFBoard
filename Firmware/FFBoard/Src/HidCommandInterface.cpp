@@ -15,7 +15,7 @@
  *
  * ******************
  */
-cpp_freertos::BinarySemaphore HID_CommandInterface::threadSem = cpp_freertos::BinarySemaphore();
+//cpp_freertos::BinarySemaphore HID_CommandInterface::threadSem = cpp_freertos::BinarySemaphore();
 
 
 HID_CommandInterface* HID_CommandInterface::globalInterface = nullptr;
@@ -38,7 +38,7 @@ bool HID_CommandInterface::getNewCommands(std::vector<ParsedCommand>& commands){
 // TODO maybe simplify and get rid of thread again if reliable
 void HID_CommandInterface::Run(){
 	while(true){
-		threadSem.Take();
+		this->WaitForNotification();
 		for(HID_CMD_Data_t& rep : outBuffer){
 			while(!tud_hid_n_ready(0)){
 				Delay(1);
@@ -93,7 +93,7 @@ void HID_CommandInterface::sendReplies(const std::vector<CommandResult>& results
 			this->queueReplyValues(reply,result.originalCommand);
 		}
 	}
-	threadSem.Give();
+	this->Notify();
 }
 
 
@@ -163,7 +163,7 @@ void HID_CommandInterface::hidCmdCallback(HID_CMD_Data_t* data){
 			data->type = HidCmdType::notFound;
 			//sendHidCmd(data); // Send back error
 			this->outBuffer.push_back(*data);
-			threadSem.Give();
+			this->Notify();
 			return;
 		}
 		if(cmd.target->isValidCommandId(cmd.cmdId, CMDFLAG_STR_ONLY))
@@ -177,7 +177,7 @@ void HID_CommandInterface::hidCmdCallback(HID_CMD_Data_t* data){
 				data->type = HidCmdType::notFound;
 				//sendHidCmd(data); // Send back error
 				this->outBuffer.push_back(*data);
-				threadSem.Give();
+				this->Notify();
 				return;
 			}
 			commands.push_back(newCmd);

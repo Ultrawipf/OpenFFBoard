@@ -75,7 +75,7 @@ public:
 private:
 	bool enableBroadcastFromOtherInterfaces = true;
 	const uint32_t parserTimeout = 2000;
-	cpp_freertos::BinarySemaphore sendSem;
+	//cpp_freertos::BinarySemaphore sendSem;
 	std::vector<CommandResult> resultsBuffer;
 	bool nextFormat = false;
 	std::string sendBuffer;
@@ -102,7 +102,7 @@ private:
 	uint32_t baud = 115200;
 	std::string sendBuffer;
 	bool enableBroadcastFromOtherInterfaces = false; // uart is slow. do not broadcast other messages by default
-	cpp_freertos::BinarySemaphore cmdUartSem;
+	//cpp_freertos::BinarySemaphore cmdUartSem;
 	//cpp_freertos::BinarySemaphore bufferSem;
 	std::vector<CommandResult> resultsBuffer;
 	bool nextFormat = false;
