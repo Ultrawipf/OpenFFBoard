@@ -148,6 +148,7 @@ struct TMC4671MainConfig{
 	bool canChangeHwType 	= true; // Allows changing the hardware version by commands
 	bool encoderReversed	= false;
 	bool combineEncoder		= false;
+	bool invertForce		= false;
 };
 
 struct TMC4671PIDConf{
@@ -274,7 +275,7 @@ class TMC4671 :
 		cpr,mtype,encsrc,tmcHwType,encalign,poles,acttrq,pwmlim,
 		torqueP,torqueI,fluxP,fluxI,velocityP,velocityI,posP,posI,
 		tmctype,pidPrec,phiesrc,fluxoffset,seqpi,tmcIscale,encdir,temp,reg,
-		svpwm,fullCalibration,abnindexenabled,findIndex,getState,encpol,combineEncoder
+		svpwm,fullCalibration,abnindexenabled,findIndex,getState,encpol,combineEncoder,invertForce
 	};
 
 public:
