@@ -54,7 +54,7 @@ private:
 	std::vector<ParsedCommand> commands;
 	std::vector<HID_CMD_Data_t> outBuffer;
 	bool enableBroadcastFromOtherInterfaces = true; // TODO make configurable via command
-	static cpp_freertos::BinarySemaphore threadSem;
+	//static cpp_freertos::BinarySemaphore threadSem;
 	const uint32_t maxQueuedReplies = 50;
 	const uint32_t maxQueuedRepliesBroadcast = 10; // Must be smaller than maxQueuedReplies
 
