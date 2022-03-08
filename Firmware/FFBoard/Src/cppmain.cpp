@@ -6,7 +6,6 @@
 #include "cpp_target_config.h"
 #include "cmsis_os.h"
 #include "stm32f4xx_hal_flash.h"
-#include "RessourceManager.h"
 
 #include "tusb.h"
 
@@ -30,7 +29,6 @@ ClassChooser<FFBoardMain> mainchooser(class_registry);
 StackType_t  usb_device_stack[USBD_STACK_SIZE];
 StaticTask_t usb_device_taskdef;
 
-RessourceManager ressourceManager = RessourceManager();
 
 void cppmain() {
 #ifdef FW_DEVID

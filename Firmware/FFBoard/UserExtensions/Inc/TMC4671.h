@@ -491,7 +491,6 @@ protected:
 
 	private:
 		TMC4671* tmc;
-		cpp_freertos::BinarySemaphore updateSem;
 	};
 
 private:
