@@ -235,7 +235,7 @@ CDC_CommandInterface::~CDC_CommandInterface() {
 
 void CDC_CommandInterface::Run(){
 	while(true){
-		sendSem.Take(); // Block
+		WaitForNotification();
 
 		this->sendBuffer.clear();
 		if(this->sendBuffer.capacity() > 100){
@@ -266,7 +266,7 @@ void CDC_CommandInterface::sendReplies(const std::vector<CommandResult>& results
 	resultsBuffer.assign(results.begin(), results.end());
 	resultsBuffer.shrink_to_fit();
 	nextFormat = originalInterface != this && originalInterface != nullptr;
-	sendSem.Give();
+	Notify(); // Resume
 }
 
 /**
@@ -305,7 +305,7 @@ UART_CommandInterface::~UART_CommandInterface() {
 void UART_CommandInterface::Run(){
 	while(true){
 
-		cmdUartSem.Take();
+		WaitForNotification();
 		while(uartport->isTaken()){
 			Delay(1);
 		}
@@ -329,7 +329,7 @@ void UART_CommandInterface::sendReplies(const std::vector<CommandResult>& result
 	resultsBuffer.assign(results.begin(), results.end());
 	resultsBuffer.shrink_to_fit();
 	nextFormat = originalInterface != this && originalInterface != nullptr;
-	cmdUartSem.Give();
+	Notify();
 }
 
 /**
