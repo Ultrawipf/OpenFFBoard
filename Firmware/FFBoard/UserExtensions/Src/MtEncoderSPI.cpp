@@ -89,7 +89,6 @@ void MtEncoderSPI::setPos(int32_t pos){
 void MtEncoderSPI::spiTxRxCompleted(SPIPort* port){
 
 	if(updateInProgress){
-		blinkErrLed(0, 0);
 		updateAngleStatusCb();
 	}
 
@@ -105,9 +104,10 @@ void MtEncoderSPI::updateAngleStatus(){
 	}
 	uint8_t txbufNew[4] = {0x03 | MAGNTEK_READ,0,0,0};
 	memcpy(this->txbuf,txbufNew,4);
-
+	spiPort.getCsPins()[1].set();
 	if(useDMA){
 		this->updateInProgress = true;
+
 		spiPort.transmitReceive_DMA(txbuf, rxbuf, 4, this);
 
 
@@ -119,6 +119,7 @@ void MtEncoderSPI::updateAngleStatus(){
 }
 
 void MtEncoderSPI::updateAngleStatusCb(){
+	spiPort.getCsPins()[1].reset();
 	uint8_t angle17_10 = rxbuf[1];
 	uint8_t angle9_4 = rxbuf[2];
 	uint8_t angle3_0 = rxbuf[3];
