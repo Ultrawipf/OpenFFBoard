@@ -36,11 +36,6 @@ struct effect_scaler_t {
 	float inertia = 200.0;  // 200 with accelScaler at 40 => if 1 => accelscaler = 8000
 };
 
-struct biquad_constant_t {
-	uint16_t freq;
-	uint8_t q;
-};
-
 struct effect_biquad_t {
 	biquad_constant_t constant	= { 500, 70 };
 	biquad_constant_t friction 	= { 50, 20 };
@@ -57,7 +52,7 @@ struct effect_stat_t {
 enum class EffectsCalculator_commands : uint32_t {
 	ffbfiltercf,ffbfiltercf_q,effects,spring,friction,damper,inertia,
 	damper_f, damper_q, friction_f, friction_q, inertia_f, inertia_q,
-	frictionPctSpeedToRampup, scaleSpeed, scaleAccel,
+	frictionPctSpeedToRampup,
 	monitorEffect, effectsDetails, effectsForces
 };
 
@@ -111,9 +106,7 @@ private:
 	uint8_t global_gain = 0xff;
 	effect_gain_t gain;
 	effect_scaler_t scaler;
-	int frictionPctSpeedToRampup = 5;	// define the max value of the range (0..5% of maxspeed) where torque is rampup on friction
-	uint16_t scaleSpeed = 40;  		// TODO decide if scalers are useful or not
-	uint16_t scaleAccel = 40;
+	uint8_t frictionPctSpeedToRampup = 5;	// define the max value of the range (0..5% of maxspeed) where torque is rampup on friction
 
 	// FFB status
 	bool effects_active = false; // was ffb_active

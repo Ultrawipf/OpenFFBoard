@@ -51,8 +51,6 @@ EffectsCalculator::EffectsCalculator() : CommandHandler("fx", CLSID_EFFECTSCALC)
 	registerCommand("inertia_q", EffectsCalculator_commands::inertia_q, "Inertia biquad q", CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_INFOSTRING);
 
 	registerCommand("frictionPctSpeedToRampup", EffectsCalculator_commands::frictionPctSpeedToRampup, "% of max speed during effect is slow", CMDFLAG_GET | CMDFLAG_SET);
-	registerCommand("scaleSpeed", EffectsCalculator_commands::scaleSpeed, "Scale to map SPEED on full range", CMDFLAG_GET | CMDFLAG_SET);
-	registerCommand("scaleAccel", EffectsCalculator_commands::scaleAccel, "Scale to map ACCEL on full range", CMDFLAG_GET | CMDFLAG_SET);
 
 	this->Start();
 }
@@ -383,7 +381,7 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 	 */
 	case FFB_EFFECT_FRICTION: // TODO sometimes unstable.
 	{
-		float speed = metrics->speed * scaleSpeed;//effect->filter[con_idx]->process()
+		float speed = metrics->speed;
 
 		int16_t offset = effect->conditions[con_idx].cpOffset;
 		int16_t deadBand = effect->conditions[con_idx].deadBand;
@@ -421,7 +419,7 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 	case FFB_EFFECT_DAMPER:
 	{
 
-		float speed = metrics->speed * scaleSpeed;
+		float speed = metrics->speed;
 		result_torque -= effect->filter[con_idx]->process(calcConditionEffectForce(effect, speed, gain.damper, con_idx, scaler.damper, angle_ratio));
 
 		break;
@@ -429,7 +427,7 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 
 	case FFB_EFFECT_INERTIA:
 	{
-		float accel = metrics->accel* scaleAccel;
+		float accel = metrics->accel;
 		result_torque -= effect->filter[con_idx]->process(calcConditionEffectForce(effect, accel, gain.inertia, con_idx, scaler.inertia, angle_ratio)); // Bump *60 the inertia feedback
 
 		break;
@@ -575,23 +573,47 @@ void EffectsCalculator::setEffectsArray(FFB_Effect *pEffects)
  */
 void EffectsCalculator::restoreFlash()
 {
-	uint16_t filter;
-	if (Flash_Read(ADR_CF_FILTER, &filter))
+	uint16_t filterStorage;
+	if (Flash_Read(ADR_FFB_CF_FILTER, &filterStorage))
 	{
-		uint32_t freq = filter & 0x1FF;
-		uint8_t q = (filter >> 9) & 0x7F;
+		uint32_t freq = filterStorage & 0x1FF;
+		uint8_t q = (filterStorage >> 9) & 0x7F;
 		checkFilter(&(this->filter.constant), freq, q);
 	}
 	setCfFilter(&(this->filter.constant));
 
+	if (Flash_Read(ADR_FFB_FR_FILTER, &filterStorage))
+	{
+		uint32_t freq = filterStorage & 0x1FF;
+		uint8_t q = (filterStorage >> 9) & 0x7F;
+		checkFilter(&(this->filter.friction), freq, q);
+	}
+
+	if (Flash_Read(ADR_FFB_DA_FILTER, &filterStorage))
+	{
+		uint32_t freq = filterStorage & 0x1FF;
+		uint8_t q = (filterStorage >> 9) & 0x7F;
+		checkFilter(&(this->filter.damper), freq, q);
+	}
+
+	if (Flash_Read(ADR_FFB_IN_FILTER, &filterStorage))
+	{
+		uint32_t freq = filterStorage & 0x1FF;
+		uint8_t q = (filterStorage >> 9) & 0x7F;
+		checkFilter(&(this->filter.inertia), freq, q);
+	}
+
 	uint16_t effects = 0;
-	if(Flash_Read(ADR_AXIS_EFFECTS1, &effects)){
+	if(Flash_Read(ADR_FFB_EFFECTS1, &effects)){
 		gain.friction = (effects >> 8) & 0xff;
 		gain.inertia = (effects & 0xff);
 	}
-	if(Flash_Read(ADR_AXIS_EFFECTS2, &effects)){
+	if(Flash_Read(ADR_FFB_EFFECTS2, &effects)){
 		gain.damper = (effects >> 8) & 0xff;
 		gain.spring = (effects & 0xff);
+	}
+	if(Flash_Read(ADR_FFB_EFFECTS3, &effects)){
+		frictionPctSpeedToRampup = (effects & 0xff);
 	}
 
 }
@@ -599,13 +621,38 @@ void EffectsCalculator::restoreFlash()
 // Saves parameters to flash
 void EffectsCalculator::saveFlash()
 {
-	uint16_t cffilter = (uint16_t)filter.constant.freq & 0x1FF;
-	cffilter |= ( (uint16_t)filter.constant.q & 0x7F ) << 9 ;
-	Flash_Write(ADR_CF_FILTER, cffilter);
+	uint16_t filterStorage;
+
+	// save CF biquad
+	filterStorage = (uint16_t)filter.constant.freq & 0x1FF;
+	filterStorage |= ( (uint16_t)filter.constant.q & 0x7F ) << 9 ;
+	Flash_Write(ADR_FFB_CF_FILTER, filterStorage);
+
+	// save Friction biquad
+	filterStorage = (uint16_t)filter.friction.freq & 0x1FF;
+	filterStorage |= ( (uint16_t)filter.friction.q & 0x7F ) << 9 ;
+	Flash_Write(ADR_FFB_FR_FILTER, filterStorage);
+
+	// save Damper biquad
+	filterStorage = (uint16_t)filter.damper.freq & 0x1FF;
+	filterStorage |= ( (uint16_t)filter.damper.q & 0x7F ) << 9 ;
+	Flash_Write(ADR_FFB_DA_FILTER, filterStorage);
+
+	// save Inertia biquad
+	filterStorage = (uint16_t)filter.inertia.freq & 0x1FF;
+	filterStorage |= ( (uint16_t)filter.inertia.q & 0x7F ) << 9 ;
+	Flash_Write(ADR_FFB_IN_FILTER, filterStorage);
+
+	// save the effect gain
 	uint16_t effects = gain.inertia | (gain.friction << 8);
-	Flash_Write(ADR_AXIS_EFFECTS1, effects);
+	Flash_Write(ADR_FFB_EFFECTS1, effects);
+
 	effects = gain.spring | (gain.damper << 8);
-	Flash_Write(ADR_AXIS_EFFECTS2, effects);
+	Flash_Write(ADR_FFB_EFFECTS2, effects);
+
+	// save the friction rampup zone
+	effects = frictionPctSpeedToRampup;
+	Flash_Write(ADR_FFB_EFFECTS3, effects);
 
 }
 
@@ -877,28 +924,6 @@ CommandStatus EffectsCalculator::command(const ParsedCommand& cmd,std::vector<Co
 		{
 			uint8_t pct = clip<uint8_t, uint8_t>(cmd.val, 0, 100);
 			frictionPctSpeedToRampup = pct;
-		}
-		break;
-	case EffectsCalculator_commands::scaleSpeed:
-		if (cmd.type == CMDtype::get)
-		{
-			replies.push_back(CommandReply(scaleSpeed));
-		}
-		else if (cmd.type == CMDtype::set)
-		{
-			uint16_t value = clip<uint16_t, uint16_t>(cmd.val, 0, 200);
-			scaleSpeed = value;
-		}
-		break;
-	case EffectsCalculator_commands::scaleAccel:
-		if (cmd.type == CMDtype::get)
-		{
-			replies.push_back(CommandReply(scaleAccel));
-		}
-		else if (cmd.type == CMDtype::set)
-		{
-			uint16_t value = clip<uint16_t, uint16_t>(cmd.val, 0, 200);
-			scaleAccel = value;
 		}
 		break;
 	case EffectsCalculator_commands::monitorEffect:
