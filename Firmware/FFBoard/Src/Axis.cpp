@@ -289,6 +289,7 @@ void Axis::setupTMC4671()
 	tmclimits.pid_torque_flux = getPower();
 	drv->setLimits(tmclimits);
 	//drv->setBiquadFlux(fluxbq);
+	drv->setExternalEncoderAllowed(true);
 	
 
 	// Enable driver

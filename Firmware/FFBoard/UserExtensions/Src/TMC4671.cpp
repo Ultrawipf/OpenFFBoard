@@ -1360,7 +1360,7 @@ void TMC4671::encoderInit(){
  */
 void TMC4671::setEncoderType(EncoderType_TMC type){
 	// If no external timer is set external encoder is not valid
-	if(!externalEncoderTimer && type == EncoderType_TMC::ext){
+	if((!externalEncoderTimer || !externalEncoderAllowed()) && type == EncoderType_TMC::ext){
 		type = EncoderType_TMC::NONE;
 	}
 	this->conf.motconf.enctype = type;
@@ -1751,6 +1751,27 @@ void TMC4671::setFFMode(FFMode mode){
 void TMC4671::setSequentialPI(bool sequential){
 	curPids.sequentialPI = sequential;
 	updateReg(0x63, sequential ? 1 : 0, 0x1, 31);
+}
+
+void TMC4671::setExternalEncoderAllowed(bool allow){
+#ifndef TIM_TMC
+	allowExternalEncoder = false;
+#else
+	bool lastAllowed = allowExternalEncoder;
+	allowExternalEncoder = allow;
+	// External encoder was previously used but now not allowed anymore. Change to none type encoder
+	if(!allow && lastAllowed && conf.motconf.enctype == EncoderType_TMC::ext){
+		setEncoderType(EncoderType_TMC::NONE); // Reinit encoder
+	}
+#endif
+}
+
+bool TMC4671::externalEncoderAllowed(){
+#ifndef TIM_TMC
+	return false;
+#else
+	return allowExternalEncoder;
+#endif
 }
 
 void TMC4671::setMotorType(MotorType motor,uint16_t poles){
@@ -2484,11 +2505,11 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 		}else if(cmd.type == CMDtype::set){
 			this->setEncoderType((EncoderType_TMC)cmd.val);
 		}else{
-#ifdef TIM_TMC
-			replies.push_back(CommandReply("NONE=0,ABN=1,SinCos=2,Analog UVW=3,Hall=4,External=5"));
-#else
-			replies.push_back(CommandReply("NONE=0,ABN=1,SinCos=2,Analog UVW=3,Hall=4"));
-#endif
+			if(externalEncoderAllowed())
+				replies.push_back(CommandReply("NONE=0,ABN=1,SinCos=2,Analog UVW=3,Hall=4,External=5"));
+			else
+				replies.push_back(CommandReply("NONE=0,ABN=1,SinCos=2,Analog UVW=3,Hall=4"));
+
 		}
 		break;
 
@@ -2696,7 +2717,7 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 #ifdef TIM_TMC
 	void TMC4671::timerElapsed(TIM_HandleTypeDef* htim){
 		// Read encoder and send to tmc
-		if(usingExternalEncoder() && this->conf.motconf.phiEsource == PhiE::extEncoder && extEncUpdater != nullptr){
+		if(usingExternalEncoder() && externalEncoderAllowed() && this->conf.motconf.phiEsource == PhiE::extEncoder && extEncUpdater != nullptr){
 			//setPhiE_ext(getPhiEfromExternalEncoder());
 			// Signal phiE update
 			extEncUpdater->updateFromIsr(); // Use task so that the update is not being done inside an ISR
