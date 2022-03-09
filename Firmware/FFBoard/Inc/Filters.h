@@ -11,6 +11,11 @@
 
 #ifdef __cplusplus
 
+struct biquad_constant_t {
+	uint16_t freq;
+	uint8_t q;
+};
+
 enum class BiquadType : uint8_t {
     lowpass = 0,
     highpass,
