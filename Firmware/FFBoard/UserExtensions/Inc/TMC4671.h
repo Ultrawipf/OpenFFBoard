@@ -354,6 +354,11 @@ public:
 
 	void changeState(TMC_ControlState newState,bool force = false);
 
+	bool externalEncoderAllowed();
+	void setExternalEncoderAllowed(bool allow);
+
+
+
 #ifdef TIM_TMC
 	void timerElapsed(TIM_HandleTypeDef* htim);
 #endif
@@ -527,6 +532,7 @@ private:
 	uint8_t calibrationFailCount = 2;
 
 	int16_t externalEncoderPhieOffset = 0; // PhiE offset for external encoders
+	bool allowExternalEncoder = false;
 
 	bool allowStateChange = false;
 
@@ -589,3 +595,5 @@ public:
 };
 
 #endif /* TMC4671_H_ */
+
+
