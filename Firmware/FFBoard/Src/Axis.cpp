@@ -110,7 +110,7 @@ void Axis::restoreFlash(){
 	uint16_t esval, power;
 	if(Flash_Read(flashAddrs.endstop, &esval)) {
 		fx_ratio_i = esval & 0xff;
-		endstop_gain = (esval >> 8) & 0xff;
+		endstopStrength = (esval >> 8) & 0xff;
 	}
 
 
@@ -139,7 +139,7 @@ void Axis::saveFlash(){
 //	Flash_Write(flashAddrs.maxSpeed, this->maxSpeedDegS);
 //	Flash_Write(flashAddrs.maxAccel, (uint16_t)(this->maxTorqueRateMS));
 
-	Flash_Write(flashAddrs.endstop, fx_ratio_i | (endstop_gain << 8));
+	Flash_Write(flashAddrs.endstop, fx_ratio_i | (endstopStrength << 8));
 	Flash_Write(flashAddrs.power, power);
 	Flash_Write(flashAddrs.degrees, (degreesOfRotation & 0x7fff) | (invertAxis << 15));
 	Flash_Write(flashAddrs.effects1, idlespringstrength | (damperIntensity << 8));
@@ -509,7 +509,7 @@ int16_t Axis::updateEndstop(){
 		return 0;
 	}
 	int32_t addtorque = clip<int32_t,int32_t>(abs(metric.current.pos)-0x7fff,-0x7fff,0x7fff);
-	addtorque *= (float)endstop_gain * 1.25 * torqueScaler; // Apply endstop gain for stiffness. 0.15f
+	addtorque *= (float)endstopStrength * endstopGain * torqueScaler; // Apply endstop gain for stiffness. 0.15f
 	addtorque *= -clipdir;
 
 	return clip<int32_t,int32_t>(addtorque,-0x7fff,0x7fff);
@@ -621,7 +621,7 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 		break;
 
 	case Axis_commands::esgain:
-		handleGetSet(cmd, replies, this->endstop_gain);
+		handleGetSet(cmd, replies, this->endstopStrength);
 		break;
 
 	case Axis_commands::zeroenc:
