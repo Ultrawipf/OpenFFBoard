@@ -19,6 +19,7 @@
 #include "EncoderLocal.h"
 #include "LocalAnalog.h"
 #include "AnalogSource.h"
+#include "PCF8574.h"
 
 #include "Axis.h"
 
