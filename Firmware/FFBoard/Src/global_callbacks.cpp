@@ -24,6 +24,7 @@
 #include "EffectsCalculator.h"
 #include "SpiHandler.h"
 #include "HidCommandInterface.h"
+#include "I2CHandler.h"
 
 #ifdef CANBUS
 #include "CanHandler.h"
@@ -220,6 +221,42 @@ void HAL_SPI_ErrorCallback(SPI_HandleTypeDef *hspi){
 		c->SpiError(hspi);
 	}
 }
+
+// I2C
+
+void HAL_I2C_MasterTxCpltCallback(I2C_HandleTypeDef * hi2c){
+	for(I2CHandler* c : I2CHandler::getI2CHandlers()){
+		c->I2cTxCplt(hi2c);
+	}
+}
+
+void HAL_I2C_MasterRxCpltCallback(I2C_HandleTypeDef * hi2c){
+	for(I2CHandler* c : I2CHandler::getI2CHandlers()){
+		c->I2cRxCplt(hi2c);
+	}
+}
+
+void HAL_I2C_MemTxCpltCallback(I2C_HandleTypeDef * hi2c){
+	for(I2CHandler* c : I2CHandler::getI2CHandlers()){
+		c->I2cTxCplt(hi2c);
+	}
+}
+
+void HAL_I2C_MemRxCpltCallback(I2C_HandleTypeDef * hi2c){
+	for(I2CHandler* c : I2CHandler::getI2CHandlers()){
+		c->I2cRxCplt(hi2c);
+	}
+}
+
+void HAL_I2C_ErrorCallback(I2C_HandleTypeDef *hi2c){
+	for(I2CHandler* c : I2CHandler::getI2CHandlers()){
+		c->I2cError(hi2c);
+	}
+}
+
+
+void HAL_I2C_MemRxCpltCallback(I2C_HandleTypeDef *hi2c);
+void HAL_I2C_ErrorCallback(I2C_HandleTypeDef *hi2c);
 
 // USB Callbacks
 USBdevice* usb_device;

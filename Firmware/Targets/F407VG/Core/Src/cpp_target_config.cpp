@@ -26,6 +26,11 @@ extern UART_HandleTypeDef UART_PORT_EXT;
 UARTPort external_uart{UART_PORT_EXT};
 #endif
 
+#ifdef I2C_PORT
+extern I2C_HandleTypeDef I2C_PORT;
+I2CPort i2cport{I2C_PORT};
+#endif
+
 #ifdef CANBUS
 /*
  * Can BTR register for different speed configs

@@ -13,6 +13,7 @@
 #include "UART.h"
 #include "target_constants.h"
 #include "CAN.h"
+#include "I2C.h"
 
 extern SPIPort external_spi;
 extern SPIPort motor_spi;
@@ -32,6 +33,10 @@ extern CANPort canport;
 
 #ifdef PWMDRIVER
 extern const PWMConfig pwmTimerConfig;
+#endif
+
+#ifdef I2C_PORT
+extern I2CPort i2cport;
 #endif
 
 #endif

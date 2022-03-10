@@ -225,8 +225,9 @@ void SPIPort::SpiTxCplt(SPI_HandleTypeDef *hspi) {
 	if (hspi->Instance != this->hspi.Instance) {
 		return;
 	}
-	current_device->spiTxCompleted(this);
 	current_device->endSpiTransfer(this);
+	current_device->spiTxCompleted(this);
+
 	current_device = nullptr;
 
 }
@@ -238,8 +239,9 @@ void SPIPort::SpiRxCplt(SPI_HandleTypeDef *hspi) {
 	if (hspi->Instance != this->hspi.Instance) {
 		return;
 	}
-	current_device->spiRxCompleted(this);
 	current_device->endSpiTransfer(this);
+	current_device->spiRxCompleted(this);
+
 	current_device = nullptr;
 }
 void SPIPort::SpiTxRxCplt(SPI_HandleTypeDef *hspi) {
@@ -250,8 +252,9 @@ void SPIPort::SpiTxRxCplt(SPI_HandleTypeDef *hspi) {
 	if (hspi->Instance != this->hspi.Instance) {
 		return;
 	}
-	current_device->spiTxRxCompleted(this);
 	current_device->endSpiTransfer(this);
+	current_device->spiTxRxCompleted(this);
+
 	current_device = nullptr;
 }
 
@@ -263,9 +266,9 @@ void SPIPort::SpiError(SPI_HandleTypeDef *hspi) {
 	if (hspi->Instance != this->hspi.Instance) {
 		return;
 	}
-
-	current_device->spiRequestError(this);
 	current_device->endSpiTransfer(this);
+	current_device->spiRequestError(this);
+
 	current_device = nullptr;
 }
 
