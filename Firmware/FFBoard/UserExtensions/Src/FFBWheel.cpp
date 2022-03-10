@@ -40,6 +40,7 @@ const std::vector<class_entry<ButtonSource>> button_sources =
 #ifdef SHIFTERBUTTONS
 		add_class<ShifterAnalog,ButtonSource>(3),
 #endif
+		add_class<PCF8574Buttons,ButtonSource>(4),
 };
 
 // Register possible analog sources (id 0-15)

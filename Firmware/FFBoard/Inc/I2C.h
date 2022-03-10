@@ -11,7 +11,7 @@
 #include "semaphore.hpp"
 #include "cppmain.h"
 
-class I2CDevice;
+//class I2CDevice;
 class I2CPort {
 public:
 	I2CPort(I2C_HandleTypeDef &hi2c);
@@ -20,11 +20,14 @@ public:
 
 	void configurePort(I2C_InitTypeDef* config); // Reconfigures the i2c port
 
-	bool transmitMaster(const uint16_t addr,const uint8_t* pData,const uint16_t size,const uint32_t timeout);
-	bool receiveMaster(const uint16_t addr,uint8_t* pData,const uint16_t Size,const uint32_t timeout);
-	bool writeMem(const uint16_t devAddr,const uint16_t memAddr,const uint16_t memAddSize,const uint8_t* pData,const uint16_t size,const uint32_t timeout);
+	bool transmitMaster(const uint16_t addr,uint8_t* pData,const uint16_t size,const uint32_t timeout);
+	bool receiveMaster(const uint16_t addr,uint8_t* pData,const uint16_t size,const uint32_t timeout);
+	bool writeMem(const uint16_t devAddr,const uint16_t memAddr,const uint16_t memAddSize,uint8_t* pData,const uint16_t size,const uint32_t timeout);
 	bool readMem(const uint16_t devAddr,const uint16_t memAddr,const uint16_t memAddSize,uint8_t* pData,const uint16_t size,const uint32_t timeout);
 
+	void takeSemaphore();
+	void giveSemaphore();
+	bool isTaken();
 private:
 	cpp_freertos::BinarySemaphore semaphore = cpp_freertos::BinarySemaphore(true);
 	volatile bool isTakenFlag = false;
