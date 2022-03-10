@@ -63,6 +63,8 @@ extern UART_HandleTypeDef huart3;
 
 #define UART_BUF_SIZE 1 // How many bytes to expect via DMA
 
+extern I2C_HandleTypeDef hi2c1;
+#define I2C_PORT hi2c1
 
 
 
