@@ -30,6 +30,7 @@
 #define LOCALBUTTONS
 #define SPIBUTTONS
 //#define SPIBUTTONS2 // Additional spi source. Not supported
+#define PCF8574BUTTONS // Requires I2C
 #define SHIFTERBUTTONS
 #define ANALOGAXES
 #define TMC4671DRIVER
@@ -42,6 +43,9 @@
 // Timer 3 is used by the encoder.
 #define TIM_USER htim9
 #define TIM_TMC htim2
+
+extern I2C_HandleTypeDef hi2c3;
+#define I2C_PORT hi2c3
 
 #define TIM_MICROS htim10
 extern UART_HandleTypeDef huart1;

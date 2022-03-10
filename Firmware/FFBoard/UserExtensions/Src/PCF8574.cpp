@@ -5,9 +5,10 @@
  *      Author: Yannick
  */
 
+
 #include "PCF8574.h"
 #include "math.h"
-
+#ifdef I2C_PORT
 PCF8574::PCF8574(I2CPort &port) : port(port) {
 	config.ClockSpeed = 100000;
 	config.DutyCycle = I2C_DUTYCYCLE_2;
@@ -26,16 +27,33 @@ PCF8574::~PCF8574() {
 
 uint8_t PCF8574::readByte(const uint8_t devAddr){
 	uint8_t data = 0;
-
-	port.receiveMaster(devAddr * 2 + 1, &data, 1, 250);
+	port.receiveMaster(this,devAddr * 2 + 1, &data, 1, 250);
 	return data;
+}
+
+void PCF8574::readByteIT(const uint8_t devAddr,uint8_t* data){
+	port.receiveMasterIT(this,devAddr * 2 + 1, data, 1);
+}
+
+void PCF8574::writeByteIT(const uint8_t devAddr,uint8_t* data){
+	port.transmitMasterIT(this,devAddr * 2, data, 1);
 }
 
 void PCF8574::writeByte(const uint8_t devAddr,uint8_t data){
 	lastWriteData = data;
-	port.transmitMaster(devAddr * 2 , &lastWriteData, 1, 250);
+	port.transmitMaster(this,devAddr * 2 , &lastWriteData, 1, 250);
 }
 
+void PCF8574::startI2CTransfer(I2CPort* port){
+	transferActive = true;
+}
+
+void PCF8574::endI2CTransfer(I2CPort* port){
+	transferActive = false;
+}
+
+
+#ifdef PCF8574BUTTONS
 ClassIdentifier PCF8574Buttons::info = {
 		 .name = "I2C PCF8574" ,
 		 .id=CLSID_BTN_PCF,
@@ -57,6 +75,25 @@ PCF8574Buttons::~PCF8574Buttons() {
 
 }
 
+
+
+void PCF8574Buttons::i2cRxCompleted(I2CPort* port){
+	if(port != &this->port){
+		return;
+	}
+	lastSuccess = HAL_GetTick();
+	currentButtons |= lastData << (lastByte*8);
+	if(lastByte+1 < this->numBytes){
+		// Next transfer
+		if(!port->isTaken()){
+			lastData = 0;
+			readByteIT(0x20+ ++lastByte, &lastData);
+		}
+	}else{
+		readingData = false; // Done
+	}
+}
+
 void PCF8574Buttons::saveFlash(){
 	uint16_t conf1 = (btnnum-1) & 0x3F;
 	conf1 |= (invert & 0x1) << 6;
@@ -71,22 +108,34 @@ void PCF8574Buttons::restoreFlash(){
 	}
 }
 
-uint8_t PCF8574Buttons::readButtons(uint64_t* buf){
-	if(!port.isTaken()){
-		port.takeSemaphore();
-		lastButtons = 0;
-		for(uint8_t idx = 0; idx < numBytes; idx++){
 
-			uint8_t dat = readByte(0x20+idx);
-			if(invert){
-				dat = ~dat;
-			}
-			lastButtons |= dat << (idx*8);
+
+uint8_t PCF8574Buttons::readButtons(uint64_t* buf){
+
+	if(!readingData){ // Only write buffer if done
+		lastButtons = currentButtons;
+		if(invert){
+			*buf = ~lastButtons;
+		}else{
+			*buf = lastButtons;
 		}
-		port.giveSemaphore();
+		*buf &= mask;
 	}
-	lastButtons &= mask;
-	*buf = lastButtons;
+
+
+	// Update
+	if(HAL_GetTick()-lastSuccess > timeout && readingData){
+		readingData = false;
+		port.resetPort();
+		lastSuccess = HAL_GetTick();
+	}
+	if(!port.isTaken()){
+		readingData = true;
+		lastButtons = 0;
+		currentButtons = 0;
+		lastByte = 0;
+		readByteIT(0x20, &lastData);
+	}
 	return btnnum;
 }
 
@@ -96,13 +145,18 @@ uint16_t PCF8574Buttons::getBtnNum(){
 	return btnnum;
 }
 
-
+/**
+ * Changes the amount of buttons to be read
+ * num/8 chips required. Each of them taking 200µS for a transfer!
+ * Not recommended to use more than 4 modules
+ */
 void PCF8574Buttons::setBtnNum(uint8_t num){
 	num = clip<uint8_t,uint8_t>(num, 1, 64); // up to 8 PCF8574 can be chained resulting in 64 buttons
 	this->btnnum = num;
 	this->numBytes = 1+((num-1)/8);
 
 	mask = pow(2,num)-1;
+	port.resetPort();
 }
 
 CommandStatus PCF8574Buttons::command(const ParsedCommand& cmd,std::vector<CommandReply>& replies){
@@ -125,3 +179,5 @@ CommandStatus PCF8574Buttons::command(const ParsedCommand& cmd,std::vector<Comma
 	}
 	return CommandStatus::OK;
 }
+#endif
+#endif //i2c

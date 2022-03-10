@@ -32,6 +32,7 @@
 #define LOCALBUTTONS
 #define SPIBUTTONS
 #define SHIFTERBUTTONS
+#define PCF8574BUTTONS // Requires I2C
 #define ANALOGAXES
 #define TMC4671DRIVER
 #define PWMDRIVER
