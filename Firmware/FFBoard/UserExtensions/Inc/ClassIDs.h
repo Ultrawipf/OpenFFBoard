@@ -46,6 +46,7 @@ enum class ClassType : uint16_t {
 #define CLSID_BTN_LOCAL 	0x21
 #define CLSID_BTN_SPI	 	0x22
 #define CLSID_BTN_SHIFTER 	0x23
+#define CLSID_BTN_PCF	 	0x24
 
 // Analog sources
 #define CLSID_ANALOG_NONE 	0x40

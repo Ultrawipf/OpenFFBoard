@@ -13,3 +13,8 @@ SPIPort motor_spi{hspi1,motor_spi_cspins,false};
 extern UART_HandleTypeDef UART_PORT_EXT;
 UARTPort external_uart{UART_PORT_EXT};
 #endif
+
+#ifdef I2C_PORT
+extern I2C_HandleTypeDef I2C_PORT;
+I2CPort i2cport{I2C_PORT};
+#endif

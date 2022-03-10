@@ -32,6 +32,7 @@
 #define LOCALBUTTONS
 #define SPIBUTTONS
 #define SHIFTERBUTTONS
+#define PCF8574BUTTONS // Requires I2C
 #define ANALOGAXES
 #define TMC4671DRIVER
 #define PWMDRIVER
@@ -63,6 +64,8 @@ extern UART_HandleTypeDef huart3;
 
 #define UART_BUF_SIZE 1 // How many bytes to expect via DMA
 
+extern I2C_HandleTypeDef hi2c1;
+#define I2C_PORT hi2c1
 
 
 
