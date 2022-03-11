@@ -84,6 +84,7 @@ struct TMC4671HardwareTypeConf{
 	float currentScaler = 2.5 / (0x7fff * 60.0 * 0.0015); // Converts from adc counts to current in Amps
 	uint16_t brakeLimLow = 50700;
 	uint16_t brakeLimHigh = 50900;
+	float vmScaler = (2.5 / 0x7fff) * ((1.5+71.5)/1.5);
 	// Todo restrict allowed motor and encoder types
 };
 
@@ -275,7 +276,7 @@ class TMC4671 :
 		cpr,mtype,encsrc,tmcHwType,encalign,poles,acttrq,pwmlim,
 		torqueP,torqueI,fluxP,fluxI,velocityP,velocityI,posP,posI,
 		tmctype,pidPrec,phiesrc,fluxoffset,seqpi,tmcIscale,encdir,temp,reg,
-		svpwm,fullCalibration,abnindexenabled,findIndex,getState,encpol,combineEncoder,invertForce
+		svpwm,fullCalibration,abnindexenabled,findIndex,getState,encpol,combineEncoder,invertForce,vmTmc
 	};
 
 public:
