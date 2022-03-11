@@ -55,8 +55,6 @@ public:
 	static Error cmdExecError;
 
 protected:
-	virtual void updateSys();
-
 	virtual void executeCommands(std::vector<ParsedCommand> commands,CommandInterface* commandInterface);
 
 
