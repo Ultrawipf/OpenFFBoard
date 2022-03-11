@@ -475,17 +475,17 @@ void TMC4671::Run(){
 			// Calibrate ADC
 			enablePin.set();
 			setPwm(TMC_PwmMode::PWM_FOC); // enable foc to calibrate adc
+			Delay(50);
 			if(calibrateAdcOffset(500)){
 				saveAdcParams();
 			}else{
 				calibFailCb();
+				break;
 			}
 
 			// Encoder
 			calibrateEncoder();
 			setEncoderType(conf.motconf.enctype);
-
-
 
 			break;
 		}
@@ -1219,12 +1219,13 @@ bool TMC4671::calibrateAdcOffset(uint16_t time){
 	uint32_t measurements_idle = 0;
 	uint64_t totalA=0;
 	uint64_t totalB=0;
-
+	bool allowTemp = conf.hwconf.temperatureEnabled;
+	conf.hwconf.temperatureEnabled = false; // Temp check interrupts adc
 	writeReg(0x03, 0); // Read raw adc
 	PhiE lastphie = getPhiEtype();
 	MotionMode lastmode = getMotionMode();
 	setMotionMode(MotionMode::stop,true);
-
+	Delay(100); // Wait a bit before sampling
 	uint16_t lastrawA=conf.adc_I0_offset, lastrawB=conf.adc_I1_offset;
 
 	//pulseClipLed(); // Turn on led
@@ -1232,6 +1233,7 @@ bool TMC4671::calibrateAdcOffset(uint16_t time){
 	//enablePin.reset();
 	uint32_t tick = HAL_GetTick();
 	while(HAL_GetTick() - tick < measuretime_idle){ // Measure idle
+		writeReg(0x03, 0); // Read raw adc
 		uint32_t adcraw = readReg(0x02);
 		uint16_t rawA = adcraw & 0xffff;
 		uint16_t rawB = (adcraw >> 16) & 0xffff;
@@ -1243,18 +1245,21 @@ bool TMC4671::calibrateAdcOffset(uint16_t time){
 			lastrawA = rawA;
 			lastrawB = rawB;
 		}
+//		uint32_t lastMicros = micros();
+//		while(micros()-lastMicros < 100){} // Wait 100µs at least
 	}
 	//enablePin.set();
-	uint32_t offsetAidle = totalA / (measurements_idle);
-	uint32_t offsetBidle = totalB / (measurements_idle);
+	int32_t offsetAidle = totalA / (measurements_idle);
+	int32_t offsetBidle = totalB / (measurements_idle);
 
 	// Check if offsets are in a valid range
-	if(totalA < 100 || totalB < 100 || (abs((int32_t)offsetAidle - 0x7fff) > 5000 || abs((int32_t)offsetBidle - 0x7fff) > 5000)){
+	if(totalA < 100 || totalB < 100 || ((abs(offsetAidle - 0x7fff) > TMC_ADCOFFSETFAIL) || (abs(offsetBidle - 0x7fff) > TMC_ADCOFFSETFAIL)) ){
 		ErrorHandler::addError(Error(ErrorCode::adcCalibrationError,ErrorType::critical,"TMC ADC offset calibration failed."));
-		blinkErrLed(100, 0); // Blink forever
-		setPwm(TMC_PwmMode::off); //Disable pwm
-		this->changeState(TMC_ControlState::HardError);
+//		blinkErrLed(100, 0); // Blink forever
+//		setPwm(TMC_PwmMode::off); //Disable pwm
+//		this->changeState(TMC_ControlState::HardError);
 		adcCalibrated = false;
+		conf.hwconf.temperatureEnabled = allowTemp;
 		return false; // An adc or shunt amp is likely broken. do not proceed.
 	}
 	conf.adc_I0_offset = offsetAidle;
@@ -1265,6 +1270,7 @@ bool TMC4671::calibrateAdcOffset(uint16_t time){
 	setPhiEtype(lastphie);
 	setMotionMode(lastmode,true);
 	adcCalibrated = true;
+	conf.hwconf.temperatureEnabled = allowTemp;
 	return true;
 }
 

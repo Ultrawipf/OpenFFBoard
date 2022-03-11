@@ -28,6 +28,7 @@
 #define SPITIMEOUT 500
 #define TMC_THREAD_MEM 256
 #define TMC_THREAD_PRIO 25 // Must be higher than main thread
+#define TMC_ADCOFFSETFAIL 5000 // How much offset from 0x7fff to allow before a calibration is failed
 
 extern SPI_HandleTypeDef HSPIDRV;
 
@@ -154,14 +155,14 @@ struct TMC4671MainConfig{
 
 struct TMC4671PIDConf{
 	uint16_t fluxI		= 512;
-	uint16_t fluxP		= 256;
+	uint16_t fluxP		= 512;
 	uint16_t torqueI	= 512;
-	uint16_t torqueP	= 256;
+	uint16_t torqueP	= 512;
 	uint16_t velocityI	= 0;
 	uint16_t velocityP	= 256;
 	uint16_t positionI	= 0;
 	uint16_t positionP	= 128;
-	bool sequentialPI	= false; // Advanced pid
+	bool sequentialPI	= true; // Advanced pid
 };
 
 struct TMC4671Limits{
