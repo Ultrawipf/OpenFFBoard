@@ -208,12 +208,14 @@ bool TMC4671::pingDriver(){
 }
 
 /**
- * Returns centered tmc VM adc value
+ * Returns estimated VM in mV measured by TMC
  */
 int32_t TMC4671::getTmcVM(){
 	writeReg(0x03, 1); // adc raw data to VM/agpiA
 	uint32_t agpiA_VM = readReg(0x02);
-	return (agpiA_VM & 0xFFFF) - 0x7FFF;
+	agpiA_VM = (agpiA_VM & 0xFFFF) - 0x7FFF - conf.hwconf.adcOffset;
+
+	return ((float)agpiA_VM * conf.hwconf.vmScaler) * 1000;
 }
 
 
@@ -2326,6 +2328,7 @@ void TMC4671::setHwType(TMC_HW_Ver type){
 			.currentScaler = 2.5 / (0x7fff * 0.1), // w. TMCS1100A2 sensor 100mV/A
 			.brakeLimLow = 50700,
 			.brakeLimHigh = 50900,
+			.vmScaler = (2.5 / 0x7fff) * ((1.5+71.5)/1.5)
 		};
 		this->conf.hwconf = newHwConf;
 	break;
@@ -2343,7 +2346,8 @@ void TMC4671::setHwType(TMC_HW_Ver type){
 			.temp_limit = 90,
 			.currentScaler = 2.5 / (0x7fff * 0.04), // w. LEM 20 sensor 40mV/A
 			.brakeLimLow = 50700,
-			.brakeLimHigh = 50900
+			.brakeLimHigh = 50900,
+			.vmScaler = (2.5 / 0x7fff) * ((1.5+71.5)/1.5)
 		};
 		this->conf.hwconf = newHwConf;
 	break;
@@ -2362,6 +2366,7 @@ void TMC4671::setHwType(TMC_HW_Ver type){
 			.currentScaler = 2.5 / (0x7fff * 0.08), // w. LEM 10 sensor 80mV/A
 			.brakeLimLow = 50700,
 			.brakeLimHigh = 50900,
+			.vmScaler = (2.5 / 0x7fff) * ((1.5+71.5)/1.5)
 		};
 		this->conf.hwconf = newHwConf;
 	break;
@@ -2380,6 +2385,7 @@ void TMC4671::setHwType(TMC_HW_Ver type){
 			.currentScaler = 2.5 / (0x7fff * 60.0 * 0.0015), // w. 60x 1.5mOhm sensor
 			.brakeLimLow = 50700,
 			.brakeLimHigh = 50900,
+			.vmScaler = (2.5 / 0x7fff) * ((1.5+71.5)/1.5)
 		};
 		this->conf.hwconf = newHwConf;
 		// Activates around 60V as last resort failsave. Check offsets from tmc leakage. ~ 1.426V
@@ -2391,7 +2397,7 @@ void TMC4671::setHwType(TMC_HW_Ver type){
 	{
 		TMC4671HardwareTypeConf newHwConf = {
 			.hwVersion = TMC_HW_Ver::v1_0,
-			.adcOffset = 0,
+			.adcOffset = 1000,
 			.thermistor_R2 = 0,
 			.thermistor_R = 0,
 			.thermistor_Beta = 0,
@@ -2400,6 +2406,7 @@ void TMC4671::setHwType(TMC_HW_Ver type){
 			.currentScaler = 2.5 / (0x7fff * 60.0 * 0.0015), // w. 60x 1.5mOhm sensor
 			.brakeLimLow = 52400,
 			.brakeLimHigh = 52800,
+			.vmScaler = (2.5 / 0x7fff) * ((1.5+71.5)/1.5)
 		};
 		this->conf.hwconf = newHwConf;
 
@@ -2457,7 +2464,7 @@ void TMC4671::registerCommands(){
 	registerCommand("state", TMC4671_commands::getState, "Get state",CMDFLAG_GET);
 	registerCommand("combineEncoder", TMC4671_commands::combineEncoder, "Use TMC for movement, external encoder for position",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("invertForce", TMC4671_commands::invertForce, "Invert incoming forces",CMDFLAG_GET | CMDFLAG_SET);
-
+	registerCommand("vm", TMC4671_commands::vmTmc, "VM in mV",CMDFLAG_GET);
 }
 
 CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply>& replies){
@@ -2624,6 +2631,10 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 		replies.push_back(CommandReply(ver.second,ver.first));
 		break;
 	}
+
+	case TMC4671_commands::vmTmc:
+		replies.push_back(CommandReply(getTmcVM()));
+		break;
 
 	case TMC4671_commands::pidPrec:
 		if(cmd.type == CMDtype::get){
