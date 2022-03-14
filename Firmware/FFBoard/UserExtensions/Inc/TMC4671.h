@@ -278,7 +278,7 @@ class TMC4671 :
 		cpr,mtype,encsrc,tmcHwType,encalign,poles,acttrq,pwmlim,
 		torqueP,torqueI,fluxP,fluxI,velocityP,velocityI,posP,posI,
 		tmctype,pidPrec,phiesrc,fluxoffset,seqpi,tmcIscale,encdir,temp,reg,
-		svpwm,fullCalibration,abnindexenabled,findIndex,getState,encpol,combineEncoder,invertForce,vmTmc
+		svpwm,fullCalibration,calibrated,abnindexenabled,findIndex,getState,encpol,combineEncoder,invertForce,vmTmc,
 	};
 
 public:
@@ -359,6 +359,8 @@ public:
 
 	bool externalEncoderAllowed();
 	void setExternalEncoderAllowed(bool allow);
+
+	bool isCalibrated();
 
 
 
@@ -524,7 +526,7 @@ private:
 	bool initialized = false; // Init ran once
 	bool powerInitialized = false;
 	bool adcCalibrated = false;
-	bool adcSettingsRestored = false;
+	bool adcSettingsStored = false;
 	bool motorEnabledRequested = false;
 	volatile bool encoderIndexHitFlag = false;
 	bool zeroEncoderOnIndexHit = false;
@@ -538,6 +540,7 @@ private:
 	bool allowExternalEncoder = false;
 
 	bool allowStateChange = false;
+	bool recalibrationRequired = false;
 
 	uint8_t enc_retry = 0;
 	uint8_t enc_retry_max = 3;
