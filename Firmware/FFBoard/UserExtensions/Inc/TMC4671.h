@@ -86,6 +86,7 @@ struct TMC4671HardwareTypeConf{
 	uint16_t brakeLimLow = 50700;
 	uint16_t brakeLimHigh = 50900;
 	float vmScaler = (2.5 / 0x7fff) * ((1.5+71.5)/1.5);
+	float vSenseMult = VOLTAGE_MULT_DEFAULT;
 	// Todo restrict allowed motor and encoder types
 };
 

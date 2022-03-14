@@ -2431,6 +2431,8 @@ void TMC4671::setHwType(TMC_HW_Ver type){
 		break;
 	}
 	}
+	setVSenseMult(this->conf.hwconf.vSenseMult); // Update vsense multiplier
+	//setupBrakePin(vdiffAct, vdiffDeact, vMax); // TODO if required
 	setBrakeLimits(this->conf.hwconf.brakeLimLow,this->conf.hwconf.brakeLimHigh);
 }
 
