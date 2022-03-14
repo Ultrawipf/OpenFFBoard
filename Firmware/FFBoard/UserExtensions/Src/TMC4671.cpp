@@ -125,6 +125,7 @@ void TMC4671::saveFlash(){
 void TMC4671::saveAdcParams(){
 	Flash_Write(flashAddrs.ADC_i0_ofs, conf.adc_I0_offset);
 	Flash_Write(flashAddrs.ADC_i1_ofs, conf.adc_I1_offset);
+	adcSettingsStored = true;
 }
 
 /**
@@ -155,7 +156,9 @@ void TMC4671::restoreFlash(){
 
 	// Restore ADC settings
 	if(Flash_Read(flashAddrs.ADC_i0_ofs,&conf.adc_I0_offset) &&	Flash_Read(flashAddrs.ADC_i1_ofs,&conf.adc_I1_offset)){
-		adcSettingsRestored = true; // Previous adc settings restored
+		adcSettingsStored = true; // Previous adc settings restored
+	}else{
+		recalibrationRequired = true; // Never stored
 	}
 
 //	abnconf.phiEoffset = Flash_ReadDefault(flashAddrs.phieOffset,0);
@@ -369,11 +372,11 @@ void TMC4671::initializeWithPower(){
 	powerInitialized = true;
 	// Load ADC settings
 	if(Flash_Read(flashAddrs.ADC_i0_ofs,&conf.adc_I0_offset) &&	Flash_Read(flashAddrs.ADC_i1_ofs,&conf.adc_I1_offset)){
-		adcSettingsRestored = true; // Previous adc settings restored
+		adcSettingsStored = true; // Previous adc settings restored
 		setAdcOffset(conf.adc_I0_offset, conf.adc_I1_offset);
 	}
 
-	if(adcSettingsRestored && checkAdc()){
+	if(adcSettingsStored && checkAdc()){
 		adcCalibrated = true;
 	}else{
 		if(!calibrateAdcOffset(300)){
@@ -486,7 +489,7 @@ void TMC4671::Run(){
 			// Encoder
 			calibrateEncoder();
 			setEncoderType(conf.motconf.enctype);
-
+			recalibrationRequired = false;
 			break;
 		}
 
@@ -1298,6 +1301,7 @@ void TMC4671::encoderInit(){
 		//setup_ABN_Enc(abnconf);
 		if(!encHallRestored){
 			estimateABNparams(); // If not saved try to estimate parameters
+			recalibrationRequired = true;
 		}
 	}else if(conf.motconf.enctype == EncoderType_TMC::sincos || conf.motconf.enctype == EncoderType_TMC::uvw){
 		setPosSel(PosSelection::PhiM_aenc); // Mechanical Angle
@@ -2334,7 +2338,8 @@ void TMC4671::setHwType(TMC_HW_Ver type){
 			.currentScaler = 2.5 / (0x7fff * 0.1), // w. TMCS1100A2 sensor 100mV/A
 			.brakeLimLow = 50700,
 			.brakeLimHigh = 50900,
-			.vmScaler = (2.5 / 0x7fff) * ((1.5+71.5)/1.5)
+			.vmScaler = (2.5 / 0x7fff) * ((1.5+71.5)/1.5),
+			.vSenseMult = VOLTAGE_MULT_DEFAULT
 		};
 		this->conf.hwconf = newHwConf;
 	break;
@@ -2353,7 +2358,8 @@ void TMC4671::setHwType(TMC_HW_Ver type){
 			.currentScaler = 2.5 / (0x7fff * 0.04), // w. LEM 20 sensor 40mV/A
 			.brakeLimLow = 50700,
 			.brakeLimHigh = 50900,
-			.vmScaler = (2.5 / 0x7fff) * ((1.5+71.5)/1.5)
+			.vmScaler = (2.5 / 0x7fff) * ((1.5+71.5)/1.5),
+			.vSenseMult = VOLTAGE_MULT_DEFAULT
 		};
 		this->conf.hwconf = newHwConf;
 	break;
@@ -2372,7 +2378,8 @@ void TMC4671::setHwType(TMC_HW_Ver type){
 			.currentScaler = 2.5 / (0x7fff * 0.08), // w. LEM 10 sensor 80mV/A
 			.brakeLimLow = 50700,
 			.brakeLimHigh = 50900,
-			.vmScaler = (2.5 / 0x7fff) * ((1.5+71.5)/1.5)
+			.vmScaler = (2.5 / 0x7fff) * ((1.5+71.5)/1.5),
+			.vSenseMult = VOLTAGE_MULT_DEFAULT
 		};
 		this->conf.hwconf = newHwConf;
 	break;
@@ -2391,7 +2398,8 @@ void TMC4671::setHwType(TMC_HW_Ver type){
 			.currentScaler = 2.5 / (0x7fff * 60.0 * 0.0015), // w. 60x 1.5mOhm sensor
 			.brakeLimLow = 50700,
 			.brakeLimHigh = 50900,
-			.vmScaler = (2.5 / 0x7fff) * ((1.5+71.5)/1.5)
+			.vmScaler = (2.5 / 0x7fff) * ((1.5+71.5)/1.5),
+			.vSenseMult = VOLTAGE_MULT_DEFAULT
 		};
 		this->conf.hwconf = newHwConf;
 		// Activates around 60V as last resort failsave. Check offsets from tmc leakage. ~ 1.426V
@@ -2412,7 +2420,8 @@ void TMC4671::setHwType(TMC_HW_Ver type){
 			.currentScaler = 2.5 / (0x7fff * 60.0 * 0.0015), // w. 60x 1.5mOhm sensor
 			.brakeLimLow = 52400,
 			.brakeLimHigh = 52800,
-			.vmScaler = (2.5 / 0x7fff) * ((1.5+71.5)/1.5)
+			.vmScaler = (2.5 / 0x7fff) * ((1.5+71.5)/1.5),
+			.vSenseMult = VOLTAGE_MULT_DEFAULT
 		};
 		this->conf.hwconf = newHwConf;
 
@@ -2469,11 +2478,14 @@ void TMC4671::registerCommands(){
 	registerCommand("autohome", TMC4671_commands::findIndex, "Find abn index",CMDFLAG_GET);
 	registerCommand("abnindex", TMC4671_commands::abnindexenabled, "Enable ABN index",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("calibrate", TMC4671_commands::fullCalibration, "Full calibration",CMDFLAG_GET);
+	registerCommand("calibrated", TMC4671_commands::calibrated, "Calibration valid",CMDFLAG_GET);
 	registerCommand("state", TMC4671_commands::getState, "Get state",CMDFLAG_GET);
 	registerCommand("combineEncoder", TMC4671_commands::combineEncoder, "Use TMC for movement, external encoder for position",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("invertForce", TMC4671_commands::invertForce, "Invert incoming forces",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("vm", TMC4671_commands::vmTmc, "VM in mV",CMDFLAG_GET);
+
 }
+
 
 CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply>& replies){
 	CommandStatus status = CommandStatus::OK;
@@ -2502,6 +2514,10 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 		calibrationFailCount = 1; // allow 1 fail
 		changeState(TMC_ControlState::FullCalibration);
 		// TODO start full calibration and save in flash
+		break;
+
+	case TMC4671_commands::calibrated:
+		replies.push_back(CommandReply(!recalibrationRequired && adcCalibrated));
 		break;
 
 	case TMC4671_commands::mtype:
