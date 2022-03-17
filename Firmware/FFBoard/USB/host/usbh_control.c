@@ -29,7 +29,7 @@
 #if TUSB_OPT_HOST_ENABLED
 
 #include "tusb.h"
-#include "usbh_hcd.h"
+#include "usbh_classdriver.h"
 
 enum
 {
@@ -50,7 +50,7 @@ typedef struct
 static usbh_control_xfer_t _ctrl_xfer;
 
 //CFG_TUSB_MEM_SECTION CFG_TUSB_MEM_ALIGN
-//static uint8_t _tuh_ctrl_buf[CFG_TUSB_HOST_ENUM_BUFFER_SIZE];
+//static uint8_t _tuh_ctrl_buf[CFG_TUH_ENUMERATION_BUFSIZE];
 
 //--------------------------------------------------------------------+
 // MACRO TYPEDEF CONSTANT ENUM DECLARATION
@@ -59,16 +59,14 @@ static usbh_control_xfer_t _ctrl_xfer;
 bool tuh_control_xfer (uint8_t dev_addr, tusb_control_request_t const* request, void* buffer, tuh_control_complete_cb_t complete_cb)
 {
   // TODO need to claim the endpoint first
-
-  usbh_device_t* dev = &_usbh_devices[dev_addr];
-  const uint8_t rhport = dev->rhport;
+  const uint8_t rhport = usbh_get_rhport(dev_addr);
 
   _ctrl_xfer.request     = (*request);
   _ctrl_xfer.buffer      = buffer;
   _ctrl_xfer.stage       = STAGE_SETUP;
   _ctrl_xfer.complete_cb = complete_cb;
 
-  TU_LOG2("Control Setup: ");
+  TU_LOG2("Control Setup (addr = %u): ", dev_addr);
   TU_LOG2_VAR(request);
   TU_LOG2("\r\n");
 
@@ -80,6 +78,7 @@ bool tuh_control_xfer (uint8_t dev_addr, tusb_control_request_t const* request, 
 
 static void _xfer_complete(uint8_t dev_addr, xfer_result_t result)
 {
+  TU_LOG2("\r\n");
   if (_ctrl_xfer.complete_cb) _ctrl_xfer.complete_cb(dev_addr, &_ctrl_xfer.request, result);
 }
 
@@ -88,8 +87,7 @@ bool usbh_control_xfer_cb (uint8_t dev_addr, uint8_t ep_addr, xfer_result_t resu
   (void) ep_addr;
   (void) xferred_bytes;
 
-  usbh_device_t* dev = &_usbh_devices[dev_addr];
-  const uint8_t rhport = dev->rhport;
+  const uint8_t rhport = usbh_get_rhport(dev_addr);
 
   tusb_control_request_t const * request = &_ctrl_xfer.request;
 
@@ -107,7 +105,7 @@ bool usbh_control_xfer_cb (uint8_t dev_addr, uint8_t ep_addr, xfer_result_t resu
         _ctrl_xfer.stage = STAGE_DATA;
         if (request->wLength)
         {
-          // Note: initial data toggle is always 1
+          // DATA stage: initial data toggle is always 1
           hcd_edpt_xfer(rhport, dev_addr, tu_edpt_addr(0, request->bmRequestType_bit.direction), _ctrl_xfer.buffer, request->wLength);
           return true;
         }
@@ -118,11 +116,11 @@ bool usbh_control_xfer_cb (uint8_t dev_addr, uint8_t ep_addr, xfer_result_t resu
 
         if (request->wLength)
         {
-          TU_LOG2("Control data:\r\n");
+          TU_LOG2("Control data (addr = %u):\r\n", dev_addr);
           TU_LOG2_MEM(_ctrl_xfer.buffer, request->wLength, 2);
         }
 
-        // data toggle is always 1
+        // ACK stage: toggle is always 1
         hcd_edpt_xfer(rhport, dev_addr, tu_edpt_addr(0, 1-request->bmRequestType_bit.direction), NULL, 0);
       break;
 
