@@ -27,10 +27,12 @@
 
 #include "tusb_option.h"
 
-#if ( TUSB_OPT_DEVICE_ENABLED && CFG_TUD_NET )
+#if ( TUSB_OPT_DEVICE_ENABLED && CFG_TUD_ECM_RNDIS )
+
+#include "device/usbd.h"
+#include "device/usbd_pvt.h"
 
 #include "net_device.h"
-#include "device/usbd_pvt.h"
 #include "rndis_protocol.h"
 
 void rndis_class_set_handler(uint8_t *data, int size); /* found in ./misc/networking/rndis_reports.c */
@@ -117,6 +119,8 @@ static void do_in_xfer(uint8_t *buf, uint16_t len)
 
 void netd_report(uint8_t *buf, uint16_t len)
 {
+  // skip if previous report not yet acknowledged by host
+  if ( usbd_edpt_busy(TUD_OPT_RHPORT, _netd_itf.ep_notif) ) return;
   usbd_edpt_xfer(TUD_OPT_RHPORT, _netd_itf.ep_notif, buf, len);
 }
 
@@ -405,8 +409,10 @@ bool netd_xfer_cb(uint8_t rhport, uint8_t ep_addr, xfer_result_t result, uint32_
   return true;
 }
 
-bool tud_network_can_xmit(void)
+bool tud_network_can_xmit(uint16_t size)
 {
+  (void)size;
+
   return can_xmit;
 }
 

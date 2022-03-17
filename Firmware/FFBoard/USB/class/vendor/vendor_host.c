@@ -31,7 +31,7 @@
 //--------------------------------------------------------------------+
 // INCLUDE
 //--------------------------------------------------------------------+
-#include "common/tusb_common.h"
+#include "host/usbh.h"
 #include "vendor_host.h"
 
 //--------------------------------------------------------------------+
@@ -41,7 +41,7 @@
 //--------------------------------------------------------------------+
 // INTERNAL OBJECT & FUNCTION DECLARATION
 //--------------------------------------------------------------------+
-custom_interface_info_t custom_interface[CFG_TUSB_HOST_DEVICE_MAX];
+custom_interface_info_t custom_interface[CFG_TUH_DEVICE_MAX];
 
 static tusb_error_t cush_validate_paras(uint8_t dev_addr, uint16_t vendor_id, uint16_t product_id, void * p_buffer, uint16_t length)
 {
@@ -66,7 +66,7 @@ tusb_error_t tusbh_custom_read(uint8_t dev_addr, uint16_t vendor_id, uint16_t pr
     return TUSB_ERROR_INTERFACE_IS_BUSY;
   }
 
-  (void) hcd_pipe_xfer( custom_interface[dev_addr-1].pipe_in, p_buffer, length, true);
+  (void) usbh_edpt_xfer( custom_interface[dev_addr-1].pipe_in, p_buffer, length);
 
   return TUSB_ERROR_NONE;
 }
@@ -80,7 +80,7 @@ tusb_error_t tusbh_custom_write(uint8_t dev_addr, uint16_t vendor_id, uint16_t p
     return TUSB_ERROR_INTERFACE_IS_BUSY;
   }
 
-  (void) hcd_pipe_xfer( custom_interface[dev_addr-1].pipe_out, p_data, length, true);
+  (void) usbh_edpt_xfer( custom_interface[dev_addr-1].pipe_out, p_data, length);
 
   return TUSB_ERROR_NONE;
 }
@@ -90,7 +90,7 @@ tusb_error_t tusbh_custom_write(uint8_t dev_addr, uint16_t vendor_id, uint16_t p
 //--------------------------------------------------------------------+
 void cush_init(void)
 {
-  tu_memclr(&custom_interface, sizeof(custom_interface_info_t) * CFG_TUSB_HOST_DEVICE_MAX);
+  tu_memclr(&custom_interface, sizeof(custom_interface_info_t) * CFG_TUH_DEVICE_MAX);
 }
 
 tusb_error_t cush_open_subtask(uint8_t dev_addr, tusb_desc_interface_t const *p_interface_desc, uint16_t *p_length)

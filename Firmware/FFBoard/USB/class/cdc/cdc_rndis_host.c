@@ -40,10 +40,10 @@
 //--------------------------------------------------------------------+
 #define RNDIS_MSG_PAYLOAD_MAX   (1024*4)
 
-CFG_TUSB_MEM_SECTION static uint8_t msg_notification[CFG_TUSB_HOST_DEVICE_MAX][8];
+CFG_TUSB_MEM_SECTION static uint8_t msg_notification[CFG_TUH_DEVICE_MAX][8];
 CFG_TUSB_MEM_SECTION TU_ATTR_ALIGNED(4) static uint8_t msg_payload[RNDIS_MSG_PAYLOAD_MAX];
 
-static rndish_data_t rndish_data[CFG_TUSB_HOST_DEVICE_MAX];
+static rndish_data_t rndish_data[CFG_TUH_DEVICE_MAX];
 
 // TODO Microsoft requires message length for any get command must be at least 4096 bytes
 
@@ -88,7 +88,7 @@ static tusb_error_t rndis_body_subtask(void)
 
   OSAL_SUBTASK_BEGIN
 
-  for (relative_addr = 0; relative_addr < CFG_TUSB_HOST_DEVICE_MAX; relative_addr++)
+  for (relative_addr = 0; relative_addr < CFG_TUH_DEVICE_MAX; relative_addr++)
   {
 
   }
@@ -103,12 +103,12 @@ static tusb_error_t rndis_body_subtask(void)
 //--------------------------------------------------------------------+
 void rndish_init(void)
 {
-  tu_memclr(rndish_data, sizeof(rndish_data_t)*CFG_TUSB_HOST_DEVICE_MAX);
+  tu_memclr(rndish_data, sizeof(rndish_data_t)*CFG_TUH_DEVICE_MAX);
 
   //------------- Task creation -------------//
 
   //------------- semaphore creation for notificaiton pipe -------------//
-  for(uint8_t i=0; i<CFG_TUSB_HOST_DEVICE_MAX; i++)
+  for(uint8_t i=0; i<CFG_TUH_DEVICE_MAX; i++)
   {
     rndish_data[i].sem_notification_hdl = osal_semaphore_create( OSAL_SEM_REF(rndish_data[i].semaphore_notification) );
   }
@@ -239,7 +239,7 @@ static tusb_error_t send_message_get_response_subtask( uint8_t dev_addr, cdch_da
   if ( TUSB_ERROR_NONE != error )   STASK_RETURN(error);
 
   //------------- waiting for Response Available notification -------------//
-  (void) hcd_pipe_xfer(p_cdc->pipe_notification, msg_notification[dev_addr-1], 8, true);
+  (void) usbh_edpt_xfer(p_cdc->pipe_notification, msg_notification[dev_addr-1], 8);
   osal_semaphore_wait(rndish_data[dev_addr-1].sem_notification_hdl, OSAL_TIMEOUT_NORMAL, &error);
   if ( TUSB_ERROR_NONE != error )   STASK_RETURN(error);
   STASK_ASSERT(msg_notification[dev_addr-1][0] == 1);
