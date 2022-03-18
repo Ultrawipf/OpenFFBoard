@@ -12,7 +12,7 @@
 #include "Filters.h"
 #include "constants.h" // For #define MAX_AXIS
 #define FFB_ID_OFFSET 0x00
-#define MAX_EFFECTS 40
+#define MAX_EFFECTS 31
 
 // HID Descriptor definitions - Axes
 #define HID_USAGE_X		0x30
@@ -192,15 +192,6 @@ typedef struct
 } __attribute__((packed)) FFB_SetCondition_Data_t;
 
 
-
-typedef struct
-	{
-	uint8_t	reportId = HID_ID_BLKLDREP;
-	uint8_t effectBlockIndex;	// 1..max_effects
-	uint8_t	loadStatus;	// 1=Success,2=Full,3=Error
-	uint16_t	ramPoolAvailable;
-} __attribute__((packed)) FFB_BlockLoad_Feature_Data_t;
-
 typedef struct
 	{
 	uint8_t		reportId;
@@ -208,12 +199,21 @@ typedef struct
 	uint16_t	byteCount;	// Size of custom effects
 } __attribute__((packed)) FFB_CreateNewEffect_Feature_Data_t;
 
+// Feature GET report
 typedef struct
 	{
-	uint8_t	reportId = HID_ID_POOLREP;
+	//uint8_t	reportId = HID_ID_BLKLDREP; // No report ID for tinyusb feature GET
+	uint8_t effectBlockIndex;	// 1..max_effects
+	uint8_t	loadStatus;	// 1=Success,2=Full,3=Error
+	uint16_t	ramPoolAvailable;
+} __attribute__((packed)) FFB_BlockLoad_Feature_Data_t;
+
+typedef struct
+	{
+	//uint8_t	reportId = HID_ID_POOLREP; // No report ID for tinyusb feature GET
 	uint16_t	ramPoolSize = MAX_EFFECTS;
 	uint8_t		maxSimultaneousEffects = MAX_EFFECTS;
-	uint8_t		memoryManagement = 1;	// 0=DeviceManagedPool, 1=SharedParameterBlocks
+	uint8_t		memoryManagement = 1;	// 0=DeviceManagedPool (0/1), 1=SharedParameterBlocks (0/1)
 } __attribute__((packed)) FFB_PIDPool_Feature_Data_t;
 
 

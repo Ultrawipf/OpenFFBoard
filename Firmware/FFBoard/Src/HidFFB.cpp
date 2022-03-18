@@ -13,6 +13,17 @@
 
 
 HidFFB::HidFFB() {
+
+	// Initialize reports
+	blockLoad_report.effectBlockIndex = 1;
+	blockLoad_report.ramPoolAvailable = MAX_EFFECTS-used_effects;
+	blockLoad_report.loadStatus = 1;
+
+	pool_report.ramPoolSize = MAX_EFFECTS;
+	pool_report.maxSimultaneousEffects = MAX_EFFECTS;
+	pool_report.memoryManagement = 1; // Linux fix
+
+
 	this->registerHidCallback();
 }
 
@@ -169,6 +180,7 @@ uint16_t HidFFB::hidGet(uint8_t report_id, hid_report_type_t report_type,uint8_t
 	switch(id){
 	case HID_ID_BLKLDREP:
 		//printf("Get Block Report\n");
+		// Notice: first byte ID is not present in the reply buffer because it is handled by tinyusb internally!
 		memcpy(buffer,&this->blockLoad_report,sizeof(FFB_BlockLoad_Feature_Data_t));
 		return sizeof(FFB_BlockLoad_Feature_Data_t);
 		break;
@@ -230,8 +242,13 @@ void HidFFB::ffb_control(uint8_t cmd){
 }
 
 
-void HidFFB::set_constant_effect(FFB_SetConstantForce_Data_t* effect){
-	effects[effect->effectBlockIndex-1].magnitude = effect->magnitude;
+void HidFFB::set_constant_effect(FFB_SetConstantForce_Data_t* data){
+	FFB_Effect& effect_p = effects[data->effectBlockIndex-1];
+
+	effect_p.magnitude = data->magnitude;
+	if(effect_p.state == 0){
+		effect_p.state = 1; // Force start effect
+	}
 }
 
 void HidFFB::new_effect(FFB_CreateNewEffect_Feature_Data_t* effect){
@@ -256,8 +273,8 @@ void HidFFB::new_effect(FFB_CreateNewEffect_Feature_Data_t* effect){
 	used_effects++;
 	blockLoad_report.ramPoolAvailable = MAX_EFFECTS-used_effects;
 	blockLoad_report.loadStatus = 1;
-
 	
+
 }
 void HidFFB::set_effect(FFB_SetEffect_t* effect){
 	uint8_t index = effect->effectBlockIndex;
@@ -288,7 +305,7 @@ void HidFFB::set_effect(FFB_SetEffect_t* effect){
 	effect_p->startDelay = effect->startDelay;
 	if(!ffb_active)
 		start_FFB();
-	//sendStatusReport(effect->effectBlockIndex);
+	//sendStatusReport(effect->effectBlockIndex); // TODO required?
 }
 
 void HidFFB::set_condition(FFB_SetCondition_Data_t *cond){
