@@ -731,15 +731,15 @@ __ALIGN_BEGIN const uint8_t hid_ffb_desc[USB_HID_FFB_REPORT_DESC_SIZE] __ALIGN_E
 			   0x09,0x8C,    //    Usage Block Load Success
 			   0x09,0x8D,    //    Usage Block Load Full
 			   0x09,0x8E,    //    Usage Block Load Error
-			   0x25,0x03,    //    Logical Maximum 3
 			   0x15,0x01,    //    Logical Minimum 1
+			   0x25,0x03,    //    Logical Maximum 3
 			   0x35,0x01,    //    Physical Minimum 1
 			   0x45,0x03,    //    Physical Maximum 3
 			   0x75,0x08,    //    Report Size 8
 			   0x95,0x01,    //    Report Count 1
 			   0xB1,0x00,    //    Feature
 			0xC0     ,                   // End Collection
-			0x09,0xAC,                   //    Usage Undefined
+			0x09,0xAC,                   //    Usage Pool available
 			0x15,0x00,                   //    Logical Minimum 0
 			0x27,0xFF,0xFF,0x00,0x00,    //    Logical Maximum FFFFh (65535d)
 			0x35,0x00,                   //    Physical Minimum 0
@@ -748,35 +748,36 @@ __ALIGN_BEGIN const uint8_t hid_ffb_desc[USB_HID_FFB_REPORT_DESC_SIZE] __ALIGN_E
 			0x95,0x01,                   //    Report Count 1
 			0xB1,0x00,                   //    Feature
 			0xC0     ,    //    End Collection
+
 			0x09,0x7F,    //    Usage PID Pool Report
 			0xA1,0x02,    //    Collection Datalink
-			0x85,HID_ID_POOLREP+FFB_ID_OFFSET,                   //    Report ID 0x13
-			0x09,0x80,                   //    Usage RAM Pool size
-			0x75,0x10,                   //    Report Size 10h (16d)
-			0x95,0x01,                   //    Report Count 1
-			0x15,0x00,                   //    Logical Minimum 0
-			0x35,0x00,                   //    Physical Minimum 0
-			0x27,0xFF,0xFF,0x00,0x00,    //    Logical Maximum FFFFh (65535d)
-			0x47,0xFF,0xFF,0x00,0x00,    //    Physical Maximum FFFFh (65535d)
-			0xB1,0x02,                   //    Feature (Variable)
-			0x09,0x83,                   //    Usage Simultaneous Effects Max
-			0x26,0xFF,0x00,              //    Logical Maximum FFh (255d)
-			0x46,0xFF,0x00,              //    Physical Maximum FFh (255d)
-			0x75,0x08,                   //    Report Size 8
-			0x95,0x01,                   //    Report Count 1
-			0xB1,0x02,                   //    Feature (Variable)
-			0x09,0xA9,                   //    Usage Device Managed Pool
-			0x09,0xAA,                   //    Usage Shared Parameter Blocks
-			0x75,0x01,                   //    Report Size 1
-			0x95,0x02,                   //    Report Count 2
-			0x15,0x00,                   //    Logical Minimum 0
-			0x25,0x01,                   //    Logical Maximum 1
-			0x35,0x00,                   //    Physical Minimum 0
-			0x45,0x01,                   //    Physical Maximum 1
-			0xB1,0x02,                   //    Feature (Variable)
-			0x75,0x06,                   //    Report Size 6
-			0x95,0x01,                   //    Report Count 1
-			0xB1,0x03,                   //    Feature (Constant, Variable)
+				0x85,HID_ID_POOLREP+FFB_ID_OFFSET,                   //    Report ID 0x13
+				0x09,0x80,                   //    Usage RAM Pool size
+				0x75,0x10,                   //    Report Size 10h (16d)
+				0x95,0x01,                   //    Report Count 1
+				0x15,0x00,                   //    Logical Minimum 0
+				0x35,0x00,                   //    Physical Minimum 0
+				0x27,0xFF,0xFF,0x00,0x00,    //    Logical Maximum FFFFh (65535d)
+				0x47,0xFF,0xFF,0x00,0x00,    //    Physical Maximum FFFFh (65535d)
+				0xB1,0x02,                   //    Feature (Variable)
+				0x09,0x83,                   //    Usage Simultaneous Effects Max
+				0x26,0xFF,0x00,              //    Logical Maximum FFh (255d)
+				0x46,0xFF,0x00,              //    Physical Maximum FFh (255d)
+				0x75,0x08,                   //    Report Size 8
+				0x95,0x01,                   //    Report Count 1
+				0xB1,0x02,                   //    Feature (Variable)
+				0x09,0xA9,                   //    Usage Device Managed Pool
+				0x09,0xAA,                   //    Usage Shared Parameter Blocks
+				0x75,0x01,                   //    Report Size 1
+				0x95,0x02,                   //    Report Count 2
+				0x15,0x00,                   //    Logical Minimum 0
+				0x25,0x01,                   //    Logical Maximum 1
+				0x35,0x00,                   //    Physical Minimum 0
+				0x45,0x01,                   //    Physical Maximum 1
+				0xB1,0x02,                   //    Feature (Variable)
+				0x75,0x06,                   //    Report Size 6
+				0x95,0x01,                   //    Report Count 1
+				0xB1,0x03,                   //    Feature (Constant, Variable)
 			0xC0, //    End Collection
 
   0xC0    /*     END_COLLECTION	             */
