@@ -281,7 +281,9 @@ void HidFFB::set_effect(FFB_SetEffect_t* effect){
 #if MAX_AXIS == 3
 	effect_p->directionZ = effect->directionZ;
 #endif
-
+	if(effect_p->duration == 0){ // Fix for games assuming 0 is infinite
+		effect_p->duration = FFB_EFFECT_DURATION_INFINITE;
+	}
 	effect_p->duration = effect->duration;
 	effect_p->startDelay = effect->startDelay;
 	if(!ffb_active)
