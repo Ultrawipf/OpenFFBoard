@@ -109,8 +109,8 @@ void EffectsCalculator::calculateEffects(std::vector<std::unique_ptr<Axis>> &axe
 	{
 		FFB_Effect *effect = &effects[i];
 
-		// Effect activated and not infinite
-		if (effect->state != EFFECT_STATE_INACTIVE && effect->duration != FFB_EFFECT_DURATION_INFINITE){
+		// Effect activated and not infinite (0 or 0xffff)
+		if (effect->state != EFFECT_STATE_INACTIVE && effect->duration != FFB_EFFECT_DURATION_INFINITE && effect->duration != 0){
 			// Start delay not yet reached
 			if(HAL_GetTick() < effect->startTime){
 				continue;
@@ -469,7 +469,7 @@ int32_t EffectsCalculator::applyEnvelope(FFB_Effect *effect, int32_t value)
 		newValue /= (int32_t)effect->attackTime;
 		newValue += attackLevel;
 	}
-	if (effect->duration != FFB_EFFECT_DURATION_INFINITE &&
+	if (effect->duration != FFB_EFFECT_DURATION_INFINITE && effect->duration != 0 &&
 		elapsed_time > (effect->duration - effect->fadeTime))
 	{
 		newValue = (magnitude - fadeLevel) * (effect->duration - elapsed_time);
