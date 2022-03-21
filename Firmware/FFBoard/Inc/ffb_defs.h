@@ -272,7 +272,7 @@ typedef struct
 #if MAX_AXIS == 3
 	uint8_t directionZ = 0; // angle (0=0 .. 255=360deg)
 #endif
-	uint8_t conditionsCount = 0;
+	//uint8_t conditionsCount = 0;
 	FFB_Effect_Condition conditions[MAX_AXIS];
 	int16_t phase = 0;
 	uint16_t period = 0;
