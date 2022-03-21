@@ -315,7 +315,7 @@ void tud_hid_set_report_cb(uint8_t itf, uint8_t report_id, hid_report_type_t rep
  */
 uint16_t tud_hid_get_report_cb(uint8_t itf, uint8_t report_id, hid_report_type_t report_type,uint8_t* buffer, uint16_t reqlen){
 	if(UsbHidHandler::globalHidHandler != nullptr)
-		return UsbHidHandler::globalHidHandler->hidGet(report_id, report_type, buffer,reqlen);
+		return UsbHidHandler::globalHidHandler->hidGet(report_id, report_type, buffer,reqlen); // reply buffer should not contain report ID in first byte
 	return 0;
 }
 

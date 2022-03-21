@@ -129,9 +129,9 @@ void EffectsCalculator::calculateEffects(std::vector<std::unique_ptr<Axis>> &axe
 		}
 
 
-		if (effect->conditionsCount == 0) {
-			forceVector = calcNonConditionEffectForce(effect);
-		}
+		//if (effect->conditionsCount == 0) {
+		forceVector = calcNonConditionEffectForce(effect);
+		//}
 
 		if (effect->enableAxis == DIRECTION_ENABLE || (effect->enableAxis & X_AXIS_ENABLE))
 		{
@@ -300,10 +300,10 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 	if (effect->enableAxis == DIRECTION_ENABLE)
 	{
 		direction = effect->directionX;
-		if (effect->conditionsCount > 1)
-		{
+//		if (effect->conditionsCount > 1)
+//		{
 			con_idx = axis;
-		}
+//		}
 	}
 	else
 	{
@@ -312,7 +312,7 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 	}
 
 	//bool useForceDirectionForConditionEffect = (effect->enableAxis == DIRECTION_ENABLE && axisCount > 1 && effect->conditionsCount == 1);
-	bool rotateConditionForce = (axisCount > 1 && effect->conditionsCount < axisCount);
+	bool rotateConditionForce = (axisCount > 1); // && effect->conditionsCount < axisCount
 	float angle = ((float)direction * (2*M_PI) / 36000.0);
 	float angle_ratio = axis == 0 ? sin(angle) : -1 * cos(angle);
 	angle_ratio = rotateConditionForce ? angle_ratio : 1.0;
