@@ -21,7 +21,7 @@ HidFFB::HidFFB() {
 
 	pool_report.ramPoolSize = MAX_EFFECTS;
 	pool_report.maxSimultaneousEffects = MAX_EFFECTS;
-	pool_report.memoryManagement = 1; // Linux fix
+	pool_report.memoryManagement = 1;
 
 
 	this->registerHidCallback();
@@ -43,7 +43,7 @@ bool HidFFB::getFfbActive(){
 }
 
 bool HidFFB::HID_SendReport(uint8_t *report,uint16_t len){
-	return tud_hid_report(0, report, len);
+	return tud_hid_report(0, report, len); // ID 0 skips ID field
 }
 
 /**
@@ -132,13 +132,22 @@ void HidFFB::hidOut(uint8_t report_id, hid_report_type_t report_type, uint8_t co
 			effects[id].state = 0; //Stop
 								   //printf("Stop %d\n",report[1]);
 		}else{
+			// 1 = start, 2 = start solo
+			if(report[2] == 2){
+				for(FFB_Effect& effect : effects){
+					effect.state = 0; // Stop all other effects
+				}
+			}
 			if(effects[id].state != 1){
 				set_filters(&effects[id]);
 				//effects[id].startTime = 0; // When an effect was stopped reset all parameters that could cause jerking
 			}
+
 			//printf("Start %d\n",report[1]);
 			effects[id].startTime = HAL_GetTick() + effects[id].startDelay; // + effects[id].startDelay;
 			effects[id].state = 1; //Start
+
+
 		}
 		//sendStatusReport(report[1]);
 		break;
@@ -320,7 +329,7 @@ void HidFFB::set_condition(FFB_SetCondition_Data_t *cond){
 	effect->conditions[axis].negativeSaturation = cond->negativeSaturation;
 	effect->conditions[axis].positiveSaturation = cond->positiveSaturation;
 	effect->conditions[axis].deadBand = cond->deadBand;
-	effect->conditionsCount++;
+	//effect->conditionsCount++;
 	if(effect->conditions[axis].positiveSaturation == 0){
 		effect->conditions[axis].positiveSaturation = 0x7FFF;
 	}
