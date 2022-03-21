@@ -159,11 +159,17 @@ void EffectsCalculator::calculateEffects(std::vector<std::unique_ptr<Axis>> &axe
  */
 int32_t EffectsCalculator::calcNonConditionEffectForce(FFB_Effect *effect) {
 	int32_t force_vector = 0;
+	int32_t magnitude = effect->magnitude;
+
+	// If using an envelope modulate the magnitude based on time
+	if(effect->useEnvelope){
+		magnitude = getEnvelopeMagnitude(effect);
+	}
 	switch (effect->type){
 
 	case FFB_EFFECT_CONSTANT:
 	{ // Constant force is just the force
-		force_vector = ((int32_t)effect->magnitude * (int32_t)(1 + effect->gain)) >> 8;
+		force_vector = ((int32_t)magnitude * (int32_t)(1 + effect->gain)) >> 8;
 		// Optional filtering to reduce spikes
 		if (cfFilter_f < calcfrequency / 2 && cfFilter_f != 0 )
 		{
@@ -184,7 +190,7 @@ int32_t EffectsCalculator::calcNonConditionEffectForce(FFB_Effect *effect) {
 	case FFB_EFFECT_SQUARE:
 	{
 		uint32_t elapsed_time = HAL_GetTick() - effect->startTime;
-		int32_t force = ((elapsed_time + effect->phase) % ((uint32_t)effect->period + 2)) < (uint32_t)(effect->period + 2) / 2 ? -effect->magnitude : effect->magnitude;
+		int32_t force = ((elapsed_time + effect->phase) % ((uint32_t)effect->period + 2)) < (uint32_t)(effect->period + 2) / 2 ? -magnitude : magnitude;
 		force_vector = force + effect->offset;
 		break;
 	}
@@ -193,7 +199,6 @@ int32_t EffectsCalculator::calcNonConditionEffectForce(FFB_Effect *effect) {
 	{
 		int32_t force = 0;
 		int32_t offset = effect->offset;
-		int32_t magnitude = effect->magnitude;
 		uint32_t elapsed_time = HAL_GetTick() - effect->startTime;
 		uint32_t phase = effect->phase;
 		uint32_t period = effect->period;
@@ -217,7 +222,6 @@ int32_t EffectsCalculator::calcNonConditionEffectForce(FFB_Effect *effect) {
 	case FFB_EFFECT_SAWTOOTHUP:
 	{
 		float offset = effect->offset;
-		float magnitude = effect->magnitude;
 		uint32_t elapsed_time = HAL_GetTick() - effect->startTime;
 		uint32_t phase = effect->phase;
 		uint32_t period = effect->period;
@@ -236,7 +240,6 @@ int32_t EffectsCalculator::calcNonConditionEffectForce(FFB_Effect *effect) {
 	case FFB_EFFECT_SAWTOOTHDOWN:
 	{
 		float offset = effect->offset;
-		float magnitude = effect->magnitude;
 		uint32_t elapsed_time = HAL_GetTick() - effect->startTime;
 		float phase = effect->phase;
 		uint32_t period = effect->period;
@@ -257,16 +260,15 @@ int32_t EffectsCalculator::calcNonConditionEffectForce(FFB_Effect *effect) {
 		uint32_t t = HAL_GetTick() - effect->startTime;
 		float freq = 1.0f / (float)(std::max<uint16_t>(effect->period, 2));
 		float phase = (float)effect->phase / (float)35999; //degrees
-		float sine = sinf(2.0 * (float)M_PI * (t * freq + phase)) * effect->magnitude;
+		float sine = sinf(2.0 * (float)M_PI * (t * freq + phase)) * magnitude;
 		force_vector = (int32_t)(effect->offset + sine);
 		break;
 	}
 	default:
+		return 0;
 		break;
 	}
-	if(effect->useEnvelope) {
-		force_vector = applyEnvelope(effect, (int32_t)force_vector);
-	}
+
 	return force_vector;
 }
 
@@ -455,31 +457,33 @@ int32_t EffectsCalculator::calcConditionEffectForce(FFB_Effect *effect, float  m
 	return force * angle_ratio;
 }
 
-// Check correct levels. Looks reasonable compared with fedit preview
-int32_t EffectsCalculator::applyEnvelope(FFB_Effect *effect, int32_t value)
+/**
+ * Modulates the magnitude of an effect based on time and attack/fade levels
+ * During attack time the strength changes from the initial attack level to the normal magnitude which is sustained
+ * until the fade time where the strength changes to the fade level until the stop time of the effect.
+ * Infinite effects can't have an envelope and return the normal magnitude.
+ */
+int32_t EffectsCalculator::getEnvelopeMagnitude(FFB_Effect *effect)
 {
-	int32_t magnitude = (effect->magnitude);
-	int32_t attackLevel = (effect->attackLevel);
-	int32_t fadeLevel = (effect->fadeLevel);
-	int32_t newValue = magnitude;
+	if(effect->duration == FFB_EFFECT_DURATION_INFINITE || effect->duration == 0){
+		return effect->magnitude; // Effect is infinite. envelope is invalid
+	}
+	int32_t scaler = abs(effect->magnitude);
 	uint32_t elapsed_time = HAL_GetTick() - effect->startTime;
 	if (elapsed_time < effect->attackTime)
 	{
-		newValue = (magnitude - attackLevel) * elapsed_time;
-		newValue /= (int32_t)effect->attackTime;
-		newValue += attackLevel;
+		scaler = (effect->magnitude - effect->attackLevel) * elapsed_time;
+		scaler /= (int32_t)effect->attackTime;
+		scaler += effect->attackLevel;
 	}
-	if (effect->duration != FFB_EFFECT_DURATION_INFINITE && effect->duration != 0 &&
-		elapsed_time > (effect->duration - effect->fadeTime))
+	if (elapsed_time > (effect->duration - effect->fadeTime))
 	{
-		newValue = (magnitude - fadeLevel) * (effect->duration - elapsed_time);
-		newValue /= (int32_t)effect->fadeTime;
-		newValue += fadeLevel;
+		scaler = (effect->magnitude - effect->fadeLevel) * (effect->duration - elapsed_time); // Reversed
+		scaler /= (int32_t)effect->fadeTime;
+		scaler += effect->fadeLevel;
 	}
-
-	newValue *= value;
-	newValue /= 0x7fff; // 16 bit
-	return newValue;
+	scaler = signbit(effect->magnitude) ? -scaler : scaler; // Follow original sign of magnitude because envelope has no sign (important for constant force)
+	return scaler;
 }
 
 void EffectsCalculator::setFilters(FFB_Effect *effect){
