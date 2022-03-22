@@ -12,7 +12,7 @@
 #include "Filters.h"
 #include "constants.h" // For #define MAX_AXIS
 #define FFB_ID_OFFSET 0x00
-#define MAX_EFFECTS 31
+#define MAX_EFFECTS 40
 
 // HID Descriptor definitions - Axes
 #define HID_USAGE_X		0x30
@@ -149,7 +149,7 @@ inline void setHidReportAxis(reportHID_t *report, uint8_t idx, int16_t val){
 typedef struct
 {
 	const uint8_t	reportId = HID_ID_STATE+FFB_ID_OFFSET;
-	uint8_t	effectBlockIndex = 1;	//EffectId
+	//uint8_t	effectBlockIndex = 1;	//EffectId
 	uint8_t	status = (HID_ACTUATOR_POWER) | (HID_ENABLE_ACTUATORS);	// Bits: 0=Device Paused,1=Actuators Enabled,2=Safety Switch,3=Actuator Power, 4=Effect Playing
 
 } __attribute__((packed)) reportFFB_status_t;
@@ -194,7 +194,7 @@ typedef struct
 
 typedef struct
 	{
-	uint8_t		reportId;
+	//uint8_t		reportId; // ID removed by tinyusb
 	uint8_t	effectType;	// Effect type ID
 	uint16_t	byteCount;	// Size of custom effects
 } __attribute__((packed)) FFB_CreateNewEffect_Feature_Data_t;
@@ -255,6 +255,14 @@ typedef struct
 	uint16_t deadBand = 0;
 
 } __attribute__((packed)) FFB_Effect_Condition;
+
+typedef struct
+{
+	uint8_t reportId;
+	uint8_t effectBlockIndex;
+	uint8_t state;
+	uint8_t loopCount;
+} __attribute__((packed)) FFB_EffOp_Data_t;
 
 // Internal struct for storing effects
 typedef struct
