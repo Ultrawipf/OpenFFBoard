@@ -16,10 +16,10 @@ HidFFB::HidFFB() {
 
 	// Initialize reports
 	blockLoad_report.effectBlockIndex = 1;
-	blockLoad_report.ramPoolAvailable = MAX_EFFECTS-used_effects;
+	blockLoad_report.ramPoolAvailable = (MAX_EFFECTS-used_effects)*sizeof(FFB_Effect);
 	blockLoad_report.loadStatus = 1;
 
-	pool_report.ramPoolSize = MAX_EFFECTS;
+	pool_report.ramPoolSize = MAX_EFFECTS*sizeof(FFB_Effect);
 	pool_report.maxSimultaneousEffects = MAX_EFFECTS;
 	pool_report.memoryManagement = 1;
 
@@ -63,9 +63,9 @@ uint32_t HidFFB::getRate(){
  * Sends a status report for a specific effect
  */
 void HidFFB::sendStatusReport(uint8_t effect){
-	if(effect != 0){
-		this->reportFFBStatus.effectBlockIndex = effect;
-	}
+//	if(effect != 0){
+//		this->reportFFBStatus.effectBlockIndex = effect;
+//	}
 	this->reportFFBStatus.status = HID_ACTUATOR_POWER;
 	if(this->ffb_active){
 		this->reportFFBStatus.status |= HID_ENABLE_ACTUATORS;
@@ -73,8 +73,8 @@ void HidFFB::sendStatusReport(uint8_t effect){
 	}else{
 		this->reportFFBStatus.status |= HID_EFFECT_PAUSE;
 	}
-	if(effect > 0 && effects[effect-1].state == 1)
-		this->reportFFBStatus.status |= HID_EFFECT_PLAYING;
+//	if(effect > 0 && effects[effect-1].state == 1)
+//		this->reportFFBStatus.status |= HID_EFFECT_PLAYING;
 	//printf("Status: %d\n",reportFFBStatus.status);
 	HID_SendReport(reinterpret_cast<uint8_t*>(&this->reportFFBStatus), sizeof(reportFFB_status_t));
 }
@@ -88,83 +88,70 @@ void HidFFB::hidOut(uint8_t report_id, hid_report_type_t report_type, uint8_t co
 	lastOut = micros();
 	// FFB Output Message
 	const uint8_t* report = buffer;
-	uint8_t event_idx = buffer[0] - FFB_ID_OFFSET;
+	uint8_t event_idx = report_id - FFB_ID_OFFSET;
+
+	if(report_type == HID_REPORT_TYPE_FEATURE && (event_idx == 0x11)){
+		pulseClipLed();
+	}
 
 	// -------- Out Reports --------
-	switch(event_idx){
-	case HID_ID_NEWEFREP: //add Effect Report. Feature
-		new_effect((FFB_CreateNewEffect_Feature_Data_t*)(report));
-		break;
-	case HID_ID_EFFREP: // Set Effect
-		set_effect((FFB_SetEffect_t*)(report));
-		break;
-	case HID_ID_CTRLREP: // Control report. 1=Enable Actuators, 2=Disable Actuators, 4=Stop All Effects, 8=Reset, 16=Pause, 32=Continue
-		ffb_control(report[1]);
-		sendStatusReport(0);
-		break;
-	case HID_ID_GAINREP: // Set global gain
-		set_gain(report[1]);
-		break;
-	case HID_ID_ENVREP: // Envelope
-		set_envelope((FFB_SetEnvelope_Data_t *)report);
-		break;
-	case HID_ID_CONDREP: // Spring, Damper, Friction, Inertia
-		set_condition((FFB_SetCondition_Data_t*)report);
-		break;
-	case HID_ID_PRIDREP: // Periodic
-		set_periodic((FFB_SetPeriodic_Data_t*)report);
-		break;
-	case HID_ID_CONSTREP: // Constant
-		set_constant_effect((FFB_SetConstantForce_Data_t*)report);
-		break;
-	case HID_ID_RAMPREP: // Ramp
-		set_ramp((FFB_SetRamp_Data_t *)report);
-		break;
-	case HID_ID_CSTMREP: // Custom. pretty much never used
-		//printf("Customrep");
-		break;
-	case HID_ID_SMPLREP: // Download sample
-		//printf("Sampledl");
-		break;
-	case HID_ID_EFOPREP: //Effect operation
+	switch(event_idx)
 	{
-		// Start or stop effect
-		uint8_t id = report[1]-1;
-		if(report[2] == 3){
-			effects[id].state = 0; //Stop
-								   //printf("Stop %d\n",report[1]);
-		}else{
-			// 1 = start, 2 = start solo
-			if(report[2] == 2){
-				for(FFB_Effect& effect : effects){
-					effect.state = 0; // Stop all other effects
-				}
-			}
-			if(effects[id].state != 1){
-				set_filters(&effects[id]);
-				//effects[id].startTime = 0; // When an effect was stopped reset all parameters that could cause jerking
-			}
 
-			//printf("Start %d\n",report[1]);
-			effects[id].startTime = HAL_GetTick() + effects[id].startDelay; // + effects[id].startDelay;
-			effects[id].state = 1; //Start
-
-
+		case HID_ID_NEWEFREP: //add Effect Report. Feature
+			new_effect((FFB_CreateNewEffect_Feature_Data_t*)(report));
+			break;
+		case HID_ID_EFFREP: // Set Effect
+			set_effect((FFB_SetEffect_t*)(report));
+			break;
+		case HID_ID_CTRLREP: // Control report. 1=Enable Actuators, 2=Disable Actuators, 4=Stop All Effects, 8=Reset, 16=Pause, 32=Continue
+			ffb_control(report[1]);
+			//sendStatusReport(0);
+			break;
+		case HID_ID_GAINREP: // Set global gain
+			set_gain(report[1]);
+			break;
+		case HID_ID_ENVREP: // Envelope
+			set_envelope((FFB_SetEnvelope_Data_t *)report);
+			break;
+		case HID_ID_CONDREP: // Spring, Damper, Friction, Inertia
+			set_condition((FFB_SetCondition_Data_t*)report);
+			break;
+		case HID_ID_PRIDREP: // Periodic
+			set_periodic((FFB_SetPeriodic_Data_t*)report);
+			break;
+		case HID_ID_CONSTREP: // Constant
+			set_constant_effect((FFB_SetConstantForce_Data_t*)report);
+			break;
+		case HID_ID_RAMPREP: // Ramp
+			set_ramp((FFB_SetRamp_Data_t *)report);
+			break;
+		case HID_ID_CSTMREP: // Custom. pretty much never used
+			//printf("Customrep");
+			break;
+		case HID_ID_SMPLREP: // Download sample
+			//printf("Sampledl");
+			break;
+		case HID_ID_EFOPREP: //Effect operation
+		{
+			set_effect_operation((FFB_EffOp_Data_t*)report);
+			break;
 		}
-		sendStatusReport(report[1]);
-		break;
-	}
-	case HID_ID_BLKFRREP: // Free a block
-	{
-		free_effect(report[1]-1);
-		break;
-	}
+		case HID_ID_BLKFRREP: // Free a block
+		{
+			free_effect(report[1]-1);
+			break;
+		}
 
-	default:
-		break;
+		default:
+		{
+			pulseErrLed();
+			break;
+		}
 	}
 
 }
+
 
 void HidFFB::free_effect(uint16_t idx){
 	if(idx < MAX_EFFECTS){
@@ -271,9 +258,9 @@ void HidFFB::new_effect(FFB_CreateNewEffect_Feature_Data_t* effect){
 	uint8_t index = find_free_effect(effect->effectType); // next effect
 	if(index == 0){
 		blockLoad_report.loadStatus = 2;
+		//CommandHandler::logSerial("Can't allocate a new effect");
 		return;
 	}
-	//CommandHandler::logSerial("Creating Effect: " + std::to_string(effect->effectType) +  " at " + std::to_string(index) + "\n");
 	FFB_Effect new_effect;
 	new_effect.type = effect->effectType;
 	this->effects_calc->logEffectType(effect->effectType);
@@ -282,11 +269,12 @@ void HidFFB::new_effect(FFB_CreateNewEffect_Feature_Data_t* effect){
 
 	effects[index-1] = std::move(new_effect);
 	// Set block load report
-	reportFFBStatus.effectBlockIndex = index;
+	//reportFFBStatus.effectBlockIndex = index;
 	blockLoad_report.effectBlockIndex = index;
 	used_effects++;
-	blockLoad_report.ramPoolAvailable = MAX_EFFECTS-used_effects;
+	blockLoad_report.ramPoolAvailable = (MAX_EFFECTS-used_effects)*sizeof(FFB_Effect);
 	blockLoad_report.loadStatus = 1;
+	sendStatusReport(index);
 	
 
 }
@@ -320,6 +308,7 @@ void HidFFB::set_effect(FFB_SetEffect_t* effect){
 	if(!ffb_active)
 		start_FFB();
 	sendStatusReport(effect->effectBlockIndex); // TODO required?
+	//CommandHandler::logSerial("Setting Effect: " + std::to_string(effect->effectType) +  " at " + std::to_string(index) + "\n");
 }
 
 void HidFFB::set_condition(FFB_SetCondition_Data_t *cond){
@@ -346,6 +335,38 @@ void HidFFB::set_condition(FFB_SetCondition_Data_t *cond){
 		effect->conditions[axis].negativeSaturation = 0x7FFF;
 	}
 }
+
+void HidFFB::set_effect_operation(FFB_EffOp_Data_t* report){
+	if(report->effectBlockIndex == 0 || report->effectBlockIndex > MAX_EFFECTS){
+		return; // Invalid ID
+	}
+	// Start or stop effect
+	uint8_t id = report->effectBlockIndex-1;
+	if(report->state == 3){
+		effects[id].state = 0; //Stop
+		//CommandHandler::logSerial("Stop" + std::to_string(id));
+	}else{
+
+		// 1 = start, 2 = start solo
+		if(report->state == 2){
+			//CommandHandler::logSerial("Start solo" + std::to_string(id));
+			for(FFB_Effect& effect : effects){
+				effect.state = 0; // Stop all other effects
+			}
+		}
+		if(effects[id].state != 1){
+			set_filters(&effects[id]);
+		}
+
+		//CommandHandler::logSerial("Start" + std::to_string(id));
+		effects[id].startTime = HAL_GetTick() + effects[id].startDelay; // + effects[id].startDelay;
+		effects[id].state = 1; //Start
+
+
+	}
+	//sendStatusReport(report[1]);
+}
+
 
 void HidFFB::set_envelope(FFB_SetEnvelope_Data_t *report){
 	if(report->effectBlockIndex == 0 || report->effectBlockIndex > MAX_EFFECTS){
@@ -398,7 +419,7 @@ void HidFFB::reset_ffb(){
 	for(uint8_t i=0;i<MAX_EFFECTS;i++){
 		free_effect(i);
 	}
-	this->reportFFBStatus.effectBlockIndex = 1;
+	//this->reportFFBStatus.effectBlockIndex = 1;
 	this->reportFFBStatus.status = (HID_ACTUATOR_POWER) | (HID_ENABLE_ACTUATORS);
-	used_effects = 0;
+	used_effects = 1;
 }
