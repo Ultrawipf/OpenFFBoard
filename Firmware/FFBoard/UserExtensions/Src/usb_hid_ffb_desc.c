@@ -178,14 +178,14 @@ __ALIGN_BEGIN const uint8_t hid_ffb_desc[USB_HID_FFB_REPORT_DESC_SIZE] __ALIGN_E
 			0xA1,0x02,        //    Collection Datalink (logical)
 			   0x85,HID_ID_STATE+FFB_ID_OFFSET,    //    Report ID 2
 
-			   0x09,0x22,    //    Usage Effect Block Index
-			   0x15,0x01,    //    Logical Minimum 1
-			   0x25,MAX_EFFECTS,    //    Logical Maximum 28h (40d)
-			   0x35,0x01,    //    Physical Minimum 1
-			   0x45,MAX_EFFECTS,    //    Physical Maximum 28h (40d)
-			   0x75,0x08,    //    Report Size 8
-			   0x95,0x01,    //    Report Count 1
-			   0x81,0x02,    //    Input (Variable)
+//			   0x09,0x22,    //    Usage Effect Block Index
+//			   0x15,0x01,    //    Logical Minimum 1
+//			   0x25,MAX_EFFECTS,    //    Logical Maximum 28h (40d)
+//			   0x35,0x01,    //    Physical Minimum 1
+//			   0x45,MAX_EFFECTS,    //    Physical Maximum 28h (40d)
+//			   0x75,0x08,    //    Report Size 8
+//			   0x95,0x01,    //    Report Count 1
+//			   0x81,0x02,    //    Input (Variable)
 
 
 
@@ -601,8 +601,8 @@ __ALIGN_BEGIN const uint8_t hid_ffb_desc[USB_HID_FFB_REPORT_DESC_SIZE] __ALIGN_E
 			0xA1,0x02,    //    Collection Datalink
 			   0x85,HID_ID_BLKFRREP+FFB_ID_OFFSET,    //    Report ID Bh (11d)
 			   0x09,0x22,    //    Usage Effect Block Index
-			   0x25,MAX_EFFECTS,    //    Logical Maximum 28h (40d)
 			   0x15,0x01,    //    Logical Minimum 1
+			   0x25,MAX_EFFECTS,    //    Logical Maximum 28h (40d)
 			   0x35,0x01,    //    Physical Minimum 1
 			   0x45,MAX_EFFECTS,    //    Physical Maximum 28h (40d)
 			   0x75,0x08,    //    Report Size 8
@@ -703,7 +703,7 @@ __ALIGN_BEGIN const uint8_t hid_ffb_desc[USB_HID_FFB_REPORT_DESC_SIZE] __ALIGN_E
 			   0xB1,0x00,    //    Feature
 			0xC0     ,    // End Collection
 			0x05,0x01,         //    Usage Page Generic Desktop
-			0x09,0x3B,         //    Usage Reserved
+			0x09,0x3B,         //    Usage Reserved (Byte count)
 			0x15,0x00,         //    Logical Minimum 0
 			0x26,0xFF,0x01,    //    Logical Maximum 1FFh (511d)
 			0x35,0x00,         //    Physical Minimum 0
