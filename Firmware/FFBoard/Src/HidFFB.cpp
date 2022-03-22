@@ -90,9 +90,6 @@ void HidFFB::hidOut(uint8_t report_id, hid_report_type_t report_type, uint8_t co
 	const uint8_t* report = buffer;
 	uint8_t event_idx = report_id - FFB_ID_OFFSET;
 
-	if(report_type == HID_REPORT_TYPE_FEATURE && (event_idx == 0x11)){
-		pulseClipLed();
-	}
 
 	// -------- Out Reports --------
 	switch(event_idx)
@@ -145,7 +142,6 @@ void HidFFB::hidOut(uint8_t report_id, hid_report_type_t report_type, uint8_t co
 
 		default:
 		{
-			pulseErrLed();
 			break;
 		}
 	}
@@ -313,7 +309,6 @@ void HidFFB::set_effect(FFB_SetEffect_t* effect){
 
 void HidFFB::set_condition(FFB_SetCondition_Data_t *cond){
 	if(cond->effectBlockIndex == 0 || cond->effectBlockIndex > MAX_EFFECTS){
-		pulseErrLed();
 		return;
 	}
 	uint8_t axis = cond->parameterBlockOffset;
@@ -392,7 +387,6 @@ void HidFFB::set_ramp(FFB_SetRamp_Data_t *report){
 
 void HidFFB::set_periodic(FFB_SetPeriodic_Data_t* report){
 	if(report->effectBlockIndex == 0 || report->effectBlockIndex > MAX_EFFECTS){
-		pulseErrLed();
 		return;
 	}
 	FFB_Effect* effect = &effects[report->effectBlockIndex-1];
