@@ -63,7 +63,9 @@ uint32_t HidFFB::getRate(){
  * Sends a status report for a specific effect
  */
 void HidFFB::sendStatusReport(uint8_t effect){
-	this->reportFFBStatus.effectBlockIndex = effect;
+	if(effect != 0){
+		this->reportFFBStatus.effectBlockIndex = effect;
+	}
 	this->reportFFBStatus.status = HID_ACTUATOR_POWER;
 	if(this->ffb_active){
 		this->reportFFBStatus.status |= HID_ENABLE_ACTUATORS;
@@ -149,7 +151,7 @@ void HidFFB::hidOut(uint8_t report_id, hid_report_type_t report_type, uint8_t co
 
 
 		}
-		//sendStatusReport(report[1]);
+		sendStatusReport(report[1]);
 		break;
 	}
 	case HID_ID_BLKFRREP: // Free a block
@@ -252,6 +254,9 @@ void HidFFB::ffb_control(uint8_t cmd){
 
 
 void HidFFB::set_constant_effect(FFB_SetConstantForce_Data_t* data){
+	if(data->effectBlockIndex == 0 || data->effectBlockIndex > MAX_EFFECTS){
+		return;
+	}
 	FFB_Effect& effect_p = effects[data->effectBlockIndex-1];
 
 	effect_p.magnitude = data->magnitude;
@@ -314,10 +319,14 @@ void HidFFB::set_effect(FFB_SetEffect_t* effect){
 	effect_p->startDelay = effect->startDelay;
 	if(!ffb_active)
 		start_FFB();
-	//sendStatusReport(effect->effectBlockIndex); // TODO required?
+	sendStatusReport(effect->effectBlockIndex); // TODO required?
 }
 
 void HidFFB::set_condition(FFB_SetCondition_Data_t *cond){
+	if(cond->effectBlockIndex == 0 || cond->effectBlockIndex > MAX_EFFECTS){
+		pulseErrLed();
+		return;
+	}
 	uint8_t axis = cond->parameterBlockOffset;
 	if (axis >= MAX_AXIS){
 		return; // sanity check!
@@ -339,6 +348,9 @@ void HidFFB::set_condition(FFB_SetCondition_Data_t *cond){
 }
 
 void HidFFB::set_envelope(FFB_SetEnvelope_Data_t *report){
+	if(report->effectBlockIndex == 0 || report->effectBlockIndex > MAX_EFFECTS){
+		return;
+	}
 	FFB_Effect *effect = &effects[report->effectBlockIndex - 1];
 
 	effect->attackLevel = report->attackLevel;
@@ -348,6 +360,9 @@ void HidFFB::set_envelope(FFB_SetEnvelope_Data_t *report){
 	effect->useEnvelope = true;
 }
 void HidFFB::set_ramp(FFB_SetRamp_Data_t *report){
+	if(report->effectBlockIndex == 0 || report->effectBlockIndex > MAX_EFFECTS){
+		return;
+	}
 	FFB_Effect *effect = &effects[report->effectBlockIndex - 1];
 	effect->magnitude = 0x7fff; // Full magnitude for envelope calculation. This effect does not have a periodic report
 	effect->startLevel = report->startLevel;
@@ -355,6 +370,10 @@ void HidFFB::set_ramp(FFB_SetRamp_Data_t *report){
 }
 
 void HidFFB::set_periodic(FFB_SetPeriodic_Data_t* report){
+	if(report->effectBlockIndex == 0 || report->effectBlockIndex > MAX_EFFECTS){
+		pulseErrLed();
+		return;
+	}
 	FFB_Effect* effect = &effects[report->effectBlockIndex-1];
 
 	effect->period = clip<uint32_t,uint32_t>(report->period,1,0x7fff); // Period is never 0

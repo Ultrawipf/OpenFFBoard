@@ -56,7 +56,7 @@ private:
 
 	uint32_t hid_out_period = 0; // ms since last out report for measuring update rate
 
-	uint8_t last_effect_id = 0;
+	//uint8_t last_effect_id = 0;
 	uint16_t used_effects = 0;
 	bool ffb_active = false;
 	FFB_BlockLoad_Feature_Data_t blockLoad_report;
