@@ -472,13 +472,13 @@ int32_t EffectsCalculator::getEnvelopeMagnitude(FFB_Effect *effect)
 	uint32_t elapsed_time = HAL_GetTick() - effect->startTime;
 	if (elapsed_time < effect->attackTime && effect->attackTime != 0)
 	{
-		scaler = (effect->magnitude - effect->attackLevel) * elapsed_time;
+		scaler = (scaler - effect->attackLevel) * elapsed_time;
 		scaler /= (int32_t)effect->attackTime;
 		scaler += effect->attackLevel;
 	}
 	if (elapsed_time > (effect->duration - effect->fadeTime) && effect->fadeTime != 0)
 	{
-		scaler = (effect->magnitude - effect->fadeLevel) * (effect->duration - elapsed_time); // Reversed
+		scaler = (scaler - effect->fadeLevel) * (effect->duration - elapsed_time); // Reversed
 		scaler /= (int32_t)effect->fadeTime;
 		scaler += effect->fadeLevel;
 	}
