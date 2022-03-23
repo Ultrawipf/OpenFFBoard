@@ -18,7 +18,7 @@ __ALIGN_BEGIN const uint8_t hid_ffb_desc[USB_HID_FFB_REPORT_DESC_SIZE] __ALIGN_E
 		    0x85, 0x01,                    //     REPORT_ID (1)
 		    0x05, 0x09,                    //     USAGE_PAGE (Button)
 		    0x19, 0x01,                    //     USAGE_MINIMUM (Button 1)
-		    0x29, 0x20,                    //     USAGE_MAXIMUM (Button 32)
+		    0x29, 0x40,                    //     USAGE_MAXIMUM (Button 64)
 		    0x15, 0x00,                    //     LOGICAL_MINIMUM (0)
 		    0x25, 0x01,                    //     LOGICAL_MAXIMUM (1)
 		    0x95, 0x40,                    //     REPORT_COUNT (64)
