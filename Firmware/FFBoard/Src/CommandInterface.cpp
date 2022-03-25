@@ -250,19 +250,16 @@ void CDC_CommandInterface::Run(){
 
 
 void CDC_CommandInterface::sendReplies(const std::vector<CommandResult>& results,CommandInterface* originalInterface){
-//	if( (!enableBroadcastFromOtherInterfaces && originalInterface != this) ){
-//		return;
-//	}
-//
-//	replystr.reserve(100);
-//	StringCommandInterface::formatReply(replystr,results, originalInterface != this && originalInterface != nullptr);
-//	if(!replystr.empty())
-//		CDCcomm::cdcSend(&replystr, 0);
+
+	if(HAL_GetTick() - lastSendTime > parserTimeout){
+		resultsBuffer.clear(); // Empty buffer because we were not able to reply in time to prevent the full buffer from blocking future commands
+		//CDCcomm::clearRemainingBuffer(0);
+	}
 
 	if( (!enableBroadcastFromOtherInterfaces && originalInterface != this) ){
 		return;
 	}
-
+	lastSendTime = HAL_GetTick();
 	resultsBuffer.assign(results.begin(), results.end());
 	resultsBuffer.shrink_to_fit();
 	nextFormat = originalInterface != this && originalInterface != nullptr;
@@ -273,6 +270,9 @@ void CDC_CommandInterface::sendReplies(const std::vector<CommandResult>& results
  * Ready to send if there is no data in the backup buffer of the cdc port
  */
 bool CDC_CommandInterface::readyToSend(){
+	if(HAL_GetTick() - lastSendTime > parserTimeout && CDCcomm::remainingData(0) == 0){
+		return true;
+	}
 	return CDCcomm::remainingData(0) == 0 && resultsBuffer.empty();
 }
 

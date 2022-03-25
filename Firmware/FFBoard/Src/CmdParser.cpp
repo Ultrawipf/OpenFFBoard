@@ -35,7 +35,9 @@ bool CmdParser::add(char* Buf, uint32_t *Len){
 
 		}
 	}
-
+	if(clearBufferTimeout && HAL_GetTick() - lastAddTime > clearBufferTimeout ){
+		this->buffer.clear();
+	}
 	lastAddTime = HAL_GetTick();
 	this->buffer.append((char*)Buf,*Len);
 	return flag;
@@ -51,6 +53,9 @@ void CmdParser::setClearBufferTimeout(uint32_t timeout){
 }
 
 int32_t CmdParser::bufferCapacity(){
+	if(lastAddTime > clearBufferTimeout){
+		return bufferMaxCapacity;
+	}
 	return std::max<int32_t>(bufferMaxCapacity - buffer.size(),0);
 }
 

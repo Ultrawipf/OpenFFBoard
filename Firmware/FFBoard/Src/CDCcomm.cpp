@@ -38,8 +38,18 @@ void CDCcomm::cdcFinished(uint8_t itf){
 	}
 }
 
+/**
+ * Checks if data is remaining in a buffer to be sent
+ */
 uint32_t CDCcomm::remainingData(uint8_t itf){
 	return CDCcomm::remainingStrs[itf].size();
+}
+
+/**
+ * Clears a buffer
+ */
+void CDCcomm::clearRemainingBuffer(uint8_t itf){
+	CDCcomm::remainingStrs[itf].clear();
 }
 
 /**
