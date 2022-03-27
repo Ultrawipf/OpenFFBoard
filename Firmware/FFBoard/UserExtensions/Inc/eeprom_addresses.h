@@ -10,11 +10,11 @@
 
 #include "main.h"
 // Change this to the amount of currently registered variables
-#define NB_OF_VAR	96
+#define NB_OF_VAR	97
 extern const uint16_t VirtAddVarTab[NB_OF_VAR];
 
 // Amount of variables in exportable list
-#define NB_EXPORTABLE_ADR 82
+#define NB_EXPORTABLE_ADR 83
 extern const uint16_t exportableFlashAddresses[NB_EXPORTABLE_ADR];
 
 
