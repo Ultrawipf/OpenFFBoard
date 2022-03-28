@@ -6,7 +6,8 @@ var tusb__types_8h =
     [ "tusb_desc_bos_t", "group___u_s_b_def___type.html#ga37592c8d292e3794f94d6d81c4c266fc", null ],
     [ "tusb_desc_configuration_t", "group___u_s_b_def___type.html#gae640129e609bf2e7b33828de0e38dd65", null ],
     [ "tusb_desc_device_qualifier_t", "group___u_s_b_def___type.html#ga52201cd4d3a9b89e194c290f5e98af06", null ],
-    [ "tusb_desc_device_t", "group___u_s_b_def___type.html#ga26951b4ef7eb0465e774c1a954f7c762", null ],
+    [ "tusb_desc_device_t", "group___u_s_b_def___type.html#ga56e3c57225a4a7b7207c28f31a7789a8", null ],
+    [ "tusb_desc_dfu_functional_t", "group___u_s_b_def___type.html#gabbdba82f013b9af79c72a0889af31859", null ],
     [ "tusb_desc_endpoint_t", "group___u_s_b_def___type.html#ga95906f860c391cedba638b1946669694", null ],
     [ "tusb_desc_interface_assoc_t", "group___u_s_b_def___type.html#ga9d2c9cc99aafbe416b5b5bf275b5b16b", null ],
     [ "tusb_desc_interface_t", "group___u_s_b_def___type.html#gac4415f9c56f80b658137e35c14b58096", null ],
@@ -109,6 +110,15 @@ var tusb__types_8h =
       [ "TUSB_DIR_IN", "group___u_s_b_def___type.html#gga0c1b25b161b272f5f39e4ba49478289ca29e402c2558d1a97a08294c5d1837444", null ],
       [ "TUSB_DIR_IN_MASK", "group___u_s_b_def___type.html#gga0c1b25b161b272f5f39e4ba49478289cae41b455d7ff3ce44fe4f6c68a69dd4f6", null ]
     ] ],
+    [ "tusb_iso_ep_attribute_t", "group___u_s_b_def___type.html#ga333727ea541808f5c815adec3b2888c2", [
+      [ "TUSB_ISO_EP_ATT_NO_SYNC", "group___u_s_b_def___type.html#gga333727ea541808f5c815adec3b2888c2a6c02aa49f1981446327a6ae4f0f0e913", null ],
+      [ "TUSB_ISO_EP_ATT_ASYNCHRONOUS", "group___u_s_b_def___type.html#gga333727ea541808f5c815adec3b2888c2a6056229f7bed07909ef2c8f273efe6b0", null ],
+      [ "TUSB_ISO_EP_ATT_ADAPTIVE", "group___u_s_b_def___type.html#gga333727ea541808f5c815adec3b2888c2abc7974a647c2e2afb3c5e3aac2f6af21", null ],
+      [ "TUSB_ISO_EP_ATT_SYNCHRONOUS", "group___u_s_b_def___type.html#gga333727ea541808f5c815adec3b2888c2a7828338884de6c23bf0f031cab3322e1", null ],
+      [ "TUSB_ISO_EP_ATT_DATA", "group___u_s_b_def___type.html#gga333727ea541808f5c815adec3b2888c2acd2cc791e4add9166c33d45eea5b553a", null ],
+      [ "TUSB_ISO_EP_ATT_EXPLICIT_FB", "group___u_s_b_def___type.html#gga333727ea541808f5c815adec3b2888c2a93b4e5aa895d454902e51bc4a0ef8d78", null ],
+      [ "TUSB_ISO_EP_ATT_IMPLICIT_FB", "group___u_s_b_def___type.html#gga333727ea541808f5c815adec3b2888c2a2fa77227b919236ccef44cf15e540719", null ]
+    ] ],
     [ "tusb_request_code_t", "group___u_s_b_def___type.html#ga0ce8a24b63587d1b3ad6a73d53b9b5d7", [
       [ "TUSB_REQ_GET_STATUS", "group___u_s_b_def___type.html#gga0ce8a24b63587d1b3ad6a73d53b9b5d7a153f1069b07ed59a7e0d689bfe9e7b61", null ],
       [ "TUSB_REQ_CLEAR_FEATURE", "group___u_s_b_def___type.html#gga0ce8a24b63587d1b3ad6a73d53b9b5d7a70c06c7b2c9ad19ed5a64ff79c0f466b", null ],
@@ -152,13 +162,14 @@ var tusb__types_8h =
       [ "XFER_RESULT_FAILED", "group___u_s_b_def___type.html#gga6a3b3a4d6801fd9b02feb0510c84e5f9a25a26f92e6369131560cb95863c145a7", null ],
       [ "XFER_RESULT_STALLED", "group___u_s_b_def___type.html#gga6a3b3a4d6801fd9b02feb0510c84e5f9afd15857b96b2f33fd3139cce70c61a09", null ]
     ] ],
-    [ "bm_request_type", "group___u_s_b_def___type.html#ga7af729bb868b8672878a098ff9cde15e", null ],
     [ "tu_desc_len", "group___u_s_b_def___type.html#ga874af9e4300217d76323918b61a0fc93", null ],
     [ "tu_desc_next", "group___u_s_b_def___type.html#ga6ac1b6104429ebe2494f49c6c65f6a30", null ],
     [ "tu_desc_type", "group___u_s_b_def___type.html#gaec3d617e38f349c026a4d2558d814513", null ],
     [ "tu_edpt_addr", "group___u_s_b_def___type.html#gafac3eb7a5d95891e1520a24a472811d7", null ],
-    [ "tu_edpt_dir", "group___u_s_b_def___type.html#gaaa353f2da73c8d7c4dda783341e4c681", null ],
+    [ "tu_edpt_dir", "group___u_s_b_def___type.html#ga4d579630893352ad521ab3be2719e253", null ],
     [ "tu_edpt_number", "group___u_s_b_def___type.html#gaec0233a77ef66c106dfdfd2f391d245f", null ],
+    [ "tu_edpt_packet_size", "group___u_s_b_def___type.html#ga8d47219fcaf031b9d37eb860f65e7c4c", null ],
+    [ "TU_VERIFY_STATIC", "group___u_s_b_def___type.html#ga03bdd55b38209b6f6d64494bb2d62c9d", null ],
     [ "TU_VERIFY_STATIC", "group___u_s_b_def___type.html#gae2054465c7ed133c1b2ff71ff5101257", null ],
     [ "C", "group___u_s_b_def___type.html#gaaa53ca0b650dfd85c4f59fa156f7a2cc", null ]
 ];

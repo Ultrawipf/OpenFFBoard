@@ -24,10 +24,7 @@ var files_dup =
     [ "CDCcomm.h", "_c_d_ccomm_8h.html", [
       [ "CDCcomm", "class_c_d_ccomm.html", "class_c_d_ccomm" ]
     ] ],
-    [ "ChoosableClass.h", "_choosable_class_8h.html", [
-      [ "ClassIdentifier", "struct_class_identifier.html", "struct_class_identifier" ],
-      [ "ChoosableClass", "class_choosable_class.html", "class_choosable_class" ]
-    ] ],
+    [ "ChoosableClass.h", "_choosable_class_8h.html", "_choosable_class_8h" ],
     [ "ClassChooser.h", "_class_chooser_8h.html", "_class_chooser_8h" ],
     [ "CmdParser.h", "_cmd_parser_8h.html", [
       [ "CmdParser", "class_cmd_parser.html", "class_cmd_parser" ]
@@ -63,12 +60,22 @@ var files_dup =
       [ "FastAvg< LEN >", "class_fast_avg.html", "class_fast_avg" ]
     ] ],
     [ "ffb_defs.h", "ffb__defs_8h.html", "ffb__defs_8h" ],
+    [ "FFBoardMainCommandThread.h", "_f_f_board_main_command_thread_8h.html", [
+      [ "FFBoardMainCommandThread", "class_f_f_board_main_command_thread.html", "class_f_f_board_main_command_thread" ]
+    ] ],
     [ "Filters.h", "_filters_8h.html", "_filters_8h" ],
     [ "flash_helpers.h", "flash__helpers_8h.html", "flash__helpers_8h" ],
     [ "global_callbacks.h", "global__callbacks_8h.html", "global__callbacks_8h" ],
     [ "HidCommandInterface.h", "_hid_command_interface_8h.html", "_hid_command_interface_8h" ],
     [ "HidFFB.h", "_hid_f_f_b_8h.html", [
       [ "HidFFB", "class_hid_f_f_b.html", "class_hid_f_f_b" ]
+    ] ],
+    [ "I2C.h", "_i2_c_8h.html", [
+      [ "I2CPort", "class_i2_c_port.html", "class_i2_c_port" ],
+      [ "I2CDevice", "class_i2_c_device.html", "class_i2_c_device" ]
+    ] ],
+    [ "I2CHandler.h", "_i2_c_handler_8h.html", [
+      [ "I2CHandler", "class_i2_c_handler.html", "class_i2_c_handler" ]
     ] ],
     [ "ledEffects.h", "led_effects_8h.html", "led_effects_8h" ],
     [ "mem_pool.hpp", "mem__pool_8hpp.html", [
@@ -106,9 +113,6 @@ var files_dup =
       [ "cpp_freertos::ReadWriteLock", "classcpp__freertos_1_1_read_write_lock.html", "classcpp__freertos_1_1_read_write_lock" ],
       [ "cpp_freertos::ReadWriteLockPreferReader", "classcpp__freertos_1_1_read_write_lock_prefer_reader.html", "classcpp__freertos_1_1_read_write_lock_prefer_reader" ],
       [ "cpp_freertos::ReadWriteLockPreferWriter", "classcpp__freertos_1_1_read_write_lock_prefer_writer.html", "classcpp__freertos_1_1_read_write_lock_prefer_writer" ]
-    ] ],
-    [ "RessourceManager.h", "_ressource_manager_8h.html", [
-      [ "RessourceManager", "class_ressource_manager.html", "class_ressource_manager" ]
     ] ],
     [ "semaphore.hpp", "semaphore_8hpp.html", [
       [ "cpp_freertos::SemaphoreCreateException", "classcpp__freertos_1_1_semaphore_create_exception.html", "classcpp__freertos_1_1_semaphore_create_exception" ],
@@ -194,16 +198,18 @@ var files_dup =
     [ "Encoder.cpp", "_encoder_8cpp.html", null ],
     [ "ErrorHandler.cpp", "_error_handler_8cpp.html", null ],
     [ "ExtiHandler.cpp", "_exti_handler_8cpp.html", null ],
+    [ "FFBoardMainCommandThread.cpp", "_f_f_board_main_command_thread_8cpp.html", null ],
     [ "Filters.cpp", "_filters_8cpp.html", null ],
     [ "flash_helpers.cpp", "flash__helpers_8cpp.html", "flash__helpers_8cpp" ],
     [ "global_callbacks.cpp", "global__callbacks_8cpp.html", "global__callbacks_8cpp" ],
     [ "HidCommandInterface.cpp", "_hid_command_interface_8cpp.html", null ],
     [ "HidFFB.cpp", "_hid_f_f_b_8cpp.html", null ],
+    [ "I2C.cpp", "_i2_c_8cpp.html", "_i2_c_8cpp" ],
+    [ "I2CHandler.cpp", "_i2_c_handler_8cpp.html", null ],
     [ "ledEffects.cpp", "led_effects_8cpp.html", "led_effects_8cpp" ],
     [ "MidiHandler.cpp", "_midi_handler_8cpp.html", null ],
     [ "MotorDriver.cpp", "_motor_driver_8cpp.html", null ],
     [ "PersistentStorage.cpp", "_persistent_storage_8cpp.html", null ],
-    [ "RessourceManager.cpp", "_ressource_manager_8cpp.html", null ],
     [ "SPI.cpp", "_s_p_i_8cpp.html", "_s_p_i_8cpp" ],
     [ "SpiHandler.cpp", "_spi_handler_8cpp.html", null ],
     [ "SystemCommands.cpp", "_system_commands_8cpp.html", "_system_commands_8cpp" ],
@@ -226,6 +232,9 @@ var files_dup =
     [ "cdc_rndis.h", "cdc__rndis_8h.html", "cdc__rndis_8h" ],
     [ "cdc_rndis_host.c", "cdc__rndis__host_8c.html", "cdc__rndis__host_8c" ],
     [ "cdc_rndis_host.h", "cdc__rndis__host_8h.html", "cdc__rndis__host_8h" ],
+    [ "dfu.h", "dfu_8h.html", "dfu_8h" ],
+    [ "dfu_device.c", "dfu__device_8c.html", "dfu__device_8c" ],
+    [ "dfu_device.h", "dfu__device_8h.html", "dfu__device_8h" ],
     [ "dfu_rt_device.c", "dfu__rt__device_8c.html", "dfu__rt__device_8c" ],
     [ "dfu_rt_device.h", "dfu__rt__device_8h.html", "dfu__rt__device_8h" ],
     [ "hid.h", "hid_8h.html", "hid_8h" ],
@@ -241,7 +250,9 @@ var files_dup =
     [ "msc_device.h", "msc__device_8h.html", "msc__device_8h" ],
     [ "msc_host.c", "msc__host_8c.html", "msc__host_8c" ],
     [ "msc_host.h", "msc__host_8h.html", "msc__host_8h" ],
-    [ "net_device.c", "net__device_8c.html", "net__device_8c" ],
+    [ "ecm_rndis_device.c", "ecm__rndis__device_8c.html", "ecm__rndis__device_8c" ],
+    [ "ncm.h", "ncm_8h.html", "ncm_8h" ],
+    [ "ncm_device.c", "ncm__device_8c.html", "ncm__device_8c" ],
     [ "net_device.h", "net__device_8h.html", "net__device_8h" ],
     [ "usbtmc.h", "usbtmc_8h.html", "usbtmc_8h" ],
     [ "usbtmc_device.c", "usbtmc__device_8c.html", "usbtmc__device_8c" ],
@@ -250,6 +261,9 @@ var files_dup =
     [ "vendor_device.h", "vendor__device_8h.html", "vendor__device_8h" ],
     [ "vendor_host.c", "vendor__host_8c.html", "vendor__host_8c" ],
     [ "vendor_host.h", "vendor__host_8h.html", "vendor__host_8h" ],
+    [ "video.h", "video_8h.html", "video_8h" ],
+    [ "video_device.c", "video__device_8c.html", "video__device_8c" ],
+    [ "video_device.h", "video__device_8h.html", "video__device_8h" ],
     [ "tusb_common.h", "tusb__common_8h.html", "tusb__common_8h" ],
     [ "tusb_compiler.h", "tusb__compiler_8h.html", null ],
     [ "tusb_error.h", "tusb__error_8h.html", "tusb__error_8h" ],
@@ -259,22 +273,32 @@ var files_dup =
     [ "tusb_types.h", "tusb__types_8h.html", "tusb__types_8h" ],
     [ "tusb_verify.h", "tusb__verify_8h.html", null ],
     [ "dcd.h", "dcd_8h.html", "dcd_8h" ],
+    [ "dcd_attr.h", "dcd__attr_8h.html", null ],
     [ "usbd.c", "usbd_8c.html", "usbd_8c" ],
     [ "usbd.h", "usbd_8h.html", "usbd_8h" ],
     [ "usbd_control.c", "usbd__control_8c.html", "usbd__control_8c" ],
     [ "usbd_pvt.h", "usbd__pvt_8h.html", "usbd__pvt_8h" ],
     [ "hcd.h", "hcd_8h.html", "hcd_8h" ],
+    [ "hcd_attr.h", "hcd__attr_8h.html", null ],
     [ "hub.c", "hub_8c.html", "hub_8c" ],
     [ "hub.h", "hub_8h.html", "hub_8h" ],
     [ "usbh.c", "usbh_8c.html", "usbh_8c" ],
     [ "usbh.h", "usbh_8h.html", "usbh_8h" ],
+    [ "usbh_classdriver.h", "usbh__classdriver_8h.html", "usbh__classdriver_8h" ],
     [ "usbh_control.c", "usbh__control_8c.html", "usbh__control_8c" ],
-    [ "usbh_hcd.h", "usbh__hcd_8h.html", "usbh__hcd_8h" ],
     [ "osal.h", "osal_8h.html", "osal_8h" ],
     [ "osal_freertos.h", "osal__freertos_8h.html", "osal__freertos_8h" ],
     [ "dcd_stm32_fsdev.c", "dcd__stm32__fsdev_8c.html", "dcd__stm32__fsdev_8c" ],
     [ "dcd_stm32_fsdev_pvt_st.h", "dcd__stm32__fsdev__pvt__st_8h.html", "dcd__stm32__fsdev__pvt__st_8h" ],
     [ "dcd_synopsys.c", "dcd__synopsys_8c.html", "dcd__synopsys_8c" ],
+    [ "synopsys_common.h", "synopsys__common_8h.html", [
+      [ "USB_OTG_GlobalTypeDef", "struct_u_s_b___o_t_g___global_type_def.html", "struct_u_s_b___o_t_g___global_type_def" ],
+      [ "USB_OTG_DeviceTypeDef", "struct_u_s_b___o_t_g___device_type_def.html", "struct_u_s_b___o_t_g___device_type_def" ],
+      [ "USB_OTG_INEndpointTypeDef", "struct_u_s_b___o_t_g___i_n_endpoint_type_def.html", "struct_u_s_b___o_t_g___i_n_endpoint_type_def" ],
+      [ "USB_OTG_OUTEndpointTypeDef", "struct_u_s_b___o_t_g___o_u_t_endpoint_type_def.html", "struct_u_s_b___o_t_g___o_u_t_endpoint_type_def" ],
+      [ "USB_OTG_HostTypeDef", "struct_u_s_b___o_t_g___host_type_def.html", "struct_u_s_b___o_t_g___host_type_def" ],
+      [ "USB_OTG_HostChannelTypeDef", "struct_u_s_b___o_t_g___host_channel_type_def.html", "struct_u_s_b___o_t_g___host_channel_type_def" ]
+    ] ],
     [ "tusb.c", "tusb_8c.html", "tusb_8c" ],
     [ "tusb.h", "tusb_8h.html", "tusb_8h" ],
     [ "tusb_config.h", "tusb__config_8h.html", null ],
@@ -291,9 +315,6 @@ var files_dup =
     [ "EncoderLocal.h", "_encoder_local_8h.html", "_encoder_local_8h" ],
     [ "FFBoardMain.h", "_f_f_board_main_8h.html", [
       [ "FFBoardMain", "class_f_f_board_main.html", "class_f_f_board_main" ]
-    ] ],
-    [ "FFBoardMainCommandThread.h", "_f_f_board_main_command_thread_8h.html", [
-      [ "FFBoardMainCommandThread", "class_f_f_board_main_command_thread.html", "class_f_f_board_main_command_thread" ]
     ] ],
     [ "FFBWheel.h", "_f_f_b_wheel_8h.html", [
       [ "FFBWheel", "class_f_f_b_wheel.html", "class_f_f_b_wheel" ]
@@ -316,6 +337,10 @@ var files_dup =
       [ "MtEncoderSPI", "class_mt_encoder_s_p_i.html", "class_mt_encoder_s_p_i" ]
     ] ],
     [ "ODriveCAN.h", "_o_drive_c_a_n_8h.html", "_o_drive_c_a_n_8h" ],
+    [ "PCF8574.h", "_p_c_f8574_8h.html", [
+      [ "PCF8574", "class_p_c_f8574.html", "class_p_c_f8574" ],
+      [ "PCF8574Buttons", "class_p_c_f8574_buttons.html", "class_p_c_f8574_buttons" ]
+    ] ],
     [ "ShifterAnalog.h", "_shifter_analog_8h.html", [
       [ "ShifterAnalog", "class_shifter_analog.html", "class_shifter_analog" ],
       [ "ShifterAnalog::G27ShifterButtonClient", "class_shifter_analog_1_1_g27_shifter_button_client.html", "class_shifter_analog_1_1_g27_shifter_button_client" ]
@@ -331,7 +356,6 @@ var files_dup =
     [ "eeprom_addresses.c", "eeprom__addresses_8c.html", "eeprom__addresses_8c" ],
     [ "EncoderLocal.cpp", "_encoder_local_8cpp.html", null ],
     [ "FFBoardMain.cpp", "_f_f_board_main_8cpp.html", null ],
-    [ "FFBoardMainCommandThread.cpp", "_f_f_board_main_command_thread_8cpp.html", null ],
     [ "FFBWheel.cpp", "_f_f_b_wheel_8cpp.html", "_f_f_b_wheel_8cpp" ],
     [ "FFBWheel_commmands.cpp", "_f_f_b_wheel__commmands_8cpp.html", null ],
     [ "LocalAnalog.cpp", "_local_analog_8cpp.html", null ],
@@ -341,6 +365,7 @@ var files_dup =
     [ "MotorPWM.cpp", "_motor_p_w_m_8cpp.html", "_motor_p_w_m_8cpp" ],
     [ "MtEncoderSPI.cpp", "_mt_encoder_s_p_i_8cpp.html", null ],
     [ "ODriveCAN.cpp", "_o_drive_c_a_n_8cpp.html", null ],
+    [ "PCF8574.cpp", "_p_c_f8574_8cpp.html", null ],
     [ "ShifterAnalog.cpp", "_shifter_analog_8cpp.html", null ],
     [ "SPIButtons.cpp", "_s_p_i_buttons_8cpp.html", "_s_p_i_buttons_8cpp" ],
     [ "TMC4671.cpp", "_t_m_c4671_8cpp.html", null ],

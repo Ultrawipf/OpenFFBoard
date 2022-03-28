@@ -1,8 +1,7 @@
 var searchData=
 [
-  ['vesccan_5fcommands_0',['VescCAN_commands',['../_vesc_c_a_n_8h.html#a2125c9b686c373137058c5ae8fa4219f',1,'VescCAN.h']]],
-  ['vesccanmsg_1',['VescCANMsg',['../_vesc_c_a_n_8h.html#a31f4088fc0096d6c5e2ee0396066eb47',1,'VescCAN.h']]],
-  ['vesccmd_2',['VescCmd',['../_vesc_c_a_n_8h.html#ade8aa0c8682cb29483f2d2b58786989f',1,'VescCAN.h']]],
-  ['vescencodermode_3',['VescEncoderMode',['../_vesc_c_a_n_8h.html#a12d8e5801006430b8ec1be3256505416',1,'VescCAN.h']]],
-  ['vescstate_4',['VescState',['../_vesc_c_a_n_8h.html#a081546a7e1519ad0cfb40bcc429be04d',1,'VescCAN.h']]]
+  ['usbtmc_5fmsgid_5fenum_0',['usbtmc_msgid_enum',['../usbtmc_8h.html#ae76b6ce18005a5fe9c14723c433c527b',1,'usbtmc.h']]],
+  ['usbtmc_5fstatus_5fenum_1',['usbtmc_status_enum',['../usbtmc_8h.html#ae5dcdfb01c55239e21f9fdcfe0b62692',1,'usbtmc.h']]],
+  ['usbtmcd_5fstate_5fenum_2',['usbtmcd_state_enum',['../usbtmc__device_8c.html#a1894598404de628b7ff560a783174d8e',1,'usbtmc_device.c']]],
+  ['usmtmc_5frequest_5ftype_5fenum_3',['usmtmc_request_type_enum',['../usbtmc_8h.html#aee18bbea2d1733020445c633fde64832',1,'usbtmc.h']]]
 ];

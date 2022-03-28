@@ -105,6 +105,7 @@ Inheritance diagram for Axis:</div>
   <map id="Axis_map" name="Axis_map">
 <area href="class_persistent_storage.html" alt="PersistentStorage" shape="rect" coords="0,0,112,24"/>
 <area href="class_command_handler.html" alt="CommandHandler" shape="rect" coords="122,0,234,24"/>
+<area href="class_error_handler.html" alt="ErrorHandler" shape="rect" coords="244,0,356,24"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -147,6 +148,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aa0709fa6da168da91655179f033f832b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9492c65142e3a7d0482bfbae847e5f2b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_axis.html#a9492c65142e3a7d0482bfbae847e5f2b">setPos</a> (uint16_t val)</td></tr>
 <tr class="separator:a9492c65142e3a7d0482bfbae847e5f2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0d18d98916bea763369475ab35766e2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_axis.html#ad0d18d98916bea763369475ab35766e2">zeroPos</a> ()</td></tr>
+<tr class="separator:ad0d18d98916bea763369475ab35766e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa7645124f90111c3e23296580db96715"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_axis.html#aa7645124f90111c3e23296580db96715">getFfbActive</a> ()</td></tr>
 <tr class="separator:aa7645124f90111c3e23296580db96715"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a896f28b56d39de138060d03b483ff05a"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_axis.html#a896f28b56d39de138060d03b483ff05a">scaleEncValue</a> (float angle, uint16_t <a class="el" href="_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715a18daee01fc6e54aacd7f4c2eef60ff4d">degrees</a>)</td></tr>
@@ -155,6 +158,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a0b3129bc899fdaaa3dd83d478f2b9d7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a61e33317a15464ec12526fe9db98c353"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_axis.html#a61e33317a15464ec12526fe9db98c353">setPower</a> (uint16_t <a class="el" href="class_axis.html#a90f31bc6a2f78000d6b2b3cd848286e1">power</a>)</td></tr>
 <tr class="separator:a61e33317a15464ec12526fe9db98c353"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a315d8adef91c166c5e979006a89803d2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_axis.html#a315d8adef91c166c5e979006a89803d2">errorCallback</a> (<a class="el" href="class_error.html">Error</a> &amp;error, bool cleared) override</td></tr>
+<tr class="separator:a315d8adef91c166c5e979006a89803d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7a35d21551dc92eda7890df33ccee46c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_axis.html#a7a35d21551dc92eda7890df33ccee46c">registerCommands</a> ()</td></tr>
 <tr class="separator:a7a35d21551dc92eda7890df33ccee46c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a80c0d87a1982cecb6304d902580031e0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_command_handler_8h.html#aefaf83fec6a7da1d02ae7e912dd9a6d5">CommandStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_axis.html#a80c0d87a1982cecb6304d902580031e0">command</a> (const <a class="el" href="struct_parsed_command.html">ParsedCommand</a> &amp;cmd, std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;replies)</td></tr>
@@ -201,19 +206,18 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a45979fba8f86796394ad7e22896fc33f inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a09e6c7b1db8de3631ffbc1e4c1336676 inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a09e6c7b1db8de3631ffbc1e4c1336676">registerCommands</a> ()</td></tr>
 <tr class="separator:a09e6c7b1db8de3631ffbc1e4c1336676 inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aed6a9e7304ae2edefc41d636442639a5 inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="_command_handler_8h.html#aefaf83fec6a7da1d02ae7e912dd9a6d5">CommandStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#aed6a9e7304ae2edefc41d636442639a5">internalCommand</a> (const <a class="el" href="struct_parsed_command.html">ParsedCommand</a> &amp;cmd, std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;replies, <a class="el" href="class_command_interface.html">CommandInterface</a> *interface=nullptr)</td></tr>
-<tr class="separator:aed6a9e7304ae2edefc41d636442639a5 inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a533be5d0625557f6e1f194f70dc0d5 inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="_command_handler_8h.html#aefaf83fec6a7da1d02ae7e912dd9a6d5">CommandStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a6a533be5d0625557f6e1f194f70dc0d5">internalCommand</a> (const <a class="el" href="struct_parsed_command.html">ParsedCommand</a> &amp;cmd, std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;replies)</td></tr>
+<tr class="separator:a6a533be5d0625557f6e1f194f70dc0d5 inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd8e021f6a407115dba838d7b16930bb inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#acd8e021f6a407115dba838d7b16930bb">getCommandsHelpstring</a> ()</td></tr>
 <tr class="separator:acd8e021f6a407115dba838d7b16930bb inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af6efec263bc372a1ca57add26dd93a97 inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#af6efec263bc372a1ca57add26dd93a97">getCsvHelpstring</a> ()</td></tr>
 <tr class="separator:af6efec263bc372a1ca57add26dd93a97 inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad67013c18a56f13ff7159883dfce665e inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#ad67013c18a56f13ff7159883dfce665e">broadcastCommandReply</a> (<a class="el" href="class_command_reply.html">CommandReply</a> reply, uint32_t cmdId, <a class="el" href="_command_handler_8h.html#aec46f6cc23a395b611fbc7c7239b9c41">CMDtype</a> type)</td></tr>
 <tr class="separator:ad67013c18a56f13ff7159883dfce665e inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab23b77c2282380e1e713b0173530416c inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#ab23b77c2282380e1e713b0173530416c">sendCommandReplyAsync</a> (<a class="el" href="class_command_reply.html">CommandReply</a> reply, uint32_t cmdId, <a class="el" href="_command_handler_8h.html#aec46f6cc23a395b611fbc7c7239b9c41">CMDtype</a> type, <a class="el" href="class_command_interface.html">CommandInterface</a> *interface=nullptr)</td></tr>
+<tr class="separator:ab23b77c2282380e1e713b0173530416c inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5d6e4cd233e9221df2cf1ff3c1468385 inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">virtual uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a5d6e4cd233e9221df2cf1ff3c1468385">getCommandHandlerID</a> ()</td></tr>
 <tr class="separator:a5d6e4cd233e9221df2cf1ff3c1468385 inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad27ce104d3546c2b6f7cd74dff950274 inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">virtual uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#ad27ce104d3546c2b6f7cd74dff950274">getSelectionID</a> ()</td></tr>
-<tr class="memdesc:ad27ce104d3546c2b6f7cd74dff950274 inherit pub_methods_class_command_handler"><td class="mdescLeft">&#160;</td><td class="mdescRight">normally returns class id but for choosable classes this can be the id used to create the class  <a href="class_command_handler.html#ad27ce104d3546c2b6f7cd74dff950274">More...</a><br /></td></tr>
-<tr class="separator:ad27ce104d3546c2b6f7cd74dff950274 inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad9d9d0fd0bd0a58cfd8b6199081403a9 inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="struct_cmd_handler_info.html">CmdHandlerInfo</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#ad9d9d0fd0bd0a58cfd8b6199081403a9">getCommandHandlerInfo</a> ()</td></tr>
 <tr class="separator:ad9d9d0fd0bd0a58cfd8b6199081403a9 inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af658c15ccbac468224ed2c5997e06f91 inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#af658c15ccbac468224ed2c5997e06f91">isValidCommandId</a> (uint32_t cmdid, uint32_t ignoredFlags=0, uint32_t requiredFlag=0)</td></tr>
@@ -222,6 +226,11 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ac5417a6284e8066c67776301c7d25d72 inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a406a0e915a9373f5c1992711b167f7f9 inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="struct_cmd_handler_commanddef.html">CmdHandlerCommanddef</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a406a0e915a9373f5c1992711b167f7f9">getCommandFromId</a> (const uint32_t <a class="el" href="_command_handler_8h.html#a13a18e5b49561a2f007205dc0afeea14ab80bb7740288fda1f201890375a60c8f">id</a>, uint32_t ignoredFlags=0)</td></tr>
 <tr class="separator:a406a0e915a9373f5c1992711b167f7f9 inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_class_error_handler"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_error_handler')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_error_handler.html">ErrorHandler</a></td></tr>
+<tr class="memitem:a7e5f379bd231442b898cef94556b2107 inherit pub_methods_class_error_handler"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_error_handler.html#a7e5f379bd231442b898cef94556b2107">ErrorHandler</a> ()</td></tr>
+<tr class="separator:a7e5f379bd231442b898cef94556b2107 inherit pub_methods_class_error_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73c7e690b864697e507aaeb537b3c3e5 inherit pub_methods_class_error_handler"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_error_handler.html#a73c7e690b864697e507aaeb537b3c3e5">~ErrorHandler</a> ()</td></tr>
+<tr class="separator:a73c7e690b864697e507aaeb537b3c3e5 inherit pub_methods_class_error_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -248,6 +257,9 @@ Static Public Attributes</h2></td></tr>
 <tr class="separator:aa712fed44e0c1c489118b0577b2b4800 inherit pub_static_attribs_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9029c76e98bec126216b0e6e35c0c88a inherit pub_static_attribs_class_command_handler"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a9029c76e98bec126216b0e6e35c0c88a">logEnabled</a> = true</td></tr>
 <tr class="separator:a9029c76e98bec126216b0e6e35c0c88a inherit pub_static_attribs_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_static_attribs_class_error_handler"><td colspan="2" onclick="javascript:toggleInherit('pub_static_attribs_class_error_handler')"><img src="closed.png" alt="-"/>&#160;Static Public Attributes inherited from <a class="el" href="class_error_handler.html">ErrorHandler</a></td></tr>
+<tr class="memitem:ab5494eba227861b24fa0fed4978b59ea inherit pub_static_attribs_class_error_handler"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; <a class="el" href="class_error_handler.html">ErrorHandler</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_error_handler.html#ab5494eba227861b24fa0fed4978b59ea">errorHandlers</a></td></tr>
+<tr class="separator:ab5494eba227861b24fa0fed4978b59ea inherit pub_static_attribs_class_error_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -283,8 +295,6 @@ Private Attributes</h2></td></tr>
 <tr class="separator:ab8b67d4546ffb7cfe1f936a33138ca00"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aac0d628209ee1b8ab5c4699a0fbc2d97"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="class_encoder.html">Encoder</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_axis.html#aac0d628209ee1b8ab5c4699a0fbc2d97">enc</a> = nullptr</td></tr>
 <tr class="separator:aac0d628209ee1b8ab5c4699a0fbc2d97"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a820d444453bd41d43d3753023f5fc48b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_axis.html#a820d444453bd41d43d3753023f5fc48b">tmcFeedForward</a> = false</td></tr>
-<tr class="separator:a820d444453bd41d43d3753023f5fc48b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa4945beb02c2947191b6edff918d9356"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_axis.html#aa4945beb02c2947191b6edff918d9356">outOfBounds</a> = false</td></tr>
 <tr class="separator:aa4945beb02c2947191b6edff918d9356"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a599f86d6c5cb7060cdb78fce55faf369"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="class_error.html">Error</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_axis.html#a599f86d6c5cb7060cdb78fce55faf369">outOfBoundsError</a> = <a class="el" href="class_error.html">Error</a>(<a class="el" href="_error_handler_8h.html#a6f3b1ba4fbf4167d3a58b0b331ddcfefa30ebab90be35958a8cb1987ba7ec5ff4">ErrorCode::axisOutOfRange</a>,<a class="el" href="_error_handler_8h.html#a01775e5fef063175684d0fc8d9c7d301a7b83d3f08fa392b79e3f553b585971cd">ErrorType::warning</a>,&quot;Axis out of bounds&quot;)</td></tr>
@@ -295,14 +305,8 @@ Private Attributes</h2></td></tr>
 <tr class="separator:ae18282969fa7dc9dc99a70d7d2cf8d20"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a118bcd14c1699f98339ea27a56020199"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="struct_t_m_c4671_biquad.html">TMC4671Biquad</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_axis.html#a118bcd14c1699f98339ea27a56020199">fluxbq</a></td></tr>
 <tr class="separator:a118bcd14c1699f98339ea27a56020199"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9c547b558eef5b51a5461477304f0652"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_axis.html#a9c547b558eef5b51a5461477304f0652">torqueFFgain</a> = 50000</td></tr>
-<tr class="separator:a9c547b558eef5b51a5461477304f0652"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab398835dcca3f5a2d95a7abce059eb63"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_axis.html#ab398835dcca3f5a2d95a7abce059eb63">torqueFFconst</a> = 0</td></tr>
-<tr class="separator:ab398835dcca3f5a2d95a7abce059eb63"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6a04a27b068ed3ca166b76b59c80ad9d"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_axis.html#a6a04a27b068ed3ca166b76b59c80ad9d">velocityFFgain</a> = 30000</td></tr>
-<tr class="separator:a6a04a27b068ed3ca166b76b59c80ad9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4dc647a2fd5b4164a34a068bed483d49"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_axis.html#a4dc647a2fd5b4164a34a068bed483d49">velocityFFconst</a> = 0</td></tr>
-<tr class="separator:a4dc647a2fd5b4164a34a068bed483d49"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aafeff48126407cf0da47ef3dac52e544"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_axis.html#aafeff48126407cf0da47ef3dac52e544">encoderOffset</a> = 0</td></tr>
+<tr class="separator:aafeff48126407cf0da47ef3dac52e544"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abda22770951446b0ce5a9bc385fa5fc2"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_axis.html#abda22770951446b0ce5a9bc385fa5fc2">degreesOfRotation</a> = 900</td></tr>
 <tr class="separator:abda22770951446b0ce5a9bc385fa5fc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a512266c960b8830f7a2a6c3f8e3b3436"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_axis.html#a512266c960b8830f7a2a6c3f8e3b3436">lastdegreesOfRotation</a> = <a class="el" href="class_axis.html#abda22770951446b0ce5a9bc385fa5fc2">degreesOfRotation</a></td></tr>
@@ -331,8 +335,10 @@ Private Attributes</h2></td></tr>
 <tr class="separator:a396e38fa71d534284f77161a532f9130"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aad0b2854e311d5f34d4aa636a6b657a5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_axis.html#aad0b2854e311d5f34d4aa636a6b657a5">invertAxis</a> = false</td></tr>
 <tr class="separator:aad0b2854e311d5f34d4aa636a6b657a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abd787c46b2138bd5b084f9fbd7d92f23"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_axis.html#abd787c46b2138bd5b084f9fbd7d92f23">endstop_gain</a> = 127</td></tr>
-<tr class="separator:abd787c46b2138bd5b084f9fbd7d92f23"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a35ca03e3279d950c04adfff75e49e2a5"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_axis.html#a35ca03e3279d950c04adfff75e49e2a5">endstopStrength</a> = 127</td></tr>
+<tr class="separator:a35ca03e3279d950c04adfff75e49e2a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a8716d292017f815ebb6a441ed29c1d"><td class="memItemLeft" align="right" valign="top">const float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_axis.html#a8a8716d292017f815ebb6a441ed29c1d">endstopGain</a> = 0.75</td></tr>
+<tr class="separator:a8a8716d292017f815ebb6a441ed29c1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0cd5bdf9a42ada994758f899663a3700"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_axis.html#a0cd5bdf9a42ada994758f899663a3700">idlespringstrength</a> = 127</td></tr>
 <tr class="separator:a0cd5bdf9a42ada994758f899663a3700"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac665f172ea37615e2596b96e750ac8b6"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_axis.html#ac665f172ea37615e2596b96e750ac8b6">idlespringclip</a> = 0</td></tr>
@@ -390,6 +396,19 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:a563efae94fc4c4cd910a0feefb681df3 inherit pub_static_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb22b24f51c53110d1275157b5d82fde inherit pub_static_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">static std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#adb22b24f51c53110d1275157b5d82fde">getAllHelpstrings</a> ()</td></tr>
 <tr class="separator:adb22b24f51c53110d1275157b5d82fde inherit pub_static_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_static_methods_class_error_handler"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_class_error_handler')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="class_error_handler.html">ErrorHandler</a></td></tr>
+<tr class="memitem:abedf2d4fca68939a7f77367cac409b19 inherit pub_static_methods_class_error_handler"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_error_handler.html#abedf2d4fca68939a7f77367cac409b19">addError</a> (<a class="el" href="class_error.html">Error</a> error)</td></tr>
+<tr class="separator:abedf2d4fca68939a7f77367cac409b19 inherit pub_static_methods_class_error_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6371dd69040614049c8ed74317544647 inherit pub_static_methods_class_error_handler"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_error_handler.html#a6371dd69040614049c8ed74317544647">clearError</a> (<a class="el" href="class_error.html">Error</a> error)</td></tr>
+<tr class="separator:a6371dd69040614049c8ed74317544647 inherit pub_static_methods_class_error_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f575a96059977a36844dd36d4a63616 inherit pub_static_methods_class_error_handler"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_error_handler.html#a7f575a96059977a36844dd36d4a63616">clearError</a> (<a class="el" href="_error_handler_8h.html#a6f3b1ba4fbf4167d3a58b0b331ddcfef">ErrorCode</a> errorcode)</td></tr>
+<tr class="separator:a7f575a96059977a36844dd36d4a63616 inherit pub_static_methods_class_error_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2447e48321458444c4b3d79380f74f65 inherit pub_static_methods_class_error_handler"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_error_handler.html#a2447e48321458444c4b3d79380f74f65">clearTemp</a> ()</td></tr>
+<tr class="separator:a2447e48321458444c4b3d79380f74f65 inherit pub_static_methods_class_error_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9bf00bc45f36bf2a09ae9f2fcd393a3 inherit pub_static_methods_class_error_handler"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_error_handler.html#ad9bf00bc45f36bf2a09ae9f2fcd393a3">clearAll</a> ()</td></tr>
+<tr class="separator:ad9bf00bc45f36bf2a09ae9f2fcd393a3 inherit pub_static_methods_class_error_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7489b7af0d4691473781ea6db1d9ce0f inherit pub_static_methods_class_error_handler"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; <a class="el" href="class_error.html">Error</a> &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_error_handler.html#a7489b7af0d4691473781ea6db1d9ce0f">getErrors</a> ()</td></tr>
+<tr class="separator:a7489b7af0d4691473781ea6db1d9ce0f inherit pub_static_methods_class_error_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_class_command_handler"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_class_command_handler')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="class_command_handler.html">CommandHandler</a></td></tr>
 <tr class="memitem:a6b21c926cfce2d16e63fe12f442f390e inherit pro_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a6b21c926cfce2d16e63fe12f442f390e">setInstance</a> (uint8_t <a class="el" href="_command_handler_8h.html#a13a18e5b49561a2f007205dc0afeea14a7123a699d77db6479a1d8ece2c4f1c16">instance</a>)</td></tr>
 <tr class="separator:a6b21c926cfce2d16e63fe12f442f390e inherit pro_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -419,6 +438,9 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:a3f584d2a8b93c309c2feaa538a1ed36d inherit pro_attribs_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7421ca437044e8588b3fdf748ace166b inherit pro_attribs_class_command_handler"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_cmd_handler_info.html">CmdHandlerInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a7421ca437044e8588b3fdf748ace166b">cmdHandlerInfo</a></td></tr>
 <tr class="separator:a7421ca437044e8588b3fdf748ace166b inherit pro_attribs_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_static_attribs_class_error_handler"><td colspan="2" onclick="javascript:toggleInherit('pro_static_attribs_class_error_handler')"><img src="closed.png" alt="-"/>&#160;Static Protected Attributes inherited from <a class="el" href="class_error_handler.html">ErrorHandler</a></td></tr>
+<tr class="memitem:acb7611550d54d1ba27a613bf3c101df4 inherit pro_static_attribs_class_error_handler"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; <a class="el" href="class_error.html">Error</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_error_handler.html#acb7611550d54d1ba27a613bf3c101df4">errors</a></td></tr>
+<tr class="separator:acb7611550d54d1ba27a613bf3c101df4 inherit pro_static_attribs_class_error_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
@@ -498,7 +520,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00418">418</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00427">427</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
 
 </div>
 </div>
@@ -545,7 +567,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_command_handler.html#a8d2531d579c03d6672495ccb57f5ffb3">CommandHandler</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00587">587</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00596">596</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
 
 </div>
 </div>
@@ -573,7 +595,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00718">718</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00734">734</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
 
 </div>
 </div>
@@ -592,7 +614,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00352">352</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00361">361</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
 
 </div>
 </div>
@@ -620,7 +642,47 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00727">727</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00743">743</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a315d8adef91c166c5e979006a89803d2" name="a315d8adef91c166c5e979006a89803d2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a315d8adef91c166c5e979006a89803d2">&#9670;&nbsp;</a></span>errorCallback()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Axis::errorCallback </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_error.html">Error</a> &amp;&#160;</td>
+          <td class="paramname"><em>error</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>cleared</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reimplemented from <a class="el" href="class_error_handler.html#a60a21df81f9184e16ad596b237ad4eff">ErrorHandler</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00213">213</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
 
 </div>
 </div>
@@ -669,7 +731,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00147">147</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00149">149</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
 
 </div>
 </div>
@@ -690,7 +752,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p >Returns the encoder position in degrees </p>
 
-<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00338">338</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00347">347</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
 
 </div>
 </div>
@@ -709,7 +771,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00151">151</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00153">153</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
 
 </div>
 </div>
@@ -806,7 +868,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00387">387</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00396">396</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
 
 </div>
 </div>
@@ -825,7 +887,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00372">372</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00381">381</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
 
 </div>
 </div>
@@ -852,7 +914,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00474">474</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00483">483</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
 
 </div>
 </div>
@@ -871,7 +933,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00376">376</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00385">385</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
 
 </div>
 </div>
@@ -890,7 +952,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00488">488</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00497">497</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
 
 </div>
 </div>
@@ -917,7 +979,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00483">483</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00492">492</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
 
 </div>
 </div>
@@ -944,7 +1006,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00490">490</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00499">499</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
 
 </div>
 </div>
@@ -963,7 +1025,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00169">169</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00171">171</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
 
 </div>
 </div>
@@ -1002,7 +1064,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00438">438</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00447">447</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
 
 </div>
 </div>
@@ -1032,7 +1094,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_persistent_storage.html#aa8187136adfa89fca9ddee2578f6eb68">PersistentStorage</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00082">82</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00084">84</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
 
 </div>
 </div>
@@ -1062,7 +1124,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_persistent_storage.html#a105599e99ab0e4244a531c2286f2ffa2">PersistentStorage</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00134">134</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00136">136</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
 
 </div>
 </div>
@@ -1093,7 +1155,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p >Returns a scaled encoder value between -0x7fff and 0x7fff with a range of degrees Takes an encoder angle in degrees </p>
 
-<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00325">325</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00334">334</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
 
 </div>
 </div>
@@ -1113,7 +1175,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00410">410</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00419">419</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
 
 </div>
 </div>
@@ -1141,7 +1203,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00575">575</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00584">584</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
 
 </div>
 </div>
@@ -1161,7 +1223,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00236">236</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00247">247</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
 
 </div>
 </div>
@@ -1181,7 +1243,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00509">509</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00518">518</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
 
 </div>
 </div>
@@ -1202,7 +1264,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p >Init the encoder and reset metrics </p>
 
-<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00298">298</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00306">306</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
 
 </div>
 </div>
@@ -1230,7 +1292,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00432">432</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00441">441</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
 
 </div>
 </div>
@@ -1250,7 +1312,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00399">399</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00408">408</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
 
 </div>
 </div>
@@ -1270,7 +1332,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00159">159</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00161">161</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
 
 </div>
 </div>
@@ -1290,7 +1352,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00220">220</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00231">231</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
 
 </div>
 </div>
@@ -1309,7 +1371,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00273">273</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00284">284</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
 
 </div>
 </div>
@@ -1328,7 +1390,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00210">210</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00221">221</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
 
 </div>
 </div>
@@ -1348,7 +1410,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p >Calculate soft endstop effect </p>
 
-<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00497">497</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00506">506</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
 
 </div>
 </div>
@@ -1367,7 +1429,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00392">392</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00401">401</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
 
 </div>
 </div>
@@ -1387,7 +1449,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00449">449</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00458">458</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
 
 </div>
 </div>
@@ -1407,7 +1469,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00515">515</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00524">524</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
 
 </div>
 </div>
@@ -1434,7 +1496,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00478">478</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00487">487</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
 
 </div>
 </div>
@@ -1453,7 +1515,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00364">364</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00373">373</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
 
 </div>
 </div>
@@ -1472,7 +1534,24 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00357">357</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8cpp_source.html#l00366">366</a> of file <a class="el" href="_axis_8cpp_source.html">Axis.cpp</a>.</p>
+
+</div>
+</div>
+<a id="ad0d18d98916bea763369475ab35766e2" name="ad0d18d98916bea763369475ab35766e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad0d18d98916bea763369475ab35766e2">&#9670;&nbsp;</a></span>zeroPos()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Axis::zeroPos </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -1497,7 +1576,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00236">236</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00237">237</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
 
 </div>
 </div>
@@ -1521,7 +1600,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00236">236</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00237">237</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
 
 </div>
 </div>
@@ -1545,7 +1624,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00241">241</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00242">242</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
 
 </div>
 </div>
@@ -1569,7 +1648,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00217">217</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00216">216</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
 
 </div>
 </div>
@@ -1593,7 +1672,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00223">223</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00222">222</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
 
 </div>
 </div>
@@ -1617,7 +1696,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00151">151</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00155">155</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
 
 </div>
 </div>
@@ -1641,7 +1720,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00148">148</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00152">152</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
 
 </div>
 </div>
@@ -1665,7 +1744,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00238">238</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00239">239</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
 
 </div>
 </div>
@@ -1689,7 +1768,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00239">239</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00240">240</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
 
 </div>
 </div>
@@ -1713,7 +1792,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00195">195</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00194">194</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
 
 </div>
 </div>
@@ -1737,7 +1816,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00153">153</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00157">157</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
 
 </div>
 </div>
@@ -1753,7 +1832,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00125">125</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00129">129</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
 
 </div>
 </div>
@@ -1777,7 +1856,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00222">222</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00221">221</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
 
 </div>
 </div>
@@ -1801,7 +1880,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00154">154</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00158">158</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
 
 </div>
 </div>
@@ -1817,12 +1896,12 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00126">126</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00130">130</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
 
 </div>
 </div>
-<a id="abd787c46b2138bd5b084f9fbd7d92f23" name="abd787c46b2138bd5b084f9fbd7d92f23"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abd787c46b2138bd5b084f9fbd7d92f23">&#9670;&nbsp;</a></span>endstop_gain</h2>
+<a id="aafeff48126407cf0da47ef3dac52e544" name="aafeff48126407cf0da47ef3dac52e544"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aafeff48126407cf0da47ef3dac52e544">&#9670;&nbsp;</a></span>encoderOffset</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1831,7 +1910,31 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">uint8_t Axis::endstop_gain = 127</td>
+          <td class="memname">float Axis::encoderOffset = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00193">193</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
+
+</div>
+</div>
+<a id="a8a8716d292017f815ebb6a441ed29c1d" name="a8a8716d292017f815ebb6a441ed29c1d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8a8716d292017f815ebb6a441ed29c1d">&#9670;&nbsp;</a></span>endstopGain</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const float Axis::endstopGain = 0.75</td>
         </tr>
       </table>
   </td>
@@ -1842,6 +1945,30 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00228">228</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
+
+</div>
+</div>
+<a id="a35ca03e3279d950c04adfff75e49e2a5" name="a35ca03e3279d950c04adfff75e49e2a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a35ca03e3279d950c04adfff75e49e2a5">&#9670;&nbsp;</a></span>endstopStrength</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t Axis::endstopStrength = 127</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00227">227</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
 
 </div>
 </div>
@@ -1865,7 +1992,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00237">237</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00238">238</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
 
 </div>
 </div>
@@ -1889,7 +2016,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00147">147</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00151">151</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
 
 </div>
 </div>
@@ -1918,9 +2045,9 @@ Additional Inherited Members</h2></td></tr>
 <div class="line">                                          .b1 = 134913,</div>
 <div class="line">                                          .b2 = 67457,</div>
 <div class="line">                                          .enable = <span class="keyword">true</span>})</div>
-<div class="ttc" id="astruct_t_m_c4671_biquad_html"><div class="ttname"><a href="struct_t_m_c4671_biquad.html">TMC4671Biquad</a></div><div class="ttdef"><b>Definition:</b> <a href="_t_m_c4671_8h_source.html#l00235">TMC4671.h:235</a></div></div>
+<div class="ttc" id="astruct_t_m_c4671_biquad_html"><div class="ttname"><a href="struct_t_m_c4671_biquad.html">TMC4671Biquad</a></div><div class="ttdef"><b>Definition:</b> <a href="_t_m_c4671_8h_source.html#l00258">TMC4671.h:258</a></div></div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00183">183</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00185">185</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
 
 </div>
 </div>
@@ -1944,7 +2071,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00224">224</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00223">223</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
 
 </div>
 </div>
@@ -1968,7 +2095,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00233">233</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00234">234</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
 
 </div>
 </div>
@@ -1992,7 +2119,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00231">231</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00232">232</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
 
 </div>
 </div>
@@ -2016,7 +2143,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00232">232</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00233">233</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
 
 </div>
 </div>
@@ -2040,7 +2167,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00230">230</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00231">231</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
 
 </div>
 </div>
@@ -2066,7 +2193,8 @@ Additional Inherited Members</h2></td></tr>
 <b>Initial value:</b><div class="fragment"><div class="line">= {</div>
 <div class="line">    .name = <span class="stringliteral">&quot;Axis&quot;</span>,</div>
 <div class="line">    .id = CLSID_AXIS, </div>
-<div class="line">    .hidden = <span class="keyword">false</span>}</div>
+<div class="line">    .visibility = <a class="code hl_enumvalue" href="_choosable_class_8h.html#aa3a363b83e4ed5a23cf7398fcf8bae0ca46cf0e59759c9b7f1112ca4b174343ef">ClassVisibility::visible</a>}</div>
+<div class="ttc" id="a_choosable_class_8h_html_aa3a363b83e4ed5a23cf7398fcf8bae0ca46cf0e59759c9b7f1112ca4b174343ef"><div class="ttname"><a href="_choosable_class_8h.html#aa3a363b83e4ed5a23cf7398fcf8bae0ca46cf0e59759c9b7f1112ca4b174343ef">ClassVisibility::visible</a></div><div class="ttdeci">@ visible</div></div>
 </div><!-- fragment -->
 <p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00084">84</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
 
@@ -2092,7 +2220,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00227">227</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00226">226</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
 
 </div>
 </div>
@@ -2116,7 +2244,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00196">196</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00195">195</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
 
 </div>
 </div>
@@ -2140,7 +2268,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00200">200</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00199">199</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
 
 </div>
 </div>
@@ -2164,7 +2292,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00202">202</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00201">201</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
 
 </div>
 </div>
@@ -2188,7 +2316,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00221">221</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00220">220</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
 
 </div>
 </div>
@@ -2212,7 +2340,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00197">197</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00196">196</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
 
 </div>
 </div>
@@ -2236,7 +2364,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00158">158</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00160">160</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
 
 </div>
 </div>
@@ -2260,7 +2388,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00163">163</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00165">165</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
 
 </div>
 </div>
@@ -2284,7 +2412,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00225">225</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00224">224</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
 
 </div>
 </div>
@@ -2308,7 +2436,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00243">243</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00244">244</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
 
 </div>
 </div>
@@ -2332,7 +2460,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00204">204</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00203">203</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
 
 </div>
 </div>
@@ -2356,7 +2484,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00235">235</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00236">236</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
 
 </div>
 </div>
@@ -2380,7 +2508,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00235">235</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00236">236</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
 
 </div>
 </div>
@@ -2404,31 +2532,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00240">240</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
-
-</div>
-</div>
-<a id="a820d444453bd41d43d3753023f5fc48b" name="a820d444453bd41d43d3753023f5fc48b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a820d444453bd41d43d3753023f5fc48b">&#9670;&nbsp;</a></span>tmcFeedForward</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool Axis::tmcFeedForward = false</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00156">156</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00241">241</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
 
 </div>
 </div>
@@ -2458,9 +2562,9 @@ Additional Inherited Members</h2></td></tr>
 <div class="line">                                             .pid_vel_lim = 2147483647,</div>
 <div class="line">                                             .pid_pos_low = -2147483647,</div>
 <div class="line">                                             .pid_pos_high = 2147483647})</div>
-<div class="ttc" id="astruct_t_m_c4671_limits_html"><div class="ttname"><a href="struct_t_m_c4671_limits.html">TMC4671Limits</a></div><div class="ttdef"><b>Definition:</b> <a href="_t_m_c4671_8h_source.html#l00153">TMC4671.h:153</a></div></div>
+<div class="ttc" id="astruct_t_m_c4671_limits_html"><div class="ttname"><a href="struct_t_m_c4671_limits.html">TMC4671Limits</a></div><div class="ttdef"><b>Definition:</b> <a href="_t_m_c4671_8h_source.html#l00169">TMC4671.h:169</a></div></div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00174">174</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00176">176</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
 
 </div>
 </div>
@@ -2492,57 +2596,9 @@ Additional Inherited Members</h2></td></tr>
 <div class="line">                                             .positionI = 0,</div>
 <div class="line">                                             .positionP = 64,</div>
 <div class="line">                                             .sequentialPI = <span class="keyword">true</span>})</div>
-<div class="ttc" id="astruct_t_m_c4671_p_i_d_conf_html"><div class="ttname"><a href="struct_t_m_c4671_p_i_d_conf.html">TMC4671PIDConf</a></div><div class="ttdef"><b>Definition:</b> <a href="_t_m_c4671_8h_source.html#l00141">TMC4671.h:141</a></div></div>
+<div class="ttc" id="astruct_t_m_c4671_p_i_d_conf_html"><div class="ttname"><a href="struct_t_m_c4671_p_i_d_conf.html">TMC4671PIDConf</a></div><div class="ttdef"><b>Definition:</b> <a href="_t_m_c4671_8h_source.html#l00157">TMC4671.h:157</a></div></div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00165">165</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
-
-</div>
-</div>
-<a id="ab398835dcca3f5a2d95a7abce059eb63" name="ab398835dcca3f5a2d95a7abce059eb63"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab398835dcca3f5a2d95a7abce059eb63">&#9670;&nbsp;</a></span>torqueFFconst</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">int32_t Axis::torqueFFconst = 0</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00191">191</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
-
-</div>
-</div>
-<a id="a9c547b558eef5b51a5461477304f0652" name="a9c547b558eef5b51a5461477304f0652"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9c547b558eef5b51a5461477304f0652">&#9670;&nbsp;</a></span>torqueFFgain</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">int32_t Axis::torqueFFgain = 50000</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00190">190</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00167">167</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
 
 </div>
 </div>
@@ -2566,55 +2622,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00226">226</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
-
-</div>
-</div>
-<a id="a4dc647a2fd5b4164a34a068bed483d49" name="a4dc647a2fd5b4164a34a068bed483d49"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4dc647a2fd5b4164a34a068bed483d49">&#9670;&nbsp;</a></span>velocityFFconst</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">int32_t Axis::velocityFFconst = 0</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00193">193</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
-
-</div>
-</div>
-<a id="a6a04a27b068ed3ca166b76b59c80ad9d" name="a6a04a27b068ed3ca166b76b59c80ad9d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6a04a27b068ed3ca166b76b59c80ad9d">&#9670;&nbsp;</a></span>velocityFFgain</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">int32_t Axis::velocityFFgain = 30000</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00192">192</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00225">225</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
 
 </div>
 </div>

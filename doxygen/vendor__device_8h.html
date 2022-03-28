@@ -97,11 +97,13 @@ $(document).ready(function(){initNavTree('vendor__device_8h.html',''); initResiz
 Functions</h2></td></tr>
 <tr class="memitem:a1aec83944132a7f5fdcf70213ba4f169"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vendor__device_8h.html#a1aec83944132a7f5fdcf70213ba4f169">tud_vendor_n_available</a> (uint8_t itf)</td></tr>
 <tr class="separator:a1aec83944132a7f5fdcf70213ba4f169"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a455f45f6633fe160a9946d446f8fc282"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vendor__device_8h.html#a455f45f6633fe160a9946d446f8fc282">tud_vendor_n_read</a> (uint8_t itf, void *buffer, uint32_t bufsize)</td></tr>
+<tr class="memitem:a455f45f6633fe160a9946d446f8fc282"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vendor__device_8h.html#a455f45f6633fe160a9946d446f8fc282">tud_vendor_n_read</a> (uint8_t itf, void *<a class="el" href="midi__device_8h.html#ac8733c58bc671239139641960e2d5dbf">buffer</a>, uint32_t <a class="el" href="midi__device_8h.html#aca9aaceac98612802d20cb6983f7669c">bufsize</a>)</td></tr>
 <tr class="separator:a455f45f6633fe160a9946d446f8fc282"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab4898b1156011b2dea94954840ee3e86"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vendor__device_8h.html#ab4898b1156011b2dea94954840ee3e86">tud_vendor_n_peek</a> (uint8_t itf, int pos, uint8_t *u8)</td></tr>
-<tr class="separator:ab4898b1156011b2dea94954840ee3e86"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad1e4e9ff2d52bdd8ff29a1e5c2ac3731"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vendor__device_8h.html#ad1e4e9ff2d52bdd8ff29a1e5c2ac3731">tud_vendor_n_write</a> (uint8_t itf, void const *buffer, uint32_t bufsize)</td></tr>
+<tr class="memitem:aac0eb01dadf5ea45b87fb62e6f04725f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vendor__device_8h.html#aac0eb01dadf5ea45b87fb62e6f04725f">tud_vendor_n_peek</a> (uint8_t itf, uint8_t *ui8)</td></tr>
+<tr class="separator:aac0eb01dadf5ea45b87fb62e6f04725f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9de39710bfadfcf72a7ade172c95d7cd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vendor__device_8h.html#a9de39710bfadfcf72a7ade172c95d7cd">tud_vendor_n_read_flush</a> (uint8_t itf)</td></tr>
+<tr class="separator:a9de39710bfadfcf72a7ade172c95d7cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1e4e9ff2d52bdd8ff29a1e5c2ac3731"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vendor__device_8h.html#ad1e4e9ff2d52bdd8ff29a1e5c2ac3731">tud_vendor_n_write</a> (uint8_t itf, void const *<a class="el" href="midi__device_8h.html#ac8733c58bc671239139641960e2d5dbf">buffer</a>, uint32_t <a class="el" href="midi__device_8h.html#aca9aaceac98612802d20cb6983f7669c">bufsize</a>)</td></tr>
 <tr class="separator:ad1e4e9ff2d52bdd8ff29a1e5c2ac3731"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae8bdbef330e682c8843950f9c7c4f9ff"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vendor__device_8h.html#ae8bdbef330e682c8843950f9c7c4f9ff">tud_vendor_n_write_available</a> (uint8_t itf)</td></tr>
 <tr class="separator:ae8bdbef330e682c8843950f9c7c4f9ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -111,11 +113,13 @@ Functions</h2></td></tr>
 <tr class="separator:ac496560c252638b07a32c06de04a774f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a32d7dbc54e7cd14338bf9d639f40aa3e"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vendor__device_8h.html#a32d7dbc54e7cd14338bf9d639f40aa3e">tud_vendor_available</a> (void)</td></tr>
 <tr class="separator:a32d7dbc54e7cd14338bf9d639f40aa3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a79aa94459fbe11b19a0f776bd13048ae"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vendor__device_8h.html#a79aa94459fbe11b19a0f776bd13048ae">tud_vendor_read</a> (void *buffer, uint32_t bufsize)</td></tr>
+<tr class="memitem:a79aa94459fbe11b19a0f776bd13048ae"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vendor__device_8h.html#a79aa94459fbe11b19a0f776bd13048ae">tud_vendor_read</a> (void *<a class="el" href="midi__device_8h.html#ac8733c58bc671239139641960e2d5dbf">buffer</a>, uint32_t <a class="el" href="midi__device_8h.html#aca9aaceac98612802d20cb6983f7669c">bufsize</a>)</td></tr>
 <tr class="separator:a79aa94459fbe11b19a0f776bd13048ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac0ee4fe847bb184a5ee5e80dc7bbed68"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vendor__device_8h.html#ac0ee4fe847bb184a5ee5e80dc7bbed68">tud_vendor_peek</a> (int pos, uint8_t *u8)</td></tr>
-<tr class="separator:ac0ee4fe847bb184a5ee5e80dc7bbed68"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aca876c443a8935424629d0fce8961896"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vendor__device_8h.html#aca876c443a8935424629d0fce8961896">tud_vendor_write</a> (void const *buffer, uint32_t bufsize)</td></tr>
+<tr class="memitem:aa83ea0d196ebaa4d84f226fa57ee6271"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vendor__device_8h.html#aa83ea0d196ebaa4d84f226fa57ee6271">tud_vendor_peek</a> (uint8_t *ui8)</td></tr>
+<tr class="separator:aa83ea0d196ebaa4d84f226fa57ee6271"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb3ef24e094abac87ce8b94264658ee7"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vendor__device_8h.html#aeb3ef24e094abac87ce8b94264658ee7">tud_vendor_read_flush</a> (void)</td></tr>
+<tr class="separator:aeb3ef24e094abac87ce8b94264658ee7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca876c443a8935424629d0fce8961896"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vendor__device_8h.html#aca876c443a8935424629d0fce8961896">tud_vendor_write</a> (void const *<a class="el" href="midi__device_8h.html#ac8733c58bc671239139641960e2d5dbf">buffer</a>, uint32_t <a class="el" href="midi__device_8h.html#aca9aaceac98612802d20cb6983f7669c">bufsize</a>)</td></tr>
 <tr class="separator:aca876c443a8935424629d0fce8961896"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa3171d1eeaaeb7af3f39c7558bebd3fe"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vendor__device_8h.html#aa3171d1eeaaeb7af3f39c7558bebd3fe">tud_vendor_write_str</a> (char const *str)</td></tr>
 <tr class="separator:aa3171d1eeaaeb7af3f39c7558bebd3fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -162,7 +166,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vendor__device_8h_source.html#l00088">88</a> of file <a class="el" href="vendor__device_8h_source.html">vendor_device.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vendor__device_8h_source.html#l00089">89</a> of file <a class="el" href="vendor__device_8h_source.html">vendor_device.h</a>.</p>
 
 </div>
 </div>
@@ -190,7 +194,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vendor__device_8h_source.html#l00083">83</a> of file <a class="el" href="vendor__device_8h_source.html">vendor_device.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vendor__device_8h_source.html#l00084">84</a> of file <a class="el" href="vendor__device_8h_source.html">vendor_device.h</a>.</p>
 
 </div>
 </div>
@@ -210,12 +214,12 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vendor__device_8c_source.html#l00070">70</a> of file <a class="el" href="vendor__device_8c_source.html">vendor_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vendor__device_8c_source.html#l00072">72</a> of file <a class="el" href="vendor__device_8c_source.html">vendor_device.c</a>.</p>
 
 </div>
 </div>
-<a id="ab4898b1156011b2dea94954840ee3e86" name="ab4898b1156011b2dea94954840ee3e86"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab4898b1156011b2dea94954840ee3e86">&#9670;&nbsp;</a></span>tud_vendor_n_peek()</h2>
+<a id="aac0eb01dadf5ea45b87fb62e6f04725f" name="aac0eb01dadf5ea45b87fb62e6f04725f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac0eb01dadf5ea45b87fb62e6f04725f">&#9670;&nbsp;</a></span>tud_vendor_n_peek()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -229,14 +233,8 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>pos</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
           <td class="paramtype">uint8_t *&#160;</td>
-          <td class="paramname"><em>u8</em>&#160;</td>
+          <td class="paramname"><em>ui8</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -246,7 +244,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vendor__device_8c_source.html#l00075">75</a> of file <a class="el" href="vendor__device_8c_source.html">vendor_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vendor__device_8c_source.html#l00077">77</a> of file <a class="el" href="vendor__device_8c_source.html">vendor_device.c</a>.</p>
 
 </div>
 </div>
@@ -282,7 +280,27 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vendor__device_8c_source.html#l00096">96</a> of file <a class="el" href="vendor__device_8c_source.html">vendor_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vendor__device_8c_source.html#l00098">98</a> of file <a class="el" href="vendor__device_8c_source.html">vendor_device.c</a>.</p>
+
+</div>
+</div>
+<a id="a9de39710bfadfcf72a7ade172c95d7cd" name="a9de39710bfadfcf72a7ade172c95d7cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9de39710bfadfcf72a7ade172c95d7cd">&#9670;&nbsp;</a></span>tud_vendor_n_read_flush()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void tud_vendor_n_read_flush </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>itf</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="vendor__device_8c_source.html#l00106">106</a> of file <a class="el" href="vendor__device_8c_source.html">vendor_device.c</a>.</p>
 
 </div>
 </div>
@@ -318,7 +336,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vendor__device_8c_source.html#l00120">120</a> of file <a class="el" href="vendor__device_8c_source.html">vendor_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vendor__device_8c_source.html#l00129">129</a> of file <a class="el" href="vendor__device_8c_source.html">vendor_device.c</a>.</p>
 
 </div>
 </div>
@@ -338,7 +356,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vendor__device_8c_source.html#l00128">128</a> of file <a class="el" href="vendor__device_8c_source.html">vendor_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vendor__device_8c_source.html#l00137">137</a> of file <a class="el" href="vendor__device_8c_source.html">vendor_device.c</a>.</p>
 
 </div>
 </div>
@@ -376,12 +394,12 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vendor__device_8h_source.html#l00078">78</a> of file <a class="el" href="vendor__device_8h_source.html">vendor_device.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vendor__device_8h_source.html#l00079">79</a> of file <a class="el" href="vendor__device_8h_source.html">vendor_device.h</a>.</p>
 
 </div>
 </div>
-<a id="ac0ee4fe847bb184a5ee5e80dc7bbed68" name="ac0ee4fe847bb184a5ee5e80dc7bbed68"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac0ee4fe847bb184a5ee5e80dc7bbed68">&#9670;&nbsp;</a></span>tud_vendor_peek()</h2>
+<a id="aa83ea0d196ebaa4d84f226fa57ee6271" name="aa83ea0d196ebaa4d84f226fa57ee6271"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa83ea0d196ebaa4d84f226fa57ee6271">&#9670;&nbsp;</a></span>tud_vendor_peek()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -392,19 +410,9 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">static bool tud_vendor_peek </td>
           <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>pos</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
           <td class="paramtype">uint8_t *&#160;</td>
-          <td class="paramname"><em>u8</em>&#160;</td>
-        </tr>
-        <tr>
+          <td class="paramname"><em>ui8</em></td><td>)</td>
           <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -414,7 +422,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vendor__device_8h_source.html#l00098">98</a> of file <a class="el" href="vendor__device_8h_source.html">vendor_device.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vendor__device_8h_source.html#l00099">99</a> of file <a class="el" href="vendor__device_8h_source.html">vendor_device.h</a>.</p>
 
 </div>
 </div>
@@ -452,7 +460,35 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vendor__device_8h_source.html#l00093">93</a> of file <a class="el" href="vendor__device_8h_source.html">vendor_device.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vendor__device_8h_source.html#l00094">94</a> of file <a class="el" href="vendor__device_8h_source.html">vendor_device.h</a>.</p>
+
+</div>
+</div>
+<a id="aeb3ef24e094abac87ce8b94264658ee7" name="aeb3ef24e094abac87ce8b94264658ee7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb3ef24e094abac87ce8b94264658ee7">&#9670;&nbsp;</a></span>tud_vendor_read_flush()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void tud_vendor_read_flush </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="vendor__device_8h_source.html#l00104">104</a> of file <a class="el" href="vendor__device_8h_source.html">vendor_device.h</a>.</p>
 
 </div>
 </div>
@@ -508,7 +544,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vendor__device_8h_source.html#l00103">103</a> of file <a class="el" href="vendor__device_8h_source.html">vendor_device.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vendor__device_8h_source.html#l00109">109</a> of file <a class="el" href="vendor__device_8h_source.html">vendor_device.h</a>.</p>
 
 </div>
 </div>
@@ -536,7 +572,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vendor__device_8h_source.html#l00113">113</a> of file <a class="el" href="vendor__device_8h_source.html">vendor_device.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vendor__device_8h_source.html#l00119">119</a> of file <a class="el" href="vendor__device_8h_source.html">vendor_device.h</a>.</p>
 
 </div>
 </div>
@@ -564,7 +600,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vendor__device_8h_source.html#l00108">108</a> of file <a class="el" href="vendor__device_8h_source.html">vendor_device.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vendor__device_8h_source.html#l00114">114</a> of file <a class="el" href="vendor__device_8h_source.html">vendor_device.h</a>.</p>
 
 </div>
 </div>
@@ -584,7 +620,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vendor__device_8c_source.html#l00136">136</a> of file <a class="el" href="vendor__device_8c_source.html">vendor_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vendor__device_8c_source.html#l00145">145</a> of file <a class="el" href="vendor__device_8c_source.html">vendor_device.c</a>.</p>
 
 </div>
 </div>
@@ -620,7 +656,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vendor__device_8c_source.html#l00169">169</a> of file <a class="el" href="vendor__device_8c_source.html">vendor_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vendor__device_8c_source.html#l00178">178</a> of file <a class="el" href="vendor__device_8c_source.html">vendor_device.c</a>.</p>
 
 </div>
 </div>
@@ -640,7 +676,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vendor__device_8c_source.html#l00155">155</a> of file <a class="el" href="vendor__device_8c_source.html">vendor_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vendor__device_8c_source.html#l00164">164</a> of file <a class="el" href="vendor__device_8c_source.html">vendor_device.c</a>.</p>
 
 </div>
 </div>
@@ -682,7 +718,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vendor__device_8c_source.html#l00203">203</a> of file <a class="el" href="vendor__device_8c_source.html">vendor_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vendor__device_8c_source.html#l00223">223</a> of file <a class="el" href="vendor__device_8c_source.html">vendor_device.c</a>.</p>
 
 </div>
 </div>
@@ -713,7 +749,7 @@ Variables</h2></td></tr>
 <div class="line"> </div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">bool</span>     <a class="code hl_function" href="vendor__device_8c.html#aeff4873db4cf043211aab6c3da511fd2">tud_vendor_n_mounted</a>         (uint8_t itf)</div>
-<div class="ttc" id="avendor__device_8c_html_aeff4873db4cf043211aab6c3da511fd2"><div class="ttname"><a href="vendor__device_8c.html#aeff4873db4cf043211aab6c3da511fd2">tud_vendor_n_mounted</a></div><div class="ttdeci">bool tud_vendor_n_mounted(uint8_t itf)</div><div class="ttdef"><b>Definition:</b> <a href="vendor__device_8c_source.html#l00065">vendor_device.c:65</a></div></div>
+<div class="ttc" id="avendor__device_8c_html_aeff4873db4cf043211aab6c3da511fd2"><div class="ttname"><a href="vendor__device_8c.html#aeff4873db4cf043211aab6c3da511fd2">tud_vendor_n_mounted</a></div><div class="ttdeci">bool tud_vendor_n_mounted(uint8_t itf)</div><div class="ttdef"><b>Definition:</b> <a href="vendor__device_8c_source.html#l00067">vendor_device.c:67</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

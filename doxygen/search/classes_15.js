@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['xfer_5fctl_5ft_0',['xfer_ctl_t',['../structxfer__ctl__t.html',1,'']]]
+  ['workitem_0',['WorkItem',['../classcpp__freertos_1_1_work_item.html',1,'cpp_freertos']]],
+  ['workqueue_1',['WorkQueue',['../classcpp__freertos_1_1_work_queue.html',1,'cpp_freertos']]]
 ];

@@ -6,7 +6,6 @@ var class_f_f_board_main_command_thread =
     [ "executeCommands", "class_f_f_board_main_command_thread.html#a1997cbfdf019dd80d8cadd43e8d4f680", null ],
     [ "getClassType", "class_f_f_board_main_command_thread.html#a6468027bca35281c507a17c948c40336", null ],
     [ "Run", "class_f_f_board_main_command_thread.html#afad6fb2ed97ffd2913509a298975f124", null ],
-    [ "updateSys", "class_f_f_board_main_command_thread.html#af70908dd42caba75ec89df8cc4b0f2f6", null ],
     [ "wakeUp", "class_f_f_board_main_command_thread.html#aceba33cbdf16ad70d5d95597923ac1d3", null ],
     [ "clearReply", "class_f_f_board_main_command_thread.html#a41c149872b94d1a178aa89d2fb91b03c", null ],
     [ "cmd_reply", "class_f_f_board_main_command_thread.html#a295e22b4fe80e96e17cb4d1f55a287a8", null ],

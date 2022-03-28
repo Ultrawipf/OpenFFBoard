@@ -14,15 +14,9 @@ var _t_m_c4671_8h =
     [ "TMC4671HALLConf", "struct_t_m_c4671_h_a_l_l_conf.html", "struct_t_m_c4671_h_a_l_l_conf" ],
     [ "TMC4671Biquad", "struct_t_m_c4671_biquad.html", "struct_t_m_c4671_biquad" ],
     [ "TMC4671", "class_t_m_c4671.html", "class_t_m_c4671" ],
+    [ "TMC4671::TMC_ExternalEncoderUpdateThread", "class_t_m_c4671_1_1_t_m_c___external_encoder_update_thread.html", "class_t_m_c4671_1_1_t_m_c___external_encoder_update_thread" ],
     [ "TMC_1", "class_t_m_c__1.html", "class_t_m_c__1" ],
     [ "TMC_2", "class_t_m_c__2.html", "class_t_m_c__2" ],
-    [ "ENC_InitState", "_t_m_c4671_8h.html#af7a9c4e6e1bf0678c768e3210cdeadad", [
-      [ "uninitialized", "_t_m_c4671_8h.html#af7a9c4e6e1bf0678c768e3210cdeadada42dd1a73d072bb6bf3f494f22b15db8e", null ],
-      [ "estimating", "_t_m_c4671_8h.html#af7a9c4e6e1bf0678c768e3210cdeadadad09f48e4c1dd9be0167e409cce110a01", null ],
-      [ "aligning", "_t_m_c4671_8h.html#af7a9c4e6e1bf0678c768e3210cdeadadaf24e40acf49c4786ebeaa4768c1e490c", null ],
-      [ "checking", "_t_m_c4671_8h.html#af7a9c4e6e1bf0678c768e3210cdeadadace5fb8df125a4721d1df328bc6f2ddea", null ],
-      [ "OK", "_t_m_c4671_8h.html#af7a9c4e6e1bf0678c768e3210cdeadadae0aa021e21dddbd6d8cecec71e9cf564", null ]
-    ] ],
     [ "EncoderType_TMC", "_t_m_c4671_8h.html#a3b24d58867df0611d6df04e70b34c5c0", [
       [ "NONE", "_t_m_c4671_8h.html#a3b24d58867df0611d6df04e70b34c5c0ab50339a10e1de285ac99d4c3990b8693", null ],
       [ "abn", "_t_m_c4671_8h.html#a3b24d58867df0611d6df04e70b34c5c0a24eeeaa1d807172d5abf68b49df3e069", null ],
@@ -62,7 +56,8 @@ var _t_m_c4671_8h =
       [ "hall", "_t_m_c4671_8h.html#addb917dd45972d75a9b40bab2ce78492a5ab06702d8b598415f7b095c130e1787", null ],
       [ "aenc", "_t_m_c4671_8h.html#addb917dd45972d75a9b40bab2ce78492a0ab366e41d9a974a01e4d452c293fa0b", null ],
       [ "aencE", "_t_m_c4671_8h.html#addb917dd45972d75a9b40bab2ce78492a40e43521071fe4ef5e4138432c37d3ba", null ],
-      [ "NONE", "_t_m_c4671_8h.html#addb917dd45972d75a9b40bab2ce78492ab50339a10e1de285ac99d4c3990b8693", null ]
+      [ "NONE", "_t_m_c4671_8h.html#addb917dd45972d75a9b40bab2ce78492ab50339a10e1de285ac99d4c3990b8693", null ],
+      [ "extEncoder", "_t_m_c4671_8h.html#addb917dd45972d75a9b40bab2ce78492a37e37860aa511a1925d51de7c2abbbbc", null ]
     ] ],
     [ "PosSelection", "_t_m_c4671_8h.html#affe1640d3ae28fb6e7d823943b6b784b", [
       [ "PhiE", "_t_m_c4671_8h.html#affe1640d3ae28fb6e7d823943b6b784ba7776db0a1a53ff88d4b79db48b8e8531", null ],
@@ -79,18 +74,18 @@ var _t_m_c4671_8h =
       [ "PhiM_aenc", "_t_m_c4671_8h.html#affe1640d3ae28fb6e7d823943b6b784bac49a6ec394dc74a3970c746b7d741d40", null ],
       [ "PhiM_hal", "_t_m_c4671_8h.html#affe1640d3ae28fb6e7d823943b6b784ba64a253130010448551e8eb7520f4a18f", null ]
     ] ],
-    [ "TMC_ControlState", "_t_m_c4671_8h.html#a08a7449bf7a92827d2af8ebebb8f218e", [
-      [ "uninitialized", "_t_m_c4671_8h.html#a08a7449bf7a92827d2af8ebebb8f218ea42dd1a73d072bb6bf3f494f22b15db8e", null ],
-      [ "No_power", "_t_m_c4671_8h.html#a08a7449bf7a92827d2af8ebebb8f218ea080b44751abaaec5de8bac6d8a2a794a", null ],
-      [ "Shutdown", "_t_m_c4671_8h.html#a08a7449bf7a92827d2af8ebebb8f218ea1a4ebb180ba59b067782515ffee6e975", null ],
-      [ "Running", "_t_m_c4671_8h.html#a08a7449bf7a92827d2af8ebebb8f218ea5bda814c4aedb126839228f1a3d92f09", null ],
-      [ "Init_wait", "_t_m_c4671_8h.html#a08a7449bf7a92827d2af8ebebb8f218ea98d41426fe076b9fa65c83220167cacf", null ],
-      [ "ABN_init", "_t_m_c4671_8h.html#a08a7449bf7a92827d2af8ebebb8f218ea68441e224f5cafb748ba7e9be5b60230", null ],
-      [ "AENC_init", "_t_m_c4671_8h.html#a08a7449bf7a92827d2af8ebebb8f218ea4bd8a069b734278e09aedfb5750deb92", null ],
-      [ "Enc_bang", "_t_m_c4671_8h.html#a08a7449bf7a92827d2af8ebebb8f218ea5d7785ab7289f008bd23c0ccf335eb22", null ],
-      [ "HardError", "_t_m_c4671_8h.html#a08a7449bf7a92827d2af8ebebb8f218ea5e9736db4e28dab20d106d5e625c878e", null ],
-      [ "OverTemp", "_t_m_c4671_8h.html#a08a7449bf7a92827d2af8ebebb8f218ea9cfa39fcf8d4622338bfa04439eeda88", null ],
-      [ "EncoderFinished", "_t_m_c4671_8h.html#a08a7449bf7a92827d2af8ebebb8f218eabb482287d9e99acc78992b550d58c1ec", null ]
+    [ "TMC_ControlState", "_t_m_c4671_8h.html#ad7d50073249f48de7e58d41071064a7c", [
+      [ "uninitialized", "_t_m_c4671_8h.html#ad7d50073249f48de7e58d41071064a7ca42dd1a73d072bb6bf3f494f22b15db8e", null ],
+      [ "waitPower", "_t_m_c4671_8h.html#ad7d50073249f48de7e58d41071064a7ca1432931f1dbec3ace61423a47dace3a7", null ],
+      [ "Shutdown", "_t_m_c4671_8h.html#ad7d50073249f48de7e58d41071064a7ca1a4ebb180ba59b067782515ffee6e975", null ],
+      [ "Running", "_t_m_c4671_8h.html#ad7d50073249f48de7e58d41071064a7ca5bda814c4aedb126839228f1a3d92f09", null ],
+      [ "EncoderInit", "_t_m_c4671_8h.html#ad7d50073249f48de7e58d41071064a7cae385a37c7214c1022a7d4f8853ebb86a", null ],
+      [ "EncoderFinished", "_t_m_c4671_8h.html#ad7d50073249f48de7e58d41071064a7cabb482287d9e99acc78992b550d58c1ec", null ],
+      [ "HardError", "_t_m_c4671_8h.html#ad7d50073249f48de7e58d41071064a7ca5e9736db4e28dab20d106d5e625c878e", null ],
+      [ "OverTemp", "_t_m_c4671_8h.html#ad7d50073249f48de7e58d41071064a7ca9cfa39fcf8d4622338bfa04439eeda88", null ],
+      [ "IndexSearch", "_t_m_c4671_8h.html#ad7d50073249f48de7e58d41071064a7caf0f7579b398a27ed1eaa19b2f79cf666", null ],
+      [ "FullCalibration", "_t_m_c4671_8h.html#ad7d50073249f48de7e58d41071064a7ca1a1aaf34022bdc367fefa52bd812e060", null ],
+      [ "ExternalEncoderInit", "_t_m_c4671_8h.html#ad7d50073249f48de7e58d41071064a7caa93eed0dbbc42a70bc2ea0869e63994e", null ]
     ] ],
     [ "TMC_HW_Ver", "_t_m_c4671_8h.html#a1064cdca049007c828bd4a5b28f51d71", [
       [ "NONE", "_t_m_c4671_8h.html#a1064cdca049007c828bd4a5b28f51d71ab50339a10e1de285ac99d4c3990b8693", null ],
@@ -100,6 +95,37 @@ var _t_m_c4671_8h =
       [ "v1_2_2_LEM20", "_t_m_c4671_8h.html#a1064cdca049007c828bd4a5b28f51d71abe037adad1534fd5de5ec31255a3dc8c", null ],
       [ "v1_2_2_TMCS", "_t_m_c4671_8h.html#a1064cdca049007c828bd4a5b28f51d71a500304a4522bbaed49e6da064372760c", null ]
     ] ],
+    [ "TMC_PwmMode", "_t_m_c4671_8h.html#acb6903f48e442bdc6b4f14999ebdf8f1", [
+      [ "off", "_t_m_c4671_8h.html#acb6903f48e442bdc6b4f14999ebdf8f1a3262d48df5d75e3452f0f16b313b7808", null ],
+      [ "HSlow_LShigh", "_t_m_c4671_8h.html#acb6903f48e442bdc6b4f14999ebdf8f1aafa99c35fd04e3be17ccb5dbbb5e9dc1", null ],
+      [ "HShigh_LSlow", "_t_m_c4671_8h.html#acb6903f48e442bdc6b4f14999ebdf8f1ae7c08c377c6fc054240b9999d1262cb5", null ],
+      [ "res2", "_t_m_c4671_8h.html#acb6903f48e442bdc6b4f14999ebdf8f1a3528579414912ea7816656ea7b96b29e", null ],
+      [ "res3", "_t_m_c4671_8h.html#acb6903f48e442bdc6b4f14999ebdf8f1a9c000ba84bc291ae7fd19d68e192be11", null ],
+      [ "PWM_LS", "_t_m_c4671_8h.html#acb6903f48e442bdc6b4f14999ebdf8f1abd241cd63cdfa1ce4e4c1586f15a349b", null ],
+      [ "PWM_HS", "_t_m_c4671_8h.html#acb6903f48e442bdc6b4f14999ebdf8f1ad128dee1f81fda3600fb0e2a25a7e8e4", null ],
+      [ "PWM_FOC", "_t_m_c4671_8h.html#acb6903f48e442bdc6b4f14999ebdf8f1a2329b010ab92f87e2827bc6d8fe81912", null ]
+    ] ],
+    [ "TMC_StartupType", "_t_m_c4671_8h.html#af365ac996597ce7cdb3ee95b7d603cbe", [
+      [ "NONE", "_t_m_c4671_8h.html#af365ac996597ce7cdb3ee95b7d603cbeab50339a10e1de285ac99d4c3990b8693", null ],
+      [ "coldStart", "_t_m_c4671_8h.html#af365ac996597ce7cdb3ee95b7d603cbeaa7fc932f3ea78360533e9ca9b3d3dd40", null ],
+      [ "warmStart", "_t_m_c4671_8h.html#af365ac996597ce7cdb3ee95b7d603cbea946b09e5226bb0c761bd81a7d982d435", null ]
+    ] ],
+    [ "VelSelection", "_t_m_c4671_8h.html#a864ad6319d56116bc88bb51ae28cd2b2", [
+      [ "PhiE", "_t_m_c4671_8h.html#a864ad6319d56116bc88bb51ae28cd2b2a7776db0a1a53ff88d4b79db48b8e8531", null ],
+      [ "PhiE_ext", "_t_m_c4671_8h.html#a864ad6319d56116bc88bb51ae28cd2b2a73c8b9d265295d80e6a95ad9abace754", null ],
+      [ "PhiE_openloop", "_t_m_c4671_8h.html#a864ad6319d56116bc88bb51ae28cd2b2af0218511785a7e2876e312b354cefeef", null ],
+      [ "PhiE_abn", "_t_m_c4671_8h.html#a864ad6319d56116bc88bb51ae28cd2b2a3cbba8ad9387207e9fbc15ce0cd2bbe7", null ],
+      [ "res1", "_t_m_c4671_8h.html#a864ad6319d56116bc88bb51ae28cd2b2a91e7e433e34c3b8843334c1467001cb7", null ],
+      [ "PhiE_hal", "_t_m_c4671_8h.html#a864ad6319d56116bc88bb51ae28cd2b2a40c1e7b9fe1fc15f5713724c6b7aa2f8", null ],
+      [ "PhiE_aenc", "_t_m_c4671_8h.html#a864ad6319d56116bc88bb51ae28cd2b2af5abf0aec998b48adcab72a37344a38c", null ],
+      [ "PhiA_aenc", "_t_m_c4671_8h.html#a864ad6319d56116bc88bb51ae28cd2b2a540e0fc8b581d451b81b7651d1bc02dd", null ],
+      [ "res2", "_t_m_c4671_8h.html#a864ad6319d56116bc88bb51ae28cd2b2a3528579414912ea7816656ea7b96b29e", null ],
+      [ "PhiM_abn", "_t_m_c4671_8h.html#a864ad6319d56116bc88bb51ae28cd2b2ad55a5cdd97a7c6dffe8f295f1e2c04a8", null ],
+      [ "PhiM_abn2", "_t_m_c4671_8h.html#a864ad6319d56116bc88bb51ae28cd2b2a5226a2c41c89f25df90e97eb4b24ddd5", null ],
+      [ "PhiM_aenc", "_t_m_c4671_8h.html#a864ad6319d56116bc88bb51ae28cd2b2ac49a6ec394dc74a3970c746b7d741d40", null ],
+      [ "PhiM_hal", "_t_m_c4671_8h.html#a864ad6319d56116bc88bb51ae28cd2b2a64a253130010448551e8eb7520f4a18f", null ]
+    ] ],
     [ "HSPIDRV", "_t_m_c4671_8h.html#a49b76b3df998b61ed9347ac903b9ecf8", null ],
+    [ "TIM_TMC", "_t_m_c4671_8h.html#ac8a5bdef22bd816f2a4d22b60fe61432", null ],
     [ "tmcHwVersionNames", "_t_m_c4671_8h.html#acecaf14b1bbf948db2c59ade57598a68", null ]
 ];

@@ -1,10 +1,22 @@
 var searchData=
 [
   ['g27shifterbuttonclient_0',['g27ShifterButtonClient',['../class_shifter_analog.html#a048ceb3072aec253f0fe1c207c3207a2',1,'ShifterAnalog']]],
-  ['gain_1',['gain',['../class_effects_calculator.html#a7bc1656240ffd645a917f2e292761668',1,'EffectsCalculator::gain()'],['../struct____attribute____.html#a7b5e1135ea483c594413089fd261cf1e',1,'__attribute__::gain()'],['../struct_f_f_b___effect.html#a50c87a7dd2869fda3b59c0256067b808',1,'FFB_Effect::gain()']]],
-  ['gear_2',['gear',['../class_shifter_analog.html#ad2f0d12125a0448eab86716e3547db46',1,'ShifterAnalog']]],
-  ['global_5fgain_3',['global_gain',['../class_effects_calculator.html#a16dd559d84404850ed15ca1f971e2997',1,'EffectsCalculator']]],
-  ['globalhidhandler_4',['globalHidHandler',['../class_usb_hid_handler.html#a9734a0e103bb2c934de8cab9bef202ea',1,'UsbHidHandler']]],
-  ['globalinterface_5',['globalInterface',['../class_h_i_d___command_interface.html#adf3d6fb173733a49a49ddf4c6cbf846c',1,'HID_CommandInterface']]],
-  ['gvretmode_6',['gvretMode',['../class_can_bridge.html#a4d59681453fed2f40dc14096b32a7d4b',1,'CanBridge']]]
+  ['gahbcfg_1',['GAHBCFG',['../struct_u_s_b___o_t_g___global_type_def.html#a212059dc4a38136fee7fb358fc74c0d0',1,'USB_OTG_GlobalTypeDef']]],
+  ['gain_2',['gain',['../class_effects_calculator.html#a7bc1656240ffd645a917f2e292761668',1,'EffectsCalculator::gain()'],['../struct____attribute____.html#a7b5e1135ea483c594413089fd261cf1e',1,'__attribute__::gain()'],['../struct_f_f_b___effect.html#a50c87a7dd2869fda3b59c0256067b808',1,'FFB_Effect::gain()']]],
+  ['gccfg_3',['GCCFG',['../struct_u_s_b___o_t_g___global_type_def.html#a9f94762e8ec6d3984e2da3f48bae8a7b',1,'USB_OTG_GlobalTypeDef']]],
+  ['gear_4',['gear',['../class_shifter_analog.html#ad2f0d12125a0448eab86716e3547db46',1,'ShifterAnalog']]],
+  ['gintmsk_5',['GINTMSK',['../struct_u_s_b___o_t_g___global_type_def.html#a42668fa352b82eb13164a99664956271',1,'USB_OTG_GlobalTypeDef']]],
+  ['gintsts_6',['GINTSTS',['../struct_u_s_b___o_t_g___global_type_def.html#a0c0a00511f6c07b8609b54adb14319da',1,'USB_OTG_GlobalTypeDef']]],
+  ['global_5fgain_7',['global_gain',['../class_effects_calculator.html#a16dd559d84404850ed15ca1f971e2997',1,'EffectsCalculator']]],
+  ['globalhidhandler_8',['globalHidHandler',['../class_usb_hid_handler.html#a9734a0e103bb2c934de8cab9bef202ea',1,'UsbHidHandler']]],
+  ['globalinterface_9',['globalInterface',['../class_h_i_d___command_interface.html#adf3d6fb173733a49a49ddf4c6cbf846c',1,'HID_CommandInterface']]],
+  ['gotgctl_10',['GOTGCTL',['../struct_u_s_b___o_t_g___global_type_def.html#a44d3a8825526e6f362da26bbdfb9c71d',1,'USB_OTG_GlobalTypeDef']]],
+  ['gotgint_11',['GOTGINT',['../struct_u_s_b___o_t_g___global_type_def.html#a09055525656d2be5adce9471c2590c49',1,'USB_OTG_GlobalTypeDef']]],
+  ['grstctl_12',['GRSTCTL',['../struct_u_s_b___o_t_g___global_type_def.html#a75148d8257eaeec482aa99f8b4a8b0fb',1,'USB_OTG_GlobalTypeDef']]],
+  ['grxfsiz_13',['GRXFSIZ',['../struct_u_s_b___o_t_g___global_type_def.html#ade50afc41de620913eaf1bc66d93cd3a',1,'USB_OTG_GlobalTypeDef']]],
+  ['grxstsp_14',['GRXSTSP',['../struct_u_s_b___o_t_g___global_type_def.html#a060364111cf507dfab9bb6503477983a',1,'USB_OTG_GlobalTypeDef']]],
+  ['grxstsr_15',['GRXSTSR',['../struct_u_s_b___o_t_g___global_type_def.html#a77b651a1120fc5fb647eaccac6f002c6',1,'USB_OTG_GlobalTypeDef']]],
+  ['guidformat_16',['guidFormat',['../struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a66763392b108d49551111dc0c4c36e19',1,'TU_ATTR_PACKED']]],
+  ['gusbcfg_17',['GUSBCFG',['../struct_u_s_b___o_t_g___global_type_def.html#a2094f12e3e4d4e6cc45047dedbfd0acd',1,'USB_OTG_GlobalTypeDef']]],
+  ['gvretmode_18',['gvretMode',['../class_can_bridge.html#a4d59681453fed2f40dc14096b32a7d4b',1,'CanBridge']]]
 ];

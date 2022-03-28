@@ -137,6 +137,8 @@ Typedefs</h2></td></tr>
 <tr class="memitem:ga8bb2346a11c1e4c5ddacd274c67c2cff"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html">TU_ATTR_PACKED</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___class_driver___audio.html#ga8bb2346a11c1e4c5ddacd274c67c2cff">audio_desc_cs_as_iso_data_ep_t</a></td></tr>
 <tr class="memdesc:ga8bb2346a11c1e4c5ddacd274c67c2cff"><td class="mdescLeft">&#160;</td><td class="mdescRight">AUDIO Class-Specific AS Isochronous Audio Data Endpoint Descriptor(4.10.1.2)  <a href="group___class_driver___audio.html#ga8bb2346a11c1e4c5ddacd274c67c2cff">More...</a><br /></td></tr>
 <tr class="separator:ga8bb2346a11c1e4c5ddacd274c67c2cff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae8d286e4ae169cbb9dd44f1cd06c1852"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html">TU_ATTR_PACKED</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___class_driver___audio.html#gae8d286e4ae169cbb9dd44f1cd06c1852">audio_control_request_t</a></td></tr>
+<tr class="separator:gae8d286e4ae169cbb9dd44f1cd06c1852"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga3b4bdeb7cfdc86353ef2963d47ee0b33"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html">TU_ATTR_PACKED</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___class_driver___audio.html#ga3b4bdeb7cfdc86353ef2963d47ee0b33">audio_control_cur_1_t</a></td></tr>
 <tr class="separator:ga3b4bdeb7cfdc86353ef2963d47ee0b33"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac26cd9e468838fc81e6f32924f9d562f"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html">TU_ATTR_PACKED</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___class_driver___audio.html#gac26cd9e468838fc81e6f32924f9d562f">audio_control_cur_2_t</a></td></tr>
@@ -566,24 +568,36 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:gaf582f513e3a7354d2fce6bb6c7d7fa96"><td class="mdescLeft">&#160;</td><td class="mdescRight">2.3 - Audio Class-Output Terminal Types UAC2  <a href="group___class_driver___audio.html#gaf582f513e3a7354d2fce6bb6c7d7fa96">More...</a><br /></td></tr>
 <tr class="separator:gaf582f513e3a7354d2fce6bb6c7d7fa96"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga333727ea541808f5c815adec3b2888c2"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___class_driver___audio.html#ga333727ea541808f5c815adec3b2888c2">tusb_iso_ep_attribute_t</a> { <br />
-&#160;&#160;<a class="el" href="group___class_driver___audio.html#gga333727ea541808f5c815adec3b2888c2a6c02aa49f1981446327a6ae4f0f0e913">TUSB_ISO_EP_ATT_NO_SYNC</a> = 0x00
-, <a class="el" href="group___class_driver___audio.html#gga333727ea541808f5c815adec3b2888c2a6056229f7bed07909ef2c8f273efe6b0">TUSB_ISO_EP_ATT_ASYNCHRONOUS</a> = 0x04
-, <a class="el" href="group___class_driver___audio.html#gga333727ea541808f5c815adec3b2888c2abc7974a647c2e2afb3c5e3aac2f6af21">TUSB_ISO_EP_ATT_ADAPTIVE</a> = 0x08
-, <a class="el" href="group___class_driver___audio.html#gga333727ea541808f5c815adec3b2888c2a7828338884de6c23bf0f031cab3322e1">TUSB_ISO_EP_ATT_SYNCHRONOUS</a> = 0x0C
+<tr class="memitem:gae18c93236294ee991e5f5c6b0922cd2f"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___class_driver___audio.html#gae18c93236294ee991e5f5c6b0922cd2f">audio_format_type_t</a> { <br />
+&#160;&#160;<a class="el" href="group___class_driver___audio.html#ggae18c93236294ee991e5f5c6b0922cd2fa093499407a4aaac15d6fc424ea617207">AUDIO_FORMAT_TYPE_UNDEFINED</a> = 0x00
+, <a class="el" href="group___class_driver___audio.html#ggae18c93236294ee991e5f5c6b0922cd2faaca39c01f96e7e659f427adec29204e8">AUDIO_FORMAT_TYPE_I</a> = 0x01
+, <a class="el" href="group___class_driver___audio.html#ggae18c93236294ee991e5f5c6b0922cd2fa9b72072cd81c55316f46845f56e01417">AUDIO_FORMAT_TYPE_II</a> = 0x02
+, <a class="el" href="group___class_driver___audio.html#ggae18c93236294ee991e5f5c6b0922cd2fa7ab0e96ce1a69b79a70df36ce830758a">AUDIO_FORMAT_TYPE_III</a> = 0x03
 , <br />
-&#160;&#160;<a class="el" href="group___class_driver___audio.html#gga333727ea541808f5c815adec3b2888c2acd2cc791e4add9166c33d45eea5b553a">TUSB_ISO_EP_ATT_DATA</a> = 0x00
-, <a class="el" href="group___class_driver___audio.html#gga333727ea541808f5c815adec3b2888c2a93b4e5aa895d454902e51bc4a0ef8d78">TUSB_ISO_EP_ATT_EXPLICIT_FB</a> = 0x10
-, <a class="el" href="group___class_driver___audio.html#gga333727ea541808f5c815adec3b2888c2a2fa77227b919236ccef44cf15e540719">TUSB_ISO_EP_ATT_IMPLICIT_FB</a> = 0x20
+&#160;&#160;<a class="el" href="group___class_driver___audio.html#ggae18c93236294ee991e5f5c6b0922cd2fac245b1df9989fd381ba625ac11250569">AUDIO_FORMAT_TYPE_IV</a> = 0x04
+, <a class="el" href="group___class_driver___audio.html#ggae18c93236294ee991e5f5c6b0922cd2fa6ef787e7730329435c30cc3a9545f261">AUDIO_EXT_FORMAT_TYPE_I</a> = 0x81
+, <a class="el" href="group___class_driver___audio.html#ggae18c93236294ee991e5f5c6b0922cd2fa2eb6d4c22587b5eaf6b7b6af182c64b9">AUDIO_EXT_FORMAT_TYPE_II</a> = 0x82
+, <a class="el" href="group___class_driver___audio.html#ggae18c93236294ee991e5f5c6b0922cd2fa357a841997b69dbc5017a088f13b82c8">AUDIO_EXT_FORMAT_TYPE_III</a> = 0x83
 <br />
  }</td></tr>
-<tr class="memdesc:ga333727ea541808f5c815adec3b2888c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">All remaining definitions are taken from the descriptor descriptions in the UAC2 main specification.  <a href="group___class_driver___audio.html#ga333727ea541808f5c815adec3b2888c2">More...</a><br /></td></tr>
-<tr class="separator:ga333727ea541808f5c815adec3b2888c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memdesc:gae18c93236294ee991e5f5c6b0922cd2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rest is yet to be implemented.  <a href="group___class_driver___audio.html#gae18c93236294ee991e5f5c6b0922cd2f">More...</a><br /></td></tr>
+<tr class="separator:gae18c93236294ee991e5f5c6b0922cd2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga32a64f6a946669fed071b3ba687c9cd2"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___class_driver___audio.html#ga32a64f6a946669fed071b3ba687c9cd2">audio_data_format_type_I_t</a> { <br />
+&#160;&#160;<a class="el" href="group___class_driver___audio.html#gga32a64f6a946669fed071b3ba687c9cd2ade8c49fc3312338fc38d26ea51f782e8">AUDIO_DATA_FORMAT_TYPE_I_PCM</a> = (uint32_t) (1 &lt;&lt; 0)
+, <a class="el" href="group___class_driver___audio.html#gga32a64f6a946669fed071b3ba687c9cd2adfaab4223bb6b305956c9fd69794ebe1">AUDIO_DATA_FORMAT_TYPE_I_PCM8</a> = (uint32_t) (1 &lt;&lt; 1)
+, <a class="el" href="group___class_driver___audio.html#gga32a64f6a946669fed071b3ba687c9cd2acf27039927e4ba44dc9f6dddbe9a7055">AUDIO_DATA_FORMAT_TYPE_I_IEEE_FLOAT</a> = (uint32_t) (1 &lt;&lt; 2)
+, <a class="el" href="group___class_driver___audio.html#gga32a64f6a946669fed071b3ba687c9cd2ab8d771ed2c791f3e40e3551f33498139">AUDIO_DATA_FORMAT_TYPE_I_ALAW</a> = (uint32_t) (1 &lt;&lt; 3)
+, <br />
+&#160;&#160;<a class="el" href="group___class_driver___audio.html#gga32a64f6a946669fed071b3ba687c9cd2acdf9a05758520df207e9fcc037e03641">AUDIO_DATA_FORMAT_TYPE_I_MULAW</a> = (uint32_t) (1 &lt;&lt; 4)
+, <a class="el" href="group___class_driver___audio.html#gga32a64f6a946669fed071b3ba687c9cd2ad433789f2ce8f43926acb2fbabc43c17">AUDIO_DATA_FORMAT_TYPE_I_RAW_DATA</a> = 0x80000000
+<br />
+ }</td></tr>
+<tr class="separator:ga32a64f6a946669fed071b3ba687c9cd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gabed82c3a184d1fb071275fa03996069e"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___class_driver___audio.html#gabed82c3a184d1fb071275fa03996069e">audio_control_t</a> { <a class="el" href="group___class_driver___audio.html#ggabed82c3a184d1fb071275fa03996069ea31ae8bc4052dc06d72ef41c26fd216cb">AUDIO_CTRL_NONE</a> = 0x00
 , <a class="el" href="group___class_driver___audio.html#ggabed82c3a184d1fb071275fa03996069ead53fb435041563e619e85cd47a36b803">AUDIO_CTRL_R</a> = 0x01
 , <a class="el" href="group___class_driver___audio.html#ggabed82c3a184d1fb071275fa03996069eaf911da7d087f007d70c0f2b815132bba">AUDIO_CTRL_RW</a> = 0x03
  }</td></tr>
-<tr class="memdesc:gabed82c3a184d1fb071275fa03996069e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Audio Class-Control Values UAC2.  <a href="group___class_driver___audio.html#gabed82c3a184d1fb071275fa03996069e">More...</a><br /></td></tr>
+<tr class="memdesc:gabed82c3a184d1fb071275fa03996069e"><td class="mdescLeft">&#160;</td><td class="mdescRight">All remaining definitions are taken from the descriptor descriptions in the UAC2 main specification.  <a href="group___class_driver___audio.html#gabed82c3a184d1fb071275fa03996069e">More...</a><br /></td></tr>
 <tr class="separator:gabed82c3a184d1fb071275fa03996069e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaa023c068e28bd62b06e93ad3c2df2cf4"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___class_driver___audio.html#gaa023c068e28bd62b06e93ad3c2df2cf4">audio_cs_ac_interface_control_pos_t</a> { <a class="el" href="group___class_driver___audio.html#ggaa023c068e28bd62b06e93ad3c2df2cf4a85b8974406534e0fc2717b94dad2ba29">AUDIO_CS_AS_INTERFACE_CTRL_LATENCY_POS</a> = 0
  }</td></tr>

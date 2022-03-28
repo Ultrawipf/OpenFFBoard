@@ -33,7 +33,7 @@ var usbtmc__device_8c =
     [ "logMsg", "usbtmc__device_8c.html#acc1f47bef0ca348ab67b55c4c63f7274", null ],
     [ "termChar", "usbtmc__device_8c.html#abd5b0a211242502d65b0b607f118e19d", null ],
     [ "termCharRequested", "usbtmc__device_8c.html#a09ad8ab54b2bd5b6516c935421df19fb", null ],
-    [ "usbtmc_state", "usbtmc__device_8c.html#a37848f9a07529c5f98573d8a81506c5c", null ],
+    [ "usbtmc_state", "usbtmc__device_8c.html#a6ddbe8eaf3c179cec6308d9176cc9420", null ],
     [ "usbtmcLock", "usbtmc__device_8c.html#a9fc7cf85089ab63ee2fd3db6d3a40cc3", null ],
     [ "usbtmcLockBuffer", "usbtmc__device_8c.html#a2399cbafd30f308eed2ec0de24e12398", null ]
 ];

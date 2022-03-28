@@ -104,21 +104,19 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:adb49720dc49f7d4e4cf9adbf2948e409"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <a class="el" href="usbd_8c.html#adb49720dc49f7d4e4cf9adbf2948e409a06827fb1b800dd4df84c46e3db632cf7">DRVID_INVALID</a> = 0xFFu
+<tr class="memitem:af715e26dfffd1f8de1c18449e2770cff"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <a class="el" href="usbd_8c.html#af715e26dfffd1f8de1c18449e2770cffa06827fb1b800dd4df84c46e3db632cf7">DRVID_INVALID</a> = 0xFFu
  }</td></tr>
-<tr class="separator:adb49720dc49f7d4e4cf9adbf2948e409"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aae05225933a42f81e7c4a9fb286596f9"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <a class="el" href="usbd_8c.html#aae05225933a42f81e7c4a9fb286596f9a684c73c98e0b3538c8e20a083b2b3521">BUILTIN_DRIVER_COUNT</a> = TU_ARRAY_SIZE(_usbd_driver)
+<tr class="separator:af715e26dfffd1f8de1c18449e2770cff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb730582952b7ceec73d7dc9bf7bef39"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <a class="el" href="usbd_8c.html#afb730582952b7ceec73d7dc9bf7bef39a684c73c98e0b3538c8e20a083b2b3521">BUILTIN_DRIVER_COUNT</a> = TU_ARRAY_SIZE(_usbd_driver)
  }</td></tr>
-<tr class="separator:aae05225933a42f81e7c4a9fb286596f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:afb730582952b7ceec73d7dc9bf7bef39"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:af54c169bf3342f3fbfce6f43e25952ce"><td class="memItemLeft" align="right" valign="top">static usbd_class_driver_t const *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbd_8c.html#af54c169bf3342f3fbfce6f43e25952ce">get_driver</a> (uint8_t drvid)</td></tr>
 <tr class="separator:af54c169bf3342f3fbfce6f43e25952ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aedf08e0adb7873509bdebab31d79b33f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbd_8c.html#aedf08e0adb7873509bdebab31d79b33f">OSAL_QUEUE_DEF</a> (OPT_MODE_DEVICE, _usbd_qdef, CFG_TUD_TASK_QUEUE_SZ, <a class="el" href="group__group__dcd.html#gab25c38b50bab414daf2b102d2f664e19">dcd_event_t</a>)</td></tr>
+<tr class="memitem:aedf08e0adb7873509bdebab31d79b33f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbd_8c.html#aedf08e0adb7873509bdebab31d79b33f">OSAL_QUEUE_DEF</a> (OPT_MODE_DEVICE, _usbd_qdef, CFG_TUD_TASK_QUEUE_SZ, <a class="el" href="dcd_8h.html#ab25c38b50bab414daf2b102d2f664e19">dcd_event_t</a>)</td></tr>
 <tr class="separator:aedf08e0adb7873509bdebab31d79b33f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9fb488765912bb3ecedc15b41784edb0"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbd_8c.html#a9fb488765912bb3ecedc15b41784edb0">mark_interface_endpoint</a> (uint8_t ep2drv[][2], uint8_t const *p_desc, uint16_t desc_len, uint8_t driver_id)</td></tr>
-<tr class="separator:a9fb488765912bb3ecedc15b41784edb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d4403179ea6dae698f837e18a693c01"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbd_8c.html#a8d4403179ea6dae698f837e18a693c01">process_control_request</a> (uint8_t rhport, <a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *p_request)</td></tr>
 <tr class="separator:a8d4403179ea6dae698f837e18a693c01"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c0cc4ee7931f1190e6d2b1dee01512f"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbd_8c.html#a0c0cc4ee7931f1190e6d2b1dee01512f">process_set_config</a> (uint8_t rhport, uint8_t cfg_num)</td></tr>
@@ -149,8 +147,12 @@ Functions</h2></td></tr>
 <tr class="separator:a1f4115508fea4487b162f2f3d83594cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2190fc23a2d064eac909db2a8d6ec792"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbd_8c.html#a2190fc23a2d064eac909db2a8d6ec792">tud_connect</a> (void)</td></tr>
 <tr class="separator:a2190fc23a2d064eac909db2a8d6ec792"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9b260b10ebb04f8022be14c614f0e4a1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbd_8c.html#a9b260b10ebb04f8022be14c614f0e4a1">tud_init</a> (void)</td></tr>
-<tr class="separator:a9b260b10ebb04f8022be14c614f0e4a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc2e4b102bded0c9cf76b90f72ad2a4c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbd_8c.html#adc2e4b102bded0c9cf76b90f72ad2a4c">tud_inited</a> (void)</td></tr>
+<tr class="separator:adc2e4b102bded0c9cf76b90f72ad2a4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd4b38f48eef1e7edf2f195fbf363484"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbd_8c.html#afd4b38f48eef1e7edf2f195fbf363484">tud_init</a> (uint8_t rhport)</td></tr>
+<tr class="separator:afd4b38f48eef1e7edf2f195fbf363484"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a6ea57fe5270ca741a75f8215273503"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbd_8c.html#a2a6ea57fe5270ca741a75f8215273503">configuration_reset</a> (uint8_t rhport)</td></tr>
+<tr class="separator:a2a6ea57fe5270ca741a75f8215273503"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:add3b5f3002a683df5528684d8f6338b1"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbd_8c.html#add3b5f3002a683df5528684d8f6338b1">usbd_reset</a> (uint8_t rhport)</td></tr>
 <tr class="separator:add3b5f3002a683df5528684d8f6338b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7c2d3a07fd55a1fb7b2a2a9ff735169d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbd_8c.html#a7c2d3a07fd55a1fb7b2a2a9ff735169d">tud_task_event_ready</a> (void)</td></tr>
@@ -159,16 +161,16 @@ Functions</h2></td></tr>
 <tr class="separator:a344dae34ecf7c87250ca5790d201db59"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a566dd71492f64b47c699fca8571e342d"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbd_8c.html#a566dd71492f64b47c699fca8571e342d">invoke_class_control</a> (uint8_t rhport, usbd_class_driver_t const *driver, <a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *request)</td></tr>
 <tr class="separator:a566dd71492f64b47c699fca8571e342d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac3826cbb38a8a502f679a7ebeac6fb77"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__group__dcd.html#gac3826cbb38a8a502f679a7ebeac6fb77">dcd_event_handler</a> (<a class="el" href="group__group__dcd.html#gab25c38b50bab414daf2b102d2f664e19">dcd_event_t</a> const *event, bool in_isr)</td></tr>
-<tr class="separator:gac3826cbb38a8a502f679a7ebeac6fb77"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6435617153e913ac50750ff7a90f1cdf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__group__dcd.html#ga6435617153e913ac50750ff7a90f1cdf">dcd_event_bus_signal</a> (uint8_t rhport, dcd_eventid_t eid, bool in_isr)</td></tr>
-<tr class="separator:ga6435617153e913ac50750ff7a90f1cdf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga60b63a0ee77a4fd35198b6ab7723f18b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__group__dcd.html#ga60b63a0ee77a4fd35198b6ab7723f18b">dcd_event_bus_reset</a> (uint8_t rhport, tusb_speed_t speed, bool in_isr)</td></tr>
-<tr class="separator:ga60b63a0ee77a4fd35198b6ab7723f18b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaaf49149b894cd223eb5bd46494c4068b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__group__dcd.html#gaaf49149b894cd223eb5bd46494c4068b">dcd_event_setup_received</a> (uint8_t rhport, uint8_t const *setup, bool in_isr)</td></tr>
-<tr class="separator:gaaf49149b894cd223eb5bd46494c4068b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab1e6bce2327e7f7c5860f1486ef48fc5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__group__dcd.html#gab1e6bce2327e7f7c5860f1486ef48fc5">dcd_event_xfer_complete</a> (uint8_t rhport, uint8_t ep_addr, uint32_t xferred_bytes, uint8_t result, bool in_isr)</td></tr>
-<tr class="separator:gab1e6bce2327e7f7c5860f1486ef48fc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3826cbb38a8a502f679a7ebeac6fb77"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbd_8c.html#ac3826cbb38a8a502f679a7ebeac6fb77">dcd_event_handler</a> (<a class="el" href="dcd_8h.html#ab25c38b50bab414daf2b102d2f664e19">dcd_event_t</a> const *event, bool in_isr)</td></tr>
+<tr class="separator:ac3826cbb38a8a502f679a7ebeac6fb77"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6435617153e913ac50750ff7a90f1cdf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbd_8c.html#a6435617153e913ac50750ff7a90f1cdf">dcd_event_bus_signal</a> (uint8_t rhport, dcd_eventid_t eid, bool in_isr)</td></tr>
+<tr class="separator:a6435617153e913ac50750ff7a90f1cdf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60b63a0ee77a4fd35198b6ab7723f18b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbd_8c.html#a60b63a0ee77a4fd35198b6ab7723f18b">dcd_event_bus_reset</a> (uint8_t rhport, tusb_speed_t speed, bool in_isr)</td></tr>
+<tr class="separator:a60b63a0ee77a4fd35198b6ab7723f18b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf49149b894cd223eb5bd46494c4068b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbd_8c.html#aaf49149b894cd223eb5bd46494c4068b">dcd_event_setup_received</a> (uint8_t rhport, uint8_t const *setup, bool in_isr)</td></tr>
+<tr class="separator:aaf49149b894cd223eb5bd46494c4068b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab1e6bce2327e7f7c5860f1486ef48fc5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbd_8c.html#ab1e6bce2327e7f7c5860f1486ef48fc5">dcd_event_xfer_complete</a> (uint8_t rhport, uint8_t ep_addr, uint32_t xferred_bytes, uint8_t result, bool in_isr)</td></tr>
+<tr class="separator:ab1e6bce2327e7f7c5860f1486ef48fc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a95c40a7c8eeb1717a3b58a0af255f5ab"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbd_8c.html#a95c40a7c8eeb1717a3b58a0af255f5ab">usbd_open_edpt_pair</a> (uint8_t rhport, uint8_t const *p_desc, uint8_t ep_count, uint8_t xfer_type, uint8_t *ep_out, uint8_t *ep_in)</td></tr>
 <tr class="separator:a95c40a7c8eeb1717a3b58a0af255f5ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a54e631ffb1c448121351e58e5c966ddc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbd_8c.html#a54e631ffb1c448121351e58e5c966ddc">usbd_defer_func</a> (osal_task_func_t func, void *param, bool in_isr)</td></tr>
@@ -179,8 +181,10 @@ Functions</h2></td></tr>
 <tr class="separator:a4f431bf6b81bd35cbf67d79f5c53f8bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7cdd51abb7658b1193a73471ee18d860"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbd_8c.html#a7cdd51abb7658b1193a73471ee18d860">usbd_edpt_release</a> (uint8_t rhport, uint8_t ep_addr)</td></tr>
 <tr class="separator:a7cdd51abb7658b1193a73471ee18d860"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a381b55ad6eadb2bad7f95e2286dc50c9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbd_8c.html#a381b55ad6eadb2bad7f95e2286dc50c9">usbd_edpt_xfer</a> (uint8_t rhport, uint8_t ep_addr, uint8_t *buffer, uint16_t total_bytes)</td></tr>
+<tr class="memitem:a381b55ad6eadb2bad7f95e2286dc50c9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbd_8c.html#a381b55ad6eadb2bad7f95e2286dc50c9">usbd_edpt_xfer</a> (uint8_t rhport, uint8_t ep_addr, uint8_t *<a class="el" href="midi__device_8h.html#ac8733c58bc671239139641960e2d5dbf">buffer</a>, uint16_t total_bytes)</td></tr>
 <tr class="separator:a381b55ad6eadb2bad7f95e2286dc50c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa187a0c3c24f8800f83bf5ae0220f914"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbd_8c.html#aa187a0c3c24f8800f83bf5ae0220f914">usbd_edpt_xfer_fifo</a> (uint8_t rhport, uint8_t ep_addr, <a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *ff, uint16_t total_bytes)</td></tr>
+<tr class="separator:aa187a0c3c24f8800f83bf5ae0220f914"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a66f04dcaad638cd71eb379c84cf5d4b8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbd_8c.html#a66f04dcaad638cd71eb379c84cf5d4b8">usbd_edpt_busy</a> (uint8_t rhport, uint8_t ep_addr)</td></tr>
 <tr class="separator:a66f04dcaad638cd71eb379c84cf5d4b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3b0a5d91750b27db9b5b17549b7fa982"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbd_8c.html#a3b0a5d91750b27db9b5b17549b7fa982">usbd_edpt_stall</a> (uint8_t rhport, uint8_t ep_addr)</td></tr>
@@ -202,6 +206,8 @@ Variables</h2></td></tr>
 <tr class="separator:ae8d5eb950062421ab209c1b1fde74f30"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1a5a8ce4e4c512af012eb30df238a16a"><td class="memItemLeft" align="right" valign="top">static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbd_8c.html#a1a5a8ce4e4c512af012eb30df238a16a">_app_driver_count</a> = 0</td></tr>
 <tr class="separator:a1a5a8ce4e4c512af012eb30df238a16a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ae7eb4079ef1def729c959cfe26bcf6"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbd_8c.html#a1ae7eb4079ef1def729c959cfe26bcf6">_usbd_initialized</a> = false</td></tr>
+<tr class="separator:a1ae7eb4079ef1def729c959cfe26bcf6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a805aaa3b60be800d9a341d6461ffda46"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="osal__freertos_8h.html#a5f64e2aab321ebea3838c44d830375c7">osal_queue_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbd_8c.html#a805aaa3b60be800d9a341d6461ffda46">_usbd_q</a></td></tr>
 <tr class="separator:a805aaa3b60be800d9a341d6461ffda46"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af93d2c57930aea6dcd1bd1fe63a05c48"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="osal__freertos_8h.html#a5930f7a2cc6f2bb374dea58f7256f943">osal_mutex_def_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbd_8c.html#af93d2c57930aea6dcd1bd1fe63a05c48">_ubsd_mutexdef</a></td></tr>
@@ -212,10 +218,12 @@ Variables</h2></td></tr>
 <tr class="separator:a65ef77c4474937b5a85ced70fd3a9fa3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a322f06f1d8607d4e104706f9469078ce"><td class="memItemLeft" align="right" valign="top">static char const  *const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbd_8c.html#a322f06f1d8607d4e104706f9469078ce">_tusb_std_request_str</a> []</td></tr>
 <tr class="separator:a322f06f1d8607d4e104706f9469078ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e7a4e8166a3e0d47d9828d9f970e5c2"><td class="memItemLeft" align="right" valign="top">static char const  *const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbd_8c.html#a6e7a4e8166a3e0d47d9828d9f970e5c2">_tusb_speed_str</a> [] = { &quot;Full&quot;, &quot;Low&quot;, &quot;High&quot; }</td></tr>
+<tr class="separator:a6e7a4e8166a3e0d47d9828d9f970e5c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
-<a id="adb49720dc49f7d4e4cf9adbf2948e409" name="adb49720dc49f7d4e4cf9adbf2948e409"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adb49720dc49f7d4e4cf9adbf2948e409">&#9670;&nbsp;</a></span>anonymous enum</h2>
+<a id="af715e26dfffd1f8de1c18449e2770cff" name="af715e26dfffd1f8de1c18449e2770cff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af715e26dfffd1f8de1c18449e2770cff">&#9670;&nbsp;</a></span>anonymous enum</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -226,15 +234,15 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="adb49720dc49f7d4e4cf9adbf2948e409a06827fb1b800dd4df84c46e3db632cf7" name="adb49720dc49f7d4e4cf9adbf2948e409a06827fb1b800dd4df84c46e3db632cf7"></a>DRVID_INVALID&#160;</td><td class="fielddoc"></td></tr>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="af715e26dfffd1f8de1c18449e2770cffa06827fb1b800dd4df84c46e3db632cf7" name="af715e26dfffd1f8de1c18449e2770cffa06827fb1b800dd4df84c46e3db632cf7"></a>DRVID_INVALID&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00080">80</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00052">52</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 
 </div>
 </div>
-<a id="aae05225933a42f81e7c4a9fb286596f9" name="aae05225933a42f81e7c4a9fb286596f9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aae05225933a42f81e7c4a9fb286596f9">&#9670;&nbsp;</a></span>anonymous enum</h2>
+<a id="afb730582952b7ceec73d7dc9bf7bef39" name="afb730582952b7ceec73d7dc9bf7bef39"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb730582952b7ceec73d7dc9bf7bef39">&#9670;&nbsp;</a></span>anonymous enum</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -245,14 +253,228 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aae05225933a42f81e7c4a9fb286596f9a684c73c98e0b3538c8e20a083b2b3521" name="aae05225933a42f81e7c4a9fb286596f9a684c73c98e0b3538c8e20a083b2b3521"></a>BUILTIN_DRIVER_COUNT&#160;</td><td class="fielddoc"></td></tr>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="afb730582952b7ceec73d7dc9bf7bef39a684c73c98e0b3538c8e20a083b2b3521" name="afb730582952b7ceec73d7dc9bf7bef39a684c73c98e0b3538c8e20a083b2b3521"></a>BUILTIN_DRIVER_COUNT&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00215">215</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00243">243</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="a2a6ea57fe5270ca741a75f8215273503" name="a2a6ea57fe5270ca741a75f8215273503"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a6ea57fe5270ca741a75f8215273503">&#9670;&nbsp;</a></span>configuration_reset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void configuration_reset </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>rhport</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00447">447</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+
+</div>
+</div>
+<a id="a60b63a0ee77a4fd35198b6ab7723f18b" name="a60b63a0ee77a4fd35198b6ab7723f18b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a60b63a0ee77a4fd35198b6ab7723f18b">&#9670;&nbsp;</a></span>dcd_event_bus_reset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void dcd_event_bus_reset </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>rhport</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">tusb_speed_t&#160;</td>
+          <td class="paramname"><em>speed</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>in_isr</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l01146">1146</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+
+</div>
+</div>
+<a id="a6435617153e913ac50750ff7a90f1cdf" name="a6435617153e913ac50750ff7a90f1cdf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6435617153e913ac50750ff7a90f1cdf">&#9670;&nbsp;</a></span>dcd_event_bus_signal()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void dcd_event_bus_signal </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>rhport</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">dcd_eventid_t&#160;</td>
+          <td class="paramname"><em>eid</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>in_isr</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l01140">1140</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+
+</div>
+</div>
+<a id="ac3826cbb38a8a502f679a7ebeac6fb77" name="ac3826cbb38a8a502f679a7ebeac6fb77"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac3826cbb38a8a502f679a7ebeac6fb77">&#9670;&nbsp;</a></span>dcd_event_handler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void dcd_event_handler </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="dcd_8h.html#ab25c38b50bab414daf2b102d2f664e19">dcd_event_t</a> const *&#160;</td>
+          <td class="paramname"><em>event</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>in_isr</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l01090">1090</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+
+</div>
+</div>
+<a id="aaf49149b894cd223eb5bd46494c4068b" name="aaf49149b894cd223eb5bd46494c4068b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaf49149b894cd223eb5bd46494c4068b">&#9670;&nbsp;</a></span>dcd_event_setup_received()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void dcd_event_setup_received </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>rhport</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t const *&#160;</td>
+          <td class="paramname"><em>setup</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>in_isr</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l01153">1153</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+
+</div>
+</div>
+<a id="ab1e6bce2327e7f7c5860f1486ef48fc5" name="ab1e6bce2327e7f7c5860f1486ef48fc5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab1e6bce2327e7f7c5860f1486ef48fc5">&#9670;&nbsp;</a></span>dcd_event_xfer_complete()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void dcd_event_xfer_complete </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>rhport</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>ep_addr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>xferred_bytes</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>result</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>in_isr</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l01161">1161</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+
+</div>
+</div>
 <a id="af54c169bf3342f3fbfce6f43e25952ce" name="af54c169bf3342f3fbfce6f43e25952ce"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af54c169bf3342f3fbfce6f43e25952ce">&#9670;&nbsp;</a></span>get_driver()</h2>
 
@@ -277,7 +499,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00223">223</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00251">251</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 
 </div>
 </div>
@@ -321,57 +543,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00567">567</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
-
-</div>
-</div>
-<a id="a9fb488765912bb3ecedc15b41784edb0" name="a9fb488765912bb3ecedc15b41784edb0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9fb488765912bb3ecedc15b41784edb0">&#9670;&nbsp;</a></span>mark_interface_endpoint()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void mark_interface_endpoint </td>
-          <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>ep2drv</em>[][2], </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t const *&#160;</td>
-          <td class="paramname"><em>p_desc</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint16_t&#160;</td>
-          <td class="paramname"><em>desc_len</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>driver_id</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00874">874</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00626">626</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 
 </div>
 </div>
@@ -402,7 +574,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group__group__dcd.html#gab25c38b50bab414daf2b102d2f664e19">dcd_event_t</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="dcd_8h.html#ab25c38b50bab414daf2b102d2f664e19">dcd_event_t</a>&#160;</td>
           <td class="paramname">&#160;</td>
         </tr>
         <tr>
@@ -449,7 +621,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00576">576</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00635">635</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 
 </div>
 </div>
@@ -487,7 +659,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00893">893</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00982">982</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 
 </div>
 </div>
@@ -525,7 +697,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00796">796</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00887">887</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 
 </div>
 </div>
@@ -545,7 +717,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00359">359</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00390">390</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 
 </div>
 </div>
@@ -565,7 +737,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00329">329</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00360">360</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 
 </div>
 </div>
@@ -585,18 +757,38 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00352">352</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00383">383</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 
 </div>
 </div>
-<a id="a9b260b10ebb04f8022be14c614f0e4a1" name="a9b260b10ebb04f8022be14c614f0e4a1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9b260b10ebb04f8022be14c614f0e4a1">&#9670;&nbsp;</a></span>tud_init()</h2>
+<a id="afd4b38f48eef1e7edf2f195fbf363484" name="afd4b38f48eef1e7edf2f195fbf363484"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd4b38f48eef1e7edf2f195fbf363484">&#9670;&nbsp;</a></span>tud_init()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">bool tud_init </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>rhport</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00405">405</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+
+</div>
+</div>
+<a id="adc2e4b102bded0c9cf76b90f72ad2a4c" name="adc2e4b102bded0c9cf76b90f72ad2a4c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adc2e4b102bded0c9cf76b90f72ad2a4c">&#9670;&nbsp;</a></span>tud_inited()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool tud_inited </td>
           <td>(</td>
           <td class="paramtype">void&#160;</td>
           <td class="paramname"></td><td>)</td>
@@ -605,7 +797,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00369">369</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00400">400</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 
 </div>
 </div>
@@ -625,7 +817,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00334">334</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00365">365</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 
 </div>
 </div>
@@ -645,7 +837,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00344">344</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00375">375</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 
 </div>
 </div>
@@ -665,7 +857,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00324">324</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00355">355</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 
 </div>
 </div>
@@ -685,7 +877,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00339">339</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00370">370</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 
 </div>
 </div>
@@ -705,7 +897,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00447">447</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00491">491</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 
 </div>
 </div>
@@ -725,7 +917,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00421">421</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00465">465</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 
 </div>
 </div>
@@ -863,7 +1055,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l01106">1106</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l01201">1201</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 
 </div>
 </div>
@@ -883,7 +1075,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00306">306</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00337">337</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 
 </div>
 </div>
@@ -913,7 +1105,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l01244">1244</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l01346">1346</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 
 </div>
 </div>
@@ -943,7 +1135,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l01162">1162</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l01227">1227</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 
 </div>
 </div>
@@ -973,7 +1165,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l01264">1264</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l01372">1372</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 
 </div>
 </div>
@@ -1005,7 +1197,7 @@ Variables</h2></td></tr>
 <p >usbd_edpt_close will disable an endpoint.</p>
 <p >In progress transfers on this EP may be delivered after this call. </p>
 
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l01290">1290</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l01403">1403</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 
 </div>
 </div>
@@ -1035,7 +1227,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l01124">1124</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l01219">1219</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 
 </div>
 </div>
@@ -1065,7 +1257,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l01190">1190</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l01257">1257</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 
 </div>
 </div>
@@ -1095,7 +1287,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l01254">1254</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l01356">1356</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 
 </div>
 </div>
@@ -1125,7 +1317,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l01274">1274</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l01387">1387</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 
 </div>
 </div>
@@ -1167,7 +1359,49 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l01215">1215</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l01282">1282</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+
+</div>
+</div>
+<a id="aa187a0c3c24f8800f83bf5ae0220f914" name="aa187a0c3c24f8800f83bf5ae0220f914"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa187a0c3c24f8800f83bf5ae0220f914">&#9670;&nbsp;</a></span>usbd_edpt_xfer_fifo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool usbd_edpt_xfer_fifo </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>rhport</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>ep_addr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *&#160;</td>
+          <td class="paramname"><em>ff</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>total_bytes</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l01317">1317</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 
 </div>
 </div>
@@ -1221,7 +1455,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l01082">1082</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l01177">1177</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 
 </div>
 </div>
@@ -1249,7 +1483,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00406">406</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00459">459</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 
 </div>
 </div>
@@ -1274,7 +1508,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00218">218</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00246">246</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 
 </div>
 </div>
@@ -1298,7 +1532,31 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00219">219</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00247">247</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+
+</div>
+</div>
+<a id="a6e7a4e8166a3e0d47d9828d9f970e5c2" name="a6e7a4e8166a3e0d47d9828d9f970e5c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e7a4e8166a3e0d47d9828d9f970e5c2">&#9670;&nbsp;</a></span>_tusb_speed_str</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">char const* const _tusb_speed_str[] = { &quot;Full&quot;, &quot;Low&quot;, &quot;High&quot; }</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00334">334</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 
 </div>
 </div>
@@ -1338,7 +1596,7 @@ Variables</h2></td></tr>
 <div class="line">  <span class="stringliteral">&quot;Synch Frame&quot;</span></div>
 <div class="line">}</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00288">288</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00317">317</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 
 </div>
 </div>
@@ -1362,7 +1620,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00251">251</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00281">281</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 
 </div>
 </div>
@@ -1386,7 +1644,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00077">77</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00084">84</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 
 </div>
 </div>
@@ -1410,7 +1668,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00092">92</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00096">96</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 
 </div>
 </div>
@@ -1446,7 +1704,31 @@ Variables</h2></td></tr>
 <div class="line">  <span class="stringliteral">&quot;Func Call&quot;</span></div>
 <div class="line">}</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00275">275</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00304">304</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+
+</div>
+</div>
+<a id="a1ae7eb4079ef1def729c959cfe26bcf6" name="a1ae7eb4079ef1def729c959cfe26bcf6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ae7eb4079ef1def729c959cfe26bcf6">&#9670;&nbsp;</a></span>_usbd_initialized</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool _usbd_initialized = false</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00272">272</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 
 </div>
 </div>
@@ -1470,7 +1752,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00252">252</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00282">282</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 
 </div>
 </div>
@@ -1494,7 +1776,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00247">247</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00277">277</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 
 </div>
 </div>

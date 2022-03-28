@@ -125,6 +125,47 @@ Enumerations</h2></td></tr>
 , <a class="el" href="group___class_driver___c_d_c.html#gga9d46601df0e30cdb102f29eae0e8e60dac6939996bba7083140630e3edf71936f">MIDI_JACK_EXTERNAL</a> = 0x02
  }</td></tr>
 <tr class="separator:ga9d46601df0e30cdb102f29eae0e8e60d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaaff14066c85f32d293dc602e188e354b"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___class_driver___c_d_c.html#gaaff14066c85f32d293dc602e188e354b">midi_code_index_number_t</a> { <br />
+&#160;&#160;<a class="el" href="group___class_driver___c_d_c.html#ggaaff14066c85f32d293dc602e188e354bacd7173b10309dd6674189bee0f4fafac">MIDI_CIN_MISC</a> = 0
+, <a class="el" href="group___class_driver___c_d_c.html#ggaaff14066c85f32d293dc602e188e354ba474d57c2833a008c83def2855ce3c7bd">MIDI_CIN_CABLE_EVENT</a> = 1
+, <a class="el" href="group___class_driver___c_d_c.html#ggaaff14066c85f32d293dc602e188e354ba9e382fa3cb50d3c0c84d1d68695b3018">MIDI_CIN_SYSCOM_2BYTE</a> = 2
+, <a class="el" href="group___class_driver___c_d_c.html#ggaaff14066c85f32d293dc602e188e354ba3949ecafd3ba9381e228173fb409bdf2">MIDI_CIN_SYSCOM_3BYTE</a> = 3
+, <br />
+&#160;&#160;<a class="el" href="group___class_driver___c_d_c.html#ggaaff14066c85f32d293dc602e188e354bac4642a3e2b980688a810b2e58f50b631">MIDI_CIN_SYSEX_START</a> = 4
+, <a class="el" href="group___class_driver___c_d_c.html#ggaaff14066c85f32d293dc602e188e354ba7afb1cffa030d1b38950c5e03a18b0e6">MIDI_CIN_SYSEX_END_1BYTE</a> = 5
+, <a class="el" href="group___class_driver___c_d_c.html#ggaaff14066c85f32d293dc602e188e354ba9f09f66b9ee51479418e575e407fe0d1">MIDI_CIN_SYSEX_END_2BYTE</a> = 6
+, <a class="el" href="group___class_driver___c_d_c.html#ggaaff14066c85f32d293dc602e188e354baf84558e1a23003bca49a340e9eac3f98">MIDI_CIN_SYSEX_END_3BYTE</a> = 7
+, <br />
+&#160;&#160;<a class="el" href="group___class_driver___c_d_c.html#ggaaff14066c85f32d293dc602e188e354baaf55cdfbc9d189fb332dbc0531e4ec0e">MIDI_CIN_NOTE_ON</a> = 8
+, <a class="el" href="group___class_driver___c_d_c.html#ggaaff14066c85f32d293dc602e188e354ba3fad1489a9dc46f9c28f241657051b7d">MIDI_CIN_NOTE_OFF</a> = 9
+, <a class="el" href="group___class_driver___c_d_c.html#ggaaff14066c85f32d293dc602e188e354ba929782cc8d931826822cc76006265edd">MIDI_CIN_POLY_KEYPRESS</a> = 10
+, <a class="el" href="group___class_driver___c_d_c.html#ggaaff14066c85f32d293dc602e188e354ba1dd9d311e0f520457c2d0f3e9affbf46">MIDI_CIN_CONTROL_CHANGE</a> = 11
+, <br />
+&#160;&#160;<a class="el" href="group___class_driver___c_d_c.html#ggaaff14066c85f32d293dc602e188e354ba0bce335d41c18367416a6265343606e0">MIDI_CIN_PROGRAM_CHANGE</a> = 12
+, <a class="el" href="group___class_driver___c_d_c.html#ggaaff14066c85f32d293dc602e188e354ba9768b2537539d8720deb3ffd747e1258">MIDI_CIN_CHANNEL_PRESSURE</a> = 13
+, <a class="el" href="group___class_driver___c_d_c.html#ggaaff14066c85f32d293dc602e188e354ba171fa5944074a5fe21c6dc142e1d7868">MIDI_CIN_PITCH_BEND_CHANGE</a> = 14
+, <a class="el" href="group___class_driver___c_d_c.html#ggaaff14066c85f32d293dc602e188e354bab5090c2c846fc11bb6c1e7780cbba921">MIDI_CIN_1BYTE_DATA</a> = 15
+<br />
+ }</td></tr>
+<tr class="separator:gaaff14066c85f32d293dc602e188e354b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga80155586fa275b28773c9b203f52caba"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <br />
+&#160;&#160;<a class="el" href="group___class_driver___c_d_c.html#gga80155586fa275b28773c9b203f52cabaafad8c0b837912db67d541ddc936b7681">MIDI_STATUS_SYSEX_START</a> = 0xF0
+, <a class="el" href="group___class_driver___c_d_c.html#gga80155586fa275b28773c9b203f52cabaac2ea0ceaaa38389e03ead8a076a4ff6e">MIDI_STATUS_SYSEX_END</a> = 0xF7
+, <a class="el" href="group___class_driver___c_d_c.html#gga80155586fa275b28773c9b203f52cabaa991c7c99cdeaaa83d9fc50f246163a07">MIDI_STATUS_SYSCOM_TIME_CODE_QUARTER_FRAME</a> = 0xF1
+, <a class="el" href="group___class_driver___c_d_c.html#gga80155586fa275b28773c9b203f52cabaa866bf08c459fcc09fe3e11ef3b61fa16">MIDI_STATUS_SYSCOM_SONG_POSITION_POINTER</a> = 0xF2
+, <br />
+&#160;&#160;<a class="el" href="group___class_driver___c_d_c.html#gga80155586fa275b28773c9b203f52cabaa46790f8c2e7d6c35a55a656f1a836afc">MIDI_STATUS_SYSCOM_SONG_SELECT</a> = 0xF3
+, <a class="el" href="group___class_driver___c_d_c.html#gga80155586fa275b28773c9b203f52cabaa331697a232cb1ebce5395ac19903924b">MIDI_STATUS_SYSCOM_TUNE_REQUEST</a> = 0xF6
+, <a class="el" href="group___class_driver___c_d_c.html#gga80155586fa275b28773c9b203f52cabaaa5d45ac13cd0ac07b9ffbef812f2bd9d">MIDI_STATUS_SYSREAL_TIMING_CLOCK</a> = 0xF8
+, <a class="el" href="group___class_driver___c_d_c.html#gga80155586fa275b28773c9b203f52cabaae5552c1f219c36012e95cbc990b48599">MIDI_STATUS_SYSREAL_START</a> = 0xFA
+, <br />
+&#160;&#160;<a class="el" href="group___class_driver___c_d_c.html#gga80155586fa275b28773c9b203f52cabaab77e761729a74afb176cc58694a322f5">MIDI_STATUS_SYSREAL_CONTINUE</a> = 0xFB
+, <a class="el" href="group___class_driver___c_d_c.html#gga80155586fa275b28773c9b203f52cabaa880120aa43b1f9df969ee45f7c7ca542">MIDI_STATUS_SYSREAL_STOP</a> = 0xFC
+, <a class="el" href="group___class_driver___c_d_c.html#gga80155586fa275b28773c9b203f52cabaabb9204bf6d25a68a294af23c80b18ff1">MIDI_STATUS_SYSREAL_ACTIVE_SENSING</a> = 0xFE
+, <a class="el" href="group___class_driver___c_d_c.html#gga80155586fa275b28773c9b203f52cabaa18a1496e309208635da67b55812e8989">MIDI_STATUS_SYSREAL_SYSTEM_RESET</a> = 0xFF
+<br />
+ }</td></tr>
+<tr class="separator:ga80155586fa275b28773c9b203f52caba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>

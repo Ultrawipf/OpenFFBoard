@@ -6,8 +6,9 @@ var struct_t_m_c4671_a_b_n_conf =
     [ "cpr", "struct_t_m_c4671_a_b_n_conf.html#a30628bfd55c83871b22a3d9746e4121c", null ],
     [ "latch_on_N", "struct_t_m_c4671_a_b_n_conf.html#abd8d6ec0f7869ce41b89cc612fcc632c", null ],
     [ "npol", "struct_t_m_c4671_a_b_n_conf.html#a67441caa37389655cad450e642f93f87", null ],
-    [ "npos", "struct_t_m_c4671_a_b_n_conf.html#a1f3b910ff1ac365fa108d8902b63589b", null ],
     [ "phiEoffset", "struct_t_m_c4671_a_b_n_conf.html#a05dee5e6c5427c12e3db3f580444f823", null ],
     [ "phiMoffset", "struct_t_m_c4671_a_b_n_conf.html#ae533ce5ba4e236a7a72b0ef488527345", null ],
-    [ "rdir", "struct_t_m_c4671_a_b_n_conf.html#a6acc901e8cc9683a044c068fe78f8b9e", null ]
+    [ "posOffsetFromIndex", "struct_t_m_c4671_a_b_n_conf.html#aaf581b99d13f0f6d6b01b11d65f2cb5c", null ],
+    [ "rdir", "struct_t_m_c4671_a_b_n_conf.html#a6acc901e8cc9683a044c068fe78f8b9e", null ],
+    [ "useIndex", "struct_t_m_c4671_a_b_n_conf.html#add50fc968f923729b6f1631cebe81f54", null ]
 ];

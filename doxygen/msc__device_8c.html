@@ -102,35 +102,57 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:a385c44f6fb256e5716a2302a5b940388"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <a class="el" href="msc__device_8c.html#a385c44f6fb256e5716a2302a5b940388ad931ac754bdb1f41a2fbbfeed548385b">MSC_STAGE_CMD</a> = 0
-, <a class="el" href="msc__device_8c.html#a385c44f6fb256e5716a2302a5b940388aaf3f6c0a5c70849845431c65e820e58f">MSC_STAGE_DATA</a>
-, <a class="el" href="msc__device_8c.html#a385c44f6fb256e5716a2302a5b940388a5e52ea986daa5602c790ccf5d6b39b38">MSC_STAGE_STATUS</a>
-, <a class="el" href="msc__device_8c.html#a385c44f6fb256e5716a2302a5b940388aadfb7cf1f1b382adfc583ce81c372371">MSC_STAGE_STATUS_SENT</a>
+<tr class="memitem:af9bdc3014f3d54c426b6d2df10de4960"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <br />
+&#160;&#160;<a class="el" href="msc__device_8c.html#af9bdc3014f3d54c426b6d2df10de4960ad931ac754bdb1f41a2fbbfeed548385b">MSC_STAGE_CMD</a> = 0
+, <a class="el" href="msc__device_8c.html#af9bdc3014f3d54c426b6d2df10de4960aaf3f6c0a5c70849845431c65e820e58f">MSC_STAGE_DATA</a>
+, <a class="el" href="msc__device_8c.html#af9bdc3014f3d54c426b6d2df10de4960a5e52ea986daa5602c790ccf5d6b39b38">MSC_STAGE_STATUS</a>
+, <a class="el" href="msc__device_8c.html#af9bdc3014f3d54c426b6d2df10de4960aadfb7cf1f1b382adfc583ce81c372371">MSC_STAGE_STATUS_SENT</a>
+, <br />
+&#160;&#160;<a class="el" href="msc__device_8c.html#af9bdc3014f3d54c426b6d2df10de4960ae52bd465198dc0a474db079d67e0a20b">MSC_STAGE_NEED_RESET</a>
+<br />
  }</td></tr>
-<tr class="separator:a385c44f6fb256e5716a2302a5b940388"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:af9bdc3014f3d54c426b6d2df10de4960"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a1ebcd99ffa9773559264453fa71ca77b"><td class="memItemLeft" align="right" valign="top">static int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msc__device_8c.html#a1ebcd99ffa9773559264453fa71ca77b">proc_builtin_scsi</a> (uint8_t lun, uint8_t const scsi_cmd[16], uint8_t *buffer, uint32_t bufsize)</td></tr>
+<tr class="memitem:a1ebcd99ffa9773559264453fa71ca77b"><td class="memItemLeft" align="right" valign="top">static int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msc__device_8c.html#a1ebcd99ffa9773559264453fa71ca77b">proc_builtin_scsi</a> (uint8_t lun, uint8_t const scsi_cmd[16], uint8_t *<a class="el" href="midi__device_8h.html#ac8733c58bc671239139641960e2d5dbf">buffer</a>, uint32_t <a class="el" href="midi__device_8h.html#aca9aaceac98612802d20cb6983f7669c">bufsize</a>)</td></tr>
 <tr class="separator:a1ebcd99ffa9773559264453fa71ca77b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a02228578ea25ff825e9411998d03a8dd"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msc__device_8c.html#a02228578ea25ff825e9411998d03a8dd">proc_read10_cmd</a> (uint8_t rhport, <a class="el" href="structmscd__interface__t.html">mscd_interface_t</a> *p_msc)</td></tr>
 <tr class="separator:a02228578ea25ff825e9411998d03a8dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae0fd3bb08a647fc9e6e3d9cf1ecbcf49"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msc__device_8c.html#ae0fd3bb08a647fc9e6e3d9cf1ecbcf49">proc_write10_cmd</a> (uint8_t rhport, <a class="el" href="structmscd__interface__t.html">mscd_interface_t</a> *p_msc)</td></tr>
 <tr class="separator:ae0fd3bb08a647fc9e6e3d9cf1ecbcf49"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa83bc882485edd5a1dca7b2db5d991a"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msc__device_8c.html#afa83bc882485edd5a1dca7b2db5d991a">proc_write10_new_data</a> (uint8_t rhport, <a class="el" href="structmscd__interface__t.html">mscd_interface_t</a> *p_msc, uint32_t xferred_bytes)</td></tr>
+<tr class="separator:afa83bc882485edd5a1dca7b2db5d991a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e5e6abb2b921f5008a4cbec0bb35a65"><td class="memItemLeft" align="right" valign="top">static TU_ATTR_ALWAYS_INLINE bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msc__device_8c.html#a0e5e6abb2b921f5008a4cbec0bb35a65">is_data_in</a> (uint8_t dir)</td></tr>
+<tr class="separator:a0e5e6abb2b921f5008a4cbec0bb35a65"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac286d28e9920b0d652cab43ed92e9dae"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msc__device_8c.html#ac286d28e9920b0d652cab43ed92e9dae">send_csw</a> (uint8_t rhport, <a class="el" href="structmscd__interface__t.html">mscd_interface_t</a> *p_msc)</td></tr>
+<tr class="separator:ac286d28e9920b0d652cab43ed92e9dae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e9283e59f4f59fdc30eb4cfe9ff29e4"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msc__device_8c.html#a3e9283e59f4f59fdc30eb4cfe9ff29e4">prepare_cbw</a> (uint8_t rhport, <a class="el" href="structmscd__interface__t.html">mscd_interface_t</a> *p_msc)</td></tr>
+<tr class="separator:a3e9283e59f4f59fdc30eb4cfe9ff29e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af191c983fdf655fc0aace4aab732475b"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msc__device_8c.html#af191c983fdf655fc0aace4aab732475b">fail_scsi_op</a> (uint8_t rhport, <a class="el" href="structmscd__interface__t.html">mscd_interface_t</a> *p_msc, uint8_t status)</td></tr>
+<tr class="separator:af191c983fdf655fc0aace4aab732475b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab5b47d842788cb614e10a00afa4de129"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msc__device_8c.html#ab5b47d842788cb614e10a00afa4de129">rdwr10_get_lba</a> (uint8_t const command[])</td></tr>
 <tr class="separator:ab5b47d842788cb614e10a00afa4de129"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9cb992a642c935b6629d21c298b67682"><td class="memItemLeft" align="right" valign="top">static uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msc__device_8c.html#a9cb992a642c935b6629d21c298b67682">rdwr10_get_blockcount</a> (uint8_t const command[])</td></tr>
-<tr class="separator:a9cb992a642c935b6629d21c298b67682"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4fe9764da024511a8593a3eeb957d1cb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___m_s_c___device.html#ga4fe9764da024511a8593a3eeb957d1cb">tud_msc_set_sense</a> (uint8_t lun, uint8_t sense_key, uint8_t add_sense_code, uint8_t add_sense_qualifier)</td></tr>
-<tr class="separator:ga4fe9764da024511a8593a3eeb957d1cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a812292f314fc72ae36e7ca94b62dc6"><td class="memItemLeft" align="right" valign="top">static uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msc__device_8c.html#a0a812292f314fc72ae36e7ca94b62dc6">rdwr10_get_blockcount</a> (<a class="el" href="msc_8h.html#a822e5cafac4f4e07f9514332fd648fef">msc_cbw_t</a> const *cbw)</td></tr>
+<tr class="separator:a0a812292f314fc72ae36e7ca94b62dc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0145d33e00c5d308abb6bb01b6924f25"><td class="memItemLeft" align="right" valign="top">static uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msc__device_8c.html#a0145d33e00c5d308abb6bb01b6924f25">rdwr10_get_blocksize</a> (<a class="el" href="msc_8h.html#a822e5cafac4f4e07f9514332fd648fef">msc_cbw_t</a> const *cbw)</td></tr>
+<tr class="separator:a0145d33e00c5d308abb6bb01b6924f25"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a421589c00f1f6d88fd73ada55b750cee"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msc__device_8c.html#a421589c00f1f6d88fd73ada55b750cee">rdwr10_validate_cmd</a> (<a class="el" href="msc_8h.html#a822e5cafac4f4e07f9514332fd648fef">msc_cbw_t</a> const *cbw)</td></tr>
+<tr class="separator:a421589c00f1f6d88fd73ada55b750cee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4fe9764da024511a8593a3eeb957d1cb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msc__device_8c.html#a4fe9764da024511a8593a3eeb957d1cb">tud_msc_set_sense</a> (uint8_t lun, uint8_t sense_key, uint8_t add_sense_code, uint8_t add_sense_qualifier)</td></tr>
+<tr class="separator:a4fe9764da024511a8593a3eeb957d1cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93f76b74bcb88b62b3ee7fd959e527ad"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msc__device_8c.html#a93f76b74bcb88b62b3ee7fd959e527ad">set_sense_medium_not_present</a> (uint8_t lun)</td></tr>
+<tr class="separator:a93f76b74bcb88b62b3ee7fd959e527ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf4981315a4d70a7057edd4064fd90ce"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msc__device_8c.html#aaf4981315a4d70a7057edd4064fd90ce">mscd_init</a> (void)</td></tr>
 <tr class="separator:aaf4981315a4d70a7057edd4064fd90ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2b8d7cd18e5e49f3378e1f5bdd7bf196"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msc__device_8c.html#a2b8d7cd18e5e49f3378e1f5bdd7bf196">mscd_reset</a> (uint8_t rhport)</td></tr>
 <tr class="separator:a2b8d7cd18e5e49f3378e1f5bdd7bf196"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a88c3deff8b6784aa3c5b273c3f34deb0"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msc__device_8c.html#a88c3deff8b6784aa3c5b273c3f34deb0">mscd_open</a> (uint8_t rhport, <a class="el" href="group___u_s_b_def___type.html#gac4415f9c56f80b658137e35c14b58096">tusb_desc_interface_t</a> const *itf_desc, uint16_t max_len)</td></tr>
 <tr class="separator:a88c3deff8b6784aa3c5b273c3f34deb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adc18d9c97fcbd636c71dab72302fa6b3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msc__device_8c.html#adc18d9c97fcbd636c71dab72302fa6b3">mscd_control_xfer_cb</a> (uint8_t rhport, uint8_t stage, <a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *p_request)</td></tr>
-<tr class="separator:adc18d9c97fcbd636c71dab72302fa6b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50a093de2310ab88814ee0f917c0c2c7"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msc__device_8c.html#a50a093de2310ab88814ee0f917c0c2c7">proc_bot_reset</a> (<a class="el" href="structmscd__interface__t.html">mscd_interface_t</a> *p_msc)</td></tr>
+<tr class="separator:a50a093de2310ab88814ee0f917c0c2c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a46d4a53f4b05b233200357bcff684feb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msc__device_8c.html#a46d4a53f4b05b233200357bcff684feb">mscd_control_xfer_cb</a> (uint8_t rhport, uint8_t stage, <a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *request)</td></tr>
+<tr class="separator:a46d4a53f4b05b233200357bcff684feb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0a30469f504fc9d9add41321908d4988"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msc__device_8c.html#a0a30469f504fc9d9add41321908d4988">mscd_xfer_cb</a> (uint8_t rhport, uint8_t ep_addr, <a class="el" href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a> event, uint32_t xferred_bytes)</td></tr>
 <tr class="separator:a0a30469f504fc9d9add41321908d4988"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -140,14 +162,14 @@ Variables</h2></td></tr>
 <tr class="separator:a0f3852b3b7799ede4a700d23fa54f00c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad468bfc3149d2829f9562525d9ac46e3"><td class="memItemLeft" align="right" valign="top">CFG_TUSB_MEM_SECTION static CFG_TUSB_MEM_ALIGN uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msc__device_8c.html#ad468bfc3149d2829f9562525d9ac46e3">_mscd_buf</a> [CFG_TUD_MSC_EP_BUFSIZE]</td></tr>
 <tr class="separator:ad468bfc3149d2829f9562525d9ac46e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2e718208a9d25bfede5d733689695d17"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structtu__lookup__entry__t.html">tu_lookup_entry_t</a> const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msc__device_8c.html#a2e718208a9d25bfede5d733689695d17">_msc_scsi_cmd_lookup</a> []</td></tr>
-<tr class="separator:a2e718208a9d25bfede5d733689695d17"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a974c0c8a69095d136a048465fce33694"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structtu__lookup__table__t.html">tu_lookup_table_t</a> const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msc__device_8c.html#a974c0c8a69095d136a048465fce33694">_msc_scsi_cmd_table</a></td></tr>
-<tr class="separator:a974c0c8a69095d136a048465fce33694"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abff3dd5583e9253b6b19e110accb9481"><td class="memItemLeft" align="right" valign="top">static TU_ATTR_UNUSED <a class="el" href="structtu__lookup__entry__t.html">tu_lookup_entry_t</a> const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msc__device_8c.html#abff3dd5583e9253b6b19e110accb9481">_msc_scsi_cmd_lookup</a> []</td></tr>
+<tr class="separator:abff3dd5583e9253b6b19e110accb9481"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a576f1b0d1a24f014c022a5eb61f8562b"><td class="memItemLeft" align="right" valign="top">static TU_ATTR_UNUSED <a class="el" href="structtu__lookup__table__t.html">tu_lookup_table_t</a> const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msc__device_8c.html#a576f1b0d1a24f014c022a5eb61f8562b">_msc_scsi_cmd_table</a></td></tr>
+<tr class="separator:a576f1b0d1a24f014c022a5eb61f8562b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
-<a id="a385c44f6fb256e5716a2302a5b940388" name="a385c44f6fb256e5716a2302a5b940388"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a385c44f6fb256e5716a2302a5b940388">&#9670;&nbsp;</a></span>anonymous enum</h2>
+<a id="af9bdc3014f3d54c426b6d2df10de4960" name="af9bdc3014f3d54c426b6d2df10de4960"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af9bdc3014f3d54c426b6d2df10de4960">&#9670;&nbsp;</a></span>anonymous enum</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -158,19 +180,92 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a385c44f6fb256e5716a2302a5b940388ad931ac754bdb1f41a2fbbfeed548385b" name="a385c44f6fb256e5716a2302a5b940388ad931ac754bdb1f41a2fbbfeed548385b"></a>MSC_STAGE_CMD&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a385c44f6fb256e5716a2302a5b940388aaf3f6c0a5c70849845431c65e820e58f" name="a385c44f6fb256e5716a2302a5b940388aaf3f6c0a5c70849845431c65e820e58f"></a>MSC_STAGE_DATA&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a385c44f6fb256e5716a2302a5b940388a5e52ea986daa5602c790ccf5d6b39b38" name="a385c44f6fb256e5716a2302a5b940388a5e52ea986daa5602c790ccf5d6b39b38"></a>MSC_STAGE_STATUS&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a385c44f6fb256e5716a2302a5b940388aadfb7cf1f1b382adfc583ce81c372371" name="a385c44f6fb256e5716a2302a5b940388aadfb7cf1f1b382adfc583ce81c372371"></a>MSC_STAGE_STATUS_SENT&#160;</td><td class="fielddoc"></td></tr>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="af9bdc3014f3d54c426b6d2df10de4960ad931ac754bdb1f41a2fbbfeed548385b" name="af9bdc3014f3d54c426b6d2df10de4960ad931ac754bdb1f41a2fbbfeed548385b"></a>MSC_STAGE_CMD&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="af9bdc3014f3d54c426b6d2df10de4960aaf3f6c0a5c70849845431c65e820e58f" name="af9bdc3014f3d54c426b6d2df10de4960aaf3f6c0a5c70849845431c65e820e58f"></a>MSC_STAGE_DATA&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="af9bdc3014f3d54c426b6d2df10de4960a5e52ea986daa5602c790ccf5d6b39b38" name="af9bdc3014f3d54c426b6d2df10de4960a5e52ea986daa5602c790ccf5d6b39b38"></a>MSC_STAGE_STATUS&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="af9bdc3014f3d54c426b6d2df10de4960aadfb7cf1f1b382adfc583ce81c372371" name="af9bdc3014f3d54c426b6d2df10de4960aadfb7cf1f1b382adfc583ce81c372371"></a>MSC_STAGE_STATUS_SENT&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="af9bdc3014f3d54c426b6d2df10de4960ae52bd465198dc0a474db079d67e0a20b" name="af9bdc3014f3d54c426b6d2df10de4960ae52bd465198dc0a474db079d67e0a20b"></a>MSC_STAGE_NEED_RESET&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="msc__device_8c_source.html#l00039">39</a> of file <a class="el" href="msc__device_8c_source.html">msc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="msc__device_8c_source.html#l00044">44</a> of file <a class="el" href="msc__device_8c_source.html">msc_device.c</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="adc18d9c97fcbd636c71dab72302fa6b3" name="adc18d9c97fcbd636c71dab72302fa6b3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adc18d9c97fcbd636c71dab72302fa6b3">&#9670;&nbsp;</a></span>mscd_control_xfer_cb()</h2>
+<a id="af191c983fdf655fc0aace4aab732475b" name="af191c983fdf655fc0aace4aab732475b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af191c983fdf655fc0aace4aab732475b">&#9670;&nbsp;</a></span>fail_scsi_op()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void fail_scsi_op </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>rhport</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structmscd__interface__t.html">mscd_interface_t</a> *&#160;</td>
+          <td class="paramname"><em>p_msc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>status</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="msc__device_8c_source.html#l00106">106</a> of file <a class="el" href="msc__device_8c_source.html">msc_device.c</a>.</p>
+
+</div>
+</div>
+<a id="a0e5e6abb2b921f5008a4cbec0bb35a65" name="a0e5e6abb2b921f5008a4cbec0bb35a65"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0e5e6abb2b921f5008a4cbec0bb35a65">&#9670;&nbsp;</a></span>is_data_in()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static TU_ATTR_ALWAYS_INLINE bool is_data_in </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>dir</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="msc__device_8c_source.html#l00086">86</a> of file <a class="el" href="msc__device_8c_source.html">msc_device.c</a>.</p>
+
+</div>
+</div>
+<a id="a46d4a53f4b05b233200357bcff684feb" name="a46d4a53f4b05b233200357bcff684feb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a46d4a53f4b05b233200357bcff684feb">&#9670;&nbsp;</a></span>mscd_control_xfer_cb()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -191,7 +286,7 @@ Variables</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *&#160;</td>
-          <td class="paramname"><em>p_request</em>&#160;</td>
+          <td class="paramname"><em>request</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -201,7 +296,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="msc__device_8c_source.html#l00193">193</a> of file <a class="el" href="msc__device_8c_source.html">msc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="msc__device_8c_source.html#l00301">301</a> of file <a class="el" href="msc__device_8c_source.html">msc_device.c</a>.</p>
 
 </div>
 </div>
@@ -221,7 +316,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="msc__device_8c_source.html#l00150">150</a> of file <a class="el" href="msc__device_8c_source.html">msc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="msc__device_8c_source.html#l00251">251</a> of file <a class="el" href="msc__device_8c_source.html">msc_device.c</a>.</p>
 
 </div>
 </div>
@@ -257,7 +352,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="msc__device_8c_source.html#l00161">161</a> of file <a class="el" href="msc__device_8c_source.html">msc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="msc__device_8c_source.html#l00262">262</a> of file <a class="el" href="msc__device_8c_source.html">msc_device.c</a>.</p>
 
 </div>
 </div>
@@ -277,7 +372,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="msc__device_8c_source.html#l00155">155</a> of file <a class="el" href="msc__device_8c_source.html">msc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="msc__device_8c_source.html#l00256">256</a> of file <a class="el" href="msc__device_8c_source.html">msc_device.c</a>.</p>
 
 </div>
 </div>
@@ -319,7 +414,73 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="msc__device_8c_source.html#l00227">227</a> of file <a class="el" href="msc__device_8c_source.html">msc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="msc__device_8c_source.html#l00386">386</a> of file <a class="el" href="msc__device_8c_source.html">msc_device.c</a>.</p>
+
+</div>
+</div>
+<a id="a3e9283e59f4f59fdc30eb4cfe9ff29e4" name="a3e9283e59f4f59fdc30eb4cfe9ff29e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e9283e59f4f59fdc30eb4cfe9ff29e4">&#9670;&nbsp;</a></span>prepare_cbw()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool prepare_cbw </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>rhport</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structmscd__interface__t.html">mscd_interface_t</a> *&#160;</td>
+          <td class="paramname"><em>p_msc</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="msc__device_8c_source.html#l00100">100</a> of file <a class="el" href="msc__device_8c_source.html">msc_device.c</a>.</p>
+
+</div>
+</div>
+<a id="a50a093de2310ab88814ee0f917c0c2c7" name="a50a093de2310ab88814ee0f917c0c2c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a50a093de2310ab88814ee0f917c0c2c7">&#9670;&nbsp;</a></span>proc_bot_reset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void proc_bot_reset </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structmscd__interface__t.html">mscd_interface_t</a> *&#160;</td>
+          <td class="paramname"><em>p_msc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="msc__device_8c_source.html#l00287">287</a> of file <a class="el" href="msc__device_8c_source.html">msc_device.c</a>.</p>
 
 </div>
 </div>
@@ -369,7 +530,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="msc__device_8c_source.html#l00474">474</a> of file <a class="el" href="msc__device_8c_source.html">msc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="msc__device_8c_source.html#l00647">647</a> of file <a class="el" href="msc__device_8c_source.html">msc_device.c</a>.</p>
 
 </div>
 </div>
@@ -407,7 +568,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="msc__device_8c_source.html#l00645">645</a> of file <a class="el" href="msc__device_8c_source.html">msc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="msc__device_8c_source.html#l00827">827</a> of file <a class="el" href="msc__device_8c_source.html">msc_device.c</a>.</p>
 
 </div>
 </div>
@@ -445,12 +606,56 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="msc__device_8c_source.html#l00685">685</a> of file <a class="el" href="msc__device_8c_source.html">msc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="msc__device_8c_source.html#l00865">865</a> of file <a class="el" href="msc__device_8c_source.html">msc_device.c</a>.</p>
 
 </div>
 </div>
-<a id="a9cb992a642c935b6629d21c298b67682" name="a9cb992a642c935b6629d21c298b67682"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9cb992a642c935b6629d21c298b67682">&#9670;&nbsp;</a></span>rdwr10_get_blockcount()</h2>
+<a id="afa83bc882485edd5a1dca7b2db5d991a" name="afa83bc882485edd5a1dca7b2db5d991a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afa83bc882485edd5a1dca7b2db5d991a">&#9670;&nbsp;</a></span>proc_write10_new_data()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void proc_write10_new_data </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>rhport</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structmscd__interface__t.html">mscd_interface_t</a> *&#160;</td>
+          <td class="paramname"><em>p_msc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>xferred_bytes</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="msc__device_8c_source.html#l00892">892</a> of file <a class="el" href="msc__device_8c_source.html">msc_device.c</a>.</p>
+
+</div>
+</div>
+<a id="a0a812292f314fc72ae36e7ca94b62dc6" name="a0a812292f314fc72ae36e7ca94b62dc6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0a812292f314fc72ae36e7ca94b62dc6">&#9670;&nbsp;</a></span>rdwr10_get_blockcount()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -461,8 +666,8 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">static uint16_t rdwr10_get_blockcount </td>
           <td>(</td>
-          <td class="paramtype">uint8_t const&#160;</td>
-          <td class="paramname"><em>command</em>[]</td><td>)</td>
+          <td class="paramtype"><a class="el" href="msc_8h.html#a822e5cafac4f4e07f9514332fd648fef">msc_cbw_t</a> const *&#160;</td>
+          <td class="paramname"><em>cbw</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -473,7 +678,35 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="msc__device_8c_source.html#l00092">92</a> of file <a class="el" href="msc__device_8c_source.html">msc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="msc__device_8c_source.html#l00141">141</a> of file <a class="el" href="msc__device_8c_source.html">msc_device.c</a>.</p>
+
+</div>
+</div>
+<a id="a0145d33e00c5d308abb6bb01b6924f25" name="a0145d33e00c5d308abb6bb01b6924f25"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0145d33e00c5d308abb6bb01b6924f25">&#9670;&nbsp;</a></span>rdwr10_get_blocksize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static uint16_t rdwr10_get_blocksize </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="msc_8h.html#a822e5cafac4f4e07f9514332fd648fef">msc_cbw_t</a> const *&#160;</td>
+          <td class="paramname"><em>cbw</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="msc__device_8c_source.html#l00147">147</a> of file <a class="el" href="msc__device_8c_source.html">msc_device.c</a>.</p>
 
 </div>
 </div>
@@ -501,13 +734,141 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="msc__device_8c_source.html#l00078">78</a> of file <a class="el" href="msc__device_8c_source.html">msc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="msc__device_8c_source.html#l00132">132</a> of file <a class="el" href="msc__device_8c_source.html">msc_device.c</a>.</p>
+
+</div>
+</div>
+<a id="a421589c00f1f6d88fd73ada55b750cee" name="a421589c00f1f6d88fd73ada55b750cee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a421589c00f1f6d88fd73ada55b750cee">&#9670;&nbsp;</a></span>rdwr10_validate_cmd()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t rdwr10_validate_cmd </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="msc_8h.html#a822e5cafac4f4e07f9514332fd648fef">msc_cbw_t</a> const *&#160;</td>
+          <td class="paramname"><em>cbw</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="msc__device_8c_source.html#l00158">158</a> of file <a class="el" href="msc__device_8c_source.html">msc_device.c</a>.</p>
+
+</div>
+</div>
+<a id="ac286d28e9920b0d652cab43ed92e9dae" name="ac286d28e9920b0d652cab43ed92e9dae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac286d28e9920b0d652cab43ed92e9dae">&#9670;&nbsp;</a></span>send_csw()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool send_csw </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>rhport</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structmscd__interface__t.html">mscd_interface_t</a> *&#160;</td>
+          <td class="paramname"><em>p_msc</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="msc__device_8c_source.html#l00091">91</a> of file <a class="el" href="msc__device_8c_source.html">msc_device.c</a>.</p>
+
+</div>
+</div>
+<a id="a93f76b74bcb88b62b3ee7fd959e527ad" name="a93f76b74bcb88b62b3ee7fd959e527ad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a93f76b74bcb88b62b3ee7fd959e527ad">&#9670;&nbsp;</a></span>set_sense_medium_not_present()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void set_sense_medium_not_present </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>lun</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="msc__device_8c_source.html#l00242">242</a> of file <a class="el" href="msc__device_8c_source.html">msc_device.c</a>.</p>
+
+</div>
+</div>
+<a id="a4fe9764da024511a8593a3eeb957d1cb" name="a4fe9764da024511a8593a3eeb957d1cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4fe9764da024511a8593a3eeb957d1cb">&#9670;&nbsp;</a></span>tud_msc_set_sense()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool tud_msc_set_sense </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>lun</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>sense_key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>add_sense_code</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>add_sense_qualifier</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="msc__device_8c_source.html#l00231">231</a> of file <a class="el" href="msc__device_8c_source.html">msc_device.c</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
-<a id="a2e718208a9d25bfede5d733689695d17" name="a2e718208a9d25bfede5d733689695d17"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2e718208a9d25bfede5d733689695d17">&#9670;&nbsp;</a></span>_msc_scsi_cmd_lookup</h2>
+<a id="abff3dd5583e9253b6b19e110accb9481" name="abff3dd5583e9253b6b19e110accb9481"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abff3dd5583e9253b6b19e110accb9481">&#9670;&nbsp;</a></span>_msc_scsi_cmd_lookup</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -516,7 +877,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structtu__lookup__entry__t.html">tu_lookup_entry_t</a> const _msc_scsi_cmd_lookup[]</td>
+          <td class="memname">TU_ATTR_UNUSED <a class="el" href="structtu__lookup__entry__t.html">tu_lookup_entry_t</a> const _msc_scsi_cmd_lookup[]</td>
         </tr>
       </table>
   </td>
@@ -527,36 +888,36 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">=</div>
 <div class="line">{</div>
-<div class="line">  { .key = <a class="code hl_enumvalue" href="group___class_driver___m_s_c___common.html#ggad5f995e6aa7f3c4cf01e369dae83ddd4a117340f6f7e567543b031f4cd311e7b1">SCSI_CMD_TEST_UNIT_READY</a>              , .data = <span class="stringliteral">&quot;Test Unit Ready&quot;</span> },</div>
-<div class="line">  { .key = <a class="code hl_enumvalue" href="group___class_driver___m_s_c___common.html#ggad5f995e6aa7f3c4cf01e369dae83ddd4adaaa451130fe92c126a5a7031de1a25f">SCSI_CMD_INQUIRY</a>                      , .data = <span class="stringliteral">&quot;Inquiry&quot;</span> },</div>
-<div class="line">  { .key = <a class="code hl_enumvalue" href="group___class_driver___m_s_c___common.html#ggad5f995e6aa7f3c4cf01e369dae83ddd4a68ae8c502e73b3c6e85b17efbbf7f8d9">SCSI_CMD_MODE_SELECT_6</a>                , .data = <span class="stringliteral">&quot;Mode_Select 6&quot;</span> },</div>
-<div class="line">  { .key = <a class="code hl_enumvalue" href="group___class_driver___m_s_c___common.html#ggad5f995e6aa7f3c4cf01e369dae83ddd4ad1eae0b1b180693ce3dc6645d1935152">SCSI_CMD_MODE_SENSE_6</a>                 , .data = <span class="stringliteral">&quot;Mode_Sense 6&quot;</span> },</div>
-<div class="line">  { .key = <a class="code hl_enumvalue" href="group___class_driver___m_s_c___common.html#ggad5f995e6aa7f3c4cf01e369dae83ddd4a7b9c796eea337b9c3e9b45ca7c2a00c0">SCSI_CMD_START_STOP_UNIT</a>              , .data = <span class="stringliteral">&quot;Start Stop Unit&quot;</span> },</div>
-<div class="line">  { .key = <a class="code hl_enumvalue" href="group___class_driver___m_s_c___common.html#ggad5f995e6aa7f3c4cf01e369dae83ddd4a311251670e970f63bb12d5e936d95761">SCSI_CMD_PREVENT_ALLOW_MEDIUM_REMOVAL</a> , .data = <span class="stringliteral">&quot;Prevent Allow Medium Removal&quot;</span> },</div>
-<div class="line">  { .key = <a class="code hl_enumvalue" href="group___class_driver___m_s_c___common.html#ggad5f995e6aa7f3c4cf01e369dae83ddd4a7a8b5c7b6db011cb6244012e21c02115">SCSI_CMD_READ_CAPACITY_10</a>             , .data = <span class="stringliteral">&quot;Read Capacity10&quot;</span> },</div>
-<div class="line">  { .key = <a class="code hl_enumvalue" href="group___class_driver___m_s_c___common.html#ggad5f995e6aa7f3c4cf01e369dae83ddd4a5cf192d1e89d1553d238f67024d84fd9">SCSI_CMD_REQUEST_SENSE</a>                , .data = <span class="stringliteral">&quot;Request Sense&quot;</span> },</div>
-<div class="line">  { .key = <a class="code hl_enumvalue" href="group___class_driver___m_s_c___common.html#ggad5f995e6aa7f3c4cf01e369dae83ddd4a1c7c2d9842ea20accf2333d2a320f1c4">SCSI_CMD_READ_FORMAT_CAPACITY</a>         , .data = <span class="stringliteral">&quot;Read Format Capacity&quot;</span> },</div>
-<div class="line">  { .key = <a class="code hl_enumvalue" href="group___class_driver___m_s_c___common.html#ggad5f995e6aa7f3c4cf01e369dae83ddd4a896bb16014025d5ee9c30767c37bb429">SCSI_CMD_READ_10</a>                      , .data = <span class="stringliteral">&quot;Read10&quot;</span> },</div>
-<div class="line">  { .key = <a class="code hl_enumvalue" href="group___class_driver___m_s_c___common.html#ggad5f995e6aa7f3c4cf01e369dae83ddd4a64f64e86275d0618cc06512cac43e5e0">SCSI_CMD_WRITE_10</a>                     , .data = <span class="stringliteral">&quot;Write10&quot;</span> }</div>
+<div class="line">  { .key = <a class="code hl_enumvalue" href="msc_8h.html#ad5f995e6aa7f3c4cf01e369dae83ddd4a117340f6f7e567543b031f4cd311e7b1">SCSI_CMD_TEST_UNIT_READY</a>              , .data = <span class="stringliteral">&quot;Test Unit Ready&quot;</span> },</div>
+<div class="line">  { .key = <a class="code hl_enumvalue" href="msc_8h.html#ad5f995e6aa7f3c4cf01e369dae83ddd4adaaa451130fe92c126a5a7031de1a25f">SCSI_CMD_INQUIRY</a>                      , .data = <span class="stringliteral">&quot;Inquiry&quot;</span> },</div>
+<div class="line">  { .key = <a class="code hl_enumvalue" href="msc_8h.html#ad5f995e6aa7f3c4cf01e369dae83ddd4a68ae8c502e73b3c6e85b17efbbf7f8d9">SCSI_CMD_MODE_SELECT_6</a>                , .data = <span class="stringliteral">&quot;Mode_Select 6&quot;</span> },</div>
+<div class="line">  { .key = <a class="code hl_enumvalue" href="msc_8h.html#ad5f995e6aa7f3c4cf01e369dae83ddd4ad1eae0b1b180693ce3dc6645d1935152">SCSI_CMD_MODE_SENSE_6</a>                 , .data = <span class="stringliteral">&quot;Mode_Sense 6&quot;</span> },</div>
+<div class="line">  { .key = <a class="code hl_enumvalue" href="msc_8h.html#ad5f995e6aa7f3c4cf01e369dae83ddd4a7b9c796eea337b9c3e9b45ca7c2a00c0">SCSI_CMD_START_STOP_UNIT</a>              , .data = <span class="stringliteral">&quot;Start Stop Unit&quot;</span> },</div>
+<div class="line">  { .key = <a class="code hl_enumvalue" href="msc_8h.html#ad5f995e6aa7f3c4cf01e369dae83ddd4a311251670e970f63bb12d5e936d95761">SCSI_CMD_PREVENT_ALLOW_MEDIUM_REMOVAL</a> , .data = <span class="stringliteral">&quot;Prevent/Allow Medium Removal&quot;</span> },</div>
+<div class="line">  { .key = <a class="code hl_enumvalue" href="msc_8h.html#ad5f995e6aa7f3c4cf01e369dae83ddd4a7a8b5c7b6db011cb6244012e21c02115">SCSI_CMD_READ_CAPACITY_10</a>             , .data = <span class="stringliteral">&quot;Read Capacity10&quot;</span> },</div>
+<div class="line">  { .key = <a class="code hl_enumvalue" href="msc_8h.html#ad5f995e6aa7f3c4cf01e369dae83ddd4a5cf192d1e89d1553d238f67024d84fd9">SCSI_CMD_REQUEST_SENSE</a>                , .data = <span class="stringliteral">&quot;Request Sense&quot;</span> },</div>
+<div class="line">  { .key = <a class="code hl_enumvalue" href="msc_8h.html#ad5f995e6aa7f3c4cf01e369dae83ddd4a1c7c2d9842ea20accf2333d2a320f1c4">SCSI_CMD_READ_FORMAT_CAPACITY</a>         , .data = <span class="stringliteral">&quot;Read Format Capacity&quot;</span> },</div>
+<div class="line">  { .key = <a class="code hl_enumvalue" href="msc_8h.html#ad5f995e6aa7f3c4cf01e369dae83ddd4a896bb16014025d5ee9c30767c37bb429">SCSI_CMD_READ_10</a>                      , .data = <span class="stringliteral">&quot;Read10&quot;</span> },</div>
+<div class="line">  { .key = <a class="code hl_enumvalue" href="msc_8h.html#ad5f995e6aa7f3c4cf01e369dae83ddd4a64f64e86275d0618cc06512cac43e5e0">SCSI_CMD_WRITE_10</a>                     , .data = <span class="stringliteral">&quot;Write10&quot;</span> }</div>
 <div class="line">}</div>
-<div class="ttc" id="agroup___class_driver___m_s_c___common_html_ggad5f995e6aa7f3c4cf01e369dae83ddd4a117340f6f7e567543b031f4cd311e7b1"><div class="ttname"><a href="group___class_driver___m_s_c___common.html#ggad5f995e6aa7f3c4cf01e369dae83ddd4a117340f6f7e567543b031f4cd311e7b1">SCSI_CMD_TEST_UNIT_READY</a></div><div class="ttdeci">@ SCSI_CMD_TEST_UNIT_READY</div><div class="ttdoc">The SCSI Test Unit Ready command is used to determine if a device is ready to transfer data (read/wri...</div><div class="ttdef"><b>Definition:</b> <a href="msc_8h_source.html#l00120">msc.h:120</a></div></div>
-<div class="ttc" id="agroup___class_driver___m_s_c___common_html_ggad5f995e6aa7f3c4cf01e369dae83ddd4a1c7c2d9842ea20accf2333d2a320f1c4"><div class="ttname"><a href="group___class_driver___m_s_c___common.html#ggad5f995e6aa7f3c4cf01e369dae83ddd4a1c7c2d9842ea20accf2333d2a320f1c4">SCSI_CMD_READ_FORMAT_CAPACITY</a></div><div class="ttdeci">@ SCSI_CMD_READ_FORMAT_CAPACITY</div><div class="ttdoc">The command allows the Host to request a list of the possible format capacities for an installed writ...</div><div class="ttdef"><b>Definition:</b> <a href="msc_8h_source.html#l00128">msc.h:128</a></div></div>
-<div class="ttc" id="agroup___class_driver___m_s_c___common_html_ggad5f995e6aa7f3c4cf01e369dae83ddd4a311251670e970f63bb12d5e936d95761"><div class="ttname"><a href="group___class_driver___m_s_c___common.html#ggad5f995e6aa7f3c4cf01e369dae83ddd4a311251670e970f63bb12d5e936d95761">SCSI_CMD_PREVENT_ALLOW_MEDIUM_REMOVAL</a></div><div class="ttdeci">@ SCSI_CMD_PREVENT_ALLOW_MEDIUM_REMOVAL</div><div class="ttdef"><b>Definition:</b> <a href="msc_8h_source.html#l00125">msc.h:125</a></div></div>
-<div class="ttc" id="agroup___class_driver___m_s_c___common_html_ggad5f995e6aa7f3c4cf01e369dae83ddd4a5cf192d1e89d1553d238f67024d84fd9"><div class="ttname"><a href="group___class_driver___m_s_c___common.html#ggad5f995e6aa7f3c4cf01e369dae83ddd4a5cf192d1e89d1553d238f67024d84fd9">SCSI_CMD_REQUEST_SENSE</a></div><div class="ttdeci">@ SCSI_CMD_REQUEST_SENSE</div><div class="ttdoc">The SCSI Request Sense command is part of the SCSI computer protocol standard. This command is used t...</div><div class="ttdef"><b>Definition:</b> <a href="msc_8h_source.html#l00127">msc.h:127</a></div></div>
-<div class="ttc" id="agroup___class_driver___m_s_c___common_html_ggad5f995e6aa7f3c4cf01e369dae83ddd4a64f64e86275d0618cc06512cac43e5e0"><div class="ttname"><a href="group___class_driver___m_s_c___common.html#ggad5f995e6aa7f3c4cf01e369dae83ddd4a64f64e86275d0618cc06512cac43e5e0">SCSI_CMD_WRITE_10</a></div><div class="ttdeci">@ SCSI_CMD_WRITE_10</div><div class="ttdoc">The WRITE (10) command requests thatthe device server transfer the specified logical block(s) from th...</div><div class="ttdef"><b>Definition:</b> <a href="msc_8h_source.html#l00130">msc.h:130</a></div></div>
-<div class="ttc" id="agroup___class_driver___m_s_c___common_html_ggad5f995e6aa7f3c4cf01e369dae83ddd4a68ae8c502e73b3c6e85b17efbbf7f8d9"><div class="ttname"><a href="group___class_driver___m_s_c___common.html#ggad5f995e6aa7f3c4cf01e369dae83ddd4a68ae8c502e73b3c6e85b17efbbf7f8d9">SCSI_CMD_MODE_SELECT_6</a></div><div class="ttdeci">@ SCSI_CMD_MODE_SELECT_6</div><div class="ttdoc">provides a means for the application client to specify medium, logical unit, or peripheral device par...</div><div class="ttdef"><b>Definition:</b> <a href="msc_8h_source.html#l00122">msc.h:122</a></div></div>
-<div class="ttc" id="agroup___class_driver___m_s_c___common_html_ggad5f995e6aa7f3c4cf01e369dae83ddd4a7a8b5c7b6db011cb6244012e21c02115"><div class="ttname"><a href="group___class_driver___m_s_c___common.html#ggad5f995e6aa7f3c4cf01e369dae83ddd4a7a8b5c7b6db011cb6244012e21c02115">SCSI_CMD_READ_CAPACITY_10</a></div><div class="ttdeci">@ SCSI_CMD_READ_CAPACITY_10</div><div class="ttdoc">The SCSI Read Capacity command is used to obtain data capacity information from a target device.</div><div class="ttdef"><b>Definition:</b> <a href="msc_8h_source.html#l00126">msc.h:126</a></div></div>
-<div class="ttc" id="agroup___class_driver___m_s_c___common_html_ggad5f995e6aa7f3c4cf01e369dae83ddd4a7b9c796eea337b9c3e9b45ca7c2a00c0"><div class="ttname"><a href="group___class_driver___m_s_c___common.html#ggad5f995e6aa7f3c4cf01e369dae83ddd4a7b9c796eea337b9c3e9b45ca7c2a00c0">SCSI_CMD_START_STOP_UNIT</a></div><div class="ttdeci">@ SCSI_CMD_START_STOP_UNIT</div><div class="ttdef"><b>Definition:</b> <a href="msc_8h_source.html#l00124">msc.h:124</a></div></div>
-<div class="ttc" id="agroup___class_driver___m_s_c___common_html_ggad5f995e6aa7f3c4cf01e369dae83ddd4a896bb16014025d5ee9c30767c37bb429"><div class="ttname"><a href="group___class_driver___m_s_c___common.html#ggad5f995e6aa7f3c4cf01e369dae83ddd4a896bb16014025d5ee9c30767c37bb429">SCSI_CMD_READ_10</a></div><div class="ttdeci">@ SCSI_CMD_READ_10</div><div class="ttdoc">The READ (10) command requests that the device server read the specified logical block(s) and transfe...</div><div class="ttdef"><b>Definition:</b> <a href="msc_8h_source.html#l00129">msc.h:129</a></div></div>
-<div class="ttc" id="agroup___class_driver___m_s_c___common_html_ggad5f995e6aa7f3c4cf01e369dae83ddd4ad1eae0b1b180693ce3dc6645d1935152"><div class="ttname"><a href="group___class_driver___m_s_c___common.html#ggad5f995e6aa7f3c4cf01e369dae83ddd4ad1eae0b1b180693ce3dc6645d1935152">SCSI_CMD_MODE_SENSE_6</a></div><div class="ttdeci">@ SCSI_CMD_MODE_SENSE_6</div><div class="ttdoc">provides a means for a device server to report parameters to an application client....</div><div class="ttdef"><b>Definition:</b> <a href="msc_8h_source.html#l00123">msc.h:123</a></div></div>
-<div class="ttc" id="agroup___class_driver___m_s_c___common_html_ggad5f995e6aa7f3c4cf01e369dae83ddd4adaaa451130fe92c126a5a7031de1a25f"><div class="ttname"><a href="group___class_driver___m_s_c___common.html#ggad5f995e6aa7f3c4cf01e369dae83ddd4adaaa451130fe92c126a5a7031de1a25f">SCSI_CMD_INQUIRY</a></div><div class="ttdeci">@ SCSI_CMD_INQUIRY</div><div class="ttdoc">The SCSI Inquiry command is used to obtain basic information from a target device.</div><div class="ttdef"><b>Definition:</b> <a href="msc_8h_source.html#l00121">msc.h:121</a></div></div>
+<div class="ttc" id="amsc_8h_html_ad5f995e6aa7f3c4cf01e369dae83ddd4a117340f6f7e567543b031f4cd311e7b1"><div class="ttname"><a href="msc_8h.html#ad5f995e6aa7f3c4cf01e369dae83ddd4a117340f6f7e567543b031f4cd311e7b1">SCSI_CMD_TEST_UNIT_READY</a></div><div class="ttdeci">@ SCSI_CMD_TEST_UNIT_READY</div><div class="ttdoc">The SCSI Test Unit Ready command is used to determine if a device is ready to transfer data (read/wri...</div><div class="ttdef"><b>Definition:</b> <a href="msc_8h_source.html#l00113">msc.h:113</a></div></div>
+<div class="ttc" id="amsc_8h_html_ad5f995e6aa7f3c4cf01e369dae83ddd4a1c7c2d9842ea20accf2333d2a320f1c4"><div class="ttname"><a href="msc_8h.html#ad5f995e6aa7f3c4cf01e369dae83ddd4a1c7c2d9842ea20accf2333d2a320f1c4">SCSI_CMD_READ_FORMAT_CAPACITY</a></div><div class="ttdeci">@ SCSI_CMD_READ_FORMAT_CAPACITY</div><div class="ttdoc">The command allows the Host to request a list of the possible format capacities for an installed writ...</div><div class="ttdef"><b>Definition:</b> <a href="msc_8h_source.html#l00121">msc.h:121</a></div></div>
+<div class="ttc" id="amsc_8h_html_ad5f995e6aa7f3c4cf01e369dae83ddd4a311251670e970f63bb12d5e936d95761"><div class="ttname"><a href="msc_8h.html#ad5f995e6aa7f3c4cf01e369dae83ddd4a311251670e970f63bb12d5e936d95761">SCSI_CMD_PREVENT_ALLOW_MEDIUM_REMOVAL</a></div><div class="ttdeci">@ SCSI_CMD_PREVENT_ALLOW_MEDIUM_REMOVAL</div><div class="ttdef"><b>Definition:</b> <a href="msc_8h_source.html#l00118">msc.h:118</a></div></div>
+<div class="ttc" id="amsc_8h_html_ad5f995e6aa7f3c4cf01e369dae83ddd4a5cf192d1e89d1553d238f67024d84fd9"><div class="ttname"><a href="msc_8h.html#ad5f995e6aa7f3c4cf01e369dae83ddd4a5cf192d1e89d1553d238f67024d84fd9">SCSI_CMD_REQUEST_SENSE</a></div><div class="ttdeci">@ SCSI_CMD_REQUEST_SENSE</div><div class="ttdoc">The SCSI Request Sense command is part of the SCSI computer protocol standard. This command is used t...</div><div class="ttdef"><b>Definition:</b> <a href="msc_8h_source.html#l00120">msc.h:120</a></div></div>
+<div class="ttc" id="amsc_8h_html_ad5f995e6aa7f3c4cf01e369dae83ddd4a64f64e86275d0618cc06512cac43e5e0"><div class="ttname"><a href="msc_8h.html#ad5f995e6aa7f3c4cf01e369dae83ddd4a64f64e86275d0618cc06512cac43e5e0">SCSI_CMD_WRITE_10</a></div><div class="ttdeci">@ SCSI_CMD_WRITE_10</div><div class="ttdoc">The WRITE (10) command requests thatthe device server transfer the specified logical block(s) from th...</div><div class="ttdef"><b>Definition:</b> <a href="msc_8h_source.html#l00123">msc.h:123</a></div></div>
+<div class="ttc" id="amsc_8h_html_ad5f995e6aa7f3c4cf01e369dae83ddd4a68ae8c502e73b3c6e85b17efbbf7f8d9"><div class="ttname"><a href="msc_8h.html#ad5f995e6aa7f3c4cf01e369dae83ddd4a68ae8c502e73b3c6e85b17efbbf7f8d9">SCSI_CMD_MODE_SELECT_6</a></div><div class="ttdeci">@ SCSI_CMD_MODE_SELECT_6</div><div class="ttdoc">provides a means for the application client to specify medium, logical unit, or peripheral device par...</div><div class="ttdef"><b>Definition:</b> <a href="msc_8h_source.html#l00115">msc.h:115</a></div></div>
+<div class="ttc" id="amsc_8h_html_ad5f995e6aa7f3c4cf01e369dae83ddd4a7a8b5c7b6db011cb6244012e21c02115"><div class="ttname"><a href="msc_8h.html#ad5f995e6aa7f3c4cf01e369dae83ddd4a7a8b5c7b6db011cb6244012e21c02115">SCSI_CMD_READ_CAPACITY_10</a></div><div class="ttdeci">@ SCSI_CMD_READ_CAPACITY_10</div><div class="ttdoc">The SCSI Read Capacity command is used to obtain data capacity information from a target device.</div><div class="ttdef"><b>Definition:</b> <a href="msc_8h_source.html#l00119">msc.h:119</a></div></div>
+<div class="ttc" id="amsc_8h_html_ad5f995e6aa7f3c4cf01e369dae83ddd4a7b9c796eea337b9c3e9b45ca7c2a00c0"><div class="ttname"><a href="msc_8h.html#ad5f995e6aa7f3c4cf01e369dae83ddd4a7b9c796eea337b9c3e9b45ca7c2a00c0">SCSI_CMD_START_STOP_UNIT</a></div><div class="ttdeci">@ SCSI_CMD_START_STOP_UNIT</div><div class="ttdef"><b>Definition:</b> <a href="msc_8h_source.html#l00117">msc.h:117</a></div></div>
+<div class="ttc" id="amsc_8h_html_ad5f995e6aa7f3c4cf01e369dae83ddd4a896bb16014025d5ee9c30767c37bb429"><div class="ttname"><a href="msc_8h.html#ad5f995e6aa7f3c4cf01e369dae83ddd4a896bb16014025d5ee9c30767c37bb429">SCSI_CMD_READ_10</a></div><div class="ttdeci">@ SCSI_CMD_READ_10</div><div class="ttdoc">The READ (10) command requests that the device server read the specified logical block(s) and transfe...</div><div class="ttdef"><b>Definition:</b> <a href="msc_8h_source.html#l00122">msc.h:122</a></div></div>
+<div class="ttc" id="amsc_8h_html_ad5f995e6aa7f3c4cf01e369dae83ddd4ad1eae0b1b180693ce3dc6645d1935152"><div class="ttname"><a href="msc_8h.html#ad5f995e6aa7f3c4cf01e369dae83ddd4ad1eae0b1b180693ce3dc6645d1935152">SCSI_CMD_MODE_SENSE_6</a></div><div class="ttdeci">@ SCSI_CMD_MODE_SENSE_6</div><div class="ttdoc">provides a means for a device server to report parameters to an application client....</div><div class="ttdef"><b>Definition:</b> <a href="msc_8h_source.html#l00116">msc.h:116</a></div></div>
+<div class="ttc" id="amsc_8h_html_ad5f995e6aa7f3c4cf01e369dae83ddd4adaaa451130fe92c126a5a7031de1a25f"><div class="ttname"><a href="msc_8h.html#ad5f995e6aa7f3c4cf01e369dae83ddd4adaaa451130fe92c126a5a7031de1a25f">SCSI_CMD_INQUIRY</a></div><div class="ttdeci">@ SCSI_CMD_INQUIRY</div><div class="ttdoc">The SCSI Inquiry command is used to obtain basic information from a target device.</div><div class="ttdef"><b>Definition:</b> <a href="msc_8h_source.html#l00114">msc.h:114</a></div></div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="msc__device_8c_source.html#l00110">110</a> of file <a class="el" href="msc__device_8c_source.html">msc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="msc__device_8c_source.html#l00205">205</a> of file <a class="el" href="msc__device_8c_source.html">msc_device.c</a>.</p>
 
 </div>
 </div>
-<a id="a974c0c8a69095d136a048465fce33694" name="a974c0c8a69095d136a048465fce33694"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a974c0c8a69095d136a048465fce33694">&#9670;&nbsp;</a></span>_msc_scsi_cmd_table</h2>
+<a id="a576f1b0d1a24f014c022a5eb61f8562b" name="a576f1b0d1a24f014c022a5eb61f8562b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a576f1b0d1a24f014c022a5eb61f8562b">&#9670;&nbsp;</a></span>_msc_scsi_cmd_table</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -565,7 +926,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structtu__lookup__table__t.html">tu_lookup_table_t</a> const _msc_scsi_cmd_table</td>
+          <td class="memname">TU_ATTR_UNUSED <a class="el" href="structtu__lookup__table__t.html">tu_lookup_table_t</a> const _msc_scsi_cmd_table</td>
         </tr>
       </table>
   </td>
@@ -576,12 +937,12 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">=</div>
 <div class="line">{</div>
-<div class="line">  .count = TU_ARRAY_SIZE(<a class="code hl_variable" href="msc__device_8c.html#a2e718208a9d25bfede5d733689695d17">_msc_scsi_cmd_lookup</a>),</div>
-<div class="line">  .items = <a class="code hl_variable" href="msc__device_8c.html#a2e718208a9d25bfede5d733689695d17">_msc_scsi_cmd_lookup</a></div>
+<div class="line">  .count = TU_ARRAY_SIZE(<a class="code hl_variable" href="msc__device_8c.html#abff3dd5583e9253b6b19e110accb9481">_msc_scsi_cmd_lookup</a>),</div>
+<div class="line">  .items = <a class="code hl_variable" href="msc__device_8c.html#abff3dd5583e9253b6b19e110accb9481">_msc_scsi_cmd_lookup</a></div>
 <div class="line">}</div>
-<div class="ttc" id="amsc__device_8c_html_a2e718208a9d25bfede5d733689695d17"><div class="ttname"><a href="msc__device_8c.html#a2e718208a9d25bfede5d733689695d17">_msc_scsi_cmd_lookup</a></div><div class="ttdeci">static tu_lookup_entry_t const _msc_scsi_cmd_lookup[]</div><div class="ttdef"><b>Definition:</b> <a href="msc__device_8c_source.html#l00110">msc_device.c:110</a></div></div>
+<div class="ttc" id="amsc__device_8c_html_abff3dd5583e9253b6b19e110accb9481"><div class="ttname"><a href="msc__device_8c.html#abff3dd5583e9253b6b19e110accb9481">_msc_scsi_cmd_lookup</a></div><div class="ttdeci">static TU_ATTR_UNUSED tu_lookup_entry_t const _msc_scsi_cmd_lookup[]</div><div class="ttdef"><b>Definition:</b> <a href="msc__device_8c_source.html#l00205">msc_device.c:205</a></div></div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="msc__device_8c_source.html#l00125">125</a> of file <a class="el" href="msc__device_8c_source.html">msc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="msc__device_8c_source.html#l00220">220</a> of file <a class="el" href="msc__device_8c_source.html">msc_device.c</a>.</p>
 
 </div>
 </div>
@@ -605,7 +966,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="msc__device_8c_source.html#l00069">69</a> of file <a class="el" href="msc__device_8c_source.html">msc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="msc__device_8c_source.html#l00075">75</a> of file <a class="el" href="msc__device_8c_source.html">msc_device.c</a>.</p>
 
 </div>
 </div>
@@ -629,7 +990,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="msc__device_8c_source.html#l00068">68</a> of file <a class="el" href="msc__device_8c_source.html">msc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="msc__device_8c_source.html#l00074">74</a> of file <a class="el" href="msc__device_8c_source.html">msc_device.c</a>.</p>
 
 </div>
 </div>

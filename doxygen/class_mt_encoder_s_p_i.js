@@ -1,7 +1,8 @@
 var class_mt_encoder_s_p_i =
 [
     [ "MtEncoderSPI_commands", "class_mt_encoder_s_p_i.html#a329693332cff2b8e297684ec86053206", [
-      [ "cspin", "class_mt_encoder_s_p_i.html#a329693332cff2b8e297684ec86053206aed6e177ce34c42177d8faa5a15d65dd0", null ]
+      [ "cspin", "class_mt_encoder_s_p_i.html#a329693332cff2b8e297684ec86053206aed6e177ce34c42177d8faa5a15d65dd0", null ],
+      [ "pos", "class_mt_encoder_s_p_i.html#a329693332cff2b8e297684ec86053206a5e0bdcbddccca4d66d74ba8c1cee1a68", null ]
     ] ],
     [ "MtEncoderSPI", "class_mt_encoder_s_p_i.html#a71e78bf74a37fa7c23104a8bd2c4ad59", null ],
     [ "~MtEncoderSPI", "class_mt_encoder_s_p_i.html#a11d3c1af8564db6226f8dadc00b2a1ba", null ],
@@ -18,16 +19,22 @@ var class_mt_encoder_s_p_i =
     [ "saveFlash", "class_mt_encoder_s_p_i.html#a3f277a29d31711a8f5e02729d8c3aa67", null ],
     [ "setCsPin", "class_mt_encoder_s_p_i.html#addcc0f0ec61500fc50c96ab157d881b8", null ],
     [ "setPos", "class_mt_encoder_s_p_i.html#a5a5463200a5ccb7fc1a8b145e967212a", null ],
+    [ "spiTxRxCompleted", "class_mt_encoder_s_p_i.html#aa865cc761325ee6c2848c71129eb38fa", null ],
     [ "updateAngleStatus", "class_mt_encoder_s_p_i.html#a804408907eeef3713f9ada5c8dda9f3d", null ],
+    [ "updateAngleStatusCb", "class_mt_encoder_s_p_i.html#a3bf67312766807e9d5a3ea59350cff68", null ],
     [ "writeSpi", "class_mt_encoder_s_p_i.html#a682c0e4ea005cf268fbebc7719d68d77", null ],
     [ "cspin", "class_mt_encoder_s_p_i.html#a5614ff7e7d2fd10f1e9e5947ecfb5b76", null ],
-    [ "curAngleInt", "class_mt_encoder_s_p_i.html#a6afc99ce064e61b8a72bef96cbc5ba84", null ],
-    [ "curPos", "class_mt_encoder_s_p_i.html#a636526e19e33147232290b3168485480", null ],
+    [ "curAngleInt", "class_mt_encoder_s_p_i.html#a3a64933311c6fc00ae95fe139c99dd0b", null ],
+    [ "curPos", "class_mt_encoder_s_p_i.html#a3a76ef206f0934e224a4d7bfa568f4a2", null ],
     [ "info", "class_mt_encoder_s_p_i.html#ae74a8cd925c2426d332a536f6ff11039", null ],
     [ "inUse", "class_mt_encoder_s_p_i.html#a4108e5f3c452821897dc31b714eb95ba", null ],
-    [ "lastAngleInt", "class_mt_encoder_s_p_i.html#aa11a7cd7f6b1792f0dbd11472ce21a12", null ],
-    [ "nomag", "class_mt_encoder_s_p_i.html#a9ec78fb169727dbead97c532b60d5518", null ],
+    [ "lastAngleInt", "class_mt_encoder_s_p_i.html#a511bac9b9612648e5f54ba5c14233509", null ],
+    [ "nomag", "class_mt_encoder_s_p_i.html#a8ee4749c5a9871d08ab562530a58d674", null ],
     [ "offset", "class_mt_encoder_s_p_i.html#abed9baeee41e342e8f4bd8c2102be00d", null ],
-    [ "overspeed", "class_mt_encoder_s_p_i.html#ae0673b39fe9e2b9e7921c4bb4d1ea776", null ],
-    [ "rotations", "class_mt_encoder_s_p_i.html#a8d65c1e7f6871c3af05ef2ac75f48e5c", null ]
+    [ "overspeed", "class_mt_encoder_s_p_i.html#a289ebb9039ca44586a126c722e2166bc", null ],
+    [ "rotations", "class_mt_encoder_s_p_i.html#ab0ea6e751feb3c307ae00b938dc62d25", null ],
+    [ "rxbuf", "class_mt_encoder_s_p_i.html#a25ff175f56e5e90ba4366b22f10069b5", null ],
+    [ "txbuf", "class_mt_encoder_s_p_i.html#ad5f9af300b9f7fbb574e31bfe31d220d", null ],
+    [ "updateInProgress", "class_mt_encoder_s_p_i.html#aca75bf0d973ee0a7aedc5776f3207d5b", null ],
+    [ "useDMA", "class_mt_encoder_s_p_i.html#a5aee259ef00c3b1dce496c7ff259af4f", null ]
 ];

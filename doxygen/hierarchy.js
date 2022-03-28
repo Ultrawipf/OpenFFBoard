@@ -2,7 +2,7 @@ var hierarchy =
 [
     [ "__attribute__", "struct____attribute____.html", null ],
     [ "AdcHandler", "class_adc_handler.html", null ],
-    [ "audiod_interface_t", "structaudiod__interface__t.html", null ],
+    [ "audiod_function_t", "structaudiod__function__t.html", null ],
     [ "axis_metric_t", "structaxis__metric__t.html", null ],
     [ "AxisConfig", "struct_axis_config.html", null ],
     [ "AxisFlashAddrs", "struct_axis_flash_addrs.html", null ],
@@ -32,6 +32,7 @@ var hierarchy =
       ] ],
       [ "ButtonSource", "class_button_source.html", [
         [ "LocalButtons", "class_local_buttons.html", null ],
+        [ "PCF8574Buttons", "class_p_c_f8574_buttons.html", null ],
         [ "SPI_Buttons", "class_s_p_i___buttons.html", [
           [ "SPI_Buttons_1", "class_s_p_i___buttons__1.html", null ],
           [ "SPI_Buttons_2", "class_s_p_i___buttons__2.html", null ]
@@ -78,6 +79,7 @@ var hierarchy =
       [ "MotorPWM", "class_motor_p_w_m.html", null ],
       [ "MtEncoderSPI", "class_mt_encoder_s_p_i.html", null ],
       [ "ODriveCAN", "class_o_drive_c_a_n.html", null ],
+      [ "PCF8574Buttons", "class_p_c_f8574_buttons.html", null ],
       [ "SPI_Buttons", "class_s_p_i___buttons.html", null ],
       [ "ShifterAnalog", "class_shifter_analog.html", null ],
       [ "SystemCommands", "class_system_commands.html", null ],
@@ -96,10 +98,12 @@ var hierarchy =
     [ "cpp_freertos::ConditionVariable", "classcpp__freertos_1_1_condition_variable.html", null ],
     [ "Control_t", "struct_control__t.html", null ],
     [ "cpp_freertos::CriticalSection", "classcpp__freertos_1_1_critical_section.html", null ],
+    [ "dfu_state_ctx_t", "structdfu__state__ctx__t.html", null ],
     [ "ecm_notify_struct", "structecm__notify__struct.html", null ],
     [ "effect_gain_t", "structeffect__gain__t.html", null ],
     [ "Error", "class_error.html", null ],
     [ "ErrorHandler", "class_error_handler.html", [
+      [ "Axis", "class_axis.html", null ],
       [ "ErrorPrinter", "class_error_printer.html", null ],
       [ "FFBWheel", "class_f_f_b_wheel.html", null ]
     ] ],
@@ -122,17 +126,32 @@ var hierarchy =
     ] ],
     [ "FastAvg< LEN >", "class_fast_avg.html", null ],
     [ "FFB_Effect", "struct_f_f_b___effect.html", null ],
+    [ "hcd_devtree_info_t", "structhcd__devtree__info__t.html", null ],
     [ "hcd_event_t", "structhcd__event__t.html", null ],
     [ "hidd_interface_t", "structhidd__interface__t.html", null ],
+    [ "hidh_device_t", "structhidh__device__t.html", null ],
     [ "hidh_interface_t", "structhidh__interface__t.html", null ],
+    [ "hub_interface_t", "structhub__interface__t.html", null ],
     [ "hub_port_status_response_t", "structhub__port__status__response__t.html", null ],
     [ "hub_status_response_t", "structhub__status__response__t.html", null ],
+    [ "I2CDevice", "class_i2_c_device.html", [
+      [ "PCF8574", "class_p_c_f8574.html", [
+        [ "PCF8574Buttons", "class_p_c_f8574_buttons.html", null ]
+      ] ]
+    ] ],
+    [ "I2CHandler", "class_i2_c_handler.html", [
+      [ "I2CPort", "class_i2_c_port.html", null ]
+    ] ],
+    [ "ifdef TIM_TMC public TimerHandlerendif", null, [
+      [ "TMC4671", "class_t_m_c4671.html", null ]
+    ] ],
     [ "Ledstruct", "struct_ledstruct.html", null ],
     [ "LocalAnalogConfig", "struct_local_analog_config.html", null ],
     [ "cpp_freertos::LockGuard", "classcpp__freertos_1_1_lock_guard.html", null ],
     [ "cpp_freertos::MemoryPool", "classcpp__freertos_1_1_memory_pool.html", null ],
     [ "metric_t", "structmetric__t.html", null ],
     [ "midid_interface_t", "structmidid__interface__t.html", null ],
+    [ "midid_stream_t", "structmidid__stream__t.html", null ],
     [ "MidiHandler", "class_midi_handler.html", [
       [ "MidiMain", "class_midi_main.html", null ]
     ] ],
@@ -144,6 +163,7 @@ var hierarchy =
       [ "cpp_freertos::MutexRecursive", "classcpp__freertos_1_1_mutex_recursive.html", null ],
       [ "cpp_freertos::MutexStandard", "classcpp__freertos_1_1_mutex_standard.html", null ]
     ] ],
+    [ "ncm_interface_t", "structncm__interface__t.html", null ],
     [ "netd_interface_t", "structnetd__interface__t.html", null ],
     [ "osal_queue_def_t", "structosal__queue__def__t.html", null ],
     [ "OutputPin", "class_output_pin.html", null ],
@@ -162,6 +182,7 @@ var hierarchy =
       [ "TMC4671", "class_t_m_c4671.html", null ],
       [ "VescCAN", "class_vesc_c_a_n.html", null ]
     ] ],
+    [ "PWMConfig", "struct_p_w_m_config.html", null ],
     [ "cpp_freertos::Queue", "classcpp__freertos_1_1_queue.html", [
       [ "cpp_freertos::BinaryQueue", "classcpp__freertos_1_1_binary_queue.html", null ],
       [ "cpp_freertos::Deque", "classcpp__freertos_1_1_deque.html", null ]
@@ -170,7 +191,6 @@ var hierarchy =
       [ "cpp_freertos::ReadWriteLockPreferReader", "classcpp__freertos_1_1_read_write_lock_prefer_reader.html", null ],
       [ "cpp_freertos::ReadWriteLockPreferWriter", "classcpp__freertos_1_1_read_write_lock_prefer_writer.html", null ]
     ] ],
-    [ "RessourceManager", "class_ressource_manager.html", null ],
     [ "rndis_msg_initialize_cmplt_t", "structrndis__msg__initialize__cmplt__t.html", null ],
     [ "rndis_msg_initialize_t", "structrndis__msg__initialize__t.html", null ],
     [ "rndis_msg_keep_alive_t", "structrndis__msg__keep__alive__t.html", null ],
@@ -201,11 +221,13 @@ var hierarchy =
     [ "StatusFlags::StatusFlags_s", "struct_status_flags_1_1_status_flags__s.html", null ],
     [ "cpp_freertos::Tasklet", "classcpp__freertos_1_1_tasklet.html", null ],
     [ "cpp_freertos::Thread", "classcpp__freertos_1_1_thread.html", [
+      [ "CDC_CommandInterface", "class_c_d_c___command_interface.html", null ],
       [ "ErrorPrinter", "class_error_printer.html", null ],
       [ "FFBoardMainCommandThread", "class_f_f_board_main_command_thread.html", null ],
       [ "HID_CommandInterface", "class_h_i_d___command_interface.html", null ],
       [ "ODriveCAN", "class_o_drive_c_a_n.html", null ],
       [ "TMC4671", "class_t_m_c4671.html", null ],
+      [ "TMC4671::TMC_ExternalEncoderUpdateThread", "class_t_m_c4671_1_1_t_m_c___external_encoder_update_thread.html", null ],
       [ "UART_CommandInterface", "class_u_a_r_t___command_interface.html", null ],
       [ "USBdevice", "class_u_s_bdevice.html", null ],
       [ "VescCAN", "class_vesc_c_a_n.html", null ],
@@ -233,22 +255,34 @@ var hierarchy =
     [ "TU_ATTR_PACKED", "struct_t_u___a_t_t_r___p_a_c_k_e_d.html", null ],
     [ "TU_ATTR_PACKED::TU_ATTR_PACKED", "struct_t_u___a_t_t_r___p_a_c_k_e_d_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html", null ],
     [ "usbd_device_t::TU_ATTR_PACKED", "structusbd__device__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html", null ],
+    [ "usbh_dev0_t::TU_ATTR_PACKED", "structusbh__dev0__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html", null ],
+    [ "usbh_device_t::TU_ATTR_PACKED", "structusbh__device__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html", null ],
+    [ "tu_fifo_buffer_info_t", "structtu__fifo__buffer__info__t.html", null ],
     [ "tu_fifo_t", "structtu__fifo__t.html", null ],
     [ "tu_lookup_entry_t", "structtu__lookup__entry__t.html", null ],
     [ "tu_lookup_table_t", "structtu__lookup__table__t.html", null ],
     [ "tu_timeout_t", "structtu__timeout__t.html", null ],
+    [ "tusb_desc_vc_itf_t", "structtusb__desc__vc__itf__t.html", null ],
+    [ "tusb_desc_video_itf_hdr_t", "uniontusb__desc__video__itf__hdr__t.html", null ],
+    [ "tusb_desc_vs_itf_t", "structtusb__desc__vs__itf__t.html", null ],
     [ "UARTDevice", "class_u_a_r_t_device.html", [
       [ "UART_CommandInterface", "class_u_a_r_t___command_interface.html", null ]
     ] ],
     [ "UartHandler", "class_uart_handler.html", [
       [ "UARTPort", "class_u_a_r_t_port.html", null ]
     ] ],
+    [ "USB_OTG_DeviceTypeDef", "struct_u_s_b___o_t_g___device_type_def.html", null ],
+    [ "USB_OTG_GlobalTypeDef", "struct_u_s_b___o_t_g___global_type_def.html", null ],
+    [ "USB_OTG_HostChannelTypeDef", "struct_u_s_b___o_t_g___host_channel_type_def.html", null ],
+    [ "USB_OTG_HostTypeDef", "struct_u_s_b___o_t_g___host_type_def.html", null ],
+    [ "USB_OTG_INEndpointTypeDef", "struct_u_s_b___o_t_g___i_n_endpoint_type_def.html", null ],
+    [ "USB_OTG_OUTEndpointTypeDef", "struct_u_s_b___o_t_g___o_u_t_endpoint_type_def.html", null ],
     [ "usb_string_desc", "structusb__string__desc.html", null ],
     [ "usbd_control_xfer_t", "structusbd__control__xfer__t.html", null ],
     [ "usbd_device_t", "structusbd__device__t.html", null ],
-    [ "usbh_class_driver_t", "structusbh__class__driver__t.html", null ],
     [ "usbh_control_xfer_t", "structusbh__control__xfer__t.html", null ],
-    [ "usbh_hub_t", "structusbh__hub__t.html", null ],
+    [ "usbh_dev0_t", "structusbh__dev0__t.html", null ],
+    [ "usbh_device_t", "structusbh__device__t.html", null ],
     [ "UsbHidHandler", "class_usb_hid_handler.html", [
       [ "FFBWheel", "class_f_f_b_wheel.html", null ],
       [ "HidFFB", "class_hid_f_f_b.html", null ]

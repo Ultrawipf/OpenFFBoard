@@ -127,7 +127,7 @@ $(document).ready(function(){initNavTree('_motor_driver_8h_source.html',''); ini
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="class_motor_driver.html#aacfec8dee7778471057908b02b81dc39">hasIntegratedEncoder</a>(); <span class="comment">// Returns true if the driver has an integrated encoder. If false the axis will pass one to the driver</span></div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="keyword">protected</span>:</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="class_motor_driver.html#ace8bd58b55e5c070c293ef03cc29b79e">   46</a></span>    std::shared_ptr&lt;Encoder&gt; <a class="code hl_variable" href="class_motor_driver.html#ace8bd58b55e5c070c293ef03cc29b79e">drvEncoder</a> = std::make_shared&lt;Encoder&gt;(); <span class="comment">// Dummy encoder</span></div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>};</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
@@ -140,8 +140,8 @@ $(document).ready(function(){initNavTree('_motor_driver_8h_source.html',''); ini
 <div class="ttc" id="a_class_i_ds_8h_html_a79467dc849dd02adbaa4373bbd7aba75a260d8f8b43f68b9903fef207bbe7df02"><div class="ttname"><a href="_class_i_ds_8h.html#a79467dc849dd02adbaa4373bbd7aba75a260d8f8b43f68b9903fef207bbe7df02">ClassType::Motordriver</a></div><div class="ttdeci">@ Motordriver</div></div>
 <div class="ttc" id="a_encoder_8h_html"><div class="ttname"><a href="_encoder_8h.html">Encoder.h</a></div></div>
 <div class="ttc" id="a_persistent_storage_8h_html"><div class="ttname"><a href="_persistent_storage_8h.html">PersistentStorage.h</a></div></div>
-<div class="ttc" id="aclass_choosable_class_html"><div class="ttname"><a href="class_choosable_class.html">ChoosableClass</a></div><div class="ttdef"><b>Definition:</b> <a href="_choosable_class_8h_source.html#l00022">ChoosableClass.h:22</a></div></div>
-<div class="ttc" id="aclass_encoder_html"><div class="ttname"><a href="class_encoder.html">Encoder</a></div><div class="ttdef"><b>Definition:</b> <a href="_encoder_8h_source.html#l00025">Encoder.h:25</a></div></div>
+<div class="ttc" id="aclass_choosable_class_html"><div class="ttname"><a href="class_choosable_class.html">ChoosableClass</a></div><div class="ttdef"><b>Definition:</b> <a href="_choosable_class_8h_source.html#l00024">ChoosableClass.h:24</a></div></div>
+<div class="ttc" id="aclass_encoder_html"><div class="ttname"><a href="class_encoder.html">Encoder</a></div><div class="ttdef"><b>Definition:</b> <a href="_encoder_8h_source.html#l00031">Encoder.h:31</a></div></div>
 <div class="ttc" id="aclass_motor_driver_html"><div class="ttname"><a href="class_motor_driver.html">MotorDriver</a></div><div class="ttdef"><b>Definition:</b> <a href="_motor_driver_8h_source.html#l00018">MotorDriver.h:18</a></div></div>
 <div class="ttc" id="aclass_motor_driver_html_a05c9fc372e3b52d0b317e3be83c0400c"><div class="ttname"><a href="class_motor_driver.html#a05c9fc372e3b52d0b317e3be83c0400c">MotorDriver::setEncoder</a></div><div class="ttdeci">virtual void setEncoder(std::shared_ptr&lt; Encoder &gt; &amp;encoder)</div><div class="ttdef"><b>Definition:</b> <a href="_motor_driver_8h_source.html#l00041">MotorDriver.h:41</a></div></div>
 <div class="ttc" id="aclass_motor_driver_html_a07baeeb52b30dd507b9ba903d7876835"><div class="ttname"><a href="class_motor_driver.html#a07baeeb52b30dd507b9ba903d7876835">MotorDriver::turn</a></div><div class="ttdeci">virtual void turn(int16_t power)</div><div class="ttdef"><b>Definition:</b> <a href="_motor_driver_8cpp_source.html#l00077">MotorDriver.cpp:77</a></div></div>
@@ -159,7 +159,7 @@ $(document).ready(function(){initNavTree('_motor_driver_8h_source.html',''); ini
 <div class="ttc" id="aclass_motor_driver_html_adf44b8e43d09d27344388fc755a7689a"><div class="ttname"><a href="class_motor_driver.html#adf44b8e43d09d27344388fc755a7689a">MotorDriver::getEncoder</a></div><div class="ttdeci">virtual Encoder * getEncoder()</div><div class="ttdef"><b>Definition:</b> <a href="_motor_driver_8cpp_source.html#l00098">MotorDriver.cpp:98</a></div></div>
 <div class="ttc" id="aclass_motor_driver_html_aef624f5da2b1644823052cc80ac218bd"><div class="ttname"><a href="class_motor_driver.html#aef624f5da2b1644823052cc80ac218bd">MotorDriver::stopMotor</a></div><div class="ttdeci">virtual void stopMotor()</div><div class="ttdef"><b>Definition:</b> <a href="_motor_driver_8cpp_source.html#l00090">MotorDriver.cpp:90</a></div></div>
 <div class="ttc" id="acppmain_8h_html"><div class="ttname"><a href="cppmain_8h.html">cppmain.h</a></div></div>
-<div class="ttc" id="astruct_class_identifier_html"><div class="ttname"><a href="struct_class_identifier.html">ClassIdentifier</a></div><div class="ttdef"><b>Definition:</b> <a href="_choosable_class_8h_source.html#l00013">ChoosableClass.h:13</a></div></div>
+<div class="ttc" id="astruct_class_identifier_html"><div class="ttname"><a href="struct_class_identifier.html">ClassIdentifier</a></div><div class="ttdef"><b>Definition:</b> <a href="_choosable_class_8h_source.html#l00015">ChoosableClass.h:15</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

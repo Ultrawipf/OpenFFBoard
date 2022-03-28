@@ -85,7 +85,6 @@ $(document).ready(function(){initNavTree('dfu__rt__device_8h.html',''); initResi
 
 <div class="header">
   <div class="summary">
-<a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">dfu_rt_device.h File Reference</div></div>
@@ -94,16 +93,8 @@ $(document).ready(function(){initNavTree('dfu__rt__device_8h.html',''); initResi
 
 <p><a href="dfu__rt__device_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
-Enumerations</h2></td></tr>
-<tr class="memitem:a37c9cfb22efe8e280af662ace4330a3e"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dfu__rt__device_8h.html#a37c9cfb22efe8e280af662ace4330a3e">dfu_descriptor_type_t</a> { <a class="el" href="dfu__rt__device_8h.html#a37c9cfb22efe8e280af662ace4330a3ea104febb2c4ae0a2bdd3a326681489f29">DFU_DESC_FUNCTIONAL</a> = 0x21
- }</td></tr>
-<tr class="separator:a37c9cfb22efe8e280af662ace4330a3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ac6db4a6f0b68b49168e88cf4329e4097"><td class="memItemLeft" align="right" valign="top">TU_ATTR_WEAK void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dfu__rt__device_8h.html#ac6db4a6f0b68b49168e88cf4329e4097">tud_dfu_runtime_reboot_to_dfu_cb</a> (void)</td></tr>
-<tr class="separator:ac6db4a6f0b68b49168e88cf4329e4097"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8499f1800cdf006232688c012d221782"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dfu__rt__device_8h.html#a8499f1800cdf006232688c012d221782">dfu_rtd_init</a> (void)</td></tr>
 <tr class="separator:a8499f1800cdf006232688c012d221782"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb7ff83e93d3486fde41980854ac381a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dfu__rt__device_8h.html#afb7ff83e93d3486fde41980854ac381a">dfu_rtd_reset</a> (uint8_t rhport)</td></tr>
@@ -112,34 +103,12 @@ Functions</h2></td></tr>
 <tr class="separator:a93b6d88234bb594402077150be2bf2dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeb6815f3f2d7326b525e62ad472ef0ae"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dfu__rt__device_8h.html#aeb6815f3f2d7326b525e62ad472ef0ae">dfu_rtd_control_xfer_cb</a> (uint8_t rhport, uint8_t stage, <a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *request)</td></tr>
 <tr class="separator:aeb6815f3f2d7326b525e62ad472ef0ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa9d58f5f40be9f5bed963759f395b312"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dfu__rt__device_8h.html#aa9d58f5f40be9f5bed963759f395b312">dfu_rtd_xfer_cb</a> (uint8_t rhport, uint8_t ep_addr, <a class="el" href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a> event, uint32_t xferred_bytes)</td></tr>
-<tr class="separator:aa9d58f5f40be9f5bed963759f395b312"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:aaa53ca0b650dfd85c4f59fa156f7a2cc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dfu__rt__device_8h.html#aaa53ca0b650dfd85c4f59fa156f7a2cc">C</a></td></tr>
 <tr class="separator:aaa53ca0b650dfd85c4f59fa156f7a2cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Enumeration Type Documentation</h2>
-<a id="a37c9cfb22efe8e280af662ace4330a3e" name="a37c9cfb22efe8e280af662ace4330a3e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a37c9cfb22efe8e280af662ace4330a3e">&#9670;&nbsp;</a></span>dfu_descriptor_type_t</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="dfu__rt__device_8h.html#a37c9cfb22efe8e280af662ace4330a3e">dfu_descriptor_type_t</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a37c9cfb22efe8e280af662ace4330a3ea104febb2c4ae0a2bdd3a326681489f29" name="a37c9cfb22efe8e280af662ace4330a3ea104febb2c4ae0a2bdd3a326681489f29"></a>DFU_DESC_FUNCTIONAL&#160;</td><td class="fielddoc"></td></tr>
-</table>
-
-<p class="definition">Definition at line <a class="el" href="dfu__rt__device_8h_source.html#l00050">50</a> of file <a class="el" href="dfu__rt__device_8h_source.html">dfu_rt_device.h</a>.</p>
-
-</div>
-</div>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="aeb6815f3f2d7326b525e62ad472ef0ae" name="aeb6815f3f2d7326b525e62ad472ef0ae"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aeb6815f3f2d7326b525e62ad472ef0ae">&#9670;&nbsp;</a></span>dfu_rtd_control_xfer_cb()</h2>
@@ -173,7 +142,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dfu__rt__device_8c_source.html#l00091">91</a> of file <a class="el" href="dfu__rt__device_8c_source.html">dfu_rt_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dfu__rt__device_8c_source.html#l00080">80</a> of file <a class="el" href="dfu__rt__device_8c_source.html">dfu_rt_device.c</a>.</p>
 
 </div>
 </div>
@@ -193,7 +162,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dfu__rt__device_8c_source.html#l00058">58</a> of file <a class="el" href="dfu__rt__device_8c_source.html">dfu_rt_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dfu__rt__device_8c_source.html#l00047">47</a> of file <a class="el" href="dfu__rt__device_8c_source.html">dfu_rt_device.c</a>.</p>
 
 </div>
 </div>
@@ -229,7 +198,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dfu__rt__device_8c_source.html#l00067">67</a> of file <a class="el" href="dfu__rt__device_8c_source.html">dfu_rt_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dfu__rt__device_8c_source.html#l00056">56</a> of file <a class="el" href="dfu__rt__device_8c_source.html">dfu_rt_device.c</a>.</p>
 
 </div>
 </div>
@@ -249,67 +218,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dfu__rt__device_8c_source.html#l00062">62</a> of file <a class="el" href="dfu__rt__device_8c_source.html">dfu_rt_device.c</a>.</p>
-
-</div>
-</div>
-<a id="aa9d58f5f40be9f5bed963759f395b312" name="aa9d58f5f40be9f5bed963759f395b312"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa9d58f5f40be9f5bed963759f395b312">&#9670;&nbsp;</a></span>dfu_rtd_xfer_cb()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool dfu_rtd_xfer_cb </td>
-          <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>rhport</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>ep_addr</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a>&#160;</td>
-          <td class="paramname"><em>event</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>xferred_bytes</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="dfu__rt__device_8c_source.html#l00130">130</a> of file <a class="el" href="dfu__rt__device_8c_source.html">dfu_rt_device.c</a>.</p>
-
-</div>
-</div>
-<a id="ac6db4a6f0b68b49168e88cf4329e4097" name="ac6db4a6f0b68b49168e88cf4329e4097"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac6db4a6f0b68b49168e88cf4329e4097">&#9670;&nbsp;</a></span>tud_dfu_runtime_reboot_to_dfu_cb()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">TU_ATTR_WEAK void tud_dfu_runtime_reboot_to_dfu_cb </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
+<p class="definition">Definition at line <a class="el" href="dfu__rt__device_8c_source.html#l00051">51</a> of file <a class="el" href="dfu__rt__device_8c_source.html">dfu_rt_device.c</a>.</p>
 
 </div>
 </div>
@@ -340,13 +249,7 @@ Variables</h2></td></tr>
 <div class="line"> </div>
 <div class="line"> </div>
 <div class="line"> </div>
-<div class="line"> </div>
-<div class="line"> </div>
-<div class="line"><span class="keyword">typedef</span> <span class="keyword">enum</span></div>
-<div class="line">{</div>
-<div class="line">  DFU_PROTOCOL_RT  = 1,</div>
-<div class="line">  DFU_PROTOCOL_DFU = 2,</div>
-<div class="line">} dfu_protocol_type_t</div>
+<div class="line"><span class="keywordtype">void</span> tud_dfu_runtime_reboot_to_dfu_cb(<span class="keywordtype">void</span>)</div>
 </div><!-- fragment -->
 </div>
 </div>

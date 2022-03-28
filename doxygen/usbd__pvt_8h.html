@@ -107,8 +107,10 @@ Functions</h2></td></tr>
 <tr class="separator:a406b8e3f5527c4ca9b545e538b4181e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f04a6c0936ebf2d3015103dbd83153d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbd__pvt_8h.html#a2f04a6c0936ebf2d3015103dbd83153d">usbd_edpt_close</a> (uint8_t rhport, uint8_t ep_addr)</td></tr>
 <tr class="separator:a2f04a6c0936ebf2d3015103dbd83153d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a381b55ad6eadb2bad7f95e2286dc50c9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbd__pvt_8h.html#a381b55ad6eadb2bad7f95e2286dc50c9">usbd_edpt_xfer</a> (uint8_t rhport, uint8_t ep_addr, uint8_t *buffer, uint16_t total_bytes)</td></tr>
+<tr class="memitem:a381b55ad6eadb2bad7f95e2286dc50c9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbd__pvt_8h.html#a381b55ad6eadb2bad7f95e2286dc50c9">usbd_edpt_xfer</a> (uint8_t rhport, uint8_t ep_addr, uint8_t *<a class="el" href="midi__device_8h.html#ac8733c58bc671239139641960e2d5dbf">buffer</a>, uint16_t total_bytes)</td></tr>
 <tr class="separator:a381b55ad6eadb2bad7f95e2286dc50c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa187a0c3c24f8800f83bf5ae0220f914"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbd__pvt_8h.html#aa187a0c3c24f8800f83bf5ae0220f914">usbd_edpt_xfer_fifo</a> (uint8_t rhport, uint8_t ep_addr, <a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *ff, uint16_t total_bytes)</td></tr>
+<tr class="separator:aa187a0c3c24f8800f83bf5ae0220f914"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4f431bf6b81bd35cbf67d79f5c53f8bd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbd__pvt_8h.html#a4f431bf6b81bd35cbf67d79f5c53f8bd">usbd_edpt_claim</a> (uint8_t rhport, uint8_t ep_addr)</td></tr>
 <tr class="separator:a4f431bf6b81bd35cbf67d79f5c53f8bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7cdd51abb7658b1193a73471ee18d860"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbd__pvt_8h.html#a7cdd51abb7658b1193a73471ee18d860">usbd_edpt_release</a> (uint8_t rhport, uint8_t ep_addr)</td></tr>
@@ -121,8 +123,8 @@ Functions</h2></td></tr>
 <tr class="separator:a2acfc7062ccd10892583c6c674e27757"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:add02f4f5fa20f430941140616956d748"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbd__pvt_8h.html#add02f4f5fa20f430941140616956d748">usbd_edpt_stalled</a> (uint8_t rhport, uint8_t ep_addr)</td></tr>
 <tr class="separator:add02f4f5fa20f430941140616956d748"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af21e9ce32de122fba2b80b3fb7126980"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbd__pvt_8h.html#af21e9ce32de122fba2b80b3fb7126980">usbd_edpt_ready</a> (uint8_t rhport, uint8_t ep_addr)</td></tr>
-<tr class="separator:af21e9ce32de122fba2b80b3fb7126980"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a03962717ebe763d44d0193ea18bcf4fd"><td class="memItemLeft" align="right" valign="top">static TU_ATTR_ALWAYS_INLINE bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbd__pvt_8h.html#a03962717ebe763d44d0193ea18bcf4fd">usbd_edpt_ready</a> (uint8_t rhport, uint8_t ep_addr)</td></tr>
+<tr class="separator:a03962717ebe763d44d0193ea18bcf4fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a95c40a7c8eeb1717a3b58a0af255f5ab"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbd__pvt_8h.html#a95c40a7c8eeb1717a3b58a0af255f5ab">usbd_open_edpt_pair</a> (uint8_t rhport, uint8_t const *p_desc, uint8_t ep_count, uint8_t xfer_type, uint8_t *ep_out, uint8_t *ep_in)</td></tr>
 <tr class="separator:a95c40a7c8eeb1717a3b58a0af255f5ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a54e631ffb1c448121351e58e5c966ddc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbd__pvt_8h.html#a54e631ffb1c448121351e58e5c966ddc">usbd_defer_func</a> (osal_task_func_t func, void *param, bool in_isr)</td></tr>
@@ -146,7 +148,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbd__pvt_8h_source.html#l00060">60</a> of file <a class="el" href="usbd__pvt_8h_source.html">usbd_pvt.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd__pvt_8h_source.html#l00059">59</a> of file <a class="el" href="usbd__pvt_8h_source.html">usbd_pvt.h</a>.</p>
 
 </div>
 </div>
@@ -201,7 +203,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l01106">1106</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l01201">1201</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 
 </div>
 </div>
@@ -231,7 +233,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l01244">1244</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l01346">1346</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 
 </div>
 </div>
@@ -261,7 +263,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l01162">1162</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l01227">1227</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 
 </div>
 </div>
@@ -291,7 +293,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l01264">1264</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l01372">1372</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 
 </div>
 </div>
@@ -323,7 +325,7 @@ Variables</h2></td></tr>
 <p >usbd_edpt_close will disable an endpoint.</p>
 <p >In progress transfers on this EP may be delivered after this call. </p>
 
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l01290">1290</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l01403">1403</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 
 </div>
 </div>
@@ -353,12 +355,12 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l01124">1124</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l01219">1219</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 
 </div>
 </div>
-<a id="af21e9ce32de122fba2b80b3fb7126980" name="af21e9ce32de122fba2b80b3fb7126980"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af21e9ce32de122fba2b80b3fb7126980">&#9670;&nbsp;</a></span>usbd_edpt_ready()</h2>
+<a id="a03962717ebe763d44d0193ea18bcf4fd" name="a03962717ebe763d44d0193ea18bcf4fd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a03962717ebe763d44d0193ea18bcf4fd">&#9670;&nbsp;</a></span>usbd_edpt_ready()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -367,7 +369,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static bool usbd_edpt_ready </td>
+          <td class="memname">static TU_ATTR_ALWAYS_INLINE bool usbd_edpt_ready </td>
           <td>(</td>
           <td class="paramtype">uint8_t&#160;</td>
           <td class="paramname"><em>rhport</em>, </td>
@@ -391,7 +393,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbd__pvt_8h_source.html#l00095">95</a> of file <a class="el" href="usbd__pvt_8h_source.html">usbd_pvt.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd__pvt_8h_source.html#l00098">98</a> of file <a class="el" href="usbd__pvt_8h_source.html">usbd_pvt.h</a>.</p>
 
 </div>
 </div>
@@ -421,7 +423,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l01190">1190</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l01257">1257</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 
 </div>
 </div>
@@ -451,7 +453,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l01254">1254</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l01356">1356</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 
 </div>
 </div>
@@ -481,7 +483,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l01274">1274</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l01387">1387</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 
 </div>
 </div>
@@ -523,7 +525,49 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l01215">1215</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l01282">1282</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+
+</div>
+</div>
+<a id="aa187a0c3c24f8800f83bf5ae0220f914" name="aa187a0c3c24f8800f83bf5ae0220f914"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa187a0c3c24f8800f83bf5ae0220f914">&#9670;&nbsp;</a></span>usbd_edpt_xfer_fifo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool usbd_edpt_xfer_fifo </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>rhport</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>ep_addr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *&#160;</td>
+          <td class="paramname"><em>ff</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>total_bytes</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l01317">1317</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 
 </div>
 </div>
@@ -577,7 +621,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l01082">1082</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l01177">1177</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 
 </div>
 </div>
@@ -618,13 +662,13 @@ Variables</h2></td></tr>
 <div class="line">  void     (* reset            ) (uint8_t rhport);</div>
 <div class="line">  uint16_t (* open             ) (uint8_t rhport, <a class="code hl_struct" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html">tusb_desc_interface_t</a> <span class="keyword">const</span> * desc_intf, uint16_t max_len);</div>
 <div class="line">  bool     (* control_xfer_cb  ) (uint8_t rhport, uint8_t stage, <a class="code hl_struct" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html">tusb_control_request_t</a> <span class="keyword">const</span> * <a class="code hl_enumvalue" href="_hid_command_interface_8h.html#a3f333b1c841dda37afbc4c28598a6fc5a10573b873d2fa5a365d558a45e328e47">request</a>);</div>
-<div class="line">  bool     (* xfer_cb          ) (uint8_t rhport, uint8_t ep_addr, <a class="code hl_enumeration" href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a> event, uint32_t xferred_bytes);</div>
+<div class="line">  bool     (* xfer_cb          ) (uint8_t rhport, uint8_t ep_addr, <a class="code hl_enumeration" href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a> result, uint32_t xferred_bytes);</div>
 <div class="line">  void     (* sof              ) (uint8_t rhport); </div>
 <div class="line">} usbd_class_driver_t</div>
 <div class="ttc" id="a_command_handler_8h_html_a13a18e5b49561a2f007205dc0afeea14ab068931cc450442b63f5b3d276ea4297"><div class="ttname"><a href="_command_handler_8h.html#a13a18e5b49561a2f007205dc0afeea14ab068931cc450442b63f5b3d276ea4297">CommandHandlerCommands::name</a></div><div class="ttdeci">@ name</div></div>
 <div class="ttc" id="a_hid_command_interface_8h_html_a3f333b1c841dda37afbc4c28598a6fc5a10573b873d2fa5a365d558a45e328e47"><div class="ttname"><a href="_hid_command_interface_8h.html#a3f333b1c841dda37afbc4c28598a6fc5a10573b873d2fa5a365d558a45e328e47">HidCmdType::request</a></div><div class="ttdeci">@ request</div></div>
-<div class="ttc" id="agroup___u_s_b_def___type_html_ga6a3b3a4d6801fd9b02feb0510c84e5f9"><div class="ttname"><a href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a></div><div class="ttdeci">xfer_result_t</div><div class="ttdef"><b>Definition:</b> <a href="tusb__types_8h_source.html#l00222">tusb_types.h:223</a></div></div>
-<div class="ttc" id="astruct_t_u___a_t_t_r___p_a_c_k_e_d_html"><div class="ttname"><a href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html">TU_ATTR_PACKED</a></div><div class="ttdoc">AUDIO Channel Cluster Descriptor (4.1)</div><div class="ttdef"><b>Definition:</b> <a href="audio_8h_source.html#l00675">audio.h:675</a></div></div>
+<div class="ttc" id="agroup___u_s_b_def___type_html_ga6a3b3a4d6801fd9b02feb0510c84e5f9"><div class="ttname"><a href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a></div><div class="ttdeci">xfer_result_t</div><div class="ttdef"><b>Definition:</b> <a href="tusb__types_8h_source.html#l00234">tusb_types.h:235</a></div></div>
+<div class="ttc" id="astruct_t_u___a_t_t_r___p_a_c_k_e_d_html"><div class="ttname"><a href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html">TU_ATTR_PACKED</a></div><div class="ttdoc">AUDIO Channel Cluster Descriptor (4.1)</div><div class="ttdef"><b>Definition:</b> <a href="audio_8h_source.html#l00647">audio.h:647</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

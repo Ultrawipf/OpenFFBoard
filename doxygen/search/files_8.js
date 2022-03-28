@@ -1,9 +1,7 @@
 var searchData=
 [
-  ['ledeffects_2ecpp_0',['ledEffects.cpp',['../led_effects_8cpp.html',1,'']]],
-  ['ledeffects_2eh_1',['ledEffects.h',['../led_effects_8h.html',1,'']]],
-  ['localanalog_2ecpp_2',['LocalAnalog.cpp',['../_local_analog_8cpp.html',1,'']]],
-  ['localanalog_2eh_3',['LocalAnalog.h',['../_local_analog_8h.html',1,'']]],
-  ['localbuttons_2ecpp_4',['LocalButtons.cpp',['../_local_buttons_8cpp.html',1,'']]],
-  ['localbuttons_2eh_5',['LocalButtons.h',['../_local_buttons_8h.html',1,'']]]
+  ['i2c_2ecpp_0',['I2C.cpp',['../_i2_c_8cpp.html',1,'']]],
+  ['i2c_2eh_1',['I2C.h',['../_i2_c_8h.html',1,'']]],
+  ['i2chandler_2ecpp_2',['I2CHandler.cpp',['../_i2_c_handler_8cpp.html',1,'']]],
+  ['i2chandler_2eh_3',['I2CHandler.h',['../_i2_c_handler_8h.html',1,'']]]
 ];

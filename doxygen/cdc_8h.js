@@ -5,7 +5,7 @@ var cdc_8h =
     [ "cdc_desc_func_call_management_t", "group___class_driver___c_d_c.html#ga9c2316cc9387902bc6829371681ecb7e", null ],
     [ "cdc_desc_func_country_selection_t", "group___class_driver___c_d_c.html#gada28612e6eed79ce8bb7eebae906c862", null ],
     [ "cdc_desc_func_direct_line_management_t", "group___class_driver___c_d_c.html#ga578759e6090c0c573a41e90073f8325c", null ],
-    [ "cdc_desc_func_header_t", "group___class_driver___c_d_c.html#ga962bf7d2acd2c818cc5df8e35768de2d", null ],
+    [ "cdc_desc_func_header_t", "group___class_driver___c_d_c.html#ga10454e4ad18fc79f987782e093bf1bf5", null ],
     [ "cdc_desc_func_telephone_call_state_reporting_capabilities_t", "group___class_driver___c_d_c.html#ga481dd61a34b5d619f6b1e0b3689ac5e1", null ],
     [ "cdc_desc_func_telephone_operational_modes_t", "group___class_driver___c_d_c.html#ga13e71c506886bbaa54ad59c0537df59b", null ],
     [ "cdc_desc_func_telephone_ringer_t", "group___class_driver___c_d_c.html#ga86b1dd34e55382ce7ccb324309b7b6d7", null ],
@@ -34,7 +34,8 @@ var cdc_8h =
       [ "CDC_COMM_SUBCLASS_DEVICE_MANAGEMENT", "group___class_driver___c_d_c.html#gga48d58906ad33c9e53b2f7d6306ebced2a1ab397664d53650924f82bf7f544a022", null ],
       [ "CDC_COMM_SUBCLASS_MOBILE_DIRECT_LINE_MODEL", "group___class_driver___c_d_c.html#gga48d58906ad33c9e53b2f7d6306ebced2ad7bbd7b736e44f78d01b7d6c5619e02d", null ],
       [ "CDC_COMM_SUBCLASS_OBEX", "group___class_driver___c_d_c.html#gga48d58906ad33c9e53b2f7d6306ebced2a4f62590243217cb0f179a403294da287", null ],
-      [ "CDC_COMM_SUBCLASS_ETHERNET_EMULATION_MODEL", "group___class_driver___c_d_c.html#gga48d58906ad33c9e53b2f7d6306ebced2ae2377f76c14d05a20d125367a770bf42", null ]
+      [ "CDC_COMM_SUBCLASS_ETHERNET_EMULATION_MODEL", "group___class_driver___c_d_c.html#gga48d58906ad33c9e53b2f7d6306ebced2ae2377f76c14d05a20d125367a770bf42", null ],
+      [ "CDC_COMM_SUBCLASS_NETWORK_CONTROL_MODEL", "group___class_driver___c_d_c.html#gga48d58906ad33c9e53b2f7d6306ebced2a0c223c461f13203bf8340815ca598e05", null ]
     ] ],
     [ "cdc_data_protocol_type_t", "group___class_driver___c_d_c.html#ga020ae63208fc27e10bf15c6d06186b33", [
       [ "CDC_DATA_PROTOCOL_ISDN_BRI", "group___class_driver___c_d_c.html#gga020ae63208fc27e10bf15c6d06186b33a8e0ec24598741f079b504d1f34f88018", null ],
@@ -76,7 +77,8 @@ var cdc_8h =
       [ "CDC_FUNC_DESC_COMMAND_SET", "group___class_driver___c_d_c.html#ggae6a80ac81974bf75a55eeda33f6abfbda65a7bae418d86989c1b00d8f0b0519f4", null ],
       [ "CDC_FUNC_DESC_COMMAND_SET_DETAIL", "group___class_driver___c_d_c.html#ggae6a80ac81974bf75a55eeda33f6abfbda2a3255421bce28cf07ec766cb73c35fe", null ],
       [ "CDC_FUNC_DESC_TELEPHONE_CONTROL_MODEL", "group___class_driver___c_d_c.html#ggae6a80ac81974bf75a55eeda33f6abfbda1618ae01b07313192ff4aba1225e48a9", null ],
-      [ "CDC_FUNC_DESC_OBEX_SERVICE_IDENTIFIER", "group___class_driver___c_d_c.html#ggae6a80ac81974bf75a55eeda33f6abfbda02390b1fea65d825e4e29e011a4d31de", null ]
+      [ "CDC_FUNC_DESC_OBEX_SERVICE_IDENTIFIER", "group___class_driver___c_d_c.html#ggae6a80ac81974bf75a55eeda33f6abfbda02390b1fea65d825e4e29e011a4d31de", null ],
+      [ "CDC_FUNC_DESC_NCM", "group___class_driver___c_d_c.html#ggae6a80ac81974bf75a55eeda33f6abfbdaf2eeabd9f5d31cf328041e424f54794f", null ]
     ] ],
     [ "cdc_management_request_t", "group___class_driver___c_d_c.html#ga2a389fb44d9e4275e44370e34303476f", [
       [ "CDC_REQUEST_SEND_ENCAPSULATED_COMMAND", "group___class_driver___c_d_c.html#gga2a389fb44d9e4275e44370e34303476fa8088573b5b7b4c544af1f84f258fb7be", null ],
@@ -117,15 +119,15 @@ var cdc_8h =
       [ "CDC_REQUEST_MDLM_SEMANTIC_MODEL", "group___class_driver___c_d_c.html#gga2a389fb44d9e4275e44370e34303476fa5a5fb5bb388bdca5c3820caa7ab9ed28", null ]
     ] ],
     [ "cdc_notification_request_t", "group___class_driver___c_d_c.html#gafe51e6ac2b0028e0d33de1cbb4739e6f", [
-      [ "NETWORK_CONNECTION", "group___class_driver___c_d_c.html#ggafe51e6ac2b0028e0d33de1cbb4739e6faa146d594ca0988d95fd3bd88efdc8ec0", null ],
-      [ "RESPONSE_AVAILABLE", "group___class_driver___c_d_c.html#ggafe51e6ac2b0028e0d33de1cbb4739e6fa4fa6052a18b9742a8c5a321434a11fab", null ],
-      [ "AUX_JACK_HOOK_STATE", "group___class_driver___c_d_c.html#ggafe51e6ac2b0028e0d33de1cbb4739e6fafe4ed25efa0f560ebbf39c3357a77844", null ],
-      [ "RING_DETECT", "group___class_driver___c_d_c.html#ggafe51e6ac2b0028e0d33de1cbb4739e6faa656b09593945174eccd36c41a7ac647", null ],
-      [ "SERIAL_STATE", "group___class_driver___c_d_c.html#ggafe51e6ac2b0028e0d33de1cbb4739e6fa6c3a1b1df6a17c7a48fbff9b32c2cbc0", null ],
-      [ "CALL_STATE_CHANGE", "group___class_driver___c_d_c.html#ggafe51e6ac2b0028e0d33de1cbb4739e6fa3c1e8630d77b0ad9a633da8f2617d14a", null ],
-      [ "LINE_STATE_CHANGE", "group___class_driver___c_d_c.html#ggafe51e6ac2b0028e0d33de1cbb4739e6faa003e0c594b69642e2b3e4af9a5a938e", null ],
-      [ "CONNECTION_SPEED_CHANGE", "group___class_driver___c_d_c.html#ggafe51e6ac2b0028e0d33de1cbb4739e6fa396f8875eac6a9948fd4e5ae378cd093", null ],
-      [ "MDLM_SEMANTIC_MODEL_NOTIFICATION", "group___class_driver___c_d_c.html#ggafe51e6ac2b0028e0d33de1cbb4739e6fa90522e4b2f6bdd460a65a5cae516a0d3", null ]
+      [ "CDC_NOTIF_NETWORK_CONNECTION", "group___class_driver___c_d_c.html#ggafe51e6ac2b0028e0d33de1cbb4739e6faa7f55445fb36a3c8358d280ff3f9dee9", null ],
+      [ "CDC_NOTIF_RESPONSE_AVAILABLE", "group___class_driver___c_d_c.html#ggafe51e6ac2b0028e0d33de1cbb4739e6fabbe24715cae0c1004cc7a83146304dc3", null ],
+      [ "CDC_NOTIF_AUX_JACK_HOOK_STATE", "group___class_driver___c_d_c.html#ggafe51e6ac2b0028e0d33de1cbb4739e6fad2dec2c26a395e493b6e33d673c3b26f", null ],
+      [ "CDC_NOTIF_RING_DETECT", "group___class_driver___c_d_c.html#ggafe51e6ac2b0028e0d33de1cbb4739e6faba44f9d81dd558bc4def3631f63832b8", null ],
+      [ "CDC_NOTIF_SERIAL_STATE", "group___class_driver___c_d_c.html#ggafe51e6ac2b0028e0d33de1cbb4739e6fa792b5696c9efbd6662ac9b1d4e3424dd", null ],
+      [ "CDC_NOTIF_CALL_STATE_CHANGE", "group___class_driver___c_d_c.html#ggafe51e6ac2b0028e0d33de1cbb4739e6faa51bccb30cb8fee5ea08a3f693008b51", null ],
+      [ "CDC_NOTIF_LINE_STATE_CHANGE", "group___class_driver___c_d_c.html#ggafe51e6ac2b0028e0d33de1cbb4739e6fafe3f502a044613d222761f20417b8759", null ],
+      [ "CDC_NOTIF_CONNECTION_SPEED_CHANGE", "group___class_driver___c_d_c.html#ggafe51e6ac2b0028e0d33de1cbb4739e6fa1fa0f5a08ce0cea5641708d10dcdb320", null ],
+      [ "CDC_NOTIF_MDLM_SEMANTIC_MODEL_NOTIFICATION", "group___class_driver___c_d_c.html#ggafe51e6ac2b0028e0d33de1cbb4739e6fac66c90f1c309867da2135ddaf2a54b26", null ]
     ] ],
     [ "cdc_functional_desc_typeof", "group___class_driver___c_d_c.html#gade837ca5a3595c03ce64204ab78b8f28", null ],
     [ "TU_VERIFY_STATIC", "group___class_driver___c_d_c.html#ga1f1cbb9b6df240ce5645f04dfa09f1d9", null ],

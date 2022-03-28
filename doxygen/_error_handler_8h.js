@@ -17,6 +17,9 @@ var _error_handler_8h =
       [ "overtemp", "_error_handler_8h.html#a6f3b1ba4fbf4167d3a58b0b331ddcfefa5f70813d126d15d6e3d68ec7ee5f547c", null ],
       [ "encoderAlignmentFailed", "_error_handler_8h.html#a6f3b1ba4fbf4167d3a58b0b331ddcfefada8d080f9ba3ccb69fc4ce6dbbe85c21", null ],
       [ "adcCalibrationError", "_error_handler_8h.html#a6f3b1ba4fbf4167d3a58b0b331ddcfefac578babf71b6394c7a21b677f9440647", null ],
+      [ "tmcCalibFail", "_error_handler_8h.html#a6f3b1ba4fbf4167d3a58b0b331ddcfefa93009cd83f59eb3b2fc367b810c34834", null ],
+      [ "encoderIndexMissed", "_error_handler_8h.html#a6f3b1ba4fbf4167d3a58b0b331ddcfefaebfcc08e784297ec13745b3bcd78297d", null ],
+      [ "encoderReversed", "_error_handler_8h.html#a6f3b1ba4fbf4167d3a58b0b331ddcfefa826e9a2980c45471542681f61ff35053", null ],
       [ "axisOutOfRange", "_error_handler_8h.html#a6f3b1ba4fbf4167d3a58b0b331ddcfefa30ebab90be35958a8cb1987ba7ec5ff4", null ]
     ] ],
     [ "ErrorType", "_error_handler_8h.html#a01775e5fef063175684d0fc8d9c7d301", [

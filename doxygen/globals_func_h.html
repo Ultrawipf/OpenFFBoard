@@ -100,6 +100,11 @@ $(document).ready(function(){initNavTree('globals_func_h.html',''); initResizabl
 <li>HAL_CAN_TxMailbox2AbortCallback()&#160;:&#160;<a class="el" href="global__callbacks_8cpp.html#a32fb0775fcb574d58737d2f2670e2f2e">global_callbacks.cpp</a></li>
 <li>HAL_CAN_TxMailbox2CompleteCallback()&#160;:&#160;<a class="el" href="global__callbacks_8cpp.html#a2fdfd760f1c31359331deb6e04c6f09d">global_callbacks.cpp</a></li>
 <li>HAL_GPIO_EXTI_Callback()&#160;:&#160;<a class="el" href="global__callbacks_8cpp.html#a0cd91fd3a9608559c2a87a8ba6cba55f">global_callbacks.cpp</a></li>
+<li>HAL_I2C_ErrorCallback()&#160;:&#160;<a class="el" href="global__callbacks_8cpp.html#a4d5338cd64a656dfdc4154773bc4f05d">global_callbacks.cpp</a></li>
+<li>HAL_I2C_MasterRxCpltCallback()&#160;:&#160;<a class="el" href="global__callbacks_8cpp.html#a5782358f977ddf450b203fc075833a1d">global_callbacks.cpp</a></li>
+<li>HAL_I2C_MasterTxCpltCallback()&#160;:&#160;<a class="el" href="global__callbacks_8cpp.html#aa258e0eb52bbc34002a46dc2db89a84b">global_callbacks.cpp</a></li>
+<li>HAL_I2C_MemRxCpltCallback()&#160;:&#160;<a class="el" href="global__callbacks_8cpp.html#ac16a95413b35f05c5ce725fefd8531a5">global_callbacks.cpp</a></li>
+<li>HAL_I2C_MemTxCpltCallback()&#160;:&#160;<a class="el" href="global__callbacks_8cpp.html#a874f6104d2cdbced9f2ab6e941ec58f0">global_callbacks.cpp</a></li>
 <li>HAL_SPI_ErrorCallback()&#160;:&#160;<a class="el" href="global__callbacks_8cpp.html#a3db7835e7e7ac335887f62fedf156926">global_callbacks.cpp</a></li>
 <li>HAL_SPI_RxCpltCallback()&#160;:&#160;<a class="el" href="global__callbacks_8cpp.html#a3df7021fe24cf874f8b1eec5bd5f4cb3">global_callbacks.cpp</a></li>
 <li>HAL_SPI_RxHalfCpltCallback()&#160;:&#160;<a class="el" href="global__callbacks_8cpp.html#acf622756a3814edfacf449b5749b048a">global_callbacks.cpp</a></li>
@@ -116,50 +121,51 @@ $(document).ready(function(){initNavTree('globals_func_h.html',''); initResizabl
 <li>handle_devMsgOutStart()&#160;:&#160;<a class="el" href="usbtmc__device_8c.html#a59c18e183f48953019d1650172f8a542">usbtmc_device.c</a></li>
 <li>handle_epin_ints()&#160;:&#160;<a class="el" href="dcd__synopsys_8c.html#a940e13efa17f46825bae9367b8a4b75e">dcd_synopsys.c</a></li>
 <li>handle_epout_ints()&#160;:&#160;<a class="el" href="dcd__synopsys_8c.html#ae795c920260687a2b9c3ef65f7f2c97e">dcd_synopsys.c</a></li>
-<li>handle_incoming_packet()&#160;:&#160;<a class="el" href="net__device_8c.html#a95deaef01ee622f9b87bbc5e4dba7257">net_device.c</a></li>
+<li>handle_incoming_datagram()&#160;:&#160;<a class="el" href="ncm__device_8c.html#a1c93762f095bfb56f97a10158b3ef1dd">ncm_device.c</a></li>
+<li>handle_incoming_packet()&#160;:&#160;<a class="el" href="ecm__rndis__device_8c.html#a95deaef01ee622f9b87bbc5e4dba7257">ecm_rndis_device.c</a></li>
 <li>handle_rxflvl_ints()&#160;:&#160;<a class="el" href="dcd__synopsys_8c.html#aeb76c19d11d69303bdd202bd941081bd">dcd_synopsys.c</a></li>
-<li>hcd_device_close()&#160;:&#160;<a class="el" href="group___group___h_c_d.html#ga7c6ccf51f41f13d0e273f83dd4194abd">hcd.h</a></li>
-<li>hcd_edpt_busy()&#160;:&#160;<a class="el" href="group___group___h_c_d.html#gac14921c3bd3f661684d0fcd4f2dc503e">hcd.h</a></li>
-<li>hcd_edpt_clear_stall()&#160;:&#160;<a class="el" href="group___group___h_c_d.html#gac90cfc9317bb1d14e2d45d3e64b6d3d0">hcd.h</a></li>
-<li>hcd_edpt_open()&#160;:&#160;<a class="el" href="group___group___h_c_d.html#gae01e3b9ed2d02feff70687438c329e00">hcd.h</a></li>
-<li>hcd_edpt_stalled()&#160;:&#160;<a class="el" href="group___group___h_c_d.html#ga5474ae105962237b65e503a8a7553e0e">hcd.h</a></li>
-<li>hcd_edpt_xfer()&#160;:&#160;<a class="el" href="group___group___h_c_d.html#ga742697381d3ad79ac1f5cbdb8ef64d53">hcd.h</a></li>
-<li>hcd_event_device_attach()&#160;:&#160;<a class="el" href="group___group___h_c_d.html#gaece588a83ad525b717113525b24b9a02">usbh.c</a>, <a class="el" href="group___group___h_c_d.html#gaece588a83ad525b717113525b24b9a02">hcd.h</a></li>
-<li>hcd_event_device_remove()&#160;:&#160;<a class="el" href="group___group___h_c_d.html#gac619a022e4ccfc07f658cf9c8ec4ea0f">hcd.h</a>, <a class="el" href="group___group___h_c_d.html#gac619a022e4ccfc07f658cf9c8ec4ea0f">usbh.c</a></li>
-<li>hcd_event_handler()&#160;:&#160;<a class="el" href="group___group___h_c_d.html#ga8f36b6f1ecc776dddd271e7c4607f0b2">hcd.h</a>, <a class="el" href="group___group___h_c_d.html#ga8f36b6f1ecc776dddd271e7c4607f0b2">usbh.c</a></li>
-<li>hcd_event_xfer_complete()&#160;:&#160;<a class="el" href="group___group___h_c_d.html#gacdabc4ab32fb9593c5463e58224ddd9e">hcd.h</a>, <a class="el" href="group___group___h_c_d.html#gacdabc4ab32fb9593c5463e58224ddd9e">usbh.c</a></li>
-<li>hcd_frame_number()&#160;:&#160;<a class="el" href="group___group___h_c_d.html#gab5a6599ea374175569446c6d2cc19e2c">hcd.h</a></li>
-<li>hcd_init()&#160;:&#160;<a class="el" href="group___group___h_c_d.html#ga5010f02a821fb6277b179b7db71fa397">hcd.h</a></li>
-<li>hcd_int_disable()&#160;:&#160;<a class="el" href="group___group___h_c_d.html#ga197a56f3a9dce3d87a16641afd7b0dc5">hcd.h</a></li>
-<li>hcd_int_enable()&#160;:&#160;<a class="el" href="group___group___h_c_d.html#ga69bc2917c5933edb2c1b0a3cb67e3815">hcd.h</a></li>
-<li>hcd_int_handler()&#160;:&#160;<a class="el" href="group___group___h_c_d.html#ga5c5ff767126e5d660118bae5613cf36f">hcd.h</a>, <a class="el" href="usbh_8h.html#a5c5ff767126e5d660118bae5613cf36f">usbh.h</a></li>
-<li>hcd_pipe_queue_xfer()&#160;:&#160;<a class="el" href="group___group___h_c_d.html#gad66d39c9ab891c0b36f1a8ae1ea0c95e">hcd.h</a></li>
-<li>hcd_pipe_xfer()&#160;:&#160;<a class="el" href="group___group___h_c_d.html#ga2a3ddc31e815d0b69174ab3f9b92b7c7">hcd.h</a></li>
-<li>hcd_port_connect_status()&#160;:&#160;<a class="el" href="group___group___h_c_d.html#gaee95ca7242dabf7f06b108dac7170c18">hcd.h</a></li>
-<li>hcd_port_reset()&#160;:&#160;<a class="el" href="group___group___h_c_d.html#gaf03fb794413e23ce50c3df2f8d52e608">hcd.h</a></li>
-<li>hcd_port_reset_end()&#160;:&#160;<a class="el" href="group___group___h_c_d.html#ga8a9ca5a02aadd9c52a5cda1036e0463d">hcd.h</a></li>
-<li>hcd_port_speed_get()&#160;:&#160;<a class="el" href="group___group___h_c_d.html#gac9e67456d1e694c3d002de652ec110db">hcd.h</a></li>
-<li>hcd_setup_send()&#160;:&#160;<a class="el" href="group___group___h_c_d.html#ga035c3854e11cd8797f9014c2f61e84be">hcd.h</a></li>
-<li>hcd_uframe_number()&#160;:&#160;<a class="el" href="group___group___h_c_d.html#gad17c3fd8b95ae5adfefd82a1fa38ea25">hcd.h</a></li>
+<li>handle_video_ctl_cs_req()&#160;:&#160;<a class="el" href="video__device_8c.html#acf9138481918683b77e5807dec9a3abb">video_device.c</a></li>
+<li>handle_video_ctl_req()&#160;:&#160;<a class="el" href="video__device_8c.html#a10a5d74a9eed1ed4d7e088cd2b70f0d4">video_device.c</a></li>
+<li>handle_video_ctl_std_req()&#160;:&#160;<a class="el" href="video__device_8c.html#af913c32a4d3feda8a5da2fa847874b42">video_device.c</a></li>
+<li>handle_video_stm_cs_req()&#160;:&#160;<a class="el" href="video__device_8c.html#ab39d705af5693a4fbd83a35cb62b22d5">video_device.c</a></li>
+<li>handle_video_stm_req()&#160;:&#160;<a class="el" href="video__device_8c.html#ad875407c9100f777401d52f9141c7ad2">video_device.c</a></li>
+<li>handle_video_stm_std_req()&#160;:&#160;<a class="el" href="video__device_8c.html#a900e4a3714eb4d844e02ce59b1a40fb3">video_device.c</a></li>
+<li>hcd_device_close()&#160;:&#160;<a class="el" href="hcd_8h.html#a7c6ccf51f41f13d0e273f83dd4194abd">hcd.h</a></li>
+<li>hcd_devtree_get_info()&#160;:&#160;<a class="el" href="hcd_8h.html#a8a0c33dc0e9cc1ec7689eae385a66fb4">hcd.h</a>, <a class="el" href="usbh_8c.html#a8a0c33dc0e9cc1ec7689eae385a66fb4">usbh.c</a></li>
+<li>hcd_edpt_clear_stall()&#160;:&#160;<a class="el" href="hcd_8h.html#ac90cfc9317bb1d14e2d45d3e64b6d3d0">hcd.h</a></li>
+<li>hcd_edpt_open()&#160;:&#160;<a class="el" href="hcd_8h.html#ae01e3b9ed2d02feff70687438c329e00">hcd.h</a></li>
+<li>hcd_edpt_xfer()&#160;:&#160;<a class="el" href="hcd_8h.html#a742697381d3ad79ac1f5cbdb8ef64d53">hcd.h</a></li>
+<li>hcd_event_device_attach()&#160;:&#160;<a class="el" href="hcd_8h.html#aece588a83ad525b717113525b24b9a02">hcd.h</a>, <a class="el" href="usbh_8c.html#aece588a83ad525b717113525b24b9a02">usbh.c</a></li>
+<li>hcd_event_device_remove()&#160;:&#160;<a class="el" href="hcd_8h.html#ac619a022e4ccfc07f658cf9c8ec4ea0f">hcd.h</a>, <a class="el" href="usbh_8c.html#aaec362cb850cd354557545ca2b300680">usbh.c</a></li>
+<li>hcd_event_handler()&#160;:&#160;<a class="el" href="hcd_8h.html#a8f36b6f1ecc776dddd271e7c4607f0b2">hcd.h</a>, <a class="el" href="usbh_8c.html#a8f36b6f1ecc776dddd271e7c4607f0b2">usbh.c</a></li>
+<li>hcd_event_xfer_complete()&#160;:&#160;<a class="el" href="hcd_8h.html#acdabc4ab32fb9593c5463e58224ddd9e">hcd.h</a>, <a class="el" href="usbh_8c.html#acdabc4ab32fb9593c5463e58224ddd9e">usbh.c</a></li>
+<li>hcd_frame_number()&#160;:&#160;<a class="el" href="hcd_8h.html#ab4dc3ecde3688abc5dc6b7d0374e2e1b">hcd.h</a></li>
+<li>hcd_init()&#160;:&#160;<a class="el" href="hcd_8h.html#a5010f02a821fb6277b179b7db71fa397">hcd.h</a></li>
+<li>hcd_int_disable()&#160;:&#160;<a class="el" href="hcd_8h.html#a197a56f3a9dce3d87a16641afd7b0dc5">hcd.h</a></li>
+<li>hcd_int_enable()&#160;:&#160;<a class="el" href="hcd_8h.html#a69bc2917c5933edb2c1b0a3cb67e3815">hcd.h</a></li>
+<li>hcd_int_handler()&#160;:&#160;<a class="el" href="hcd_8h.html#a5c5ff767126e5d660118bae5613cf36f">hcd.h</a>, <a class="el" href="usbh_8h.html#a5c5ff767126e5d660118bae5613cf36f">usbh.h</a></li>
+<li>hcd_port_connect_status()&#160;:&#160;<a class="el" href="hcd_8h.html#a9f441b2808a399d617aabf532a574f0a">hcd.h</a></li>
+<li>hcd_port_reset()&#160;:&#160;<a class="el" href="hcd_8h.html#a99c3d7d6b9e394bd514ed52d3ffd2d77">hcd.h</a></li>
+<li>hcd_port_reset_end()&#160;:&#160;<a class="el" href="hcd_8h.html#a8a9ca5a02aadd9c52a5cda1036e0463d">hcd.h</a></li>
+<li>hcd_port_speed_get()&#160;:&#160;<a class="el" href="hcd_8h.html#aca7cfcd3b59d9bb5895feb9266381ba8">hcd.h</a></li>
+<li>hcd_setup_send()&#160;:&#160;<a class="el" href="hcd_8h.html#a035c3854e11cd8797f9014c2f61e84be">hcd.h</a></li>
 <li>hidd_control_xfer_cb()&#160;:&#160;<a class="el" href="hid__device_8c.html#abf0f9726033648a9c5b7ae2a3809f83f">hid_device.c</a>, <a class="el" href="hid__device_8h.html#abf0f9726033648a9c5b7ae2a3809f83f">hid_device.h</a></li>
 <li>hidd_init()&#160;:&#160;<a class="el" href="hid__device_8c.html#a0cc371cbd260f776472218a97830e9e1">hid_device.c</a>, <a class="el" href="hid__device_8h.html#a0cc371cbd260f776472218a97830e9e1">hid_device.h</a></li>
 <li>hidd_open()&#160;:&#160;<a class="el" href="hid__device_8c.html#a1d90af6f68f8dc82e92b23d57c2337ec">hid_device.c</a>, <a class="el" href="hid__device_8h.html#af4e8e1c72cb674f2798a813a2fc94143">hid_device.h</a></li>
 <li>hidd_reset()&#160;:&#160;<a class="el" href="hid__device_8c.html#a02a57dcfc0a6dd2398d9d902e3433132">hid_device.c</a>, <a class="el" href="hid__device_8h.html#a02a57dcfc0a6dd2398d9d902e3433132">hid_device.h</a></li>
 <li>hidd_xfer_cb()&#160;:&#160;<a class="el" href="hid__device_8c.html#aa373bafdf8bcafb736ae9b75ec1b21f4">hid_device.c</a>, <a class="el" href="hid__device_8h.html#a50cb9b8bd19b92fb5ee16c6cbb830680">hid_device.h</a></li>
 <li>hidh_close()&#160;:&#160;<a class="el" href="hid__host_8c.html#a7110dba6dd4e9a49435d0a9fa17d2aeb">hid_host.c</a>, <a class="el" href="hid__host_8h.html#a7110dba6dd4e9a49435d0a9fa17d2aeb">hid_host.h</a></li>
-<li>hidh_init()&#160;:&#160;<a class="el" href="hid__host_8c.html#a8613f691fb2432217df3a2bbb246811b">hid_host.c</a>, <a class="el" href="hid__host_8h.html#a8613f691fb2432217df3a2bbb246811b">hid_host.h</a></li>
-<li>hidh_interface_close()&#160;:&#160;<a class="el" href="hid__host_8c.html#a49077574db21421461afd44e1dd14471">hid_host.c</a></li>
-<li>hidh_interface_get_report()&#160;:&#160;<a class="el" href="hid__host_8c.html#a4a04b718a7ce1e0e03d21c4091cd6b2a">hid_host.c</a></li>
-<li>hidh_interface_open()&#160;:&#160;<a class="el" href="hid__host_8c.html#add9ebfaa444b7f77a69d200e000072bb">hid_host.c</a></li>
-<li>hidh_open_subtask()&#160;:&#160;<a class="el" href="hid__host_8c.html#ae6b360226c8016bf5cf3dc66b25fc613">hid_host.c</a>, <a class="el" href="hid__host_8h.html#ae6b360226c8016bf5cf3dc66b25fc613">hid_host.h</a></li>
+<li>hidh_init()&#160;:&#160;<a class="el" href="hid__host_8h.html#a8613f691fb2432217df3a2bbb246811b">hid_host.h</a>, <a class="el" href="hid__host_8c.html#a8613f691fb2432217df3a2bbb246811b">hid_host.c</a></li>
+<li>hidh_open()&#160;:&#160;<a class="el" href="hid__host_8c.html#ae4abd02e3e8624b4cd5aa035e5227b2d">hid_host.c</a>, <a class="el" href="hid__host_8h.html#ae4abd02e3e8624b4cd5aa035e5227b2d">hid_host.h</a></li>
 <li>hidh_set_config()&#160;:&#160;<a class="el" href="hid__host_8c.html#a863f18453b95ee8031189c8439a67198">hid_host.c</a>, <a class="el" href="hid__host_8h.html#a863f18453b95ee8031189c8439a67198">hid_host.h</a></li>
-<li>hidh_xfer_cb()&#160;:&#160;<a class="el" href="hid__host_8c.html#af61e2d4615666dc6fb6b72a31968e093">hid_host.c</a>, <a class="el" href="hid__host_8h.html#af61e2d4615666dc6fb6b72a31968e093">hid_host.h</a></li>
+<li>hidh_xfer_cb()&#160;:&#160;<a class="el" href="hid__host_8c.html#a128017e2324ed776564f97188cf53095">hid_host.c</a>, <a class="el" href="hid__host_8h.html#a128017e2324ed776564f97188cf53095">hid_host.h</a></li>
 <li>hub_close()&#160;:&#160;<a class="el" href="group___class_driver___hub.html#ga1b03ea6225f3dc0e651d7851e0e230a5">hub.c</a>, <a class="el" href="group___class_driver___hub.html#ga1b03ea6225f3dc0e651d7851e0e230a5">hub.h</a></li>
 <li>hub_init()&#160;:&#160;<a class="el" href="group___class_driver___hub.html#gaa95d3f2f2a0b0b6e1fec2788482ccf05">hub.c</a>, <a class="el" href="group___class_driver___hub.html#gaa95d3f2f2a0b0b6e1fec2788482ccf05">hub.h</a></li>
-<li>hub_open()&#160;:&#160;<a class="el" href="group___class_driver___hub.html#gab2daf3a98635e1f8e208f58ea9dd41ae">hub.h</a>, <a class="el" href="group___class_driver___hub.html#gab2daf3a98635e1f8e208f58ea9dd41ae">hub.c</a></li>
-<li>hub_port_clear_feature()&#160;:&#160;<a class="el" href="group___class_driver___hub.html#ga69e9606b3d30c89152c5e09aede419ba">hub.h</a></li>
+<li>hub_open()&#160;:&#160;<a class="el" href="group___class_driver___hub.html#ga1dd2487a962064d886fb69ef9a7ab9f2">hub.c</a>, <a class="el" href="group___class_driver___hub.html#ga1dd2487a962064d886fb69ef9a7ab9f2">hub.h</a></li>
+<li>hub_port_clear_feature()&#160;:&#160;<a class="el" href="group___class_driver___hub.html#ga69e9606b3d30c89152c5e09aede419ba">hub.c</a>, <a class="el" href="group___class_driver___hub.html#ga69e9606b3d30c89152c5e09aede419ba">hub.h</a></li>
 <li>hub_port_get_status()&#160;:&#160;<a class="el" href="group___class_driver___hub.html#gabfc161145fbaabd251c8d705f2ece0ba">hub.c</a>, <a class="el" href="group___class_driver___hub.html#gabfc161145fbaabd251c8d705f2ece0ba">hub.h</a></li>
 <li>hub_port_reset()&#160;:&#160;<a class="el" href="group___class_driver___hub.html#gac2857fdae6a808e974b601e665b0bca5">hub.c</a>, <a class="el" href="group___class_driver___hub.html#gac2857fdae6a808e974b601e665b0bca5">hub.h</a></li>
+<li>hub_port_set_feature()&#160;:&#160;<a class="el" href="group___class_driver___hub.html#gafa4d5ade3194b1711bcb0bc2facbd447">hub.c</a>, <a class="el" href="group___class_driver___hub.html#gafa4d5ade3194b1711bcb0bc2facbd447">hub.h</a></li>
 <li>hub_set_config()&#160;:&#160;<a class="el" href="group___class_driver___hub.html#gabea74b5e5819665f051099e3322ae5a9">hub.c</a>, <a class="el" href="group___class_driver___hub.html#gabea74b5e5819665f051099e3322ae5a9">hub.h</a></li>
 <li>hub_status_pipe_queue()&#160;:&#160;<a class="el" href="group___class_driver___hub.html#gaa31fc52733096d5cc6d9790139c89318">hub.c</a>, <a class="el" href="group___class_driver___hub.html#gaa31fc52733096d5cc6d9790139c89318">hub.h</a></li>
 <li>hub_xfer_cb()&#160;:&#160;<a class="el" href="group___class_driver___hub.html#ga78697e4e754fe78972dc163d56422d91">hub.c</a>, <a class="el" href="group___class_driver___hub.html#ga78697e4e754fe78972dc163d56422d91">hub.h</a></li>

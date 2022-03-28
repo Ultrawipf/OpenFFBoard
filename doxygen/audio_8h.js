@@ -7,6 +7,7 @@ var audio_8h =
     [ "audio_control_range_1_t", "group___class_driver___audio.html#ga699bbfbad95153cfffb6803f1567167c", null ],
     [ "audio_control_range_2_t", "group___class_driver___audio.html#ga485320bc20a6415cf96bb62da4c42e6b", null ],
     [ "audio_control_range_4_t", "group___class_driver___audio.html#ga1c592e5a6ddf1346567d1c934be173d4", null ],
+    [ "audio_control_request_t", "group___class_driver___audio.html#gae8d286e4ae169cbb9dd44f1cd06c1852", null ],
     [ "audio_desc_channel_cluster_t", "group___class_driver___audio.html#ga2954564b65cfa92b321e14e166d31195", null ],
     [ "audio_desc_clock_multiplier_t", "group___class_driver___audio.html#ga036395c031ba53ea9cd82cdb13cd2dca", null ],
     [ "audio_desc_clock_selector_t", "group___class_driver___audio.html#gab0bb80939f87004d650a368cc478fec0", null ],
@@ -156,6 +157,14 @@ var audio_8h =
       [ "AUDIO_CS_REQ_RANGE", "group___class_driver___audio.html#ggaaf501fbac4e77bfc280992a22a3453a3a0058fdfbd5be3046a35480ca56b36548", null ],
       [ "AUDIO_CS_REQ_MEM", "group___class_driver___audio.html#ggaaf501fbac4e77bfc280992a22a3453a3ad490ecab6baea910e0ecdccb12b1fc24", null ]
     ] ],
+    [ "audio_data_format_type_I_t", "group___class_driver___audio.html#ga32a64f6a946669fed071b3ba687c9cd2", [
+      [ "AUDIO_DATA_FORMAT_TYPE_I_PCM", "group___class_driver___audio.html#gga32a64f6a946669fed071b3ba687c9cd2ade8c49fc3312338fc38d26ea51f782e8", null ],
+      [ "AUDIO_DATA_FORMAT_TYPE_I_PCM8", "group___class_driver___audio.html#gga32a64f6a946669fed071b3ba687c9cd2adfaab4223bb6b305956c9fd69794ebe1", null ],
+      [ "AUDIO_DATA_FORMAT_TYPE_I_IEEE_FLOAT", "group___class_driver___audio.html#gga32a64f6a946669fed071b3ba687c9cd2acf27039927e4ba44dc9f6dddbe9a7055", null ],
+      [ "AUDIO_DATA_FORMAT_TYPE_I_ALAW", "group___class_driver___audio.html#gga32a64f6a946669fed071b3ba687c9cd2ab8d771ed2c791f3e40e3551f33498139", null ],
+      [ "AUDIO_DATA_FORMAT_TYPE_I_MULAW", "group___class_driver___audio.html#gga32a64f6a946669fed071b3ba687c9cd2acdf9a05758520df207e9fcc037e03641", null ],
+      [ "AUDIO_DATA_FORMAT_TYPE_I_RAW_DATA", "group___class_driver___audio.html#gga32a64f6a946669fed071b3ba687c9cd2ad433789f2ce8f43926acb2fbabc43c17", null ]
+    ] ],
     [ "audio_dolby_prologic_control_selector_t", "group___class_driver___audio.html#gaee2ae40fea7bc292cc4fa46dd1e33c79", [
       [ "AUDIO_DP_CTRL_UNDEF", "group___class_driver___audio.html#ggaee2ae40fea7bc292cc4fa46dd1e33c79a5d54b432755fec1cc474fd210ceee852", null ],
       [ "AUDIO_DP_CTRL_ENABLE", "group___class_driver___audio.html#ggaee2ae40fea7bc292cc4fa46dd1e33c79afb447e5f0939e8838f1d3da157e33f08", null ],
@@ -257,6 +266,16 @@ var audio_8h =
       [ "AUDIO_FU_CTRL_UNDERFLOW", "group___class_driver___audio.html#ggacf5c20cb4f2328fcf76560ee6ddd6c9aa65cfc3bc750eef2ef876d2537ad8c70d", null ],
       [ "AUDIO_FU_CTRL_OVERVLOW", "group___class_driver___audio.html#ggacf5c20cb4f2328fcf76560ee6ddd6c9aa81980d85ff3a2db15d19cf529d0619be", null ],
       [ "AUDIO_FU_CTRL_LATENCY", "group___class_driver___audio.html#ggacf5c20cb4f2328fcf76560ee6ddd6c9aa1f3361407d027ec2bf7d818880e98b00", null ]
+    ] ],
+    [ "audio_format_type_t", "group___class_driver___audio.html#gae18c93236294ee991e5f5c6b0922cd2f", [
+      [ "AUDIO_FORMAT_TYPE_UNDEFINED", "group___class_driver___audio.html#ggae18c93236294ee991e5f5c6b0922cd2fa093499407a4aaac15d6fc424ea617207", null ],
+      [ "AUDIO_FORMAT_TYPE_I", "group___class_driver___audio.html#ggae18c93236294ee991e5f5c6b0922cd2faaca39c01f96e7e659f427adec29204e8", null ],
+      [ "AUDIO_FORMAT_TYPE_II", "group___class_driver___audio.html#ggae18c93236294ee991e5f5c6b0922cd2fa9b72072cd81c55316f46845f56e01417", null ],
+      [ "AUDIO_FORMAT_TYPE_III", "group___class_driver___audio.html#ggae18c93236294ee991e5f5c6b0922cd2fa7ab0e96ce1a69b79a70df36ce830758a", null ],
+      [ "AUDIO_FORMAT_TYPE_IV", "group___class_driver___audio.html#ggae18c93236294ee991e5f5c6b0922cd2fac245b1df9989fd381ba625ac11250569", null ],
+      [ "AUDIO_EXT_FORMAT_TYPE_I", "group___class_driver___audio.html#ggae18c93236294ee991e5f5c6b0922cd2fa6ef787e7730329435c30cc3a9545f261", null ],
+      [ "AUDIO_EXT_FORMAT_TYPE_II", "group___class_driver___audio.html#ggae18c93236294ee991e5f5c6b0922cd2fa2eb6d4c22587b5eaf6b7b6af182c64b9", null ],
+      [ "AUDIO_EXT_FORMAT_TYPE_III", "group___class_driver___audio.html#ggae18c93236294ee991e5f5c6b0922cd2fa357a841997b69dbc5017a088f13b82c8", null ]
     ] ],
     [ "audio_function_code_t", "group___class_driver___audio.html#gac55a31b8b72f974a9fb9f6ee731ea427", [
       [ "AUDIO_FUNC_UNDEF", "group___class_driver___audio.html#ggac55a31b8b72f974a9fb9f6ee731ea427af72e16c6fa69b15df7bb35f433d15258", null ],
@@ -429,14 +448,5 @@ var audio_8h =
       [ "AUDIO_WD_CTRL_UNDERFLOW", "group___class_driver___audio.html#ggaaa736a5727cdbacad7b21d0a23a07398ad61a311b5d6f8a997867e8f90d3baee9", null ],
       [ "AUDIO_WD_CTRL_OVERFLOW", "group___class_driver___audio.html#ggaaa736a5727cdbacad7b21d0a23a07398a4de57d1bec69b2caf711da4f095e9001", null ],
       [ "AUDIO_WD_CTRL_DECODER_ERROR", "group___class_driver___audio.html#ggaaa736a5727cdbacad7b21d0a23a07398a3c67655781aab1593c9bf3d2369020e7", null ]
-    ] ],
-    [ "tusb_iso_ep_attribute_t", "group___class_driver___audio.html#ga333727ea541808f5c815adec3b2888c2", [
-      [ "TUSB_ISO_EP_ATT_NO_SYNC", "group___class_driver___audio.html#gga333727ea541808f5c815adec3b2888c2a6c02aa49f1981446327a6ae4f0f0e913", null ],
-      [ "TUSB_ISO_EP_ATT_ASYNCHRONOUS", "group___class_driver___audio.html#gga333727ea541808f5c815adec3b2888c2a6056229f7bed07909ef2c8f273efe6b0", null ],
-      [ "TUSB_ISO_EP_ATT_ADAPTIVE", "group___class_driver___audio.html#gga333727ea541808f5c815adec3b2888c2abc7974a647c2e2afb3c5e3aac2f6af21", null ],
-      [ "TUSB_ISO_EP_ATT_SYNCHRONOUS", "group___class_driver___audio.html#gga333727ea541808f5c815adec3b2888c2a7828338884de6c23bf0f031cab3322e1", null ],
-      [ "TUSB_ISO_EP_ATT_DATA", "group___class_driver___audio.html#gga333727ea541808f5c815adec3b2888c2acd2cc791e4add9166c33d45eea5b553a", null ],
-      [ "TUSB_ISO_EP_ATT_EXPLICIT_FB", "group___class_driver___audio.html#gga333727ea541808f5c815adec3b2888c2a93b4e5aa895d454902e51bc4a0ef8d78", null ],
-      [ "TUSB_ISO_EP_ATT_IMPLICIT_FB", "group___class_driver___audio.html#gga333727ea541808f5c815adec3b2888c2a2fa77227b919236ccef44cf15e540719", null ]
     ] ]
 ];

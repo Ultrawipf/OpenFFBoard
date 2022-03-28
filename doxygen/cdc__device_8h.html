@@ -103,15 +103,15 @@ Functions</h2></td></tr>
 <tr class="separator:a50ebb7833da5241510b90444c25f6a94"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad8cf7db23b940e2844fa29d54f94122d"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cdc__device_8h.html#ad8cf7db23b940e2844fa29d54f94122d">tud_cdc_n_available</a> (uint8_t itf)</td></tr>
 <tr class="separator:ad8cf7db23b940e2844fa29d54f94122d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abe59a6941bcfa522b54c464974f49194"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cdc__device_8h.html#abe59a6941bcfa522b54c464974f49194">tud_cdc_n_read</a> (uint8_t itf, void *buffer, uint32_t bufsize)</td></tr>
+<tr class="memitem:abe59a6941bcfa522b54c464974f49194"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cdc__device_8h.html#abe59a6941bcfa522b54c464974f49194">tud_cdc_n_read</a> (uint8_t itf, void *<a class="el" href="midi__device_8h.html#ac8733c58bc671239139641960e2d5dbf">buffer</a>, uint32_t <a class="el" href="midi__device_8h.html#aca9aaceac98612802d20cb6983f7669c">bufsize</a>)</td></tr>
 <tr class="separator:abe59a6941bcfa522b54c464974f49194"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a29946647b96190e58a813702e1792fab"><td class="memItemLeft" align="right" valign="top">static int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cdc__device_8h.html#a29946647b96190e58a813702e1792fab">tud_cdc_n_read_char</a> (uint8_t itf)</td></tr>
 <tr class="separator:a29946647b96190e58a813702e1792fab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab5e7c8e39469766b0ca22bf5503e58cf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cdc__device_8h.html#ab5e7c8e39469766b0ca22bf5503e58cf">tud_cdc_n_read_flush</a> (uint8_t itf)</td></tr>
 <tr class="separator:ab5e7c8e39469766b0ca22bf5503e58cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2077b8a101a253a22ca8b7e3219fcea6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cdc__device_8h.html#a2077b8a101a253a22ca8b7e3219fcea6">tud_cdc_n_peek</a> (uint8_t itf, int pos, uint8_t *u8)</td></tr>
-<tr class="separator:a2077b8a101a253a22ca8b7e3219fcea6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac09d0ce77b93d5d1e4fa3b84e7cdc3f9"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cdc__device_8h.html#ac09d0ce77b93d5d1e4fa3b84e7cdc3f9">tud_cdc_n_write</a> (uint8_t itf, void const *buffer, uint32_t bufsize)</td></tr>
+<tr class="memitem:a545a4004b831f8e73fc3ff9098f3d98b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cdc__device_8h.html#a545a4004b831f8e73fc3ff9098f3d98b">tud_cdc_n_peek</a> (uint8_t itf, uint8_t *ui8)</td></tr>
+<tr class="separator:a545a4004b831f8e73fc3ff9098f3d98b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac09d0ce77b93d5d1e4fa3b84e7cdc3f9"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cdc__device_8h.html#ac09d0ce77b93d5d1e4fa3b84e7cdc3f9">tud_cdc_n_write</a> (uint8_t itf, void const *<a class="el" href="midi__device_8h.html#ac8733c58bc671239139641960e2d5dbf">buffer</a>, uint32_t <a class="el" href="midi__device_8h.html#aca9aaceac98612802d20cb6983f7669c">bufsize</a>)</td></tr>
 <tr class="separator:ac09d0ce77b93d5d1e4fa3b84e7cdc3f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6878722b63f54c03341b7aa88de6f367"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cdc__device_8h.html#a6878722b63f54c03341b7aa88de6f367">tud_cdc_n_write_char</a> (uint8_t itf, char ch)</td></tr>
 <tr class="separator:a6878722b63f54c03341b7aa88de6f367"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -135,15 +135,15 @@ Functions</h2></td></tr>
 <tr class="separator:aa9109deaf179b7e25944a42c981c91f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a611b102d8497dcb5fd183754c1c1015a"><td class="memItemLeft" align="right" valign="top">static int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cdc__device_8h.html#a611b102d8497dcb5fd183754c1c1015a">tud_cdc_read_char</a> (void)</td></tr>
 <tr class="separator:a611b102d8497dcb5fd183754c1c1015a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7c4273c399ca3e8462b584b3d2b76afb"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cdc__device_8h.html#a7c4273c399ca3e8462b584b3d2b76afb">tud_cdc_read</a> (void *buffer, uint32_t bufsize)</td></tr>
+<tr class="memitem:a7c4273c399ca3e8462b584b3d2b76afb"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cdc__device_8h.html#a7c4273c399ca3e8462b584b3d2b76afb">tud_cdc_read</a> (void *<a class="el" href="midi__device_8h.html#ac8733c58bc671239139641960e2d5dbf">buffer</a>, uint32_t <a class="el" href="midi__device_8h.html#aca9aaceac98612802d20cb6983f7669c">bufsize</a>)</td></tr>
 <tr class="separator:a7c4273c399ca3e8462b584b3d2b76afb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5867a8dfe2ffe7a29d9d24c7cbfcc554"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cdc__device_8h.html#a5867a8dfe2ffe7a29d9d24c7cbfcc554">tud_cdc_read_flush</a> (void)</td></tr>
 <tr class="separator:a5867a8dfe2ffe7a29d9d24c7cbfcc554"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7069e4f6d21ef9221f8395d2836ef1ba"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cdc__device_8h.html#a7069e4f6d21ef9221f8395d2836ef1ba">tud_cdc_peek</a> (int pos, uint8_t *u8)</td></tr>
-<tr class="separator:a7069e4f6d21ef9221f8395d2836ef1ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a694b2c116e365980e10f871a44b09140"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cdc__device_8h.html#a694b2c116e365980e10f871a44b09140">tud_cdc_peek</a> (uint8_t *ui8)</td></tr>
+<tr class="separator:a694b2c116e365980e10f871a44b09140"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a96d85b6dca908d16cc43c4232c342496"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cdc__device_8h.html#a96d85b6dca908d16cc43c4232c342496">tud_cdc_write_char</a> (char ch)</td></tr>
 <tr class="separator:a96d85b6dca908d16cc43c4232c342496"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a474aaf544525e54967f3dc45b224da36"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cdc__device_8h.html#a474aaf544525e54967f3dc45b224da36">tud_cdc_write</a> (void const *buffer, uint32_t bufsize)</td></tr>
+<tr class="memitem:a474aaf544525e54967f3dc45b224da36"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cdc__device_8h.html#a474aaf544525e54967f3dc45b224da36">tud_cdc_write</a> (void const *<a class="el" href="midi__device_8h.html#ac8733c58bc671239139641960e2d5dbf">buffer</a>, uint32_t <a class="el" href="midi__device_8h.html#aca9aaceac98612802d20cb6983f7669c">bufsize</a>)</td></tr>
 <tr class="separator:a474aaf544525e54967f3dc45b224da36"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a82fa9a2d157e0b3f0c8d28e9619aaed4"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cdc__device_8h.html#a82fa9a2d157e0b3f0c8d28e9619aaed4">tud_cdc_write_str</a> (char const *str)</td></tr>
 <tr class="separator:a82fa9a2d157e0b3f0c8d28e9619aaed4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -214,7 +214,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00336">336</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00338">338</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
 
 </div>
 </div>
@@ -234,7 +234,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00222">222</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00226">226</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
 
 </div>
 </div>
@@ -270,7 +270,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00268">268</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00272">272</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
 
 </div>
 </div>
@@ -290,7 +290,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00253">253</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00257">257</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
 
 </div>
 </div>
@@ -332,7 +332,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00418">418</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00420">420</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
 
 </div>
 </div>
@@ -360,7 +360,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cdc__device_8h_source.html#l00190">190</a> of file <a class="el" href="cdc__device_8h_source.html">cdc_device.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__device_8h_source.html#l00189">189</a> of file <a class="el" href="cdc__device_8h_source.html">cdc_device.h</a>.</p>
 
 </div>
 </div>
@@ -388,7 +388,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cdc__device_8h_source.html#l00170">170</a> of file <a class="el" href="cdc__device_8h_source.html">cdc_device.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__device_8h_source.html#l00169">169</a> of file <a class="el" href="cdc__device_8h_source.html">cdc_device.h</a>.</p>
 
 </div>
 </div>
@@ -416,7 +416,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cdc__device_8h_source.html#l00180">180</a> of file <a class="el" href="cdc__device_8h_source.html">cdc_device.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__device_8h_source.html#l00179">179</a> of file <a class="el" href="cdc__device_8h_source.html">cdc_device.h</a>.</p>
 
 </div>
 </div>
@@ -444,7 +444,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cdc__device_8h_source.html#l00175">175</a> of file <a class="el" href="cdc__device_8h_source.html">cdc_device.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__device_8h_source.html#l00174">174</a> of file <a class="el" href="cdc__device_8h_source.html">cdc_device.h</a>.</p>
 
 </div>
 </div>
@@ -526,7 +526,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00136">136</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00140">140</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
 
 </div>
 </div>
@@ -556,7 +556,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00122">122</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00126">126</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
 
 </div>
 </div>
@@ -576,12 +576,12 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00117">117</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00121">121</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
 
 </div>
 </div>
-<a id="a2077b8a101a253a22ca8b7e3219fcea6" name="a2077b8a101a253a22ca8b7e3219fcea6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2077b8a101a253a22ca8b7e3219fcea6">&#9670;&nbsp;</a></span>tud_cdc_n_peek()</h2>
+<a id="a545a4004b831f8e73fc3ff9098f3d98b" name="a545a4004b831f8e73fc3ff9098f3d98b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a545a4004b831f8e73fc3ff9098f3d98b">&#9670;&nbsp;</a></span>tud_cdc_n_peek()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -595,14 +595,8 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>pos</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
           <td class="paramtype">uint8_t *&#160;</td>
-          <td class="paramname"><em>u8</em>&#160;</td>
+          <td class="paramname"><em>ui8</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -612,7 +606,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00149">149</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00153">153</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
 
 </div>
 </div>
@@ -648,7 +642,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00141">141</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00145">145</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
 
 </div>
 </div>
@@ -676,7 +670,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cdc__device_8h_source.html#l00154">154</a> of file <a class="el" href="cdc__device_8h_source.html">cdc_device.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__device_8h_source.html#l00153">153</a> of file <a class="el" href="cdc__device_8h_source.html">cdc_device.h</a>.</p>
 
 </div>
 </div>
@@ -696,7 +690,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00154">154</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00158">158</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
 
 </div>
 </div>
@@ -726,7 +720,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00127">127</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00131">131</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
 
 </div>
 </div>
@@ -762,7 +756,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00164">164</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00168">168</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
 
 </div>
 </div>
@@ -782,7 +776,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00209">209</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00213">213</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
 
 </div>
 </div>
@@ -820,7 +814,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cdc__device_8h_source.html#l00160">160</a> of file <a class="el" href="cdc__device_8h_source.html">cdc_device.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__device_8h_source.html#l00159">159</a> of file <a class="el" href="cdc__device_8h_source.html">cdc_device.h</a>.</p>
 
 </div>
 </div>
@@ -840,7 +834,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00214">214</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00218">218</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
 
 </div>
 </div>
@@ -860,7 +854,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00178">178</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00182">182</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
 
 </div>
 </div>
@@ -898,12 +892,12 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cdc__device_8h_source.html#l00165">165</a> of file <a class="el" href="cdc__device_8h_source.html">cdc_device.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__device_8h_source.html#l00164">164</a> of file <a class="el" href="cdc__device_8h_source.html">cdc_device.h</a>.</p>
 
 </div>
 </div>
-<a id="a7069e4f6d21ef9221f8395d2836ef1ba" name="a7069e4f6d21ef9221f8395d2836ef1ba"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7069e4f6d21ef9221f8395d2836ef1ba">&#9670;&nbsp;</a></span>tud_cdc_peek()</h2>
+<a id="a694b2c116e365980e10f871a44b09140" name="a694b2c116e365980e10f871a44b09140"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a694b2c116e365980e10f871a44b09140">&#9670;&nbsp;</a></span>tud_cdc_peek()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -914,19 +908,9 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">static bool tud_cdc_peek </td>
           <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>pos</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
           <td class="paramtype">uint8_t *&#160;</td>
-          <td class="paramname"><em>u8</em>&#160;</td>
-        </tr>
-        <tr>
+          <td class="paramname"><em>ui8</em></td><td>)</td>
           <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -936,7 +920,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cdc__device_8h_source.html#l00210">210</a> of file <a class="el" href="cdc__device_8h_source.html">cdc_device.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__device_8h_source.html#l00209">209</a> of file <a class="el" href="cdc__device_8h_source.html">cdc_device.h</a>.</p>
 
 </div>
 </div>
@@ -974,7 +958,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cdc__device_8h_source.html#l00200">200</a> of file <a class="el" href="cdc__device_8h_source.html">cdc_device.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__device_8h_source.html#l00199">199</a> of file <a class="el" href="cdc__device_8h_source.html">cdc_device.h</a>.</p>
 
 </div>
 </div>
@@ -1002,7 +986,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cdc__device_8h_source.html#l00195">195</a> of file <a class="el" href="cdc__device_8h_source.html">cdc_device.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__device_8h_source.html#l00194">194</a> of file <a class="el" href="cdc__device_8h_source.html">cdc_device.h</a>.</p>
 
 </div>
 </div>
@@ -1030,7 +1014,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cdc__device_8h_source.html#l00205">205</a> of file <a class="el" href="cdc__device_8h_source.html">cdc_device.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__device_8h_source.html#l00204">204</a> of file <a class="el" href="cdc__device_8h_source.html">cdc_device.h</a>.</p>
 
 </div>
 </div>
@@ -1050,7 +1034,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00238">238</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00279">279</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
 
 </div>
 </div>
@@ -1134,7 +1118,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cdc__device_8h_source.html#l00185">185</a> of file <a class="el" href="cdc__device_8h_source.html">cdc_device.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__device_8h_source.html#l00184">184</a> of file <a class="el" href="cdc__device_8h_source.html">cdc_device.h</a>.</p>
 
 </div>
 </div>
@@ -1154,7 +1138,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00245">245</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00286">286</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
 
 </div>
 </div>
@@ -1192,7 +1176,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cdc__device_8h_source.html#l00220">220</a> of file <a class="el" href="cdc__device_8h_source.html">cdc_device.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__device_8h_source.html#l00219">219</a> of file <a class="el" href="cdc__device_8h_source.html">cdc_device.h</a>.</p>
 
 </div>
 </div>
@@ -1220,7 +1204,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cdc__device_8h_source.html#l00235">235</a> of file <a class="el" href="cdc__device_8h_source.html">cdc_device.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__device_8h_source.html#l00234">234</a> of file <a class="el" href="cdc__device_8h_source.html">cdc_device.h</a>.</p>
 
 </div>
 </div>
@@ -1248,7 +1232,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cdc__device_8h_source.html#l00215">215</a> of file <a class="el" href="cdc__device_8h_source.html">cdc_device.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__device_8h_source.html#l00214">214</a> of file <a class="el" href="cdc__device_8h_source.html">cdc_device.h</a>.</p>
 
 </div>
 </div>
@@ -1276,7 +1260,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cdc__device_8h_source.html#l00240">240</a> of file <a class="el" href="cdc__device_8h_source.html">cdc_device.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__device_8h_source.html#l00239">239</a> of file <a class="el" href="cdc__device_8h_source.html">cdc_device.h</a>.</p>
 
 </div>
 </div>
@@ -1304,7 +1288,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cdc__device_8h_source.html#l00230">230</a> of file <a class="el" href="cdc__device_8h_source.html">cdc_device.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__device_8h_source.html#l00229">229</a> of file <a class="el" href="cdc__device_8h_source.html">cdc_device.h</a>.</p>
 
 </div>
 </div>
@@ -1332,7 +1316,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cdc__device_8h_source.html#l00225">225</a> of file <a class="el" href="cdc__device_8h_source.html">cdc_device.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__device_8h_source.html#l00224">224</a> of file <a class="el" href="cdc__device_8h_source.html">cdc_device.h</a>.</p>
 
 </div>
 </div>
@@ -1368,7 +1352,7 @@ Variables</h2></td></tr>
 <div class="line"> </div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">bool</span>     <a class="code hl_function" href="cdc__device_8c.html#aa3f01d42cabe29ca298fdbbf537f6480">tud_cdc_n_connected</a>       (uint8_t itf)</div>
-<div class="ttc" id="acdc__device_8c_html_aa3f01d42cabe29ca298fdbbf537f6480"><div class="ttname"><a href="cdc__device_8c.html#aa3f01d42cabe29ca298fdbbf537f6480">tud_cdc_n_connected</a></div><div class="ttdeci">bool tud_cdc_n_connected(uint8_t itf)</div><div class="ttdef"><b>Definition:</b> <a href="cdc__device_8c_source.html#l00111">cdc_device.c:111</a></div></div>
+<div class="ttc" id="acdc__device_8c_html_aa3f01d42cabe29ca298fdbbf537f6480"><div class="ttname"><a href="cdc__device_8c.html#aa3f01d42cabe29ca298fdbbf537f6480">tud_cdc_n_connected</a></div><div class="ttdeci">bool tud_cdc_n_connected(uint8_t itf)</div><div class="ttdef"><b>Definition:</b> <a href="cdc__device_8c_source.html#l00115">cdc_device.c:115</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

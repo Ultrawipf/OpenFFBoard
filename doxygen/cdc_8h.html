@@ -104,9 +104,9 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:ga962bf7d2acd2c818cc5df8e35768de2d"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html">TU_ATTR_PACKED</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___class_driver___c_d_c.html#ga962bf7d2acd2c818cc5df8e35768de2d">cdc_desc_func_header_t</a></td></tr>
-<tr class="memdesc:ga962bf7d2acd2c818cc5df8e35768de2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Header Functional Descriptor (Communication Interface)  <a href="group___class_driver___c_d_c.html#ga962bf7d2acd2c818cc5df8e35768de2d">More...</a><br /></td></tr>
-<tr class="separator:ga962bf7d2acd2c818cc5df8e35768de2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga10454e4ad18fc79f987782e093bf1bf5"><td class="memItemLeft" align="right" valign="top">typedef TU_ATTR_PACKED_BEGIN TU_ATTR_BIT_FIELD_ORDER_BEGIN struct <a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html">TU_ATTR_PACKED</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___class_driver___c_d_c.html#ga10454e4ad18fc79f987782e093bf1bf5">cdc_desc_func_header_t</a></td></tr>
+<tr class="memdesc:ga10454e4ad18fc79f987782e093bf1bf5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Header Functional Descriptor (Communication Interface)  <a href="group___class_driver___c_d_c.html#ga10454e4ad18fc79f987782e093bf1bf5">More...</a><br /></td></tr>
+<tr class="separator:ga10454e4ad18fc79f987782e093bf1bf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga2aab42e09a46860135203c84eab780e5"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html">TU_ATTR_PACKED</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___class_driver___c_d_c.html#ga2aab42e09a46860135203c84eab780e5">cdc_desc_func_union_t</a></td></tr>
 <tr class="memdesc:ga2aab42e09a46860135203c84eab780e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Union Functional Descriptor (Communication Interface)  <a href="group___class_driver___c_d_c.html#ga2aab42e09a46860135203c84eab780e5">More...</a><br /></td></tr>
 <tr class="separator:ga2aab42e09a46860135203c84eab780e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -119,7 +119,6 @@ Typedefs</h2></td></tr>
 <tr class="memitem:ga3a7c83544ea027d21bbbd515a3b08e32"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html">TU_ATTR_PACKED</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___class_driver___c_d_c.html#ga3a7c83544ea027d21bbbd515a3b08e32">cdc_acm_capability_t</a></td></tr>
 <tr class="separator:ga3a7c83544ea027d21bbbd515a3b08e32"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaaf09d5c3ff646c800a6d4b7730f2247d"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html">TU_ATTR_PACKED</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___class_driver___c_d_c.html#gaaf09d5c3ff646c800a6d4b7730f2247d">cdc_desc_func_acm_t</a></td></tr>
-<tr class="memdesc:gaaf09d5c3ff646c800a6d4b7730f2247d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Abstract Control Management Functional Descriptor.  <a href="group___class_driver___c_d_c.html#gaaf09d5c3ff646c800a6d4b7730f2247d">More...</a><br /></td></tr>
 <tr class="separator:gaaf09d5c3ff646c800a6d4b7730f2247d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga578759e6090c0c573a41e90073f8325c"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html">TU_ATTR_PACKED</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___class_driver___c_d_c.html#ga578759e6090c0c573a41e90073f8325c">cdc_desc_func_direct_line_management_t</a></td></tr>
 <tr class="memdesc:ga578759e6090c0c573a41e90073f8325c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Direct Line Management Functional Descriptor.  <a href="group___class_driver___c_d_c.html#ga578759e6090c0c573a41e90073f8325c">More...</a><br /></td></tr>
@@ -142,33 +141,35 @@ Typedefs</h2></td></tr>
 Enumerations</h2></td></tr>
 <tr class="memitem:ga48d58906ad33c9e53b2f7d6306ebced2"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___class_driver___c_d_c.html#ga48d58906ad33c9e53b2f7d6306ebced2">cdc_comm_sublcass_type_t</a> { <br />
 &#160;&#160;<a class="el" href="group___class_driver___c_d_c.html#gga48d58906ad33c9e53b2f7d6306ebced2a53ce6239644f89af12b104b9a99fc866">CDC_COMM_SUBCLASS_DIRECT_LINE_CONTROL_MODEL</a> = 0x01
-, <a class="el" href="group___class_driver___c_d_c.html#gga48d58906ad33c9e53b2f7d6306ebced2a53661271012c020a3d2373044f0c319a">CDC_COMM_SUBCLASS_ABSTRACT_CONTROL_MODEL</a>
-, <a class="el" href="group___class_driver___c_d_c.html#gga48d58906ad33c9e53b2f7d6306ebced2a0bf27dc92f1bc15ee28997fb40881933">CDC_COMM_SUBCLASS_TELEPHONE_CONTROL_MODEL</a>
-, <a class="el" href="group___class_driver___c_d_c.html#gga48d58906ad33c9e53b2f7d6306ebced2ad26e8899ac487127276b236987258090">CDC_COMM_SUBCLASS_MULTICHANNEL_CONTROL_MODEL</a>
+, <a class="el" href="group___class_driver___c_d_c.html#gga48d58906ad33c9e53b2f7d6306ebced2a53661271012c020a3d2373044f0c319a">CDC_COMM_SUBCLASS_ABSTRACT_CONTROL_MODEL</a> = 0x02
+, <a class="el" href="group___class_driver___c_d_c.html#gga48d58906ad33c9e53b2f7d6306ebced2a0bf27dc92f1bc15ee28997fb40881933">CDC_COMM_SUBCLASS_TELEPHONE_CONTROL_MODEL</a> = 0x03
+, <a class="el" href="group___class_driver___c_d_c.html#gga48d58906ad33c9e53b2f7d6306ebced2ad26e8899ac487127276b236987258090">CDC_COMM_SUBCLASS_MULTICHANNEL_CONTROL_MODEL</a> = 0x04
 , <br />
-&#160;&#160;<a class="el" href="group___class_driver___c_d_c.html#gga48d58906ad33c9e53b2f7d6306ebced2a1cce93820d7eeda74a7bfb5e5b7b9175">CDC_COMM_SUBCLASS_CAPI_CONTROL_MODEL</a>
-, <a class="el" href="group___class_driver___c_d_c.html#gga48d58906ad33c9e53b2f7d6306ebced2a0280beaef2569fb1216edf933f4e8017">CDC_COMM_SUBCLASS_ETHERNET_CONTROL_MODEL</a>
-, <a class="el" href="group___class_driver___c_d_c.html#gga48d58906ad33c9e53b2f7d6306ebced2a921e3d4cf79fcdbb2ec3860af22aab63">CDC_COMM_SUBCLASS_ATM_NETWORKING_CONTROL_MODEL</a>
-, <a class="el" href="group___class_driver___c_d_c.html#gga48d58906ad33c9e53b2f7d6306ebced2af935820bcb4e595c3ae73ac41f016425">CDC_COMM_SUBCLASS_WIRELESS_HANDSET_CONTROL_MODEL</a>
+&#160;&#160;<a class="el" href="group___class_driver___c_d_c.html#gga48d58906ad33c9e53b2f7d6306ebced2a1cce93820d7eeda74a7bfb5e5b7b9175">CDC_COMM_SUBCLASS_CAPI_CONTROL_MODEL</a> = 0x05
+, <a class="el" href="group___class_driver___c_d_c.html#gga48d58906ad33c9e53b2f7d6306ebced2a0280beaef2569fb1216edf933f4e8017">CDC_COMM_SUBCLASS_ETHERNET_CONTROL_MODEL</a> = 0x06
+, <a class="el" href="group___class_driver___c_d_c.html#gga48d58906ad33c9e53b2f7d6306ebced2a921e3d4cf79fcdbb2ec3860af22aab63">CDC_COMM_SUBCLASS_ATM_NETWORKING_CONTROL_MODEL</a> = 0x07
+, <a class="el" href="group___class_driver___c_d_c.html#gga48d58906ad33c9e53b2f7d6306ebced2af935820bcb4e595c3ae73ac41f016425">CDC_COMM_SUBCLASS_WIRELESS_HANDSET_CONTROL_MODEL</a> = 0x08
 , <br />
-&#160;&#160;<a class="el" href="group___class_driver___c_d_c.html#gga48d58906ad33c9e53b2f7d6306ebced2a1ab397664d53650924f82bf7f544a022">CDC_COMM_SUBCLASS_DEVICE_MANAGEMENT</a>
-, <a class="el" href="group___class_driver___c_d_c.html#gga48d58906ad33c9e53b2f7d6306ebced2ad7bbd7b736e44f78d01b7d6c5619e02d">CDC_COMM_SUBCLASS_MOBILE_DIRECT_LINE_MODEL</a>
-, <a class="el" href="group___class_driver___c_d_c.html#gga48d58906ad33c9e53b2f7d6306ebced2a4f62590243217cb0f179a403294da287">CDC_COMM_SUBCLASS_OBEX</a>
-, <a class="el" href="group___class_driver___c_d_c.html#gga48d58906ad33c9e53b2f7d6306ebced2ae2377f76c14d05a20d125367a770bf42">CDC_COMM_SUBCLASS_ETHERNET_EMULATION_MODEL</a>
+&#160;&#160;<a class="el" href="group___class_driver___c_d_c.html#gga48d58906ad33c9e53b2f7d6306ebced2a1ab397664d53650924f82bf7f544a022">CDC_COMM_SUBCLASS_DEVICE_MANAGEMENT</a> = 0x09
+, <a class="el" href="group___class_driver___c_d_c.html#gga48d58906ad33c9e53b2f7d6306ebced2ad7bbd7b736e44f78d01b7d6c5619e02d">CDC_COMM_SUBCLASS_MOBILE_DIRECT_LINE_MODEL</a> = 0x0A
+, <a class="el" href="group___class_driver___c_d_c.html#gga48d58906ad33c9e53b2f7d6306ebced2a4f62590243217cb0f179a403294da287">CDC_COMM_SUBCLASS_OBEX</a> = 0x0B
+, <a class="el" href="group___class_driver___c_d_c.html#gga48d58906ad33c9e53b2f7d6306ebced2ae2377f76c14d05a20d125367a770bf42">CDC_COMM_SUBCLASS_ETHERNET_EMULATION_MODEL</a> = 0x0C
+, <br />
+&#160;&#160;<a class="el" href="group___class_driver___c_d_c.html#gga48d58906ad33c9e53b2f7d6306ebced2a0c223c461f13203bf8340815ca598e05">CDC_COMM_SUBCLASS_NETWORK_CONTROL_MODEL</a> = 0x0D
 <br />
  }</td></tr>
 <tr class="memdesc:ga48d58906ad33c9e53b2f7d6306ebced2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Communication Interface Subclass Codes.  <a href="group___class_driver___c_d_c.html#ga48d58906ad33c9e53b2f7d6306ebced2">More...</a><br /></td></tr>
 <tr class="separator:ga48d58906ad33c9e53b2f7d6306ebced2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga8925914b195491f5369642d68482ba8d"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___class_driver___c_d_c.html#ga8925914b195491f5369642d68482ba8d">cdc_comm_protocol_type_t</a> { <br />
 &#160;&#160;<a class="el" href="group___class_driver___c_d_c.html#gga8925914b195491f5369642d68482ba8da03a827dfa703e070e55d464b1bf9f34b">CDC_COMM_PROTOCOL_NONE</a> = 0x00
-, <a class="el" href="group___class_driver___c_d_c.html#gga8925914b195491f5369642d68482ba8da3257a6e2c00e14e46fbd83026b9cb73b">CDC_COMM_PROTOCOL_ATCOMMAND</a>
-, <a class="el" href="group___class_driver___c_d_c.html#gga8925914b195491f5369642d68482ba8dacd1c4585dc8e8b2529552522d057d66d">CDC_COMM_PROTOCOL_ATCOMMAND_PCCA_101</a>
-, <a class="el" href="group___class_driver___c_d_c.html#gga8925914b195491f5369642d68482ba8da37c9fd9ec25bf5c5ff102c882f3ebd3f">CDC_COMM_PROTOCOL_ATCOMMAND_PCCA_101_AND_ANNEXO</a>
+, <a class="el" href="group___class_driver___c_d_c.html#gga8925914b195491f5369642d68482ba8da3257a6e2c00e14e46fbd83026b9cb73b">CDC_COMM_PROTOCOL_ATCOMMAND</a> = 0x01
+, <a class="el" href="group___class_driver___c_d_c.html#gga8925914b195491f5369642d68482ba8dacd1c4585dc8e8b2529552522d057d66d">CDC_COMM_PROTOCOL_ATCOMMAND_PCCA_101</a> = 0x02
+, <a class="el" href="group___class_driver___c_d_c.html#gga8925914b195491f5369642d68482ba8da37c9fd9ec25bf5c5ff102c882f3ebd3f">CDC_COMM_PROTOCOL_ATCOMMAND_PCCA_101_AND_ANNEXO</a> = 0x03
 , <br />
-&#160;&#160;<a class="el" href="group___class_driver___c_d_c.html#gga8925914b195491f5369642d68482ba8da203690a8f4ce71028a80da74276f38a8">CDC_COMM_PROTOCOL_ATCOMMAND_GSM_707</a>
-, <a class="el" href="group___class_driver___c_d_c.html#gga8925914b195491f5369642d68482ba8daa8bb444144dbcf12258d48107f73d711">CDC_COMM_PROTOCOL_ATCOMMAND_3GPP_27007</a>
-, <a class="el" href="group___class_driver___c_d_c.html#gga8925914b195491f5369642d68482ba8dadcc8abdb42b9b29d0213634b918d5c01">CDC_COMM_PROTOCOL_ATCOMMAND_CDMA</a>
-, <a class="el" href="group___class_driver___c_d_c.html#gga8925914b195491f5369642d68482ba8da4744fd74c5f0487c909600a6f0bd69e6">CDC_COMM_PROTOCOL_ETHERNET_EMULATION_MODEL</a>
+&#160;&#160;<a class="el" href="group___class_driver___c_d_c.html#gga8925914b195491f5369642d68482ba8da203690a8f4ce71028a80da74276f38a8">CDC_COMM_PROTOCOL_ATCOMMAND_GSM_707</a> = 0x04
+, <a class="el" href="group___class_driver___c_d_c.html#gga8925914b195491f5369642d68482ba8daa8bb444144dbcf12258d48107f73d711">CDC_COMM_PROTOCOL_ATCOMMAND_3GPP_27007</a> = 0x05
+, <a class="el" href="group___class_driver___c_d_c.html#gga8925914b195491f5369642d68482ba8dadcc8abdb42b9b29d0213634b918d5c01">CDC_COMM_PROTOCOL_ATCOMMAND_CDMA</a> = 0x06
+, <a class="el" href="group___class_driver___c_d_c.html#gga8925914b195491f5369642d68482ba8da4744fd74c5f0487c909600a6f0bd69e6">CDC_COMM_PROTOCOL_ETHERNET_EMULATION_MODEL</a> = 0x07
 <br />
  }</td></tr>
 <tr class="memdesc:ga8925914b195491f5369642d68482ba8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Communication Interface Protocol Codes.  <a href="group___class_driver___c_d_c.html#ga8925914b195491f5369642d68482ba8d">More...</a><br /></td></tr>
@@ -206,6 +207,7 @@ Enumerations</h2></td></tr>
 , <br />
 &#160;&#160;<a class="el" href="group___class_driver___c_d_c.html#ggae6a80ac81974bf75a55eeda33f6abfbda1618ae01b07313192ff4aba1225e48a9">CDC_FUNC_DESC_TELEPHONE_CONTROL_MODEL</a> = 0x18
 , <a class="el" href="group___class_driver___c_d_c.html#ggae6a80ac81974bf75a55eeda33f6abfbda02390b1fea65d825e4e29e011a4d31de">CDC_FUNC_DESC_OBEX_SERVICE_IDENTIFIER</a> = 0x19
+, <a class="el" href="group___class_driver___c_d_c.html#ggae6a80ac81974bf75a55eeda33f6abfbdaf2eeabd9f5d31cf328041e424f54794f">CDC_FUNC_DESC_NCM</a> = 0x1A
 <br />
  }</td></tr>
 <tr class="memdesc:gae6a80ac81974bf75a55eeda33f6abfbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Communication Interface SubType Descriptor.  <a href="group___class_driver___c_d_c.html#gae6a80ac81974bf75a55eeda33f6abfbd">More...</a><br /></td></tr>
@@ -227,7 +229,6 @@ Enumerations</h2></td></tr>
 , <a class="el" href="group___class_driver___c_d_c.html#gga020ae63208fc27e10bf15c6d06186b33a04e2d73df166bf52511dd1a96ccabac1">CDC_DATA_PROTOCOL_IN_PROTOCOL_UNIT_FUNCTIONAL_DESCRIPTOR</a> = 0xFE
 <br />
  }</td></tr>
-<tr class="memdesc:ga020ae63208fc27e10bf15c6d06186b33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Data Interface Protocol Codes.  <a href="group___class_driver___c_d_c.html#ga020ae63208fc27e10bf15c6d06186b33">More...</a><br /></td></tr>
 <tr class="separator:ga020ae63208fc27e10bf15c6d06186b33"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga2a389fb44d9e4275e44370e34303476f"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___class_driver___c_d_c.html#ga2a389fb44d9e4275e44370e34303476f">cdc_management_request_t</a> { <br />
 &#160;&#160;<a class="el" href="group___class_driver___c_d_c.html#gga2a389fb44d9e4275e44370e34303476fa8088573b5b7b4c544af1f84f258fb7be">CDC_REQUEST_SEND_ENCAPSULATED_COMMAND</a> = 0x00
@@ -279,20 +280,20 @@ Enumerations</h2></td></tr>
 <tr class="memdesc:ga2a389fb44d9e4275e44370e34303476f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Communication Interface Management Element Request Codes.  <a href="group___class_driver___c_d_c.html#ga2a389fb44d9e4275e44370e34303476f">More...</a><br /></td></tr>
 <tr class="separator:ga2a389fb44d9e4275e44370e34303476f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gafe51e6ac2b0028e0d33de1cbb4739e6f"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___class_driver___c_d_c.html#gafe51e6ac2b0028e0d33de1cbb4739e6f">cdc_notification_request_t</a> { <br />
-&#160;&#160;<a class="el" href="group___class_driver___c_d_c.html#ggafe51e6ac2b0028e0d33de1cbb4739e6faa146d594ca0988d95fd3bd88efdc8ec0">NETWORK_CONNECTION</a> = 0x00
-, <a class="el" href="group___class_driver___c_d_c.html#ggafe51e6ac2b0028e0d33de1cbb4739e6fa4fa6052a18b9742a8c5a321434a11fab">RESPONSE_AVAILABLE</a> = 0x01
-, <a class="el" href="group___class_driver___c_d_c.html#ggafe51e6ac2b0028e0d33de1cbb4739e6fafe4ed25efa0f560ebbf39c3357a77844">AUX_JACK_HOOK_STATE</a> = 0x08
-, <a class="el" href="group___class_driver___c_d_c.html#ggafe51e6ac2b0028e0d33de1cbb4739e6faa656b09593945174eccd36c41a7ac647">RING_DETECT</a> = 0x09
+&#160;&#160;<a class="el" href="group___class_driver___c_d_c.html#ggafe51e6ac2b0028e0d33de1cbb4739e6faa7f55445fb36a3c8358d280ff3f9dee9">CDC_NOTIF_NETWORK_CONNECTION</a> = 0x00
+, <a class="el" href="group___class_driver___c_d_c.html#ggafe51e6ac2b0028e0d33de1cbb4739e6fabbe24715cae0c1004cc7a83146304dc3">CDC_NOTIF_RESPONSE_AVAILABLE</a> = 0x01
+, <a class="el" href="group___class_driver___c_d_c.html#ggafe51e6ac2b0028e0d33de1cbb4739e6fad2dec2c26a395e493b6e33d673c3b26f">CDC_NOTIF_AUX_JACK_HOOK_STATE</a> = 0x08
+, <a class="el" href="group___class_driver___c_d_c.html#ggafe51e6ac2b0028e0d33de1cbb4739e6faba44f9d81dd558bc4def3631f63832b8">CDC_NOTIF_RING_DETECT</a> = 0x09
 , <br />
-&#160;&#160;<a class="el" href="group___class_driver___c_d_c.html#ggafe51e6ac2b0028e0d33de1cbb4739e6fa6c3a1b1df6a17c7a48fbff9b32c2cbc0">SERIAL_STATE</a> = 0x20
-, <a class="el" href="group___class_driver___c_d_c.html#ggafe51e6ac2b0028e0d33de1cbb4739e6fa3c1e8630d77b0ad9a633da8f2617d14a">CALL_STATE_CHANGE</a> = 0x28
-, <a class="el" href="group___class_driver___c_d_c.html#ggafe51e6ac2b0028e0d33de1cbb4739e6faa003e0c594b69642e2b3e4af9a5a938e">LINE_STATE_CHANGE</a> = 0x29
-, <a class="el" href="group___class_driver___c_d_c.html#ggafe51e6ac2b0028e0d33de1cbb4739e6fa396f8875eac6a9948fd4e5ae378cd093">CONNECTION_SPEED_CHANGE</a> = 0x2A
+&#160;&#160;<a class="el" href="group___class_driver___c_d_c.html#ggafe51e6ac2b0028e0d33de1cbb4739e6fa792b5696c9efbd6662ac9b1d4e3424dd">CDC_NOTIF_SERIAL_STATE</a> = 0x20
+, <a class="el" href="group___class_driver___c_d_c.html#ggafe51e6ac2b0028e0d33de1cbb4739e6faa51bccb30cb8fee5ea08a3f693008b51">CDC_NOTIF_CALL_STATE_CHANGE</a> = 0x28
+, <a class="el" href="group___class_driver___c_d_c.html#ggafe51e6ac2b0028e0d33de1cbb4739e6fafe3f502a044613d222761f20417b8759">CDC_NOTIF_LINE_STATE_CHANGE</a> = 0x29
+, <a class="el" href="group___class_driver___c_d_c.html#ggafe51e6ac2b0028e0d33de1cbb4739e6fa1fa0f5a08ce0cea5641708d10dcdb320">CDC_NOTIF_CONNECTION_SPEED_CHANGE</a> = 0x2A
 , <br />
-&#160;&#160;<a class="el" href="group___class_driver___c_d_c.html#ggafe51e6ac2b0028e0d33de1cbb4739e6fa90522e4b2f6bdd460a65a5cae516a0d3">MDLM_SEMANTIC_MODEL_NOTIFICATION</a> = 0x40
+&#160;&#160;<a class="el" href="group___class_driver___c_d_c.html#ggafe51e6ac2b0028e0d33de1cbb4739e6fac66c90f1c309867da2135ddaf2a54b26">CDC_NOTIF_MDLM_SEMANTIC_MODEL_NOTIFICATION</a> = 0x40
 <br />
  }</td></tr>
-<tr class="memdesc:gafe51e6ac2b0028e0d33de1cbb4739e6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Communication Interface Management Element Notification Codes.  <a href="group___class_driver___c_d_c.html#gafe51e6ac2b0028e0d33de1cbb4739e6f">More...</a><br /></td></tr>
+<tr class="memdesc:gafe51e6ac2b0028e0d33de1cbb4739e6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">6.3 Notification Codes  <a href="group___class_driver___c_d_c.html#gafe51e6ac2b0028e0d33de1cbb4739e6f">More...</a><br /></td></tr>
 <tr class="separator:gafe51e6ac2b0028e0d33de1cbb4739e6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>

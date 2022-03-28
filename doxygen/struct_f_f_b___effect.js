@@ -3,7 +3,6 @@ var struct_f_f_b___effect =
     [ "attackLevel", "struct_f_f_b___effect.html#a8ec5f69df68d5b3c97c4097717d3e5e7", null ],
     [ "attackTime", "struct_f_f_b___effect.html#a7c1720e41b5acbd33926eedfa982bc1c", null ],
     [ "conditions", "struct_f_f_b___effect.html#a86e981a12a804be9c50561f6042542b0", null ],
-    [ "conditionsCount", "struct_f_f_b___effect.html#a0d4732171cc7d89f5f76fbcaa96b28fc", null ],
     [ "directionX", "struct_f_f_b___effect.html#a0ac095fa3a25d0654a5f497419b0dbd6", null ],
     [ "directionY", "struct_f_f_b___effect.html#ae9112fdb408e2b5839d7c84d8b0b8e50", null ],
     [ "directionZ", "struct_f_f_b___effect.html#adecfd4e99d592b0ba1c3810b0eb2a1ef", null ],

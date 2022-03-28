@@ -4,5 +4,6 @@ var struct_t_m_c4671_mot_conf =
     [ "motor_type", "struct_t_m_c4671_mot_conf.html#a28c3fe1e92e91bcfde1668d4dc053ec4", null ],
     [ "phiEsource", "struct_t_m_c4671_mot_conf.html#a841164c8c38da5ed654e12e9a4b01923", null ],
     [ "pole_pairs", "struct_t_m_c4671_mot_conf.html#a45323a99d7722e6ab1600b04d75c608a", null ],
-    [ "pos_sel", "struct_t_m_c4671_mot_conf.html#a821121381aaf88049781fb4021804304", null ]
+    [ "pos_sel", "struct_t_m_c4671_mot_conf.html#a821121381aaf88049781fb4021804304", null ],
+    [ "vel_sel", "struct_t_m_c4671_mot_conf.html#abc52bb3e56c4da7c6a3c1c4b429cc84d", null ]
 ];

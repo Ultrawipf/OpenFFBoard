@@ -9,5 +9,7 @@ var struct_t_m_c4671_hardware_type_conf =
     [ "temperatureEnabled", "struct_t_m_c4671_hardware_type_conf.html#a92e855676592df0fc97c5554f1a2a442", null ],
     [ "thermistor_Beta", "struct_t_m_c4671_hardware_type_conf.html#af9a9b336daaf859b705c2df551533449", null ],
     [ "thermistor_R", "struct_t_m_c4671_hardware_type_conf.html#aa77beffb14556aa8190b1a7fa34bd542", null ],
-    [ "thermistor_R2", "struct_t_m_c4671_hardware_type_conf.html#a37fbf40d8c3a5a15b6df61c9540afb66", null ]
+    [ "thermistor_R2", "struct_t_m_c4671_hardware_type_conf.html#a37fbf40d8c3a5a15b6df61c9540afb66", null ],
+    [ "vmScaler", "struct_t_m_c4671_hardware_type_conf.html#a083a3fdb64f4fbfe1f5cd2a8d0c02834", null ],
+    [ "vSenseMult", "struct_t_m_c4671_hardware_type_conf.html#a042dbabce28906a0c95f704061e217ad", null ]
 ];

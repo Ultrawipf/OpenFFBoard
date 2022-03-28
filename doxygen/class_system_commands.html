@@ -115,8 +115,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ae48810b49d0221f92d5a4bd85124af0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a926a7fe1f1f52de1dc8c27203f259ba3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_system_commands.html#a926a7fe1f1f52de1dc8c27203f259ba3">registerCommands</a> ()</td></tr>
 <tr class="separator:a926a7fe1f1f52de1dc8c27203f259ba3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a99914612eb7510063fe7f712eab8a88f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_command_handler_8h.html#aefaf83fec6a7da1d02ae7e912dd9a6d5">CommandStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_system_commands.html#a99914612eb7510063fe7f712eab8a88f">internalCommand</a> (const <a class="el" href="struct_parsed_command.html">ParsedCommand</a> &amp;cmd, std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;replies, <a class="el" href="class_command_interface.html">CommandInterface</a> *interface)</td></tr>
-<tr class="separator:a99914612eb7510063fe7f712eab8a88f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a110230afcdc4c4a512243b3414d45ff0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_command_handler_8h.html#aefaf83fec6a7da1d02ae7e912dd9a6d5">CommandStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_system_commands.html#a110230afcdc4c4a512243b3414d45ff0">internalCommand</a> (const <a class="el" href="struct_parsed_command.html">ParsedCommand</a> &amp;cmd, std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;replies)</td></tr>
+<tr class="separator:a110230afcdc4c4a512243b3414d45ff0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a07e56cc47e5e688644970b59063c237f"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="_class_i_ds_8h.html#a79467dc849dd02adbaa4373bbd7aba75">ClassType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_system_commands.html#a07e56cc47e5e688644970b59063c237f">getClassType</a> ()</td></tr>
 <tr class="separator:a07e56cc47e5e688644970b59063c237f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_command_handler"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_command_handler')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_command_handler.html">CommandHandler</a></td></tr>
@@ -140,11 +140,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:af6efec263bc372a1ca57add26dd93a97 inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad67013c18a56f13ff7159883dfce665e inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#ad67013c18a56f13ff7159883dfce665e">broadcastCommandReply</a> (<a class="el" href="class_command_reply.html">CommandReply</a> reply, uint32_t cmdId, <a class="el" href="_command_handler_8h.html#aec46f6cc23a395b611fbc7c7239b9c41">CMDtype</a> type)</td></tr>
 <tr class="separator:ad67013c18a56f13ff7159883dfce665e inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab23b77c2282380e1e713b0173530416c inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#ab23b77c2282380e1e713b0173530416c">sendCommandReplyAsync</a> (<a class="el" href="class_command_reply.html">CommandReply</a> reply, uint32_t cmdId, <a class="el" href="_command_handler_8h.html#aec46f6cc23a395b611fbc7c7239b9c41">CMDtype</a> type, <a class="el" href="class_command_interface.html">CommandInterface</a> *interface=nullptr)</td></tr>
+<tr class="separator:ab23b77c2282380e1e713b0173530416c inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5d6e4cd233e9221df2cf1ff3c1468385 inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">virtual uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a5d6e4cd233e9221df2cf1ff3c1468385">getCommandHandlerID</a> ()</td></tr>
 <tr class="separator:a5d6e4cd233e9221df2cf1ff3c1468385 inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad27ce104d3546c2b6f7cd74dff950274 inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">virtual uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#ad27ce104d3546c2b6f7cd74dff950274">getSelectionID</a> ()</td></tr>
-<tr class="memdesc:ad27ce104d3546c2b6f7cd74dff950274 inherit pub_methods_class_command_handler"><td class="mdescLeft">&#160;</td><td class="mdescRight">normally returns class id but for choosable classes this can be the id used to create the class  <a href="class_command_handler.html#ad27ce104d3546c2b6f7cd74dff950274">More...</a><br /></td></tr>
-<tr class="separator:ad27ce104d3546c2b6f7cd74dff950274 inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad9d9d0fd0bd0a58cfd8b6199081403a9 inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="struct_cmd_handler_info.html">CmdHandlerInfo</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#ad9d9d0fd0bd0a58cfd8b6199081403a9">getCommandHandlerInfo</a> ()</td></tr>
 <tr class="separator:ad9d9d0fd0bd0a58cfd8b6199081403a9 inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af658c15ccbac468224ed2c5997e06f91 inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#af658c15ccbac468224ed2c5997e06f91">isValidCommandId</a> (uint32_t cmdid, uint32_t ignoredFlags=0, uint32_t requiredFlag=0)</td></tr>
@@ -353,8 +352,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a99914612eb7510063fe7f712eab8a88f" name="a99914612eb7510063fe7f712eab8a88f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a99914612eb7510063fe7f712eab8a88f">&#9670;&nbsp;</a></span>internalCommand()</h2>
+<a id="a110230afcdc4c4a512243b3414d45ff0" name="a110230afcdc4c4a512243b3414d45ff0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a110230afcdc4c4a512243b3414d45ff0">&#9670;&nbsp;</a></span>internalCommand()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -372,13 +371,7 @@ Additional Inherited Members</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;&#160;</td>
-          <td class="paramname"><em>replies</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="class_command_interface.html">CommandInterface</a> *&#160;</td>
-          <td class="paramname"><em>interface</em>&#160;</td>
+          <td class="paramname"><em>replies</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -394,7 +387,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p >Some standard commands most classes will need </p>
 
-<p>Reimplemented from <a class="el" href="class_command_handler.html#aed6a9e7304ae2edefc41d636442639a5">CommandHandler</a>.</p>
+<p>Reimplemented from <a class="el" href="class_command_handler.html#a6a533be5d0625557f6e1f194f70dc0d5">CommandHandler</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="_system_commands_8cpp_source.html#l00071">71</a> of file <a class="el" href="_system_commands_8cpp_source.html">SystemCommands.cpp</a>.</p>
 
@@ -443,7 +436,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_system_commands_8cpp_source.html#l00281">281</a> of file <a class="el" href="_system_commands_8cpp_source.html">SystemCommands.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_system_commands_8cpp_source.html#l00289">289</a> of file <a class="el" href="_system_commands_8cpp_source.html">SystemCommands.cpp</a>.</p>
 
 </div>
 </div>
@@ -471,7 +464,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_system_commands_8cpp_source.html#l00261">261</a> of file <a class="el" href="_system_commands_8cpp_source.html">SystemCommands.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_system_commands_8cpp_source.html#l00269">269</a> of file <a class="el" href="_system_commands_8cpp_source.html">SystemCommands.cpp</a>.</p>
 
 </div>
 </div>
@@ -546,8 +539,9 @@ Additional Inherited Members</h2></td></tr>
 <b>Initial value:</b><div class="fragment"><div class="line">= {</div>
 <div class="line">         .name = <span class="stringliteral">&quot;System Commands&quot;</span> ,</div>
 <div class="line">         .id = CLSID_SYSTEM,</div>
-<div class="line">         .hidden = <span class="keyword">true</span></div>
+<div class="line">         .visibility = <a class="code hl_enumvalue" href="_choosable_class_8h.html#aa3a363b83e4ed5a23cf7398fcf8bae0ca662f707d5491e9bce8238a6c0be92190">ClassVisibility::hidden</a></div>
 <div class="line"> }</div>
+<div class="ttc" id="a_choosable_class_8h_html_aa3a363b83e4ed5a23cf7398fcf8bae0ca662f707d5491e9bce8238a6c0be92190"><div class="ttname"><a href="_choosable_class_8h.html#aa3a363b83e4ed5a23cf7398fcf8bae0ca662f707d5491e9bce8238a6c0be92190">ClassVisibility::hidden</a></div><div class="ttdeci">@ hidden</div></div>
 </div><!-- fragment -->
 <p class="definition">Definition at line <a class="el" href="_system_commands_8h_source.html#l00023">23</a> of file <a class="el" href="_system_commands_8h_source.html">SystemCommands.h</a>.</p>
 

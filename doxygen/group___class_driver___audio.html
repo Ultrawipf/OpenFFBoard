@@ -133,6 +133,8 @@ Typedefs</h2></td></tr>
 <tr class="memitem:ga8bb2346a11c1e4c5ddacd274c67c2cff"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html">TU_ATTR_PACKED</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___class_driver___audio.html#ga8bb2346a11c1e4c5ddacd274c67c2cff">audio_desc_cs_as_iso_data_ep_t</a></td></tr>
 <tr class="memdesc:ga8bb2346a11c1e4c5ddacd274c67c2cff"><td class="mdescLeft">&#160;</td><td class="mdescRight">AUDIO Class-Specific AS Isochronous Audio Data Endpoint Descriptor(4.10.1.2)  <a href="group___class_driver___audio.html#ga8bb2346a11c1e4c5ddacd274c67c2cff">More...</a><br /></td></tr>
 <tr class="separator:ga8bb2346a11c1e4c5ddacd274c67c2cff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae8d286e4ae169cbb9dd44f1cd06c1852"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html">TU_ATTR_PACKED</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___class_driver___audio.html#gae8d286e4ae169cbb9dd44f1cd06c1852">audio_control_request_t</a></td></tr>
+<tr class="separator:gae8d286e4ae169cbb9dd44f1cd06c1852"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga3b4bdeb7cfdc86353ef2963d47ee0b33"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html">TU_ATTR_PACKED</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___class_driver___audio.html#ga3b4bdeb7cfdc86353ef2963d47ee0b33">audio_control_cur_1_t</a></td></tr>
 <tr class="separator:ga3b4bdeb7cfdc86353ef2963d47ee0b33"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac26cd9e468838fc81e6f32924f9d562f"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html">TU_ATTR_PACKED</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___class_driver___audio.html#gac26cd9e468838fc81e6f32924f9d562f">audio_control_cur_2_t</a></td></tr>
@@ -562,24 +564,36 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:gaf582f513e3a7354d2fce6bb6c7d7fa96"><td class="mdescLeft">&#160;</td><td class="mdescRight">2.3 - Audio Class-Output Terminal Types UAC2  <a href="group___class_driver___audio.html#gaf582f513e3a7354d2fce6bb6c7d7fa96">More...</a><br /></td></tr>
 <tr class="separator:gaf582f513e3a7354d2fce6bb6c7d7fa96"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga333727ea541808f5c815adec3b2888c2"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___class_driver___audio.html#ga333727ea541808f5c815adec3b2888c2">tusb_iso_ep_attribute_t</a> { <br />
-&#160;&#160;<a class="el" href="group___class_driver___audio.html#gga333727ea541808f5c815adec3b2888c2a6c02aa49f1981446327a6ae4f0f0e913">TUSB_ISO_EP_ATT_NO_SYNC</a> = 0x00
-, <a class="el" href="group___class_driver___audio.html#gga333727ea541808f5c815adec3b2888c2a6056229f7bed07909ef2c8f273efe6b0">TUSB_ISO_EP_ATT_ASYNCHRONOUS</a> = 0x04
-, <a class="el" href="group___class_driver___audio.html#gga333727ea541808f5c815adec3b2888c2abc7974a647c2e2afb3c5e3aac2f6af21">TUSB_ISO_EP_ATT_ADAPTIVE</a> = 0x08
-, <a class="el" href="group___class_driver___audio.html#gga333727ea541808f5c815adec3b2888c2a7828338884de6c23bf0f031cab3322e1">TUSB_ISO_EP_ATT_SYNCHRONOUS</a> = 0x0C
+<tr class="memitem:gae18c93236294ee991e5f5c6b0922cd2f"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___class_driver___audio.html#gae18c93236294ee991e5f5c6b0922cd2f">audio_format_type_t</a> { <br />
+&#160;&#160;<a class="el" href="group___class_driver___audio.html#ggae18c93236294ee991e5f5c6b0922cd2fa093499407a4aaac15d6fc424ea617207">AUDIO_FORMAT_TYPE_UNDEFINED</a> = 0x00
+, <a class="el" href="group___class_driver___audio.html#ggae18c93236294ee991e5f5c6b0922cd2faaca39c01f96e7e659f427adec29204e8">AUDIO_FORMAT_TYPE_I</a> = 0x01
+, <a class="el" href="group___class_driver___audio.html#ggae18c93236294ee991e5f5c6b0922cd2fa9b72072cd81c55316f46845f56e01417">AUDIO_FORMAT_TYPE_II</a> = 0x02
+, <a class="el" href="group___class_driver___audio.html#ggae18c93236294ee991e5f5c6b0922cd2fa7ab0e96ce1a69b79a70df36ce830758a">AUDIO_FORMAT_TYPE_III</a> = 0x03
 , <br />
-&#160;&#160;<a class="el" href="group___class_driver___audio.html#gga333727ea541808f5c815adec3b2888c2acd2cc791e4add9166c33d45eea5b553a">TUSB_ISO_EP_ATT_DATA</a> = 0x00
-, <a class="el" href="group___class_driver___audio.html#gga333727ea541808f5c815adec3b2888c2a93b4e5aa895d454902e51bc4a0ef8d78">TUSB_ISO_EP_ATT_EXPLICIT_FB</a> = 0x10
-, <a class="el" href="group___class_driver___audio.html#gga333727ea541808f5c815adec3b2888c2a2fa77227b919236ccef44cf15e540719">TUSB_ISO_EP_ATT_IMPLICIT_FB</a> = 0x20
+&#160;&#160;<a class="el" href="group___class_driver___audio.html#ggae18c93236294ee991e5f5c6b0922cd2fac245b1df9989fd381ba625ac11250569">AUDIO_FORMAT_TYPE_IV</a> = 0x04
+, <a class="el" href="group___class_driver___audio.html#ggae18c93236294ee991e5f5c6b0922cd2fa6ef787e7730329435c30cc3a9545f261">AUDIO_EXT_FORMAT_TYPE_I</a> = 0x81
+, <a class="el" href="group___class_driver___audio.html#ggae18c93236294ee991e5f5c6b0922cd2fa2eb6d4c22587b5eaf6b7b6af182c64b9">AUDIO_EXT_FORMAT_TYPE_II</a> = 0x82
+, <a class="el" href="group___class_driver___audio.html#ggae18c93236294ee991e5f5c6b0922cd2fa357a841997b69dbc5017a088f13b82c8">AUDIO_EXT_FORMAT_TYPE_III</a> = 0x83
 <br />
  }</td></tr>
-<tr class="memdesc:ga333727ea541808f5c815adec3b2888c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">All remaining definitions are taken from the descriptor descriptions in the UAC2 main specification.  <a href="group___class_driver___audio.html#ga333727ea541808f5c815adec3b2888c2">More...</a><br /></td></tr>
-<tr class="separator:ga333727ea541808f5c815adec3b2888c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memdesc:gae18c93236294ee991e5f5c6b0922cd2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rest is yet to be implemented.  <a href="group___class_driver___audio.html#gae18c93236294ee991e5f5c6b0922cd2f">More...</a><br /></td></tr>
+<tr class="separator:gae18c93236294ee991e5f5c6b0922cd2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga32a64f6a946669fed071b3ba687c9cd2"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___class_driver___audio.html#ga32a64f6a946669fed071b3ba687c9cd2">audio_data_format_type_I_t</a> { <br />
+&#160;&#160;<a class="el" href="group___class_driver___audio.html#gga32a64f6a946669fed071b3ba687c9cd2ade8c49fc3312338fc38d26ea51f782e8">AUDIO_DATA_FORMAT_TYPE_I_PCM</a> = (uint32_t) (1 &lt;&lt; 0)
+, <a class="el" href="group___class_driver___audio.html#gga32a64f6a946669fed071b3ba687c9cd2adfaab4223bb6b305956c9fd69794ebe1">AUDIO_DATA_FORMAT_TYPE_I_PCM8</a> = (uint32_t) (1 &lt;&lt; 1)
+, <a class="el" href="group___class_driver___audio.html#gga32a64f6a946669fed071b3ba687c9cd2acf27039927e4ba44dc9f6dddbe9a7055">AUDIO_DATA_FORMAT_TYPE_I_IEEE_FLOAT</a> = (uint32_t) (1 &lt;&lt; 2)
+, <a class="el" href="group___class_driver___audio.html#gga32a64f6a946669fed071b3ba687c9cd2ab8d771ed2c791f3e40e3551f33498139">AUDIO_DATA_FORMAT_TYPE_I_ALAW</a> = (uint32_t) (1 &lt;&lt; 3)
+, <br />
+&#160;&#160;<a class="el" href="group___class_driver___audio.html#gga32a64f6a946669fed071b3ba687c9cd2acdf9a05758520df207e9fcc037e03641">AUDIO_DATA_FORMAT_TYPE_I_MULAW</a> = (uint32_t) (1 &lt;&lt; 4)
+, <a class="el" href="group___class_driver___audio.html#gga32a64f6a946669fed071b3ba687c9cd2ad433789f2ce8f43926acb2fbabc43c17">AUDIO_DATA_FORMAT_TYPE_I_RAW_DATA</a> = 0x80000000
+<br />
+ }</td></tr>
+<tr class="separator:ga32a64f6a946669fed071b3ba687c9cd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gabed82c3a184d1fb071275fa03996069e"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___class_driver___audio.html#gabed82c3a184d1fb071275fa03996069e">audio_control_t</a> { <a class="el" href="group___class_driver___audio.html#ggabed82c3a184d1fb071275fa03996069ea31ae8bc4052dc06d72ef41c26fd216cb">AUDIO_CTRL_NONE</a> = 0x00
 , <a class="el" href="group___class_driver___audio.html#ggabed82c3a184d1fb071275fa03996069ead53fb435041563e619e85cd47a36b803">AUDIO_CTRL_R</a> = 0x01
 , <a class="el" href="group___class_driver___audio.html#ggabed82c3a184d1fb071275fa03996069eaf911da7d087f007d70c0f2b815132bba">AUDIO_CTRL_RW</a> = 0x03
  }</td></tr>
-<tr class="memdesc:gabed82c3a184d1fb071275fa03996069e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Audio Class-Control Values UAC2.  <a href="group___class_driver___audio.html#gabed82c3a184d1fb071275fa03996069e">More...</a><br /></td></tr>
+<tr class="memdesc:gabed82c3a184d1fb071275fa03996069e"><td class="mdescLeft">&#160;</td><td class="mdescRight">All remaining definitions are taken from the descriptor descriptions in the UAC2 main specification.  <a href="group___class_driver___audio.html#gabed82c3a184d1fb071275fa03996069e">More...</a><br /></td></tr>
 <tr class="separator:gabed82c3a184d1fb071275fa03996069e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaa023c068e28bd62b06e93ad3c2df2cf4"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___class_driver___audio.html#gaa023c068e28bd62b06e93ad3c2df2cf4">audio_cs_ac_interface_control_pos_t</a> { <a class="el" href="group___class_driver___audio.html#ggaa023c068e28bd62b06e93ad3c2df2cf4a85b8974406534e0fc2717b94dad2ba29">AUDIO_CS_AS_INTERFACE_CTRL_LATENCY_POS</a> = 0
  }</td></tr>
@@ -801,6 +815,20 @@ Enumerations</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">typedef struct <a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html">TU_ATTR_PACKED</a> <a class="el" href="group___class_driver___audio.html#ga1c592e5a6ddf1346567d1c934be173d4">audio_control_range_4_t</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gae8d286e4ae169cbb9dd44f1cd06c1852" name="gae8d286e4ae169cbb9dd44f1cd06c1852"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae8d286e4ae169cbb9dd44f1cd06c1852">&#9670;&nbsp;</a></span>audio_control_request_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef struct <a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html">TU_ATTR_PACKED</a> <a class="el" href="group___class_driver___audio.html#gae8d286e4ae169cbb9dd44f1cd06c1852">audio_control_request_t</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1081,7 +1109,7 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="ggae37557c5995a3b95d32b8919d38c7237a0df9f9abef52cee30bfd8a4ad8954986" name="ggae37557c5995a3b95d32b8919d38c7237a0df9f9abef52cee30bfd8a4ad8954986"></a>AUDIO_CHANNEL_CONFIG_RAW_DATA&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00641">641</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00613">613</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
 
 </div>
 </div>
@@ -1126,7 +1154,7 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="gga5acf0aaee7b494e7ea7379e80fee71d9ab66c8725f521a2d5987cc00cc479a9e0" name="gga5acf0aaee7b494e7ea7379e80fee71d9ab66c8725f521a2d5987cc00cc479a9e0"></a>AUDIO_CLOCK_MULTIPLIER_CTRL_DENOMINATOR_POS&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00593">593</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00565">565</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
 
 </div>
 </div>
@@ -1169,7 +1197,7 @@ Enumerations</h2></td></tr>
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga49b4912ffb39ce100207fb1aeb2d9f1ca1977d9259d18aedd96f1ec8547e6dbba" name="gga49b4912ffb39ce100207fb1aeb2d9f1ca1977d9259d18aedd96f1ec8547e6dbba"></a>AUDIO_CLOCK_SELECTOR_CTRL_POS&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00587">587</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00559">559</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
 
 </div>
 </div>
@@ -1194,7 +1222,7 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="gga08f132af78e76dc4d123bf5431879236a82047ce7bf4a4e7f51fd8b50e63164ca" name="gga08f132af78e76dc4d123bf5431879236a82047ce7bf4a4e7f51fd8b50e63164ca"></a>AUDIO_CLOCK_SOURCE_ATT_CLK_SYC_SOF&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00570">570</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00542">542</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
 
 </div>
 </div>
@@ -1216,7 +1244,7 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="gga4787165ad328f895ad70c2f30c244811ab9db5d7a73a983fcf8f6f8666b2dc743" name="gga4787165ad328f895ad70c2f30c244811ab9db5d7a73a983fcf8f6f8666b2dc743"></a>AUDIO_CLOCK_SOURCE_CTRL_CLK_VAL_POS&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00580">580</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00552">552</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
 
 </div>
 </div>
@@ -1256,7 +1284,8 @@ Enumerations</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Audio Class-Control Values UAC2. </p>
+<p>All remaining definitions are taken from the descriptor descriptions in the UAC2 main specification. </p>
+<p >Audio Class-Control Values UAC2 </p>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ggabed82c3a184d1fb071275fa03996069ea31ae8bc4052dc06d72ef41c26fd216cb" name="ggabed82c3a184d1fb071275fa03996069ea31ae8bc4052dc06d72ef41c26fd216cb"></a>AUDIO_CTRL_NONE&#160;</td><td class="fielddoc"><p >No Host access. </p>
 </td></tr>
@@ -1266,7 +1295,7 @@ Enumerations</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00526">526</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00498">498</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
 
 </div>
 </div>
@@ -1287,7 +1316,7 @@ Enumerations</h2></td></tr>
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ggaa023c068e28bd62b06e93ad3c2df2cf4a85b8974406534e0fc2717b94dad2ba29" name="ggaa023c068e28bd62b06e93ad3c2df2cf4a85b8974406534e0fc2717b94dad2ba29"></a>AUDIO_CS_AS_INTERFACE_CTRL_LATENCY_POS&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00534">534</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00506">506</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
 
 </div>
 </div>
@@ -1343,7 +1372,7 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="ggabfa0354471abc3d45835ef8cc6ccd9abae4fb8bf406941cd3079d78ee582bd07e" name="ggabfa0354471abc3d45835ef8cc6ccd9abae4fb8bf406941cd3079d78ee582bd07e"></a>AUDIO_CS_AS_INTERFACE_CTRL_VALID_ALT_SET_POS&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00540">540</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00512">512</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
 
 </div>
 </div>
@@ -1390,7 +1419,7 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="gga6e645fa3936b584ca378d69e0d6e4724af038d611640b17dd3ec4eab7965d620f" name="gga6e645fa3936b584ca378d69e0d6e4724af038d611640b17dd3ec4eab7965d620f"></a>AUDIO_CS_AS_ISO_DATA_EP_ATT_NON_MAX_PACKETS_OK&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00547">547</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00519">519</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
 
 </div>
 </div>
@@ -1413,7 +1442,7 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="ggaaf387c04a2094b6522ca4eff8e850233a1eb26ec823988bc949d87db20344d51c" name="ggaaf387c04a2094b6522ca4eff8e850233a1eb26ec823988bc949d87db20344d51c"></a>AUDIO_CS_AS_ISO_DATA_EP_CTRL_DATA_UNDERRUN_POS&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00554">554</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00526">526</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
 
 </div>
 </div>
@@ -1436,7 +1465,7 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="gga6bbbe36737039299d4318434e3d50a50ad907d44934e69e0cfbe02f4eaa0a92f6" name="gga6bbbe36737039299d4318434e3d50a50ad907d44934e69e0cfbe02f4eaa0a92f6"></a>AUDIO_CS_AS_ISO_DATA_EP_LOCK_DELAY_UNIT_PCM_SAMPLES&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00562">562</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00534">534</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
 
 </div>
 </div>
@@ -1483,6 +1512,30 @@ Enumerations</h2></td></tr>
 </table>
 
 <p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00148">148</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
+
+</div>
+</div>
+<a id="ga32a64f6a946669fed071b3ba687c9cd2" name="ga32a64f6a946669fed071b3ba687c9cd2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga32a64f6a946669fed071b3ba687c9cd2">&#9670;&nbsp;</a></span>audio_data_format_type_I_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group___class_driver___audio.html#ga32a64f6a946669fed071b3ba687c9cd2">audio_data_format_type_I_t</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga32a64f6a946669fed071b3ba687c9cd2ade8c49fc3312338fc38d26ea51f782e8" name="gga32a64f6a946669fed071b3ba687c9cd2ade8c49fc3312338fc38d26ea51f782e8"></a>AUDIO_DATA_FORMAT_TYPE_I_PCM&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="gga32a64f6a946669fed071b3ba687c9cd2adfaab4223bb6b305956c9fd69794ebe1" name="gga32a64f6a946669fed071b3ba687c9cd2adfaab4223bb6b305956c9fd69794ebe1"></a>AUDIO_DATA_FORMAT_TYPE_I_PCM8&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="gga32a64f6a946669fed071b3ba687c9cd2acf27039927e4ba44dc9f6dddbe9a7055" name="gga32a64f6a946669fed071b3ba687c9cd2acf27039927e4ba44dc9f6dddbe9a7055"></a>AUDIO_DATA_FORMAT_TYPE_I_IEEE_FLOAT&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="gga32a64f6a946669fed071b3ba687c9cd2ab8d771ed2c791f3e40e3551f33498139" name="gga32a64f6a946669fed071b3ba687c9cd2ab8d771ed2c791f3e40e3551f33498139"></a>AUDIO_DATA_FORMAT_TYPE_I_ALAW&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="gga32a64f6a946669fed071b3ba687c9cd2acdf9a05758520df207e9fcc037e03641" name="gga32a64f6a946669fed071b3ba687c9cd2acdf9a05758520df207e9fcc037e03641"></a>AUDIO_DATA_FORMAT_TYPE_I_MULAW&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="gga32a64f6a946669fed071b3ba687c9cd2ad433789f2ce8f43926acb2fbabc43c17" name="gga32a64f6a946669fed071b3ba687c9cd2ad433789f2ce8f43926acb2fbabc43c17"></a>AUDIO_DATA_FORMAT_TYPE_I_RAW_DATA&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00485">485</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
 
 </div>
 </div>
@@ -1709,7 +1762,7 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="ggaa6e8e2e482cff444b1460997147d9da5a00204779d019c2fe3262cb91ce01c7e4" name="ggaa6e8e2e482cff444b1460997147d9da5a00204779d019c2fe3262cb91ce01c7e4"></a>AUDIO_FEATURE_UNIT_CTRL_OVERFLOW_POS&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00621">621</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00593">593</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
 
 </div>
 </div>
@@ -1747,6 +1800,35 @@ Enumerations</h2></td></tr>
 </table>
 
 <p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00214">214</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
+
+</div>
+</div>
+<a id="gae18c93236294ee991e5f5c6b0922cd2f" name="gae18c93236294ee991e5f5c6b0922cd2f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae18c93236294ee991e5f5c6b0922cd2f">&#9670;&nbsp;</a></span>audio_format_type_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group___class_driver___audio.html#gae18c93236294ee991e5f5c6b0922cd2f">audio_format_type_t</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Rest is yet to be implemented. </p>
+<p >Additional Audio Device Class Codes - Source: Audio Data Formats A.1 - Audio Class-Format Type Codes UAC2 </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ggae18c93236294ee991e5f5c6b0922cd2fa093499407a4aaac15d6fc424ea617207" name="ggae18c93236294ee991e5f5c6b0922cd2fa093499407a4aaac15d6fc424ea617207"></a>AUDIO_FORMAT_TYPE_UNDEFINED&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ggae18c93236294ee991e5f5c6b0922cd2faaca39c01f96e7e659f427adec29204e8" name="ggae18c93236294ee991e5f5c6b0922cd2faaca39c01f96e7e659f427adec29204e8"></a>AUDIO_FORMAT_TYPE_I&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ggae18c93236294ee991e5f5c6b0922cd2fa9b72072cd81c55316f46845f56e01417" name="ggae18c93236294ee991e5f5c6b0922cd2fa9b72072cd81c55316f46845f56e01417"></a>AUDIO_FORMAT_TYPE_II&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ggae18c93236294ee991e5f5c6b0922cd2fa7ab0e96ce1a69b79a70df36ce830758a" name="ggae18c93236294ee991e5f5c6b0922cd2fa7ab0e96ce1a69b79a70df36ce830758a"></a>AUDIO_FORMAT_TYPE_III&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ggae18c93236294ee991e5f5c6b0922cd2fac245b1df9989fd381ba625ac11250569" name="ggae18c93236294ee991e5f5c6b0922cd2fac245b1df9989fd381ba625ac11250569"></a>AUDIO_FORMAT_TYPE_IV&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ggae18c93236294ee991e5f5c6b0922cd2fa6ef787e7730329435c30cc3a9545f261" name="ggae18c93236294ee991e5f5c6b0922cd2fa6ef787e7730329435c30cc3a9545f261"></a>AUDIO_EXT_FORMAT_TYPE_I&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ggae18c93236294ee991e5f5c6b0922cd2fa2eb6d4c22587b5eaf6b7b6af182c64b9" name="ggae18c93236294ee991e5f5c6b0922cd2fa2eb6d4c22587b5eaf6b7b6af182c64b9"></a>AUDIO_EXT_FORMAT_TYPE_II&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ggae18c93236294ee991e5f5c6b0922cd2fa357a841997b69dbc5017a088f13b82c8" name="ggae18c93236294ee991e5f5c6b0922cd2fa357a841997b69dbc5017a088f13b82c8"></a>AUDIO_EXT_FORMAT_TYPE_III&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00472">472</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
 
 </div>
 </div>
@@ -2150,7 +2232,7 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="ggaa259ac23ac4317b186d1f23d9d4d21e7ade4cb700f1f351ad7f4af377440c89d4" name="ggaa259ac23ac4317b186d1f23d9d4d21e7ade4cb700f1f351ad7f4af377440c89d4"></a>AUDIO_IN_TERM_CTRL_OVERFLOW_POS&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00600">600</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00572">572</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
 
 </div>
 </div>
@@ -2202,7 +2284,7 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="ggadfbd52a1e74245c830df8cd6eac3ced5abb7183fcf77bd3e3f13cfcbab80e4a86" name="ggadfbd52a1e74245c830df8cd6eac3ced5abb7183fcf77bd3e3f13cfcbab80e4a86"></a>AUDIO_OUT_TERM_CTRL_OVERFLOW_POS&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00611">611</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00583">583</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
 
 </div>
 </div>
@@ -2307,37 +2389,6 @@ Enumerations</h2></td></tr>
 </table>
 
 <p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00406">406</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
-
-</div>
-</div>
-<a id="ga333727ea541808f5c815adec3b2888c2" name="ga333727ea541808f5c815adec3b2888c2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga333727ea541808f5c815adec3b2888c2">&#9670;&nbsp;</a></span>tusb_iso_ep_attribute_t</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="group___class_driver___audio.html#ga333727ea541808f5c815adec3b2888c2">tusb_iso_ep_attribute_t</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>All remaining definitions are taken from the descriptor descriptions in the UAC2 main specification. </p>
-<p >Isochronous End Point Attributes </p>
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga333727ea541808f5c815adec3b2888c2a6c02aa49f1981446327a6ae4f0f0e913" name="gga333727ea541808f5c815adec3b2888c2a6c02aa49f1981446327a6ae4f0f0e913"></a>TUSB_ISO_EP_ATT_NO_SYNC&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="gga333727ea541808f5c815adec3b2888c2a6056229f7bed07909ef2c8f273efe6b0" name="gga333727ea541808f5c815adec3b2888c2a6056229f7bed07909ef2c8f273efe6b0"></a>TUSB_ISO_EP_ATT_ASYNCHRONOUS&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="gga333727ea541808f5c815adec3b2888c2abc7974a647c2e2afb3c5e3aac2f6af21" name="gga333727ea541808f5c815adec3b2888c2abc7974a647c2e2afb3c5e3aac2f6af21"></a>TUSB_ISO_EP_ATT_ADAPTIVE&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="gga333727ea541808f5c815adec3b2888c2a7828338884de6c23bf0f031cab3322e1" name="gga333727ea541808f5c815adec3b2888c2a7828338884de6c23bf0f031cab3322e1"></a>TUSB_ISO_EP_ATT_SYNCHRONOUS&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="gga333727ea541808f5c815adec3b2888c2acd2cc791e4add9166c33d45eea5b553a" name="gga333727ea541808f5c815adec3b2888c2acd2cc791e4add9166c33d45eea5b553a"></a>TUSB_ISO_EP_ATT_DATA&#160;</td><td class="fielddoc"><p >Data End Point. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga333727ea541808f5c815adec3b2888c2a93b4e5aa895d454902e51bc4a0ef8d78" name="gga333727ea541808f5c815adec3b2888c2a93b4e5aa895d454902e51bc4a0ef8d78"></a>TUSB_ISO_EP_ATT_EXPLICIT_FB&#160;</td><td class="fielddoc"><p >Feedback End Point. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga333727ea541808f5c815adec3b2888c2a2fa77227b919236ccef44cf15e540719" name="gga333727ea541808f5c815adec3b2888c2a2fa77227b919236ccef44cf15e540719"></a>TUSB_ISO_EP_ATT_IMPLICIT_FB&#160;</td><td class="fielddoc"><p >Data endpoint that also serves as an implicit feedback. </p>
-</td></tr>
-</table>
-
-<p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00514">514</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
 
 </div>
 </div>

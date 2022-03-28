@@ -124,6 +124,8 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_m_c4671.html">TMC4671</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_m_c4671_1_1_t_m_c___external_encoder_update_thread.html">TMC4671::TMC_ExternalEncoderUpdateThread</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_m_c__1.html">TMC_1</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_m_c__2.html">TMC_2</a></td></tr>
@@ -131,33 +133,41 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:a08a7449bf7a92827d2af8ebebb8f218e"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_t_m_c4671_8h.html#a08a7449bf7a92827d2af8ebebb8f218e">TMC_ControlState</a> { <br />
-&#160;&#160;<a class="el" href="_t_m_c4671_8h.html#a08a7449bf7a92827d2af8ebebb8f218ea42dd1a73d072bb6bf3f494f22b15db8e">uninitialized</a>
-, <a class="el" href="_t_m_c4671_8h.html#a08a7449bf7a92827d2af8ebebb8f218ea080b44751abaaec5de8bac6d8a2a794a">No_power</a>
-, <a class="el" href="_t_m_c4671_8h.html#a08a7449bf7a92827d2af8ebebb8f218ea1a4ebb180ba59b067782515ffee6e975">Shutdown</a>
-, <a class="el" href="_t_m_c4671_8h.html#a08a7449bf7a92827d2af8ebebb8f218ea5bda814c4aedb126839228f1a3d92f09">Running</a>
+<tr class="memitem:ad7d50073249f48de7e58d41071064a7c"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_t_m_c4671_8h.html#ad7d50073249f48de7e58d41071064a7c">TMC_ControlState</a> : uint32_t { <br />
+&#160;&#160;<a class="el" href="_t_m_c4671_8h.html#ad7d50073249f48de7e58d41071064a7ca42dd1a73d072bb6bf3f494f22b15db8e">uninitialized</a>
+, <a class="el" href="_t_m_c4671_8h.html#ad7d50073249f48de7e58d41071064a7ca1432931f1dbec3ace61423a47dace3a7">waitPower</a>
+, <a class="el" href="_t_m_c4671_8h.html#ad7d50073249f48de7e58d41071064a7ca1a4ebb180ba59b067782515ffee6e975">Shutdown</a>
+, <a class="el" href="_t_m_c4671_8h.html#ad7d50073249f48de7e58d41071064a7ca5bda814c4aedb126839228f1a3d92f09">Running</a>
 , <br />
-&#160;&#160;<a class="el" href="_t_m_c4671_8h.html#a08a7449bf7a92827d2af8ebebb8f218ea98d41426fe076b9fa65c83220167cacf">Init_wait</a>
-, <a class="el" href="_t_m_c4671_8h.html#a08a7449bf7a92827d2af8ebebb8f218ea68441e224f5cafb748ba7e9be5b60230">ABN_init</a>
-, <a class="el" href="_t_m_c4671_8h.html#a08a7449bf7a92827d2af8ebebb8f218ea4bd8a069b734278e09aedfb5750deb92">AENC_init</a>
-, <a class="el" href="_t_m_c4671_8h.html#a08a7449bf7a92827d2af8ebebb8f218ea5d7785ab7289f008bd23c0ccf335eb22">Enc_bang</a>
+&#160;&#160;<a class="el" href="_t_m_c4671_8h.html#ad7d50073249f48de7e58d41071064a7cae385a37c7214c1022a7d4f8853ebb86a">EncoderInit</a>
+, <a class="el" href="_t_m_c4671_8h.html#ad7d50073249f48de7e58d41071064a7cabb482287d9e99acc78992b550d58c1ec">EncoderFinished</a>
+, <a class="el" href="_t_m_c4671_8h.html#ad7d50073249f48de7e58d41071064a7ca5e9736db4e28dab20d106d5e625c878e">HardError</a>
+, <a class="el" href="_t_m_c4671_8h.html#ad7d50073249f48de7e58d41071064a7ca9cfa39fcf8d4622338bfa04439eeda88">OverTemp</a>
 , <br />
-&#160;&#160;<a class="el" href="_t_m_c4671_8h.html#a08a7449bf7a92827d2af8ebebb8f218ea5e9736db4e28dab20d106d5e625c878e">HardError</a>
-, <a class="el" href="_t_m_c4671_8h.html#a08a7449bf7a92827d2af8ebebb8f218ea9cfa39fcf8d4622338bfa04439eeda88">OverTemp</a>
-, <a class="el" href="_t_m_c4671_8h.html#a08a7449bf7a92827d2af8ebebb8f218eabb482287d9e99acc78992b550d58c1ec">EncoderFinished</a>
+&#160;&#160;<a class="el" href="_t_m_c4671_8h.html#ad7d50073249f48de7e58d41071064a7caf0f7579b398a27ed1eaa19b2f79cf666">IndexSearch</a>
+, <a class="el" href="_t_m_c4671_8h.html#ad7d50073249f48de7e58d41071064a7ca1a1aaf34022bdc367fefa52bd812e060">FullCalibration</a>
+, <a class="el" href="_t_m_c4671_8h.html#ad7d50073249f48de7e58d41071064a7caa93eed0dbbc42a70bc2ea0869e63994e">ExternalEncoderInit</a>
 <br />
  }</td></tr>
-<tr class="separator:a08a7449bf7a92827d2af8ebebb8f218e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af7a9c4e6e1bf0678c768e3210cdeadad"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_t_m_c4671_8h.html#af7a9c4e6e1bf0678c768e3210cdeadad">ENC_InitState</a> { <br />
-&#160;&#160;<a class="el" href="_t_m_c4671_8h.html#af7a9c4e6e1bf0678c768e3210cdeadada42dd1a73d072bb6bf3f494f22b15db8e">uninitialized</a>
-, <a class="el" href="_t_m_c4671_8h.html#af7a9c4e6e1bf0678c768e3210cdeadadad09f48e4c1dd9be0167e409cce110a01">estimating</a>
-, <a class="el" href="_t_m_c4671_8h.html#af7a9c4e6e1bf0678c768e3210cdeadadaf24e40acf49c4786ebeaa4768c1e490c">aligning</a>
-, <a class="el" href="_t_m_c4671_8h.html#af7a9c4e6e1bf0678c768e3210cdeadadace5fb8df125a4721d1df328bc6f2ddea">checking</a>
+<tr class="separator:ad7d50073249f48de7e58d41071064a7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb6903f48e442bdc6b4f14999ebdf8f1"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_t_m_c4671_8h.html#acb6903f48e442bdc6b4f14999ebdf8f1">TMC_PwmMode</a> : uint8_t { <br />
+&#160;&#160;<a class="el" href="_t_m_c4671_8h.html#acb6903f48e442bdc6b4f14999ebdf8f1a3262d48df5d75e3452f0f16b313b7808">off</a> = 0
+, <a class="el" href="_t_m_c4671_8h.html#acb6903f48e442bdc6b4f14999ebdf8f1aafa99c35fd04e3be17ccb5dbbb5e9dc1">HSlow_LShigh</a> = 1
+, <a class="el" href="_t_m_c4671_8h.html#acb6903f48e442bdc6b4f14999ebdf8f1ae7c08c377c6fc054240b9999d1262cb5">HShigh_LSlow</a> = 2
+, <a class="el" href="_t_m_c4671_8h.html#acb6903f48e442bdc6b4f14999ebdf8f1a3528579414912ea7816656ea7b96b29e">res2</a> = 3
 , <br />
-&#160;&#160;<a class="el" href="_t_m_c4671_8h.html#af7a9c4e6e1bf0678c768e3210cdeadadae0aa021e21dddbd6d8cecec71e9cf564">OK</a>
+&#160;&#160;<a class="el" href="_t_m_c4671_8h.html#acb6903f48e442bdc6b4f14999ebdf8f1a9c000ba84bc291ae7fd19d68e192be11">res3</a> = 4
+, <a class="el" href="_t_m_c4671_8h.html#acb6903f48e442bdc6b4f14999ebdf8f1abd241cd63cdfa1ce4e4c1586f15a349b">PWM_LS</a> = 5
+, <a class="el" href="_t_m_c4671_8h.html#acb6903f48e442bdc6b4f14999ebdf8f1ad128dee1f81fda3600fb0e2a25a7e8e4">PWM_HS</a> = 6
+, <a class="el" href="_t_m_c4671_8h.html#acb6903f48e442bdc6b4f14999ebdf8f1a2329b010ab92f87e2827bc6d8fe81912">PWM_FOC</a> = 7
 <br />
  }</td></tr>
-<tr class="separator:af7a9c4e6e1bf0678c768e3210cdeadad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:acb6903f48e442bdc6b4f14999ebdf8f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af365ac996597ce7cdb3ee95b7d603cbe"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_t_m_c4671_8h.html#af365ac996597ce7cdb3ee95b7d603cbe">TMC_StartupType</a> { <a class="el" href="_t_m_c4671_8h.html#af365ac996597ce7cdb3ee95b7d603cbeab50339a10e1de285ac99d4c3990b8693">NONE</a>
+, <a class="el" href="_t_m_c4671_8h.html#af365ac996597ce7cdb3ee95b7d603cbeaa7fc932f3ea78360533e9ca9b3d3dd40">coldStart</a>
+, <a class="el" href="_t_m_c4671_8h.html#af365ac996597ce7cdb3ee95b7d603cbea946b09e5226bb0c761bd81a7d982d435">warmStart</a>
+ }</td></tr>
+<tr class="separator:af365ac996597ce7cdb3ee95b7d603cbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a582234b0c15ab7ba48e3ddd16e7a41d2"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_t_m_c4671_8h.html#a582234b0c15ab7ba48e3ddd16e7a41d2">MotorType</a> : uint8_t { <br />
 &#160;&#160;<a class="el" href="_t_m_c4671_8h.html#a582234b0c15ab7ba48e3ddd16e7a41d2ab50339a10e1de285ac99d4c3990b8693">NONE</a> =0
 , <a class="el" href="_t_m_c4671_8h.html#a582234b0c15ab7ba48e3ddd16e7a41d2acf75e54791dd1f49f918345fdfe2430b">DC</a> =1
@@ -177,6 +187,7 @@ Enumerations</h2></td></tr>
 &#160;&#160;<a class="el" href="_t_m_c4671_8h.html#addb917dd45972d75a9b40bab2ce78492a0ab366e41d9a974a01e4d452c293fa0b">aenc</a> =6
 , <a class="el" href="_t_m_c4671_8h.html#addb917dd45972d75a9b40bab2ce78492a40e43521071fe4ef5e4138432c37d3ba">aencE</a> =7
 , <a class="el" href="_t_m_c4671_8h.html#addb917dd45972d75a9b40bab2ce78492ab50339a10e1de285ac99d4c3990b8693">NONE</a>
+, <a class="el" href="_t_m_c4671_8h.html#addb917dd45972d75a9b40bab2ce78492a37e37860aa511a1925d51de7c2abbbbc">extEncoder</a>
 <br />
  }</td></tr>
 <tr class="separator:addb917dd45972d75a9b40bab2ce78492"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -221,6 +232,26 @@ Enumerations</h2></td></tr>
 <br />
  }</td></tr>
 <tr class="separator:affe1640d3ae28fb6e7d823943b6b784b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a864ad6319d56116bc88bb51ae28cd2b2"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_t_m_c4671_8h.html#a864ad6319d56116bc88bb51ae28cd2b2">VelSelection</a> : uint8_t { <br />
+&#160;&#160;<a class="el" href="_t_m_c4671_8h.html#a864ad6319d56116bc88bb51ae28cd2b2a7776db0a1a53ff88d4b79db48b8e8531">PhiE</a> =0
+, <a class="el" href="_t_m_c4671_8h.html#a864ad6319d56116bc88bb51ae28cd2b2a73c8b9d265295d80e6a95ad9abace754">PhiE_ext</a> =1
+, <a class="el" href="_t_m_c4671_8h.html#a864ad6319d56116bc88bb51ae28cd2b2af0218511785a7e2876e312b354cefeef">PhiE_openloop</a> =2
+, <a class="el" href="_t_m_c4671_8h.html#a864ad6319d56116bc88bb51ae28cd2b2a3cbba8ad9387207e9fbc15ce0cd2bbe7">PhiE_abn</a> =3
+, <br />
+&#160;&#160;<a class="el" href="_t_m_c4671_8h.html#a864ad6319d56116bc88bb51ae28cd2b2a91e7e433e34c3b8843334c1467001cb7">res1</a> =4
+, <a class="el" href="_t_m_c4671_8h.html#a864ad6319d56116bc88bb51ae28cd2b2a40c1e7b9fe1fc15f5713724c6b7aa2f8">PhiE_hal</a> =5
+, <a class="el" href="_t_m_c4671_8h.html#a864ad6319d56116bc88bb51ae28cd2b2af5abf0aec998b48adcab72a37344a38c">PhiE_aenc</a> =6
+, <a class="el" href="_t_m_c4671_8h.html#a864ad6319d56116bc88bb51ae28cd2b2a540e0fc8b581d451b81b7651d1bc02dd">PhiA_aenc</a> =7
+, <br />
+&#160;&#160;<a class="el" href="_t_m_c4671_8h.html#a864ad6319d56116bc88bb51ae28cd2b2a3528579414912ea7816656ea7b96b29e">res2</a> =8
+, <a class="el" href="_t_m_c4671_8h.html#a864ad6319d56116bc88bb51ae28cd2b2ad55a5cdd97a7c6dffe8f295f1e2c04a8">PhiM_abn</a> =9
+, <a class="el" href="_t_m_c4671_8h.html#a864ad6319d56116bc88bb51ae28cd2b2a5226a2c41c89f25df90e97eb4b24ddd5">PhiM_abn2</a> =10
+, <a class="el" href="_t_m_c4671_8h.html#a864ad6319d56116bc88bb51ae28cd2b2ac49a6ec394dc74a3970c746b7d741d40">PhiM_aenc</a> =11
+, <br />
+&#160;&#160;<a class="el" href="_t_m_c4671_8h.html#a864ad6319d56116bc88bb51ae28cd2b2a64a253130010448551e8eb7520f4a18f">PhiM_hal</a> =12
+<br />
+ }</td></tr>
+<tr class="separator:a864ad6319d56116bc88bb51ae28cd2b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3b24d58867df0611d6df04e70b34c5c0"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_t_m_c4671_8h.html#a3b24d58867df0611d6df04e70b34c5c0">EncoderType_TMC</a> : uint8_t { <br />
 &#160;&#160;<a class="el" href="_t_m_c4671_8h.html#a3b24d58867df0611d6df04e70b34c5c0ab50339a10e1de285ac99d4c3990b8693">NONE</a> =0
 , <a class="el" href="_t_m_c4671_8h.html#a3b24d58867df0611d6df04e70b34c5c0a24eeeaa1d807172d5abf68b49df3e069">abn</a> =1
@@ -248,41 +279,12 @@ Enumerations</h2></td></tr>
 Variables</h2></td></tr>
 <tr class="memitem:a49b76b3df998b61ed9347ac903b9ecf8"><td class="memItemLeft" align="right" valign="top">SPI_HandleTypeDef&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_t_m_c4671_8h.html#a49b76b3df998b61ed9347ac903b9ecf8">HSPIDRV</a></td></tr>
 <tr class="separator:a49b76b3df998b61ed9347ac903b9ecf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8a5bdef22bd816f2a4d22b60fe61432"><td class="memItemLeft" align="right" valign="top">TIM_HandleTypeDef&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_t_m_c4671_8h.html#ac8a5bdef22bd816f2a4d22b60fe61432">TIM_TMC</a></td></tr>
+<tr class="separator:ac8a5bdef22bd816f2a4d22b60fe61432"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acecaf14b1bbf948db2c59ade57598a68"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; std::pair&lt; <a class="el" href="_t_m_c4671_8h.html#a1064cdca049007c828bd4a5b28f51d71">TMC_HW_Ver</a>, std::string &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_t_m_c4671_8h.html#acecaf14b1bbf948db2c59ade57598a68">tmcHwVersionNames</a></td></tr>
 <tr class="separator:acecaf14b1bbf948db2c59ade57598a68"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
-<a id="af7a9c4e6e1bf0678c768e3210cdeadad" name="af7a9c4e6e1bf0678c768e3210cdeadad"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af7a9c4e6e1bf0678c768e3210cdeadad">&#9670;&nbsp;</a></span>ENC_InitState</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum class <a class="el" href="_t_m_c4671_8h.html#af7a9c4e6e1bf0678c768e3210cdeadad">ENC_InitState</a></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="af7a9c4e6e1bf0678c768e3210cdeadada42dd1a73d072bb6bf3f494f22b15db8e" name="af7a9c4e6e1bf0678c768e3210cdeadada42dd1a73d072bb6bf3f494f22b15db8e"></a>uninitialized&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="af7a9c4e6e1bf0678c768e3210cdeadadad09f48e4c1dd9be0167e409cce110a01" name="af7a9c4e6e1bf0678c768e3210cdeadadad09f48e4c1dd9be0167e409cce110a01"></a>estimating&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="af7a9c4e6e1bf0678c768e3210cdeadadaf24e40acf49c4786ebeaa4768c1e490c" name="af7a9c4e6e1bf0678c768e3210cdeadadaf24e40acf49c4786ebeaa4768c1e490c"></a>aligning&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="af7a9c4e6e1bf0678c768e3210cdeadadace5fb8df125a4721d1df328bc6f2ddea" name="af7a9c4e6e1bf0678c768e3210cdeadadace5fb8df125a4721d1df328bc6f2ddea"></a>checking&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="af7a9c4e6e1bf0678c768e3210cdeadadae0aa021e21dddbd6d8cecec71e9cf564" name="af7a9c4e6e1bf0678c768e3210cdeadadae0aa021e21dddbd6d8cecec71e9cf564"></a>OK&#160;</td><td class="fielddoc"></td></tr>
-</table>
-
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00034">34</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
-
-</div>
-</div>
 <a id="a3b24d58867df0611d6df04e70b34c5c0" name="a3b24d58867df0611d6df04e70b34c5c0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3b24d58867df0611d6df04e70b34c5c0">&#9670;&nbsp;</a></span>EncoderType_TMC</h2>
 
@@ -311,7 +313,7 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="a3b24d58867df0611d6df04e70b34c5c0aabf77184f55403d75b9d51d79162a7ca" name="a3b24d58867df0611d6df04e70b34c5c0aabf77184f55403d75b9d51d79162a7ca"></a>ext&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00041">41</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00051">51</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -340,7 +342,7 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="a6116f1e0e18067831052e401757405c6ae9ee2651c12f09e358eb1da8545952a7" name="a6116f1e0e18067831052e401757405c6ae9ee2651c12f09e358eb1da8545952a7"></a>torque&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00039">39</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00048">48</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -376,7 +378,7 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="a1b04aa8e350271255d351486d3720741ab50339a10e1de285ac99d4c3990b8693" name="a1b04aa8e350271255d351486d3720741ab50339a10e1de285ac99d4c3990b8693"></a>NONE&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00038">38</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00047">47</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -407,7 +409,7 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="a582234b0c15ab7ba48e3ddd16e7a41d2acd22bad976363fdd1bfbf6759fede482" name="a582234b0c15ab7ba48e3ddd16e7a41d2acd22bad976363fdd1bfbf6759fede482"></a>ERR&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00036">36</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00045">45</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -438,9 +440,10 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="addb917dd45972d75a9b40bab2ce78492a0ab366e41d9a974a01e4d452c293fa0b" name="addb917dd45972d75a9b40bab2ce78492a0ab366e41d9a974a01e4d452c293fa0b"></a>aenc&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="addb917dd45972d75a9b40bab2ce78492a40e43521071fe4ef5e4138432c37d3ba" name="addb917dd45972d75a9b40bab2ce78492a40e43521071fe4ef5e4138432c37d3ba"></a>aencE&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="addb917dd45972d75a9b40bab2ce78492ab50339a10e1de285ac99d4c3990b8693" name="addb917dd45972d75a9b40bab2ce78492ab50339a10e1de285ac99d4c3990b8693"></a>NONE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="addb917dd45972d75a9b40bab2ce78492a37e37860aa511a1925d51de7c2abbbbc" name="addb917dd45972d75a9b40bab2ce78492a37e37860aa511a1925d51de7c2abbbbc"></a>extEncoder&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00037">37</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00046">46</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -479,12 +482,12 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="affe1640d3ae28fb6e7d823943b6b784ba64a253130010448551e8eb7520f4a18f" name="affe1640d3ae28fb6e7d823943b6b784ba64a253130010448551e8eb7520f4a18f"></a>PhiM_hal&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00040">40</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00049">49</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
-<a id="a08a7449bf7a92827d2af8ebebb8f218e" name="a08a7449bf7a92827d2af8ebebb8f218e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a08a7449bf7a92827d2af8ebebb8f218e">&#9670;&nbsp;</a></span>TMC_ControlState</h2>
+<a id="ad7d50073249f48de7e58d41071064a7c" name="ad7d50073249f48de7e58d41071064a7c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7d50073249f48de7e58d41071064a7c">&#9670;&nbsp;</a></span>TMC_ControlState</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -493,7 +496,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">enum class <a class="el" href="_t_m_c4671_8h.html#a08a7449bf7a92827d2af8ebebb8f218e">TMC_ControlState</a></td>
+          <td class="memname">enum class <a class="el" href="_t_m_c4671_8h.html#ad7d50073249f48de7e58d41071064a7c">TMC_ControlState</a> : uint32_t</td>
         </tr>
       </table>
   </td>
@@ -503,20 +506,20 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a08a7449bf7a92827d2af8ebebb8f218ea42dd1a73d072bb6bf3f494f22b15db8e" name="a08a7449bf7a92827d2af8ebebb8f218ea42dd1a73d072bb6bf3f494f22b15db8e"></a>uninitialized&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a08a7449bf7a92827d2af8ebebb8f218ea080b44751abaaec5de8bac6d8a2a794a" name="a08a7449bf7a92827d2af8ebebb8f218ea080b44751abaaec5de8bac6d8a2a794a"></a>No_power&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a08a7449bf7a92827d2af8ebebb8f218ea1a4ebb180ba59b067782515ffee6e975" name="a08a7449bf7a92827d2af8ebebb8f218ea1a4ebb180ba59b067782515ffee6e975"></a>Shutdown&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a08a7449bf7a92827d2af8ebebb8f218ea5bda814c4aedb126839228f1a3d92f09" name="a08a7449bf7a92827d2af8ebebb8f218ea5bda814c4aedb126839228f1a3d92f09"></a>Running&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a08a7449bf7a92827d2af8ebebb8f218ea98d41426fe076b9fa65c83220167cacf" name="a08a7449bf7a92827d2af8ebebb8f218ea98d41426fe076b9fa65c83220167cacf"></a>Init_wait&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a08a7449bf7a92827d2af8ebebb8f218ea68441e224f5cafb748ba7e9be5b60230" name="a08a7449bf7a92827d2af8ebebb8f218ea68441e224f5cafb748ba7e9be5b60230"></a>ABN_init&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a08a7449bf7a92827d2af8ebebb8f218ea4bd8a069b734278e09aedfb5750deb92" name="a08a7449bf7a92827d2af8ebebb8f218ea4bd8a069b734278e09aedfb5750deb92"></a>AENC_init&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a08a7449bf7a92827d2af8ebebb8f218ea5d7785ab7289f008bd23c0ccf335eb22" name="a08a7449bf7a92827d2af8ebebb8f218ea5d7785ab7289f008bd23c0ccf335eb22"></a>Enc_bang&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a08a7449bf7a92827d2af8ebebb8f218ea5e9736db4e28dab20d106d5e625c878e" name="a08a7449bf7a92827d2af8ebebb8f218ea5e9736db4e28dab20d106d5e625c878e"></a>HardError&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a08a7449bf7a92827d2af8ebebb8f218ea9cfa39fcf8d4622338bfa04439eeda88" name="a08a7449bf7a92827d2af8ebebb8f218ea9cfa39fcf8d4622338bfa04439eeda88"></a>OverTemp&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a08a7449bf7a92827d2af8ebebb8f218eabb482287d9e99acc78992b550d58c1ec" name="a08a7449bf7a92827d2af8ebebb8f218eabb482287d9e99acc78992b550d58c1ec"></a>EncoderFinished&#160;</td><td class="fielddoc"></td></tr>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ad7d50073249f48de7e58d41071064a7ca42dd1a73d072bb6bf3f494f22b15db8e" name="ad7d50073249f48de7e58d41071064a7ca42dd1a73d072bb6bf3f494f22b15db8e"></a>uninitialized&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ad7d50073249f48de7e58d41071064a7ca1432931f1dbec3ace61423a47dace3a7" name="ad7d50073249f48de7e58d41071064a7ca1432931f1dbec3ace61423a47dace3a7"></a>waitPower&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ad7d50073249f48de7e58d41071064a7ca1a4ebb180ba59b067782515ffee6e975" name="ad7d50073249f48de7e58d41071064a7ca1a4ebb180ba59b067782515ffee6e975"></a>Shutdown&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ad7d50073249f48de7e58d41071064a7ca5bda814c4aedb126839228f1a3d92f09" name="ad7d50073249f48de7e58d41071064a7ca5bda814c4aedb126839228f1a3d92f09"></a>Running&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ad7d50073249f48de7e58d41071064a7cae385a37c7214c1022a7d4f8853ebb86a" name="ad7d50073249f48de7e58d41071064a7cae385a37c7214c1022a7d4f8853ebb86a"></a>EncoderInit&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ad7d50073249f48de7e58d41071064a7cabb482287d9e99acc78992b550d58c1ec" name="ad7d50073249f48de7e58d41071064a7cabb482287d9e99acc78992b550d58c1ec"></a>EncoderFinished&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ad7d50073249f48de7e58d41071064a7ca5e9736db4e28dab20d106d5e625c878e" name="ad7d50073249f48de7e58d41071064a7ca5e9736db4e28dab20d106d5e625c878e"></a>HardError&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ad7d50073249f48de7e58d41071064a7ca9cfa39fcf8d4622338bfa04439eeda88" name="ad7d50073249f48de7e58d41071064a7ca9cfa39fcf8d4622338bfa04439eeda88"></a>OverTemp&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ad7d50073249f48de7e58d41071064a7caf0f7579b398a27ed1eaa19b2f79cf666" name="ad7d50073249f48de7e58d41071064a7caf0f7579b398a27ed1eaa19b2f79cf666"></a>IndexSearch&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ad7d50073249f48de7e58d41071064a7ca1a1aaf34022bdc367fefa52bd812e060" name="ad7d50073249f48de7e58d41071064a7ca1a1aaf34022bdc367fefa52bd812e060"></a>FullCalibration&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ad7d50073249f48de7e58d41071064a7caa93eed0dbbc42a70bc2ea0869e63994e" name="ad7d50073249f48de7e58d41071064a7caa93eed0dbbc42a70bc2ea0869e63994e"></a>ExternalEncoderInit&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00033">33</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00039">39</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -548,7 +551,109 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="a1064cdca049007c828bd4a5b28f51d71a500304a4522bbaed49e6da064372760c" name="a1064cdca049007c828bd4a5b28f51d71a500304a4522bbaed49e6da064372760c"></a>v1_2_2_TMCS&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00044">44</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00054">54</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+
+</div>
+</div>
+<a id="acb6903f48e442bdc6b4f14999ebdf8f1" name="acb6903f48e442bdc6b4f14999ebdf8f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb6903f48e442bdc6b4f14999ebdf8f1">&#9670;&nbsp;</a></span>TMC_PwmMode</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="_t_m_c4671_8h.html#acb6903f48e442bdc6b4f14999ebdf8f1">TMC_PwmMode</a> : uint8_t</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="acb6903f48e442bdc6b4f14999ebdf8f1a3262d48df5d75e3452f0f16b313b7808" name="acb6903f48e442bdc6b4f14999ebdf8f1a3262d48df5d75e3452f0f16b313b7808"></a>off&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="acb6903f48e442bdc6b4f14999ebdf8f1aafa99c35fd04e3be17ccb5dbbb5e9dc1" name="acb6903f48e442bdc6b4f14999ebdf8f1aafa99c35fd04e3be17ccb5dbbb5e9dc1"></a>HSlow_LShigh&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="acb6903f48e442bdc6b4f14999ebdf8f1ae7c08c377c6fc054240b9999d1262cb5" name="acb6903f48e442bdc6b4f14999ebdf8f1ae7c08c377c6fc054240b9999d1262cb5"></a>HShigh_LSlow&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="acb6903f48e442bdc6b4f14999ebdf8f1a3528579414912ea7816656ea7b96b29e" name="acb6903f48e442bdc6b4f14999ebdf8f1a3528579414912ea7816656ea7b96b29e"></a>res2&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="acb6903f48e442bdc6b4f14999ebdf8f1a9c000ba84bc291ae7fd19d68e192be11" name="acb6903f48e442bdc6b4f14999ebdf8f1a9c000ba84bc291ae7fd19d68e192be11"></a>res3&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="acb6903f48e442bdc6b4f14999ebdf8f1abd241cd63cdfa1ce4e4c1586f15a349b" name="acb6903f48e442bdc6b4f14999ebdf8f1abd241cd63cdfa1ce4e4c1586f15a349b"></a>PWM_LS&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="acb6903f48e442bdc6b4f14999ebdf8f1ad128dee1f81fda3600fb0e2a25a7e8e4" name="acb6903f48e442bdc6b4f14999ebdf8f1ad128dee1f81fda3600fb0e2a25a7e8e4"></a>PWM_HS&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="acb6903f48e442bdc6b4f14999ebdf8f1a2329b010ab92f87e2827bc6d8fe81912" name="acb6903f48e442bdc6b4f14999ebdf8f1a2329b010ab92f87e2827bc6d8fe81912"></a>PWM_FOC&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00041">41</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+
+</div>
+</div>
+<a id="af365ac996597ce7cdb3ee95b7d603cbe" name="af365ac996597ce7cdb3ee95b7d603cbe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af365ac996597ce7cdb3ee95b7d603cbe">&#9670;&nbsp;</a></span>TMC_StartupType</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="_t_m_c4671_8h.html#af365ac996597ce7cdb3ee95b7d603cbe">TMC_StartupType</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="af365ac996597ce7cdb3ee95b7d603cbeab50339a10e1de285ac99d4c3990b8693" name="af365ac996597ce7cdb3ee95b7d603cbeab50339a10e1de285ac99d4c3990b8693"></a>NONE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="af365ac996597ce7cdb3ee95b7d603cbeaa7fc932f3ea78360533e9ca9b3d3dd40" name="af365ac996597ce7cdb3ee95b7d603cbeaa7fc932f3ea78360533e9ca9b3d3dd40"></a>coldStart&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="af365ac996597ce7cdb3ee95b7d603cbea946b09e5226bb0c761bd81a7d982d435" name="af365ac996597ce7cdb3ee95b7d603cbea946b09e5226bb0c761bd81a7d982d435"></a>warmStart&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00043">43</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+
+</div>
+</div>
+<a id="a864ad6319d56116bc88bb51ae28cd2b2" name="a864ad6319d56116bc88bb51ae28cd2b2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a864ad6319d56116bc88bb51ae28cd2b2">&#9670;&nbsp;</a></span>VelSelection</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="_t_m_c4671_8h.html#a864ad6319d56116bc88bb51ae28cd2b2">VelSelection</a> : uint8_t</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a864ad6319d56116bc88bb51ae28cd2b2a7776db0a1a53ff88d4b79db48b8e8531" name="a864ad6319d56116bc88bb51ae28cd2b2a7776db0a1a53ff88d4b79db48b8e8531"></a>PhiE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a864ad6319d56116bc88bb51ae28cd2b2a73c8b9d265295d80e6a95ad9abace754" name="a864ad6319d56116bc88bb51ae28cd2b2a73c8b9d265295d80e6a95ad9abace754"></a>PhiE_ext&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a864ad6319d56116bc88bb51ae28cd2b2af0218511785a7e2876e312b354cefeef" name="a864ad6319d56116bc88bb51ae28cd2b2af0218511785a7e2876e312b354cefeef"></a>PhiE_openloop&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a864ad6319d56116bc88bb51ae28cd2b2a3cbba8ad9387207e9fbc15ce0cd2bbe7" name="a864ad6319d56116bc88bb51ae28cd2b2a3cbba8ad9387207e9fbc15ce0cd2bbe7"></a>PhiE_abn&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a864ad6319d56116bc88bb51ae28cd2b2a91e7e433e34c3b8843334c1467001cb7" name="a864ad6319d56116bc88bb51ae28cd2b2a91e7e433e34c3b8843334c1467001cb7"></a>res1&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a864ad6319d56116bc88bb51ae28cd2b2a40c1e7b9fe1fc15f5713724c6b7aa2f8" name="a864ad6319d56116bc88bb51ae28cd2b2a40c1e7b9fe1fc15f5713724c6b7aa2f8"></a>PhiE_hal&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a864ad6319d56116bc88bb51ae28cd2b2af5abf0aec998b48adcab72a37344a38c" name="a864ad6319d56116bc88bb51ae28cd2b2af5abf0aec998b48adcab72a37344a38c"></a>PhiE_aenc&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a864ad6319d56116bc88bb51ae28cd2b2a540e0fc8b581d451b81b7651d1bc02dd" name="a864ad6319d56116bc88bb51ae28cd2b2a540e0fc8b581d451b81b7651d1bc02dd"></a>PhiA_aenc&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a864ad6319d56116bc88bb51ae28cd2b2a3528579414912ea7816656ea7b96b29e" name="a864ad6319d56116bc88bb51ae28cd2b2a3528579414912ea7816656ea7b96b29e"></a>res2&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a864ad6319d56116bc88bb51ae28cd2b2ad55a5cdd97a7c6dffe8f295f1e2c04a8" name="a864ad6319d56116bc88bb51ae28cd2b2ad55a5cdd97a7c6dffe8f295f1e2c04a8"></a>PhiM_abn&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a864ad6319d56116bc88bb51ae28cd2b2a5226a2c41c89f25df90e97eb4b24ddd5" name="a864ad6319d56116bc88bb51ae28cd2b2a5226a2c41c89f25df90e97eb4b24ddd5"></a>PhiM_abn2&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a864ad6319d56116bc88bb51ae28cd2b2ac49a6ec394dc74a3970c746b7d741d40" name="a864ad6319d56116bc88bb51ae28cd2b2ac49a6ec394dc74a3970c746b7d741d40"></a>PhiM_aenc&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a864ad6319d56116bc88bb51ae28cd2b2a64a253130010448551e8eb7520f4a18f" name="a864ad6319d56116bc88bb51ae28cd2b2a64a253130010448551e8eb7520f4a18f"></a>PhiM_hal&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00050">50</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -575,6 +680,28 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a id="ac8a5bdef22bd816f2a4d22b60fe61432" name="ac8a5bdef22bd816f2a4d22b60fe61432"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac8a5bdef22bd816f2a4d22b60fe61432">&#9670;&nbsp;</a></span>TIM_TMC</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TIM_HandleTypeDef TIM_TMC</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="acecaf14b1bbf948db2c59ade57598a68" name="acecaf14b1bbf948db2c59ade57598a68"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acecaf14b1bbf948db2c59ade57598a68">&#9670;&nbsp;</a></span>tmcHwVersionNames</h2>
 
@@ -588,8 +715,8 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">{</div>
 <div class="line">            std::make_pair(<a class="code hl_enumvalue" href="_t_m_c4671_8h.html#a1064cdca049007c828bd4a5b28f51d71ab50339a10e1de285ac99d4c3990b8693">TMC_HW_Ver::NONE</a>,<span class="stringliteral">&quot;Undefined&quot;</span>), </div>
-<div class="line">            std::make_pair(<a class="code hl_enumvalue" href="_t_m_c4671_8h.html#a1064cdca049007c828bd4a5b28f51d71a09d7da9ea375f1827517b45b61cfc6b8">TMC_HW_Ver::v1_0</a>,<span class="stringliteral">&quot;v1.0&quot;</span>),</div>
-<div class="line">            std::make_pair(<a class="code hl_enumvalue" href="_t_m_c4671_8h.html#a1064cdca049007c828bd4a5b28f51d71a0fdcfe7bc01aadbcbb7ff8c0e1024336">TMC_HW_Ver::v1_2</a>,<span class="stringliteral">&quot;v1.2&quot;</span>),</div>
+<div class="line">            std::make_pair(<a class="code hl_enumvalue" href="_t_m_c4671_8h.html#a1064cdca049007c828bd4a5b28f51d71a09d7da9ea375f1827517b45b61cfc6b8">TMC_HW_Ver::v1_0</a>,<span class="stringliteral">&quot;v1.0 AD8417&quot;</span>),</div>
+<div class="line">            std::make_pair(<a class="code hl_enumvalue" href="_t_m_c4671_8h.html#a1064cdca049007c828bd4a5b28f51d71a0fdcfe7bc01aadbcbb7ff8c0e1024336">TMC_HW_Ver::v1_2</a>,<span class="stringliteral">&quot;v1.2 AD8417&quot;</span>),</div>
 <div class="line">            std::make_pair(<a class="code hl_enumvalue" href="_t_m_c4671_8h.html#a1064cdca049007c828bd4a5b28f51d71a5890325397fec85b18f616220d3235ad">TMC_HW_Ver::v1_2_2</a>,<span class="stringliteral">&quot;v1.2.2 LEM GO 10&quot;</span>),</div>
 <div class="line">            std::make_pair(<a class="code hl_enumvalue" href="_t_m_c4671_8h.html#a1064cdca049007c828bd4a5b28f51d71abe037adad1534fd5de5ec31255a3dc8c">TMC_HW_Ver::v1_2_2_LEM20</a>,<span class="stringliteral">&quot;v1.2.2 LEM GO 20&quot;</span>),</div>
 <div class="line">            std::make_pair(<a class="code hl_enumvalue" href="_t_m_c4671_8h.html#a1064cdca049007c828bd4a5b28f51d71a500304a4522bbaed49e6da064372760c">TMC_HW_Ver::v1_2_2_TMCS</a>,<span class="stringliteral">&quot;v1.2.2 TMCS1100A2&quot;</span>)</div>
@@ -601,7 +728,7 @@ Variables</h2></td></tr>
 <div class="ttc" id="a_t_m_c4671_8h_html_a1064cdca049007c828bd4a5b28f51d71ab50339a10e1de285ac99d4c3990b8693"><div class="ttname"><a href="_t_m_c4671_8h.html#a1064cdca049007c828bd4a5b28f51d71ab50339a10e1de285ac99d4c3990b8693">TMC_HW_Ver::NONE</a></div><div class="ttdeci">@ NONE</div></div>
 <div class="ttc" id="a_t_m_c4671_8h_html_a1064cdca049007c828bd4a5b28f51d71abe037adad1534fd5de5ec31255a3dc8c"><div class="ttname"><a href="_t_m_c4671_8h.html#a1064cdca049007c828bd4a5b28f51d71abe037adad1534fd5de5ec31255a3dc8c">TMC_HW_Ver::v1_2_2_LEM20</a></div><div class="ttdeci">@ v1_2_2_LEM20</div></div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00046">46</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00056">56</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>

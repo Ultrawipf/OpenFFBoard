@@ -19,6 +19,8 @@ var _axis_8h =
       [ "pos", "_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715a5e0bdcbddccca4d66d74ba8c1cee1a68", null ],
       [ "maxspeed", "_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715a89cf9beeb9ea18529e4bd86703ab5392", null ],
       [ "maxtorquerate", "_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715ac7681d83202d9b9b8fae3b1bd5a4e940", null ],
-      [ "fxratio", "_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715a39d37a1e1318d45873b0443db487c948", null ]
+      [ "fxratio", "_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715a39d37a1e1318d45873b0443db487c948", null ],
+      [ "curtorque", "_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715a2246494328af04e5200e1e604782e983", null ],
+      [ "curpos", "_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715af0b2e49c0d3953c76e09444ae521ebbe", null ]
     ] ]
 ];

@@ -106,9 +106,9 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:ga26951b4ef7eb0465e774c1a954f7c762"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html">TU_ATTR_PACKED</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___u_s_b_def___type.html#ga26951b4ef7eb0465e774c1a954f7c762">tusb_desc_device_t</a></td></tr>
-<tr class="memdesc:ga26951b4ef7eb0465e774c1a954f7c762"><td class="mdescLeft">&#160;</td><td class="mdescRight">USB Device Descriptor.  <a href="group___u_s_b_def___type.html#ga26951b4ef7eb0465e774c1a954f7c762">More...</a><br /></td></tr>
-<tr class="separator:ga26951b4ef7eb0465e774c1a954f7c762"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga56e3c57225a4a7b7207c28f31a7789a8"><td class="memItemLeft" align="right" valign="top">typedef TU_ATTR_PACKED_BEGIN TU_ATTR_BIT_FIELD_ORDER_BEGIN struct <a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html">TU_ATTR_PACKED</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___u_s_b_def___type.html#ga56e3c57225a4a7b7207c28f31a7789a8">tusb_desc_device_t</a></td></tr>
+<tr class="memdesc:ga56e3c57225a4a7b7207c28f31a7789a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">USB Device Descriptor.  <a href="group___u_s_b_def___type.html#ga56e3c57225a4a7b7207c28f31a7789a8">More...</a><br /></td></tr>
+<tr class="separator:ga56e3c57225a4a7b7207c28f31a7789a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga37592c8d292e3794f94d6d81c4c266fc"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html">TU_ATTR_PACKED</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___u_s_b_def___type.html#ga37592c8d292e3794f94d6d81c4c266fc">tusb_desc_bos_t</a></td></tr>
 <tr class="separator:ga37592c8d292e3794f94d6d81c4c266fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gae640129e609bf2e7b33828de0e38dd65"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html">TU_ATTR_PACKED</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___u_s_b_def___type.html#gae640129e609bf2e7b33828de0e38dd65">tusb_desc_configuration_t</a></td></tr>
@@ -135,6 +135,8 @@ Typedefs</h2></td></tr>
 <tr class="separator:ga9a258ed1b33369335f3d700ac02165f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga56223ef38820720ca7fbbad45a6a40bb"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html">TU_ATTR_PACKED</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___u_s_b_def___type.html#ga56223ef38820720ca7fbbad45a6a40bb">tusb_desc_webusb_url_t</a></td></tr>
 <tr class="separator:ga56223ef38820720ca7fbbad45a6a40bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabbdba82f013b9af79c72a0889af31859"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html">TU_ATTR_PACKED</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___u_s_b_def___type.html#gabbdba82f013b9af79c72a0889af31859">tusb_desc_dfu_functional_t</a></td></tr>
+<tr class="separator:gabbdba82f013b9af79c72a0889af31859"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga2b3bee81c54dd32ba52362b2634f72f4"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html">TU_ATTR_PACKED</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a></td></tr>
 <tr class="separator:ga2b3bee81c54dd32ba52362b2634f72f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -152,6 +154,19 @@ Enumerations</h2></td></tr>
 , <a class="el" href="group___u_s_b_def___type.html#gga0c1b25b161b272f5f39e4ba49478289cae41b455d7ff3ce44fe4f6c68a69dd4f6">TUSB_DIR_IN_MASK</a> = 0x80
  }</td></tr>
 <tr class="separator:ga0c1b25b161b272f5f39e4ba49478289c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga333727ea541808f5c815adec3b2888c2"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___u_s_b_def___type.html#ga333727ea541808f5c815adec3b2888c2">tusb_iso_ep_attribute_t</a> { <br />
+&#160;&#160;<a class="el" href="group___u_s_b_def___type.html#gga333727ea541808f5c815adec3b2888c2a6c02aa49f1981446327a6ae4f0f0e913">TUSB_ISO_EP_ATT_NO_SYNC</a> = 0x00
+, <a class="el" href="group___u_s_b_def___type.html#gga333727ea541808f5c815adec3b2888c2a6056229f7bed07909ef2c8f273efe6b0">TUSB_ISO_EP_ATT_ASYNCHRONOUS</a> = 0x04
+, <a class="el" href="group___u_s_b_def___type.html#gga333727ea541808f5c815adec3b2888c2abc7974a647c2e2afb3c5e3aac2f6af21">TUSB_ISO_EP_ATT_ADAPTIVE</a> = 0x08
+, <a class="el" href="group___u_s_b_def___type.html#gga333727ea541808f5c815adec3b2888c2a7828338884de6c23bf0f031cab3322e1">TUSB_ISO_EP_ATT_SYNCHRONOUS</a> = 0x0C
+, <br />
+&#160;&#160;<a class="el" href="group___u_s_b_def___type.html#gga333727ea541808f5c815adec3b2888c2acd2cc791e4add9166c33d45eea5b553a">TUSB_ISO_EP_ATT_DATA</a> = 0x00
+, <a class="el" href="group___u_s_b_def___type.html#gga333727ea541808f5c815adec3b2888c2a93b4e5aa895d454902e51bc4a0ef8d78">TUSB_ISO_EP_ATT_EXPLICIT_FB</a> = 0x10
+, <a class="el" href="group___u_s_b_def___type.html#gga333727ea541808f5c815adec3b2888c2a2fa77227b919236ccef44cf15e540719">TUSB_ISO_EP_ATT_IMPLICIT_FB</a> = 0x20
+<br />
+ }</td></tr>
+<tr class="memdesc:ga333727ea541808f5c815adec3b2888c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Isochronous End Point Attributes.  <a href="group___u_s_b_def___type.html#ga333727ea541808f5c815adec3b2888c2">More...</a><br /></td></tr>
+<tr class="separator:ga333727ea541808f5c815adec3b2888c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gacb5e6c763fa4283e1be386759d1dfc13"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___u_s_b_def___type.html#gacb5e6c763fa4283e1be386759d1dfc13">tusb_desc_type_t</a> { <br />
 &#160;&#160;<a class="el" href="group___u_s_b_def___type.html#ggacb5e6c763fa4283e1be386759d1dfc13aef58405f6fddc86707c6886bda0e0ca2">TUSB_DESC_DEVICE</a> = 0x01
 , <a class="el" href="group___u_s_b_def___type.html#ggacb5e6c763fa4283e1be386759d1dfc13a7943d5a189206a7a61b5025e46217373">TUSB_DESC_CONFIGURATION</a> = 0x02
@@ -284,10 +299,10 @@ Enumerations</h2></td></tr>
 <br />
  }</td></tr>
 <tr class="separator:gae8dad3738b9ff604cc3cdedf28cf2245"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaaf105ae5beaca1dee30ae54530691fce"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <a class="el" href="group___u_s_b_def___type.html#ggaaf105ae5beaca1dee30ae54530691fcea7d6c573ab243f61df3473d5f09417875">TUSB_DESC_CONFIG_ATT_REMOTE_WAKEUP</a> = TU_BIT(5)
-, <a class="el" href="group___u_s_b_def___type.html#ggaaf105ae5beaca1dee30ae54530691fceab8c4e6066fdbe969da821d02bc1adacb">TUSB_DESC_CONFIG_ATT_SELF_POWERED</a> = TU_BIT(6)
+<tr class="memitem:gafa231099d07583c3ed0981e0bb665f55"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <a class="el" href="group___u_s_b_def___type.html#ggafa231099d07583c3ed0981e0bb665f55a7d6c573ab243f61df3473d5f09417875">TUSB_DESC_CONFIG_ATT_REMOTE_WAKEUP</a> = TU_BIT(5)
+, <a class="el" href="group___u_s_b_def___type.html#ggafa231099d07583c3ed0981e0bb665f55ab8c4e6066fdbe969da821d02bc1adacb">TUSB_DESC_CONFIG_ATT_SELF_POWERED</a> = TU_BIT(6)
  }</td></tr>
-<tr class="separator:gaaf105ae5beaca1dee30ae54530691fce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:gafa231099d07583c3ed0981e0bb665f55"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga338a80b2964f1b2fd8ce2bc6b349579d"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___u_s_b_def___type.html#ga338a80b2964f1b2fd8ce2bc6b349579d">tusb_device_state_t</a> { <a class="el" href="group___u_s_b_def___type.html#gga338a80b2964f1b2fd8ce2bc6b349579da2bd3e169b9095b654fbb9cc2bde63bd7">TUSB_DEVICE_STATE_UNPLUG</a> = 0
 , <a class="el" href="group___u_s_b_def___type.html#gga338a80b2964f1b2fd8ce2bc6b349579da78a7ee60dd91b618bb5216e5605b5770">TUSB_DEVICE_STATE_CONFIGURED</a>
 , <a class="el" href="group___u_s_b_def___type.html#gga338a80b2964f1b2fd8ce2bc6b349579daf69269296278a6089ba978a42b515ae8">TUSB_DEVICE_STATE_SUSPENDED</a>
@@ -299,13 +314,13 @@ Enumerations</h2></td></tr>
 , <a class="el" href="group___u_s_b_def___type.html#gga6a3b3a4d6801fd9b02feb0510c84e5f9afd15857b96b2f33fd3139cce70c61a09">XFER_RESULT_STALLED</a>
  }</td></tr>
 <tr class="separator:ga6a3b3a4d6801fd9b02feb0510c84e5f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga80155586fa275b28773c9b203f52caba"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <a class="el" href="group___u_s_b_def___type.html#gga80155586fa275b28773c9b203f52cabaa7b0bfe73ad193a4aab08993e9fabf428">DESC_OFFSET_LEN</a> = 0
-, <a class="el" href="group___u_s_b_def___type.html#gga80155586fa275b28773c9b203f52cabaae9b31577bb641dd4a39d6091be145bf6">DESC_OFFSET_TYPE</a> = 1
+<tr class="memitem:ga394b3903fbf00ba2b6243f60689a5a5f"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <a class="el" href="group___u_s_b_def___type.html#gga394b3903fbf00ba2b6243f60689a5a5fa7b0bfe73ad193a4aab08993e9fabf428">DESC_OFFSET_LEN</a> = 0
+, <a class="el" href="group___u_s_b_def___type.html#gga394b3903fbf00ba2b6243f60689a5a5fae9b31577bb641dd4a39d6091be145bf6">DESC_OFFSET_TYPE</a> = 1
  }</td></tr>
-<tr class="separator:ga80155586fa275b28773c9b203f52caba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6b7b47dd702d9e331586d485013fd1ea"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <a class="el" href="group___u_s_b_def___type.html#gga6b7b47dd702d9e331586d485013fd1eaa864a113f67c0537a7d0cfd1df7c04974">INTERFACE_INVALID_NUMBER</a> = 0xff
+<tr class="separator:ga394b3903fbf00ba2b6243f60689a5a5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac205be2172292384dd687b5471a87edd"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <a class="el" href="group___u_s_b_def___type.html#ggac205be2172292384dd687b5471a87edda864a113f67c0537a7d0cfd1df7c04974">INTERFACE_INVALID_NUMBER</a> = 0xff
  }</td></tr>
-<tr class="separator:ga6b7b47dd702d9e331586d485013fd1ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:gac205be2172292384dd687b5471a87edd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaeb2f72368db30eb42854ed359c37ef2d"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___u_s_b_def___type.html#gaeb2f72368db30eb42854ed359c37ef2d">microsoft_os_20_type_t</a> { <br />
 &#160;&#160;<a class="el" href="group___u_s_b_def___type.html#ggaeb2f72368db30eb42854ed359c37ef2dac74a28d4e873b255d5b027af5ffffb5d">MS_OS_20_SET_HEADER_DESCRIPTOR</a> = 0x00
 , <a class="el" href="group___u_s_b_def___type.html#ggaeb2f72368db30eb42854ed359c37ef2dafe117782c0101a880e152a8a1110ecbc">MS_OS_20_SUBSET_HEADER_CONFIGURATION</a> = 0x01
@@ -321,24 +336,26 @@ Enumerations</h2></td></tr>
 <br />
  }</td></tr>
 <tr class="separator:gaeb2f72368db30eb42854ed359c37ef2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf9bdc3014f3d54c426b6d2df10de4960"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <a class="el" href="group___u_s_b_def___type.html#ggaf9bdc3014f3d54c426b6d2df10de4960af17ae8688f98708446ce909eb0e83c7c">CONTROL_STAGE_SETUP</a>
-, <a class="el" href="group___u_s_b_def___type.html#ggaf9bdc3014f3d54c426b6d2df10de4960ae5d89e21948588e11d6564fdf0e66c0b">CONTROL_STAGE_DATA</a>
-, <a class="el" href="group___u_s_b_def___type.html#ggaf9bdc3014f3d54c426b6d2df10de4960a18079efec0cdb821f24b437b646b864d">CONTROL_STAGE_ACK</a>
+<tr class="memitem:ga157d5577a5b2f5986037d0d09c7dc77d"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <a class="el" href="group___u_s_b_def___type.html#gga157d5577a5b2f5986037d0d09c7dc77daf17ae8688f98708446ce909eb0e83c7c">CONTROL_STAGE_SETUP</a>
+, <a class="el" href="group___u_s_b_def___type.html#gga157d5577a5b2f5986037d0d09c7dc77dae5d89e21948588e11d6564fdf0e66c0b">CONTROL_STAGE_DATA</a>
+, <a class="el" href="group___u_s_b_def___type.html#gga157d5577a5b2f5986037d0d09c7dc77da18079efec0cdb821f24b437b646b864d">CONTROL_STAGE_ACK</a>
  }</td></tr>
-<tr class="separator:gaf9bdc3014f3d54c426b6d2df10de4960"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:ga157d5577a5b2f5986037d0d09c7dc77d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:gae2054465c7ed133c1b2ff71ff5101257"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___u_s_b_def___type.html#gae2054465c7ed133c1b2ff71ff5101257">TU_VERIFY_STATIC</a> (sizeof(<a class="el" href="group___u_s_b_def___type.html#ga26951b4ef7eb0465e774c1a954f7c762">tusb_desc_device_t</a>)==18, &quot;size is not correct&quot;)</td></tr>
+<tr class="memitem:gae2054465c7ed133c1b2ff71ff5101257"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___u_s_b_def___type.html#gae2054465c7ed133c1b2ff71ff5101257">TU_VERIFY_STATIC</a> (sizeof(<a class="el" href="group___u_s_b_def___type.html#ga56e3c57225a4a7b7207c28f31a7789a8">tusb_desc_device_t</a>)==18, &quot;size is not correct&quot;)</td></tr>
 <tr class="separator:gae2054465c7ed133c1b2ff71ff5101257"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga7af729bb868b8672878a098ff9cde15e"><td class="memItemLeft" align="right" valign="top">static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___u_s_b_def___type.html#ga7af729bb868b8672878a098ff9cde15e">bm_request_type</a> (uint8_t direction, uint8_t type, uint8_t recipient)</td></tr>
-<tr class="separator:ga7af729bb868b8672878a098ff9cde15e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaaa353f2da73c8d7c4dda783341e4c681"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="group___u_s_b_def___type.html#ga0c1b25b161b272f5f39e4ba49478289c">tusb_dir_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___u_s_b_def___type.html#gaaa353f2da73c8d7c4dda783341e4c681">tu_edpt_dir</a> (uint8_t addr)</td></tr>
-<tr class="separator:gaaa353f2da73c8d7c4dda783341e4c681"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga03bdd55b38209b6f6d64494bb2d62c9d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___u_s_b_def___type.html#ga03bdd55b38209b6f6d64494bb2d62c9d">TU_VERIFY_STATIC</a> (sizeof(<a class="el" href="group___u_s_b_def___type.html#ga37592c8d292e3794f94d6d81c4c266fc">tusb_desc_bos_t</a>)==5, &quot;size is not correct&quot;)</td></tr>
+<tr class="separator:ga03bdd55b38209b6f6d64494bb2d62c9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4d579630893352ad521ab3be2719e253"><td class="memItemLeft" align="right" valign="top">TU_ATTR_PACKED_END static TU_ATTR_BIT_FIELD_ORDER_END <a class="el" href="group___u_s_b_def___type.html#ga0c1b25b161b272f5f39e4ba49478289c">tusb_dir_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___u_s_b_def___type.html#ga4d579630893352ad521ab3be2719e253">tu_edpt_dir</a> (uint8_t addr)</td></tr>
+<tr class="separator:ga4d579630893352ad521ab3be2719e253"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaec0233a77ef66c106dfdfd2f391d245f"><td class="memItemLeft" align="right" valign="top">static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___u_s_b_def___type.html#gaec0233a77ef66c106dfdfd2f391d245f">tu_edpt_number</a> (uint8_t addr)</td></tr>
 <tr class="separator:gaec0233a77ef66c106dfdfd2f391d245f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gafac3eb7a5d95891e1520a24a472811d7"><td class="memItemLeft" align="right" valign="top">static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___u_s_b_def___type.html#gafac3eb7a5d95891e1520a24a472811d7">tu_edpt_addr</a> (uint8_t num, uint8_t dir)</td></tr>
 <tr class="separator:gafac3eb7a5d95891e1520a24a472811d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8d47219fcaf031b9d37eb860f65e7c4c"><td class="memItemLeft" align="right" valign="top">static uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___u_s_b_def___type.html#ga8d47219fcaf031b9d37eb860f65e7c4c">tu_edpt_packet_size</a> (<a class="el" href="group___u_s_b_def___type.html#ga95906f860c391cedba638b1946669694">tusb_desc_endpoint_t</a> const *desc_ep)</td></tr>
+<tr class="separator:ga8d47219fcaf031b9d37eb860f65e7c4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga6ac1b6104429ebe2494f49c6c65f6a30"><td class="memItemLeft" align="right" valign="top">static uint8_t const *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___u_s_b_def___type.html#ga6ac1b6104429ebe2494f49c6c65f6a30">tu_desc_next</a> (void const *desc)</td></tr>
 <tr class="separator:ga6ac1b6104429ebe2494f49c6c65f6a30"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaec3d617e38f349c026a4d2558d814513"><td class="memItemLeft" align="right" valign="top">static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___u_s_b_def___type.html#gaec3d617e38f349c026a4d2558d814513">tu_desc_type</a> (void const *desc)</td></tr>

@@ -95,9 +95,9 @@ $(document).ready(function(){initNavTree('cdc__host_8h.html',''); initResizable(
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a5fc6f63a43ffd2f651495e8388b72e16"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cdc__host_8h.html#a5fc6f63a43ffd2f651495e8388b72e16">tuh_cdc_connect</a> (uint8_t dev_addr, <a class="el" href="usbh_8h.html#ac1bd7b783c9fe43cc2534108ba548068">tuh_control_complete_cb_t</a> complete_cb)</td></tr>
+<tr class="memitem:a5fc6f63a43ffd2f651495e8388b72e16"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cdc__host_8h.html#a5fc6f63a43ffd2f651495e8388b72e16">tuh_cdc_connect</a> (uint8_t dev_addr, tuh_control_complete_cb_t complete_cb)</td></tr>
 <tr class="separator:a5fc6f63a43ffd2f651495e8388b72e16"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acfac89b409ff6b8ba818123d565ad54e"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cdc__host_8h.html#acfac89b409ff6b8ba818123d565ad54e">tuh_cdc_disconnect</a> (uint8_t dev_addr, <a class="el" href="usbh_8h.html#ac1bd7b783c9fe43cc2534108ba548068">tuh_control_complete_cb_t</a> complete_cb)</td></tr>
+<tr class="memitem:acfac89b409ff6b8ba818123d565ad54e"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cdc__host_8h.html#acfac89b409ff6b8ba818123d565ad54e">tuh_cdc_disconnect</a> (uint8_t dev_addr, tuh_control_complete_cb_t complete_cb)</td></tr>
 <tr class="separator:acfac89b409ff6b8ba818123d565ad54e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a27adc2258733e2294da30aa68978b455"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cdc__host_8h.html#a27adc2258733e2294da30aa68978b455">tuh_cdc_serial_is_mounted</a> (uint8_t dev_addr)</td></tr>
 <tr class="memdesc:a27adc2258733e2294da30aa68978b455"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if device support CDC Serial interface or not.  <a href="cdc__host_8h.html#a27adc2258733e2294da30aa68978b455">More...</a><br /></td></tr>
@@ -116,8 +116,8 @@ Functions</h2></td></tr>
 <tr class="separator:a57261973c29682e4edfddb40e8f9c6e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0ad2c710279205a3a355d85a3475de99"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cdc__host_8h.html#a0ad2c710279205a3a355d85a3475de99">cdch_init</a> (void)</td></tr>
 <tr class="separator:a0ad2c710279205a3a355d85a3475de99"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4e9b45e49bb9ef458025c1fae5352b86"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cdc__host_8h.html#a4e9b45e49bb9ef458025c1fae5352b86">cdch_open</a> (uint8_t rhport, uint8_t dev_addr, <a class="el" href="group___u_s_b_def___type.html#gac4415f9c56f80b658137e35c14b58096">tusb_desc_interface_t</a> const *itf_desc, uint16_t *p_length)</td></tr>
-<tr class="separator:a4e9b45e49bb9ef458025c1fae5352b86"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0cd733f9db9e519ecc3c21aa3c806f42"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cdc__host_8h.html#a0cd733f9db9e519ecc3c21aa3c806f42">cdch_open</a> (uint8_t rhport, uint8_t dev_addr, <a class="el" href="group___u_s_b_def___type.html#gac4415f9c56f80b658137e35c14b58096">tusb_desc_interface_t</a> const *itf_desc, uint16_t max_len)</td></tr>
+<tr class="separator:a0cd733f9db9e519ecc3c21aa3c806f42"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a79799a90074a6cbaa3f51775433398ed"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cdc__host_8h.html#a79799a90074a6cbaa3f51775433398ed">cdch_set_config</a> (uint8_t dev_addr, uint8_t itf_num)</td></tr>
 <tr class="separator:a79799a90074a6cbaa3f51775433398ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7eef9fd395ec24d48d55d2ec1609a2bf"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cdc__host_8h.html#a7eef9fd395ec24d48d55d2ec1609a2bf">cdch_xfer_cb</a> (uint8_t dev_addr, uint8_t ep_addr, <a class="el" href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a> event, uint32_t xferred_bytes)</td></tr>
@@ -147,7 +147,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cdc__host_8c_source.html#l00239">239</a> of file <a class="el" href="cdc__host_8c_source.html">cdc_host.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__host_8c_source.html#l00241">241</a> of file <a class="el" href="cdc__host_8c_source.html">cdc_host.c</a>.</p>
 
 </div>
 </div>
@@ -167,12 +167,12 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cdc__host_8c_source.html#l00143">143</a> of file <a class="el" href="cdc__host_8c_source.html">cdc_host.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__host_8c_source.html#l00147">147</a> of file <a class="el" href="cdc__host_8c_source.html">cdc_host.c</a>.</p>
 
 </div>
 </div>
-<a id="a4e9b45e49bb9ef458025c1fae5352b86" name="a4e9b45e49bb9ef458025c1fae5352b86"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4e9b45e49bb9ef458025c1fae5352b86">&#9670;&nbsp;</a></span>cdch_open()</h2>
+<a id="a0cd733f9db9e519ecc3c21aa3c806f42" name="a0cd733f9db9e519ecc3c21aa3c806f42"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0cd733f9db9e519ecc3c21aa3c806f42">&#9670;&nbsp;</a></span>cdch_open()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -198,8 +198,8 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint16_t *&#160;</td>
-          <td class="paramname"><em>p_length</em>&#160;</td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>max_len</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -209,7 +209,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cdc__host_8c_source.html#l00148">148</a> of file <a class="el" href="cdc__host_8c_source.html">cdc_host.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__host_8c_source.html#l00152">152</a> of file <a class="el" href="cdc__host_8c_source.html">cdc_host.c</a>.</p>
 
 </div>
 </div>
@@ -239,7 +239,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cdc__host_8c_source.html#l00226">226</a> of file <a class="el" href="cdc__host_8c_source.html">cdc_host.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__host_8c_source.html#l00228">228</a> of file <a class="el" href="cdc__host_8c_source.html">cdc_host.c</a>.</p>
 
 </div>
 </div>
@@ -281,7 +281,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cdc__host_8c_source.html#l00232">232</a> of file <a class="el" href="cdc__host_8c_source.html">cdc_host.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__host_8c_source.html#l00234">234</a> of file <a class="el" href="cdc__host_8c_source.html">cdc_host.c</a>.</p>
 
 </div>
 </div>
@@ -303,7 +303,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="usbh_8h.html#ac1bd7b783c9fe43cc2534108ba548068">tuh_control_complete_cb_t</a>&#160;</td>
+          <td class="paramtype">tuh_control_complete_cb_t&#160;</td>
           <td class="paramname"><em>complete_cb</em>&#160;</td>
         </tr>
         <tr>
@@ -319,7 +319,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cdc__host_8h_source.html#l00049">49</a> of file <a class="el" href="cdc__host_8h_source.html">cdc_host.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__host_8h_source.html#l00047">47</a> of file <a class="el" href="cdc__host_8h_source.html">cdc_host.h</a>.</p>
 
 </div>
 </div>
@@ -341,7 +341,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="usbh_8h.html#ac1bd7b783c9fe43cc2534108ba548068">tuh_control_complete_cb_t</a>&#160;</td>
+          <td class="paramtype">tuh_control_complete_cb_t&#160;</td>
           <td class="paramname"><em>complete_cb</em>&#160;</td>
         </tr>
         <tr>
@@ -357,7 +357,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cdc__host_8h_source.html#l00054">54</a> of file <a class="el" href="cdc__host_8h_source.html">cdc_host.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__host_8h_source.html#l00052">52</a> of file <a class="el" href="cdc__host_8h_source.html">cdc_host.h</a>.</p>
 
 </div>
 </div>
@@ -404,7 +404,7 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>This function is used to check if previous transfer is complete (success or error), so that the next transfer can be scheduled. User needs to make sure the corresponding interface is mounted (by <a class="el" href="cdc__host_8h.html#a27adc2258733e2294da30aa68978b455">tuh_cdc_serial_is_mounted</a>) before calling this function. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="cdc__host_8c_source.html#l00065">65</a> of file <a class="el" href="cdc__host_8c_source.html">cdc_host.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__host_8c_source.html#l00067">67</a> of file <a class="el" href="cdc__host_8c_source.html">cdc_host.c</a>.</p>
 
 </div>
 </div>
@@ -466,7 +466,7 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>This function is non-blocking and returns immediately. The result of USB transfer will be reported by the interface's callback function. <em>p_data</em> must be declared with CFG_TUSB_MEM_SECTION. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="cdc__host_8c_source.html#l00108">108</a> of file <a class="el" href="cdc__host_8c_source.html">cdc_host.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__host_8c_source.html#l00111">111</a> of file <a class="el" href="cdc__host_8c_source.html">cdc_host.c</a>.</p>
 
 </div>
 </div>
@@ -528,7 +528,7 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>This function is non-blocking and returns immediately. The result of USB transfer will be reported by the interface's callback function. <em>p_data</em> must be declared with CFG_TUSB_MEM_SECTION. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="cdc__host_8c_source.html#l00097">97</a> of file <a class="el" href="cdc__host_8c_source.html">cdc_host.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__host_8c_source.html#l00099">99</a> of file <a class="el" href="cdc__host_8c_source.html">cdc_host.c</a>.</p>
 
 </div>
 </div>
@@ -563,7 +563,7 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="cdc__host_8c_source.html#l00090">90</a> of file <a class="el" href="cdc__host_8c_source.html">cdc_host.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__host_8c_source.html#l00092">92</a> of file <a class="el" href="cdc__host_8c_source.html">cdc_host.c</a>.</p>
 
 </div>
 </div>
@@ -654,9 +654,8 @@ Variables</h2></td></tr>
 <div class="line"> </div>
 <div class="line"> </div>
 <div class="line"> </div>
-<div class="line"><span class="keywordtype">bool</span> <a class="code hl_function" href="cdc__host_8c.html#abcbcbffa0e9d2dafd6b613e2fb16d5b2">tuh_cdc_set_control_line_state</a>(uint8_t dev_addr, <span class="keywordtype">bool</span> dtr, <span class="keywordtype">bool</span> rts, <a class="code hl_typedef" href="usbh_8h.html#ac1bd7b783c9fe43cc2534108ba548068">tuh_control_complete_cb_t</a> complete_cb)</div>
-<div class="ttc" id="acdc__host_8c_html_abcbcbffa0e9d2dafd6b613e2fb16d5b2"><div class="ttname"><a href="cdc__host_8c.html#abcbcbffa0e9d2dafd6b613e2fb16d5b2">tuh_cdc_set_control_line_state</a></div><div class="ttdeci">bool tuh_cdc_set_control_line_state(uint8_t dev_addr, bool dtr, bool rts, tuh_control_complete_cb_t complete_cb)</div><div class="ttdef"><b>Definition:</b> <a href="cdc__host_8c_source.html#l00119">cdc_host.c:119</a></div></div>
-<div class="ttc" id="ausbh_8h_html_ac1bd7b783c9fe43cc2534108ba548068"><div class="ttname"><a href="usbh_8h.html#ac1bd7b783c9fe43cc2534108ba548068">tuh_control_complete_cb_t</a></div><div class="ttdeci">bool(* tuh_control_complete_cb_t)(uint8_t dev_addr, tusb_control_request_t const *request, xfer_result_t result)</div><div class="ttdef"><b>Definition:</b> <a href="usbh_8h_source.html#l00068">usbh.h:68</a></div></div>
+<div class="line"><span class="keywordtype">bool</span> <a class="code hl_function" href="cdc__host_8c.html#abcbcbffa0e9d2dafd6b613e2fb16d5b2">tuh_cdc_set_control_line_state</a>(uint8_t dev_addr, <span class="keywordtype">bool</span> dtr, <span class="keywordtype">bool</span> rts, tuh_control_complete_cb_t complete_cb)</div>
+<div class="ttc" id="acdc__host_8c_html_abcbcbffa0e9d2dafd6b613e2fb16d5b2"><div class="ttname"><a href="cdc__host_8c.html#abcbcbffa0e9d2dafd6b613e2fb16d5b2">tuh_cdc_set_control_line_state</a></div><div class="ttdeci">bool tuh_cdc_set_control_line_state(uint8_t dev_addr, bool dtr, bool rts, tuh_control_complete_cb_t complete_cb)</div><div class="ttdef"><b>Definition:</b> <a href="cdc__host_8c_source.html#l00123">cdc_host.c:123</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

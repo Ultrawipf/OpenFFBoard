@@ -87,7 +87,7 @@ $(document).ready(function(){initNavTree('tusb_8h_source.html',''); initResizabl
   <div class="headertitle"><div class="title">tusb.h</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="tusb_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">/* </span></div>
+<a href="tusb_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">/*</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment"> * The MIT License (MIT)</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment"> *</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment"> * Copyright (c) 2019 Ha Thach (tinyusb.org)</span></div>
@@ -131,7 +131,7 @@ $(document).ready(function(){initNavTree('tusb_8h_source.html',''); initResizabl
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="preprocessor">#if TUSB_OPT_HOST_ENABLED</span></div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="preprocessor">  #include &quot;<a class="code" href="usbh_8h.html">host/usbh.h</a>&quot;</span></div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="preprocessor">  #if HOST_CLASS_HID</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="preprocessor">  #if CFG_TUH_HID</span></div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="preprocessor">    #include &quot;<a class="code" href="hid__host_8h.html">class/hid/hid_host.h</a>&quot;</span></div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="preprocessor">  #endif</span></div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
@@ -165,59 +165,68 @@ $(document).ready(function(){initNavTree('tusb_8h_source.html',''); initResizabl
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span><span class="preprocessor">    #include &quot;<a class="code" href="msc__device_8h.html">class/msc/msc_device.h</a>&quot;</span></div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="preprocessor">  #endif</span></div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span><span class="preprocessor">#if CFG_TUD_AUDIO</span></div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span><span class="preprocessor">  #include &quot;<a class="code" href="audio__device_8h.html">class/audio/audio_device.h</a>&quot;</span></div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span><span class="preprocessor">  #if CFG_TUD_AUDIO</span></div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span><span class="preprocessor">    #include &quot;<a class="code" href="audio__device_8h.html">class/audio/audio_device.h</a>&quot;</span></div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="preprocessor">  #endif</span></div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="preprocessor">  #if CFG_TUD_MIDI</span></div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="preprocessor">    #include &quot;<a class="code" href="midi__device_8h.html">class/midi/midi_device.h</a>&quot;</span></div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="preprocessor">  #if CFG_TUD_VIDEO</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="preprocessor">    #include &quot;<a class="code" href="video__device_8h.html">class/video/video_device.h</a>&quot;</span></div>
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span><span class="preprocessor">  #endif</span></div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span><span class="preprocessor">  #if CFG_TUD_VENDOR</span></div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span><span class="preprocessor">    #include &quot;<a class="code" href="vendor__device_8h.html">class/vendor/vendor_device.h</a>&quot;</span></div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span><span class="preprocessor">  #if CFG_TUD_MIDI</span></div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span><span class="preprocessor">    #include &quot;<a class="code" href="midi__device_8h.html">class/midi/midi_device.h</a>&quot;</span></div>
 <div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span><span class="preprocessor">  #endif</span></div>
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span><span class="preprocessor">  #if CFG_TUD_USBTMC</span></div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span><span class="preprocessor">    #include &quot;<a class="code" href="usbtmc__device_8h.html">class/usbtmc/usbtmc_device.h</a>&quot;</span></div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span><span class="preprocessor">  #if CFG_TUD_VENDOR</span></div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span><span class="preprocessor">    #include &quot;<a class="code" href="vendor__device_8h.html">class/vendor/vendor_device.h</a>&quot;</span></div>
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span><span class="preprocessor">  #endif</span></div>
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span><span class="preprocessor">  #if CFG_TUD_DFU_RUNTIME</span></div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span><span class="preprocessor">    #include &quot;<a class="code" href="dfu__rt__device_8h.html">class/dfu/dfu_rt_device.h</a>&quot;</span></div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span><span class="preprocessor">  #if CFG_TUD_USBTMC</span></div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span><span class="preprocessor">    #include &quot;<a class="code" href="usbtmc__device_8h.html">class/usbtmc/usbtmc_device.h</a>&quot;</span></div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span><span class="preprocessor">  #endif</span></div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span><span class="preprocessor">  #if CFG_TUD_NET</span></div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span><span class="preprocessor">    #include &quot;<a class="code" href="net__device_8h.html">class/net/net_device.h</a>&quot;</span></div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span><span class="preprocessor">  #if CFG_TUD_DFU_RUNTIME</span></div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span><span class="preprocessor">    #include &quot;<a class="code" href="dfu__rt__device_8h.html">class/dfu/dfu_rt_device.h</a>&quot;</span></div>
 <div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span><span class="preprocessor">  #endif</span></div>
 <div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span><span class="preprocessor">  #if CFG_TUD_BTH</span></div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span><span class="preprocessor">    #include &quot;<a class="code" href="bth__device_8h.html">class/bth/bth_device.h</a>&quot;</span></div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span><span class="preprocessor">  #if CFG_TUD_DFU</span></div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span><span class="preprocessor">    #include &quot;<a class="code" href="dfu__device_8h.html">class/dfu/dfu_device.h</a>&quot;</span></div>
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span><span class="preprocessor">  #endif</span></div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span><span class="comment">//--------------------------------------------------------------------+</span></div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span><span class="comment">// APPLICATION API</span></div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span><span class="comment">//--------------------------------------------------------------------+</span></div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span><span class="comment"></span><span class="comment">// Initialize device/host stack</span></div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span><span class="comment">// Note: when using with RTOS, this should be called after scheduler/kernel is started.</span></div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span><span class="comment">// Otherwise it could cause kernel issue since USB IRQ handler does use RTOS queue API.</span></div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span><span class="keywordtype">bool</span> <a class="code hl_function" href="tusb_8c.html#a8803da64217c7948ebbef4e5f2d6b8a9">tusb_init</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span><span class="comment">// Check if stack is initialized</span></div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span><span class="keywordtype">bool</span> <a class="code hl_function" href="tusb_8h.html#af94a415a201deda582ef2e30a810d34a">tusb_inited</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span> </div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span><span class="comment">// TODO</span></div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span><span class="comment">// bool tusb_teardown(void);</span></div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span> </div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span><span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span> }</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span> </div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span><span class="preprocessor">#endif </span><span class="comment">/* _TUSB_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span><span class="preprocessor">  #if CFG_TUD_ECM_RNDIS || CFG_TUD_NCM</span></div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span><span class="preprocessor">    #include &quot;<a class="code" href="net__device_8h.html">class/net/net_device.h</a>&quot;</span></div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span><span class="preprocessor">  #endif</span></div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span><span class="preprocessor">  #if CFG_TUD_BTH</span></div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span><span class="preprocessor">    #include &quot;<a class="code" href="bth__device_8h.html">class/bth/bth_device.h</a>&quot;</span></div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span><span class="preprocessor">  #endif</span></div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span> </div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span><span class="comment">//--------------------------------------------------------------------+</span></div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span><span class="comment">// APPLICATION API</span></div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span><span class="comment">//--------------------------------------------------------------------+</span></div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span><span class="comment"></span><span class="comment">// Initialize device/host stack</span></div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span><span class="comment">// Note: when using with RTOS, this should be called after scheduler/kernel is started.</span></div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span><span class="comment">// Otherwise it could cause kernel issue since USB IRQ handler does use RTOS queue API.</span></div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span><span class="keywordtype">bool</span> <a class="code hl_function" href="tusb_8c.html#a8803da64217c7948ebbef4e5f2d6b8a9">tusb_init</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span> </div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span><span class="comment">// Check if stack is initialized</span></div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span><span class="keywordtype">bool</span> <a class="code hl_function" href="tusb_8h.html#af94a415a201deda582ef2e30a810d34a">tusb_inited</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span><span class="comment">// TODO</span></div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span><span class="comment">// bool tusb_teardown(void);</span></div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span> </div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span><span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span> }</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span> </div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span><span class="preprocessor">#endif </span><span class="comment">/* _TUSB_H_ */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="aaudio__device_8h_html"><div class="ttname"><a href="audio__device_8h.html">audio_device.h</a></div></div>
 <div class="ttc" id="abth__device_8h_html"><div class="ttname"><a href="bth__device_8h.html">bth_device.h</a></div></div>
 <div class="ttc" id="acdc__device_8h_html"><div class="ttname"><a href="cdc__device_8h.html">cdc_device.h</a></div></div>
 <div class="ttc" id="acdc__host_8h_html"><div class="ttname"><a href="cdc__host_8h.html">cdc_host.h</a></div></div>
+<div class="ttc" id="adfu__device_8h_html"><div class="ttname"><a href="dfu__device_8h.html">dfu_device.h</a></div></div>
 <div class="ttc" id="adfu__rt__device_8h_html"><div class="ttname"><a href="dfu__rt__device_8h.html">dfu_rt_device.h</a></div></div>
 <div class="ttc" id="ahid__device_8h_html"><div class="ttname"><a href="hid__device_8h.html">hid_device.h</a></div></div>
 <div class="ttc" id="ahid__host_8h_html"><div class="ttname"><a href="hid__host_8h.html">hid_host.h</a></div></div>
@@ -226,8 +235,8 @@ $(document).ready(function(){initNavTree('tusb_8h_source.html',''); initResizabl
 <div class="ttc" id="amsc__host_8h_html"><div class="ttname"><a href="msc__host_8h.html">msc_host.h</a></div></div>
 <div class="ttc" id="anet__device_8h_html"><div class="ttname"><a href="net__device_8h.html">net_device.h</a></div></div>
 <div class="ttc" id="aosal_8h_html"><div class="ttname"><a href="osal_8h.html">osal.h</a></div></div>
-<div class="ttc" id="atusb_8c_html_a8803da64217c7948ebbef4e5f2d6b8a9"><div class="ttname"><a href="tusb_8c.html#a8803da64217c7948ebbef4e5f2d6b8a9">tusb_init</a></div><div class="ttdeci">bool tusb_init(void)</div><div class="ttdef"><b>Definition:</b> <a href="tusb_8c_source.html#l00040">tusb.c:40</a></div></div>
-<div class="ttc" id="atusb_8h_html_af94a415a201deda582ef2e30a810d34a"><div class="ttname"><a href="tusb_8h.html#af94a415a201deda582ef2e30a810d34a">tusb_inited</a></div><div class="ttdeci">bool tusb_inited(void)</div><div class="ttdef"><b>Definition:</b> <a href="tusb_8c_source.html#l00058">tusb.c:58</a></div></div>
+<div class="ttc" id="atusb_8c_html_a8803da64217c7948ebbef4e5f2d6b8a9"><div class="ttname"><a href="tusb_8c.html#a8803da64217c7948ebbef4e5f2d6b8a9">tusb_init</a></div><div class="ttdeci">bool tusb_init(void)</div><div class="ttdef"><b>Definition:</b> <a href="tusb_8c_source.html#l00038">tusb.c:38</a></div></div>
+<div class="ttc" id="atusb_8h_html_af94a415a201deda582ef2e30a810d34a"><div class="ttname"><a href="tusb_8h.html#af94a415a201deda582ef2e30a810d34a">tusb_inited</a></div><div class="ttdeci">bool tusb_inited(void)</div><div class="ttdef"><b>Definition:</b> <a href="tusb_8c_source.html#l00051">tusb.c:51</a></div></div>
 <div class="ttc" id="atusb__common_8h_html"><div class="ttname"><a href="tusb__common_8h.html">tusb_common.h</a></div></div>
 <div class="ttc" id="atusb__fifo_8h_html"><div class="ttname"><a href="tusb__fifo_8h.html">tusb_fifo.h</a></div></div>
 <div class="ttc" id="ausbd_8h_html"><div class="ttname"><a href="usbd_8h.html">usbd.h</a></div></div>
@@ -235,6 +244,7 @@ $(document).ready(function(){initNavTree('tusb_8h_source.html',''); initResizabl
 <div class="ttc" id="ausbtmc__device_8h_html"><div class="ttname"><a href="usbtmc__device_8h.html">usbtmc_device.h</a></div></div>
 <div class="ttc" id="avendor__device_8h_html"><div class="ttname"><a href="vendor__device_8h.html">vendor_device.h</a></div></div>
 <div class="ttc" id="avendor__host_8h_html"><div class="ttname"><a href="vendor__host_8h.html">vendor_host.h</a></div></div>
+<div class="ttc" id="avideo__device_8h_html"><div class="ttname"><a href="video__device_8h.html">video_device.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

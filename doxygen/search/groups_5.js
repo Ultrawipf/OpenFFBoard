@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['gamepad_0',['Gamepad',['../group___class_driver___h_i_d___gamepad.html',1,'']]],
-  ['generic_20_28not_20supported_20yet_29_1',['Generic (not supported yet)',['../group___class_driver___h_i_d___generic.html',1,'']]],
-  ['group_5fconfiguration_2',['Group_configuration',['../group__group__configuration.html',1,'']]]
+  ['host_0',['Host',['../group___c_d_c___r_n_s_i_d___host.html',1,'']]],
+  ['hub_20_28host_20only_29_1',['Hub (Host only)',['../group___class_driver___hub.html',1,'']]],
+  ['human_20interface_20device_20_28hid_29_2',['Human Interface Device (HID)',['../group___class_driver___h_i_d.html',1,'']]]
 ];

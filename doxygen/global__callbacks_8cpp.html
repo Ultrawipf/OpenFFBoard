@@ -143,6 +143,16 @@ Functions</h2></td></tr>
 <tr class="separator:ab46e2325b0880d5b5a301792438b151b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3db7835e7e7ac335887f62fedf156926"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="global__callbacks_8cpp.html#a3db7835e7e7ac335887f62fedf156926">HAL_SPI_ErrorCallback</a> (SPI_HandleTypeDef *hspi)</td></tr>
 <tr class="separator:a3db7835e7e7ac335887f62fedf156926"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa258e0eb52bbc34002a46dc2db89a84b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="global__callbacks_8cpp.html#aa258e0eb52bbc34002a46dc2db89a84b">HAL_I2C_MasterTxCpltCallback</a> (I2C_HandleTypeDef *hi2c)</td></tr>
+<tr class="separator:aa258e0eb52bbc34002a46dc2db89a84b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5782358f977ddf450b203fc075833a1d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="global__callbacks_8cpp.html#a5782358f977ddf450b203fc075833a1d">HAL_I2C_MasterRxCpltCallback</a> (I2C_HandleTypeDef *hi2c)</td></tr>
+<tr class="separator:a5782358f977ddf450b203fc075833a1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a874f6104d2cdbced9f2ab6e941ec58f0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="global__callbacks_8cpp.html#a874f6104d2cdbced9f2ab6e941ec58f0">HAL_I2C_MemTxCpltCallback</a> (I2C_HandleTypeDef *hi2c)</td></tr>
+<tr class="separator:a874f6104d2cdbced9f2ab6e941ec58f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac16a95413b35f05c5ce725fefd8531a5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="global__callbacks_8cpp.html#ac16a95413b35f05c5ce725fefd8531a5">HAL_I2C_MemRxCpltCallback</a> (I2C_HandleTypeDef *hi2c)</td></tr>
+<tr class="separator:ac16a95413b35f05c5ce725fefd8531a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d5338cd64a656dfdc4154773bc4f05d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="global__callbacks_8cpp.html#a4d5338cd64a656dfdc4154773bc4f05d">HAL_I2C_ErrorCallback</a> (I2C_HandleTypeDef *hi2c)</td></tr>
+<tr class="separator:a4d5338cd64a656dfdc4154773bc4f05d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1f453b8b047af5e8a9c9a2ebd8a09259"><td class="memItemLeft" align="right" valign="top">uint8_t const *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="global__callbacks_8cpp.html#a1f453b8b047af5e8a9c9a2ebd8a09259">tud_descriptor_device_cb</a> (void)</td></tr>
 <tr class="separator:a1f453b8b047af5e8a9c9a2ebd8a09259"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab8ee9fe0bc8bf4d317c4e7c7fa52194e"><td class="memItemLeft" align="right" valign="top">uint8_t const *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="global__callbacks_8cpp.html#ab8ee9fe0bc8bf4d317c4e7c7fa52194e">tud_descriptor_configuration_cb</a> (uint8_t index)</td></tr>
@@ -155,9 +165,9 @@ Functions</h2></td></tr>
 <tr class="separator:a8a10535dfe03a33af833f55b6ba33cfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1db62490ab8613591d4dc8033d6778d0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="global__callbacks_8cpp.html#a1db62490ab8613591d4dc8033d6778d0">tud_cdc_tx_complete_cb</a> (uint8_t itf)</td></tr>
 <tr class="separator:a1db62490ab8613591d4dc8033d6778d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3b7d9ad4015f5cb88a7653ea0e51d2e3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="global__callbacks_8cpp.html#a3b7d9ad4015f5cb88a7653ea0e51d2e3">tud_hid_set_report_cb</a> (uint8_t itf, uint8_t report_id, <a class="el" href="group___class_driver___h_i_d.html#gaeef3673bfd124f9f431f7f6913d78088">hid_report_type_t</a> report_type, uint8_t const *buffer, uint16_t bufsize)</td></tr>
+<tr class="memitem:a3b7d9ad4015f5cb88a7653ea0e51d2e3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="global__callbacks_8cpp.html#a3b7d9ad4015f5cb88a7653ea0e51d2e3">tud_hid_set_report_cb</a> (uint8_t itf, uint8_t report_id, <a class="el" href="group___class_driver___h_i_d.html#gaeef3673bfd124f9f431f7f6913d78088">hid_report_type_t</a> report_type, uint8_t const *<a class="el" href="midi__device_8h.html#ac8733c58bc671239139641960e2d5dbf">buffer</a>, uint16_t <a class="el" href="midi__device_8h.html#aca9aaceac98612802d20cb6983f7669c">bufsize</a>)</td></tr>
 <tr class="separator:a3b7d9ad4015f5cb88a7653ea0e51d2e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6e2cbfa4f30aab0b986853b9d0e94085"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="global__callbacks_8cpp.html#a6e2cbfa4f30aab0b986853b9d0e94085">tud_hid_get_report_cb</a> (uint8_t itf, uint8_t report_id, <a class="el" href="group___class_driver___h_i_d.html#gaeef3673bfd124f9f431f7f6913d78088">hid_report_type_t</a> report_type, uint8_t *buffer, uint16_t reqlen)</td></tr>
+<tr class="memitem:a6e2cbfa4f30aab0b986853b9d0e94085"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="global__callbacks_8cpp.html#a6e2cbfa4f30aab0b986853b9d0e94085">tud_hid_get_report_cb</a> (uint8_t itf, uint8_t report_id, <a class="el" href="group___class_driver___h_i_d.html#gaeef3673bfd124f9f431f7f6913d78088">hid_report_type_t</a> report_type, uint8_t *<a class="el" href="midi__device_8h.html#ac8733c58bc671239139641960e2d5dbf">buffer</a>, uint16_t reqlen)</td></tr>
 <tr class="separator:a6e2cbfa4f30aab0b986853b9d0e94085"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a38461a4d62d110f5d712a5a75fa8943e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="global__callbacks_8cpp.html#a38461a4d62d110f5d712a5a75fa8943e">tud_hid_report_complete_cb</a> (uint8_t itf, uint8_t const *report, uint8_t len)</td></tr>
 <tr class="separator:a38461a4d62d110f5d712a5a75fa8943e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -232,7 +242,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00327">327</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00369">369</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
 
 </div>
 </div>
@@ -253,7 +263,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p >Callback after an adc finished conversion </p>
 
-<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00059">59</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00060">60</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
 
 </div>
 </div>
@@ -273,7 +283,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00169">169</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00174">174</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
 
 </div>
 </div>
@@ -293,7 +303,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00127">127</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00132">132</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
 
 </div>
 </div>
@@ -313,7 +323,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00113">113</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00118">118</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
 
 </div>
 </div>
@@ -333,7 +343,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00132">132</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00137">137</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
 
 </div>
 </div>
@@ -353,7 +363,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00120">120</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00125">125</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
 
 </div>
 </div>
@@ -373,7 +383,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00153">153</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00158">158</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
 
 </div>
 </div>
@@ -393,7 +403,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00138">138</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00143">143</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
 
 </div>
 </div>
@@ -413,7 +423,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00158">158</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00163">163</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
 
 </div>
 </div>
@@ -433,7 +443,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00143">143</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00148">148</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
 
 </div>
 </div>
@@ -453,7 +463,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00163">163</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00168">168</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
 
 </div>
 </div>
@@ -473,7 +483,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00148">148</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00153">153</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
 
 </div>
 </div>
@@ -494,7 +504,107 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p >Callback for GPIO interrupts </p>
 
-<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00087">87</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00092">92</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a4d5338cd64a656dfdc4154773bc4f05d" name="a4d5338cd64a656dfdc4154773bc4f05d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d5338cd64a656dfdc4154773bc4f05d">&#9670;&nbsp;</a></span>HAL_I2C_ErrorCallback()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HAL_I2C_ErrorCallback </td>
+          <td>(</td>
+          <td class="paramtype">I2C_HandleTypeDef *&#160;</td>
+          <td class="paramname"><em>hi2c</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00251">251</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a5782358f977ddf450b203fc075833a1d" name="a5782358f977ddf450b203fc075833a1d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5782358f977ddf450b203fc075833a1d">&#9670;&nbsp;</a></span>HAL_I2C_MasterRxCpltCallback()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HAL_I2C_MasterRxCpltCallback </td>
+          <td>(</td>
+          <td class="paramtype">I2C_HandleTypeDef *&#160;</td>
+          <td class="paramname"><em>hi2c</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00233">233</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+
+</div>
+</div>
+<a id="aa258e0eb52bbc34002a46dc2db89a84b" name="aa258e0eb52bbc34002a46dc2db89a84b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa258e0eb52bbc34002a46dc2db89a84b">&#9670;&nbsp;</a></span>HAL_I2C_MasterTxCpltCallback()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HAL_I2C_MasterTxCpltCallback </td>
+          <td>(</td>
+          <td class="paramtype">I2C_HandleTypeDef *&#160;</td>
+          <td class="paramname"><em>hi2c</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00227">227</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+
+</div>
+</div>
+<a id="ac16a95413b35f05c5ce725fefd8531a5" name="ac16a95413b35f05c5ce725fefd8531a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac16a95413b35f05c5ce725fefd8531a5">&#9670;&nbsp;</a></span>HAL_I2C_MemRxCpltCallback()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HAL_I2C_MemRxCpltCallback </td>
+          <td>(</td>
+          <td class="paramtype">I2C_HandleTypeDef *&#160;</td>
+          <td class="paramname"><em>hi2c</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00245">245</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a874f6104d2cdbced9f2ab6e941ec58f0" name="a874f6104d2cdbced9f2ab6e941ec58f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a874f6104d2cdbced9f2ab6e941ec58f0">&#9670;&nbsp;</a></span>HAL_I2C_MemTxCpltCallback()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HAL_I2C_MemTxCpltCallback </td>
+          <td>(</td>
+          <td class="paramtype">I2C_HandleTypeDef *&#160;</td>
+          <td class="paramname"><em>hi2c</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00239">239</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
 
 </div>
 </div>
@@ -514,7 +624,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00214">214</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00219">219</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
 
 </div>
 </div>
@@ -534,7 +644,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00184">184</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00189">189</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
 
 </div>
 </div>
@@ -554,7 +664,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00202">202</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00207">207</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
 
 </div>
 </div>
@@ -574,7 +684,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00178">178</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00183">183</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
 
 </div>
 </div>
@@ -594,7 +704,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00196">196</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00201">201</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
 
 </div>
 </div>
@@ -614,7 +724,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00190">190</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00195">195</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
 
 </div>
 </div>
@@ -634,7 +744,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00208">208</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00213">213</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
 
 </div>
 </div>
@@ -653,8 +763,9 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p >Note: this is normally generated in the main.c A call to HAL_TIM_PeriodElapsedCallback_CPP must be added there instead! </p>
 
-<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00074">74</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00079">79</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
 
 </div>
 </div>
@@ -674,7 +785,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00078">78</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00083">83</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
 
 </div>
 </div>
@@ -694,7 +805,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00093">93</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00098">98</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
 
 </div>
 </div>
@@ -714,7 +825,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00099">99</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00104">104</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
 
 </div>
 </div>
@@ -733,7 +844,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00351">351</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00393">393</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
 
 </div>
 </div>
@@ -753,7 +864,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00238">238</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00279">279</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
 
 </div>
 </div>
@@ -773,7 +884,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00245">245</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00286">286</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
 
 </div>
 </div>
@@ -793,7 +904,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00226">226</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00267">267</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
 
 </div>
 </div>
@@ -813,7 +924,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00222">222</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00263">263</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
 
 </div>
 </div>
@@ -843,7 +954,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00230">230</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00271">271</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
 
 </div>
 </div>
@@ -863,7 +974,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00234">234</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00275">275</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
 
 </div>
 </div>
@@ -912,7 +1023,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p >HID Get Feature </p>
 
-<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00275">275</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00316">316</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
 
 </div>
 </div>
@@ -949,7 +1060,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p >HID transfer complete </p>
 
-<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00284">284</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00325">325</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
 
 </div>
 </div>
@@ -998,7 +1109,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p >USB Out Endpoint callback HID Out and Set Feature </p>
 
-<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00256">256</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00297">297</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
 
 </div>
 </div>
@@ -1019,7 +1130,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p >Midi receive callback </p>
 
-<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00298">298</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00339">339</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
 
 </div>
 </div>
@@ -1040,7 +1151,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p >Called on usb mount </p>
 
-<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00319">319</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00361">361</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
 
 </div>
 </div>
@@ -1060,7 +1171,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00322">322</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00364">364</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
 
 </div>
 </div>
@@ -1080,7 +1191,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p >Called on usb disconnect and suspend </p>
 
-<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00309">309</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00351">351</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
 
 </div>
 </div>
@@ -1100,7 +1211,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00312">312</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00354">354</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
 
 </div>
 </div>
@@ -1117,7 +1228,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00044">44</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00045">45</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
 
 </div>
 </div>
@@ -1133,7 +1244,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00048">48</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00049">49</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
 
 </div>
 </div>
@@ -1149,7 +1260,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00052">52</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00053">53</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
 
 </div>
 </div>
@@ -1165,7 +1276,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00108">108</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00113">113</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
 
 </div>
 </div>
@@ -1181,7 +1292,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00110">110</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00115">115</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
 
 </div>
 </div>
@@ -1197,7 +1308,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00109">109</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00114">114</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
 
 </div>
 </div>
@@ -1213,7 +1324,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00111">111</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00116">116</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
 
 </div>
 </div>
@@ -1317,7 +1428,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00294">294</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00335">335</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
 
 </div>
 </div>
@@ -1333,7 +1444,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00221">221</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="global__callbacks_8cpp_source.html#l00262">262</a> of file <a class="el" href="global__callbacks_8cpp_source.html">global_callbacks.cpp</a>.</p>
 
 </div>
 </div>

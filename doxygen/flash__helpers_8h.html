@@ -100,19 +100,19 @@ Functions</h2></td></tr>
 <tr class="separator:abe1c4bced00f5a4ee1b698098dbad093"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a366baca16e358e78f207d2b4870b8c56"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flash__helpers_8h.html#a366baca16e358e78f207d2b4870b8c56">Flash_ReadWriteDefault</a> (uint16_t adr, uint16_t *buf, uint16_t def)</td></tr>
 <tr class="separator:a366baca16e358e78f207d2b4870b8c56"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a885a8ce41615c9a02af4ca5e37378303"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flash__helpers_8h.html#a885a8ce41615c9a02af4ca5e37378303">Flash_Dump</a> (std::vector&lt; std::tuple&lt; uint16_t, uint16_t &gt; &gt; *result)</td></tr>
-<tr class="separator:a885a8ce41615c9a02af4ca5e37378303"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab145569b67ca04a0fcf948d213527a0b"><td class="memTemplParams" colspan="2">template&lt;typename TVal &gt; </td></tr>
-<tr class="memitem:ab145569b67ca04a0fcf948d213527a0b"><td class="memTemplItemLeft" align="right" valign="top">TVal&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="flash__helpers_8h.html#ab145569b67ca04a0fcf948d213527a0b">Flash_Read</a> (uint16_t adr, TVal def)</td></tr>
-<tr class="separator:ab145569b67ca04a0fcf948d213527a0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b1d1eda57dc4d7d6911e16c96b4b790"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flash__helpers_8h.html#a4b1d1eda57dc4d7d6911e16c96b4b790">Flash_Dump</a> (std::vector&lt; std::tuple&lt; uint16_t, uint16_t &gt; &gt; *result, bool includeAll=false)</td></tr>
+<tr class="separator:a4b1d1eda57dc4d7d6911e16c96b4b790"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2bbff9e686544cb0f673cf4e3f948592"><td class="memTemplParams" colspan="2">template&lt;typename TVal &gt; </td></tr>
+<tr class="memitem:a2bbff9e686544cb0f673cf4e3f948592"><td class="memTemplItemLeft" align="right" valign="top">TVal&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="flash__helpers_8h.html#a2bbff9e686544cb0f673cf4e3f948592">Flash_ReadDefault</a> (uint16_t adr, TVal def)</td></tr>
+<tr class="separator:a2bbff9e686544cb0f673cf4e3f948592"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0a1578933c3c630c74d87b0034339546"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flash__helpers_8h.html#a0a1578933c3c630c74d87b0034339546">pack</a> (uint8_t hb, uint8_t lb)</td></tr>
 <tr class="separator:a0a1578933c3c630c74d87b0034339546"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4cd5b822082e31ee340fcdad07ffeefc"><td class="memItemLeft" align="right" valign="top">std::tuple&lt; uint8_t, uint8_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flash__helpers_8h.html#a4cd5b822082e31ee340fcdad07ffeefc">unpack</a> (uint16_t v)</td></tr>
 <tr class="separator:a4cd5b822082e31ee340fcdad07ffeefc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a885a8ce41615c9a02af4ca5e37378303" name="a885a8ce41615c9a02af4ca5e37378303"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a885a8ce41615c9a02af4ca5e37378303">&#9670;&nbsp;</a></span>Flash_Dump()</h2>
+<a id="a4b1d1eda57dc4d7d6911e16c96b4b790" name="a4b1d1eda57dc4d7d6911e16c96b4b790"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4b1d1eda57dc4d7d6911e16c96b4b790">&#9670;&nbsp;</a></span>Flash_Dump()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -121,38 +121,13 @@ Functions</h2></td></tr>
           <td class="memname">void Flash_Dump </td>
           <td>(</td>
           <td class="paramtype">std::vector&lt; std::tuple&lt; uint16_t, uint16_t &gt; &gt; *&#160;</td>
-          <td class="paramname"><em>result</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="flash__helpers_8cpp_source.html#l00064">64</a> of file <a class="el" href="flash__helpers_8cpp_source.html">flash_helpers.cpp</a>.</p>
-
-</div>
-</div>
-<a id="ab145569b67ca04a0fcf948d213527a0b" name="ab145569b67ca04a0fcf948d213527a0b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab145569b67ca04a0fcf948d213527a0b">&#9670;&nbsp;</a></span>Flash_Read() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename TVal &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">TVal Flash_Read </td>
-          <td>(</td>
-          <td class="paramtype">uint16_t&#160;</td>
-          <td class="paramname"><em>adr</em>, </td>
+          <td class="paramname"><em>result</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">TVal&#160;</td>
-          <td class="paramname"><em>def</em>&#160;</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>includeAll</em> = <code>false</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -160,19 +135,14 @@ template&lt;typename TVal &gt; </div>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flash__helpers_8h_source.html#l00032">32</a> of file <a class="el" href="flash__helpers_8h_source.html">flash_helpers.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="flash__helpers_8cpp_source.html#l00065">65</a> of file <a class="el" href="flash__helpers_8cpp_source.html">flash_helpers.cpp</a>.</p>
 
 </div>
 </div>
 <a id="abe1c4bced00f5a4ee1b698098dbad093" name="abe1c4bced00f5a4ee1b698098dbad093"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abe1c4bced00f5a4ee1b698098dbad093">&#9670;&nbsp;</a></span>Flash_Read() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#abe1c4bced00f5a4ee1b698098dbad093">&#9670;&nbsp;</a></span>Flash_Read()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -198,6 +168,46 @@ template&lt;typename TVal &gt; </div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="flash__helpers_8cpp_source.html#l00040">40</a> of file <a class="el" href="flash__helpers_8cpp_source.html">flash_helpers.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a2bbff9e686544cb0f673cf4e3f948592" name="a2bbff9e686544cb0f673cf4e3f948592"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2bbff9e686544cb0f673cf4e3f948592">&#9670;&nbsp;</a></span>Flash_ReadDefault()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TVal &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TVal Flash_ReadDefault </td>
+          <td>(</td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>adr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TVal&#160;</td>
+          <td class="paramname"><em>def</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="flash__helpers_8h_source.html#l00032">32</a> of file <a class="el" href="flash__helpers_8h_source.html">flash_helpers.h</a>.</p>
 
 </div>
 </div>

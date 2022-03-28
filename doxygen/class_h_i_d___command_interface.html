@@ -88,7 +88,6 @@ $(document).ready(function(){initNavTree('class_h_i_d___command_interface.html',
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
-<a href="#pri-static-attribs">Static Private Attributes</a> &#124;
 <a href="class_h_i_d___command_interface-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">HID_CommandInterface Class Reference</div></div>
 </div><!--header-->
@@ -116,14 +115,14 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aee27ff716dd92de28952827cb4800f10"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af3b0ce294e3cf0bb39b015b44d2e5f21"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_i_d___command_interface.html#af3b0ce294e3cf0bb39b015b44d2e5f21">getNewCommands</a> (std::vector&lt; <a class="el" href="struct_parsed_command.html">ParsedCommand</a> &gt; &amp;<a class="el" href="class_h_i_d___command_interface.html#a4ed8cfdfef8069f1a8b5c6e25bacc516">commands</a>)</td></tr>
 <tr class="separator:af3b0ce294e3cf0bb39b015b44d2e5f21"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4c1892ad29a8a87be76f4539aafd07f9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_i_d___command_interface.html#a4c1892ad29a8a87be76f4539aafd07f9">sendReplies</a> (std::vector&lt; <a class="el" href="struct_command_result.html">CommandResult</a> &gt; &amp;results, <a class="el" href="class_command_interface.html">CommandInterface</a> *originalInterface)</td></tr>
-<tr class="separator:a4c1892ad29a8a87be76f4539aafd07f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a913e1e7225f647e9ced6141aad0eb5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_i_d___command_interface.html#a6a913e1e7225f647e9ced6141aad0eb5">sendReplies</a> (const std::vector&lt; <a class="el" href="struct_command_result.html">CommandResult</a> &gt; &amp;results, <a class="el" href="class_command_interface.html">CommandInterface</a> *originalInterface)</td></tr>
+<tr class="separator:a6a913e1e7225f647e9ced6141aad0eb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaa94bf5030e6715ec04762e7cbe37c6d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_i_d___command_interface.html#aaa94bf5030e6715ec04762e7cbe37c6d">hidCmdCallback</a> (HID_CMD_Data_t *data)</td></tr>
 <tr class="separator:aaa94bf5030e6715ec04762e7cbe37c6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9f229fb9500556dc8233ccf04d654244"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_i_d___command_interface.html#a9f229fb9500556dc8233ccf04d654244">sendHidCmd</a> (HID_CMD_Data_t *data)</td></tr>
 <tr class="separator:a9f229fb9500556dc8233ccf04d654244"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a55669ce5ef22c247bcca5daaf49e9248"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_i_d___command_interface.html#a55669ce5ef22c247bcca5daaf49e9248">queueReplyValues</a> (<a class="el" href="class_command_reply.html">CommandReply</a> &amp;reply, <a class="el" href="struct_parsed_command.html">ParsedCommand</a> &amp;command)</td></tr>
-<tr class="separator:a55669ce5ef22c247bcca5daaf49e9248"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13031739d485175d52dfad89a1a3b5d1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_i_d___command_interface.html#a13031739d485175d52dfad89a1a3b5d1">queueReplyValues</a> (const <a class="el" href="class_command_reply.html">CommandReply</a> &amp;reply, const <a class="el" href="struct_parsed_command.html">ParsedCommand</a> &amp;command)</td></tr>
+<tr class="separator:a13031739d485175d52dfad89a1a3b5d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c2821a4772674d2bb2c6e448890fc0c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_i_d___command_interface.html#a3c2821a4772674d2bb2c6e448890fc0c">transferComplete</a> (uint8_t itf, uint8_t const *report, uint8_t len)</td></tr>
 <tr class="separator:a3c2821a4772674d2bb2c6e448890fc0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa625a828d7101ba5f547c17792c0d518"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_i_d___command_interface.html#aa625a828d7101ba5f547c17792c0d518">readyToSend</a> ()</td></tr>
@@ -137,6 +136,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ac2a42c5c7ea718e74bad2ca6c399fee5 inherit pub_methods_class_command_interface"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7c03182cda44cd54b5bcbd30974ea445 inherit pub_methods_class_command_interface"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_interface.html#a7c03182cda44cd54b5bcbd30974ea445">hasNewCommands</a> ()</td></tr>
 <tr class="separator:a7c03182cda44cd54b5bcbd30974ea445 inherit pub_methods_class_command_interface"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a401a3cff2a1de47dbbd7713f6e0834f2 inherit pub_methods_class_command_interface"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_interface.html#a401a3cff2a1de47dbbd7713f6e0834f2">sendReplyAsync</a> (std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;reply, <a class="el" href="class_command_handler.html">CommandHandler</a> *handler, uint32_t cmdId, <a class="el" href="_command_handler_8h.html#aec46f6cc23a395b611fbc7c7239b9c41">CMDtype</a> type)</td></tr>
+<tr class="separator:a401a3cff2a1de47dbbd7713f6e0834f2 inherit pub_methods_class_command_interface"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classcpp__freertos_1_1_thread"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classcpp__freertos_1_1_thread')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classcpp__freertos_1_1_thread.html">cpp_freertos::Thread</a></td></tr>
 <tr class="memitem:ab9bcc1da7274a7337ce35ee75916cee2 inherit pub_methods_classcpp__freertos_1_1_thread"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__freertos_1_1_thread.html#ab9bcc1da7274a7337ce35ee75916cee2">Thread</a> (const std::string <a class="el" href="classcpp__freertos_1_1_thread.html#a1f2cd65e506b35d36ec7004f81cc1dbf">Name</a>, uint16_t <a class="el" href="classcpp__freertos_1_1_thread.html#a4583bd1bfe825cf482cbcab200282581">StackDepth</a>, UBaseType_t <a class="el" href="classcpp__freertos_1_1_thread.html#a75d8a4c561b63555e4a61ac93fadebad">Priority</a>)</td></tr>
 <tr class="separator:ab9bcc1da7274a7337ce35ee75916cee2 inherit pub_methods_classcpp__freertos_1_1_thread"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -156,6 +157,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a0a413b18b2818072998320f1f6388eee inherit pub_methods_classcpp__freertos_1_1_thread"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa11e945ef24eb35b4df261050576a2c0 inherit pub_methods_classcpp__freertos_1_1_thread"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__freertos_1_1_thread.html#aa11e945ef24eb35b4df261050576a2c0">ResumeFromISR</a> ()</td></tr>
 <tr class="separator:aa11e945ef24eb35b4df261050576a2c0 inherit pub_methods_classcpp__freertos_1_1_thread"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11c4a24ed63a986f75e5a85d249bc372 inherit pub_methods_classcpp__freertos_1_1_thread"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__freertos_1_1_thread.html#a11c4a24ed63a986f75e5a85d249bc372">Notify</a> ()</td></tr>
+<tr class="separator:a11c4a24ed63a986f75e5a85d249bc372 inherit pub_methods_classcpp__freertos_1_1_thread"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57a2c2a7f5e1e815b031a78a0f2314c5 inherit pub_methods_classcpp__freertos_1_1_thread"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__freertos_1_1_thread.html#a57a2c2a7f5e1e815b031a78a0f2314c5">NotifyFromISR</a> ()</td></tr>
+<tr class="separator:a57a2c2a7f5e1e815b031a78a0f2314c5 inherit pub_methods_classcpp__freertos_1_1_thread"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a198ff02a770b7fd7e43e8ab0e9221176 inherit pub_methods_classcpp__freertos_1_1_thread"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__freertos_1_1_thread.html#a198ff02a770b7fd7e43e8ab0e9221176">WaitForNotification</a> (TickType_t Timeout=portMAX_DELAY)</td></tr>
+<tr class="separator:a198ff02a770b7fd7e43e8ab0e9221176 inherit pub_methods_classcpp__freertos_1_1_thread"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ace92214a082dd8fd49e48af680e9bee5 inherit pub_methods_classcpp__freertos_1_1_thread"><td class="memItemLeft" align="right" valign="top">UBaseType_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__freertos_1_1_thread.html#ace92214a082dd8fd49e48af680e9bee5">GetPriority</a> ()</td></tr>
 <tr class="separator:ace92214a082dd8fd49e48af680e9bee5 inherit pub_methods_classcpp__freertos_1_1_thread"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a00923e979ba8b757d293c7f33701df29 inherit pub_methods_classcpp__freertos_1_1_thread"><td class="memItemLeft" align="right" valign="top">UBaseType_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__freertos_1_1_thread.html#a00923e979ba8b757d293c7f33701df29">GetPriorityFromISR</a> ()</td></tr>
@@ -188,16 +195,13 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:a329dd9f35a54566b99f25e81f9451ab5"><td class="memItemLeft" align="right" valign="top">const uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_i_d___command_interface.html#a329dd9f35a54566b99f25e81f9451ab5">maxQueuedRepliesBroadcast</a> = 10</td></tr>
 <tr class="separator:a329dd9f35a54566b99f25e81f9451ab5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-static-attribs" name="pri-static-attribs"></a>
-Static Private Attributes</h2></td></tr>
-<tr class="memitem:a643939bbbb4d61d4bfa0babb27e1de85"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classcpp__freertos_1_1_binary_semaphore.html">cpp_freertos::BinarySemaphore</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_i_d___command_interface.html#a643939bbbb4d61d4bfa0babb27e1de85">threadSem</a> = <a class="el" href="classcpp__freertos_1_1_binary_semaphore.html">cpp_freertos::BinarySemaphore</a>()</td></tr>
-<tr class="separator:a643939bbbb4d61d4bfa0babb27e1de85"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pub_static_methods_class_command_interface"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_class_command_interface')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="class_command_interface.html">CommandInterface</a></td></tr>
-<tr class="memitem:a2bd2f8109c74444ec235da3a466c8c2f inherit pub_static_methods_class_command_interface"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_interface.html#a2bd2f8109c74444ec235da3a466c8c2f">broadcastCommandReplyAsync</a> (std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;reply, <a class="el" href="class_command_handler.html">CommandHandler</a> *handler, uint32_t cmdId, <a class="el" href="_command_handler_8h.html#aec46f6cc23a395b611fbc7c7239b9c41">CMDtype</a> type)</td></tr>
-<tr class="separator:a2bd2f8109c74444ec235da3a466c8c2f inherit pub_static_methods_class_command_interface"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc6b7d8a16c3ddbc8ef9087c87a17f8c inherit pub_static_methods_class_command_interface"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="struct_command_result.html">CommandResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_interface.html#acc6b7d8a16c3ddbc8ef9087c87a17f8c">makeCommandReply</a> (const std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;reply, <a class="el" href="class_command_handler.html">CommandHandler</a> *handler, uint32_t cmdId, <a class="el" href="_command_handler_8h.html#aec46f6cc23a395b611fbc7c7239b9c41">CMDtype</a> type=<a class="el" href="_command_handler_8h.html#aec46f6cc23a395b611fbc7c7239b9c41ab5eda0a74558a342cf659187f06f746f">CMDtype::get</a>, <a class="el" href="class_command_interface.html">CommandInterface</a> *originalInterface=nullptr)</td></tr>
+<tr class="separator:acc6b7d8a16c3ddbc8ef9087c87a17f8c inherit pub_static_methods_class_command_interface"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab57c213c043aa400c70b4166ce4c818b inherit pub_static_methods_class_command_interface"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_interface.html#ab57c213c043aa400c70b4166ce4c818b">broadcastCommandReplyAsync</a> (const std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;reply, <a class="el" href="class_command_handler.html">CommandHandler</a> *handler, uint32_t cmdId, <a class="el" href="_command_handler_8h.html#aec46f6cc23a395b611fbc7c7239b9c41">CMDtype</a> type=<a class="el" href="_command_handler_8h.html#aec46f6cc23a395b611fbc7c7239b9c41ab5eda0a74558a342cf659187f06f746f">CMDtype::get</a>)</td></tr>
+<tr class="separator:ab57c213c043aa400c70b4166ce4c818b inherit pub_static_methods_class_command_interface"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_methods_classcpp__freertos_1_1_thread"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classcpp__freertos_1_1_thread')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classcpp__freertos_1_1_thread.html">cpp_freertos::Thread</a></td></tr>
 <tr class="memitem:abe20a08801d022da203e0295dbb59cbb inherit pub_static_methods_classcpp__freertos_1_1_thread"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__freertos_1_1_thread.html#abe20a08801d022da203e0295dbb59cbb">Yield</a> ()</td></tr>
 <tr class="separator:abe20a08801d022da203e0295dbb59cbb inherit pub_static_methods_classcpp__freertos_1_1_thread"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -350,8 +354,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a55669ce5ef22c247bcca5daaf49e9248" name="a55669ce5ef22c247bcca5daaf49e9248"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a55669ce5ef22c247bcca5daaf49e9248">&#9670;&nbsp;</a></span>queueReplyValues()</h2>
+<a id="a13031739d485175d52dfad89a1a3b5d1" name="a13031739d485175d52dfad89a1a3b5d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a13031739d485175d52dfad89a1a3b5d1">&#9670;&nbsp;</a></span>queueReplyValues()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -359,13 +363,13 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="memname">void HID_CommandInterface::queueReplyValues </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="class_command_reply.html">CommandReply</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="class_command_reply.html">CommandReply</a> &amp;&#160;</td>
           <td class="paramname"><em>reply</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="struct_parsed_command.html">ParsedCommand</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="struct_parsed_command.html">ParsedCommand</a> &amp;&#160;</td>
           <td class="paramname"><em>command</em>&#160;</td>
         </tr>
         <tr>
@@ -460,8 +464,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a4c1892ad29a8a87be76f4539aafd07f9" name="a4c1892ad29a8a87be76f4539aafd07f9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4c1892ad29a8a87be76f4539aafd07f9">&#9670;&nbsp;</a></span>sendReplies()</h2>
+<a id="a6a913e1e7225f647e9ced6141aad0eb5" name="a6a913e1e7225f647e9ced6141aad0eb5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6a913e1e7225f647e9ced6141aad0eb5">&#9670;&nbsp;</a></span>sendReplies()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -472,7 +476,7 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="memname">void HID_CommandInterface::sendReplies </td>
           <td>(</td>
-          <td class="paramtype">std::vector&lt; <a class="el" href="struct_command_result.html">CommandResult</a> &gt; &amp;&#160;</td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="struct_command_result.html">CommandResult</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>results</em>, </td>
         </tr>
         <tr>
@@ -493,9 +497,8 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p >A batch of commands has been executed and a reply returned </p>
 
-<p>Reimplemented from <a class="el" href="class_command_interface.html#ab12fa4bc34dd18078110e8e926a066ba">CommandInterface</a>.</p>
+<p>Implements <a class="el" href="class_command_interface.html#ae90dc2ba4ee3289276f312acfeac0499">CommandInterface</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="_hid_command_interface_8cpp_source.html#l00059">59</a> of file <a class="el" href="_hid_command_interface_8cpp_source.html">HidCommandInterface.cpp</a>.</p>
 
@@ -679,30 +682,6 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="_hid_command_interface_8h_source.html#l00055">55</a> of file <a class="el" href="_hid_command_interface_8h_source.html">HidCommandInterface.h</a>.</p>
-
-</div>
-</div>
-<a id="a643939bbbb4d61d4bfa0babb27e1de85" name="a643939bbbb4d61d4bfa0babb27e1de85"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a643939bbbb4d61d4bfa0babb27e1de85">&#9670;&nbsp;</a></span>threadSem</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classcpp__freertos_1_1_binary_semaphore.html">cpp_freertos::BinarySemaphore</a> HID_CommandInterface::threadSem = <a class="el" href="classcpp__freertos_1_1_binary_semaphore.html">cpp_freertos::BinarySemaphore</a>()</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_hid_command_interface_8h_source.html#l00057">57</a> of file <a class="el" href="_hid_command_interface_8h_source.html">HidCommandInterface.h</a>.</p>
 
 </div>
 </div>

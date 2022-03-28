@@ -1,16 +1,17 @@
 var searchData=
 [
-  ['tuh_5fcontrol_5fcomplete_5fcb_5ft_0',['tuh_control_complete_cb_t',['../usbh_8h.html#ac1bd7b783c9fe43cc2534108ba548068',1,'usbh.h']]],
-  ['tusb_5fcontrol_5frequest_5ft_1',['tusb_control_request_t',['../group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4',1,'tusb_types.h']]],
-  ['tusb_5fdesc_5fbos_5fplatform_5ft_2',['tusb_desc_bos_platform_t',['../group___u_s_b_def___type.html#ga9a258ed1b33369335f3d700ac02165f6',1,'tusb_types.h']]],
-  ['tusb_5fdesc_5fbos_5ft_3',['tusb_desc_bos_t',['../group___u_s_b_def___type.html#ga37592c8d292e3794f94d6d81c4c266fc',1,'tusb_types.h']]],
-  ['tusb_5fdesc_5fconfiguration_5ft_4',['tusb_desc_configuration_t',['../group___u_s_b_def___type.html#gae640129e609bf2e7b33828de0e38dd65',1,'tusb_types.h']]],
-  ['tusb_5fdesc_5fdevice_5fqualifier_5ft_5',['tusb_desc_device_qualifier_t',['../group___u_s_b_def___type.html#ga52201cd4d3a9b89e194c290f5e98af06',1,'tusb_types.h']]],
-  ['tusb_5fdesc_5fdevice_5ft_6',['tusb_desc_device_t',['../group___u_s_b_def___type.html#ga26951b4ef7eb0465e774c1a954f7c762',1,'tusb_types.h']]],
-  ['tusb_5fdesc_5fendpoint_5ft_7',['tusb_desc_endpoint_t',['../group___u_s_b_def___type.html#ga95906f860c391cedba638b1946669694',1,'tusb_types.h']]],
-  ['tusb_5fdesc_5finterface_5fassoc_5ft_8',['tusb_desc_interface_assoc_t',['../group___u_s_b_def___type.html#ga9d2c9cc99aafbe416b5b5bf275b5b16b',1,'tusb_types.h']]],
-  ['tusb_5fdesc_5finterface_5ft_9',['tusb_desc_interface_t',['../group___u_s_b_def___type.html#gac4415f9c56f80b658137e35c14b58096',1,'tusb_types.h']]],
-  ['tusb_5fdesc_5fother_5fspeed_5ft_10',['tusb_desc_other_speed_t',['../group___u_s_b_def___type.html#ga676f9ec48f2fc774865c290946651b97',1,'tusb_types.h']]],
-  ['tusb_5fdesc_5fstring_5ft_11',['tusb_desc_string_t',['../group___u_s_b_def___type.html#ga076f45f0184127d7d695af61a371adf1',1,'tusb_types.h']]],
-  ['tusb_5fdesc_5fwebusb_5furl_5ft_12',['tusb_desc_webusb_url_t',['../group___u_s_b_def___type.html#ga56223ef38820720ca7fbbad45a6a40bb',1,'tusb_types.h']]]
+  ['scsi_5finquiry_5fresp_5ft_0',['scsi_inquiry_resp_t',['../msc_8h.html#a53dbaa53d961afe194eda05b77a1d2fd',1,'msc.h']]],
+  ['scsi_5finquiry_5ft_1',['scsi_inquiry_t',['../msc_8h.html#a74aa951cff1048adda09233012ef6879',1,'msc.h']]],
+  ['scsi_5fmode_5fsense6_5fresp_5ft_2',['scsi_mode_sense6_resp_t',['../msc_8h.html#a7b89d3c5693d27ae447a681e14feea80',1,'msc.h']]],
+  ['scsi_5fmode_5fsense6_5ft_3',['scsi_mode_sense6_t',['../msc_8h.html#ae1424ce4f7a3bcf2828c5c3e43106914',1,'msc.h']]],
+  ['scsi_5fprevent_5fallow_5fmedium_5fremoval_5ft_4',['scsi_prevent_allow_medium_removal_t',['../msc_8h.html#a9a1dcd11b33cce913340cf33802a6f75',1,'msc.h']]],
+  ['scsi_5fread10_5ft_5',['scsi_read10_t',['../msc_8h.html#a82ab2e83dd6f762294c3c20fbc367414',1,'msc.h']]],
+  ['scsi_5fread_5fcapacity10_5ft_6',['scsi_read_capacity10_t',['../msc_8h.html#a505c6929681cc45714008e1ab585794f',1,'msc.h']]],
+  ['scsi_5fread_5fformat_5fcapacity_5fdata_5ft_7',['scsi_read_format_capacity_data_t',['../msc_8h.html#aaf3e4229e8a4ec8239cdfc804490cae9',1,'msc.h']]],
+  ['scsi_5fread_5fformat_5fcapacity_5ft_8',['scsi_read_format_capacity_t',['../msc_8h.html#addae4dac7692631a6d295d1b80d96133',1,'msc.h']]],
+  ['scsi_5frequest_5fsense_5ft_9',['scsi_request_sense_t',['../msc_8h.html#a5c45e64bbbdcd3111dcdc92a152dde20',1,'msc.h']]],
+  ['scsi_5fsense_5ffixed_5fresp_5ft_10',['scsi_sense_fixed_resp_t',['../msc_8h.html#ac26a185708e7fcaf806976d947ccc34b',1,'msc.h']]],
+  ['scsi_5fstart_5fstop_5funit_5ft_11',['scsi_start_stop_unit_t',['../msc_8h.html#a80fe4f493de3c359529e102e3adb0552',1,'msc.h']]],
+  ['scsi_5ftest_5funit_5fready_5ft_12',['scsi_test_unit_ready_t',['../msc_8h.html#acd41801e10c1ffe1f19d6779b01c91ea',1,'msc.h']]],
+  ['scsi_5fwrite10_5ft_13',['scsi_write10_t',['../msc_8h.html#a87709f2def5d51890e7f62bcc69943fa',1,'msc.h']]]
 ];

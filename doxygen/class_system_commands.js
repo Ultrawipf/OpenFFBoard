@@ -4,7 +4,7 @@ var class_system_commands =
     [ "~SystemCommands", "class_system_commands.html#a5897147eac1ab4afc736f18bf85644e5", null ],
     [ "getClassType", "class_system_commands.html#a07e56cc47e5e688644970b59063c237f", null ],
     [ "getInfo", "class_system_commands.html#ae48810b49d0221f92d5a4bd85124af0a", null ],
-    [ "internalCommand", "class_system_commands.html#a99914612eb7510063fe7f712eab8a88f", null ],
+    [ "internalCommand", "class_system_commands.html#a110230afcdc4c4a512243b3414d45ff0", null ],
     [ "registerCommands", "class_system_commands.html#a926a7fe1f1f52de1dc8c27203f259ba3", null ],
     [ "replyErrors", "class_system_commands.html#a8a7a167c3565d0492f8fc6ecc9b1163d", null ],
     [ "replyFlashDump", "class_system_commands.html#abd65a2c2f526046e47ff5537193dea59", null ],

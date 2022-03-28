@@ -1,5 +1,6 @@
 var _motor_p_w_m_8h =
 [
+    [ "PWMConfig", "struct_p_w_m_config.html", "struct_p_w_m_config" ],
     [ "MotorPWM", "class_motor_p_w_m.html", "class_motor_p_w_m" ],
     [ "ModePWM_DRV", "_motor_p_w_m_8h.html#ac7c5d62ef76b553182cae611031ae8bc", [
       [ "RC_PWM", "_motor_p_w_m_8h.html#ac7c5d62ef76b553182cae611031ae8bcaa69242fdd6080ca67382f14a0c2fb631", null ],

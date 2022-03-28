@@ -16,6 +16,5 @@ var searchData=
   ['keyboard_5fmodifier_5frightctrl_13',['KEYBOARD_MODIFIER_RIGHTCTRL',['../group___class_driver___h_i_d___keyboard.html#gga267dfef61bb13db0254ac75246ace393a75de72a0eafd0de3f5f5634640aff776',1,'hid.h']]],
   ['keyboard_5fmodifier_5frightgui_14',['KEYBOARD_MODIFIER_RIGHTGUI',['../group___class_driver___h_i_d___keyboard.html#gga267dfef61bb13db0254ac75246ace393a55bff59ddf845ab7ddb26e14a61abfe5',1,'hid.h']]],
   ['keyboard_5fmodifier_5frightshift_15',['KEYBOARD_MODIFIER_RIGHTSHIFT',['../group___class_driver___h_i_d___keyboard.html#gga267dfef61bb13db0254ac75246ace393aa7e0c865fe5c779d651391b43474c32f',1,'hid.h']]],
-  ['keyboardh_5fdata_16',['keyboardh_data',['../hid__host_8c.html#a718f5c7577dde10f668510a3e93fd48f',1,'hid_host.c']]],
-  ['keycode_17',['keycode',['../struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a71d09c038e0dd4d1596cfa26aa0f714d',1,'TU_ATTR_PACKED']]]
+  ['keycode_16',['keycode',['../struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a71d09c038e0dd4d1596cfa26aa0f714d',1,'TU_ATTR_PACKED']]]
 ];

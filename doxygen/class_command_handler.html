@@ -111,11 +111,12 @@ Inheritance diagram for CommandHandler:</div>
 <area href="class_motor_p_w_m.html" alt="MotorPWM" shape="rect" coords="123,392,236,416"/>
 <area href="class_mt_encoder_s_p_i.html" alt="MtEncoderSPI" shape="rect" coords="123,448,236,472"/>
 <area href="class_o_drive_c_a_n.html" alt="ODriveCAN" shape="rect" coords="123,504,236,528"/>
-<area href="class_s_p_i___buttons.html" alt="SPI_Buttons" shape="rect" coords="123,560,236,584"/>
-<area href="class_shifter_analog.html" alt="ShifterAnalog" shape="rect" coords="123,616,236,640"/>
-<area href="class_system_commands.html" alt="SystemCommands" shape="rect" coords="123,672,236,696"/>
-<area href="class_t_m_c4671.html" alt="TMC4671" shape="rect" coords="123,728,236,752"/>
-<area href="class_vesc_c_a_n.html" alt="VescCAN" shape="rect" coords="123,784,236,808"/>
+<area href="class_p_c_f8574_buttons.html" alt="PCF8574Buttons" shape="rect" coords="123,560,236,584"/>
+<area href="class_s_p_i___buttons.html" alt="SPI_Buttons" shape="rect" coords="123,616,236,640"/>
+<area href="class_shifter_analog.html" alt="ShifterAnalog" shape="rect" coords="123,672,236,696"/>
+<area href="class_system_commands.html" alt="SystemCommands" shape="rect" coords="123,728,236,752"/>
+<area href="class_t_m_c4671.html" alt="TMC4671" shape="rect" coords="123,784,236,808"/>
+<area href="class_vesc_c_a_n.html" alt="VescCAN" shape="rect" coords="123,840,236,864"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -135,8 +136,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a8d2531d579c03d6672495ccb57f5ffb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a09e6c7b1db8de3631ffbc1e4c1336676"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a09e6c7b1db8de3631ffbc1e4c1336676">registerCommands</a> ()</td></tr>
 <tr class="separator:a09e6c7b1db8de3631ffbc1e4c1336676"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aed6a9e7304ae2edefc41d636442639a5"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="_command_handler_8h.html#aefaf83fec6a7da1d02ae7e912dd9a6d5">CommandStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#aed6a9e7304ae2edefc41d636442639a5">internalCommand</a> (const <a class="el" href="struct_parsed_command.html">ParsedCommand</a> &amp;cmd, std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;replies, <a class="el" href="class_command_interface.html">CommandInterface</a> *interface=nullptr)</td></tr>
-<tr class="separator:aed6a9e7304ae2edefc41d636442639a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a533be5d0625557f6e1f194f70dc0d5"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="_command_handler_8h.html#aefaf83fec6a7da1d02ae7e912dd9a6d5">CommandStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a6a533be5d0625557f6e1f194f70dc0d5">internalCommand</a> (const <a class="el" href="struct_parsed_command.html">ParsedCommand</a> &amp;cmd, std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;replies)</td></tr>
+<tr class="separator:a6a533be5d0625557f6e1f194f70dc0d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6d4dd2900284fea12f53ca1e513be856"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="struct_class_identifier.html">ClassIdentifier</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a6d4dd2900284fea12f53ca1e513be856">getInfo</a> ()=0</td></tr>
 <tr class="memdesc:a6d4dd2900284fea12f53ca1e513be856"><td class="mdescLeft">&#160;</td><td class="mdescRight">Command handlers always have class infos. Works well with <a class="el" href="class_choosable_class.html">ChoosableClass</a>.  <a href="class_command_handler.html#a6d4dd2900284fea12f53ca1e513be856">More...</a><br /></td></tr>
 <tr class="separator:a6d4dd2900284fea12f53ca1e513be856"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -148,11 +149,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:af6efec263bc372a1ca57add26dd93a97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad67013c18a56f13ff7159883dfce665e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#ad67013c18a56f13ff7159883dfce665e">broadcastCommandReply</a> (<a class="el" href="class_command_reply.html">CommandReply</a> reply, uint32_t cmdId, <a class="el" href="_command_handler_8h.html#aec46f6cc23a395b611fbc7c7239b9c41">CMDtype</a> type)</td></tr>
 <tr class="separator:ad67013c18a56f13ff7159883dfce665e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab23b77c2282380e1e713b0173530416c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#ab23b77c2282380e1e713b0173530416c">sendCommandReplyAsync</a> (<a class="el" href="class_command_reply.html">CommandReply</a> reply, uint32_t cmdId, <a class="el" href="_command_handler_8h.html#aec46f6cc23a395b611fbc7c7239b9c41">CMDtype</a> type, <a class="el" href="class_command_interface.html">CommandInterface</a> *interface=nullptr)</td></tr>
+<tr class="separator:ab23b77c2282380e1e713b0173530416c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5d6e4cd233e9221df2cf1ff3c1468385"><td class="memItemLeft" align="right" valign="top">virtual uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a5d6e4cd233e9221df2cf1ff3c1468385">getCommandHandlerID</a> ()</td></tr>
 <tr class="separator:a5d6e4cd233e9221df2cf1ff3c1468385"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad27ce104d3546c2b6f7cd74dff950274"><td class="memItemLeft" align="right" valign="top">virtual uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#ad27ce104d3546c2b6f7cd74dff950274">getSelectionID</a> ()</td></tr>
-<tr class="memdesc:ad27ce104d3546c2b6f7cd74dff950274"><td class="mdescLeft">&#160;</td><td class="mdescRight">normally returns class id but for choosable classes this can be the id used to create the class  <a href="class_command_handler.html#ad27ce104d3546c2b6f7cd74dff950274">More...</a><br /></td></tr>
-<tr class="separator:ad27ce104d3546c2b6f7cd74dff950274"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad9d9d0fd0bd0a58cfd8b6199081403a9"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="struct_cmd_handler_info.html">CmdHandlerInfo</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#ad9d9d0fd0bd0a58cfd8b6199081403a9">getCommandHandlerInfo</a> ()</td></tr>
 <tr class="separator:ad9d9d0fd0bd0a58cfd8b6199081403a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af658c15ccbac468224ed2c5997e06f91"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#af658c15ccbac468224ed2c5997e06f91">isValidCommandId</a> (uint32_t cmdid, uint32_t ignoredFlags=0, uint32_t requiredFlag=0)</td></tr>
@@ -241,7 +241,7 @@ Protected Attributes</h2></td></tr>
 <p >Adds itself to a global vector of handlers that can be called from the main class when a command gets parsed.</p>
 <p >For example motor drivers and button sources can implement this to easily get serial commands </p>
 
-<p class="definition">Definition at line <a class="el" href="_command_handler_8h_source.html#l00113">113</a> of file <a class="el" href="_command_handler_8h_source.html">CommandHandler.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_command_handler_8h_source.html#l00114">114</a> of file <a class="el" href="_command_handler_8h_source.html">CommandHandler.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="af331bf7b73ad45951226b30251f270f4" name="af331bf7b73ad45951226b30251f270f4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af331bf7b73ad45951226b30251f270f4">&#9670;&nbsp;</a></span>CommandHandler()</h2>
@@ -332,7 +332,7 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p >Registers a command handler in the global callback list and assigns a unique index number </p>
 
-<p class="definition">Definition at line <a class="el" href="_command_handler_8cpp_source.html#l00397">397</a> of file <a class="el" href="_command_handler_8cpp_source.html">CommandHandler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_command_handler_8cpp_source.html#l00417">417</a> of file <a class="el" href="_command_handler_8cpp_source.html">CommandHandler.cpp</a>.</p>
 
 </div>
 </div>
@@ -367,9 +367,16 @@ Protected Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p >Broadcasts an unrequested reply to all command interfaces in the name of this class </p>
+<p >Broadcasts an unrequested reply to all command interfaces in the name of this class </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">reply</td><td>a command reply to be sent </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">cmdId</td><td>the command id in which name to reply </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">type</td><td>type of the command to create (normally get) </td></tr>
+  </table>
+  </dd>
+</dl>
 
-<p class="definition">Definition at line <a class="el" href="_command_handler_8cpp_source.html#l00363">363</a> of file <a class="el" href="_command_handler_8cpp_source.html">CommandHandler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_command_handler_8cpp_source.html#l00366">366</a> of file <a class="el" href="_command_handler_8cpp_source.html">CommandHandler.cpp</a>.</p>
 
 </div>
 </div>
@@ -414,7 +421,7 @@ Protected Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Reimplemented in <a class="el" href="class_axis.html#a80c0d87a1982cecb6304d902580031e0">Axis</a>, <a class="el" href="class_effects_calculator.html#ab03374bae6d7cd45b410a6dc1fd9a53d">EffectsCalculator</a>, <a class="el" href="class_can_bridge.html#a61705bd6ff0e65911c4d32236428d2ae">CanBridge</a>, <a class="el" href="class_custom_main.html#a7fa2d7f6cf95f65a835cc10dfd51e2e1">CustomMain</a>, <a class="el" href="class_encoder_local.html#ab973b51b8364f12df4d0aef9fa0a6701">EncoderLocal</a>, <a class="el" href="class_f_f_board_main.html#a1ea6dc33d788c968dfa8968f7bd113fd">FFBoardMain</a>, <a class="el" href="class_f_f_b_wheel.html#a7da0b8bde548b1cf8c0e2881014609e7">FFBWheel</a>, <a class="el" href="class_local_analog.html#a72dbec2d2bd89a4fd44803e2b77ce515">LocalAnalog</a>, <a class="el" href="class_local_buttons.html#ab0c297b2ffdb4d6368f3965423975d65">LocalButtons</a>, <a class="el" href="class_midi_main.html#afdbefd9787ef84cc8bc95bf5df8e8c0e">MidiMain</a>, <a class="el" href="class_motor_p_w_m.html#afbf694259ce5f15f359e53410b7d0e21">MotorPWM</a>, <a class="el" href="class_mt_encoder_s_p_i.html#ae94a898b987374341f086079bb3b89ed">MtEncoderSPI</a>, <a class="el" href="class_t_m_c4671.html#a2847a2850f50f03dd731bfdf03d635c9">TMC4671</a>, <a class="el" href="class_t_m_c_debug_bridge.html#a5ce3ed664ee46b7ebbd3256105c757fc">TMCDebugBridge</a>, <a class="el" href="class_vesc_c_a_n.html#ac330bde8005a94343810fae8aec8bf35">VescCAN</a>, <a class="el" href="class_o_drive_c_a_n.html#aca23d7dbcc4185274da3c1e7925c012c">ODriveCAN</a>, <a class="el" href="class_shifter_analog.html#a02a2d5916079827fe6c3319a14fdc758">ShifterAnalog</a>, and <a class="el" href="class_s_p_i___buttons.html#a170614c569dc4b74a6db5c650ca4866e">SPI_Buttons</a>.</p>
+<p>Reimplemented in <a class="el" href="class_axis.html#a80c0d87a1982cecb6304d902580031e0">Axis</a>, <a class="el" href="class_effects_calculator.html#ab03374bae6d7cd45b410a6dc1fd9a53d">EffectsCalculator</a>, <a class="el" href="class_can_bridge.html#a61705bd6ff0e65911c4d32236428d2ae">CanBridge</a>, <a class="el" href="class_custom_main.html#a7fa2d7f6cf95f65a835cc10dfd51e2e1">CustomMain</a>, <a class="el" href="class_encoder_local.html#ab973b51b8364f12df4d0aef9fa0a6701">EncoderLocal</a>, <a class="el" href="class_f_f_board_main.html#a1ea6dc33d788c968dfa8968f7bd113fd">FFBoardMain</a>, <a class="el" href="class_f_f_b_wheel.html#a7da0b8bde548b1cf8c0e2881014609e7">FFBWheel</a>, <a class="el" href="class_local_analog.html#a72dbec2d2bd89a4fd44803e2b77ce515">LocalAnalog</a>, <a class="el" href="class_local_buttons.html#ab0c297b2ffdb4d6368f3965423975d65">LocalButtons</a>, <a class="el" href="class_midi_main.html#afdbefd9787ef84cc8bc95bf5df8e8c0e">MidiMain</a>, <a class="el" href="class_motor_p_w_m.html#afbf694259ce5f15f359e53410b7d0e21">MotorPWM</a>, <a class="el" href="class_mt_encoder_s_p_i.html#ae94a898b987374341f086079bb3b89ed">MtEncoderSPI</a>, <a class="el" href="class_t_m_c4671.html#a2847a2850f50f03dd731bfdf03d635c9">TMC4671</a>, <a class="el" href="class_t_m_c_debug_bridge.html#a5ce3ed664ee46b7ebbd3256105c757fc">TMCDebugBridge</a>, <a class="el" href="class_vesc_c_a_n.html#ac330bde8005a94343810fae8aec8bf35">VescCAN</a>, <a class="el" href="class_o_drive_c_a_n.html#aca23d7dbcc4185274da3c1e7925c012c">ODriveCAN</a>, <a class="el" href="class_p_c_f8574_buttons.html#a1ce7fe5037b4faf823513ebb8a92f8e7">PCF8574Buttons</a>, <a class="el" href="class_shifter_analog.html#a02a2d5916079827fe6c3319a14fdc758">ShifterAnalog</a>, and <a class="el" href="class_s_p_i___buttons.html#a170614c569dc4b74a6db5c650ca4866e">SPI_Buttons</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="_command_handler_8cpp_source.html#l00354">354</a> of file <a class="el" href="_command_handler_8cpp_source.html">CommandHandler.cpp</a>.</p>
 
@@ -527,9 +534,9 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p >Type of this class. Mainclass, motordriver... Should be implemented by the parent class so it is not in the info struct </p>
 
-<p>Reimplemented in <a class="el" href="class_system_commands.html#a07e56cc47e5e688644970b59063c237f">SystemCommands</a>, <a class="el" href="class_local_buttons.html#ae269f0b70e980655a6e1a2222fdcabfe">LocalButtons</a>, <a class="el" href="class_axis.html#a615565360b1186e3ab93597e8235942c">Axis</a>, <a class="el" href="class_effects_calculator.html#aaa8449464c681ddab60e3a436e982d45">EffectsCalculator</a>, <a class="el" href="class_f_f_board_main.html#a955c919bc4f2062f9223ef006c659f0a">FFBoardMain</a>, <a class="el" href="class_local_analog.html#a006e1b50996b0ac0d7aba084b7104d0b">LocalAnalog</a>, <a class="el" href="class_shifter_analog.html#a0ce41eb8c54b2e322a5aeed91512a11f">ShifterAnalog</a>, <a class="el" href="class_s_p_i___buttons.html#a5e5abf2e4d95ffb62840f99812b5548e">SPI_Buttons</a>, and <a class="el" href="class_t_m_c4671.html#a1877dc08c022f3da1e7567831eb8a44c">TMC4671</a>.</p>
+<p>Reimplemented in <a class="el" href="class_system_commands.html#a07e56cc47e5e688644970b59063c237f">SystemCommands</a>, <a class="el" href="class_local_buttons.html#ae269f0b70e980655a6e1a2222fdcabfe">LocalButtons</a>, <a class="el" href="class_axis.html#a615565360b1186e3ab93597e8235942c">Axis</a>, <a class="el" href="class_effects_calculator.html#aaa8449464c681ddab60e3a436e982d45">EffectsCalculator</a>, <a class="el" href="class_f_f_board_main.html#a955c919bc4f2062f9223ef006c659f0a">FFBoardMain</a>, <a class="el" href="class_local_analog.html#a006e1b50996b0ac0d7aba084b7104d0b">LocalAnalog</a>, <a class="el" href="class_p_c_f8574_buttons.html#a2dd3fa6a30fbbe7e38101db34604e114">PCF8574Buttons</a>, <a class="el" href="class_shifter_analog.html#a0ce41eb8c54b2e322a5aeed91512a11f">ShifterAnalog</a>, <a class="el" href="class_s_p_i___buttons.html#a5e5abf2e4d95ffb62840f99812b5548e">SPI_Buttons</a>, and <a class="el" href="class_t_m_c4671.html#a1877dc08c022f3da1e7567831eb8a44c">TMC4671</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_command_handler_8h_source.html#l00122">122</a> of file <a class="el" href="_command_handler_8h_source.html">CommandHandler.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_command_handler_8h_source.html#l00123">123</a> of file <a class="el" href="_command_handler_8h_source.html">CommandHandler.h</a>.</p>
 
 </div>
 </div>
@@ -634,7 +641,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_command_handler_8h_source.html#l00146">146</a> of file <a class="el" href="_command_handler_8h_source.html">CommandHandler.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_command_handler_8h_source.html#l00148">148</a> of file <a class="el" href="_command_handler_8h_source.html">CommandHandler.h</a>.</p>
 
 </div>
 </div>
@@ -662,7 +669,7 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p >Returns a pointer to this classes command handler info struct containing its name and ids </p>
 
-<p class="definition">Definition at line <a class="el" href="_command_handler_8cpp_source.html#l00390">390</a> of file <a class="el" href="_command_handler_8cpp_source.html">CommandHandler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_command_handler_8cpp_source.html#l00410">410</a> of file <a class="el" href="_command_handler_8cpp_source.html">CommandHandler.cpp</a>.</p>
 
 </div>
 </div>
@@ -911,9 +918,9 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p >Returns a description of this class </p>
 
-<p>Reimplemented in <a class="el" href="class_axis.html#a4632a17700210ceff44f175643f11441">Axis</a>, <a class="el" href="class_effects_calculator.html#a55fb6432ba309c1b428f53a4743083e3">EffectsCalculator</a>, <a class="el" href="class_can_bridge.html#a4ad00d344635c612e77dd3a2f0f1320f">CanBridge</a>, <a class="el" href="class_custom_main.html#ab3f252a7cd6d20f19a7bf8e594aeaa9f">CustomMain</a>, <a class="el" href="class_encoder_local.html#adc92b64b8984692d8cf2d843ebeb955f">EncoderLocal</a>, <a class="el" href="class_f_f_board_main.html#a967abb134bf73e04c95efd495ddb4243">FFBoardMain</a>, <a class="el" href="class_f_f_b_wheel.html#ad1590112eef7df0295225000f6a87e9c">FFBWheel</a>, <a class="el" href="class_local_analog.html#a0a5f0d4ef8f89ebe5557ec561f1db7f5">LocalAnalog</a>, <a class="el" href="class_local_buttons.html#a74bc45bea2f205c8550cb89f5f35a2c7">LocalButtons</a>, <a class="el" href="class_motor_p_w_m.html#a253278b6886a996c02ad52e5fe0ff577">MotorPWM</a>, <a class="el" href="class_o_drive_c_a_n.html#a52cad696f743d5b1ac3d6494fa8bcb7f">ODriveCAN</a>, <a class="el" href="class_shifter_analog.html#a884d27bd2f805f55d3d816354c913a66">ShifterAnalog</a>, <a class="el" href="class_s_p_i___buttons.html#acdf745aff934f5ac6a7116fa1418016c">SPI_Buttons</a>, <a class="el" href="class_t_m_c4671.html#a46dbcc0b45c851a5a6478133c615e698">TMC4671</a>, <a class="el" href="class_t_m_c_debug_bridge.html#a3f879da66c87daa353a416448c21e0eb">TMCDebugBridge</a>, and <a class="el" href="class_vesc_c_a_n.html#a4457332825dd230eddbaab340dcc9331">VescCAN</a>.</p>
+<p>Reimplemented in <a class="el" href="class_axis.html#a4632a17700210ceff44f175643f11441">Axis</a>, <a class="el" href="class_effects_calculator.html#a55fb6432ba309c1b428f53a4743083e3">EffectsCalculator</a>, <a class="el" href="class_can_bridge.html#a4ad00d344635c612e77dd3a2f0f1320f">CanBridge</a>, <a class="el" href="class_custom_main.html#ab3f252a7cd6d20f19a7bf8e594aeaa9f">CustomMain</a>, <a class="el" href="class_encoder_local.html#adc92b64b8984692d8cf2d843ebeb955f">EncoderLocal</a>, <a class="el" href="class_f_f_board_main.html#a967abb134bf73e04c95efd495ddb4243">FFBoardMain</a>, <a class="el" href="class_f_f_b_wheel.html#ad1590112eef7df0295225000f6a87e9c">FFBWheel</a>, <a class="el" href="class_local_analog.html#a0a5f0d4ef8f89ebe5557ec561f1db7f5">LocalAnalog</a>, <a class="el" href="class_local_buttons.html#a74bc45bea2f205c8550cb89f5f35a2c7">LocalButtons</a>, <a class="el" href="class_motor_p_w_m.html#a253278b6886a996c02ad52e5fe0ff577">MotorPWM</a>, <a class="el" href="class_o_drive_c_a_n.html#a52cad696f743d5b1ac3d6494fa8bcb7f">ODriveCAN</a>, <a class="el" href="class_p_c_f8574_buttons.html#a33e354df58665799d34b387e7629e9c6">PCF8574Buttons</a>, <a class="el" href="class_shifter_analog.html#a884d27bd2f805f55d3d816354c913a66">ShifterAnalog</a>, <a class="el" href="class_s_p_i___buttons.html#acdf745aff934f5ac6a7116fa1418016c">SPI_Buttons</a>, <a class="el" href="class_t_m_c4671.html#a46dbcc0b45c851a5a6478133c615e698">TMC4671</a>, <a class="el" href="class_t_m_c_debug_bridge.html#a3f879da66c87daa353a416448c21e0eb">TMCDebugBridge</a>, and <a class="el" href="class_vesc_c_a_n.html#a4457332825dd230eddbaab340dcc9331">VescCAN</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_command_handler_8cpp_source.html#l00383">383</a> of file <a class="el" href="_command_handler_8cpp_source.html">CommandHandler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_command_handler_8cpp_source.html#l00403">403</a> of file <a class="el" href="_command_handler_8cpp_source.html">CommandHandler.cpp</a>.</p>
 
 </div>
 </div>
@@ -942,36 +949,7 @@ Protected Attributes</h2></td></tr>
 
 <p>Command handlers always have class infos. Works well with <a class="el" href="class_choosable_class.html">ChoosableClass</a>. </p>
 
-<p>Implemented in <a class="el" href="class_axis.html#adddf0ac6b894867aa4948233d7950150">Axis</a>, <a class="el" href="class_effects_calculator.html#a29378273784a7201c393e8cd680ffe90">EffectsCalculator</a>, <a class="el" href="class_system_commands.html#ae48810b49d0221f92d5a4bd85124af0a">SystemCommands</a>, <a class="el" href="class_custom_main.html#a91e1f2b7b6f6e2db6947b813812ac44b">CustomMain</a>, <a class="el" href="class_encoder_local.html#a504cd0c7f2ca4026646f6652940843d3">EncoderLocal</a>, <a class="el" href="class_f_f_board_main.html#a42e6466dd226db91ef0c9ac30c81badc">FFBoardMain</a>, <a class="el" href="class_f_f_b_wheel.html#ab048aa9a2bd029b41c62962dacfaea04">FFBWheel</a>, <a class="el" href="class_local_analog.html#a1e34c24dea22bc068be80ca0d190de7b">LocalAnalog</a>, <a class="el" href="class_local_buttons.html#ad3ecc8ebac6a501c873264c68b9736a7">LocalButtons</a>, <a class="el" href="class_midi_main.html#a884f0f0620145fab82839f5aea6526bf">MidiMain</a>, <a class="el" href="class_motor_p_w_m.html#aa97cf5ba62a08c311ddb36e516686d8c">MotorPWM</a>, <a class="el" href="class_mt_encoder_s_p_i.html#a761680037f1ae414333fd15aad1227ea">MtEncoderSPI</a>, <a class="el" href="class_o_drive_c_a_n1.html#a6c3de7e9b4f61f4254e5c84cfabcaca8">ODriveCAN1</a>, <a class="el" href="class_o_drive_c_a_n2.html#a9b270a07a32f8083f7a3bf4869dcb96e">ODriveCAN2</a>, <a class="el" href="class_shifter_analog.html#ac369647f2b335485f5f49f46c0771f5d">ShifterAnalog</a>, <a class="el" href="class_t_m_c4671.html#aed81114dd28ccba08d5c5e437245da9b">TMC4671</a>, <a class="el" href="class_t_m_c_debug_bridge.html#a2d69b85aeca2d825e3464478f4423c72">TMCDebugBridge</a>, <a class="el" href="class_v_e_s_c__1.html#a24bea995bed760b5240856ae93572918">VESC_1</a>, <a class="el" href="class_can_bridge.html#a1e769d597c60a89da9622e69398e1e2e">CanBridge</a>, <a class="el" href="class_s_p_i___buttons__1.html#a1d77e78816660bb2ce7d91b729faba7a">SPI_Buttons_1</a>, <a class="el" href="class_s_p_i___buttons__2.html#ae51ed498a7d9fe4b417ca10cdb5132c4">SPI_Buttons_2</a>, and <a class="el" href="class_o_drive_c_a_n.html#a6a48f6cb98cebd8dd1704487466cd2f5">ODriveCAN</a>.</p>
-
-</div>
-</div>
-<a id="ad27ce104d3546c2b6f7cd74dff950274" name="ad27ce104d3546c2b6f7cd74dff950274"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad27ce104d3546c2b6f7cd74dff950274">&#9670;&nbsp;</a></span>getSelectionID()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual uint16_t CommandHandler::getSelectionID </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>normally returns class id but for choosable classes this can be the id used to create the class </p>
-
-<p class="definition">Definition at line <a class="el" href="_command_handler_8h_source.html#l00147">147</a> of file <a class="el" href="_command_handler_8h_source.html">CommandHandler.h</a>.</p>
+<p>Implemented in <a class="el" href="class_axis.html#adddf0ac6b894867aa4948233d7950150">Axis</a>, <a class="el" href="class_effects_calculator.html#a29378273784a7201c393e8cd680ffe90">EffectsCalculator</a>, <a class="el" href="class_system_commands.html#ae48810b49d0221f92d5a4bd85124af0a">SystemCommands</a>, <a class="el" href="class_custom_main.html#a91e1f2b7b6f6e2db6947b813812ac44b">CustomMain</a>, <a class="el" href="class_encoder_local.html#a504cd0c7f2ca4026646f6652940843d3">EncoderLocal</a>, <a class="el" href="class_f_f_board_main.html#a42e6466dd226db91ef0c9ac30c81badc">FFBoardMain</a>, <a class="el" href="class_f_f_b_wheel.html#ab048aa9a2bd029b41c62962dacfaea04">FFBWheel</a>, <a class="el" href="class_local_analog.html#a1e34c24dea22bc068be80ca0d190de7b">LocalAnalog</a>, <a class="el" href="class_local_buttons.html#ad3ecc8ebac6a501c873264c68b9736a7">LocalButtons</a>, <a class="el" href="class_midi_main.html#a884f0f0620145fab82839f5aea6526bf">MidiMain</a>, <a class="el" href="class_motor_p_w_m.html#aa97cf5ba62a08c311ddb36e516686d8c">MotorPWM</a>, <a class="el" href="class_mt_encoder_s_p_i.html#a761680037f1ae414333fd15aad1227ea">MtEncoderSPI</a>, <a class="el" href="class_o_drive_c_a_n1.html#a6c3de7e9b4f61f4254e5c84cfabcaca8">ODriveCAN1</a>, <a class="el" href="class_o_drive_c_a_n2.html#a9b270a07a32f8083f7a3bf4869dcb96e">ODriveCAN2</a>, <a class="el" href="class_p_c_f8574_buttons.html#a68094ed1f424fa0e884c063f07b06acf">PCF8574Buttons</a>, <a class="el" href="class_shifter_analog.html#ac369647f2b335485f5f49f46c0771f5d">ShifterAnalog</a>, <a class="el" href="class_t_m_c4671.html#aed81114dd28ccba08d5c5e437245da9b">TMC4671</a>, <a class="el" href="class_t_m_c_debug_bridge.html#a2d69b85aeca2d825e3464478f4423c72">TMCDebugBridge</a>, <a class="el" href="class_v_e_s_c__1.html#a24bea995bed760b5240856ae93572918">VESC_1</a>, <a class="el" href="class_can_bridge.html#a1e769d597c60a89da9622e69398e1e2e">CanBridge</a>, <a class="el" href="class_s_p_i___buttons__1.html#a1d77e78816660bb2ce7d91b729faba7a">SPI_Buttons_1</a>, <a class="el" href="class_s_p_i___buttons__2.html#ae51ed498a7d9fe4b417ca10cdb5132c4">SPI_Buttons_2</a>, and <a class="el" href="class_o_drive_c_a_n.html#a6a48f6cb98cebd8dd1704487466cd2f5">ODriveCAN</a>.</p>
 
 </div>
 </div>
@@ -1030,7 +1008,7 @@ template&lt;typename TVal , class cls &gt; </div>
 </div><div class="memdoc">
 <p >Reads from a member function and writes to a variable </p>
 
-<p class="definition">Definition at line <a class="el" href="_command_handler_8h_source.html#l00217">217</a> of file <a class="el" href="_command_handler_8h_source.html">CommandHandler.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_command_handler_8h_source.html#l00219">219</a> of file <a class="el" href="_command_handler_8h_source.html">CommandHandler.h</a>.</p>
 
 </div>
 </div>
@@ -1089,7 +1067,7 @@ template&lt;typename TVal , class cls , class cls1 , class cls2 &gt; </div>
 </div><div class="memdoc">
 <p >Reads from a member function and sets to a member function </p>
 
-<p class="definition">Definition at line <a class="el" href="_command_handler_8h_source.html#l00206">206</a> of file <a class="el" href="_command_handler_8h_source.html">CommandHandler.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_command_handler_8h_source.html#l00208">208</a> of file <a class="el" href="_command_handler_8h_source.html">CommandHandler.h</a>.</p>
 
 </div>
 </div>
@@ -1136,7 +1114,7 @@ template&lt;typename TVal &gt; </div>
 </div><div class="memdoc">
 <p >Reads or writes a variable </p>
 
-<p class="definition">Definition at line <a class="el" href="_command_handler_8h_source.html#l00181">181</a> of file <a class="el" href="_command_handler_8h_source.html">CommandHandler.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_command_handler_8h_source.html#l00183">183</a> of file <a class="el" href="_command_handler_8h_source.html">CommandHandler.h</a>.</p>
 
 </div>
 </div>
@@ -1195,7 +1173,7 @@ template&lt;typename TVal , class cls &gt; </div>
 </div><div class="memdoc">
 <p >Reads from a variable and passes set commands to a member callback </p>
 
-<p class="definition">Definition at line <a class="el" href="_command_handler_8h_source.html#l00195">195</a> of file <a class="el" href="_command_handler_8h_source.html">CommandHandler.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_command_handler_8h_source.html#l00197">197</a> of file <a class="el" href="_command_handler_8h_source.html">CommandHandler.h</a>.</p>
 
 </div>
 </div>
@@ -1226,8 +1204,8 @@ template&lt;typename TVal , class cls &gt; </div>
 
 </div>
 </div>
-<a id="aed6a9e7304ae2edefc41d636442639a5" name="aed6a9e7304ae2edefc41d636442639a5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aed6a9e7304ae2edefc41d636442639a5">&#9670;&nbsp;</a></span>internalCommand()</h2>
+<a id="a6a533be5d0625557f6e1f194f70dc0d5" name="a6a533be5d0625557f6e1f194f70dc0d5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6a533be5d0625557f6e1f194f70dc0d5">&#9670;&nbsp;</a></span>internalCommand()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1245,13 +1223,7 @@ template&lt;typename TVal , class cls &gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;&#160;</td>
-          <td class="paramname"><em>replies</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="class_command_interface.html">CommandInterface</a> *&#160;</td>
-          <td class="paramname"><em>interface</em> = <code>nullptr</code>&#160;</td>
+          <td class="paramname"><em>replies</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1267,7 +1239,7 @@ template&lt;typename TVal , class cls &gt; </div>
 </div><div class="memdoc">
 <p >Some standard commands most classes will need </p>
 
-<p>Reimplemented in <a class="el" href="class_system_commands.html#a99914612eb7510063fe7f712eab8a88f">SystemCommands</a>.</p>
+<p>Reimplemented in <a class="el" href="class_system_commands.html#a110230afcdc4c4a512243b3414d45ff0">SystemCommands</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="_command_handler_8cpp_source.html#l00172">172</a> of file <a class="el" href="_command_handler_8cpp_source.html">CommandHandler.cpp</a>.</p>
 
@@ -1401,7 +1373,7 @@ template&lt;typename TVal , class cls &gt; </div>
 <p>Send a log formatted sequence. </p>
 <p >Sends log info back via cdc. UNUSED </p>
 
-<p class="definition">Definition at line <a class="el" href="_command_handler_8cpp_source.html#l00372">372</a> of file <a class="el" href="_command_handler_8cpp_source.html">CommandHandler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_command_handler_8cpp_source.html#l00392">392</a> of file <a class="el" href="_command_handler_8cpp_source.html">CommandHandler.cpp</a>.</p>
 
 </div>
 </div>
@@ -1453,7 +1425,7 @@ template&lt;typename ID &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_command_handler_8h_source.html#l00229">229</a> of file <a class="el" href="_command_handler_8h_source.html">CommandHandler.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_command_handler_8h_source.html#l00231">231</a> of file <a class="el" href="_command_handler_8h_source.html">CommandHandler.h</a>.</p>
 
 </div>
 </div>
@@ -1501,7 +1473,58 @@ template&lt;typename ID &gt; </div>
 </div><div class="memdoc">
 <p >Removes a class from the global callback list and frees its id </p>
 
-<p class="definition">Definition at line <a class="el" href="_command_handler_8cpp_source.html#l00413">413</a> of file <a class="el" href="_command_handler_8cpp_source.html">CommandHandler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_command_handler_8cpp_source.html#l00433">433</a> of file <a class="el" href="_command_handler_8cpp_source.html">CommandHandler.cpp</a>.</p>
+
+</div>
+</div>
+<a id="ab23b77c2282380e1e713b0173530416c" name="ab23b77c2282380e1e713b0173530416c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab23b77c2282380e1e713b0173530416c">&#9670;&nbsp;</a></span>sendCommandReplyAsync()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void CommandHandler::sendCommandReplyAsync </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_command_reply.html">CommandReply</a>&#160;</td>
+          <td class="paramname"><em>reply</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>cmdId</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="_command_handler_8h.html#aec46f6cc23a395b611fbc7c7239b9c41">CMDtype</a>&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_command_interface.html">CommandInterface</a> *&#160;</td>
+          <td class="paramname"><em>interface</em> = <code>nullptr</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >Broadcasts an unrequested reply to a specific command interface in the name of this class </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">interface</td><td>Must be a valid interface pointer from a previously received command or nullptr (treated like a broadcast) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">reply</td><td>a command reply to be sent </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">cmdId</td><td>the command id in which name to reply </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">type</td><td>type of the command to create (normally get) </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="_command_handler_8cpp_source.html#l00378">378</a> of file <a class="el" href="_command_handler_8cpp_source.html">CommandHandler.cpp</a>.</p>
 
 </div>
 </div>
@@ -1614,7 +1637,7 @@ template&lt;typename ID &gt; </div>
 
 <p>Reserves dynamic unique IDs to keep track of command handlers. </p>
 
-<p class="definition">Definition at line <a class="el" href="_command_handler_8h_source.html#l00116">116</a> of file <a class="el" href="_command_handler_8h_source.html">CommandHandler.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_command_handler_8h_source.html#l00117">117</a> of file <a class="el" href="_command_handler_8h_source.html">CommandHandler.h</a>.</p>
 
 </div>
 </div>
@@ -1638,7 +1661,7 @@ template&lt;typename ID &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_command_handler_8h_source.html#l00246">246</a> of file <a class="el" href="_command_handler_8h_source.html">CommandHandler.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_command_handler_8h_source.html#l00248">248</a> of file <a class="el" href="_command_handler_8h_source.html">CommandHandler.h</a>.</p>
 
 </div>
 </div>
@@ -1662,7 +1685,7 @@ template&lt;typename ID &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_command_handler_8h_source.html#l00117">117</a> of file <a class="el" href="_command_handler_8h_source.html">CommandHandler.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_command_handler_8h_source.html#l00118">118</a> of file <a class="el" href="_command_handler_8h_source.html">CommandHandler.h</a>.</p>
 
 </div>
 </div>
@@ -1688,7 +1711,7 @@ template&lt;typename ID &gt; </div>
 
 <p>List of all registered command handlers to be called on commands. </p>
 
-<p class="definition">Definition at line <a class="el" href="_command_handler_8h_source.html#l00115">115</a> of file <a class="el" href="_command_handler_8h_source.html">CommandHandler.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_command_handler_8h_source.html#l00116">116</a> of file <a class="el" href="_command_handler_8h_source.html">CommandHandler.h</a>.</p>
 
 </div>
 </div>
@@ -1712,7 +1735,7 @@ template&lt;typename ID &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_command_handler_8h_source.html#l00172">172</a> of file <a class="el" href="_command_handler_8h_source.html">CommandHandler.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_command_handler_8h_source.html#l00174">174</a> of file <a class="el" href="_command_handler_8h_source.html">CommandHandler.h</a>.</p>
 
 </div>
 </div>
@@ -1736,7 +1759,7 @@ template&lt;typename ID &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_command_handler_8h_source.html#l00143">143</a> of file <a class="el" href="_command_handler_8h_source.html">CommandHandler.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_command_handler_8h_source.html#l00145">145</a> of file <a class="el" href="_command_handler_8h_source.html">CommandHandler.h</a>.</p>
 
 </div>
 </div>
@@ -1760,7 +1783,7 @@ template&lt;typename ID &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_command_handler_8h_source.html#l00225">225</a> of file <a class="el" href="_command_handler_8h_source.html">CommandHandler.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_command_handler_8h_source.html#l00227">227</a> of file <a class="el" href="_command_handler_8h_source.html">CommandHandler.h</a>.</p>
 
 </div>
 </div>

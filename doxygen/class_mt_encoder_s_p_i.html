@@ -87,6 +87,7 @@ $(document).ready(function(){initNavTree('class_mt_encoder_s_p_i.html',''); init
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#pri-types">Private Types</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
@@ -138,6 +139,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a5801d5fc227862b983fef9a9a6810d8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a804408907eeef3713f9ada5c8dda9f3d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mt_encoder_s_p_i.html#a804408907eeef3713f9ada5c8dda9f3d">updateAngleStatus</a> ()</td></tr>
 <tr class="separator:a804408907eeef3713f9ada5c8dda9f3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3bf67312766807e9d5a3ea59350cff68"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mt_encoder_s_p_i.html#a3bf67312766807e9d5a3ea59350cff68">updateAngleStatusCb</a> ()</td></tr>
+<tr class="separator:a3bf67312766807e9d5a3ea59350cff68"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae94a898b987374341f086079bb3b89ed"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_command_handler_8h.html#aefaf83fec6a7da1d02ae7e912dd9a6d5">CommandStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mt_encoder_s_p_i.html#ae94a898b987374341f086079bb3b89ed">command</a> (const <a class="el" href="struct_parsed_command.html">ParsedCommand</a> &amp;cmd, std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;replies)</td></tr>
 <tr class="separator:ae94a898b987374341f086079bb3b89ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:addcc0f0ec61500fc50c96ab157d881b8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mt_encoder_s_p_i.html#addcc0f0ec61500fc50c96ab157d881b8">setCsPin</a> (uint8_t <a class="el" href="class_mt_encoder_s_p_i.html#a5614ff7e7d2fd10f1e9e5947ecfb5b76">cspin</a>)</td></tr>
@@ -176,8 +179,6 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a56dd6e4bc113a66dd87fec6f23a77521 inherit pub_methods_class_s_p_i_device"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abca0ed31abf6c2f61e35f3bb45a75ba3 inherit pub_methods_class_s_p_i_device"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_p_i_device.html#abca0ed31abf6c2f61e35f3bb45a75ba3">spiRxCompleted</a> (<a class="el" href="class_s_p_i_port.html">SPIPort</a> *port)</td></tr>
 <tr class="separator:abca0ed31abf6c2f61e35f3bb45a75ba3 inherit pub_methods_class_s_p_i_device"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae1199ca661af7d1623d8636f332ee5cc inherit pub_methods_class_s_p_i_device"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_p_i_device.html#ae1199ca661af7d1623d8636f332ee5cc">spiTxRxCompleted</a> (<a class="el" href="class_s_p_i_port.html">SPIPort</a> *port)</td></tr>
-<tr class="separator:ae1199ca661af7d1623d8636f332ee5cc inherit pub_methods_class_s_p_i_device"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab6f778b006a383d95f142bae55eb1970 inherit pub_methods_class_s_p_i_device"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_p_i_device.html#ab6f778b006a383d95f142bae55eb1970">spiRequestError</a> (<a class="el" href="class_s_p_i_port.html">SPIPort</a> *port)</td></tr>
 <tr class="separator:ab6f778b006a383d95f142bae55eb1970 inherit pub_methods_class_s_p_i_device"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2d39ef1a6af4796a3740f75260c9fe8a inherit pub_methods_class_s_p_i_device"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_p_i_device.html#a2d39ef1a6af4796a3740f75260c9fe8a">beginSpiTransfer</a> (<a class="el" href="class_s_p_i_port.html">SPIPort</a> *port)</td></tr>
@@ -204,8 +205,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a45979fba8f86796394ad7e22896fc33f inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a09e6c7b1db8de3631ffbc1e4c1336676 inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a09e6c7b1db8de3631ffbc1e4c1336676">registerCommands</a> ()</td></tr>
 <tr class="separator:a09e6c7b1db8de3631ffbc1e4c1336676 inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aed6a9e7304ae2edefc41d636442639a5 inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="_command_handler_8h.html#aefaf83fec6a7da1d02ae7e912dd9a6d5">CommandStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#aed6a9e7304ae2edefc41d636442639a5">internalCommand</a> (const <a class="el" href="struct_parsed_command.html">ParsedCommand</a> &amp;cmd, std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;replies, <a class="el" href="class_command_interface.html">CommandInterface</a> *interface=nullptr)</td></tr>
-<tr class="separator:aed6a9e7304ae2edefc41d636442639a5 inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a533be5d0625557f6e1f194f70dc0d5 inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="_command_handler_8h.html#aefaf83fec6a7da1d02ae7e912dd9a6d5">CommandStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a6a533be5d0625557f6e1f194f70dc0d5">internalCommand</a> (const <a class="el" href="struct_parsed_command.html">ParsedCommand</a> &amp;cmd, std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;replies)</td></tr>
+<tr class="separator:a6a533be5d0625557f6e1f194f70dc0d5 inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0842b01125770b9be569a29d49080a3f inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a0842b01125770b9be569a29d49080a3f">getHelpstring</a> ()</td></tr>
 <tr class="separator:a0842b01125770b9be569a29d49080a3f inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd8e021f6a407115dba838d7b16930bb inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#acd8e021f6a407115dba838d7b16930bb">getCommandsHelpstring</a> ()</td></tr>
@@ -214,11 +215,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:af6efec263bc372a1ca57add26dd93a97 inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad67013c18a56f13ff7159883dfce665e inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#ad67013c18a56f13ff7159883dfce665e">broadcastCommandReply</a> (<a class="el" href="class_command_reply.html">CommandReply</a> reply, uint32_t cmdId, <a class="el" href="_command_handler_8h.html#aec46f6cc23a395b611fbc7c7239b9c41">CMDtype</a> type)</td></tr>
 <tr class="separator:ad67013c18a56f13ff7159883dfce665e inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab23b77c2282380e1e713b0173530416c inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#ab23b77c2282380e1e713b0173530416c">sendCommandReplyAsync</a> (<a class="el" href="class_command_reply.html">CommandReply</a> reply, uint32_t cmdId, <a class="el" href="_command_handler_8h.html#aec46f6cc23a395b611fbc7c7239b9c41">CMDtype</a> type, <a class="el" href="class_command_interface.html">CommandInterface</a> *interface=nullptr)</td></tr>
+<tr class="separator:ab23b77c2282380e1e713b0173530416c inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5d6e4cd233e9221df2cf1ff3c1468385 inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">virtual uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a5d6e4cd233e9221df2cf1ff3c1468385">getCommandHandlerID</a> ()</td></tr>
 <tr class="separator:a5d6e4cd233e9221df2cf1ff3c1468385 inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad27ce104d3546c2b6f7cd74dff950274 inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">virtual uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#ad27ce104d3546c2b6f7cd74dff950274">getSelectionID</a> ()</td></tr>
-<tr class="memdesc:ad27ce104d3546c2b6f7cd74dff950274 inherit pub_methods_class_command_handler"><td class="mdescLeft">&#160;</td><td class="mdescRight">normally returns class id but for choosable classes this can be the id used to create the class  <a href="class_command_handler.html#ad27ce104d3546c2b6f7cd74dff950274">More...</a><br /></td></tr>
-<tr class="separator:ad27ce104d3546c2b6f7cd74dff950274 inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad9d9d0fd0bd0a58cfd8b6199081403a9 inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="struct_cmd_handler_info.html">CmdHandlerInfo</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#ad9d9d0fd0bd0a58cfd8b6199081403a9">getCommandHandlerInfo</a> ()</td></tr>
 <tr class="separator:ad9d9d0fd0bd0a58cfd8b6199081403a9 inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af658c15ccbac468224ed2c5997e06f91 inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#af658c15ccbac468224ed2c5997e06f91">isValidCommandId</a> (uint32_t cmdid, uint32_t ignoredFlags=0, uint32_t requiredFlag=0)</td></tr>
@@ -262,6 +262,11 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:adb22b24f51c53110d1275157b5d82fde inherit pub_static_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">static std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#adb22b24f51c53110d1275157b5d82fde">getAllHelpstrings</a> ()</td></tr>
 <tr class="separator:adb22b24f51c53110d1275157b5d82fde inherit pub_static_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:a5aee259ef00c3b1dce496c7ff259af4f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mt_encoder_s_p_i.html#a5aee259ef00c3b1dce496c7ff259af4f">useDMA</a> = false</td></tr>
+<tr class="separator:a5aee259ef00c3b1dce496c7ff259af4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:a4108e5f3c452821897dc31b714eb95ba"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mt_encoder_s_p_i.html#a4108e5f3c452821897dc31b714eb95ba">inUse</a> = false</td></tr>
@@ -269,7 +274,7 @@ Static Public Attributes</h2></td></tr>
 <tr class="memitem:ae74a8cd925c2426d332a536f6ff11039"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="struct_class_identifier.html">ClassIdentifier</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mt_encoder_s_p_i.html#ae74a8cd925c2426d332a536f6ff11039">info</a></td></tr>
 <tr class="separator:ae74a8cd925c2426d332a536f6ff11039"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_attribs_class_encoder"><td colspan="2" onclick="javascript:toggleInherit('pub_static_attribs_class_encoder')"><img src="closed.png" alt="-"/>&#160;Static Public Attributes inherited from <a class="el" href="class_encoder.html">Encoder</a></td></tr>
-<tr class="memitem:aca93704c64f6c921eec0969f7ef89f4f inherit pub_static_attribs_class_encoder"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="struct_class_identifier.html">ClassIdentifier</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_encoder.html#aca93704c64f6c921eec0969f7ef89f4f">info</a> ={.<a class="el" href="_command_handler_8h.html#a13a18e5b49561a2f007205dc0afeea14ab068931cc450442b63f5b3d276ea4297">name</a> = &quot;None&quot; , .id=CLSID_ENCODER_NONE, .hidden = false}</td></tr>
+<tr class="memitem:aca93704c64f6c921eec0969f7ef89f4f inherit pub_static_attribs_class_encoder"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="struct_class_identifier.html">ClassIdentifier</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_encoder.html#aca93704c64f6c921eec0969f7ef89f4f">info</a> ={.<a class="el" href="_command_handler_8h.html#a13a18e5b49561a2f007205dc0afeea14ab068931cc450442b63f5b3d276ea4297">name</a> = &quot;None&quot; , .id=CLSID_ENCODER_NONE, .visibility = <a class="el" href="_choosable_class_8h.html#aa3a363b83e4ed5a23cf7398fcf8bae0ca46cf0e59759c9b7f1112ca4b174343ef">ClassVisibility::visible</a>}</td></tr>
 <tr class="separator:aca93704c64f6c921eec0969f7ef89f4f inherit pub_static_attribs_class_encoder"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af67ff4bb229901b96416060a6d5fcf25 inherit pub_static_attribs_class_encoder"><td class="memItemLeft" align="right" valign="top">static const std::vector&lt; <a class="el" href="structclass__entry.html">class_entry</a>&lt; <a class="el" href="class_encoder.html">Encoder</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_encoder.html#af67ff4bb229901b96416060a6d5fcf25">all_encoders</a></td></tr>
 <tr class="separator:af67ff4bb229901b96416060a6d5fcf25 inherit pub_static_attribs_class_encoder"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -294,6 +299,7 @@ Static Public Attributes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-types" name="pri-types"></a>
 Private Types</h2></td></tr>
 <tr class="memitem:a329693332cff2b8e297684ec86053206"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mt_encoder_s_p_i.html#a329693332cff2b8e297684ec86053206">MtEncoderSPI_commands</a> : uint32_t { <a class="el" href="class_mt_encoder_s_p_i.html#a329693332cff2b8e297684ec86053206aed6e177ce34c42177d8faa5a15d65dd0">cspin</a>
+, <a class="el" href="class_mt_encoder_s_p_i.html#a329693332cff2b8e297684ec86053206a5e0bdcbddccca4d66d74ba8c1cee1a68">pos</a>
  }</td></tr>
 <tr class="separator:a329693332cff2b8e297684ec86053206"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -303,25 +309,33 @@ Private Member Functions</h2></td></tr>
 <tr class="separator:ad8912cf1a915b7352954566918771b20"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a682c0e4ea005cf268fbebc7719d68d77"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mt_encoder_s_p_i.html#a682c0e4ea005cf268fbebc7719d68d77">writeSpi</a> (uint8_t addr, uint8_t data)</td></tr>
 <tr class="separator:a682c0e4ea005cf268fbebc7719d68d77"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa865cc761325ee6c2848c71129eb38fa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mt_encoder_s_p_i.html#aa865cc761325ee6c2848c71129eb38fa">spiTxRxCompleted</a> (<a class="el" href="class_s_p_i_port.html">SPIPort</a> *port)</td></tr>
+<tr class="separator:aa865cc761325ee6c2848c71129eb38fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr class="memitem:a9ec78fb169727dbead97c532b60d5518"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mt_encoder_s_p_i.html#a9ec78fb169727dbead97c532b60d5518">nomag</a> = false</td></tr>
-<tr class="separator:a9ec78fb169727dbead97c532b60d5518"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae0673b39fe9e2b9e7921c4bb4d1ea776"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mt_encoder_s_p_i.html#ae0673b39fe9e2b9e7921c4bb4d1ea776">overspeed</a> = false</td></tr>
-<tr class="separator:ae0673b39fe9e2b9e7921c4bb4d1ea776"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa11a7cd7f6b1792f0dbd11472ce21a12"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mt_encoder_s_p_i.html#aa11a7cd7f6b1792f0dbd11472ce21a12">lastAngleInt</a> = 0</td></tr>
-<tr class="separator:aa11a7cd7f6b1792f0dbd11472ce21a12"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6afc99ce064e61b8a72bef96cbc5ba84"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mt_encoder_s_p_i.html#a6afc99ce064e61b8a72bef96cbc5ba84">curAngleInt</a> = 0</td></tr>
-<tr class="separator:a6afc99ce064e61b8a72bef96cbc5ba84"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a636526e19e33147232290b3168485480"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mt_encoder_s_p_i.html#a636526e19e33147232290b3168485480">curPos</a> = 0</td></tr>
-<tr class="separator:a636526e19e33147232290b3168485480"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8d65c1e7f6871c3af05ef2ac75f48e5c"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mt_encoder_s_p_i.html#a8d65c1e7f6871c3af05ef2ac75f48e5c">rotations</a> = 0</td></tr>
-<tr class="separator:a8d65c1e7f6871c3af05ef2ac75f48e5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ee4749c5a9871d08ab562530a58d674"><td class="memItemLeft" align="right" valign="top">volatile bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mt_encoder_s_p_i.html#a8ee4749c5a9871d08ab562530a58d674">nomag</a> = false</td></tr>
+<tr class="separator:a8ee4749c5a9871d08ab562530a58d674"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a289ebb9039ca44586a126c722e2166bc"><td class="memItemLeft" align="right" valign="top">volatile bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mt_encoder_s_p_i.html#a289ebb9039ca44586a126c722e2166bc">overspeed</a> = false</td></tr>
+<tr class="separator:a289ebb9039ca44586a126c722e2166bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a511bac9b9612648e5f54ba5c14233509"><td class="memItemLeft" align="right" valign="top">volatile int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mt_encoder_s_p_i.html#a511bac9b9612648e5f54ba5c14233509">lastAngleInt</a> = 0</td></tr>
+<tr class="separator:a511bac9b9612648e5f54ba5c14233509"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a64933311c6fc00ae95fe139c99dd0b"><td class="memItemLeft" align="right" valign="top">volatile int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mt_encoder_s_p_i.html#a3a64933311c6fc00ae95fe139c99dd0b">curAngleInt</a> = 0</td></tr>
+<tr class="separator:a3a64933311c6fc00ae95fe139c99dd0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a76ef206f0934e224a4d7bfa568f4a2"><td class="memItemLeft" align="right" valign="top">volatile int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mt_encoder_s_p_i.html#a3a76ef206f0934e224a4d7bfa568f4a2">curPos</a> = 0</td></tr>
+<tr class="separator:a3a76ef206f0934e224a4d7bfa568f4a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0ea6e751feb3c307ae00b938dc62d25"><td class="memItemLeft" align="right" valign="top">volatile int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mt_encoder_s_p_i.html#ab0ea6e751feb3c307ae00b938dc62d25">rotations</a> = 0</td></tr>
+<tr class="separator:ab0ea6e751feb3c307ae00b938dc62d25"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abed9baeee41e342e8f4bd8c2102be00d"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mt_encoder_s_p_i.html#abed9baeee41e342e8f4bd8c2102be00d">offset</a> = 0</td></tr>
 <tr class="separator:abed9baeee41e342e8f4bd8c2102be00d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5614ff7e7d2fd10f1e9e5947ecfb5b76"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mt_encoder_s_p_i.html#a5614ff7e7d2fd10f1e9e5947ecfb5b76">cspin</a> = 0</td></tr>
 <tr class="separator:a5614ff7e7d2fd10f1e9e5947ecfb5b76"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca75bf0d973ee0a7aedc5776f3207d5b"><td class="memItemLeft" align="right" valign="top">volatile bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mt_encoder_s_p_i.html#aca75bf0d973ee0a7aedc5776f3207d5b">updateInProgress</a> = false</td></tr>
+<tr class="separator:aca75bf0d973ee0a7aedc5776f3207d5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5f9af300b9f7fbb574e31bfe31d220d"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mt_encoder_s_p_i.html#ad5f9af300b9f7fbb574e31bfe31d220d">txbuf</a> [4] = {0x03 | MAGNTEK_READ,0,0,0}</td></tr>
+<tr class="separator:ad5f9af300b9f7fbb574e31bfe31d220d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25ff175f56e5e90ba4366b22f10069b5"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mt_encoder_s_p_i.html#a25ff175f56e5e90ba4366b22f10069b5">rxbuf</a> [4] = {0,0,0,0}</td></tr>
+<tr class="separator:a25ff175f56e5e90ba4366b22f10069b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -395,6 +409,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a329693332cff2b8e297684ec86053206aed6e177ce34c42177d8faa5a15d65dd0" name="a329693332cff2b8e297684ec86053206aed6e177ce34c42177d8faa5a15d65dd0"></a>cspin&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a329693332cff2b8e297684ec86053206a5e0bdcbddccca4d66d74ba8c1cee1a68" name="a329693332cff2b8e297684ec86053206a5e0bdcbddccca4d66d74ba8c1cee1a68"></a>pos&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 <p class="definition">Definition at line <a class="el" href="_mt_encoder_s_p_i_8h_source.html#l00021">21</a> of file <a class="el" href="_mt_encoder_s_p_i_8h_source.html">MtEncoderSPI.h</a>.</p>
@@ -444,7 +459,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html#l00034">34</a> of file <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html">MtEncoderSPI.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html#l00036">36</a> of file <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html">MtEncoderSPI.cpp</a>.</p>
 
 </div>
 </div>
@@ -492,7 +507,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_command_handler.html#a8d2531d579c03d6672495ccb57f5ffb3">CommandHandler</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html#l00131">131</a> of file <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html">MtEncoderSPI.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html#l00160">160</a> of file <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html">MtEncoderSPI.cpp</a>.</p>
 
 </div>
 </div>
@@ -522,7 +537,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_encoder.html#a7ea557d2536d6c2c0a05f0c34a2003a9">Encoder</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html#l00125">125</a> of file <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html">MtEncoderSPI.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html#l00154">154</a> of file <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html">MtEncoderSPI.cpp</a>.</p>
 
 </div>
 </div>
@@ -583,7 +598,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_encoder.html#a5041739a15b236ef2428c1e7e974f8e2">Encoder</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html#l00115">115</a> of file <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html">MtEncoderSPI.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html#l00142">142</a> of file <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html">MtEncoderSPI.cpp</a>.</p>
 
 </div>
 </div>
@@ -613,7 +628,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_encoder.html#ac34abd41c98400224526ca6ad39abc77">Encoder</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html#l00120">120</a> of file <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html">MtEncoderSPI.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html#l00148">148</a> of file <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html">MtEncoderSPI.cpp</a>.</p>
 
 </div>
 </div>
@@ -661,7 +676,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html#l00056">56</a> of file <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html">MtEncoderSPI.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html#l00060">60</a> of file <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html">MtEncoderSPI.cpp</a>.</p>
 
 </div>
 </div>
@@ -717,7 +732,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p >MT encoder reads 1 byte and transmits 1 byte back after that </p>
 
-<p class="definition">Definition at line <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html#l00067">67</a> of file <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html">MtEncoderSPI.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html#l00070">70</a> of file <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html">MtEncoderSPI.cpp</a>.</p>
 
 </div>
 </div>
@@ -747,7 +762,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_persistent_storage.html#aa8187136adfa89fca9ddee2578f6eb68">PersistentStorage</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html#l00039">39</a> of file <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html">MtEncoderSPI.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html#l00041">41</a> of file <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html">MtEncoderSPI.cpp</a>.</p>
 
 </div>
 </div>
@@ -777,7 +792,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_persistent_storage.html#a105599e99ab0e4244a531c2286f2ffa2">PersistentStorage</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html#l00045">45</a> of file <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html">MtEncoderSPI.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html#l00047">47</a> of file <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html">MtEncoderSPI.cpp</a>.</p>
 
 </div>
 </div>
@@ -797,7 +812,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html#l00050">50</a> of file <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html">MtEncoderSPI.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html#l00052">52</a> of file <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html">MtEncoderSPI.cpp</a>.</p>
 
 </div>
 </div>
@@ -828,7 +843,37 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_encoder.html#aacf98b034fee3e2fd70cc443a784a5e0">Encoder</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html#l00080">80</a> of file <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html">MtEncoderSPI.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html#l00084">84</a> of file <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html">MtEncoderSPI.cpp</a>.</p>
+
+</div>
+</div>
+<a id="aa865cc761325ee6c2848c71129eb38fa" name="aa865cc761325ee6c2848c71129eb38fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa865cc761325ee6c2848c71129eb38fa">&#9670;&nbsp;</a></span>spiTxRxCompleted()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MtEncoderSPI::spiTxRxCompleted </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_s_p_i_port.html">SPIPort</a> *&#160;</td>
+          <td class="paramname"><em>port</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reimplemented from <a class="el" href="class_s_p_i_device.html#ae1199ca661af7d1623d8636f332ee5cc">SPIDevice</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html#l00089">89</a> of file <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html">MtEncoderSPI.cpp</a>.</p>
 
 </div>
 </div>
@@ -848,7 +893,26 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p >Reads the angle and diagnostic registers in burst mode </p>
 
-<p class="definition">Definition at line <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html#l00087">87</a> of file <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html">MtEncoderSPI.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html#l00101">101</a> of file <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html">MtEncoderSPI.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a3bf67312766807e9d5a3ea59350cff68" name="a3bf67312766807e9d5a3ea59350cff68"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3bf67312766807e9d5a3ea59350cff68">&#9670;&nbsp;</a></span>updateAngleStatusCb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MtEncoderSPI::updateAngleStatusCb </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html#l00118">118</a> of file <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html">MtEncoderSPI.cpp</a>.</p>
 
 </div>
 </div>
@@ -886,7 +950,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html#l00075">75</a> of file <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html">MtEncoderSPI.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html#l00079">79</a> of file <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html">MtEncoderSPI.cpp</a>.</p>
 
 </div>
 </div>
@@ -911,12 +975,12 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_mt_encoder_s_p_i_8h_source.html#l00062">62</a> of file <a class="el" href="_mt_encoder_s_p_i_8h_source.html">MtEncoderSPI.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_mt_encoder_s_p_i_8h_source.html#l00067">67</a> of file <a class="el" href="_mt_encoder_s_p_i_8h_source.html">MtEncoderSPI.h</a>.</p>
 
 </div>
 </div>
-<a id="a6afc99ce064e61b8a72bef96cbc5ba84" name="a6afc99ce064e61b8a72bef96cbc5ba84"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6afc99ce064e61b8a72bef96cbc5ba84">&#9670;&nbsp;</a></span>curAngleInt</h2>
+<a id="a3a64933311c6fc00ae95fe139c99dd0b" name="a3a64933311c6fc00ae95fe139c99dd0b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a64933311c6fc00ae95fe139c99dd0b">&#9670;&nbsp;</a></span>curAngleInt</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -925,7 +989,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int32_t MtEncoderSPI::curAngleInt = 0</td>
+          <td class="memname">volatile int32_t MtEncoderSPI::curAngleInt = 0</td>
         </tr>
       </table>
   </td>
@@ -935,12 +999,12 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_mt_encoder_s_p_i_8h_source.html#l00058">58</a> of file <a class="el" href="_mt_encoder_s_p_i_8h_source.html">MtEncoderSPI.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_mt_encoder_s_p_i_8h_source.html#l00063">63</a> of file <a class="el" href="_mt_encoder_s_p_i_8h_source.html">MtEncoderSPI.h</a>.</p>
 
 </div>
 </div>
-<a id="a636526e19e33147232290b3168485480" name="a636526e19e33147232290b3168485480"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a636526e19e33147232290b3168485480">&#9670;&nbsp;</a></span>curPos</h2>
+<a id="a3a76ef206f0934e224a4d7bfa568f4a2" name="a3a76ef206f0934e224a4d7bfa568f4a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a76ef206f0934e224a4d7bfa568f4a2">&#9670;&nbsp;</a></span>curPos</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -949,7 +1013,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int32_t MtEncoderSPI::curPos = 0</td>
+          <td class="memname">volatile int32_t MtEncoderSPI::curPos = 0</td>
         </tr>
       </table>
   </td>
@@ -959,7 +1023,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_mt_encoder_s_p_i_8h_source.html#l00059">59</a> of file <a class="el" href="_mt_encoder_s_p_i_8h_source.html">MtEncoderSPI.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_mt_encoder_s_p_i_8h_source.html#l00064">64</a> of file <a class="el" href="_mt_encoder_s_p_i_8h_source.html">MtEncoderSPI.h</a>.</p>
 
 </div>
 </div>
@@ -1015,8 +1079,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="aa11a7cd7f6b1792f0dbd11472ce21a12" name="aa11a7cd7f6b1792f0dbd11472ce21a12"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa11a7cd7f6b1792f0dbd11472ce21a12">&#9670;&nbsp;</a></span>lastAngleInt</h2>
+<a id="a511bac9b9612648e5f54ba5c14233509" name="a511bac9b9612648e5f54ba5c14233509"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a511bac9b9612648e5f54ba5c14233509">&#9670;&nbsp;</a></span>lastAngleInt</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1025,7 +1089,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int32_t MtEncoderSPI::lastAngleInt = 0</td>
+          <td class="memname">volatile int32_t MtEncoderSPI::lastAngleInt = 0</td>
         </tr>
       </table>
   </td>
@@ -1035,12 +1099,12 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_mt_encoder_s_p_i_8h_source.html#l00057">57</a> of file <a class="el" href="_mt_encoder_s_p_i_8h_source.html">MtEncoderSPI.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_mt_encoder_s_p_i_8h_source.html#l00062">62</a> of file <a class="el" href="_mt_encoder_s_p_i_8h_source.html">MtEncoderSPI.h</a>.</p>
 
 </div>
 </div>
-<a id="a9ec78fb169727dbead97c532b60d5518" name="a9ec78fb169727dbead97c532b60d5518"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9ec78fb169727dbead97c532b60d5518">&#9670;&nbsp;</a></span>nomag</h2>
+<a id="a8ee4749c5a9871d08ab562530a58d674" name="a8ee4749c5a9871d08ab562530a58d674"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ee4749c5a9871d08ab562530a58d674">&#9670;&nbsp;</a></span>nomag</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1049,7 +1113,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool MtEncoderSPI::nomag = false</td>
+          <td class="memname">volatile bool MtEncoderSPI::nomag = false</td>
         </tr>
       </table>
   </td>
@@ -1059,7 +1123,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_mt_encoder_s_p_i_8h_source.html#l00055">55</a> of file <a class="el" href="_mt_encoder_s_p_i_8h_source.html">MtEncoderSPI.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_mt_encoder_s_p_i_8h_source.html#l00060">60</a> of file <a class="el" href="_mt_encoder_s_p_i_8h_source.html">MtEncoderSPI.h</a>.</p>
 
 </div>
 </div>
@@ -1083,12 +1147,36 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p class="definition">Definition at line <a class="el" href="_mt_encoder_s_p_i_8h_source.html#l00066">66</a> of file <a class="el" href="_mt_encoder_s_p_i_8h_source.html">MtEncoderSPI.h</a>.</p>
+
+</div>
+</div>
+<a id="a289ebb9039ca44586a126c722e2166bc" name="a289ebb9039ca44586a126c722e2166bc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a289ebb9039ca44586a126c722e2166bc">&#9670;&nbsp;</a></span>overspeed</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">volatile bool MtEncoderSPI::overspeed = false</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
 <p class="definition">Definition at line <a class="el" href="_mt_encoder_s_p_i_8h_source.html#l00061">61</a> of file <a class="el" href="_mt_encoder_s_p_i_8h_source.html">MtEncoderSPI.h</a>.</p>
 
 </div>
 </div>
-<a id="ae0673b39fe9e2b9e7921c4bb4d1ea776" name="ae0673b39fe9e2b9e7921c4bb4d1ea776"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae0673b39fe9e2b9e7921c4bb4d1ea776">&#9670;&nbsp;</a></span>overspeed</h2>
+<a id="ab0ea6e751feb3c307ae00b938dc62d25" name="ab0ea6e751feb3c307ae00b938dc62d25"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab0ea6e751feb3c307ae00b938dc62d25">&#9670;&nbsp;</a></span>rotations</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1097,7 +1185,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool MtEncoderSPI::overspeed = false</td>
+          <td class="memname">volatile int32_t MtEncoderSPI::rotations = 0</td>
         </tr>
       </table>
   </td>
@@ -1107,12 +1195,12 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_mt_encoder_s_p_i_8h_source.html#l00056">56</a> of file <a class="el" href="_mt_encoder_s_p_i_8h_source.html">MtEncoderSPI.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_mt_encoder_s_p_i_8h_source.html#l00065">65</a> of file <a class="el" href="_mt_encoder_s_p_i_8h_source.html">MtEncoderSPI.h</a>.</p>
 
 </div>
 </div>
-<a id="a8d65c1e7f6871c3af05ef2ac75f48e5c" name="a8d65c1e7f6871c3af05ef2ac75f48e5c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8d65c1e7f6871c3af05ef2ac75f48e5c">&#9670;&nbsp;</a></span>rotations</h2>
+<a id="a25ff175f56e5e90ba4366b22f10069b5" name="a25ff175f56e5e90ba4366b22f10069b5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a25ff175f56e5e90ba4366b22f10069b5">&#9670;&nbsp;</a></span>rxbuf</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1121,7 +1209,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int32_t MtEncoderSPI::rotations = 0</td>
+          <td class="memname">uint8_t MtEncoderSPI::rxbuf[4] = {0,0,0,0}</td>
         </tr>
       </table>
   </td>
@@ -1131,7 +1219,71 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_mt_encoder_s_p_i_8h_source.html#l00060">60</a> of file <a class="el" href="_mt_encoder_s_p_i_8h_source.html">MtEncoderSPI.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_mt_encoder_s_p_i_8h_source.html#l00071">71</a> of file <a class="el" href="_mt_encoder_s_p_i_8h_source.html">MtEncoderSPI.h</a>.</p>
+
+</div>
+</div>
+<a id="ad5f9af300b9f7fbb574e31bfe31d220d" name="ad5f9af300b9f7fbb574e31bfe31d220d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad5f9af300b9f7fbb574e31bfe31d220d">&#9670;&nbsp;</a></span>txbuf</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t MtEncoderSPI::txbuf[4] = {0x03 | MAGNTEK_READ,0,0,0}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_mt_encoder_s_p_i_8h_source.html#l00070">70</a> of file <a class="el" href="_mt_encoder_s_p_i_8h_source.html">MtEncoderSPI.h</a>.</p>
+
+</div>
+</div>
+<a id="aca75bf0d973ee0a7aedc5776f3207d5b" name="aca75bf0d973ee0a7aedc5776f3207d5b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aca75bf0d973ee0a7aedc5776f3207d5b">&#9670;&nbsp;</a></span>updateInProgress</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">volatile bool MtEncoderSPI::updateInProgress = false</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_mt_encoder_s_p_i_8h_source.html#l00068">68</a> of file <a class="el" href="_mt_encoder_s_p_i_8h_source.html">MtEncoderSPI.h</a>.</p>
+
+</div>
+</div>
+<a id="a5aee259ef00c3b1dce496c7ff259af4f" name="a5aee259ef00c3b1dce496c7ff259af4f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5aee259ef00c3b1dce496c7ff259af4f">&#9670;&nbsp;</a></span>useDMA</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool MtEncoderSPI::useDMA = false</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_mt_encoder_s_p_i_8h_source.html#l00052">52</a> of file <a class="el" href="_mt_encoder_s_p_i_8h_source.html">MtEncoderSPI.h</a>.</p>
 
 </div>
 </div>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['keyboard_0',['Keyboard',['../group___class_driver___h_i_d___keyboard.html',1,'']]]
+  ['mouse_0',['Mouse',['../group___class_driver___h_i_d___mouse.html',1,'']]]
 ];

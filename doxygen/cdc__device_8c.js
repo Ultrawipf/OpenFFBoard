@@ -1,7 +1,7 @@
 var cdc__device_8c =
 [
     [ "cdcd_interface_t", "structcdcd__interface__t.html", "structcdcd__interface__t" ],
-    [ "_prep_out_transaction", "cdc__device_8c.html#adbdc586da3e27573fd8c597eeb0782f3", null ],
+    [ "_prep_out_transaction", "cdc__device_8c.html#a4c1adca40f61212227ec4b5d4fbc761e", null ],
     [ "cdcd_control_xfer_cb", "cdc__device_8c.html#a89fc99d2107ec64712fe630691e89281", null ],
     [ "cdcd_init", "cdc__device_8c.html#a6f0120f84ea5e8dc536b173b7b859e2c", null ],
     [ "cdcd_open", "cdc__device_8c.html#a21eb9e0af7f0faf4f6aed7678830bc88", null ],
@@ -11,7 +11,7 @@ var cdc__device_8c =
     [ "tud_cdc_n_connected", "cdc__device_8c.html#aa3f01d42cabe29ca298fdbbf537f6480", null ],
     [ "tud_cdc_n_get_line_coding", "cdc__device_8c.html#a6e544e512bcd4b247a943041d7b7c00b", null ],
     [ "tud_cdc_n_get_line_state", "cdc__device_8c.html#a73446d498a2352563d0837ff62ca30ee", null ],
-    [ "tud_cdc_n_peek", "cdc__device_8c.html#aa02d0949ff53b9b053096c85f13d7768", null ],
+    [ "tud_cdc_n_peek", "cdc__device_8c.html#ab9d1b94e28f6ae32e21ff98ea4a22228", null ],
     [ "tud_cdc_n_read", "cdc__device_8c.html#abe59a6941bcfa522b54c464974f49194", null ],
     [ "tud_cdc_n_read_flush", "cdc__device_8c.html#ab5e7c8e39469766b0ca22bf5503e58cf", null ],
     [ "tud_cdc_n_set_wanted_char", "cdc__device_8c.html#a50ebb7833da5241510b90444c25f6a94", null ],

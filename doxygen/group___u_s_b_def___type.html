@@ -102,9 +102,9 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:ga26951b4ef7eb0465e774c1a954f7c762"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html">TU_ATTR_PACKED</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___u_s_b_def___type.html#ga26951b4ef7eb0465e774c1a954f7c762">tusb_desc_device_t</a></td></tr>
-<tr class="memdesc:ga26951b4ef7eb0465e774c1a954f7c762"><td class="mdescLeft">&#160;</td><td class="mdescRight">USB Device Descriptor.  <a href="group___u_s_b_def___type.html#ga26951b4ef7eb0465e774c1a954f7c762">More...</a><br /></td></tr>
-<tr class="separator:ga26951b4ef7eb0465e774c1a954f7c762"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga56e3c57225a4a7b7207c28f31a7789a8"><td class="memItemLeft" align="right" valign="top">typedef TU_ATTR_PACKED_BEGIN TU_ATTR_BIT_FIELD_ORDER_BEGIN struct <a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html">TU_ATTR_PACKED</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___u_s_b_def___type.html#ga56e3c57225a4a7b7207c28f31a7789a8">tusb_desc_device_t</a></td></tr>
+<tr class="memdesc:ga56e3c57225a4a7b7207c28f31a7789a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">USB Device Descriptor.  <a href="group___u_s_b_def___type.html#ga56e3c57225a4a7b7207c28f31a7789a8">More...</a><br /></td></tr>
+<tr class="separator:ga56e3c57225a4a7b7207c28f31a7789a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga37592c8d292e3794f94d6d81c4c266fc"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html">TU_ATTR_PACKED</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___u_s_b_def___type.html#ga37592c8d292e3794f94d6d81c4c266fc">tusb_desc_bos_t</a></td></tr>
 <tr class="separator:ga37592c8d292e3794f94d6d81c4c266fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gae640129e609bf2e7b33828de0e38dd65"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html">TU_ATTR_PACKED</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___u_s_b_def___type.html#gae640129e609bf2e7b33828de0e38dd65">tusb_desc_configuration_t</a></td></tr>
@@ -131,6 +131,8 @@ Typedefs</h2></td></tr>
 <tr class="separator:ga9a258ed1b33369335f3d700ac02165f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga56223ef38820720ca7fbbad45a6a40bb"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html">TU_ATTR_PACKED</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___u_s_b_def___type.html#ga56223ef38820720ca7fbbad45a6a40bb">tusb_desc_webusb_url_t</a></td></tr>
 <tr class="separator:ga56223ef38820720ca7fbbad45a6a40bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabbdba82f013b9af79c72a0889af31859"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html">TU_ATTR_PACKED</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___u_s_b_def___type.html#gabbdba82f013b9af79c72a0889af31859">tusb_desc_dfu_functional_t</a></td></tr>
+<tr class="separator:gabbdba82f013b9af79c72a0889af31859"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga2b3bee81c54dd32ba52362b2634f72f4"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html">TU_ATTR_PACKED</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a></td></tr>
 <tr class="separator:ga2b3bee81c54dd32ba52362b2634f72f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -148,6 +150,19 @@ Enumerations</h2></td></tr>
 , <a class="el" href="group___u_s_b_def___type.html#gga0c1b25b161b272f5f39e4ba49478289cae41b455d7ff3ce44fe4f6c68a69dd4f6">TUSB_DIR_IN_MASK</a> = 0x80
  }</td></tr>
 <tr class="separator:ga0c1b25b161b272f5f39e4ba49478289c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga333727ea541808f5c815adec3b2888c2"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___u_s_b_def___type.html#ga333727ea541808f5c815adec3b2888c2">tusb_iso_ep_attribute_t</a> { <br />
+&#160;&#160;<a class="el" href="group___u_s_b_def___type.html#gga333727ea541808f5c815adec3b2888c2a6c02aa49f1981446327a6ae4f0f0e913">TUSB_ISO_EP_ATT_NO_SYNC</a> = 0x00
+, <a class="el" href="group___u_s_b_def___type.html#gga333727ea541808f5c815adec3b2888c2a6056229f7bed07909ef2c8f273efe6b0">TUSB_ISO_EP_ATT_ASYNCHRONOUS</a> = 0x04
+, <a class="el" href="group___u_s_b_def___type.html#gga333727ea541808f5c815adec3b2888c2abc7974a647c2e2afb3c5e3aac2f6af21">TUSB_ISO_EP_ATT_ADAPTIVE</a> = 0x08
+, <a class="el" href="group___u_s_b_def___type.html#gga333727ea541808f5c815adec3b2888c2a7828338884de6c23bf0f031cab3322e1">TUSB_ISO_EP_ATT_SYNCHRONOUS</a> = 0x0C
+, <br />
+&#160;&#160;<a class="el" href="group___u_s_b_def___type.html#gga333727ea541808f5c815adec3b2888c2acd2cc791e4add9166c33d45eea5b553a">TUSB_ISO_EP_ATT_DATA</a> = 0x00
+, <a class="el" href="group___u_s_b_def___type.html#gga333727ea541808f5c815adec3b2888c2a93b4e5aa895d454902e51bc4a0ef8d78">TUSB_ISO_EP_ATT_EXPLICIT_FB</a> = 0x10
+, <a class="el" href="group___u_s_b_def___type.html#gga333727ea541808f5c815adec3b2888c2a2fa77227b919236ccef44cf15e540719">TUSB_ISO_EP_ATT_IMPLICIT_FB</a> = 0x20
+<br />
+ }</td></tr>
+<tr class="memdesc:ga333727ea541808f5c815adec3b2888c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Isochronous End Point Attributes.  <a href="group___u_s_b_def___type.html#ga333727ea541808f5c815adec3b2888c2">More...</a><br /></td></tr>
+<tr class="separator:ga333727ea541808f5c815adec3b2888c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gacb5e6c763fa4283e1be386759d1dfc13"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___u_s_b_def___type.html#gacb5e6c763fa4283e1be386759d1dfc13">tusb_desc_type_t</a> { <br />
 &#160;&#160;<a class="el" href="group___u_s_b_def___type.html#ggacb5e6c763fa4283e1be386759d1dfc13aef58405f6fddc86707c6886bda0e0ca2">TUSB_DESC_DEVICE</a> = 0x01
 , <a class="el" href="group___u_s_b_def___type.html#ggacb5e6c763fa4283e1be386759d1dfc13a7943d5a189206a7a61b5025e46217373">TUSB_DESC_CONFIGURATION</a> = 0x02
@@ -280,10 +295,10 @@ Enumerations</h2></td></tr>
 <br />
  }</td></tr>
 <tr class="separator:gae8dad3738b9ff604cc3cdedf28cf2245"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaaf105ae5beaca1dee30ae54530691fce"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <a class="el" href="group___u_s_b_def___type.html#ggaaf105ae5beaca1dee30ae54530691fcea7d6c573ab243f61df3473d5f09417875">TUSB_DESC_CONFIG_ATT_REMOTE_WAKEUP</a> = TU_BIT(5)
-, <a class="el" href="group___u_s_b_def___type.html#ggaaf105ae5beaca1dee30ae54530691fceab8c4e6066fdbe969da821d02bc1adacb">TUSB_DESC_CONFIG_ATT_SELF_POWERED</a> = TU_BIT(6)
+<tr class="memitem:gafa231099d07583c3ed0981e0bb665f55"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <a class="el" href="group___u_s_b_def___type.html#ggafa231099d07583c3ed0981e0bb665f55a7d6c573ab243f61df3473d5f09417875">TUSB_DESC_CONFIG_ATT_REMOTE_WAKEUP</a> = TU_BIT(5)
+, <a class="el" href="group___u_s_b_def___type.html#ggafa231099d07583c3ed0981e0bb665f55ab8c4e6066fdbe969da821d02bc1adacb">TUSB_DESC_CONFIG_ATT_SELF_POWERED</a> = TU_BIT(6)
  }</td></tr>
-<tr class="separator:gaaf105ae5beaca1dee30ae54530691fce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:gafa231099d07583c3ed0981e0bb665f55"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga338a80b2964f1b2fd8ce2bc6b349579d"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___u_s_b_def___type.html#ga338a80b2964f1b2fd8ce2bc6b349579d">tusb_device_state_t</a> { <a class="el" href="group___u_s_b_def___type.html#gga338a80b2964f1b2fd8ce2bc6b349579da2bd3e169b9095b654fbb9cc2bde63bd7">TUSB_DEVICE_STATE_UNPLUG</a> = 0
 , <a class="el" href="group___u_s_b_def___type.html#gga338a80b2964f1b2fd8ce2bc6b349579da78a7ee60dd91b618bb5216e5605b5770">TUSB_DEVICE_STATE_CONFIGURED</a>
 , <a class="el" href="group___u_s_b_def___type.html#gga338a80b2964f1b2fd8ce2bc6b349579daf69269296278a6089ba978a42b515ae8">TUSB_DEVICE_STATE_SUSPENDED</a>
@@ -295,13 +310,13 @@ Enumerations</h2></td></tr>
 , <a class="el" href="group___u_s_b_def___type.html#gga6a3b3a4d6801fd9b02feb0510c84e5f9afd15857b96b2f33fd3139cce70c61a09">XFER_RESULT_STALLED</a>
  }</td></tr>
 <tr class="separator:ga6a3b3a4d6801fd9b02feb0510c84e5f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga80155586fa275b28773c9b203f52caba"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <a class="el" href="group___u_s_b_def___type.html#gga80155586fa275b28773c9b203f52cabaa7b0bfe73ad193a4aab08993e9fabf428">DESC_OFFSET_LEN</a> = 0
-, <a class="el" href="group___u_s_b_def___type.html#gga80155586fa275b28773c9b203f52cabaae9b31577bb641dd4a39d6091be145bf6">DESC_OFFSET_TYPE</a> = 1
+<tr class="memitem:ga394b3903fbf00ba2b6243f60689a5a5f"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <a class="el" href="group___u_s_b_def___type.html#gga394b3903fbf00ba2b6243f60689a5a5fa7b0bfe73ad193a4aab08993e9fabf428">DESC_OFFSET_LEN</a> = 0
+, <a class="el" href="group___u_s_b_def___type.html#gga394b3903fbf00ba2b6243f60689a5a5fae9b31577bb641dd4a39d6091be145bf6">DESC_OFFSET_TYPE</a> = 1
  }</td></tr>
-<tr class="separator:ga80155586fa275b28773c9b203f52caba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6b7b47dd702d9e331586d485013fd1ea"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <a class="el" href="group___u_s_b_def___type.html#gga6b7b47dd702d9e331586d485013fd1eaa864a113f67c0537a7d0cfd1df7c04974">INTERFACE_INVALID_NUMBER</a> = 0xff
+<tr class="separator:ga394b3903fbf00ba2b6243f60689a5a5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac205be2172292384dd687b5471a87edd"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <a class="el" href="group___u_s_b_def___type.html#ggac205be2172292384dd687b5471a87edda864a113f67c0537a7d0cfd1df7c04974">INTERFACE_INVALID_NUMBER</a> = 0xff
  }</td></tr>
-<tr class="separator:ga6b7b47dd702d9e331586d485013fd1ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:gac205be2172292384dd687b5471a87edd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaeb2f72368db30eb42854ed359c37ef2d"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___u_s_b_def___type.html#gaeb2f72368db30eb42854ed359c37ef2d">microsoft_os_20_type_t</a> { <br />
 &#160;&#160;<a class="el" href="group___u_s_b_def___type.html#ggaeb2f72368db30eb42854ed359c37ef2dac74a28d4e873b255d5b027af5ffffb5d">MS_OS_20_SET_HEADER_DESCRIPTOR</a> = 0x00
 , <a class="el" href="group___u_s_b_def___type.html#ggaeb2f72368db30eb42854ed359c37ef2dafe117782c0101a880e152a8a1110ecbc">MS_OS_20_SUBSET_HEADER_CONFIGURATION</a> = 0x01
@@ -317,24 +332,26 @@ Enumerations</h2></td></tr>
 <br />
  }</td></tr>
 <tr class="separator:gaeb2f72368db30eb42854ed359c37ef2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf9bdc3014f3d54c426b6d2df10de4960"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <a class="el" href="group___u_s_b_def___type.html#ggaf9bdc3014f3d54c426b6d2df10de4960af17ae8688f98708446ce909eb0e83c7c">CONTROL_STAGE_SETUP</a>
-, <a class="el" href="group___u_s_b_def___type.html#ggaf9bdc3014f3d54c426b6d2df10de4960ae5d89e21948588e11d6564fdf0e66c0b">CONTROL_STAGE_DATA</a>
-, <a class="el" href="group___u_s_b_def___type.html#ggaf9bdc3014f3d54c426b6d2df10de4960a18079efec0cdb821f24b437b646b864d">CONTROL_STAGE_ACK</a>
+<tr class="memitem:ga157d5577a5b2f5986037d0d09c7dc77d"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <a class="el" href="group___u_s_b_def___type.html#gga157d5577a5b2f5986037d0d09c7dc77daf17ae8688f98708446ce909eb0e83c7c">CONTROL_STAGE_SETUP</a>
+, <a class="el" href="group___u_s_b_def___type.html#gga157d5577a5b2f5986037d0d09c7dc77dae5d89e21948588e11d6564fdf0e66c0b">CONTROL_STAGE_DATA</a>
+, <a class="el" href="group___u_s_b_def___type.html#gga157d5577a5b2f5986037d0d09c7dc77da18079efec0cdb821f24b437b646b864d">CONTROL_STAGE_ACK</a>
  }</td></tr>
-<tr class="separator:gaf9bdc3014f3d54c426b6d2df10de4960"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:ga157d5577a5b2f5986037d0d09c7dc77d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:gae2054465c7ed133c1b2ff71ff5101257"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___u_s_b_def___type.html#gae2054465c7ed133c1b2ff71ff5101257">TU_VERIFY_STATIC</a> (sizeof(<a class="el" href="group___u_s_b_def___type.html#ga26951b4ef7eb0465e774c1a954f7c762">tusb_desc_device_t</a>)==18, &quot;size is not correct&quot;)</td></tr>
+<tr class="memitem:gae2054465c7ed133c1b2ff71ff5101257"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___u_s_b_def___type.html#gae2054465c7ed133c1b2ff71ff5101257">TU_VERIFY_STATIC</a> (sizeof(<a class="el" href="group___u_s_b_def___type.html#ga56e3c57225a4a7b7207c28f31a7789a8">tusb_desc_device_t</a>)==18, &quot;size is not correct&quot;)</td></tr>
 <tr class="separator:gae2054465c7ed133c1b2ff71ff5101257"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga7af729bb868b8672878a098ff9cde15e"><td class="memItemLeft" align="right" valign="top">static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___u_s_b_def___type.html#ga7af729bb868b8672878a098ff9cde15e">bm_request_type</a> (uint8_t direction, uint8_t type, uint8_t recipient)</td></tr>
-<tr class="separator:ga7af729bb868b8672878a098ff9cde15e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaaa353f2da73c8d7c4dda783341e4c681"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="group___u_s_b_def___type.html#ga0c1b25b161b272f5f39e4ba49478289c">tusb_dir_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___u_s_b_def___type.html#gaaa353f2da73c8d7c4dda783341e4c681">tu_edpt_dir</a> (uint8_t addr)</td></tr>
-<tr class="separator:gaaa353f2da73c8d7c4dda783341e4c681"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga03bdd55b38209b6f6d64494bb2d62c9d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___u_s_b_def___type.html#ga03bdd55b38209b6f6d64494bb2d62c9d">TU_VERIFY_STATIC</a> (sizeof(<a class="el" href="group___u_s_b_def___type.html#ga37592c8d292e3794f94d6d81c4c266fc">tusb_desc_bos_t</a>)==5, &quot;size is not correct&quot;)</td></tr>
+<tr class="separator:ga03bdd55b38209b6f6d64494bb2d62c9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4d579630893352ad521ab3be2719e253"><td class="memItemLeft" align="right" valign="top">TU_ATTR_PACKED_END static TU_ATTR_BIT_FIELD_ORDER_END <a class="el" href="group___u_s_b_def___type.html#ga0c1b25b161b272f5f39e4ba49478289c">tusb_dir_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___u_s_b_def___type.html#ga4d579630893352ad521ab3be2719e253">tu_edpt_dir</a> (uint8_t addr)</td></tr>
+<tr class="separator:ga4d579630893352ad521ab3be2719e253"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaec0233a77ef66c106dfdfd2f391d245f"><td class="memItemLeft" align="right" valign="top">static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___u_s_b_def___type.html#gaec0233a77ef66c106dfdfd2f391d245f">tu_edpt_number</a> (uint8_t addr)</td></tr>
 <tr class="separator:gaec0233a77ef66c106dfdfd2f391d245f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gafac3eb7a5d95891e1520a24a472811d7"><td class="memItemLeft" align="right" valign="top">static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___u_s_b_def___type.html#gafac3eb7a5d95891e1520a24a472811d7">tu_edpt_addr</a> (uint8_t num, uint8_t dir)</td></tr>
 <tr class="separator:gafac3eb7a5d95891e1520a24a472811d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8d47219fcaf031b9d37eb860f65e7c4c"><td class="memItemLeft" align="right" valign="top">static uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___u_s_b_def___type.html#ga8d47219fcaf031b9d37eb860f65e7c4c">tu_edpt_packet_size</a> (<a class="el" href="group___u_s_b_def___type.html#ga95906f860c391cedba638b1946669694">tusb_desc_endpoint_t</a> const *desc_ep)</td></tr>
+<tr class="separator:ga8d47219fcaf031b9d37eb860f65e7c4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga6ac1b6104429ebe2494f49c6c65f6a30"><td class="memItemLeft" align="right" valign="top">static uint8_t const *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___u_s_b_def___type.html#ga6ac1b6104429ebe2494f49c6c65f6a30">tu_desc_next</a> (void const *desc)</td></tr>
 <tr class="separator:ga6ac1b6104429ebe2494f49c6c65f6a30"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaec3d617e38f349c026a4d2558d814513"><td class="memItemLeft" align="right" valign="top">static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___u_s_b_def___type.html#gaec3d617e38f349c026a4d2558d814513">tu_desc_type</a> (void const *desc)</td></tr>
@@ -423,19 +440,33 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="ga26951b4ef7eb0465e774c1a954f7c762" name="ga26951b4ef7eb0465e774c1a954f7c762"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga26951b4ef7eb0465e774c1a954f7c762">&#9670;&nbsp;</a></span>tusb_desc_device_t</h2>
+<a id="ga56e3c57225a4a7b7207c28f31a7789a8" name="ga56e3c57225a4a7b7207c28f31a7789a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga56e3c57225a4a7b7207c28f31a7789a8">&#9670;&nbsp;</a></span>tusb_desc_device_t</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef struct <a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html">TU_ATTR_PACKED</a> <a class="el" href="group___u_s_b_def___type.html#ga26951b4ef7eb0465e774c1a954f7c762">tusb_desc_device_t</a></td>
+          <td class="memname">typedef TU_ATTR_PACKED_BEGIN TU_ATTR_BIT_FIELD_ORDER_BEGIN struct <a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html">TU_ATTR_PACKED</a> <a class="el" href="group___u_s_b_def___type.html#ga56e3c57225a4a7b7207c28f31a7789a8">tusb_desc_device_t</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>USB Device Descriptor. </p>
+
+</div>
+</div>
+<a id="gabbdba82f013b9af79c72a0889af31859" name="gabbdba82f013b9af79c72a0889af31859"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gabbdba82f013b9af79c72a0889af31859">&#9670;&nbsp;</a></span>tusb_desc_dfu_functional_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef struct <a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html">TU_ATTR_PACKED</a> <a class="el" href="group___u_s_b_def___type.html#gabbdba82f013b9af79c72a0889af31859">tusb_desc_dfu_functional_t</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -532,8 +563,8 @@ Variables</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
-<a id="gaaf105ae5beaca1dee30ae54530691fce" name="gaaf105ae5beaca1dee30ae54530691fce"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaaf105ae5beaca1dee30ae54530691fce">&#9670;&nbsp;</a></span>anonymous enum</h2>
+<a id="gafa231099d07583c3ed0981e0bb665f55" name="gafa231099d07583c3ed0981e0bb665f55"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gafa231099d07583c3ed0981e0bb665f55">&#9670;&nbsp;</a></span>anonymous enum</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -544,16 +575,16 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ggaaf105ae5beaca1dee30ae54530691fcea7d6c573ab243f61df3473d5f09417875" name="ggaaf105ae5beaca1dee30ae54530691fcea7d6c573ab243f61df3473d5f09417875"></a>TUSB_DESC_CONFIG_ATT_REMOTE_WAKEUP&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="ggaaf105ae5beaca1dee30ae54530691fceab8c4e6066fdbe969da821d02bc1adacb" name="ggaaf105ae5beaca1dee30ae54530691fceab8c4e6066fdbe969da821d02bc1adacb"></a>TUSB_DESC_CONFIG_ATT_SELF_POWERED&#160;</td><td class="fielddoc"></td></tr>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ggafa231099d07583c3ed0981e0bb665f55a7d6c573ab243f61df3473d5f09417875" name="ggafa231099d07583c3ed0981e0bb665f55a7d6c573ab243f61df3473d5f09417875"></a>TUSB_DESC_CONFIG_ATT_REMOTE_WAKEUP&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ggafa231099d07583c3ed0981e0bb665f55ab8c4e6066fdbe969da821d02bc1adacb" name="ggafa231099d07583c3ed0981e0bb665f55ab8c4e6066fdbe969da821d02bc1adacb"></a>TUSB_DESC_CONFIG_ATT_SELF_POWERED&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00207">207</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00219">219</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
 
 </div>
 </div>
-<a id="ga80155586fa275b28773c9b203f52caba" name="ga80155586fa275b28773c9b203f52caba"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga80155586fa275b28773c9b203f52caba">&#9670;&nbsp;</a></span>anonymous enum</h2>
+<a id="ga394b3903fbf00ba2b6243f60689a5a5f" name="ga394b3903fbf00ba2b6243f60689a5a5f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga394b3903fbf00ba2b6243f60689a5a5f">&#9670;&nbsp;</a></span>anonymous enum</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -564,16 +595,16 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga80155586fa275b28773c9b203f52cabaa7b0bfe73ad193a4aab08993e9fabf428" name="gga80155586fa275b28773c9b203f52cabaa7b0bfe73ad193a4aab08993e9fabf428"></a>DESC_OFFSET_LEN&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="gga80155586fa275b28773c9b203f52cabaae9b31577bb641dd4a39d6091be145bf6" name="gga80155586fa275b28773c9b203f52cabaae9b31577bb641dd4a39d6091be145bf6"></a>DESC_OFFSET_TYPE&#160;</td><td class="fielddoc"></td></tr>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga394b3903fbf00ba2b6243f60689a5a5fa7b0bfe73ad193a4aab08993e9fabf428" name="gga394b3903fbf00ba2b6243f60689a5a5fa7b0bfe73ad193a4aab08993e9fabf428"></a>DESC_OFFSET_LEN&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="gga394b3903fbf00ba2b6243f60689a5a5fae9b31577bb641dd4a39d6091be145bf6" name="gga394b3903fbf00ba2b6243f60689a5a5fae9b31577bb641dd4a39d6091be145bf6"></a>DESC_OFFSET_TYPE&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00229">229</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00241">241</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
 
 </div>
 </div>
-<a id="ga6b7b47dd702d9e331586d485013fd1ea" name="ga6b7b47dd702d9e331586d485013fd1ea"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga6b7b47dd702d9e331586d485013fd1ea">&#9670;&nbsp;</a></span>anonymous enum</h2>
+<a id="gac205be2172292384dd687b5471a87edd" name="gac205be2172292384dd687b5471a87edd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac205be2172292384dd687b5471a87edd">&#9670;&nbsp;</a></span>anonymous enum</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -584,15 +615,15 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga6b7b47dd702d9e331586d485013fd1eaa864a113f67c0537a7d0cfd1df7c04974" name="gga6b7b47dd702d9e331586d485013fd1eaa864a113f67c0537a7d0cfd1df7c04974"></a>INTERFACE_INVALID_NUMBER&#160;</td><td class="fielddoc"></td></tr>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ggac205be2172292384dd687b5471a87edda864a113f67c0537a7d0cfd1df7c04974" name="ggac205be2172292384dd687b5471a87edda864a113f67c0537a7d0cfd1df7c04974"></a>INTERFACE_INVALID_NUMBER&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00235">235</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00247">247</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
 
 </div>
 </div>
-<a id="gaf9bdc3014f3d54c426b6d2df10de4960" name="gaf9bdc3014f3d54c426b6d2df10de4960"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaf9bdc3014f3d54c426b6d2df10de4960">&#9670;&nbsp;</a></span>anonymous enum</h2>
+<a id="ga157d5577a5b2f5986037d0d09c7dc77d" name="ga157d5577a5b2f5986037d0d09c7dc77d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga157d5577a5b2f5986037d0d09c7dc77d">&#9670;&nbsp;</a></span>anonymous enum</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -603,12 +634,12 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ggaf9bdc3014f3d54c426b6d2df10de4960af17ae8688f98708446ce909eb0e83c7c" name="ggaf9bdc3014f3d54c426b6d2df10de4960af17ae8688f98708446ce909eb0e83c7c"></a>CONTROL_STAGE_SETUP&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="ggaf9bdc3014f3d54c426b6d2df10de4960ae5d89e21948588e11d6564fdf0e66c0b" name="ggaf9bdc3014f3d54c426b6d2df10de4960ae5d89e21948588e11d6564fdf0e66c0b"></a>CONTROL_STAGE_DATA&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="ggaf9bdc3014f3d54c426b6d2df10de4960a18079efec0cdb821f24b437b646b864d" name="ggaf9bdc3014f3d54c426b6d2df10de4960a18079efec0cdb821f24b437b646b864d"></a>CONTROL_STAGE_ACK&#160;</td><td class="fielddoc"></td></tr>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga157d5577a5b2f5986037d0d09c7dc77daf17ae8688f98708446ce909eb0e83c7c" name="gga157d5577a5b2f5986037d0d09c7dc77daf17ae8688f98708446ce909eb0e83c7c"></a>CONTROL_STAGE_SETUP&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="gga157d5577a5b2f5986037d0d09c7dc77dae5d89e21948588e11d6564fdf0e66c0b" name="gga157d5577a5b2f5986037d0d09c7dc77dae5d89e21948588e11d6564fdf0e66c0b"></a>CONTROL_STAGE_DATA&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="gga157d5577a5b2f5986037d0d09c7dc77da18079efec0cdb821f24b437b646b864d" name="gga157d5577a5b2f5986037d0d09c7dc77da18079efec0cdb821f24b437b646b864d"></a>CONTROL_STAGE_ACK&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00254">254</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00266">266</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
 
 </div>
 </div>
@@ -628,7 +659,7 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="ggafcb8687b2ccbc3b5c207701a15568c18a79a3c871879d9fedd7d22f7128cd8c50" name="ggafcb8687b2ccbc3b5c207701a15568c18a79a3c871879d9fedd7d22f7128cd8c50"></a>APP_SUBCLASS_DFU_RUNTIME&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00181">181</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00193">193</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
 
 </div>
 </div>
@@ -662,7 +693,7 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="ggae8dad3738b9ff604cc3cdedf28cf2245a3fe095ac397247a61afc055e78974286" name="ggae8dad3738b9ff604cc3cdedf28cf2245a3fe095ac397247a61afc055e78974286"></a>DEVICE_CAPABILITY_CONFIGURATION_SUMMARY&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00187">187</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00199">199</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
 
 </div>
 </div>
@@ -689,7 +720,7 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="ggaeb2f72368db30eb42854ed359c37ef2da2f7940f495e1a996692f474a456d63d6" name="ggaeb2f72368db30eb42854ed359c37ef2da2f7940f495e1a996692f474a456d63d6"></a>MS_OS_20_FEATURE_VENDOR_REVISION&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00241">241</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00253">253</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
 
 </div>
 </div>
@@ -708,7 +739,7 @@ Variables</h2></td></tr>
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga5724637351ad72f54af87503067e713cafd40ae4e11db256c97dd9b750beeec81" name="gga5724637351ad72f54af87503067e713cafd40ae4e11db256c97dd9b750beeec81"></a>MISC_PROTOCOL_IAD&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00176">176</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00188">188</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
 
 </div>
 </div>
@@ -727,7 +758,7 @@ Variables</h2></td></tr>
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga0203a5979a4fc3e98387db53acb0511cae9eb76a5fe9501ce2a4ad1993583d76b" name="gga0203a5979a4fc3e98387db53acb0511cae9eb76a5fe9501ce2a4ad1993583d76b"></a>MISC_SUBCLASS_COMMON&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00171">171</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00183">183</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
 
 </div>
 </div>
@@ -767,7 +798,7 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="gga163997b8e3d823786be70e2f192e87f6ac75b0461cb2e6bfa9dee751a7256bc56" name="gga163997b8e3d823786be70e2f192e87f6ac75b0461cb2e6bfa9dee751a7256bc56"></a>TUSB_CLASS_VENDOR_SPECIFIC&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00144">144</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00156">156</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
 
 </div>
 </div>
@@ -808,7 +839,7 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="ggacb5e6c763fa4283e1be386759d1dfc13ad5e4f7dc08dd58557246f2aff148cbd7" name="ggacb5e6c763fa4283e1be386759d1dfc13ad5e4f7dc08dd58557246f2aff148cbd7"></a>TUSB_DESC_SUPERSPEED_ISO_ENDPOINT_COMPANION&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00073">73</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00085">85</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
 
 </div>
 </div>
@@ -831,7 +862,7 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="gga338a80b2964f1b2fd8ce2bc6b349579daf69269296278a6089ba978a42b515ae8" name="gga338a80b2964f1b2fd8ce2bc6b349579daf69269296278a6089ba978a42b515ae8"></a>TUSB_DEVICE_STATE_SUSPENDED&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00215">215</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00227">227</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
 
 </div>
 </div>
@@ -853,6 +884,36 @@ Variables</h2></td></tr>
 </table>
 
 <p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00064">64</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
+
+</div>
+</div>
+<a id="ga333727ea541808f5c815adec3b2888c2" name="ga333727ea541808f5c815adec3b2888c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga333727ea541808f5c815adec3b2888c2">&#9670;&nbsp;</a></span>tusb_iso_ep_attribute_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group___u_s_b_def___type.html#ga333727ea541808f5c815adec3b2888c2">tusb_iso_ep_attribute_t</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Isochronous End Point Attributes. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga333727ea541808f5c815adec3b2888c2a6c02aa49f1981446327a6ae4f0f0e913" name="gga333727ea541808f5c815adec3b2888c2a6c02aa49f1981446327a6ae4f0f0e913"></a>TUSB_ISO_EP_ATT_NO_SYNC&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="gga333727ea541808f5c815adec3b2888c2a6056229f7bed07909ef2c8f273efe6b0" name="gga333727ea541808f5c815adec3b2888c2a6056229f7bed07909ef2c8f273efe6b0"></a>TUSB_ISO_EP_ATT_ASYNCHRONOUS&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="gga333727ea541808f5c815adec3b2888c2abc7974a647c2e2afb3c5e3aac2f6af21" name="gga333727ea541808f5c815adec3b2888c2abc7974a647c2e2afb3c5e3aac2f6af21"></a>TUSB_ISO_EP_ATT_ADAPTIVE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="gga333727ea541808f5c815adec3b2888c2a7828338884de6c23bf0f031cab3322e1" name="gga333727ea541808f5c815adec3b2888c2a7828338884de6c23bf0f031cab3322e1"></a>TUSB_ISO_EP_ATT_SYNCHRONOUS&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="gga333727ea541808f5c815adec3b2888c2acd2cc791e4add9166c33d45eea5b553a" name="gga333727ea541808f5c815adec3b2888c2acd2cc791e4add9166c33d45eea5b553a"></a>TUSB_ISO_EP_ATT_DATA&#160;</td><td class="fielddoc"><p >Data End Point. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga333727ea541808f5c815adec3b2888c2a93b4e5aa895d454902e51bc4a0ef8d78" name="gga333727ea541808f5c815adec3b2888c2a93b4e5aa895d454902e51bc4a0ef8d78"></a>TUSB_ISO_EP_ATT_EXPLICIT_FB&#160;</td><td class="fielddoc"><p >Feedback End Point. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga333727ea541808f5c815adec3b2888c2a2fa77227b919236ccef44cf15e540719" name="gga333727ea541808f5c815adec3b2888c2a2fa77227b919236ccef44cf15e540719"></a>TUSB_ISO_EP_ATT_IMPLICIT_FB&#160;</td><td class="fielddoc"><p >Data endpoint that also serves as an implicit feedback. </p>
+</td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00073">73</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
 
 </div>
 </div>
@@ -883,7 +944,7 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="gga0ce8a24b63587d1b3ad6a73d53b9b5d7ac91a5c9ace6424b730e5bf42706a1756" name="gga0ce8a24b63587d1b3ad6a73d53b9b5d7ac91a5c9ace6424b730e5bf42706a1756"></a>TUSB_REQ_SYNCH_FRAME&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00103">103</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00115">115</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
 
 </div>
 </div>
@@ -904,7 +965,7 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="ggad250e0d10446aed6277a6c42671b351aaefed3f4a61e6b6438507ce2ff33820d8" name="ggad250e0d10446aed6277a6c42671b351aaefed3f4a61e6b6438507ce2ff33820d8"></a>TUSB_REQ_FEATURE_TEST_MODE&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00120">120</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00132">132</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
 
 </div>
 </div>
@@ -926,7 +987,7 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="gga7edb52971e0f0a9fa25fbc3a55469a98af47138b6b25e16011afde2118664af8a" name="gga7edb52971e0f0a9fa25fbc3a55469a98af47138b6b25e16011afde2118664af8a"></a>TUSB_REQ_RCPT_OTHER&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00135">135</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00147">147</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
 
 </div>
 </div>
@@ -948,7 +1009,7 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="ggabbeae90d995af4a347e21ab82eec9456a55e355240419a46cbae6e5858ddac12a" name="ggabbeae90d995af4a347e21ab82eec9456a55e355240419a46cbae6e5858ddac12a"></a>TUSB_REQ_TYPE_INVALID&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00127">127</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00139">139</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
 
 </div>
 </div>
@@ -993,55 +1054,11 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="gga6a3b3a4d6801fd9b02feb0510c84e5f9afd15857b96b2f33fd3139cce70c61a09" name="gga6a3b3a4d6801fd9b02feb0510c84e5f9afd15857b96b2f33fd3139cce70c61a09"></a>XFER_RESULT_STALLED&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00222">222</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00234">234</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="ga7af729bb868b8672878a098ff9cde15e" name="ga7af729bb868b8672878a098ff9cde15e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga7af729bb868b8672878a098ff9cde15e">&#9670;&nbsp;</a></span>bm_request_type()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static uint8_t bm_request_type </td>
-          <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>direction</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>type</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>recipient</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00447">447</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
-
-</div>
-</div>
 <a id="ga874af9e4300217d76323918b61a0fc93" name="ga874af9e4300217d76323918b61a0fc93"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga874af9e4300217d76323918b61a0fc93">&#9670;&nbsp;</a></span>tu_desc_len()</h2>
 
@@ -1066,7 +1083,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00487">487</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00535">535</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
 
 </div>
 </div>
@@ -1094,7 +1111,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00476">476</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00524">524</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
 
 </div>
 </div>
@@ -1122,7 +1139,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00482">482</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00530">530</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
 
 </div>
 </div>
@@ -1160,12 +1177,12 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00468">468</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00511">511</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
 
 </div>
 </div>
-<a id="gaaa353f2da73c8d7c4dda783341e4c681" name="gaaa353f2da73c8d7c4dda783341e4c681"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaaa353f2da73c8d7c4dda783341e4c681">&#9670;&nbsp;</a></span>tu_edpt_dir()</h2>
+<a id="ga4d579630893352ad521ab3be2719e253" name="ga4d579630893352ad521ab3be2719e253"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4d579630893352ad521ab3be2719e253">&#9670;&nbsp;</a></span>tu_edpt_dir()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1174,7 +1191,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static <a class="el" href="group___u_s_b_def___type.html#ga0c1b25b161b272f5f39e4ba49478289c">tusb_dir_t</a> tu_edpt_dir </td>
+          <td class="memname">TU_ATTR_PACKED_END static TU_ATTR_BIT_FIELD_ORDER_END <a class="el" href="group___u_s_b_def___type.html#ga0c1b25b161b272f5f39e4ba49478289c">tusb_dir_t</a> tu_edpt_dir </td>
           <td>(</td>
           <td class="paramtype">uint8_t&#160;</td>
           <td class="paramname"><em>addr</em></td><td>)</td>
@@ -1188,7 +1205,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00457">457</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00500">500</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
 
 </div>
 </div>
@@ -1216,12 +1233,40 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00463">463</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00506">506</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
 
 </div>
 </div>
-<a id="gae2054465c7ed133c1b2ff71ff5101257" name="gae2054465c7ed133c1b2ff71ff5101257"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gae2054465c7ed133c1b2ff71ff5101257">&#9670;&nbsp;</a></span>TU_VERIFY_STATIC()</h2>
+<a id="ga8d47219fcaf031b9d37eb860f65e7c4c" name="ga8d47219fcaf031b9d37eb860f65e7c4c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga8d47219fcaf031b9d37eb860f65e7c4c">&#9670;&nbsp;</a></span>tu_edpt_packet_size()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static uint16_t tu_edpt_packet_size </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga95906f860c391cedba638b1946669694">tusb_desc_endpoint_t</a> const *&#160;</td>
+          <td class="paramname"><em>desc_ep</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00516">516</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
+
+</div>
+</div>
+<a id="ga03bdd55b38209b6f6d64494bb2d62c9d" name="ga03bdd55b38209b6f6d64494bb2d62c9d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga03bdd55b38209b6f6d64494bb2d62c9d">&#9670;&nbsp;</a></span>TU_VERIFY_STATIC() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1229,7 +1274,35 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">TU_VERIFY_STATIC </td>
           <td>(</td>
-          <td class="paramtype">sizeof(<a class="el" href="group___u_s_b_def___type.html#ga26951b4ef7eb0465e774c1a954f7c762">tusb_desc_device_t</a>)&#160;</td>
+          <td class="paramtype">sizeof(<a class="el" href="group___u_s_b_def___type.html#ga37592c8d292e3794f94d6d81c4c266fc">tusb_desc_bos_t</a>)&#160;</td>
+          <td class="paramname"> = <code>=5</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&quot;size is not correct&quot;&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gae2054465c7ed133c1b2ff71ff5101257" name="gae2054465c7ed133c1b2ff71ff5101257"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae2054465c7ed133c1b2ff71ff5101257">&#9670;&nbsp;</a></span>TU_VERIFY_STATIC() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TU_VERIFY_STATIC </td>
+          <td>(</td>
+          <td class="paramtype">sizeof(<a class="el" href="group___u_s_b_def___type.html#ga56e3c57225a4a7b7207c28f31a7789a8">tusb_desc_device_t</a>)&#160;</td>
           <td class="paramname"> = <code>=18</code>, </td>
         </tr>
         <tr>
@@ -1278,8 +1351,8 @@ Variables</h2></td></tr>
 <div class="line"><span class="keyword">typedef</span> <span class="keyword">enum</span></div>
 <div class="line">{</div>
 <div class="line">  TUSB_SPEED_FULL = 0,</div>
-<div class="line">  TUSB_SPEED_LOW     ,</div>
-<div class="line">  TUSB_SPEED_HIGH,</div>
+<div class="line">  TUSB_SPEED_LOW  = 1,</div>
+<div class="line">  TUSB_SPEED_HIGH = 2,</div>
 <div class="line">  TUSB_SPEED_INVALID = 0xff,</div>
 <div class="line">}tusb_speed_t</div>
 </div><!-- fragment -->

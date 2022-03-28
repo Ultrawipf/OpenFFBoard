@@ -8,7 +8,7 @@ var msc__host_8c =
     [ "config_test_unit_ready_complete", "msc__host_8c.html#a096209d281ca1d5b7a288a527a15019d", null ],
     [ "msch_close", "msc__host_8c.html#a6807cd61b3cd2833ade45c7f58663081", null ],
     [ "msch_init", "msc__host_8c.html#adf532c93b1dfd28c649e2af47c874221", null ],
-    [ "msch_open", "msc__host_8c.html#a0248b81f79d844502b38ced9b7dee244", null ],
+    [ "msch_open", "msc__host_8c.html#a54d2ca02074b5424dc3b48b99a0a9a60", null ],
     [ "msch_set_config", "msc__host_8c.html#a7286232fd0875aa0f3e6129459279dbc", null ],
     [ "msch_xfer_cb", "msc__host_8c.html#a9cd6b09df7e5d6ec3e1b00e5c1e98e7f", null ],
     [ "TU_ATTR_ALIGNED", "msc__host_8c.html#ae877b140d54118e337eaf9d46a364361", null ],
@@ -25,5 +25,5 @@ var msc__host_8c =
     [ "tuh_msc_scsi_command", "msc__host_8c.html#a19ff5d9727b3c5b4fca5357c80e17415", null ],
     [ "tuh_msc_test_unit_ready", "msc__host_8c.html#af0948ad5451e6421f21bee6547d7cf06", null ],
     [ "tuh_msc_write10", "msc__host_8c.html#ae0e9867c10480442a421b626c97574bf", null ],
-    [ "_msch_itf", "msc__host_8c.html#ab54d1cdfcb06c38a897082b85138906a", null ]
+    [ "_msch_itf", "msc__host_8c.html#a389bc6ee1a3770f2d35f9afc291a60c1", null ]
 ];

@@ -1,8 +1,8 @@
 var midi__device_8c =
 [
+    [ "midid_stream_t", "structmidid__stream__t.html", "structmidid__stream__t" ],
     [ "midid_interface_t", "structmidid__interface__t.html", "structmidid__interface__t" ],
     [ "_prep_out_transaction", "midi__device_8c.html#ace906c0c7011af9d6a27b946b6e7c029", null ],
-    [ "midi_rx_done_cb", "midi__device_8c.html#aae114b553195a6189e9cb3394f494c62", null ],
     [ "midid_control_xfer_cb", "midi__device_8c.html#af909f14053ada6d6142e28ad2a03fc77", null ],
     [ "midid_init", "midi__device_8c.html#a5807ad9ef77b35341944e974045cab9f", null ],
     [ "midid_open", "midi__device_8c.html#a919c79a0c4eb2929dc59ff5eddba782a", null ],
@@ -10,11 +10,10 @@ var midi__device_8c =
     [ "midid_xfer_cb", "midi__device_8c.html#a5df70feb4ddb9dc8036a318d21645afc", null ],
     [ "tud_midi_n_available", "midi__device_8c.html#a973511da5e026dd009673a6fece4001b", null ],
     [ "tud_midi_n_mounted", "midi__device_8c.html#ad53ab5c30760a6777b9792954c56149b", null ],
-    [ "tud_midi_n_read", "midi__device_8c.html#ae109fd38a566a4b301089e993fe456a2", null ],
-    [ "tud_midi_n_read_flush", "midi__device_8c.html#ac6b31c0a82608510c9256f6387bf3959", null ],
-    [ "tud_midi_n_receive", "midi__device_8c.html#a39f89c058782f58d47f0036f0a6d3ec8", null ],
-    [ "tud_midi_n_send", "midi__device_8c.html#a139b8d932812ac02266880d85ee2f51b", null ],
-    [ "tud_midi_n_write", "midi__device_8c.html#a39ae902f727de475e76880654ba5e7ee", null ],
+    [ "tud_midi_n_packet_read", "midi__device_8c.html#ad7f40b6d93b4219b15ff53e321ace473", null ],
+    [ "tud_midi_n_packet_write", "midi__device_8c.html#a0189a81d56933d379e6a01375492598f", null ],
+    [ "tud_midi_n_stream_read", "midi__device_8c.html#a61455422910fa3045697ab3821d3b919", null ],
+    [ "tud_midi_n_stream_write", "midi__device_8c.html#a34a1dd0d1069e5a2fae5b7d5afd9bcbb", null ],
     [ "write_flush", "midi__device_8c.html#a8c9a07ef0d445077e24612b47760a7c2", null ],
     [ "_midid_itf", "midi__device_8c.html#a51536aab992f2cf09a58bcebe8376d25", null ]
 ];

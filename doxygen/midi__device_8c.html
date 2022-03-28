@@ -96,6 +96,8 @@ $(document).ready(function(){initNavTree('midi__device_8c.html',''); initResizab
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmidid__stream__t.html">midid_stream_t</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmidid__interface__t.html">midid_interface_t</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -107,20 +109,16 @@ Functions</h2></td></tr>
 <tr class="separator:ace906c0c7011af9d6a27b946b6e7c029"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a973511da5e026dd009673a6fece4001b"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="midi__device_8c.html#a973511da5e026dd009673a6fece4001b">tud_midi_n_available</a> (uint8_t itf, uint8_t cable_num)</td></tr>
 <tr class="separator:a973511da5e026dd009673a6fece4001b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae109fd38a566a4b301089e993fe456a2"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="midi__device_8c.html#ae109fd38a566a4b301089e993fe456a2">tud_midi_n_read</a> (uint8_t itf, uint8_t cable_num, void *buffer, uint32_t bufsize)</td></tr>
-<tr class="separator:ae109fd38a566a4b301089e993fe456a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac6b31c0a82608510c9256f6387bf3959"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="midi__device_8c.html#ac6b31c0a82608510c9256f6387bf3959">tud_midi_n_read_flush</a> (uint8_t itf, uint8_t cable_num)</td></tr>
-<tr class="separator:ac6b31c0a82608510c9256f6387bf3959"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a39f89c058782f58d47f0036f0a6d3ec8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="midi__device_8c.html#a39f89c058782f58d47f0036f0a6d3ec8">tud_midi_n_receive</a> (uint8_t itf, uint8_t packet[4])</td></tr>
-<tr class="separator:a39f89c058782f58d47f0036f0a6d3ec8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aae114b553195a6189e9cb3394f494c62"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="midi__device_8c.html#aae114b553195a6189e9cb3394f494c62">midi_rx_done_cb</a> (<a class="el" href="structmidid__interface__t.html">midid_interface_t</a> *midi, uint8_t const *buffer, uint32_t bufsize)</td></tr>
-<tr class="separator:aae114b553195a6189e9cb3394f494c62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61455422910fa3045697ab3821d3b919"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="midi__device_8c.html#a61455422910fa3045697ab3821d3b919">tud_midi_n_stream_read</a> (uint8_t itf, uint8_t cable_num, void *<a class="el" href="midi__device_8h.html#ac8733c58bc671239139641960e2d5dbf">buffer</a>, uint32_t <a class="el" href="midi__device_8h.html#aca9aaceac98612802d20cb6983f7669c">bufsize</a>)</td></tr>
+<tr class="separator:a61455422910fa3045697ab3821d3b919"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7f40b6d93b4219b15ff53e321ace473"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="midi__device_8c.html#ad7f40b6d93b4219b15ff53e321ace473">tud_midi_n_packet_read</a> (uint8_t itf, uint8_t packet[4])</td></tr>
+<tr class="separator:ad7f40b6d93b4219b15ff53e321ace473"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8c9a07ef0d445077e24612b47760a7c2"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="midi__device_8c.html#a8c9a07ef0d445077e24612b47760a7c2">write_flush</a> (<a class="el" href="structmidid__interface__t.html">midid_interface_t</a> *midi)</td></tr>
 <tr class="separator:a8c9a07ef0d445077e24612b47760a7c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a39ae902f727de475e76880654ba5e7ee"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="midi__device_8c.html#a39ae902f727de475e76880654ba5e7ee">tud_midi_n_write</a> (uint8_t itf, uint8_t cable_num, uint8_t const *buffer, uint32_t bufsize)</td></tr>
-<tr class="separator:a39ae902f727de475e76880654ba5e7ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a139b8d932812ac02266880d85ee2f51b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="midi__device_8c.html#a139b8d932812ac02266880d85ee2f51b">tud_midi_n_send</a> (uint8_t itf, uint8_t const packet[4])</td></tr>
-<tr class="separator:a139b8d932812ac02266880d85ee2f51b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34a1dd0d1069e5a2fae5b7d5afd9bcbb"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="midi__device_8c.html#a34a1dd0d1069e5a2fae5b7d5afd9bcbb">tud_midi_n_stream_write</a> (uint8_t itf, uint8_t cable_num, uint8_t const *<a class="el" href="midi__device_8h.html#ac8733c58bc671239139641960e2d5dbf">buffer</a>, uint32_t <a class="el" href="midi__device_8h.html#aca9aaceac98612802d20cb6983f7669c">bufsize</a>)</td></tr>
+<tr class="separator:a34a1dd0d1069e5a2fae5b7d5afd9bcbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0189a81d56933d379e6a01375492598f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="midi__device_8c.html#a0189a81d56933d379e6a01375492598f">tud_midi_n_packet_write</a> (uint8_t itf, uint8_t const packet[4])</td></tr>
+<tr class="separator:a0189a81d56933d379e6a01375492598f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5807ad9ef77b35341944e974045cab9f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="midi__device_8c.html#a5807ad9ef77b35341944e974045cab9f">midid_init</a> (void)</td></tr>
 <tr class="separator:a5807ad9ef77b35341944e974045cab9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae2fe979f84a64ca2ab1341ac3bb24c56"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="midi__device_8c.html#ae2fe979f84a64ca2ab1341ac3bb24c56">midid_reset</a> (uint8_t rhport)</td></tr>
@@ -162,43 +160,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="midi__device_8c_source.html#l00088">88</a> of file <a class="el" href="midi__device_8c_source.html">midi_device.c</a>.</p>
-
-</div>
-</div>
-<a id="aae114b553195a6189e9cb3394f494c62" name="aae114b553195a6189e9cb3394f494c62"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aae114b553195a6189e9cb3394f494c62">&#9670;&nbsp;</a></span>midi_rx_done_cb()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void midi_rx_done_cb </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structmidid__interface__t.html">midid_interface_t</a> *&#160;</td>
-          <td class="paramname"><em>midi</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t const *&#160;</td>
-          <td class="paramname"><em>buffer</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>bufsize</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="midi__device_8c_source.html#l00177">177</a> of file <a class="el" href="midi__device_8c_source.html">midi_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="midi__device_8c_source.html#l00093">93</a> of file <a class="el" href="midi__device_8c_source.html">midi_device.c</a>.</p>
 
 </div>
 </div>
@@ -234,7 +196,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="midi__device_8c_source.html#l00410">410</a> of file <a class="el" href="midi__device_8c_source.html">midi_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="midi__device_8c_source.html#l00487">487</a> of file <a class="el" href="midi__device_8c_source.html">midi_device.c</a>.</p>
 
 </div>
 </div>
@@ -254,7 +216,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="midi__device_8c_source.html#l00300">300</a> of file <a class="el" href="midi__device_8c_source.html">midi_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="midi__device_8c_source.html#l00375">375</a> of file <a class="el" href="midi__device_8c_source.html">midi_device.c</a>.</p>
 
 </div>
 </div>
@@ -290,7 +252,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="midi__device_8c_source.html#l00332">332</a> of file <a class="el" href="midi__device_8c_source.html">midi_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="midi__device_8c_source.html#l00407">407</a> of file <a class="el" href="midi__device_8c_source.html">midi_device.c</a>.</p>
 
 </div>
 </div>
@@ -310,7 +272,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="midi__device_8c_source.html#l00319">319</a> of file <a class="el" href="midi__device_8c_source.html">midi_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="midi__device_8c_source.html#l00394">394</a> of file <a class="el" href="midi__device_8c_source.html">midi_device.c</a>.</p>
 
 </div>
 </div>
@@ -352,7 +314,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="midi__device_8c_source.html#l00420">420</a> of file <a class="el" href="midi__device_8c_source.html">midi_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="midi__device_8c_source.html#l00497">497</a> of file <a class="el" href="midi__device_8c_source.html">midi_device.c</a>.</p>
 
 </div>
 </div>
@@ -382,7 +344,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="midi__device_8c_source.html#l00117">117</a> of file <a class="el" href="midi__device_8c_source.html">midi_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="midi__device_8c_source.html#l00122">122</a> of file <a class="el" href="midi__device_8c_source.html">midi_device.c</a>.</p>
 
 </div>
 </div>
@@ -402,18 +364,78 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="midi__device_8c_source.html#l00082">82</a> of file <a class="el" href="midi__device_8c_source.html">midi_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="midi__device_8c_source.html#l00087">87</a> of file <a class="el" href="midi__device_8c_source.html">midi_device.c</a>.</p>
 
 </div>
 </div>
-<a id="ae109fd38a566a4b301089e993fe456a2" name="ae109fd38a566a4b301089e993fe456a2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae109fd38a566a4b301089e993fe456a2">&#9670;&nbsp;</a></span>tud_midi_n_read()</h2>
+<a id="ad7f40b6d93b4219b15ff53e321ace473" name="ad7f40b6d93b4219b15ff53e321ace473"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7f40b6d93b4219b15ff53e321ace473">&#9670;&nbsp;</a></span>tud_midi_n_packet_read()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint32_t tud_midi_n_read </td>
+          <td class="memname">bool tud_midi_n_packet_read </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>itf</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>packet</em>[4]&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="midi__device_8c_source.html#l00203">203</a> of file <a class="el" href="midi__device_8c_source.html">midi_device.c</a>.</p>
+
+</div>
+</div>
+<a id="a0189a81d56933d379e6a01375492598f" name="a0189a81d56933d379e6a01375492598f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0189a81d56933d379e6a01375492598f">&#9670;&nbsp;</a></span>tud_midi_n_packet_write()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool tud_midi_n_packet_write </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>itf</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t const&#160;</td>
+          <td class="paramname"><em>packet</em>[4]&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="midi__device_8c_source.html#l00359">359</a> of file <a class="el" href="midi__device_8c_source.html">midi_device.c</a>.</p>
+
+</div>
+</div>
+<a id="a61455422910fa3045697ab3821d3b919" name="a61455422910fa3045697ab3821d3b919"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a61455422910fa3045697ab3821d3b919">&#9670;&nbsp;</a></span>tud_midi_n_stream_read()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t tud_midi_n_stream_read </td>
           <td>(</td>
           <td class="paramtype">uint8_t&#160;</td>
           <td class="paramname"><em>itf</em>, </td>
@@ -444,108 +466,18 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="midi__device_8c_source.html#l00123">123</a> of file <a class="el" href="midi__device_8c_source.html">midi_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="midi__device_8c_source.html#l00133">133</a> of file <a class="el" href="midi__device_8c_source.html">midi_device.c</a>.</p>
 
 </div>
 </div>
-<a id="ac6b31c0a82608510c9256f6387bf3959" name="ac6b31c0a82608510c9256f6387bf3959"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac6b31c0a82608510c9256f6387bf3959">&#9670;&nbsp;</a></span>tud_midi_n_read_flush()</h2>
+<a id="a34a1dd0d1069e5a2fae5b7d5afd9bcbb" name="a34a1dd0d1069e5a2fae5b7d5afd9bcbb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34a1dd0d1069e5a2fae5b7d5afd9bcbb">&#9670;&nbsp;</a></span>tud_midi_n_stream_write()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void tud_midi_n_read_flush </td>
-          <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>itf</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>cable_num</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="midi__device_8c_source.html#l00161">161</a> of file <a class="el" href="midi__device_8c_source.html">midi_device.c</a>.</p>
-
-</div>
-</div>
-<a id="a39f89c058782f58d47f0036f0a6d3ec8" name="a39f89c058782f58d47f0036f0a6d3ec8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a39f89c058782f58d47f0036f0a6d3ec8">&#9670;&nbsp;</a></span>tud_midi_n_receive()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool tud_midi_n_receive </td>
-          <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>itf</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>packet</em>[4]&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="midi__device_8c_source.html#l00169">169</a> of file <a class="el" href="midi__device_8c_source.html">midi_device.c</a>.</p>
-
-</div>
-</div>
-<a id="a139b8d932812ac02266880d85ee2f51b" name="a139b8d932812ac02266880d85ee2f51b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a139b8d932812ac02266880d85ee2f51b">&#9670;&nbsp;</a></span>tud_midi_n_send()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool tud_midi_n_send </td>
-          <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>itf</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t const&#160;</td>
-          <td class="paramname"><em>packet</em>[4]&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="midi__device_8c_source.html#l00281">281</a> of file <a class="el" href="midi__device_8c_source.html">midi_device.c</a>.</p>
-
-</div>
-</div>
-<a id="a39ae902f727de475e76880654ba5e7ee" name="a39ae902f727de475e76880654ba5e7ee"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a39ae902f727de475e76880654ba5e7ee">&#9670;&nbsp;</a></span>tud_midi_n_write()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint32_t tud_midi_n_write </td>
+          <td class="memname">uint32_t tud_midi_n_stream_write </td>
           <td>(</td>
           <td class="paramtype">uint8_t&#160;</td>
           <td class="paramname"><em>itf</em>, </td>
@@ -576,7 +508,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="midi__device_8c_source.html#l00208">208</a> of file <a class="el" href="midi__device_8c_source.html">midi_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="midi__device_8c_source.html#l00241">241</a> of file <a class="el" href="midi__device_8c_source.html">midi_device.c</a>.</p>
 
 </div>
 </div>
@@ -604,7 +536,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="midi__device_8c_source.html#l00185">185</a> of file <a class="el" href="midi__device_8c_source.html">midi_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="midi__device_8c_source.html#l00217">217</a> of file <a class="el" href="midi__device_8c_source.html">midi_device.c</a>.</p>
 
 </div>
 </div>
@@ -621,7 +553,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="midi__device_8c_source.html#l00080">80</a> of file <a class="el" href="midi__device_8c_source.html">midi_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="midi__device_8c_source.html#l00085">85</a> of file <a class="el" href="midi__device_8c_source.html">midi_device.c</a>.</p>
 
 </div>
 </div>

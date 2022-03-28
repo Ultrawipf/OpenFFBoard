@@ -165,26 +165,10 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a56d1a83c1f4d5195bc04b7381dd03a55"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a1ede5afcf2a5a639d2f8e4444147ab"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#a5a1ede5afcf2a5a639d2f8e4444147ab">__pad0__</a>: 2</td></tr>
 <tr class="separator:a5a1ede5afcf2a5a639d2f8e4444147ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1f718a4f3707b79dba3342d9c378e0d7"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#a1f718a4f3707b79dba3342d9c378e0d7">size</a>: 11</td></tr>
-<tr class="memdesc:a1f718a4f3707b79dba3342d9c378e0d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum packet size this endpoint is capable of sending or receiving when this configuration is selected. <br  />
- For isochronous endpoints, this value is used to reserve the bus time in the schedule, required for the per-(micro)frame data payloads. The pipe may, on an ongoing basis, actually use less bandwidth than that reserved. The device reports, if necessary, the actual bandwidth used via its normal, non-USB defined mechanisms. <br  />
- For all endpoints, bits 10..0 specify the maximum packet size (in bytes). <br  />
- For high-speed isochronous and interrupt endpoints: <br  />
- Bits 12..11 specify the number of additional transaction opportunities per microframe: <br  />
-- 00 = None (1 transaction per microframe) <br  />
-- 01 = 1 additional (2 per microframe) <br  />
-- 10 = 2 additional (3 per microframe) <br  />
-- 11 = Reserved <br  />
- Bits 15..13 are reserved and must be set to zero.  <a href="struct_t_u___a_t_t_r___p_a_c_k_e_d_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#a1f718a4f3707b79dba3342d9c378e0d7">More...</a><br /></td></tr>
-<tr class="separator:a1f718a4f3707b79dba3342d9c378e0d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa9f726c014fcf2fb1167e865780cf39b"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#aa9f726c014fcf2fb1167e865780cf39b">hs_period_mult</a>: 2</td></tr>
-<tr class="separator:aa9f726c014fcf2fb1167e865780cf39b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a20e3bbcfc570dbf74298dad2d71a499c"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#a20e3bbcfc570dbf74298dad2d71a499c">TU_RESERVED</a>: 3</td></tr>
-<tr class="separator:a20e3bbcfc570dbf74298dad2d71a499c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00784">784</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00756">756</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
 <a id="a5a1ede5afcf2a5a639d2f8e4444147ab" name="a5a1ede5afcf2a5a639d2f8e4444147ab"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5a1ede5afcf2a5a639d2f8e4444147ab">&#9670;&nbsp;</a></span>__pad0__</h2>
@@ -198,7 +182,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00339">339</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00361">361</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
 
 </div>
 </div>
@@ -216,7 +200,7 @@ Public Attributes</h2></td></tr>
 
 <p>See: audio_feature_unit_control_pos_t. Controls0 is master channel 0 (always present) and Controls1 is logical channel 1. </p>
 
-<p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00785">785</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00757">757</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
 
 </div>
 </div>
@@ -232,7 +216,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00868">868</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00867">867</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
 
 </div>
 </div>
@@ -248,7 +232,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00878">878</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00877">877</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
 
 </div>
 </div>
@@ -264,7 +248,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00888">888</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00887">887</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
 
 </div>
 </div>
@@ -280,7 +264,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00867">867</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00866">866</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
 
 </div>
 </div>
@@ -296,7 +280,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00877">877</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00876">876</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
 
 </div>
 </div>
@@ -312,7 +296,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00887">887</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00886">886</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
 
 </div>
 </div>
@@ -328,7 +312,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00869">869</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00868">868</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
 
 </div>
 </div>
@@ -344,7 +328,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00879">879</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00878">878</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
 
 </div>
 </div>
@@ -360,7 +344,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00889">889</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="audio_8h_source.html#l00888">888</a> of file <a class="el" href="audio_8h_source.html">audio.h</a>.</p>
 
 </div>
 </div>
@@ -466,22 +450,6 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="aa9f726c014fcf2fb1167e865780cf39b" name="aa9f726c014fcf2fb1167e865780cf39b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa9f726c014fcf2fb1167e865780cf39b">&#9670;&nbsp;</a></span>hs_period_mult</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint16_t TU_ATTR_PACKED::TU_ATTR_PACKED::hs_period_mult</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00344">344</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
-
-</div>
-</div>
 <a id="a6f19e9484d321ac33cfca25d54fd3110" name="a6f19e9484d321ac33cfca25d54fd3110"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6f19e9484d321ac33cfca25d54fd3110">&#9670;&nbsp;</a></span>is488_2</h2>
 
@@ -562,33 +530,6 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a1f718a4f3707b79dba3342d9c378e0d7" name="a1f718a4f3707b79dba3342d9c378e0d7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1f718a4f3707b79dba3342d9c378e0d7">&#9670;&nbsp;</a></span>size</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint16_t TU_ATTR_PACKED::TU_ATTR_PACKED::size</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Maximum packet size this endpoint is capable of sending or receiving when this configuration is selected. <br  />
- For isochronous endpoints, this value is used to reserve the bus time in the schedule, required for the per-(micro)frame data payloads. The pipe may, on an ongoing basis, actually use less bandwidth than that reserved. The device reports, if necessary, the actual bandwidth used via its normal, non-USB defined mechanisms. <br  />
- For all endpoints, bits 10..0 specify the maximum packet size (in bytes). <br  />
- For high-speed isochronous and interrupt endpoints: <br  />
- Bits 12..11 specify the number of additional transaction opportunities per microframe: <br  />
-- 00 = None (1 transaction per microframe) <br  />
-- 01 = 1 additional (2 per microframe) <br  />
-- 10 = 2 additional (3 per microframe) <br  />
-- 11 = Reserved <br  />
- Bits 15..13 are reserved and must be set to zero. </p>
-
-<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00343">343</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
-
-</div>
-</div>
 <a id="ade344a397edb855adeada6a7dc70896c" name="ade344a397edb855adeada6a7dc70896c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ade344a397edb855adeada6a7dc70896c">&#9670;&nbsp;</a></span>SR1</h2>
 
@@ -665,7 +606,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00337">337</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00359">359</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
 
 </div>
 </div>
@@ -703,22 +644,6 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a20e3bbcfc570dbf74298dad2d71a499c" name="a20e3bbcfc570dbf74298dad2d71a499c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a20e3bbcfc570dbf74298dad2d71a499c">&#9670;&nbsp;</a></span>TU_RESERVED</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint16_t TU_ATTR_PACKED::TU_ATTR_PACKED::TU_RESERVED</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00345">345</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
-
-</div>
-</div>
 <a id="a56d1a83c1f4d5195bc04b7381dd03a55" name="a56d1a83c1f4d5195bc04b7381dd03a55"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a56d1a83c1f4d5195bc04b7381dd03a55">&#9670;&nbsp;</a></span>usage</h2>
 
@@ -731,7 +656,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00338">338</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00360">360</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
 
 </div>
 </div>
@@ -765,7 +690,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00336">336</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__types_8h_source.html#l00358">358</a> of file <a class="el" href="tusb__types_8h_source.html">tusb_types.h</a>.</p>
 
 </div>
 </div>

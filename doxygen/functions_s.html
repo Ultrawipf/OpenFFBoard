@@ -89,7 +89,8 @@ $(document).ready(function(){initNavTree('functions_s.html',''); initResizable()
 <h3><a id="index_s" name="index_s"></a>- s -</h3><ul>
 <li>samplePeriod&#160;:&#160;<a class="el" href="struct____attribute____.html#a7aad7d4014fd89761840fca65390fb40">__attribute__</a>, <a class="el" href="struct_f_f_b___effect.html#aca55e76765c951d7260da9bf5d5c9cf6">FFB_Effect</a></li>
 <li>samples&#160;:&#160;<a class="el" href="class_fast_avg.html#a90a4866b8b521c289a0db8134d62d545">FastAvg&lt; LEN &gt;</a></li>
-<li>saveFlash()&#160;:&#160;<a class="el" href="class_axes_manager.html#acf1ba339855959c30f0a8ecfacc49671">AxesManager</a>, <a class="el" href="class_axis.html#ad0bdf4a78c80f7b82293be9a540846ed">Axis</a>, <a class="el" href="class_effects_calculator.html#ae11b5eebae3f30eb9e16053d958a8ce8">EffectsCalculator</a>, <a class="el" href="class_encoder_local.html#a70014faf65d51ca9133ae560387f3f87">EncoderLocal</a>, <a class="el" href="class_f_f_b_wheel.html#ae28cadd9926e4a4a703311b0688062ba">FFBWheel</a>, <a class="el" href="class_local_analog.html#a6212f3a5cdc8209c0cc6b7c7dde7fe1c">LocalAnalog</a>, <a class="el" href="class_local_buttons.html#a83177d23aeea9bfe8a90d75eee957449">LocalButtons</a>, <a class="el" href="class_motor_p_w_m.html#a04d925329fb425185f5d12c972e395e9">MotorPWM</a>, <a class="el" href="class_mt_encoder_s_p_i.html#a3f277a29d31711a8f5e02729d8c3aa67">MtEncoderSPI</a>, <a class="el" href="class_o_drive_c_a_n.html#a6e7835f8f6d70262cbf64cb25f987bae">ODriveCAN</a>, <a class="el" href="class_persistent_storage.html#a105599e99ab0e4244a531c2286f2ffa2">PersistentStorage</a>, <a class="el" href="class_shifter_analog.html#a5db074133ff37fc881451bc0c715c363">ShifterAnalog</a>, <a class="el" href="class_s_p_i___buttons.html#aad159b15367d850ec9d33f911cab9a04">SPI_Buttons</a>, <a class="el" href="class_t_m_c4671.html#a05e1e801cf5920c600e99dd9c4ad3e4a">TMC4671</a>, <a class="el" href="class_vesc_c_a_n.html#aaf3479d84911a8245774054321fc1730">VescCAN</a></li>
+<li>saveAdcParams()&#160;:&#160;<a class="el" href="class_t_m_c4671.html#af8e5617292e74ed3ef19d4018084e603">TMC4671</a></li>
+<li>saveFlash()&#160;:&#160;<a class="el" href="class_axes_manager.html#acf1ba339855959c30f0a8ecfacc49671">AxesManager</a>, <a class="el" href="class_axis.html#ad0bdf4a78c80f7b82293be9a540846ed">Axis</a>, <a class="el" href="class_effects_calculator.html#ae11b5eebae3f30eb9e16053d958a8ce8">EffectsCalculator</a>, <a class="el" href="class_encoder_local.html#a70014faf65d51ca9133ae560387f3f87">EncoderLocal</a>, <a class="el" href="class_f_f_b_wheel.html#ae28cadd9926e4a4a703311b0688062ba">FFBWheel</a>, <a class="el" href="class_local_analog.html#a6212f3a5cdc8209c0cc6b7c7dde7fe1c">LocalAnalog</a>, <a class="el" href="class_local_buttons.html#a83177d23aeea9bfe8a90d75eee957449">LocalButtons</a>, <a class="el" href="class_motor_p_w_m.html#a04d925329fb425185f5d12c972e395e9">MotorPWM</a>, <a class="el" href="class_mt_encoder_s_p_i.html#a3f277a29d31711a8f5e02729d8c3aa67">MtEncoderSPI</a>, <a class="el" href="class_o_drive_c_a_n.html#a6e7835f8f6d70262cbf64cb25f987bae">ODriveCAN</a>, <a class="el" href="class_p_c_f8574_buttons.html#a9e838968aea70f12a3c7e9a4e613986d">PCF8574Buttons</a>, <a class="el" href="class_persistent_storage.html#a105599e99ab0e4244a531c2286f2ffa2">PersistentStorage</a>, <a class="el" href="class_shifter_analog.html#a5db074133ff37fc881451bc0c715c363">ShifterAnalog</a>, <a class="el" href="class_s_p_i___buttons.html#aad159b15367d850ec9d33f911cab9a04">SPI_Buttons</a>, <a class="el" href="class_t_m_c4671.html#a05e1e801cf5920c600e99dd9c4ad3e4a">TMC4671</a>, <a class="el" href="class_vesc_c_a_n.html#aaf3479d84911a8245774054321fc1730">VescCAN</a></li>
 <li>saveFlashOffset()&#160;:&#160;<a class="el" href="class_vesc_c_a_n.html#aa186da23c69e64c8c04a411b794e3b46">VescCAN</a></li>
 <li>scaleEncValue()&#160;:&#160;<a class="el" href="class_axis.html#a896f28b56d39de138060d03b483ff05a">Axis</a></li>
 <li>scc_support&#160;:&#160;<a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a705b76bb7e005f60df5e25dce6a6c1c1">TU_ATTR_PACKED</a></li>
@@ -102,26 +103,28 @@ $(document).ready(function(){initNavTree('functions_s.html',''); initResizable()
 <li>self_powered&#160;:&#160;<a class="el" href="structusbd__device__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#a143522bf944462883c9f3d971ddfb62f">usbd_device_t::TU_ATTR_PACKED</a></li>
 <li>semaphore&#160;:&#160;<a class="el" href="class_c_a_n_port.html#a8c57c45de27614276918a25af743198e">CANPort</a></li>
 <li>Semaphore()&#160;:&#160;<a class="el" href="classcpp__freertos_1_1_semaphore.html#ae32c955336ae9e60e20a3facde270714">cpp_freertos::Semaphore</a></li>
-<li>semaphore&#160;:&#160;<a class="el" href="class_s_p_i_port.html#adf68e67849206fff7f660dc16be8f9aa">SPIPort</a>, <a class="el" href="class_u_a_r_t_port.html#adb8dbaf5bacf819bc62ff18f3e6a2dfa">UARTPort</a></li>
-<li>SemaphoreCreateException()&#160;:&#160;<a class="el" href="classcpp__freertos_1_1_semaphore_create_exception.html#a6d9bd8c9435361be4add21c327838c34">cpp_freertos::SemaphoreCreateException</a></li>
+<li>semaphore&#160;:&#160;<a class="el" href="class_i2_c_port.html#a1521ed55303e4f80e96ecc02ea0710d1">I2CPort</a>, <a class="el" href="class_s_p_i_port.html#adf68e67849206fff7f660dc16be8f9aa">SPIPort</a>, <a class="el" href="class_u_a_r_t_port.html#adb8dbaf5bacf819bc62ff18f3e6a2dfa">UARTPort</a></li>
+<li>SemaphoreCreateException()&#160;:&#160;<a class="el" href="classcpp__freertos_1_1_semaphore_create_exception.html#a16413ee983f224cc57415b0ae9035c40">cpp_freertos::SemaphoreCreateException</a></li>
 <li>send_recv_call&#160;:&#160;<a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a49ac5f2e97cd5377c67c60143c55b014">TU_ATTR_PACKED</a></li>
 <li>send_report()&#160;:&#160;<a class="el" href="class_f_f_b_wheel.html#a09d3599ae327242f65b76a378c0ddfc2">FFBWheel</a></li>
-<li>sendBuffer&#160;:&#160;<a class="el" href="class_u_a_r_t___command_interface.html#a1a015793e7a64ab2ddfa46eced9fdd82">UART_CommandInterface</a></li>
+<li>sendBuffer&#160;:&#160;<a class="el" href="class_c_d_c___command_interface.html#a00935ea6b53aa405de4420c3b4d1f897">CDC_CommandInterface</a>, <a class="el" href="class_u_a_r_t___command_interface.html#a1a015793e7a64ab2ddfa46eced9fdd82">UART_CommandInterface</a></li>
 <li>sendCdc()&#160;:&#160;<a class="el" href="class_t_m_c_debug_bridge.html#a71fa32474803cea1e29a9aa6c3b397f0">TMCDebugBridge</a></li>
+<li>sendCommandReplyAsync()&#160;:&#160;<a class="el" href="class_command_handler.html#ab23b77c2282380e1e713b0173530416c">CommandHandler</a></li>
 <li>sendHidCmd()&#160;:&#160;<a class="el" href="class_h_i_d___command_interface.html#a9f229fb9500556dc8233ccf04d654244">HID_CommandInterface</a></li>
 <li>sendMessage()&#160;:&#160;<a class="el" href="class_can_bridge.html#a48f7fb996e9e5feee83dba7f585e6da3">CanBridge</a>, <a class="el" href="class_c_a_n_port.html#ab3f59af8df79dbd26e1717be04ebf5fc">CANPort</a></li>
 <li>sendMsg()&#160;:&#160;<a class="el" href="class_o_drive_c_a_n.html#ae5665e78f5b882190777421df8066e84">ODriveCAN</a>, <a class="el" href="class_vesc_c_a_n.html#a945a35c3d25167a42ed54e4443de3288">VescCAN</a></li>
 <li>sendPing()&#160;:&#160;<a class="el" href="class_vesc_c_a_n.html#acd9313670eb4d018fd7542ed468f51fe">VescCAN</a></li>
-<li>sendReplies()&#160;:&#160;<a class="el" href="class_c_d_c___command_interface.html#a77e0e1f584b25a0f8010212aeeafff9e">CDC_CommandInterface</a>, <a class="el" href="class_command_interface.html#ab12fa4bc34dd18078110e8e926a066ba">CommandInterface</a>, <a class="el" href="class_h_i_d___command_interface.html#a4c1892ad29a8a87be76f4539aafd07f9">HID_CommandInterface</a>, <a class="el" href="class_u_a_r_t___command_interface.html#a3ac71cb6d332367b209a9376de019df0">UART_CommandInterface</a></li>
+<li>sendReplies()&#160;:&#160;<a class="el" href="class_c_d_c___command_interface.html#af31b6fd24807615c725d70fcb3b9988d">CDC_CommandInterface</a>, <a class="el" href="class_command_interface.html#ae90dc2ba4ee3289276f312acfeac0499">CommandInterface</a>, <a class="el" href="class_h_i_d___command_interface.html#a6a913e1e7225f647e9ced6141aad0eb5">HID_CommandInterface</a>, <a class="el" href="class_u_a_r_t___command_interface.html#a09736493130ab2e26d6539de43fdb244">UART_CommandInterface</a></li>
+<li>sendReplyAsync()&#160;:&#160;<a class="el" href="class_command_interface.html#a401a3cff2a1de47dbbd7713f6e0834f2">CommandInterface</a></li>
 <li>sendStatusReport()&#160;:&#160;<a class="el" href="class_hid_f_f_b.html#a80005ad90153d3f6614084c22d286c2f">HidFFB</a></li>
 <li>sense_key&#160;:&#160;<a class="el" href="structmscd__interface__t.html#aaeb7b9ffbafe24ab6f7080a38fdabd59">mscd_interface_t</a>, <a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a80beab3ee743ee5b090a127784a6346b">TU_ATTR_PACKED</a></li>
 <li>sense_key_specific&#160;:&#160;<a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a4846f47bbb586bd343d262e6c775652c">TU_ATTR_PACKED</a></li>
 <li>sequentialPI&#160;:&#160;<a class="el" href="struct_t_m_c4671_p_i_d_conf.html#a08195a17eb97f74b20e778dccf06fb2a">TMC4671PIDConf</a></li>
 <li>set()&#160;:&#160;<a class="el" href="class_output_pin.html#a935f6e1e705d9a2502f0964be2bfcb72">OutputPin</a></li>
 <li>set_condition()&#160;:&#160;<a class="el" href="class_hid_f_f_b.html#aa39810e30fa6f7f25a283369564d2a4d">HidFFB</a></li>
-<li>set_config&#160;:&#160;<a class="el" href="structusbh__class__driver__t.html#a1081bc6765b6fd9136631229a6b31134">usbh_class_driver_t</a></li>
 <li>set_constant_effect()&#160;:&#160;<a class="el" href="class_hid_f_f_b.html#a1cd78a5965574418580446e3e00df6aa">HidFFB</a></li>
 <li>set_effect()&#160;:&#160;<a class="el" href="class_hid_f_f_b.html#aed16b7975e037d6a4728c51fc260378b">HidFFB</a></li>
+<li>set_effect_operation()&#160;:&#160;<a class="el" href="class_hid_f_f_b.html#a0f4de70426ae95aabfaaa969aeee4ff1">HidFFB</a></li>
 <li>set_envelope()&#160;:&#160;<a class="el" href="class_hid_f_f_b.html#ab0a508be0a7e923e60973987c84cdbe7">HidFFB</a></li>
 <li>set_FFB()&#160;:&#160;<a class="el" href="class_hid_f_f_b.html#a179ecbead500f0c0a11f8eaf07361147">HidFFB</a></li>
 <li>set_filters()&#160;:&#160;<a class="el" href="class_hid_f_f_b.html#af03aa6e7b6677f125fb1969b67b67e7d">HidFFB</a></li>
@@ -143,6 +146,7 @@ $(document).ready(function(){initNavTree('functions_s.html',''); initResizable()
 <li>SetBits()&#160;:&#160;<a class="el" href="classcpp__freertos_1_1_event_group.html#a72f524b57d52b1f311d750ab260cdd05">cpp_freertos::EventGroup</a></li>
 <li>SetBitsFromISR()&#160;:&#160;<a class="el" href="classcpp__freertos_1_1_event_group.html#acb5df2e5c90078e9268aa16454c62042">cpp_freertos::EventGroup</a></li>
 <li>setBrakeLimits()&#160;:&#160;<a class="el" href="class_t_m_c4671.html#a5ce57e06d0f62f66f7634e77a9627348">TMC4671</a></li>
+<li>setBtnNum()&#160;:&#160;<a class="el" href="class_p_c_f8574_buttons.html#a66c2ce69151f47f79ee586598037580e">PCF8574Buttons</a></li>
 <li>setBtnTypes()&#160;:&#160;<a class="el" href="class_f_f_b_wheel.html#ad7cbf95263f36916a4067728e58c9680">FFBWheel</a></li>
 <li>setCanRate()&#160;:&#160;<a class="el" href="class_o_drive_c_a_n.html#a188691da747f6b54c96fd41c28577473">ODriveCAN</a>, <a class="el" href="class_vesc_c_a_n.html#acb2d4273c1d4998599fcf8e570543360">VescCAN</a></li>
 <li>setCfFilter()&#160;:&#160;<a class="el" href="class_effects_calculator.html#ab947ff3bb05eff55bbc824ecb58bbedf">EffectsCalculator</a></li>
@@ -159,10 +163,11 @@ $(document).ready(function(){initNavTree('functions_s.html',''); initResizable()
 <li>setEffectsCalculator()&#160;:&#160;<a class="el" href="class_axes_manager.html#a9f584f2815a42f1bafa8ec5b6e91177a">AxesManager</a>, <a class="el" href="class_hid_f_f_b.html#aaa0c7606fc2d1df36a3bf3c6892cd7ee">HidFFB</a></li>
 <li>setEffectTorque()&#160;:&#160;<a class="el" href="class_axis.html#a253e1fbf85eca1f2ca35fd3c16bf073e">Axis</a></li>
 <li>setEnabled()&#160;:&#160;<a class="el" href="class_error_printer.html#ad95e26732270803cf6da0927448fcaa5">ErrorPrinter</a></li>
-<li>setEncoder()&#160;:&#160;<a class="el" href="class_motor_driver.html#a05c9fc372e3b52d0b317e3be83c0400c">MotorDriver</a></li>
-<li>setEncoderIndexFlagEnabled()&#160;:&#160;<a class="el" href="class_t_m_c4671.html#a04f128c9f52a07a25dc89ea135dca4ed">TMC4671</a></li>
+<li>setEncoder()&#160;:&#160;<a class="el" href="class_motor_driver.html#a05c9fc372e3b52d0b317e3be83c0400c">MotorDriver</a>, <a class="el" href="class_t_m_c4671.html#af8d1b0c50c18ad6c5552c5749be9b247">TMC4671</a></li>
+<li>setEncoderIndexFlagEnabled()&#160;:&#160;<a class="el" href="class_t_m_c4671.html#a2fb12ee3fde5e416e3b2d4897e23f75b">TMC4671</a></li>
 <li>setEncoderType()&#160;:&#160;<a class="el" href="class_t_m_c4671.html#a4f5c1ae64e140ac1944a5509f3a09d19">TMC4671</a></li>
 <li>setEncType()&#160;:&#160;<a class="el" href="class_axis.html#a8ce45c1b849c02e7a7d341254682269c">Axis</a></li>
+<li>setExternalEncoderAllowed()&#160;:&#160;<a class="el" href="class_t_m_c4671.html#a10ca9159f114dc2ef7a3c5ae3c9fb089">TMC4671</a></li>
 <li>setFc()&#160;:&#160;<a class="el" href="class_biquad.html#a17361f2b6fbbfc25d7a1debc83b3884e">Biquad</a></li>
 <li>setFFMode()&#160;:&#160;<a class="el" href="class_t_m_c4671.html#ac0daf7febf2bb626039fb337d2db0805">TMC4671</a></li>
 <li>setFilters()&#160;:&#160;<a class="el" href="class_effects_calculator.html#aeb35ed9548dd34f774b755c41f5771d6">EffectsCalculator</a></li>
@@ -206,21 +211,24 @@ $(document).ready(function(){initNavTree('functions_s.html',''); initResizable()
 <li>setSpiAddr()&#160;:&#160;<a class="el" href="class_t_m_c4671.html#a7e24c58fc247cef97c74cc7b22732783">TMC4671</a></li>
 <li>setSpiConfig()&#160;:&#160;<a class="el" href="class_s_p_i_device.html#aafab005ab5eca20c27c6c3d4cf0da9da">SPIDevice</a></li>
 <li>setState()&#160;:&#160;<a class="el" href="class_o_drive_c_a_n.html#a20df20c69f312f0ab847a1f7afb661ca">ODriveCAN</a></li>
-<li>setStatusFlags()&#160;:&#160;<a class="el" href="class_t_m_c4671.html#afd3251813149c2658f7dbcdc7bbcd9bc">TMC4671</a></li>
-<li>setStatusMask()&#160;:&#160;<a class="el" href="class_t_m_c4671.html#ac89aa0fc72021564b1b96fa7ee9810d3">TMC4671</a></li>
+<li>setStatusFlags()&#160;:&#160;<a class="el" href="class_t_m_c4671.html#a6d879e265152bbdb69f6ddd446ed7cf9">TMC4671</a></li>
+<li>setStatusMask()&#160;:&#160;<a class="el" href="class_t_m_c4671.html#a829e13704bc4624e7d5e45c4f5f3eb13">TMC4671</a></li>
 <li>setSvPwm()&#160;:&#160;<a class="el" href="class_t_m_c4671.html#ae4e6d2e4cf2b8104a424e4897bd023c4">TMC4671</a></li>
 <li>setTargetPos()&#160;:&#160;<a class="el" href="class_t_m_c4671.html#a977570c5b44262b522c3bb50d39ab258">TMC4671</a></li>
 <li>setTargetVelocity()&#160;:&#160;<a class="el" href="class_t_m_c4671.html#ac1d93b241b50551752026875080c76d8">TMC4671</a></li>
+<li>setTmcPos()&#160;:&#160;<a class="el" href="class_t_m_c4671.html#abdbed4ed5dc00c5bb7aa47dfa3c2be9b">TMC4671</a></li>
 <li>setTorque()&#160;:&#160;<a class="el" href="class_o_drive_c_a_n.html#a411cad3ce134b57cdf88a7f9a48e75a2">ODriveCAN</a>, <a class="el" href="class_t_m_c4671.html#a78ad71b3a34f55dcb8a257dd71829470">TMC4671</a>, <a class="el" href="class_vesc_c_a_n.html#a37ec181cecdcd258fb8bec54ccdbff06">VescCAN</a></li>
 <li>setTorqueLimit()&#160;:&#160;<a class="el" href="class_t_m_c4671.html#afd51fee1847e0bd494dbf9b4a19e5b4b">TMC4671</a></li>
 <li>setUdUq()&#160;:&#160;<a class="el" href="class_t_m_c4671.html#a43ed91d58990b2f52a41a9bafee72a78">TMC4671</a></li>
 <li>setup_ABN_Enc()&#160;:&#160;<a class="el" href="class_t_m_c4671.html#ac95fe111c5bec6619d81b7add187c69a">TMC4671</a></li>
 <li>setup_AENC()&#160;:&#160;<a class="el" href="class_t_m_c4671.html#a8ccc9ec0e03c52fa57efcbf9c3e850f2">TMC4671</a></li>
 <li>setup_HALL()&#160;:&#160;<a class="el" href="class_t_m_c4671.html#ab90d893e09ab31dda527cf0cf88efb5c">TMC4671</a></li>
+<li>setUpExtEncTimer()&#160;:&#160;<a class="el" href="class_t_m_c4671.html#a749fa3731b696fdd0a0ad48a8e14787c">TMC4671</a></li>
 <li>setupFeedForwardTorque()&#160;:&#160;<a class="el" href="class_t_m_c4671.html#ac2020743e237ddb72e872bfe335d1829">TMC4671</a></li>
 <li>setupFeedForwardVelocity()&#160;:&#160;<a class="el" href="class_t_m_c4671.html#a27d509e3dfbec15d3ce41edfbd08afa6">TMC4671</a></li>
 <li>setupTMC4671()&#160;:&#160;<a class="el" href="class_axis.html#a7d4a02a26769483bc4969ad841fa8719">Axis</a></li>
 <li>setUqUdLimit()&#160;:&#160;<a class="el" href="class_t_m_c4671.html#ad66883874db0ea5f6609839060f81d45">TMC4671</a></li>
+<li>setVelSel()&#160;:&#160;<a class="el" href="class_t_m_c4671.html#a4ecfe5490cf94e179921d4e889b99d59">TMC4671</a></li>
 <li>ShifterAnalog()&#160;:&#160;<a class="el" href="class_shifter_analog.html#add6fe5a5157ad25d199db7cc8efcb958">ShifterAnalog</a></li>
 <li>ShifterAnalog_commands&#160;:&#160;<a class="el" href="class_shifter_analog.html#a99c6ea60974ea937a349d12dcd599078">ShifterAnalog</a></li>
 <li>ShifterMode&#160;:&#160;<a class="el" href="class_shifter_analog.html#accacc6d1913810ad58fe569081098aae">ShifterAnalog</a></li>
@@ -229,11 +237,12 @@ $(document).ready(function(){initNavTree('functions_s.html',''); initResizable()
 <li>simple_mode&#160;:&#160;<a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a14da53e6a7f18aacdce97fe54a3ba3ea">TU_ATTR_PACKED</a></li>
 <li>Singleton()&#160;:&#160;<a class="el" href="class_singleton.html#a923b995920da9c06590adb170ab2f890">Singleton&lt; T &gt;</a></li>
 <li>singletonRefCount&#160;:&#160;<a class="el" href="class_singleton.html#ac4f6fb6cd3e873ea41e642f24f45a96f">Singleton&lt; T &gt;</a></li>
-<li>size&#160;:&#160;<a class="el" href="structrndis__msg__out__of__band__data__t.html#a20ec923ab401b85ceb62146befeda814">rndis_msg_out_of_band_data_t</a>, <a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#a1f718a4f3707b79dba3342d9c378e0d7">TU_ATTR_PACKED::TU_ATTR_PACKED</a></li>
+<li>size&#160;:&#160;<a class="el" href="structrndis__msg__out__of__band__data__t.html#a20ec923ab401b85ceb62146befeda814">rndis_msg_out_of_band_data_t</a></li>
 <li>slaveFilterStart&#160;:&#160;<a class="el" href="class_c_a_n_port.html#a6ae616d4ae83f93a87eba7d95feea721">CANPort</a></li>
+<li>SourceClockReference&#160;:&#160;<a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#addde86519d7e072cbb71eb10c92be745">TU_ATTR_PACKED</a></li>
 <li>spdlimiterAvg&#160;:&#160;<a class="el" href="class_axis.html#a3edc4e596ef00375ca13b71cf96addea">Axis</a></li>
 <li>spdlimitreducerI&#160;:&#160;<a class="el" href="class_axis.html#ad22650cf3a97de8973fc180320c59a5d">Axis</a></li>
-<li>speed&#160;:&#160;<a class="el" href="struct_c_a_n___config__t.html#aaec9a2e1adf3296cc10a2e240a1783b7">CAN_Config_t</a>, <a class="el" href="structmetric__t.html#a50ffdb0c4bc4588f27a6647b909ae314">metric_t</a>, <a class="el" href="structusbd__device__t.html#a97667c454b360721b71ec3dc63a6cfb0">usbd_device_t</a></li>
+<li>speed&#160;:&#160;<a class="el" href="struct_c_a_n___config__t.html#aaec9a2e1adf3296cc10a2e240a1783b7">CAN_Config_t</a>, <a class="el" href="structhcd__devtree__info__t.html#aa7451c62c2662f9a2863fc32b4c26867">hcd_devtree_info_t</a>, <a class="el" href="structhcd__event__t.html#a356013f1c3c385f97c99477aa5217b89">hcd_event_t</a>, <a class="el" href="structmetric__t.html#a50ffdb0c4bc4588f27a6647b909ae314">metric_t</a>, <a class="el" href="structusbd__device__t.html#a97667c454b360721b71ec3dc63a6cfb0">usbd_device_t</a>, <a class="el" href="structusbh__dev0__t.html#ae99d9971b003dbdde0e60d84336d202a">usbh_dev0_t</a>, <a class="el" href="structusbh__device__t.html#abe1506bb0590eaf1e2ffaa677c5df1ee">usbh_device_t</a></li>
 <li>speed_f&#160;:&#160;<a class="el" href="class_axis.html#af8d2df7f32b92bd6cde12f5809ebc733">Axis</a></li>
 <li>speed_q&#160;:&#160;<a class="el" href="class_axis.html#a3db9121808fbc20e3928fec207274623">Axis</a></li>
 <li>speedFilter&#160;:&#160;<a class="el" href="class_axis.html#a5e35ae1d6640ec4f32e41bf4fe6d306e">Axis</a></li>
@@ -260,11 +269,10 @@ $(document).ready(function(){initNavTree('functions_s.html',''); initResizable()
 <li>spiRxCompleted()&#160;:&#160;<a class="el" href="class_s_p_i_device.html#abca0ed31abf6c2f61e35f3bb45a75ba3">SPIDevice</a></li>
 <li>SpiRxCplt()&#160;:&#160;<a class="el" href="class_spi_handler.html#aab15f9c12659559f3e85d034a58227a9">SpiHandler</a>, <a class="el" href="class_s_p_i_port.html#ada6f6ca253dec10c789f183ee1d6c11f">SPIPort</a></li>
 <li>SpiRxHalfCplt()&#160;:&#160;<a class="el" href="class_spi_handler.html#a3b266d024ae729cb4a50e5de45145127">SpiHandler</a></li>
-<li>spiSemaphores&#160;:&#160;<a class="el" href="class_ressource_manager.html#aeb9066140c6b3b01b3048c531cbfb365">RessourceManager</a></li>
 <li>spiTxCompleted()&#160;:&#160;<a class="el" href="class_s_p_i_device.html#a56dd6e4bc113a66dd87fec6f23a77521">SPIDevice</a></li>
 <li>SpiTxCplt()&#160;:&#160;<a class="el" href="class_spi_handler.html#ad3c3daaf8084372d77af4cce03436b93">SpiHandler</a>, <a class="el" href="class_s_p_i_port.html#a7298cf5b568a95b812d4545723eef187">SPIPort</a></li>
 <li>SpiTxHalfCplt()&#160;:&#160;<a class="el" href="class_spi_handler.html#a11aab1cf5e67fac7c4f513317eedc712">SpiHandler</a></li>
-<li>spiTxRxCompleted()&#160;:&#160;<a class="el" href="class_s_p_i_device.html#ae1199ca661af7d1623d8636f332ee5cc">SPIDevice</a></li>
+<li>spiTxRxCompleted()&#160;:&#160;<a class="el" href="class_mt_encoder_s_p_i.html#aa865cc761325ee6c2848c71129eb38fa">MtEncoderSPI</a>, <a class="el" href="class_s_p_i_device.html#ae1199ca661af7d1623d8636f332ee5cc">SPIDevice</a></li>
 <li>SpiTxRxCplt()&#160;:&#160;<a class="el" href="class_spi_handler.html#afdd24b7cee3bf1af6cf73b27edc63704">SpiHandler</a>, <a class="el" href="class_s_p_i_port.html#aaa8d5b713d4e9f02219c1b6bda4cf798">SPIPort</a></li>
 <li>SpiTxRxHalfCplt()&#160;:&#160;<a class="el" href="class_spi_handler.html#ab4e7e4660d4550716e391aea5b3e7ffa">SpiHandler</a></li>
 <li>spring&#160;:&#160;<a class="el" href="structeffect__gain__t.html#a16729737a947fa8274cac6bd154dae87">effect_gain_t</a></li>
@@ -273,7 +281,7 @@ $(document).ready(function(){initNavTree('functions_s.html',''); initResizable()
 <li>SR1&#160;:&#160;<a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#ade344a397edb855adeada6a7dc70896c">TU_ATTR_PACKED::TU_ATTR_PACKED</a></li>
 <li>StackDepth&#160;:&#160;<a class="el" href="classcpp__freertos_1_1_thread.html#a4583bd1bfe825cf482cbcab200282581">cpp_freertos::Thread</a></li>
 <li>stage&#160;:&#160;<a class="el" href="structmscd__interface__t.html#ad586a8d617a684bc6946e7255ebf03ee">mscd_interface_t</a>, <a class="el" href="structmsch__interface__t.html#aa3b7afff89850b42416f40050047c8d0">msch_interface_t</a>, <a class="el" href="structusbh__control__xfer__t.html#a3f532b0e2c485a0b8916f92c63925c92">usbh_control_xfer_t</a></li>
-<li>stalled&#160;:&#160;<a class="el" href="structusbd__device__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#a15980e69880152d0c8e7bb3452ea3897">usbd_device_t::TU_ATTR_PACKED</a></li>
+<li>stalled&#160;:&#160;<a class="el" href="structusbd__device__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#a15980e69880152d0c8e7bb3452ea3897">usbd_device_t::TU_ATTR_PACKED</a>, <a class="el" href="structusbh__device__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#a499a85207f98afe0b44a1dd3e9b01426">usbh_device_t::TU_ATTR_PACKED</a></li>
 <li>standalone_mode&#160;:&#160;<a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a1f7570ef700cea9a4b132a455d59f643">TU_ATTR_PACKED</a></li>
 <li>Start()&#160;:&#160;<a class="el" href="classcpp__freertos_1_1_thread.html#a279c2b78aa2bf43371f2462623588830">cpp_freertos::Thread</a>, <a class="el" href="classcpp__freertos_1_1_timer.html#a171c77988a6d4c2d8d32f86344514359">cpp_freertos::Timer</a></li>
 <li>start&#160;:&#160;<a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a1b5c2e7a1d835ed331efd677dbbce6b9">TU_ATTR_PACKED</a>, <a class="el" href="structtu__timeout__t.html#a8c1ef755c02f74b6f465fa82def8f233">tu_timeout_t</a></li>
@@ -282,24 +290,31 @@ $(document).ready(function(){initNavTree('functions_s.html',''); initResizable()
 <li>startDelay&#160;:&#160;<a class="el" href="struct____attribute____.html#a1cc045b2767bc09a2dc821c7c79a7eda">__attribute__</a>, <a class="el" href="struct_f_f_b___effect.html#a32e5f07014baa0a0c1be80cd4f3eb517">FFB_Effect</a></li>
 <li>StartFromISR()&#160;:&#160;<a class="el" href="classcpp__freertos_1_1_timer.html#ae512d19700e4197dfb6b6e7c59fa6143">cpp_freertos::Timer</a></li>
 <li>StartGuardLock&#160;:&#160;<a class="el" href="classcpp__freertos_1_1_thread.html#a4b0652b53cb50822212cc46795956973">cpp_freertos::Thread</a></li>
+<li>startI2CTransfer()&#160;:&#160;<a class="el" href="class_i2_c_device.html#ae143929f2cb79867048f2c987f3932d8">I2CDevice</a>, <a class="el" href="class_p_c_f8574.html#a184e26da37796483448c8647c3463072">PCF8574</a></li>
 <li>startLevel&#160;:&#160;<a class="el" href="struct____attribute____.html#a1895769ab141b49fc2f3bcfbcd67451f">__attribute__</a>, <a class="el" href="struct_f_f_b___effect.html#a361649b1130fab069d323567818fd5a2">FFB_Effect</a></li>
 <li>startMotor()&#160;:&#160;<a class="el" href="class_motor_driver.html#aa7de17ce2e32f58c9d3ab2d379c636a9">MotorDriver</a>, <a class="el" href="class_motor_p_w_m.html#a9761b07ef79d66358fc5c539b1ecab28">MotorPWM</a>, <a class="el" href="class_o_drive_c_a_n.html#aaf7808235b85e4b54c679e4aed7aa663">ODriveCAN</a>, <a class="el" href="class_t_m_c4671.html#a1ae9df1a47323d8b2fd5aebc6bc3b2d3">TMC4671</a>, <a class="el" href="class_vesc_c_a_n.html#ab79098ff9a76ac9c291bb00c0e0905a4">VescCAN</a></li>
 <li>StartScheduler()&#160;:&#160;<a class="el" href="classcpp__freertos_1_1_thread.html#a6c5e2fea2e1badb606730c279559aa36">cpp_freertos::Thread</a></li>
 <li>startTime&#160;:&#160;<a class="el" href="struct_f_f_b___effect.html#aaef92db68c6bbd0606e7641f8b015c64">FFB_Effect</a></li>
 <li>startUartTransfer()&#160;:&#160;<a class="el" href="class_u_a_r_t_device.html#a2ca074114ddd14070f3c1b13f60f9d08">UARTDevice</a></li>
-<li>state&#160;:&#160;<a class="el" href="struct_f_f_b___effect.html#aaa43e1b621abe7d58f228ec5fe64c564">FFB_Effect</a>, <a class="el" href="class_o_drive_c_a_n.html#a35edaf845ad49346fbf4f21d10de63dc">ODriveCAN</a>, <a class="el" href="class_t_m_c4671.html#a1f5d314bdba9754a990756fdb48e4f00">TMC4671</a>, <a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a49538af3925401d133b5f9f5c88b0104">TU_ATTR_PACKED</a>, <a class="el" href="structusbtmc__interface__state__t.html#aff05f2d5e9b3e4609907dd748b91d5c3">usbtmc_interface_state_t</a>, <a class="el" href="class_vesc_c_a_n.html#a13baf06052aa8b00eb53cb9a2308173f">VescCAN</a></li>
-<li>status&#160;:&#160;<a class="el" href="struct____attribute____.html#a567db21f585a142ec6fadca7ef62e631">__attribute__</a>, <a class="el" href="structhub__port__status__response__t.html#a302b8d556362f7f99f8ce3f995554960">hub_port_status_response_t</a>, <a class="el" href="structhub__status__response__t.html#a76f731f7752a6f614392b4156ed2ef42">hub_status_response_t</a>, <a class="el" href="structrndis__msg__initialize__cmplt__t.html#a749fab3a48d6e98e1355832b0f209ce2">rndis_msg_initialize_cmplt_t</a>, <a class="el" href="structrndis__msg__query__cmplt__t.html#aa9f38843670761f2c481f2e883d57688">rndis_msg_query_cmplt_t</a>, <a class="el" href="structrndis__msg__reset__cmplt__t.html#ab73b5a2614cd30f176af728d803c1df2">rndis_msg_reset_cmplt_t</a>, <a class="el" href="structrndis__msg__set__cmplt__t.html#a85bf2ca25746555400df0d4063436a81">rndis_msg_set_cmplt_t</a>, <a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a26280ad85563fe30045d5f641488578c">TU_ATTR_PACKED</a></li>
-<li>status_change&#160;:&#160;<a class="el" href="structusbh__hub__t.html#ae6e946888ffb50d3fa267b5047cc7006">usbh_hub_t</a></li>
-<li>statusByte&#160;:&#160;<a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a601f2b854b0435a7792f74635f2f0e88">TU_ATTR_PACKED</a></li>
+<li>startupType&#160;:&#160;<a class="el" href="class_t_m_c4671.html#abc0d6931cffb87d99de4b0aaad2ded84">TMC4671</a></li>
+<li>state&#160;:&#160;<a class="el" href="struct____attribute____.html#a9eaab2a86e1d16e875a147d466188d65">__attribute__</a>, <a class="el" href="structdfu__state__ctx__t.html#a69e25314b560412482f4e24902d6b0b3">dfu_state_ctx_t</a>, <a class="el" href="struct_f_f_b___effect.html#aaa43e1b621abe7d58f228ec5fe64c564">FFB_Effect</a>, <a class="el" href="class_o_drive_c_a_n.html#a35edaf845ad49346fbf4f21d10de63dc">ODriveCAN</a>, <a class="el" href="class_t_m_c4671.html#a1f5d314bdba9754a990756fdb48e4f00">TMC4671</a>, <a class="el" href="structusbh__device__t.html#afae42216b81b35f25b539996d6adc573">usbh_device_t</a>, <a class="el" href="structusbtmc__interface__state__t.html#aff05f2d5e9b3e4609907dd748b91d5c3">usbtmc_interface_state_t</a>, <a class="el" href="class_vesc_c_a_n.html#a13baf06052aa8b00eb53cb9a2308173f">VescCAN</a></li>
+<li>status&#160;:&#160;<a class="el" href="struct____attribute____.html#a567db21f585a142ec6fadca7ef62e631">__attribute__</a>, <a class="el" href="structdfu__state__ctx__t.html#ad82f5fe92f5a04fff4104aacfdd97acb">dfu_state_ctx_t</a>, <a class="el" href="structhub__port__status__response__t.html#a9c07055405db62dce1d3981ff5c957dd">hub_port_status_response_t</a>, <a class="el" href="structhub__status__response__t.html#ae94b9e604d34928fc0aaceaa45ea387b">hub_status_response_t</a>, <a class="el" href="structrndis__msg__initialize__cmplt__t.html#a749fab3a48d6e98e1355832b0f209ce2">rndis_msg_initialize_cmplt_t</a>, <a class="el" href="structrndis__msg__query__cmplt__t.html#aa9f38843670761f2c481f2e883d57688">rndis_msg_query_cmplt_t</a>, <a class="el" href="structrndis__msg__reset__cmplt__t.html#ab73b5a2614cd30f176af728d803c1df2">rndis_msg_reset_cmplt_t</a>, <a class="el" href="structrndis__msg__set__cmplt__t.html#a85bf2ca25746555400df0d4063436a81">rndis_msg_set_cmplt_t</a>, <a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a26280ad85563fe30045d5f641488578c">TU_ATTR_PACKED</a></li>
+<li>status_change&#160;:&#160;<a class="el" href="structhub__interface__t.html#acdf9470be8a5753317485c8e40fa918d">hub_interface_t</a></li>
 <li>StatusByte&#160;:&#160;<a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#adb469ef2e90da5d39f24a968ebc1326c">TU_ATTR_PACKED</a></li>
+<li>statusByte&#160;:&#160;<a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a601f2b854b0435a7792f74635f2f0e88">TU_ATTR_PACKED</a></li>
 <li>statusCheck()&#160;:&#160;<a class="el" href="class_t_m_c4671.html#a1a4d666392551702eb798ba0ef344ee4">TMC4671</a></li>
 <li>statusFlags&#160;:&#160;<a class="el" href="class_t_m_c4671.html#af6b660da50146922ae2b88c0d4e3a27a">TMC4671</a></li>
 <li>statusMask&#160;:&#160;<a class="el" href="class_t_m_c4671.html#a471950ecb00ccabbba69804acaf349a4">TMC4671</a></li>
+<li>std&#160;:&#160;<a class="el" href="structtusb__desc__vc__itf__t.html#a1b17a8ed59a9bbb428252a7718b36cfe">tusb_desc_vc_itf_t</a>, <a class="el" href="structtusb__desc__vs__itf__t.html#a8c01f3091e27e217151f0677927b218e">tusb_desc_vs_itf_t</a></li>
+<li>StillImage&#160;:&#160;<a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a25183ea51bec47636254561dbf6caf3c">TU_ATTR_PACKED</a></li>
+<li>stm&#160;:&#160;<a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a822aa1b5f5b23e6f50e8e7ea64cde534">TU_ATTR_PACKED</a>, <a class="el" href="uniontusb__desc__video__itf__hdr__t.html#ac8d57a3831fb055360f2a83bebbe15f8">tusb_desc_video_itf_hdr_t</a>, <a class="el" href="structtusb__desc__vs__itf__t.html#a9a8dfefcf3026f30461433c85b114d1a">tusb_desc_vs_itf_t</a></li>
 <li>Stop()&#160;:&#160;<a class="el" href="classcpp__freertos_1_1_timer.html#a15873ed66f31b28e7c7af88ca0c9d2d5">cpp_freertos::Timer</a></li>
 <li>stop_bits&#160;:&#160;<a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a695c087af33e8176616a743902b747b1">TU_ATTR_PACKED</a></li>
 <li>stop_FFB()&#160;:&#160;<a class="el" href="class_hid_f_f_b.html#ae9eac7111c117c02442c8381e908d57d">HidFFB</a></li>
 <li>StopFromISR()&#160;:&#160;<a class="el" href="classcpp__freertos_1_1_timer.html#a403285c6e10f401cd3d9fb43843092cb">cpp_freertos::Timer</a></li>
 <li>stopMotor()&#160;:&#160;<a class="el" href="class_motor_driver.html#aef624f5da2b1644823052cc80ac218bd">MotorDriver</a>, <a class="el" href="class_motor_p_w_m.html#aa93dd5c2970589c1270c88a08e3e7c03">MotorPWM</a>, <a class="el" href="class_o_drive_c_a_n.html#a39d21bec378b965b922487799e48c187">ODriveCAN</a>, <a class="el" href="class_t_m_c4671.html#acdf9e395332356e9659cfe9a6caf1556">TMC4671</a>, <a class="el" href="class_vesc_c_a_n.html#a475e04c7006019c14d110fb31b8fc384">VescCAN</a></li>
+<li>stream_read&#160;:&#160;<a class="el" href="structmidid__interface__t.html#aa45ebff2e8dfc1e0a38d3d4514e669ed">midid_interface_t</a></li>
+<li>stream_write&#160;:&#160;<a class="el" href="structmidid__interface__t.html#a5c6a3bf21b310b1c35558abecbc1f028">midid_interface_t</a></li>
 <li>string_desc&#160;:&#160;<a class="el" href="class_u_s_bdevice.html#ac7094d35f30b8efa6934539e92bbc508">USBdevice</a></li>
 <li>StringCommandInterface()&#160;:&#160;<a class="el" href="class_string_command_interface.html#a2a2c826dba2728234fdc66b52132eebf">StringCommandInterface</a></li>
 <li>subpage_code&#160;:&#160;<a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#ac76e497e1a135deb7e46c8caa9e4ad13">TU_ATTR_PACKED</a></li>
@@ -316,8 +331,9 @@ $(document).ready(function(){initNavTree('functions_s.html',''); initResizable()
 <li>supportsTrigger&#160;:&#160;<a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#a8bc5e93b7a06bec200c5caf706e72200">TU_ATTR_PACKED::TU_ATTR_PACKED</a></li>
 <li>Suspend()&#160;:&#160;<a class="el" href="classcpp__freertos_1_1_thread.html#a9eca55dec69e4758cf397e882338c7e6">cpp_freertos::Thread</a></li>
 <li>suspend&#160;:&#160;<a class="el" href="structhub__port__status__response__t.html#a9b211abcf5dd543b190d3d6f2832b94c">hub_port_status_response_t</a></li>
-<li>suspended&#160;:&#160;<a class="el" href="structusbd__device__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#a9093372846935733d7e9534b88a752d7">usbd_device_t::TU_ATTR_PACKED</a></li>
+<li>suspended&#160;:&#160;<a class="el" href="structusbd__device__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#a9093372846935733d7e9534b88a752d7">usbd_device_t::TU_ATTR_PACKED</a>, <a class="el" href="structusbh__dev0__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#ae848a6ec4dfc4e11b3d832e4d24fbe4e">usbh_dev0_t::TU_ATTR_PACKED</a>, <a class="el" href="structusbh__device__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#a33f43dc5154cfcbc849b363095d008e3">usbh_device_t::TU_ATTR_PACKED</a></li>
 <li>SuspendScheduler()&#160;:&#160;<a class="el" href="classcpp__freertos_1_1_critical_section.html#a27aa6c4e9bf5bbe3da7222030392783c">cpp_freertos::CriticalSection</a></li>
+<li>svpwm&#160;:&#160;<a class="el" href="struct_t_m_c4671_main_config.html#a439824c39ee0f56c0cf84d24368bbb76">TMC4671MainConfig</a></li>
 <li>Sync()&#160;:&#160;<a class="el" href="classcpp__freertos_1_1_event_group.html#a3b7f5f1f4ce5af448f58c039e1bda551">cpp_freertos::EventGroup</a></li>
 <li>sync&#160;:&#160;<a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#ae6f13e000e56196db99388555c52aeec">TU_ATTR_PACKED</a>, <a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#ad2d53d6058a49cb8538eb20c6d0de81c">TU_ATTR_PACKED::TU_ATTR_PACKED</a></li>
 <li>systemCommands&#160;:&#160;<a class="el" href="class_f_f_board_main.html#a6d4ae663d2d14945c3e7b1e30ed40f43">FFBoardMain</a></li>

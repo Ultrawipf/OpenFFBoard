@@ -120,15 +120,19 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a17927e91949212591a7cdbd37ddeee8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7c03182cda44cd54b5bcbd30974ea445"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_interface.html#a7c03182cda44cd54b5bcbd30974ea445">hasNewCommands</a> ()</td></tr>
 <tr class="separator:a7c03182cda44cd54b5bcbd30974ea445"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab12fa4bc34dd18078110e8e926a066ba"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_interface.html#ab12fa4bc34dd18078110e8e926a066ba">sendReplies</a> (std::vector&lt; <a class="el" href="struct_command_result.html">CommandResult</a> &gt; &amp;results, <a class="el" href="class_command_interface.html">CommandInterface</a> *originalInterface)</td></tr>
-<tr class="separator:ab12fa4bc34dd18078110e8e926a066ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae90dc2ba4ee3289276f312acfeac0499"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_interface.html#ae90dc2ba4ee3289276f312acfeac0499">sendReplies</a> (const std::vector&lt; <a class="el" href="struct_command_result.html">CommandResult</a> &gt; &amp;results, <a class="el" href="class_command_interface.html">CommandInterface</a> *originalInterface)=0</td></tr>
+<tr class="separator:ae90dc2ba4ee3289276f312acfeac0499"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a401a3cff2a1de47dbbd7713f6e0834f2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_interface.html#a401a3cff2a1de47dbbd7713f6e0834f2">sendReplyAsync</a> (std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;reply, <a class="el" href="class_command_handler.html">CommandHandler</a> *handler, uint32_t cmdId, <a class="el" href="_command_handler_8h.html#aec46f6cc23a395b611fbc7c7239b9c41">CMDtype</a> type)</td></tr>
+<tr class="separator:a401a3cff2a1de47dbbd7713f6e0834f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a256600b9ed96055684e0d4cec26b462e"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_interface.html#a256600b9ed96055684e0d4cec26b462e">readyToSend</a> ()</td></tr>
 <tr class="separator:a256600b9ed96055684e0d4cec26b462e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a2bd2f8109c74444ec235da3a466c8c2f"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_interface.html#a2bd2f8109c74444ec235da3a466c8c2f">broadcastCommandReplyAsync</a> (std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;reply, <a class="el" href="class_command_handler.html">CommandHandler</a> *handler, uint32_t cmdId, <a class="el" href="_command_handler_8h.html#aec46f6cc23a395b611fbc7c7239b9c41">CMDtype</a> type)</td></tr>
-<tr class="separator:a2bd2f8109c74444ec235da3a466c8c2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc6b7d8a16c3ddbc8ef9087c87a17f8c"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="struct_command_result.html">CommandResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_interface.html#acc6b7d8a16c3ddbc8ef9087c87a17f8c">makeCommandReply</a> (const std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;reply, <a class="el" href="class_command_handler.html">CommandHandler</a> *handler, uint32_t cmdId, <a class="el" href="_command_handler_8h.html#aec46f6cc23a395b611fbc7c7239b9c41">CMDtype</a> type=<a class="el" href="_command_handler_8h.html#aec46f6cc23a395b611fbc7c7239b9c41ab5eda0a74558a342cf659187f06f746f">CMDtype::get</a>, <a class="el" href="class_command_interface.html">CommandInterface</a> *originalInterface=nullptr)</td></tr>
+<tr class="separator:acc6b7d8a16c3ddbc8ef9087c87a17f8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab57c213c043aa400c70b4166ce4c818b"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_interface.html#ab57c213c043aa400c70b4166ce4c818b">broadcastCommandReplyAsync</a> (const std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;reply, <a class="el" href="class_command_handler.html">CommandHandler</a> *handler, uint32_t cmdId, <a class="el" href="_command_handler_8h.html#aec46f6cc23a395b611fbc7c7239b9c41">CMDtype</a> type=<a class="el" href="_command_handler_8h.html#aec46f6cc23a395b611fbc7c7239b9c41ab5eda0a74558a342cf659187f06f746f">CMDtype::get</a>)</td></tr>
+<tr class="separator:ab57c213c043aa400c70b4166ce4c818b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -192,8 +196,8 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a2bd2f8109c74444ec235da3a466c8c2f" name="a2bd2f8109c74444ec235da3a466c8c2f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2bd2f8109c74444ec235da3a466c8c2f">&#9670;&nbsp;</a></span>broadcastCommandReplyAsync()</h2>
+<a id="ab57c213c043aa400c70b4166ce4c818b" name="ab57c213c043aa400c70b4166ce4c818b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab57c213c043aa400c70b4166ce4c818b">&#9670;&nbsp;</a></span>broadcastCommandReplyAsync()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -204,7 +208,7 @@ Protected Attributes</h2></td></tr>
         <tr>
           <td class="memname">void CommandInterface::broadcastCommandReplyAsync </td>
           <td>(</td>
-          <td class="paramtype">std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;&#160;</td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>reply</em>, </td>
         </tr>
         <tr>
@@ -223,7 +227,7 @@ Protected Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="_command_handler_8h.html#aec46f6cc23a395b611fbc7c7239b9c41">CMDtype</a>&#160;</td>
-          <td class="paramname"><em>type</em>&#160;</td>
+          <td class="paramname"><em>type</em> = <code><a class="el" href="_command_handler_8h.html#aec46f6cc23a395b611fbc7c7239b9c41ab5eda0a74558a342cf659187f06f746f">CMDtype::get</a></code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -239,7 +243,7 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p >Broadcasts an unrequested reply to all command interfaces </p>
 
-<p class="definition">Definition at line <a class="el" href="_command_interface_8cpp_source.html#l00036">36</a> of file <a class="el" href="_command_interface_8cpp_source.html">CommandInterface.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_command_interface_8cpp_source.html#l00030">30</a> of file <a class="el" href="_command_interface_8cpp_source.html">CommandInterface.cpp</a>.</p>
 
 </div>
 </div>
@@ -324,7 +328,63 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p >Command thread requests new commands Return true if any are ready, false otherwise If true it will request the vector of parsed commands </p>
 
-<p class="definition">Definition at line <a class="el" href="_command_interface_8cpp_source.html#l00062">62</a> of file <a class="el" href="_command_interface_8cpp_source.html">CommandInterface.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_command_interface_8cpp_source.html#l00070">70</a> of file <a class="el" href="_command_interface_8cpp_source.html">CommandInterface.cpp</a>.</p>
+
+</div>
+</div>
+<a id="acc6b7d8a16c3ddbc8ef9087c87a17f8c" name="acc6b7d8a16c3ddbc8ef9087c87a17f8c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc6b7d8a16c3ddbc8ef9087c87a17f8c">&#9670;&nbsp;</a></span>makeCommandReply()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_command_result.html">CommandResult</a> CommandInterface::makeCommandReply </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>reply</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_command_handler.html">CommandHandler</a> *&#160;</td>
+          <td class="paramname"><em>handler</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>cmdId</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="_command_handler_8h.html#aec46f6cc23a395b611fbc7c7239b9c41">CMDtype</a>&#160;</td>
+          <td class="paramname"><em>type</em> = <code><a class="el" href="_command_handler_8h.html#aec46f6cc23a395b611fbc7c7239b9c41ab5eda0a74558a342cf659187f06f746f">CMDtype::get</a></code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_command_interface.html">CommandInterface</a> *&#160;</td>
+          <td class="paramname"><em>originalInterface</em> = <code>nullptr</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_command_interface_8cpp_source.html#l00047">47</a> of file <a class="el" href="_command_interface_8cpp_source.html">CommandInterface.cpp</a>.</p>
 
 </div>
 </div>
@@ -354,12 +414,12 @@ Protected Attributes</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="class_h_i_d___command_interface.html#aa625a828d7101ba5f547c17792c0d518">HID_CommandInterface</a>, and <a class="el" href="class_c_d_c___command_interface.html#ab4156859243412ba1096da77ba362114">CDC_CommandInterface</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_command_interface_8cpp_source.html#l00070">70</a> of file <a class="el" href="_command_interface_8cpp_source.html">CommandInterface.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_command_interface_8cpp_source.html#l00078">78</a> of file <a class="el" href="_command_interface_8cpp_source.html">CommandInterface.cpp</a>.</p>
 
 </div>
 </div>
-<a id="ab12fa4bc34dd18078110e8e926a066ba" name="ab12fa4bc34dd18078110e8e926a066ba"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab12fa4bc34dd18078110e8e926a066ba">&#9670;&nbsp;</a></span>sendReplies()</h2>
+<a id="ae90dc2ba4ee3289276f312acfeac0499" name="ae90dc2ba4ee3289276f312acfeac0499"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae90dc2ba4ee3289276f312acfeac0499">&#9670;&nbsp;</a></span>sendReplies()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -368,9 +428,9 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void CommandInterface::sendReplies </td>
+          <td class="memname">virtual void CommandInterface::sendReplies </td>
           <td>(</td>
-          <td class="paramtype">std::vector&lt; <a class="el" href="struct_command_result.html">CommandResult</a> &gt; &amp;&#160;</td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="struct_command_result.html">CommandResult</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>results</em>, </td>
         </tr>
         <tr>
@@ -387,15 +447,63 @@ Protected Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implemented in <a class="el" href="class_h_i_d___command_interface.html#a6a913e1e7225f647e9ced6141aad0eb5">HID_CommandInterface</a>, <a class="el" href="class_c_d_c___command_interface.html#af31b6fd24807615c725d70fcb3b9988d">CDC_CommandInterface</a>, and <a class="el" href="class_u_a_r_t___command_interface.html#a09736493130ab2e26d6539de43fdb244">UART_CommandInterface</a>.</p>
+
+</div>
+</div>
+<a id="a401a3cff2a1de47dbbd7713f6e0834f2" name="a401a3cff2a1de47dbbd7713f6e0834f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a401a3cff2a1de47dbbd7713f6e0834f2">&#9670;&nbsp;</a></span>sendReplyAsync()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void CommandInterface::sendReplyAsync </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>reply</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_command_handler.html">CommandHandler</a> *&#160;</td>
+          <td class="paramname"><em>handler</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>cmdId</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="_command_handler_8h.html#aec46f6cc23a395b611fbc7c7239b9c41">CMDtype</a>&#160;</td>
+          <td class="paramname"><em>type</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
 <span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
-<p >A batch of commands has been executed and a reply returned </p>
+<p >Sends an unrequested reply to this specific interface </p>
 
-<p>Reimplemented in <a class="el" href="class_h_i_d___command_interface.html#a4c1892ad29a8a87be76f4539aafd07f9">HID_CommandInterface</a>, <a class="el" href="class_c_d_c___command_interface.html#a77e0e1f584b25a0f8010212aeeafff9e">CDC_CommandInterface</a>, and <a class="el" href="class_u_a_r_t___command_interface.html#a3ac71cb6d332367b209a9376de019df0">UART_CommandInterface</a>.</p>
-
-<p class="definition">Definition at line <a class="el" href="_command_interface_8cpp_source.html#l00029">29</a> of file <a class="el" href="_command_interface_8cpp_source.html">CommandInterface.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_command_interface_8cpp_source.html#l00042">42</a> of file <a class="el" href="_command_interface_8cpp_source.html">CommandInterface.cpp</a>.</p>
 
 </div>
 </div>
@@ -444,7 +552,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_command_interface_8h_source.html#l00037">37</a> of file <a class="el" href="_command_interface_8h_source.html">CommandInterface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_command_interface_8h_source.html#l00039">39</a> of file <a class="el" href="_command_interface_8h_source.html">CommandInterface.h</a>.</p>
 
 </div>
 </div>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['fifo_0',['fifo',['../group__group__fifo.html',1,'']]]
+  ['gamepad_0',['Gamepad',['../group___class_driver___h_i_d___gamepad.html',1,'']]]
 ];

@@ -3,65 +3,44 @@ var hid_8h =
     [ "hid_gamepad_report_t", "group___class_driver___h_i_d___gamepad.html#ga936dca8ffdf92dad2bb1c69bd14cb178", null ],
     [ "hid_keyboard_report_t", "group___class_driver___h_i_d___keyboard.html#gaabc57b935435b1a2b38f4560d24afc77", null ],
     [ "hid_mouse_report_t", "group___class_driver___h_i_d___mouse.html#gac0cad0fc2de7d2c740b28d0ecc2b7210", null ],
-    [ "hid_country_code_t", "group___class_driver___h_i_d.html#ga26df686fa916cfbae8777bb3fa0c4143", [
-      [ "HID_LOCAL_NotSupported", "group___class_driver___h_i_d.html#gga26df686fa916cfbae8777bb3fa0c4143a87c4c8dd608e10ba98840df94abc1956", null ],
-      [ "HID_LOCAL_Arabic", "group___class_driver___h_i_d.html#gga26df686fa916cfbae8777bb3fa0c4143a5d7793ba7e18d3a78f5d38e8dcb71c5c", null ],
-      [ "HID_LOCAL_Belgian", "group___class_driver___h_i_d.html#gga26df686fa916cfbae8777bb3fa0c4143a4b8fc3f8af08e662fd2efe015652a858", null ],
-      [ "HID_LOCAL_Canadian_Bilingual", "group___class_driver___h_i_d.html#gga26df686fa916cfbae8777bb3fa0c4143a51bf58c7371ec3ef824d848041f4d4e0", null ],
-      [ "HID_LOCAL_Canadian_French", "group___class_driver___h_i_d.html#gga26df686fa916cfbae8777bb3fa0c4143abeac2d607c89c3975d9adb319a528681", null ],
-      [ "HID_LOCAL_Czech_Republic", "group___class_driver___h_i_d.html#gga26df686fa916cfbae8777bb3fa0c4143a12b05629a9b9fdd64f4150950a459af8", null ],
-      [ "HID_LOCAL_Danish", "group___class_driver___h_i_d.html#gga26df686fa916cfbae8777bb3fa0c4143a18caf57a3598e627d9105f62178e2885", null ],
-      [ "HID_LOCAL_Finnish", "group___class_driver___h_i_d.html#gga26df686fa916cfbae8777bb3fa0c4143ab2e1f3bf739e4d7f600fe31ead559a9b", null ],
-      [ "HID_LOCAL_French", "group___class_driver___h_i_d.html#gga26df686fa916cfbae8777bb3fa0c4143ae4d9b071e9bf0a084d66fbeef2f4ecda", null ],
-      [ "HID_LOCAL_German", "group___class_driver___h_i_d.html#gga26df686fa916cfbae8777bb3fa0c4143aeed05e4e291160fb6133821b64d17f55", null ],
-      [ "HID_LOCAL_Greek", "group___class_driver___h_i_d.html#gga26df686fa916cfbae8777bb3fa0c4143a7a822832deb3ec45f037fcdcbb628795", null ],
-      [ "HID_LOCAL_Hebrew", "group___class_driver___h_i_d.html#gga26df686fa916cfbae8777bb3fa0c4143a995e69e1f70533f607db842765119920", null ],
-      [ "HID_LOCAL_Hungary", "group___class_driver___h_i_d.html#gga26df686fa916cfbae8777bb3fa0c4143a8ff2032842cfb97d4d3254b967cf1e31", null ],
-      [ "HID_LOCAL_International", "group___class_driver___h_i_d.html#gga26df686fa916cfbae8777bb3fa0c4143a967a696caae26e69e701fca72326802f", null ],
-      [ "HID_LOCAL_Italian", "group___class_driver___h_i_d.html#gga26df686fa916cfbae8777bb3fa0c4143ae3caf8923a39b8f0c5b7e327a5cc31f0", null ],
-      [ "HID_LOCAL_Japan_Katakana", "group___class_driver___h_i_d.html#gga26df686fa916cfbae8777bb3fa0c4143af05e9ee6df44c50897d8642b03ef1d03", null ],
-      [ "HID_LOCAL_Korean", "group___class_driver___h_i_d.html#gga26df686fa916cfbae8777bb3fa0c4143a2c220138186d821aec0979d4a0114d89", null ],
-      [ "HID_LOCAL_Latin_American", "group___class_driver___h_i_d.html#gga26df686fa916cfbae8777bb3fa0c4143a1db3a30da7b7688a77b0dcebb1167e42", null ],
-      [ "HID_LOCAL_Netherlands_Dutch", "group___class_driver___h_i_d.html#gga26df686fa916cfbae8777bb3fa0c4143a4af0114199fa9653ab3309b5d411691e", null ],
-      [ "HID_LOCAL_Norwegian", "group___class_driver___h_i_d.html#gga26df686fa916cfbae8777bb3fa0c4143af48599aed2638a1e0422128dbac7188e", null ],
-      [ "HID_LOCAL_Persian_Farsi", "group___class_driver___h_i_d.html#gga26df686fa916cfbae8777bb3fa0c4143a18cc4f55558dec61f419b1561eb902b0", null ],
-      [ "HID_LOCAL_Poland", "group___class_driver___h_i_d.html#gga26df686fa916cfbae8777bb3fa0c4143af61e2c5f1e3b35cd994404de94edf595", null ],
-      [ "HID_LOCAL_Portuguese", "group___class_driver___h_i_d.html#gga26df686fa916cfbae8777bb3fa0c4143a528be4d3c61243ef066ffc3188a6628e", null ],
-      [ "HID_LOCAL_Russia", "group___class_driver___h_i_d.html#gga26df686fa916cfbae8777bb3fa0c4143a8262c6f0c6619259d44e85ab6c21dba0", null ],
-      [ "HID_LOCAL_Slovakia", "group___class_driver___h_i_d.html#gga26df686fa916cfbae8777bb3fa0c4143a6b723b6fc03c76566c22104c16367c49", null ],
-      [ "HID_LOCAL_Spanish", "group___class_driver___h_i_d.html#gga26df686fa916cfbae8777bb3fa0c4143a737e65e5a0f54820fe28681cdd373d94", null ],
-      [ "HID_LOCAL_Swedish", "group___class_driver___h_i_d.html#gga26df686fa916cfbae8777bb3fa0c4143a9416916e8ba8bf7f008063d78d4a4337", null ],
-      [ "HID_LOCAL_Swiss_French", "group___class_driver___h_i_d.html#gga26df686fa916cfbae8777bb3fa0c4143ad1fa6285ca844d6a18ed11af149a5512", null ],
-      [ "HID_LOCAL_Swiss_German", "group___class_driver___h_i_d.html#gga26df686fa916cfbae8777bb3fa0c4143a12a365126432f4f256c0c242ab3c03f4", null ],
-      [ "HID_LOCAL_Switzerland", "group___class_driver___h_i_d.html#gga26df686fa916cfbae8777bb3fa0c4143a104f1d2b352d5c782414d2a2c3f50781", null ],
-      [ "HID_LOCAL_Taiwan", "group___class_driver___h_i_d.html#gga26df686fa916cfbae8777bb3fa0c4143a3d3d623549dd047b6d7be625589c5eff", null ],
-      [ "HID_LOCAL_Turkish_Q", "group___class_driver___h_i_d.html#gga26df686fa916cfbae8777bb3fa0c4143a41baf64b87c436ebabe1707319a300d4", null ],
-      [ "HID_LOCAL_UK", "group___class_driver___h_i_d.html#gga26df686fa916cfbae8777bb3fa0c4143ada22e938a025cac7ced9c1b5f3cb71b0", null ],
-      [ "HID_LOCAL_US", "group___class_driver___h_i_d.html#gga26df686fa916cfbae8777bb3fa0c4143ad7649edf7a7582ccc67463e27f31cc98", null ],
-      [ "HID_LOCAL_Yugoslavia", "group___class_driver___h_i_d.html#gga26df686fa916cfbae8777bb3fa0c4143a9613695ec062de96cfefbf2b8993202b", null ],
-      [ "HID_LOCAL_Turkish_F", "group___class_driver___h_i_d.html#gga26df686fa916cfbae8777bb3fa0c4143a8320ae2b185d45cb9ed80164f20049fe", null ]
-    ] ],
-    [ "hid_descriptor_type_t", "group___class_driver___h_i_d.html#gada1109e4f5b655f5244d782d22ff2dd8", [
-      [ "HID_DESC_TYPE_HID", "group___class_driver___h_i_d.html#ggada1109e4f5b655f5244d782d22ff2dd8ad7d289340fe803bd96447a9283d38b20", null ],
-      [ "HID_DESC_TYPE_REPORT", "group___class_driver___h_i_d.html#ggada1109e4f5b655f5244d782d22ff2dd8a783592cb8c151f166c8a34914352bc18", null ],
-      [ "HID_DESC_TYPE_PHYSICAL", "group___class_driver___h_i_d.html#ggada1109e4f5b655f5244d782d22ff2dd8a60219ea46a240578d87e71721e7ed358", null ]
+    [ "hid_descriptor_enum_t", "group___class_driver___h_i_d.html#gac7cd4cdb633d75db60cca8312c3c4994", [
+      [ "HID_DESC_TYPE_HID", "group___class_driver___h_i_d.html#ggac7cd4cdb633d75db60cca8312c3c4994ad7d289340fe803bd96447a9283d38b20", null ],
+      [ "HID_DESC_TYPE_REPORT", "group___class_driver___h_i_d.html#ggac7cd4cdb633d75db60cca8312c3c4994a783592cb8c151f166c8a34914352bc18", null ],
+      [ "HID_DESC_TYPE_PHYSICAL", "group___class_driver___h_i_d.html#ggac7cd4cdb633d75db60cca8312c3c4994a60219ea46a240578d87e71721e7ed358", null ]
     ] ],
     [ "hid_gamepad_button_bm_t", "group___class_driver___h_i_d___gamepad.html#ga480ab1ef985bd92da8d53e3761950cb8", [
-      [ "GAMEPAD_BUTTON_A", "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8ab929b749d51c01eea411670804770be8", null ],
-      [ "GAMEPAD_BUTTON_B", "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8a4fe1615d613741f10d7d9722c7a03be5", null ],
-      [ "GAMEPAD_BUTTON_C", "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8aabf6c88dc1769d4808ddc428bd2fd5e6", null ],
-      [ "GAMEPAD_BUTTON_X", "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8a7a45bbdd6cb574c8d283f3a9551a364c", null ],
-      [ "GAMEPAD_BUTTON_Y", "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8aa154cfd4fce600e5f2f477df7d5a2784", null ],
-      [ "GAMEPAD_BUTTON_Z", "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8a77a1f684c17cd52ac98afe2c6cef7413", null ],
-      [ "GAMEPAD_BUTTON_TL", "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8a6fc801df5282aa28d2e0ba4a18d45c6d", null ],
-      [ "GAMEPAD_BUTTON_TR", "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8a05030a15763dd8132f78672ac9bc3eff", null ],
-      [ "GAMEPAD_BUTTON_TL2", "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8ac3547bd645c7d337cc5c3f55fc691b76", null ],
-      [ "GAMEPAD_BUTTON_TR2", "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8a7119392990977c6808c4bb3270ef9a9f", null ],
-      [ "GAMEPAD_BUTTON_SELECT", "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8a03ccd78e141934cb44b471c193c22fda", null ],
-      [ "GAMEPAD_BUTTON_START", "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8a2d5721d05e679bbf96387c5ee74a04a0", null ],
-      [ "GAMEPAD_BUTTON_MODE", "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8a064511a1243ca86e570ed025f4d9ad2b", null ],
-      [ "GAMEPAD_BUTTON_THUMBL", "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8a55cd0d2ee347bad76ba122bde056440b", null ],
-      [ "GAMEPAD_BUTTON_THUMBR", "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8a108c3f61fe5948f2bed732d72630db1d", null ]
+      [ "GAMEPAD_BUTTON_0", "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8a5f6077cea6b3420d8e8d09d2ef2ee41f", null ],
+      [ "GAMEPAD_BUTTON_1", "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8a8e1258ec6d371e3a659218132989192c", null ],
+      [ "GAMEPAD_BUTTON_2", "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8a93bd3a9cc1f87b0d51edc2f19e473e90", null ],
+      [ "GAMEPAD_BUTTON_3", "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8aa65fc471261b2623b9067e0f809ea6b8", null ],
+      [ "GAMEPAD_BUTTON_4", "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8af14c9998a446ca8fd94f763553f41a35", null ],
+      [ "GAMEPAD_BUTTON_5", "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8a2506e452a9a673aa5800790985786071", null ],
+      [ "GAMEPAD_BUTTON_6", "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8aa14ce9d6fa149d629acd9331a5ca59dd", null ],
+      [ "GAMEPAD_BUTTON_7", "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8aaef4cc2ef03009ae146f5b2300f37f4e", null ],
+      [ "GAMEPAD_BUTTON_8", "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8a916d90088bc431b8da6fdf05e41bf383", null ],
+      [ "GAMEPAD_BUTTON_9", "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8a37e56df1bc799910cf78d94918a92400", null ],
+      [ "GAMEPAD_BUTTON_10", "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8acb6ef9e169140ddc132f72672a232309", null ],
+      [ "GAMEPAD_BUTTON_11", "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8afa00d2afac1d07f4d0bdbb82e75a7388", null ],
+      [ "GAMEPAD_BUTTON_12", "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8a0de63db9d70f4982a03ce826963787c4", null ],
+      [ "GAMEPAD_BUTTON_13", "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8a850d431f0c3437a4e411496c6d9440f3", null ],
+      [ "GAMEPAD_BUTTON_14", "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8a988b03e24f94b3f84beadcd2dd50a51e", null ],
+      [ "GAMEPAD_BUTTON_15", "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8ac2e3c12e45c11490ae46338f3644083a", null ],
+      [ "GAMEPAD_BUTTON_16", "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8a5db8220d48bc43f5d486665cb731a77f", null ],
+      [ "GAMEPAD_BUTTON_17", "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8a3a2f51a54f40a0cd2dac676e843bc0ec", null ],
+      [ "GAMEPAD_BUTTON_18", "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8a7ab827b1d64e57bb90b5702b9d7bda86", null ],
+      [ "GAMEPAD_BUTTON_19", "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8a89b3575c8c9f74de3d99d6a60b661957", null ],
+      [ "GAMEPAD_BUTTON_20", "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8ab009cf28b9ceb656709560fd096707b8", null ],
+      [ "GAMEPAD_BUTTON_21", "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8a7f464b48c205cd11999337dff05a363d", null ],
+      [ "GAMEPAD_BUTTON_22", "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8a7ef68d888c5a7f372e6038c996f36a4e", null ],
+      [ "GAMEPAD_BUTTON_23", "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8a73afa9d29c5eb4c9e886d70c1f9b57a5", null ],
+      [ "GAMEPAD_BUTTON_24", "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8ae971549781061ad710e76fe93837ece9", null ],
+      [ "GAMEPAD_BUTTON_25", "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8a845ec9086133f9d266a7c67561250d95", null ],
+      [ "GAMEPAD_BUTTON_26", "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8ab64183faa24752d390a25a8c675d2fbb", null ],
+      [ "GAMEPAD_BUTTON_27", "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8a083dea141146c660bcd4d3e072947b5b", null ],
+      [ "GAMEPAD_BUTTON_28", "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8a2260f16beee8f7c615cf3602745990d2", null ],
+      [ "GAMEPAD_BUTTON_29", "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8a895e0915a9fdade686af705929d0d5af", null ],
+      [ "GAMEPAD_BUTTON_30", "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8aa2d857f1a9a6c30121546ec5cf9bba25", null ],
+      [ "GAMEPAD_BUTTON_31", "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8ad5fd53a472e5ff0d691714584e223597", null ]
     ] ],
     [ "hid_gamepad_hat_t", "group___class_driver___h_i_d___gamepad.html#gae8909e1713f911347f804b65babcb9b0", [
       [ "GAMEPAD_HAT_CENTERED", "group___class_driver___h_i_d___gamepad.html#ggae8909e1713f911347f804b65babcb9b0ae82878feca1e1d40d9233f81334bf0c1", null ],
@@ -73,6 +52,11 @@ var hid_8h =
       [ "GAMEPAD_HAT_DOWN_LEFT", "group___class_driver___h_i_d___gamepad.html#ggae8909e1713f911347f804b65babcb9b0a461055ee5049b6ae5cc7144b20a4e6b5", null ],
       [ "GAMEPAD_HAT_LEFT", "group___class_driver___h_i_d___gamepad.html#ggae8909e1713f911347f804b65babcb9b0a9607e1f3512dafd53d7d2a9eefb5f885", null ],
       [ "GAMEPAD_HAT_UP_LEFT", "group___class_driver___h_i_d___gamepad.html#ggae8909e1713f911347f804b65babcb9b0af4f934d4e7e7781374c3bbf082ce8a73", null ]
+    ] ],
+    [ "hid_interface_protocol_enum_t", "group___class_driver___h_i_d.html#ga7e429f347974b5edc6d748de2829b984", [
+      [ "HID_ITF_PROTOCOL_NONE", "group___class_driver___h_i_d.html#gga7e429f347974b5edc6d748de2829b984ae2a1cc7fa476dc8d4d14f3084b6dc378", null ],
+      [ "HID_ITF_PROTOCOL_KEYBOARD", "group___class_driver___h_i_d.html#gga7e429f347974b5edc6d748de2829b984a6792c51c8c4c7f77ce0730d8e51f8898", null ],
+      [ "HID_ITF_PROTOCOL_MOUSE", "group___class_driver___h_i_d.html#gga7e429f347974b5edc6d748de2829b984a81ad0e14f16f406d0da8fd9ba67db2e5", null ]
     ] ],
     [ "hid_keyboard_led_bm_t", "group___class_driver___h_i_d___keyboard.html#ga7cef2aea3178da2aa5fe0d4bf298c5b7", [
       [ "KEYBOARD_LED_NUMLOCK", "group___class_driver___h_i_d___keyboard.html#gga7cef2aea3178da2aa5fe0d4bf298c5b7ab146281c88fca97cf36501b8edf33e67", null ],
@@ -91,6 +75,44 @@ var hid_8h =
       [ "KEYBOARD_MODIFIER_RIGHTALT", "group___class_driver___h_i_d___keyboard.html#gga267dfef61bb13db0254ac75246ace393a366c02214e8a02fdc692f2ed2703eb2c", null ],
       [ "KEYBOARD_MODIFIER_RIGHTGUI", "group___class_driver___h_i_d___keyboard.html#gga267dfef61bb13db0254ac75246ace393a55bff59ddf845ab7ddb26e14a61abfe5", null ]
     ] ],
+    [ "hid_local_enum_t", "group___class_driver___h_i_d.html#gafa39696504bdc6891d340b764213be79", [
+      [ "HID_LOCAL_NotSupported", "group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79a87c4c8dd608e10ba98840df94abc1956", null ],
+      [ "HID_LOCAL_Arabic", "group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79a5d7793ba7e18d3a78f5d38e8dcb71c5c", null ],
+      [ "HID_LOCAL_Belgian", "group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79a4b8fc3f8af08e662fd2efe015652a858", null ],
+      [ "HID_LOCAL_Canadian_Bilingual", "group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79a51bf58c7371ec3ef824d848041f4d4e0", null ],
+      [ "HID_LOCAL_Canadian_French", "group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79abeac2d607c89c3975d9adb319a528681", null ],
+      [ "HID_LOCAL_Czech_Republic", "group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79a12b05629a9b9fdd64f4150950a459af8", null ],
+      [ "HID_LOCAL_Danish", "group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79a18caf57a3598e627d9105f62178e2885", null ],
+      [ "HID_LOCAL_Finnish", "group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79ab2e1f3bf739e4d7f600fe31ead559a9b", null ],
+      [ "HID_LOCAL_French", "group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79ae4d9b071e9bf0a084d66fbeef2f4ecda", null ],
+      [ "HID_LOCAL_German", "group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79aeed05e4e291160fb6133821b64d17f55", null ],
+      [ "HID_LOCAL_Greek", "group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79a7a822832deb3ec45f037fcdcbb628795", null ],
+      [ "HID_LOCAL_Hebrew", "group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79a995e69e1f70533f607db842765119920", null ],
+      [ "HID_LOCAL_Hungary", "group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79a8ff2032842cfb97d4d3254b967cf1e31", null ],
+      [ "HID_LOCAL_International", "group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79a967a696caae26e69e701fca72326802f", null ],
+      [ "HID_LOCAL_Italian", "group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79ae3caf8923a39b8f0c5b7e327a5cc31f0", null ],
+      [ "HID_LOCAL_Japan_Katakana", "group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79af05e9ee6df44c50897d8642b03ef1d03", null ],
+      [ "HID_LOCAL_Korean", "group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79a2c220138186d821aec0979d4a0114d89", null ],
+      [ "HID_LOCAL_Latin_American", "group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79a1db3a30da7b7688a77b0dcebb1167e42", null ],
+      [ "HID_LOCAL_Netherlands_Dutch", "group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79a4af0114199fa9653ab3309b5d411691e", null ],
+      [ "HID_LOCAL_Norwegian", "group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79af48599aed2638a1e0422128dbac7188e", null ],
+      [ "HID_LOCAL_Persian_Farsi", "group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79a18cc4f55558dec61f419b1561eb902b0", null ],
+      [ "HID_LOCAL_Poland", "group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79af61e2c5f1e3b35cd994404de94edf595", null ],
+      [ "HID_LOCAL_Portuguese", "group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79a528be4d3c61243ef066ffc3188a6628e", null ],
+      [ "HID_LOCAL_Russia", "group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79a8262c6f0c6619259d44e85ab6c21dba0", null ],
+      [ "HID_LOCAL_Slovakia", "group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79a6b723b6fc03c76566c22104c16367c49", null ],
+      [ "HID_LOCAL_Spanish", "group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79a737e65e5a0f54820fe28681cdd373d94", null ],
+      [ "HID_LOCAL_Swedish", "group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79a9416916e8ba8bf7f008063d78d4a4337", null ],
+      [ "HID_LOCAL_Swiss_French", "group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79ad1fa6285ca844d6a18ed11af149a5512", null ],
+      [ "HID_LOCAL_Swiss_German", "group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79a12a365126432f4f256c0c242ab3c03f4", null ],
+      [ "HID_LOCAL_Switzerland", "group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79a104f1d2b352d5c782414d2a2c3f50781", null ],
+      [ "HID_LOCAL_Taiwan", "group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79a3d3d623549dd047b6d7be625589c5eff", null ],
+      [ "HID_LOCAL_Turkish_Q", "group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79a41baf64b87c436ebabe1707319a300d4", null ],
+      [ "HID_LOCAL_UK", "group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79ada22e938a025cac7ced9c1b5f3cb71b0", null ],
+      [ "HID_LOCAL_US", "group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79ad7649edf7a7582ccc67463e27f31cc98", null ],
+      [ "HID_LOCAL_Yugoslavia", "group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79a9613695ec062de96cfefbf2b8993202b", null ],
+      [ "HID_LOCAL_Turkish_F", "group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79a8320ae2b185d45cb9ed80164f20049fe", null ]
+    ] ],
     [ "hid_mouse_button_bm_t", "group___class_driver___h_i_d___mouse.html#ga67fa26a659c18a393d7a83e807560929", [
       [ "MOUSE_BUTTON_LEFT", "group___class_driver___h_i_d___mouse.html#gga67fa26a659c18a393d7a83e807560929a3c2e62b97b30d850c5539d0f3a6d0958", null ],
       [ "MOUSE_BUTTON_RIGHT", "group___class_driver___h_i_d___mouse.html#gga67fa26a659c18a393d7a83e807560929a5b61e63e73f15ed6af97d5cd3124bc6f", null ],
@@ -98,10 +120,9 @@ var hid_8h =
       [ "MOUSE_BUTTON_BACKWARD", "group___class_driver___h_i_d___mouse.html#gga67fa26a659c18a393d7a83e807560929a2c0df80a8920975bc3b7528e9fc4f227", null ],
       [ "MOUSE_BUTTON_FORWARD", "group___class_driver___h_i_d___mouse.html#gga67fa26a659c18a393d7a83e807560929a1dcc16e6a491263be0143ec3aa951910", null ]
     ] ],
-    [ "hid_protocol_type_t", "group___class_driver___h_i_d.html#ga90d00287412f4ba2286f2fd15173e6c7", [
-      [ "HID_PROTOCOL_NONE", "group___class_driver___h_i_d.html#gga90d00287412f4ba2286f2fd15173e6c7a609d8103e0052cb10141f12653d554b5", null ],
-      [ "HID_PROTOCOL_KEYBOARD", "group___class_driver___h_i_d.html#gga90d00287412f4ba2286f2fd15173e6c7a230a1287ac2e27222537b12b4a16ebdd", null ],
-      [ "HID_PROTOCOL_MOUSE", "group___class_driver___h_i_d.html#gga90d00287412f4ba2286f2fd15173e6c7a67b7be71e51bd28589a418432474c06b", null ]
+    [ "hid_protocol_mode_enum_t", "group___class_driver___h_i_d.html#gae15eb35d0f49967e1b1eec7a76356d11", [
+      [ "HID_PROTOCOL_BOOT", "group___class_driver___h_i_d.html#ggae15eb35d0f49967e1b1eec7a76356d11a10a2cdec9b00b024fb6c4feafb39ede2", null ],
+      [ "HID_PROTOCOL_REPORT", "group___class_driver___h_i_d.html#ggae15eb35d0f49967e1b1eec7a76356d11a67419f6feb8d39bd219e26c424a5fee0", null ]
     ] ],
     [ "hid_report_type_t", "group___class_driver___h_i_d.html#gaeef3673bfd124f9f431f7f6913d78088", [
       [ "HID_REPORT_TYPE_INVALID", "group___class_driver___h_i_d.html#ggaeef3673bfd124f9f431f7f6913d78088aa960368e4e0990e4e2cf34389039d097", null ],
@@ -109,17 +130,17 @@ var hid_8h =
       [ "HID_REPORT_TYPE_OUTPUT", "group___class_driver___h_i_d.html#ggaeef3673bfd124f9f431f7f6913d78088ac019f1ccb72d64b8ce9dc5c5d952f8a3", null ],
       [ "HID_REPORT_TYPE_FEATURE", "group___class_driver___h_i_d.html#ggaeef3673bfd124f9f431f7f6913d78088adb047f4ed99575941ca9d857244f5aea", null ]
     ] ],
-    [ "hid_request_type_t", "group___class_driver___h_i_d.html#ga40b25478e300d37659ba4fae7685ee8b", [
-      [ "HID_REQ_CONTROL_GET_REPORT", "group___class_driver___h_i_d.html#gga40b25478e300d37659ba4fae7685ee8ba7af68c33301160d68321bd3a59938dac", null ],
-      [ "HID_REQ_CONTROL_GET_IDLE", "group___class_driver___h_i_d.html#gga40b25478e300d37659ba4fae7685ee8badc1aee1310006bd1d68b2bbf62366320", null ],
-      [ "HID_REQ_CONTROL_GET_PROTOCOL", "group___class_driver___h_i_d.html#gga40b25478e300d37659ba4fae7685ee8ba06d23f8abb653d69c9400bd63f5cab42", null ],
-      [ "HID_REQ_CONTROL_SET_REPORT", "group___class_driver___h_i_d.html#gga40b25478e300d37659ba4fae7685ee8ba7a9ec9765aed526efcbd5c7efa62860e", null ],
-      [ "HID_REQ_CONTROL_SET_IDLE", "group___class_driver___h_i_d.html#gga40b25478e300d37659ba4fae7685ee8baaf873151da8b864bc4cca47247ed4ba1", null ],
-      [ "HID_REQ_CONTROL_SET_PROTOCOL", "group___class_driver___h_i_d.html#gga40b25478e300d37659ba4fae7685ee8ba8b2fbbfc16c3d35e011b4fb24d88f405", null ]
+    [ "hid_request_enum_t", "group___class_driver___h_i_d.html#ga3266c72abd6c51535d8956dd43853a0f", [
+      [ "HID_REQ_CONTROL_GET_REPORT", "group___class_driver___h_i_d.html#gga3266c72abd6c51535d8956dd43853a0fa7af68c33301160d68321bd3a59938dac", null ],
+      [ "HID_REQ_CONTROL_GET_IDLE", "group___class_driver___h_i_d.html#gga3266c72abd6c51535d8956dd43853a0fadc1aee1310006bd1d68b2bbf62366320", null ],
+      [ "HID_REQ_CONTROL_GET_PROTOCOL", "group___class_driver___h_i_d.html#gga3266c72abd6c51535d8956dd43853a0fa06d23f8abb653d69c9400bd63f5cab42", null ],
+      [ "HID_REQ_CONTROL_SET_REPORT", "group___class_driver___h_i_d.html#gga3266c72abd6c51535d8956dd43853a0fa7a9ec9765aed526efcbd5c7efa62860e", null ],
+      [ "HID_REQ_CONTROL_SET_IDLE", "group___class_driver___h_i_d.html#gga3266c72abd6c51535d8956dd43853a0faaf873151da8b864bc4cca47247ed4ba1", null ],
+      [ "HID_REQ_CONTROL_SET_PROTOCOL", "group___class_driver___h_i_d.html#gga3266c72abd6c51535d8956dd43853a0fa8b2fbbfc16c3d35e011b4fb24d88f405", null ]
     ] ],
-    [ "hid_subclass_type_t", "group___class_driver___h_i_d.html#gae112a336cedb27cfceb990ef7505395c", [
-      [ "HID_SUBCLASS_NONE", "group___class_driver___h_i_d.html#ggae112a336cedb27cfceb990ef7505395ca87ab6689bb0a2c7fa0c0d1259dfb1940", null ],
-      [ "HID_SUBCLASS_BOOT", "group___class_driver___h_i_d.html#ggae112a336cedb27cfceb990ef7505395ca08ced0936226fb6f5b46f2a842f7d510", null ]
+    [ "hid_subclass_enum_t", "group___class_driver___h_i_d.html#ga3dd0800b5c19b783006060c8645f7899", [
+      [ "HID_SUBCLASS_NONE", "group___class_driver___h_i_d.html#gga3dd0800b5c19b783006060c8645f7899a87ab6689bb0a2c7fa0c0d1259dfb1940", null ],
+      [ "HID_SUBCLASS_BOOT", "group___class_driver___h_i_d.html#gga3dd0800b5c19b783006060c8645f7899a08ced0936226fb6f5b46f2a842f7d510", null ]
     ] ],
     [ "C", "group___class_driver___h_i_d.html#gaaa53ca0b650dfd85c4f59fa156f7a2cc", null ]
 ];

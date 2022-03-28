@@ -7,11 +7,12 @@ var hid__device_8c =
     [ "hidd_open", "hid__device_8c.html#a1d90af6f68f8dc82e92b23d57c2337ec", null ],
     [ "hidd_reset", "hid__device_8c.html#a02a57dcfc0a6dd2398d9d902e3433132", null ],
     [ "hidd_xfer_cb", "hid__device_8c.html#aa373bafdf8bcafb736ae9b75ec1b21f4", null ],
-    [ "tud_hid_n_boot_mode", "hid__device_8c.html#a15c1b73d29134f687381f6aab6d48ffd", null ],
-    [ "tud_hid_n_gamepad_report", "hid__device_8c.html#ada2c055608154a5a0ffee1a54b8f5e9f", null ],
-    [ "tud_hid_n_keyboard_report", "hid__device_8c.html#a004f8ca72964b609a330ea2f5ff6d95a", null ],
-    [ "tud_hid_n_mouse_report", "hid__device_8c.html#a531830a9acce4497eecd726a621c8b29", null ],
-    [ "tud_hid_n_ready", "hid__device_8c.html#ac93502df9af1fa84528cc2e34b213695", null ],
-    [ "tud_hid_n_report", "hid__device_8c.html#a8b5ba162968a0990139a0bd8a062ddfa", null ],
+    [ "tud_hid_n_gamepad_report", "hid__device_8c.html#acf3dcc8248d23b74edee0e5824f18400", null ],
+    [ "tud_hid_n_get_protocol", "hid__device_8c.html#a566005a88eb8f9197b6f851b5d5bb926", null ],
+    [ "tud_hid_n_interface_protocol", "hid__device_8c.html#a8d03205a88b4ea5e080f02ece2a89fa4", null ],
+    [ "tud_hid_n_keyboard_report", "hid__device_8c.html#a472bfcb8f732eacb1c1b67653e7e06aa", null ],
+    [ "tud_hid_n_mouse_report", "hid__device_8c.html#a43a6a6784e5e6e1b06593702553eabad", null ],
+    [ "tud_hid_n_ready", "hid__device_8c.html#afd06b4579ff7c5d19c183d78b27effca", null ],
+    [ "tud_hid_n_report", "hid__device_8c.html#ac7a840730d497e90339351ad43cb3fc4", null ],
     [ "_hidd_itf", "hid__device_8c.html#a1622809257cd6e9ea44a58c11a9b4ccb", null ]
 ];

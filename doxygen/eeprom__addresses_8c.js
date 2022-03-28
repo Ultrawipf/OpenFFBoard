@@ -1,4 +1,5 @@
 var eeprom__addresses_8c =
 [
-    [ "VirtAddVarTab", "eeprom__addresses_8c.html#a1fb74b26daf6fdfa3dc85e4232ef4769", null ]
+    [ "exportableFlashAddresses", "eeprom__addresses_8c.html#ab97cf75868cb1d0bbe370e27346a4e5e", null ],
+    [ "VirtAddVarTab", "eeprom__addresses_8c.html#a27d99716228bbb05cff8443e2ab0ebcb", null ]
 ];

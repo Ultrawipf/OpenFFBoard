@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['timeout_20timer_0',['timeout timer',['../group___group___timeout_timer.html',1,'']]]
+  ['usb_20types_0',['USB Types',['../group___u_s_b_def___type.html',1,'']]]
 ];

@@ -21,14 +21,6 @@ var class_motor_p_w_m =
     [ "stopMotor", "class_motor_p_w_m.html#aa93dd5c2970589c1270c88a08e3e7c03", null ],
     [ "turn", "class_motor_p_w_m.html#a770023d0eb433b4833907542a6aa5eb4", null ],
     [ "active", "class_motor_p_w_m.html#adfbe735571cef59c87ef0324f0f90fa3", null ],
-    [ "ccr_1", "class_motor_p_w_m.html#abfc9c21615c4f628f57945d0ac336df1", null ],
-    [ "ccr_2", "class_motor_p_w_m.html#a479216614a0309cde6c0a487ab15e334", null ],
-    [ "ccr_3", "class_motor_p_w_m.html#a713ce22ef92231f126597e10f2d41120", null ],
-    [ "ccr_4", "class_motor_p_w_m.html#ad9895ec804e94926fa8996e2cb19160c", null ],
-    [ "channel_1", "class_motor_p_w_m.html#a5e8ea7d888b8b51304a0eacd6f256b43", null ],
-    [ "channel_2", "class_motor_p_w_m.html#af53effb1e76617e299f45cc204382c03", null ],
-    [ "channel_3", "class_motor_p_w_m.html#a32b2f91f0e6ec42b0c78525500d5b81e", null ],
-    [ "channel_4", "class_motor_p_w_m.html#a9da0058b3aa9812f57bef53360034b4f", null ],
     [ "info", "class_motor_p_w_m.html#a85b1eade8c4b946dbc7db293a631ed2e", null ],
     [ "mode", "class_motor_p_w_m.html#a5c4c33d2ea083febdc499d04fb3ecef9", null ],
     [ "period", "class_motor_p_w_m.html#afb701d67ae69d0bcdd71097474a6b049", null ],
@@ -36,5 +28,5 @@ var class_motor_p_w_m =
     [ "pwmDriverInUse", "class_motor_p_w_m.html#a2d0ce8a3c755709f8f965355b0d4f8c6", null ],
     [ "pwmspeed", "class_motor_p_w_m.html#ad8dfd249f7b50b25232da1bd8e27f422", null ],
     [ "tFreq", "class_motor_p_w_m.html#a8e41b09dbe0371952a803f7c604675b9", null ],
-    [ "timer", "class_motor_p_w_m.html#a4cbf78646f3533c9b6cd2316e22dd67b", null ]
+    [ "timerConfig", "class_motor_p_w_m.html#a2ef88d3690251a1ebe0e7c7f648fa93d", null ]
 ];

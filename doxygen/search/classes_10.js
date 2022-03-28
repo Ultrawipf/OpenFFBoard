@@ -1,19 +1,17 @@
 var searchData=
 [
-  ['scsi_5fread_5fcapacity10_5fresp_5ft_0',['scsi_read_capacity10_resp_t',['../structscsi__read__capacity10__resp__t.html',1,'']]],
-  ['semaphore_1',['Semaphore',['../classcpp__freertos_1_1_semaphore.html',1,'cpp_freertos']]],
-  ['semaphorecreateexception_2',['SemaphoreCreateException',['../classcpp__freertos_1_1_semaphore_create_exception.html',1,'cpp_freertos']]],
-  ['shifteranalog_3',['ShifterAnalog',['../class_shifter_analog.html',1,'']]],
-  ['singleton_4',['Singleton',['../class_singleton.html',1,'']]],
-  ['spi_5fbuttons_5',['SPI_Buttons',['../class_s_p_i___buttons.html',1,'']]],
-  ['spi_5fbuttons_5f1_6',['SPI_Buttons_1',['../class_s_p_i___buttons__1.html',1,'']]],
-  ['spi_5fbuttons_5f2_7',['SPI_Buttons_2',['../class_s_p_i___buttons__2.html',1,'']]],
-  ['spiconfig_8',['SPIConfig',['../struct_s_p_i_config.html',1,'']]],
-  ['spidevice_9',['SPIDevice',['../class_s_p_i_device.html',1,'']]],
-  ['spihandler_10',['SpiHandler',['../class_spi_handler.html',1,'']]],
-  ['spiport_11',['SPIPort',['../class_s_p_i_port.html',1,'']]],
-  ['statusflags_12',['StatusFlags',['../union_status_flags.html',1,'']]],
-  ['statusflags_5fs_13',['StatusFlags_s',['../struct_status_flags_1_1_status_flags__s.html',1,'StatusFlags']]],
-  ['stringcommandinterface_14',['StringCommandInterface',['../class_string_command_interface.html',1,'']]],
-  ['systemcommands_15',['SystemCommands',['../class_system_commands.html',1,'']]]
+  ['readwritelock_0',['ReadWriteLock',['../classcpp__freertos_1_1_read_write_lock.html',1,'cpp_freertos']]],
+  ['readwritelockcreateexception_1',['ReadWriteLockCreateException',['../classcpp__freertos_1_1_read_write_lock_create_exception.html',1,'cpp_freertos']]],
+  ['readwritelockpreferreader_2',['ReadWriteLockPreferReader',['../classcpp__freertos_1_1_read_write_lock_prefer_reader.html',1,'cpp_freertos']]],
+  ['readwritelockpreferwriter_3',['ReadWriteLockPreferWriter',['../classcpp__freertos_1_1_read_write_lock_prefer_writer.html',1,'cpp_freertos']]],
+  ['rndis_5fmsg_5finitialize_5fcmplt_5ft_4',['rndis_msg_initialize_cmplt_t',['../structrndis__msg__initialize__cmplt__t.html',1,'']]],
+  ['rndis_5fmsg_5finitialize_5ft_5',['rndis_msg_initialize_t',['../structrndis__msg__initialize__t.html',1,'']]],
+  ['rndis_5fmsg_5fkeep_5falive_5ft_6',['rndis_msg_keep_alive_t',['../structrndis__msg__keep__alive__t.html',1,'']]],
+  ['rndis_5fmsg_5fout_5fof_5fband_5fdata_5ft_7',['rndis_msg_out_of_band_data_t',['../structrndis__msg__out__of__band__data__t.html',1,'']]],
+  ['rndis_5fmsg_5fpacket_5ft_8',['rndis_msg_packet_t',['../structrndis__msg__packet__t.html',1,'']]],
+  ['rndis_5fmsg_5fquery_5fcmplt_5ft_9',['rndis_msg_query_cmplt_t',['../structrndis__msg__query__cmplt__t.html',1,'']]],
+  ['rndis_5fmsg_5fquery_5ft_10',['rndis_msg_query_t',['../structrndis__msg__query__t.html',1,'']]],
+  ['rndis_5fmsg_5freset_5fcmplt_5ft_11',['rndis_msg_reset_cmplt_t',['../structrndis__msg__reset__cmplt__t.html',1,'']]],
+  ['rndis_5fmsg_5freset_5ft_12',['rndis_msg_reset_t',['../structrndis__msg__reset__t.html',1,'']]],
+  ['rndis_5fmsg_5fset_5fcmplt_5ft_13',['rndis_msg_set_cmplt_t',['../structrndis__msg__set__cmplt__t.html',1,'']]]
 ];

@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['rndis_5fmsg_5fstatus_5ft_0',['rndis_msg_status_t',['../group___c_d_c___r_n_d_i_s___common.html#ga68258ea157c329f651e9e539eb1b268d',1,'cdc_rndis.h']]],
-  ['rndis_5foid_5ftype_5ft_1',['rndis_oid_type_t',['../group___c_d_c___r_n_d_i_s___common.html#ga1f481916fd3d96784ade7285b72c8e7a',1,'cdc_rndis.h']]],
-  ['rndis_5fpacket_5ffilter_5ftype_5ft_2',['rndis_packet_filter_type_t',['../group___c_d_c___r_n_d_i_s___common.html#ga4e92796a7b6193715d6db3d55e52be58',1,'cdc_rndis.h']]]
+  ['pcf8574buttons_5fcommands_0',['PCF8574Buttons_commands',['../class_p_c_f8574_buttons.html#a4968701182a9f51430d9c750d6375b70',1,'PCF8574Buttons']]],
+  ['phie_1',['PhiE',['../_t_m_c4671_8h.html#addb917dd45972d75a9b40bab2ce78492',1,'TMC4671.h']]],
+  ['posselection_2',['PosSelection',['../_t_m_c4671_8h.html#affe1640d3ae28fb6e7d823943b6b784b',1,'TMC4671.h']]]
 ];

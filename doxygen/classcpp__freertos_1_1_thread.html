@@ -105,15 +105,17 @@ Inheritance diagram for cpp_freertos::Thread:</div>
  <div class="center">
   <img src="classcpp__freertos_1_1_thread.png" usemap="#cpp_5Ffreertos::Thread_map" alt=""/>
   <map id="cpp_5Ffreertos::Thread_map" name="cpp_5Ffreertos::Thread_map">
-<area href="class_error_printer.html" alt="ErrorPrinter" shape="rect" coords="263,56,516,80"/>
-<area href="class_f_f_board_main_command_thread.html" alt="FFBoardMainCommandThread" shape="rect" coords="263,112,516,136"/>
-<area href="class_h_i_d___command_interface.html" alt="HID_CommandInterface" shape="rect" coords="263,168,516,192"/>
-<area href="class_o_drive_c_a_n.html" alt="ODriveCAN" shape="rect" coords="263,224,516,248"/>
-<area href="class_t_m_c4671.html" alt="TMC4671" shape="rect" coords="263,280,516,304"/>
-<area href="class_u_a_r_t___command_interface.html" alt="UART_CommandInterface" shape="rect" coords="263,336,516,360"/>
-<area href="class_u_s_bdevice.html" alt="USBdevice" shape="rect" coords="263,392,516,416"/>
-<area href="class_vesc_c_a_n.html" alt="VescCAN" shape="rect" coords="263,448,516,472"/>
-<area href="classcpp__freertos_1_1_work_queue_1_1_c_worker_thread.html" alt="cpp_freertos::WorkQueue::CWorkerThread" shape="rect" coords="263,504,516,528"/>
+<area href="class_c_d_c___command_interface.html" alt="CDC_CommandInterface" shape="rect" coords="290,56,570,80"/>
+<area href="class_error_printer.html" alt="ErrorPrinter" shape="rect" coords="290,112,570,136"/>
+<area href="class_f_f_board_main_command_thread.html" alt="FFBoardMainCommandThread" shape="rect" coords="290,168,570,192"/>
+<area href="class_h_i_d___command_interface.html" alt="HID_CommandInterface" shape="rect" coords="290,224,570,248"/>
+<area href="class_o_drive_c_a_n.html" alt="ODriveCAN" shape="rect" coords="290,280,570,304"/>
+<area href="class_t_m_c4671.html" alt="TMC4671" shape="rect" coords="290,336,570,360"/>
+<area href="class_t_m_c4671_1_1_t_m_c___external_encoder_update_thread.html" alt="TMC4671::TMC_ExternalEncoderUpdateThread" shape="rect" coords="290,392,570,416"/>
+<area href="class_u_a_r_t___command_interface.html" alt="UART_CommandInterface" shape="rect" coords="290,448,570,472"/>
+<area href="class_u_s_bdevice.html" alt="USBdevice" shape="rect" coords="290,504,570,528"/>
+<area href="class_vesc_c_a_n.html" alt="VescCAN" shape="rect" coords="290,560,570,584"/>
+<area href="classcpp__freertos_1_1_work_queue_1_1_c_worker_thread.html" alt="cpp_freertos::WorkQueue::CWorkerThread" shape="rect" coords="290,616,570,640"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -137,6 +139,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a0a413b18b2818072998320f1f6388eee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa11e945ef24eb35b4df261050576a2c0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__freertos_1_1_thread.html#aa11e945ef24eb35b4df261050576a2c0">ResumeFromISR</a> ()</td></tr>
 <tr class="separator:aa11e945ef24eb35b4df261050576a2c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11c4a24ed63a986f75e5a85d249bc372"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__freertos_1_1_thread.html#a11c4a24ed63a986f75e5a85d249bc372">Notify</a> ()</td></tr>
+<tr class="separator:a11c4a24ed63a986f75e5a85d249bc372"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57a2c2a7f5e1e815b031a78a0f2314c5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__freertos_1_1_thread.html#a57a2c2a7f5e1e815b031a78a0f2314c5">NotifyFromISR</a> ()</td></tr>
+<tr class="separator:a57a2c2a7f5e1e815b031a78a0f2314c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a198ff02a770b7fd7e43e8ab0e9221176"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__freertos_1_1_thread.html#a198ff02a770b7fd7e43e8ab0e9221176">WaitForNotification</a> (TickType_t Timeout=portMAX_DELAY)</td></tr>
+<tr class="separator:a198ff02a770b7fd7e43e8ab0e9221176"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ace92214a082dd8fd49e48af680e9bee5"><td class="memItemLeft" align="right" valign="top">UBaseType_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__freertos_1_1_thread.html#ace92214a082dd8fd49e48af680e9bee5">GetPriority</a> ()</td></tr>
 <tr class="separator:ace92214a082dd8fd49e48af680e9bee5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a00923e979ba8b757d293c7f33701df29"><td class="memItemLeft" align="right" valign="top">UBaseType_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__freertos_1_1_thread.html#a00923e979ba8b757d293c7f33701df29">GetPriorityFromISR</a> ()</td></tr>
@@ -431,7 +439,7 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="thread_8hpp_source.html#l00314">314</a> of file <a class="el" href="thread_8hpp_source.html">thread.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread_8hpp_source.html#l00352">352</a> of file <a class="el" href="thread_8hpp_source.html">thread.hpp</a>.</p>
 
 </div>
 </div>
@@ -556,7 +564,7 @@ You need to use this call. Do NOT directly call vTaskEndScheduler while using th
 <p >Get the name of this thread.</p>
 <dl class="section return"><dt>Returns</dt><dd>a C++ string with the name of the task. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="thread_8hpp_source.html#l00256">256</a> of file <a class="el" href="thread_8hpp_source.html">thread.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread_8hpp_source.html#l00294">294</a> of file <a class="el" href="thread_8hpp_source.html">thread.hpp</a>.</p>
 
 </div>
 </div>
@@ -583,7 +591,7 @@ You need to use this call. Do NOT directly call vTaskEndScheduler while using th
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread_8hpp_source.html#l00261">261</a> of file <a class="el" href="thread_8hpp_source.html">thread.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread_8hpp_source.html#l00299">299</a> of file <a class="el" href="thread_8hpp_source.html">thread.hpp</a>.</p>
 
 </div>
 </div>
@@ -612,7 +620,7 @@ You need to use this call. Do NOT directly call vTaskEndScheduler while using th
 <p >Get the priority of this <a class="el" href="classcpp__freertos_1_1_thread.html">Thread</a>.</p>
 <dl class="section return"><dt>Returns</dt><dd>Priority at the time this was called. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="thread_8hpp_source.html#l00220">220</a> of file <a class="el" href="thread_8hpp_source.html">thread.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread_8hpp_source.html#l00258">258</a> of file <a class="el" href="thread_8hpp_source.html">thread.hpp</a>.</p>
 
 </div>
 </div>
@@ -640,6 +648,62 @@ You need to use this call. Do NOT directly call vTaskEndScheduler while using th
 </div><div class="memdoc">
 <p >Get the priority of this <a class="el" href="classcpp__freertos_1_1_thread.html">Thread</a> from ISR context.</p>
 <dl class="section return"><dt>Returns</dt><dd>Priority at the time this was called. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="thread_8hpp_source.html#l00268">268</a> of file <a class="el" href="thread_8hpp_source.html">thread.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a11c4a24ed63a986f75e5a85d249bc372" name="a11c4a24ed63a986f75e5a85d249bc372"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a11c4a24ed63a986f75e5a85d249bc372">&#9670;&nbsp;</a></span>Notify()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void cpp_freertos::Thread::Notify </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p >Added from PR <a href="https://github.com/michaelbecker/freertos-addons/pull/40">https://github.com/michaelbecker/freertos-addons/pull/40</a> Notify a specific thread. </p>
+
+<p class="definition">Definition at line <a class="el" href="thread_8hpp_source.html#l00222">222</a> of file <a class="el" href="thread_8hpp_source.html">thread.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a57a2c2a7f5e1e815b031a78a0f2314c5" name="a57a2c2a7f5e1e815b031a78a0f2314c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a57a2c2a7f5e1e815b031a78a0f2314c5">&#9670;&nbsp;</a></span>NotifyFromISR()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void cpp_freertos::Thread::NotifyFromISR </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p >Notify a specific thread from ISR context. </p>
 
 <p class="definition">Definition at line <a class="el" href="thread_8hpp_source.html#l00230">230</a> of file <a class="el" href="thread_8hpp_source.html">thread.hpp</a>.</p>
 
@@ -753,7 +817,7 @@ You need to use this call. Do NOT directly call vTaskEndScheduler while using th
 </div><div class="memdoc">
 <p >Implementation of your actual thread code. You must override this function. </p><dl class="section note"><dt>Note</dt><dd>If INCLUDE_vTaskDelete is defined, then you may return from your Run method. This will cause the task to be deleted from FreeRTOS, however you are still responsible to delete the task object. If this is not defined, then retuning from your <a class="el" href="classcpp__freertos_1_1_thread.html#a93df31e4bee72f150dd742ab5d6d35c3">Run()</a> method will result in an assert. </dd></dl>
 
-<p>Implemented in <a class="el" href="class_u_a_r_t___command_interface.html#a3b9237b8a83c5dad6f07cbe604fba490">UART_CommandInterface</a>, <a class="el" href="class_error_printer.html#a48f7e1123610c17e948c185def0dcb5c">ErrorPrinter</a>, <a class="el" href="class_h_i_d___command_interface.html#af081cacc2176077655f7f6bbdd1f3e1a">HID_CommandInterface</a>, <a class="el" href="class_u_s_bdevice.html#ac9b99ad1180f779d782ef776a25cb005">USBdevice</a>, <a class="el" href="classcpp__freertos_1_1_work_queue_1_1_c_worker_thread.html#a6fe045f97485fda01d4bae558e9e3a5b">cpp_freertos::WorkQueue::CWorkerThread</a>, <a class="el" href="class_f_f_board_main_command_thread.html#afad6fb2ed97ffd2913509a298975f124">FFBoardMainCommandThread</a>, <a class="el" href="class_o_drive_c_a_n.html#a553174402ce65f40ca987d14ae44e638">ODriveCAN</a>, <a class="el" href="class_t_m_c4671.html#ad4f53e7722f511fbeeb18ef58d6edb88">TMC4671</a>, and <a class="el" href="class_vesc_c_a_n.html#a5386de2560078193d27d5f6670a6399f">VescCAN</a>.</p>
+<p>Implemented in <a class="el" href="class_c_d_c___command_interface.html#a766e41872727ac9b1536b253e8f21b37">CDC_CommandInterface</a>, <a class="el" href="class_u_a_r_t___command_interface.html#a3b9237b8a83c5dad6f07cbe604fba490">UART_CommandInterface</a>, <a class="el" href="class_error_printer.html#a48f7e1123610c17e948c185def0dcb5c">ErrorPrinter</a>, <a class="el" href="class_f_f_board_main_command_thread.html#afad6fb2ed97ffd2913509a298975f124">FFBoardMainCommandThread</a>, <a class="el" href="class_h_i_d___command_interface.html#af081cacc2176077655f7f6bbdd1f3e1a">HID_CommandInterface</a>, <a class="el" href="class_u_s_bdevice.html#ac9b99ad1180f779d782ef776a25cb005">USBdevice</a>, <a class="el" href="classcpp__freertos_1_1_work_queue_1_1_c_worker_thread.html#a6fe045f97485fda01d4bae558e9e3a5b">cpp_freertos::WorkQueue::CWorkerThread</a>, <a class="el" href="class_o_drive_c_a_n.html#a553174402ce65f40ca987d14ae44e638">ODriveCAN</a>, <a class="el" href="class_t_m_c4671.html#ad4f53e7722f511fbeeb18ef58d6edb88">TMC4671</a>, <a class="el" href="class_t_m_c4671_1_1_t_m_c___external_encoder_update_thread.html#a8257be61e71e0b7cd9b7cc85781ad910">TMC4671::TMC_ExternalEncoderUpdateThread</a>, and <a class="el" href="class_vesc_c_a_n.html#a5386de2560078193d27d5f6670a6399f">VescCAN</a>.</p>
 
 </div>
 </div>
@@ -788,7 +852,7 @@ You need to use this call. Do NOT directly call vTaskEndScheduler while using th
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="thread_8hpp_source.html#l00243">243</a> of file <a class="el" href="thread_8hpp_source.html">thread.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread_8hpp_source.html#l00281">281</a> of file <a class="el" href="thread_8hpp_source.html">thread.hpp</a>.</p>
 
 </div>
 </div>
@@ -816,7 +880,7 @@ You need to use this call. Do NOT directly call vTaskEndScheduler while using th
 </div><div class="memdoc">
 <p >Internal helper function to signal this thread. </p>
 
-<p class="definition">Definition at line <a class="el" href="thread_8hpp_source.html#l00442">442</a> of file <a class="el" href="thread_8hpp_source.html">thread.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread_8hpp_source.html#l00480">480</a> of file <a class="el" href="thread_8hpp_source.html">thread.hpp</a>.</p>
 
 </div>
 </div>
@@ -985,6 +1049,42 @@ You need to use this call. Do NOT directly call vTaskEndScheduler while using th
 
 </div>
 </div>
+<a id="a198ff02a770b7fd7e43e8ab0e9221176" name="a198ff02a770b7fd7e43e8ab0e9221176"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a198ff02a770b7fd7e43e8ab0e9221176">&#9670;&nbsp;</a></span>WaitForNotification()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t cpp_freertos::Thread::WaitForNotification </td>
+          <td>(</td>
+          <td class="paramtype">TickType_t&#160;</td>
+          <td class="paramname"><em>Timeout</em> = <code>portMAX_DELAY</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p >Have this thread wait until it gets notification.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">Timeout</td><td>Allows you to specify a timeout on the Wait, if desired.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Notification Value, which can be set/modified when giving a notification </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="thread_8hpp_source.html#l00246">246</a> of file <a class="el" href="thread_8hpp_source.html">thread.hpp</a>.</p>
+
+</div>
+</div>
 <a id="abe20a08801d022da203e0295dbb59cbb" name="abe20a08801d022da203e0295dbb59cbb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abe20a08801d022da203e0295dbb59cbb">&#9670;&nbsp;</a></span>Yield()</h2>
 
@@ -1035,7 +1135,7 @@ You need to use this call. Do NOT directly call vTaskEndScheduler while using th
 </div><div class="memdoc">
 <p >The <a class="el" href="classcpp__freertos_1_1_thread.html">Thread</a> class and the <a class="el" href="classcpp__freertos_1_1_condition_variable.html">ConditionVariable</a> class are interdependent. If we allow the <a class="el" href="classcpp__freertos_1_1_condition_variable.html">ConditionVariable</a> class to access the internals of the <a class="el" href="classcpp__freertos_1_1_thread.html">Thread</a> class, we can reduce the public interface, which is a good thing. </p>
 
-<p class="definition">Definition at line <a class="el" href="thread_8hpp_source.html#l00453">453</a> of file <a class="el" href="thread_8hpp_source.html">thread.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread_8hpp_source.html#l00491">491</a> of file <a class="el" href="thread_8hpp_source.html">thread.hpp</a>.</p>
 
 </div>
 </div>
@@ -1061,7 +1161,7 @@ You need to use this call. Do NOT directly call vTaskEndScheduler while using th
 </div><div class="memdoc">
 <p >Flag denoting if we've setup delay until yet. </p>
 
-<p class="definition">Definition at line <a class="el" href="thread_8hpp_source.html#l00422">422</a> of file <a class="el" href="thread_8hpp_source.html">thread.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread_8hpp_source.html#l00460">460</a> of file <a class="el" href="thread_8hpp_source.html">thread.hpp</a>.</p>
 
 </div>
 </div>
@@ -1086,7 +1186,7 @@ You need to use this call. Do NOT directly call vTaskEndScheduler while using th
 </div><div class="memdoc">
 <p >Book keeping value for delay until. </p>
 
-<p class="definition">Definition at line <a class="el" href="thread_8hpp_source.html#l00427">427</a> of file <a class="el" href="thread_8hpp_source.html">thread.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread_8hpp_source.html#l00465">465</a> of file <a class="el" href="thread_8hpp_source.html">thread.hpp</a>.</p>
 
 </div>
 </div>
@@ -1111,7 +1211,7 @@ You need to use this call. Do NOT directly call vTaskEndScheduler while using th
 </div><div class="memdoc">
 <p >Reference to the underlying task handle for this thread. Can be obtained from <a class="el" href="classcpp__freertos_1_1_thread.html#a1053a1c4f291a9a9a5dbf4ead7e96ae7">GetHandle()</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="thread_8hpp_source.html#l00374">374</a> of file <a class="el" href="thread_8hpp_source.html">thread.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread_8hpp_source.html#l00412">412</a> of file <a class="el" href="thread_8hpp_source.html">thread.hpp</a>.</p>
 
 </div>
 </div>
@@ -1136,7 +1236,7 @@ You need to use this call. Do NOT directly call vTaskEndScheduler while using th
 </div><div class="memdoc">
 <p >The name of this thread. </p>
 
-<p class="definition">Definition at line <a class="el" href="thread_8hpp_source.html#l00385">385</a> of file <a class="el" href="thread_8hpp_source.html">thread.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread_8hpp_source.html#l00423">423</a> of file <a class="el" href="thread_8hpp_source.html">thread.hpp</a>.</p>
 
 </div>
 </div>
@@ -1160,7 +1260,7 @@ You need to use this call. Do NOT directly call vTaskEndScheduler while using th
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread_8hpp_source.html#l00387">387</a> of file <a class="el" href="thread_8hpp_source.html">thread.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread_8hpp_source.html#l00425">425</a> of file <a class="el" href="thread_8hpp_source.html">thread.hpp</a>.</p>
 
 </div>
 </div>
@@ -1185,7 +1285,7 @@ You need to use this call. Do NOT directly call vTaskEndScheduler while using th
 </div><div class="memdoc">
 <p >A saved / cached copy of what the <a class="el" href="classcpp__freertos_1_1_thread.html">Thread</a>'s priority is. </p>
 
-<p class="definition">Definition at line <a class="el" href="thread_8hpp_source.html#l00398">398</a> of file <a class="el" href="thread_8hpp_source.html">thread.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread_8hpp_source.html#l00436">436</a> of file <a class="el" href="thread_8hpp_source.html">thread.hpp</a>.</p>
 
 </div>
 </div>
@@ -1210,7 +1310,7 @@ You need to use this call. Do NOT directly call vTaskEndScheduler while using th
 </div><div class="memdoc">
 <p >We need to track whether the scheduler is active or not. </p>
 
-<p class="definition">Definition at line <a class="el" href="thread_8hpp_source.html#l00379">379</a> of file <a class="el" href="thread_8hpp_source.html">thread.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread_8hpp_source.html#l00417">417</a> of file <a class="el" href="thread_8hpp_source.html">thread.hpp</a>.</p>
 
 </div>
 </div>
@@ -1235,7 +1335,7 @@ You need to use this call. Do NOT directly call vTaskEndScheduler while using th
 </div><div class="memdoc">
 <p >Stack depth of this <a class="el" href="classcpp__freertos_1_1_thread.html">Thread</a>, in words. </p>
 
-<p class="definition">Definition at line <a class="el" href="thread_8hpp_source.html#l00393">393</a> of file <a class="el" href="thread_8hpp_source.html">thread.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread_8hpp_source.html#l00431">431</a> of file <a class="el" href="thread_8hpp_source.html">thread.hpp</a>.</p>
 
 </div>
 </div>
@@ -1260,7 +1360,7 @@ You need to use this call. Do NOT directly call vTaskEndScheduler while using th
 </div><div class="memdoc">
 <p >Make sure no one calls Start more than once. </p>
 
-<p class="definition">Definition at line <a class="el" href="thread_8hpp_source.html#l00408">408</a> of file <a class="el" href="thread_8hpp_source.html">thread.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread_8hpp_source.html#l00446">446</a> of file <a class="el" href="thread_8hpp_source.html">thread.hpp</a>.</p>
 
 </div>
 </div>
@@ -1285,7 +1385,7 @@ You need to use this call. Do NOT directly call vTaskEndScheduler while using th
 </div><div class="memdoc">
 <p >Flag whether or not the <a class="el" href="classcpp__freertos_1_1_thread.html">Thread</a> was started. </p>
 
-<p class="definition">Definition at line <a class="el" href="thread_8hpp_source.html#l00403">403</a> of file <a class="el" href="thread_8hpp_source.html">thread.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread_8hpp_source.html#l00441">441</a> of file <a class="el" href="thread_8hpp_source.html">thread.hpp</a>.</p>
 
 </div>
 </div>
@@ -1310,7 +1410,7 @@ You need to use this call. Do NOT directly call vTaskEndScheduler while using th
 </div><div class="memdoc">
 <p >How we wait and signal the thread when using condition variables. Because a semaphore maintains state, this solves the race condition between dropping the CvLock and waiting. </p>
 
-<p class="definition">Definition at line <a class="el" href="thread_8hpp_source.html#l00437">437</a> of file <a class="el" href="thread_8hpp_source.html">thread.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread_8hpp_source.html#l00475">475</a> of file <a class="el" href="thread_8hpp_source.html">thread.hpp</a>.</p>
 
 </div>
 </div>
