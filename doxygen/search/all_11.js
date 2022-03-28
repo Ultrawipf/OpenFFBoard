@@ -114,7 +114,7 @@ var searchData=
   ['reset_111',['reset',['../structhub__port__status__response__t.html#a047303b6710f6a417dc94315d1b76ae4',1,'hub_port_status_response_t']]],
   ['reset_112',['Reset',['../classcpp__freertos_1_1_timer.html#a96d82602e1649be3d73866037f538359',1,'cpp_freertos::Timer']]],
   ['reset_113',['reset',['../class_output_pin.html#ae3d5227ff371958f4240b17e7350cc9d',1,'OutputPin']]],
-  ['reset_5fdelay_114',['RESET_DELAY',['../usbh_8c.html#a9334a5b9057f32da96db9b5c6a045d67a255e787af798f103692ae6a228b0600a',1,'usbh.c']]],
+  ['reset_5fdelay_114',['RESET_DELAY',['../usbh_8c.html#aeb8e1c282570d629a6b603a94a4650d6a255e787af798f103692ae6a228b0600a',1,'usbh.c']]],
   ['reset_5fffb_115',['reset_ffb',['../class_hid_f_f_b.html#acdc70e61e2993741d83f04850eba9a86',1,'HidFFB']]],
   ['reset_5fstate_116',['reset_state',['../dfu__device_8c.html#a9fbef29f6a0a976770a3055c37a35d95',1,'dfu_device.c']]],
   ['resetdelayuntil_117',['ResetDelayUntil',['../classcpp__freertos_1_1_thread.html#a71f796ec7c2bd53bb0f28b648967f601',1,'cpp_freertos::Thread']]],

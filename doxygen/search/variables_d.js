@@ -34,7 +34,7 @@ var searchData=
   ['note_31',['note',['../struct_midi_note.html#ad142b35eaa010c9cda41160c23df0fe8',1,'MidiNote']]],
   ['notes_32',['notes',['../class_midi_main.html#adf5001f6da397251be3f774f0cd38089',1,'MidiMain']]],
   ['notetofreq_33',['noteToFreq',['../class_midi_main.html#a12ad5df2b21348819296de44ef86880a',1,'MidiMain']]],
-  ['notify_34',['notify',['../ecm__rndis__device_8c.html#a694789cef964566797564defcbe2d504',1,'ecm_rndis_device.c']]],
+  ['notify_34',['notify',['../ecm__rndis__device_8c.html#af56210097486516d0106da24c5230f7a',1,'ecm_rndis_device.c']]],
   ['npol_35',['npol',['../struct_t_m_c4671_a_b_n_conf.html#a67441caa37389655cad450e642f93f87',1,'TMC4671ABNConf']]],
   ['ntb_5fin_5fsize_36',['ntb_in_size',['../structncm__interface__t.html#a1bf8c500e478c8796c9aa4d2d127329c',1,'ncm_interface_t']]],
   ['ntb_5fparameters_37',['ntb_parameters',['../ncm__device_8c.html#a7b3f509a88e098ae901ade99803ffd34',1,'ncm_device.c']]],

@@ -128,7 +128,7 @@ var searchData=
   ['comm_5fget_5fvalues_5fselective_125',['COMM_GET_VALUES_SELECTIVE',['../_vesc_c_a_n_8h.html#ade8aa0c8682cb29483f2d2b58786989fac62513ac3d8a268c40130929f12d471d',1,'VescCAN.h']]],
   ['comm_5frotor_5fposition_126',['COMM_ROTOR_POSITION',['../_vesc_c_a_n_8h.html#ade8aa0c8682cb29483f2d2b58786989fa0740d6f7ed6d40d5934ae8faebe1724e',1,'VescCAN.h']]],
   ['command_127',['command',['../class_custom_main.html#a68028ffdcc598ccb1675e17cd9823fb8a1dccadfed7bcbb036c56a4afb97e906f',1,'CustomMain']]],
-  ['config_5fnum_128',['CONFIG_NUM',['../usbh_8c.html#a8628933cde20921c453a6d2607bdad62a9ef96027281cc2b3431239fb6b10cde7',1,'usbh.c']]],
+  ['config_5fnum_128',['CONFIG_NUM',['../usbh_8c.html#a109bfaad92bd6d348dab484aec11edbba9ef96027281cc2b3431239fb6b10cde7',1,'usbh.c']]],
   ['connected_129',['connected',['../_o_drive_c_a_n_8h.html#a539f13973573e98e043ff32d1b899068a06aa6fa8bdc2078e7e1bd903e70c8f6a',1,'ODriveCAN.h']]],
   ['control_5fmode_5fposition_5fcontrol_130',['CONTROL_MODE_POSITION_CONTROL',['../_o_drive_c_a_n_8h.html#afbb352e995053f25fb271f45cd99b930a87f372b5c7e05c3cc5fce1a780693a11',1,'ODriveCAN.h']]],
   ['control_5fmode_5ftorque_5fcontrol_131',['CONTROL_MODE_TORQUE_CONTROL',['../_o_drive_c_a_n_8h.html#afbb352e995053f25fb271f45cd99b930ac531e9abc75088ee4897cea851e89973',1,'ODriveCAN.h']]],

@@ -59,7 +59,7 @@ var searchData=
   ['addmemory_56',['AddMemory',['../classcpp__freertos_1_1_memory_pool.html#a3a45774c8c0f761ea8b75e3e4d3a1591',1,'cpp_freertos::MemoryPool::AddMemory(int itemCount)'],['../classcpp__freertos_1_1_memory_pool.html#abc987382be536cc5111a38202301a042',1,'cpp_freertos::MemoryPool::AddMemory(void *preallocatedMemory, int preallocatedMemorySize)']]],
   ['addr_57',['addr',['../struct____attribute____.html#a4d08a8cdd95e53d17f712dde807840b0',1,'__attribute__']]],
   ['addr16_58',['addr16',['../struct_t_u___a_t_t_r___p_a_c_k_e_d.html#ae55ead6bbe488381fdb18ad272341f5b',1,'TU_ATTR_PACKED']]],
-  ['addr_5finvalid_59',['ADDR_INVALID',['../usbh_8c.html#a2f80701c36e79c0640d91c788feee0b3a156537bd0faf441a451c955e4691af70',1,'usbh.c']]],
+  ['addr_5finvalid_59',['ADDR_INVALID',['../usbh_8c.html#ade9ca5088d171ad20b4c237f1c2d6260a156537bd0faf441a451c955e4691af70',1,'usbh.c']]],
   ['addressed_60',['addressed',['../structusbd__device__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#a3dbaf74ea6d5de2900f007da222e1864',1,'usbd_device_t::TU_ATTR_PACKED::addressed()'],['../structusbh__dev0__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#a901cf2528ea69397bf404aa2c5563912',1,'usbh_dev0_t::TU_ATTR_PACKED::addressed()'],['../structusbh__device__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#ae0da2821cfdea2c02982d4c2f01abd6a',1,'usbh_device_t::TU_ATTR_PACKED::addressed()']]],
   ['addressing_5freset_61',['addressing_reset',['../structrndis__msg__reset__cmplt__t.html#ac52331aec8fe047d2130385ffdfac69c',1,'rndis_msg_reset_cmplt_t']]],
   ['addtowaitlist_62',['AddToWaitList',['../classcpp__freertos_1_1_condition_variable.html#a2ffe9249383d68bc423221be9e69dad0',1,'cpp_freertos::ConditionVariable']]],
