@@ -6,6 +6,7 @@
  */
 
 #include "FFBWheel.h"
+#include "usb_hid_ffb_desc.h"
 
 // Unique identifier for listing
 ClassIdentifier FFBWheel::info = {
@@ -29,7 +30,7 @@ FFBWheel::~FFBWheel() {
 
 
 void FFBWheel::usbInit(){
-	this->usbdev = std::make_unique<USBdevice>(&usb_devdesc_ffboard_composite,usb_cdc_hid_conf,&usb_ffboard_strings_default);
-	FFBHIDMain::UsbHidHandler::setHidDesc(hid_ffb_desc);
+	this->usbdev = std::make_unique<USBdevice>(&usb_devdesc_ffboard_composite,usb_cdc_hid_conf_1axis,&usb_ffboard_strings_default);
+	FFBHIDMain::UsbHidHandler::setHidDesc(hid_1ffb_desc);
 	usbdev->registerUsb();
 }

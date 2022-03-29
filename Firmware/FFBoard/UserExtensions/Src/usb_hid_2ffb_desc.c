@@ -9,7 +9,7 @@
 #include "ffb_defs.h"
 #include "usb_hid_ffb_desc.h"
 
-__ALIGN_BEGIN const uint8_t hid_ffb_desc[USB_HID_FFB_REPORT_DESC_SIZE] __ALIGN_END =
+__ALIGN_BEGIN const uint8_t hid_2ffb_desc[USB_HID_2FFB_REPORT_DESC_SIZE] __ALIGN_END =
 {
 		   0x05, 0x01,                    // USAGE_PAGE (Generic Desktop)
 		    0x09, 0x04,                    // USAGE (Joystick)
