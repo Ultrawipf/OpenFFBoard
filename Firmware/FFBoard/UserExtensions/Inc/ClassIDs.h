@@ -35,6 +35,7 @@ enum class ClassType : uint16_t {
 // Unique class IDs. 16 bits (0xFFFF max)
 #define CLSID_NONE			0	// Undefined IDs or failsafe main
 #define CLSID_MAIN_FFBWHEEL 0x1
+#define CLSID_MAIN_FFBJOY	0x2
 #define CLSID_MAIN_TMCDBG 	0xB
 #define CLSID_MAIN_CAN	 	0xC
 #define CLSID_MAIN_MIDI 	0xD

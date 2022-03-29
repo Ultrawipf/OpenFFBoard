@@ -12,6 +12,9 @@
 #ifdef FFBWHEEL
 #include "FFBWheel.h"
 #endif
+#ifdef FFBJOYSTICK
+#include "FFBJoystick.h"
+#endif
 #include "FFBoardMain.h"
 #ifdef TMCDEBUG
 #include "TMCDebugBridge.h"
@@ -27,18 +30,27 @@
 const std::vector<class_entry<FFBoardMain>> class_registry =
 {
 		add_class<FFBoardMain,FFBoardMain>(0),
+
 #ifdef FFBWHEEL
 		add_class<FFBWheel,FFBoardMain>(),
 #endif
+
+#ifdef FFBJOYSTICK
+		add_class<FFBJoystick,FFBoardMain>(),
+#endif
+
 #ifdef TMCDEBUG
 		add_class<TMCDebugBridge,FFBoardMain>(),
 #endif
+
 #ifdef MIDI
 		add_class<MidiMain,FFBoardMain>(),
 #endif
+
 #ifdef CANBRIDGE
 		add_class<CanBridge,FFBoardMain>(),
 #endif
+
 		add_class<CustomMain,FFBoardMain>()
 };
 
