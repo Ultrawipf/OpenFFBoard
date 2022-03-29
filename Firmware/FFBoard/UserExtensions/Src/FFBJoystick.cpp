@@ -6,6 +6,7 @@
  */
 
 #include "FFBJoystick.h"
+#include "usb_hid_ffb_desc.h"
 
 // Unique identifier for listing
 ClassIdentifier FFBJoystick::info = {
@@ -29,7 +30,7 @@ FFBJoystick::~FFBJoystick() {
 
 
 void FFBJoystick::usbInit(){
-	this->usbdev = std::make_unique<USBdevice>(&usb_devdesc_ffboard_composite,usb_cdc_hid_conf,&usb_ffboard_strings_default);
-	FFBHIDMain::UsbHidHandler::setHidDesc(hid_ffb_desc);
+	this->usbdev = std::make_unique<USBdevice>(&usb_devdesc_ffboard_composite,usb_cdc_hid_conf_2axis,&usb_ffboard_strings_default);
+	FFBHIDMain::UsbHidHandler::setHidDesc(hid_2ffb_desc);
 	usbdev->registerUsb();
 }

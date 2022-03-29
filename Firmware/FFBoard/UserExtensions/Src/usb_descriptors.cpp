@@ -56,7 +56,7 @@ const uint8_t usb_cdc_conf[] =
 };
 
 // Composite CDC and HID
-const uint8_t usb_cdc_hid_conf[] =
+const uint8_t usb_cdc_hid_conf_1axis[] =
 {
   // Config number, interface count, string index, total length, attribute, power in mA
   TUD_CONFIG_DESCRIPTOR(1, 3, 0, (TUD_CONFIG_DESC_LEN + TUD_CDC_DESC_LEN + TUD_HID_INOUT_DESC_LEN), TUSB_DESC_CONFIG_ATT_REMOTE_WAKEUP, 100),
@@ -65,7 +65,20 @@ const uint8_t usb_cdc_hid_conf[] =
   TUD_CDC_DESCRIPTOR(0, 4, 0x82, 8, 0x01, 0x81, 64),
 
   // HID Descriptor. EP 83 and 2
-  TUD_HID_INOUT_DESCRIPTOR(2, 5, HID_ITF_PROTOCOL_NONE, USB_HID_FFB_REPORT_DESC_SIZE, 0x83, 0x02, 64, HID_BINTERVAL),
+  TUD_HID_INOUT_DESCRIPTOR(2, 5, HID_ITF_PROTOCOL_NONE, USB_HID_1FFB_REPORT_DESC_SIZE, 0x83, 0x02, 64, HID_BINTERVAL),
+};
+
+// Composite CDC and HID
+const uint8_t usb_cdc_hid_conf_2axis[] =
+{
+  // Config number, interface count, string index, total length, attribute, power in mA
+  TUD_CONFIG_DESCRIPTOR(1, 3, 0, (TUD_CONFIG_DESC_LEN + TUD_CDC_DESC_LEN + TUD_HID_INOUT_DESC_LEN), TUSB_DESC_CONFIG_ATT_REMOTE_WAKEUP, 100),
+
+  // 1st CDC: Interface number, string index, EP notification address and size, EP data address (out, in) and size.
+  TUD_CDC_DESCRIPTOR(0, 4, 0x82, 8, 0x01, 0x81, 64),
+
+  // HID Descriptor. EP 83 and 2
+  TUD_HID_INOUT_DESCRIPTOR(2, 5, HID_ITF_PROTOCOL_NONE, USB_HID_2FFB_REPORT_DESC_SIZE, 0x83, 0x02, 64, HID_BINTERVAL),
 };
 
 

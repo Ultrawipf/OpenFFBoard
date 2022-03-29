@@ -99,8 +99,12 @@ void HidFFB::hidOut(uint8_t report_id, hid_report_type_t report_type, uint8_t co
 			new_effect((FFB_CreateNewEffect_Feature_Data_t*)(report));
 			break;
 		case HID_ID_EFFREP: // Set Effect
-			set_effect((FFB_SetEffect_t*)(report));
+		{
+			FFB_SetEffect_t setEffectRepBuf;
+			memcpy(&setEffectRepBuf,report,std::min<uint16_t>(sizeof(FFB_SetEffect_t),bufsize)); // Copy report to buffer. only valid range if less axes are used
+			set_effect(&setEffectRepBuf);
 			break;
+		}
 		case HID_ID_CTRLREP: // Control report. 1=Enable Actuators, 2=Disable Actuators, 4=Stop All Effects, 8=Reset, 16=Pause, 32=Continue
 			ffb_control(report[1]);
 			//sendStatusReport(0);

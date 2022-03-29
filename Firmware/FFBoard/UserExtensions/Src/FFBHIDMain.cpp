@@ -334,11 +334,6 @@ void FFBHIDMain::usbResume(){
 	axes_manager->usbResume();
 }
 
-void FFBHIDMain::usbInit(){
-	this->usbdev = std::make_unique<USBdevice>(&usb_devdesc_ffboard_composite,usb_cdc_hid_conf,&usb_ffboard_strings_default);
-	UsbHidHandler::setHidDesc(hid_ffb_desc);
-	usbdev->registerUsb();
-}
 
 // External interrupt pins
 void FFBHIDMain::exti(uint16_t GPIO_Pin){
