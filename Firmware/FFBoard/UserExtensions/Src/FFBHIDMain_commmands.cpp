@@ -6,12 +6,12 @@
  */
 
 
-#include "FFBWheel.h"
+#include <FFBHIDMain.h>
 
-void FFBWheel::registerCommands(){
+void FFBHIDMain::registerCommands(){
 	//CommandHandler::registerCommands();
 
-	registerCommand("axes", FFBWheel_commands::axes, "Number of axes (1-2)");
+	//registerCommand("axes", FFBWheel_commands::axes, "Number of axes (1-2)");
 	registerCommand("ffbactive", FFBWheel_commands::ffbactive, "FFB status");
 
 	registerCommand("btntypes", FFBWheel_commands::btntypes, "Enabled button sources");
@@ -26,7 +26,7 @@ void FFBWheel::registerCommands(){
 	registerCommand("hidsendspd", FFBWheel_commands::hidsendspd, "Change HID gamepad update rate");
 }
 
-CommandStatus FFBWheel::command(const ParsedCommand& cmd,std::vector<CommandReply>& replies){
+CommandStatus FFBHIDMain::command(const ParsedCommand& cmd,std::vector<CommandReply>& replies){
 	switch(static_cast<FFBWheel_commands>(cmd.cmdId)){
 	case FFBWheel_commands::ffbactive:
 	{
@@ -40,13 +40,13 @@ CommandStatus FFBWheel::command(const ParsedCommand& cmd,std::vector<CommandRepl
 		replies.push_back(CommandReply(flag));
 		break;
 	}
-	case FFBWheel_commands::axes:
-		if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply(this->axes_manager->getAxisCount()));
-		}else if(cmd.type == CMDtype::set){
-			this->axes_manager->setAxisCount(cmd.val);
-		}
-		break;
+//	case FFBWheel_commands::axes:
+//		if(cmd.type == CMDtype::get){
+//			replies.push_back(CommandReply(this->axes_manager->getAxisCount()));
+//		}else if(cmd.type == CMDtype::set){
+//			this->axes_manager->setAxisCount(cmd.val);
+//		}
+//		break;
 	case FFBWheel_commands::btntypes:
 		if(cmd.type == CMDtype::get){
 			replies.push_back(CommandReply(btnsources));

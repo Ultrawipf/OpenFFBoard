@@ -2480,7 +2480,7 @@ void TMC4671::registerCommands(){
 	registerCommand("calibrate", TMC4671_commands::fullCalibration, "Full calibration",CMDFLAG_GET);
 	registerCommand("calibrated", TMC4671_commands::calibrated, "Calibration valid",CMDFLAG_GET);
 	registerCommand("state", TMC4671_commands::getState, "Get state",CMDFLAG_GET);
-	registerCommand("combineEncoder", TMC4671_commands::combineEncoder, "Use TMC for movement, external encoder for position",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("combineEncoder", TMC4671_commands::combineEncoder, "Use TMC for movement. External encoder for position",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("invertForce", TMC4671_commands::invertForce, "Invert incoming forces",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("vm", TMC4671_commands::vmTmc, "VM in mV",CMDFLAG_GET);
 
