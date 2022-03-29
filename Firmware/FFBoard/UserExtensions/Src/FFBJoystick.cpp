@@ -5,30 +5,30 @@
  *      Author: Yannick
  */
 
-#include "FFBWheel.h"
+#include "FFBJoystick.h"
 
 // Unique identifier for listing
-ClassIdentifier FFBWheel::info = {
-		 .name = "FFB Wheel (1 Axis)" ,
-		 .id=CLSID_MAIN_FFBWHEEL,
+ClassIdentifier FFBJoystick::info = {
+		 .name = "FFB Joystick (2 Axis)" ,
+		 .id=CLSID_MAIN_FFBJOY,
  };
 
-const ClassIdentifier FFBWheel::getInfo(){
+const ClassIdentifier FFBJoystick::getInfo(){
 	return info;
 }
 
 
-FFBWheel::FFBWheel() : FFBHIDMain(1) {
+FFBJoystick::FFBJoystick() : FFBHIDMain(2) {
 
 }
 
-FFBWheel::~FFBWheel() {
+FFBJoystick::~FFBJoystick() {
 
 }
 
 
 
-void FFBWheel::usbInit(){
+void FFBJoystick::usbInit(){
 	this->usbdev = std::make_unique<USBdevice>(&usb_devdesc_ffboard_composite,usb_cdc_hid_conf,&usb_ffboard_strings_default);
 	FFBHIDMain::UsbHidHandler::setHidDesc(hid_ffb_desc);
 	usbdev->registerUsb();

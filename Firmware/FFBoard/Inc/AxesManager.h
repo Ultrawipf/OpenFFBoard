@@ -8,7 +8,7 @@
 #ifndef AXESMANAGER_H_
 #define AXESMANAGER_H_
 #include "Axis.h"
-#include "PersistentStorage.h"
+//#include "PersistentStorage.h"
 #include "ffb_defs.h"
 
 #include "CmdParser.h"
@@ -19,7 +19,7 @@
 class EffectsCalculator;
 
 
-class AxesManager : public PersistentStorage
+class AxesManager
 {
 public:
 	AxesManager(volatile Control_t* control);
@@ -29,8 +29,8 @@ public:
 //	const ClassIdentifier getInfo();
 
 	void setEffectsCalculator(EffectsCalculator *ec);
-	void saveFlash();
-	void restoreFlash();
+//	void saveFlash();
+//	void restoreFlash();
 
 	uint8_t getAxisCount();
 	bool setAxisCount(int8_t count);
