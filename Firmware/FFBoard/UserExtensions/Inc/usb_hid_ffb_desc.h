@@ -8,9 +8,14 @@
 #ifndef USB_INC_USB_HID_FFB_DESC_H_
 #define USB_INC_USB_HID_FFB_DESC_H_
 
-#define USB_HID_FFB_REPORT_DESC_SIZE 1229-16//1378
+#define USB_HID_1FFB_REPORT_DESC_SIZE 1196
 
-extern const uint8_t hid_ffb_desc[USB_HID_FFB_REPORT_DESC_SIZE];
+extern const uint8_t hid_1ffb_desc[USB_HID_1FFB_REPORT_DESC_SIZE];
+
+
+#define USB_HID_2FFB_REPORT_DESC_SIZE 1213
+
+extern const uint8_t hid_2ffb_desc[USB_HID_2FFB_REPORT_DESC_SIZE];
 
 
 #endif /* USB_INC_USB_HID_FFB_DESC_H_ */

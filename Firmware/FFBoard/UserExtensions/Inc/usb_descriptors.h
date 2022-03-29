@@ -34,7 +34,8 @@ extern const tusb_desc_device_t usb_devdesc_ffboard_composite;
  * Config descriptors
  */
 extern const uint8_t usb_cdc_conf[];
-extern const uint8_t usb_cdc_hid_conf[];
+extern const uint8_t usb_cdc_hid_conf_1axis[];
+extern const uint8_t usb_cdc_hid_conf_2axis[];
 extern const uint8_t usb_cdc_midi_conf[];
 
 // Default strings

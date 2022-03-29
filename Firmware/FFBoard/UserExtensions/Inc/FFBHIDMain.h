@@ -62,7 +62,7 @@ public:
 	void clearAinTypes();
 
 
-	virtual void usbInit(); // initialize a composite usb device
+	virtual void usbInit() = 0; // initialize a composite usb device
 	void usbSuspend(); // Called on usb disconnect and suspend
 	void usbResume(); // Called on usb resume
 
