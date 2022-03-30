@@ -14,7 +14,7 @@
 #define X_AXIS_ENABLE 1
 #define Y_AXIS_ENABLE 2
 #define Z_AXIS_ENABLE 4
-#define DIRECTION_ENABLE (1 << MAX_AXIS)
+#define DIRECTION_ENABLE(AXES) (1 << AXES)
 
 #define EFFECT_STATE_INACTIVE 0
 
@@ -133,12 +133,12 @@ void EffectsCalculator::calculateEffects(std::vector<std::unique_ptr<Axis>> &axe
 		forceVector = calcNonConditionEffectForce(effect);
 		//}
 
-		if (effect->enableAxis == DIRECTION_ENABLE || (effect->enableAxis & X_AXIS_ENABLE))
+		if (effect->enableAxis == DIRECTION_ENABLE(axisCount) || (effect->enableAxis & X_AXIS_ENABLE))
 		{
 			forceX += calcComponentForce(effect, forceVector, axes, 0);
 			forceX = clip<int32_t, int32_t>(forceX, -0x7fff, 0x7fff); // Clip
 		}
-		if (validY && ((effect->enableAxis == DIRECTION_ENABLE) || (effect->enableAxis & Y_AXIS_ENABLE)))
+		if (validY && ((effect->enableAxis == DIRECTION_ENABLE(axisCount)) || (effect->enableAxis & Y_AXIS_ENABLE)))
 		{
 			forceY += calcComponentForce(effect, forceVector, axes, 1);
 			forceY = clip<int32_t, int32_t>(forceY, -0x7fff, 0x7fff); // Clip
@@ -299,7 +299,7 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 	float scaleSpeed = 40;//axes[axis]->getSpeedScalerNormalized(); // TODO decide if scalers are useful or not
 	float scaleAccel = 40;//axes[axis]->getAccelScalerNormalized();
 
-	if (effect->enableAxis == DIRECTION_ENABLE)
+	if (effect->enableAxis == DIRECTION_ENABLE(axisCount))
 	{
 		direction = effect->directionX;
 //		if (effect->conditionsCount > 1)
