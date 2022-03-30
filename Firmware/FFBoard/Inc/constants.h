@@ -10,7 +10,8 @@
 
 
 
-static const uint8_t SW_VERSION_INT[3] = {1,7,4}; // Version as array. 8 bit each!
+
+static const uint8_t SW_VERSION_INT[3] = {1,8,0}; // Version as array. 8 bit each!
 
 #define MAX_AXIS 2 // ONLY USE 2 for now else screws HID Reports
 
