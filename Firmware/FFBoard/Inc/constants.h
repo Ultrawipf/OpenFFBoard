@@ -21,4 +21,13 @@ static const uint8_t SW_VERSION_INT[3] = {1,8,0}; // Version as array. 8 bit eac
 #undef VESC
 #endif
 
+
+#ifdef FFBWHEEL
+#define AXIS1_FFB_HID_DESC
+#endif
+
+#ifdef FFBJOYSTICK
+#define AXIS2_FFB_HID_DESC
+#endif
+
 #endif

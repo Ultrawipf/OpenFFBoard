@@ -22,6 +22,7 @@
 
 // Main classes
 #define FFBWHEEL
+#define FFBJOYSTICK
 #define MIDI
 #define TMCDEBUG
 
