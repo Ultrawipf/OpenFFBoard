@@ -9,6 +9,8 @@
 #include "ffb_defs.h"
 #include "usb_hid_ffb_desc.h"
 
+#ifdef AXIS1_FFB_HID_DESC
+
 __ALIGN_BEGIN const uint8_t hid_1ffb_desc[USB_HID_1FFB_REPORT_DESC_SIZE] __ALIGN_END =
 {
 		   0x05, 0x01,                    // USAGE_PAGE (Generic Desktop)
@@ -727,3 +729,5 @@ __ALIGN_BEGIN const uint8_t hid_1ffb_desc[USB_HID_1FFB_REPORT_DESC_SIZE] __ALIGN
 
   0xC0    /*     END_COLLECTION	             */
 };
+
+#endif

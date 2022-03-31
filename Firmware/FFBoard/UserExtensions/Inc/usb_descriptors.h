@@ -8,7 +8,7 @@
 #ifndef USB_TINYUSB_USB_DESCRIPTORS_H_
 #define USB_TINYUSB_USB_DESCRIPTORS_H_
 
-
+#include "constants.h"
 #include "tusb.h"
 #include <string>
 #include <vector>
@@ -34,8 +34,15 @@ extern const tusb_desc_device_t usb_devdesc_ffboard_composite;
  * Config descriptors
  */
 extern const uint8_t usb_cdc_conf[];
+
+#ifdef AXIS1_FFB_HID_DESC
 extern const uint8_t usb_cdc_hid_conf_1axis[];
+#endif
+
+#ifdef AXIS2_FFB_HID_DESC
 extern const uint8_t usb_cdc_hid_conf_2axis[];
+#endif
+
 extern const uint8_t usb_cdc_midi_conf[];
 
 // Default strings

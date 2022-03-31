@@ -4,7 +4,6 @@
  *  Created on: 16.02.2021
  *      Author: Yannick
  */
-
 #include "tusb.h"
 #include "usb_descriptors.h"
 #include "usbd.h"
@@ -56,6 +55,7 @@ const uint8_t usb_cdc_conf[] =
 };
 
 // Composite CDC and HID
+#ifdef AXIS1_FFB_HID_DESC
 const uint8_t usb_cdc_hid_conf_1axis[] =
 {
   // Config number, interface count, string index, total length, attribute, power in mA
@@ -67,8 +67,10 @@ const uint8_t usb_cdc_hid_conf_1axis[] =
   // HID Descriptor. EP 83 and 2
   TUD_HID_INOUT_DESCRIPTOR(2, 5, HID_ITF_PROTOCOL_NONE, USB_HID_1FFB_REPORT_DESC_SIZE, 0x83, 0x02, 64, HID_BINTERVAL),
 };
+#endif
 
 // Composite CDC and HID
+#ifdef AXIS2_FFB_HID_DESC
 const uint8_t usb_cdc_hid_conf_2axis[] =
 {
   // Config number, interface count, string index, total length, attribute, power in mA
@@ -80,7 +82,7 @@ const uint8_t usb_cdc_hid_conf_2axis[] =
   // HID Descriptor. EP 83 and 2
   TUD_HID_INOUT_DESCRIPTOR(2, 5, HID_ITF_PROTOCOL_NONE, USB_HID_2FFB_REPORT_DESC_SIZE, 0x83, 0x02, 64, HID_BINTERVAL),
 };
-
+#endif
 
 // Composite CDC and MIDI
 uint8_t const usb_cdc_midi_conf[] =
