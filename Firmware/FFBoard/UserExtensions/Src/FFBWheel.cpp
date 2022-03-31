@@ -5,7 +5,11 @@
  *      Author: Yannick
  */
 
+
 #include "FFBWheel.h"
+
+#ifdef FFBWHEEL
+
 #include "usb_hid_ffb_desc.h"
 
 // Unique identifier for listing
@@ -34,3 +38,5 @@ void FFBWheel::usbInit(){
 	FFBHIDMain::UsbHidHandler::setHidDesc(hid_1ffb_desc);
 	usbdev->registerUsb();
 }
+
+#endif

@@ -7,6 +7,8 @@
 
 #ifndef USEREXTENSIONS_SRC_FFBJOYSTICK_H_
 #define USEREXTENSIONS_SRC_FFBJOYSTICK_H_
+#include "constants.h"
+#ifdef FFBJOYSTICK
 
 #include "FFBHIDMain.h"
 
@@ -20,5 +22,5 @@ public:
 
 	void usbInit() override;
 };
-
+#endif
 #endif /* USEREXTENSIONS_SRC_FFBJOYSTICK_H_ */

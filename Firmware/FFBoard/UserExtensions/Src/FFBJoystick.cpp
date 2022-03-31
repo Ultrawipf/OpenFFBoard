@@ -6,6 +6,9 @@
  */
 
 #include "FFBJoystick.h"
+#ifdef FFBJOYSTICK
+
+
 #include "usb_hid_ffb_desc.h"
 
 // Unique identifier for listing
@@ -34,3 +37,4 @@ void FFBJoystick::usbInit(){
 	FFBHIDMain::UsbHidHandler::setHidDesc(hid_2ffb_desc);
 	usbdev->registerUsb();
 }
+#endif

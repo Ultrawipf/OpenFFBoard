@@ -7,6 +7,8 @@
 
 #ifndef USEREXTENSIONS_SRC_FFBWHEEL_H_
 #define USEREXTENSIONS_SRC_FFBWHEEL_H_
+#include "constants.h"
+#ifdef FFBWHEEL
 
 #include "FFBHIDMain.h"
 
@@ -20,5 +22,7 @@ public:
 
 	void usbInit() override;
 };
+
+#endif
 
 #endif /* USEREXTENSIONS_SRC_FFBWHEEL_H_ */
