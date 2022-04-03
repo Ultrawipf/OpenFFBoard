@@ -168,12 +168,12 @@ void Axis::restoreFlash(){
 	uint16_t scaler;
 	if (Flash_Read(flashAddrs.speedScale, &scaler))
 	{
-		this->scaleSpeed = scaler / 10.0;
+		this->scaleSpeed = scaler;
 	}
 
 	if (Flash_Read(flashAddrs.accelScale, &scaler))
 	{
-		this->scaleAccel = scaler / 10.0;
+		this->scaleAccel = scaler;
 	}
 
 
@@ -202,8 +202,8 @@ void Axis::saveFlash(){
 	Flash_Write(flashAddrs.accelFilter, filterStorage);
 
 	// save scaler
-	Flash_Write(flashAddrs.speedScale, (uint16_t) (this->scaleSpeed * 10));
-	Flash_Write(flashAddrs.accelScale, (uint16_t)(this->scaleAccel * 10));
+	Flash_Write(flashAddrs.speedScale, (uint16_t) (this->scaleSpeed));
+	Flash_Write(flashAddrs.accelScale, (uint16_t)(this->scaleAccel));
 
 }
 
@@ -744,16 +744,16 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 
 	case Axis_commands::scaleSpeed:
 		if(cmd.type == CMDtype::info){
-			replies.push_back(CommandReply("scale:0.1"));
+			replies.push_back(CommandReply("scale:1"));
 		}
 		else if (cmd.type == CMDtype::get)
 		{
-			replies.push_back(CommandReply(this->scaleSpeed * 10));
+			replies.push_back(CommandReply(this->scaleSpeed));
 		}
 		else if (cmd.type == CMDtype::set)
 		{
-			uint32_t value = clip<uint32_t, uint32_t>(cmd.val, 0, 20480);
-			this->scaleSpeed = value / 10.0;
+			uint32_t value = clip<uint32_t, uint32_t>(cmd.val, 1, 10000);
+			this->scaleSpeed = value;
 		}
 		break;
 	case Axis_commands::scaleAccel:
@@ -762,12 +762,12 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 		}
 		else if (cmd.type == CMDtype::get)
 		{
-			replies.push_back(CommandReply(this->scaleAccel * 10));
+			replies.push_back(CommandReply(this->scaleAccel));
 		}
 		else if (cmd.type == CMDtype::set)
 		{
-			uint32_t value = clip<uint32_t, uint32_t>(cmd.val, 0, 20480);
-			this->scaleAccel = value / 10.0;
+			uint32_t value = clip<uint32_t, uint32_t>(cmd.val, 1, 10000);
+			this->scaleAccel = value;
 		}
 		break;
 
