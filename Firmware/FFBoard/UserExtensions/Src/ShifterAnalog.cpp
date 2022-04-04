@@ -34,7 +34,7 @@ void ShifterAnalog::registerCommands(){
 
 	registerCommand("mode", ShifterAnalog_commands::mode, "Shifter mode");
 	registerCommand("x12", ShifterAnalog_commands::x12, "X-threshold for 1,2 gears");
-	registerCommand("x56", ShifterAnalog_commands::x12, "X-threshold for 5,6 gears");
+	registerCommand("x56", ShifterAnalog_commands::x56, "X-threshold for 5,6 gears");
 	registerCommand("y135", ShifterAnalog_commands::y135, "Y-threshold for 1,3,5 gears");
 	registerCommand("y246", ShifterAnalog_commands::y246, "Y-threshold for 2,4,6 gears");
 	registerCommand("revbtn", ShifterAnalog_commands::revbtn, "Pin for R signal");
