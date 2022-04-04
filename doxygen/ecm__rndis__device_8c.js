@@ -20,7 +20,7 @@ var ecm__rndis__device_8c =
     [ "ecm_buf", "ecm__rndis__device_8c.html#aacecfafc538a4f5d440b78cceb55ea7f", null ],
     [ "ecm_notify_csc", "ecm__rndis__device_8c.html#a05830a79fca5eb67e9866f6a1872c449", null ],
     [ "ecm_notify_nc", "ecm__rndis__device_8c.html#a29c2e5320f24abbfc54743508128f47b", null ],
-    [ "notify", "ecm__rndis__device_8c.html#af56210097486516d0106da24c5230f7a", null ],
+    [ "notify", "ecm__rndis__device_8c.html#a694789cef964566797564defcbe2d504", null ],
     [ "received", "ecm__rndis__device_8c.html#a38d53e1575ad74f40a600feb0ef0056e", null ],
     [ "rndis_buf", "ecm__rndis__device_8c.html#ac8a18b41b8c0a77a59735bda13ddc7ec", null ],
     [ "transmitted", "ecm__rndis__device_8c.html#a5e1292b9567e802016471969b34e375a", null ]

@@ -1,5 +1,6 @@
 var NAVTREEINDEX20 =
 {
+"osal_8h.html#a769e04740a4a3d00c59d3c353736752e":[4,0,177,10],
 "osal_8h.html#a7b6ccb70e04cd7e65d7a0753794785a3":[4,0,177,7],
 "osal_8h.html#aaa53ca0b650dfd85c4f59fa156f7a2cc":[4,0,177,11],
 "osal_8h.html#ac0f2b3d79793b06dc28f75f1ea6379ae":[4,0,177,1],
@@ -53,8 +54,8 @@ var NAVTREEINDEX20 =
 "struct____attribute____.html#a566ce96ab44885ff1a7a3701b365a4b5":[3,0,1,32],
 "struct____attribute____.html#a567db21f585a142ec6fadca7ef62e631":[3,0,1,43],
 "struct____attribute____.html#a570e221bb51c305732701485966d2fc8":[3,0,1,45],
-"struct____attribute____.html#a59a963eab533908f7a9860e6075a951b":[3,0,1,37],
 "struct____attribute____.html#a59a963eab533908f7a9860e6075a951b":[3,0,1,38],
+"struct____attribute____.html#a59a963eab533908f7a9860e6075a951b":[3,0,1,37],
 "struct____attribute____.html#a626340db63bd3ed89614ab41cb44469a":[3,0,1,2],
 "struct____attribute____.html#a62828bf9dacca91412eaa7dd342ec5f2":[3,0,1,4],
 "struct____attribute____.html#a63031257ee009f16f8ef1c12a105227d":[3,0,1,29],
@@ -248,6 +249,5 @@ var NAVTREEINDEX20 =
 "struct_t_m_c4671_a_b_n_conf.html#aeb96f80163c8b7d325edf65da6e51d6d":[3,0,118,1],
 "struct_t_m_c4671_a_e_n_c_conf.html":[3,0,119],
 "struct_t_m_c4671_a_e_n_c_conf.html#a29d229e83df2bcdb3b38dc34859c8ea9":[3,0,119,1],
-"struct_t_m_c4671_a_e_n_c_conf.html#a38c185b65316754fc7d04c792d749b4c":[3,0,119,12],
-"struct_t_m_c4671_a_e_n_c_conf.html#a5e5600d464249c336b800b022de11acf":[3,0,119,11]
+"struct_t_m_c4671_a_e_n_c_conf.html#a38c185b65316754fc7d04c792d749b4c":[3,0,119,12]
 };

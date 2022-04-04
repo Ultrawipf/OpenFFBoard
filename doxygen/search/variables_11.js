@@ -26,7 +26,7 @@ var searchData=
   ['report_5fdesc_5ftype_23',['report_desc_type',['../structhidh__interface__t.html#a9baa13a5308eaaeea4137a97490529fd',1,'hidh_interface_t']]],
   ['report_5fpending_24',['report_pending',['../structncm__interface__t.html#ab3ad36a7c4fdd93d7a4186a984278405',1,'ncm_interface_t']]],
   ['report_5frate_5fcnt_25',['report_rate_cnt',['../class_f_f_b_wheel.html#a2aac56d0af5161c413a08658edb06c97',1,'FFBWheel']]],
-  ['report_5fstate_26',['report_state',['../structncm__interface__t.html#a90dd16bd76e03f9164a4880cb6bc7b49',1,'ncm_interface_t']]],
+  ['report_5fstate_26',['report_state',['../structncm__interface__t.html#afe0ef618cf826081c2012e5d7e742ce4',1,'ncm_interface_t']]],
   ['reportffbstatus_27',['reportFFBStatus',['../class_hid_f_f_b.html#a0d873cbb7019197c2fb42054a79dda33',1,'HidFFB']]],
   ['reporthid_28',['reportHID',['../class_f_f_b_wheel.html#afc94e6e6e218e60d73c656fc527a8738',1,'FFBWheel']]],
   ['reportid_29',['reportId',['../struct____attribute____.html#a59a963eab533908f7a9860e6075a951b',1,'__attribute__::reportId()'],['../struct____attribute____.html#a59a963eab533908f7a9860e6075a951b',1,'__attribute__::reportId()']]],

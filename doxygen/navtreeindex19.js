@@ -1,5 +1,6 @@
 var NAVTREEINDEX19 =
 {
+"midi__device_8h.html#a1e2a00971f6d334067132d9c2a143ca4":[4,0,135,19],
 "midi__device_8h.html#a34a1dd0d1069e5a2fae5b7d5afd9bcbb":[4,0,135,15],
 "midi__device_8h.html#a5807ad9ef77b35341944e974045cab9f":[4,0,135,1],
 "midi__device_8h.html#a597ab5ec63bda614aff4114020012233":[4,0,135,8],
@@ -248,6 +249,5 @@ var NAVTREEINDEX19 =
 "osal_8h.html#a3d129da6b49a5fd00217d88ac522c6b9":[4,0,177,3],
 "osal_8h.html#a5026d837cd2fcc6ed813cd369668dbba":[4,0,177,8],
 "osal_8h.html#a6c510adde23b8eba6df88ae8551be2d1":[4,0,177,5],
-"osal_8h.html#a6f2721e8b6bb1100d20d5e65fb9506a2":[4,0,177,0],
-"osal_8h.html#a769e04740a4a3d00c59d3c353736752e":[4,0,177,10]
+"osal_8h.html#a6f2721e8b6bb1100d20d5e65fb9506a2":[4,0,177,0]
 };

@@ -15,6 +15,7 @@ var class_p_c_f8574_buttons =
     [ "isCreatable", "class_p_c_f8574_buttons.html#a705c0255b135780e1cec40b682e1b4c3", null ],
     [ "readButtons", "class_p_c_f8574_buttons.html#abeec3978d5c4847b69c7a3fac41aff6d", null ],
     [ "restoreFlash", "class_p_c_f8574_buttons.html#ae4b3e868079dc5917d678f11b7018fb7", null ],
+    [ "Run", "class_p_c_f8574_buttons.html#a134c41ad4eeec8de808e5d507f39958b", null ],
     [ "rxDone", "class_p_c_f8574_buttons.html#ad50b22bc56a1c43b989024cfb468549e", null ],
     [ "saveFlash", "class_p_c_f8574_buttons.html#a9e838968aea70f12a3c7e9a4e613986d", null ],
     [ "setBtnNum", "class_p_c_f8574_buttons.html#a66c2ce69151f47f79ee586598037580e", null ],

@@ -226,6 +226,7 @@ var hierarchy =
       [ "FFBoardMainCommandThread", "class_f_f_board_main_command_thread.html", null ],
       [ "HID_CommandInterface", "class_h_i_d___command_interface.html", null ],
       [ "ODriveCAN", "class_o_drive_c_a_n.html", null ],
+      [ "PCF8574Buttons", "class_p_c_f8574_buttons.html", null ],
       [ "TMC4671", "class_t_m_c4671.html", null ],
       [ "TMC4671::TMC_ExternalEncoderUpdateThread", "class_t_m_c4671_1_1_t_m_c___external_encoder_update_thread.html", null ],
       [ "UART_CommandInterface", "class_u_a_r_t___command_interface.html", null ],
