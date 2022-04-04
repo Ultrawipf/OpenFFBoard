@@ -17,6 +17,7 @@
 #include "I2C.h"
 #include "cpp_target_config.h"
 #include "PersistentStorage.h"
+#include "thread.hpp"
 #ifdef I2C_PORT
 class PCF8574 : public I2CDevice {
 public:
@@ -44,7 +45,7 @@ private:
 };
 
 #ifdef PCF8574BUTTONS
-class PCF8574Buttons : public PCF8574, public CommandHandler,public ButtonSource {
+class PCF8574Buttons : public PCF8574, public CommandHandler,public ButtonSource, public cpp_freertos::Thread {
 public:
 	PCF8574Buttons();
 	virtual ~PCF8574Buttons();
@@ -52,6 +53,7 @@ public:
 	enum class PCF8574Buttons_commands : uint32_t {
 		btnnum,invert
 	};
+	void Run();
 
 	void saveFlash();
 	void restoreFlash();

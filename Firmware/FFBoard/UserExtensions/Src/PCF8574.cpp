@@ -63,35 +63,44 @@ const ClassIdentifier PCF8574Buttons::getInfo(){
 }
 
 
-PCF8574Buttons::PCF8574Buttons() : PCF8574(i2cport) , CommandHandler("pcfbtn", CLSID_BTN_PCF, 0) {
+PCF8574Buttons::PCF8574Buttons() : PCF8574(i2cport) , CommandHandler("pcfbtn", CLSID_BTN_PCF, 0), Thread("pcfbtn", 64, 25) {
 	CommandHandler::registerCommands();
 	ButtonSource::btnnum=8;
 	registerCommand("btnnum", PCF8574Buttons_commands::btnnum, "Amount of buttons",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("invert", PCF8574Buttons_commands::invert, "Invert buttons",CMDFLAG_GET | CMDFLAG_SET);
 	restoreFlash();
+	this->Start();
 }
 
 PCF8574Buttons::~PCF8574Buttons() {
 
 }
 
+// Handles starting next transfer for >1 byte transfers
+void PCF8574Buttons::Run(){
+	while(true){
+		WaitForNotification();
+		if(lastByte+1 < this->numBytes){
+			// Next transfer
+			lastData = 0;
+			readByteIT(0x20+ ++lastByte, &lastData);
+		}else{
+			lastByte = 0;
+			readingData = false; // Done
+			lastButtons = currentButtons;
+		}
+	}
+}
 
-
+// i2c complete interrupt signals thread to start next transfer
 void PCF8574Buttons::i2cRxCompleted(I2CPort* port){
 	if(port != &this->port){
 		return;
 	}
 	lastSuccess = HAL_GetTick();
-	currentButtons |= lastData << (lastByte*8);
-	if(lastByte+1 < this->numBytes){
-		// Next transfer
-		if(!port->isTaken()){
-			lastData = 0;
-			readByteIT(0x20+ ++lastByte, &lastData);
-		}
-	}else{
-		readingData = false; // Done
-	}
+	currentButtons |= (uint64_t)lastData << (lastByte*8);
+	NotifyFromISR();
+
 }
 
 void PCF8574Buttons::saveFlash(){
@@ -112,15 +121,12 @@ void PCF8574Buttons::restoreFlash(){
 
 uint8_t PCF8574Buttons::readButtons(uint64_t* buf){
 
-	if(!readingData){ // Only write buffer if done
-		lastButtons = currentButtons;
-		if(invert){
-			*buf = ~lastButtons;
-		}else{
-			*buf = lastButtons;
-		}
-		*buf &= mask;
+	if(invert){
+		*buf = ~lastButtons;
+	}else{
+		*buf = lastButtons;
 	}
+	*buf &= mask;
 
 
 	// Update
@@ -129,12 +135,12 @@ uint8_t PCF8574Buttons::readButtons(uint64_t* buf){
 		port.resetPort();
 		lastSuccess = HAL_GetTick();
 	}
-	if(!port.isTaken()){
+	if(!port.isTaken() && !readingData){
 		readingData = true;
-		lastButtons = 0;
+		//lastButtons = 0;
 		currentButtons = 0;
 		lastByte = 0;
-		readByteIT(0x20, &lastData);
+		readByteIT(0x20, &lastData); // Read first address
 	}
 	return btnnum;
 }
@@ -155,7 +161,7 @@ void PCF8574Buttons::setBtnNum(uint8_t num){
 	this->btnnum = num;
 	this->numBytes = 1+((num-1)/8);
 
-	mask = pow(2,num)-1;
+	mask = (uint64_t)pow<uint64_t>(2,num)-(uint64_t)1; // Must be done completely in 64 bit!
 	port.resetPort();
 }
 
