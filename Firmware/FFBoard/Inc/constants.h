@@ -18,6 +18,7 @@ static const uint8_t SW_VERSION_INT[3] = {1,8,0}; // Version as array. 8 bit eac
 
 #ifndef CANBUS
 #undef ODRIVE
+#undef CANBUTTONS
 #undef VESC
 #endif
 

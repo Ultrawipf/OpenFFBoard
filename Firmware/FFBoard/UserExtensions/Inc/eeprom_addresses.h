@@ -71,6 +71,9 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 
 #define ADR_PCFBTN_CONF1				0x250
 
+#define ADR_CANBTN_CONF1				0x260
+#define ADR_CANBTN_CONF2				0x261 // CAN ID
+
 
 #define ADR_CF_FILTER       			0x280 // CF Lowpass
 

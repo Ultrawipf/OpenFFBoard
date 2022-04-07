@@ -42,10 +42,10 @@
 #define ODRIVE
 #define VESC
 #define MTENCODERSPI // requires SPI3
+#define CANBUTTONS // Requires CAN
 
 #define UARTCOMMANDS
 
-//#define TMCTEMP // Enable tmc temperature shutdown. replaced by hardware selection
 //----------------------
 
 
