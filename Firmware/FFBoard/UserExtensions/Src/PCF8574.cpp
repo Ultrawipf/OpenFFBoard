@@ -161,7 +161,11 @@ void PCF8574Buttons::setBtnNum(uint8_t num){
 	this->btnnum = num;
 	this->numBytes = 1+((num-1)/8);
 
-	mask = (uint64_t)pow<uint64_t>(2,num)-(uint64_t)1; // Must be done completely in 64 bit!
+	if(num == 64){ // Special case
+		mask = 0xffffffffffffffff;
+	}else{
+		mask = (uint64_t)pow<uint64_t>(2,num)-(uint64_t)1; // Must be done completely in 64 bit!
+	}
 	port.resetPort();
 }
 
