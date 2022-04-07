@@ -15,8 +15,9 @@
 #include "PersistentStorage.h"
 #include "CAN.h"
 #include "CommandHandler.h"
+#include "cpp_target_config.h"
 
-class CanButtons : public ButtonSource, public PersistentStorage, public CanHandler, public CommandHandler {
+class CanButtons : public ButtonSource, public CanHandler, public CommandHandler {
 public:
 	enum class CanButtons_commands : uint32_t {
 		btnnum,invert,canid
@@ -24,6 +25,9 @@ public:
 
 	CanButtons();
 	virtual ~CanButtons();
+
+	const virtual ClassIdentifier getInfo();
+	static ClassIdentifier info;
 
 	void restoreFlash();
 	void saveFlash();
@@ -34,7 +38,7 @@ public:
 
 	CommandStatus command(const ParsedCommand& cmd,std::vector<CommandReply>& replies);
 
-	void canRxPendCallback(CAN_HandleTypeDef *hcan,uint8_t* rxBuf,CAN_RxHeaderTypeDef* rxHeader,uint32_t fifo);
+	void canRxPendCallback(CAN_HandleTypeDef *hcan,uint8_t* rxBuf,CAN_RxHeaderTypeDef* rxHeader,uint32_t fifo) override;
 
 private:
 	bool invert = false;
@@ -43,7 +47,7 @@ private:
 	CANPort* port = &canport;
 	uint64_t mask = 0xff;
 
-	uint64_t currentButtons = 0;
+	volatile uint64_t currentButtons = 0;
 };
 
 

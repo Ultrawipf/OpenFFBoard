@@ -17,9 +17,9 @@ const ClassIdentifier CanButtons::getInfo(){
 	return info;
 }
 
-CanButtons::CanButtons() {
+CanButtons::CanButtons() : CommandHandler("canbtn", CLSID_BTN_CAN, 0) {
 	CommandHandler::registerCommands();
-	ButtonSource::btnnum=64;
+	ButtonSource::btnnum=32;
 	registerCommand("btnnum", CanButtons_commands::btnnum, "Amount of buttons",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("invert", CanButtons_commands::invert, "Invert buttons",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("canid", CanButtons_commands::canid, "CAN frame ID",CMDFLAG_GET | CMDFLAG_SET);
@@ -34,11 +34,14 @@ void CanButtons::setupCanPort(){
 	}
 	CAN_FilterTypeDef sFilterConfig;
 	sFilterConfig.FilterBank = 0;
-	sFilterConfig.FilterMode = CAN_FILTERMODE_IDLIST;
+	//sFilterConfig.FilterMode = CAN_FILTERMODE_IDLIST;
+	sFilterConfig.FilterMode = CAN_FILTERMODE_IDMASK;
 	sFilterConfig.FilterScale = CAN_FILTERSCALE_32BIT;
-	sFilterConfig.FilterIdHigh = canId<<5;
-	sFilterConfig.FilterIdLow = canId<<5;
-	sFilterConfig.FilterMaskIdHigh = 0x0000;
+	sFilterConfig.FilterIdHigh = (canId << 5);
+	sFilterConfig.FilterIdLow = 0x0000;
+//	sFilterConfig.FilterIdHigh = 0x0000;
+//	sFilterConfig.FilterIdLow = 0x0000;
+	sFilterConfig.FilterMaskIdHigh = 0xFFFF;
 	sFilterConfig.FilterMaskIdLow = 0x0000;
 	sFilterConfig.FilterFIFOAssignment = CAN_RX_FIFO0;
 	sFilterConfig.FilterActivation = ENABLE;
@@ -46,10 +49,12 @@ void CanButtons::setupCanPort(){
 	this->filterId = this->port->addCanFilter(sFilterConfig);
 
 	this->port->setSpeedPreset(CANSPEEDPRESET_500);
+	this->port->start();
 }
 
 CanButtons::~CanButtons() {
-	// TODO Auto-generated destructor stub
+	if(filterId != -1)
+		this->port->removeCanFilter(filterId);
 }
 
 void CanButtons::saveFlash(){
@@ -76,8 +81,11 @@ void CanButtons::restoreFlash(){
 void CanButtons::setBtnNum(uint8_t num){
 	num = clip<uint8_t,uint8_t>(num, 1, 64); // up to 8 PCF8574 can be chained resulting in 64 buttons
 	this->btnnum = num;
-
-	mask = (uint64_t)pow<uint64_t>(2,num)-(uint64_t)1; // Must be done completely in 64 bit!
+	if(num == 64){ // Special case
+		mask = 0xffffffffffffffff;
+	}else{
+		mask = (uint64_t)pow<uint64_t>(2,num)-(uint64_t)1; // Must be done completely in 64 bit!
+	}
 }
 
 
@@ -122,10 +130,13 @@ CommandStatus CanButtons::command(const ParsedCommand& cmd,std::vector<CommandRe
 }
 
 void CanButtons::canRxPendCallback(CAN_HandleTypeDef *hcan,uint8_t* rxBuf,CAN_RxHeaderTypeDef* rxHeader,uint32_t fifo){
-	uint16_t id = (rxHeader->StdId >> 5) & 0x7FF;
-	if(id != this->canId){
+
+	uint32_t id = (rxHeader->StdId) & 0x7FF;
+	pulseClipLed();
+	if(id != this->canId || rxHeader->RTR != CAN_RTR_DATA){
 		return;
 	}
+
 	currentButtons = *reinterpret_cast<uint64_t*>(rxBuf);
 }
 
