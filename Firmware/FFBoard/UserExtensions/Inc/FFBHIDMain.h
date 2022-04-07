@@ -20,6 +20,7 @@
 #include "LocalAnalog.h"
 #include "AnalogSource.h"
 #include "PCF8574.h"
+#include "CanButtons.h"
 
 #include "Axis.h"
 

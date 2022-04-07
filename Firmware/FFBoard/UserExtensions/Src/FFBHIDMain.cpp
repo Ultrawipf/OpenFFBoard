@@ -43,6 +43,9 @@ const std::vector<class_entry<ButtonSource>> button_sources =
 #ifdef PCF8574BUTTONS
 		add_class<PCF8574Buttons,ButtonSource>(4),
 #endif
+#ifdef CANBUTTONS
+		add_class<CanButtons,ButtonSource>(5),
+#endif
 };
 
 // Register possible analog sources (id 0-15)
