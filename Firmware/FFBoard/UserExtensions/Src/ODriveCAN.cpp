@@ -61,12 +61,15 @@ ODriveCAN::ODriveCAN(uint8_t id)  : CommandHandler("odrv", CLSID_MOT_ODRV0,id), 
 	this->filterId = this->port->addCanFilter(sFilterConfig);
 
 	this->port->setSpeedPreset(baudrate);
+	this->port->setSilentMode(false);
 	this->registerCommands();
+	this->port->start();
 	this->Start();
 }
 
 ODriveCAN::~ODriveCAN() {
 	this->setTorque(0.0);
+	this->port->removeCanFilter(filterId);
 }
 
 void ODriveCAN::registerCommands(){
