@@ -13,6 +13,7 @@
 #include "main.h"
 #include <vector>
 #include "semaphore.hpp"
+#include "OutputPin.h"
 
 typedef struct{
 	uint8_t data[8] = {0};
@@ -29,7 +30,11 @@ typedef struct{
 class CANPort { //  : public CanHandler if interrupt callbacks needed
 public:
 	CANPort(CAN_HandleTypeDef &hcan);
+	CANPort(CAN_HandleTypeDef &hcan,const OutputPin* silentPin);
 	virtual ~CANPort();
+
+	bool start();
+	bool stop();
 
 	bool sendMessage(CAN_tx_msg msg);
 	bool sendMessage(CAN_TxHeaderTypeDef *pHeader, uint8_t aData[],uint32_t *pTxMailbox = nullptr);
@@ -45,6 +50,7 @@ public:
 	void giveSemaphore();
 	void takeSemaphore();
 
+	void setSilentMode(bool silent);
 
 	static const uint8_t slaveFilterStart = 14;
 
@@ -58,6 +64,9 @@ private:
 	std::vector<CAN_FilterTypeDef> canFilters;
 	uint32_t txMailbox;
 	cpp_freertos::BinarySemaphore semaphore = cpp_freertos::BinarySemaphore(true);
+
+	const OutputPin* silentPin;
+	bool silent = true;
 };
 
 #endif /* SRC_CAN_H_ */
