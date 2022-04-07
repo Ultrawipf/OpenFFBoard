@@ -55,7 +55,8 @@ CanBridge::CanBridge() {
 	registerCommand("can", CanBridge_commands::can, "Send a frame or get last received frame");
 	registerCommand("rtr", CanBridge_commands::canrtr, "Send a RTR frame");
 	registerCommand("spd", CanBridge_commands::canspd, "Change or get CAN baud");
-	this->port->setSilentMode(false);
+
+	this->port->start();
 }
 
 CanBridge::~CanBridge() {

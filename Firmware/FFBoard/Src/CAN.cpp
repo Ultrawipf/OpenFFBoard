@@ -10,9 +10,15 @@
 #include "CAN.h"
 
 
-CANPort::CANPort(CAN_HandleTypeDef &hcan) : hcan(&hcan) {
+CANPort::CANPort(CAN_HandleTypeDef &hcan) : hcan(&hcan), silentPin(nullptr) {
+	//HAL_CAN_Start(this->hcan);
+
+}
+CANPort::CANPort(CAN_HandleTypeDef &hcan,const OutputPin* silentPin) : hcan(&hcan), silentPin(silentPin) {
 	//HAL_CAN_Start(this->hcan);
 }
+
+
 
 CANPort::~CANPort() {
 	// removes all filters
@@ -22,6 +28,25 @@ CANPort::~CANPort() {
 	}
 	canFilters.clear();
 	HAL_CAN_Stop(this->hcan);
+	if(silentPin){
+		silentPin->set(); // set pin high to disable
+	}
+}
+
+/**
+ * Enables the can port
+ */
+bool CANPort::start(){
+	setSilentMode(false);
+	return HAL_CAN_Start(this->hcan) == HAL_OK;
+}
+
+/**
+ * Disables the can port
+ */
+bool CANPort::stop(){
+	setSilentMode(true);
+	return HAL_CAN_Start(this->hcan) == HAL_OK;
 }
 
 
@@ -104,7 +129,7 @@ uint32_t CANPort::presetToSpeed(uint8_t preset){
  * Changes the speed of the CAN port to a preset
  */
 void CANPort::setSpeedPreset(uint8_t preset){
-	if(preset > 5 || preset == this->speedPreset)
+	if(preset > 5)
 		return;
 	speedPreset = preset;
 
@@ -150,6 +175,16 @@ void CANPort::giveSemaphore(){
 }
 
 /**
+ * Sets the can port passive if a transceiver with silent mode is available
+ */
+void CANPort::setSilentMode(bool silent){
+	this->silent = silent;
+	if(silentPin){
+		silentPin->write(silent);
+	}
+}
+
+/**
  * Transmits a CAN frame on this port
  * Wraps the internal transmit function
  */
@@ -161,6 +196,8 @@ bool CANPort::sendMessage(CAN_tx_msg msg){
  * Transmits a CAN frame with separate data and header settings
  */
 bool CANPort::sendMessage(CAN_TxHeaderTypeDef *pHeader, uint8_t aData[],uint32_t *pTxMailbox){
+	if(this->silent)
+		setSilentMode(false);
 	if(pTxMailbox == nullptr){
 		pTxMailbox = &this->txMailbox;
 	}
