@@ -13,9 +13,12 @@
 #include "PersistentStorage.h"
 #include "vector"
 #include "CommandHandler.h"
+#include "constants.h"
+
 
 class AnalogSource : public ChoosableClass, public PersistentStorage{
 public:
+
 	AnalogSource();
 	virtual ~AnalogSource();
 
