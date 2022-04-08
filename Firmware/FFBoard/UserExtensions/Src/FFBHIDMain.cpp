@@ -11,6 +11,16 @@
 #include "tusb.h"
 #include "usb_hid_ffb_desc.h"
 
+#include "SPIButtons.h"
+#include "CanButtons.h"
+#include "LocalButtons.h"
+#include <ShifterAnalog.h>
+#include "PCF8574.h"
+
+#include "LocalAnalog.h"
+#include "CanAnalog.h"
+
+
 // Unique identifier for listing
 //ClassIdentifier FFBHIDMain::info = {
 //		 .name = "FFB Wheel" , // Leave as wheel for now
@@ -53,6 +63,9 @@ const std::vector<class_entry<AnalogSource>> analog_sources =
 {
 #ifdef ANALOGAXES
 		add_class<LocalAnalog,AnalogSource>(0),
+#endif
+#ifdef CANANALOG
+		add_class<CanAnalog<8>,AnalogSource>(1),
 #endif
 };
 

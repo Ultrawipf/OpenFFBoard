@@ -50,9 +50,11 @@ enum class ClassType : uint16_t {
 #define CLSID_BTN_PCF	 	0x24
 #define CLSID_BTN_CAN	 	0x25
 
+
 // Analog sources
 #define CLSID_ANALOG_NONE 	0x40
 #define CLSID_ANALOG_LOCAL 	0x41
+#define CLSID_ANALOG_CAN	0x42
 
 // Encoders
 #define CLSID_ENCODER_NONE	0x60
