@@ -8,22 +8,16 @@
 #ifndef SRC_FFBWHEEL_H_
 #define SRC_FFBWHEEL_H_
 //#include <CmdParser.h>
+#include <CanAnalog.h>
 #include <FFBoardMain.h>
 #include <MotorPWM.h>
-#include <ShifterAnalog.h>
+
 #include "TMC4671.h"
 #include "flash_helpers.h"
 #include "ButtonSource.h"
-#include "LocalButtons.h"
-#include "SPIButtons.h"
 #include "EncoderLocal.h"
-#include "LocalAnalog.h"
-#include "AnalogSource.h"
-#include "PCF8574.h"
-#include "CanButtons.h"
 
 #include "Axis.h"
-
 #include "cppmain.h"
 #include "HidFFB.h"
 #include "TimerHandler.h"

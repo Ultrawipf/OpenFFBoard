@@ -43,6 +43,7 @@
 #define VESC
 #define MTENCODERSPI // requires SPI3
 #define CANBUTTONS // Requires CAN
+#define CANANALOG // Requires CAN
 
 #define UARTCOMMANDS
 
