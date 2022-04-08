@@ -34,13 +34,10 @@ void CanButtons::setupCanPort(){
 	}
 	CAN_FilterTypeDef sFilterConfig;
 	sFilterConfig.FilterBank = 0;
-	//sFilterConfig.FilterMode = CAN_FILTERMODE_IDLIST;
 	sFilterConfig.FilterMode = CAN_FILTERMODE_IDMASK;
 	sFilterConfig.FilterScale = CAN_FILTERSCALE_32BIT;
-	sFilterConfig.FilterIdHigh = (canId << 5);
+	sFilterConfig.FilterIdHigh = (canId << 5); // Just one ID
 	sFilterConfig.FilterIdLow = 0x0000;
-//	sFilterConfig.FilterIdHigh = 0x0000;
-//	sFilterConfig.FilterIdLow = 0x0000;
 	sFilterConfig.FilterMaskIdHigh = 0xFFFF;
 	sFilterConfig.FilterMaskIdLow = 0x0000;
 	sFilterConfig.FilterFIFOAssignment = CAN_RX_FIFO0;
@@ -48,7 +45,7 @@ void CanButtons::setupCanPort(){
 	sFilterConfig.SlaveStartFilterBank = 14;
 	this->filterId = this->port->addCanFilter(sFilterConfig);
 
-	this->port->setSpeedPreset(CANSPEEDPRESET_500);
+	//this->port->setSpeedPreset(CANSPEEDPRESET_500); // default speed used
 	this->port->start();
 }
 
@@ -133,7 +130,7 @@ void CanButtons::canRxPendCallback(CAN_HandleTypeDef *hcan,uint8_t* rxBuf,CAN_Rx
 
 	uint32_t id = (rxHeader->StdId) & 0x7FF;
 	pulseClipLed();
-	if(id != this->canId || rxHeader->RTR != CAN_RTR_DATA){
+	if(id != this->canId || rxHeader->RTR != CAN_RTR_DATA || rxHeader->DLC != 8){
 		return;
 	}
 

@@ -26,7 +26,7 @@ public:
 	CanButtons();
 	virtual ~CanButtons();
 
-	const virtual ClassIdentifier getInfo();
+	const ClassIdentifier getInfo();
 	static ClassIdentifier info;
 
 	void restoreFlash();
@@ -42,7 +42,7 @@ public:
 
 private:
 	bool invert = false;
-	uint32_t canId = 25;
+	uint32_t canId = 100;
 	int32_t filterId = -1;
 	CANPort* port = &canport;
 	uint64_t mask = 0xff;
