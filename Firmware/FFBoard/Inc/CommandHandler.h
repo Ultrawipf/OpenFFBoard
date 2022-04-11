@@ -37,7 +37,7 @@ enum class CMDtype : uint32_t{
 };
 
 enum class CommandStatus : uint8_t {NOT_FOUND,OK,ERR,NO_REPLY,BROADCAST};
-enum class CommandReplyType : uint8_t {NONE,ACK,INT,STRING,STRING_OR_INT,STRING_OR_DOUBLEINT,DOUBLEINTS};
+enum class CommandReplyType : uint8_t {NONE,ACK,INT,STRING,STRING_OR_INT,STRING_OR_DOUBLEINT,DOUBLEINTS,ERR};
 
 class CommandInterface;
 class CommandHandler; // defined lower
