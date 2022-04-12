@@ -52,6 +52,13 @@ void HID_CommandInterface::Run(){
 	}
 }
 
+/**
+ * true if output buffer contains data
+ */
+bool HID_CommandInterface::waitingToSend(){
+	return !this->outBuffer.empty();
+}
+
 bool HID_CommandInterface::readyToSend(){
 	return this->outBuffer.size() < maxQueuedReplies;
 }
