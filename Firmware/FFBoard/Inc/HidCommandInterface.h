@@ -49,6 +49,7 @@ public:
 	void transferComplete(uint8_t itf, uint8_t const* report, uint8_t len);
 	bool readyToSend();
 	void Run();
+	bool waitingToSend();
 
 private:
 	std::vector<ParsedCommand> commands;
