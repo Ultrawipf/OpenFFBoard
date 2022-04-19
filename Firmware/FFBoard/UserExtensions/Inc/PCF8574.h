@@ -24,6 +24,8 @@ public:
 	PCF8574(I2CPort &port);
 	virtual ~PCF8574();
 
+	void configurePort(bool fastMode);
+
 	uint8_t readByte(const uint8_t devAddr);
 	void readByteIT(const uint8_t devAddr,uint8_t* data);
 	void writeByteIT(const uint8_t devAddr,uint8_t* data);
@@ -51,7 +53,7 @@ public:
 	virtual ~PCF8574Buttons();
 
 	enum class PCF8574Buttons_commands : uint32_t {
-		btnnum,invert
+		btnnum,invert,fastmode
 	};
 	void Run();
 
@@ -78,6 +80,7 @@ public:
 
 private:
 	bool invert = true;
+	bool fastmode = false;
 	uint8_t numBytes = 1;
 	uint64_t mask = 0xff;
 	uint64_t lastButtons = 0;
