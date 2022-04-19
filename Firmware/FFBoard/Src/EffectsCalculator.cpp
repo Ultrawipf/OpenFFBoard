@@ -170,11 +170,7 @@ int32_t EffectsCalculator::calcNonConditionEffectForce(FFB_Effect *effect) {
 	case FFB_EFFECT_CONSTANT:
 	{ // Constant force is just the force
 		force_vector = ((int32_t)magnitude * (int32_t)(1 + effect->gain)) >> 8;
-		// Optional filtering to reduce spikes
-		if (cfFilter_f < calcfrequency / 2 && cfFilter_f != 0 )
-		{
-			force_vector = effect->filter[0]->process(force_vector);
-		}
+
 		break;
 	}
 
@@ -322,6 +318,13 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 	switch (effect->type)
 	{
 	case FFB_EFFECT_CONSTANT:
+	{
+		// Optional filtering to reduce spikes
+		if (cfFilter_f < calcfrequency / 2 && cfFilter_f != 0 )
+		{
+			result_torque = effect->filter[con_idx]->process(forceVector);
+		}
+	}
 	case FFB_EFFECT_RAMP:
 	case FFB_EFFECT_SQUARE:
 	case FFB_EFFECT_TRIANGLE:
@@ -592,14 +595,19 @@ void EffectsCalculator::setCfFilter(uint32_t freq,uint8_t q)
 		freq = calcfrequency / 2;
 	}
 	cfFilter_f = clip<uint32_t, uint32_t>(freq, 1, (calcfrequency / 2));
-	float f = (float)cfFilter_f / (float)calcfrequency;
+	//float f = (float)cfFilter_f / (float)calcfrequency;
 
 	for (uint8_t i = 0; i < MAX_EFFECTS; i++)
 	{
 		if (effects[i].type == FFB_EFFECT_CONSTANT)
 		{
-			effects[i].filter[0]->setFc(f);
-			effects[i].filter[0]->setQ(cfFilter_qfloatScaler * (cfFilter_q+1));
+			setFilters(&effects[i]);
+			//for(uint8_t ax = 0;ax<MAX_AXIS;ax++){
+
+//				effects[i].filter[ax]->setFc(f);
+//				effects[i].filter[ax]->setQ(cfFilter_qfloatScaler * (cfFilter_q+1));
+		//	}
+
 		}
 	}
 }
