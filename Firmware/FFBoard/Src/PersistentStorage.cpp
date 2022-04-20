@@ -8,14 +8,14 @@
 #include "PersistentStorage.h"
 #include "global_callbacks.h"
 
-std::vector<PersistentStorage*> PersistentStorage::flashHandlers;
+//std::vector<PersistentStorage*> PersistentStorage::flashHandlers;
 
 PersistentStorage::PersistentStorage() {
-	addCallbackHandler(flashHandlers, this);
+	addCallbackHandler(getFlashHandlers(), this);
 }
 
 PersistentStorage::~PersistentStorage() {
-	removeCallbackHandler(flashHandlers, this);
+	removeCallbackHandler(getFlashHandlers(), this);
 }
 
 /**

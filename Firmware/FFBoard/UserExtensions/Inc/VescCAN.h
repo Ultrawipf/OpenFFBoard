@@ -136,12 +136,12 @@ private:
 
 	CANPort *port = &canport;
 	int32_t filterId = 0;
-	uint8_t baudrate = CANSPEEDPRESET_500; 	// 250000, 500000, 1M
+	//uint8_t baudrate = CANSPEEDPRESET_500; 	// 250000, 500000, 1M
 	uint8_t OFFB_can_Id = 0x40; 			// Default OpenFFBoard CAN ID
 	uint8_t VESC_can_Id = 0xFF;				// Default VESC CAN id
 	uint8_t buffer_rx[BUFFER_RX_SIZE];		// Used to store multi-frame can message
 
-	void setCanRate(uint8_t canRate);
+	//void setCanRate(uint8_t canRate);
 	void getFirmwareInfo();
 	bool isFirmwareCompatible();
 	void sendPing();

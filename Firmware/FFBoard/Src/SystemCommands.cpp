@@ -84,7 +84,7 @@ CommandStatus SystemCommands::internalCommand(const ParsedCommand& cmd,std::vect
 				}
 				std::string reply =	itfHelp + "Available classes (use cls.0.help for more info):\n";
 				//std::string reply = "";
-				for(CommandHandler* handler : CommandHandler::cmdHandlers){
+				for(CommandHandler* handler : CommandHandler::getCommandHandlers()){
 					CmdHandlerInfo* info = handler->getCommandHandlerInfo();
 					reply += std::string(info->clsname) + "." + std::to_string(info->instance)+"\n";
 				}
@@ -96,7 +96,7 @@ CommandStatus SystemCommands::internalCommand(const ParsedCommand& cmd,std::vect
 		}
 
 		case FFBoardMain_commands::save:
-			for(PersistentStorage* handler : PersistentStorage::flashHandlers){
+			for(PersistentStorage* handler : PersistentStorage::getFlashHandlers()){
 				handler->saveFlash();
 			}
 			break;
@@ -230,7 +230,7 @@ CommandStatus SystemCommands::internalCommand(const ParsedCommand& cmd,std::vect
 #endif
 		case FFBoardMain_commands::lsactive:
 		{
-			for(CommandHandler* handler : CommandHandler::cmdHandlers){
+			for(CommandHandler* handler : CommandHandler::getCommandHandlers()){
 				if(handler->hasCommands()){
 					ClassIdentifier i = handler->getInfo();
 					CmdHandlerInfo* hi = handler->getCommandHandlerInfo();

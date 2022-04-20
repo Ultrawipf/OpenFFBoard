@@ -11,8 +11,12 @@
 #include "semaphore.hpp"
 #include "cppmain.h"
 #include "I2CHandler.h"
+#include "PersistentStorage.h"
+#include "CommandHandler.h"
+
 class I2CDevice;
-class I2CPort : public I2CHandler{
+class I2CPort : public I2CHandler, public CommandHandler, public PersistentStorage{
+	enum class I2CPort_commands : uint32_t {speed};
 public:
 	I2CPort(I2C_HandleTypeDef &hi2c);
 	virtual ~I2CPort();
@@ -20,6 +24,13 @@ public:
 
 	void configurePort(I2C_InitTypeDef* config); // Reconfigures the i2c port
 	void resetPort();
+
+	void takePort();
+	void freePort();
+	int32_t getPortUsers(){return portUsers;}
+
+	void setSpeedPreset(uint8_t preset);
+	uint8_t getSpeedPreset();
 
 	bool transmitMaster(I2CDevice* device, const uint16_t addr,uint8_t* pData,const uint16_t size,const uint32_t timeout);
 	bool transmitMasterDMA(I2CDevice* device,const uint16_t addr,uint8_t* pData,const uint16_t size);
@@ -39,11 +50,25 @@ public:
 	void I2cTxCplt(I2C_HandleTypeDef *hi2c);
 	void I2cRxCplt(I2C_HandleTypeDef *hi2c);
 
+	// Config
+	enum class CanPort_commands : uint32_t {speed};
+	CommandStatus command(const ParsedCommand& cmd,std::vector<CommandReply>& replies);
+	void registerCommands();
+	void saveFlash();
+	void restoreFlash();
+	static ClassIdentifier info;
+	const ClassIdentifier getInfo(){return this->info;}
+	const ClassType getClassType() override {return ClassType::Port;};
+	const std::vector<std::string> SpeedNames = {"100kb/s (Standard)","400kb/s (Fast mode)"};
+
+
 private:
 	cpp_freertos::BinarySemaphore semaphore = cpp_freertos::BinarySemaphore(true);
 	//volatile bool isTakenFlag = false;
 	I2C_HandleTypeDef& hi2c;
 	I2CDevice* currentDevice = nullptr;
+	int32_t portUsers = 0;
+	uint8_t speedPreset = 0;
 };
 
 

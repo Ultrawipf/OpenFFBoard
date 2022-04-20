@@ -62,7 +62,11 @@ VescCAN::VescCAN(uint8_t address) :
 	sFilterConfig.SlaveStartFilterBank = 14;
 	this->filterId = this->port->addCanFilter(sFilterConfig);
 
-	this->setCanRate(this->baudrate);
+	//this->setCanRate(this->baudrate);
+	if(port->getSpeedPreset() < 3){
+		port->setSpeedPreset(3); // Minimum 250k
+	}
+	this->port->takePort();
 
 	registerCommands();
 	this->Start();
@@ -71,6 +75,7 @@ VescCAN::VescCAN(uint8_t address) :
 
 VescCAN::~VescCAN() {
 	this->stopMotor();
+	this->port->freePort();
 	this->state = VescState::VESC_STATE_UNKNOWN;
 }
 
@@ -125,7 +130,7 @@ void VescCAN::restoreFlash() {
 	if (Flash_Read(flashAddrs.data, &dataFlash)) {
 
 		uint8_t canspd = dataFlash & 0b111;
-		this->baudrate = canspd;
+		//this->baudrate = canspd;
 
 		this->useEncoder = (dataFlash >> 3) & 0x1;
 	}
@@ -151,7 +156,7 @@ void VescCAN::saveFlash() {
 	Flash_Write(flashAddrs.canId, dataFlash);
 
 	dataFlash = 0;
-	dataFlash |= (this->baudrate & 0b111); // set the baudrate in 0..2 bit
+	//dataFlash |= (this->baudrate & 0b111); // set the baudrate in 0..2 bit
 	dataFlash |= (this->useEncoder & 0x1) << 3;  // set the encoder use in bit 3
 	Flash_Write(flashAddrs.data, dataFlash);
 
@@ -229,9 +234,9 @@ CommandStatus VescCAN::command(const ParsedCommand &cmd,
 		break;
 	case VescCAN_commands::canspd:
 		if (cmd.type == CMDtype::get) {
-			replies.push_back(CommandReply(this->baudrate));
+			replies.push_back(CommandReply(port->getSpeedPreset()));
 		} else if (cmd.type == CMDtype::set) {
-			this->setCanRate(cmd.val);
+			port->setSpeedPreset(std::max<uint8_t>(3,cmd.val));
 		}
 		break;
 	case VescCAN_commands::vescstate:
@@ -344,10 +349,10 @@ void VescCAN::Run() {
  * 										CAN SECTION
  */
 
-void VescCAN::setCanRate(uint8_t canRate) {
-	this->baudrate = clip<uint8_t, uint8_t>(canRate, 3, 5);
-	this->port->setSpeedPreset(baudrate);
-}
+//void VescCAN::setCanRate(uint8_t canRate) {
+//	this->baudrate = clip<uint8_t, uint8_t>(canRate, 3, 5);
+//	this->port->setSpeedPreset(baudrate);
+//}
 
 /**
  * Get the firmware vesc information

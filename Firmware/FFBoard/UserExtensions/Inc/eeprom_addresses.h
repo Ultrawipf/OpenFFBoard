@@ -10,11 +10,11 @@
 
 #include "main.h"
 // Change this to the amount of currently registered variables
-#define NB_OF_VAR	94
+#define NB_OF_VAR	96
 extern const uint16_t VirtAddVarTab[NB_OF_VAR];
 
 // Amount of variables in exportable list
-#define NB_EXPORTABLE_ADR 80
+#define NB_EXPORTABLE_ADR 82
 extern const uint16_t exportableFlashAddresses[NB_EXPORTABLE_ADR];
 
 
@@ -36,6 +36,10 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_HW_VERSION 		1
 #define ADR_SW_VERSION 		2
 #define ADR_CURRENT_CONFIG 	10
+
+// Ports
+#define ADR_CANCONF1			 		0xC1
+#define ADR_I2CCONF1		 			0xC2
 
 // FFBWheel
 #define ADR_FFBWHEEL_BUTTONCONF 		0x101
