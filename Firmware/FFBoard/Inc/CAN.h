@@ -14,6 +14,8 @@
 #include <vector>
 #include "semaphore.hpp"
 #include "OutputPin.h"
+#include "PersistentStorage.h"
+#include "CommandHandler.h"
 
 typedef struct{
 	uint8_t data[8] = {0};
@@ -27,7 +29,8 @@ typedef struct{
 
 
 
-class CANPort { //  : public CanHandler if interrupt callbacks needed
+class CANPort : public CommandHandler, public PersistentStorage { //  : public CanHandler if interrupt callbacks needed
+	enum class CanPort_commands : uint32_t {speed};
 public:
 	CANPort(CAN_HandleTypeDef &hcan);
 	CANPort(CAN_HandleTypeDef &hcan,const OutputPin* silentPin);
@@ -35,6 +38,10 @@ public:
 
 	bool start();
 	bool stop();
+
+	void takePort();
+	void freePort();
+	int32_t getPortUsers(){return portUsers;}
 
 	bool sendMessage(CAN_tx_msg msg);
 	bool sendMessage(CAN_TxHeaderTypeDef *pHeader, uint8_t aData[],uint32_t *pTxMailbox = nullptr);
@@ -57,16 +64,30 @@ public:
 	static uint8_t speedToPreset(uint32_t speed);
 	static uint32_t presetToSpeed(uint8_t preset);
 
+
+	// Config
+
+	CommandStatus command(const ParsedCommand& cmd,std::vector<CommandReply>& replies);
+	void registerCommands();
+	void saveFlash();
+	void restoreFlash();
+	static ClassIdentifier info;
+	const ClassIdentifier getInfo(){return this->info;}
+	const ClassType getClassType() override {return ClassType::Port;};
+
 private:
 	uint8_t speedPreset = CANSPEEDPRESET_500; // default
-	bool isTakenFlag = false;
 	CAN_HandleTypeDef *hcan = nullptr;
 	std::vector<CAN_FilterTypeDef> canFilters;
 	uint32_t txMailbox;
 	cpp_freertos::BinarySemaphore semaphore = cpp_freertos::BinarySemaphore(true);
-
+	//bool isTakenFlag = false;
 	const OutputPin* silentPin;
 	bool silent = true;
+	int32_t portUsers = 0;
+
+	const std::vector<std::string> SpeedNames = {"50k","100k","125k","250k","500k","1000k"};
+
 };
 
 #endif /* SRC_CAN_H_ */

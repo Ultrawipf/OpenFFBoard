@@ -10,18 +10,19 @@
 #include "FFBoardMain.h"
 #include "cdc_device.h"
 #include "CDCcomm.h"
-#include <set>
+//#include <set>
 #include "ChoosableClass.h"
 
-std::vector<CommandHandler*> CommandHandler::cmdHandlers;
-std::set<uint16_t> CommandHandler::cmdHandlerIDs;
-cpp_freertos::MutexStandard CommandHandler::cmdHandlerListMutex;
+//std::vector<CommandHandler*> CommandHandler::cmdHandlers;
+//std::set<uint16_t> CommandHandler::cmdHandlerIDs;
+//std::vector<uint16_t> CommandHandler::cmdHandlerIDs;
+//cpp_freertos::MutexStandard CommandHandler::cmdHandlerListMutex;
 bool CommandHandler::logEnabled = true; // If logs are sent by default
 
 /**
  * clsname and clsid identify this class in commands additionally to the unique instance field which can be assigned at runtime
  */
-CommandHandler::CommandHandler(const char* clsname,uint16_t clsid,uint8_t instance) : cmdHandlerInfo({clsname,clsid,instance}) {
+CommandHandler::CommandHandler(const char* clsname,uint16_t clsid,uint8_t instance) : cmdHandlerInfo({clsname,clsid,instance,0}) {
 	addCommandHandler();
 }
 
@@ -233,7 +234,7 @@ void CommandHandler::setLogsEnabled(bool enable){
  */
 uint32_t CommandHandler::getClassIdFromName(const char* name){
 
-	for(CommandHandler* cls : cmdHandlers){
+	for(CommandHandler* cls : getCommandHandlers()){
 		CmdHandlerInfo* cmdhandlerinfo = cls->getCommandHandlerInfo();
 		if(strcmp(cmdhandlerinfo->clsname , name) == 0){
 			return cmdhandlerinfo->clsTypeid;
@@ -247,7 +248,7 @@ uint32_t CommandHandler::getClassIdFromName(const char* name){
  */
 const char* CommandHandler::getClassNameFromId(const uint32_t id){
 
-	for(CommandHandler* cls : cmdHandlers){
+	for(CommandHandler* cls : getCommandHandlers()){
 		CmdHandlerInfo* cmdhandlerinfo = cls->getCommandHandlerInfo();
 		if(cmdhandlerinfo->clsTypeid == id){
 			return cmdhandlerinfo->clsname;
@@ -260,7 +261,7 @@ const char* CommandHandler::getClassNameFromId(const uint32_t id){
  * Returns a command handler with a specific unique handler id or nullptr if not found
  */
 CommandHandler* CommandHandler::getHandlerFromHandlerId(const uint16_t cmdhandlerID){
-	for(CommandHandler* cls : cmdHandlers){
+	for(CommandHandler* cls : getCommandHandlers()){
 		if(cls->getCommandHandlerID() == cmdhandlerID){
 			return cls;
 		}
@@ -273,7 +274,7 @@ CommandHandler* CommandHandler::getHandlerFromHandlerId(const uint16_t cmdhandle
  */
 CommandHandler* CommandHandler::getHandlerFromId(const uint16_t id,const uint8_t instance){
 
-	for(CommandHandler* cls : cmdHandlers){
+	for(CommandHandler* cls : getCommandHandlers()){
 		CmdHandlerInfo* cmdhandlerinfo = cls->getCommandHandlerInfo();
 		if(cmdhandlerinfo->clsTypeid == id && (cmdhandlerinfo->instance == instance || instance == 0xFF)){
 			return cls;
@@ -287,7 +288,7 @@ CommandHandler* CommandHandler::getHandlerFromId(const uint16_t id,const uint8_t
  */
 CommandHandler* CommandHandler::getHandlerFromClassName(const char* name,const uint8_t instance){
 
-	for(CommandHandler* cls : cmdHandlers){
+	for(CommandHandler* cls : getCommandHandlers()){
 		CmdHandlerInfo* cmdhandlerinfo = cls->getCommandHandlerInfo();
 		if(strcmp(cmdhandlerinfo->clsname, name) == 0 && (cmdhandlerinfo->instance == instance || instance == 0xFF)){
 			return cls;
@@ -301,7 +302,7 @@ CommandHandler* CommandHandler::getHandlerFromClassName(const char* name,const u
  */
 std::vector<CommandHandler*> CommandHandler::getHandlersFromClassName(const char* name){
 	std::vector<CommandHandler*> reply;
-	for(CommandHandler* cls : cmdHandlers){
+	for(CommandHandler* cls : getCommandHandlers()){
 		CmdHandlerInfo* cmdhandlerinfo = cls->getCommandHandlerInfo();
 		if(strcmp(cmdhandlerinfo->clsname, name) == 0){
 			reply.push_back(cls);
@@ -314,7 +315,7 @@ std::vector<CommandHandler*> CommandHandler::getHandlersFromClassName(const char
  */
 std::vector<CommandHandler*> CommandHandler::getHandlersFromId(const uint16_t id){
 	std::vector<CommandHandler*> reply;
-	for(CommandHandler* cls : cmdHandlers){
+	for(CommandHandler* cls : getCommandHandlers()){
 		CmdHandlerInfo* cmdhandlerinfo = cls->getCommandHandlerInfo();
 		if(id == cmdhandlerinfo->clsTypeid){
 			reply.push_back(cls);
@@ -327,7 +328,7 @@ std::vector<CommandHandler*> CommandHandler::getHandlersFromId(const uint16_t id
  * Returns true if a command handler pointer is in the list of active command handlers
  */
 bool CommandHandler::isInHandlerList(CommandHandler* handler){
-	return std::find(cmdHandlers.begin(), cmdHandlers.end(), handler) != cmdHandlers.end();
+	return std::find(getCommandHandlers().begin(), getCommandHandlers().end(), handler) != getCommandHandlers().end();
 }
 
 /**
@@ -415,24 +416,37 @@ CmdHandlerInfo* CommandHandler::getCommandHandlerInfo(){
  * Registers a command handler in the global callback list and assigns a unique index number
  */
 void CommandHandler::addCommandHandler(){
-	cmdHandlerListMutex.Lock();
-	while(this->cmdHandlerInfo.commandHandlerID != 0xffff){
-		auto res = CommandHandler::cmdHandlerIDs.insert(this->cmdHandlerInfo.commandHandlerID);
-		if(res.second){ // Element was inserted
+	//cmdHandlerListMutex.Lock();
+//	while(this->cmdHandlerInfo.commandHandlerID != 0xffff){
+//		auto res = CommandHandler::cmdHandlerIDs.insert(cmdHandlerIDs.end(),this->cmdHandlerInfo.commandHandlerID);
+//		if(res.second){ // Element was inserted
+//			break;
+//		}
+//		this->cmdHandlerInfo.commandHandlerID++; // Try next id
+//	}
+	addCallbackHandler(getCommandHandlers(), this);
+	std::vector<uint16_t>&cmdHandlerIDs = getCommandHandlerIds();
+	while(this->cmdHandlerInfo.commandHandlerID++ != 0xffff){
+		if(std::find(cmdHandlerIDs.begin(),cmdHandlerIDs.end(), cmdHandlerInfo.commandHandlerID) == cmdHandlerIDs.end()){
+			cmdHandlerIDs.push_back(this->cmdHandlerInfo.commandHandlerID);
+			pulseSysLed();
 			break;
 		}
-		this->cmdHandlerInfo.commandHandlerID++; // Try next id
 	}
-	addCallbackHandler(cmdHandlers, this);
-	cmdHandlerListMutex.Unlock();
+
+
+
+	//cmdHandlerListMutex.Unlock();
 }
 
 /**
  * Removes a class from the global callback list and frees its id
  */
 void CommandHandler::removeCommandHandler(){
-	cmdHandlerListMutex.Lock();
-	cmdHandlerIDs.erase(this->cmdHandlerInfo.commandHandlerID); // removes id from list of reserved ids
-	removeCallbackHandler(cmdHandlers, this);
-	cmdHandlerListMutex.Unlock();
+	//cmdHandlerListMutex.Lock();
+	//cmdHandlerIDs.erase(this->cmdHandlerInfo.commandHandlerID); // removes id from list of reserved ids
+	std::vector<uint16_t>&cmdHandlerIDs = getCommandHandlerIds();
+	cmdHandlerIDs.erase(std::find(cmdHandlerIDs.begin(),cmdHandlerIDs.end(), cmdHandlerInfo.commandHandlerID)); // removes id from list of reserved ids
+	removeCallbackHandler(getCommandHandlers(), this);
+	//cmdHandlerListMutex.Unlock();
 }

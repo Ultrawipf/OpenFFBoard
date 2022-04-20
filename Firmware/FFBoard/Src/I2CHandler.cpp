@@ -6,7 +6,6 @@
  */
 
 #include "I2CHandler.h"
-#include "global_callbacks.h"
 
 I2CHandler::I2CHandler() {
 	addCallbackHandler(getI2CHandlers(), this);

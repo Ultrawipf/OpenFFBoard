@@ -13,13 +13,18 @@
 // See flash_helpers.h for functions write or read from flash
 class PersistentStorage {
 public:
-	static std::vector<PersistentStorage*> flashHandlers;
+	//static std::vector<PersistentStorage*> flashHandlers;
 
 	PersistentStorage();
 	virtual ~PersistentStorage();
 
 	virtual void saveFlash(); 		// Write to flash here
 	virtual void restoreFlash();	// Load from flash
+
+	static std::vector<PersistentStorage*>& getFlashHandlers() {
+		static std::vector<PersistentStorage*> flashHandlers{};
+		return flashHandlers;
+	}
 };
 
 #endif /* PERSISTENTSTORAGE_H_ */

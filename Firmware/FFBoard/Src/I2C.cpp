@@ -7,6 +7,13 @@
 
 #include <I2C.h>
 
+ClassIdentifier I2CPort::info = {
+	.name = "I2C port",
+	.id = CLSID_I2CPORT,
+	.visibility = ClassVisibility::visible};
+
+
+
 static bool operator==(const I2C_InitTypeDef& lhs, const I2C_InitTypeDef& rhs) {
 	return lhs.AddressingMode == rhs.AddressingMode
 			&& lhs.ClockSpeed == rhs.ClockSpeed
@@ -21,12 +28,81 @@ static bool operator==(const I2C_InitTypeDef& lhs, const I2C_InitTypeDef& rhs) {
 
 
 
-I2CPort::I2CPort(I2C_HandleTypeDef &hi2c) : hi2c(hi2c) {
-
+I2CPort::I2CPort(I2C_HandleTypeDef &hi2c) : CommandHandler("i2c", CLSID_I2CPORT, 0), hi2c(hi2c) {
+	restoreFlash();
+	this->setCommandsEnabled(false);
+	registerCommands();
 }
 
 I2CPort::~I2CPort() {
 
+}
+
+void I2CPort::saveFlash(){
+	if(this->getCommandHandlerInfo()->instance != 0){
+		return; // Only first instance can save
+	}
+	uint16_t data = (this->speedPreset & 0b11); // 2 bits reserved. 1 used
+	Flash_Write(ADR_I2CCONF1, data);
+}
+
+void I2CPort::restoreFlash(){
+	if(this->getCommandHandlerInfo()->instance != 0){
+		return; // Only first instance can save
+	}
+	uint16_t data;
+	if(Flash_Read(ADR_I2CCONF1, &data)){
+		setSpeedPreset(data & 0b11);
+	}
+}
+
+void I2CPort::setSpeedPreset(uint8_t preset){
+	uint32_t speed;
+	switch(preset){
+	case 0:
+		speed = 100000;
+		break;
+	case 1:
+		speed = 400000;
+		break;
+	default:
+		return;
+	}
+	speedPreset = preset;
+	I2C_InitTypeDef config = hi2c.Init;
+	config.ClockSpeed = speed;
+	configurePort(&config);
+}
+
+uint8_t I2CPort::getSpeedPreset(){
+	return speedPreset;
+}
+
+void I2CPort::registerCommands(){
+	CommandHandler::registerCommands();
+	registerCommand("speed", I2CPort_commands::speed, "I2C speed preset (0:100k;1:400k)", CMDFLAG_GET|CMDFLAG_SET|CMDFLAG_INFOSTRING);
+}
+
+CommandStatus I2CPort::command(const ParsedCommand& cmd,std::vector<CommandReply>& replies){
+
+	switch(static_cast<I2CPort_commands>(cmd.cmdId)){
+
+	case I2CPort_commands::speed:
+		if(cmd.type == CMDtype::get){
+			replies.push_back(CommandReply(this->speedPreset));
+		}else if(cmd.type == CMDtype::set){
+			setSpeedPreset(cmd.val);
+		}else if(cmd.type == CMDtype::info){
+			for(uint8_t i = 0; i<SpeedNames.size();i++){
+				replies.push_back(CommandReply(SpeedNames[i]  + ":" + std::to_string(i)));
+			}
+		}
+	break;
+
+	default:
+		return CommandStatus::NOT_FOUND;
+	}
+	return CommandStatus::OK;
 }
 
 /**
@@ -34,6 +110,33 @@ I2CPort::~I2CPort() {
  */
 void I2CPort::resetPort(){
 	HAL_I2C_Init(&hi2c);
+}
+
+/**
+ * Signals that this port is being used.
+ * Increments the user counter
+ */
+void I2CPort::takePort(){
+	if(portUsers++ == 0){
+		HAL_I2C_Init(&hi2c);
+		this->setCommandsEnabled(true);
+	}
+}
+
+/**
+ * Signals that the port is not needed anymore.
+ * Decrements the user counter
+ */
+void I2CPort::freePort(){
+	if(portUsers>0){
+		portUsers--;
+	}
+
+	if(portUsers == 0){
+		HAL_I2C_DeInit(&hi2c);
+		this->setCommandsEnabled(false);
+	}
+
 }
 
 void I2CPort::configurePort(I2C_InitTypeDef* config){

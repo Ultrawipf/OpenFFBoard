@@ -18,7 +18,8 @@ enum class ClassType : uint16_t {
 	Analogsource=5,
 	Encoder=6,
 	Axis=7,
-	Extension=8
+	Extension=8,
+	Port=9
 };
 
 // Mainclasses all have the name "main" in the commandhandler system for addressing and ID 0 but can have different display names
@@ -76,6 +77,9 @@ enum class ClassType : uint16_t {
 // Internal classes
 #define CLSID_AXIS			0xA01
 #define CLSID_EFFECTSCALC	0xA02
+
+#define CLSID_CANPORT		0xC01
+#define CLSID_I2CPORT		0xC02
 
 #define CLSID_CUSTOM		0x539 // Reserved for testing
 
