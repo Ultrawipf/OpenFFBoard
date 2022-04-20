@@ -79,7 +79,7 @@ public:
 
 	void readyCb();
 
-	void setCanRate(uint8_t canRate);
+	//void setCanRate(uint8_t canRate);
 
 	void saveFlash() override; 		// Write to flash here
 	void restoreFlash() override;	// Load from flash

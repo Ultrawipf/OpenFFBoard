@@ -18,17 +18,17 @@ PCF8574::~PCF8574() {
 	port.freePort();
 }
 
-void PCF8574::configurePort(bool fastMode){
-	config.ClockSpeed = fastMode ? 400000 : 100000;
-	config.DutyCycle = I2C_DUTYCYCLE_2;
-	config.OwnAddress1 = 0;
-	config.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
-	config.DualAddressMode = I2C_DUALADDRESS_DISABLE;
-	config.OwnAddress2 = 0;
-	config.GeneralCallMode = I2C_GENERALCALL_DISABLE;
-	config.NoStretchMode = I2C_NOSTRETCH_ENABLE;
-	port.configurePort(&config);
-}
+//void PCF8574::configurePort(bool fastMode){
+//	config.ClockSpeed = fastMode ? 400000 : 100000;
+//	config.DutyCycle = I2C_DUTYCYCLE_2;
+//	config.OwnAddress1 = 0;
+//	config.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+//	config.DualAddressMode = I2C_DUALADDRESS_DISABLE;
+//	config.OwnAddress2 = 0;
+//	config.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+//	config.NoStretchMode = I2C_NOSTRETCH_ENABLE;
+//	port.configurePort(&config);
+//}
 
 uint8_t PCF8574::readByte(const uint8_t devAddr){
 	uint8_t data = 0;
@@ -73,9 +73,9 @@ PCF8574Buttons::PCF8574Buttons() : PCF8574(i2cport) , CommandHandler("pcfbtn", C
 	ButtonSource::btnnum=8;
 	registerCommand("btnnum", PCF8574Buttons_commands::btnnum, "Amount of buttons",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("invert", PCF8574Buttons_commands::invert, "Invert buttons",CMDFLAG_GET | CMDFLAG_SET);
-	registerCommand("fastmode", PCF8574Buttons_commands::fastmode, "400kHz mode",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("speed", PCF8574Buttons_commands::speed, "400kb/s mode",CMDFLAG_GET | CMDFLAG_SET);
 	restoreFlash();
-	configurePort(this->fastmode);
+
 	this->Start();
 }
 
@@ -113,7 +113,7 @@ void PCF8574Buttons::i2cRxCompleted(I2CPort* port){
 void PCF8574Buttons::saveFlash(){
 	uint16_t conf1 = (btnnum-1) & 0x3F;
 	conf1 |= (invert & 0x1) << 6;
-	conf1 |= (fastmode & 0x1) << 7;
+	//conf1 |= (fastmode & 0x1) << 7;
 	Flash_Write(ADR_PCFBTN_CONF1, conf1);
 }
 
@@ -122,7 +122,7 @@ void PCF8574Buttons::restoreFlash(){
 	if(Flash_Read(ADR_PCFBTN_CONF1, &conf1)){
 		setBtnNum((conf1 & 0x3F) +1);
 		invert = (conf1 >> 6) & 0x1;
-		fastmode = (conf1 >> 7) & 0x1;
+		//fastmode = (conf1 >> 7) & 0x1;
 	}
 }
 
@@ -193,12 +193,14 @@ CommandStatus PCF8574Buttons::command(const ParsedCommand& cmd,std::vector<Comma
 		return handleGetSet(cmd, replies, this->invert);
 	break;
 
-	case PCF8574Buttons_commands::fastmode:
-		handleGetSet(cmd, replies, this->fastmode);
-		if(cmd.type == CMDtype::set){
-			configurePort(this->fastmode);
+	case PCF8574Buttons_commands::speed:
+		if(cmd.type == CMDtype::get){
+			replies.push_back(CommandReply(this->port.getSpeedPreset()));
+		}else if(cmd.type == CMDtype::set){
+			port.setSpeedPreset(cmd.val);
 		}
 	break;
+
 
 	default:
 		return CommandStatus::NOT_FOUND;

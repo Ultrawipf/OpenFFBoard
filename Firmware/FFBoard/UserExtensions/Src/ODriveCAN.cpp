@@ -60,16 +60,20 @@ ODriveCAN::ODriveCAN(uint8_t id)  : CommandHandler("odrv", CLSID_MOT_ODRV0,id), 
 	sFilterConfig.SlaveStartFilterBank = 14;
 	this->filterId = this->port->addCanFilter(sFilterConfig);
 
-	this->port->setSpeedPreset(baudrate);
+	if(port->getSpeedPreset() < 3){
+		port->setSpeedPreset(3); // Minimum 250k
+	}
+
 	this->port->setSilentMode(false);
 	this->registerCommands();
-	this->port->start();
+	this->port->takePort();
 	this->Start();
 }
 
 ODriveCAN::~ODriveCAN() {
 	this->setTorque(0.0);
 	this->port->removeCanFilter(filterId);
+	this->port->freePort();
 }
 
 void ODriveCAN::registerCommands(){
@@ -95,8 +99,8 @@ void ODriveCAN::restoreFlash(){
 			nodeId = (canIds >> 6) & 0x3f;
 			setting1addr = ADR_ODRIVE_SETTING1_M1;
 		}
-		uint8_t canspd = (canIds >> 12) & 0x7;
-		this->setCanRate(canspd);
+//		uint8_t canspd = (canIds >> 12) & 0x7;
+//		this->setCanRate(canspd);
 	}
 
 	uint16_t settings1 = 0;
@@ -119,7 +123,7 @@ void ODriveCAN::saveFlash(){
 		canIds |= (nodeId & 0x3f) << 6;
 	}
 	canIds &= ~0x7000; // reset bits
-	canIds |= (this->baudrate & 0x7) << 12;
+//	canIds |= (this->baudrate & 0x7) << 12;
 	Flash_Write(ADR_ODRIVE_CANID,canIds);
 
 	uint16_t settings1 = ((int32_t)(maxTorque*100) & 0xfff);
@@ -263,10 +267,10 @@ void ODriveCAN::turn(int16_t power){
 	this->setTorque(torque);
 }
 
-void ODriveCAN::setCanRate(uint8_t canRate){
-	baudrate = clip<uint8_t,uint8_t>(canRate, 3, 5);
-	port->setSpeedPreset(baudrate);
-}
+//void ODriveCAN::setCanRate(uint8_t canRate){
+//	baudrate = clip<uint8_t,uint8_t>(canRate, 3, 5);
+//	port->setSpeedPreset(baudrate);
+//}
 
 /**
  * Sends the start anticogging command
@@ -307,9 +311,9 @@ CommandStatus ODriveCAN::command(const ParsedCommand& cmd,std::vector<CommandRep
 		break;
 	case ODriveCAN_commands::canspd:
 		if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply(baudrate));
+			replies.push_back(CommandReply(port->getSpeedPreset()));
 		}else if(cmd.type == CMDtype::set){
-			setCanRate(cmd.val);
+			port->setSpeedPreset(std::max<uint8_t>(3,cmd.val));
 		}else{
 			return CommandStatus::ERR;
 		}
