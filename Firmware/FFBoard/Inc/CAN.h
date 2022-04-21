@@ -19,7 +19,7 @@
 
 typedef struct{
 	uint8_t data[8] = {0};
-	CAN_TxHeaderTypeDef header = {0,0,0,0,8,(FunctionalState)0};
+	CAN_TxHeaderTypeDef header = {0,0,0,CAN_RTR_DATA,8,(FunctionalState)0};
 } CAN_tx_msg;
 
 typedef struct{
@@ -30,7 +30,7 @@ typedef struct{
 
 
 class CANPort : public CommandHandler, public PersistentStorage { //  : public CanHandler if interrupt callbacks needed
-	enum class CanPort_commands : uint32_t {speed};
+	enum class CanPort_commands : uint32_t {speed,send};
 public:
 	CANPort(CAN_HandleTypeDef &hcan);
 	CANPort(CAN_HandleTypeDef &hcan,const OutputPin* silentPin);
@@ -43,7 +43,7 @@ public:
 	void freePort();
 	int32_t getPortUsers(){return portUsers;}
 
-	bool sendMessage(CAN_tx_msg msg);
+	bool sendMessage(CAN_tx_msg& msg);
 	bool sendMessage(CAN_TxHeaderTypeDef *pHeader, uint8_t aData[],uint32_t *pTxMailbox = nullptr);
 
 	int32_t addCanFilter(CAN_FilterTypeDef sFilterConfig);
@@ -84,6 +84,7 @@ private:
 	//bool isTakenFlag = false;
 	const OutputPin* silentPin;
 	bool silent = true;
+	bool active = false;
 	int32_t portUsers = 0;
 
 	const std::vector<std::string> SpeedNames = {"50k","100k","125k","250k","500k","1000k"};

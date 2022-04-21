@@ -19,7 +19,9 @@ ClassIdentifier CANPort::info = {
 CANPort::CANPort(CAN_HandleTypeDef &hcan) : CommandHandler("can", CLSID_CANPORT, 0), hcan(&hcan), silentPin(nullptr) {
 	//HAL_CAN_Start(this->hcan);
 	restoreFlash();
+#ifdef CAN_COMMANDS_DISABLED_IF_NOT_USED
 	this->setCommandsEnabled(false);
+#endif
 	registerCommands();
 }
 CANPort::CANPort(CAN_HandleTypeDef &hcan,const OutputPin* silentPin) : CommandHandler("can", CLSID_CANPORT, 0), hcan(&hcan), silentPin(silentPin) {
@@ -31,6 +33,7 @@ CANPort::CANPort(CAN_HandleTypeDef &hcan,const OutputPin* silentPin) : CommandHa
 void CANPort::registerCommands(){
 	CommandHandler::registerCommands();
 	registerCommand("speed", CanPort_commands::speed, "CAN speed preset (0:50k;1:100k;2:125k;3:250k;4:500k;5:1M)", CMDFLAG_GET|CMDFLAG_SET|CMDFLAG_INFOSTRING);
+	registerCommand("send", CanPort_commands::send, "Send CAN frame. Adr&Value required", CMDFLAG_SETADR);
 }
 
 void CANPort::saveFlash(){
@@ -94,7 +97,10 @@ void CANPort::freePort(){
  */
 bool CANPort::start(){
 	setSilentMode(false);
+	active = true;
+#ifdef CAN_COMMANDS_DISABLED_IF_NOT_USED
 	this->setCommandsEnabled(true);
+#endif
 	return HAL_CAN_Start(this->hcan) == HAL_OK;
 }
 
@@ -103,7 +109,10 @@ bool CANPort::start(){
  */
 bool CANPort::stop(){
 	setSilentMode(true);
+	active = false;
+#ifdef CAN_COMMANDS_DISABLED_IF_NOT_USED
 	this->setCommandsEnabled(false);
+#endif
 	return HAL_CAN_Start(this->hcan) == HAL_OK;
 }
 
@@ -246,7 +255,7 @@ void CANPort::setSilentMode(bool silent){
  * Transmits a CAN frame on this port
  * Wraps the internal transmit function
  */
-bool CANPort::sendMessage(CAN_tx_msg msg){
+bool CANPort::sendMessage(CAN_tx_msg& msg){
 	return this->sendMessage(&msg.header,msg.data,&this->txMailbox);
 }
 
@@ -335,6 +344,21 @@ CommandStatus CANPort::command(const ParsedCommand& cmd,std::vector<CommandReply
 		}
 	break;
 
+	case CanPort_commands::send:
+	{
+		if(cmd.type == CMDtype::setat){
+			if(!active){
+				start(); // If port is not used activate port at first use
+			}
+			CAN_tx_msg msg;
+			memcpy(msg.data,&cmd.val,8);
+			msg.header.StdId = cmd.adr;
+			sendMessage(msg);
+		}else{
+			return CommandStatus::NOT_FOUND;
+		}
+		break;
+	}
 	default:
 		return CommandStatus::NOT_FOUND;
 	}
