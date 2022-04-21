@@ -34,14 +34,14 @@ public:
 //	void startI2CTransfer(I2CPort* port);
 //	void endI2CTransfer(I2CPort* port);
 
-	void startI2CTransfer(I2CPort* port);
-	void endI2CTransfer(I2CPort* port);
+//	void startI2CTransfer(I2CPort* port);
+//	void endI2CTransfer(I2CPort* port);
 
 
 protected:
 	I2CPort &port;
-	I2C_InitTypeDef config;
-	volatile bool transferActive = false;
+	//I2C_InitTypeDef config;
+	//volatile bool transferActive = false;
 private:
 	uint8_t lastWriteData = 0;
 };

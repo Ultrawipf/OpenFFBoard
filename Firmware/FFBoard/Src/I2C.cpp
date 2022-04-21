@@ -210,6 +210,14 @@ bool I2CPort::readMem(I2CDevice* device,const uint16_t devAddr,const uint16_t me
 	return flag;
 }
 
+bool I2CPort::readMemIT(I2CDevice* device,const uint16_t devAddr,const uint16_t memAddr,const uint16_t memAddSize,uint8_t* pData,const uint16_t size){
+	currentDevice = device;
+	device->startI2CTransfer(this);
+	bool flag = HAL_I2C_Mem_Read_IT(&this->hi2c, devAddr, memAddr, memAddSize, pData, size) == HAL_OK;
+	device->endI2CTransfer(this);
+	return flag;
+}
+
 void I2CPort::I2cTxCplt(I2C_HandleTypeDef *hi2c){
 	if (currentDevice == nullptr) {
 		return;

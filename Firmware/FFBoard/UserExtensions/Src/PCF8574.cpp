@@ -49,13 +49,13 @@ void PCF8574::writeByte(const uint8_t devAddr,uint8_t data){
 	port.transmitMaster(this,devAddr * 2 , &lastWriteData, 1, 250);
 }
 
-void PCF8574::startI2CTransfer(I2CPort* port){
-	transferActive = true;
-}
-
-void PCF8574::endI2CTransfer(I2CPort* port){
-	transferActive = false;
-}
+//void PCF8574::startI2CTransfer(I2CPort* port){
+//	transferActive = true;
+//}
+//
+//void PCF8574::endI2CTransfer(I2CPort* port){
+//	transferActive = false;
+//}
 
 
 #ifdef PCF8574BUTTONS
@@ -101,7 +101,7 @@ void PCF8574Buttons::Run(){
 
 // i2c complete interrupt signals thread to start next transfer
 void PCF8574Buttons::i2cRxCompleted(I2CPort* port){
-	if(port != &this->port){
+	if(port != &this->port || !readingData){
 		return;
 	}
 	lastSuccess = HAL_GetTick();
