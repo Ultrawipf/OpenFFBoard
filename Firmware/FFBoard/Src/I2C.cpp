@@ -30,7 +30,9 @@ static bool operator==(const I2C_InitTypeDef& lhs, const I2C_InitTypeDef& rhs) {
 
 I2CPort::I2CPort(I2C_HandleTypeDef &hi2c) : CommandHandler("i2c", CLSID_I2CPORT, 0), hi2c(hi2c) {
 	restoreFlash();
+#ifdef I2C_COMMANDS_DISABLED_IF_NOT_USED
 	this->setCommandsEnabled(false);
+#endif
 	registerCommands();
 }
 
@@ -119,7 +121,9 @@ void I2CPort::resetPort(){
 void I2CPort::takePort(){
 	if(portUsers++ == 0){
 		HAL_I2C_Init(&hi2c);
+#ifdef I2C_COMMANDS_DISABLED_IF_NOT_USED
 		this->setCommandsEnabled(true);
+#endif
 	}
 }
 
@@ -134,7 +138,9 @@ void I2CPort::freePort(){
 
 	if(portUsers == 0){
 		HAL_I2C_DeInit(&hi2c);
+#ifdef I2C_COMMANDS_DISABLED_IF_NOT_USED
 		this->setCommandsEnabled(false);
+#endif
 	}
 
 }

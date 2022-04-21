@@ -14,6 +14,8 @@
 #include "PersistentStorage.h"
 #include "CommandHandler.h"
 
+#define I2C_COMMANDS_DISABLED_IF_NOT_USED
+
 class I2CDevice;
 class I2CPort : public I2CHandler, public CommandHandler, public PersistentStorage{
 	enum class I2CPort_commands : uint32_t {speed};
