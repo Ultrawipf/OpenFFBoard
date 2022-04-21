@@ -56,14 +56,34 @@ std::string CommandHandler::getCommandsHelpstring(){
 	if(registeredCommands.empty()){
 		helpstring += "No commands.";
 	}else{
-		helpstring += "Commands with help:\n";
+		helpstring += "cmd\tflags\tdescription\n\n";
 		for(CmdHandlerCommanddef& cmd : registeredCommands){
 			if(cmd.helpstring != nullptr && cmd.cmd != nullptr){
-				helpstring += std::string(cmd.cmd) + ":\t" + std::string(cmd.helpstring);
-				if(cmd.flags & CMDFLAG_DEBUG){
-					helpstring+= " (DEBUG MODE ONLY)";
+				helpstring += std::string(cmd.cmd);
+				helpstring += "\t(";
+
+				if(cmd.flags & CMDFLAG_GET){
+					helpstring+= " R";
 				}
-				helpstring += "\n";
+				if(cmd.flags & CMDFLAG_SET){
+					helpstring+= " W";
+				}
+				if(cmd.flags & CMDFLAG_SETADR){
+					helpstring+= " WA";
+				}
+				if(cmd.flags & CMDFLAG_GETADR){
+					helpstring+= " RA";
+				}
+				if(cmd.flags & CMDFLAG_INFOSTRING){
+					helpstring+= " I";
+				}
+				if(cmd.flags & CMDFLAG_STR_ONLY){
+					helpstring+= " STR";
+				}
+				if(cmd.flags & CMDFLAG_DEBUG){
+					helpstring+= " DBG";
+				}
+				helpstring += " )\t" + std::string(cmd.helpstring)+"\n";
 			}
 
 		}
@@ -102,7 +122,7 @@ std::string CommandHandler::getCsvHelpstring(){
 	if(registeredCommands.empty()){
 		helpstring += "No commands.";
 	}else{
-		helpstring += "Command name,CMD ID, Description\n";
+		helpstring += "Command name,CMD ID, Description, Flags\n";
 		for(CmdHandlerCommanddef& cmd : registeredCommands){
 			if(cmd.helpstring != nullptr && cmd.cmd != nullptr){
 				char cmdhex[11];
@@ -110,8 +130,27 @@ std::string CommandHandler::getCsvHelpstring(){
 				helpstring.append(cmd.cmd);
 				helpstring += "," + std::string(cmdhex) + ",";
 				helpstring.append(cmd.helpstring);
+				helpstring += ",";
+				if(cmd.flags & CMDFLAG_GET){
+					helpstring+= " R";
+				}
+				if(cmd.flags & CMDFLAG_SET){
+					helpstring+= " W";
+				}
+				if(cmd.flags & CMDFLAG_SETADR){
+					helpstring+= " WA";
+				}
+				if(cmd.flags & CMDFLAG_GETADR){
+					helpstring+= " RA";
+				}
+				if(cmd.flags & CMDFLAG_INFOSTRING){
+					helpstring+= " I";
+				}
+				if(cmd.flags & CMDFLAG_STR_ONLY){
+					helpstring+= " (STR)";
+				}
 				if(cmd.flags & CMDFLAG_DEBUG){
-					helpstring+= " (DEBUG MODE ONLY)";
+					helpstring+= " (DEBUG)";
 				}
 				helpstring += "\n";
 			}
