@@ -57,6 +57,13 @@ void EffectsCalculator::setActive(bool active)
 	effects_active = active;
 }
 
+/**
+ * Sets the mask where the direction enable bit is in the effect
+ */
+void EffectsCalculator::setDirectionEnableMask(uint8_t mask){
+	this->directionEnableMask = mask;
+}
+
 /*
 If the metric is less than CP Offset - Dead Band, then the resulting force is given by the following formula:
 		force = Negative Coefficient * (q - (CP Offset – Dead Band))
@@ -133,12 +140,14 @@ void EffectsCalculator::calculateEffects(std::vector<std::unique_ptr<Axis>> &axe
 		forceVector = calcNonConditionEffectForce(effect);
 		//}
 
-		if (effect->enableAxis == DIRECTION_ENABLE(axisCount) || (effect->enableAxis & X_AXIS_ENABLE))
+		uint8_t directionEnableMask = this->directionEnableMask ? this->directionEnableMask : DIRECTION_ENABLE(axisCount);
+
+		if (effect->enableAxis & directionEnableMask || (effect->enableAxis & X_AXIS_ENABLE))
 		{
 			forceX += calcComponentForce(effect, forceVector, axes, 0);
 			forceX = clip<int32_t, int32_t>(forceX, -0x7fff, 0x7fff); // Clip
 		}
-		if (validY && ((effect->enableAxis == DIRECTION_ENABLE(axisCount)) || (effect->enableAxis & Y_AXIS_ENABLE)))
+		if (validY && (effect->enableAxis & directionEnableMask || (effect->enableAxis & Y_AXIS_ENABLE)))
 		{
 			forceY += calcComponentForce(effect, forceVector, axes, 1);
 			forceY = clip<int32_t, int32_t>(forceY, -0x7fff, 0x7fff); // Clip
@@ -253,10 +262,10 @@ int32_t EffectsCalculator::calcNonConditionEffectForce(FFB_Effect *effect) {
 
 	case FFB_EFFECT_SINE:
 	{
-		uint32_t t = HAL_GetTick() - effect->startTime;
+		float t = HAL_GetTick() - effect->startTime;
 		float freq = 1.0f / (float)(std::max<uint16_t>(effect->period, 2));
 		float phase = (float)effect->phase / (float)35999; //degrees
-		float sine = sinf(2.0 * (float)M_PI * (t * freq + phase)) * magnitude;
+		float sine = sinf(2.0 * M_PI * (t * freq + phase)) * magnitude;
 		force_vector = (int32_t)(effect->offset + sine);
 		break;
 	}
@@ -294,8 +303,8 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 	uint8_t axisCount = axes.size();
 	float scaleSpeed = 40;//axes[axis]->getSpeedScalerNormalized(); // TODO decide if scalers are useful or not
 	float scaleAccel = 40;//axes[axis]->getAccelScalerNormalized();
-
-	if (effect->enableAxis == DIRECTION_ENABLE(axisCount))
+	uint8_t directionEnableMask = this->directionEnableMask ? this->directionEnableMask : DIRECTION_ENABLE(axisCount);
+	if (effect->enableAxis & directionEnableMask)
 	{
 		direction = effect->directionX;
 //		if (effect->conditionsCount > 1)

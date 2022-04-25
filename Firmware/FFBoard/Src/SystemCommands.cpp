@@ -68,10 +68,12 @@ void SystemCommands::registerCommands(){
 	CommandHandler::registerCommand("devid", FFBoardMain_commands::devid, "Get chip dev id and rev id",CMDFLAG_GET);
 }
 
+// Choose lower optimize level because the compiler likes to blow up this function
+__attribute__((optimize("-O1")))
 CommandStatus SystemCommands::internalCommand(const ParsedCommand& cmd,std::vector<CommandReply>& replies){
 	CommandStatus flag = CommandStatus::OK;
 
-	switch((FFBoardMain_commands)cmd.cmdId)
+	switch(static_cast<FFBoardMain_commands>(cmd.cmdId))
 	{
 		case FFBoardMain_commands::help:
 		{// help
