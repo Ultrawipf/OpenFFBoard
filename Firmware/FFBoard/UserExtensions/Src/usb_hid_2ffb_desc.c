@@ -253,10 +253,10 @@ __ALIGN_BEGIN const uint8_t hid_2ffb_desc[USB_HID_2FFB_REPORT_DESC_SIZE] __ALIGN
 			 0x09, HID_USAGE_INRT,    //    Usage ET Inertia
 			 0x09, HID_USAGE_FRIC,    //    Usage ET Friction
 			// 0x09, 0x28,    //    Usage ET Custom Force Data
-			      0x25,0x0B,    //    Logical Maximum Ch (11d)
+			      0x25,0x0B,    //    Logical Maximum Bh (11d)
 			      0x15,0x01,    //    Logical Minimum 1
 			      0x35,0x01,    //    Physical Minimum 1
-			      0x45,0x0B,    //    Physical Maximum Ch (11d)
+			      0x45,0x0B,    //    Physical Maximum Bh (11d)
 			      0x75,0x08,    //    Report Size 8
 			      0x95,0x01,    //    Report Count 1
 			      0x91,0x00,    //    Output

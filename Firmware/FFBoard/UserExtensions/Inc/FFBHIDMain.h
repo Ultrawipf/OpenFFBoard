@@ -75,9 +75,10 @@ public:
 
 	void errorCallback(Error &error, bool cleared);
 
+protected:
+	std::unique_ptr<EffectsCalculator> effects_calc;
 private:
 	volatile Control_t control;
-	std::unique_ptr<EffectsCalculator> effects_calc;
 	void send_report();
 
 	/* USB Report rate

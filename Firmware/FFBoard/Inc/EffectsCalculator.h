@@ -51,6 +51,7 @@ public:
 	uint8_t getGain();
 	void setCfFilter(uint32_t f,uint8_t q); // Set output filter frequency
 	void logEffectType(uint8_t type);
+	void setDirectionEnableMask(uint8_t mask);
 
 	//virtual ParseStatus command(ParsedCommand_old *cmd, std::string *reply);
 	CommandStatus command(const ParsedCommand& cmd,std::vector<CommandReply>& replies);
@@ -62,6 +63,7 @@ public:
 protected:
 
 private:
+	uint8_t directionEnableMask = 0;
 // Filters
 	bool effects_active = false; // was ffb_active
 	uint8_t global_gain = 0xff;

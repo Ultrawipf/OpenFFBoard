@@ -247,9 +247,9 @@ void HidFFB::set_constant_effect(FFB_SetConstantForce_Data_t* data){
 	FFB_Effect& effect_p = effects[data->effectBlockIndex-1];
 
 	effect_p.magnitude = data->magnitude;
-	if(effect_p.state == 0){
-		effect_p.state = 1; // Force start effect
-	}
+//	if(effect_p.state == 0){
+//		effect_p.state = 1; // Force start effect
+//	}
 }
 
 void HidFFB::new_effect(FFB_CreateNewEffect_Feature_Data_t* effect){
@@ -300,7 +300,7 @@ void HidFFB::set_effect(FFB_SetEffect_t* effect){
 #if MAX_AXIS == 3
 	effect_p->directionZ = effect->directionZ;
 #endif
-	if(effect_p->duration == 0){ // Fix for games assuming 0 is infinite
+	if(effect->duration == 0){ // Fix for games assuming 0 is infinite
 		effect_p->duration = FFB_EFFECT_DURATION_INFINITE;
 	}else{
 		effect_p->duration = effect->duration;
