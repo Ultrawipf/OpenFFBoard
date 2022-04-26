@@ -34,14 +34,14 @@ FFBWheel::~FFBWheel() {
 
 
 void FFBWheel::usbInit(){
-#ifdef FFBWHEEL_USE_2AXIS_DESC
-	this->usbdev = std::make_unique<USBdevice>(&usb_devdesc_ffboard_composite,usb_cdc_hid_conf_2axis,&usb_ffboard_strings_default);
-	FFBHIDMain::UsbHidHandler::setHidDesc(hid_2ffb_desc);
-	effects_calc->setDirectionEnableMask(0x04);
-#else
+#ifdef FFBWHEEL_USE_1AXIS_DESC
 	this->usbdev = std::make_unique<USBdevice>(&usb_devdesc_ffboard_composite,usb_cdc_hid_conf_1axis,&usb_ffboard_strings_default);
 	FFBHIDMain::UsbHidHandler::setHidDesc(hid_1ffb_desc);
 	effects_calc->setDirectionEnableMask(0x02);
+#else
+	this->usbdev = std::make_unique<USBdevice>(&usb_devdesc_ffboard_composite,usb_cdc_hid_conf_2axis,&usb_ffboard_strings_default);
+	FFBHIDMain::UsbHidHandler::setHidDesc(hid_2ffb_desc);
+	effects_calc->setDirectionEnableMask(0x04);
 #endif
 
 	usbdev->registerUsb();
