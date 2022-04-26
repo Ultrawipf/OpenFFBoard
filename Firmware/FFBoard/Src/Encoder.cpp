@@ -9,6 +9,7 @@
 #include "ClassChooser.h"
 #include "EncoderLocal.h"
 #include "MtEncoderSPI.h"
+#include "EncoderBissC.h"
 // 0-63 valid ids
 std::vector<class_entry<Encoder>> const Encoder::all_encoders =
 	{
@@ -20,6 +21,9 @@ std::vector<class_entry<Encoder>> const Encoder::all_encoders =
 
 #ifdef MTENCODERSPI
 		add_class<MtEncoderSPI, Encoder>(4),
+#endif
+#ifdef BISSENCODER
+		add_class<EncoderBissC, Encoder>(5),
 #endif
 
 };
