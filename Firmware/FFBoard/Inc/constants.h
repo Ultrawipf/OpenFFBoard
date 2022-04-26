@@ -24,10 +24,10 @@ static const uint8_t SW_VERSION_INT[3] = {1,8,3}; // Version as array. 8 bit eac
 
 
 #ifdef FFBWHEEL
-#ifdef FFBWHEEL_USE_2AXIS_DESC
-#define AXIS2_FFB_HID_DESC
-#else
+#ifdef FFBWHEEL_USE_1AXIS_DESC
 #define AXIS1_FFB_HID_DESC
+#else
+#define AXIS2_FFB_HID_DESC
 #endif
 #endif
 
