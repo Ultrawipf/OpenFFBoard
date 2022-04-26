@@ -35,4 +35,9 @@ static const uint8_t SW_VERSION_INT[3] = {1,8,3}; // Version as array. 8 bit eac
 #define AXIS2_FFB_HID_DESC
 #endif
 
+
+#ifndef ENCODER_SPI_PORT
+#define ENCODER_SPI_PORT ext3_spi // See cpp_target_config.cpp for ports
+#endif
+
 #endif
