@@ -49,6 +49,7 @@
 #define MTENCODERSPI // requires SPI3
 #define CANBUTTONS // Requires CAN
 #define CANANALOG // Requires CAN
+#define BISSENCODER // Requires SPI3
 
 #define UARTCOMMANDS
 
