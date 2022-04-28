@@ -19,7 +19,7 @@
 #include "PersistentStorage.h"
 #include "semaphore.hpp"
 
-class EncoderBissC: public Encoder, public SPIDevice, public CommandHandler,public PersistentStorage {
+class EncoderBissC: public Encoder, public SPIDevice , public CommandHandler,cpp_freertos::Thread,public PersistentStorage {
 public:
 
 	static ClassIdentifier info;
@@ -30,7 +30,7 @@ public:
 
 	EncoderType getType();
 	static bool isCreatable();
-
+	bool updateFrame();
 	int32_t getPos();
 	int32_t getPosAbs();
 	void setPos(int32_t pos);
@@ -38,6 +38,8 @@ public:
 
 	void saveFlash(); 		// Write to flash here
 	void restoreFlash();	// Load from flash
+
+	void Run();
 
 	enum class EncoderBissC_commands {bits,cs,speed,rawpos,errors};
 
@@ -57,18 +59,20 @@ private:
 	int spiSpeed = 3;
 	bool waitData = false;
 
-	int32_t pos = 0, posOffset = 0;
+	int32_t pos = 0, posOffset = 0,lastPos = 0,newPos = 0;
 	int32_t mtpos = 0;
-	bool crc_ok = false;
+	//bool crc_ok = false;
 	const static uint8_t bytes = 8;
-	uint8_t spi_buf[bytes] = {0}, decod_buf[bytes] = {0};
+	uint8_t spi_buf[bytes] = {0};
+	uint32_t decod_buf[bytes/4] = {0};
 
 
 	uint8_t POLY = 0x43;
 	uint8_t tableCRC6n[64] = {0};
 	int32_t numErrors = 0;
 	static bool inUse;
-	cpp_freertos::BinarySemaphore readSem = cpp_freertos::BinarySemaphore(false);
+	cpp_freertos::BinarySemaphore requestNewDataSem = cpp_freertos::BinarySemaphore(false);
+	cpp_freertos::BinarySemaphore waitForUpdateSem = cpp_freertos::BinarySemaphore(false);
 };
 
 #endif /* ENCODERBISSC_H_ */
