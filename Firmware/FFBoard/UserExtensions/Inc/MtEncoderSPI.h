@@ -20,7 +20,7 @@
 
 class MtEncoderSPI: public Encoder, public SPIDevice, public PersistentStorage, public CommandHandler,cpp_freertos::Thread{
 	enum class MtEncoderSPI_commands : uint32_t{
-		cspin,pos
+		cspin,pos,errors
 	};
 public:
 	MtEncoderSPI();
@@ -59,15 +59,17 @@ private:
 	void spiTxRxCompleted(SPIPort* port);
 
 
-	volatile bool nomag = false; // Magnet lost in last report
-	volatile bool overspeed = false; // Overspeed flag set in last report
-	volatile int32_t lastAngleInt = 0;
-	volatile int32_t curAngleInt = 0;
-	volatile int32_t curPos = 0;
-	volatile int32_t rotations = 0;
+	bool nomag = false; // Magnet lost in last report
+	bool overspeed = false; // Overspeed flag set in last report
+	int32_t lastAngleInt = 0;
+	int32_t curAngleInt = 0;
+	int32_t curPos = 0;
+	int32_t rotations = 0;
 	int32_t offset = 0;
 	uint8_t cspin = 0;
-	volatile bool updateInProgress = false;
+	bool updateInProgress = false;
+	uint32_t errors = 0;
+
 
 	uint8_t txbuf[4] = {0x03 | MAGNTEK_READ,0,0,0};
 	uint8_t rxbuf[4] = {0,0,0,0};

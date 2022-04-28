@@ -32,6 +32,7 @@ MtEncoderSPI::MtEncoderSPI() : SPIDevice(ENCODER_SPI_PORT,ENCODER_SPI_PORT.getFr
 	CommandHandler::registerCommands();
 	registerCommand("cs", MtEncoderSPI_commands::cspin, "CS pin",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("pos", MtEncoderSPI_commands::pos, "Position",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("errors", MtEncoderSPI_commands::errors, "Parity error count",CMDFLAG_GET);
 	this->Start();
 }
 
@@ -59,7 +60,18 @@ void MtEncoderSPI::Run(){
 		updateAngleStatus();
 		this->WaitForNotification();  // Wait until DMA is finished
 		if(updateAngleStatusCb()){
-			curPos = rotations * getCpr() + curAngleInt;
+
+			if(curAngleInt-lastAngleInt > 0x20000){ // Underflowed
+				rotations--;
+			}
+			else if(lastAngleInt-curAngleInt > 0x20000){ // Overflowed
+				rotations++;
+			}
+			lastAngleInt = curAngleInt;
+
+			curPos = rotations * getCpr() + curAngleInt; // Update position
+		}else{
+			errors++;
 		}
 		waitForUpdateSem.Give();
 		updateInProgress = false;
@@ -131,15 +143,17 @@ bool MtEncoderSPI::updateAngleStatusCb(){
 	uint32_t angle9_4 = rxbuf[2];
 	uint32_t angle3_0 = rxbuf[3];
 
+	// Parity check byte 2
 	uint8_t pc1 = angle9_4 ^ angle9_4 >> 1;
 	pc1 = pc1 ^ pc1 >> 2;
 	pc1 = pc1 ^ pc1 >> 4;
-	bool parity9_4 = pc1 & 1;
 
+	// Parity check byte 1
 	uint8_t pc2 = angle3_0 ^ angle3_0 >> 1;
 	pc2 = pc2 ^ pc2 >> 2;
 	pc2 = pc2 ^ pc2 >> 4;
-	bool parity3_0 = pc2 & 1;
+
+	bool parity_ok = !(pc2 & 1) && !(pc1 & 1);
 
 	nomag = 	(angle9_4 & 0x02) >> 1;
 	overspeed = (angle3_0 & 0x04) >> 2;
@@ -149,18 +163,10 @@ bool MtEncoderSPI::updateAngleStatusCb(){
 
 	curAngleInt = (angle17_10 << 10) | (angle9_4 << 4) | (angle3_0);
 
-	if(curAngleInt-lastAngleInt > 0x20000){ // Underflowed
-		rotations--;
-	}
-	else if(lastAngleInt-curAngleInt > 0x20000){ // Overflowed
-		rotations++;
-	}
 
-
-	lastAngleInt = curAngleInt;
 	this->updateInProgress = false;
 
-	return !parity3_0 && !parity9_4; // ok if both bytes have even parity
+	return parity_ok; // ok if both bytes have even parity
 }
 
 int32_t MtEncoderSPI::getPos(){
@@ -205,6 +211,9 @@ CommandStatus MtEncoderSPI::command(const ParsedCommand& cmd,std::vector<Command
 		}else{
 			return CommandStatus::ERR;
 		}
+		break;
+	case MtEncoderSPI_commands::errors:
+		replies.push_back(CommandReply(errors));
 		break;
 	default:
 		return CommandStatus::NOT_FOUND;
