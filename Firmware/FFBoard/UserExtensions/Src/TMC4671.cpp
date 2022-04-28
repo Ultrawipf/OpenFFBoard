@@ -782,15 +782,16 @@ void TMC4671::setPhiE_ext(int16_t phiE){
 	writeReg(0x1C, phiE);
 }
 
+//__attribute__((optimize("-Onone")))
 int16_t TMC4671::getPhiEfromExternalEncoder(){
-	int64_t phiE = (int64_t)drvEncoder->getPosAbs() * (int64_t)0xffff;
+	int64_t phiE_t = (int64_t)drvEncoder->getPosAbs() * 0xffff;
 	if(this->conf.encoderReversed){
-		phiE = -phiE;
+		phiE_t = -phiE_t;
 	}
-	phiE = (phiE / drvEncoder->getCpr());
-	phiE = ((phiE * conf.motconf.pole_pairs) & 0xffff) + externalEncoderPhieOffset; // Add offset and scale to pole pairs
+	int32_t phiE = (phiE_t / (int64_t)drvEncoder->getCpr());
+	phiE = (phiE * conf.motconf.pole_pairs) & 0xffff; // scale to pole pairs
 	//int16_t phiE = (drvEncoder->getPosAbs_f() * (float)0xffff) * conf.motconf.pole_pairs + externalEncoderPhieOffset;
-	return(phiE);
+	return(phiE+externalEncoderPhieOffset);
 }
 
 // PhiE is read only
@@ -2483,6 +2484,7 @@ void TMC4671::registerCommands(){
 	registerCommand("combineEncoder", TMC4671_commands::combineEncoder, "Use TMC for movement. External encoder for position",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("invertForce", TMC4671_commands::invertForce, "Invert incoming forces",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("vm", TMC4671_commands::vmTmc, "VM in mV",CMDFLAG_GET);
+	registerCommand("extphie", TMC4671_commands::extphie, "external phie",CMDFLAG_GET);
 
 }
 
@@ -2740,6 +2742,13 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 		}
 		break;
 	}
+	case TMC4671_commands::extphie:
+	{
+
+		replies.push_back(CommandReply(getPhiEfromExternalEncoder()));
+
+		break;
+	}
 	default:
 		return CommandStatus::NOT_FOUND;
 	}
@@ -2767,7 +2776,7 @@ void TMC4671::setUpExtEncTimer(){
 	// Setup timer
 	this->externalEncoderTimer = &TIM_TMC; // Timer setup with prescaler of sysclock
 	this->externalEncoderTimer->Instance->ARR = 250;
-	this->externalEncoderTimer->Instance->PSC = (SystemCoreClock / 2000000)-1; // half clock
+	this->externalEncoderTimer->Instance->PSC = (SystemCoreClock / 2000000)+1; // timer running at half clock speed. 1µs ticks
 	this->externalEncoderTimer->Instance->CR1 = 1;
 	HAL_TIM_Base_Start_IT(this->externalEncoderTimer);
 #endif
