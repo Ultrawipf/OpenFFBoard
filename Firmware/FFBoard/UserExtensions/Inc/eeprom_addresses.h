@@ -184,7 +184,10 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_VESC3_OFFSET				0x3E8 //16b offset
 
 
-//MT Encoder
+// MT Encoder
 #define ADR_MTENC_CONF1					0x401
+
+// Biss-C
+#define ADR_BISSENC_CONF1				0x410
 
 #endif /* EEPROM_ADDRESSES_H_ */

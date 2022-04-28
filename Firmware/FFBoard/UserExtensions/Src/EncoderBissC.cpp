@@ -42,11 +42,15 @@ EncoderBissC::EncoderBissC() : SPIDevice(ENCODER_SPI_PORT, ENCODER_SPI_PORT.getC
 }
 
 void EncoderBissC::restoreFlash(){
-
+	uint16_t buf;
+	if(Flash_Read(ADR_BISSENC_CONF1, &buf)){
+		this->lenghtDataBit = (buf & 0x1F)+1; // up to 32 bit. 5 bits
+	}
 }
 
 void EncoderBissC::saveFlash(){
-
+	uint16_t buf = std::max((this->lenghtDataBit-1),0) & 0x1F;
+	Flash_Write(ADR_BISSENC_CONF1, buf);
 }
 
 void EncoderBissC::configSPI() {
@@ -88,15 +92,16 @@ void EncoderBissC::acquirePosition(){
 	waitData = true;
 	spiPort.receive_DMA(spi_buf, bytes, this);
 	readSem.Take();
-//	//spiRxCompleted();
+
 	//spiPort.receive(spi_buf, bytes, this,100);
-	//memcpy(this->decod_buf,this->spi_buf,this->bytes);
+	//spiRxCompleted(&spiPort);
 }
 
 void EncoderBissC::spiRxCompleted(SPIPort* port) {
 	memcpy(this->decod_buf,this->spi_buf,this->bytes);
-	waitData = false;
+
 	BaseType_t pxHigherPriorityTaskWoken;
+	waitData = false;
 	readSem.GiveFromISR(&pxHigherPriorityTaskWoken);
 	portYIELD_FROM_ISR(pxHigherPriorityTaskWoken);
 }
@@ -115,7 +120,7 @@ EncoderType EncoderBissC::getType(){
 	return EncoderType::absolute;
 }
 
-int32_t EncoderBissC::getPos(){
+int32_t EncoderBissC::getPosAbs(){
 	if(waitData){
 		return pos;
 	}
@@ -168,6 +173,7 @@ int32_t EncoderBissC::getPos(){
 	crc_ok = crc == crcRx;
 	if(!crc_ok || pos < 0)
 	{
+		pos = lastpos; // do not update position
 		numErrors++;
 	}
 
@@ -178,13 +184,19 @@ int32_t EncoderBissC::getPos(){
 		mtpos++;
 	}
 
-	return pos + mtpos * getCpr() - posOffset;
+	return pos + mtpos * getCpr();
+}
+
+int32_t EncoderBissC::getPos(){
+	return getPosAbs()-posOffset;
 }
 
 void EncoderBissC::setPos(int32_t newpos){
 
 	posOffset = pos - newpos;
 }
+
+
 
 uint32_t EncoderBissC::getCpr(){
 	return 1<<lenghtDataBit;
