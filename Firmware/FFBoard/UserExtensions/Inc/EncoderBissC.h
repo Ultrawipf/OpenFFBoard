@@ -19,7 +19,7 @@
 #include "PersistentStorage.h"
 #include "semaphore.hpp"
 
-class EncoderBissC: public Encoder, public CommandHandler, public SPIDevice,public PersistentStorage {
+class EncoderBissC: public Encoder, public SPIDevice, public CommandHandler,public PersistentStorage {
 public:
 
 	static ClassIdentifier info;
@@ -32,6 +32,7 @@ public:
 	static bool isCreatable();
 
 	int32_t getPos();
+	int32_t getPosAbs();
 	void setPos(int32_t pos);
 	uint32_t getCpr();
 
