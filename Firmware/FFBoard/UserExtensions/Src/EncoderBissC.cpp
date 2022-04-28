@@ -10,7 +10,7 @@
 #include "EncoderBissC.h"
 bool EncoderBissC::inUse = false;
 ClassIdentifier EncoderBissC::info = {
-		 .name = "BissC" ,
+		 .name = "BISS-C" ,
 		 .id=CLSID_ENCODER_BISS
 };
 
@@ -18,7 +18,13 @@ const ClassIdentifier EncoderBissC::getInfo(){
 	return info;
 }
 
-EncoderBissC::EncoderBissC() : SPIDevice(ENCODER_SPI_PORT, ENCODER_SPI_PORT.getCsPins()[0]),CommandHandler("bissenc",CLSID_ENCODER_BISS,0) {
+
+
+
+EncoderBissC::EncoderBissC() :
+		SPIDevice(ENCODER_SPI_PORT, ENCODER_SPI_PORT.getCsPins()[0]),
+		CommandHandler("bissenc",CLSID_ENCODER_BISS,0),
+		cpp_freertos::Thread("BISSENC",256,41) {
 	setPos(0);
 	EncoderBissC::inUse = true;
 	configSPI();
@@ -39,7 +45,34 @@ EncoderBissC::EncoderBissC() : SPIDevice(ENCODER_SPI_PORT, ENCODER_SPI_PORT.getC
 	}
 	restoreFlash();
 	registerCommands();
+	this->Start();
 }
+
+void EncoderBissC::Run(){
+	while(true){
+		requestNewDataSem.Take(); // Wait until a position is requested
+		spiPort.receive_DMA(spi_buf, bytes, this); // Receive next frame
+
+		this->WaitForNotification();  // Wait until DMA is finished
+		if(updateFrame()){
+			pos = newPos;
+			//handle multiturn
+			if(pos-lastPos > 1<<(lenghtDataBit-1)){
+				mtpos--;
+			}else if(lastPos-pos > 1<<(lenghtDataBit-1)){
+				mtpos++;
+			}
+
+			lastPos = pos;
+		}else{
+			numErrors++;
+		}
+		waitData = false;
+		waitForUpdateSem.Give();
+
+	}
+}
+
 
 void EncoderBissC::restoreFlash(){
 	uint16_t buf;
@@ -87,31 +120,18 @@ EncoderBissC::~EncoderBissC() {
 	EncoderBissC::inUse = false;
 }
 
-void EncoderBissC::acquirePosition(){
-	// CS pin and semaphore managed by spi port
-	waitData = true;
-	spiPort.receive_DMA(spi_buf, bytes, this);
-	readSem.Take();
-
-	//spiPort.receive(spi_buf, bytes, this,100);
-	//spiRxCompleted(&spiPort);
-}
-
 void EncoderBissC::spiRxCompleted(SPIPort* port) {
 	memcpy(this->decod_buf,this->spi_buf,this->bytes);
+	this->NotifyFromISR();
 
-	BaseType_t pxHigherPriorityTaskWoken;
-	waitData = false;
-	readSem.GiveFromISR(&pxHigherPriorityTaskWoken);
-	portYIELD_FROM_ISR(pxHigherPriorityTaskWoken);
 }
 
 void EncoderBissC::beginSpiTransfer(SPIPort* port){
-	port->takeSemaphore();
+	//port->takeSemaphore();
 }
 
 void EncoderBissC::endSpiTransfer(SPIPort* port){
-	port->giveSemaphore();
+	//port->giveSemaphore();
 }
 
 
@@ -120,28 +140,13 @@ EncoderType EncoderBissC::getType(){
 	return EncoderType::absolute;
 }
 
-int32_t EncoderBissC::getPosAbs(){
-	if(waitData){
-		return pos;
-	}
-	acquirePosition();
-
-//	while (waitData) {
-//		//__NOP();
-//		portYIELD();
-//	}
-	int32_t lastpos = pos;
-
+bool EncoderBissC::updateFrame(){
 	//Put data into 64bit int to enable easy shifting
 	uint64_t rxData64;
-	rxData64 = (uint64_t)decod_buf[0] << 56;
-	rxData64 |= (uint64_t)decod_buf[1] << 48;
-	rxData64 |= (uint64_t)decod_buf[2] << 40;
-	rxData64 |= (uint64_t)decod_buf[3] << 32;
-	rxData64 |= (uint64_t)decod_buf[4] << 24;
-	rxData64 |= (uint64_t)decod_buf[5] << 16;
-	rxData64 |= (uint64_t)decod_buf[6] << 8;
-	rxData64 |= (uint64_t)decod_buf[7];
+
+	// 32b operation reduces time needed
+	rxData64 = (uint64_t)__REV(decod_buf[0]) << 32;
+	rxData64 |= (uint64_t)__REV(decod_buf[1]);
 
 	// sample of rxData64
 	// like this 1100000000000000100001100111010000000101110111100000000000000000
@@ -158,7 +163,7 @@ int32_t EncoderBissC::getPosAbs(){
 
 	uint8_t crcRx = rxData64 & 0x3F; 									 //extract last 6-bit digits to get CRC
 	uint32_t dataRx = (rxData64 >> 6) & ((1<<(lenghtDataBit + 2)) - 1);  //Shift out CRC, AND with 24-bit mask to get raw data (position, error, warning)
-	pos = (dataRx >> 2) & ((1<<lenghtDataBit) - 1); 									 			 //Shift out error and warning, AND with 22-bit mask to get position
+	newPos = (dataRx >> 2) & ((1<<lenghtDataBit) - 1); 			//Shift out error and warning, AND with 22-bit mask to get position
 
 
 	uint8_t crc = 0;  //CRC seed is 0b000000
@@ -170,19 +175,17 @@ int32_t EncoderBissC::getPosAbs(){
 	crc = tableCRC6n[((dataRx >> 0) & 0x3F) ^ crc];
 	crc = 0x3F & ~crc; //CRC is output inverted
 
-	crc_ok = crc == crcRx;
-	if(!crc_ok || pos < 0)
-	{
-		pos = lastpos; // do not update position
-		numErrors++;
-	}
+	bool crc_ok = crc == crcRx;
+	return crc_ok;
+}
 
-	//handle multiturn
-	if(pos-lastpos > 1<<(lenghtDataBit-1)){
-		mtpos--;
-	}else if(lastpos-pos > 1<<(lenghtDataBit-1)){
-		mtpos++;
+int32_t EncoderBissC::getPosAbs(){
+	if(waitData){ // If a transfer is still in progress return the last result
+		return pos;
 	}
+	requestNewDataSem.Give(); // Start transfer
+
+	waitForUpdateSem.Take(10); // Wait a bit
 
 	return pos + mtpos * getCpr();
 }

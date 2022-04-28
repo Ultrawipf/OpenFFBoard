@@ -88,7 +88,7 @@ void MtEncoderSPI::setPos(int32_t pos){
 
 void MtEncoderSPI::spiTxRxCompleted(SPIPort* port){
 
-	if(updateInProgress){
+	if(updateInProgress && useDMA){
 		updateAngleStatusCb();
 	}
 
