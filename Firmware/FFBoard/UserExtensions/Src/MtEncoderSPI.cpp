@@ -144,22 +144,27 @@ bool MtEncoderSPI::updateAngleStatusCb(){
 	uint32_t angle3_0 = rxbuf[3];
 
 	// Parity check byte 2
-	uint8_t pc1 = angle9_4 ^ angle9_4 >> 1;
+	uint8_t pc1 = angle17_10 ^ angle17_10 >> 1;
 	pc1 = pc1 ^ pc1 >> 2;
 	pc1 = pc1 ^ pc1 >> 4;
 
+	uint8_t pc1_2 = angle9_4 ^ angle9_4 >> 1;
+	pc1_2 = pc1_2 ^ pc1_2 >> 2;
+	pc1_2 = pc1_2 ^ pc1_2 >> 4;
+
 	// Parity check byte 1
-	uint8_t pc2 = angle3_0 ^ angle3_0 >> 1;
+	angle3_0 = angle3_0 >> 2; // shift 2
+	uint8_t pc2 = (angle3_0) ^ (angle3_0) >> 1;
 	pc2 = pc2 ^ pc2 >> 2;
 	pc2 = pc2 ^ pc2 >> 4;
-
-	bool parity_ok = !(pc2 & 1) && !(pc1 & 1);
 
 	nomag = 	(angle9_4 & 0x02) >> 1;
 	overspeed = (angle3_0 & 0x04) >> 2;
 	angle9_4 = 	(angle9_4 & 0xFC) >> 2;
-	angle3_0 = 	(angle3_0 & 0xE0) >> 5;
+	angle3_0 = 	angle3_0 >> 2;//(angle3_0 & 0xF0) >> 4;
 
+
+	bool parity_ok = !(pc2 & 1) && ((pc1 & 1) == (pc1_2 & 1));
 
 	curAngleInt = (angle17_10 << 10) | (angle9_4 << 4) | (angle3_0);
 
