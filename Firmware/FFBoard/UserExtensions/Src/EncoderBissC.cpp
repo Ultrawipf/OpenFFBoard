@@ -27,7 +27,7 @@ EncoderBissC::EncoderBissC() :
 		cpp_freertos::Thread("BISSENC",256,41) {
 	setPos(0);
 	EncoderBissC::inUse = true;
-	configSPI();
+
 
 	//Init CRC table
 	for(int i = 0; i < 64; i++){
@@ -44,6 +44,7 @@ EncoderBissC::EncoderBissC() :
 		tableCRC6n[i] = crc;
 	}
 	restoreFlash();
+	configSPI();
 	registerCommands();
 	this->Start();
 }
@@ -51,9 +52,10 @@ EncoderBissC::EncoderBissC() :
 void EncoderBissC::Run(){
 	while(true){
 		requestNewDataSem.Take(); // Wait until a position is requested
+		waitData = true;
 		spiPort.receive_DMA(spi_buf, bytes, this); // Receive next frame
-
 		this->WaitForNotification();  // Wait until DMA is finished
+
 		if(updateFrame()){
 			pos = newPos;
 			//handle multiturn
@@ -78,11 +80,13 @@ void EncoderBissC::restoreFlash(){
 	uint16_t buf;
 	if(Flash_Read(ADR_BISSENC_CONF1, &buf)){
 		this->lenghtDataBit = (buf & 0x1F)+1; // up to 32 bit. 5 bits
+		this->spiSpeed = ((buf >> 5) & 0x3) +1;
 	}
 }
 
 void EncoderBissC::saveFlash(){
 	uint16_t buf = std::max((this->lenghtDataBit-1),0) & 0x1F;
+	buf |= ((this->spiSpeed-1) & 0x3) << 5;
 	Flash_Write(ADR_BISSENC_CONF1, buf);
 }
 
@@ -141,6 +145,8 @@ EncoderType EncoderBissC::getType(){
 }
 
 bool EncoderBissC::updateFrame(){
+
+
 	//Put data into 64bit int to enable easy shifting
 	uint64_t rxData64;
 
@@ -156,7 +162,8 @@ bool EncoderBissC::updateFrame(){
 	// remove the first 1, count how many digit stay in buffer after removing the 0, if there is more than 32 digits,
 	// keep only 32st (on the left)
 	// 32 because the format is : (1+1+lenghtDataBit+1+1+6) - Align bitstream to left (Startbit, CDS, 22-bit Position, Error, Warning, CRC)
-	int nbBit = log2(rxData64)+1;
+	//int nbBit = log2(rxData64)+1;
+	int nbBit =  64-__builtin_clzll(rxData64); // Much faster than log2
 	if ( nbBit >= ( lenghtDataBit + 10 ) ) {
 		rxData64 >>= nbBit-( lenghtDataBit + 10 );
 	}
@@ -180,13 +187,10 @@ bool EncoderBissC::updateFrame(){
 }
 
 int32_t EncoderBissC::getPosAbs(){
-	if(waitData){ // If a transfer is still in progress return the last result
-		return pos;
+	if(!waitData){ // If a transfer is still in progress return the last result
+		requestNewDataSem.Give(); // Start transfer
+		waitForUpdateSem.Take(10); // Wait a bit
 	}
-	requestNewDataSem.Give(); // Start transfer
-
-	waitForUpdateSem.Take(10); // Wait a bit
-
 	return pos + mtpos * getCpr();
 }
 
@@ -208,6 +212,7 @@ uint32_t EncoderBissC::getCpr(){
 void EncoderBissC::registerCommands(){
 	CommandHandler::registerCommands();
 	registerCommand("bits", EncoderBissC_commands::bits, "Bits of resolution",CMDFLAG_GET|CMDFLAG_SET);
+	registerCommand("speed", EncoderBissC_commands::speed, "SPI speed preset 1-3",CMDFLAG_GET|CMDFLAG_SET);
 	registerCommand("errors", EncoderBissC_commands::errors, "CRC error count",CMDFLAG_GET);
 }
 
@@ -218,7 +223,12 @@ CommandStatus EncoderBissC::command(const ParsedCommand& cmd,std::vector<Command
 	case EncoderBissC_commands::errors:
 		replies.push_back(CommandReply(numErrors));
 		break;
-
+	case EncoderBissC_commands::speed:
+		handleGetSet(cmd, replies, this->spiSpeed);
+		if(cmd.type == CMDtype::set){
+			configSPI();
+		}
+		break;
 	default:
 		return CommandStatus::NOT_FOUND;
 	}
