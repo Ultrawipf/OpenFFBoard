@@ -39,4 +39,8 @@ extern const PWMConfig pwmTimerConfig;
 extern I2CPort i2cport;
 #endif
 
+#ifdef DEBUGPIN
+extern const OutputPin debugpin;
+#endif
+
 #endif
