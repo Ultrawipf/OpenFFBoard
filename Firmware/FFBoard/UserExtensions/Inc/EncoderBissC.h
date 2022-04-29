@@ -56,7 +56,7 @@ public:
 
 private:
 	int lenghtDataBit = 22;
-	int spiSpeed = 3;
+	int spiSpeed = 2;
 	bool waitData = false;
 
 	int32_t pos = 0, posOffset = 0,lastPos = 0,newPos = 0;
