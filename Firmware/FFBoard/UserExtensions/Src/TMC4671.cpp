@@ -2165,6 +2165,18 @@ void TMC4671::writeReg(uint8_t reg,uint32_t dat){
 	spiPort.transmit(spi_buf, 5, this, SPITIMEOUT);
 }
 
+void TMC4671::writeRegDMA(uint8_t reg,uint32_t dat){
+
+	// wait until ready
+	spiPort.takeSemaphore();
+	spi_buf[0] = (uint8_t)(0x80 | reg);
+	dat =__REV(dat);
+	memcpy(spi_buf+1,&dat,4);
+
+	// -----
+	spiPort.transmit_DMA(this->spi_buf, 5, this);
+}
+
 void TMC4671::updateReg(uint8_t reg,uint32_t dat,uint32_t mask,uint8_t shift){
 
 	uint32_t t = readReg(reg) & ~(mask << shift);
@@ -2793,7 +2805,7 @@ void TMC4671::TMC_ExternalEncoderUpdateThread::Run(){
 	while(true){
 		this->WaitForNotification();
 		if(tmc->usingExternalEncoder() && !tmc->spiPort.isTaken())
-			tmc->setPhiE_ext(tmc->getPhiEfromExternalEncoder());
+			tmc->writeRegDMA(0x1C, (tmc->getPhiEfromExternalEncoder())); // Write phiE_ext
 	}
 }
 
