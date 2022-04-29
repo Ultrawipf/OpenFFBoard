@@ -2786,7 +2786,7 @@ void TMC4671::setUpExtEncTimer(){
 	if(extEncUpdater == nullptr) // Create updater thread
 		extEncUpdater = std::make_unique<TMC_ExternalEncoderUpdateThread>(this);
 	// Setup timer
-	this->externalEncoderTimer = &TIM_TMC; // Timer setup with prescaler of sysclock
+	this->externalEncoderTimer = &TIM_TMC;
 	this->externalEncoderTimer->Instance->ARR = 200;
 	this->externalEncoderTimer->Instance->PSC = (SystemCoreClock / 2000000)+1; // timer running at half clock speed. 1µs ticks
 	this->externalEncoderTimer->Instance->CR1 = 1;
@@ -2804,8 +2804,9 @@ TMC4671::TMC_ExternalEncoderUpdateThread::TMC_ExternalEncoderUpdateThread(TMC467
 void TMC4671::TMC_ExternalEncoderUpdateThread::Run(){
 	while(true){
 		this->WaitForNotification();
-		if(tmc->usingExternalEncoder() && !tmc->spiPort.isTaken())
+		if(tmc->usingExternalEncoder() && !tmc->spiPort.isTaken()){
 			tmc->writeRegDMA(0x1C, (tmc->getPhiEfromExternalEncoder())); // Write phiE_ext
+		}
 	}
 }
 

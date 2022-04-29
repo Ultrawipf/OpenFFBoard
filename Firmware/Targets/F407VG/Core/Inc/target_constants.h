@@ -118,6 +118,7 @@ extern CAN_HandleTypeDef hcan1;
 extern const uint32_t canSpeedBTR_preset[];
 #endif
 
+#define DEBUGPIN // GP1 pin. see cpp target constants
 
 //Flash. 2 pages used
 /* EEPROM start address in Flash
