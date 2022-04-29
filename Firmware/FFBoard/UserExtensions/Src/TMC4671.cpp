@@ -2787,7 +2787,7 @@ void TMC4671::setUpExtEncTimer(){
 		extEncUpdater = std::make_unique<TMC_ExternalEncoderUpdateThread>(this);
 	// Setup timer
 	this->externalEncoderTimer = &TIM_TMC; // Timer setup with prescaler of sysclock
-	this->externalEncoderTimer->Instance->ARR = 250;
+	this->externalEncoderTimer->Instance->ARR = 200;
 	this->externalEncoderTimer->Instance->PSC = (SystemCoreClock / 2000000)+1; // timer running at half clock speed. 1µs ticks
 	this->externalEncoderTimer->Instance->CR1 = 1;
 	HAL_TIM_Base_Start_IT(this->externalEncoderTimer);
