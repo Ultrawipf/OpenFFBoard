@@ -55,6 +55,7 @@ public:
 	void endSpiTransfer(SPIPort* port);
 
 private:
+	static const bool useWaitSem = true;
 	int lenghtDataBit = 22;
 	int spiSpeed = 2;
 	bool waitData = false;

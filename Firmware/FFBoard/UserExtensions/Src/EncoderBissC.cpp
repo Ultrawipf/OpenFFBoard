@@ -24,7 +24,7 @@ const ClassIdentifier EncoderBissC::getInfo(){
 EncoderBissC::EncoderBissC() :
 		SPIDevice(ENCODER_SPI_PORT, ENCODER_SPI_PORT.getCsPins()[0]),
 		CommandHandler("bissenc",CLSID_ENCODER_BISS,0),
-		cpp_freertos::Thread("BISSENC",256,41) {
+		cpp_freertos::Thread("BISSENC",256,42) {
 	setPos(0);
 	EncoderBissC::inUse = true;
 
@@ -70,7 +70,8 @@ void EncoderBissC::Run(){
 			numErrors++;
 		}
 		waitData = false;
-		waitForUpdateSem.Give();
+		if(useWaitSem)
+			waitForUpdateSem.Give();
 
 	}
 }
@@ -144,6 +145,7 @@ EncoderType EncoderBissC::getType(){
 	return EncoderType::absolute;
 }
 
+__attribute__((optimize("-Ofast")))
 bool EncoderBissC::updateFrame(){
 
 
@@ -189,7 +191,8 @@ bool EncoderBissC::updateFrame(){
 int32_t EncoderBissC::getPosAbs(){
 	if(!waitData){ // If a transfer is still in progress return the last result
 		requestNewDataSem.Give(); // Start transfer
-		waitForUpdateSem.Take(10); // Wait a bit
+		if(useWaitSem)
+			waitForUpdateSem.Take(10); // Wait a bit
 	}
 	return pos + mtpos * getCpr();
 }
