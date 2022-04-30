@@ -10,11 +10,11 @@
 
 #include "main.h"
 // Change this to the amount of currently registered variables
-#define NB_OF_VAR	96
+#define NB_OF_VAR	99
 extern const uint16_t VirtAddVarTab[NB_OF_VAR];
 
 // Amount of variables in exportable list
-#define NB_EXPORTABLE_ADR 82
+#define NB_EXPORTABLE_ADR 85
 extern const uint16_t exportableFlashAddresses[NB_EXPORTABLE_ADR];
 
 
@@ -186,8 +186,9 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 
 // MT Encoder
 #define ADR_MTENC_CONF1					0x401
-
+#define ADR_MTENC_OFS					0x400
 // Biss-C
 #define ADR_BISSENC_CONF1				0x410
+#define ADR_BISSENC_OFS					0x411
 
 #endif /* EEPROM_ADDRESSES_H_ */

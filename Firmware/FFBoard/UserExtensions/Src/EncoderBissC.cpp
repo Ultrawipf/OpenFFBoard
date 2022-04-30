@@ -25,7 +25,6 @@ EncoderBissC::EncoderBissC() :
 		SPIDevice(ENCODER_SPI_PORT, ENCODER_SPI_PORT.getCsPins()[0]),
 		CommandHandler("bissenc",CLSID_ENCODER_BISS,0),
 		cpp_freertos::Thread("BISSENC",256,42) {
-	setPos(0);
 	EncoderBissC::inUse = true;
 
 
@@ -83,12 +82,15 @@ void EncoderBissC::restoreFlash(){
 		this->lenghtDataBit = (buf & 0x1F)+1; // up to 32 bit. 5 bits
 		this->spiSpeed = ((buf >> 5) & 0x3) +1;
 	}
+	posOffset = Flash_ReadDefault(ADR_BISSENC_OFS, 0)<<std::max(0,(lenghtDataBit-16));
+
 }
 
 void EncoderBissC::saveFlash(){
 	uint16_t buf = std::max((this->lenghtDataBit-1),0) & 0x1F;
 	buf |= ((this->spiSpeed-1) & 0x3) << 5;
 	Flash_Write(ADR_BISSENC_CONF1, buf);
+	Flash_Write(ADR_BISSENC_OFS, posOffset >> std::max(0,(lenghtDataBit-16)));
 }
 
 void EncoderBissC::configSPI() {
