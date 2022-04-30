@@ -782,7 +782,6 @@ void TMC4671::setPhiE_ext(int16_t phiE){
 	writeReg(0x1C, phiE);
 }
 
-//__attribute__((optimize("-Onone")))
 int16_t TMC4671::getPhiEfromExternalEncoder(){
 	int64_t phiE_t = (int64_t)drvEncoder->getPosAbs() * 0xffff;
 	if(this->conf.encoderReversed){
@@ -796,9 +795,6 @@ int16_t TMC4671::getPhiEfromExternalEncoder(){
 
 // PhiE is read only
 int16_t TMC4671::getPhiE(){
-//	if(usingExternalEncoder()){
-//		return getPhiEfromExternalEncoder();
-//	}
 	return readReg(0x53);
 }
 
@@ -2787,7 +2783,7 @@ void TMC4671::setUpExtEncTimer(){
 		extEncUpdater = std::make_unique<TMC_ExternalEncoderUpdateThread>(this);
 	// Setup timer
 	this->externalEncoderTimer = &TIM_TMC;
-	this->externalEncoderTimer->Instance->ARR = 200;
+	this->externalEncoderTimer->Instance->ARR = 200; // 200 = 5khz = 5 tmc cycles, 250 = 4khz, 240 = 6 tmc cycles
 	this->externalEncoderTimer->Instance->PSC = (SystemCoreClock / 2000000)+1; // timer running at half clock speed. 1µs ticks
 	this->externalEncoderTimer->Instance->CR1 = 1;
 	HAL_TIM_Base_Start_IT(this->externalEncoderTimer);
@@ -2797,7 +2793,7 @@ void TMC4671::setUpExtEncTimer(){
 /**
  * High priority task to update external encoders
  */
-TMC4671::TMC_ExternalEncoderUpdateThread::TMC_ExternalEncoderUpdateThread(TMC4671* tmc) : cpp_freertos::Thread("TMCENC",128,40),tmc(tmc){
+TMC4671::TMC_ExternalEncoderUpdateThread::TMC_ExternalEncoderUpdateThread(TMC4671* tmc) : cpp_freertos::Thread("TMCENC",128,41),tmc(tmc){
 	this->Start();
 }
 
