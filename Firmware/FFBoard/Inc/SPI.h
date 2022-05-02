@@ -76,6 +76,9 @@ public:
 
 	bool isTaken(); // Returns true if semaphore was taken by another task
 
+	void takeExclusive(bool exclusive);
+	bool hasFreePins();
+
 private:
 	void beginTransfer(SPIConfig* config);
 	void endTransfer(SPIConfig* config);
@@ -88,6 +91,7 @@ private:
 	cpp_freertos::BinarySemaphore semaphore = cpp_freertos::BinarySemaphore(true);
 	bool allowReconfigure = false; // Allow reconfiguration at runtime. Can reduce performance a lot
 	volatile bool isTakenFlag = false;
+	bool takenExclusive = false;
 };
 
 class SPIDevice {
