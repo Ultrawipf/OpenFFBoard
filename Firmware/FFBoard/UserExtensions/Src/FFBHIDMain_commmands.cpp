@@ -12,18 +12,18 @@ void FFBHIDMain::registerCommands(){
 	//CommandHandler::registerCommands();
 
 	//registerCommand("axes", FFBWheel_commands::axes, "Number of axes (1-2)");
-	registerCommand("ffbactive", FFBWheel_commands::ffbactive, "FFB status");
+	registerCommand("ffbactive", FFBWheel_commands::ffbactive, "FFB status",CMDFLAG_GET);
 
-	registerCommand("btntypes", FFBWheel_commands::btntypes, "Enabled button sources");
-	registerCommand("addbtn", FFBWheel_commands::addbtn, "Enable button source");
-	registerCommand("lsbtn", FFBWheel_commands::lsbtn, "Get available button sources");
+	registerCommand("btntypes", FFBWheel_commands::btntypes, "Enabled button sources",CMDFLAG_GET|CMDFLAG_SET);
+	registerCommand("addbtn", FFBWheel_commands::addbtn, "Enable button source",CMDFLAG_SET);
+	registerCommand("lsbtn", FFBWheel_commands::lsbtn, "Get available button sources",CMDFLAG_GET|CMDFLAG_STR_ONLY);
 
-	registerCommand("aintypes", FFBWheel_commands::aintypes, "Enabled analog sources");
-	registerCommand("lsain", FFBWheel_commands::lsain, "Get available analog sources");
-	registerCommand("addain", FFBWheel_commands::addain, "Enable analog source");
+	registerCommand("aintypes", FFBWheel_commands::aintypes, "Enabled analog sources",CMDFLAG_GET|CMDFLAG_SET);
+	registerCommand("lsain", FFBWheel_commands::lsain, "Get available analog sources",CMDFLAG_GET|CMDFLAG_STR_ONLY);
+	registerCommand("addain", FFBWheel_commands::addain, "Enable analog source",CMDFLAG_SET);
 
-	registerCommand("hidrate", FFBWheel_commands::hidrate, "Get estimated effect update speed");
-	registerCommand("hidsendspd", FFBWheel_commands::hidsendspd, "Change HID gamepad update rate");
+	registerCommand("hidrate", FFBWheel_commands::hidrate, "Get estimated effect update speed",CMDFLAG_GET);
+	registerCommand("hidsendspd", FFBWheel_commands::hidsendspd, "Change HID gamepad update rate",CMDFLAG_GET|CMDFLAG_SET|CMDFLAG_INFOSTRING);
 }
 
 CommandStatus FFBHIDMain::command(const ParsedCommand& cmd,std::vector<CommandReply>& replies){
