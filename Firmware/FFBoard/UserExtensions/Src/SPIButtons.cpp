@@ -24,7 +24,7 @@ const ClassIdentifier SPI_Buttons_1::getInfo(){
 }
 
 bool SPI_Buttons_1::isCreatable(){
-	return (external_spi.getFreeCsPins().size() > 0);
+	return (external_spi.hasFreePins());
 }
 
 ClassIdentifier SPI_Buttons_2::info = {
@@ -36,7 +36,7 @@ const ClassIdentifier SPI_Buttons_2::getInfo(){
 }
 
 bool SPI_Buttons_2::isCreatable(){
-	return false;//(external_spi.getFreeCsPins().size() > 0);
+	return false;//(external_spi.hasFreePins();
 }
 
 

@@ -43,6 +43,7 @@ EncoderBissC::EncoderBissC() :
 		tableCRC6n[i] = crc;
 	}
 	restoreFlash();
+	this->spiPort.takeExclusive(true);
 	configSPI();
 	registerCommands();
 	this->Start();
@@ -116,15 +117,18 @@ void EncoderBissC::configSPI() {
 	config->peripheral.CLKPolarity = SPI_POLARITY_HIGH;
 	config->peripheral.DataSize = SPI_DATASIZE_8BIT;
 	this->setSpiConfig(*config);
+	this->spiPort.configurePort(&config->peripheral);
+
 }
 
 bool EncoderBissC::isCreatable(){
-	return !EncoderBissC::inUse;
+	return !EncoderBissC::inUse && ENCODER_SPI_PORT.hasFreePins();
 }
 
 EncoderBissC::~EncoderBissC() {
 	setPos(0);
 	EncoderBissC::inUse = false;
+	this->spiPort.takeExclusive(true);
 }
 
 void EncoderBissC::spiRxCompleted(SPIPort* port) {

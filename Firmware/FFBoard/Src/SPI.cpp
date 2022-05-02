@@ -22,6 +22,7 @@ static bool operator==(const SPI_InitTypeDef& lhs, const SPI_InitTypeDef& rhs) {
 
 SPIPort::SPIPort(SPI_HandleTypeDef &hspi,const std::vector<OutputPin>& csPins,bool allowReconfigure)
 : hspi{hspi}{
+	this->current_device = nullptr;
 	this->allowReconfigure = allowReconfigure;
 	this->csPins = csPins;
 	this->freePins = csPins;
@@ -92,7 +93,7 @@ void SPIPort::configurePort(SPI_InitTypeDef* config){
 void SPIPort::transmit_DMA(const uint8_t* buf,uint16_t size,SPIDevice* device){
 	device->beginSpiTransfer(this);
 	current_device = device; // Will call back this device
-	if(this->allowReconfigure){
+	if(!takenExclusive && this->allowReconfigure){
 		this->configurePort(&device->getSpiConfig()->peripheral);
 	}
 	HAL_SPI_Transmit_DMA(&this->hspi,const_cast<uint8_t*>(buf),size);
@@ -105,7 +106,7 @@ void SPIPort::transmit_DMA(const uint8_t* buf,uint16_t size,SPIDevice* device){
  */
 void SPIPort::transmitReceive_DMA(const uint8_t* txbuf,uint8_t* rxbuf,uint16_t size,SPIDevice* device){
 	device->beginSpiTransfer(this);
-	if(this->allowReconfigure){
+	if(!takenExclusive && this->allowReconfigure){
 		this->configurePort(&device->getSpiConfig()->peripheral);
 	}
 	current_device = device; // Will call back this device
@@ -119,7 +120,7 @@ void SPIPort::transmitReceive_DMA(const uint8_t* txbuf,uint8_t* rxbuf,uint16_t s
  */
 void SPIPort::receive_DMA(uint8_t* buf,uint16_t size,SPIDevice* device){
 	device->beginSpiTransfer(this);
-	if(this->allowReconfigure){
+	if(!takenExclusive && this->allowReconfigure){
 		this->configurePort(&device->getSpiConfig()->peripheral);
 	}
 	current_device = device;
@@ -131,7 +132,7 @@ void SPIPort::receive_DMA(uint8_t* buf,uint16_t size,SPIDevice* device){
 void SPIPort::transmit_IT(const uint8_t* buf,uint16_t size,SPIDevice* device){
 	device->beginSpiTransfer(this);
 	current_device = device; // Will call back this device
-	if(this->allowReconfigure){
+	if(!takenExclusive && this->allowReconfigure){
 		this->configurePort(&device->getSpiConfig()->peripheral);
 	}
 	HAL_SPI_Transmit_IT(&this->hspi,const_cast<uint8_t*>(buf),size);
@@ -140,7 +141,7 @@ void SPIPort::transmit_IT(const uint8_t* buf,uint16_t size,SPIDevice* device){
 
 void SPIPort::transmitReceive_IT(const uint8_t* txbuf,uint8_t* rxbuf,uint16_t size,SPIDevice* device){
 	device->beginSpiTransfer(this);
-	if(this->allowReconfigure){
+	if(!takenExclusive && this->allowReconfigure){
 		this->configurePort(&device->getSpiConfig()->peripheral);
 	}
 	current_device = device; // Will call back this device
@@ -150,7 +151,7 @@ void SPIPort::transmitReceive_IT(const uint8_t* txbuf,uint8_t* rxbuf,uint16_t si
 
 void SPIPort::receive_IT(uint8_t* buf,uint16_t size,SPIDevice* device){
 	device->beginSpiTransfer(this);
-	if(this->allowReconfigure){
+	if(!takenExclusive && this->allowReconfigure){
 		this->configurePort(&device->getSpiConfig()->peripheral);
 	}
 	current_device = device;
@@ -160,7 +161,7 @@ void SPIPort::receive_IT(uint8_t* buf,uint16_t size,SPIDevice* device){
 
 void SPIPort::transmit(const uint8_t* buf,uint16_t size,SPIDevice* device,uint16_t timeout){
 	device->beginSpiTransfer(this);
-	if(this->allowReconfigure){
+	if(!takenExclusive && this->allowReconfigure){
 		this->configurePort(&device->getSpiConfig()->peripheral);
 	}
 	HAL_SPI_Transmit(&this->hspi,const_cast<uint8_t*>(buf),size,timeout);
@@ -169,7 +170,7 @@ void SPIPort::transmit(const uint8_t* buf,uint16_t size,SPIDevice* device,uint16
 
 void SPIPort::receive(uint8_t* buf,uint16_t size,SPIDevice* device,int16_t timeout){
 	device->beginSpiTransfer(this);
-	if(this->allowReconfigure){
+	if(!takenExclusive && this->allowReconfigure){
 		this->configurePort(&device->getSpiConfig()->peripheral);
 	}
 	HAL_SPI_Receive(&this->hspi,buf,size,timeout);
@@ -178,7 +179,7 @@ void SPIPort::receive(uint8_t* buf,uint16_t size,SPIDevice* device,int16_t timeo
 
 void SPIPort::transmitReceive(const uint8_t* txbuf,uint8_t* rxbuf,uint16_t size,SPIDevice* device,uint16_t timeout){
 	device->beginSpiTransfer(this);
-	if(this->allowReconfigure){
+	if(!takenExclusive && this->allowReconfigure){
 		this->configurePort(&device->getSpiConfig()->peripheral);
 	}
 	HAL_SPI_TransmitReceive(&this->hspi,const_cast<uint8_t*>(txbuf),rxbuf,size,timeout);
@@ -214,6 +215,14 @@ void SPIPort::giveSemaphore(){
 
 bool SPIPort::isTaken(){
 	return isTakenFlag;
+}
+
+void SPIPort::takeExclusive(bool exclusive){
+	takenExclusive = exclusive;
+}
+
+bool SPIPort::hasFreePins(){
+	return !takenExclusive && this->getCsPins().size() > 0;
 }
 
 // interrupt callbacks
