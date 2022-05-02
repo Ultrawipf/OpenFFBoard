@@ -116,6 +116,7 @@ private:
 	std::unique_ptr<HID_CommandInterface> hidCommands = std::make_unique<HID_CommandInterface>();
 
 	uint32_t lastUsbReportTick = 0;
+	cpp_freertos::BinarySemaphore sourcesSem = cpp_freertos::BinarySemaphore(true);
 };
 
 #endif /* SRC_FFBWHEEL_H_ */
