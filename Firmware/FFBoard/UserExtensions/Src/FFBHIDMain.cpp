@@ -179,6 +179,7 @@ void FFBHIDMain::clearBtnTypes(){
 }
 
 void FFBHIDMain::setBtnTypes(uint16_t btntypes){
+	sourcesSem.Take();
 	this->btnsources = btntypes;
 	clearBtnTypes();
 	for(uint8_t id = 0;id<16;id++){
@@ -189,6 +190,7 @@ void FFBHIDMain::setBtnTypes(uint16_t btntypes){
 				this->btns.push_back(std::unique_ptr<ButtonSource>(btn));
 		}
 	}
+	sourcesSem.Give();
 }
 
 void FFBHIDMain::addBtnType(uint16_t id){
@@ -210,6 +212,7 @@ void FFBHIDMain::clearAinTypes(){
 }
 
 void FFBHIDMain::setAinTypes(uint16_t aintypes){
+	sourcesSem.Take();
 	this->ainsources = aintypes;
 	clearAinTypes();
 	for(uint8_t id = 0;id<16;id++){
@@ -220,6 +223,7 @@ void FFBHIDMain::setAinTypes(uint16_t aintypes){
 				this->analog_inputs.push_back(std::unique_ptr<AnalogSource>(ain));
 		}
 	}
+	sourcesSem.Give();
 }
 void FFBHIDMain::addAinType(uint16_t id){
 	for(auto &ain : this->analog_inputs){
@@ -244,7 +248,9 @@ bool FFBHIDMain::getFfbActive(){
  * Sends periodic gamepad reports of buttons and analog axes
  */
 void FFBHIDMain::send_report(){
-
+	if(!sourcesSem.Take(10)){
+		return;
+	}
 	// Read buttons
 	reportHID.buttons = 0; // Reset buttons
 	uint8_t shift = 0;
@@ -275,10 +281,13 @@ void FFBHIDMain::send_report(){
 				break;
 			setHidReportAxis(&reportHID,count++,val);
 		}
-	} // Fill rest
+	}
+	sourcesSem.Give();
+	// Fill rest
 	for(;count<analogAxisCount; count++){
 		setHidReportAxis(&reportHID,count,0);
 	}
+
 
 	/*
 	 * Only send a new report if actually changed since last time or timeout and hid is ready
