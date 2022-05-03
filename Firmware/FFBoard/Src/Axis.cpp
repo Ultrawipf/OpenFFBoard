@@ -179,12 +179,12 @@ void Axis::restoreFlash(){
 	uint16_t scaler;
 	if (Flash_Read(flashAddrs.speedScale, &scaler))
 	{
-		this->scaleSpeed = scaler / 100.0;
+		this->scaleSpeed = scaler;
 	}
 
 	if (Flash_Read(flashAddrs.accelScale, &scaler))
 	{
-		this->scaleAccel = scaler / 100.0;
+		this->scaleAccel = scaler;
 	}
 
 
@@ -217,8 +217,8 @@ void Axis::saveFlash(){
 	Flash_Write(flashAddrs.accelFilter, filterStorage);
 
 	// save scaler
-	Flash_Write(flashAddrs.speedScale, (uint16_t)(this->scaleSpeed * 100));
-	Flash_Write(flashAddrs.accelScale, (uint16_t)(this->scaleAccel * 100));
+	Flash_Write(flashAddrs.speedScale, (uint16_t)(this->scaleSpeed));
+	Flash_Write(flashAddrs.accelScale, (uint16_t)(this->scaleAccel));
 
 >>>>>>> 189eb62 (Clean code, and exposed internal settings)
 }
@@ -810,30 +810,30 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 =======
 	case Axis_commands::scaleSpeed:
 		if(cmd.type == CMDtype::info){
-			replies.push_back(CommandReply("scale:0.01"));
+			replies.push_back(CommandReply("scale:1"));
 		}
 		else if (cmd.type == CMDtype::get)
 		{
-			replies.push_back(CommandReply(scaleSpeed * 100));
+			replies.push_back(CommandReply(this->scaleSpeed));
 		}
 		else if (cmd.type == CMDtype::set)
 		{
-			uint32_t value = clip<uint32_t, uint32_t>(cmd.val, 0, 204800);
-			scaleSpeed = value / 100.0;
+			uint32_t value = clip<uint32_t, uint32_t>(cmd.val, 1, 10000);
+			this->scaleSpeed = value;
 		}
 		break;
 	case Axis_commands::scaleAccel:
 		if(cmd.type == CMDtype::info){
-			replies.push_back(CommandReply("scale:0.01"));
+			replies.push_back(CommandReply("scale:0.1"));
 		}
 		else if (cmd.type == CMDtype::get)
 		{
-			replies.push_back(CommandReply(scaleAccel * 100));
+			replies.push_back(CommandReply(this->scaleAccel));
 		}
 		else if (cmd.type == CMDtype::set)
 		{
-			uint32_t value = clip<uint32_t, uint32_t>(cmd.val, 0, 204800);
-			scaleAccel = value / 100.0;
+			uint32_t value = clip<uint32_t, uint32_t>(cmd.val, 1, 10000);
+			this->scaleAccel = value;
 		}
 		break;
 
