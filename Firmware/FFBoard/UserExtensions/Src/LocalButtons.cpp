@@ -20,6 +20,7 @@ LocalButtons::LocalButtons() : CommandHandler("dpin",CLSID_BTN_LOCAL,0) {
 	registerCommand("mask", LocalButtons_commands::mask, "Enabled pins",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("polarity", LocalButtons_commands::polarity, "Pin polarity",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("pins", LocalButtons_commands::pins, "Available pins",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("values", LocalButtons_commands::values, "pin values",CMDFLAG_GET);
 }
 
 LocalButtons::~LocalButtons() {
@@ -101,6 +102,16 @@ CommandStatus LocalButtons::command(const ParsedCommand& cmd,std::vector<Command
 	case LocalButtons_commands::pins:
 		if(cmd.type == CMDtype::get){
 			replies.push_back(CommandReply(maxButtons));
+		}else{
+			return CommandStatus::ERR;
+		}
+	break;
+
+	case LocalButtons_commands::values:
+		if(cmd.type == CMDtype::get){
+			uint64_t buf = 0;
+			readButtons(&buf);
+			replies.push_back(CommandReply(buf));
 		}else{
 			return CommandStatus::ERR;
 		}

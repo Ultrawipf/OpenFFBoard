@@ -25,7 +25,7 @@ struct LocalAnalogConfig{
 
 class LocalAnalog : public AnalogSource, public CommandHandler{
 	enum class LocalAnaloc_commands : uint32_t{
-		pinmask,autocal,pins
+		pinmask,autocal,pins,values
 	};
 public:
 	LocalAnalog();
