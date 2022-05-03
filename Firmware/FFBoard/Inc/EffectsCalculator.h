@@ -30,10 +30,10 @@ struct effect_gain_t {
 };
 
 struct effect_scaler_t {
-	float friction = 0.4; 	// 0.4 with speedScaler at 40 => if 1 => speedscaler = 100
+	float friction = 0.4; 	// 0.4 with speedScaler at 40 => if speedscaler==1 then 16
 	float spring = 16.0;
-	float damper = 2.0;		// 2.0 with speedScaler at 40 => 5 with speedscaler = 100
-	float inertia = 200.0;  // 200 with accelScaler at 40 => if 1 => accelscaler = 8000
+	float damper = 2.0;		// 2.0 with speedScaler at 40 => if speedscaler==1 then 4
+	float inertia = 200.0;  // 200 with accelScaler at 40 => if accelscaler==1 then 8000
 };
 
 struct effect_biquad_t {
