@@ -15,7 +15,7 @@
 
 class LocalButtons: public ButtonSource,CommandHandler{
 	enum class LocalButtons_commands : uint32_t{
-		mask,polarity,pins
+		mask,polarity,pins,values,
 	};
 public:
 	LocalButtons();
