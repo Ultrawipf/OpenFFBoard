@@ -2791,9 +2791,9 @@ void TMC4671::setUpExtEncTimer(){
 }
 
 /**
- * High priority task to update external encoders
+ * Medium priority task to update external encoders
  */
-TMC4671::TMC_ExternalEncoderUpdateThread::TMC_ExternalEncoderUpdateThread(TMC4671* tmc) : cpp_freertos::Thread("TMCENC",128,41),tmc(tmc){
+TMC4671::TMC_ExternalEncoderUpdateThread::TMC_ExternalEncoderUpdateThread(TMC4671* tmc) : cpp_freertos::Thread("TMCENC",128,35),tmc(tmc){
 	this->Start();
 }
 
