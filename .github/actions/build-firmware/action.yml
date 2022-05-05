@@ -1,0 +1,60 @@
+name: Build OpenFFBoard firmware
+
+inputs:
+  target: 
+    description: 'make target'
+    required: true
+  path: 
+    description: 'output path in firmwarepath ./Firmware/<path>'
+    required: true
+    default: 'Output'
+  firmwarepath: 
+    description: 'Input path. Normally ./Firmware'
+    required: true
+    default: './Firmware'
+
+
+runs:
+  using: "composite"
+  # Steps represent a sequence of tasks that will be executed as part of the job
+  steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    #- uses: actions/checkout@v2
+    - name: "Check toolchain exists"
+      id: check_tc
+      uses: andstor/file-existence-action@v1
+      with:
+        files: "/tmp/armtc,/usr/share/gcc-arm-none-eabi-10.3-2021.10"
+        allow_failure: false
+
+    - name: Make temp dir
+      if: steps.check_tc.outputs.files_exists != 'true'
+      shell: bash
+      run: mkdir -p /tmp/armtc # make temp directory
+
+    # Setup toolchain
+    - uses: actions/cache@v2
+      id: cache
+      if: steps.check_tc.outputs.files_exists != 'true'
+      with:
+        path: /tmp/armtc
+        key: 'gcc-arm-none-eabi-10.3-2021.10-x86_64-linux'
+
+    - name: Download toolchain
+      shell: bash
+      if: steps.check_tc.outputs.files_exists != 'true' && steps.cache.outputs.cache-hit != 'true'
+      run: wget -q -O /tmp/armtc/gcc-arm-none-eabi.tar.bz2 https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2 
+      
+    - name: Setup environment
+      if: steps.check_tc.outputs.files_exists != 'true'
+      shell: bash
+      run: | 
+        sudo tar xjf /tmp/armtc/gcc-arm-none-eabi.tar.bz2 -C /usr/share/
+        sudo ln -s /usr/share/gcc-arm-none-eabi-10.3-2021.10/bin/* /usr/bin/
+
+    - name: Build ${{ inputs.target }}
+      shell: bash
+      run: |
+        make -C ${{ inputs.firmwarepath }} clean
+        make -j16 -C ${{ inputs.firmwarepath }} MCU_TARGET=${{ inputs.target }} OUTPUT_DIR=${{ inputs.path }}
+

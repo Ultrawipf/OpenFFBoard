@@ -13,11 +13,13 @@ on:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-
+  # Can be called
+  workflow_call:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # Build firmware
   Build_firmware:
+    name: Build firmware
     strategy:
         fail-fast: false
         matrix:
@@ -31,30 +33,31 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
       
-      - run: mkdir -p /tmp/armtc # make temp directory
+      - {uses: ./.github/actions/build-firmware, with: {target: '${{ matrix.target }}', path: 'Output'}}
 
-      # Setup toolchain
-      - uses: actions/cache@v2
-        id: cache
-        with:
-          path: /tmp/armtc
-          key: 'gcc-arm-none-eabi-10.3-2021.10-x86_64-linux'
-
-      - name: Download toolchain
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: wget -q -O /tmp/armtc/gcc-arm-none-eabi.tar.bz2 https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2 
-        
-      - name: Setup environment
-        run: | 
-          sudo tar xjf /tmp/armtc/gcc-arm-none-eabi.tar.bz2 -C /usr/share/
-          sudo ln -s /usr/share/gcc-arm-none-eabi-10.3-2021.10/bin/* /usr/bin/
-
-      - name: Build ${{ matrix.target }}
-        run: |
-          make -C ./Firmware clean
-          make -j16 -C ./Firmware MCU_TARGET=${{ matrix.target }} OUTPUT_DIR=Output
-
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: OpenFFBoard-Firmware-${{ matrix.target }}
           path: ./Firmware/Output
+
+  # Release:
+  #   needs: [Build_firmware] # Requires build first
+  #   name: Release if tagged
+  #   runs-on: ubuntu-latest
+  #   if: startsWith(github.ref, 'refs/tags/v')
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - uses: actions/download-artifact@v3
+  #       with:
+  #         path: etc/usr/artifacts/
+
+  #     - name: Display structure of downloaded files
+  #       run: ls -R
+  #       working-directory: etc/usr/artifacts/
+
+  #     - name: Release
+  #       uses: softprops/action-gh-release@v1
+  #       if: startsWith(github.ref, 'refs/tags/')
+  #       with:
+  #         body_path: ${{ github.workspace }}/CHANGELOG.txt
+  #         body: "Release notes coming soon"
