@@ -50,7 +50,7 @@ void CANPort::restoreFlash(){
 	}
 	uint16_t data;
 	if(Flash_Read(ADR_CANCONF1, &data)){
-		setSpeedPreset(data & 0x111);
+		setSpeedPreset(data & 0b111);
 	}
 }
 
