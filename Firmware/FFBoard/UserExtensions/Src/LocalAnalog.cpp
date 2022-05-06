@@ -19,10 +19,10 @@ LocalAnalog::LocalAnalog() : CommandHandler("apin",CLSID_ANALOG_LOCAL,0) {
 	this->restoreFlash();
 
 	CommandHandler::registerCommands();
-	registerCommand("mask", LocalAnaloc_commands::pinmask, "Enabled pins");
-	registerCommand("autocal", LocalAnaloc_commands::autocal, "Autoranging");
-	registerCommand("pins", LocalAnaloc_commands::pins, "Available pins");
-	registerCommand("values", LocalAnaloc_commands::values, "Analog values");
+	registerCommand("mask", LocalAnaloc_commands::pinmask, "Enabled pins",CMDFLAG_GET|CMDFLAG_SET);
+	registerCommand("autocal", LocalAnaloc_commands::autocal, "Autoranging",CMDFLAG_GET|CMDFLAG_SET);
+	registerCommand("pins", LocalAnaloc_commands::pins, "Available pins",CMDFLAG_GET|CMDFLAG_SET);
+	registerCommand("values", LocalAnaloc_commands::values, "Analog values",CMDFLAG_GET);
 }
 
 LocalAnalog::~LocalAnalog() {
@@ -108,15 +108,11 @@ CommandStatus LocalAnalog::command(const ParsedCommand& cmd,std::vector<CommandR
 		case LocalAnaloc_commands::values:
 			if(cmd.type == CMDtype::get){
 				std::vector<int32_t>* axes = getAxes();
-				char buf[100]={0};
+
 				for(int32_t val : *axes){
-					char s_num[8];
-					snprintf(s_num, sizeof(s_num), "%d,",val);
-					strcat(buf, s_num);
+					replies.push_back(CommandReply(val));
 				}
-				std::string reply = buf;
-				reply.erase(reply.end() - 1); // remove the last ','
-				replies.push_back(CommandReply(reply));
+
 			}else{
 				return CommandStatus::ERR;
 			}
