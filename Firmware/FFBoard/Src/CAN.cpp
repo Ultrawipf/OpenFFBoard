@@ -101,6 +101,7 @@ bool CANPort::start(){
 #ifdef CAN_COMMANDS_DISABLED_IF_NOT_USED
 	this->setCommandsEnabled(true);
 #endif
+	setSpeedPreset(this->speedPreset); // Set preset again for a safe state
 	return HAL_CAN_Start(this->hcan) == HAL_OK;
 }
 

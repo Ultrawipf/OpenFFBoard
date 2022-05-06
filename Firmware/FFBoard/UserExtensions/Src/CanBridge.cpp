@@ -48,7 +48,6 @@ CanBridge::CanBridge() {
 	txHeader.TransmitGlobalTime = DISABLE;
 
 	this->filterId = this->port->addCanFilter(sFilterConfig);
-	// Interrupt start
 	conf1.enabled = true;
 
 	//CommandHandler::registerCommands();
@@ -56,11 +55,13 @@ CanBridge::CanBridge() {
 	registerCommand("rtr", CanBridge_commands::canrtr, "Send a RTR frame");
 	registerCommand("spd", CanBridge_commands::canspd, "Change or get CAN baud");
 
-	this->port->start();
+	this->port->setSilentMode(false);
+	this->port->takePort();
 }
 
 CanBridge::~CanBridge() {
 	this->port->removeCanFilter(filterId);
+	this->port->freePort();
 }
 
 
