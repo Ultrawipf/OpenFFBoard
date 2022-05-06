@@ -11,3 +11,4 @@
 - Added BISS-C encoder
 - Fixed MT Encoder
 - Reworked TMC external encoder system
+- Digital and analog source readout command
