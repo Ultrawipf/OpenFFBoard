@@ -29,7 +29,7 @@ EncoderLocal::EncoderLocal() : CommandHandler("localenc",CLSID_ENCODER_LOCAL) {
 
 void EncoderLocal::registerCommands(){
 	CommandHandler::registerCommands();
-	registerCommand("cpr", EncoderLocal_commands::cpr, "CPR of encoder");
+	registerCommand("cpr", EncoderLocal_commands::cpr, "CPR of encoder",CMDFLAG_GET|CMDFLAG_SET);
 }
 
 EncoderLocal::~EncoderLocal() {

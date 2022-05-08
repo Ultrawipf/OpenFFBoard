@@ -123,27 +123,6 @@ public:
 		return false;
 	}
 
-	/**
-	 * Returns a string of classes available to this classchooser
-	 * ignoredCreatableId will list as creatable even if it is not. Useful to make a single class list as valid if it was already chosen
-	 */ // TODO REMOVE
-	std::string printAvailableClasses(int16_t ignoredCreatableId = 255){
-		std::string ret;
-		for(class_entry<T> cls : class_registry){
-			if(cls.info.visibility == ClassVisibility::hidden || (cls.info.visibility == ClassVisibility::debug && !SystemCommands::allowDebugCommands)){
-				if(ignoredCreatableId != cls.selectionId)
-					continue;
-			}
-
-			ret+= std::to_string(cls.selectionId);
-			ret+= ":";
-			ret+= (cls.isCreatable() || ignoredCreatableId == cls.selectionId) ? "1" : "0";
-			ret+= ":";
-			ret+= cls.info.name;
-			ret+='\n';
-		}
-		return ret;
-	}
 
 	/**
 	 * Generates replies for the command system listing selectable classes
