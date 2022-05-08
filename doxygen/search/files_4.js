@@ -9,11 +9,13 @@ var searchData=
   ['effectscalculator_2eh_6',['EffectsCalculator.h',['../_effects_calculator_8h.html',1,'']]],
   ['encoder_2ecpp_7',['Encoder.cpp',['../_encoder_8cpp.html',1,'']]],
   ['encoder_2eh_8',['Encoder.h',['../_encoder_8h.html',1,'']]],
-  ['encoderlocal_2ecpp_9',['EncoderLocal.cpp',['../_encoder_local_8cpp.html',1,'']]],
-  ['encoderlocal_2eh_10',['EncoderLocal.h',['../_encoder_local_8h.html',1,'']]],
-  ['errorhandler_2ecpp_11',['ErrorHandler.cpp',['../_error_handler_8cpp.html',1,'']]],
-  ['errorhandler_2eh_12',['ErrorHandler.h',['../_error_handler_8h.html',1,'']]],
-  ['event_5fgroups_2ehpp_13',['event_groups.hpp',['../event__groups_8hpp.html',1,'']]],
-  ['extihandler_2ecpp_14',['ExtiHandler.cpp',['../_exti_handler_8cpp.html',1,'']]],
-  ['extihandler_2eh_15',['ExtiHandler.h',['../_exti_handler_8h.html',1,'']]]
+  ['encoderbissc_2ecpp_9',['EncoderBissC.cpp',['../_encoder_biss_c_8cpp.html',1,'']]],
+  ['encoderbissc_2eh_10',['EncoderBissC.h',['../_encoder_biss_c_8h.html',1,'']]],
+  ['encoderlocal_2ecpp_11',['EncoderLocal.cpp',['../_encoder_local_8cpp.html',1,'']]],
+  ['encoderlocal_2eh_12',['EncoderLocal.h',['../_encoder_local_8h.html',1,'']]],
+  ['errorhandler_2ecpp_13',['ErrorHandler.cpp',['../_error_handler_8cpp.html',1,'']]],
+  ['errorhandler_2eh_14',['ErrorHandler.h',['../_error_handler_8h.html',1,'']]],
+  ['event_5fgroups_2ehpp_15',['event_groups.hpp',['../event__groups_8hpp.html',1,'']]],
+  ['extihandler_2ecpp_16',['ExtiHandler.cpp',['../_exti_handler_8cpp.html',1,'']]],
+  ['extihandler_2eh_17',['ExtiHandler.h',['../_exti_handler_8h.html',1,'']]]
 ];

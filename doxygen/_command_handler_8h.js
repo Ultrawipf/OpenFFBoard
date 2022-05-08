@@ -30,7 +30,8 @@ var _command_handler_8h =
       [ "STRING", "_command_handler_8h.html#a9c4555f6fe97545f2480f26071a2935fa63b588d5559f64f89a416e656880b949", null ],
       [ "STRING_OR_INT", "_command_handler_8h.html#a9c4555f6fe97545f2480f26071a2935fa11f3bb213887c0c8e35ab1dbbc839b79", null ],
       [ "STRING_OR_DOUBLEINT", "_command_handler_8h.html#a9c4555f6fe97545f2480f26071a2935fa6e8ac824da9888bd4beebe876e0e4ec7", null ],
-      [ "DOUBLEINTS", "_command_handler_8h.html#a9c4555f6fe97545f2480f26071a2935fa03d44b87916b4ed53affc13f79dbc459", null ]
+      [ "DOUBLEINTS", "_command_handler_8h.html#a9c4555f6fe97545f2480f26071a2935fa03d44b87916b4ed53affc13f79dbc459", null ],
+      [ "ERR", "_command_handler_8h.html#a9c4555f6fe97545f2480f26071a2935facd22bad976363fdd1bfbf6759fede482", null ]
     ] ],
     [ "CommandStatus", "_command_handler_8h.html#aefaf83fec6a7da1d02ae7e912dd9a6d5", [
       [ "NOT_FOUND", "_command_handler_8h.html#aefaf83fec6a7da1d02ae7e912dd9a6d5a8c02547a8a3b02382bac3557bcb2280d", null ],

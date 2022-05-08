@@ -116,6 +116,7 @@ Inheritance diagram for PCF8574Buttons:</div>
 Public Types</h2></td></tr>
 <tr class="memitem:a4968701182a9f51430d9c750d6375b70"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_p_c_f8574_buttons.html#a4968701182a9f51430d9c750d6375b70">PCF8574Buttons_commands</a> : uint32_t { <a class="el" href="class_p_c_f8574_buttons.html#a4968701182a9f51430d9c750d6375b70a8f6247b8c4167035329ce85cb34db93f">btnnum</a>
 , <a class="el" href="class_p_c_f8574_buttons.html#a4968701182a9f51430d9c750d6375b70a20e57f32ba12b9cd13ebe9ef5e32d949">invert</a>
+, <a class="el" href="class_p_c_f8574_buttons.html#a4968701182a9f51430d9c750d6375b70ace4ef3ec98443ed10da505114b58f153">speed</a>
  }</td></tr>
 <tr class="separator:a4968701182a9f51430d9c750d6375b70"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -286,12 +287,17 @@ Static Public Member Functions</h2></td></tr>
 <tr class="separator:a563efae94fc4c4cd910a0feefb681df3 inherit pub_static_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb22b24f51c53110d1275157b5d82fde inherit pub_static_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">static std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#adb22b24f51c53110d1275157b5d82fde">getAllHelpstrings</a> ()</td></tr>
 <tr class="separator:adb22b24f51c53110d1275157b5d82fde inherit pub_static_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5a52ada34bde17d66b072d41aa96769 inherit pub_static_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; <a class="el" href="class_command_handler.html">CommandHandler</a> * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#af5a52ada34bde17d66b072d41aa96769">getCommandHandlers</a> ()</td></tr>
+<tr class="separator:af5a52ada34bde17d66b072d41aa96769 inherit pub_static_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_methods_class_button_source"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_class_button_source')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="class_button_source.html">ButtonSource</a></td></tr>
 <tr class="memitem:a4f10e6970dbfc7d9ed1ddb2a069631f1 inherit pub_static_methods_class_button_source"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_button_source.html#a4f10e6970dbfc7d9ed1ddb2a069631f1">isCreatable</a> ()</td></tr>
 <tr class="separator:a4f10e6970dbfc7d9ed1ddb2a069631f1 inherit pub_static_methods_class_button_source"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_methods_class_choosable_class"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_class_choosable_class')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="class_choosable_class.html">ChoosableClass</a></td></tr>
 <tr class="memitem:a0844860bcdabd39f492b498ccb674468 inherit pub_static_methods_class_choosable_class"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_choosable_class.html#a0844860bcdabd39f492b498ccb674468">isCreatable</a> ()</td></tr>
 <tr class="separator:a0844860bcdabd39f492b498ccb674468 inherit pub_static_methods_class_choosable_class"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_static_methods_class_persistent_storage"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_class_persistent_storage')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="class_persistent_storage.html">PersistentStorage</a></td></tr>
+<tr class="memitem:a14700f8511d8aaea5d5b29632b371eb9 inherit pub_static_methods_class_persistent_storage"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; <a class="el" href="class_persistent_storage.html">PersistentStorage</a> * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_persistent_storage.html#a14700f8511d8aaea5d5b29632b371eb9">getFlashHandlers</a> ()</td></tr>
+<tr class="separator:a14700f8511d8aaea5d5b29632b371eb9 inherit pub_static_methods_class_persistent_storage"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_methods_classcpp__freertos_1_1_thread"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classcpp__freertos_1_1_thread')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classcpp__freertos_1_1_thread.html">cpp_freertos::Thread</a></td></tr>
 <tr class="memitem:abe20a08801d022da203e0295dbb59cbb inherit pub_static_methods_classcpp__freertos_1_1_thread"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__freertos_1_1_thread.html#abe20a08801d022da203e0295dbb59cbb">Yield</a> ()</td></tr>
 <tr class="separator:abe20a08801d022da203e0295dbb59cbb inherit pub_static_methods_classcpp__freertos_1_1_thread"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -305,14 +311,6 @@ Static Public Attributes</h2></td></tr>
 <tr class="memitem:a8979f66c1ed357e4414eaa1d6965fc59"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="struct_class_identifier.html">ClassIdentifier</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_p_c_f8574_buttons.html#a8979f66c1ed357e4414eaa1d6965fc59">info</a></td></tr>
 <tr class="separator:a8979f66c1ed357e4414eaa1d6965fc59"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_attribs_class_command_handler"><td colspan="2" onclick="javascript:toggleInherit('pub_static_attribs_class_command_handler')"><img src="closed.png" alt="-"/>&#160;Static Public Attributes inherited from <a class="el" href="class_command_handler.html">CommandHandler</a></td></tr>
-<tr class="memitem:addbb8cd4ec08f1ffc017fdf03c324ed0 inherit pub_static_attribs_class_command_handler"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; <a class="el" href="class_command_handler.html">CommandHandler</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#addbb8cd4ec08f1ffc017fdf03c324ed0">cmdHandlers</a></td></tr>
-<tr class="memdesc:addbb8cd4ec08f1ffc017fdf03c324ed0 inherit pub_static_attribs_class_command_handler"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of all registered command handlers to be called on commands.  <a href="class_command_handler.html#addbb8cd4ec08f1ffc017fdf03c324ed0">More...</a><br /></td></tr>
-<tr class="separator:addbb8cd4ec08f1ffc017fdf03c324ed0 inherit pub_static_attribs_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a340d66384489dc6e5faae48728a80929 inherit pub_static_attribs_class_command_handler"><td class="memItemLeft" align="right" valign="top">static std::set&lt; uint16_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a340d66384489dc6e5faae48728a80929">cmdHandlerIDs</a></td></tr>
-<tr class="memdesc:a340d66384489dc6e5faae48728a80929 inherit pub_static_attribs_class_command_handler"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reserves dynamic unique IDs to keep track of command handlers.  <a href="class_command_handler.html#a340d66384489dc6e5faae48728a80929">More...</a><br /></td></tr>
-<tr class="separator:a340d66384489dc6e5faae48728a80929 inherit pub_static_attribs_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa712fed44e0c1c489118b0577b2b4800 inherit pub_static_attribs_class_command_handler"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classcpp__freertos_1_1_mutex_standard.html">cpp_freertos::MutexStandard</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#aa712fed44e0c1c489118b0577b2b4800">cmdHandlerListMutex</a></td></tr>
-<tr class="separator:aa712fed44e0c1c489118b0577b2b4800 inherit pub_static_attribs_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9029c76e98bec126216b0e6e35c0c88a inherit pub_static_attribs_class_command_handler"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a9029c76e98bec126216b0e6e35c0c88a">logEnabled</a> = true</td></tr>
 <tr class="separator:a9029c76e98bec126216b0e6e35c0c88a inherit pub_static_attribs_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_attribs_class_button_source"><td colspan="2" onclick="javascript:toggleInherit('pub_static_attribs_class_button_source')"><img src="closed.png" alt="-"/>&#160;Static Public Attributes inherited from <a class="el" href="class_button_source.html">ButtonSource</a></td></tr>
@@ -321,9 +319,6 @@ Static Public Attributes</h2></td></tr>
 <tr class="inherit_header pub_static_attribs_class_choosable_class"><td colspan="2" onclick="javascript:toggleInherit('pub_static_attribs_class_choosable_class')"><img src="closed.png" alt="-"/>&#160;Static Public Attributes inherited from <a class="el" href="class_choosable_class.html">ChoosableClass</a></td></tr>
 <tr class="memitem:a13914185ad8fcd65474c4e7e981d4c2b inherit pub_static_attribs_class_choosable_class"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="struct_class_identifier.html">ClassIdentifier</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_choosable_class.html#a13914185ad8fcd65474c4e7e981d4c2b">info</a></td></tr>
 <tr class="separator:a13914185ad8fcd65474c4e7e981d4c2b inherit pub_static_attribs_class_choosable_class"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_static_attribs_class_persistent_storage"><td colspan="2" onclick="javascript:toggleInherit('pub_static_attribs_class_persistent_storage')"><img src="closed.png" alt="-"/>&#160;Static Public Attributes inherited from <a class="el" href="class_persistent_storage.html">PersistentStorage</a></td></tr>
-<tr class="memitem:a3ed49a2f47c50a087bcda25d9b00d50c inherit pub_static_attribs_class_persistent_storage"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; <a class="el" href="class_persistent_storage.html">PersistentStorage</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_persistent_storage.html#a3ed49a2f47c50a087bcda25d9b00d50c">flashHandlers</a></td></tr>
-<tr class="separator:a3ed49a2f47c50a087bcda25d9b00d50c inherit pub_static_attribs_class_persistent_storage"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
@@ -383,6 +378,9 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:a71f796ec7c2bd53bb0f28b648967f601 inherit pro_methods_classcpp__freertos_1_1_thread"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a91a73909fb17ee160f992a78cfd2b119 inherit pro_methods_classcpp__freertos_1_1_thread"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__freertos_1_1_thread.html#a91a73909fb17ee160f992a78cfd2b119">Wait</a> (<a class="el" href="classcpp__freertos_1_1_condition_variable.html">ConditionVariable</a> &amp;Cv, <a class="el" href="classcpp__freertos_1_1_mutex.html">Mutex</a> &amp;CvLock, TickType_t Timeout=portMAX_DELAY)</td></tr>
 <tr class="separator:a91a73909fb17ee160f992a78cfd2b119 inherit pro_methods_classcpp__freertos_1_1_thread"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_static_methods_class_command_handler"><td colspan="2" onclick="javascript:toggleInherit('pro_static_methods_class_command_handler')"><img src="closed.png" alt="-"/>&#160;Static Protected Member Functions inherited from <a class="el" href="class_command_handler.html">CommandHandler</a></td></tr>
+<tr class="memitem:a123585937cc70b6d4e77c024e138019f inherit pro_static_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; uint16_t &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a123585937cc70b6d4e77c024e138019f">getCommandHandlerIds</a> ()</td></tr>
+<tr class="separator:a123585937cc70b6d4e77c024e138019f inherit pro_static_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_class_p_c_f8574"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_class_p_c_f8574')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="class_p_c_f8574.html">PCF8574</a></td></tr>
 <tr class="memitem:afb939a6060983e8bc65833c8fc12fe03 inherit pro_attribs_class_p_c_f8574"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_i2_c_port.html">I2CPort</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_p_c_f8574.html#afb939a6060983e8bc65833c8fc12fe03">port</a></td></tr>
 <tr class="separator:afb939a6060983e8bc65833c8fc12fe03 inherit pro_attribs_class_p_c_f8574"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -407,7 +405,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_p_c_f8574_8h_source.html#l00048">48</a> of file <a class="el" href="_p_c_f8574_8h_source.html">PCF8574.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_p_c_f8574_8h_source.html#l00050">50</a> of file <a class="el" href="_p_c_f8574_8h_source.html">PCF8574.h</a>.</p>
 </div><h2 class="groupheader">Member Enumeration Documentation</h2>
 <a id="a4968701182a9f51430d9c750d6375b70" name="a4968701182a9f51430d9c750d6375b70"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4968701182a9f51430d9c750d6375b70">&#9670;&nbsp;</a></span>PCF8574Buttons_commands</h2>
@@ -431,9 +429,10 @@ Additional Inherited Members</h2></td></tr>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a4968701182a9f51430d9c750d6375b70a8f6247b8c4167035329ce85cb34db93f" name="a4968701182a9f51430d9c750d6375b70a8f6247b8c4167035329ce85cb34db93f"></a>btnnum&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a4968701182a9f51430d9c750d6375b70a20e57f32ba12b9cd13ebe9ef5e32d949" name="a4968701182a9f51430d9c750d6375b70a20e57f32ba12b9cd13ebe9ef5e32d949"></a>invert&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a4968701182a9f51430d9c750d6375b70ace4ef3ec98443ed10da505114b58f153" name="a4968701182a9f51430d9c750d6375b70ace4ef3ec98443ed10da505114b58f153"></a>speed&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="_p_c_f8574_8h_source.html#l00053">53</a> of file <a class="el" href="_p_c_f8574_8h_source.html">PCF8574.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_p_c_f8574_8h_source.html#l00055">55</a> of file <a class="el" href="_p_c_f8574_8h_source.html">PCF8574.h</a>.</p>
 
 </div>
 </div>
@@ -453,7 +452,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_p_c_f8574_8cpp_source.html#l00066">66</a> of file <a class="el" href="_p_c_f8574_8cpp_source.html">PCF8574.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_p_c_f8574_8cpp_source.html#l00071">71</a> of file <a class="el" href="_p_c_f8574_8cpp_source.html">PCF8574.cpp</a>.</p>
 
 </div>
 </div>
@@ -480,7 +479,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_p_c_f8574_8cpp_source.html#l00075">75</a> of file <a class="el" href="_p_c_f8574_8cpp_source.html">PCF8574.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_p_c_f8574_8cpp_source.html#l00082">82</a> of file <a class="el" href="_p_c_f8574_8cpp_source.html">PCF8574.cpp</a>.</p>
 
 </div>
 </div>
@@ -528,7 +527,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_command_handler.html#a8d2531d579c03d6672495ccb57f5ffb3">CommandHandler</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_p_c_f8574_8cpp_source.html#l00168">168</a> of file <a class="el" href="_p_c_f8574_8cpp_source.html">PCF8574.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_p_c_f8574_8cpp_source.html#l00181">181</a> of file <a class="el" href="_p_c_f8574_8cpp_source.html">PCF8574.cpp</a>.</p>
 
 </div>
 </div>
@@ -557,7 +556,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_button_source.html#a720d1040bb379a0353b2f21c0b8204a1">ButtonSource</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_p_c_f8574_8cpp_source.html#l00149">149</a> of file <a class="el" href="_p_c_f8574_8cpp_source.html">PCF8574.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_p_c_f8574_8cpp_source.html#l00158">158</a> of file <a class="el" href="_p_c_f8574_8cpp_source.html">PCF8574.cpp</a>.</p>
 
 </div>
 </div>
@@ -589,7 +588,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_button_source.html#a14b6d39e560e07ce49fcad3f53396c20">ButtonSource</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_p_c_f8574_8h_source.html#l00073">73</a> of file <a class="el" href="_p_c_f8574_8h_source.html">PCF8574.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_p_c_f8574_8h_source.html#l00075">75</a> of file <a class="el" href="_p_c_f8574_8h_source.html">PCF8574.h</a>.</p>
 
 </div>
 </div>
@@ -619,7 +618,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_command_handler.html#a0842b01125770b9be569a29d49080a3f">CommandHandler</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_p_c_f8574_8h_source.html#l00075">75</a> of file <a class="el" href="_p_c_f8574_8h_source.html">PCF8574.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_p_c_f8574_8h_source.html#l00077">77</a> of file <a class="el" href="_p_c_f8574_8h_source.html">PCF8574.h</a>.</p>
 
 </div>
 </div>
@@ -648,7 +647,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="class_button_source.html#a3260ac96b3bd002ebc882665eaa0078d">ButtonSource</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_p_c_f8574_8cpp_source.html#l00061">61</a> of file <a class="el" href="_p_c_f8574_8cpp_source.html">PCF8574.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_p_c_f8574_8cpp_source.html#l00066">66</a> of file <a class="el" href="_p_c_f8574_8cpp_source.html">PCF8574.cpp</a>.</p>
 
 </div>
 </div>
@@ -678,7 +677,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_i2_c_device.html#add48ca296615b1f7db570c8caa4a46cc">I2CDevice</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_p_c_f8574_8cpp_source.html#l00096">96</a> of file <a class="el" href="_p_c_f8574_8cpp_source.html">PCF8574.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_p_c_f8574_8cpp_source.html#l00103">103</a> of file <a class="el" href="_p_c_f8574_8cpp_source.html">PCF8574.cpp</a>.</p>
 
 </div>
 </div>
@@ -705,7 +704,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_p_c_f8574_8h_source.html#l00071">71</a> of file <a class="el" href="_p_c_f8574_8h_source.html">PCF8574.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_p_c_f8574_8h_source.html#l00073">73</a> of file <a class="el" href="_p_c_f8574_8h_source.html">PCF8574.h</a>.</p>
 
 </div>
 </div>
@@ -736,7 +735,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="class_button_source.html#a95a2fa76c98f3e065aadc8a278287586">ButtonSource</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_p_c_f8574_8cpp_source.html#l00122">122</a> of file <a class="el" href="_p_c_f8574_8cpp_source.html">PCF8574.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_p_c_f8574_8cpp_source.html#l00131">131</a> of file <a class="el" href="_p_c_f8574_8cpp_source.html">PCF8574.cpp</a>.</p>
 
 </div>
 </div>
@@ -766,7 +765,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_persistent_storage.html#aa8187136adfa89fca9ddee2578f6eb68">PersistentStorage</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_p_c_f8574_8cpp_source.html#l00112">112</a> of file <a class="el" href="_p_c_f8574_8cpp_source.html">PCF8574.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_p_c_f8574_8cpp_source.html#l00120">120</a> of file <a class="el" href="_p_c_f8574_8cpp_source.html">PCF8574.cpp</a>.</p>
 
 </div>
 </div>
@@ -796,7 +795,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classcpp__freertos_1_1_thread.html#a93df31e4bee72f150dd742ab5d6d35c3">cpp_freertos::Thread</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_p_c_f8574_8cpp_source.html#l00080">80</a> of file <a class="el" href="_p_c_f8574_8cpp_source.html">PCF8574.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_p_c_f8574_8cpp_source.html#l00087">87</a> of file <a class="el" href="_p_c_f8574_8cpp_source.html">PCF8574.cpp</a>.</p>
 
 </div>
 </div>
@@ -844,7 +843,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_persistent_storage.html#a105599e99ab0e4244a531c2286f2ffa2">PersistentStorage</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_p_c_f8574_8cpp_source.html#l00106">106</a> of file <a class="el" href="_p_c_f8574_8cpp_source.html">PCF8574.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_p_c_f8574_8cpp_source.html#l00113">113</a> of file <a class="el" href="_p_c_f8574_8cpp_source.html">PCF8574.cpp</a>.</p>
 
 </div>
 </div>
@@ -865,7 +864,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p >Changes the amount of buttons to be read num/8 chips required. Each of them taking 200µS for a transfer! Not recommended to use more than 4 modules </p>
 
-<p class="definition">Definition at line <a class="el" href="_p_c_f8574_8cpp_source.html#l00159">159</a> of file <a class="el" href="_p_c_f8574_8cpp_source.html">PCF8574.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_p_c_f8574_8cpp_source.html#l00168">168</a> of file <a class="el" href="_p_c_f8574_8cpp_source.html">PCF8574.cpp</a>.</p>
 
 </div>
 </div>
@@ -890,7 +889,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_p_c_f8574_8h_source.html#l00084">84</a> of file <a class="el" href="_p_c_f8574_8h_source.html">PCF8574.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_p_c_f8574_8h_source.html#l00086">86</a> of file <a class="el" href="_p_c_f8574_8h_source.html">PCF8574.h</a>.</p>
 
 </div>
 </div>
@@ -918,7 +917,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line">         .id=CLSID_BTN_PCF,</div>
 <div class="line"> }</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="_p_c_f8574_8h_source.html#l00070">70</a> of file <a class="el" href="_p_c_f8574_8h_source.html">PCF8574.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_p_c_f8574_8h_source.html#l00072">72</a> of file <a class="el" href="_p_c_f8574_8h_source.html">PCF8574.h</a>.</p>
 
 </div>
 </div>
@@ -942,7 +941,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_p_c_f8574_8h_source.html#l00080">80</a> of file <a class="el" href="_p_c_f8574_8h_source.html">PCF8574.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_p_c_f8574_8h_source.html#l00082">82</a> of file <a class="el" href="_p_c_f8574_8h_source.html">PCF8574.h</a>.</p>
 
 </div>
 </div>
@@ -966,7 +965,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_p_c_f8574_8h_source.html#l00083">83</a> of file <a class="el" href="_p_c_f8574_8h_source.html">PCF8574.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_p_c_f8574_8h_source.html#l00085">85</a> of file <a class="el" href="_p_c_f8574_8h_source.html">PCF8574.h</a>.</p>
 
 </div>
 </div>
@@ -990,7 +989,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_p_c_f8574_8h_source.html#l00086">86</a> of file <a class="el" href="_p_c_f8574_8h_source.html">PCF8574.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_p_c_f8574_8h_source.html#l00088">88</a> of file <a class="el" href="_p_c_f8574_8h_source.html">PCF8574.h</a>.</p>
 
 </div>
 </div>
@@ -1014,7 +1013,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_p_c_f8574_8h_source.html#l00087">87</a> of file <a class="el" href="_p_c_f8574_8h_source.html">PCF8574.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_p_c_f8574_8h_source.html#l00089">89</a> of file <a class="el" href="_p_c_f8574_8h_source.html">PCF8574.h</a>.</p>
 
 </div>
 </div>
@@ -1038,7 +1037,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_p_c_f8574_8h_source.html#l00089">89</a> of file <a class="el" href="_p_c_f8574_8h_source.html">PCF8574.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_p_c_f8574_8h_source.html#l00091">91</a> of file <a class="el" href="_p_c_f8574_8h_source.html">PCF8574.h</a>.</p>
 
 </div>
 </div>
@@ -1062,7 +1061,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_p_c_f8574_8h_source.html#l00082">82</a> of file <a class="el" href="_p_c_f8574_8h_source.html">PCF8574.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_p_c_f8574_8h_source.html#l00084">84</a> of file <a class="el" href="_p_c_f8574_8h_source.html">PCF8574.h</a>.</p>
 
 </div>
 </div>
@@ -1086,7 +1085,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_p_c_f8574_8h_source.html#l00081">81</a> of file <a class="el" href="_p_c_f8574_8h_source.html">PCF8574.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_p_c_f8574_8h_source.html#l00083">83</a> of file <a class="el" href="_p_c_f8574_8h_source.html">PCF8574.h</a>.</p>
 
 </div>
 </div>
@@ -1110,7 +1109,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_p_c_f8574_8h_source.html#l00091">91</a> of file <a class="el" href="_p_c_f8574_8h_source.html">PCF8574.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_p_c_f8574_8h_source.html#l00093">93</a> of file <a class="el" href="_p_c_f8574_8h_source.html">PCF8574.h</a>.</p>
 
 </div>
 </div>
@@ -1134,7 +1133,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_p_c_f8574_8h_source.html#l00090">90</a> of file <a class="el" href="_p_c_f8574_8h_source.html">PCF8574.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_p_c_f8574_8h_source.html#l00092">92</a> of file <a class="el" href="_p_c_f8574_8h_source.html">PCF8574.h</a>.</p>
 
 </div>
 </div>

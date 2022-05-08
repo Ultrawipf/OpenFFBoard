@@ -7,8 +7,6 @@ var class_axes_manager =
     [ "getAxisCount", "class_axes_manager.html#a870f6d09234f274a65c6797c0873c262", null ],
     [ "getAxisValues", "class_axes_manager.html#aacd4d7102b72d89d18736c1d1ec2400b", null ],
     [ "resetPosZero", "class_axes_manager.html#a85deee4d6fc31189f60729b3fcaff971", null ],
-    [ "restoreFlash", "class_axes_manager.html#afae6cdc75050e23a151086d48cfb4392", null ],
-    [ "saveFlash", "class_axes_manager.html#acf1ba339855959c30f0a8ecfacc49671", null ],
     [ "setAxisCount", "class_axes_manager.html#a4ffcf69cd10bb9b52b7b2e8f5c82714f", null ],
     [ "setEffectsCalculator", "class_axes_manager.html#a9f584f2815a42f1bafa8ec5b6e91177a", null ],
     [ "update", "class_axes_manager.html#ad9b154e66a586a76b996ee52d101ffaa", null ],

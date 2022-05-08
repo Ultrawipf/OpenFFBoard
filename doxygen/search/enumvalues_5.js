@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['ffbactive_0',['ffbactive',['../class_f_f_b_wheel.html#ace76c3afbd00ff74b273a794066c2888a849a1e676206d4b8a6f4d45c9e6b7818',1,'FFBWheel']]],
+  ['ffbactive_0',['ffbactive',['../class_f_f_b_h_i_d_main.html#a632f99d11cc2d6623e7341d704d641ada849a1e676206d4b8a6f4d45c9e6b7818',1,'FFBHIDMain']]],
   ['ffbfiltercf_1',['ffbfiltercf',['../_effects_calculator_8h.html#a8c1e274c9ae0e228a7e0a406bec8a694a9d8c1b1e011e3e5451da3ae153777d34',1,'EffectsCalculator.h']]],
   ['ffbfiltercf_5fq_2',['ffbfiltercf_q',['../_effects_calculator_8h.html#a8c1e274c9ae0e228a7e0a406bec8a694aa12e2678c0f433a4341697350bdc9c7a',1,'EffectsCalculator.h']]],
   ['findindex_3',['findIndex',['../class_t_m_c4671.html#a383a82ab842490e325553e9365028a27a74297ee14db5b6c340f2ca10bf0a247b',1,'TMC4671']]],

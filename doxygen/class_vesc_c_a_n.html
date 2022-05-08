@@ -248,8 +248,6 @@ Public Member Functions</h2></td></tr>
 Private Member Functions</h2></td></tr>
 <tr class="memitem:aa186da23c69e64c8c04a411b794e3b46"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_vesc_c_a_n.html#aa186da23c69e64c8c04a411b794e3b46">saveFlashOffset</a> ()</td></tr>
 <tr class="separator:aa186da23c69e64c8c04a411b794e3b46"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acb2d4273c1d4998599fcf8e570543360"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_vesc_c_a_n.html#acb2d4273c1d4998599fcf8e570543360">setCanRate</a> (uint8_t canRate)</td></tr>
-<tr class="separator:acb2d4273c1d4998599fcf8e570543360"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0836c415eed0eefefd4dc0172bfcc607"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_vesc_c_a_n.html#a0836c415eed0eefefd4dc0172bfcc607">getFirmwareInfo</a> ()</td></tr>
 <tr class="separator:a0836c415eed0eefefd4dc0172bfcc607"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9eab0cbce66c1b7279a14307ae448ef5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_vesc_c_a_n.html#a9eab0cbce66c1b7279a14307ae448ef5">isFirmwareCompatible</a> ()</td></tr>
@@ -368,8 +366,6 @@ Private Attributes</h2></td></tr>
 <tr class="separator:aeb1912ec30578673b821d051a1581b14"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ace66a4b35cd1665b3c355596bff7c7a9"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_vesc_c_a_n.html#ace66a4b35cd1665b3c355596bff7c7a9">filterId</a> = 0</td></tr>
 <tr class="separator:ace66a4b35cd1665b3c355596bff7c7a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a64d22ed689dab16739d5ccd8fc077eef"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_vesc_c_a_n.html#a64d22ed689dab16739d5ccd8fc077eef">baudrate</a> = CANSPEEDPRESET_500</td></tr>
-<tr class="separator:a64d22ed689dab16739d5ccd8fc077eef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1ea53f75e9a39f4d94d1fe4bf9ab256d"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_vesc_c_a_n.html#a1ea53f75e9a39f4d94d1fe4bf9ab256d">OFFB_can_Id</a> = 0x40</td></tr>
 <tr class="separator:a1ea53f75e9a39f4d94d1fe4bf9ab256d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa96669528b8cc16aac4e348e68118a8b"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_vesc_c_a_n.html#aa96669528b8cc16aac4e348e68118a8b">VESC_can_Id</a> = 0xFF</td></tr>
@@ -384,6 +380,9 @@ Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pub_static_methods_class_choosable_class"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_class_choosable_class')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="class_choosable_class.html">ChoosableClass</a></td></tr>
 <tr class="memitem:a0844860bcdabd39f492b498ccb674468 inherit pub_static_methods_class_choosable_class"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_choosable_class.html#a0844860bcdabd39f492b498ccb674468">isCreatable</a> ()</td></tr>
 <tr class="separator:a0844860bcdabd39f492b498ccb674468 inherit pub_static_methods_class_choosable_class"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_static_methods_class_persistent_storage"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_class_persistent_storage')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="class_persistent_storage.html">PersistentStorage</a></td></tr>
+<tr class="memitem:a14700f8511d8aaea5d5b29632b371eb9 inherit pub_static_methods_class_persistent_storage"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; <a class="el" href="class_persistent_storage.html">PersistentStorage</a> * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_persistent_storage.html#a14700f8511d8aaea5d5b29632b371eb9">getFlashHandlers</a> ()</td></tr>
+<tr class="separator:a14700f8511d8aaea5d5b29632b371eb9 inherit pub_static_methods_class_persistent_storage"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_methods_class_command_handler"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_class_command_handler')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="class_command_handler.html">CommandHandler</a></td></tr>
 <tr class="memitem:a2f1846340caca33036391050a3bfa785 inherit pub_static_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a2f1846340caca33036391050a3bfa785">logSerial</a> (std::string string)</td></tr>
 <tr class="memdesc:a2f1846340caca33036391050a3bfa785 inherit pub_static_methods_class_command_handler"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a log formatted sequence.  <a href="class_command_handler.html#a2f1846340caca33036391050a3bfa785">More...</a><br /></td></tr>
@@ -410,6 +409,8 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:a563efae94fc4c4cd910a0feefb681df3 inherit pub_static_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb22b24f51c53110d1275157b5d82fde inherit pub_static_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">static std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#adb22b24f51c53110d1275157b5d82fde">getAllHelpstrings</a> ()</td></tr>
 <tr class="separator:adb22b24f51c53110d1275157b5d82fde inherit pub_static_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5a52ada34bde17d66b072d41aa96769 inherit pub_static_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; <a class="el" href="class_command_handler.html">CommandHandler</a> * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#af5a52ada34bde17d66b072d41aa96769">getCommandHandlers</a> ()</td></tr>
+<tr class="separator:af5a52ada34bde17d66b072d41aa96769 inherit pub_static_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_attribs_class_motor_driver"><td colspan="2" onclick="javascript:toggleInherit('pub_static_attribs_class_motor_driver')"><img src="closed.png" alt="-"/>&#160;Static Public Attributes inherited from <a class="el" href="class_motor_driver.html">MotorDriver</a></td></tr>
 <tr class="memitem:aa8dafac3a66d9703ae42e2aa3b876347 inherit pub_static_attribs_class_motor_driver"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="struct_class_identifier.html">ClassIdentifier</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_motor_driver.html#aa8dafac3a66d9703ae42e2aa3b876347">info</a> ={.<a class="el" href="_command_handler_8h.html#a13a18e5b49561a2f007205dc0afeea14ab068931cc450442b63f5b3d276ea4297">name</a> = &quot;None&quot; , .id=CLSID_MOT_NONE, .visibility = <a class="el" href="_choosable_class_8h.html#aa3a363b83e4ed5a23cf7398fcf8bae0ca46cf0e59759c9b7f1112ca4b174343ef">ClassVisibility::visible</a>}</td></tr>
 <tr class="separator:aa8dafac3a66d9703ae42e2aa3b876347 inherit pub_static_attribs_class_motor_driver"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -418,9 +419,6 @@ Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pub_static_attribs_class_choosable_class"><td colspan="2" onclick="javascript:toggleInherit('pub_static_attribs_class_choosable_class')"><img src="closed.png" alt="-"/>&#160;Static Public Attributes inherited from <a class="el" href="class_choosable_class.html">ChoosableClass</a></td></tr>
 <tr class="memitem:a13914185ad8fcd65474c4e7e981d4c2b inherit pub_static_attribs_class_choosable_class"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="struct_class_identifier.html">ClassIdentifier</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_choosable_class.html#a13914185ad8fcd65474c4e7e981d4c2b">info</a></td></tr>
 <tr class="separator:a13914185ad8fcd65474c4e7e981d4c2b inherit pub_static_attribs_class_choosable_class"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_static_attribs_class_persistent_storage"><td colspan="2" onclick="javascript:toggleInherit('pub_static_attribs_class_persistent_storage')"><img src="closed.png" alt="-"/>&#160;Static Public Attributes inherited from <a class="el" href="class_persistent_storage.html">PersistentStorage</a></td></tr>
-<tr class="memitem:a3ed49a2f47c50a087bcda25d9b00d50c inherit pub_static_attribs_class_persistent_storage"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; <a class="el" href="class_persistent_storage.html">PersistentStorage</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_persistent_storage.html#a3ed49a2f47c50a087bcda25d9b00d50c">flashHandlers</a></td></tr>
-<tr class="separator:a3ed49a2f47c50a087bcda25d9b00d50c inherit pub_static_attribs_class_persistent_storage"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_attribs_class_encoder"><td colspan="2" onclick="javascript:toggleInherit('pub_static_attribs_class_encoder')"><img src="closed.png" alt="-"/>&#160;Static Public Attributes inherited from <a class="el" href="class_encoder.html">Encoder</a></td></tr>
 <tr class="memitem:aca93704c64f6c921eec0969f7ef89f4f inherit pub_static_attribs_class_encoder"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="struct_class_identifier.html">ClassIdentifier</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_encoder.html#aca93704c64f6c921eec0969f7ef89f4f">info</a> ={.<a class="el" href="_command_handler_8h.html#a13a18e5b49561a2f007205dc0afeea14ab068931cc450442b63f5b3d276ea4297">name</a> = &quot;None&quot; , .id=CLSID_ENCODER_NONE, .visibility = <a class="el" href="_choosable_class_8h.html#aa3a363b83e4ed5a23cf7398fcf8bae0ca46cf0e59759c9b7f1112ca4b174343ef">ClassVisibility::visible</a>}</td></tr>
 <tr class="separator:aca93704c64f6c921eec0969f7ef89f4f inherit pub_static_attribs_class_encoder"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -430,14 +428,6 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:a40672afaa48f472234780bc711e31a5c inherit pub_static_attribs_class_can_handler"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; <a class="el" href="class_can_handler.html">CanHandler</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_handler.html#a40672afaa48f472234780bc711e31a5c">canHandlers</a></td></tr>
 <tr class="separator:a40672afaa48f472234780bc711e31a5c inherit pub_static_attribs_class_can_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_attribs_class_command_handler"><td colspan="2" onclick="javascript:toggleInherit('pub_static_attribs_class_command_handler')"><img src="closed.png" alt="-"/>&#160;Static Public Attributes inherited from <a class="el" href="class_command_handler.html">CommandHandler</a></td></tr>
-<tr class="memitem:addbb8cd4ec08f1ffc017fdf03c324ed0 inherit pub_static_attribs_class_command_handler"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; <a class="el" href="class_command_handler.html">CommandHandler</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#addbb8cd4ec08f1ffc017fdf03c324ed0">cmdHandlers</a></td></tr>
-<tr class="memdesc:addbb8cd4ec08f1ffc017fdf03c324ed0 inherit pub_static_attribs_class_command_handler"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of all registered command handlers to be called on commands.  <a href="class_command_handler.html#addbb8cd4ec08f1ffc017fdf03c324ed0">More...</a><br /></td></tr>
-<tr class="separator:addbb8cd4ec08f1ffc017fdf03c324ed0 inherit pub_static_attribs_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a340d66384489dc6e5faae48728a80929 inherit pub_static_attribs_class_command_handler"><td class="memItemLeft" align="right" valign="top">static std::set&lt; uint16_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a340d66384489dc6e5faae48728a80929">cmdHandlerIDs</a></td></tr>
-<tr class="memdesc:a340d66384489dc6e5faae48728a80929 inherit pub_static_attribs_class_command_handler"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reserves dynamic unique IDs to keep track of command handlers.  <a href="class_command_handler.html#a340d66384489dc6e5faae48728a80929">More...</a><br /></td></tr>
-<tr class="separator:a340d66384489dc6e5faae48728a80929 inherit pub_static_attribs_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa712fed44e0c1c489118b0577b2b4800 inherit pub_static_attribs_class_command_handler"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classcpp__freertos_1_1_mutex_standard.html">cpp_freertos::MutexStandard</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#aa712fed44e0c1c489118b0577b2b4800">cmdHandlerListMutex</a></td></tr>
-<tr class="separator:aa712fed44e0c1c489118b0577b2b4800 inherit pub_static_attribs_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9029c76e98bec126216b0e6e35c0c88a inherit pub_static_attribs_class_command_handler"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a9029c76e98bec126216b0e6e35c0c88a">logEnabled</a> = true</td></tr>
 <tr class="separator:a9029c76e98bec126216b0e6e35c0c88a inherit pub_static_attribs_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_class_command_handler"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_class_command_handler')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="class_command_handler.html">CommandHandler</a></td></tr>
@@ -462,6 +452,9 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:a26d4fbfbb1106d0465716e1968150a7d inherit pro_methods_class_command_handler"><td class="memTemplParams" colspan="2">template&lt;typename ID &gt; </td></tr>
 <tr class="memitem:a26d4fbfbb1106d0465716e1968150a7d inherit pro_methods_class_command_handler"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a26d4fbfbb1106d0465716e1968150a7d">registerCommand</a> (const char *cmd, const ID cmdid, const char *<a class="el" href="_command_handler_8h.html#a13a18e5b49561a2f007205dc0afeea14a657f8b8da628ef83cf69101b6817150a">help</a>=nullptr, uint32_t flags=0)</td></tr>
 <tr class="separator:a26d4fbfbb1106d0465716e1968150a7d inherit pro_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_static_methods_class_command_handler"><td colspan="2" onclick="javascript:toggleInherit('pro_static_methods_class_command_handler')"><img src="closed.png" alt="-"/>&#160;Static Protected Member Functions inherited from <a class="el" href="class_command_handler.html">CommandHandler</a></td></tr>
+<tr class="memitem:a123585937cc70b6d4e77c024e138019f inherit pro_static_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; uint16_t &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a123585937cc70b6d4e77c024e138019f">getCommandHandlerIds</a> ()</td></tr>
+<tr class="separator:a123585937cc70b6d4e77c024e138019f inherit pro_static_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_class_motor_driver"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_class_motor_driver')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="class_motor_driver.html">MotorDriver</a></td></tr>
 <tr class="memitem:ace8bd58b55e5c070c293ef03cc29b79e inherit pro_attribs_class_motor_driver"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="class_encoder.html">Encoder</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_motor_driver.html#ace8bd58b55e5c070c293ef03cc29b79e">drvEncoder</a> = std::make_shared&lt;<a class="el" href="class_encoder.html">Encoder</a>&gt;()</td></tr>
 <tr class="separator:ace8bd58b55e5c070c293ef03cc29b79e inherit pro_attribs_class_motor_driver"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -534,7 +527,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00072">72</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00076">76</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
 
 </div>
 </div>
@@ -562,7 +555,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00398">398</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00403">403</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
 
 </div>
 </div>
@@ -590,7 +583,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p >Ask a position with the new system Call the new short response command with a 2 messages communications </p>
 
-<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00417">417</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00422">422</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
 
 </div>
 </div>
@@ -640,7 +633,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00641">641</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00646">646</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
 
 </div>
 </div>
@@ -684,7 +677,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00646">646</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00651">651</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
 
 </div>
 </div>
@@ -728,7 +721,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00654">654</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00659">659</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
 
 </div>
 </div>
@@ -772,7 +765,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00692">692</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00697">697</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
 
 </div>
 </div>
@@ -816,7 +809,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00687">687</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00692">692</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
 
 </div>
 </div>
@@ -854,7 +847,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00680">680</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00685">685</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
 
 </div>
 </div>
@@ -892,7 +885,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00671">671</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00676">676</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
 
 </div>
 </div>
@@ -930,7 +923,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00662">662</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00667">667</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
 
 </div>
 </div>
@@ -983,7 +976,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_can_handler.html#a53651a4aa1e88f3e442c054aae0a33d7">CanHandler</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00552">552</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00557">557</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
 
 </div>
 </div>
@@ -1030,7 +1023,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_command_handler.html#a8d2531d579c03d6672495ccb57f5ffb3">CommandHandler</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00217">217</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00222">222</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
 
 </div>
 </div>
@@ -1068,7 +1061,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00697">697</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00702">702</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
 
 </div>
 </div>
@@ -1106,7 +1099,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00455">455</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00460">460</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
 
 </div>
 </div>
@@ -1134,7 +1127,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00427">427</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00432">432</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
 
 </div>
 </div>
@@ -1164,7 +1157,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_encoder.html#a7ea557d2536d6c2c0a05f0c34a2003a9">Encoder</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00197">197</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00202">202</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
 
 </div>
 </div>
@@ -1194,7 +1187,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_motor_driver.html#adf44b8e43d09d27344388fc755a7689a">MotorDriver</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00102">102</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00107">107</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
 
 </div>
 </div>
@@ -1222,7 +1215,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p >Get the firmware vesc information </p>
 
-<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00355">355</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00360">360</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
 
 </div>
 </div>
@@ -1282,7 +1275,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_encoder.html#a5041739a15b236ef2428c1e7e974f8e2">Encoder</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00193">193</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00198">198</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
 
 </div>
 </div>
@@ -1312,7 +1305,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_encoder.html#a99e71d386d47f62b67988142d6fb133c">Encoder</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00186">186</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00191">191</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
 
 </div>
 </div>
@@ -1371,7 +1364,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_motor_driver.html#aacfec8dee7778471057908b02b81dc39">MotorDriver</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00109">109</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00114">114</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
 
 </div>
 </div>
@@ -1425,7 +1418,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_motor_driver.html#a3acb195cff8b383d6d30ce4b97b70b29">MotorDriver</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00113">113</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00118">118</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
 
 </div>
 </div>
@@ -1444,7 +1437,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00201">201</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00206">206</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
 
 </div>
 </div>
@@ -1474,7 +1467,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_persistent_storage.html#aa8187136adfa89fca9ddee2578f6eb68">PersistentStorage</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00117">117</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00122">122</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
 
 </div>
 </div>
@@ -1504,7 +1497,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classcpp__freertos_1_1_thread.html#a93df31e4bee72f150dd742ab5d6d35c3">cpp_freertos::Thread</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00299">299</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00304">304</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
 
 </div>
 </div>
@@ -1534,7 +1527,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_persistent_storage.html#a105599e99ab0e4244a531c2286f2ffa2">PersistentStorage</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00146">146</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00151">151</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
 
 </div>
 </div>
@@ -1561,7 +1554,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00161">161</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00166">166</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
 
 </div>
 </div>
@@ -1606,7 +1599,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p >send the message to the CAN with an Extended Can message </p>
 
-<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00445">445</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00450">450</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
 
 </div>
 </div>
@@ -1634,7 +1627,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p >Send a ping command to the vesc to check if it's here. </p>
 
-<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00368">368</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00373">373</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
 
 </div>
 </div>
@@ -1654,35 +1647,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00077">77</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
-
-</div>
-</div>
-<a id="acb2d4273c1d4998599fcf8e570543360" name="acb2d4273c1d4998599fcf8e570543360"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acb2d4273c1d4998599fcf8e570543360">&#9670;&nbsp;</a></span>setCanRate()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void VescCAN::setCanRate </td>
-          <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>canRate</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00347">347</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00082">82</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
 
 </div>
 </div>
@@ -1713,7 +1678,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_encoder.html#aacf98b034fee3e2fd70cc443a784a5e0">Encoder</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00179">179</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00184">184</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
 
 </div>
 </div>
@@ -1742,7 +1707,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p >Send a torque command to the vesc : value is [-1,1] range relative to max torque settings in the vesc fw. </p>
 
-<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00380">380</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00385">385</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
 
 </div>
 </div>
@@ -1772,7 +1737,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_motor_driver.html#aa7de17ce2e32f58c9d3ab2d379c636a9">MotorDriver</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00098">98</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00103">103</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
 
 </div>
 </div>
@@ -1802,7 +1767,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_motor_driver.html#aef624f5da2b1644823052cc80ac218bd">MotorDriver</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00093">93</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00098">98</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
 
 </div>
 </div>
@@ -1833,7 +1798,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_motor_driver.html#a07baeeb52b30dd507b9ba903d7876835">MotorDriver</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00087">87</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8cpp_source.html#l00092">92</a> of file <a class="el" href="_vesc_c_a_n_8cpp_source.html">VescCAN.cpp</a>.</p>
 
 </div>
 </div>
@@ -1859,30 +1824,6 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8h_source.html#l00117">117</a> of file <a class="el" href="_vesc_c_a_n_8h_source.html">VescCAN.h</a>.</p>
-
-</div>
-</div>
-<a id="a64d22ed689dab16739d5ccd8fc077eef" name="a64d22ed689dab16739d5ccd8fc077eef"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a64d22ed689dab16739d5ccd8fc077eef">&#9670;&nbsp;</a></span>baudrate</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint8_t VescCAN::baudrate = CANSPEEDPRESET_500</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8h_source.html#l00139">139</a> of file <a class="el" href="_vesc_c_a_n_8h_source.html">VescCAN.h</a>.</p>
 
 </div>
 </div>

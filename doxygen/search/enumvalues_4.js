@@ -19,8 +19,8 @@ var searchData=
   ['encrate_16',['encrate',['../_vesc_c_a_n_8h.html#a2125c9b686c373137058c5ae8fa4219fa42839c09d4d2f2f30961d704de2950b6',1,'VescCAN.h']]],
   ['encsrc_17',['encsrc',['../class_t_m_c4671.html#a383a82ab842490e325553e9365028a27ad0a6478bacc8a509473db61071e08e64',1,'TMC4671']]],
   ['enctype_18',['enctype',['../_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715a67450bbede4db564a69b7ff75e49c689',1,'Axis.h']]],
-  ['err_19',['ERR',['../_t_m_c4671_8h.html#a582234b0c15ab7ba48e3ddd16e7a41d2acd22bad976363fdd1bfbf6759fede482',1,'ERR():&#160;TMC4671.h'],['../_command_handler_8h.html#aefaf83fec6a7da1d02ae7e912dd9a6d5acd22bad976363fdd1bfbf6759fede482',1,'ERR():&#160;CommandHandler.h']]],
-  ['err_20',['err',['../_command_handler_8h.html#aec46f6cc23a395b611fbc7c7239b9c41a56bd7107802ebe56c6918992f0608ec6',1,'err():&#160;CommandHandler.h'],['../_hid_command_interface_8h.html#a3f333b1c841dda37afbc4c28598a6fc5a56bd7107802ebe56c6918992f0608ec6',1,'err():&#160;HidCommandInterface.h']]],
+  ['err_19',['ERR',['../_command_handler_8h.html#a9c4555f6fe97545f2480f26071a2935facd22bad976363fdd1bfbf6759fede482',1,'ERR():&#160;CommandHandler.h'],['../_t_m_c4671_8h.html#a582234b0c15ab7ba48e3ddd16e7a41d2acd22bad976363fdd1bfbf6759fede482',1,'ERR():&#160;TMC4671.h'],['../_command_handler_8h.html#aefaf83fec6a7da1d02ae7e912dd9a6d5acd22bad976363fdd1bfbf6759fede482',1,'ERR():&#160;CommandHandler.h']]],
+  ['err_20',['err',['../_hid_command_interface_8h.html#a3f333b1c841dda37afbc4c28598a6fc5a56bd7107802ebe56c6918992f0608ec6',1,'err():&#160;HidCommandInterface.h'],['../_command_handler_8h.html#aec46f6cc23a395b611fbc7c7239b9c41a56bd7107802ebe56c6918992f0608ec6',1,'err():&#160;CommandHandler.h']]],
   ['error_5fabs_5fspi_5fcom_5ffail_21',['ERROR_ABS_SPI_COM_FAIL',['../_o_drive_c_a_n_8h.html#aaa5729c3c570bb9e79f2dab90f0cc856a2e74a4cbc3b285c80f97cd2c23371c77',1,'ODriveCAN.h']]],
   ['error_5fabs_5fspi_5fnot_5fready_22',['ERROR_ABS_SPI_NOT_READY',['../_o_drive_c_a_n_8h.html#aaa5729c3c570bb9e79f2dab90f0cc856affb444c8f7f3199da590a824171ee8bb',1,'ODriveCAN.h']]],
   ['error_5fabs_5fspi_5ftimeout_23',['ERROR_ABS_SPI_TIMEOUT',['../_o_drive_c_a_n_8h.html#aaa5729c3c570bb9e79f2dab90f0cc856aca071b1176d2e4156b92a07a5be4ec83',1,'ODriveCAN.h']]],
@@ -33,11 +33,12 @@ var searchData=
   ['error_5funstable_5fgain_30',['ERROR_UNSTABLE_GAIN',['../_o_drive_c_a_n_8h.html#aaa5729c3c570bb9e79f2dab90f0cc856a3c58cdf80432c19707c2d2fa641ad4c9',1,'ODriveCAN.h']]],
   ['error_5funsupported_5fencoder_5fmode_31',['ERROR_UNSUPPORTED_ENCODER_MODE',['../_o_drive_c_a_n_8h.html#aaa5729c3c570bb9e79f2dab90f0cc856a71a2e797072cfd77110e4f066781ece0',1,'ODriveCAN.h']]],
   ['errorflags_32',['errorflags',['../_vesc_c_a_n_8h.html#a2125c9b686c373137058c5ae8fa4219fab5d8bf8d7558af1512e3bd20e99ab0a5',1,'VescCAN.h']]],
-  ['errors_33',['errors',['../_system_commands_8h.html#a4a42a50bc0a826d5ab6d847950749d07a07213a0161f52846ab198be103b5ab43',1,'errors():&#160;SystemCommands.h'],['../_o_drive_c_a_n_8h.html#a539f13973573e98e043ff32d1b899068a07213a0161f52846ab198be103b5ab43',1,'errors():&#160;ODriveCAN.h']]],
+  ['errors_33',['errors',['../class_encoder_biss_c.html#ab6486bfbbaa89e76f2918f15595e668ba07213a0161f52846ab198be103b5ab43',1,'EncoderBissC::errors()'],['../class_mt_encoder_s_p_i.html#a329693332cff2b8e297684ec86053206a07213a0161f52846ab198be103b5ab43',1,'MtEncoderSPI::errors()'],['../_system_commands_8h.html#a4a42a50bc0a826d5ab6d847950749d07a07213a0161f52846ab198be103b5ab43',1,'errors():&#160;SystemCommands.h'],['../_o_drive_c_a_n_8h.html#a539f13973573e98e043ff32d1b899068a07213a0161f52846ab198be103b5ab43',1,'errors():&#160;ODriveCAN.h']]],
   ['errorsclr_34',['errorsclr',['../_system_commands_8h.html#a4a42a50bc0a826d5ab6d847950749d07a743c21aef17322fd79d18d8c99d711d1',1,'SystemCommands.h']]],
   ['esgain_35',['esgain',['../_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715a2f727a880c6389e2fe3f9e8ed8fe46b7',1,'Axis.h']]],
   ['ext_36',['ext',['../_t_m_c4671_8h.html#addb917dd45972d75a9b40bab2ce78492aabf77184f55403d75b9d51d79162a7ca',1,'ext():&#160;TMC4671.h'],['../_t_m_c4671_8h.html#a3b24d58867df0611d6df04e70b34c5c0aabf77184f55403d75b9d51d79162a7ca',1,'ext():&#160;TMC4671.h']]],
   ['extencoder_37',['extEncoder',['../_t_m_c4671_8h.html#addb917dd45972d75a9b40bab2ce78492a37e37860aa511a1925d51de7c2abbbbc',1,'TMC4671.h']]],
   ['extension_38',['Extension',['../_class_i_ds_8h.html#a79467dc849dd02adbaa4373bbd7aba75a63e4e92bb7d207ca577b11c07f827279',1,'ClassIDs.h']]],
-  ['externalencoderinit_39',['ExternalEncoderInit',['../_t_m_c4671_8h.html#ad7d50073249f48de7e58d41071064a7caa93eed0dbbc42a70bc2ea0869e63994e',1,'TMC4671.h']]]
+  ['externalencoderinit_39',['ExternalEncoderInit',['../_t_m_c4671_8h.html#ad7d50073249f48de7e58d41071064a7caa93eed0dbbc42a70bc2ea0869e63994e',1,'TMC4671.h']]],
+  ['extphie_40',['extphie',['../class_t_m_c4671.html#a383a82ab842490e325553e9365028a27a1da79c08683a487155b42fee9062683d',1,'TMC4671']]]
 ];

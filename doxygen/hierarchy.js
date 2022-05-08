@@ -3,6 +3,7 @@ var hierarchy =
     [ "__attribute__", "struct____attribute____.html", null ],
     [ "AdcHandler", "class_adc_handler.html", null ],
     [ "audiod_function_t", "structaudiod__function__t.html", null ],
+    [ "AxesManager", "class_axes_manager.html", null ],
     [ "axis_metric_t", "structaxis__metric__t.html", null ],
     [ "AxisConfig", "struct_axis_config.html", null ],
     [ "AxisFlashAddrs", "struct_axis_flash_addrs.html", null ],
@@ -13,7 +14,11 @@ var hierarchy =
     [ "CAN_rx_msg", "struct_c_a_n__rx__msg.html", null ],
     [ "CAN_tx_msg", "struct_c_a_n__tx__msg.html", null ],
     [ "CanHandler", "class_can_handler.html", [
+      [ "CanAnalogBase", "class_can_analog_base.html", [
+        [ "CanAnalog< AMOUNT >", "class_can_analog.html", null ]
+      ] ],
       [ "CanBridge", "class_can_bridge.html", null ],
+      [ "CanButtons", "class_can_buttons.html", null ],
       [ "ODriveCAN", "class_o_drive_c_a_n.html", [
         [ "ODriveCAN1", "class_o_drive_c_a_n1.html", null ],
         [ "ODriveCAN2", "class_o_drive_c_a_n2.html", null ]
@@ -22,15 +27,16 @@ var hierarchy =
         [ "VESC_1", "class_v_e_s_c__1.html", null ]
       ] ]
     ] ],
-    [ "CANPort", "class_c_a_n_port.html", null ],
     [ "CDCcomm", "class_c_d_ccomm.html", null ],
     [ "cdcd_interface_t", "structcdcd__interface__t.html", null ],
     [ "cdch_data_t", "structcdch__data__t.html", null ],
     [ "ChoosableClass", "class_choosable_class.html", [
       [ "AnalogSource", "class_analog_source.html", [
+        [ "CanAnalogBase", "class_can_analog_base.html", null ],
         [ "LocalAnalog", "class_local_analog.html", null ]
       ] ],
       [ "ButtonSource", "class_button_source.html", [
+        [ "CanButtons", "class_can_buttons.html", null ],
         [ "LocalButtons", "class_local_buttons.html", null ],
         [ "PCF8574Buttons", "class_p_c_f8574_buttons.html", null ],
         [ "SPI_Buttons", "class_s_p_i___buttons.html", [
@@ -40,6 +46,7 @@ var hierarchy =
         [ "ShifterAnalog", "class_shifter_analog.html", null ]
       ] ],
       [ "Encoder", "class_encoder.html", [
+        [ "EncoderBissC", "class_encoder_biss_c.html", null ],
         [ "EncoderLocal", "class_encoder_local.html", null ],
         [ "MtEncoderSPI", "class_mt_encoder_s_p_i.html", null ],
         [ "ODriveCAN", "class_o_drive_c_a_n.html", null ],
@@ -52,7 +59,10 @@ var hierarchy =
       [ "FFBoardMain", "class_f_f_board_main.html", [
         [ "CanBridge", "class_can_bridge.html", null ],
         [ "CustomMain", "class_custom_main.html", null ],
-        [ "FFBWheel", "class_f_f_b_wheel.html", null ],
+        [ "FFBHIDMain", "class_f_f_b_h_i_d_main.html", [
+          [ "FFBJoystick", "class_f_f_b_joystick.html", null ],
+          [ "FFBWheel", "class_f_f_b_wheel.html", null ]
+        ] ],
         [ "MidiMain", "class_midi_main.html", null ],
         [ "TMCDebugBridge", "class_t_m_c_debug_bridge.html", null ]
       ] ],
@@ -71,9 +81,14 @@ var hierarchy =
     [ "CmdParser", "class_cmd_parser.html", null ],
     [ "CommandHandler", "class_command_handler.html", [
       [ "Axis", "class_axis.html", null ],
+      [ "CANPort", "class_c_a_n_port.html", null ],
+      [ "CanAnalogBase", "class_can_analog_base.html", null ],
+      [ "CanButtons", "class_can_buttons.html", null ],
       [ "EffectsCalculator", "class_effects_calculator.html", null ],
+      [ "EncoderBissC", "class_encoder_biss_c.html", null ],
       [ "EncoderLocal", "class_encoder_local.html", null ],
       [ "FFBoardMain", "class_f_f_board_main.html", null ],
+      [ "I2CPort", "class_i2_c_port.html", null ],
       [ "LocalAnalog", "class_local_analog.html", null ],
       [ "LocalButtons", "class_local_buttons.html", null ],
       [ "MotorPWM", "class_motor_p_w_m.html", null ],
@@ -105,7 +120,7 @@ var hierarchy =
     [ "ErrorHandler", "class_error_handler.html", [
       [ "Axis", "class_axis.html", null ],
       [ "ErrorPrinter", "class_error_printer.html", null ],
-      [ "FFBWheel", "class_f_f_b_wheel.html", null ]
+      [ "FFBHIDMain", "class_f_f_b_h_i_d_main.html", null ]
     ] ],
     [ "cpp_freertos::EventGroup", "classcpp__freertos_1_1_event_group.html", null ],
     [ "std::exception", null, [
@@ -121,7 +136,7 @@ var hierarchy =
     ] ],
     [ "ExtiHandler", "class_exti_handler.html", [
       [ "EncoderLocal", "class_encoder_local.html", null ],
-      [ "FFBWheel", "class_f_f_b_wheel.html", null ],
+      [ "FFBHIDMain", "class_f_f_b_h_i_d_main.html", null ],
       [ "TMC4671", "class_t_m_c4671.html", null ]
     ] ],
     [ "FastAvg< LEN >", "class_fast_avg.html", null ],
@@ -170,12 +185,14 @@ var hierarchy =
     [ "ParsedCommand", "struct_parsed_command.html", null ],
     [ "PersistentStorage", "class_persistent_storage.html", [
       [ "AnalogSource", "class_analog_source.html", null ],
-      [ "AxesManager", "class_axes_manager.html", null ],
       [ "Axis", "class_axis.html", null ],
       [ "ButtonSource", "class_button_source.html", null ],
+      [ "CANPort", "class_c_a_n_port.html", null ],
       [ "EffectsCalculator", "class_effects_calculator.html", null ],
+      [ "EncoderBissC", "class_encoder_biss_c.html", null ],
       [ "EncoderLocal", "class_encoder_local.html", null ],
-      [ "FFBWheel", "class_f_f_b_wheel.html", null ],
+      [ "FFBHIDMain", "class_f_f_b_h_i_d_main.html", null ],
+      [ "I2CPort", "class_i2_c_port.html", null ],
       [ "MotorPWM", "class_motor_p_w_m.html", null ],
       [ "MtEncoderSPI", "class_mt_encoder_s_p_i.html", null ],
       [ "ODriveCAN", "class_o_drive_c_a_n.html", null ],
@@ -209,6 +226,7 @@ var hierarchy =
     [ "Singleton< T >", "class_singleton.html", null ],
     [ "SPIConfig", "struct_s_p_i_config.html", null ],
     [ "SPIDevice", "class_s_p_i_device.html", [
+      [ "EncoderBissC", "class_encoder_biss_c.html", null ],
       [ "MtEncoderSPI", "class_mt_encoder_s_p_i.html", null ],
       [ "SPI_Buttons", "class_s_p_i___buttons.html", null ],
       [ "ShifterAnalog::G27ShifterButtonClient", "class_shifter_analog_1_1_g27_shifter_button_client.html", null ],
@@ -222,9 +240,11 @@ var hierarchy =
     [ "cpp_freertos::Tasklet", "classcpp__freertos_1_1_tasklet.html", null ],
     [ "cpp_freertos::Thread", "classcpp__freertos_1_1_thread.html", [
       [ "CDC_CommandInterface", "class_c_d_c___command_interface.html", null ],
+      [ "EncoderBissC", "class_encoder_biss_c.html", null ],
       [ "ErrorPrinter", "class_error_printer.html", null ],
       [ "FFBoardMainCommandThread", "class_f_f_board_main_command_thread.html", null ],
       [ "HID_CommandInterface", "class_h_i_d___command_interface.html", null ],
+      [ "MtEncoderSPI", "class_mt_encoder_s_p_i.html", null ],
       [ "ODriveCAN", "class_o_drive_c_a_n.html", null ],
       [ "PCF8574Buttons", "class_p_c_f8574_buttons.html", null ],
       [ "TMC4671", "class_t_m_c4671.html", null ],
@@ -239,7 +259,7 @@ var hierarchy =
     [ "cpp_freertos::Timer", "classcpp__freertos_1_1_timer.html", null ],
     [ "TimerHandler", "class_timer_handler.html", [
       [ "EncoderLocal", "class_encoder_local.html", null ],
-      [ "FFBWheel", "class_f_f_b_wheel.html", null ],
+      [ "FFBHIDMain", "class_f_f_b_h_i_d_main.html", null ],
       [ "MidiMain", "class_midi_main.html", null ]
     ] ],
     [ "TMC4671ABNConf", "struct_t_m_c4671_a_b_n_conf.html", null ],
@@ -285,7 +305,7 @@ var hierarchy =
     [ "usbh_dev0_t", "structusbh__dev0__t.html", null ],
     [ "usbh_device_t", "structusbh__device__t.html", null ],
     [ "UsbHidHandler", "class_usb_hid_handler.html", [
-      [ "FFBWheel", "class_f_f_b_wheel.html", null ],
+      [ "FFBHIDMain", "class_f_f_b_h_i_d_main.html", null ],
       [ "HidFFB", "class_hid_f_f_b.html", null ]
     ] ],
     [ "usbtmc_interface_state_t", "structusbtmc__interface__state__t.html", null ],

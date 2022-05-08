@@ -303,16 +303,32 @@ var files_dup =
     [ "tusb.h", "tusb_8h.html", "tusb_8h" ],
     [ "tusb_config.h", "tusb__config_8h.html", null ],
     [ "tusb_option.h", "tusb__option_8h.html", null ],
+    [ "CanAnalog.h", "_can_analog_8h.html", [
+      [ "CanAnalogBase", "class_can_analog_base.html", "class_can_analog_base" ],
+      [ "CanAnalog< AMOUNT >", "class_can_analog.html", "class_can_analog" ]
+    ] ],
     [ "CanBridge.h", "_can_bridge_8h.html", [
       [ "CAN_Config_t", "struct_c_a_n___config__t.html", "struct_c_a_n___config__t" ],
       [ "CanBridge", "class_can_bridge.html", "class_can_bridge" ]
+    ] ],
+    [ "CanButtons.h", "_can_buttons_8h.html", [
+      [ "CanButtons", "class_can_buttons.html", "class_can_buttons" ]
     ] ],
     [ "ClassIDs.h", "_class_i_ds_8h.html", "_class_i_ds_8h" ],
     [ "CustomMain.h", "_custom_main_8h.html", [
       [ "CustomMain", "class_custom_main.html", "class_custom_main" ]
     ] ],
     [ "eeprom_addresses.h", "eeprom__addresses_8h.html", "eeprom__addresses_8h" ],
+    [ "EncoderBissC.h", "_encoder_biss_c_8h.html", [
+      [ "EncoderBissC", "class_encoder_biss_c.html", "class_encoder_biss_c" ]
+    ] ],
     [ "EncoderLocal.h", "_encoder_local_8h.html", "_encoder_local_8h" ],
+    [ "FFBHIDMain.h", "_f_f_b_h_i_d_main_8h.html", [
+      [ "FFBHIDMain", "class_f_f_b_h_i_d_main.html", "class_f_f_b_h_i_d_main" ]
+    ] ],
+    [ "FFBJoystick.h", "_f_f_b_joystick_8h.html", [
+      [ "FFBJoystick", "class_f_f_b_joystick.html", "class_f_f_b_joystick" ]
+    ] ],
     [ "FFBoardMain.h", "_f_f_board_main_8h.html", [
       [ "FFBoardMain", "class_f_f_board_main.html", "class_f_f_board_main" ]
     ] ],
@@ -351,13 +367,18 @@ var files_dup =
     [ "usb_descriptors.h", "usb__descriptors_8h.html", "usb__descriptors_8h" ],
     [ "usb_hid_ffb_desc.h", "usb__hid__ffb__desc_8h.html", "usb__hid__ffb__desc_8h" ],
     [ "VescCAN.h", "_vesc_c_a_n_8h.html", "_vesc_c_a_n_8h" ],
+    [ "CanAnalog.cpp", "_can_analog_8cpp.html", null ],
     [ "CanBridge.cpp", "_can_bridge_8cpp.html", "_can_bridge_8cpp" ],
+    [ "CanButtons.cpp", "_can_buttons_8cpp.html", null ],
     [ "CustomMain.cpp", "_custom_main_8cpp.html", null ],
     [ "eeprom_addresses.c", "eeprom__addresses_8c.html", "eeprom__addresses_8c" ],
+    [ "EncoderBissC.cpp", "_encoder_biss_c_8cpp.html", "_encoder_biss_c_8cpp" ],
     [ "EncoderLocal.cpp", "_encoder_local_8cpp.html", null ],
+    [ "FFBHIDMain.cpp", "_f_f_b_h_i_d_main_8cpp.html", "_f_f_b_h_i_d_main_8cpp" ],
+    [ "FFBHIDMain_commmands.cpp", "_f_f_b_h_i_d_main__commmands_8cpp.html", null ],
+    [ "FFBJoystick.cpp", "_f_f_b_joystick_8cpp.html", null ],
     [ "FFBoardMain.cpp", "_f_f_board_main_8cpp.html", null ],
-    [ "FFBWheel.cpp", "_f_f_b_wheel_8cpp.html", "_f_f_b_wheel_8cpp" ],
-    [ "FFBWheel_commmands.cpp", "_f_f_b_wheel__commmands_8cpp.html", null ],
+    [ "FFBWheel.cpp", "_f_f_b_wheel_8cpp.html", null ],
     [ "LocalAnalog.cpp", "_local_analog_8cpp.html", null ],
     [ "LocalButtons.cpp", "_local_buttons_8cpp.html", null ],
     [ "mainclass_chooser.cpp", "mainclass__chooser_8cpp.html", "mainclass__chooser_8cpp" ],
@@ -371,6 +392,7 @@ var files_dup =
     [ "TMC4671.cpp", "_t_m_c4671_8cpp.html", null ],
     [ "TMCDebugBridge.cpp", "_t_m_c_debug_bridge_8cpp.html", null ],
     [ "usb_descriptors.cpp", "usb__descriptors_8cpp.html", "usb__descriptors_8cpp" ],
-    [ "usb_hid_ffb_desc.c", "usb__hid__ffb__desc_8c.html", "usb__hid__ffb__desc_8c" ],
+    [ "usb_hid_1ffb_desc.c", "usb__hid__1ffb__desc_8c.html", "usb__hid__1ffb__desc_8c" ],
+    [ "usb_hid_2ffb_desc.c", "usb__hid__2ffb__desc_8c.html", "usb__hid__2ffb__desc_8c" ],
     [ "VescCAN.cpp", "_vesc_c_a_n_8cpp.html", null ]
 ];

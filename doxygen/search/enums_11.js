@@ -1,4 +1,22 @@
 var searchData=
 [
-  ['xfer_5fresult_5ft_0',['xfer_result_t',['../group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9',1,'tusb_types.h']]]
+  ['velselection_0',['VelSelection',['../_t_m_c4671_8h.html#a864ad6319d56116bc88bb51ae28cd2b2',1,'TMC4671.h']]],
+  ['vesccan_5fcommands_1',['VescCAN_commands',['../_vesc_c_a_n_8h.html#a2125c9b686c373137058c5ae8fa4219f',1,'VescCAN.h']]],
+  ['vesccanmsg_2',['VescCANMsg',['../_vesc_c_a_n_8h.html#a31f4088fc0096d6c5e2ee0396066eb47',1,'VescCAN.h']]],
+  ['vesccmd_3',['VescCmd',['../_vesc_c_a_n_8h.html#ade8aa0c8682cb29483f2d2b58786989f',1,'VescCAN.h']]],
+  ['vescencodermode_4',['VescEncoderMode',['../_vesc_c_a_n_8h.html#a12d8e5801006430b8ec1be3256505416',1,'VescCAN.h']]],
+  ['vescstate_5',['VescState',['../_vesc_c_a_n_8h.html#a081546a7e1519ad0cfb40bcc429be04d',1,'VescCAN.h']]],
+  ['video_5fcolor_5fmatrix_5fcoefficients_5ft_6',['video_color_matrix_coefficients_t',['../video_8h.html#a8436453e32c90314732218480f2dc138',1,'video.h']]],
+  ['video_5fcolor_5fprimaries_5ft_7',['video_color_primaries_t',['../video_8h.html#a4a8fe86554366cf08695289f54e2a506',1,'video.h']]],
+  ['video_5fcolor_5ftransfer_5fcharacteristics_5ft_8',['video_color_transfer_characteristics_t',['../video_8h.html#a5aff16e9590d7d076bd0d985d7ed4722',1,'video.h']]],
+  ['video_5fcontrol_5frequest_5ft_9',['video_control_request_t',['../video_8h.html#a984722234b784ac910b7e11c140a3b97',1,'video.h']]],
+  ['video_5fcs_5fep_5fsubtype_5ft_10',['video_cs_ep_subtype_t',['../video_8h.html#a8ff518f0fbbfd70ecb893590733a27ed',1,'video.h']]],
+  ['video_5fcs_5fvc_5finterface_5fsubtype_5ft_11',['video_cs_vc_interface_subtype_t',['../video_8h.html#a08ad93f6800511ff155a59bdb2b24e54',1,'video.h']]],
+  ['video_5fcs_5fvs_5finterface_5fsubtype_5ft_12',['video_cs_vs_interface_subtype_t',['../video_8h.html#a6bf146c6429c2d646b368e0031951f04',1,'video.h']]],
+  ['video_5ferror_5fcode_5ft_13',['video_error_code_t',['../video_8h.html#acf0d5ac2587dbaecdae104c6e599f0e5',1,'video.h']]],
+  ['video_5finterface_5fcontrol_5fselector_5ft_14',['video_interface_control_selector_t',['../video_8h.html#ae4d0daacf477c07030a82fdd00b533e0',1,'video.h']]],
+  ['video_5finterface_5fprotocol_5fcode_5ft_15',['video_interface_protocol_code_t',['../video_8h.html#aacc40eb6d30cfe98f80975cc15a9d1e9',1,'video.h']]],
+  ['video_5finterface_5fstreaming_5fselector_5ft_16',['video_interface_streaming_selector_t',['../video_8h.html#a2f6937c4fd35d3faa43edbe1a35461bb',1,'video.h']]],
+  ['video_5fsubclass_5ftype_5ft_17',['video_subclass_type_t',['../video_8h.html#abe6aca4992201b87dce69e9e1097b4c6',1,'video.h']]],
+  ['video_5fterminal_5ftype_5ft_18',['video_terminal_type_t',['../video_8h.html#a48f13a33278f78ede48d1c837e5cb77b',1,'video.h']]]
 ];

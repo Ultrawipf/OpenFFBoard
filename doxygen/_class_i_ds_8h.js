@@ -9,6 +9,7 @@ var _class_i_ds_8h =
       [ "Analogsource", "_class_i_ds_8h.html#a79467dc849dd02adbaa4373bbd7aba75a5ce65198f38e0f58cb4193a9546fe4da", null ],
       [ "Encoder", "_class_i_ds_8h.html#a79467dc849dd02adbaa4373bbd7aba75a87d487f6f605eb96e61be67988e41e6d", null ],
       [ "Axis", "_class_i_ds_8h.html#a79467dc849dd02adbaa4373bbd7aba75a39e6b4ab3e4adecf031d3aa8410bb3ce", null ],
-      [ "Extension", "_class_i_ds_8h.html#a79467dc849dd02adbaa4373bbd7aba75a63e4e92bb7d207ca577b11c07f827279", null ]
+      [ "Extension", "_class_i_ds_8h.html#a79467dc849dd02adbaa4373bbd7aba75a63e4e92bb7d207ca577b11c07f827279", null ],
+      [ "Port", "_class_i_ds_8h.html#a79467dc849dd02adbaa4373bbd7aba75a60aaf44d4b562252c04db7f98497e9aa", null ]
     ] ]
 ];

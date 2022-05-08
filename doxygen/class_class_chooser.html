@@ -104,8 +104,6 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a3f5ac6463289a34f5f2f63e2ba01d9c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a03687b317089ca84a3624e915d1b0be4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_class_chooser.html#a03687b317089ca84a3624e915d1b0be4">isCreatable</a> (uint16_t <a class="el" href="_command_handler_8h.html#a13a18e5b49561a2f007205dc0afeea14ab80bb7740288fda1f201890375a60c8f">id</a>)</td></tr>
 <tr class="separator:a03687b317089ca84a3624e915d1b0be4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a48c35819142dafb5e28cf83599952883"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_class_chooser.html#a48c35819142dafb5e28cf83599952883">printAvailableClasses</a> (int16_t ignoredCreatableId=255)</td></tr>
-<tr class="separator:a48c35819142dafb5e28cf83599952883"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a65ffe33036fe00ca15c190a1dc712727"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_class_chooser.html#a65ffe33036fe00ca15c190a1dc712727">replyAvailableClasses</a> (std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;replies, int16_t ignoredCreatableId=255)</td></tr>
 <tr class="separator:a65ffe33036fe00ca15c190a1dc712727"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a30c3411caeec09731283ce8f493e8d1e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_class_chooser.html#a30c3411caeec09731283ce8f493e8d1e">isValidClassId</a> (uint16_t <a class="el" href="_command_handler_8h.html#a13a18e5b49561a2f007205dc0afeea14ab80bb7740288fda1f201890375a60c8f">id</a>)</td></tr>
@@ -270,38 +268,7 @@ template&lt;class T &gt; </div>
 </div><div class="memdoc">
 <p >Returns if this id is actually in the list of possible classes </p>
 
-<p class="definition">Definition at line <a class="el" href="_class_chooser_8h_source.html#l00181">181</a> of file <a class="el" href="_class_chooser_8h_source.html">ClassChooser.h</a>.</p>
-
-</div>
-</div>
-<a id="a48c35819142dafb5e28cf83599952883" name="a48c35819142dafb5e28cf83599952883"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a48c35819142dafb5e28cf83599952883">&#9670;&nbsp;</a></span>printAvailableClasses()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string <a class="el" href="class_class_chooser.html">ClassChooser</a>&lt; T &gt;::printAvailableClasses </td>
-          <td>(</td>
-          <td class="paramtype">int16_t&#160;</td>
-          <td class="paramname"><em>ignoredCreatableId</em> = <code>255</code></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p >Returns a string of classes available to this classchooser ignoredCreatableId will list as creatable even if it is not. Useful to make a single class list as valid if it was already chosen </p>
-
-<p class="definition">Definition at line <a class="el" href="_class_chooser_8h_source.html#l00130">130</a> of file <a class="el" href="_class_chooser_8h_source.html">ClassChooser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_class_chooser_8h_source.html#l00160">160</a> of file <a class="el" href="_class_chooser_8h_source.html">ClassChooser.h</a>.</p>
 
 </div>
 </div>
@@ -342,7 +309,7 @@ template&lt;class T &gt; </div>
 </div><div class="memdoc">
 <p >Generates replies for the command system listing selectable classes </p>
 
-<p class="definition">Definition at line <a class="el" href="_class_chooser_8h_source.html#l00151">151</a> of file <a class="el" href="_class_chooser_8h_source.html">ClassChooser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_class_chooser_8h_source.html#l00130">130</a> of file <a class="el" href="_class_chooser_8h_source.html">ClassChooser.h</a>.</p>
 
 </div>
 </div>

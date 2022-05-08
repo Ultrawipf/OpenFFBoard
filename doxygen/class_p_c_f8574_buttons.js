@@ -2,7 +2,8 @@ var class_p_c_f8574_buttons =
 [
     [ "PCF8574Buttons_commands", "class_p_c_f8574_buttons.html#a4968701182a9f51430d9c750d6375b70", [
       [ "btnnum", "class_p_c_f8574_buttons.html#a4968701182a9f51430d9c750d6375b70a8f6247b8c4167035329ce85cb34db93f", null ],
-      [ "invert", "class_p_c_f8574_buttons.html#a4968701182a9f51430d9c750d6375b70a20e57f32ba12b9cd13ebe9ef5e32d949", null ]
+      [ "invert", "class_p_c_f8574_buttons.html#a4968701182a9f51430d9c750d6375b70a20e57f32ba12b9cd13ebe9ef5e32d949", null ],
+      [ "speed", "class_p_c_f8574_buttons.html#a4968701182a9f51430d9c750d6375b70ace4ef3ec98443ed10da505114b58f153", null ]
     ] ],
     [ "PCF8574Buttons", "class_p_c_f8574_buttons.html#a12a3216348ea0869e331cdfaf8459bd9", null ],
     [ "~PCF8574Buttons", "class_p_c_f8574_buttons.html#ac8ce2cea0cb3b87cc1eb59fa83ad6e07", null ],

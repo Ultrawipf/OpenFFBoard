@@ -20,6 +20,6 @@ var searchData=
   ['int_17',['INT',['../_command_handler_8h.html#a9c4555f6fe97545f2480f26071a2935fa53f93baa3057821107c750323892fa92',1,'CommandHandler.h']]],
   ['interface_5finvalid_5fnumber_18',['INTERFACE_INVALID_NUMBER',['../group___u_s_b_def___type.html#ggac205be2172292384dd687b5471a87edda864a113f67c0537a7d0cfd1df7c04974',1,'tusb_types.h']]],
   ['internal_19',['Internal',['../_class_i_ds_8h.html#a79467dc849dd02adbaa4373bbd7aba75aafbf0897a5a83fdd873dfb032ec695d3',1,'ClassIDs.h']]],
-  ['invert_20',['invert',['../class_p_c_f8574_buttons.html#a4968701182a9f51430d9c750d6375b70a20e57f32ba12b9cd13ebe9ef5e32d949',1,'PCF8574Buttons::invert()'],['../_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715a20e57f32ba12b9cd13ebe9ef5e32d949',1,'invert():&#160;Axis.h']]],
+  ['invert_20',['invert',['../class_can_buttons.html#a754ffff3064b81506b96e59d93099e19a20e57f32ba12b9cd13ebe9ef5e32d949',1,'CanButtons::invert()'],['../_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715a20e57f32ba12b9cd13ebe9ef5e32d949',1,'invert():&#160;Axis.h'],['../class_p_c_f8574_buttons.html#a4968701182a9f51430d9c750d6375b70a20e57f32ba12b9cd13ebe9ef5e32d949',1,'PCF8574Buttons::invert()']]],
   ['invertforce_21',['invertForce',['../class_t_m_c4671.html#a383a82ab842490e325553e9365028a27ab4f0f19e27f41a19f5a95695d51f43be',1,'TMC4671']]]
 ];

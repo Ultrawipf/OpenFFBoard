@@ -96,14 +96,23 @@ $(document).ready(function(){initNavTree('usb__hid__ffb__desc_8h_source.html',''
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#ifndef USB_INC_USB_HID_FFB_DESC_H_</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#define USB_INC_USB_HID_FFB_DESC_H_</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#define USB_HID_FFB_REPORT_DESC_SIZE 1229-16</span><span class="comment">//1378</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;<a class="code" href="constants_8h.html">constants.h</a>&quot;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="keyword">extern</span> <span class="keyword">const</span> uint8_t <a class="code hl_variable" href="usb__hid__ffb__desc_8h.html#a8d1d108f11c18bafc256d019738c6005">hid_ffb_desc</a>[USB_HID_FFB_REPORT_DESC_SIZE];</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#endif </span><span class="comment">/* USB_INC_USB_HID_FFB_DESC_H_ */</span><span class="preprocessor"></span></div>
-<div class="ttc" id="ausb__hid__ffb__desc_8h_html_a8d1d108f11c18bafc256d019738c6005"><div class="ttname"><a href="usb__hid__ffb__desc_8h.html#a8d1d108f11c18bafc256d019738c6005">hid_ffb_desc</a></div><div class="ttdeci">const uint8_t hid_ffb_desc[USB_HID_FFB_REPORT_DESC_SIZE]</div></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#define USB_HID_1FFB_REPORT_DESC_SIZE 1196</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#ifdef AXIS1_FFB_HID_DESC</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keyword">extern</span> <span class="keyword">const</span> uint8_t <a class="code hl_variable" href="usb__hid__ffb__desc_8h.html#aa4d5b330bb8c98e152295a9f03ae1305">hid_1ffb_desc</a>[USB_HID_1FFB_REPORT_DESC_SIZE];</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#define USB_HID_2FFB_REPORT_DESC_SIZE 1213</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#ifdef AXIS2_FFB_HID_DESC</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">extern</span> <span class="keyword">const</span> uint8_t <a class="code hl_variable" href="usb__hid__ffb__desc_8h.html#af2203a063a070c7d68641471587c1a0d">hid_2ffb_desc</a>[USB_HID_2FFB_REPORT_DESC_SIZE];</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#endif </span><span class="comment">/* USB_INC_USB_HID_FFB_DESC_H_ */</span><span class="preprocessor"></span></div>
+<div class="ttc" id="aconstants_8h_html"><div class="ttname"><a href="constants_8h.html">constants.h</a></div></div>
+<div class="ttc" id="ausb__hid__ffb__desc_8h_html_aa4d5b330bb8c98e152295a9f03ae1305"><div class="ttname"><a href="usb__hid__ffb__desc_8h.html#aa4d5b330bb8c98e152295a9f03ae1305">hid_1ffb_desc</a></div><div class="ttdeci">const uint8_t hid_1ffb_desc[USB_HID_1FFB_REPORT_DESC_SIZE]</div></div>
+<div class="ttc" id="ausb__hid__ffb__desc_8h_html_af2203a063a070c7d68641471587c1a0d"><div class="ttname"><a href="usb__hid__ffb__desc_8h.html#af2203a063a070c7d68641471587c1a0d">hid_2ffb_desc</a></div><div class="ttdeci">const uint8_t hid_2ffb_desc[USB_HID_2FFB_REPORT_DESC_SIZE]</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

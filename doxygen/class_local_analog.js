@@ -3,7 +3,8 @@ var class_local_analog =
     [ "LocalAnaloc_commands", "class_local_analog.html#ada1e9ea182d2596718e39abdb27b6921", [
       [ "pinmask", "class_local_analog.html#ada1e9ea182d2596718e39abdb27b6921ae8afad92175e4e5034e1b25de0a7c8bf", null ],
       [ "autocal", "class_local_analog.html#ada1e9ea182d2596718e39abdb27b6921ab4afd2e8188f6c787aea998d6ac7745d", null ],
-      [ "pins", "class_local_analog.html#ada1e9ea182d2596718e39abdb27b6921ad3226782744ce122d789ea8e03d32f53", null ]
+      [ "pins", "class_local_analog.html#ada1e9ea182d2596718e39abdb27b6921ad3226782744ce122d789ea8e03d32f53", null ],
+      [ "values", "class_local_analog.html#ada1e9ea182d2596718e39abdb27b6921af09cc7ee3a9a93273f4b80601cafb00c", null ]
     ] ],
     [ "LocalAnalog", "class_local_analog.html#a0fa1ad705b280dbb5820b243130f2cf0", null ],
     [ "~LocalAnalog", "class_local_analog.html#ac7239a3fd603a07c99699c872e7c4cc1", null ],

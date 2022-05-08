@@ -9,6 +9,7 @@ var class_s_p_i_port =
     [ "getCsPins", "class_s_p_i_port.html#a0e64972b1b0a120110f3f498e2d654ed", null ],
     [ "getFreeCsPins", "class_s_p_i_port.html#a5b6e18a6a58d9cb15d1cf51d550fe5a6", null ],
     [ "giveSemaphore", "class_s_p_i_port.html#ac3feeaf8dffc219625567c0aa0789d3a", null ],
+    [ "hasFreePins", "class_s_p_i_port.html#a1109e42c8e5889df7f0e345713279a01", null ],
     [ "isPinFree", "class_s_p_i_port.html#a1cfc17f6cbbd35d35943f9dcf69d798a", null ],
     [ "isTaken", "class_s_p_i_port.html#a8518ed69ff1473e7a866b79267e13065", null ],
     [ "receive", "class_s_p_i_port.html#a67136d6545ede553d36fa116fc2852c8", null ],
@@ -19,6 +20,7 @@ var class_s_p_i_port =
     [ "SpiRxCplt", "class_s_p_i_port.html#ada6f6ca253dec10c789f183ee1d6c11f", null ],
     [ "SpiTxCplt", "class_s_p_i_port.html#a7298cf5b568a95b812d4545723eef187", null ],
     [ "SpiTxRxCplt", "class_s_p_i_port.html#aaa8d5b713d4e9f02219c1b6bda4cf798", null ],
+    [ "takeExclusive", "class_s_p_i_port.html#a2a85ef27467443ec06ff20615c541708", null ],
     [ "takeSemaphore", "class_s_p_i_port.html#a2f4057e9c8d04aec84bd88c70b78623b", null ],
     [ "transmit", "class_s_p_i_port.html#a7735ff59588531467484e9614246acc1", null ],
     [ "transmit_DMA", "class_s_p_i_port.html#a8e4e64da0ea1db035be095ccbdcd2de0", null ],
@@ -32,5 +34,6 @@ var class_s_p_i_port =
     [ "freePins", "class_s_p_i_port.html#a6039e4c402a597251a161ab3521c1a37", null ],
     [ "hspi", "class_s_p_i_port.html#a1884a8265d1b1d113b2c0c9a33c72584", null ],
     [ "isTakenFlag", "class_s_p_i_port.html#ad2193523354ab097d188a3690c646a10", null ],
-    [ "semaphore", "class_s_p_i_port.html#adf68e67849206fff7f660dc16be8f9aa", null ]
+    [ "semaphore", "class_s_p_i_port.html#adf68e67849206fff7f660dc16be8f9aa", null ],
+    [ "takenExclusive", "class_s_p_i_port.html#a8d929b49b729619a6e4a1293a6876229", null ]
 ];

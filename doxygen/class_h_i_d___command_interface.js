@@ -11,6 +11,7 @@ var class_h_i_d___command_interface =
     [ "sendHidCmd", "class_h_i_d___command_interface.html#a9f229fb9500556dc8233ccf04d654244", null ],
     [ "sendReplies", "class_h_i_d___command_interface.html#a6a913e1e7225f647e9ced6141aad0eb5", null ],
     [ "transferComplete", "class_h_i_d___command_interface.html#a3c2821a4772674d2bb2c6e448890fc0c", null ],
+    [ "waitingToSend", "class_h_i_d___command_interface.html#a7947cb858f6ad3274a769f816ed7ec0d", null ],
     [ "commands", "class_h_i_d___command_interface.html#a4ed8cfdfef8069f1a8b5c6e25bacc516", null ],
     [ "enableBroadcastFromOtherInterfaces", "class_h_i_d___command_interface.html#a06b4fce172baa678a0cc1d4e30ddb9c3", null ],
     [ "globalInterface", "class_h_i_d___command_interface.html#adf3d6fb173733a49a49ddf4c6cbf846c", null ],

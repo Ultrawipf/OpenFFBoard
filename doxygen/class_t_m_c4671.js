@@ -36,7 +36,8 @@ var class_t_m_c4671 =
       [ "encpol", "class_t_m_c4671.html#a383a82ab842490e325553e9365028a27a476a2cbf0b8d20688bd8d3c8f905ae9c", null ],
       [ "combineEncoder", "class_t_m_c4671.html#a383a82ab842490e325553e9365028a27a6fe77c3a5eaa979831ff06aa1430b3f8", null ],
       [ "invertForce", "class_t_m_c4671.html#a383a82ab842490e325553e9365028a27ab4f0f19e27f41a19f5a95695d51f43be", null ],
-      [ "vmTmc", "class_t_m_c4671.html#a383a82ab842490e325553e9365028a27aa4c85f6bd07bccc575b078ae00b60ef0", null ]
+      [ "vmTmc", "class_t_m_c4671.html#a383a82ab842490e325553e9365028a27aa4c85f6bd07bccc575b078ae00b60ef0", null ],
+      [ "extphie", "class_t_m_c4671.html#a383a82ab842490e325553e9365028a27a1da79c08683a487155b42fee9062683d", null ]
     ] ],
     [ "TMC4671", "class_t_m_c4671.html#aff75030b94a5d49cd959c1f53c47be32", null ],
     [ "~TMC4671", "class_t_m_c4671.html#a776fa9a0e9e0f2b15544dfdd4f043138", null ],
@@ -172,6 +173,7 @@ var class_t_m_c4671 =
     [ "updateReg", "class_t_m_c4671.html#ac89e2eb4e9e57fad1310452b8a75db3c", null ],
     [ "usingExternalEncoder", "class_t_m_c4671.html#a43e350251ae8bb6e2b369dad7f15afa7", null ],
     [ "writeReg", "class_t_m_c4671.html#a007ee36f6bc20dad75e5ff372ce75ee5", null ],
+    [ "writeRegDMA", "class_t_m_c4671.html#aeeb78b76676f4dc951ac789fe7b13f5b", null ],
     [ "zeroAbnUsingPhiM", "class_t_m_c4671.html#a832e590d5c733b07f39171a522831ab0", null ],
     [ "abnconf", "class_t_m_c4671.html#a406aed05ca8f1d9ba996c631d4164fe3", null ],
     [ "adcCalibrated", "class_t_m_c4671.html#aaa44a7ae6581bc22538be0d3af18e112", null ],

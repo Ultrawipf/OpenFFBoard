@@ -20,7 +20,6 @@ var class_o_drive_c_a_n =
     [ "saveFlash", "class_o_drive_c_a_n.html#a6e7835f8f6d70262cbf64cb25f987bae", null ],
     [ "sendMsg", "class_o_drive_c_a_n.html#ae5665e78f5b882190777421df8066e84", null ],
     [ "sendMsg", "class_o_drive_c_a_n.html#ab3ee2297abf009ec340f6565544e5c82", null ],
-    [ "setCanRate", "class_o_drive_c_a_n.html#a188691da747f6b54c96fd41c28577473", null ],
     [ "setMode", "class_o_drive_c_a_n.html#acae9b813e29f83db4657c34cf7efadce", null ],
     [ "setPos", "class_o_drive_c_a_n.html#a4852b2c6334d07079a7bdeb67d8335a3", null ],
     [ "setState", "class_o_drive_c_a_n.html#a20df20c69f312f0ab847a1f7afb661ca", null ],

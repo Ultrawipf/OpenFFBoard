@@ -3,7 +3,8 @@ var class_local_buttons =
     [ "LocalButtons_commands", "class_local_buttons.html#a4079bc8e1bdb9a36f0c7614d42b203cb", [
       [ "mask", "class_local_buttons.html#a4079bc8e1bdb9a36f0c7614d42b203cbaf2ce11ebf110993621bedd8e747d7b1b", null ],
       [ "polarity", "class_local_buttons.html#a4079bc8e1bdb9a36f0c7614d42b203cbabf26cfe05f05fa0ee79497b6441582b9", null ],
-      [ "pins", "class_local_buttons.html#a4079bc8e1bdb9a36f0c7614d42b203cbad3226782744ce122d789ea8e03d32f53", null ]
+      [ "pins", "class_local_buttons.html#a4079bc8e1bdb9a36f0c7614d42b203cbad3226782744ce122d789ea8e03d32f53", null ],
+      [ "values", "class_local_buttons.html#a4079bc8e1bdb9a36f0c7614d42b203cbaf09cc7ee3a9a93273f4b80601cafb00c", null ]
     ] ],
     [ "LocalButtons", "class_local_buttons.html#ad7a8ef46dfba6a1ddd3f8f3ca9ce4c67", null ],
     [ "~LocalButtons", "class_local_buttons.html#aa7fac7ae24e3f20438ec1a97962db1bb", null ],
