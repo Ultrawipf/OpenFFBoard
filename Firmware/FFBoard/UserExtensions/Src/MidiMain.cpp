@@ -64,8 +64,8 @@ MidiMain::MidiMain(){
 
 
 	//CommandHandler::registerCommands();
-	registerCommand("power", MidiMain_commands::power, "Intensity");
-	registerCommand("range", MidiMain_commands::range, "Range of phase change");
+	registerCommand("power", MidiMain_commands::power, "Intensity",CMDFLAG_GET|CMDFLAG_SET);
+	registerCommand("range", MidiMain_commands::range, "Range of phase change",CMDFLAG_GET|CMDFLAG_SET);
 
 	HAL_TIM_Base_Start_IT(this->timer_update);
 }

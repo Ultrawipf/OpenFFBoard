@@ -238,7 +238,13 @@ protected:
 
 	std::vector<CmdHandlerCommanddef> registeredCommands;
 
-	// Helper to be used with class enums
+	/**
+	 * Registers a command for this command handler
+	 * @param[in]	cmd		string name of command for serial interface
+	 * @param[in]	cmdid	id enum for command for HID
+	 * @param[in]	help	help message displayed on serial interface
+	 * @param[in]	flags	what access methods are available for a command (see CMDFLAG definitions)
+	 */
 	template<typename ID>
 	void registerCommand(const char* cmd,const ID cmdid,const char* help=nullptr,uint32_t flags = 0){
 		for(CmdHandlerCommanddef& cmdDef : registeredCommands){
