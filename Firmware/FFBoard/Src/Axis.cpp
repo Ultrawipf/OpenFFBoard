@@ -824,7 +824,7 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 		break;
 	case Axis_commands::scaleAccel:
 		if(cmd.type == CMDtype::info){
-			replies.push_back(CommandReply("scale:0.1"));
+			replies.push_back(CommandReply("scale:1"));
 		}
 		else if (cmd.type == CMDtype::get)
 		{
