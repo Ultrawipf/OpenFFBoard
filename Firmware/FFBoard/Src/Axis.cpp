@@ -443,11 +443,6 @@ float Axis::getSpeedScalerNormalized() {
 	return (float)0x7FFF / maxSpeedDegS;
 }
 
-//float	 Axis::getAccelScalerNormalized() {
-//	//return accelScalerNormalized;
-//	return (float)0x7FFF / maxAccelDegSS;
-//}
-
 
 int32_t Axis::getLastScaledEnc() {
 	return  clip(metric.current.pos,-0x7fff,0x7fff);
@@ -519,11 +514,12 @@ void Axis::updateMetrics(float new_pos) { // pos is degrees
 	int32_t scaled_pos = scaleEncValue(new_pos, degreesOfRotation);
 	metric.current.pos = scaled_pos;
 
-	metric.current.speedInstant = (new_pos - metric.previous.posDegrees) * 1000.0; // deg/s
-	metric.current.speed = speedFilter.process(metric.current.speedInstant);
 
-	metric.current.accelInstant = (metric.current.speedInstant - metric.previous.speedInstant) * 1000.0;
-	metric.current.accel = accelFilter.process(metric.current.accelInstant);
+	// compute speed and accel from raw instant speed normalized
+	float currentSpeed = (new_pos - metric.previous.posDegrees) * 1000.0; // deg/s
+	metric.current.speed = speedFilter.process(currentSpeed);
+	metric.current.accel = accelFilter.process((currentSpeed - _lastSpeed) * 1000.0); // deg/s/s
+	_lastSpeed = currentSpeed;
 
 	metric.current.torque = 0;
 }
@@ -588,7 +584,7 @@ bool Axis::updateTorque(int32_t* totalTorque) {
 
 		float torqueSign = torque > 0 ? 1 : -1; // Used to prevent metrics against the force to go into the limiter
 		// Speed. Mostly tuned...
-		spdlimiterAvg.addValue(metric.current.speedInstant);
+		spdlimiterAvg.addValue(metric.current.speed);
 		float speedreducer = (float)((spdlimiterAvg.getAverage()*torqueSign) - (float)maxSpeedDegS) * getSpeedScalerNormalized();
 		spdlimitreducerI = clip<float,int32_t>( spdlimitreducerI + ((speedreducer * 0.015) * torqueScaler),0,power);
 
