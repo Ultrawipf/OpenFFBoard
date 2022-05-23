@@ -31,22 +31,22 @@ Axis::Axis(char axis,volatile Control_t* control) :CommandHandler("axis", CLSID_
 	{
 		setInstance(0);
 		this->flashAddrs = AxisFlashAddrs({ADR_AXIS1_CONFIG, ADR_AXIS1_MAX_SPEED, ADR_AXIS1_MAX_ACCEL,
-										   ADR_AXIS1_ENDSTOP, ADR_AXIS1_POWER, ADR_AXIS1_DEGREES,ADR_AXIS1_EFFECTS1, ADR_AXIS1_ENC_RATIO,
-										   ADR_AXIS1_SPEED_FILTER, ADR_AXIS1_ACCEL_FILTER, ADR_AXIS1_SCALER_SPEED, ADR_AXIS1_SCALER_ACCEL});
+										   ADR_AXIS1_ENDSTOP, ADR_AXIS1_POWER, ADR_AXIS1_DEGREES,ADR_AXIS1_EFFECTS1,ADR_AXIS1_ENC_RATIO,
+										   ADR_AXIS1_SPEED_FILTER, ADR_AXIS1_ACCEL_FILTER});
 	}
 	else if (axis == 'Y')
 	{
 		setInstance(1);
 		this->flashAddrs = AxisFlashAddrs({ADR_AXIS2_CONFIG, ADR_AXIS2_MAX_SPEED, ADR_AXIS2_MAX_ACCEL,
 										   ADR_AXIS2_ENDSTOP, ADR_AXIS2_POWER, ADR_AXIS2_DEGREES,ADR_AXIS2_EFFECTS1, ADR_AXIS2_ENC_RATIO,
-										   ADR_AXIS2_SPEED_FILTER, ADR_AXIS2_ACCEL_FILTER, ADR_AXIS2_SCALER_SPEED, ADR_AXIS2_SCALER_ACCEL});
+										   ADR_AXIS2_SPEED_FILTER, ADR_AXIS2_ACCEL_FILTER});
 	}
 	else if (axis == 'Z')
 	{
 		setInstance(2);
 		this->flashAddrs = AxisFlashAddrs({ADR_AXIS3_CONFIG, ADR_AXIS3_MAX_SPEED, ADR_AXIS3_MAX_ACCEL,
 										   ADR_AXIS3_ENDSTOP, ADR_AXIS3_POWER, ADR_AXIS3_DEGREES,ADR_AXIS3_EFFECTS1, ADR_AXIS3_ENC_RATIO,
-										   ADR_AXIS3_SPEED_FILTER, ADR_AXIS3_ACCEL_FILTER, ADR_AXIS3_SCALER_SPEED, ADR_AXIS3_SCALER_ACCEL});
+										   ADR_AXIS3_SPEED_FILTER, ADR_AXIS3_ACCEL_FILTER});
 	}
 
 
@@ -82,17 +82,11 @@ void Axis::registerCommands(){
 	registerCommand("fxratio", Axis_commands::fxratio, "Effect ratio. Reduces effects excluding endstop. 255=100%",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("curtorque", Axis_commands::curtorque, "Axis torque",CMDFLAG_GET);
 	registerCommand("curpos", Axis_commands::curpos, "Axis position",CMDFLAG_GET);
-<<<<<<< HEAD
 	registerCommand("reduction", Axis_commands::reductionScaler, "Encoder to axis gear reduction (adr+1 / val+1) 0-255",CMDFLAG_GET | CMDFLAG_SETADR);
-=======
-
 	registerCommand("filterSpeed_freq", Axis_commands::filterSpeed_freq, "Biquad filter frequency for speed", CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("filterSpeed_q", Axis_commands::filterSpeed_q, "Biquad filter q for speed", CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("filterAccel_freq", Axis_commands::filterAccel_freq, "Biquad filter frequency for accel", CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("filterAccel_q", Axis_commands::filterAccel_q, "Biquad filter frequency for accel", CMDFLAG_GET | CMDFLAG_SET);
-	registerCommand("scaleSpeed", Axis_commands::scaleSpeed, "Scale to map SPEED on full range", CMDFLAG_GET | CMDFLAG_SET);
-	registerCommand("scaleAccel", Axis_commands::scaleAccel, "Scale to map ACCEL on full range", CMDFLAG_GET | CMDFLAG_SET);
->>>>>>> 189eb62 (Clean code, and exposed internal settings)
 }
 
 /*
@@ -148,13 +142,11 @@ void Axis::restoreFlash(){
 		setDamperStrength((effects >> 8) & 0xff);
 	}
 
-<<<<<<< HEAD
 	uint16_t ratio;
 	if(Flash_Read(flashAddrs.encoderRatio, &ratio)){
 		setGearRatio(ratio & 0xff, (ratio >> 8) & 0xff);
 	}
 
-=======
 	uint16_t filterStorage;
 	if (Flash_Read(flashAddrs.speedFilter, &filterStorage))
 	{
@@ -176,19 +168,7 @@ void Axis::restoreFlash(){
 		accelFilter.setQ(filterAccelCst.q / 100.0);
 	}
 
-	uint16_t scaler;
-	if (Flash_Read(flashAddrs.speedScale, &scaler))
-	{
-		this->scaleSpeed = scaler;
-	}
 
-	if (Flash_Read(flashAddrs.accelScale, &scaler))
-	{
-		this->scaleAccel = scaler;
-	}
-
-
->>>>>>> 189eb62 (Clean code, and exposed internal settings)
 }
 // Saves parameters to flash.
 void Axis::saveFlash(){
@@ -201,10 +181,7 @@ void Axis::saveFlash(){
 	Flash_Write(flashAddrs.power, power);
 	Flash_Write(flashAddrs.degrees, (degreesOfRotation & 0x7fff) | (invertAxis << 15));
 	Flash_Write(flashAddrs.effects1, idlespringstrength | (damperIntensity << 8));
-<<<<<<< HEAD
 	Flash_Write(flashAddrs.encoderRatio, gearRatio.numerator | (gearRatio.denominator << 8));
-=======
-
 	uint16_t filterStorage;
 
 	// save CF biquad
@@ -216,11 +193,6 @@ void Axis::saveFlash(){
 	filterStorage |= ( (uint16_t)filterAccelCst.q & 0x7F ) << 9 ;
 	Flash_Write(flashAddrs.accelFilter, filterStorage);
 
-	// save scaler
-	Flash_Write(flashAddrs.speedScale, (uint16_t)(this->scaleSpeed));
-	Flash_Write(flashAddrs.accelScale, (uint16_t)(this->scaleAccel));
-
->>>>>>> 189eb62 (Clean code, and exposed internal settings)
 }
 
 
@@ -548,10 +520,10 @@ void Axis::updateMetrics(float new_pos) { // pos is degrees
 	metric.current.pos = scaled_pos;
 
 	metric.current.speedInstant = (new_pos - metric.previous.posDegrees) * 1000.0; // deg/s
-	metric.current.speed = speedFilter.process(metric.current.speedInstant * scaleSpeed);
+	metric.current.speed = speedFilter.process(metric.current.speedInstant);
 
 	metric.current.accelInstant = (metric.current.speedInstant - metric.previous.speedInstant) * 1000.0;
-	metric.current.accel = accelFilter.process(metric.current.accelInstant * scaleAccel);
+	metric.current.accel = accelFilter.process(metric.current.accelInstant);
 
 	metric.current.torque = 0;
 }
@@ -798,42 +770,11 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 		replies.emplace_back(this->metric.current.torque);
 		break;
 
-<<<<<<< HEAD
 	case Axis_commands::reductionScaler:
 		if(cmd.type == CMDtype::get){
 			replies.emplace_back(gearRatio.denominator,gearRatio.numerator);
 		}else if(cmd.type == CMDtype::setat){
 			setGearRatio(cmd.adr,cmd.val);
-		}
-		break;
-
-=======
-	case Axis_commands::scaleSpeed:
-		if(cmd.type == CMDtype::info){
-			replies.push_back(CommandReply("scale:1"));
-		}
-		else if (cmd.type == CMDtype::get)
-		{
-			replies.push_back(CommandReply(this->scaleSpeed));
-		}
-		else if (cmd.type == CMDtype::set)
-		{
-			uint32_t value = clip<uint32_t, uint32_t>(cmd.val, 1, 10000);
-			this->scaleSpeed = value;
-		}
-		break;
-	case Axis_commands::scaleAccel:
-		if(cmd.type == CMDtype::info){
-			replies.push_back(CommandReply("scale:1"));
-		}
-		else if (cmd.type == CMDtype::get)
-		{
-			replies.push_back(CommandReply(this->scaleAccel));
-		}
-		else if (cmd.type == CMDtype::set)
-		{
-			uint32_t value = clip<uint32_t, uint32_t>(cmd.val, 1, 10000);
-			this->scaleAccel = value;
 		}
 		break;
 
@@ -892,8 +833,6 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 		}
 		break;
 
-
->>>>>>> 189eb62 (Clean code, and exposed internal settings)
 	default:
 		return CommandStatus::NOT_FOUND;
 	}
