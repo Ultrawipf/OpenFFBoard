@@ -60,9 +60,7 @@ struct AxisConfig
 };
 struct metric_t {
 	float accel = 0;	// in deg/s²
-	float accelInstant = 0;
-	float speed = 0;
-	float speedInstant = 0; // in deg/s
+	float speed = 0; // in deg/s
 	int32_t pos = 0;
 	float posDegrees = 0;
 	int32_t torque = 0; // total of effect + endstop torque
@@ -122,10 +120,6 @@ public:
 
 	int32_t scaleEncValue(float angle, uint16_t degrees);
 	float 	getEncAngle(Encoder *enc);
-//	float	getNormalizedSpeedScaler(uint16_t maxSpeedRpm, uint16_t degrees);
-//	float	getNormalizedAccelScaler(uint16_t maxAccelRpm, uint16_t degrees);
-//	float	getSpeedFromNormalized(uint16_t speedNormalized, uint16_t degrees);
-//	float	getAccelFromNormalized(uint16_t accelNormalized, uint16_t degrees);
 
 
 	void setPower(uint16_t power);
@@ -152,7 +146,6 @@ public:
 
 	metric_t* getMetrics();
 	float 	 getSpeedScalerNormalized();
-	//float	 getAccelScalerNormalized();
 
 	void setEffectTorque(int32_t torque);
 	bool updateTorque(int32_t* totalTorque);
@@ -227,6 +220,7 @@ private:
 
 	// Merge normalized
 	axis_metric_t metric;
+	float _lastSpeed = 0;
 	int32_t effectTorque = 0;
 	int32_t axisEffectTorque = 0;
 	uint8_t fx_ratio_i = 204; // Reduce effects to a certain ratio of the total power to have a margin for the endstop. 80% = 204
