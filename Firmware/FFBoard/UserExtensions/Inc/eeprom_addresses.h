@@ -12,11 +12,11 @@
 
 #include "main.h"
 // Change this to the amount of currently registered variables
-#define NB_OF_VAR 125
+#define NB_OF_VAR 119
 extern const uint16_t VirtAddVarTab[NB_OF_VAR];
 
 // Amount of variables in exportable list
-#define NB_EXPORTABLE_ADR 110
+#define NB_EXPORTABLE_ADR 104
 extern const uint16_t exportableFlashAddresses[NB_EXPORTABLE_ADR];
 
 
@@ -95,9 +95,7 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_AXIS1_EFFECTS1 0x308 // 0-7 idlespring, 8-15 damper
 #define ADR_AXIS1_SPEED_FILTER 0x309 // Speed filter Lowpass
 #define ADR_AXIS1_ACCEL_FILTER 0x30A // Accel filter Lowpass
-#define ADR_AXIS1_SCALER_SPEED 0x30B // Store the speed scaler
-#define ADR_AXIS1_SCALER_ACCEL 0x30C // Store the accel scaler
-#define ADR_AXIS1_ENC_RATIO 0x30D // Store the encoder ratio for an axis
+#define ADR_AXIS1_ENC_RATIO 0x30B // Store the encoder ratio for an axis
 // TMC1
 #define ADR_TMC1_MOTCONF 0x320 // 0-2: MotType 3-5: PhiE source 6-15: Poles
 #define ADR_TMC1_CPR 0x321 
@@ -121,9 +119,7 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_AXIS2_EFFECTS1 0x348 // 0-7 idlespring, 8-15 damper
 #define ADR_AXIS2_SPEED_FILTER 0x349 // Speed filter Lowpass
 #define ADR_AXIS2_ACCEL_FILTER 0x34A // Accel filter Lowpass
-#define ADR_AXIS2_SCALER_SPEED 0x34B // Store the speed scaler
-#define ADR_AXIS2_SCALER_ACCEL 0x34C // Store the accel scaler
-#define ADR_AXIS2_ENC_RATIO 0x34D // Store the encoder ratio for an axis
+#define ADR_AXIS2_ENC_RATIO 0x34B // Store the encoder ratio for an axis
 // TMC2
 #define ADR_TMC2_MOTCONF 0x360 // 0-2: MotType 3-5: PhiE source 6-15: Poles
 #define ADR_TMC2_CPR 0x361 
@@ -147,9 +143,7 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_AXIS3_EFFECTS1 0x388 // 0-7 idlespring, 8-15 damper
 #define ADR_AXIS3_SPEED_FILTER 0x389 // Speed filter Lowpass
 #define ADR_AXIS3_ACCEL_FILTER 0x38A // Accel filter Lowpass
-#define ADR_AXIS3_SCALER_SPEED 0x38B // Store the speed scaler
-#define ADR_AXIS3_SCALER_ACCEL 0x38C // Store the accel scaler
-#define ADR_AXIS3_ENC_RATIO 0x38D // Store the encoder ratio for an axis
+#define ADR_AXIS3_ENC_RATIO 0x38B // Store the encoder ratio for an axis
 // TMC3
 #define ADR_TMC3_MOTCONF 0x3A0 // 0-2: MotType 3-5: PhiE source 6-15: Poles
 #define ADR_TMC3_CPR 0x3A1 

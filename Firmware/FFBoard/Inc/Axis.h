@@ -83,7 +83,7 @@ struct GearRatio_t{
 
 enum class Axis_commands : uint32_t{
 	power=0x00,degrees=0x01,esgain,zeroenc,invert,idlespring,axisdamper,enctype,drvtype,pos,maxspeed,maxtorquerate,fxratio,curtorque,curpos,reductionScaler,
-	filterSpeed_freq, filterSpeed_q, filterAccel_freq, filterAccel_q, scaleSpeed, scaleAccel
+	filterSpeed_freq, filterSpeed_q, filterAccel_freq, filterAccel_q
 };
 
 class Axis : public PersistentStorage, public CommandHandler, public ErrorHandler
@@ -241,10 +241,6 @@ private:
 	int16_t idlespringclip = 0;
 	float idlespringscale = 0;
 	bool idle_center = false;
-
-	// Scaler
-	float scaleSpeed = 40;
-	float scaleAccel = 40;
 
 	biquad_constant_t filterSpeedCst = { 25, 60 };
 	biquad_constant_t filterAccelCst = { 120, 30 };
