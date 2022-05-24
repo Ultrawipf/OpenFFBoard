@@ -20,6 +20,8 @@
 #include "LocalAnalog.h"
 #include "CanAnalog.h"
 
+#include "cmsis_os.h"
+extern osThreadId_t defaultTaskHandle;
 
 // Unique identifier for listing
 //ClassIdentifier FFBHIDMain::info = {
@@ -157,6 +159,9 @@ void FFBHIDMain::update(){
 
 	// If either usb or timer triggered
 	if(control.usb_update_flag || control.update_flag){
+		//debugpin.set();
+		uint32_t prio = uxTaskPriorityGet((TaskHandle_t)defaultTaskHandle);
+		vTaskPrioritySet((TaskHandle_t)defaultTaskHandle,34); // Increase priority
 		axes_manager->update();
 		control.update_flag = false;
 		if(control.usb_update_flag){
@@ -167,6 +172,8 @@ void FFBHIDMain::update(){
 			}
 		}
 		axes_manager->updateTorque();
+		//debugpin.reset();
+		vTaskPrioritySet((TaskHandle_t)defaultTaskHandle,prio); // reset priority
 	}
 }
 
