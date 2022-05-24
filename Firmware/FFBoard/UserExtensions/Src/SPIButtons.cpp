@@ -248,7 +248,7 @@ CommandStatus SPI_Buttons::command(const ParsedCommand& cmd,std::vector<CommandR
 
 static ButtonSourceConfig decodeIntToConf(uint16_t config_int, uint16_t config_int_2){
 	ButtonSourceConfig c;
-	c.numButtons = config_int & 0x3F;
+	c.numButtons = (config_int & 0x3F) + 1;
 	c.invert = (config_int >> 6) & 0x1;
 	c.cutRight = (config_int >> 7) & 0x1;
 	c.mode = SPI_BtnMode(config_int >> 8);
@@ -256,7 +256,7 @@ static ButtonSourceConfig decodeIntToConf(uint16_t config_int, uint16_t config_i
 	return c;
 }
 static std::tuple<uint16_t, uint16_t> encodeConfToInt(ButtonSourceConfig* c){
-	uint16_t val = c->numButtons & 0x3F;
+	uint16_t val = (c->numButtons-1) & 0x3F; // 1-64
 	val |= c->invert << 6;
 	val |= c->cutRight << 7;
 	val |= (uint8_t)c->mode << 8;
