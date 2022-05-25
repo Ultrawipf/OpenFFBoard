@@ -34,6 +34,7 @@ void CANPort::registerCommands(){
 	CommandHandler::registerCommands();
 	registerCommand("speed", CanPort_commands::speed, "CAN speed preset (0:50k;1:100k;2:125k;3:250k;4:500k;5:1M)", CMDFLAG_GET|CMDFLAG_SET|CMDFLAG_INFOSTRING);
 	registerCommand("send", CanPort_commands::send, "Send CAN frame. Adr&Value required", CMDFLAG_SETADR);
+	registerCommand("len", CanPort_commands::len, "Set length of next frames", CMDFLAG_SET|CMDFLAG_GET);
 }
 
 void CANPort::saveFlash(){
@@ -353,13 +354,18 @@ CommandStatus CANPort::command(const ParsedCommand& cmd,std::vector<CommandReply
 			}
 			CAN_tx_msg msg;
 			memcpy(msg.data,&cmd.val,8);
-			msg.header.StdId = cmd.adr;
+			header.StdId = cmd.adr;
+			msg.header = header;
 			sendMessage(msg);
 		}else{
 			return CommandStatus::NOT_FOUND;
 		}
 		break;
 	}
+	case CanPort_commands::len:
+		handleGetSet(cmd, replies, header.DLC);
+		header.DLC = std::min<uint32_t>(header.DLC,8);
+		break;
 	default:
 		return CommandStatus::NOT_FOUND;
 	}
