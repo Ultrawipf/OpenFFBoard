@@ -30,7 +30,7 @@ typedef struct{
 
 
 class CANPort : public CommandHandler, public PersistentStorage { //  : public CanHandler if interrupt callbacks needed
-	enum class CanPort_commands : uint32_t {speed,send};
+	enum class CanPort_commands : uint32_t {speed,send,len};
 public:
 	CANPort(CAN_HandleTypeDef &hcan);
 	CANPort(CAN_HandleTypeDef &hcan,const OutputPin* silentPin);
@@ -86,6 +86,8 @@ private:
 	bool silent = true;
 	bool active = false;
 	int32_t portUsers = 0;
+
+	CAN_TxHeaderTypeDef header = {0,0,0,CAN_RTR_DATA,8,(FunctionalState)0};
 
 	const std::vector<std::string> SpeedNames = {"50k","100k","125k","250k","500k","1000k"};
 
