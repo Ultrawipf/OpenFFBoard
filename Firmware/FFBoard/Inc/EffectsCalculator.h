@@ -18,6 +18,9 @@
 #define EFFECT_THREAD_MEM 128
 #define EFFECT_THREAD_PRIO 20 // low priority for stat
 
+//TODO VMA : with bissC i used *3 in speed scale => we keep *4
+#define MAX_COEFF_DAMPER 4
+
 class Axis;
 struct metric_t;
 
@@ -25,14 +28,14 @@ struct metric_t;
 struct effect_gain_t {
 	uint8_t friction = 127;
 	uint8_t spring = 64;
-	uint8_t damper = 127;
+	uint8_t damper = 127 / MAX_COEFF_DAMPER;
 	uint8_t inertia = 127;
 };
 
 struct effect_scaler_t {
 	float friction = 0.4 * 40;
 	float spring = 16.0;
-	float damper = 2.0 * 40;  //TODO : tweak it later : nice ffb with 125, tweak
+	float damper = 2.0 * 40 * MAX_COEFF_DAMPER;
 	float inertia = 0.5 * 40;
 };
 
@@ -106,7 +109,7 @@ private:
 	uint8_t global_gain = 0xff;
 	effect_gain_t gain;
 	effect_scaler_t scaler;
-	uint8_t frictionPctSpeedToRampup = 5;	// define the max value of the range (0..5% of maxspeed) where torque is rampup on friction
+	uint8_t frictionPctSpeedToRampup = 25;	// define the max value of the range (0..5% of maxspeed) where torque is rampup on friction
 
 	// FFB status
 	bool effects_active = false; // was ffb_active
