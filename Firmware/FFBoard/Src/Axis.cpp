@@ -508,8 +508,8 @@ int16_t Axis::updateEndstop(){
 	if(clipdir == 0){
 		return 0;
 	}
-	int32_t addtorque = clip<int32_t,int32_t>(abs(metric.current.pos)-0x7fff,-0x7fff,0x7fff);
-	addtorque *= (float)endstopStrength * endstopGain * torqueScaler; // Apply endstop gain for stiffness. 0.15f
+	float addtorque = clipdir*metric.current.posDegrees - (float)this->degreesOfRotation/2.0; // degress of rotation counts total range so multiply by 2
+	addtorque *= (float)endstopStrength * endstopGain * torqueScaler; // Apply endstop gain for stiffness.
 	addtorque *= -clipdir;
 
 	return clip<int32_t,int32_t>(addtorque,-0x7fff,0x7fff);
