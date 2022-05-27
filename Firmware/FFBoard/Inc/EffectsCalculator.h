@@ -19,7 +19,7 @@
 #define EFFECT_THREAD_PRIO 20 // low priority for stat
 
 //TODO VMA : with bissC i used *3 in speed scale => we keep *4
-#define MAX_COEFF_DAMPER 4
+#define MAX_COEFF_DAMPER 2
 
 class Axis;
 struct metric_t;
