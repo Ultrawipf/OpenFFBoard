@@ -225,7 +225,7 @@ private:
 	float torqueScaler = 0; // power * fx_ratio as a ratio between 0 & 1
 	bool invertAxis = false;
 	uint8_t endstopStrength = 127; // Sets how much extra torque per count above endstop is added. High = stiff endstop. Low = softer
-	const float endstopGain = 0.75; // Overall max endstop intensity
+	const float endstopGain = 50; // Overall max endstop intensity
 
 
 	uint8_t idlespringstrength = 127;
