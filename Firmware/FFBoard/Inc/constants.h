@@ -8,11 +8,7 @@
  * For more settings see target_constants.h in a target specific folder
  */
 
-
-
-
 static const uint8_t SW_VERSION_INT[3] = {1,9,2}; // Version as array. 8 bit each!
-
 #define MAX_AXIS 2 // ONLY USE 2 for now else screws HID Reports
 
 //#define DEBUGLOG // Uncomment to enable some debug printouts
