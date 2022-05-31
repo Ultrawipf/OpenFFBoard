@@ -381,7 +381,7 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 	 */
 	case FFB_EFFECT_FRICTION: // TODO sometimes unstable.
 	{
-		float speed = metrics->speed;
+		float speed = metrics->speed * INTERNAL_SCALER_FRICTION;
 
 		int16_t offset = effect->conditions[con_idx].cpOffset;
 		int16_t deadBand = effect->conditions[con_idx].deadBand;
@@ -419,7 +419,7 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 	case FFB_EFFECT_DAMPER:
 	{
 
-		float speed = metrics->speed;
+		float speed = metrics->speed * INTERNAL_SCALER_DAMPER;
 		result_torque -= effect->filter[con_idx]->process(calcConditionEffectForce(effect, speed, gain.damper, con_idx, scaler.damper, angle_ratio));
 
 		break;
@@ -427,7 +427,7 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 
 	case FFB_EFFECT_INERTIA:
 	{
-		float accel = metrics->accel;
+		float accel = metrics->accel * INTERNAL_SCALER_INERTIA;
 		result_torque -= effect->filter[con_idx]->process(calcConditionEffectForce(effect, accel, gain.inertia, con_idx, scaler.inertia, angle_ratio)); // Bump *60 the inertia feedback
 
 		break;
