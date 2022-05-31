@@ -18,8 +18,9 @@
 #define EFFECT_THREAD_MEM 128
 #define EFFECT_THREAD_PRIO 20 // low priority for stat
 
-//TODO VMA : with bissC i used *3 in speed scale => we keep *4
-#define MAX_COEFF_DAMPER 2
+#define INTERNAL_SCALER_DAMPER 40
+#define INTERNAL_SCALER_FRICTION 8
+#define INTERNAL_SCALER_INERTIA 10
 
 class Axis;
 struct metric_t;
@@ -28,15 +29,15 @@ struct metric_t;
 struct effect_gain_t {
 	uint8_t friction = 127;
 	uint8_t spring = 64;
-	uint8_t damper = 127 / MAX_COEFF_DAMPER;
+	uint8_t damper = 64;
 	uint8_t inertia = 127;
 };
 
 struct effect_scaler_t {
-	float friction = 0.4 * 40;
+	float friction = 2.0; //0.4 * 40;
 	float spring = 16.0;
-	float damper = 2.0 * 40 * MAX_COEFF_DAMPER;
-	float inertia = 0.5 * 40;
+	float damper = 4.0; //2 * 40 * 2
+	float inertia = 2.0;//0.5 * 40;
 };
 
 struct effect_biquad_t {
