@@ -51,7 +51,7 @@ enum class ErrorType : uint8_t{
 
 class Error{
 public:
-	Error();
+	//Error(const Error &e);
 	Error(ErrorCode code, ErrorType type, std::string info) : code(code), type(type), info(info){};
 	ErrorCode code = ErrorCode::none;
 	ErrorType type = ErrorType::warning;
@@ -62,7 +62,7 @@ public:
 	/*
 	 * Errors are equivalent if their code and type match
 	 */
-	bool operator ==(const Error &b){return (this->code == b.code && this->type == b.type && this->info == b.info);}
+	bool operator ==(const Error &b) const {return (this->code == b.code && this->type == b.type);}
 
 };
 
@@ -75,10 +75,10 @@ public:
 
 	ErrorHandler();
 	virtual ~ErrorHandler();
-	virtual void errorCallback(Error &error, bool cleared); // Called when a new error happened. Warning: Could be called from ISR!
+	virtual void errorCallback(const Error &error, bool cleared); // Called when a new error happened. Warning: Could be called from ISR!
 
-	static void addError(Error error);
-	static void clearError(Error error);
+	static void addError(const Error &error);
+	static void clearError(const Error &error);
 	static void clearError(ErrorCode errorcode);
 	static void clearTemp();
 	static void clearAll();
@@ -95,7 +95,7 @@ protected:
 class ErrorPrinter : ErrorHandler, cpp_freertos::Thread{
 public:
 	ErrorPrinter();
-	void errorCallback(Error &error, bool cleared);
+	void errorCallback(const Error &error, bool cleared);
 	void setEnabled(bool enable);
 	bool getEnabled();
 	void Run();
