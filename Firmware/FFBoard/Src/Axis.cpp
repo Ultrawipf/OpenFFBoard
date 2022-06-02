@@ -210,7 +210,7 @@ void Axis::prepareForUpdate(){
 
 }
 
-void Axis::errorCallback(Error &error, bool cleared){
+void Axis::errorCallback(const Error &error, bool cleared){
 	if(cleared && error == this->outOfBoundsError){
 		drv->startMotor();
 		outOfBounds = false;
@@ -358,9 +358,10 @@ float Axis::getEncAngle(Encoder *enc){
 }
 
 
-void Axis::emergencyStop(){
-	drv->stopMotor();
-	control->emergency = true;
+void Axis::emergencyStop(bool reset){
+	drv->emergencyStop(reset);
+	//drv->stopMotor();
+	control->emergency = !reset;
 }
 
 void Axis::usbSuspend(){

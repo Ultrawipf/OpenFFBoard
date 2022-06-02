@@ -375,7 +375,7 @@ public:
 	void stopMotor();
 	void startMotor();
 
-	void emergencyStop();
+	void emergencyStop(bool reset);
 	bool emergency = false;
 	bool estopTriggered = false;
 	void turn(int16_t power);
@@ -511,6 +511,7 @@ private:
 	const Error indexNotHitError = Error(ErrorCode::encoderIndexMissed,ErrorType::critical,"Encoder index missed");
 	const Error lowVoltageError = Error(ErrorCode::undervoltage,ErrorType::warning,"Low motor voltage");
 	const Error communicationError = Error(ErrorCode::tmcCommunicationError, ErrorType::warning, "TMC not responding");
+	const Error estopError = Error(ErrorCode::emergencyStop, ErrorType::critical, "TMC emergency stop triggered");
 
 	TMC_ControlState state = TMC_ControlState::uninitialized;
 	TMC_ControlState laststate = TMC_ControlState::uninitialized;

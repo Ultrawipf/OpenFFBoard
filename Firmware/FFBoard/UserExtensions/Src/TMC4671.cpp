@@ -511,8 +511,9 @@ void TMC4671::Run(){
 				bool tmc_en = ((pins >> 15) & 0x01) && pins != 0xffffffff;
 				if(!tmc_en && motorEnabledRequested){ // Hardware emergency.
 					this->estopTriggered = true;
-					this->emergencyStop();
-					changeState(TMC_ControlState::HardError);
+					this->emergencyStop(false);
+					ErrorHandler::addError(estopError);
+					//changeState(TMC_ControlState::HardError);
 				}
 
 				// Temperature sense
@@ -531,6 +532,16 @@ void TMC4671::Run(){
 
 		case TMC_ControlState::Shutdown:
 			Delay(100);
+			if(estopTriggered){
+				uint32_t pins = readReg(0x76);
+				bool tmc_en = ((pins >> 15) & 0x01) && pins != 0xffffffff;
+				if(tmc_en){
+					// Emergency stop reset
+					ErrorHandler::clearError(estopError);
+					this->estopTriggered = false; // TODO resume correctly
+					changeState(TMC_ControlState::uninitialized,true);
+				}
+			}
 			break;
 
 		case TMC_ControlState::EncoderInit:
@@ -1538,12 +1549,22 @@ void TMC4671::startMotor(){
 
 }
 
-void TMC4671::emergencyStop(){
-	setPwm(TMC_PwmMode::HSlow_LShigh); // Short low side for instant stop
-	emergency = true;
-	enablePin.reset();
-	motorEnabledRequested = false;
-	changeState(TMC_ControlState::HardError);
+void TMC4671::emergencyStop(bool reset){
+	if(!reset){
+		setPwm(TMC_PwmMode::HSlow_LShigh); // Short low side for instant stop
+		emergency = true;
+		enablePin.reset(); // Release enable pin to disable the whole driver
+		motorEnabledRequested = false;
+		this->stopMotor();
+	}else{
+		setPwm(TMC_PwmMode::PWM_FOC);
+		emergency = false;
+		enablePin.set();
+		motorEnabledRequested = true;
+		//this->changeState(TMC_ControlState::waitPower, true); // Reinit
+		this->startMotor();
+
+	}
 }
 
 /**

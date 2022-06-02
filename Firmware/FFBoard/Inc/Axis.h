@@ -102,7 +102,7 @@ public:
 
 	void prepareForUpdate();  // called before the effects are calculated
 	void updateDriveTorque(); //int32_t effectTorque);
-	void emergencyStop();
+	void emergencyStop(bool reset);
 
 	void setPos(uint16_t val);
 	void zeroPos();
@@ -120,7 +120,7 @@ public:
 	void setPower(uint16_t power);
 
 
-	void errorCallback(Error &error, bool cleared) override;
+	void errorCallback(const Error &error, bool cleared) override;
 
 	//ParseStatus command(ParsedCommand_old* cmd,std::string* reply) override;
 	void registerCommands();

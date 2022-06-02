@@ -37,6 +37,7 @@ std::string Error::toString(){
 
 
 ErrorHandler::ErrorHandler(){
+	errors.reserve(10);
 	addCallbackHandler(errorHandlers,this);
 }
 
@@ -68,7 +69,7 @@ void ErrorHandler::clearTemp(){
 	}
 }
 
-void ErrorHandler::addError(Error error){
+void ErrorHandler::addError(const Error &error){
 	for(Error e : errors){
 		if(error == e){
 			return;
@@ -84,7 +85,7 @@ void ErrorHandler::addError(Error error){
 	//cpp_freertos::CriticalSection::ResumeScheduler();
 }
 
-void ErrorHandler::clearError(Error error){
+void ErrorHandler::clearError(const Error &error){
 	for (uint8_t i = 0; i < errors.size(); i++){
 		if(errors[i] == error){
 			errors.erase(errors.begin()+i);
@@ -116,7 +117,7 @@ std::vector<Error>* ErrorHandler::getErrors(){
 	return &errors;
 }
 
-void ErrorHandler::errorCallback(Error &error, bool cleared){
+void ErrorHandler::errorCallback(const Error &error, bool cleared){
 
 }
 
@@ -149,7 +150,7 @@ void ErrorPrinter::Run(){
 
 
 // TODO prints in thread when called from isr
-void ErrorPrinter::errorCallback(Error &error, bool cleared){
+void ErrorPrinter::errorCallback(const Error &error, bool cleared){
 	if(!cleared){
 //		this->errorsToPrint.push_back(error); // Errors are stored in errorhandler
 		if(inIsr()){
