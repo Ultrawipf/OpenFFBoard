@@ -48,8 +48,12 @@ const std::vector<class_entry<MotorDriver>> MotorDriver::all_drivers =
  * Request an emergency stop if something critical happened or the emergency button is triggered
  * Should stop the motor immediately in a safe way.
  */
-void MotorDriver::emergencyStop(){
-	stopMotor();
+void MotorDriver::emergencyStop(bool reset){
+	if(reset){
+		startMotor();
+	}else{
+		stopMotor();
+	}
 }
 
 bool MotorDriver::motorReady(){

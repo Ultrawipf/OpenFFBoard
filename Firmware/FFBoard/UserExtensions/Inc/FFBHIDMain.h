@@ -66,20 +66,23 @@ public:
 
 	void update();
 
-	void emergencyStop();
+	void emergencyStop(bool reset);
 	uint32_t getRate();
 	bool getFfbActive();
 
 	void timerElapsed(TIM_HandleTypeDef* htim);
 	void exti(uint16_t GPIO_Pin);
 
-	void errorCallback(Error &error, bool cleared);
+	void errorCallback(const Error &error, bool cleared);
 
 protected:
 	std::unique_ptr<EffectsCalculator> effects_calc;
 private:
 	volatile Control_t control;
 	void send_report();
+	const bool allowEstopReset = true; // Resets the Estop when the pin is released
+	bool lastEstopState = false;
+	const Error estopError = Error(ErrorCode::emergencyStop, ErrorType::critical, "Emergency stop button triggered");
 
 	/* USB Report rate
 	 * Warning: Report rate initialized by bInterval is overridden by saved speed preset at startup!
@@ -117,6 +120,8 @@ private:
 
 	uint32_t lastUsbReportTick = 0;
 	cpp_freertos::BinarySemaphore sourcesSem = cpp_freertos::BinarySemaphore(true);
+
+	volatile uint32_t lastEstop = 0;
 };
 
 #endif /* SRC_FFBWHEEL_H_ */

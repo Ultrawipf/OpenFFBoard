@@ -141,6 +141,7 @@ void FFBHIDMain::update(){
 		return;
 	}
 	if(control.emergency){
+		pulseClipLed();
 		pulseErrLed();
 		return;
 	}
@@ -335,8 +336,8 @@ std::string FFBHIDMain::usb_report_rates_names() {
 		return s;
 	}
 
-void FFBHIDMain::emergencyStop(){
-	axes_manager->emergencyStop();
+void FFBHIDMain::emergencyStop(bool reset){
+	axes_manager->emergencyStop(reset);
 }
 
 void FFBHIDMain::timerElapsed(TIM_HandleTypeDef* htim){
@@ -383,9 +384,19 @@ void FFBHIDMain::exti(uint16_t GPIO_Pin){
 	}
 #ifdef E_STOP_Pin
 	if(GPIO_Pin == E_STOP_Pin){ // Emergency stop. low active
-		if(HAL_GPIO_ReadPin(E_STOP_GPIO_Port, E_STOP_Pin) == GPIO_PIN_RESET){
-			emergencyStop();
+//		if(HAL_GPIO_ReadPin(E_STOP_GPIO_Port, E_STOP_Pin) == GPIO_PIN_RESET){
+		bool estopPinState = HAL_GPIO_ReadPin(E_STOP_GPIO_Port, E_STOP_Pin) == GPIO_PIN_RESET;
+		if(HAL_GetTick()-lastEstop > 1000 && estopPinState != lastEstopState){ // Long debounce
+			lastEstopState = estopPinState;
+			lastEstop = HAL_GetTick();
+			if(estopPinState){
+				emergencyStop(false);
+			}else if(allowEstopReset){
+				emergencyStop(true);
+			}
+
 		}
+//		}
 	}
 #endif
 }
@@ -393,11 +404,14 @@ void FFBHIDMain::exti(uint16_t GPIO_Pin){
 /*
  * Error handling
  */
-void FFBHIDMain::errorCallback(Error &error, bool cleared){
+void FFBHIDMain::errorCallback(const Error &error, bool cleared){
 	if(error.type == ErrorType::critical){
 		if(!cleared){
-			this->emergencyStop();
+			this->emergencyStop(true);
 		}
+	}
+	if(error.code == ErrorCode::emergencyStop){
+		this->emergencyStop(cleared); // Clear Estop
 	}
 	if(!cleared){
 		pulseErrLed();

@@ -44,7 +44,7 @@ public:
 
 	std::vector<int32_t>* getAxisValues();
 
-	void emergencyStop();
+	void emergencyStop(bool reset);
 	void resetPosZero();
 
 private:

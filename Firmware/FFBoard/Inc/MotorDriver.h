@@ -28,7 +28,7 @@ public:
 	virtual void turn(int16_t power);
 	virtual void stopMotor();
 	virtual void startMotor();
-	virtual void emergencyStop();
+	virtual void emergencyStop(bool reset = false);
 
 	virtual bool motorReady(); // Returns true if the driver is active and ready to receive commands
 

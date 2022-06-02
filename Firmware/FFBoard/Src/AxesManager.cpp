@@ -82,9 +82,9 @@ std::vector<int32_t>* AxesManager::getAxisValues(){
 	return &this->axisValues;
 }
 
-void AxesManager::emergencyStop() {
+void AxesManager::emergencyStop(bool reset) {
 	for (auto &axis : axes) {
-		axis->emergencyStop();
+		axis->emergencyStop(reset);
 	}
 }
 
