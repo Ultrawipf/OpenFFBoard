@@ -50,12 +50,13 @@ bool HidFFB::HID_SendReport(uint8_t *report,uint16_t len){
  * Calculates the frequency of hid out reports
  */
 uint32_t HidFFB::getRate(){
-
-	if(micros() - lastOut > 1000000 || hid_out_period == 0){
-		hid_out_period = 0;
+	float periodAvg = hidPeriodAvg.getAverage();
+	if((HAL_GetTick() - lastOut) > 1000 || periodAvg == 0){
+		// Reset average
+		hidPeriodAvg.clear();
 		return 0;
 	}else{
-		return (1000000/hid_out_period);
+		return (1000.0/periodAvg);
 	}
 }
 
@@ -84,8 +85,9 @@ void HidFFB::sendStatusReport(uint8_t effect){
  * Called when HID OUT data is received via USB
  */
 void HidFFB::hidOut(uint8_t report_id, hid_report_type_t report_type, uint8_t const* buffer, uint16_t bufsize){
-	hid_out_period = (micros() - lastOut); // For measuring update rate
-	lastOut = micros();
+	hidPeriodAvg.addValue((uint32_t)(HAL_GetTick() - lastOut)); // use uint16_t for timer overflow handling if micros timer is used
+	lastOut = HAL_GetTick();
+
 	// FFB Output Message
 	const uint8_t* report = buffer;
 	uint8_t event_idx = report_id - FFB_ID_OFFSET;

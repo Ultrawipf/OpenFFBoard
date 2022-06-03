@@ -10,7 +10,7 @@
 
 #include <FFBoardMain.h>
 
-template <std::size_t LEN>
+template <class T,std::size_t LEN>
 class FastAvg {
 
 public:
@@ -18,7 +18,7 @@ public:
 	~FastAvg(){};
 
 	__attribute__((optimize("-Ofast")))
-	void addValue(float value) {
+	void addValue(T value) {
 
 		// Add the new value
 		samples[currentIndex] = value;
@@ -32,19 +32,24 @@ public:
 		currentIndex = indexRemove;
 	}
 
-	float getAverage() {
+	T getAverage() {
 		return sumOfSamples / LEN;
 	}
 
-	float process(float value) {
+	T process(float value) {
 		addValue(value);
 		return sumOfSamples / LEN;
 	}
 
+	void clear() {
+		memset(samples,0,LEN*sizeof(T));
+		sumOfSamples = 0;
+	}
+
 private:
-	float samples[LEN+1];
+	T samples[LEN+1] = {static_cast<T>(0)};
 	int currentIndex = 0;
-	float sumOfSamples = 0;
+	T sumOfSamples = 0;
 
 };
 

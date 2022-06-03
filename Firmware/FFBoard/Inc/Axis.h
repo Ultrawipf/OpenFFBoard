@@ -241,7 +241,7 @@ private:
 	Biquad speedFilter = Biquad(BiquadType::lowpass, speed_f/filter_f, speed_q, 0.0);
 	Biquad accelFilter = Biquad(BiquadType::lowpass, accel_f/filter_f, accel_q, 0.0);
 	//Biquad limitsFilter = Biquad(BiquadType::lowpass, 20/filter_f, 0.4, 0.0);
-	FastAvg<8> spdlimiterAvg;
+	FastAvg<float,8> spdlimiterAvg;
 
 	void setFxRatio(uint8_t val);
 	void updateTorqueScaler();
