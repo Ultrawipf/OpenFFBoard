@@ -13,6 +13,7 @@
 #include "PersistentStorage.h"
 #include "Filters.h"
 #include "EffectsCalculator.h"
+#include "FastAvg.h"
 
 
 class HidFFB: public UsbHidHandler {
@@ -55,8 +56,6 @@ private:
 	void set_filters(FFB_Effect* effect);
 
 
-	uint32_t hid_out_period = 0; // ms since last out report for measuring update rate
-
 	//uint8_t last_effect_id = 0;
 	uint16_t used_effects = 0;
 	bool ffb_active = false;
@@ -64,7 +63,7 @@ private:
 	FFB_PIDPool_Feature_Data_t pool_report;
 
 	reportFFB_status_t reportFFBStatus;
-
+	FastAvg<float,20> hidPeriodAvg;
 
 	uint32_t lastOut = 0;
 };
