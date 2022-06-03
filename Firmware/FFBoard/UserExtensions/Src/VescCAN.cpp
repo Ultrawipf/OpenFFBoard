@@ -200,7 +200,7 @@ int32_t VescCAN::getPos() {
 }
 
 uint32_t VescCAN::getCpr() {
-	return 0xFFFF;
+	return 360000000;
 }
 
 void VescCAN::registerCommands() {
