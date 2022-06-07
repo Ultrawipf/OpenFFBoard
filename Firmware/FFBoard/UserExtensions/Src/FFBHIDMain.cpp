@@ -85,6 +85,15 @@ FFBHIDMain::FFBHIDMain(uint8_t axisCount) :
 	axes_manager->setAxisCount(axisCount);
 	restoreFlash(); // Load parameters
 	registerCommands();
+
+
+#ifdef E_STOP_Pin
+	bool estopState = HAL_GPIO_ReadPin(E_STOP_GPIO_Port, E_STOP_Pin) == GPIO_PIN_RESET;
+	if(estopState){ // Estop pressed at startup
+		emergencyStop(!estopState);
+		lastEstop = HAL_GetTick();
+	}
+#endif
 }
 
 
@@ -337,6 +346,7 @@ std::string FFBHIDMain::usb_report_rates_names() {
 	}
 
 void FFBHIDMain::emergencyStop(bool reset){
+	control.emergency = !reset;
 	axes_manager->emergencyStop(reset);
 }
 
@@ -386,8 +396,7 @@ void FFBHIDMain::exti(uint16_t GPIO_Pin){
 	if(GPIO_Pin == E_STOP_Pin){ // Emergency stop. low active
 //		if(HAL_GPIO_ReadPin(E_STOP_GPIO_Port, E_STOP_Pin) == GPIO_PIN_RESET){
 		bool estopPinState = HAL_GPIO_ReadPin(E_STOP_GPIO_Port, E_STOP_Pin) == GPIO_PIN_RESET;
-		if(HAL_GetTick()-lastEstop > 1000 && estopPinState != lastEstopState){ // Long debounce
-			lastEstopState = estopPinState;
+		if(HAL_GetTick()-lastEstop > 1000 && estopPinState != this->control.emergency){ // Long debounce
 			lastEstop = HAL_GetTick();
 			if(estopPinState){
 				emergencyStop(false);

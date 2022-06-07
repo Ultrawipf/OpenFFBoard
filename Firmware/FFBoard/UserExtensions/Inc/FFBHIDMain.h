@@ -33,7 +33,7 @@
 
 class FFBHIDMain: public FFBoardMain, TimerHandler, PersistentStorage,ExtiHandler,public UsbHidHandler, ErrorHandler{
 	enum class FFBWheel_commands : uint32_t{
-		ffbactive,axes,btntypes,lsbtn,addbtn,aintypes,lsain,addain,hidrate,hidsendspd
+		ffbactive,axes,btntypes,lsbtn,addbtn,aintypes,lsain,addain,hidrate,hidsendspd,estop
 	};
 public:
 	FFBHIDMain(uint8_t axisCount);
@@ -81,7 +81,7 @@ private:
 	volatile Control_t control;
 	void send_report();
 	const bool allowEstopReset = true; // Resets the Estop when the pin is released
-	bool lastEstopState = false;
+	//bool lastEstopState = false;
 	const Error estopError = Error(ErrorCode::emergencyStop, ErrorType::critical, "Emergency stop button triggered");
 
 	/* USB Report rate
