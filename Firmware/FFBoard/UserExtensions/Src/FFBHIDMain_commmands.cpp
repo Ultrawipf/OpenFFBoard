@@ -24,10 +24,20 @@ void FFBHIDMain::registerCommands(){
 
 	registerCommand("hidrate", FFBWheel_commands::hidrate, "Get estimated effect update speed",CMDFLAG_GET);
 	registerCommand("hidsendspd", FFBWheel_commands::hidsendspd, "Change HID gamepad update rate",CMDFLAG_GET|CMDFLAG_SET|CMDFLAG_INFOSTRING);
+
+	registerCommand("estop", FFBWheel_commands::estop, "Emergency stop",CMDFLAG_GET|CMDFLAG_SET);
 }
 
 CommandStatus FFBHIDMain::command(const ParsedCommand& cmd,std::vector<CommandReply>& replies){
 	switch(static_cast<FFBWheel_commands>(cmd.cmdId)){
+	case FFBWheel_commands::estop:
+		if(cmd.type == CMDtype::get){
+			replies.push_back(CommandReply(this->control.emergency));
+		}else if(cmd.type == CMDtype::set){
+			this->emergencyStop(cmd.val == 0);
+		}
+
+		break;
 	case FFBWheel_commands::ffbactive:
 	{
 		if(cmd.type != CMDtype::get)
