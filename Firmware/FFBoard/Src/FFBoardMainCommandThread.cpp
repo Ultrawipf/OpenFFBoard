@@ -83,14 +83,13 @@ void FFBoardMainCommandThread::wakeUp(){
  * Executes parsed commands and calls other command handlers.
  * Not global so it can be overridden by main classes to change behaviour or suppress outputs.
  */
-void FFBoardMainCommandThread::executeCommands(std::vector<ParsedCommand> commands,CommandInterface* commandInterface){
+void FFBoardMainCommandThread::executeCommands(std::vector<ParsedCommand>& commands,CommandInterface* commandInterface){
 
 	//cpp_freertos::CriticalSection::SuspendScheduler();
 	for(ParsedCommand& cmd : commands){
 		cmd.originalInterface = commandInterface;
 		this->results.clear();
 
-		CommandResult resultObj;
 		CommandStatus status = CommandStatus::NOT_FOUND;
 		CommandHandler* handler = cmd.target;
 
@@ -103,24 +102,25 @@ void FFBoardMainCommandThread::executeCommands(std::vector<ParsedCommand> comman
 		}
 		if(CommandHandler::isInHandlerList(handler)  && validFlags){ // check if pointer is still present in handler list
 			// Call internal commands first
+			this->results.emplace_back(); // Create new result element
+			CommandResult& resultObj = this->results.back();
 			status = handler->internalCommand(cmd,resultObj.reply);
 
 			// internal commands did not return anything call regular custom commands
 			if(status == CommandStatus::NOT_FOUND){
 				status = handler->command(cmd,resultObj.reply);
 			}
+			// If status is not no reply append a reply object. If command was not found the reply vector should be empty but the not found flag set
+			if(status != CommandStatus::NO_REPLY){
+				resultObj.handlerId = handler->getCommandHandlerID();
+				resultObj.originalCommand = cmd;
+				resultObj.type = status;
+				resultObj.commandHandler = handler;
+			}else{
+				this->results.pop_back(); // Remove result again
+			}
+		}
 
-		}
-		// If status is not no reply append a reply object. If command was not found the reply vector should be empty but the not found flag set
-		if(status != CommandStatus::NO_REPLY){
-			resultObj.handlerId = handler->getCommandHandlerID();
-			resultObj.originalCommand = cmd;
-			resultObj.type = status;
-			resultObj.commandHandler = handler;
-			//this->results.push_back(resultObj);
-			// Not found if result is empty
-			this->results.push_back(resultObj);
-		}
 		if(!this->results.empty()){
 			for(CommandInterface* itf : CommandInterface::cmdInterfaces){
 				// Block until replies are sent

@@ -38,6 +38,7 @@ CommandHandler::~CommandHandler() {
  */
 std::string CommandHandler::getCommandsHelpstring(){
 	std::string helpstring = "\n";
+	helpstring.reserve(this->registeredCommands.size() * 40); // Helpstrings are large. reserve a big buffer to save on reallocations
 	ClassIdentifier info = this->getInfo();
 	if(info.name == nullptr || cmdHandlerInfo.clsname == nullptr){
 		return "";
@@ -99,6 +100,7 @@ std::string CommandHandler::getCommandsHelpstring(){
  */
 std::string CommandHandler::getCsvHelpstring(){
 	std::string helpstring = "\nPrefix,Class ID, Class description\n";
+	helpstring.reserve(this->registeredCommands.size() * 40); // Helpstrings are large. reserve a big buffer to save on reallocations
 	ClassIdentifier info = this->getInfo();
 	if(info.name == nullptr || cmdHandlerInfo.clsname == nullptr){
 		return "";

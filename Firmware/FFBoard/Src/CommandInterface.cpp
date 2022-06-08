@@ -12,9 +12,6 @@
 #include <stdlib.h>
 #include "critical.hpp"
 
-#include "cpp_target_config.h"
-extern const OutputPin debugpin;
-
 std::vector<CommandInterface*> CommandInterface::cmdInterfaces;
 
 
@@ -91,7 +88,6 @@ bool CommandInterface::readyToSend(){
 
 bool StringCommandInterface::getNewCommands(std::vector<ParsedCommand>& commands){
 	parserReady = false;
-
 	return parser.parse(commands);
 }
 
