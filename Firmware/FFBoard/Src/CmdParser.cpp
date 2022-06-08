@@ -83,7 +83,7 @@ bool CmdParser::parse(std::vector<ParsedCommand>& commands){
 	buffer.reserve(reservedBuffer);
 	cpp_freertos::CriticalSection::Exit();
 
-	for(std::string word : tokens){
+	for(std::string &word : tokens){
 		if(word.length() < 2)
 			continue;
 
@@ -96,7 +96,7 @@ bool CmdParser::parse(std::vector<ParsedCommand>& commands){
 
 
 		// cmdstart = <cls>.
-		std::string clsname = "";
+		std::string clsname;
 		if(point1 != std::string::npos){
 			cmd_start = point1+1;
 			clsname = word.substr(0, point1);
@@ -110,7 +110,7 @@ bool CmdParser::parse(std::vector<ParsedCommand>& commands){
 			cmd_start = point2+1; // after second point
 		}
 
-		std::string cmdstring="";
+		std::string cmdstring;
 		if(word.back() == '?'){ // <cmd>?
 			cmd.type = CMDtype::get;
 			cmdstring = word.substr(cmd_start, word.length()-cmd_start - 1);
