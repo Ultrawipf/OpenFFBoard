@@ -55,7 +55,7 @@ public:
 	static Error cmdExecError;
 
 protected:
-	virtual void executeCommands(std::vector<ParsedCommand> commands,CommandInterface* commandInterface);
+	virtual void executeCommands(std::vector<ParsedCommand>& commands,CommandInterface* commandInterface);
 
 
 	static cpp_freertos::BinarySemaphore threadSem; // Blocks this thread. more efficient than suspending/waking
