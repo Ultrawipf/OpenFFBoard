@@ -80,9 +80,9 @@ public:
 	CommandReply(CommandReplyType type) : type(type){}; // empty
 	CommandReply(int64_t val) : val(val), type(CommandReplyType::INT){};
 	CommandReply(int64_t val,int64_t adr) : val(val),adr(adr),type(CommandReplyType::DOUBLEINTS){};
-	CommandReply(std::string reply) : reply(reply), type(CommandReplyType::STRING){};
-	CommandReply(std::string reply,int64_t val) : reply(reply),val(val), type(CommandReplyType::STRING_OR_INT){};
-	CommandReply(std::string reply,int64_t val,int64_t adr) : reply(reply),val(val),adr(adr), type(CommandReplyType::STRING_OR_DOUBLEINT){};
+	CommandReply(const std::string& reply) : reply(reply), type(CommandReplyType::STRING){};
+	CommandReply(const std::string& reply,int64_t val) : reply(reply),val(val), type(CommandReplyType::STRING_OR_INT){};
+	CommandReply(const std::string& reply,int64_t val,int64_t adr) : reply(reply),val(val),adr(adr), type(CommandReplyType::STRING_OR_DOUBLEINT){};
 
     std::string reply;
     int64_t val = 0;
@@ -196,7 +196,7 @@ protected:
 		if(cmd.type == CMDtype::set){
 			value = static_cast<TVal>(cmd.val);
 		}else if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply(value));
+			replies.emplace_back(value);
 		}else{
 			return CommandStatus::ERR;
 		}
@@ -210,7 +210,7 @@ protected:
 		if(cmd.type == CMDtype::set){
 			(obj->*setfunc)(cmd.val);
 		}else if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply(value));
+			replies.emplace_back(value);
 		}
 	}
 	/**
@@ -221,7 +221,7 @@ protected:
 		if(cmd.type == CMDtype::set){
 			(obj->*setfunc)(cmd.val);
 		}else if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply((obj->*getfunc)()));
+			replies.emplace_back((obj->*getfunc)());
 		}
 	}
 	/**
@@ -232,7 +232,7 @@ protected:
 		if(cmd.type == CMDtype::set){
 			value = static_cast<TVal>(cmd.val);
 		}else if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply((obj->*getfunc)()));
+			replies.emplace_back((obj->*getfunc)());
 		}
 	}
 
