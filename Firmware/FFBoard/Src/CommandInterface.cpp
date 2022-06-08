@@ -12,6 +12,9 @@
 #include <stdlib.h>
 #include "critical.hpp"
 
+#include "cpp_target_config.h"
+extern const OutputPin debugpin;
+
 std::vector<CommandInterface*> CommandInterface::cmdInterfaces;
 
 
@@ -88,6 +91,7 @@ bool CommandInterface::readyToSend(){
 
 bool StringCommandInterface::getNewCommands(std::vector<ParsedCommand>& commands){
 	parserReady = false;
+
 	return parser.parse(commands);
 }
 
@@ -115,9 +119,9 @@ void StringCommandInterface::formatReply(std::string& reply,const std::vector<Co
 			return; // Ignore commands that should be formatted as read if they are not set commands
 		}
 
-		reply += "["; // Start marker
+		reply += '['; // Start marker
 		reply += StringCommandInterface::formatOriginalCommandFromResult(result.originalCommand,result.commandHandler, formatWriteAsRead);
-		reply += "|"; // Separator
+		reply += '|'; // Separator
 
 		if(formatWriteAsRead){
 			std::string tstr;
@@ -161,9 +165,10 @@ std::string StringCommandInterface::formatOriginalCommandFromResult(const Parsed
 //	ClassIdentifier info = commandHandler->getInfo();
 	std::string cmdstring = commandHandler->getCommandHandlerInfo()->clsname;
 	if(originalCommand.instance != 0xFF){
-		cmdstring += "." + std::to_string(originalCommand.instance);
+		cmdstring += '.';
+		cmdstring += std::to_string(originalCommand.instance);
 	}
-	cmdstring += ".";
+	cmdstring += '.';
 
 
 	CmdHandlerCommanddef* cmdDef = commandHandler->getCommandFromId(originalCommand.cmdId); // CMD name
@@ -172,19 +177,24 @@ std::string StringCommandInterface::formatOriginalCommandFromResult(const Parsed
 	}
 	cmdstring += std::string(cmdDef->cmd);
 	if(originalCommand.type == CMDtype::get || (formatWriteAsRead && originalCommand.type == CMDtype::set)){
-		cmdstring += "?";
+		cmdstring += '?';
 
 	}else if(originalCommand.type == CMDtype::getat || (formatWriteAsRead && originalCommand.type == CMDtype::setat)){ // cls.inst.cmd?
-		cmdstring += "?" + std::to_string(originalCommand.adr);
+		cmdstring += '?';
+		cmdstring += std::to_string(originalCommand.adr);
 
 	}else if(originalCommand.type == CMDtype::set){ // cls.inst.cmd?
-		cmdstring += "=" + std::to_string(originalCommand.val);
+		cmdstring += '=';
+		cmdstring += std::to_string(originalCommand.val);
 
 	}else if(originalCommand.type == CMDtype::setat){ // cls.inst.cmd?x=y
-		cmdstring += "=" + std::to_string(originalCommand.val) + "?" + std::to_string(originalCommand.adr);
+		cmdstring += '=';
+		cmdstring += std::to_string(originalCommand.val);
+		cmdstring += '?';
+		cmdstring += std::to_string(originalCommand.adr);
 
 	}else if(originalCommand.type == CMDtype::info){
-		cmdstring += "!";
+		cmdstring += '!';
 	}
 
 	return cmdstring;
@@ -201,7 +211,9 @@ void StringCommandInterface::generateReplyValueString(std::string& replyPart,con
 	}else if(reply.type == CommandReplyType::INT){
 		replyPart = std::to_string(reply.val);
 	}else if(reply.type == CommandReplyType::DOUBLEINTS){
-		replyPart = std::to_string(reply.val) + ":" + std::to_string(reply.adr);
+		replyPart = std::to_string(reply.val);
+		replyPart += ':';
+		replyPart += std::to_string(reply.adr);
 	}else if(reply.type == CommandReplyType::ACK){
 		replyPart = "OK";
 	}
@@ -211,7 +223,9 @@ void StringCommandInterface::generateReplyFromCmd(std::string& replyPart,const P
 	if(originalCommand.type == CMDtype::set){
 		replyPart = std::to_string(originalCommand.val);
 	}else if(originalCommand.type == CMDtype::setat){
-		replyPart = std::to_string(originalCommand.val) + ":" + std::to_string(originalCommand.adr);
+		replyPart = std::to_string(originalCommand.val);
+		replyPart += ':';
+		replyPart += std::to_string(originalCommand.adr);
 	}
 }
 
@@ -238,7 +252,7 @@ void CDC_CommandInterface::Run(){
 		WaitForNotification();
 
 		this->sendBuffer.clear();
-		if(this->sendBuffer.capacity() > 100){
+		if(this->sendBuffer.capacity() > 200){
 			this->sendBuffer.reserve(64);
 		}
 		StringCommandInterface::formatReply(sendBuffer,resultsBuffer,nextFormat);
