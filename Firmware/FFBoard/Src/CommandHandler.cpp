@@ -222,27 +222,27 @@ CommandStatus CommandHandler::internalCommand(const ParsedCommand& cmd,std::vect
 	switch(static_cast<CommandHandlerCommands>(cmd.cmdId)){
 
 		case CommandHandlerCommands::id:
-			replies.push_back(CommandReply(this->getInfo().id));
+			replies.emplace_back(this->getInfo().id);
 		break;
 
 		case CommandHandlerCommands::name:
-			replies.push_back(CommandReply(this->getInfo().name));
+			replies.emplace_back(this->getInfo().name);
 		break;
 
 		case CommandHandlerCommands::help:
 			if(cmd.type == CMDtype::info){
-				replies.push_back(CommandReply(this->getCsvHelpstring()));
+				replies.emplace_back(this->getCsvHelpstring());
 			}else{
-				replies.push_back(CommandReply(this->getCommandsHelpstring()));
+				replies.emplace_back(this->getCommandsHelpstring());
 			}
 		break;
 
 		case CommandHandlerCommands::cmdhandleruid:
-			replies.push_back(CommandReply(this->getCommandHandlerID()));
+			replies.emplace_back(this->getCommandHandlerID());
 		break;
 
 		case CommandHandlerCommands::instance:
-			replies.push_back(CommandReply(this->getCommandHandlerInfo()->instance));
+			replies.emplace_back(this->getCommandHandlerInfo()->instance);
 		break;
 
 //		case CommandHandlerCommands::selectionid:
