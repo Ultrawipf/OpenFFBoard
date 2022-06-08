@@ -43,14 +43,15 @@ std::string CommandHandler::getCommandsHelpstring(){
 		return "";
 	}
 	helpstring.append(info.name);
-	helpstring +=  "(";
+	helpstring.push_back('(');
 	helpstring.append(cmdHandlerInfo.clsname);
-	helpstring += "." + std::to_string(cmdHandlerInfo.instance) + "):\n";
+	helpstring.push_back('.');
+	helpstring.append(std::to_string(cmdHandlerInfo.instance)).append("):\n");
 
 	std::string handlerHelp = getHelpstring();
 
 	if(!handlerHelp.empty()){
-		helpstring += handlerHelp + "\n";
+		helpstring.append(handlerHelp).append("\n");
 	}
 
 	if(registeredCommands.empty()){
@@ -83,7 +84,7 @@ std::string CommandHandler::getCommandsHelpstring(){
 				if(cmd.flags & CMDFLAG_DEBUG){
 					helpstring+= " DBG";
 				}
-				helpstring += " )\t" + std::string(cmd.helpstring)+"\n";
+				helpstring.append(" )\t").append(std::string(cmd.helpstring)).append("\n");
 			}
 
 		}
@@ -104,17 +105,20 @@ std::string CommandHandler::getCsvHelpstring(){
 	}
 
 	helpstring.append(cmdHandlerInfo.clsname);
-	helpstring += "." + std::to_string(cmdHandlerInfo.instance) + ",";
+	helpstring += '.';
+	helpstring += std::to_string(cmdHandlerInfo.instance);
+	helpstring += ',';
 	char clshex[7];
 	std::snprintf(clshex,7,"0x%X",cmdHandlerInfo.clsTypeid);
-	helpstring += std::string(clshex) + ",";
+	helpstring += std::string(clshex);
+	helpstring += ',';
 
 	helpstring.append(info.name);
 
 	std::string handlerHelp = getHelpstring();
 
 	if(!handlerHelp.empty()){
-		helpstring += ": " + handlerHelp + "\n";
+		helpstring.append(": ").append(handlerHelp).append("\n");
 	}else{
 		helpstring += "\n";
 	}
@@ -128,9 +132,11 @@ std::string CommandHandler::getCsvHelpstring(){
 				char cmdhex[11];
 				std::snprintf(cmdhex,11,"0x%lX",cmd.cmdId);
 				helpstring.append(cmd.cmd);
-				helpstring += "," + std::string(cmdhex) + ",";
+				helpstring += ',';
+				helpstring += std::string(cmdhex);
+				helpstring += ',';
 				helpstring.append(cmd.helpstring);
-				helpstring += ",";
+				helpstring += ',';
 				if(cmd.flags & CMDFLAG_GET){
 					helpstring+= " R";
 				}
