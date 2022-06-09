@@ -93,14 +93,14 @@ CommandStatus LocalAnalog::command(const ParsedCommand& cmd,std::vector<CommandR
 
 		case LocalAnaloc_commands::autocal:
 			if(cmd.type == CMDtype::get){
-				replies.push_back(CommandReply(aconf.autorange));
+				replies.emplace_back(aconf.autorange);
 			}else if(cmd.type == CMDtype::set){
 				setAutorange(cmd.val != 0);
 			}
 			break;
 		case LocalAnaloc_commands::pins:
 			if(cmd.type == CMDtype::get){
-				replies.push_back(CommandReply(numPins));
+				replies.emplace_back(numPins);
 			}else{
 				return CommandStatus::ERR;
 			}
@@ -110,7 +110,7 @@ CommandStatus LocalAnalog::command(const ParsedCommand& cmd,std::vector<CommandR
 				std::vector<int32_t>* axes = getAxes();
 
 				for(int32_t val : *axes){
-					replies.push_back(CommandReply(val));
+					replies.emplace_back(val);
 				}
 
 			}else{

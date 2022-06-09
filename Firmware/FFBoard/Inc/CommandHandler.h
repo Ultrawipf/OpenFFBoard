@@ -42,8 +42,12 @@ enum class CommandReplyType : uint8_t {NONE,ACK,INT,STRING,STRING_OR_INT,STRING_
 class CommandInterface;
 class CommandHandler; // defined lower
 
-struct CmdHandlerCommanddef
+class CmdHandlerCommanddef
 {
+public:
+	CmdHandlerCommanddef(const char* cmd,const char* helpstring,const uint32_t cmdId,const uint32_t flags)
+	: cmd(cmd),helpstring(helpstring),cmdId(cmdId), flags(flags)
+	  {};
 	const char* cmd = nullptr;
 	const char* helpstring = nullptr;
 	const uint32_t cmdId;
@@ -252,13 +256,13 @@ protected:
 				return; //already present
 		}
 
-		CmdHandlerCommanddef cmddef = {
-			.cmd=cmd,
-			.helpstring = help,
-			.cmdId = static_cast<uint32_t>(cmdid),
-			.flags = flags
-		};
-		this->registeredCommands.push_back(cmddef);
+//		CmdHandlerCommanddef cmddef = {
+//			.cmd=cmd,
+//			.helpstring = help,
+//			.cmdId = static_cast<uint32_t>(cmdid),
+//			.flags = flags
+//		};
+		this->registeredCommands.emplace_back(cmd, help,static_cast<uint32_t>(cmdid),flags);
 		this->registeredCommands.shrink_to_fit();
 	}
 

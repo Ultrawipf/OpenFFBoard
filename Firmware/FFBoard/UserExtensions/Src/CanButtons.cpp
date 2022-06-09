@@ -102,7 +102,7 @@ CommandStatus CanButtons::command(const ParsedCommand& cmd,std::vector<CommandRe
 
 	case CanButtons_commands::btnnum:
 		if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply(this->btnnum));
+			replies.emplace_back(this->btnnum);
 		}else if(cmd.type == CMDtype::set){
 			setBtnNum(cmd.val);
 		}
@@ -113,7 +113,7 @@ CommandStatus CanButtons::command(const ParsedCommand& cmd,std::vector<CommandRe
 
 	case CanButtons_commands::canid:
 		if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply(this->canId));
+			replies.emplace_back(this->canId);
 		}else if(cmd.type == CMDtype::set){
 			canId = (cmd.val) & 0x7ff;
 			setupCanPort(); // Set can filter

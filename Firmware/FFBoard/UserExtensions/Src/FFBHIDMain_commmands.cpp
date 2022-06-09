@@ -32,7 +32,7 @@ CommandStatus FFBHIDMain::command(const ParsedCommand& cmd,std::vector<CommandRe
 	switch(static_cast<FFBWheel_commands>(cmd.cmdId)){
 	case FFBWheel_commands::estop:
 		if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply(this->control.emergency));
+			replies.emplace_back(this->control.emergency);
 		}else if(cmd.type == CMDtype::set){
 			this->emergencyStop(cmd.val == 0);
 		}
@@ -47,19 +47,19 @@ CommandStatus FFBHIDMain::command(const ParsedCommand& cmd,std::vector<CommandRe
 		if(this->control.emergency){
 			flag = -1;
 		}
-		replies.push_back(CommandReply(flag));
+		replies.emplace_back(flag);
 		break;
 	}
 //	case FFBWheel_commands::axes:
 //		if(cmd.type == CMDtype::get){
-//			replies.push_back(CommandReply(this->axes_manager->getAxisCount()));
+//			replies.emplace_back(this->axes_manager->getAxisCount());
 //		}else if(cmd.type == CMDtype::set){
 //			this->axes_manager->setAxisCount(cmd.val);
 //		}
 //		break;
 	case FFBWheel_commands::btntypes:
 		if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply(btnsources));
+			replies.emplace_back(btnsources);
 		}else if(cmd.type == CMDtype::set){
 			setBtnTypes(cmd.val);
 		}
@@ -74,7 +74,7 @@ CommandStatus FFBHIDMain::command(const ParsedCommand& cmd,std::vector<CommandRe
 		break;
 	case FFBWheel_commands::aintypes:
 		if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply(ainsources));
+			replies.emplace_back(ainsources);
 		}else if(cmd.type == CMDtype::set){
 			setAinTypes(cmd.val);
 		}
@@ -89,18 +89,18 @@ CommandStatus FFBHIDMain::command(const ParsedCommand& cmd,std::vector<CommandRe
 		break;
 	case FFBWheel_commands::hidrate:
 		if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply(this->getRate()));
+			replies.emplace_back(this->getRate());
 		}else{
 			return CommandStatus::ERR;
 		}
 		break;
 	case FFBWheel_commands::hidsendspd:
 		if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply(usb_report_rate_idx));
+			replies.emplace_back(usb_report_rate_idx);
 		}else if(cmd.type == CMDtype::set){
 			setReportRate(cmd.val);
 		}else if(cmd.type == CMDtype::info){
-			replies.push_back(CommandReply(usb_report_rates_names()));
+			replies.emplace_back(usb_report_rates_names());
 		}
 		break;
 	default:

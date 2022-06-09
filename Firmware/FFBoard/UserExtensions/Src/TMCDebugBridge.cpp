@@ -52,7 +52,7 @@ CommandStatus TMCDebugBridge::command(const ParsedCommand& cmd,std::vector<Comma
 	switch(static_cast<TMCDebugBridge_commands>(cmd.cmdId)){
 	case TMCDebugBridge_commands::torque:
 		if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply(drv->getTorque()));
+			replies.emplace_back(drv->getTorque());
 		}else if(cmd.type == CMDtype::set){
 			drv->turn(cmd.val);
 		}else{
@@ -62,7 +62,7 @@ CommandStatus TMCDebugBridge::command(const ParsedCommand& cmd,std::vector<Comma
 
 	case TMCDebugBridge_commands::pos:
 		if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply(drv->getPos()));
+			replies.emplace_back(drv->getPos());
 		}else if(cmd.type == CMDtype::set){
 			drv->setTargetPos(cmd.val);
 		}else{
@@ -82,7 +82,7 @@ CommandStatus TMCDebugBridge::command(const ParsedCommand& cmd,std::vector<Comma
 
 	case TMCDebugBridge_commands::velocity:
 		if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply(drv->getVelocity()));
+			replies.emplace_back(drv->getVelocity());
 		}else if(cmd.type == CMDtype::set){
 			drv->setTargetVelocity(cmd.val);
 		}else{
@@ -92,18 +92,18 @@ CommandStatus TMCDebugBridge::command(const ParsedCommand& cmd,std::vector<Comma
 
 	case TMCDebugBridge_commands::mode:
 		if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply((uint8_t)drv->getMotionMode()));
+			replies.emplace_back((uint8_t)drv->getMotionMode());
 		}else if(cmd.type == CMDtype::set && cmd.val < (uint8_t)MotionMode::NONE){
 			drv->setMotionMode(MotionMode(cmd.val));
 			drv->startMotor();
 		}else{
-			replies.push_back(CommandReply("stop=0,torque=1,velocity=2,position=3,prbsflux=4,prbstorque=5,prbsvelocity=6,uqudext=8,encminimove=9"));
+			replies.emplace_back("stop=0,torque=1,velocity=2,position=3,prbsflux=4,prbstorque=5,prbsvelocity=6,uqudext=8,encminimove=9");
 		}
 		break;
 
 	case TMCDebugBridge_commands::reg:
 		if(cmd.type == CMDtype::getat){
-			replies.push_back(CommandReply(drv->readReg(cmd.val)));
+			replies.emplace_back(drv->readReg(cmd.val));
 		}else if(cmd.type == CMDtype::setat){
 			drv->writeReg(cmd.adr,cmd.val);
 		}else{

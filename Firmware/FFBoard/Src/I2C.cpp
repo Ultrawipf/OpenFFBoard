@@ -91,12 +91,12 @@ CommandStatus I2CPort::command(const ParsedCommand& cmd,std::vector<CommandReply
 
 	case I2CPort_commands::speed:
 		if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply(this->speedPreset));
+			replies.emplace_back(this->speedPreset);
 		}else if(cmd.type == CMDtype::set){
 			setSpeedPreset(cmd.val);
 		}else if(cmd.type == CMDtype::info){
 			for(uint8_t i = 0; i<SpeedNames.size();i++){
-				replies.push_back(CommandReply(SpeedNames[i]  + ":" + std::to_string(i)));
+				replies.emplace_back(SpeedNames[i]  + ":" + std::to_string(i));
 			}
 		}
 	break;

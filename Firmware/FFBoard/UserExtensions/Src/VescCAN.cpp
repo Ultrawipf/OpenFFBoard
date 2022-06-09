@@ -230,22 +230,22 @@ CommandStatus VescCAN::command(const ParsedCommand &cmd,
 		return handleGetSet(cmd, replies, this->VESC_can_Id);
 	case VescCAN_commands::errorflags:
 		if (cmd.type == CMDtype::get)
-			replies.push_back(CommandReply(vescErrorFlag));
+			replies.emplace_back(vescErrorFlag);
 		break;
 	case VescCAN_commands::canspd:
 		if (cmd.type == CMDtype::get) {
-			replies.push_back(CommandReply(port->getSpeedPreset()));
+			replies.emplace_back(port->getSpeedPreset());
 		} else if (cmd.type == CMDtype::set) {
 			port->setSpeedPreset(std::max<uint8_t>(3,cmd.val));
 		}
 		break;
 	case VescCAN_commands::vescstate:
 		if (cmd.type == CMDtype::get)
-			replies.push_back(CommandReply((uint32_t) this->state));
+			replies.emplace_back((uint32_t) this->state);
 		break;
 	case VescCAN_commands::encrate:
 		if (cmd.type == CMDtype::get)
-			replies.push_back(CommandReply((uint32_t) this->encRate));
+			replies.emplace_back((uint32_t) this->encRate);
 		break;
 	case VescCAN_commands::pos:
 		if (cmd.type == CMDtype::get) {
@@ -256,7 +256,7 @@ CommandStatus VescCAN::command(const ParsedCommand &cmd,
 		break;
 	case VescCAN_commands::torque:
 		if (cmd.type == CMDtype::get) {
-			replies.push_back(CommandReply((int32_t) (lastTorque * 10000)));
+			replies.emplace_back((int32_t) (lastTorque * 10000));
 		}
 		break;
 	case VescCAN_commands::forcePosRead:
@@ -264,14 +264,14 @@ CommandStatus VescCAN::command(const ParsedCommand &cmd,
 		break;
 	case VescCAN_commands::useEncoder:
 		if (cmd.type == CMDtype::get) {
-			replies.push_back(CommandReply(useEncoder ? 1 : 0));
+			replies.emplace_back(useEncoder ? 1 : 0);
 		} else if (cmd.type == CMDtype::set) {
 			useEncoder = cmd.val != 0;
 		}
 		break;
 	case VescCAN_commands::offset: {
 		if (cmd.type == CMDtype::get) {
-			replies.push_back(CommandReply((int32_t) (posOffset * 10000)));
+			replies.emplace_back((int32_t) (posOffset * 10000));
 		} else if (cmd.type == CMDtype::set) {
 			posOffset = (float) cmd.val / 10000.0;
 			this->saveFlashOffset(); // Really save to flash?
@@ -280,7 +280,7 @@ CommandStatus VescCAN::command(const ParsedCommand &cmd,
 		break;
 	case VescCAN_commands::voltage:
 		if (cmd.type == CMDtype::get)
-			replies.push_back(CommandReply(voltage * 1000));
+			replies.emplace_back(voltage * 1000);
 		break;
 
 	default:
