@@ -246,7 +246,7 @@ CommandStatus CommandHandler::internalCommand(const ParsedCommand& cmd,std::vect
 		break;
 
 //		case CommandHandlerCommands::selectionid:
-//			replies.push_back(CommandReply(this->getSelectionID()));
+//			replies.emplace_back(this->getSelectionID());
 //		break;
 
 		default:

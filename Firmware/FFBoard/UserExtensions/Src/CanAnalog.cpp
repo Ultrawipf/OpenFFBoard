@@ -87,19 +87,19 @@ CommandStatus CanAnalogBase::command(const ParsedCommand& cmd,std::vector<Comman
 
 	case CanAnalog_commands::amount:
 		if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply(this->axes));
+			replies.emplace_back(this->axes);
 		}else if(cmd.type == CMDtype::set){
 			setAxisNum(cmd.val);
 		}
 	break;
 
 	case CanAnalog_commands::maxAmount:
-		replies.push_back(CommandReply(this->maxAxes));
+		replies.emplace_back(this->maxAxes);
 		break;
 
 	case CanAnalog_commands::canid:
 		if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply(this->canId));
+			replies.emplace_back(this->canId);
 		}else if(cmd.type == CMDtype::set){
 			canId = std::min<uint32_t>((cmd.val) & 0x7ff,0x7ff-(this->axes/4));
 			setupCanPort(); // Set can filter

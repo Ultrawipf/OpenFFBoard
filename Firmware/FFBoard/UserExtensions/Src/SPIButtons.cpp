@@ -194,7 +194,7 @@ CommandStatus SPI_Buttons::command(const ParsedCommand& cmd,std::vector<CommandR
 			c->numButtons = cmd.val;
 			this->setConfig(*c);
 		}else if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply(this->getBtnNum()));
+			replies.emplace_back(this->getBtnNum());
 		}else{
 			return CommandStatus::ERR;
 		}
@@ -205,7 +205,7 @@ CommandStatus SPI_Buttons::command(const ParsedCommand& cmd,std::vector<CommandR
 			c->invert = cmd.val != 0;
 			this->setConfig(*c);
 		}else if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply(this->getConfig()->invert ? 1 : 0));
+			replies.emplace_back(this->getConfig()->invert ? 1 : 0);
 		}else{
 			return CommandStatus::ERR;
 		}
@@ -216,7 +216,7 @@ CommandStatus SPI_Buttons::command(const ParsedCommand& cmd,std::vector<CommandR
 			c->cutRight = cmd.val != 0;
 			this->setConfig(*c);
 		}else if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply(this->getConfig()->cutRight ? 1 : 0));
+			replies.emplace_back(this->getConfig()->cutRight ? 1 : 0);
 		}else{
 			return CommandStatus::ERR;
 		}
@@ -225,9 +225,9 @@ CommandStatus SPI_Buttons::command(const ParsedCommand& cmd,std::vector<CommandR
 		if(cmd.type == CMDtype::set){
 			setMode((SPI_BtnMode)cmd.val);
 		}else if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply((uint8_t)this->conf.mode));
+			replies.emplace_back((uint8_t)this->conf.mode);
 		}else if(cmd.type == CMDtype::info){
-			replies.push_back(CommandReply(printModes()));
+			replies.emplace_back(printModes());
 		}else{
 			return CommandStatus::ERR;
 		}

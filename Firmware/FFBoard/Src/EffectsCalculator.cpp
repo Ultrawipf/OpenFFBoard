@@ -655,7 +655,7 @@ CommandStatus EffectsCalculator::command(const ParsedCommand& cmd,std::vector<Co
 	case EffectsCalculator_commands::ffbfiltercf:
 		if (cmd.type == CMDtype::get)
 		{
-			replies.push_back(CommandReply(cfFilter_f));
+			replies.emplace_back(cfFilter_f);
 		}
 		else if (cmd.type == CMDtype::set)
 		{
@@ -666,7 +666,7 @@ CommandStatus EffectsCalculator::command(const ParsedCommand& cmd,std::vector<Co
 	case EffectsCalculator_commands::ffbfiltercf_q:
 		if (cmd.type == CMDtype::get)
 		{
-			replies.push_back(CommandReply(cfFilter_q));
+			replies.emplace_back(cfFilter_q);
 		}
 		else if (cmd.type == CMDtype::set)
 		{
@@ -678,7 +678,7 @@ CommandStatus EffectsCalculator::command(const ParsedCommand& cmd,std::vector<Co
 	case EffectsCalculator_commands::effects:
 		if (cmd.type == CMDtype::get)
 		{
-			replies.push_back(CommandReply(listEffectsUsed()));
+			replies.emplace_back(listEffectsUsed());
 		}
 		else if (cmd.type == CMDtype::set && cmd.val == 0)
 		{
@@ -687,25 +687,25 @@ CommandStatus EffectsCalculator::command(const ParsedCommand& cmd,std::vector<Co
 		break;
 	case EffectsCalculator_commands::spring:
 		if(cmd.type == CMDtype::info){
-			replies.push_back(CommandReply("scale:"+std::to_string(this->spring_scaler)));
+			replies.emplace_back("scale:"+std::to_string(this->spring_scaler));
 		}else
 			return handleGetSet(cmd, replies, this->gain.spring);
 		break;
 	case EffectsCalculator_commands::friction:
 		if(cmd.type == CMDtype::info){
-			replies.push_back(CommandReply("scale:"+std::to_string(2)));
+			replies.emplace_back("scale:"+std::to_string(2));
 		}else
 			return handleGetSet(cmd, replies, this->gain.friction);
 		break;
 	case EffectsCalculator_commands::damper:
 		if(cmd.type == CMDtype::info){
-			replies.push_back(CommandReply("scale:"+std::to_string(2)));
+			replies.emplace_back("scale:"+std::to_string(2));
 		}else
 			return handleGetSet(cmd, replies, this->gain.damper);
 		break;
 	case EffectsCalculator_commands::inertia:
 		if(cmd.type == CMDtype::info){
-			replies.push_back(CommandReply("scale:"+std::to_string(2)));
+			replies.emplace_back("scale:"+std::to_string(2));
 		}else
 			return handleGetSet(cmd, replies, this->gain.inertia);
 		break;

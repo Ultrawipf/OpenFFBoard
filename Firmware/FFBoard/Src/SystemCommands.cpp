@@ -78,7 +78,7 @@ CommandStatus SystemCommands::internalCommand(const ParsedCommand& cmd,std::vect
 		case FFBoardMain_commands::help:
 		{// help
 			if(cmd.type == CMDtype::info){
-				replies.push_back(CommandReply(this->getCsvHelpstring()));
+				replies.emplace_back(this->getCsvHelpstring());
 			}else{
 				std::string itfHelp = "";
 				if(cmd.originalInterface){
@@ -91,7 +91,7 @@ CommandStatus SystemCommands::internalCommand(const ParsedCommand& cmd,std::vect
 					reply += std::string(info->clsname) + "." + std::to_string(info->instance)+"\n";
 				}
 				reply +=  "\n"+this->getCommandsHelpstring();
-				replies.push_back(CommandReply(reply));
+				replies.emplace_back(reply);
 			}
 
 			break;
@@ -116,7 +116,7 @@ CommandStatus SystemCommands::internalCommand(const ParsedCommand& cmd,std::vect
 
 		case FFBoardMain_commands::vint:
 		{
-			replies.push_back(CommandReply(getIntV()));
+			replies.emplace_back(getIntV());
 			break;
 		}
 
@@ -125,7 +125,7 @@ CommandStatus SystemCommands::internalCommand(const ParsedCommand& cmd,std::vect
 
 		case FFBoardMain_commands::vext:
 		{
-			replies.push_back(CommandReply(getExtV()));
+			replies.emplace_back(getExtV());
 			break;
 		}
 
@@ -134,7 +134,7 @@ CommandStatus SystemCommands::internalCommand(const ParsedCommand& cmd,std::vect
 			if(cmd.type == CMDtype::get){
 				uint16_t buf=mainclass->getInfo().id;
 				Flash_Read(ADR_CURRENT_CONFIG, &buf);
-				replies.push_back(CommandReply(buf));
+				replies.emplace_back(buf);
 			}else if(cmd.type == CMDtype::set){
 				if(mainchooser.isValidClassId(cmd.val)){
 					Flash_Write(ADR_CURRENT_CONFIG, (uint16_t)cmd.val);
@@ -190,13 +190,13 @@ CommandStatus SystemCommands::internalCommand(const ParsedCommand& cmd,std::vect
 
 		case FFBoardMain_commands::hwtype:
 		{
-			replies.push_back(CommandReply(HW_TYPE,HW_TYPE_INT));
-			//replies.push_back(CommandReply(HAL_GetDEVID()));
+			replies.emplace_back(HW_TYPE,HW_TYPE_INT);
+			//replies.emplace_back(HAL_GetDEVID());
 			break;
 		}
 		case FFBoardMain_commands::devid:
 			{
-				replies.push_back(CommandReply(HAL_GetDEVID(),HAL_GetREVID()));
+				replies.emplace_back(HAL_GetDEVID(),HAL_GetREVID());
 				break;
 			}
 
@@ -218,7 +218,7 @@ CommandStatus SystemCommands::internalCommand(const ParsedCommand& cmd,std::vect
 
 		case FFBoardMain_commands::heapfree:
 		{
-			replies.push_back(CommandReply(xPortGetFreeHeapSize(),xPortGetMinimumEverFreeHeapSize()));
+			replies.emplace_back(xPortGetFreeHeapSize(),xPortGetMinimumEverFreeHeapSize());
 			break;
 		}
 #if configUSE_STATS_FORMATTING_FUNCTIONS>0
@@ -226,7 +226,7 @@ CommandStatus SystemCommands::internalCommand(const ParsedCommand& cmd,std::vect
 		{
 			char repl[800];
 			vTaskGetRunTimeStats(repl);
-			replies.push_back(CommandReply("\n"+std::string(repl)));
+			replies.emplace_back("\n"+std::string(repl));
 			break;
 		}
 #endif

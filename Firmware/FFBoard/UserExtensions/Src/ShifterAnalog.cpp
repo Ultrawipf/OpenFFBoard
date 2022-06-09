@@ -218,9 +218,9 @@ CommandStatus ShifterAnalog::command(const ParsedCommand& cmd,std::vector<Comman
 		if(cmd.type == CMDtype::set){
 			setMode((ShifterMode)cmd.val);
 		}else if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply((uint8_t)this->mode));
+			replies.emplace_back((uint8_t)this->mode);
 		}else if(cmd.type == CMDtype::info){
-			replies.push_back(CommandReply(printModes()));
+			replies.emplace_back(printModes());
 		}
 		break;
 
@@ -242,14 +242,14 @@ CommandStatus ShifterAnalog::command(const ParsedCommand& cmd,std::vector<Comman
 		return handleGetSet(cmd, replies, y_chan);
 	case ShifterAnalog_commands::vals:
 		if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply(x_val,y_val));
+			replies.emplace_back(x_val,y_val);
 		}else{
 			return CommandStatus::ERR;
 		}
 		break;
 	case ShifterAnalog_commands::gear:
 		if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply(gear));
+			replies.emplace_back(gear);
 		}else{
 			return CommandStatus::ERR;
 		}

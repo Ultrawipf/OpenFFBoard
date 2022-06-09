@@ -202,7 +202,7 @@ CommandStatus MtEncoderSPI::command(const ParsedCommand& cmd,std::vector<Command
 	switch(static_cast<MtEncoderSPI_commands>(cmd.cmdId)){
 	case MtEncoderSPI_commands::cspin:
 		if(cmd.type==CMDtype::get){
-			replies.push_back(CommandReply(this->cspin+1));
+			replies.emplace_back(this->cspin+1);
 		}else if(cmd.type==CMDtype::set){
 			this->setCsPin(cmd.val-1);
 		}else{
@@ -212,7 +212,7 @@ CommandStatus MtEncoderSPI::command(const ParsedCommand& cmd,std::vector<Command
 
 	case MtEncoderSPI_commands::pos:
 		if(cmd.type==CMDtype::get){
-			replies.push_back(CommandReply(getPos()));
+			replies.emplace_back(getPos());
 		}else if(cmd.type==CMDtype::set){
 			this->setPos(cmd.val);
 		}else{
@@ -220,7 +220,7 @@ CommandStatus MtEncoderSPI::command(const ParsedCommand& cmd,std::vector<Command
 		}
 		break;
 	case MtEncoderSPI_commands::errors:
-		replies.push_back(CommandReply(errors));
+		replies.emplace_back(errors);
 		break;
 	default:
 		return CommandStatus::NOT_FOUND;

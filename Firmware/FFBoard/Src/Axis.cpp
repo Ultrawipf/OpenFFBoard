@@ -601,7 +601,7 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 	case Axis_commands::power:
 		if (cmd.type == CMDtype::get)
 		{
-			replies.push_back(CommandReply(this->power));
+			replies.emplace_back(this->power);
 		}
 		else if (cmd.type == CMDtype::set)
 		{
@@ -613,7 +613,7 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 		handleGetSetFunc(cmd, replies, degreesOfRotation, &Axis::setDegrees,this);
 //		if (cmd.type == CMDtype::get)
 //		{
-//			replies.push_back(CommandReply(degreesOfRotation));
+//			replies.emplace_back(degreesOfRotation);
 //		}
 //		else if (cmd.type == CMDtype::set)
 //		{
@@ -632,7 +632,7 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 	case Axis_commands::invert:
 		if (cmd.type == CMDtype::get)
 		{
-			replies.push_back(CommandReply(invertAxis ? 1 : 0));
+			replies.emplace_back(invertAxis ? 1 : 0);
 		}
 		else if (cmd.type == CMDtype::set)
 		{
@@ -644,7 +644,7 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 	case Axis_commands::idlespring:
 		if (cmd.type == CMDtype::get)
 		{
-			replies.push_back(CommandReply(idlespringstrength));
+			replies.emplace_back(idlespringstrength);
 		}
 		else if (cmd.type == CMDtype::set)
 		{
@@ -655,7 +655,7 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 	case Axis_commands::axisdamper:
 		if (cmd.type == CMDtype::get)
 		{
-			replies.push_back(CommandReply(damperIntensity));
+			replies.emplace_back(damperIntensity);
 		}
 		else if (cmd.type == CMDtype::set)
 		{
@@ -667,7 +667,7 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 		if(cmd.type == CMDtype::info){
 			enc_chooser.replyAvailableClasses(replies,this->getEncType());
 		}else if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply(this->getEncType()));
+			replies.emplace_back(this->getEncType());
 		}else if(cmd.type == CMDtype::set){
 			this->setEncType(cmd.val);
 		}
@@ -677,7 +677,7 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 		if(cmd.type == CMDtype::info){
 			drv_chooser.replyAvailableClasses(replies,this->getDrvType());
 		}else if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply(this->getDrvType()));
+			replies.emplace_back(this->getDrvType());
 		}else if(cmd.type == CMDtype::set){
 			this->setDrvType(cmd.val);
 		}
@@ -686,7 +686,7 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 	case Axis_commands::pos:
 		if (cmd.type == CMDtype::get)
 		{
-			replies.push_back(CommandReply(this->drv->getEncoder()->getPos()));
+			replies.emplace_back(this->drv->getEncoder()->getPos());
 		}
 		else if (cmd.type == CMDtype::set && this->drv->getEncoder() != nullptr)
 		{
@@ -708,17 +708,17 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 
 	case Axis_commands::fxratio:
 		if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply(this->fx_ratio_i));
+			replies.emplace_back(this->fx_ratio_i);
 		}else if(cmd.type == CMDtype::set){
 			setFxRatio(cmd.val);
 		}
 		break;
 
 	case Axis_commands::curpos:
-		replies.push_back(CommandReply(this->metric.current.pos));
+		replies.emplace_back(this->metric.current.pos);
 		break;
 	case Axis_commands::curtorque:
-		replies.push_back(CommandReply(this->metric.current.torque));
+		replies.emplace_back(this->metric.current.torque);
 		break;
 
 	default:

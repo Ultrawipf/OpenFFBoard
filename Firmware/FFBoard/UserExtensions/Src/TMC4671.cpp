@@ -2538,7 +2538,7 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 		break;
 
 	case TMC4671_commands::getState:
-		replies.push_back(CommandReply((uint32_t)getState()));
+		replies.emplace_back((uint32_t)getState());
 		break;
 
 	case TMC4671_commands::fullCalibration:
@@ -2548,29 +2548,29 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 		break;
 
 	case TMC4671_commands::calibrated:
-		replies.push_back(CommandReply(!recalibrationRequired && adcCalibrated));
+		replies.emplace_back(!recalibrationRequired && adcCalibrated);
 		break;
 
 	case TMC4671_commands::mtype:
 		if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply((uint8_t)this->conf.motconf.motor_type));
+			replies.emplace_back((uint8_t)this->conf.motconf.motor_type);
 		}else if(cmd.type == CMDtype::set && (uint8_t)cmd.type < (uint8_t)MotorType::ERR){
 			this->setMotorType((MotorType)cmd.val, this->conf.motconf.pole_pairs);
 		}else{
-			replies.push_back(CommandReply("NONE=0,DC=1,2Ph Stepper=2,3Ph BLDC=3"));
+			replies.emplace_back("NONE=0,DC=1,2Ph Stepper=2,3Ph BLDC=3");
 		}
 		break;
 
 	case TMC4671_commands::encsrc:
 		if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply((uint8_t)this->conf.motconf.enctype));
+			replies.emplace_back((uint8_t)this->conf.motconf.enctype);
 		}else if(cmd.type == CMDtype::set){
 			this->setEncoderType((EncoderType_TMC)cmd.val);
 		}else{
 			if(externalEncoderAllowed())
-				replies.push_back(CommandReply("NONE=0,ABN=1,SinCos=2,Analog UVW=3,Hall=4,External=5"));
+				replies.emplace_back("NONE=0,ABN=1,SinCos=2,Analog UVW=3,Hall=4,External=5");
 			else
-				replies.push_back(CommandReply("NONE=0,ABN=1,SinCos=2,Analog UVW=3,Hall=4"));
+				replies.emplace_back("NONE=0,ABN=1,SinCos=2,Analog UVW=3,Hall=4");
 
 		}
 		break;
@@ -2585,7 +2585,7 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 			// List known hardware versions
 			for(auto v : tmcHwVersionNames){
 				if(conf.canChangeHwType || v.first == conf.hwconf.hwVersion){
-					replies.push_back(CommandReply( std::to_string((uint8_t)v.first) + ":" + v.second,(uint8_t)v.first));
+					replies.emplace_back( std::to_string((uint8_t)v.first) + ":" + v.second,(uint8_t)v.first);
 				}
 
 			}
@@ -2605,7 +2605,7 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 
 	case TMC4671_commands::poles:
 		if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply(this->conf.motconf.pole_pairs));
+			replies.emplace_back(this->conf.motconf.pole_pairs);
 		}else if(cmd.type == CMDtype::set){
 			this->setMotorType(this->conf.motconf.motor_type,cmd.val);
 		}
@@ -2614,13 +2614,13 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 	case TMC4671_commands::acttrq:
 		if(cmd.type == CMDtype::get){
 			std::pair<int32_t,int32_t> current = getActualTorqueFlux();
-			replies.push_back(CommandReply(current.second,current.first));
+			replies.emplace_back(current.second,current.first);
 		}
 		break;
 
 	case TMC4671_commands::pwmlim:
 		if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply(this->curLimits.pid_uq_ud));
+			replies.emplace_back(this->curLimits.pid_uq_ud);
 		}else if(cmd.type == CMDtype::set){
 			this->setUqUdLimit(cmd.val);
 		}
@@ -2683,17 +2683,17 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 	case TMC4671_commands::tmctype:
 	{
 		std::pair<uint32_t,std::string> ver = getTmcType();
-		replies.push_back(CommandReply(ver.second,ver.first));
+		replies.emplace_back(ver.second,ver.first);
 		break;
 	}
 
 	case TMC4671_commands::vmTmc:
-		replies.push_back(CommandReply(getTmcVM()));
+		replies.emplace_back(getTmcVM());
 		break;
 
 	case TMC4671_commands::pidPrec:
 		if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply(this->pidPrecision.current_I | (this->pidPrecision.current_P << 1)));
+			replies.emplace_back(this->pidPrecision.current_I | (this->pidPrecision.current_P << 1));
 		}else if(cmd.type == CMDtype::set){
 			this->pidPrecision.current_I = cmd.val & 0x1;
 			this->pidPrecision.current_P = (cmd.val >> 1) & 0x1;
@@ -2702,11 +2702,11 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 		break;
 	case TMC4671_commands::phiesrc:
 		if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply((uint8_t)this->getPhiEtype()));
+			replies.emplace_back((uint8_t)this->getPhiEtype());
 		}else if(cmd.type == CMDtype::set){
 			this->setPhiEtype((PhiE)cmd.val);
 		}else{
-			replies.push_back(CommandReply("ext=1,openloop=2,abn=3,hall=5,aenc=6,aencE=7"));
+			replies.emplace_back("ext=1,openloop=2,abn=3,hall=5,aenc=6,aencE=7");
 		}
 		break;
 	case TMC4671_commands::fluxoffset:
@@ -2714,19 +2714,19 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 		break;
 	case TMC4671_commands::seqpi:
 		if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply(this->curPids.sequentialPI));
+			replies.emplace_back(this->curPids.sequentialPI);
 		}else if(cmd.type == CMDtype::set){
 			this->setSequentialPI(cmd.val != 0);
 		}
 		break;
 	case TMC4671_commands::tmcIscale:
 		if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply(std::to_string(this->conf.hwconf.currentScaler))); // TODO float as value?
+			replies.emplace_back(std::to_string(this->conf.hwconf.currentScaler)); // TODO float as value?
 		}
 		break;
 	case TMC4671_commands::encdir:
 		if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply(this->abnconf.rdir));
+			replies.emplace_back(this->abnconf.rdir);
 		}else if(cmd.type == CMDtype::set){
 			this->abnconf.rdir = cmd.val != 0;
 			this->setup_ABN_Enc(this->abnconf);
@@ -2735,7 +2735,7 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 
 	case TMC4671_commands::encpol:
 		if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply(this->abnconf.npol));
+			replies.emplace_back(this->abnconf.npol);
 		}else if(cmd.type == CMDtype::set){
 			this->abnconf.npol = cmd.val != 0;
 			this->abnconf.apol = cmd.val != 0;
@@ -2745,12 +2745,12 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 		break;
 	case TMC4671_commands::temp:
 		if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply((int32_t)(this->getTemp()*100.0)));
+			replies.emplace_back((int32_t)(this->getTemp()*100.0));
 		}
 		break;
 	case TMC4671_commands::reg:
 		if(cmd.type == CMDtype::getat){
-			replies.push_back(CommandReply(readReg(cmd.val)));
+			replies.emplace_back(readReg(cmd.val));
 		}else if(cmd.type == CMDtype::setat){
 			writeReg(cmd.adr,cmd.val);
 		}else{
@@ -2767,14 +2767,14 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 		if(cmd.type == CMDtype::set){
 			setSvPwm(cmd.val != 0);
 		}else if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply(conf.svpwm));
+			replies.emplace_back(conf.svpwm);
 		}
 		break;
 	}
 	case TMC4671_commands::extphie:
 	{
 
-		replies.push_back(CommandReply(getPhiEfromExternalEncoder()));
+		replies.emplace_back(getPhiEfromExternalEncoder());
 
 		break;
 	}
