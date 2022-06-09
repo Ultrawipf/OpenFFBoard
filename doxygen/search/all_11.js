@@ -115,7 +115,7 @@ var searchData=
   ['reserveport_112',['reservePort',['../class_u_a_r_t_port.html#a6389279de8791c1b7ba81e0f9ed14080',1,'UARTPort']]],
   ['reset_113',['Reset',['../classcpp__freertos_1_1_timer.html#a96d82602e1649be3d73866037f538359',1,'cpp_freertos::Timer']]],
   ['reset_114',['reset',['../class_output_pin.html#ae3d5227ff371958f4240b17e7350cc9d',1,'OutputPin::reset()'],['../structhub__port__status__response__t.html#a047303b6710f6a417dc94315d1b76ae4',1,'hub_port_status_response_t::reset()']]],
-  ['reset_5fdelay_115',['RESET_DELAY',['../usbh_8c.html#a9e93d8eae633734dfeb29e24a1f3a7c0a255e787af798f103692ae6a228b0600a',1,'usbh.c']]],
+  ['reset_5fdelay_115',['RESET_DELAY',['../usbh_8c.html#aeb8e1c282570d629a6b603a94a4650d6a255e787af798f103692ae6a228b0600a',1,'usbh.c']]],
   ['reset_5fffb_116',['reset_ffb',['../class_hid_f_f_b.html#acdc70e61e2993741d83f04850eba9a86',1,'HidFFB']]],
   ['reset_5fstate_117',['reset_state',['../dfu__device_8c.html#a9fbef29f6a0a976770a3055c37a35d95',1,'dfu_device.c']]],
   ['resetdelayuntil_118',['ResetDelayUntil',['../classcpp__freertos_1_1_thread.html#a71f796ec7c2bd53bb0f28b648967f601',1,'cpp_freertos::Thread']]],

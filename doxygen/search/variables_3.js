@@ -33,7 +33,7 @@ var searchData=
   ['cffilter_5fq_30',['cfFilter_q',['../class_effects_calculator.html#ab29b9b29517a3d154655f74e735ed15a',1,'EffectsCalculator']]],
   ['cffilter_5fqfloatscaler_31',['cfFilter_qfloatScaler',['../class_effects_calculator.html#a43c9cd847852a8f990f389c67c2213eb',1,'EffectsCalculator']]],
   ['cfg_5fnum_32',['cfg_num',['../structusbd__device__t.html#a7ac04dbc0e57299c0a7f45009bd4df3f',1,'usbd_device_t']]],
-  ['change_33',['change',['../structhub__port__status__response__t.html#ab57df60100050de850ae8c843d738abc',1,'hub_port_status_response_t::change()'],['../structhub__status__response__t.html#a161b089de9677f7f312cbb82e84fd4f4',1,'hub_status_response_t::change()']]],
+  ['change_33',['change',['../structhub__port__status__response__t.html#afbce7368c1afedda382aae6721f9da93',1,'hub_port_status_response_t::change()'],['../structhub__status__response__t.html#a161b089de9677f7f312cbb82e84fd4f4',1,'hub_status_response_t::change()']]],
   ['channel_5f1_34',['channel_1',['../struct_p_w_m_config.html#a8f025cc02e9128033ae9e451e7da6a08',1,'PWMConfig']]],
   ['channel_5f2_35',['channel_2',['../struct_p_w_m_config.html#abc8ff068da78f4ad8f143305c761e11c',1,'PWMConfig']]],
   ['channel_5f3_36',['channel_3',['../struct_p_w_m_config.html#abda251fdcc4081ce011059e441d373d1',1,'PWMConfig']]],

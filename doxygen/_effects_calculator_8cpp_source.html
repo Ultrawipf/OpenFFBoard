@@ -413,7 +413,7 @@ $(document).ready(function(){initNavTree('_effects_calculator_8cpp_source.html',
 <div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>        <span class="comment">// Optional filtering to reduce spikes</span></div>
 <div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="class_effects_calculator.html#a011454699591bfab1a40bcd2a1ff1deb">cfFilter_f</a> &lt; <a class="code hl_variable" href="class_effects_calculator.html#a96630061dd851c6c0d24344721d52e45">calcfrequency</a> / 2 &amp;&amp; <a class="code hl_variable" href="class_effects_calculator.html#a011454699591bfab1a40bcd2a1ff1deb">cfFilter_f</a> != 0 )</div>
 <div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>        {</div>
-<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>            result_torque = effect-&gt;<a class="code hl_variable" href="struct_f_f_b___effect.html#a5267e542282229bc02be0505013f48d4">filter</a>[con_idx]-&gt;process(forceVector);</div>
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>            forceVector = effect-&gt;<a class="code hl_variable" href="struct_f_f_b___effect.html#a5267e542282229bc02be0505013f48d4">filter</a>[con_idx]-&gt;process(forceVector);</div>
 <div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>        }</div>
 <div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>    }</div>
 <div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>    <span class="keywordflow">case</span> FFB_EFFECT_RAMP:</div>

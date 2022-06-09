@@ -7,7 +7,7 @@ var searchData=
   ['usb488_5fbrequest_5flocal_5flockout_4',['USB488_bREQUEST_LOCAL_LOCKOUT',['../usbtmc_8h.html#aee18bbea2d1733020445c633fde64832acfb0a320ce0eba5e1ade15a0c8eb4f64',1,'usbtmc.h']]],
   ['usb488_5fbrequest_5fread_5fstatus_5fbyte_5',['USB488_bREQUEST_READ_STATUS_BYTE',['../usbtmc_8h.html#aee18bbea2d1733020445c633fde64832af101446b4952de7cc67cacaf8596e4ea',1,'usbtmc.h']]],
   ['usb488_5fbrequest_5fren_5fcontrol_6',['USB488_bREQUEST_REN_CONTROL',['../usbtmc_8h.html#aee18bbea2d1733020445c633fde64832ab22753047bf2eda6519386a34b670a34',1,'usbtmc.h']]],
-  ['usbh_5fclass_5fdriver_5fcount_7',['USBH_CLASS_DRIVER_COUNT',['../usbh_8c.html#ade9ca5088d171ad20b4c237f1c2d6260a3d69eab44dbede9d61507ef234aea764',1,'usbh.c']]],
+  ['usbh_5fclass_5fdriver_5fcount_7',['USBH_CLASS_DRIVER_COUNT',['../usbh_8c.html#a9e93d8eae633734dfeb29e24a1f3a7c0a3d69eab44dbede9d61507ef234aea764',1,'usbh.c']]],
   ['usbtmc_5fbrequest_5fcheck_5fabort_5fbulk_5fin_5fstatus_8',['USBTMC_bREQUEST_CHECK_ABORT_BULK_IN_STATUS',['../usbtmc_8h.html#aee18bbea2d1733020445c633fde64832af9b82c39ffd537dcffbe19d74aeda91b',1,'usbtmc.h']]],
   ['usbtmc_5fbrequest_5fcheck_5fabort_5fbulk_5fout_5fstatus_9',['USBTMC_bREQUEST_CHECK_ABORT_BULK_OUT_STATUS',['../usbtmc_8h.html#aee18bbea2d1733020445c633fde64832ada76ee7f30568483abf5897826000adf',1,'usbtmc.h']]],
   ['usbtmc_5fbrequest_5fcheck_5fclear_5fstatus_10',['USBTMC_bREQUEST_CHECK_CLEAR_STATUS',['../usbtmc_8h.html#aee18bbea2d1733020445c633fde64832aab2eaed444280a247d8003128e7905c5',1,'usbtmc.h']]],
