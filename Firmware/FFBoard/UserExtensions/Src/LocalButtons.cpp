@@ -83,7 +83,7 @@ CommandStatus LocalButtons::command(const ParsedCommand& cmd,std::vector<Command
 		if(cmd.type == CMDtype::set){
 			this->setMask(cmd.val);
 		}else if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply(this->mask));
+			replies.emplace_back(this->mask);
 		}else{
 			return CommandStatus::ERR;
 		}
@@ -93,7 +93,7 @@ CommandStatus LocalButtons::command(const ParsedCommand& cmd,std::vector<Command
 		if(cmd.type == CMDtype::set){
 			this->polarity = cmd.val != 0;
 		}else if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply(this->polarity ? 1 : 0));
+			replies.emplace_back(this->polarity ? 1 : 0);
 		}else{
 			return CommandStatus::ERR;
 		}
@@ -101,7 +101,7 @@ CommandStatus LocalButtons::command(const ParsedCommand& cmd,std::vector<Command
 
 	case LocalButtons_commands::pins:
 		if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply(maxButtons));
+			replies.emplace_back(maxButtons);
 		}else{
 			return CommandStatus::ERR;
 		}
@@ -111,7 +111,7 @@ CommandStatus LocalButtons::command(const ParsedCommand& cmd,std::vector<Command
 		if(cmd.type == CMDtype::get){
 			uint64_t buf = 0;
 			readButtons(&buf);
-			replies.push_back(CommandReply(buf));
+			replies.emplace_back(buf);
 		}else{
 			return CommandStatus::ERR;
 		}

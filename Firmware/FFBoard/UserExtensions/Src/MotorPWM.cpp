@@ -241,7 +241,7 @@ CommandStatus MotorPWM::command(const ParsedCommand& cmd,std::vector<CommandRepl
 		if(cmd.type == CMDtype::set){
 			this->setPwmSpeed((SpeedPWM_DRV)cmd.val);
 		}else if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply((uint8_t)this->getPwmSpeed()));
+			replies.emplace_back((uint8_t)this->getPwmSpeed());
 		}else if(cmd.type == CMDtype::info){
 			std::vector<std::string> names = PWM_SpeedNames;
 			if(this->mode == ModePWM_DRV::RC_PWM){
@@ -250,7 +250,7 @@ CommandStatus MotorPWM::command(const ParsedCommand& cmd,std::vector<CommandRepl
 				names = PWM_SpeedNames;
 			}
 			for(uint8_t i = 0; i<names.size();i++){
-				replies.push_back(CommandReply(names[i]  + ":" + std::to_string(i)+"\n"));
+				replies.emplace_back(names[i]  + ":" + std::to_string(i)+"\n");
 			}
 		}
 		break;
@@ -260,10 +260,10 @@ CommandStatus MotorPWM::command(const ParsedCommand& cmd,std::vector<CommandRepl
 		if(cmd.type == CMDtype::set){
 			this->setMode((ModePWM_DRV)cmd.val);
 		}else if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply((uint8_t)this->getMode()));
+			replies.emplace_back((uint8_t)this->getMode());
 		}else if(cmd.type == CMDtype::info){
 			for(uint8_t i = 0; i<PwmModeNames.size();i++){
-				replies.push_back(CommandReply(PwmModeNames[i]  + ":" + std::to_string(i)+"\n"));
+				replies.emplace_back(PwmModeNames[i]  + ":" + std::to_string(i)+"\n");
 			}
 		}
 		break;

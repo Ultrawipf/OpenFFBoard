@@ -285,7 +285,7 @@ CommandStatus ODriveCAN::command(const ParsedCommand& cmd,std::vector<CommandRep
 	switch(static_cast<ODriveCAN_commands>(cmd.cmdId)){
 	case ODriveCAN_commands::vbus:
 		if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply(lastVoltage*1000));
+			replies.emplace_back(lastVoltage*1000);
 		}else{
 			return CommandStatus::ERR;
 		}
@@ -293,7 +293,7 @@ CommandStatus ODriveCAN::command(const ParsedCommand& cmd,std::vector<CommandRep
 
 	case ODriveCAN_commands::errors:
 		if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply((uint32_t)errors));
+			replies.emplace_back((uint32_t)errors);
 		}else{
 			return CommandStatus::ERR;
 		}
@@ -304,14 +304,14 @@ CommandStatus ODriveCAN::command(const ParsedCommand& cmd,std::vector<CommandRep
 		break;
 	case ODriveCAN_commands::state:
 		if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply((uint32_t)odriveCurrentState));
+			replies.emplace_back((uint32_t)odriveCurrentState);
 		}else{
 			return CommandStatus::ERR;
 		}
 		break;
 	case ODriveCAN_commands::canspd:
 		if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply(port->getSpeedPreset()));
+			replies.emplace_back(port->getSpeedPreset());
 		}else if(cmd.type == CMDtype::set){
 			port->setSpeedPreset(std::max<uint8_t>(3,cmd.val));
 		}else{
@@ -329,7 +329,7 @@ CommandStatus ODriveCAN::command(const ParsedCommand& cmd,std::vector<CommandRep
 	{
 		if(cmd.type == CMDtype::get){
 			int32_t val = maxTorque*100;
-			replies.push_back(CommandReply(val));
+			replies.emplace_back(val);
 		}else if(cmd.type == CMDtype::set){
 			maxTorque = (float)clip(cmd.val, 0, 0xfff) / 100.0;
 		}else{
@@ -339,7 +339,7 @@ CommandStatus ODriveCAN::command(const ParsedCommand& cmd,std::vector<CommandRep
 	}
 	case ODriveCAN_commands::connected:
 		if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply(connected ? 1 : 0));
+			replies.emplace_back(connected ? 1 : 0);
 		}
 		break;
 

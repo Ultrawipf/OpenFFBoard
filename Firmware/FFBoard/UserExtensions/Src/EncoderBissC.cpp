@@ -230,7 +230,7 @@ CommandStatus EncoderBissC::command(const ParsedCommand& cmd,std::vector<Command
 	case EncoderBissC_commands::bits:
 		return handleGetSet(cmd, replies, this->lenghtDataBit);
 	case EncoderBissC_commands::errors:
-		replies.push_back(CommandReply(numErrors));
+		replies.emplace_back(numErrors);
 		break;
 	case EncoderBissC_commands::speed:
 		handleGetSet(cmd, replies, this->spiSpeed);

@@ -184,7 +184,7 @@ CommandStatus PCF8574Buttons::command(const ParsedCommand& cmd,std::vector<Comma
 
 	case PCF8574Buttons_commands::btnnum:
 		if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply(this->btnnum));
+			replies.emplace_back(this->btnnum);
 		}else if(cmd.type == CMDtype::set){
 			setBtnNum(cmd.val);
 		}
@@ -195,7 +195,7 @@ CommandStatus PCF8574Buttons::command(const ParsedCommand& cmd,std::vector<Comma
 
 	case PCF8574Buttons_commands::speed:
 		if(cmd.type == CMDtype::get){
-			replies.push_back(CommandReply(this->port.getSpeedPreset()));
+			replies.emplace_back(this->port.getSpeedPreset());
 		}else if(cmd.type == CMDtype::set){
 			port.setSpeedPreset(cmd.val);
 		}
