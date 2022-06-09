@@ -331,7 +331,7 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 		// Optional filtering to reduce spikes
 		if (cfFilter_f < calcfrequency / 2 && cfFilter_f != 0 )
 		{
-			result_torque = effect->filter[con_idx]->process(forceVector);
+			forceVector = effect->filter[con_idx]->process(forceVector);
 		}
 	}
 	case FFB_EFFECT_RAMP:
