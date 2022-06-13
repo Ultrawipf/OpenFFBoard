@@ -178,8 +178,7 @@ int32_t EffectsCalculator::calcNonConditionEffectForce(FFB_Effect *effect) {
 
 	case FFB_EFFECT_CONSTANT:
 	{ // Constant force is just the force
-		force_vector = ((int32_t)magnitude * (int32_t)(1 + effect->gain)) >> 8;
-
+		force_vector = (int32_t)magnitude;
 		break;
 	}
 
@@ -187,8 +186,7 @@ int32_t EffectsCalculator::calcNonConditionEffectForce(FFB_Effect *effect) {
 	{
 		uint32_t elapsed_time = HAL_GetTick() - effect->startTime;
 		int32_t duration = effect->duration;
-		float force = (int32_t)effect->startLevel + ((int32_t)elapsed_time * (effect->endLevel - effect->startLevel)) / duration;
-		force_vector = (int32_t)(force * (1 + effect->gain)) >> 8;
+		force_vector = (int32_t)effect->startLevel + ((int32_t)elapsed_time * (effect->endLevel - effect->startLevel)) / duration;
 		break;
 	}
 
@@ -274,7 +272,7 @@ int32_t EffectsCalculator::calcNonConditionEffectForce(FFB_Effect *effect) {
 		break;
 	}
 
-	return force_vector;
+	return (force_vector * effect->gain) / 255;
 }
 
 
@@ -433,7 +431,7 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 		// Unsupported effect
 		break;
 	}
-	return (result_torque * (global_gain+1)) >> 8; // Apply global gain
+	return (result_torque * global_gain) / 255; // Apply global gain
 }
 
 /**
