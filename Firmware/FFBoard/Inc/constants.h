@@ -15,6 +15,7 @@ static const uint8_t SW_VERSION_INT[3] = {1,8,7}; // Version as array. 8 bit eac
 
 #define MAX_AXIS 2 // ONLY USE 2 for now else screws HID Reports
 
+//#define DEBUGLOG // Uncomment to enable some debug printouts
 
 #ifndef CANBUS
 #undef ODRIVE
