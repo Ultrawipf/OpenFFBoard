@@ -143,6 +143,7 @@ public:
 	virtual std::string getCsvHelpstring(); // Returns a list of the commands helpstrings formatted for csv
 
 	static void logSerial(std::string string);	//!< Send a log formatted sequence
+	static void logSerialDebug(std::string string);	//!< Send a log formatted sequence if debug is on
 
 	void broadcastCommandReply(CommandReply reply, uint32_t cmdId,CMDtype type);
 	void sendCommandReplyAsync(CommandReply reply, uint32_t cmdId,CMDtype type,CommandInterface* interface = nullptr);

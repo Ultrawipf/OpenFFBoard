@@ -17,7 +17,7 @@ extern ClassChooser<FFBoardMain> mainchooser;
 extern FFBoardMain* mainclass;
 //extern static const uint8_t SW_VERSION_INT[3];
 
-bool SystemCommands::allowDebugCommands = false;
+bool SystemCommands::debugMode = false;
 bool SystemCommands::errorPrintingEnabled = true;
 SystemCommands* SystemCommands::systemCommandsInstance = nullptr;
 
@@ -121,7 +121,7 @@ CommandStatus SystemCommands::internalCommand(const ParsedCommand& cmd,std::vect
 		}
 
 		case FFBoardMain_commands::debug:
-			return handleGetSet(cmd, replies, SystemCommands::allowDebugCommands);
+			return handleGetSet(cmd, replies, SystemCommands::debugMode);
 
 		case FFBoardMain_commands::vext:
 		{
