@@ -129,7 +129,7 @@ public:
 	 */
 	void replyAvailableClasses(std::vector<CommandReply>& replies,int16_t ignoredCreatableId = 255){
 		for(class_entry<T> cls : class_registry){
-			if(cls.info.visibility == ClassVisibility::hidden || (cls.info.visibility == ClassVisibility::debug && !SystemCommands::allowDebugCommands)){
+			if(cls.info.visibility == ClassVisibility::hidden || (cls.info.visibility == ClassVisibility::debug && !SystemCommands::debugMode)){
 				if(ignoredCreatableId != cls.selectionId)
 					continue;
 			}

@@ -92,7 +92,6 @@ void HidFFB::hidOut(uint8_t report_id, hid_report_type_t report_type, uint8_t co
 	const uint8_t* report = buffer;
 	uint8_t event_idx = report_id - FFB_ID_OFFSET;
 
-
 	// -------- Out Reports --------
 	switch(event_idx)
 	{
@@ -196,10 +195,16 @@ uint16_t HidFFB::hidGet(uint8_t report_id, hid_report_type_t report_type,uint8_t
 }
 
 void HidFFB::start_FFB(){
+#ifdef DEBUGLOG
+	CommandHandler::logSerialDebug("FFB on");
+#endif
 	this->set_FFB(true);
 }
 
 void HidFFB::stop_FFB(){
+#ifdef DEBUGLOG
+	CommandHandler::logSerialDebug("FFB off");
+#endif
 	this->set_FFB(false);
 }
 
@@ -221,7 +226,7 @@ void HidFFB::set_filters(FFB_Effect *effect){
 }
 
 void HidFFB::ffb_control(uint8_t cmd){
-	//printf("Got Control signal: %d\n",cmd);
+
 	if(cmd & 0x01){ //enable
 		start_FFB();
 	}if(cmd & 0x02){ //disable
@@ -260,12 +265,17 @@ void HidFFB::new_effect(FFB_CreateNewEffect_Feature_Data_t* effect){
 	uint8_t index = find_free_effect(effect->effectType); // next effect
 	if(index == 0){
 		blockLoad_report.loadStatus = 2;
-		//CommandHandler::logSerial("Can't allocate a new effect");
+#ifdef DEBUGLOG
+		CommandHandler::logSerialDebug("Can't allocate a new effect");
+#endif
 		return;
 	}
 	FFB_Effect new_effect;
 	new_effect.type = effect->effectType;
 	this->effects_calc->logEffectType(effect->effectType);
+#ifdef DEBUGLOG
+	CommandHandler::logSerialDebug("New effect type:" + std::to_string(effect->effectType) + " idx: " + std::to_string(index-1));
+#endif
 
 	set_filters(&new_effect);
 
@@ -311,7 +321,7 @@ void HidFFB::set_effect(FFB_SetEffect_t* effect){
 	if(!ffb_active)
 		start_FFB();
 	sendStatusReport(effect->effectBlockIndex); // TODO required?
-	//CommandHandler::logSerial("Setting Effect: " + std::to_string(effect->effectType) +  " at " + std::to_string(index) + "\n");
+	//CommandHandler::logSerialDebug("Setting Effect: " + std::to_string(effect->effectType) +  " at " + std::to_string(index) + "\n");
 }
 
 void HidFFB::set_condition(FFB_SetCondition_Data_t *cond){
@@ -346,12 +356,17 @@ void HidFFB::set_effect_operation(FFB_EffOp_Data_t* report){
 	uint8_t id = report->effectBlockIndex-1;
 	if(report->state == 3){
 		effects[id].state = 0; //Stop
-		//CommandHandler::logSerial("Stop" + std::to_string(id));
+#ifdef DEBUGLOG
+		CommandHandler::logSerialDebug("Stop effect: " + std::to_string(id));
+#endif
+
 	}else{
 
 		// 1 = start, 2 = start solo
 		if(report->state == 2){
-			//CommandHandler::logSerial("Start solo" + std::to_string(id));
+#ifdef DEBUGLOG
+			CommandHandler::logSerialDebug("Start solo: " + std::to_string(id));
+#endif
 			for(FFB_Effect& effect : effects){
 				effect.state = 0; // Stop all other effects
 			}
@@ -359,8 +374,9 @@ void HidFFB::set_effect_operation(FFB_EffOp_Data_t* report){
 		if(effects[id].state != 1){
 			set_filters(&effects[id]);
 		}
-
-		//CommandHandler::logSerial("Start" + std::to_string(id));
+#ifdef DEBUGLOG
+		CommandHandler::logSerialDebug("Start effect: " + std::to_string(id));
+#endif
 		effects[id].startTime = HAL_GetTick() + effects[id].startDelay; // + effects[id].startDelay;
 		effects[id].state = 1; //Start
 

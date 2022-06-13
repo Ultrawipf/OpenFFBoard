@@ -186,7 +186,7 @@ void CommandHandler::registerCommands(){
  */
 CmdHandlerCommanddef* CommandHandler::getCommandFromName(const std::string& cmd,uint32_t ignoredFlags){
 	for(CmdHandlerCommanddef& cmdItem : registeredCommands){
-		if(cmdItem.cmd == cmd && !(cmdItem.flags & ignoredFlags) && (SystemCommands::allowDebugCommands || !(cmdItem.flags & CMDFLAG_DEBUG))){
+		if(cmdItem.cmd == cmd && !(cmdItem.flags & ignoredFlags) && (SystemCommands::debugMode || !(cmdItem.flags & CMDFLAG_DEBUG))){
 			return &cmdItem;
 		}
 	}
@@ -199,7 +199,7 @@ CmdHandlerCommanddef* CommandHandler::getCommandFromName(const std::string& cmd,
  */
 CmdHandlerCommanddef* CommandHandler::getCommandFromId(const uint32_t id,uint32_t ignoredFlags){
 	for(CmdHandlerCommanddef& cmdItem : registeredCommands){
-		if(cmdItem.cmdId == id && !(cmdItem.flags & ignoredFlags) && (SystemCommands::allowDebugCommands || !(cmdItem.flags & CMDFLAG_DEBUG))){
+		if(cmdItem.cmdId == id && !(cmdItem.flags & ignoredFlags) && (SystemCommands::debugMode || !(cmdItem.flags & CMDFLAG_DEBUG))){
 			return &cmdItem;
 		}
 	}
@@ -383,7 +383,7 @@ bool CommandHandler::isInHandlerList(CommandHandler* handler){
  */
 bool CommandHandler::isValidCommandId(uint32_t cmdid,uint32_t ignoredFlags,uint32_t requiredFlags){
 	for(CmdHandlerCommanddef& cmd : registeredCommands){
-		if(cmd.cmdId == cmdid && !(cmd.flags & ignoredFlags) && ((cmd.flags & requiredFlags) == requiredFlags) && (SystemCommands::allowDebugCommands || !(cmd.flags & CMDFLAG_DEBUG))){
+		if(cmd.cmdId == cmdid && !(cmd.flags & ignoredFlags) && ((cmd.flags & requiredFlags) == requiredFlags) && (SystemCommands::debugMode || !(cmd.flags & CMDFLAG_DEBUG))){
 			return true;
 		}
 	}
@@ -443,6 +443,16 @@ void CommandHandler::logSerial(std::string string){
 	std::string reply = "[>!" + string + "\n]";
 	CDCcomm::cdcSend(&reply, 0);
 
+}
+
+/**
+ * Sends log info back via cdc if debug mode is on
+ */
+void CommandHandler::logSerialDebug(std::string string)
+{
+	if(SystemCommands::debugMode){
+		logSerial(string);
+	}
 }
 
 /**

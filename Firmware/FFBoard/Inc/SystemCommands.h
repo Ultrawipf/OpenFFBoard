@@ -31,7 +31,7 @@ public:
 	static void replyFlashDump(std::vector<CommandReply>& replies);
 	static void replyErrors(std::vector<CommandReply>& replies);
 
-	static bool allowDebugCommands; // Global flag that controls the debug mode
+	static bool debugMode; // Global flag that controls the debug mode
 
 	static bool errorPrintingEnabled;
 	static SystemCommands* systemCommandsInstance;
