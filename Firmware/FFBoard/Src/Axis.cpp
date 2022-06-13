@@ -359,6 +359,7 @@ float Axis::getEncAngle(Encoder *enc){
 
 
 void Axis::emergencyStop(bool reset){
+	drv->turn(0); // Send 0 torque first
 	drv->emergencyStop(reset);
 	//drv->stopMotor();
 	control->emergency = !reset;

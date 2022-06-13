@@ -149,11 +149,7 @@ void FFBHIDMain::update(){
 		//logSerial("Update disabled");
 		return;
 	}
-	if(control.emergency){
-		pulseClipLed();
-		pulseErrLed();
-		return;
-	}
+
 	if(control.resetEncoder){
 		control.resetEncoder = false;
 		axes_manager->resetPosZero();
@@ -181,7 +177,12 @@ void FFBHIDMain::update(){
 					this->send_report();
 			}
 		}
-		axes_manager->updateTorque();
+		if(!control.emergency){
+			axes_manager->updateTorque();
+
+		}else{
+			pulseClipLed();
+		}
 		//debugpin.reset();
 		vTaskPrioritySet((TaskHandle_t)defaultTaskHandle,prio); // reset priority
 	}
