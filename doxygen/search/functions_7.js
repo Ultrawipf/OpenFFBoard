@@ -17,7 +17,7 @@ var searchData=
   ['getactualtorqueflux_14',['getActualTorqueFlux',['../class_t_m_c4671.html#ab74a3b6ad75090d96b203de36b48fdc2',1,'TMC4671']]],
   ['getallhelpstrings_15',['getAllHelpstrings',['../class_command_handler.html#adb22b24f51c53110d1275157b5d82fde',1,'CommandHandler']]],
   ['getanalogbuffer_16',['getAnalogBuffer',['../global__callbacks_8cpp.html#a013b2ae4ee1d814f98c86189bd666c66',1,'getAnalogBuffer(ADC_HandleTypeDef *hadc, uint8_t *chans):&#160;global_callbacks.cpp'],['../global__callbacks_8h.html#a013b2ae4ee1d814f98c86189bd666c66',1,'getAnalogBuffer(ADC_HandleTypeDef *hadc, uint8_t *chans):&#160;global_callbacks.cpp']]],
-  ['getaverage_17',['getAverage',['../class_fast_avg.html#a92315eb944651496b053c0f79d5d0f1a',1,'FastAvg']]],
+  ['getaverage_17',['getAverage',['../class_fast_avg.html#a197891aa780265997680e793cbb296f4',1,'FastAvg']]],
   ['getaxes_18',['getAxes',['../class_local_analog.html#a30b986fab162314cc57de1f8e1cbf03f',1,'LocalAnalog::getAxes()'],['../class_analog_source.html#a72fd0817fbe45e953f6e5f66f6160238',1,'AnalogSource::getAxes()']]],
   ['getaxiscount_19',['getAxisCount',['../class_axes_manager.html#a870f6d09234f274a65c6797c0873c262',1,'AxesManager']]],
   ['getaxisvalues_20',['getAxisValues',['../class_axes_manager.html#aacd4d7102b72d89d18736c1d1ec2400b',1,'AxesManager']]],

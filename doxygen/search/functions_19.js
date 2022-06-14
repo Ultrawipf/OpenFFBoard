@@ -28,7 +28,7 @@ var searchData=
   ['_7eerrorhandler_25',['~ErrorHandler',['../class_error_handler.html#a73c7e690b864697e507aaeb537b3c3e5',1,'ErrorHandler']]],
   ['_7eeventgroup_26',['~EventGroup',['../classcpp__freertos_1_1_event_group.html#aec45fca847056b3ea8b62899c5903f55',1,'cpp_freertos::EventGroup']]],
   ['_7eextihandler_27',['~ExtiHandler',['../class_exti_handler.html#a1d81c833833e16045797a282bf614df7',1,'ExtiHandler']]],
-  ['_7efastavg_28',['~FastAvg',['../class_fast_avg.html#af6143cce66c5bd4e91006f1afaec5a2a',1,'FastAvg']]],
+  ['_7efastavg_28',['~FastAvg',['../class_fast_avg.html#aa4730ce748fe79baf6bb99fdb30f7f1e',1,'FastAvg']]],
   ['_7effbhidmain_29',['~FFBHIDMain',['../class_f_f_b_h_i_d_main.html#a9f4b27c7527cce4a523d83b7dd59ae68',1,'FFBHIDMain']]],
   ['_7effbjoystick_30',['~FFBJoystick',['../class_f_f_b_joystick.html#a7c307964b774bc19577ad62cb4d75bdd',1,'FFBJoystick']]],
   ['_7effboardmain_31',['~FFBoardMain',['../class_f_f_board_main.html#ab919aaaedd40d25b04c8bbacb0311ad9',1,'FFBoardMain']]],

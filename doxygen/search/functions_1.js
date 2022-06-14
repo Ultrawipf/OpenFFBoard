@@ -12,7 +12,7 @@ var searchData=
   ['addcallbackhandler_9',['addCallbackHandler',['../global__callbacks_8h.html#a55e73ce0bdb6d2a817c96f5215193b86',1,'global_callbacks.h']]],
   ['addcanfilter_10',['addCanFilter',['../class_c_a_n_port.html#a3ab8b5e4190bee6160b5d1a2eb1778a9',1,'CANPort']]],
   ['addcommandhandler_11',['addCommandHandler',['../class_command_handler.html#a3de5a97bb00981074ef6ea85caea8093',1,'CommandHandler']]],
-  ['adderror_12',['addError',['../class_error_handler.html#abedf2d4fca68939a7f77367cac409b19',1,'ErrorHandler']]],
+  ['adderror_12',['addError',['../class_error_handler.html#ad571cbcc5c4a6c2afaf996117b20b868',1,'ErrorHandler']]],
   ['addmemory_13',['AddMemory',['../classcpp__freertos_1_1_memory_pool.html#a3a45774c8c0f761ea8b75e3e4d3a1591',1,'cpp_freertos::MemoryPool::AddMemory(int itemCount)'],['../classcpp__freertos_1_1_memory_pool.html#abc987382be536cc5111a38202301a042',1,'cpp_freertos::MemoryPool::AddMemory(void *preallocatedMemory, int preallocatedMemorySize)']]],
   ['addtowaitlist_14',['AddToWaitList',['../classcpp__freertos_1_1_condition_variable.html#a2ffe9249383d68bc423221be9e69dad0',1,'cpp_freertos::ConditionVariable']]],
   ['advance_5fpointer_15',['advance_pointer',['../tusb__fifo_8c.html#a6238e2884f42935eafaf654b21cccf8c',1,'tusb_fifo.c']]],

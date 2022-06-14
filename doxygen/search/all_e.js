@@ -29,7 +29,7 @@ var searchData=
   ['openloop_26',['openloop',['../_t_m_c4671_8h.html#addb917dd45972d75a9b40bab2ce78492af0cc7c5edf94f9dc31e12fae5543040b',1,'TMC4671.h']]],
   ['openloopspeed_27',['openloopspeed',['../class_t_m_c_debug_bridge.html#af27c0ce5f4df3232b543806a8247fcd8a8ce6fb50513bcd5716de76c40a09df11',1,'TMCDebugBridge']]],
   ['operator_3d_28',['operator=',['../class_singleton.html#afaeece572828c10525122e8e9c7f9efa',1,'Singleton']]],
-  ['operator_3d_3d_29',['operator==',['../class_error.html#aedc724e69d527f171cc7d11a844e95ce',1,'Error::operator==()'],['../class_output_pin.html#a84e6a5dfb88e5859a75d79ebb2985c62',1,'OutputPin::operator==()'],['../_i2_c_8cpp.html#affb7df786a5cadbfa6ffe48c7b63d3e5',1,'operator==(const I2C_InitTypeDef &amp;lhs, const I2C_InitTypeDef &amp;rhs):&#160;I2C.cpp'],['../_s_p_i_8cpp.html#a55bac928c2ab7198d1462b6bd69f43b5',1,'operator==(const SPI_InitTypeDef &amp;lhs, const SPI_InitTypeDef &amp;rhs):&#160;SPI.cpp'],['../_u_a_r_t_8cpp.html#a96a77e41a8179601633de1adab1d4167',1,'operator==(const UART_InitTypeDef &amp;lhs, const UART_InitTypeDef &amp;rhs):&#160;UART.cpp']]],
+  ['operator_3d_3d_29',['operator==',['../class_error.html#a9fe51a7f47e33f74ddf95955c0e36e5a',1,'Error::operator==()'],['../class_output_pin.html#a84e6a5dfb88e5859a75d79ebb2985c62',1,'OutputPin::operator==()'],['../_i2_c_8cpp.html#affb7df786a5cadbfa6ffe48c7b63d3e5',1,'operator==(const I2C_InitTypeDef &amp;lhs, const I2C_InitTypeDef &amp;rhs):&#160;I2C.cpp'],['../_s_p_i_8cpp.html#a55bac928c2ab7198d1462b6bd69f43b5',1,'operator==(const SPI_InitTypeDef &amp;lhs, const SPI_InitTypeDef &amp;rhs):&#160;SPI.cpp'],['../_u_a_r_t_8cpp.html#a96a77e41a8179601633de1adab1d4167',1,'operator==(const UART_InitTypeDef &amp;lhs, const UART_InitTypeDef &amp;rhs):&#160;UART.cpp']]],
   ['originalcommand_30',['originalCommand',['../struct_command_result.html#a3ef17ae87ed9763dd23415987153a656',1,'CommandResult']]],
   ['originalinterface_31',['originalInterface',['../struct_parsed_command.html#aa95e667bafb73fc580e3338b0178ec09',1,'ParsedCommand']]],
   ['osal_2eh_32',['osal.h',['../osal_8h.html',1,'']]],
@@ -64,8 +64,8 @@ var searchData=
   ['over_5fcurrent_61',['over_current',['../structhub__status__response__t.html#ae1e0e79c620d9a93220cffd68f934a25',1,'hub_status_response_t::over_current()'],['../structhub__port__status__response__t.html#a8f8deb7f2461295540bea242948fb3ae',1,'hub_port_status_response_t::over_current()']]],
   ['overflowcallback_62',['overflowCallback',['../class_encoder_local.html#aaabd6d7ad395d54de1e8790214e89e83',1,'EncoderLocal']]],
   ['overspeed_63',['overspeed',['../class_mt_encoder_s_p_i.html#ae0673b39fe9e2b9e7921c4bb4d1ea776',1,'MtEncoderSPI']]],
-  ['overtemp_64',['overtemp',['../_error_handler_8h.html#a6f3b1ba4fbf4167d3a58b0b331ddcfefa5f70813d126d15d6e3d68ec7ee5f547c',1,'ErrorHandler.h']]],
-  ['overtemp_65',['OverTemp',['../_t_m_c4671_8h.html#ad7d50073249f48de7e58d41071064a7ca9cfa39fcf8d4622338bfa04439eeda88',1,'TMC4671.h']]],
+  ['overtemp_64',['OverTemp',['../_t_m_c4671_8h.html#ad7d50073249f48de7e58d41071064a7ca9cfa39fcf8d4622338bfa04439eeda88',1,'TMC4671.h']]],
+  ['overtemp_65',['overtemp',['../_error_handler_8h.html#a6f3b1ba4fbf4167d3a58b0b331ddcfefa5f70813d126d15d6e3d68ec7ee5f547c',1,'ErrorHandler.h']]],
   ['overvoltage_66',['overvoltage',['../_error_handler_8h.html#a6f3b1ba4fbf4167d3a58b0b331ddcfefa97586d839fb4db72de3f0f6c3e20464e',1,'ErrorHandler.h']]],
   ['overwritable_67',['overwritable',['../structtu__fifo__t.html#ad05e8eafcf249b93b84cd8e7056d052d',1,'tu_fifo_t']]]
 ];

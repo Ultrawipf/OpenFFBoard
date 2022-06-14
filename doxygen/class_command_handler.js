@@ -34,6 +34,7 @@ var class_command_handler =
     [ "isValidCommandId", "class_command_handler.html#af658c15ccbac468224ed2c5997e06f91", null ],
     [ "logsEnabled", "class_command_handler.html#a0ad3a15342dfe6bd3bc86527195ea54a", null ],
     [ "logSerial", "class_command_handler.html#a2f1846340caca33036391050a3bfa785", null ],
+    [ "logSerialDebug", "class_command_handler.html#a7c81b3587ae6b875e4f9ec2b12c898f0", null ],
     [ "registerCommand", "class_command_handler.html#a26d4fbfbb1106d0465716e1968150a7d", null ],
     [ "registerCommands", "class_command_handler.html#a09e6c7b1db8de3631ffbc1e4c1336676", null ],
     [ "removeCommandHandler", "class_command_handler.html#adc82292657521596a2e77756886f95aa", null ],

@@ -65,7 +65,7 @@ var annotated_dup =
     [ "class_entry", "structclass__entry.html", "structclass__entry" ],
     [ "ClassChooser", "class_class_chooser.html", "class_class_chooser" ],
     [ "ClassIdentifier", "struct_class_identifier.html", "struct_class_identifier" ],
-    [ "CmdHandlerCommanddef", "struct_cmd_handler_commanddef.html", "struct_cmd_handler_commanddef" ],
+    [ "CmdHandlerCommanddef", "class_cmd_handler_commanddef.html", "class_cmd_handler_commanddef" ],
     [ "CmdHandlerInfo", "struct_cmd_handler_info.html", "struct_cmd_handler_info" ],
     [ "CmdParser", "class_cmd_parser.html", "class_cmd_parser" ],
     [ "CommandHandler", "class_command_handler.html", "class_command_handler" ],

@@ -2,7 +2,8 @@ var class_c_a_n_port =
 [
     [ "CanPort_commands", "class_c_a_n_port.html#a5b851cfc207f4822440f3f5be11d3241", [
       [ "speed", "class_c_a_n_port.html#a5b851cfc207f4822440f3f5be11d3241ace4ef3ec98443ed10da505114b58f153", null ],
-      [ "send", "class_c_a_n_port.html#a5b851cfc207f4822440f3f5be11d3241a2541d938b0a58946090d7abdde0d3890", null ]
+      [ "send", "class_c_a_n_port.html#a5b851cfc207f4822440f3f5be11d3241a2541d938b0a58946090d7abdde0d3890", null ],
+      [ "len", "class_c_a_n_port.html#a5b851cfc207f4822440f3f5be11d3241af5a8e923f8cd24b56b3bab32358cc58a", null ]
     ] ],
     [ "CANPort", "class_c_a_n_port.html#a1fea1acd455f3b13f1cfd2ce676318cc", null ],
     [ "CANPort", "class_c_a_n_port.html#a4ed6f5de6ac22d3c52c4e6a41c973a48", null ],
@@ -34,6 +35,7 @@ var class_c_a_n_port =
     [ "active", "class_c_a_n_port.html#a21bfc825e44a1eb82751abce3bfe7d8d", null ],
     [ "canFilters", "class_c_a_n_port.html#ad9d782daa3be39d4f4291ac4eba4608f", null ],
     [ "hcan", "class_c_a_n_port.html#a101c18fab15f6f8b21f6a1516dd98a56", null ],
+    [ "header", "class_c_a_n_port.html#a5d0039ced03b75ee7244ca0d34bc25af", null ],
     [ "info", "class_c_a_n_port.html#af32b50ed81078180d87c9d993ff42690", null ],
     [ "portUsers", "class_c_a_n_port.html#ac5144ef8f20eecafd6fa44786a89be18", null ],
     [ "semaphore", "class_c_a_n_port.html#a8c57c45de27614276918a25af743198e", null ],

@@ -30,7 +30,7 @@ var class_hid_f_f_b =
     [ "effects", "class_hid_f_f_b.html#a4d7f393f79820f4c9d9a59932af242be", null ],
     [ "effects_calc", "class_hid_f_f_b.html#aa63cc49341799e6b314a309078b02306", null ],
     [ "ffb_active", "class_hid_f_f_b.html#ad1e907722aeafb6214d8c4911dee749e", null ],
-    [ "hid_out_period", "class_hid_f_f_b.html#ab8fd229b687c50795853f0c09e2263d1", null ],
+    [ "hidPeriodAvg", "class_hid_f_f_b.html#a069897bf62f1a4b5ad3077bfda5d179a", null ],
     [ "lastOut", "class_hid_f_f_b.html#a8cf218a30d8d6bc8f16ffb2de18289fb", null ],
     [ "pool_report", "class_hid_f_f_b.html#aaed04bafc326612fa3fb1a0805d3f7fb", null ],
     [ "reportFFBStatus", "class_hid_f_f_b.html#a0d873cbb7019197c2fb42054a79dda33", null ],

@@ -1,6 +1,6 @@
 var _command_handler_8h =
 [
-    [ "CmdHandlerCommanddef", "struct_cmd_handler_commanddef.html", "struct_cmd_handler_commanddef" ],
+    [ "CmdHandlerCommanddef", "class_cmd_handler_commanddef.html", "class_cmd_handler_commanddef" ],
     [ "CmdHandlerInfo", "struct_cmd_handler_info.html", "struct_cmd_handler_info" ],
     [ "ParsedCommand", "struct_parsed_command.html", "struct_parsed_command" ],
     [ "CommandReply", "class_command_reply.html", "class_command_reply" ],

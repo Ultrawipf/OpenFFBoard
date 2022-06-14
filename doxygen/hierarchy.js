@@ -76,7 +76,7 @@ var hierarchy =
     [ "class_entry< B >", "structclass__entry.html", null ],
     [ "ClassChooser< T >", "class_class_chooser.html", null ],
     [ "ClassIdentifier", "struct_class_identifier.html", null ],
-    [ "CmdHandlerCommanddef", "struct_cmd_handler_commanddef.html", null ],
+    [ "CmdHandlerCommanddef", "class_cmd_handler_commanddef.html", null ],
     [ "CmdHandlerInfo", "struct_cmd_handler_info.html", null ],
     [ "CmdParser", "class_cmd_parser.html", null ],
     [ "CommandHandler", "class_command_handler.html", [
@@ -139,7 +139,7 @@ var hierarchy =
       [ "FFBHIDMain", "class_f_f_b_h_i_d_main.html", null ],
       [ "TMC4671", "class_t_m_c4671.html", null ]
     ] ],
-    [ "FastAvg< LEN >", "class_fast_avg.html", null ],
+    [ "FastAvg< T, LEN >", "class_fast_avg.html", null ],
     [ "FFB_Effect", "struct_f_f_b___effect.html", null ],
     [ "hcd_devtree_info_t", "structhcd__devtree__info__t.html", null ],
     [ "hcd_event_t", "structhcd__event__t.html", null ],

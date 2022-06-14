@@ -3,7 +3,7 @@ var class_axes_manager =
     [ "AxesManager", "class_axes_manager.html#a5135bd088107d102395ba77fa72d69ae", null ],
     [ "~AxesManager", "class_axes_manager.html#a43c6199313b4bbbd3bae7562668f4685", null ],
     [ "deleteAxes", "class_axes_manager.html#a552185325917b63d12a546f158919390", null ],
-    [ "emergencyStop", "class_axes_manager.html#a456d91a30a8edca1283f1700eafeef96", null ],
+    [ "emergencyStop", "class_axes_manager.html#a3bcacfe0af397f94c0c9e1ae8e56c10a", null ],
     [ "getAxisCount", "class_axes_manager.html#a870f6d09234f274a65c6797c0873c262", null ],
     [ "getAxisValues", "class_axes_manager.html#aacd4d7102b72d89d18736c1d1ec2400b", null ],
     [ "resetPosZero", "class_axes_manager.html#a85deee4d6fc31189f60729b3fcaff971", null ],

@@ -1,5 +1,15 @@
 var NAVTREEINDEX33 =
 {
+"structcdch__data__t.html#af3f7a786a3075a8f8fc153e7df8dda40":[3,0,26,2],
+"structcdch__data__t.html#afcfb429282fe4e8fd3bb5f391dd13cd1":[3,0,26,5],
+"structclass__entry.html":[3,0,28],
+"structclass__entry.html#a6985f67ebc31e994dd3485cc05ae73af":[3,0,28,0],
+"structclass__entry.html#a77e13f77ca953258f8d462fb0cc4e977":[3,0,28,3],
+"structclass__entry.html#ab6a618c997e86f0b1d02f4a1e0591d83":[3,0,28,2],
+"structclass__entry.html#af3a84ded4dd26d82cb14f17b91bf1f61":[3,0,28,1],
+"structdfu__state__ctx__t.html":[3,0,40],
+"structdfu__state__ctx__t.html#a3ebeda69039d1ce19b61b4b4824273df":[3,0,40,4],
+"structdfu__state__ctx__t.html#a58fe343b2fdcd6ee00505859537a128e":[3,0,40,2],
 "structdfu__state__ctx__t.html#a69e25314b560412482f4e24902d6b0b3":[3,0,40,5],
 "structdfu__state__ctx__t.html#a7738d64b2ab0c97c9164a96a4599f310":[3,0,40,7],
 "structdfu__state__ctx__t.html#aa55ba64df7032cbecbbe1a9eaaf49831":[3,0,40,0],
@@ -239,15 +249,5 @@ var NAVTREEINDEX33 =
 "structrndis__msg__reset__cmplt__t.html#ac52331aec8fe047d2130385ffdfac69c":[1,2,0,0,5,0],
 "structrndis__msg__reset__t.html":[1,2,0,0,4],
 "structrndis__msg__reset__t.html#a03ebf5a717f9034c2d8b15dc46914a9b":[1,2,0,0,4,1],
-"structrndis__msg__reset__t.html#a5e180dff9f17e9ed27173f3028861f77":[1,2,0,0,4,2],
-"structrndis__msg__reset__t.html#ad0a48b8d029c8194e4351c9eed125fad":[1,2,0,0,4,0],
-"structrndis__msg__set__cmplt__t.html":[1,2,0,0,7],
-"structrndis__msg__set__cmplt__t.html#a85bf2ca25746555400df0d4063436a81":[1,2,0,0,7,2],
-"structrndis__msg__set__cmplt__t.html#a9f647ad076178716f31e76f8e5eb4b6f":[1,2,0,0,7,0],
-"structrndis__msg__set__cmplt__t.html#acb16640dfe476f84d51cf71d0f49378b":[1,2,0,0,7,1],
-"structrndis__msg__set__cmplt__t.html#aed57a1422839e258cd690f493746ad7c":[1,2,0,0,7,3],
-"structscsi__read__capacity10__resp__t.html":[3,0,109],
-"structscsi__read__capacity10__resp__t.html#a18adc42538b12b9eeb01b33933de0d63":[3,0,109,1],
-"structscsi__read__capacity10__resp__t.html#ab3ea8234a357247faafbfc90e70c162f":[3,0,109,0],
-"structtu__fifo__buffer__info__t.html":[3,0,139]
+"structrndis__msg__reset__t.html#a5e180dff9f17e9ed27173f3028861f77":[1,2,0,0,4,2]
 };

@@ -17,7 +17,7 @@ var searchData=
   ['class_5fentry_14',['class_entry',['../structclass__entry.html',1,'']]],
   ['classchooser_15',['ClassChooser',['../class_class_chooser.html',1,'']]],
   ['classidentifier_16',['ClassIdentifier',['../struct_class_identifier.html',1,'']]],
-  ['cmdhandlercommanddef_17',['CmdHandlerCommanddef',['../struct_cmd_handler_commanddef.html',1,'']]],
+  ['cmdhandlercommanddef_17',['CmdHandlerCommanddef',['../class_cmd_handler_commanddef.html',1,'']]],
   ['cmdhandlerinfo_18',['CmdHandlerInfo',['../struct_cmd_handler_info.html',1,'']]],
   ['cmdparser_19',['CmdParser',['../class_cmd_parser.html',1,'']]],
   ['commandhandler_20',['CommandHandler',['../class_command_handler.html',1,'']]],

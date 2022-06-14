@@ -95,6 +95,6 @@ var searchData=
   ['rndis_5fstatus_5fmedia_5fdisconnect_92',['RNDIS_STATUS_MEDIA_DISCONNECT',['../group___c_d_c___r_n_d_i_s___common.html#gga68258ea157c329f651e9e539eb1b268dabb205e925d84f29bedb5d90b036c5a8e',1,'cdc_rndis.h']]],
   ['rndis_5fstatus_5fnot_5fsupported_93',['RNDIS_STATUS_NOT_SUPPORTED',['../group___c_d_c___r_n_d_i_s___common.html#gga68258ea157c329f651e9e539eb1b268da3898ef69ce52b18d6b960dac12934e9e',1,'cdc_rndis.h']]],
   ['rndis_5fstatus_5fsuccess_94',['RNDIS_STATUS_SUCCESS',['../group___c_d_c___r_n_d_i_s___common.html#gga68258ea157c329f651e9e539eb1b268da60a3b810656d00e78327c554c74961e8',1,'cdc_rndis.h']]],
-  ['running_95',['RUNNING',['../_o_drive_c_a_n_8h.html#abf9bd05cd369f434291d67fb39600086a43491564ebcfd38568918efbd6e840fd',1,'ODriveCAN.h']]],
-  ['running_96',['Running',['../_t_m_c4671_8h.html#ad7d50073249f48de7e58d41071064a7ca5bda814c4aedb126839228f1a3d92f09',1,'TMC4671.h']]]
+  ['running_95',['Running',['../_t_m_c4671_8h.html#ad7d50073249f48de7e58d41071064a7ca5bda814c4aedb126839228f1a3d92f09',1,'TMC4671.h']]],
+  ['running_96',['RUNNING',['../_o_drive_c_a_n_8h.html#abf9bd05cd369f434291d67fb39600086a43491564ebcfd38568918efbd6e840fd',1,'ODriveCAN.h']]]
 ];

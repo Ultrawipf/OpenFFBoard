@@ -8,7 +8,7 @@ var class_system_commands =
     [ "registerCommands", "class_system_commands.html#a926a7fe1f1f52de1dc8c27203f259ba3", null ],
     [ "replyErrors", "class_system_commands.html#a8a7a167c3565d0492f8fc6ecc9b1163d", null ],
     [ "replyFlashDump", "class_system_commands.html#abd65a2c2f526046e47ff5537193dea59", null ],
-    [ "allowDebugCommands", "class_system_commands.html#a72ce57349cc31fab197d77f744ae0ce3", null ],
+    [ "debugMode", "class_system_commands.html#a7fc4287b8cc8139b86054e3191c3353d", null ],
     [ "errorPrintingEnabled", "class_system_commands.html#a60f33737132690f20a01914ed02cea2e", null ],
     [ "info", "class_system_commands.html#a473e994fe9290ef29187f3ff3cbdc4ce", null ],
     [ "systemCommandsInstance", "class_system_commands.html#a3f91b23af112631afce7b72932cf7b01", null ]

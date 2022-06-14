@@ -130,8 +130,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aef624f5da2b1644823052cc80ac218bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa7de17ce2e32f58c9d3ab2d379c636a9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_motor_driver.html#aa7de17ce2e32f58c9d3ab2d379c636a9">startMotor</a> ()</td></tr>
 <tr class="separator:aa7de17ce2e32f58c9d3ab2d379c636a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa286a9611cf33a4a140010d99be1d58d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_motor_driver.html#aa286a9611cf33a4a140010d99be1d58d">emergencyStop</a> ()</td></tr>
-<tr class="separator:aa286a9611cf33a4a140010d99be1d58d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a5e9941dcbbc6161637c03e9154f081"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_motor_driver.html#a8a5e9941dcbbc6161637c03e9154f081">emergencyStop</a> (bool reset=false)</td></tr>
+<tr class="separator:a8a5e9941dcbbc6161637c03e9154f081"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3acb195cff8b383d6d30ce4b97b70b29"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_motor_driver.html#a3acb195cff8b383d6d30ce4b97b70b29">motorReady</a> ()</td></tr>
 <tr class="separator:a3acb195cff8b383d6d30ce4b97b70b29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adf44b8e43d09d27344388fc755a7689a"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_encoder.html">Encoder</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_motor_driver.html#adf44b8e43d09d27344388fc755a7689a">getEncoder</a> ()</td></tr>
@@ -230,8 +230,8 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="aa286a9611cf33a4a140010d99be1d58d" name="aa286a9611cf33a4a140010d99be1d58d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa286a9611cf33a4a140010d99be1d58d">&#9670;&nbsp;</a></span>emergencyStop()</h2>
+<a id="a8a5e9941dcbbc6161637c03e9154f081" name="a8a5e9941dcbbc6161637c03e9154f081"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8a5e9941dcbbc6161637c03e9154f081">&#9670;&nbsp;</a></span>emergencyStop()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -242,7 +242,8 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="memname">void MotorDriver::emergencyStop </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>reset</em> = <code>false</code></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -254,7 +255,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p >Request an emergency stop if something critical happened or the emergency button is triggered Should stop the motor immediately in a safe way. </p>
 
-<p>Reimplemented in <a class="el" href="class_t_m_c4671.html#a396fed8690752a187bc7c63b716925d7">TMC4671</a>.</p>
+<p>Reimplemented in <a class="el" href="class_t_m_c4671.html#ab4203b3616652c62ac0e9b2ffbb5508e">TMC4671</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="_motor_driver_8cpp_source.html#l00051">51</a> of file <a class="el" href="_motor_driver_8cpp_source.html">MotorDriver.cpp</a>.</p>
 
@@ -320,7 +321,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="class_o_drive_c_a_n.html#a9e51bae8612eb81442dfbf6c515b9d41">ODriveCAN</a>, <a class="el" href="class_t_m_c4671.html#a8ce3a2b5b85e62d2aed7885185e5cdb4">TMC4671</a>, and <a class="el" href="class_vesc_c_a_n.html#ae7cc3a224a39f80a0855ec880a5c0f20">VescCAN</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_motor_driver_8cpp_source.html#l00098">98</a> of file <a class="el" href="_motor_driver_8cpp_source.html">MotorDriver.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_motor_driver_8cpp_source.html#l00102">102</a> of file <a class="el" href="_motor_driver_8cpp_source.html">MotorDriver.cpp</a>.</p>
 
 </div>
 </div>
@@ -351,7 +352,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="class_motor_p_w_m.html#aa97cf5ba62a08c311ddb36e516686d8c">MotorPWM</a>, <a class="el" href="class_o_drive_c_a_n1.html#a6c3de7e9b4f61f4254e5c84cfabcaca8">ODriveCAN1</a>, <a class="el" href="class_o_drive_c_a_n2.html#a9b270a07a32f8083f7a3bf4869dcb96e">ODriveCAN2</a>, <a class="el" href="class_t_m_c4671.html#aed81114dd28ccba08d5c5e437245da9b">TMC4671</a>, <a class="el" href="class_v_e_s_c__1.html#a24bea995bed760b5240856ae93572918">VESC_1</a>, and <a class="el" href="class_o_drive_c_a_n.html#a6a48f6cb98cebd8dd1704487466cd2f5">ODriveCAN</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_motor_driver_8cpp_source.html#l00067">67</a> of file <a class="el" href="_motor_driver_8cpp_source.html">MotorDriver.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_motor_driver_8cpp_source.html#l00071">71</a> of file <a class="el" href="_motor_driver_8cpp_source.html">MotorDriver.cpp</a>.</p>
 
 </div>
 </div>
@@ -381,7 +382,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="class_o_drive_c_a_n.html#a92e04f417e682c8e24559dc5cdd14f29">ODriveCAN</a>, <a class="el" href="class_t_m_c4671.html#a1e8ebb108c1adec1e1ea358ecde48b49">TMC4671</a>, and <a class="el" href="class_vesc_c_a_n.html#aafa8492dddce406df55609e7538d473a">VescCAN</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_motor_driver_8cpp_source.html#l00062">62</a> of file <a class="el" href="_motor_driver_8cpp_source.html">MotorDriver.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_motor_driver_8cpp_source.html#l00066">66</a> of file <a class="el" href="_motor_driver_8cpp_source.html">MotorDriver.cpp</a>.</p>
 
 </div>
 </div>
@@ -410,7 +411,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="class_t_m_c4671.html#aa4511cdfce90794430e1d2be559996f5">TMC4671</a>, <a class="el" href="class_o_drive_c_a_n.html#ac7c6fd4c4fe7be00e4f02412c2c817e6">ODriveCAN</a>, and <a class="el" href="class_vesc_c_a_n.html#a099cb1023c592032efe14708cc659a39">VescCAN</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_motor_driver_8cpp_source.html#l00055">55</a> of file <a class="el" href="_motor_driver_8cpp_source.html">MotorDriver.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_motor_driver_8cpp_source.html#l00059">59</a> of file <a class="el" href="_motor_driver_8cpp_source.html">MotorDriver.cpp</a>.</p>
 
 </div>
 </div>
@@ -471,7 +472,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="class_motor_p_w_m.html#a9761b07ef79d66358fc5c539b1ecab28">MotorPWM</a>, <a class="el" href="class_t_m_c4671.html#a1ae9df1a47323d8b2fd5aebc6bc3b2d3">TMC4671</a>, <a class="el" href="class_o_drive_c_a_n.html#aaf7808235b85e4b54c679e4aed7aa663">ODriveCAN</a>, and <a class="el" href="class_vesc_c_a_n.html#ab79098ff9a76ac9c291bb00c0e0905a4">VescCAN</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_motor_driver_8cpp_source.html#l00084">84</a> of file <a class="el" href="_motor_driver_8cpp_source.html">MotorDriver.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_motor_driver_8cpp_source.html#l00088">88</a> of file <a class="el" href="_motor_driver_8cpp_source.html">MotorDriver.cpp</a>.</p>
 
 </div>
 </div>
@@ -501,7 +502,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="class_motor_p_w_m.html#aa93dd5c2970589c1270c88a08e3e7c03">MotorPWM</a>, <a class="el" href="class_t_m_c4671.html#acdf9e395332356e9659cfe9a6caf1556">TMC4671</a>, <a class="el" href="class_o_drive_c_a_n.html#a39d21bec378b965b922487799e48c187">ODriveCAN</a>, and <a class="el" href="class_vesc_c_a_n.html#a475e04c7006019c14d110fb31b8fc384">VescCAN</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_motor_driver_8cpp_source.html#l00090">90</a> of file <a class="el" href="_motor_driver_8cpp_source.html">MotorDriver.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_motor_driver_8cpp_source.html#l00094">94</a> of file <a class="el" href="_motor_driver_8cpp_source.html">MotorDriver.cpp</a>.</p>
 
 </div>
 </div>
@@ -532,7 +533,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="class_motor_p_w_m.html#a770023d0eb433b4833907542a6aa5eb4">MotorPWM</a>, <a class="el" href="class_t_m_c4671.html#ab5cb82263660526740656cf4533cbde2">TMC4671</a>, <a class="el" href="class_o_drive_c_a_n.html#a81f48f403ce40c9d8fd8271be4e2aa64">ODriveCAN</a>, and <a class="el" href="class_vesc_c_a_n.html#a5a3b2d2306bacbbd186b1b25e8e909ee">VescCAN</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_motor_driver_8cpp_source.html#l00077">77</a> of file <a class="el" href="_motor_driver_8cpp_source.html">MotorDriver.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_motor_driver_8cpp_source.html#l00081">81</a> of file <a class="el" href="_motor_driver_8cpp_source.html">MotorDriver.cpp</a>.</p>
 
 </div>
 </div>

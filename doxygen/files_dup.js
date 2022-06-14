@@ -57,7 +57,7 @@ var files_dup =
       [ "ExtiHandler", "class_exti_handler.html", "class_exti_handler" ]
     ] ],
     [ "FastAvg.h", "_fast_avg_8h.html", [
-      [ "FastAvg< LEN >", "class_fast_avg.html", "class_fast_avg" ]
+      [ "FastAvg< T, LEN >", "class_fast_avg.html", "class_fast_avg" ]
     ] ],
     [ "ffb_defs.h", "ffb__defs_8h.html", "ffb__defs_8h" ],
     [ "FFBoardMainCommandThread.h", "_f_f_board_main_command_thread_8h.html", [

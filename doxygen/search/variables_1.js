@@ -52,7 +52,7 @@ var searchData=
   ['all_5fdrivers_49',['all_drivers',['../class_motor_driver.html#ac6564132bb5e5aa5a041fc53ac987bd7',1,'MotorDriver']]],
   ['all_5fencoders_50',['all_encoders',['../class_encoder.html#af67ff4bb229901b96416060a6d5fcf25',1,'Encoder']]],
   ['alloc_5flength_51',['alloc_length',['../struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a35ce178528635c6ddd78afabff2e8491',1,'TU_ATTR_PACKED::alloc_length()'],['../struct_t_u___a_t_t_r___p_a_c_k_e_d.html#ae73e762ed2141986483760222cd08003',1,'TU_ATTR_PACKED::alloc_length()']]],
-  ['allowdebugcommands_52',['allowDebugCommands',['../class_system_commands.html#a72ce57349cc31fab197d77f744ae0ce3',1,'SystemCommands']]],
+  ['allowestopreset_52',['allowEstopReset',['../class_f_f_b_h_i_d_main.html#a77dd3faee191c46d8254ae56bff9e458',1,'FFBHIDMain']]],
   ['allowexternalencoder_53',['allowExternalEncoder',['../class_t_m_c4671.html#a16573d193ea7c8fae21e5a4a9b673154',1,'TMC4671']]],
   ['allowreconfigure_54',['allowReconfigure',['../class_s_p_i_port.html#ad6c915319e2a7e71328fc8510b091451',1,'SPIPort']]],
   ['allowslowspi_55',['allowSlowSPI',['../class_t_m_c4671.html#a52b0455649173f3e73593405f0a683ea',1,'TMC4671']]],

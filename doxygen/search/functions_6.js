@@ -1,7 +1,7 @@
 var searchData=
 [
   ['fail_5fscsi_5fop_0',['fail_scsi_op',['../msc__device_8c.html#af191c983fdf655fc0aace4aab732475b',1,'msc_device.c']]],
-  ['fastavg_1',['FastAvg',['../class_fast_avg.html#adc16ed7d6b5f7772d5e1318b0a692fa5',1,'FastAvg']]],
+  ['fastavg_1',['FastAvg',['../class_fast_avg.html#aae7319a915ab6c4a34cb441e2b8014b1',1,'FastAvg']]],
   ['ffb_5fcontrol_2',['ffb_control',['../class_hid_f_f_b.html#abe8f91666068e5bb1adbbca83483734a',1,'HidFFB']]],
   ['ffbhidmain_3',['FFBHIDMain',['../class_f_f_b_h_i_d_main.html#a9bfbfd9b46787bf1a43d96df154a4c53',1,'FFBHIDMain']]],
   ['ffbjoystick_4',['FFBJoystick',['../class_f_f_b_joystick.html#a10a31790a20c356bdf56f8cf95169a70',1,'FFBJoystick']]],
