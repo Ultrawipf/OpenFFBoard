@@ -1,7 +1,1 @@
-- Rescaled endstop to encoder angle (makes strength feel the same at every range)
-- Changed SPI button saved count from 0-63 to 1-64 (will invalidate your setting)
-- Added CAN next frame length command to send frames with different headers
-- Emergency stop can be reset and only disables torque
-- Added estop command
-- Optimized string based command interfaces
-- Effects honor the gain setting (Makes Forza Horizon work)
+- Added analog filter option

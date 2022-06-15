@@ -23,6 +23,8 @@ LocalAnalog::LocalAnalog() : CommandHandler("apin",CLSID_ANALOG_LOCAL,0) {
 	registerCommand("autocal", LocalAnaloc_commands::autocal, "Autoranging",CMDFLAG_GET|CMDFLAG_SET);
 	registerCommand("pins", LocalAnaloc_commands::pins, "Available pins",CMDFLAG_GET|CMDFLAG_SET);
 	registerCommand("values", LocalAnaloc_commands::values, "Analog values",CMDFLAG_GET);
+	registerCommand("filter", LocalAnaloc_commands::filter, "Enable lowpass filter",CMDFLAG_GET|CMDFLAG_SET);
+	setupFilters();
 }
 
 LocalAnalog::~LocalAnalog() {
@@ -74,6 +76,9 @@ std::vector<int32_t>* LocalAnalog::getAxes(){
 				float scaler = ((float)0xffff / (float)range);
 				val *= scaler;
 				val = val - ((scaler*(float)minMaxVals[i].min) + 0x7fff);
+				if(aconf.filtersEnabled){
+					val = filters[i].process(val);
+				}
 				val = clip(val,-0x7fff,0x7fff); // Clip if slightly out of range because of inaccuracy
 			}
 		}
@@ -82,6 +87,15 @@ std::vector<int32_t>* LocalAnalog::getAxes(){
 		this->buf.push_back(val);
 	}
 	return &this->buf;
+}
+
+/**
+ * Calculates and resets filters
+ */
+void LocalAnalog::setupFilters(){
+	for(Biquad& filter : filters){
+		filter.setBiquad(BiquadType::lowpass, filterF, filterQ, 0.0);
+	}
 }
 
 CommandStatus LocalAnalog::command(const ParsedCommand& cmd,std::vector<CommandReply>& replies){
@@ -117,6 +131,10 @@ CommandStatus LocalAnalog::command(const ParsedCommand& cmd,std::vector<CommandR
 				return CommandStatus::ERR;
 			}
 			break;
+		case LocalAnaloc_commands::filter:
+			setupFilters();
+			return handleGetSet(cmd, replies, this->aconf.filtersEnabled);
+		break;
 
 		default:
 			return CommandStatus::NOT_FOUND;
@@ -130,10 +148,12 @@ LocalAnalogConfig LocalAnalog::decodeAnalogConfFromInt(uint16_t val){
 	LocalAnalogConfig aconf;
 	aconf.analogmask = val & 0xff;
 	aconf.autorange = (val >> 8) & 0x1;
+	aconf.filtersEnabled = (val >> 9) & 0x1;
 	return aconf;
 }
 uint16_t LocalAnalog::encodeAnalogConfToInt(LocalAnalogConfig conf){
 	uint16_t val = conf.analogmask & 0xff;
 	val |= (conf.autorange & 0x1) << 8;
+	val |= (conf.filtersEnabled & 0x1) << 9;
 	return val;
 }
