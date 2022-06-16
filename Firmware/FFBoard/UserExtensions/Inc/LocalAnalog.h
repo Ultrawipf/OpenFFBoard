@@ -57,7 +57,7 @@ private:
 	MinMaxPair minMaxVals[ADC_PINS];
 
 	Biquad filters[ADC_PINS]; // Optional filters
-	const float filterF = 50.0/1000.0 , filterQ = 0.5;
+	const float filterF = 30.0/1000.0 , filterQ = 0.5;
 	LocalAnalogConfig aconf;
 };
 
