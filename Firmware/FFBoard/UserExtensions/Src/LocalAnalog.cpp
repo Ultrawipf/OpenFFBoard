@@ -66,22 +66,26 @@ std::vector<int32_t>* LocalAnalog::getAxes(){
 			continue;
 
 		int32_t val = ((adcbuf[i+ADC_CHAN_FPIN] & 0xFFF) << 4)-0x7fff;
+		// Filter before autoranging
+		if(aconf.filtersEnabled){
+			val = filters[i].process(val);
+			if(filterSamples <= waitFilterSamples){
+				filterSamples++;
+			}
+		}
 
-		if(aconf.autorange){
+		if(aconf.autorange && (filterSamples > waitFilterSamples || !aconf.filtersEnabled)){
 			minMaxVals[i].max = std::max(minMaxVals[i].max,val);
 			minMaxVals[i].min = std::min(minMaxVals[i].min,val);
 
 			int32_t range = (minMaxVals[i].max - minMaxVals[i].min);
 			if(range > 1){
-				float scaler = ((float)0xffff / (float)range);
+				float scaler = ((float)0xffff / (float)range)*(autorangeScale);
 				val *= scaler;
 				val = val - ((scaler*(float)minMaxVals[i].min) + 0x7fff);
 			}
 		}
-		// Filter last so autoranging is not affected by the filter response
-		if(aconf.filtersEnabled){
-			val = filters[i].process(val);
-		}
+
 		val = clip(val,-0x7fff,0x7fff); // Clip if slightly out of range because of inaccuracy
 
 		this->buf.push_back(val);
@@ -96,6 +100,7 @@ void LocalAnalog::setupFilters(){
 	for(Biquad& filter : filters){
 		filter.setBiquad(BiquadType::lowpass, filterF, filterQ, 0.0);
 	}
+	filterSamples = 0;
 }
 
 CommandStatus LocalAnalog::command(const ParsedCommand& cmd,std::vector<CommandReply>& replies){

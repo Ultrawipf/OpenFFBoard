@@ -59,6 +59,9 @@ private:
 	Biquad filters[ADC_PINS]; // Optional filters
 	const float filterF = 30.0/1000.0 , filterQ = 0.5;
 	LocalAnalogConfig aconf;
+	uint32_t filterSamples = 0;
+	const uint32_t waitFilterSamples = 500;
+	float autorangeScale = 1.05; // Multiplies autorange scale to add some margin
 };
 
 
