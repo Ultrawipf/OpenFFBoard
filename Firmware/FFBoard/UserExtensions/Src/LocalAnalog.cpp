@@ -76,13 +76,13 @@ std::vector<int32_t>* LocalAnalog::getAxes(){
 				float scaler = ((float)0xffff / (float)range);
 				val *= scaler;
 				val = val - ((scaler*(float)minMaxVals[i].min) + 0x7fff);
-				if(aconf.filtersEnabled){
-					val = filters[i].process(val);
-				}
-				val = clip(val,-0x7fff,0x7fff); // Clip if slightly out of range because of inaccuracy
 			}
 		}
-
+		// Filter last so autoranging is not affected by the filter response
+		if(aconf.filtersEnabled){
+			val = filters[i].process(val);
+		}
+		val = clip(val,-0x7fff,0x7fff); // Clip if slightly out of range because of inaccuracy
 
 		this->buf.push_back(val);
 	}
