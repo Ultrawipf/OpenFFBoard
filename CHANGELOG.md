@@ -4,3 +4,5 @@
 - Added effect filter option
 - Added effects monitoring
 - Clean code on filter
+- Added some analog autorange margin
+- Added min/max commands for apin
