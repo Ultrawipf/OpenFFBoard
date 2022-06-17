@@ -15,8 +15,8 @@
 #include "Filters.h"
 
 struct MinMaxPair{
-	int32_t min = INT_MAX;
-	int32_t max = INT_MIN;
+	int32_t min = 0x7fff;
+	int32_t max = -0x7fff;
 };
 
 struct LocalAnalogConfig{
@@ -26,8 +26,8 @@ struct LocalAnalogConfig{
 };
 
 class LocalAnalog : public AnalogSource, public CommandHandler{
-	enum class LocalAnaloc_commands : uint32_t{
-		pinmask,autocal,pins,values,filter
+	enum class LocalAnalog_commands : uint32_t{
+		pinmask,autocal,pins,values,filter,min,max
 	};
 public:
 	LocalAnalog();
