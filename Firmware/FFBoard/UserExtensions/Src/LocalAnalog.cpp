@@ -19,11 +19,13 @@ LocalAnalog::LocalAnalog() : CommandHandler("apin",CLSID_ANALOG_LOCAL,0) {
 	this->restoreFlash();
 
 	CommandHandler::registerCommands();
-	registerCommand("mask", LocalAnaloc_commands::pinmask, "Enabled pins",CMDFLAG_GET|CMDFLAG_SET);
-	registerCommand("autocal", LocalAnaloc_commands::autocal, "Autoranging",CMDFLAG_GET|CMDFLAG_SET);
-	registerCommand("pins", LocalAnaloc_commands::pins, "Available pins",CMDFLAG_GET|CMDFLAG_SET);
-	registerCommand("values", LocalAnaloc_commands::values, "Analog values",CMDFLAG_GET);
-	registerCommand("filter", LocalAnaloc_commands::filter, "Enable lowpass filter",CMDFLAG_GET|CMDFLAG_SET);
+	registerCommand("mask", LocalAnalog_commands::pinmask, "Enabled pins",CMDFLAG_GET|CMDFLAG_SET);
+	registerCommand("autocal", LocalAnalog_commands::autocal, "Autoranging",CMDFLAG_GET|CMDFLAG_SET);
+	registerCommand("pins", LocalAnalog_commands::pins, "Available pins",CMDFLAG_GET|CMDFLAG_SET);
+	registerCommand("values", LocalAnalog_commands::values, "Analog values",CMDFLAG_GET);
+	registerCommand("filter", LocalAnalog_commands::filter, "Enable lowpass filter",CMDFLAG_GET|CMDFLAG_SET);
+	registerCommand("min", LocalAnalog_commands::min, "Min value limit",CMDFLAG_GETADR|CMDFLAG_SETADR);
+	registerCommand("max", LocalAnalog_commands::max, "Max value limit",CMDFLAG_GETADR|CMDFLAG_SETADR);
 	setupFilters();
 }
 
@@ -77,15 +79,13 @@ std::vector<int32_t>* LocalAnalog::getAxes(){
 		if(aconf.autorange && (filterSamples > waitFilterSamples || !aconf.filtersEnabled)){
 			minMaxVals[i].max = std::max(minMaxVals[i].max,val);
 			minMaxVals[i].min = std::min(minMaxVals[i].min,val);
-
-			int32_t range = (minMaxVals[i].max - minMaxVals[i].min);
-			if(range > 1){
-				float scaler = ((float)0xffff / (float)range)*(autorangeScale);
-				val *= scaler;
-				val = val - ((scaler*(float)minMaxVals[i].min) + 0x7fff);
-			}
 		}
-
+		int32_t range = (minMaxVals[i].max - minMaxVals[i].min);
+		if(range > 1 && range <= 0xffff){
+			float scaler = ((float)0xffff / (float)range)*(autorangeScale);
+			val *= scaler;
+			val = val - ((scaler*(float)minMaxVals[i].min) + 0x7fff);
+		}
 		val = clip(val,-0x7fff,0x7fff); // Clip if slightly out of range because of inaccuracy
 
 		this->buf.push_back(val);
@@ -105,26 +105,26 @@ void LocalAnalog::setupFilters(){
 
 CommandStatus LocalAnalog::command(const ParsedCommand& cmd,std::vector<CommandReply>& replies){
 
-	switch(static_cast<LocalAnaloc_commands>(cmd.cmdId)){
-		case LocalAnaloc_commands::pinmask:
+	switch(static_cast<LocalAnalog_commands>(cmd.cmdId)){
+		case LocalAnalog_commands::pinmask:
 			return handleGetSet(cmd, replies, this->aconf.analogmask);
 		break;
 
-		case LocalAnaloc_commands::autocal:
+		case LocalAnalog_commands::autocal:
 			if(cmd.type == CMDtype::get){
 				replies.emplace_back(aconf.autorange);
 			}else if(cmd.type == CMDtype::set){
 				setAutorange(cmd.val != 0);
 			}
 			break;
-		case LocalAnaloc_commands::pins:
+		case LocalAnalog_commands::pins:
 			if(cmd.type == CMDtype::get){
 				replies.emplace_back(numPins);
 			}else{
 				return CommandStatus::ERR;
 			}
 			break;
-		case LocalAnaloc_commands::values:
+		case LocalAnalog_commands::values:
 			if(cmd.type == CMDtype::get){
 				std::vector<int32_t>* axes = getAxes();
 
@@ -136,10 +136,36 @@ CommandStatus LocalAnalog::command(const ParsedCommand& cmd,std::vector<CommandR
 				return CommandStatus::ERR;
 			}
 			break;
-		case LocalAnaloc_commands::filter:
+		case LocalAnalog_commands::filter:
 			setupFilters();
 			return handleGetSet(cmd, replies, this->aconf.filtersEnabled);
 		break;
+
+		case LocalAnalog_commands::min:
+			// Valid if address is in pin range and value is 16b int
+			if(cmd.adr >= 0 && cmd.adr <= numPins && cmd.val >= -0x7fff && cmd.val <= 0x7fff){
+				if(cmd.type == CMDtype::getat){
+					replies.emplace_back(minMaxVals[cmd.adr].min);
+					break;
+				}else if(cmd.type == CMDtype::setat){
+					minMaxVals[cmd.adr].min = cmd.val;
+					break;
+				}
+			}
+			return CommandStatus::ERR; // Invalid
+
+		case LocalAnalog_commands::max:
+			// Valid if address is in pin range and value is 16b int
+			if(cmd.adr >= 0 && cmd.adr <= numPins && cmd.val >= -0x7fff && cmd.val <= 0x7fff){
+				if(cmd.type == CMDtype::getat){
+					replies.emplace_back(minMaxVals[cmd.adr].max);
+					break;
+				}else if(cmd.type == CMDtype::setat){
+					minMaxVals[cmd.adr].max = cmd.val;
+					break;
+				}
+			}
+			return CommandStatus::ERR; // Invalid
 
 		default:
 			return CommandStatus::NOT_FOUND;
