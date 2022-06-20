@@ -19,7 +19,7 @@ ADS111X::~ADS111X() {
 
 void ADS111X::readRegIT(const uint8_t reg,uint16_t* data){
 	port.takeSemaphore();
-	port.readMemIT(this, address*2, reg, 1, (uint8_t*)data, 2);
+	port.readMemIT(this, address, reg, 1, (uint8_t*)data, 2);
 //	port.transmitMaster(this, address, (uint8_t*)&reg, 1, 100);
 //	port.receiveMasterIT(this, address, (uint8_t*)data, 2);
 }
@@ -27,7 +27,7 @@ void ADS111X::readRegIT(const uint8_t reg,uint16_t* data){
 uint16_t ADS111X::readReg(const uint8_t reg){
 	uint16_t buf=0;
 	port.takeSemaphore();
-	port.readMem(this, address*2, reg, 1, (uint8_t*)&buf, 2,100);
+	port.readMem(this, address, reg, 1, (uint8_t*)&buf, 2,100);
 	return buf;
 }
 
@@ -36,7 +36,7 @@ void ADS111X::writeRegIT(const uint8_t reg,uint16_t data){
 	port.takeSemaphore();
 //	port.transmitMaster(this, address, (uint8_t*)&reg, 1, 100);
 //	port.transmitMasterIT(this, address, (uint8_t*)&data, 2);
-	port.writeMemIT(this, address*2 + 1, reg, 1, (uint8_t*)&writeItBuffer, 2);
+	port.writeMemIT(this, address, reg, 1, (uint8_t*)&writeItBuffer, 2);
 }
 
 /**

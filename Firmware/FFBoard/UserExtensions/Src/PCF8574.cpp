@@ -32,21 +32,21 @@ PCF8574::~PCF8574() {
 
 uint8_t PCF8574::readByte(const uint8_t devAddr){
 	uint8_t data = 0;
-	port.receiveMaster(this,devAddr * 2 + 1, &data, 1, 250);
+	port.receiveMaster(this,devAddr, &data, 1, 250);
 	return data;
 }
 
 void PCF8574::readByteIT(const uint8_t devAddr,uint8_t* data){
-	port.receiveMasterIT(this,devAddr * 2 + 1, data, 1);
+	port.receiveMasterIT(this,devAddr, data, 1);
 }
 
 void PCF8574::writeByteIT(const uint8_t devAddr,uint8_t* data){
-	port.transmitMasterIT(this,devAddr * 2, data, 1);
+	port.transmitMasterIT(this,devAddr, data, 1);
 }
 
 void PCF8574::writeByte(const uint8_t devAddr,uint8_t data){
 	lastWriteData = data;
-	port.transmitMaster(this,devAddr * 2 , &lastWriteData, 1, 250);
+	port.transmitMaster(this,devAddr , &lastWriteData, 1, 250);
 }
 
 //void PCF8574::startI2CTransfer(I2CPort* port){
