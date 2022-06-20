@@ -19,6 +19,7 @@
 
 #include "LocalAnalog.h"
 #include "CanAnalog.h"
+#include "ADS111X.h"
 
 #include "cmsis_os.h"
 extern osThreadId_t defaultTaskHandle;
@@ -68,6 +69,9 @@ const std::vector<class_entry<AnalogSource>> analog_sources =
 #endif
 #ifdef CANANALOG
 		add_class<CanAnalog<8>,AnalogSource>(1),
+#endif
+#ifdef ADS111XANALOG
+		add_class<ADS111X_AnalogSource,AnalogSource>(2),
 #endif
 };
 
