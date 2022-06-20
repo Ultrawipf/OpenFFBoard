@@ -42,6 +42,7 @@
 #define ANALOGAXES
 #define TMC4671DRIVER
 #define LOCALENCODER
+#define ADS111XANALOG // Requires I2C
 //#define PWMDRIVER // Not supported! No free timer
 //----------------------
 
