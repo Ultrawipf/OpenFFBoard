@@ -27,8 +27,8 @@ public:
 	void configurePort(I2C_InitTypeDef* config); // Reconfigures the i2c port
 	void resetPort();
 
-	void takePort();
-	void freePort();
+	void takePort(I2CDevice* device);
+	void freePort(I2CDevice* device);
 	int32_t getPortUsers(){return portUsers;}
 
 	void setSpeedPreset(uint8_t preset);
@@ -53,6 +53,7 @@ public:
 
 	void I2cTxCplt(I2C_HandleTypeDef *hi2c);
 	void I2cRxCplt(I2C_HandleTypeDef *hi2c);
+	void I2cError(I2C_HandleTypeDef *hi2c);
 
 	// Config
 	enum class CanPort_commands : uint32_t {speed};
@@ -73,6 +74,7 @@ private:
 	I2CDevice* currentDevice = nullptr;
 	int32_t portUsers = 0;
 	uint8_t speedPreset = 0;
+	I2C_InitTypeDef config;
 };
 
 
@@ -86,6 +88,7 @@ public:
 	virtual void endI2CTransfer(I2CPort* port);
 	virtual void i2cTxCompleted(I2CPort* port);
 	virtual void i2cRxCompleted(I2CPort* port);
+	virtual void i2cError(I2CPort* port);
 
 //protected:
 //	I2CDevice* port = nullptr;

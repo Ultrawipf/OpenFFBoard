@@ -11,11 +11,11 @@
 #ifdef I2C_PORT
 PCF8574::PCF8574(I2CPort &port) : port(port) {
 
-	port.takePort();
+	port.takePort(this);
 }
 
 PCF8574::~PCF8574() {
-	port.freePort();
+	port.freePort(this);
 }
 
 //void PCF8574::configurePort(bool fastMode){
@@ -32,12 +32,12 @@ PCF8574::~PCF8574() {
 
 uint8_t PCF8574::readByte(const uint8_t devAddr){
 	uint8_t data = 0;
-	port.receiveMaster(this,devAddr, &data, 1, 250);
+	port.receiveMaster(this,devAddr+1, &data, 1, 250);
 	return data;
 }
 
 void PCF8574::readByteIT(const uint8_t devAddr,uint8_t* data){
-	port.receiveMasterIT(this,devAddr, data, 1);
+	port.receiveMasterIT(this,devAddr+1, data, 1);
 }
 
 void PCF8574::writeByteIT(const uint8_t devAddr,uint8_t* data){
@@ -127,6 +127,11 @@ void PCF8574Buttons::restoreFlash(){
 }
 
 
+void PCF8574Buttons::i2cError(I2CPort* port){
+	readingData = false;
+	port->resetPort();
+	lastSuccess = HAL_GetTick();
+}
 
 uint8_t PCF8574Buttons::readButtons(uint64_t* buf){
 

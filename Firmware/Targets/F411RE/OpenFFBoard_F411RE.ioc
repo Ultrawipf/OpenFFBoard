@@ -204,6 +204,7 @@ NVIC.EXTI2_IRQn=true\:6\:0\:true\:false\:true\:true\:true\:true\:true
 NVIC.EXTI9_5_IRQn=true\:6\:0\:true\:true\:true\:6\:true\:true\:true\:true
 NVIC.ForceEnableDMAVector=true
 NVIC.HardFault_IRQn=true\:0\:0\:false\:false\:true\:false\:true\:false\:true
+NVIC.I2C3_ER_IRQn=true\:10\:0\:true\:false\:true\:true\:true\:true\:true
 NVIC.I2C3_EV_IRQn=true\:10\:0\:true\:false\:true\:true\:true\:true\:true
 NVIC.MemoryManagement_IRQn=true\:0\:0\:false\:false\:true\:false\:true\:false\:true
 NVIC.NonMaskableInt_IRQn=true\:0\:0\:false\:false\:true\:false\:true\:false\:true
