@@ -61,6 +61,7 @@ public:
 	void restoreFlash();
 
 	void i2cRxCompleted(I2CPort* port);
+	void i2cError(I2CPort* port);
 
 	CommandStatus command(const ParsedCommand& cmd,std::vector<CommandReply>& replies) override;
 

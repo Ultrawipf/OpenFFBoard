@@ -10,11 +10,11 @@
 
 #include "main.h"
 // Change this to the amount of currently registered variables
-#define NB_OF_VAR	99
+#define NB_OF_VAR	100
 extern const uint16_t VirtAddVarTab[NB_OF_VAR];
 
 // Amount of variables in exportable list
-#define NB_EXPORTABLE_ADR 85
+#define NB_EXPORTABLE_ADR 86
 extern const uint16_t exportableFlashAddresses[NB_EXPORTABLE_ADR];
 
 
@@ -81,6 +81,8 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_CANANALOG_CONF1				0x270
 
 #define ADR_CF_FILTER       			0x280 // CF Lowpass
+
+#define ADR_ADS111X_CONF1				0x290
 
 // How many axis configured 1-3
 #define ADR_AXIS_COUNT					0x300

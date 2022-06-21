@@ -24,26 +24,21 @@ public:
 	ADS111X(I2CPort &port,uint8_t address = 0x48);
 	virtual ~ADS111X();
 
-//	void readRegIT(const uint8_t devAddr,const uint8_t reg,uint8_t* data);
-//	void writeRegIT(const uint8_t devAddr,const uint8_t reg,uint16_t data);
-//	void writeReg(const uint8_t devAddr,const uint8_t reg,uint16_t data);
-//	void readReg(const uint8_t devAddr,const uint8_t reg,uint16_t data);
 	void readRegIT(const uint8_t reg,uint16_t* data);
 	void writeRegIT(const uint8_t reg,uint16_t data);
 	uint16_t readReg(const uint8_t reg);
+	void writeReg(const uint8_t reg,uint16_t data);
 
-//	void startI2CTransfer(I2CPort* port);
-//	void endI2CTransfer(I2CPort* port);
 	void startConversion(uint8_t channel, bool differential=false);
 
 	void setGain(uint16_t gain);
-	uint16_t getGain();
 
 	void setDatarate(uint16_t rate);
-	uint16_t getDatarate();
 
 	void startI2CTransfer(I2CPort* port);
 	void endI2CTransfer(I2CPort* port);
+
+	void setThresh(uint16_t loTh,uint16_t hiTh);
 
 
 protected:
@@ -51,7 +46,8 @@ protected:
 	//I2C_InitTypeDef config;
 
 	uint8_t address;
-	uint8_t datarate = 8;
+	uint8_t datarate = 4;
+	uint8_t gain = 2;
 	uint16_t conversions[4] = {0};
 
 	struct {
@@ -66,11 +62,11 @@ private:
 #ifdef ADS111XANALOG
 class ADS111X_AnalogSource : public ADS111X, public AnalogSource, public CommandHandler, public cpp_freertos::Thread {
 	enum class ADS111X_AnalogSource_commands : uint32_t {
-		axes,gain,address
+		axes,differential,gain,rate,address
 	};
 
 	enum class ADS111X_AnalogSource_state : uint8_t {
-		none,idle,sampling,reading,getsample
+		none,idle,sampling,beginSampling,getsample,readingSample
 	};
 
 public:
@@ -83,6 +79,10 @@ public:
 	void Run();
 
 	void i2cRxCompleted(I2CPort* port);
+	void i2cTxCompleted(I2CPort* port);
+	void i2cError(I2CPort* port);
+
+
 
 	std::vector<int32_t>* getAxes();
 
@@ -97,12 +97,14 @@ public:
 	CommandStatus command(const ParsedCommand& cmd,std::vector<CommandReply>& replies);
 
 private:
-	//bool readingData = false;
-	uint16_t sampleBuffer;
-	uint8_t axes=4;
+	void setAxes(uint8_t axes, bool differential);
+	int16_t sampleBuffer;
+	uint16_t configRegBuf = 0;
+	uint8_t axes=1;
 	uint8_t lastAxis = 0;
 	uint32_t lastSuccess = 0;
-	ADS111X_AnalogSource_state state = ADS111X_AnalogSource_state::none;
+	bool differentialMode = false;
+	volatile ADS111X_AnalogSource_state state = ADS111X_AnalogSource_state::none;
 };
 #endif
 #endif /* USEREXTENSIONS_SRC_ADS111X_H_ */
