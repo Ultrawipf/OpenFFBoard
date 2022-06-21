@@ -111,16 +111,17 @@ CommandStatus I2CPort::command(const ParsedCommand& cmd,std::vector<CommandReply
  * Forces a reinit
  */
 void I2CPort::resetPort(){
-	HAL_I2C_Init(&hi2c);
+	configurePort(&this->config);
+	giveSemaphore();
 }
 
 /**
  * Signals that this port is being used.
  * Increments the user counter
  */
-void I2CPort::takePort(){
+void I2CPort::takePort(I2CDevice* device){
 	if(portUsers++ == 0){
-		HAL_I2C_Init(&hi2c);
+		configurePort(&this->config);
 #ifdef I2C_COMMANDS_DISABLED_IF_NOT_USED
 		this->setCommandsEnabled(true);
 #endif
@@ -131,12 +132,16 @@ void I2CPort::takePort(){
  * Signals that the port is not needed anymore.
  * Decrements the user counter
  */
-void I2CPort::freePort(){
+void I2CPort::freePort(I2CDevice* device){
 	if(portUsers>0){
 		portUsers--;
 	}
-
+	if(device == currentDevice){
+		currentDevice = nullptr; // invalidate pointer if a transfer was in progress
+		giveSemaphore();
+	}
 	if(portUsers == 0){
+
 		HAL_I2C_DeInit(&hi2c);
 #ifdef I2C_COMMANDS_DISABLED_IF_NOT_USED
 		this->setCommandsEnabled(false);
@@ -146,10 +151,11 @@ void I2CPort::freePort(){
 }
 
 void I2CPort::configurePort(I2C_InitTypeDef* config){
-	if(config == nullptr || hi2c.Init == *config){
+	if(config == nullptr){
 		return; // No need to reconfigure
 	}
-	hi2c.Init = *config;
+	this->config = *config;
+	hi2c.Init = this->config;
 	HAL_I2C_Init(&hi2c);
 }
 
@@ -176,7 +182,7 @@ bool I2CPort::transmitMasterIT(I2CDevice* device,const uint16_t addr,uint8_t* pD
 bool I2CPort::receiveMaster(I2CDevice* device,const uint16_t addr,uint8_t* pData,const uint16_t size,const uint32_t timeout){
 	currentDevice = device;
 	device->startI2CTransfer(this);
-	bool flag = HAL_I2C_Master_Receive(&this->hi2c, addr * 2 + 1, pData, size, timeout) == HAL_OK;
+	bool flag = HAL_I2C_Master_Receive(&this->hi2c, addr * 2, pData, size, timeout) == HAL_OK;
 	device->endI2CTransfer(this);
 	return flag;
 }
@@ -184,13 +190,13 @@ bool I2CPort::receiveMaster(I2CDevice* device,const uint16_t addr,uint8_t* pData
 bool I2CPort::receiveMasterDMA(I2CDevice* device,const uint16_t addr,uint8_t* pData,const uint16_t size){
 	currentDevice = device;
 	device->startI2CTransfer(this);
-	return HAL_I2C_Master_Receive_DMA(&this->hi2c, addr * 2 + 1, pData, size) == HAL_OK;
+	return HAL_I2C_Master_Receive_DMA(&this->hi2c, addr * 2, pData, size) == HAL_OK;
 }
 
 bool I2CPort::receiveMasterIT(I2CDevice* device,const uint16_t addr,uint8_t* pData,const uint16_t size){
 	currentDevice = device;
 	device->startI2CTransfer(this);
-	return HAL_I2C_Master_Receive_IT(&this->hi2c, addr * 2 + 1, pData, size) == HAL_OK;
+	return HAL_I2C_Master_Receive_IT(&this->hi2c, addr * 2, pData, size) == HAL_OK;
 }
 
 
@@ -205,7 +211,7 @@ bool I2CPort::writeMem(I2CDevice* device,const uint16_t devAddr,const uint16_t m
 bool I2CPort::readMem(I2CDevice* device,const uint16_t devAddr,const uint16_t memAddr,const uint16_t memAddSize,uint8_t* pData,const uint16_t size,const uint32_t timeout){
 	currentDevice = device;
 	device->startI2CTransfer(this);
-	bool flag = HAL_I2C_Mem_Read(&this->hi2c, devAddr * 2 + 1, memAddr, memAddSize, pData, size, timeout) == HAL_OK;
+	bool flag = HAL_I2C_Mem_Read(&this->hi2c, devAddr * 2, memAddr, memAddSize, pData, size, timeout) == HAL_OK;
 	device->endI2CTransfer(this);
 	return flag;
 }
@@ -213,7 +219,7 @@ bool I2CPort::readMem(I2CDevice* device,const uint16_t devAddr,const uint16_t me
 bool I2CPort::readMemIT(I2CDevice* device,const uint16_t devAddr,const uint16_t memAddr,const uint16_t memAddSize,uint8_t* pData,const uint16_t size){
 	currentDevice = device;
 	device->startI2CTransfer(this);
-	bool flag = HAL_I2C_Mem_Read_IT(&this->hi2c, devAddr * 2 + 1, memAddr, memAddSize, pData, size) == HAL_OK;
+	bool flag = HAL_I2C_Mem_Read_IT(&this->hi2c, devAddr * 2, memAddr, memAddSize, pData, size) == HAL_OK;
 	//device->endI2CTransfer(this);
 	return flag;
 }
@@ -252,6 +258,14 @@ void I2CPort::I2cRxCplt(I2C_HandleTypeDef *hi2c){
 	currentDevice->i2cRxCompleted(this);
 
 	currentDevice = nullptr;
+}
+
+void I2CPort::I2cError(I2C_HandleTypeDef *hi2c){
+	if (currentDevice){
+		currentDevice->i2cError(this);
+	}else{
+		resetPort();
+	}
 }
 
 bool I2CPort::isTaken(){
@@ -305,4 +319,7 @@ void I2CDevice::i2cTxCompleted(I2CPort* port){
 }
 void I2CDevice::i2cRxCompleted(I2CPort* port){
 
+}
+void I2CDevice::i2cError(I2CPort* port){
+	port->resetPort();
 }
