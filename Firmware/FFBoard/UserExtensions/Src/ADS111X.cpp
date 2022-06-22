@@ -308,13 +308,14 @@ std::vector<int32_t>* ADS111X_AnalogSource::getAxes(){
 	if(state == ADS111X_AnalogSource_state::idle && !port.isTaken()){
 		//Begin transfer
 		lastAxis = 0;
-		//Notify();
-		//readingData = true;
 		state = ADS111X_AnalogSource_state::beginSampling;
-		ADS111X::startConversion(0,differentialMode);
+		Notify();
+		//readingData = true;
+		//ADS111X::startConversion(0,differentialMode);
+
 	}
 
-	if(HAL_GetTick() - lastSuccess > 1000){
+	if(HAL_GetTick() - lastSuccess > 4000){
 		state = ADS111X_AnalogSource_state::none;
 		Notify();
 	}
