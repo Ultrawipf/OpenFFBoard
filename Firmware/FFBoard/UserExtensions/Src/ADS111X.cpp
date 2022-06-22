@@ -92,14 +92,15 @@ void ADS111X::setDatarate(uint16_t rate){
  * differential = true
  * 0: 0=p, 1=n
  * 1: 2=p, 3=n
- * 2: 1=p, 3=n
- * 3: 0=p, 3=n
+ * 2: 0=p, 3=n
+ * 3: 1=p, 3=n
  */
 void ADS111X::startConversion(uint8_t channel, bool differential){
 	uint16_t mux = 0;
 	if(differential){
 		switch(channel)
 		{
+			default:
 			case 0:
 				mux = 0x0000;
 				break;
@@ -107,18 +108,17 @@ void ADS111X::startConversion(uint8_t channel, bool differential){
 				mux = 0x3000;
 				break;
 			case 2:
-				mux = 0x2000;
-				break;
-			case 3:
 				mux = 0x1000;
 				break;
-			default:
-				mux = 0x7000;
+			case 3:
+				mux = 0x2000;
 				break;
+
 		}
 	}else{
 		switch(channel)
 		{
+			default:
 			case 0:
 				mux = 0x4000;
 				break;
@@ -131,9 +131,7 @@ void ADS111X::startConversion(uint8_t channel, bool differential){
 			case 3:
 				mux = 0x7000;
 				break;
-			default:
-				mux = 0x0000;
-				break;
+
 		}
 	}
 	this->registers.config = 0x103; // Default settings. Single conversion 103
@@ -160,7 +158,7 @@ void ADS111X::endI2CTransfer(I2CPort* port){
 // ---------------------------------------------------------------------- //
 #ifdef ADS111XANALOG
 ClassIdentifier ADS111X_AnalogSource::info = {
-		 .name = "ADS111X analog" ,
+		 .name = "ADS111X ADC" ,
 		 .id=CLSID_ANALOG_ADS111X,
  };
 const ClassIdentifier ADS111X_AnalogSource::getInfo(){
@@ -308,8 +306,7 @@ void ADS111X_AnalogSource::i2cTxCompleted(I2CPort* port){
 std::vector<int32_t>* ADS111X_AnalogSource::getAxes(){
 
 	if(state == ADS111X_AnalogSource_state::idle && !port.isTaken()){
-		// Begin transfer
-
+		//Begin transfer
 		lastAxis = 0;
 		//Notify();
 		//readingData = true;

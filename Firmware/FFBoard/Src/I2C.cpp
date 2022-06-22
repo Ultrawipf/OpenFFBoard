@@ -71,9 +71,10 @@ void I2CPort::setSpeedPreset(uint8_t preset){
 		return;
 	}
 	speedPreset = preset;
-	I2C_InitTypeDef config = hi2c.Init;
+	config = hi2c.Init;
 	config.ClockSpeed = speed;
-	configurePort(&config);
+	if(portUsers)
+		configurePort(&config);
 }
 
 uint8_t I2CPort::getSpeedPreset(){
@@ -121,7 +122,9 @@ void I2CPort::resetPort(){
  */
 void I2CPort::takePort(I2CDevice* device){
 	if(portUsers++ == 0){
-		configurePort(&this->config);
+		this->config = hi2c.Init;
+		//configurePort(&this->config);
+		setSpeedPreset(speedPreset); // Load speed and activate
 #ifdef I2C_COMMANDS_DISABLED_IF_NOT_USED
 		this->setCommandsEnabled(true);
 #endif
