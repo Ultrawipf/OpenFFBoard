@@ -1,1 +1,2 @@
 - Added analog filter option
+- Added ADS111X analog source
