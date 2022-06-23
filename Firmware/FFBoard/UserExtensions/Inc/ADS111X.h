@@ -82,8 +82,6 @@ public:
 	void i2cTxCompleted(I2CPort* port);
 	void i2cError(I2CPort* port);
 
-
-
 	std::vector<int32_t>* getAxes();
 
 	const virtual ClassIdentifier getInfo();
