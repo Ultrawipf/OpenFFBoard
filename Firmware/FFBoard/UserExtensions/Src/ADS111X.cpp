@@ -171,8 +171,8 @@ ADS111X_AnalogSource::ADS111X_AnalogSource() : ADS111X(i2cport) , CommandHandler
 	registerCommand("inputs", ADS111X_AnalogSource_commands::axes, "Amount of inputs (1-4 or 1-2 if differential)",CMDFLAG_GET | CMDFLAG_SET);
 	//registerCommand("addr", ADS111X_AnalogSource_commands::address, "Address",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("diff", ADS111X_AnalogSource_commands::differential, "Differential mode (Ch0= 0p 1n Ch1= 2p 3n)",CMDFLAG_GET | CMDFLAG_SET);
-	registerCommand("gain", ADS111X_AnalogSource_commands::gain, "Gain mode",CMDFLAG_GET | CMDFLAG_SET);
-	registerCommand("rate", ADS111X_AnalogSource_commands::rate, "Data rate (0-7)",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("gain", ADS111X_AnalogSource_commands::gain, "PGA scale (0-5)",CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_INFOSTRING);
+	registerCommand("rate", ADS111X_AnalogSource_commands::rate, "Data rate (0-7)",CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_INFOSTRING);
 	restoreFlash();
 	this->Start();
 }
@@ -346,6 +346,9 @@ CommandStatus ADS111X_AnalogSource::command(const ParsedCommand& cmd,std::vector
 			this->setGain(cmd.val);
 		}else if(cmd.type == CMDtype::get){
 			replies.emplace_back(gain);
+		}else if(cmd.type == CMDtype::info){
+			//replies.emplace_back("2/3x:0,1x:1,2x:2,4x:3,8x:4,16x:5");
+			replies.emplace_back("6.144V:0,4.096V:1,2.048V:2,1.024V:3,0.512V:4,0.256V:5");
 		}
 	break;
 
@@ -362,6 +365,8 @@ CommandStatus ADS111X_AnalogSource::command(const ParsedCommand& cmd,std::vector
 			setDatarate(cmd.val);
 		}else if(cmd.type == CMDtype::get){
 			replies.emplace_back(datarate);
+		}else if(cmd.type == CMDtype::info){
+			replies.emplace_back("8 SPS:0,16 SPS:1,32 SPS:2,64 SPS:3,128 SPS:4,250 SPS:5,475 SPS:6,860 SPS:7");
 		}
 	break;
 
