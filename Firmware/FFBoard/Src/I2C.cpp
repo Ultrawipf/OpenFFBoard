@@ -162,75 +162,75 @@ void I2CPort::configurePort(I2C_InitTypeDef* config){
 	HAL_I2C_Init(&hi2c);
 }
 
-bool I2CPort::transmitMaster(I2CDevice* device,const uint16_t addr,uint8_t* pData,const uint16_t size,const uint32_t timeout){
+bool I2CPort::transmitMaster(I2CDevice* device,const uint16_t addr,uint8_t* pData,const uint16_t size,const uint32_t timeout,bool shiftAddr){
 	currentDevice = device;
 	device->startI2CTransfer(this);
-	bool flag = HAL_I2C_Master_Transmit(&this->hi2c, addr * 2, pData, size, timeout) == HAL_OK;
+	bool flag = HAL_I2C_Master_Transmit(&this->hi2c, shiftAddr ? addr << 1 : addr, pData, size, timeout) == HAL_OK;
 	device->endI2CTransfer(this);
 	return flag;
 }
 
-bool I2CPort::transmitMasterDMA(I2CDevice* device,const uint16_t addr,uint8_t* pData,const uint16_t size){
+bool I2CPort::transmitMasterDMA(I2CDevice* device,const uint16_t addr,uint8_t* pData,const uint16_t size,bool shiftAddr){
 	currentDevice = device;
 	device->startI2CTransfer(this);
-	return HAL_I2C_Master_Transmit_DMA(&this->hi2c, addr * 2, pData, size) == HAL_OK;
+	return HAL_I2C_Master_Transmit_DMA(&this->hi2c, shiftAddr ? addr << 1 : addr, pData, size) == HAL_OK;
 }
 
-bool I2CPort::transmitMasterIT(I2CDevice* device,const uint16_t addr,uint8_t* pData,const uint16_t size){
+bool I2CPort::transmitMasterIT(I2CDevice* device,const uint16_t addr,uint8_t* pData,const uint16_t size,bool shiftAddr){
 	currentDevice = device;
 	device->startI2CTransfer(this);
-	return HAL_I2C_Master_Transmit_IT(&this->hi2c, addr * 2, pData, size) == HAL_OK;
+	return HAL_I2C_Master_Transmit_IT(&this->hi2c, shiftAddr ? addr << 1 : addr, pData, size) == HAL_OK;
 }
 
-bool I2CPort::receiveMaster(I2CDevice* device,const uint16_t addr,uint8_t* pData,const uint16_t size,const uint32_t timeout){
+bool I2CPort::receiveMaster(I2CDevice* device,const uint16_t addr,uint8_t* pData,const uint16_t size,const uint32_t timeout,bool shiftAddr){
 	currentDevice = device;
 	device->startI2CTransfer(this);
-	bool flag = HAL_I2C_Master_Receive(&this->hi2c, addr * 2, pData, size, timeout) == HAL_OK;
+	bool flag = HAL_I2C_Master_Receive(&this->hi2c, shiftAddr ? addr << 1 : addr, pData, size, timeout) == HAL_OK;
 	device->endI2CTransfer(this);
 	return flag;
 }
 
-bool I2CPort::receiveMasterDMA(I2CDevice* device,const uint16_t addr,uint8_t* pData,const uint16_t size){
+bool I2CPort::receiveMasterDMA(I2CDevice* device,const uint16_t addr,uint8_t* pData,const uint16_t size,bool shiftAddr){
 	currentDevice = device;
 	device->startI2CTransfer(this);
-	return HAL_I2C_Master_Receive_DMA(&this->hi2c, addr * 2, pData, size) == HAL_OK;
+	return HAL_I2C_Master_Receive_DMA(&this->hi2c, shiftAddr ? addr << 1 : addr, pData, size) == HAL_OK;
 }
 
-bool I2CPort::receiveMasterIT(I2CDevice* device,const uint16_t addr,uint8_t* pData,const uint16_t size){
+bool I2CPort::receiveMasterIT(I2CDevice* device,const uint16_t addr,uint8_t* pData,const uint16_t size,bool shiftAddr){
 	currentDevice = device;
 	device->startI2CTransfer(this);
-	return HAL_I2C_Master_Receive_IT(&this->hi2c, addr * 2, pData, size) == HAL_OK;
+	return HAL_I2C_Master_Receive_IT(&this->hi2c, shiftAddr ? addr << 1 : addr, pData, size) == HAL_OK;
 }
 
 
-bool I2CPort::writeMem(I2CDevice* device,const uint16_t devAddr,const uint16_t memAddr,const uint16_t memAddSize,uint8_t* pData,const uint16_t size,const uint32_t timeout){
+bool I2CPort::writeMem(I2CDevice* device,const uint16_t devAddr,const uint16_t memAddr,const uint16_t memAddSize,uint8_t* pData,const uint16_t size,const uint32_t timeout,bool shiftAddr){
 	currentDevice = device;
 	device->startI2CTransfer(this);
-	bool flag = HAL_I2C_Mem_Write(&this->hi2c, devAddr * 2, memAddr, memAddSize, pData, size, timeout) == HAL_OK;
+	bool flag = HAL_I2C_Mem_Write(&this->hi2c, shiftAddr ? devAddr << 1 : devAddr, memAddr, memAddSize, pData, size, timeout) == HAL_OK;
 	device->endI2CTransfer(this);
 	return flag;
 }
 
-bool I2CPort::readMem(I2CDevice* device,const uint16_t devAddr,const uint16_t memAddr,const uint16_t memAddSize,uint8_t* pData,const uint16_t size,const uint32_t timeout){
+bool I2CPort::readMem(I2CDevice* device,const uint16_t devAddr,const uint16_t memAddr,const uint16_t memAddSize,uint8_t* pData,const uint16_t size,const uint32_t timeout,bool shiftAddr){
 	currentDevice = device;
 	device->startI2CTransfer(this);
-	bool flag = HAL_I2C_Mem_Read(&this->hi2c, devAddr * 2, memAddr, memAddSize, pData, size, timeout) == HAL_OK;
+	bool flag = HAL_I2C_Mem_Read(&this->hi2c, shiftAddr ? devAddr << 1 : devAddr, memAddr, memAddSize, pData, size, timeout) == HAL_OK;
 	device->endI2CTransfer(this);
 	return flag;
 }
 
-bool I2CPort::readMemIT(I2CDevice* device,const uint16_t devAddr,const uint16_t memAddr,const uint16_t memAddSize,uint8_t* pData,const uint16_t size){
+bool I2CPort::readMemIT(I2CDevice* device,const uint16_t devAddr,const uint16_t memAddr,const uint16_t memAddSize,uint8_t* pData,const uint16_t size,bool shiftAddr){
 	currentDevice = device;
 	device->startI2CTransfer(this);
-	bool flag = HAL_I2C_Mem_Read_IT(&this->hi2c, devAddr * 2, memAddr, memAddSize, pData, size) == HAL_OK;
+	bool flag = HAL_I2C_Mem_Read_IT(&this->hi2c, shiftAddr ? devAddr << 1 : devAddr, memAddr, memAddSize, pData, size) == HAL_OK;
 	//device->endI2CTransfer(this);
 	return flag;
 }
 
-bool I2CPort::writeMemIT(I2CDevice* device,const uint16_t devAddr,const uint16_t memAddr,const uint16_t memAddSize,uint8_t* pData,const uint16_t size){
+bool I2CPort::writeMemIT(I2CDevice* device,const uint16_t devAddr,const uint16_t memAddr,const uint16_t memAddSize,uint8_t* pData,const uint16_t size,bool shiftAddr){
 	currentDevice = device;
 	device->startI2CTransfer(this);
-	bool flag = HAL_I2C_Mem_Write_IT(&this->hi2c, devAddr * 2, memAddr, memAddSize, pData, size) == HAL_OK;
+	bool flag = HAL_I2C_Mem_Write_IT(&this->hi2c, shiftAddr ? devAddr << 1 : devAddr, memAddr, memAddSize, pData, size) == HAL_OK;
 	//device->endI2CTransfer(this);
 	return flag;
 }

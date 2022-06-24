@@ -34,18 +34,18 @@ public:
 	void setSpeedPreset(uint8_t preset);
 	uint8_t getSpeedPreset();
 
-	bool transmitMaster(I2CDevice* device, const uint16_t addr,uint8_t* pData,const uint16_t size,const uint32_t timeout);
-	bool transmitMasterDMA(I2CDevice* device,const uint16_t addr,uint8_t* pData,const uint16_t size);
-	bool transmitMasterIT(I2CDevice* device,const uint16_t addr,uint8_t* pData,const uint16_t size);
+	bool transmitMaster(I2CDevice* device, const uint16_t addr,uint8_t* pData,const uint16_t size,const uint32_t timeout,bool shiftAddr = true);
+	bool transmitMasterDMA(I2CDevice* device,const uint16_t addr,uint8_t* pData,const uint16_t size,bool shiftAddr = true);
+	bool transmitMasterIT(I2CDevice* device,const uint16_t addr,uint8_t* pData,const uint16_t size,bool shiftAddr = true);
 
-	bool receiveMaster(I2CDevice* device,const uint16_t addr,uint8_t* pData,const uint16_t size,const uint32_t timeout);
-	bool receiveMasterDMA(I2CDevice* device,const uint16_t addr,uint8_t* pData,const uint16_t size);
-	bool receiveMasterIT(I2CDevice* device,const uint16_t addr,uint8_t* pData,const uint16_t size);
+	bool receiveMaster(I2CDevice* device,const uint16_t addr,uint8_t* pData,const uint16_t size,const uint32_t timeout,bool shiftAddr = true);
+	bool receiveMasterDMA(I2CDevice* device,const uint16_t addr,uint8_t* pData,const uint16_t size,bool shiftAddr = true);
+	bool receiveMasterIT(I2CDevice* device,const uint16_t addr,uint8_t* pData,const uint16_t size,bool shiftAddr = true);
 
-	bool writeMem(I2CDevice* device,const uint16_t devAddr,const uint16_t memAddr,const uint16_t memAddSize,uint8_t* pData,const uint16_t size,const uint32_t timeout);
-	bool readMem(I2CDevice* device,const uint16_t devAddr,const uint16_t memAddr,const uint16_t memAddSize,uint8_t* pData,const uint16_t size,const uint32_t timeout);
-	bool readMemIT(I2CDevice* device,const uint16_t devAddr,const uint16_t memAddr,const uint16_t memAddSize,uint8_t* pData,const uint16_t size);
-	bool writeMemIT(I2CDevice* device,const uint16_t devAddr,const uint16_t memAddr,const uint16_t memAddSize,uint8_t* pData,const uint16_t size);
+	bool writeMem(I2CDevice* device,const uint16_t devAddr,const uint16_t memAddr,const uint16_t memAddSize,uint8_t* pData,const uint16_t size,const uint32_t timeout,bool shiftAddr = true);
+	bool readMem(I2CDevice* device,const uint16_t devAddr,const uint16_t memAddr,const uint16_t memAddSize,uint8_t* pData,const uint16_t size,const uint32_t timeout,bool shiftAddr = true);
+	bool readMemIT(I2CDevice* device,const uint16_t devAddr,const uint16_t memAddr,const uint16_t memAddSize,uint8_t* pData,const uint16_t size,bool shiftAddr = true);
+	bool writeMemIT(I2CDevice* device,const uint16_t devAddr,const uint16_t memAddr,const uint16_t memAddSize,uint8_t* pData,const uint16_t size,bool shiftAddr = true);
 
 	void takeSemaphore();
 	void giveSemaphore();
