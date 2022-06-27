@@ -32,21 +32,21 @@ Axis::Axis(char axis,volatile Control_t* control) :CommandHandler("axis", CLSID_
 		setInstance(0);
 		this->flashAddrs = AxisFlashAddrs({ADR_AXIS1_CONFIG, ADR_AXIS1_MAX_SPEED, ADR_AXIS1_MAX_ACCEL,
 										   ADR_AXIS1_ENDSTOP, ADR_AXIS1_POWER, ADR_AXIS1_DEGREES,ADR_AXIS1_EFFECTS1,ADR_AXIS1_ENC_RATIO,
-										   ADR_AXIS1_SPEED_FILTER, ADR_AXIS1_ACCEL_FILTER});
+										   ADR_AXIS1_SPEEDACCEL_FILTER});
 	}
 	else if (axis == 'Y')
 	{
 		setInstance(1);
 		this->flashAddrs = AxisFlashAddrs({ADR_AXIS2_CONFIG, ADR_AXIS2_MAX_SPEED, ADR_AXIS2_MAX_ACCEL,
 										   ADR_AXIS2_ENDSTOP, ADR_AXIS2_POWER, ADR_AXIS2_DEGREES,ADR_AXIS2_EFFECTS1, ADR_AXIS2_ENC_RATIO,
-										   ADR_AXIS2_SPEED_FILTER, ADR_AXIS2_ACCEL_FILTER});
+										   ADR_AXIS2_SPEEDACCEL_FILTER});
 	}
 	else if (axis == 'Z')
 	{
 		setInstance(2);
 		this->flashAddrs = AxisFlashAddrs({ADR_AXIS3_CONFIG, ADR_AXIS3_MAX_SPEED, ADR_AXIS3_MAX_ACCEL,
-										   ADR_AXIS3_ENDSTOP, ADR_AXIS3_POWER, ADR_AXIS3_DEGREES,ADR_AXIS3_EFFECTS1, ADR_AXIS3_ENC_RATIO,
-										   ADR_AXIS3_SPEED_FILTER, ADR_AXIS3_ACCEL_FILTER});
+										   ADR_AXIS3_ENDSTOP, ADR_AXIS3_POWER, ADR_AXIS3_DEGREES,ADR_AXIS3_EFFECTS1,ADR_AXIS3_ENC_RATIO,
+										   ADR_AXIS3_SPEEDACCEL_FILTER});
 	}
 
 
@@ -83,10 +83,11 @@ void Axis::registerCommands(){
 	registerCommand("curtorque", Axis_commands::curtorque, "Axis torque",CMDFLAG_GET);
 	registerCommand("curpos", Axis_commands::curpos, "Axis position",CMDFLAG_GET);
 	registerCommand("reduction", Axis_commands::reductionScaler, "Encoder to axis gear reduction (adr+1 / val+1) 0-255",CMDFLAG_GET | CMDFLAG_SETADR);
-	registerCommand("filterSpeed_freq", Axis_commands::filterSpeed_freq, "Biquad filter frequency for speed", CMDFLAG_GET | CMDFLAG_SET);
-	registerCommand("filterSpeed_q", Axis_commands::filterSpeed_q, "Biquad filter q for speed", CMDFLAG_GET | CMDFLAG_SET);
-	registerCommand("filterAccel_freq", Axis_commands::filterAccel_freq, "Biquad filter frequency for accel", CMDFLAG_GET | CMDFLAG_SET);
-	registerCommand("filterAccel_q", Axis_commands::filterAccel_q, "Biquad filter frequency for accel", CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("filterProfile_id", Axis_commands::filterProfileId, "Biquad filter profile for speed and accel", CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("filterSpeed_freq", Axis_commands::filterSpeed_freq, "Biquad filter frequency for speed", CMDFLAG_GET);
+	registerCommand("filterSpeed_q", Axis_commands::filterSpeed_q, "Biquad filter q for speed", CMDFLAG_GET);
+	registerCommand("filterAccel_freq", Axis_commands::filterAccel_freq, "Biquad filter frequency for accel", CMDFLAG_GET);
+	registerCommand("filterAccel_q", Axis_commands::filterAccel_q, "Biquad filter frequency for accel", CMDFLAG_GET);
 }
 
 /*
@@ -148,26 +149,15 @@ void Axis::restoreFlash(){
 	}
 
 	uint16_t filterStorage;
-	if (Flash_Read(flashAddrs.speedFilter, &filterStorage))
+	if (Flash_Read(flashAddrs.speedAccelFilter, &filterStorage))
 	{
-		uint32_t freq = filterStorage & 0x1FF;
-		uint8_t q = (filterStorage >> 9) & 0x7F;
-		filterSpeedCst.freq = freq;
-		filterSpeedCst.q = q;
-		speedFilter.setFc(filterSpeedCst.freq / filter_f);
-		speedFilter.setQ(filterSpeedCst.q / 100.0);
+		uint8_t profile = filterStorage & 0xFF;
+		this->filterProfileId = profile;
+		speedFilter.setFc(filterSpeedCst[this->filterProfileId].freq / filter_f);
+		speedFilter.setQ(filterSpeedCst[this->filterProfileId].q / 100.0);
+		accelFilter.setFc(filterAccelCst[this->filterProfileId].freq / filter_f);
+		accelFilter.setQ(filterAccelCst[this->filterProfileId].q / 100.0);
 	}
-
-	if (Flash_Read(flashAddrs.accelFilter, &filterStorage))
-	{
-		uint32_t freq = filterStorage & 0x1FF;
-		uint8_t q = (filterStorage >> 9) & 0x7F;
-		filterAccelCst.freq = freq;
-		filterAccelCst.q = q;
-		accelFilter.setFc(filterAccelCst.freq / filter_f);
-		accelFilter.setQ(filterAccelCst.q / 100.0);
-	}
-
 
 }
 // Saves parameters to flash.
@@ -182,17 +172,10 @@ void Axis::saveFlash(){
 	Flash_Write(flashAddrs.degrees, (degreesOfRotation & 0x7fff) | (invertAxis << 15));
 	Flash_Write(flashAddrs.effects1, idlespringstrength | (damperIntensity << 8));
 	Flash_Write(flashAddrs.encoderRatio, gearRatio.numerator | (gearRatio.denominator << 8));
-	uint16_t filterStorage;
 
 	// save CF biquad
-	filterStorage = (uint16_t)filterSpeedCst.freq & 0x1FF;
-	filterStorage |= ( (uint16_t)filterSpeedCst.q & 0x7F ) << 9 ;
-	Flash_Write(flashAddrs.speedFilter, filterStorage);
-
-	filterStorage = (uint16_t)filterAccelCst.freq & 0x1FF;
-	filterStorage |= ( (uint16_t)filterAccelCst.q & 0x7F ) << 9 ;
-	Flash_Write(flashAddrs.accelFilter, filterStorage);
-
+	uint16_t filterStorage = (uint16_t)this->filterProfileId & 0xFF;
+	Flash_Write(flashAddrs.speedAccelFilter, filterStorage);
 }
 
 
@@ -774,16 +757,25 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 		}
 		break;
 
-	case Axis_commands::filterSpeed_freq:
+	case Axis_commands::filterProfileId:
 		if (cmd.type == CMDtype::get)
 		{
-			replies.push_back(CommandReply(this->filterSpeedCst.freq));
+			replies.emplace_back(this->filterProfileId);
 		}
 		else if (cmd.type == CMDtype::set)
 		{
-			uint32_t value = clip<uint32_t, uint32_t>(cmd.val, 0, 500);
-			this->filterSpeedCst.freq = value;
-			speedFilter.setFc(filterSpeedCst.freq / filter_f);
+			uint32_t value = clip<uint32_t, uint32_t>(cmd.val, 0, 2);
+			this->filterProfileId = value;
+			speedFilter.setFc(filterSpeedCst[this->filterProfileId].freq / filter_f);
+			speedFilter.setQ(filterSpeedCst[this->filterProfileId].q / 100.0);
+			accelFilter.setFc(filterAccelCst[this->filterProfileId].freq / filter_f);
+			accelFilter.setQ(filterAccelCst[this->filterProfileId].q / 100.0);
+		}
+		break;
+	case Axis_commands::filterSpeed_freq:
+		if (cmd.type == CMDtype::get)
+		{
+			replies.emplace_back(this->filterSpeedCst[this->filterProfileId].freq);
 		}
 		break;
 	case Axis_commands::filterSpeed_q:
@@ -792,25 +784,13 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 		}
 		else if (cmd.type == CMDtype::get)
 		{
-			replies.push_back(CommandReply(this->filterSpeedCst.q));
-		}
-		else if (cmd.type == CMDtype::set)
-		{
-			uint32_t value = clip<uint32_t, uint32_t>(cmd.val, 0, 120);
-			this->filterSpeedCst.q = value;
-			speedFilter.setQ(filterSpeedCst.q / 100.0);
+			replies.emplace_back(this->filterSpeedCst[this->filterProfileId].q);
 		}
 		break;
 	case Axis_commands::filterAccel_freq:
 		if (cmd.type == CMDtype::get)
 		{
-			replies.push_back(CommandReply(this->filterAccelCst.freq));
-		}
-		else if (cmd.type == CMDtype::set)
-		{
-			uint32_t value = clip<uint32_t, uint32_t>(cmd.val, 0, 500);
-			this->filterAccelCst.freq = value;
-			accelFilter.setFc(filterAccelCst.freq / filter_f);
+			replies.emplace_back(this->filterAccelCst[this->filterProfileId].freq);
 		}
 		break;
 	case Axis_commands::filterAccel_q:
@@ -819,13 +799,7 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 		}
 		else if (cmd.type == CMDtype::get)
 		{
-			replies.push_back(CommandReply(this->filterAccelCst.q));
-		}
-		else if (cmd.type == CMDtype::set)
-		{
-			uint32_t value = clip<uint32_t, uint32_t>(cmd.val, 0, 120);
-			this->filterAccelCst.q = value;
-			accelFilter.setQ(filterAccelCst.q / 100.0);
+			replies.emplace_back(this->filterAccelCst[this->filterProfileId].q);
 		}
 		break;
 

@@ -48,8 +48,7 @@ struct AxisFlashAddrs
 	uint16_t effects1 = ADR_AXIS1_EFFECTS1;
 	uint16_t encoderRatio = ADR_AXIS1_ENC_RATIO;
 
-	uint16_t speedFilter = ADR_AXIS1_SPEED_FILTER;
-	uint16_t accelFilter = ADR_AXIS1_ACCEL_FILTER;
+	uint16_t speedAccelFilter = ADR_AXIS1_SPEEDACCEL_FILTER;
 };
 
 struct AxisConfig
@@ -80,8 +79,9 @@ struct GearRatio_t{
 
 
 enum class Axis_commands : uint32_t{
-	power=0x00,degrees=0x01,esgain,zeroenc,invert,idlespring,axisdamper,enctype,drvtype,pos,maxspeed,maxtorquerate,fxratio,curtorque,curpos,reductionScaler,
-	filterSpeed_freq, filterSpeed_q, filterAccel_freq, filterAccel_q
+	power=0x00,degrees=0x01,esgain,zeroenc,invert,idlespring,axisdamper,enctype,drvtype,
+	pos,maxspeed,maxtorquerate,fxratio,curtorque,curpos,reductionScaler,
+	filterSpeed_freq, filterSpeed_q, filterAccel_freq, filterAccel_q, filterProfileId
 };
 
 class Axis : public PersistentStorage, public CommandHandler, public ErrorHandler
@@ -236,15 +236,16 @@ private:
 	float idlespringscale = 0;
 	bool idle_center = false;
 
-	biquad_constant_t filterSpeedCst = { 25, 60 };
-	biquad_constant_t filterAccelCst = { 120, 30 };
+	biquad_constant_t filterSpeedCst[3] = {{ 25, 60 }, { 125, 60 }, { 250, 60 }};
+	biquad_constant_t filterAccelCst[3] = {{ 120, 30 }, { 210, 30 }, { 300, 30 }};
+	uint8_t filterProfileId = 0;
 	const float filter_f = 1000; // 1khz
 	const int32_t damperClip = 10000;
 	uint8_t damperIntensity = 30;
 	FastAvg<float,8> spdlimiterAvg;
 
-	Biquad speedFilter = Biquad(BiquadType::lowpass, filterSpeedCst.freq/filter_f, filterSpeedCst.q/100.0, 0.0);
-	Biquad accelFilter = Biquad(BiquadType::lowpass, filterAccelCst.freq/filter_f, filterAccelCst.q/100.0, 0.0);
+	Biquad speedFilter = Biquad(BiquadType::lowpass, filterSpeedCst[filterProfileId].freq/filter_f, filterSpeedCst[filterProfileId].q/100.0, 0.0);
+	Biquad accelFilter = Biquad(BiquadType::lowpass, filterAccelCst[filterProfileId].freq/filter_f, filterAccelCst[filterProfileId].q/100.0, 0.0);
 
 	void setFxRatio(uint8_t val);
 	void updateTorqueScaler();
