@@ -829,19 +829,19 @@ CommandStatus EffectsCalculator::command(const ParsedCommand& cmd,std::vector<Co
 		break;
 	case EffectsCalculator_commands::friction:
 		if(cmd.type == CMDtype::info){
-			replies.emplace_back("scale:"+std::to_string(2)); //this->scaler.friction
+			replies.emplace_back("scale:"+std::to_string(this->scaler.friction));
 		}else
 			return handleGetSet(cmd, replies, this->gain.friction);
 		break;
 	case EffectsCalculator_commands::damper:
 		if(cmd.type == CMDtype::info){
-			replies.emplace_back("scale:"+std::to_string(2)); //this->scaler.damper
+			replies.emplace_back("scale:"+std::to_string(this->scaler.damper));
 		}else
 			return handleGetSet(cmd, replies, this->gain.damper);
 		break;
 	case EffectsCalculator_commands::inertia:
 		if(cmd.type == CMDtype::info){
-			replies.emplace_back("scale:"+std::to_string(2)); //this->scaler.inertias
+			replies.emplace_back("scale:"+std::to_string(this->scaler.inertia));
 		}else
 			return handleGetSet(cmd, replies, this->gain.inertia);
 		break;
