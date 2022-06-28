@@ -236,7 +236,7 @@ private:
 	float idlespringscale = 0;
 	bool idle_center = false;
 
-	biquad_constant_t filterSpeedCst[3] = {{ 25, 60 }, { 125, 60 }, { 250, 60 }};
+	biquad_constant_t filterSpeedCst[3] = {{ 25, 55 }, { 125, 55 }, { 250, 55 }};
 	biquad_constant_t filterAccelCst[3] = {{ 120, 30 }, { 210, 30 }, { 300, 30 }};
 	uint8_t filterProfileId = 0;
 	const float filter_f = 1000; // 1khz
