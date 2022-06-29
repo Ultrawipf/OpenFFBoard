@@ -452,6 +452,8 @@ void Axis::setIdleSpringStrength(uint8_t spring){
 
 void Axis::setDamperStrength(uint8_t damper){
 	this->damperIntensity = damper;
+	if(damperIntensity != 0)
+		damperFilter.calcBiquad();
 }
 
 /*
@@ -468,7 +470,7 @@ void Axis::calculateAxisEffects(bool ffb_on){
 	// Always active damper
 	if(damperIntensity != 0){
 		float speedFiltered = (metric.current.speed) * (float)damperIntensity * 0.15 ; // 1.5
-		axisEffectTorque -= clip<float, int32_t>(speedFiltered, -damperClip, damperClip);
+		axisEffectTorque -= damperFilter.process(clip<float, int32_t>(speedFiltered, -damperClip, damperClip));
 	}
 }
 
