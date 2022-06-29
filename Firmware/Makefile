@@ -74,10 +74,10 @@ CPP_SOURCES += $(wildcard $(TARGET_DIR)/Core/Src/*.cpp)
 CPP_SOURCES += $(wildcard FFBoard/UserExtensions/Src/*.cpp)
 
 # ASM sources
-ifeq ($(MCU_TARGET),F407VG)
-ASM_SOURCES = $(TARGET_DIR)/Core/Startup/startup_stm32f407vgtx.s
-else
+ifeq ($(MCU_TARGET),F411RE)
 ASM_SOURCES = $(TARGET_DIR)/Core/Startup/startup_stm32f411retx.s
+else
+ASM_SOURCES = $(TARGET_DIR)/Core/Startup/startup_stm32f407vgtx.s
 endif
 
 
@@ -151,10 +151,10 @@ AS_DEFS =
 C_DEFS =  \
 -DSTM32_THREAD_SAFE_STRATEGY=4 \
 -DUSE_HAL_DRIVER 
-ifeq ($(MCU_TARGET),F407VG)
-C_DEFS += -DSTM32F407xx
-else
+ifeq ($(MCU_TARGET),F411RE)
 C_DEFS += -DSTM32F411xE
+else
+C_DEFS += -DSTM32F407xx
 endif
 
 # compile gcc flags
@@ -176,7 +176,11 @@ CXXFLAGS = $(MCU) $(C_DEFS) $(C_INCLUDES) $(OPTCPP) -Wall -fdata-sections -ffunc
 # LDFLAGS
 #######################################
 # link script
+ifeq ($(MCU_TARGET),F407VG_DISCO)
+LDSCRIPT = $(TARGET_DIR)/STM32F407VGTX_FLASH.ld
+else
 LDSCRIPT = $(TARGET_DIR)/STM32$(MCU_TARGET)TX_FLASH.ld
+endif
 
 # libraries
 LIBS = -lc -lm -lnosys 

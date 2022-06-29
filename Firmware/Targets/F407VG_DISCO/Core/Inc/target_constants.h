@@ -14,7 +14,7 @@
 
 // Hardware name string
 #define HW_TYPE "F407VG_DISCO"
-#define HW_TYPE_INT 2
+#define HW_TYPE_INT 3 // Discovery board
 #define FW_DEVID 0x413 // F407
 
 #include "main.h"
@@ -24,8 +24,8 @@
 // Main classes
 #define FFBWHEEL
 #define FFBJOYSTICK
-#define MIDI
-#define TMCDEBUG
+//#define MIDI
+//#define TMCDEBUG
 #define CANBRIDGE
 
 /*
@@ -40,7 +40,7 @@
 #define SHIFTERBUTTONS
 #define PCF8574BUTTONS // Requires I2C
 #define ANALOGAXES
-#define TMC4671DRIVER
+//#define TMC4671DRIVER
 #define PWMDRIVER
 #define LOCALENCODER
 #define CANBUS
@@ -49,14 +49,15 @@
 #define MTENCODERSPI // requires SPI3
 #define CANBUTTONS // Requires CAN
 #define CANANALOG // Requires CAN
+#define ADS111XANALOG // Requires I2C
 
 //#define UARTCOMMANDS
 
 //----------------------
 
 
-#define TIM_ENC htim3
-// Timer 3 is used by the encoder.
+#define TIM_ENC htim2
+// Timer 2 is used by the encoder.
 #define TIM_PWM htim1
 
 #define TIM_MICROS htim10
@@ -77,7 +78,7 @@ extern I2C_HandleTypeDef hi2c1;
 
 
 // ADC Channels
-#define ADC1_CHANNELS 6 	// how many analog input values to be read by dma
+#define ADC1_CHANNELS 3 	// how many analog input values to be read by dma
 #define ADC2_CHANNELS 2		// VSENSE
 
 extern ADC_HandleTypeDef hadc2;
@@ -89,14 +90,14 @@ extern volatile uint32_t ADC2_BUF[ADC2_CHANNELS]; // Buffer
 
 extern ADC_HandleTypeDef hadc1;
 #define AIN_HADC hadc1	// main adc for analog pins
-#define ADC_PINS 6	// Amount of analog channel pins
+#define ADC_PINS 3	// Amount of analog channel pins
 #define ADC_CHAN_FPIN 0 // First analog channel pin. last channel = fpin+ADC_PINS-1
 #define VOLTAGE_MULT_DEFAULT 24.6 // Voltage in mV = adc*VOLTAGE_MULT (24.6 for 976k/33k divider)
 
 #define BUTTON_PINS 8
 
-extern SPI_HandleTypeDef hspi1;
-#define HSPIDRV hspi1
+//extern SPI_HandleTypeDef hspi1;
+//#define HSPIDRV hspi1
 extern SPI_HandleTypeDef hspi2;
 #define HSPI2 hspi2
 extern SPI_HandleTypeDef hspi3;

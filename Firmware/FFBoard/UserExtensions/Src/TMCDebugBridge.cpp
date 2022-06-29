@@ -6,6 +6,7 @@
  */
 
 #include <TMCDebugBridge.h>
+#ifdef TMCDEBUG
 #include "ledEffects.h"
 #include "voltagesense.h"
 #include "cdc_device.h"
@@ -242,3 +243,4 @@ TMCDebugBridge::~TMCDebugBridge() {
 	HAL_GPIO_WritePin(DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin,GPIO_PIN_RESET);
 }
 
+#endif
