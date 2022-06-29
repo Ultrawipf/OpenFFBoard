@@ -8,8 +8,9 @@
 #ifndef TMCDebugBridge_H_
 #define TMCDebugBridge_H_
 
-#include <FFBoardMain.h>
 #include "constants.h"
+#ifdef TMCDEBUG
+#include <FFBoardMain.h>
 #include <vector>
 #include "TMC4671.h"
 
@@ -73,3 +74,4 @@ private:
 };
 
 #endif /* TMCDebugBridge_H_ */
+#endif
