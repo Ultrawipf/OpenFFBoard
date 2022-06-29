@@ -246,6 +246,7 @@ private:
 
 	Biquad speedFilter = Biquad(BiquadType::lowpass, filterSpeedCst[filterProfileId].freq/filter_f, filterSpeedCst[filterProfileId].q/100.0, 0.0);
 	Biquad accelFilter = Biquad(BiquadType::lowpass, filterAccelCst[filterProfileId].freq/filter_f, filterAccelCst[filterProfileId].q/100.0, 0.0);
+	Biquad damperFilter = Biquad(BiquadType::lowpass, 30/filter_f, 0.55, 0.0);
 
 	void setFxRatio(uint8_t val);
 	void updateTorqueScaler();
