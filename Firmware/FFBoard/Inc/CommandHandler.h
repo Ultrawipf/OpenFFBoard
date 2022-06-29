@@ -210,8 +210,8 @@ protected:
 	/**
 	 * Reads from a variable and passes set commands to a member callback
 	 */
-	template<typename TVal,class cls>
-	inline void handleGetSetFunc(const ParsedCommand& cmd,std::vector<CommandReply>& replies,TVal& value,void (cls::*setfunc)(TVal),cls* obj){
+	template<typename TVal,class cls,class cls1>
+	inline void handleGetSetFunc(const ParsedCommand& cmd,std::vector<CommandReply>& replies,TVal& value,void (cls1::*setfunc)(TVal),cls* obj){
 		if(cmd.type == CMDtype::set){
 			(obj->*setfunc)(cmd.val);
 		}else if(cmd.type == CMDtype::get){
@@ -232,8 +232,8 @@ protected:
 	/**
 	 * Reads from a member function and writes to a variable
 	 */
-	template<typename TVal,class cls>
-	inline void handleGetFuncSet(const ParsedCommand& cmd,std::vector<CommandReply>& replies,TVal& value,TVal (cls::*getfunc)(),cls* obj){
+	template<typename TVal,class cls,class cls1>
+	inline void handleGetFuncSet(const ParsedCommand& cmd,std::vector<CommandReply>& replies,TVal& value,TVal (cls1::*getfunc)(),cls* obj){
 		if(cmd.type == CMDtype::set){
 			value = static_cast<TVal>(cmd.val);
 		}else if(cmd.type == CMDtype::get){
