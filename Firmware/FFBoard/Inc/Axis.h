@@ -97,8 +97,9 @@ public:
 	const ClassType getClassType() override {return ClassType::Axis;};
 
 	virtual std::string getHelpstring() { return "FFB axis"	;}
+#ifdef TMC4671
 	void setupTMC4671();
-
+#endif
 	// Dynamic classes
 	void setDrvType(uint8_t drvtype);
 	void setEncType(uint8_t enctype);
@@ -177,7 +178,7 @@ private:
 
 	const Error outOfBoundsError = Error(ErrorCode::axisOutOfRange,ErrorType::warning,"Axis out of bounds");
 
-
+#ifdef TMC4671DRIVER
 	TMC4671Limits tmclimits = TMC4671Limits({.pid_torque_flux_ddt = 32767,
 											 .pid_uq_ud = 30000,
 											 .pid_torque_flux = 30000,
@@ -203,7 +204,7 @@ private:
 			  .b2 = 7114021});
 
 
-
+#endif
 	float encoderOffset = 0; // Offset for absolute encoders
 	uint16_t degreesOfRotation = 900;					// How many degrees of range for the full gamepad range
 	uint16_t lastdegreesOfRotation = degreesOfRotation; // Used to store the previous value
