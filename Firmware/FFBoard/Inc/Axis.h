@@ -31,8 +31,8 @@ struct Control_t {
 	bool usb_disabled = true;
 	bool update_disabled = true;
 	bool request_update_disabled = false;
-	bool usb_update_flag = false;
-	bool update_flag = false;
+//	bool usb_update_flag = false;
+//	bool update_flag = false;
 	bool resetEncoder = false;
 };
 

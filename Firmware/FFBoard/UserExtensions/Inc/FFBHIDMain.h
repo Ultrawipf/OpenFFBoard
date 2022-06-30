@@ -31,10 +31,13 @@
 #include "memory"
 #include "HidCommandInterface.h"
 
-class FFBHIDMain: public FFBoardMain, TimerHandler, PersistentStorage,ExtiHandler,public UsbHidHandler, ErrorHandler{
+#include "thread.hpp"
+
+class FFBHIDMain: public FFBoardMain, public cpp_freertos::Thread, PersistentStorage,ExtiHandler,public UsbHidHandler, ErrorHandler{
 	enum class FFBWheel_commands : uint32_t{
 		ffbactive,axes,btntypes,lsbtn,addbtn,aintypes,lsain,addain,hidrate,hidsendspd,estop
 	};
+
 public:
 	FFBHIDMain(uint8_t axisCount);
 	virtual ~FFBHIDMain();
@@ -64,16 +67,19 @@ public:
 	void saveFlash();
 	void restoreFlash();
 
-	void update();
+	void Run();
+	void updateControl();
 
 	void emergencyStop(bool reset);
 	uint32_t getRate();
 	bool getFfbActive();
 
-	void timerElapsed(TIM_HandleTypeDef* htim);
+	//void timerElapsed(TIM_HandleTypeDef* htim);
 	void exti(uint16_t GPIO_Pin);
 
 	void errorCallback(const Error &error, bool cleared);
+
+	void systick();
 
 protected:
 	std::unique_ptr<EffectsCalculator> effects_calc;
