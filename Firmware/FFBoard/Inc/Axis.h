@@ -25,6 +25,8 @@
 #include "EffectsCalculator.h"
 #include "FastAvg.h"
 
+#define INTERNAL_AXIS_DAMPER_SCALER 0.5
+
 
 struct Control_t {
 	bool emergency = false;
@@ -154,6 +156,9 @@ public:
 
 
 private:
+	// Axis damper is setted to 50% of the default scale of HID Damper
+	const float AXIS_DAMPER_RATIO = INTERNAL_SCALER_DAMPER * INTERNAL_AXIS_DAMPER_SCALER / 255.0;
+
 	AxisFlashAddrs flashAddrs;
 	volatile Control_t* control;
 
@@ -236,8 +241,9 @@ private:
 	float idlespringscale = 0;
 	bool idle_center = false;
 
-	biquad_constant_t filterSpeedCst[3] = {{ 25, 55 }, { 125, 55 }, { 250, 55 }};
-	biquad_constant_t filterAccelCst[3] = {{ 120, 30 }, { 210, 30 }, { 300, 30 }};
+	const biquad_constant_t filterSpeedCst[3] = {{ 25, 55 }, { 125, 55 }, { 250, 55 }};
+	const biquad_constant_t filterAccelCst[3] = {{ 120, 30 }, { 210, 30 }, { 300, 30 }};
+	const biquad_constant_t filterDamperCst = {60, 55};
 	uint8_t filterProfileId = 0;
 	const float filter_f = 1000; // 1khz
 	const int32_t damperClip = 10000;
@@ -246,7 +252,7 @@ private:
 
 	Biquad speedFilter = Biquad(BiquadType::lowpass, filterSpeedCst[filterProfileId].freq/filter_f, filterSpeedCst[filterProfileId].q/100.0, 0.0);
 	Biquad accelFilter = Biquad(BiquadType::lowpass, filterAccelCst[filterProfileId].freq/filter_f, filterAccelCst[filterProfileId].q/100.0, 0.0);
-	Biquad damperFilter = Biquad(BiquadType::lowpass, 30/filter_f, 0.55, 0.0);
+	Biquad damperFilter = Biquad(BiquadType::lowpass, filterDamperCst.freq/filter_f, filterDamperCst.q / 100, 0.0); // enable on class constructor
 
 	void setFxRatio(uint8_t val);
 	void updateTorqueScaler();

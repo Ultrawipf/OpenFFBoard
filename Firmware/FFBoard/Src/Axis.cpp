@@ -469,7 +469,7 @@ void Axis::calculateAxisEffects(bool ffb_on){
 
 	// Always active damper
 	if(damperIntensity != 0){
-		float speedFiltered = (metric.current.speed) * (float)damperIntensity * 0.15 ; // 1.5
+		float speedFiltered = (metric.current.speed) * (float)damperIntensity * AXIS_DAMPER_RATIO;
 		axisEffectTorque -= damperFilter.process(clip<float, int32_t>(speedFiltered, -damperClip, damperClip));
 	}
 }
