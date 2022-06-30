@@ -63,9 +63,8 @@ void AxesManager::update() {
 	for (auto &axis: axes) {
 		axis->prepareForUpdate();
 	}
-	if (control->usb_update_flag) {
-		effects_calc->calculateEffects(axes);
-	}
+
+	effects_calc->calculateEffects(axes);
 }
 
 void AxesManager::updateTorque() {
