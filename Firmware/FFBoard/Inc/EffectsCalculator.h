@@ -81,7 +81,6 @@ public:
 	virtual void setFilters(FFB_Effect* effect);
 	void setGain(uint8_t gain);
 	uint8_t getGain();
-	void setCfFilter(biquad_constant_t *filter); // Set output filter frequency for the constant effect
 	void logEffectType(uint8_t type);
 	void setDirectionEnableMask(uint8_t mask);
 	void calcStatsEffectType(uint8_t type, int16_t force);
@@ -125,6 +124,7 @@ private:
 	int32_t getEnvelopeMagnitude(FFB_Effect *effect);
 	std::string listEffectsUsed(bool details = false);
 	std::string listForceEffects();
-	void checkFilter(biquad_constant_t *filter, uint32_t freq,uint8_t q);
+	void checkFilterCoeff(biquad_constant_t *filter, uint32_t freq,uint8_t q);
+	void updateFilterSettingsForEffects(uint8_t type_effect);
 };
 #endif /* EFFECTSCALCULATOR_H_ */

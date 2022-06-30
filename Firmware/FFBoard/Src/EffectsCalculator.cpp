@@ -578,29 +578,32 @@ void EffectsCalculator::restoreFlash()
 	{
 		uint32_t freq = filterStorage & 0x1FF;
 		uint8_t q = (filterStorage >> 9) & 0x7F;
-		checkFilter(&(this->filter.constant), freq, q);
+		checkFilterCoeff(&(this->filter.constant), freq, q);
+		updateFilterSettingsForEffects(FFB_EFFECT_CONSTANT);
 	}
-	setCfFilter(&(this->filter.constant));
 
 	if (Flash_Read(ADR_FFB_FR_FILTER, &filterStorage))
 	{
 		uint32_t freq = filterStorage & 0x1FF;
 		uint8_t q = (filterStorage >> 9) & 0x7F;
-		checkFilter(&(this->filter.friction), freq, q);
+		checkFilterCoeff(&(this->filter.friction), freq, q);
+		updateFilterSettingsForEffects(FFB_EFFECT_FRICTION);
 	}
 
 	if (Flash_Read(ADR_FFB_DA_FILTER, &filterStorage))
 	{
 		uint32_t freq = filterStorage & 0x1FF;
 		uint8_t q = (filterStorage >> 9) & 0x7F;
-		checkFilter(&(this->filter.damper), freq, q);
+		checkFilterCoeff(&(this->filter.damper), freq, q);
+		updateFilterSettingsForEffects(FFB_EFFECT_DAMPER);
 	}
 
 	if (Flash_Read(ADR_FFB_IN_FILTER, &filterStorage))
 	{
 		uint32_t freq = filterStorage & 0x1FF;
 		uint8_t q = (filterStorage >> 9) & 0x7F;
-		checkFilter(&(this->filter.inertia), freq, q);
+		checkFilterCoeff(&(this->filter.inertia), freq, q);
+		updateFilterSettingsForEffects(FFB_EFFECT_INERTIA);
 	}
 
 	uint16_t effects = 0;
@@ -656,37 +659,30 @@ void EffectsCalculator::saveFlash()
 
 }
 
-void EffectsCalculator::setCfFilter(biquad_constant_t *filter)
+void EffectsCalculator::checkFilterCoeff(biquad_constant_t *filter, uint32_t freq,uint8_t q)
 {
-	// check if freq and q parameters are ok
-	if(filter->freq == 0){
-		filter->freq = calcfrequency / 2;
+	if(q == 0) {
+		q = 1;
 	}
-
-	if(filter->q == 0) {
-		filter->q = 0.01;
-	}
-
-	// loop on all effect in memory and setup new constant filter
-	for (uint8_t i = 0; i < MAX_EFFECTS; i++)
-	{
-		if (effects[i].type == FFB_EFFECT_CONSTANT)
-		{
-			setFilters(&effects[i]);
-		}
-	}
-}
-
-void EffectsCalculator::checkFilter(biquad_constant_t *filter, uint32_t freq,uint8_t q)
-{
-	filter->q = clip<uint8_t, uint8_t>(q,0,127);
 
 	if(freq == 0){
 		freq = calcfrequency / 2;
 	}
 
 	filter->freq = clip<uint32_t, uint32_t>(freq, 1, (calcfrequency / 2));
+	filter->q = clip<uint8_t, uint8_t>(q,0,127);
+}
 
+void EffectsCalculator::updateFilterSettingsForEffects(uint8_t type_effect) {
+
+	// loop on all effect in memory and setup new constant filter
+	for (uint8_t i = 0; i < MAX_EFFECTS; i++)
+	{
+		if (effects[i].type == type_effect)
+		{
+			setFilters(&effects[i]);
+		}
+	}
 }
 
 
@@ -772,13 +768,13 @@ CommandStatus EffectsCalculator::command(const ParsedCommand& cmd,std::vector<Co
 		}
 		else if (cmd.type == CMDtype::set)
 		{
-			checkFilter(&filter.constant, cmd.val, filter.constant.q);
-			setCfFilter(&filter.constant);
+			checkFilterCoeff(&filter.constant, cmd.val, filter.constant.q);
+			updateFilterSettingsForEffects(FFB_EFFECT_CONSTANT);
 		}
 		break;
 	case EffectsCalculator_commands::ffbfiltercf_q:
 		if(cmd.type == CMDtype::info){
-			replies.push_back(CommandReply("scale:"+std::to_string(this->qfloatScaler)));
+			replies.emplace_back("scale:"+std::to_string(this->qfloatScaler));
 		}
 		else if (cmd.type == CMDtype::get)
 		{
@@ -786,8 +782,8 @@ CommandStatus EffectsCalculator::command(const ParsedCommand& cmd,std::vector<Co
 		}
 		else if (cmd.type == CMDtype::set)
 		{
-			checkFilter(&filter.constant, filter.constant.freq, cmd.val);
-			setCfFilter(&filter.constant);
+			checkFilterCoeff(&filter.constant, filter.constant.freq, cmd.val);
+			updateFilterSettingsForEffects(FFB_EFFECT_CONSTANT);
 		}
 		break;
 	case EffectsCalculator_commands::effects:
@@ -803,7 +799,7 @@ CommandStatus EffectsCalculator::command(const ParsedCommand& cmd,std::vector<Co
 	case EffectsCalculator_commands::effectsDetails:
 		if (cmd.type == CMDtype::get)
 		{
-			replies.push_back(CommandReply(listEffectsUsed(true)));
+			replies.emplace_back(listEffectsUsed(true));
 		}
 		else if (cmd.type == CMDtype::set && cmd.val == 0)
 		{
@@ -818,7 +814,7 @@ CommandStatus EffectsCalculator::command(const ParsedCommand& cmd,std::vector<Co
 	case EffectsCalculator_commands::effectsForces:
 		if (cmd.type == CMDtype::get)
 		{
-			replies.push_back(CommandReply(listForceEffects()));
+			replies.emplace_back(listForceEffects());
 		}
 		break;
 	case EffectsCalculator_commands::spring:
@@ -848,77 +844,83 @@ CommandStatus EffectsCalculator::command(const ParsedCommand& cmd,std::vector<Co
 	case EffectsCalculator_commands::damper_f:
 		if (cmd.type == CMDtype::get)
 		{
-			replies.push_back(CommandReply(filter.damper.freq));
+			replies.emplace_back(filter.damper.freq);
 		}
 		else if (cmd.type == CMDtype::set)
 		{
-			checkFilter(&filter.damper, cmd.val, filter.damper.q);
+			checkFilterCoeff(&filter.damper, cmd.val, filter.damper.q);
+			updateFilterSettingsForEffects(FFB_EFFECT_DAMPER);
 		}
 		break;
 	case EffectsCalculator_commands::damper_q:
 		if(cmd.type == CMDtype::info){
-			replies.push_back(CommandReply("scale:"+std::to_string(this->qfloatScaler)));
+			replies.emplace_back("scale:"+std::to_string(this->qfloatScaler));
 		}
 		else if (cmd.type == CMDtype::get)
 		{
-			replies.push_back(CommandReply(filter.damper.q));
+			replies.emplace_back(filter.damper.q);
 		}
 		else if (cmd.type == CMDtype::set)
 		{
-			checkFilter(&filter.damper, filter.damper.freq, cmd.val);
+			checkFilterCoeff(&filter.damper, filter.damper.freq, cmd.val);
+			updateFilterSettingsForEffects(FFB_EFFECT_DAMPER);
 		}
 		break;
 	case EffectsCalculator_commands::friction_f:
 		if (cmd.type == CMDtype::get)
 		{
-			replies.push_back(CommandReply(filter.friction.freq));
+			replies.emplace_back(filter.friction.freq);
 		}
 		else if (cmd.type == CMDtype::set)
 		{
-			checkFilter(&filter.friction, cmd.val, filter.friction.q);
+			checkFilterCoeff(&filter.friction, cmd.val, filter.friction.q);
+			updateFilterSettingsForEffects(FFB_EFFECT_FRICTION);
 		}
 		break;
 	case EffectsCalculator_commands::friction_q:
 		if(cmd.type == CMDtype::info){
-			replies.push_back(CommandReply("scale:"+std::to_string(this->qfloatScaler)));
+			replies.emplace_back("scale:"+std::to_string(this->qfloatScaler));
 		}
 		else if (cmd.type == CMDtype::get)
 		{
-			replies.push_back(CommandReply(filter.friction.q));
+			replies.emplace_back(filter.friction.q);
 		}
 		else if (cmd.type == CMDtype::set)
 		{
-			checkFilter(&filter.friction, filter.friction.freq, cmd.val);
+			checkFilterCoeff(&filter.friction, filter.friction.freq, cmd.val);
+			updateFilterSettingsForEffects(FFB_EFFECT_FRICTION);
 		}
 		break;
 	case EffectsCalculator_commands::inertia_f:
 		if (cmd.type == CMDtype::get)
 		{
-			replies.push_back(CommandReply(filter.inertia.freq));
+			replies.emplace_back(filter.inertia.freq);
 		}
 		else if (cmd.type == CMDtype::set)
 		{
-			checkFilter(&filter.inertia, cmd.val, filter.inertia.q);
+			checkFilterCoeff(&filter.inertia, cmd.val, filter.inertia.q);
+			updateFilterSettingsForEffects(FFB_EFFECT_INERTIA);
 		}
 		break;
 	case EffectsCalculator_commands::inertia_q:
 		if(cmd.type == CMDtype::info){
-			replies.push_back(CommandReply("scale:"+std::to_string(this->qfloatScaler)));
+			replies.emplace_back("scale:"+std::to_string(this->qfloatScaler));
 		}
 		else if (cmd.type == CMDtype::get)
 		{
-			replies.push_back(CommandReply(filter.inertia.q));
+			replies.emplace_back(filter.inertia.q);
 		}
 		else if (cmd.type == CMDtype::set)
 		{
-			checkFilter(&filter.inertia, filter.inertia.freq, cmd.val);
+			checkFilterCoeff(&filter.inertia, filter.inertia.freq, cmd.val);
+			updateFilterSettingsForEffects(FFB_EFFECT_INERTIA);
 		}
 		break;
 
 	case EffectsCalculator_commands::frictionPctSpeedToRampup:
 		if (cmd.type == CMDtype::get)
 		{
-			replies.push_back(CommandReply(frictionPctSpeedToRampup));
+			replies.emplace_back(frictionPctSpeedToRampup);
 		}
 		else if (cmd.type == CMDtype::set)
 		{
@@ -929,7 +931,7 @@ CommandStatus EffectsCalculator::command(const ParsedCommand& cmd,std::vector<Co
 	case EffectsCalculator_commands::monitorEffect:
 		if (cmd.type == CMDtype::get)
 		{
-			replies.push_back(CommandReply(isMonitorEffect));
+			replies.emplace_back(isMonitorEffect);
 		}
 		else if (cmd.type == CMDtype::set)
 		{
