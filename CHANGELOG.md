@@ -1,2 +1,3 @@
 - Added analog filter option
 - Added ADS111X analog source
+- Added user configurable axis encoder ratios for setups with reductions

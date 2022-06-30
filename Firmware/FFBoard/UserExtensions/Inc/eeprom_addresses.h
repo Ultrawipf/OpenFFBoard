@@ -10,11 +10,11 @@
 
 #include "main.h"
 // Change this to the amount of currently registered variables
-#define NB_OF_VAR	100
+#define NB_OF_VAR	103
 extern const uint16_t VirtAddVarTab[NB_OF_VAR];
 
 // Amount of variables in exportable list
-#define NB_EXPORTABLE_ADR 86
+#define NB_EXPORTABLE_ADR 89
 extern const uint16_t exportableFlashAddresses[NB_EXPORTABLE_ADR];
 
 
@@ -99,6 +99,7 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_AXIS1_ENDSTOP		    	0x307 // 0-7 endstop margin, 8-15 endstop stiffness
 #define ADR_AXIS1_EFFECTS1		    	0x308 // 0-7 idlespring, 8-15 damper
 //#define ADR_AXIS1_ENC_OFFSET	    	0x309
+#define ADR_AXIS1_ENC_RATIO				0x30A
 
 // TMC1
 #define ADR_TMC1_MOTCONF 				0x320 // 0-2: MotType 3-5: PhiE source 6-15: Poles
@@ -127,6 +128,7 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_AXIS2_ENDSTOP		    	0x347 // 0-7 endstop margin, 8-15 endstop stiffness
 #define ADR_AXIS2_EFFECTS1		    	0x348 // 0-7 idlespring, 8-15 damper
 //#define ADR_AXIS2_ENC_OFFSET	    	0x349
+#define ADR_AXIS2_ENC_RATIO				0x34A
 
 // TMC2
 #define ADR_TMC2_MOTCONF 				0x360 // 0-2: MotType 3-5: PhiE source 6-15: Poles
@@ -152,6 +154,7 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_AXIS3_ENDSTOP	    		0x387 // 0-7 endstop margin, 8-15 endstop stiffness
 #define ADR_AXIS3_EFFECTS1		    	0x388 // 0-7 idlespring, 8-15 damper
 //#define ADR_AXIS3_ENC_OFFSET	    	0x389
+#define ADR_AXIS3_ENC_RATIO				0x38A
 
 // TMC3
 #define ADR_TMC3_MOTCONF 				0x3A0 // 0-2: MotType 3-5: PhiE source 6-15: Poles

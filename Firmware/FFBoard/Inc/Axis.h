@@ -46,6 +46,7 @@ struct AxisFlashAddrs
 	uint16_t power = ADR_AXIS1_POWER;
 	uint16_t degrees = ADR_AXIS1_DEGREES;
 	uint16_t effects1 = ADR_AXIS1_EFFECTS1;
+	uint16_t encoderRatio = ADR_AXIS1_ENC_RATIO;
 };
 
 struct AxisConfig
@@ -70,9 +71,15 @@ struct axis_metric_t {
 	metric_t previous;
 };
 
+struct GearRatio_t{
+	uint8_t denominator = 0;
+	uint8_t numerator = 0;
+	float gearRatio = 1.0;
+};
+
 
 enum class Axis_commands : uint32_t{
-	power=0x00,degrees=0x01,esgain,zeroenc,invert,idlespring,axisdamper,enctype,drvtype,pos,maxspeed,maxtorquerate,fxratio,curtorque,curpos
+	power=0x00,degrees=0x01,esgain,zeroenc,invert,idlespring,axisdamper,enctype,drvtype,pos,maxspeed,maxtorquerate,fxratio,curtorque,curpos,reductionScaler
 };
 
 class Axis : public PersistentStorage, public CommandHandler, public ErrorHandler
@@ -145,6 +152,8 @@ public:
 
 	void setEffectTorque(int32_t torque);
 	bool updateTorque(int32_t* totalTorque);
+
+	void setGearRatio(uint8_t numerator,uint8_t denominator);
 
 
 private:
@@ -245,6 +254,10 @@ private:
 
 	void setFxRatio(uint8_t val);
 	void updateTorqueScaler();
+
+
+	GearRatio_t gearRatio;
+
 };
 
 #endif /* SRC_AXIS_H_ */
