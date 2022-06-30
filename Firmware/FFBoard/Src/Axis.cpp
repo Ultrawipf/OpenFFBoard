@@ -30,17 +30,17 @@ Axis::Axis(char axis,volatile Control_t* control) :CommandHandler("axis", CLSID_
 	if (axis == 'X')
 	{
 		setInstance(0);
-		this->flashAddrs = AxisFlashAddrs({ADR_AXIS1_CONFIG, ADR_AXIS1_MAX_SPEED, ADR_AXIS1_MAX_ACCEL,ADR_AXIS1_ENDSTOP, ADR_AXIS1_POWER, ADR_AXIS1_DEGREES,ADR_AXIS1_EFFECTS1});
+		this->flashAddrs = AxisFlashAddrs({ADR_AXIS1_CONFIG, ADR_AXIS1_MAX_SPEED, ADR_AXIS1_MAX_ACCEL,ADR_AXIS1_ENDSTOP, ADR_AXIS1_POWER, ADR_AXIS1_DEGREES,ADR_AXIS1_EFFECTS1,ADR_AXIS1_ENC_RATIO});
 	}
 	else if (axis == 'Y')
 	{
 		setInstance(1);
-		this->flashAddrs = AxisFlashAddrs({ADR_AXIS2_CONFIG, ADR_AXIS2_MAX_SPEED, ADR_AXIS2_MAX_ACCEL,ADR_AXIS2_ENDSTOP, ADR_AXIS2_POWER, ADR_AXIS2_DEGREES,ADR_AXIS2_EFFECTS1});
+		this->flashAddrs = AxisFlashAddrs({ADR_AXIS2_CONFIG, ADR_AXIS2_MAX_SPEED, ADR_AXIS2_MAX_ACCEL,ADR_AXIS2_ENDSTOP, ADR_AXIS2_POWER, ADR_AXIS2_DEGREES,ADR_AXIS2_EFFECTS1,ADR_AXIS2_ENC_RATIO});
 	}
 	else if (axis == 'Z')
 	{
 		setInstance(2);
-		this->flashAddrs = AxisFlashAddrs({ADR_AXIS3_CONFIG, ADR_AXIS3_MAX_SPEED, ADR_AXIS3_MAX_ACCEL,ADR_AXIS3_ENDSTOP, ADR_AXIS3_POWER, ADR_AXIS3_DEGREES,ADR_AXIS3_EFFECTS1});
+		this->flashAddrs = AxisFlashAddrs({ADR_AXIS3_CONFIG, ADR_AXIS3_MAX_SPEED, ADR_AXIS3_MAX_ACCEL,ADR_AXIS3_ENDSTOP, ADR_AXIS3_POWER, ADR_AXIS3_DEGREES,ADR_AXIS3_EFFECTS1,ADR_AXIS3_ENC_RATIO});
 	}
 
 
@@ -76,6 +76,7 @@ void Axis::registerCommands(){
 	registerCommand("fxratio", Axis_commands::fxratio, "Effect ratio. Reduces effects excluding endstop. 255=100%",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("curtorque", Axis_commands::curtorque, "Axis torque",CMDFLAG_GET);
 	registerCommand("curpos", Axis_commands::curpos, "Axis position",CMDFLAG_GET);
+	registerCommand("reduction", Axis_commands::reductionScaler, "Encoder to axis gear reduction (adr+1 / val+1) 0-255",CMDFLAG_GET | CMDFLAG_SETADR);
 }
 
 /*
@@ -131,6 +132,11 @@ void Axis::restoreFlash(){
 		setDamperStrength((effects >> 8) & 0xff);
 	}
 
+	uint16_t ratio;
+	if(Flash_Read(flashAddrs.encoderRatio, &ratio)){
+		setGearRatio(ratio & 0xff, (ratio >> 8) & 0xff);
+	}
+
 }
 // Saves parameters to flash.
 void Axis::saveFlash(){
@@ -143,6 +149,7 @@ void Axis::saveFlash(){
 	Flash_Write(flashAddrs.power, power);
 	Flash_Write(flashAddrs.degrees, (degreesOfRotation & 0x7fff) | (invertAxis << 15));
 	Flash_Write(flashAddrs.effects1, idlespringstrength | (damperIntensity << 8));
+	Flash_Write(flashAddrs.encoderRatio, gearRatio.numerator | (gearRatio.denominator << 8));
 }
 
 
@@ -327,6 +334,16 @@ void Axis::setEncType(uint8_t enctype)
 }
 
 /**
+ * Changes the internal gearRatio scaler
+ * Encoder angle is multiplied with (numerator+1)/(denominator+1)
+ */
+void Axis::setGearRatio(uint8_t numerator,uint8_t denominator){
+	this->gearRatio.denominator = denominator;
+	this->gearRatio.numerator = numerator;
+	this->gearRatio.gearRatio = ((float)numerator+1.0)/((float)denominator+1.0);
+}
+
+/**
  * Returns a scaled encoder value between -0x7fff and 0x7fff with a range of degrees
  * Takes an encoder angle in degrees
  */
@@ -346,7 +363,7 @@ int32_t Axis::scaleEncValue(float angle, uint16_t degrees){
  */
 float Axis::getEncAngle(Encoder *enc){
 	if(enc != nullptr){
-		float pos = 360.0 * enc->getPos_f();
+		float pos = 360.0 * enc->getPos_f() * gearRatio.gearRatio;
 		if (isInverted()){
 			pos= -pos;
 		}
@@ -720,6 +737,14 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 		break;
 	case Axis_commands::curtorque:
 		replies.emplace_back(this->metric.current.torque);
+		break;
+
+	case Axis_commands::reductionScaler:
+		if(cmd.type == CMDtype::get){
+			replies.emplace_back(gearRatio.denominator,gearRatio.numerator);
+		}else if(cmd.type == CMDtype::setat){
+			setGearRatio(cmd.adr,cmd.val);
+		}
 		break;
 
 	default:
