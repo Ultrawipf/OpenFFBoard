@@ -181,23 +181,12 @@ public:
 		return commandhandlers;
 	}
 
-protected:
-	void setInstance(uint8_t instance);
-	bool commandsEnabled = true;
-	virtual void addCommandHandler();
-	virtual void removeCommandHandler();
-
-	static inline std::vector<uint16_t>& getCommandHandlerIds() {
-		static std::vector<uint16_t> commandhandlerids{};
-		return commandhandlerids;
-	}
-
 
 	/**
 	 * Reads or writes a variable
 	 */
 	template<typename TVal>
-	inline CommandStatus handleGetSet(const ParsedCommand& cmd,std::vector<CommandReply>& replies,TVal& value){
+	static CommandStatus handleGetSet(const ParsedCommand& cmd,std::vector<CommandReply>& replies,TVal& value){
 		if(cmd.type == CMDtype::set){
 			value = static_cast<TVal>(cmd.val);
 		}else if(cmd.type == CMDtype::get){
@@ -211,7 +200,7 @@ protected:
 	 * Reads from a variable and passes set commands to a member callback
 	 */
 	template<typename TVal,class cls,class cls1>
-	inline void handleGetSetFunc(const ParsedCommand& cmd,std::vector<CommandReply>& replies,TVal& value,void (cls1::*setfunc)(TVal),cls* obj){
+	static void handleGetSetFunc(const ParsedCommand& cmd,std::vector<CommandReply>& replies,TVal& value,void (cls1::*setfunc)(TVal),cls* obj){
 		if(cmd.type == CMDtype::set){
 			(obj->*setfunc)(cmd.val);
 		}else if(cmd.type == CMDtype::get){
@@ -222,7 +211,7 @@ protected:
 	 * Reads from a member function and sets to a member function
 	 */
 	template<typename TVal,class cls,class cls1,class cls2>
-	inline void handleGetFuncSetFunc(const ParsedCommand& cmd,std::vector<CommandReply>& replies,TVal (cls1::*getfunc)(),void (cls2::*setfunc)(TVal),cls* obj){
+	static void handleGetFuncSetFunc(const ParsedCommand& cmd,std::vector<CommandReply>& replies,TVal (cls1::*getfunc)(),void (cls2::*setfunc)(TVal),cls* obj){
 		if(cmd.type == CMDtype::set){
 			(obj->*setfunc)(cmd.val);
 		}else if(cmd.type == CMDtype::get){
@@ -233,15 +222,13 @@ protected:
 	 * Reads from a member function and writes to a variable
 	 */
 	template<typename TVal,class cls,class cls1>
-	inline void handleGetFuncSet(const ParsedCommand& cmd,std::vector<CommandReply>& replies,TVal& value,TVal (cls1::*getfunc)(),cls* obj){
+	static void handleGetFuncSet(const ParsedCommand& cmd,std::vector<CommandReply>& replies,TVal& value,TVal (cls1::*getfunc)(),cls* obj){
 		if(cmd.type == CMDtype::set){
 			value = static_cast<TVal>(cmd.val);
 		}else if(cmd.type == CMDtype::get){
 			replies.emplace_back((obj->*getfunc)());
 		}
 	}
-
-	std::vector<CmdHandlerCommanddef> registeredCommands;
 
 	/**
 	 * Registers a command for this command handler
@@ -257,16 +244,25 @@ protected:
 				return; //already present
 		}
 
-//		CmdHandlerCommanddef cmddef = {
-//			.cmd=cmd,
-//			.helpstring = help,
-//			.cmdId = static_cast<uint32_t>(cmdid),
-//			.flags = flags
-//		};
 		this->registeredCommands.emplace_back(cmd, help,static_cast<uint32_t>(cmdid),flags);
 		this->registeredCommands.shrink_to_fit();
 	}
 
+
+
+protected:
+	void setInstance(uint8_t instance);
+	bool commandsEnabled = true;
+	virtual void addCommandHandler();
+	virtual void removeCommandHandler();
+
+	static inline std::vector<uint16_t>& getCommandHandlerIds() {
+		static std::vector<uint16_t> commandhandlerids{};
+		return commandhandlerids;
+	}
+
+
+	std::vector<CmdHandlerCommanddef> registeredCommands;
 
 	CmdHandlerInfo cmdHandlerInfo;
 
