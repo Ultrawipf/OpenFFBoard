@@ -13,6 +13,7 @@
 #include <vector>
 #include <limits.h>
 #include "Filters.h"
+#include "AnalogAxisProcessing.h"
 
 struct MinMaxPair{
 	int32_t min = 0x7fff;
@@ -25,7 +26,7 @@ struct LocalAnalogConfig{
 	bool filtersEnabled = false;
 };
 
-class LocalAnalog : public AnalogSource, public CommandHandler{
+class LocalAnalog : public AnalogSource, public CommandHandler, public AnalogAxisProcessing{
 	enum class LocalAnalog_commands : uint32_t{
 		pinmask,autocal,pins,values,filter,min,max
 	};
@@ -62,6 +63,7 @@ private:
 	uint32_t filterSamples = 0;
 	const uint32_t waitFilterSamples = 500;
 	float autorangeScale = 1.05; // Multiplies autorange scale to add some margin
+	static const std::vector<std::pair<uint16_t,uint16_t>> minMaxValAddr;
 };
 
 

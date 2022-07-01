@@ -15,17 +15,21 @@ ClassIdentifier LocalAnalog::info = {
 };
 
 
-LocalAnalog::LocalAnalog() : CommandHandler("apin",CLSID_ANALOG_LOCAL,0) {
+std::vector<std::pair<uint16_t,uint16_t>> LocalAnalog::minMaxValAddr = {
+
+};
+
+LocalAnalog::LocalAnalog() : CommandHandler("apin",CLSID_ANALOG_LOCAL,0),AnalogAxisProcessing(ADC_PINS, this, true, true,std::nullopt) {
 	this->restoreFlash();
 
 	CommandHandler::registerCommands();
 	registerCommand("mask", LocalAnalog_commands::pinmask, "Enabled pins",CMDFLAG_GET|CMDFLAG_SET);
-	registerCommand("autocal", LocalAnalog_commands::autocal, "Autoranging",CMDFLAG_GET|CMDFLAG_SET);
+//	registerCommand("autocal", LocalAnalog_commands::autocal, "Autoranging",CMDFLAG_GET|CMDFLAG_SET);
 	registerCommand("pins", LocalAnalog_commands::pins, "Available pins",CMDFLAG_GET|CMDFLAG_SET);
 	registerCommand("values", LocalAnalog_commands::values, "Analog values",CMDFLAG_GET);
-	registerCommand("filter", LocalAnalog_commands::filter, "Enable lowpass filter",CMDFLAG_GET|CMDFLAG_SET);
-	registerCommand("min", LocalAnalog_commands::min, "Min value limit",CMDFLAG_GETADR|CMDFLAG_SETADR);
-	registerCommand("max", LocalAnalog_commands::max, "Max value limit",CMDFLAG_GETADR|CMDFLAG_SETADR);
+//	registerCommand("filter", LocalAnalog_commands::filter, "Enable lowpass filter",CMDFLAG_GET|CMDFLAG_SET);
+//	registerCommand("min", LocalAnalog_commands::min, "Min value limit",CMDFLAG_GETADR|CMDFLAG_SETADR);
+//	registerCommand("max", LocalAnalog_commands::max, "Max value limit",CMDFLAG_GETADR|CMDFLAG_SETADR);
 	setupFilters();
 }
 
@@ -68,28 +72,29 @@ std::vector<int32_t>* LocalAnalog::getAxes(){
 			continue;
 
 		int32_t val = ((adcbuf[i+ADC_CHAN_FPIN] & 0xFFF) << 4)-0x7fff;
-		// Filter before autoranging
-		if(aconf.filtersEnabled){
-			val = filters[i].process(val);
-			if(filterSamples <= waitFilterSamples){
-				filterSamples++;
-			}
-		}
-
-		if(aconf.autorange && (filterSamples > waitFilterSamples || !aconf.filtersEnabled)){
-			minMaxVals[i].max = std::max(minMaxVals[i].max,val);
-			minMaxVals[i].min = std::min(minMaxVals[i].min,val);
-		}
-		int32_t range = (minMaxVals[i].max - minMaxVals[i].min);
-		if(range > 1 && range <= 0xffff){
-			float scaler = ((float)0xffff / (float)range)*(autorangeScale);
-			val *= scaler;
-			val = val - ((scaler*(float)minMaxVals[i].min) + 0x7fff);
-		}
-		val = clip(val,-0x7fff,0x7fff); // Clip if slightly out of range because of inaccuracy
+//		// Filter before autoranging
+//		if(aconf.filtersEnabled){
+//			val = filters[i].process(val);
+//			if(filterSamples <= waitFilterSamples){
+//				filterSamples++;
+//			}
+//		}
+//
+//		if(aconf.autorange && (filterSamples > waitFilterSamples || !aconf.filtersEnabled)){
+//			minMaxVals[i].max = std::max(minMaxVals[i].max,val);
+//			minMaxVals[i].min = std::min(minMaxVals[i].min,val);
+//		}
+//		int32_t range = (minMaxVals[i].max - minMaxVals[i].min);
+//		if(range > 1 && range <= 0xffff){
+//			float scaler = ((float)0xffff / (float)range)*(autorangeScale);
+//			val *= scaler;
+//			val = val - ((scaler*(float)minMaxVals[i].min) + 0x7fff);
+//		}
+//		val = clip(val,-0x7fff,0x7fff); // Clip if slightly out of range because of inaccuracy
 
 		this->buf.push_back(val);
 	}
+	AnalogAxisProcessing::processAxes(buf);
 	return &this->buf;
 }
 
@@ -168,7 +173,7 @@ CommandStatus LocalAnalog::command(const ParsedCommand& cmd,std::vector<CommandR
 			return CommandStatus::ERR; // Invalid
 
 		default:
-			return CommandStatus::NOT_FOUND;
+			return AnalogAxisProcessing::command(cmd, replies); // Try processing command
 		}
 
 		return CommandStatus::OK;
