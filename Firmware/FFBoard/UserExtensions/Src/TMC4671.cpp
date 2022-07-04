@@ -2832,4 +2832,10 @@ void TMC4671::TMC_ExternalEncoderUpdateThread::updateFromIsr(){
 	this->NotifyFromISR();
 }
 
-
+void TMC4671::errorCallback(const Error &error, bool cleared){
+	if(!cleared && error.code == ErrorCode::brakeResistorFailure){
+		// shut down and block.
+		emergencyStop(false);
+		this->changeState(TMC_ControlState::HardError, true);
+	}
+}
