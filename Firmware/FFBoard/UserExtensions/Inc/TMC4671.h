@@ -268,9 +268,9 @@ struct TMC4671Biquad{
 
 class TMC4671 :
 		public MotorDriver, public PersistentStorage, public Encoder,
-		public CommandHandler, public SPIDevice, public ExtiHandler, public cpp_freertos::Thread,
+		public CommandHandler, public SPIDevice, public ExtiHandler, public cpp_freertos::Thread,ErrorHandler
 #ifdef TIM_TMC
-		public TimerHandler
+		,public TimerHandler
 #endif
 {
 
@@ -567,6 +567,7 @@ private:
 //	void AENC_init();
 
 	void encoderInit();
+	void errorCallback(const Error &error, bool cleared);
 
 	uint32_t initTime = 0;
 	bool manualEncAlign = false;
