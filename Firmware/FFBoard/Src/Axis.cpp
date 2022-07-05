@@ -82,6 +82,8 @@ void Axis::registerCommands(){
 	registerCommand("fxratio", Axis_commands::fxratio, "Effect ratio. Reduces effects excluding endstop. 255=100%",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("curtorque", Axis_commands::curtorque, "Axis torque",CMDFLAG_GET);
 	registerCommand("curpos", Axis_commands::curpos, "Axis position",CMDFLAG_GET);
+	registerCommand("curspd", Axis_commands::curspd, "Axis speed",CMDFLAG_GET);
+	registerCommand("curaccel", Axis_commands::curaccel, "Axis accel",CMDFLAG_GET);
 	registerCommand("reduction", Axis_commands::reductionScaler, "Encoder to axis gear reduction (adr+1 / val+1) 0-255",CMDFLAG_GET | CMDFLAG_SETADR);
 	registerCommand("filterProfile_id", Axis_commands::filterProfileId, "Biquad filter profile for speed and accel", CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("filterSpeed_freq", Axis_commands::filterSpeed_freq, "Biquad filter frequency for speed", CMDFLAG_GET);
@@ -749,6 +751,12 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 		break;
 	case Axis_commands::curtorque:
 		replies.emplace_back(this->metric.current.torque);
+		break;
+	case Axis_commands::curspd:
+		replies.emplace_back(this->metric.current.speed);
+		break;
+	case Axis_commands::curaccel:
+		replies.emplace_back(this->metric.current.accel);
 		break;
 
 	case Axis_commands::reductionScaler:
