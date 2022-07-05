@@ -20,7 +20,7 @@
 
 #define INTERNAL_SCALER_DAMPER 40
 #define INTERNAL_SCALER_FRICTION 8
-#define INTERNAL_SCALER_INERTIA 10
+#define INTERNAL_SCALER_INERTIA 0.01
 
 class Axis;
 struct metric_t;
@@ -57,7 +57,8 @@ enum class EffectsCalculator_commands : uint32_t {
 	ffbfiltercf,ffbfiltercf_q,effects,spring,friction,damper,inertia,
 	damper_f, damper_q, friction_f, friction_q, inertia_f, inertia_q,
 	frictionPctSpeedToRampup,
-	monitorEffect, effectsDetails, effectsForces
+	monitorEffect, effectsDetails, effectsForces,
+	scaler_damper, scaler_friction, scaler_inertia
 };
 
 class EffectsCalculator: public PersistentStorage,
