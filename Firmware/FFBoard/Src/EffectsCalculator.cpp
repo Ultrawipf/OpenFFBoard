@@ -50,6 +50,10 @@ EffectsCalculator::EffectsCalculator() : CommandHandler("fx", CLSID_EFFECTSCALC)
 	registerCommand("inertia_f", EffectsCalculator_commands::inertia_f, "Inertia biquad freq", CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("inertia_q", EffectsCalculator_commands::inertia_q, "Inertia biquad q", CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_INFOSTRING);
 
+	registerCommand("scaler_damper", EffectsCalculator_commands::scaler_damper, "Scaler damper", CMDFLAG_GET | CMDFLAG_INFOSTRING);
+	registerCommand("scaler_friction", EffectsCalculator_commands::scaler_friction, "Scaler friction", CMDFLAG_GET | CMDFLAG_INFOSTRING);
+	registerCommand("scaler_inertia", EffectsCalculator_commands::scaler_inertia, "Scaler inertia", CMDFLAG_GET | CMDFLAG_INFOSTRING);
+
 	registerCommand("frictionPctSpeedToRampup", EffectsCalculator_commands::frictionPctSpeedToRampup, "% of max speed during effect is slow", CMDFLAG_GET | CMDFLAG_SET);
 
 	this->Start();
@@ -936,6 +940,34 @@ CommandStatus EffectsCalculator::command(const ParsedCommand& cmd,std::vector<Co
 		else if (cmd.type == CMDtype::set)
 		{
 			isMonitorEffect = clip<uint8_t, uint8_t>(cmd.val, 0, 1);
+		}
+		break;
+	case EffectsCalculator_commands::scaler_damper:
+		if(cmd.type == CMDtype::info){
+			replies.emplace_back("scale:0.001");
+		}
+		else if (cmd.type == CMDtype::get)
+		{
+			replies.emplace_back(INTERNAL_SCALER_DAMPER * 1000);
+		}
+		break;
+
+	case EffectsCalculator_commands::scaler_friction:
+		if(cmd.type == CMDtype::info){
+			replies.emplace_back("scale:0.001");
+		}
+		else if (cmd.type == CMDtype::get)
+		{
+			replies.emplace_back(INTERNAL_SCALER_FRICTION * 1000);
+		}
+		break;
+	case EffectsCalculator_commands::scaler_inertia:
+		if(cmd.type == CMDtype::info){
+			replies.emplace_back("scale:0.001");
+		}
+		else if  (cmd.type == CMDtype::get)
+		{
+			replies.emplace_back(INTERNAL_SCALER_INERTIA * 1000);
 		}
 		break;
 
