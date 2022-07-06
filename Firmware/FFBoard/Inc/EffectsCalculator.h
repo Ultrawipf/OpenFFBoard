@@ -19,7 +19,7 @@
 #define EFFECT_THREAD_PRIO 20 // low priority for stat
 
 #define INTERNAL_SCALER_DAMPER 40
-#define INTERNAL_SCALER_FRICTION 8
+#define INTERNAL_SCALER_FRICTION 91
 #define INTERNAL_SCALER_INERTIA 4
 
 class Axis;
@@ -27,14 +27,14 @@ struct metric_t;
 
 // default effect gains
 struct effect_gain_t {
-	uint8_t friction = 127;
+	uint8_t friction = 254;
 	uint8_t spring = 64;
 	uint8_t damper = 64;
 	uint8_t inertia = 127;
 };
 
 struct effect_scaler_t {
-	float friction = 2.0; //0.4 * 40;
+	float friction = 1.0; //0.4 * 40;
 	float spring = 16.0;
 	float damper = 4.0; //2 * 40 * 2
 	float inertia = 2.0;//0.5 * 40;
