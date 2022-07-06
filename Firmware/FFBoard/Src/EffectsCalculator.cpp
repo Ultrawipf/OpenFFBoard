@@ -391,6 +391,8 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 		int16_t deadBand = effect->conditions[con_idx].deadBand;
 		int32_t force = 0;
 
+		float speedRampupCeil = speedRampupPct();
+
 		// Effect is only active outside deadband + offset
 		if (abs((int32_t)speed - offset) > deadBand){
 
@@ -399,9 +401,9 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 
 			// check if speed is in the 0..x% to rampup, if is this range, apply a sinusoidale function to smooth the torque (slow near 0, slow around the X% rampup
 			float rampupFactor = 1.0;
-			if (fabs (speed) < speedRampupPct()) {								// if speed in the range to rampup we apply a sinus curbe to ramup
+			if (fabs (speed) < speedRampupCeil) {								// if speed in the range to rampup we apply a sinus curbe to ramup
 
-				float phaseRad = M_PI * ((fabs (speed) / speedRampupPct()) - 0.5);// we start to compute the normalized angle (speed / normalizedSpeed@5%) and translate it of -1/2PI to translate sin on 1/2 periode
+				float phaseRad = M_PI * ((fabs (speed) / speedRampupCeil) - 0.5);// we start to compute the normalized angle (speed / normalizedSpeed@5%) and translate it of -1/2PI to translate sin on 1/2 periode
 				rampupFactor = ( 1 + sin(phaseRad ) ) / 2;						// sin value is -1..1 range, we translate it to 0..2 and we scale it by 2
 
 			}
