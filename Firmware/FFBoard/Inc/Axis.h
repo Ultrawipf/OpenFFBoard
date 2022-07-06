@@ -147,7 +147,6 @@ public:
 	int16_t updateEndstop();
 
 	metric_t* getMetrics();
-	float 	 getSpeedScalerNormalized();
 
 	void setEffectTorque(int32_t torque);
 	bool updateTorque(int32_t* totalTorque);
@@ -242,7 +241,7 @@ private:
 	bool idle_center = false;
 
 	const biquad_constant_t filterSpeedCst[3] = {{ 25, 55 }, { 125, 55 }, { 250, 55 }};
-	const biquad_constant_t filterAccelCst[3] = {{ 120, 30 }, { 210, 30 }, { 300, 30 }};
+	const biquad_constant_t filterAccelCst[3] = {{ 40, 30 }, { 55, 30 }, { 70, 30 }};
 	const biquad_constant_t filterDamperCst = {60, 55};
 	uint8_t filterProfileId = 0;
 	const float filter_f = 1000; // 1khz
