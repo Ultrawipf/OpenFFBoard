@@ -423,11 +423,6 @@ metric_t* Axis::getMetrics() {
 	return &metric.current;
 }
 
-float Axis::getSpeedScalerNormalized() {
-	//return speedScalerNormalized;
-	return (float)0x7FFF / maxSpeedDegS;
-}
-
 
 int32_t Axis::getLastScaledEnc() {
 	return  clip(metric.current.pos,-0x7fff,0x7fff);
@@ -505,7 +500,7 @@ void Axis::updateMetrics(float new_pos) { // pos is degrees
 	// compute speed and accel from raw instant speed normalized
 	float currentSpeed = (new_pos - metric.previous.posDegrees) * 1000.0; // deg/s
 	metric.current.speed = speedFilter.process(currentSpeed);
-	metric.current.accel = accelFilter.process((currentSpeed - _lastSpeed) * 1000.0); // deg/s/s
+	metric.current.accel = accelFilter.process((currentSpeed - _lastSpeed))* 1000.0; // deg/s/s
 	_lastSpeed = currentSpeed;
 
 	metric.current.torque = 0;
@@ -572,7 +567,7 @@ bool Axis::updateTorque(int32_t* totalTorque) {
 		float torqueSign = torque > 0 ? 1 : -1; // Used to prevent metrics against the force to go into the limiter
 		// Speed. Mostly tuned...
 		spdlimiterAvg.addValue(metric.current.speed);
-		float speedreducer = (float)((spdlimiterAvg.getAverage()*torqueSign) - (float)maxSpeedDegS) * getSpeedScalerNormalized();
+		float speedreducer = (float)((spdlimiterAvg.getAverage()*torqueSign) - (float)maxSpeedDegS) *  ((float)0x7FFF / maxSpeedDegS);
 		spdlimitreducerI = clip<float,int32_t>( spdlimitreducerI + ((speedreducer * 0.015) * torqueScaler),0,power);
 
 		// Accel limit. Not really useful. Maybe replace with torque slew rate limit?

@@ -20,7 +20,7 @@
 
 #define INTERNAL_SCALER_DAMPER 40
 #define INTERNAL_SCALER_FRICTION 8
-#define INTERNAL_SCALER_INERTIA 0.01
+#define INTERNAL_SCALER_INERTIA 4
 
 class Axis;
 struct metric_t;
