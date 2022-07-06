@@ -19,7 +19,7 @@
 #define EFFECT_THREAD_PRIO 20 // low priority for stat
 
 #define INTERNAL_SCALER_DAMPER 40
-#define INTERNAL_SCALER_FRICTION 91
+#define INTERNAL_SCALER_FRICTION 45
 #define INTERNAL_SCALER_INERTIA 4
 
 class Axis;
