@@ -165,7 +165,16 @@ const ClassIdentifier ADS111X_AnalogSource::getInfo(){
 	return info;
 }
 
-ADS111X_AnalogSource::ADS111X_AnalogSource() : ADS111X(i2cport) , CommandHandler("adsAnalog", CLSID_ANALOG_ADS111X, 0), Thread("ads111x", 64, 25) {
+
+const std::array<std::pair<uint16_t,uint16_t>,4> minMaxValAddr = {
+	std::pair<uint16_t,uint16_t>(ADR_ADS111X_MIN_0,ADR_ADS111X_MAX_0),
+	std::pair<uint16_t,uint16_t>(ADR_ADS111X_MIN_1,ADR_ADS111X_MAX_1),
+	std::pair<uint16_t,uint16_t>(ADR_ADS111X_MIN_2,ADR_ADS111X_MAX_2),
+	std::pair<uint16_t,uint16_t>(ADR_ADS111X_MIN_3,ADR_ADS111X_MAX_3),
+
+};
+
+ADS111X_AnalogSource::ADS111X_AnalogSource() : ADS111X(i2cport), AnalogAxisProcessing(AnalogAxisProcessing(4,this, true, true,false)) , CommandHandler("adsAnalog", CLSID_ANALOG_ADS111X, 0), Thread("ads111x", 64, 25) {
 	CommandHandler::registerCommands();
 	setAxes(axes,differentialMode);
 	registerCommand("inputs", ADS111X_AnalogSource_commands::axes, "Amount of inputs (1-4 or 1-2 if differential)",CMDFLAG_GET | CMDFLAG_SET);
@@ -182,20 +191,23 @@ ADS111X_AnalogSource::~ADS111X_AnalogSource(){
 }
 
 void ADS111X_AnalogSource::saveFlash(){
+	AnalogAxisProcessing::saveMinMaxValues(minMaxValAddr);
 	uint16_t data = axes & 0x7;
 	data |= (gain & 0x7) << 3;
 	data |= (datarate & 0x7) << 6;
 	data |= (differentialMode) << 9;
-
+	data |= AnalogAxisProcessing::encodeAnalogProcessingConfToInt(AnalogAxisProcessing::getAnalogProcessingConfig()) << 10;
 	Flash_Write(ADR_ADS111X_CONF1, data);
 }
 
 void ADS111X_AnalogSource::restoreFlash(){
+	AnalogAxisProcessing::restoreMinMaxValues(minMaxValAddr);
 	uint16_t data;
 	if(Flash_Read(ADR_ADS111X_CONF1, &data)){
 		setAxes(data & 0x7, ((data >> 9) & 0x1) != 0);
 		setGain((data >> 3) & 0x7);
 		setDatarate((data >> 6) & 0x7);
+		AnalogAxisProcessing::setAnalogProcessingConfig(AnalogAxisProcessing::decodeAnalogProcessingConfFromInt(data >> 10));
 	}
 }
 
@@ -319,7 +331,7 @@ std::vector<int32_t>* ADS111X_AnalogSource::getAxes(){
 		state = ADS111X_AnalogSource_state::none;
 		Notify();
 	}
-
+	AnalogAxisProcessing::processAxes(buf); // Do processing every call to keep filter samplerate steady
 	return &this->buf;
 }
 
