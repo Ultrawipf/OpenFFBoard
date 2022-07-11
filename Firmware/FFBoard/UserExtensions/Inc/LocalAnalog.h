@@ -15,20 +15,20 @@
 #include "Filters.h"
 #include "AnalogAxisProcessing.h"
 
-struct MinMaxPair{
-	int32_t min = 0x7fff;
-	int32_t max = -0x7fff;
-};
+//struct MinMaxPair{
+//	int32_t min = 0x7fff;
+//	int32_t max = -0x7fff;
+//};
 
 struct LocalAnalogConfig{
 	uint8_t analogmask = 0xff;
-	bool autorange = false;
-	bool filtersEnabled = false;
+//	bool autorange = false;
+//	bool filtersEnabled = false;
 };
 
 class LocalAnalog : public AnalogSource, public CommandHandler, public AnalogAxisProcessing{
 	enum class LocalAnalog_commands : uint32_t{
-		pinmask,autocal,pins,values,filter,min,max
+		pinmask,pins=2,values=3
 	};
 public:
 	LocalAnalog();
@@ -49,21 +49,20 @@ public:
 
 	const ClassType getClassType() override {return ClassType::Analogsource;};
 
-	void setupFilters();
+	//void setupFilters();
 private:
-	bool autorange = false;
-	static LocalAnalogConfig decodeAnalogConfFromInt(uint16_t val);
-	static uint16_t encodeAnalogConfToInt(LocalAnalogConfig conf);
+//	bool autorange = false;
+//	static LocalAnalogConfig decodeAnalogConfFromInt(uint16_t val);
+//	static uint16_t encodeAnalogConfToInt(LocalAnalogConfig conf);
 	const uint8_t numPins = ADC_PINS;
-	MinMaxPair minMaxVals[ADC_PINS];
+	//MinMaxPair minMaxVals[ADC_PINS];
 
-	Biquad filters[ADC_PINS]; // Optional filters
-	const float filterF = 30.0/1000.0 , filterQ = 0.5;
+//	Biquad filters[ADC_PINS]; // Optional filters
+//	const float filterF = 30.0/1000.0 , filterQ = 0.5;
 	LocalAnalogConfig aconf;
-	uint32_t filterSamples = 0;
-	const uint32_t waitFilterSamples = 500;
-	float autorangeScale = 1.05; // Multiplies autorange scale to add some margin
-	static const std::vector<std::pair<uint16_t,uint16_t>> minMaxValAddr;
+//	uint32_t filterSamples = 0;
+//	const uint32_t waitFilterSamples = 500;
+//	float autorangeScale = 1.05; // Multiplies autorange scale to add some margin
 };
 
 
