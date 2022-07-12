@@ -448,9 +448,10 @@ void Axis::setIdleSpringStrength(uint8_t spring){
 }
 
 void Axis::setDamperStrength(uint8_t damper){
-	this->damperIntensity = damper;
-	if(damperIntensity != 0)
-		damperFilter.calcBiquad();
+    if(damperIntensity == 0 && damper != 0)
+        damperFilter.calcBiquad();
+
+    this->damperIntensity = damper;
 }
 
 /*
