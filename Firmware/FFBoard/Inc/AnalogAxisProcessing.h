@@ -16,48 +16,6 @@
 #include "limits.h"
 
 
-//template<size_t AxisAmount,bool AllowFilters, bool AllowAutoscale>
-//class AnalogAxisProcessing_tpl
-//struct Empty{};
-//{
-//
-//public:
-//
-//	AnalogAxisProcessing_tpl(CommandHandler* cmdHandler = nullptr)
-//	{
-//
-//	};
-//
-//protected:
-//
-//	const uint32_t axisAmount = AxisAmount;
-////	std::conditional<AllowFilters,std::array<Biquad,AxisAmount>,Empty> filters; // Optional filters
-////	std::vector<MinMaxPair> minMaxVals;
-////	std::vector<std::pair<uint16_t,uint16_t>> minMaxValAddr = ManualMinMaxAddresses;
-////
-////	const float filterF = 30.0/1000.0 , filterQ = 0.5;
-////
-////	AnalogProcessingConfig conf;
-//	uint32_t filterSamples = 0;
-//	const uint32_t waitFilterSamples = 500;
-//
-//	float autorangeScale = 1.05; // Multiplies autorange scale to add some margin
-//	};
-
-//template<class T>
-//class AnalogAxisProcessingAddresses{
-//public:
-//	template<size_t minmaxlen>
-//	AnalogAxisProcessingAddresses(uint16_t settingsAddr,std::array<std::pair<uint16_t,uint16_t>,minmaxlen>) : data(data[length]),length(length),settingsAddr(settingsAddr)
-//	{
-//
-//	};
-//
-//private:
-//	uint32_t length;
-//	T data[];
-//	uint16_t settingsAddr;
-//};
 struct AnalogProcessingConfig{
 	bool autorange = false;
 	bool filtersEnabled = false;
