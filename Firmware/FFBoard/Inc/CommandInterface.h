@@ -44,7 +44,7 @@ protected:
  */
 class StringCommandInterface : public CommandInterface{
 public:
-	StringCommandInterface(uint32_t reservedBuffer = 16) : parser(CmdParser(reservedBuffer)){}
+	StringCommandInterface(uint32_t reservedBuffer = 16,uint32_t bufferMaxCapacity = 512) : parser(CmdParser(reservedBuffer,bufferMaxCapacity)){}
 	bool addBuf(char* Buf, uint32_t *Len);
 	uint32_t bufferCapacity();
 	bool getNewCommands(std::vector<ParsedCommand>& commands) override;
@@ -84,7 +84,7 @@ private:
 
 
 
-class UART_CommandInterface : public StringCommandInterface,public UARTDevice, public cpp_freertos::Thread{
+class UART_CommandInterface : public UARTDevice, public cpp_freertos::Thread,public StringCommandInterface{
 public:
 	UART_CommandInterface(uint32_t baud = 115200);
 	virtual ~UART_CommandInterface();
