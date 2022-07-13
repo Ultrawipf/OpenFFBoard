@@ -200,6 +200,14 @@ void Axis::setPos(uint16_t val)
 	}
 }
 
+MotorDriver* Axis::getDriver(){
+	return drv.get();
+}
+
+Encoder* Axis::getEncoder(){
+	return drv->getEncoder();
+}
+
 /*
  * Called from FFBWheel->Update() via AxesManager->Update()
  */

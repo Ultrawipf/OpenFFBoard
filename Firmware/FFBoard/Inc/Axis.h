@@ -105,6 +105,9 @@ public:
 	uint8_t getDrvType();
 	uint8_t getEncType();
 
+	Encoder* getEncoder();
+	MotorDriver* getDriver();
+
 	void usbSuspend(); // Called on usb disconnect and suspend
 	void usbResume();  // Called on usb resume
 
