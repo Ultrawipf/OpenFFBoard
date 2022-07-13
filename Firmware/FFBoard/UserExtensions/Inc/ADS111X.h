@@ -61,7 +61,7 @@ private:
 };
 
 #ifdef ADS111XANALOG
-class ADS111X_AnalogSource : public ADS111X, public AnalogAxisProcessing , public AnalogSource, public CommandHandler, public cpp_freertos::Thread {
+class ADS111X_AnalogSource : public ADS111X, public AnalogSource, public CommandHandler, public AnalogAxisProcessing, public cpp_freertos::Thread {
 	enum class ADS111X_AnalogSource_commands : uint32_t {
 		axes,differential,gain,rate,address
 	};
