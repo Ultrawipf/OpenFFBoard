@@ -75,8 +75,13 @@ void AxesManager::updateTorque() {
 
 
 std::vector<int32_t>* AxesManager::getAxisValues(){
+	this->axisValues.clear(); // Empty axes
 	for (std::size_t i=0; i < axes.size(); i++) {
-		this->axisValues[i] = axes[i]->getLastScaledEnc();
+		Encoder* enc = axes[i]->getEncoder();
+		if(enc && enc->getType() != EncoderType::NONE){ // If encoder not none type
+			this->axisValues.push_back(axes[i]->getLastScaledEnc());
+			//this->axisValues[i] = axes[i]->getLastScaledEnc();
+		}
 	}
 	return &this->axisValues;
 }
@@ -112,7 +117,8 @@ bool AxesManager::setAxisCount(int8_t count) {
 	control->update_disabled = false;
 
 	// Allocate axis value buffer
-	this->axisValues = std::vector<int32_t>(axis_count,0);
+	this->axisValues.reserve(axis_count);
+	//this->axisValues = std::vector<int32_t>(axis_count,0);
 
 	return true;
 }

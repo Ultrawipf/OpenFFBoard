@@ -6,3 +6,5 @@
 - Clean code on filter
 - Added some analog autorange margin
 - Added min/max commands for apin
+- Added analog processing functions to ADS111X
+- Selecting a "none" encoder will remove the axis value. Allows analog inputs to be used as the primary axis.
