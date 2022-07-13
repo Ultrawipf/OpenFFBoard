@@ -22,7 +22,7 @@ class CommandInterface;
 
 class CmdParser {
 public:
-	CmdParser(uint32_t reservedBuffer = 16);
+	CmdParser(uint32_t reservedBuffer = 16,uint32_t bufferMaxCapacity = 512);
 	virtual ~CmdParser();
 
 	void clear();
@@ -34,8 +34,8 @@ public:
 
 private:
 	std::string buffer;
-	int32_t reservedBuffer = 100;
-	int32_t bufferMaxCapacity = 512;
+	uint32_t reservedBuffer = 100;
+	uint32_t bufferMaxCapacity = 512;
 
 	uint32_t clearBufferTimeout = 0;
 	uint32_t lastAddTime = 0;

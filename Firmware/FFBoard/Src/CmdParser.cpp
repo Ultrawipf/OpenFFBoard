@@ -11,8 +11,9 @@
 #include "FFBoardMainCommandThread.h"
 #include "critical.hpp"
 
-CmdParser::CmdParser(uint32_t reservedBuffer) {
+CmdParser::CmdParser(uint32_t reservedBuffer,uint32_t bufferMaxCapacity) {
 	this->reservedBuffer = reservedBuffer;
+	this->bufferMaxCapacity = bufferMaxCapacity;
 	buffer.reserve(reservedBuffer);
 }
 
@@ -26,6 +27,12 @@ void CmdParser::clear(){
 
 // TODO: when called from interrupts quickly it might interfere with the parsing. Use double buffers or create tokens in this function
 bool CmdParser::add(char* Buf, uint32_t *Len){
+	if(bufferMaxCapacity < this->buffer.size()+*Len){
+		//buffer.clear();
+		pulseErrLed();
+		return false; // we can not add to the buffer. reject command and clear buffer
+	}
+
 	bool flag = false;
 	for(uint32_t i=0;i<*Len;i++){
 		// Replace end markers

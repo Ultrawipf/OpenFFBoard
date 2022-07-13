@@ -99,6 +99,7 @@ bool StringCommandInterface::addBuf(char* Buf, uint32_t *Len){
 	bool res = this->parser.add(Buf, Len);
 	if(res){
 		parserReady = true; // Signals that we should execute commands in the thread
+		pulseSysLed();
 		FFBoardMainCommandThread::wakeUp();
 	}
 	return res;
@@ -296,7 +297,7 @@ bool CDC_CommandInterface::readyToSend(){
  */
 
 extern UARTPort external_uart; // defined in cpp_target_config.cpp
-UART_CommandInterface::UART_CommandInterface(uint32_t baud) : StringCommandInterface(128), UARTDevice(external_uart),Thread("UARTCMD", 256, 36), baud(baud){ //
+UART_CommandInterface::UART_CommandInterface(uint32_t baud) : UARTDevice(external_uart),Thread("UARTCMD", 256, 36),StringCommandInterface(256,256), baud(baud){ //
 	uartconfig = uartport->getConfig();
 	if(baud != 0){
 		uartconfig.BaudRate = this->baud;
@@ -336,7 +337,8 @@ void UART_CommandInterface::sendReplies(const std::vector<CommandResult>& result
 		return;
 	}
 
-	resultsBuffer.assign(results.begin(), results.end());
+	//resultsBuffer.assign(results.begin(), results.end());
+	resultsBuffer = results;
 	resultsBuffer.shrink_to_fit();
 	nextFormat = originalInterface != this && originalInterface != nullptr;
 	Notify();
@@ -351,6 +353,7 @@ void UART_CommandInterface::uartRcv(char& buf){
 	BaseType_t savedInterruptStatus =  cpp_freertos::CriticalSection::EnterFromISR();
 	if(this->parser.bufferCapacity() > (int32_t)len) // Check buffer because we can't allocate more memory inside the ISR safely at the moment
 		StringCommandInterface::addBuf(&buf, &len);
+
 	cpp_freertos::CriticalSection::ExitFromISR(savedInterruptStatus);
 }
 
