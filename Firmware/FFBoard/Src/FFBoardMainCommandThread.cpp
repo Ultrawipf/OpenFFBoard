@@ -26,12 +26,14 @@ Error FFBoardMainCommandThread::cmdExecError = Error(ErrorCode::cmdExecutionErro
 
 
 cpp_freertos::BinarySemaphore FFBoardMainCommandThread::threadSem = cpp_freertos::BinarySemaphore();
-
+FFBoardMainCommandThread* commandThread;
 
 // Note: allocate enough memory for the command thread to store replies
 FFBoardMainCommandThread::FFBoardMainCommandThread(FFBoardMain* mainclass) : Thread("CMD_MAIN",700, 35) {
 	//main = mainclass;
+	commandThread = this;
 	this->Start();
+
 }
 
 FFBoardMainCommandThread::~FFBoardMainCommandThread() {
@@ -52,10 +54,10 @@ void FFBoardMainCommandThread::Run(){
 					commands.shrink_to_fit();
 			}
 		}
+		WaitForNotification();
+		//FFBoardMainCommandThread::threadSem.Take(); // Stop thread again. will be resumed when parser ready
 
-		FFBoardMainCommandThread::threadSem.Take(); // Stop thread again. will be resumed when parser ready
-
-		Delay(1); // Give the scheduler time
+		//Delay(1); // Give the scheduler time
 	}
 }
 
@@ -65,11 +67,13 @@ void FFBoardMainCommandThread::Run(){
 void FFBoardMainCommandThread::wakeUp(){
 
 	if(inIsr()){
-		BaseType_t pxHigherPriorityTaskWoken;
-		FFBoardMainCommandThread::threadSem.GiveFromISR(&pxHigherPriorityTaskWoken);
-		portYIELD_FROM_ISR(pxHigherPriorityTaskWoken);
+		commandThread->NotifyFromISR();
+//		BaseType_t pxHigherPriorityTaskWoken;
+//		FFBoardMainCommandThread::threadSem.GiveFromISR(&pxHigherPriorityTaskWoken);
+//		portYIELD_FROM_ISR(pxHigherPriorityTaskWoken);
 	}else{
-		FFBoardMainCommandThread::threadSem.Give();
+		commandThread->Notify();
+		//FFBoardMainCommandThread::threadSem.Give();
 	}
 
 }
