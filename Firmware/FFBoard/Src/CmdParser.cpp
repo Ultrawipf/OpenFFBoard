@@ -10,43 +10,47 @@
 #include "CommandHandler.h"
 #include "FFBoardMainCommandThread.h"
 #include "critical.hpp"
+//#include "cpp_target_config.h"
 
-CmdParser::CmdParser(uint32_t reservedBuffer,uint32_t bufferMaxCapacity) {
-	this->reservedBuffer = reservedBuffer;
+CmdParser::CmdParser(uint32_t bufferMaxCapacity) : ringbuffer(RingBufferWrapper(bufferMaxCapacity)) {
+	//this->reservedBuffer = reservedBuffer;
 	this->bufferMaxCapacity = bufferMaxCapacity;
-	buffer.reserve(reservedBuffer);
 }
 
 CmdParser::~CmdParser() {
 }
 
 void CmdParser::clear(){
-	buffer.clear();
+	ringbuffer.clean();
 }
 
 
 // TODO: when called from interrupts quickly it might interfere with the parsing. Use double buffers or create tokens in this function
 bool CmdParser::add(char* Buf, uint32_t *Len){
-	if(bufferMaxCapacity < this->buffer.size()+*Len){
-		//buffer.clear();
-		pulseErrLed();
-		return false; // we can not add to the buffer. reject command and clear buffer
+//	if(ringbuffer.freeSpace() < *Len){
+//		clear();
+//		pulseErrLed();
+//		return false; // we can not add to the buffer. reject command and clear buffer
+//	}
+//
+	if(clearBufferTimeout && HAL_GetTick() - lastAddTime > clearBufferTimeout ){
+		clear();
 	}
 
 	bool flag = false;
 	for(uint32_t i=0;i<*Len;i++){
 		// Replace end markers
-		if(*(Buf+i) == '\n' || *(Buf+i) == '\r' || *(Buf+i) == ';'|| *(Buf+i) == ' '){
+		char c = *(Buf+i);
+		if(c == '\n' || c == '\r' || c == ';'|| c == ' '){
 			*(Buf+i) = (uint8_t)';';
 			flag = true;
-
 		}
 	}
-	if(clearBufferTimeout && HAL_GetTick() - lastAddTime > clearBufferTimeout ){
-		this->buffer.clear();
-	}
+	ringbuffer.appendMultiple((uint8_t*)Buf, *Len);
+
 	lastAddTime = HAL_GetTick();
-	this->buffer.append((char*)Buf,*Len);
+	//this->buffer.append((char*)Buf,*Len);
+
 	return flag;
 }
 
@@ -63,7 +67,8 @@ int32_t CmdParser::bufferCapacity(){
 	if(lastAddTime > clearBufferTimeout){
 		return bufferMaxCapacity;
 	}
-	return std::max<int32_t>(bufferMaxCapacity - buffer.size(),0);
+	//return std::max<int32_t>(bufferMaxCapacity - buffer.size(),0);
+	return std::max<int32_t>(ringbuffer.freeSpace(),0);
 }
 
 
@@ -77,18 +82,49 @@ bool CmdParser::parse(std::vector<ParsedCommand>& commands){
 	uint32_t pos = 0;
 	uint32_t lpos = 0;
 
-	cpp_freertos::CriticalSection::Enter();
-	while(pos < buffer.length()-1){
-		pos = buffer.find(';',lpos);
-		if(pos != std::string::npos){
-			std::string token = buffer.substr(lpos,pos-lpos);
-			lpos = pos+1;
-			tokens.push_back(token);
-		}
+	//cpp_freertos::CriticalSection::Enter();
+//	while(pos < buffer.length()-1){
+//		pos = buffer.find(';',lpos);
+//		if(pos != std::string::npos){
+//			std::string token = buffer.substr(lpos,pos-lpos);
+//			lpos = pos+1;
+//			tokens.push_back(token);
+//		}
+//	}
+//	buffer.erase(0,lpos); // Clear parsed portion from buffer
+//	buffer.reserve(reservedBuffer);
+	//cpp_freertos::CriticalSection::Exit();
+
+	uint32_t bufferlen = ringbuffer.length();
+	if(bufferlen==0){
+		return false;
 	}
-	buffer.erase(0,lpos); // Clear parsed portion from buffer
-	buffer.reserve(reservedBuffer);
-	cpp_freertos::CriticalSection::Exit();
+	char buf[bufferlen];
+	ringbuffer.peekMultiple((uint8_t*)buf, bufferlen);
+	// find end marker
+	while(pos<bufferlen){
+		if(buf[pos] == ';'){
+			if(lpos+2<pos){
+				tokens.emplace_back(buf+lpos,buf+pos);
+				lpos = pos+1;
+			}
+		}
+		pos++;
+	}
+	// discard used chars
+	ringbuffer.discardMultiple(lpos);
+
+
+//	std::string buffer = std::string((char*)buf,bufferlen);
+//	while(pos < buffer.length()-1){
+//		pos = buffer.find(';',lpos);
+//		if(pos != std::string::npos){
+//			std::string token = buffer.substr(lpos,pos-lpos);
+//			lpos = pos+1;
+//			tokens.push_back(token);
+//		}
+//	}
+
 
 	for(std::string &word : tokens){
 		if(word.length() < 2)

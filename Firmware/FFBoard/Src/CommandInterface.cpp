@@ -11,7 +11,7 @@
 #include "CommandHandler.h"
 #include <stdlib.h>
 #include "critical.hpp"
-
+#include "cpp_target_config.h"
 std::vector<CommandInterface*> CommandInterface::cmdInterfaces;
 
 
@@ -234,7 +234,7 @@ void StringCommandInterface::generateReplyFromCmd(std::string& replyPart,const P
  */
 
 
-CDC_CommandInterface::CDC_CommandInterface() : StringCommandInterface(32), Thread("CDCCMD", 512, 37) {
+CDC_CommandInterface::CDC_CommandInterface() : StringCommandInterface(512), Thread("CDCCMD", 512, 37) {
 	parser.setClearBufferTimeout(parserTimeout);
 	this->Start();
 }
@@ -261,7 +261,6 @@ void CDC_CommandInterface::Run(){
 
 
 void CDC_CommandInterface::sendReplies(const std::vector<CommandResult>& results,CommandInterface* originalInterface){
-
 	if(HAL_GetTick() - lastSendTime > parserTimeout){
 		resultsBuffer.clear(); // Empty buffer because we were not able to reply in time to prevent the full buffer from blocking future commands
 		//CDCcomm::clearRemainingBuffer(0);
@@ -275,6 +274,7 @@ void CDC_CommandInterface::sendReplies(const std::vector<CommandResult>& results
 	resultsBuffer.shrink_to_fit();
 	nextFormat = originalInterface != this && originalInterface != nullptr;
 	Notify(); // Resume
+
 }
 
 /**
@@ -297,7 +297,7 @@ bool CDC_CommandInterface::readyToSend(){
  */
 
 extern UARTPort external_uart; // defined in cpp_target_config.cpp
-UART_CommandInterface::UART_CommandInterface(uint32_t baud) : UARTDevice(external_uart),Thread("UARTCMD", 256, 36),StringCommandInterface(256,256), baud(baud){ //
+UART_CommandInterface::UART_CommandInterface(uint32_t baud) : UARTDevice(external_uart),Thread("UARTCMD", 256, 36),StringCommandInterface(512), baud(baud){ //
 	uartconfig = uartport->getConfig();
 	if(baud != 0){
 		uartconfig.BaudRate = this->baud;
@@ -312,6 +312,13 @@ UART_CommandInterface::~UART_CommandInterface() {
 
 }
 
+/**
+ * Ready to send if there is no data in the backup buffer of the cdc port
+ */
+bool UART_CommandInterface::readyToSend(){
+
+	return !uartport->isTaken();
+}
 
 void UART_CommandInterface::Run(){
 	while(true){
@@ -328,6 +335,7 @@ void UART_CommandInterface::Run(){
 		resultsBuffer.clear();
 		if(!sendBuffer.empty())
 			uartport->transmit_IT(sendBuffer.c_str(), sendBuffer.size());
+		debugpin.reset();
 	}
 }
 
@@ -336,6 +344,7 @@ void UART_CommandInterface::sendReplies(const std::vector<CommandResult>& result
 	if( (!enableBroadcastFromOtherInterfaces && originalInterface != this) ){
 		return;
 	}
+	debugpin.set();
 
 	//resultsBuffer.assign(results.begin(), results.end());
 	resultsBuffer = results;
@@ -346,15 +355,17 @@ void UART_CommandInterface::sendReplies(const std::vector<CommandResult>& result
 
 /**
  * Receives one byte and adds it to the parser
- * TODO: seems to cause resets when parsing multiple commands quickly
  */
 void UART_CommandInterface::uartRcv(char& buf){
 	uint32_t len = 1;
-	BaseType_t savedInterruptStatus =  cpp_freertos::CriticalSection::EnterFromISR();
-	if(this->parser.bufferCapacity() > (int32_t)len) // Check buffer because we can't allocate more memory inside the ISR safely at the moment
+	//BaseType_t savedInterruptStatus =  cpp_freertos::CriticalSection::EnterFromISR();
+	if(this->parser.bufferCapacity() > (int32_t)len){ // Check buffer because we can't allocate more memory inside the ISR safely at the moment
 		StringCommandInterface::addBuf(&buf, &len);
+	}else{
+		pulseErrLed();
+	}
 
-	cpp_freertos::CriticalSection::ExitFromISR(savedInterruptStatus);
+	//cpp_freertos::CriticalSection::ExitFromISR(savedInterruptStatus);
 }
 
 

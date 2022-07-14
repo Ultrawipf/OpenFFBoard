@@ -44,7 +44,7 @@ protected:
  */
 class StringCommandInterface : public CommandInterface{
 public:
-	StringCommandInterface(uint32_t reservedBuffer = 16,uint32_t bufferMaxCapacity = 512) : parser(CmdParser(reservedBuffer,bufferMaxCapacity)){}
+	StringCommandInterface(uint32_t bufferMaxCapacity = 512) : parser(CmdParser(bufferMaxCapacity)){}
 	bool addBuf(char* Buf, uint32_t *Len);
 	uint32_t bufferCapacity();
 	bool getNewCommands(std::vector<ParsedCommand>& commands) override;
@@ -93,6 +93,7 @@ public:
 
 	void sendReplies(const std::vector<CommandResult>& results,CommandInterface* originalInterface) override;
 	void uartRcv(char& buf);
+	bool readyToSend();
 	const std::string getHelpstring(){return "UART interface. " + StringCommandInterface::getHelpstring();};
 	//void endUartTransfer(UARTPort* port) override;
 
