@@ -59,7 +59,7 @@ public:
 	SystemCommands systemCommands; //!< System command handler
 
 #ifdef UARTCOMMANDS
-	std::unique_ptr<UART_CommandInterface> uartCmdInterface = std::make_unique<UART_CommandInterface>(500000); // UART command interface
+	std::unique_ptr<UART_CommandInterface> uartCmdInterface = std::make_unique<UART_CommandInterface>(115200); // UART command interface
 #endif
 
 protected:
