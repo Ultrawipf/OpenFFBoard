@@ -19,13 +19,14 @@
 #include "ClassChooser.h"
 #include "FFBoardMain.h"
 #include "critical.hpp"
+#include "cpp_target_config.h"
+
 
 
 Error FFBoardMainCommandThread::cmdNotFoundError = Error(ErrorCode::cmdNotFound,ErrorType::temporary,"Invalid command");
 Error FFBoardMainCommandThread::cmdExecError = Error(ErrorCode::cmdExecutionError,ErrorType::temporary,"Error while executing command");
 
 
-cpp_freertos::BinarySemaphore FFBoardMainCommandThread::threadSem = cpp_freertos::BinarySemaphore();
 FFBoardMainCommandThread* commandThread;
 
 // Note: allocate enough memory for the command thread to store replies
@@ -89,7 +90,6 @@ void FFBoardMainCommandThread::wakeUp(){
  */
 void FFBoardMainCommandThread::executeCommands(std::vector<ParsedCommand>& commands,CommandInterface* commandInterface){
 
-	//cpp_freertos::CriticalSection::SuspendScheduler();
 	for(ParsedCommand& cmd : commands){
 		cmd.originalInterface = commandInterface;
 		this->results.clear();
@@ -132,10 +132,10 @@ void FFBoardMainCommandThread::executeCommands(std::vector<ParsedCommand>& comma
 				while(!itf->readyToSend() && --remainingTime){
 					Delay(1);
 				}
-				if(remainingTime)
+				if(remainingTime){
 					itf->sendReplies(results, commandInterface);
+				}
 			}
 		}
 	}
-	//cpp_freertos::CriticalSection::ResumeScheduler();
 }

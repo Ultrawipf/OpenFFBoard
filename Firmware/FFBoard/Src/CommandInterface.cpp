@@ -11,7 +11,7 @@
 #include "CommandHandler.h"
 #include <stdlib.h>
 #include "critical.hpp"
-#include "cpp_target_config.h"
+
 std::vector<CommandInterface*> CommandInterface::cmdInterfaces;
 
 
@@ -99,7 +99,6 @@ bool StringCommandInterface::addBuf(char* Buf, uint32_t *Len){
 	bool res = this->parser.add(Buf, Len);
 	if(res){
 		parserReady = true; // Signals that we should execute commands in the thread
-		pulseSysLed();
 		FFBoardMainCommandThread::wakeUp();
 	}
 	return res;
@@ -335,7 +334,6 @@ void UART_CommandInterface::Run(){
 		resultsBuffer.clear();
 		if(!sendBuffer.empty())
 			uartport->transmit_IT(sendBuffer.c_str(), sendBuffer.size());
-		debugpin.reset();
 	}
 }
 
@@ -344,8 +342,6 @@ void UART_CommandInterface::sendReplies(const std::vector<CommandResult>& result
 	if( (!enableBroadcastFromOtherInterfaces && originalInterface != this) ){
 		return;
 	}
-	debugpin.set();
-
 	//resultsBuffer.assign(results.begin(), results.end());
 	resultsBuffer = results;
 	resultsBuffer.shrink_to_fit();
@@ -359,11 +355,8 @@ void UART_CommandInterface::sendReplies(const std::vector<CommandResult>& result
 void UART_CommandInterface::uartRcv(char& buf){
 	uint32_t len = 1;
 	//BaseType_t savedInterruptStatus =  cpp_freertos::CriticalSection::EnterFromISR();
-	if(this->parser.bufferCapacity() > (int32_t)len){ // Check buffer because we can't allocate more memory inside the ISR safely at the moment
-		StringCommandInterface::addBuf(&buf, &len);
-	}else{
-		pulseErrLed();
-	}
+	StringCommandInterface::addBuf(&buf, &len);
+
 
 	//cpp_freertos::CriticalSection::ExitFromISR(savedInterruptStatus);
 }

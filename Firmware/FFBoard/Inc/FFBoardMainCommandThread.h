@@ -58,8 +58,7 @@ protected:
 	virtual void executeCommands(std::vector<ParsedCommand>& commands,CommandInterface* commandInterface);
 
 
-	static cpp_freertos::BinarySemaphore threadSem; // Blocks this thread. more efficient than suspending/waking
-	//static cpp_freertos::MutexStandard commandMutex;
+	//static cpp_freertos::BinarySemaphore threadSem; // Blocks this thread. more efficient than suspending/waking
 };
 
 #endif /* USEREXTENSIONS_SRC_FFBOARDMAINCOMMANDTHREAD_H_ */

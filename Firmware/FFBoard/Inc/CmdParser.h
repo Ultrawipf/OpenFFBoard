@@ -17,13 +17,14 @@
 #include "CommandHandler.h"
 #include "ringbufferwrapper.h"
 
+#define CMDPARSER_MAX_VALID_CAPACITY 2048
 
 class CommandHandler;
 class CommandInterface;
 
 class CmdParser {
 public:
-	CmdParser(uint32_t bufferMaxCapacity = 1024);
+	CmdParser(const uint32_t bufferMaxCapacity = 512);
 	virtual ~CmdParser();
 
 	void clear();
@@ -36,7 +37,7 @@ public:
 private:
 	//std::string buffer;
 	//uint32_t reservedBuffer = 100;
-	uint32_t bufferMaxCapacity = 512;
+	const uint32_t bufferMaxCapacity;
 
 	uint32_t clearBufferTimeout = 0;
 	uint32_t lastAddTime = 0;
