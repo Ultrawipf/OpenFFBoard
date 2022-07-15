@@ -307,7 +307,8 @@ void FFBHIDMain::send_report(){
 	 */
 	if( (reportSendCounter++ > 100/usb_report_rate || (memcmp(&lastReportHID,&reportHID,sizeof(reportHID_t)) != 0) )
 		&& tud_hid_n_ready(0)
-		&& !(reportSendCounter < usb_report_rate*2 && this->hidCommands->waitingToSend())) // Check if HID command interface wants to send something and allow that if we did not skip the last report
+		&& !(reportSendCounter < usb_report_rate*4 && this->hidCommands->waitingToSend())
+		) // Check if HID command interface wants to send something and allow that if we did not skip too many reports
 	{
 
 
