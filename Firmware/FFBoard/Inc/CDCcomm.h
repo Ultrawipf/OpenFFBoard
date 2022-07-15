@@ -19,6 +19,7 @@ public:
 	static void cdcFinished(uint8_t itf = 0);
 	static uint32_t remainingData(uint8_t itf = 0);
 	static void clearRemainingBuffer(uint8_t itf = 0);
+	static bool connected(uint8_t itf=0);
 
 private:
 	static bool usb_busy_retry;

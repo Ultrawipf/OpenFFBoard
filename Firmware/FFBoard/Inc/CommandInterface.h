@@ -75,7 +75,7 @@ public:
 private:
 	bool enableBroadcastFromOtherInterfaces = true;
 	uint32_t lastSendTime = 0;
-	const uint32_t parserTimeout = 2000;
+	const uint32_t parserTimeout = 500;
 	//cpp_freertos::BinarySemaphore sendSem;
 	std::vector<CommandResult> resultsBuffer;
 	bool nextFormat = false;

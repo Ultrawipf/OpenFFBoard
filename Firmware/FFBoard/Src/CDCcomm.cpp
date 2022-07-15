@@ -52,12 +52,16 @@ void CDCcomm::clearRemainingBuffer(uint8_t itf){
 	CDCcomm::remainingStrs[itf].clear();
 }
 
+bool CDCcomm::connected(uint8_t itf){
+	return tud_cdc_n_connected(itf);
+}
+
 /**
  * Sends a string via CDC
  * If not everything can be sent it will be buffered for later in a new string
  */
 uint16_t CDCcomm::cdcSend(std::string* reply,uint8_t itf){
-	if(!tud_ready() || reply->empty()){
+	if(!tud_ready() || reply->empty()){ // TODO check if connected when gui sets DTR
 		return 0;
 	}
 	cdcSems[itf].Take();
