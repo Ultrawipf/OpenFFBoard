@@ -107,7 +107,8 @@ void HID_CommandInterface::sendReplies(const std::vector<CommandResult>& results
 			this->queueReplyValues(reply,result.originalCommand);
 		}
 	}
-	this->Notify();
+	if(!this->outBuffer.empty())
+		this->Notify();
 }
 
 
