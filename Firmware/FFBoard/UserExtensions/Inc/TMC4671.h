@@ -42,6 +42,8 @@ enum class TMC_PwmMode : uint8_t {off = 0,HSlow_LShigh = 1, HShigh_LSlow = 2, re
 
 enum class TMC_StartupType{NONE,coldStart,warmStart};
 
+enum class TMC_GpioMode{DebugSpi,DSAdcClkOut,DSAdcClkIn,Aout_Bin,Ain_Bout,Aout_Bout,Ain_Bin};
+
 enum class MotorType : uint8_t {NONE=0,DC=1,STEPPER=2,BLDC=3,ERR};
 enum class PhiE : uint8_t {ext=1,openloop=2,abn=3,hall=5,aenc=6,aencE=7,NONE,extEncoder};
 enum class MotionMode : uint8_t {stop=0,torque=1,velocity=2,position=3,prbsflux=4,prbstorque=5,prbsvelocity=6,uqudext=8,encminimove=9,NONE};
@@ -266,6 +268,7 @@ struct TMC4671Biquad{
 
 
 
+
 class TMC4671 :
 		public MotorDriver, public PersistentStorage, public Encoder,
 		public CommandHandler, public SPIDevice, public ExtiHandler, public cpp_freertos::Thread,ErrorHandler
@@ -411,6 +414,9 @@ public:
 	int16_t getPhiEfromExternalEncoder();
 	int16_t getPhiE_Enc();
 
+	void setGpioMode(TMC_GpioMode mode);
+	uint8_t getGpioPins();
+	void setGpioPins(uint8_t pins);
 
 	void setPosSel(PosSelection psel);
 	void setVelSel(VelSelection vsel,uint8_t mode = 0);
