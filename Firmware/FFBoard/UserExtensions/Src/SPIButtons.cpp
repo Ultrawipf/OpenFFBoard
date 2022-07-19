@@ -110,7 +110,7 @@ void SPI_Buttons::setConfig(ButtonSourceConfig config){
 		this->spiConfig.cspol = false;
 		this->conf.cutRight = false;
 		this->spiConfig.peripheral.CLKPhase = SPI_PHASE_1EDGE;
-		this->spiConfig.peripheral.CLKPolarity = SPI_POLARITY_LOW;
+		this->spiConfig.peripheral.CLKPolarity = SPI_POLARITY_HIGH; // its actually shifting on the rising edge but 165 will have the first output set even before clocking. First clock cycle is actually second bit so we sample at the falling edge and skip the first bit with that.
 	}
 	spiPort.takeSemaphore();
 	spiPort.configurePort(&this->spiConfig.peripheral);
