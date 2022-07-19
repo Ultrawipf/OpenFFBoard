@@ -1603,6 +1603,49 @@ void TMC4671::setVelSel(VelSelection vsel,uint8_t mode){
 	this->conf.motconf.vel_sel = vsel;
 }
 
+/**
+ * Changes the mode of the 8 GPIO pins
+ * Banks A and B can be mapped independently to inputs or outputs, as a DS adc interface or by default as a secondary debug SPI port
+ */
+void TMC4671::setGpioMode(TMC_GpioMode mode){
+	uint8_t modeReg = 0;
+	switch(mode){
+	default:
+	case TMC_GpioMode::DebugSpi:
+		modeReg = 0;			break;
+	case TMC_GpioMode::DSAdcClkOut:
+		modeReg = 0b1100111;	break;
+	case TMC_GpioMode::DSAdcClkIn:
+		modeReg = 0b0000111;	break;
+	case TMC_GpioMode::Ain_Bin:
+		modeReg = 0b0000001;	break;
+	case TMC_GpioMode::Ain_Bout:
+		modeReg = 0b0010001;	break;
+	case TMC_GpioMode::Aout_Bin:
+		modeReg = 0b0001001;	break;
+	case TMC_GpioMode::Aout_Bout:
+		modeReg = 0b0011001;	break;
+	}
+
+	updateReg(0x7B, modeReg,0xff,0);
+}
+
+/**
+ * Reads the state of the 8 gpio pins
+ */
+uint8_t TMC4671::getGpioPins(){
+	return readReg(0x7B) >> 24;
+}
+
+/**
+ * Changes the state of gpio pins that are mapped as output
+ * lower 4 bits bank A, upper 4 bits bank B
+ */
+void TMC4671::setGpioPins(uint8_t pins){
+	uint32_t reg = pins << 16;
+	updateReg(0x7B, reg,0xff,16);
+}
+
 
 /**
  * Returns a string with the name and version of the chip
