@@ -48,9 +48,9 @@ struct effect_biquad_t {
 };
 
 struct effect_stat_t {
-	int16_t current;
-	int16_t max;
-	uint16_t nb;
+	int16_t current=0;
+	int16_t max=0;
+	uint16_t nb=0;
 };
 
 enum class EffectsCalculator_commands : uint32_t {
@@ -82,9 +82,10 @@ public:
 	virtual void setFilters(FFB_Effect* effect);
 	void setGain(uint8_t gain);
 	uint8_t getGain();
-	void logEffectType(uint8_t type);
+	void logEffectType(uint8_t type,bool remove = false);
 	void setDirectionEnableMask(uint8_t mask);
 	void calcStatsEffectType(uint8_t type, int16_t force);
+	void logEffectState(uint8_t type,uint8_t state);
 
 	//virtual ParseStatus command(ParsedCommand_old *cmd, std::string *reply);
 	CommandStatus command(const ParsedCommand& cmd,std::vector<CommandReply>& replies);
@@ -115,7 +116,7 @@ private:
 	// FFB status
 	bool effects_active = false; // was ffb_active
 	uint32_t effects_used = 0;
-	effect_stat_t effects_stats[12]; // [0..12 effect types]
+	std::array<effect_stat_t,12> effects_stats; // [0..12 effect types]
 	bool isMonitorEffect = false;
 
 	int32_t calcComponentForce(FFB_Effect *effect, int32_t forceVector, std::vector<std::unique_ptr<Axis>> &axes, uint8_t axis);
@@ -124,7 +125,7 @@ private:
 	int32_t calcConditionEffectForce(FFB_Effect *effect, float metric, uint8_t gain, uint8_t idx, float scale, float angle_ratio);
 	int32_t getEnvelopeMagnitude(FFB_Effect *effect);
 	std::string listEffectsUsed(bool details = false);
-	std::string listForceEffects();
+	//std::string listForceEffects();
 	void checkFilterCoeff(biquad_constant_t *filter, uint32_t freq,uint8_t q);
 	void updateFilterSettingsForEffects(uint8_t type_effect);
 };

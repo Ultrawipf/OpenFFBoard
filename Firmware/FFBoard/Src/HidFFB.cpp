@@ -159,6 +159,7 @@ void HidFFB::free_effect(uint16_t idx){
 		effects[idx].type=FFB_EFFECT_NONE;
 		for(int i=0; i< MAX_AXIS; i++) {
 			if(effects[idx].filter[i] != nullptr){
+				effects_calc->logEffectType(effects[idx].type, true); // Effect off
 				effects[idx].filter[i].reset(nullptr);
 			}
 		}
@@ -273,7 +274,7 @@ void HidFFB::new_effect(FFB_CreateNewEffect_Feature_Data_t* effect){
 	FFB_Effect new_effect;
 	new_effect.type = effect->effectType;
 
-	this->effects_calc->logEffectType(effect->effectType);
+	this->effects_calc->logEffectType(effect->effectType,false);
 #ifdef DEBUGLOG
 	CommandHandler::logSerialDebug("New effect type:" + std::to_string(effect->effectType) + " idx: " + std::to_string(index-1));
 #endif
@@ -385,6 +386,7 @@ void HidFFB::set_effect_operation(FFB_EffOp_Data_t* report){
 
 	}
 	//sendStatusReport(report[1]);
+	this->effects_calc->logEffectState(effects[id].type,effects[id].state);
 }
 
 

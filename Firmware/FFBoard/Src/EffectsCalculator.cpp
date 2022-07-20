@@ -40,7 +40,7 @@ EffectsCalculator::EffectsCalculator() : CommandHandler("fx", CLSID_EFFECTSCALC)
 	registerCommand("inertia", EffectsCalculator_commands::inertia, "Inertia gain", CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_INFOSTRING);
 	registerCommand("effects", EffectsCalculator_commands::effects, "List effects. set 0 to reset", CMDFLAG_GET | CMDFLAG_SET  | CMDFLAG_STR_ONLY);
 	registerCommand("effectsDetails", EffectsCalculator_commands::effectsDetails, "List effects details. set 0 to reset", CMDFLAG_GET | CMDFLAG_SET  | CMDFLAG_STR_ONLY);
-	registerCommand("effectsForces", EffectsCalculator_commands::effectsForces, "List actual effects forces.", CMDFLAG_GET | CMDFLAG_STR_ONLY);
+	registerCommand("effectsForces", EffectsCalculator_commands::effectsForces, "List actual effects forces.", CMDFLAG_GET);
 	registerCommand("monitorEffect", EffectsCalculator_commands::monitorEffect, "Get monitoring status. set to 1 to enable.", CMDFLAG_GET | CMDFLAG_SET);
 
 	registerCommand("damper_f", EffectsCalculator_commands::damper_f, "Damper biquad freq", CMDFLAG_GET | CMDFLAG_SET);
@@ -50,18 +50,18 @@ EffectsCalculator::EffectsCalculator() : CommandHandler("fx", CLSID_EFFECTSCALC)
 	registerCommand("inertia_f", EffectsCalculator_commands::inertia_f, "Inertia biquad freq", CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("inertia_q", EffectsCalculator_commands::inertia_q, "Inertia biquad q", CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_INFOSTRING);
 
-	registerCommand("scaler_damper", EffectsCalculator_commands::scaler_damper, "Scaler damper", CMDFLAG_GET | CMDFLAG_INFOSTRING);
-	registerCommand("scaler_friction", EffectsCalculator_commands::scaler_friction, "Scaler friction", CMDFLAG_GET | CMDFLAG_INFOSTRING);
-	registerCommand("scaler_inertia", EffectsCalculator_commands::scaler_inertia, "Scaler inertia", CMDFLAG_GET | CMDFLAG_INFOSTRING);
+//	registerCommand("scaler_damper", EffectsCalculator_commands::scaler_damper, "Scaler damper", CMDFLAG_GET | CMDFLAG_INFOSTRING);
+//	registerCommand("scaler_friction", EffectsCalculator_commands::scaler_friction, "Scaler friction", CMDFLAG_GET | CMDFLAG_INFOSTRING);
+//	registerCommand("scaler_inertia", EffectsCalculator_commands::scaler_inertia, "Scaler inertia", CMDFLAG_GET | CMDFLAG_INFOSTRING);
 
 	registerCommand("frictionPctSpeedToRampup", EffectsCalculator_commands::frictionPctSpeedToRampup, "% of max speed during effect is slow", CMDFLAG_GET | CMDFLAG_SET);
 
-	this->Start();
+	//this->Start(); // Enable if we want to periodically monitor
 }
 
 EffectsCalculator::~EffectsCalculator()
 {
-	this->Suspend();
+
 }
 
 
@@ -692,13 +692,34 @@ void EffectsCalculator::updateFilterSettingsForEffects(uint8_t type_effect) {
 }
 
 
-void EffectsCalculator::logEffectType(uint8_t type){
+void EffectsCalculator::logEffectType(uint8_t type,bool remove){
 	if(type > 0 && type < 32){
-		effects_used |= 1<<(type-1);
-		if( effects_stats[type-1].nb < 65535 ) {
-			effects_stats[type-1].nb ++;
+
+		if(remove){
+			if(effects_stats[type-1].nb > 0)
+				effects_stats[type-1].nb--;
+
+			if(!effects_stats[type-1].nb){
+				effects_used &= ~(1<<(type-1)); // Disable
+				effects_stats[type-1].max = 0;
+				effects_stats[type-1].current = 0;
+			}
+		}else{
+			effects_used |= 1<<(type-1);
+			if( effects_stats[type-1].nb < 65535 ) {
+				effects_stats[type-1].nb ++;
+			}
 		}
 
+	}
+}
+
+void EffectsCalculator::logEffectState(uint8_t type,uint8_t state){
+	if(type > 0 && type < 32){
+		if(!state){
+			effects_stats[type-1].max = 0;
+			effects_stats[type-1].current = 0;
+		}
 	}
 }
 
@@ -749,19 +770,20 @@ std::string EffectsCalculator::listEffectsUsed(bool details){
 
 /**
  * Print return all current value effect
+ * TODO push multiple replies instead of using a string to allow reading via HID
  */
-std::string EffectsCalculator::listForceEffects() {
-	std::string effects_list = "";
-
-	bool firstItem = true;
-	for (int i=0; i < 12; i++) {
-		if (!firstItem) effects_list += ", ";
-		effects_list += std::to_string(effects_stats[i].current);
-		firstItem = false;
-	}
-
-	return effects_list.c_str();
-}
+//std::string EffectsCalculator::listForceEffects() {
+//	std::string effects_list = "";
+//
+//	bool firstItem = true;
+//	for (int i=0; i < 12; i++) {
+//		if (!firstItem) effects_list += ", ";
+//		effects_list += std::to_string(effects_stats[i].current);
+//		firstItem = false;
+//	}
+//
+//	return effects_list.c_str();
+//}
 
 
 CommandStatus EffectsCalculator::command(const ParsedCommand& cmd,std::vector<CommandReply>& replies){
@@ -820,7 +842,10 @@ CommandStatus EffectsCalculator::command(const ParsedCommand& cmd,std::vector<Co
 	case EffectsCalculator_commands::effectsForces:
 		if (cmd.type == CMDtype::get)
 		{
-			replies.emplace_back(listForceEffects());
+			//replies.emplace_back(listForceEffects());
+			for (size_t i=0; i < effects_stats.size(); i++) {
+				replies.emplace_back(effects_stats[i].current);
+			}
 		}
 		break;
 	case EffectsCalculator_commands::spring:
@@ -831,19 +856,19 @@ CommandStatus EffectsCalculator::command(const ParsedCommand& cmd,std::vector<Co
 		break;
 	case EffectsCalculator_commands::friction:
 		if(cmd.type == CMDtype::info){
-			replies.emplace_back("scale:"+std::to_string(this->scaler.friction));
+			replies.emplace_back("scale:"+std::to_string(this->scaler.friction)+",factor:"+std::to_string(INTERNAL_SCALER_FRICTION));
 		}else
 			return handleGetSet(cmd, replies, this->gain.friction);
 		break;
 	case EffectsCalculator_commands::damper:
 		if(cmd.type == CMDtype::info){
-			replies.emplace_back("scale:"+std::to_string(this->scaler.damper));
+			replies.emplace_back("scale:"+std::to_string(this->scaler.damper)+",factor:"+std::to_string(INTERNAL_SCALER_DAMPER));
 		}else
 			return handleGetSet(cmd, replies, this->gain.damper);
 		break;
 	case EffectsCalculator_commands::inertia:
 		if(cmd.type == CMDtype::info){
-			replies.emplace_back("scale:"+std::to_string(this->scaler.inertia));
+			replies.emplace_back("scale:"+std::to_string(this->scaler.inertia)+",factor:"+std::to_string(INTERNAL_SCALER_INERTIA));
 		}else
 			return handleGetSet(cmd, replies, this->gain.inertia);
 		break;
@@ -944,34 +969,34 @@ CommandStatus EffectsCalculator::command(const ParsedCommand& cmd,std::vector<Co
 			isMonitorEffect = clip<uint8_t, uint8_t>(cmd.val, 0, 1);
 		}
 		break;
-	case EffectsCalculator_commands::scaler_damper:
-		if(cmd.type == CMDtype::info){
-			replies.emplace_back("scale:0.001");
-		}
-		else if (cmd.type == CMDtype::get)
-		{
-			replies.emplace_back(INTERNAL_SCALER_DAMPER * 1000);
-		}
-		break;
-
-	case EffectsCalculator_commands::scaler_friction:
-		if(cmd.type == CMDtype::info){
-			replies.emplace_back("scale:0.001");
-		}
-		else if (cmd.type == CMDtype::get)
-		{
-			replies.emplace_back(INTERNAL_SCALER_FRICTION * 1000);
-		}
-		break;
-	case EffectsCalculator_commands::scaler_inertia:
-		if(cmd.type == CMDtype::info){
-			replies.emplace_back("scale:0.001");
-		}
-		else if  (cmd.type == CMDtype::get)
-		{
-			replies.emplace_back(INTERNAL_SCALER_INERTIA * 1000);
-		}
-		break;
+//	case EffectsCalculator_commands::scaler_damper:
+//		if(cmd.type == CMDtype::info){
+//			replies.emplace_back("scale:0.001");
+//		}
+//		else if (cmd.type == CMDtype::get)
+//		{
+//			replies.emplace_back(INTERNAL_SCALER_DAMPER * 1000);
+//		}
+//		break;
+//
+//	case EffectsCalculator_commands::scaler_friction:
+//		if(cmd.type == CMDtype::info){
+//			replies.emplace_back("scale:0.001");
+//		}
+//		else if (cmd.type == CMDtype::get)
+//		{
+//			replies.emplace_back(INTERNAL_SCALER_FRICTION * 1000);
+//		}
+//		break;
+//	case EffectsCalculator_commands::scaler_inertia:
+//		if(cmd.type == CMDtype::info){
+//			replies.emplace_back("scale:0.001");
+//		}
+//		else if  (cmd.type == CMDtype::get)
+//		{
+//			replies.emplace_back(INTERNAL_SCALER_INERTIA * 1000);
+//		}
+//		break;
 
 	default:
 		return CommandStatus::NOT_FOUND;
