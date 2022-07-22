@@ -25,7 +25,7 @@
 #include "EffectsCalculator.h"
 #include "FastAvg.h"
 
-#define INTERNAL_AXIS_DAMPER_SCALER 0.5
+#define INTERNAL_AXIS_DAMPER_SCALER 0.7
 
 
 struct Control_t {
@@ -158,7 +158,7 @@ public:
 
 
 private:
-	// Axis damper is setted to 50% of the default scale of HID Damper
+	// Axis damper is lower than default scale of HID Damper
 	const float AXIS_DAMPER_RATIO = INTERNAL_SCALER_DAMPER * INTERNAL_AXIS_DAMPER_SCALER / 255.0;
 
 	AxisFlashAddrs flashAddrs;
@@ -249,7 +249,7 @@ private:
 	const biquad_constant_t filterDamperCst = {60, 55};
 	uint8_t filterProfileId = 0;
 	const float filter_f = 1000; // 1khz
-	const int32_t damperClip = 10000;
+	const int32_t damperClip = 20000;
 	uint8_t damperIntensity = 30;
 	FastAvg<float,8> spdlimiterAvg;
 

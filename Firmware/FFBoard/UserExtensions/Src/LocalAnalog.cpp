@@ -27,14 +27,14 @@ const std::array<std::pair<uint16_t,uint16_t>,8> minMaxValAddr = {
 	std::pair<uint16_t,uint16_t>(ADR_LOCALANALOG_MIN_7,ADR_LOCALANALOG_MAX_7),
 };
 
-LocalAnalog::LocalAnalog() : CommandHandler("apin",CLSID_ANALOG_LOCAL,0),AnalogAxisProcessing(ADC_PINS,this, true, true,false) {
+LocalAnalog::LocalAnalog() : CommandHandler("apin",CLSID_ANALOG_LOCAL,0),AnalogAxisProcessing(ADC_PINS,this,this, true, true,false) {
 	this->restoreFlash();
 
 	CommandHandler::registerCommands();
 	registerCommand("mask", LocalAnalog_commands::pinmask, "Enabled pins",CMDFLAG_GET|CMDFLAG_SET);
 
 	registerCommand("pins", LocalAnalog_commands::pins, "Available pins",CMDFLAG_GET|CMDFLAG_SET);
-	registerCommand("values", LocalAnalog_commands::values, "Analog values",CMDFLAG_GET);
+	//registerCommand("values", LocalAnalog_commands::values, "Analog values",CMDFLAG_GET);
 
 }
 
@@ -99,18 +99,18 @@ CommandStatus LocalAnalog::command(const ParsedCommand& cmd,std::vector<CommandR
 				return CommandStatus::ERR;
 			}
 			break;
-		case LocalAnalog_commands::values:
-			if(cmd.type == CMDtype::get){
-				std::vector<int32_t>* axes = getAxes();
-
-				for(int32_t val : *axes){
-					replies.emplace_back(val);
-				}
-
-			}else{
-				return CommandStatus::ERR;
-			}
-			break;
+//		case LocalAnalog_commands::values:
+//			if(cmd.type == CMDtype::get){
+//				std::vector<int32_t>* axes = getAxes();
+//
+//				for(int32_t val : *axes){
+//					replies.emplace_back(val);
+//				}
+//
+//			}else{
+//				return CommandStatus::ERR;
+//			}
+//			break;
 
 		default:
 			return AnalogAxisProcessing::command(cmd, replies); // Try processing command

@@ -174,7 +174,7 @@ const std::array<std::pair<uint16_t,uint16_t>,4> minMaxValAddr = {
 
 };
 
-ADS111X_AnalogSource::ADS111X_AnalogSource() : ADS111X(i2cport) , CommandHandler("adsAnalog", CLSID_ANALOG_ADS111X, 0),AnalogAxisProcessing(AnalogAxisProcessing(4,this, true, true,false)), Thread("ads111x", 64, 25) {
+ADS111X_AnalogSource::ADS111X_AnalogSource() : ADS111X(i2cport) , CommandHandler("adsAnalog", CLSID_ANALOG_ADS111X, 0),AnalogAxisProcessing(AnalogAxisProcessing(4,this,this, true, true,false)), Thread("ads111x", 64, 25) {
 	CommandHandler::registerCommands();
 	setAxes(axes,differentialMode);
 	registerCommand("inputs", ADS111X_AnalogSource_commands::axes, "Amount of inputs (1-4 or 1-2 if differential)",CMDFLAG_GET | CMDFLAG_SET);

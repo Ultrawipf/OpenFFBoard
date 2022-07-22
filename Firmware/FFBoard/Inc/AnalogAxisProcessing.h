@@ -14,6 +14,7 @@
 #include "CommandHandler.h"
 #include "Filters.h"
 #include "limits.h"
+#include "AnalogSource.h"
 
 
 struct AnalogProcessingConfig{
@@ -28,12 +29,12 @@ struct MinMaxPair{
 class AnalogAxisProcessing {
 
 	enum class AnalogAxisProcessing_commands {
-		filter=0xA1,autoscale=0xA2,min=0xA3,max=0xA4
+		values=0xAA0,filter=0xAA1,autoscale=0xAA2,min=0xAA3,max=0xAA4
 	};
 
 public:
 	//AnalogAxisProcessing(const uint32_t axisAmount,CommandHandler* cmdHandler = nullptr,bool allowFilters = true,bool allowAutoscale = true,const std::optional<const std::vector<std::pair<uint16_t,uint16_t>>*> manualMinMaxAddresses=std::nullopt);
-	AnalogAxisProcessing(const uint32_t axisAmount,CommandHandler* cmdHandler = nullptr,bool allowFilters = true,bool allowAutoscale = true, bool allowManualScale = false);
+	AnalogAxisProcessing(const uint32_t axisAmount,AnalogSource* analogSource, CommandHandler* cmdHandler = nullptr,bool allowFilters = true,bool allowAutoscale = true, bool allowManualScale = false);
 	virtual ~AnalogAxisProcessing();
 	CommandStatus command(const ParsedCommand& cmd,std::vector<CommandReply>& replies);
 	void setupFilters();
@@ -79,6 +80,7 @@ public:
 
 protected:
 	AnalogProcessingConfig conf;
+	AnalogSource* analogSource;
 	const uint32_t axisAmount;
 	std::vector<Biquad> filters; // Optional filters
 	std::vector<MinMaxPair> minMaxVals; // TODO maybe use 2 minMax vectors to separate manual and autoscale later?
