@@ -16,7 +16,7 @@
  * @param[in] allowAutoscale enable autoscaling command
  * @param[in] allowManualScale activates min/max commands if set
  */
-AnalogAxisProcessing::AnalogAxisProcessing(const uint32_t axisAmount,CommandHandler* cmdHandler,bool allowFilters,bool allowAutoscale,bool allowManualScale) : axisAmount(axisAmount), modes({allowFilters,allowAutoscale,allowManualScale}){
+AnalogAxisProcessing::AnalogAxisProcessing(const uint32_t axisAmount,AnalogSource* analogSource,CommandHandler* cmdHandler,bool allowFilters,bool allowAutoscale,bool allowManualScale) : axisAmount(axisAmount),analogSource(analogSource), modes({allowFilters,allowAutoscale,allowManualScale}){
 
 	if(allowAutoscale || allowManualScale){
 		minMaxVals.resize(axisAmount); // We need min/max pairs if autoscaling or manual scaling is allowed
@@ -39,6 +39,9 @@ AnalogAxisProcessing::AnalogAxisProcessing(const uint32_t axisAmount,CommandHand
 	}else{
 		conf.autorange = false;
 	}
+
+	if(analogSource)
+		cmdHandler->registerCommand("values", AnalogAxisProcessing_commands::values, "Analog values",CMDFLAG_GET);
 
 	if(allowManualScale && cmdHandler){
 		cmdHandler->registerCommand("min", AnalogAxisProcessing_commands::min, "Min value limit",CMDFLAG_GETADR|CMDFLAG_SETADR);
@@ -119,6 +122,18 @@ void AnalogAxisProcessing::processAxes(std::vector<int32_t>& buf){
 CommandStatus AnalogAxisProcessing::command(const ParsedCommand& cmd,std::vector<CommandReply>& replies){
 	switch(static_cast<AnalogAxisProcessing_commands>(cmd.cmdId))
 	{
+	case AnalogAxisProcessing_commands::values:
+		if(cmd.type == CMDtype::get){
+			std::vector<int32_t>* axes = this->analogSource->getAxes();
+
+			for(int32_t val : *axes){
+				replies.emplace_back(val);
+			}
+
+		}else{
+			return CommandStatus::ERR;
+		}
+		break;
 	case AnalogAxisProcessing_commands::autoscale:
 		if( (cmd.type == CMDtype::set && cmd.val != 0) || !modes.allowManualScale){
 			// Reset autorange
