@@ -23,18 +23,18 @@ struct AnalogProcessingConfig{
 	bool raw = false;
 };
 struct MinMaxPair{
-	int32_t min = INT_MAX;
-	int32_t max = INT_MIN;
+	int32_t min = 0x7fff;
+	int32_t max = -0x7fff;
 };
 class AnalogAxisProcessing {
 
 	enum class AnalogAxisProcessing_commands {
-		values=0xAA0,filter=0xAA1,autoscale=0xAA2,min=0xAA3,max=0xAA4
+		values=0xAA0,filter=0xAA2,autoscale=0xAA3,rawvalues=0XAA1,min=0xAA4,max=0xAA5
 	};
 
 public:
 	//AnalogAxisProcessing(const uint32_t axisAmount,CommandHandler* cmdHandler = nullptr,bool allowFilters = true,bool allowAutoscale = true,const std::optional<const std::vector<std::pair<uint16_t,uint16_t>>*> manualMinMaxAddresses=std::nullopt);
-	AnalogAxisProcessing(const uint32_t axisAmount,AnalogSource* analogSource, CommandHandler* cmdHandler = nullptr,bool allowFilters = true,bool allowAutoscale = true, bool allowManualScale = false);
+	AnalogAxisProcessing(const uint32_t axisAmount,AnalogSource* analogSource, CommandHandler* cmdHandler = nullptr,bool allowFilters = true,bool allowAutoscale = true, bool allowRawValues=false, bool allowManualScale = false);
 	virtual ~AnalogAxisProcessing();
 	CommandStatus command(const ParsedCommand& cmd,std::vector<CommandReply>& replies);
 	void setupFilters();
@@ -46,6 +46,8 @@ public:
 
 	static AnalogProcessingConfig decodeAnalogProcessingConfFromInt(uint16_t val);
 	static uint16_t encodeAnalogProcessingConfToInt(AnalogProcessingConfig& conf);
+	//void setRawValues(std::vector<int32_t>* rawValues);
+
 	/**
 	 * Loads min and max values
 	 * @param[in] minMaxAddresses addresses to store manual min/max values in (pair of min,max addresses).
@@ -92,66 +94,16 @@ protected:
 
 	float autorangeScale = 1.05; // Multiplies autorange scale to add some margin
 
+	std::vector<int32_t> rawValues; // Pointer to unscaled raw values
+
 private:
 	const struct AnalogProcessingMode{
 		bool allowFilters : 1;
 		bool allowAutoscale : 1;
+		bool allowRawvalues : 1;
 		bool allowManualScale : 1;
 	} modes;
 };
-
-
-//class AnalogAxisProcessing {
-//
-//	struct AnalogProcessingConfig{
-//		bool autorange = false;
-//		bool filtersEnabled = false;
-//	};
-//	struct MinMaxPair{
-//		int32_t min = INT_MAX;
-//		int32_t max = INT_MIN;
-//	};
-//	enum class AnalogAxisProcessing_commands {
-//		filter=0xA1,autoscale=0xA2,min=0xA3,max=0xA4
-//	};
-//
-//public:
-//	// Public contructor w. template for static_assert
-//	template<size_t AddressSize>
-//    AnalogAxisProcessing(const uint32_t axisAmount,CommandHandler* cmdHandler,bool allowFilters,bool allowAutoscale, const std::array<std::pair<uint16_t, uint16_t>,AddressSize> &addr)
-//	: AnalogAxisProcessing(axisAmount,cmdHandler, allowFilters,allowAutoscale, std::optional(addr))
-//    {
-//        //static_assert(addr.size() >= axisAmount, "Not enough addresses supplied");
-//    };
-//	template<size_t axisAmount>
-//	AnalogAxisProcessing(CommandHandler* cmdHandler = nullptr,bool allowFilters = true,bool allowAutoscale = true)
-//	: AnalogAxisProcessing(axisAmount,cmdHandler, allowFilters,allowAutoscale, std::nullopt){
-//
-//	};
-//
-//
-//	virtual ~AnalogAxisProcessing();
-//	CommandStatus command(const ParsedCommand& cmd,std::vector<CommandReply>& replies);
-//	void setupFilters();
-//	void processAxes(std::vector<int32_t>& buf);
-//protected:
-//
-//	const uint32_t axisAmount;
-//	std::vector<Biquad> filters; // Optional filters
-//	std::vector<MinMaxPair> minMaxVals;
-//	const std::pair<uint16_t,uint16_t> *minMaxValAddr = nullptr;
-//
-//	const float filterF = 30.0/1000.0 , filterQ = 0.5;
-//
-//	AnalogProcessingConfig conf;
-//	uint32_t filterSamples = 0;
-//	const uint32_t waitFilterSamples = 500;
-//
-//	float autorangeScale = 1.05; // Multiplies autorange scale to add some margin
-//
-//private:
-//	AnalogAxisProcessing(const uint32_t axisAmount,CommandHandler* cmdHandler = nullptr,bool allowFilters = true,bool allowAutoscale = true,const std::optional<const std::pair<uint16_t,uint16_t>*> manualMinMaxAddresses = std::nullopt);
-//};
 
 
 
