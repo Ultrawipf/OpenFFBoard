@@ -14,9 +14,10 @@
  * @param[in] cmdHandler command handler to register commands to. nullptr to disable commands
  * @param[in] allowFilters enable the use of filters. Creates filters and activates filter command
  * @param[in] allowAutoscale enable autoscaling command
+ * @param[in] allowRawvalues enable raw value command. Required if manual scale should be used with the GUI
  * @param[in] allowManualScale activates min/max commands if set
  */
-AnalogAxisProcessing::AnalogAxisProcessing(const uint32_t axisAmount,AnalogSource* analogSource,CommandHandler* cmdHandler,bool allowFilters,bool allowAutoscale,bool allowManualScale) : axisAmount(axisAmount),analogSource(analogSource), modes({allowFilters,allowAutoscale,allowManualScale}){
+AnalogAxisProcessing::AnalogAxisProcessing(const uint32_t axisAmount,AnalogSource* analogSource,CommandHandler* cmdHandler,bool allowFilters,bool allowAutoscale,bool allowRawValues,bool allowManualScale) : axisAmount(axisAmount),analogSource(analogSource), modes({allowFilters,allowAutoscale,allowRawValues,allowManualScale}){
 
 	if(allowAutoscale || allowManualScale){
 		minMaxVals.resize(axisAmount); // We need min/max pairs if autoscaling or manual scaling is allowed
@@ -41,7 +42,10 @@ AnalogAxisProcessing::AnalogAxisProcessing(const uint32_t axisAmount,AnalogSourc
 	}
 
 	if(analogSource)
-		cmdHandler->registerCommand("values", AnalogAxisProcessing_commands::values, "Analog values",CMDFLAG_GET);
+		cmdHandler->registerCommand("values", AnalogAxisProcessing_commands::values, "Analog output values",CMDFLAG_GET);
+
+	if(allowRawValues)
+		cmdHandler->registerCommand("rawval", AnalogAxisProcessing_commands::rawvalues, "All raw values",CMDFLAG_GET);
 
 	if(allowManualScale && cmdHandler){
 		cmdHandler->registerCommand("min", AnalogAxisProcessing_commands::min, "Min value limit",CMDFLAG_GETADR|CMDFLAG_SETADR);
@@ -82,6 +86,10 @@ void AnalogAxisProcessing::setAnalogProcessingConfig(AnalogProcessingConfig conf
 }
 
 void AnalogAxisProcessing::processAxes(std::vector<int32_t>& buf){
+	if(modes.allowRawvalues){
+		this->rawValues = buf;
+	}
+
 	for(uint32_t i = 0 ; i < std::min<uint32_t>(this->axisAmount , buf.size()) ; i++){
 		// Modify values in vector directly
 		int32_t val = buf[i];
@@ -116,6 +124,7 @@ void AnalogAxisProcessing::processAxes(std::vector<int32_t>& buf){
 
 }
 
+
 /**
  * To be called by the class using this. Not an actual command handler
  */
@@ -134,6 +143,18 @@ CommandStatus AnalogAxisProcessing::command(const ParsedCommand& cmd,std::vector
 			return CommandStatus::ERR;
 		}
 		break;
+
+	case AnalogAxisProcessing_commands::rawvalues:
+		if(cmd.type == CMDtype::get){
+			for(int32_t val : this->rawValues){
+				replies.emplace_back(val);
+			}
+
+		}else{
+			return CommandStatus::ERR;
+		}
+		break;
+
 	case AnalogAxisProcessing_commands::autoscale:
 		if( (cmd.type == CMDtype::set && cmd.val != 0) || !modes.allowManualScale){
 			// Reset autorange

@@ -27,7 +27,7 @@ const std::array<std::pair<uint16_t,uint16_t>,8> minMaxValAddr = {
 	std::pair<uint16_t,uint16_t>(ADR_LOCALANALOG_MIN_7,ADR_LOCALANALOG_MAX_7),
 };
 
-LocalAnalog::LocalAnalog() : CommandHandler("apin",CLSID_ANALOG_LOCAL,0),AnalogAxisProcessing(ADC_PINS,this,this, true, true,false) {
+LocalAnalog::LocalAnalog() : CommandHandler("apin",CLSID_ANALOG_LOCAL,0),AnalogAxisProcessing(ADC_PINS,this,this, true,true,true,true) {
 	this->restoreFlash();
 
 	CommandHandler::registerCommands();
@@ -35,7 +35,6 @@ LocalAnalog::LocalAnalog() : CommandHandler("apin",CLSID_ANALOG_LOCAL,0),AnalogA
 
 	registerCommand("pins", LocalAnalog_commands::pins, "Available pins",CMDFLAG_GET|CMDFLAG_SET);
 	//registerCommand("values", LocalAnalog_commands::values, "Analog values",CMDFLAG_GET);
-
 }
 
 LocalAnalog::~LocalAnalog() {
@@ -73,13 +72,14 @@ std::vector<int32_t>* LocalAnalog::getAxes(){
 	uint8_t axes = std::min<uint8_t>(chans-ADC_CHAN_FPIN,numPins);
 
 	for(uint8_t i = 0;i<axes;i++){
+		int32_t val = ((adcbuf[i+ADC_CHAN_FPIN] & 0xFFF) << 4)-0x7fff;
 		if(!(aconf.analogmask & 0x01 << i))
 			continue;
 
-		int32_t val = ((adcbuf[i+ADC_CHAN_FPIN] & 0xFFF) << 4)-0x7fff;
 
 		this->buf.push_back(val);
 	}
+
 	AnalogAxisProcessing::processAxes(buf);
 	return &this->buf;
 }
