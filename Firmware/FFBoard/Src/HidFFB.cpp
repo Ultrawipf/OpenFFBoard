@@ -156,10 +156,10 @@ void HidFFB::hidOut(uint8_t report_id, hid_report_type_t report_type, uint8_t co
 
 void HidFFB::free_effect(uint16_t idx){
 	if(idx < MAX_EFFECTS){
+		effects_calc->logEffectType(effects[idx].type, true); // Effect off
 		effects[idx].type=FFB_EFFECT_NONE;
 		for(int i=0; i< MAX_AXIS; i++) {
 			if(effects[idx].filter[i] != nullptr){
-				effects_calc->logEffectType(effects[idx].type, true); // Effect off
 				effects[idx].filter[i].reset(nullptr);
 			}
 		}
