@@ -233,7 +233,7 @@ void StringCommandInterface::generateReplyFromCmd(std::string& replyPart,const P
  */
 
 
-CDC_CommandInterface::CDC_CommandInterface() : StringCommandInterface(512), Thread("CDCCMD", 512, 37) {
+CDC_CommandInterface::CDC_CommandInterface() : StringCommandInterface(1024), Thread("CDCCMD", 512, 37) {
 	parser.setClearBufferTimeout(parserTimeout);
 	this->Start();
 }
