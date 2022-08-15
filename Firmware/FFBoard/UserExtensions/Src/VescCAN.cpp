@@ -129,7 +129,7 @@ void VescCAN::restoreFlash() {
 
 	if (Flash_Read(flashAddrs.data, &dataFlash)) {
 
-		uint8_t canspd = dataFlash & 0b111;
+		//uint8_t canspd = dataFlash & 0b111;
 		//this->baudrate = canspd;
 
 		this->useEncoder = (dataFlash >> 3) & 0x1;
@@ -207,7 +207,7 @@ void VescCAN::registerCommands() {
 	CommandHandler::registerCommands();
 	registerCommand("offbcanid", VescCAN_commands::offbcanid, "CAN id of OpenFFBoard Axis", CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("vesccanid", VescCAN_commands::vesccanid, "CAN id of VESC", CMDFLAG_GET | CMDFLAG_SET);
-	registerCommand("canspd", VescCAN_commands::canspd, "CAN baud (3=250k 4=500k 5=1M)", CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("canspd", VescCAN_commands::canspd, "CAN baud (3=250k 4=500k 5=1M)", CMDFLAG_GET | CMDFLAG_SET); // Kept for backwards compatibility. Remove in the future
 	registerCommand("errorflags", VescCAN_commands::errorflags, "VESC error state", CMDFLAG_GET);
 	registerCommand("vescstate", VescCAN_commands::vescstate, "VESC state", CMDFLAG_GET);
 	registerCommand("voltage", VescCAN_commands::voltage, "VESC supply voltage (mV)", CMDFLAG_GET);

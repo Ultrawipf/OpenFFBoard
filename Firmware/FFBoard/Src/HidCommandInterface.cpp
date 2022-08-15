@@ -139,6 +139,8 @@ void HID_CommandInterface::queueReplyValues(const CommandReply& reply,const Pars
 	case CommandReplyType::ERR:
 		hidReply.type == HidCmdType::err;
 		break;
+	case CommandReplyType::NONE:
+	case CommandReplyType::STRING:
 	default:
 		// Ignore
 		return;

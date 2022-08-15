@@ -58,7 +58,6 @@ enum class EffectsCalculator_commands : uint32_t {
 	damper_f, damper_q, friction_f, friction_q, inertia_f, inertia_q,
 	frictionPctSpeedToRampup,
 	monitorEffect, effectsDetails, effectsForces,
-	scaler_damper, scaler_friction, scaler_inertia
 };
 
 class EffectsCalculator: public PersistentStorage,

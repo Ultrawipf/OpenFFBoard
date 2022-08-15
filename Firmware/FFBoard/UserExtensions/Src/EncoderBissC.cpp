@@ -242,31 +242,5 @@ CommandStatus EncoderBissC::command(const ParsedCommand& cmd,std::vector<Command
 		return CommandStatus::NOT_FOUND;
 	}
 	return CommandStatus::OK;
-//	ParseStatus status = ParseStatus::OK;
-//	if (cmd->cmd == "bissCnbBitData") {
-//		if (cmd->type == CMDtype::get) {
-//			*reply += std::to_string(lenghtDataBit);
-//		} else if (cmd->type == CMDtype::set) {
-//			lenghtDataBit = cmd->val;
-//		}
-//	} else if (cmd->cmd == "bissCsetSpeed") {
-//		if (cmd->type == CMDtype::get) {
-//			*reply += std::to_string(spiSpeed);
-//		} else if (cmd->type == CMDtype::set) {
-//			spiSpeed = cmd->val;
-//			if ( spiSpeed < 1 || 3 < spiSpeed ) spiSpeed = 3;
-//			configSPI();
-//		}
-//	} else if (cmd->cmd == "bissCnbError") {
-//		if (cmd->type == CMDtype::get) {
-//			*reply += std::to_string(numErrors);
-//		}
-//	} else if (cmd->cmd == "bissCgetRawPos") {
-//		if (cmd->type == CMDtype::get) {
-//			*reply += std::to_string(pos) + " crc" + std::to_string(crc_ok);
-//		}
-//	} else {
-//		status = ParseStatus::NOT_FOUND;
-//	}
-//	return status;
+
 }
