@@ -348,7 +348,7 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 			// if the filter is enabled we apply it
 			if (effect->filter[con_idx]->getFc() < 0.5 && effect->filter[0]->getFc() != 0.0)
 			{
-				result_torque = effect->filter[con_idx]->process(forceVector);
+				forceVector = effect->filter[con_idx]->process(forceVector);
 			}
 		}
 	}
