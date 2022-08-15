@@ -41,7 +41,7 @@ EffectsCalculator::EffectsCalculator() : CommandHandler("fx", CLSID_EFFECTSCALC)
 	registerCommand("effects", EffectsCalculator_commands::effects, "List effects. set 0 to reset", CMDFLAG_GET | CMDFLAG_SET  | CMDFLAG_STR_ONLY);
 	registerCommand("effectsDetails", EffectsCalculator_commands::effectsDetails, "List effects details. set 0 to reset", CMDFLAG_GET | CMDFLAG_SET  | CMDFLAG_STR_ONLY);
 	registerCommand("effectsForces", EffectsCalculator_commands::effectsForces, "List actual effects forces.", CMDFLAG_GET);
-	registerCommand("monitorEffect", EffectsCalculator_commands::monitorEffect, "Get monitoring status. set to 1 to enable.", CMDFLAG_GET | CMDFLAG_SET);
+//	registerCommand("monitorEffect", EffectsCalculator_commands::monitorEffect, "Get monitoring status. set to 1 to enable.", CMDFLAG_GET | CMDFLAG_SET);
 
 	registerCommand("damper_f", EffectsCalculator_commands::damper_f, "Damper biquad freq", CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("damper_q", EffectsCalculator_commands::damper_q, "Damper biquad q", CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_INFOSTRING);
@@ -54,7 +54,7 @@ EffectsCalculator::EffectsCalculator() : CommandHandler("fx", CLSID_EFFECTSCALC)
 //	registerCommand("scaler_friction", EffectsCalculator_commands::scaler_friction, "Scaler friction", CMDFLAG_GET | CMDFLAG_INFOSTRING);
 //	registerCommand("scaler_inertia", EffectsCalculator_commands::scaler_inertia, "Scaler inertia", CMDFLAG_GET | CMDFLAG_INFOSTRING);
 
-	registerCommand("frictionPctSpeedToRampup", EffectsCalculator_commands::frictionPctSpeedToRampup, "% of max speed during effect is slow", CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("frictionPctSpeedToRampup", EffectsCalculator_commands::frictionPctSpeedToRampup, "% of max speed for gradual increase", CMDFLAG_GET | CMDFLAG_SET);
 
 	//this->Start(); // Enable if we want to periodically monitor
 }
@@ -160,14 +160,14 @@ void EffectsCalculator::calculateEffects(std::vector<std::unique_ptr<Axis>> &axe
 
 		uint8_t directionEnableMask = this->directionEnableMask ? this->directionEnableMask : DIRECTION_ENABLE(axisCount);
 
-		if (effect->enableAxis & directionEnableMask || (effect->enableAxis & X_AXIS_ENABLE))
+		if ( (effect->enableAxis & directionEnableMask) || (effect->enableAxis & X_AXIS_ENABLE))
 		{
 			int32_t newEffectForce = calcComponentForce(effect, forceVector, axes, 0);
 			calcStatsEffectType(effect->type, newEffectForce);
 			forceX += newEffectForce;
 			forceX = clip<int32_t, int32_t>(forceX, -0x7fff, 0x7fff); // Clip
 		}
-		if (validY && (effect->enableAxis & directionEnableMask || (effect->enableAxis & Y_AXIS_ENABLE)))
+		if (validY && ((effect->enableAxis & directionEnableMask) || (effect->enableAxis & Y_AXIS_ENABLE)))
 		{
 			int32_t newEffectForce = calcComponentForce(effect, forceVector, axes, 0);
 			calcStatsEffectType(effect->type, newEffectForce);
@@ -768,23 +768,6 @@ std::string EffectsCalculator::listEffectsUsed(bool details){
 	return effects_list.c_str();
 }
 
-/**
- * Print return all current value effect
- * TODO push multiple replies instead of using a string to allow reading via HID
- */
-//std::string EffectsCalculator::listForceEffects() {
-//	std::string effects_list = "";
-//
-//	bool firstItem = true;
-//	for (int i=0; i < 12; i++) {
-//		if (!firstItem) effects_list += ", ";
-//		effects_list += std::to_string(effects_stats[i].current);
-//		firstItem = false;
-//	}
-//
-//	return effects_list.c_str();
-//}
-
 
 CommandStatus EffectsCalculator::command(const ParsedCommand& cmd,std::vector<CommandReply>& replies){
 	switch(static_cast<EffectsCalculator_commands>(cmd.cmdId)){
@@ -969,34 +952,6 @@ CommandStatus EffectsCalculator::command(const ParsedCommand& cmd,std::vector<Co
 			isMonitorEffect = clip<uint8_t, uint8_t>(cmd.val, 0, 1);
 		}
 		break;
-//	case EffectsCalculator_commands::scaler_damper:
-//		if(cmd.type == CMDtype::info){
-//			replies.emplace_back("scale:0.001");
-//		}
-//		else if (cmd.type == CMDtype::get)
-//		{
-//			replies.emplace_back(INTERNAL_SCALER_DAMPER * 1000);
-//		}
-//		break;
-//
-//	case EffectsCalculator_commands::scaler_friction:
-//		if(cmd.type == CMDtype::info){
-//			replies.emplace_back("scale:0.001");
-//		}
-//		else if (cmd.type == CMDtype::get)
-//		{
-//			replies.emplace_back(INTERNAL_SCALER_FRICTION * 1000);
-//		}
-//		break;
-//	case EffectsCalculator_commands::scaler_inertia:
-//		if(cmd.type == CMDtype::info){
-//			replies.emplace_back("scale:0.001");
-//		}
-//		else if  (cmd.type == CMDtype::get)
-//		{
-//			replies.emplace_back(INTERNAL_SCALER_INERTIA * 1000);
-//		}
-//		break;
 
 	default:
 		return CommandStatus::NOT_FOUND;

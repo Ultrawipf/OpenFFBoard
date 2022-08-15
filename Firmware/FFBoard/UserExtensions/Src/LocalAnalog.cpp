@@ -99,18 +99,6 @@ CommandStatus LocalAnalog::command(const ParsedCommand& cmd,std::vector<CommandR
 				return CommandStatus::ERR;
 			}
 			break;
-//		case LocalAnalog_commands::values:
-//			if(cmd.type == CMDtype::get){
-//				std::vector<int32_t>* axes = getAxes();
-//
-//				for(int32_t val : *axes){
-//					replies.emplace_back(val);
-//				}
-//
-//			}else{
-//				return CommandStatus::ERR;
-//			}
-//			break;
 
 		default:
 			return AnalogAxisProcessing::command(cmd, replies); // Try processing command

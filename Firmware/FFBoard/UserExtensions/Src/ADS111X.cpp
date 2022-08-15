@@ -322,9 +322,6 @@ std::vector<int32_t>* ADS111X_AnalogSource::getAxes(){
 		lastAxis = 0;
 		state = ADS111X_AnalogSource_state::beginSampling;
 		Notify();
-		//readingData = true;
-		//ADS111X::startConversion(0,differentialMode);
-
 	}
 
 	if(HAL_GetTick() - lastSuccess > 4000){
@@ -381,7 +378,7 @@ CommandStatus ADS111X_AnalogSource::command(const ParsedCommand& cmd,std::vector
 			replies.emplace_back("8 SPS:0,16 SPS:1,32 SPS:2,64 SPS:3,128 SPS:4,250 SPS:5,475 SPS:6,860 SPS:7");
 		}
 	break;
-
+	case ADS111X_AnalogSource_commands::address: // No option yet
 	default:
 		return AnalogAxisProcessing::command(cmd, replies); // Try processing command
 	}
