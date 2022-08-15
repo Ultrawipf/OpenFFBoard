@@ -41,12 +41,10 @@ public:
 
 	void Run();
 
-	enum class EncoderBissC_commands {bits,cs,speed,rawpos,errors};
+	enum class EncoderBissC_commands {bits,cs,speed,errors};
 
 	CommandStatus command(const ParsedCommand& cmd,std::vector<CommandReply>& replies);
-//	virtual std::string getHelpstring() {
-//			return "BissC Encoder: bissCnbBitData, bissCsetSpeed, bissCnbError, bissCgetRawPos\n";
-//		};
+
 	void registerCommands();
 	void configSPI();
 	void acquirePosition();

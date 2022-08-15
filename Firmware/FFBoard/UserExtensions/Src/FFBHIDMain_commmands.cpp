@@ -103,6 +103,7 @@ CommandStatus FFBHIDMain::command(const ParsedCommand& cmd,std::vector<CommandRe
 			replies.emplace_back(usb_report_rates_names());
 		}
 		break;
+	case FFBWheel_commands::axes: // Dummy for compatibility. remove later
 	default:
 		return CommandStatus::NOT_FOUND;
 	}

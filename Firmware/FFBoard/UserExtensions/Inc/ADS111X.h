@@ -57,7 +57,7 @@ protected:
 		uint16_t hithresh = 0x7FFF; // 0x03
 	} registers;
 private:
-	uint16_t writeItBuffer;
+	uint16_t writeItBuffer = 0;
 };
 
 #ifdef ADS111XANALOG

@@ -82,8 +82,9 @@ public:
 
 protected:
 	AnalogProcessingConfig conf;
-	AnalogSource* analogSource;
 	const uint32_t axisAmount;
+	AnalogSource* analogSource;
+
 	std::vector<Biquad> filters; // Optional filters
 	std::vector<MinMaxPair> minMaxVals; // TODO maybe use 2 minMax vectors to separate manual and autoscale later?
 	//const std::vector<std::pair<uint16_t,uint16_t>> *minMaxValAddr = nullptr;
