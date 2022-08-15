@@ -15,6 +15,7 @@ uint32_t maxVoltage = 65000; // Force braking
 uint32_t voltageDiffActivate = 5000;
 uint32_t voltageDiffDeactivate = 4000;
 float vSenseMult = VOLTAGE_MULT_DEFAULT;
+bool brake_failure = false;
 
 uint32_t brakeActiveTime = 0;
 
@@ -47,7 +48,7 @@ uint16_t getExtV(){
 }
 
 void brakeCheck(){
-	if(maxVoltage == 0){
+	if(maxVoltage == 0 || brake_failure){
 		return;
 	}
 	uint16_t vint = getIntV();
@@ -63,7 +64,8 @@ void brakeCheck(){
 		}
 	}
 	if(brakeActiveTime && HAL_GetTick() - brakeActiveTime > 5000){
-		// Brake resistor active over 10s. Shut down.
+		// Brake resistor active over 5s. Shut down.
+		brake_failure = true;
 		HAL_GPIO_WritePin(DRV_BRAKE_GPIO_Port,DRV_BRAKE_Pin, GPIO_PIN_RESET);
 		ErrorHandler::addError(Error(ErrorCode::brakeResistorFailure, ErrorType::critical, "Brake resistor stuck on"));
 	}else{
