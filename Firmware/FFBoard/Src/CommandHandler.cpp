@@ -177,6 +177,7 @@ void CommandHandler::registerCommands(){
 	registerCommand("help", CommandHandlerCommands::help, "Prints help for commands",CMDFLAG_GET | CMDFLAG_STR_ONLY | CMDFLAG_INFOSTRING);
 	registerCommand("cmduid", CommandHandlerCommands::cmdhandleruid, "Command handler index",CMDFLAG_GET);
 	registerCommand("instance", CommandHandlerCommands::instance, "Command handler instance number",CMDFLAG_GET);
+	registerCommand("cmdinfo", CommandHandlerCommands::cmdinfo, "Checks flags of a command id (adr). returns -1 if cmd id invalid",CMDFLAG_GETADR);
 	//registerCommand("selId", CommandHandlerCommands::selectionid, "Selection id used to create this class",CMDFLAG_GET);
 }
 
@@ -243,6 +244,13 @@ CommandStatus CommandHandler::internalCommand(const ParsedCommand& cmd,std::vect
 
 		case CommandHandlerCommands::instance:
 			replies.emplace_back(this->getCommandHandlerInfo()->instance);
+		break;
+
+		case CommandHandlerCommands::cmdinfo:
+		{
+			CmdHandlerCommanddef* command_p = this->getCommandFromId(cmd.adr);
+			replies.emplace_back(command_p ? command_p->flags : (int64_t)-1); // Replies with the commands flags if command is valid else with -1
+		}
 		break;
 
 //		case CommandHandlerCommands::selectionid:

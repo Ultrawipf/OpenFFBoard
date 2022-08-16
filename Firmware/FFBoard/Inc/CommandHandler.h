@@ -105,7 +105,7 @@ struct CommandResult {
 
 // All commands have the 0x80000000 but set! do no use anywhere else
 enum class CommandHandlerCommands : uint32_t{
-	id=0x80000001,name=0x80000002,help=0x80000003,instance=0x80000004,cmdhandleruid=0x80000005,selectionid=0x80000006
+	id=0x80000001,name=0x80000002,help=0x80000003,instance=0x80000004,cmdhandleruid=0x80000005,selectionid=0x80000006,cmdinfo=0x80000007
 };
 
 /**
