@@ -84,7 +84,7 @@ void Axis::registerCommands(){
 	registerCommand("curpos", Axis_commands::curpos, "Axis position",CMDFLAG_GET);
 	registerCommand("curspd", Axis_commands::curspd, "Axis speed",CMDFLAG_GET);
 	registerCommand("curaccel", Axis_commands::curaccel, "Axis accel",CMDFLAG_GET);
-	registerCommand("reduction", Axis_commands::reductionScaler, "Encoder to axis gear reduction (adr+1 / val+1) 0-255",CMDFLAG_GET | CMDFLAG_SETADR);
+	registerCommand("reduction", Axis_commands::reductionScaler, "Encoder to axis gear reduction (val / adr) 1-256",CMDFLAG_GET | CMDFLAG_SETADR);
 	registerCommand("filterProfile_id", Axis_commands::filterProfileId, "Biquad filter profile for speed and accel", CMDFLAG_GET | CMDFLAG_SET);
 	//Can only read exact filter settings
 	registerCommand("filterSpeed", Axis_commands::filterSpeed, "Biquad filter freq and q*100 for speed", CMDFLAG_GET);
@@ -764,9 +764,9 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 
 	case Axis_commands::reductionScaler:
 		if(cmd.type == CMDtype::get){
-			replies.emplace_back(gearRatio.denominator,gearRatio.numerator);
+			replies.emplace_back(gearRatio.numerator+1,gearRatio.denominator+1);
 		}else if(cmd.type == CMDtype::setat){
-			setGearRatio(cmd.adr,cmd.val);
+			setGearRatio(cmd.val-1,cmd.adr-1);
 		}
 		break;
 
