@@ -86,10 +86,9 @@ void Axis::registerCommands(){
 	registerCommand("curaccel", Axis_commands::curaccel, "Axis accel",CMDFLAG_GET);
 	registerCommand("reduction", Axis_commands::reductionScaler, "Encoder to axis gear reduction (adr+1 / val+1) 0-255",CMDFLAG_GET | CMDFLAG_SETADR);
 	registerCommand("filterProfile_id", Axis_commands::filterProfileId, "Biquad filter profile for speed and accel", CMDFLAG_GET | CMDFLAG_SET);
-	registerCommand("filterSpeed_freq", Axis_commands::filterSpeed_freq, "Biquad filter frequency for speed", CMDFLAG_GET);
-	registerCommand("filterSpeed_q", Axis_commands::filterSpeed_q, "Biquad filter q for speed", CMDFLAG_GET);
-	registerCommand("filterAccel_freq", Axis_commands::filterAccel_freq, "Biquad filter frequency for accel", CMDFLAG_GET);
-	registerCommand("filterAccel_q", Axis_commands::filterAccel_q, "Biquad filter frequency for accel", CMDFLAG_GET);
+	//Can only read exact filter settings
+	registerCommand("filterSpeed", Axis_commands::filterSpeed, "Biquad filter freq and q*100 for speed", CMDFLAG_GET);
+	registerCommand("filterAccel", Axis_commands::filterAccel, "Biquad filter freq and q*100 for accel", CMDFLAG_GET);
 }
 
 /*
@@ -786,34 +785,17 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 			accelFilter.setQ(filterAccelCst[this->filterProfileId].q / 100.0);
 		}
 		break;
-	case Axis_commands::filterSpeed_freq:
+	case Axis_commands::filterSpeed:
 		if (cmd.type == CMDtype::get)
 		{
-			replies.emplace_back(this->filterSpeedCst[this->filterProfileId].freq);
+			replies.emplace_back(this->filterSpeedCst[this->filterProfileId].freq,this->filterSpeedCst[this->filterProfileId].q);
 		}
 		break;
-	case Axis_commands::filterSpeed_q:
-		if(cmd.type == CMDtype::info){
-			replies.push_back(CommandReply("scale:0.01"));
-		}
-		else if (cmd.type == CMDtype::get)
-		{
-			replies.emplace_back(this->filterSpeedCst[this->filterProfileId].q);
-		}
-		break;
-	case Axis_commands::filterAccel_freq:
+
+	case Axis_commands::filterAccel:
 		if (cmd.type == CMDtype::get)
 		{
-			replies.emplace_back(this->filterAccelCst[this->filterProfileId].freq);
-		}
-		break;
-	case Axis_commands::filterAccel_q:
-		if(cmd.type == CMDtype::info){
-			replies.push_back(CommandReply("scale:0.01"));
-		}
-		else if (cmd.type == CMDtype::get)
-		{
-			replies.emplace_back(this->filterAccelCst[this->filterProfileId].q);
+			replies.emplace_back(this->filterAccelCst[this->filterProfileId].freq,this->filterAccelCst[this->filterProfileId].q);
 		}
 		break;
 

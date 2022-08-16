@@ -83,7 +83,7 @@ struct GearRatio_t{
 enum class Axis_commands : uint32_t{
 	power=0x00,degrees=0x01,esgain,zeroenc,invert,idlespring,axisdamper,enctype,drvtype,
 	pos,maxspeed,maxtorquerate,fxratio,curtorque,curpos,curspd,curaccel,reductionScaler,
-	filterSpeed_freq, filterSpeed_q, filterAccel_freq, filterAccel_q, filterProfileId
+	filterSpeed, filterAccel, filterProfileId
 };
 
 class Axis : public PersistentStorage, public CommandHandler, public ErrorHandler
@@ -244,7 +244,7 @@ private:
 	bool idle_center = false;
 
 	// TODO tune these and check if it is really stable and beneficial to the FFB
-	const biquad_constant_t filterSpeedCst[3] = {{ 25, 55 }, { 125, 55 }, { 250, 55 }};
+	const biquad_constant_t filterSpeedCst[3] = {{ 25, 55 }, { 50, 55 }, { 100, 55 }};
 	const biquad_constant_t filterAccelCst[3] = {{ 40, 30 }, { 55, 30 }, { 70, 30 }};
 	const biquad_constant_t filterDamperCst = {60, 55};
 	uint8_t filterProfileId = 0;
