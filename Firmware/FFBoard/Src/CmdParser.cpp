@@ -248,7 +248,7 @@ bool CmdParser::parse(std::vector<ParsedCommand>& commands){
 				}
 				if(!found){
 					Error error = FFBoardMainCommandThread::cmdNotFoundError;
-					error.info += ":"+cmdstring;
+					error.info += ":"+clsname+"."+cmdstring;
 					ErrorHandler::addError(error);
 				}
 			}
