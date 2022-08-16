@@ -215,15 +215,14 @@ bool CmdParser::parse(std::vector<ParsedCommand>& commands){
 
 				if(cmd.instance != 0xFF){
 					cmd.target = (CommandHandler::getHandlerFromClassName(clsname.c_str(),cmd.instance));
-					if(cmd.target == nullptr){
-						continue; // invalid class
-					}
-					CmdHandlerCommanddef* cmdDef = cmd.target->getCommandFromName(cmdstring,CMDFLAG_HID_ONLY);
+					if(cmd.target != nullptr){
+						CmdHandlerCommanddef* cmdDef = cmd.target->getCommandFromName(cmdstring,CMDFLAG_HID_ONLY);
 
-					if(cmdDef){
-						cmd.cmdId = cmdDef->cmdId;
-						commands.push_back(cmd);
-						found = true;
+						if(cmdDef){
+							cmd.cmdId = cmdDef->cmdId;
+							commands.push_back(cmd);
+							found = true;
+						}
 					}
 
 
