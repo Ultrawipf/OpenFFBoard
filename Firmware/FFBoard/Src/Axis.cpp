@@ -89,6 +89,8 @@ void Axis::registerCommands(){
 	//Can only read exact filter settings
 	registerCommand("filterSpeed", Axis_commands::filterSpeed, "Biquad filter freq and q*100 for speed", CMDFLAG_GET);
 	registerCommand("filterAccel", Axis_commands::filterAccel, "Biquad filter freq and q*100 for accel", CMDFLAG_GET);
+
+	registerCommand("cpr", Axis_commands::cpr, "Reported encoder CPR",CMDFLAG_GET);
 }
 
 /*
@@ -719,7 +721,7 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 		break;
 
 	case Axis_commands::pos:
-		if (cmd.type == CMDtype::get)
+		if (cmd.type == CMDtype::get && this->drv->getEncoder() != nullptr)
 		{
 			replies.emplace_back(this->drv->getEncoder()->getPos());
 		}
@@ -796,6 +798,21 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 		if (cmd.type == CMDtype::get)
 		{
 			replies.emplace_back(this->filterAccelCst[this->filterProfileId].freq,this->filterAccelCst[this->filterProfileId].q);
+		}
+		break;
+
+	case Axis_commands::cpr:
+		if (cmd.type == CMDtype::get && this->drv->getEncoder() != nullptr)
+		{
+			uint32_t cpr = this->drv->getEncoder()->getCpr();
+			TMC4671 *tmcdrv = dynamic_cast<TMC4671 *>(this->drv.get()); // Special case for TMC. Get the actual encoder resolution
+			if (tmcdrv)
+			{
+				cpr = tmcdrv->getEncCpr();
+			}
+			replies.emplace_back(cpr);
+		}else{
+			return CommandStatus::ERR;
 		}
 		break;
 
