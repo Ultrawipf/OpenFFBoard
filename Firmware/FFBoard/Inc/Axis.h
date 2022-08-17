@@ -244,7 +244,7 @@ private:
 	bool idle_center = false;
 
 	// TODO tune these and check if it is really stable and beneficial to the FFB
-	const biquad_constant_t filterSpeedCst[3] = {{ 25, 55 }, { 50, 55 }, { 100, 55 }};
+	const biquad_constant_t filterSpeedCst[3] = {{ 30, 55 }, { 60, 55 }, { 120, 55 }};
 	const biquad_constant_t filterAccelCst[3] = {{ 40, 30 }, { 55, 30 }, { 70, 30 }};
 	const biquad_constant_t filterDamperCst = {60, 55};
 	uint8_t filterProfileId = 1;
