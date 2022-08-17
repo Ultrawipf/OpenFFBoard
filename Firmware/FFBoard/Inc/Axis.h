@@ -247,7 +247,7 @@ private:
 	const biquad_constant_t filterSpeedCst[3] = {{ 25, 55 }, { 50, 55 }, { 100, 55 }};
 	const biquad_constant_t filterAccelCst[3] = {{ 40, 30 }, { 55, 30 }, { 70, 30 }};
 	const biquad_constant_t filterDamperCst = {60, 55};
-	uint8_t filterProfileId = 0;
+	uint8_t filterProfileId = 1;
 	const float filter_f = 1000; // 1khz
 	const int32_t damperClip = 20000;
 	uint8_t damperIntensity = 30;
