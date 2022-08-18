@@ -25,6 +25,7 @@ public:
 	uint16_t hidGet(uint8_t report_id, hid_report_type_t report_type,uint8_t* buffer, uint16_t reqlen) override;
 
 	uint32_t getRate(); // Returns an estimate of the hid effect update speed in hz
+	uint32_t getConstantForceRate(); // Returns an estimate of the constant force effect update rate in hz
 	bool getFfbActive();
 	static bool HID_SendReport(uint8_t *report,uint16_t len);
 
@@ -64,8 +65,10 @@ private:
 
 	reportFFB_status_t reportFFBStatus;
 	FastAvg<float,20> hidPeriodAvg;
+	FastAvg<float,20> cfUpdatePeriodAvg;
 
 	uint32_t lastOut = 0;
+	uint32_t lastCfUpdate = 0;
 };
 
 #endif /* HIDFFB_H_ */

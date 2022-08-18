@@ -61,6 +61,20 @@ uint32_t HidFFB::getRate(){
 }
 
 /**
+ * Calculates the frequency of the CF effect only
+ */
+uint32_t HidFFB::getConstantForceRate(){
+	float periodAvg = cfUpdatePeriodAvg.getAverage();
+	if((HAL_GetTick() - lastCfUpdate) > 1000 || periodAvg == 0){
+		// Reset average
+		cfUpdatePeriodAvg.clear();
+		return 0;
+	}else{
+		return (1000.0/periodAvg);
+	}
+}
+
+/**
  * Sends a status report for a specific effect
  */
 void HidFFB::sendStatusReport(uint8_t effect){
@@ -252,12 +266,14 @@ void HidFFB::set_constant_effect(FFB_SetConstantForce_Data_t* data){
 	if(data->effectBlockIndex == 0 || data->effectBlockIndex > MAX_EFFECTS){
 		return;
 	}
+	cfUpdatePeriodAvg.addValue((uint32_t)(HAL_GetTick() - lastCfUpdate));
 	FFB_Effect& effect_p = effects[data->effectBlockIndex-1];
 
 	effect_p.magnitude = data->magnitude;
 //	if(effect_p.state == 0){
 //		effect_p.state = 1; // Force start effect
 //	}
+	lastCfUpdate = HAL_GetTick();
 }
 
 void HidFFB::new_effect(FFB_CreateNewEffect_Feature_Data_t* effect){
