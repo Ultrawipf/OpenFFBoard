@@ -48,8 +48,8 @@ AnalogAxisProcessing::AnalogAxisProcessing(const uint32_t axisAmount,AnalogSourc
 		cmdHandler->registerCommand("rawval", AnalogAxisProcessing_commands::rawvalues, "All raw values",CMDFLAG_GET);
 
 	if(allowManualScale && cmdHandler){
-		cmdHandler->registerCommand("min", AnalogAxisProcessing_commands::min, "Min value limit",CMDFLAG_GETADR|CMDFLAG_SETADR);
-		cmdHandler->registerCommand("max", AnalogAxisProcessing_commands::max, "Max value limit",CMDFLAG_GETADR|CMDFLAG_SETADR);
+		cmdHandler->registerCommand("min", AnalogAxisProcessing_commands::min, "Min value limit (adr=chan)",CMDFLAG_GETADR|CMDFLAG_SETADR);
+		cmdHandler->registerCommand("max", AnalogAxisProcessing_commands::max, "Max value limit (adr=chan)",CMDFLAG_GETADR|CMDFLAG_SETADR);
 		conf.raw = false;
 	}
 	setupFilters(); // Initialize filters

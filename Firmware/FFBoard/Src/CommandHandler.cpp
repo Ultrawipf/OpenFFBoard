@@ -177,7 +177,7 @@ void CommandHandler::registerCommands(){
 	registerCommand("help", CommandHandlerCommands::help, "Prints help for commands",CMDFLAG_GET | CMDFLAG_STR_ONLY | CMDFLAG_INFOSTRING);
 	registerCommand("cmduid", CommandHandlerCommands::cmdhandleruid, "Command handler index",CMDFLAG_GET);
 	registerCommand("instance", CommandHandlerCommands::instance, "Command handler instance number",CMDFLAG_GET);
-	registerCommand("cmdinfo", CommandHandlerCommands::cmdinfo, "Checks flags of a command id (adr). returns -1 if cmd id invalid",CMDFLAG_GETADR);
+	registerCommand("cmdinfo", CommandHandlerCommands::cmdinfo, "Flags of a command id (adr). -1 if cmd id invalid",CMDFLAG_GETADR);
 	//registerCommand("selId", CommandHandlerCommands::selectionid, "Selection id used to create this class",CMDFLAG_GET);
 }
 
