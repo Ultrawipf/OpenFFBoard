@@ -23,6 +23,7 @@ void FFBHIDMain::registerCommands(){
 	registerCommand("addain", FFBWheel_commands::addain, "Enable analog source",CMDFLAG_SET);
 
 	registerCommand("hidrate", FFBWheel_commands::hidrate, "Get estimated effect update speed",CMDFLAG_GET);
+	registerCommand("cfrate", FFBWheel_commands::cfrate, "Get estimated const force rate",CMDFLAG_GET);
 	registerCommand("hidsendspd", FFBWheel_commands::hidsendspd, "Change HID gamepad update rate",CMDFLAG_GET|CMDFLAG_SET|CMDFLAG_INFOSTRING);
 
 	registerCommand("estop", FFBWheel_commands::estop, "Emergency stop",CMDFLAG_GET|CMDFLAG_SET);
@@ -90,6 +91,13 @@ CommandStatus FFBHIDMain::command(const ParsedCommand& cmd,std::vector<CommandRe
 	case FFBWheel_commands::hidrate:
 		if(cmd.type == CMDtype::get){
 			replies.emplace_back(this->getRate());
+		}else{
+			return CommandStatus::ERR;
+		}
+		break;
+	case FFBWheel_commands::cfrate:
+		if(cmd.type == CMDtype::get){
+			replies.emplace_back(this->ffb->getConstantForceRate());
 		}else{
 			return CommandStatus::ERR;
 		}
