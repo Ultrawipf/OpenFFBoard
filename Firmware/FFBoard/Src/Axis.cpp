@@ -273,7 +273,7 @@ void Axis::setPower(uint16_t power)
 {
 	this->power = power;
 	updateTorqueScaler();
-#ifdef TMC4671
+#ifdef TMC4671DRIVER
 	// Update hardware limits for TMC for safety
 	TMC4671 *drv = dynamic_cast<TMC4671 *>(this->drv.get());
 	if (drv != nullptr)
@@ -306,7 +306,7 @@ void Axis::setDrvType(uint8_t drvtype)
 	if(!this->drv->hasIntegratedEncoder()){
 		this->drv->setEncoder(this->enc);
 	}
-#ifdef TMC4671
+#ifdef TMC4671DRIVER
 	if (dynamic_cast<TMC4671 *>(drv))
 	{
 		setupTMC4671();
@@ -323,7 +323,7 @@ void Axis::setDrvType(uint8_t drvtype)
 	}
 }
 
-#ifdef TMC4671
+#ifdef TMC4671DRIVER
 // Special tmc setup methods
 void Axis::setupTMC4671()
 {
@@ -808,7 +808,7 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 		if (cmd.type == CMDtype::get && this->drv->getEncoder() != nullptr)
 		{
 			uint32_t cpr = this->drv->getEncoder()->getCpr();
-#ifdef TMC4671
+#ifdef TMC4671DRIVER
 			TMC4671 *tmcdrv = dynamic_cast<TMC4671 *>(this->drv.get()); // Special case for TMC. Get the actual encoder resolution
 			if (tmcdrv)
 			{

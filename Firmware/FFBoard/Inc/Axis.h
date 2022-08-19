@@ -97,7 +97,7 @@ public:
 	const ClassType getClassType() override {return ClassType::Axis;};
 
 	virtual std::string getHelpstring() { return "FFB axis"	;}
-#ifdef TMC4671
+#ifdef TMC4671DRIVER
 	void setupTMC4671();
 #endif
 	// Dynamic classes
