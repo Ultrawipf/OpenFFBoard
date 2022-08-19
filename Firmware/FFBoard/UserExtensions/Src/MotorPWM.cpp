@@ -68,7 +68,7 @@ void MotorPWM::turn(int16_t power){
 
 		float val = ((pval * 1000)/0x7fff)*tFreq;
 		val = clip((1500*tFreq)-val,1000*tFreq, 2000*tFreq);
-		setPWM(val,timerConfig.ccr_1);
+		setPWM(val,timerConfig.rcpwm_chan);
 
 	/*
 	 * Generates a 0-100% PWM signal
@@ -77,28 +77,28 @@ void MotorPWM::turn(int16_t power){
 	 */
 	}else if(mode == ModePWM_DRV::PWM_DIR){
 		if(power < 0){
-			setPWM(0,timerConfig.ccr_3);
-			setPWM(0xffff,timerConfig.ccr_4);
+			setPWM(0,timerConfig.dir_chan);
+			setPWM(0xffff,timerConfig.dir_chan_n);
 		}else{
-			setPWM(0,timerConfig.ccr_4);
-			setPWM(0xffff,timerConfig.ccr_3);
+			setPWM(0,timerConfig.dir_chan_n);
+			setPWM(0xffff,timerConfig.dir_chan);
 		}
 		int32_t val = (uint32_t)((abs(power) * period)/0x7fff);
-		setPWM(val,timerConfig.ccr_1);
+		setPWM(val,timerConfig.pwm_chan);
 
 	}else if(mode == ModePWM_DRV::CENTERED_PWM){
 		int32_t pval = 0x7fff+power;
 		int32_t val = (pval * period)/0xffff;
-		setPWM(val,timerConfig.ccr_1);
+		setPWM(val,timerConfig.centerpwm_chan);
 
 	}else if(mode == ModePWM_DRV::PWM_DUAL){
 		int32_t val = (uint32_t)((abs(power) * period)/0x7fff);
 		if(power < 0){
-			setPWM(0,timerConfig.ccr_1);
-			setPWM(val,timerConfig.ccr_2);
+			setPWM(0,timerConfig.dualpwm1);
+			setPWM(val,timerConfig.dualpwm2);
 		}else{
-			setPWM(0,timerConfig.ccr_2);
-			setPWM(val,timerConfig.ccr_1);
+			setPWM(0,timerConfig.dualpwm2);
+			setPWM(val,timerConfig.dualpwm1);
 		}
 	}
 }

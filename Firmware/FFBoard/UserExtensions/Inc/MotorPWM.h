@@ -30,10 +30,17 @@ struct PWMConfig{
 		uint32_t channel_3 = TIM_CHANNEL_3;
 		uint32_t channel_4 = TIM_CHANNEL_4;
 
-		uint8_t ccr_1 = 1;
-		uint8_t ccr_2 = 2;
-		uint8_t ccr_3 = 3;
-		uint8_t ccr_4 = 4;
+		uint8_t pwm_chan = 1;
+		uint8_t	dir_chan = 3;
+		uint8_t	dir_chan_n = 4;
+
+		uint8_t centerpwm_chan = 1;
+
+		uint8_t rcpwm_chan = 1;
+
+		uint8_t dualpwm1 = 1;
+		uint8_t dualpwm2 = 2;
+
 		TIM_HandleTypeDef* timer = &TIM_PWM;
 		uint32_t timerFreq = 168000000;
 	};
