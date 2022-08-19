@@ -45,19 +45,26 @@ const uint32_t canSpeedBTR_preset[] = { 0x001b0037,0x001b001b,0x001c0014,0x001a0
 
 
 #ifdef PWMDRIVER
-// CCR and channels must match!
-const PWMConfig pwmTimerConfig = {
-		.channel_1 = TIM_CHANNEL_1,
-		.channel_2 = TIM_CHANNEL_2,
-		.channel_3 = TIM_CHANNEL_3,
-		.channel_4 = TIM_CHANNEL_4,
 
-		.ccr_1 = 1,
-		.ccr_2 = 2,
-		.ccr_3 = 3,
-		.ccr_4 = 4,
+const PWMConfig pwmTimerConfig =
+{
+	.channel_1 = TIM_CHANNEL_1,
+	.channel_2 = TIM_CHANNEL_2,
+	.channel_3 = TIM_CHANNEL_3,
+	.channel_4 = TIM_CHANNEL_4,
 
-		.timer = &TIM_PWM,
-		.timerFreq = 168000000
-	};
+	.pwm_chan = 1,
+	.dir_chan = 2, // Changed from default 3 for OSW pinout
+	.dir_chan_n = 4, // Should be PE 10. Check if required by any application
+
+	.centerpwm_chan = 1,
+
+	.rcpwm_chan = 1,
+
+	.dualpwm1 = 1,
+	.dualpwm2 = 2,
+
+	.timer = &TIM_PWM,
+	.timerFreq = 168000000
+};
 #endif
