@@ -7,7 +7,7 @@
 
 #include "Axis.h"
 #include "voltagesense.h"
-
+#include "TMC4671.h"
 
 //////////////////////////////////////////////
 /*
@@ -808,11 +808,13 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 		if (cmd.type == CMDtype::get && this->drv->getEncoder() != nullptr)
 		{
 			uint32_t cpr = this->drv->getEncoder()->getCpr();
+#ifdef TMC4671
 			TMC4671 *tmcdrv = dynamic_cast<TMC4671 *>(this->drv.get()); // Special case for TMC. Get the actual encoder resolution
 			if (tmcdrv)
 			{
 				cpr = tmcdrv->getEncCpr();
 			}
+#endif
 			replies.emplace_back(cpr);
 		}else{
 			return CommandStatus::ERR;
