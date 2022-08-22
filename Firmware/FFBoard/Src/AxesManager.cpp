@@ -78,7 +78,7 @@ std::vector<int32_t>* AxesManager::getAxisValues(){
 	this->axisValues.clear(); // Empty axes
 	for (std::size_t i=0; i < axes.size(); i++) {
 		Encoder* enc = axes[i]->getEncoder();
-		if(enc && enc->getType() != EncoderType::NONE){ // If encoder not none type
+		if(enc && enc->getEncoderType() != EncoderType::NONE){ // If encoder not none type
 			this->axisValues.push_back(axes[i]->getLastScaledEnc());
 			//this->axisValues[i] = axes[i]->getLastScaledEnc();
 		}

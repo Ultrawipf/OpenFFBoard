@@ -195,7 +195,7 @@ bool TMC4671::isSetUp(){
 			return false;
 		}
 	}
-	if(this->conf.motconf.phiEsource == PhiE::ext && drvEncoder->getType() == EncoderType::NONE && !encoderAligned){
+	if(this->conf.motconf.phiEsource == PhiE::ext && drvEncoder->getEncoderType() == EncoderType::NONE && !encoderAligned){
 		return false;
 	}
 
@@ -1425,7 +1425,7 @@ void TMC4671::setEncoderType(EncoderType_TMC type){
 		setPhiEtype(PhiE::hall);
 		setup_HALL(hallconf);
 
-	}else if(type == EncoderType_TMC::ext && drvEncoder && drvEncoder->getType() != EncoderType::NONE){
+	}else if(type == EncoderType_TMC::ext && drvEncoder && drvEncoder->getEncoderType() != EncoderType::NONE){
 		// TODO check different encoder type
 		encoderAligned = false;
 		setUpExtEncTimer();
@@ -1775,7 +1775,7 @@ uint32_t TMC4671::posToEnc(uint32_t pos){
 	return pos/((0xffff / abnconf.cpr)) % abnconf.cpr; //(conf.motconf.pole_pairs)
 }
 
-EncoderType TMC4671::getType(){
+EncoderType TMC4671::getEncoderType(){
 	if(conf.motconf.enctype == EncoderType_TMC::abn && abnconf.useIndex && encoderIndexHitFlag){
 		return EncoderType::incrementalIndex;
 	}
@@ -2871,8 +2871,8 @@ void TMC4671::TMC_ExternalEncoderUpdateThread::Run(){
 }
 
 void TMC4671::TMC_ExternalEncoderUpdateThread::updateFromIsr(){
-
-	this->NotifyFromISR();
+	if(tmc->initialized)
+		this->NotifyFromISR();
 }
 
 void TMC4671::errorCallback(const Error &error, bool cleared){

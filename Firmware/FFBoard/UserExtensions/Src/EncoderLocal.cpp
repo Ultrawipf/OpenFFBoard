@@ -49,7 +49,7 @@ void EncoderLocal::restoreFlash(){
 	}
 }
 
-EncoderType EncoderLocal::getType(){
+EncoderType EncoderLocal::getEncoderType(){
 	return EncoderType::incremental;
 }
 

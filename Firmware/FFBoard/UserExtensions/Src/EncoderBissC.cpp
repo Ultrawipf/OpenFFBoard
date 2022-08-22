@@ -147,7 +147,7 @@ void EncoderBissC::endSpiTransfer(SPIPort* port){
 
 
 
-EncoderType EncoderBissC::getType(){
+EncoderType EncoderBissC::getEncoderType(){
 	return EncoderType::absolute;
 }
 

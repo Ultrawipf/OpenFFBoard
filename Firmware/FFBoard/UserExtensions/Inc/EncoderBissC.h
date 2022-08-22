@@ -28,7 +28,7 @@ public:
 	EncoderBissC();
 	virtual ~EncoderBissC();
 
-	EncoderType getType();
+	EncoderType getEncoderType();
 	static bool isCreatable();
 	bool updateFrame();
 	int32_t getPos();

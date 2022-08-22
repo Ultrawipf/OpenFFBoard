@@ -452,7 +452,7 @@ public:
 	Encoder* getEncoder() override;
 	void setEncoder(std::shared_ptr<Encoder>& encoder) override;
 	bool hasIntegratedEncoder() override;
-	inline bool usingExternalEncoder(){return conf.motconf.enctype == EncoderType_TMC::ext && drvEncoder != nullptr && drvEncoder->getType() != EncoderType::NONE;}
+	inline bool usingExternalEncoder(){return conf.motconf.enctype == EncoderType_TMC::ext && drvEncoder != nullptr && drvEncoder->getEncoderType() != EncoderType::NONE;}
 	int32_t getPos() override;
 	int32_t getPosAbs() override;
 	void setPos(int32_t pos) override;
@@ -460,7 +460,7 @@ public:
 	//uint32_t getPosCpr();
 	uint32_t getCpr();
 	void setCpr(uint32_t cpr);
-	EncoderType getType() override;
+	EncoderType getEncoderType() override;
 	uint32_t posToEnc(uint32_t pos);
 	uint32_t encToPos(uint32_t enc);
 

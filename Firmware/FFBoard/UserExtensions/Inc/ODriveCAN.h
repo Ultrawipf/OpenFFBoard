@@ -73,6 +73,7 @@ public:
 	uint32_t getCpr() override;
 	int32_t getPos() override;
 	void setPos(int32_t pos) override;
+	EncoderType getEncoderType() override;
 
 	void setMode(ODriveControlMode controlMode,ODriveInputMode inputMode);
 	void setState(ODriveState state);
