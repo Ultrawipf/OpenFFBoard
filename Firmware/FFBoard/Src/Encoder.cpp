@@ -43,7 +43,10 @@ Encoder::~Encoder() {
 
 }
 
-EncoderType Encoder::getType(){
+/**
+ * Returns the type of the encoder. Must override this and NOT return NONE in other classes
+ */
+EncoderType Encoder::getEncoderType(){
 	return EncoderType::NONE;
 }
 

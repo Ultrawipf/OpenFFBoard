@@ -252,6 +252,11 @@ void ODriveCAN::setTorque(float torque){
 		sendMsg<float>(0x0E,torque);
 }
 
+EncoderType ODriveCAN::getEncoderType(){
+	return EncoderType::absolute;
+}
+
+
 void ODriveCAN::setMode(ODriveControlMode controlMode,ODriveInputMode inputMode){
 	uint64_t mode = (uint64_t) controlMode | ((uint64_t)inputMode << 32);
 	sendMsg(0x0B,mode);

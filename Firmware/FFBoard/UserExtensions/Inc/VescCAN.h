@@ -81,6 +81,7 @@ public:
 	void startMotor() override;
 	Encoder* getEncoder() override;
 	bool hasIntegratedEncoder() override;
+	EncoderType getEncoderType() override;
 	bool motorReady() override;
 
 	// PersistentStorage impl
@@ -88,7 +89,6 @@ public:
 	void restoreFlash() override;
 
 	// Encoder impl
-	EncoderType getType() { return EncoderType::absolute;}
 	float getPos_f() override;
 	uint32_t getCpr() override;
 	int32_t getPos() override;

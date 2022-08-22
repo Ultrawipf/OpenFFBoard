@@ -35,7 +35,7 @@ public:
 	static ClassIdentifier info;
 	const ClassIdentifier getInfo();
 
-	virtual EncoderType getType();
+	virtual EncoderType getEncoderType();
 
 	virtual int32_t getPos();
 	virtual float getPos_f();

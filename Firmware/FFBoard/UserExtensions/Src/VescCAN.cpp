@@ -115,6 +115,13 @@ bool VescCAN::hasIntegratedEncoder() {
 	return useEncoder;
 }
 
+EncoderType VescCAN::getEncoderType(){
+	if (useEncoder)
+		return EncoderType::absolute;
+	else
+		return MotorDriver::getEncoder()->getEncoderType();
+}
+
 bool VescCAN::motorReady() {
 	return state == VescState::VESC_STATE_READY;
 }

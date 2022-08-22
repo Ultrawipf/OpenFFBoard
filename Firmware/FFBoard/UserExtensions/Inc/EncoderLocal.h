@@ -33,7 +33,7 @@ public:
 	EncoderLocal();
 	virtual ~EncoderLocal();
 
-	EncoderType getType();
+	EncoderType getEncoderType();
 
 	void registerCommands();
 

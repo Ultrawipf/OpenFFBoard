@@ -383,7 +383,7 @@ void FFBHIDMain::usbResume(){
 void FFBHIDMain::exti(uint16_t GPIO_Pin){
 	if(GPIO_Pin == BUTTON_A_Pin){
 		// Button down?
-		if(HAL_GPIO_ReadPin(BUTTON_A_GPIO_Port, BUTTON_A_Pin)){
+		if(HAL_GPIO_ReadPin(BUTTON_A_GPIO_Port, BUTTON_A_Pin)){https://discord.com/channels/@me/1006955737559335052
 			this->control.resetEncoder = true;
 		}
 	}

@@ -31,7 +31,7 @@ public:
 	const ClassIdentifier getInfo();
 	static bool isCreatable() {return ext3_spi.getFreeCsPins().size() > 0 && !inUse;};
 
-	EncoderType getType(){return EncoderType::absolute;};
+	EncoderType getEncoderType(){return EncoderType::absolute;};
 	void Run();
 
 	void restoreFlash() override;
