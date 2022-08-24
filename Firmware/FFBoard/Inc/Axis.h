@@ -243,7 +243,7 @@ private:
 	float idlespringscale = 0;
 	bool idle_center = false;
 
-	// TODO tune these and check if it is really stable and beneficial to the FFB
+	// TODO tune these and check if it is really stable and beneficial to the FFB. index 4 placeholder
 	const biquad_constant_t filterSpeedCst[4] = {{ 30, 55 }, { 60, 55 }, { 120, 55 }, {120, 55}};
 	const biquad_constant_t filterAccelCst[4] = {{ 40, 30 }, { 55, 30 }, { 70, 30 }, {120, 55}};
 	const biquad_constant_t filterDamperCst = {60, 55};
