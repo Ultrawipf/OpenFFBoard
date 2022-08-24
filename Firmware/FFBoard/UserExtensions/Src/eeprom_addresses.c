@@ -19,6 +19,7 @@ const uint16_t VirtAddVarTab[NB_OF_VAR] =
 // System variables		
 	ADR_HW_VERSION	,
 	ADR_SW_VERSION	,
+	ADR_FLASH_VERSION	,
 	ADR_CURRENT_CONFIG	,
 // Ports		
 	ADR_CANCONF1	,
@@ -183,6 +184,7 @@ const uint16_t VirtAddVarTab[NB_OF_VAR] =
 	ADR_ADS111X_MAX_3	
 };		
 
+
 /**		
  * Variables to be included in a flash dump		
  */		
@@ -191,6 +193,7 @@ const uint16_t exportableFlashAddresses[NB_EXPORTABLE_ADR] =
 // System variables		
 	//ADR_HW_VERSION	,
 	//ADR_SW_VERSION	,
+	ADR_FLASH_VERSION	,
 	ADR_CURRENT_CONFIG	,
 // Ports		
 	ADR_CANCONF1	,
@@ -354,3 +357,4 @@ const uint16_t exportableFlashAddresses[NB_EXPORTABLE_ADR] =
 	ADR_ADS111X_MIN_3	,
 	ADR_ADS111X_MAX_3	
 };		
+

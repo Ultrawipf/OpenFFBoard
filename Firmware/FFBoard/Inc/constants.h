@@ -10,6 +10,7 @@
 
 static const uint8_t SW_VERSION_INT[3] = {1,9,5}; // Version as array. 8 bit each!
 #define MAX_AXIS 2 // ONLY USE 2 for now else screws HID Reports
+#define FLASH_VERSION 0 // Counter to increase whenever a full flash erase is required.
 
 //#define DEBUGLOG // Uncomment to enable some debug printouts
 

@@ -12,11 +12,11 @@
 		
 #include "main.h"		
 // Change this to the amount of currently registered variables		
-#define NB_OF_VAR 140		
+#define NB_OF_VAR 141
 extern const uint16_t VirtAddVarTab[NB_OF_VAR];		
 		
 // Amount of variables in exportable list		
-#define NB_EXPORTABLE_ADR 125		
+#define NB_EXPORTABLE_ADR 126
 extern const uint16_t exportableFlashAddresses[NB_EXPORTABLE_ADR];		
 		
 		
@@ -37,6 +37,7 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 // System variables		
 #define ADR_HW_VERSION 1 		
 #define ADR_SW_VERSION 2 		
+#define ADR_FLASH_VERSION 4
 #define ADR_CURRENT_CONFIG 10 		
 // Ports		
 #define ADR_CANCONF1 0xC1 		
@@ -75,9 +76,9 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_CANANALOG_CONF1 0x270 		
 // FFB Engine flash area		
 #define ADR_FFB_CF_FILTER 0x280 // Constant Force Lowpass		
-#define ADR_FFB_FR_FILTER 0x281 // Friction Lowpass		
-#define ADR_FFB_DA_FILTER 0x282 // Damper Lowpass		
-#define ADR_FFB_IN_FILTER 0x283 // Inertia Lowpass		
+#define ADR_FFB_FR_FILTER 0x281 // Friction Lowpass
+#define ADR_FFB_DA_FILTER 0x282 // Damper Lowpass
+#define ADR_FFB_IN_FILTER 0x283 // Inertia Lowpass
 #define ADR_FFB_EFFECTS1 0x284 // 0-7 inertia, 8-15 friction		
 #define ADR_FFB_EFFECTS2 0x285 // 0-7 spring, 8-15 damper		
 #define ADR_FFB_EFFECTS3 0x286 // 0-7 friction ramp up zone, 8-9 filterProfile
@@ -199,4 +200,4 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_ADS111X_MAX_2 0x515 		
 #define ADR_ADS111X_MIN_3 0x516 		
 #define ADR_ADS111X_MAX_3 0x517 		
-#endif /* EEPROM_ADDRESSES_H_ */		
+#endif /* EEPROM_ADDRESSES_H_ */
