@@ -44,11 +44,11 @@ EffectsCalculator::EffectsCalculator() : CommandHandler("fx", CLSID_EFFECTSCALC)
 //	registerCommand("monitorEffect", EffectsCalculator_commands::monitorEffect, "Get monitoring status. set to 1 to enable.", CMDFLAG_GET | CMDFLAG_SET);
 
 	registerCommand("damper_f", EffectsCalculator_commands::damper_f, "Damper biquad freq", CMDFLAG_GET | CMDFLAG_SET);
-	registerCommand("damper_q", EffectsCalculator_commands::damper_q, "Damper biquad q", CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_INFOSTRING);
+	registerCommand("damper_q", EffectsCalculator_commands::damper_q, "Damper biquad q", CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("friction_f", EffectsCalculator_commands::friction_f, "Friction biquad freq", CMDFLAG_GET | CMDFLAG_SET);
-	registerCommand("friction_q", EffectsCalculator_commands::friction_q, "Friction biquad q", CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_INFOSTRING);
+	registerCommand("friction_q", EffectsCalculator_commands::friction_q, "Friction biquad q", CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("inertia_f", EffectsCalculator_commands::inertia_f, "Inertia biquad freq", CMDFLAG_GET | CMDFLAG_SET);
-	registerCommand("inertia_q", EffectsCalculator_commands::inertia_q, "Inertia biquad q", CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_INFOSTRING);
+	registerCommand("inertia_q", EffectsCalculator_commands::inertia_q, "Inertia biquad q", CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("filterProfile_id", EffectsCalculator_commands::filterProfileId, "Biquad filter profile for damper, inertia, friction: 0 default, 1 custom", CMDFLAG_GET | CMDFLAG_SET);
 
 //	registerCommand("scaler_damper", EffectsCalculator_commands::scaler_damper, "Scaler damper", CMDFLAG_GET | CMDFLAG_INFOSTRING);
@@ -639,20 +639,22 @@ void EffectsCalculator::saveFlash()
 	filterStorage |= ( (uint16_t)filter[0].constant.q & 0x7F ) << 9 ;
 	Flash_Write(ADR_FFB_CF_FILTER, filterStorage);
 
-	// save Friction biquad
-	filterStorage = (uint16_t)filter[CUSTOM_PROFILE_ID].friction.freq & 0x1FF;
-	filterStorage |= ( (uint16_t)filter[CUSTOM_PROFILE_ID].friction.q & 0x7F ) << 9 ;
-	Flash_Write(ADR_FFB_FR_FILTER, filterStorage);
+	if(filterProfileId == CUSTOM_PROFILE_ID){ // Only attempt saving if custom profile active
+		// save Friction biquad
+		filterStorage = (uint16_t)filter[CUSTOM_PROFILE_ID].friction.freq & 0x1FF;
+		filterStorage |= ( (uint16_t)filter[CUSTOM_PROFILE_ID].friction.q & 0x7F ) << 9 ;
+		Flash_Write(ADR_FFB_FR_FILTER, filterStorage);
 
-	// save Damper biquad
-	filterStorage = (uint16_t)filter[CUSTOM_PROFILE_ID].damper.freq & 0x1FF;
-	filterStorage |= ( (uint16_t)filter[CUSTOM_PROFILE_ID].damper.q & 0x7F ) << 9 ;
-	Flash_Write(ADR_FFB_DA_FILTER, filterStorage);
+		// save Damper biquad
+		filterStorage = (uint16_t)filter[CUSTOM_PROFILE_ID].damper.freq & 0x1FF;
+		filterStorage |= ( (uint16_t)filter[CUSTOM_PROFILE_ID].damper.q & 0x7F ) << 9 ;
+		Flash_Write(ADR_FFB_DA_FILTER, filterStorage);
 
-	// save Inertia biquad
-	filterStorage = (uint16_t)filter[CUSTOM_PROFILE_ID].inertia.freq & 0x1FF;
-	filterStorage |= ( (uint16_t)filter[CUSTOM_PROFILE_ID].inertia.q & 0x7F ) << 9 ;
-	Flash_Write(ADR_FFB_IN_FILTER, filterStorage);
+		// save Inertia biquad
+		filterStorage = (uint16_t)filter[CUSTOM_PROFILE_ID].inertia.freq & 0x1FF;
+		filterStorage |= ( (uint16_t)filter[CUSTOM_PROFILE_ID].inertia.q & 0x7F ) << 9 ;
+		Flash_Write(ADR_FFB_IN_FILTER, filterStorage);
+	}
 
 	// save the effect gain
 	uint16_t effects = gain.inertia | (gain.friction << 8);
@@ -869,10 +871,7 @@ CommandStatus EffectsCalculator::command(const ParsedCommand& cmd,std::vector<Co
 		}
 		break;
 	case EffectsCalculator_commands::damper_q:
-		if(cmd.type == CMDtype::info){
-			replies.emplace_back("scale:"+std::to_string(this->qfloatScaler));
-		}
-		else if (cmd.type == CMDtype::get)
+		if (cmd.type == CMDtype::get)
 		{
 			replies.emplace_back(filter[filterProfileId].damper.q);
 		}
@@ -894,10 +893,7 @@ CommandStatus EffectsCalculator::command(const ParsedCommand& cmd,std::vector<Co
 		}
 		break;
 	case EffectsCalculator_commands::friction_q:
-		if(cmd.type == CMDtype::info){
-			replies.emplace_back("scale:"+std::to_string(this->qfloatScaler));
-		}
-		else if (cmd.type == CMDtype::get)
+		if (cmd.type == CMDtype::get)
 		{
 			replies.emplace_back(filter[filterProfileId].friction.q);
 		}
@@ -919,10 +915,7 @@ CommandStatus EffectsCalculator::command(const ParsedCommand& cmd,std::vector<Co
 		}
 		break;
 	case EffectsCalculator_commands::inertia_q:
-		if(cmd.type == CMDtype::info){
-			replies.emplace_back("scale:"+std::to_string(this->qfloatScaler));
-		}
-		else if (cmd.type == CMDtype::get)
+		if (cmd.type == CMDtype::get)
 		{
 			replies.emplace_back(filter[filterProfileId].inertia.q);
 		}

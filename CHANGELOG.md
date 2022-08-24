@@ -11,3 +11,4 @@
 - Added constant force rate command
 - Highly improved uart command stability (default baud rate 115200)
 - Added command to check command flags (cls.cmdinfo?cmdid)
+- Added advanced filter mode to switch between custom and default conditional effect output filters ("fx.filterProfile_id")
