@@ -52,16 +52,27 @@ void cppmain() {
 	if( EE_Init() != EE_OK){
 		Error_Handler();
 	}
+//	// Check if flash is initialized
+//	uint16_t lastVersion = 0;
+//	if(!Flash_Read(ADR_SW_VERSION, &lastVersion)){ // Version never written
+//		Flash_Write(ADR_SW_VERSION, (SW_VERSION_INT[0]<<8) | SW_VERSION_INT[1]);
+//	}
+//	Flash_Read(ADR_SW_VERSION,&lastVersion);
+//	if((lastVersion & 0xff00) != (SW_VERSION_INT[0]<<8)){
+//		//EE_Format(); // Major version changed or could not write initial value. force a format
+//		Flash_Write(ADR_SW_VERSION, (SW_VERSION_INT[0]<<8) | SW_VERSION_INT[1]);
+//	}
 	// Check if flash is initialized
-	uint16_t lastVersion = 0;
-	if(!Flash_Read(ADR_SW_VERSION, &lastVersion)){ // Version never written
-		Flash_Write(ADR_SW_VERSION, (SW_VERSION_INT[0]<<8) | SW_VERSION_INT[1]);
+	uint16_t lastFlashVersion = 0;
+	if(!Flash_Read(ADR_FLASH_VERSION, &lastFlashVersion)){ // Version never written
+		Flash_Write(ADR_FLASH_VERSION, FLASH_VERSION);
 	}
-	Flash_Read(ADR_SW_VERSION,&lastVersion);
-	if((lastVersion & 0xff00) != (SW_VERSION_INT[0]<<8)){
+	Flash_Read(ADR_FLASH_VERSION,&lastFlashVersion);
+	if(lastFlashVersion != FLASH_VERSION){
 		EE_Format(); // Major version changed or could not write initial value. force a format
-		Flash_Write(ADR_SW_VERSION, (SW_VERSION_INT[0]<<8) | SW_VERSION_INT[1]);
+		Flash_Write(ADR_FLASH_VERSION, FLASH_VERSION);
 	}
+
 	HAL_FLASH_Lock();
 	// ------------------------
 
