@@ -22,6 +22,8 @@
 #define INTERNAL_SCALER_FRICTION 45
 #define INTERNAL_SCALER_INERTIA 4
 
+#define CUSTOM_PROFILE_ID 1
+
 class Axis;
 struct metric_t;
 
@@ -55,7 +57,7 @@ struct effect_stat_t {
 
 enum class EffectsCalculator_commands : uint32_t {
 	ffbfiltercf,ffbfiltercf_q,effects,spring,friction,damper,inertia,
-	damper_f, damper_q, friction_f, friction_q, inertia_f, inertia_q,
+	damper_f, damper_q, friction_f, friction_q, inertia_f, inertia_q, filterProfileId,
 	frictionPctSpeedToRampup,
 	monitorEffect, effectsDetails, effectsForces,
 };
@@ -102,7 +104,8 @@ protected:
 private:
 	uint8_t directionEnableMask = 0;
 	// Filters
-	effect_biquad_t filter;
+	effect_biquad_t filter[2];		// 0 is the default profile and the custom for CFFilter, CUSTOM_PROFILE_ID is the custom slot
+	uint8_t filterProfileId = 0;
 	const uint32_t calcfrequency = 1000; 		// HID frequency 1khz
 	const float qfloatScaler = 0.01;
 
