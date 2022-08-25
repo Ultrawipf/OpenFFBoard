@@ -615,7 +615,7 @@ void TMC4671::calibrateEncoder(){
 	}else if(conf.motconf.enctype == EncoderType_TMC::sincos || conf.motconf.enctype == EncoderType_TMC::uvw){
 		calibrateAenc();
 	}else if(conf.motconf.enctype == EncoderType_TMC::ext){
-		calibrateAenc();
+		estimateExtEnc();
 	}
 	changeState(TMC_ControlState::EncoderInit);
 
@@ -2108,7 +2108,6 @@ void TMC4671::estimateExtEnc(){
 		setFluxTorque(flux, 0);
 		Delay(5);
 	}
-
 	int16_t phiE_enc = getPhiEfromExternalEncoder();
 	int16_t phiE_enc_old = 0;
 	int16_t rcount=0,c = 0; // Count how often direction was in reverse
@@ -2130,7 +2129,9 @@ void TMC4671::estimateExtEnc(){
 	setPhiEtype(lastphie);
 	setMotionMode(lastmode,true);
 
-	conf.encoderReversed = rcount > c/2;
+	if(rcount > c/2)
+		conf.encoderReversed = !conf.encoderReversed;
+
 	blinkClipLed(0, 0);
 }
 
