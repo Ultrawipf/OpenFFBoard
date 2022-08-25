@@ -49,7 +49,7 @@ EffectsCalculator::EffectsCalculator() : CommandHandler("fx", CLSID_EFFECTSCALC)
 	registerCommand("friction_q", EffectsCalculator_commands::friction_q, "Friction biquad q", CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("inertia_f", EffectsCalculator_commands::inertia_f, "Inertia biquad freq", CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("inertia_q", EffectsCalculator_commands::inertia_q, "Inertia biquad q", CMDFLAG_GET | CMDFLAG_SET);
-	registerCommand("filterProfile_id", EffectsCalculator_commands::filterProfileId, "Biquad filter profile for damper, inertia, friction: 0 default, 1 custom", CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("filterProfile_id", EffectsCalculator_commands::filterProfileId, "Conditional effects filter profile: 0 default; 1 custom", CMDFLAG_GET | CMDFLAG_SET);
 
 //	registerCommand("scaler_damper", EffectsCalculator_commands::scaler_damper, "Scaler damper", CMDFLAG_GET | CMDFLAG_INFOSTRING);
 //	registerCommand("scaler_friction", EffectsCalculator_commands::scaler_friction, "Scaler friction", CMDFLAG_GET | CMDFLAG_INFOSTRING);
@@ -129,6 +129,12 @@ void EffectsCalculator::calculateEffects(std::vector<std::unique_ptr<Axis>> &axe
 	int32_t forceZ = 0;
 	bool validZ = axisCount > 2;
 #endif
+
+	for (uint8_t i = 0; i < effects_stats.size(); i++)
+	{
+		effects_stats[i].current = 0; // Reset active effect forces
+	}
+
 
 	for (uint8_t i = 0; i < MAX_EFFECTS; i++)
 	{
@@ -727,10 +733,11 @@ void EffectsCalculator::logEffectState(uint8_t type,uint8_t state){
 	}
 }
 
+
 void EffectsCalculator::calcStatsEffectType(uint8_t type, int16_t force){
 	if(type > 0 && type < 13) {
 		uint8_t arrayLocation = type - 1;
-		effects_stats[arrayLocation].current = force;
+		effects_stats[arrayLocation].current += force;
 		effects_stats[arrayLocation].max = std::max(effects_stats[arrayLocation].max, (int16_t)abs(force));
 	}
 }
