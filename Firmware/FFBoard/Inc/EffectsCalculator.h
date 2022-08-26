@@ -87,6 +87,7 @@ public:
 	void setDirectionEnableMask(uint8_t mask);
 	void calcStatsEffectType(uint8_t type, int16_t force);
 	void logEffectState(uint8_t type,uint8_t state);
+	void resetLoggedActiveEffects(bool reinit);
 
 	//virtual ParseStatus command(ParsedCommand_old *cmd, std::string *reply);
 	CommandStatus command(const ParsedCommand& cmd,std::vector<CommandReply>& replies);

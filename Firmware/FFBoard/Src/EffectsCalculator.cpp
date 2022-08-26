@@ -38,7 +38,7 @@ EffectsCalculator::EffectsCalculator() : CommandHandler("fx", CLSID_EFFECTSCALC)
 	registerCommand("friction", EffectsCalculator_commands::friction, "Friction gain", CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_INFOSTRING);
 	registerCommand("damper", EffectsCalculator_commands::damper, "Damper gain", CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_INFOSTRING);
 	registerCommand("inertia", EffectsCalculator_commands::inertia, "Inertia gain", CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_INFOSTRING);
-	registerCommand("effects", EffectsCalculator_commands::effects, "List effects. set 0 to reset", CMDFLAG_GET | CMDFLAG_SET  | CMDFLAG_STR_ONLY);
+	registerCommand("effects", EffectsCalculator_commands::effects, "USed effects since reset (Info print as str). set 0 to reset", CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_INFOSTRING);
 	registerCommand("effectsDetails", EffectsCalculator_commands::effectsDetails, "List effects details. set 0 to reset", CMDFLAG_GET | CMDFLAG_SET  | CMDFLAG_STR_ONLY);
 	registerCommand("effectsForces", EffectsCalculator_commands::effectsForces, "List actual effects forces.", CMDFLAG_GET);
 //	registerCommand("monitorEffect", EffectsCalculator_commands::monitorEffect, "Get monitoring status. set to 1 to enable.", CMDFLAG_GET | CMDFLAG_SET);
@@ -710,7 +710,7 @@ void EffectsCalculator::logEffectType(uint8_t type,bool remove){
 				effects_stats[type-1].nb--;
 
 			if(!effects_stats[type-1].nb){
-				effects_used &= ~(1<<(type-1)); // Disable
+				//effects_used &= ~(1<<(type-1)); // Only manual reset
 				effects_stats[type-1].max = 0;
 				effects_stats[type-1].current = 0;
 			}
@@ -779,6 +779,20 @@ std::string EffectsCalculator::listEffectsUsed(bool details){
 	return effects_list.c_str();
 }
 
+/**
+ * Resets the effects_used flags
+ * If reinit is true it will set the flag again if the currently active effect number is not 0
+ */
+void EffectsCalculator::resetLoggedActiveEffects(bool reinit){
+	effects_used = 0;
+	if(reinit){
+		for (int i=0;i < 12; i++) {
+			if(effects_stats[i].nb > 0) {
+				effects_used |= 1<<(i);
+			}
+		}
+	}
+}
 
 CommandStatus EffectsCalculator::command(const ParsedCommand& cmd,std::vector<CommandReply>& replies){
 	switch(static_cast<EffectsCalculator_commands>(cmd.cmdId)){
@@ -811,11 +825,15 @@ CommandStatus EffectsCalculator::command(const ParsedCommand& cmd,std::vector<Co
 	case EffectsCalculator_commands::effects:
 		if (cmd.type == CMDtype::get)
 		{
-			replies.emplace_back(listEffectsUsed(cmd.val));
+			replies.emplace_back(effects_used); //listEffectsUsed(cmd.val)
 		}
-		else if (cmd.type == CMDtype::set && cmd.val == 0)
+		else if (cmd.type == CMDtype::set)
 		{
-			effects_used = 0;
+			resetLoggedActiveEffects(cmd.val == 0);
+		}
+		else if (cmd.type == CMDtype::info)
+		{
+			replies.emplace_back(listEffectsUsed(cmd.val));
 		}
 		break;
 	case EffectsCalculator_commands::effectsDetails:
@@ -823,22 +841,23 @@ CommandStatus EffectsCalculator::command(const ParsedCommand& cmd,std::vector<Co
 		{
 			replies.emplace_back(listEffectsUsed(true));
 		}
-		else if (cmd.type == CMDtype::set && cmd.val == 0)
+		else if (cmd.type == CMDtype::set && cmd.val >= 0)
 		{
-			effects_used = 0;
 			for (int i=0; i<12; i++) {
 				effects_stats[i].max = 0;
-				effects_stats[i].current = 0;
-				effects_stats[i].nb = 0;
+				if(cmd.val > 0){
+					effects_stats[i].current = 0;
+					effects_stats[i].nb = 0;
+				}
 			}
+			resetLoggedActiveEffects(true);
 		}
 		break;
 	case EffectsCalculator_commands::effectsForces:
 		if (cmd.type == CMDtype::get)
 		{
-			//replies.emplace_back(listForceEffects());
 			for (size_t i=0; i < effects_stats.size(); i++) {
-				replies.emplace_back(effects_stats[i].current);
+				replies.emplace_back(effects_stats[i].current,effects_stats[i].nb);
 			}
 		}
 		break;
