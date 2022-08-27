@@ -120,8 +120,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab4156859243412ba1096da77ba362114"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_d_c___command_interface.html#ab4156859243412ba1096da77ba362114">readyToSend</a> () override</td></tr>
 <tr class="separator:ab4156859243412ba1096da77ba362114"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_string_command_interface"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_string_command_interface')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_string_command_interface.html">StringCommandInterface</a></td></tr>
-<tr class="memitem:a2a2c826dba2728234fdc66b52132eebf inherit pub_methods_class_string_command_interface"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_string_command_interface.html#a2a2c826dba2728234fdc66b52132eebf">StringCommandInterface</a> (uint32_t reservedBuffer=16)</td></tr>
-<tr class="separator:a2a2c826dba2728234fdc66b52132eebf inherit pub_methods_class_string_command_interface"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab7cfb25b7bc78501f70f5138df3c53fd inherit pub_methods_class_string_command_interface"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_string_command_interface.html#ab7cfb25b7bc78501f70f5138df3c53fd">StringCommandInterface</a> (uint32_t bufferMaxCapacity=512)</td></tr>
+<tr class="separator:ab7cfb25b7bc78501f70f5138df3c53fd inherit pub_methods_class_string_command_interface"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a05bd25ab1fa92e0cf080e0c997e79996 inherit pub_methods_class_string_command_interface"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_string_command_interface.html#a05bd25ab1fa92e0cf080e0c997e79996">addBuf</a> (char *Buf, uint32_t *Len)</td></tr>
 <tr class="separator:a05bd25ab1fa92e0cf080e0c997e79996 inherit pub_methods_class_string_command_interface"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa6f5407c7754561161d8ca8d4e37c616 inherit pub_methods_class_string_command_interface"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_string_command_interface.html#aa6f5407c7754561161d8ca8d4e37c616">bufferCapacity</a> ()</td></tr>
@@ -179,7 +179,7 @@ Private Attributes</h2></td></tr>
 <tr class="separator:aa1bb0a41bda599bab852fa591edcf311"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a45f7b2fc446df9754555a976b47d82b0"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_d_c___command_interface.html#a45f7b2fc446df9754555a976b47d82b0">lastSendTime</a> = 0</td></tr>
 <tr class="separator:a45f7b2fc446df9754555a976b47d82b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad38eea2fb692c80db0c09e98a9fd86bc"><td class="memItemLeft" align="right" valign="top">const uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_d_c___command_interface.html#ad38eea2fb692c80db0c09e98a9fd86bc">parserTimeout</a> = 2000</td></tr>
+<tr class="memitem:ad38eea2fb692c80db0c09e98a9fd86bc"><td class="memItemLeft" align="right" valign="top">const uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_d_c___command_interface.html#ad38eea2fb692c80db0c09e98a9fd86bc">parserTimeout</a> = 500</td></tr>
 <tr class="separator:ad38eea2fb692c80db0c09e98a9fd86bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a236e9712fbe0b098a3cbbdc7ab58af95"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="struct_command_result.html">CommandResult</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_d_c___command_interface.html#a236e9712fbe0b098a3cbbdc7ab58af95">resultsBuffer</a></td></tr>
 <tr class="separator:a236e9712fbe0b098a3cbbdc7ab58af95"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -338,7 +338,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_command_interface.html#a256600b9ed96055684e0d4cec26b462e">CommandInterface</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_command_interface_8cpp_source.html#l00282">282</a> of file <a class="el" href="_command_interface_8cpp_source.html">CommandInterface.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_command_interface_8cpp_source.html#l00286">286</a> of file <a class="el" href="_command_interface_8cpp_source.html">CommandInterface.cpp</a>.</p>
 
 </div>
 </div>
@@ -495,7 +495,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const uint32_t CDC_CommandInterface::parserTimeout = 2000</td>
+          <td class="memname">const uint32_t CDC_CommandInterface::parserTimeout = 500</td>
         </tr>
       </table>
   </td>

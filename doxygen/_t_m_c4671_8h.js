@@ -87,6 +87,15 @@ var _t_m_c4671_8h =
       [ "FullCalibration", "_t_m_c4671_8h.html#ad7d50073249f48de7e58d41071064a7ca1a1aaf34022bdc367fefa52bd812e060", null ],
       [ "ExternalEncoderInit", "_t_m_c4671_8h.html#ad7d50073249f48de7e58d41071064a7caa93eed0dbbc42a70bc2ea0869e63994e", null ]
     ] ],
+    [ "TMC_GpioMode", "_t_m_c4671_8h.html#aacd749e72feab7582be13cd7f4d414a6", [
+      [ "DebugSpi", "_t_m_c4671_8h.html#aacd749e72feab7582be13cd7f4d414a6a431de3d2985bdfed9c3d8ee75cf9196c", null ],
+      [ "DSAdcClkOut", "_t_m_c4671_8h.html#aacd749e72feab7582be13cd7f4d414a6a6352d2cd0dd6eaa5bd26c4dae7b6107d", null ],
+      [ "DSAdcClkIn", "_t_m_c4671_8h.html#aacd749e72feab7582be13cd7f4d414a6a68fe401a9c6bbcdf302bfcaabb5e9480", null ],
+      [ "Aout_Bin", "_t_m_c4671_8h.html#aacd749e72feab7582be13cd7f4d414a6af1394999c35f14f59b9024ac5dc0ae48", null ],
+      [ "Ain_Bout", "_t_m_c4671_8h.html#aacd749e72feab7582be13cd7f4d414a6afbda66f8efe0aad41b637b2f21d918b1", null ],
+      [ "Aout_Bout", "_t_m_c4671_8h.html#aacd749e72feab7582be13cd7f4d414a6a90b702567e047037297f201326d79096", null ],
+      [ "Ain_Bin", "_t_m_c4671_8h.html#aacd749e72feab7582be13cd7f4d414a6aa94a2169cb33537b70bfc78d9abadd43", null ]
+    ] ],
     [ "TMC_HW_Ver", "_t_m_c4671_8h.html#a1064cdca049007c828bd4a5b28f51d71", [
       [ "NONE", "_t_m_c4671_8h.html#a1064cdca049007c828bd4a5b28f51d71ab50339a10e1de285ac99d4c3990b8693", null ],
       [ "v1_0", "_t_m_c4671_8h.html#a1064cdca049007c828bd4a5b28f51d71a09d7da9ea375f1827517b45b61cfc6b8", null ],

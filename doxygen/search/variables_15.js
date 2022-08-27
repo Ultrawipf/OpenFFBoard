@@ -1,7 +1,7 @@
 var searchData=
 [
   ['val_0',['val',['../class_command_reply.html#a7da24a9d20d6d41b7ea47364bc5c2cf0',1,'CommandReply::val()'],['../struct_t_u___a_t_t_r___p_a_c_k_e_d.html#ac7a140943444383d8177d942ae39ca0d',1,'TU_ATTR_PACKED::val()'],['../struct_t_u___a_t_t_r___p_a_c_k_e_d.html#acdb9a916ca36433eaedb48f1ae4497c4',1,'TU_ATTR_PACKED::val()'],['../struct_parsed_command.html#a74453a0cc1ccf42709bafd7e69573c83',1,'ParsedCommand::val()']]],
-  ['valid_1',['valid',['../struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a6e72697bd44b6f84b828561e293d0961',1,'TU_ATTR_PACKED']]],
+  ['valid_1',['valid',['../class_ring_buffer_wrapper.html#a1125046faecc0634e71c4fd37baec4ad',1,'RingBufferWrapper::valid()'],['../struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a6e72697bd44b6f84b828561e293d0961',1,'TU_ATTR_PACKED::valid()']]],
   ['value_2',['value',['../structhub__status__response__t.html#aeb3e4a317583445868bfe67d77a53f15',1,'hub_status_response_t::value()'],['../structhub__port__status__response__t.html#ad2b2341b1fb4535c6890008020a040af',1,'hub_port_status_response_t::value()']]],
   ['vel_5fsel_3',['vel_sel',['../struct_t_m_c4671_mot_conf.html#abc52bb3e56c4da7c6a3c1c4b429cc84d',1,'TMC4671MotConf']]],
   ['velocity_5fi_4',['velocity_I',['../struct_t_m_c4671_pid_precision.html#a9616182a6009ed02def0f341621def4e',1,'TMC4671PidPrecision']]],

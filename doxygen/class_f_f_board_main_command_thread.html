@@ -90,7 +90,6 @@ $(document).ready(function(){initNavTree('class_f_f_board_main_command_thread.ht
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
-<a href="#pro-static-attribs">Static Protected Attributes</a> &#124;
 <a href="class_f_f_board_main_command_thread-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">FFBoardMainCommandThread Class Reference</div></div>
 </div><!--header-->
@@ -200,11 +199,6 @@ Protected Member Functions</h2></td></tr>
 <tr class="separator:a71f796ec7c2bd53bb0f28b648967f601 inherit pro_methods_classcpp__freertos_1_1_thread"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a91a73909fb17ee160f992a78cfd2b119 inherit pro_methods_classcpp__freertos_1_1_thread"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__freertos_1_1_thread.html#a91a73909fb17ee160f992a78cfd2b119">Wait</a> (<a class="el" href="classcpp__freertos_1_1_condition_variable.html">ConditionVariable</a> &amp;Cv, <a class="el" href="classcpp__freertos_1_1_mutex.html">Mutex</a> &amp;CvLock, TickType_t Timeout=portMAX_DELAY)</td></tr>
 <tr class="separator:a91a73909fb17ee160f992a78cfd2b119 inherit pro_methods_classcpp__freertos_1_1_thread"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-static-attribs" name="pro-static-attribs"></a>
-Static Protected Attributes</h2></td></tr>
-<tr class="memitem:a2ff01c8a22548df9ab09a1f333cf93a2"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classcpp__freertos_1_1_binary_semaphore.html">cpp_freertos::BinarySemaphore</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_f_f_board_main_command_thread.html#a2ff01c8a22548df9ab09a1f333cf93a2">threadSem</a> = <a class="el" href="classcpp__freertos_1_1_binary_semaphore.html">cpp_freertos::BinarySemaphore</a>()</td></tr>
-<tr class="separator:a2ff01c8a22548df9ab09a1f333cf93a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
@@ -226,7 +220,7 @@ Static Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_board_main_command_thread_8cpp_source.html#l00032">32</a> of file <a class="el" href="_f_f_board_main_command_thread_8cpp_source.html">FFBoardMainCommandThread.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_board_main_command_thread_8cpp_source.html#l00033">33</a> of file <a class="el" href="_f_f_board_main_command_thread_8cpp_source.html">FFBoardMainCommandThread.cpp</a>.</p>
 
 </div>
 </div>
@@ -253,7 +247,7 @@ Static Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_board_main_command_thread_8cpp_source.html#l00037">37</a> of file <a class="el" href="_f_f_board_main_command_thread_8cpp_source.html">FFBoardMainCommandThread.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_board_main_command_thread_8cpp_source.html#l00040">40</a> of file <a class="el" href="_f_f_board_main_command_thread_8cpp_source.html">FFBoardMainCommandThread.cpp</a>.</p>
 
 </div>
 </div>
@@ -327,7 +321,7 @@ Static Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p >Executes parsed commands and calls other command handlers. Not global so it can be overridden by main classes to change behaviour or suppress outputs. </p>
 
-<p class="definition">Definition at line <a class="el" href="_f_f_board_main_command_thread_8cpp_source.html#l00086">86</a> of file <a class="el" href="_f_f_board_main_command_thread_8cpp_source.html">FFBoardMainCommandThread.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_board_main_command_thread_8cpp_source.html#l00091">91</a> of file <a class="el" href="_f_f_board_main_command_thread_8cpp_source.html">FFBoardMainCommandThread.cpp</a>.</p>
 
 </div>
 </div>
@@ -384,7 +378,7 @@ Static Protected Attributes</h2></td></tr>
 
 <p>Implements <a class="el" href="classcpp__freertos_1_1_thread.html#a93df31e4bee72f150dd742ab5d6d35c3">cpp_freertos::Thread</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_f_f_board_main_command_thread_8cpp_source.html#l00043">43</a> of file <a class="el" href="_f_f_board_main_command_thread_8cpp_source.html">FFBoardMainCommandThread.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_board_main_command_thread_8cpp_source.html#l00046">46</a> of file <a class="el" href="_f_f_board_main_command_thread_8cpp_source.html">FFBoardMainCommandThread.cpp</a>.</p>
 
 </div>
 </div>
@@ -412,7 +406,7 @@ Static Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p >Signals the command thread that new commands are ready to be executed </p>
 
-<p class="definition">Definition at line <a class="el" href="_f_f_board_main_command_thread_8cpp_source.html#l00065">65</a> of file <a class="el" href="_f_f_board_main_command_thread_8cpp_source.html">FFBoardMainCommandThread.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_board_main_command_thread_8cpp_source.html#l00068">68</a> of file <a class="el" href="_f_f_board_main_command_thread_8cpp_source.html">FFBoardMainCommandThread.cpp</a>.</p>
 
 </div>
 </div>
@@ -526,30 +520,6 @@ Static Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="_f_f_board_main_command_thread_8h_source.html#l00050">50</a> of file <a class="el" href="_f_f_board_main_command_thread_8h_source.html">FFBoardMainCommandThread.h</a>.</p>
-
-</div>
-</div>
-<a id="a2ff01c8a22548df9ab09a1f333cf93a2" name="a2ff01c8a22548df9ab09a1f333cf93a2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2ff01c8a22548df9ab09a1f333cf93a2">&#9670;&nbsp;</a></span>threadSem</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classcpp__freertos_1_1_binary_semaphore.html">cpp_freertos::BinarySemaphore</a> FFBoardMainCommandThread::threadSem = <a class="el" href="classcpp__freertos_1_1_binary_semaphore.html">cpp_freertos::BinarySemaphore</a>()</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_f_f_board_main_command_thread_8h_source.html#l00061">61</a> of file <a class="el" href="_f_f_board_main_command_thread_8h_source.html">FFBoardMainCommandThread.h</a>.</p>
 
 </div>
 </div>

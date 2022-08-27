@@ -1,0 +1,25 @@
+var class_a_d_s111_x =
+[
+    [ "ADS111X", "class_a_d_s111_x.html#aa43795142983135c66762e850ed9ae7b", null ],
+    [ "~ADS111X", "class_a_d_s111_x.html#a50d8d0ebf4fcf7c2ff646815b6f99e2b", null ],
+    [ "endI2CTransfer", "class_a_d_s111_x.html#a6818b3fd083ed56c310b7402144087a6", null ],
+    [ "readReg", "class_a_d_s111_x.html#ad95e5884c0ed8d922713d12358a084eb", null ],
+    [ "readRegIT", "class_a_d_s111_x.html#ae3b77c0fa8c93ff10dc37fa3bc4872e1", null ],
+    [ "setDatarate", "class_a_d_s111_x.html#ae3bd82d973939dc6c98b2244fb1e6624", null ],
+    [ "setGain", "class_a_d_s111_x.html#a47d6e61559b42eae1e8e2d8f5f9e299b", null ],
+    [ "setThresh", "class_a_d_s111_x.html#a9840a1a911bfc327748d719810a78afe", null ],
+    [ "startConversion", "class_a_d_s111_x.html#aaca21180a5ff7acb61a2af918afe9ad9", null ],
+    [ "startI2CTransfer", "class_a_d_s111_x.html#a1871fead760d06d25dd29b5e0ff4c30b", null ],
+    [ "writeReg", "class_a_d_s111_x.html#a7bc6ec2d621b31c9030a4312e1f80ef7", null ],
+    [ "writeRegIT", "class_a_d_s111_x.html#a7db1f7bf807f4920a09acffddb80fadb", null ],
+    [ "address", "class_a_d_s111_x.html#aa7a61bc6b4eaa6d2856ac92d4391ea90", null ],
+    [ "config", "class_a_d_s111_x.html#a4e7aa584bad3954e36dd4fe77be1b399", null ],
+    [ "conversions", "class_a_d_s111_x.html#a278b9f2788cac2abef2f93a505377c79", null ],
+    [ "datarate", "class_a_d_s111_x.html#afb305adb4c31e07e8e92412bece249fd", null ],
+    [ "gain", "class_a_d_s111_x.html#a3f7f4b9755132f7c2b8d2914670e0cee", null ],
+    [ "hithresh", "class_a_d_s111_x.html#af1c7ebb74b1fc015430ad8f11c2ef3a1", null ],
+    [ "lothresh", "class_a_d_s111_x.html#ad48f502142fdc0322fc08300af1a8164", null ],
+    [ "port", "class_a_d_s111_x.html#aa468224c47d0237db741a82529f995f4", null ],
+    [ "registers", "class_a_d_s111_x.html#a4c7782eb256c927aee9ef3469e55fde0", null ],
+    [ "writeItBuffer", "class_a_d_s111_x.html#a63bfef25114e56132cf4d9263a8ab34e", null ]
+];

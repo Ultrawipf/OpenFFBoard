@@ -21,7 +21,8 @@ var _command_handler_8h =
       [ "help", "_command_handler_8h.html#a13a18e5b49561a2f007205dc0afeea14a657f8b8da628ef83cf69101b6817150a", null ],
       [ "instance", "_command_handler_8h.html#a13a18e5b49561a2f007205dc0afeea14a7123a699d77db6479a1d8ece2c4f1c16", null ],
       [ "cmdhandleruid", "_command_handler_8h.html#a13a18e5b49561a2f007205dc0afeea14a8f067684e17b86cb610da0f34c91f3f7", null ],
-      [ "selectionid", "_command_handler_8h.html#a13a18e5b49561a2f007205dc0afeea14a14e1d308f3a514414226e41097c1ffc7", null ]
+      [ "selectionid", "_command_handler_8h.html#a13a18e5b49561a2f007205dc0afeea14a14e1d308f3a514414226e41097c1ffc7", null ],
+      [ "cmdinfo", "_command_handler_8h.html#a13a18e5b49561a2f007205dc0afeea14a7bf01779b6d3086de3130db787528a13", null ]
     ] ],
     [ "CommandReplyType", "_command_handler_8h.html#a9c4555f6fe97545f2480f26071a2935f", [
       [ "NONE", "_command_handler_8h.html#a9c4555f6fe97545f2480f26071a2935fab50339a10e1de285ac99d4c3990b8693", null ],

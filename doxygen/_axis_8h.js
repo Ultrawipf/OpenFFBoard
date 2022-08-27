@@ -5,6 +5,7 @@ var _axis_8h =
     [ "AxisConfig", "struct_axis_config.html", "struct_axis_config" ],
     [ "metric_t", "structmetric__t.html", "structmetric__t" ],
     [ "axis_metric_t", "structaxis__metric__t.html", "structaxis__metric__t" ],
+    [ "GearRatio_t", "struct_gear_ratio__t.html", "struct_gear_ratio__t" ],
     [ "Axis", "class_axis.html", "class_axis" ],
     [ "Axis_commands", "_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715", [
       [ "power", "_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715a62cd275989e78ee56a81f0265a87562e", null ],
@@ -21,6 +22,13 @@ var _axis_8h =
       [ "maxtorquerate", "_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715ac7681d83202d9b9b8fae3b1bd5a4e940", null ],
       [ "fxratio", "_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715a39d37a1e1318d45873b0443db487c948", null ],
       [ "curtorque", "_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715a2246494328af04e5200e1e604782e983", null ],
-      [ "curpos", "_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715af0b2e49c0d3953c76e09444ae521ebbe", null ]
+      [ "curpos", "_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715af0b2e49c0d3953c76e09444ae521ebbe", null ],
+      [ "curspd", "_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715a3ad769e867fc4542140b3aada914c7aa", null ],
+      [ "curaccel", "_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715aa8fb1b9588becd255abb42103bbef38d", null ],
+      [ "reductionScaler", "_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715a07de0f7532baa4f3960bbc8033bb0b83", null ],
+      [ "filterSpeed", "_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715a3cca904bf1dff17a788c9fd75d6a8c1c", null ],
+      [ "filterAccel", "_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715a6c6490d008ccc9ba7e47d52887e4638f", null ],
+      [ "filterProfileId", "_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715a7d34441f5e8fb727be2791f4661a5439", null ],
+      [ "cpr", "_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715a293a5b816a2fade15a3c7b02d660198b", null ]
     ] ]
 ];

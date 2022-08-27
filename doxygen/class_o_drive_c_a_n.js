@@ -6,6 +6,7 @@ var class_o_drive_c_a_n =
     [ "command", "class_o_drive_c_a_n.html#aca23d7dbcc4185274da3c1e7925c012c", null ],
     [ "getCpr", "class_o_drive_c_a_n.html#ae02fc8301756d45fdc59d37ba9fe869a", null ],
     [ "getEncoder", "class_o_drive_c_a_n.html#a9e51bae8612eb81442dfbf6c515b9d41", null ],
+    [ "getEncoderType", "class_o_drive_c_a_n.html#add596d6e03ee2389343545abc1572186", null ],
     [ "getHelpstring", "class_o_drive_c_a_n.html#a52cad696f743d5b1ac3d6494fa8bcb7f", null ],
     [ "getInfo", "class_o_drive_c_a_n.html#a6a48f6cb98cebd8dd1704487466cd2f5", null ],
     [ "getPos", "class_o_drive_c_a_n.html#a8c2fe33cdd44f475d7f4e0c9f0c0b25b", null ],

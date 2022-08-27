@@ -97,6 +97,12 @@ $(document).ready(function(){initNavTree('_effects_calculator_8h.html',''); init
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structeffect__gain__t.html">effect_gain_t</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structeffect__scaler__t.html">effect_scaler_t</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structeffect__biquad__t.html">effect_biquad_t</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structeffect__stat__t.html">effect_stat_t</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_effects_calculator.html">EffectsCalculator</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -111,6 +117,20 @@ Enumerations</h2></td></tr>
 &#160;&#160;<a class="el" href="_effects_calculator_8h.html#a8c1e274c9ae0e228a7e0a406bec8a694a22354ce144c7e1834dbc69848e79906b">friction</a>
 , <a class="el" href="_effects_calculator_8h.html#a8c1e274c9ae0e228a7e0a406bec8a694af995f784a3f2f57b5d7cc8e8bb4b33a3">damper</a>
 , <a class="el" href="_effects_calculator_8h.html#a8c1e274c9ae0e228a7e0a406bec8a694a119f13a70555b4078773f20bcc6a4e42">inertia</a>
+, <a class="el" href="_effects_calculator_8h.html#a8c1e274c9ae0e228a7e0a406bec8a694ae66e38620d751c97943e4f2d635a3457">damper_f</a>
+, <br />
+&#160;&#160;<a class="el" href="_effects_calculator_8h.html#a8c1e274c9ae0e228a7e0a406bec8a694a73d8ea75853ee8ea93c1eb8034b94bd7">damper_q</a>
+, <a class="el" href="_effects_calculator_8h.html#a8c1e274c9ae0e228a7e0a406bec8a694a97904946969ea1096612e7880aaf59a9">friction_f</a>
+, <a class="el" href="_effects_calculator_8h.html#a8c1e274c9ae0e228a7e0a406bec8a694a5f85d70758d2cf17c16f5012a1165303">friction_q</a>
+, <a class="el" href="_effects_calculator_8h.html#a8c1e274c9ae0e228a7e0a406bec8a694a11f815b070aa8a75328952150e7bc6d9">inertia_f</a>
+, <br />
+&#160;&#160;<a class="el" href="_effects_calculator_8h.html#a8c1e274c9ae0e228a7e0a406bec8a694a53984349e84e125f96edfa53ef48240c">inertia_q</a>
+, <a class="el" href="_effects_calculator_8h.html#a8c1e274c9ae0e228a7e0a406bec8a694a7d34441f5e8fb727be2791f4661a5439">filterProfileId</a>
+, <a class="el" href="_effects_calculator_8h.html#a8c1e274c9ae0e228a7e0a406bec8a694aa9d77f170a4358639f3150e4b7c391c3">frictionPctSpeedToRampup</a>
+, <a class="el" href="_effects_calculator_8h.html#a8c1e274c9ae0e228a7e0a406bec8a694a5d3bbd574d6ac4a496f31978f294f7c6">monitorEffect</a>
+, <br />
+&#160;&#160;<a class="el" href="_effects_calculator_8h.html#a8c1e274c9ae0e228a7e0a406bec8a694a008587bd99030db539879fa105999e34">effectsDetails</a>
+, <a class="el" href="_effects_calculator_8h.html#a8c1e274c9ae0e228a7e0a406bec8a694aa0112e256299170560cf2623b0a37403">effectsForces</a>
 <br />
  }</td></tr>
 <tr class="separator:a8c1e274c9ae0e228a7e0a406bec8a694"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -143,9 +163,20 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="a8c1e274c9ae0e228a7e0a406bec8a694a22354ce144c7e1834dbc69848e79906b" name="a8c1e274c9ae0e228a7e0a406bec8a694a22354ce144c7e1834dbc69848e79906b"></a>friction&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a8c1e274c9ae0e228a7e0a406bec8a694af995f784a3f2f57b5d7cc8e8bb4b33a3" name="a8c1e274c9ae0e228a7e0a406bec8a694af995f784a3f2f57b5d7cc8e8bb4b33a3"></a>damper&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a8c1e274c9ae0e228a7e0a406bec8a694a119f13a70555b4078773f20bcc6a4e42" name="a8c1e274c9ae0e228a7e0a406bec8a694a119f13a70555b4078773f20bcc6a4e42"></a>inertia&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a8c1e274c9ae0e228a7e0a406bec8a694ae66e38620d751c97943e4f2d635a3457" name="a8c1e274c9ae0e228a7e0a406bec8a694ae66e38620d751c97943e4f2d635a3457"></a>damper_f&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a8c1e274c9ae0e228a7e0a406bec8a694a73d8ea75853ee8ea93c1eb8034b94bd7" name="a8c1e274c9ae0e228a7e0a406bec8a694a73d8ea75853ee8ea93c1eb8034b94bd7"></a>damper_q&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a8c1e274c9ae0e228a7e0a406bec8a694a97904946969ea1096612e7880aaf59a9" name="a8c1e274c9ae0e228a7e0a406bec8a694a97904946969ea1096612e7880aaf59a9"></a>friction_f&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a8c1e274c9ae0e228a7e0a406bec8a694a5f85d70758d2cf17c16f5012a1165303" name="a8c1e274c9ae0e228a7e0a406bec8a694a5f85d70758d2cf17c16f5012a1165303"></a>friction_q&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a8c1e274c9ae0e228a7e0a406bec8a694a11f815b070aa8a75328952150e7bc6d9" name="a8c1e274c9ae0e228a7e0a406bec8a694a11f815b070aa8a75328952150e7bc6d9"></a>inertia_f&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a8c1e274c9ae0e228a7e0a406bec8a694a53984349e84e125f96edfa53ef48240c" name="a8c1e274c9ae0e228a7e0a406bec8a694a53984349e84e125f96edfa53ef48240c"></a>inertia_q&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a8c1e274c9ae0e228a7e0a406bec8a694a7d34441f5e8fb727be2791f4661a5439" name="a8c1e274c9ae0e228a7e0a406bec8a694a7d34441f5e8fb727be2791f4661a5439"></a>filterProfileId&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a8c1e274c9ae0e228a7e0a406bec8a694aa9d77f170a4358639f3150e4b7c391c3" name="a8c1e274c9ae0e228a7e0a406bec8a694aa9d77f170a4358639f3150e4b7c391c3"></a>frictionPctSpeedToRampup&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a8c1e274c9ae0e228a7e0a406bec8a694a5d3bbd574d6ac4a496f31978f294f7c6" name="a8c1e274c9ae0e228a7e0a406bec8a694a5d3bbd574d6ac4a496f31978f294f7c6"></a>monitorEffect&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a8c1e274c9ae0e228a7e0a406bec8a694a008587bd99030db539879fa105999e34" name="a8c1e274c9ae0e228a7e0a406bec8a694a008587bd99030db539879fa105999e34"></a>effectsDetails&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a8c1e274c9ae0e228a7e0a406bec8a694aa0112e256299170560cf2623b0a37403" name="a8c1e274c9ae0e228a7e0a406bec8a694aa0112e256299170560cf2623b0a37403"></a>effectsForces&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="_effects_calculator_8h_source.html#l00029">29</a> of file <a class="el" href="_effects_calculator_8h_source.html">EffectsCalculator.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_effects_calculator_8h_source.html#l00058">58</a> of file <a class="el" href="_effects_calculator_8h_source.html">EffectsCalculator.h</a>.</p>
 
 </div>
 </div>

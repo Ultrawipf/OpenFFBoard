@@ -118,6 +118,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a28c452d1376b5da7708211745df4c845"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8a868407c35459e61002e12272d5e1b1"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hid_f_f_b.html#a8a868407c35459e61002e12272d5e1b1">getRate</a> ()</td></tr>
 <tr class="separator:a8a868407c35459e61002e12272d5e1b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac533d6c11535cc03681da5ae3c807e0"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hid_f_f_b.html#aac533d6c11535cc03681da5ae3c807e0">getConstantForceRate</a> ()</td></tr>
+<tr class="separator:aac533d6c11535cc03681da5ae3c807e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abde71d53de6ebc0c407298f14a9ea0ed"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hid_f_f_b.html#abde71d53de6ebc0c407298f14a9ea0ed">getFfbActive</a> ()</td></tr>
 <tr class="separator:abde71d53de6ebc0c407298f14a9ea0ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acdc70e61e2993741d83f04850eba9a86"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hid_f_f_b.html#acdc70e61e2993741d83f04850eba9a86">reset_ffb</a> ()</td></tr>
@@ -202,8 +204,12 @@ Private Attributes</h2></td></tr>
 <tr class="separator:a0d873cbb7019197c2fb42054a79dda33"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a069897bf62f1a4b5ad3077bfda5d179a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_fast_avg.html">FastAvg</a>&lt; float, 20 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hid_f_f_b.html#a069897bf62f1a4b5ad3077bfda5d179a">hidPeriodAvg</a></td></tr>
 <tr class="separator:a069897bf62f1a4b5ad3077bfda5d179a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5736d06eca5d18ef2a10b2cf44f00f6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_fast_avg.html">FastAvg</a>&lt; float, 20 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hid_f_f_b.html#af5736d06eca5d18ef2a10b2cf44f00f6">cfUpdatePeriodAvg</a></td></tr>
+<tr class="separator:af5736d06eca5d18ef2a10b2cf44f00f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8cf218a30d8d6bc8f16ffb2de18289fb"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hid_f_f_b.html#a8cf218a30d8d6bc8f16ffb2de18289fb">lastOut</a> = 0</td></tr>
 <tr class="separator:a8cf218a30d8d6bc8f16ffb2de18289fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e8ffbbddd55600b4144e735b35ea4d7"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hid_f_f_b.html#a1e8ffbbddd55600b4144e735b35ea4d7">lastCfUpdate</a> = 0</td></tr>
+<tr class="separator:a1e8ffbbddd55600b4144e735b35ea4d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -288,7 +294,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8cpp_source.html#l00228">228</a> of file <a class="el" href="_hid_f_f_b_8cpp_source.html">HidFFB.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8cpp_source.html#l00243">243</a> of file <a class="el" href="_hid_f_f_b_8cpp_source.html">HidFFB.cpp</a>.</p>
 
 </div>
 </div>
@@ -316,7 +322,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8cpp_source.html#l00424">424</a> of file <a class="el" href="_hid_f_f_b_8cpp_source.html">HidFFB.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8cpp_source.html#l00445">445</a> of file <a class="el" href="_hid_f_f_b_8cpp_source.html">HidFFB.cpp</a>.</p>
 
 </div>
 </div>
@@ -344,7 +350,27 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8cpp_source.html#l00157">157</a> of file <a class="el" href="_hid_f_f_b_8cpp_source.html">HidFFB.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8cpp_source.html#l00171">171</a> of file <a class="el" href="_hid_f_f_b_8cpp_source.html">HidFFB.cpp</a>.</p>
+
+</div>
+</div>
+<a id="aac533d6c11535cc03681da5ae3c807e0" name="aac533d6c11535cc03681da5ae3c807e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac533d6c11535cc03681da5ae3c807e0">&#9670;&nbsp;</a></span>getConstantForceRate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t HidFFB::getConstantForceRate </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >Calculates the frequency of the CF effect only </p>
+
+<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8cpp_source.html#l00066">66</a> of file <a class="el" href="_hid_f_f_b_8cpp_source.html">HidFFB.cpp</a>.</p>
 
 </div>
 </div>
@@ -475,7 +501,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_usb_hid_handler.html#a05a390b45bacd9fb9a3882a44c3d7005">UsbHidHandler</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8cpp_source.html#l00174">174</a> of file <a class="el" href="_hid_f_f_b_8cpp_source.html">HidFFB.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8cpp_source.html#l00189">189</a> of file <a class="el" href="_hid_f_f_b_8cpp_source.html">HidFFB.cpp</a>.</p>
 
 </div>
 </div>
@@ -528,7 +554,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_usb_hid_handler.html#a981a9cf241853cdb3529cacc9bb724ee">UsbHidHandler</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8cpp_source.html#l00087">87</a> of file <a class="el" href="_hid_f_f_b_8cpp_source.html">HidFFB.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8cpp_source.html#l00101">101</a> of file <a class="el" href="_hid_f_f_b_8cpp_source.html">HidFFB.cpp</a>.</p>
 
 </div>
 </div>
@@ -556,7 +582,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8cpp_source.html#l00262">262</a> of file <a class="el" href="_hid_f_f_b_8cpp_source.html">HidFFB.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8cpp_source.html#l00279">279</a> of file <a class="el" href="_hid_f_f_b_8cpp_source.html">HidFFB.cpp</a>.</p>
 
 </div>
 </div>
@@ -575,7 +601,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8cpp_source.html#l00435">435</a> of file <a class="el" href="_hid_f_f_b_8cpp_source.html">HidFFB.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8cpp_source.html#l00454">454</a> of file <a class="el" href="_hid_f_f_b_8cpp_source.html">HidFFB.cpp</a>.</p>
 
 </div>
 </div>
@@ -596,7 +622,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p >Sends a status report for a specific effect </p>
 
-<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8cpp_source.html#l00066">66</a> of file <a class="el" href="_hid_f_f_b_8cpp_source.html">HidFFB.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8cpp_source.html#l00080">80</a> of file <a class="el" href="_hid_f_f_b_8cpp_source.html">HidFFB.cpp</a>.</p>
 
 </div>
 </div>
@@ -624,7 +650,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8cpp_source.html#l00327">327</a> of file <a class="el" href="_hid_f_f_b_8cpp_source.html">HidFFB.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8cpp_source.html#l00346">346</a> of file <a class="el" href="_hid_f_f_b_8cpp_source.html">HidFFB.cpp</a>.</p>
 
 </div>
 </div>
@@ -652,7 +678,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8cpp_source.html#l00250">250</a> of file <a class="el" href="_hid_f_f_b_8cpp_source.html">HidFFB.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8cpp_source.html#l00265">265</a> of file <a class="el" href="_hid_f_f_b_8cpp_source.html">HidFFB.cpp</a>.</p>
 
 </div>
 </div>
@@ -680,7 +706,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8cpp_source.html#l00293">293</a> of file <a class="el" href="_hid_f_f_b_8cpp_source.html">HidFFB.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8cpp_source.html#l00311">311</a> of file <a class="el" href="_hid_f_f_b_8cpp_source.html">HidFFB.cpp</a>.</p>
 
 </div>
 </div>
@@ -708,7 +734,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8cpp_source.html#l00351">351</a> of file <a class="el" href="_hid_f_f_b_8cpp_source.html">HidFFB.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8cpp_source.html#l00370">370</a> of file <a class="el" href="_hid_f_f_b_8cpp_source.html">HidFFB.cpp</a>.</p>
 
 </div>
 </div>
@@ -736,7 +762,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8cpp_source.html#l00389">389</a> of file <a class="el" href="_hid_f_f_b_8cpp_source.html">HidFFB.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8cpp_source.html#l00409">409</a> of file <a class="el" href="_hid_f_f_b_8cpp_source.html">HidFFB.cpp</a>.</p>
 
 </div>
 </div>
@@ -756,7 +782,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8cpp_source.html#l00211">211</a> of file <a class="el" href="_hid_f_f_b_8cpp_source.html">HidFFB.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8cpp_source.html#l00226">226</a> of file <a class="el" href="_hid_f_f_b_8cpp_source.html">HidFFB.cpp</a>.</p>
 
 </div>
 </div>
@@ -784,7 +810,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8cpp_source.html#l00223">223</a> of file <a class="el" href="_hid_f_f_b_8cpp_source.html">HidFFB.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8cpp_source.html#l00238">238</a> of file <a class="el" href="_hid_f_f_b_8cpp_source.html">HidFFB.cpp</a>.</p>
 
 </div>
 </div>
@@ -804,7 +830,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8cpp_source.html#l00218">218</a> of file <a class="el" href="_hid_f_f_b_8cpp_source.html">HidFFB.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8cpp_source.html#l00233">233</a> of file <a class="el" href="_hid_f_f_b_8cpp_source.html">HidFFB.cpp</a>.</p>
 
 </div>
 </div>
@@ -832,7 +858,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8cpp_source.html#l00411">411</a> of file <a class="el" href="_hid_f_f_b_8cpp_source.html">HidFFB.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8cpp_source.html#l00432">432</a> of file <a class="el" href="_hid_f_f_b_8cpp_source.html">HidFFB.cpp</a>.</p>
 
 </div>
 </div>
@@ -860,7 +886,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8cpp_source.html#l00401">401</a> of file <a class="el" href="_hid_f_f_b_8cpp_source.html">HidFFB.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8cpp_source.html#l00422">422</a> of file <a class="el" href="_hid_f_f_b_8cpp_source.html">HidFFB.cpp</a>.</p>
 
 </div>
 </div>
@@ -899,7 +925,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8cpp_source.html#l00197">197</a> of file <a class="el" href="_hid_f_f_b_8cpp_source.html">HidFFB.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8cpp_source.html#l00212">212</a> of file <a class="el" href="_hid_f_f_b_8cpp_source.html">HidFFB.cpp</a>.</p>
 
 </div>
 </div>
@@ -918,7 +944,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8cpp_source.html#l00204">204</a> of file <a class="el" href="_hid_f_f_b_8cpp_source.html">HidFFB.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8cpp_source.html#l00219">219</a> of file <a class="el" href="_hid_f_f_b_8cpp_source.html">HidFFB.cpp</a>.</p>
 
 </div>
 </div>
@@ -943,7 +969,31 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8h_source.html#l00062">62</a> of file <a class="el" href="_hid_f_f_b_8h_source.html">HidFFB.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8h_source.html#l00063">63</a> of file <a class="el" href="_hid_f_f_b_8h_source.html">HidFFB.h</a>.</p>
+
+</div>
+</div>
+<a id="af5736d06eca5d18ef2a10b2cf44f00f6" name="af5736d06eca5d18ef2a10b2cf44f00f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af5736d06eca5d18ef2a10b2cf44f00f6">&#9670;&nbsp;</a></span>cfUpdatePeriodAvg</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_fast_avg.html">FastAvg</a>&lt;float,20&gt; HidFFB::cfUpdatePeriodAvg</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8h_source.html#l00068">68</a> of file <a class="el" href="_hid_f_f_b_8h_source.html">HidFFB.h</a>.</p>
 
 </div>
 </div>
@@ -959,7 +1009,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8h_source.html#l00039">39</a> of file <a class="el" href="_hid_f_f_b_8h_source.html">HidFFB.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8h_source.html#l00040">40</a> of file <a class="el" href="_hid_f_f_b_8h_source.html">HidFFB.h</a>.</p>
 
 </div>
 </div>
@@ -983,7 +1033,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8h_source.html#l00042">42</a> of file <a class="el" href="_hid_f_f_b_8h_source.html">HidFFB.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8h_source.html#l00043">43</a> of file <a class="el" href="_hid_f_f_b_8h_source.html">HidFFB.h</a>.</p>
 
 </div>
 </div>
@@ -1007,7 +1057,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8h_source.html#l00061">61</a> of file <a class="el" href="_hid_f_f_b_8h_source.html">HidFFB.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8h_source.html#l00062">62</a> of file <a class="el" href="_hid_f_f_b_8h_source.html">HidFFB.h</a>.</p>
 
 </div>
 </div>
@@ -1031,7 +1081,31 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8h_source.html#l00066">66</a> of file <a class="el" href="_hid_f_f_b_8h_source.html">HidFFB.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8h_source.html#l00067">67</a> of file <a class="el" href="_hid_f_f_b_8h_source.html">HidFFB.h</a>.</p>
+
+</div>
+</div>
+<a id="a1e8ffbbddd55600b4144e735b35ea4d7" name="a1e8ffbbddd55600b4144e735b35ea4d7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e8ffbbddd55600b4144e735b35ea4d7">&#9670;&nbsp;</a></span>lastCfUpdate</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t HidFFB::lastCfUpdate = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8h_source.html#l00071">71</a> of file <a class="el" href="_hid_f_f_b_8h_source.html">HidFFB.h</a>.</p>
 
 </div>
 </div>
@@ -1055,7 +1129,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8h_source.html#l00068">68</a> of file <a class="el" href="_hid_f_f_b_8h_source.html">HidFFB.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8h_source.html#l00070">70</a> of file <a class="el" href="_hid_f_f_b_8h_source.html">HidFFB.h</a>.</p>
 
 </div>
 </div>
@@ -1079,7 +1153,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8h_source.html#l00063">63</a> of file <a class="el" href="_hid_f_f_b_8h_source.html">HidFFB.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8h_source.html#l00064">64</a> of file <a class="el" href="_hid_f_f_b_8h_source.html">HidFFB.h</a>.</p>
 
 </div>
 </div>
@@ -1103,7 +1177,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8h_source.html#l00065">65</a> of file <a class="el" href="_hid_f_f_b_8h_source.html">HidFFB.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8h_source.html#l00066">66</a> of file <a class="el" href="_hid_f_f_b_8h_source.html">HidFFB.h</a>.</p>
 
 </div>
 </div>
@@ -1127,7 +1201,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8h_source.html#l00060">60</a> of file <a class="el" href="_hid_f_f_b_8h_source.html">HidFFB.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_hid_f_f_b_8h_source.html#l00061">61</a> of file <a class="el" href="_hid_f_f_b_8h_source.html">HidFFB.h</a>.</p>
 
 </div>
 </div>

@@ -3,6 +3,7 @@ var class_u_a_r_t___command_interface =
     [ "UART_CommandInterface", "class_u_a_r_t___command_interface.html#a2d6870df65e7c37cbdc81957fbefc5af", null ],
     [ "~UART_CommandInterface", "class_u_a_r_t___command_interface.html#a3871ce8db87bbb80d346117fd8625bf5", null ],
     [ "getHelpstring", "class_u_a_r_t___command_interface.html#a53ba67271abdca90cda23bffd897e0ac", null ],
+    [ "readyToSend", "class_u_a_r_t___command_interface.html#af0af1f8d410b74ae0885741048e302df", null ],
     [ "Run", "class_u_a_r_t___command_interface.html#a3b9237b8a83c5dad6f07cbe604fba490", null ],
     [ "sendReplies", "class_u_a_r_t___command_interface.html#a09736493130ab2e26d6539de43fdb244", null ],
     [ "uartRcv", "class_u_a_r_t___command_interface.html#aa4c2836a343bdc2401f4676fcb1cc672", null ],

@@ -1,6 +1,6 @@
 var class_string_command_interface =
 [
-    [ "StringCommandInterface", "class_string_command_interface.html#a2a2c826dba2728234fdc66b52132eebf", null ],
+    [ "StringCommandInterface", "class_string_command_interface.html#ab7cfb25b7bc78501f70f5138df3c53fd", null ],
     [ "addBuf", "class_string_command_interface.html#a05bd25ab1fa92e0cf080e0c997e79996", null ],
     [ "bufferCapacity", "class_string_command_interface.html#aa6f5407c7754561161d8ca8d4e37c616", null ],
     [ "formatOriginalCommandFromResult", "class_string_command_interface.html#a2a3fad2cfe7507f5677547a26051e869", null ],

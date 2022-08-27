@@ -123,8 +123,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a87cc8067c98c0ab2134dee3822e3b250"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a794431a3a9eefb32696c10adb1caf432"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="struct_class_identifier.html">ClassIdentifier</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_encoder.html#a794431a3a9eefb32696c10adb1caf432">getInfo</a> ()</td></tr>
 <tr class="separator:a794431a3a9eefb32696c10adb1caf432"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae30dc67ff9a64629e4d55e21a424b68b"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="_encoder_8h.html#a3b8360b25c8bb88ce54eb577fa04987b">EncoderType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_encoder.html#ae30dc67ff9a64629e4d55e21a424b68b">getType</a> ()</td></tr>
-<tr class="separator:ae30dc67ff9a64629e4d55e21a424b68b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75a328ecc1a9738edc6f051c682cdabb"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="_encoder_8h.html#a3b8360b25c8bb88ce54eb577fa04987b">EncoderType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_encoder.html#a75a328ecc1a9738edc6f051c682cdabb">getEncoderType</a> ()</td></tr>
+<tr class="separator:a75a328ecc1a9738edc6f051c682cdabb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5041739a15b236ef2428c1e7e974f8e2"><td class="memItemLeft" align="right" valign="top">virtual int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_encoder.html#a5041739a15b236ef2428c1e7e974f8e2">getPos</a> ()</td></tr>
 <tr class="separator:a5041739a15b236ef2428c1e7e974f8e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99e71d386d47f62b67988142d6fb133c"><td class="memItemLeft" align="right" valign="top">virtual float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_encoder.html#a99e71d386d47f62b67988142d6fb133c">getPos_f</a> ()</td></tr>
@@ -282,7 +282,37 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="class_encoder_biss_c.html#a5b0272ad8d5e45dcc92002299c92f459">EncoderBissC</a>, <a class="el" href="class_t_m_c4671.html#a29e6be7de5761e0b577fd31f818ec2ad">TMC4671</a>, <a class="el" href="class_mt_encoder_s_p_i.html#a3a1bf058bfd2fa06ac01901868654ace">MtEncoderSPI</a>, <a class="el" href="class_o_drive_c_a_n.html#ae02fc8301756d45fdc59d37ba9fe869a">ODriveCAN</a>, and <a class="el" href="class_vesc_c_a_n.html#a41967cd0536764c5d23a1cf34e8a262c">VescCAN</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_encoder_8cpp_source.html#l00053">53</a> of file <a class="el" href="_encoder_8cpp_source.html">Encoder.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_encoder_8cpp_source.html#l00056">56</a> of file <a class="el" href="_encoder_8cpp_source.html">Encoder.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a75a328ecc1a9738edc6f051c682cdabb" name="a75a328ecc1a9738edc6f051c682cdabb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a75a328ecc1a9738edc6f051c682cdabb">&#9670;&nbsp;</a></span>getEncoderType()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="_encoder_8h.html#a3b8360b25c8bb88ce54eb577fa04987b">EncoderType</a> Encoder::getEncoderType </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p >Returns the type of the encoder. Must override this and NOT return NONE in other classes </p>
+
+<p>Reimplemented in <a class="el" href="class_encoder_biss_c.html#afd61cb9fca23068389671dcd3c8a235a">EncoderBissC</a>, <a class="el" href="class_encoder_local.html#ab0591a51178ffe52a01f225e305ae70a">EncoderLocal</a>, <a class="el" href="class_mt_encoder_s_p_i.html#a7b4449c598abb1e87a6e5c708340ebd2">MtEncoderSPI</a>, <a class="el" href="class_o_drive_c_a_n.html#add596d6e03ee2389343545abc1572186">ODriveCAN</a>, <a class="el" href="class_t_m_c4671.html#af0155d1cfe11b19c333f2ba88701c00d">TMC4671</a>, and <a class="el" href="class_vesc_c_a_n.html#ae897a5d093d405939eec5192f5f043ad">VescCAN</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="_encoder_8cpp_source.html#l00049">49</a> of file <a class="el" href="_encoder_8cpp_source.html">Encoder.cpp</a>.</p>
 
 </div>
 </div>
@@ -343,7 +373,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="class_encoder_biss_c.html#ad91644de814dc3c8a5a9ff819e4e4ec2">EncoderBissC</a>, <a class="el" href="class_encoder_local.html#a1481fae056308cf15e94add0860eedbe">EncoderLocal</a>, <a class="el" href="class_mt_encoder_s_p_i.html#a02dbbbe5a1f26a3d2c07bae5f4f884d0">MtEncoderSPI</a>, <a class="el" href="class_o_drive_c_a_n.html#a8c2fe33cdd44f475d7f4e0c9f0c0b25b">ODriveCAN</a>, <a class="el" href="class_t_m_c4671.html#a9ac710beda08bf836a9e132ba545c5e8">TMC4671</a>, and <a class="el" href="class_vesc_c_a_n.html#a17751aa63d09860404c6b29c844d4123">VescCAN</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_encoder_8cpp_source.html#l00061">61</a> of file <a class="el" href="_encoder_8cpp_source.html">Encoder.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_encoder_8cpp_source.html#l00064">64</a> of file <a class="el" href="_encoder_8cpp_source.html">Encoder.cpp</a>.</p>
 
 </div>
 </div>
@@ -373,7 +403,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="class_o_drive_c_a_n.html#a93817f5290fa64befe3d675b5ab42d30">ODriveCAN</a>, and <a class="el" href="class_vesc_c_a_n.html#a8338267b96660d2b89e9c8baa05eb6d6">VescCAN</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_encoder_8cpp_source.html#l00084">84</a> of file <a class="el" href="_encoder_8cpp_source.html">Encoder.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_encoder_8cpp_source.html#l00087">87</a> of file <a class="el" href="_encoder_8cpp_source.html">Encoder.cpp</a>.</p>
 
 </div>
 </div>
@@ -403,7 +433,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="class_encoder_biss_c.html#a3f5116b3ad17e081f13a77b8a0d4e13d">EncoderBissC</a>, <a class="el" href="class_mt_encoder_s_p_i.html#a4af821eabd4bc5c2026afeb50b7e5756">MtEncoderSPI</a>, and <a class="el" href="class_t_m_c4671.html#a7a9b34323d1a36ec2fb80ff7887aced1">TMC4671</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_encoder_8cpp_source.html#l00076">76</a> of file <a class="el" href="_encoder_8cpp_source.html">Encoder.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_encoder_8cpp_source.html#l00079">79</a> of file <a class="el" href="_encoder_8cpp_source.html">Encoder.cpp</a>.</p>
 
 </div>
 </div>
@@ -430,36 +460,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_encoder_8cpp_source.html#l00065">65</a> of file <a class="el" href="_encoder_8cpp_source.html">Encoder.cpp</a>.</p>
-
-</div>
-</div>
-<a id="ae30dc67ff9a64629e4d55e21a424b68b" name="ae30dc67ff9a64629e4d55e21a424b68b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae30dc67ff9a64629e4d55e21a424b68b">&#9670;&nbsp;</a></span>getType()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="_encoder_8h.html#a3b8360b25c8bb88ce54eb577fa04987b">EncoderType</a> Encoder::getType </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Reimplemented in <a class="el" href="class_encoder_biss_c.html#a6c0c8df2a3c9bec74f27edc05ddab7a0">EncoderBissC</a>, <a class="el" href="class_encoder_local.html#a6784faab45b0944bc871d4d78ae1e883">EncoderLocal</a>, <a class="el" href="class_mt_encoder_s_p_i.html#a0d9e491739544ce2f92415af59e2ab0a">MtEncoderSPI</a>, <a class="el" href="class_vesc_c_a_n.html#a4a9aa5fa4c45d7dbe00a53ee2e63bf94">VescCAN</a>, and <a class="el" href="class_t_m_c4671.html#a411c96d431c7f0a93ab4212778e10a1e">TMC4671</a>.</p>
-
-<p class="definition">Definition at line <a class="el" href="_encoder_8cpp_source.html#l00046">46</a> of file <a class="el" href="_encoder_8cpp_source.html">Encoder.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_encoder_8cpp_source.html#l00068">68</a> of file <a class="el" href="_encoder_8cpp_source.html">Encoder.cpp</a>.</p>
 
 </div>
 </div>
@@ -490,7 +491,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="class_encoder_biss_c.html#ab8cb033d30eda38d64f87dea9aebaeed">EncoderBissC</a>, <a class="el" href="class_encoder_local.html#a1e09ff4d0e99fa4741f871b020f3eee5">EncoderLocal</a>, <a class="el" href="class_mt_encoder_s_p_i.html#a5a5463200a5ccb7fc1a8b145e967212a">MtEncoderSPI</a>, <a class="el" href="class_o_drive_c_a_n.html#a4852b2c6334d07079a7bdeb67d8335a3">ODriveCAN</a>, <a class="el" href="class_t_m_c4671.html#a3363fd0780c8de76fdcf0bb96d25f082">TMC4671</a>, and <a class="el" href="class_vesc_c_a_n.html#ad604f2b98471a252ce160fc21f117576">VescCAN</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_encoder_8cpp_source.html#l00095">95</a> of file <a class="el" href="_encoder_8cpp_source.html">Encoder.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_encoder_8cpp_source.html#l00098">98</a> of file <a class="el" href="_encoder_8cpp_source.html">Encoder.cpp</a>.</p>
 
 </div>
 </div>

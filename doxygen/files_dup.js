@@ -3,6 +3,12 @@ var files_dup =
     [ "AdcHandler.h", "_adc_handler_8h.html", [
       [ "AdcHandler", "class_adc_handler.html", "class_adc_handler" ]
     ] ],
+    [ "AnalogAxisProcessing.h", "_analog_axis_processing_8h.html", [
+      [ "AnalogProcessingConfig", "struct_analog_processing_config.html", "struct_analog_processing_config" ],
+      [ "MinMaxPair", "struct_min_max_pair.html", "struct_min_max_pair" ],
+      [ "AnalogAxisProcessing", "class_analog_axis_processing.html", "class_analog_axis_processing" ],
+      [ "AnalogAxisProcessing::AnalogProcessingMode", "struct_analog_axis_processing_1_1_analog_processing_mode.html", "struct_analog_axis_processing_1_1_analog_processing_mode" ]
+    ] ],
     [ "AnalogSource.h", "_analog_source_8h.html", [
       [ "AnalogSource", "class_analog_source.html", "class_analog_source" ]
     ] ],
@@ -114,6 +120,10 @@ var files_dup =
       [ "cpp_freertos::ReadWriteLockPreferReader", "classcpp__freertos_1_1_read_write_lock_prefer_reader.html", "classcpp__freertos_1_1_read_write_lock_prefer_reader" ],
       [ "cpp_freertos::ReadWriteLockPreferWriter", "classcpp__freertos_1_1_read_write_lock_prefer_writer.html", "classcpp__freertos_1_1_read_write_lock_prefer_writer" ]
     ] ],
+    [ "ringbuffer.h", "ringbuffer_8h.html", "ringbuffer_8h" ],
+    [ "ringbufferwrapper.h", "ringbufferwrapper_8h.html", [
+      [ "RingBufferWrapper", "class_ring_buffer_wrapper.html", "class_ring_buffer_wrapper" ]
+    ] ],
     [ "semaphore.hpp", "semaphore_8hpp.html", [
       [ "cpp_freertos::SemaphoreCreateException", "classcpp__freertos_1_1_semaphore_create_exception.html", "classcpp__freertos_1_1_semaphore_create_exception" ],
       [ "cpp_freertos::Semaphore", "classcpp__freertos_1_1_semaphore.html", "classcpp__freertos_1_1_semaphore" ],
@@ -170,6 +180,7 @@ var files_dup =
       [ "cpp_freertos::WorkQueue::CWorkerThread", "classcpp__freertos_1_1_work_queue_1_1_c_worker_thread.html", "classcpp__freertos_1_1_work_queue_1_1_c_worker_thread" ]
     ] ],
     [ "AdcHandler.cpp", "_adc_handler_8cpp.html", null ],
+    [ "AnalogAxisProcessing.cpp", "_analog_axis_processing_8cpp.html", "_analog_axis_processing_8cpp" ],
     [ "AnalogSource.cpp", "_analog_source_8cpp.html", null ],
     [ "AxesManager.cpp", "_axes_manager_8cpp.html", null ],
     [ "Axis.cpp", "_axis_8cpp.html", null ],
@@ -198,7 +209,7 @@ var files_dup =
     [ "Encoder.cpp", "_encoder_8cpp.html", null ],
     [ "ErrorHandler.cpp", "_error_handler_8cpp.html", null ],
     [ "ExtiHandler.cpp", "_exti_handler_8cpp.html", null ],
-    [ "FFBoardMainCommandThread.cpp", "_f_f_board_main_command_thread_8cpp.html", null ],
+    [ "FFBoardMainCommandThread.cpp", "_f_f_board_main_command_thread_8cpp.html", "_f_f_board_main_command_thread_8cpp" ],
     [ "Filters.cpp", "_filters_8cpp.html", null ],
     [ "flash_helpers.cpp", "flash__helpers_8cpp.html", "flash__helpers_8cpp" ],
     [ "global_callbacks.cpp", "global__callbacks_8cpp.html", "global__callbacks_8cpp" ],
@@ -210,6 +221,8 @@ var files_dup =
     [ "MidiHandler.cpp", "_midi_handler_8cpp.html", null ],
     [ "MotorDriver.cpp", "_motor_driver_8cpp.html", null ],
     [ "PersistentStorage.cpp", "_persistent_storage_8cpp.html", null ],
+    [ "ringbuffer.c", "ringbuffer_8c.html", "ringbuffer_8c" ],
+    [ "ringbufferwrapper.cpp", "ringbufferwrapper_8cpp.html", null ],
     [ "SPI.cpp", "_s_p_i_8cpp.html", "_s_p_i_8cpp" ],
     [ "SpiHandler.cpp", "_spi_handler_8cpp.html", null ],
     [ "SystemCommands.cpp", "_system_commands_8cpp.html", "_system_commands_8cpp" ],
@@ -303,6 +316,10 @@ var files_dup =
     [ "tusb.h", "tusb_8h.html", "tusb_8h" ],
     [ "tusb_config.h", "tusb__config_8h.html", null ],
     [ "tusb_option.h", "tusb__option_8h.html", null ],
+    [ "ADS111X.h", "_a_d_s111_x_8h.html", [
+      [ "ADS111X", "class_a_d_s111_x.html", "class_a_d_s111_x" ],
+      [ "ADS111X_AnalogSource", "class_a_d_s111_x___analog_source.html", "class_a_d_s111_x___analog_source" ]
+    ] ],
     [ "CanAnalog.h", "_can_analog_8h.html", [
       [ "CanAnalogBase", "class_can_analog_base.html", "class_can_analog_base" ],
       [ "CanAnalog< AMOUNT >", "class_can_analog.html", "class_can_analog" ]
@@ -336,7 +353,6 @@ var files_dup =
       [ "FFBWheel", "class_f_f_b_wheel.html", "class_f_f_b_wheel" ]
     ] ],
     [ "LocalAnalog.h", "_local_analog_8h.html", [
-      [ "MinMaxPair", "struct_min_max_pair.html", "struct_min_max_pair" ],
       [ "LocalAnalogConfig", "struct_local_analog_config.html", "struct_local_analog_config" ],
       [ "LocalAnalog", "class_local_analog.html", "class_local_analog" ]
     ] ],
@@ -367,6 +383,7 @@ var files_dup =
     [ "usb_descriptors.h", "usb__descriptors_8h.html", "usb__descriptors_8h" ],
     [ "usb_hid_ffb_desc.h", "usb__hid__ffb__desc_8h.html", "usb__hid__ffb__desc_8h" ],
     [ "VescCAN.h", "_vesc_c_a_n_8h.html", "_vesc_c_a_n_8h" ],
+    [ "ADS111X.cpp", "_a_d_s111_x_8cpp.html", "_a_d_s111_x_8cpp" ],
     [ "CanAnalog.cpp", "_can_analog_8cpp.html", null ],
     [ "CanBridge.cpp", "_can_bridge_8cpp.html", "_can_bridge_8cpp" ],
     [ "CanButtons.cpp", "_can_buttons_8cpp.html", null ],
@@ -379,7 +396,7 @@ var files_dup =
     [ "FFBJoystick.cpp", "_f_f_b_joystick_8cpp.html", null ],
     [ "FFBoardMain.cpp", "_f_f_board_main_8cpp.html", null ],
     [ "FFBWheel.cpp", "_f_f_b_wheel_8cpp.html", null ],
-    [ "LocalAnalog.cpp", "_local_analog_8cpp.html", null ],
+    [ "LocalAnalog.cpp", "_local_analog_8cpp.html", "_local_analog_8cpp" ],
     [ "LocalButtons.cpp", "_local_buttons_8cpp.html", null ],
     [ "mainclass_chooser.cpp", "mainclass__chooser_8cpp.html", "mainclass__chooser_8cpp" ],
     [ "MidiMain.cpp", "_midi_main_8cpp.html", null ],

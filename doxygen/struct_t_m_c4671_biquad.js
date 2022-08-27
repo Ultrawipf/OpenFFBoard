@@ -1,5 +1,6 @@
 var struct_t_m_c4671_biquad =
 [
+    [ "from_bq", "struct_t_m_c4671_biquad.html#ab5f797eaae0540f505207256bcc9036c", null ],
     [ "a1", "struct_t_m_c4671_biquad.html#af21be7d59eef72330aac26ec841ff300", null ],
     [ "a2", "struct_t_m_c4671_biquad.html#ab32c62a6712be6674b99f3b42e81fa7a", null ],
     [ "b0", "struct_t_m_c4671_biquad.html#a3065fe0de8bc8065ebc893c7f350ca1f", null ],

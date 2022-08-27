@@ -87,6 +87,7 @@ $(document).ready(function(){initNavTree('class_biquad.html',''); initResizable(
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="class_biquad-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Biquad Class Reference</div></div>
 </div><!--header-->
@@ -108,8 +109,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aef00593330729e8a65f8926a90e494ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a17361f2b6fbbfc25d7a1debc83b3884e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_biquad.html#a17361f2b6fbbfc25d7a1debc83b3884e">setFc</a> (float <a class="el" href="class_biquad.html#af5fcdf54f305059618953c7af3726fbb">Fc</a>)</td></tr>
 <tr class="separator:a17361f2b6fbbfc25d7a1debc83b3884e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae111556767f1760d5c6da170f4623e89"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_biquad.html#ae111556767f1760d5c6da170f4623e89">getFc</a> ()</td></tr>
+<tr class="separator:ae111556767f1760d5c6da170f4623e89"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a509fd9bae1fc2b17a39cb1c063bcb566"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_biquad.html#a509fd9bae1fc2b17a39cb1c063bcb566">setQ</a> (float <a class="el" href="class_biquad.html#ac2e118b4a02e9adb7b37290b37e0dfe6">Q</a>)</td></tr>
 <tr class="separator:a509fd9bae1fc2b17a39cb1c063bcb566"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afdd5f78633d201d0a8eceb76148fff3b"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_biquad.html#afdd5f78633d201d0a8eceb76148fff3b">getQ</a> ()</td></tr>
+<tr class="separator:afdd5f78633d201d0a8eceb76148fff3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5502c359e0f4a3f4e499f850b3bae0c4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_biquad.html#a5502c359e0f4a3f4e499f850b3bae0c4">calcBiquad</a> (void)</td></tr>
 <tr class="separator:a5502c359e0f4a3f4e499f850b3bae0c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -137,10 +142,15 @@ Protected Attributes</h2></td></tr>
 <tr class="separator:a160ae989186acdb6eb00f60da3527c92"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1f5f63e2f75e774a0a9fdf7c2562794b"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_biquad.html#a1f5f63e2f75e774a0a9fdf7c2562794b">z2</a></td></tr>
 <tr class="separator:a1f5f63e2f75e774a0a9fdf7c2562794b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a1c025ded97ee0fea2173b1e5ee41f865"><td class="memItemLeft" align="right" valign="top">friend&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_biquad.html#a1c025ded97ee0fea2173b1e5ee41f865">TMC4671Biquad</a></td></tr>
+<tr class="separator:a1c025ded97ee0fea2173b1e5ee41f865"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_filters_8h_source.html#l00024">24</a> of file <a class="el" href="_filters_8h_source.html">Filters.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_filters_8h_source.html#l00030">30</a> of file <a class="el" href="_filters_8h_source.html">Filters.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a52dca857188efd568cce9e763c1fcb82" name="a52dca857188efd568cce9e763c1fcb82"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a52dca857188efd568cce9e763c1fcb82">&#9670;&nbsp;</a></span>Biquad() <span class="overload">[1/2]</span></h2>
@@ -239,7 +249,45 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_filters_8cpp_source.html#l00064">64</a> of file <a class="el" href="_filters_8cpp_source.html">Filters.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_filters_8cpp_source.html#l00072">72</a> of file <a class="el" href="_filters_8cpp_source.html">Filters.cpp</a>.</p>
+
+</div>
+</div>
+<a id="ae111556767f1760d5c6da170f4623e89" name="ae111556767f1760d5c6da170f4623e89"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae111556767f1760d5c6da170f4623e89">&#9670;&nbsp;</a></span>getFc()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Biquad::getFc </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_filters_8cpp_source.html#l00034">34</a> of file <a class="el" href="_filters_8cpp_source.html">Filters.cpp</a>.</p>
+
+</div>
+</div>
+<a id="afdd5f78633d201d0a8eceb76148fff3b" name="afdd5f78633d201d0a8eceb76148fff3b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afdd5f78633d201d0a8eceb76148fff3b">&#9670;&nbsp;</a></span>getQ()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Biquad::getQ </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_filters_8cpp_source.html#l00046">46</a> of file <a class="el" href="_filters_8cpp_source.html">Filters.cpp</a>.</p>
 
 </div>
 </div>
@@ -260,7 +308,7 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p >Calculates one step of the filter and returns the output </p>
 
-<p class="definition">Definition at line <a class="el" href="_filters_8cpp_source.html#l00045">45</a> of file <a class="el" href="_filters_8cpp_source.html">Filters.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_filters_8cpp_source.html#l00053">53</a> of file <a class="el" href="_filters_8cpp_source.html">Filters.cpp</a>.</p>
 
 </div>
 </div>
@@ -302,7 +350,7 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_filters_8cpp_source.html#l00052">52</a> of file <a class="el" href="_filters_8cpp_source.html">Filters.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_filters_8cpp_source.html#l00060">60</a> of file <a class="el" href="_filters_8cpp_source.html">Filters.cpp</a>.</p>
 
 </div>
 </div>
@@ -344,7 +392,7 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p >Changes Q value and recalculaes filter </p>
 
-<p class="definition">Definition at line <a class="el" href="_filters_8cpp_source.html#l00037">37</a> of file <a class="el" href="_filters_8cpp_source.html">Filters.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_filters_8cpp_source.html#l00041">41</a> of file <a class="el" href="_filters_8cpp_source.html">Filters.cpp</a>.</p>
 
 </div>
 </div>
@@ -369,7 +417,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_filters_8h_source.html#l00038">38</a> of file <a class="el" href="_filters_8h_source.html">Filters.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_filters_8h_source.html#l00047">47</a> of file <a class="el" href="_filters_8h_source.html">Filters.h</a>.</p>
 
 </div>
 </div>
@@ -393,7 +441,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_filters_8h_source.html#l00038">38</a> of file <a class="el" href="_filters_8h_source.html">Filters.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_filters_8h_source.html#l00047">47</a> of file <a class="el" href="_filters_8h_source.html">Filters.h</a>.</p>
 
 </div>
 </div>
@@ -417,7 +465,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_filters_8h_source.html#l00038">38</a> of file <a class="el" href="_filters_8h_source.html">Filters.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_filters_8h_source.html#l00047">47</a> of file <a class="el" href="_filters_8h_source.html">Filters.h</a>.</p>
 
 </div>
 </div>
@@ -441,7 +489,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_filters_8h_source.html#l00038">38</a> of file <a class="el" href="_filters_8h_source.html">Filters.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_filters_8h_source.html#l00047">47</a> of file <a class="el" href="_filters_8h_source.html">Filters.h</a>.</p>
 
 </div>
 </div>
@@ -465,7 +513,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_filters_8h_source.html#l00038">38</a> of file <a class="el" href="_filters_8h_source.html">Filters.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_filters_8h_source.html#l00047">47</a> of file <a class="el" href="_filters_8h_source.html">Filters.h</a>.</p>
 
 </div>
 </div>
@@ -489,7 +537,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_filters_8h_source.html#l00039">39</a> of file <a class="el" href="_filters_8h_source.html">Filters.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_filters_8h_source.html#l00048">48</a> of file <a class="el" href="_filters_8h_source.html">Filters.h</a>.</p>
 
 </div>
 </div>
@@ -513,7 +561,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_filters_8h_source.html#l00039">39</a> of file <a class="el" href="_filters_8h_source.html">Filters.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_filters_8h_source.html#l00048">48</a> of file <a class="el" href="_filters_8h_source.html">Filters.h</a>.</p>
 
 </div>
 </div>
@@ -537,7 +585,31 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_filters_8h_source.html#l00039">39</a> of file <a class="el" href="_filters_8h_source.html">Filters.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_filters_8h_source.html#l00048">48</a> of file <a class="el" href="_filters_8h_source.html">Filters.h</a>.</p>
+
+</div>
+</div>
+<a id="a1c025ded97ee0fea2173b1e5ee41f865" name="a1c025ded97ee0fea2173b1e5ee41f865"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1c025ded97ee0fea2173b1e5ee41f865">&#9670;&nbsp;</a></span>TMC4671Biquad</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">friend Biquad::TMC4671Biquad</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_filters_8h_source.html#l00031">31</a> of file <a class="el" href="_filters_8h_source.html">Filters.h</a>.</p>
 
 </div>
 </div>
@@ -561,7 +633,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_filters_8h_source.html#l00037">37</a> of file <a class="el" href="_filters_8h_source.html">Filters.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_filters_8h_source.html#l00046">46</a> of file <a class="el" href="_filters_8h_source.html">Filters.h</a>.</p>
 
 </div>
 </div>
@@ -585,7 +657,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_filters_8h_source.html#l00040">40</a> of file <a class="el" href="_filters_8h_source.html">Filters.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_filters_8h_source.html#l00049">49</a> of file <a class="el" href="_filters_8h_source.html">Filters.h</a>.</p>
 
 </div>
 </div>
@@ -609,7 +681,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_filters_8h_source.html#l00040">40</a> of file <a class="el" href="_filters_8h_source.html">Filters.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_filters_8h_source.html#l00049">49</a> of file <a class="el" href="_filters_8h_source.html">Filters.h</a>.</p>
 
 </div>
 </div>

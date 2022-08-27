@@ -2,12 +2,19 @@ var hierarchy =
 [
     [ "__attribute__", "struct____attribute____.html", null ],
     [ "AdcHandler", "class_adc_handler.html", null ],
+    [ "AnalogAxisProcessing", "class_analog_axis_processing.html", [
+      [ "ADS111X_AnalogSource", "class_a_d_s111_x___analog_source.html", null ],
+      [ "LocalAnalog", "class_local_analog.html", null ]
+    ] ],
+    [ "AnalogProcessingConfig", "struct_analog_processing_config.html", null ],
+    [ "AnalogAxisProcessing::AnalogProcessingMode", "struct_analog_axis_processing_1_1_analog_processing_mode.html", null ],
     [ "audiod_function_t", "structaudiod__function__t.html", null ],
     [ "AxesManager", "class_axes_manager.html", null ],
     [ "axis_metric_t", "structaxis__metric__t.html", null ],
     [ "AxisConfig", "struct_axis_config.html", null ],
     [ "AxisFlashAddrs", "struct_axis_flash_addrs.html", null ],
     [ "Biquad", "class_biquad.html", null ],
+    [ "biquad_constant_t", "structbiquad__constant__t.html", null ],
     [ "btd_interface_t", "structbtd__interface__t.html", null ],
     [ "ButtonSourceConfig", "struct_button_source_config.html", null ],
     [ "CAN_Config_t", "struct_c_a_n___config__t.html", null ],
@@ -32,6 +39,7 @@ var hierarchy =
     [ "cdch_data_t", "structcdch__data__t.html", null ],
     [ "ChoosableClass", "class_choosable_class.html", [
       [ "AnalogSource", "class_analog_source.html", [
+        [ "ADS111X_AnalogSource", "class_a_d_s111_x___analog_source.html", null ],
         [ "CanAnalogBase", "class_can_analog_base.html", null ],
         [ "LocalAnalog", "class_local_analog.html", null ]
       ] ],
@@ -80,6 +88,7 @@ var hierarchy =
     [ "CmdHandlerInfo", "struct_cmd_handler_info.html", null ],
     [ "CmdParser", "class_cmd_parser.html", null ],
     [ "CommandHandler", "class_command_handler.html", [
+      [ "ADS111X_AnalogSource", "class_a_d_s111_x___analog_source.html", null ],
       [ "Axis", "class_axis.html", null ],
       [ "CANPort", "class_c_a_n_port.html", null ],
       [ "CanAnalogBase", "class_can_analog_base.html", null ],
@@ -115,12 +124,18 @@ var hierarchy =
     [ "cpp_freertos::CriticalSection", "classcpp__freertos_1_1_critical_section.html", null ],
     [ "dfu_state_ctx_t", "structdfu__state__ctx__t.html", null ],
     [ "ecm_notify_struct", "structecm__notify__struct.html", null ],
+    [ "effect_biquad_t", "structeffect__biquad__t.html", null ],
     [ "effect_gain_t", "structeffect__gain__t.html", null ],
+    [ "effect_scaler_t", "structeffect__scaler__t.html", null ],
+    [ "effect_stat_t", "structeffect__stat__t.html", null ],
     [ "Error", "class_error.html", null ],
     [ "ErrorHandler", "class_error_handler.html", [
       [ "Axis", "class_axis.html", null ],
       [ "ErrorPrinter", "class_error_printer.html", null ],
       [ "FFBHIDMain", "class_f_f_b_h_i_d_main.html", null ]
+    ] ],
+    [ "ErrorHandlerifdef TIM_TMC", null, [
+      [ "TMC4671", "class_t_m_c4671.html", null ]
     ] ],
     [ "cpp_freertos::EventGroup", "classcpp__freertos_1_1_event_group.html", null ],
     [ "std::exception", null, [
@@ -141,6 +156,7 @@ var hierarchy =
     ] ],
     [ "FastAvg< T, LEN >", "class_fast_avg.html", null ],
     [ "FFB_Effect", "struct_f_f_b___effect.html", null ],
+    [ "GearRatio_t", "struct_gear_ratio__t.html", null ],
     [ "hcd_devtree_info_t", "structhcd__devtree__info__t.html", null ],
     [ "hcd_event_t", "structhcd__event__t.html", null ],
     [ "hidd_interface_t", "structhidd__interface__t.html", null ],
@@ -150,15 +166,15 @@ var hierarchy =
     [ "hub_port_status_response_t", "structhub__port__status__response__t.html", null ],
     [ "hub_status_response_t", "structhub__status__response__t.html", null ],
     [ "I2CDevice", "class_i2_c_device.html", [
+      [ "ADS111X", "class_a_d_s111_x.html", [
+        [ "ADS111X_AnalogSource", "class_a_d_s111_x___analog_source.html", null ]
+      ] ],
       [ "PCF8574", "class_p_c_f8574.html", [
         [ "PCF8574Buttons", "class_p_c_f8574_buttons.html", null ]
       ] ]
     ] ],
     [ "I2CHandler", "class_i2_c_handler.html", [
       [ "I2CPort", "class_i2_c_port.html", null ]
-    ] ],
-    [ "ifdef TIM_TMC public TimerHandlerendif", null, [
-      [ "TMC4671", "class_t_m_c4671.html", null ]
     ] ],
     [ "Ledstruct", "struct_ledstruct.html", null ],
     [ "LocalAnalogConfig", "struct_local_analog_config.html", null ],
@@ -208,6 +224,8 @@ var hierarchy =
       [ "cpp_freertos::ReadWriteLockPreferReader", "classcpp__freertos_1_1_read_write_lock_prefer_reader.html", null ],
       [ "cpp_freertos::ReadWriteLockPreferWriter", "classcpp__freertos_1_1_read_write_lock_prefer_writer.html", null ]
     ] ],
+    [ "RingBuffer", "struct_ring_buffer.html", null ],
+    [ "RingBufferWrapper", "class_ring_buffer_wrapper.html", null ],
     [ "rndis_msg_initialize_cmplt_t", "structrndis__msg__initialize__cmplt__t.html", null ],
     [ "rndis_msg_initialize_t", "structrndis__msg__initialize__t.html", null ],
     [ "rndis_msg_keep_alive_t", "structrndis__msg__keep__alive__t.html", null ],
@@ -239,9 +257,12 @@ var hierarchy =
     [ "StatusFlags::StatusFlags_s", "struct_status_flags_1_1_status_flags__s.html", null ],
     [ "cpp_freertos::Tasklet", "classcpp__freertos_1_1_tasklet.html", null ],
     [ "cpp_freertos::Thread", "classcpp__freertos_1_1_thread.html", [
+      [ "ADS111X_AnalogSource", "class_a_d_s111_x___analog_source.html", null ],
       [ "CDC_CommandInterface", "class_c_d_c___command_interface.html", null ],
+      [ "EffectsCalculator", "class_effects_calculator.html", null ],
       [ "EncoderBissC", "class_encoder_biss_c.html", null ],
       [ "ErrorPrinter", "class_error_printer.html", null ],
+      [ "FFBHIDMain", "class_f_f_b_h_i_d_main.html", null ],
       [ "FFBoardMainCommandThread", "class_f_f_board_main_command_thread.html", null ],
       [ "HID_CommandInterface", "class_h_i_d___command_interface.html", null ],
       [ "MtEncoderSPI", "class_mt_encoder_s_p_i.html", null ],
@@ -259,8 +280,10 @@ var hierarchy =
     [ "cpp_freertos::Timer", "classcpp__freertos_1_1_timer.html", null ],
     [ "TimerHandler", "class_timer_handler.html", [
       [ "EncoderLocal", "class_encoder_local.html", null ],
-      [ "FFBHIDMain", "class_f_f_b_h_i_d_main.html", null ],
       [ "MidiMain", "class_midi_main.html", null ]
+    ] ],
+    [ "TimerHandlerendif", null, [
+      [ "TMC4671", "class_t_m_c4671.html", null ]
     ] ],
     [ "TMC4671ABNConf", "struct_t_m_c4671_a_b_n_conf.html", null ],
     [ "TMC4671AENCConf", "struct_t_m_c4671_a_e_n_c_conf.html", null ],

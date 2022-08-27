@@ -121,8 +121,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a761680037f1ae414333fd15aad1227ea"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="struct_class_identifier.html">ClassIdentifier</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mt_encoder_s_p_i.html#a761680037f1ae414333fd15aad1227ea">getInfo</a> ()</td></tr>
 <tr class="memdesc:a761680037f1ae414333fd15aad1227ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Command handlers always have class infos. Works well with <a class="el" href="class_choosable_class.html">ChoosableClass</a>.  <a href="class_mt_encoder_s_p_i.html#a761680037f1ae414333fd15aad1227ea">More...</a><br /></td></tr>
 <tr class="separator:a761680037f1ae414333fd15aad1227ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0d9e491739544ce2f92415af59e2ab0a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_encoder_8h.html#a3b8360b25c8bb88ce54eb577fa04987b">EncoderType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mt_encoder_s_p_i.html#a0d9e491739544ce2f92415af59e2ab0a">getType</a> ()</td></tr>
-<tr class="separator:a0d9e491739544ce2f92415af59e2ab0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b4449c598abb1e87a6e5c708340ebd2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_encoder_8h.html#a3b8360b25c8bb88ce54eb577fa04987b">EncoderType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mt_encoder_s_p_i.html#a7b4449c598abb1e87a6e5c708340ebd2">getEncoderType</a> ()</td></tr>
+<tr class="separator:a7b4449c598abb1e87a6e5c708340ebd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a437998795b732300394e10bea3b309f0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mt_encoder_s_p_i.html#a437998795b732300394e10bea3b309f0">Run</a> ()</td></tr>
 <tr class="separator:a437998795b732300394e10bea3b309f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7821c6c4c045feaaafca2d9d3fc34e18"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mt_encoder_s_p_i.html#a7821c6c4c045feaaafca2d9d3fc34e18">restoreFlash</a> () override</td></tr>
@@ -229,6 +229,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ac5417a6284e8066c67776301c7d25d72 inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a406a0e915a9373f5c1992711b167f7f9 inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_cmd_handler_commanddef.html">CmdHandlerCommanddef</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a406a0e915a9373f5c1992711b167f7f9">getCommandFromId</a> (const uint32_t <a class="el" href="_command_handler_8h.html#a13a18e5b49561a2f007205dc0afeea14ab80bb7740288fda1f201890375a60c8f">id</a>, uint32_t ignoredFlags=0)</td></tr>
 <tr class="separator:a406a0e915a9373f5c1992711b167f7f9 inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26d4fbfbb1106d0465716e1968150a7d inherit pub_methods_class_command_handler"><td class="memTemplParams" colspan="2">template&lt;typename ID &gt; </td></tr>
+<tr class="memitem:a26d4fbfbb1106d0465716e1968150a7d inherit pub_methods_class_command_handler"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a26d4fbfbb1106d0465716e1968150a7d">registerCommand</a> (const char *cmd, const ID cmdid, const char *<a class="el" href="_command_handler_8h.html#a13a18e5b49561a2f007205dc0afeea14a657f8b8da628ef83cf69101b6817150a">help</a>=nullptr, uint32_t flags=0)</td></tr>
+<tr class="separator:a26d4fbfbb1106d0465716e1968150a7d inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -271,6 +274,18 @@ Static Public Member Functions</h2></td></tr>
 <tr class="separator:adb22b24f51c53110d1275157b5d82fde inherit pub_static_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af5a52ada34bde17d66b072d41aa96769 inherit pub_static_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; <a class="el" href="class_command_handler.html">CommandHandler</a> * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#af5a52ada34bde17d66b072d41aa96769">getCommandHandlers</a> ()</td></tr>
 <tr class="separator:af5a52ada34bde17d66b072d41aa96769 inherit pub_static_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5deca916348f55b7a6aaffc598d28c0b inherit pub_static_methods_class_command_handler"><td class="memTemplParams" colspan="2">template&lt;typename TVal &gt; </td></tr>
+<tr class="memitem:a5deca916348f55b7a6aaffc598d28c0b inherit pub_static_methods_class_command_handler"><td class="memTemplItemLeft" align="right" valign="top">static <a class="el" href="_command_handler_8h.html#aefaf83fec6a7da1d02ae7e912dd9a6d5">CommandStatus</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a5deca916348f55b7a6aaffc598d28c0b">handleGetSet</a> (const <a class="el" href="struct_parsed_command.html">ParsedCommand</a> &amp;cmd, std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;replies, TVal &amp;value)</td></tr>
+<tr class="separator:a5deca916348f55b7a6aaffc598d28c0b inherit pub_static_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a962937ad83e3f5317fa085da8a5779a9 inherit pub_static_methods_class_command_handler"><td class="memTemplParams" colspan="2">template&lt;typename TVal , class cls , class cls1 &gt; </td></tr>
+<tr class="memitem:a962937ad83e3f5317fa085da8a5779a9 inherit pub_static_methods_class_command_handler"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a962937ad83e3f5317fa085da8a5779a9">handleGetSetFunc</a> (const <a class="el" href="struct_parsed_command.html">ParsedCommand</a> &amp;cmd, std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;replies, TVal &amp;value, void(cls1::*setfunc)(TVal), cls *obj)</td></tr>
+<tr class="separator:a962937ad83e3f5317fa085da8a5779a9 inherit pub_static_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5cb275560fa91128585d4f2546ffc3b inherit pub_static_methods_class_command_handler"><td class="memTemplParams" colspan="2">template&lt;typename TVal , class cls , class cls1 , class cls2 &gt; </td></tr>
+<tr class="memitem:af5cb275560fa91128585d4f2546ffc3b inherit pub_static_methods_class_command_handler"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_command_handler.html#af5cb275560fa91128585d4f2546ffc3b">handleGetFuncSetFunc</a> (const <a class="el" href="struct_parsed_command.html">ParsedCommand</a> &amp;cmd, std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;replies, TVal(cls1::*getfunc)(), void(cls2::*setfunc)(TVal), cls *obj)</td></tr>
+<tr class="separator:af5cb275560fa91128585d4f2546ffc3b inherit pub_static_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5044af5133a039b266864c2cb38f399c inherit pub_static_methods_class_command_handler"><td class="memTemplParams" colspan="2">template&lt;typename TVal , class cls , class cls1 &gt; </td></tr>
+<tr class="memitem:a5044af5133a039b266864c2cb38f399c inherit pub_static_methods_class_command_handler"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a5044af5133a039b266864c2cb38f399c">handleGetFuncSet</a> (const <a class="el" href="struct_parsed_command.html">ParsedCommand</a> &amp;cmd, std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;replies, TVal &amp;value, TVal(cls1::*getfunc)(), cls *obj)</td></tr>
+<tr class="separator:a5044af5133a039b266864c2cb38f399c inherit pub_static_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -397,21 +412,6 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:a3de5a97bb00981074ef6ea85caea8093 inherit pro_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adc82292657521596a2e77756886f95aa inherit pro_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#adc82292657521596a2e77756886f95aa">removeCommandHandler</a> ()</td></tr>
 <tr class="separator:adc82292657521596a2e77756886f95aa inherit pro_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2efb62247e3d01ce46766e7728de888f inherit pro_methods_class_command_handler"><td class="memTemplParams" colspan="2">template&lt;typename TVal &gt; </td></tr>
-<tr class="memitem:a2efb62247e3d01ce46766e7728de888f inherit pro_methods_class_command_handler"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="_command_handler_8h.html#aefaf83fec6a7da1d02ae7e912dd9a6d5">CommandStatus</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a2efb62247e3d01ce46766e7728de888f">handleGetSet</a> (const <a class="el" href="struct_parsed_command.html">ParsedCommand</a> &amp;cmd, std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;replies, TVal &amp;value)</td></tr>
-<tr class="separator:a2efb62247e3d01ce46766e7728de888f inherit pro_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa030af802d761b4515b4ff78f640a53a inherit pro_methods_class_command_handler"><td class="memTemplParams" colspan="2">template&lt;typename TVal , class cls &gt; </td></tr>
-<tr class="memitem:aa030af802d761b4515b4ff78f640a53a inherit pro_methods_class_command_handler"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_command_handler.html#aa030af802d761b4515b4ff78f640a53a">handleGetSetFunc</a> (const <a class="el" href="struct_parsed_command.html">ParsedCommand</a> &amp;cmd, std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;replies, TVal &amp;value, void(cls::*setfunc)(TVal), cls *obj)</td></tr>
-<tr class="separator:aa030af802d761b4515b4ff78f640a53a inherit pro_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a46a4f520b99df3c02276dec435613f6b inherit pro_methods_class_command_handler"><td class="memTemplParams" colspan="2">template&lt;typename TVal , class cls , class cls1 , class cls2 &gt; </td></tr>
-<tr class="memitem:a46a4f520b99df3c02276dec435613f6b inherit pro_methods_class_command_handler"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a46a4f520b99df3c02276dec435613f6b">handleGetFuncSetFunc</a> (const <a class="el" href="struct_parsed_command.html">ParsedCommand</a> &amp;cmd, std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;replies, TVal(cls1::*getfunc)(), void(cls2::*setfunc)(TVal), cls *obj)</td></tr>
-<tr class="separator:a46a4f520b99df3c02276dec435613f6b inherit pro_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1ee871a0cd5fcd6cccd915251963a7d9 inherit pro_methods_class_command_handler"><td class="memTemplParams" colspan="2">template&lt;typename TVal , class cls &gt; </td></tr>
-<tr class="memitem:a1ee871a0cd5fcd6cccd915251963a7d9 inherit pro_methods_class_command_handler"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a1ee871a0cd5fcd6cccd915251963a7d9">handleGetFuncSet</a> (const <a class="el" href="struct_parsed_command.html">ParsedCommand</a> &amp;cmd, std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;replies, TVal &amp;value, TVal(cls::*getfunc)(), cls *obj)</td></tr>
-<tr class="separator:a1ee871a0cd5fcd6cccd915251963a7d9 inherit pro_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a26d4fbfbb1106d0465716e1968150a7d inherit pro_methods_class_command_handler"><td class="memTemplParams" colspan="2">template&lt;typename ID &gt; </td></tr>
-<tr class="memitem:a26d4fbfbb1106d0465716e1968150a7d inherit pro_methods_class_command_handler"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a26d4fbfbb1106d0465716e1968150a7d">registerCommand</a> (const char *cmd, const ID cmdid, const char *<a class="el" href="_command_handler_8h.html#a13a18e5b49561a2f007205dc0afeea14a657f8b8da628ef83cf69101b6817150a">help</a>=nullptr, uint32_t flags=0)</td></tr>
-<tr class="separator:a26d4fbfbb1106d0465716e1968150a7d inherit pro_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_static_methods_class_command_handler"><td colspan="2" onclick="javascript:toggleInherit('pro_static_methods_class_command_handler')"><img src="closed.png" alt="-"/>&#160;Static Protected Member Functions inherited from <a class="el" href="class_command_handler.html">CommandHandler</a></td></tr>
 <tr class="memitem:a123585937cc70b6d4e77c024e138019f inherit pro_static_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; uint16_t &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a123585937cc70b6d4e77c024e138019f">getCommandHandlerIds</a> ()</td></tr>
 <tr class="separator:a123585937cc70b6d4e77c024e138019f inherit pro_static_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -600,6 +600,36 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a id="a7b4449c598abb1e87a6e5c708340ebd2" name="a7b4449c598abb1e87a6e5c708340ebd2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7b4449c598abb1e87a6e5c708340ebd2">&#9670;&nbsp;</a></span>getEncoderType()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="_encoder_8h.html#a3b8360b25c8bb88ce54eb577fa04987b">EncoderType</a> MtEncoderSPI::getEncoderType </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p >Returns the type of the encoder. Must override this and NOT return NONE in other classes </p>
+
+<p>Reimplemented from <a class="el" href="class_encoder.html#a75a328ecc1a9738edc6f051c682cdabb">Encoder</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="_mt_encoder_s_p_i_8h_source.html#l00034">34</a> of file <a class="el" href="_mt_encoder_s_p_i_8h_source.html">MtEncoderSPI.h</a>.</p>
+
+</div>
+</div>
 <a id="a761680037f1ae414333fd15aad1227ea" name="a761680037f1ae414333fd15aad1227ea"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a761680037f1ae414333fd15aad1227ea">&#9670;&nbsp;</a></span>getInfo()</h2>
 
@@ -688,35 +718,6 @@ Additional Inherited Members</h2></td></tr>
 <p>Reimplemented from <a class="el" href="class_encoder.html#ac34abd41c98400224526ca6ad39abc77">Encoder</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html#l00184">184</a> of file <a class="el" href="_mt_encoder_s_p_i_8cpp_source.html">MtEncoderSPI.cpp</a>.</p>
-
-</div>
-</div>
-<a id="a0d9e491739544ce2f92415af59e2ab0a" name="a0d9e491739544ce2f92415af59e2ab0a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0d9e491739544ce2f92415af59e2ab0a">&#9670;&nbsp;</a></span>getType()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="_encoder_8h.html#a3b8360b25c8bb88ce54eb577fa04987b">EncoderType</a> MtEncoderSPI::getType </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Reimplemented from <a class="el" href="class_encoder.html#ae30dc67ff9a64629e4d55e21a424b68b">Encoder</a>.</p>
-
-<p class="definition">Definition at line <a class="el" href="_mt_encoder_s_p_i_8h_source.html#l00034">34</a> of file <a class="el" href="_mt_encoder_s_p_i_8h_source.html">MtEncoderSPI.h</a>.</p>
 
 </div>
 </div>

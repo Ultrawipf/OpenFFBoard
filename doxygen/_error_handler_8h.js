@@ -7,6 +7,7 @@ var _error_handler_8h =
       [ "none", "_error_handler_8h.html#a6f3b1ba4fbf4167d3a58b0b331ddcfefa334c4a4c42fdb79d7ebc3e73b517e6f8", null ],
       [ "shutdown", "_error_handler_8h.html#a6f3b1ba4fbf4167d3a58b0b331ddcfefa5924f03a95ee6f7277e5bdd1e81b8fdc", null ],
       [ "emergencyStop", "_error_handler_8h.html#a6f3b1ba4fbf4167d3a58b0b331ddcfefaf295dcb7afd6ae61d4d7e5f99d9bf71a", null ],
+      [ "brakeResistorFailure", "_error_handler_8h.html#a6f3b1ba4fbf4167d3a58b0b331ddcfefa1efe903946f4bbf8012a8d8e092427a0", null ],
       [ "systemError", "_error_handler_8h.html#a6f3b1ba4fbf4167d3a58b0b331ddcfefa300e14bbcaa3119ad2b82320a8a1e9c3", null ],
       [ "cmdNotFound", "_error_handler_8h.html#a6f3b1ba4fbf4167d3a58b0b331ddcfefa6daf75f3ee6029f55fed55d2b95532a1", null ],
       [ "cmdExecutionError", "_error_handler_8h.html#a6f3b1ba4fbf4167d3a58b0b331ddcfefac437c634866880bb5961a317064c3897", null ],

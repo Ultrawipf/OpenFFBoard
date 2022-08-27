@@ -12,6 +12,7 @@ var class_p_c_f8574_buttons =
     [ "getClassType", "class_p_c_f8574_buttons.html#a2dd3fa6a30fbbe7e38101db34604e114", null ],
     [ "getHelpstring", "class_p_c_f8574_buttons.html#a33e354df58665799d34b387e7629e9c6", null ],
     [ "getInfo", "class_p_c_f8574_buttons.html#a68094ed1f424fa0e884c063f07b06acf", null ],
+    [ "i2cError", "class_p_c_f8574_buttons.html#a0d251bb9ad7e7c214e8e40d84d4f7b75", null ],
     [ "i2cRxCompleted", "class_p_c_f8574_buttons.html#aeb3e0e46af1621aa97d1c8abe80537e0", null ],
     [ "isCreatable", "class_p_c_f8574_buttons.html#a705c0255b135780e1cec40b682e1b4c3", null ],
     [ "readButtons", "class_p_c_f8574_buttons.html#abeec3978d5c4847b69c7a3fac41aff6d", null ],

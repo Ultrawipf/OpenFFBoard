@@ -12,6 +12,5 @@ var class_f_f_board_main_command_thread =
     [ "cmdExecError", "class_f_f_board_main_command_thread.html#a9ebcb71228062cab8ef42a33359147a2", null ],
     [ "cmdNotFoundError", "class_f_f_board_main_command_thread.html#a9669bea5b9b540fb571dfab79dd3900b", null ],
     [ "commands", "class_f_f_board_main_command_thread.html#a51c813436baac7f67693336093aa6a2a", null ],
-    [ "results", "class_f_f_board_main_command_thread.html#a991ebb88f96de464ea53bb1bea2180cc", null ],
-    [ "threadSem", "class_f_f_board_main_command_thread.html#a2ff01c8a22548df9ab09a1f333cf93a2", null ]
+    [ "results", "class_f_f_board_main_command_thread.html#a991ebb88f96de464ea53bb1bea2180cc", null ]
 ];

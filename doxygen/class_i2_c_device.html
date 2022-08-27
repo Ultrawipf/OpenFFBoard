@@ -98,8 +98,10 @@ Inheritance diagram for I2CDevice:</div>
  <div class="center">
   <img src="class_i2_c_device.png" usemap="#I2CDevice_map" alt=""/>
   <map id="I2CDevice_map" name="I2CDevice_map">
-<area href="class_p_c_f8574.html" alt="PCF8574" shape="rect" coords="0,56,106,80"/>
-<area href="class_p_c_f8574_buttons.html" alt="PCF8574Buttons" shape="rect" coords="0,112,106,136"/>
+<area href="class_a_d_s111_x.html" alt="ADS111X" shape="rect" coords="0,56,156,80"/>
+<area href="class_p_c_f8574.html" alt="PCF8574" shape="rect" coords="166,56,322,80"/>
+<area href="class_a_d_s111_x___analog_source.html" alt="ADS111X_AnalogSource" shape="rect" coords="0,112,156,136"/>
+<area href="class_p_c_f8574_buttons.html" alt="PCF8574Buttons" shape="rect" coords="166,112,322,136"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -117,10 +119,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a76673327ee9a1aae9798d469de5bf51c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:add48ca296615b1f7db570c8caa4a46cc"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i2_c_device.html#add48ca296615b1f7db570c8caa4a46cc">i2cRxCompleted</a> (<a class="el" href="class_i2_c_port.html">I2CPort</a> *port)</td></tr>
 <tr class="separator:add48ca296615b1f7db570c8caa4a46cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5101c5f11dfa10bb018ab224c1067b8f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i2_c_device.html#a5101c5f11dfa10bb018ab224c1067b8f">i2cError</a> (<a class="el" href="class_i2_c_port.html">I2CPort</a> *port)</td></tr>
+<tr class="separator:a5101c5f11dfa10bb018ab224c1067b8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_i2_c_8h_source.html#l00077">77</a> of file <a class="el" href="_i2_c_8h_source.html">I2C.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i2_c_8h_source.html#l00081">81</a> of file <a class="el" href="_i2_c_8h_source.html">I2C.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="afa6d28cbaab65cfc2ad60a63bc95d30d" name="afa6d28cbaab65cfc2ad60a63bc95d30d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afa6d28cbaab65cfc2ad60a63bc95d30d">&#9670;&nbsp;</a></span>I2CDevice()</h2>
@@ -137,7 +141,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00271">271</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00304">304</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
 
 </div>
 </div>
@@ -164,7 +168,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00274">274</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00307">307</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
 
 </div>
 </div>
@@ -193,9 +197,39 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="class_p_c_f8574.html#a57d7e7299893900b3ea2cad9f8e68abc">PCF8574</a>.</p>
+<p>Reimplemented in <a class="el" href="class_a_d_s111_x.html#a6818b3fd083ed56c310b7402144087a6">ADS111X</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00282">282</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00315">315</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a5101c5f11dfa10bb018ab224c1067b8f" name="a5101c5f11dfa10bb018ab224c1067b8f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5101c5f11dfa10bb018ab224c1067b8f">&#9670;&nbsp;</a></span>i2cError()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void I2CDevice::i2cError </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_i2_c_port.html">I2CPort</a> *&#160;</td>
+          <td class="paramname"><em>port</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reimplemented in <a class="el" href="class_a_d_s111_x___analog_source.html#ab647e779b1d8b16f3044db5aa3fb58ce">ADS111X_AnalogSource</a>, and <a class="el" href="class_p_c_f8574_buttons.html#a0d251bb9ad7e7c214e8e40d84d4f7b75">PCF8574Buttons</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00326">326</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
 
 </div>
 </div>
@@ -223,9 +257,9 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="class_p_c_f8574_buttons.html#aeb3e0e46af1621aa97d1c8abe80537e0">PCF8574Buttons</a>.</p>
+<p>Reimplemented in <a class="el" href="class_a_d_s111_x___analog_source.html#aa2ff042ed3f15190b89d04a8f96a1ea8">ADS111X_AnalogSource</a>, and <a class="el" href="class_p_c_f8574_buttons.html#aeb3e0e46af1621aa97d1c8abe80537e0">PCF8574Buttons</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00290">290</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00323">323</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
 
 </div>
 </div>
@@ -253,7 +287,9 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00287">287</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
+<p>Reimplemented in <a class="el" href="class_a_d_s111_x___analog_source.html#a3895e93e1985f5141d6ccaab7dc262be">ADS111X_AnalogSource</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00320">320</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
 
 </div>
 </div>
@@ -281,9 +317,9 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="class_p_c_f8574.html#a184e26da37796483448c8647c3463072">PCF8574</a>.</p>
+<p>Reimplemented in <a class="el" href="class_a_d_s111_x.html#a1871fead760d06d25dd29b5e0ff4c30b">ADS111X</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00278">278</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00311">311</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
 
 </div>
 </div>

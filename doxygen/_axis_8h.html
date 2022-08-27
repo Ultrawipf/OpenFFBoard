@@ -105,6 +105,8 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structaxis__metric__t.html">axis_metric_t</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_gear_ratio__t.html">GearRatio_t</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_axis.html">Axis</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -129,6 +131,15 @@ Enumerations</h2></td></tr>
 &#160;&#160;<a class="el" href="_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715a39d37a1e1318d45873b0443db487c948">fxratio</a>
 , <a class="el" href="_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715a2246494328af04e5200e1e604782e983">curtorque</a>
 , <a class="el" href="_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715af0b2e49c0d3953c76e09444ae521ebbe">curpos</a>
+, <a class="el" href="_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715a3ad769e867fc4542140b3aada914c7aa">curspd</a>
+, <br />
+&#160;&#160;<a class="el" href="_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715aa8fb1b9588becd255abb42103bbef38d">curaccel</a>
+, <a class="el" href="_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715a07de0f7532baa4f3960bbc8033bb0b83">reductionScaler</a>
+, <a class="el" href="_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715a3cca904bf1dff17a788c9fd75d6a8c1c">filterSpeed</a>
+, <a class="el" href="_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715a6c6490d008ccc9ba7e47d52887e4638f">filterAccel</a>
+, <br />
+&#160;&#160;<a class="el" href="_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715a7d34441f5e8fb727be2791f4661a5439">filterProfileId</a>
+, <a class="el" href="_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715a293a5b816a2fade15a3c7b02d660198b">cpr</a>
 <br />
  }</td></tr>
 <tr class="separator:ad3ecb30741dcdb99ec2fc80ca6fff715"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -169,9 +180,16 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="ad3ecb30741dcdb99ec2fc80ca6fff715a39d37a1e1318d45873b0443db487c948" name="ad3ecb30741dcdb99ec2fc80ca6fff715a39d37a1e1318d45873b0443db487c948"></a>fxratio&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="ad3ecb30741dcdb99ec2fc80ca6fff715a2246494328af04e5200e1e604782e983" name="ad3ecb30741dcdb99ec2fc80ca6fff715a2246494328af04e5200e1e604782e983"></a>curtorque&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="ad3ecb30741dcdb99ec2fc80ca6fff715af0b2e49c0d3953c76e09444ae521ebbe" name="ad3ecb30741dcdb99ec2fc80ca6fff715af0b2e49c0d3953c76e09444ae521ebbe"></a>curpos&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ad3ecb30741dcdb99ec2fc80ca6fff715a3ad769e867fc4542140b3aada914c7aa" name="ad3ecb30741dcdb99ec2fc80ca6fff715a3ad769e867fc4542140b3aada914c7aa"></a>curspd&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ad3ecb30741dcdb99ec2fc80ca6fff715aa8fb1b9588becd255abb42103bbef38d" name="ad3ecb30741dcdb99ec2fc80ca6fff715aa8fb1b9588becd255abb42103bbef38d"></a>curaccel&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ad3ecb30741dcdb99ec2fc80ca6fff715a07de0f7532baa4f3960bbc8033bb0b83" name="ad3ecb30741dcdb99ec2fc80ca6fff715a07de0f7532baa4f3960bbc8033bb0b83"></a>reductionScaler&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ad3ecb30741dcdb99ec2fc80ca6fff715a3cca904bf1dff17a788c9fd75d6a8c1c" name="ad3ecb30741dcdb99ec2fc80ca6fff715a3cca904bf1dff17a788c9fd75d6a8c1c"></a>filterSpeed&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ad3ecb30741dcdb99ec2fc80ca6fff715a6c6490d008ccc9ba7e47d52887e4638f" name="ad3ecb30741dcdb99ec2fc80ca6fff715a6c6490d008ccc9ba7e47d52887e4638f"></a>filterAccel&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ad3ecb30741dcdb99ec2fc80ca6fff715a7d34441f5e8fb727be2791f4661a5439" name="ad3ecb30741dcdb99ec2fc80ca6fff715a7d34441f5e8fb727be2791f4661a5439"></a>filterProfileId&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ad3ecb30741dcdb99ec2fc80ca6fff715a293a5b816a2fade15a3c7b02d660198b" name="ad3ecb30741dcdb99ec2fc80ca6fff715a293a5b816a2fade15a3c7b02d660198b"></a>cpr&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00074">74</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axis_8h_source.html#l00083">83</a> of file <a class="el" href="_axis_8h_source.html">Axis.h</a>.</p>
 
 </div>
 </div>

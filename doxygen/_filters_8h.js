@@ -1,5 +1,6 @@
 var _filters_8h =
 [
+    [ "biquad_constant_t", "structbiquad__constant__t.html", "structbiquad__constant__t" ],
     [ "Biquad", "class_biquad.html", "class_biquad" ],
     [ "BiquadType", "_filters_8h.html#afba124be8dd4fe063cbff46434ee8610", [
       [ "lowpass", "_filters_8h.html#afba124be8dd4fe063cbff46434ee8610af4264a824899ff8f0fc5962ff60b9cef", null ],

@@ -89,13 +89,11 @@ $(document).ready(function(){initNavTree('functions_d.html',''); initResizable()
 <h3><a id="index_d" name="index_d"></a>- d -</h3><ul>
 <li>DAINT&#160;:&#160;<a class="el" href="struct_u_s_b___o_t_g___device_type_def.html#a5d28aaa3ea2e4e2246f9ba7025c6a8e7">USB_OTG_DeviceTypeDef</a></li>
 <li>DAINTMSK&#160;:&#160;<a class="el" href="struct_u_s_b___o_t_g___device_type_def.html#a26dc7ee19b8bd8c82378575cfddface4">USB_OTG_DeviceTypeDef</a></li>
-<li>damper&#160;:&#160;<a class="el" href="structeffect__gain__t.html#a1095539bcd2b046d736a5d55738dfe35">effect_gain_t</a></li>
-<li>damper_f&#160;:&#160;<a class="el" href="class_effects_calculator.html#a533e7eeeadaf0f01aa2879622b2f800f">EffectsCalculator</a></li>
-<li>damper_q&#160;:&#160;<a class="el" href="class_effects_calculator.html#a721fee26d06cbab158ea98687e87c20e">EffectsCalculator</a></li>
-<li>damper_scaler&#160;:&#160;<a class="el" href="class_effects_calculator.html#a9ca54064532e01f28678546e50e7a69a">EffectsCalculator</a></li>
+<li>damper&#160;:&#160;<a class="el" href="structeffect__biquad__t.html#a69031aa61fd344651eb10fed10a68c7d">effect_biquad_t</a>, <a class="el" href="structeffect__gain__t.html#a1095539bcd2b046d736a5d55738dfe35">effect_gain_t</a>, <a class="el" href="structeffect__scaler__t.html#a3d2031f8431c6ac23376767fe1d466c9">effect_scaler_t</a></li>
 <li>damperClip&#160;:&#160;<a class="el" href="class_axis.html#aa678d37ce629d44855cdaf0cf1a45916">Axis</a></li>
+<li>damperFilter&#160;:&#160;<a class="el" href="class_axis.html#a7916c2b590cee3589f039ff1ff626e01">Axis</a></li>
 <li>damperIntensity&#160;:&#160;<a class="el" href="class_axis.html#a40f00306af0dd8d1dffb6d0b81a2e736">Axis</a></li>
-<li>data&#160;:&#160;<a class="el" href="struct____attribute____.html#a81ed27f4606846a789c4b5cc1d984d87">__attribute__</a>, <a class="el" href="struct_c_a_n__rx__msg.html#a81fc39a7a1e5a5661d0c6a9c3fde3738">CAN_rx_msg</a>, <a class="el" href="struct_c_a_n__tx__msg.html#ab56d8852f46ea7eb55ba748ddfc3a683">CAN_tx_msg</a>, <a class="el" href="structrndis__msg__out__of__band__data__t.html#a99a3b3343a7c97415eedd0b762e3d445">rndis_msg_out_of_band_data_t</a>, <a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a5b71feb8af52c402857d562f110f34dd">TU_ATTR_PACKED</a>, <a class="el" href="structtu__lookup__entry__t.html#acae1119309518c0a55801182919aa2a7">tu_lookup_entry_t</a>, <a class="el" href="struct_vesc_flash_addrs.html#a0ccd8a85879f6a7e364b014b62bf152a">VescFlashAddrs</a></li>
+<li>data&#160;:&#160;<a class="el" href="struct____attribute____.html#a81ed27f4606846a789c4b5cc1d984d87">__attribute__</a>, <a class="el" href="struct_c_a_n__rx__msg.html#a81fc39a7a1e5a5661d0c6a9c3fde3738">CAN_rx_msg</a>, <a class="el" href="struct_c_a_n__tx__msg.html#ab56d8852f46ea7eb55ba748ddfc3a683">CAN_tx_msg</a>, <a class="el" href="struct_ring_buffer.html#a937310eeb1e1e1775450e46d4b796d22">RingBuffer</a>, <a class="el" href="structrndis__msg__out__of__band__data__t.html#a99a3b3343a7c97415eedd0b762e3d445">rndis_msg_out_of_band_data_t</a>, <a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a5b71feb8af52c402857d562f110f34dd">TU_ATTR_PACKED</a>, <a class="el" href="structtu__lookup__entry__t.html#acae1119309518c0a55801182919aa2a7">tu_lookup_entry_t</a>, <a class="el" href="struct_vesc_flash_addrs.html#a0ccd8a85879f6a7e364b014b62bf152a">VescFlashAddrs</a></li>
 <li>data_bits&#160;:&#160;<a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#ac638bc12cdb8f9065d74c7133500dcf1">TU_ATTR_PACKED</a></li>
 <li>data_len&#160;:&#160;<a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a27bdddb76135d8cfdbfb1e87eec2b5da">TU_ATTR_PACKED</a>, <a class="el" href="structusbd__control__xfer__t.html#a0b3be3c88ce867dc9e09ea9f9c4d4638">usbd_control_xfer_t</a></li>
 <li>data_length&#160;:&#160;<a class="el" href="structrndis__msg__packet__t.html#aaa15961dd9bb1329b73ab51b63c3ce45">rndis_msg_packet_t</a></li>
@@ -103,6 +101,7 @@ $(document).ready(function(){initNavTree('functions_d.html',''); initResizable()
 <li>data_residue&#160;:&#160;<a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a925fec8719c3626a570d9baadee863b9">TU_ATTR_PACKED</a></li>
 <li>datagram&#160;:&#160;<a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a0735a839a202caac6a4aac012f18bec9">TU_ATTR_PACKED</a></li>
 <li>datagram_count&#160;:&#160;<a class="el" href="structncm__interface__t.html#a45c6720d5bdd3fe19a86b2b757960a5b">ncm_interface_t</a></li>
+<li>datarate&#160;:&#160;<a class="el" href="class_a_d_s111_x.html#afb305adb4c31e07e8e92412bece249fd">ADS111X</a></li>
 <li>DCFG&#160;:&#160;<a class="el" href="struct_u_s_b___o_t_g___device_type_def.html#a9a9dac417f09f6a2d9a4b3110aa99b53">USB_OTG_DeviceTypeDef</a></li>
 <li>DCTL&#160;:&#160;<a class="el" href="struct_u_s_b___o_t_g___device_type_def.html#a091e9adaacbe0860ac18eb3792e2e3bb">USB_OTG_DeviceTypeDef</a></li>
 <li>DEACHINT&#160;:&#160;<a class="el" href="struct_u_s_b___o_t_g___device_type_def.html#a881208a5819f6a8bfb1f16a2d7cd05a1">USB_OTG_DeviceTypeDef</a></li>
@@ -111,7 +110,7 @@ $(document).ready(function(){initNavTree('functions_d.html',''); initResizable()
 <li>debugMode&#160;:&#160;<a class="el" href="class_system_commands.html#a7fc4287b8cc8139b86054e3191c3353d">SystemCommands</a></li>
 <li>decod_buf&#160;:&#160;<a class="el" href="class_encoder_biss_c.html#ae265f8696b443c7ded92f0a703e1586a">EncoderBissC</a></li>
 <li>decode_buffer()&#160;:&#160;<a class="el" href="class_vesc_c_a_n.html#a4f1de0f52d567e2f13db44a0bd5257e4">VescCAN</a></li>
-<li>decodeAnalogConfFromInt()&#160;:&#160;<a class="el" href="class_local_analog.html#a19afe94e74a40c6e523a441d9095ca75">LocalAnalog</a></li>
+<li>decodeAnalogProcessingConfFromInt()&#160;:&#160;<a class="el" href="class_analog_axis_processing.html#a6db8b23885acd644cc14ad83404bbd9e">AnalogAxisProcessing</a></li>
 <li>decodeConfFromInt()&#160;:&#160;<a class="el" href="class_axis.html#ae1023e48cdfa5b0fa81278cf23ed74e7">Axis</a></li>
 <li>decodeEncoderPosition()&#160;:&#160;<a class="el" href="class_vesc_c_a_n.html#a175375bac8493a4e861f71c3dad69ae9">VescCAN</a></li>
 <li>decodeMotFromInt()&#160;:&#160;<a class="el" href="class_t_m_c4671.html#afbaa547962a24b2a366357966a01b6b5">TMC4671</a></li>
@@ -122,6 +121,7 @@ $(document).ready(function(){initNavTree('functions_d.html',''); initResizable()
 <li>delayUntilInitialized&#160;:&#160;<a class="el" href="classcpp__freertos_1_1_thread.html#a74483047d55e5b9e35d6cd43d6657ecf">cpp_freertos::Thread</a></li>
 <li>delayUntilPreviousWakeTime&#160;:&#160;<a class="el" href="classcpp__freertos_1_1_thread.html#a7c79e97f961f99d04edffa819b1e1a7e">cpp_freertos::Thread</a></li>
 <li>deleteAxes()&#160;:&#160;<a class="el" href="class_axes_manager.html#a552185325917b63d12a546f158919390">AxesManager</a></li>
+<li>denominator&#160;:&#160;<a class="el" href="struct_gear_ratio__t.html#a41dde1facb7156700d5f7aac869d6e23">GearRatio_t</a></li>
 <li>depth&#160;:&#160;<a class="el" href="structosal__queue__def__t.html#ac960793c7ffb0c12b32fd002b7605fa4">osal_queue_def_t</a>, <a class="el" href="structtu__fifo__t.html#a3dfff98adc95216871ffd2bfb91d36e6">tu_fifo_t</a></li>
 <li>Deque()&#160;:&#160;<a class="el" href="classcpp__freertos_1_1_deque.html#a16deb225bed6d4862d5806be94cadf8b">cpp_freertos::Deque</a></li>
 <li>Dequeue()&#160;:&#160;<a class="el" href="classcpp__freertos_1_1_queue.html#a4713ec4c9c1410c11acacc4eca72fc18">cpp_freertos::Queue</a></li>
@@ -143,6 +143,7 @@ $(document).ready(function(){initNavTree('functions_d.html',''); initResizable()
 <li>DIEPTSIZ&#160;:&#160;<a class="el" href="struct_u_s_b___o_t_g___i_n_endpoint_type_def.html#aeda9700dcd52e252d7809cabed971bab">USB_OTG_INEndpointTypeDef</a></li>
 <li>DIEPTXF&#160;:&#160;<a class="el" href="struct_u_s_b___o_t_g___global_type_def.html#a8027d5b1a53306f5440506ae4915dd52">USB_OTG_GlobalTypeDef</a></li>
 <li>DIEPTXF0_HNPTXFSIZ&#160;:&#160;<a class="el" href="struct_u_s_b___o_t_g___global_type_def.html#aa68d26991ddeec06897297c110c11503">USB_OTG_GlobalTypeDef</a></li>
+<li>differentialMode&#160;:&#160;<a class="el" href="class_a_d_s111_x___analog_source.html#a97ae8574a1623640a7f7427119c3ed11">ADS111X_AnalogSource</a></li>
 <li>DINEP1MSK&#160;:&#160;<a class="el" href="struct_u_s_b___o_t_g___device_type_def.html#a6dccbd3d18fe0e4e552aefc9f6f469fa">USB_OTG_DeviceTypeDef</a></li>
 <li>dir&#160;:&#160;<a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a57253a58547249719bef1ff12e2eecd5">TU_ATTR_PACKED</a></li>
 <li>direction&#160;:&#160;<a class="el" href="struct_t_m_c4671_h_a_l_l_conf.html#ad10be2623c24550d64be929a9efd17c5">TMC4671HALLConf</a>, <a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a86d99694f12d21fa149cff53b1889c79">TU_ATTR_PACKED</a></li>
@@ -153,6 +154,7 @@ $(document).ready(function(){initNavTree('functions_d.html',''); initResizable()
 <li>Disable()&#160;:&#160;<a class="el" href="classcpp__freertos_1_1_tick_hook.html#a439237278f81412390b3572b2a180978">cpp_freertos::TickHook</a></li>
 <li>disable_block_descriptor&#160;:&#160;<a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a697321cc5457f00d355fbbaa8f752a78">TU_ATTR_PACKED</a></li>
 <li>DisableInterrupts()&#160;:&#160;<a class="el" href="classcpp__freertos_1_1_critical_section.html#a6648fd37c8556b2a8e958011f4614817">cpp_freertos::CriticalSection</a></li>
+<li>discardMultiple()&#160;:&#160;<a class="el" href="class_ring_buffer_wrapper.html#a6129aa7d9ccc1f7dbc181b7bdf8ba463">RingBufferWrapper</a></li>
 <li>DOEPCTL&#160;:&#160;<a class="el" href="struct_u_s_b___o_t_g___o_u_t_endpoint_type_def.html#a86a62895d4b90531c30f5a48f404ddea">USB_OTG_OUTEndpointTypeDef</a></li>
 <li>DOEPDMA&#160;:&#160;<a class="el" href="struct_u_s_b___o_t_g___o_u_t_endpoint_type_def.html#a189d59fa4e34c96ce7eb25c0afd50cd7">USB_OTG_OUTEndpointTypeDef</a></li>
 <li>DOEPINT&#160;:&#160;<a class="el" href="struct_u_s_b___o_t_g___o_u_t_endpoint_type_def.html#a0b8b826828cba51585aabe9b73074d07">USB_OTG_OUTEndpointTypeDef</a></li>
