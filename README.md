@@ -20,10 +20,10 @@
 
 
 # Open FFBoard
-The Open FFBoard is an open source force feedback interface with the goal of creating a platform for highly compatible simulation devices.
+The Open FFBoard is an open source force feedback interface with the goal of creating a platform for highly compatible FFB simulation devices like steering wheels and joysticks.
 
-This firmware is optimized for the Open FFBoard.
-At the moment the software is far from finished. Features may not work completely or contain errors.
+This firmware is optimized for the Open FFBoard and mainly designed for use with DD steering wheels.
+Remember this software is experimental and is intended for advanced users. Features may contain errors and can change at any time.
 
 More documentation about this project is on the [hackaday.io page](https://hackaday.io/project/163904-open-ffboard).
 
@@ -36,7 +36,7 @@ These git submodules can be pulled with `git submodule init` and `git submodule 
 Updates often require matching firmware and GUI versions!
 
 ## Documentation
-Documentation will be added in the [GitHub Wiki](https://github.com/Ultrawipf/OpenFFBoard/wiki).
+Documentation will be updated in the [GitHub Wiki](https://github.com/Ultrawipf/OpenFFBoard/wiki).
 
 Available commands are listed on the [Commands wiki page](https://github.com/Ultrawipf/OpenFFBoard/wiki/Commands)
 
