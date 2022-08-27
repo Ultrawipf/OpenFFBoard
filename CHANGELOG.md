@@ -1,3 +1,5 @@
+### Changes since v1.8: 
+
 - Added analog filter option
 - Main effect loop runs in higher priority thread than idle
 - Added ADS111X analog source
@@ -12,3 +14,4 @@
 - Highly improved uart command stability (default baud rate 115200)
 - Added command to check command flags (cls.cmdinfo?cmdid)
 - Added advanced filter mode to switch between custom and default conditional effect output filters ("fx.filterProfile_id")
+- Automatic flash erase condition changed from major version change to separate flash version counter
