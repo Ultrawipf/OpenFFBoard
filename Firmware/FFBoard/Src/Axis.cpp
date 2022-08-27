@@ -329,7 +329,7 @@ void Axis::setupTMC4671()
 	drv->restoreFlash();
 	tmclimits.pid_torque_flux = getPower();
 	drv->setLimits(tmclimits);
-	//drv->setBiquadFlux(fluxbq);
+	//drv->setBiquadTorque(tmcbq_500hz_07q_25k);
 	drv->setExternalEncoderAllowed(true);
 	
 
