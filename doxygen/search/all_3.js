@@ -251,7 +251,7 @@ var searchData=
   ['cfg_5ftusb_5fdebug_5fprintf_248',['CFG_TUSB_DEBUG_PRINTF',['../tusb__common_8h.html#aefd271edc3be7f12e20531c756c9dffa',1,'tusb_common.h']]],
   ['cfrate_249',['cfrate',['../class_f_f_b_h_i_d_main.html#a632f99d11cc2d6623e7341d704d641adaa9986b4f7deaf212691871359a4873bd',1,'FFBHIDMain']]],
   ['cfupdateperiodavg_250',['cfUpdatePeriodAvg',['../class_hid_f_f_b.html#af5736d06eca5d18ef2a10b2cf44f00f6',1,'HidFFB']]],
-  ['change_251',['change',['../structhub__status__response__t.html#a161b089de9677f7f312cbb82e84fd4f4',1,'hub_status_response_t::change()'],['../structhub__port__status__response__t.html#afbce7368c1afedda382aae6721f9da93',1,'hub_port_status_response_t::change()']]],
+  ['change_251',['change',['../structhub__status__response__t.html#a161b089de9677f7f312cbb82e84fd4f4',1,'hub_status_response_t::change()'],['../structhub__port__status__response__t.html#ab57df60100050de850ae8c843d738abc',1,'hub_port_status_response_t::change()']]],
   ['changestate_252',['changeState',['../class_t_m_c4671.html#a47ac5e9ae2f0709a80fde01f38aeff35',1,'TMC4671']]],
   ['channel_5f1_253',['channel_1',['../struct_p_w_m_config.html#a8f025cc02e9128033ae9e451e7da6a08',1,'PWMConfig']]],
   ['channel_5f2_254',['channel_2',['../struct_p_w_m_config.html#abc8ff068da78f4ad8f143305c761e11c',1,'PWMConfig']]],
