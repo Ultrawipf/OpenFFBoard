@@ -24,6 +24,7 @@
 #include "semaphore.hpp"
 #include "OutputPin.h"
 #include "cpp_target_config.h"
+#include "Filters.h"
 
 #define SPITIMEOUT 500
 #define TMC_THREAD_MEM 256
@@ -157,10 +158,10 @@ struct TMC4671MainConfig{
 };
 
 struct TMC4671PIDConf{
-	uint16_t fluxI		= 512;
-	uint16_t fluxP		= 512;
-	uint16_t torqueI	= 512;
-	uint16_t torqueP	= 512;
+	uint16_t fluxI		= 800;
+	uint16_t fluxP		= 700;
+	uint16_t torqueI	= 800;
+	uint16_t torqueP	= 700;
 	uint16_t velocityI	= 0;
 	uint16_t velocityP	= 256;
 	uint16_t positionI	= 0;
@@ -257,13 +258,26 @@ struct TMC4671HALLConf{
 	uint16_t dPhiMax = 10922;
 };
 
+// Use TMCL IDE with TMC4671 devkit to generate values
+// TODO rewrite as class to allow conversion from biquad
 struct TMC4671Biquad{
+
 	int32_t a1 = 0;
 	int32_t a2 = 0;
 	int32_t b0 = 0;
 	int32_t b1 = 0;
 	int32_t b2 = 0;
 	bool enable = false;
+
+	void from_bq(Biquad& bq,bool enable){
+		// Note: trinamic swapped the naming of b and a from the regular convention in the datasheet
+		a1 = (int32_t)(bq.b1 * (1 << 29));
+		a2 = (int32_t)(bq.b2 * (1 << 29));
+		b0 = (int32_t)(bq.a0 * (1 << 29));
+		b1 = (int32_t)(bq.a1 * (1 << 29));
+		b2 = (int32_t)(bq.a2 * (1 << 29));
+		this->enable = enable;
+	};
 };
 
 

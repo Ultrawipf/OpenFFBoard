@@ -26,7 +26,9 @@ enum class BiquadType : uint8_t {
     highshelf
 };
 
+class TMC4671Biquad;
 class Biquad{
+	friend TMC4671Biquad;
 public:
 	Biquad();
     Biquad(BiquadType type, float Fc, float Q, float peakGainDB);

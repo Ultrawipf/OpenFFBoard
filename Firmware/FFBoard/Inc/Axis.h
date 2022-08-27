@@ -177,15 +177,7 @@ private:
 
 	const Error outOfBoundsError = Error(ErrorCode::axisOutOfRange,ErrorType::warning,"Axis out of bounds");
 
-	const TMC4671PIDConf tmcpids = TMC4671PIDConf({.fluxI = 400,
-											 .fluxP = 400,
-											 .torqueI = 400,
-											 .torqueP = 300,
-											 .velocityI = 0,
-											 .velocityP = 128,
-											 .positionI = 0,
-											 .positionP = 64,
-											 .sequentialPI = true});
+
 	TMC4671Limits tmclimits = TMC4671Limits({.pid_torque_flux_ddt = 32767,
 											 .pid_uq_ud = 30000,
 											 .pid_torque_flux = 30000,
@@ -194,13 +186,24 @@ private:
 											 .pid_pos_low = -2147483647,
 											 .pid_pos_high = 2147483647});
 
-	// Lowpass 1KHZ
-	const TMC4671Biquad fluxbq = TMC4671Biquad({.a1 = -134913,
-										  .a2 = 536735999,
-										  .b0 = 67457,
-										  .b1 = 134913,
-										  .b2 = 67457,
-										  .enable = true});
+	// Lowpass 500Hz Q 0.7 @ 25khz
+	const TMC4671Biquad tmcbq_500hz_07q_25k = TMC4671Biquad(
+			{ .a1 = 979476766,
+			  .a2 = -450370144,
+			  .b0 = 1941073,
+			  .b1 = 3882145,
+			  .b2 = 1941073,
+			  .enable = true});
+
+	// Lowpass 1000Hz Q 0.7 @ 25khz
+	const TMC4671Biquad tmcbq_1000hz_07q_25k = TMC4671Biquad(
+			{ .a1 = 886773302,
+			  .a2 = -378358476,
+			  .b0 = 7114021,
+			  .b1 = 14228043,
+			  .b2 = 7114021,
+			  .enable = true});
+
 
 
 	float encoderOffset = 0; // Offset for absolute encoders
@@ -247,7 +250,7 @@ private:
 	const biquad_constant_t filterSpeedCst[4] = {{ 30, 55 }, { 60, 55 }, { 120, 55 }, {120, 55}};
 	const biquad_constant_t filterAccelCst[4] = {{ 40, 30 }, { 55, 30 }, { 70, 30 }, {120, 55}};
 	const biquad_constant_t filterDamperCst = {60, 55};
-	uint8_t filterProfileId = 0;
+	uint8_t filterProfileId = 1; // Default medium (1) as this is the most common encoder resolution and users can go lower or higher if required.
 	const float filter_f = 1000; // 1khz
 	const int32_t damperClip = 20000;
 	uint8_t damperIntensity = 30;
