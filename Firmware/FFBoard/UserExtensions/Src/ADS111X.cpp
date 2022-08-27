@@ -293,7 +293,7 @@ void ADS111X_AnalogSource::i2cRxCompleted(I2CPort* port){
 		if(!differentialMode){
 			sampleBuffer = (clip<int16_t,int16_t>(sampleBuffer,0,0x7fff) - 0x3fff) * 2 - 1; // Shift because we can't go below GND anyways
 		}
-		buf[lastAxis] = (int16_t)sampleBuffer;
+		rawbuf[lastAxis] = (int16_t)sampleBuffer;
 		lastAxis++;
 		state = ADS111X_AnalogSource_state::beginSampling; // Begin next sample or go idle
 	}
@@ -328,6 +328,7 @@ std::vector<int32_t>* ADS111X_AnalogSource::getAxes(){
 		state = ADS111X_AnalogSource_state::none;
 		Notify();
 	}
+	buf = rawbuf;
 	AnalogAxisProcessing::processAxes(buf); // Do processing every call to keep filter samplerate steady
 	return &this->buf;
 }
@@ -336,6 +337,7 @@ void ADS111X_AnalogSource::setAxes(uint8_t axes,bool differential){
 	differentialMode = differential;
 	this->axes = clip<uint16_t,uint16_t>(axes,1,differentialMode ? 2 : 4);
 	this->buf.resize(this->axes,0);
+	this->rawbuf.resize(this->axes,0);
 }
 
 CommandStatus ADS111X_AnalogSource::command(const ParsedCommand& cmd,std::vector<CommandReply>& replies){

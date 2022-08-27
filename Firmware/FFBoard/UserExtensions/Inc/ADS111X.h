@@ -103,6 +103,7 @@ private:
 	uint8_t lastAxis = 0;
 	uint32_t lastSuccess = 0;
 	bool differentialMode = false;
+	std::vector<int32_t> rawbuf;
 	volatile ADS111X_AnalogSource_state state = ADS111X_AnalogSource_state::none;
 };
 #endif
