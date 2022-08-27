@@ -711,7 +711,7 @@ void EffectsCalculator::logEffectType(uint8_t type,bool remove){
 
 			if(!effects_stats[type-1].nb){
 				//effects_used &= ~(1<<(type-1)); // Only manual reset
-				effects_stats[type-1].max = 0;
+				//effects_stats[type-1].max = 0;
 				effects_stats[type-1].current = 0;
 			}
 		}else{
@@ -727,7 +727,7 @@ void EffectsCalculator::logEffectType(uint8_t type,bool remove){
 void EffectsCalculator::logEffectState(uint8_t type,uint8_t state){
 	if(type > 0 && type < 32){
 		if(!state){
-			effects_stats[type-1].max = 0;
+			// effects_stats[type-1].max = 0;
 			effects_stats[type-1].current = 0;
 		}
 	}
