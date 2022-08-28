@@ -73,6 +73,9 @@ void AxesManager::updateTorque() {
 	}
 }
 
+void AxesManager::cfEffectsFreqToEffectsCalc(uint16_t freq){
+	effects_calc->setCfEffectsFreq(freq);
+}
 
 std::vector<int32_t>* AxesManager::getAxisValues(){
 	this->axisValues.clear(); // Empty axes

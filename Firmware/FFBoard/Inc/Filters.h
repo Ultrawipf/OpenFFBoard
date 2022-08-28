@@ -49,6 +49,27 @@ protected:
     float z1, z2;
 };
 
+class InterpFFB {
+public:
+
+	InterpFFB();
+	InterpFFB(int16_t interp_f);
+    ~InterpFFB();
+    void setInterpFactor(int16_t interp_f);
+    int16_t getInterpFactor();
+    int16_t getEffectiveInterpFactor();
+	float interpFloat(int32_t input, uint32_t auto_interp_factor);
+    float lerp(float a, float b, float c);
+
+protected:
+
+	int16_t interp_f = 0; //interp factor
+    float cd = 0.0; //current
+    int32_t input_backup = 0.0; //to track goal from a step behind
+	float dd = 0.0; //delta
+    int16_t effective_interp_f = 0;
+    int8_t lerpCount = 0;
+};
 
 #endif
 

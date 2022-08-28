@@ -82,6 +82,7 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_FFB_EFFECTS1 0x284 // 0-7 inertia, 8-15 friction		
 #define ADR_FFB_EFFECTS2 0x285 // 0-7 spring, 8-15 damper		
 #define ADR_FFB_EFFECTS3 0x286 // 0-7 friction ramp up zone, 8-9 filterProfile
+#define ADR_FFB_INTERP_FILTER 0x287 // Constant Force Interpolation	
 // Button Sources:		
 #define ADR_ADS111X_CONF1 0x290 		
 // How many axis configured 1-3		

@@ -170,6 +170,11 @@ void FFBHIDMain::updateControl(){
 	//debugpin.set();
 	axes_manager->update();
 
+	// CF Effects Frequency to effects calculator
+	if(this->backupCfFreq != (backupCfFreq = this->getConstantForceRate())){
+		axes_manager->cfEffectsFreqToEffectsCalc(backupCfFreq);
+	}
+
 	if(++report_rate_cnt >= usb_report_rate){
 		report_rate_cnt = 0;
 		this->send_report();
@@ -251,6 +256,10 @@ void FFBHIDMain::addAinType(uint16_t id){
 
 uint32_t FFBHIDMain::getRate() {
 	return this->ffb->getRate();
+}
+
+uint16_t FFBHIDMain::getConstantForceRate() {
+	return this->ffb->getConstantForceRate();
 }
 
 bool FFBHIDMain::getFfbActive(){

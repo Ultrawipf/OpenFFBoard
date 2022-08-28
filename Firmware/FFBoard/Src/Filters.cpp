@@ -9,6 +9,54 @@
 
 #include <math.h>
 
+InterpFFB::InterpFFB(){
+	interp_f = 0.0;
+}
+
+InterpFFB::InterpFFB(int16_t ifactor){
+	setInterpFactor(ifactor);
+}
+
+InterpFFB::~InterpFFB() {
+}
+
+void InterpFFB::setInterpFactor(int16_t ifactor){
+    this->interp_f = ifactor;
+}
+
+int16_t InterpFFB::getInterpFactor(){
+    return this->interp_f;
+}
+
+int16_t InterpFFB::getEffectiveInterpFactor(){
+    return this->effective_interp_f;
+}
+float InterpFFB::lerp(float a, float b, float c){
+        return a + (b - a) * c;
+}
+
+//Note: This function is called in a way that effective_interp_f can never be 1 or 0.
+//It minimum can be 2. If it is 1 or 0, this filter is not activated.
+float InterpFFB::interpFloat(int32_t input, uint32_t auto_interp_factor){
+                    if(auto_interp_factor != 1){
+                        effective_interp_f = auto_interp_factor;
+                    }
+                    else {
+                        effective_interp_f = interp_f;
+                    }
+					
+                    if(input_backup != input) {
+                        cd = input_backup;
+                        input_backup = input;
+                        lerpCount = 0;
+                    }
+                    if(lerpCount < effective_interp_f) {
+                    lerpCount++;
+                    return lerp((float)cd,(float)input, ((float)lerpCount / (float)effective_interp_f));
+                    } else {
+                    return (float)input;
+                    }
+}
 
 Biquad::Biquad(){
 	z1 = z2 = 0.0;
