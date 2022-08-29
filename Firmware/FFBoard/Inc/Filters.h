@@ -11,6 +11,7 @@
 
 #ifdef __cplusplus
 
+// Frequency in hz, q in float q*100. Example: Q 0.5 -> 50
 struct biquad_constant_t {
 	uint16_t freq;
 	uint8_t q;

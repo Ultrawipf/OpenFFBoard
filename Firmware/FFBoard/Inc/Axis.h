@@ -192,8 +192,7 @@ private:
 			  .a2 = -450370144,
 			  .b0 = 1941073,
 			  .b1 = 3882145,
-			  .b2 = 1941073,
-			  .enable = true});
+			  .b2 = 1941073});
 
 	// Lowpass 1000Hz Q 0.7 @ 25khz
 	const TMC4671Biquad_t tmcbq_1000hz_07q_25k = TMC4671Biquad_t(
@@ -201,8 +200,7 @@ private:
 			  .a2 = -378358476,
 			  .b0 = 7114021,
 			  .b1 = 14228043,
-			  .b2 = 7114021,
-			  .enable = true});
+			  .b2 = 7114021});
 
 
 

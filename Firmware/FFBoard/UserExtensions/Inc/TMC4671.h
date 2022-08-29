@@ -90,6 +90,7 @@ struct TMC4671HardwareTypeConf{
 	uint16_t brakeLimHigh = 50900;
 	float vmScaler = (2.5 / 0x7fff) * ((1.5+71.5)/1.5);
 	float vSenseMult = VOLTAGE_MULT_DEFAULT;
+	float clockfreq = 25e6;
 	// Todo restrict allowed motor and encoder types
 };
 
@@ -139,7 +140,7 @@ union StatusFlags {
 struct TMC4671MainConfig{
 	TMC4671HardwareTypeConf hwconf;
 	TMC4671MotConf motconf;
-	uint16_t pwmcnt 		= 3999;
+	uint16_t pwmcnt 		= 3999; // PWM resolution is 12 bit internally
 	uint8_t bbmL			= 10;
 	uint8_t bbmH			= 10;
 	uint16_t mdecA 			= 660; // 334 default. 331 recommended by datasheet,662 double. 660 lowest noise
@@ -266,18 +267,18 @@ struct TMC4671Biquad_t{
 	int32_t b0 = 0;
 	int32_t b1 = 0;
 	int32_t b2 = 0;
-	bool enable = false;
+	bool enable = true;
 };
 class TMC4671Biquad{
 public:
 	TMC4671Biquad(const TMC4671Biquad_t bq) : params(bq){}
-	TMC4671Biquad(const Biquad bq,bool enable){
-		// Note: trinamic swapped the naming of b and a from the regular convention in the datasheet
-		this->params.a1 = (int32_t)(bq.b1 * (1 << 29));
-		this->params.a2 = (int32_t)(bq.b2 * (1 << 29));
-		this->params.b0 = (int32_t)(bq.a0 * (1 << 29));
-		this->params.b1 = (int32_t)(bq.a1 * (1 << 29));
-		this->params.b2 = (int32_t)(bq.a2 * (1 << 29));
+	TMC4671Biquad(const Biquad bq,bool enable = true){
+		// Note: trinamic swapped the naming of b and a from the regular convention in the datasheet and a and b are possibly inverse to b in our filter class
+		this->params.a1 = -(int32_t)(bq.b1 * (float)(1 << 29));
+		this->params.a2 = -(int32_t)(bq.b2 * (float)(1 << 29));
+		this->params.b0 = (int32_t)(bq.a0 * (float)(1 << 29));
+		this->params.b1 = (int32_t)(bq.a1 * (float)(1 << 29));
+		this->params.b2 = (int32_t)(bq.a2 * (float)(1 << 29));
 		this->params.enable = enable;
 	}
 	TMC4671Biquad_t params;
@@ -299,7 +300,7 @@ class TMC4671 :
 		torqueP,torqueI,fluxP,fluxI,velocityP,velocityI,posP,posI,
 		tmctype,pidPrec,phiesrc,fluxoffset,seqpi,tmcIscale,encdir,temp,reg,
 		svpwm,fullCalibration,calibrated,abnindexenabled,findIndex,getState,encpol,combineEncoder,invertForce,vmTmc,
-		extphie
+		extphie,torqueFilter_f,torqueFilter_q
 	};
 
 public:
@@ -372,7 +373,8 @@ public:
 	void setBiquadTorque(const TMC4671Biquad &filter);
 	void setBiquadPos(const TMC4671Biquad &filter);
 	void setBiquadVel(const TMC4671Biquad &filter);
-	
+	TMC4671Biquad makeLpTmcFilter(const biquad_constant_t& params,bool enable = true);
+	void setTorqueFilter(const biquad_constant_t& params,bool enable = true);
 
 	bool pingDriver();
 	std::pair<uint32_t,std::string> getTmcType();
@@ -382,8 +384,7 @@ public:
 	bool externalEncoderAllowed();
 	void setExternalEncoderAllowed(bool allow);
 
-	bool isCalibrated();
-
+	float getPwmFreq();
 
 
 #ifdef TIM_TMC
@@ -595,6 +596,8 @@ private:
 	uint32_t initTime = 0;
 	bool manualEncAlign = false;
 	bool spiActive = false; // Flag for tx interrupt that the transfer was started by this instance
+
+	biquad_constant_t torqueFilter = biquad_constant_t({1000,50});
 
 	// External encoder timer fires interrupts to trigger a new commutation position update
 #ifdef TIM_TMC

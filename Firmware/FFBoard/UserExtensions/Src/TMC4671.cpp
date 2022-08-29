@@ -1968,6 +1968,7 @@ TMC4671Limits TMC4671::getLimits(){
 
 /**
  * Applies a biquad filter to the flux target
+ * Set nullptr to disable
  */
 void TMC4671::setBiquadFlux(const TMC4671Biquad &filter){
 	const TMC4671Biquad_t& bq = filter.params;
@@ -1987,6 +1988,7 @@ void TMC4671::setBiquadFlux(const TMC4671Biquad &filter){
 
 /**
  * Applies a biquad filter to the pos target
+ * Set nullptr to disable
  */
 void TMC4671::setBiquadPos(const TMC4671Biquad &filter){
 	const TMC4671Biquad_t& bq = filter.params;
@@ -2006,6 +2008,7 @@ void TMC4671::setBiquadPos(const TMC4671Biquad &filter){
 
 /**
  * Applies a biquad filter to the actual measured velocity
+ * Set nullptr to disable
  */
 void TMC4671::setBiquadVel(const TMC4671Biquad &filter){
 	const TMC4671Biquad_t& bq = filter.params;
@@ -2025,6 +2028,7 @@ void TMC4671::setBiquadVel(const TMC4671Biquad &filter){
 
 /**
  * Applies a biquad filter to the torque target
+ * Set nullptr to disable
  */
 void TMC4671::setBiquadTorque(const TMC4671Biquad &filter){
 	const TMC4671Biquad_t& bq = filter.params;
@@ -2041,6 +2045,19 @@ void TMC4671::setBiquadTorque(const TMC4671Biquad &filter){
 	writeReg(0x4E, 23);
 	writeReg(0x4D, bq.enable & 0x1);
 }
+
+TMC4671Biquad TMC4671::makeLpTmcFilter(const biquad_constant_t& params,bool enable){
+	return TMC4671Biquad(Biquad(BiquadType::lowpass, (float)torqueFilter.freq / getPwmFreq(), (float)torqueFilter.q/100.0,0.0), enable);
+}
+
+/**
+ * Changes the torque biquad filter
+ */
+void TMC4671::setTorqueFilter(const biquad_constant_t& params,bool enable){
+	this->torqueFilter = params;
+	setBiquadTorque(makeLpTmcFilter(params,enable));
+}
+
 
 /**
  *  Sets the raw brake resistor limits.
@@ -2189,6 +2206,14 @@ void TMC4671::setSvPwm(bool enable){
 	}
 	conf.svpwm = enable;
 	updateReg(0x1A,enable,0x01,8);
+}
+
+/**
+ * Returns the PWM loop frequency in Hz
+ * Depends on hardware clock and pwm counter setting. Default 25kHz
+ */
+float TMC4671::getPwmFreq(){
+	return (4.0 * this->conf.hwconf.clockfreq) / (this->conf.pwmcnt +1);
 }
 
 
@@ -2577,7 +2602,8 @@ void TMC4671::registerCommands(){
 	registerCommand("invertForce", TMC4671_commands::invertForce, "Invert incoming forces",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("vm", TMC4671_commands::vmTmc, "VM in mV",CMDFLAG_GET);
 	registerCommand("extphie", TMC4671_commands::extphie, "external phie",CMDFLAG_GET);
-
+	registerCommand("torque_f", TMC4671_commands::torqueFilter_f, "Torque filter freq 1000 max. 0 to disable. (Stored f/2)",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("torque_q", TMC4671_commands::torqueFilter_q, "Torque filter q*100",CMDFLAG_GET | CMDFLAG_SET);
 }
 
 
@@ -2841,6 +2867,26 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 
 		break;
 	}
+	case TMC4671_commands::torqueFilter_f:
+	{
+		if(cmd.type == CMDtype::set){
+				torqueFilter.freq = clip(cmd.val,0,10000);
+				setBiquadTorque(makeLpTmcFilter(torqueFilter,torqueFilter.freq != 0));
+			}else if(cmd.type == CMDtype::get){
+				replies.emplace_back(torqueFilter.freq);
+			}
+		break;
+	}
+
+	case TMC4671_commands::torqueFilter_q:
+		if(cmd.type == CMDtype::set){
+				torqueFilter.q = clip(cmd.val,0,127);
+				setBiquadTorque(makeLpTmcFilter(torqueFilter,torqueFilter.freq != 0));
+			}else if(cmd.type == CMDtype::get){
+				replies.emplace_back(torqueFilter.q);
+			}
+		break;
+
 	default:
 		return CommandStatus::NOT_FOUND;
 	}
