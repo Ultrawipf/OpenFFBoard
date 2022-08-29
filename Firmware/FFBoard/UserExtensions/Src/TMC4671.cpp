@@ -1969,7 +1969,8 @@ TMC4671Limits TMC4671::getLimits(){
 /**
  * Applies a biquad filter to the flux target
  */
-void TMC4671::setBiquadFlux(TMC4671Biquad bq){
+void TMC4671::setBiquadFlux(const TMC4671Biquad &filter){
+	const TMC4671Biquad_t& bq = filter.params;
 	writeReg(0x4E, 25);
 	writeReg(0x4D, bq.a1);
 	writeReg(0x4E, 26);
@@ -1987,7 +1988,8 @@ void TMC4671::setBiquadFlux(TMC4671Biquad bq){
 /**
  * Applies a biquad filter to the pos target
  */
-void TMC4671::setBiquadPos(TMC4671Biquad bq){
+void TMC4671::setBiquadPos(const TMC4671Biquad &filter){
+	const TMC4671Biquad_t& bq = filter.params;
 	writeReg(0x4E, 1);
 	writeReg(0x4D, bq.a1);
 	writeReg(0x4E, 2);
@@ -2005,7 +2007,8 @@ void TMC4671::setBiquadPos(TMC4671Biquad bq){
 /**
  * Applies a biquad filter to the actual measured velocity
  */
-void TMC4671::setBiquadVel(TMC4671Biquad bq){
+void TMC4671::setBiquadVel(const TMC4671Biquad &filter){
+	const TMC4671Biquad_t& bq = filter.params;
 	writeReg(0x4E, 9);
 	writeReg(0x4D, bq.a1);
 	writeReg(0x4E, 10);
@@ -2023,7 +2026,8 @@ void TMC4671::setBiquadVel(TMC4671Biquad bq){
 /**
  * Applies a biquad filter to the torque target
  */
-void TMC4671::setBiquadTorque(TMC4671Biquad bq){
+void TMC4671::setBiquadTorque(const TMC4671Biquad &filter){
+	const TMC4671Biquad_t& bq = filter.params;
 	writeReg(0x4E, 17);
 	writeReg(0x4D, bq.a1);
 	writeReg(0x4E, 18);

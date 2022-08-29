@@ -260,24 +260,27 @@ struct TMC4671HALLConf{
 
 // Use TMCL IDE with TMC4671 devkit to generate values
 // TODO rewrite as class to allow conversion from biquad
-struct TMC4671Biquad{
-
+struct TMC4671Biquad_t{
 	int32_t a1 = 0;
 	int32_t a2 = 0;
 	int32_t b0 = 0;
 	int32_t b1 = 0;
 	int32_t b2 = 0;
 	bool enable = false;
-
-	void from_bq(Biquad& bq,bool enable){
+};
+class TMC4671Biquad{
+public:
+	TMC4671Biquad(const TMC4671Biquad_t bq) : params(bq){}
+	TMC4671Biquad(const Biquad bq,bool enable){
 		// Note: trinamic swapped the naming of b and a from the regular convention in the datasheet
-		a1 = (int32_t)(bq.b1 * (1 << 29));
-		a2 = (int32_t)(bq.b2 * (1 << 29));
-		b0 = (int32_t)(bq.a0 * (1 << 29));
-		b1 = (int32_t)(bq.a1 * (1 << 29));
-		b2 = (int32_t)(bq.a2 * (1 << 29));
-		this->enable = enable;
-	};
+		this->params.a1 = (int32_t)(bq.b1 * (1 << 29));
+		this->params.a2 = (int32_t)(bq.b2 * (1 << 29));
+		this->params.b0 = (int32_t)(bq.a0 * (1 << 29));
+		this->params.b1 = (int32_t)(bq.a1 * (1 << 29));
+		this->params.b2 = (int32_t)(bq.a2 * (1 << 29));
+		this->params.enable = enable;
+	}
+	TMC4671Biquad_t params;
 };
 
 
@@ -365,10 +368,10 @@ public:
 	void setFFMode(FFMode mode);
 	void setSequentialPI(bool sequential);
 
-	void setBiquadFlux(TMC4671Biquad bq);
-	void setBiquadTorque(TMC4671Biquad bq);
-	void setBiquadPos(TMC4671Biquad bq);
-	void setBiquadVel(TMC4671Biquad bq);
+	void setBiquadFlux(const TMC4671Biquad &filter);
+	void setBiquadTorque(const TMC4671Biquad &filter);
+	void setBiquadPos(const TMC4671Biquad &filter);
+	void setBiquadVel(const TMC4671Biquad &filter);
 	
 
 	bool pingDriver();
