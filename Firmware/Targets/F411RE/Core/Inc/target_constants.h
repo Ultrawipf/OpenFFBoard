@@ -46,6 +46,8 @@
 //#define PWMDRIVER // Not supported! No free timer
 //----------------------
 
+#define DEBUGPIN // GP1 pin. see cpp target constants
+#define UARTCOMMANDS
 
 #define TIM_ENC htim3
 // Timer 3 is used by the encoder.
