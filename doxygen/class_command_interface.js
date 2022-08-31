@@ -2,6 +2,7 @@ var class_command_interface =
 [
     [ "CommandInterface", "class_command_interface.html#a7d4950b6e07ca84d80c03b34c8507b78", null ],
     [ "~CommandInterface", "class_command_interface.html#ac2a42c5c7ea718e74bad2ca6c399fee5", null ],
+    [ "batchDone", "class_command_interface.html#aa6036b3c6c63e303fa07896f0960f3d5", null ],
     [ "broadcastCommandReplyAsync", "class_command_interface.html#ab57c213c043aa400c70b4166ce4c818b", null ],
     [ "getHelpstring", "class_command_interface.html#aed0d3b4fa6f423b1157f766e7f56caea", null ],
     [ "getNewCommands", "class_command_interface.html#a17927e91949212591a7cdbd37ddeee8a", null ],

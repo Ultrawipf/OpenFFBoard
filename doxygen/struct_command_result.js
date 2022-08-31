@@ -1,5 +1,6 @@
 var struct_command_result =
 [
+    [ "size", "struct_command_result.html#a12ad97b6ff566ae297061bc4b02c2db4", null ],
     [ "commandHandler", "struct_command_result.html#a651fa5f0bfa90bd7e926d97bda763938", null ],
     [ "handlerId", "struct_command_result.html#ab94a427697e5def46a501514b042eeaa", null ],
     [ "originalCommand", "struct_command_result.html#a3ef17ae87ed9763dd23415987153a656", null ],

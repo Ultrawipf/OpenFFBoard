@@ -7,6 +7,7 @@ var class_command_reply =
     [ "CommandReply", "class_command_reply.html#aee8bb1f848f6a5df6de83398046d4dee", null ],
     [ "CommandReply", "class_command_reply.html#a439e826dcbca423b9026c19f0bb991cc", null ],
     [ "CommandReply", "class_command_reply.html#a8855ade3cf71fb47f61fb80936ed5bd4", null ],
+    [ "size", "class_command_reply.html#a23bc7966d430c9d5079bb9762b2be423", null ],
     [ "adr", "class_command_reply.html#a5c6dd64ad766e568231b544a96b5ff04", null ],
     [ "reply", "class_command_reply.html#a0400ba01508c4142543380760a13c40a", null ],
     [ "type", "class_command_reply.html#a980fa32b7be7a9d0f8f9c0697f1c8adf", null ],
