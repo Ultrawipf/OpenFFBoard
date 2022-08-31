@@ -273,7 +273,7 @@ void CDC_CommandInterface::sendReplies(const std::vector<CommandResult>& results
 		return;
 	}
 	lastSendTime = HAL_GetTick();
-	resultsBuffer.assign(results.begin(), results.end());
+	resultsBuffer = results;
 	resultsBuffer.shrink_to_fit();
 	nextFormat = originalInterface != this && originalInterface != nullptr;
 	Notify(); // Resume
@@ -290,7 +290,7 @@ bool CDC_CommandInterface::readyToSend(){
 	if(HAL_GetTick() - lastSendTime > parserTimeout && CDCcomm::remainingData(0) == 0){
 		return true;
 	}
-	return CDCcomm::remainingData(0) == 0 ; //&& resultsBuffer.empty() // TODO do a better check. also check if connected
+	return CDCcomm::remainingData(0) == 0 && resultsBuffer.empty(); //&& resultsBuffer.empty() // TODO do a better check. also check if connected
 }
 
 
