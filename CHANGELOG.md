@@ -1,3 +1,6 @@
+### Changes since 1.9.6:
+- Fixed CDC serial port sometimes losing replies on with some USB ports
+
 ### Changes since v1.8: 
 
 - Added analog filter option
