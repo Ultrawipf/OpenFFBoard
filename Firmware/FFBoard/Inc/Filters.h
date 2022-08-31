@@ -37,9 +37,9 @@ public:
     float process(float in);
     void setBiquad(BiquadType type, float Fc, float Q, float peakGain);
     void setFc(float Fc); //frequency
-    float getFc();
+    float getFc() const;
     void setQ(float Q);
-    float getQ();
+    float getQ() const;
     void calcBiquad(void);
 
 protected:
