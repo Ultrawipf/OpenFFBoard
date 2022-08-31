@@ -79,6 +79,13 @@ bool CommandInterface::readyToSend(){
 	return true;
 }
 
+/**
+ * Command thread signals that all commands in this batch are done
+ */
+void CommandInterface::batchDone(){
+
+}
+
 
 /*
  *
@@ -253,11 +260,11 @@ void CDC_CommandInterface::Run(){
 		}
 		StringCommandInterface::formatReply(sendBuffer,resultsBuffer,nextFormat);
 		resultsBuffer.clear();
+		bufferLength = 0;
 		if(!sendBuffer.empty())
 			CDCcomm::cdcSend(&sendBuffer, 0);
 	}
 }
-
 
 void CDC_CommandInterface::sendReplies(const std::vector<CommandResult>& results,CommandInterface* originalInterface){
 	if(!tud_ready()){
@@ -265,6 +272,7 @@ void CDC_CommandInterface::sendReplies(const std::vector<CommandResult>& results
 	}
 
 	if(HAL_GetTick() - lastSendTime > parserTimeout){
+		bufferLength = 0;
 		resultsBuffer.clear(); // Empty buffer because we were not able to reply in time to prevent the full buffer from blocking future commands
 		//CDCcomm::clearRemainingBuffer(0);
 	}
@@ -272,25 +280,38 @@ void CDC_CommandInterface::sendReplies(const std::vector<CommandResult>& results
 	if( (!enableBroadcastFromOtherInterfaces && originalInterface != this) ){
 		return;
 	}
-	lastSendTime = HAL_GetTick();
-	resultsBuffer = results;
-	resultsBuffer.shrink_to_fit();
-	nextFormat = originalInterface != this && originalInterface != nullptr;
-	Notify(); // Resume
+	for(const CommandResult& r : results){
+		bufferLength += r.size();
+	}
 
+	resultsBuffer.insert(resultsBuffer.end(), results.begin(), results.end());
+	//resultsBuffer.shrink_to_fit();
+	nextFormat = originalInterface != this && originalInterface != nullptr;
+	lastSendTime = HAL_GetTick();
+	if(bufferLength >= maxSendBuffer){
+		Notify(); // Resume
+	}
+
+}
+
+void CDC_CommandInterface::batchDone(){
+	if(resultsBuffer.empty())
+		return;
+	Notify();
+	resultsBuffer.shrink_to_fit();
 }
 
 /**
  * Ready to send if there is no data in the backup buffer of the cdc port
  */
 bool CDC_CommandInterface::readyToSend(){
-	if(!tud_ready()){
+	if(!tud_ready() || !tud_cdc_connected()){ // TODO check if cdc connected. if not connected be ready but ignore data.
 		return true;
 	}
 	if(HAL_GetTick() - lastSendTime > parserTimeout && CDCcomm::remainingData(0) == 0){
 		return true;
 	}
-	return CDCcomm::remainingData(0) == 0 && resultsBuffer.empty(); //&& resultsBuffer.empty() // TODO do a better check. also check if connected
+	return CDCcomm::remainingData(0) == 0 && bufferLength < maxSendBuffer; //&& resultsBuffer.empty()
 }
 
 
@@ -323,7 +344,7 @@ UART_CommandInterface::~UART_CommandInterface() {
  */
 bool UART_CommandInterface::readyToSend(){
 
-	return !uartport->isTaken();
+	return !uartport->isTaken() && bufferLength < maxSendBuffer;
 }
 
 void UART_CommandInterface::Run(){
@@ -339,6 +360,7 @@ void UART_CommandInterface::Run(){
 		}
 		StringCommandInterface::formatReply(sendBuffer,resultsBuffer,nextFormat);
 		resultsBuffer.clear();
+		bufferLength = 0;
 		if(!sendBuffer.empty())
 			uartport->transmit_IT(sendBuffer.c_str(), sendBuffer.size());
 	}
@@ -349,11 +371,17 @@ void UART_CommandInterface::sendReplies(const std::vector<CommandResult>& result
 	if( (!enableBroadcastFromOtherInterfaces && originalInterface != this) ){
 		return;
 	}
-	//resultsBuffer.assign(results.begin(), results.end());
-	resultsBuffer = results;
-	resultsBuffer.shrink_to_fit();
+
+	for(const CommandResult& r : results){
+		bufferLength += r.size();
+	}
+
+	resultsBuffer.insert(resultsBuffer.end(), results.begin(), results.end());
+	//resultsBuffer.shrink_to_fit();
 	nextFormat = originalInterface != this && originalInterface != nullptr;
-	Notify();
+	if(bufferLength >= maxSendBuffer){
+		Notify(); // Resume
+	}
 }
 
 /**
@@ -368,4 +396,10 @@ void UART_CommandInterface::uartRcv(char& buf){
 	//cpp_freertos::CriticalSection::ExitFromISR(savedInterruptStatus);
 }
 
+void UART_CommandInterface::batchDone(){
+	if(resultsBuffer.empty())
+		return;
+	Notify();
+	resultsBuffer.shrink_to_fit();
+}
 

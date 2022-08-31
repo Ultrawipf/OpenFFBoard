@@ -87,7 +87,9 @@ public:
 	CommandReply(const std::string& reply) : reply(reply), type(CommandReplyType::STRING){};
 	CommandReply(const std::string& reply,int64_t val) : reply(reply),val(val), type(CommandReplyType::STRING_OR_INT){};
 	CommandReply(const std::string& reply,int64_t val,int64_t adr) : reply(reply),val(val),adr(adr), type(CommandReplyType::STRING_OR_DOUBLEINT){};
-
+	uint32_t size() const{
+		return reply.size() + sizeof(CommandReply);
+	}
     std::string reply;
     int64_t val = 0;
     int64_t adr = 0;
@@ -101,6 +103,14 @@ struct CommandResult {
 	//CommandInterface* originalInterface = nullptr;
 	CommandHandler* commandHandler = nullptr;
 	CommandStatus type = CommandStatus::NOT_FOUND;
+
+	uint32_t size() const{
+		uint32_t size_b = sizeof(CommandResult);
+		for(const CommandReply& r : reply){
+			size_b += r.size();
+		}
+		return size_b;
+	}
 };
 
 // All commands have the 0x80000000 but set! do no use anywhere else
