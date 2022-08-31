@@ -297,8 +297,8 @@ void CDC_CommandInterface::sendReplies(const std::vector<CommandResult>& results
 void CDC_CommandInterface::batchDone(){
 	if(resultsBuffer.empty())
 		return;
-	Notify();
 	resultsBuffer.shrink_to_fit();
+	Notify();
 }
 
 /**
@@ -324,7 +324,7 @@ bool CDC_CommandInterface::readyToSend(){
  */
 
 extern UARTPort external_uart; // defined in cpp_target_config.cpp
-UART_CommandInterface::UART_CommandInterface(uint32_t baud) : UARTDevice(external_uart),Thread("UARTCMD", 256, 36),StringCommandInterface(512), baud(baud){ //
+UART_CommandInterface::UART_CommandInterface(uint32_t baud) : UARTDevice(external_uart),Thread("UARTCMD", 150, 36),StringCommandInterface(512), baud(baud){ //
 	uartconfig = uartport->getConfig();
 	if(baud != 0){
 		uartconfig.BaudRate = this->baud;
@@ -399,7 +399,7 @@ void UART_CommandInterface::uartRcv(char& buf){
 void UART_CommandInterface::batchDone(){
 	if(resultsBuffer.empty())
 		return;
-	Notify();
 	resultsBuffer.shrink_to_fit();
+	Notify();
 }
 

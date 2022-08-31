@@ -24,7 +24,7 @@ const ClassIdentifier EncoderBissC::getInfo(){
 EncoderBissC::EncoderBissC() :
 		SPIDevice(ENCODER_SPI_PORT, ENCODER_SPI_PORT.getCsPins()[0]),
 		CommandHandler("bissenc",CLSID_ENCODER_BISS,0),
-		cpp_freertos::Thread("BISSENC",256,42) {
+		cpp_freertos::Thread("BISSENC",64,42) {
 	EncoderBissC::inUse = true;
 
 
