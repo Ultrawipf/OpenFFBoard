@@ -969,7 +969,7 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(SPI1_SS1_GPIO_Port, SPI1_SS1_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOC, DRV_ENABLE_Pin|LED_CLIP_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOC, DRV_ENABLE_Pin|GP1_Pin|LED_CLIP_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, DRV_BRAKE_Pin|SPI2_NSS_Pin|LED_SYS_Pin, GPIO_PIN_RESET);
@@ -993,8 +993,8 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
   HAL_GPIO_Init(SPI1_SS1_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : DRV_ENABLE_Pin LED_CLIP_Pin */
-  GPIO_InitStruct.Pin = DRV_ENABLE_Pin|LED_CLIP_Pin;
+  /*Configure GPIO pins : DRV_ENABLE_Pin GP1_Pin LED_CLIP_Pin */
+  GPIO_InitStruct.Pin = DRV_ENABLE_Pin|GP1_Pin|LED_CLIP_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -1039,11 +1039,11 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GP3_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : GP2_Pin GP1_Pin */
-  GPIO_InitStruct.Pin = GP2_Pin|GP1_Pin;
+  /*Configure GPIO pin : GP2_Pin */
+  GPIO_InitStruct.Pin = GP2_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+  HAL_GPIO_Init(GP2_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : LED_ERR_Pin */
   GPIO_InitStruct.Pin = LED_ERR_Pin;

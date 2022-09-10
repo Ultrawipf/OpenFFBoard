@@ -89,10 +89,9 @@ void FFBoardMainCommandThread::wakeUp(){
  * Not global so it can be overridden by main classes to change behaviour or suppress outputs.
  */
 void FFBoardMainCommandThread::executeCommands(std::vector<ParsedCommand>& commands,CommandInterface* commandInterface){
-
 	for(ParsedCommand& cmd : commands){
-		cmd.originalInterface = commandInterface;
 		this->results.clear();
+		cmd.originalInterface = commandInterface;
 
 		CommandStatus status = CommandStatus::NOT_FOUND;
 		CommandHandler* handler = cmd.target;
@@ -124,7 +123,7 @@ void FFBoardMainCommandThread::executeCommands(std::vector<ParsedCommand>& comma
 				this->results.pop_back(); // Remove result again
 			}
 		}
-
+		// Results are buffered. send out
 		if(!this->results.empty()){
 			for(CommandInterface* itf : CommandInterface::cmdInterfaces){
 				// Block until replies are sent
@@ -138,4 +137,8 @@ void FFBoardMainCommandThread::executeCommands(std::vector<ParsedCommand>& comma
 			}
 		}
 	}
+	for(CommandInterface* itf : CommandInterface::cmdInterfaces){
+		itf->batchDone(); // Signal that all commands are done
+	}
+
 }

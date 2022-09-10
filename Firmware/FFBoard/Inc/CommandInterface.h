@@ -35,6 +35,7 @@ public:
 	virtual void sendReplies(const std::vector<CommandResult>& results,CommandInterface* originalInterface) = 0; // All commands from batch done
 	virtual void sendReplyAsync(std::vector<CommandReply>& reply,CommandHandler* handler, uint32_t cmdId,CMDtype type);
 	virtual bool readyToSend();
+	virtual void batchDone();
 protected:
 	bool parserReady = false;
 };
@@ -71,6 +72,7 @@ public:
 	void sendReplies(const std::vector<CommandResult>& results,CommandInterface* originalInterface) override;
 	const std::string getHelpstring(){return "CDC interface. " + StringCommandInterface::getHelpstring();};
 	bool readyToSend() override;
+	void batchDone() override;
 
 private:
 	bool enableBroadcastFromOtherInterfaces = true;
@@ -80,6 +82,8 @@ private:
 	std::vector<CommandResult> resultsBuffer;
 	bool nextFormat = false;
 	std::string sendBuffer;
+	uint32_t bufferLength = 0;
+	const uint32_t maxSendBuffer = 1024; // Max buffered command size before sending immediately
 };
 
 
@@ -96,6 +100,7 @@ public:
 	bool readyToSend();
 	const std::string getHelpstring(){return "UART interface. " + StringCommandInterface::getHelpstring();};
 	//void endUartTransfer(UARTPort* port) override;
+	void batchDone() override;
 
 private:
 	const uint32_t parserTimeout = 2000;
@@ -108,6 +113,8 @@ private:
 	//cpp_freertos::BinarySemaphore bufferSem;
 	std::vector<CommandResult> resultsBuffer;
 	bool nextFormat = false;
+	uint32_t bufferLength = 0;
+	const uint32_t maxSendBuffer = 512; // Max buffered command size before sending immediately
 };
 
 

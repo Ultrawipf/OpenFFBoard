@@ -18,3 +18,7 @@ UARTPort external_uart{UART_PORT_EXT};
 extern I2C_HandleTypeDef I2C_PORT;
 I2CPort i2cport{I2C_PORT};
 #endif
+
+#ifdef DEBUGPIN
+const OutputPin debugpin = OutputPin(*GP1_GPIO_Port, GP1_Pin);
+#endif
