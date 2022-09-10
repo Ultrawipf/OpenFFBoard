@@ -49,6 +49,10 @@ struct effect_biquad_t {
 	biquad_constant_t inertia	= { 15, 20 };
 };
 
+struct effect_interp_t {
+	uint16_t factor = 0;
+};
+
 struct effect_stat_t {
 	int16_t current=0;
 	int16_t max=0;
@@ -59,7 +63,7 @@ enum class EffectsCalculator_commands : uint32_t {
 	ffbfiltercf,ffbfiltercf_q,effects,spring,friction,damper,inertia,
 	damper_f, damper_q, friction_f, friction_q, inertia_f, inertia_q, filterProfileId,
 	frictionPctSpeedToRampup,
-	monitorEffect, effectsDetails, effectsForces,
+	monitorEffect, effectsDetails, effectsForces,ffbinterpf
 };
 
 class EffectsCalculator: public PersistentStorage,
@@ -75,6 +79,8 @@ public:
 
 	void saveFlash();
 	void restoreFlash();
+
+	void setCfEffectsFreq(uint16_t freq);
 
 //	virtual bool processHidCommand(HID_Custom_Data_t* data);
 	bool isActive();
@@ -103,9 +109,12 @@ public:
 protected:
 
 private:
+	uint16_t cf_effects_freq;
+
 	uint8_t directionEnableMask = 0;
 	// Filters
 	effect_biquad_t filter[2];		// 0 is the default profile and the custom for CFFilter, CUSTOM_PROFILE_ID is the custom slot
+	effect_interp_t interp;
 	uint8_t filterProfileId = 0;
 	const uint32_t calcfrequency = 1000; 		// HID frequency 1khz
 	const float qfloatScaler = 0.01;

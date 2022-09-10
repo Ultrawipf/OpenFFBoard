@@ -289,6 +289,7 @@ typedef struct
 	uint32_t attackTime = 0, fadeTime = 0;	 // Envelope effect
 
 	std::unique_ptr<Biquad> filter[MAX_AXIS] = { nullptr };  // Optional filter
+	std::unique_ptr<InterpFFB> interp[MAX_AXIS] = { nullptr };  // Optional Interpolation
 	uint16_t startDelay = 0;
 	uint32_t startTime = 0;	  // Elapsed time in ms before effect starts
 	uint16_t samplePeriod = 0;

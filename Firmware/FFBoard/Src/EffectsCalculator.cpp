@@ -32,6 +32,7 @@ EffectsCalculator::EffectsCalculator() : CommandHandler("fx", CLSID_EFFECTSCALC)
 	restoreFlash();
 
 	CommandHandler::registerCommands();
+	registerCommand("interpFactor", EffectsCalculator_commands::ffbinterpf, "Constant force interpolation factor", CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("filterCfFreq", EffectsCalculator_commands::ffbfiltercf, "Constant force filter frequency", CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("filterCfQ", EffectsCalculator_commands::ffbfiltercf_q, "Constant force filter Q-factor", CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("spring", EffectsCalculator_commands::spring, "Spring gain", CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_INFOSTRING);
@@ -304,7 +305,9 @@ int32_t EffectsCalculator::calcNonConditionEffectForce(FFB_Effect *effect) {
 	return (force_vector * effect->gain) / 255;
 }
 
-
+void EffectsCalculator::setCfEffectsFreq(uint16_t freq){
+	this->cf_effects_freq = freq;
+}
 
 /*
  * If the number of Condition report blocks is equal to the number of axes for the effect, then the first report
@@ -356,6 +359,19 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 			if (effect->filter[con_idx]->getFc() < 0.5 && effect->filter[0]->getFc() != 0.0)
 			{
 				forceVector = effect->filter[con_idx]->process(forceVector);
+			}
+		}
+		// Optional interpolation to smooth ffb
+		if(effect->interp[con_idx] != nullptr) {
+			// if the filter is enabled we apply it
+			uint8_t auto_interp_factor = floor(calcfrequency / this->cf_effects_freq);
+			if (effect->interp[con_idx]->getInterpFactor() == 1 && auto_interp_factor >= 2) //IF 1 or 0, Filter Disabled
+			{
+				forceVector = effect->interp[con_idx]->interpFloat(forceVector, auto_interp_factor);
+			}
+			else if(effect->interp[con_idx]->getInterpFactor() > 1)
+			{
+				forceVector = effect->interp[con_idx]->interpFloat(forceVector, 1);
 			}
 		}
 	}
@@ -523,6 +539,7 @@ int32_t EffectsCalculator::getEnvelopeMagnitude(FFB_Effect *effect)
 void EffectsCalculator::setFilters(FFB_Effect *effect){
 
 	std::function<void(std::unique_ptr<Biquad> &)> fnptr = [=](std::unique_ptr<Biquad> &filter){};
+	std::function<void(std::unique_ptr<InterpFFB> &)> fnptr2 = [=](std::unique_ptr<InterpFFB> &interp){};
 
 	switch (effect->type)
 	{
@@ -557,12 +574,19 @@ void EffectsCalculator::setFilters(FFB_Effect *effect){
 			else
 				filter = std::make_unique<Biquad>(BiquadType::lowpass, this->filter[0].constant.freq / (float)calcfrequency, this->filter[0].constant.q * qfloatScaler, (float)0.0);
 		};
+		fnptr2 = [=](std::unique_ptr<InterpFFB> &interp){
+			if (interp != nullptr)
+				interp->setInterpFactor(this->interp.factor);
+			else
+				interp = std::make_unique<InterpFFB>(this->interp.factor);
+		};
 		break;
 	}
 
 
 	for (int i=0; i<MAX_AXIS; i++) {
 		fnptr(effect->filter[i]);
+		fnptr2(effect->interp[i]);
 	}
 }
 
@@ -587,6 +611,12 @@ void EffectsCalculator::setEffectsArray(FFB_Effect *pEffects)
 void EffectsCalculator::restoreFlash()
 {
 	uint16_t filterStorage;
+
+	if(Flash_Read(ADR_FFB_INTERP_FILTER, &filterStorage)){
+		this->interp.factor = filterStorage;
+		updateFilterSettingsForEffects(FFB_EFFECT_CONSTANT);
+	}
+
 	if (Flash_Read(ADR_FFB_CF_FILTER, &filterStorage))
 	{
 		uint32_t freq = filterStorage & 0x1FF;
@@ -639,6 +669,9 @@ void EffectsCalculator::restoreFlash()
 void EffectsCalculator::saveFlash()
 {
 	uint16_t filterStorage;
+
+	//save CF interpolation
+	Flash_Write(ADR_FFB_INTERP_FILTER, (uint16_t)interp.factor);
 
 	// save CF biquad
 	filterStorage = (uint16_t)filter[0].constant.freq & 0x1FF;
@@ -797,6 +830,17 @@ void EffectsCalculator::resetLoggedActiveEffects(bool reinit){
 CommandStatus EffectsCalculator::command(const ParsedCommand& cmd,std::vector<CommandReply>& replies){
 	switch(static_cast<EffectsCalculator_commands>(cmd.cmdId)){
 
+	case EffectsCalculator_commands::ffbinterpf:
+		if (cmd.type == CMDtype::get)
+		{
+			replies.emplace_back(interp.factor);
+		}
+		else if (cmd.type == CMDtype::set)
+		{
+			interp.factor = cmd.val;
+			updateFilterSettingsForEffects(FFB_EFFECT_CONSTANT);
+		}
+		break;
 	case EffectsCalculator_commands::ffbfiltercf:
 		if (cmd.type == CMDtype::get)
 		{

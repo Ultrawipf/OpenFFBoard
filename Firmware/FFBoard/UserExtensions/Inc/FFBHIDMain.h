@@ -72,6 +72,7 @@ public:
 
 	void emergencyStop(bool reset);
 	uint32_t getRate();
+	uint16_t getConstantForceRate();
 	bool getFfbActive();
 
 	//void timerElapsed(TIM_HandleTypeDef* htim);
@@ -128,6 +129,9 @@ private:
 	cpp_freertos::BinarySemaphore sourcesSem = cpp_freertos::BinarySemaphore(true);
 
 	volatile uint32_t lastEstop = 0;
+
+	//To compare CF effect Freq and determine to be send again to effectsCalculator?
+	uint16_t backupCfFreq = 0;
 };
 
 #endif /* SRC_FFBWHEEL_H_ */

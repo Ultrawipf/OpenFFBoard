@@ -46,6 +46,7 @@ public:
 
 	void emergencyStop(bool reset);
 	void resetPosZero();
+	void cfEffectsFreqToEffectsCalc(uint16_t freq);
 
 private:
 	volatile Control_t* control;

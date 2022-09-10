@@ -10,7 +10,7 @@
 #include "flash_helpers.h"
 #include "hid_device.h"
 #include "cppmain.h"
-
+#include "math.h"
 
 HidFFB::HidFFB() {
 
@@ -63,14 +63,14 @@ uint32_t HidFFB::getRate(){
 /**
  * Calculates the frequency of the CF effect only
  */
-uint32_t HidFFB::getConstantForceRate(){
-	float periodAvg = cfUpdatePeriodAvg.getAverage();
-	if((HAL_GetTick() - lastCfUpdate) > 1000 || periodAvg == 0){
+uint16_t HidFFB::getConstantForceRate() {
+	float periodAvg = cfEwma.process(cfUpdateMicros);
+	if(periodAvg < 0.5){
 		// Reset average
-		cfUpdatePeriodAvg.clear();
+		cfEwma.clear();
 		return 0;
-	}else{
-		return (1000.0/periodAvg);
+	}else {
+		return (round(1000000.0 / periodAvg));
 	}
 }
 
@@ -263,17 +263,19 @@ void HidFFB::ffb_control(uint8_t cmd){
 
 
 void HidFFB::set_constant_effect(FFB_SetConstantForce_Data_t* data){
+	cfUpdateMicros = ((uint16_t)(micros() - lastCfUpdate));
+
 	if(data->effectBlockIndex == 0 || data->effectBlockIndex > MAX_EFFECTS){
 		return;
 	}
-	cfUpdatePeriodAvg.addValue((uint32_t)(HAL_GetTick() - lastCfUpdate));
+	lastCfUpdate = micros();
+	
 	FFB_Effect& effect_p = effects[data->effectBlockIndex-1];
 
 	effect_p.magnitude = data->magnitude;
 //	if(effect_p.state == 0){
 //		effect_p.state = 1; // Force start effect
 //	}
-	lastCfUpdate = HAL_GetTick();
 }
 
 void HidFFB::new_effect(FFB_CreateNewEffect_Feature_Data_t* effect){
