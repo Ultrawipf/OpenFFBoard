@@ -176,7 +176,7 @@ void EffectsCalculator::calculateEffects(std::vector<std::unique_ptr<Axis>> &axe
 		}
 		if (validY && ((effect->enableAxis & directionEnableMask) || (effect->enableAxis & Y_AXIS_ENABLE)))
 		{
-			int32_t newEffectForce = calcComponentForce(effect, forceVector, axes, 0);
+			int32_t newEffectForce = calcComponentForce(effect, forceVector, axes, 1); //AXIS Y should be 1
 			calcStatsEffectType(effect->type, newEffectForce);
 			forceY += newEffectForce;
 			forceY = clip<int32_t, int32_t>(forceY, -0x7fff, 0x7fff); // Clip
@@ -331,19 +331,18 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 	uint8_t directionEnableMask = this->directionEnableMask ? this->directionEnableMask : DIRECTION_ENABLE(axisCount);
 	if (effect->enableAxis & directionEnableMask)
 	{
-		direction = effect->directionX;
-		con_idx = axis;
+		direction = axis == 0 ? effect->directionX : effect->directionY;  //get direction according to axis index when directionEnable is non-zero
 	}
 	else
 	{
-		direction = axis == 0 ? effect->directionX : effect->directionY;
-		con_idx = axis;
+		direction = effect->directionX;
 	}
+	con_idx = axis;
 
 	//bool useForceDirectionForConditionEffect = (effect->enableAxis == DIRECTION_ENABLE && axisCount > 1 && effect->conditionsCount == 1);
 	bool rotateConditionForce = (axisCount > 1); // && effect->conditionsCount < axisCount
 	float angle = ((float)direction * (2*M_PI) / 36000.0);
-	float angle_ratio = axis == 0 ? sin(angle) : -1 * cos(angle);
+	float angle_ratio = axis == 0 ? sin(angle) : cos(angle);  
 	angle_ratio = rotateConditionForce ? angle_ratio : 1.0;
 
 	switch (effect->type)
