@@ -1,0 +1,3 @@
+../Core/Src/freertos.c:63:6:vApplicationIdleHook	4	static
+../Core/Src/freertos.c:78:6:vApplicationStackOverflowHook	16	static
+../Core/Src/freertos.c:89:6:vApplicationMallocFailedHook	16	static,ignoring_inline_asm

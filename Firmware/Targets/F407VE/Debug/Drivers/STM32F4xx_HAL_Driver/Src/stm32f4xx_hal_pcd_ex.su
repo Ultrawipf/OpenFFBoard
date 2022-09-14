@@ -1,0 +1,4 @@
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd_ex.c:70:19:HAL_PCDEx_SetTxFiFo	24	static
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd_ex.c:112:19:HAL_PCDEx_SetRxFiFo	16	static
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd_ex.c:297:13:HAL_PCDEx_LPM_Callback	16	static
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd_ex.c:314:13:HAL_PCDEx_BCD_Callback	16	static
