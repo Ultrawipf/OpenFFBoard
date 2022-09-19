@@ -1,6 +1,0 @@
-../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c:141:19:HAL_PWREx_EnableBkUpReg	16	static
-../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c:165:19:HAL_PWREx_DisableBkUpReg	16	static
-../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c:189:6:HAL_PWREx_EnableFlashPowerDown	4	static
-../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c:198:6:HAL_PWREx_DisableFlashPowerDown	4	static
-../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c:211:10:HAL_PWREx_GetVoltageRange	4	static
-../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c:232:19:HAL_PWREx_ControlVoltageScaling	32	static
