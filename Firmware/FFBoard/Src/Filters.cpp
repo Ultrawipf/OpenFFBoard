@@ -31,7 +31,7 @@ void Biquad::setFc(float Fc) {
     calcBiquad();
 }
 
-float Biquad::getFc() {
+float Biquad::getFc() const {
 	return this->Fc;
 }
 
@@ -43,7 +43,7 @@ void Biquad::setQ(float Q) {
     calcBiquad();
 }
 
-float Biquad::getQ() {
+float Biquad::getQ() const {
 	return this->Q;
 }
 
