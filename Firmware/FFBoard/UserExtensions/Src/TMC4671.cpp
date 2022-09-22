@@ -284,6 +284,7 @@ bool TMC4671::initialize(){
 	initAdc(conf.mdecA,conf.mdecB,conf.mclkA,conf.mclkB);
 	setAdcOffset(conf.adc_I0_offset, conf.adc_I1_offset);
 	setAdcScale(conf.adc_I0_scale, conf.adc_I1_scale);
+	setTorqueFilter(torqueFilterConf);
 
 	// Initial adc calibration and check without PWM if power off to get basic offsets. PWM is off!
 	if(!hasPower()){
