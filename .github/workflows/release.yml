@@ -18,11 +18,11 @@ jobs:
   Build_configurator:
     name: Build configurator
     # The type of runner that the job will run on
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.conf.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: ['windows-latest', 'macos-latest']
+        conf:  [ {os: 'windows-latest', pyver: '3.8'},{os: 'windows-latest', pyver: '3.10'}, {os: 'macos-latest', pyver: '3.9'}]
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -37,10 +37,11 @@ jobs:
         uses: ./Configurator/.github/actions/build-pyinstaller
         with: 
           path: '${{ github.workspace }}/Configurator'
+          python-version: '${{ matrix.conf.pyver }}'
         
       - uses: actions/upload-artifact@v2
         with:
-          name: OpenFFBoard-Configurator-${{ matrix.os }}
+          name: OpenFFBoard-Configurator-${{ matrix.conf.os }}-py${{ matrix.conf.pyver }}
           path: ${{ steps.build_c.outputs.distpath }}
 
 
