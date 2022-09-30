@@ -96,13 +96,16 @@ void EncoderBissC::saveFlash(){
 
 void EncoderBissC::configSPI() {
 
-	uint32_t prescale = SPI_BAUDRATEPRESCALER_16;
+	uint32_t prescale;
 	switch (spiSpeed) {
 		case 1 :
 			prescale = SPI_BAUDRATEPRESCALER_64;
 			break;
 		case 2 :
 			prescale = SPI_BAUDRATEPRESCALER_32;
+			break;
+		case 3 :
+			prescale = SPI_BAUDRATEPRESCALER_16;
 			break;
 		default :
 			prescale = SPI_BAUDRATEPRESCALER_16;
@@ -228,12 +231,17 @@ void EncoderBissC::registerCommands(){
 CommandStatus EncoderBissC::command(const ParsedCommand& cmd,std::vector<CommandReply>& replies){
 	switch(static_cast<EncoderBissC_commands>(cmd.cmdId)){
 	case EncoderBissC_commands::bits:
-		return handleGetSet(cmd, replies, this->lenghtDataBit);
+		handleGetSet(cmd, replies, this->lenghtDataBit);
+		if(this->lenghtDataBit > 24 && this->spiSpeed >= 3){
+			this->spiSpeed = 2; // Drop SPI speed to prevent encoder from losing data.
+		}
+		break;
 	case EncoderBissC_commands::errors:
 		replies.emplace_back(numErrors);
 		break;
 	case EncoderBissC_commands::speed:
 		handleGetSet(cmd, replies, this->spiSpeed);
+		this->spiSpeed = clip(this->spiSpeed,1,3); // Limit from 1-3
 		if(cmd.type == CMDtype::set){
 			configSPI();
 		}
