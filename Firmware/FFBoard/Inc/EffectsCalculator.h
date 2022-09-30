@@ -120,6 +120,7 @@ private:
 	bool effects_active = false; // was ffb_active
 	uint32_t effects_used = 0;
 	std::array<effect_stat_t,12> effects_stats; // [0..12 effect types]
+	std::array<effect_stat_t,12> effects_statslast; // [0..12 effect types]
 	bool isMonitorEffect = false;
 
 	int32_t calcComponentForce(FFB_Effect *effect, int32_t forceVector, std::vector<std::unique_ptr<Axis>> &axes, uint8_t axis);
