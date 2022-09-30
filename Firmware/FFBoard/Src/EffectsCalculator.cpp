@@ -189,6 +189,7 @@ void EffectsCalculator::calculateEffects(std::vector<std::unique_ptr<Axis>> &axe
 	{
 		axes[1]->setEffectTorque(forceY);
 	}
+	effects_statslast = effects_stats;
 }
 
 /**
@@ -734,6 +735,8 @@ void EffectsCalculator::logEffectState(uint8_t type,uint8_t state){
 
 
 void EffectsCalculator::calcStatsEffectType(uint8_t type, int16_t force){
+	if(force==0)
+		pulseErrLed();
 	if(type > 0 && type < 13) {
 		uint8_t arrayLocation = type - 1;
 		effects_stats[arrayLocation].current += force;
@@ -855,8 +858,8 @@ CommandStatus EffectsCalculator::command(const ParsedCommand& cmd,std::vector<Co
 	case EffectsCalculator_commands::effectsForces:
 		if (cmd.type == CMDtype::get)
 		{
-			for (size_t i=0; i < effects_stats.size(); i++) {
-				replies.emplace_back(effects_stats[i].current,effects_stats[i].nb);
+			for (size_t i=0; i < effects_statslast.size(); i++) {
+				replies.emplace_back(effects_statslast[i].current,effects_statslast[i].nb);
 			}
 		}
 		break;
