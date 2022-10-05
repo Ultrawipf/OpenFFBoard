@@ -53,10 +53,13 @@ public:
 	void endSpiTransfer(SPIPort* port);
 
 private:
-	static const bool useWaitSem = true;
+	static const bool useWaitSem = true; // Wait until data is processed. otherwise returns last value
+	static const uint32_t waitThresh = 2; // If last sample older than x ms use wait semaphore. Else skip and use last value to speed up processing
 	int lenghtDataBit = 22;
-	int spiSpeed = 2;
+	int spiSpeed = 3;
 	bool waitData = false;
+
+	uint32_t lastUpdateTick = 0;
 
 	int32_t pos = 0, posOffset = 0,lastPos = 0,newPos = 0;
 	int32_t mtpos = 0;
