@@ -70,6 +70,7 @@ void EncoderBissC::Run(){
 			numErrors++;
 		}
 		waitData = false;
+		lastUpdateTick = HAL_GetTick();
 		if(useWaitSem)
 			waitForUpdateSem.Give();
 
@@ -200,8 +201,8 @@ bool EncoderBissC::updateFrame(){
 int32_t EncoderBissC::getPosAbs(){
 	if(!waitData){ // If a transfer is still in progress return the last result
 		requestNewDataSem.Give(); // Start transfer
-		if(useWaitSem)
-			waitForUpdateSem.Take(10); // Wait a bit
+		if(useWaitSem && HAL_GetTick() - lastUpdateTick > waitThresh)
+			waitForUpdateSem.Take(waitThresh); // Wait a bit
 	}
 	return pos + mtpos * getCpr();
 }
