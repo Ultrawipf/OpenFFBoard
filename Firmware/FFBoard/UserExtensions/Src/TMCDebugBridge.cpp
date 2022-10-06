@@ -32,12 +32,12 @@ uint8_t TMCDebugBridge::checksum(std::vector<uint8_t> *buffer,uint8_t len){
 
 void TMCDebugBridge::registerCommands(){
 	//CommandHandler::registerCommands();
-	registerCommand("reg", TMCDebugBridge_commands::reg, "Read or write a TMC register at adr");
-	registerCommand("torque", TMCDebugBridge_commands::torque, "Change torque and enter torque mode");
-	registerCommand("pos", TMCDebugBridge_commands::pos, "Change pos and enter pos mode");
-	registerCommand("openloopspeed", TMCDebugBridge_commands::openloopspeed, "Move openloop. adr=strength,val=speed");
-	registerCommand("velocity", TMCDebugBridge_commands::velocity, "Change velocity and enter velocity mode");
-	registerCommand("mode", TMCDebugBridge_commands::mode, "Change motion mode");
+	registerCommand("reg", TMCDebugBridge_commands::reg, "Read or write a TMC register at adr",CMDFLAG_GETADR | CMDFLAG_SETADR);
+	registerCommand("torque", TMCDebugBridge_commands::torque, "Change torque and enter torque mode",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("pos", TMCDebugBridge_commands::pos, "Change pos and enter pos mode",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("openloopspeed", TMCDebugBridge_commands::openloopspeed, "Move openloop. adr=strength;val=speed",CMDFLAG_SETADR | CMDFLAG_SET);
+	registerCommand("velocity", TMCDebugBridge_commands::velocity, "Change velocity and enter velocity mode",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("mode", TMCDebugBridge_commands::mode, "Change motion mode",CMDFLAG_GET | CMDFLAG_SET);
 }
 
 void TMCDebugBridge::tmcReadRegRaw(uint8_t reg,uint8_t* buf){
