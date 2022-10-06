@@ -52,6 +52,10 @@ public:
 
 	void timerElapsed(TIM_HandleTypeDef* htim);
 
+	virtual std::string getHelpstring(){
+		return "Plays MIDI via TMC4671";
+	}
+
 	void play();
 
 	std::unique_ptr<TMC4671> drv;

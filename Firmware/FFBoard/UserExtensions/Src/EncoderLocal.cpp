@@ -10,7 +10,7 @@
 
 bool EncoderLocal::inUse = false;
 ClassIdentifier EncoderLocal::info = {
-		 .name = "Local" ,
+		 .name = "Local ABN" ,
 		 .id=CLSID_ENCODER_LOCAL,
  };
 const ClassIdentifier EncoderLocal::getInfo(){
