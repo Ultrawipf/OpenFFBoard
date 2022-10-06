@@ -51,9 +51,9 @@ CanBridge::CanBridge() {
 	conf1.enabled = true;
 
 	//CommandHandler::registerCommands();
-	registerCommand("can", CanBridge_commands::can, "Send a frame or get last received frame");
-	registerCommand("rtr", CanBridge_commands::canrtr, "Send a RTR frame");
-	registerCommand("spd", CanBridge_commands::canspd, "Change or get CAN baud");
+	registerCommand("can", CanBridge_commands::can, "Send a frame or get last received frame",CMDFLAG_GET | CMDFLAG_SETADR);
+	registerCommand("rtr", CanBridge_commands::canrtr, "Send a RTR frame",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("spd", CanBridge_commands::canspd, "Change or get CAN baud",CMDFLAG_GET | CMDFLAG_SET);
 
 	this->port->setSilentMode(false);
 	this->port->takePort();
@@ -314,8 +314,8 @@ CommandStatus CanBridge::command(const ParsedCommand& cmd,std::vector<CommandRep
 	case CanBridge_commands::canrtr:
 		if(cmd.type == CMDtype::get){
 			replies.emplace_back(*(int64_t*)lastmsg.data,lastmsg.header.StdId);
-		}else if(cmd.type == CMDtype::setat){
-			sendMessage(cmd.adr,cmd.val,8,true); // msg with rtr bit
+		}else if(cmd.type == CMDtype::set){
+			sendMessage(cmd.val,0,8,true); // msg with rtr bit
 		}else{
 			return CommandStatus::ERR;
 		}
