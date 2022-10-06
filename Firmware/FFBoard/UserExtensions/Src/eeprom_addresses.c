@@ -38,6 +38,7 @@ const uint16_t VirtAddVarTab[NB_OF_VAR] =
 	ADR_SPI_BTN_2_CONF_2	,
 // Local encoder		
 	ADR_ENCLOCAL_CPR	,
+	ADR_ENCLOCAL_OFS	,
 // PWM		
 	ADR_PWM_MODE	,
 // Local analog source		
@@ -215,6 +216,7 @@ const uint16_t exportableFlashAddresses[NB_EXPORTABLE_ADR] =
 	ADR_SPI_BTN_2_CONF_2	,
 // Local encoder		
 	ADR_ENCLOCAL_CPR	,
+	ADR_ENCLOCAL_OFS	,
 // PWM		
 	ADR_PWM_MODE	,
 // Local analog source		
@@ -363,5 +365,4 @@ const uint16_t exportableFlashAddresses[NB_EXPORTABLE_ADR] =
 	ADR_ADS111X_MIN_3	,
 	ADR_ADS111X_MAX_3	
 };		
-
 
