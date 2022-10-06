@@ -33,10 +33,10 @@ void ShifterAnalog::registerCommands(){
 	CommandHandler::registerCommands();
 
 	registerCommand("mode", ShifterAnalog_commands::mode, "Shifter mode",CMDFLAG_GET|CMDFLAG_SET|CMDFLAG_INFOSTRING);
-	registerCommand("x12", ShifterAnalog_commands::x12, "X-threshold for 1,2 gears",CMDFLAG_GET|CMDFLAG_SET);
-	registerCommand("x56", ShifterAnalog_commands::x56, "X-threshold for 5,6 gears",CMDFLAG_GET|CMDFLAG_SET);
-	registerCommand("y135", ShifterAnalog_commands::y135, "Y-threshold for 1,3,5 gears",CMDFLAG_GET|CMDFLAG_SET);
-	registerCommand("y246", ShifterAnalog_commands::y246, "Y-threshold for 2,4,6 gears",CMDFLAG_GET|CMDFLAG_SET);
+	registerCommand("x12", ShifterAnalog_commands::x12, "X-threshold for 1&2 gears",CMDFLAG_GET|CMDFLAG_SET);
+	registerCommand("x56", ShifterAnalog_commands::x56, "X-threshold for 5&6 gears",CMDFLAG_GET|CMDFLAG_SET);
+	registerCommand("y135", ShifterAnalog_commands::y135, "Y-threshold for 1&3&5 gears",CMDFLAG_GET|CMDFLAG_SET);
+	registerCommand("y246", ShifterAnalog_commands::y246, "Y-threshold for 2&4&6 gears",CMDFLAG_GET|CMDFLAG_SET);
 	registerCommand("revbtn", ShifterAnalog_commands::revbtn, "Pin for R signal",CMDFLAG_GET|CMDFLAG_SET);
 	registerCommand("cspin", ShifterAnalog_commands::cspin, "CS pin for SPI modes",CMDFLAG_GET|CMDFLAG_SET);
 	registerCommand("xchan", ShifterAnalog_commands::xchan, "X signal analog pin",CMDFLAG_GET|CMDFLAG_SET);
