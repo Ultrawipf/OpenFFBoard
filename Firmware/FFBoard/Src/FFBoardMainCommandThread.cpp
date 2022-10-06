@@ -110,7 +110,7 @@ void FFBoardMainCommandThread::executeCommands(std::vector<ParsedCommand>& comma
 			status = handler->internalCommand(cmd,resultObj.reply);
 
 			// internal commands did not return anything call regular custom commands
-			if(status == CommandStatus::NOT_FOUND){
+			if(status == CommandStatus::NOT_FOUND && handler->hasCommands()){
 				status = handler->command(cmd,resultObj.reply);
 			}
 			// If status is not no reply append a reply object. If command was not found the reply vector should be empty but the not found flag set

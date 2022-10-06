@@ -66,12 +66,20 @@ void SystemCommands::registerCommands(){
 	CommandHandler::registerCommand("format", FFBoardMain_commands::format, "set format=1 to erase all stored values",CMDFLAG_SET);
 	CommandHandler::registerCommand("debug", FFBoardMain_commands::debug, "Enable or disable debug commands",CMDFLAG_SET | CMDFLAG_GET);
 	CommandHandler::registerCommand("devid", FFBoardMain_commands::devid, "Get chip dev id and rev id",CMDFLAG_GET);
+	CommandHandler::registerCommand("name", CommandHandlerCommands::name, "name of class",CMDFLAG_GET|CMDFLAG_STR_ONLY);
+	CommandHandler::registerCommand("cmdinfo", CommandHandlerCommands::cmdinfo, "Flags of a command id (adr). -1 if cmd id invalid",CMDFLAG_GETADR);
 }
 
 // Choose lower optimize level because the compiler likes to blow up this function
 __attribute__((optimize("-O1")))
 CommandStatus SystemCommands::internalCommand(const ParsedCommand& cmd,std::vector<CommandReply>& replies){
-	CommandStatus flag = CommandStatus::OK;
+	CommandStatus flag = CommandHandler::internalCommand(cmd, replies);
+
+	if(flag != CommandStatus::NOT_FOUND){
+		return flag;
+	}else{
+		flag = CommandStatus::OK;
+	}
 
 	switch(static_cast<FFBoardMain_commands>(cmd.cmdId))
 	{
@@ -233,16 +241,16 @@ CommandStatus SystemCommands::internalCommand(const ParsedCommand& cmd,std::vect
 		case FFBoardMain_commands::lsactive:
 		{
 			for(CommandHandler* handler : CommandHandler::getCommandHandlers()){
-				if(handler->hasCommands()){
-					ClassIdentifier i = handler->getInfo();
-					CmdHandlerInfo* hi = handler->getCommandHandlerInfo();
-					CommandReply reply;
-					reply.type = CommandReplyType::STRING_OR_DOUBLEINT;
-					reply.adr = hi->instance;
-					reply.val = hi->clsTypeid;
-					reply.reply += std::string(i.name)+ ":" + hi->clsname + ":" + std::to_string(hi->instance) + ":" + std::to_string(i.id) + ":" + std::to_string(hi->commandHandlerID);
-					replies.push_back(reply);
-				}
+
+				ClassIdentifier i = handler->getInfo();
+				CmdHandlerInfo* hi = handler->getCommandHandlerInfo();
+				CommandReply reply;
+				reply.type = CommandReplyType::STRING_OR_DOUBLEINT;
+				reply.adr = hi->instance;
+				reply.val = hi->clsTypeid;
+				reply.reply += std::string(i.name)+ ":" + hi->clsname + ":" + std::to_string(hi->instance) + ":" + std::to_string(i.id) + ":" + std::to_string(hi->commandHandlerID);
+				replies.push_back(reply);
+
 			}
 			break;
 		}
