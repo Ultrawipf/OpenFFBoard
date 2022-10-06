@@ -59,7 +59,7 @@ public:
 	volatile bool replyPending = false;
 
 	void registerCommands();
-	virtual std::string getHelpstring(){return "CAN commands:\ncan=(msgint)?(id) send message (canrtr with rtr bit). Or can? (last received message). canspd (speed).\nThis class is GVRET/SavvyCAN compatible!";}
+	virtual std::string getHelpstring(){return "CAN bus debug bridge. This class is GVRET/SavvyCAN compatible!";}
 
 
 private:
