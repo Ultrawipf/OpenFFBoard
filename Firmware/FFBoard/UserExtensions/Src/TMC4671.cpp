@@ -46,10 +46,11 @@ ClassIdentifier TMC4671::info = {
 
 
 TMC4671::TMC4671(SPIPort& spiport,OutputPin cspin,uint8_t address) :
-		CommandHandler("tmc", CLSID_MOT_TMC0), SPIDevice{motor_spi,cspin},Thread("TMC", TMC_THREAD_MEM, TMC_THREAD_PRIO)
+		CommandHandler("tmc", CLSID_MOT_TMC0,address-1), SPIDevice{motor_spi,cspin},Thread("TMC", TMC_THREAD_MEM, TMC_THREAD_PRIO)
 {
+	CommandHandler::setCommandsEnabled(false);
 	setAddress(address);
-	setInstance(address-1);
+	registerCommands();
 	spiConfig.peripheral.Mode = SPI_MODE_MASTER;
 	spiConfig.peripheral.Direction = SPI_DIRECTION_2LINES;
 	spiConfig.peripheral.DataSize = SPI_DATASIZE_8BIT;
@@ -68,7 +69,7 @@ TMC4671::TMC4671(SPIPort& spiport,OutputPin cspin,uint8_t address) :
 	spiPort.giveSemaphore();
 
 	this->restoreFlash();
-	registerCommands();
+	CommandHandler::setCommandsEnabled(true);
 }
 
 
