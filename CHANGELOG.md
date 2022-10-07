@@ -4,3 +4,5 @@
 - Added TMC4671 biquad filter option
   - Lowpass, notch and peak modes (fixed Q factor, saved frequency)
 - Improved BISS performance when used with TMC
+- Fixed an issue with live effects statistics jumping to 0 using double buffers
+- Added missing command flags and help messages
