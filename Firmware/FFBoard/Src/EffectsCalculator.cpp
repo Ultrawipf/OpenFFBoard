@@ -735,8 +735,6 @@ void EffectsCalculator::logEffectState(uint8_t type,uint8_t state){
 
 
 void EffectsCalculator::calcStatsEffectType(uint8_t type, int16_t force){
-	if(force==0)
-		pulseErrLed();
 	if(type > 0 && type < 13) {
 		uint8_t arrayLocation = type - 1;
 		effects_stats[arrayLocation].current += force;
