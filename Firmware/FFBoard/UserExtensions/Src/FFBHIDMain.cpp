@@ -76,7 +76,7 @@ const std::vector<class_entry<AnalogSource>> analog_sources =
 };
 
 FFBHIDMain::FFBHIDMain(uint8_t axisCount) :
-		Thread("FFBMAIN", 256, 32),btn_chooser(button_sources),analog_chooser(analog_sources)
+		Thread("FFBMAIN", 256, 30),btn_chooser(button_sources),analog_chooser(analog_sources)
 {
 	// Creates the required no of axis (Default 1)
 	effects_calc = std::make_unique<EffectsCalculator>();
