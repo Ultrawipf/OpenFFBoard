@@ -15,6 +15,7 @@
 DEBUG = 0
 # optimization
 OPT = -O2 # -mno-unaligned-access
+OPTCPP = -Os
 
 
 #######################################
@@ -169,7 +170,7 @@ endif
 # Generate dependency information
 CFLAGS += -MMD -MP -MF"$(@:%.o=%.d)"
 
-CXXFLAGS = $(MCU) $(C_DEFS) $(C_INCLUDES) $(OPT) -Wall -fdata-sections -ffunction-sections -fno-exceptions -fno-use-cxa-atexit -std=gnu++17 -fstack-usage
+CXXFLAGS = $(MCU) $(C_DEFS) $(C_INCLUDES) $(OPTCPP) -Wall -fdata-sections -ffunction-sections -fno-exceptions -fno-use-cxa-atexit -std=gnu++17 -fstack-usage
 
 #######################################
 # LDFLAGS
