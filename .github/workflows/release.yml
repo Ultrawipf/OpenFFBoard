@@ -22,7 +22,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        conf:  [ {os: 'windows-latest', pyver: '3.8'},{os: 'windows-latest', pyver: '3.10'}, {os: 'macos-latest', pyver: '3.9'}]
+        conf:  [ {os: 'windows-latest', pyver: '3.8'},{os: 'windows-latest', pyver: '3.9'}, {os: 'macos-latest', pyver: '3.9'}]
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
