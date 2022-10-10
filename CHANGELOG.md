@@ -1,4 +1,4 @@
-### Changes since 1.9.7:
+### Changes since 1.9.x:
 - Added local encoder index option to reload a previously stored offset
 - Fixed an issue with 2 axis FFB effects on second axis
 - Added TMC4671 biquad filter option
