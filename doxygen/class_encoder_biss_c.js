@@ -31,6 +31,7 @@ var class_encoder_biss_c =
     [ "info", "class_encoder_biss_c.html#a0f0ba198d699852f5783953c764fc41c", null ],
     [ "inUse", "class_encoder_biss_c.html#abfb02cda26c1ab5b7d33342e1abf28ae", null ],
     [ "lastPos", "class_encoder_biss_c.html#a0b516aa9de6938eb75bde9154c4860a4", null ],
+    [ "lastUpdateTick", "class_encoder_biss_c.html#a7d646c7b0fccbebc0f001bab27bcc43f", null ],
     [ "lenghtDataBit", "class_encoder_biss_c.html#a5d9500dd24f392ba3e862e3cb458fe1d", null ],
     [ "mtpos", "class_encoder_biss_c.html#acc20f57368b1e18306d11d0122001052", null ],
     [ "newPos", "class_encoder_biss_c.html#ac33892b363938b8974be6fef5d987447", null ],
@@ -44,5 +45,6 @@ var class_encoder_biss_c =
     [ "tableCRC6n", "class_encoder_biss_c.html#aca53a5e8dfa2ddaea6950b032a81ff11", null ],
     [ "useWaitSem", "class_encoder_biss_c.html#a9c6e941e9b36e4b30acc36d3eff2a282", null ],
     [ "waitData", "class_encoder_biss_c.html#a6ee678c0dd969b95586c9dbd0a829b19", null ],
-    [ "waitForUpdateSem", "class_encoder_biss_c.html#a60dbc36779e139ad22c51e5c09d1e0f6", null ]
+    [ "waitForUpdateSem", "class_encoder_biss_c.html#a60dbc36779e139ad22c51e5c09d1e0f6", null ],
+    [ "waitThresh", "class_encoder_biss_c.html#a7a5c076b8d78a6ca9d119c070121548b", null ]
 ];

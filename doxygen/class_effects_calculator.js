@@ -34,6 +34,7 @@ var class_effects_calculator =
     [ "effects", "class_effects_calculator.html#a39a5fbaf3d045d366e401c435582a8d7", null ],
     [ "effects_active", "class_effects_calculator.html#ae2c2f2178ce3205745afb5fc6af3b30b", null ],
     [ "effects_stats", "class_effects_calculator.html#abf306c214197607e56e52e188a29b563", null ],
+    [ "effects_statslast", "class_effects_calculator.html#ad7b13e35408af18b0e270596114acab0", null ],
     [ "effects_used", "class_effects_calculator.html#abec85aa5f013efad97ce9a4080607eab", null ],
     [ "filter", "class_effects_calculator.html#ad5cf3698786cfe93a66634322d59d3cf", null ],
     [ "filterProfileId", "class_effects_calculator.html#a339f829233df6cd7a25584c928aa4dea", null ],

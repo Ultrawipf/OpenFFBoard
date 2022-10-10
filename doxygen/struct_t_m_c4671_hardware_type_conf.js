@@ -3,6 +3,7 @@ var struct_t_m_c4671_hardware_type_conf =
     [ "adcOffset", "struct_t_m_c4671_hardware_type_conf.html#a9ee801db834fd4f98d6992a8858a76d0", null ],
     [ "brakeLimHigh", "struct_t_m_c4671_hardware_type_conf.html#a2506caf7284bb7dd678e8073d4036459", null ],
     [ "brakeLimLow", "struct_t_m_c4671_hardware_type_conf.html#a1c9fd9fc200e540fbb5dc9f742e9eb9c", null ],
+    [ "clockfreq", "struct_t_m_c4671_hardware_type_conf.html#aad4be8009f03b82ee341058524f6ccff", null ],
     [ "currentScaler", "struct_t_m_c4671_hardware_type_conf.html#a3b3c2d5e33ace10a956b22ba6d48f583", null ],
     [ "hwVersion", "struct_t_m_c4671_hardware_type_conf.html#abf7034af3f8cc520a81922b183d4436c", null ],
     [ "temp_limit", "struct_t_m_c4671_hardware_type_conf.html#a27c0ce290bc038f1fcc61924fa739a72", null ],

@@ -93,8 +93,8 @@ var class_axis =
     [ "spdlimiterAvg", "class_axis.html#a0e53a910a02b3b3328b7cf435578233c", null ],
     [ "spdlimitreducerI", "class_axis.html#ad22650cf3a97de8973fc180320c59a5d", null ],
     [ "speedFilter", "class_axis.html#a5e35ae1d6640ec4f32e41bf4fe6d306e", null ],
-    [ "tmcbq_1000hz_07q_25k", "class_axis.html#a7278a05f70b1a7618db11e41a2893f05", null ],
-    [ "tmcbq_500hz_07q_25k", "class_axis.html#ad423a833e540923e900e036d4307a6c6", null ],
+    [ "tmcbq_1000hz_07q_25k", "class_axis.html#ab9938ecc3ba60a0692979b05879fb567", null ],
+    [ "tmcbq_500hz_07q_25k", "class_axis.html#a1c969c8821149356c81fbef0aaaef3cb", null ],
     [ "tmclimits", "class_axis.html#ae18282969fa7dc9dc99a70d7d2cf8d20", null ],
     [ "torqueScaler", "class_axis.html#a396e38fa71d534284f77161a532f9130", null ]
 ];

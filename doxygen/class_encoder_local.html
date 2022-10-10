@@ -128,16 +128,16 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a1481fae056308cf15e94add0860eedbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1e09ff4d0e99fa4741f871b020f3eee5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_encoder_local.html#a1e09ff4d0e99fa4741f871b020f3eee5">setPos</a> (int32_t <a class="el" href="class_encoder_local.html#af51f795087edfd5f505aec81fed47bc6">pos</a>)</td></tr>
 <tr class="separator:a1e09ff4d0e99fa4741f871b020f3eee5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af2443962156f032b6c6908ea2408e20b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_encoder_local.html#af2443962156f032b6c6908ea2408e20b">setOffset</a> (int32_t <a class="el" href="class_encoder_local.html#ae62d2e92283635103ec203b0bcfa89d2">offset</a>)</td></tr>
-<tr class="separator:af2443962156f032b6c6908ea2408e20b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4e0c0be256435e1d4766247486c0f1b2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_encoder_local.html#a4e0c0be256435e1d4766247486c0f1b2">setPeriod</a> (uint32_t period)</td></tr>
 <tr class="separator:a4e0c0be256435e1d4766247486c0f1b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaabd6d7ad395d54de1e8790214e89e83"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_encoder_local.html#aaabd6d7ad395d54de1e8790214e89e83">overflowCallback</a> ()</td></tr>
 <tr class="separator:aaabd6d7ad395d54de1e8790214e89e83"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1085ee849d6178c15f5ede76b66e7031"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_encoder_local.html#a1085ee849d6178c15f5ede76b66e7031">exti</a> (uint16_t GPIO_Pin)</td></tr>
-<tr class="separator:a1085ee849d6178c15f5ede76b66e7031"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3436fa7bc9f2b5e3ec263e86a64f462f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_encoder_local.html#a3436fa7bc9f2b5e3ec263e86a64f462f">exti</a> (uint16_t GPIO_Pin) override</td></tr>
+<tr class="separator:a3436fa7bc9f2b5e3ec263e86a64f462f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a42d756320fcb3ff9c5f6c85977d80b1a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_encoder_local.html#a42d756320fcb3ff9c5f6c85977d80b1a">timerElapsed</a> (TIM_HandleTypeDef *<a class="el" href="class_encoder_local.html#a8b3c43e615ff71f96771cbde3584e2a4">htim</a>)</td></tr>
 <tr class="separator:a42d756320fcb3ff9c5f6c85977d80b1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a116356c2df5fec17af9d60549eccf47b"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_encoder_local.html#a116356c2df5fec17af9d60549eccf47b">getTimerCount</a> ()</td></tr>
+<tr class="separator:a116356c2df5fec17af9d60549eccf47b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc86e3bf967e5c57a788c8cdc93b3629"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_encoder_local.html#acc86e3bf967e5c57a788c8cdc93b3629">setCpr</a> (uint32_t <a class="el" href="class_encoder.html#aba57ae0de8a7c2adabb47445d9c845c8">cpr</a>)</td></tr>
 <tr class="separator:acc86e3bf967e5c57a788c8cdc93b3629"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab973b51b8364f12df4d0aef9fa0a6701"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_command_handler_8h.html#aefaf83fec6a7da1d02ae7e912dd9a6d5">CommandStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_encoder_local.html#ab973b51b8364f12df4d0aef9fa0a6701">command</a> (const <a class="el" href="struct_parsed_command.html">ParsedCommand</a> &amp;cmd, std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;replies)</td></tr>
@@ -294,6 +294,7 @@ Static Public Attributes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-types" name="pri-types"></a>
 Private Types</h2></td></tr>
 <tr class="memitem:acc0ca4cd4abf53366f1b8e0afd80c2cc"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_encoder_local.html#acc0ca4cd4abf53366f1b8e0afd80c2cc">EncoderLocal_commands</a> : uint32_t { <a class="el" href="class_encoder_local.html#acc0ca4cd4abf53366f1b8e0afd80c2cca293a5b816a2fade15a3c7b02d660198b">cpr</a>
+, <a class="el" href="class_encoder_local.html#acc0ca4cd4abf53366f1b8e0afd80c2ccafad4d7b64a1a62f0d51054f4fc66f622">useindex</a>
  }</td></tr>
 <tr class="separator:acc0ca4cd4abf53366f1b8e0afd80c2cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -301,10 +302,16 @@ Private Types</h2></td></tr>
 Private Attributes</h2></td></tr>
 <tr class="memitem:a8b3c43e615ff71f96771cbde3584e2a4"><td class="memItemLeft" align="right" valign="top">TIM_HandleTypeDef *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_encoder_local.html#a8b3c43e615ff71f96771cbde3584e2a4">htim</a></td></tr>
 <tr class="separator:a8b3c43e615ff71f96771cbde3584e2a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae62d2e92283635103ec203b0bcfa89d2"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_encoder_local.html#ae62d2e92283635103ec203b0bcfa89d2">offset</a> = 0</td></tr>
-<tr class="separator:ae62d2e92283635103ec203b0bcfa89d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84a9dd971d9c8d490726a5bf1ede7205"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_encoder_local.html#a84a9dd971d9c8d490726a5bf1ede7205">offset</a> = 0</td></tr>
+<tr class="separator:a84a9dd971d9c8d490726a5bf1ede7205"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af51f795087edfd5f505aec81fed47bc6"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_encoder_local.html#af51f795087edfd5f505aec81fed47bc6">pos</a> = 0</td></tr>
 <tr class="separator:af51f795087edfd5f505aec81fed47bc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd6be7c660c9b0809b7d2901cf0dc798"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_encoder_local.html#abd6be7c660c9b0809b7d2901cf0dc798">indexpos</a> = 0</td></tr>
+<tr class="separator:abd6be7c660c9b0809b7d2901cf0dc798"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad81021c46aabeabb6b1976de38105f9a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_encoder_local.html#ad81021c46aabeabb6b1976de38105f9a">indexHit</a> = false</td></tr>
+<tr class="separator:ad81021c46aabeabb6b1976de38105f9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a99a671d02eeaa541618b63c217f869"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_encoder_local.html#a0a99a671d02eeaa541618b63c217f869">useIndex</a> = false</td></tr>
+<tr class="separator:a0a99a671d02eeaa541618b63c217f869"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -366,6 +373,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="acc0ca4cd4abf53366f1b8e0afd80c2cca293a5b816a2fade15a3c7b02d660198b" name="acc0ca4cd4abf53366f1b8e0afd80c2cca293a5b816a2fade15a3c7b02d660198b"></a>cpr&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="acc0ca4cd4abf53366f1b8e0afd80c2ccafad4d7b64a1a62f0d51054f4fc66f622" name="acc0ca4cd4abf53366f1b8e0afd80c2ccafad4d7b64a1a62f0d51054f4fc66f622"></a>useindex&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 <p class="definition">Definition at line <a class="el" href="_encoder_local_8h_source.html#l00024">24</a> of file <a class="el" href="_encoder_local_8h_source.html">EncoderLocal.h</a>.</p>
@@ -415,7 +423,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_encoder_local_8cpp_source.html#l00035">35</a> of file <a class="el" href="_encoder_local_8cpp_source.html">EncoderLocal.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_encoder_local_8cpp_source.html#l00041">41</a> of file <a class="el" href="_encoder_local_8cpp_source.html">EncoderLocal.cpp</a>.</p>
 
 </div>
 </div>
@@ -463,12 +471,12 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_command_handler.html#a8d2531d579c03d6672495ccb57f5ffb3">CommandHandler</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_encoder_local_8cpp_source.html#l00096">96</a> of file <a class="el" href="_encoder_local_8cpp_source.html">EncoderLocal.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_encoder_local_8cpp_source.html#l00133">133</a> of file <a class="el" href="_encoder_local_8cpp_source.html">EncoderLocal.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a1085ee849d6178c15f5ede76b66e7031" name="a1085ee849d6178c15f5ede76b66e7031"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1085ee849d6178c15f5ede76b66e7031">&#9670;&nbsp;</a></span>exti()</h2>
+<a id="a3436fa7bc9f2b5e3ec263e86a64f462f" name="a3436fa7bc9f2b5e3ec263e86a64f462f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3436fa7bc9f2b5e3ec263e86a64f462f">&#9670;&nbsp;</a></span>exti()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -486,14 +494,14 @@ Additional Inherited Members</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p>Reimplemented from <a class="el" href="class_exti_handler.html#a98dad3ef8d41c40d84493e41b1f8c16e">ExtiHandler</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_encoder_local_8cpp_source.html#l00072">72</a> of file <a class="el" href="_encoder_local_8cpp_source.html">EncoderLocal.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_encoder_local_8cpp_source.html#l00098">98</a> of file <a class="el" href="_encoder_local_8cpp_source.html">EncoderLocal.cpp</a>.</p>
 
 </div>
 </div>
@@ -523,7 +531,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_encoder.html#a75a328ecc1a9738edc6f051c682cdabb">Encoder</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_encoder_local_8cpp_source.html#l00052">52</a> of file <a class="el" href="_encoder_local_8cpp_source.html">EncoderLocal.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_encoder_local_8cpp_source.html#l00070">70</a> of file <a class="el" href="_encoder_local_8cpp_source.html">EncoderLocal.cpp</a>.</p>
 
 </div>
 </div>
@@ -553,7 +561,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_command_handler.html#a0842b01125770b9be569a29d49080a3f">CommandHandler</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_encoder_local_8h_source.html#l00051">51</a> of file <a class="el" href="_encoder_local_8h_source.html">EncoderLocal.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_encoder_local_8h_source.html#l00053">53</a> of file <a class="el" href="_encoder_local_8h_source.html">EncoderLocal.h</a>.</p>
 
 </div>
 </div>
@@ -614,7 +622,26 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_encoder.html#a5041739a15b236ef2428c1e7e974f8e2">Encoder</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_encoder_local_8cpp_source.html#l00057">57</a> of file <a class="el" href="_encoder_local_8cpp_source.html">EncoderLocal.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_encoder_local_8cpp_source.html#l00075">75</a> of file <a class="el" href="_encoder_local_8cpp_source.html">EncoderLocal.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a116356c2df5fec17af9d60549eccf47b" name="a116356c2df5fec17af9d60549eccf47b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a116356c2df5fec17af9d60549eccf47b">&#9670;&nbsp;</a></span>getTimerCount()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int32_t EncoderLocal::getTimerCount </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_encoder_local_8cpp_source.html#l00066">66</a> of file <a class="el" href="_encoder_local_8cpp_source.html">EncoderLocal.cpp</a>.</p>
 
 </div>
 </div>
@@ -660,7 +687,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_encoder_local_8cpp_source.html#l00084">84</a> of file <a class="el" href="_encoder_local_8cpp_source.html">EncoderLocal.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_encoder_local_8cpp_source.html#l00121">121</a> of file <a class="el" href="_encoder_local_8cpp_source.html">EncoderLocal.cpp</a>.</p>
 
 </div>
 </div>
@@ -679,7 +706,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_encoder_local_8cpp_source.html#l00030">30</a> of file <a class="el" href="_encoder_local_8cpp_source.html">EncoderLocal.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_encoder_local_8cpp_source.html#l00035">35</a> of file <a class="el" href="_encoder_local_8cpp_source.html">EncoderLocal.cpp</a>.</p>
 
 </div>
 </div>
@@ -709,7 +736,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_persistent_storage.html#aa8187136adfa89fca9ddee2578f6eb68">PersistentStorage</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_encoder_local_8cpp_source.html#l00045">45</a> of file <a class="el" href="_encoder_local_8cpp_source.html">EncoderLocal.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_encoder_local_8cpp_source.html#l00053">53</a> of file <a class="el" href="_encoder_local_8cpp_source.html">EncoderLocal.cpp</a>.</p>
 
 </div>
 </div>
@@ -739,7 +766,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_persistent_storage.html#a105599e99ab0e4244a531c2286f2ffa2">PersistentStorage</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_encoder_local_8cpp_source.html#l00041">41</a> of file <a class="el" href="_encoder_local_8cpp_source.html">EncoderLocal.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_encoder_local_8cpp_source.html#l00047">47</a> of file <a class="el" href="_encoder_local_8cpp_source.html">EncoderLocal.cpp</a>.</p>
 
 </div>
 </div>
@@ -759,25 +786,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_encoder_local_8cpp_source.html#l00092">92</a> of file <a class="el" href="_encoder_local_8cpp_source.html">EncoderLocal.cpp</a>.</p>
-
-</div>
-</div>
-<a id="af2443962156f032b6c6908ea2408e20b" name="af2443962156f032b6c6908ea2408e20b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af2443962156f032b6c6908ea2408e20b">&#9670;&nbsp;</a></span>setOffset()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void EncoderLocal::setOffset </td>
-          <td>(</td>
-          <td class="paramtype">int32_t&#160;</td>
-          <td class="paramname"><em>offset</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
+<p class="definition">Definition at line <a class="el" href="_encoder_local_8cpp_source.html#l00129">129</a> of file <a class="el" href="_encoder_local_8cpp_source.html">EncoderLocal.cpp</a>.</p>
 
 </div>
 </div>
@@ -797,7 +806,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_encoder_local_8cpp_source.html#l00068">68</a> of file <a class="el" href="_encoder_local_8cpp_source.html">EncoderLocal.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_encoder_local_8cpp_source.html#l00094">94</a> of file <a class="el" href="_encoder_local_8cpp_source.html">EncoderLocal.cpp</a>.</p>
 
 </div>
 </div>
@@ -828,7 +837,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_encoder.html#aacf98b034fee3e2fd70cc443a784a5e0">Encoder</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_encoder_local_8cpp_source.html#l00061">61</a> of file <a class="el" href="_encoder_local_8cpp_source.html">EncoderLocal.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_encoder_local_8cpp_source.html#l00079">79</a> of file <a class="el" href="_encoder_local_8cpp_source.html">EncoderLocal.cpp</a>.</p>
 
 </div>
 </div>
@@ -858,7 +867,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_timer_handler.html#a22b251078df0edfda8ade99324045649">TimerHandler</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_encoder_local_8cpp_source.html#l00078">78</a> of file <a class="el" href="_encoder_local_8cpp_source.html">EncoderLocal.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_encoder_local_8cpp_source.html#l00115">115</a> of file <a class="el" href="_encoder_local_8cpp_source.html">EncoderLocal.cpp</a>.</p>
 
 </div>
 </div>
@@ -883,7 +892,55 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_encoder_local_8h_source.html#l00057">57</a> of file <a class="el" href="_encoder_local_8h_source.html">EncoderLocal.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_encoder_local_8h_source.html#l00059">59</a> of file <a class="el" href="_encoder_local_8h_source.html">EncoderLocal.h</a>.</p>
+
+</div>
+</div>
+<a id="ad81021c46aabeabb6b1976de38105f9a" name="ad81021c46aabeabb6b1976de38105f9a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad81021c46aabeabb6b1976de38105f9a">&#9670;&nbsp;</a></span>indexHit</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool EncoderLocal::indexHit = false</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_encoder_local_8h_source.html#l00064">64</a> of file <a class="el" href="_encoder_local_8h_source.html">EncoderLocal.h</a>.</p>
+
+</div>
+</div>
+<a id="abd6be7c660c9b0809b7d2901cf0dc798" name="abd6be7c660c9b0809b7d2901cf0dc798"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd6be7c660c9b0809b7d2901cf0dc798">&#9670;&nbsp;</a></span>indexpos</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t EncoderLocal::indexpos = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_encoder_local_8h_source.html#l00062">62</a> of file <a class="el" href="_encoder_local_8h_source.html">EncoderLocal.h</a>.</p>
 
 </div>
 </div>
@@ -907,7 +964,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">= {</div>
-<div class="line">         .name = <span class="stringliteral">&quot;Local&quot;</span> ,</div>
+<div class="line">         .name = <span class="stringliteral">&quot;Local ABN&quot;</span> ,</div>
 <div class="line">         .id=CLSID_ENCODER_LOCAL,</div>
 <div class="line"> }</div>
 </div><!-- fragment -->
@@ -939,8 +996,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="ae62d2e92283635103ec203b0bcfa89d2" name="ae62d2e92283635103ec203b0bcfa89d2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae62d2e92283635103ec203b0bcfa89d2">&#9670;&nbsp;</a></span>offset</h2>
+<a id="a84a9dd971d9c8d490726a5bf1ede7205" name="a84a9dd971d9c8d490726a5bf1ede7205"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a84a9dd971d9c8d490726a5bf1ede7205">&#9670;&nbsp;</a></span>offset</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -949,7 +1006,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int32_t EncoderLocal::offset = 0</td>
+          <td class="memname">int16_t EncoderLocal::offset = 0</td>
         </tr>
       </table>
   </td>
@@ -959,7 +1016,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_encoder_local_8h_source.html#l00058">58</a> of file <a class="el" href="_encoder_local_8h_source.html">EncoderLocal.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_encoder_local_8h_source.html#l00060">60</a> of file <a class="el" href="_encoder_local_8h_source.html">EncoderLocal.h</a>.</p>
 
 </div>
 </div>
@@ -983,7 +1040,31 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_encoder_local_8h_source.html#l00059">59</a> of file <a class="el" href="_encoder_local_8h_source.html">EncoderLocal.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_encoder_local_8h_source.html#l00061">61</a> of file <a class="el" href="_encoder_local_8h_source.html">EncoderLocal.h</a>.</p>
+
+</div>
+</div>
+<a id="a0a99a671d02eeaa541618b63c217f869" name="a0a99a671d02eeaa541618b63c217f869"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0a99a671d02eeaa541618b63c217f869">&#9670;&nbsp;</a></span>useIndex</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool EncoderLocal::useIndex = false</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_encoder_local_8h_source.html#l00065">65</a> of file <a class="el" href="_encoder_local_8h_source.html">EncoderLocal.h</a>.</p>
 
 </div>
 </div>

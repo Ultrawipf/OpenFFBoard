@@ -2,7 +2,7 @@ var searchData=
 [
   ['g27shifterbuttonclient_0',['g27ShifterButtonClient',['../class_shifter_analog.html#a048ceb3072aec253f0fe1c207c3207a2',1,'ShifterAnalog']]],
   ['gahbcfg_1',['GAHBCFG',['../struct_u_s_b___o_t_g___global_type_def.html#a212059dc4a38136fee7fb358fc74c0d0',1,'USB_OTG_GlobalTypeDef']]],
-  ['gain_2',['gain',['../class_effects_calculator.html#a7bc1656240ffd645a917f2e292761668',1,'EffectsCalculator::gain()'],['../struct____attribute____.html#a7b5e1135ea483c594413089fd261cf1e',1,'__attribute__::gain()'],['../struct_f_f_b___effect.html#a50c87a7dd2869fda3b59c0256067b808',1,'FFB_Effect::gain()'],['../class_a_d_s111_x.html#a3f7f4b9755132f7c2b8d2914670e0cee',1,'ADS111X::gain()']]],
+  ['gain_2',['gain',['../class_effects_calculator.html#a7bc1656240ffd645a917f2e292761668',1,'EffectsCalculator::gain()'],['../struct____attribute____.html#a7b5e1135ea483c594413089fd261cf1e',1,'__attribute__::gain()'],['../struct_f_f_b___effect.html#a50c87a7dd2869fda3b59c0256067b808',1,'FFB_Effect::gain()'],['../class_a_d_s111_x.html#a3f7f4b9755132f7c2b8d2914670e0cee',1,'ADS111X::gain()'],['../struct_t_m_c4671_biquad__conf.html#a6ed605e09a026236c162c33b067d873f',1,'TMC4671Biquad_conf::gain()']]],
   ['gccfg_3',['GCCFG',['../struct_u_s_b___o_t_g___global_type_def.html#a9f94762e8ec6d3984e2da3f48bae8a7b',1,'USB_OTG_GlobalTypeDef']]],
   ['gear_4',['gear',['../class_shifter_analog.html#ad2f0d12125a0448eab86716e3547db46',1,'ShifterAnalog']]],
   ['gearratio_5',['gearRatio',['../struct_gear_ratio__t.html#ad07555ff5468dd6395cc9fc8179973f8',1,'GearRatio_t::gearRatio()'],['../class_axis.html#a25791eaaa269ba040d2f4615a4035585',1,'Axis::gearRatio()']]],

@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['b0_0',['b0',['../struct_t_m_c4671_biquad.html#a3065fe0de8bc8065ebc893c7f350ca1f',1,'TMC4671Biquad']]],
-  ['b1_1',['b1',['../class_biquad.html#a14e44bc8dbf9add3d8dba4d707ecd642',1,'Biquad::b1()'],['../struct_t_m_c4671_biquad.html#a24a84db2b7291411f5591d7e9758d6df',1,'TMC4671Biquad::b1()']]],
-  ['b2_2',['b2',['../class_biquad.html#a365da3ef2da6d9a992f81ad5fc970659',1,'Biquad::b2()'],['../struct_t_m_c4671_biquad.html#a1909ed0c672b455f3d9ac17d363f74b9',1,'TMC4671Biquad::b2()']]],
+  ['b0_0',['b0',['../struct_t_m_c4671_biquad__t.html#a1f59770e1a5482dd59a660e9a0b9ea47',1,'TMC4671Biquad_t']]],
+  ['b1_1',['b1',['../class_biquad.html#a14e44bc8dbf9add3d8dba4d707ecd642',1,'Biquad::b1()'],['../struct_t_m_c4671_biquad__t.html#a8a7ed80608a63d4a1b9ff2daac6eecba',1,'TMC4671Biquad_t::b1()']]],
+  ['b2_2',['b2',['../class_biquad.html#a365da3ef2da6d9a992f81ad5fc970659',1,'Biquad::b2()'],['../struct_t_m_c4671_biquad__t.html#a113f36695267684e9461eb9577965614',1,'TMC4671Biquad_t::b2()']]],
   ['bacsourceid_3',['baCSourceID',['../struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a2fa9779e73f96cd5311a9cd676eb8221',1,'TU_ATTR_PACKED']]],
   ['bainterfacenr_4',['baInterfaceNr',['../struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a44e6026a2bce61cdd54788aa1940f424',1,'TU_ATTR_PACKED']]],
   ['balternatesetting_5',['bAlternateSetting',['../struct_t_u___a_t_t_r___p_a_c_k_e_d.html#af2550553f18c20966282846f2fa548bc',1,'TU_ATTR_PACKED']]],
@@ -53,8 +53,8 @@ var searchData=
   ['belementid_50',['bElementID',['../struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a648ce8736d90f2ddefe10266e6dadf09',1,'TU_ATTR_PACKED']]],
   ['bendpoint_51',['bEndpoint',['../struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a80d3051fff1f841bdf0a3edd278c109a',1,'TU_ATTR_PACKED']]],
   ['bendpointaddress_52',['bEndpointAddress',['../struct_t_u___a_t_t_r___p_a_c_k_e_d.html#acb4657509bfbb26aacf7c5f6fd8817b9',1,'TU_ATTR_PACKED']]],
-  ['bentityid_53',['bEntityID',['../struct_t_u___a_t_t_r___p_a_c_k_e_d.html#ad6f6af85cac85fc861769253f023eaa4',1,'TU_ATTR_PACKED']]],
-  ['bentityid_54',['bEntityId',['../struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a1727c21adecc9a5426363b59d59f10e2',1,'TU_ATTR_PACKED']]],
+  ['bentityid_53',['bEntityId',['../struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a1727c21adecc9a5426363b59d59f10e2',1,'TU_ATTR_PACKED']]],
+  ['bentityid_54',['bEntityID',['../struct_t_u___a_t_t_r___p_a_c_k_e_d.html#ad6f6af85cac85fc861769253f023eaa4',1,'TU_ATTR_PACKED']]],
   ['bfirstinterface_55',['bFirstInterface',['../struct_t_u___a_t_t_r___p_a_c_k_e_d.html#aea75e0f77b781682137b99c20fce8ae2',1,'TU_ATTR_PACKED']]],
   ['bformatindex_56',['bFormatIndex',['../struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a6108f2644a2be5400fe8760355faf7af',1,'TU_ATTR_PACKED']]],
   ['bformattype_57',['bFormatType',['../struct_t_u___a_t_t_r___p_a_c_k_e_d.html#aead456fd52a02c549a876b5d5e65dab7',1,'TU_ATTR_PACKED']]],

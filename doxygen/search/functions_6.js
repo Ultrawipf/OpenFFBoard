@@ -10,7 +10,7 @@ var searchData=
   ['ffbwheel_7',['FFBWheel',['../class_f_f_b_wheel.html#a2984f0be2a7f2e580a3e1800c1aff0d7',1,'FFBWheel']]],
   ['find_5ffree_5feffect_8',['find_free_effect',['../class_hid_f_f_b.html#a8337e1a7efb80a6c8c5beeffbb38c38a',1,'HidFFB']]],
   ['findencoderindex_9',['findEncoderIndex',['../class_t_m_c4671.html#af8933c1f784958a72e7dc78661f97980',1,'TMC4671']]],
-  ['flash_5fdump_10',['Flash_Dump',['../flash__helpers_8h.html#a4b1d1eda57dc4d7d6911e16c96b4b790',1,'Flash_Dump(std::vector&lt; std::tuple&lt; uint16_t, uint16_t &gt; &gt; *result, bool includeAll=false):&#160;flash_helpers.cpp'],['../flash__helpers_8cpp.html#a8abee2e669e71a86b209fff79af3b84b',1,'Flash_Dump(std::vector&lt; std::tuple&lt; uint16_t, uint16_t &gt; &gt; *result, bool includeAll):&#160;flash_helpers.cpp']]],
+  ['flash_5fdump_10',['Flash_Dump',['../flash__helpers_8cpp.html#a8abee2e669e71a86b209fff79af3b84b',1,'Flash_Dump(std::vector&lt; std::tuple&lt; uint16_t, uint16_t &gt; &gt; *result, bool includeAll):&#160;flash_helpers.cpp'],['../flash__helpers_8h.html#a4b1d1eda57dc4d7d6911e16c96b4b790',1,'Flash_Dump(std::vector&lt; std::tuple&lt; uint16_t, uint16_t &gt; &gt; *result, bool includeAll=false):&#160;flash_helpers.cpp']]],
   ['flash_5fread_11',['Flash_Read',['../flash__helpers_8cpp.html#abe1c4bced00f5a4ee1b698098dbad093',1,'Flash_Read(uint16_t adr, uint16_t *buf):&#160;flash_helpers.cpp'],['../flash__helpers_8h.html#abe1c4bced00f5a4ee1b698098dbad093',1,'Flash_Read(uint16_t adr, uint16_t *buf):&#160;flash_helpers.cpp']]],
   ['flash_5freaddefault_12',['Flash_ReadDefault',['../flash__helpers_8h.html#a2bbff9e686544cb0f673cf4e3f948592',1,'flash_helpers.h']]],
   ['flash_5freadwritedefault_13',['Flash_ReadWriteDefault',['../flash__helpers_8cpp.html#a366baca16e358e78f207d2b4870b8c56',1,'Flash_ReadWriteDefault(uint16_t adr, uint16_t *buf, uint16_t def):&#160;flash_helpers.cpp'],['../flash__helpers_8h.html#a366baca16e358e78f207d2b4870b8c56',1,'Flash_ReadWriteDefault(uint16_t adr, uint16_t *buf, uint16_t def):&#160;flash_helpers.cpp']]],
@@ -24,6 +24,5 @@ var searchData=
   ['freeafterrun_21',['FreeAfterRun',['../classcpp__freertos_1_1_work_item.html#ab38768c98eba55fb35fab948a0856103',1,'cpp_freertos::WorkItem']]],
   ['freecspin_22',['freeCsPin',['../class_s_p_i_port.html#ac88f07b2b363e23124e5ac37c4c7465c',1,'SPIPort']]],
   ['freeport_23',['freePort',['../class_u_a_r_t_port.html#a50a55473e423dbb7bb1fe861d09b6163',1,'UARTPort::freePort()'],['../class_i2_c_port.html#a752fa4d24ce3e5671c07b7b67c514330',1,'I2CPort::freePort()'],['../class_c_a_n_port.html#a3760a7620954fc2a5a3fac8365bdc483',1,'CANPort::freePort()']]],
-  ['freespace_24',['freeSpace',['../class_ring_buffer_wrapper.html#a29c95947e5c9e0a8339732be04979763',1,'RingBufferWrapper']]],
-  ['from_5fbq_25',['from_bq',['../struct_t_m_c4671_biquad.html#ab5f797eaae0540f505207256bcc9036c',1,'TMC4671Biquad']]]
+  ['freespace_24',['freeSpace',['../class_ring_buffer_wrapper.html#a29c95947e5c9e0a8339732be04979763',1,'RingBufferWrapper']]]
 ];

@@ -7,7 +7,7 @@ var searchData=
   ['usb488_5fbrequest_5flocal_5flockout_4',['USB488_bREQUEST_LOCAL_LOCKOUT',['../usbtmc_8h.html#aee18bbea2d1733020445c633fde64832acfb0a320ce0eba5e1ade15a0c8eb4f64',1,'usbtmc.h']]],
   ['usb488_5fbrequest_5fread_5fstatus_5fbyte_5',['USB488_bREQUEST_READ_STATUS_BYTE',['../usbtmc_8h.html#aee18bbea2d1733020445c633fde64832af101446b4952de7cc67cacaf8596e4ea',1,'usbtmc.h']]],
   ['usb488_5fbrequest_5fren_5fcontrol_6',['USB488_bREQUEST_REN_CONTROL',['../usbtmc_8h.html#aee18bbea2d1733020445c633fde64832ab22753047bf2eda6519386a34b670a34',1,'usbtmc.h']]],
-  ['usbh_5fclass_5fdriver_5fcount_7',['USBH_CLASS_DRIVER_COUNT',['../usbh_8c.html#a531c35e38ede3ea4e5ba5afb24b29493a3d69eab44dbede9d61507ef234aea764',1,'usbh.c']]],
+  ['usbh_5fclass_5fdriver_5fcount_7',['USBH_CLASS_DRIVER_COUNT',['../usbh_8c.html#a9e93d8eae633734dfeb29e24a1f3a7c0a3d69eab44dbede9d61507ef234aea764',1,'usbh.c']]],
   ['usbtmc_5fbrequest_5fcheck_5fabort_5fbulk_5fin_5fstatus_8',['USBTMC_bREQUEST_CHECK_ABORT_BULK_IN_STATUS',['../usbtmc_8h.html#aee18bbea2d1733020445c633fde64832af9b82c39ffd537dcffbe19d74aeda91b',1,'usbtmc.h']]],
   ['usbtmc_5fbrequest_5fcheck_5fabort_5fbulk_5fout_5fstatus_9',['USBTMC_bREQUEST_CHECK_ABORT_BULK_OUT_STATUS',['../usbtmc_8h.html#aee18bbea2d1733020445c633fde64832ada76ee7f30568483abf5897826000adf',1,'usbtmc.h']]],
   ['usbtmc_5fbrequest_5fcheck_5fclear_5fstatus_10',['USBTMC_bREQUEST_CHECK_CLEAR_STATUS',['../usbtmc_8h.html#aee18bbea2d1733020445c633fde64832aab2eaed444280a247d8003128e7905c5',1,'usbtmc.h']]],
@@ -34,5 +34,6 @@ var searchData=
   ['usbtmc_5fstatus_5fsuccess_31',['USBTMC_STATUS_SUCCESS',['../usbtmc_8h.html#ae5dcdfb01c55239e21f9fdcfe0b62692a0425c7553d4315e855b69e3fbca2990c',1,'usbtmc.h']]],
   ['usbtmc_5fstatus_5ftransfer_5fnot_5fin_5fprogress_32',['USBTMC_STATUS_TRANSFER_NOT_IN_PROGRESS',['../usbtmc_8h.html#ae5dcdfb01c55239e21f9fdcfe0b62692ab16090305ff3ddfc6f3071260ff42bd8',1,'usbtmc.h']]],
   ['useencoder_33',['useEncoder',['../_vesc_c_a_n_8h.html#a2125c9b686c373137058c5ae8fa4219fa2ab3e376a5be601a068bf43d5d70f17e',1,'VescCAN.h']]],
-  ['uvw_34',['uvw',['../_t_m_c4671_8h.html#a3b24d58867df0611d6df04e70b34c5c0a53f21197fd88556f12d066faea1684e9',1,'TMC4671.h']]]
+  ['useindex_34',['useindex',['../class_encoder_local.html#acc0ca4cd4abf53366f1b8e0afd80c2ccafad4d7b64a1a62f0d51054f4fc66f622',1,'EncoderLocal']]],
+  ['uvw_35',['uvw',['../_t_m_c4671_8h.html#a3b24d58867df0611d6df04e70b34c5c0a53f21197fd88556f12d066faea1684e9',1,'TMC4671.h']]]
 ];

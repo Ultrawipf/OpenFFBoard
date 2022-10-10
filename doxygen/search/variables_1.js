@@ -1,8 +1,8 @@
 var searchData=
 [
   ['a0_0',['a0',['../class_biquad.html#a0fb70c385a8f9d7e231744d6d46504c7',1,'Biquad']]],
-  ['a1_1',['a1',['../class_biquad.html#a8298f5e0871449dc6bd6741231c1d3fb',1,'Biquad::a1()'],['../struct_t_m_c4671_biquad.html#af21be7d59eef72330aac26ec841ff300',1,'TMC4671Biquad::a1()']]],
-  ['a2_2',['a2',['../class_biquad.html#ae7beb3858e3230b81fc9aff882f04431',1,'Biquad::a2()'],['../struct_t_m_c4671_biquad.html#ab32c62a6712be6674b99f3b42e81fa7a',1,'TMC4671Biquad::a2()']]],
+  ['a1_1',['a1',['../class_biquad.html#a8298f5e0871449dc6bd6741231c1d3fb',1,'Biquad::a1()'],['../struct_t_m_c4671_biquad__t.html#aac57afa7e4fad0d0487090047751103f',1,'TMC4671Biquad_t::a1()']]],
+  ['a2_2',['a2',['../class_biquad.html#ae7beb3858e3230b81fc9aff882f04431',1,'Biquad::a2()'],['../struct_t_m_c4671_biquad__t.html#ad61310bd010f14335ceac872c8c880d7',1,'TMC4671Biquad_t::a2()']]],
   ['ab_5fas_5fn_3',['ab_as_n',['../struct_t_m_c4671_a_b_n_conf.html#a660a3d77d315cbaa336f4cb30553b2d5',1,'TMC4671ABNConf']]],
   ['abnconf_4',['abnconf',['../class_t_m_c4671.html#a406aed05ca8f1d9ba996c631d4164fe3',1,'TMC4671']]],
   ['accel_5',['accel',['../structmetric__t.html#a3ce28e8bf81def88f284a1068a098f24',1,'metric_t']]],

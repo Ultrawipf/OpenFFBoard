@@ -8,6 +8,7 @@ var class_midi_main =
     [ "~MidiMain", "class_midi_main.html#ad61b9cc8ba35bde997a820f01d3562f5", null ],
     [ "command", "class_midi_main.html#afdbefd9787ef84cc8bc95bf5df8e8c0e", null ],
     [ "controlChange", "class_midi_main.html#a0b363111006d243e5cc928578ee11160", null ],
+    [ "getHelpstring", "class_midi_main.html#adb18040b03cfeda3e28bff55741f05f1", null ],
     [ "getInfo", "class_midi_main.html#a884f0f0620145fab82839f5aea6526bf", null ],
     [ "isCreatable", "class_midi_main.html#a72c6e64ef302404ca62a1d0a8b04590d", null ],
     [ "noteOff", "class_midi_main.html#aab3256b4a168fede07f461b9d64147a4", null ],

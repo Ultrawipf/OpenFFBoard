@@ -16,7 +16,7 @@ var searchData=
   ['usb_5fcdc_5fhid_5fconf_5f1axis_13',['usb_cdc_hid_conf_1axis',['../usb__descriptors_8cpp.html#ae8b38ca40dbc1587e257f64bfe8fdc63',1,'usb_cdc_hid_conf_1axis():&#160;usb_descriptors.cpp'],['../usb__descriptors_8h.html#ae8b38ca40dbc1587e257f64bfe8fdc63',1,'usb_cdc_hid_conf_1axis():&#160;usb_descriptors.cpp']]],
   ['usb_5fcdc_5fhid_5fconf_5f2axis_14',['usb_cdc_hid_conf_2axis',['../usb__descriptors_8cpp.html#a11ab363d9dd1f762f5f92bf81c18610a',1,'usb_cdc_hid_conf_2axis():&#160;usb_descriptors.cpp'],['../usb__descriptors_8h.html#a11ab363d9dd1f762f5f92bf81c18610a',1,'usb_cdc_hid_conf_2axis():&#160;usb_descriptors.cpp']]],
   ['usb_5fcdc_5fmidi_5fconf_15',['usb_cdc_midi_conf',['../usb__descriptors_8cpp.html#aeb0ede3123c9c0368e5286926e8f8bd6',1,'usb_cdc_midi_conf():&#160;usb_descriptors.cpp'],['../usb__descriptors_8h.html#a32c474290d48c1c9c318da572f026f73',1,'usb_cdc_midi_conf():&#160;usb_descriptors.cpp']]],
-  ['usb_5fdevdesc_5fffboard_5fcomposite_16',['usb_devdesc_ffboard_composite',['../usb__descriptors_8cpp.html#a5326deb6f2a777b2b259bfa41f321613',1,'usb_devdesc_ffboard_composite():&#160;usb_descriptors.cpp'],['../usb__descriptors_8h.html#a5326deb6f2a777b2b259bfa41f321613',1,'usb_devdesc_ffboard_composite():&#160;usb_descriptors.cpp']]],
+  ['usb_5fdevdesc_5fffboard_5fcomposite_16',['usb_devdesc_ffboard_composite',['../usb__descriptors_8h.html#a5326deb6f2a777b2b259bfa41f321613',1,'usb_devdesc_ffboard_composite():&#160;usb_descriptors.cpp'],['../usb__descriptors_8cpp.html#a5326deb6f2a777b2b259bfa41f321613',1,'usb_devdesc_ffboard_composite():&#160;usb_descriptors.cpp']]],
   ['usb_5fdevice_17',['usb_device',['../global__callbacks_8cpp.html#a60be4155fae7a9dca05d7736e5e4d3be',1,'global_callbacks.cpp']]],
   ['usb_5fdevice_5fstack_18',['usb_device_stack',['../cppmain_8cpp.html#addd91c6ebb3f5b0273a0dda9aeabfbb4',1,'cppmain.cpp']]],
   ['usb_5fdevice_5ftaskdef_19',['usb_device_taskdef',['../cppmain_8cpp.html#ad5de8c7b51499e1f23c600717b495711',1,'cppmain.cpp']]],
@@ -34,7 +34,7 @@ var searchData=
   ['used_5feffects_31',['used_effects',['../class_hid_f_f_b.html#a5a3bb8b83418f11e6ca5f4ad3a20c960',1,'HidFFB']]],
   ['useencoder_32',['useEncoder',['../class_vesc_c_a_n.html#ad1c4b67eaa8b2b478692f982ccae72be',1,'VescCAN']]],
   ['useenvelope_33',['useEnvelope',['../struct_f_f_b___effect.html#a06b9dd6999e23ccd1a77c84d3c590930',1,'FFB_Effect']]],
-  ['useindex_34',['useIndex',['../struct_t_m_c4671_a_b_n_conf.html#add50fc968f923729b6f1631cebe81f54',1,'TMC4671ABNConf']]],
+  ['useindex_34',['useIndex',['../struct_t_m_c4671_a_b_n_conf.html#add50fc968f923729b6f1631cebe81f54',1,'TMC4671ABNConf::useIndex()'],['../class_encoder_local.html#a0a99a671d02eeaa541618b63c217f869',1,'EncoderLocal::useIndex()']]],
   ['usewaitsem_35',['useWaitSem',['../class_encoder_biss_c.html#a9c6e941e9b36e4b30acc36d3eff2a282',1,'EncoderBissC']]],
   ['usingtermchar_36',['UsingTermChar',['../struct_t_u___a_t_t_r___p_a_c_k_e_d_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#a3a2be11da9dc596317edd46ee8c1fe0d',1,'TU_ATTR_PACKED::TU_ATTR_PACKED']]],
   ['uvwmode_37',['uvwmode',['../struct_t_m_c4671_a_e_n_c_conf.html#a9b18bf43bf51dc9c54ceb8a876fae5d8',1,'TMC4671AENCConf']]]
