@@ -271,7 +271,7 @@ struct TMC4671Biquad_t{
 	bool enable = false;
 };
 struct TMC4671Biquad_conf{
-	TMCbiquadpreset mode;
+	TMCbiquadpreset mode = TMCbiquadpreset::none;
 	biquad_constant_t params = {1000,50}; // Q = 1/100 for lowpass and 1/10 for notch and peak mode
 	float gain = 10.0; // Gain for peak mode
 };
@@ -607,7 +607,6 @@ private:
 	bool manualEncAlign = false;
 	bool spiActive = false; // Flag for tx interrupt that the transfer was started by this instance
 
-	TMCbiquadpreset torqueFilterMode = TMCbiquadpreset::none;
 
 	TMC4671Biquad_conf torqueFilterConf;
 
