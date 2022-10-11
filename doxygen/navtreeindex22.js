@@ -1,6 +1,5 @@
 var NAVTREEINDEX22 =
 {
-"struct____attribute____.html#aadca03a7e7c97e56b1a2c9db3d0624c6":[3,0,1,27],
 "struct____attribute____.html#ab0f91edfe465a6915b77d92a707924f5":[3,0,1,16],
 "struct____attribute____.html#ab32520ef571dcbb0576c21f0e910d2c9":[3,0,1,46],
 "struct____attribute____.html#acace4e1922e468463188a0e52f31d2ab":[3,0,1,6],
@@ -249,5 +248,6 @@ var NAVTREEINDEX22 =
 "struct_t_m_c4671_hardware_type_conf.html":[3,0,142],
 "struct_t_m_c4671_hardware_type_conf.html#a042dbabce28906a0c95f704061e217ad":[3,0,142,12],
 "struct_t_m_c4671_hardware_type_conf.html#a083a3fdb64f4fbfe1f5cd2a8d0c02834":[3,0,142,11],
-"struct_t_m_c4671_hardware_type_conf.html#a1c9fd9fc200e540fbb5dc9f742e9eb9c":[3,0,142,2]
+"struct_t_m_c4671_hardware_type_conf.html#a1c9fd9fc200e540fbb5dc9f742e9eb9c":[3,0,142,2],
+"struct_t_m_c4671_hardware_type_conf.html#a2506caf7284bb7dd678e8073d4036459":[3,0,142,1]
 };

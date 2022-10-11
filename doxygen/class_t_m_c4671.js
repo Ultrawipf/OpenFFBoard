@@ -240,6 +240,5 @@ var class_t_m_c4671 =
     [ "statusFlags", "class_t_m_c4671.html#af6b660da50146922ae2b88c0d4e3a27a", null ],
     [ "statusMask", "class_t_m_c4671.html#a471950ecb00ccabbba69804acaf349a4", null ],
     [ "torqueFilterConf", "class_t_m_c4671.html#ae29b39e8ef5b5f9bb6b0ddc38d89f1ae", null ],
-    [ "torqueFilterMode", "class_t_m_c4671.html#a30a60de78cd4f2714a092c2b299cfe5e", null ],
     [ "zeroEncoderOnIndexHit", "class_t_m_c4671.html#a31e6fa64ceaaec22a58006b5635e80bf", null ]
 ];

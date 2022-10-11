@@ -1,6 +1,5 @@
 var NAVTREEINDEX21 =
 {
-"msc__device_8h.html":[4,0,144],
 "msc__device_8h.html#a0a30469f504fc9d9add41321908d4988":[4,0,144,4],
 "msc__device_8h.html#a148e0153ce23f6ffd6305fb0e0fc4dfd":[4,0,144,9],
 "msc__device_8h.html#a2b8d7cd18e5e49f3378e1f5bdd7bf196":[4,0,144,3],
@@ -249,5 +248,6 @@ var NAVTREEINDEX21 =
 "struct____attribute____.html#a81ed27f4606846a789c4b5cc1d984d87":[3,0,1,7],
 "struct____attribute____.html#a958fa987837de4a064a1c7b723ab7bf8":[3,0,1,11],
 "struct____attribute____.html#a9eaab2a86e1d16e875a147d466188d65":[3,0,1,42],
-"struct____attribute____.html#aac1998665a3eadd3434a64eff8abcc6b":[3,0,1,17]
+"struct____attribute____.html#aac1998665a3eadd3434a64eff8abcc6b":[3,0,1,17],
+"struct____attribute____.html#aadca03a7e7c97e56b1a2c9db3d0624c6":[3,0,1,27]
 };
