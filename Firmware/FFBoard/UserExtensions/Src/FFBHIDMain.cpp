@@ -83,8 +83,7 @@ FFBHIDMain::FFBHIDMain(uint8_t axisCount) :
 	axes_manager = std::make_unique<AxesManager>(&control);
 	axes_manager->setEffectsCalculator(effects_calc.get());
 // Create the USB effects handler & pass in the effects calculator
-	this->ffb = std::make_unique<HidFFB>();
-	this->ffb->setEffectsCalculator(effects_calc.get());
+	this->ffb = std::make_unique<HidFFB>(*effects_calc);
 
 	axes_manager->setAxisCount(axisCount);
 	restoreFlash(); // Load parameters
