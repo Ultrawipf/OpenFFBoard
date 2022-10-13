@@ -359,6 +359,7 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 			}
 		}
 	}
+	// No break required here. The filter is a special preprocessing case for the constant force effect.
 	case FFB_EFFECT_RAMP:
 	case FFB_EFFECT_SQUARE:
 	case FFB_EFFECT_TRIANGLE:
@@ -573,11 +574,6 @@ void EffectsCalculator::setGain(uint8_t gain)
 }
 
 uint8_t EffectsCalculator::getGain() { return global_gain; }
-
-void EffectsCalculator::setEffectsArray(FFB_Effect *pEffects)
-{
-	effects = pEffects;
-}
 
 
 

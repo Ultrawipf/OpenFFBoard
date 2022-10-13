@@ -18,7 +18,7 @@
 
 class HidFFB: public UsbHidHandler {
 public:
-	HidFFB();
+	HidFFB(EffectsCalculator &ec);
 	virtual ~HidFFB();
 
 	void hidOut(uint8_t report_id, hid_report_type_t report_type,const uint8_t* buffer, uint16_t bufsize) override;
@@ -36,8 +36,8 @@ public:
 	void set_gain(uint8_t gain);
 	
 	void sendStatusReport(uint8_t effect);
-	void setEffectsCalculator(EffectsCalculator* ec);
-	FFB_Effect effects[MAX_EFFECTS];
+
+	std::array<FFB_Effect,EffectsCalculator::max_effects>& effects; // Must be passed in constructor
 private:
 	// HID
 	EffectsCalculator* effects_calc = nullptr;
@@ -57,7 +57,6 @@ private:
 	void set_filters(FFB_Effect* effect);
 
 
-	//uint8_t last_effect_id = 0;
 	uint16_t used_effects = 0;
 	bool ffb_active = false;
 	FFB_BlockLoad_Feature_Data_t blockLoad_report;

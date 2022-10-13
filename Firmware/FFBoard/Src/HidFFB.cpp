@@ -12,15 +12,16 @@
 #include "cppmain.h"
 
 
-HidFFB::HidFFB() {
+HidFFB::HidFFB(EffectsCalculator &ec) : effects_calc(&ec), effects(ec.effects)
+{
 
 	// Initialize reports
 	blockLoad_report.effectBlockIndex = 1;
-	blockLoad_report.ramPoolAvailable = (MAX_EFFECTS-used_effects)*sizeof(FFB_Effect);
+	blockLoad_report.ramPoolAvailable = (effects.size()-used_effects)*sizeof(FFB_Effect);
 	blockLoad_report.loadStatus = 1;
 
-	pool_report.ramPoolSize = MAX_EFFECTS*sizeof(FFB_Effect);
-	pool_report.maxSimultaneousEffects = MAX_EFFECTS;
+	pool_report.ramPoolSize = effects.size()*sizeof(FFB_Effect);
+	pool_report.maxSimultaneousEffects = effects.size();
 	pool_report.memoryManagement = 1;
 
 
@@ -30,12 +31,6 @@ HidFFB::HidFFB() {
 HidFFB::~HidFFB() {
 }
 
-void HidFFB::setEffectsCalculator(EffectsCalculator *ec) {
-	this->effects_calc = ec;
-	assert(effects_calc != nullptr);
-	this->effects_calc->setEffectsArray(this->effects);
-	this->effects_calc->setActive(this->ffb_active);
-}
 
 
 bool HidFFB::getFfbActive(){
@@ -169,7 +164,7 @@ void HidFFB::hidOut(uint8_t report_id, hid_report_type_t report_type, uint8_t co
 
 
 void HidFFB::free_effect(uint16_t idx){
-	if(idx < MAX_EFFECTS){
+	if(idx < this->effects.size()){
 		effects_calc->logEffectType(effects[idx].type, true); // Effect off
 		effects[idx].type=FFB_EFFECT_NONE;
 		for(int i=0; i< MAX_AXIS; i++) {
@@ -263,7 +258,7 @@ void HidFFB::ffb_control(uint8_t cmd){
 
 
 void HidFFB::set_constant_effect(FFB_SetConstantForce_Data_t* data){
-	if(data->effectBlockIndex == 0 || data->effectBlockIndex > MAX_EFFECTS){
+	if(data->effectBlockIndex == 0 || data->effectBlockIndex > effects.size()){
 		return;
 	}
 	cfUpdatePeriodAvg.addValue((uint32_t)(HAL_GetTick() - lastCfUpdate));
@@ -302,7 +297,7 @@ void HidFFB::new_effect(FFB_CreateNewEffect_Feature_Data_t* effect){
 	//reportFFBStatus.effectBlockIndex = index;
 	blockLoad_report.effectBlockIndex = index;
 	used_effects++;
-	blockLoad_report.ramPoolAvailable = (MAX_EFFECTS-used_effects)*sizeof(FFB_Effect);
+	blockLoad_report.ramPoolAvailable = (effects.size()-used_effects)*sizeof(FFB_Effect);
 	blockLoad_report.loadStatus = 1;
 	sendStatusReport(index);
 	
@@ -310,7 +305,7 @@ void HidFFB::new_effect(FFB_CreateNewEffect_Feature_Data_t* effect){
 }
 void HidFFB::set_effect(FFB_SetEffect_t* effect){
 	uint8_t index = effect->effectBlockIndex;
-	if(index > MAX_EFFECTS || index == 0)
+	if(index > effects.size() || index == 0)
 		return;
 
 	FFB_Effect* effect_p = &effects[index-1];
@@ -344,7 +339,7 @@ void HidFFB::set_effect(FFB_SetEffect_t* effect){
 }
 
 void HidFFB::set_condition(FFB_SetCondition_Data_t *cond){
-	if(cond->effectBlockIndex == 0 || cond->effectBlockIndex > MAX_EFFECTS){
+	if(cond->effectBlockIndex == 0 || cond->effectBlockIndex > effects.size()){
 		return;
 	}
 	uint8_t axis = cond->parameterBlockOffset;
@@ -368,7 +363,7 @@ void HidFFB::set_condition(FFB_SetCondition_Data_t *cond){
 }
 
 void HidFFB::set_effect_operation(FFB_EffOp_Data_t* report){
-	if(report->effectBlockIndex == 0 || report->effectBlockIndex > MAX_EFFECTS){
+	if(report->effectBlockIndex == 0 || report->effectBlockIndex > effects.size()){
 		return; // Invalid ID
 	}
 	// Start or stop effect
@@ -407,7 +402,7 @@ void HidFFB::set_effect_operation(FFB_EffOp_Data_t* report){
 
 
 void HidFFB::set_envelope(FFB_SetEnvelope_Data_t *report){
-	if(report->effectBlockIndex == 0 || report->effectBlockIndex > MAX_EFFECTS){
+	if(report->effectBlockIndex == 0 || report->effectBlockIndex > effects.size()){
 		return;
 	}
 	FFB_Effect *effect = &effects[report->effectBlockIndex - 1];
@@ -420,7 +415,7 @@ void HidFFB::set_envelope(FFB_SetEnvelope_Data_t *report){
 }
 
 void HidFFB::set_ramp(FFB_SetRamp_Data_t *report){
-	if(report->effectBlockIndex == 0 || report->effectBlockIndex > MAX_EFFECTS){
+	if(report->effectBlockIndex == 0 || report->effectBlockIndex > effects.size()){
 		return;
 	}
 	FFB_Effect *effect = &effects[report->effectBlockIndex - 1];
@@ -430,7 +425,7 @@ void HidFFB::set_ramp(FFB_SetRamp_Data_t *report){
 }
 
 void HidFFB::set_periodic(FFB_SetPeriodic_Data_t* report){
-	if(report->effectBlockIndex == 0 || report->effectBlockIndex > MAX_EFFECTS){
+	if(report->effectBlockIndex == 0 || report->effectBlockIndex > effects.size()){
 		return;
 	}
 	FFB_Effect* effect = &effects[report->effectBlockIndex-1];
@@ -443,7 +438,7 @@ void HidFFB::set_periodic(FFB_SetPeriodic_Data_t* report){
 }
 
 uint8_t HidFFB::find_free_effect(uint8_t type){ //Will return the first effect index which is empty or the same type
-	for(uint8_t i=0;i<MAX_EFFECTS;i++){
+	for(uint8_t i=0;i<effects.size();i++){
 		if(effects[i].type == FFB_EFFECT_NONE){
 			return(i+1);
 		}
@@ -452,7 +447,7 @@ uint8_t HidFFB::find_free_effect(uint8_t type){ //Will return the first effect i
 }
 
 void HidFFB::reset_ffb(){
-	for(uint8_t i=0;i<MAX_EFFECTS;i++){
+	for(uint8_t i=0;i<effects.size();i++){
 		free_effect(i);
 	}
 	//this->reportFFBStatus.effectBlockIndex = 1;

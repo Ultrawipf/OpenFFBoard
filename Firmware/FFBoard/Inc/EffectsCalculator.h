@@ -76,7 +76,6 @@ public:
 	void saveFlash();
 	void restoreFlash();
 
-//	virtual bool processHidCommand(HID_Custom_Data_t* data);
 	bool isActive();
 	void setActive(bool active);
 	void calculateEffects(std::vector<std::unique_ptr<Axis>> &axes);
@@ -89,12 +88,11 @@ public:
 	void logEffectState(uint8_t type,uint8_t state);
 	void resetLoggedActiveEffects(bool reinit);
 
-	//virtual ParseStatus command(ParsedCommand_old *cmd, std::string *reply);
 	CommandStatus command(const ParsedCommand& cmd,std::vector<CommandReply>& replies);
 	virtual std::string getHelpstring() { return "Controls internal FFB effects"; }
 
-	void setEffectsArray(FFB_Effect* pEffects);
-	FFB_Effect* effects = nullptr; // ptr to effects array in HidFFB
+	static const uint32_t max_effects = MAX_EFFECTS;
+	std::array<FFB_Effect,max_effects> effects; // Main effects storage
 
 	// Thread impl
 	void Run();
