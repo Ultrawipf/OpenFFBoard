@@ -22,12 +22,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        conf:  [ {os: 'windows-latest', pyver: '3.8'},{os: 'windows-latest', pyver: '3.9'}, {os: 'macos-latest', pyver: '3.9'}]
+        conf:  [ {os: 'windows-latest', pyver: '3.8'},{os: 'windows-latest', pyver: '3.11'}, {os: 'macos-latest', pyver: '3.10'}]
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: 'true'
 
@@ -39,7 +39,7 @@ jobs:
           path: '${{ github.workspace }}/Configurator'
           python-version: '${{ matrix.conf.pyver }}'
         
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: OpenFFBoard-Configurator-${{ matrix.conf.os }}-py${{ matrix.conf.pyver }}
           path: ${{ steps.build_c.outputs.distpath }}
@@ -52,7 +52,7 @@ jobs:
     runs-on: ubuntu-latest
     #if: github.event.base_ref == 'refs/heads/master'
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
             submodules: 'true'
 
