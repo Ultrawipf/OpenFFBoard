@@ -2,6 +2,7 @@
 - Changed default power from 2000 to 5000 as 2000 is not enough to calibrate many motors
 - Internal change moving effects into effectscalculator to simplify managing effects from different sources
 - Effect intensity tuning value now only affects game effects. Fixes the effect intensity incorrectly affecting the endstop.
+- Added new subproject for third party devkits (F407DISCO target)
 
 ### Changes since 1.9.x:
 - Added local encoder index option to reload a previously stored offset
