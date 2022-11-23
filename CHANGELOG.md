@@ -1,3 +1,7 @@
+### Changes this version:
+- Changed default power from 2000 to 5000 as 2000 is not enough to calibrate many motors
+- Internal change moving effects into effectscalculator to simplify managing effects from different sources
+
 ### Changes since 1.9.x:
 - Added local encoder index option to reload a previously stored offset
 - Fixed an issue with 2 axis FFB effects on second axis
