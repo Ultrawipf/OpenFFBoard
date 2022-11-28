@@ -234,9 +234,10 @@ private:
 	uint8_t fx_ratio_i = 204; // Reduce effects to a certain ratio of the total power to have a margin for the endstop. 80% = 204
 	uint16_t power = 5000;
 	float torqueScaler = 0; // power * fx_ratio as a ratio between 0 & 1
+	float effect_margin_scaler = 0;
 	bool invertAxis = false;
 	uint8_t endstopStrength = 127; // Sets how much extra torque per count above endstop is added. High = stiff endstop. Low = softer
-	const float endstopGain = 50; // Overall max endstop intensity
+	const float endstopGain = 25; // Overall max endstop intensity
 
 
 	uint8_t idlespringstrength = 127;
