@@ -62,6 +62,7 @@ var class_axis =
     [ "degreesOfRotation", "class_axis.html#abda22770951446b0ce5a9bc385fa5fc2", null ],
     [ "drv", "class_axis.html#ab8b67d4546ffb7cfe1f936a33138ca00", null ],
     [ "drv_chooser", "class_axis.html#a3a8a653442b31b71a1f92fbc0dae0225", null ],
+    [ "effect_margin_scaler", "class_axis.html#a023f2c5093e59228394d63b32e4addee", null ],
     [ "effectTorque", "class_axis.html#ac390a93a56b158ca862a170fab9b2ad8", null ],
     [ "enc", "class_axis.html#aac0d628209ee1b8ab5c4699a0fbc2d97", null ],
     [ "enc_chooser", "class_axis.html#a8401abdb8455405eadfd9713fcab920f", null ],

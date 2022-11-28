@@ -340,7 +340,7 @@ var searchData=
   ['hidd_5freset_337',['hidd_reset',['../hid__device_8c.html#a02a57dcfc0a6dd2398d9d902e3433132',1,'hidd_reset(uint8_t rhport):&#160;hid_device.c'],['../hid__device_8h.html#a02a57dcfc0a6dd2398d9d902e3433132',1,'hidd_reset(uint8_t rhport):&#160;hid_device.c']]],
   ['hidd_5fxfer_5fcb_338',['hidd_xfer_cb',['../hid__device_8c.html#aa373bafdf8bcafb736ae9b75ec1b21f4',1,'hidd_xfer_cb(uint8_t rhport, uint8_t ep_addr, xfer_result_t result, uint32_t xferred_bytes):&#160;hid_device.c'],['../hid__device_8h.html#a50cb9b8bd19b92fb5ee16c6cbb830680',1,'hidd_xfer_cb(uint8_t rhport, uint8_t ep_addr, xfer_result_t event, uint32_t xferred_bytes):&#160;hid_device.c']]],
   ['hidden_339',['hidden',['../_choosable_class_8h.html#aa3a363b83e4ed5a23cf7398fcf8bae0ca662f707d5491e9bce8238a6c0be92190',1,'ChoosableClass.h']]],
-  ['hidffb_340',['HidFFB',['../class_hid_f_f_b.html',1,'HidFFB'],['../class_hid_f_f_b.html#a19502f8ac30d8161b786bd6d33014ea7',1,'HidFFB::HidFFB()']]],
+  ['hidffb_340',['HidFFB',['../class_hid_f_f_b.html',1,'HidFFB'],['../class_hid_f_f_b.html#ab6882057a662fdbbde20e8a453995ef1',1,'HidFFB::HidFFB()']]],
   ['hidffb_2ecpp_341',['HidFFB.cpp',['../_hid_f_f_b_8cpp.html',1,'']]],
   ['hidffb_2eh_342',['HidFFB.h',['../_hid_f_f_b_8h.html',1,'']]],
   ['hidget_343',['hidGet',['../class_usb_hid_handler.html#a05a390b45bacd9fb9a3882a44c3d7005',1,'UsbHidHandler::hidGet()'],['../class_hid_f_f_b.html#a28c452d1376b5da7708211745df4c845',1,'HidFFB::hidGet()']]],

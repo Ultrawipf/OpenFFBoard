@@ -24,14 +24,13 @@ var class_effects_calculator =
     [ "saveFlash", "class_effects_calculator.html#ae11b5eebae3f30eb9e16053d958a8ce8", null ],
     [ "setActive", "class_effects_calculator.html#a58757ea0273d4e84b95fe43dae45bf4c", null ],
     [ "setDirectionEnableMask", "class_effects_calculator.html#aa439fbe0bc98fb0f6c95bcfcd52bf185", null ],
-    [ "setEffectsArray", "class_effects_calculator.html#afcda3b9121654cf270e5ce4364c6abeb", null ],
     [ "setFilters", "class_effects_calculator.html#aeb35ed9548dd34f774b755c41f5771d6", null ],
     [ "setGain", "class_effects_calculator.html#aaa93ee9315f35afa73a51594f9729195", null ],
     [ "speedRampupPct", "class_effects_calculator.html#a81856fd697fd0fd18d8e6ae5090c5449", null ],
     [ "updateFilterSettingsForEffects", "class_effects_calculator.html#a31faf6bf765dd8f875cf542c05910812", null ],
     [ "calcfrequency", "class_effects_calculator.html#a96630061dd851c6c0d24344721d52e45", null ],
     [ "directionEnableMask", "class_effects_calculator.html#a8512a9631c1440b95faee2c1b51c6cd0", null ],
-    [ "effects", "class_effects_calculator.html#a39a5fbaf3d045d366e401c435582a8d7", null ],
+    [ "effects", "class_effects_calculator.html#ae9438d5a635a3aaffbaa9d13f9107ff6", null ],
     [ "effects_active", "class_effects_calculator.html#ae2c2f2178ce3205745afb5fc6af3b30b", null ],
     [ "effects_stats", "class_effects_calculator.html#abf306c214197607e56e52e188a29b563", null ],
     [ "effects_statslast", "class_effects_calculator.html#ad7b13e35408af18b0e270596114acab0", null ],
@@ -43,6 +42,7 @@ var class_effects_calculator =
     [ "global_gain", "class_effects_calculator.html#a16dd559d84404850ed15ca1f971e2997", null ],
     [ "info", "class_effects_calculator.html#ae06082726e9bd9666accc46ec445b48c", null ],
     [ "isMonitorEffect", "class_effects_calculator.html#ad17d069e60c1c4c7fe5cc04ba9b020c3", null ],
+    [ "max_effects", "class_effects_calculator.html#ac83b35e4836fa729a6014237e4954453", null ],
     [ "qfloatScaler", "class_effects_calculator.html#a6d420fa45ffcc6df35772e92b256b703", null ],
     [ "scaler", "class_effects_calculator.html#af98dcbc5cf6eebd8c07e16413fbfef60", null ]
 ];

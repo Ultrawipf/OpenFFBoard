@@ -245,9 +245,9 @@ var NAVTREEINDEX3 =
 "class_axes_manager.html#aebbbe7aed6d7b689685bd656702a4b42":[3,0,9,20],
 "class_axis.html":[3,0,10],
 "class_axis.html#a0231cbf544f7eac35b7f165960218a92":[3,0,10,29],
+"class_axis.html#a023f2c5093e59228394d63b32e4addee":[3,0,10,62],
 "class_axis.html#a02b07a6421e20755e407f6a5612c9421":[3,0,10,21],
 "class_axis.html#a04a9e80f52900bf09963687077bb799c":[3,0,10,7],
 "class_axis.html#a0b3129bc899fdaaa3dd83d478f2b9d7d":[3,0,10,11],
-"class_axis.html#a0cd5bdf9a42ada994758f899663a3700":[3,0,10,79],
-"class_axis.html#a0e53a910a02b3b3328b7cf435578233c":[3,0,10,90]
+"class_axis.html#a0cd5bdf9a42ada994758f899663a3700":[3,0,10,80]
 };

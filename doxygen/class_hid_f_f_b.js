@@ -1,6 +1,6 @@
 var class_hid_f_f_b =
 [
-    [ "HidFFB", "class_hid_f_f_b.html#a19502f8ac30d8161b786bd6d33014ea7", null ],
+    [ "HidFFB", "class_hid_f_f_b.html#ab6882057a662fdbbde20e8a453995ef1", null ],
     [ "~HidFFB", "class_hid_f_f_b.html#a9ab46be09f32214f7296e53f7f3ad94a", null ],
     [ "ffb_control", "class_hid_f_f_b.html#abe8f91666068e5bb1adbbca83483734a", null ],
     [ "find_free_effect", "class_hid_f_f_b.html#a8337e1a7efb80a6c8c5beeffbb38c38a", null ],
@@ -24,12 +24,11 @@ var class_hid_f_f_b =
     [ "set_gain", "class_hid_f_f_b.html#a7cb4b9e7837698e13c25c8271f0c3362", null ],
     [ "set_periodic", "class_hid_f_f_b.html#afa8dca8dfcb2f32f20e59cf2840c0817", null ],
     [ "set_ramp", "class_hid_f_f_b.html#ae1bbb5cb4b5add2851ff1bfb988e9757", null ],
-    [ "setEffectsCalculator", "class_hid_f_f_b.html#aaa0c7606fc2d1df36a3bf3c6892cd7ee", null ],
     [ "start_FFB", "class_hid_f_f_b.html#a208283b8a09e8cb67461f47c491b8ad5", null ],
     [ "stop_FFB", "class_hid_f_f_b.html#ae9eac7111c117c02442c8381e908d57d", null ],
     [ "blockLoad_report", "class_hid_f_f_b.html#a39c09c6462c03d8e2665ffd3c7345acd", null ],
     [ "cfUpdatePeriodAvg", "class_hid_f_f_b.html#af5736d06eca5d18ef2a10b2cf44f00f6", null ],
-    [ "effects", "class_hid_f_f_b.html#a4d7f393f79820f4c9d9a59932af242be", null ],
+    [ "effects", "class_hid_f_f_b.html#a0c4ba47fb34b524816d94c70ee276628", null ],
     [ "effects_calc", "class_hid_f_f_b.html#aa63cc49341799e6b314a309078b02306", null ],
     [ "ffb_active", "class_hid_f_f_b.html#ad1e907722aeafb6214d8c4911dee749e", null ],
     [ "hidPeriodAvg", "class_hid_f_f_b.html#a069897bf62f1a4b5ad3077bfda5d179a", null ],
