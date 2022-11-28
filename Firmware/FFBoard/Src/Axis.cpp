@@ -53,7 +53,7 @@ Axis::Axis(char axis,volatile Control_t* control) :CommandHandler("axis", CLSID_
 	restoreFlash(); // Load parameters
 	CommandHandler::registerCommands(); // Internal commands
 	registerCommands();
-
+	updateTorqueScaler(); // In case no flash setting has been loaded yet
 }
 
 Axis::~Axis()
@@ -79,7 +79,7 @@ void Axis::registerCommands(){
 	registerCommand("pos", Axis_commands::pos, "Encoder position",CMDFLAG_GET);
 	registerCommand("maxspeed", Axis_commands::maxspeed, "Speed limit in deg/s",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("maxtorquerate", Axis_commands::maxtorquerate, "Torque rate limit in counts/ms",CMDFLAG_GET | CMDFLAG_SET);
-	registerCommand("fxratio", Axis_commands::fxratio, "Effect ratio. Reduces effects excluding endstop. 255=100%",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("fxratio", Axis_commands::fxratio, "Effect ratio. Reduces game effects excluding endstop. 255=100%",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("curtorque", Axis_commands::curtorque, "Axis torque",CMDFLAG_GET);
 	registerCommand("curpos", Axis_commands::curpos, "Axis position",CMDFLAG_GET);
 	registerCommand("curspd", Axis_commands::curspd, "Axis speed",CMDFLAG_GET);
@@ -452,7 +452,7 @@ void Axis::setIdleSpringStrength(uint8_t spring){
 	}else{
 		idle_center = true;
 	}
-	idlespringclip = clip<int32_t,int32_t>((int32_t)spring*50,0,10000);
+	idlespringclip = clip<int32_t,int32_t>((int32_t)spring*35,0,10000);
 	idlespringscale = 0.5f + ((float)spring * 0.01f);
 }
 
@@ -523,8 +523,8 @@ uint16_t Axis::getPower(){
 }
 
 void  Axis::updateTorqueScaler() {
-	float effect_margin_scaler = ((float)fx_ratio_i/255.0);
-	torqueScaler = ((float)power / (float)0x7fff) * effect_margin_scaler;
+	effect_margin_scaler = ((float)fx_ratio_i/255.0);
+	torqueScaler = ((float)power / (float)0x7fff);
 }
 
 float Axis::getTorqueScaler(){
@@ -547,7 +547,7 @@ int16_t Axis::updateEndstop(){
 		return 0;
 	}
 	float addtorque = clipdir*metric.current.posDegrees - (float)this->degreesOfRotation/2.0; // degress of rotation counts total range so multiply by 2
-	addtorque *= (float)endstopStrength * endstopGain * torqueScaler; // Apply endstop gain for stiffness.
+	addtorque *= (float)endstopStrength * endstopGain; // Apply endstop gain for stiffness.
 	addtorque *= -clipdir;
 
 	return clip<int32_t,int32_t>(addtorque,-0x7fff,0x7fff);
@@ -566,10 +566,11 @@ bool Axis::updateTorque(int32_t* totalTorque) {
 	}
 
 	// Scale effect torque
-	effectTorque  *= torqueScaler;
-
-	int32_t torque = effectTorque + updateEndstop();
-	torque += axisEffectTorque * torqueScaler; // Updated from effect calculator
+	int32_t torque = effectTorque; // Game effects
+	torque *= effect_margin_scaler;
+	torque += axisEffectTorque; // Independent effects
+	torque += updateEndstop();
+	torque *= torqueScaler; // Scale to power
 
 	// TODO speed and accel limiters
 	if(maxSpeedDegS > 0){
