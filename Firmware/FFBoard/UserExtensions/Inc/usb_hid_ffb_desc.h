@@ -20,4 +20,9 @@ extern const uint8_t hid_1ffb_desc[USB_HID_1FFB_REPORT_DESC_SIZE];
 extern const uint8_t hid_2ffb_desc[USB_HID_2FFB_REPORT_DESC_SIZE];
 #endif
 
+#define USB_HID_GAMEPAD_REPORT_DESC_SIZE 176
+#ifdef FFB_HID_DESC_GAMEPAD
+extern const uint8_t hid_gamepad_desc[USB_HID_GAMEPAD_REPORT_DESC_SIZE];
+#endif
+
 #endif /* USB_INC_USB_HID_FFB_DESC_H_ */

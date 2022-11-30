@@ -75,15 +75,15 @@ const std::vector<class_entry<AnalogSource>> analog_sources =
 #endif
 };
 
-FFBHIDMain::FFBHIDMain(uint8_t axisCount) :
-		Thread("FFBMAIN", 256, 30),btn_chooser(button_sources),analog_chooser(analog_sources)
+FFBHIDMain::FFBHIDMain(uint8_t axisCount,std::unique_ptr<EffectsControlItf> &ffb,std::unique_ptr<EffectsCalculator> &effects_calc) :
+		Thread("FFBMAIN", 256, 30),ffb(ffb),effects_calc(effects_calc),btn_chooser(button_sources),analog_chooser(analog_sources)
 {
 	// Creates the required no of axis (Default 1)
-	effects_calc = std::make_unique<EffectsCalculator>();
+//	effects_calc = std::make_unique<EffectsCalculator>();
 	axes_manager = std::make_unique<AxesManager>(&control);
 	axes_manager->setEffectsCalculator(effects_calc.get());
 // Create the USB effects handler & pass in the effects calculator
-	this->ffb = std::make_unique<HidFFB>(*effects_calc);
+	//this->ffb = std::make_unique<HidFFB>(*effects_calc);
 
 	axes_manager->setAxisCount(axisCount);
 	restoreFlash(); // Load parameters

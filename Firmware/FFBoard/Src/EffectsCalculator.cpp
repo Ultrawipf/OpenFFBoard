@@ -716,7 +716,6 @@ void EffectsCalculator::logEffectType(uint8_t type,bool remove){
 				effects_stats[type-1].nb ++;
 			}
 		}
-
 	}
 }
 
@@ -1013,4 +1012,34 @@ void EffectsCalculator::Run() {
 	}
 
 }
+
+/**
+ * Resets an effect and marks the effect as free
+ */
+void EffectsCalculator::free_effect(uint16_t idx){
+	if(idx < this->effects.size()){
+		logEffectType(effects[idx].type, true); // Effect off
+		effects[idx].type=FFB_EFFECT_NONE;
+		for(int i=0; i< MAX_AXIS; i++) {
+			if(effects[idx].filter[i] != nullptr){
+				effects[idx].filter[i].reset(nullptr);
+			}
+		}
+	}
+}
+
+/**
+ * Will return the first effect index which is empty or -1 if none found
+ */
+int32_t EffectsCalculator::find_free_effect(uint8_t type){
+	if(type > FFB_EFFECT_NONE && type < FFB_EFFECT_CUSTOM+1){ // Check if it is a valid effect type
+		for(uint8_t i=0;i<effects.size();i++){
+			if(effects[i].type == FFB_EFFECT_NONE){
+				return(i);
+			}
+		}
+	}
+	return -1;
+}
+
 

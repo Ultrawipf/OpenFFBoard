@@ -25,6 +25,9 @@
 #ifdef CANBRIDGE
 #include "CanBridge.h"
 #endif
+#ifdef FFBHIDEXT
+#include "FFBHIDExt.h"
+#endif
 
 // Add all classes here
 const std::vector<class_entry<FFBoardMain>> class_registry =
@@ -37,6 +40,10 @@ const std::vector<class_entry<FFBoardMain>> class_registry =
 
 #ifdef FFBJOYSTICK
 		add_class<FFBJoystick,FFBoardMain>(),
+#endif
+
+#ifdef FFBHIDEXT
+		add_class<FFBHIDExt,FFBoardMain>(),
 #endif
 
 #ifdef TMCDEBUG
