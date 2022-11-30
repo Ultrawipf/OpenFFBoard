@@ -43,6 +43,10 @@ extern const uint8_t usb_cdc_hid_conf_1axis[];
 extern const uint8_t usb_cdc_hid_conf_2axis[];
 #endif
 
+#ifdef FFB_HID_DESC_GAMEPAD
+extern const uint8_t usb_cdc_hid_conf_gamepad[];
+#endif
+
 extern const uint8_t usb_cdc_midi_conf[];
 
 // Default strings

@@ -21,6 +21,11 @@ public:
 	const ClassIdentifier getInfo();
 
 	void usbInit() override;
+
+
+private:
+	std::unique_ptr<EffectsCalculator> effects_calc = std::make_unique<EffectsCalculator>();
+	std::unique_ptr<EffectsControlItf> ffb = std::make_unique<HidFFB>(*effects_calc);
 };
 
 #endif

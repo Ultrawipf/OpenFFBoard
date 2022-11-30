@@ -16,7 +16,7 @@
 #include "FastAvg.h"
 
 
-class HidFFB: public UsbHidHandler {
+class HidFFB: public UsbHidHandler, public EffectsControlItf {
 public:
 	HidFFB(EffectsCalculator &ec);
 	virtual ~HidFFB();
@@ -37,11 +37,10 @@ public:
 	
 	void sendStatusReport(uint8_t effect);
 
-	std::array<FFB_Effect,EffectsCalculator::max_effects>& effects; // Must be passed in constructor
 private:
 	// HID
 	EffectsCalculator* effects_calc = nullptr;
-	uint8_t find_free_effect(uint8_t type);
+	std::array<FFB_Effect,EffectsCalculator::max_effects>& effects; // Must be passed in constructor
 	void new_effect(FFB_CreateNewEffect_Feature_Data_t* effect);
 	void free_effect(uint16_t id);
 	void ffb_control(uint8_t cmd);

@@ -84,6 +84,21 @@ const uint8_t usb_cdc_hid_conf_2axis[] =
 };
 #endif
 
+// Composite CDC and HID
+#ifdef FFB_HID_DESC_GAMEPAD
+const uint8_t usb_cdc_hid_conf_gamepad[] =
+{
+  // Config number, interface count, string index, total length, attribute, power in mA
+  TUD_CONFIG_DESCRIPTOR(1, 3, 0, (TUD_CONFIG_DESC_LEN + TUD_CDC_DESC_LEN + TUD_HID_INOUT_DESC_LEN), TUSB_DESC_CONFIG_ATT_REMOTE_WAKEUP, 100),
+
+  // 1st CDC: Interface number, string index, EP notification address and size, EP data address (out, in) and size.
+  TUD_CDC_DESCRIPTOR(0, 4, 0x82, 8, 0x01, 0x81, 64),
+
+  // HID Descriptor. EP 83 and 2
+  TUD_HID_INOUT_DESCRIPTOR(2, 5, HID_ITF_PROTOCOL_NONE, USB_HID_GAMEPAD_REPORT_DESC_SIZE, 0x83, 0x02, 64, HID_BINTERVAL),
+};
+#endif
+
 // Composite CDC and MIDI
 uint8_t const usb_cdc_midi_conf[] =
 {

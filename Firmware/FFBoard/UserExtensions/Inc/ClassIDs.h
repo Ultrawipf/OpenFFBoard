@@ -37,6 +37,7 @@ enum class ClassType : uint16_t {
 #define CLSID_NONE			0	// Undefined IDs or failsafe main
 #define CLSID_MAIN_FFBWHEEL 0x1
 #define CLSID_MAIN_FFBJOY	0x2
+#define CLSID_MAIN_FFBEXT	0x3
 #define CLSID_MAIN_TMCDBG 	0xB
 #define CLSID_MAIN_CAN	 	0xC
 #define CLSID_MAIN_MIDI 	0xD
@@ -78,6 +79,7 @@ enum class ClassType : uint16_t {
 // Internal classes
 #define CLSID_AXIS			0xA01
 #define CLSID_EFFECTSCALC	0xA02
+#define CLSID_EFFECTSMGR	0xA03
 
 #define CLSID_CANPORT		0xC01
 #define CLSID_I2CPORT		0xC02
