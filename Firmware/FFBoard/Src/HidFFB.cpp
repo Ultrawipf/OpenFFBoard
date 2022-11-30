@@ -150,7 +150,7 @@ void HidFFB::hidOut(uint8_t report_id, hid_report_type_t report_type, uint8_t co
 		}
 		case HID_ID_BLKFRREP: // Free a block
 		{
-			free_effect(report[1]-1);
+			effects_calc->free_effect(report[1]-1);
 			break;
 		}
 
@@ -163,17 +163,17 @@ void HidFFB::hidOut(uint8_t report_id, hid_report_type_t report_type, uint8_t co
 }
 
 
-void HidFFB::free_effect(uint16_t idx){
-	if(idx < this->effects.size()){
-		effects_calc->logEffectType(effects[idx].type, true); // Effect off
-		effects[idx].type=FFB_EFFECT_NONE;
-		for(int i=0; i< MAX_AXIS; i++) {
-			if(effects[idx].filter[i] != nullptr){
-				effects[idx].filter[i].reset(nullptr);
-			}
-		}
-	}
-}
+//void HidFFB::free_effect(uint16_t idx){
+//	if(idx < this->effects.size()){
+//		effects_calc->logEffectType(effects[idx].type, true); // Effect off
+//		effects[idx].type=FFB_EFFECT_NONE;
+//		for(int i=0; i< MAX_AXIS; i++) {
+//			if(effects[idx].filter[i] != nullptr){
+//				effects[idx].filter[i].reset(nullptr);
+//			}
+//		}
+//	}
+//}
 
 /**
  * Called on HID feature GET events
@@ -274,8 +274,8 @@ void HidFFB::set_constant_effect(FFB_SetConstantForce_Data_t* data){
 void HidFFB::new_effect(FFB_CreateNewEffect_Feature_Data_t* effect){
 	// Allocates a new effect
 
-	uint8_t index = find_free_effect(effect->effectType); // next effect
-	if(index == 0){
+	int32_t index = effects_calc->find_free_effect(effect->effectType); // next effect
+	if(index == -1){
 		blockLoad_report.loadStatus = 2;
 #ifdef DEBUGLOG
 		CommandHandler::logSerialDebug("Can't allocate a new effect");
@@ -292,14 +292,14 @@ void HidFFB::new_effect(FFB_CreateNewEffect_Feature_Data_t* effect){
 
 	set_filters(&new_effect);
 
-	effects[index-1] = std::move(new_effect);
+	effects[index] = std::move(new_effect);
 	// Set block load report
 	//reportFFBStatus.effectBlockIndex = index;
-	blockLoad_report.effectBlockIndex = index;
+	blockLoad_report.effectBlockIndex = index+1;
 	used_effects++;
 	blockLoad_report.ramPoolAvailable = (effects.size()-used_effects)*sizeof(FFB_Effect);
 	blockLoad_report.loadStatus = 1;
-	sendStatusReport(index);
+	sendStatusReport(index+1);
 	
 
 }
@@ -318,6 +318,8 @@ void HidFFB::set_effect(FFB_SetEffect_t* effect){
 	effect_p->gain = effect->gain;
 	effect_p->type = effect->effectType;
 	effect_p->samplePeriod = effect->samplePeriod;
+
+	// TODO precalculate axis vectors here
 
 	effect_p->enableAxis = effect->enableAxis;
 	effect_p->directionX = effect->directionX;
@@ -437,18 +439,18 @@ void HidFFB::set_periodic(FFB_SetPeriodic_Data_t* report){
 	//effect->counter = 0;
 }
 
-uint8_t HidFFB::find_free_effect(uint8_t type){ //Will return the first effect index which is empty or the same type
-	for(uint8_t i=0;i<effects.size();i++){
-		if(effects[i].type == FFB_EFFECT_NONE){
-			return(i+1);
-		}
-	}
-	return 0;
-}
-
+//uint8_t HidFFB::find_free_effect(uint8_t type){ //Will return the first effect index which is empty or the same type
+//	for(uint8_t i=0;i<effects.size();i++){
+//		if(effects[i].type == FFB_EFFECT_NONE){
+//			return(i+1);
+//		}
+//	}
+//	return 0;
+//}
+//
 void HidFFB::reset_ffb(){
 	for(uint8_t i=0;i<effects.size();i++){
-		free_effect(i);
+		effects_calc->free_effect(i);
 	}
 	//this->reportFFBStatus.effectBlockIndex = 1;
 	this->reportFFBStatus.status = (HID_ACTUATOR_POWER) | (HID_ENABLE_ACTUATORS);

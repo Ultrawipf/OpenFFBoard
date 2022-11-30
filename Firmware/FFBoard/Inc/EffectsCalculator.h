@@ -88,6 +88,9 @@ public:
 	void logEffectState(uint8_t type,uint8_t state);
 	void resetLoggedActiveEffects(bool reinit);
 
+	int32_t find_free_effect(uint8_t type);
+	void free_effect(uint16_t idx);
+
 	CommandStatus command(const ParsedCommand& cmd,std::vector<CommandReply>& replies);
 	virtual std::string getHelpstring() { return "Controls internal FFB effects"; }
 
@@ -131,4 +134,21 @@ private:
 	void checkFilterCoeff(biquad_constant_t *filter, uint32_t freq,uint8_t q);
 	void updateFilterSettingsForEffects(uint8_t type_effect);
 };
+
+/**
+ * Helper interface class for common effects calculator related control functions
+ */
+class EffectsControlItf{
+public:
+	virtual void set_FFB(bool state) = 0; // Enables or disables FFB
+	virtual void stop_FFB(){set_FFB(false);};
+	virtual void start_FFB(){set_FFB(true);};
+	virtual void reset_ffb() = 0;
+	virtual uint32_t getConstantForceRate() = 0; // Returns an estimate of the constant force effect update rate in hz
+	virtual uint32_t getRate() = 0; // Returns an estimate of the hid effect update speed in hz
+	virtual bool getFfbActive() = 0;
+	virtual void set_gain(uint8_t gain) = 0;
+
+};
+
 #endif /* EFFECTSCALCULATOR_H_ */

@@ -39,7 +39,7 @@ class FFBHIDMain: public FFBoardMain, public cpp_freertos::Thread, PersistentSto
 	};
 
 public:
-	FFBHIDMain(uint8_t axisCount);
+	FFBHIDMain(uint8_t axisCount,std::unique_ptr<EffectsControlItf> &ffb,std::unique_ptr<EffectsCalculator> &effects_calc);
 	virtual ~FFBHIDMain();
 
 	//static ClassIdentifier info;
@@ -82,7 +82,9 @@ public:
 	void systick();
 
 protected:
-	std::unique_ptr<EffectsCalculator> effects_calc;
+	std::unique_ptr<EffectsControlItf> &ffb;
+	std::unique_ptr<EffectsCalculator> &effects_calc;
+
 private:
 	volatile Control_t control;
 	void send_report();
@@ -102,7 +104,6 @@ private:
 
 	uint8_t report_rate_cnt = 0;
 
-	std::unique_ptr<HidFFB> ffb;
 	std::unique_ptr<AxesManager> axes_manager;
 	//TIM_HandleTypeDef* timer_update;
 
