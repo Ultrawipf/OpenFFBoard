@@ -47,7 +47,13 @@ void cppmain() {
 	// Flash init
 	// TODO verify why or if flash does not erase or initialize correctly on some new chips
 	HAL_FLASH_Unlock();
-	__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_PGPERR | FLASH_FLAG_PGSERR | FLASH_FLAG_BSY);
+	// Clear all the error flags
+	__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_EOP);
+	__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_OPERR);
+	__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_WRPERR);
+	__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_PGAERR);
+	__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_PGPERR);
+	__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_PGSERR);
 
 	if( EE_Init() != EE_OK){
 		Error_Handler();
