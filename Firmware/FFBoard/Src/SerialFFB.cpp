@@ -67,6 +67,13 @@ int32_t SerialFFB::newEffect(uint8_t effectType){
 
 CommandStatus SerialFFB::command(const ParsedCommand& cmd,std::vector<CommandReply>& replies){
 	switch(static_cast<SerialEffects_commands>(cmd.cmdId)){
-
+	case SerialEffects_commands::ffbstate:
+		break;
+	case SerialEffects_commands::ffbreset:
+		break;
+	case SerialEffects_commands::newEffect:
+		break;
+	case SerialEffects_commands::fxmagnitude:
+		break;
 	}
 }

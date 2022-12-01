@@ -10,10 +10,7 @@
 #include "EffectsCalculator.h"
 #include "Axis.h"
 
-#define X_AXIS_ENABLE 1
-#define Y_AXIS_ENABLE 2
-#define Z_AXIS_ENABLE 4
-#define DIRECTION_ENABLE(AXES) (1 << AXES)
+
 
 #define EFFECT_STATE_INACTIVE 0
 
@@ -51,10 +48,6 @@ EffectsCalculator::EffectsCalculator() : CommandHandler("fx", CLSID_EFFECTSCALC)
 	registerCommand("inertia_q", EffectsCalculator_commands::inertia_q, "Inertia biquad q", CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("filterProfile_id", EffectsCalculator_commands::filterProfileId, "Conditional effects filter profile: 0 default; 1 custom", CMDFLAG_GET | CMDFLAG_SET);
 
-//	registerCommand("scaler_damper", EffectsCalculator_commands::scaler_damper, "Scaler damper", CMDFLAG_GET | CMDFLAG_INFOSTRING);
-//	registerCommand("scaler_friction", EffectsCalculator_commands::scaler_friction, "Scaler friction", CMDFLAG_GET | CMDFLAG_INFOSTRING);
-//	registerCommand("scaler_inertia", EffectsCalculator_commands::scaler_inertia, "Scaler inertia", CMDFLAG_GET | CMDFLAG_INFOSTRING);
-
 	registerCommand("frictionPctSpeedToRampup", EffectsCalculator_commands::frictionPctSpeedToRampup, "% of max speed for gradual increase", CMDFLAG_GET | CMDFLAG_SET);
 
 	//this->Start(); // Enable if we want to periodically monitor
@@ -75,12 +68,6 @@ void EffectsCalculator::setActive(bool active)
 	effects_active = active;
 }
 
-/**
- * Sets the mask where the direction enable bit is in the effect
- */
-void EffectsCalculator::setDirectionEnableMask(uint8_t mask){
-	this->directionEnableMask = mask;
-}
 
 /*
 If the metric is less than CP Offset - Dead Band, then the resulting force is given by the following formula:
@@ -92,20 +79,9 @@ A spring condition uses axis position as the metric.
 A damper condition uses axis velocity as the metric.
 An inertia condition uses axis acceleration as the metric.
 
-If the number of Condition report blocks is equal to the number of axes for the effect, then the first report
-block applies to the first axis, the second applies to the second axis, and so on. For example, a two-axis
-spring condition with CP Offset set to zero in both Condition report blocks would have the same effect as
-the joystick self-centering spring. When a condition is defined for each axis in this way, the effect must
-not be rotated.
-
-If there is a single Condition report block for an effect with more than one axis, then the direction along
-which the parameters of the Condition report block are in effect is determined by the direction parameters
-passed in the Direction field of the Effect report block. For example, a friction condition rotated 45
-degrees (in polar coordinates) would resist joystick motion in the northeast-southwest direction but would
-have no effect on joystick motion in the northwest-southeast direction.
  */
 
-/*
+/**
  * Calculates the resulting torque for FFB effects
  * Takes current position input scaled from -0x7fff to 0x7fff
  * Outputs a torque value from -0x7fff to 0x7fff (not yet clipped)
@@ -120,20 +96,15 @@ void EffectsCalculator::calculateEffects(std::vector<std::unique_ptr<Axis>> &axe
 	 return;
 	}
 
-	int32_t forceX = 0;
-	int32_t forceY = 0;
 	int32_t forceVector = 0;
 	uint8_t axisCount = axes.size();
-	bool validY = axisCount > 1;
-#if MAX_AXIS == 3
-	int32_t forceZ = 0;
-	bool validZ = axisCount > 2;
-#endif
+	int32_t forces[axisCount] = {0};
 
 	for (uint8_t i = 0; i < effects_stats.size(); i++)
 	{
 		effects_stats[i].current = 0; // Reset active effect forces
 	}
+
 
 
 	for (uint8_t i = 0; i < MAX_EFFECTS; i++)
@@ -165,30 +136,21 @@ void EffectsCalculator::calculateEffects(std::vector<std::unique_ptr<Axis>> &axe
 		forceVector = calcNonConditionEffectForce(effect);
 		//}
 
-		uint8_t directionEnableMask = this->directionEnableMask ? this->directionEnableMask : DIRECTION_ENABLE(axisCount);
-
-		if ( (effect->enableAxis & directionEnableMask) || (effect->enableAxis & X_AXIS_ENABLE))
+		//uint8_t directionEnableMask = this->directionEnableMask ? this->directionEnableMask : DIRECTION_ENABLE(axisCount);
+		for(uint8_t i=0 ; i < axisCount ; i++) // Calculate effects for all axes
 		{
-			int32_t newEffectForce = calcComponentForce(effect, forceVector, axes, 0);
-			calcStatsEffectType(effect->type, newEffectForce);
-			forceX += newEffectForce;
-			forceX = clip<int32_t, int32_t>(forceX, -0x7fff, 0x7fff); // Clip
+			forceVector = calcComponentForce(effect, forceVector, axes, i);
+			calcStatsEffectType(effect->type, forceVector);
+			forces[i] += forceVector;
 		}
-		if (validY && ((effect->enableAxis & directionEnableMask) || (effect->enableAxis & Y_AXIS_ENABLE)))
-		{
-			int32_t newEffectForce = calcComponentForce(effect, forceVector, axes, 1); //AXIS Y should be 1
-			calcStatsEffectType(effect->type, newEffectForce);
-			forceY += newEffectForce;
-			forceY = clip<int32_t, int32_t>(forceY, -0x7fff, 0x7fff); // Clip
-		}
-
 	}
 
-	axes[0]->setEffectTorque(forceX);
-	if (validY)
+	for(uint8_t i=0 ; i < axisCount ; i++)
 	{
-		axes[1]->setEffectTorque(forceY);
+		int32_t force = clip<int32_t, int32_t>(forces[i], -0x7fff, 0x7fff); // Clip
+		axes[i]->setEffectTorque(force);
 	}
+
 	effects_statslast = effects_stats;
 }
 
@@ -307,55 +269,30 @@ int32_t EffectsCalculator::calcNonConditionEffectForce(FFB_Effect *effect) {
 
 
 
-/*
- * If the number of Condition report blocks is equal to the number of axes for the effect, then the first report
-block applies to the first axis, the second applies to the second axis, and so on. For example, a two-axis
-spring condition with CP Offset set to zero in both Condition report blocks would have the same effect as
-the joystick self-centering spring. When a condition is defined for each axis in this way, the effect must
-not be rotated.
-
-If there is a single Condition report block for an effect with more than one axis, then the direction along
-which the parameters of the Condition report block are in effect is determined by the direction parameters
-passed in the Direction field of the Effect report block. For example, a friction condition rotated 45
-degrees (in polar coordinates) would resist joystick motion in the northeast-southwest direction but would
-have no effect on joystick motion in the northwest-southeast direction.
+/**
+ * Calculates the force of an effect
  */
 
 int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceVector, std::vector<std::unique_ptr<Axis>> &axes, uint8_t axis)
 {
 	int32_t result_torque = 0;
-	uint16_t direction;
-	uint8_t con_idx = 0; // condition block index
+//	uint16_t direction;
+	uint8_t con_idx = effect->useSingleCondition? 0 : axis; // condition block index
 
 	metric_t *metrics = axes[axis]->getMetrics();
-	uint8_t axisCount = axes.size();
-	uint8_t directionEnableMask = this->directionEnableMask ? this->directionEnableMask : DIRECTION_ENABLE(axisCount);
-	if (effect->enableAxis & directionEnableMask)
-	{
-		direction = axis == 0 ? effect->directionX : effect->directionY;  //get direction according to axis index when directionEnable is non-zero
-	}
-	else
-	{
-		direction = effect->directionX;
-	}
-	con_idx = axis;
 
-	//bool useForceDirectionForConditionEffect = (effect->enableAxis == DIRECTION_ENABLE && axisCount > 1 && effect->conditionsCount == 1);
-	bool rotateConditionForce = (axisCount > 1); // && effect->conditionsCount < axisCount
-	float angle = ((float)direction * (2*M_PI) / 36000.0);
-	float angle_ratio = axis == 0 ? sin(angle) : cos(angle);  
-	angle_ratio = rotateConditionForce ? angle_ratio : 1.0;
+	float angle_ratio = effect->axisMagnitudes[axis];
 
 	switch (effect->type)
 	{
 	case FFB_EFFECT_CONSTANT:
 	{
 		// Optional filtering to reduce spikes
-		if(effect->filter[con_idx] != nullptr) {
+		if(effect->filter[axis] != nullptr) {
 			// if the filter is enabled we apply it
-			if (effect->filter[con_idx]->getFc() < 0.5 && effect->filter[0]->getFc() != 0.0)
+			if (effect->filter[axis]->getFc() < 0.5 && effect->filter[0]->getFc() != 0.0)
 			{
-				forceVector = effect->filter[con_idx]->process(forceVector);
+				forceVector = effect->filter[axis]->process(forceVector);
 			}
 		}
 	}
@@ -425,7 +362,7 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 				force = clip<int32_t, int32_t>(force, -effect->conditions[con_idx].negativeSaturation, effect->conditions[con_idx].positiveSaturation);
 			}
 
-			result_torque -= effect->filter[con_idx]->process( (((gain.friction + 1) * force) >> 8) * angle_ratio * scaler.friction);
+			result_torque -= effect->filter[axis]->process( (((gain.friction + 1) * force) >> 8) * angle_ratio * scaler.friction);
 		}
 
 		break;
@@ -434,7 +371,7 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 	{
 
 		float speed = metrics->speed * INTERNAL_SCALER_DAMPER;
-		result_torque -= effect->filter[con_idx]->process(calcConditionEffectForce(effect, speed, gain.damper, con_idx, scaler.damper, angle_ratio));
+		result_torque -= effect->filter[axis]->process(calcConditionEffectForce(effect, speed, gain.damper, con_idx, scaler.damper, angle_ratio));
 
 		break;
 	}
@@ -442,7 +379,7 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 	case FFB_EFFECT_INERTIA:
 	{
 		float accel = metrics->accel * INTERNAL_SCALER_INERTIA;
-		result_torque -= effect->filter[con_idx]->process(calcConditionEffectForce(effect, accel, gain.inertia, con_idx, scaler.inertia, angle_ratio)); // Bump *60 the inertia feedback
+		result_torque -= effect->filter[axis]->process(calcConditionEffectForce(effect, accel, gain.inertia, con_idx, scaler.inertia, angle_ratio)); // Bump *60 the inertia feedback
 
 		break;
 	}

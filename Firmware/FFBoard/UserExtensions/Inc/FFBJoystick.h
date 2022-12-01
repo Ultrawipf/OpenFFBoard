@@ -24,7 +24,7 @@ public:
 
 private:
 	std::unique_ptr<EffectsCalculator> effects_calc = std::make_unique<EffectsCalculator>();
-	std::unique_ptr<EffectsControlItf> ffb = std::make_unique<HidFFB>(*effects_calc);
+	std::unique_ptr<EffectsControlItf> ffb = std::make_unique<HidFFB>(*effects_calc,2);
 };
 #endif
 #endif /* USEREXTENSIONS_SRC_FFBJOYSTICK_H_ */
