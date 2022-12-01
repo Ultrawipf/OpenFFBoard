@@ -10,11 +10,11 @@
 #include "flash_helpers.h"
 #include "hid_device.h"
 #include "cppmain.h"
+#include <math.h>
 
-
-HidFFB::HidFFB(EffectsCalculator &ec) : effects_calc(&ec), effects(ec.effects)
+HidFFB::HidFFB(EffectsCalculator &ec,uint8_t axisCount) : effects_calc(&ec), effects(ec.effects),axisCount(axisCount)
 {
-
+	directionEnableMask = 1 << axisCount; // Direction enable bit is last bit after axis enable bits
 	// Initialize reports
 	blockLoad_report.effectBlockIndex = 1;
 	blockLoad_report.ramPoolAvailable = (effects.size()-used_effects)*sizeof(FFB_Effect);
@@ -31,6 +31,13 @@ HidFFB::HidFFB(EffectsCalculator &ec) : effects_calc(&ec), effects(ec.effects)
 HidFFB::~HidFFB() {
 }
 
+
+/**
+ * Sets the mask where the direction enable bit is in the effect
+ */
+void HidFFB::setDirectionEnableMask(uint8_t mask){
+	this->directionEnableMask = mask;
+}
 
 
 bool HidFFB::getFfbActive(){
@@ -163,18 +170,6 @@ void HidFFB::hidOut(uint8_t report_id, hid_report_type_t report_type, uint8_t co
 }
 
 
-//void HidFFB::free_effect(uint16_t idx){
-//	if(idx < this->effects.size()){
-//		effects_calc->logEffectType(effects[idx].type, true); // Effect off
-//		effects[idx].type=FFB_EFFECT_NONE;
-//		for(int i=0; i< MAX_AXIS; i++) {
-//			if(effects[idx].filter[i] != nullptr){
-//				effects[idx].filter[i].reset(nullptr);
-//			}
-//		}
-//	}
-//}
-
 /**
  * Called on HID feature GET events
  * Any reply is assigned to the return buffer
@@ -241,7 +236,7 @@ void HidFFB::ffb_control(uint8_t cmd){
 		start_FFB();
 	}if(cmd & 0x02){ //disable
 		stop_FFB();
-	}if(cmd & 0x04){ //stop TODO Some games send wrong commands?
+	}if(cmd & 0x04){ //stop
 		stop_FFB();
 		//start_FFB();
 	}if(cmd & 0x08){ //reset
@@ -303,6 +298,11 @@ void HidFFB::new_effect(FFB_CreateNewEffect_Feature_Data_t* effect){
 	
 
 }
+
+/**
+ * Sets up an effect
+ * If the direction enable bit is set then only 1 condition block is used
+ */
 void HidFFB::set_effect(FFB_SetEffect_t* effect){
 	uint8_t index = effect->effectBlockIndex;
 	if(index > effects.size() || index == 0)
@@ -319,13 +319,26 @@ void HidFFB::set_effect(FFB_SetEffect_t* effect){
 	effect_p->type = effect->effectType;
 	effect_p->samplePeriod = effect->samplePeriod;
 
-	// TODO precalculate axis vectors here
+	if(axisCount == 1){
+		/* Compatibility fix. Some games may send a 0° or 90° angle for the first axis.
+		 * If we only have 1 axis defined we ignore any directions and force enable the first axis
+		 */
+		effect->enableAxis = X_AXIS_ENABLE;
+	}
 
-	effect_p->enableAxis = effect->enableAxis;
-	effect_p->directionX = effect->directionX;
-	effect_p->directionY = effect->directionY;
+	//uint8_t directionEnableMask = this->directionEnableMask ? this->directionEnableMask : DIRECTION_ENABLE(axisCount);
+	bool directionEnable = (effect->enableAxis & this->directionEnableMask);
+	effect_p->useSingleCondition = !directionEnable; // If direction is used only a single parameter block is allowed
+
+	float phaseX = M_PI*2.0 * (effect->directionX/36000.0);
+	effect_p->axisMagnitudes[0] = directionEnable ? sin(phaseX) : (effect->enableAxis & X_AXIS_ENABLE ? 1 : 0); // Angular vector if dirEnable used otherwise full or 0 if axis enabled
+	effect_p->axisMagnitudes[1] = directionEnable ? cos(phaseX) : (effect->enableAxis & Y_AXIS_ENABLE ? 1 : 0); // Angular vector if dirEnable used otherwise full or 0 if axis enabled
+
+
 #if MAX_AXIS == 3
-	effect_p->directionZ = effect->directionZ;
+	float phaseY = M_PI*2.0 * (effect->directionY/36000.0);
+	effect_p->axisMagnitudes[3] = directionEnable ? sin(phaseY) : (effect->enableAxis & Z_AXIS_ENABLE ? 1 : 0); // Angular vector if dirEnable used otherwise full or 0 if axis enabled
+
 #endif
 	if(effect->duration == 0){ // Fix for games assuming 0 is infinite
 		effect_p->duration = FFB_EFFECT_DURATION_INFINITE;
@@ -336,18 +349,29 @@ void HidFFB::set_effect(FFB_SetEffect_t* effect){
 	if(!ffb_active)
 		start_FFB();
 
-	sendStatusReport(effect->effectBlockIndex); // TODO required?
+	sendStatusReport(effect->effectBlockIndex);
 	//CommandHandler::logSerialDebug("Setting Effect: " + std::to_string(effect->effectType) +  " at " + std::to_string(index) + "\n");
 }
 
+/**
+	If the number of Condition report blocks is equal to the number of axes for the effect, then the first report
+	block applies to the first axis, the second applies to the second axis, and so on. For example, a two-axis
+	spring condition with CP Offset set to zero in both Condition report blocks would have the same effect as
+	the joystick self-centering spring. When a condition is defined for each axis in this way, the effect must
+	not be rotated.
+
+	If there is a single Condition report block for an effect with more than one axis, then the direction along
+	which the parameters of the Condition report block are in effect is determined by the direction parameters
+	passed in the Direction field of the Effect report block. For example, a friction condition rotated 45
+	degrees (in polar coordinates) would resist joystick motion in the northeast-southwest direction but would
+	have no effect on joystick motion in the northwest-southeast direction.
+ */
 void HidFFB::set_condition(FFB_SetCondition_Data_t *cond){
 	if(cond->effectBlockIndex == 0 || cond->effectBlockIndex > effects.size()){
 		return;
 	}
-	uint8_t axis = cond->parameterBlockOffset;
-	if (axis >= MAX_AXIS){
-		return; // sanity check!
-	}
+	uint8_t axis = std::min(axisCount,cond->parameterBlockOffset);
+
 	FFB_Effect *effect = &effects[cond->effectBlockIndex - 1];
 	effect->conditions[axis].cpOffset = cond->cpOffset;
 	effect->conditions[axis].negativeCoefficient = cond->negativeCoefficient;
@@ -439,15 +463,7 @@ void HidFFB::set_periodic(FFB_SetPeriodic_Data_t* report){
 	//effect->counter = 0;
 }
 
-//uint8_t HidFFB::find_free_effect(uint8_t type){ //Will return the first effect index which is empty or the same type
-//	for(uint8_t i=0;i<effects.size();i++){
-//		if(effects[i].type == FFB_EFFECT_NONE){
-//			return(i+1);
-//		}
-//	}
-//	return 0;
-//}
-//
+
 void HidFFB::reset_ffb(){
 	for(uint8_t i=0;i<effects.size();i++){
 		effects_calc->free_effect(i);

@@ -38,7 +38,6 @@ FFBHIDExt::~FFBHIDExt() {
 void FFBHIDExt::usbInit(){
 	this->usbdev = std::make_unique<USBdevice>(&usb_devdesc_ffboard_composite,usb_cdc_hid_conf_gamepad,&usb_ffboard_strings_default);
 	FFBHIDMain::UsbHidHandler::setHidDesc(hid_gamepad_desc);
-	effects_calc->setDirectionEnableMask(0x04); // TODO change direction system?
 
 	usbdev->registerUsb();
 }
