@@ -12,7 +12,7 @@
 cpp_freertos::MutexStandard flashMutex;
 // Flash helpers
 
-
+// TODO sometimes on F4 chips when writing HAL_FLASH_ERROR_PGS and HAL_FLASH_ERROR_PGP occur and it is not writing
 
 /*
  * Writes a variable to eeprom emulation adr
@@ -25,9 +25,18 @@ bool Flash_Write(uint16_t adr,uint16_t dat){
 	bool res = false;
 	if(readRes == 1 || (readRes == 0 && buf != dat) ){ // Only write if var updated
 		HAL_FLASH_Unlock();
-		EE_WriteVariable(adr, dat);
+		// Clear all the error flags
+	    __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_EOP);
+	    __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_OPERR);
+	    __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_WRPERR);
+	    __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_PGAERR);
+	    __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_PGPERR);
+	    __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_PGSERR);
+		if(EE_WriteVariable(adr, dat) == HAL_OK){
+			res = true;
+		}
 		HAL_FLASH_Lock();
-		res = true;
+
 	}
 	//flashMutex.Unlock();
 	return res;
@@ -51,6 +60,13 @@ bool Flash_ReadWriteDefault(uint16_t adr,uint16_t *buf,uint16_t def){
 	if(EE_ReadVariable(adr, buf) != 0){
 		*buf = def;
 		HAL_FLASH_Unlock();
+		// Clear all the error flags
+		__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_EOP);
+		__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_OPERR);
+		__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_WRPERR);
+		__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_PGAERR);
+		__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_PGPERR);
+		__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_PGSERR);
 		EE_WriteVariable(adr, def);
 		HAL_FLASH_Lock();
 		return false;
