@@ -170,9 +170,9 @@ typedef struct
 	uint8_t		enableAxis = 0; // bits: 0=X, 1=Y, 2=DirectionEnable
 	uint16_t	directionX = 0;	// angle (0=0 .. 36000=360deg)
 	uint16_t	directionY = 0;	// angle (0=0 .. 36000=360deg) TODO axes are last bytes in struct if fewer axes are used. use different report if this is not enough anymore!
-#if MAX_AXIS == 3
-	uint8_t directionZ = 0; // angle (0=0 .. 255=360deg)
-#endif
+//#if MAX_AXIS == 3
+//	uint8_t directionZ = 0; // angle (0=0 .. 255=360deg)
+//#endif
 	//	uint16_t	typeSpecificBlockOffsetX = 0; // Needed?
 	//	uint16_t	typeSpecificBlockOffsetY = 0;
 //	uint16_t	startDelay;	// 0..32767 ms
@@ -253,7 +253,6 @@ typedef struct
 	uint16_t positiveSaturation = 0;
 	uint16_t negativeSaturation = 0;
 	uint16_t deadBand = 0;
-
 } __attribute__((packed)) FFB_Effect_Condition;
 
 typedef struct
@@ -274,12 +273,13 @@ typedef struct
 	int16_t magnitude = 0;			// High res intensity of effect
 	int16_t startLevel = 0;			// Ramp effect
 	int16_t endLevel = 0;			// Ramp effect
-	uint8_t enableAxis = 0;			// Active axis
-	uint16_t directionX = 0;		// angle (0=0 .. 36000=360deg)
-	uint16_t directionY = 0;		// angle (0=0 .. 36000=360deg)
-#if MAX_AXIS == 3
-	uint8_t directionZ = 0; // angle (0=0 .. 255=360deg)
-#endif
+	float axisMagnitudes[MAX_AXIS] = {0}; // 0=0,100%=1
+//	uint8_t enableAxis = 0;			// Active axis
+//	uint16_t directionX = 0;		// angle (0=0 .. 36000=360deg)
+//	uint16_t directionY = 0;		// angle (0=0 .. 36000=360deg)
+//#if MAX_AXIS == 3
+//	uint8_t directionZ = 0; // angle (0=0 .. 255=360deg)
+//#endif
 	//uint8_t conditionsCount = 0;
 	FFB_Effect_Condition conditions[MAX_AXIS];
 	int16_t phase = 0;
@@ -293,6 +293,7 @@ typedef struct
 	uint32_t startTime = 0;	  // Elapsed time in ms before effect starts
 	uint16_t samplePeriod = 0;
 	bool useEnvelope = false;
+	bool useSingleCondition = false;
 } FFB_Effect;
 
 

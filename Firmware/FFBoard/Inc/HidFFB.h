@@ -15,10 +15,14 @@
 #include "EffectsCalculator.h"
 #include "FastAvg.h"
 
+#define X_AXIS_ENABLE 1
+#define Y_AXIS_ENABLE 2
+#define Z_AXIS_ENABLE 4
+#define DIRECTION_ENABLE(AXES) (1 << AXES)
 
 class HidFFB: public UsbHidHandler, public EffectsControlItf {
 public:
-	HidFFB(EffectsCalculator &ec);
+	HidFFB(EffectsCalculator &ec,uint8_t axisCount);
 	virtual ~HidFFB();
 
 	void hidOut(uint8_t report_id, hid_report_type_t report_type,const uint8_t* buffer, uint16_t bufsize) override;
@@ -36,6 +40,7 @@ public:
 	void set_gain(uint8_t gain);
 	
 	void sendStatusReport(uint8_t effect);
+	void setDirectionEnableMask(uint8_t mask);
 
 private:
 	// HID
@@ -55,7 +60,7 @@ private:
 
 	void set_filters(FFB_Effect* effect);
 
-
+	uint8_t directionEnableMask; // Has to be adjusted if bit is not last bit after axis enable bits
 	uint16_t used_effects = 0;
 	bool ffb_active = false;
 	FFB_BlockLoad_Feature_Data_t blockLoad_report;
@@ -67,6 +72,8 @@ private:
 
 	uint32_t lastOut = 0;
 	uint32_t lastCfUpdate = 0;
+
+	uint8_t axisCount;
 };
 
 #endif /* HIDFFB_H_ */

@@ -83,7 +83,7 @@ public:
 	void setGain(uint8_t gain);
 	uint8_t getGain();
 	void logEffectType(uint8_t type,bool remove = false);
-	void setDirectionEnableMask(uint8_t mask);
+	//void setDirectionEnableMask(uint8_t mask);
 	void calcStatsEffectType(uint8_t type, int16_t force);
 	void logEffectState(uint8_t type,uint8_t state);
 	void resetLoggedActiveEffects(bool reinit);
@@ -104,7 +104,7 @@ public:
 protected:
 
 private:
-	uint8_t directionEnableMask = 0;
+	//uint8_t directionEnableMask = 0;
 	// Filters
 	effect_biquad_t filter[2];		// 0 is the default profile and the custom for CFFilter, CUSTOM_PROFILE_ID is the custom slot
 	uint8_t filterProfileId = 0;
