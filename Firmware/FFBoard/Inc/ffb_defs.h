@@ -253,7 +253,7 @@ typedef struct
 	uint16_t positiveSaturation = 0;
 	uint16_t negativeSaturation = 0;
 	uint16_t deadBand = 0;
-} __attribute__((packed)) FFB_Effect_Condition;
+} FFB_Effect_Condition;
 
 typedef struct
 {
@@ -274,13 +274,7 @@ typedef struct
 	int16_t startLevel = 0;			// Ramp effect
 	int16_t endLevel = 0;			// Ramp effect
 	float axisMagnitudes[MAX_AXIS] = {0}; // 0=0,100%=1
-//	uint8_t enableAxis = 0;			// Active axis
-//	uint16_t directionX = 0;		// angle (0=0 .. 36000=360deg)
-//	uint16_t directionY = 0;		// angle (0=0 .. 36000=360deg)
-//#if MAX_AXIS == 3
-//	uint8_t directionZ = 0; // angle (0=0 .. 255=360deg)
-//#endif
-	//uint8_t conditionsCount = 0;
+
 	FFB_Effect_Condition conditions[MAX_AXIS];
 	int16_t phase = 0;
 	uint16_t period = 0;

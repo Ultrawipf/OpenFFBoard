@@ -17,11 +17,11 @@
 class SerialFFB : public CommandHandler, public EffectsControlItf{
 
 	enum class SerialEffects_commands : uint32_t {
-		ffbstate,ffbreset,newEffect,fxmagnitude,fxstate,fxperiod,fxduration,fxdirX,fxdirY
+		ffbstate,ffbreset,newEffect,fxmagnitude,fxstate,fxperiod,fxduration,fxoffset,fxdeadzone,fxsat,fxcoeff,fxaxisgain
 	};
 
 public:
-	SerialFFB(EffectsCalculator &ec);
+	SerialFFB(EffectsCalculator &ec,uint8_t instance=0);
 	virtual ~SerialFFB();
 
 	CommandStatus command(const ParsedCommand& cmd,std::vector<CommandReply>& replies);
@@ -36,10 +36,10 @@ public:
 	void set_gain(uint8_t gain);
 
 	int32_t newEffect(uint8_t effectType);
+	void setMagnitude(uint8_t idx,int16_t magnitude);
 
 private:
 	static ClassIdentifier info;
-	bool ffb_active=false;
 	EffectsCalculator &effects_calc;
 	std::array<FFB_Effect,EffectsCalculator::max_effects> &effects; // Direct access to effects calculator effect array
 };
