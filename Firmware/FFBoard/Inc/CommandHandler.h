@@ -197,9 +197,9 @@ public:
 	 */
 	template<typename TVal>
 	static CommandStatus handleGetSet(const ParsedCommand& cmd,std::vector<CommandReply>& replies,TVal& value){
-		if(cmd.type == CMDtype::set){
+		if(cmd.type == CMDtype::set || cmd.type == CMDtype::setat){
 			value = static_cast<TVal>(cmd.val);
-		}else if(cmd.type == CMDtype::get){
+		}else if(cmd.type == CMDtype::get || cmd.type == CMDtype::getat){
 			replies.emplace_back(value);
 		}else{
 			return CommandStatus::ERR;
@@ -210,34 +210,43 @@ public:
 	 * Reads from a variable and passes set commands to a member callback
 	 */
 	template<typename TVal,class cls,class cls1>
-	static void handleGetSetFunc(const ParsedCommand& cmd,std::vector<CommandReply>& replies,TVal& value,void (cls1::*setfunc)(TVal),cls* obj){
-		if(cmd.type == CMDtype::set){
+	static CommandStatus handleGetSetFunc(const ParsedCommand& cmd,std::vector<CommandReply>& replies,TVal& value,void (cls1::*setfunc)(TVal),cls* obj){
+		if(cmd.type == CMDtype::set || cmd.type == CMDtype::setat){
 			(obj->*setfunc)(cmd.val);
-		}else if(cmd.type == CMDtype::get){
+		}else if(cmd.type == CMDtype::get || cmd.type == CMDtype::getat){
 			replies.emplace_back(value);
+		}else{
+			return CommandStatus::ERR;
 		}
+		return CommandStatus::OK;
 	}
 	/**
 	 * Reads from a member function and sets to a member function
 	 */
 	template<typename TVal,class cls,class cls1,class cls2>
-	static void handleGetFuncSetFunc(const ParsedCommand& cmd,std::vector<CommandReply>& replies,TVal (cls1::*getfunc)(),void (cls2::*setfunc)(TVal),cls* obj){
-		if(cmd.type == CMDtype::set){
+	static CommandStatus handleGetFuncSetFunc(const ParsedCommand& cmd,std::vector<CommandReply>& replies,TVal (cls1::*getfunc)(),void (cls2::*setfunc)(TVal),cls* obj){
+		if(cmd.type == CMDtype::set || cmd.type == CMDtype::setat){
 			(obj->*setfunc)(cmd.val);
-		}else if(cmd.type == CMDtype::get){
+		}else if(cmd.type == CMDtype::get || cmd.type == CMDtype::getat){
 			replies.emplace_back((obj->*getfunc)());
+		}else{
+			return CommandStatus::ERR;
 		}
+		return CommandStatus::OK;
 	}
 	/**
 	 * Reads from a member function and writes to a variable
 	 */
 	template<typename TVal,class cls,class cls1>
-	static void handleGetFuncSet(const ParsedCommand& cmd,std::vector<CommandReply>& replies,TVal& value,TVal (cls1::*getfunc)(),cls* obj){
-		if(cmd.type == CMDtype::set){
+	static CommandStatus handleGetFuncSet(const ParsedCommand& cmd,std::vector<CommandReply>& replies,TVal& value,TVal (cls1::*getfunc)(),cls* obj){
+		if(cmd.type == CMDtype::set || cmd.type == CMDtype::setat){
 			value = static_cast<TVal>(cmd.val);
-		}else if(cmd.type == CMDtype::get){
+		}else if(cmd.type == CMDtype::get || cmd.type == CMDtype::getat){
 			replies.emplace_back((obj->*getfunc)());
+		}else{
+			return CommandStatus::ERR;
 		}
+		return CommandStatus::OK;
 	}
 
 	/**
