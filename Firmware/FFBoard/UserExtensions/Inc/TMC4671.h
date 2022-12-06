@@ -315,6 +315,10 @@ class TMC4671 :
 		extphie,torqueFilter_mode,torqueFilter_f,torqueFilter_q
 	};
 
+#ifdef TMCDEBUG
+friend class TMCDebugBridge;
+#endif
+
 public:
 
 	static ClassIdentifier info;
