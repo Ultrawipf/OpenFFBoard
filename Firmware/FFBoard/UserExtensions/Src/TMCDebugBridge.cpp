@@ -236,6 +236,7 @@ TMCDebugBridge::TMCDebugBridge() {
 	drv->setEncoderType(EncoderType_TMC::NONE); // Set encoder to none to prevent alignment
 	//drv->initialize();
 	drv->Start();
+	drv->enablePin.set();
 	//drv->stop();
 }
 
