@@ -23,9 +23,9 @@ const ClassIdentifier FFBJoystick::getInfo(){
 
 
 FFBJoystick::FFBJoystick() :
-		FFBHIDMain(2,ffb,effects_calc)
+		FFBHIDMain(2)
 {
-
+	FFBHIDMain::setFFBEffectsCalc(ffb, effects_calc);
 }
 
 FFBJoystick::~FFBJoystick() {

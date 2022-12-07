@@ -12,7 +12,7 @@
 #include "cppmain.h"
 #include <math.h>
 
-HidFFB::HidFFB(EffectsCalculator &ec,uint8_t axisCount) : effects_calc(&ec), effects(ec.effects),axisCount(axisCount)
+HidFFB::HidFFB(std::shared_ptr<EffectsCalculator> ec,uint8_t axisCount) : effects_calc(ec), effects(ec->effects),axisCount(axisCount)
 {
 	directionEnableMask = 1 << axisCount; // Direction enable bit is last bit after axis enable bits
 	// Initialize reports

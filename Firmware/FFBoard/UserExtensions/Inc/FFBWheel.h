@@ -24,8 +24,8 @@ public:
 
 
 private:
-	std::unique_ptr<EffectsCalculator> effects_calc = std::make_unique<EffectsCalculator>();
-	std::unique_ptr<EffectsControlItf> ffb = std::make_unique<HidFFB>(*effects_calc,1);
+	std::shared_ptr<EffectsCalculator> effects_calc = std::make_shared<EffectsCalculator>();
+	std::shared_ptr<EffectsControlItf> ffb = std::make_shared<HidFFB>(effects_calc,1);
 };
 
 #endif

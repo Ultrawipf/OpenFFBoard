@@ -118,7 +118,7 @@ private:
 	uint8_t frictionPctSpeedToRampup = 25;	// define the max value of the range (0..5% of maxspeed) where torque is rampup on friction
 
 	// FFB status
-	bool effects_active = false; // was ffb_active
+	bool effects_active = false; // If FFB is on
 	uint32_t effects_used = 0;
 	std::array<effect_stat_t,12> effects_stats; // [0..12 effect types]
 	std::array<effect_stat_t,12> effects_statslast; // [0..12 effect types]

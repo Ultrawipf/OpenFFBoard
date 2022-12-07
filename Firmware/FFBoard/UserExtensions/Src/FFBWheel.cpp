@@ -24,9 +24,9 @@ const ClassIdentifier FFBWheel::getInfo(){
 
 
 FFBWheel::FFBWheel() :
-		FFBHIDMain(1,ffb,effects_calc)
+		FFBHIDMain(1)
 {
-
+	FFBHIDMain::setFFBEffectsCalc(ffb, effects_calc);
 }
 
 FFBWheel::~FFBWheel() {
