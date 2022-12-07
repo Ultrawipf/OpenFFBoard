@@ -21,7 +21,7 @@ class SerialFFB : public CommandHandler, public EffectsControlItf{
 	};
 
 public:
-	SerialFFB(EffectsCalculator &ec,uint8_t instance=0);
+	SerialFFB(std::shared_ptr<EffectsCalculator> ec,uint8_t instance=0);
 	virtual ~SerialFFB();
 
 	CommandStatus command(const ParsedCommand& cmd,std::vector<CommandReply>& replies);
@@ -40,7 +40,7 @@ public:
 
 private:
 	static ClassIdentifier info;
-	EffectsCalculator &effects_calc;
+	std::shared_ptr<EffectsCalculator> effects_calc;
 	std::array<FFB_Effect,EffectsCalculator::max_effects> &effects; // Direct access to effects calculator effect array
 };
 

@@ -21,8 +21,7 @@
 //	return info;
 //}
 
-AxesManager::AxesManager(volatile Control_t* control) {
-	this->control = control;
+AxesManager::AxesManager(volatile Control_t* control,std::shared_ptr<EffectsCalculator> calc) : control(control), effects_calc(calc) {
 	//this->restoreFlash();
 }
 
@@ -38,9 +37,9 @@ void AxesManager::deleteAxes(){
 	axis_count = 0;
 }
 
-void AxesManager::setEffectsCalculator(EffectsCalculator* calc) {
-	this->effects_calc = calc;
-}
+//void AxesManager::setEffectsCalculator(EffectsCalculator* calc) {
+//	this->effects_calc = calc;
+//}
 
 //void AxesManager::restoreFlash() {
 //	uint16_t val;
@@ -63,8 +62,8 @@ void AxesManager::update() {
 	for (auto &axis: axes) {
 		axis->prepareForUpdate();
 	}
-
-	effects_calc->calculateEffects(axes);
+	if(effects_calc != nullptr)
+		effects_calc->calculateEffects(axes);
 }
 
 void AxesManager::updateTorque() {

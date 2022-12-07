@@ -22,7 +22,7 @@
 
 class HidFFB: public UsbHidHandler, public EffectsControlItf {
 public:
-	HidFFB(EffectsCalculator &ec,uint8_t axisCount);
+	HidFFB(std::shared_ptr<EffectsCalculator> ec,uint8_t axisCount);
 	virtual ~HidFFB();
 
 	void hidOut(uint8_t report_id, hid_report_type_t report_type,const uint8_t* buffer, uint16_t bufsize) override;
@@ -44,7 +44,7 @@ public:
 
 private:
 	// HID
-	EffectsCalculator* effects_calc = nullptr;
+	std::shared_ptr<EffectsCalculator> effects_calc;
 	std::array<FFB_Effect,EffectsCalculator::max_effects>& effects; // Must be passed in constructor
 	void new_effect(FFB_CreateNewEffect_Feature_Data_t* effect);
 	void free_effect(uint16_t id);

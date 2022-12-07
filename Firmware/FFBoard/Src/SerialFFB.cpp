@@ -16,7 +16,7 @@ const ClassIdentifier SerialFFB::getInfo(){
 	return info;
 }
 
-SerialFFB::SerialFFB(EffectsCalculator &ec,uint8_t instance) : CommandHandler("fxm", CLSID_EFFECTSMGR,instance), effects_calc(ec), effects(ec.effects) {
+SerialFFB::SerialFFB(std::shared_ptr<EffectsCalculator> ec,uint8_t instance) : CommandHandler("fxm", CLSID_EFFECTSMGR,instance), effects_calc(ec), effects(ec->effects) {
 
 	CommandHandler::registerCommands();
 	registerCommand("ffbstate", SerialEffects_commands::ffbstate, "FFB active", CMDFLAG_GET);
@@ -50,19 +50,19 @@ uint32_t SerialFFB::getConstantForceRate(){
 }
 
 bool SerialFFB::getFfbActive(){
-	return this->effects_calc.isActive();
+	return this->effects_calc->isActive();
 }
 
 void SerialFFB::reset_ffb(){
 	for(uint8_t i=0;i<effects.size();i++){
-		effects_calc.free_effect(i);
+		effects_calc->free_effect(i);
 	}
 }
 void SerialFFB::set_FFB(bool state){
-	this->effects_calc.setActive(state);
+	this->effects_calc->setActive(state);
 }
 void SerialFFB::set_gain(uint8_t gain){
-	effects_calc.setGain(gain); // Global gain
+	effects_calc->setGain(gain); // Global gain
 }
 
 /**
@@ -70,7 +70,7 @@ void SerialFFB::set_gain(uint8_t gain){
  * Returns the index where the effect was created or -1 if it can not be created
  */
 int32_t SerialFFB::newEffect(uint8_t effectType){
-	uint32_t idx = this->effects_calc.find_free_effect(effectType);
+	uint32_t idx = this->effects_calc->find_free_effect(effectType);
 	if(idx > 0){
 		// Allocate effect
 		effects[idx].type = effectType;
@@ -102,7 +102,7 @@ CommandStatus SerialFFB::command(const ParsedCommand& cmd,std::vector<CommandRep
 		if(cmd.type == CMDtype::get){
 			reset_ffb();
 		}else if(cmd.type == CMDtype::getat){
-			effects_calc.free_effect(cmd.adr);
+			effects_calc->free_effect(cmd.adr);
 		}else
 			return CommandStatus::ERR;
 		break;
