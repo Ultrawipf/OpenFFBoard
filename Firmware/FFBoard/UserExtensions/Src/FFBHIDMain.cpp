@@ -75,17 +75,13 @@ const std::vector<class_entry<AnalogSource>> analog_sources =
 #endif
 };
 
-FFBHIDMain::FFBHIDMain(uint8_t axisCount,std::unique_ptr<EffectsControlItf> &ffb,std::unique_ptr<EffectsCalculator> &effects_calc) :
-		Thread("FFBMAIN", 256, 30),ffb(ffb),effects_calc(effects_calc),btn_chooser(button_sources),analog_chooser(analog_sources)
+/**
+ * setFFBEffectsCalc must be called in constructor of derived class to finish the setup
+ */
+FFBHIDMain::FFBHIDMain(uint8_t axisCount) :
+		Thread("FFBMAIN", 256, 30),axisCount(axisCount),btn_chooser(button_sources),analog_chooser(analog_sources)
 {
-	// Creates the required no of axis (Default 1)
-//	effects_calc = std::make_unique<EffectsCalculator>();
-	axes_manager = std::make_unique<AxesManager>(&control);
-	axes_manager->setEffectsCalculator(effects_calc.get());
-// Create the USB effects handler & pass in the effects calculator
-	//this->ffb = std::make_unique<HidFFB>(*effects_calc);
 
-	axes_manager->setAxisCount(axisCount);
 	restoreFlash(); // Load parameters
 	registerCommands();
 
@@ -97,9 +93,21 @@ FFBHIDMain::FFBHIDMain(uint8_t axisCount,std::unique_ptr<EffectsControlItf> &ffb
 		lastEstop = HAL_GetTick();
 	}
 #endif
-	this->Start();
+
 }
 
+/**
+ * MUST be called in the constructor of the derived class.
+ * This finishes the construction because the constructor of this class will be called before the ffb and effects calc
+ * objects are created in the derived class.
+ */
+void FFBHIDMain::setFFBEffectsCalc(std::shared_ptr<EffectsControlItf> ffb,std::shared_ptr<EffectsCalculator> effects_calc){
+	this->ffb = ffb;
+	this->effects_calc = effects_calc;
+	axes_manager = std::make_unique<AxesManager>(&control,effects_calc);
+	axes_manager->setAxisCount(axisCount);
+	this->Start();
+}
 
 
 FFBHIDMain::~FFBHIDMain() {

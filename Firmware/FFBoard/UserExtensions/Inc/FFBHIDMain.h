@@ -39,8 +39,9 @@ class FFBHIDMain: public FFBoardMain, public cpp_freertos::Thread, PersistentSto
 	};
 
 public:
-	FFBHIDMain(uint8_t axisCount,std::unique_ptr<EffectsControlItf> &ffb,std::unique_ptr<EffectsCalculator> &effects_calc);
+	FFBHIDMain(uint8_t axisCount);
 	virtual ~FFBHIDMain();
+	void setFFBEffectsCalc(std::shared_ptr<EffectsControlItf> ffb,std::shared_ptr<EffectsCalculator> effects_calc);
 
 	//static ClassIdentifier info;
 	const ClassIdentifier getInfo() = 0;
@@ -82,8 +83,9 @@ public:
 	void systick();
 
 protected:
-	std::unique_ptr<EffectsControlItf> &ffb;
-	std::unique_ptr<EffectsCalculator> &effects_calc;
+	std::shared_ptr<EffectsControlItf> ffb;
+	std::shared_ptr<EffectsCalculator> effects_calc;
+	uint8_t axisCount=0;
 
 private:
 	volatile Control_t control;

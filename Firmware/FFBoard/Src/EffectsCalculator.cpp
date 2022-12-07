@@ -24,7 +24,7 @@ const ClassIdentifier EffectsCalculator::getInfo(){
 }
 
 EffectsCalculator::EffectsCalculator() : CommandHandler("fx", CLSID_EFFECTSCALC),
-		Thread("EffectsCalculator", EFFECT_THREAD_MEM, EFFECT_THREAD_PRIO)
+		Thread("FXCalc", EFFECT_THREAD_MEM, EFFECT_THREAD_PRIO)
 {
 	restoreFlash();
 
@@ -93,12 +93,13 @@ void EffectsCalculator::calculateEffects(std::vector<std::unique_ptr<Axis>> &axe
 	}
 
 	if(!isActive()){
-	 return;
+		return;
 	}
 
-	int32_t forceVector = 0;
-	uint8_t axisCount = axes.size();
-	int32_t forces[axisCount] = {0};
+	int32_t force = 0;
+	int axisCount = axes.size();
+	//std::vector<int32_t> forces(axisCount,0);
+	//int32_t forces[MAX_AXIS] = {0};
 
 	for (uint8_t i = 0; i < effects_stats.size(); i++)
 	{
@@ -107,9 +108,9 @@ void EffectsCalculator::calculateEffects(std::vector<std::unique_ptr<Axis>> &axe
 
 
 
-	for (uint8_t i = 0; i < MAX_EFFECTS; i++)
+	for (uint8_t fxi = 0; fxi < MAX_EFFECTS; fxi++)
 	{
-		FFB_Effect *effect = &effects[i];
+		FFB_Effect *effect = &effects[fxi];
 
 		// Effect activated and not infinite (0 or 0xffff)
 		if (effect->state != EFFECT_STATE_INACTIVE && effect->duration != FFB_EFFECT_DURATION_INFINITE && effect->duration != 0){
@@ -133,23 +134,25 @@ void EffectsCalculator::calculateEffects(std::vector<std::unique_ptr<Axis>> &axe
 
 
 		//if (effect->conditionsCount == 0) {
-		forceVector = calcNonConditionEffectForce(effect);
+		force = calcNonConditionEffectForce(effect);
 		//}
 
 		//uint8_t directionEnableMask = this->directionEnableMask ? this->directionEnableMask : DIRECTION_ENABLE(axisCount);
-		for(uint8_t i=0 ; i < axisCount ; i++) // Calculate effects for all axes
+		for(uint8_t axis=0 ; axis < axisCount ; axis++) // Calculate effects for all axes
 		{
-			forceVector = calcComponentForce(effect, forceVector, axes, i);
-			calcStatsEffectType(effect->type, forceVector);
-			forces[i] += forceVector;
+			force = calcComponentForce(effect, force, axes, axis);
+			force = clip<int32_t, int32_t>(force, -0x7fff, 0x7fff); // Clip
+			calcStatsEffectType(effect->type, force);
+			//forces[axis] += force;
+			axes[axis]->setEffectTorque(force);
 		}
 	}
 
-	for(uint8_t i=0 ; i < axisCount ; i++)
-	{
-		int32_t force = clip<int32_t, int32_t>(forces[i], -0x7fff, 0x7fff); // Clip
-		axes[i]->setEffectTorque(force);
-	}
+//	for(uint8_t i=0 ; i < axisCount ; i++)
+//	{
+//		int32_t force = clip<int32_t, int32_t>(forces[i], -0x7fff, 0x7fff); // Clip
+//		axes[i]->setEffectTorque(force);
+//	}
 
 	effects_statslast = effects_stats;
 }
