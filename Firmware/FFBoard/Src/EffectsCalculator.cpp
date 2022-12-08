@@ -983,3 +983,43 @@ int32_t EffectsCalculator::find_free_effect(uint8_t type){
 }
 
 
+
+
+/**
+ * Calculates the frequency of hid out reports
+ */
+uint32_t EffectsControlItf::getRate(){
+	float periodAvg = fxPeriodAvg.getAverage();
+	if((HAL_GetTick() - lastFxUpdate) > 1000 || periodAvg == 0){
+		// Reset average
+		fxPeriodAvg.clear();
+		return 0;
+	}else{
+		return (1000.0/periodAvg);
+	}
+}
+
+/**
+ * Calculates the frequency of the CF effect only
+ */
+uint32_t EffectsControlItf::getConstantForceRate(){
+	float periodAvg = cfUpdatePeriodAvg.getAverage();
+	if((HAL_GetTick() - lastCfUpdate) > 1000 || periodAvg == 0){
+		// Reset average
+		cfUpdatePeriodAvg.clear();
+		return 0;
+	}else{
+		return (1000.0/periodAvg);
+	}
+}
+
+
+void EffectsControlItf::cfUpdateEvent(){
+	cfUpdatePeriodAvg.addValue((uint32_t)(HAL_GetTick() - lastCfUpdate));
+	lastCfUpdate = HAL_GetTick();
+}
+
+void EffectsControlItf::fxUpdateEvent(){
+	fxPeriodAvg.addValue((uint32_t)(HAL_GetTick() - lastFxUpdate));
+	lastFxUpdate = HAL_GetTick();
+}
