@@ -36,10 +36,21 @@ public:
 	int32_t newEffect(uint8_t effectType);
 	void setMagnitude(uint8_t idx,int16_t magnitude);
 
+	void setEffectState(uint8_t id, bool state);
+
 private:
 	static ClassIdentifier info;
 	std::shared_ptr<EffectsCalculator> effects_calc;
 	std::array<FFB_Effect,EffectsCalculator::max_effects> &effects; // Direct access to effects calculator effect array
+
+	static constexpr FFB_Effect_Condition defaultCond = {
+			.cpOffset = 0,
+			.positiveCoefficient = 0x7fff,
+			.negativeCoefficient = 0x7fff,
+			.positiveSaturation = 0x7fff,
+			.negativeSaturation = 0x7fff,
+			.deadBand = 0
+	};
 };
 
 #endif /* SRC_SERIALFFB_H_ */
