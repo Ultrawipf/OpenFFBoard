@@ -48,33 +48,6 @@ bool HidFFB::HID_SendReport(uint8_t *report,uint16_t len){
 	return tud_hid_report(0, report, len); // ID 0 skips ID field
 }
 
-/**
- * Calculates the frequency of hid out reports
- */
-uint32_t HidFFB::getRate(){
-	float periodAvg = hidPeriodAvg.getAverage();
-	if((HAL_GetTick() - lastOut) > 1000 || periodAvg == 0){
-		// Reset average
-		hidPeriodAvg.clear();
-		return 0;
-	}else{
-		return (1000.0/periodAvg);
-	}
-}
-
-/**
- * Calculates the frequency of the CF effect only
- */
-uint32_t HidFFB::getConstantForceRate(){
-	float periodAvg = cfUpdatePeriodAvg.getAverage();
-	if((HAL_GetTick() - lastCfUpdate) > 1000 || periodAvg == 0){
-		// Reset average
-		cfUpdatePeriodAvg.clear();
-		return 0;
-	}else{
-		return (1000.0/periodAvg);
-	}
-}
 
 /**
  * Sends a status report for a specific effect
@@ -101,8 +74,7 @@ void HidFFB::sendStatusReport(uint8_t effect){
  * Called when HID OUT data is received via USB
  */
 void HidFFB::hidOut(uint8_t report_id, hid_report_type_t report_type, uint8_t const* buffer, uint16_t bufsize){
-	hidPeriodAvg.addValue((uint32_t)(HAL_GetTick() - lastOut)); // use uint16_t for timer overflow handling if micros timer is used
-	lastOut = HAL_GetTick();
+	fxUpdateEvent(); // use uint16_t for timer overflow handling if micros timer is used
 
 	// FFB Output Message
 	const uint8_t* report = buffer;
@@ -256,14 +228,13 @@ void HidFFB::set_constant_effect(FFB_SetConstantForce_Data_t* data){
 	if(data->effectBlockIndex == 0 || data->effectBlockIndex > effects.size()){
 		return;
 	}
-	cfUpdatePeriodAvg.addValue((uint32_t)(HAL_GetTick() - lastCfUpdate));
+	cfUpdateEvent();
 	FFB_Effect& effect_p = effects[data->effectBlockIndex-1];
 
 	effect_p.magnitude = data->magnitude;
 //	if(effect_p.state == 0){
 //		effect_p.state = 1; // Force start effect
 //	}
-	lastCfUpdate = HAL_GetTick();
 }
 
 void HidFFB::new_effect(FFB_CreateNewEffect_Feature_Data_t* effect){
