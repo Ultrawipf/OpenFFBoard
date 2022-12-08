@@ -2217,6 +2217,13 @@ void TMC4671::setPwm(TMC_PwmMode val){
 	updateReg(0x1A,(uint8_t)val,0xff,0);
 }
 
+void TMC4671::setBBM(uint8_t bbmL,uint8_t bbmH){
+	this->conf.bbmH = bbmH;
+	this->conf.bbmL = bbmL;
+	uint32_t bbmr = bbmL | (bbmH << 8);
+	writeReg(0x19, bbmr);
+}
+
 void TMC4671::setPwm(uint8_t val,uint16_t maxcnt,uint8_t bbmL,uint8_t bbmH){
 	writeReg(0x18, maxcnt);
 	updateReg(0x1A,val,0xff,0);
@@ -2472,6 +2479,26 @@ void TMC4671::restoreEncHallMisc(uint16_t val){
 void TMC4671::setHwType(TMC_HW_Ver type){
 	//TMC4671HardwareTypeConf newHwConf;
 	switch(type){
+	case TMC_HW_Ver::v1_3_ACS30:
+		{
+		TMC4671HardwareTypeConf newHwConf = {
+			.hwVersion = TMC_HW_Ver::v1_3_ACS30,
+			.adcOffset = 0,
+			.thermistor_R2 = 1500,
+			.thermistor_R = 10000,
+			.thermistor_Beta = 4300,
+			.temperatureEnabled = true,
+			.temp_limit = 90,
+			.currentScaler = 2.5 / (0x7fff * 0.066), // sensor 66mV/A
+			.brakeLimLow = 50700,
+			.brakeLimHigh = 50900,
+			.vmScaler = (2.5 / 0x7fff) * ((1.5+71.5)/1.5),
+			.vSenseMult = VOLTAGE_MULT_DEFAULT,
+			.bbm = 60 // DMTH8003SPS need longer deadtime
+		};
+		this->conf.hwconf = newHwConf;
+	break;
+	}
 	case TMC_HW_Ver::v1_2_2_TMCS:
 	{
 		TMC4671HardwareTypeConf newHwConf = {
@@ -2486,7 +2513,8 @@ void TMC4671::setHwType(TMC_HW_Ver type){
 			.brakeLimLow = 50700,
 			.brakeLimHigh = 50900,
 			.vmScaler = (2.5 / 0x7fff) * ((1.5+71.5)/1.5),
-			.vSenseMult = VOLTAGE_MULT_DEFAULT
+			.vSenseMult = VOLTAGE_MULT_DEFAULT,
+			.bbm = 10
 		};
 		this->conf.hwconf = newHwConf;
 	break;
@@ -2506,7 +2534,8 @@ void TMC4671::setHwType(TMC_HW_Ver type){
 			.brakeLimLow = 50700,
 			.brakeLimHigh = 50900,
 			.vmScaler = (2.5 / 0x7fff) * ((1.5+71.5)/1.5),
-			.vSenseMult = VOLTAGE_MULT_DEFAULT
+			.vSenseMult = VOLTAGE_MULT_DEFAULT,
+			.bbm = 10
 		};
 		this->conf.hwconf = newHwConf;
 	break;
@@ -2526,7 +2555,8 @@ void TMC4671::setHwType(TMC_HW_Ver type){
 			.brakeLimLow = 50700,
 			.brakeLimHigh = 50900,
 			.vmScaler = (2.5 / 0x7fff) * ((1.5+71.5)/1.5),
-			.vSenseMult = VOLTAGE_MULT_DEFAULT
+			.vSenseMult = VOLTAGE_MULT_DEFAULT,
+			.bbm = 10
 		};
 		this->conf.hwconf = newHwConf;
 	break;
@@ -2546,7 +2576,8 @@ void TMC4671::setHwType(TMC_HW_Ver type){
 			.brakeLimLow = 50700,
 			.brakeLimHigh = 50900,
 			.vmScaler = (2.5 / 0x7fff) * ((1.5+71.5)/1.5),
-			.vSenseMult = VOLTAGE_MULT_DEFAULT
+			.vSenseMult = VOLTAGE_MULT_DEFAULT,
+			.bbm = 10
 		};
 		this->conf.hwconf = newHwConf;
 		// Activates around 60V as last resort failsave. Check offsets from tmc leakage. ~ 1.426V
@@ -2568,7 +2599,8 @@ void TMC4671::setHwType(TMC_HW_Ver type){
 			.brakeLimLow = 52400,
 			.brakeLimHigh = 52800,
 			.vmScaler = (2.5 / 0x7fff) * ((1.5+71.5)/1.5),
-			.vSenseMult = VOLTAGE_MULT_DEFAULT
+			.vSenseMult = VOLTAGE_MULT_DEFAULT,
+			.bbm = 10
 		};
 		this->conf.hwconf = newHwConf;
 
@@ -2590,6 +2622,8 @@ void TMC4671::setHwType(TMC_HW_Ver type){
 	setVSenseMult(this->conf.hwconf.vSenseMult); // Update vsense multiplier
 	//setupBrakePin(vdiffAct, vdiffDeact, vMax); // TODO if required
 	setBrakeLimits(this->conf.hwconf.brakeLimLow,this->conf.hwconf.brakeLimHigh);
+	setBBM(this->conf.hwconf.bbm,this->conf.hwconf.bbm);
+
 }
 
 void TMC4671::registerCommands(){
