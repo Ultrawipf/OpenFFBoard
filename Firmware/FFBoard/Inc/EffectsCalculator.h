@@ -13,7 +13,7 @@
 #include "PersistentStorage.h"
 #include "CommandHandler.h"
 #include <vector>
-//#include "hid_cmd_defs.h"
+#include "FastAvg.h"
 
 #define EFFECT_THREAD_MEM 128
 #define EFFECT_THREAD_PRIO 20 // low priority for stat
@@ -144,11 +144,19 @@ public:
 	virtual void stop_FFB(){set_FFB(false);};
 	virtual void start_FFB(){set_FFB(true);};
 	virtual void reset_ffb() = 0;
-	virtual uint32_t getConstantForceRate() = 0; // Returns an estimate of the constant force effect update rate in hz
-	virtual uint32_t getRate() = 0; // Returns an estimate of the hid effect update speed in hz
+	virtual uint32_t getConstantForceRate(); // Returns an estimate of the constant force effect update rate in hz
+	virtual uint32_t getRate(); // Returns an estimate of the overall effect update speed in hz
 	virtual bool getFfbActive() = 0;
 	virtual void set_gain(uint8_t gain) = 0;
+	virtual void cfUpdateEvent();
+	virtual void fxUpdateEvent();
 
+private:
+	FastAvg<float,20> fxPeriodAvg;
+	FastAvg<float,20> cfUpdatePeriodAvg;
+
+	uint32_t lastFxUpdate = 0;
+	uint32_t lastCfUpdate = 0;
 };
 
 #endif /* EFFECTSCALCULATOR_H_ */

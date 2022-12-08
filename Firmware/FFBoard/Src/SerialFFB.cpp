@@ -41,14 +41,6 @@ SerialFFB::~SerialFFB() {
 }
 
 
-uint32_t SerialFFB::getRate(){
-	return 0;
-}
-
-uint32_t SerialFFB::getConstantForceRate(){
-	return 0;
-}
-
 bool SerialFFB::getFfbActive(){
 	return this->effects_calc->isActive();
 }

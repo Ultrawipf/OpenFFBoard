@@ -27,8 +27,6 @@ public:
 	CommandStatus command(const ParsedCommand& cmd,std::vector<CommandReply>& replies);
 	const ClassIdentifier getInfo();
 
-	uint32_t getRate(); // Returns an estimate of the hid effect update speed in hz
-	uint32_t getConstantForceRate(); // Returns an estimate of the constant force effect update rate in hz
 	bool getFfbActive();
 
 	void reset_ffb();
