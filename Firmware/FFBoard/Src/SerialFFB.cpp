@@ -19,7 +19,7 @@ const ClassIdentifier SerialFFB::getInfo(){
 SerialFFB::SerialFFB(std::shared_ptr<EffectsCalculator> ec,uint8_t instance) : CommandHandler("fxm", CLSID_EFFECTSMGR,instance), effects_calc(ec), effects(ec->effects) {
 
 	CommandHandler::registerCommands();
-	registerCommand("ffbstate", SerialEffects_commands::ffbstate, "FFB active", CMDFLAG_GET);
+	registerCommand("ffbstate", SerialEffects_commands::ffbstate, "FFB active", CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("ffbreset", SerialEffects_commands::ffbreset, "Reset all effects or effect adr", CMDFLAG_GET | CMDFLAG_GETADR);
 	registerCommand("new", SerialEffects_commands::newEffect, "Create new effect of type val. Returns index or -1 on err", CMDFLAG_SET | CMDFLAG_INFOSTRING);
 	registerCommand("mag", SerialEffects_commands::fxmagnitude, "16b magnitude of effect adr", CMDFLAG_SETADR | CMDFLAG_GETADR);
@@ -31,9 +31,7 @@ SerialFFB::SerialFFB(std::shared_ptr<EffectsCalculator> ec,uint8_t instance) : C
 	registerCommand("sat", SerialEffects_commands::fxsat, "Saturation of effect adr", CMDFLAG_SETADR | CMDFLAG_GETADR);
 	registerCommand("coeff", SerialEffects_commands::fxcoeff, "Coefficient of effect adr", CMDFLAG_SETADR | CMDFLAG_GETADR);
 	// First effect is preallocated CF
-	effects[0].type = FFB_EFFECT_CONSTANT;
-	effects[0].state = 0;
-
+	newEffect(FFB_EFFECT_CONSTANT);
 }
 
 SerialFFB::~SerialFFB() {
@@ -66,6 +64,11 @@ int32_t SerialFFB::newEffect(uint8_t effectType){
 	if(idx > 0){
 		// Allocate effect
 		effects[idx].type = effectType;
+		effects[idx].duration = FFB_EFFECT_DURATION_INFINITE;
+		effects[idx].axisMagnitudes[0] = 1;
+
+		effects[idx].conditions[0] = defaultCond;
+		this->effects_calc->logEffectType(effectType,false);
 	}
 	return idx;
 }
@@ -83,6 +86,15 @@ void SerialFFB::setMagnitude(uint8_t idx,int16_t magnitude){
 }
 
 
+void SerialFFB::setEffectState(uint8_t id, bool state){
+	if(id >= effects.size()){
+		return;
+	}
+	if(state){
+		effects[id].startTime = HAL_GetTick() + effects[id].startDelay;
+	}
+	effects[id].state = state ? 1 : 0;
+}
 
 CommandStatus SerialFFB::command(const ParsedCommand& cmd,std::vector<CommandReply>& replies){
 	CommandStatus status = CommandStatus::OK;
@@ -118,10 +130,18 @@ CommandStatus SerialFFB::command(const ParsedCommand& cmd,std::vector<CommandRep
 		break;
 
 	case SerialEffects_commands::fxstate:
-		if(cmd.adr < effects.size())
-			return handleGetSet(cmd, replies, effects[cmd.adr].state);
-		else
+		if(cmd.adr < effects.size()){
+			if(cmd.type == CMDtype::setat){
+				setEffectState(cmd.adr,cmd.val);
+			}else if(cmd.type == CMDtype::getat){
+				replies.emplace_back(effects[cmd.adr].state);
+			}else{
+				return CommandStatus::ERR;
+			}
+		}else{
 			return CommandStatus::ERR;
+		}
+
 		break;
 
 	case SerialEffects_commands::fxperiod:
