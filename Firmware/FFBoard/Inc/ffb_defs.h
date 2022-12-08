@@ -278,7 +278,7 @@ typedef struct
 	FFB_Effect_Condition conditions[MAX_AXIS];
 	int16_t phase = 0;
 	uint16_t period = 0;
-	uint32_t duration = 0;					 // Duration in ms
+	uint32_t duration = FFB_EFFECT_DURATION_INFINITE;					 // Duration in ms
 	uint16_t attackLevel = 0, fadeLevel = 0; // Envelope effect
 	uint32_t attackTime = 0, fadeTime = 0;	 // Envelope effect
 
