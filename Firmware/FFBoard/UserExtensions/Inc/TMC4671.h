@@ -54,16 +54,17 @@ enum class PosSelection : uint8_t {PhiE=0, PhiE_ext=1, PhiE_openloop=2, PhiE_abn
 enum class VelSelection : uint8_t {PhiE=0, PhiE_ext=1, PhiE_openloop=2, PhiE_abn=3, res1=4, PhiE_hal=5, PhiE_aenc=6, PhiA_aenc=7, res2=8, PhiM_abn=9, PhiM_abn2=10, PhiM_aenc=11, PhiM_hal=12};
 enum class EncoderType_TMC : uint8_t {NONE=0,abn=1,sincos=2,uvw=3,hall=4,ext=5}; // max 7
 
-// Hardware versions for identifying different types
-enum class TMC_HW_Ver : uint8_t {NONE=0,v1_0,v1_2,v1_2_2,v1_2_2_LEM20,v1_2_2_TMCS};
+// Hardware versions for identifying different types. 31 versions valid
+enum class TMC_HW_Ver : uint8_t {NONE=0,v1_0,v1_2,v1_2_2,v1_2_2_LEM20,v1_2_2_TMCS,v1_3_ACS30};
 // Selectable version names to be listed in commands
 const std::vector<std::pair<TMC_HW_Ver,std::string>> tmcHwVersionNames{
 			std::make_pair(TMC_HW_Ver::NONE,"Undefined"), // Do not select. Default but disables some safety features
 			std::make_pair(TMC_HW_Ver::v1_0,"v1.0 AD8417"),
 			std::make_pair(TMC_HW_Ver::v1_2,"v1.2 AD8417"),
-			std::make_pair(TMC_HW_Ver::v1_2_2,"v1.2.2 LEM GO 10"),
-			std::make_pair(TMC_HW_Ver::v1_2_2_LEM20,"v1.2.2 LEM GO 20"),
-			std::make_pair(TMC_HW_Ver::v1_2_2_TMCS,"v1.2.2 TMCS1100A2")
+			std::make_pair(TMC_HW_Ver::v1_2_2,"v1.2.2 LEM GO 10 (80mV/A)"),
+			std::make_pair(TMC_HW_Ver::v1_2_2_LEM20,"v1.2.2 LEM GO 20 (40mV/A)"),
+			std::make_pair(TMC_HW_Ver::v1_2_2_TMCS,"v1.2.2 TMCS1100A2"),
+			std::make_pair(TMC_HW_Ver::v1_3_ACS30,"v1.3 ACS72430AB (66mV/A & long bbm)")
 };
 
 struct TMC4671MotConf{
@@ -92,6 +93,8 @@ struct TMC4671HardwareTypeConf{
 	float vmScaler = (2.5 / 0x7fff) * ((1.5+71.5)/1.5);
 	float vSenseMult = VOLTAGE_MULT_DEFAULT;
 	float clockfreq = 25e6;
+	uint8_t bbm = 10;
+
 	// Todo restrict allowed motor and encoder types
 };
 
@@ -400,6 +403,8 @@ public:
 	void setExternalEncoderAllowed(bool allow);
 
 	float getPwmFreq();
+
+	void setBBM(uint8_t bbml,uint8_t bbmh);
 
 
 #ifdef TIM_TMC
