@@ -98,15 +98,12 @@ void EffectsCalculator::calculateEffects(std::vector<std::unique_ptr<Axis>> &axe
 
 	int32_t force = 0;
 	int axisCount = axes.size();
-	//std::vector<int32_t> forces(axisCount,0);
-	//int32_t forces[MAX_AXIS] = {0};
+	int32_t forces[MAX_AXIS] = {0};
 
 	for (uint8_t i = 0; i < effects_stats.size(); i++)
 	{
 		effects_stats[i].current = 0; // Reset active effect forces
 	}
-
-
 
 	for (uint8_t fxi = 0; fxi < MAX_EFFECTS; fxi++)
 	{
@@ -132,27 +129,22 @@ void EffectsCalculator::calculateEffects(std::vector<std::unique_ptr<Axis>> &axe
 			continue;
 		}
 
-
-		//if (effect->conditionsCount == 0) {
 		force = calcNonConditionEffectForce(effect);
-		//}
+		calcStatsEffectType(effect->type, force);
 
-		//uint8_t directionEnableMask = this->directionEnableMask ? this->directionEnableMask : DIRECTION_ENABLE(axisCount);
 		for(uint8_t axis=0 ; axis < axisCount ; axis++) // Calculate effects for all axes
 		{
 			force = calcComponentForce(effect, force, axes, axis);
-			force = clip<int32_t, int32_t>(force, -0x7fff, 0x7fff); // Clip
-			calcStatsEffectType(effect->type, force);
-			//forces[axis] += force;
-			axes[axis]->setEffectTorque(force);
+			forces[axis] += force; // Do not clip yet to allow effects to subtract force correctly. Will not overflow as maxeffects * 0x7fff is less than int32 range
 		}
 	}
 
-//	for(uint8_t i=0 ; i < axisCount ; i++)
-//	{
-//		int32_t force = clip<int32_t, int32_t>(forces[i], -0x7fff, 0x7fff); // Clip
-//		axes[i]->setEffectTorque(force);
-//	}
+	// Apply summed force to axes
+	for(uint8_t i=0 ; i < axisCount ; i++)
+	{
+		int32_t force = clip<int32_t, int32_t>(forces[i], -0x7fff, 0x7fff); // Clip
+		axes[i]->setEffectTorque(forces[i]);
+	}
 
 	effects_statslast = effects_stats;
 }
