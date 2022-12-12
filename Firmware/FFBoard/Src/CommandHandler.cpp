@@ -478,6 +478,13 @@ CmdHandlerInfo* CommandHandler::getCommandHandlerInfo(){
 }
 
 /**
+ * Returns the instance number of this class
+ */
+uint8_t CommandHandler::getCommandHandlerInstance(){
+	return cmdHandlerInfo.instance;
+}
+
+/**
  * Registers a command handler in the global callback list and assigns a unique index number
  */
 void CommandHandler::addCommandHandler(){
