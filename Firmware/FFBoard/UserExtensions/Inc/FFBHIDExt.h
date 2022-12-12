@@ -26,7 +26,8 @@ public:
 
 private:
 	std::shared_ptr<EffectsCalculator> effects_calc = std::make_shared<EffectsCalculator>();
-	std::shared_ptr<EffectsControlItf> ffb = std::make_shared<SerialFFB>(effects_calc,1);
+	std::shared_ptr<EffectsControlItf> ffb = std::make_shared<SerialFFB>(effects_calc,0);
+	std::shared_ptr<EffectsControlItf> ffb_axis2 = std::make_shared<SerialFFB>(effects_calc,1);
 };
 
 #endif

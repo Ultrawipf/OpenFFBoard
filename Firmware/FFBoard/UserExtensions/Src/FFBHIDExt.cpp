@@ -24,7 +24,7 @@ const ClassIdentifier FFBHIDExt::getInfo(){
 
 
 FFBHIDExt::FFBHIDExt() :
-		FFBHIDMain(1)
+		FFBHIDMain(2)
 {
 	FFBHIDMain::setFFBEffectsCalc(ffb, effects_calc);
 }

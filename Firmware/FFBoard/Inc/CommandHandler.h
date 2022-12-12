@@ -155,6 +155,8 @@ public:
 	static void logSerial(std::string string);	//!< Send a log formatted sequence
 	static void logSerialDebug(std::string string);	//!< Send a log formatted sequence if debug is on
 
+	virtual uint8_t getCommandHandlerInstance();
+
 	void broadcastCommandReply(CommandReply reply, uint32_t cmdId,CMDtype type);
 	void sendCommandReplyAsync(CommandReply reply, uint32_t cmdId,CMDtype type,CommandInterface* interface = nullptr);
 

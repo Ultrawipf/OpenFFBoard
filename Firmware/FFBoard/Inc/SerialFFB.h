@@ -17,7 +17,7 @@
 class SerialFFB : public CommandHandler, public EffectsControlItf{
 
 	enum class SerialEffects_commands : uint32_t {
-		ffbstate,ffbreset,newEffect,fxmagnitude,fxstate,fxperiod,fxduration,fxoffset,fxdeadzone,fxsat,fxcoeff,fxaxisgain
+		ffbstate,ffbreset,newEffect,fxtype,fxmagnitude,fxstate,fxperiod,fxduration,fxoffset,fxdeadzone,fxsat,fxcoeff,fxaxisgain
 	};
 
 public:
