@@ -18,8 +18,7 @@ const ClassIdentifier EncoderBissC::getInfo(){
 	return info;
 }
 
-
-
+uint8_t EncoderBissC::tableCRC6n[64] __attribute__((section (".ccmram")));
 
 EncoderBissC::EncoderBissC() :
 		SPIDevice(ENCODER_SPI_PORT, ENCODER_SPI_PORT.getCsPins()[0]),
