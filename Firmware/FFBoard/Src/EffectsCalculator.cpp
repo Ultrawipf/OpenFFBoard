@@ -130,11 +130,11 @@ void EffectsCalculator::calculateEffects(std::vector<std::unique_ptr<Axis>> &axe
 		}
 
 		force = calcNonConditionEffectForce(effect);
-		calcStatsEffectType(effect->type, force);
 
 		for(uint8_t axis=0 ; axis < axisCount ; axis++) // Calculate effects for all axes
 		{
 			force = calcComponentForce(effect, force, axes, axis);
+			calcStatsEffectType(effect->type, force);
 			forces[axis] += force; // Do not clip yet to allow effects to subtract force correctly. Will not overflow as maxeffects * 0x7fff is less than int32 range
 		}
 	}
@@ -143,7 +143,7 @@ void EffectsCalculator::calculateEffects(std::vector<std::unique_ptr<Axis>> &axe
 	for(uint8_t i=0 ; i < axisCount ; i++)
 	{
 		int32_t force = clip<int32_t, int32_t>(forces[i], -0x7fff, 0x7fff); // Clip
-		axes[i]->setEffectTorque(forces[i]);
+		axes[i]->setEffectTorque(force);
 	}
 
 	effects_statslast = effects_stats;
@@ -664,7 +664,7 @@ void EffectsCalculator::logEffectState(uint8_t type,uint8_t state){
 void EffectsCalculator::calcStatsEffectType(uint8_t type, int16_t force){
 	if(type > 0 && type < 13) {
 		uint8_t arrayLocation = type - 1;
-		effects_stats[arrayLocation].current += force;
+		effects_stats[arrayLocation].current = clip<int32_t,int16_t>(effects_stats[arrayLocation].current + force, -0x7fff, 0x7fff);
 		effects_stats[arrayLocation].max = std::max(effects_stats[arrayLocation].max, (int16_t)abs(force));
 	}
 }
@@ -951,7 +951,7 @@ void EffectsCalculator::Run() {
 void EffectsCalculator::free_effect(uint16_t idx){
 	if(idx < this->effects.size()){
 		logEffectType(effects[idx].type, true); // Effect off
-		effects[idx].type=FFB_EFFECT_NONE;
+		effects[idx] = FFB_Effect(); // Reset all settings
 		for(int i=0; i< MAX_AXIS; i++) {
 			if(effects[idx].filter[i] != nullptr){
 				effects[idx].filter[i].reset(nullptr);
