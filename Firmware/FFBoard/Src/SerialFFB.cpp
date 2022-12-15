@@ -24,7 +24,7 @@ SerialFFB::SerialFFB(std::shared_ptr<EffectsCalculator> ec,uint8_t instance) : C
 	CommandHandler::registerCommands();
 	registerCommand("ffbstate", SerialEffects_commands::ffbstate, "FFB active", CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("type", SerialEffects_commands::fxtype, "Effect type", CMDFLAG_GETADR);
-	registerCommand("ffbreset", SerialEffects_commands::ffbreset, "Reset all effects or effect adr", CMDFLAG_GET | CMDFLAG_GETADR);
+	registerCommand("reset", SerialEffects_commands::ffbreset, "Reset all effects or effect adr", CMDFLAG_GET | CMDFLAG_GETADR);
 	registerCommand("new", SerialEffects_commands::newEffect, "Create new effect of type val. Returns index or -1 on err", CMDFLAG_SET | CMDFLAG_INFOSTRING);
 	registerCommand("mag", SerialEffects_commands::fxmagnitude, "16b magnitude of effect adr", CMDFLAG_SETADR | CMDFLAG_GETADR);
 	registerCommand("state", SerialEffects_commands::fxstate, "Enable/Disable effect adr", CMDFLAG_SETADR | CMDFLAG_GETADR);
@@ -34,6 +34,7 @@ SerialFFB::SerialFFB(std::shared_ptr<EffectsCalculator> ec,uint8_t instance) : C
 	registerCommand("deadzone", SerialEffects_commands::fxdeadzone, "Deadzone of effect adr", CMDFLAG_SETADR | CMDFLAG_GETADR);
 	registerCommand("sat", SerialEffects_commands::fxsat, "Saturation of effect adr", CMDFLAG_SETADR | CMDFLAG_GETADR);
 	registerCommand("coeff", SerialEffects_commands::fxcoeff, "Coefficient of effect adr", CMDFLAG_SETADR | CMDFLAG_GETADR);
+	registerCommand("axisgain", SerialEffects_commands::fxaxisgain, "Gain for this axis (instance) 16b", CMDFLAG_SETADR | CMDFLAG_GETADR);
 }
 
 SerialFFB::~SerialFFB() {
@@ -173,6 +174,18 @@ CommandStatus SerialFFB::command(const ParsedCommand& cmd,std::vector<CommandRep
 	case SerialEffects_commands::fxdeadzone:
 		if(cmd.adr < effects.size())
 			return handleGetSet(cmd, replies, effects[cmd.adr].conditions[getCommandHandlerInstance()].deadBand);
+		else
+			return CommandStatus::ERR;
+		break;
+
+	case SerialEffects_commands::fxaxisgain:
+		if(cmd.adr < effects.size()){
+			if(cmd.type == CMDtype::getat){ // Must rescale between 0/1 float to uint16
+				replies.emplace_back(effects[cmd.adr].axisMagnitudes[getCommandHandlerInstance()] * 0xffff);
+			}else if(cmd.type == CMDtype::setat){
+				effects[cmd.adr].axisMagnitudes[getCommandHandlerInstance()] = (float)cmd.val / 0xffff;
+			}
+		}
 		else
 			return CommandStatus::ERR;
 		break;
