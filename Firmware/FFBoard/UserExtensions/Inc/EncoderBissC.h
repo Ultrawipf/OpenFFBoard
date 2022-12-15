@@ -69,8 +69,8 @@ private:
 	uint32_t decod_buf[bytes/4] = {0};
 
 
-	uint8_t POLY = 0x43;
-	uint8_t tableCRC6n[64] = {0};
+	const uint8_t POLY = 0x43;
+	static uint8_t tableCRC6n[64];
 	int32_t numErrors = 0;
 	static bool inUse;
 	cpp_freertos::BinarySemaphore requestNewDataSem = cpp_freertos::BinarySemaphore(false);
