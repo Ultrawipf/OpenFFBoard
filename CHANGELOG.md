@@ -4,3 +4,4 @@
 - Added Serial FFB mainclass mode
 - Added mosfet BBM time to TMC hardware selection
 - TMC enable pin is set when TMC debug mode starts
+- Added option to change SPI speed for buttons. Can be helpful if the connection is unreliable
