@@ -15,6 +15,9 @@
 static ButtonSourceConfig decodeIntToConf(uint16_t config, uint16_t config_int_2);
 static std::tuple<uint16_t, uint16_t> encodeConfToInt(ButtonSourceConfig* c);
 
+const std::vector<std::string> SPI_Buttons::mode_names = {"Thrustmaster/HEF4021BT","74xx165"};
+const std::vector<std::string> SPI_Buttons::speed_names = {"Fast","Medium","Slow"};
+
 ClassIdentifier SPI_Buttons_1::info = {
 		 .name = "SPI Buttons 1" ,
 		 .id=CLSID_BTN_SPI,
@@ -46,12 +49,13 @@ SPI_Buttons::SPI_Buttons(uint16_t configuration_address, uint16_t configuration_
 
 	this->configuration_address = configuration_address;
 	this->configuration_address_2 = configuration_address_2;
-	this->spiConfig.peripheral.BaudRatePrescaler = SPIBUTTONS_SPEED;
+	restoreFlash();
+
+	this->spiConfig.peripheral.BaudRatePrescaler = speedPresets[this->conf.spi_speed];
 	this->spiConfig.peripheral.FirstBit = SPI_FIRSTBIT_LSB;
 	this->spiConfig.peripheral.CLKPhase = SPI_PHASE_1EDGE;
 	this->spiConfig.peripheral.CLKPolarity = SPI_POLARITY_LOW;
 
-	restoreFlash();
 	initSPI();
 
 	registerCommands();
@@ -79,6 +83,7 @@ void SPI_Buttons::registerCommands(){
 	registerCommand("btnpol", SPIButtons_commands::btnpol, "Invert",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("btnnum", SPIButtons_commands::btnnum, "Number of buttons",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("cs", SPIButtons_commands::cs, "SPI CS pin",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("spispeed", SPIButtons_commands::spispeed, "SPI speed preset",CMDFLAG_INFOSTRING | CMDFLAG_GET | CMDFLAG_SET);
 }
 
 /**
@@ -109,7 +114,7 @@ void SPI_Buttons::setConfig(ButtonSourceConfig config){
 	}else if(conf.mode == SPI_BtnMode::PISOSR){
 		this->spiConfig.cspol = false;
 		this->conf.cutRight = false;
-		this->spiConfig.peripheral.CLKPhase = SPI_PHASE_1EDGE;
+		this->spiConfig.peripheral.CLKPhase = SPI_PHASE_2EDGE;
 		this->spiConfig.peripheral.CLKPolarity = SPI_POLARITY_HIGH; // its actually shifting on the rising edge but 165 will have the first output set even before clocking. First clock cycle is actually second bit so we sample at the falling edge and skip the first bit with that.
 	}
 	spiPort.takeSemaphore();
@@ -134,6 +139,13 @@ void SPI_Buttons::setConfig(ButtonSourceConfig config){
 
 ButtonSourceConfig* SPI_Buttons::getConfig(){
 	return &this->conf;
+}
+
+void SPI_Buttons::setSpiSpeed(uint8_t speedPreset){
+	speedPreset = clip<uint8_t,uint8_t>(speedPreset,0,this->speedPresets.size());
+	this->conf.spi_speed = speedPreset;
+	this->spiConfig.peripheral.BaudRatePrescaler = this->speedPresets[speedPreset];
+	initSPI();
 }
 
 void SPI_Buttons::saveFlash(){
@@ -177,10 +189,10 @@ uint8_t SPI_Buttons::readButtons(uint64_t* buf){
 	return this->btnnum;
 }
 
-std::string SPI_Buttons::printModes(){
+std::string SPI_Buttons::printModes(const std::vector<std::string>& names){
 	std::string reply;
-	for(uint8_t i = 0; i<mode_names.size();i++){
-		reply+=  mode_names[i]  + ":" + std::to_string(i)+"\n";
+	for(uint8_t i = 0; i<names.size();i++){
+		reply+=  names[i]  + ":" + std::to_string(i)+"\n";
 	}
 	return reply;
 }
@@ -227,7 +239,19 @@ CommandStatus SPI_Buttons::command(const ParsedCommand& cmd,std::vector<CommandR
 		}else if(cmd.type == CMDtype::get){
 			replies.emplace_back((uint8_t)this->conf.mode);
 		}else if(cmd.type == CMDtype::info){
-			replies.emplace_back(printModes());
+			replies.emplace_back(printModes(this->mode_names));
+		}else{
+			return CommandStatus::ERR;
+		}
+		break;
+
+	case SPIButtons_commands::spispeed:
+		if(cmd.type == CMDtype::set){
+			setSpiSpeed(cmd.val);
+		}else if(cmd.type == CMDtype::get){
+			replies.emplace_back((uint8_t)this->conf.spi_speed);
+		}else if(cmd.type == CMDtype::info){
+			replies.emplace_back(printModes(this->speed_names));
 		}else{
 			return CommandStatus::ERR;
 		}
@@ -252,14 +276,18 @@ static ButtonSourceConfig decodeIntToConf(uint16_t config_int, uint16_t config_i
 	c.invert = (config_int >> 6) & 0x1;
 	c.cutRight = (config_int >> 7) & 0x1;
 	c.mode = SPI_BtnMode(config_int >> 8);
-	c.cs_num = static_cast<uint8_t>(config_int_2 & 0xF); // Leaving space for other use.
+	c.cs_num = (config_int_2 & 0x3);
+	c.spi_speed = (config_int_2 >> 3) & 0x3;
 	return c;
 }
 static std::tuple<uint16_t, uint16_t> encodeConfToInt(ButtonSourceConfig* c){
 	uint16_t val = (c->numButtons-1) & 0x3F; // 1-64
 	val |= c->invert << 6;
 	val |= c->cutRight << 7;
-	val |= (uint8_t)c->mode << 8;
-	return { val, c->cs_num & 0xF };
+	val |= (uint16_t)c->mode << 8;
+	uint16_t val2 = c->cs_num & 0x3;
+	val2 |= (c->spi_speed & 0x3) << 3;
+
+	return { val, val2 };
 }
 
