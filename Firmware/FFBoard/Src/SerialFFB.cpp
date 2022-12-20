@@ -86,7 +86,7 @@ void SerialFFB::setMagnitude(uint8_t idx,int16_t magnitude){
 	effect->magnitude = magnitude;
 
 	if(effect->type == FFB_EFFECT_CONSTANT){
-		//Log CF rate
+		EffectsControlItf::cfUpdateEvent();
 	}
 }
 
@@ -103,6 +103,8 @@ void SerialFFB::setEffectState(uint8_t id, bool state){
 
 CommandStatus SerialFFB::command(const ParsedCommand& cmd,std::vector<CommandReply>& replies){
 	CommandStatus status = CommandStatus::OK;
+	EffectsControlItf::fxUpdateEvent();
+
 	switch(static_cast<SerialEffects_commands>(cmd.cmdId)){
 	case SerialEffects_commands::ffbstate:
 		return handleGetFuncSetFunc(cmd, replies, &SerialFFB::getFfbActive, &SerialFFB::set_FFB, this);
