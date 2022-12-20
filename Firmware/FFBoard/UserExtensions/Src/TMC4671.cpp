@@ -2479,10 +2479,10 @@ void TMC4671::restoreEncHallMisc(uint16_t val){
 void TMC4671::setHwType(TMC_HW_Ver type){
 	//TMC4671HardwareTypeConf newHwConf;
 	switch(type){
-	case TMC_HW_Ver::v1_3_ACS30:
+	case TMC_HW_Ver::v1_3_66mv:
 		{
 		TMC4671HardwareTypeConf newHwConf = {
-			.hwVersion = TMC_HW_Ver::v1_3_ACS30,
+			.hwVersion = TMC_HW_Ver::v1_3_66mv,
 			.adcOffset = 0,
 			.thermistor_R2 = 1500,
 			.thermistor_R = 10000,
@@ -2494,15 +2494,15 @@ void TMC4671::setHwType(TMC_HW_Ver type){
 			.brakeLimHigh = 50900,
 			.vmScaler = (2.5 / 0x7fff) * ((1.5+71.5)/1.5),
 			.vSenseMult = VOLTAGE_MULT_DEFAULT,
-			.bbm = 60 // DMTH8003SPS need longer deadtime
+			.bbm = 50 // DMTH8003SPS need longer deadtime
 		};
 		this->conf.hwconf = newHwConf;
 	break;
 	}
-	case TMC_HW_Ver::v1_2_2_TMCS:
+	case TMC_HW_Ver::v1_2_2_100mv:
 	{
 		TMC4671HardwareTypeConf newHwConf = {
-			.hwVersion = TMC_HW_Ver::v1_2_2_TMCS,
+			.hwVersion = TMC_HW_Ver::v1_2_2_100mv,
 			.adcOffset = 0,
 			.thermistor_R2 = 1500,
 			.thermistor_R = 10000,
@@ -2514,7 +2514,7 @@ void TMC4671::setHwType(TMC_HW_Ver type){
 			.brakeLimHigh = 50900,
 			.vmScaler = (2.5 / 0x7fff) * ((1.5+71.5)/1.5),
 			.vSenseMult = VOLTAGE_MULT_DEFAULT,
-			.bbm = 10
+			.bbm = 50
 		};
 		this->conf.hwconf = newHwConf;
 	break;
