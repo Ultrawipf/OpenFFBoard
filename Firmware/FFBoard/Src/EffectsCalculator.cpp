@@ -66,6 +66,11 @@ bool EffectsCalculator::isActive()
 void EffectsCalculator::setActive(bool active)
 {
 	effects_active = active;
+	for (uint8_t i = 0; i < effects_stats.size(); i++)
+	{
+		effects_stats[i].current = 0; // Reset active effect forces
+		effects_statslast[i].current = 0;
+	}
 }
 
 
@@ -89,6 +94,7 @@ An inertia condition uses axis acceleration as the metric.
 void EffectsCalculator::calculateEffects(std::vector<std::unique_ptr<Axis>> &axes)
 {
 	for (auto &axis : axes) {
+		axis->setEffectTorque(0);
 		axis->calculateAxisEffects(isActive());
 	}
 
