@@ -26,19 +26,19 @@ SerialFFB::SerialFFB(std::shared_ptr<EffectsCalculator> ec,uint8_t instance) : C
 	registerCommand("type", SerialEffects_commands::fxtype, "Effect type", CMDFLAG_GETADR);
 	registerCommand("reset", SerialEffects_commands::ffbreset, "Reset all effects or effect adr", CMDFLAG_GET | CMDFLAG_GETADR);
 	registerCommand("new", SerialEffects_commands::newEffect, "Create new effect of type val. Returns index or -1 on err", CMDFLAG_SET | CMDFLAG_INFOSTRING);
-	registerCommand("mag", SerialEffects_commands::fxmagnitude, "16b magnitude of effect adr", CMDFLAG_SETADR | CMDFLAG_GETADR);
+	registerCommand("mag", SerialEffects_commands::fxmagnitude, "16b magnitude of non cond. effect adr", CMDFLAG_SETADR | CMDFLAG_GETADR);
 	registerCommand("state", SerialEffects_commands::fxstate, "Enable/Disable effect adr", CMDFLAG_SETADR | CMDFLAG_GETADR);
 	registerCommand("period", SerialEffects_commands::fxperiod, "Period of effect adr", CMDFLAG_SETADR | CMDFLAG_GETADR);
 	registerCommand("duration", SerialEffects_commands::fxduration, "Duration of effect adr", CMDFLAG_SETADR | CMDFLAG_GETADR);
-	registerCommand("offset", SerialEffects_commands::fxoffset, "Offset of effect adr", CMDFLAG_SETADR | CMDFLAG_GETADR);
-	registerCommand("deadzone", SerialEffects_commands::fxdeadzone, "Deadzone of effect adr", CMDFLAG_SETADR | CMDFLAG_GETADR);
-	registerCommand("sat", SerialEffects_commands::fxsat, "Saturation of effect adr", CMDFLAG_SETADR | CMDFLAG_GETADR);
-	registerCommand("coeff", SerialEffects_commands::fxcoeff, "Coefficient of effect adr", CMDFLAG_SETADR | CMDFLAG_GETADR);
+	registerCommand("offset", SerialEffects_commands::fxoffset, "Offset of cond. effect adr", CMDFLAG_SETADR | CMDFLAG_GETADR);
+	registerCommand("deadzone", SerialEffects_commands::fxdeadzone, "Deadzone of cond. effect adr", CMDFLAG_SETADR | CMDFLAG_GETADR);
+	registerCommand("sat", SerialEffects_commands::fxsat, "Saturation of cond. effect adr", CMDFLAG_SETADR | CMDFLAG_GETADR);
+	registerCommand("coeff", SerialEffects_commands::fxcoeff, "Coefficient of cond. effect adr", CMDFLAG_SETADR | CMDFLAG_GETADR);
 	registerCommand("axisgain", SerialEffects_commands::fxaxisgain, "Gain for this axis (instance) 16b", CMDFLAG_SETADR | CMDFLAG_GETADR);
 }
 
 SerialFFB::~SerialFFB() {
-	// TODO Auto-generated destructor stub
+	reset_ffb();
 }
 
 
@@ -46,14 +46,25 @@ bool SerialFFB::getFfbActive(){
 	return this->effects_calc->isActive();
 }
 
+/**
+ * Resets all effects and disables ffb
+ */
 void SerialFFB::reset_ffb(){
 	for(uint8_t i=0;i<effects.size();i++){
 		effects_calc->free_effect(i);
 	}
+	set_FFB(false);
+	set_gain(255);
 }
+/**
+ * Enables or disables FFB actuator
+ */
 void SerialFFB::set_FFB(bool state){
 	this->effects_calc->setActive(state);
 }
+/**
+ * Changes the global gain scaler
+ */
 void SerialFFB::set_gain(uint8_t gain){
 	effects_calc->setGain(gain); // Global gain
 }
@@ -78,6 +89,9 @@ int32_t SerialFFB::newEffect(uint8_t effectType){
 	return idx;
 }
 
+/**
+ * Changes magnitude of non conditional effects (Constant, ramp, square, triangle, sawtooth)
+ */
 void SerialFFB::setMagnitude(uint8_t idx,int16_t magnitude){
 	if(idx > effects.size()){
 		return;
@@ -88,9 +102,15 @@ void SerialFFB::setMagnitude(uint8_t idx,int16_t magnitude){
 	if(effect->type == FFB_EFFECT_CONSTANT){
 		EffectsControlItf::cfUpdateEvent();
 	}
+
+	// Compatibility for conditional effects... Recommended to use the set coefficient functions instead.
+	effects[idx].conditions[getCommandHandlerInstance()].negativeCoefficient;
+	effects[idx].conditions[getCommandHandlerInstance()].positiveCoefficient;
 }
 
-
+/**
+ * Enables or disables an effect
+ */
 void SerialFFB::setEffectState(uint8_t id, bool state){
 	if(id >= effects.size()){
 		return;
