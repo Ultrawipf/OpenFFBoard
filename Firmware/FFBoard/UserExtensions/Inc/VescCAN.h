@@ -208,7 +208,7 @@ public:
 };
 
 // *** Creation of the second concrete class (VESC_2) used by OpenFFBoard of VescCan interface ***
-/*class VESC_2 : public VescCAN {
+class VESC_2 : public VescCAN {
 public:
 	VESC_2() : VescCAN{1} { inUse = true; }
 	~VESC_2() { inUse = false; }
@@ -219,6 +219,6 @@ public:
 	static bool isCreatable();
 	const ClassIdentifier getInfo();
 };
-*/
+
 #endif /*             VESC               */
 #endif /*  USEREXTENSIONS_SRC_VESCCAN_H_ */
