@@ -40,7 +40,7 @@ const std::vector<class_entry<MotorDriver>> MotorDriver::all_drivers =
 #endif
 #ifdef VESC
 	add_class<VESC_1,MotorDriver>(7),
-	//add_class<VESC_2,MotorDriver>(8)
+	add_class<VESC_2,MotorDriver>(8)
 #endif
 };
 

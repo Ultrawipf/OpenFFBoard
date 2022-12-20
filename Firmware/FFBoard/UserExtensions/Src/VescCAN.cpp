@@ -27,9 +27,13 @@ const ClassIdentifier VESC_1::getInfo() {
 }
 
 // *****    static initializer for the VESC_2 instance (extend VESC_CAN) *****
-/*
+
 bool VESC_2::inUse = false;
-ClassIdentifier VESC_2::info = { "VESC 2", CLSID_MOT_VESC1, false };
+
+ClassIdentifier VESC_2::info = {
+	 .name = "VESC 2" ,
+	 .id=CLSID_MOT_VESC1
+};
 
 bool VESC_2::isCreatable() {
 	return !VESC_2::inUse;
@@ -38,7 +42,7 @@ bool VESC_2::isCreatable() {
 const ClassIdentifier VESC_2::getInfo() {
 	return info;
 }
-*/
+
 // *****    				 VESC_CAN							 *****
 
 VescCAN::VescCAN(uint8_t address) :
