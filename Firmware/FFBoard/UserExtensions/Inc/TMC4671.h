@@ -55,7 +55,7 @@ enum class VelSelection : uint8_t {PhiE=0, PhiE_ext=1, PhiE_openloop=2, PhiE_abn
 enum class EncoderType_TMC : uint8_t {NONE=0,abn=1,sincos=2,uvw=3,hall=4,ext=5}; // max 7
 
 // Hardware versions for identifying different types. 31 versions valid
-enum class TMC_HW_Ver : uint8_t {NONE=0,v1_0,v1_2,v1_2_2,v1_2_2_LEM20,v1_2_2_TMCS,v1_3_ACS30};
+enum class TMC_HW_Ver : uint8_t {NONE=0,v1_0,v1_2,v1_2_2,v1_2_2_LEM20,v1_2_2_100mv,v1_3_66mv};
 // Selectable version names to be listed in commands
 const std::vector<std::pair<TMC_HW_Ver,std::string>> tmcHwVersionNames{
 			std::make_pair(TMC_HW_Ver::NONE,"Undefined"), // Do not select. Default but disables some safety features
@@ -63,8 +63,8 @@ const std::vector<std::pair<TMC_HW_Ver,std::string>> tmcHwVersionNames{
 			std::make_pair(TMC_HW_Ver::v1_2,"v1.2 AD8417"),
 			std::make_pair(TMC_HW_Ver::v1_2_2,"v1.2.2 LEM GO 10 (80mV/A)"),
 			std::make_pair(TMC_HW_Ver::v1_2_2_LEM20,"v1.2.2 LEM GO 20 (40mV/A)"),
-			std::make_pair(TMC_HW_Ver::v1_2_2_TMCS,"v1.2.2 TMCS1100A2"),
-			std::make_pair(TMC_HW_Ver::v1_3_ACS30,"v1.3 ACS72430AB (66mV/A & long bbm)")
+			std::make_pair(TMC_HW_Ver::v1_2_2_100mv,"v1.2/3 100mV/A"),
+			std::make_pair(TMC_HW_Ver::v1_3_66mv,"v1.3 ACS724 30A (66mV/A)")
 };
 
 struct TMC4671MotConf{
@@ -148,7 +148,7 @@ struct TMC4671MainConfig{
 	uint8_t bbmL			= 10;
 	uint8_t bbmH			= 10;
 	uint16_t mdecA 			= 660; // 334 default. 331 recommended by datasheet,662 double. 660 lowest noise
-	uint16_t mdecB 			= 334; // Encoder ADC faster rate
+	uint16_t mdecB 			= 660; // Encoder ADC high resolution recommended
 	uint32_t mclkA			= 0x20000000; //0x20000000 default
 	uint32_t mclkB			= 0x20000000; // For AENC
 	uint16_t adc_I0_offset 	= 33415;
