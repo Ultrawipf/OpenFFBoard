@@ -8,6 +8,9 @@
 #include "Axis.h"
 #include "voltagesense.h"
 #include "TMC4671.h"
+#include "MotorPWM.h"
+#include "VescCAN.h"
+#include "ODriveCAN.h"
 
 //////////////////////////////////////////////
 /*
@@ -22,6 +25,45 @@ ClassIdentifier Axis::info = {
 	.id = CLSID_AXIS, // 1
 	.visibility = ClassVisibility::visible};
 
+
+const std::vector<class_entry<MotorDriver>> Axis::axis1_drivers =
+{
+	add_class<MotorDriver, MotorDriver>(0),
+
+#ifdef TMC4671DRIVER
+	add_class<TMC_1, MotorDriver>(1),
+#endif
+#ifdef PWMDRIVER
+	add_class<MotorPWM, MotorDriver>(4),
+#endif
+#ifdef ODRIVE
+	add_class<ODriveCAN1,MotorDriver>(5),
+#endif
+#ifdef VESC
+	add_class<VESC_1,MotorDriver>(7),
+#endif
+};
+
+const std::vector<class_entry<MotorDriver>> Axis::axis2_drivers =
+{
+	add_class<MotorDriver, MotorDriver>(0),
+
+#ifdef TMC4671DRIVER
+	add_class<TMC_2, MotorDriver>(2),
+#endif
+#ifdef PWMDRIVER
+	add_class<MotorPWM, MotorDriver>(4),
+#endif
+#ifdef ODRIVE
+	add_class<ODriveCAN2,MotorDriver>(6),
+#endif
+#ifdef VESC
+	add_class<VESC_2,MotorDriver>(8)
+#endif
+};
+
+
+
 Axis::Axis(char axis,volatile Control_t* control) :CommandHandler("axis", CLSID_AXIS), drv_chooser(MotorDriver::all_drivers),enc_chooser{Encoder::all_encoders}
 {
 	// Create HID FFB handler. Will receive all usb messages directly
@@ -29,6 +71,7 @@ Axis::Axis(char axis,volatile Control_t* control) :CommandHandler("axis", CLSID_
 	this->control = control;
 	if (axis == 'X')
 	{
+		drv_chooser = ClassChooser<MotorDriver>(axis1_drivers);
 		setInstance(0);
 		this->flashAddrs = AxisFlashAddrs({ADR_AXIS1_CONFIG, ADR_AXIS1_MAX_SPEED, ADR_AXIS1_MAX_ACCEL,
 										   ADR_AXIS1_ENDSTOP, ADR_AXIS1_POWER, ADR_AXIS1_DEGREES,ADR_AXIS1_EFFECTS1,ADR_AXIS1_ENC_RATIO,
@@ -36,6 +79,7 @@ Axis::Axis(char axis,volatile Control_t* control) :CommandHandler("axis", CLSID_
 	}
 	else if (axis == 'Y')
 	{
+		drv_chooser = ClassChooser<MotorDriver>(axis2_drivers);
 		setInstance(1);
 		this->flashAddrs = AxisFlashAddrs({ADR_AXIS2_CONFIG, ADR_AXIS2_MAX_SPEED, ADR_AXIS2_MAX_ACCEL,
 										   ADR_AXIS2_ENDSTOP, ADR_AXIS2_POWER, ADR_AXIS2_DEGREES,ADR_AXIS2_EFFECTS1, ADR_AXIS2_ENC_RATIO,
