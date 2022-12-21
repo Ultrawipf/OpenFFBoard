@@ -161,15 +161,15 @@ bool CmdParser::parse(std::vector<ParsedCommand>& commands){
 							int64_t val;
 							int64_t val2;
 							if(word[pqm+1] == 'x'){
-								val2 = (int64_t)std::stoll(&word[pqm+2],0,16);
+								val2 = (int64_t)std::strtoll(&word[pqm+2],0,16);
 							}else{
-								val2 = (int64_t)std::stoll(&word[pqm+1]);
+								val2 = (int64_t)std::strtoll(&word[pqm+1],0,10);
 							}
 
 							if(word[peq+1] == 'x'){
-								val = (int64_t)std::stoll(word.substr(peq+2, pqm-peq),0,16);
+								val = (int64_t)std::strtoll(word.substr(peq+2, pqm-peq).c_str(),0,16);
 							}else{
-								val = (int64_t)std::stoll(word.substr(peq+1, pqm-peq));
+								val = (int64_t)std::strtoll(word.substr(peq+1, pqm-peq).c_str(),0,10);
 							}
 
 							cmdstring = word.substr(cmd_start, peq-cmd_start);
@@ -180,9 +180,9 @@ bool CmdParser::parse(std::vector<ParsedCommand>& commands){
 						}else if(validPqm){ // <cmd>?<int>
 							int64_t val;
 							if(word[pqm+1] == 'x'){
-								val = (int64_t)std::stoll(&word[pqm+2],0,16);
+								val = (int64_t)std::strtoll(&word[pqm+2],0,16);
 							}else{
-								val = (int64_t)std::stoll(&word[pqm+1]);
+								val = (int64_t)std::strtoll(&word[pqm+1],0,10);
 							}
 
 							cmd.val = val;
@@ -193,9 +193,9 @@ bool CmdParser::parse(std::vector<ParsedCommand>& commands){
 						}else if(validPeq){ // <cmd>=<int>
 							int64_t val;
 							if(word[peq+1] == 'x'){
-								val = (int64_t)std::stoll(&word[peq+2],0,16);
+								val = (int64_t)std::strtoll(&word[peq+2],0,16);
 							}else{
-								val = (int64_t)std::stoll(&word[peq+1]);
+								val = (int64_t)std::strtoll(&word[peq+1],0,10);
 							}
 
 							cmd.val = val;
