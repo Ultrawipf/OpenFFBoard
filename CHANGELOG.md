@@ -1,4 +1,4 @@
-### Changes this release (v1.11.0):
+### Changes this release (v1.11.1):
 - Added new subproject for third party devkits (F407DISCO target)
 - Added serialfx effect manager for a command based FFB mainclass (Instead of PID FFB)
 - Added Serial FFB mainclass mode
