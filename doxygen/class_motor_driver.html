@@ -104,12 +104,13 @@ Inheritance diagram for MotorDriver:</div>
 <area href="class_motor_p_w_m.html" alt="MotorPWM" shape="rect" coords="0,112,103,136"/>
 <area href="class_o_drive_c_a_n.html" alt="ODriveCAN" shape="rect" coords="113,112,216,136"/>
 <area href="class_t_m_c4671.html" alt="TMC4671" shape="rect" coords="339,112,442,136"/>
-<area href="class_vesc_c_a_n.html" alt="VescCAN" shape="rect" coords="508,112,611,136"/>
+<area href="class_vesc_c_a_n.html" alt="VescCAN" shape="rect" coords="565,112,668,136"/>
 <area href="class_o_drive_c_a_n1.html" alt="ODriveCAN1" shape="rect" coords="56,168,159,192"/>
 <area href="class_o_drive_c_a_n2.html" alt="ODriveCAN2" shape="rect" coords="169,168,272,192"/>
 <area href="class_t_m_c__1.html" alt="TMC_1" shape="rect" coords="282,168,385,192"/>
 <area href="class_t_m_c__2.html" alt="TMC_2" shape="rect" coords="395,168,498,192"/>
 <area href="class_v_e_s_c__1.html" alt="VESC_1" shape="rect" coords="508,168,611,192"/>
+<area href="class_v_e_s_c__2.html" alt="VESC_2" shape="rect" coords="621,168,724,192"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -350,7 +351,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="class_choosable_class.html#ab19f29386ffd993adc41c03b9b19df87">ChoosableClass</a>.</p>
 
-<p>Reimplemented in <a class="el" href="class_motor_p_w_m.html#aa97cf5ba62a08c311ddb36e516686d8c">MotorPWM</a>, <a class="el" href="class_o_drive_c_a_n1.html#a6c3de7e9b4f61f4254e5c84cfabcaca8">ODriveCAN1</a>, <a class="el" href="class_o_drive_c_a_n2.html#a9b270a07a32f8083f7a3bf4869dcb96e">ODriveCAN2</a>, <a class="el" href="class_t_m_c4671.html#aed81114dd28ccba08d5c5e437245da9b">TMC4671</a>, <a class="el" href="class_v_e_s_c__1.html#a24bea995bed760b5240856ae93572918">VESC_1</a>, and <a class="el" href="class_o_drive_c_a_n.html#a6a48f6cb98cebd8dd1704487466cd2f5">ODriveCAN</a>.</p>
+<p>Reimplemented in <a class="el" href="class_motor_p_w_m.html#aa97cf5ba62a08c311ddb36e516686d8c">MotorPWM</a>, <a class="el" href="class_o_drive_c_a_n1.html#a6c3de7e9b4f61f4254e5c84cfabcaca8">ODriveCAN1</a>, <a class="el" href="class_o_drive_c_a_n2.html#a9b270a07a32f8083f7a3bf4869dcb96e">ODriveCAN2</a>, <a class="el" href="class_t_m_c4671.html#aed81114dd28ccba08d5c5e437245da9b">TMC4671</a>, <a class="el" href="class_v_e_s_c__1.html#a24bea995bed760b5240856ae93572918">VESC_1</a>, <a class="el" href="class_v_e_s_c__2.html#a84ea2256cc3b1f7ea706806e40cc02ff">VESC_2</a>, and <a class="el" href="class_o_drive_c_a_n.html#a6a48f6cb98cebd8dd1704487466cd2f5">ODriveCAN</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="_motor_driver_8cpp_source.html#l00071">71</a> of file <a class="el" href="_motor_driver_8cpp_source.html">MotorDriver.cpp</a>.</p>
 
@@ -577,7 +578,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="preprocessor">#endif</span></div>
 <div class="line"><span class="preprocessor">#ifdef VESC</span></div>
 <div class="line">    add_class&lt;VESC_1,MotorDriver&gt;(7),</div>
-<div class="line">    </div>
+<div class="line">    add_class&lt;VESC_2,MotorDriver&gt;(8)</div>
 <div class="line"><span class="preprocessor">#endif</span></div>
 <div class="line"><span class="preprocessor">}</span></div>
 </div><!-- fragment --><p >Add available motor drivers here. ID must be unique to a motor driver. 0-63 </p>

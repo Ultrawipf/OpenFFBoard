@@ -97,12 +97,10 @@ $(document).ready(function(){initNavTree('class_axes_manager.html',''); initResi
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a5135bd088107d102395ba77fa72d69ae"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_axes_manager.html#a5135bd088107d102395ba77fa72d69ae">AxesManager</a> (volatile <a class="el" href="struct_control__t.html">Control_t</a> *<a class="el" href="class_axes_manager.html#a62188d3b1e6eaa67b56b4dd3f1924a0c">control</a>)</td></tr>
-<tr class="separator:a5135bd088107d102395ba77fa72d69ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a856491f7e12d83e6da3dc4ac3a1ad211"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_axes_manager.html#a856491f7e12d83e6da3dc4ac3a1ad211">AxesManager</a> (volatile <a class="el" href="struct_control__t.html">Control_t</a> *<a class="el" href="class_axes_manager.html#a62188d3b1e6eaa67b56b4dd3f1924a0c">control</a>, std::shared_ptr&lt; <a class="el" href="class_effects_calculator.html">EffectsCalculator</a> &gt; calc)</td></tr>
+<tr class="separator:a856491f7e12d83e6da3dc4ac3a1ad211"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a43c6199313b4bbbd3bae7562668f4685"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_axes_manager.html#a43c6199313b4bbbd3bae7562668f4685">~AxesManager</a> ()</td></tr>
 <tr class="separator:a43c6199313b4bbbd3bae7562668f4685"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9f584f2815a42f1bafa8ec5b6e91177a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_axes_manager.html#a9f584f2815a42f1bafa8ec5b6e91177a">setEffectsCalculator</a> (<a class="el" href="class_effects_calculator.html">EffectsCalculator</a> *ec)</td></tr>
-<tr class="separator:a9f584f2815a42f1bafa8ec5b6e91177a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a870f6d09234f274a65c6797c0873c262"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_axes_manager.html#a870f6d09234f274a65c6797c0873c262">getAxisCount</a> ()</td></tr>
 <tr class="separator:a870f6d09234f274a65c6797c0873c262"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4ffcf69cd10bb9b52b7b2e8f5c82714f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_axes_manager.html#a4ffcf69cd10bb9b52b7b2e8f5c82714f">setAxisCount</a> (int8_t count)</td></tr>
@@ -137,8 +135,8 @@ Private Attributes</h2></td></tr>
 <tr class="separator:aebbbe7aed6d7b689685bd656702a4b42"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5131e878dd8a49afed6f184ef4a330a2"><td class="memItemLeft" align="right" valign="top">volatile bool *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_axes_manager.html#a5131e878dd8a49afed6f184ef4a330a2">p_emergency</a></td></tr>
 <tr class="separator:a5131e878dd8a49afed6f184ef4a330a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7a6886a54d3eaf2fe0aef93531a93481"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_effects_calculator.html">EffectsCalculator</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_axes_manager.html#a7a6886a54d3eaf2fe0aef93531a93481">effects_calc</a></td></tr>
-<tr class="separator:a7a6886a54d3eaf2fe0aef93531a93481"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c65fc516ea5efc2eacb3cc44197fb6e"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="class_effects_calculator.html">EffectsCalculator</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_axes_manager.html#a2c65fc516ea5efc2eacb3cc44197fb6e">effects_calc</a></td></tr>
+<tr class="separator:a2c65fc516ea5efc2eacb3cc44197fb6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a86f9e09050bcca91a88a41fe67791a20"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_axes_manager.html#a86f9e09050bcca91a88a41fe67791a20">axis_count</a> = 0</td></tr>
 <tr class="separator:a86f9e09050bcca91a88a41fe67791a20"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3063863d6a55738a32bf71e983bff7d7"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::unique_ptr&lt; <a class="el" href="class_axis.html">Axis</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_axes_manager.html#a3063863d6a55738a32bf71e983bff7d7">axes</a></td></tr>
@@ -150,8 +148,8 @@ Private Attributes</h2></td></tr>
 <div class="textblock">
 <p class="definition">Definition at line <a class="el" href="_axes_manager_8h_source.html#l00022">22</a> of file <a class="el" href="_axes_manager_8h_source.html">AxesManager.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a5135bd088107d102395ba77fa72d69ae" name="a5135bd088107d102395ba77fa72d69ae"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5135bd088107d102395ba77fa72d69ae">&#9670;&nbsp;</a></span>AxesManager()</h2>
+<a id="a856491f7e12d83e6da3dc4ac3a1ad211" name="a856491f7e12d83e6da3dc4ac3a1ad211"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a856491f7e12d83e6da3dc4ac3a1ad211">&#9670;&nbsp;</a></span>AxesManager()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -160,8 +158,18 @@ Private Attributes</h2></td></tr>
           <td class="memname">AxesManager::AxesManager </td>
           <td>(</td>
           <td class="paramtype">volatile <a class="el" href="struct_control__t.html">Control_t</a> *&#160;</td>
-          <td class="paramname"><em>control</em></td><td>)</td>
+          <td class="paramname"><em>control</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="class_effects_calculator.html">EffectsCalculator</a> &gt;&#160;</td>
+          <td class="paramname"><em>calc</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -193,7 +201,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axes_manager_8cpp_source.html#l00029">29</a> of file <a class="el" href="_axes_manager_8cpp_source.html">AxesManager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axes_manager_8cpp_source.html#l00028">28</a> of file <a class="el" href="_axes_manager_8cpp_source.html">AxesManager.cpp</a>.</p>
 
 </div>
 </div>
@@ -221,7 +229,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axes_manager_8cpp_source.html#l00033">33</a> of file <a class="el" href="_axes_manager_8cpp_source.html">AxesManager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axes_manager_8cpp_source.html#l00032">32</a> of file <a class="el" href="_axes_manager_8cpp_source.html">AxesManager.cpp</a>.</p>
 
 </div>
 </div>
@@ -241,7 +249,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axes_manager_8cpp_source.html#l00089">89</a> of file <a class="el" href="_axes_manager_8cpp_source.html">AxesManager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axes_manager_8cpp_source.html#l00088">88</a> of file <a class="el" href="_axes_manager_8cpp_source.html">AxesManager.cpp</a>.</p>
 
 </div>
 </div>
@@ -260,7 +268,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axes_manager_8cpp_source.html#l00095">95</a> of file <a class="el" href="_axes_manager_8cpp_source.html">AxesManager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axes_manager_8cpp_source.html#l00094">94</a> of file <a class="el" href="_axes_manager_8cpp_source.html">AxesManager.cpp</a>.</p>
 
 </div>
 </div>
@@ -279,7 +287,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axes_manager_8cpp_source.html#l00077">77</a> of file <a class="el" href="_axes_manager_8cpp_source.html">AxesManager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axes_manager_8cpp_source.html#l00076">76</a> of file <a class="el" href="_axes_manager_8cpp_source.html">AxesManager.cpp</a>.</p>
 
 </div>
 </div>
@@ -298,7 +306,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axes_manager_8cpp_source.html#l00138">138</a> of file <a class="el" href="_axes_manager_8cpp_source.html">AxesManager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axes_manager_8cpp_source.html#l00137">137</a> of file <a class="el" href="_axes_manager_8cpp_source.html">AxesManager.cpp</a>.</p>
 
 </div>
 </div>
@@ -318,27 +326,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axes_manager_8cpp_source.html#l00101">101</a> of file <a class="el" href="_axes_manager_8cpp_source.html">AxesManager.cpp</a>.</p>
-
-</div>
-</div>
-<a id="a9f584f2815a42f1bafa8ec5b6e91177a" name="a9f584f2815a42f1bafa8ec5b6e91177a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9f584f2815a42f1bafa8ec5b6e91177a">&#9670;&nbsp;</a></span>setEffectsCalculator()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void AxesManager::setEffectsCalculator </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_effects_calculator.html">EffectsCalculator</a> *&#160;</td>
-          <td class="paramname"><em>ec</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_axes_manager_8cpp_source.html#l00041">41</a> of file <a class="el" href="_axes_manager_8cpp_source.html">AxesManager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axes_manager_8cpp_source.html#l00100">100</a> of file <a class="el" href="_axes_manager_8cpp_source.html">AxesManager.cpp</a>.</p>
 
 </div>
 </div>
@@ -357,7 +345,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axes_manager_8cpp_source.html#l00062">62</a> of file <a class="el" href="_axes_manager_8cpp_source.html">AxesManager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axes_manager_8cpp_source.html#l00061">61</a> of file <a class="el" href="_axes_manager_8cpp_source.html">AxesManager.cpp</a>.</p>
 
 </div>
 </div>
@@ -376,7 +364,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axes_manager_8cpp_source.html#l00070">70</a> of file <a class="el" href="_axes_manager_8cpp_source.html">AxesManager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axes_manager_8cpp_source.html#l00069">69</a> of file <a class="el" href="_axes_manager_8cpp_source.html">AxesManager.cpp</a>.</p>
 
 </div>
 </div>
@@ -395,7 +383,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axes_manager_8cpp_source.html#l00132">132</a> of file <a class="el" href="_axes_manager_8cpp_source.html">AxesManager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axes_manager_8cpp_source.html#l00131">131</a> of file <a class="el" href="_axes_manager_8cpp_source.html">AxesManager.cpp</a>.</p>
 
 </div>
 </div>
@@ -414,7 +402,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axes_manager_8cpp_source.html#l00126">126</a> of file <a class="el" href="_axes_manager_8cpp_source.html">AxesManager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axes_manager_8cpp_source.html#l00125">125</a> of file <a class="el" href="_axes_manager_8cpp_source.html">AxesManager.cpp</a>.</p>
 
 </div>
 </div>
@@ -434,7 +422,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axes_manager_8cpp_source.html#l00097">97</a> of file <a class="el" href="_axes_manager_8cpp_source.html">AxesManager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axes_manager_8cpp_source.html#l00096">96</a> of file <a class="el" href="_axes_manager_8cpp_source.html">AxesManager.cpp</a>.</p>
 
 </div>
 </div>
@@ -535,8 +523,8 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a7a6886a54d3eaf2fe0aef93531a93481" name="a7a6886a54d3eaf2fe0aef93531a93481"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7a6886a54d3eaf2fe0aef93531a93481">&#9670;&nbsp;</a></span>effects_calc</h2>
+<a id="a2c65fc516ea5efc2eacb3cc44197fb6e" name="a2c65fc516ea5efc2eacb3cc44197fb6e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c65fc516ea5efc2eacb3cc44197fb6e">&#9670;&nbsp;</a></span>effects_calc</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -545,7 +533,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_effects_calculator.html">EffectsCalculator</a>* AxesManager::effects_calc</td>
+          <td class="memname">std::shared_ptr&lt;<a class="el" href="class_effects_calculator.html">EffectsCalculator</a>&gt; AxesManager::effects_calc</td>
         </tr>
       </table>
   </td>

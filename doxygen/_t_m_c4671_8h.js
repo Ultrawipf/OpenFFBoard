@@ -104,7 +104,8 @@ var _t_m_c4671_8h =
       [ "v1_2", "_t_m_c4671_8h.html#a1064cdca049007c828bd4a5b28f51d71a0fdcfe7bc01aadbcbb7ff8c0e1024336", null ],
       [ "v1_2_2", "_t_m_c4671_8h.html#a1064cdca049007c828bd4a5b28f51d71a5890325397fec85b18f616220d3235ad", null ],
       [ "v1_2_2_LEM20", "_t_m_c4671_8h.html#a1064cdca049007c828bd4a5b28f51d71abe037adad1534fd5de5ec31255a3dc8c", null ],
-      [ "v1_2_2_TMCS", "_t_m_c4671_8h.html#a1064cdca049007c828bd4a5b28f51d71a500304a4522bbaed49e6da064372760c", null ]
+      [ "v1_2_2_100mv", "_t_m_c4671_8h.html#a1064cdca049007c828bd4a5b28f51d71a3f164736094716dd9f25ddb98343a118", null ],
+      [ "v1_3_66mv", "_t_m_c4671_8h.html#a1064cdca049007c828bd4a5b28f51d71a88a6f2c070b87db0927009998e7534fe", null ]
     ] ],
     [ "TMC_PwmMode", "_t_m_c4671_8h.html#acb6903f48e442bdc6b4f14999ebdf8f1", [
       [ "off", "_t_m_c4671_8h.html#acb6903f48e442bdc6b4f14999ebdf8f1a3262d48df5d75e3452f0f16b313b7808", null ],

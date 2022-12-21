@@ -44,7 +44,7 @@ var searchData=
   ['prepare_5fcbw_41',['prepare_cbw',['../msc__device_8c.html#a3e9283e59f4f59fdc30eb4cfe9ff29e4',1,'msc_device.c']]],
   ['prepareforupdate_42',['prepareForUpdate',['../class_axis.html#af64e0fe6b54b584aea65733c1a3299cf',1,'Axis']]],
   ['presettospeed_43',['presetToSpeed',['../class_c_a_n_port.html#a2e9cfe119f7581e24230c66839afc33b',1,'CANPort']]],
-  ['printmodes_44',['printModes',['../class_shifter_analog.html#aa998b30b632eea2ab2a74cd04b00538b',1,'ShifterAnalog::printModes()'],['../class_s_p_i___buttons.html#a069411e85916d3af03163e49b4e2c647',1,'SPI_Buttons::printModes()']]],
+  ['printmodes_44',['printModes',['../class_shifter_analog.html#aa998b30b632eea2ab2a74cd04b00538b',1,'ShifterAnalog::printModes()'],['../class_s_p_i___buttons.html#ad0be4286115c8ea9459eaeaa89a093be',1,'SPI_Buttons::printModes()']]],
   ['proc_5fbot_5freset_45',['proc_bot_reset',['../msc__device_8c.html#a50a093de2310ab88814ee0f917c0c2c7',1,'msc_device.c']]],
   ['proc_5fbuiltin_5fscsi_46',['proc_builtin_scsi',['../msc__device_8c.html#a1ebcd99ffa9773559264453fa71ca77b',1,'msc_device.c']]],
   ['proc_5fread10_5fcmd_47',['proc_read10_cmd',['../msc__device_8c.html#a02228578ea25ff825e9411998d03a8dd',1,'msc_device.c']]],

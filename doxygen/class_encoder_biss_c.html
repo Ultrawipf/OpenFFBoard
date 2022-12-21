@@ -221,6 +221,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:acd8e021f6a407115dba838d7b16930bb inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af6efec263bc372a1ca57add26dd93a97 inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#af6efec263bc372a1ca57add26dd93a97">getCsvHelpstring</a> ()</td></tr>
 <tr class="separator:af6efec263bc372a1ca57add26dd93a97 inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2628ee7f333010e15ad70b9bcffc433d inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">virtual uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a2628ee7f333010e15ad70b9bcffc433d">getCommandHandlerInstance</a> ()</td></tr>
+<tr class="separator:a2628ee7f333010e15ad70b9bcffc433d inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad67013c18a56f13ff7159883dfce665e inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#ad67013c18a56f13ff7159883dfce665e">broadcastCommandReply</a> (<a class="el" href="class_command_reply.html">CommandReply</a> reply, uint32_t cmdId, <a class="el" href="_command_handler_8h.html#aec46f6cc23a395b611fbc7c7239b9c41">CMDtype</a> type)</td></tr>
 <tr class="separator:ad67013c18a56f13ff7159883dfce665e inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab23b77c2282380e1e713b0173530416c inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#ab23b77c2282380e1e713b0173530416c">sendCommandReplyAsync</a> (<a class="el" href="class_command_reply.html">CommandReply</a> reply, uint32_t cmdId, <a class="el" href="_command_handler_8h.html#aec46f6cc23a395b611fbc7c7239b9c41">CMDtype</a> type, <a class="el" href="class_command_interface.html">CommandInterface</a> *interface=nullptr)</td></tr>
@@ -285,15 +287,15 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a5deca916348f55b7a6aaffc598d28c0b inherit pub_static_methods_class_command_handler"><td class="memTemplParams" colspan="2">template&lt;typename TVal &gt; </td></tr>
 <tr class="memitem:a5deca916348f55b7a6aaffc598d28c0b inherit pub_static_methods_class_command_handler"><td class="memTemplItemLeft" align="right" valign="top">static <a class="el" href="_command_handler_8h.html#aefaf83fec6a7da1d02ae7e912dd9a6d5">CommandStatus</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a5deca916348f55b7a6aaffc598d28c0b">handleGetSet</a> (const <a class="el" href="struct_parsed_command.html">ParsedCommand</a> &amp;cmd, std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;replies, TVal &amp;value)</td></tr>
 <tr class="separator:a5deca916348f55b7a6aaffc598d28c0b inherit pub_static_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a962937ad83e3f5317fa085da8a5779a9 inherit pub_static_methods_class_command_handler"><td class="memTemplParams" colspan="2">template&lt;typename TVal , class cls , class cls1 &gt; </td></tr>
-<tr class="memitem:a962937ad83e3f5317fa085da8a5779a9 inherit pub_static_methods_class_command_handler"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a962937ad83e3f5317fa085da8a5779a9">handleGetSetFunc</a> (const <a class="el" href="struct_parsed_command.html">ParsedCommand</a> &amp;cmd, std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;replies, TVal &amp;value, void(cls1::*setfunc)(TVal), cls *obj)</td></tr>
-<tr class="separator:a962937ad83e3f5317fa085da8a5779a9 inherit pub_static_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af5cb275560fa91128585d4f2546ffc3b inherit pub_static_methods_class_command_handler"><td class="memTemplParams" colspan="2">template&lt;typename TVal , class cls , class cls1 , class cls2 &gt; </td></tr>
-<tr class="memitem:af5cb275560fa91128585d4f2546ffc3b inherit pub_static_methods_class_command_handler"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_command_handler.html#af5cb275560fa91128585d4f2546ffc3b">handleGetFuncSetFunc</a> (const <a class="el" href="struct_parsed_command.html">ParsedCommand</a> &amp;cmd, std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;replies, TVal(cls1::*getfunc)(), void(cls2::*setfunc)(TVal), cls *obj)</td></tr>
-<tr class="separator:af5cb275560fa91128585d4f2546ffc3b inherit pub_static_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5044af5133a039b266864c2cb38f399c inherit pub_static_methods_class_command_handler"><td class="memTemplParams" colspan="2">template&lt;typename TVal , class cls , class cls1 &gt; </td></tr>
-<tr class="memitem:a5044af5133a039b266864c2cb38f399c inherit pub_static_methods_class_command_handler"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a5044af5133a039b266864c2cb38f399c">handleGetFuncSet</a> (const <a class="el" href="struct_parsed_command.html">ParsedCommand</a> &amp;cmd, std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;replies, TVal &amp;value, TVal(cls1::*getfunc)(), cls *obj)</td></tr>
-<tr class="separator:a5044af5133a039b266864c2cb38f399c inherit pub_static_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acdb27df68d3ab32e1c47360930656ca1 inherit pub_static_methods_class_command_handler"><td class="memTemplParams" colspan="2">template&lt;typename TVal , class cls , class cls1 &gt; </td></tr>
+<tr class="memitem:acdb27df68d3ab32e1c47360930656ca1 inherit pub_static_methods_class_command_handler"><td class="memTemplItemLeft" align="right" valign="top">static <a class="el" href="_command_handler_8h.html#aefaf83fec6a7da1d02ae7e912dd9a6d5">CommandStatus</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_command_handler.html#acdb27df68d3ab32e1c47360930656ca1">handleGetSetFunc</a> (const <a class="el" href="struct_parsed_command.html">ParsedCommand</a> &amp;cmd, std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;replies, TVal &amp;value, void(cls1::*setfunc)(TVal), cls *obj)</td></tr>
+<tr class="separator:acdb27df68d3ab32e1c47360930656ca1 inherit pub_static_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a07d24bd9ab3d2d37c4541da554338c20 inherit pub_static_methods_class_command_handler"><td class="memTemplParams" colspan="2">template&lt;typename TVal , class cls , class cls1 , class cls2 &gt; </td></tr>
+<tr class="memitem:a07d24bd9ab3d2d37c4541da554338c20 inherit pub_static_methods_class_command_handler"><td class="memTemplItemLeft" align="right" valign="top">static <a class="el" href="_command_handler_8h.html#aefaf83fec6a7da1d02ae7e912dd9a6d5">CommandStatus</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a07d24bd9ab3d2d37c4541da554338c20">handleGetFuncSetFunc</a> (const <a class="el" href="struct_parsed_command.html">ParsedCommand</a> &amp;cmd, std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;replies, TVal(cls1::*getfunc)(), void(cls2::*setfunc)(TVal), cls *obj)</td></tr>
+<tr class="separator:a07d24bd9ab3d2d37c4541da554338c20 inherit pub_static_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9a0eb7259f402ad1668908d9f8e2cb8 inherit pub_static_methods_class_command_handler"><td class="memTemplParams" colspan="2">template&lt;typename TVal , class cls , class cls1 &gt; </td></tr>
+<tr class="memitem:ae9a0eb7259f402ad1668908d9f8e2cb8 inherit pub_static_methods_class_command_handler"><td class="memTemplItemLeft" align="right" valign="top">static <a class="el" href="_command_handler_8h.html#aefaf83fec6a7da1d02ae7e912dd9a6d5">CommandStatus</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_command_handler.html#ae9a0eb7259f402ad1668908d9f8e2cb8">handleGetFuncSet</a> (const <a class="el" href="struct_parsed_command.html">ParsedCommand</a> &amp;cmd, std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;replies, TVal &amp;value, TVal(cls1::*getfunc)(), cls *obj)</td></tr>
+<tr class="separator:ae9a0eb7259f402ad1668908d9f8e2cb8 inherit pub_static_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_methods_class_persistent_storage"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_class_persistent_storage')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="class_persistent_storage.html">PersistentStorage</a></td></tr>
 <tr class="memitem:a14700f8511d8aaea5d5b29632b371eb9 inherit pub_static_methods_class_persistent_storage"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; <a class="el" href="class_persistent_storage.html">PersistentStorage</a> * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_persistent_storage.html#a14700f8511d8aaea5d5b29632b371eb9">getFlashHandlers</a> ()</td></tr>
 <tr class="separator:a14700f8511d8aaea5d5b29632b371eb9 inherit pub_static_methods_class_persistent_storage"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -338,10 +340,8 @@ Private Attributes</h2></td></tr>
 <tr class="separator:a8e8aa4daf880f55223893084cebfdfd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae265f8696b443c7ded92f0a703e1586a"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_encoder_biss_c.html#ae265f8696b443c7ded92f0a703e1586a">decod_buf</a> [<a class="el" href="class_encoder_biss_c.html#ac2e1092037eb64b3bb54592395b731ee">bytes</a>/4] = {0}</td></tr>
 <tr class="separator:ae265f8696b443c7ded92f0a703e1586a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2f24cdb820874f660ebe1d398ab9ae00"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_encoder_biss_c.html#a2f24cdb820874f660ebe1d398ab9ae00">POLY</a> = 0x43</td></tr>
-<tr class="separator:a2f24cdb820874f660ebe1d398ab9ae00"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aca53a5e8dfa2ddaea6950b032a81ff11"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_encoder_biss_c.html#aca53a5e8dfa2ddaea6950b032a81ff11">tableCRC6n</a> [64] = {0}</td></tr>
-<tr class="separator:aca53a5e8dfa2ddaea6950b032a81ff11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2de73e18cd3322aea912b47d67b6f695"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_encoder_biss_c.html#a2de73e18cd3322aea912b47d67b6f695">POLY</a> = 0x43</td></tr>
+<tr class="separator:a2de73e18cd3322aea912b47d67b6f695"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a11860f47aaabd9157e3476abeb938aec"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_encoder_biss_c.html#a11860f47aaabd9157e3476abeb938aec">numErrors</a> = 0</td></tr>
 <tr class="separator:a11860f47aaabd9157e3476abeb938aec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb969153b073a45b92c3b2d62244f30c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classcpp__freertos_1_1_binary_semaphore.html">cpp_freertos::BinarySemaphore</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_encoder_biss_c.html#adb969153b073a45b92c3b2d62244f30c">requestNewDataSem</a> = <a class="el" href="classcpp__freertos_1_1_binary_semaphore.html">cpp_freertos::BinarySemaphore</a>(false)</td></tr>
@@ -357,6 +357,8 @@ Static Private Attributes</h2></td></tr>
 <tr class="separator:a7a5c076b8d78a6ca9d119c070121548b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac2e1092037eb64b3bb54592395b731ee"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_encoder_biss_c.html#ac2e1092037eb64b3bb54592395b731ee">bytes</a> = 8</td></tr>
 <tr class="separator:ac2e1092037eb64b3bb54592395b731ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca53a5e8dfa2ddaea6950b032a81ff11"><td class="memItemLeft" align="right" valign="top">static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_encoder_biss_c.html#aca53a5e8dfa2ddaea6950b032a81ff11">tableCRC6n</a> [64]</td></tr>
+<tr class="separator:aca53a5e8dfa2ddaea6950b032a81ff11"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abfb02cda26c1ab5b7d33342e1abf28ae"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_encoder_biss_c.html#abfb02cda26c1ab5b7d33342e1abf28ae">inUse</a> = false</td></tr>
 <tr class="separator:abfb02cda26c1ab5b7d33342e1abf28ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -497,7 +499,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_encoder_biss_c_8cpp_source.html#l00024">24</a> of file <a class="el" href="_encoder_biss_c_8cpp_source.html">EncoderBissC.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_encoder_biss_c_8cpp_source.html#l00023">23</a> of file <a class="el" href="_encoder_biss_c_8cpp_source.html">EncoderBissC.cpp</a>.</p>
 
 </div>
 </div>
@@ -524,7 +526,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_encoder_biss_c_8cpp_source.html#l00132">132</a> of file <a class="el" href="_encoder_biss_c_8cpp_source.html">EncoderBissC.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_encoder_biss_c_8cpp_source.html#l00131">131</a> of file <a class="el" href="_encoder_biss_c_8cpp_source.html">EncoderBissC.cpp</a>.</p>
 
 </div>
 </div>
@@ -572,7 +574,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_s_p_i_device.html#a2d39ef1a6af4796a3740f75260c9fe8a">SPIDevice</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_encoder_biss_c_8cpp_source.html#l00144">144</a> of file <a class="el" href="_encoder_biss_c_8cpp_source.html">EncoderBissC.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_encoder_biss_c_8cpp_source.html#l00143">143</a> of file <a class="el" href="_encoder_biss_c_8cpp_source.html">EncoderBissC.cpp</a>.</p>
 
 </div>
 </div>
@@ -619,7 +621,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_command_handler.html#a8d2531d579c03d6672495ccb57f5ffb3">CommandHandler</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_encoder_biss_c_8cpp_source.html#l00232">232</a> of file <a class="el" href="_encoder_biss_c_8cpp_source.html">EncoderBissC.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_encoder_biss_c_8cpp_source.html#l00231">231</a> of file <a class="el" href="_encoder_biss_c_8cpp_source.html">EncoderBissC.cpp</a>.</p>
 
 </div>
 </div>
@@ -638,7 +640,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_encoder_biss_c_8cpp_source.html#l00098">98</a> of file <a class="el" href="_encoder_biss_c_8cpp_source.html">EncoderBissC.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_encoder_biss_c_8cpp_source.html#l00097">97</a> of file <a class="el" href="_encoder_biss_c_8cpp_source.html">EncoderBissC.cpp</a>.</p>
 
 </div>
 </div>
@@ -668,7 +670,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_s_p_i_device.html#a7a16f61efb6990a72f22090c4c98a672">SPIDevice</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_encoder_biss_c_8cpp_source.html#l00148">148</a> of file <a class="el" href="_encoder_biss_c_8cpp_source.html">EncoderBissC.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_encoder_biss_c_8cpp_source.html#l00147">147</a> of file <a class="el" href="_encoder_biss_c_8cpp_source.html">EncoderBissC.cpp</a>.</p>
 
 </div>
 </div>
@@ -698,7 +700,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_encoder.html#a7ea557d2536d6c2c0a05f0c34a2003a9">Encoder</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_encoder_biss_c_8cpp_source.html#l00221">221</a> of file <a class="el" href="_encoder_biss_c_8cpp_source.html">EncoderBissC.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_encoder_biss_c_8cpp_source.html#l00220">220</a> of file <a class="el" href="_encoder_biss_c_8cpp_source.html">EncoderBissC.cpp</a>.</p>
 
 </div>
 </div>
@@ -728,7 +730,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_encoder.html#a75a328ecc1a9738edc6f051c682cdabb">Encoder</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_encoder_biss_c_8cpp_source.html#l00154">154</a> of file <a class="el" href="_encoder_biss_c_8cpp_source.html">EncoderBissC.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_encoder_biss_c_8cpp_source.html#l00153">153</a> of file <a class="el" href="_encoder_biss_c_8cpp_source.html">EncoderBissC.cpp</a>.</p>
 
 </div>
 </div>
@@ -789,7 +791,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_encoder.html#a5041739a15b236ef2428c1e7e974f8e2">Encoder</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_encoder_biss_c_8cpp_source.html#l00210">210</a> of file <a class="el" href="_encoder_biss_c_8cpp_source.html">EncoderBissC.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_encoder_biss_c_8cpp_source.html#l00209">209</a> of file <a class="el" href="_encoder_biss_c_8cpp_source.html">EncoderBissC.cpp</a>.</p>
 
 </div>
 </div>
@@ -819,7 +821,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_encoder.html#ac34abd41c98400224526ca6ad39abc77">Encoder</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_encoder_biss_c_8cpp_source.html#l00201">201</a> of file <a class="el" href="_encoder_biss_c_8cpp_source.html">EncoderBissC.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_encoder_biss_c_8cpp_source.html#l00200">200</a> of file <a class="el" href="_encoder_biss_c_8cpp_source.html">EncoderBissC.cpp</a>.</p>
 
 </div>
 </div>
@@ -846,7 +848,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_encoder_biss_c_8cpp_source.html#l00128">128</a> of file <a class="el" href="_encoder_biss_c_8cpp_source.html">EncoderBissC.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_encoder_biss_c_8cpp_source.html#l00127">127</a> of file <a class="el" href="_encoder_biss_c_8cpp_source.html">EncoderBissC.cpp</a>.</p>
 
 </div>
 </div>
@@ -865,7 +867,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_encoder_biss_c_8cpp_source.html#l00225">225</a> of file <a class="el" href="_encoder_biss_c_8cpp_source.html">EncoderBissC.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_encoder_biss_c_8cpp_source.html#l00224">224</a> of file <a class="el" href="_encoder_biss_c_8cpp_source.html">EncoderBissC.cpp</a>.</p>
 
 </div>
 </div>
@@ -895,7 +897,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_persistent_storage.html#aa8187136adfa89fca9ddee2578f6eb68">PersistentStorage</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_encoder_biss_c_8cpp_source.html#l00081">81</a> of file <a class="el" href="_encoder_biss_c_8cpp_source.html">EncoderBissC.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_encoder_biss_c_8cpp_source.html#l00080">80</a> of file <a class="el" href="_encoder_biss_c_8cpp_source.html">EncoderBissC.cpp</a>.</p>
 
 </div>
 </div>
@@ -925,7 +927,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classcpp__freertos_1_1_thread.html#a93df31e4bee72f150dd742ab5d6d35c3">cpp_freertos::Thread</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_encoder_biss_c_8cpp_source.html#l00052">52</a> of file <a class="el" href="_encoder_biss_c_8cpp_source.html">EncoderBissC.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_encoder_biss_c_8cpp_source.html#l00051">51</a> of file <a class="el" href="_encoder_biss_c_8cpp_source.html">EncoderBissC.cpp</a>.</p>
 
 </div>
 </div>
@@ -955,7 +957,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_persistent_storage.html#a105599e99ab0e4244a531c2286f2ffa2">PersistentStorage</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_encoder_biss_c_8cpp_source.html#l00091">91</a> of file <a class="el" href="_encoder_biss_c_8cpp_source.html">EncoderBissC.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_encoder_biss_c_8cpp_source.html#l00090">90</a> of file <a class="el" href="_encoder_biss_c_8cpp_source.html">EncoderBissC.cpp</a>.</p>
 
 </div>
 </div>
@@ -986,7 +988,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_encoder.html#aacf98b034fee3e2fd70cc443a784a5e0">Encoder</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_encoder_biss_c_8cpp_source.html#l00214">214</a> of file <a class="el" href="_encoder_biss_c_8cpp_source.html">EncoderBissC.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_encoder_biss_c_8cpp_source.html#l00213">213</a> of file <a class="el" href="_encoder_biss_c_8cpp_source.html">EncoderBissC.cpp</a>.</p>
 
 </div>
 </div>
@@ -1016,7 +1018,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_s_p_i_device.html#abca0ed31abf6c2f61e35f3bb45a75ba3">SPIDevice</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_encoder_biss_c_8cpp_source.html#l00138">138</a> of file <a class="el" href="_encoder_biss_c_8cpp_source.html">EncoderBissC.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_encoder_biss_c_8cpp_source.html#l00137">137</a> of file <a class="el" href="_encoder_biss_c_8cpp_source.html">EncoderBissC.cpp</a>.</p>
 
 </div>
 </div>
@@ -1282,8 +1284,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a2f24cdb820874f660ebe1d398ab9ae00" name="a2f24cdb820874f660ebe1d398ab9ae00"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2f24cdb820874f660ebe1d398ab9ae00">&#9670;&nbsp;</a></span>POLY</h2>
+<a id="a2de73e18cd3322aea912b47d67b6f695" name="a2de73e18cd3322aea912b47d67b6f695"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2de73e18cd3322aea912b47d67b6f695">&#9670;&nbsp;</a></span>POLY</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1292,7 +1294,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">uint8_t EncoderBissC::POLY = 0x43</td>
+          <td class="memname">const uint8_t EncoderBissC::POLY = 0x43</td>
         </tr>
       </table>
   </td>
@@ -1436,12 +1438,12 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">uint8_t EncoderBissC::tableCRC6n[64] = {0}</td>
+          <td class="memname">uint8_t EncoderBissC::tableCRC6n[64]</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

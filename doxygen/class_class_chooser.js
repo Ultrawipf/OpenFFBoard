@@ -6,5 +6,5 @@ var class_class_chooser =
     [ "isCreatable", "class_class_chooser.html#a03687b317089ca84a3624e915d1b0be4", null ],
     [ "isValidClassId", "class_class_chooser.html#a30c3411caeec09731283ce8f493e8d1e", null ],
     [ "replyAvailableClasses", "class_class_chooser.html#a65ffe33036fe00ca15c190a1dc712727", null ],
-    [ "class_registry", "class_class_chooser.html#a66a5959c41024b85ca188054a0e1fe9f", null ]
+    [ "class_registry", "class_class_chooser.html#a80c31a9651dce6249c751b2e74a8bf37", null ]
 ];

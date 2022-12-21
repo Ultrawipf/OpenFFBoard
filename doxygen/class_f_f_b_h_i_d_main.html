@@ -111,17 +111,20 @@ Inheritance diagram for FFBHIDMain:</div>
 <area href="class_error_handler.html" alt="ErrorHandler" shape="rect" coords="770,56,900,80"/>
 <area href="class_choosable_class.html" alt="ChoosableClass" shape="rect" coords="0,0,130,24"/>
 <area href="class_command_handler.html" alt="CommandHandler" shape="rect" coords="140,0,270,24"/>
-<area href="class_f_f_b_joystick.html" alt="FFBJoystick" shape="rect" coords="350,168,480,192"/>
-<area href="class_f_f_b_wheel.html" alt="FFBWheel" shape="rect" coords="490,168,620,192"/>
+<area href="class_f_f_b_h_i_d_ext.html" alt="FFBHIDExt" shape="rect" coords="280,168,410,192"/>
+<area href="class_f_f_b_joystick.html" alt="FFBJoystick" shape="rect" coords="420,168,550,192"/>
+<area href="class_f_f_b_wheel.html" alt="FFBWheel" shape="rect" coords="560,168,690,192"/>
   </map>
 </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a9bfbfd9b46787bf1a43d96df154a4c53"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_f_f_b_h_i_d_main.html#a9bfbfd9b46787bf1a43d96df154a4c53">FFBHIDMain</a> (uint8_t axisCount)</td></tr>
+<tr class="memitem:a9bfbfd9b46787bf1a43d96df154a4c53"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_f_f_b_h_i_d_main.html#a9bfbfd9b46787bf1a43d96df154a4c53">FFBHIDMain</a> (uint8_t <a class="el" href="class_f_f_b_h_i_d_main.html#a51b39a7900e9c7c5028fc2f4123cb6ed">axisCount</a>)</td></tr>
 <tr class="separator:a9bfbfd9b46787bf1a43d96df154a4c53"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9f4b27c7527cce4a523d83b7dd59ae68"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_f_f_b_h_i_d_main.html#a9f4b27c7527cce4a523d83b7dd59ae68">~FFBHIDMain</a> ()</td></tr>
 <tr class="separator:a9f4b27c7527cce4a523d83b7dd59ae68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a812cfca603a079393c331d7177b5062d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_f_f_b_h_i_d_main.html#a812cfca603a079393c331d7177b5062d">setFFBEffectsCalc</a> (std::shared_ptr&lt; <a class="el" href="class_effects_control_itf.html">EffectsControlItf</a> &gt; <a class="el" href="class_f_f_b_h_i_d_main.html#a015377c7ec93573e6dff76da4d278ba0">ffb</a>, std::shared_ptr&lt; <a class="el" href="class_effects_calculator.html">EffectsCalculator</a> &gt; <a class="el" href="class_f_f_b_h_i_d_main.html#abc2387e35a52e0525c478ba3889e254b">effects_calc</a>)</td></tr>
+<tr class="separator:a812cfca603a079393c331d7177b5062d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb3512c65b9285454d8784b5e3aca82a"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="struct_class_identifier.html">ClassIdentifier</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_f_f_b_h_i_d_main.html#adb3512c65b9285454d8784b5e3aca82a">getInfo</a> ()=0</td></tr>
 <tr class="separator:adb3512c65b9285454d8784b5e3aca82a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a468649202f64eb3d79d6449835ef5804"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_command_handler_8h.html#aefaf83fec6a7da1d02ae7e912dd9a6d5">CommandStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_f_f_b_h_i_d_main.html#a468649202f64eb3d79d6449835ef5804">command</a> (const <a class="el" href="struct_parsed_command.html">ParsedCommand</a> &amp;cmd, std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;replies)</td></tr>
@@ -204,6 +207,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:acd8e021f6a407115dba838d7b16930bb inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af6efec263bc372a1ca57add26dd93a97 inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#af6efec263bc372a1ca57add26dd93a97">getCsvHelpstring</a> ()</td></tr>
 <tr class="separator:af6efec263bc372a1ca57add26dd93a97 inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2628ee7f333010e15ad70b9bcffc433d inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">virtual uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a2628ee7f333010e15ad70b9bcffc433d">getCommandHandlerInstance</a> ()</td></tr>
+<tr class="separator:a2628ee7f333010e15ad70b9bcffc433d inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad67013c18a56f13ff7159883dfce665e inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#ad67013c18a56f13ff7159883dfce665e">broadcastCommandReply</a> (<a class="el" href="class_command_reply.html">CommandReply</a> reply, uint32_t cmdId, <a class="el" href="_command_handler_8h.html#aec46f6cc23a395b611fbc7c7239b9c41">CMDtype</a> type)</td></tr>
 <tr class="separator:ad67013c18a56f13ff7159883dfce665e inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab23b77c2282380e1e713b0173530416c inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#ab23b77c2282380e1e713b0173530416c">sendCommandReplyAsync</a> (<a class="el" href="class_command_reply.html">CommandReply</a> reply, uint32_t cmdId, <a class="el" href="_command_handler_8h.html#aec46f6cc23a395b611fbc7c7239b9c41">CMDtype</a> type, <a class="el" href="class_command_interface.html">CommandInterface</a> *interface=nullptr)</td></tr>
@@ -314,15 +319,15 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a5deca916348f55b7a6aaffc598d28c0b inherit pub_static_methods_class_command_handler"><td class="memTemplParams" colspan="2">template&lt;typename TVal &gt; </td></tr>
 <tr class="memitem:a5deca916348f55b7a6aaffc598d28c0b inherit pub_static_methods_class_command_handler"><td class="memTemplItemLeft" align="right" valign="top">static <a class="el" href="_command_handler_8h.html#aefaf83fec6a7da1d02ae7e912dd9a6d5">CommandStatus</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a5deca916348f55b7a6aaffc598d28c0b">handleGetSet</a> (const <a class="el" href="struct_parsed_command.html">ParsedCommand</a> &amp;cmd, std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;replies, TVal &amp;value)</td></tr>
 <tr class="separator:a5deca916348f55b7a6aaffc598d28c0b inherit pub_static_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a962937ad83e3f5317fa085da8a5779a9 inherit pub_static_methods_class_command_handler"><td class="memTemplParams" colspan="2">template&lt;typename TVal , class cls , class cls1 &gt; </td></tr>
-<tr class="memitem:a962937ad83e3f5317fa085da8a5779a9 inherit pub_static_methods_class_command_handler"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a962937ad83e3f5317fa085da8a5779a9">handleGetSetFunc</a> (const <a class="el" href="struct_parsed_command.html">ParsedCommand</a> &amp;cmd, std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;replies, TVal &amp;value, void(cls1::*setfunc)(TVal), cls *obj)</td></tr>
-<tr class="separator:a962937ad83e3f5317fa085da8a5779a9 inherit pub_static_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af5cb275560fa91128585d4f2546ffc3b inherit pub_static_methods_class_command_handler"><td class="memTemplParams" colspan="2">template&lt;typename TVal , class cls , class cls1 , class cls2 &gt; </td></tr>
-<tr class="memitem:af5cb275560fa91128585d4f2546ffc3b inherit pub_static_methods_class_command_handler"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_command_handler.html#af5cb275560fa91128585d4f2546ffc3b">handleGetFuncSetFunc</a> (const <a class="el" href="struct_parsed_command.html">ParsedCommand</a> &amp;cmd, std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;replies, TVal(cls1::*getfunc)(), void(cls2::*setfunc)(TVal), cls *obj)</td></tr>
-<tr class="separator:af5cb275560fa91128585d4f2546ffc3b inherit pub_static_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5044af5133a039b266864c2cb38f399c inherit pub_static_methods_class_command_handler"><td class="memTemplParams" colspan="2">template&lt;typename TVal , class cls , class cls1 &gt; </td></tr>
-<tr class="memitem:a5044af5133a039b266864c2cb38f399c inherit pub_static_methods_class_command_handler"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a5044af5133a039b266864c2cb38f399c">handleGetFuncSet</a> (const <a class="el" href="struct_parsed_command.html">ParsedCommand</a> &amp;cmd, std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;replies, TVal &amp;value, TVal(cls1::*getfunc)(), cls *obj)</td></tr>
-<tr class="separator:a5044af5133a039b266864c2cb38f399c inherit pub_static_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acdb27df68d3ab32e1c47360930656ca1 inherit pub_static_methods_class_command_handler"><td class="memTemplParams" colspan="2">template&lt;typename TVal , class cls , class cls1 &gt; </td></tr>
+<tr class="memitem:acdb27df68d3ab32e1c47360930656ca1 inherit pub_static_methods_class_command_handler"><td class="memTemplItemLeft" align="right" valign="top">static <a class="el" href="_command_handler_8h.html#aefaf83fec6a7da1d02ae7e912dd9a6d5">CommandStatus</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_command_handler.html#acdb27df68d3ab32e1c47360930656ca1">handleGetSetFunc</a> (const <a class="el" href="struct_parsed_command.html">ParsedCommand</a> &amp;cmd, std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;replies, TVal &amp;value, void(cls1::*setfunc)(TVal), cls *obj)</td></tr>
+<tr class="separator:acdb27df68d3ab32e1c47360930656ca1 inherit pub_static_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a07d24bd9ab3d2d37c4541da554338c20 inherit pub_static_methods_class_command_handler"><td class="memTemplParams" colspan="2">template&lt;typename TVal , class cls , class cls1 , class cls2 &gt; </td></tr>
+<tr class="memitem:a07d24bd9ab3d2d37c4541da554338c20 inherit pub_static_methods_class_command_handler"><td class="memTemplItemLeft" align="right" valign="top">static <a class="el" href="_command_handler_8h.html#aefaf83fec6a7da1d02ae7e912dd9a6d5">CommandStatus</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a07d24bd9ab3d2d37c4541da554338c20">handleGetFuncSetFunc</a> (const <a class="el" href="struct_parsed_command.html">ParsedCommand</a> &amp;cmd, std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;replies, TVal(cls1::*getfunc)(), void(cls2::*setfunc)(TVal), cls *obj)</td></tr>
+<tr class="separator:a07d24bd9ab3d2d37c4541da554338c20 inherit pub_static_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9a0eb7259f402ad1668908d9f8e2cb8 inherit pub_static_methods_class_command_handler"><td class="memTemplParams" colspan="2">template&lt;typename TVal , class cls , class cls1 &gt; </td></tr>
+<tr class="memitem:ae9a0eb7259f402ad1668908d9f8e2cb8 inherit pub_static_methods_class_command_handler"><td class="memTemplItemLeft" align="right" valign="top">static <a class="el" href="_command_handler_8h.html#aefaf83fec6a7da1d02ae7e912dd9a6d5">CommandStatus</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_command_handler.html#ae9a0eb7259f402ad1668908d9f8e2cb8">handleGetFuncSet</a> (const <a class="el" href="struct_parsed_command.html">ParsedCommand</a> &amp;cmd, std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;replies, TVal &amp;value, TVal(cls1::*getfunc)(), cls *obj)</td></tr>
+<tr class="separator:ae9a0eb7259f402ad1668908d9f8e2cb8 inherit pub_static_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_methods_classcpp__freertos_1_1_thread"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classcpp__freertos_1_1_thread')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classcpp__freertos_1_1_thread.html">cpp_freertos::Thread</a></td></tr>
 <tr class="memitem:abe20a08801d022da203e0295dbb59cbb inherit pub_static_methods_classcpp__freertos_1_1_thread"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__freertos_1_1_thread.html#abe20a08801d022da203e0295dbb59cbb">Yield</a> ()</td></tr>
 <tr class="separator:abe20a08801d022da203e0295dbb59cbb inherit pub_static_methods_classcpp__freertos_1_1_thread"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -338,8 +343,12 @@ Static Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
-<tr class="memitem:a60361c34a698571785fb9f9dfe38d313"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="class_effects_calculator.html">EffectsCalculator</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_f_f_b_h_i_d_main.html#a60361c34a698571785fb9f9dfe38d313">effects_calc</a></td></tr>
-<tr class="separator:a60361c34a698571785fb9f9dfe38d313"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a015377c7ec93573e6dff76da4d278ba0"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="class_effects_control_itf.html">EffectsControlItf</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_f_f_b_h_i_d_main.html#a015377c7ec93573e6dff76da4d278ba0">ffb</a></td></tr>
+<tr class="separator:a015377c7ec93573e6dff76da4d278ba0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc2387e35a52e0525c478ba3889e254b"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="class_effects_calculator.html">EffectsCalculator</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_f_f_b_h_i_d_main.html#abc2387e35a52e0525c478ba3889e254b">effects_calc</a></td></tr>
+<tr class="separator:abc2387e35a52e0525c478ba3889e254b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a51b39a7900e9c7c5028fc2f4123cb6ed"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_f_f_b_h_i_d_main.html#a51b39a7900e9c7c5028fc2f4123cb6ed">axisCount</a> =0</td></tr>
+<tr class="separator:a51b39a7900e9c7c5028fc2f4123cb6ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_class_f_f_board_main"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_class_f_f_board_main')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="class_f_f_board_main.html">FFBoardMain</a></td></tr>
 <tr class="memitem:a295f3e0008dc3464d64ffaa5ce5efe47 inherit pro_attribs_class_f_f_board_main"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="class_u_s_bdevice.html">USBdevice</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_f_f_board_main.html#a295f3e0008dc3464d64ffaa5ce5efe47">usbdev</a></td></tr>
 <tr class="separator:a295f3e0008dc3464d64ffaa5ce5efe47 inherit pro_attribs_class_f_f_board_main"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -416,8 +425,6 @@ Private Attributes</h2></td></tr>
 <tr class="separator:ae7da24104d70c4c57eb122f371de338c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc67f84e801a7189aad6acd7a4fa418b"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_f_f_b_h_i_d_main.html#abc67f84e801a7189aad6acd7a4fa418b">report_rate_cnt</a> = 0</td></tr>
 <tr class="separator:abc67f84e801a7189aad6acd7a4fa418b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac3e49294b893822c70f42d83448b4a2c"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="class_hid_f_f_b.html">HidFFB</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_f_f_b_h_i_d_main.html#ac3e49294b893822c70f42d83448b4a2c">ffb</a></td></tr>
-<tr class="separator:ac3e49294b893822c70f42d83448b4a2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a76f74e96b19e0af8a4f6170661ae7c9e"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="class_axes_manager.html">AxesManager</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_f_f_b_h_i_d_main.html#a76f74e96b19e0af8a4f6170661ae7c9e">axes_manager</a></td></tr>
 <tr class="separator:a76f74e96b19e0af8a4f6170661ae7c9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a51d7d67f9864a3b709ceb3fb4b61279d"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::unique_ptr&lt; <a class="el" href="class_button_source.html">ButtonSource</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_f_f_b_h_i_d_main.html#a51d7d67f9864a3b709ceb3fb4b61279d">btns</a></td></tr>
@@ -584,8 +591,9 @@ Additional Inherited Members</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p >setFFBEffectsCalc must be called in constructor of derived class to finish the setup </p>
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html#l00078">78</a> of file <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html">FFBHIDMain.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html#l00071">71</a> of file <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html">FFBHIDMain.cpp</a>.</p>
 
 </div>
 </div>
@@ -612,7 +620,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html#l00105">105</a> of file <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html">FFBHIDMain.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html#l00103">103</a> of file <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html">FFBHIDMain.cpp</a>.</p>
 
 </div>
 </div>
@@ -633,7 +641,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html#l00240">240</a> of file <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html">FFBHIDMain.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html#l00238">238</a> of file <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html">FFBHIDMain.cpp</a>.</p>
 
 </div>
 </div>
@@ -653,7 +661,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html#l00208">208</a> of file <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html">FFBHIDMain.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html#l00206">206</a> of file <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html">FFBHIDMain.cpp</a>.</p>
 
 </div>
 </div>
@@ -672,7 +680,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html#l00220">220</a> of file <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html">FFBHIDMain.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html#l00218">218</a> of file <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html">FFBHIDMain.cpp</a>.</p>
 
 </div>
 </div>
@@ -691,7 +699,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html#l00187">187</a> of file <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html">FFBHIDMain.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html#l00185">185</a> of file <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html">FFBHIDMain.cpp</a>.</p>
 
 </div>
 </div>
@@ -758,7 +766,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html#l00344">344</a> of file <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html">FFBHIDMain.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html#l00342">342</a> of file <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html">FFBHIDMain.cpp</a>.</p>
 
 </div>
 </div>
@@ -798,7 +806,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_error_handler.html#a78b8f55909d65f9cd07ed1ab6f9f3461">ErrorHandler</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html#l00410">410</a> of file <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html">FFBHIDMain.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html#l00408">408</a> of file <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html">FFBHIDMain.cpp</a>.</p>
 
 </div>
 </div>
@@ -828,7 +836,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_exti_handler.html#a98dad3ef8d41c40d84493e41b1f8c16e">ExtiHandler</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html#l00382">382</a> of file <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html">FFBHIDMain.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html#l00380">380</a> of file <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html">FFBHIDMain.cpp</a>.</p>
 
 </div>
 </div>
@@ -847,7 +855,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html#l00255">255</a> of file <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html">FFBHIDMain.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html#l00253">253</a> of file <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html">FFBHIDMain.cpp</a>.</p>
 
 </div>
 </div>
@@ -877,7 +885,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_f_f_board_main.html#a967abb134bf73e04c95efd495ddb4243">FFBoardMain</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00051">51</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00052">52</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
 
 </div>
 </div>
@@ -906,7 +914,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_f_f_board_main.html#a42e6466dd226db91ef0c9ac30c81badc">FFBoardMain</a>.</p>
 
-<p>Implemented in <a class="el" href="class_f_f_b_joystick.html#a4abdc731d5415af9ba17356c5553dc49">FFBJoystick</a>, and <a class="el" href="class_f_f_b_wheel.html#ab048aa9a2bd029b41c62962dacfaea04">FFBWheel</a>.</p>
+<p>Implemented in <a class="el" href="class_f_f_b_h_i_d_ext.html#a0517ec69fbce0a88cd16a4bbf957ced5">FFBHIDExt</a>, <a class="el" href="class_f_f_b_joystick.html#a4abdc731d5415af9ba17356c5553dc49">FFBJoystick</a>, and <a class="el" href="class_f_f_b_wheel.html#ab048aa9a2bd029b41c62962dacfaea04">FFBWheel</a>.</p>
 
 </div>
 </div>
@@ -925,7 +933,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html#l00251">251</a> of file <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html">FFBHIDMain.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html#l00249">249</a> of file <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html">FFBHIDMain.cpp</a>.</p>
 
 </div>
 </div>
@@ -952,7 +960,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00047">47</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00048">48</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
 
 </div>
 </div>
@@ -1001,7 +1009,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_persistent_storage.html#aa8187136adfa89fca9ddee2578f6eb68">PersistentStorage</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html#l00112">112</a> of file <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html">FFBHIDMain.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html#l00110">110</a> of file <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html">FFBHIDMain.cpp</a>.</p>
 
 </div>
 </div>
@@ -1031,7 +1039,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classcpp__freertos_1_1_thread.html#a93df31e4bee72f150dd742ab5d6d35c3">cpp_freertos::Thread</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html#l00142">142</a> of file <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html">FFBHIDMain.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html#l00140">140</a> of file <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html">FFBHIDMain.cpp</a>.</p>
 
 </div>
 </div>
@@ -1061,7 +1069,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_persistent_storage.html#a105599e99ab0e4244a531c2286f2ffa2">PersistentStorage</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html#l00130">130</a> of file <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html">FFBHIDMain.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html#l00128">128</a> of file <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html">FFBHIDMain.cpp</a>.</p>
 
 </div>
 </div>
@@ -1089,7 +1097,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p >Sends periodic gamepad reports of buttons and analog axes </p>
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html#l00262">262</a> of file <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html">FFBHIDMain.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html#l00260">260</a> of file <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html">FFBHIDMain.cpp</a>.</p>
 
 </div>
 </div>
@@ -1109,7 +1117,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html#l00226">226</a> of file <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html">FFBHIDMain.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html#l00224">224</a> of file <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html">FFBHIDMain.cpp</a>.</p>
 
 </div>
 </div>
@@ -1129,7 +1137,38 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html#l00193">193</a> of file <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html">FFBHIDMain.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html#l00191">191</a> of file <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html">FFBHIDMain.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a812cfca603a079393c331d7177b5062d" name="a812cfca603a079393c331d7177b5062d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a812cfca603a079393c331d7177b5062d">&#9670;&nbsp;</a></span>setFFBEffectsCalc()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void FFBHIDMain::setFFBEffectsCalc </td>
+          <td>(</td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="class_effects_control_itf.html">EffectsControlItf</a> &gt;&#160;</td>
+          <td class="paramname"><em>ffb</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="class_effects_calculator.html">EffectsCalculator</a> &gt;&#160;</td>
+          <td class="paramname"><em>effects_calc</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >MUST be called in the constructor of the derived class. This finishes the construction because the constructor of this class will be called before the ffb and effects calc objects are created in the derived class. </p>
+
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html#l00094">94</a> of file <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html">FFBHIDMain.cpp</a>.</p>
 
 </div>
 </div>
@@ -1158,7 +1197,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p >Changes the hid report rate based on the index for usb_report_rates </p>
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html#l00325">325</a> of file <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html">FFBHIDMain.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html#l00323">323</a> of file <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html">FFBHIDMain.cpp</a>.</p>
 
 </div>
 </div>
@@ -1195,7 +1234,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p >Main update loop </p>
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html#l00152">152</a> of file <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html">FFBHIDMain.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html#l00150">150</a> of file <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html">FFBHIDMain.cpp</a>.</p>
 
 </div>
 </div>
@@ -1223,7 +1262,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p >Generates the speed strings to display to the user </p>
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html#l00334">334</a> of file <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html">FFBHIDMain.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html#l00332">332</a> of file <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html">FFBHIDMain.cpp</a>.</p>
 
 </div>
 </div>
@@ -1253,7 +1292,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_f_f_board_main.html#a919f31e6e99ecef3eb3a1cba6432fa72">FFBoardMain</a>.</p>
 
-<p>Implemented in <a class="el" href="class_f_f_b_joystick.html#a505aa5ff0990cf50d0fea13bcacd573a">FFBJoystick</a>, and <a class="el" href="class_f_f_b_wheel.html#aaa30dfd94a0ba5909e08181b31af4578">FFBWheel</a>.</p>
+<p>Implemented in <a class="el" href="class_f_f_b_h_i_d_ext.html#a8f3424c2e2c74750051065b748023872">FFBHIDExt</a>, <a class="el" href="class_f_f_b_joystick.html#a505aa5ff0990cf50d0fea13bcacd573a">FFBJoystick</a>, and <a class="el" href="class_f_f_b_wheel.html#aaa30dfd94a0ba5909e08181b31af4578">FFBWheel</a>.</p>
 
 </div>
 </div>
@@ -1283,7 +1322,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_f_f_board_main.html#a5c8c9bf502e526c5212a98608aeed010">FFBoardMain</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html#l00370">370</a> of file <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html">FFBHIDMain.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html#l00368">368</a> of file <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html">FFBHIDMain.cpp</a>.</p>
 
 </div>
 </div>
@@ -1313,7 +1352,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_f_f_board_main.html#aae6ecdffa3bcb2f3ad9eba415c2f9f2a">FFBoardMain</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html#l00358">358</a> of file <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html">FFBHIDMain.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html#l00356">356</a> of file <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html">FFBHIDMain.cpp</a>.</p>
 
 </div>
 </div>
@@ -1338,7 +1377,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00118">118</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00121">121</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
 
 </div>
 </div>
@@ -1362,7 +1401,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00089">89</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00093">93</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
 
 </div>
 </div>
@@ -1386,7 +1425,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00122">122</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00125">125</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
 
 </div>
 </div>
@@ -1410,7 +1449,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00110">110</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00113">113</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
 
 </div>
 </div>
@@ -1434,7 +1473,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00116">116</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00119">119</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
 
 </div>
 </div>
@@ -1458,7 +1497,31 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00106">106</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00109">109</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
+
+</div>
+</div>
+<a id="a51b39a7900e9c7c5028fc2f4123cb6ed" name="a51b39a7900e9c7c5028fc2f4123cb6ed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a51b39a7900e9c7c5028fc2f4123cb6ed">&#9670;&nbsp;</a></span>axisCount</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t FFBHIDMain::axisCount =0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00088">88</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
 
 </div>
 </div>
@@ -1482,7 +1545,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00121">121</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00124">124</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
 
 </div>
 </div>
@@ -1506,7 +1569,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00109">109</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00112">112</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
 
 </div>
 </div>
@@ -1530,7 +1593,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00117">117</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00120">120</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
 
 </div>
 </div>
@@ -1554,12 +1617,12 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00087">87</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00091">91</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
 
 </div>
 </div>
-<a id="a60361c34a698571785fb9f9dfe38d313" name="a60361c34a698571785fb9f9dfe38d313"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a60361c34a698571785fb9f9dfe38d313">&#9670;&nbsp;</a></span>effects_calc</h2>
+<a id="abc2387e35a52e0525c478ba3889e254b" name="abc2387e35a52e0525c478ba3889e254b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abc2387e35a52e0525c478ba3889e254b">&#9670;&nbsp;</a></span>effects_calc</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1568,7 +1631,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::unique_ptr&lt;<a class="el" href="class_effects_calculator.html">EffectsCalculator</a>&gt; FFBHIDMain::effects_calc</td>
+          <td class="memname">std::shared_ptr&lt;<a class="el" href="class_effects_calculator.html">EffectsCalculator</a>&gt; FFBHIDMain::effects_calc</td>
         </tr>
       </table>
   </td>
@@ -1578,7 +1641,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00085">85</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00087">87</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
 
 </div>
 </div>
@@ -1602,12 +1665,12 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00091">91</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00095">95</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
 
 </div>
 </div>
-<a id="ac3e49294b893822c70f42d83448b4a2c" name="ac3e49294b893822c70f42d83448b4a2c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac3e49294b893822c70f42d83448b4a2c">&#9670;&nbsp;</a></span>ffb</h2>
+<a id="a015377c7ec93573e6dff76da4d278ba0" name="a015377c7ec93573e6dff76da4d278ba0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a015377c7ec93573e6dff76da4d278ba0">&#9670;&nbsp;</a></span>ffb</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1616,17 +1679,17 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::unique_ptr&lt;<a class="el" href="class_hid_f_f_b.html">HidFFB</a>&gt; FFBHIDMain::ffb</td>
+          <td class="memname">std::shared_ptr&lt;<a class="el" href="class_effects_control_itf.html">EffectsControlItf</a>&gt; FFBHIDMain::ffb</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00105">105</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00086">86</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
 
 </div>
 </div>
@@ -1650,7 +1713,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00125">125</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00128">128</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
 
 </div>
 </div>
@@ -1674,7 +1737,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00130">130</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00133">133</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
 
 </div>
 </div>
@@ -1698,7 +1761,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00113">113</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00116">116</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
 
 </div>
 </div>
@@ -1722,7 +1785,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00127">127</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00130">130</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
 
 </div>
 </div>
@@ -1746,7 +1809,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00103">103</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00107">107</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
 
 </div>
 </div>
@@ -1770,7 +1833,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00112">112</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00115">115</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
 
 </div>
 </div>
@@ -1794,7 +1857,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00114">114</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00117">117</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
 
 </div>
 </div>
@@ -1818,7 +1881,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00128">128</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00131">131</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
 
 </div>
 </div>
@@ -1842,7 +1905,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00097">97</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00101">101</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
 
 </div>
 </div>
@@ -1866,7 +1929,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00098">98</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00102">102</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
 
 </div>
 </div>
@@ -1890,7 +1953,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00099">99</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00103">103</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
 
 </div>
 </div>

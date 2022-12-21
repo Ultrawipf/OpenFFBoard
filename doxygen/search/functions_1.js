@@ -51,6 +51,6 @@ var searchData=
   ['audiod_5fverify_5fitf_5fexists_48',['audiod_verify_itf_exists',['../audio__device_8c.html#a44cdff6f905139ea4ae04950323e6089',1,'audio_device.c']]],
   ['audiod_5fxfer_5fcb_49',['audiod_xfer_cb',['../group___a_u_d_i_o___serial___device.html#ga267968271f1e5533c5a529a4bb452fe9',1,'audiod_xfer_cb(uint8_t rhport, uint8_t ep_addr, xfer_result_t result, uint32_t xferred_bytes):&#160;audio_device.c'],['../group___a_u_d_i_o___serial___device.html#ga267968271f1e5533c5a529a4bb452fe9',1,'audiod_xfer_cb(uint8_t rhport, uint8_t edpt_addr, xfer_result_t result, uint32_t xferred_bytes):&#160;audio_device.c']]],
   ['autohome_50',['autohome',['../class_t_m_c4671.html#a1773c150e154369cceb4c02cab6297ef',1,'TMC4671']]],
-  ['axesmanager_51',['AxesManager',['../class_axes_manager.html#a5135bd088107d102395ba77fa72d69ae',1,'AxesManager']]],
+  ['axesmanager_51',['AxesManager',['../class_axes_manager.html#a856491f7e12d83e6da3dc4ac3a1ad211',1,'AxesManager']]],
   ['axis_52',['Axis',['../class_axis.html#a29e382bef1e9f048e7a79cc552b196e7',1,'Axis']]]
 ];

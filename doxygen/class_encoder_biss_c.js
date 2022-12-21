@@ -36,7 +36,7 @@ var class_encoder_biss_c =
     [ "mtpos", "class_encoder_biss_c.html#acc20f57368b1e18306d11d0122001052", null ],
     [ "newPos", "class_encoder_biss_c.html#ac33892b363938b8974be6fef5d987447", null ],
     [ "numErrors", "class_encoder_biss_c.html#a11860f47aaabd9157e3476abeb938aec", null ],
-    [ "POLY", "class_encoder_biss_c.html#a2f24cdb820874f660ebe1d398ab9ae00", null ],
+    [ "POLY", "class_encoder_biss_c.html#a2de73e18cd3322aea912b47d67b6f695", null ],
     [ "pos", "class_encoder_biss_c.html#aae0f96d86fbeb7b699d5871b98616f9f", null ],
     [ "posOffset", "class_encoder_biss_c.html#ab3645815494034d35268eb607986182b", null ],
     [ "requestNewDataSem", "class_encoder_biss_c.html#adb969153b073a45b92c3b2d62244f30c", null ],

@@ -109,21 +109,15 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a361649b1130fab069d323567818fd5a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa66b13e22a18d4f3339530b5e718011e"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_f_f_b___effect.html#aa66b13e22a18d4f3339530b5e718011e">endLevel</a> = 0</td></tr>
 <tr class="separator:aa66b13e22a18d4f3339530b5e718011e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aea1937f9d1d26b1d2b4139a0d01ecf9d"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_f_f_b___effect.html#aea1937f9d1d26b1d2b4139a0d01ecf9d">enableAxis</a> = 0</td></tr>
-<tr class="separator:aea1937f9d1d26b1d2b4139a0d01ecf9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0ac095fa3a25d0654a5f497419b0dbd6"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_f_f_b___effect.html#a0ac095fa3a25d0654a5f497419b0dbd6">directionX</a> = 0</td></tr>
-<tr class="separator:a0ac095fa3a25d0654a5f497419b0dbd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae9112fdb408e2b5839d7c84d8b0b8e50"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_f_f_b___effect.html#ae9112fdb408e2b5839d7c84d8b0b8e50">directionY</a> = 0</td></tr>
-<tr class="separator:ae9112fdb408e2b5839d7c84d8b0b8e50"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adecfd4e99d592b0ba1c3810b0eb2a1ef"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_f_f_b___effect.html#adecfd4e99d592b0ba1c3810b0eb2a1ef">directionZ</a> = 0</td></tr>
-<tr class="separator:adecfd4e99d592b0ba1c3810b0eb2a1ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a86e981a12a804be9c50561f6042542b0"><td class="memItemLeft" align="right" valign="top">FFB_Effect_Condition&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_f_f_b___effect.html#a86e981a12a804be9c50561f6042542b0">conditions</a> [MAX_AXIS]</td></tr>
+<tr class="memitem:a7e731071953bc2eab778eea9abb9b4b7"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_f_f_b___effect.html#a7e731071953bc2eab778eea9abb9b4b7">axisMagnitudes</a> [MAX_AXIS] = {0}</td></tr>
+<tr class="separator:a7e731071953bc2eab778eea9abb9b4b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86e981a12a804be9c50561f6042542b0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_f_f_b___effect___condition.html">FFB_Effect_Condition</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_f_f_b___effect.html#a86e981a12a804be9c50561f6042542b0">conditions</a> [MAX_AXIS]</td></tr>
 <tr class="separator:a86e981a12a804be9c50561f6042542b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af2fe60cffefc14b34eaa025cfce09ef0"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_f_f_b___effect.html#af2fe60cffefc14b34eaa025cfce09ef0">phase</a> = 0</td></tr>
 <tr class="separator:af2fe60cffefc14b34eaa025cfce09ef0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a00d99798134251462d699bac50c292a0"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_f_f_b___effect.html#a00d99798134251462d699bac50c292a0">period</a> = 0</td></tr>
 <tr class="separator:a00d99798134251462d699bac50c292a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a548639c8b5fdbf412b0bac0c1ce4a904"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_f_f_b___effect.html#a548639c8b5fdbf412b0bac0c1ce4a904">duration</a> = 0</td></tr>
+<tr class="memitem:a548639c8b5fdbf412b0bac0c1ce4a904"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_f_f_b___effect.html#a548639c8b5fdbf412b0bac0c1ce4a904">duration</a> = FFB_EFFECT_DURATION_INFINITE</td></tr>
 <tr class="separator:a548639c8b5fdbf412b0bac0c1ce4a904"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8ec5f69df68d5b3c97c4097717d3e5e7"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_f_f_b___effect.html#a8ec5f69df68d5b3c97c4097717d3e5e7">attackLevel</a> = 0</td></tr>
 <tr class="separator:a8ec5f69df68d5b3c97c4097717d3e5e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -143,10 +137,12 @@ Public Attributes</h2></td></tr>
 <tr class="separator:aca55e76765c951d7260da9bf5d5c9cf6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06b9dd6999e23ccd1a77c84d3c590930"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_f_f_b___effect.html#a06b9dd6999e23ccd1a77c84d3c590930">useEnvelope</a> = false</td></tr>
 <tr class="separator:a06b9dd6999e23ccd1a77c84d3c590930"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a49214e79dc5d6dd3105915dc6e75d59f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_f_f_b___effect.html#a49214e79dc5d6dd3105915dc6e75d59f">useSingleCondition</a> = false</td></tr>
+<tr class="separator:a49214e79dc5d6dd3105915dc6e75d59f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="ffb__defs_8h_source.html#l00268">268</a> of file <a class="el" href="ffb__defs_8h_source.html">ffb_defs.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ffb__defs_8h_source.html#l00267">267</a> of file <a class="el" href="ffb__defs_8h_source.html">ffb_defs.h</a>.</p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
 <a id="a8ec5f69df68d5b3c97c4097717d3e5e7" name="a8ec5f69df68d5b3c97c4097717d3e5e7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8ec5f69df68d5b3c97c4097717d3e5e7">&#9670;&nbsp;</a></span>attackLevel</h2>
@@ -160,7 +156,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ffb__defs_8h_source.html#l00288">288</a> of file <a class="el" href="ffb__defs_8h_source.html">ffb_defs.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ffb__defs_8h_source.html#l00282">282</a> of file <a class="el" href="ffb__defs_8h_source.html">ffb_defs.h</a>.</p>
 
 </div>
 </div>
@@ -176,7 +172,23 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ffb__defs_8h_source.html#l00289">289</a> of file <a class="el" href="ffb__defs_8h_source.html">ffb_defs.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ffb__defs_8h_source.html#l00283">283</a> of file <a class="el" href="ffb__defs_8h_source.html">ffb_defs.h</a>.</p>
+
+</div>
+</div>
+<a id="a7e731071953bc2eab778eea9abb9b4b7" name="a7e731071953bc2eab778eea9abb9b4b7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e731071953bc2eab778eea9abb9b4b7">&#9670;&nbsp;</a></span>axisMagnitudes</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float FFB_Effect::axisMagnitudes[MAX_AXIS] = {0}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="ffb__defs_8h_source.html#l00276">276</a> of file <a class="el" href="ffb__defs_8h_source.html">ffb_defs.h</a>.</p>
 
 </div>
 </div>
@@ -187,60 +199,12 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">FFB_Effect_Condition FFB_Effect::conditions[MAX_AXIS]</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="ffb__defs_8h_source.html#l00284">284</a> of file <a class="el" href="ffb__defs_8h_source.html">ffb_defs.h</a>.</p>
-
-</div>
-</div>
-<a id="a0ac095fa3a25d0654a5f497419b0dbd6" name="a0ac095fa3a25d0654a5f497419b0dbd6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0ac095fa3a25d0654a5f497419b0dbd6">&#9670;&nbsp;</a></span>directionX</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint16_t FFB_Effect::directionX = 0</td>
+          <td class="memname"><a class="el" href="struct_f_f_b___effect___condition.html">FFB_Effect_Condition</a> FFB_Effect::conditions[MAX_AXIS]</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="ffb__defs_8h_source.html#l00278">278</a> of file <a class="el" href="ffb__defs_8h_source.html">ffb_defs.h</a>.</p>
-
-</div>
-</div>
-<a id="ae9112fdb408e2b5839d7c84d8b0b8e50" name="ae9112fdb408e2b5839d7c84d8b0b8e50"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae9112fdb408e2b5839d7c84d8b0b8e50">&#9670;&nbsp;</a></span>directionY</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint16_t FFB_Effect::directionY = 0</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="ffb__defs_8h_source.html#l00279">279</a> of file <a class="el" href="ffb__defs_8h_source.html">ffb_defs.h</a>.</p>
-
-</div>
-</div>
-<a id="adecfd4e99d592b0ba1c3810b0eb2a1ef" name="adecfd4e99d592b0ba1c3810b0eb2a1ef"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adecfd4e99d592b0ba1c3810b0eb2a1ef">&#9670;&nbsp;</a></span>directionZ</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint8_t FFB_Effect::directionZ = 0</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="ffb__defs_8h_source.html#l00281">281</a> of file <a class="el" href="ffb__defs_8h_source.html">ffb_defs.h</a>.</p>
 
 </div>
 </div>
@@ -251,28 +215,12 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint32_t FFB_Effect::duration = 0</td>
+          <td class="memname">uint32_t FFB_Effect::duration = FFB_EFFECT_DURATION_INFINITE</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ffb__defs_8h_source.html#l00287">287</a> of file <a class="el" href="ffb__defs_8h_source.html">ffb_defs.h</a>.</p>
-
-</div>
-</div>
-<a id="aea1937f9d1d26b1d2b4139a0d01ecf9d" name="aea1937f9d1d26b1d2b4139a0d01ecf9d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aea1937f9d1d26b1d2b4139a0d01ecf9d">&#9670;&nbsp;</a></span>enableAxis</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint8_t FFB_Effect::enableAxis = 0</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="ffb__defs_8h_source.html#l00277">277</a> of file <a class="el" href="ffb__defs_8h_source.html">ffb_defs.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ffb__defs_8h_source.html#l00281">281</a> of file <a class="el" href="ffb__defs_8h_source.html">ffb_defs.h</a>.</p>
 
 </div>
 </div>
@@ -288,7 +236,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ffb__defs_8h_source.html#l00276">276</a> of file <a class="el" href="ffb__defs_8h_source.html">ffb_defs.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ffb__defs_8h_source.html#l00275">275</a> of file <a class="el" href="ffb__defs_8h_source.html">ffb_defs.h</a>.</p>
 
 </div>
 </div>
@@ -304,7 +252,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ffb__defs_8h_source.html#l00288">288</a> of file <a class="el" href="ffb__defs_8h_source.html">ffb_defs.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ffb__defs_8h_source.html#l00282">282</a> of file <a class="el" href="ffb__defs_8h_source.html">ffb_defs.h</a>.</p>
 
 </div>
 </div>
@@ -320,7 +268,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ffb__defs_8h_source.html#l00289">289</a> of file <a class="el" href="ffb__defs_8h_source.html">ffb_defs.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ffb__defs_8h_source.html#l00283">283</a> of file <a class="el" href="ffb__defs_8h_source.html">ffb_defs.h</a>.</p>
 
 </div>
 </div>
@@ -336,7 +284,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ffb__defs_8h_source.html#l00291">291</a> of file <a class="el" href="ffb__defs_8h_source.html">ffb_defs.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ffb__defs_8h_source.html#l00285">285</a> of file <a class="el" href="ffb__defs_8h_source.html">ffb_defs.h</a>.</p>
 
 </div>
 </div>
@@ -352,7 +300,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ffb__defs_8h_source.html#l00273">273</a> of file <a class="el" href="ffb__defs_8h_source.html">ffb_defs.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ffb__defs_8h_source.html#l00272">272</a> of file <a class="el" href="ffb__defs_8h_source.html">ffb_defs.h</a>.</p>
 
 </div>
 </div>
@@ -368,7 +316,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ffb__defs_8h_source.html#l00274">274</a> of file <a class="el" href="ffb__defs_8h_source.html">ffb_defs.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ffb__defs_8h_source.html#l00273">273</a> of file <a class="el" href="ffb__defs_8h_source.html">ffb_defs.h</a>.</p>
 
 </div>
 </div>
@@ -384,7 +332,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ffb__defs_8h_source.html#l00272">272</a> of file <a class="el" href="ffb__defs_8h_source.html">ffb_defs.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ffb__defs_8h_source.html#l00271">271</a> of file <a class="el" href="ffb__defs_8h_source.html">ffb_defs.h</a>.</p>
 
 </div>
 </div>
@@ -400,7 +348,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ffb__defs_8h_source.html#l00286">286</a> of file <a class="el" href="ffb__defs_8h_source.html">ffb_defs.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ffb__defs_8h_source.html#l00280">280</a> of file <a class="el" href="ffb__defs_8h_source.html">ffb_defs.h</a>.</p>
 
 </div>
 </div>
@@ -416,7 +364,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ffb__defs_8h_source.html#l00285">285</a> of file <a class="el" href="ffb__defs_8h_source.html">ffb_defs.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ffb__defs_8h_source.html#l00279">279</a> of file <a class="el" href="ffb__defs_8h_source.html">ffb_defs.h</a>.</p>
 
 </div>
 </div>
@@ -432,7 +380,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ffb__defs_8h_source.html#l00294">294</a> of file <a class="el" href="ffb__defs_8h_source.html">ffb_defs.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ffb__defs_8h_source.html#l00288">288</a> of file <a class="el" href="ffb__defs_8h_source.html">ffb_defs.h</a>.</p>
 
 </div>
 </div>
@@ -448,7 +396,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ffb__defs_8h_source.html#l00292">292</a> of file <a class="el" href="ffb__defs_8h_source.html">ffb_defs.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ffb__defs_8h_source.html#l00286">286</a> of file <a class="el" href="ffb__defs_8h_source.html">ffb_defs.h</a>.</p>
 
 </div>
 </div>
@@ -464,7 +412,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ffb__defs_8h_source.html#l00275">275</a> of file <a class="el" href="ffb__defs_8h_source.html">ffb_defs.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ffb__defs_8h_source.html#l00274">274</a> of file <a class="el" href="ffb__defs_8h_source.html">ffb_defs.h</a>.</p>
 
 </div>
 </div>
@@ -480,7 +428,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ffb__defs_8h_source.html#l00293">293</a> of file <a class="el" href="ffb__defs_8h_source.html">ffb_defs.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ffb__defs_8h_source.html#l00287">287</a> of file <a class="el" href="ffb__defs_8h_source.html">ffb_defs.h</a>.</p>
 
 </div>
 </div>
@@ -496,7 +444,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ffb__defs_8h_source.html#l00270">270</a> of file <a class="el" href="ffb__defs_8h_source.html">ffb_defs.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ffb__defs_8h_source.html#l00269">269</a> of file <a class="el" href="ffb__defs_8h_source.html">ffb_defs.h</a>.</p>
 
 </div>
 </div>
@@ -512,7 +460,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ffb__defs_8h_source.html#l00271">271</a> of file <a class="el" href="ffb__defs_8h_source.html">ffb_defs.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ffb__defs_8h_source.html#l00270">270</a> of file <a class="el" href="ffb__defs_8h_source.html">ffb_defs.h</a>.</p>
 
 </div>
 </div>
@@ -528,7 +476,23 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ffb__defs_8h_source.html#l00295">295</a> of file <a class="el" href="ffb__defs_8h_source.html">ffb_defs.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ffb__defs_8h_source.html#l00289">289</a> of file <a class="el" href="ffb__defs_8h_source.html">ffb_defs.h</a>.</p>
+
+</div>
+</div>
+<a id="a49214e79dc5d6dd3105915dc6e75d59f" name="a49214e79dc5d6dd3105915dc6e75d59f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a49214e79dc5d6dd3105915dc6e75d59f">&#9670;&nbsp;</a></span>useSingleCondition</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool FFB_Effect::useSingleCondition = false</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="ffb__defs_8h_source.html#l00290">290</a> of file <a class="el" href="ffb__defs_8h_source.html">ffb_defs.h</a>.</p>
 
 </div>
 </div>

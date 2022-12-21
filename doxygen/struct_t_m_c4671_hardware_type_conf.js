@@ -1,6 +1,7 @@
 var struct_t_m_c4671_hardware_type_conf =
 [
     [ "adcOffset", "struct_t_m_c4671_hardware_type_conf.html#a9ee801db834fd4f98d6992a8858a76d0", null ],
+    [ "bbm", "struct_t_m_c4671_hardware_type_conf.html#ac39d741e5ccf327986f62ded4d1ac5a5", null ],
     [ "brakeLimHigh", "struct_t_m_c4671_hardware_type_conf.html#a2506caf7284bb7dd678e8073d4036459", null ],
     [ "brakeLimLow", "struct_t_m_c4671_hardware_type_conf.html#a1c9fd9fc200e540fbb5dc9f742e9eb9c", null ],
     [ "clockfreq", "struct_t_m_c4671_hardware_type_conf.html#aad4be8009f03b82ee341058524f6ccff", null ],

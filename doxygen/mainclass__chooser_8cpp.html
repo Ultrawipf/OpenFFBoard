@@ -121,6 +121,10 @@ Variables</h2></td></tr>
 <div class="line">        add_class&lt;FFBJoystick,FFBoardMain&gt;(),</div>
 <div class="line"><span class="preprocessor">#endif</span></div>
 <div class="line"> </div>
+<div class="line"><span class="preprocessor">#ifdef FFBHIDEXT</span></div>
+<div class="line">        add_class&lt;FFBHIDExt,FFBoardMain&gt;(),</div>
+<div class="line"><span class="preprocessor">#endif</span></div>
+<div class="line"> </div>
 <div class="line"><span class="preprocessor">#ifdef TMCDEBUG</span></div>
 <div class="line">        add_class&lt;TMCDebugBridge,FFBoardMain&gt;(),</div>
 <div class="line"><span class="preprocessor">#endif</span></div>
@@ -136,7 +140,7 @@ Variables</h2></td></tr>
 <div class="line">        add_class&lt;CustomMain,FFBoardMain&gt;()</div>
 <div class="line">}</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="mainclass__chooser_8cpp_source.html#l00030">30</a> of file <a class="el" href="mainclass__chooser_8cpp_source.html">mainclass_chooser.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mainclass__chooser_8cpp_source.html#l00033">33</a> of file <a class="el" href="mainclass__chooser_8cpp_source.html">mainclass_chooser.cpp</a>.</p>
 
 </div>
 </div>

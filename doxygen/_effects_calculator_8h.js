@@ -5,6 +5,7 @@ var _effects_calculator_8h =
     [ "effect_biquad_t", "structeffect__biquad__t.html", "structeffect__biquad__t" ],
     [ "effect_stat_t", "structeffect__stat__t.html", "structeffect__stat__t" ],
     [ "EffectsCalculator", "class_effects_calculator.html", "class_effects_calculator" ],
+    [ "EffectsControlItf", "class_effects_control_itf.html", "class_effects_control_itf" ],
     [ "EffectsCalculator_commands", "_effects_calculator_8h.html#a8c1e274c9ae0e228a7e0a406bec8a694", [
       [ "ffbfiltercf", "_effects_calculator_8h.html#a8c1e274c9ae0e228a7e0a406bec8a694a9d8c1b1e011e3e5451da3ae153777d34", null ],
       [ "ffbfiltercf_q", "_effects_calculator_8h.html#a8c1e274c9ae0e228a7e0a406bec8a694aa12e2678c0f433a4341697350bdc9c7a", null ],

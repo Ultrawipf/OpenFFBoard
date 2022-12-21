@@ -31,7 +31,8 @@ var hierarchy =
         [ "ODriveCAN2", "class_o_drive_c_a_n2.html", null ]
       ] ],
       [ "VescCAN", "class_vesc_c_a_n.html", [
-        [ "VESC_1", "class_v_e_s_c__1.html", null ]
+        [ "VESC_1", "class_v_e_s_c__1.html", null ],
+        [ "VESC_2", "class_v_e_s_c__2.html", null ]
       ] ]
     ] ],
     [ "CDCcomm", "class_c_d_ccomm.html", null ],
@@ -68,6 +69,7 @@ var hierarchy =
         [ "CanBridge", "class_can_bridge.html", null ],
         [ "CustomMain", "class_custom_main.html", null ],
         [ "FFBHIDMain", "class_f_f_b_h_i_d_main.html", [
+          [ "FFBHIDExt", "class_f_f_b_h_i_d_ext.html", null ],
           [ "FFBJoystick", "class_f_f_b_joystick.html", null ],
           [ "FFBWheel", "class_f_f_b_wheel.html", null ]
         ] ],
@@ -105,6 +107,7 @@ var hierarchy =
       [ "ODriveCAN", "class_o_drive_c_a_n.html", null ],
       [ "PCF8574Buttons", "class_p_c_f8574_buttons.html", null ],
       [ "SPI_Buttons", "class_s_p_i___buttons.html", null ],
+      [ "SerialFFB", "class_serial_f_f_b.html", null ],
       [ "ShifterAnalog", "class_shifter_analog.html", null ],
       [ "SystemCommands", "class_system_commands.html", null ],
       [ "TMC4671", "class_t_m_c4671.html", null ],
@@ -128,6 +131,10 @@ var hierarchy =
     [ "effect_gain_t", "structeffect__gain__t.html", null ],
     [ "effect_scaler_t", "structeffect__scaler__t.html", null ],
     [ "effect_stat_t", "structeffect__stat__t.html", null ],
+    [ "EffectsControlItf", "class_effects_control_itf.html", [
+      [ "HidFFB", "class_hid_f_f_b.html", null ],
+      [ "SerialFFB", "class_serial_f_f_b.html", null ]
+    ] ],
     [ "Error", "class_error.html", null ],
     [ "ErrorHandler", "class_error_handler.html", [
       [ "Axis", "class_axis.html", null ],
@@ -156,6 +163,7 @@ var hierarchy =
     ] ],
     [ "FastAvg< T, LEN >", "class_fast_avg.html", null ],
     [ "FFB_Effect", "struct_f_f_b___effect.html", null ],
+    [ "FFB_Effect_Condition", "struct_f_f_b___effect___condition.html", null ],
     [ "GearRatio_t", "struct_gear_ratio__t.html", null ],
     [ "hcd_devtree_info_t", "structhcd__devtree__info__t.html", null ],
     [ "hcd_event_t", "structhcd__event__t.html", null ],

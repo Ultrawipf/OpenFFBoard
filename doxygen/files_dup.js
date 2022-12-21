@@ -130,6 +130,9 @@ var files_dup =
       [ "cpp_freertos::BinarySemaphore", "classcpp__freertos_1_1_binary_semaphore.html", "classcpp__freertos_1_1_binary_semaphore" ],
       [ "cpp_freertos::CountingSemaphore", "classcpp__freertos_1_1_counting_semaphore.html", "classcpp__freertos_1_1_counting_semaphore" ]
     ] ],
+    [ "SerialFFB.h", "_serial_f_f_b_8h.html", [
+      [ "SerialFFB", "class_serial_f_f_b.html", "class_serial_f_f_b" ]
+    ] ],
     [ "Singleton.h", "_singleton_8h.html", [
       [ "Singleton< T >", "class_singleton.html", "class_singleton" ]
     ] ],
@@ -223,6 +226,7 @@ var files_dup =
     [ "PersistentStorage.cpp", "_persistent_storage_8cpp.html", null ],
     [ "ringbuffer.c", "ringbuffer_8c.html", "ringbuffer_8c" ],
     [ "ringbufferwrapper.cpp", "ringbufferwrapper_8cpp.html", null ],
+    [ "SerialFFB.cpp", "_serial_f_f_b_8cpp.html", null ],
     [ "SPI.cpp", "_s_p_i_8cpp.html", "_s_p_i_8cpp" ],
     [ "SpiHandler.cpp", "_spi_handler_8cpp.html", null ],
     [ "SystemCommands.cpp", "_system_commands_8cpp.html", "_system_commands_8cpp" ],
@@ -340,6 +344,9 @@ var files_dup =
       [ "EncoderBissC", "class_encoder_biss_c.html", "class_encoder_biss_c" ]
     ] ],
     [ "EncoderLocal.h", "_encoder_local_8h.html", "_encoder_local_8h" ],
+    [ "FFBHIDExt.h", "_f_f_b_h_i_d_ext_8h.html", [
+      [ "FFBHIDExt", "class_f_f_b_h_i_d_ext.html", "class_f_f_b_h_i_d_ext" ]
+    ] ],
     [ "FFBHIDMain.h", "_f_f_b_h_i_d_main_8h.html", [
       [ "FFBHIDMain", "class_f_f_b_h_i_d_main.html", "class_f_f_b_h_i_d_main" ]
     ] ],
@@ -391,6 +398,7 @@ var files_dup =
     [ "eeprom_addresses.c", "eeprom__addresses_8c.html", "eeprom__addresses_8c" ],
     [ "EncoderBissC.cpp", "_encoder_biss_c_8cpp.html", "_encoder_biss_c_8cpp" ],
     [ "EncoderLocal.cpp", "_encoder_local_8cpp.html", null ],
+    [ "FFBHIDExt.cpp", "_f_f_b_h_i_d_ext_8cpp.html", null ],
     [ "FFBHIDMain.cpp", "_f_f_b_h_i_d_main_8cpp.html", "_f_f_b_h_i_d_main_8cpp" ],
     [ "FFBHIDMain_commmands.cpp", "_f_f_b_h_i_d_main__commmands_8cpp.html", null ],
     [ "FFBJoystick.cpp", "_f_f_b_joystick_8cpp.html", null ],
@@ -411,5 +419,6 @@ var files_dup =
     [ "usb_descriptors.cpp", "usb__descriptors_8cpp.html", "usb__descriptors_8cpp" ],
     [ "usb_hid_1ffb_desc.c", "usb__hid__1ffb__desc_8c.html", "usb__hid__1ffb__desc_8c" ],
     [ "usb_hid_2ffb_desc.c", "usb__hid__2ffb__desc_8c.html", "usb__hid__2ffb__desc_8c" ],
+    [ "usb_hid_gamepad.c", "usb__hid__gamepad_8c.html", "usb__hid__gamepad_8c" ],
     [ "VescCAN.cpp", "_vesc_c_a_n_8cpp.html", null ]
 ];

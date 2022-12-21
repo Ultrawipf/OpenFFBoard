@@ -102,6 +102,8 @@ Variables</h2></td></tr>
 <tr class="separator:ae8b38ca40dbc1587e257f64bfe8fdc63"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a11ab363d9dd1f762f5f92bf81c18610a"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usb__descriptors_8cpp.html#a11ab363d9dd1f762f5f92bf81c18610a">usb_cdc_hid_conf_2axis</a> []</td></tr>
 <tr class="separator:a11ab363d9dd1f762f5f92bf81c18610a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a316d73bcf949dffa39046c1c46012a17"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usb__descriptors_8cpp.html#a316d73bcf949dffa39046c1c46012a17">usb_cdc_hid_conf_gamepad</a> []</td></tr>
+<tr class="separator:a316d73bcf949dffa39046c1c46012a17"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeb0ede3123c9c0368e5286926e8f8bd6"><td class="memItemLeft" align="right" valign="top">uint8_t const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usb__descriptors_8cpp.html#aeb0ede3123c9c0368e5286926e8f8bd6">usb_cdc_midi_conf</a> []</td></tr>
 <tr class="separator:aeb0ede3123c9c0368e5286926e8f8bd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab00f7433f77df99361d1f9a2eb78b6ac"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="usb__descriptors_8h.html#a61aa6e284babe00b49ff18a946fada25">usb_string_desc_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usb__descriptors_8cpp.html#ab00f7433f77df99361d1f9a2eb78b6ac">usb_ffboard_strings_default</a></td></tr>
@@ -188,6 +190,33 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a id="a316d73bcf949dffa39046c1c46012a17" name="a316d73bcf949dffa39046c1c46012a17"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a316d73bcf949dffa39046c1c46012a17">&#9670;&nbsp;</a></span>usb_cdc_hid_conf_gamepad</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const uint8_t usb_cdc_hid_conf_gamepad[]</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">{</div>
+<div class="line">  </div>
+<div class="line">  TUD_CONFIG_DESCRIPTOR(1, 3, 0, (TUD_CONFIG_DESC_LEN + TUD_CDC_DESC_LEN + TUD_HID_INOUT_DESC_LEN), <a class="code hl_enumvalue" href="group___u_s_b_def___type.html#ggafa231099d07583c3ed0981e0bb665f55a7d6c573ab243f61df3473d5f09417875">TUSB_DESC_CONFIG_ATT_REMOTE_WAKEUP</a>, 100),</div>
+<div class="line"> </div>
+<div class="line">  </div>
+<div class="line">  TUD_CDC_DESCRIPTOR(0, 4, 0x82, 8, 0x01, 0x81, 64),</div>
+<div class="line"> </div>
+<div class="line">  </div>
+<div class="line">  TUD_HID_INOUT_DESCRIPTOR(2, 5, <a class="code hl_enumvalue" href="group___class_driver___h_i_d.html#gga7e429f347974b5edc6d748de2829b984ae2a1cc7fa476dc8d4d14f3084b6dc378">HID_ITF_PROTOCOL_NONE</a>, USB_HID_GAMEPAD_REPORT_DESC_SIZE, 0x83, 0x02, 64, HID_BINTERVAL),</div>
+<div class="line">}</div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="usb__descriptors_8cpp_source.html#l00089">89</a> of file <a class="el" href="usb__descriptors_8cpp_source.html">usb_descriptors.cpp</a>.</p>
+
+</div>
+</div>
 <a id="aeb0ede3123c9c0368e5286926e8f8bd6" name="aeb0ede3123c9c0368e5286926e8f8bd6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aeb0ede3123c9c0368e5286926e8f8bd6">&#9670;&nbsp;</a></span>usb_cdc_midi_conf</h2>
 
@@ -209,7 +238,7 @@ Variables</h2></td></tr>
 <div class="line">  TUD_MIDI_DESCRIPTOR(2, 6, 0x02, 0x83, 64)</div>
 <div class="line">}</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="usb__descriptors_8cpp_source.html#l00088">88</a> of file <a class="el" href="usb__descriptors_8cpp_source.html">usb_descriptors.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usb__descriptors_8cpp_source.html#l00103">103</a> of file <a class="el" href="usb__descriptors_8cpp_source.html">usb_descriptors.cpp</a>.</p>
 
 </div>
 </div>
@@ -275,7 +304,7 @@ Variables</h2></td></tr>
 <div class="line">    .interfaces = {<span class="stringliteral">&quot;FFBoard CDC&quot;</span>, <span class="stringliteral">&quot;FFBoard HID&quot;</span>,<span class="stringliteral">&quot;FFBoard MIDI&quot;</span>}</div>
 <div class="line">}</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="usb__descriptors_8cpp_source.html#l00103">103</a> of file <a class="el" href="usb__descriptors_8cpp_source.html">usb_descriptors.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usb__descriptors_8cpp_source.html#l00118">118</a> of file <a class="el" href="usb__descriptors_8cpp_source.html">usb_descriptors.cpp</a>.</p>
 
 </div>
 </div>

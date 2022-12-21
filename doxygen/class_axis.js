@@ -52,6 +52,8 @@ var class_axis =
     [ "_lastSpeed", "class_axis.html#af8f781d284ae8e8a52e53bb164b9a77c", null ],
     [ "accelFilter", "class_axis.html#a92234f73e40683454f4fad849e30810f", null ],
     [ "axis", "class_axis.html#a3a5b923fe6b12acb417ebe9a60c79d65", null ],
+    [ "axis1_drivers", "class_axis.html#a6afc1cf9249d23e3b6ac5c110fb471a6", null ],
+    [ "axis2_drivers", "class_axis.html#a6eda8d6db56d3bd14c7f25fb4b2cf62a", null ],
     [ "AXIS_DAMPER_RATIO", "class_axis.html#ae0e7adc106cabb620bb96145ba040ee7", null ],
     [ "axisEffectTorque", "class_axis.html#aac41c655ce3d273b10d4625e25688751", null ],
     [ "conf", "class_axis.html#a6ba479d298120eb0c24be53552a7a8f5", null ],

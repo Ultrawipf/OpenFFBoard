@@ -4,5 +4,6 @@ var struct_button_source_config =
     [ "cutRight", "struct_button_source_config.html#ad699998fb08e317cee1e43d6f2a8392d", null ],
     [ "invert", "struct_button_source_config.html#a8efe3c209df2ea819f90a231d8635a3a", null ],
     [ "mode", "struct_button_source_config.html#a8f222d06574c71cb2ebae9aa593005e7", null ],
-    [ "numButtons", "struct_button_source_config.html#ae8da3bffd19fef31ef35c21c2c4292bf", null ]
+    [ "numButtons", "struct_button_source_config.html#ae8da3bffd19fef31ef35c21c2c4292bf", null ],
+    [ "spi_speed", "struct_button_source_config.html#a9e8ffb23de4b2d4bdbfc292e54ee4968", null ]
 ];
