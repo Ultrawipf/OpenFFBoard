@@ -24,16 +24,6 @@
 #include "cmsis_os.h"
 extern osThreadId_t defaultTaskHandle;
 
-// Unique identifier for listing
-//ClassIdentifier FFBHIDMain::info = {
-//		 .name = "FFB Wheel" , // Leave as wheel for now
-//		 .id=CLSID_MAIN_FFBWHEEL,
-// };
-//
-//const ClassIdentifier FFBHIDMain::getInfo(){
-//	return info;
-//}
-
 //////////////////////////////////////////////
 /*
  * Sources for class choosers here

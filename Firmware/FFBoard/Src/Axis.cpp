@@ -25,7 +25,9 @@ ClassIdentifier Axis::info = {
 	.id = CLSID_AXIS, // 1
 	.visibility = ClassVisibility::visible};
 
-
+/**
+ * List of motor drivers available to the first axis
+ */
 const std::vector<class_entry<MotorDriver>> Axis::axis1_drivers =
 {
 	add_class<MotorDriver, MotorDriver>(0),
@@ -44,6 +46,9 @@ const std::vector<class_entry<MotorDriver>> Axis::axis1_drivers =
 #endif
 };
 
+/**
+ * List of motor drivers available to the second axis
+ */
 const std::vector<class_entry<MotorDriver>> Axis::axis2_drivers =
 {
 	add_class<MotorDriver, MotorDriver>(0),
@@ -63,10 +68,11 @@ const std::vector<class_entry<MotorDriver>> Axis::axis2_drivers =
 };
 
 
-
+/**
+ * Axis class manages motor drivers and passes effect torque to the motor drivers
+ */
 Axis::Axis(char axis,volatile Control_t* control) :CommandHandler("axis", CLSID_AXIS), drv_chooser(MotorDriver::all_drivers),enc_chooser{Encoder::all_encoders}
 {
-	// Create HID FFB handler. Will receive all usb messages directly
 	this->axis = axis;
 	this->control = control;
 	if (axis == 'X')
@@ -253,7 +259,7 @@ Encoder* Axis::getEncoder(){
 	return drv->getEncoder();
 }
 
-/*
+/**
  * Called from FFBWheel->Update() via AxesManager->Update()
  */
 void Axis::prepareForUpdate(){
@@ -330,7 +336,9 @@ void Axis::setPower(uint16_t power)
 }
 
 
-// create and setup a motor driver
+/**
+ * create and setup a motor driver
+ */
 void Axis::setDrvType(uint8_t drvtype)
 {
 	if (!drv_chooser.isValidClassId(drvtype))
@@ -452,7 +460,9 @@ float Axis::getEncAngle(Encoder *enc){
 	}
 }
 
-
+/**
+ * Stops the motor driver and sets torque to 0
+ */
 void Axis::emergencyStop(bool reset){
 	drv->turn(0); // Send 0 torque first
 	drv->emergencyStop(reset);
@@ -460,6 +470,9 @@ void Axis::emergencyStop(bool reset){
 	control->emergency = !reset;
 }
 
+/**
+ * Disables torque and motor driver
+ */
 void Axis::usbSuspend(){
 	if (drv != nullptr){
 		drv->turn(0);
@@ -467,6 +480,9 @@ void Axis::usbSuspend(){
 	}
 }
 
+/**
+ * Enables motor driver
+ */
 void Axis::usbResume(){
 	if (drv != nullptr){
 		drv->startMotor();
@@ -479,12 +495,16 @@ metric_t* Axis::getMetrics() {
 	return &metric.current;
 }
 
-
+/**
+ * Returns position as 16b int scaled to gamepad range
+ */
 int32_t Axis::getLastScaledEnc() {
 	return  clip(metric.current.pos,-0x7fff,0x7fff);
 }
 
-
+/**
+ * Changes intensity of idle spring when FFB is off
+ */
 int32_t Axis::updateIdleSpringForce() {
 	return clip<int32_t,int32_t>((int32_t)(-metric.current.pos*idlespringscale),-idlespringclip,idlespringclip);
 }
@@ -503,6 +523,9 @@ void Axis::setIdleSpringStrength(uint8_t spring){
 	idlespringscale = 0.5f + ((float)spring * 0.01f);
 }
 
+/**
+ * Sets the independent damper intensity
+ */
 void Axis::setDamperStrength(uint8_t damper){
     if(damperIntensity == 0 && damper != 0)
         damperFilter.calcBiquad();
@@ -510,7 +533,7 @@ void Axis::setDamperStrength(uint8_t damper){
     this->damperIntensity = damper;
 }
 
-/*
+/**
  * Called before HID effects are calculated
  * Should calculate always on and idle effects specific to the axis like idlespring and friction
  */
@@ -528,12 +551,17 @@ void Axis::calculateAxisEffects(bool ffb_on){
 	}
 }
 
+/**
+ * Changes the ratio of effects to endstop strength. 255 = same strength, 0 = no effects
+ */
 void Axis::setFxRatio(uint8_t val) {
 	fx_ratio_i = val;
 	updateTorqueScaler();
 }
 
-
+/**
+ * Resets the metrics and filters
+ */
 void Axis::resetMetrics(float new_pos= 0) { // pos is degrees
 	metric.current = metric_t();
 	metric.current.posDegrees = new_pos;
@@ -544,7 +572,9 @@ void Axis::resetMetrics(float new_pos= 0) { // pos is degrees
 	accelFilter.calcBiquad();
 }
 
-
+/**
+ * Updates metrics
+ */
 void Axis::updateMetrics(float new_pos) { // pos is degrees
 	// store old value for next metric's computing
 	metric.previous = metric.current;
@@ -604,8 +634,10 @@ void Axis::setEffectTorque(int32_t torque) {
 	effectTorque = torque;
 }
 
-// pass in ptr to receive the sum of the effects + endstop torque
-// return true if torque is clipping
+/** pass in ptr to receive the sum of the effects + endstop torque
+ *  return true if torque has changed
+*/
+
 bool Axis::updateTorque(int32_t* totalTorque) {
 
 	if(abs(effectTorque) >= 0x7fff){
@@ -667,6 +699,9 @@ bool Axis::updateTorque(int32_t* totalTorque) {
 	return (torqueChanged);
 }
 
+/**
+ * Changes gamepad range in degrees for effect scaling
+ */
 void Axis::setDegrees(uint16_t degrees){
 
 	degrees &= 0x7fff;
