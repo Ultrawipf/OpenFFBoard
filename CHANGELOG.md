@@ -1,4 +1,8 @@
-### Changes this release (v1.11.1):
+### Changes this version:
+- Fixed a possible crash if unparsable/too large numbers are sent in a command
+
+
+### Changes in (v1.11.x):
 - Added new subproject for third party devkits (F407DISCO target)
 - Added serialfx effect manager for a command based FFB mainclass (Instead of PID FFB)
 - Added Serial FFB mainclass mode
