@@ -3,7 +3,8 @@
 In this folder are subprojects for each hardware target.
 
 * F411RE: FFBoard 1.0
-* F407VE: FFBoard 1.2
+* F407VG: FFBoard 1.2
+* F407VG_DISCO: Third party development kits (ST F407 Discovery board)
 
 
 A subproject should reference the main FFBoard firmware in the parent folder.
