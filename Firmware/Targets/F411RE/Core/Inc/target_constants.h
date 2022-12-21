@@ -25,6 +25,7 @@
 #define FFBJOYSTICK
 #define MIDI
 #define TMCDEBUG
+#define FFBHIDEXT
 
 /*
  * FFBWheel uses 2 FFB axis descriptor instead of 1 axis.
