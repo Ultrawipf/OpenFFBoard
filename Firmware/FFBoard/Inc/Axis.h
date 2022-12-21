@@ -157,6 +157,8 @@ public:
 
 	void setGearRatio(uint8_t numerator,uint8_t denominator);
 
+	static const std::vector<class_entry<MotorDriver>> axis1_drivers;
+	static const std::vector<class_entry<MotorDriver>> axis2_drivers;
 
 private:
 	// Axis damper is lower than default scale of HID Damper

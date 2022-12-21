@@ -82,10 +82,11 @@ constexpr class_entry<B> make_class_entry(ClassIdentifier info,B* ref,std::optio
 	return { info,selectionId, [ref]() -> B * { return  ref; },ref->isCreatable };
 }
 
+// TODO make this constexpr with fixed memory so the registry is not stored on heap
 template<class T>
 class ClassChooser {
 public:
-	ClassChooser(const std::vector<class_entry<T>>& classes) : class_registry(classes){
+	ClassChooser(const std::vector<class_entry<T>>& classes) : class_registry(&classes){
 		//this->class_registry = classes;
 	}
 	~ClassChooser(){
@@ -93,14 +94,12 @@ public:
 	}
 
 
-	const std::vector<class_entry<T>>& class_registry;
-
 	/**
 	 * Creates a new instance of class
 	 */
 	T* Create(uint16_t id){
 		T* cls = nullptr;
-		for(class_entry<T> e : class_registry){
+		for(class_entry<T> e : *class_registry){
 
 			if(e.selectionId == id && e.isCreatable()){
 				cls = e.create();
@@ -115,7 +114,7 @@ public:
 	 * Checks the isCreatable() function
 	 */
 	bool isCreatable(uint16_t id){
-		for(class_entry<T> e : class_registry){
+		for(class_entry<T> e : *class_registry){
 			if(e.selectionId == id && e.isCreatable()){
 				return true;
 			}
@@ -128,7 +127,7 @@ public:
 	 * Generates replies for the command system listing selectable classes
 	 */
 	void replyAvailableClasses(std::vector<CommandReply>& replies,int16_t ignoredCreatableId = 255){
-		for(class_entry<T> cls : class_registry){
+		for(class_entry<T> cls : *class_registry){
 			if(cls.info.visibility == ClassVisibility::hidden || (cls.info.visibility == ClassVisibility::debug && !SystemCommands::debugMode)){
 				if(ignoredCreatableId != cls.selectionId)
 					continue;
@@ -158,14 +157,15 @@ public:
 	 * Returns if this id is actually in the list of possible classes
 	 */
 	bool isValidClassId(uint16_t id){
-		for(class_entry<T> cls : class_registry){
+		for(class_entry<T> cls : *class_registry){
 			if(cls.selectionId == id){
 				return true;
 			}
 		}
 		return false;
 	}
-
+private:
+	const std::vector<class_entry<T>>* class_registry;
 
 };
 

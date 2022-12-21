@@ -6,3 +6,4 @@
 - TMC enable pin is set when TMC debug mode starts
 - Added option to change SPI speed for buttons. Can be helpful if the connection is unreliable
 - Added back second VESC instance for 2 axis vesc setups
+- Separate motor driver selection lists per axis (No double odrive/vesc/tmc instance options in motor driver lists)
