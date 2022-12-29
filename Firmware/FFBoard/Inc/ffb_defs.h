@@ -169,7 +169,7 @@ typedef struct
 	uint8_t		triggerButton = 0;	// button ID. unused
 	uint8_t		enableAxis = 0; // bits: 0=X, 1=Y, 2=DirectionEnable
 	uint16_t	directionX = 0;	// angle (0=0 .. 36000=360deg)
-	uint16_t	directionY = 0;	// angle (0=0 .. 36000=360deg) TODO axes are last bytes in struct if fewer axes are used. use different report if this is not enough anymore!
+//	uint16_t	directionY = 0;	// angle (0=0 .. 36000=360deg) TODO axes are last bytes in struct if fewer axes are used. use different report if this is not enough anymore!
 //#if MAX_AXIS == 3
 //	uint8_t directionZ = 0; // angle (0=0 .. 255=360deg)
 //#endif
