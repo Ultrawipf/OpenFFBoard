@@ -297,9 +297,19 @@ void HidFFB::set_effect(FFB_SetEffect_t* effect){
 		effect->enableAxis = X_AXIS_ENABLE;
 	}
 
-	//uint8_t directionEnableMask = this->directionEnableMask ? this->directionEnableMask : DIRECTION_ENABLE(axisCount);
 	bool directionEnable = (effect->enableAxis & this->directionEnableMask);
-	effect_p->useSingleCondition = !directionEnable; // If direction is used only a single parameter block is allowed
+
+	if(effect_p->useSingleCondition){ // Only allow turning single condition off in case it was overridden by sending multiple conditions previously
+		effect_p->useSingleCondition = directionEnable; // If direction is used only a single parameter block is allowed. Somehow this is still set while 2 conditions are sent...
+	}else if(directionEnable){
+		directionEnable = false; // If multiple conditions were previously sent we ignore direction enable and instead activate axes
+		if(effect_p->conditions[0].isActive()){
+			effect->enableAxis |= X_AXIS_ENABLE;
+		}
+		if(effect_p->conditions[1].isActive()){
+			effect->enableAxis |= Y_AXIS_ENABLE;
+		}
+	}
 
 	float phaseX = M_PI*2.0 * (effect->directionX/36000.0);
 	effect_p->axisMagnitudes[0] = directionEnable ? sin(phaseX) : (effect->enableAxis & X_AXIS_ENABLE ? 1 : 0); // Angular vector if dirEnable used otherwise full or 0 if axis enabled
@@ -356,6 +366,13 @@ void HidFFB::set_condition(FFB_SetCondition_Data_t *cond){
 	}
 	if(effect->conditions[axis].negativeSaturation == 0){
 		effect->conditions[axis].negativeSaturation = 0x7FFF;
+	}
+
+	if(axis>0){ // Workaround when direction enable is set but multiple conditions are defined... Resets direction and uses conditions again
+		effect->useSingleCondition = false;
+		for(uint8_t i = 0;i<MAX_AXIS;i++){
+			effect->axisMagnitudes[i] = 1.0;
+		}
 	}
 }
 
