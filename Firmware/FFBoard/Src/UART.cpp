@@ -81,6 +81,18 @@ bool UARTPort::receive(char* rxbuf,uint16_t size,uint32_t timeout){
 	return(HAL_UART_Receive(&this->huart, (uint8_t*)(rxbuf), size, timeout) == HAL_OK);
 }
 
+bool UARTPort::receiveDMA(char* rxbuf,uint16_t size){
+	if(this->device)
+		device->startUartTransfer(this);
+	return(HAL_UART_Receive_DMA(&this->huart, (uint8_t*)(rxbuf), size) == HAL_OK);
+}
+
+bool UARTPort::receiveIT(char* rxbuf,uint16_t size){
+	if(this->device)
+		device->startUartTransfer(this);
+	return(HAL_UART_Receive_IT(&this->huart, (uint8_t*)(rxbuf), size) == HAL_OK);
+}
+
 bool UARTPort::reservePort(UARTDevice* device){
 	if(this->device == nullptr || device == this->device){
 		this->device = device;

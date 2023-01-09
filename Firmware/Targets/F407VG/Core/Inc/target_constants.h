@@ -53,6 +53,7 @@
 #define BISSENCODER // Requires SPI3
 #define ADS111XANALOG // Requires I2C
 #define UARTCOMMANDS
+//#define SIMPLEMOTION // Requires motor gpio pin
 
 //----------------------
 

@@ -36,6 +36,8 @@ public:
 	void transmit_IT(const char* txbuf,uint16_t size);
 	bool receive(char* rxbuf,uint16_t size,uint32_t timeout = 10000); // Receive in blocking mode
 	void transmit_DMA(const char* txbuf,uint16_t size);
+	bool receiveDMA(char* rxbuf,uint16_t size);
+	bool receiveIT(char* rxbuf,uint16_t size);
 
 	void takeSemaphore(); // Call before accessing this port
 	void giveSemaphore(); // Call when finished using this port
