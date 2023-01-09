@@ -253,6 +253,10 @@ typedef struct
 	uint16_t positiveSaturation = 0;
 	uint16_t negativeSaturation = 0;
 	uint16_t deadBand = 0;
+
+	bool isActive(){ // Condition is active if either coefficient is not zero
+		return positiveCoefficient != 0 || negativeCoefficient != 0;
+	}
 } FFB_Effect_Condition;
 
 typedef struct
@@ -287,7 +291,7 @@ typedef struct
 	uint32_t startTime = 0;	  // Elapsed time in ms before effect starts
 	uint16_t samplePeriod = 0;
 	bool useEnvelope = false;
-	bool useSingleCondition = false;
+	bool useSingleCondition = true;
 } FFB_Effect;
 
 
