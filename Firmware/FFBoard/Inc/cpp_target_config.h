@@ -43,4 +43,8 @@ extern I2CPort i2cport;
 extern const OutputPin debugpin;
 #endif
 
+#ifdef GPIO_MOTOR
+extern const OutputPin gpMotor;
+#endif
+
 #endif

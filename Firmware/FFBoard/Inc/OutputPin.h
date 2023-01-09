@@ -37,6 +37,18 @@ public:
 		return(this->port == b.port && this->pin == b.pin);
 	}
 
+	/**
+	 * Sets a pin into output mode in case it was previously reconfigured
+	 */
+	void configureOutput(uint32_t pull = GPIO_NOPULL,bool opendrain = false, uint32_t speed = GPIO_SPEED_FREQ_LOW){
+		GPIO_InitTypeDef GPIO_InitStruct = {0};
+		GPIO_InitStruct.Pin = pin;
+		GPIO_InitStruct.Mode = opendrain ? GPIO_MODE_OUTPUT_OD : GPIO_MODE_OUTPUT_PP;
+		GPIO_InitStruct.Pull = pull;
+		GPIO_InitStruct.Speed = speed;
+		HAL_GPIO_Init(port, &GPIO_InitStruct);
+	}
+
 	//const std::string getName(){return name;}
 
 

@@ -31,6 +31,10 @@ extern I2C_HandleTypeDef I2C_PORT;
 I2CPort i2cport{I2C_PORT};
 #endif
 
+#ifdef GPIO_MOTOR
+const OutputPin gpMotor{*DRV_GP1_GPIO_Port,DRV_GP1_Pin};
+#endif
+
 #ifdef CANBUS
 /*
  * Can BTR register for different speed configs
