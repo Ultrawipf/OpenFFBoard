@@ -9,6 +9,9 @@
 #include <VescCAN.h>
 #include "ClassIDs.h"
 
+bool VescCAN::crcTableInitialized = false;
+uint16_t VescCAN::crc16_tab[256] __attribute__((section (".ccmram"))); // Generate in ram to save some flash (512B)
+
 // *****    static initializer for the VESC_1 instance (extend VESC_CAN) *****
 
 bool VESC_1::inUse = false;
@@ -48,6 +51,26 @@ const ClassIdentifier VESC_2::getInfo() {
 VescCAN::VescCAN(uint8_t address) :
 		CommandHandler("vesc", CLSID_MOT_VESC0, address), Thread("VESC", VESC_THREAD_MEM,
 				VESC_THREAD_PRIO) {
+
+	if(!crcTableInitialized){ // Generate a CRC16 table the first time a vesc instance is created
+		for (uint16_t byte = 0; byte < 256; byte++)
+		  {
+			uint16_t crc = byte;
+			for (uint8_t bit = 0; bit < 16; bit++)
+			{
+			  if (crc & 0x8000)
+			  {
+				crc = (crc << 1) ^ crcpoly;
+			  }
+			  else
+			  {
+				crc <<= 1;
+			  }
+			}
+			crc16_tab[byte] = crc;
+		  }
+		crcTableInitialized = true;
+	}
 
 	setAddress(address);
 	restoreFlash();
