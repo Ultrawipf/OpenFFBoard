@@ -1,5 +1,7 @@
 ### Changes this version:
 - Fixed a possible crash if unparsable/too large numbers are sent in a command
+- Removed unused direction field from descriptor in 2 axis desc
+- Workarounds for 2 axis conditional effects giving condition blocks priority over direction angles
 
 
 ### Changes in (v1.11.x):
