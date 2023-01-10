@@ -58,7 +58,6 @@ private:
 	UART_HandleTypeDef& huart;
 	UARTDevice* device = nullptr;
 	volatile char uart_buf[UART_BUF_SIZE] = {0};
-
 };
 
 
@@ -69,8 +68,8 @@ public:
 	virtual ~UARTDevice();
 	virtual void uartRcv(char& buf){}; //Warning: called by interrupts!
 
-	virtual void startUartTransfer(UARTPort* port);
-	virtual void endUartTransfer(UARTPort* port);
+	virtual void startUartTransfer(UARTPort* port,bool transmit);
+	virtual void endUartTransfer(UARTPort* port,bool transmit);
 
 protected:
 	UARTPort* uartport = nullptr;

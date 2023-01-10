@@ -22,8 +22,12 @@
  * Requires a uart port and one GPIO output for the transceiver
  */
 class MotorSimplemotion : public MotorDriver,public PersistentStorage, public Encoder,public CommandHandler,public UARTDevice{
+
+	enum class MotorSimplemotion_commands : uint8_t {
+		errors
+	};
 public:
-	MotorSimplemotion(uint8_t address);
+	MotorSimplemotion(uint8_t instance);
 	virtual ~MotorSimplemotion();
 
 	const ClassIdentifier getInfo() = 0;
@@ -48,16 +52,24 @@ public:
 	std::string getHelpstring(){return "RS485 Simplemotion interface";};
 
 	void uartRcv(char& buf); //Warning: called by interrupts!
-	void startUartTransfer(UARTPort* port);
-	void endUartTransfer(UARTPort* port);
+	void sendFastUpdate(uint16_t val1,uint16_t val2 = 0);
+	void startUartTransfer(UARTPort* port,bool transmit);
+	void endUartTransfer(UARTPort* port,bool transmit);
+
+	static const uint8_t SMCMD_FAST_UPDATE_CYCLE = 2<<3;
+	static const uint8_t SMCMD_FAST_UPDATE_CYCLE_RET = (2<<3) | 1;
+	static const uint8_t SMP_FAST_UPDATE_CYCLE_FORMAT = 17;
 
 protected:
 	const OutputPin& writeEnablePin = gpMotor;
 	UARTPort& uart = motor_uart;
 
-	static uint8_t tableCRC8[256];
+	static std::array<uint8_t,256> tableCRC8;
+	static std::array<uint16_t,256> tableCRC16;
 	static const uint8_t crcpoly = 0x07;
+	static const uint16_t crcpoly16 = 0xC1C0;
 	static bool crcTableInitialized;
+	uint8_t rxbuf[6];
 
 private:
 	uint8_t address;
@@ -69,28 +81,30 @@ private:
  * Instance 1
  */
 class MotorSimplemotion1 : public MotorSimplemotion{
+private:
+	static bool inUse;
 public:
-	MotorSimplemotion1() : MotorSimplemotion{1} {inUse = true;}
+	MotorSimplemotion1() : MotorSimplemotion{0} {inUse = true;}
+	static ClassIdentifier info;
 	const ClassIdentifier getInfo(){return info;}
 	~MotorSimplemotion1(){inUse = false;}
 	static bool isCreatable(){return !inUse;}
-	static ClassIdentifier info;
-private:
-	static bool inUse;
+
 };
 
 /**
  * Instance 2
  */
 class MotorSimplemotion2 : public MotorSimplemotion{
+private:
+	static bool inUse;
 public:
-	MotorSimplemotion2() : MotorSimplemotion{2} {inUse = true;}
+	MotorSimplemotion2() : MotorSimplemotion{1} {inUse = true;}
+	static ClassIdentifier info;
 	const ClassIdentifier getInfo(){return info;}
 	~MotorSimplemotion2(){inUse = false;}
 	static bool isCreatable(){return !inUse;}
-	static ClassIdentifier info;
-private:
-	static bool inUse;
+
 };
 #endif
 #endif /* USEREXTENSIONS_SRC_MOTORSIMPLEMOTION_H_ */
