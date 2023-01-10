@@ -391,7 +391,7 @@ void UART_CommandInterface::uartRcv(char& buf){
 	uint32_t len = 1;
 	//BaseType_t savedInterruptStatus =  cpp_freertos::CriticalSection::EnterFromISR();
 	StringCommandInterface::addBuf(&buf, &len);
-
+	uartport->registerInterrupt();
 
 	//cpp_freertos::CriticalSection::ExitFromISR(savedInterruptStatus);
 }
