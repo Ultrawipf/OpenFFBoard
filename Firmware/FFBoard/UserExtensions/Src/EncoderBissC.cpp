@@ -8,6 +8,9 @@
  */
 
 #include "EncoderBissC.h"
+#include "CRC.h"
+#include "array"
+
 bool EncoderBissC::inUse = false;
 ClassIdentifier EncoderBissC::info = {
 		 .name = "BISS-C" ,
@@ -18,7 +21,7 @@ const ClassIdentifier EncoderBissC::getInfo(){
 	return info;
 }
 
-uint8_t EncoderBissC::tableCRC6n[64] __attribute__((section (".ccmram")));
+std::array<uint8_t,64> EncoderBissC::tableCRC6n __attribute__((section (".ccmram")));
 
 EncoderBissC::EncoderBissC() :
 		SPIDevice(ENCODER_SPI_PORT, ENCODER_SPI_PORT.getCsPins()[0]),
@@ -27,20 +30,9 @@ EncoderBissC::EncoderBissC() :
 	EncoderBissC::inUse = true;
 
 
-	//Init CRC table
-	for(int i = 0; i < 64; i++){
-		int crc = i;
+	//Init CRC-6 table
+	makeCrcTable(tableCRC6n,POLY,6);
 
-		for (int j = 0; j < 6; j++){
-			if (crc & 0x20){
-				crc <<= 1;
-				crc ^= POLY;
-			} else {
-				crc <<= 1;
-			}
-		}
-		tableCRC6n[i] = crc;
-	}
 	restoreFlash();
 	this->spiPort.takeExclusive(true);
 	configSPI();

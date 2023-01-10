@@ -8,9 +8,10 @@
 #ifdef VESC
 #include <VescCAN.h>
 #include "ClassIDs.h"
+#include "CRC.h"
 
 bool VescCAN::crcTableInitialized = false;
-uint16_t VescCAN::crc16_tab[256] __attribute__((section (".ccmram"))); // Generate in ram to save some flash (512B)
+std::array<uint16_t,256> VescCAN::crc16_tab __attribute__((section (".ccmram"))); // Generate in ram to save some flash (512B)
 
 // *****    static initializer for the VESC_1 instance (extend VESC_CAN) *****
 
@@ -53,22 +54,7 @@ VescCAN::VescCAN(uint8_t address) :
 				VESC_THREAD_PRIO) {
 
 	if(!crcTableInitialized){ // Generate a CRC16 table the first time a vesc instance is created
-		for (uint16_t byte = 0; byte < 256; byte++)
-		  {
-			uint16_t crc = byte;
-			for (uint8_t bit = 0; bit < 16; bit++)
-			{
-			  if (crc & 0x8000)
-			  {
-				crc = (crc << 1) ^ crcpoly;
-			  }
-			  else
-			  {
-				crc <<= 1;
-			  }
-			}
-			crc16_tab[byte] = crc;
-		  }
+		makeCrcTable(crc16_tab, crcpoly,16);
 		crcTableInitialized = true;
 	}
 
@@ -643,7 +629,8 @@ void VescCAN::canRxPendCallback(CAN_HandleTypeDef *hcan, uint8_t *rxBuf,
 		uint8_t crc_high = rxBuf[index++];
 		uint8_t crc_low = rxBuf[index++];
 
-		if (crc16(buffer_rx, rxbuf_length)
+		if(calculateCrc16_8(crc16_tab,buffer_rx,rxbuf_length)
+		//if (crc16(buffer_rx, rxbuf_length)
 				== ((uint8_t) crc_high << 8 | (uint8_t) crc_low)) {
 
 			this->decode_buffer(buffer_rx, rxbuf_length);
@@ -731,15 +718,6 @@ float VescCAN::buffer_get_float32(const uint8_t *buffer, float scale,
 float VescCAN::buffer_get_float16(const uint8_t *buffer, float scale,
 		int32_t *index) {
 	return (float) buffer_get_int16(buffer, index) / scale;
-}
-
-unsigned short VescCAN::crc16(unsigned char *buf, unsigned int len) {
-	unsigned int i;
-	unsigned short cksum = 0;
-	for (i = 0; i < len; i++) {
-		cksum = crc16_tab[(((cksum >> 8) ^ *buf++) & 0xFF)] ^ (cksum << 8);
-	}
-	return cksum;
 }
 
 #endif

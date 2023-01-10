@@ -18,6 +18,7 @@
 #include <math.h>
 #include "PersistentStorage.h"
 #include "semaphore.hpp"
+#include "array"
 
 class EncoderBissC: public Encoder, public SPIDevice , public CommandHandler,cpp_freertos::Thread,public PersistentStorage {
 public:
@@ -70,7 +71,7 @@ private:
 
 
 	const uint8_t POLY = 0x43;
-	static uint8_t tableCRC6n[64];
+	static std::array<uint8_t,64> tableCRC6n;
 	int32_t numErrors = 0;
 	static bool inUse;
 	cpp_freertos::BinarySemaphore requestNewDataSem = cpp_freertos::BinarySemaphore(false);
