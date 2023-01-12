@@ -63,6 +63,7 @@ void MotorSimplemotion::sendFastUpdate(uint16_t val1,uint16_t val2){
 		//pulseErrLed();
 		if(HAL_GetTick()-lastSentTime>10){
 			uartport->abortReceive();
+			resetBuffer();
 			waitingFastUpdate = false;
 			pulseClipLed();
 		}
@@ -80,26 +81,10 @@ void MotorSimplemotion::sendFastUpdate(uint16_t val1,uint16_t val2){
 		pulseErrLed();
 		return;
 	}
-//	uartport->transmit((char*)(&fastbuffer), 7,2);
 
 	lastSentTime = HAL_GetTick();
 	waitingFastUpdate = true;
-	//uartport->abortReceive();
-	if(!uartport->receive_IT((char*)(rxbuf), 6)){
-		pulseErrLed();
-		waitingFastUpdate = false;
-		return;
-	}
-
-//	if(uartport->receive((char*)(rxbuf), 6,2)){
-//		this->uartRcv((char&)(*rxbuf));
-//	}else{
-//		pulseErrLed();
-//	}
-//	if(uartport->getErrors()){
-//		pulseErrLed();
-//	}
-
+	uartport->registerInterrupt(); // Wait for reply data
 
 }
 
@@ -166,28 +151,66 @@ void MotorSimplemotion::sendCommand(uint8_t len,uint8_t* buf){
 	// TODO receive reply...
 }
 
+void MotorSimplemotion::resetBuffer(){
+	memset((char*)rxbuf,0,RXBUF_SIZE);
+	rxbuf_i = 0;
+}
+
 void MotorSimplemotion::uartRcv(char& buf){
 	uint32_t errorcodes = uartport->getErrors();
 	if(errorcodes){
-		// Flush buffer
+		// Flush buffer if error occured in case of noise
+		resetBuffer();
+		return;
+	}
+	// Append to buffer while not overrun
+	if(rxbuf_i < RXBUF_SIZE){
+		rxbuf[rxbuf_i++] = buf;
+	}else{
+		// Overrun
+		resetBuffer();
+		pulseErrLed();
 		return;
 	}
 
+	// Check if we can parse a command
+	char byte1 = rxbuf[0];
 
-	if(waitingFastUpdate && buf == SMCMD_FAST_UPDATE_CYCLE_RET && &buf == (char*)&this->rxbuf){
+	if(waitingFastUpdate && byte1 == SMCMD_FAST_UPDATE_CYCLE_RET && rxbuf_i == 6) // Fast update reply
+	{
 		// We know the size of the fast update
 		waitingFastUpdate = false;
+
 		Sm2FastUpdate_reply packet;
-		memcpy(&packet,&buf,6);
+		memcpy(&packet,(char*)rxbuf,6);
+
 		if(calculateCrc8(tableCRC8, (uint8_t*)rxbuf, 6, crc8init) != 0){
 			crcerrors++;
+			resetBuffer();
 			return;
 		}
 		updatePosition(packet.val1);
 		updateStatus(packet.val2);
-	}else{
-		pulseErrLed();
+		resetBuffer();
+		return;
 	}
+	else if(byte1 == SMCMD_INSTANT_CMD_RET) // Standard reply
+	{
+
+	}
+	else
+	{
+		uartport->registerInterrupt(); // Wait for next byte if nothing can be parsed yet
+	}
+
+}
+
+void MotorSimplemotion::startMotor(){
+
+}
+
+void MotorSimplemotion::stopMotor(){
+	turn(0);
 }
 
 EncoderType MotorSimplemotion::getEncoderType(){
@@ -195,21 +218,17 @@ EncoderType MotorSimplemotion::getEncoderType(){
 }
 
 void MotorSimplemotion::startUartTransfer(UARTPort* port,bool transmit){
-	port->takeSemaphore(!transmit);
+	port->takeSemaphore(transmit);
 	if(transmit){
 		writeEnablePin.set();
-	}else{
-		debugpin.set();
 	}
 }
 void MotorSimplemotion::endUartTransfer(UARTPort* port,bool transmit){
 	// Disable write pin
 	if(transmit){
 		writeEnablePin.reset();
-	}else{
-		debugpin.reset();
 	}
-	port->giveSemaphore(!transmit);
+	port->giveSemaphore(transmit);
 }
 
 void MotorSimplemotion::registerCommands(){

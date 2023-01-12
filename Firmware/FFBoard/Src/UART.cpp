@@ -142,8 +142,8 @@ bool UARTPort::freePort(UARTDevice* device){
 	return false;
 }
 
-void UARTPort::takeSemaphore(bool rxsem){
-	cpp_freertos::BinarySemaphore& sem = rxsem ? rxsemaphore : semaphore;
+void UARTPort::takeSemaphore(bool txsem){
+	cpp_freertos::BinarySemaphore& sem = !txsem ? rxsemaphore : semaphore;
 	bool isIsr = inIsr();
 	BaseType_t taskWoken = 0;
 	if(isIsr)
@@ -154,8 +154,8 @@ void UARTPort::takeSemaphore(bool rxsem){
 	portYIELD_FROM_ISR(taskWoken);
 }
 
-void UARTPort::giveSemaphore(bool rxsem){
-	cpp_freertos::BinarySemaphore& sem = rxsem ? rxsemaphore : semaphore;
+void UARTPort::giveSemaphore(bool txsem){
+	cpp_freertos::BinarySemaphore& sem = !txsem ? rxsemaphore : semaphore;
 	bool isIsr = inIsr();
 	BaseType_t taskWoken = 0;
 	if(isIsr)
@@ -219,11 +219,11 @@ UARTDevice::~UARTDevice(){
 
 
 void UARTDevice::startUartTransfer(UARTPort* port,bool transmit){
-	port->takeSemaphore(!transmit);
+	port->takeSemaphore(transmit);
 }
 
 void UARTDevice::endUartTransfer(UARTPort* port,bool transmit){
-	port->giveSemaphore(!transmit);
+	port->giveSemaphore(transmit);
 }
 
 

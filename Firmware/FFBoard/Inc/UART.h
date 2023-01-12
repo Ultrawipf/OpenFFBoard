@@ -41,8 +41,8 @@ public:
 	bool abortReceive();
 	bool abortTransmit();
 
-	void takeSemaphore(bool rxsem = false); // Call before accessing this port
-	void giveSemaphore(bool rxsem = false); // Call when finished using this port
+	void takeSemaphore(bool txsem = true); // Call before accessing this port
+	void giveSemaphore(bool txsem = true); // Call when finished using this port
 	bool isTaken(); // Returns true if semaphore was taken by another task
 
 	bool reconfigurePort(UART_InitTypeDef& config);
@@ -60,7 +60,7 @@ public:
 
 private:
 	cpp_freertos::BinarySemaphore semaphore = cpp_freertos::BinarySemaphore(true);
-	cpp_freertos::BinarySemaphore rxsemaphore = cpp_freertos::BinarySemaphore(true); // second semaphore for accessing receive functions if full duplex
+	cpp_freertos::BinarySemaphore rxsemaphore = cpp_freertos::BinarySemaphore(true); // second semaphore for accessing transmit functions if full duplex
 	bool isTakenFlag = false;
 	UART_HandleTypeDef& huart;
 	UARTDevice* device = nullptr;
