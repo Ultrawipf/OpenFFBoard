@@ -32,15 +32,17 @@ public:
 	void uartRxComplete(UART_HandleTypeDef *huart);
 	void uartTxComplete(UART_HandleTypeDef *huart);
 
-	void transmit(const char* txbuf,uint16_t size,uint32_t timeout = 10000);
-	void transmit_IT(const char* txbuf,uint16_t size);
+	bool transmit(const char* txbuf,uint16_t size,uint32_t timeout = 10000);
+	bool transmit_IT(const char* txbuf,uint16_t size);
 	bool receive(char* rxbuf,uint16_t size,uint32_t timeout = 10000); // Receive in blocking mode
-	void transmit_DMA(const char* txbuf,uint16_t size);
-	bool receiveDMA(char* rxbuf,uint16_t size);
-	bool receiveIT(char* rxbuf,uint16_t size);
+	bool transmit_DMA(const char* txbuf,uint16_t size);
+	bool receive_DMA(char* rxbuf,uint16_t size);
+	bool receive_IT(char* rxbuf,uint16_t size);
+	bool abortReceive();
+	bool abortTransmit();
 
-	void takeSemaphore(); // Call before accessing this port
-	void giveSemaphore(); // Call when finished using this port
+	void takeSemaphore(bool rxsem = false); // Call before accessing this port
+	void giveSemaphore(bool rxsem = false); // Call when finished using this port
 	bool isTaken(); // Returns true if semaphore was taken by another task
 
 	bool reconfigurePort(UART_InitTypeDef& config);
@@ -50,14 +52,22 @@ public:
 	bool reservePort(UARTDevice* device);
 	bool freePort(UARTDevice* device);
 
-	void registerInterrupt();
+	uint32_t getErrors();
+
+	bool registerInterrupt();
+
+	UART_HandleTypeDef* getHuart();
 
 private:
 	cpp_freertos::BinarySemaphore semaphore = cpp_freertos::BinarySemaphore(true);
+	cpp_freertos::BinarySemaphore rxsemaphore = cpp_freertos::BinarySemaphore(true); // second semaphore for accessing receive functions if full duplex
 	bool isTakenFlag = false;
 	UART_HandleTypeDef& huart;
 	UARTDevice* device = nullptr;
 	volatile char uart_buf[UART_BUF_SIZE] = {0};
+	bool waitingForSingleBytes = false;
+	uint16_t lastPos = 0;
+	char* rxbuf_t = nullptr;
 };
 
 

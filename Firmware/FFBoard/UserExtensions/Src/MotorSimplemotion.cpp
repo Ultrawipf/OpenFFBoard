@@ -9,6 +9,7 @@
 #ifdef SIMPLEMOTION
 #include "MotorSimplemotion.h"
 #include "CRC.h"
+#include "cpp_target_config.h"
 
 bool MotorSimplemotion::crcTableInitialized = false;
 std::array<uint8_t,256> MotorSimplemotion::tableCRC8 __attribute__((section (".ccmram")));
@@ -25,14 +26,28 @@ ClassIdentifier MotorSimplemotion2::info = {
 	 .id=CLSID_MOT_SM2
 };
 
-MotorSimplemotion::MotorSimplemotion(uint8_t instance) : CommandHandler("sm", CLSID_MOT_SM1, address), address(address+1){
+MotorSimplemotion::MotorSimplemotion(uint8_t instance) : CommandHandler("sm", CLSID_MOT_SM1, address),UARTDevice(motor_uart), address(address+1){
 	//Init CRC table at runtime to save flash
 	if(!crcTableInitialized){
 		makeCrcTable(tableCRC8, crcpoly, 8); // Generate a CRC8 table the first time an instance is created
 		makeCrcTable(tableCRC16, crcpoly16, 16,true,true); // Make a CRC16 table
 		crcTableInitialized = true;
 	}
+	cpr = 8192;
 
+	// Set up uart port
+	UART_InitTypeDef uartconf;
+	uartconf.BaudRate = 460800;
+	uartconf.WordLength = UART_WORDLENGTH_8B;
+	uartconf.StopBits = UART_STOPBITS_1;
+	uartconf.Parity = UART_PARITY_NONE;
+	uartconf.Mode = UART_MODE_TX_RX;
+	uartconf.HwFlowCtl = UART_HWCONTROL_NONE;
+	uartconf.OverSampling = UART_OVERSAMPLING_8;
+	uartport->reconfigurePort(uartconf);
+	writeEnablePin.reset();
+
+	registerCommands();
 }
 
 MotorSimplemotion::~MotorSimplemotion() {
@@ -44,16 +59,52 @@ MotorSimplemotion::~MotorSimplemotion() {
  * Sends a fast cycle packet. Driver will reply with status and position
  */
 void MotorSimplemotion::sendFastUpdate(uint16_t val1,uint16_t val2){
-	uint8_t buffer[6] = {SMCMD_FAST_UPDATE_CYCLE,
-			(uint8_t)(val1 & 0xff),(uint8_t)((val1 >> 8) & 0xff),
-			(uint8_t)(val2 & 0xff),(uint8_t)((val2 >> 8) & 0xff),
-			0};
-	buffer[5] = calculateCrc8(tableCRC8,buffer,5,0x52);
-	uartport->transmit_IT((char*)(buffer), 6); // Send update
-	uartport->receiveIT((char*)(rxbuf), 6); // Receive reply
+	if(uartport->isTaken() || waitingFastUpdate){
+		//pulseErrLed();
+		if(HAL_GetTick()-lastSentTime>10){
+			uartport->abortReceive();
+			waitingFastUpdate = false;
+			pulseClipLed();
+		}
+		return;
+	}
+
+	fastbuffer.header = SMCMD_FAST_UPDATE_CYCLE;
+	fastbuffer.adr = this->address;
+	fastbuffer.val1 = val1;
+	fastbuffer.val2 = val2;
+	fastbuffer.crc = calculateCrc8(tableCRC8,(uint8_t*)&fastbuffer,6,crc8init);
+
+	if(!uartport->transmit_IT((char*)(&fastbuffer), 7)) // Send update
+	{
+		pulseErrLed();
+		return;
+	}
+//	uartport->transmit((char*)(&fastbuffer), 7,2);
+
+	lastSentTime = HAL_GetTick();
+	waitingFastUpdate = true;
+	//uartport->abortReceive();
+	if(!uartport->receive_IT((char*)(rxbuf), 6)){
+		pulseErrLed();
+		waitingFastUpdate = false;
+		return;
+	}
+
+//	if(uartport->receive((char*)(rxbuf), 6,2)){
+//		this->uartRcv((char&)(*rxbuf));
+//	}else{
+//		pulseErrLed();
+//	}
+//	if(uartport->getErrors()){
+//		pulseErrLed();
+//	}
+
+
 }
 
 void MotorSimplemotion::turn(int16_t power){
+	lastTorque = power;
 	sendFastUpdate((uint16_t)power, 0);
 }
 
@@ -61,15 +112,15 @@ Encoder* MotorSimplemotion::getEncoder(){
 	return static_cast<Encoder*>(this);
 }
 
-uint32_t MotorSimplemotion::getCpr(){
-	return 0xffff;
-}
 
 /**
  * In order to get a position update the fast update must be sent first by updating a torque value
  */
 int32_t MotorSimplemotion::getPos(){
-	return 0;
+	if(HAL_GetTick()-lastUpdateTime>100){
+		this->turn(lastTorque); // Sending torque updates the position
+	}
+	return position;
 }
 
 void MotorSimplemotion::setPos(int32_t pos){
@@ -83,8 +134,60 @@ void MotorSimplemotion::restoreFlash(){
 
 }
 
-void MotorSimplemotion::uartRcv(char& buf){
+void MotorSimplemotion::updatePosition(uint16_t value){
+	// Position is in raw encoder counts but overflows between 0 and 0xffff.
+	int32_t diff = value-lastPosRep;
+	if(abs(diff) > 0x7fff){
+		// Overflow likely
+		if(value < 0x7fff)
+			overflows += 1;
+		else if(value >= 0x7fff)
+			overflows -= 1;
+	}
+	position = value + (0xffff * overflows);
+	lastPosRep = value;
+	lastUpdateTime = HAL_GetTick();
+}
 
+void MotorSimplemotion::updateStatus(uint16_t value){
+
+}
+
+void MotorSimplemotion::sendCommand(uint8_t len,uint8_t* buf){
+	uint8_t cmdbuffer[len+5];
+	cmdbuffer[0] = SMCMD_INSTANT_CMD;
+	cmdbuffer[1] = len;
+	cmdbuffer[2] = address;
+	memcpy(cmdbuffer+3,buf,len);
+	uint16_t crc = calculateCrc16_8(tableCRC16,cmdbuffer,len+3,0);
+	cmdbuffer[3+len] = (crc << 8) & 0xff;
+	cmdbuffer[4+len] = (crc) & 0xff;
+	uartport->transmit_IT((char*)(cmdbuffer), len+5); // Send update
+	// TODO receive reply...
+}
+
+void MotorSimplemotion::uartRcv(char& buf){
+	uint32_t errorcodes = uartport->getErrors();
+	if(errorcodes){
+		// Flush buffer
+		return;
+	}
+
+
+	if(waitingFastUpdate && buf == SMCMD_FAST_UPDATE_CYCLE_RET && &buf == (char*)&this->rxbuf){
+		// We know the size of the fast update
+		waitingFastUpdate = false;
+		Sm2FastUpdate_reply packet;
+		memcpy(&packet,&buf,6);
+		if(calculateCrc8(tableCRC8, (uint8_t*)rxbuf, 6, crc8init) != 0){
+			crcerrors++;
+			return;
+		}
+		updatePosition(packet.val1);
+		updateStatus(packet.val2);
+	}else{
+		pulseErrLed();
+	}
 }
 
 EncoderType MotorSimplemotion::getEncoderType(){
@@ -92,26 +195,34 @@ EncoderType MotorSimplemotion::getEncoderType(){
 }
 
 void MotorSimplemotion::startUartTransfer(UARTPort* port,bool transmit){
-	port->takeSemaphore();
-	if(transmit)
+	port->takeSemaphore(!transmit);
+	if(transmit){
 		writeEnablePin.set();
+	}else{
+		debugpin.set();
+	}
 }
 void MotorSimplemotion::endUartTransfer(UARTPort* port,bool transmit){
 	// Disable write pin
-	if(transmit)
+	if(transmit){
 		writeEnablePin.reset();
-	port->giveSemaphore();
+	}else{
+		debugpin.reset();
+	}
+	port->giveSemaphore(!transmit);
 }
 
 void MotorSimplemotion::registerCommands(){
 	CommandHandler::registerCommands();
 
-//	registerCommand("errors", MotorSimplemotion_commands::errors, "CRC error count",CMDFLAG_GET);
+	registerCommand("errors", MotorSimplemotion_commands::errors, "CRC error count",CMDFLAG_GET);
 }
 
 CommandStatus MotorSimplemotion::command(const ParsedCommand& cmd,std::vector<CommandReply>& replies){
 	switch(static_cast<MotorSimplemotion_commands>(cmd.cmdId)){
-
+	case MotorSimplemotion_commands::errors:
+		replies.emplace_back(this->crcerrors);
+		break;
 	default:
 		return CommandStatus::NOT_FOUND;
 	}

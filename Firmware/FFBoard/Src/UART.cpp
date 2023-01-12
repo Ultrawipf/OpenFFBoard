@@ -53,46 +53,55 @@ UART_InitTypeDef& UARTPort::getConfig(){
 /**
  * Begins to wait on a single UART_BUF_SIZE sized transfer
  */
-void UARTPort::registerInterrupt(){
-	HAL_UART_Receive_IT(&this->huart,(uint8_t*)this->uart_buf,UART_BUF_SIZE);
+bool UARTPort::registerInterrupt(){
+	waitingForSingleBytes = true;
+	return HAL_UART_Receive_IT(&this->huart,(uint8_t*)this->uart_buf,UART_BUF_SIZE) == HAL_OK;
 }
 
 
-void UARTPort::transmit_DMA(const char* txbuf,uint16_t size){
+bool UARTPort::transmit_DMA(const char* txbuf,uint16_t size){
 	if(this->device)
 		device->startUartTransfer(this,true);
-	HAL_UART_Transmit_DMA(&this->huart, (uint8_t*)(txbuf), size);
+	return HAL_UART_Transmit_DMA(&this->huart, (uint8_t*)(txbuf), size) == HAL_OK;
 	// Transfer ends in txinterrupt
 }
 
-void UARTPort::transmit(const char* txbuf,uint16_t size,uint32_t timeout){
+bool UARTPort::transmit(const char* txbuf,uint16_t size,uint32_t timeout){
 	if(this->device)
 		device->startUartTransfer(this,true);
-	HAL_UART_Transmit(&this->huart, (uint8_t*)(txbuf), size,timeout);
+	uint32_t status = HAL_UART_Transmit(&this->huart, (uint8_t*)(txbuf), size,timeout);
 	if(this->device)
 		device->endUartTransfer(this,true);
+	return status == HAL_OK;
 }
 
-void UARTPort::transmit_IT(const char* txbuf,uint16_t size){
+bool UARTPort::transmit_IT(const char* txbuf,uint16_t size){
 	if(this->device)
 		device->startUartTransfer(this,true);
-	HAL_UART_Transmit_IT(&this->huart, (uint8_t*)(txbuf), size);
+	return HAL_UART_Transmit_IT(&this->huart, (uint8_t*)(txbuf), size) == HAL_OK;
 	// Transfer ends in txinterrupt
 }
 
 bool UARTPort::receive(char* rxbuf,uint16_t size,uint32_t timeout){
-	return(HAL_UART_Receive(&this->huart, (uint8_t*)(rxbuf), size, timeout) == HAL_OK);
-}
-
-bool UARTPort::receiveDMA(char* rxbuf,uint16_t size){
 	if(this->device)
 		device->startUartTransfer(this,false);
+	uint32_t status = (HAL_UART_Receive(&this->huart, (uint8_t*)(rxbuf), size, timeout));
+	if(this->device)
+		device->endUartTransfer(this,false);
+	return status == HAL_OK;
+}
+
+bool UARTPort::receive_DMA(char* rxbuf,uint16_t size){
+	if(this->device)
+		device->startUartTransfer(this,false);
+	rxbuf_t = rxbuf;
 	return(HAL_UART_Receive_DMA(&this->huart, (uint8_t*)(rxbuf), size) == HAL_OK);
 }
 
-bool UARTPort::receiveIT(char* rxbuf,uint16_t size){
+bool UARTPort::receive_IT(char* rxbuf,uint16_t size){
 	if(this->device)
 		device->startUartTransfer(this,false);
+	rxbuf_t = rxbuf;
 	return(HAL_UART_Receive_IT(&this->huart, (uint8_t*)(rxbuf), size) == HAL_OK);
 }
 
@@ -104,6 +113,27 @@ bool UARTPort::reservePort(UARTDevice* device){
 	return false;
 }
 
+bool UARTPort::abortReceive(){
+
+	uint32_t status = HAL_UART_AbortReceive(&this->huart);
+	if(device && status == HAL_OK){
+		device->endUartTransfer(this,false);
+	}
+	return status == HAL_OK;
+}
+
+UART_HandleTypeDef* UARTPort::getHuart(){
+	return &this->huart;
+}
+
+bool UARTPort::abortTransmit(){
+	uint32_t status = HAL_UART_AbortTransmit(&this->huart);
+	if(device && status == HAL_OK){
+		device->endUartTransfer(this,true);
+	}
+	return status == HAL_OK;
+}
+
 bool UARTPort::freePort(UARTDevice* device){
 	if(device == this->device){
 		this->device = nullptr;
@@ -112,24 +142,26 @@ bool UARTPort::freePort(UARTDevice* device){
 	return false;
 }
 
-void UARTPort::takeSemaphore(){
+void UARTPort::takeSemaphore(bool rxsem){
+	cpp_freertos::BinarySemaphore& sem = rxsem ? rxsemaphore : semaphore;
 	bool isIsr = inIsr();
 	BaseType_t taskWoken = 0;
 	if(isIsr)
-		this->semaphore.TakeFromISR(&taskWoken);
+		sem.TakeFromISR(&taskWoken);
 	else
-		this->semaphore.Take();
+		sem.Take();
 	isTakenFlag = true;
 	portYIELD_FROM_ISR(taskWoken);
 }
 
-void UARTPort::giveSemaphore(){
+void UARTPort::giveSemaphore(bool rxsem){
+	cpp_freertos::BinarySemaphore& sem = rxsem ? rxsemaphore : semaphore;
 	bool isIsr = inIsr();
 	BaseType_t taskWoken = 0;
 	if(isIsr)
-		this->semaphore.GiveFromISR(&taskWoken);
+		sem.GiveFromISR(&taskWoken);
 	else
-		this->semaphore.Give();
+		sem.Give();
 	isTakenFlag = false;
 	portYIELD_FROM_ISR(taskWoken);
 }
@@ -138,14 +170,25 @@ bool UARTPort::isTaken(){
 	return isTakenFlag;
 }
 
+uint32_t UARTPort::getErrors(){
+	return huart.ErrorCode;
+}
+
 
 void UARTPort::uartRxComplete(UART_HandleTypeDef *huart){
 	// Check if port matches this port
 	if(huart == &this->huart){
 		if(this->device != nullptr){
-			device->uartRcv((char&)*this->uart_buf);
+			waitingForSingleBytes = false;
 			if(isTakenFlag)
-				device->endUartTransfer(this,true);
+				device->endUartTransfer(this,false);
+			if(rxbuf_t){
+				device->uartRcv(*rxbuf_t);
+				rxbuf_t = nullptr;
+			}else{
+				device->uartRcv((char&)*this->uart_buf);
+			}
+
 		}
 	} // If started by interrupt we need to restart the interrupt transfer again by calling registerInterrupt()
 }
@@ -176,11 +219,11 @@ UARTDevice::~UARTDevice(){
 
 
 void UARTDevice::startUartTransfer(UARTPort* port,bool transmit){
-	port->takeSemaphore();
+	port->takeSemaphore(!transmit);
 }
 
 void UARTDevice::endUartTransfer(UARTPort* port,bool transmit){
-	port->giveSemaphore();
+	port->giveSemaphore(!transmit);
 }
 
 
