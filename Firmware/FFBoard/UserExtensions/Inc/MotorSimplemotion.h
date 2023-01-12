@@ -65,8 +65,8 @@ public:
 	const ClassIdentifier getInfo() = 0;
 
 	void turn(int16_t power) override;
-//	void stopMotor() override;
-//	void startMotor() override;
+	void stopMotor() override;
+	void startMotor() override;
 	Encoder* getEncoder() override;
 	bool hasIntegratedEncoder() {return true;}
 
@@ -108,7 +108,10 @@ protected:
 	static const uint8_t crc8init = 0x52;
 
 	// Receive buffer
-	volatile char rxbuf[32];
+	static const uint8_t RXBUF_SIZE = 32;
+	volatile char rxbuf[RXBUF_SIZE];
+	volatile uint8_t rxbuf_i = 0;
+
 	volatile uint32_t crcerrors = 0;
 	int16_t lastTorque = 0;
 	volatile uint32_t lastUpdateTime = 0;
@@ -123,6 +126,7 @@ private:
 	int32_t overflows = 0;
 	Sm2FastUpdate fastbuffer;
 	volatile uint32_t lastSentTime = 0;
+	void resetBuffer();
 };
 
 

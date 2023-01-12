@@ -96,7 +96,7 @@ void MotorDriver::startMotor(){
  * Disable the motor driver
  */
 void MotorDriver::stopMotor(){
-
+	turn(0);
 }
 
 /**
