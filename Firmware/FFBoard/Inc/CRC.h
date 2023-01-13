@@ -38,7 +38,8 @@ void makeCrcTable(std::array<T,LEN> &table, const T crcpoly,const uint8_t bits,c
 	T mask = 1 << (bits-1);
 	for (uint16_t byte = 0; byte < LEN; ++byte)
 	{
-		T crc = (refin ? reverseBits<T>(byte) : byte);
+		uint8_t shiftin = std::max<int16_t>(bits-8,0);
+		T crc = (refin ? reverseBits<T>(byte) >> shiftin : byte);
 		for (uint8_t bit = 0; bit < bits; ++bit)
 		{
 			if (crc & mask)
@@ -57,5 +58,6 @@ void makeCrcTable(std::array<T,LEN> &table, const T crcpoly,const uint8_t bits,c
 
 uint8_t calculateCrc8(std::array<uint8_t,256> &crctable,uint8_t* buf,uint16_t len,uint8_t crc=0);
 uint16_t calculateCrc16_8(std::array<uint16_t,256> &crctable,uint8_t* buf,uint16_t len,uint16_t crc=0);
+uint16_t calculateCrc16_8_rev(std::array<uint16_t,256> &crctable,uint8_t* buf,uint16_t len,uint16_t crc=0);
 
 #endif /* SRC_CRC_H_ */

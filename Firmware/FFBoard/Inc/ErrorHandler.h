@@ -39,7 +39,9 @@ enum class ErrorCode : uint32_t{
 			encoderIndexMissed = 23,
 			encoderReversed = 24,
 
-			axisOutOfRange = 31
+			axisOutOfRange = 31,
+
+			externalConfigurationError = 32
 };
 /*
  * Error type for severity
