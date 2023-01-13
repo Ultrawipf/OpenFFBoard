@@ -61,7 +61,7 @@ MotorSimplemotion::~MotorSimplemotion() {
  */
 void MotorSimplemotion::sendFastUpdate(uint16_t val1,uint16_t val2){
 	// If not initialized try that instead
-	if(waitingReply){
+	if(waitingReply || (uartport->isTaken() && !waitingFastUpdate)){
 		return; // When we wait for a complex reply we don't start the fast update
 	}
 	if(waitingFastUpdate){
@@ -128,6 +128,14 @@ bool MotorSimplemotion::motorReady(){
 
 bool MotorSimplemotion::getSettings(){
 	bool status = true;
+
+	uint32_t st;
+	if(read1Parameter(MotorSimplemotion_param::status, &st)){
+		this->status = st;
+	}else{
+		status = false;
+	}
+
 	uint32_t tcpr = 0;
 	if(!read1Parameter(MotorSimplemotion_param::FBR, &tcpr)){
 		status=false;
@@ -169,6 +177,7 @@ bool MotorSimplemotion::getSettings(){
 			status = false; // control mode must be torque mode
 		}
 	}else{status=false;}
+
 
 	initialized = status && !hardfault;
 	return status && !hardfault;

@@ -32,7 +32,7 @@ class MotorSimplemotion : public MotorDriver, public Encoder,public CommandHandl
 	};
 
 	enum class MotorSimplemotion_param : uint16_t {
-		FBD = 493, FBR = 565,ControlMode = 559,Voltage = 900, Torque = 901,systemcontrol = 554
+		FBD = 493, FBR = 565,ControlMode = 559,Voltage = 900, Torque = 901,systemcontrol = 554,status = 553
 	};
 
 	enum class MotorSimplemotion_FBR : uint8_t {
@@ -55,22 +55,6 @@ class MotorSimplemotion : public MotorDriver, public Encoder,public CommandHandl
 		uint8_t crc = 0;
 	} __attribute__((packed));
 
-	struct SMPayloadCommand16{
-		long param :14;
-		long ID:2; // = 2
-	} __attribute__((packed));
-
-	struct SMPayloadCommand24{
-		long param :22;
-		long ID:2; // = 1
-	} __attribute__((packed));
-
-	struct SMPayloadCommand32{
-		long param :30;
-		long ID:2; // = 0
-	} __attribute__((packed));
-
-
 public:
 	MotorSimplemotion(uint8_t instance);
 	virtual ~MotorSimplemotion();
@@ -83,14 +67,10 @@ public:
 	Encoder* getEncoder() override;
 	bool hasIntegratedEncoder() {return true;}
 
-	//float getPos_f() override;
-//	uint32_t getCpr() override;
+
 	int32_t getPos() override;
 	void setPos(int32_t pos) override;
 	EncoderType getEncoderType() override;
-//
-//	void saveFlash() override; 		// Write to flash here
-//	void restoreFlash() override;	// Load from flash
 
 	CommandStatus command(const ParsedCommand& cmd,std::vector<CommandReply>& replies) override;
 	void registerCommands();
