@@ -21,11 +21,24 @@
 /**
  * Requires a uart port and one GPIO output for the transceiver
  */
-class MotorSimplemotion : public MotorDriver,public PersistentStorage, public Encoder,public CommandHandler,public UARTDevice{
+class MotorSimplemotion : public MotorDriver, public Encoder,public CommandHandler,public UARTDevice{
 
 	enum class MotorSimplemotion_commands : uint8_t {
-		errors
+		crcerrors,uarterrors,voltage,torque,status,restart,reg
 	};
+
+	enum class MotorSimplemotion_cmdtypes : uint8_t {
+		param32b = 0,param24b = 1,setparamadr = 2,status=3
+	};
+
+	enum class MotorSimplemotion_param : uint16_t {
+		FBD = 493, FBR = 565,ControlMode = 559,Voltage = 900, Torque = 901,systemcontrol = 554
+	};
+
+	enum class MotorSimplemotion_FBR : uint8_t {
+		none = 0,ABN1,ABN2,Resolver,Hall,Serial,Sincos16,Sincos64,Sincos256
+	};
+
 
 	struct Sm2FastUpdate{
 		uint8_t header = SMCMD_FAST_UPDATE_CYCLE;
@@ -75,9 +88,9 @@ public:
 	int32_t getPos() override;
 	void setPos(int32_t pos) override;
 	EncoderType getEncoderType() override;
-
-	void saveFlash() override; 		// Write to flash here
-	void restoreFlash() override;	// Load from flash
+//
+//	void saveFlash() override; 		// Write to flash here
+//	void restoreFlash() override;	// Load from flash
 
 	CommandStatus command(const ParsedCommand& cmd,std::vector<CommandReply>& replies) override;
 	void registerCommands();
@@ -87,13 +100,25 @@ public:
 	void sendFastUpdate(uint16_t val1,uint16_t val2 = 0);
 	void startUartTransfer(UARTPort* port,bool transmit);
 	void endUartTransfer(UARTPort* port,bool transmit);
-	void sendCommand(uint8_t len,uint8_t* buf);
+	void sendCommand(uint8_t* buf,uint8_t len,uint8_t adr);
+
+	uint8_t queueCommand(uint8_t* buf, MotorSimplemotion_cmdtypes type,uint32_t data);
+	bool read1Parameter(MotorSimplemotion_param paramId,uint32_t* reply_p);
+	bool set1Parameter(MotorSimplemotion_param paramId,int32_t value,uint32_t* reply_p);
+	bool getSettings();
+
+	bool motorReady();
+
+	int32_t getTorque();
+	int32_t getVoltage();
+
+	void restart();
 
 	static const uint8_t SMCMD_FAST_UPDATE_CYCLE = 2<<3;
 	static const uint8_t SMCMD_FAST_UPDATE_CYCLE_RET = (2<<3) | 1;
 	static const uint8_t SMP_FAST_UPDATE_CYCLE_FORMAT = 17;
-	static const uint8_t SMCMD_INSTANT_CMD = (((4)<<3)|4);
-	static const uint8_t SMCMD_INSTANT_CMD_RET = (((4)<<3)| 4 | 1);
+	static const uint8_t SMCMD_INSTANT_CMD = 0x24; // 0x24
+	static const uint8_t SMCMD_INSTANT_CMD_RET = 0x25; // 0x25
 	static const uint8_t SMPCMD_SETPARAMADDR = 2;
 
 protected:
@@ -103,7 +128,7 @@ protected:
 	static std::array<uint8_t,256> tableCRC8;
 	static std::array<uint16_t,256> tableCRC16;
 	static const uint8_t crcpoly = 0x07;
-	static const uint16_t crcpoly16 = 0xC1C0;
+	static const uint16_t crcpoly16 = 0x8005;
 	static bool crcTableInitialized;
 	static const uint8_t crc8init = 0x52;
 
@@ -112,21 +137,113 @@ protected:
 	volatile char rxbuf[RXBUF_SIZE];
 	volatile uint8_t rxbuf_i = 0;
 
+	// Transmit buffer
+	static const uint8_t TXBUF_SIZE = 32;
+	char txbuf[TXBUF_SIZE];
+
+	volatile uint8_t replyidx = 0;
+	static const uint8_t REPLYBUF_SIZE = 32;
+	volatile uint32_t replyvalues[REPLYBUF_SIZE]; // can't be vector because filled in isr
+
 	volatile uint32_t crcerrors = 0;
 	int16_t lastTorque = 0;
 	volatile uint32_t lastUpdateTime = 0;
+	volatile uint32_t uarterrors = 0;
 
 private:
 	uint8_t address;
 	void updatePosition(uint16_t value);
 	void updateStatus(uint16_t value);
+
+	uint16_t status;
+
 	int32_t position = 0;
-	uint16_t lastPosRep = 0;
+	int32_t position_offset = 0;
+	uint16_t lastPosRep = 0x7fff;
 	volatile bool waitingFastUpdate = false;
+	volatile bool waitingReply = false;
 	int32_t overflows = 0;
 	Sm2FastUpdate fastbuffer;
 	volatile uint32_t lastSentTime = 0;
 	void resetBuffer();
+
+	bool initialized = false;
+	bool hardfault = false;
+	Error configError = {ErrorCode::externalConfigurationError, ErrorType::critical, "Simplemotion device invalid configuration"};
+	MotorSimplemotion_FBR encodertype;
+
+	static uint16_t calculateCrc16rev(std::array<uint16_t,256> &crctable,uint8_t* buf,uint16_t len,uint16_t crc);
+
+	/**
+	 * Templated function to read multiple parameters
+	 * TODO: support more than 1 request at once
+	 */
+	template<size_t params,size_t replynum>
+	bool readParameter(std::array<MotorSimplemotion_param,params> paramIds,std::array<uint32_t*,replynum> replies,MotorSimplemotion_cmdtypes type,uint32_t timeout_ms = 2){
+
+		uint8_t packetlen = 4-((uint8_t)type & 0x3);
+		uint8_t subpacketbuf[(packetlen + 7)*params] = {0};
+		uint8_t requestlen = 0;
+
+		for(MotorSimplemotion_param param : paramIds){
+			requestlen+=queueCommand(subpacketbuf+requestlen,  MotorSimplemotion_cmdtypes::setparamadr, 10); //SMP_RETURN_PARAM_LEN
+			requestlen+=queueCommand(subpacketbuf+requestlen,  MotorSimplemotion_cmdtypes::param24b, 0); //SMPRET_32B?!
+			requestlen+=queueCommand(subpacketbuf+requestlen,  MotorSimplemotion_cmdtypes::setparamadr, 9); //SMP_RETURN_PARAM_ADDR
+			requestlen+=queueCommand(subpacketbuf+requestlen,  type, (uint32_t)param);
+		}
+
+		sendCommand(subpacketbuf,requestlen,this->address);
+		uint32_t mstart = HAL_GetTick();
+
+		while((HAL_GetTick()-mstart) < timeout_ms && waitingReply){
+			// Wait...
+			refreshWatchdog();
+		}
+
+		if(waitingReply){
+			uartport->abortReceive();
+			resetBuffer();
+			return false;
+		}
+		for(uint8_t i = 0;i<replynum ; i++){
+			*replies[i] = replyvalues[(i+1)*3]; // Skip first reply
+		}
+
+		return true;
+	}
+
+	template<size_t params,size_t replynum>
+	bool writeParameter(std::array<std::pair<MotorSimplemotion_param,int32_t>,params> paramIds_value,std::array<uint32_t*,replynum> replies,MotorSimplemotion_cmdtypes type,uint32_t timeout_ms = 2){
+
+		uint8_t packetlen = 4-((uint8_t)type & 0x3);
+		uint8_t subpacketbuf[(packetlen + 3)*params] = {0};
+		uint8_t requestlen = 0;
+
+		for(std::pair<MotorSimplemotion_param,int32_t> param : paramIds_value){
+			requestlen+=queueCommand(subpacketbuf+requestlen,  MotorSimplemotion_cmdtypes::setparamadr, (uint32_t)param.first);
+			requestlen+=queueCommand(subpacketbuf+requestlen,  type, (uint32_t)param.second);
+		}
+
+		sendCommand(subpacketbuf,requestlen,this->address);
+		uint32_t mstart = HAL_GetTick();
+
+		while((HAL_GetTick()-mstart) < timeout_ms && waitingReply){
+			// Wait...
+			refreshWatchdog();
+		}
+
+		if(waitingReply){
+			uartport->abortReceive();
+			resetBuffer();
+			return false;
+		}
+		for(uint8_t i = 0;i<replynum ; i++){
+			if(replies[i])
+				*replies[i] = replyvalues[(i+1)*2 - 1]; // Skip first reply
+		}
+
+		return true;
+	}
 };
 
 
