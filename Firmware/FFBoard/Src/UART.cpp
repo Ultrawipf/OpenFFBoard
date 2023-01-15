@@ -142,28 +142,32 @@ bool UARTPort::freePort(UARTDevice* device){
 	return false;
 }
 
-void UARTPort::takeSemaphore(bool txsem){
+bool UARTPort::takeSemaphore(bool txsem,uint32_t blocktime){
 	cpp_freertos::BinarySemaphore& sem = !txsem ? rxsemaphore : semaphore;
 	bool isIsr = inIsr();
 	BaseType_t taskWoken = 0;
+	bool success = false;
 	if(isIsr)
-		sem.TakeFromISR(&taskWoken);
+		success = sem.TakeFromISR(&taskWoken);
 	else
-		sem.Take();
+		success = sem.Take(blocktime);
 	isTakenFlag = true;
 	portYIELD_FROM_ISR(taskWoken);
+	return success;
 }
 
-void UARTPort::giveSemaphore(bool txsem){
+bool UARTPort::giveSemaphore(bool txsem){
 	cpp_freertos::BinarySemaphore& sem = !txsem ? rxsemaphore : semaphore;
 	bool isIsr = inIsr();
 	BaseType_t taskWoken = 0;
+	bool success = false;
 	if(isIsr)
-		sem.GiveFromISR(&taskWoken);
+		success = sem.GiveFromISR(&taskWoken);
 	else
-		sem.Give();
+		success = sem.Give();
 	isTakenFlag = false;
 	portYIELD_FROM_ISR(taskWoken);
+	return success;
 }
 
 bool UARTPort::isTaken(){

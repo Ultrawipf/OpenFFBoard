@@ -41,8 +41,8 @@ public:
 	bool abortReceive();
 	bool abortTransmit();
 
-	void takeSemaphore(bool txsem = true); // Call before accessing this port
-	void giveSemaphore(bool txsem = true); // Call when finished using this port
+	bool takeSemaphore(bool txsem = true,uint32_t blocktime = portMAX_DELAY); // Call before accessing this port
+	bool giveSemaphore(bool txsem = true); // Call when finished using this port
 	bool isTaken(); // Returns true if semaphore was taken by another task
 
 	bool reconfigurePort(UART_InitTypeDef& config);

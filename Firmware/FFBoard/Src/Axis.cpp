@@ -69,9 +69,9 @@ const std::vector<class_entry<MotorDriver>> Axis::axis2_drivers =
 #ifdef VESC
 	add_class<VESC_2,MotorDriver>(8),
 #endif
-#ifdef SIMPLEMOTION
-	add_class<MotorSimplemotion2,MotorDriver>(10),
-#endif
+//#ifdef SIMPLEMOTION
+//	add_class<MotorSimplemotion2,MotorDriver>(10), // TODO this likely does not work reliably with a single uart port and multiple devices
+//#endif
 };
 
 

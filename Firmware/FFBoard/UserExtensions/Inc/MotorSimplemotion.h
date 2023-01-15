@@ -71,6 +71,7 @@ public:
 	int32_t getPos() override;
 	void setPos(int32_t pos) override;
 	EncoderType getEncoderType() override;
+	uint32_t getCpr() override;
 
 	CommandStatus command(const ParsedCommand& cmd,std::vector<CommandReply>& replies) override;
 	void registerCommands();
@@ -80,7 +81,7 @@ public:
 	void sendFastUpdate(uint16_t val1,uint16_t val2 = 0);
 	void startUartTransfer(UARTPort* port,bool transmit);
 	void endUartTransfer(UARTPort* port,bool transmit);
-	void sendCommand(uint8_t* buf,uint8_t len,uint8_t adr);
+	bool sendCommand(uint8_t* buf,uint8_t len,uint8_t adr);
 
 	uint8_t queueCommand(uint8_t* buf, MotorSimplemotion_cmdtypes type,uint32_t data);
 	bool read1Parameter(MotorSimplemotion_param paramId,uint32_t* reply_p);
@@ -145,7 +146,14 @@ private:
 	int32_t overflows = 0;
 	Sm2FastUpdate fastbuffer;
 	volatile uint32_t lastSentTime = 0;
+	volatile uint32_t lastStatusTime = 0;
+
+	static const uint32_t uartErrorTimeout = 10; //ms after a failed transfer to reset the buffer and port status
+	volatile uint32_t lastTimeByteReceived = 0;
+	volatile bool uartErrorOccured = false;
 	void resetBuffer();
+
+	bool prepareUartTransmit();
 
 	bool initialized = false;
 	bool hardfault = false;
@@ -159,20 +167,24 @@ private:
 	 * TODO: support more than 1 request at once
 	 */
 	template<size_t params,size_t replynum>
-	bool readParameter(std::array<MotorSimplemotion_param,params> paramIds,std::array<uint32_t*,replynum> replies,MotorSimplemotion_cmdtypes type,uint32_t timeout_ms = 2){
+	bool readParameter(std::array<MotorSimplemotion_param,params> paramIds,std::array<uint32_t*,replynum> replies,uint32_t timeout_ms = uartErrorTimeout){
 
-		uint8_t packetlen = 4-((uint8_t)type & 0x3);
-		uint8_t subpacketbuf[(packetlen + 7)*params] = {0};
+		//uint8_t packetlen = 4-((uint8_t)type & 0x3);
+		//uint8_t subpacketbuf[(packetlen + 7)*params] = {0}; // If length specified
+		uint8_t subpacketbuf[(5)*params] = {0};
 		uint8_t requestlen = 0;
 
 		for(MotorSimplemotion_param param : paramIds){
-			requestlen+=queueCommand(subpacketbuf+requestlen,  MotorSimplemotion_cmdtypes::setparamadr, 10); //SMP_RETURN_PARAM_LEN
-			requestlen+=queueCommand(subpacketbuf+requestlen,  MotorSimplemotion_cmdtypes::param24b, 0); //SMPRET_32B?!
+//			requestlen+=queueCommand(subpacketbuf+requestlen,  MotorSimplemotion_cmdtypes::setparamadr, 10); //SMP_RETURN_PARAM_LEN
+//			requestlen+=queueCommand(subpacketbuf+requestlen,  MotorSimplemotion_cmdtypes::setparamadr, MotorSimplemotion_cmdtypes::param32b); //SMPRET_32B?!
 			requestlen+=queueCommand(subpacketbuf+requestlen,  MotorSimplemotion_cmdtypes::setparamadr, 9); //SMP_RETURN_PARAM_ADDR
-			requestlen+=queueCommand(subpacketbuf+requestlen,  type, (uint32_t)param);
+			requestlen+=queueCommand(subpacketbuf+requestlen,  MotorSimplemotion_cmdtypes::param24b, (uint32_t)param);
 		}
 
-		sendCommand(subpacketbuf,requestlen,this->address);
+		if(!sendCommand(subpacketbuf,requestlen,this->address)){
+			uartErrorOccured = true;
+			return false;
+		}
 		uint32_t mstart = HAL_GetTick();
 
 		while((HAL_GetTick()-mstart) < timeout_ms && waitingReply){
@@ -181,22 +193,27 @@ private:
 		}
 
 		if(waitingReply){
-			uartport->abortReceive();
-			resetBuffer();
+			uartErrorOccured = true;
+			uarterrors++;
+			//uartport->abortReceive();
+			// resetBuffer();
+
+			waitingReply = false;
 			return false;
 		}
 		for(uint8_t i = 0;i<replynum ; i++){
-			*replies[i] = replyvalues[(i+1)*3]; // Skip first reply
+//			*replies[i] = replyvalues[(i+1)*3]; // Skip first 3 replies if length is set
+			*replies[i] = replyvalues[(i+1)*2 - 1]; // Skip first reply
 		}
 
 		return true;
 	}
 
 	template<size_t params,size_t replynum>
-	bool writeParameter(std::array<std::pair<MotorSimplemotion_param,int32_t>,params> paramIds_value,std::array<uint32_t*,replynum> replies,MotorSimplemotion_cmdtypes type,uint32_t timeout_ms = 2){
+	bool writeParameter(std::array<std::pair<MotorSimplemotion_param,int32_t>,params> paramIds_value,std::array<uint32_t*,replynum> replies,MotorSimplemotion_cmdtypes type,uint32_t timeout_ms = uartErrorTimeout){
 
 		uint8_t packetlen = 4-((uint8_t)type & 0x3);
-		uint8_t subpacketbuf[(packetlen + 3)*params] = {0};
+		uint8_t subpacketbuf[(packetlen + 2)*params] = {0};
 		uint8_t requestlen = 0;
 
 		for(std::pair<MotorSimplemotion_param,int32_t> param : paramIds_value){
@@ -204,7 +221,9 @@ private:
 			requestlen+=queueCommand(subpacketbuf+requestlen,  type, (uint32_t)param.second);
 		}
 
-		sendCommand(subpacketbuf,requestlen,this->address);
+		if(!sendCommand(subpacketbuf,requestlen,this->address)){
+			return false;
+		}
 		uint32_t mstart = HAL_GetTick();
 
 		while((HAL_GetTick()-mstart) < timeout_ms && waitingReply){
@@ -213,8 +232,10 @@ private:
 		}
 
 		if(waitingReply){
-			uartport->abortReceive();
-			resetBuffer();
+			uartErrorOccured = true;
+			uarterrors++;
+			//uartport->abortReceive();
+			waitingReply = false;
 			return false;
 		}
 		for(uint8_t i = 0;i<replynum ; i++){

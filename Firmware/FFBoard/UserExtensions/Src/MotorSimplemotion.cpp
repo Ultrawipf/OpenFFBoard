@@ -27,7 +27,7 @@ ClassIdentifier MotorSimplemotion2::info = {
 	 .id=CLSID_MOT_SM2
 };
 
-MotorSimplemotion::MotorSimplemotion(uint8_t instance) : CommandHandler("sm", CLSID_MOT_SM1, address),UARTDevice(motor_uart), address(address+1){
+MotorSimplemotion::MotorSimplemotion(uint8_t instance) : CommandHandler("sm2", CLSID_MOT_SM1, address),UARTDevice(motor_uart), address(address+1){
 	//Init CRC table at runtime to save flash
 	if(!crcTableInitialized){
 		makeCrcTable(tableCRC8, crcpoly, 8); // Generate a CRC8 table the first time an instance is created
@@ -48,7 +48,7 @@ MotorSimplemotion::MotorSimplemotion(uint8_t instance) : CommandHandler("sm", CL
 	writeEnablePin.reset();
 
 	registerCommands();
-	getSettings();
+	//getSettings();
 }
 
 MotorSimplemotion::~MotorSimplemotion() {
@@ -61,25 +61,21 @@ MotorSimplemotion::~MotorSimplemotion() {
  */
 void MotorSimplemotion::sendFastUpdate(uint16_t val1,uint16_t val2){
 	// If not initialized try that instead
-	if(waitingReply || (uartport->isTaken() && !waitingFastUpdate)){
-		return; // When we wait for a complex reply we don't start the fast update
+	if(waitingReply){ // || (uartport->isTaken() && !waitingFastUpdate)
+		return; // When we wait for a complex reply we don't start the fast update. Should also wait if port was taken by another class but needs more testing
 	}
-	if(waitingFastUpdate){
-		if(HAL_GetTick()-lastSentTime>10){
-			uartport->abortReceive();
-			resetBuffer();
-			waitingFastUpdate = false;
-		}
-		return;
-	}
-	if(!initialized){
-		if(!getSettings()){
-			HAL_Delay(10);
-			return;
-		}
+	if((HAL_GetTick()-lastSentTime>10 && waitingFastUpdate) || (HAL_GetTick() - lastTimeByteReceived > uartErrorTimeout && uartport->isTaken())){
+//		uartport->abortReceive();
+//		uarterrors++;
+		uartErrorOccured = true;
+		waitingFastUpdate = false;
+//		uartport->giveSemaphore(true); // Force giving semaphore here so we don't cause a block. This may not be ideal
 	}
 
-	uartport->takeSemaphore(true);
+	if(!prepareUartTransmit()){
+		uartErrorOccured = true;
+		return; // Could not take port
+	}
 	fastbuffer.header = SMCMD_FAST_UPDATE_CYCLE;
 	fastbuffer.adr = this->address;
 	fastbuffer.val1 = val1;
@@ -88,8 +84,8 @@ void MotorSimplemotion::sendFastUpdate(uint16_t val1,uint16_t val2){
 
 	if(!uartport->transmit_IT((char*)(&fastbuffer), 7)) // Send update
 	{
-		pulseErrLed();
 		endUartTransfer(uartport, true); // transfer aborted
+		uartport->giveSemaphore(true);
 		return;
 	}
 	uartport->registerInterrupt(); // Wait for reply data
@@ -121,12 +117,28 @@ void MotorSimplemotion::setPos(int32_t pos){
 	position_offset = position - pos;
 }
 
+/**
+ * This is requested always before position so we need to make sure we have the cpr
+ */
+uint32_t MotorSimplemotion::getCpr(){
+	if(cpr == 0 || !initialized){
+		getSettings();
+//			HAL_Delay(10);
+
+
+	}
+	return this->cpr;
+}
 
 bool MotorSimplemotion::motorReady(){
-	return initialized && !hardfault && (status & 0x3118);
+
+	return initialized && !hardfault;
 }
 
 bool MotorSimplemotion::getSettings(){
+	if(HAL_GetTick() - lastSentTime < 150){
+		return false;
+	}
 	bool status = true;
 
 	uint32_t st;
@@ -145,15 +157,14 @@ bool MotorSimplemotion::getSettings(){
 	if(read1Parameter(MotorSimplemotion_param::FBD, &fbd)){
 		this->encodertype = (MotorSimplemotion_FBR)fbd;
 		switch(this->encodertype){
+		case MotorSimplemotion_FBR::Serial:
+		case MotorSimplemotion_FBR::Hall: // TODO check if this is right for hall, resolver and sincos. Seems like it also must be *4 for serial
+		case MotorSimplemotion_FBR::Resolver:
 		case MotorSimplemotion_FBR::ABN1:
 		case MotorSimplemotion_FBR::ABN2:
 			this->cpr = tcpr*4;
 			break;
-		case MotorSimplemotion_FBR::Serial:
-		case MotorSimplemotion_FBR::Hall: // TODO check if this is right
-		case MotorSimplemotion_FBR::Resolver:
-			this->cpr = tcpr;
-			break;
+
 		case MotorSimplemotion_FBR::Sincos16:
 			this->cpr = tcpr*16;
 			break;
@@ -186,7 +197,7 @@ bool MotorSimplemotion::getSettings(){
 bool MotorSimplemotion::read1Parameter(MotorSimplemotion_param paramId,uint32_t* reply_p){
 	std::array<MotorSimplemotion_param,1> paramIds = {paramId};
 	std::array<uint32_t*,1> replies = {reply_p};
-	return readParameter(paramIds, replies,MotorSimplemotion_cmdtypes::param24b);
+	return readParameter(paramIds, replies);
 }
 
 bool MotorSimplemotion::set1Parameter(MotorSimplemotion_param paramId,int32_t value,uint32_t* reply_p){
@@ -214,6 +225,7 @@ int32_t MotorSimplemotion::getTorque(){
 }
 
 void MotorSimplemotion::restart(){
+	hardfault = false;
 	set1Parameter(MotorSimplemotion_param::systemcontrol, 2, 0);
 }
 
@@ -225,7 +237,7 @@ void MotorSimplemotion::updatePosition(uint16_t value){
 		// Overflow likely
 		if(diff < 0)
 			overflows += 1;
-		else if(diff > 0)
+		else
 			overflows -= 1;
 	}
 	position = value + (0xffff * overflows) - 0x7fff;
@@ -235,13 +247,31 @@ void MotorSimplemotion::updatePosition(uint16_t value){
 
 void MotorSimplemotion::updateStatus(uint16_t value){
 	status = value;
+	lastStatusTime = HAL_GetTick();
+	hardfault = (value & (1 << 5));
+	if(!(value & (1 << 12))){
+		initialized = false; // Driver has an issue
+	}
+}
+
+/**
+ * Checks for a failed transfer and takes the semaphore for uart port
+ */
+bool MotorSimplemotion::prepareUartTransmit(){
+	if(HAL_GetTick() - lastTimeByteReceived > uartErrorTimeout && uartErrorOccured){
+		uartport->abortReceive();
+		resetBuffer();
+	}
+	return uartport->takeSemaphore(true,10);
 }
 
 /**
  * Sends a command buffer
  */
-void MotorSimplemotion::sendCommand(uint8_t* buf,uint8_t len,uint8_t adr){
-	uartport->takeSemaphore(true);
+bool MotorSimplemotion::sendCommand(uint8_t* buf,uint8_t len,uint8_t adr){
+	if(!prepareUartTransmit()){
+		return false; // Failed
+	}
 	txbuf[0] = SMCMD_INSTANT_CMD;
 	txbuf[1] = len;
 	txbuf[2] = adr;
@@ -252,12 +282,14 @@ void MotorSimplemotion::sendCommand(uint8_t* buf,uint8_t len,uint8_t adr){
 
 	if(uartport->transmit_IT((char*)(txbuf), len+5) && adr != 0) // Send update and wait for reply if not broadcasted
 	{
-		debugpin.set();
 		lastSentTime = HAL_GetTick();
 		waitingReply = true;
 		uartport->registerInterrupt(); // Listen for reply
+		return true;
 	}else{
 		endUartTransfer(uartport, true); // Transfer aborted
+		uartport->giveSemaphore(true);
+		return false;
 	}
 
 }
@@ -283,34 +315,31 @@ uint8_t MotorSimplemotion::queueCommand(uint8_t* buf, MotorSimplemotion_cmdtypes
 void MotorSimplemotion::resetBuffer(){
 	memset((char*)rxbuf,0,RXBUF_SIZE);
 	rxbuf_i = 0;
-	debugpin.reset();
-	uartport->giveSemaphore(true); // When the buffer is reset we are allowed to transmit again
 	waitingReply = false; // We failed if it was reset early
 	waitingFastUpdate = false;
+	uartErrorOccured = false;
+	uartport->giveSemaphore(true); // When the buffer is reset we are allowed to transmit again
 }
 
 void MotorSimplemotion::uartRcv(char& buf){
 	uint32_t errorcodes = uartport->getErrors();
-	if(errorcodes){
-		// Flush buffer if error occured in case of noise
-		uarterrors++;
-		pulseErrLed();
-//		resetBuffer();
-//		return;
-	}
+	lastTimeByteReceived = HAL_GetTick();
+
 	// Append to buffer while not overrun
-	if(rxbuf_i < RXBUF_SIZE){
+	if(rxbuf_i < RXBUF_SIZE && !errorcodes){
 		rxbuf[rxbuf_i++] = buf;
 	}else{
 		// Overrun
 		uarterrors++;
-		resetBuffer();
-
+		uartErrorOccured = true;
+//		resetBuffer();
+		/* We should actually NOT give back the semaphore immediately because data may still be sent by the device.
+		 * Instead it should only be reset after a timeout...
+		 */
 		return;
 	}
 	// Check if we can parse a command
 	char byte1 = rxbuf[0];
-
 
 	if(waitingFastUpdate && byte1 == SMCMD_FAST_UPDATE_CYCLE_RET && rxbuf_i == 6) // Fast update reply
 	{
@@ -318,7 +347,9 @@ void MotorSimplemotion::uartRcv(char& buf){
 		waitingFastUpdate = false;
 
 		if(calculateCrc8(tableCRC8, (uint8_t*)rxbuf, 6, crc8init) != 0){
+			uartErrorOccured = true;
 			crcerrors++;
+			resetBuffer();
 			return;
 		}
 		Sm2FastUpdate_reply packet;
@@ -346,6 +377,7 @@ void MotorSimplemotion::uartRcv(char& buf){
 		// check that crc is 0
 		if(calculateCrc16_8_rev(tableCRC16, (uint8_t*)rxbuf, rxbuf_i, 0)){
 			crcerrors++;
+			uartErrorOccured = true;
 			resetBuffer();
 			return;
 		}
@@ -354,7 +386,7 @@ void MotorSimplemotion::uartRcv(char& buf){
 		char* data = (char*)(rxbuf+3);
 		replyidx = 0;
 		while(i < len && replyidx < REPLYBUF_SIZE){
-			uint8_t subpacketlen = 4 - (data[i] >> 6); // MotorSimplemotion_cmdtypes
+			uint8_t subpacketlen = 4 - ((data[i] >> 6) & 0x3); // MotorSimplemotion_cmdtypes
 			uint32_t val = (data[i] & 0x3f) << ((subpacketlen-1)*8); // First byte contains upper 6 bits
 			for(uint8_t b = 1;b < subpacketlen;b++){
 				uint32_t data_t = (uint32_t)data[i+b];
@@ -409,11 +441,11 @@ void MotorSimplemotion::endUartTransfer(UARTPort* port,bool transmit){
 void MotorSimplemotion::registerCommands(){
 	CommandHandler::registerCommands();
 
-	registerCommand("crcerrors", MotorSimplemotion_commands::crcerrors, "CRC error count",CMDFLAG_GET);
-	registerCommand("uarterrors", MotorSimplemotion_commands::uarterrors, "UART error count",CMDFLAG_GET);
+	registerCommand("crcerr", MotorSimplemotion_commands::crcerrors, "CRC error count",CMDFLAG_GET);
+	registerCommand("uarterr", MotorSimplemotion_commands::uarterrors, "UART error count",CMDFLAG_GET);
 	registerCommand("voltage", MotorSimplemotion_commands::voltage, "Voltage in mV",CMDFLAG_GET);
 	registerCommand("torque", MotorSimplemotion_commands::torque, "Torque in mA",CMDFLAG_GET);
-	registerCommand("status", MotorSimplemotion_commands::status, "Status flags",CMDFLAG_GET);
+	registerCommand("state", MotorSimplemotion_commands::status, "Status flags",CMDFLAG_GET);
 	registerCommand("restart", MotorSimplemotion_commands::restart, "Restart driver",CMDFLAG_GET);
 	registerCommand("reg", MotorSimplemotion_commands::reg, "Read/Write raw register",CMDFLAG_GETADR | CMDFLAG_SETADR | CMDFLAG_DEBUG);
 }
