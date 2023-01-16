@@ -1,5 +1,17 @@
 var NAVTREEINDEX34 =
 {
+"struct_u_s_b___o_t_g___global_type_def.html#ad50445f076f99e6b3d0cfb2643f40fac":[3,0,169,15],
+"struct_u_s_b___o_t_g___global_type_def.html#ade50afc41de620913eaf1bc66d93cd3a":[3,0,169,10],
+"struct_u_s_b___o_t_g___host_channel_type_def.html":[3,0,170],
+"struct_u_s_b___o_t_g___host_channel_type_def.html#a14cb8c8dbbafdef182c82c0493ca48ab":[3,0,170,5],
+"struct_u_s_b___o_t_g___host_channel_type_def.html#a23b3abb27cf5acff0edc709c90e2e5cb":[3,0,170,4],
+"struct_u_s_b___o_t_g___host_channel_type_def.html#a4204a2dcbc14fb11d371fc45b9f3170f":[3,0,170,1],
+"struct_u_s_b___o_t_g___host_channel_type_def.html#a6735bbd8fbc28f897f1b44df95f52873":[3,0,170,2],
+"struct_u_s_b___o_t_g___host_channel_type_def.html#a6f1e046a654010fb0da5eec942fb9a8d":[3,0,170,0],
+"struct_u_s_b___o_t_g___host_channel_type_def.html#a8edfae19390d323525449d2444e93984":[3,0,170,3],
+"struct_u_s_b___o_t_g___host_channel_type_def.html#aa85d014d19b79d61bed7fdf134ed1037":[3,0,170,6],
+"struct_u_s_b___o_t_g___host_type_def.html":[3,0,171],
+"struct_u_s_b___o_t_g___host_type_def.html#a0d4a262443e6d12c065adcafabf787ee":[3,0,171,6],
 "struct_u_s_b___o_t_g___host_type_def.html#a509fd299e7540892623954ea4dc1313c":[3,0,171,3],
 "struct_u_s_b___o_t_g___host_type_def.html#aa4ec75921a9699f77ee14f377e1b86dc":[3,0,171,1],
 "struct_u_s_b___o_t_g___host_type_def.html#ab44a72e139c005445aac54e866f7750f":[3,0,171,2],
@@ -237,17 +249,5 @@ var NAVTREEINDEX34 =
 "structmidid__interface__t.html#aec1886d965f60f01d2741447d55e0eda":[3,0,88,11],
 "structmidid__interface__t.html#af4f98317282340aa8c4deeb9f06d4508":[3,0,88,0],
 "structmidid__stream__t.html":[3,0,89],
-"structmidid__stream__t.html#af6643533f6de3ddb93bd48e40286707c":[3,0,89,2],
-"structmidid__stream__t.html#afa03ded757826496efddc6c4292820ca":[3,0,89,1],
-"structmidid__stream__t.html#afe0fd6f78a130cb11fd35bb0afb25cd8":[3,0,89,0],
-"structmscd__interface__t.html":[3,0,96],
-"structmscd__interface__t.html#a28dc726daa3f2ea87b2f8b587a1733d2":[3,0,96,5],
-"structmscd__interface__t.html#a35c99578894c43a451b6d3c17a51311d":[3,0,96,3],
-"structmscd__interface__t.html#a6b50b39f8c8ae2583cb0f13a88944f7b":[3,0,96,0],
-"structmscd__interface__t.html#a900d84feab73ff81cb6a24136cb9319d":[3,0,96,1],
-"structmscd__interface__t.html#aaeb7b9ffbafe24ab6f7080a38fdabd59":[3,0,96,7],
-"structmscd__interface__t.html#ac0f7d8a9bc015edac789c51ddc3126ee":[3,0,96,9],
-"structmscd__interface__t.html#ac56d1f3b17d290b90483ac75d13247ad":[3,0,96,4],
-"structmscd__interface__t.html#acd398c380989f1e6604fdc827f7c7a75":[3,0,96,2],
-"structmscd__interface__t.html#ad586a8d617a684bc6946e7255ebf03ee":[3,0,96,8]
+"structmidid__stream__t.html#af6643533f6de3ddb93bd48e40286707c":[3,0,89,2]
 };

@@ -1,5 +1,17 @@
 var NAVTREEINDEX18 =
 {
+"group___class_driver___audio.html#ggaee2ae40fea7bc292cc4fa46dd1e33c79af52aa968a4bb1fe064700af351452ee2":[1,0,40,3],
+"group___class_driver___audio.html#ggaee2ae40fea7bc292cc4fa46dd1e33c79afb447e5f0939e8838f1d3da157e33f08":[1,0,40,1],
+"group___class_driver___audio.html#ggaf582f513e3a7354d2fce6bb6c7d7fa96a29190415047127938831d180ccad5059":[1,0,67,5],
+"group___class_driver___audio.html#ggaf582f513e3a7354d2fce6bb6c7d7fa96a2c337cf993c412bf3ea809dd81eb116d":[1,0,67,3],
+"group___class_driver___audio.html#ggaf582f513e3a7354d2fce6bb6c7d7fa96a4fc6fcba3490a45f146f34aa59205c83":[1,0,67,4],
+"group___class_driver___audio.html#ggaf582f513e3a7354d2fce6bb6c7d7fa96a8055f454c0810fa06b108765831afb27":[1,0,67,7],
+"group___class_driver___audio.html#ggaf582f513e3a7354d2fce6bb6c7d7fa96a936c7c498630d1960c4662bbe7cce834":[1,0,67,0],
+"group___class_driver___audio.html#ggaf582f513e3a7354d2fce6bb6c7d7fa96ab5e3a2538f2fccbcbd6b27526e6fc3cf":[1,0,67,6],
+"group___class_driver___audio.html#ggaf582f513e3a7354d2fce6bb6c7d7fa96ab9892d823971ae380fd04aebf5dc755e":[1,0,67,1],
+"group___class_driver___audio.html#ggaf582f513e3a7354d2fce6bb6c7d7fa96ae7af2fa363a958ff75c29141a338133b":[1,0,67,2],
+"group___class_driver___audio.html#ggaf90c84e4cb3a400a0aa1f975be5bf1f5a3a26c2d69db64b66d19bae8f18900fdd":[1,0,59,5],
+"group___class_driver___audio.html#ggaf90c84e4cb3a400a0aa1f975be5bf1f5a494d232d5fa69937fd536e26de4d4a0c":[1,0,59,2],
 "group___class_driver___audio.html#ggaf90c84e4cb3a400a0aa1f975be5bf1f5a5471ebdf6ec0983b24272bc054a6daa8":[1,0,59,4],
 "group___class_driver___audio.html#ggaf90c84e4cb3a400a0aa1f975be5bf1f5a753dc1f9c9140af2d489b41c80a0af05":[1,0,59,11],
 "group___class_driver___audio.html#ggaf90c84e4cb3a400a0aa1f975be5bf1f5a788496f7a34dd6dda4a34b352ae3ca44":[1,0,59,8],
@@ -237,17 +249,5 @@ var NAVTREEINDEX18 =
 "group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79ad7649edf7a7582ccc67463e27f31cc98":[1,3,2,33],
 "group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79ada22e938a025cac7ced9c1b5f3cb71b0":[1,3,2,32],
 "group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79ae3caf8923a39b8f0c5b7e327a5cc31f0":[1,3,2,14],
-"group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79ae4d9b071e9bf0a084d66fbeef2f4ecda":[1,3,2,8],
-"group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79aeed05e4e291160fb6133821b64d17f55":[1,3,2,9],
-"group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79af05e9ee6df44c50897d8642b03ef1d03":[1,3,2,15],
-"group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79af48599aed2638a1e0422128dbac7188e":[1,3,2,19],
-"group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79af61e2c5f1e3b35cd994404de94edf595":[1,3,2,21],
-"group___class_driver___h_i_d___gamepad.html":[1,10],
-"group___class_driver___h_i_d___gamepad.html#ga480ab1ef985bd92da8d53e3761950cb8":[1,10,2],
-"group___class_driver___h_i_d___gamepad.html#ga936dca8ffdf92dad2bb1c69bd14cb178":[1,10,1],
-"group___class_driver___h_i_d___gamepad.html#gae8909e1713f911347f804b65babcb9b0":[1,10,3],
-"group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8a083dea141146c660bcd4d3e072947b5b":[1,10,2,27],
-"group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8a0de63db9d70f4982a03ce826963787c4":[1,10,2,12],
-"group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8a2260f16beee8f7c615cf3602745990d2":[1,10,2,28],
-"group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8a2506e452a9a673aa5800790985786071":[1,10,2,5]
+"group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79ae4d9b071e9bf0a084d66fbeef2f4ecda":[1,3,2,8]
 };

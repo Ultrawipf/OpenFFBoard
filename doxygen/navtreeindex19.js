@@ -1,5 +1,17 @@
 var NAVTREEINDEX19 =
 {
+"group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79aeed05e4e291160fb6133821b64d17f55":[1,3,2,9],
+"group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79af05e9ee6df44c50897d8642b03ef1d03":[1,3,2,15],
+"group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79af48599aed2638a1e0422128dbac7188e":[1,3,2,19],
+"group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79af61e2c5f1e3b35cd994404de94edf595":[1,3,2,21],
+"group___class_driver___h_i_d___gamepad.html":[1,10],
+"group___class_driver___h_i_d___gamepad.html#ga480ab1ef985bd92da8d53e3761950cb8":[1,10,2],
+"group___class_driver___h_i_d___gamepad.html#ga936dca8ffdf92dad2bb1c69bd14cb178":[1,10,1],
+"group___class_driver___h_i_d___gamepad.html#gae8909e1713f911347f804b65babcb9b0":[1,10,3],
+"group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8a083dea141146c660bcd4d3e072947b5b":[1,10,2,27],
+"group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8a0de63db9d70f4982a03ce826963787c4":[1,10,2,12],
+"group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8a2260f16beee8f7c615cf3602745990d2":[1,10,2,28],
+"group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8a2506e452a9a673aa5800790985786071":[1,10,2,5],
 "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8a37e56df1bc799910cf78d94918a92400":[1,10,2,9],
 "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8a3a2f51a54f40a0cd2dac676e843bc0ec":[1,10,2,17],
 "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8a5db8220d48bc43f5d486665cb731a77f":[1,10,2,16],
@@ -237,17 +249,5 @@ var NAVTREEINDEX19 =
 "group___u_s_b_def___type.html#ggacb5e6c763fa4283e1be386759d1dfc13a2cfbd040f96f8dc94f6a8744b1396769":[1,7,20,8],
 "group___u_s_b_def___type.html#ggacb5e6c763fa4283e1be386759d1dfc13a32d6d5af88d22406123dcbad9b0db254":[1,7,20,14],
 "group___u_s_b_def___type.html#ggacb5e6c763fa4283e1be386759d1dfc13a35b9936dc84993d876fc3ecebcc28732":[1,7,20,18],
-"group___u_s_b_def___type.html#ggacb5e6c763fa4283e1be386759d1dfc13a3f27584291f5c57168176c81dab154f9":[1,7,20,13],
-"group___u_s_b_def___type.html#ggacb5e6c763fa4283e1be386759d1dfc13a40cf518c334ba50685a4d30aae447c68":[1,7,20,2],
-"group___u_s_b_def___type.html#ggacb5e6c763fa4283e1be386759d1dfc13a6667851398bf8ae09a0e3da914996fcb":[1,7,20,11],
-"group___u_s_b_def___type.html#ggacb5e6c763fa4283e1be386759d1dfc13a6aa1861e300830251b831051db5f78d8":[1,7,20,10],
-"group___u_s_b_def___type.html#ggacb5e6c763fa4283e1be386759d1dfc13a7943d5a189206a7a61b5025e46217373":[1,7,20,1],
-"group___u_s_b_def___type.html#ggacb5e6c763fa4283e1be386759d1dfc13a8cc5626e96eb90f68a088d7e2b1140d6":[1,7,20,7],
-"group___u_s_b_def___type.html#ggacb5e6c763fa4283e1be386759d1dfc13a9dacbd2bb4263371c89ef406907875e2":[1,7,20,5],
-"group___u_s_b_def___type.html#ggacb5e6c763fa4283e1be386759d1dfc13aa93d38e6ec7f35668b6c5223dc60f411":[1,7,20,17],
-"group___u_s_b_def___type.html#ggacb5e6c763fa4283e1be386759d1dfc13abab5f4629d2d2bf0fb2bd3189c1f02f3":[1,7,20,4],
-"group___u_s_b_def___type.html#ggacb5e6c763fa4283e1be386759d1dfc13ad007b5dcdaabf1cd852cfe36a3be4e01":[1,7,20,9],
-"group___u_s_b_def___type.html#ggacb5e6c763fa4283e1be386759d1dfc13ad5e4f7dc08dd58557246f2aff148cbd7":[1,7,20,20],
-"group___u_s_b_def___type.html#ggacb5e6c763fa4283e1be386759d1dfc13add82e2845f24e1704c86d8273100e7e5":[1,7,20,15],
-"group___u_s_b_def___type.html#ggacb5e6c763fa4283e1be386759d1dfc13ae6894b69faf0ba905e3263cf93a999e4":[1,7,20,3]
+"group___u_s_b_def___type.html#ggacb5e6c763fa4283e1be386759d1dfc13a3f27584291f5c57168176c81dab154f9":[1,7,20,13]
 };

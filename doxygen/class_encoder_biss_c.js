@@ -42,7 +42,7 @@ var class_encoder_biss_c =
     [ "requestNewDataSem", "class_encoder_biss_c.html#adb969153b073a45b92c3b2d62244f30c", null ],
     [ "spi_buf", "class_encoder_biss_c.html#a8e8aa4daf880f55223893084cebfdfd8", null ],
     [ "spiSpeed", "class_encoder_biss_c.html#abde7648f0eef33a09e483ff71fc7f478", null ],
-    [ "tableCRC6n", "class_encoder_biss_c.html#aca53a5e8dfa2ddaea6950b032a81ff11", null ],
+    [ "tableCRC6n", "class_encoder_biss_c.html#a3916428d3c872d7a30b49c7663763443", null ],
     [ "useWaitSem", "class_encoder_biss_c.html#a9c6e941e9b36e4b30acc36d3eff2a282", null ],
     [ "waitData", "class_encoder_biss_c.html#a6ee678c0dd969b95586c9dbd0a829b19", null ],
     [ "waitForUpdateSem", "class_encoder_biss_c.html#a60dbc36779e139ad22c51e5c09d1e0f6", null ],

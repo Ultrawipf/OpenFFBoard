@@ -48,6 +48,7 @@ var files_dup =
     [ "constants.h", "constants_8h.html", "constants_8h" ],
     [ "cpp_target_config.h", "cpp__target__config_8h.html", "cpp__target__config_8h" ],
     [ "cppmain.h", "cppmain_8h.html", "cppmain_8h" ],
+    [ "CRC.h", "_c_r_c_8h.html", "_c_r_c_8h" ],
     [ "critical.hpp", "critical_8hpp.html", [
       [ "cpp_freertos::CriticalSection", "classcpp__freertos_1_1_critical_section.html", "classcpp__freertos_1_1_critical_section" ]
     ] ],
@@ -200,6 +201,7 @@ var files_dup =
     [ "CommandInterface.cpp", "_command_interface_8cpp.html", "_command_interface_8cpp" ],
     [ "cppmain.cpp", "cppmain_8cpp.html", "cppmain_8cpp" ],
     [ "cqueue.cpp", "cqueue_8cpp.html", null ],
+    [ "CRC.cpp", "_c_r_c_8cpp.html", "_c_r_c_8cpp" ],
     [ "cread_write_lock.cpp", "cread__write__lock_8cpp.html", null ],
     [ "csemaphore.cpp", "csemaphore_8cpp.html", null ],
     [ "ctasklet.cpp", "ctasklet_8cpp.html", null ],
@@ -420,5 +422,5 @@ var files_dup =
     [ "usb_hid_1ffb_desc.c", "usb__hid__1ffb__desc_8c.html", "usb__hid__1ffb__desc_8c" ],
     [ "usb_hid_2ffb_desc.c", "usb__hid__2ffb__desc_8c.html", "usb__hid__2ffb__desc_8c" ],
     [ "usb_hid_gamepad.c", "usb__hid__gamepad_8c.html", "usb__hid__gamepad_8c" ],
-    [ "VescCAN.cpp", "_vesc_c_a_n_8cpp.html", null ]
+    [ "VescCAN.cpp", "_vesc_c_a_n_8cpp.html", "_vesc_c_a_n_8cpp" ]
 ];

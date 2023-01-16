@@ -1,5 +1,16 @@
 var NAVTREEINDEX7 =
 {
+"class_fast_avg.html#a6f6c9895566d24276fcc4590214a0092":[3,0,60,3],
+"class_fast_avg.html#a75a1fc3f04f75ff4f709657fd947a850":[3,0,60,2],
+"class_fast_avg.html#a9b17f3913232fc07e04a715da92d71f1":[3,0,60,6],
+"class_fast_avg.html#aa4730ce748fe79baf6bb99fdb30f7f1e":[3,0,60,1],
+"class_fast_avg.html#aa8af7022d445c049b1f313c3e84f6553":[3,0,60,5],
+"class_fast_avg.html#aae7319a915ab6c4a34cb441e2b8014b1":[3,0,60,0],
+"class_h_i_d___command_interface.html":[3,0,72],
+"class_h_i_d___command_interface.html#a06b4fce172baa678a0cc1d4e30ddb9c3":[3,0,72,13],
+"class_h_i_d___command_interface.html#a13031739d485175d52dfad89a1a3b5d1":[3,0,72,5],
+"class_h_i_d___command_interface.html#a329dd9f35a54566b99f25e81f9451ab5":[3,0,72,16],
+"class_h_i_d___command_interface.html#a3c2821a4772674d2bb2c6e448890fc0c":[3,0,72,10],
 "class_h_i_d___command_interface.html#a4ed8cfdfef8069f1a8b5c6e25bacc516":[3,0,72,12],
 "class_h_i_d___command_interface.html#a6a913e1e7225f647e9ced6141aad0eb5":[3,0,72,9],
 "class_h_i_d___command_interface.html#a7298ae78c7c2e45afc9fc4646fa57750":[3,0,72,1],
@@ -238,16 +249,5 @@ var NAVTREEINDEX7 =
 "class_mt_encoder_s_p_i.html#a11d3c1af8564db6226f8dadc00b2a1ba":[3,0,98,2],
 "class_mt_encoder_s_p_i.html#a186f9709311bd3d40f6b347c491298ac":[3,0,98,10],
 "class_mt_encoder_s_p_i.html#a200f6fec5384001c0b2912955274d100":[3,0,98,36],
-"class_mt_encoder_s_p_i.html#a25ff175f56e5e90ba4366b22f10069b5":[3,0,98,33],
-"class_mt_encoder_s_p_i.html#a329693332cff2b8e297684ec86053206":[3,0,98,0],
-"class_mt_encoder_s_p_i.html#a329693332cff2b8e297684ec86053206a07213a0161f52846ab198be103b5ab43":[3,0,98,0,2],
-"class_mt_encoder_s_p_i.html#a329693332cff2b8e297684ec86053206a5e0bdcbddccca4d66d74ba8c1cee1a68":[3,0,98,0,1],
-"class_mt_encoder_s_p_i.html#a329693332cff2b8e297684ec86053206aed6e177ce34c42177d8faa5a15d65dd0":[3,0,98,0,0],
-"class_mt_encoder_s_p_i.html#a3a1bf058bfd2fa06ac01901868654ace":[3,0,98,4],
-"class_mt_encoder_s_p_i.html#a3c2a75caa9f7ab1acade52516c3631a4":[3,0,98,31],
-"class_mt_encoder_s_p_i.html#a3f277a29d31711a8f5e02729d8c3aa67":[3,0,98,14],
-"class_mt_encoder_s_p_i.html#a4108e5f3c452821897dc31b714eb95ba":[3,0,98,26],
-"class_mt_encoder_s_p_i.html#a434788641cf0ecae1fdf61b029cdc5f8":[3,0,98,37],
-"class_mt_encoder_s_p_i.html#a437998795b732300394e10bea3b309f0":[3,0,98,13],
-"class_mt_encoder_s_p_i.html#a4af821eabd4bc5c2026afeb50b7e5756":[3,0,98,8]
+"class_mt_encoder_s_p_i.html#a25ff175f56e5e90ba4366b22f10069b5":[3,0,98,33]
 };
