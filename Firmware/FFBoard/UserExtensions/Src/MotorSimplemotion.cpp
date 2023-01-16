@@ -64,6 +64,11 @@ void MotorSimplemotion::sendFastUpdate(uint16_t val1,uint16_t val2){
 	if(waitingReply){ // || (uartport->isTaken() && !waitingFastUpdate)
 		return; // When we wait for a complex reply we don't start the fast update. Should also wait if port was taken by another class but needs more testing
 	}
+	if(!initialized){
+		if(!getSettings()){
+			return;
+		}
+	}
 	if((HAL_GetTick()-lastSentTime>10 && waitingFastUpdate) || (HAL_GetTick() - lastTimeByteReceived > uartErrorTimeout && uartport->isTaken())){
 //		uartport->abortReceive();
 //		uarterrors++;
@@ -123,9 +128,6 @@ void MotorSimplemotion::setPos(int32_t pos){
 uint32_t MotorSimplemotion::getCpr(){
 	if(cpr == 0 || !initialized){
 		getSettings();
-//			HAL_Delay(10);
-
-
 	}
 	return this->cpr;
 }
@@ -135,26 +137,53 @@ bool MotorSimplemotion::motorReady(){
 	return initialized && !hardfault;
 }
 
+uint32_t MotorSimplemotion::getCumstat(){
+	uint32_t stat = 0;
+	if(read1Parameter(MotorSimplemotion_param::cumstat, &stat,MotorSimplemotion_cmdtypes::param32b)){
+		set1Parameter(MotorSimplemotion_param::cumstat, 0);
+	}
+	return stat;
+}
+
 bool MotorSimplemotion::getSettings(){
 	if(HAL_GetTick() - lastSentTime < 150){
 		return false;
 	}
 	bool status = true;
 
-	uint32_t st;
-	if(read1Parameter(MotorSimplemotion_param::status, &st)){
-		this->status = st;
+
+//	if(getCumstat()){
+//		pulseErrLed();
+//	}
+
+	uint32_t devtype;
+	if(read1Parameter(MotorSimplemotion_param::devtype, &devtype,MotorSimplemotion_cmdtypes::param32b)){
+		this->devicetype = devtype;
 	}else{
 		status = false;
 	}
 
+	// Clearfaults
+	set1Parameter(MotorSimplemotion_param::faults, 0);
+
+
+	uint32_t st;
+	if(read1Parameter(MotorSimplemotion_param::status, &st,MotorSimplemotion_cmdtypes::param24b)){
+		this->status = st;
+	}else{
+		status = false;
+	}
+	if(!st){
+		return false; // If we can't get a status we have no connection
+	}
+
 	uint32_t tcpr = 0;
-	if(!read1Parameter(MotorSimplemotion_param::FBR, &tcpr)){
+	if(!read1Parameter(MotorSimplemotion_param::FBR, &tcpr,MotorSimplemotion_cmdtypes::param24b)){
 		status=false;
 	}
 
 	uint32_t fbd;
-	if(read1Parameter(MotorSimplemotion_param::FBD, &fbd)){
+	if(read1Parameter(MotorSimplemotion_param::FBD, &fbd,MotorSimplemotion_cmdtypes::param24b)){
 		this->encodertype = (MotorSimplemotion_FBR)fbd;
 		switch(this->encodertype){
 		case MotorSimplemotion_FBR::Serial:
@@ -182,22 +211,22 @@ bool MotorSimplemotion::getSettings(){
 
 	}else{status=false;}
 
-	uint32_t cm;
-	if(read1Parameter(MotorSimplemotion_param::ControlMode, &cm)){
+	uint32_t cm; // This is the last transfer with length specified. all future requests with no length will reply in this format
+	if(read1Parameter(MotorSimplemotion_param::ControlMode, &cm,MotorSimplemotion_cmdtypes::param24b)){
 		if(cm != 3){
 			status = false; // control mode must be torque mode
 		}
 	}else{status=false;}
 
 
-	initialized = status && !hardfault;
-	return status && !hardfault;
+	initialized = status;
+	return status;
 }
 
-bool MotorSimplemotion::read1Parameter(MotorSimplemotion_param paramId,uint32_t* reply_p){
+bool MotorSimplemotion::read1Parameter(MotorSimplemotion_param paramId,uint32_t* reply_p,MotorSimplemotion_cmdtypes replylen){
 	std::array<MotorSimplemotion_param,1> paramIds = {paramId};
 	std::array<uint32_t*,1> replies = {reply_p};
-	return readParameter(paramIds, replies);
+	return readParameter(paramIds, replies,replylen);
 }
 
 bool MotorSimplemotion::set1Parameter(MotorSimplemotion_param paramId,int32_t value,uint32_t* reply_p){
@@ -207,7 +236,7 @@ bool MotorSimplemotion::set1Parameter(MotorSimplemotion_param paramId,int32_t va
 }
 
 // In mV
-int32_t MotorSimplemotion::getVoltage(){
+int16_t MotorSimplemotion::getVoltage(){
 	uint32_t voltage;
 	if(read1Parameter(MotorSimplemotion_param::Voltage, &voltage)){
 		return voltage * 10;
@@ -216,10 +245,10 @@ int32_t MotorSimplemotion::getVoltage(){
 }
 
 // Torque in mA
-int32_t MotorSimplemotion::getTorque(){
+int16_t MotorSimplemotion::getTorque(){
 	uint32_t torque_u;
 	if(read1Parameter(MotorSimplemotion_param::Torque, &torque_u)){
-		return ((int32_t)torque_u * 1000) / 560;
+		return ((int16_t)torque_u * 1000) / 560;
 	}
 	return 0;
 }
@@ -392,7 +421,8 @@ void MotorSimplemotion::uartRcv(char& buf){
 				uint32_t data_t = (uint32_t)data[i+b];
 				val |= data_t << ((subpacketlen-1-b)*8); // Copy next bytes in reverse
 			}
-
+			// Pad leading bits for negative values
+//			val |= ~((1 << (subpacketlen*8))-1); // 8*bytes -1
 			replyvalues[replyidx++] = val;
 			i += subpacketlen;
 		}
@@ -409,11 +439,12 @@ void MotorSimplemotion::uartRcv(char& buf){
 
 
 void MotorSimplemotion::startMotor(){
-
+	set1Parameter(MotorSimplemotion_param::CB1, 1);
 }
 
 void MotorSimplemotion::stopMotor(){
 	turn(0);
+	set1Parameter(MotorSimplemotion_param::CB1, 0);
 }
 
 EncoderType MotorSimplemotion::getEncoderType(){
@@ -448,6 +479,7 @@ void MotorSimplemotion::registerCommands(){
 	registerCommand("state", MotorSimplemotion_commands::status, "Status flags",CMDFLAG_GET);
 	registerCommand("restart", MotorSimplemotion_commands::restart, "Restart driver",CMDFLAG_GET);
 	registerCommand("reg", MotorSimplemotion_commands::reg, "Read/Write raw register",CMDFLAG_GETADR | CMDFLAG_SETADR | CMDFLAG_DEBUG);
+	registerCommand("devtype", MotorSimplemotion_commands::devtype, "Device type",CMDFLAG_GET);
 }
 
 CommandStatus MotorSimplemotion::command(const ParsedCommand& cmd,std::vector<CommandReply>& replies){
@@ -466,6 +498,9 @@ CommandStatus MotorSimplemotion::command(const ParsedCommand& cmd,std::vector<Co
 		break;
 	case MotorSimplemotion_commands::status:
 		replies.emplace_back(status);
+		break;
+	case MotorSimplemotion_commands::devtype:
+		replies.emplace_back(devicetype);
 		break;
 	case MotorSimplemotion_commands::restart:
 		restart();
