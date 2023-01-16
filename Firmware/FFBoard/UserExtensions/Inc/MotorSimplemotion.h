@@ -24,15 +24,15 @@
 class MotorSimplemotion : public MotorDriver, public Encoder,public CommandHandler,public UARTDevice{
 
 	enum class MotorSimplemotion_commands : uint8_t {
-		crcerrors,uarterrors,voltage,torque,status,restart,reg
+		crcerrors,uarterrors,voltage,torque,status,restart,reg,devtype
 	};
 
 	enum class MotorSimplemotion_cmdtypes : uint8_t {
-		param32b = 0,param24b = 1,setparamadr = 2,status=3
+		param32b = 0,param24b = 1,setparamadr = 2,status=3,none = 0xff
 	};
 
 	enum class MotorSimplemotion_param : uint16_t {
-		FBD = 493, FBR = 565,ControlMode = 559,Voltage = 900, Torque = 901,systemcontrol = 554,status = 553
+		FBD = 493, FBR = 565,ControlMode = 559,Voltage = 900, Torque = 901,systemcontrol = 554,status = 553,CB1 = 2533,cumstat = 13,faults = 552,devtype = 6020
 	};
 
 	enum class MotorSimplemotion_FBR : uint8_t {
@@ -84,14 +84,16 @@ public:
 	bool sendCommand(uint8_t* buf,uint8_t len,uint8_t adr);
 
 	uint8_t queueCommand(uint8_t* buf, MotorSimplemotion_cmdtypes type,uint32_t data);
-	bool read1Parameter(MotorSimplemotion_param paramId,uint32_t* reply_p);
-	bool set1Parameter(MotorSimplemotion_param paramId,int32_t value,uint32_t* reply_p);
+	bool read1Parameter(MotorSimplemotion_param paramId,uint32_t* reply_p,MotorSimplemotion_cmdtypes replylen = MotorSimplemotion_cmdtypes::none); // Check default param length
+	bool set1Parameter(MotorSimplemotion_param paramId,int32_t value,uint32_t* reply_p = nullptr);
 	bool getSettings();
+
+	uint32_t getCumstat();
 
 	bool motorReady();
 
-	int32_t getTorque();
-	int32_t getVoltage();
+	int16_t getTorque();
+	int16_t getVoltage();
 
 	void restart();
 
@@ -137,6 +139,7 @@ private:
 	void updateStatus(uint16_t value);
 
 	uint16_t status;
+	uint16_t devicetype=0;
 
 	int32_t position = 0;
 	int32_t position_offset = 0;
@@ -167,16 +170,16 @@ private:
 	 * TODO: support more than 1 request at once
 	 */
 	template<size_t params,size_t replynum>
-	bool readParameter(std::array<MotorSimplemotion_param,params> paramIds,std::array<uint32_t*,replynum> replies,uint32_t timeout_ms = uartErrorTimeout){
-
-		//uint8_t packetlen = 4-((uint8_t)type & 0x3);
-		//uint8_t subpacketbuf[(packetlen + 7)*params] = {0}; // If length specified
-		uint8_t subpacketbuf[(5)*params] = {0};
+	bool readParameter(std::array<MotorSimplemotion_param,params> paramIds,std::array<uint32_t*,replynum> replies,MotorSimplemotion_cmdtypes replylen = MotorSimplemotion_cmdtypes::none,uint32_t timeout_ms = uartErrorTimeout){
+		bool lengthSpecified = replylen != MotorSimplemotion_cmdtypes::none;
+		uint8_t subpacketbuf[lengthSpecified ? (4-((uint8_t)replylen & 0x3)+7) * params : 5*params] = {0};
 		uint8_t requestlen = 0;
 
 		for(MotorSimplemotion_param param : paramIds){
-//			requestlen+=queueCommand(subpacketbuf+requestlen,  MotorSimplemotion_cmdtypes::setparamadr, 10); //SMP_RETURN_PARAM_LEN
-//			requestlen+=queueCommand(subpacketbuf+requestlen,  MotorSimplemotion_cmdtypes::setparamadr, MotorSimplemotion_cmdtypes::param32b); //SMPRET_32B?!
+			if(lengthSpecified){
+				requestlen+=queueCommand(subpacketbuf+requestlen,  MotorSimplemotion_cmdtypes::setparamadr, 10); //SMP_RETURN_PARAM_LEN
+				requestlen+=queueCommand(subpacketbuf+requestlen,  MotorSimplemotion_cmdtypes::param24b, (uint32_t)replylen); //SMPRET_32B. MUST be 24b at least once!!!
+			}
 			requestlen+=queueCommand(subpacketbuf+requestlen,  MotorSimplemotion_cmdtypes::setparamadr, 9); //SMP_RETURN_PARAM_ADDR
 			requestlen+=queueCommand(subpacketbuf+requestlen,  MotorSimplemotion_cmdtypes::param24b, (uint32_t)param);
 		}
@@ -202,8 +205,11 @@ private:
 			return false;
 		}
 		for(uint8_t i = 0;i<replynum ; i++){
-//			*replies[i] = replyvalues[(i+1)*3]; // Skip first 3 replies if length is set
-			*replies[i] = replyvalues[(i+1)*2 - 1]; // Skip first reply
+			if(lengthSpecified){
+				*replies[i] = replyvalues[(i+1)*3]; // Skip first 3 replies if length is set
+			}else{
+				*replies[i] = replyvalues[(i+1)*2 - 1]; // Skip first reply
+			}
 		}
 
 		return true;
