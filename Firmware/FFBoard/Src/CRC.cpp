@@ -22,8 +22,7 @@ uint8_t calculateCrc8(std::array<uint8_t,256> &crctable,uint8_t* buf,uint16_t le
  */
 uint16_t calculateCrc16_8(std::array<uint16_t,256> &crctable,uint8_t* buf,uint16_t len,uint16_t crc){
 	for(uint16_t i = 0;i<len;i++){
-//		crc = crctable[(((crc >> 8) ^ buf[i]) & 0xFF)] ^ (crc << 8);
-		crc = ( (crc << 8) ^ crctable[((crc >> 8) ^ buf[i])] ) & 0xffff;
+		crc = crctable[(((crc >> 8) ^ buf[i]) & 0xFF)] ^ (crc << 8);
 	}
 	return crc;
 }
@@ -33,7 +32,7 @@ uint16_t calculateCrc16_8(std::array<uint16_t,256> &crctable,uint8_t* buf,uint16
  */
 uint16_t calculateCrc16_8_rev(std::array<uint16_t,256> &crctable,uint8_t* buf,uint16_t len,uint16_t crc){
 	for(uint16_t i = 0;i<len;i++){
-		crc = ( (crc << 8) ^ __REVSH(crctable[((crc >> 8) ^ buf[i])]) ) & 0xffff;
+		crc = __REVSH(crctable[(((crc >> 8) ^ buf[i]) & 0xFF)]) ^ (crc << 8);
 	}
 	return crc;
 }
