@@ -106,6 +106,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a7aa0bfdd0a704cc4ae99cae8c765e556"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a84e6a5dfb88e5859a75d79ebb2985c62"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_output_pin.html#a84e6a5dfb88e5859a75d79ebb2985c62">operator==</a> (const <a class="el" href="class_output_pin.html">OutputPin</a> &amp;b)</td></tr>
 <tr class="separator:a84e6a5dfb88e5859a75d79ebb2985c62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aecca9448f732e269dc35df8bc760c029"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_output_pin.html#aecca9448f732e269dc35df8bc760c029">configureOutput</a> (uint32_t pull=GPIO_NOPULL, bool opendrain=false, uint32_t speed=GPIO_SPEED_FREQ_LOW)</td></tr>
+<tr class="separator:aecca9448f732e269dc35df8bc760c029"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -158,6 +160,51 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="aecca9448f732e269dc35df8bc760c029" name="aecca9448f732e269dc35df8bc760c029"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aecca9448f732e269dc35df8bc760c029">&#9670;&nbsp;</a></span>configureOutput()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void OutputPin::configureOutput </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>pull</em> = <code>GPIO_NOPULL</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>opendrain</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>speed</em> = <code>GPIO_SPEED_FREQ_LOW</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p >Sets a pin into output mode in case it was previously reconfigured </p>
+
+<p class="definition">Definition at line <a class="el" href="_output_pin_8h_source.html#l00043">43</a> of file <a class="el" href="_output_pin_8h_source.html">OutputPin.h</a>.</p>
+
+</div>
+</div>
 <a id="a84e6a5dfb88e5859a75d79ebb2985c62" name="a84e6a5dfb88e5859a75d79ebb2985c62"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a84e6a5dfb88e5859a75d79ebb2985c62">&#9670;&nbsp;</a></span>operator==()</h2>
 

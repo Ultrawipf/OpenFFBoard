@@ -8,7 +8,7 @@ var searchData=
   ['offset_5',['offset',['../struct____attribute____.html#a63031257ee009f16f8ef1c12a105227d',1,'__attribute__::offset()'],['../struct_f_f_b___effect.html#acb1b8d10f1a84e5d555df53ef3d07c48',1,'FFB_Effect::offset()'],['../structrndis__msg__out__of__band__data__t.html#a76909b337691643da6d30da8428e35d5',1,'rndis_msg_out_of_band_data_t::offset()'],['../struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a80ef6a760ae63d3e0844550585e48028',1,'TU_ATTR_PACKED::offset()'],['../class_encoder_local.html#a84a9dd971d9c8d490726a5bf1ede7205',1,'EncoderLocal::offset()'],['../class_mt_encoder_s_p_i.html#abed9baeee41e342e8f4bd8c2102be00d',1,'MtEncoderSPI::offset()'],['../class_s_p_i___buttons.html#ad0c723f669d9c82d3923d51e8bfa95ee',1,'SPI_Buttons::offset()'],['../struct_vesc_flash_addrs.html#a063191cabf4d37fe68be20d2fab1cc98',1,'VescFlashAddrs::offset()']]],
   ['offsetflux_6',['offsetFlux',['../struct_t_m_c4671_flash_addrs.html#a6c8f6d716eb116ffdd3887c928bb8990',1,'TMC4671FlashAddrs']]],
   ['oid_7',['oid',['../structrndis__msg__query__t.html#a2f7985c2a0202263d5c9c65453840d27',1,'rndis_msg_query_t']]],
-  ['oid_5fbuffer_8',['oid_buffer',['../structrndis__msg__query__t.html#a873f0033c347df2ba53a685e3b982e26',1,'rndis_msg_query_t::oid_buffer()'],['../structrndis__msg__query__cmplt__t.html#a8dddabf093279490d90935ef254954d2',1,'rndis_msg_query_cmplt_t::oid_buffer()']]],
+  ['oid_5fbuffer_8',['oid_buffer',['../structrndis__msg__query__cmplt__t.html#a8dddabf093279490d90935ef254954d2',1,'rndis_msg_query_cmplt_t::oid_buffer()'],['../structrndis__msg__query__t.html#a873f0033c347df2ba53a685e3b982e26',1,'rndis_msg_query_t::oid_buffer()']]],
   ['one_9',['one',['../struct_t_u___a_t_t_r___p_a_c_k_e_d_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#ac0336c2fe580d3370ca23ef5d3ef3a3e',1,'TU_ATTR_PACKED::TU_ATTR_PACKED']]],
   ['op_5fcode_10',['op_code',['../struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a4f127a344602e5c91c31c04e48ad39e7',1,'TU_ATTR_PACKED']]],
   ['originalcommand_11',['originalCommand',['../struct_command_result.html#a3ef17ae87ed9763dd23415987153a656',1,'CommandResult']]],
@@ -20,6 +20,7 @@ var searchData=
   ['outofboundserror_17',['outOfBoundsError',['../class_axis.html#a599f86d6c5cb7060cdb78fce55faf369',1,'Axis']]],
   ['output_18',['output',['../struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a2035718addd86ab7301558afa726a316',1,'TU_ATTR_PACKED']]],
   ['over_5fcurrent_19',['over_current',['../structhub__status__response__t.html#ae1e0e79c620d9a93220cffd68f934a25',1,'hub_status_response_t::over_current()'],['../structhub__port__status__response__t.html#a8f8deb7f2461295540bea242948fb3ae',1,'hub_port_status_response_t::over_current()']]],
-  ['overspeed_20',['overspeed',['../class_mt_encoder_s_p_i.html#ae0673b39fe9e2b9e7921c4bb4d1ea776',1,'MtEncoderSPI']]],
-  ['overwritable_21',['overwritable',['../structtu__fifo__t.html#ad05e8eafcf249b93b84cd8e7056d052d',1,'tu_fifo_t']]]
+  ['overflows_20',['overflows',['../class_motor_simplemotion.html#ae741f7d091f6f405133234f2a9dcc80f',1,'MotorSimplemotion']]],
+  ['overspeed_21',['overspeed',['../class_mt_encoder_s_p_i.html#ae0673b39fe9e2b9e7921c4bb4d1ea776',1,'MtEncoderSPI']]],
+  ['overwritable_22',['overwritable',['../structtu__fifo__t.html#ad05e8eafcf249b93b84cd8e7056d052d',1,'tu_fifo_t']]]
 ];

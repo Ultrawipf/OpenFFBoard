@@ -99,7 +99,10 @@ Inheritance diagram for UARTDevice:</div>
  <div class="center">
   <img src="class_u_a_r_t_device.png" usemap="#UARTDevice_map" alt=""/>
   <map id="UARTDevice_map" name="UARTDevice_map">
-<area href="class_u_a_r_t___command_interface.html" alt="UART_CommandInterface" shape="rect" coords="0,56,156,80"/>
+<area href="class_motor_simplemotion.html" alt="MotorSimplemotion" shape="rect" coords="83,56,239,80"/>
+<area href="class_u_a_r_t___command_interface.html" alt="UART_CommandInterface" shape="rect" coords="249,56,405,80"/>
+<area href="class_motor_simplemotion1.html" alt="MotorSimplemotion1" shape="rect" coords="0,112,156,136"/>
+<area href="class_motor_simplemotion2.html" alt="MotorSimplemotion2" shape="rect" coords="166,112,322,136"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -113,10 +116,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a2d29c9d257d0bccd37ed1a46d677fd59"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab2931f6372b4f8c19c5ff405f0d83981"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_u_a_r_t_device.html#ab2931f6372b4f8c19c5ff405f0d83981">uartRcv</a> (char &amp;buf)</td></tr>
 <tr class="separator:ab2931f6372b4f8c19c5ff405f0d83981"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2ca074114ddd14070f3c1b13f60f9d08"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_u_a_r_t_device.html#a2ca074114ddd14070f3c1b13f60f9d08">startUartTransfer</a> (<a class="el" href="class_u_a_r_t_port.html">UARTPort</a> *port)</td></tr>
-<tr class="separator:a2ca074114ddd14070f3c1b13f60f9d08"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a92a6f60d340cb8f5d2db8e5717ffd045"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_u_a_r_t_device.html#a92a6f60d340cb8f5d2db8e5717ffd045">endUartTransfer</a> (<a class="el" href="class_u_a_r_t_port.html">UARTPort</a> *port)</td></tr>
-<tr class="separator:a92a6f60d340cb8f5d2db8e5717ffd045"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb0111b5989c4f5ffa7951962e36d4a7"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_u_a_r_t_device.html#afb0111b5989c4f5ffa7951962e36d4a7">startUartTransfer</a> (<a class="el" href="class_u_a_r_t_port.html">UARTPort</a> *port, bool transmit)</td></tr>
+<tr class="separator:afb0111b5989c4f5ffa7951962e36d4a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa743d4f0ba9beee511f123671d09bae6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_u_a_r_t_device.html#aa743d4f0ba9beee511f123671d09bae6">endUartTransfer</a> (<a class="el" href="class_u_a_r_t_port.html">UARTPort</a> *port, bool transmit)</td></tr>
+<tr class="separator:aa743d4f0ba9beee511f123671d09bae6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -125,7 +128,7 @@ Protected Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8h_source.html#l00063">63</a> of file <a class="el" href="_u_a_r_t_8h_source.html">UART.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8h_source.html#l00074">74</a> of file <a class="el" href="_u_a_r_t_8h_source.html">UART.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aef18d43b1c554bfa3c9ebcdf152b20d2" name="aef18d43b1c554bfa3c9ebcdf152b20d2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aef18d43b1c554bfa3c9ebcdf152b20d2">&#9670;&nbsp;</a></span>UARTDevice() <span class="overload">[1/2]</span></h2>
@@ -142,7 +145,7 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8cpp_source.html#l00149">149</a> of file <a class="el" href="_u_a_r_t_8cpp_source.html">UART.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8cpp_source.html#l00212">212</a> of file <a class="el" href="_u_a_r_t_8cpp_source.html">UART.cpp</a>.</p>
 
 </div>
 </div>
@@ -162,7 +165,7 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8cpp_source.html#l00153">153</a> of file <a class="el" href="_u_a_r_t_8cpp_source.html">UART.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8cpp_source.html#l00216">216</a> of file <a class="el" href="_u_a_r_t_8cpp_source.html">UART.cpp</a>.</p>
 
 </div>
 </div>
@@ -189,13 +192,13 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8cpp_source.html#l00157">157</a> of file <a class="el" href="_u_a_r_t_8cpp_source.html">UART.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8cpp_source.html#l00220">220</a> of file <a class="el" href="_u_a_r_t_8cpp_source.html">UART.cpp</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a92a6f60d340cb8f5d2db8e5717ffd045" name="a92a6f60d340cb8f5d2db8e5717ffd045"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a92a6f60d340cb8f5d2db8e5717ffd045">&#9670;&nbsp;</a></span>endUartTransfer()</h2>
+<a id="aa743d4f0ba9beee511f123671d09bae6" name="aa743d4f0ba9beee511f123671d09bae6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa743d4f0ba9beee511f123671d09bae6">&#9670;&nbsp;</a></span>endUartTransfer()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -207,8 +210,18 @@ Protected Attributes</h2></td></tr>
           <td class="memname">void UARTDevice::endUartTransfer </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="class_u_a_r_t_port.html">UARTPort</a> *&#160;</td>
-          <td class="paramname"><em>port</em></td><td>)</td>
+          <td class="paramname"><em>port</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>transmit</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -218,12 +231,14 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8cpp_source.html#l00166">166</a> of file <a class="el" href="_u_a_r_t_8cpp_source.html">UART.cpp</a>.</p>
+<p>Reimplemented in <a class="el" href="class_motor_simplemotion.html#acd6c1bd686ba429c5d4754b4e874a77e">MotorSimplemotion</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8cpp_source.html#l00229">229</a> of file <a class="el" href="_u_a_r_t_8cpp_source.html">UART.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a2ca074114ddd14070f3c1b13f60f9d08" name="a2ca074114ddd14070f3c1b13f60f9d08"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2ca074114ddd14070f3c1b13f60f9d08">&#9670;&nbsp;</a></span>startUartTransfer()</h2>
+<a id="afb0111b5989c4f5ffa7951962e36d4a7" name="afb0111b5989c4f5ffa7951962e36d4a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb0111b5989c4f5ffa7951962e36d4a7">&#9670;&nbsp;</a></span>startUartTransfer()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -235,8 +250,18 @@ Protected Attributes</h2></td></tr>
           <td class="memname">void UARTDevice::startUartTransfer </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="class_u_a_r_t_port.html">UARTPort</a> *&#160;</td>
-          <td class="paramname"><em>port</em></td><td>)</td>
+          <td class="paramname"><em>port</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>transmit</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -246,7 +271,9 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8cpp_source.html#l00162">162</a> of file <a class="el" href="_u_a_r_t_8cpp_source.html">UART.cpp</a>.</p>
+<p>Reimplemented in <a class="el" href="class_motor_simplemotion.html#a2c08c25c1c86010cf53d637def613d0b">MotorSimplemotion</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8cpp_source.html#l00225">225</a> of file <a class="el" href="_u_a_r_t_8cpp_source.html">UART.cpp</a>.</p>
 
 </div>
 </div>
@@ -274,9 +301,9 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="class_u_a_r_t___command_interface.html#aa4c2836a343bdc2401f4676fcb1cc672">UART_CommandInterface</a>.</p>
+<p>Reimplemented in <a class="el" href="class_u_a_r_t___command_interface.html#aa4c2836a343bdc2401f4676fcb1cc672">UART_CommandInterface</a>, and <a class="el" href="class_motor_simplemotion.html#a1b19b43701022247142a255bc448433b">MotorSimplemotion</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8h_source.html#l00068">68</a> of file <a class="el" href="_u_a_r_t_8h_source.html">UART.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8h_source.html#l00079">79</a> of file <a class="el" href="_u_a_r_t_8h_source.html">UART.h</a>.</p>
 
 </div>
 </div>
@@ -301,7 +328,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8h_source.html#l00074">74</a> of file <a class="el" href="_u_a_r_t_8h_source.html">UART.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8h_source.html#l00085">85</a> of file <a class="el" href="_u_a_r_t_8h_source.html">UART.h</a>.</p>
 
 </div>
 </div>

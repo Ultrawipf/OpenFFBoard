@@ -107,10 +107,10 @@ $(document).ready(function(){initNavTree('flash__helpers_8cpp_source.html',''); 
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment"> * Writes a variable to eeprom emulation adr</span></div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment"> * Returns true on success or false if variable is the same or error</span></div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno"><a class="line" href="flash__helpers_8h.html#a549dcc0553f49f57e77bb36940db828a">   21</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="flash__helpers_8cpp.html#a549dcc0553f49f57e77bb36940db828a">Flash_Write</a>(uint16_t adr,uint16_t dat){</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno"><a class="line" href="flash__helpers_8h.html#a549dcc0553f49f57e77bb36940db828a">   21</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="flash__helpers_8cpp.html#a549dcc0553f49f57e77bb36940db828a">Flash_Write</a>(uint16_t <a class="code hl_variable" href="_motor_simplemotion_8h.html#a57da20e7b7050410be5e4ec5200b6485">adr</a>,uint16_t dat){</div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    <span class="comment">//flashMutex.Lock();</span></div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    uint16_t buf;</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    uint16_t readRes = <a class="code hl_function" href="group___e_e_p_r_o_m___emulation.html#ga0776e2e16f54d3a675e4f2f401703a85">EE_ReadVariable</a>(adr, &amp;buf);</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    uint16_t readRes = <a class="code hl_function" href="group___e_e_p_r_o_m___emulation.html#ga0776e2e16f54d3a675e4f2f401703a85">EE_ReadVariable</a>(<a class="code hl_variable" href="_motor_simplemotion_8h.html#a57da20e7b7050410be5e4ec5200b6485">adr</a>, &amp;buf);</div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    <span class="keywordtype">bool</span> res = <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    <span class="keywordflow">if</span>(readRes == 1 || (readRes == 0 &amp;&amp; buf != dat) ){ <span class="comment">// Only write if var updated</span></div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>        HAL_FLASH_Unlock();</div>
@@ -121,7 +121,7 @@ $(document).ready(function(){initNavTree('flash__helpers_8cpp_source.html',''); 
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>        __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_PGAERR);</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>        __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_PGPERR);</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>        __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_PGSERR);</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>        <span class="keywordflow">if</span>(<a class="code hl_function" href="group___e_e_p_r_o_m___emulation.html#ga516e9ced7438b9452c72884aa1df5915">EE_WriteVariable</a>(adr, dat) == HAL_OK){</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>        <span class="keywordflow">if</span>(<a class="code hl_function" href="group___e_e_p_r_o_m___emulation.html#ga516e9ced7438b9452c72884aa1df5915">EE_WriteVariable</a>(<a class="code hl_variable" href="_motor_simplemotion_8h.html#a57da20e7b7050410be5e4ec5200b6485">adr</a>, dat) == HAL_OK){</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>            res = <span class="keyword">true</span>;</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>        }</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>        HAL_FLASH_Lock();</div>
@@ -135,9 +135,9 @@ $(document).ready(function(){initNavTree('flash__helpers_8cpp_source.html',''); 
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="comment">/*</span></div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="comment"> * Reads a variable from eeprom emulation and returns true on success</span></div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="flash__helpers_8h.html#abe1c4bced00f5a4ee1b698098dbad093">   49</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="flash__helpers_8cpp.html#abe1c4bced00f5a4ee1b698098dbad093">Flash_Read</a>(uint16_t adr,uint16_t *buf){</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="flash__helpers_8h.html#abe1c4bced00f5a4ee1b698098dbad093">   49</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="flash__helpers_8cpp.html#abe1c4bced00f5a4ee1b698098dbad093">Flash_Read</a>(uint16_t <a class="code hl_variable" href="_motor_simplemotion_8h.html#a57da20e7b7050410be5e4ec5200b6485">adr</a>,uint16_t *buf){</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <span class="comment">//flashMutex.Lock();</span></div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="keywordtype">bool</span> res = <a class="code hl_function" href="group___e_e_p_r_o_m___emulation.html#ga0776e2e16f54d3a675e4f2f401703a85">EE_ReadVariable</a>(adr, buf) == 0;</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="keywordtype">bool</span> res = <a class="code hl_function" href="group___e_e_p_r_o_m___emulation.html#ga0776e2e16f54d3a675e4f2f401703a85">EE_ReadVariable</a>(<a class="code hl_variable" href="_motor_simplemotion_8h.html#a57da20e7b7050410be5e4ec5200b6485">adr</a>, buf) == 0;</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="comment">//flashMutex.Unlock();</span></div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <span class="keywordflow">return</span> res;</div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>}</div>
@@ -145,8 +145,8 @@ $(document).ready(function(){initNavTree('flash__helpers_8cpp_source.html',''); 
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="comment">/*</span></div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="comment"> * Reads a variable or if it does not exist default is written</span></div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="flash__helpers_8h.html#a366baca16e358e78f207d2b4870b8c56">   59</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="flash__helpers_8cpp.html#a366baca16e358e78f207d2b4870b8c56">Flash_ReadWriteDefault</a>(uint16_t adr,uint16_t *buf,uint16_t def){</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    <span class="keywordflow">if</span>(<a class="code hl_function" href="group___e_e_p_r_o_m___emulation.html#ga0776e2e16f54d3a675e4f2f401703a85">EE_ReadVariable</a>(adr, buf) != 0){</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="flash__helpers_8h.html#a366baca16e358e78f207d2b4870b8c56">   59</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="flash__helpers_8cpp.html#a366baca16e358e78f207d2b4870b8c56">Flash_ReadWriteDefault</a>(uint16_t <a class="code hl_variable" href="_motor_simplemotion_8h.html#a57da20e7b7050410be5e4ec5200b6485">adr</a>,uint16_t *buf,uint16_t def){</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    <span class="keywordflow">if</span>(<a class="code hl_function" href="group___e_e_p_r_o_m___emulation.html#ga0776e2e16f54d3a675e4f2f401703a85">EE_ReadVariable</a>(<a class="code hl_variable" href="_motor_simplemotion_8h.html#a57da20e7b7050410be5e4ec5200b6485">adr</a>, buf) != 0){</div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>        *buf = def;</div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>        HAL_FLASH_Unlock();</div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>        <span class="comment">// Clear all the error flags</span></div>
@@ -156,7 +156,7 @@ $(document).ready(function(){initNavTree('flash__helpers_8cpp_source.html',''); 
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>        __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_PGAERR);</div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>        __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_PGPERR);</div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>        __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_PGSERR);</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>        <a class="code hl_function" href="group___e_e_p_r_o_m___emulation.html#ga516e9ced7438b9452c72884aa1df5915">EE_WriteVariable</a>(adr, def);</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>        <a class="code hl_function" href="group___e_e_p_r_o_m___emulation.html#ga516e9ced7438b9452c72884aa1df5915">EE_WriteVariable</a>(<a class="code hl_variable" href="_motor_simplemotion_8h.html#a57da20e7b7050410be5e4ec5200b6485">adr</a>, def);</div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>        HAL_FLASH_Lock();</div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    }</div>
@@ -179,14 +179,15 @@ $(document).ready(function(){initNavTree('flash__helpers_8cpp_source.html',''); 
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    <span class="keywordflow">for</span>(uint32_t i = 0;i&lt;amount ; i++){</div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>        uint16_t v;</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>        uint16_t adr = list[i];</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>        uint16_t <a class="code hl_variable" href="_motor_simplemotion_8h.html#a57da20e7b7050410be5e4ec5200b6485">adr</a> = list[i];</div>
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>        <span class="keywordflow">if</span>(<a class="code hl_function" href="flash__helpers_8cpp.html#abe1c4bced00f5a4ee1b698098dbad093">Flash_Read</a>(adr,&amp;v)){</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>            result-&gt;push_back(std::tuple&lt;uint16_t,uint16_t&gt;{adr,v});</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>        <span class="keywordflow">if</span>(<a class="code hl_function" href="flash__helpers_8cpp.html#abe1c4bced00f5a4ee1b698098dbad093">Flash_Read</a>(<a class="code hl_variable" href="_motor_simplemotion_8h.html#a57da20e7b7050410be5e4ec5200b6485">adr</a>,&amp;v)){</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>            result-&gt;push_back(std::tuple&lt;uint16_t,uint16_t&gt;{<a class="code hl_variable" href="_motor_simplemotion_8h.html#a57da20e7b7050410be5e4ec5200b6485">adr</a>,v});</div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>        }</div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    }</div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>}</div>
+<div class="ttc" id="a_motor_simplemotion_8h_html_a57da20e7b7050410be5e4ec5200b6485"><div class="ttname"><a href="_motor_simplemotion_8h.html#a57da20e7b7050410be5e4ec5200b6485">adr</a></div><div class="ttdeci">uint8_t adr</div><div class="ttdef"><b>Definition:</b> <a href="_motor_simplemotion_8h_source.html#l00001">MotorSimplemotion.h:1</a></div></div>
 <div class="ttc" id="aclasscpp__freertos_1_1_mutex_standard_html"><div class="ttname"><a href="classcpp__freertos_1_1_mutex_standard.html">cpp_freertos::MutexStandard</a></div><div class="ttdef"><b>Definition:</b> <a href="mutex_8hpp_source.html#l00169">mutex.hpp:169</a></div></div>
 <div class="ttc" id="aeeprom__addresses_8h_html"><div class="ttname"><a href="eeprom__addresses_8h.html">eeprom_addresses.h</a></div></div>
 <div class="ttc" id="aeeprom__addresses_8h_html_a27d99716228bbb05cff8443e2ab0ebcb"><div class="ttname"><a href="eeprom__addresses_8h.html#a27d99716228bbb05cff8443e2ab0ebcb">VirtAddVarTab</a></div><div class="ttdeci">const uint16_t VirtAddVarTab[NB_OF_VAR]</div><div class="ttdef"><b>Definition:</b> <a href="eeprom__addresses_8c_source.html#l00017">eeprom_addresses.c:17</a></div></div>

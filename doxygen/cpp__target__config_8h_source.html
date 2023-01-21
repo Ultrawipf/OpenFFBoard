@@ -132,7 +132,11 @@ $(document).ready(function(){initNavTree('cpp__target__config_8h_source.html',''
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="keyword">extern</span> <span class="keyword">const</span> <a class="code hl_class" href="class_output_pin.html">OutputPin</a> <a class="code hl_variable" href="cpp__target__config_8h.html#a23889db535238eab0df11b75ecd77ff4">debugpin</a>;</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="preprocessor">#ifdef GPIO_MOTOR</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="keyword">extern</span> <span class="keyword">const</span> <a class="code hl_class" href="class_output_pin.html">OutputPin</a> <a class="code hl_variable" href="cpp__target__config_8h.html#ac489e2c42975d3a05486db06e9cb7e2e">gpMotor</a>;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="a_c_a_n_8h_html"><div class="ttname"><a href="_c_a_n_8h.html">CAN.h</a></div></div>
 <div class="ttc" id="a_i2_c_8h_html"><div class="ttname"><a href="_i2_c_8h.html">I2C.h</a></div></div>
 <div class="ttc" id="a_motor_p_w_m_8h_html"><div class="ttname"><a href="_motor_p_w_m_8h.html">MotorPWM.h</a></div></div>
@@ -150,6 +154,7 @@ $(document).ready(function(){initNavTree('cpp__target__config_8h_source.html',''
 <div class="ttc" id="acpp__target__config_8h_html_a4986d434e5f0ed8e5eff4a72c70f4804"><div class="ttname"><a href="cpp__target__config_8h.html#a4986d434e5f0ed8e5eff4a72c70f4804">i2cport</a></div><div class="ttdeci">I2CPort i2cport</div></div>
 <div class="ttc" id="acpp__target__config_8h_html_a7582742fcd3b6663de95f7e62eb408ef"><div class="ttname"><a href="cpp__target__config_8h.html#a7582742fcd3b6663de95f7e62eb408ef">ext3_spi</a></div><div class="ttdeci">SPIPort ext3_spi</div></div>
 <div class="ttc" id="acpp__target__config_8h_html_a85b202aba491472645391eddc2a15d42"><div class="ttname"><a href="cpp__target__config_8h.html#a85b202aba491472645391eddc2a15d42">external_uart</a></div><div class="ttdeci">UARTPort external_uart</div></div>
+<div class="ttc" id="acpp__target__config_8h_html_ac489e2c42975d3a05486db06e9cb7e2e"><div class="ttname"><a href="cpp__target__config_8h.html#ac489e2c42975d3a05486db06e9cb7e2e">gpMotor</a></div><div class="ttdeci">const OutputPin gpMotor</div></div>
 <div class="ttc" id="acpp__target__config_8h_html_ad86bd52d9a16db5303a59ac4b8a31985"><div class="ttname"><a href="cpp__target__config_8h.html#ad86bd52d9a16db5303a59ac4b8a31985">motor_uart</a></div><div class="ttdeci">UARTPort motor_uart</div></div>
 <div class="ttc" id="acpp__target__config_8h_html_ae65e27c16ce21de250f16e866e58dc09"><div class="ttname"><a href="cpp__target__config_8h.html#ae65e27c16ce21de250f16e866e58dc09">motor_spi</a></div><div class="ttdeci">SPIPort motor_spi</div></div>
 <div class="ttc" id="astruct_p_w_m_config_html"><div class="ttname"><a href="struct_p_w_m_config.html">PWMConfig</a></div><div class="ttdef"><b>Definition:</b> <a href="_motor_p_w_m_8h_source.html#l00027">MotorPWM.h:27</a></div></div>

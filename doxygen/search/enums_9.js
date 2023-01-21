@@ -10,9 +10,13 @@ var searchData=
   ['modepwm_5fdrv_7',['ModePWM_DRV',['../_motor_p_w_m_8h.html#ac7c5d62ef76b553182cae611031ae8bc',1,'MotorPWM.h']]],
   ['motionmode_8',['MotionMode',['../_t_m_c4671_8h.html#a1b04aa8e350271255d351486d3720741',1,'TMC4671.h']]],
   ['motorpwm_5fcommands_9',['MotorPWM_commands',['../class_motor_p_w_m.html#a200f16b29b4a31cfd1bbc75219b3c80a',1,'MotorPWM']]],
-  ['motortype_10',['MotorType',['../_t_m_c4671_8h.html#a582234b0c15ab7ba48e3ddd16e7a41d2',1,'TMC4671.h']]],
-  ['msc_5fcsw_5fstatus_5ft_11',['msc_csw_status_t',['../msc_8h.html#ab78ea3586ce0c7a8bb2680d7fbcca3ae',1,'msc.h']]],
-  ['msc_5fprotocol_5ftype_5ft_12',['msc_protocol_type_t',['../msc_8h.html#a09dab9a66502b8e228c8640678f97867',1,'msc.h']]],
-  ['msc_5frequest_5ftype_5ft_13',['msc_request_type_t',['../msc_8h.html#af0f486b972468c53352266648012bf2f',1,'msc.h']]],
-  ['mtencoderspi_5fcommands_14',['MtEncoderSPI_commands',['../class_mt_encoder_s_p_i.html#a329693332cff2b8e297684ec86053206',1,'MtEncoderSPI']]]
+  ['motorsimplemotion_5fcmdtypes_10',['MotorSimplemotion_cmdtypes',['../class_motor_simplemotion.html#af0d962f0eb34d875e30872890e8dfc51',1,'MotorSimplemotion']]],
+  ['motorsimplemotion_5fcommands_11',['MotorSimplemotion_commands',['../class_motor_simplemotion.html#a04284aedcbd482d8dea7aa2bf631d5b2',1,'MotorSimplemotion']]],
+  ['motorsimplemotion_5ffbr_12',['MotorSimplemotion_FBR',['../class_motor_simplemotion.html#a9d66cfb00f58d00cfc42b343079211aa',1,'MotorSimplemotion']]],
+  ['motorsimplemotion_5fparam_13',['MotorSimplemotion_param',['../class_motor_simplemotion.html#a0fa06e9cd5b42ac97ac49ff916ac1c30',1,'MotorSimplemotion']]],
+  ['motortype_14',['MotorType',['../_t_m_c4671_8h.html#a582234b0c15ab7ba48e3ddd16e7a41d2',1,'TMC4671.h']]],
+  ['msc_5fcsw_5fstatus_5ft_15',['msc_csw_status_t',['../msc_8h.html#ab78ea3586ce0c7a8bb2680d7fbcca3ae',1,'msc.h']]],
+  ['msc_5fprotocol_5ftype_5ft_16',['msc_protocol_type_t',['../msc_8h.html#a09dab9a66502b8e228c8640678f97867',1,'msc.h']]],
+  ['msc_5frequest_5ftype_5ft_17',['msc_request_type_t',['../msc_8h.html#af0f486b972468c53352266648012bf2f',1,'msc.h']]],
+  ['mtencoderspi_5fcommands_18',['MtEncoderSPI_commands',['../class_mt_encoder_s_p_i.html#a329693332cff2b8e297684ec86053206',1,'MtEncoderSPI']]]
 ];

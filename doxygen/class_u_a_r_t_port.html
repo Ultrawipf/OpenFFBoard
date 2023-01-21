@@ -113,18 +113,26 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ae37379f71ff7644b34f906c76bad8ff1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:add11e15b181c77cc86d607bad7e7fc22"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_u_a_r_t_port.html#add11e15b181c77cc86d607bad7e7fc22">uartTxComplete</a> (UART_HandleTypeDef *<a class="el" href="class_u_a_r_t_port.html#a35dc13980ccd36126820625ea853be97">huart</a>)</td></tr>
 <tr class="separator:add11e15b181c77cc86d607bad7e7fc22"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8d7460b1576a2228c67435ee10fcd705"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_u_a_r_t_port.html#a8d7460b1576a2228c67435ee10fcd705">transmit</a> (const char *txbuf, uint16_t size, uint32_t timeout=10000)</td></tr>
-<tr class="separator:a8d7460b1576a2228c67435ee10fcd705"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae992950dfda9c3b8e244a2b321760ae6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_u_a_r_t_port.html#ae992950dfda9c3b8e244a2b321760ae6">transmit_IT</a> (const char *txbuf, uint16_t size)</td></tr>
-<tr class="separator:ae992950dfda9c3b8e244a2b321760ae6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f70d9a62f54e24e1fffdf063eceff4d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_u_a_r_t_port.html#a8f70d9a62f54e24e1fffdf063eceff4d">transmit</a> (const char *txbuf, uint16_t size, uint32_t timeout=10000)</td></tr>
+<tr class="separator:a8f70d9a62f54e24e1fffdf063eceff4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8218663de427f4303392b12e0b3eb8da"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_u_a_r_t_port.html#a8218663de427f4303392b12e0b3eb8da">transmit_IT</a> (const char *txbuf, uint16_t size)</td></tr>
+<tr class="separator:a8218663de427f4303392b12e0b3eb8da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d9a74c128f4d877471ef87108f2b25e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_u_a_r_t_port.html#a0d9a74c128f4d877471ef87108f2b25e">receive</a> (char *rxbuf, uint16_t size, uint32_t timeout=10000)</td></tr>
 <tr class="separator:a0d9a74c128f4d877471ef87108f2b25e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a49e124c9605d61210e944556c0f6e531"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_u_a_r_t_port.html#a49e124c9605d61210e944556c0f6e531">transmit_DMA</a> (const char *txbuf, uint16_t size)</td></tr>
-<tr class="separator:a49e124c9605d61210e944556c0f6e531"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4640a71b346d265bb9f1b169b47181c8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_u_a_r_t_port.html#a4640a71b346d265bb9f1b169b47181c8">takeSemaphore</a> ()</td></tr>
-<tr class="separator:a4640a71b346d265bb9f1b169b47181c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac58896395936ae7193efcc3f05675d1e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_u_a_r_t_port.html#ac58896395936ae7193efcc3f05675d1e">giveSemaphore</a> ()</td></tr>
-<tr class="separator:ac58896395936ae7193efcc3f05675d1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96102ee3fcd2fe3f903145caf3847cb8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_u_a_r_t_port.html#a96102ee3fcd2fe3f903145caf3847cb8">transmit_DMA</a> (const char *txbuf, uint16_t size)</td></tr>
+<tr class="separator:a96102ee3fcd2fe3f903145caf3847cb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf0f45dc50ff7038cdb0dd3994438b2a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_u_a_r_t_port.html#aaf0f45dc50ff7038cdb0dd3994438b2a">receive_DMA</a> (char *rxbuf, uint16_t size)</td></tr>
+<tr class="separator:aaf0f45dc50ff7038cdb0dd3994438b2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a735b5764e007197747b7421a43877a44"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_u_a_r_t_port.html#a735b5764e007197747b7421a43877a44">receive_IT</a> (char *rxbuf, uint16_t size)</td></tr>
+<tr class="separator:a735b5764e007197747b7421a43877a44"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd47536691d090d28e50c67b96f8e9af"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_u_a_r_t_port.html#acd47536691d090d28e50c67b96f8e9af">abortReceive</a> ()</td></tr>
+<tr class="separator:acd47536691d090d28e50c67b96f8e9af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab766b4f9390f31b4f027d667b1d4e655"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_u_a_r_t_port.html#ab766b4f9390f31b4f027d667b1d4e655">abortTransmit</a> ()</td></tr>
+<tr class="separator:ab766b4f9390f31b4f027d667b1d4e655"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34df89b022e45e40a5519f5e42229a64"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_u_a_r_t_port.html#a34df89b022e45e40a5519f5e42229a64">takeSemaphore</a> (bool txsem=true, uint32_t blocktime=portMAX_DELAY)</td></tr>
+<tr class="separator:a34df89b022e45e40a5519f5e42229a64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19651ba541328b262d6eb2e9efa12d5e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_u_a_r_t_port.html#a19651ba541328b262d6eb2e9efa12d5e">giveSemaphore</a> (bool txsem=true)</td></tr>
+<tr class="separator:a19651ba541328b262d6eb2e9efa12d5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa7d1095d03b5a62b94279b63bf4e08b2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_u_a_r_t_port.html#aa7d1095d03b5a62b94279b63bf4e08b2">isTaken</a> ()</td></tr>
 <tr class="separator:aa7d1095d03b5a62b94279b63bf4e08b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a823b6562d8dbdee0ce1177bf704a9eb2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_u_a_r_t_port.html#a823b6562d8dbdee0ce1177bf704a9eb2">reconfigurePort</a> (UART_InitTypeDef &amp;config)</td></tr>
@@ -137,8 +145,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a6389279de8791c1b7ba81e0f9ed14080"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a50a55473e423dbb7bb1fe861d09b6163"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_u_a_r_t_port.html#a50a55473e423dbb7bb1fe861d09b6163">freePort</a> (<a class="el" href="class_u_a_r_t_device.html">UARTDevice</a> *<a class="el" href="class_u_a_r_t_port.html#a50332fb3002d0783cdf98c66d8867b6f">device</a>)</td></tr>
 <tr class="separator:a50a55473e423dbb7bb1fe861d09b6163"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab6eb8702b3e4f1de6d611c7c47ce39ab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_u_a_r_t_port.html#ab6eb8702b3e4f1de6d611c7c47ce39ab">registerInterrupt</a> ()</td></tr>
-<tr class="separator:ab6eb8702b3e4f1de6d611c7c47ce39ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0db62ea8c4b0f7bb1dbdf6eb9511391d"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_u_a_r_t_port.html#a0db62ea8c4b0f7bb1dbdf6eb9511391d">getErrors</a> ()</td></tr>
+<tr class="separator:a0db62ea8c4b0f7bb1dbdf6eb9511391d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a3e0c6e2602ec5f3217fefa25a5339d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_u_a_r_t_port.html#a8a3e0c6e2602ec5f3217fefa25a5339d">registerInterrupt</a> ()</td></tr>
+<tr class="separator:a8a3e0c6e2602ec5f3217fefa25a5339d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ffc07c72073aa8e03fcfa7f797497fe"><td class="memItemLeft" align="right" valign="top">UART_HandleTypeDef *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_u_a_r_t_port.html#a0ffc07c72073aa8e03fcfa7f797497fe">getHuart</a> ()</td></tr>
+<tr class="separator:a0ffc07c72073aa8e03fcfa7f797497fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_uart_handler"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_uart_handler')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_uart_handler.html">UartHandler</a></td></tr>
 <tr class="memitem:aef648554b29b7e6997a1cda8fc8cef51 inherit pub_methods_class_uart_handler"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uart_handler.html#aef648554b29b7e6997a1cda8fc8cef51">UartHandler</a> ()</td></tr>
 <tr class="separator:aef648554b29b7e6997a1cda8fc8cef51 inherit pub_methods_class_uart_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -149,6 +161,8 @@ Public Member Functions</h2></td></tr>
 Private Attributes</h2></td></tr>
 <tr class="memitem:adb8dbaf5bacf819bc62ff18f3e6a2dfa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classcpp__freertos_1_1_binary_semaphore.html">cpp_freertos::BinarySemaphore</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_u_a_r_t_port.html#adb8dbaf5bacf819bc62ff18f3e6a2dfa">semaphore</a> = <a class="el" href="classcpp__freertos_1_1_binary_semaphore.html">cpp_freertos::BinarySemaphore</a>(true)</td></tr>
 <tr class="separator:adb8dbaf5bacf819bc62ff18f3e6a2dfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a040b0dd8b91dfd68834761b114d92a99"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classcpp__freertos_1_1_binary_semaphore.html">cpp_freertos::BinarySemaphore</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_u_a_r_t_port.html#a040b0dd8b91dfd68834761b114d92a99">rxsemaphore</a> = <a class="el" href="classcpp__freertos_1_1_binary_semaphore.html">cpp_freertos::BinarySemaphore</a>(true)</td></tr>
+<tr class="separator:a040b0dd8b91dfd68834761b114d92a99"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab2e60efa5b300d24da373f7e5b82b048"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_u_a_r_t_port.html#ab2e60efa5b300d24da373f7e5b82b048">isTakenFlag</a> = false</td></tr>
 <tr class="separator:ab2e60efa5b300d24da373f7e5b82b048"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a35dc13980ccd36126820625ea853be97"><td class="memItemLeft" align="right" valign="top">UART_HandleTypeDef &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_u_a_r_t_port.html#a35dc13980ccd36126820625ea853be97">huart</a></td></tr>
@@ -157,6 +171,12 @@ Private Attributes</h2></td></tr>
 <tr class="separator:a50332fb3002d0783cdf98c66d8867b6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3a373622dd4cdd76c72605c7cb443fa1"><td class="memItemLeft" align="right" valign="top">volatile char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_u_a_r_t_port.html#a3a373622dd4cdd76c72605c7cb443fa1">uart_buf</a> [UART_BUF_SIZE] = {0}</td></tr>
 <tr class="separator:a3a373622dd4cdd76c72605c7cb443fa1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b929f7d1fa6c4d26c9566fdc6471021"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_u_a_r_t_port.html#a1b929f7d1fa6c4d26c9566fdc6471021">waitingForSingleBytes</a> = false</td></tr>
+<tr class="separator:a1b929f7d1fa6c4d26c9566fdc6471021"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ca79f0a9bcf0d78fbba02d945fb6f96"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_u_a_r_t_port.html#a4ca79f0a9bcf0d78fbba02d945fb6f96">lastPos</a> = 0</td></tr>
+<tr class="separator:a4ca79f0a9bcf0d78fbba02d945fb6f96"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e1a189a835c09b96fe799df19349fb5"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_u_a_r_t_port.html#a6e1a189a835c09b96fe799df19349fb5">rxbuf_t</a> = nullptr</td></tr>
+<tr class="separator:a6e1a189a835c09b96fe799df19349fb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -216,6 +236,44 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="acd47536691d090d28e50c67b96f8e9af" name="acd47536691d090d28e50c67b96f8e9af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acd47536691d090d28e50c67b96f8e9af">&#9670;&nbsp;</a></span>abortReceive()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool UARTPort::abortReceive </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8cpp_source.html#l00116">116</a> of file <a class="el" href="_u_a_r_t_8cpp_source.html">UART.cpp</a>.</p>
+
+</div>
+</div>
+<a id="ab766b4f9390f31b4f027d667b1d4e655" name="ab766b4f9390f31b4f027d667b1d4e655"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab766b4f9390f31b4f027d667b1d4e655">&#9670;&nbsp;</a></span>abortTransmit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool UARTPort::abortTransmit </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8cpp_source.html#l00129">129</a> of file <a class="el" href="_u_a_r_t_8cpp_source.html">UART.cpp</a>.</p>
+
+</div>
+</div>
 <a id="a50a55473e423dbb7bb1fe861d09b6163" name="a50a55473e423dbb7bb1fe861d09b6163"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a50a55473e423dbb7bb1fe861d09b6163">&#9670;&nbsp;</a></span>freePort()</h2>
 
@@ -232,7 +290,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8cpp_source.html#l00092">92</a> of file <a class="el" href="_u_a_r_t_8cpp_source.html">UART.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8cpp_source.html#l00137">137</a> of file <a class="el" href="_u_a_r_t_8cpp_source.html">UART.cpp</a>.</p>
 
 </div>
 </div>
@@ -255,14 +313,14 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="ac58896395936ae7193efcc3f05675d1e" name="ac58896395936ae7193efcc3f05675d1e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac58896395936ae7193efcc3f05675d1e">&#9670;&nbsp;</a></span>giveSemaphore()</h2>
+<a id="a0db62ea8c4b0f7bb1dbdf6eb9511391d" name="a0db62ea8c4b0f7bb1dbdf6eb9511391d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0db62ea8c4b0f7bb1dbdf6eb9511391d">&#9670;&nbsp;</a></span>getErrors()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void UARTPort::giveSemaphore </td>
+          <td class="memname">uint32_t UARTPort::getErrors </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -270,7 +328,46 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8cpp_source.html#l00111">111</a> of file <a class="el" href="_u_a_r_t_8cpp_source.html">UART.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8cpp_source.html#l00177">177</a> of file <a class="el" href="_u_a_r_t_8cpp_source.html">UART.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a0ffc07c72073aa8e03fcfa7f797497fe" name="a0ffc07c72073aa8e03fcfa7f797497fe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ffc07c72073aa8e03fcfa7f797497fe">&#9670;&nbsp;</a></span>getHuart()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">UART_HandleTypeDef * UARTPort::getHuart </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8cpp_source.html#l00125">125</a> of file <a class="el" href="_u_a_r_t_8cpp_source.html">UART.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a19651ba541328b262d6eb2e9efa12d5e" name="a19651ba541328b262d6eb2e9efa12d5e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a19651ba541328b262d6eb2e9efa12d5e">&#9670;&nbsp;</a></span>giveSemaphore()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool UARTPort::giveSemaphore </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>txsem</em> = <code>true</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8cpp_source.html#l00159">159</a> of file <a class="el" href="_u_a_r_t_8cpp_source.html">UART.cpp</a>.</p>
 
 </div>
 </div>
@@ -297,7 +394,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8h_source.html#l00047">47</a> of file <a class="el" href="_u_a_r_t_8h_source.html">UART.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8h_source.html#l00051">51</a> of file <a class="el" href="_u_a_r_t_8h_source.html">UART.h</a>.</p>
 
 </div>
 </div>
@@ -316,7 +413,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8cpp_source.html#l00122">122</a> of file <a class="el" href="_u_a_r_t_8cpp_source.html">UART.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8cpp_source.html#l00173">173</a> of file <a class="el" href="_u_a_r_t_8cpp_source.html">UART.cpp</a>.</p>
 
 </div>
 </div>
@@ -352,7 +449,67 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8cpp_source.html#l00080">80</a> of file <a class="el" href="_u_a_r_t_8cpp_source.html">UART.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8cpp_source.html#l00085">85</a> of file <a class="el" href="_u_a_r_t_8cpp_source.html">UART.cpp</a>.</p>
+
+</div>
+</div>
+<a id="aaf0f45dc50ff7038cdb0dd3994438b2a" name="aaf0f45dc50ff7038cdb0dd3994438b2a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaf0f45dc50ff7038cdb0dd3994438b2a">&#9670;&nbsp;</a></span>receive_DMA()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool UARTPort::receive_DMA </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>rxbuf</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8cpp_source.html#l00094">94</a> of file <a class="el" href="_u_a_r_t_8cpp_source.html">UART.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a735b5764e007197747b7421a43877a44" name="a735b5764e007197747b7421a43877a44"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a735b5764e007197747b7421a43877a44">&#9670;&nbsp;</a></span>receive_IT()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool UARTPort::receive_IT </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>rxbuf</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8cpp_source.html#l00101">101</a> of file <a class="el" href="_u_a_r_t_8cpp_source.html">UART.cpp</a>.</p>
 
 </div>
 </div>
@@ -376,22 +533,23 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="ab6eb8702b3e4f1de6d611c7c47ce39ab" name="ab6eb8702b3e4f1de6d611c7c47ce39ab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab6eb8702b3e4f1de6d611c7c47ce39ab">&#9670;&nbsp;</a></span>registerInterrupt()</h2>
+<a id="a8a3e0c6e2602ec5f3217fefa25a5339d" name="a8a3e0c6e2602ec5f3217fefa25a5339d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8a3e0c6e2602ec5f3217fefa25a5339d">&#9670;&nbsp;</a></span>registerInterrupt()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void UARTPort::registerInterrupt </td>
+          <td class="memname">bool UARTPort::registerInterrupt </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
+<p >Begins to wait on a single UART_BUF_SIZE sized transfer </p>
 
-<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8cpp_source.html#l00053">53</a> of file <a class="el" href="_u_a_r_t_8cpp_source.html">UART.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8cpp_source.html#l00056">56</a> of file <a class="el" href="_u_a_r_t_8cpp_source.html">UART.cpp</a>.</p>
 
 </div>
 </div>
@@ -411,37 +569,48 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8cpp_source.html#l00084">84</a> of file <a class="el" href="_u_a_r_t_8cpp_source.html">UART.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8cpp_source.html#l00108">108</a> of file <a class="el" href="_u_a_r_t_8cpp_source.html">UART.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a4640a71b346d265bb9f1b169b47181c8" name="a4640a71b346d265bb9f1b169b47181c8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4640a71b346d265bb9f1b169b47181c8">&#9670;&nbsp;</a></span>takeSemaphore()</h2>
+<a id="a34df89b022e45e40a5519f5e42229a64" name="a34df89b022e45e40a5519f5e42229a64"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34df89b022e45e40a5519f5e42229a64">&#9670;&nbsp;</a></span>takeSemaphore()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void UARTPort::takeSemaphore </td>
+          <td class="memname">bool UARTPort::takeSemaphore </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>txsem</em> = <code>true</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>blocktime</em> = <code>portMAX_DELAY</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8cpp_source.html#l00100">100</a> of file <a class="el" href="_u_a_r_t_8cpp_source.html">UART.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8cpp_source.html#l00145">145</a> of file <a class="el" href="_u_a_r_t_8cpp_source.html">UART.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a8d7460b1576a2228c67435ee10fcd705" name="a8d7460b1576a2228c67435ee10fcd705"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8d7460b1576a2228c67435ee10fcd705">&#9670;&nbsp;</a></span>transmit()</h2>
+<a id="a8f70d9a62f54e24e1fffdf063eceff4d" name="a8f70d9a62f54e24e1fffdf063eceff4d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8f70d9a62f54e24e1fffdf063eceff4d">&#9670;&nbsp;</a></span>transmit()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void UARTPort::transmit </td>
+          <td class="memname">bool UARTPort::transmit </td>
           <td>(</td>
           <td class="paramtype">const char *&#160;</td>
           <td class="paramname"><em>txbuf</em>, </td>
@@ -466,18 +635,18 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8cpp_source.html#l00065">65</a> of file <a class="el" href="_u_a_r_t_8cpp_source.html">UART.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8cpp_source.html#l00069">69</a> of file <a class="el" href="_u_a_r_t_8cpp_source.html">UART.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a49e124c9605d61210e944556c0f6e531" name="a49e124c9605d61210e944556c0f6e531"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a49e124c9605d61210e944556c0f6e531">&#9670;&nbsp;</a></span>transmit_DMA()</h2>
+<a id="a96102ee3fcd2fe3f903145caf3847cb8" name="a96102ee3fcd2fe3f903145caf3847cb8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96102ee3fcd2fe3f903145caf3847cb8">&#9670;&nbsp;</a></span>transmit_DMA()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void UARTPort::transmit_DMA </td>
+          <td class="memname">bool UARTPort::transmit_DMA </td>
           <td>(</td>
           <td class="paramtype">const char *&#160;</td>
           <td class="paramname"><em>txbuf</em>, </td>
@@ -496,18 +665,18 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8cpp_source.html#l00058">58</a> of file <a class="el" href="_u_a_r_t_8cpp_source.html">UART.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8cpp_source.html#l00062">62</a> of file <a class="el" href="_u_a_r_t_8cpp_source.html">UART.cpp</a>.</p>
 
 </div>
 </div>
-<a id="ae992950dfda9c3b8e244a2b321760ae6" name="ae992950dfda9c3b8e244a2b321760ae6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae992950dfda9c3b8e244a2b321760ae6">&#9670;&nbsp;</a></span>transmit_IT()</h2>
+<a id="a8218663de427f4303392b12e0b3eb8da" name="a8218663de427f4303392b12e0b3eb8da"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8218663de427f4303392b12e0b3eb8da">&#9670;&nbsp;</a></span>transmit_IT()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void UARTPort::transmit_IT </td>
+          <td class="memname">bool UARTPort::transmit_IT </td>
           <td>(</td>
           <td class="paramtype">const char *&#160;</td>
           <td class="paramname"><em>txbuf</em>, </td>
@@ -526,7 +695,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8cpp_source.html#l00073">73</a> of file <a class="el" href="_u_a_r_t_8cpp_source.html">UART.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8cpp_source.html#l00078">78</a> of file <a class="el" href="_u_a_r_t_8cpp_source.html">UART.cpp</a>.</p>
 
 </div>
 </div>
@@ -556,7 +725,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_uart_handler.html#a45bfa32fcdf2e70280378622ca271622">UartHandler</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8cpp_source.html#l00127">127</a> of file <a class="el" href="_u_a_r_t_8cpp_source.html">UART.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8cpp_source.html#l00182">182</a> of file <a class="el" href="_u_a_r_t_8cpp_source.html">UART.cpp</a>.</p>
 
 </div>
 </div>
@@ -586,7 +755,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_uart_handler.html#ab97b09d5fa98b4f3c0a38752ff50e585">UartHandler</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8cpp_source.html#l00137">137</a> of file <a class="el" href="_u_a_r_t_8cpp_source.html">UART.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8cpp_source.html#l00200">200</a> of file <a class="el" href="_u_a_r_t_8cpp_source.html">UART.cpp</a>.</p>
 
 </div>
 </div>
@@ -611,7 +780,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8h_source.html#l00057">57</a> of file <a class="el" href="_u_a_r_t_8h_source.html">UART.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8h_source.html#l00066">66</a> of file <a class="el" href="_u_a_r_t_8h_source.html">UART.h</a>.</p>
 
 </div>
 </div>
@@ -635,7 +804,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8h_source.html#l00056">56</a> of file <a class="el" href="_u_a_r_t_8h_source.html">UART.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8h_source.html#l00065">65</a> of file <a class="el" href="_u_a_r_t_8h_source.html">UART.h</a>.</p>
 
 </div>
 </div>
@@ -659,7 +828,79 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8h_source.html#l00055">55</a> of file <a class="el" href="_u_a_r_t_8h_source.html">UART.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8h_source.html#l00064">64</a> of file <a class="el" href="_u_a_r_t_8h_source.html">UART.h</a>.</p>
+
+</div>
+</div>
+<a id="a4ca79f0a9bcf0d78fbba02d945fb6f96" name="a4ca79f0a9bcf0d78fbba02d945fb6f96"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4ca79f0a9bcf0d78fbba02d945fb6f96">&#9670;&nbsp;</a></span>lastPos</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint16_t UARTPort::lastPos = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8h_source.html#l00069">69</a> of file <a class="el" href="_u_a_r_t_8h_source.html">UART.h</a>.</p>
+
+</div>
+</div>
+<a id="a6e1a189a835c09b96fe799df19349fb5" name="a6e1a189a835c09b96fe799df19349fb5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e1a189a835c09b96fe799df19349fb5">&#9670;&nbsp;</a></span>rxbuf_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">char* UARTPort::rxbuf_t = nullptr</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8h_source.html#l00070">70</a> of file <a class="el" href="_u_a_r_t_8h_source.html">UART.h</a>.</p>
+
+</div>
+</div>
+<a id="a040b0dd8b91dfd68834761b114d92a99" name="a040b0dd8b91dfd68834761b114d92a99"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a040b0dd8b91dfd68834761b114d92a99">&#9670;&nbsp;</a></span>rxsemaphore</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classcpp__freertos_1_1_binary_semaphore.html">cpp_freertos::BinarySemaphore</a> UARTPort::rxsemaphore = <a class="el" href="classcpp__freertos_1_1_binary_semaphore.html">cpp_freertos::BinarySemaphore</a>(true)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8h_source.html#l00063">63</a> of file <a class="el" href="_u_a_r_t_8h_source.html">UART.h</a>.</p>
 
 </div>
 </div>
@@ -683,7 +924,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8h_source.html#l00054">54</a> of file <a class="el" href="_u_a_r_t_8h_source.html">UART.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8h_source.html#l00062">62</a> of file <a class="el" href="_u_a_r_t_8h_source.html">UART.h</a>.</p>
 
 </div>
 </div>
@@ -707,7 +948,31 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8h_source.html#l00058">58</a> of file <a class="el" href="_u_a_r_t_8h_source.html">UART.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8h_source.html#l00067">67</a> of file <a class="el" href="_u_a_r_t_8h_source.html">UART.h</a>.</p>
+
+</div>
+</div>
+<a id="a1b929f7d1fa6c4d26c9566fdc6471021" name="a1b929f7d1fa6c4d26c9566fdc6471021"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1b929f7d1fa6c4d26c9566fdc6471021">&#9670;&nbsp;</a></span>waitingForSingleBytes</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool UARTPort::waitingForSingleBytes = false</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_u_a_r_t_8h_source.html#l00068">68</a> of file <a class="el" href="_u_a_r_t_8h_source.html">UART.h</a>.</p>
 
 </div>
 </div>

@@ -57,6 +57,10 @@ var hierarchy =
       [ "Encoder", "class_encoder.html", [
         [ "EncoderBissC", "class_encoder_biss_c.html", null ],
         [ "EncoderLocal", "class_encoder_local.html", null ],
+        [ "MotorSimplemotion", "class_motor_simplemotion.html", [
+          [ "MotorSimplemotion1", "class_motor_simplemotion1.html", null ],
+          [ "MotorSimplemotion2", "class_motor_simplemotion2.html", null ]
+        ] ],
         [ "MtEncoderSPI", "class_mt_encoder_s_p_i.html", null ],
         [ "ODriveCAN", "class_o_drive_c_a_n.html", null ],
         [ "TMC4671", "class_t_m_c4671.html", [
@@ -78,6 +82,7 @@ var hierarchy =
       ] ],
       [ "MotorDriver", "class_motor_driver.html", [
         [ "MotorPWM", "class_motor_p_w_m.html", null ],
+        [ "MotorSimplemotion", "class_motor_simplemotion.html", null ],
         [ "ODriveCAN", "class_o_drive_c_a_n.html", null ],
         [ "TMC4671", "class_t_m_c4671.html", null ],
         [ "VescCAN", "class_vesc_c_a_n.html", null ]
@@ -103,6 +108,7 @@ var hierarchy =
       [ "LocalAnalog", "class_local_analog.html", null ],
       [ "LocalButtons", "class_local_buttons.html", null ],
       [ "MotorPWM", "class_motor_p_w_m.html", null ],
+      [ "MotorSimplemotion", "class_motor_simplemotion.html", null ],
       [ "MtEncoderSPI", "class_mt_encoder_s_p_i.html", null ],
       [ "ODriveCAN", "class_o_drive_c_a_n.html", null ],
       [ "PCF8574Buttons", "class_p_c_f8574_buttons.html", null ],
@@ -250,6 +256,8 @@ var hierarchy =
       [ "cpp_freertos::CountingSemaphore", "classcpp__freertos_1_1_counting_semaphore.html", null ]
     ] ],
     [ "Singleton< T >", "class_singleton.html", null ],
+    [ "MotorSimplemotion::Sm2FastUpdate", "struct_motor_simplemotion_1_1_sm2_fast_update.html", null ],
+    [ "MotorSimplemotion::Sm2FastUpdate_reply", "struct_motor_simplemotion_1_1_sm2_fast_update__reply.html", null ],
     [ "SPIConfig", "struct_s_p_i_config.html", null ],
     [ "SPIDevice", "class_s_p_i_device.html", [
       [ "EncoderBissC", "class_encoder_biss_c.html", null ],
@@ -320,6 +328,7 @@ var hierarchy =
     [ "tusb_desc_video_itf_hdr_t", "uniontusb__desc__video__itf__hdr__t.html", null ],
     [ "tusb_desc_vs_itf_t", "structtusb__desc__vs__itf__t.html", null ],
     [ "UARTDevice", "class_u_a_r_t_device.html", [
+      [ "MotorSimplemotion", "class_motor_simplemotion.html", null ],
       [ "UART_CommandInterface", "class_u_a_r_t___command_interface.html", null ]
     ] ],
     [ "UartHandler", "class_uart_handler.html", [

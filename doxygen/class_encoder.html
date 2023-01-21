@@ -100,19 +100,22 @@ Inheritance diagram for Encoder:</div>
  <div class="center">
   <img src="class_encoder.png" usemap="#Encoder_map" alt=""/>
   <map id="Encoder_map" name="Encoder_map">
-<area href="class_choosable_class.html" alt="ChoosableClass" shape="rect" coords="282,0,385,24"/>
-<area href="class_encoder_biss_c.html" alt="EncoderBissC" shape="rect" coords="0,112,103,136"/>
-<area href="class_encoder_local.html" alt="EncoderLocal" shape="rect" coords="113,112,216,136"/>
-<area href="class_mt_encoder_s_p_i.html" alt="MtEncoderSPI" shape="rect" coords="226,112,329,136"/>
-<area href="class_o_drive_c_a_n.html" alt="ODriveCAN" shape="rect" coords="339,112,442,136"/>
-<area href="class_t_m_c4671.html" alt="TMC4671" shape="rect" coords="565,112,668,136"/>
-<area href="class_vesc_c_a_n.html" alt="VescCAN" shape="rect" coords="791,112,894,136"/>
-<area href="class_o_drive_c_a_n1.html" alt="ODriveCAN1" shape="rect" coords="282,168,385,192"/>
-<area href="class_o_drive_c_a_n2.html" alt="ODriveCAN2" shape="rect" coords="395,168,498,192"/>
-<area href="class_t_m_c__1.html" alt="TMC_1" shape="rect" coords="508,168,611,192"/>
-<area href="class_t_m_c__2.html" alt="TMC_2" shape="rect" coords="621,168,724,192"/>
-<area href="class_v_e_s_c__1.html" alt="VESC_1" shape="rect" coords="734,168,837,192"/>
-<area href="class_v_e_s_c__2.html" alt="VESC_2" shape="rect" coords="847,168,950,192"/>
+<area href="class_choosable_class.html" alt="ChoosableClass" shape="rect" coords="405,0,530,24"/>
+<area href="class_encoder_biss_c.html" alt="EncoderBissC" shape="rect" coords="0,112,125,136"/>
+<area href="class_encoder_local.html" alt="EncoderLocal" shape="rect" coords="135,112,260,136"/>
+<area href="class_motor_simplemotion.html" alt="MotorSimplemotion" shape="rect" coords="270,112,395,136"/>
+<area href="class_mt_encoder_s_p_i.html" alt="MtEncoderSPI" shape="rect" coords="405,112,530,136"/>
+<area href="class_o_drive_c_a_n.html" alt="ODriveCAN" shape="rect" coords="540,112,665,136"/>
+<area href="class_t_m_c4671.html" alt="TMC4671" shape="rect" coords="810,112,935,136"/>
+<area href="class_vesc_c_a_n.html" alt="VescCAN" shape="rect" coords="1080,112,1205,136"/>
+<area href="class_motor_simplemotion1.html" alt="MotorSimplemotion1" shape="rect" coords="405,168,530,192"/>
+<area href="class_motor_simplemotion2.html" alt="MotorSimplemotion2" shape="rect" coords="405,224,530,248"/>
+<area href="class_o_drive_c_a_n1.html" alt="ODriveCAN1" shape="rect" coords="675,168,800,192"/>
+<area href="class_o_drive_c_a_n2.html" alt="ODriveCAN2" shape="rect" coords="675,224,800,248"/>
+<area href="class_t_m_c__1.html" alt="TMC_1" shape="rect" coords="945,168,1070,192"/>
+<area href="class_t_m_c__2.html" alt="TMC_2" shape="rect" coords="945,224,1070,248"/>
+<area href="class_v_e_s_c__1.html" alt="VESC_1" shape="rect" coords="1215,168,1340,192"/>
+<area href="class_v_e_s_c__2.html" alt="VESC_2" shape="rect" coords="1215,224,1340,248"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -281,7 +284,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p >Gets the amount of counts per full rotation of the encoder </p>
 
-<p>Reimplemented in <a class="el" href="class_encoder_biss_c.html#a5b0272ad8d5e45dcc92002299c92f459">EncoderBissC</a>, <a class="el" href="class_t_m_c4671.html#a29e6be7de5761e0b577fd31f818ec2ad">TMC4671</a>, <a class="el" href="class_mt_encoder_s_p_i.html#a3a1bf058bfd2fa06ac01901868654ace">MtEncoderSPI</a>, <a class="el" href="class_o_drive_c_a_n.html#ae02fc8301756d45fdc59d37ba9fe869a">ODriveCAN</a>, and <a class="el" href="class_vesc_c_a_n.html#a41967cd0536764c5d23a1cf34e8a262c">VescCAN</a>.</p>
+<p>Reimplemented in <a class="el" href="class_encoder_biss_c.html#a5b0272ad8d5e45dcc92002299c92f459">EncoderBissC</a>, <a class="el" href="class_t_m_c4671.html#a29e6be7de5761e0b577fd31f818ec2ad">TMC4671</a>, <a class="el" href="class_motor_simplemotion.html#ac2bca4240bd64d1f51f6925937a1cd35">MotorSimplemotion</a>, <a class="el" href="class_mt_encoder_s_p_i.html#a3a1bf058bfd2fa06ac01901868654ace">MtEncoderSPI</a>, <a class="el" href="class_o_drive_c_a_n.html#ae02fc8301756d45fdc59d37ba9fe869a">ODriveCAN</a>, and <a class="el" href="class_vesc_c_a_n.html#a41967cd0536764c5d23a1cf34e8a262c">VescCAN</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="_encoder_8cpp_source.html#l00056">56</a> of file <a class="el" href="_encoder_8cpp_source.html">Encoder.cpp</a>.</p>
 
@@ -311,7 +314,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p >Returns the type of the encoder. Must override this and NOT return NONE in other classes </p>
 
-<p>Reimplemented in <a class="el" href="class_encoder_biss_c.html#afd61cb9fca23068389671dcd3c8a235a">EncoderBissC</a>, <a class="el" href="class_encoder_local.html#ab0591a51178ffe52a01f225e305ae70a">EncoderLocal</a>, <a class="el" href="class_mt_encoder_s_p_i.html#a7b4449c598abb1e87a6e5c708340ebd2">MtEncoderSPI</a>, <a class="el" href="class_o_drive_c_a_n.html#add596d6e03ee2389343545abc1572186">ODriveCAN</a>, <a class="el" href="class_t_m_c4671.html#af0155d1cfe11b19c333f2ba88701c00d">TMC4671</a>, and <a class="el" href="class_vesc_c_a_n.html#ae897a5d093d405939eec5192f5f043ad">VescCAN</a>.</p>
+<p>Reimplemented in <a class="el" href="class_encoder_biss_c.html#afd61cb9fca23068389671dcd3c8a235a">EncoderBissC</a>, <a class="el" href="class_encoder_local.html#ab0591a51178ffe52a01f225e305ae70a">EncoderLocal</a>, <a class="el" href="class_mt_encoder_s_p_i.html#a7b4449c598abb1e87a6e5c708340ebd2">MtEncoderSPI</a>, <a class="el" href="class_motor_simplemotion.html#a271a6b1eb5d7c53b70498db5d4e5355c">MotorSimplemotion</a>, <a class="el" href="class_o_drive_c_a_n.html#add596d6e03ee2389343545abc1572186">ODriveCAN</a>, <a class="el" href="class_t_m_c4671.html#af0155d1cfe11b19c333f2ba88701c00d">TMC4671</a>, and <a class="el" href="class_vesc_c_a_n.html#ae897a5d093d405939eec5192f5f043ad">VescCAN</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="_encoder_8cpp_source.html#l00049">49</a> of file <a class="el" href="_encoder_8cpp_source.html">Encoder.cpp</a>.</p>
 
@@ -342,7 +345,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="class_choosable_class.html#ab19f29386ffd993adc41c03b9b19df87">ChoosableClass</a>.</p>
 
-<p>Reimplemented in <a class="el" href="class_encoder_biss_c.html#aa219d692516a9de33f2368de48a1e83a">EncoderBissC</a>, <a class="el" href="class_encoder_local.html#a504cd0c7f2ca4026646f6652940843d3">EncoderLocal</a>, <a class="el" href="class_mt_encoder_s_p_i.html#a761680037f1ae414333fd15aad1227ea">MtEncoderSPI</a>, <a class="el" href="class_o_drive_c_a_n1.html#a6c3de7e9b4f61f4254e5c84cfabcaca8">ODriveCAN1</a>, <a class="el" href="class_o_drive_c_a_n2.html#a9b270a07a32f8083f7a3bf4869dcb96e">ODriveCAN2</a>, <a class="el" href="class_t_m_c4671.html#aed81114dd28ccba08d5c5e437245da9b">TMC4671</a>, <a class="el" href="class_v_e_s_c__1.html#a24bea995bed760b5240856ae93572918">VESC_1</a>, <a class="el" href="class_v_e_s_c__2.html#a84ea2256cc3b1f7ea706806e40cc02ff">VESC_2</a>, and <a class="el" href="class_o_drive_c_a_n.html#a6a48f6cb98cebd8dd1704487466cd2f5">ODriveCAN</a>.</p>
+<p>Reimplemented in <a class="el" href="class_encoder_biss_c.html#aa219d692516a9de33f2368de48a1e83a">EncoderBissC</a>, <a class="el" href="class_encoder_local.html#a504cd0c7f2ca4026646f6652940843d3">EncoderLocal</a>, <a class="el" href="class_motor_simplemotion1.html#accf91a92c6fb35878ba588ddde04502d">MotorSimplemotion1</a>, <a class="el" href="class_motor_simplemotion2.html#a4530a79329f6ab19e9d92abde82f34a8">MotorSimplemotion2</a>, <a class="el" href="class_mt_encoder_s_p_i.html#a761680037f1ae414333fd15aad1227ea">MtEncoderSPI</a>, <a class="el" href="class_o_drive_c_a_n1.html#a6c3de7e9b4f61f4254e5c84cfabcaca8">ODriveCAN1</a>, <a class="el" href="class_o_drive_c_a_n2.html#a9b270a07a32f8083f7a3bf4869dcb96e">ODriveCAN2</a>, <a class="el" href="class_t_m_c4671.html#aed81114dd28ccba08d5c5e437245da9b">TMC4671</a>, <a class="el" href="class_v_e_s_c__1.html#a24bea995bed760b5240856ae93572918">VESC_1</a>, <a class="el" href="class_v_e_s_c__2.html#a84ea2256cc3b1f7ea706806e40cc02ff">VESC_2</a>, <a class="el" href="class_motor_simplemotion.html#aaf53bd8846eb462dabf5068632d88d3e">MotorSimplemotion</a>, and <a class="el" href="class_o_drive_c_a_n.html#a6a48f6cb98cebd8dd1704487466cd2f5">ODriveCAN</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="_encoder_8cpp_source.html#l00034">34</a> of file <a class="el" href="_encoder_8cpp_source.html">Encoder.cpp</a>.</p>
 
@@ -372,7 +375,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p >Returns the encoder position as raw counts </p>
 
-<p>Reimplemented in <a class="el" href="class_encoder_biss_c.html#ad91644de814dc3c8a5a9ff819e4e4ec2">EncoderBissC</a>, <a class="el" href="class_encoder_local.html#a1481fae056308cf15e94add0860eedbe">EncoderLocal</a>, <a class="el" href="class_mt_encoder_s_p_i.html#a02dbbbe5a1f26a3d2c07bae5f4f884d0">MtEncoderSPI</a>, <a class="el" href="class_o_drive_c_a_n.html#a8c2fe33cdd44f475d7f4e0c9f0c0b25b">ODriveCAN</a>, <a class="el" href="class_t_m_c4671.html#a9ac710beda08bf836a9e132ba545c5e8">TMC4671</a>, and <a class="el" href="class_vesc_c_a_n.html#a17751aa63d09860404c6b29c844d4123">VescCAN</a>.</p>
+<p>Reimplemented in <a class="el" href="class_encoder_biss_c.html#ad91644de814dc3c8a5a9ff819e4e4ec2">EncoderBissC</a>, <a class="el" href="class_encoder_local.html#a1481fae056308cf15e94add0860eedbe">EncoderLocal</a>, <a class="el" href="class_motor_simplemotion.html#ad65b363e6c0545ec865a4b4fab7963d5">MotorSimplemotion</a>, <a class="el" href="class_mt_encoder_s_p_i.html#a02dbbbe5a1f26a3d2c07bae5f4f884d0">MtEncoderSPI</a>, <a class="el" href="class_o_drive_c_a_n.html#a8c2fe33cdd44f475d7f4e0c9f0c0b25b">ODriveCAN</a>, <a class="el" href="class_t_m_c4671.html#a9ac710beda08bf836a9e132ba545c5e8">TMC4671</a>, and <a class="el" href="class_vesc_c_a_n.html#a17751aa63d09860404c6b29c844d4123">VescCAN</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="_encoder_8cpp_source.html#l00064">64</a> of file <a class="el" href="_encoder_8cpp_source.html">Encoder.cpp</a>.</p>
 
@@ -490,7 +493,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p >Change the position of the encoder Can be used to reset the center </p>
 
-<p>Reimplemented in <a class="el" href="class_encoder_biss_c.html#ab8cb033d30eda38d64f87dea9aebaeed">EncoderBissC</a>, <a class="el" href="class_encoder_local.html#a1e09ff4d0e99fa4741f871b020f3eee5">EncoderLocal</a>, <a class="el" href="class_mt_encoder_s_p_i.html#a5a5463200a5ccb7fc1a8b145e967212a">MtEncoderSPI</a>, <a class="el" href="class_o_drive_c_a_n.html#a4852b2c6334d07079a7bdeb67d8335a3">ODriveCAN</a>, <a class="el" href="class_t_m_c4671.html#a3363fd0780c8de76fdcf0bb96d25f082">TMC4671</a>, and <a class="el" href="class_vesc_c_a_n.html#ad604f2b98471a252ce160fc21f117576">VescCAN</a>.</p>
+<p>Reimplemented in <a class="el" href="class_encoder_biss_c.html#ab8cb033d30eda38d64f87dea9aebaeed">EncoderBissC</a>, <a class="el" href="class_encoder_local.html#a1e09ff4d0e99fa4741f871b020f3eee5">EncoderLocal</a>, <a class="el" href="class_mt_encoder_s_p_i.html#a5a5463200a5ccb7fc1a8b145e967212a">MtEncoderSPI</a>, <a class="el" href="class_motor_simplemotion.html#aebb4a14e382598652d419889753e0eb3">MotorSimplemotion</a>, <a class="el" href="class_o_drive_c_a_n.html#a4852b2c6334d07079a7bdeb67d8335a3">ODriveCAN</a>, <a class="el" href="class_t_m_c4671.html#a3363fd0780c8de76fdcf0bb96d25f082">TMC4671</a>, and <a class="el" href="class_vesc_c_a_n.html#ad604f2b98471a252ce160fc21f117576">VescCAN</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="_encoder_8cpp_source.html#l00098">98</a> of file <a class="el" href="_encoder_8cpp_source.html">Encoder.cpp</a>.</p>
 

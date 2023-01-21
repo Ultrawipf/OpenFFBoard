@@ -13,11 +13,12 @@ var searchData=
   ['globalinterface_10',['globalInterface',['../class_h_i_d___command_interface.html#adf3d6fb173733a49a49ddf4c6cbf846c',1,'HID_CommandInterface']]],
   ['gotgctl_11',['GOTGCTL',['../struct_u_s_b___o_t_g___global_type_def.html#a44d3a8825526e6f362da26bbdfb9c71d',1,'USB_OTG_GlobalTypeDef']]],
   ['gotgint_12',['GOTGINT',['../struct_u_s_b___o_t_g___global_type_def.html#a09055525656d2be5adce9471c2590c49',1,'USB_OTG_GlobalTypeDef']]],
-  ['grstctl_13',['GRSTCTL',['../struct_u_s_b___o_t_g___global_type_def.html#a75148d8257eaeec482aa99f8b4a8b0fb',1,'USB_OTG_GlobalTypeDef']]],
-  ['grxfsiz_14',['GRXFSIZ',['../struct_u_s_b___o_t_g___global_type_def.html#ade50afc41de620913eaf1bc66d93cd3a',1,'USB_OTG_GlobalTypeDef']]],
-  ['grxstsp_15',['GRXSTSP',['../struct_u_s_b___o_t_g___global_type_def.html#a060364111cf507dfab9bb6503477983a',1,'USB_OTG_GlobalTypeDef']]],
-  ['grxstsr_16',['GRXSTSR',['../struct_u_s_b___o_t_g___global_type_def.html#a77b651a1120fc5fb647eaccac6f002c6',1,'USB_OTG_GlobalTypeDef']]],
-  ['guidformat_17',['guidFormat',['../struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a66763392b108d49551111dc0c4c36e19',1,'TU_ATTR_PACKED']]],
-  ['gusbcfg_18',['GUSBCFG',['../struct_u_s_b___o_t_g___global_type_def.html#a2094f12e3e4d4e6cc45047dedbfd0acd',1,'USB_OTG_GlobalTypeDef']]],
-  ['gvretmode_19',['gvretMode',['../class_can_bridge.html#a4d59681453fed2f40dc14096b32a7d4b',1,'CanBridge']]]
+  ['gpmotor_13',['gpMotor',['../cpp__target__config_8h.html#ac489e2c42975d3a05486db06e9cb7e2e',1,'cpp_target_config.h']]],
+  ['grstctl_14',['GRSTCTL',['../struct_u_s_b___o_t_g___global_type_def.html#a75148d8257eaeec482aa99f8b4a8b0fb',1,'USB_OTG_GlobalTypeDef']]],
+  ['grxfsiz_15',['GRXFSIZ',['../struct_u_s_b___o_t_g___global_type_def.html#ade50afc41de620913eaf1bc66d93cd3a',1,'USB_OTG_GlobalTypeDef']]],
+  ['grxstsp_16',['GRXSTSP',['../struct_u_s_b___o_t_g___global_type_def.html#a060364111cf507dfab9bb6503477983a',1,'USB_OTG_GlobalTypeDef']]],
+  ['grxstsr_17',['GRXSTSR',['../struct_u_s_b___o_t_g___global_type_def.html#a77b651a1120fc5fb647eaccac6f002c6',1,'USB_OTG_GlobalTypeDef']]],
+  ['guidformat_18',['guidFormat',['../struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a66763392b108d49551111dc0c4c36e19',1,'TU_ATTR_PACKED']]],
+  ['gusbcfg_19',['GUSBCFG',['../struct_u_s_b___o_t_g___global_type_def.html#a2094f12e3e4d4e6cc45047dedbfd0acd',1,'USB_OTG_GlobalTypeDef']]],
+  ['gvretmode_20',['gvretMode',['../class_can_bridge.html#a4d59681453fed2f40dc14096b32a7d4b',1,'CanBridge']]]
 ];

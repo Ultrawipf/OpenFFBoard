@@ -124,11 +124,20 @@ $(document).ready(function(){initNavTree('_output_pin_8h_source.html',''); initR
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>        <span class="keywordflow">return</span>(this-&gt;port == b.<a class="code hl_variable" href="class_output_pin.html#a53c3e51329eeb3c8a8972eaefe0dc95c">port</a> &amp;&amp; this-&gt;pin == b.<a class="code hl_variable" href="class_output_pin.html#a986d8857dd5fa36238acd2c08e3e8916">pin</a>);</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    }</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="comment">//const std::string getName(){return name;}</span></div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>};</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="class_output_pin.html#aecca9448f732e269dc35df8bc760c029">   43</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="class_output_pin.html#aecca9448f732e269dc35df8bc760c029">configureOutput</a>(uint32_t pull = GPIO_NOPULL,<span class="keywordtype">bool</span> opendrain = <span class="keyword">false</span>, uint32_t speed = GPIO_SPEED_FREQ_LOW){</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        GPIO_InitTypeDef GPIO_InitStruct = {0};</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>        GPIO_InitStruct.Pin = <a class="code hl_variable" href="class_output_pin.html#a986d8857dd5fa36238acd2c08e3e8916">pin</a>;</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>        GPIO_InitStruct.Mode = opendrain ? GPIO_MODE_OUTPUT_OD : GPIO_MODE_OUTPUT_PP;</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        GPIO_InitStruct.Pull = pull;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>        GPIO_InitStruct.Speed = speed;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        HAL_GPIO_Init(<a class="code hl_variable" href="class_output_pin.html#a53c3e51329eeb3c8a8972eaefe0dc95c">port</a>, &amp;GPIO_InitStruct);</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    }</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="comment">//const std::string getName(){return name;}</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>};</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="a_o_drive_c_a_n_8h_html_a539f13973573e98e043ff32d1b899068a9ed39e2ea931586b6a985a6942ef573e"><div class="ttname"><a href="_o_drive_c_a_n_8h.html#a539f13973573e98e043ff32d1b899068a9ed39e2ea931586b6a985a6942ef573e">ODriveCAN_commands::state</a></div><div class="ttdeci">@ state</div></div>
 <div class="ttc" id="aclass_output_pin_html"><div class="ttname"><a href="class_output_pin.html">OutputPin</a></div><div class="ttdef"><b>Definition:</b> <a href="_output_pin_8h_source.html#l00013">OutputPin.h:13</a></div></div>
 <div class="ttc" id="aclass_output_pin_html_a53c3e51329eeb3c8a8972eaefe0dc95c"><div class="ttname"><a href="class_output_pin.html#a53c3e51329eeb3c8a8972eaefe0dc95c">OutputPin::port</a></div><div class="ttdeci">GPIO_TypeDef * port</div><div class="ttdef"><b>Definition:</b> <a href="_output_pin_8h_source.html#l00015">OutputPin.h:15</a></div></div>
@@ -138,6 +147,7 @@ $(document).ready(function(){initNavTree('_output_pin_8h_source.html',''); initR
 <div class="ttc" id="aclass_output_pin_html_a935f6e1e705d9a2502f0964be2bfcb72"><div class="ttname"><a href="class_output_pin.html#a935f6e1e705d9a2502f0964be2bfcb72">OutputPin::set</a></div><div class="ttdeci">void set() const</div><div class="ttdef"><b>Definition:</b> <a href="_output_pin_8h_source.html#l00024">OutputPin.h:24</a></div></div>
 <div class="ttc" id="aclass_output_pin_html_a986d8857dd5fa36238acd2c08e3e8916"><div class="ttname"><a href="class_output_pin.html#a986d8857dd5fa36238acd2c08e3e8916">OutputPin::pin</a></div><div class="ttdeci">uint16_t pin</div><div class="ttdef"><b>Definition:</b> <a href="_output_pin_8h_source.html#l00016">OutputPin.h:16</a></div></div>
 <div class="ttc" id="aclass_output_pin_html_ae3d5227ff371958f4240b17e7350cc9d"><div class="ttname"><a href="class_output_pin.html#ae3d5227ff371958f4240b17e7350cc9d">OutputPin::reset</a></div><div class="ttdeci">void reset() const</div><div class="ttdef"><b>Definition:</b> <a href="_output_pin_8h_source.html#l00028">OutputPin.h:28</a></div></div>
+<div class="ttc" id="aclass_output_pin_html_aecca9448f732e269dc35df8bc760c029"><div class="ttname"><a href="class_output_pin.html#aecca9448f732e269dc35df8bc760c029">OutputPin::configureOutput</a></div><div class="ttdeci">void configureOutput(uint32_t pull=GPIO_NOPULL, bool opendrain=false, uint32_t speed=GPIO_SPEED_FREQ_LOW)</div><div class="ttdef"><b>Definition:</b> <a href="_output_pin_8h_source.html#l00043">OutputPin.h:43</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

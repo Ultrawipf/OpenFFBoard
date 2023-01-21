@@ -21,7 +21,8 @@ var _error_handler_8h =
       [ "tmcCalibFail", "_error_handler_8h.html#a6f3b1ba4fbf4167d3a58b0b331ddcfefa93009cd83f59eb3b2fc367b810c34834", null ],
       [ "encoderIndexMissed", "_error_handler_8h.html#a6f3b1ba4fbf4167d3a58b0b331ddcfefaebfcc08e784297ec13745b3bcd78297d", null ],
       [ "encoderReversed", "_error_handler_8h.html#a6f3b1ba4fbf4167d3a58b0b331ddcfefa826e9a2980c45471542681f61ff35053", null ],
-      [ "axisOutOfRange", "_error_handler_8h.html#a6f3b1ba4fbf4167d3a58b0b331ddcfefa30ebab90be35958a8cb1987ba7ec5ff4", null ]
+      [ "axisOutOfRange", "_error_handler_8h.html#a6f3b1ba4fbf4167d3a58b0b331ddcfefa30ebab90be35958a8cb1987ba7ec5ff4", null ],
+      [ "externalConfigurationError", "_error_handler_8h.html#a6f3b1ba4fbf4167d3a58b0b331ddcfefab499e2d7dc517ce3469dc4a52402e67e", null ]
     ] ],
     [ "ErrorType", "_error_handler_8h.html#a01775e5fef063175684d0fc8d9c7d301", [
       [ "warning", "_error_handler_8h.html#a01775e5fef063175684d0fc8d9c7d301a7b83d3f08fa392b79e3f553b585971cd", null ],

@@ -14,12 +14,14 @@ var searchData=
   ['motordriver_2eh_11',['MotorDriver.h',['../_motor_driver_8h.html',1,'']]],
   ['motorpwm_2ecpp_12',['MotorPWM.cpp',['../_motor_p_w_m_8cpp.html',1,'']]],
   ['motorpwm_2eh_13',['MotorPWM.h',['../_motor_p_w_m_8h.html',1,'']]],
-  ['msc_2eh_14',['msc.h',['../msc_8h.html',1,'']]],
-  ['msc_5fdevice_2ec_15',['msc_device.c',['../msc__device_8c.html',1,'']]],
-  ['msc_5fdevice_2eh_16',['msc_device.h',['../msc__device_8h.html',1,'']]],
-  ['msc_5fhost_2ec_17',['msc_host.c',['../msc__host_8c.html',1,'']]],
-  ['msc_5fhost_2eh_18',['msc_host.h',['../msc__host_8h.html',1,'']]],
-  ['mtencoderspi_2ecpp_19',['MtEncoderSPI.cpp',['../_mt_encoder_s_p_i_8cpp.html',1,'']]],
-  ['mtencoderspi_2eh_20',['MtEncoderSPI.h',['../_mt_encoder_s_p_i_8h.html',1,'']]],
-  ['mutex_2ehpp_21',['mutex.hpp',['../mutex_8hpp.html',1,'']]]
+  ['motorsimplemotion_2ecpp_14',['MotorSimplemotion.cpp',['../_motor_simplemotion_8cpp.html',1,'']]],
+  ['motorsimplemotion_2eh_15',['MotorSimplemotion.h',['../_motor_simplemotion_8h.html',1,'']]],
+  ['msc_2eh_16',['msc.h',['../msc_8h.html',1,'']]],
+  ['msc_5fdevice_2ec_17',['msc_device.c',['../msc__device_8c.html',1,'']]],
+  ['msc_5fdevice_2eh_18',['msc_device.h',['../msc__device_8h.html',1,'']]],
+  ['msc_5fhost_2ec_19',['msc_host.c',['../msc__host_8c.html',1,'']]],
+  ['msc_5fhost_2eh_20',['msc_host.h',['../msc__host_8h.html',1,'']]],
+  ['mtencoderspi_2ecpp_21',['MtEncoderSPI.cpp',['../_mt_encoder_s_p_i_8cpp.html',1,'']]],
+  ['mtencoderspi_2eh_22',['MtEncoderSPI.h',['../_mt_encoder_s_p_i_8h.html',1,'']]],
+  ['mutex_2ehpp_23',['mutex.hpp',['../mutex_8hpp.html',1,'']]]
 ];

@@ -374,6 +374,7 @@ var files_dup =
       [ "MidiMain", "class_midi_main.html", "class_midi_main" ]
     ] ],
     [ "MotorPWM.h", "_motor_p_w_m_8h.html", "_motor_p_w_m_8h" ],
+    [ "MotorSimplemotion.h", "_motor_simplemotion_8h.html", "_motor_simplemotion_8h" ],
     [ "MtEncoderSPI.h", "_mt_encoder_s_p_i_8h.html", [
       [ "MtEncoderSPI", "class_mt_encoder_s_p_i.html", "class_mt_encoder_s_p_i" ]
     ] ],
@@ -411,6 +412,7 @@ var files_dup =
     [ "mainclass_chooser.cpp", "mainclass__chooser_8cpp.html", "mainclass__chooser_8cpp" ],
     [ "MidiMain.cpp", "_midi_main_8cpp.html", null ],
     [ "MotorPWM.cpp", "_motor_p_w_m_8cpp.html", "_motor_p_w_m_8cpp" ],
+    [ "MotorSimplemotion.cpp", "_motor_simplemotion_8cpp.html", "_motor_simplemotion_8cpp" ],
     [ "MtEncoderSPI.cpp", "_mt_encoder_s_p_i_8cpp.html", null ],
     [ "ODriveCAN.cpp", "_o_drive_c_a_n_8cpp.html", null ],
     [ "PCF8574.cpp", "_p_c_f8574_8cpp.html", null ],

@@ -108,12 +108,12 @@ $(document).ready(function(){initNavTree('_c_a_n_8h_source.html',''); initResiza
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="struct_c_a_n__tx__msg.html">   20</a></span><span class="keyword">typedef</span> <span class="keyword">struct</span>{</div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno"><a class="line" href="struct_c_a_n__tx__msg.html#ab56d8852f46ea7eb55ba748ddfc3a683">   21</a></span>    uint8_t data[8] = {0};</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="struct_c_a_n__tx__msg.html#a42a9cca998d377254cbc9ffd2618c837">   22</a></span>    CAN_TxHeaderTypeDef header = {0,0,0,CAN_RTR_DATA,8,(FunctionalState)0};</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="struct_c_a_n__tx__msg.html#a42a9cca998d377254cbc9ffd2618c837">   22</a></span>    CAN_TxHeaderTypeDef <a class="code hl_variable" href="_motor_simplemotion_8h.html#a3707517cb22eb26bf33bbb859fb010d2">header</a> = {0,0,0,CAN_RTR_DATA,8,(FunctionalState)0};</div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>} <a class="code hl_struct" href="struct_c_a_n__tx__msg.html">CAN_tx_msg</a>;</div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="struct_c_a_n__rx__msg.html">   25</a></span><span class="keyword">typedef</span> <span class="keyword">struct</span>{</div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="struct_c_a_n__rx__msg.html#a81fc39a7a1e5a5661d0c6a9c3fde3738">   26</a></span>    uint8_t data[8] = {0};</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="struct_c_a_n__rx__msg.html#a1de4b39e8a6e5fc402753eb28af81e17">   27</a></span>    CAN_RxHeaderTypeDef header = {0,0,0,0,0,0};</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="struct_c_a_n__rx__msg.html#a1de4b39e8a6e5fc402753eb28af81e17">   27</a></span>    CAN_RxHeaderTypeDef <a class="code hl_variable" href="_motor_simplemotion_8h.html#a3707517cb22eb26bf33bbb859fb010d2">header</a> = {0,0,0,0,0,0};</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>} <a class="code hl_struct" href="struct_c_a_n__rx__msg.html">CAN_rx_msg</a>;</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
@@ -189,6 +189,7 @@ $(document).ready(function(){initNavTree('_c_a_n_8h_source.html',''); initResiza
 <div class="ttc" id="a_class_i_ds_8h_html_a79467dc849dd02adbaa4373bbd7aba75a60aaf44d4b562252c04db7f98497e9aa"><div class="ttname"><a href="_class_i_ds_8h.html#a79467dc849dd02adbaa4373bbd7aba75a60aaf44d4b562252c04db7f98497e9aa">ClassType::Port</a></div><div class="ttdeci">@ Port</div></div>
 <div class="ttc" id="a_command_handler_8h_html"><div class="ttname"><a href="_command_handler_8h.html">CommandHandler.h</a></div></div>
 <div class="ttc" id="a_command_handler_8h_html_aefaf83fec6a7da1d02ae7e912dd9a6d5"><div class="ttname"><a href="_command_handler_8h.html#aefaf83fec6a7da1d02ae7e912dd9a6d5">CommandStatus</a></div><div class="ttdeci">CommandStatus</div><div class="ttdef"><b>Definition:</b> <a href="_command_handler_8h_source.html#l00039">CommandHandler.h:39</a></div></div>
+<div class="ttc" id="a_motor_simplemotion_8h_html_a3707517cb22eb26bf33bbb859fb010d2"><div class="ttname"><a href="_motor_simplemotion_8h.html#a3707517cb22eb26bf33bbb859fb010d2">header</a></div><div class="ttdeci">uint8_t header</div><div class="ttdef"><b>Definition:</b> <a href="_motor_simplemotion_8h_source.html#l00000">MotorSimplemotion.h:0</a></div></div>
 <div class="ttc" id="a_output_pin_8h_html"><div class="ttname"><a href="_output_pin_8h.html">OutputPin.h</a></div></div>
 <div class="ttc" id="a_persistent_storage_8h_html"><div class="ttname"><a href="_persistent_storage_8h.html">PersistentStorage.h</a></div></div>
 <div class="ttc" id="aclass_c_a_n_port_html"><div class="ttname"><a href="class_c_a_n_port.html">CANPort</a></div><div class="ttdef"><b>Definition:</b> <a href="_c_a_n_8h_source.html#l00032">CAN.h:32</a></div></div>

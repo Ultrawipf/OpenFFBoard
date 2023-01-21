@@ -12,11 +12,14 @@ var searchData=
   ['minmaxpair_9',['MinMaxPair',['../struct_min_max_pair.html',1,'']]],
   ['motordriver_10',['MotorDriver',['../class_motor_driver.html',1,'']]],
   ['motorpwm_11',['MotorPWM',['../class_motor_p_w_m.html',1,'']]],
-  ['mscd_5finterface_5ft_12',['mscd_interface_t',['../structmscd__interface__t.html',1,'']]],
-  ['msch_5finterface_5ft_13',['msch_interface_t',['../structmsch__interface__t.html',1,'']]],
-  ['mtencoderspi_14',['MtEncoderSPI',['../class_mt_encoder_s_p_i.html',1,'']]],
-  ['mutex_15',['Mutex',['../classcpp__freertos_1_1_mutex.html',1,'cpp_freertos']]],
-  ['mutexcreateexception_16',['MutexCreateException',['../classcpp__freertos_1_1_mutex_create_exception.html',1,'cpp_freertos']]],
-  ['mutexrecursive_17',['MutexRecursive',['../classcpp__freertos_1_1_mutex_recursive.html',1,'cpp_freertos']]],
-  ['mutexstandard_18',['MutexStandard',['../classcpp__freertos_1_1_mutex_standard.html',1,'cpp_freertos']]]
+  ['motorsimplemotion_12',['MotorSimplemotion',['../class_motor_simplemotion.html',1,'']]],
+  ['motorsimplemotion1_13',['MotorSimplemotion1',['../class_motor_simplemotion1.html',1,'']]],
+  ['motorsimplemotion2_14',['MotorSimplemotion2',['../class_motor_simplemotion2.html',1,'']]],
+  ['mscd_5finterface_5ft_15',['mscd_interface_t',['../structmscd__interface__t.html',1,'']]],
+  ['msch_5finterface_5ft_16',['msch_interface_t',['../structmsch__interface__t.html',1,'']]],
+  ['mtencoderspi_17',['MtEncoderSPI',['../class_mt_encoder_s_p_i.html',1,'']]],
+  ['mutex_18',['Mutex',['../classcpp__freertos_1_1_mutex.html',1,'cpp_freertos']]],
+  ['mutexcreateexception_19',['MutexCreateException',['../classcpp__freertos_1_1_mutex_create_exception.html',1,'cpp_freertos']]],
+  ['mutexrecursive_20',['MutexRecursive',['../classcpp__freertos_1_1_mutex_recursive.html',1,'cpp_freertos']]],
+  ['mutexstandard_21',['MutexStandard',['../classcpp__freertos_1_1_mutex_standard.html',1,'cpp_freertos']]]
 ];

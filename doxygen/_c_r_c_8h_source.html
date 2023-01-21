@@ -124,31 +124,35 @@ $(document).ready(function(){initNavTree('_c_r_c_8h_source.html',''); initResiza
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    T mask = 1 &lt;&lt; (bits-1);</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <span class="keywordflow">for</span> (uint16_t <span class="keywordtype">byte</span> = 0; <span class="keywordtype">byte</span> &lt; LEN; ++byte)</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    {</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>        T crc = (refin ? reverseBits&lt;T&gt;(<span class="keywordtype">byte</span>) : byte);</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>        <span class="keywordflow">for</span> (uint8_t bit = 0; bit &lt; bits; ++bit)</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>        {</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>            <span class="keywordflow">if</span> (crc &amp; mask)</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>            {</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>                crc = (crc &lt;&lt; 1) ^ crcpoly;</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>            }</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>            <span class="keywordflow">else</span></div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>            {</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>                crc &lt;&lt;= 1;</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>            }</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>        }</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>        table[byte] =  (refout ? reverseBits&lt;T&gt;(crc) : crc);</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    }</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>}</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>        uint8_t shiftin = std::max&lt;int16_t&gt;(bits-8,0);</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>        T <a class="code hl_variable" href="_motor_simplemotion_8h.html#ab737b9992427f6e30af5b3846d48b66d">crc</a> = (refin ? reverseBits&lt;T&gt;(<span class="keywordtype">byte</span>) &gt;&gt; shiftin : byte);</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>        <span class="keywordflow">for</span> (uint8_t bit = 0; bit &lt; bits; ++bit)</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        {</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>            <span class="keywordflow">if</span> (<a class="code hl_variable" href="_motor_simplemotion_8h.html#ab737b9992427f6e30af5b3846d48b66d">crc</a> &amp; mask)</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>            {</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>                <a class="code hl_variable" href="_motor_simplemotion_8h.html#ab737b9992427f6e30af5b3846d48b66d">crc</a> = (<a class="code hl_variable" href="_motor_simplemotion_8h.html#ab737b9992427f6e30af5b3846d48b66d">crc</a> &lt;&lt; 1) ^ crcpoly;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>            }</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>            <span class="keywordflow">else</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>            {</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>                <a class="code hl_variable" href="_motor_simplemotion_8h.html#ab737b9992427f6e30af5b3846d48b66d">crc</a> &lt;&lt;= 1;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>            }</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>        }</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>        table[byte] =  (refout ? reverseBits&lt;T&gt;(<a class="code hl_variable" href="_motor_simplemotion_8h.html#ab737b9992427f6e30af5b3846d48b66d">crc</a>) : <a class="code hl_variable" href="_motor_simplemotion_8h.html#ab737b9992427f6e30af5b3846d48b66d">crc</a>);</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    }</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>}</div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>uint8_t <a class="code hl_function" href="_c_r_c_8h.html#a9bffce7854aeb0380af83f09966418e2">calculateCrc8</a>(std::array&lt;uint8_t,256&gt; &amp;crctable,uint8_t* buf,uint16_t len,uint8_t crc=0);</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>uint16_t <a class="code hl_function" href="_c_r_c_8h.html#ae847a04c59119ba5dd6f9d8ab2cb9650">calculateCrc16_8</a>(std::array&lt;uint16_t,256&gt; &amp;crctable,uint8_t* buf,uint16_t len,uint16_t crc=0);</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="preprocessor">#endif </span><span class="comment">/* SRC_CRC_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>uint8_t <a class="code hl_function" href="_c_r_c_8h.html#a9bffce7854aeb0380af83f09966418e2">calculateCrc8</a>(std::array&lt;uint8_t,256&gt; &amp;crctable,uint8_t* buf,uint16_t len,uint8_t <a class="code hl_variable" href="_motor_simplemotion_8h.html#ab737b9992427f6e30af5b3846d48b66d">crc</a>=0);</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>uint16_t <a class="code hl_function" href="_c_r_c_8h.html#ae847a04c59119ba5dd6f9d8ab2cb9650">calculateCrc16_8</a>(std::array&lt;uint16_t,256&gt; &amp;crctable,uint8_t* buf,uint16_t len,uint16_t <a class="code hl_variable" href="_motor_simplemotion_8h.html#ab737b9992427f6e30af5b3846d48b66d">crc</a>=0);</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>uint16_t <a class="code hl_function" href="_c_r_c_8h.html#a786b11b922e6e5591e33ddafe9e0b564">calculateCrc16_8_rev</a>(std::array&lt;uint16_t,256&gt; &amp;crctable,uint8_t* buf,uint16_t len,uint16_t <a class="code hl_variable" href="_motor_simplemotion_8h.html#ab737b9992427f6e30af5b3846d48b66d">crc</a>=0);</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="preprocessor">#endif </span><span class="comment">/* SRC_CRC_H_ */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="a_c_r_c_8h_html_a2eecee60771652b4047bfba585c9731c"><div class="ttname"><a href="_c_r_c_8h.html#a2eecee60771652b4047bfba585c9731c">makeCrcTable</a></div><div class="ttdeci">void makeCrcTable(std::array&lt; T, LEN &gt; &amp;table, const T crcpoly, const uint8_t bits, const bool refin=false, const bool refout=false)</div><div class="ttdef"><b>Definition:</b> <a href="_c_r_c_8h_source.html#l00036">CRC.h:36</a></div></div>
+<div class="ttc" id="a_c_r_c_8h_html_a786b11b922e6e5591e33ddafe9e0b564"><div class="ttname"><a href="_c_r_c_8h.html#a786b11b922e6e5591e33ddafe9e0b564">calculateCrc16_8_rev</a></div><div class="ttdeci">uint16_t calculateCrc16_8_rev(std::array&lt; uint16_t, 256 &gt; &amp;crctable, uint8_t *buf, uint16_t len, uint16_t crc=0)</div><div class="ttdef"><b>Definition:</b> <a href="_c_r_c_8cpp_source.html#l00033">CRC.cpp:33</a></div></div>
 <div class="ttc" id="a_c_r_c_8h_html_a9bffce7854aeb0380af83f09966418e2"><div class="ttname"><a href="_c_r_c_8h.html#a9bffce7854aeb0380af83f09966418e2">calculateCrc8</a></div><div class="ttdeci">uint8_t calculateCrc8(std::array&lt; uint8_t, 256 &gt; &amp;crctable, uint8_t *buf, uint16_t len, uint8_t crc=0)</div><div class="ttdef"><b>Definition:</b> <a href="_c_r_c_8cpp_source.html#l00013">CRC.cpp:13</a></div></div>
 <div class="ttc" id="a_c_r_c_8h_html_acff2a8a5e36dd8fcf557e45f7ac36cda"><div class="ttname"><a href="_c_r_c_8h.html#acff2a8a5e36dd8fcf557e45f7ac36cda">reverseBits</a></div><div class="ttdeci">T reverseBits(T value)</div><div class="ttdef"><b>Definition:</b> <a href="_c_r_c_8h_source.html#l00015">CRC.h:15</a></div></div>
 <div class="ttc" id="a_c_r_c_8h_html_ae847a04c59119ba5dd6f9d8ab2cb9650"><div class="ttname"><a href="_c_r_c_8h.html#ae847a04c59119ba5dd6f9d8ab2cb9650">calculateCrc16_8</a></div><div class="ttdeci">uint16_t calculateCrc16_8(std::array&lt; uint16_t, 256 &gt; &amp;crctable, uint8_t *buf, uint16_t len, uint16_t crc=0)</div><div class="ttdef"><b>Definition:</b> <a href="_c_r_c_8cpp_source.html#l00023">CRC.cpp:23</a></div></div>
+<div class="ttc" id="a_motor_simplemotion_8h_html_ab737b9992427f6e30af5b3846d48b66d"><div class="ttname"><a href="_motor_simplemotion_8h.html#ab737b9992427f6e30af5b3846d48b66d">crc</a></div><div class="ttdeci">uint8_t crc</div><div class="ttdef"><b>Definition:</b> <a href="_motor_simplemotion_8h_source.html#l00004">MotorSimplemotion.h:4</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

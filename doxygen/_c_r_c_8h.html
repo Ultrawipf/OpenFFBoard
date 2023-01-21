@@ -100,10 +100,12 @@ Functions</h2></td></tr>
 <tr class="memitem:a2eecee60771652b4047bfba585c9731c"><td class="memTemplParams" colspan="2">template&lt;typename T , size_t LEN&gt; </td></tr>
 <tr class="memitem:a2eecee60771652b4047bfba585c9731c"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_c_r_c_8h.html#a2eecee60771652b4047bfba585c9731c">makeCrcTable</a> (std::array&lt; T, LEN &gt; &amp;table, const T crcpoly, const uint8_t bits, const bool refin=false, const bool refout=false)</td></tr>
 <tr class="separator:a2eecee60771652b4047bfba585c9731c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9bffce7854aeb0380af83f09966418e2"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_c_r_c_8h.html#a9bffce7854aeb0380af83f09966418e2">calculateCrc8</a> (std::array&lt; uint8_t, 256 &gt; &amp;crctable, uint8_t *buf, uint16_t len, uint8_t crc=0)</td></tr>
+<tr class="memitem:a9bffce7854aeb0380af83f09966418e2"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_c_r_c_8h.html#a9bffce7854aeb0380af83f09966418e2">calculateCrc8</a> (std::array&lt; uint8_t, 256 &gt; &amp;crctable, uint8_t *buf, uint16_t len, uint8_t <a class="el" href="_motor_simplemotion_8h.html#ab737b9992427f6e30af5b3846d48b66d">crc</a>=0)</td></tr>
 <tr class="separator:a9bffce7854aeb0380af83f09966418e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae847a04c59119ba5dd6f9d8ab2cb9650"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_c_r_c_8h.html#ae847a04c59119ba5dd6f9d8ab2cb9650">calculateCrc16_8</a> (std::array&lt; uint16_t, 256 &gt; &amp;crctable, uint8_t *buf, uint16_t len, uint16_t crc=0)</td></tr>
+<tr class="memitem:ae847a04c59119ba5dd6f9d8ab2cb9650"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_c_r_c_8h.html#ae847a04c59119ba5dd6f9d8ab2cb9650">calculateCrc16_8</a> (std::array&lt; uint16_t, 256 &gt; &amp;crctable, uint8_t *buf, uint16_t len, uint16_t <a class="el" href="_motor_simplemotion_8h.html#ab737b9992427f6e30af5b3846d48b66d">crc</a>=0)</td></tr>
 <tr class="separator:ae847a04c59119ba5dd6f9d8ab2cb9650"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a786b11b922e6e5591e33ddafe9e0b564"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_c_r_c_8h.html#a786b11b922e6e5591e33ddafe9e0b564">calculateCrc16_8_rev</a> (std::array&lt; uint16_t, 256 &gt; &amp;crctable, uint8_t *buf, uint16_t len, uint16_t <a class="el" href="_motor_simplemotion_8h.html#ab737b9992427f6e30af5b3846d48b66d">crc</a>=0)</td></tr>
+<tr class="separator:a786b11b922e6e5591e33ddafe9e0b564"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="ae847a04c59119ba5dd6f9d8ab2cb9650" name="ae847a04c59119ba5dd6f9d8ab2cb9650"></a>
@@ -146,6 +148,49 @@ Functions</h2></td></tr>
 <p >Calculates a 16b checksum using a crc16 table on a 8b buffer </p>
 
 <p class="definition">Definition at line <a class="el" href="_c_r_c_8cpp_source.html#l00023">23</a> of file <a class="el" href="_c_r_c_8cpp_source.html">CRC.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a786b11b922e6e5591e33ddafe9e0b564" name="a786b11b922e6e5591e33ddafe9e0b564"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a786b11b922e6e5591e33ddafe9e0b564">&#9670;&nbsp;</a></span>calculateCrc16_8_rev()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint16_t calculateCrc16_8_rev </td>
+          <td>(</td>
+          <td class="paramtype">std::array&lt; uint16_t, 256 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>crctable</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>buf</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>len</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>crc</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >CRC16 with reversed table bytes </p>
+
+<p class="definition">Definition at line <a class="el" href="_c_r_c_8cpp_source.html#l00033">33</a> of file <a class="el" href="_c_r_c_8cpp_source.html">CRC.cpp</a>.</p>
 
 </div>
 </div>

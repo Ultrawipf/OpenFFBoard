@@ -7,7 +7,7 @@ var searchData=
   ['v1_5f2_5f2_5flem20_4',['v1_2_2_LEM20',['../_t_m_c4671_8h.html#a1064cdca049007c828bd4a5b28f51d71abe037adad1534fd5de5ec31255a3dc8c',1,'TMC4671.h']]],
   ['v1_5f3_5f66mv_5',['v1_3_66mv',['../_t_m_c4671_8h.html#a1064cdca049007c828bd4a5b28f51d71a88a6f2c070b87db0927009998e7534fe',1,'TMC4671.h']]],
   ['vals_6',['vals',['../class_shifter_analog.html#a99c6ea60974ea937a349d12dcd599078ab2021c4149dfd5dc85c88823b7df34bd',1,'ShifterAnalog']]],
-  ['values_7',['values',['../class_analog_axis_processing.html#ae42fdc69ac6559919a33cf1f419a1565af09cc7ee3a9a93273f4b80601cafb00c',1,'AnalogAxisProcessing::values()'],['../class_local_buttons.html#a4079bc8e1bdb9a36f0c7614d42b203cbaf09cc7ee3a9a93273f4b80601cafb00c',1,'LocalButtons::values()'],['../class_local_analog.html#a8a119ddf35bde39c528c0d384ec95226af09cc7ee3a9a93273f4b80601cafb00c',1,'LocalAnalog::values()']]],
+  ['values_7',['values',['../class_analog_axis_processing.html#ae42fdc69ac6559919a33cf1f419a1565af09cc7ee3a9a93273f4b80601cafb00c',1,'AnalogAxisProcessing::values()'],['../class_local_analog.html#a8a119ddf35bde39c528c0d384ec95226af09cc7ee3a9a93273f4b80601cafb00c',1,'LocalAnalog::values()'],['../class_local_buttons.html#a4079bc8e1bdb9a36f0c7614d42b203cbaf09cc7ee3a9a93273f4b80601cafb00c',1,'LocalButtons::values()']]],
   ['vbus_8',['vbus',['../_o_drive_c_a_n_8h.html#a539f13973573e98e043ff32d1b899068aa6836846042d32ab49d028e4908a505b',1,'ODriveCAN.h']]],
   ['velocity_9',['velocity',['../class_t_m_c_debug_bridge.html#af27c0ce5f4df3232b543806a8247fcd8aac1a453d0cdc1f19d9479ccfaa8b082c',1,'TMCDebugBridge::velocity()'],['../_t_m_c4671_8h.html#a1b04aa8e350271255d351486d3720741aac1a453d0cdc1f19d9479ccfaa8b082c',1,'velocity():&#160;TMC4671.h'],['../_t_m_c4671_8h.html#a6116f1e0e18067831052e401757405c6aac1a453d0cdc1f19d9479ccfaa8b082c',1,'velocity():&#160;TMC4671.h']]],
   ['velocityi_10',['velocityI',['../class_t_m_c4671.html#a383a82ab842490e325553e9365028a27a348cf227a262664ced33ca390d7d337a',1,'TMC4671']]],
@@ -134,5 +134,6 @@ var searchData=
   ['vint_131',['vint',['../_system_commands_8h.html#a4a42a50bc0a826d5ab6d847950749d07a7a48b6e7efa8475f61dc5ecd419fda73',1,'SystemCommands.h']]],
   ['visible_132',['visible',['../_choosable_class_8h.html#aa3a363b83e4ed5a23cf7398fcf8bae0ca46cf0e59759c9b7f1112ca4b174343ef',1,'ChoosableClass.h']]],
   ['vmtmc_133',['vmTmc',['../class_t_m_c4671.html#a383a82ab842490e325553e9365028a27aa4c85f6bd07bccc575b078ae00b60ef0',1,'TMC4671']]],
-  ['voltage_134',['voltage',['../_vesc_c_a_n_8h.html#a2125c9b686c373137058c5ae8fa4219fae437ba437f4106903e619bb380574954',1,'VescCAN.h']]]
+  ['voltage_134',['Voltage',['../class_motor_simplemotion.html#a0fa06e9cd5b42ac97ac49ff916ac1c30a4a92fbe41f6463598c39850b8335096c',1,'MotorSimplemotion']]],
+  ['voltage_135',['voltage',['../_vesc_c_a_n_8h.html#a2125c9b686c373137058c5ae8fa4219fae437ba437f4106903e619bb380574954',1,'voltage():&#160;VescCAN.h'],['../class_motor_simplemotion.html#a04284aedcbd482d8dea7aa2bf631d5b2ae437ba437f4106903e619bb380574954',1,'MotorSimplemotion::voltage()']]]
 ];
