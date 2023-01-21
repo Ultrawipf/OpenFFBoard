@@ -27,7 +27,7 @@ ClassIdentifier MotorSimplemotion2::info = {
 	 .id=CLSID_MOT_SM2
 };
 
-MotorSimplemotion::MotorSimplemotion(uint8_t instance) : CommandHandler("sm2", CLSID_MOT_SM1, address),UARTDevice(motor_uart), address(address+1){
+MotorSimplemotion::MotorSimplemotion(uint8_t instance) : CommandHandler("sm2", CLSID_MOT_SM1, instance),UARTDevice(motor_uart), address(address+1){
 	//Init CRC table at runtime to save flash
 	if(!crcTableInitialized){
 		makeCrcTable(tableCRC8, crcpoly, 8); // Generate a CRC8 table the first time an instance is created
@@ -288,7 +288,7 @@ void MotorSimplemotion::updateStatus(uint16_t value){
  */
 bool MotorSimplemotion::prepareUartTransmit(){
 	if(HAL_GetTick() - lastTimeByteReceived > uartErrorTimeout && uartErrorOccured){
-		uartport->abortReceive();
+//		uartport->abortReceive();
 		resetBuffer();
 	}
 	return uartport->takeSemaphore(true,10);
