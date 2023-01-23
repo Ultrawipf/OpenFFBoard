@@ -51,6 +51,7 @@
 #define CANBUTTONS // Requires CAN
 #define CANANALOG // Requires CAN
 #define ADS111XANALOG // Requires I2C
+#define SIMPLEMOTION
 
 //#define UARTCOMMANDS
 
