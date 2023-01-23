@@ -10,8 +10,8 @@
 
 uint16_t _desc_str[USB_STRING_DESC_BUF_SIZE]; // String buffer
 
-USBdevice::USBdevice(const tusb_desc_device_t* deviceDesc,const uint8_t (*confDesc),const usb_string_desc_t* strings) :
-Thread("USB", 256, 40), desc_device(deviceDesc), desc_conf(confDesc), string_desc(strings) {
+USBdevice::USBdevice(const tusb_desc_device_t* deviceDesc,const uint8_t (*confDesc),const usb_string_desc_t* strings, uint8_t appendSerial) :
+Thread("USB", 256, 40), desc_device(deviceDesc), desc_conf(confDesc), string_desc(strings),appendSerial(appendSerial) {
 
 }
 
@@ -75,6 +75,11 @@ uint16_t* USBdevice::getUsbStringDesc(uint8_t index,uint16_t langid){
 			field = string_desc->manufacturer;
 		}else if(index > 3 && ((index - 4) < (int)string_desc->interfaces.size())){
 			field = string_desc->interfaces[index-4];
+			if(appendSerial){
+				field += "(";
+				field.append(getUsbSerial().substr(0, appendSerial));
+				field += ")";
+			}
 		}else{
 			return NULL;
 		}

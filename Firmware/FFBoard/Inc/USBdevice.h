@@ -21,10 +21,11 @@
  * This class defines a usb device and implements callbacks for getting the basic
  * usb descriptors for tinyusb.
  * Different usb configurations are predefined in usb_descriptors.c
+ * appendSerial: adds the last n chars of the serial number to the interface strings
  */
 class USBdevice : public cpp_freertos::Thread {
 public:
-	USBdevice(const tusb_desc_device_t* deviceDesc,const uint8_t (*confDesc),const usb_string_desc_t* strings);
+	USBdevice(const tusb_desc_device_t* deviceDesc,const uint8_t (*confDesc),const usb_string_desc_t* strings,uint8_t appendSerial = 4);
 	virtual ~USBdevice();
 	void Run(); // Thread loop
 	void virtual registerUsb();
@@ -38,6 +39,7 @@ protected:
 	const tusb_desc_device_t* desc_device;
 	const uint8_t* desc_conf; // Device configuration descriptor
 	const usb_string_desc_t* string_desc;
+	uint8_t appendSerial;
 };
 
 #endif /* USB_SRC_USBDEVICE_H_ */
