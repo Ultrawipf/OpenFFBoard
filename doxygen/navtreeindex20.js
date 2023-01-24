@@ -1,5 +1,6 @@
 var NAVTREEINDEX20 =
 {
+"group___class_driver___hub.html#gga56a0f36da7f9eaaf54bd05cc2bf49173a8eeb8bf1544bc6ae385829aeea12185e":[1,8,1,0],
 "group___class_driver___hub.html#gga56a0f36da7f9eaaf54bd05cc2bf49173aba259f8964731e3a6021c940ca4d7fef":[1,8,1,1],
 "group___class_driver___hub.html#ggaa156d1cebb38c8a65846c4d9c006012aa13e3d74c35038d47cc3ce2c2839d81c5":[1,8,1,3],
 "group___class_driver___hub.html#ggaa156d1cebb38c8a65846c4d9c006012aa18f841a2cb3de11a3853cfbb30b577f3":[1,8,1,11],
@@ -248,6 +249,5 @@ var NAVTREEINDEX20 =
 "hid__device_8c.html#ac7a840730d497e90339351ad43cb3fc4":[4,0,139,13],
 "hid__device_8c.html#acf3dcc8248d23b74edee0e5824f18400":[4,0,139,7],
 "hid__device_8c.html#af17bad00577b15f94fe4bd24d6af1278":[4,0,139,1],
-"hid__device_8c.html#afd06b4579ff7c5d19c183d78b27effca":[4,0,139,12],
-"hid__device_8c_source.html":[4,0,139]
+"hid__device_8c.html#afd06b4579ff7c5d19c183d78b27effca":[4,0,139,12]
 };

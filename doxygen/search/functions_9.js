@@ -1,8 +1,8 @@
 var searchData=
 [
   ['i2cdevice_0',['I2CDevice',['../class_i2_c_device.html#afa6d28cbaab65cfc2ad60a63bc95d30d',1,'I2CDevice']]],
-  ['i2cerror_1',['i2cError',['../class_i2_c_device.html#a5101c5f11dfa10bb018ab224c1067b8f',1,'I2CDevice::i2cError()'],['../class_a_d_s111_x___analog_source.html#ab647e779b1d8b16f3044db5aa3fb58ce',1,'ADS111X_AnalogSource::i2cError()'],['../class_p_c_f8574_buttons.html#a0d251bb9ad7e7c214e8e40d84d4f7b75',1,'PCF8574Buttons::i2cError()']]],
-  ['i2cerror_2',['I2cError',['../class_i2_c_port.html#a47375c8c677d40c856b1cd40e2535588',1,'I2CPort::I2cError()'],['../class_i2_c_handler.html#a76ab0f8b0e6375d6dc1956cbfc969762',1,'I2CHandler::I2cError(I2C_HandleTypeDef *hi2c)']]],
+  ['i2cerror_1',['I2cError',['../class_i2_c_port.html#a47375c8c677d40c856b1cd40e2535588',1,'I2CPort::I2cError()'],['../class_i2_c_handler.html#a76ab0f8b0e6375d6dc1956cbfc969762',1,'I2CHandler::I2cError()']]],
+  ['i2cerror_2',['i2cError',['../class_i2_c_device.html#a5101c5f11dfa10bb018ab224c1067b8f',1,'I2CDevice::i2cError()'],['../class_a_d_s111_x___analog_source.html#ab647e779b1d8b16f3044db5aa3fb58ce',1,'ADS111X_AnalogSource::i2cError()'],['../class_p_c_f8574_buttons.html#a0d251bb9ad7e7c214e8e40d84d4f7b75',1,'PCF8574Buttons::i2cError()']]],
   ['i2chandler_3',['I2CHandler',['../class_i2_c_handler.html#ac469f9d06d608e638982108b2215842f',1,'I2CHandler']]],
   ['i2cport_4',['I2CPort',['../class_i2_c_port.html#a8c091b5055b58928811e2e92937f73a2',1,'I2CPort']]],
   ['i2crxcompleted_5',['i2cRxCompleted',['../class_i2_c_device.html#add48ca296615b1f7db570c8caa4a46cc',1,'I2CDevice::i2cRxCompleted()'],['../class_a_d_s111_x___analog_source.html#aa2ff042ed3f15190b89d04a8f96a1ea8',1,'ADS111X_AnalogSource::i2cRxCompleted()'],['../class_p_c_f8574_buttons.html#aeb3e0e46af1621aa97d1c8abe80537e0',1,'PCF8574Buttons::i2cRxCompleted()']]],

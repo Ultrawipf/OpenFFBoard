@@ -1,5 +1,6 @@
 var NAVTREEINDEX23 =
 {
+"struct____attribute____.html#a9eaab2a86e1d16e875a147d466188d65":[3,0,1,40],
 "struct____attribute____.html#aac1998665a3eadd3434a64eff8abcc6b":[3,0,1,15],
 "struct____attribute____.html#aadca03a7e7c97e56b1a2c9db3d0624c6":[3,0,1,25],
 "struct____attribute____.html#ab0f91edfe465a6915b77d92a707924f5":[3,0,1,14],
@@ -248,6 +249,5 @@ var NAVTREEINDEX23 =
 "struct_t_m_c4671_flash_addrs.html#a8b1e9db28050ebcc37b3097954a2de29":[3,0,147,11],
 "struct_t_m_c4671_flash_addrs.html#aa3a990c2c2bccc8240f834bce39dbead":[3,0,147,10],
 "struct_t_m_c4671_flash_addrs.html#ac97b6449979c562e427a5d63bddebd47":[3,0,147,2],
-"struct_t_m_c4671_flash_addrs.html#ad27d142485f3470e43a37144b50fe32c":[3,0,147,5],
-"struct_t_m_c4671_flash_addrs.html#ad38e24da0a2284b01fce17e481fb29d0":[3,0,147,1]
+"struct_t_m_c4671_flash_addrs.html#ad27d142485f3470e43a37144b50fe32c":[3,0,147,5]
 };

@@ -58,7 +58,7 @@ var searchData=
   ['usbd_5freset_55',['usbd_reset',['../usbd_8c.html#add3b5f3002a683df5528684d8f6338b1',1,'usbd.c']]],
   ['usbd_5fresume_56',['USBD_Resume',['../global__callbacks_8h.html#a186e3a7db9d584d5ee5913a74d485f36',1,'global_callbacks.h']]],
   ['usbd_5fsuspend_57',['USBD_Suspend',['../global__callbacks_8h.html#a1b13f696521a14ddfe420bf0bef145aa',1,'global_callbacks.h']]],
-  ['usbdevice_58',['USBdevice',['../class_u_s_bdevice.html#a56e2c2242c42cee0eb37f28c05f32a06',1,'USBdevice']]],
+  ['usbdevice_58',['USBdevice',['../class_u_s_bdevice.html#ad835c904bb1cd5fb1196d9e752a26adf',1,'USBdevice']]],
   ['usbh_5fcontrol_5fxfer_5fcb_59',['usbh_control_xfer_cb',['../usbh_8c.html#a4152f6a0ce38f952c2f4a9fe769cd809',1,'usbh_control_xfer_cb(uint8_t dev_addr, uint8_t ep_addr, xfer_result_t result, uint32_t xferred_bytes):&#160;usbh_control.c'],['../usbh__control_8c.html#a4152f6a0ce38f952c2f4a9fe769cd809',1,'usbh_control_xfer_cb(uint8_t dev_addr, uint8_t ep_addr, xfer_result_t result, uint32_t xferred_bytes):&#160;usbh_control.c']]],
   ['usbh_5fdriver_5fset_5fconfig_5fcomplete_60',['usbh_driver_set_config_complete',['../usbh_8c.html#a3ac535abe21b09ad34150cb0649d8e09',1,'usbh_driver_set_config_complete(uint8_t dev_addr, uint8_t itf_num):&#160;usbh.c'],['../usbh__classdriver_8h.html#a3ac535abe21b09ad34150cb0649d8e09',1,'usbh_driver_set_config_complete(uint8_t dev_addr, uint8_t itf_num):&#160;usbh.c']]],
   ['usbh_5fedpt_5fbusy_61',['usbh_edpt_busy',['../usbh_8c.html#ad52a71c68d85f90f5dea17c7f1821f58',1,'usbh_edpt_busy(uint8_t dev_addr, uint8_t ep_addr):&#160;usbh.c'],['../usbh__classdriver_8h.html#ad52a71c68d85f90f5dea17c7f1821f58',1,'usbh_edpt_busy(uint8_t dev_addr, uint8_t ep_addr):&#160;usbh.c']]],
