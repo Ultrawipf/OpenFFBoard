@@ -58,7 +58,7 @@ uint8_t LocalButtons::readButtons(uint64_t* buf){
 }
 
 void LocalButtons::saveFlash(){
-	uint16_t dat = this->mask & 0xff;
+	uint16_t dat = this->mask & 0xffff;
 	Flash_Write(ADR_LOCAL_BTN_CONF, dat);
 
 	uint16_t dat2 = this->polarity & 0x01;
@@ -68,7 +68,7 @@ void LocalButtons::saveFlash(){
 void LocalButtons::restoreFlash(){
 	uint16_t dat = 0;
 	if(Flash_Read(ADR_LOCAL_BTN_CONF,&dat)){
-		this->setMask(dat & 0xff);
+		this->setMask(dat & 0xffff);
 	}
 
 	if(Flash_Read(ADR_LOCAL_BTN_CONF_2,&dat)){
@@ -125,3 +125,58 @@ CommandStatus LocalButtons::command(const ParsedCommand& cmd,std::vector<Command
 
 }
 
+/**
+ * All DIN pins must be defined as inputs.
+ * Not more than 16 pins can be defined
+ */
+const std::array<InputPin,BUTTON_PINS> LocalButtons::button_pins {
+#if BUTTON_PINS > 0
+		InputPin(DIN0_GPIO_Port, DIN0_Pin),
+#endif
+#if BUTTON_PINS > 1
+		InputPin(DIN1_GPIO_Port, DIN1_Pin),
+#endif
+#if BUTTON_PINS > 2
+		InputPin(DIN2_GPIO_Port, DIN2_Pin),
+#endif
+#if BUTTON_PINS > 3
+		InputPin(DIN3_GPIO_Port, DIN3_Pin),
+#endif
+#if BUTTON_PINS > 4
+		InputPin(DIN4_GPIO_Port, DIN4_Pin),
+#endif
+#if BUTTON_PINS > 5
+		InputPin(DIN5_GPIO_Port, DIN5_Pin),
+#endif
+#if BUTTON_PINS > 6
+		InputPin(DIN6_GPIO_Port, DIN6_Pin),
+#endif
+#if BUTTON_PINS > 7
+		InputPin(DIN7_GPIO_Port, DIN7_Pin),
+#endif
+#if BUTTON_PINS > 8
+		InputPin(DIN8_GPIO_Port, DIN8_Pin),
+#endif
+#if BUTTON_PINS > 9
+		InputPin(DIN9_GPIO_Port, DIN9_Pin),
+#endif
+#if BUTTON_PINS > 10
+		InputPin(DIN10_GPIO_Port, DIN10_Pin),
+#endif
+#if BUTTON_PINS > 11
+		InputPin(DIN11_GPIO_Port, DIN11_Pin),
+#endif
+#if BUTTON_PINS > 12
+		InputPin(DIN12_GPIO_Port, DIN12_Pin),
+#endif
+#if BUTTON_PINS > 13
+		InputPin(DIN13_GPIO_Port, DIN13_Pin),
+#endif
+#if BUTTON_PINS > 14
+		InputPin(DIN14_GPIO_Port, DIN14_Pin),
+#endif
+#if BUTTON_PINS > 15
+		InputPin(DIN15_GPIO_Port, DIN15_Pin),
+#endif
+
+};

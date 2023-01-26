@@ -8,14 +8,13 @@
 #ifndef SPI_H_
 #define SPI_H_
 
+#include <GPIOPin.h>
 #include <vector>
 #include "cppmain.h"
 
 #include "stm32f4xx_hal.h"
 
 #include "SpiHandler.h"
-#include "OutputPin.h"
-
 #include "semaphore.hpp"
 
 struct SPIConfig {

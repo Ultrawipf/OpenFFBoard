@@ -13,7 +13,7 @@
 #include "main.h"
 #include <vector>
 #include "semaphore.hpp"
-#include "OutputPin.h"
+#include <GPIOPin.h>
 #include "PersistentStorage.h"
 #include "CommandHandler.h"
 
