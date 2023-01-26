@@ -23,7 +23,7 @@
 #include "TimerHandler.h"
 
 #include "semaphore.hpp"
-#include "OutputPin.h"
+#include <GPIOPin.h>
 #include "cpp_target_config.h"
 #include "Filters.h"
 
