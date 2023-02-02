@@ -504,6 +504,18 @@ void TMC4671::Run(){
 			recalibrationRequired = false;
 			break;
 		}
+		case TMC_ControlState::Pidautotune:
+			{
+				allowStateChange = false;
+				 // Wait for Power
+				while(!hasPower()){
+					Delay(100);
+				}
+				pidAutoTune();
+				allowStateChange = true;
+				changeState(laststate,false);
+				break;
+			}
 
 		case TMC_ControlState::IndexSearch:
 			autohome();
@@ -603,7 +615,7 @@ void TMC4671::Run(){
 		// Optional update methods for safety
 
 		if(!hasPower() && state != TMC_ControlState::waitPower && initialized && powerInitialized){ // low voltage or overvoltage
-			lastMotionMode = curMotionMode;
+
 			requestedState = state;
 			ErrorHandler::addError(lowVoltageError);
 			setMotionMode(MotionMode::stop,true); // Disable tmc
@@ -632,6 +644,99 @@ void TMC4671::calibrateEncoder(){
 	changeState(TMC_ControlState::EncoderInit);
 
 
+}
+
+/**
+ * Iterative tuning function for tuning the torque mode PI values
+ */
+bool TMC4671::pidAutoTune(){
+	/**
+	 * Enter phieExt & torque mode
+	 * Zero I, default P
+	 * Ramp up flux P until 50% of target, then lower increments until 75%
+	 * Increase I until oscillation is found (Average of peak delta increases). Back off a bit
+	 */
+	PhiE lastphie = getPhiEtype();
+	MotionMode lastmode = getMotionMode();
+	setPhiE_ext(getPhiE());
+	setPhiEtype(PhiE::ext); // Fixed phase
+	setFluxTorque(0, 0);
+	TMC4671PIDConf newpids = curPids;
+	int16_t targetflux = bangInitPower;
+	int16_t targetflux_p = targetflux * 0.65;
+
+	uint16_t fluxI = 0,fluxP = 100; // Startvalues
+	writeReg(0x54, fluxI | (fluxP << 16));
+	int16_t flux = 0;
+	setFluxTorque(targetflux, 0); // Start flux step
+	while(fluxP < 20000){
+		writeReg(0x54, fluxI | (fluxP << 16)); // Update P
+		// Do flux step
+		Delay(20); // Wait a bit. not critical
+		std::tie(flux,std::ignore) = getActualTorqueFlux();
+		if(flux > targetflux_p){
+			break;
+		}else if(flux > targetflux * 0.5){
+			// Reduce steps when we are close
+			fluxP+=10;
+		}else{
+			fluxP+=100;
+		}
+	}
+	setFluxTorque(0, 0);
+	Delay(100); // Let the current settle down
+
+	// Tune I. This is more difficult because we need to take overshoot into account
+	int16_t targetflux_i = targetflux * 0.9;
+	uint16_t measuretime_idle = 50; // ms to wait per measurement
+	uint16_t step_i = 64;
+	fluxI = 100;
+	while(fluxI < 20000){
+		writeReg(0x54, fluxI | (fluxP << 16));
+		setFluxTorque(targetflux, 0);
+		uint16_t tick = HAL_GetTick();//micros();
+		int32_t peakflux = 0;
+
+		while(HAL_GetTick() - tick < measuretime_idle){ // Measure current for this pulse
+			std::tie(flux,std::ignore) = getActualTorqueFlux();
+			peakflux = std::max<int32_t>(peakflux, flux);
+
+		}
+		setFluxTorque(0, 0);
+		Delay(measuretime_idle * 2); // Let the current settle down
+
+		if(peakflux > (targetflux)) // + ( targetflux * 0.01))
+		{
+			//fluxI -= step_i;
+			break;
+		}
+		if(peakflux < targetflux_i){
+			step_i = 100;
+		}else{
+			step_i = 10;
+		}
+		fluxI += step_i;
+
+	}
+
+	if(fluxP && fluxP < 20000 && fluxI && fluxI < 20000){
+			newpids.fluxP = fluxP;
+			newpids.torqueP = fluxP;
+			newpids.fluxI = fluxI;
+			newpids.torqueI = fluxI;
+	}else{
+		CommandHandler::broadcastCommandReply(CommandReply("FAIL",0), (uint32_t)TMC4671_commands::pidautotune, CMDtype::get);
+		setPhiEtype(lastphie);
+		setMotionMode(lastmode);
+		return false;
+	}
+
+	setPids(newpids);
+
+	CommandHandler::broadcastCommandReply(CommandReply("OK",1), (uint32_t)TMC4671_commands::pidautotune, CMDtype::get);
+	setPhiEtype(lastphie);
+	setMotionMode(lastmode);
+	return true;
 }
 
 bool TMC4671::autohome(){
@@ -2668,6 +2773,7 @@ void TMC4671::registerCommands(){
 	registerCommand("trqbq_mode", TMC4671_commands::torqueFilter_mode, "Torque filter mode: none;lowpass;notch;peak",CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_INFOSTRING);
 	registerCommand("trqbq_f", TMC4671_commands::torqueFilter_f, "Torque filter freq 1000 max. 0 to disable. (Stored f/2)",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("trqbq_q", TMC4671_commands::torqueFilter_q, "Torque filter q*100",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("pidautotune", TMC4671_commands::pidautotune, "Start PID autoruning",CMDFLAG_GET);
 }
 
 
@@ -2960,6 +3066,9 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 				replies.emplace_back(torqueFilterConf.params.q);
 			}
 		break;
+	case TMC4671_commands::pidautotune:
+		changeState(TMC_ControlState::Pidautotune);
+		return CommandStatus::NO_REPLY;
 
 	default:
 		return CommandStatus::NOT_FOUND;
