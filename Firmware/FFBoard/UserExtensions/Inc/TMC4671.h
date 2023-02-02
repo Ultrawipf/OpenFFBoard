@@ -38,7 +38,7 @@ extern SPI_HandleTypeDef HSPIDRV;
 extern TIM_HandleTypeDef TIM_TMC;
 #endif
 
-enum class TMC_ControlState : uint32_t {uninitialized,waitPower,Shutdown,Running,EncoderInit,EncoderFinished,HardError,OverTemp,IndexSearch,FullCalibration,ExternalEncoderInit};
+enum class TMC_ControlState : uint32_t {uninitialized,waitPower,Shutdown,Running,EncoderInit,EncoderFinished,HardError,OverTemp,IndexSearch,FullCalibration,ExternalEncoderInit,Pidautotune};
 
 enum class TMC_PwmMode : uint8_t {off = 0,HSlow_LShigh = 1, HShigh_LSlow = 2, res2 = 3, res3 = 4, PWM_LS = 5, PWM_HS = 6, PWM_FOC = 7};
 
@@ -315,7 +315,7 @@ class TMC4671 :
 		torqueP,torqueI,fluxP,fluxI,velocityP,velocityI,posP,posI,
 		tmctype,pidPrec,phiesrc,fluxoffset,seqpi,tmcIscale,encdir,temp,reg,
 		svpwm,fullCalibration,calibrated,abnindexenabled,findIndex,getState,encpol,combineEncoder,invertForce,vmTmc,
-		extphie,torqueFilter_mode,torqueFilter_f,torqueFilter_q
+		extphie,torqueFilter_mode,torqueFilter_f,torqueFilter_q,pidautotune
 	};
 
 #ifdef TMCDEBUG
@@ -612,6 +612,7 @@ private:
 
 	void encoderInit();
 	void errorCallback(const Error &error, bool cleared);
+	bool pidAutoTune();
 
 	uint32_t initTime = 0;
 	bool manualEncAlign = false;
