@@ -439,6 +439,8 @@ public:
 	void setFluxTorque(int16_t flux, int16_t torque);
 	void setFluxTorqueFF(int16_t flux, int16_t torque);
 	std::pair<int32_t,int32_t> getActualTorqueFlux();
+	int32_t getActualFlux();
+	int32_t getActualTorque();
 
 	bool checkAdc();
 
