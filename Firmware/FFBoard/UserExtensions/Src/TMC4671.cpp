@@ -653,27 +653,27 @@ bool TMC4671::pidAutoTune(){
 	/**
 	 * Enter phieExt & torque mode
 	 * Zero I, default P
-	 * Ramp up flux P until 50% of target, then lower increments until 75%
-	 * Increase I until oscillation is found (Average of peak delta increases). Back off a bit
+	 * Ramp up flux P until 50% of target, then lower increments until targetflux_p is reached
+	 * Increase I until oscillation is found. Back off a bit
 	 */
 	PhiE lastphie = getPhiEtype();
 	MotionMode lastmode = getMotionMode();
 	setPhiE_ext(getPhiE());
 	setPhiEtype(PhiE::ext); // Fixed phase
+	setMotionMode(MotionMode::torque, true);
 	setFluxTorque(0, 0);
 	TMC4671PIDConf newpids = curPids;
 	int16_t targetflux = bangInitPower;
-	int16_t targetflux_p = targetflux * 0.65;
+	int16_t targetflux_p = targetflux * 0.7;
 
 	uint16_t fluxI = 0,fluxP = 100; // Startvalues
 	writeReg(0x54, fluxI | (fluxP << 16));
-	int16_t flux = 0;
+	int32_t flux = 0;
 	setFluxTorque(targetflux, 0); // Start flux step
 	while(fluxP < 20000){
 		writeReg(0x54, fluxI | (fluxP << 16)); // Update P
-		// Do flux step
 		Delay(20); // Wait a bit. not critical
-		std::tie(flux,std::ignore) = getActualTorqueFlux();
+		flux = getActualFlux();
 		if(flux > targetflux_p){
 			break;
 		}else if(flux > targetflux * 0.5){
@@ -687,30 +687,33 @@ bool TMC4671::pidAutoTune(){
 	Delay(100); // Let the current settle down
 
 	// Tune I. This is more difficult because we need to take overshoot into account
-	int16_t targetflux_i = targetflux * 0.9;
-	uint16_t measuretime_idle = 50; // ms to wait per measurement
+	uint32_t measuretime = 50; // ms to wait per measurement
 	uint16_t step_i = 64;
 	fluxI = 100;
+	flux = 0;
 	while(fluxI < 20000){
 		writeReg(0x54, fluxI | (fluxP << 16));
-		setFluxTorque(targetflux, 0);
-		uint16_t tick = HAL_GetTick();//micros();
+		uint32_t tick = HAL_GetTick();//micros();
 		int32_t peakflux = 0;
+		setFluxTorque(targetflux, 0);
 
-		while(HAL_GetTick() - tick < measuretime_idle){ // Measure current for this pulse
-			std::tie(flux,std::ignore) = getActualTorqueFlux();
+		while(HAL_GetTick() - tick < measuretime){ // Measure current for this pulse
+			flux = getActualFlux();
 			peakflux = std::max<int32_t>(peakflux, flux);
-
 		}
 		setFluxTorque(0, 0);
-		Delay(measuretime_idle * 2); // Let the current settle down
+		uint8_t timeout = 100;  // Let the current settle down
+		while(timeout-- && flux > 10){
+			Delay(1);
+			flux = getActualFlux();
+		}
 
-		if(peakflux > (targetflux)) // + ( targetflux * 0.01))
+		if(peakflux > (targetflux + ( targetflux * 0.03))) // Overshoot target by 3%
 		{
-			//fluxI -= step_i;
+			fluxI -= step_i; // Revert last step
 			break;
 		}
-		if(peakflux < targetflux_i){
+		if(peakflux < targetflux*0.95){ // Do larger steps if we don't even reach near the target within the time.
 			step_i = 100;
 		}else{
 			step_i = 10;
@@ -725,17 +728,16 @@ bool TMC4671::pidAutoTune(){
 			newpids.fluxI = fluxI;
 			newpids.torqueI = fluxI;
 	}else{
-		CommandHandler::broadcastCommandReply(CommandReply("FAIL",0), (uint32_t)TMC4671_commands::pidautotune, CMDtype::get);
+		CommandHandler::broadcastCommandReply(CommandReply("PID Autotune failed",0), (uint32_t)TMC4671_commands::pidautotune, CMDtype::get);
 		setPhiEtype(lastphie);
-		setMotionMode(lastmode);
+		setMotionMode(lastmode,true);
 		return false;
 	}
 
-	setPids(newpids);
-
-	CommandHandler::broadcastCommandReply(CommandReply("OK",1), (uint32_t)TMC4671_commands::pidautotune, CMDtype::get);
+	setPids(newpids); // Apply new values
+	CommandHandler::broadcastCommandReply(CommandReply("PID Autotune success",1), (uint32_t)TMC4671_commands::pidautotune, CMDtype::get);
 	setPhiEtype(lastphie);
-	setMotionMode(lastmode);
+	setMotionMode(lastmode,true);
 	return true;
 }
 
@@ -2380,6 +2382,24 @@ std::pair<int32_t,int32_t> TMC4671::getActualTorqueFlux(){
 	int16_t af = (tfluxa & 0xffff);
 	int16_t at = (tfluxa >> 16);
 	return std::pair<int16_t,int16_t>(af,at);
+}
+
+/**
+ * Returns measured flux
+ */
+int32_t TMC4671::getActualFlux(){
+	uint32_t tfluxa = readReg(0x69);
+	int16_t af = (tfluxa & 0xffff);
+	return af;
+}
+
+/**
+ * Returns measured torque
+ */
+int32_t TMC4671::getActualTorque(){
+	uint32_t tfluxa = readReg(0x69);
+	int16_t at = (tfluxa >> 16);
+	return at;
 }
 
 
