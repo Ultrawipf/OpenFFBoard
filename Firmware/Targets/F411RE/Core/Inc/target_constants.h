@@ -46,7 +46,7 @@
 #define ADS111XANALOG // Requires I2C
 //#define PWMDRIVER // Not supported! No free timer
 //----------------------
-
+#define BTNFAILSAFE // Use user button to force board into failsafe mainclass
 #define DEBUGPIN // GP1 pin. see cpp target constants
 #define UARTCOMMANDS
 

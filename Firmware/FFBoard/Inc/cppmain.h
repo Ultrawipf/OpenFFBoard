@@ -10,12 +10,18 @@
 
 #include "constants.h"
 
+#ifndef DEFAULTMAIN
+#define DEFAULTMAIN 0
+#endif
+
 #pragma once
 #ifdef __cplusplus
 
 #include "FFBoardMain.h"
 #include "ledEffects.h"
 #include "ClassChooser.h"
+
+
 
 extern "C" {
 #endif
