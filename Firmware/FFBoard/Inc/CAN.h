@@ -24,7 +24,7 @@ typedef struct{
 
 typedef struct{
 	uint8_t data[8] = {0};
-	CAN_RxHeaderTypeDef header = {0,0,0,0,0,0};
+	CAN_RxHeaderTypeDef header = {0,0,0,0,0,0,0};
 } CAN_rx_msg;
 
 

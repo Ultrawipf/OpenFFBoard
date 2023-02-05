@@ -19,6 +19,15 @@
 #include "PersistentStorage.h"
 #include "thread.hpp"
 #ifdef I2C_PORT
+
+#ifdef HW_ESP32SX
+#define PCF8574BUTTONS_THREAD_MEM 1024
+#define PCF8574BUTTONS_THREAD_PRIO (20*25/56)
+#else
+#define PCF8574BUTTONS_THREAD_MEM 64
+#define PCF8574BUTTONS_THREAD_PRIO 20
+#endif
+
 class PCF8574 : public I2CDevice {
 public:
 	PCF8574(I2CPort &port);

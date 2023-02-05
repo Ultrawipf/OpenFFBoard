@@ -19,6 +19,14 @@
 
 #ifdef I2C_PORT
 
+#ifdef HW_ESP32SX
+#define ADS111X_ANALOG_THREAD_MEM 1024
+#define ADS111X_ANALOG_THREAD_PRIO (25*25/56)
+#else
+#define ADS111X_ANALOG_THREAD_MEM 64
+#define ADS111X_ANALOG_THREAD_PRIO 25
+#endif
+
 class ADS111X : public I2CDevice {
 
 public:

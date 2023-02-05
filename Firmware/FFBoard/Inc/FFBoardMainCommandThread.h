@@ -11,9 +11,7 @@
 
 #include <CmdParser.h>
 #include "cppmain.h"
-#include "main.h"
 #include <string>
-#include "cdc_device.h"
 #include "ChoosableClass.h"
 #include "CommandHandler.h"
 #include <vector>
@@ -23,6 +21,14 @@
 #include "semaphore.hpp"
 
 #include "CommandInterface.h"
+
+#ifdef HW_ESP32SX
+#define FFBOARDMAINCOMMANDTHREAD_MEM 4096
+#define FFBOARDMAINCOMMANDTHREAD_PRIO 32*25/56
+#else
+#define FFBOARDMAINCOMMANDTHREAD_MEM 700
+#define FFBOARDMAINCOMMANDTHREAD_PRIO 32
+#endif
 
 class FFBoardMain;
 //class CommandInterface;

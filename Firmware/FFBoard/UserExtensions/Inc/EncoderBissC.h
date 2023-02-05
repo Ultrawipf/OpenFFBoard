@@ -20,6 +20,14 @@
 #include "semaphore.hpp"
 #include "array"
 
+#ifdef HW_ESP32SX
+#define ENCODERBISSC_THREAD_MEM 1024
+#define ENCODERBISSC_THREAD_PRIO (42*25/56)
+#else
+#define ENCODERBISSC_THREAD_MEM 64
+#define ENCODERBISSC_THREAD_PRIO 42
+#endif
+
 class EncoderBissC: public Encoder, public SPIDevice , public CommandHandler,cpp_freertos::Thread,public PersistentStorage {
 public:
 

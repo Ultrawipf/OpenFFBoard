@@ -19,7 +19,7 @@
 
 
 HID_CommandInterface* HID_CommandInterface::globalInterface = nullptr;
-HID_CommandInterface::HID_CommandInterface() : cpp_freertos::Thread("HIDCMD",128,18){
+HID_CommandInterface::HID_CommandInterface() : cpp_freertos::Thread("HIDCMD",HID_COMMANDINTERFACE_MEM,HID_COMMANDINTERFACE_PRIO){
 	globalInterface = this;
 	this->Start();
 }

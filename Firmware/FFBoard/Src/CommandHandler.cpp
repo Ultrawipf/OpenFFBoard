@@ -132,7 +132,7 @@ std::string CommandHandler::getCsvHelpstring(){
 		for(CmdHandlerCommanddef& cmd : registeredCommands){
 			if(cmd.helpstring != nullptr && cmd.cmd != nullptr){
 				char cmdhex[11];
-				std::snprintf(cmdhex,11,"0x%lX",cmd.cmdId);
+				std::snprintf(cmdhex,11,"0x%X",cmd.cmdId);
 				helpstring.append(cmd.cmd);
 				helpstring += ',';
 				helpstring += std::string(cmdhex);

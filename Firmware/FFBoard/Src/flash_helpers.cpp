@@ -25,6 +25,7 @@ bool Flash_Write(uint16_t adr,uint16_t dat){
 	bool res = false;
 	if(readRes == 1 || (readRes == 0 && buf != dat) ){ // Only write if var updated
 		HAL_FLASH_Unlock();
+		#ifndef HW_ESP32SX
 		// Clear all the error flags
 	    __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_EOP);
 	    __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_OPERR);
@@ -32,6 +33,7 @@ bool Flash_Write(uint16_t adr,uint16_t dat){
 	    __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_PGAERR);
 	    __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_PGPERR);
 	    __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_PGSERR);
+		#endif
 		if(EE_WriteVariable(adr, dat) == HAL_OK){
 			res = true;
 		}
@@ -60,6 +62,7 @@ bool Flash_ReadWriteDefault(uint16_t adr,uint16_t *buf,uint16_t def){
 	if(EE_ReadVariable(adr, buf) != 0){
 		*buf = def;
 		HAL_FLASH_Unlock();
+		#ifndef HW_ESP32SX
 		// Clear all the error flags
 		__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_EOP);
 		__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_OPERR);
@@ -67,6 +70,7 @@ bool Flash_ReadWriteDefault(uint16_t adr,uint16_t *buf,uint16_t def){
 		__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_PGAERR);
 		__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_PGPERR);
 		__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_PGSERR);
+		#endif
 		EE_WriteVariable(adr, def);
 		HAL_FLASH_Lock();
 		return false;

@@ -58,9 +58,11 @@ extern ADC_HandleTypeDef hadc3;
  * Callback after an adc finished conversion
  */
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc){
+#ifndef HW_ESP32SX
 	//Pulse braking mosfet if internal voltage is higher than supply.
 	if(hadc == &VSENSE_HADC)
 		brakeCheck();
+#endif
 
 	uint8_t chans = 0;
 	volatile uint32_t* buf = getAnalogBuffer(hadc,&chans);
@@ -76,15 +78,20 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc){
  * Note: this is normally generated in the main.c
  * A call to HAL_TIM_PeriodElapsedCallback_CPP must be added there instead!
  */
+#ifndef HW_ESP32SX
 __weak void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim){
 	HAL_TIM_PeriodElapsedCallback_CPP(htim);
 }
-
+#endif
 void HAL_TIM_PeriodElapsedCallback_CPP(TIM_HandleTypeDef* htim) {
 	for(TimerHandler* c : TimerHandler::timerHandlers){
 		c->timerElapsed(htim);
 	}
 }
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**
  * Callback for GPIO interrupts
@@ -107,7 +114,7 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart){
 	}
 }
 
-#ifdef CANBUS
+#if defined(CANBUS) && !defined(HW_ESP32SX)
 // CAN
 
 uint8_t canRxBuf0[8];
@@ -253,7 +260,9 @@ void HAL_I2C_ErrorCallback(I2C_HandleTypeDef *hi2c){
 		c->I2cError(hi2c);
 	}
 }
-
+#ifdef __cplusplus
+}
+#endif
 
 //void HAL_I2C_MemRxCpltCallback(I2C_HandleTypeDef *hi2c);
 //void HAL_I2C_ErrorCallback(I2C_HandleTypeDef *hi2c);
@@ -365,6 +374,32 @@ void tud_resume_cb(){
 	mainclass->usbResume();
 }
 
+#ifdef HW_ESP32SX
+extern "C" volatile uint32_t* getAnalogBuffer(ADC_HandleTypeDef* hadc,uint8_t* chans)
+{
+	uint8_t result[12] = {0};
+    uint32_t ret_num = 0;
+	esp_err_t ret = adc_digi_read_bytes(result, 12, &ret_num, ADC_MAX_DELAY);
+	if (ret == ESP_OK || ret == ESP_ERR_INVALID_STATE) 
+	{
+		for (size_t i = 0; i < ret_num; i+=2)
+		{
+			adc_digi_output_data_t *p = (adc_digi_output_data_t *)&result[i];
+#ifdef CONFIG_IDF_TARGET_ESP32S3
+        	ADC1_BUF[p->type2.channel] = p->type2.data;
+#elif defined CONFIG_IDF_TARGET_ESP32S2
+        	ADC1_BUF[p->type1.channel] = p->type1.data;
+#endif
+		}
+		ESP_LOGV(__FUNCTION__, "[%d] Channel: 0|%04d, 1|%04d, 2|%04d", ret_num, 
+				ADC1_BUF[0],
+				ADC1_BUF[1],
+				ADC1_BUF[2]);
+	}
+	*chans = ADC1_CHANNELS;
+	return ADC1_BUF;
+}
+#else
 
 volatile uint32_t* getAnalogBuffer(ADC_HandleTypeDef* hadc,uint8_t* chans){
 	#ifdef ADC1_CHANNELS
@@ -389,6 +424,7 @@ volatile uint32_t* getAnalogBuffer(ADC_HandleTypeDef* hadc,uint8_t* chans){
 	#endif
 	return NULL;
 }
+#endif
 
 void startADC(){
 	#ifdef ADC1_CHANNELS

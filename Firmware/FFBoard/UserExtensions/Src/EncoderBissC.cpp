@@ -26,7 +26,7 @@ std::array<uint8_t,64> EncoderBissC::tableCRC6n __attribute__((section (".ccmram
 EncoderBissC::EncoderBissC() :
 		SPIDevice(ENCODER_SPI_PORT, ENCODER_SPI_PORT.getCsPins()[0]),
 		CommandHandler("bissenc",CLSID_ENCODER_BISS,0),
-		cpp_freertos::Thread("BISSENC",64,42) {
+		cpp_freertos::Thread("BISSENC",ENCODERBISSC_THREAD_MEM,ENCODERBISSC_THREAD_PRIO) {
 	EncoderBissC::inUse = true;
 
 

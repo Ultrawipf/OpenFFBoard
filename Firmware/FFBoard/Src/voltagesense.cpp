@@ -40,11 +40,19 @@ void setupBrakePin(uint32_t vdiffAct,uint32_t vdiffDeact,uint32_t vMax){
 }
 
 uint16_t getIntV(){
+#ifdef HW_ESP32SX
+	return 20000;  // ESP32S2 don't have enough gpio to measure v_int
+#else
 	return VSENSE_ADC_BUF[ADC_CHAN_VINT] * vSenseMult;
+#endif
 }
 
 uint16_t getExtV(){
+#ifdef HW_ESP32SX
+	return 20000; // ESP32S2 don't have enough gpio to measure v_ext
+#else
 	return VSENSE_ADC_BUF[ADC_CHAN_VEXT] * vSenseMult;
+#endif
 }
 
 void brakeCheck(){

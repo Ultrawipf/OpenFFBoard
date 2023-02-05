@@ -68,7 +68,7 @@ const ClassIdentifier PCF8574Buttons::getInfo(){
 }
 
 
-PCF8574Buttons::PCF8574Buttons() : PCF8574(i2cport) , CommandHandler("pcfbtn", CLSID_BTN_PCF, 0), Thread("pcfbtn", 64, 20) {
+PCF8574Buttons::PCF8574Buttons() : PCF8574(i2cport) , CommandHandler("pcfbtn", CLSID_BTN_PCF, 0), Thread("pcfbtn", PCF8574BUTTONS_THREAD_MEM, PCF8574BUTTONS_THREAD_PRIO) {
 	CommandHandler::registerCommands();
 	ButtonSource::btnnum=8;
 	registerCommand("btnnum", PCF8574Buttons_commands::btnnum, "Amount of buttons",CMDFLAG_GET | CMDFLAG_SET);

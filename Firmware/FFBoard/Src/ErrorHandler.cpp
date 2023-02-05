@@ -131,7 +131,7 @@ void ErrorHandler::errorCallback(const Error &error, bool cleared){
 //	return info;
 //}
 
-ErrorPrinter::ErrorPrinter() : Thread("errprint",256,19){ // Higher than default task but low.
+ErrorPrinter::ErrorPrinter() : Thread("errprint",ERROR_PRINTER_MEM,ERROR_PRINTER_PRIO){ // Higher than default task but low.
 	this->Start();
 }
 

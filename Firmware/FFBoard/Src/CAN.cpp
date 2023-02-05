@@ -205,7 +205,12 @@ void CANPort::setSpeedPreset(uint8_t preset){
 	takeSemaphore();
 	HAL_CAN_Stop(this->hcan);
 	HAL_CAN_AbortTxRequest(hcan, txMailbox);
+#ifdef HW_ESP32SX
+	const uint32_t rate[6]={50000, 100000, 125000, 250000, 500000, 1000000}; //bit/s
+	glue_can_set_speed(this->hcan, rate[preset]);
+#else
 	this->hcan->Instance->BTR = canSpeedBTR_preset[preset];
+#endif
 	HAL_CAN_ResetError(hcan);
 
 	HAL_CAN_Start(this->hcan);

@@ -11,6 +11,15 @@
 #include <string>
 #include "thread.hpp"
 #include "CommandHandler.h"
+#include "target_constants.h"
+
+#ifdef HW_ESP32SX
+#define ERROR_PRINTER_MEM 4096
+#define ERROR_PRINTER_PRIO 19*25/56
+#else
+#define ERROR_PRINTER_MEM 512
+#define ERROR_PRINTER_PRIO 19
+#endif
 
 /*
  * Error code definitions

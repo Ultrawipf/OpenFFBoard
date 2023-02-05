@@ -142,8 +142,8 @@ bool CmdParser::parse(std::vector<ParsedCommand>& commands){
 					cmd.type = CMDtype::err;
 
 				}else{
-					uint32_t peq = word.find('=', 0); // set
-					uint32_t pqm = word.find('?', 0); // read with var
+					int32_t peq = word.find('=', 0); // set
+					int32_t pqm = word.find('?', 0); // read with var
 
 					// <cmd>\n
 					if(pqm == std::string::npos && peq == std::string::npos){

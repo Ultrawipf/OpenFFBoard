@@ -65,7 +65,9 @@ class CriticalSection {
          */
         static inline void Enter()
         {
+            #ifndef HW_ESP32SX
             taskENTER_CRITICAL();
+            #endif
         }
 
         /**
@@ -73,7 +75,9 @@ class CriticalSection {
          */
         static inline void Exit()
         {
+            #ifndef HW_ESP32SX
             taskEXIT_CRITICAL();
+            #endif
         }
 
         /**
