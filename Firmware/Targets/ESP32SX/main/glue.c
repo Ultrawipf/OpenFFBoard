@@ -25,6 +25,20 @@ CAN_HandleTypeDef hcan1;
 TIM_HandleTypeDef htim1;
 I2C_HandleTypeDef hi2c1;
 
+
+void HAL_GPIO_Init(GPIO_TypeDef  *GPIOx, GPIO_InitTypeDef *GPIO_Init)
+{
+    gpio_config_t io_conf = {0};
+    io_conf.intr_type = GPIO_INTR_DISABLE;
+    io_conf.mode = GPIO_Init->Mode;
+    io_conf.pin_bit_mask = (BIT64(LED_CLIP_Pin) | BIT64(LED_ERR_Pin) \
+                            | BIT64(LED_SYS_Pin) | BIT64(DRV_ENABLE_Pin) \
+                            | BIT64(DRV_BRAKE_Pin) | BIT64(CAN_S_Pin));
+    io_conf.pull_down_en = 0;
+    io_conf.pull_up_en = 0;
+    gpio_config(&io_conf);
+}
+
 GPIO_PinState HAL_GPIO_ReadPin(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin)
 {
     return gpio_ll_get_level(&GPIO, GPIO_Pin);
@@ -215,6 +229,21 @@ HAL_StatusTypeDef HAL_UART_Receive(UART_HandleTypeDef *huart, uint8_t *pData, ui
 {
     ESP_LOGW(TAG, "%s: Unsupported", __FUNCTION__);
     return HAL_OK;
+}
+HAL_StatusTypeDef HAL_UART_Receive_DMA(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size)
+{
+    ESP_LOGW(TAG, "%s: Unsupported", __FUNCTION__);
+    return HAL_OK;
+}
+HAL_StatusTypeDef HAL_UART_AbortReceive(UART_HandleTypeDef *huart)
+{
+    ESP_LOGW(TAG, "%s: Unsupported", __FUNCTION__);
+    return;
+}
+HAL_StatusTypeDef HAL_UART_AbortTransmit(UART_HandleTypeDef *huart)
+{
+    ESP_LOGW(TAG, "%s: Unsupported", __FUNCTION__);
+    return;
 }
 
 HAL_StatusTypeDef HAL_I2C_Init(I2C_HandleTypeDef *hi2c)

@@ -120,6 +120,40 @@ typedef enum
 #define GPIO_PIN_47   (47)
 #define GPIO_PIN_48   (48)
 
+/** 
+  * @brief GPIO Init structure definition  
+  */ 
+typedef struct
+{
+  uint32_t Pin;       /*!< Specifies the GPIO pins to be configured.
+                           This parameter can be any value of @ref GPIO_pins_define */
+
+  uint32_t Mode;      /*!< Specifies the operating mode for the selected pins.
+                           This parameter can be a value of @ref GPIO_mode_define */
+
+  uint32_t Pull;      /*!< Specifies the Pull-up or Pull-Down activation for the selected pins.
+                           This parameter can be a value of @ref GPIO_pull_define */
+
+  uint32_t Speed;     /*!< Specifies the speed for the selected pins.
+                           This parameter can be a value of @ref GPIO_speed_define */
+
+  uint32_t Alternate;  /*!< Peripheral to be connected to the selected pins. 
+                            This parameter can be a value of @ref GPIO_Alternate_function_selection */
+}GPIO_InitTypeDef;
+
+#define  GPIO_MODE_INPUT                        GPIO_MODE_INPUT                                                  /*!< Input Floating Mode                   */
+#define  GPIO_MODE_OUTPUT_PP                    GPIO_MODE_OUTPUT                                   /*!< Output Push Pull Mode                 */
+#define  GPIO_MODE_OUTPUT_OD                    GPIO_MODE_OUTPUT_OD                                   /*!< Output Open Drain Mode                */
+
+#define  GPIO_NOPULL        GPIO_PULLUP_DISABLE   /*!< No Pull-up or Pull-down activation  */
+#define  GPIO_PULLUP        GPIO_PULLUP_ENABLE   /*!< Pull-up activation                  */
+#define  GPIO_PULLDOWN      GPIO_PULLDOWN_ENABLE   /*!< Pull-down activation                */
+
+#define  GPIO_SPEED_FREQ_LOW         0x00000000U  /*!< IO works at 2 MHz, please refer to the product datasheet */
+#define  GPIO_SPEED_FREQ_MEDIUM      0x00000001U  /*!< range 12,5 MHz to 50 MHz, please refer to the product datasheet */
+#define  GPIO_SPEED_FREQ_HIGH        0x00000002U  /*!< range 25 MHz to 100 MHz, please refer to the product datasheet  */
+#define  GPIO_SPEED_FREQ_VERY_HIGH   0x00000003U  /*!< range 50 MHz to 200 MHz, please refer to the product datasheet  */
+
 typedef struct {
     twai_timing_config_t t_config;
     TaskHandle_t task;
@@ -431,6 +465,7 @@ typedef struct
 typedef struct {
     UART_InitTypeDef Init;
     uint32_t a;
+    uint32_t ErrorCode;
 } UART_HandleTypeDef;
 
 
