@@ -20,7 +20,7 @@
 #include "main.h"
 
 // Enabled features
-
+#define DEFAULTMAIN 1 // FFBWHeel
 // Main classes
 #define FFBWHEEL
 #define FFBJOYSTICK

@@ -56,7 +56,7 @@
 #define SIMPLEMOTION // Requires motor gpio pin
 
 //----------------------
-
+#define BTNFAILSAFE // Use user button to force board into failsafe mainclass
 
 #define TIM_ENC htim3
 // Timer 3 is used by the encoder.

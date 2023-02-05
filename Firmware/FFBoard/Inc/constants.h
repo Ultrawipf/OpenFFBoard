@@ -49,4 +49,5 @@ static const uint8_t SW_VERSION_INT[3] = {1,12,3}; // Version as array. 8 bit ea
 #define GPIO_MOTOR // See cpp_target_config.cpp for pin
 #endif
 
+
 #endif

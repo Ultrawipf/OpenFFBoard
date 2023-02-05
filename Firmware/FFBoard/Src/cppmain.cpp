@@ -87,13 +87,15 @@ void cppmain() {
 	startADC(); // enable ADC DMA
 
 	// If switch pressed at boot select failsafe implementation
+#ifdef BTNFAILSAFE
 	if(HAL_GPIO_ReadPin(BUTTON_A_GPIO_Port, BUTTON_A_Pin) == 1){
 		main_id = 0;
-	}else{
-		if(!Flash_ReadWriteDefault(ADR_CURRENT_CONFIG, &main_id,0)){
-			Error_Handler();
-		}
+	}else
+#endif
+	if(!Flash_ReadWriteDefault(ADR_CURRENT_CONFIG, &main_id,DEFAULTMAIN)){
+		Error_Handler();
 	}
+
 
 	mainclass = mainchooser.Create(main_id);
 	if(mainclass == nullptr){ // invalid id
