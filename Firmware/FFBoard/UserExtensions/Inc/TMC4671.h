@@ -32,9 +32,13 @@
 #ifdef HW_ESP32SX
 #define TMC_THREAD_MEM 4096
 #define TMC_THREAD_PRIO 25*25/56
+#define TMCENC_THREAD_MEM 2048
+#define TMCENC_THREAD_PRIO 33*25/56
 #else
 #define TMC_THREAD_MEM 256
 #define TMC_THREAD_PRIO 25 // Must be higher than main thread
+#define TMCENC_THREAD_MEM 80
+#define TMCENC_THREAD_PRIO 33
 #endif
 
 #define TMC_ADCOFFSETFAIL 5000 // How much offset from 0x7fff to allow before a calibration is failed

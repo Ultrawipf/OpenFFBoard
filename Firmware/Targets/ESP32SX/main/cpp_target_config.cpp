@@ -42,18 +42,25 @@ CANPort canport{CANPORT};
 
 #ifdef PWMDRIVER
 // CCR and channels must match!
-const PWMConfig pwmTimerConfig = {
-		.channel_1 = TIM_CHANNEL_1,
-		.channel_2 = TIM_CHANNEL_2,
-		.channel_3 = TIM_CHANNEL_3,
-		.channel_4 = TIM_CHANNEL_4,
+const PWMConfig pwmTimerConfig =
+{
+	.channel_1 = TIM_CHANNEL_1,
+	.channel_2 = TIM_CHANNEL_2,
+	.channel_3 = TIM_CHANNEL_3,
+	.channel_4 = TIM_CHANNEL_4,
 
-		.ccr_1 = 1,
-		.ccr_2 = 2,
-		.ccr_3 = 3,
-		.ccr_4 = 4,
+	.pwm_chan = 1,
+	.dir_chan = 3,
+	.dir_chan_n = 4,
 
-		.timer = &TIM_PWM,
-		.timerFreq = APB_CLK_FREQ
-	};
+	.centerpwm_chan = 1,
+
+	.rcpwm_chan = 1,
+
+	.dualpwm1 = 1,
+	.dualpwm2 = 2,
+
+	.timer = &TIM_PWM,
+	.timerFreq = APB_CLK_FREQ
+};
 #endif

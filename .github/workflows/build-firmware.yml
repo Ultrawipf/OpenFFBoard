@@ -63,7 +63,9 @@ jobs:
         cd /opt/esp/idf
         git checkout c29343eb94d
         git submodule update --init --recursive
+        git status
         tools/idf_tools.py --non-interactive install cmake
+        rm $IDF_TOOLS_PATH/idf-env.json
         ./install.sh
         source ./export.sh
         cd $GITHUB_WORKSPACE/$PROJECT_PATH

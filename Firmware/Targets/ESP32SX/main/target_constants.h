@@ -8,6 +8,7 @@
 #ifndef INC_TARGET_CONSTANTS_H_
 #define INC_TARGET_CONSTANTS_H_
 
+#include "sdkconfig.h"
 /*
  * Add settings and peripheral maps for this specific target here
  */
@@ -16,6 +17,10 @@
 #define HW_TYPE "ESP32SX"
 #define HW_TYPE_INT 2
 #define FW_DEVID 0x413 // F407
+
+#if !(defined(CONFIG_IDF_TARGET_ESP32S2)) && !(defined(CONFIG_IDF_TARGET_ESP32S3))
+#error "The target chip is not supported, you should select a proper target by 'idf.py set-target esp32s2/3'"
+#endif
 
 #define HW_ESP32SX // Defining this macro will implement the STM32 HAL library using some of the functions of ESP-IDF
 
@@ -97,6 +102,9 @@ extern ADC_HandleTypeDef hadc1;
 #else
 #define BUTTON_PINS 3
 #endif
+
+extern SPI_HandleTypeDef hspi1;
+#define HSPIDRV hspi1
 
 // CAN
 #ifdef CANBUS

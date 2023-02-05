@@ -14,7 +14,6 @@
 static const char *TAG = "glue";
 
 ADC_HandleTypeDef hadc1;
-ADC_HandleTypeDef hadc2;
 SPI_HandleTypeDef hspi1;
 #if defined(SHIFTERBUTTONS) || defined(SPIBUTTONS)
 SPI_HandleTypeDef hspi2;
@@ -24,6 +23,20 @@ UART_HandleTypeDef huart3;
 CAN_HandleTypeDef hcan1;
 TIM_HandleTypeDef htim1;
 I2C_HandleTypeDef hi2c1;
+
+
+void HAL_GPIO_Init(GPIO_TypeDef  *GPIOx, GPIO_InitTypeDef *GPIO_Init)
+{
+    gpio_config_t io_conf = {0};
+    io_conf.intr_type = GPIO_INTR_DISABLE;
+    io_conf.mode = GPIO_Init->Mode;
+    io_conf.pin_bit_mask = (BIT64(LED_CLIP_Pin) | BIT64(LED_ERR_Pin) \
+                            | BIT64(LED_SYS_Pin) | BIT64(DRV_ENABLE_Pin) \
+                            | BIT64(DRV_BRAKE_Pin) | BIT64(CAN_S_Pin));
+    io_conf.pull_down_en = 0;
+    io_conf.pull_up_en = 0;
+    gpio_config(&io_conf);
+}
 
 GPIO_PinState HAL_GPIO_ReadPin(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin)
 {
@@ -125,7 +138,7 @@ HAL_StatusTypeDef HAL_SPI_Init(SPI_HandleTypeDef *hspi)
         .sclk_io_num = SPI1_SCK_Pin,
         .quadwp_io_num = -1,
         .quadhd_io_num = -1,
-        .max_transfer_sz = 256,
+        .max_transfer_sz = 4096,
     };
     hspi->Init.BaudRatePrescaler >>= 3;
     uint32_t freq = (84 * 1000 * 1000) / (uint32_t)(powf(2, hspi->Init.BaudRatePrescaler + 1));
@@ -156,6 +169,11 @@ HAL_StatusTypeDef HAL_SPI_Transmit(SPI_HandleTypeDef *hspi, uint8_t *pData, uint
     ret = spi_device_polling_transmit(hspi->Instance, &t); //Transmit!
     assert(ret == ESP_OK);          //Should have had no issues.
     return HAL_OK;
+}
+
+HAL_StatusTypeDef HAL_SPI_Transmit_DMA(SPI_HandleTypeDef *hspi, uint8_t *pData, uint16_t Size)
+{
+    return HAL_SPI_Transmit(hspi, pData, Size, 500);
 }
 
 HAL_StatusTypeDef HAL_SPI_Transmit_IT(SPI_HandleTypeDef *hspi, uint8_t *pData, uint16_t Size)
@@ -212,6 +230,21 @@ HAL_StatusTypeDef HAL_UART_Transmit_IT(UART_HandleTypeDef *huart, uint8_t *pData
     return HAL_OK;
 }
 HAL_StatusTypeDef HAL_UART_Receive(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size, uint32_t Timeout)
+{
+    ESP_LOGW(TAG, "%s: Unsupported", __FUNCTION__);
+    return HAL_OK;
+}
+HAL_StatusTypeDef HAL_UART_Receive_DMA(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size)
+{
+    ESP_LOGW(TAG, "%s: Unsupported", __FUNCTION__);
+    return HAL_OK;
+}
+HAL_StatusTypeDef HAL_UART_AbortReceive(UART_HandleTypeDef *huart)
+{
+    ESP_LOGW(TAG, "%s: Unsupported", __FUNCTION__);
+    return HAL_OK;
+}
+HAL_StatusTypeDef HAL_UART_AbortTransmit(UART_HandleTypeDef *huart)
 {
     ESP_LOGW(TAG, "%s: Unsupported", __FUNCTION__);
     return HAL_OK;

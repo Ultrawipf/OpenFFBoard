@@ -37,6 +37,8 @@ public:
 		return(this->port == b.port && this->pin == b.pin);
 	}
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
 	/**
 	 * Sets a pin into output mode in case it was previously reconfigured
 	 */
@@ -48,7 +50,7 @@ public:
 		GPIO_InitStruct.Speed = speed;
 		HAL_GPIO_Init(port, &GPIO_InitStruct);
 	}
-
+#pragma GCC diagnostic pop
 	//const std::string getName(){return name;}
 
 
