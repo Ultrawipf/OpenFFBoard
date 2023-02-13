@@ -17,7 +17,7 @@ class CanHandler {
 public:
 	CanHandler();
 	virtual ~CanHandler();
-	static std::vector<CanHandler*> canHandlers;
+//	static std::vector<CanHandler*> canHandlers;
 
 //	static int32_t addCanFilter(CAN_HandleTypeDef* CanHandle,CAN_FilterTypeDef sFilterConfig);
 //	static void removeCanFilter(CAN_HandleTypeDef* CanHandle,uint8_t filterId);
@@ -29,6 +29,10 @@ public:
 	virtual void canTxCpltCallback(CAN_HandleTypeDef *hcan,uint32_t mailbox);
 	virtual void canTxAbortCallback(CAN_HandleTypeDef *hcan,uint32_t mailbox);
 
+	static std::vector<CanHandler*>& getCANHandlers() {
+		static std::vector<CanHandler*> canHandlers{};
+		return canHandlers;
+	}
 //private:
 //	//static std::vector<CAN_FilterTypeDef> canFilters;
 //
