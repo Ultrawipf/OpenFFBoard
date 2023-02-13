@@ -7,15 +7,15 @@
 #include "CanHandler.h"
 #ifdef CANBUS
 
-std::vector<CanHandler*> CanHandler::canHandlers;
+//std::vector<CanHandler*> CanHandler::canHandlers;
 
 CanHandler::CanHandler() {
-	addCallbackHandler(canHandlers, this);
+	addCallbackHandler(getCANHandlers(), this);
 
 }
 
 CanHandler::~CanHandler() {
-	removeCallbackHandler(canHandlers, this);
+	removeCallbackHandler(getCANHandlers(), this);
 }
 
 /**
