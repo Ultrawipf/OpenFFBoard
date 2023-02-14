@@ -8,6 +8,7 @@
 #include "target_constants.h"
 #ifdef CANBUS
 #include "CAN.h"
+#include "cpp_target_config.h"
 
 
 ClassIdentifier CANPort::info = {
@@ -102,6 +103,8 @@ bool CANPort::start(){
 #ifdef CAN_COMMANDS_DISABLED_IF_NOT_USED
 	this->setCommandsEnabled(true);
 #endif
+	//CAN_IT_RX_FIFO0_FULL | CAN_IT_RX_FIFO0_OVERRUN
+	HAL_CAN_ActivateNotification(hcan, CAN_IT_RX_FIFO0_MSG_PENDING | CAN_IT_RX_FIFO1_MSG_PENDING | CAN_IT_RX_FIFO0_FULL | CAN_IT_RX_FIFO0_OVERRUN | CAN_IT_RX_FIFO1_FULL | CAN_IT_RX_FIFO1_OVERRUN | CAN_IT_ERROR | CAN_IT_BUSOFF | CAN_IT_TX_MAILBOX_EMPTY);
 	setSpeedPreset(this->speedPreset); // Set preset again for a safe state
 	return HAL_CAN_Start(this->hcan) == HAL_OK;
 }
@@ -221,13 +224,13 @@ void CANPort::setSpeed(uint32_t speed){
 	setSpeedPreset(preset);
 }
 
-void CANPort::takeSemaphore(){
+void CANPort::takeSemaphore(uint32_t delay){
 	bool isIsr = inIsr();
 	BaseType_t taskWoken = 0;
 	if(isIsr)
 		this->semaphore.TakeFromISR(&taskWoken);
 	else
-		this->semaphore.Take();
+		this->semaphore.Take(delay);
 	//isTakenFlag = true;
 	portYIELD_FROM_ISR(taskWoken);
 }
@@ -270,7 +273,9 @@ bool CANPort::sendMessage(CAN_TxHeaderTypeDef *pHeader, uint8_t aData[],uint32_t
 	if(pTxMailbox == nullptr){
 		pTxMailbox = &this->txMailbox;
 	}
+
 	takeSemaphore();
+
 	//this->isTakenFlag = true;
 	if (HAL_CAN_AddTxMessage(this->hcan, pHeader, aData, pTxMailbox) != HAL_OK)
 	{
@@ -278,10 +283,29 @@ bool CANPort::sendMessage(CAN_TxHeaderTypeDef *pHeader, uint8_t aData[],uint32_t
 	  giveSemaphore();
 	  return false;
 	}
-	giveSemaphore();
+//	txMailboxes &= ~*pTxMailbox;
+//	if(HAL_CAN_GetTxMailboxesFreeLevel(hcan)) // Give back semaphore immediately if mailboxes are still free
+//		giveSemaphore();
 	return true;
 }
 
+void CANPort::canTxCpltCallback(CAN_HandleTypeDef *hcan,uint32_t mailbox){
+	if(hcan == this->hcan){
+		giveSemaphore();
+	}
+}
+
+void CANPort::canTxAbortCallback(CAN_HandleTypeDef *hcan,uint32_t mailbox){
+	if(hcan == this->hcan){
+		giveSemaphore();
+	}
+}
+
+void CANPort::canErrorCallback(CAN_HandleTypeDef *hcan){
+	if(hcan == this->hcan){
+		giveSemaphore();
+	}
+}
 
 
 /**
@@ -291,19 +315,32 @@ bool CANPort::sendMessage(CAN_TxHeaderTypeDef *pHeader, uint8_t aData[],uint32_t
  */
 int32_t CANPort::addCanFilter(CAN_FilterTypeDef sFilterConfig){
 	takeSemaphore();
-	int32_t lowestId = sFilterConfig.FilterFIFOAssignment == CAN_RX_FIFO0 ? 0 : slaveFilterStart;
-	int32_t highestId = sFilterConfig.FilterFIFOAssignment == CAN_RX_FIFO0 ? slaveFilterStart : 29;
+	int32_t lowestId = 0;// sFilterConfig.FilterFIFOAssignment == CAN_RX_FIFO0 ? 0 : slaveFilterStart;
+	int32_t highestId = slaveFilterStart;// sFilterConfig.FilterFIFOAssignment == CAN_RX_FIFO0 ? slaveFilterStart : 29;
 	int32_t foundId = -1;
+
 	for(uint8_t id = lowestId; id < highestId ; id++ ){
+		bool foundExisting = false;
 		for(CAN_FilterTypeDef filter : canFilters){
-			if(filter.FilterFIFOAssignment == sFilterConfig.FilterFIFOAssignment && id == filter.FilterBank){
+			if(id == filter.FilterBank
+//					&& filter.FilterIdHigh == sFilterConfig.FilterIdHigh && filter.FilterIdLow == sFilterConfig.FilterIdLow &&filter.FilterFIFOAssignment == sFilterConfig.FilterFIFOAssignment &&
+//					&& filter.FilterMaskIdHigh == sFilterConfig.FilterMaskIdHigh && filter.FilterMaskIdLow == sFilterConfig.FilterMaskIdLow
+//					&& filter.FilterMode == sFilterConfig.FilterMode && filter.FilterScale == sFilterConfig.FilterScale
+					)
+			{
+				foundExisting = true;
 				break;
 			}
 		}
 		foundId = id;
-		break;
+		if(!foundExisting){
+			break;
+		}
+
 	}
 	if(foundId < highestId){
+		if(sFilterConfig.FilterBank == 0)
+			sFilterConfig.FilterBank = foundId;
 		if (HAL_CAN_ConfigFilter(this->hcan, &sFilterConfig) == HAL_OK){
 			canFilters.push_back(sFilterConfig);
 		}

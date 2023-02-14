@@ -68,6 +68,8 @@ public:
 	void setTorque(float torque);
 
 	void canRxPendCallback(CAN_HandleTypeDef *hcan,uint8_t* rxBuf,CAN_RxHeaderTypeDef* rxHeader,uint32_t fifo) override;
+	void canErrorCallback(CAN_HandleTypeDef *hcan);
+
 
 	float getPos_f() override;
 	uint32_t getCpr() override;
@@ -89,6 +91,8 @@ public:
 	void registerCommands();
 	std::string getHelpstring(){return "ODrive motor driver with CAN";};
 
+	void setCanFilter();
+
 private:
 	CANPort* port = &canport;
 	float lastPos = 0;
@@ -97,6 +101,9 @@ private:
 	float lastVoltage = 0;
 	uint32_t lastVoltageUpdate = 0;
 	uint32_t lastCanMessage = 0;
+
+	uint32_t lastPosTime = 0;
+	bool posWaiting = false;
 
 	int8_t nodeId = 0; // 6 bits can ID
 	int8_t motorId = 0;

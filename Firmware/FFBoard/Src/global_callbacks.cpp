@@ -38,7 +38,6 @@
 #include "cdc_device.h"
 #include "CDCcomm.h"
 
-
 extern FFBoardMain* mainclass;
 
 #ifdef ADC1_CHANNELS
@@ -116,16 +115,20 @@ uint8_t canRxBuf1[8];
 CAN_RxHeaderTypeDef canRxHeader1; // Receive header 1
 // RX
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan){
-	if(HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &canRxHeader0, canRxBuf0) == HAL_OK){
-		for(CanHandler* c : CanHandler::getCANHandlers()){
-			c->canRxPendCallback(hcan,canRxBuf0,&canRxHeader0,CAN_RX_FIFO0);
+	for(uint8_t i = 0; i < HAL_CAN_GetRxFifoFillLevel(hcan, CAN_RX_FIFO0); i++){
+		if(HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &canRxHeader0, canRxBuf0) == HAL_OK){
+			for(CanHandler* c : CanHandler::getCANHandlers()){
+				c->canRxPendCallback(hcan,canRxBuf0,&canRxHeader0,CAN_RX_FIFO0);
+			}
 		}
 	}
 }
 void HAL_CAN_RxFifo1MsgPendingCallback(CAN_HandleTypeDef *hcan){
-	if(HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO1, &canRxHeader1, canRxBuf1) == HAL_OK){
-		for(CanHandler* c : CanHandler::getCANHandlers()){
-			c->canRxPendCallback(hcan,canRxBuf1,&canRxHeader1,CAN_RX_FIFO1);
+	for(uint8_t i = 0; i < HAL_CAN_GetRxFifoFillLevel(hcan, CAN_RX_FIFO1); i++){
+		if(HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO1, &canRxHeader1, canRxBuf1) == HAL_OK){
+			for(CanHandler* c : CanHandler::getCANHandlers()){
+				c->canRxPendCallback(hcan,canRxBuf1,&canRxHeader1,CAN_RX_FIFO1);
+			}
 		}
 	}
 }
@@ -175,6 +178,7 @@ void HAL_CAN_ErrorCallback(CAN_HandleTypeDef *hcan){
 	for(CanHandler* c : CanHandler::getCANHandlers()){
 		c->canErrorCallback(hcan);
 	}
+	hcan->ErrorCode = 0; // Clear errors
 }
 #endif
 

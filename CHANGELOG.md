@@ -1,5 +1,6 @@
 ### Changes this version:
 - Added basic iterative TMC PI autotuning
+- Fixed issues with CAN transmission with multiple axes
   
 ### Changes in 1.12.x:
 - Added support for Simplemotion V2 (Ioni/Argon motor drivers)

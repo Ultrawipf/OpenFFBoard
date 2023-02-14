@@ -17,6 +17,11 @@
 #include "PersistentStorage.h"
 #include "CommandHandler.h"
 
+#ifdef STM32F4
+#include "stm32f4xx_hal_can.h"
+#define CAN_MAILBOXES 3
+#endif
+
 typedef struct{
 	uint8_t data[8] = {0};
 	CAN_TxHeaderTypeDef header = {0,0,0,CAN_RTR_DATA,8,(FunctionalState)0};
@@ -28,8 +33,7 @@ typedef struct{
 } CAN_rx_msg;
 
 
-
-class CANPort : public CommandHandler, public PersistentStorage { //  : public CanHandler if interrupt callbacks needed
+class CANPort : public CommandHandler, public PersistentStorage,public CanHandler { //  : public CanHandler if interrupt callbacks needed
 	enum class CanPort_commands : uint32_t {speed,send,len};
 public:
 	CANPort(CAN_HandleTypeDef &hcan);
@@ -55,7 +59,7 @@ public:
 	uint8_t getSpeedPreset();
 
 	void giveSemaphore();
-	void takeSemaphore();
+	void takeSemaphore(uint32_t delay = portMAX_DELAY);
 
 	void setSilentMode(bool silent);
 
@@ -64,6 +68,9 @@ public:
 	static uint8_t speedToPreset(uint32_t speed);
 	static uint32_t presetToSpeed(uint8_t preset);
 
+	void canTxCpltCallback(CAN_HandleTypeDef *hcan,uint32_t mailbox);
+	void canTxAbortCallback(CAN_HandleTypeDef *hcan,uint32_t mailbox);
+	void canErrorCallback(CAN_HandleTypeDef *hcan);
 
 	// Config
 
@@ -80,7 +87,8 @@ private:
 	CAN_HandleTypeDef *hcan = nullptr;
 	std::vector<CAN_FilterTypeDef> canFilters;
 	uint32_t txMailbox;
-	cpp_freertos::BinarySemaphore semaphore = cpp_freertos::BinarySemaphore(true);
+
+	cpp_freertos::BinarySemaphore semaphore = cpp_freertos::BinarySemaphore(true); // Semaphore will block
 	//bool isTakenFlag = false;
 	const OutputPin* silentPin;
 	bool silent = true;

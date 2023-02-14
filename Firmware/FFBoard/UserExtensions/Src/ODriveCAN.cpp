@@ -46,19 +46,7 @@ ODriveCAN::ODriveCAN(uint8_t id)  : CommandHandler("odrv", CLSID_MOT_ODRV0,id), 
 	}
 	restoreFlash();
 
-	// Set up a filter to receive odrive commands
-	CAN_FilterTypeDef sFilterConfig;
-	sFilterConfig.FilterBank = 0;
-	sFilterConfig.FilterMode = CAN_FILTERMODE_IDMASK;
-	sFilterConfig.FilterScale = CAN_FILTERSCALE_32BIT;
-	sFilterConfig.FilterIdHigh = 0x0000;
-	sFilterConfig.FilterIdLow = 0x0000;
-	sFilterConfig.FilterMaskIdHigh = 0x0000;
-	sFilterConfig.FilterMaskIdLow = 0x0000;
-	sFilterConfig.FilterFIFOAssignment = CAN_RX_FIFO0;
-	sFilterConfig.FilterActivation = ENABLE;
-	sFilterConfig.SlaveStartFilterBank = 14;
-	this->filterId = this->port->addCanFilter(sFilterConfig);
+	setCanFilter();
 
 	if(port->getSpeedPreset() < 3){
 		port->setSpeedPreset(3); // Minimum 250k
@@ -74,6 +62,30 @@ ODriveCAN::~ODriveCAN() {
 	this->setTorque(0.0);
 	this->port->removeCanFilter(filterId);
 	this->port->freePort();
+}
+
+void ODriveCAN::setCanFilter(){
+	// Set up a filter to receive odrive commands
+	CAN_FilterTypeDef sFilterConfig;
+	sFilterConfig.FilterBank = 0;
+	sFilterConfig.FilterMode = CAN_FILTERMODE_IDMASK;
+	sFilterConfig.FilterScale = CAN_FILTERSCALE_32BIT;
+//	sFilterConfig.FilterIdHigh = 0x0000;
+//	sFilterConfig.FilterIdLow = 0x0000;
+//	sFilterConfig.FilterMaskIdHigh = 0x0000;
+//	sFilterConfig.FilterMaskIdLow = 0x0000;
+	uint32_t filter_id = (nodeId & 0x3F) << 5;
+	uint32_t filter_mask = 0x07E0;
+	sFilterConfig.FilterIdHigh = filter_id << 5;
+	sFilterConfig.FilterIdLow = 0x0000;
+	sFilterConfig.FilterMaskIdHigh = filter_mask << 5;
+	sFilterConfig.FilterMaskIdLow = 0x0000;
+
+//	sFilterConfig.FilterFIFOAssignment = CAN_RX_FIFO0;
+	sFilterConfig.FilterFIFOAssignment = motorId % 2 == 0 ? CAN_RX_FIFO0 : CAN_RX_FIFO1;
+	sFilterConfig.FilterActivation = ENABLE;
+	sFilterConfig.SlaveStartFilterBank = 14;
+	this->filterId = this->port->addCanFilter(sFilterConfig);
 }
 
 void ODriveCAN::registerCommands(){
@@ -231,8 +243,11 @@ void ODriveCAN::requestMsg(uint8_t cmd){
 }
 
 float ODriveCAN::getPos_f(){
-	if(this->connected)
+	// Do not start a new request if already waiting and within timeout
+	if(this->connected && (!posWaiting || HAL_GetTick() - lastPosTime > 5)){
+		posWaiting = true;
 		requestMsg(0x09);
+	}
 	return lastPos-posOffset;
 }
 
@@ -248,8 +263,9 @@ uint32_t ODriveCAN::getCpr(){
 	return 0xffff;
 }
 void ODriveCAN::setTorque(float torque){
-	if(motorReady())
+	//if(motorReady()){
 		sendMsg<float>(0x0E,torque);
+	//}
 }
 
 EncoderType ODriveCAN::getEncoderType(){
@@ -305,7 +321,9 @@ CommandStatus ODriveCAN::command(const ParsedCommand& cmd,std::vector<CommandRep
 		break;
 
 	case ODriveCAN_commands::canid:
-		return handleGetSet(cmd, replies, this->nodeId);
+		handleGetSet(cmd, replies, this->nodeId);
+		canport.removeCanFilter(filterId);
+		setCanFilter();
 		break;
 	case ODriveCAN_commands::state:
 		if(cmd.type == CMDtype::get){
@@ -356,9 +374,11 @@ CommandStatus ODriveCAN::command(const ParsedCommand& cmd,std::vector<CommandRep
 
 }
 
+void ODriveCAN::canErrorCallback(CAN_HandleTypeDef *hcan){
+	//pulseErrLed();
+}
 
 void ODriveCAN::canRxPendCallback(CAN_HandleTypeDef *hcan,uint8_t* rxBuf,CAN_RxHeaderTypeDef* rxHeader,uint32_t fifo){
-
 	uint16_t node = (rxHeader->StdId >> 5) & 0x3F;
 	if(node != this->nodeId){
 		return;
@@ -391,6 +411,9 @@ void ODriveCAN::canRxPendCallback(CAN_HandleTypeDef *hcan,uint8_t* rxBuf,CAN_RxH
 
 		uint64_t ts = (msg >> 32) & 0xffffffff;
 		memcpy(&lastSpeed,&ts,sizeof(float));
+		lastPosTime = HAL_GetTick();
+		posWaiting = false;
+
 		break;
 	}
 
