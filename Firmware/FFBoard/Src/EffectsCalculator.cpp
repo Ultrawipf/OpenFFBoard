@@ -139,9 +139,9 @@ void EffectsCalculator::calculateEffects(std::vector<std::unique_ptr<Axis>> &axe
 
 		for(uint8_t axis=0 ; axis < axisCount ; axis++) // Calculate effects for all axes
 		{
-			force = calcComponentForce(effect, force, axes, axis);
-			calcStatsEffectType(effect->type, force);
-			forces[axis] += force; // Do not clip yet to allow effects to subtract force correctly. Will not overflow as maxeffects * 0x7fff is less than int32 range
+			int32_t axisforce = calcComponentForce(effect, force, axes, axis);
+			calcStatsEffectType(effect->type, axisforce);
+			forces[axis] += axisforce; // Do not clip yet to allow effects to subtract force correctly. Will not overflow as maxeffects * 0x7fff is less than int32 range
 		}
 	}
 
