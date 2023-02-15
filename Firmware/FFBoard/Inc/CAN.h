@@ -89,10 +89,12 @@ private:
 	uint32_t txMailbox;
 
 	cpp_freertos::BinarySemaphore semaphore = cpp_freertos::BinarySemaphore(true); // Semaphore will block
-	//bool isTakenFlag = false;
+	bool isWaitingFlag = false;
 	const OutputPin* silentPin;
 	bool silent = true;
 	bool active = false;
+
+	uint32_t lastSentTime = 0;
 	int32_t portUsers = 0;
 
 	CAN_TxHeaderTypeDef header = {0,0,0,CAN_RTR_DATA,8,(FunctionalState)0};
