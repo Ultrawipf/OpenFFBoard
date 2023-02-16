@@ -663,8 +663,8 @@ bool TMC4671::pidAutoTune(){
 	setMotionMode(MotionMode::torque, true);
 	setFluxTorque(0, 0);
 	TMC4671PIDConf newpids = curPids;
-	int16_t targetflux = bangInitPower;
-	int16_t targetflux_p = targetflux * 0.7;
+	int16_t targetflux = std::min<int16_t>(this->curLimits.pid_torque_flux,bangInitPower); // Respect limits
+	int16_t targetflux_p = targetflux * 0.75;
 
 	uint16_t fluxI = 0,fluxP = 100; // Startvalues
 	writeReg(0x54, fluxI | (fluxP << 16));
@@ -672,7 +672,7 @@ bool TMC4671::pidAutoTune(){
 	setFluxTorque(targetflux, 0); // Start flux step
 	while(fluxP < 20000){
 		writeReg(0x54, fluxI | (fluxP << 16)); // Update P
-		Delay(20); // Wait a bit. not critical
+		Delay(50); // Wait a bit. not critical
 		flux = getActualFlux();
 		if(flux > targetflux_p){
 			break;
