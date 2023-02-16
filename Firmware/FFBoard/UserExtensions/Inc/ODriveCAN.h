@@ -55,7 +55,9 @@ public:
 		msg.header.RTR = CAN_RTR_DATA;
 		msg.header.DLC = sizeof(T);
 		msg.header.StdId = cmd | (nodeId << 5);
-		port->sendMessage(msg);
+		if(!port->sendMessage(msg)){
+			port->abortTxRequests();
+		}
 	}
 
 	void sendMsg(uint8_t cmd,float value);

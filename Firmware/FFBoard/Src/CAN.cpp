@@ -207,7 +207,7 @@ void CANPort::setSpeedPreset(uint8_t preset){
 
 	takeSemaphore();
 	HAL_CAN_Stop(this->hcan);
-	HAL_CAN_AbortTxRequest(hcan, txMailbox);
+	HAL_CAN_AbortTxRequest(hcan, txMailboxes);
 	this->hcan->Instance->BTR = canSpeedBTR_preset[preset];
 	HAL_CAN_ResetError(hcan);
 
@@ -224,15 +224,18 @@ void CANPort::setSpeed(uint32_t speed){
 	setSpeedPreset(preset);
 }
 
-void CANPort::takeSemaphore(uint32_t delay){
+bool CANPort::takeSemaphore(uint32_t delay){
 	bool isIsr = inIsr();
 	BaseType_t taskWoken = 0;
+	bool success;
 	if(isIsr)
-		this->semaphore.TakeFromISR(&taskWoken);
-	else
-		this->semaphore.Take(delay);
+		success = this->semaphore.TakeFromISR(&taskWoken);
+	else{
+		success = this->semaphore.Take(delay);
+	}
 	//isTakenFlag = true;
 	portYIELD_FROM_ISR(taskWoken);
+	return success;
 }
 
 void CANPort::giveSemaphore(){
@@ -242,7 +245,7 @@ void CANPort::giveSemaphore(){
 		this->semaphore.GiveFromISR(&taskWoken);
 	else
 		this->semaphore.Give();
-	//isTakenFlag = false;
+	isWaitingFlag = false;
 	portYIELD_FROM_ISR(taskWoken);
 }
 
@@ -261,7 +264,11 @@ void CANPort::setSilentMode(bool silent){
  * Wraps the internal transmit function
  */
 bool CANPort::sendMessage(CAN_tx_msg& msg){
-	return this->sendMessage(&msg.header,msg.data,&this->txMailbox);
+	return this->sendMessage(&msg.header,msg.data,nullptr);
+}
+
+void CANPort::abortTxRequests(){
+	HAL_CAN_AbortTxRequest(hcan, txMailboxes);
 }
 
 /**
@@ -270,18 +277,23 @@ bool CANPort::sendMessage(CAN_tx_msg& msg){
 bool CANPort::sendMessage(CAN_TxHeaderTypeDef *pHeader, uint8_t aData[],uint32_t *pTxMailbox){
 	if(this->silent)
 		setSilentMode(false);
+	uint32_t mailbox;
 	if(pTxMailbox == nullptr){
-		pTxMailbox = &this->txMailbox;
+		pTxMailbox = &mailbox;
 	}
 
-	if(!HAL_CAN_GetTxMailboxesFreeLevel(hcan) && HAL_GetTick() - lastSentTime > 10){
+	if(!HAL_CAN_GetTxMailboxesFreeLevel(hcan) && HAL_GetTick() - lastSentTime > sendTimeout){
 		// Mailbox full and nothing has been sent successfully for some time. Abort previous requests if timeout reached
-		HAL_CAN_AbortTxRequest(hcan, CAN_TX_MAILBOX0 | CAN_TX_MAILBOX1 | CAN_TX_MAILBOX2);
+		HAL_CAN_AbortTxRequest(hcan, txMailboxes);
 	}
 //
 	if(!HAL_CAN_GetTxMailboxesFreeLevel(hcan)){ // Only wait if no mailbox is free
 		isWaitingFlag = true;
-		takeSemaphore();
+		if(!takeSemaphore(sendTimeout)){
+			isWaitingFlag = false;
+			return false;
+		}
+
 	}
 
 	//this->isTakenFlag = true;
@@ -292,7 +304,7 @@ bool CANPort::sendMessage(CAN_TxHeaderTypeDef *pHeader, uint8_t aData[],uint32_t
 			giveSemaphore();
 	  return false;
 	}
-//	txMailboxes &= ~*pTxMailbox;
+	txMailboxes |= *pTxMailbox;
 //	if(HAL_CAN_GetTxMailboxesFreeLevel(hcan)) // Give back semaphore immediately if mailboxes are still free
 //		giveSemaphore();
 	return true;
@@ -301,6 +313,8 @@ bool CANPort::sendMessage(CAN_TxHeaderTypeDef *pHeader, uint8_t aData[],uint32_t
 void CANPort::canTxCpltCallback(CAN_HandleTypeDef *hcan,uint32_t mailbox){
 	if(hcan == this->hcan){
 		lastSentTime = HAL_GetTick();
+		txMailboxes &= ~mailbox;
+		debugpin.reset();
 		if(isWaitingFlag)
 			giveSemaphore();
 	}
@@ -308,18 +322,21 @@ void CANPort::canTxCpltCallback(CAN_HandleTypeDef *hcan,uint32_t mailbox){
 
 void CANPort::canTxAbortCallback(CAN_HandleTypeDef *hcan,uint32_t mailbox){
 	if(hcan == this->hcan){
+		debugpin.reset();
+		txMailboxes &= ~mailbox;
 		if(isWaitingFlag)
 			giveSemaphore();
 	}
 }
 
 void CANPort::canErrorCallback(CAN_HandleTypeDef *hcan){
-//	if(
-//		hcan == this->hcan &&
-//		hcan->ErrorCode & (HAL_CAN_ERROR_TX_ALST0 | HAL_CAN_ERROR_TX_ALST1 | HAL_CAN_ERROR_TX_ALST2 | HAL_CAN_ERROR_TX_TERR0 | HAL_CAN_ERROR_TX_TERR1 | HAL_CAN_ERROR_TX_TERR2)
-//	){
-//		giveSemaphore();
-//	}
+	if(
+		hcan == this->hcan &&
+		hcan->ErrorCode & (HAL_CAN_ERROR_TX_ALST0 | HAL_CAN_ERROR_TX_ALST1 | HAL_CAN_ERROR_TX_ALST2 | HAL_CAN_ERROR_TX_TERR0 | HAL_CAN_ERROR_TX_TERR1 | HAL_CAN_ERROR_TX_TERR2)
+	){
+		debugpin.set();
+		giveSemaphore();
+	}
 }
 
 

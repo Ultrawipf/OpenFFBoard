@@ -49,6 +49,7 @@ public:
 
 	bool sendMessage(CAN_tx_msg& msg);
 	bool sendMessage(CAN_TxHeaderTypeDef *pHeader, uint8_t aData[],uint32_t *pTxMailbox = nullptr);
+	void abortTxRequests();
 
 	int32_t addCanFilter(CAN_FilterTypeDef sFilterConfig);
 	void removeCanFilter(uint8_t filterId);
@@ -59,7 +60,7 @@ public:
 	uint8_t getSpeedPreset();
 
 	void giveSemaphore();
-	void takeSemaphore(uint32_t delay = portMAX_DELAY);
+	bool takeSemaphore(uint32_t delay = portMAX_DELAY);
 
 	void setSilentMode(bool silent);
 
@@ -86,7 +87,7 @@ private:
 	uint8_t speedPreset = CANSPEEDPRESET_500; // default
 	CAN_HandleTypeDef *hcan = nullptr;
 	std::vector<CAN_FilterTypeDef> canFilters;
-	uint32_t txMailbox;
+	uint32_t txMailboxes = 0;
 
 	cpp_freertos::BinarySemaphore semaphore = cpp_freertos::BinarySemaphore(true); // Semaphore will block
 	bool isWaitingFlag = false;
@@ -96,6 +97,8 @@ private:
 
 	uint32_t lastSentTime = 0;
 	int32_t portUsers = 0;
+
+	static const uint32_t sendTimeout = 100;
 
 	CAN_TxHeaderTypeDef header = {0,0,0,CAN_RTR_DATA,8,(FunctionalState)0};
 
