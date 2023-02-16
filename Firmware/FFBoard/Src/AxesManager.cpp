@@ -37,26 +37,7 @@ void AxesManager::deleteAxes(){
 	axis_count = 0;
 }
 
-//void AxesManager::setEffectsCalculator(EffectsCalculator* calc) {
-//	this->effects_calc = calc;
-//}
 
-//void AxesManager::restoreFlash() {
-//	uint16_t val;
-//	bool res = (Flash_Read(ADR_AXIS_COUNT, &val));
-//
-//	if (!res || !this->validAxisRange(val)) {
-//		val = 1;
-//	}
-//	this->setAxisCount(val);
-////	for (auto &axis : axes) {
-////		axis->restoreFlash();
-////	}
-//}
-//
-//void AxesManager::saveFlash() {
-//	Flash_Write(ADR_AXIS_COUNT, this->axis_count);
-//}
 
 void AxesManager::update() {
 	for (auto &axis: axes) {
