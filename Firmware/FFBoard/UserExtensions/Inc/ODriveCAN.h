@@ -56,7 +56,7 @@ public:
 		msg.header.DLC = sizeof(T);
 		msg.header.StdId = cmd | (nodeId << 5);
 		if(!port->sendMessage(msg)){
-			port->abortTxRequests();
+			// Nothing
 		}
 	}
 

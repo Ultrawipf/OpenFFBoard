@@ -98,7 +98,7 @@ private:
 	uint32_t lastSentTime = 0;
 	int32_t portUsers = 0;
 
-	static const uint32_t sendTimeout = 100;
+	static const uint32_t sendTimeout = 20;
 
 	CAN_TxHeaderTypeDef header = {0,0,0,CAN_RTR_DATA,8,(FunctionalState)0};
 

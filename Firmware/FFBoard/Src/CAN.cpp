@@ -8,8 +8,6 @@
 #include "target_constants.h"
 #ifdef CANBUS
 #include "CAN.h"
-#include "cpp_target_config.h"
-
 
 ClassIdentifier CANPort::info = {
 	.name = "Can port",
@@ -314,7 +312,6 @@ void CANPort::canTxCpltCallback(CAN_HandleTypeDef *hcan,uint32_t mailbox){
 	if(hcan == this->hcan){
 		lastSentTime = HAL_GetTick();
 		txMailboxes &= ~mailbox;
-		debugpin.reset();
 		if(isWaitingFlag)
 			giveSemaphore();
 	}
@@ -322,7 +319,6 @@ void CANPort::canTxCpltCallback(CAN_HandleTypeDef *hcan,uint32_t mailbox){
 
 void CANPort::canTxAbortCallback(CAN_HandleTypeDef *hcan,uint32_t mailbox){
 	if(hcan == this->hcan){
-		debugpin.reset();
 		txMailboxes &= ~mailbox;
 		if(isWaitingFlag)
 			giveSemaphore();
@@ -334,7 +330,6 @@ void CANPort::canErrorCallback(CAN_HandleTypeDef *hcan){
 		hcan == this->hcan &&
 		hcan->ErrorCode & (HAL_CAN_ERROR_TX_ALST0 | HAL_CAN_ERROR_TX_ALST1 | HAL_CAN_ERROR_TX_ALST2 | HAL_CAN_ERROR_TX_TERR0 | HAL_CAN_ERROR_TX_TERR1 | HAL_CAN_ERROR_TX_TERR2)
 	){
-		debugpin.set();
 		giveSemaphore();
 	}
 }
