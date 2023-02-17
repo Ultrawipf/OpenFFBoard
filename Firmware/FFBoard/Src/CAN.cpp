@@ -203,14 +203,14 @@ void CANPort::setSpeedPreset(uint8_t preset){
 		return;
 	speedPreset = preset;
 
-	takeSemaphore();
+	configSem.Take();
 	HAL_CAN_Stop(this->hcan);
 	HAL_CAN_AbortTxRequest(hcan, txMailboxes);
 	this->hcan->Instance->BTR = canSpeedBTR_preset[preset];
 	HAL_CAN_ResetError(hcan);
 
 	HAL_CAN_Start(this->hcan);
-	giveSemaphore();
+	configSem.Give();
 }
 
 /**
@@ -341,7 +341,7 @@ void CANPort::canErrorCallback(CAN_HandleTypeDef *hcan){
  * Use the returned id to disable the filter again
  */
 int32_t CANPort::addCanFilter(CAN_FilterTypeDef sFilterConfig){
-	takeSemaphore();
+	configSem.Take();
 	int32_t lowestId = 0;// sFilterConfig.FilterFIFOAssignment == CAN_RX_FIFO0 ? 0 : slaveFilterStart;
 	int32_t highestId = slaveFilterStart;// sFilterConfig.FilterFIFOAssignment == CAN_RX_FIFO0 ? slaveFilterStart : 29;
 	int32_t foundId = -1;
@@ -372,7 +372,7 @@ int32_t CANPort::addCanFilter(CAN_FilterTypeDef sFilterConfig){
 			canFilters.push_back(sFilterConfig);
 		}
 	}
-	giveSemaphore();
+	configSem.Give();
 	return foundId;
 }
 
@@ -381,7 +381,7 @@ int32_t CANPort::addCanFilter(CAN_FilterTypeDef sFilterConfig){
  * Use the id returned by the addCanFilter function
  */
 void CANPort::removeCanFilter(uint8_t filterId){
-	semaphore.Take();
+	configSem.Take();
 	for (uint8_t i = 0; i < canFilters.size(); i++){
 		if(canFilters[i].FilterBank == filterId){
 			canFilters[i].FilterActivation = false;
@@ -390,7 +390,7 @@ void CANPort::removeCanFilter(uint8_t filterId){
 			break;
 		}
 	}
-	semaphore.Give();
+	configSem.Give();
 }
 
 
