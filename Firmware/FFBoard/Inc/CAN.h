@@ -90,6 +90,7 @@ private:
 	uint32_t txMailboxes = 0;
 
 	cpp_freertos::BinarySemaphore semaphore = cpp_freertos::BinarySemaphore(true); // Semaphore will block
+	cpp_freertos::BinarySemaphore configSem = cpp_freertos::BinarySemaphore(true); // Semaphore will block
 	bool isWaitingFlag = false;
 	const OutputPin* silentPin;
 	bool silent = true;
