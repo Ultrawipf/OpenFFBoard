@@ -282,13 +282,19 @@ void Axis::prepareForUpdate(){
 	// Scale encoder value to set rotation range
 	// Update a change of range only when new range is within valid range
 	// if degree change, compute the SpeedScaler, it depends on degreesOfRotation
-	if (nextDegreesOfRotation != degreesOfRotation && abs(scaleEncValue(angle, nextDegreesOfRotation)) < 0x7fff){
-		degreesOfRotation = nextDegreesOfRotation;
+	if (nextDegreesOfRotation != degreesOfRotation){
+		int32_t scaledEnc;
+		std::tie(scaledEnc,std::ignore) = scaleEncValue(angle, nextDegreesOfRotation);
+		if(abs(scaledEnc) < 0x7fff){
+			degreesOfRotation = nextDegreesOfRotation;
+		}
+
 	}
 
 
 	// scaledEnc now gets inverted if necessary in updateMetrics
-	int32_t scaledEnc = scaleEncValue(angle, degreesOfRotation);
+	int32_t scaledEnc;
+	std::tie(scaledEnc,std::ignore) = scaleEncValue(angle, degreesOfRotation);
 
 	if (abs(scaledEnc) > 0xffff && drv->motorReady()){
 		// We are way off. Shut down
@@ -437,18 +443,19 @@ void Axis::setGearRatio(uint8_t numerator,uint8_t denominator){
 }
 
 /**
- * Returns a scaled encoder value between -0x7fff and 0x7fff with a range of degrees
+ * Returns a scaled encoder value between -0x7fff and 0x7fff with a range of degrees and a float between -1 and 1
  * Takes an encoder angle in degrees
  */
 
-int32_t Axis::scaleEncValue(float angle, uint16_t degrees){
+std::pair<int32_t,float> Axis::scaleEncValue(float angle, uint16_t degrees){
 	if (degrees == 0){
-		return 0x7fff;
+		return std::make_pair<int32_t,float>(0x7fff,0.0);
 	}
 
 	int32_t val = (0xffff / (float)degrees) * angle;
+	float val_f = (2.0 / (float)degrees) * angle;
 
-	return val;
+	return std::make_pair(val,val_f);
 }
 
 /**
@@ -572,7 +579,7 @@ void Axis::setFxRatio(uint8_t val) {
 void Axis::resetMetrics(float new_pos= 0) { // pos is degrees
 	metric.current = metric_t();
 	metric.current.posDegrees = new_pos;
-	metric.current.pos = scaleEncValue(new_pos, degreesOfRotation);
+	std::tie(metric.current.pos,metric.current.pos_f) = scaleEncValue(new_pos, degreesOfRotation);
 	metric.previous = metric_t();
 	// Reset filters
 	speedFilter.calcBiquad();
@@ -587,8 +594,7 @@ void Axis::updateMetrics(float new_pos) { // pos is degrees
 	metric.previous = metric.current;
 
 	metric.current.posDegrees = new_pos;
-	int32_t scaled_pos = scaleEncValue(new_pos, degreesOfRotation);
-	metric.current.pos = scaled_pos;
+	std::tie(metric.current.pos,metric.current.pos_f) = scaleEncValue(new_pos, degreesOfRotation);
 
 
 	// compute speed and accel from raw instant speed normalized
