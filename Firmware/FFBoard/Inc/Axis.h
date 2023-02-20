@@ -62,8 +62,9 @@ struct AxisConfig
 struct metric_t {
 	float accel = 0;	// in deg/s²
 	float speed = 0; // in deg/s
-	int32_t pos = 0;
-	float posDegrees = 0;
+	int32_t pos = 0; // scaled position as 16b int -0x7fff to 0x7fff
+	float pos_f = 0; // scaled position as float. -1 to 1 range
+	float posDegrees = 0; // Position in degrees. Not scaled to selected range
 	int32_t torque = 0; // total of effect + endstop torque
 };
 
@@ -124,7 +125,7 @@ public:
 
 	bool getFfbActive();
 
-	int32_t scaleEncValue(float angle, uint16_t degrees);
+	std::pair<int32_t,float> scaleEncValue(float angle, uint16_t degrees);
 	float 	getEncAngle(Encoder *enc);
 
 
