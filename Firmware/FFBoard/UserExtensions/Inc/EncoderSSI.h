@@ -56,7 +56,6 @@ public:
 
 	std::string printSpeeds();
 
-
 	CommandStatus command(const ParsedCommand& cmd,std::vector<CommandReply>& replies);
 
 	void registerCommands();
@@ -78,8 +77,7 @@ private:
 	int32_t pos = 0, posOffset = 0,lastPos = 0,newPos = 0;
 	int32_t mtpos = 0;
 
-
-	const static uint8_t bytes = 8; // Maybe use higher length to allow higher speeds because the fixed length start timeout wastes more bits at higher rates
+	const static uint8_t bytes = 8;
 	uint8_t spi_buf[bytes] = {0};
 	uint8_t transferlen = bytes;
 
