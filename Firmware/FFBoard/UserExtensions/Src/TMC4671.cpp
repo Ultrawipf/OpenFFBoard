@@ -2047,6 +2047,7 @@ void TMC4671::setUqUdLimit(uint16_t limit){
 
 void TMC4671::setTorqueLimit(uint16_t limit){
 	this->curLimits.pid_torque_flux = limit;
+	bangInitPower = (float)limit*0.75;
 	writeReg(0x5E, limit);
 }
 
@@ -2619,7 +2620,7 @@ void TMC4671::setHwType(TMC_HW_Ver type){
 			.brakeLimHigh = 50900,
 			.vmScaler = (2.5 / 0x7fff) * ((1.5+71.5)/1.5),
 			.vSenseMult = VOLTAGE_MULT_DEFAULT,
-			.bbm = 50 // DMTH8003SPS need longer deadtime
+			.bbm = 30 // DMTH8003SPS need longer deadtime
 		};
 		this->conf.hwconf = newHwConf;
 	break;
@@ -2639,7 +2640,7 @@ void TMC4671::setHwType(TMC_HW_Ver type){
 			.brakeLimHigh = 50900,
 			.vmScaler = (2.5 / 0x7fff) * ((1.5+71.5)/1.5),
 			.vSenseMult = VOLTAGE_MULT_DEFAULT,
-			.bbm = 50
+			.bbm = 30
 		};
 		this->conf.hwconf = newHwConf;
 	break;
@@ -2660,7 +2661,7 @@ void TMC4671::setHwType(TMC_HW_Ver type){
 			.brakeLimHigh = 50900,
 			.vmScaler = (2.5 / 0x7fff) * ((1.5+71.5)/1.5),
 			.vSenseMult = VOLTAGE_MULT_DEFAULT,
-			.bbm = 10
+			.bbm = 20
 		};
 		this->conf.hwconf = newHwConf;
 	break;
@@ -2681,7 +2682,7 @@ void TMC4671::setHwType(TMC_HW_Ver type){
 			.brakeLimHigh = 50900,
 			.vmScaler = (2.5 / 0x7fff) * ((1.5+71.5)/1.5),
 			.vSenseMult = VOLTAGE_MULT_DEFAULT,
-			.bbm = 10
+			.bbm = 20
 		};
 		this->conf.hwconf = newHwConf;
 	break;
@@ -2702,7 +2703,7 @@ void TMC4671::setHwType(TMC_HW_Ver type){
 			.brakeLimHigh = 50900,
 			.vmScaler = (2.5 / 0x7fff) * ((1.5+71.5)/1.5),
 			.vSenseMult = VOLTAGE_MULT_DEFAULT,
-			.bbm = 10
+			.bbm = 20
 		};
 		this->conf.hwconf = newHwConf;
 		// Activates around 60V as last resort failsave. Check offsets from tmc leakage. ~ 1.426V
@@ -2725,7 +2726,7 @@ void TMC4671::setHwType(TMC_HW_Ver type){
 			.brakeLimHigh = 52800,
 			.vmScaler = (2.5 / 0x7fff) * ((1.5+71.5)/1.5),
 			.vSenseMult = VOLTAGE_MULT_DEFAULT,
-			.bbm = 10
+			.bbm = 20
 		};
 		this->conf.hwconf = newHwConf;
 
