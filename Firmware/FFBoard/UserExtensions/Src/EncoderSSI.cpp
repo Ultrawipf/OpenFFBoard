@@ -142,13 +142,6 @@ void EncoderSSI::beginSpiTransfer(SPIPort* port){
 	//port->takeSemaphore();
 	waitData = true;
 	assertChipSelect();
-	// If AMT mode wait 500ns
-	if(mode == EncoderSSI_modes::AMT23){
-		for(uint8_t i = 0;i<=500000000 /  HAL_RCC_GetHCLKFreq() ;i++){
-			asm("NOP");
-		}
-	}
-
 }
 
 void EncoderSSI::endSpiTransfer(SPIPort* port){
@@ -166,9 +159,7 @@ EncoderType EncoderSSI::getEncoderType(){
 int32_t EncoderSSI::getPosAbs(){
 	if(!waitData){ // If a transfer is still in progress return the last result
 		spiPort.receive_DMA(spi_buf, transferlen, this); // Receive next frame
-//		requestNewDataSem.Give(); // Start transfer
-//		if(useWaitSem && HAL_GetTick() - lastUpdateTick > waitThresh)
-//			waitForUpdateSem.Take(waitThresh); // Wait a bit
+
 	}
 	return pos + mtpos * getCpr();
 }
