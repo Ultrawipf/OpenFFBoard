@@ -111,6 +111,7 @@ void EncoderBissC::configSPI() {
 	config->peripheral.CLKPhase = SPI_PHASE_2EDGE;
 	config->peripheral.CLKPolarity = SPI_POLARITY_HIGH;
 	config->peripheral.DataSize = SPI_DATASIZE_8BIT;
+	config->cspol = true;
 	this->setSpiConfig(*config);
 	this->spiPort.configurePort(&config->peripheral);
 
@@ -134,10 +135,12 @@ void EncoderBissC::spiRxCompleted(SPIPort* port) {
 
 void EncoderBissC::beginSpiTransfer(SPIPort* port){
 	//port->takeSemaphore();
+	assertChipSelect();
 }
 
 void EncoderBissC::endSpiTransfer(SPIPort* port){
 	//port->giveSemaphore();
+	clearChipSelect();
 }
 
 

@@ -161,6 +161,9 @@ const uint16_t VirtAddVarTab[NB_OF_VAR] =
 // Biss-C		
 	ADR_BISSENC_CONF1	,
 	ADR_BISSENC_OFS	,
+// SSI
+	ADR_SSI_CONF1	,
+	ADR_SSI_OFS	,
 // Analog min/max calibrations		
 	ADR_LOCALANALOG_MIN_0	,
 	ADR_LOCALANALOG_MAX_0	,
@@ -187,6 +190,7 @@ const uint16_t VirtAddVarTab[NB_OF_VAR] =
 	ADR_ADS111X_MIN_3	,
 	ADR_ADS111X_MAX_3	
 };		
+
 
 
 /**		
@@ -339,6 +343,9 @@ const uint16_t exportableFlashAddresses[NB_EXPORTABLE_ADR] =
 // Biss-C		
 	ADR_BISSENC_CONF1	,
 	ADR_BISSENC_OFS	,
+// SSI
+	ADR_SSI_CONF1	,
+	ADR_SSI_OFS	,
 // Analog min/max calibrations		
 	ADR_LOCALANALOG_MIN_0	,
 	ADR_LOCALANALOG_MAX_0	,
@@ -365,4 +372,3 @@ const uint16_t exportableFlashAddresses[NB_EXPORTABLE_ADR] =
 	ADR_ADS111X_MIN_3	,
 	ADR_ADS111X_MAX_3	
 };		
-

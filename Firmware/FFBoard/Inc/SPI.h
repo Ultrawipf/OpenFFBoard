@@ -44,7 +44,7 @@ class SPIDevice;
 
 class SPIPort: public SpiHandler {
 public:
-	SPIPort(SPI_HandleTypeDef &hspi,const std::vector<OutputPin>& csPins,bool allowReconfigure = true);
+	SPIPort(SPI_HandleTypeDef &hspi,const std::vector<OutputPin>& csPins,uint32_t baseclk,bool allowReconfigure = true);
 
 	void takeSemaphore(); // Call before accessing this port
 	void giveSemaphore(); // Call when finished using this port
@@ -78,6 +78,8 @@ public:
 	void takeExclusive(bool exclusive);
 	bool hasFreePins();
 
+	uint32_t getBaseClk();
+
 private:
 	void beginTransfer(SPIConfig* config);
 	void endTransfer(SPIConfig* config);
@@ -91,6 +93,7 @@ private:
 	bool allowReconfigure = false; // Allow reconfiguration at runtime. Can reduce performance a lot
 	volatile bool isTakenFlag = false;
 	bool takenExclusive = false;
+	uint32_t baseclk;
 };
 
 class SPIDevice {
