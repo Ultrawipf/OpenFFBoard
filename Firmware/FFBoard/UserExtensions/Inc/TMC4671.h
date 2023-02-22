@@ -93,7 +93,7 @@ struct TMC4671HardwareTypeConf{
 	float vmScaler = (2.5 / 0x7fff) * ((1.5+71.5)/1.5);
 	float vSenseMult = VOLTAGE_MULT_DEFAULT;
 	float clockfreq = 25e6;
-	uint8_t bbm = 10;
+	uint8_t bbm = 20;
 
 	// Todo restrict allowed motor and encoder types
 };
