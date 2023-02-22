@@ -65,7 +65,7 @@ private:
 	int32_t pos = 0, posOffset = 0,lastPos = 0,newPos = 0;
 	int32_t mtpos = 0;
 	//bool crc_ok = false;
-	const static uint8_t bytes = 8;
+	const static uint8_t bytes = 8; // Maybe use higher length to allow higher speeds because the fixed length start timeout wastes more bits at higher rates
 	uint8_t spi_buf[bytes] = {0};
 	uint32_t decod_buf[bytes/4] = {0};
 
