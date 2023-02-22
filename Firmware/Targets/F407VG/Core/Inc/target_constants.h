@@ -51,6 +51,7 @@
 #define CANBUTTONS // Requires CAN
 #define CANANALOG // Requires CAN
 #define BISSENCODER // Requires SPI3
+#define SSIENCODER // Requires SPI3
 #define ADS111XANALOG // Requires I2C
 #define UARTCOMMANDS
 #define SIMPLEMOTION // Requires motor gpio pin

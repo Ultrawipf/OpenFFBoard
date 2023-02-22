@@ -20,12 +20,13 @@ static bool operator==(const SPI_InitTypeDef& lhs, const SPI_InitTypeDef& rhs) {
 
 
 
-SPIPort::SPIPort(SPI_HandleTypeDef &hspi,const std::vector<OutputPin>& csPins,bool allowReconfigure)
+SPIPort::SPIPort(SPI_HandleTypeDef &hspi,const std::vector<OutputPin>& csPins,uint32_t baseclk,bool allowReconfigure)
 : hspi{hspi}{
 	this->current_device = nullptr;
 	this->allowReconfigure = allowReconfigure;
 	this->csPins = csPins;
 	this->freePins = csPins;
+	this->baseclk = baseclk;
 }
 
 // ----------------------------------
@@ -223,6 +224,13 @@ void SPIPort::takeExclusive(bool exclusive){
 
 bool SPIPort::hasFreePins(){
 	return !takenExclusive && this->getCsPins().size() > 0;
+}
+
+/**
+ * Returns the peripheral base clock frequency
+ */
+uint32_t SPIPort::getBaseClk(){
+	return this->baseclk;
 }
 
 // interrupt callbacks

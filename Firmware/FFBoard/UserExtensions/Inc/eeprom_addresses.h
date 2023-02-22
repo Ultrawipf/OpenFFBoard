@@ -12,12 +12,13 @@
 
 #include "main.h"
 // Change this to the amount of currently registered variables
-#define NB_OF_VAR 145
+#define NB_OF_VAR 147
 extern const uint16_t VirtAddVarTab[NB_OF_VAR];
 
 // Amount of variables in exportable list
-#define NB_EXPORTABLE_ADR 130
+#define NB_EXPORTABLE_ADR 132
 extern const uint16_t exportableFlashAddresses[NB_EXPORTABLE_ADR];
+
 
 		
 /* Add your addresses here. 0xffff is invalid as it marks an erased field.		
@@ -179,6 +180,9 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 // Biss-C
 #define ADR_BISSENC_CONF1 0x410
 #define ADR_BISSENC_OFS 0x411
+// SSI
+#define ADR_SSI_CONF1 0x413
+#define ADR_SSI_OFS 0x414
 // Analog min/max calibrations
 #define ADR_LOCALANALOG_MIN_0 0x500
 #define ADR_LOCALANALOG_MAX_0 0x501
