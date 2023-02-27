@@ -73,6 +73,11 @@ var files_dup =
     [ "Filters.h", "_filters_8h.html", "_filters_8h" ],
     [ "flash_helpers.h", "flash__helpers_8h.html", "flash__helpers_8h" ],
     [ "global_callbacks.h", "global__callbacks_8h.html", "global__callbacks_8h" ],
+    [ "GPIOPin.h", "_g_p_i_o_pin_8h.html", [
+      [ "GpioPin", "class_gpio_pin.html", "class_gpio_pin" ],
+      [ "OutputPin", "class_output_pin.html", "class_output_pin" ],
+      [ "InputPin", "class_input_pin.html", "class_input_pin" ]
+    ] ],
     [ "HidCommandInterface.h", "_hid_command_interface_8h.html", "_hid_command_interface_8h" ],
     [ "HidFFB.h", "_hid_f_f_b_8h.html", [
       [ "HidFFB", "class_hid_f_f_b.html", "class_hid_f_f_b" ]
@@ -102,9 +107,6 @@ var files_dup =
       [ "cpp_freertos::MutexStandard", "classcpp__freertos_1_1_mutex_standard.html", "classcpp__freertos_1_1_mutex_standard" ],
       [ "cpp_freertos::MutexRecursive", "classcpp__freertos_1_1_mutex_recursive.html", "classcpp__freertos_1_1_mutex_recursive" ],
       [ "cpp_freertos::LockGuard", "classcpp__freertos_1_1_lock_guard.html", "classcpp__freertos_1_1_lock_guard" ]
-    ] ],
-    [ "OutputPin.h", "_output_pin_8h.html", [
-      [ "OutputPin", "class_output_pin.html", "class_output_pin" ]
     ] ],
     [ "PersistentStorage.h", "_persistent_storage_8h.html", [
       [ "PersistentStorage", "class_persistent_storage.html", "class_persistent_storage" ]
@@ -346,6 +348,9 @@ var files_dup =
       [ "EncoderBissC", "class_encoder_biss_c.html", "class_encoder_biss_c" ]
     ] ],
     [ "EncoderLocal.h", "_encoder_local_8h.html", "_encoder_local_8h" ],
+    [ "EncoderSSI.h", "_encoder_s_s_i_8h.html", [
+      [ "EncoderSSI", "class_encoder_s_s_i.html", "class_encoder_s_s_i" ]
+    ] ],
     [ "FFBHIDExt.h", "_f_f_b_h_i_d_ext_8h.html", [
       [ "FFBHIDExt", "class_f_f_b_h_i_d_ext.html", "class_f_f_b_h_i_d_ext" ]
     ] ],
@@ -401,6 +406,7 @@ var files_dup =
     [ "eeprom_addresses.c", "eeprom__addresses_8c.html", "eeprom__addresses_8c" ],
     [ "EncoderBissC.cpp", "_encoder_biss_c_8cpp.html", "_encoder_biss_c_8cpp" ],
     [ "EncoderLocal.cpp", "_encoder_local_8cpp.html", null ],
+    [ "EncoderSSI.cpp", "_encoder_s_s_i_8cpp.html", null ],
     [ "FFBHIDExt.cpp", "_f_f_b_h_i_d_ext_8cpp.html", null ],
     [ "FFBHIDMain.cpp", "_f_f_b_h_i_d_main_8cpp.html", "_f_f_b_h_i_d_main_8cpp" ],
     [ "FFBHIDMain_commmands.cpp", "_f_f_b_h_i_d_main__commmands_8cpp.html", null ],
@@ -408,7 +414,7 @@ var files_dup =
     [ "FFBoardMain.cpp", "_f_f_board_main_8cpp.html", null ],
     [ "FFBWheel.cpp", "_f_f_b_wheel_8cpp.html", null ],
     [ "LocalAnalog.cpp", "_local_analog_8cpp.html", "_local_analog_8cpp" ],
-    [ "LocalButtons.cpp", "_local_buttons_8cpp.html", null ],
+    [ "LocalButtons.cpp", "_local_buttons_8cpp.html", "_local_buttons_8cpp" ],
     [ "mainclass_chooser.cpp", "mainclass__chooser_8cpp.html", "mainclass__chooser_8cpp" ],
     [ "MidiMain.cpp", "_midi_main_8cpp.html", null ],
     [ "MotorPWM.cpp", "_motor_p_w_m_8cpp.html", "_motor_p_w_m_8cpp" ],

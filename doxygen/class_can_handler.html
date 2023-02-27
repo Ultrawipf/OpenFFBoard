@@ -86,7 +86,7 @@ $(document).ready(function(){initNavTree('class_can_handler.html',''); initResiz
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="class_can_handler-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">CanHandler Class Reference</div></div>
 </div><!--header-->
@@ -99,16 +99,17 @@ Inheritance diagram for CanHandler:</div>
  <div class="center">
   <img src="class_can_handler.png" usemap="#CanHandler_map" alt=""/>
   <map id="CanHandler_map" name="CanHandler_map">
-<area href="class_can_analog_base.html" alt="CanAnalogBase" shape="rect" coords="0,56,153,80"/>
-<area href="class_can_bridge.html" alt="CanBridge" shape="rect" coords="163,56,316,80"/>
-<area href="class_can_buttons.html" alt="CanButtons" shape="rect" coords="326,56,479,80"/>
-<area href="class_o_drive_c_a_n.html" alt="ODriveCAN" shape="rect" coords="489,56,642,80"/>
-<area href="class_vesc_c_a_n.html" alt="VescCAN" shape="rect" coords="815,56,968,80"/>
-<area href="class_can_analog.html" alt="CanAnalog&lt; AMOUNT &gt;" shape="rect" coords="0,112,153,136"/>
-<area href="class_o_drive_c_a_n1.html" alt="ODriveCAN1" shape="rect" coords="407,112,560,136"/>
-<area href="class_o_drive_c_a_n2.html" alt="ODriveCAN2" shape="rect" coords="570,112,723,136"/>
-<area href="class_v_e_s_c__1.html" alt="VESC_1" shape="rect" coords="733,112,886,136"/>
-<area href="class_v_e_s_c__2.html" alt="VESC_2" shape="rect" coords="896,112,1049,136"/>
+<area href="class_c_a_n_port.html" alt="CANPort" shape="rect" coords="0,56,153,80"/>
+<area href="class_can_analog_base.html" alt="CanAnalogBase" shape="rect" coords="163,56,316,80"/>
+<area href="class_can_bridge.html" alt="CanBridge" shape="rect" coords="326,56,479,80"/>
+<area href="class_can_buttons.html" alt="CanButtons" shape="rect" coords="489,56,642,80"/>
+<area href="class_o_drive_c_a_n.html" alt="ODriveCAN" shape="rect" coords="652,56,805,80"/>
+<area href="class_vesc_c_a_n.html" alt="VescCAN" shape="rect" coords="978,56,1131,80"/>
+<area href="class_can_analog.html" alt="CanAnalog&lt; AMOUNT &gt;" shape="rect" coords="163,112,316,136"/>
+<area href="class_o_drive_c_a_n1.html" alt="ODriveCAN1" shape="rect" coords="570,112,723,136"/>
+<area href="class_o_drive_c_a_n2.html" alt="ODriveCAN2" shape="rect" coords="733,112,886,136"/>
+<area href="class_v_e_s_c__1.html" alt="VESC_1" shape="rect" coords="896,112,1049,136"/>
+<area href="class_v_e_s_c__2.html" alt="VESC_2" shape="rect" coords="1059,112,1212,136"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -129,10 +130,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a0e2267410edc1d3f36bf8cb228ff458b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_handler.html#a0e2267410edc1d3f36bf8cb228ff458b">canTxAbortCallback</a> (CAN_HandleTypeDef *hcan, uint32_t mailbox)</td></tr>
 <tr class="separator:a0e2267410edc1d3f36bf8cb228ff458b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
-Static Public Attributes</h2></td></tr>
-<tr class="memitem:a40672afaa48f472234780bc711e31a5c"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; <a class="el" href="class_can_handler.html">CanHandler</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_handler.html#a40672afaa48f472234780bc711e31a5c">canHandlers</a></td></tr>
-<tr class="separator:a40672afaa48f472234780bc711e31a5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a8ed97e1ea01b2899296ae4d702abb95b"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; <a class="el" href="class_can_handler.html">CanHandler</a> * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_handler.html#a8ed97e1ea01b2899296ae4d702abb95b">getCANHandlers</a> ()</td></tr>
+<tr class="separator:a8ed97e1ea01b2899296ae4d702abb95b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
@@ -210,7 +211,7 @@ Static Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p ><a class="el" href="class_error.html">Error</a> during can transfer </p>
 
-<p>Reimplemented in <a class="el" href="class_can_bridge.html#a2e93f005127cd16fd3a1133cca2e27c6">CanBridge</a>.</p>
+<p>Reimplemented in <a class="el" href="class_c_a_n_port.html#a9d3d3027cc83927ae0fdd6ffc7e9f101">CANPort</a>, <a class="el" href="class_can_bridge.html#a2e93f005127cd16fd3a1133cca2e27c6">CanBridge</a>, and <a class="el" href="class_o_drive_c_a_n.html#a2bb257db85a8e4f4916bef31f1a3f81d">ODriveCAN</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="_can_handler_8cpp_source.html#l00038">38</a> of file <a class="el" href="_can_handler_8cpp_source.html">CanHandler.cpp</a>.</p>
 
@@ -343,6 +344,8 @@ Static Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p >CAN transmission aborted </p>
 
+<p>Reimplemented in <a class="el" href="class_c_a_n_port.html#a15971a0ae68ffebfc3968578c3b24897">CANPort</a>.</p>
+
 <p class="definition">Definition at line <a class="el" href="_can_handler_8cpp_source.html#l00052">52</a> of file <a class="el" href="_can_handler_8cpp_source.html">CanHandler.cpp</a>.</p>
 
 </div>
@@ -382,13 +385,14 @@ Static Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p >CAN transmission complete </p>
 
+<p>Reimplemented in <a class="el" href="class_c_a_n_port.html#a7d06609e307f98cc14a030efee41b7a0">CANPort</a>.</p>
+
 <p class="definition">Definition at line <a class="el" href="_can_handler_8cpp_source.html#l00045">45</a> of file <a class="el" href="_can_handler_8cpp_source.html">CanHandler.cpp</a>.</p>
 
 </div>
 </div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="a40672afaa48f472234780bc711e31a5c" name="a40672afaa48f472234780bc711e31a5c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a40672afaa48f472234780bc711e31a5c">&#9670;&nbsp;</a></span>canHandlers</h2>
+<a id="a8ed97e1ea01b2899296ae4d702abb95b" name="a8ed97e1ea01b2899296ae4d702abb95b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ed97e1ea01b2899296ae4d702abb95b">&#9670;&nbsp;</a></span>getCANHandlers()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -397,17 +401,20 @@ Static Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt; <a class="el" href="class_can_handler.html">CanHandler</a> * &gt; CanHandler::canHandlers</td>
+          <td class="memname">static std::vector&lt; <a class="el" href="class_can_handler.html">CanHandler</a> * &gt; &amp; CanHandler::getCANHandlers </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_can_handler_8h_source.html#l00020">20</a> of file <a class="el" href="_can_handler_8h_source.html">CanHandler.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_can_handler_8h_source.html#l00032">32</a> of file <a class="el" href="_can_handler_8h_source.html">CanHandler.h</a>.</p>
 
 </div>
 </div>

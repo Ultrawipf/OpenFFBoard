@@ -13,9 +13,11 @@ var searchData=
   ['encoderbissc_2eh_10',['EncoderBissC.h',['../_encoder_biss_c_8h.html',1,'']]],
   ['encoderlocal_2ecpp_11',['EncoderLocal.cpp',['../_encoder_local_8cpp.html',1,'']]],
   ['encoderlocal_2eh_12',['EncoderLocal.h',['../_encoder_local_8h.html',1,'']]],
-  ['errorhandler_2ecpp_13',['ErrorHandler.cpp',['../_error_handler_8cpp.html',1,'']]],
-  ['errorhandler_2eh_14',['ErrorHandler.h',['../_error_handler_8h.html',1,'']]],
-  ['event_5fgroups_2ehpp_15',['event_groups.hpp',['../event__groups_8hpp.html',1,'']]],
-  ['extihandler_2ecpp_16',['ExtiHandler.cpp',['../_exti_handler_8cpp.html',1,'']]],
-  ['extihandler_2eh_17',['ExtiHandler.h',['../_exti_handler_8h.html',1,'']]]
+  ['encoderssi_2ecpp_13',['EncoderSSI.cpp',['../_encoder_s_s_i_8cpp.html',1,'']]],
+  ['encoderssi_2eh_14',['EncoderSSI.h',['../_encoder_s_s_i_8h.html',1,'']]],
+  ['errorhandler_2ecpp_15',['ErrorHandler.cpp',['../_error_handler_8cpp.html',1,'']]],
+  ['errorhandler_2eh_16',['ErrorHandler.h',['../_error_handler_8h.html',1,'']]],
+  ['event_5fgroups_2ehpp_17',['event_groups.hpp',['../event__groups_8hpp.html',1,'']]],
+  ['extihandler_2ecpp_18',['ExtiHandler.cpp',['../_exti_handler_8cpp.html',1,'']]],
+  ['extihandler_2eh_19',['ExtiHandler.h',['../_exti_handler_8h.html',1,'']]]
 ];

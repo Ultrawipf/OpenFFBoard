@@ -86,17 +86,25 @@ $(document).ready(function(){initNavTree('class_output_pin.html',''); initResiza
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="class_output_pin-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">OutputPin Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="_output_pin_8h_source.html">OutputPin.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="_g_p_i_o_pin_8h_source.html">GPIOPin.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for OutputPin:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="class_output_pin.png" usemap="#OutputPin_map" alt=""/>
+  <map id="OutputPin_map" name="OutputPin_map">
+<area href="class_gpio_pin.html" alt="GpioPin" shape="rect" coords="0,0,67,24"/>
+  </map>
+</div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a7d18d38ee55bfaab59d1e7863a5d0d7e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_output_pin.html#a7d18d38ee55bfaab59d1e7863a5d0d7e">OutputPin</a> (GPIO_TypeDef &amp;<a class="el" href="class_output_pin.html#a53c3e51329eeb3c8a8972eaefe0dc95c">port</a>, uint16_t <a class="el" href="class_output_pin.html#a986d8857dd5fa36238acd2c08e3e8916">pin</a>)</td></tr>
+<tr class="memitem:a7d18d38ee55bfaab59d1e7863a5d0d7e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_output_pin.html#a7d18d38ee55bfaab59d1e7863a5d0d7e">OutputPin</a> (GPIO_TypeDef &amp;<a class="el" href="class_gpio_pin.html#a6ea7b33fdeb52edaebbdb73b63b8bf75">port</a>, uint16_t <a class="el" href="class_gpio_pin.html#a26e8762e3bb00e9e0eb8491539c9fc1b">pin</a>)</td></tr>
 <tr class="separator:a7d18d38ee55bfaab59d1e7863a5d0d7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a935f6e1e705d9a2502f0964be2bfcb72"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_output_pin.html#a935f6e1e705d9a2502f0964be2bfcb72">set</a> () const</td></tr>
 <tr class="separator:a935f6e1e705d9a2502f0964be2bfcb72"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -104,22 +112,25 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ae3d5227ff371958f4240b17e7350cc9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7aa0bfdd0a704cc4ae99cae8c765e556"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_output_pin.html#a7aa0bfdd0a704cc4ae99cae8c765e556">write</a> (bool <a class="el" href="_o_drive_c_a_n_8h.html#a539f13973573e98e043ff32d1b899068a9ed39e2ea931586b6a985a6942ef573e">state</a>) const</td></tr>
 <tr class="separator:a7aa0bfdd0a704cc4ae99cae8c765e556"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a84e6a5dfb88e5859a75d79ebb2985c62"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_output_pin.html#a84e6a5dfb88e5859a75d79ebb2985c62">operator==</a> (const <a class="el" href="class_output_pin.html">OutputPin</a> &amp;b)</td></tr>
-<tr class="separator:a84e6a5dfb88e5859a75d79ebb2985c62"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aecca9448f732e269dc35df8bc760c029"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_output_pin.html#aecca9448f732e269dc35df8bc760c029">configureOutput</a> (uint32_t pull=GPIO_NOPULL, bool opendrain=false, uint32_t speed=GPIO_SPEED_FREQ_LOW)</td></tr>
 <tr class="separator:aecca9448f732e269dc35df8bc760c029"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_class_gpio_pin"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_gpio_pin')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_gpio_pin.html">GpioPin</a></td></tr>
+<tr class="memitem:a1c98c7b90e57bdc48a43d3360d0bf52d inherit pub_methods_class_gpio_pin"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_gpio_pin.html#a1c98c7b90e57bdc48a43d3360d0bf52d">GpioPin</a> (GPIO_TypeDef &amp;<a class="el" href="class_gpio_pin.html#a6ea7b33fdeb52edaebbdb73b63b8bf75">port</a>, uint16_t <a class="el" href="class_gpio_pin.html#a26e8762e3bb00e9e0eb8491539c9fc1b">pin</a>)</td></tr>
+<tr class="separator:a1c98c7b90e57bdc48a43d3360d0bf52d inherit pub_methods_class_gpio_pin"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac99d4469997103cd9e467c093e6a3037 inherit pub_methods_class_gpio_pin"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_gpio_pin.html#ac99d4469997103cd9e467c093e6a3037">operator==</a> (const <a class="el" href="class_gpio_pin.html">GpioPin</a> &amp;b)</td></tr>
+<tr class="separator:ac99d4469997103cd9e467c093e6a3037 inherit pub_methods_class_gpio_pin"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
-Protected Attributes</h2></td></tr>
-<tr class="memitem:a53c3e51329eeb3c8a8972eaefe0dc95c"><td class="memItemLeft" align="right" valign="top">GPIO_TypeDef *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_output_pin.html#a53c3e51329eeb3c8a8972eaefe0dc95c">port</a></td></tr>
-<tr class="separator:a53c3e51329eeb3c8a8972eaefe0dc95c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a986d8857dd5fa36238acd2c08e3e8916"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_output_pin.html#a986d8857dd5fa36238acd2c08e3e8916">pin</a></td></tr>
-<tr class="separator:a986d8857dd5fa36238acd2c08e3e8916"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pro_attribs_class_gpio_pin"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_class_gpio_pin')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="class_gpio_pin.html">GpioPin</a></td></tr>
+<tr class="memitem:a6ea7b33fdeb52edaebbdb73b63b8bf75 inherit pro_attribs_class_gpio_pin"><td class="memItemLeft" align="right" valign="top">GPIO_TypeDef *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_gpio_pin.html#a6ea7b33fdeb52edaebbdb73b63b8bf75">port</a></td></tr>
+<tr class="separator:a6ea7b33fdeb52edaebbdb73b63b8bf75 inherit pro_attribs_class_gpio_pin"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26e8762e3bb00e9e0eb8491539c9fc1b inherit pro_attribs_class_gpio_pin"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_gpio_pin.html#a26e8762e3bb00e9e0eb8491539c9fc1b">pin</a></td></tr>
+<tr class="separator:a26e8762e3bb00e9e0eb8491539c9fc1b inherit pro_attribs_class_gpio_pin"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p >For now this class only works with pre-configured output pins but it could be easily extended to cover input pins as well as expose various configuration API's. </p>
-
-<p class="definition">Definition at line <a class="el" href="_output_pin_8h_source.html#l00013">13</a> of file <a class="el" href="_output_pin_8h_source.html">OutputPin.h</a>.</p>
+<div class="textblock">
+<p class="definition">Definition at line <a class="el" href="_g_p_i_o_pin_8h_source.html#l00029">29</a> of file <a class="el" href="_g_p_i_o_pin_8h_source.html">GPIOPin.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a7d18d38ee55bfaab59d1e7863a5d0d7e" name="a7d18d38ee55bfaab59d1e7863a5d0d7e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7d18d38ee55bfaab59d1e7863a5d0d7e">&#9670;&nbsp;</a></span>OutputPin()</h2>
@@ -155,7 +166,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_output_pin_8h_source.html#l00020">20</a> of file <a class="el" href="_output_pin_8h_source.html">OutputPin.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_p_i_o_pin_8h_source.html#l00031">31</a> of file <a class="el" href="_g_p_i_o_pin_8h_source.html">GPIOPin.h</a>.</p>
 
 </div>
 </div>
@@ -201,35 +212,7 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p >Sets a pin into output mode in case it was previously reconfigured </p>
 
-<p class="definition">Definition at line <a class="el" href="_output_pin_8h_source.html#l00043">43</a> of file <a class="el" href="_output_pin_8h_source.html">OutputPin.h</a>.</p>
-
-</div>
-</div>
-<a id="a84e6a5dfb88e5859a75d79ebb2985c62" name="a84e6a5dfb88e5859a75d79ebb2985c62"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a84e6a5dfb88e5859a75d79ebb2985c62">&#9670;&nbsp;</a></span>operator==()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool OutputPin::operator== </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="class_output_pin.html">OutputPin</a> &amp;&#160;</td>
-          <td class="paramname"><em>b</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_output_pin_8h_source.html#l00036">36</a> of file <a class="el" href="_output_pin_8h_source.html">OutputPin.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_p_i_o_pin_8h_source.html#l00051">51</a> of file <a class="el" href="_g_p_i_o_pin_8h_source.html">GPIOPin.h</a>.</p>
 
 </div>
 </div>
@@ -256,7 +239,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_output_pin_8h_source.html#l00028">28</a> of file <a class="el" href="_output_pin_8h_source.html">OutputPin.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_p_i_o_pin_8h_source.html#l00039">39</a> of file <a class="el" href="_g_p_i_o_pin_8h_source.html">GPIOPin.h</a>.</p>
 
 </div>
 </div>
@@ -283,7 +266,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_output_pin_8h_source.html#l00024">24</a> of file <a class="el" href="_output_pin_8h_source.html">OutputPin.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_p_i_o_pin_8h_source.html#l00035">35</a> of file <a class="el" href="_g_p_i_o_pin_8h_source.html">GPIOPin.h</a>.</p>
 
 </div>
 </div>
@@ -311,61 +294,12 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_output_pin_8h_source.html#l00032">32</a> of file <a class="el" href="_output_pin_8h_source.html">OutputPin.h</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="a986d8857dd5fa36238acd2c08e3e8916" name="a986d8857dd5fa36238acd2c08e3e8916"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a986d8857dd5fa36238acd2c08e3e8916">&#9670;&nbsp;</a></span>pin</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint16_t OutputPin::pin</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_output_pin_8h_source.html#l00016">16</a> of file <a class="el" href="_output_pin_8h_source.html">OutputPin.h</a>.</p>
-
-</div>
-</div>
-<a id="a53c3e51329eeb3c8a8972eaefe0dc95c" name="a53c3e51329eeb3c8a8972eaefe0dc95c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a53c3e51329eeb3c8a8972eaefe0dc95c">&#9670;&nbsp;</a></span>port</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">GPIO_TypeDef* OutputPin::port</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_output_pin_8h_source.html#l00015">15</a> of file <a class="el" href="_output_pin_8h_source.html">OutputPin.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_p_i_o_pin_8h_source.html#l00043">43</a> of file <a class="el" href="_g_p_i_o_pin_8h_source.html">GPIOPin.h</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li><a class="el" href="_output_pin_8h_source.html">OutputPin.h</a></li>
+<li><a class="el" href="_g_p_i_o_pin_8h_source.html">GPIOPin.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

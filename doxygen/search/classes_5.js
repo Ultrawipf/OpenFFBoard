@@ -10,10 +10,11 @@ var searchData=
   ['encoder_7',['Encoder',['../class_encoder.html',1,'']]],
   ['encoderbissc_8',['EncoderBissC',['../class_encoder_biss_c.html',1,'']]],
   ['encoderlocal_9',['EncoderLocal',['../class_encoder_local.html',1,'']]],
-  ['error_10',['Error',['../class_error.html',1,'']]],
-  ['errorhandler_11',['ErrorHandler',['../class_error_handler.html',1,'']]],
-  ['errorprinter_12',['ErrorPrinter',['../class_error_printer.html',1,'']]],
-  ['eventgroup_13',['EventGroup',['../classcpp__freertos_1_1_event_group.html',1,'cpp_freertos']]],
-  ['eventgroupcreateexception_14',['EventGroupCreateException',['../classcpp__freertos_1_1_event_group_create_exception.html',1,'cpp_freertos']]],
-  ['extihandler_15',['ExtiHandler',['../class_exti_handler.html',1,'']]]
+  ['encoderssi_10',['EncoderSSI',['../class_encoder_s_s_i.html',1,'']]],
+  ['error_11',['Error',['../class_error.html',1,'']]],
+  ['errorhandler_12',['ErrorHandler',['../class_error_handler.html',1,'']]],
+  ['errorprinter_13',['ErrorPrinter',['../class_error_printer.html',1,'']]],
+  ['eventgroup_14',['EventGroup',['../classcpp__freertos_1_1_event_group.html',1,'cpp_freertos']]],
+  ['eventgroupcreateexception_15',['EventGroupCreateException',['../classcpp__freertos_1_1_event_group_create_exception.html',1,'cpp_freertos']]],
+  ['extihandler_16',['ExtiHandler',['../class_exti_handler.html',1,'']]]
 ];

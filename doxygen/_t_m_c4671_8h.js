@@ -87,7 +87,8 @@ var _t_m_c4671_8h =
       [ "OverTemp", "_t_m_c4671_8h.html#ad7d50073249f48de7e58d41071064a7ca9cfa39fcf8d4622338bfa04439eeda88", null ],
       [ "IndexSearch", "_t_m_c4671_8h.html#ad7d50073249f48de7e58d41071064a7caf0f7579b398a27ed1eaa19b2f79cf666", null ],
       [ "FullCalibration", "_t_m_c4671_8h.html#ad7d50073249f48de7e58d41071064a7ca1a1aaf34022bdc367fefa52bd812e060", null ],
-      [ "ExternalEncoderInit", "_t_m_c4671_8h.html#ad7d50073249f48de7e58d41071064a7caa93eed0dbbc42a70bc2ea0869e63994e", null ]
+      [ "ExternalEncoderInit", "_t_m_c4671_8h.html#ad7d50073249f48de7e58d41071064a7caa93eed0dbbc42a70bc2ea0869e63994e", null ],
+      [ "Pidautotune", "_t_m_c4671_8h.html#ad7d50073249f48de7e58d41071064a7cac8321891eecb2447e2155b099ea48ef2", null ]
     ] ],
     [ "TMC_GpioMode", "_t_m_c4671_8h.html#aacd749e72feab7582be13cd7f4d414a6", [
       [ "DebugSpi", "_t_m_c4671_8h.html#aacd749e72feab7582be13cd7f4d414a6a431de3d2985bdfed9c3d8ee75cf9196c", null ],

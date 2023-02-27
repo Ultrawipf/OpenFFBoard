@@ -40,7 +40,8 @@ var class_t_m_c4671 =
       [ "extphie", "class_t_m_c4671.html#a383a82ab842490e325553e9365028a27a1da79c08683a487155b42fee9062683d", null ],
       [ "torqueFilter_mode", "class_t_m_c4671.html#a383a82ab842490e325553e9365028a27a0b04e3c31886dad1738b7ff937043779", null ],
       [ "torqueFilter_f", "class_t_m_c4671.html#a383a82ab842490e325553e9365028a27ac77579063a77041b21b719f40be1e474", null ],
-      [ "torqueFilter_q", "class_t_m_c4671.html#a383a82ab842490e325553e9365028a27a66d8266d2d6bf3c321b8391eb02e06d3", null ]
+      [ "torqueFilter_q", "class_t_m_c4671.html#a383a82ab842490e325553e9365028a27a66d8266d2d6bf3c321b8391eb02e06d3", null ],
+      [ "pidautotune", "class_t_m_c4671.html#a383a82ab842490e325553e9365028a27a2aec58fa2c9c7e50e8e453cae31bdcae", null ]
     ] ],
     [ "TMC4671", "class_t_m_c4671.html#aff75030b94a5d49cd959c1f53c47be32", null ],
     [ "~TMC4671", "class_t_m_c4671.html#a776fa9a0e9e0f2b15544dfdd4f043138", null ],
@@ -70,6 +71,8 @@ var class_t_m_c4671 =
     [ "externalEncoderAllowed", "class_t_m_c4671.html#a1176405aad5c4b0ec477c11e42a75cff", null ],
     [ "exti", "class_t_m_c4671.html#adce4c0d122fc84bcaa2df9e91755b302", null ],
     [ "findEncoderIndex", "class_t_m_c4671.html#af8933c1f784958a72e7dc78661f97980", null ],
+    [ "getActualFlux", "class_t_m_c4671.html#a90925f95b2d5f985bf1e2f228ec3592f", null ],
+    [ "getActualTorque", "class_t_m_c4671.html#af1c553c6c31c59633fa69d11d5c11513", null ],
     [ "getActualTorqueFlux", "class_t_m_c4671.html#ab74a3b6ad75090d96b203de36b48fdc2", null ],
     [ "getClassType", "class_t_m_c4671.html#a1877dc08c022f3da1e7567831eb8a44c", null ],
     [ "getCpr", "class_t_m_c4671.html#a29e6be7de5761e0b577fd31f818ec2ad", null ],
@@ -106,6 +109,7 @@ var class_t_m_c4671 =
     [ "initializeWithPower", "class_t_m_c4671.html#a310c92085804de4c1d5154c811d592e5", null ],
     [ "isSetUp", "class_t_m_c4671.html#a84023a40d125916689d3d6e79a969780", null ],
     [ "motorReady", "class_t_m_c4671.html#aa4511cdfce90794430e1d2be559996f5", null ],
+    [ "pidAutoTune", "class_t_m_c4671.html#a0b152793efe8b12d97ef0159d2e4a0b8", null ],
     [ "pingDriver", "class_t_m_c4671.html#a78f2f1e72c9cd1eca1cc062db601075a", null ],
     [ "posToEnc", "class_t_m_c4671.html#ad39175477b1007cc9ce5576f7866d435", null ],
     [ "reachedPosition", "class_t_m_c4671.html#a355e2fec628b4480084724bcee003049", null ],

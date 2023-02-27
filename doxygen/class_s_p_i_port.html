@@ -106,8 +106,8 @@ Inheritance diagram for SPIPort:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:af8286ffd8c090f6e530ee8315c236edf"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_p_i_port.html#af8286ffd8c090f6e530ee8315c236edf">SPIPort</a> (SPI_HandleTypeDef &amp;<a class="el" href="class_s_p_i_port.html#a1884a8265d1b1d113b2c0c9a33c72584">hspi</a>, const std::vector&lt; <a class="el" href="class_output_pin.html">OutputPin</a> &gt; &amp;<a class="el" href="class_s_p_i_port.html#a9ec1c31f1268b05d2cec359f91b3a7ef">csPins</a>, bool <a class="el" href="class_s_p_i_port.html#ad6c915319e2a7e71328fc8510b091451">allowReconfigure</a>=true)</td></tr>
-<tr class="separator:af8286ffd8c090f6e530ee8315c236edf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af492ca6f49fb6c940016cfb2c60ab130"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_p_i_port.html#af492ca6f49fb6c940016cfb2c60ab130">SPIPort</a> (SPI_HandleTypeDef &amp;<a class="el" href="class_s_p_i_port.html#a1884a8265d1b1d113b2c0c9a33c72584">hspi</a>, const std::vector&lt; <a class="el" href="class_output_pin.html">OutputPin</a> &gt; &amp;<a class="el" href="class_s_p_i_port.html#a9ec1c31f1268b05d2cec359f91b3a7ef">csPins</a>, uint32_t <a class="el" href="class_s_p_i_port.html#affb3fe19a2a1a2aba1cc4c67a87f092f">baseclk</a>, bool <a class="el" href="class_s_p_i_port.html#ad6c915319e2a7e71328fc8510b091451">allowReconfigure</a>=true)</td></tr>
+<tr class="separator:af492ca6f49fb6c940016cfb2c60ab130"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f4057e9c8d04aec84bd88c70b78623b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_p_i_port.html#a2f4057e9c8d04aec84bd88c70b78623b">takeSemaphore</a> ()</td></tr>
 <tr class="separator:a2f4057e9c8d04aec84bd88c70b78623b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac3feeaf8dffc219625567c0aa0789d3a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_p_i_port.html#ac3feeaf8dffc219625567c0aa0789d3a">giveSemaphore</a> ()</td></tr>
@@ -158,6 +158,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a2a85ef27467443ec06ff20615c541708"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1109e42c8e5889df7f0e345713279a01"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_p_i_port.html#a1109e42c8e5889df7f0e345713279a01">hasFreePins</a> ()</td></tr>
 <tr class="separator:a1109e42c8e5889df7f0e345713279a01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a51d9e3e916cf0049dea6f5d48ba8fe9a"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_p_i_port.html#a51d9e3e916cf0049dea6f5d48ba8fe9a">getBaseClk</a> ()</td></tr>
+<tr class="separator:a51d9e3e916cf0049dea6f5d48ba8fe9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_spi_handler"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_spi_handler')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_spi_handler.html">SpiHandler</a></td></tr>
 <tr class="memitem:a280291936f841d31da404e9bfda7efee inherit pub_methods_class_spi_handler"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_spi_handler.html#a280291936f841d31da404e9bfda7efee">SpiHandler</a> ()</td></tr>
 <tr class="separator:a280291936f841d31da404e9bfda7efee inherit pub_methods_class_spi_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -195,6 +197,8 @@ Private Attributes</h2></td></tr>
 <tr class="separator:ad2193523354ab097d188a3690c646a10"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d929b49b729619a6e4a1293a6876229"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_p_i_port.html#a8d929b49b729619a6e4a1293a6876229">takenExclusive</a> = false</td></tr>
 <tr class="separator:a8d929b49b729619a6e4a1293a6876229"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:affb3fe19a2a1a2aba1cc4c67a87f092f"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_p_i_port.html#affb3fe19a2a1a2aba1cc4c67a87f092f">baseclk</a></td></tr>
+<tr class="separator:affb3fe19a2a1a2aba1cc4c67a87f092f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -204,10 +208,10 @@ Additional Inherited Members</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_s_p_i_8h_source.html#l00046">46</a> of file <a class="el" href="_s_p_i_8h_source.html">SPI.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_p_i_8h_source.html#l00045">45</a> of file <a class="el" href="_s_p_i_8h_source.html">SPI.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="af8286ffd8c090f6e530ee8315c236edf" name="af8286ffd8c090f6e530ee8315c236edf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af8286ffd8c090f6e530ee8315c236edf">&#9670;&nbsp;</a></span>SPIPort()</h2>
+<a id="af492ca6f49fb6c940016cfb2c60ab130" name="af492ca6f49fb6c940016cfb2c60ab130"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af492ca6f49fb6c940016cfb2c60ab130">&#9670;&nbsp;</a></span>SPIPort()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -223,6 +227,12 @@ Additional Inherited Members</h2></td></tr>
           <td></td>
           <td class="paramtype">const std::vector&lt; <a class="el" href="class_output_pin.html">OutputPin</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>csPins</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>baseclk</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -285,7 +295,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_s_p_i_8cpp_source.html#l00080">80</a> of file <a class="el" href="_s_p_i_8cpp_source.html">SPI.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_p_i_8cpp_source.html#l00081">81</a> of file <a class="el" href="_s_p_i_8cpp_source.html">SPI.cpp</a>.</p>
 
 </div>
 </div>
@@ -331,7 +341,27 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_s_p_i_8cpp_source.html#l00045">45</a> of file <a class="el" href="_s_p_i_8cpp_source.html">SPI.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_p_i_8cpp_source.html#l00046">46</a> of file <a class="el" href="_s_p_i_8cpp_source.html">SPI.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a51d9e3e916cf0049dea6f5d48ba8fe9a" name="a51d9e3e916cf0049dea6f5d48ba8fe9a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a51d9e3e916cf0049dea6f5d48ba8fe9a">&#9670;&nbsp;</a></span>getBaseClk()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t SPIPort::getBaseClk </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >Returns the peripheral base clock frequency </p>
+
+<p class="definition">Definition at line <a class="el" href="_s_p_i_8cpp_source.html#l00232">232</a> of file <a class="el" href="_s_p_i_8cpp_source.html">SPI.cpp</a>.</p>
 
 </div>
 </div>
@@ -351,7 +381,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_s_p_i_8cpp_source.html#l00073">73</a> of file <a class="el" href="_s_p_i_8cpp_source.html">SPI.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_p_i_8cpp_source.html#l00074">74</a> of file <a class="el" href="_s_p_i_8cpp_source.html">SPI.cpp</a>.</p>
 
 </div>
 </div>
@@ -370,7 +400,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_s_p_i_8cpp_source.html#l00069">69</a> of file <a class="el" href="_s_p_i_8cpp_source.html">SPI.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_p_i_8cpp_source.html#l00070">70</a> of file <a class="el" href="_s_p_i_8cpp_source.html">SPI.cpp</a>.</p>
 
 </div>
 </div>
@@ -389,7 +419,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_s_p_i_8cpp_source.html#l00063">63</a> of file <a class="el" href="_s_p_i_8cpp_source.html">SPI.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_p_i_8cpp_source.html#l00064">64</a> of file <a class="el" href="_s_p_i_8cpp_source.html">SPI.cpp</a>.</p>
 
 </div>
 </div>
@@ -408,7 +438,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_s_p_i_8cpp_source.html#l00203">203</a> of file <a class="el" href="_s_p_i_8cpp_source.html">SPI.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_p_i_8cpp_source.html#l00204">204</a> of file <a class="el" href="_s_p_i_8cpp_source.html">SPI.cpp</a>.</p>
 
 </div>
 </div>
@@ -427,7 +457,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_s_p_i_8cpp_source.html#l00224">224</a> of file <a class="el" href="_s_p_i_8cpp_source.html">SPI.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_p_i_8cpp_source.html#l00225">225</a> of file <a class="el" href="_s_p_i_8cpp_source.html">SPI.cpp</a>.</p>
 
 </div>
 </div>
@@ -447,7 +477,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_s_p_i_8cpp_source.html#l00059">59</a> of file <a class="el" href="_s_p_i_8cpp_source.html">SPI.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_p_i_8cpp_source.html#l00060">60</a> of file <a class="el" href="_s_p_i_8cpp_source.html">SPI.cpp</a>.</p>
 
 </div>
 </div>
@@ -466,7 +496,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_s_p_i_8cpp_source.html#l00216">216</a> of file <a class="el" href="_s_p_i_8cpp_source.html">SPI.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_p_i_8cpp_source.html#l00217">217</a> of file <a class="el" href="_s_p_i_8cpp_source.html">SPI.cpp</a>.</p>
 
 </div>
 </div>
@@ -508,7 +538,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_s_p_i_8cpp_source.html#l00171">171</a> of file <a class="el" href="_s_p_i_8cpp_source.html">SPI.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_p_i_8cpp_source.html#l00172">172</a> of file <a class="el" href="_s_p_i_8cpp_source.html">SPI.cpp</a>.</p>
 
 </div>
 </div>
@@ -545,7 +575,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p >Receives using DMA. Not recommended Warning: DMA depends on interrupts not being missed </p>
 
-<p class="definition">Definition at line <a class="el" href="_s_p_i_8cpp_source.html#l00121">121</a> of file <a class="el" href="_s_p_i_8cpp_source.html">SPI.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_p_i_8cpp_source.html#l00122">122</a> of file <a class="el" href="_s_p_i_8cpp_source.html">SPI.cpp</a>.</p>
 
 </div>
 </div>
@@ -581,7 +611,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_s_p_i_8cpp_source.html#l00152">152</a> of file <a class="el" href="_s_p_i_8cpp_source.html">SPI.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_p_i_8cpp_source.html#l00153">153</a> of file <a class="el" href="_s_p_i_8cpp_source.html">SPI.cpp</a>.</p>
 
 </div>
 </div>
@@ -601,7 +631,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_s_p_i_8cpp_source.html#l00033">33</a> of file <a class="el" href="_s_p_i_8cpp_source.html">SPI.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_p_i_8cpp_source.html#l00034">34</a> of file <a class="el" href="_s_p_i_8cpp_source.html">SPI.cpp</a>.</p>
 
 </div>
 </div>
@@ -631,7 +661,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_spi_handler.html#aa9332f451a8cd110ec0a6393cde57135">SpiHandler</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_s_p_i_8cpp_source.html#l00270">270</a> of file <a class="el" href="_s_p_i_8cpp_source.html">SPI.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_p_i_8cpp_source.html#l00278">278</a> of file <a class="el" href="_s_p_i_8cpp_source.html">SPI.cpp</a>.</p>
 
 </div>
 </div>
@@ -661,7 +691,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_spi_handler.html#aab15f9c12659559f3e85d034a58227a9">SpiHandler</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_s_p_i_8cpp_source.html#l00243">243</a> of file <a class="el" href="_s_p_i_8cpp_source.html">SPI.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_p_i_8cpp_source.html#l00251">251</a> of file <a class="el" href="_s_p_i_8cpp_source.html">SPI.cpp</a>.</p>
 
 </div>
 </div>
@@ -691,7 +721,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_spi_handler.html#ad3c3daaf8084372d77af4cce03436b93">SpiHandler</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_s_p_i_8cpp_source.html#l00229">229</a> of file <a class="el" href="_s_p_i_8cpp_source.html">SPI.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_p_i_8cpp_source.html#l00237">237</a> of file <a class="el" href="_s_p_i_8cpp_source.html">SPI.cpp</a>.</p>
 
 </div>
 </div>
@@ -721,7 +751,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_spi_handler.html#afdd24b7cee3bf1af6cf73b27edc63704">SpiHandler</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_s_p_i_8cpp_source.html#l00256">256</a> of file <a class="el" href="_s_p_i_8cpp_source.html">SPI.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_p_i_8cpp_source.html#l00264">264</a> of file <a class="el" href="_s_p_i_8cpp_source.html">SPI.cpp</a>.</p>
 
 </div>
 </div>
@@ -741,7 +771,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_s_p_i_8cpp_source.html#l00220">220</a> of file <a class="el" href="_s_p_i_8cpp_source.html">SPI.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_p_i_8cpp_source.html#l00221">221</a> of file <a class="el" href="_s_p_i_8cpp_source.html">SPI.cpp</a>.</p>
 
 </div>
 </div>
@@ -760,7 +790,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_s_p_i_8cpp_source.html#l00190">190</a> of file <a class="el" href="_s_p_i_8cpp_source.html">SPI.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_p_i_8cpp_source.html#l00191">191</a> of file <a class="el" href="_s_p_i_8cpp_source.html">SPI.cpp</a>.</p>
 
 </div>
 </div>
@@ -802,7 +832,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_s_p_i_8cpp_source.html#l00162">162</a> of file <a class="el" href="_s_p_i_8cpp_source.html">SPI.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_p_i_8cpp_source.html#l00163">163</a> of file <a class="el" href="_s_p_i_8cpp_source.html">SPI.cpp</a>.</p>
 
 </div>
 </div>
@@ -839,7 +869,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p >Transmits using DMA Warning: DMA depends on interrupts not being missed </p>
 
-<p class="definition">Definition at line <a class="el" href="_s_p_i_8cpp_source.html#l00093">93</a> of file <a class="el" href="_s_p_i_8cpp_source.html">SPI.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_p_i_8cpp_source.html#l00094">94</a> of file <a class="el" href="_s_p_i_8cpp_source.html">SPI.cpp</a>.</p>
 
 </div>
 </div>
@@ -875,7 +905,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_s_p_i_8cpp_source.html#l00132">132</a> of file <a class="el" href="_s_p_i_8cpp_source.html">SPI.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_p_i_8cpp_source.html#l00133">133</a> of file <a class="el" href="_s_p_i_8cpp_source.html">SPI.cpp</a>.</p>
 
 </div>
 </div>
@@ -923,7 +953,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_s_p_i_8cpp_source.html#l00180">180</a> of file <a class="el" href="_s_p_i_8cpp_source.html">SPI.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_p_i_8cpp_source.html#l00181">181</a> of file <a class="el" href="_s_p_i_8cpp_source.html">SPI.cpp</a>.</p>
 
 </div>
 </div>
@@ -966,7 +996,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p >Transmit and receive using DMA Warning: DMA depends on interrupts not being missed </p>
 
-<p class="definition">Definition at line <a class="el" href="_s_p_i_8cpp_source.html#l00107">107</a> of file <a class="el" href="_s_p_i_8cpp_source.html">SPI.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_p_i_8cpp_source.html#l00108">108</a> of file <a class="el" href="_s_p_i_8cpp_source.html">SPI.cpp</a>.</p>
 
 </div>
 </div>
@@ -1008,7 +1038,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_s_p_i_8cpp_source.html#l00142">142</a> of file <a class="el" href="_s_p_i_8cpp_source.html">SPI.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_p_i_8cpp_source.html#l00143">143</a> of file <a class="el" href="_s_p_i_8cpp_source.html">SPI.cpp</a>.</p>
 
 </div>
 </div>
@@ -1033,7 +1063,31 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_s_p_i_8h_source.html#l00092">92</a> of file <a class="el" href="_s_p_i_8h_source.html">SPI.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_p_i_8h_source.html#l00093">93</a> of file <a class="el" href="_s_p_i_8h_source.html">SPI.h</a>.</p>
+
+</div>
+</div>
+<a id="affb3fe19a2a1a2aba1cc4c67a87f092f" name="affb3fe19a2a1a2aba1cc4c67a87f092f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#affb3fe19a2a1a2aba1cc4c67a87f092f">&#9670;&nbsp;</a></span>baseclk</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t SPIPort::baseclk</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_s_p_i_8h_source.html#l00096">96</a> of file <a class="el" href="_s_p_i_8h_source.html">SPI.h</a>.</p>
 
 </div>
 </div>
@@ -1057,7 +1111,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_s_p_i_8h_source.html#l00088">88</a> of file <a class="el" href="_s_p_i_8h_source.html">SPI.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_p_i_8h_source.html#l00089">89</a> of file <a class="el" href="_s_p_i_8h_source.html">SPI.h</a>.</p>
 
 </div>
 </div>
@@ -1081,7 +1135,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_s_p_i_8h_source.html#l00087">87</a> of file <a class="el" href="_s_p_i_8h_source.html">SPI.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_p_i_8h_source.html#l00088">88</a> of file <a class="el" href="_s_p_i_8h_source.html">SPI.h</a>.</p>
 
 </div>
 </div>
@@ -1105,7 +1159,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_s_p_i_8h_source.html#l00089">89</a> of file <a class="el" href="_s_p_i_8h_source.html">SPI.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_p_i_8h_source.html#l00090">90</a> of file <a class="el" href="_s_p_i_8h_source.html">SPI.h</a>.</p>
 
 </div>
 </div>
@@ -1129,7 +1183,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_s_p_i_8h_source.html#l00086">86</a> of file <a class="el" href="_s_p_i_8h_source.html">SPI.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_p_i_8h_source.html#l00087">87</a> of file <a class="el" href="_s_p_i_8h_source.html">SPI.h</a>.</p>
 
 </div>
 </div>
@@ -1153,7 +1207,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_s_p_i_8h_source.html#l00093">93</a> of file <a class="el" href="_s_p_i_8h_source.html">SPI.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_p_i_8h_source.html#l00094">94</a> of file <a class="el" href="_s_p_i_8h_source.html">SPI.h</a>.</p>
 
 </div>
 </div>
@@ -1177,7 +1231,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_s_p_i_8h_source.html#l00091">91</a> of file <a class="el" href="_s_p_i_8h_source.html">SPI.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_p_i_8h_source.html#l00092">92</a> of file <a class="el" href="_s_p_i_8h_source.html">SPI.h</a>.</p>
 
 </div>
 </div>
@@ -1201,7 +1255,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_s_p_i_8h_source.html#l00094">94</a> of file <a class="el" href="_s_p_i_8h_source.html">SPI.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_p_i_8h_source.html#l00095">95</a> of file <a class="el" href="_s_p_i_8h_source.html">SPI.h</a>.</p>
 
 </div>
 </div>

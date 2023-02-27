@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['waitdata_0',['waitData',['../class_encoder_biss_c.html#a6ee678c0dd969b95586c9dbd0a829b19',1,'EncoderBissC']]],
+  ['waitdata_0',['waitData',['../class_encoder_s_s_i.html#a8aa2fa5ce6d1b3640a056805b0393e90',1,'EncoderSSI::waitData()'],['../class_encoder_biss_c.html#a6ee678c0dd969b95586c9dbd0a829b19',1,'EncoderBissC::waitData()']]],
   ['waitfiltersamples_1',['waitFilterSamples',['../class_analog_axis_processing.html#a2b3ad83ad54d5eed37e4168df6755832',1,'AnalogAxisProcessing']]],
-  ['waitforupdatesem_2',['waitForUpdateSem',['../class_mt_encoder_s_p_i.html#a434788641cf0ecae1fdf61b029cdc5f8',1,'MtEncoderSPI::waitForUpdateSem()'],['../class_encoder_biss_c.html#a60dbc36779e139ad22c51e5c09d1e0f6',1,'EncoderBissC::waitForUpdateSem()']]],
+  ['waitforupdatesem_2',['waitForUpdateSem',['../class_encoder_biss_c.html#a60dbc36779e139ad22c51e5c09d1e0f6',1,'EncoderBissC::waitForUpdateSem()'],['../class_mt_encoder_s_p_i.html#a434788641cf0ecae1fdf61b029cdc5f8',1,'MtEncoderSPI::waitForUpdateSem()']]],
   ['waitingfastupdate_3',['waitingFastUpdate',['../class_motor_simplemotion.html#ae448839e7738455c738f8d999de93382',1,'MotorSimplemotion']]],
   ['waitingforsinglebytes_4',['waitingForSingleBytes',['../class_u_a_r_t_port.html#a1b929f7d1fa6c4d26c9566fdc6471021',1,'UARTPort']]],
   ['waitingreply_5',['waitingReply',['../class_motor_simplemotion.html#a2b0a56e45d12de7f5b1ec26ce571304d',1,'MotorSimplemotion']]],

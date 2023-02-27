@@ -21,6 +21,7 @@ var hierarchy =
     [ "CAN_rx_msg", "struct_c_a_n__rx__msg.html", null ],
     [ "CAN_tx_msg", "struct_c_a_n__tx__msg.html", null ],
     [ "CanHandler", "class_can_handler.html", [
+      [ "CANPort", "class_c_a_n_port.html", null ],
       [ "CanAnalogBase", "class_can_analog_base.html", [
         [ "CanAnalog< AMOUNT >", "class_can_analog.html", null ]
       ] ],
@@ -57,6 +58,7 @@ var hierarchy =
       [ "Encoder", "class_encoder.html", [
         [ "EncoderBissC", "class_encoder_biss_c.html", null ],
         [ "EncoderLocal", "class_encoder_local.html", null ],
+        [ "EncoderSSI", "class_encoder_s_s_i.html", null ],
         [ "MotorSimplemotion", "class_motor_simplemotion.html", [
           [ "MotorSimplemotion1", "class_motor_simplemotion1.html", null ],
           [ "MotorSimplemotion2", "class_motor_simplemotion2.html", null ]
@@ -103,6 +105,7 @@ var hierarchy =
       [ "EffectsCalculator", "class_effects_calculator.html", null ],
       [ "EncoderBissC", "class_encoder_biss_c.html", null ],
       [ "EncoderLocal", "class_encoder_local.html", null ],
+      [ "EncoderSSI", "class_encoder_s_s_i.html", null ],
       [ "FFBoardMain", "class_f_f_board_main.html", null ],
       [ "I2CPort", "class_i2_c_port.html", null ],
       [ "LocalAnalog", "class_local_analog.html", null ],
@@ -171,6 +174,10 @@ var hierarchy =
     [ "FFB_Effect", "struct_f_f_b___effect.html", null ],
     [ "FFB_Effect_Condition", "struct_f_f_b___effect___condition.html", null ],
     [ "GearRatio_t", "struct_gear_ratio__t.html", null ],
+    [ "GpioPin", "class_gpio_pin.html", [
+      [ "InputPin", "class_input_pin.html", null ],
+      [ "OutputPin", "class_output_pin.html", null ]
+    ] ],
     [ "hcd_devtree_info_t", "structhcd__devtree__info__t.html", null ],
     [ "hcd_event_t", "structhcd__event__t.html", null ],
     [ "hidd_interface_t", "structhidd__interface__t.html", null ],
@@ -211,7 +218,6 @@ var hierarchy =
     [ "ncm_interface_t", "structncm__interface__t.html", null ],
     [ "netd_interface_t", "structnetd__interface__t.html", null ],
     [ "osal_queue_def_t", "structosal__queue__def__t.html", null ],
-    [ "OutputPin", "class_output_pin.html", null ],
     [ "ParsedCommand", "struct_parsed_command.html", null ],
     [ "PersistentStorage", "class_persistent_storage.html", [
       [ "AnalogSource", "class_analog_source.html", null ],
@@ -221,6 +227,7 @@ var hierarchy =
       [ "EffectsCalculator", "class_effects_calculator.html", null ],
       [ "EncoderBissC", "class_encoder_biss_c.html", null ],
       [ "EncoderLocal", "class_encoder_local.html", null ],
+      [ "EncoderSSI", "class_encoder_s_s_i.html", null ],
       [ "FFBHIDMain", "class_f_f_b_h_i_d_main.html", null ],
       [ "I2CPort", "class_i2_c_port.html", null ],
       [ "MotorPWM", "class_motor_p_w_m.html", null ],
@@ -261,6 +268,7 @@ var hierarchy =
     [ "SPIConfig", "struct_s_p_i_config.html", null ],
     [ "SPIDevice", "class_s_p_i_device.html", [
       [ "EncoderBissC", "class_encoder_biss_c.html", null ],
+      [ "EncoderSSI", "class_encoder_s_s_i.html", null ],
       [ "MtEncoderSPI", "class_mt_encoder_s_p_i.html", null ],
       [ "SPI_Buttons", "class_s_p_i___buttons.html", null ],
       [ "ShifterAnalog::G27ShifterButtonClient", "class_shifter_analog_1_1_g27_shifter_button_client.html", null ],

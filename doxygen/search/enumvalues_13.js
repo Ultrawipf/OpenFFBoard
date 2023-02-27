@@ -134,6 +134,6 @@ var searchData=
   ['vint_131',['vint',['../_system_commands_8h.html#a4a42a50bc0a826d5ab6d847950749d07a7a48b6e7efa8475f61dc5ecd419fda73',1,'SystemCommands.h']]],
   ['visible_132',['visible',['../_choosable_class_8h.html#aa3a363b83e4ed5a23cf7398fcf8bae0ca46cf0e59759c9b7f1112ca4b174343ef',1,'ChoosableClass.h']]],
   ['vmtmc_133',['vmTmc',['../class_t_m_c4671.html#a383a82ab842490e325553e9365028a27aa4c85f6bd07bccc575b078ae00b60ef0',1,'TMC4671']]],
-  ['voltage_134',['Voltage',['../class_motor_simplemotion.html#a0fa06e9cd5b42ac97ac49ff916ac1c30a4a92fbe41f6463598c39850b8335096c',1,'MotorSimplemotion']]],
-  ['voltage_135',['voltage',['../_vesc_c_a_n_8h.html#a2125c9b686c373137058c5ae8fa4219fae437ba437f4106903e619bb380574954',1,'voltage():&#160;VescCAN.h'],['../class_motor_simplemotion.html#a04284aedcbd482d8dea7aa2bf631d5b2ae437ba437f4106903e619bb380574954',1,'MotorSimplemotion::voltage()']]]
+  ['voltage_134',['voltage',['../class_motor_simplemotion.html#a04284aedcbd482d8dea7aa2bf631d5b2ae437ba437f4106903e619bb380574954',1,'MotorSimplemotion::voltage()'],['../_vesc_c_a_n_8h.html#a2125c9b686c373137058c5ae8fa4219fae437ba437f4106903e619bb380574954',1,'voltage():&#160;VescCAN.h']]],
+  ['voltage_135',['Voltage',['../class_motor_simplemotion.html#a0fa06e9cd5b42ac97ac49ff916ac1c30a4a92fbe41f6463598c39850b8335096c',1,'MotorSimplemotion']]]
 ];

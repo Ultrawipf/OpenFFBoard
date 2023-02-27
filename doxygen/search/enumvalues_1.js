@@ -2,7 +2,7 @@ var searchData=
 [
   ['bandpass_0',['bandpass',['../_filters_8h.html#afba124be8dd4fe063cbff46434ee8610aeaa843f2c3b43878349060f8b50c519d',1,'Filters.h']]],
   ['beginsampling_1',['beginSampling',['../class_a_d_s111_x___analog_source.html#acc763a68b2c4b26af2b09ca20690676da0cac03458ff0728881fd4db728690c6e',1,'ADS111X_AnalogSource']]],
-  ['bits_2',['bits',['../class_encoder_biss_c.html#ab6486bfbbaa89e76f2918f15595e668bacc411e6c13670e52124629b8ac83f7d0',1,'EncoderBissC']]],
+  ['bits_2',['bits',['../class_encoder_biss_c.html#ab6486bfbbaa89e76f2918f15595e668bacc411e6c13670e52124629b8ac83f7d0',1,'EncoderBissC::bits()'],['../class_encoder_s_s_i.html#aa783624a9453d065cf854152d2520db2acc411e6c13670e52124629b8ac83f7d0',1,'EncoderSSI::bits()']]],
   ['bldc_3',['BLDC',['../_t_m_c4671_8h.html#a582234b0c15ab7ba48e3ddd16e7a41d2a6bfc66b02fa7655fdac422fadf0560e1',1,'TMC4671.h']]],
   ['brakeresistorfailure_4',['brakeResistorFailure',['../_error_handler_8h.html#a6f3b1ba4fbf4167d3a58b0b331ddcfefa1efe903946f4bbf8012a8d8e092427a0',1,'ErrorHandler.h']]],
   ['broadcast_5',['BROADCAST',['../_command_handler_8h.html#aefaf83fec6a7da1d02ae7e912dd9a6d5a81d741a35dc8a42c885b7cc031afd17f',1,'CommandHandler.h']]],

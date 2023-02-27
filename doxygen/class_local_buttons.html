@@ -251,10 +251,8 @@ Private Attributes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-static-attribs" name="pri-static-attribs"></a>
 Static Private Attributes</h2></td></tr>
-<tr class="memitem:abce4dbb0668a5e3bebe1626aeb3a1297"><td class="memItemLeft" align="right" valign="top">static constexpr uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_local_buttons.html#abce4dbb0668a5e3bebe1626aeb3a1297">button_pins</a> [8] {DIN0_Pin,DIN1_Pin,DIN2_Pin,DIN3_Pin,DIN4_Pin,DIN5_Pin,DIN6_Pin,DIN7_Pin}</td></tr>
-<tr class="separator:abce4dbb0668a5e3bebe1626aeb3a1297"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7379b1c7354d9b5de1fd2863fa0305ec"><td class="memItemLeft" align="right" valign="top">static constexpr GPIO_TypeDef *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_local_buttons.html#a7379b1c7354d9b5de1fd2863fa0305ec">button_ports</a> [8] {DIN0_GPIO_Port,DIN1_GPIO_Port,DIN2_GPIO_Port,DIN3_GPIO_Port,DIN4_GPIO_Port,DIN5_GPIO_Port,DIN6_GPIO_Port,DIN7_GPIO_Port}</td></tr>
-<tr class="separator:a7379b1c7354d9b5de1fd2863fa0305ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a754511987556e0b1d8c82cf6446e5a60"><td class="memItemLeft" align="right" valign="top">static const std::array&lt; <a class="el" href="class_input_pin.html">InputPin</a>, BUTTON_PINS &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_local_buttons.html#a754511987556e0b1d8c82cf6446e5a60">button_pins</a></td></tr>
+<tr class="separator:a754511987556e0b1d8c82cf6446e5a60"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_attribs_class_command_handler"><td colspan="2" onclick="javascript:toggleInherit('pub_static_attribs_class_command_handler')"><img src="closed.png" alt="-"/>&#160;Static Private Attributes inherited from <a class="el" href="class_command_handler.html">CommandHandler</a></td></tr>
 <tr class="memitem:a9029c76e98bec126216b0e6e35c0c88a inherit pub_static_attribs_class_command_handler"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a9029c76e98bec126216b0e6e35c0c88a">logEnabled</a> = true</td></tr>
 <tr class="separator:a9029c76e98bec126216b0e6e35c0c88a inherit pub_static_attribs_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -316,7 +314,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_local_buttons_8h_source.html#l00016">16</a> of file <a class="el" href="_local_buttons_8h_source.html">LocalButtons.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_local_buttons_8h_source.html#l00018">18</a> of file <a class="el" href="_local_buttons_8h_source.html">LocalButtons.h</a>.</p>
 </div><h2 class="groupheader">Member Enumeration Documentation</h2>
 <a id="a4079bc8e1bdb9a36f0c7614d42b203cb" name="a4079bc8e1bdb9a36f0c7614d42b203cb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4079bc8e1bdb9a36f0c7614d42b203cb">&#9670;&nbsp;</a></span>LocalButtons_commands</h2>
@@ -344,7 +342,7 @@ Additional Inherited Members</h2></td></tr>
 <tr><td class="fieldname"><a id="a4079bc8e1bdb9a36f0c7614d42b203cbaf09cc7ee3a9a93273f4b80601cafb00c" name="a4079bc8e1bdb9a36f0c7614d42b203cbaf09cc7ee3a9a93273f4b80601cafb00c"></a>values&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="_local_buttons_8h_source.html#l00017">17</a> of file <a class="el" href="_local_buttons_8h_source.html">LocalButtons.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_local_buttons_8h_source.html#l00019">19</a> of file <a class="el" href="_local_buttons_8h_source.html">LocalButtons.h</a>.</p>
 
 </div>
 </div>
@@ -471,7 +469,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_button_source.html#a14b6d39e560e07ce49fcad3f53396c20">ButtonSource</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_local_buttons_8h_source.html#l00044">44</a> of file <a class="el" href="_local_buttons_8h_source.html">LocalButtons.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_local_buttons_8h_source.html#l00053">53</a> of file <a class="el" href="_local_buttons_8h_source.html">LocalButtons.h</a>.</p>
 
 </div>
 </div>
@@ -501,7 +499,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_command_handler.html#a0842b01125770b9be569a29d49080a3f">CommandHandler</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_local_buttons_8h_source.html#l00033">33</a> of file <a class="el" href="_local_buttons_8h_source.html">LocalButtons.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_local_buttons_8h_source.html#l00041">41</a> of file <a class="el" href="_local_buttons_8h_source.html">LocalButtons.h</a>.</p>
 
 </div>
 </div>
@@ -557,7 +555,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_local_buttons_8h_source.html#l00027">27</a> of file <a class="el" href="_local_buttons_8h_source.html">LocalButtons.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_local_buttons_8h_source.html#l00035">35</a> of file <a class="el" href="_local_buttons_8h_source.html">LocalButtons.h</a>.</p>
 
 </div>
 </div>
@@ -585,7 +583,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_local_buttons_8h_source.html#l00038">38</a> of file <a class="el" href="_local_buttons_8h_source.html">LocalButtons.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_local_buttons_8h_source.html#l00046">46</a> of file <a class="el" href="_local_buttons_8h_source.html">LocalButtons.h</a>.</p>
 
 </div>
 </div>
@@ -709,8 +707,8 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="abce4dbb0668a5e3bebe1626aeb3a1297" name="abce4dbb0668a5e3bebe1626aeb3a1297"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abce4dbb0668a5e3bebe1626aeb3a1297">&#9670;&nbsp;</a></span>button_pins</h2>
+<a id="a754511987556e0b1d8c82cf6446e5a60" name="a754511987556e0b1d8c82cf6446e5a60"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a754511987556e0b1d8c82cf6446e5a60">&#9670;&nbsp;</a></span>button_pins</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -719,41 +717,21 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr uint16_t LocalButtons::button_pins[8] {DIN0_Pin,DIN1_Pin,DIN2_Pin,DIN3_Pin,DIN4_Pin,DIN5_Pin,DIN6_Pin,DIN7_Pin}</td>
+          <td class="memname">const std::array&lt; <a class="el" href="class_input_pin.html">InputPin</a>, BUTTON_PINS &gt; LocalButtons::button_pins</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">{</div>
+<div class="line"><span class="preprocessor">#if BUTTON_PINS &gt; 0</span></div>
+<div class="line"><span class="preprocessor">        InputPin(DIN0_GPIO_Port, DIN0_Pin)</span></div>
+</div><!-- fragment --><p >All DIN pins must be defined as inputs. Not more than 16 pins can be defined </p>
 
-<p class="definition">Definition at line <a class="el" href="_local_buttons_8h_source.html#l00049">49</a> of file <a class="el" href="_local_buttons_8h_source.html">LocalButtons.h</a>.</p>
-
-</div>
-</div>
-<a id="a7379b1c7354d9b5de1fd2863fa0305ec" name="a7379b1c7354d9b5de1fd2863fa0305ec"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7379b1c7354d9b5de1fd2863fa0305ec">&#9670;&nbsp;</a></span>button_ports</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr GPIO_TypeDef* LocalButtons::button_ports[8] {DIN0_GPIO_Port,DIN1_GPIO_Port,DIN2_GPIO_Port,DIN3_GPIO_Port,DIN4_GPIO_Port,DIN5_GPIO_Port,DIN6_GPIO_Port,DIN7_GPIO_Port}</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_local_buttons_8h_source.html#l00050">50</a> of file <a class="el" href="_local_buttons_8h_source.html">LocalButtons.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_local_buttons_8h_source.html#l00026">26</a> of file <a class="el" href="_local_buttons_8h_source.html">LocalButtons.h</a>.</p>
 
 </div>
 </div>
@@ -781,7 +759,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line">     .id=CLSID_BTN_LOCAL,</div>
 <div class="line">}</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="_local_buttons_8h_source.html#l00026">26</a> of file <a class="el" href="_local_buttons_8h_source.html">LocalButtons.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_local_buttons_8h_source.html#l00034">34</a> of file <a class="el" href="_local_buttons_8h_source.html">LocalButtons.h</a>.</p>
 
 </div>
 </div>
@@ -805,7 +783,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_local_buttons_8h_source.html#l00046">46</a> of file <a class="el" href="_local_buttons_8h_source.html">LocalButtons.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_local_buttons_8h_source.html#l00023">23</a> of file <a class="el" href="_local_buttons_8h_source.html">LocalButtons.h</a>.</p>
 
 </div>
 </div>
@@ -829,7 +807,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_local_buttons_8h_source.html#l00029">29</a> of file <a class="el" href="_local_buttons_8h_source.html">LocalButtons.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_local_buttons_8h_source.html#l00037">37</a> of file <a class="el" href="_local_buttons_8h_source.html">LocalButtons.h</a>.</p>
 
 </div>
 </div>
@@ -853,7 +831,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_local_buttons_8h_source.html#l00048">48</a> of file <a class="el" href="_local_buttons_8h_source.html">LocalButtons.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_local_buttons_8h_source.html#l00025">25</a> of file <a class="el" href="_local_buttons_8h_source.html">LocalButtons.h</a>.</p>
 
 </div>
 </div>

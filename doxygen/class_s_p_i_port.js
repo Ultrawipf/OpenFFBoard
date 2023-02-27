@@ -1,10 +1,11 @@
 var class_s_p_i_port =
 [
-    [ "SPIPort", "class_s_p_i_port.html#af8286ffd8c090f6e530ee8315c236edf", null ],
+    [ "SPIPort", "class_s_p_i_port.html#af492ca6f49fb6c940016cfb2c60ab130", null ],
     [ "beginTransfer", "class_s_p_i_port.html#a04044255bef2e2be6c4e00991ad70873", null ],
     [ "configurePort", "class_s_p_i_port.html#abfb00731e34be961162c814837c37531", null ],
     [ "endTransfer", "class_s_p_i_port.html#a97689857c8333ad81e602108ea35b57a", null ],
     [ "freeCsPin", "class_s_p_i_port.html#ac88f07b2b363e23124e5ac37c4c7465c", null ],
+    [ "getBaseClk", "class_s_p_i_port.html#a51d9e3e916cf0049dea6f5d48ba8fe9a", null ],
     [ "getCsPin", "class_s_p_i_port.html#a9b00f63efcf238d91eb3748c6c378bd0", null ],
     [ "getCsPins", "class_s_p_i_port.html#a0e64972b1b0a120110f3f498e2d654ed", null ],
     [ "getFreeCsPins", "class_s_p_i_port.html#a5b6e18a6a58d9cb15d1cf51d550fe5a6", null ],
@@ -29,6 +30,7 @@ var class_s_p_i_port =
     [ "transmitReceive_DMA", "class_s_p_i_port.html#a67e742f89c522fc6b5fe4c4d780c5a2c", null ],
     [ "transmitReceive_IT", "class_s_p_i_port.html#a888b163ed373e43e531112bfc1156354", null ],
     [ "allowReconfigure", "class_s_p_i_port.html#ad6c915319e2a7e71328fc8510b091451", null ],
+    [ "baseclk", "class_s_p_i_port.html#affb3fe19a2a1a2aba1cc4c67a87f092f", null ],
     [ "csPins", "class_s_p_i_port.html#a9ec1c31f1268b05d2cec359f91b3a7ef", null ],
     [ "current_device", "class_s_p_i_port.html#a1592cfb42ea447d0c5d2d811045076a1", null ],
     [ "freePins", "class_s_p_i_port.html#a6039e4c402a597251a161ab3521c1a37", null ],

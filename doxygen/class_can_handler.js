@@ -7,5 +7,5 @@ var class_can_handler =
     [ "canRxPendCallback", "class_can_handler.html#a53651a4aa1e88f3e442c054aae0a33d7", null ],
     [ "canTxAbortCallback", "class_can_handler.html#a0e2267410edc1d3f36bf8cb228ff458b", null ],
     [ "canTxCpltCallback", "class_can_handler.html#a12401bc2ece26ccb4adf12ec833276c8", null ],
-    [ "canHandlers", "class_can_handler.html#a40672afaa48f472234780bc711e31a5c", null ]
+    [ "getCANHandlers", "class_can_handler.html#a8ed97e1ea01b2899296ae4d702abb95b", null ]
 ];

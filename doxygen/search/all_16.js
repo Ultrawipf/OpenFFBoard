@@ -5,7 +5,7 @@ var searchData=
   ['wait_5fcalibration_5fdone_2',['WAIT_CALIBRATION_DONE',['../_o_drive_c_a_n_8h.html#abf9bd05cd369f434291d67fb39600086ae15d8bf86107919ff6b556476ab0941f',1,'ODriveCAN.h']]],
   ['wait_5fready_3',['WAIT_READY',['../_o_drive_c_a_n_8h.html#abf9bd05cd369f434291d67fb39600086a3d1a0d5cadd2678fdc2e097055d24522',1,'ODriveCAN.h']]],
   ['waitbits_4',['WaitBits',['../classcpp__freertos_1_1_event_group.html#ae646467645dddbec16d4a2a51ffff7a0',1,'cpp_freertos::EventGroup']]],
-  ['waitdata_5',['waitData',['../class_encoder_biss_c.html#a6ee678c0dd969b95586c9dbd0a829b19',1,'EncoderBissC']]],
+  ['waitdata_5',['waitData',['../class_encoder_biss_c.html#a6ee678c0dd969b95586c9dbd0a829b19',1,'EncoderBissC::waitData()'],['../class_encoder_s_s_i.html#a8aa2fa5ce6d1b3640a056805b0393e90',1,'EncoderSSI::waitData()']]],
   ['waitfiltersamples_6',['waitFilterSamples',['../class_analog_axis_processing.html#a2b3ad83ad54d5eed37e4168df6755832',1,'AnalogAxisProcessing']]],
   ['waitfornotification_7',['WaitForNotification',['../classcpp__freertos_1_1_thread.html#a198ff02a770b7fd7e43e8ab0e9221176',1,'cpp_freertos::Thread']]],
   ['waitforupdatesem_8',['waitForUpdateSem',['../class_encoder_biss_c.html#a60dbc36779e139ad22c51e5c09d1e0f6',1,'EncoderBissC::waitForUpdateSem()'],['../class_mt_encoder_s_p_i.html#a434788641cf0ecae1fdf61b029cdc5f8',1,'MtEncoderSPI::waitForUpdateSem()']]],

@@ -28,7 +28,7 @@ var class_axis =
     [ "resetMetrics", "class_axis.html#a758d1f0da7172b9c79411ac6fbf2f952", null ],
     [ "restoreFlash", "class_axis.html#ab2dbd413253ba787703ac30302ec4836", null ],
     [ "saveFlash", "class_axis.html#ad0bdf4a78c80f7b82293be9a540846ed", null ],
-    [ "scaleEncValue", "class_axis.html#a896f28b56d39de138060d03b483ff05a", null ],
+    [ "scaleEncValue", "class_axis.html#a44aeb8629c86111004552959afca99fc", null ],
     [ "setDamperStrength", "class_axis.html#a0231cbf544f7eac35b7f165960218a92", null ],
     [ "setDegrees", "class_axis.html#a3db946a879d16250f2f838405ae6d83c", null ],
     [ "setDrvType", "class_axis.html#acc1c4838a0c8bf23ba7a8a4ed5d43e7b", null ],

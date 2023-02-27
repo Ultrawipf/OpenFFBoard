@@ -99,71 +99,77 @@ $(document).ready(function(){initNavTree('cppmain_8h_source.html',''); initResiz
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;<a class="code" href="constants_8h.html">constants.h</a>&quot;</span></div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#pragma once</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &quot;<a class="code" href="_f_f_board_main_8h.html">FFBoardMain.h</a>&quot;</span></div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &quot;<a class="code" href="led_effects_8h.html">ledEffects.h</a>&quot;</span></div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &quot;<a class="code" href="_class_chooser_8h.html">ClassChooser.h</a>&quot;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#ifndef DEFAULTMAIN</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#define DEFAULTMAIN 0</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#ifdef __cplusplus</span></div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#include &quot;<a class="code" href="eeprom__addresses_8h.html">eeprom_addresses.h</a>&quot;</span></div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#include &quot;main.h&quot;</span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="preprocessor">#include &quot;cmsis_compiler.h&quot;</span></div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="keywordtype">void</span> <a class="code hl_function" href="cppmain_8h.html#a128a29499985fe63f8e67a47b9ae7fa1">cppmain</a>();</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="cppmain_8h.html#a60af0d8621d025f018ba0f56bca00a93">   29</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="cppmain_8h.html#a60af0d8621d025f018ba0f56bca00a93">usb_init</a>();</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="cppmain_8h.html#ae015c7fd64d4fd46f4e12fc32544a7c3">   30</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="cppmain_8h.html#ae015c7fd64d4fd46f4e12fc32544a7c3">tudThread</a>(<span class="keywordtype">void</span> *argument);</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>}</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="cppmain_8h.html#aa16e16cf318946e552a9c9e29f3e0013">   35</a></span><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="cppmain_8h.html#aa16e16cf318946e552a9c9e29f3e0013">inIsr</a>(){</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="keywordflow">return</span> (__get_PRIMASK() != 0U) || (__get_IPSR() != 0U);</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>}</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> T,<span class="keyword">class</span> C&gt;</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="cppmain_8h.html#a7f27b0ab2e9f8751c4f06e4d7b4abf43">   40</a></span>int8_t <a class="code hl_function" href="cppmain_8h.html#a7f27b0ab2e9f8751c4f06e4d7b4abf43">cliptest</a>(T v, <a class="code hl_variable" href="bth__device_8h.html#aaa53ca0b650dfd85c4f59fa156f7a2cc">C</a> l, <a class="code hl_variable" href="bth__device_8h.html#aaa53ca0b650dfd85c4f59fa156f7a2cc">C</a> h)</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>{</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <span class="keywordflow">if</span>(v &gt; h){</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>        <span class="keywordflow">return</span> 1;</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    }<span class="keywordflow">else</span> <span class="keywordflow">if</span>(v &lt; l){</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>        <span class="keywordflow">return</span> -1;</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    }<span class="keywordflow">else</span>{</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    }</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>}</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> T,<span class="keyword">class</span> C&gt;</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="cppmain_8h.html#a0388bb70cb554fe28f373ed831be762e">   52</a></span>T <a class="code hl_function" href="cppmain_8h.html#a0388bb70cb554fe28f373ed831be762e">clip</a>(T v, <a class="code hl_variable" href="bth__device_8h.html#aaa53ca0b650dfd85c4f59fa156f7a2cc">C</a> l, <a class="code hl_variable" href="bth__device_8h.html#aaa53ca0b650dfd85c4f59fa156f7a2cc">C</a> h)</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>{</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  <span class="keywordflow">return</span> { v &gt; h ? h : v &lt; l ? l : v };</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &quot;<a class="code" href="_f_f_board_main_8h.html">FFBoardMain.h</a>&quot;</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &quot;<a class="code" href="led_effects_8h.html">ledEffects.h</a>&quot;</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#include &quot;<a class="code" href="_class_chooser_8h.html">ClassChooser.h</a>&quot;</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="preprocessor">#include &quot;<a class="code" href="eeprom__addresses_8h.html">eeprom_addresses.h</a>&quot;</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="preprocessor">#include &quot;main.h&quot;</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="preprocessor">#include &quot;cmsis_compiler.h&quot;</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="keywordtype">void</span> <a class="code hl_function" href="cppmain_8h.html#a128a29499985fe63f8e67a47b9ae7fa1">cppmain</a>();</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="cppmain_8h.html#a60af0d8621d025f018ba0f56bca00a93">   35</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="cppmain_8h.html#a60af0d8621d025f018ba0f56bca00a93">usb_init</a>();</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="cppmain_8h.html#ae015c7fd64d4fd46f4e12fc32544a7c3">   36</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="cppmain_8h.html#ae015c7fd64d4fd46f4e12fc32544a7c3">tudThread</a>(<span class="keywordtype">void</span> *argument);</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>}</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="cppmain_8h.html#aa16e16cf318946e552a9c9e29f3e0013">   41</a></span><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="cppmain_8h.html#aa16e16cf318946e552a9c9e29f3e0013">inIsr</a>(){</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <span class="keywordflow">return</span> (__get_PRIMASK() != 0U) || (__get_IPSR() != 0U);</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>}</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> T,<span class="keyword">class</span> C&gt;</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="cppmain_8h.html#a7f27b0ab2e9f8751c4f06e4d7b4abf43">   46</a></span>int8_t <a class="code hl_function" href="cppmain_8h.html#a7f27b0ab2e9f8751c4f06e4d7b4abf43">cliptest</a>(T v, <a class="code hl_variable" href="bth__device_8h.html#aaa53ca0b650dfd85c4f59fa156f7a2cc">C</a> l, <a class="code hl_variable" href="bth__device_8h.html#aaa53ca0b650dfd85c4f59fa156f7a2cc">C</a> h)</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>{</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="keywordflow">if</span>(v &gt; h){</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        <span class="keywordflow">return</span> 1;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    }<span class="keywordflow">else</span> <span class="keywordflow">if</span>(v &lt; l){</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>        <span class="keywordflow">return</span> -1;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    }<span class="keywordflow">else</span>{</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>        <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    }</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>}</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>uint32_t <a class="code hl_function" href="cppmain_8h.html#a2b97cb2cd2661deade2d301d38c4ebe8">micros</a>(); <span class="comment">// Returns microsecond scaled time</span></div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <a class="code hl_function" href="cppmain_8h.html#a531355cea579a1aab91a7a2135024cdc">getRunTimeCounterValue</a>(<span class="keywordtype">void</span>); <span class="comment">// RTOS</span></div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="keywordtype">void</span> <a class="code hl_function" href="cppmain_8h.html#a50f798129589248b20010681d780ed50">refreshWatchdog</a>(); <span class="comment">// Refreshes the watchdog</span></div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="preprocessor">#endif </span><span class="comment">/* CPPMAIN_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> T,<span class="keyword">class</span> C&gt;</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="cppmain_8h.html#a0388bb70cb554fe28f373ed831be762e">   58</a></span>T <a class="code hl_function" href="cppmain_8h.html#a0388bb70cb554fe28f373ed831be762e">clip</a>(T v, <a class="code hl_variable" href="bth__device_8h.html#aaa53ca0b650dfd85c4f59fa156f7a2cc">C</a> l, <a class="code hl_variable" href="bth__device_8h.html#aaa53ca0b650dfd85c4f59fa156f7a2cc">C</a> h)</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>{</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  <span class="keywordflow">return</span> { v &gt; h ? h : v &lt; l ? l : v };</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>}</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>uint32_t <a class="code hl_function" href="cppmain_8h.html#a2b97cb2cd2661deade2d301d38c4ebe8">micros</a>(); <span class="comment">// Returns microsecond scaled time</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <a class="code hl_function" href="cppmain_8h.html#a531355cea579a1aab91a7a2135024cdc">getRunTimeCounterValue</a>(<span class="keywordtype">void</span>); <span class="comment">// RTOS</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="keywordtype">void</span> <a class="code hl_function" href="cppmain_8h.html#a50f798129589248b20010681d780ed50">refreshWatchdog</a>(); <span class="comment">// Refreshes the watchdog</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="preprocessor">#endif </span><span class="comment">/* CPPMAIN_H_ */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="a_class_chooser_8h_html"><div class="ttname"><a href="_class_chooser_8h.html">ClassChooser.h</a></div></div>
 <div class="ttc" id="a_f_f_board_main_8h_html"><div class="ttname"><a href="_f_f_board_main_8h.html">FFBoardMain.h</a></div></div>
 <div class="ttc" id="abth__device_8h_html_aaa53ca0b650dfd85c4f59fa156f7a2cc"><div class="ttname"><a href="bth__device_8h.html#aaa53ca0b650dfd85c4f59fa156f7a2cc">C</a></div><div class="ttdeci">C</div></div>
 <div class="ttc" id="aconstants_8h_html"><div class="ttname"><a href="constants_8h.html">constants.h</a></div></div>
-<div class="ttc" id="acppmain_8h_html_a0388bb70cb554fe28f373ed831be762e"><div class="ttname"><a href="cppmain_8h.html#a0388bb70cb554fe28f373ed831be762e">clip</a></div><div class="ttdeci">T clip(T v, C l, C h)</div><div class="ttdef"><b>Definition:</b> <a href="cppmain_8h_source.html#l00052">cppmain.h:52</a></div></div>
+<div class="ttc" id="acppmain_8h_html_a0388bb70cb554fe28f373ed831be762e"><div class="ttname"><a href="cppmain_8h.html#a0388bb70cb554fe28f373ed831be762e">clip</a></div><div class="ttdeci">T clip(T v, C l, C h)</div><div class="ttdef"><b>Definition:</b> <a href="cppmain_8h_source.html#l00058">cppmain.h:58</a></div></div>
 <div class="ttc" id="acppmain_8h_html_a128a29499985fe63f8e67a47b9ae7fa1"><div class="ttname"><a href="cppmain_8h.html#a128a29499985fe63f8e67a47b9ae7fa1">cppmain</a></div><div class="ttdeci">void cppmain()</div><div class="ttdef"><b>Definition:</b> <a href="cppmain_8cpp_source.html#l00033">cppmain.cpp:33</a></div></div>
-<div class="ttc" id="acppmain_8h_html_a2b97cb2cd2661deade2d301d38c4ebe8"><div class="ttname"><a href="cppmain_8h.html#a2b97cb2cd2661deade2d301d38c4ebe8">micros</a></div><div class="ttdeci">uint32_t micros()</div><div class="ttdef"><b>Definition:</b> <a href="cppmain_8cpp_source.html#l00123">cppmain.cpp:123</a></div></div>
-<div class="ttc" id="acppmain_8h_html_a50f798129589248b20010681d780ed50"><div class="ttname"><a href="cppmain_8h.html#a50f798129589248b20010681d780ed50">refreshWatchdog</a></div><div class="ttdeci">void refreshWatchdog()</div><div class="ttdef"><b>Definition:</b> <a href="cppmain_8cpp_source.html#l00115">cppmain.cpp:115</a></div></div>
-<div class="ttc" id="acppmain_8h_html_a531355cea579a1aab91a7a2135024cdc"><div class="ttname"><a href="cppmain_8h.html#a531355cea579a1aab91a7a2135024cdc">getRunTimeCounterValue</a></div><div class="ttdeci">unsigned long getRunTimeCounterValue(void)</div><div class="ttdef"><b>Definition:</b> <a href="cppmain_8cpp_source.html#l00139">cppmain.cpp:139</a></div></div>
+<div class="ttc" id="acppmain_8h_html_a2b97cb2cd2661deade2d301d38c4ebe8"><div class="ttname"><a href="cppmain_8h.html#a2b97cb2cd2661deade2d301d38c4ebe8">micros</a></div><div class="ttdeci">uint32_t micros()</div><div class="ttdef"><b>Definition:</b> <a href="cppmain_8cpp_source.html#l00125">cppmain.cpp:125</a></div></div>
+<div class="ttc" id="acppmain_8h_html_a50f798129589248b20010681d780ed50"><div class="ttname"><a href="cppmain_8h.html#a50f798129589248b20010681d780ed50">refreshWatchdog</a></div><div class="ttdeci">void refreshWatchdog()</div><div class="ttdef"><b>Definition:</b> <a href="cppmain_8cpp_source.html#l00117">cppmain.cpp:117</a></div></div>
+<div class="ttc" id="acppmain_8h_html_a531355cea579a1aab91a7a2135024cdc"><div class="ttname"><a href="cppmain_8h.html#a531355cea579a1aab91a7a2135024cdc">getRunTimeCounterValue</a></div><div class="ttdeci">unsigned long getRunTimeCounterValue(void)</div><div class="ttdef"><b>Definition:</b> <a href="cppmain_8cpp_source.html#l00141">cppmain.cpp:141</a></div></div>
 <div class="ttc" id="acppmain_8h_html_a60af0d8621d025f018ba0f56bca00a93"><div class="ttname"><a href="cppmain_8h.html#a60af0d8621d025f018ba0f56bca00a93">usb_init</a></div><div class="ttdeci">void usb_init()</div></div>
-<div class="ttc" id="acppmain_8h_html_a7f27b0ab2e9f8751c4f06e4d7b4abf43"><div class="ttname"><a href="cppmain_8h.html#a7f27b0ab2e9f8751c4f06e4d7b4abf43">cliptest</a></div><div class="ttdeci">int8_t cliptest(T v, C l, C h)</div><div class="ttdef"><b>Definition:</b> <a href="cppmain_8h_source.html#l00040">cppmain.h:40</a></div></div>
-<div class="ttc" id="acppmain_8h_html_aa16e16cf318946e552a9c9e29f3e0013"><div class="ttname"><a href="cppmain_8h.html#aa16e16cf318946e552a9c9e29f3e0013">inIsr</a></div><div class="ttdeci">static bool inIsr()</div><div class="ttdef"><b>Definition:</b> <a href="cppmain_8h_source.html#l00035">cppmain.h:35</a></div></div>
+<div class="ttc" id="acppmain_8h_html_a7f27b0ab2e9f8751c4f06e4d7b4abf43"><div class="ttname"><a href="cppmain_8h.html#a7f27b0ab2e9f8751c4f06e4d7b4abf43">cliptest</a></div><div class="ttdeci">int8_t cliptest(T v, C l, C h)</div><div class="ttdef"><b>Definition:</b> <a href="cppmain_8h_source.html#l00046">cppmain.h:46</a></div></div>
+<div class="ttc" id="acppmain_8h_html_aa16e16cf318946e552a9c9e29f3e0013"><div class="ttname"><a href="cppmain_8h.html#aa16e16cf318946e552a9c9e29f3e0013">inIsr</a></div><div class="ttdeci">static bool inIsr()</div><div class="ttdef"><b>Definition:</b> <a href="cppmain_8h_source.html#l00041">cppmain.h:41</a></div></div>
 <div class="ttc" id="acppmain_8h_html_ae015c7fd64d4fd46f4e12fc32544a7c3"><div class="ttname"><a href="cppmain_8h.html#ae015c7fd64d4fd46f4e12fc32544a7c3">tudThread</a></div><div class="ttdeci">void tudThread(void *argument)</div></div>
 <div class="ttc" id="aeeprom__addresses_8h_html"><div class="ttname"><a href="eeprom__addresses_8h.html">eeprom_addresses.h</a></div></div>
 <div class="ttc" id="aled_effects_8h_html"><div class="ttname"><a href="led_effects_8h.html">ledEffects.h</a></div></div>

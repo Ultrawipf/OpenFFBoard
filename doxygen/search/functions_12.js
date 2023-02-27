@@ -4,7 +4,7 @@ var searchData=
   ['takeexclusive_1',['takeExclusive',['../class_s_p_i_port.html#a2a85ef27467443ec06ff20615c541708',1,'SPIPort']]],
   ['takefromisr_2',['TakeFromISR',['../classcpp__freertos_1_1_semaphore.html#aa8f8ce6e3fa6704572c29f672d8d2db6',1,'cpp_freertos::Semaphore']]],
   ['takeport_3',['takePort',['../class_c_a_n_port.html#a0beff1d53a9065ff33455811b5c495f5',1,'CANPort::takePort()'],['../class_i2_c_port.html#a97f28fd3861eb0335706fda2cb301a8a',1,'I2CPort::takePort()']]],
-  ['takesemaphore_4',['takeSemaphore',['../class_c_a_n_port.html#a38103032a997c1c2e490bce99a003317',1,'CANPort::takeSemaphore()'],['../class_i2_c_port.html#a48432cff44c398ec841d5719a7398718',1,'I2CPort::takeSemaphore()'],['../class_s_p_i_port.html#a2f4057e9c8d04aec84bd88c70b78623b',1,'SPIPort::takeSemaphore()'],['../class_u_a_r_t_port.html#a34df89b022e45e40a5519f5e42229a64',1,'UARTPort::takeSemaphore()']]],
+  ['takesemaphore_4',['takeSemaphore',['../class_c_a_n_port.html#a690007b3eaa6451c92666adb82b255df',1,'CANPort::takeSemaphore()'],['../class_i2_c_port.html#a48432cff44c398ec841d5719a7398718',1,'I2CPort::takeSemaphore()'],['../class_s_p_i_port.html#a2f4057e9c8d04aec84bd88c70b78623b',1,'SPIPort::takeSemaphore()'],['../class_u_a_r_t_port.html#a34df89b022e45e40a5519f5e42229a64',1,'UARTPort::takeSemaphore()']]],
   ['taskfunctionadapter_5',['TaskFunctionAdapter',['../classcpp__freertos_1_1_thread.html#a4df949cbebd873eb0ea81c763266c2cc',1,'cpp_freertos::Thread']]],
   ['tasklet_6',['Tasklet',['../classcpp__freertos_1_1_tasklet.html#ac93ae2fb44c610c01aaab63614558f76',1,'cpp_freertos::Tasklet']]],
   ['taskletadapterfunction_7',['TaskletAdapterFunction',['../classcpp__freertos_1_1_tasklet.html#a24d6f8a3be068d2e47101b219823bb7d',1,'cpp_freertos::Tasklet']]],

@@ -2,6 +2,7 @@ var class_o_drive_c_a_n =
 [
     [ "ODriveCAN", "class_o_drive_c_a_n.html#a6a60c243297d469da6c834be6cbc3095", null ],
     [ "~ODriveCAN", "class_o_drive_c_a_n.html#ab24155025fc8b68bfba89c836cc13585", null ],
+    [ "canErrorCallback", "class_o_drive_c_a_n.html#a2bb257db85a8e4f4916bef31f1a3f81d", null ],
     [ "canRxPendCallback", "class_o_drive_c_a_n.html#a42656b61d844150c463b53fdfde72e9b", null ],
     [ "command", "class_o_drive_c_a_n.html#aca23d7dbcc4185274da3c1e7925c012c", null ],
     [ "getCpr", "class_o_drive_c_a_n.html#ae02fc8301756d45fdc59d37ba9fe869a", null ],
@@ -21,6 +22,7 @@ var class_o_drive_c_a_n =
     [ "saveFlash", "class_o_drive_c_a_n.html#a6e7835f8f6d70262cbf64cb25f987bae", null ],
     [ "sendMsg", "class_o_drive_c_a_n.html#ae5665e78f5b882190777421df8066e84", null ],
     [ "sendMsg", "class_o_drive_c_a_n.html#ab3ee2297abf009ec340f6565544e5c82", null ],
+    [ "setCanFilter", "class_o_drive_c_a_n.html#a71bd2251a9d74449ab13fb28dad8e6bf", null ],
     [ "setMode", "class_o_drive_c_a_n.html#acae9b813e29f83db4657c34cf7efadce", null ],
     [ "setPos", "class_o_drive_c_a_n.html#a4852b2c6334d07079a7bdeb67d8335a3", null ],
     [ "setState", "class_o_drive_c_a_n.html#a20df20c69f312f0ab847a1f7afb661ca", null ],
@@ -36,6 +38,7 @@ var class_o_drive_c_a_n =
     [ "filterId", "class_o_drive_c_a_n.html#a3c1589ddd73aae0236de86249f69d5d9", null ],
     [ "lastCanMessage", "class_o_drive_c_a_n.html#a9d625e992a4e4b763549cde89d3bea6e", null ],
     [ "lastPos", "class_o_drive_c_a_n.html#ae9ed55e30ca800346b11ec019a00c1c6", null ],
+    [ "lastPosTime", "class_o_drive_c_a_n.html#ad4bbddcc9ad03eaacb98513ac2a7bdab", null ],
     [ "lastSpeed", "class_o_drive_c_a_n.html#a358831c434cc1b2821862cb54c0929a5", null ],
     [ "lastVoltage", "class_o_drive_c_a_n.html#a9d876796d43f34b1db7e74216cfaf1ee", null ],
     [ "lastVoltageUpdate", "class_o_drive_c_a_n.html#a328a8ed985b9a369ccceae13c4dd1fac", null ],
@@ -48,6 +51,7 @@ var class_o_drive_c_a_n =
     [ "odriveMotorFlags", "class_o_drive_c_a_n.html#a8644393d40e80bf0e53f145d043bc827", null ],
     [ "port", "class_o_drive_c_a_n.html#a7103ed2e8be0eb5167cdae98182cd420", null ],
     [ "posOffset", "class_o_drive_c_a_n.html#a4baab55dfa6ffd3ef3dc7b4948d5ab43", null ],
+    [ "posWaiting", "class_o_drive_c_a_n.html#abc32713b918be209b489f1d6edcd10fd", null ],
     [ "state", "class_o_drive_c_a_n.html#a35edaf845ad49346fbf4f21d10de63dc", null ],
     [ "waitReady", "class_o_drive_c_a_n.html#abe3a9835011833c6535f5dca16a89973", null ]
 ];
