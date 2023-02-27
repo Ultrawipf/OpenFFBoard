@@ -63,16 +63,16 @@ void EncoderSSI::configSPI() {
 	uint32_t prescale;
 	switch (spiSpeed) {
 		case 0 :
-			prescale = SPI_BAUDRATEPRESCALER_64;
-			break;
-		case 1 :
 			prescale = SPI_BAUDRATEPRESCALER_32;
 			break;
-		case 2 :
+		case 1 :
 			prescale = SPI_BAUDRATEPRESCALER_16;
 			break;
+		case 2 :
+			prescale = SPI_BAUDRATEPRESCALER_8;
+			break;
 		default :
-			prescale = SPI_BAUDRATEPRESCALER_64;
+			prescale = SPI_BAUDRATEPRESCALER_32;
 			break;
 	}
 
@@ -198,7 +198,7 @@ void EncoderSSI::setMode(EncoderSSI_modes mode){
 
 std::string EncoderSSI::printSpeeds(){
 	std::string reply;
-	uint8_t base = 6; // 64
+	uint8_t base = 5; // 32
 	for(uint8_t i = 0; i<3;i++){
 		uint32_t khz = spiPort.getBaseClk() / ((1 << (base - i)) * 1000);
 		reply+=  std::to_string(khz) + "kHz:" + std::to_string(i)+"\n";
