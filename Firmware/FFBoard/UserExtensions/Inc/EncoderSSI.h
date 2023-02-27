@@ -39,7 +39,7 @@ public:
 
 	void saveFlash(); 		// Write to flash here
 	void restoreFlash();	// Load from flash
-
+	std::string getHelpstring(){return "SPI SSI Encoder\n";}
 
 	enum class EncoderSSI_commands {bits,cs,speed,errors,mode};
 	enum class EncoderSSI_modes : uint8_t{rawmsb,AMT23}; // 15 max modes
