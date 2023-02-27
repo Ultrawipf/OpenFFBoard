@@ -124,7 +124,7 @@ bool EncoderBissC::isCreatable(){
 EncoderBissC::~EncoderBissC() {
 	setPos(0);
 	EncoderBissC::inUse = false;
-	this->spiPort.takeExclusive(true);
+	this->spiPort.takeExclusive(false);
 }
 
 void EncoderBissC::spiRxCompleted(SPIPort* port) {

@@ -34,7 +34,7 @@ EncoderSSI::EncoderSSI() :
 EncoderSSI::~EncoderSSI() {
 	setPos(0);
 	EncoderSSI::inUse = false;
-	this->spiPort.takeExclusive(true);
+	this->spiPort.takeExclusive(false);
 }
 
 
