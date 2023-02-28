@@ -190,7 +190,7 @@ bool EncoderBissC::updateFrame(){
 	crc = 0x3F & ~crc; //CRC is output inverted
 
 	bool crc_ok = crc == crcRx;
-	return crc_ok && !(errorWarning & 0x2);
+	return crc_ok;
 }
 
 int32_t EncoderBissC::getPosAbs(){
