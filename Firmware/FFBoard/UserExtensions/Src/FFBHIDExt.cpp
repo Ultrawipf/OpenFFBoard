@@ -26,7 +26,7 @@ const ClassIdentifier FFBHIDExt::getInfo(){
 FFBHIDExt::FFBHIDExt() :
 		FFBHIDMain(2)
 {
-	FFBHIDMain::setFFBEffectsCalc(ffb, effects_calc);
+	FFBHIDMain::setFFBEffectsCalc(ffb, static_cast<std::shared_ptr<EffectsCalculatorItf>>(effects_calc));
 }
 
 FFBHIDExt::~FFBHIDExt() {

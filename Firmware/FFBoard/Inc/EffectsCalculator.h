@@ -62,7 +62,21 @@ enum class EffectsCalculator_commands : uint32_t {
 	monitorEffect, effectsDetails, effectsForces,
 };
 
-class EffectsCalculator: public PersistentStorage,
+/**
+ * Interface for axesmanager to start the effect calculation for each axis
+ */
+class EffectsCalculatorItf{
+public:
+	virtual bool isActive() = 0;
+	virtual void setActive(bool active) = 0;
+	virtual void calculateEffects(std::vector<std::unique_ptr<Axis>> &axes) = 0;
+};
+
+/**
+ * Effects calculator for standard PID type effects
+ */
+class EffectsCalculator: public EffectsCalculatorItf,
+						 public PersistentStorage,
 						 public CommandHandler,
 						 cpp_freertos::Thread {
 public:

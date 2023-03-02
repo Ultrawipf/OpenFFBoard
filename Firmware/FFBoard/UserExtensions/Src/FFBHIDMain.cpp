@@ -35,7 +35,7 @@ FFBHIDMain::FFBHIDMain(uint8_t axisCount) :
  * This finishes the construction because the constructor of this class will be called before the ffb and effects calc
  * objects are created in the derived class.
  */
-void FFBHIDMain::setFFBEffectsCalc(std::shared_ptr<EffectsControlItf> ffb,std::shared_ptr<EffectsCalculator> effects_calc){
+void FFBHIDMain::setFFBEffectsCalc(std::shared_ptr<EffectsControlItf> ffb,std::shared_ptr<EffectsCalculatorItf> effects_calc){
 	this->ffb = ffb;
 	this->effects_calc = effects_calc;
 	axes_manager = std::make_unique<AxesManager>(&control,effects_calc);

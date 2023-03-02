@@ -21,7 +21,7 @@
 //	return info;
 //}
 
-AxesManager::AxesManager(volatile Control_t* control,std::shared_ptr<EffectsCalculator> calc) : control(control), effects_calc(calc) {
+AxesManager::AxesManager(volatile Control_t* control,std::shared_ptr<EffectsCalculatorItf> calc) : control(control), effects_calc(calc) {
 	//this->restoreFlash();
 }
 

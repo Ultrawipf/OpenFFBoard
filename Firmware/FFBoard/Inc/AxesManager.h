@@ -16,13 +16,13 @@
 #include "map"
 #include <memory>
 
-class EffectsCalculator;
+class EffectsCalculatorItf;
 
 
 class AxesManager
 {
 public:
-	AxesManager(volatile Control_t* control,std::shared_ptr<EffectsCalculator> calc);
+	AxesManager(volatile Control_t* control,std::shared_ptr<EffectsCalculatorItf> calc);
 	virtual ~AxesManager();
 
 //	static ClassIdentifier info;
@@ -51,7 +51,7 @@ private:
 	volatile Control_t* control;
 	volatile bool *p_usb_disabled;
 	volatile bool *p_emergency;
-	std::shared_ptr<EffectsCalculator> effects_calc;
+	std::shared_ptr<EffectsCalculatorItf> effects_calc;
 	uint16_t axis_count = 0;
 	std::vector<std::unique_ptr<Axis>> axes;
 	std::vector<int32_t> axisValues = std::vector<int32_t>(1,0);
