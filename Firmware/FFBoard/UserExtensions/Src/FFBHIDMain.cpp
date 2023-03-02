@@ -165,7 +165,8 @@ uint32_t FFBHIDMain::getRate() {
 }
 
 bool FFBHIDMain::getFfbActive(){
-	return this->ffb->getFfbActive();
+//	return this->ffb->getFfbActive();
+	return this->effects_calc->isActive();
 }
 
 /**
@@ -308,7 +309,7 @@ void FFBHIDMain::usbSuspend(){
 	if(control.usb_disabled)
 		return;
 	control.usb_disabled = true;
-	ffb->stop_FFB();
+	effects_calc->setActive(false);
 	ffb->reset_ffb(); // Delete all effects
 	axes_manager->usbSuspend();
 }
