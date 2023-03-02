@@ -31,6 +31,9 @@
 #ifdef CANINPUTMAIN
 #include "CanInputMain.h"
 #endif
+#ifdef FFBSHIFTER
+#include "FFBShifter.h"
+#endif
 
 // Add all classes here
 #ifndef CLASSREGISTRY_OVERRIDE
@@ -60,6 +63,9 @@ const std::vector<class_entry<FFBoardMain>> class_registry =
 
 #ifdef CANBRIDGE
 		add_class<CanBridge,FFBoardMain>(),
+#endif
+#ifdef FFBSHIFTER
+		add_class<FFBShifter,FFBoardMain>(),
 #endif
 
 #ifdef CANINPUTMAIN
