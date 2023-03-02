@@ -154,14 +154,14 @@ private:
  */
 class EffectsControlItf{
 public:
-	virtual void set_FFB(bool state) = 0; // Enables or disables FFB
-	virtual void stop_FFB(){set_FFB(false);};
-	virtual void start_FFB(){set_FFB(true);};
-	virtual void reset_ffb() = 0;
+//	virtual void set_FFB(bool state) = 0; // Enables or disables FFB
+//	virtual void stop_FFB(){set_FFB(false);};
+//	virtual void start_FFB(){set_FFB(true);};
+	virtual void reset_ffb(){};
 	virtual uint32_t getConstantForceRate(); // Returns an estimate of the constant force effect update rate in hz
 	virtual uint32_t getRate(); // Returns an estimate of the overall effect update speed in hz
-	virtual bool getFfbActive() = 0;
-	virtual void set_gain(uint8_t gain) = 0;
+//	virtual bool getFfbActive() = 0;
+//	virtual void set_gain(uint8_t gain){};
 	virtual void cfUpdateEvent();
 	virtual void fxUpdateEvent();
 

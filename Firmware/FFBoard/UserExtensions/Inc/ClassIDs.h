@@ -38,11 +38,13 @@ enum class ClassType : uint16_t {
 #define CLSID_MAIN_FFBWHEEL 0x1
 #define CLSID_MAIN_FFBJOY	0x2
 #define CLSID_MAIN_FFBEXT	0x3
+#define CLSID_MAIN_FFBSHIFTER	0x4
 #define CLSID_MAIN_TMCDBG 	0xB
 #define CLSID_MAIN_CAN	 	0xC
 #define CLSID_MAIN_MIDI 	0xD
 #define CLSID_SYSTEM		0x10 // sys main command thread
 #define CLSID_ERRORS		0x11
+
 
 // Button sources for gamepad
 #define CLSID_BTN_NONE		0x20
