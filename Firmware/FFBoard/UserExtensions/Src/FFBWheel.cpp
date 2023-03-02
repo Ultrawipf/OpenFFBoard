@@ -26,7 +26,7 @@ const ClassIdentifier FFBWheel::getInfo(){
 FFBWheel::FFBWheel() :
 		FFBHIDMain(1,FFBWHEEL_32B_MODE)
 {
-	FFBHIDMain::setFFBEffectsCalc(ffb, effects_calc);
+	FFBHIDMain::setFFBEffectsCalc(ffb, static_cast<std::shared_ptr<EffectsCalculatorItf>>(effects_calc));
 }
 
 FFBWheel::~FFBWheel() {
