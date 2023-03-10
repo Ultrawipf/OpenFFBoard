@@ -53,7 +53,7 @@ struct PWMConfig{
 
 class MotorPWM: public MotorDriver,public CommandHandler,public PersistentStorage{
 	enum class MotorPWM_commands : uint32_t {
-		mode,freq
+		mode,freq,dir
 	};
 public:
 	MotorPWM();
@@ -87,6 +87,8 @@ private:
 	float tFreq = 1; // Frequency scaling. Timer freq in MHz
 	int32_t period = 20000;
 	int32_t prescaler = 95;
+
+	bool invertDir = false;
 
 
 	SpeedPWM_DRV pwmspeed = SpeedPWM_DRV::LOW;
