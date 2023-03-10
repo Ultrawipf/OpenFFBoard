@@ -42,6 +42,7 @@ MotorPWM::MotorPWM() : CommandHandler("pwmdrv",CLSID_MOT_PWM), timerConfig(pwmTi
 	CommandHandler::registerCommands();
 	registerCommand("freq", MotorPWM_commands::freq, "PWM period selection",CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_INFOSTRING);
 	registerCommand("mode", MotorPWM_commands::mode, "PWM mode",CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_INFOSTRING);
+	registerCommand("dir", MotorPWM_commands::dir, "Invert direction",CMDFLAG_GET | CMDFLAG_SET);
 }
 
 MotorPWM::~MotorPWM() {
@@ -59,6 +60,9 @@ void MotorPWM::turn(int16_t power){
 	if(!active)
 		return;
 
+	if(invertDir){
+		power = -power;
+	}
 	/*
 	 * Generates a classic RC 20ms 1000-2000µs signal
 	 * Centered at 1500µs for bidirectional RC ESCs and similiar stuff
@@ -194,8 +198,9 @@ SpeedPWM_DRV MotorPWM::getPwmSpeed(){
 void MotorPWM::saveFlash(){
 	// 0-3: mode
 	// 4-6: speed
-	uint16_t var = (uint8_t)this->mode & 0xf;
+	uint16_t var = (uint8_t)this->mode & 0x7; // 1 bit free
 	var |= ((uint8_t)this->pwmspeed & 0x7) << 4;
+	var |= (this->invertDir & 0x1) << 15; // Last bit inversion
 	Flash_Write(ADR_PWM_MODE, var);
 }
 void MotorPWM::restoreFlash(){
@@ -206,6 +211,8 @@ void MotorPWM::restoreFlash(){
 
 		uint8_t s = (var >> 4) & 0x7;
 		this->setPwmSpeed(SpeedPWM_DRV(s));
+
+		this->invertDir = (var >> 15) & 0x1;
 	}
 }
 
@@ -268,6 +275,8 @@ CommandStatus MotorPWM::command(const ParsedCommand& cmd,std::vector<CommandRepl
 		}
 		break;
 	}
+	case MotorPWM_commands::dir:
+		return handleGetSet(cmd, replies, this->invertDir);
 	default:
 		return CommandStatus::NOT_FOUND;
 	}
