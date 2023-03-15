@@ -19,8 +19,8 @@
 #ifdef FFBSHIFTER
 
 class FFBShifterEffects : public EffectsCalculatorItf , public EffectsControlItf, public CommandHandler, public ButtonSource{
-	enum class FFBShifterEffectMode {sequential,h_sym};
-	enum class FFBShifterEffect_commands {active,invert};
+	enum class FFBShifterEffectMode : uint8_t {sequential,h_sym};
+	enum class FFBShifterEffect_commands {active,invert,mode};
 	struct ShifterEffectParams{
 		float gainYseq = 2;
 		float gainY = 0.5;
@@ -29,9 +29,10 @@ class FFBShifterEffects : public EffectsCalculatorItf , public EffectsControlItf
 		float seqgainX = 5;
 		float seqsnap = 3;
 		float seqsnappoint = 0.499;
-		uint16_t maxForceY = 10000;
-		uint16_t maxForceX= 5000;
-		uint8_t hgatesX = 4;
+		uint16_t maxForceY = 20000;
+		uint16_t maxForceX= 20000;
+		uint16_t maxCenterForceX= 5000;
+		uint8_t hgatesX = 3;
 
 		float range = 1; // Scales total movement range
 		float rangeX = 1; // Scales total movement range
@@ -39,7 +40,7 @@ class FFBShifterEffects : public EffectsCalculatorItf , public EffectsControlItf
 private:
 	bool active = true;
 	bool invertAxes = true;
-	FFBShifterEffectMode mode = FFBShifterEffectMode::sequential;
+	FFBShifterEffectMode mode = FFBShifterEffectMode::h_sym;
 	uint64_t buttons = 0;
 
 public:
@@ -55,6 +56,7 @@ public:
 	uint8_t readButtons(uint64_t* buf);
 
 	void setMode(FFBShifterEffectMode mode);
+	void setMode_i(const uint8_t mode);
 
 	// Effects ITF
 	void reset_ffb(){}; // Called when usb disconnected
@@ -84,6 +86,8 @@ public:
 	virtual std::string getHelpstring(){
 		return "FFB HID Shifter";
 	}
+
+	static const std::array<char*,2> modenames;
 
 //	uint8_t updateAnalog() override;
 //	uint8_t updateButtons(uint8_t initialShift = 0) override;
