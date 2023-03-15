@@ -19,6 +19,7 @@ const ClassIdentifier FFBShifter::getInfo(){
 	return info;
 }
 
+const std::array<char*,2> modenames = {"Sequential","H-Pattern"};
 
 FFBShifter::FFBShifter() : FFBHIDMain(2){
 	FFBHIDMain::setFFBEffectsCalc(ffb, static_cast<std::shared_ptr<EffectsCalculatorItf>>(effects_calc));
@@ -52,6 +53,7 @@ FFBShifterEffects::FFBShifterEffects():CommandHandler("shifterfx",CLSID_FFBSHIFT
 	CommandHandler::registerCommands();
 	registerCommand("active", FFBShifterEffect_commands::active, "Enable/Disable",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("invert", FFBShifterEffect_commands::invert, "Flip X/Y axes",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("mode", FFBShifterEffect_commands::mode, "Pattern mode",CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_INFOSTRING);
 //	registerCommand("polarity", LocalButtons_commands::polarity, "Pin polarity",CMDFLAG_GET | CMDFLAG_SET);
 //	registerCommand("pins", LocalButtons_commands::pins, "Available pins",CMDFLAG_GET | CMDFLAG_SET);
 //	registerCommand("values", LocalButtons_commands::values, "pin values",CMDFLAG_GET);
@@ -131,36 +133,53 @@ void FFBShifterEffects::calculateShifterEffect(metric_t* metricsX,metric_t* metr
 		}
 		// TODO h pattern with different reverse positions
 		case FFBShifterEffectMode::h_sym:
+		{
+			uint8_t buttonSection = 0;
+			// Makes 3 stable snap points in Y direction
+			if(fabsf(pos_fY) < rangeY * 0.5){ // Center point
+				*torqueY += springEffect(posY, 0, params.gainY, params.maxForceY, params.maxForceY, 0);
+			}else if(pos_fY > 0){ // Upper section
+				buttonSection = 1;
+				*torqueY += springEffect(posY, 0x7fff * rangeY * 0.75, params.gainY, params.maxForceY, params.maxForceY, 0);
+			}else if(pos_fY < 0){ // Lower section
+				buttonSection = 2;
+				*torqueY += springEffect(posY, -0x7fff * rangeY * 0.75, params.gainY, params.maxForceY, params.maxForceY, 0);
+			}
+
 			// X dir
 			if(params.hgatesX == 0 || params.hgatesX > 15){
 				break;
 			}
+			buttons = 0;
+
 			if(fabsf(pos_fY) < rangeY * 0.4){ // Center before gates in Y direction
 				// Nothing. Just weak centering
-				*torqueX += springEffect(posX, 0, params.gainX, params.maxForceX, params.maxForceX, 0);
+				*torqueX += springEffect(posX, 0, params.gainX, params.maxCenterForceX, params.maxCenterForceX, 0);
 			}else{
 				// Generate some gates in X direction
 				float gatesize = 2.0/(params.hgatesX);
+				//*torqueX += springEffect(posX, (posX % (0x7fff / params.hgatesX)), params.gainXgate, params.maxForceX, params.maxForceX, 0);
 				// Depending on the number of gates make a symmetrical H Pattern.
+				// float pos -1 to 1
+
+
 				for(uint8_t gate = 0;gate<params.hgatesX;gate++){
-					if(pos_fX > (gate * gatesize)-1.0 && pos_fX < (gatesize * (gate+1)) -1.0){
-						*torqueX += springEffect(posX, 0x7fff * ((gate * gatesize) - 1.0), params.gainXgate, params.maxForceX, params.maxForceX, 0);
+					if((gate == 0 || pos_fX > (gate * gatesize)-1.0) && (pos_fX < (gatesize * (gate+1)) -1.0 || gate == params.hgatesX-1) ){
+						if(buttonSection){
+							uint32_t btn = (gate * 2) + buttonSection - 1;
+							buttons |= (1 << btn);
+						}
+						*torqueX += springEffect(posX, 0x7fff * ((gatesize * (gate+0.5))-1), params.gainXgate, params.maxForceX, params.maxForceX, 0);
 					}
 				}
 
 			}
 
-			// Makes 3 stable snap points in Y direction
-			if(fabsf(pos_fY) < rangeY * 0.6){ // Center point
-				*torqueY += springEffect(posY, 0, params.gainY, params.maxForceY, params.maxForceY, 0);
-			}else if(pos_fY > 0){ // Upper section
-				*torqueY += springEffect(posY, 0x7fff * rangeY * 0.75, params.gainY, params.maxForceY, params.maxForceY, 0);
-			}else if(pos_fY < 0){ // Lower section
-				*torqueY += springEffect(posY, -0x7fff * rangeY * 0.75, params.gainY, params.maxForceY, params.maxForceY, 0);
-			}
 
+			*torqueY += springEffect(posY, 0, 10, params.maxForceY, params.maxForceX, 0x7fff * rangeY); // Endstop
+			*torqueX += springEffect(posX, 0, 10, params.maxForceX, params.maxForceX, 0x7ff0); // Endstop
 
-
+		}
 			break;
 	}
 }
@@ -208,6 +227,9 @@ void FFBShifterEffects::setMode(FFBShifterEffectMode mode){
 	}
 	this->mode = mode;
 }
+void FFBShifterEffects::setMode_i(const uint8_t mode){
+	setMode(static_cast<FFBShifterEffectMode>(mode));
+}
 
 uint8_t FFBShifterEffects::readButtons(uint64_t* buf){
 	*buf |= this->buttons;
@@ -225,7 +247,15 @@ CommandStatus FFBShifterEffects::command(const ParsedCommand& cmd,std::vector<Co
 	case FFBShifterEffect_commands::invert:
 		return handleGetSet(cmd, replies, this->invertAxes);
 	break;
-
+	case FFBShifterEffect_commands::mode:
+		if(cmd.type == CMDtype::info){
+			for(uint8_t i = 0; i<modenames.size();i++){
+				replies.emplace_back(std::string(modenames[i])  + ":" + std::to_string(i)+"\n");
+			}
+		}else{
+			return handleGetSetFunc(cmd, replies, (uint8_t&)this->mode, &FFBShifterEffects::setMode_i, this);
+		}
+	break;
 
 	default:
 		return CommandStatus::NOT_FOUND;
