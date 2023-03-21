@@ -140,10 +140,10 @@ void FFBShifterEffects::calculateShifterEffect(metric_t* metricsX,metric_t* metr
 				*torqueY += springEffect(posY, 0, params.gainY, params.maxForceY, params.maxForceY, 0);
 			}else if(pos_fY > 0){ // Upper section
 				buttonSection = 1;
-				*torqueY += springEffect(posY, 0x7fff * rangeY * 0.75, params.gainY, params.maxForceY, params.maxForceY, 0);
+				*torqueY += springEffect(posY, 0x7fff * rangeY * params.gateBegin, params.gainY, params.maxForceY, params.maxForceY, 0);
 			}else if(pos_fY < 0){ // Lower section
 				buttonSection = 2;
-				*torqueY += springEffect(posY, -0x7fff * rangeY * 0.75, params.gainY, params.maxForceY, params.maxForceY, 0);
+				*torqueY += springEffect(posY, -0x7fff * rangeY * params.gateBegin, params.gainY, params.maxForceY, params.maxForceY, 0);
 			}
 
 			// X dir
@@ -151,13 +151,15 @@ void FFBShifterEffects::calculateShifterEffect(metric_t* metricsX,metric_t* metr
 				break;
 			}
 			buttons = 0;
+			float gatesize = 2.0/(params.hgatesX);
 
-			if(fabsf(pos_fY) < rangeY * 0.4){ // Center before gates in Y direction
+			if(abs(pos_fY) < rangeY * 0.4){ // Center before gates in Y direction
 				// Nothing. Just weak centering
 				*torqueX += springEffect(posX, 0, params.gainX, params.maxCenterForceX, params.maxCenterForceX, 0);
+
 			}else{
 				// Generate some gates in X direction
-				float gatesize = 2.0/(params.hgatesX);
+
 				//*torqueX += springEffect(posX, (posX % (0x7fff / params.hgatesX)), params.gainXgate, params.maxForceX, params.maxForceX, 0);
 				// Depending on the number of gates make a symmetrical H Pattern.
 				// float pos -1 to 1
@@ -169,7 +171,10 @@ void FFBShifterEffects::calculateShifterEffect(metric_t* metricsX,metric_t* metr
 							uint32_t btn = (gate * 2) + buttonSection - 1;
 							buttons |= (1 << btn);
 						}
-						*torqueX += springEffect(posX, 0x7fff * ((gatesize * (gate+0.5))-1), params.gainXgate, params.maxForceX, params.maxForceX, 0);
+
+						int32_t gateTorque = springEffect(posX, 0x7fff * ((gatesize * (gate+0.5))-1), params.gainXgate, params.maxForceX, params.maxForceX, 0);
+						float fadeVal = clip<float,float>((abs(pos_fY)-params.gateBegin) * params.gateFade, 0, 1);
+						*torqueX += gateTorque * fadeVal;
 					}
 				}
 
@@ -177,8 +182,8 @@ void FFBShifterEffects::calculateShifterEffect(metric_t* metricsX,metric_t* metr
 
 
 			*torqueY += springEffect(posY, 0, 10, params.maxForceY, params.maxForceX, 0x7fff * rangeY); // Endstop
-			*torqueX += springEffect(posX, 0, 10, params.maxForceX, params.maxForceX, 0x7ff0); // Endstop
-
+			uint32_t deadzone_X = (gatesize * (params.hgatesX + 0.5) -1.0) * 0x3fff;
+			*torqueX += springEffect(posX, 0, 10, params.maxForceX, params.maxForceX, deadzone_X); // Endstop if no gate
 		}
 			break;
 	}
