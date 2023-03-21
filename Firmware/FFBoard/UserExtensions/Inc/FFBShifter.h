@@ -33,7 +33,8 @@ class FFBShifterEffects : public EffectsCalculatorItf , public EffectsControlItf
 		uint16_t maxForceX= 20000;
 		uint16_t maxCenterForceX= 5000;
 		uint8_t hgatesX = 3;
-
+		float gateFade = 10; // Gate fade in steepness
+		float gateBegin = 0.75;
 		float range = 1; // Scales total movement range
 		float rangeX = 1; // Scales total movement range
 	};
@@ -50,8 +51,6 @@ public:
 	void setActive(bool active);
 	void calculateEffects(std::vector<std::unique_ptr<Axis>> &axes);
 	void calculateShifterEffect(metric_t* metricsX,metric_t* metricsY, int32_t* torqueX,int32_t* torqueY);
-//	int32_t calculateShifterEffectX( metric_t* metrics);
-//	int32_t calculateShifterEffectY( metric_t* metrics);
 
 	uint8_t readButtons(uint64_t* buf);
 
