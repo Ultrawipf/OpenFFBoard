@@ -702,7 +702,7 @@ bool Axis::updateTorque(int32_t* totalTorque) {
 	metric.current.torque = torque;
 	torque = clip<int32_t, int32_t>(torque, -power, power);
 
-	bool torqueChanged = torque != metric.previous.torque;
+	bool torqueChanged = metric.current.torque != metric.previous.torque;
 
 	if (abs(torque) == power){
 		pulseClipLed();
