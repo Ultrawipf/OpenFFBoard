@@ -65,9 +65,10 @@ var searchData=
   ['dfu_5fstatus_5fok_62',['DFU_STATUS_OK',['../dfu_8h.html#aa74586a3991c492fcb4fa3ba5adeea2ba3a550674419538042b365d365595dc40',1,'dfu.h']]],
   ['dfu_5fupload_5fidle_63',['DFU_UPLOAD_IDLE',['../dfu_8h.html#a187dfde3b0fa8047e6c97b2317bce21faf56d835eb6704702c3ddf5134402f82a',1,'dfu.h']]],
   ['differential_64',['differential',['../class_a_d_s111_x___analog_source.html#a490bc0d1001e76501ad1a83c6a9d776cab7130ec05739e60e37f9bd6c56829122',1,'ADS111X_AnalogSource']]],
-  ['doubleints_65',['DOUBLEINTS',['../_command_handler_8h.html#a9c4555f6fe97545f2480f26071a2935fa03d44b87916b4ed53affc13f79dbc459',1,'CommandHandler.h']]],
-  ['drvid_5finvalid_66',['DRVID_INVALID',['../usbd_8c.html#af715e26dfffd1f8de1c18449e2770cffa06827fb1b800dd4df84c46e3db632cf7',1,'DRVID_INVALID():&#160;usbd.c'],['../usbh_8c.html#a8628933cde20921c453a6d2607bdad62a06827fb1b800dd4df84c46e3db632cf7',1,'DRVID_INVALID():&#160;usbh.c']]],
-  ['drvtype_67',['drvtype',['../_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715a37befb8449cef2f5f638fd7612fda2df',1,'Axis.h']]],
-  ['dsadcclkin_68',['DSAdcClkIn',['../_t_m_c4671_8h.html#aacd749e72feab7582be13cd7f4d414a6a68fe401a9c6bbcdf302bfcaabb5e9480',1,'TMC4671.h']]],
-  ['dsadcclkout_69',['DSAdcClkOut',['../_t_m_c4671_8h.html#aacd749e72feab7582be13cd7f4d414a6a6352d2cd0dd6eaa5bd26c4dae7b6107d',1,'TMC4671.h']]]
+  ['dir_65',['dir',['../class_motor_p_w_m.html#a200f16b29b4a31cfd1bbc75219b3c80aa736007832d2167baaae763fd3a3f3cf1',1,'MotorPWM']]],
+  ['doubleints_66',['DOUBLEINTS',['../_command_handler_8h.html#a9c4555f6fe97545f2480f26071a2935fa03d44b87916b4ed53affc13f79dbc459',1,'CommandHandler.h']]],
+  ['drvid_5finvalid_67',['DRVID_INVALID',['../usbd_8c.html#af715e26dfffd1f8de1c18449e2770cffa06827fb1b800dd4df84c46e3db632cf7',1,'DRVID_INVALID():&#160;usbd.c'],['../usbh_8c.html#a2f80701c36e79c0640d91c788feee0b3a06827fb1b800dd4df84c46e3db632cf7',1,'DRVID_INVALID():&#160;usbh.c']]],
+  ['drvtype_68',['drvtype',['../_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715a37befb8449cef2f5f638fd7612fda2df',1,'Axis.h']]],
+  ['dsadcclkin_69',['DSAdcClkIn',['../_t_m_c4671_8h.html#aacd749e72feab7582be13cd7f4d414a6a68fe401a9c6bbcdf302bfcaabb5e9480',1,'TMC4671.h']]],
+  ['dsadcclkout_70',['DSAdcClkOut',['../_t_m_c4671_8h.html#aacd749e72feab7582be13cd7f4d414a6a6352d2cd0dd6eaa5bd26c4dae7b6107d',1,'TMC4671.h']]]
 ];

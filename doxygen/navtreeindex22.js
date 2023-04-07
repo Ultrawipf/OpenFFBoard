@@ -1,5 +1,7 @@
 var NAVTREEINDEX22 =
 {
+"midi__device_8h.html#a973511da5e026dd009673a6fece4001b":[4,0,145,11],
+"midi__device_8h.html#a9daf6951a92780c615cc456554c791a9":[4,0,145,7],
 "midi__device_8h.html#aaa53ca0b650dfd85c4f59fa156f7a2cc":[4,0,145,23],
 "midi__device_8h.html#ac123be39174be6e3ebb1eeb025ebb1c4":[4,0,145,16],
 "midi__device_8h.html#ac34d01fee696bdbc12a7b62b056fd2e5":[4,0,145,6],
@@ -247,7 +249,5 @@ var NAVTREEINDEX22 =
 "osal_8h.html#aeef8a60c0f1ab8b880c5acc3747e9c4d":[4,0,187,6],
 "osal_8h_source.html":[4,0,187],
 "osal__freertos_8h.html":[4,0,188],
-"osal__freertos_8h.html#a2ff53ba057aded72cc831c989754544d":[4,0,188,10],
-"osal__freertos_8h.html#a35eb88423fecce37f13578e2a805a04a":[4,0,188,17],
-"osal__freertos_8h.html#a3d129da6b49a5fd00217d88ac522c6b9":[4,0,188,9]
+"osal__freertos_8h.html#a2ff53ba057aded72cc831c989754544d":[4,0,188,10]
 };

@@ -1,5 +1,7 @@
 var NAVTREEINDEX23 =
 {
+"osal__freertos_8h.html#a35eb88423fecce37f13578e2a805a04a":[4,0,188,17],
+"osal__freertos_8h.html#a3d129da6b49a5fd00217d88ac522c6b9":[4,0,188,9],
 "osal__freertos_8h.html#a48996b138a65c8328602d17890c26b4d":[4,0,188,4],
 "osal__freertos_8h.html#a5026d837cd2fcc6ed813cd369668dbba":[4,0,188,14],
 "osal__freertos_8h.html#a5930f7a2cc6f2bb374dea58f7256f943":[4,0,188,1],
@@ -247,7 +249,5 @@ var NAVTREEINDEX23 =
 "struct_parsed_command.html#a74453a0cc1ccf42709bafd7e69573c83":[3,0,112,6],
 "struct_parsed_command.html#a9022c46f7bb196a8a3148701709c8c0c":[3,0,112,4],
 "struct_parsed_command.html#aa84671f243e74af9c09290d3c8412b29":[3,0,112,1],
-"struct_parsed_command.html#aa95e667bafb73fc580e3338b0178ec09":[3,0,112,3],
-"struct_parsed_command.html#acf3db17b104672257f97f0ad872c4b1e":[3,0,112,0],
-"struct_ring_buffer.html":[3,0,117]
+"struct_parsed_command.html#aa95e667bafb73fc580e3338b0178ec09":[3,0,112,3]
 };

@@ -1,5 +1,7 @@
 var NAVTREEINDEX36 =
 {
+"structmetric__t.html#a5d8aae675bc421ae117b27b83ba73d69":[3,0,90,2],
+"structmidid__interface__t.html":[3,0,91],
 "structmidid__interface__t.html#a1bbf5b9bb3927a6c18e824ccde8e96a5":[3,0,91,12],
 "structmidid__interface__t.html#a24562126b2db81b483e86a4b008614e9":[3,0,91,1],
 "structmidid__interface__t.html#a338b34a3550de8bf0521cb886639a37d":[3,0,91,5],
@@ -247,7 +249,5 @@ var NAVTREEINDEX36 =
 "structusbh__device__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#a499a85207f98afe0b44a1dd3e9b01426":[3,0,186,0,5],
 "structusbh__device__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#a49cd758d5e58906a80e87ea3a71ec3af":[3,0,186,0,2],
 "structusbh__device__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#aa99483ed29909297788bcfc39ea0fa59":[3,0,186,0,3],
-"structusbh__device__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#ae0da2821cfdea2c02982d4c2f01abd6a":[3,0,186,0,0],
-"structusbtmc__interface__state__t.html":[3,0,188],
-"structusbtmc__interface__state__t.html#a25f4f30062601a02b3f3169dbf299050":[3,0,188,2]
+"structusbh__device__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#ae0da2821cfdea2c02982d4c2f01abd6a":[3,0,186,0,0]
 };

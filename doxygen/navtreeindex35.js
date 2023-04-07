@@ -1,5 +1,7 @@
 var NAVTREEINDEX35 =
 {
+"struct_u_s_b___o_t_g___global_type_def.html#a060364111cf507dfab9bb6503477983a":[3,0,175,11],
+"struct_u_s_b___o_t_g___global_type_def.html#a09055525656d2be5adce9471c2590c49":[3,0,175,8],
 "struct_u_s_b___o_t_g___global_type_def.html#a0c0a00511f6c07b8609b54adb14319da":[3,0,175,6],
 "struct_u_s_b___o_t_g___global_type_def.html#a2094f12e3e4d4e6cc45047dedbfd0acd":[3,0,175,13],
 "struct_u_s_b___o_t_g___global_type_def.html#a212059dc4a38136fee7fb358fc74c0d0":[3,0,175,3],
@@ -224,17 +226,17 @@ var NAVTREEINDEX35 =
 "structhub__port__status__response__t.html#a0b66c1429a3d29c02e693ea3df0c506e":[1,8,1,8],
 "structhub__port__status__response__t.html#a1ae6b25b5fa3fd9ddf14912434cb4843":[1,8,1,7],
 "structhub__port__status__response__t.html#a2381a0935a83c6d7cb6c3592dccce7df":[1,8,1,0],
-"structhub__port__status__response__t.html#a59e4c3e903d8dac46029815d7440fcc7":[1,8,1,11],
+"structhub__port__status__response__t.html#a4592f15214ead9b78a80119bfa172378":[1,8,1,1],
 "structhub__port__status__response__t.html#a8f8deb7f2461295540bea242948fb3ae":[1,8,1,5],
 "structhub__port__status__response__t.html#a9b211abcf5dd543b190d3d6f2832b94c":[1,8,1,12],
 "structhub__port__status__response__t.html#aabf1299708749266b5e809dc39f31172":[1,8,1,6],
 "structhub__port__status__response__t.html#ac51e3ec63cad581a274628bdb0626233":[1,8,1,13],
 "structhub__port__status__response__t.html#aca1c4fce456372a084aa75c25ac52a04":[1,8,1,4],
+"structhub__port__status__response__t.html#acdd6fb6a273826cf112349c26eb22464":[1,8,1,11],
 "structhub__port__status__response__t.html#ad2b2341b1fb4535c6890008020a040af":[1,8,1,14],
 "structhub__port__status__response__t.html#adf4625e9608f68c57d5b41459e1350c8":[1,8,1,9],
 "structhub__port__status__response__t.html#ae632796d212114bec85e12cf2995e755":[1,8,1,2],
 "structhub__port__status__response__t.html#af30806a710844e614298b7188c31c1fb":[1,8,1,3],
-"structhub__port__status__response__t.html#afbce7368c1afedda382aae6721f9da93":[1,8,1,1],
 "structhub__status__response__t.html":[1,8,0],
 "structhub__status__response__t.html#a161b089de9677f7f312cbb82e84fd4f4":[1,8,0,1],
 "structhub__status__response__t.html#a1668b2574123a00fa056a4d875273df5":[1,8,0,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX35 =
 "structmetric__t.html#a38efc8fc592028a5f34255606c2b78ee":[3,0,90,5],
 "structmetric__t.html#a3ce28e8bf81def88f284a1068a098f24":[3,0,90,0],
 "structmetric__t.html#a50ffdb0c4bc4588f27a6647b909ae314":[3,0,90,4],
-"structmetric__t.html#a54387188e555c5a4cfa28ea5c6bb97d2":[3,0,90,1],
-"structmetric__t.html#a5d8aae675bc421ae117b27b83ba73d69":[3,0,90,2],
-"structmidid__interface__t.html":[3,0,91]
+"structmetric__t.html#a54387188e555c5a4cfa28ea5c6bb97d2":[3,0,90,1]
 };

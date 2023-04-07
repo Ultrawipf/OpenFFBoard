@@ -2,7 +2,8 @@ var class_motor_p_w_m =
 [
     [ "MotorPWM_commands", "class_motor_p_w_m.html#a200f16b29b4a31cfd1bbc75219b3c80a", [
       [ "mode", "class_motor_p_w_m.html#a200f16b29b4a31cfd1bbc75219b3c80aa15d61712450a686a7f365adf4fef581f", null ],
-      [ "freq", "class_motor_p_w_m.html#a200f16b29b4a31cfd1bbc75219b3c80aab0038f6cab2d16ebdcf2e36d1779d8ba", null ]
+      [ "freq", "class_motor_p_w_m.html#a200f16b29b4a31cfd1bbc75219b3c80aab0038f6cab2d16ebdcf2e36d1779d8ba", null ],
+      [ "dir", "class_motor_p_w_m.html#a200f16b29b4a31cfd1bbc75219b3c80aa736007832d2167baaae763fd3a3f3cf1", null ]
     ] ],
     [ "MotorPWM", "class_motor_p_w_m.html#a8af621c58795c79f224ffa600500bed1", null ],
     [ "~MotorPWM", "class_motor_p_w_m.html#a296c493d1029f6b3bcb21387e58b543a", null ],
@@ -22,6 +23,7 @@ var class_motor_p_w_m =
     [ "turn", "class_motor_p_w_m.html#a770023d0eb433b4833907542a6aa5eb4", null ],
     [ "active", "class_motor_p_w_m.html#adfbe735571cef59c87ef0324f0f90fa3", null ],
     [ "info", "class_motor_p_w_m.html#a85b1eade8c4b946dbc7db293a631ed2e", null ],
+    [ "invertDir", "class_motor_p_w_m.html#a8b84b72e055a027b817382c32af6f1e5", null ],
     [ "mode", "class_motor_p_w_m.html#a5c4c33d2ea083febdc499d04fb3ecef9", null ],
     [ "period", "class_motor_p_w_m.html#afb701d67ae69d0bcdd71097474a6b049", null ],
     [ "prescaler", "class_motor_p_w_m.html#a29de6f193e752cc253e7093477675873", null ],
