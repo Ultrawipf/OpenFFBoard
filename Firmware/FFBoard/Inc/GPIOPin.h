@@ -12,6 +12,9 @@
 /// easily extended to cover input pins as well as expose various configuration API's.
 
 class GpioPin{
+protected:
+	GPIO_TypeDef *port;
+	uint16_t pin;
 public:
 	GpioPin(GPIO_TypeDef &port, uint16_t pin) // const std::string name = ""
 		: port{&port}, pin{pin} {}
@@ -20,9 +23,9 @@ public:
 	bool operator==(const GpioPin& b){
 		return(this->port == b.port && this->pin == b.pin);
 	}
-protected:
-	GPIO_TypeDef *port;
-	uint16_t pin;
+	const GPIO_TypeDef* getPort() const {return port;}
+	uint16_t getPin() const {return pin;}
+
 };
 
 
