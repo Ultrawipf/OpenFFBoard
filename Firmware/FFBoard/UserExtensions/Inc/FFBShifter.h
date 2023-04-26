@@ -20,7 +20,7 @@
 
 class FFBShifterEffects : public EffectsCalculatorItf , public EffectsControlItf, public CommandHandler, public ButtonSource{
 	enum class FFBShifterEffectMode : uint8_t {sequential,h_sym};
-	enum class FFBShifterEffect_commands {active,invert,mode};
+	enum class FFBShifterEffect_commands {active,invert,mode,rangeX,rangeY,lockGear};
 	struct ShifterEffectParams{
 		float gainYseq = 2;
 		float gainY = 0.5;
@@ -43,6 +43,7 @@ private:
 	bool invertAxes = true;
 	FFBShifterEffectMode mode = FFBShifterEffectMode::h_sym;
 	uint64_t buttons = 0;
+	uint32_t lockedGears = 0; // Bit mask locking out certain gears
 
 public:
 	FFBShifterEffects();
@@ -85,6 +86,7 @@ public:
 	virtual std::string getHelpstring(){
 		return "FFB HID Shifter";
 	}
+
 
 	static const std::array<char*,2> modenames;
 
