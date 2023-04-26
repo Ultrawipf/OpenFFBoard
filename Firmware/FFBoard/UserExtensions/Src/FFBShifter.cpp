@@ -54,9 +54,11 @@ FFBShifterEffects::FFBShifterEffects():CommandHandler("shifterfx",CLSID_FFBSHIFT
 	registerCommand("active", FFBShifterEffect_commands::active, "Enable/Disable",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("invert", FFBShifterEffect_commands::invert, "Flip X/Y axes",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("mode", FFBShifterEffect_commands::mode, "Pattern mode",CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_INFOSTRING);
+	registerCommand("lockgear", FFBShifterEffect_commands::lockGear, "Lockout gears",CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_GETADR | CMDFLAG_SETADR);
 //	registerCommand("polarity", LocalButtons_commands::polarity, "Pin polarity",CMDFLAG_GET | CMDFLAG_SET);
 //	registerCommand("pins", LocalButtons_commands::pins, "Available pins",CMDFLAG_GET | CMDFLAG_SET);
 //	registerCommand("values", LocalButtons_commands::values, "pin values",CMDFLAG_GET);
+
 	setMode(this->mode); // Confirm mode
 }
 
@@ -168,8 +170,17 @@ void FFBShifterEffects::calculateShifterEffect(metric_t* metricsX,metric_t* metr
 				for(uint8_t gate = 0;gate<params.hgatesX;gate++){
 					if((gate == 0 || pos_fX > (gate * gatesize)-1.0) && (pos_fX < (gatesize * (gate+1)) -1.0 || gate == params.hgatesX-1) ){
 						if(buttonSection){
+
 							uint32_t btn = (gate * 2) + buttonSection - 1;
-							buttons |= (1 << btn);
+							uint32_t buttonbit = (1 << btn);
+							bool locked = lockedGears & buttonbit;
+							if(locked){
+								// Gear is locked. add lockout effect
+								*torqueY += springEffect(posY, 0, 5, params.maxForceY, params.maxForceX, 0x7fff * rangeY * 0.4);
+
+							}else{
+								buttons |= buttonbit;
+							}
 						}
 
 						int32_t gateTorque = springEffect(posX, 0x7fff * ((gatesize * (gate+0.5))-1), params.gainXgate, params.maxForceX, params.maxForceX, 0);
@@ -261,6 +272,23 @@ CommandStatus FFBShifterEffects::command(const ParsedCommand& cmd,std::vector<Co
 			return handleGetSetFunc(cmd, replies, (uint8_t&)this->mode, &FFBShifterEffects::setMode_i, this);
 		}
 	break;
+
+	case FFBShifterEffect_commands::lockGear:
+		if(cmd.type == CMDtype::setat){
+			uint32_t mask =  1 << cmd.adr;
+			if(cmd.val){
+				this->lockedGears |= mask;
+			}else{
+				this->lockedGears &= ~mask;
+			}
+		}else if(cmd.type == CMDtype::getat){
+			replies.emplace_back(this->lockedGears & (1 << cmd.adr) ? 1 : 0);
+		}else if(cmd.type == CMDtype::get){
+			replies.emplace_back(this->lockedGears);
+		}else if(cmd.type == CMDtype::set){
+			this->lockedGears = cmd.val;
+		}
+		break;
 
 	default:
 		return CommandStatus::NOT_FOUND;
