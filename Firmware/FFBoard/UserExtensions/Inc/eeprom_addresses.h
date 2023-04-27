@@ -1,11 +1,12 @@
 /*		
- * flash_addresses.h		
- *		
- *  Created on: Jan 4, 2020		
- *      Author: Yannick		
- *		
- *	/!\ Generated from the file memory_map.xlsx NOT EDIT !!!	
- */		
+ * eeprom_addresses.h
+ *
+ *  Created on: 24.01.2020
+ *  Author: Yannick
+ *
+ *	/!\ Generated from the file memory_map.csv
+   / ! \ DO NOT EDIT THIS DIRECTLY !!!
+ */
 		
 #ifndef EEPROM_ADDRESSES_H_
 #define EEPROM_ADDRESSES_H_
@@ -33,8 +34,7 @@ Important: Add your variable to the VirtAddVarTab[NB_OF_VAR] array in eeprom_add
 		
 Tip to check if a cell is intialized:		
 uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if the address is not found or 0 if it was found.		
-*/		
-		
+*/
 // System variables
 #define ADR_HW_VERSION 1
 #define ADR_SW_VERSION 2
@@ -69,12 +69,12 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_SHIFTERANALOG_Y_246 0x243
 #define ADR_SHIFTERANALOG_CONF_2 0x244
 #define ADR_SHIFTERANALOG_CONF_3 0x245
-//
+// PCF buttons
 #define ADR_PCFBTN_CONF1 0x250
-//
+// CAN port
 #define ADR_CANBTN_CONF1 0x260
 #define ADR_CANBTN_CONF2 0x261 // CAN ID
-//
+// CAN analog
 #define ADR_CANANALOG_CONF1 0x270
 // FFB Engine flash area
 #define ADR_FFB_CF_FILTER 0x280 // Constant Force Lowpass
