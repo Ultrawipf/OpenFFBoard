@@ -36,8 +36,8 @@ EffectsCalculator::EffectsCalculator() : CommandHandler("fx", CLSID_EFFECTSCALC)
 	registerCommand("damper", EffectsCalculator_commands::damper, "Damper gain", CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_INFOSTRING);
 	registerCommand("inertia", EffectsCalculator_commands::inertia, "Inertia gain", CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_INFOSTRING);
 	registerCommand("effects", EffectsCalculator_commands::effects, "USed effects since reset (Info print as str). set 0 to reset", CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_INFOSTRING);
-	registerCommand("effectsDetails", EffectsCalculator_commands::effectsDetails, "List effects details. set 0 to reset", CMDFLAG_GET | CMDFLAG_SET  | CMDFLAG_STR_ONLY);
-	registerCommand("effectsForces", EffectsCalculator_commands::effectsForces, "List actual effects forces.", CMDFLAG_GET);
+	registerCommand("effectsDetails", EffectsCalculator_commands::effectsDetails, "List effects details. set 0 to reset", CMDFLAG_GET | CMDFLAG_SET  | CMDFLAG_STR_ONLY | CMDFLAG_GETADR);
+	registerCommand("effectsForces", EffectsCalculator_commands::effectsForces, "List actual effects forces.", CMDFLAG_GET | CMDFLAG_GETADR);
 //	registerCommand("monitorEffect", EffectsCalculator_commands::monitorEffect, "Get monitoring status. set to 1 to enable.", CMDFLAG_GET | CMDFLAG_SET);
 
 	registerCommand("damper_f", EffectsCalculator_commands::damper_f, "Damper biquad freq", CMDFLAG_GET | CMDFLAG_SET);
@@ -68,8 +68,8 @@ void EffectsCalculator::setActive(bool active)
 	effects_active = active;
 	for (uint8_t i = 0; i < effects_stats.size(); i++)
 	{
-		effects_stats[i].current = 0; // Reset active effect forces
-		effects_statslast[i].current = 0;
+		effects_stats[i].current = {0}; // Reset active effect forces
+		effects_statslast[i].current = {0};
 	}
 }
 
@@ -108,7 +108,7 @@ void EffectsCalculator::calculateEffects(std::vector<std::unique_ptr<Axis>> &axe
 
 	for (uint8_t i = 0; i < effects_stats.size(); i++)
 	{
-		effects_stats[i].current = 0; // Reset active effect forces
+		effects_stats[i].current = {0}; // Reset active effect forces
 	}
 
 	for (uint8_t fxi = 0; fxi < MAX_EFFECTS; fxi++)
@@ -125,7 +125,8 @@ void EffectsCalculator::calculateEffects(std::vector<std::unique_ptr<Axis>> &axe
 			if (HAL_GetTick() > effect->startTime + effect->duration)
 			{
 				effect->state = EFFECT_STATE_INACTIVE;
-				calcStatsEffectType(effect->type, 0); // record a 0 on the ended force
+				for(uint8_t axis=0 ; axis < axisCount ; axis++)
+					calcStatsEffectType(effect->type, 0,axis); // record a 0 on the ended force
 			}
 		}
 
@@ -140,7 +141,7 @@ void EffectsCalculator::calculateEffects(std::vector<std::unique_ptr<Axis>> &axe
 		for(uint8_t axis=0 ; axis < axisCount ; axis++) // Calculate effects for all axes
 		{
 			int32_t axisforce = calcComponentForce(effect, force, axes, axis);
-			calcStatsEffectType(effect->type, axisforce);
+			calcStatsEffectType(effect->type, axisforce,axis);
 			forces[axis] += axisforce; // Do not clip yet to allow effects to subtract force correctly. Will not overflow as maxeffects * 0x7fff is less than int32 range
 		}
 	}
@@ -646,7 +647,7 @@ void EffectsCalculator::logEffectType(uint8_t type,bool remove){
 			if(!effects_stats[type-1].nb){
 				//effects_used &= ~(1<<(type-1)); // Only manual reset
 				//effects_stats[type-1].max = 0;
-				effects_stats[type-1].current = 0;
+				effects_stats[type-1].current = {0};
 			}
 		}else{
 			effects_used |= 1<<(type-1);
@@ -661,26 +662,31 @@ void EffectsCalculator::logEffectState(uint8_t type,uint8_t state){
 	if(type > 0 && type < 32){
 		if(!state){
 			// effects_stats[type-1].max = 0;
-			effects_stats[type-1].current = 0;
+			effects_stats[type-1].current = {0};
 		}
 	}
 }
 
 
-void EffectsCalculator::calcStatsEffectType(uint8_t type, int16_t force){
+void EffectsCalculator::calcStatsEffectType(uint8_t type, int16_t force,uint8_t axis){
+	if(axis >= MAX_AXIS)
+		return;
 	if(type > 0 && type < 13) {
 		uint8_t arrayLocation = type - 1;
-		effects_stats[arrayLocation].current = clip<int32_t,int16_t>(effects_stats[arrayLocation].current + force, -0x7fff, 0x7fff);
-		effects_stats[arrayLocation].max = std::max(effects_stats[arrayLocation].max, (int16_t)abs(force));
+		effects_stats[arrayLocation].current[axis] = clip<int32_t,int16_t>(effects_stats[arrayLocation].current[axis] + force, -0x7fff, 0x7fff);
+		effects_stats[arrayLocation].max[axis] = std::max(effects_stats[arrayLocation].max[axis], (int16_t)abs(force));
 	}
 }
 
 /**
  * Prints a list of effects that were active at some point
  * Does not reset when an effect is deactivated
+ * Axis only used in detail mode
  */
-std::string EffectsCalculator::listEffectsUsed(bool details){
+std::string EffectsCalculator::listEffectsUsed(bool details,uint8_t axis){
 	std::string effects_list = "";
+	if(axis >= MAX_AXIS)
+		return "";
 
 	if (!details) {
 		if(effects_used == 0){
@@ -701,8 +707,8 @@ std::string EffectsCalculator::listEffectsUsed(bool details){
 		bool firstItem = true;
 		for (int i=0;i < 12; i++) {
 			if (!firstItem) effects_list += ", ";
-			effects_list += "{\"max\":" + std::to_string(effects_stats[i].max);
-			effects_list += ", \"curr\":" + std::to_string(effects_stats[i].current);
+			effects_list += "{\"max\":" + std::to_string(effects_stats[i].max[axis]);
+			effects_list += ", \"curr\":" + std::to_string(effects_stats[i].current[axis]);
 			effects_list += ", \"nb\":" + std::to_string(effects_stats[i].nb) + "}";
 			firstItem = false;
 		}
@@ -766,20 +772,20 @@ CommandStatus EffectsCalculator::command(const ParsedCommand& cmd,std::vector<Co
 		}
 		else if (cmd.type == CMDtype::info)
 		{
-			replies.emplace_back(listEffectsUsed(cmd.val));
+			replies.emplace_back(listEffectsUsed(false));
 		}
 		break;
 	case EffectsCalculator_commands::effectsDetails:
-		if (cmd.type == CMDtype::get)
+		if (cmd.type == CMDtype::get || cmd.type == CMDtype::getat)
 		{
-			replies.emplace_back(listEffectsUsed(true));
+			replies.emplace_back(listEffectsUsed(true,cmd.adr));
 		}
 		else if (cmd.type == CMDtype::set && cmd.val >= 0)
 		{
 			for (int i=0; i<12; i++) {
-				effects_stats[i].max = 0;
+				effects_stats[i].max = {0};
 				if(cmd.val > 0){
-					effects_stats[i].current = 0;
+					effects_stats[i].current = {0};
 					effects_stats[i].nb = 0;
 				}
 			}
@@ -787,13 +793,19 @@ CommandStatus EffectsCalculator::command(const ParsedCommand& cmd,std::vector<Co
 		}
 		break;
 	case EffectsCalculator_commands::effectsForces:
-		if (cmd.type == CMDtype::get)
+	{
+		uint8_t axis = 0;
+		if(cmd.type == CMDtype::getat){
+			axis = std::min<uint8_t>(cmd.adr,MAX_AXIS);
+		}
+		if (cmd.type == CMDtype::get || cmd.type == CMDtype::getat)
 		{
 			for (size_t i=0; i < effects_statslast.size(); i++) {
-				replies.emplace_back(effects_statslast[i].current,effects_statslast[i].nb);
+				replies.emplace_back(effects_statslast[i].current[axis],effects_statslast[i].nb);
 			}
 		}
 		break;
+	}
 	case EffectsCalculator_commands::spring:
 		if(cmd.type == CMDtype::info){
 			replies.emplace_back("scale:"+std::to_string(this->scaler.spring));

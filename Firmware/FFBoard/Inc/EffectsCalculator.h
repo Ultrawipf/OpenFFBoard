@@ -50,8 +50,8 @@ struct effect_biquad_t {
 };
 
 struct effect_stat_t {
-	int16_t current=0;
-	int16_t max=0;
+	std::array<int16_t,MAX_AXIS> current={0};
+	std::array<int16_t,MAX_AXIS> max={0};
 	uint16_t nb=0;
 };
 
@@ -84,7 +84,7 @@ public:
 	uint8_t getGain();
 	void logEffectType(uint8_t type,bool remove = false);
 	//void setDirectionEnableMask(uint8_t mask);
-	void calcStatsEffectType(uint8_t type, int16_t force);
+	void calcStatsEffectType(uint8_t type, int16_t force,uint8_t axis);
 	void logEffectState(uint8_t type,uint8_t state);
 	void resetLoggedActiveEffects(bool reinit);
 
@@ -129,7 +129,7 @@ private:
 	float speedRampupPct();
 	int32_t calcConditionEffectForce(FFB_Effect *effect, float metric, uint8_t gain, uint8_t idx, float scale, float angle_ratio);
 	int32_t getEnvelopeMagnitude(FFB_Effect *effect);
-	std::string listEffectsUsed(bool details = false);
+	std::string listEffectsUsed(bool details = false,uint8_t axis = 0);
 	//std::string listForceEffects();
 	void checkFilterCoeff(biquad_constant_t *filter, uint32_t freq,uint8_t q);
 	void updateFilterSettingsForEffects(uint8_t type_effect);
