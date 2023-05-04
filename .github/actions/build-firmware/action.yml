@@ -22,7 +22,7 @@ runs:
     #- uses: actions/checkout@v2
     - name: "Check toolchain exists"
       id: check_tc
-      uses: andstor/file-existence-action@v1
+      uses: andstor/file-existence-action@v2
       with:
         files: "/tmp/armtc,/usr/share/gcc-arm-none-eabi-10.3-2021.10"
         allow_failure: false
@@ -43,7 +43,7 @@ runs:
     - name: Download toolchain
       shell: bash
       if: steps.check_tc.outputs.files_exists != 'true' && steps.cache.outputs.cache-hit != 'true'
-      run: wget -q -O /tmp/armtc/gcc-arm-none-eabi.tar.bz2 https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2 
+      run: wget -q --no-check-certificate -O /tmp/armtc/gcc-arm-none-eabi.tar.bz2 https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2 
       
     - name: Setup environment
       if: steps.check_tc.outputs.files_exists != 'true'
