@@ -115,10 +115,14 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a3f47cc96c950abeefb0b611afa0ce90a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a682db0c74bfa2f93a1219aaf59d5deb5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_midi_handler.html#a682db0c74bfa2f93a1219aaf59d5deb5">noteOff</a> (uint8_t chan, uint8_t note, uint8_t <a class="el" href="_t_m_c4671_8h.html#a1b04aa8e350271255d351486d3720741aac1a453d0cdc1f19d9479ccfaa8b082c">velocity</a>)=0</td></tr>
 <tr class="separator:a682db0c74bfa2f93a1219aaf59d5deb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa10537f5aa69dca790b011b64b1e1e16"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_midi_handler.html#aa10537f5aa69dca790b011b64b1e1e16">controlChange</a> (uint8_t chan, uint8_t c, uint8_t val)=0</td></tr>
-<tr class="separator:aa10537f5aa69dca790b011b64b1e1e16"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a81c58301e69b9bf45fd3c73339305d44"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_midi_handler.html#a81c58301e69b9bf45fd3c73339305d44">pitchBend</a> (uint8_t chan, int16_t val)=0</td></tr>
-<tr class="separator:a81c58301e69b9bf45fd3c73339305d44"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe83c5cb0ad8e9effc19f22ed1698341"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_midi_handler.html#afe83c5cb0ad8e9effc19f22ed1698341">controlChange</a> (uint8_t chan, uint8_t c, uint8_t val)</td></tr>
+<tr class="separator:afe83c5cb0ad8e9effc19f22ed1698341"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe45148e43e8ab8ca665320ae17984bf"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_midi_handler.html#afe45148e43e8ab8ca665320ae17984bf">programChange</a> (uint8_t chan, uint8_t val)</td></tr>
+<tr class="separator:afe45148e43e8ab8ca665320ae17984bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9049694d8147984d85e1f59842a965af"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_midi_handler.html#a9049694d8147984d85e1f59842a965af">pitchBend</a> (uint8_t chan, int16_t val)</td></tr>
+<tr class="separator:a9049694d8147984d85e1f59842a965af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62816cc328ba2e56a02e06b134797503"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_midi_handler.html#a62816cc328ba2e56a02e06b134797503">midiTick</a> ()</td></tr>
+<tr class="separator:a62816cc328ba2e56a02e06b134797503"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -176,8 +180,8 @@ Static Public Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="aa10537f5aa69dca790b011b64b1e1e16" name="aa10537f5aa69dca790b011b64b1e1e16"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa10537f5aa69dca790b011b64b1e1e16">&#9670;&nbsp;</a></span>controlChange()</h2>
+<a id="afe83c5cb0ad8e9effc19f22ed1698341" name="afe83c5cb0ad8e9effc19f22ed1698341"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe83c5cb0ad8e9effc19f22ed1698341">&#9670;&nbsp;</a></span>controlChange()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -211,14 +215,14 @@ Static Public Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="class_midi_main.html#a0b363111006d243e5cc928578ee11160">MidiMain</a>.</p>
+<p>Reimplemented in <a class="el" href="class_midi_main.html#a0b363111006d243e5cc928578ee11160">MidiMain</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_midi_handler_8cpp_source.html#l00072">72</a> of file <a class="el" href="_midi_handler_8cpp_source.html">MidiHandler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_midi_handler_8cpp_source.html#l00085">85</a> of file <a class="el" href="_midi_handler_8cpp_source.html">MidiHandler.cpp</a>.</p>
 
 </div>
 </div>
@@ -257,6 +261,34 @@ Static Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="_midi_handler_8cpp_source.html#l00023">23</a> of file <a class="el" href="_midi_handler_8cpp_source.html">MidiHandler.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a62816cc328ba2e56a02e06b134797503" name="a62816cc328ba2e56a02e06b134797503"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a62816cc328ba2e56a02e06b134797503">&#9670;&nbsp;</a></span>midiTick()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MidiHandler::midiTick </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p >Sent 24 times per quarter note </p>
+
+<p class="definition">Definition at line <a class="el" href="_midi_handler_8cpp_source.html#l00094">94</a> of file <a class="el" href="_midi_handler_8cpp_source.html">MidiHandler.cpp</a>.</p>
 
 </div>
 </div>
@@ -302,7 +334,7 @@ Static Public Attributes</h2></td></tr>
 
 <p>Implemented in <a class="el" href="class_midi_main.html#aab3256b4a168fede07f461b9d64147a4">MidiMain</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_midi_handler_8cpp_source.html#l00069">69</a> of file <a class="el" href="_midi_handler_8cpp_source.html">MidiHandler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_midi_handler_8cpp_source.html#l00082">82</a> of file <a class="el" href="_midi_handler_8cpp_source.html">MidiHandler.cpp</a>.</p>
 
 </div>
 </div>
@@ -348,12 +380,12 @@ Static Public Attributes</h2></td></tr>
 
 <p>Implemented in <a class="el" href="class_midi_main.html#aece09e8a74dd4b8baf1d7553a5d938d0">MidiMain</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_midi_handler_8cpp_source.html#l00066">66</a> of file <a class="el" href="_midi_handler_8cpp_source.html">MidiHandler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_midi_handler_8cpp_source.html#l00079">79</a> of file <a class="el" href="_midi_handler_8cpp_source.html">MidiHandler.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a81c58301e69b9bf45fd3c73339305d44" name="a81c58301e69b9bf45fd3c73339305d44"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a81c58301e69b9bf45fd3c73339305d44">&#9670;&nbsp;</a></span>pitchBend()</h2>
+<a id="a9049694d8147984d85e1f59842a965af" name="a9049694d8147984d85e1f59842a965af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9049694d8147984d85e1f59842a965af">&#9670;&nbsp;</a></span>pitchBend()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -381,14 +413,52 @@ Static Public Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="class_midi_main.html#ab6a1a739df715b946d1b02440d84656b">MidiMain</a>.</p>
+<p>Reimplemented in <a class="el" href="class_midi_main.html#ab6a1a739df715b946d1b02440d84656b">MidiMain</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_midi_handler_8cpp_source.html#l00075">75</a> of file <a class="el" href="_midi_handler_8cpp_source.html">MidiHandler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_midi_handler_8cpp_source.html#l00088">88</a> of file <a class="el" href="_midi_handler_8cpp_source.html">MidiHandler.cpp</a>.</p>
+
+</div>
+</div>
+<a id="afe45148e43e8ab8ca665320ae17984bf" name="afe45148e43e8ab8ca665320ae17984bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe45148e43e8ab8ca665320ae17984bf">&#9670;&nbsp;</a></span>programChange()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MidiHandler::programChange </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>chan</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>val</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_midi_handler_8cpp_source.html#l00097">97</a> of file <a class="el" href="_midi_handler_8cpp_source.html">MidiHandler.cpp</a>.</p>
 
 </div>
 </div>
@@ -413,7 +483,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_midi_handler_8h_source.html#l00024">24</a> of file <a class="el" href="_midi_handler_8h_source.html">MidiHandler.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_midi_handler_8h_source.html#l00026">26</a> of file <a class="el" href="_midi_handler_8h_source.html">MidiHandler.h</a>.</p>
 
 </div>
 </div>

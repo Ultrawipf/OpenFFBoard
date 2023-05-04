@@ -1,5 +1,7 @@
 var NAVTREEINDEX8 =
 {
+"class_local_buttons.html#aa7fac7ae24e3f20438ec1a97962db1bb":[3,0,89,2],
+"class_local_buttons.html#aa869996657bb5193259691317dc18619":[3,0,89,14],
 "class_local_buttons.html#aaf3f02310a838a839fca7229fad71a4d":[3,0,89,9],
 "class_local_buttons.html#ab0c297b2ffdb4d6368f3965423975d65":[3,0,89,3],
 "class_local_buttons.html#ab10f9bafb1ca5cc86fa3870bbc5e2fcf":[3,0,89,10],
@@ -11,13 +13,15 @@ var NAVTREEINDEX8 =
 "class_local_buttons.html#ae269f0b70e980655a6e1a2222fdcabfe":[3,0,89,4],
 "class_midi_handler.html":[3,0,93],
 "class_midi_handler.html#a38eac68ce64889aa4d22d9b339f8e808":[3,0,93,1],
-"class_midi_handler.html#a3f47cc96c950abeefb0b611afa0ce90a":[3,0,93,5],
-"class_midi_handler.html#a682db0c74bfa2f93a1219aaf59d5deb5":[3,0,93,4],
-"class_midi_handler.html#a81c58301e69b9bf45fd3c73339305d44":[3,0,93,6],
+"class_midi_handler.html#a3f47cc96c950abeefb0b611afa0ce90a":[3,0,93,6],
+"class_midi_handler.html#a62816cc328ba2e56a02e06b134797503":[3,0,93,4],
+"class_midi_handler.html#a682db0c74bfa2f93a1219aaf59d5deb5":[3,0,93,5],
 "class_midi_handler.html#a83520e890860d9b44ec06b6d25c3e5cd":[3,0,93,3],
-"class_midi_handler.html#aa10537f5aa69dca790b011b64b1e1e16":[3,0,93,2],
-"class_midi_handler.html#ade3b95494285def10788992956f739c1":[3,0,93,7],
+"class_midi_handler.html#a9049694d8147984d85e1f59842a965af":[3,0,93,7],
+"class_midi_handler.html#ade3b95494285def10788992956f739c1":[3,0,93,9],
 "class_midi_handler.html#af94adc6eb370d6526242f54754aa8b81":[3,0,93,0],
+"class_midi_handler.html#afe45148e43e8ab8ca665320ae17984bf":[3,0,93,8],
+"class_midi_handler.html#afe83c5cb0ad8e9effc19f22ed1698341":[3,0,93,2],
 "class_midi_main.html":[3,0,94],
 "class_midi_main.html#a0b363111006d243e5cc928578ee11160":[3,0,94,4],
 "class_midi_main.html#a12ad5df2b21348819296de44ef86880a":[3,0,94,20],
@@ -245,9 +249,5 @@ var NAVTREEINDEX8 =
 "class_mt_encoder_s_p_i.html#a434788641cf0ecae1fdf61b029cdc5f8":[3,0,104,37],
 "class_mt_encoder_s_p_i.html#a437998795b732300394e10bea3b309f0":[3,0,104,13],
 "class_mt_encoder_s_p_i.html#a4af821eabd4bc5c2026afeb50b7e5756":[3,0,104,8],
-"class_mt_encoder_s_p_i.html#a5614ff7e7d2fd10f1e9e5947ecfb5b76":[3,0,104,21],
-"class_mt_encoder_s_p_i.html#a5801d5fc227862b983fef9a9a6810d8f":[3,0,104,9],
-"class_mt_encoder_s_p_i.html#a5a5463200a5ccb7fc1a8b145e967212a":[3,0,104,16],
-"class_mt_encoder_s_p_i.html#a636526e19e33147232290b3168485480":[3,0,104,23],
-"class_mt_encoder_s_p_i.html#a682c0e4ea005cf268fbebc7719d68d77":[3,0,104,20]
+"class_mt_encoder_s_p_i.html#a5614ff7e7d2fd10f1e9e5947ecfb5b76":[3,0,104,21]
 };

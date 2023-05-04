@@ -1,5 +1,9 @@
 var NAVTREEINDEX35 =
 {
+"struct_u_s_b___o_t_g___device_type_def.html#ab10e5be5517065dccac3d098cc1b9894":[3,0,174,5],
+"struct_u_s_b___o_t_g___device_type_def.html#ae446389c3fb6d62537abe36a0d7e564f":[3,0,174,9],
+"struct_u_s_b___o_t_g___device_type_def.html#af0a7a07413a095432031eddc900031cd":[3,0,174,12],
+"struct_u_s_b___o_t_g___global_type_def.html":[3,0,175],
 "struct_u_s_b___o_t_g___global_type_def.html#a060364111cf507dfab9bb6503477983a":[3,0,175,11],
 "struct_u_s_b___o_t_g___global_type_def.html#a09055525656d2be5adce9471c2590c49":[3,0,175,8],
 "struct_u_s_b___o_t_g___global_type_def.html#a0c0a00511f6c07b8609b54adb14319da":[3,0,175,6],
@@ -166,9 +170,9 @@ var NAVTREEINDEX35 =
 "structeffect__scaler__t.html#ae27f1a5c6511d678b8640891d099a2d3":[3,0,49,3],
 "structeffect__scaler__t.html#aebbd9d12515540058998b526243fdd64":[3,0,49,2],
 "structeffect__stat__t.html":[3,0,50],
-"structeffect__stat__t.html#a0555a97cbc3eed47b1cbb07565f2e844":[3,0,50,0],
 "structeffect__stat__t.html#a25741f593086aa677efc83ee24f1587f":[3,0,50,2],
-"structeffect__stat__t.html#ab3886ef7601f27c971829d0919f8ef12":[3,0,50,1],
+"structeffect__stat__t.html#a58f3ea2e28a6f00e033898bdf1a4d52a":[3,0,50,1],
+"structeffect__stat__t.html#aa0eeb28fd8f16cfcf6c993967e208045":[3,0,50,0],
 "structhcd__devtree__info__t.html":[3,0,72],
 "structhcd__devtree__info__t.html#a39d0711e87a23235bb08166fca601e13":[3,0,72,1],
 "structhcd__devtree__info__t.html#a764346a82da56b55cf2cafd1a9c84fb0":[3,0,72,0],
@@ -226,13 +230,13 @@ var NAVTREEINDEX35 =
 "structhub__port__status__response__t.html#a0b66c1429a3d29c02e693ea3df0c506e":[1,8,1,8],
 "structhub__port__status__response__t.html#a1ae6b25b5fa3fd9ddf14912434cb4843":[1,8,1,7],
 "structhub__port__status__response__t.html#a2381a0935a83c6d7cb6c3592dccce7df":[1,8,1,0],
-"structhub__port__status__response__t.html#a4592f15214ead9b78a80119bfa172378":[1,8,1,1],
+"structhub__port__status__response__t.html#a24b8a156339b43eb08e203dba146d1f3":[1,8,1,1],
 "structhub__port__status__response__t.html#a8f8deb7f2461295540bea242948fb3ae":[1,8,1,5],
 "structhub__port__status__response__t.html#a9b211abcf5dd543b190d3d6f2832b94c":[1,8,1,12],
 "structhub__port__status__response__t.html#aabf1299708749266b5e809dc39f31172":[1,8,1,6],
 "structhub__port__status__response__t.html#ac51e3ec63cad581a274628bdb0626233":[1,8,1,13],
+"structhub__port__status__response__t.html#ac85455941b27f2cde5a337d91476b37c":[1,8,1,11],
 "structhub__port__status__response__t.html#aca1c4fce456372a084aa75c25ac52a04":[1,8,1,4],
-"structhub__port__status__response__t.html#acdd6fb6a273826cf112349c26eb22464":[1,8,1,11],
 "structhub__port__status__response__t.html#ad2b2341b1fb4535c6890008020a040af":[1,8,1,14],
 "structhub__port__status__response__t.html#adf4625e9608f68c57d5b41459e1350c8":[1,8,1,9],
 "structhub__port__status__response__t.html#ae632796d212114bec85e12cf2995e755":[1,8,1,2],
@@ -245,9 +249,5 @@ var NAVTREEINDEX35 =
 "structhub__status__response__t.html#ae1e0e79c620d9a93220cffd68f934a25":[1,8,0,3],
 "structhub__status__response__t.html#aeb3e4a317583445868bfe67d77a53f15":[1,8,0,5],
 "structmetric__t.html":[3,0,90],
-"structmetric__t.html#a02c1b61e26413aaf19a366ce11612365":[3,0,90,3],
-"structmetric__t.html#a38efc8fc592028a5f34255606c2b78ee":[3,0,90,5],
-"structmetric__t.html#a3ce28e8bf81def88f284a1068a098f24":[3,0,90,0],
-"structmetric__t.html#a50ffdb0c4bc4588f27a6647b909ae314":[3,0,90,4],
-"structmetric__t.html#a54387188e555c5a4cfa28ea5c6bb97d2":[3,0,90,1]
+"structmetric__t.html#a02c1b61e26413aaf19a366ce11612365":[3,0,90,3]
 };

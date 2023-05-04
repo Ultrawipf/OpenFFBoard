@@ -88,42 +88,42 @@ $(document).ready(function(){initNavTree('eeprom__addresses_8h_source.html','');
 </div><!--header-->
 <div class="contents">
 <a href="eeprom__addresses_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">/*      </span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment"> * flash_addresses.h        </span></div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment"> *      </span></div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment"> *  Created on: Jan 4, 2020     </span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment"> *      Author: Yannick     </span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment"> *      </span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment"> *  /!\ Generated from the file memory_map.xlsx NOT EDIT !!!    </span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment"> */</span>     </div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>        </div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#ifndef EEPROM_ADDRESSES_H_</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#define EEPROM_ADDRESSES_H_</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;main.h&quot;</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment">// Change this to the amount of currently registered variables</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#define NB_OF_VAR 147</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="keyword">extern</span> <span class="keyword">const</span> uint16_t <a class="code hl_variable" href="eeprom__addresses_8h.html#a27d99716228bbb05cff8443e2ab0ebcb">VirtAddVarTab</a>[NB_OF_VAR];</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment">// Amount of variables in exportable list</span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#define NB_EXPORTABLE_ADR 132</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">extern</span> <span class="keyword">const</span> uint16_t <a class="code hl_variable" href="eeprom__addresses_8h.html#ab97cf75868cb1d0bbe370e27346a4e5e">exportableFlashAddresses</a>[NB_EXPORTABLE_ADR];</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment"> * eeprom_addresses.h</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment"> *  Created on: 24.01.2020</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment"> *  Author: Yannick</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment"> *  /!\ Generated from the file memory_map.csv</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment">   / ! \ DO NOT EDIT THIS DIRECTLY !!!</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>        </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#ifndef EEPROM_ADDRESSES_H_</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#define EEPROM_ADDRESSES_H_</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &quot;main.h&quot;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment">// Change this to the amount of currently registered variables</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#define NB_OF_VAR 147</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="keyword">extern</span> <span class="keyword">const</span> uint16_t <a class="code hl_variable" href="eeprom__addresses_8h.html#a27d99716228bbb05cff8443e2ab0ebcb">VirtAddVarTab</a>[NB_OF_VAR];</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment">// Amount of variables in exportable list</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#define NB_EXPORTABLE_ADR 132</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="keyword">extern</span> <span class="keyword">const</span> uint16_t <a class="code hl_variable" href="eeprom__addresses_8h.html#ab97cf75868cb1d0bbe370e27346a4e5e">exportableFlashAddresses</a>[NB_EXPORTABLE_ADR];</div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>        </div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment">/* Add your addresses here. 0xffff is invalid as it marks an erased field.      </span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment">Anything below 0x00ff is reserved for system variables.     </span></div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment">        </span></div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="comment">Use ranges that are clear to distinguish between configurations. Address ranges can have gaps.      </span></div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="comment">Label the names clearly.        </span></div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="comment">Example: 0x0100 - 0x01ff for one class and 0x0200-0x02ff for another class would be reasonable even if they each need only 3 variables      </span></div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="comment">        </span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>        </div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment">/* Add your addresses here. 0xffff is invalid as it marks an erased field.      </span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment">Anything below 0x00ff is reserved for system variables.     </span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="comment">        </span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="comment">Use ranges that are clear to distinguish between configurations. Address ranges can have gaps.      </span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="comment">Label the names clearly.        </span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="comment">Example: 0x0100 - 0x01ff for one class and 0x0200-0x02ff for another class would be reasonable even if they each need only 3 variables      </span></div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="comment">        </span></div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment">Important: Add your variable to the VirtAddVarTab[NB_OF_VAR] array in eeprom_addresses.c!       </span></div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="comment">        </span></div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="comment">Tip to check if a cell is intialized:       </span></div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="comment">uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if the address is not found or 0 if it was found.      </span></div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="comment">*/</span>      </div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>        </div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment">        </span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="comment">Important: Add your variable to the VirtAddVarTab[NB_OF_VAR] array in eeprom_addresses.c!       </span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="comment">        </span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="comment">Tip to check if a cell is intialized:       </span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="comment">uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if the address is not found or 0 if it was found.      </span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="comment">*/</span></div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="comment">// System variables</span></div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="preprocessor">#define ADR_HW_VERSION 1</span></div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="preprocessor">#define ADR_SW_VERSION 2</span></div>
@@ -158,12 +158,12 @@ $(document).ready(function(){initNavTree('eeprom__addresses_8h_source.html','');
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="preprocessor">#define ADR_SHIFTERANALOG_Y_246 0x243</span></div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="preprocessor">#define ADR_SHIFTERANALOG_CONF_2 0x244</span></div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="preprocessor">#define ADR_SHIFTERANALOG_CONF_3 0x245</span></div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="comment">//</span></div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="comment">// PCF buttons</span></div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="preprocessor">#define ADR_PCFBTN_CONF1 0x250</span></div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span><span class="comment">//</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span><span class="comment">// CAN port</span></div>
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><span class="preprocessor">#define ADR_CANBTN_CONF1 0x260</span></div>
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span><span class="preprocessor">#define ADR_CANBTN_CONF2 0x261 </span><span class="comment">// CAN ID</span></div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="comment">//</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="comment">// CAN analog</span></div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><span class="preprocessor">#define ADR_CANANALOG_CONF1 0x270</span></div>
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span><span class="comment">// FFB Engine flash area</span></div>
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span><span class="preprocessor">#define ADR_FFB_CF_FILTER 0x280 </span><span class="comment">// Constant Force Lowpass</span></div>
@@ -298,8 +298,8 @@ $(document).ready(function(){initNavTree('eeprom__addresses_8h_source.html','');
 <div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span><span class="preprocessor">#define ADR_ADS111X_MIN_3 0x516</span></div>
 <div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span><span class="preprocessor">#define ADR_ADS111X_MAX_3 0x517</span></div>
 <div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span><span class="preprocessor">#endif </span><span class="comment">/* EEPROM_ADDRESSES_H_ */</span><span class="preprocessor"></span></div>
-<div class="ttc" id="aeeprom__addresses_8h_html_a27d99716228bbb05cff8443e2ab0ebcb"><div class="ttname"><a href="eeprom__addresses_8h.html#a27d99716228bbb05cff8443e2ab0ebcb">VirtAddVarTab</a></div><div class="ttdeci">const uint16_t VirtAddVarTab[NB_OF_VAR]</div><div class="ttdef"><b>Definition:</b> <a href="eeprom__addresses_8c_source.html#l00017">eeprom_addresses.c:17</a></div></div>
-<div class="ttc" id="aeeprom__addresses_8h_html_ab97cf75868cb1d0bbe370e27346a4e5e"><div class="ttname"><a href="eeprom__addresses_8h.html#ab97cf75868cb1d0bbe370e27346a4e5e">exportableFlashAddresses</a></div><div class="ttdeci">const uint16_t exportableFlashAddresses[NB_EXPORTABLE_ADR]</div><div class="ttdef"><b>Definition:</b> <a href="eeprom__addresses_8c_source.html#l00199">eeprom_addresses.c:199</a></div></div>
+<div class="ttc" id="aeeprom__addresses_8h_html_a27d99716228bbb05cff8443e2ab0ebcb"><div class="ttname"><a href="eeprom__addresses_8h.html#a27d99716228bbb05cff8443e2ab0ebcb">VirtAddVarTab</a></div><div class="ttdeci">const uint16_t VirtAddVarTab[NB_OF_VAR]</div><div class="ttdef"><b>Definition:</b> <a href="eeprom__addresses_8c_source.html#l00018">eeprom_addresses.c:18</a></div></div>
+<div class="ttc" id="aeeprom__addresses_8h_html_ab97cf75868cb1d0bbe370e27346a4e5e"><div class="ttname"><a href="eeprom__addresses_8h.html#ab97cf75868cb1d0bbe370e27346a4e5e">exportableFlashAddresses</a></div><div class="ttdeci">const uint16_t exportableFlashAddresses[NB_EXPORTABLE_ADR]</div><div class="ttdef"><b>Definition:</b> <a href="eeprom__addresses_8c_source.html#l00198">eeprom_addresses.c:198</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

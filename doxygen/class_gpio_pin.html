@@ -110,6 +110,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a1c98c7b90e57bdc48a43d3360d0bf52d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac99d4469997103cd9e467c093e6a3037"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_gpio_pin.html#ac99d4469997103cd9e467c093e6a3037">operator==</a> (const <a class="el" href="class_gpio_pin.html">GpioPin</a> &amp;b)</td></tr>
 <tr class="separator:ac99d4469997103cd9e467c093e6a3037"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd0a6e69194e5b376c0538c346bd922f"><td class="memItemLeft" align="right" valign="top">const GPIO_TypeDef *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_gpio_pin.html#afd0a6e69194e5b376c0538c346bd922f">getPort</a> () const</td></tr>
+<tr class="separator:afd0a6e69194e5b376c0538c346bd922f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34e446b514dc0cc83d89a50446f47926"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_gpio_pin.html#a34e446b514dc0cc83d89a50446f47926">getPin</a> () const</td></tr>
+<tr class="separator:a34e446b514dc0cc83d89a50446f47926"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -157,11 +161,65 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_g_p_i_o_pin_8h_source.html#l00016">16</a> of file <a class="el" href="_g_p_i_o_pin_8h_source.html">GPIOPin.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_p_i_o_pin_8h_source.html#l00019">19</a> of file <a class="el" href="_g_p_i_o_pin_8h_source.html">GPIOPin.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a34e446b514dc0cc83d89a50446f47926" name="a34e446b514dc0cc83d89a50446f47926"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34e446b514dc0cc83d89a50446f47926">&#9670;&nbsp;</a></span>getPin()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint16_t GpioPin::getPin </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_g_p_i_o_pin_8h_source.html#l00027">27</a> of file <a class="el" href="_g_p_i_o_pin_8h_source.html">GPIOPin.h</a>.</p>
+
+</div>
+</div>
+<a id="afd0a6e69194e5b376c0538c346bd922f" name="afd0a6e69194e5b376c0538c346bd922f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd0a6e69194e5b376c0538c346bd922f">&#9670;&nbsp;</a></span>getPort()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const GPIO_TypeDef * GpioPin::getPort </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_g_p_i_o_pin_8h_source.html#l00026">26</a> of file <a class="el" href="_g_p_i_o_pin_8h_source.html">GPIOPin.h</a>.</p>
+
+</div>
+</div>
 <a id="ac99d4469997103cd9e467c093e6a3037" name="ac99d4469997103cd9e467c093e6a3037"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac99d4469997103cd9e467c093e6a3037">&#9670;&nbsp;</a></span>operator==()</h2>
 
@@ -186,7 +244,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_g_p_i_o_pin_8h_source.html#l00020">20</a> of file <a class="el" href="_g_p_i_o_pin_8h_source.html">GPIOPin.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_p_i_o_pin_8h_source.html#l00023">23</a> of file <a class="el" href="_g_p_i_o_pin_8h_source.html">GPIOPin.h</a>.</p>
 
 </div>
 </div>
@@ -211,7 +269,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_g_p_i_o_pin_8h_source.html#l00025">25</a> of file <a class="el" href="_g_p_i_o_pin_8h_source.html">GPIOPin.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_p_i_o_pin_8h_source.html#l00017">17</a> of file <a class="el" href="_g_p_i_o_pin_8h_source.html">GPIOPin.h</a>.</p>
 
 </div>
 </div>
@@ -235,7 +293,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_g_p_i_o_pin_8h_source.html#l00024">24</a> of file <a class="el" href="_g_p_i_o_pin_8h_source.html">GPIOPin.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_p_i_o_pin_8h_source.html#l00016">16</a> of file <a class="el" href="_g_p_i_o_pin_8h_source.html">GPIOPin.h</a>.</p>
 
 </div>
 </div>

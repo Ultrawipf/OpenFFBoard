@@ -1,5 +1,9 @@
 var NAVTREEINDEX19 =
 {
+"group___class_driver___audio.html#ggae87667462afd0fbbc5451f17e5b352a5a64a6f735ac464efe0bfb60cdc083c56c":[1,0,54,1],
+"group___class_driver___audio.html#ggae87667462afd0fbbc5451f17e5b352a5a64e62d76f5cc8fa28b312bdb9eba0b59":[1,0,54,5],
+"group___class_driver___audio.html#ggae87667462afd0fbbc5451f17e5b352a5aa371b78e526d27eb5593b85d5ea8bce9":[1,0,54,4],
+"group___class_driver___audio.html#ggae87667462afd0fbbc5451f17e5b352a5ac4eafb3c49e9afd230968d9c46484a81":[1,0,54,3],
 "group___class_driver___audio.html#ggaee2ae40fea7bc292cc4fa46dd1e33c79a2c492ed2b707d0e388d102976d04f74d":[1,0,40,4],
 "group___class_driver___audio.html#ggaee2ae40fea7bc292cc4fa46dd1e33c79a5d54b432755fec1cc474fd210ceee852":[1,0,40,0],
 "group___class_driver___audio.html#ggaee2ae40fea7bc292cc4fa46dd1e33c79a76830886ba1312189b747aafa1563bc5":[1,0,40,2],
@@ -245,9 +249,5 @@ var NAVTREEINDEX19 =
 "group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79a87c4c8dd608e10ba98840df94abc1956":[1,3,2,0],
 "group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79a8ff2032842cfb97d4d3254b967cf1e31":[1,3,2,12],
 "group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79a9416916e8ba8bf7f008063d78d4a4337":[1,3,2,26],
-"group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79a9613695ec062de96cfefbf2b8993202b":[1,3,2,34],
-"group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79a967a696caae26e69e701fca72326802f":[1,3,2,13],
-"group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79a995e69e1f70533f607db842765119920":[1,3,2,11],
-"group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79ab2e1f3bf739e4d7f600fe31ead559a9b":[1,3,2,7],
-"group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79abeac2d607c89c3975d9adb319a528681":[1,3,2,4]
+"group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79a9613695ec062de96cfefbf2b8993202b":[1,3,2,34]
 };
