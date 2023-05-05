@@ -61,15 +61,15 @@ jobs:
         with:
           path: etc/usr/artifacts/
 
-      # - name: Make temp dir
-      #   run: mkdir -p etc/usr/fw # make temp directory
+      - name: Copy firmware readme
+        run: cp -u ${{ github.workspace }}/Firmware/Targets/README_FIRMWARE.md etc/usr/artifacts/README.md
 
       # # Move hex files
       # - name: Move firmware files
       #   run: find etc/usr/artifacts/ -name '*.hex' -exec cp {} etc/usr/fw/ \;
 
       - name: Zip firmware
-        run: zip -qq -r Firmware.zip OpenFFBoard-Firmware-*
+        run: zip -qq -r Firmware.zip OpenFFBoard-Firmware-* README.md
         working-directory: etc/usr/artifacts/
 
       - name: Zip configurator
