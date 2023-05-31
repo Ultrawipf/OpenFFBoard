@@ -68,6 +68,7 @@ void SystemCommands::registerCommands(){
 	CommandHandler::registerCommand("devid", FFBoardMain_commands::devid, "Get chip dev id and rev id",CMDFLAG_GET);
 	CommandHandler::registerCommand("name", CommandHandlerCommands::name, "name of class",CMDFLAG_GET|CMDFLAG_STR_ONLY);
 	CommandHandler::registerCommand("cmdinfo", CommandHandlerCommands::cmdinfo, "Flags of a command id (adr). -1 if cmd id invalid",CMDFLAG_GETADR);
+	CommandHandler::registerCommand("uid", FFBoardMain_commands::uid, "Get 96b chip uid. Adr0-2 sel blk",CMDFLAG_GET | CMDFLAG_GETADR);
 }
 
 // Choose lower optimize level because the compiler likes to blow up this function
@@ -265,6 +266,20 @@ CommandStatus SystemCommands::internalCommand(const ParsedCommand& cmd,std::vect
 				HAL_FLASH_Lock();
 			}
 		break;
+		case FFBoardMain_commands::uid:
+			if(cmd.type == CMDtype::get){
+				replies.emplace_back((uint64_t)HAL_GetUIDw0() | (uint64_t)HAL_GetUIDw1() << 32,HAL_GetUIDw2());
+			}else if(cmd.type == CMDtype::getat){
+				if(cmd.adr == 0){
+					replies.emplace_back(HAL_GetUIDw0());
+				}else if(cmd.adr == 1){
+					replies.emplace_back(HAL_GetUIDw1());
+				}else if(cmd.adr == 2){
+					replies.emplace_back(HAL_GetUIDw2());
+				}
+			}
+			break;
+
 
 		default:
 			flag = CommandStatus::NOT_FOUND;
