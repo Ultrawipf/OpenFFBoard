@@ -1,5 +1,6 @@
 var NAVTREEINDEX3 =
 {
+"audio__device_8c.html#a7c2ca3db1e60ce966e3ea32c4a439812":[4,0,121,68],
 "audio__device_8c.html#a805248c98026096674ee4b05ec586fae":[4,0,121,58],
 "audio__device_8c.html#a81838d260b3f1ae87e443734c0d6678d":[4,0,121,84],
 "audio__device_8c.html#a88ea3d6139bdf609292d490c633f075c":[4,0,121,60],
@@ -248,6 +249,5 @@ var NAVTREEINDEX3 =
 "class_analog_axis_processing.html#a6db8b23885acd644cc14ad83404bbd9e":[3,0,5,5],
 "class_analog_axis_processing.html#a7b3ce5e5e07888ea730b4219c04166ac":[3,0,5,7],
 "class_analog_axis_processing.html#a7d7b77a1f45e471e9bc64e5008052fbf":[3,0,5,4],
-"class_analog_axis_processing.html#a8adf0a93fd495e3875052b2e74074664":[3,0,5,9],
-"class_analog_axis_processing.html#a9687166a4300608c731d04422c2f0cc5":[3,0,5,20]
+"class_analog_axis_processing.html#a8adf0a93fd495e3875052b2e74074664":[3,0,5,9]
 };

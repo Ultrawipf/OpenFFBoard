@@ -1,5 +1,6 @@
 var NAVTREEINDEX17 =
 {
+"globals_vars_p.html":[4,1,2,13],
 "globals_vars_r.html":[4,1,2,14],
 "globals_vars_s.html":[4,1,2,15],
 "globals_vars_t.html":[4,1,2,16],
@@ -248,6 +249,5 @@ var NAVTREEINDEX17 =
 "group___class_driver___audio.html#gga236dd4e273733854fa4c28fb78a6320fa34c78511100754dcd7ef36b461a3fb2f":[1,0,44,14],
 "group___class_driver___audio.html#gga236dd4e273733854fa4c28fb78a6320fa3b45da62997b156ab460f1c5ce491b07":[1,0,44,5],
 "group___class_driver___audio.html#gga236dd4e273733854fa4c28fb78a6320fa3c01673260dd347e595e4aa13e77cf30":[1,0,44,9],
-"group___class_driver___audio.html#gga236dd4e273733854fa4c28fb78a6320fa6f7fd7adbfd9f90a2c154c8495948ee2":[1,0,44,8],
-"group___class_driver___audio.html#gga236dd4e273733854fa4c28fb78a6320fa7abd7056262b0979fa534d0e44c26c6d":[1,0,44,10]
+"group___class_driver___audio.html#gga236dd4e273733854fa4c28fb78a6320fa6f7fd7adbfd9f90a2c154c8495948ee2":[1,0,44,8]
 };

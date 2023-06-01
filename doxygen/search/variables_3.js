@@ -27,7 +27,7 @@ var searchData=
   ['centerpwm_5fchan_24',['centerpwm_chan',['../struct_p_w_m_config.html#a7e32e70b3619e4280c5a674e361b2eee',1,'PWMConfig']]],
   ['cfg_5fnum_25',['cfg_num',['../structusbd__device__t.html#a7ac04dbc0e57299c0a7f45009bd4df3f',1,'usbd_device_t']]],
   ['cfupdateperiodavg_26',['cfUpdatePeriodAvg',['../class_effects_control_itf.html#a44514b4a4d71beb66a541f72d3a81622',1,'EffectsControlItf']]],
-  ['change_27',['change',['../structhub__status__response__t.html#a161b089de9677f7f312cbb82e84fd4f4',1,'hub_status_response_t::change()'],['../structhub__port__status__response__t.html#a24b8a156339b43eb08e203dba146d1f3',1,'hub_port_status_response_t::change()']]],
+  ['change_27',['change',['../structhub__status__response__t.html#a161b089de9677f7f312cbb82e84fd4f4',1,'hub_status_response_t::change()'],['../structhub__port__status__response__t.html#afbce7368c1afedda382aae6721f9da93',1,'hub_port_status_response_t::change()']]],
   ['channel_5f1_28',['channel_1',['../struct_p_w_m_config.html#a8f025cc02e9128033ae9e451e7da6a08',1,'PWMConfig']]],
   ['channel_5f2_29',['channel_2',['../struct_p_w_m_config.html#abc8ff068da78f4ad8f143305c761e11c',1,'PWMConfig']]],
   ['channel_5f3_30',['channel_3',['../struct_p_w_m_config.html#abda251fdcc4081ce011059e441d373d1',1,'PWMConfig']]],

@@ -1,5 +1,6 @@
 var NAVTREEINDEX39 =
 {
+"usbtmc__device_8c.html#acc1f47bef0ca348ab67b55c4c63f7274":[4,0,156,16],
 "usbtmc__device_8c.html#af84dba1aed47f11c8a113ee76050990d":[4,0,156,1],
 "usbtmc__device_8c.html#aff1eca3022ceca293c997bfa43ded1e9":[4,0,156,8],
 "usbtmc__device_8c_source.html":[4,0,156],
@@ -248,6 +249,5 @@ var NAVTREEINDEX39 =
 "video__device_8c.html#aa5e718e50e54fa70163e273c25e0eea0":[4,0,163,32],
 "video__device_8c.html#aab9881c1fd5352a2e305137fdcf0ee1f":[4,0,163,5],
 "video__device_8c.html#aadb4ae265747704a312cc13773fa348c":[4,0,163,24],
-"video__device_8c.html#ab01adffc1b464b90d23ee80f0c51e9fc":[4,0,163,13],
-"video__device_8c.html#ab39d705af5693a4fbd83a35cb62b22d5":[4,0,163,29]
+"video__device_8c.html#ab01adffc1b464b90d23ee80f0c51e9fc":[4,0,163,13]
 };

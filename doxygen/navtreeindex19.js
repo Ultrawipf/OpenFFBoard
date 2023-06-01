@@ -1,5 +1,6 @@
 var NAVTREEINDEX19 =
 {
+"group___class_driver___audio.html#ggae87667462afd0fbbc5451f17e5b352a5a5e831314b0151f58f8ab59b313f67b5d":[1,0,54,0],
 "group___class_driver___audio.html#ggae87667462afd0fbbc5451f17e5b352a5a64a6f735ac464efe0bfb60cdc083c56c":[1,0,54,1],
 "group___class_driver___audio.html#ggae87667462afd0fbbc5451f17e5b352a5a64e62d76f5cc8fa28b312bdb9eba0b59":[1,0,54,5],
 "group___class_driver___audio.html#ggae87667462afd0fbbc5451f17e5b352a5aa371b78e526d27eb5593b85d5ea8bce9":[1,0,54,4],
@@ -248,6 +249,5 @@ var NAVTREEINDEX19 =
 "group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79a8320ae2b185d45cb9ed80164f20049fe":[1,3,2,35],
 "group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79a87c4c8dd608e10ba98840df94abc1956":[1,3,2,0],
 "group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79a8ff2032842cfb97d4d3254b967cf1e31":[1,3,2,12],
-"group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79a9416916e8ba8bf7f008063d78d4a4337":[1,3,2,26],
-"group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79a9613695ec062de96cfefbf2b8993202b":[1,3,2,34]
+"group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79a9416916e8ba8bf7f008063d78d4a4337":[1,3,2,26]
 };

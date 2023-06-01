@@ -1,5 +1,6 @@
 var NAVTREEINDEX5 =
 {
+"class_c_d_ccomm.html":[3,0,29],
 "class_c_d_ccomm.html#a100db82ed856b51fc4f40a302ca64baa":[3,0,29,1],
 "class_c_d_ccomm.html#a551f87325b0c80d12c1da6230b8b412f":[3,0,29,3],
 "class_c_d_ccomm.html#a68fefc0197867103d5781ac40bcbe14f":[3,0,29,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX5 =
 "class_effects_calculator.html#aa3fd7ce62e812de22daf1cb625141f3d":[3,0,51,37],
 "class_effects_calculator.html#aaa8449464c681ddab60e3a436e982d45":[3,0,51,11],
 "class_effects_calculator.html#aaa93ee9315f35afa73a51594f9729195":[3,0,51,26],
-"class_effects_calculator.html#ab03374bae6d7cd45b410a6dc1fd9a53d":[3,0,51,8],
-"class_effects_calculator.html#abec85aa5f013efad97ce9a4080607eab":[3,0,51,34]
+"class_effects_calculator.html#ab03374bae6d7cd45b410a6dc1fd9a53d":[3,0,51,8]
 };

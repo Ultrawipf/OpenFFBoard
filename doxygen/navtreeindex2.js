@@ -14,6 +14,7 @@ var NAVTREEINDEX2 =
 "_system_commands_8h.html#a4a42a50bc0a826d5ab6d847950749d07a7a48b6e7efa8475f61dc5ecd419fda73":[4,0,52,1,14],
 "_system_commands_8h.html#a4a42a50bc0a826d5ab6d847950749d07a7d357e992ef2465823ddf3382e06fdfb":[4,0,52,1,18],
 "_system_commands_8h.html#a4a42a50bc0a826d5ab6d847950749d07a8c265dc4382bd9bc7eab5ee768585c65":[4,0,52,1,20],
+"_system_commands_8h.html#a4a42a50bc0a826d5ab6d847950749d07a9871d3a2c554b27151cacf1422eec048":[4,0,52,1,21],
 "_system_commands_8h.html#a4a42a50bc0a826d5ab6d847950749d07a98fc1dc1c052b6fec8d32129607eb9db":[4,0,52,1,8],
 "_system_commands_8h.html#a4a42a50bc0a826d5ab6d847950749d07aad42f6697b035b7580e4fef93be20b4d":[4,0,52,1,19],
 "_system_commands_8h.html#a4a42a50bc0a826d5ab6d847950749d07ab6594f9208d68ae331849e1663200313":[4,0,52,1,12],
@@ -248,6 +249,5 @@ var NAVTREEINDEX2 =
 "audio__device_8c.html#a722faa1f9cdbe9aee6710991d0285359":[4,0,121,80],
 "audio__device_8c.html#a74c8918da9c7d53bd1061fb7cfe0b90e":[4,0,121,13],
 "audio__device_8c.html#a78e0e3ec4719b144eb19dcf866517267":[4,0,121,72],
-"audio__device_8c.html#a7abe0efec0cf613405fa2995d15b2c8e":[4,0,121,18],
-"audio__device_8c.html#a7c2ca3db1e60ce966e3ea32c4a439812":[4,0,121,68]
+"audio__device_8c.html#a7abe0efec0cf613405fa2995d15b2c8e":[4,0,121,18]
 };

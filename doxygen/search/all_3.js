@@ -253,7 +253,7 @@ var searchData=
   ['cfrate_250',['cfrate',['../class_f_f_b_h_i_d_main.html#a632f99d11cc2d6623e7341d704d641adaa9986b4f7deaf212691871359a4873bd',1,'FFBHIDMain']]],
   ['cfupdateevent_251',['cfUpdateEvent',['../class_effects_control_itf.html#a2133cb5cabe34ccafd60d49ede3a2f1f',1,'EffectsControlItf']]],
   ['cfupdateperiodavg_252',['cfUpdatePeriodAvg',['../class_effects_control_itf.html#a44514b4a4d71beb66a541f72d3a81622',1,'EffectsControlItf']]],
-  ['change_253',['change',['../structhub__port__status__response__t.html#a24b8a156339b43eb08e203dba146d1f3',1,'hub_port_status_response_t::change()'],['../structhub__status__response__t.html#a161b089de9677f7f312cbb82e84fd4f4',1,'hub_status_response_t::change()']]],
+  ['change_253',['change',['../structhub__port__status__response__t.html#afbce7368c1afedda382aae6721f9da93',1,'hub_port_status_response_t::change()'],['../structhub__status__response__t.html#a161b089de9677f7f312cbb82e84fd4f4',1,'hub_status_response_t::change()']]],
   ['changestate_254',['changeState',['../class_t_m_c4671.html#a47ac5e9ae2f0709a80fde01f38aeff35',1,'TMC4671']]],
   ['channel_5f1_255',['channel_1',['../struct_p_w_m_config.html#a8f025cc02e9128033ae9e451e7da6a08',1,'PWMConfig']]],
   ['channel_5f2_256',['channel_2',['../struct_p_w_m_config.html#abc8ff068da78f4ad8f143305c761e11c',1,'PWMConfig']]],
