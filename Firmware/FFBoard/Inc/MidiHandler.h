@@ -22,8 +22,11 @@ public:
 	virtual void programChange(uint8_t chan, uint8_t val);
 	virtual void pitchBend(uint8_t chan, int16_t val);
 	virtual void midiTick();
+	virtual void otherPacket(uint8_t packet[4]);
 
 	static uint8_t buf[4];
+protected:
+	bool sysexState = false;
 };
 
 #endif /* SRC_MIDIHANDLER_H_ */
