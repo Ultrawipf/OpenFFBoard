@@ -342,8 +342,7 @@ MidiHandler* midihandler = nullptr;
  */
 void tud_midi_rx_cb(uint8_t itf){
 	if(!midihandler) return;
-
-	if(tud_midi_n_packet_read(itf,MidiHandler::buf)){
+	while(tud_midi_n_packet_read(itf,MidiHandler::buf)){
 		midihandler->midiRx(itf, MidiHandler::buf);
 	}
 }
