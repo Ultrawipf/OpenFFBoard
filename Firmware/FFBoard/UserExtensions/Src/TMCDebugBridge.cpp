@@ -55,6 +55,9 @@ CommandStatus TMCDebugBridge::command(const ParsedCommand& cmd,std::vector<Comma
 		if(cmd.type == CMDtype::get){
 			replies.emplace_back(drv->getTorque());
 		}else if(cmd.type == CMDtype::set){
+			if(drv->getState() != TMC_ControlState::Running){
+				drv->startMotor();
+			}
 			drv->turn(cmd.val);
 		}else{
 			return CommandStatus::ERR;
