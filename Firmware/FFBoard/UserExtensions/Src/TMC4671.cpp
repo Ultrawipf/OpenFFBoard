@@ -1638,7 +1638,7 @@ void TMC4671::stopMotor(){
 
 	//enablePin.reset();
 	motorEnabledRequested = false;
-	if(state == TMC_ControlState::Running){
+	if(state == TMC_ControlState::Running || state == TMC_ControlState::EncoderFinished){
 		setMotionMode(MotionMode::stop,true);
 		setPwm(TMC_PwmMode::off); // disable foc
 		changeState(TMC_ControlState::Shutdown);
