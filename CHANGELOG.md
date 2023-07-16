@@ -1,5 +1,5 @@
 ### Changes this version:
-- Added uid command (`sys.uid?` returns first 64 bits as val and second 32 as adr)
+- Save TMC space vector PWM mode in flash instead of unused hall direction. Should be usually on for BLDC motors if the star point is isolated.
  
 ### Changes in 1.13.x
 - Added PWM direction toggle
@@ -9,4 +9,4 @@
 - Fixed SPI buttons not working (SPI2 DMA on F407)
 - Dynamic TMC encoder alignment current based on current limit
 - Added effect monitoring per axis
- 
+- Added uid command (`sys.uid?` returns first 64 bits as val and second 32 as adr)
