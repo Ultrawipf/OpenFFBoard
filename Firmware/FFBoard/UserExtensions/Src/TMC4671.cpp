@@ -2557,7 +2557,7 @@ uint16_t TMC4671::encodeEncHallMisc(){
 	val |= (this->conf.combineEncoder) << 6;
 	val |= (this->conf.invertForce) << 7;
 
-	val |= (this->hallconf.direction & 0x01) << 8;
+	val |= !((this->conf.svpwm & 0x01) << 8);
 	val |= (this->hallconf.interpolation & 0x01) << 9;
 
 	val |= (this->curPids.sequentialPI & 0x01) << 10;
@@ -2578,6 +2578,7 @@ void TMC4671::restoreEncHallMisc(uint16_t val){
 	this->conf.encoderReversed = (val>>1) & 0x01;// Direction
 	this->abnconf.rdir = this->conf.encoderReversed;
 	this->aencconf.rdir = this->conf.encoderReversed;
+	this->hallconf.direction = this->conf.encoderReversed;
 
 	this->abnconf.ab_as_n = (val>>2) & 0x01;
 	this->pidPrecision.current_I = (val>>3) & 0x01;
@@ -2591,7 +2592,7 @@ void TMC4671::restoreEncHallMisc(uint16_t val){
 	this->conf.combineEncoder = (val>>6) & 0x01;
 	this->conf.invertForce = ((val>>7) & 0x01) && this->conf.combineEncoder;
 
-	this->hallconf.direction = (val>>8) & 0x01;
+	this->conf.svpwm = !((val>>8) & 0x01);
 	this->hallconf.interpolation = (val>>9) & 0x01;
 	this->curPids.sequentialPI = (val>>10) & 0x01;
 
