@@ -94,7 +94,7 @@ struct TMC4671HardwareTypeConf{
 	float vSenseMult = VOLTAGE_MULT_DEFAULT;
 	float clockfreq = 25e6;
 	uint8_t bbm = 20;
-
+	float fluxDissipationScaler = 1;
 	// Todo restrict allowed motor and encoder types
 };
 
@@ -145,8 +145,8 @@ struct TMC4671MainConfig{
 	TMC4671HardwareTypeConf hwconf;
 	TMC4671MotConf motconf;
 	uint16_t pwmcnt 		= 3999; // PWM resolution is 12 bit internally
-	uint8_t bbmL			= 10;
-	uint8_t bbmH			= 10;
+	uint8_t bbmL			= 50;
+	uint8_t bbmH			= 50;
 	uint16_t mdecA 			= 660; // 334 default. 331 recommended by datasheet,662 double. 660 lowest noise
 	uint16_t mdecB 			= 660; // Encoder ADC high resolution recommended
 	uint32_t mclkA			= 0x20000000; //0x20000000 default
@@ -425,6 +425,9 @@ public:
 	uint16_t maxOffsetFlux = 0;
 
 	int16_t bangInitPower = 5000; // Default current in setup routines
+
+	int16_t controlFluxDissipate();
+	const float fluxDissipationLimit = 1000;
 
 	void setTorque(int16_t torque);
 

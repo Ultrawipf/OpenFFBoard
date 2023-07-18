@@ -1,5 +1,6 @@
 ### Changes this version:
 - Save TMC space vector PWM mode in flash instead of unused hall direction. Should be usually on for BLDC motors if the star point is isolated.
+- Prefer using the motors flux component to dissipate energy with the TMC4671 instead of the brake resistor.
  
 ### Changes in 1.13.x
 - Added PWM direction toggle

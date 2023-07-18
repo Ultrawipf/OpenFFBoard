@@ -1687,6 +1687,17 @@ void TMC4671::emergencyStop(bool reset){
 }
 
 /**
+ * Calculates a flux value based on the internal and external voltage difference to dissipate energy without
+ * a brake resistor
+ */
+int16_t TMC4671::controlFluxDissipate(){
+	int32_t vDiff = getIntV() - getExtV();
+	if(vDiff > fluxDissipationLimit){
+		return(clip(vDiff * conf.hwconf.fluxDissipationScaler,0,0x7fff));
+	}
+}
+
+/**
  * Sets a torque in positive or negative direction
  * For ADC linearity reasons under 25000 is recommended
  */
@@ -1701,6 +1712,20 @@ void TMC4671::turn(int16_t power){
 	if((this->conf.encoderReversed && conf.motconf.enctype == EncoderType_TMC::ext) ^ conf.invertForce){
 		power = -power; // Encoder does not match
 	}
+
+	/*
+	 * If flux dissipation is on prefer this over the resistor.
+	 * Warning: The axis only calls this function when active and if torque changed.
+	 * It may not update during sustained force and still cause overvoltage conditions.
+	 * TODO periodically check and update if driver is on but no torque update is sent
+	 */
+	if(conf.hwconf.fluxDissipationScaler){
+		int16_t dissipationFlux = controlFluxDissipate();
+		if(dissipationFlux != 0){
+			flux = dissipationFlux;
+		}
+	}
+
 	setFluxTorque(flux, power);
 }
 
@@ -2621,7 +2646,7 @@ void TMC4671::setHwType(TMC_HW_Ver type){
 			.brakeLimHigh = 50900,
 			.vmScaler = (2.5 / 0x7fff) * ((1.5+71.5)/1.5),
 			.vSenseMult = VOLTAGE_MULT_DEFAULT,
-			.bbm = 30 // DMTH8003SPS need longer deadtime
+			.bbm = 50 // DMTH8003SPS need longer deadtime
 		};
 		this->conf.hwconf = newHwConf;
 	break;
@@ -2641,7 +2666,7 @@ void TMC4671::setHwType(TMC_HW_Ver type){
 			.brakeLimHigh = 50900,
 			.vmScaler = (2.5 / 0x7fff) * ((1.5+71.5)/1.5),
 			.vSenseMult = VOLTAGE_MULT_DEFAULT,
-			.bbm = 30
+			.bbm = 40
 		};
 		this->conf.hwconf = newHwConf;
 	break;
