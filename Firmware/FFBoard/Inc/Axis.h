@@ -217,6 +217,7 @@ private:
 	uint16_t maxSpeedDegS  = 0; // Set to non zero to enable. example 1000. 8b * 10?
 	//float	 maxAccelDegSS = 0;
 	uint32_t maxTorqueRateMS = 0; // 8b * 128?
+	const float speedLimiterP = 0.2;
 
 	float spdlimitreducerI = 0;
 	//float acclimitreducerI = 0;
@@ -257,7 +258,7 @@ private:
 	const float filter_f = 1000; // 1khz
 	const int32_t damperClip = 20000;
 	uint8_t damperIntensity = 30;
-	FastAvg<float,8> spdlimiterAvg;
+	FastAvg<float,5> spdlimiterAvg;
 
 	Biquad speedFilter = Biquad(BiquadType::lowpass, filterSpeedCst[filterProfileId].freq/filter_f, filterSpeedCst[filterProfileId].q/100.0, 0.0);
 	Biquad accelFilter = Biquad(BiquadType::lowpass, filterAccelCst[filterProfileId].freq/filter_f, filterAccelCst[filterProfileId].q/100.0, 0.0);
