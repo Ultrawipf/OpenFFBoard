@@ -74,6 +74,7 @@ struct TMC4671MotConf{
 	uint16_t pole_pairs = 4; //saved
 	PosSelection pos_sel = PosSelection::PhiE;
 	VelSelection vel_sel = VelSelection::PhiE;
+	bool svpwm = true; // enable space vector PWM for 3 phase motors
 };
 
 /**
@@ -95,6 +96,7 @@ struct TMC4671HardwareTypeConf{
 	float clockfreq = 25e6;
 	uint8_t bbm = 20;
 	float fluxDissipationScaler = 1;
+	bool allowFluxDissipationDeactivation = true;
 	// Todo restrict allowed motor and encoder types
 };
 
@@ -155,11 +157,11 @@ struct TMC4671MainConfig{
 	uint16_t adc_I1_offset 	= 33415;
 	uint16_t adc_I0_scale	= 256;
 	uint16_t adc_I1_scale	= 256;
-	bool svpwm				= true; // enable space vector PWM for 3 phase motors
 	bool canChangeHwType 	= true; // Allows changing the hardware version by commands
 	bool encoderReversed	= false;
 	bool combineEncoder		= false;
 	bool invertForce		= false;
+	bool enableFluxDissipation = true;
 };
 
 struct TMC4671PIDConf{
@@ -315,7 +317,7 @@ class TMC4671 :
 		torqueP,torqueI,fluxP,fluxI,velocityP,velocityI,posP,posI,
 		tmctype,pidPrec,phiesrc,fluxoffset,seqpi,tmcIscale,encdir,temp,reg,
 		svpwm,fullCalibration,calibrated,abnindexenabled,findIndex,getState,encpol,combineEncoder,invertForce,vmTmc,
-		extphie,torqueFilter_mode,torqueFilter_f,torqueFilter_q,pidautotune
+		extphie,torqueFilter_mode,torqueFilter_f,torqueFilter_q,pidautotune,fluxbrake
 	};
 
 #ifdef TMCDEBUG
