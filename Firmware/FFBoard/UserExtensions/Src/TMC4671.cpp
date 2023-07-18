@@ -1691,6 +1691,7 @@ void TMC4671::emergencyStop(bool reset){
  * a brake resistor
  */
 int16_t TMC4671::controlFluxDissipate(){
+
 	int32_t vDiff = getIntV() - getExtV();
 	if(vDiff > fluxDissipationLimit){
 		return(clip(vDiff * conf.hwconf.fluxDissipationScaler,0,0x7fff));
@@ -1719,7 +1720,7 @@ void TMC4671::turn(int16_t power){
 	 * It may not update during sustained force and still cause overvoltage conditions.
 	 * TODO periodically check and update if driver is on but no torque update is sent
 	 */
-	if(conf.hwconf.fluxDissipationScaler){
+	if(conf.hwconf.fluxDissipationScaler && conf.enableFluxDissipation){
 		int16_t dissipationFlux = controlFluxDissipate();
 		if(dissipationFlux != 0){
 			flux = dissipationFlux;
@@ -2003,7 +2004,7 @@ void TMC4671::setMotorType(MotorType motor,uint16_t poles){
 //	}
 	writeReg(0x1B, mtype);
 	if(motor == MotorType::BLDC && !ES_TMCdetected){
-		setSvPwm(conf.svpwm); // Higher speed for BLDC motors. Not available in engineering samples
+		setSvPwm(conf.motconf.svpwm); // Higher speed for BLDC motors. Not available in engineering samples
 	}else{
 		setSvPwm(false);
 	}
@@ -2373,7 +2374,7 @@ void TMC4671::setSvPwm(bool enable){
 	if(conf.motconf.motor_type != MotorType::BLDC){
 		enable = false; // Only valid for 3 phase motors with isolated star point
 	}
-	conf.svpwm = enable;
+	conf.motconf.svpwm = enable;
 	updateReg(0x1A,enable,0x01,8);
 }
 
@@ -2555,13 +2556,15 @@ void TMC4671::encoderIndexHit(){
 TMC4671MotConf TMC4671::decodeMotFromInt(uint16_t val){
 	// 0-2: MotType 3-5: Encoder source 6-15: Poles
 	TMC4671MotConf mot;
-	mot.motor_type = MotorType(val & 0x7);
+	mot.motor_type = MotorType(val & 0x3);
+	mot.svpwm = !(val & 0x4);
 	mot.enctype = EncoderType_TMC( (val >> 3) & 0x7);
 	mot.pole_pairs = val >> 6;
 	return mot;
 }
 uint16_t TMC4671::encodeMotToInt(TMC4671MotConf mconf){
-	uint16_t val = (uint8_t)mconf.motor_type & 0x7;
+	uint16_t val = (uint8_t)mconf.motor_type & 0x3;
+	val |= !mconf.svpwm ? 0x4 : 0;
 	val |= ((uint8_t)mconf.enctype & 0x7) << 3;
 	val |= (mconf.pole_pairs & 0x3FF) << 6;
 	return val;
@@ -2582,7 +2585,7 @@ uint16_t TMC4671::encodeEncHallMisc(){
 	val |= (this->conf.combineEncoder) << 6;
 	val |= (this->conf.invertForce) << 7;
 
-	val |= !((this->conf.svpwm & 0x01) << 8);
+	val |= ((this->conf.enableFluxDissipation & 0x01) << 8);
 	val |= (this->hallconf.interpolation & 0x01) << 9;
 
 	val |= (this->curPids.sequentialPI & 0x01) << 10;
@@ -2617,7 +2620,7 @@ void TMC4671::restoreEncHallMisc(uint16_t val){
 	this->conf.combineEncoder = (val>>6) & 0x01;
 	this->conf.invertForce = ((val>>7) & 0x01) && this->conf.combineEncoder;
 
-	this->conf.svpwm = !((val>>8) & 0x01);
+	this->conf.enableFluxDissipation = ((val>>8) & 0x01);
 	this->hallconf.interpolation = (val>>9) & 0x01;
 	this->curPids.sequentialPI = (val>>10) & 0x01;
 
@@ -2821,6 +2824,7 @@ void TMC4671::registerCommands(){
 	registerCommand("trqbq_f", TMC4671_commands::torqueFilter_f, "Torque filter freq 1000 max. 0 to disable. (Stored f/2)",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("trqbq_q", TMC4671_commands::torqueFilter_q, "Torque filter q*100",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("pidautotune", TMC4671_commands::pidautotune, "Start PID autoruning",CMDFLAG_GET);
+	registerCommand("fluxbrake", TMC4671_commands::fluxbrake, "Prefer energy dissipation in motor",CMDFLAG_GET | CMDFLAG_SET);
 }
 
 
@@ -3073,7 +3077,7 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 		if(cmd.type == CMDtype::set){
 			setSvPwm(cmd.val != 0);
 		}else if(cmd.type == CMDtype::get){
-			replies.emplace_back(conf.svpwm);
+			replies.emplace_back(conf.motconf.svpwm);
 		}
 		break;
 	}
@@ -3116,6 +3120,10 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 	case TMC4671_commands::pidautotune:
 		changeState(TMC_ControlState::Pidautotune);
 		return CommandStatus::NO_REPLY;
+
+	case TMC4671_commands::fluxbrake:
+		handleGetSet(cmd, replies, conf.enableFluxDissipation);
+		break;
 
 	default:
 		return CommandStatus::NOT_FOUND;
