@@ -166,11 +166,11 @@ void Axis::restoreFlash(){
 	setDrvType(this->conf.drvtype);
 	setEncType(this->conf.enctype);
 
-//	if (Flash_Read(flashAddrs.maxSpeed, &value)){
-//		this->maxSpeedDegS = value;
-//	}else{
-//		pulseErrLed();
-//	}
+	if (Flash_Read(flashAddrs.maxSpeed, &value)){
+		this->maxSpeedDegS = value;
+	}else{
+		pulseErrLed();
+	}
 //
 //	if (Flash_Read(flashAddrs.maxAccel, &value)){
 //		this->maxTorqueRateMS = value;
@@ -224,7 +224,7 @@ void Axis::restoreFlash(){
 void Axis::saveFlash(){
 	//NormalizedAxis::saveFlash();
 	Flash_Write(flashAddrs.config, Axis::encodeConfToInt(this->conf));
-//	Flash_Write(flashAddrs.maxSpeed, this->maxSpeedDegS);
+	Flash_Write(flashAddrs.maxSpeed, this->maxSpeedDegS);
 //	Flash_Write(flashAddrs.maxAccel, (uint16_t)(this->maxTorqueRateMS));
 
 	Flash_Write(flashAddrs.endstop, fx_ratio_i | (endstopStrength << 8));
@@ -679,7 +679,7 @@ bool Axis::updateTorque(int32_t* totalTorque) {
 
 
 		// Only reduce torque. Don't invert it to prevent oscillation
-		float torqueReduction = spdlimitreducerI + speedreducer * 0.025;// accreducer * 0.025 + acclimitreducerI
+		float torqueReduction = speedreducer * speedLimiterP + spdlimitreducerI;// accreducer * 0.025 + acclimitreducerI
 		if(torque > 0){
 			torqueReduction = clip<float,int32_t>(torqueReduction,0,torque);
 		}else{
