@@ -287,6 +287,7 @@ bool TMC4671::initialize(){
 	setAdcOffset(conf.adc_I0_offset, conf.adc_I1_offset);
 	setAdcScale(conf.adc_I0_scale, conf.adc_I1_scale);
 	setTorqueFilter(torqueFilterConf);
+	setBiquadFlux(TMC4671Biquad(Biquad(BiquadType::lowpass, fluxFilterFreq / getPwmFreq(), 0.7,0.0), true)); // Create flux filter
 
 	// Initial adc calibration and check without PWM if power off to get basic offsets. PWM is off!
 	if(!hasPower()){
@@ -486,7 +487,8 @@ void TMC4671::Run(){
 			while(!hasPower()){
 				Delay(100);
 			}
-
+			curFilters.flux.params.enable = false;
+			setBiquadFlux(curFilters.flux);
 			// Calibrate ADC
 			enablePin.set();
 			setPwm(TMC_PwmMode::PWM_FOC); // enable foc to calibrate adc
@@ -502,6 +504,8 @@ void TMC4671::Run(){
 			calibrateEncoder();
 			setEncoderType(conf.motconf.enctype);
 			recalibrationRequired = false;
+			curFilters.flux.params.enable = true;
+			setBiquadFlux(curFilters.flux);
 			break;
 		}
 		case TMC_ControlState::Pidautotune:
@@ -589,6 +593,8 @@ void TMC4671::Run(){
 
 		case TMC_ControlState::EncoderFinished: // Startup sequence done
 			//setEncoderIndexFlagEnabled(false); // TODO
+//			curFilters.flux.params.enable = true;
+//			setBiquadFlux(curFilters.flux); // Enable flux filter
 			encoderAligned = true;
 			if(motorEnabledRequested && isSetUp()){
 				startMotor();
@@ -656,6 +662,8 @@ bool TMC4671::pidAutoTune(){
 	 * Ramp up flux P until 50% of target, then lower increments until targetflux_p is reached
 	 * Increase I until oscillation is found. Back off a bit
 	 */
+	curFilters.flux.params.enable = false;
+	setBiquadFlux(curFilters.flux);
 	PhiE lastphie = getPhiEtype();
 	MotionMode lastmode = getMotionMode();
 	setPhiE_ext(getPhiE());
@@ -721,6 +729,8 @@ bool TMC4671::pidAutoTune(){
 		fluxI += step_i;
 
 	}
+	curFilters.flux.params.enable = true;
+	setBiquadFlux(curFilters.flux);
 
 	if(fluxP && fluxP < 20000 && fluxI && fluxI < 20000){
 			newpids.fluxP = fluxP;
@@ -810,6 +820,8 @@ bool TMC4671::findEncoderIndex(int32_t speed, uint16_t power,bool offsetPhiM,boo
 
 	PhiE lastphie = getPhiEtype();
 	MotionMode lastmode = getMotionMode();
+	curFilters.flux.params.enable = false;
+	setBiquadFlux(curFilters.flux);
 	setFluxTorque(0, 0);
 //	setPhiE_ext(getPhiE());
 //	setPhiEtype(PhiE::openloop);
@@ -846,6 +858,8 @@ bool TMC4671::findEncoderIndex(int32_t speed, uint16_t power,bool offsetPhiM,boo
 
 //	abnconf.clear_on_N = false;
 //	setup_ABN_Enc(abnconf);
+	curFilters.flux.params.enable = true;
+	setBiquadFlux(curFilters.flux);
 
 	setMotionMode(lastmode,true);
 	setPhiEtype(lastphie);
@@ -1694,7 +1708,8 @@ int16_t TMC4671::controlFluxDissipate(){
 
 	int32_t vDiff = getIntV() - getExtV();
 	if(vDiff > fluxDissipationLimit){
-		return(clip(vDiff * conf.hwconf.fluxDissipationScaler,0,0x7fff));
+		// Reaches limit at +5v if scaler is 1
+		return(clip<int32_t,int32_t>(vDiff * conf.hwconf.fluxDissipationScaler * curLimits.pid_torque_flux * 0.0002,0,curLimits.pid_torque_flux));
 	}
 }
 
@@ -2118,6 +2133,7 @@ TMC4671Limits TMC4671::getLimits(){
  */
 void TMC4671::setBiquadFlux(const TMC4671Biquad &filter){
 	const TMC4671Biquad_t& bq = filter.params;
+	curFilters.flux = filter;
 	writeReg(0x4E, 25);
 	writeReg(0x4D, bq.a1);
 	writeReg(0x4E, 26);
@@ -2138,6 +2154,7 @@ void TMC4671::setBiquadFlux(const TMC4671Biquad &filter){
  */
 void TMC4671::setBiquadPos(const TMC4671Biquad &filter){
 	const TMC4671Biquad_t& bq = filter.params;
+	curFilters.pos = filter;
 	writeReg(0x4E, 1);
 	writeReg(0x4D, bq.a1);
 	writeReg(0x4E, 2);
@@ -2158,6 +2175,7 @@ void TMC4671::setBiquadPos(const TMC4671Biquad &filter){
  */
 void TMC4671::setBiquadVel(const TMC4671Biquad &filter){
 	const TMC4671Biquad_t& bq = filter.params;
+	curFilters.vel = filter;
 	writeReg(0x4E, 9);
 	writeReg(0x4D, bq.a1);
 	writeReg(0x4E, 10);
@@ -2178,6 +2196,7 @@ void TMC4671::setBiquadVel(const TMC4671Biquad &filter){
  */
 void TMC4671::setBiquadTorque(const TMC4671Biquad &filter){
 	const TMC4671Biquad_t& bq = filter.params;
+	curFilters.torque = filter;
 	writeReg(0x4E, 17);
 	writeReg(0x4D, bq.a1);
 	writeReg(0x4E, 18);
