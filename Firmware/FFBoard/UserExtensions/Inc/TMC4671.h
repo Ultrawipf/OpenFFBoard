@@ -95,7 +95,7 @@ struct TMC4671HardwareTypeConf{
 	float vSenseMult = VOLTAGE_MULT_DEFAULT;
 	float clockfreq = 25e6;
 	uint8_t bbm = 20;
-	float fluxDissipationScaler = 1;
+	float fluxDissipationScaler = 0.5;
 	bool allowFluxDissipationDeactivation = true;
 	// Todo restrict allowed motor and encoder types
 };
@@ -297,10 +297,20 @@ public:
 		this->params.b2 = (int32_t)(bq.a2 * (float)(1 << 29));
 		this->params.enable = bq.getFc() > 0 ? enable : false;
 	}
+	void enable(bool enable){
+		params.enable = enable;
+	}
 
 	TMC4671Biquad_t params;
 };
 
+// Stores currently active filters
+struct TMC4671BiquadFilters{
+	TMC4671Biquad torque;
+	TMC4671Biquad flux;
+	TMC4671Biquad pos;
+	TMC4671Biquad vel;
+};
 
 
 
@@ -627,6 +637,8 @@ private:
 
 
 	TMC4671Biquad_conf torqueFilterConf;
+	TMC4671BiquadFilters curFilters;
+	const float fluxFilterFreq = 350.0;
 
 	// External encoder timer fires interrupts to trigger a new commutation position update
 #ifdef TIM_TMC
