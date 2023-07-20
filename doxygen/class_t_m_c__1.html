@@ -233,6 +233,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ab4203b3616652c62ac0e9b2ffbb5508e inherit pub_methods_class_t_m_c4671"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab5cb82263660526740656cf4533cbde2 inherit pub_methods_class_t_m_c4671"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_m_c4671.html#ab5cb82263660526740656cf4533cbde2">turn</a> (int16_t <a class="el" href="_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715a62cd275989e78ee56a81f0265a87562e">power</a>)</td></tr>
 <tr class="separator:ab5cb82263660526740656cf4533cbde2 inherit pub_methods_class_t_m_c4671"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0678fc93e1a0fb8460ebd2417192fea2 inherit pub_methods_class_t_m_c4671"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_m_c4671.html#a0678fc93e1a0fb8460ebd2417192fea2">controlFluxDissipate</a> ()</td></tr>
+<tr class="separator:a0678fc93e1a0fb8460ebd2417192fea2 inherit pub_methods_class_t_m_c4671"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a78ad71b3a34f55dcb8a257dd71829470 inherit pub_methods_class_t_m_c4671"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_m_c4671.html#a78ad71b3a34f55dcb8a257dd71829470">setTorque</a> (int16_t <a class="el" href="_t_m_c4671_8h.html#a1b04aa8e350271255d351486d3720741ae9ee2651c12f09e358eb1da8545952a7">torque</a>)</td></tr>
 <tr class="separator:a78ad71b3a34f55dcb8a257dd71829470 inherit pub_methods_class_t_m_c4671"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a977570c5b44262b522c3bb50d39ab258 inherit pub_methods_class_t_m_c4671"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_m_c4671.html#a977570c5b44262b522c3bb50d39ab258">setTargetPos</a> (int32_t <a class="el" href="_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715a5e0bdcbddccca4d66d74ba8c1cee1a68">pos</a>)</td></tr>
@@ -613,6 +615,8 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:a50e7891d1b8898edc6da36590943a964 inherit pub_attribs_class_t_m_c4671"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0311d36995adab2cf7e60a1d2407caa3 inherit pub_attribs_class_t_m_c4671"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_m_c4671.html#a0311d36995adab2cf7e60a1d2407caa3">bangInitPower</a> = 5000</td></tr>
 <tr class="separator:a0311d36995adab2cf7e60a1d2407caa3 inherit pub_attribs_class_t_m_c4671"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40502a25ee57b29f25dc03fb9cfff23f inherit pub_attribs_class_t_m_c4671"><td class="memItemLeft" align="right" valign="top">const float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_m_c4671.html#a40502a25ee57b29f25dc03fb9cfff23f">fluxDissipationLimit</a> = 1000</td></tr>
+<tr class="separator:a40502a25ee57b29f25dc03fb9cfff23f inherit pub_attribs_class_t_m_c4671"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a511b39f604c49efbae9e1402975f7102 inherit pub_attribs_class_t_m_c4671"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_t_m_c4671_p_i_d_conf.html">TMC4671PIDConf</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_m_c4671.html#a511b39f604c49efbae9e1402975f7102">curPids</a></td></tr>
 <tr class="separator:a511b39f604c49efbae9e1402975f7102 inherit pub_attribs_class_t_m_c4671"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d51dd668aab51ab866cf9237bdc171d inherit pub_attribs_class_t_m_c4671"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_t_m_c4671_limits.html">TMC4671Limits</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_m_c4671.html#a0d51dd668aab51ab866cf9237bdc171d">curLimits</a></td></tr>
@@ -684,7 +688,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00639">639</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00656">656</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a9c56fc0ec9c724f8eaa17dc74188bdc2" name="a9c56fc0ec9c724f8eaa17dc74188bdc2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9c56fc0ec9c724f8eaa17dc74188bdc2">&#9670;&nbsp;</a></span>TMC_1()</h2>
@@ -709,7 +713,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00641">641</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00658">658</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -766,7 +770,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line">    .id=CLSID_MOT_TMC0, </div>
 <div class="line">}</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00645">645</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00662">662</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>

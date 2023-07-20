@@ -1,5 +1,14 @@
 var NAVTREEINDEX21 =
 {
+"group___u_s_b_def___type.html#gga6a3b3a4d6801fd9b02feb0510c84e5f9afd15857b96b2f33fd3139cce70c61a09":[1,7,29,2],
+"group___u_s_b_def___type.html#gga7edb52971e0f0a9fa25fbc3a55469a98a4c7af1856e9ce49fb1f971b7f1cac9c5":[1,7,26,2],
+"group___u_s_b_def___type.html#gga7edb52971e0f0a9fa25fbc3a55469a98a71a2d0a0c65a57dd2902fe21376324e5":[1,7,26,0],
+"group___u_s_b_def___type.html#gga7edb52971e0f0a9fa25fbc3a55469a98ab7cd0143d8423e9520467d425ca88a7e":[1,7,26,1],
+"group___u_s_b_def___type.html#gga7edb52971e0f0a9fa25fbc3a55469a98af47138b6b25e16011afde2118664af8a":[1,7,26,3],
+"group___u_s_b_def___type.html#gga8c13f148c474fa734f69772ebfd102b7a409c358ada50d3f5f2be91dedb7bec74":[1,7,28,0],
+"group___u_s_b_def___type.html#gga8c13f148c474fa734f69772ebfd102b7a509d3ea3c7fa3ecb805c8f61bcae85c2":[1,7,28,1],
+"group___u_s_b_def___type.html#gga8c13f148c474fa734f69772ebfd102b7abe06f82c3b4c8563c319ee19face37c1":[1,7,28,3],
+"group___u_s_b_def___type.html#gga8c13f148c474fa734f69772ebfd102b7af5e955c612396de53dccaf9fdab8398b":[1,7,28,2],
 "group___u_s_b_def___type.html#ggabbeae90d995af4a347e21ab82eec9456a1a5d5e44e508347c79fe9785308a8ce7":[1,7,27,0],
 "group___u_s_b_def___type.html#ggabbeae90d995af4a347e21ab82eec9456a1b2a3ee2008b256d34105b38d424ccdf":[1,7,27,2],
 "group___u_s_b_def___type.html#ggabbeae90d995af4a347e21ab82eec9456a55e355240419a46cbae6e5858ddac12a":[1,7,27,3],
@@ -240,14 +249,5 @@ var NAVTREEINDEX21 =
 "midi__device_8c.html#ad7f40b6d93b4219b15ff53e321ace473":[4,0,144,10],
 "midi__device_8c.html#ae2fe979f84a64ca2ab1341ac3bb24c56":[4,0,144,6],
 "midi__device_8c.html#af909f14053ada6d6142e28ad2a03fc77":[4,0,144,3],
-"midi__device_8c_source.html":[4,0,144],
-"midi__device_8h.html":[4,0,145],
-"midi__device_8h.html#a0189a81d56933d379e6a01375492598f":[4,0,145,13],
-"midi__device_8h.html#a079eac1433087f225fc8601effb6d641":[4,0,145,4],
-"midi__device_8h.html#a0efa0e418902a5af4343bd6a634cb3b0":[4,0,145,2],
-"midi__device_8h.html#a185841a3f68a14fd9e790c7edd37b8a0":[4,0,145,18],
-"midi__device_8h.html#a1e2a00971f6d334067132d9c2a143ca4":[4,0,145,19],
-"midi__device_8h.html#a34a1dd0d1069e5a2fae5b7d5afd9bcbb":[4,0,145,15],
-"midi__device_8h.html#a5807ad9ef77b35341944e974045cab9f":[4,0,145,1],
-"midi__device_8h.html#a597ab5ec63bda614aff4114020012233":[4,0,145,8]
+"midi__device_8c_source.html":[4,0,144]
 };

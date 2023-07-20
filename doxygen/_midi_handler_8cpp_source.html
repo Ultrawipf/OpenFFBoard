@@ -109,95 +109,137 @@ $(document).ready(function(){initNavTree('_midi_handler_8cpp_source.html',''); i
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    <a class="code hl_variable" href="global__callbacks_8cpp.html#a7ea450cf0000d2d253661d1c96ae28f9">midihandler</a> = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>}</div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="class_midi_handler.html#a83520e890860d9b44ec06b6d25c3e5cd">   23</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_midi_handler.html#a83520e890860d9b44ec06b6d25c3e5cd">MidiHandler::midiRx</a>(uint8_t itf,uint8_t packet[4]){</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    <a class="code hl_function" href="led_effects_8h.html#abde88e5cecff56116feae6c4c789459b">pulseSysLed</a>();</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    uint8_t chan = packet[1] &amp; 0xf;</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    uint8_t packettype = packet[1] &amp; 0xf0;</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    uint8_t b1 =  packet[2];</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    uint8_t b2 =  packet[3];</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="keywordflow">switch</span>(packet[1]){ <span class="comment">// System packet</span></div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <span class="keywordflow">case</span> 0xF8:</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>        <span class="comment">// tick</span></div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>        this-&gt;<a class="code hl_function" href="class_midi_handler.html#a62816cc328ba2e56a02e06b134797503">midiTick</a>();</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>        <span class="comment">// Other packet</span></div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <span class="keywordflow">switch</span> (packettype) {</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>        <span class="keywordflow">case</span> 0x80:</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>            <span class="comment">// Noteoff</span></div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>            this-&gt;<a class="code hl_function" href="class_midi_handler.html#a682db0c74bfa2f93a1219aaf59d5deb5">noteOff</a>(chan, b1, b2);</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>            <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        <span class="keywordflow">case</span> 0x90:</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>            <span class="comment">// Noteon</span></div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>            <span class="keywordflow">if</span>(b2 == 0){</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>                this-&gt;<a class="code hl_function" href="class_midi_handler.html#a682db0c74bfa2f93a1219aaf59d5deb5">noteOff</a>(chan, b1, b2);</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>            }<span class="keywordflow">else</span>{</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>                this-&gt;<a class="code hl_function" href="class_midi_handler.html#a3f47cc96c950abeefb0b611afa0ce90a">noteOn</a>(chan, b1, b2);</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>            }</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>            <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>        <span class="keywordflow">case</span> 0xB0:</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>            <span class="comment">//cc</span></div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>            this-&gt;<a class="code hl_function" href="class_midi_handler.html#afe83c5cb0ad8e9effc19f22ed1698341">controlChange</a>(chan, b1,b2);</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>            <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>        <span class="keywordflow">case</span> 0xC0:</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>            <span class="comment">//pc</span></div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>            this-&gt;<a class="code hl_function" href="class_midi_handler.html#afe45148e43e8ab8ca665320ae17984bf">programChange</a>(chan,b1);</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="class_midi_handler.html#a83520e890860d9b44ec06b6d25c3e5cd">   25</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_midi_handler.html#a83520e890860d9b44ec06b6d25c3e5cd">MidiHandler::midiRx</a>(uint8_t itf,uint8_t packet[4]){</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <a class="code hl_function" href="led_effects_8h.html#abde88e5cecff56116feae6c4c789459b">pulseSysLed</a>();</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    uint8_t chan = packet[1] &amp; 0xf;</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    uint8_t packettype = packet[1] &amp; 0xf0;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    uint8_t b1 =  packet[2];</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    uint8_t b2 =  packet[3];</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="keywordflow">switch</span>(packet[1]){ <span class="comment">// System packet</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="group___class_driver___c_d_c.html#gga80155586fa275b28773c9b203f52cabaafad8c0b837912db67d541ddc936b7681">MIDI_STATUS_SYSEX_START</a>:</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>        {</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>            <a class="code hl_variable" href="class_midi_handler.html#afe7223cb5e2c15ab881c5fc66810c244">sysexState</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>            <a class="code hl_function" href="class_midi_handler.html#afc1807fc531f704a854dba38f97e3ea4">otherPacket</a>(packet);</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>            <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>        }</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="group___class_driver___c_d_c.html#gga80155586fa275b28773c9b203f52cabaac2ea0ceaaa38389e03ead8a076a4ff6e">MIDI_STATUS_SYSEX_END</a>:</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>            <a class="code hl_variable" href="class_midi_handler.html#afe7223cb5e2c15ab881c5fc66810c244">sysexState</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>            <a class="code hl_function" href="class_midi_handler.html#afc1807fc531f704a854dba38f97e3ea4">otherPacket</a>(packet);</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>            <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>        <span class="comment">//------------- System Common -------------//</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="comment">//          case MIDI_STATUS_SYSCOM_TIME_CODE_QUARTER_FRAME:</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="comment">//          case MIDI_STATUS_SYSCOM_SONG_POSITION_POINTER:</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="comment">//          case MIDI_STATUS_SYSCOM_SONG_SELECT:</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="comment">//          // F4, F5 is undefined</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="comment">//          case MIDI_STATUS_SYSCOM_TUNE_REQUEST:</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="comment">//              sysexState = false;</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="comment">//              break;</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>        <span class="comment">//------------- System RealTime  -------------//</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="group___class_driver___c_d_c.html#gga80155586fa275b28773c9b203f52cabaaa5d45ac13cd0ac07b9ffbef812f2bd9d">MIDI_STATUS_SYSREAL_TIMING_CLOCK</a>:</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>            <span class="comment">// tick</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>            this-&gt;<a class="code hl_function" href="class_midi_handler.html#a62816cc328ba2e56a02e06b134797503">midiTick</a>();</div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>            <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>        <span class="keywordflow">case</span> 0xD0:</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>            <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>        <span class="keywordflow">case</span> 0xE0:</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        {</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>            <span class="comment">//pb</span></div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>            int16_t pb = (b1 &amp; 0x7f) | ((b2 &amp; 0x7f) &lt;&lt; 7);</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>            this-&gt;<a class="code hl_function" href="class_midi_handler.html#a9049694d8147984d85e1f59842a965af">pitchBend</a>(chan, pb-8192);</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>            <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>        }</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>        <span class="comment">// 0xF9 is undefined</span></div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="comment">//          case MIDI_STATUS_SYSREAL_START:</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="comment">//          case MIDI_STATUS_SYSREAL_CONTINUE:</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="comment">//          case MIDI_STATUS_SYSREAL_STOP:</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="comment">//          // 0xFD is undefined</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="comment">//          case MIDI_STATUS_SYSREAL_ACTIVE_SENSING:</span></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="comment">//          case MIDI_STATUS_SYSREAL_SYSTEM_RESET:</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="comment">//              sysexState = false;</span></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="comment">//              break;</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>        <span class="keywordflow">default</span>:</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>            <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        }</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    }</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>}</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno"><a class="line" href="class_midi_handler.html#a3f47cc96c950abeefb0b611afa0ce90a">   79</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_midi_handler.html#a3f47cc96c950abeefb0b611afa0ce90a">MidiHandler::noteOn</a>(uint8_t chan, uint8_t note,uint8_t velocity){</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>}</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno"><a class="line" href="class_midi_handler.html#a682db0c74bfa2f93a1219aaf59d5deb5">   82</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_midi_handler.html#a682db0c74bfa2f93a1219aaf59d5deb5">MidiHandler::noteOff</a>(uint8_t chan, uint8_t note,uint8_t velocity){</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>}</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno"><a class="line" href="class_midi_handler.html#afe83c5cb0ad8e9effc19f22ed1698341">   85</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_midi_handler.html#afe83c5cb0ad8e9effc19f22ed1698341">MidiHandler::controlChange</a>(uint8_t chan, uint8_t c, uint8_t val){</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>}</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno"><a class="line" href="class_midi_handler.html#a9049694d8147984d85e1f59842a965af">   88</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_midi_handler.html#a9049694d8147984d85e1f59842a965af">MidiHandler::pitchBend</a>(uint8_t chan, int16_t val){</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>}</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno"><a class="line" href="class_midi_handler.html#a62816cc328ba2e56a02e06b134797503">   94</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_midi_handler.html#a62816cc328ba2e56a02e06b134797503">MidiHandler::midiTick</a>(){</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>}</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno"><a class="line" href="class_midi_handler.html#afe45148e43e8ab8ca665320ae17984bf">   97</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_midi_handler.html#afe45148e43e8ab8ca665320ae17984bf">MidiHandler::programChange</a>(uint8_t chan, uint8_t val){</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>}</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        <span class="keywordflow">switch</span> (packettype) {</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>            <span class="keywordflow">case</span> 0x80:</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>                <span class="comment">// Noteoff</span></div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>                this-&gt;<a class="code hl_function" href="class_midi_handler.html#a682db0c74bfa2f93a1219aaf59d5deb5">noteOff</a>(chan, b1, b2);</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>                <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>            <span class="keywordflow">case</span> 0x90:</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>                <span class="comment">// Noteon</span></div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>                <span class="keywordflow">if</span>(b2 == 0){</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>                    this-&gt;<a class="code hl_function" href="class_midi_handler.html#a682db0c74bfa2f93a1219aaf59d5deb5">noteOff</a>(chan, b1, b2);</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>                }<span class="keywordflow">else</span>{</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>                    this-&gt;<a class="code hl_function" href="class_midi_handler.html#a3f47cc96c950abeefb0b611afa0ce90a">noteOn</a>(chan, b1, b2);</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>                }</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>                <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>            <span class="keywordflow">case</span> 0xB0:</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>                <span class="comment">//cc</span></div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>                this-&gt;<a class="code hl_function" href="class_midi_handler.html#afe83c5cb0ad8e9effc19f22ed1698341">controlChange</a>(chan, b1,b2);</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>                <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>            <span class="keywordflow">case</span> 0xC0:</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>                <span class="comment">//pc</span></div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>                this-&gt;<a class="code hl_function" href="class_midi_handler.html#afe45148e43e8ab8ca665320ae17984bf">programChange</a>(chan,b1);</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>                <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>            <span class="keywordflow">case</span> 0xD0:</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>                <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>            <span class="keywordflow">case</span> 0xE0:</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>            {</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>                <span class="comment">//pb</span></div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>                int16_t pb = (b1 &amp; 0x7f) | ((b2 &amp; 0x7f) &lt;&lt; 7);</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>                this-&gt;<a class="code hl_function" href="class_midi_handler.html#a9049694d8147984d85e1f59842a965af">pitchBend</a>(chan, pb-8192);</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>                <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>            }</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>            <span class="keywordflow">default</span>:</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>                <a class="code hl_function" href="class_midi_handler.html#afc1807fc531f704a854dba38f97e3ea4">otherPacket</a>(packet);</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>                <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>        }</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    }</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>}</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno"><a class="line" href="class_midi_handler.html#a3f47cc96c950abeefb0b611afa0ce90a">  113</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_midi_handler.html#a3f47cc96c950abeefb0b611afa0ce90a">MidiHandler::noteOn</a>(uint8_t chan, uint8_t note,uint8_t velocity){</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span> </div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>}</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno"><a class="line" href="class_midi_handler.html#a682db0c74bfa2f93a1219aaf59d5deb5">  116</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_midi_handler.html#a682db0c74bfa2f93a1219aaf59d5deb5">MidiHandler::noteOff</a>(uint8_t chan, uint8_t note,uint8_t velocity){</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>}</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno"><a class="line" href="class_midi_handler.html#afe83c5cb0ad8e9effc19f22ed1698341">  119</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_midi_handler.html#afe83c5cb0ad8e9effc19f22ed1698341">MidiHandler::controlChange</a>(uint8_t chan, uint8_t c, uint8_t val){</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span> </div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>}</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno"><a class="line" href="class_midi_handler.html#a9049694d8147984d85e1f59842a965af">  122</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_midi_handler.html#a9049694d8147984d85e1f59842a965af">MidiHandler::pitchBend</a>(uint8_t chan, int16_t val){</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span> </div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>}</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno"><a class="line" href="class_midi_handler.html#a62816cc328ba2e56a02e06b134797503">  128</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_midi_handler.html#a62816cc328ba2e56a02e06b134797503">MidiHandler::midiTick</a>(){</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span> </div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>}</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno"><a class="line" href="class_midi_handler.html#afe45148e43e8ab8ca665320ae17984bf">  131</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_midi_handler.html#afe45148e43e8ab8ca665320ae17984bf">MidiHandler::programChange</a>(uint8_t chan, uint8_t val){</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span> </div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>}</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno"><a class="line" href="class_midi_handler.html#afc1807fc531f704a854dba38f97e3ea4">  134</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_midi_handler.html#afc1807fc531f704a854dba38f97e3ea4">MidiHandler::otherPacket</a>(uint8_t packet[4]){</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span> </div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>}</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span> </div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="a_midi_handler_8h_html"><div class="ttname"><a href="_midi_handler_8h.html">MidiHandler.h</a></div></div>
 <div class="ttc" id="aclass_midi_handler_html"><div class="ttname"><a href="class_midi_handler.html">MidiHandler</a></div><div class="ttdef"><b>Definition:</b> <a href="_midi_handler_8h_source.html#l00014">MidiHandler.h:14</a></div></div>
 <div class="ttc" id="aclass_midi_handler_html_a38eac68ce64889aa4d22d9b339f8e808"><div class="ttname"><a href="class_midi_handler.html#a38eac68ce64889aa4d22d9b339f8e808">MidiHandler::~MidiHandler</a></div><div class="ttdeci">virtual ~MidiHandler()</div><div class="ttdef"><b>Definition:</b> <a href="_midi_handler_8cpp_source.html#l00018">MidiHandler.cpp:18</a></div></div>
-<div class="ttc" id="aclass_midi_handler_html_a3f47cc96c950abeefb0b611afa0ce90a"><div class="ttname"><a href="class_midi_handler.html#a3f47cc96c950abeefb0b611afa0ce90a">MidiHandler::noteOn</a></div><div class="ttdeci">virtual void noteOn(uint8_t chan, uint8_t note, uint8_t velocity)=0</div><div class="ttdef"><b>Definition:</b> <a href="_midi_handler_8cpp_source.html#l00079">MidiHandler.cpp:79</a></div></div>
-<div class="ttc" id="aclass_midi_handler_html_a62816cc328ba2e56a02e06b134797503"><div class="ttname"><a href="class_midi_handler.html#a62816cc328ba2e56a02e06b134797503">MidiHandler::midiTick</a></div><div class="ttdeci">virtual void midiTick()</div><div class="ttdef"><b>Definition:</b> <a href="_midi_handler_8cpp_source.html#l00094">MidiHandler.cpp:94</a></div></div>
-<div class="ttc" id="aclass_midi_handler_html_a682db0c74bfa2f93a1219aaf59d5deb5"><div class="ttname"><a href="class_midi_handler.html#a682db0c74bfa2f93a1219aaf59d5deb5">MidiHandler::noteOff</a></div><div class="ttdeci">virtual void noteOff(uint8_t chan, uint8_t note, uint8_t velocity)=0</div><div class="ttdef"><b>Definition:</b> <a href="_midi_handler_8cpp_source.html#l00082">MidiHandler.cpp:82</a></div></div>
-<div class="ttc" id="aclass_midi_handler_html_a83520e890860d9b44ec06b6d25c3e5cd"><div class="ttname"><a href="class_midi_handler.html#a83520e890860d9b44ec06b6d25c3e5cd">MidiHandler::midiRx</a></div><div class="ttdeci">virtual void midiRx(uint8_t itf, uint8_t packet[4])</div><div class="ttdef"><b>Definition:</b> <a href="_midi_handler_8cpp_source.html#l00023">MidiHandler.cpp:23</a></div></div>
-<div class="ttc" id="aclass_midi_handler_html_a9049694d8147984d85e1f59842a965af"><div class="ttname"><a href="class_midi_handler.html#a9049694d8147984d85e1f59842a965af">MidiHandler::pitchBend</a></div><div class="ttdeci">virtual void pitchBend(uint8_t chan, int16_t val)</div><div class="ttdef"><b>Definition:</b> <a href="_midi_handler_8cpp_source.html#l00088">MidiHandler.cpp:88</a></div></div>
-<div class="ttc" id="aclass_midi_handler_html_ade3b95494285def10788992956f739c1"><div class="ttname"><a href="class_midi_handler.html#ade3b95494285def10788992956f739c1">MidiHandler::buf</a></div><div class="ttdeci">static uint8_t buf[4]</div><div class="ttdef"><b>Definition:</b> <a href="_midi_handler_8h_source.html#l00026">MidiHandler.h:26</a></div></div>
+<div class="ttc" id="aclass_midi_handler_html_a3f47cc96c950abeefb0b611afa0ce90a"><div class="ttname"><a href="class_midi_handler.html#a3f47cc96c950abeefb0b611afa0ce90a">MidiHandler::noteOn</a></div><div class="ttdeci">virtual void noteOn(uint8_t chan, uint8_t note, uint8_t velocity)=0</div><div class="ttdef"><b>Definition:</b> <a href="_midi_handler_8cpp_source.html#l00113">MidiHandler.cpp:113</a></div></div>
+<div class="ttc" id="aclass_midi_handler_html_a62816cc328ba2e56a02e06b134797503"><div class="ttname"><a href="class_midi_handler.html#a62816cc328ba2e56a02e06b134797503">MidiHandler::midiTick</a></div><div class="ttdeci">virtual void midiTick()</div><div class="ttdef"><b>Definition:</b> <a href="_midi_handler_8cpp_source.html#l00128">MidiHandler.cpp:128</a></div></div>
+<div class="ttc" id="aclass_midi_handler_html_a682db0c74bfa2f93a1219aaf59d5deb5"><div class="ttname"><a href="class_midi_handler.html#a682db0c74bfa2f93a1219aaf59d5deb5">MidiHandler::noteOff</a></div><div class="ttdeci">virtual void noteOff(uint8_t chan, uint8_t note, uint8_t velocity)=0</div><div class="ttdef"><b>Definition:</b> <a href="_midi_handler_8cpp_source.html#l00116">MidiHandler.cpp:116</a></div></div>
+<div class="ttc" id="aclass_midi_handler_html_a83520e890860d9b44ec06b6d25c3e5cd"><div class="ttname"><a href="class_midi_handler.html#a83520e890860d9b44ec06b6d25c3e5cd">MidiHandler::midiRx</a></div><div class="ttdeci">virtual void midiRx(uint8_t itf, uint8_t packet[4])</div><div class="ttdef"><b>Definition:</b> <a href="_midi_handler_8cpp_source.html#l00025">MidiHandler.cpp:25</a></div></div>
+<div class="ttc" id="aclass_midi_handler_html_a9049694d8147984d85e1f59842a965af"><div class="ttname"><a href="class_midi_handler.html#a9049694d8147984d85e1f59842a965af">MidiHandler::pitchBend</a></div><div class="ttdeci">virtual void pitchBend(uint8_t chan, int16_t val)</div><div class="ttdef"><b>Definition:</b> <a href="_midi_handler_8cpp_source.html#l00122">MidiHandler.cpp:122</a></div></div>
+<div class="ttc" id="aclass_midi_handler_html_ade3b95494285def10788992956f739c1"><div class="ttname"><a href="class_midi_handler.html#ade3b95494285def10788992956f739c1">MidiHandler::buf</a></div><div class="ttdeci">static uint8_t buf[4]</div><div class="ttdef"><b>Definition:</b> <a href="_midi_handler_8h_source.html#l00027">MidiHandler.h:27</a></div></div>
 <div class="ttc" id="aclass_midi_handler_html_af94adc6eb370d6526242f54754aa8b81"><div class="ttname"><a href="class_midi_handler.html#af94adc6eb370d6526242f54754aa8b81">MidiHandler::MidiHandler</a></div><div class="ttdeci">MidiHandler()</div><div class="ttdef"><b>Definition:</b> <a href="_midi_handler_8cpp_source.html#l00012">MidiHandler.cpp:12</a></div></div>
-<div class="ttc" id="aclass_midi_handler_html_afe45148e43e8ab8ca665320ae17984bf"><div class="ttname"><a href="class_midi_handler.html#afe45148e43e8ab8ca665320ae17984bf">MidiHandler::programChange</a></div><div class="ttdeci">virtual void programChange(uint8_t chan, uint8_t val)</div><div class="ttdef"><b>Definition:</b> <a href="_midi_handler_8cpp_source.html#l00097">MidiHandler.cpp:97</a></div></div>
-<div class="ttc" id="aclass_midi_handler_html_afe83c5cb0ad8e9effc19f22ed1698341"><div class="ttname"><a href="class_midi_handler.html#afe83c5cb0ad8e9effc19f22ed1698341">MidiHandler::controlChange</a></div><div class="ttdeci">virtual void controlChange(uint8_t chan, uint8_t c, uint8_t val)</div><div class="ttdef"><b>Definition:</b> <a href="_midi_handler_8cpp_source.html#l00085">MidiHandler.cpp:85</a></div></div>
+<div class="ttc" id="aclass_midi_handler_html_afc1807fc531f704a854dba38f97e3ea4"><div class="ttname"><a href="class_midi_handler.html#afc1807fc531f704a854dba38f97e3ea4">MidiHandler::otherPacket</a></div><div class="ttdeci">virtual void otherPacket(uint8_t packet[4])</div><div class="ttdef"><b>Definition:</b> <a href="_midi_handler_8cpp_source.html#l00134">MidiHandler.cpp:134</a></div></div>
+<div class="ttc" id="aclass_midi_handler_html_afe45148e43e8ab8ca665320ae17984bf"><div class="ttname"><a href="class_midi_handler.html#afe45148e43e8ab8ca665320ae17984bf">MidiHandler::programChange</a></div><div class="ttdeci">virtual void programChange(uint8_t chan, uint8_t val)</div><div class="ttdef"><b>Definition:</b> <a href="_midi_handler_8cpp_source.html#l00131">MidiHandler.cpp:131</a></div></div>
+<div class="ttc" id="aclass_midi_handler_html_afe7223cb5e2c15ab881c5fc66810c244"><div class="ttname"><a href="class_midi_handler.html#afe7223cb5e2c15ab881c5fc66810c244">MidiHandler::sysexState</a></div><div class="ttdeci">bool sysexState</div><div class="ttdef"><b>Definition:</b> <a href="_midi_handler_8h_source.html#l00029">MidiHandler.h:29</a></div></div>
+<div class="ttc" id="aclass_midi_handler_html_afe83c5cb0ad8e9effc19f22ed1698341"><div class="ttname"><a href="class_midi_handler.html#afe83c5cb0ad8e9effc19f22ed1698341">MidiHandler::controlChange</a></div><div class="ttdeci">virtual void controlChange(uint8_t chan, uint8_t c, uint8_t val)</div><div class="ttdef"><b>Definition:</b> <a href="_midi_handler_8cpp_source.html#l00119">MidiHandler.cpp:119</a></div></div>
 <div class="ttc" id="aglobal__callbacks_8cpp_html_a7ea450cf0000d2d253661d1c96ae28f9"><div class="ttname"><a href="global__callbacks_8cpp.html#a7ea450cf0000d2d253661d1c96ae28f9">midihandler</a></div><div class="ttdeci">MidiHandler * midihandler</div><div class="ttdef"><b>Definition:</b> <a href="global__callbacks_8cpp_source.html#l00339">global_callbacks.cpp:339</a></div></div>
+<div class="ttc" id="agroup___class_driver___c_d_c_html_gga80155586fa275b28773c9b203f52cabaaa5d45ac13cd0ac07b9ffbef812f2bd9d"><div class="ttname"><a href="group___class_driver___c_d_c.html#gga80155586fa275b28773c9b203f52cabaaa5d45ac13cd0ac07b9ffbef812f2bd9d">MIDI_STATUS_SYSREAL_TIMING_CLOCK</a></div><div class="ttdeci">@ MIDI_STATUS_SYSREAL_TIMING_CLOCK</div><div class="ttdef"><b>Definition:</b> <a href="midi_8h_source.html#l00099">midi.h:99</a></div></div>
+<div class="ttc" id="agroup___class_driver___c_d_c_html_gga80155586fa275b28773c9b203f52cabaac2ea0ceaaa38389e03ead8a076a4ff6e"><div class="ttname"><a href="group___class_driver___c_d_c.html#gga80155586fa275b28773c9b203f52cabaac2ea0ceaaa38389e03ead8a076a4ff6e">MIDI_STATUS_SYSEX_END</a></div><div class="ttdeci">@ MIDI_STATUS_SYSEX_END</div><div class="ttdef"><b>Definition:</b> <a href="midi_8h_source.html#l00089">midi.h:89</a></div></div>
+<div class="ttc" id="agroup___class_driver___c_d_c_html_gga80155586fa275b28773c9b203f52cabaafad8c0b837912db67d541ddc936b7681"><div class="ttname"><a href="group___class_driver___c_d_c.html#gga80155586fa275b28773c9b203f52cabaafad8c0b837912db67d541ddc936b7681">MIDI_STATUS_SYSEX_START</a></div><div class="ttdeci">@ MIDI_STATUS_SYSEX_START</div><div class="ttdef"><b>Definition:</b> <a href="midi_8h_source.html#l00088">midi.h:88</a></div></div>
 <div class="ttc" id="aled_effects_8h_html_abde88e5cecff56116feae6c4c789459b"><div class="ttname"><a href="led_effects_8h.html#abde88e5cecff56116feae6c4c789459b">pulseSysLed</a></div><div class="ttdeci">void pulseSysLed()</div><div class="ttdef"><b>Definition:</b> <a href="led_effects_8cpp_source.html#l00039">ledEffects.cpp:39</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

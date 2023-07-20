@@ -314,6 +314,7 @@ var hierarchy =
     [ "TMC4671Biquad", "class_t_m_c4671_biquad.html", null ],
     [ "TMC4671Biquad_conf", "struct_t_m_c4671_biquad__conf.html", null ],
     [ "TMC4671Biquad_t", "struct_t_m_c4671_biquad__t.html", null ],
+    [ "TMC4671BiquadFilters", "struct_t_m_c4671_biquad_filters.html", null ],
     [ "TMC4671FlashAddrs", "struct_t_m_c4671_flash_addrs.html", null ],
     [ "TMC4671HALLConf", "struct_t_m_c4671_h_a_l_l_conf.html", null ],
     [ "TMC4671HardwareTypeConf", "struct_t_m_c4671_hardware_type_conf.html", null ],

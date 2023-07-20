@@ -1,5 +1,6 @@
 var NAVTREEINDEX8 =
 {
+"class_local_buttons.html#a88201e8c5a8c29690d5cc675dbc14b31":[3,0,89,12],
 "class_local_buttons.html#a94fb54e65859041ee2c6b63c4aaf8221":[3,0,89,8],
 "class_local_buttons.html#aa7fac7ae24e3f20438ec1a97962db1bb":[3,0,89,2],
 "class_local_buttons.html#aa869996657bb5193259691317dc18619":[3,0,89,14],
@@ -18,10 +19,12 @@ var NAVTREEINDEX8 =
 "class_midi_handler.html#a62816cc328ba2e56a02e06b134797503":[3,0,93,4],
 "class_midi_handler.html#a682db0c74bfa2f93a1219aaf59d5deb5":[3,0,93,5],
 "class_midi_handler.html#a83520e890860d9b44ec06b6d25c3e5cd":[3,0,93,3],
-"class_midi_handler.html#a9049694d8147984d85e1f59842a965af":[3,0,93,7],
-"class_midi_handler.html#ade3b95494285def10788992956f739c1":[3,0,93,9],
+"class_midi_handler.html#a9049694d8147984d85e1f59842a965af":[3,0,93,8],
+"class_midi_handler.html#ade3b95494285def10788992956f739c1":[3,0,93,10],
 "class_midi_handler.html#af94adc6eb370d6526242f54754aa8b81":[3,0,93,0],
-"class_midi_handler.html#afe45148e43e8ab8ca665320ae17984bf":[3,0,93,8],
+"class_midi_handler.html#afc1807fc531f704a854dba38f97e3ea4":[3,0,93,7],
+"class_midi_handler.html#afe45148e43e8ab8ca665320ae17984bf":[3,0,93,9],
+"class_midi_handler.html#afe7223cb5e2c15ab881c5fc66810c244":[3,0,93,11],
 "class_midi_handler.html#afe83c5cb0ad8e9effc19f22ed1698341":[3,0,93,2],
 "class_midi_main.html":[3,0,94],
 "class_midi_main.html#a0b363111006d243e5cc928578ee11160":[3,0,94,4],
@@ -246,8 +249,5 @@ var NAVTREEINDEX8 =
 "class_mt_encoder_s_p_i.html#a3a1bf058bfd2fa06ac01901868654ace":[3,0,104,4],
 "class_mt_encoder_s_p_i.html#a3c2a75caa9f7ab1acade52516c3631a4":[3,0,104,31],
 "class_mt_encoder_s_p_i.html#a3f277a29d31711a8f5e02729d8c3aa67":[3,0,104,14],
-"class_mt_encoder_s_p_i.html#a4108e5f3c452821897dc31b714eb95ba":[3,0,104,26],
-"class_mt_encoder_s_p_i.html#a434788641cf0ecae1fdf61b029cdc5f8":[3,0,104,37],
-"class_mt_encoder_s_p_i.html#a437998795b732300394e10bea3b309f0":[3,0,104,13],
-"class_mt_encoder_s_p_i.html#a4af821eabd4bc5c2026afeb50b7e5756":[3,0,104,8]
+"class_mt_encoder_s_p_i.html#a4108e5f3c452821897dc31b714eb95ba":[3,0,104,26]
 };

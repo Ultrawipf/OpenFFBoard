@@ -7,7 +7,9 @@ var class_midi_handler =
     [ "midiTick", "class_midi_handler.html#a62816cc328ba2e56a02e06b134797503", null ],
     [ "noteOff", "class_midi_handler.html#a682db0c74bfa2f93a1219aaf59d5deb5", null ],
     [ "noteOn", "class_midi_handler.html#a3f47cc96c950abeefb0b611afa0ce90a", null ],
+    [ "otherPacket", "class_midi_handler.html#afc1807fc531f704a854dba38f97e3ea4", null ],
     [ "pitchBend", "class_midi_handler.html#a9049694d8147984d85e1f59842a965af", null ],
     [ "programChange", "class_midi_handler.html#afe45148e43e8ab8ca665320ae17984bf", null ],
-    [ "buf", "class_midi_handler.html#ade3b95494285def10788992956f739c1", null ]
+    [ "buf", "class_midi_handler.html#ade3b95494285def10788992956f739c1", null ],
+    [ "sysexState", "class_midi_handler.html#afe7223cb5e2c15ab881c5fc66810c244", null ]
 ];

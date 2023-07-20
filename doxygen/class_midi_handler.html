@@ -87,6 +87,7 @@ $(document).ready(function(){initNavTree('class_midi_handler.html',''); initResi
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="class_midi_handler-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">MidiHandler Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div></div>
 </div><!--header-->
@@ -123,11 +124,18 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a9049694d8147984d85e1f59842a965af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a62816cc328ba2e56a02e06b134797503"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_midi_handler.html#a62816cc328ba2e56a02e06b134797503">midiTick</a> ()</td></tr>
 <tr class="separator:a62816cc328ba2e56a02e06b134797503"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc1807fc531f704a854dba38f97e3ea4"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_midi_handler.html#afc1807fc531f704a854dba38f97e3ea4">otherPacket</a> (uint8_t packet[4])</td></tr>
+<tr class="separator:afc1807fc531f704a854dba38f97e3ea4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:ade3b95494285def10788992956f739c1"><td class="memItemLeft" align="right" valign="top">static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_midi_handler.html#ade3b95494285def10788992956f739c1">buf</a> [4] = {0}</td></tr>
 <tr class="separator:ade3b95494285def10788992956f739c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:afe7223cb5e2c15ab881c5fc66810c244"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_midi_handler.html#afe7223cb5e2c15ab881c5fc66810c244">sysexState</a> = false</td></tr>
+<tr class="separator:afe7223cb5e2c15ab881c5fc66810c244"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
@@ -222,7 +230,7 @@ Static Public Attributes</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="class_midi_main.html#a0b363111006d243e5cc928578ee11160">MidiMain</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_midi_handler_8cpp_source.html#l00085">85</a> of file <a class="el" href="_midi_handler_8cpp_source.html">MidiHandler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_midi_handler_8cpp_source.html#l00119">119</a> of file <a class="el" href="_midi_handler_8cpp_source.html">MidiHandler.cpp</a>.</p>
 
 </div>
 </div>
@@ -260,7 +268,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_midi_handler_8cpp_source.html#l00023">23</a> of file <a class="el" href="_midi_handler_8cpp_source.html">MidiHandler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_midi_handler_8cpp_source.html#l00025">25</a> of file <a class="el" href="_midi_handler_8cpp_source.html">MidiHandler.cpp</a>.</p>
 
 </div>
 </div>
@@ -288,7 +296,7 @@ Static Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p >Sent 24 times per quarter note </p>
 
-<p class="definition">Definition at line <a class="el" href="_midi_handler_8cpp_source.html#l00094">94</a> of file <a class="el" href="_midi_handler_8cpp_source.html">MidiHandler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_midi_handler_8cpp_source.html#l00128">128</a> of file <a class="el" href="_midi_handler_8cpp_source.html">MidiHandler.cpp</a>.</p>
 
 </div>
 </div>
@@ -334,7 +342,7 @@ Static Public Attributes</h2></td></tr>
 
 <p>Implemented in <a class="el" href="class_midi_main.html#aab3256b4a168fede07f461b9d64147a4">MidiMain</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_midi_handler_8cpp_source.html#l00082">82</a> of file <a class="el" href="_midi_handler_8cpp_source.html">MidiHandler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_midi_handler_8cpp_source.html#l00116">116</a> of file <a class="el" href="_midi_handler_8cpp_source.html">MidiHandler.cpp</a>.</p>
 
 </div>
 </div>
@@ -380,7 +388,35 @@ Static Public Attributes</h2></td></tr>
 
 <p>Implemented in <a class="el" href="class_midi_main.html#aece09e8a74dd4b8baf1d7553a5d938d0">MidiMain</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_midi_handler_8cpp_source.html#l00079">79</a> of file <a class="el" href="_midi_handler_8cpp_source.html">MidiHandler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_midi_handler_8cpp_source.html#l00113">113</a> of file <a class="el" href="_midi_handler_8cpp_source.html">MidiHandler.cpp</a>.</p>
+
+</div>
+</div>
+<a id="afc1807fc531f704a854dba38f97e3ea4" name="afc1807fc531f704a854dba38f97e3ea4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc1807fc531f704a854dba38f97e3ea4">&#9670;&nbsp;</a></span>otherPacket()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MidiHandler::otherPacket </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>packet</em>[4]</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_midi_handler_8cpp_source.html#l00134">134</a> of file <a class="el" href="_midi_handler_8cpp_source.html">MidiHandler.cpp</a>.</p>
 
 </div>
 </div>
@@ -420,7 +456,7 @@ Static Public Attributes</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="class_midi_main.html#ab6a1a739df715b946d1b02440d84656b">MidiMain</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_midi_handler_8cpp_source.html#l00088">88</a> of file <a class="el" href="_midi_handler_8cpp_source.html">MidiHandler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_midi_handler_8cpp_source.html#l00122">122</a> of file <a class="el" href="_midi_handler_8cpp_source.html">MidiHandler.cpp</a>.</p>
 
 </div>
 </div>
@@ -458,7 +494,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_midi_handler_8cpp_source.html#l00097">97</a> of file <a class="el" href="_midi_handler_8cpp_source.html">MidiHandler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_midi_handler_8cpp_source.html#l00131">131</a> of file <a class="el" href="_midi_handler_8cpp_source.html">MidiHandler.cpp</a>.</p>
 
 </div>
 </div>
@@ -483,7 +519,31 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_midi_handler_8h_source.html#l00026">26</a> of file <a class="el" href="_midi_handler_8h_source.html">MidiHandler.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_midi_handler_8h_source.html#l00027">27</a> of file <a class="el" href="_midi_handler_8h_source.html">MidiHandler.h</a>.</p>
+
+</div>
+</div>
+<a id="afe7223cb5e2c15ab881c5fc66810c244" name="afe7223cb5e2c15ab881c5fc66810c244"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe7223cb5e2c15ab881c5fc66810c244">&#9670;&nbsp;</a></span>sysexState</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool MidiHandler::sysexState = false</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_midi_handler_8h_source.html#l00029">29</a> of file <a class="el" href="_midi_handler_8h_source.html">MidiHandler.h</a>.</p>
 
 </div>
 </div>

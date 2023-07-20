@@ -8,6 +8,7 @@ var struct_t_m_c4671_main_config =
     [ "bbmL", "struct_t_m_c4671_main_config.html#a62059ee4315cf85d3dbceef6b4ee9cbb", null ],
     [ "canChangeHwType", "struct_t_m_c4671_main_config.html#a011f435c88e8b235f96b4d2559f8d065", null ],
     [ "combineEncoder", "struct_t_m_c4671_main_config.html#a9e4776d8b0581e130c4a1153b2125faf", null ],
+    [ "enableFluxDissipation", "struct_t_m_c4671_main_config.html#ab36c021f6e1ada5483cfa04f5d636e3b", null ],
     [ "encoderReversed", "struct_t_m_c4671_main_config.html#ad5b89e3cd5bf8d2b62dba825acf0cad0", null ],
     [ "hwconf", "struct_t_m_c4671_main_config.html#a6ed867e2405bb2091e9a4c5bd7a32eb9", null ],
     [ "invertForce", "struct_t_m_c4671_main_config.html#a4f28b5bd147572d2b61275389fa17ddb", null ],
@@ -16,6 +17,5 @@ var struct_t_m_c4671_main_config =
     [ "mdecA", "struct_t_m_c4671_main_config.html#aa5fe41d23d04db6c45debaeb01e2f363", null ],
     [ "mdecB", "struct_t_m_c4671_main_config.html#a93bf86e8f069e291b0b58e32c76474fd", null ],
     [ "motconf", "struct_t_m_c4671_main_config.html#a0f865e79da4a364f6b9f3b773f2cc4b5", null ],
-    [ "pwmcnt", "struct_t_m_c4671_main_config.html#a0ba4da98b3b9c3fb4483216d661af253", null ],
-    [ "svpwm", "struct_t_m_c4671_main_config.html#a439824c39ee0f56c0cf84d24368bbb76", null ]
+    [ "pwmcnt", "struct_t_m_c4671_main_config.html#a0ba4da98b3b9c3fb4483216d661af253", null ]
 ];

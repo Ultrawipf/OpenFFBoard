@@ -184,6 +184,7 @@ var annotated_dup =
     [ "TMC4671Biquad", "class_t_m_c4671_biquad.html", "class_t_m_c4671_biquad" ],
     [ "TMC4671Biquad_conf", "struct_t_m_c4671_biquad__conf.html", "struct_t_m_c4671_biquad__conf" ],
     [ "TMC4671Biquad_t", "struct_t_m_c4671_biquad__t.html", "struct_t_m_c4671_biquad__t" ],
+    [ "TMC4671BiquadFilters", "struct_t_m_c4671_biquad_filters.html", "struct_t_m_c4671_biquad_filters" ],
     [ "TMC4671FlashAddrs", "struct_t_m_c4671_flash_addrs.html", "struct_t_m_c4671_flash_addrs" ],
     [ "TMC4671HALLConf", "struct_t_m_c4671_h_a_l_l_conf.html", "struct_t_m_c4671_h_a_l_l_conf" ],
     [ "TMC4671HardwareTypeConf", "struct_t_m_c4671_hardware_type_conf.html", "struct_t_m_c4671_hardware_type_conf" ],

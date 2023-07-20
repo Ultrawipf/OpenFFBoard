@@ -1,5 +1,6 @@
 var NAVTREEINDEX6 =
 {
+"class_effects_calculator.html#ab03374bae6d7cd45b410a6dc1fd9a53d":[3,0,51,8],
 "class_effects_calculator.html#abec85aa5f013efad97ce9a4080607eab":[3,0,51,34],
 "class_effects_calculator.html#abf306c214197607e56e52e188a29b563":[3,0,51,32],
 "class_effects_calculator.html#abfcb256492a5378e74a981ca0ed09ba9":[3,0,51,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX6 =
 "class_f_f_b_h_i_d_main.html#a632f99d11cc2d6623e7341d704d641ada71b1503bb73853056d1ec2788927b6e9":[3,0,65,0,2],
 "class_f_f_b_h_i_d_main.html#a632f99d11cc2d6623e7341d704d641ada72130ce5726057133afda6ebea5e59c0":[3,0,65,0,6],
 "class_f_f_b_h_i_d_main.html#a632f99d11cc2d6623e7341d704d641ada849a1e676206d4b8a6f4d45c9e6b7818":[3,0,65,0,0],
-"class_f_f_b_h_i_d_main.html#a632f99d11cc2d6623e7341d704d641ada9b1a82f3f43868f58bdc18e7c4cfa08f":[3,0,65,0,7],
-"class_f_f_b_h_i_d_main.html#a632f99d11cc2d6623e7341d704d641adaa6b2715f3193a6cf98362d261c39c964":[3,0,65,0,5]
+"class_f_f_b_h_i_d_main.html#a632f99d11cc2d6623e7341d704d641ada9b1a82f3f43868f58bdc18e7c4cfa08f":[3,0,65,0,7]
 };

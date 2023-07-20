@@ -15,6 +15,7 @@ var _t_m_c4671_8h =
     [ "TMC4671Biquad_t", "struct_t_m_c4671_biquad__t.html", "struct_t_m_c4671_biquad__t" ],
     [ "TMC4671Biquad_conf", "struct_t_m_c4671_biquad__conf.html", "struct_t_m_c4671_biquad__conf" ],
     [ "TMC4671Biquad", "class_t_m_c4671_biquad.html", "class_t_m_c4671_biquad" ],
+    [ "TMC4671BiquadFilters", "struct_t_m_c4671_biquad_filters.html", "struct_t_m_c4671_biquad_filters" ],
     [ "TMC4671", "class_t_m_c4671.html", "class_t_m_c4671" ],
     [ "TMC4671::TMC_ExternalEncoderUpdateThread", "class_t_m_c4671_1_1_t_m_c___external_encoder_update_thread.html", "class_t_m_c4671_1_1_t_m_c___external_encoder_update_thread" ],
     [ "TMC_1", "class_t_m_c__1.html", "class_t_m_c__1" ],
