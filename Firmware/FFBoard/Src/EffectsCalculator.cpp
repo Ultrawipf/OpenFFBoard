@@ -118,7 +118,7 @@ void EffectsCalculator::calculateEffects(std::vector<std::unique_ptr<Axis>> &axe
 		// Effect activated and not infinite (0 or 0xffff)
 		if (effect->state != EFFECT_STATE_INACTIVE && effect->duration != FFB_EFFECT_DURATION_INFINITE && effect->duration != 0){
 			// Start delay not yet reached
-			if((int)(HAL_GetTick() - effect->startTime) > 0){
+			if(HAL_GetTick() < effect->startTime){
 				continue;
 			}
 			// If effect has expired make inactive
