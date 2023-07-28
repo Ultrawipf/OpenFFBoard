@@ -20,7 +20,7 @@
 #ifdef VESC
 #define VESC_THREAD_MEM 512
 #define VESC_THREAD_PRIO 25 // Must be higher than main thread
-#define BUFFER_RX_SIZE	32
+#define BUFFER_RX_SIZE	64
 
 #define FW_MIN_RELEASE ((5 << 16) | (3 << 8) | 51)
 
