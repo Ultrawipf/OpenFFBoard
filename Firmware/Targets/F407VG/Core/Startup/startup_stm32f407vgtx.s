@@ -60,13 +60,15 @@ defined in linker script */
     .globl   Reboot_Loader
     .type    Reboot_Loader, %function
 Reboot_Loader:
-	LDR     R0, =0x2001FFF0 // End of SRAM for your CPU
-	LDR     R1, =0xBAADF00D
-	STR     R1, [R0, #0]
 
     LDR     R0, =0x40023844 // RCC_APB2ENR
     LDR     R1, =0x00004000 // ENABLE SYSCFG CLOCK
     STR     R1, [R0, #0]
+
+    LDR     R0, =0x40024000 // BKPSRAM
+	LDR     R1, =0xBAADF00D
+	STR     R1, [R0, #0]
+
     LDR     R0, =0x40013800 // SYSCFG_MEMRMP
     LDR     R1, =0x00000001 // MAP ROM AT ZERO
     STR     R1, [R0, #0]
@@ -82,7 +84,21 @@ Reboot_Loader:
   .weak  Reset_Handler
   .type  Reset_Handler, %function
 Reset_Handler:  
-	LDR     R0, =0x2001FFF0 // End of SRAM for your CPU
+//	LDR     R0, =0x2001FFF0 // End of SRAM for your CPU
+
+    LDR     R0, =0x40023840
+    LDR     R1, =0x10000000
+    STR     R1, [R0, #0]
+
+    LDR     R0, =0x40023830
+    LDR     R1, =0x00140000
+    STR     R1, [R0, #0]
+
+    LDR     R0, =0x40007000
+    LDR     R1, =0x0000C100
+    STR     R1, [R0, #0]
+
+LDR     R0, =0x40024000 // BKPSRAM start
 	LDR     R1, =0xBAADF00D
 	LDR     R2, [R0, #0]
 	CMP     R2, R1

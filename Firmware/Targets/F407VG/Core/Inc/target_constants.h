@@ -134,6 +134,8 @@ extern const uint32_t canSpeedBTR_preset[];
 
 
 // System
+// BKPSRAM positions
+#define DFU_JUMP_MAGIC_ADR BKPSRAM_BASE + 0
 
 
 #endif /* INC_TARGET_CONSTANTS_H_ */
