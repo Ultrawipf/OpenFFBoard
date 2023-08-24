@@ -185,6 +185,13 @@ int main(void)
   HAL_GPIO_WritePin(LED_ERR_GPIO_Port, LED_ERR_Pin, GPIO_PIN_SET);
   HAL_Delay(100);
 
+  // Backup domain enable
+//  HAL_PWR_EnableBkUpAccess();
+//  HAL_PWR_EnableBkUpReg();
+//  __HAL_RCC_BKPSRAM_CLK_ENABLE();
+  //BKPSRAM_BASE
+  // Backup sram enabled by boot assembly
+
   /* USER CODE END 2 */
 
   /* Init scheduler */
@@ -1426,12 +1433,15 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE BEGIN 4 */
 void ExitDFU(void){
-	*((unsigned long *)0x2001FFF0) = 0xD00FBEAD; // invalidate flag and reset clean again
+//	*((unsigned long *)0x2001FFF0) = 0xD00FBEAD; // invalidate flag and reset clean again
+	//0x40024000 bkpsram
+	*((unsigned long *)DFU_JUMP_MAGIC_ADR) = 0xD00FBEAD; // invalidate flag and reset clean again
 	NVIC_SystemReset();
 }
 
 void RebootDFU(void) {
-	*((unsigned long *)0x2001FFF0) = 0xDEADBEEF; // ram end. see startup assembly for jumps
+	//*((unsigned long *)0x2001FFF0) = 0xDEADBEEF; // ram end. see startup assembly for jumps
+	*((unsigned long *)DFU_JUMP_MAGIC_ADR) = 0xDEADBEEF; // ram end. see startup assembly for jumps
 	NVIC_SystemReset();
 }
 /* USER CODE END 4 */
