@@ -1690,9 +1690,9 @@ void TMC4671::emergencyStop(bool reset){
 		motorEnabledRequested = false;
 		this->stopMotor();
 	}else{
+		enablePin.set();
 		setPwm(TMC_PwmMode::PWM_FOC);
 		emergency = false;
-		enablePin.set();
 		motorEnabledRequested = true;
 		//this->changeState(TMC_ControlState::waitPower, true); // Reinit
 		this->startMotor();
@@ -2378,10 +2378,9 @@ void TMC4671::setBBM(uint8_t bbmL,uint8_t bbmH){
 }
 
 void TMC4671::setPwm(uint8_t val,uint16_t maxcnt,uint8_t bbmL,uint8_t bbmH){
-	writeReg(0x18, maxcnt);
-	updateReg(0x1A,val,0xff,0);
-	uint32_t bbmr = bbmL | (bbmH << 8);
-	writeReg(0x19, bbmr);
+	setPwmMaxCnt(maxcnt);
+	setPwm((TMC_PwmMode)val);
+	setBBM(bbmL, bbmH);
 	writeReg(0x17,0); //Polarity
 }
 
@@ -2403,6 +2402,29 @@ void TMC4671::setSvPwm(bool enable){
  */
 float TMC4671::getPwmFreq(){
 	return (4.0 * this->conf.hwconf.clockfreq) / (this->conf.pwmcnt +1);
+}
+
+/**
+ * Changes PWM frequency
+ * Max value 4095, minimum 255
+ *
+ */
+void TMC4671::setPwmMaxCnt(uint16_t maxcnt){
+	maxcnt = clip(maxcnt, 255, 4095);
+	this->conf.pwmcnt = maxcnt;
+	writeReg(0x18, maxcnt);
+}
+
+/**
+ * Changes the PWM frequency to a desired frequency
+ * Possible values depend on the hwclock.
+ * At 25MHz the lowest possible frequency is 24.1kHz
+ */
+void TMC4671::setPwmFreq(float freq){
+	if(freq <= 0)
+		return;
+	uint16_t maxcnt = ((4.0 * this->conf.hwconf.clockfreq) / freq) -1;
+	setPwmMaxCnt(maxcnt);
 }
 
 
@@ -2844,6 +2866,7 @@ void TMC4671::registerCommands(){
 	registerCommand("trqbq_q", TMC4671_commands::torqueFilter_q, "Torque filter q*100",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("pidautotune", TMC4671_commands::pidautotune, "Start PID autoruning",CMDFLAG_GET);
 	registerCommand("fluxbrake", TMC4671_commands::fluxbrake, "Prefer energy dissipation in motor",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("pwmfreq", TMC4671_commands::pwmfreq, "Get/set pwm frequency",CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_DEBUG);
 }
 
 
@@ -3142,6 +3165,14 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 
 	case TMC4671_commands::fluxbrake:
 		handleGetSet(cmd, replies, conf.enableFluxDissipation);
+		break;
+
+	case TMC4671_commands::pwmfreq:
+		if(cmd.type == CMDtype::set){
+				setPwmFreq(cmd.val);
+			}else if(cmd.type == CMDtype::get){
+				replies.emplace_back(getPwmFreq());
+			}
 		break;
 
 	default:
