@@ -2020,8 +2020,6 @@ void TMC4671::setMotorType(MotorType motor,uint16_t poles){
 	writeReg(0x1B, mtype);
 	if(motor == MotorType::BLDC && !ES_TMCdetected){
 		setSvPwm(conf.motconf.svpwm); // Higher speed for BLDC motors. Not available in engineering samples
-	}else{
-		setSvPwm(false);
 	}
 }
 
@@ -2389,10 +2387,11 @@ void TMC4671::setPwm(uint8_t val,uint16_t maxcnt,uint8_t bbmL,uint8_t bbmH){
  * Normally active but should be disabled if the motor has no isolated star point
  */
 void TMC4671::setSvPwm(bool enable){
+	conf.motconf.svpwm = enable;
 	if(conf.motconf.motor_type != MotorType::BLDC){
 		enable = false; // Only valid for 3 phase motors with isolated star point
 	}
-	conf.motconf.svpwm = enable;
+
 	updateReg(0x1A,enable,0x01,8);
 }
 
