@@ -14,11 +14,12 @@ Section comment,Name,Value,Comment on key,VirtAddVarTab,exportableFlashAddresses
 // Button Sources:,,,,,
 ,ADR_SPI_BTN_1_CONF,0x201,,1,1
 ,ADR_SHIFTERANALOG_CONF,0x202,,1,1
-,ADR_LOCAL_BTN_CONF,0x203,,1,1
-,ADR_LOCAL_BTN_CONF_2,0x204,,1,1
+,ADR_LOCAL_BTN_CONF,0x203,// Pin mask,1,1
+,ADR_LOCAL_BTN_CONF_2,0x204,// Misc settings,1,1
 ,ADR_SPI_BTN_2_CONF,0x205,,1,1
 ,ADR_SPI_BTN_1_CONF_2,0x206,,1,1
 ,ADR_SPI_BTN_2_CONF_2,0x207,,1,1
+,ADR_LOCAL_BTN_CONF_3,0x208,// Pulse mask,1,1
 // Local encoder,,,,,
 ,ADR_ENCLOCAL_CPR,0x210,,1,1
 ,ADR_ENCLOCAL_OFS,0x211,,1,1

@@ -21,6 +21,7 @@ LocalButtons::LocalButtons() : CommandHandler("dpin",CLSID_BTN_LOCAL,0) {
 	registerCommand("polarity", LocalButtons_commands::polarity, "Pin polarity",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("pins", LocalButtons_commands::pins, "Available pins",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("values", LocalButtons_commands::values, "pin values",CMDFLAG_GET);
+	registerCommand("pulse", LocalButtons_commands::pulse, "Toggle to pulse mode mask",CMDFLAG_GET | CMDFLAG_SET);
 }
 
 LocalButtons::~LocalButtons() {
@@ -42,12 +43,12 @@ void LocalButtons::setMask(uint32_t mask){
 	}
 }
 
-uint8_t LocalButtons::readButtons(uint64_t* buf){
+uint8_t LocalButtons::getButtonInputs(uint64_t* buf,bool pol){
 	uint8_t cur_btn = 0;
 	for(uint8_t i = 0;i<this->maxButtons;i++){
 		if(mask & (0x1 << i)){
 			bool b{readButton(i)};
-			if(this->polarity){ // positive polarity
+			if(pol){ // positive polarity
 				*buf |= b << cur_btn++;
 			}else{	// Negative polarity (normal)
 				*buf |= !b << cur_btn++;
@@ -57,12 +58,40 @@ uint8_t LocalButtons::readButtons(uint64_t* buf){
 	return this->btnnum;
 }
 
+uint8_t LocalButtons::readButtons(uint64_t* buf){
+
+	uint64_t tBuf = 0;
+	getButtonInputs(&tBuf,this->polarity);
+
+	// TODO processing should really be done in a general button handler class to be shared
+	if(pulsemask){
+		uint64_t pulsebtns = (lastButtons ^ tBuf) & pulsemask; // Momentary mode
+		if(HAL_GetTick() - lastPulseTime > pulseTimeout || pulsebtns){ // If timeout or something is high
+			lastPulseTime = HAL_GetTick();
+			// Update pulses
+			*buf |= pulsebtns;
+		}else{
+			*buf |= (lastOutputs & pulsemask); // Normal buttons immediate. Pulsed stored
+		}
+		*buf |= (tBuf & ~pulsemask);
+		lastOutputs = *buf;
+	}else{
+		*buf |= tBuf;
+	}
+	lastButtons = tBuf;
+
+	return this->btnnum;
+}
+
 void LocalButtons::saveFlash(){
 	uint16_t dat = this->mask & 0xffff;
 	Flash_Write(ADR_LOCAL_BTN_CONF, dat);
 
 	uint16_t dat2 = this->polarity & 0x01;
 	Flash_Write(ADR_LOCAL_BTN_CONF_2, dat2);
+
+	uint16_t dat3 = this->pulsemask & 0xffff;
+	Flash_Write(ADR_LOCAL_BTN_CONF_3, dat3);
 }
 
 void LocalButtons::restoreFlash(){
@@ -73,6 +102,10 @@ void LocalButtons::restoreFlash(){
 
 	if(Flash_Read(ADR_LOCAL_BTN_CONF_2,&dat)){
 		this->polarity = dat & 0x01;
+	}
+
+	if(Flash_Read(ADR_LOCAL_BTN_CONF_3,&dat)){
+		this->pulsemask = (dat & 0xffff);
 	}
 }
 
@@ -110,8 +143,18 @@ CommandStatus LocalButtons::command(const ParsedCommand& cmd,std::vector<Command
 	case LocalButtons_commands::values:
 		if(cmd.type == CMDtype::get){
 			uint64_t buf = 0;
-			readButtons(&buf);
+			getButtonInputs(&buf,this->polarity);
 			replies.emplace_back(buf);
+		}else{
+			return CommandStatus::ERR;
+		}
+	break;
+
+	case LocalButtons_commands::pulse:
+		if(cmd.type == CMDtype::set){
+			this->pulsemask = cmd.val;
+		}else if(cmd.type == CMDtype::get){
+			replies.emplace_back(this->pulsemask);
 		}else{
 			return CommandStatus::ERR;
 		}

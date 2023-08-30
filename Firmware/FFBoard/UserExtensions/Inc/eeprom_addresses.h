@@ -1,23 +1,23 @@
 /*		
- * eeprom_addresses.h
- *
- *  Created on: 24.01.2020
- *  Author: Yannick
- *
- *	/!\ Generated from the file memory_map.csv
-   / ! \ DO NOT EDIT THIS DIRECTLY !!!
- */
+ * eeprom_addresses.h		
+ *		
+ *  Created on: 24.01.2020		
+ *  Author: Yannick		
+ *		
+ *	/!\ Generated from the file memory_map.csv 
+   / ! \ DO NOT EDIT THIS DIRECTLY !!!	
+ */			
 		
 #ifndef EEPROM_ADDRESSES_H_
 #define EEPROM_ADDRESSES_H_
 
 #include "main.h"
 // Change this to the amount of currently registered variables
-#define NB_OF_VAR 147
+#define NB_OF_VAR 148
 extern const uint16_t VirtAddVarTab[NB_OF_VAR];
 
 // Amount of variables in exportable list
-#define NB_EXPORTABLE_ADR 132
+#define NB_EXPORTABLE_ADR 133
 extern const uint16_t exportableFlashAddresses[NB_EXPORTABLE_ADR];
 
 
@@ -50,11 +50,12 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 // Button Sources:
 #define ADR_SPI_BTN_1_CONF 0x201
 #define ADR_SHIFTERANALOG_CONF 0x202
-#define ADR_LOCAL_BTN_CONF 0x203
-#define ADR_LOCAL_BTN_CONF_2 0x204
+#define ADR_LOCAL_BTN_CONF 0x203 // Pin mask
+#define ADR_LOCAL_BTN_CONF_2 0x204 // Misc settings
 #define ADR_SPI_BTN_2_CONF 0x205
 #define ADR_SPI_BTN_1_CONF_2 0x206
 #define ADR_SPI_BTN_2_CONF_2 0x207
+#define ADR_LOCAL_BTN_CONF_3 0x208 // Pulse mask
 // Local encoder
 #define ADR_ENCLOCAL_CPR 0x210
 #define ADR_ENCLOCAL_OFS 0x211
