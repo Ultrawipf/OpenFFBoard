@@ -17,18 +17,23 @@
 
 class LocalButtons: public ButtonSource,CommandHandler{
 	enum class LocalButtons_commands : uint32_t{
-		mask,polarity,pins,values,
+		mask,polarity,pins,values,pulse
 	};
 private:
-	uint32_t mask = 0xff;
+	uint32_t mask = 0xff; // Can have 16 bits stored
+	uint32_t pulsemask = 0;
+	static constexpr uint32_t pulseTimeout = 50; // Update only every 50 ms
+	uint32_t lastPulseTime = 0;
 	void setMask(uint32_t mask);
 	bool polarity = false;
 	static const std::array<InputPin,BUTTON_PINS> button_pins;
-
+	uint64_t lastOutputs = 0;
+	uint64_t lastButtons = 0;
 public:
 	LocalButtons();
 	virtual ~LocalButtons();
 	uint8_t readButtons(uint64_t* buf);
+	uint8_t getButtonInputs(uint64_t* buf,bool pol);
 
 	const ClassIdentifier getInfo();
 	static ClassIdentifier info;

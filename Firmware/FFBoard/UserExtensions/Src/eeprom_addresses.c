@@ -1,12 +1,12 @@
 /*		
- * eeprom_addresses.c
- *
- *  Created on: 24.01.2020
- *  Author: Yannick
- *
- *	/!\ Generated from the file memory_map.csv
-   / ! \ DO NOT EDIT THIS DIRECTLY !!!
- */
+ * eeprom_addresses.c		
+ *		
+ *  Created on: 24.01.2020		
+ *  Author: Yannick		
+ *		
+ *	/!\ Generated from the file memory_map.csv 
+   / ! \ DO NOT EDIT THIS DIRECTLY !!!	
+ */		
 		
 #include "eeprom_addresses.h"		
 
@@ -32,11 +32,12 @@ const uint16_t VirtAddVarTab[NB_OF_VAR] =
 // Button Sources:
 	ADR_SPI_BTN_1_CONF,
 	ADR_SHIFTERANALOG_CONF,
-	ADR_LOCAL_BTN_CONF,
-	ADR_LOCAL_BTN_CONF_2,
+	ADR_LOCAL_BTN_CONF, // Pin mask
+	ADR_LOCAL_BTN_CONF_2, // Misc settings
 	ADR_SPI_BTN_2_CONF,
 	ADR_SPI_BTN_1_CONF_2,
 	ADR_SPI_BTN_2_CONF_2,
+	ADR_LOCAL_BTN_CONF_3, // Pulse mask
 // Local encoder
 	ADR_ENCLOCAL_CPR,
 	ADR_ENCLOCAL_OFS,
@@ -193,8 +194,8 @@ const uint16_t VirtAddVarTab[NB_OF_VAR] =
 };
 
 /**		
- * Variables to be included in a flash dump
- */
+ * Variables to be included in a flash dump		
+ */		
 const uint16_t exportableFlashAddresses[NB_EXPORTABLE_ADR] =		
 {
 // System variables
@@ -212,11 +213,12 @@ const uint16_t exportableFlashAddresses[NB_EXPORTABLE_ADR] =
 // Button Sources:
 	ADR_SPI_BTN_1_CONF,
 	ADR_SHIFTERANALOG_CONF,
-	ADR_LOCAL_BTN_CONF,
-	ADR_LOCAL_BTN_CONF_2,
+	ADR_LOCAL_BTN_CONF, // Pin mask
+	ADR_LOCAL_BTN_CONF_2, // Misc settings
 	ADR_SPI_BTN_2_CONF,
 	ADR_SPI_BTN_1_CONF_2,
 	ADR_SPI_BTN_2_CONF_2,
+	ADR_LOCAL_BTN_CONF_3, // Pulse mask
 // Local encoder
 	ADR_ENCLOCAL_CPR,
 	ADR_ENCLOCAL_OFS,
