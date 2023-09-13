@@ -32,7 +32,7 @@ bool MotorPWM::isCreatable(){
 }
 
 
-MotorPWM::MotorPWM() : CommandHandler("pwmdrv",CLSID_MOT_PWM), timerConfig(pwmTimerConfig) {
+MotorPWM::MotorPWM() : CommandHandler("pwmdrv",CLSID_MOT_PWM) {
 
 	MotorPWM::pwmDriverInUse = true;
 	restoreFlash();
@@ -108,6 +108,16 @@ void MotorPWM::turn(int16_t power){
 }
 
 /**
+ * Calculates period and prescaler for a timer based on frequency
+ */
+std::pair<uint16_t,uint16_t> MotorPWM::freqToPeriodPsc(uint32_t freq){
+	uint32_t arr_raw = (timerConfig.timerFreq/freq);
+	uint32_t prescaler = arr_raw / 0xffff;
+	uint32_t arr = arr_raw / (prescaler + 1);
+	return {arr,prescaler};
+}
+
+/**
  * Setup the timer for different frequency presets.
  */
 void MotorPWM::setPwmSpeed(SpeedPWM_DRV spd){
@@ -119,8 +129,7 @@ void MotorPWM::setPwmSpeed(SpeedPWM_DRV spd){
 			period =  40000;  //20ms (40000/Sysclock)
 			prescaler = timerConfig.timerFreq/2000000;
 		}else{
-			period = timerConfig.timerFreq/3000; // Check if timer can count high enough for very high clock speeds!
-			prescaler = 0;
+			std::tie(period,prescaler) = freqToPeriodPsc(3000);
 		}
 
 	break;
@@ -129,8 +138,7 @@ void MotorPWM::setPwmSpeed(SpeedPWM_DRV spd){
 			period = 30000;//15ms(30000/47)
 			prescaler = timerConfig.timerFreq/2000000;
 		}else{
-			period = timerConfig.timerFreq/9000;
-			prescaler = 0;
+			std::tie(period,prescaler) = freqToPeriodPsc(9000);
 		}
 
 	break;
@@ -139,8 +147,7 @@ void MotorPWM::setPwmSpeed(SpeedPWM_DRV spd){
 			period = 20000; //10ms (20000/47)
 			prescaler = timerConfig.timerFreq/2000000;
 		}else{
-			period = timerConfig.timerFreq/17000;
-			prescaler = 0;
+			std::tie(period,prescaler) = freqToPeriodPsc(17000);
 		}
 	break;
 	case SpeedPWM_DRV::VERYHIGH:
@@ -148,8 +155,7 @@ void MotorPWM::setPwmSpeed(SpeedPWM_DRV spd){
 			period = 10000; //5ms (20000/23)
 			prescaler = timerConfig.timerFreq/2000000;
 		}else{
-			period = timerConfig.timerFreq/24000;
-			prescaler = 0;
+			std::tie(period,prescaler) = freqToPeriodPsc(24000);
 		}
 	break;
 	default:
