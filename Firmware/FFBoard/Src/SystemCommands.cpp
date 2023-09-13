@@ -55,7 +55,7 @@ void SystemCommands::registerCommands(){
 	CommandHandler::registerCommand("main", FFBoardMain_commands::main, "Query or change mainclass",CMDFLAG_GET | CMDFLAG_SET);
 	CommandHandler::registerCommand("swver", FFBoardMain_commands::swver, "Firmware version",CMDFLAG_GET);
 	CommandHandler::registerCommand("hwtype", FFBoardMain_commands::hwtype, "Hardware type",CMDFLAG_GET);
-	CommandHandler::registerCommand("flashraw", FFBoardMain_commands::flashraw, "Write value to flash address",CMDFLAG_SETADR);
+	CommandHandler::registerCommand("flashraw", FFBoardMain_commands::flashraw, "Write value to flash address",CMDFLAG_SETADR | CMDFLAG_GETADR);
 	CommandHandler::registerCommand("flashdump", FFBoardMain_commands::flashdump, "Read all flash variables (val:adr)",CMDFLAG_GET);
 	CommandHandler::registerCommand("errors", FFBoardMain_commands::errors, "Read error states",CMDFLAG_GET);
 	CommandHandler::registerCommand("errorsclr", FFBoardMain_commands::errorsclr, "Reset errors",CMDFLAG_GET);
