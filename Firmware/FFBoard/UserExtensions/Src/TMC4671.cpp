@@ -9,7 +9,7 @@
 #ifdef TMC4671DRIVER
 #include "ledEffects.h"
 #include "voltagesense.h"
-#include "stm32f4xx_hal_spi.h"
+//#include "stm32f4xx_hal_spi.h"
 #include <math.h>
 #include <assert.h>
 #include "ErrorHandler.h"
@@ -23,7 +23,7 @@ ClassIdentifier TMC_1::info = {
 
 
 bool TMC_1::isCreatable() {
-	return motor_spi.isPinFree(OutputPin(*SPI1_SS1_GPIO_Port, SPI1_SS1_Pin));
+	return motor_spi.isPinFree(*motor_spi.getCsPin(0));
 }
 
 
@@ -34,7 +34,7 @@ ClassIdentifier TMC_2::info = {
 
 
 bool TMC_2::isCreatable() {
-	return motor_spi.isPinFree(OutputPin(*SPI1_SS2_GPIO_Port, SPI1_SS2_Pin));
+	return motor_spi.isPinFree(*motor_spi.getCsPin(1));
 }
 
 
@@ -52,18 +52,22 @@ TMC4671::TMC4671(SPIPort& spiport,OutputPin cspin,uint8_t address) :
 	CommandHandler::setCommandsEnabled(false);
 	setAddress(address);
 	registerCommands();
+	spiConfig.peripheral = motor_spi.getPortHandle()->Init;
 	spiConfig.peripheral.Mode = SPI_MODE_MASTER;
 	spiConfig.peripheral.Direction = SPI_DIRECTION_2LINES;
 	spiConfig.peripheral.DataSize = SPI_DATASIZE_8BIT;
 	spiConfig.peripheral.CLKPolarity = SPI_POLARITY_HIGH;
 	spiConfig.peripheral.CLKPhase = SPI_PHASE_2EDGE;
 	spiConfig.peripheral.NSS = SPI_NSS_SOFT;
-	spiConfig.peripheral.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_16;
+	spiConfig.peripheral.BaudRatePrescaler = spiPort.getClosestPrescaler(10e6).first; // 10MHz
 	spiConfig.peripheral.FirstBit = SPI_FIRSTBIT_MSB;
 	spiConfig.peripheral.TIMode = SPI_TIMODE_DISABLE;
 	spiConfig.peripheral.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
-	spiConfig.peripheral.CRCPolynomial = 10;
 	spiConfig.cspol = true;
+
+#ifdef TMC4671_SPI_DATA_IDLENESS
+	spiConfig.peripheral.MasterInterDataIdleness = TMC4671_SPI_DATA_IDLENESS;
+#endif
 
 	spiPort.takeSemaphore();
 	spiPort.configurePort(&spiConfig.peripheral);

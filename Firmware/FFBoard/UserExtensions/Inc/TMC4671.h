@@ -344,7 +344,7 @@ public:
 	static uint16_t encodeMotToInt(TMC4671MotConf mconf);
 
 
-	TMC4671(SPIPort& spiport,OutputPin cspin = OutputPin(*SPI1_SS1_GPIO_Port, SPI1_SS1_Pin),uint8_t address=1);
+	TMC4671(SPIPort& spiport,OutputPin cspin,uint8_t address=1);
 
 	void setHwType(TMC_HW_Ver type);
 
@@ -659,7 +659,7 @@ private:
 
 class TMC_1 : public TMC4671 {
 public:
-	TMC_1() : TMC4671{motor_spi,OutputPin(*SPI1_SS1_GPIO_Port, SPI1_SS1_Pin),1} {}
+	TMC_1() : TMC4671{motor_spi,*motor_spi.getCsPin(0),1} {}
 
 	//const ClassIdentifier getInfo() override;
 	static bool isCreatable();
@@ -668,7 +668,7 @@ public:
 
 class TMC_2 : public TMC4671 {
 public:
-	TMC_2() : TMC4671{motor_spi,OutputPin(*SPI1_SS2_GPIO_Port, SPI1_SS2_Pin),2} {}
+	TMC_2() : TMC4671{motor_spi,*motor_spi.getCsPin(1),2} {}
 
 	//const ClassIdentifier getInfo() override;
 	static bool isCreatable();
