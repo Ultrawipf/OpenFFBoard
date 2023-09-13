@@ -57,7 +57,7 @@ const uint32_t canSpeedBTR_preset[] = { 0x001b0037,0x001b001b,0x001c0014,0x001a0
 
 
 #ifdef PWMDRIVER
-const PWMConfig pwmTimerConfig =
+const PWMConfig MotorPWM::timerConfig =
 {
 	.channel_1 = TIM_CHANNEL_1,
 	.channel_2 = TIM_CHANNEL_2,

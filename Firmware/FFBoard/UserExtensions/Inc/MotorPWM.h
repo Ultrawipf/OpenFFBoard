@@ -83,6 +83,7 @@ public:
 
 	static bool pwmDriverInUse;
 
+	static PWMConfig& config;
 private:
 	float tFreq = 1; // Frequency scaling. Timer freq in MHz
 	int32_t period = 20000;
@@ -98,7 +99,8 @@ private:
 	/**
 	 * The timer channels are mapped in the cpp_target_config files
 	 */
-	const PWMConfig timerConfig;
+	static const PWMConfig timerConfig;
+	static std::pair<uint16_t,uint16_t> freqToPeriodPsc(uint32_t freq);
 };
 
 
