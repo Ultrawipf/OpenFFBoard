@@ -66,6 +66,7 @@
 #define TIM_MICROS htim10
 #define TIM_USER htim9 // Timer with full core clock speed available for the mainclass
 #define TIM_TMC htim6 // Timer running at half clock speed
+#define TIM_TMC_BCLK SystemCoreClock / 2
 
 extern UART_HandleTypeDef huart1;
 #define UART_PORT_EXT huart1 // main uart port
@@ -81,7 +82,7 @@ extern I2C_HandleTypeDef hi2c1;
 
 
 // ADC Channels
-#define ADC1_CHANNELS 6 	// how many analog input values to be read by dma
+#define ADC1_CHANNELS 8 	// how many analog input values to be read by dma
 #define ADC2_CHANNELS 2		// VSENSE
 
 extern ADC_HandleTypeDef hadc2;
@@ -90,6 +91,10 @@ extern ADC_HandleTypeDef hadc2;
 #define ADC_CHAN_VEXT 0 // adc buffer index of supply voltage sense
 extern volatile uint32_t ADC2_BUF[ADC2_CHANNELS]; // Buffer
 #define VSENSE_ADC_BUF ADC2_BUF
+
+extern volatile uint32_t ADC1_BUF[ADC1_CHANNELS]; // Buffer
+#define TEMPSENSOR_ADC_VAL ADC1_BUF[6] // ADC1 ch 7
+#define TEMPSENSOR_ADC_INTREF_VAL ADC1_BUF[7] // ADC1 ch 8.
 
 extern ADC_HandleTypeDef hadc1;
 #define AIN_HADC hadc1	// main adc for analog pins
