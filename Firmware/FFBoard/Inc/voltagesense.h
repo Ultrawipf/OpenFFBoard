@@ -27,4 +27,10 @@ void setVSenseMult(float vSenseMultiplier);
  */
 void setupBrakePin(uint32_t vdiffAct,uint32_t vdiffDeact,uint32_t vMax);
 
+/**
+ * Helper function implementation for getting the chip temperature if read via internal ADC channel
+ * __weak defined and can be overridden in chip dependent code
+ */
+int32_t getChipTemp();
+
 #endif /* VOLTAGESENSE_H_ */

@@ -70,15 +70,6 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc){
 		c->adcUpd(buf,chans,hadc);
 	}
 
-#if defined(ADC_REQUIRES_DMA_REQUESTS)
-#if defined (__DCACHE_PRESENT) && (__DCACHE_PRESENT == 1U)
-	SCB_InvalidateDCache_by_Addr(hadc, chans);
-
-#endif
-//	HAL_ADC_Stop_DMA(hadc);
-//	HAL_ADC_Start_DMA(hadc, (uint32_t*)buf, chans);
-//	HAL_DMA_Start_IT(hadc->DMA_Handle, (uint32_t)&hadc->Instance->DR, (uint32_t)buf, chans);
-#endif
 }
 
 /**

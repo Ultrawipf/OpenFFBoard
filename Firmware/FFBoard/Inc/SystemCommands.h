@@ -11,7 +11,7 @@
 #include "CommandHandler.h"
 
 enum class FFBoardMain_commands : uint32_t{
-	help=0,save=1,reboot=2,dfu=3,swver=4,hwtype=5,lsmain,main,lsactive,format,errors,errorsclr,flashdump,flashraw,vint,vext,mallinfo,heapfree,taskstats,debug,devid,uid
+	help=0,save=1,reboot=2,dfu=3,swver=4,hwtype=5,lsmain,main,lsactive,format,errors,errorsclr,flashdump,flashraw,vint,vext,mallinfo,heapfree,taskstats,debug,devid,uid,temp
 };
 
 class SystemCommands : public CommandHandler {
