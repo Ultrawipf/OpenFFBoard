@@ -10,6 +10,7 @@
 #include "voltagesense.h"
 #include "ErrorHandler.h"
 #include "AdcHandler.h"
+#include "FastAvg.h"
 
 bool braking_flag = false;
 uint32_t maxVoltage = 65000; // Force braking
@@ -80,5 +81,18 @@ void brakeCheck(){
 	}else{
 		HAL_GPIO_WritePin(DRV_BRAKE_GPIO_Port,DRV_BRAKE_Pin, braking_flag ? GPIO_PIN_SET:GPIO_PIN_RESET);
 	}
+
+}
+
+FastMovingAverage<int32_t>chipTempAvg{5};
+__weak int32_t getChipTemp(){
+#if !defined(TEMPSENSOR_ADC_VAL) || !defined(__LL_ADC_CALC_TEMPERATURE)
+	return 0;
+#else
+	if(!TEMPSENSOR_ADC_VAL || !TEMPSENSOR_ADC_INTREF_VOL){
+		return 0; // divby0 risk
+	}
+	return chipTempAvg.addValue(__LL_ADC_CALC_TEMPERATURE(TEMPSENSOR_ADC_INTREF_VOL,TEMPSENSOR_ADC_VAL,TEMPSENSOR_ADC_RES));
+#endif
 
 }

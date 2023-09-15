@@ -17,6 +17,7 @@ extern ClassChooser<FFBoardMain> mainchooser;
 extern FFBoardMain* mainclass;
 //extern static const uint8_t SW_VERSION_INT[3];
 
+
 bool SystemCommands::debugMode = false;
 bool SystemCommands::errorPrintingEnabled = true;
 SystemCommands* SystemCommands::systemCommandsInstance = nullptr;
@@ -69,6 +70,7 @@ void SystemCommands::registerCommands(){
 	CommandHandler::registerCommand("name", CommandHandlerCommands::name, "name of class",CMDFLAG_GET|CMDFLAG_STR_ONLY);
 	CommandHandler::registerCommand("cmdinfo", CommandHandlerCommands::cmdinfo, "Flags of a command id (adr). -1 if cmd id invalid",CMDFLAG_GETADR);
 	CommandHandler::registerCommand("uid", FFBoardMain_commands::uid, "Get 96b chip uid. Adr0-2 sel blk",CMDFLAG_GET | CMDFLAG_GETADR);
+	CommandHandler::registerCommand("temp", FFBoardMain_commands::temp, "Chip temperature in C",CMDFLAG_GET);
 }
 
 // Choose lower optimize level because the compiler likes to blow up this function
@@ -279,6 +281,11 @@ CommandStatus SystemCommands::internalCommand(const ParsedCommand& cmd,std::vect
 				}
 			}
 			break;
+		case FFBoardMain_commands::temp:
+			{
+				replies.emplace_back(getChipTemp());
+				break;
+			}
 
 
 		default:

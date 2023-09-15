@@ -67,4 +67,18 @@ static const uint8_t SW_VERSION_INT[3] = {1,15,1}; // Version as array. 8 bit ea
 #define I2CBUS
 #endif
 
+
+#ifndef TEMPSENSOR_ADC_RES
+#define TEMPSENSOR_ADC_RES ADC_RESOLUTION_12B
+#endif
+
+#ifndef TEMPSENSOR_ADC_INTREF_VOL
+	#ifndef TEMPSENSOR_ADC_INTREF_VAL
+		#define TEMPSENSOR_ADC_INTREF_VOL 3300
+	#else
+		#define TEMPSENSOR_ADC_INTREF_VOL __LL_ADC_CALC_VREFANALOG_VOLTAGE(TEMPSENSOR_ADC_INTREF_VAL,TEMPSENSOR_ADC_RES)
+	#endif
+#endif
+
+
 #endif
