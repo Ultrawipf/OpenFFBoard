@@ -80,7 +80,7 @@ extern I2C_HandleTypeDef hi2c1;
 
 
 // ADC Channels
-#define ADC1_CHANNELS 3 	// how many analog input values to be read by dma
+#define ADC1_CHANNELS 5 	// how many analog input values to be read by dma
 #define ADC2_CHANNELS 2		// VSENSE
 
 extern ADC_HandleTypeDef hadc2;
@@ -95,6 +95,10 @@ extern ADC_HandleTypeDef hadc1;
 #define ADC_PINS 3	// Amount of analog channel pins
 #define ADC_CHAN_FPIN 0 // First analog channel pin. last channel = fpin+ADC_PINS-1
 #define VOLTAGE_MULT_DEFAULT 24.6 // Voltage in mV = adc*VOLTAGE_MULT (24.6 for 976k/33k divider)
+
+extern volatile uint32_t ADC1_BUF[ADC1_CHANNELS]; // Buffer
+#define TEMPSENSOR_ADC_VAL ADC1_BUF[3] // ADC1 ch 4
+#define TEMPSENSOR_ADC_INTREF_VAL ADC1_BUF[4] // ADC1 ch 5.
 
 #define BUTTON_PINS 8
 
@@ -133,6 +137,6 @@ extern const uint32_t canSpeedBTR_preset[];
 
 
 // System
-
+#define CCRAM_SEC ".ccmram"
 
 #endif /* INC_TARGET_CONSTANTS_H_ */
