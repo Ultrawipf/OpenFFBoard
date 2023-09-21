@@ -16,9 +16,9 @@
 #include "CanHandler.h"
 #include "CAN.h"
 
-extern "C"{
-#include "stm32f4xx_hal_can.h"
-}
+//extern "C"{
+//#include "stm32f4xx_hal_can.h"
+//}
 
 
 typedef struct{
@@ -48,10 +48,10 @@ public:
 	CommandStatus command(const ParsedCommand& cmd,std::vector<CommandReply>& replies);
 	void sendMessage(uint32_t id, uint64_t msg,uint8_t len,bool rtr);
 	void sendMessage();
-	void canRxPendCallback(CAN_HandleTypeDef *hcan,uint8_t* rxBuf,CAN_RxHeaderTypeDef* rxHeader,uint32_t fifo);
-	void canErrorCallback(CAN_HandleTypeDef *hcan);
+	void canRxPendCallback(CANPort* port,CAN_rx_msg& msg) override;
+	void canErrorCallback(CANPort* port, uint32_t error);
 	void cdcRcv(char* Buf, uint32_t *Len) override;
-	CAN_HandleTypeDef* CanHandle = &CANPORT;
+//	CAN_HandleTypeDef* CanHandle = &CANPORT;
 
 	std::string messageToString(CAN_rx_msg msg);
 
@@ -70,11 +70,11 @@ private:
 	const uint8_t numBuses = 1;
 
 
-	CAN_TxHeaderTypeDef txHeader;
+	CAN_msg_header_tx txHeader;
 
 	uint8_t txBuf[8] = {0};
 	uint32_t txMailbox;
-	uint32_t rxfifo = CAN_RX_FIFO0;
+	uint32_t rxfifo = 0;
 	CAN_Config_t conf1;
 	CAN_Config_t conf2;
 	bool gvretMode = false;

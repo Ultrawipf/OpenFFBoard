@@ -48,13 +48,15 @@ const OutputPin gpMotor{*DRV_GP1_GPIO_Port,DRV_GP1_Pin};
  * Can BTR register for different speed configs
  * 50, 100, 125, 250, 500, 1000 kbit
  */
+#include "CANPort2B.h"
+const auto canpresetentries = std::to_array<CANPortHardwareConfig::PresetEntry>({{0x001b0037,50000,"50k"},{0x001b001b,100000,"100k"},{0x001c0014,125000,"125k"},{0x001a000b,250000,"250k"},{0x001a0005,500000,"500k"},{0x001a0002,1000000,"1000k"}});
+CANPortHardwareConfig canpresets = CANPortHardwareConfig(true,canpresetentries);
 const OutputPin canSilentPin = OutputPin(*CAN_S_GPIO_Port, CAN_S_Pin);
-CANPort canport{CANPORT,&canSilentPin};
-const OutputPin debugpin = OutputPin(*GP1_GPIO_Port, GP1_Pin);
-const uint32_t canSpeedBTR_preset[] = { 0x001b0037,0x001b001b,0x001c0014,0x001a000b,0x001a0005,0x001a0002};
+CANPort_2B canport_base{hcan1,canpresets,&canSilentPin};
+CANPort& canport = static_cast<CANPort&>(canport_base);
 
 #endif
-
+const OutputPin debugpin = OutputPin(*GP1_GPIO_Port, GP1_Pin);
 
 #ifdef PWMDRIVER
 const PWMConfig MotorPWM::timerConfig =
