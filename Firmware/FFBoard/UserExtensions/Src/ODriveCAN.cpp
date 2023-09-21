@@ -66,26 +66,14 @@ ODriveCAN::~ODriveCAN() {
 
 void ODriveCAN::setCanFilter(){
 	// Set up a filter to receive odrive commands
-	CAN_FilterTypeDef sFilterConfig;
-	sFilterConfig.FilterBank = 0;
-	sFilterConfig.FilterMode = CAN_FILTERMODE_IDMASK;
-	sFilterConfig.FilterScale = CAN_FILTERSCALE_32BIT;
-//	sFilterConfig.FilterIdHigh = 0x0000;
-//	sFilterConfig.FilterIdLow = 0x0000;
-//	sFilterConfig.FilterMaskIdHigh = 0x0000;
-//	sFilterConfig.FilterMaskIdLow = 0x0000;
 	uint32_t filter_id = (nodeId & 0x3F) << 5;
 	uint32_t filter_mask = 0x07E0;
-	sFilterConfig.FilterIdHigh = filter_id << 5;
-	sFilterConfig.FilterIdLow = 0x0000;
-	sFilterConfig.FilterMaskIdHigh = filter_mask << 5;
-	sFilterConfig.FilterMaskIdLow = 0x0000;
 
-//	sFilterConfig.FilterFIFOAssignment = CAN_RX_FIFO0;
-	sFilterConfig.FilterFIFOAssignment = motorId % 2 == 0 ? CAN_RX_FIFO0 : CAN_RX_FIFO1;
-	sFilterConfig.FilterActivation = ENABLE;
-	sFilterConfig.SlaveStartFilterBank = 14;
-	this->filterId = this->port->addCanFilter(sFilterConfig);
+	CAN_filter filterConf;
+	filterConf.buffer = motorId % 2 == 0 ? 0 : 1;
+	filterConf.filter_id = filter_id;
+	filterConf.filter_mask =  filter_mask;
+	this->filterId = this->port->addCanFilter(filterConf);
 }
 
 void ODriveCAN::registerCommands(){
@@ -112,8 +100,7 @@ void ODriveCAN::restoreFlash(){
 			nodeId = (canIds >> 6) & 0x3f;
 			setting1addr = ADR_ODRIVE_SETTING1_M1;
 		}
-//		uint8_t canspd = (canIds >> 12) & 0x7;
-//		this->setCanRate(canspd);
+
 	}
 
 	uint16_t settings1 = 0;
@@ -145,7 +132,7 @@ void ODriveCAN::saveFlash(){
 		canIds |= (nodeId & 0x3f) << 6;
 	}
 	canIds &= ~0x7000; // reset bits
-//	canIds |= (this->baudrate & 0x7) << 12;
+
 	Flash_Write(ADR_ODRIVE_CANID,canIds);
 
 	uint16_t settings1 = ((int32_t)(maxTorque*100) & 0xfff);
@@ -255,10 +242,9 @@ void ODriveCAN::setPos(int32_t pos){
 
 void ODriveCAN::requestMsg(uint8_t cmd){
 	CAN_tx_msg msg;
-
-	msg.header.RTR = CAN_RTR_REMOTE;
-	msg.header.DLC = 0;
-	msg.header.StdId = cmd | (nodeId << 5);
+	msg.header.rtr = true;
+	msg.header.length = 0;
+	msg.header.id = cmd | (nodeId << 5);
 	port->sendMessage(msg);
 }
 
@@ -308,10 +294,6 @@ void ODriveCAN::turn(int16_t power){
 	this->setTorque(torque);
 }
 
-//void ODriveCAN::setCanRate(uint8_t canRate){
-//	baudrate = clip<uint8_t,uint8_t>(canRate, 3, 5);
-//	port->setSpeedPreset(baudrate);
-//}
 
 /**
  * Sends the start anticogging command
@@ -342,7 +324,7 @@ CommandStatus ODriveCAN::command(const ParsedCommand& cmd,std::vector<CommandRep
 
 	case ODriveCAN_commands::canid:
 		handleGetSet(cmd, replies, this->nodeId);
-		canport.removeCanFilter(filterId);
+		port->removeCanFilter(filterId);
 		setCanFilter();
 		break;
 	case ODriveCAN_commands::state:
@@ -400,17 +382,17 @@ CommandStatus ODriveCAN::command(const ParsedCommand& cmd,std::vector<CommandRep
 
 }
 
-void ODriveCAN::canErrorCallback(CAN_HandleTypeDef *hcan){
+void ODriveCAN::canErrorCallback(CANPort* port,uint32_t errcode){
 	//pulseErrLed();
 }
 
-void ODriveCAN::canRxPendCallback(CAN_HandleTypeDef *hcan,uint8_t* rxBuf,CAN_RxHeaderTypeDef* rxHeader,uint32_t fifo){
-	uint16_t node = (rxHeader->StdId >> 5) & 0x3F;
+void ODriveCAN::canRxPendCallback(CANPort* port,CAN_rx_msg& msg){
+	uint16_t node = (msg.header.id >> 5) & 0x3F;
 	if(node != this->nodeId){
 		return;
 	}
-	uint64_t msg = *reinterpret_cast<uint64_t*>(rxBuf);
-	uint8_t cmd = rxHeader->StdId & 0x1F;
+	uint64_t msg_int = *reinterpret_cast<uint64_t*>(msg.data);
+	uint8_t cmd = msg.header.id & 0x1F;
 
 	lastCanMessage = HAL_GetTick();
 
@@ -418,11 +400,11 @@ void ODriveCAN::canRxPendCallback(CAN_HandleTypeDef *hcan,uint8_t* rxBuf,CAN_RxH
 	case 1:
 	{
 		// TODO error handling
-		errors = (msg & 0xffffffff);
-		odriveCurrentState = (ODriveState)( (msg >> 32) & 0xff);
-		odriveMotorFlags = (msg >> 40) & 0xff;
-		odriveEncoderFlags = ((msg >> 48) & 0xff);
-		odriveControllerFlags = (msg >> 56) & 0xff;
+		errors = (msg_int & 0xffffffff);
+		odriveCurrentState = (ODriveState)( (msg_int >> 32) & 0xff);
+		odriveMotorFlags = (msg_int >> 40) & 0xff;
+		odriveEncoderFlags = ((msg_int >> 48) & 0xff);
+		odriveControllerFlags = (msg_int >> 56) & 0xff;
 
 		if(waitReady){
 			waitReady = false;
@@ -432,10 +414,10 @@ void ODriveCAN::canRxPendCallback(CAN_HandleTypeDef *hcan,uint8_t* rxBuf,CAN_RxH
 	}
 	case 0x09: // encoder pos float
 	{
-		uint64_t tp = msg & 0xffffffff;
+		uint64_t tp = msg_int & 0xffffffff;
 		memcpy(&lastPos,&tp,sizeof(float));
 
-		uint64_t ts = (msg >> 32) & 0xffffffff;
+		uint64_t ts = (msg_int >> 32) & 0xffffffff;
 		memcpy(&lastSpeed,&ts,sizeof(float));
 		lastPosTime = HAL_GetTick();
 		posWaiting = false;
@@ -446,7 +428,7 @@ void ODriveCAN::canRxPendCallback(CAN_HandleTypeDef *hcan,uint8_t* rxBuf,CAN_RxH
 	case 0x17: // voltage
 	{
 		lastVoltageUpdate = HAL_GetTick();
-		uint64_t t = msg & 0xffffffff;
+		uint64_t t = msg_int & 0xffffffff;
 		memcpy(&lastVoltage,&t,sizeof(float));
 
 		break;

@@ -14,9 +14,11 @@
 #include "ButtonSource.h"
 #include "PersistentStorage.h"
 #include "CAN.h"
+#include "CanHandler.h"
 #include "CommandHandler.h"
 #include "cpp_target_config.h"
 
+//class CanHandler;
 class CanButtons : public ButtonSource, public CanHandler, public CommandHandler {
 public:
 	enum class CanButtons_commands : uint32_t {
@@ -38,7 +40,7 @@ public:
 
 	CommandStatus command(const ParsedCommand& cmd,std::vector<CommandReply>& replies);
 
-	void canRxPendCallback(CAN_HandleTypeDef *hcan,uint8_t* rxBuf,CAN_RxHeaderTypeDef* rxHeader,uint32_t fifo) override;
+	void canRxPendCallback(CANPort* port,CAN_rx_msg& msg) override;
 
 private:
 	bool invert = false;
