@@ -59,7 +59,7 @@ TMC4671::TMC4671(SPIPort& spiport,OutputPin cspin,uint8_t address) :
 	spiConfig.peripheral.CLKPolarity = SPI_POLARITY_HIGH;
 	spiConfig.peripheral.CLKPhase = SPI_PHASE_2EDGE;
 	spiConfig.peripheral.NSS = SPI_NSS_SOFT;
-	spiConfig.peripheral.BaudRatePrescaler = spiPort.getClosestPrescaler(10e6).first; // 10MHz
+	spiConfig.peripheral.BaudRatePrescaler = spiPort.getClosestPrescaler(8e6,0,10e6).first; // 8 target, 10MHz max
 	spiConfig.peripheral.FirstBit = SPI_FIRSTBIT_MSB;
 	spiConfig.peripheral.TIMode = SPI_TIMODE_DISABLE;
 	spiConfig.peripheral.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
@@ -261,7 +261,7 @@ bool TMC4671::initialize(){
 		 */
 		pulseClipLed();
 
-		this->spiConfig.peripheral.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_64;
+		this->spiConfig.peripheral.BaudRatePrescaler = spiPort.getClosestPrescaler(1e6).first; // 1MHz target
 		spiPort.configurePort(&this->spiConfig.peripheral);
 		ES_TMCdetected = true;
 	}
@@ -3222,7 +3222,7 @@ void TMC4671::setUpExtEncTimer(){
 	// Setup timer
 	this->externalEncoderTimer = &TIM_TMC;
 	this->externalEncoderTimer->Instance->ARR = 200; // 200 = 5khz = 5 tmc cycles, 250 = 4khz, 240 = 6 tmc cycles
-	this->externalEncoderTimer->Instance->PSC = (SystemCoreClock / 2000000)+1; // timer running at half clock speed. 1µs ticks
+	this->externalEncoderTimer->Instance->PSC = ((TIM_TMC_BCLK)/1000000) +1; // 1µs ticks
 	this->externalEncoderTimer->Instance->CR1 = 1;
 	HAL_TIM_Base_Start_IT(this->externalEncoderTimer);
 #endif
