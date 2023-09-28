@@ -14,6 +14,7 @@
 
 #include "SpiHandler.h"
 #include "semaphore.hpp"
+#include <math.h>
 
 struct SPIConfig {
 	SPIConfig(OutputPin cs,bool cspol = true)
@@ -77,7 +78,7 @@ public:
 	bool hasFreePins();
 
 	uint32_t getBaseClk();
-	std::pair<uint32_t,float> getClosestPrescaler(float clock);
+	std::pair<uint32_t,float> getClosestPrescaler(float clock,float min = 0, float max = INFINITY);
 
 	SPI_HandleTypeDef* getPortHandle();
 

@@ -288,7 +288,7 @@ void SPIPort::SpiError(SPI_HandleTypeDef *hspi) {
  * Calculates the closest possible clock achievable with the current base clock and prescalers
  * Returns a pair of {prescaler,actual_clock}
  */
-std::pair<uint32_t,float> SPIPort::getClosestPrescaler(float clock){
+std::pair<uint32_t,float> SPIPort::getClosestPrescaler(float clock,float min,float max){
 	std::vector<std::pair<uint32_t,float>> distances;
 #if defined(SPI_BAUDRATEPRESCALER_2)
 	distances.push_back({SPI_BAUDRATEPRESCALER_2,(baseclk/2.0)});
@@ -318,7 +318,7 @@ std::pair<uint32_t,float> SPIPort::getClosestPrescaler(float clock){
 	std::pair<uint32_t,float> bestVal = distances[0];
 	float bestDist = INFINITY;
 	for(auto& val : distances){
-		if(std::abs(clock-val.second) < bestDist){
+		if(std::abs(clock-val.second) < bestDist && (val.second > min && val.second < max)){
 			bestDist = abs(clock-val.second);
 			bestVal = val;
 		}
