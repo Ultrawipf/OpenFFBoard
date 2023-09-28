@@ -41,13 +41,7 @@ void TMCDebugBridge::registerCommands(){
 	registerCommand("mode", TMCDebugBridge_commands::mode, "Change motion mode",CMDFLAG_GET | CMDFLAG_SET);
 }
 
-void TMCDebugBridge::tmcReadRegRaw(uint8_t reg,uint8_t* buf){
 
-	uint8_t req[5] = {(uint8_t)(0x7F & reg),0,0,0,0};
-	HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_RESET);
-	HAL_SPI_TransmitReceive(this->spi,req,buf,5,1000);
-	HAL_GPIO_WritePin(this->csport,this->cspin,GPIO_PIN_SET);
-}
 
 CommandStatus TMCDebugBridge::command(const ParsedCommand& cmd,std::vector<CommandReply>& replies){
 	switch(static_cast<TMCDebugBridge_commands>(cmd.cmdId)){
@@ -141,13 +135,15 @@ void TMCDebugBridge::cdcRcv(char* Buf, uint32_t *Len){
 		}
 
 		if(cmd == 148){ // read reg
-			uint8_t buf[5];
+			uint8_t buf[4];
 			uint8_t rpl[4] = {2,1,0x64,0x94};
-			tmcReadRegRaw(addr, buf);
+//			tmcReadRegRaw(addr, buf);
+			uint32_t bufI = drv->readReg(addr);
+			memcpy(buf,&bufI,4);
 			std::vector<uint8_t> rx_data;
 
 			rx_data.insert(rx_data.begin(), &rpl[0],&rpl[4]);
-			rx_data.insert(rx_data.end(),buf+1, buf+5);
+			rx_data.insert(rx_data.end(),buf, buf+4);
 			rx_data.push_back(checksum(&rx_data,8));
 			sendCdc((char*)rx_data.data(), 9);
 
