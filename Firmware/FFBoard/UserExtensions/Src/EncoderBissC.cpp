@@ -101,16 +101,16 @@ void EncoderBissC::configSPI() {
 	uint32_t prescale;
 	switch (spiSpeed) {
 		case 1 :
-			prescale = SPI_BAUDRATEPRESCALER_64;
+			prescale = spiPort.getClosestPrescaler(600000).first;
 			break;
 		case 2 :
-			prescale = SPI_BAUDRATEPRESCALER_32;
+			prescale = spiPort.getClosestPrescaler(1300000).first;
 			break;
 		case 3 :
-			prescale = SPI_BAUDRATEPRESCALER_16;
+			prescale = spiPort.getClosestPrescaler(2600000).first;
 			break;
 		default :
-			prescale = SPI_BAUDRATEPRESCALER_16;
+			prescale = spiPort.getClosestPrescaler(2600000).first;
 			break;
 	}
 
