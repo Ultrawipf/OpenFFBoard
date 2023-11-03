@@ -94,13 +94,13 @@ extern volatile uint32_t ADC2_BUF[ADC2_CHANNELS]; // Buffer
 
 extern volatile uint32_t ADC1_BUF[ADC1_CHANNELS]; // Buffer
 #define TEMPSENSOR_ADC_VAL ADC1_BUF[6] // ADC1 ch 7
-#define TEMPSENSOR_ADC_INTREF_VAL ADC1_BUF[7] // ADC1 ch 8.
+#define ADC_INTREF_VAL ADC1_BUF[7] // ADC1 ch 8.
 
 extern ADC_HandleTypeDef hadc1;
 #define AIN_HADC hadc1	// main adc for analog pins
 #define ADC_PINS 6	// Amount of analog channel pins
 #define ADC_CHAN_FPIN 0 // First analog channel pin. last channel = fpin+ADC_PINS-1
-#define VOLTAGE_MULT_DEFAULT 24.6 // Voltage in mV = adc*VOLTAGE_MULT (24.6 for 976k/33k divider)
+//#define VOLTAGE_MULT_DEFAULT 30.12 // mV adc * scaler = voltage
 
 #define BUTTON_PINS 8
 
