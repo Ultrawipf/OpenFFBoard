@@ -69,15 +69,28 @@ static const uint8_t SW_VERSION_INT[3] = {1,15,1}; // Version as array. 8 bit ea
 
 
 #ifndef TEMPSENSOR_ADC_RES
-#define TEMPSENSOR_ADC_RES ADC_RESOLUTION_12B
+#define TEMPSENSOR_ADC_RES 0
 #endif
 
-#ifndef TEMPSENSOR_ADC_INTREF_VOL
-	#ifndef TEMPSENSOR_ADC_INTREF_VAL
-		#define TEMPSENSOR_ADC_INTREF_VOL 3300
+// Assume vref is calibrated in full resolution. Check chip and __LL_ADC_CALC_VREFANALOG_VOLTAGE how to scale
+#ifndef VREF_ADC_RES
+#define VREF_ADC_RES 0
+#endif
+
+#ifndef VSENSE_ADC_RES
+#define VSENSE_ADC_RES 0
+#endif
+
+#ifndef ADC_INTREF_VOL
+	#ifndef ADC_INTREF_VAL
+		#define ADC_INTREF_VOL 3300
 	#else
-		#define TEMPSENSOR_ADC_INTREF_VOL __LL_ADC_CALC_VREFANALOG_VOLTAGE(TEMPSENSOR_ADC_INTREF_VAL,TEMPSENSOR_ADC_RES)
+		#define ADC_INTREF_VOL ((ADC_INTREF_VAL > 0) ? __LL_ADC_CALC_VREFANALOG_VOLTAGE(ADC_INTREF_VAL,VREF_ADC_RES) : 0)
 	#endif
+#endif
+
+#ifndef VOLTAGE_MULT_DEFAULT
+#define VOLTAGE_MULT_DEFAULT 30.67 // mV adc * scaler = voltage for 976k/33k divider and 3.3V vref
 #endif
 
 #if defined(TIM_MICROS_HALTICK) && defined(TIM_MICROS)

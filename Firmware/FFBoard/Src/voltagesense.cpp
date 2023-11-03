@@ -43,12 +43,20 @@ void setupBrakePin(int32_t vdiffAct,int32_t vdiffDeact,int32_t vMax){
 	voltageDiffDeactivate = vdiffDeact;
 }
 
+float adcValToVoltage(uint32_t adcval){
+	if(ADC_INTREF_VOL == 0){
+		return 0; // Divbyzero
+	}
+	return __LL_ADC_CALC_DATA_TO_VOLTAGE(ADC_INTREF_VOL,adcval,VSENSE_ADC_RES);
+}
+
 int32_t getIntV(){
-	return VSENSE_ADC_BUF[ADC_CHAN_VINT] * vSenseMult;
+	return adcValToVoltage(VSENSE_ADC_BUF[ADC_CHAN_VINT]) * vSenseMult;
+
 }
 
 int32_t getExtV(){
-	return VSENSE_ADC_BUF[ADC_CHAN_VEXT] * vSenseMult;
+	return adcValToVoltage(VSENSE_ADC_BUF[ADC_CHAN_VEXT]) * vSenseMult;
 }
 
 void brakeCheck(){
@@ -89,10 +97,10 @@ __weak int32_t getChipTemp(){
 #if !defined(TEMPSENSOR_ADC_VAL) || !defined(__LL_ADC_CALC_TEMPERATURE)
 	return 0;
 #else
-	if(!TEMPSENSOR_ADC_VAL || !TEMPSENSOR_ADC_INTREF_VOL){
+	if(!TEMPSENSOR_ADC_VAL || !ADC_INTREF_VOL){
 		return 0; // divby0 risk
 	}
-	return chipTempAvg.addValue(__LL_ADC_CALC_TEMPERATURE(TEMPSENSOR_ADC_INTREF_VOL,TEMPSENSOR_ADC_VAL,TEMPSENSOR_ADC_RES));
+	return chipTempAvg.addValue(__LL_ADC_CALC_TEMPERATURE(ADC_INTREF_VOL,TEMPSENSOR_ADC_VAL,TEMPSENSOR_ADC_RES));
 #endif
 
 }
