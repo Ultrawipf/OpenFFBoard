@@ -80,7 +80,7 @@ extern volatile uint32_t ADC1_BUF[ADC1_CHANNELS]; // Buffer
 #define AIN_HADC hadc1	// main adc for analog pins
 #define ADC_PINS 6	// Amount of analog channel pins
 #define ADC_CHAN_FPIN 0 // First analog channel pin
-#define VOLTAGE_MULT_DEFAULT 24.6 // Voltage in mV = adc*VOLTAGE_MULT (24.6 for 976k/33k divider)
+#define VOLTAGE_MULT_DEFAULT 30.12 // mV adc * scaler = voltage //(30.12 for 976k/33k divider)
 
 #define BUTTON_PINS 8
 
