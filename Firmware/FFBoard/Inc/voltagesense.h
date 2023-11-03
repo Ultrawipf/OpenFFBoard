@@ -28,6 +28,12 @@ void setVSenseMult(float vSenseMultiplier);
 void setupBrakePin(uint32_t vdiffAct,int32_t vdiffDeact,int32_t vMax);
 
 /**
+ * Converts an adc reading to millivolts using the internal calibration and reference voltage
+ * Requires ADC_INTREF_VOL and VSENSE_ADC_RES
+ */
+float adcValToVoltage(uint32_t adcval);
+
+/**
  * Helper function implementation for getting the chip temperature if read via internal ADC channel
  * __weak defined and can be overridden in chip dependent code
  */
