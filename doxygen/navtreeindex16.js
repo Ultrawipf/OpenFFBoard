@@ -1,5 +1,15 @@
 var NAVTREEINDEX16 =
 {
+"eeprom_8c_source.html":[4,0,91],
+"eeprom_8h.html":[4,0,20],
+"eeprom_8h_source.html":[4,0,20],
+"eeprom__addresses_8c.html":[4,0,233],
+"eeprom__addresses_8c.html#a27d99716228bbb05cff8443e2ab0ebcb":[4,0,233,1],
+"eeprom__addresses_8c.html#ab97cf75868cb1d0bbe370e27346a4e5e":[4,0,233,0],
+"eeprom__addresses_8c_source.html":[4,0,233],
+"eeprom__addresses_8h.html":[4,0,203],
+"eeprom__addresses_8h.html#a27d99716228bbb05cff8443e2ab0ebcb":[4,0,203,1],
+"eeprom__addresses_8h.html#ab97cf75868cb1d0bbe370e27346a4e5e":[4,0,203,0],
 "eeprom__addresses_8h_source.html":[4,0,203],
 "event__groups_8hpp.html":[4,0,24],
 "event__groups_8hpp_source.html":[4,0,24],
@@ -239,15 +249,5 @@ var NAVTREEINDEX16 =
 "globals_n.html":[4,1,0,13],
 "globals_o.html":[4,1,0,14],
 "globals_p.html":[4,1,0,15],
-"globals_r.html":[4,1,0,16],
-"globals_s.html":[4,1,0,17],
-"globals_t.html":[4,1,0,18],
-"globals_type.html":[4,1,3],
-"globals_u.html":[4,1,0,19],
-"globals_v.html":[4,1,0,20],
-"globals_vars.html":[4,1,2,0],
-"globals_vars.html":[4,1,2],
-"globals_vars_a.html":[4,1,2,1],
-"globals_vars_b.html":[4,1,2,2],
-"globals_vars_c.html":[4,1,2,3]
+"globals_r.html":[4,1,0,16]
 };

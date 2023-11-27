@@ -119,6 +119,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aa7fac7ae24e3f20438ec1a97962db1bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf3f02310a838a839fca7229fad71a4d"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_local_buttons.html#aaf3f02310a838a839fca7229fad71a4d">readButtons</a> (uint64_t *buf)</td></tr>
 <tr class="separator:aaf3f02310a838a839fca7229fad71a4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67662b819cb6ab815e64cbd274cb3bd2"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_local_buttons.html#a67662b819cb6ab815e64cbd274cb3bd2">getButtonInputs</a> (uint64_t *buf, bool pol)</td></tr>
+<tr class="separator:a67662b819cb6ab815e64cbd274cb3bd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad3ecc8ebac6a501c873264c68b9736a7"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="struct_class_identifier.html">ClassIdentifier</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_local_buttons.html#ad3ecc8ebac6a501c873264c68b9736a7">getInfo</a> ()</td></tr>
 <tr class="separator:ad3ecc8ebac6a501c873264c68b9736a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab0c297b2ffdb4d6368f3965423975d65"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_command_handler_8h.html#aefaf83fec6a7da1d02ae7e912dd9a6d5">CommandStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_local_buttons.html#ab0c297b2ffdb4d6368f3965423975d65">command</a> (const <a class="el" href="struct_parsed_command.html">ParsedCommand</a> &amp;cmd, std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;replies)</td></tr>
@@ -181,10 +183,14 @@ Static Public Attributes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-types" name="pri-types"></a>
 Private Types</h2></td></tr>
-<tr class="memitem:a4079bc8e1bdb9a36f0c7614d42b203cb"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_local_buttons.html#a4079bc8e1bdb9a36f0c7614d42b203cb">LocalButtons_commands</a> : uint32_t { <a class="el" href="class_local_buttons.html#a4079bc8e1bdb9a36f0c7614d42b203cbaf2ce11ebf110993621bedd8e747d7b1b">mask</a>
+<tr class="memitem:a4079bc8e1bdb9a36f0c7614d42b203cb"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_local_buttons.html#a4079bc8e1bdb9a36f0c7614d42b203cb">LocalButtons_commands</a> : uint32_t { <br />
+&#160;&#160;<a class="el" href="class_local_buttons.html#a4079bc8e1bdb9a36f0c7614d42b203cbaf2ce11ebf110993621bedd8e747d7b1b">mask</a>
 , <a class="el" href="class_local_buttons.html#a4079bc8e1bdb9a36f0c7614d42b203cbabf26cfe05f05fa0ee79497b6441582b9">polarity</a>
 , <a class="el" href="class_local_buttons.html#a4079bc8e1bdb9a36f0c7614d42b203cbad3226782744ce122d789ea8e03d32f53">pins</a>
 , <a class="el" href="class_local_buttons.html#a4079bc8e1bdb9a36f0c7614d42b203cbaf09cc7ee3a9a93273f4b80601cafb00c">values</a>
+, <br />
+&#160;&#160;<a class="el" href="class_local_buttons.html#a4079bc8e1bdb9a36f0c7614d42b203cba02a8dc4cf01fed584c6423f577c0b0d7">pulse</a>
+<br />
  }</td></tr>
 <tr class="separator:a4079bc8e1bdb9a36f0c7614d42b203cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -239,8 +245,16 @@ Private Member Functions</h2></td></tr>
 Private Attributes</h2></td></tr>
 <tr class="memitem:adbcfb18197602c45d3923a0c83aabb73"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_local_buttons.html#adbcfb18197602c45d3923a0c83aabb73">mask</a> = 0xff</td></tr>
 <tr class="separator:adbcfb18197602c45d3923a0c83aabb73"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5158abf411bccd1fb6fba5cd8bbc4f1c"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_local_buttons.html#a5158abf411bccd1fb6fba5cd8bbc4f1c">pulsemask</a> = 0</td></tr>
+<tr class="separator:a5158abf411bccd1fb6fba5cd8bbc4f1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33175e0eb91f439dc228859c92266b91"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_local_buttons.html#a33175e0eb91f439dc228859c92266b91">lastPulseTime</a> = 0</td></tr>
+<tr class="separator:a33175e0eb91f439dc228859c92266b91"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad21d5b397ceeaf2664c982e96d0e2693"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_local_buttons.html#ad21d5b397ceeaf2664c982e96d0e2693">polarity</a> = false</td></tr>
 <tr class="separator:ad21d5b397ceeaf2664c982e96d0e2693"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6d0998dfce9f3ab831783177055e66d"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_local_buttons.html#ac6d0998dfce9f3ab831783177055e66d">lastOutputs</a> = 0</td></tr>
+<tr class="separator:ac6d0998dfce9f3ab831783177055e66d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc26931163427bfaf47268cc890e0a3e"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_local_buttons.html#abc26931163427bfaf47268cc890e0a3e">lastButtons</a> = 0</td></tr>
+<tr class="separator:abc26931163427bfaf47268cc890e0a3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_attribs_class_command_handler"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_class_command_handler')"><img src="closed.png" alt="-"/>&#160;Private Attributes inherited from <a class="el" href="class_command_handler.html">CommandHandler</a></td></tr>
 <tr class="memitem:a516d2f479602386f947b2ec00cb7d467 inherit pub_attribs_class_command_handler"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a516d2f479602386f947b2ec00cb7d467">commandsEnabled</a> = true</td></tr>
 <tr class="separator:a516d2f479602386f947b2ec00cb7d467 inherit pub_attribs_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -251,6 +265,8 @@ Private Attributes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-static-attribs" name="pri-static-attribs"></a>
 Static Private Attributes</h2></td></tr>
+<tr class="memitem:af604fcbe4f6ad8beedbb723174c68d5e"><td class="memItemLeft" align="right" valign="top">static constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_local_buttons.html#af604fcbe4f6ad8beedbb723174c68d5e">pulseTimeout</a> = 50</td></tr>
+<tr class="separator:af604fcbe4f6ad8beedbb723174c68d5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a754511987556e0b1d8c82cf6446e5a60"><td class="memItemLeft" align="right" valign="top">static const std::array&lt; <a class="el" href="class_input_pin.html">InputPin</a>, BUTTON_PINS &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_local_buttons.html#a754511987556e0b1d8c82cf6446e5a60">button_pins</a></td></tr>
 <tr class="separator:a754511987556e0b1d8c82cf6446e5a60"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_attribs_class_command_handler"><td colspan="2" onclick="javascript:toggleInherit('pub_static_attribs_class_command_handler')"><img src="closed.png" alt="-"/>&#160;Static Private Attributes inherited from <a class="el" href="class_command_handler.html">CommandHandler</a></td></tr>
@@ -340,6 +356,7 @@ Additional Inherited Members</h2></td></tr>
 <tr><td class="fieldname"><a id="a4079bc8e1bdb9a36f0c7614d42b203cbabf26cfe05f05fa0ee79497b6441582b9" name="a4079bc8e1bdb9a36f0c7614d42b203cbabf26cfe05f05fa0ee79497b6441582b9"></a>polarity&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a4079bc8e1bdb9a36f0c7614d42b203cbad3226782744ce122d789ea8e03d32f53" name="a4079bc8e1bdb9a36f0c7614d42b203cbad3226782744ce122d789ea8e03d32f53"></a>pins&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a4079bc8e1bdb9a36f0c7614d42b203cbaf09cc7ee3a9a93273f4b80601cafb00c" name="a4079bc8e1bdb9a36f0c7614d42b203cbaf09cc7ee3a9a93273f4b80601cafb00c"></a>values&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a4079bc8e1bdb9a36f0c7614d42b203cba02a8dc4cf01fed584c6423f577c0b0d7" name="a4079bc8e1bdb9a36f0c7614d42b203cba02a8dc4cf01fed584c6423f577c0b0d7"></a>pulse&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 <p class="definition">Definition at line <a class="el" href="_local_buttons_8h_source.html#l00019">19</a> of file <a class="el" href="_local_buttons_8h_source.html">LocalButtons.h</a>.</p>
@@ -389,7 +406,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_local_buttons_8cpp_source.html#l00026">26</a> of file <a class="el" href="_local_buttons_8cpp_source.html">LocalButtons.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_local_buttons_8cpp_source.html#l00027">27</a> of file <a class="el" href="_local_buttons_8cpp_source.html">LocalButtons.cpp</a>.</p>
 
 </div>
 </div>
@@ -437,7 +454,37 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_command_handler.html#a8d2531d579c03d6672495ccb57f5ffb3">CommandHandler</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_local_buttons_8cpp_source.html#l00079">79</a> of file <a class="el" href="_local_buttons_8cpp_source.html">LocalButtons.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_local_buttons_8cpp_source.html#l00112">112</a> of file <a class="el" href="_local_buttons_8cpp_source.html">LocalButtons.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a67662b819cb6ab815e64cbd274cb3bd2" name="a67662b819cb6ab815e64cbd274cb3bd2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a67662b819cb6ab815e64cbd274cb3bd2">&#9670;&nbsp;</a></span>getButtonInputs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t LocalButtons::getButtonInputs </td>
+          <td>(</td>
+          <td class="paramtype">uint64_t *&#160;</td>
+          <td class="paramname"><em>buf</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>pol</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_local_buttons_8cpp_source.html#l00046">46</a> of file <a class="el" href="_local_buttons_8cpp_source.html">LocalButtons.cpp</a>.</p>
 
 </div>
 </div>
@@ -469,7 +516,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_button_source.html#a14b6d39e560e07ce49fcad3f53396c20">ButtonSource</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_local_buttons_8h_source.html#l00053">53</a> of file <a class="el" href="_local_buttons_8h_source.html">LocalButtons.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_local_buttons_8h_source.html#l00058">58</a> of file <a class="el" href="_local_buttons_8h_source.html">LocalButtons.h</a>.</p>
 
 </div>
 </div>
@@ -499,7 +546,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_command_handler.html#a0842b01125770b9be569a29d49080a3f">CommandHandler</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_local_buttons_8h_source.html#l00041">41</a> of file <a class="el" href="_local_buttons_8h_source.html">LocalButtons.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_local_buttons_8h_source.html#l00046">46</a> of file <a class="el" href="_local_buttons_8h_source.html">LocalButtons.h</a>.</p>
 
 </div>
 </div>
@@ -528,7 +575,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="class_button_source.html#a3260ac96b3bd002ebc882665eaa0078d">ButtonSource</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_local_buttons_8cpp_source.html#l00030">30</a> of file <a class="el" href="_local_buttons_8cpp_source.html">LocalButtons.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_local_buttons_8cpp_source.html#l00031">31</a> of file <a class="el" href="_local_buttons_8cpp_source.html">LocalButtons.cpp</a>.</p>
 
 </div>
 </div>
@@ -555,7 +602,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_local_buttons_8h_source.html#l00035">35</a> of file <a class="el" href="_local_buttons_8h_source.html">LocalButtons.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_local_buttons_8h_source.html#l00040">40</a> of file <a class="el" href="_local_buttons_8h_source.html">LocalButtons.h</a>.</p>
 
 </div>
 </div>
@@ -583,7 +630,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_local_buttons_8h_source.html#l00046">46</a> of file <a class="el" href="_local_buttons_8h_source.html">LocalButtons.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_local_buttons_8h_source.html#l00051">51</a> of file <a class="el" href="_local_buttons_8h_source.html">LocalButtons.h</a>.</p>
 
 </div>
 </div>
@@ -614,7 +661,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="class_button_source.html#a95a2fa76c98f3e065aadc8a278287586">ButtonSource</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_local_buttons_8cpp_source.html#l00045">45</a> of file <a class="el" href="_local_buttons_8cpp_source.html">LocalButtons.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_local_buttons_8cpp_source.html#l00061">61</a> of file <a class="el" href="_local_buttons_8cpp_source.html">LocalButtons.cpp</a>.</p>
 
 </div>
 </div>
@@ -644,7 +691,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_persistent_storage.html#aa8187136adfa89fca9ddee2578f6eb68">PersistentStorage</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_local_buttons_8cpp_source.html#l00068">68</a> of file <a class="el" href="_local_buttons_8cpp_source.html">LocalButtons.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_local_buttons_8cpp_source.html#l00097">97</a> of file <a class="el" href="_local_buttons_8cpp_source.html">LocalButtons.cpp</a>.</p>
 
 </div>
 </div>
@@ -674,7 +721,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_persistent_storage.html#a105599e99ab0e4244a531c2286f2ffa2">PersistentStorage</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_local_buttons_8cpp_source.html#l00060">60</a> of file <a class="el" href="_local_buttons_8cpp_source.html">LocalButtons.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_local_buttons_8cpp_source.html#l00086">86</a> of file <a class="el" href="_local_buttons_8cpp_source.html">LocalButtons.cpp</a>.</p>
 
 </div>
 </div>
@@ -702,7 +749,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_local_buttons_8cpp_source.html#l00034">34</a> of file <a class="el" href="_local_buttons_8cpp_source.html">LocalButtons.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_local_buttons_8cpp_source.html#l00035">35</a> of file <a class="el" href="_local_buttons_8cpp_source.html">LocalButtons.cpp</a>.</p>
 
 </div>
 </div>
@@ -731,7 +778,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="preprocessor">        InputPin(DIN0_GPIO_Port, DIN0_Pin)</span></div>
 </div><!-- fragment --><p >All DIN pins must be defined as inputs. Not more than 16 pins can be defined </p>
 
-<p class="definition">Definition at line <a class="el" href="_local_buttons_8h_source.html#l00026">26</a> of file <a class="el" href="_local_buttons_8h_source.html">LocalButtons.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_local_buttons_8h_source.html#l00029">29</a> of file <a class="el" href="_local_buttons_8h_source.html">LocalButtons.h</a>.</p>
 
 </div>
 </div>
@@ -759,7 +806,79 @@ Additional Inherited Members</h2></td></tr>
 <div class="line">     .id=CLSID_BTN_LOCAL,</div>
 <div class="line">}</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="_local_buttons_8h_source.html#l00034">34</a> of file <a class="el" href="_local_buttons_8h_source.html">LocalButtons.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_local_buttons_8h_source.html#l00039">39</a> of file <a class="el" href="_local_buttons_8h_source.html">LocalButtons.h</a>.</p>
+
+</div>
+</div>
+<a id="abc26931163427bfaf47268cc890e0a3e" name="abc26931163427bfaf47268cc890e0a3e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abc26931163427bfaf47268cc890e0a3e">&#9670;&nbsp;</a></span>lastButtons</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint64_t LocalButtons::lastButtons = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_local_buttons_8h_source.html#l00031">31</a> of file <a class="el" href="_local_buttons_8h_source.html">LocalButtons.h</a>.</p>
+
+</div>
+</div>
+<a id="ac6d0998dfce9f3ab831783177055e66d" name="ac6d0998dfce9f3ab831783177055e66d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac6d0998dfce9f3ab831783177055e66d">&#9670;&nbsp;</a></span>lastOutputs</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint64_t LocalButtons::lastOutputs = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_local_buttons_8h_source.html#l00030">30</a> of file <a class="el" href="_local_buttons_8h_source.html">LocalButtons.h</a>.</p>
+
+</div>
+</div>
+<a id="a33175e0eb91f439dc228859c92266b91" name="a33175e0eb91f439dc228859c92266b91"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a33175e0eb91f439dc228859c92266b91">&#9670;&nbsp;</a></span>lastPulseTime</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t LocalButtons::lastPulseTime = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_local_buttons_8h_source.html#l00026">26</a> of file <a class="el" href="_local_buttons_8h_source.html">LocalButtons.h</a>.</p>
 
 </div>
 </div>
@@ -807,7 +926,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_local_buttons_8h_source.html#l00037">37</a> of file <a class="el" href="_local_buttons_8h_source.html">LocalButtons.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_local_buttons_8h_source.html#l00042">42</a> of file <a class="el" href="_local_buttons_8h_source.html">LocalButtons.h</a>.</p>
 
 </div>
 </div>
@@ -827,6 +946,54 @@ Additional Inherited Members</h2></td></tr>
   </td>
   <td class="mlabels-right">
 <span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_local_buttons_8h_source.html#l00028">28</a> of file <a class="el" href="_local_buttons_8h_source.html">LocalButtons.h</a>.</p>
+
+</div>
+</div>
+<a id="a5158abf411bccd1fb6fba5cd8bbc4f1c" name="a5158abf411bccd1fb6fba5cd8bbc4f1c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5158abf411bccd1fb6fba5cd8bbc4f1c">&#9670;&nbsp;</a></span>pulsemask</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t LocalButtons::pulsemask = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_local_buttons_8h_source.html#l00024">24</a> of file <a class="el" href="_local_buttons_8h_source.html">LocalButtons.h</a>.</p>
+
+</div>
+</div>
+<a id="af604fcbe4f6ad8beedbb723174c68d5e" name="af604fcbe4f6ad8beedbb723174c68d5e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af604fcbe4f6ad8beedbb723174c68d5e">&#9670;&nbsp;</a></span>pulseTimeout</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr uint32_t LocalButtons::pulseTimeout = 50</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

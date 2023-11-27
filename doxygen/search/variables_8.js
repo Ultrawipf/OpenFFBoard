@@ -36,7 +36,7 @@ var searchData=
   ['hidcommands_33',['hidCommands',['../class_f_f_b_h_i_d_main.html#ae98362955d482ea648b63e1e2e1d584d',1,'FFBHIDMain']]],
   ['hierarchical_5fsupport_34',['hierarchical_support',['../struct_t_u___a_t_t_r___p_a_c_k_e_d.html#ae48e5f7851029335a6d6ed8e49e4f801',1,'TU_ATTR_PACKED']]],
   ['high_5fspeed_35',['high_speed',['../structhub__port__status__response__t.html#af30806a710844e614298b7188c31c1fb',1,'hub_port_status_response_t']]],
-  ['hint_36',['Hint',['../struct_t_u___a_t_t_r___p_a_c_k_e_d.html#ad7c4fa0e75a3fe01c157a3ade6ef37c2',1,'TU_ATTR_PACKED']]],
+  ['hint_36',['Hint',['../struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a8d8aa69667f9a357269ceeadd7ce7e49',1,'TU_ATTR_PACKED']]],
   ['hithresh_37',['hithresh',['../class_a_d_s111_x.html#af1c7ebb74b1fc015430ad8f11c2ef3a1',1,'ADS111X']]],
   ['hiwdg_38',['hiwdg',['../cppmain_8cpp.html#a80f055e38f52ca3c57e183fc685ea477',1,'cppmain.cpp']]],
   ['hnptxsts_39',['HNPTXSTS',['../struct_u_s_b___o_t_g___global_type_def.html#a99c998f37e7a88a26f22defb10a1e83a',1,'USB_OTG_GlobalTypeDef']]],

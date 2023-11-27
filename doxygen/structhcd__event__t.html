@@ -101,55 +101,55 @@ Public Attributes</h2></td></tr>
 <tr class="separator:ae0b27f98f9ea659166be6ca91e4fd21f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad60257e01a8ddd467f1e181f9d4c21eb"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structhcd__event__t.html#ad60257e01a8ddd467f1e181f9d4c21eb">dev_addr</a></td></tr>
 <tr class="separator:ad60257e01a8ddd467f1e181f9d4c21eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a96059e0e2d8591be0b5e38be5a546c67"><td class="memItemLeft" >union {</td></tr>
-<tr class="memitem:a051f4584f1257121730df97b229a3570"><td class="memItemLeft" >&#160;&#160;&#160;struct {</td></tr>
-<tr class="memitem:a3e1d754da6a1ffec76f3ab7c01ab6543"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="structhcd__event__t.html#a5b930e759c251e453ffc467386bc0641">hub_addr</a></td></tr>
-<tr class="separator:a3e1d754da6a1ffec76f3ab7c01ab6543"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a48debcc9a389ebcc32bc59491a79c707"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="structhcd__event__t.html#a402ed40fc9b86b0510e76d4842eaf6dc">hub_port</a></td></tr>
-<tr class="separator:a48debcc9a389ebcc32bc59491a79c707"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9af7435cdb7c190ac0fdf9c5d7f4abec"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="structhcd__event__t.html#a356013f1c3c385f97c99477aa5217b89">speed</a></td></tr>
-<tr class="separator:a9af7435cdb7c190ac0fdf9c5d7f4abec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a051f4584f1257121730df97b229a3570"><td class="memItemLeft" valign="top">&#160;&#160;&#160;}&#160;&#160;&#160;<a class="el" href="structhcd__event__t.html#a973228ffbbd1140db1515671e2c4b910">connection</a></td></tr>
-<tr class="separator:a051f4584f1257121730df97b229a3570"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a80db070be937d6069c72d1c61adfd0a3"><td class="memItemLeft" >&#160;&#160;&#160;struct {</td></tr>
-<tr class="memitem:a0868addeb4b3f74888d97b3af06b1070"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="structhcd__event__t.html#a322c00e84336ba097ce129c6c9b1a5df">ep_addr</a></td></tr>
-<tr class="separator:a0868addeb4b3f74888d97b3af06b1070"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af9dd564166496f3a03d5ed98cc8f2c15"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="structhcd__event__t.html#ac2f509497de671a9fb9d3cb1e7fb5cd7">result</a></td></tr>
-<tr class="separator:af9dd564166496f3a03d5ed98cc8f2c15"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a40442204bfb0b57df1db5ffea800380d"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structhcd__event__t.html#ab1b0ac3a2ec6d7c17c829dabf84eb064">len</a></td></tr>
-<tr class="separator:a40442204bfb0b57df1db5ffea800380d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a80db070be937d6069c72d1c61adfd0a3"><td class="memItemLeft" valign="top">&#160;&#160;&#160;}&#160;&#160;&#160;<a class="el" href="structhcd__event__t.html#ad46de65ea7a70bfeff89eb8092ae0ad1">xfer_complete</a></td></tr>
-<tr class="separator:a80db070be937d6069c72d1c61adfd0a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae6f204c4e47fa7c87dfedef5664d9023"><td class="memItemLeft" >&#160;&#160;&#160;struct {</td></tr>
-<tr class="memitem:ab31549e98602672a43b635efd36a0b40"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;void(*&#160;&#160;&#160;<a class="el" href="structhcd__event__t.html#a9d9de0e3ad07ee56f34040a8bfca6137">func</a> )(void *)</td></tr>
-<tr class="separator:ab31549e98602672a43b635efd36a0b40"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab637bb4a3cea5916d673a338c21209c9"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;void *&#160;&#160;&#160;<a class="el" href="structhcd__event__t.html#a2b9934c37d40fa6b14689ece0b597c4b">param</a></td></tr>
-<tr class="separator:ab637bb4a3cea5916d673a338c21209c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae6f204c4e47fa7c87dfedef5664d9023"><td class="memItemLeft" valign="top">&#160;&#160;&#160;}&#160;&#160;&#160;<a class="el" href="structhcd__event__t.html#a57d81a55cb3cf832975cad12466013bd">func_call</a></td></tr>
-<tr class="separator:ae6f204c4e47fa7c87dfedef5664d9023"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a96059e0e2d8591be0b5e38be5a546c67"><td class="memItemLeft" valign="top">};&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
-<tr class="separator:a96059e0e2d8591be0b5e38be5a546c67"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aedab9796f9b9d80e525a9c505ae8fccd"><td class="memItemLeft" >union {</td></tr>
+<tr class="memitem:a07c562b548b18f4dc9214d345c41c29a"><td class="memItemLeft" >&#160;&#160;&#160;struct {</td></tr>
+<tr class="memitem:a2fc6c29363959744e727265a09ae95f1"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="structhcd__event__t.html#a5b930e759c251e453ffc467386bc0641">hub_addr</a></td></tr>
+<tr class="separator:a2fc6c29363959744e727265a09ae95f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0cbfb40518acb54fe342b58d7b95140"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="structhcd__event__t.html#a402ed40fc9b86b0510e76d4842eaf6dc">hub_port</a></td></tr>
+<tr class="separator:aa0cbfb40518acb54fe342b58d7b95140"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e3675c0c20421e72d69c2ac9190de8d"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="structhcd__event__t.html#a356013f1c3c385f97c99477aa5217b89">speed</a></td></tr>
+<tr class="separator:a8e3675c0c20421e72d69c2ac9190de8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a07c562b548b18f4dc9214d345c41c29a"><td class="memItemLeft" valign="top">&#160;&#160;&#160;}&#160;&#160;&#160;<a class="el" href="structhcd__event__t.html#a0dfc095be188744cc8cd25a1b0495c3c">connection</a></td></tr>
+<tr class="separator:a07c562b548b18f4dc9214d345c41c29a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a141589a8ac82771b5b1d461953385d5b"><td class="memItemLeft" >&#160;&#160;&#160;struct {</td></tr>
+<tr class="memitem:ace37c6dc85980f2759afd234f70cae9d"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="structhcd__event__t.html#a322c00e84336ba097ce129c6c9b1a5df">ep_addr</a></td></tr>
+<tr class="separator:ace37c6dc85980f2759afd234f70cae9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5f6c9d9a60d41a07f81e708e4b2f8fb"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="structhcd__event__t.html#ac2f509497de671a9fb9d3cb1e7fb5cd7">result</a></td></tr>
+<tr class="separator:ac5f6c9d9a60d41a07f81e708e4b2f8fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53dcbd0823fbf62d162bcea4dcb7106a"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structhcd__event__t.html#ab1b0ac3a2ec6d7c17c829dabf84eb064">len</a></td></tr>
+<tr class="separator:a53dcbd0823fbf62d162bcea4dcb7106a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a141589a8ac82771b5b1d461953385d5b"><td class="memItemLeft" valign="top">&#160;&#160;&#160;}&#160;&#160;&#160;<a class="el" href="structhcd__event__t.html#a104989c41431741148a9864480e8fed3">xfer_complete</a></td></tr>
+<tr class="separator:a141589a8ac82771b5b1d461953385d5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0cae09680a177110d4b5d9e2c9b81d01"><td class="memItemLeft" >&#160;&#160;&#160;struct {</td></tr>
+<tr class="memitem:ae2259d939ad984395d33c0197b8acb86"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;void(*&#160;&#160;&#160;<a class="el" href="structhcd__event__t.html#a9d9de0e3ad07ee56f34040a8bfca6137">func</a> )(void *)</td></tr>
+<tr class="separator:ae2259d939ad984395d33c0197b8acb86"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c3c225923bf96c570a525c1041cab0b"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;void *&#160;&#160;&#160;<a class="el" href="structhcd__event__t.html#a2b9934c37d40fa6b14689ece0b597c4b">param</a></td></tr>
+<tr class="separator:a6c3c225923bf96c570a525c1041cab0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0cae09680a177110d4b5d9e2c9b81d01"><td class="memItemLeft" valign="top">&#160;&#160;&#160;}&#160;&#160;&#160;<a class="el" href="structhcd__event__t.html#af3737d5ab5734996da65a40f6d02b7ae">func_call</a></td></tr>
+<tr class="separator:a0cae09680a177110d4b5d9e2c9b81d01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aedab9796f9b9d80e525a9c505ae8fccd"><td class="memItemLeft" valign="top">};&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:aedab9796f9b9d80e525a9c505ae8fccd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
 <p class="definition">Definition at line <a class="el" href="hcd_8h_source.html#l00054">54</a> of file <a class="el" href="hcd_8h_source.html">hcd.h</a>.</p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
-<a id="a96059e0e2d8591be0b5e38be5a546c67" name="a96059e0e2d8591be0b5e38be5a546c67"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a96059e0e2d8591be0b5e38be5a546c67">&#9670;&nbsp;</a></span></h2>
+<a id="aedab9796f9b9d80e525a9c505ae8fccd" name="aedab9796f9b9d80e525a9c505ae8fccd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aedab9796f9b9d80e525a9c505ae8fccd">&#9670;&nbsp;</a></span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">union  { ... }  hcd_event_t::@54</td>
+          <td class="memname">union  { ... }  hcd_event_t::@50</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a973228ffbbd1140db1515671e2c4b910" name="a973228ffbbd1140db1515671e2c4b910"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a973228ffbbd1140db1515671e2c4b910">&#9670;&nbsp;</a></span></h2>
+<a id="a0dfc095be188744cc8cd25a1b0495c3c" name="a0dfc095be188744cc8cd25a1b0495c3c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0dfc095be188744cc8cd25a1b0495c3c">&#9670;&nbsp;</a></span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -226,8 +226,8 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a57d81a55cb3cf832975cad12466013bd" name="a57d81a55cb3cf832975cad12466013bd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a57d81a55cb3cf832975cad12466013bd">&#9670;&nbsp;</a></span></h2>
+<a id="af3737d5ab5734996da65a40f6d02b7ae" name="af3737d5ab5734996da65a40f6d02b7ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af3737d5ab5734996da65a40f6d02b7ae">&#9670;&nbsp;</a></span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -352,8 +352,8 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ad46de65ea7a70bfeff89eb8092ae0ad1" name="ad46de65ea7a70bfeff89eb8092ae0ad1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad46de65ea7a70bfeff89eb8092ae0ad1">&#9670;&nbsp;</a></span></h2>
+<a id="a104989c41431741148a9864480e8fed3" name="a104989c41431741148a9864480e8fed3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a104989c41431741148a9864480e8fed3">&#9670;&nbsp;</a></span></h2>
 
 <div class="memitem">
 <div class="memproto">

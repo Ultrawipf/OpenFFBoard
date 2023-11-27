@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['edpt_5fctrl_5fin_0',['EDPT_CTRL_IN',['../usbd__control_8c.html#afccd240f973cf154952fb917c9209719a8a1851cf1510242b761b5c12931b22e8',1,'usbd_control.c']]],
-  ['edpt_5fctrl_5fout_1',['EDPT_CTRL_OUT',['../usbd__control_8c.html#afccd240f973cf154952fb917c9209719ad2c9d77df4e773f1efab6703daff69b1',1,'usbd_control.c']]],
+  ['edpt_5fctrl_5fin_0',['EDPT_CTRL_IN',['../usbd__control_8c.html#af3520ff6d43011872bab77edd27d4de3a8a1851cf1510242b761b5c12931b22e8',1,'usbd_control.c']]],
+  ['edpt_5fctrl_5fout_1',['EDPT_CTRL_OUT',['../usbd__control_8c.html#af3520ff6d43011872bab77edd27d4de3ad2c9d77df4e773f1efab6703daff69b1',1,'usbd_control.c']]],
   ['effects_2',['effects',['../_effects_calculator_8h.html#a8c1e274c9ae0e228a7e0a406bec8a694a2bb387c51f0ebdab53cc485d53694d37',1,'EffectsCalculator.h']]],
   ['effectsdetails_3',['effectsDetails',['../_effects_calculator_8h.html#a8c1e274c9ae0e228a7e0a406bec8a694a008587bd99030db539879fa105999e34',1,'EffectsCalculator.h']]],
   ['effectsforces_4',['effectsForces',['../_effects_calculator_8h.html#a8c1e274c9ae0e228a7e0a406bec8a694aa0112e256299170560cf2623b0a37403',1,'EffectsCalculator.h']]],

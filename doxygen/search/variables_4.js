@@ -33,7 +33,7 @@ var searchData=
   ['delayuntilpreviouswaketime_30',['delayUntilPreviousWakeTime',['../classcpp__freertos_1_1_thread.html#a7c79e97f961f99d04edffa819b1e1a7e',1,'cpp_freertos::Thread']]],
   ['denominator_31',['denominator',['../struct_gear_ratio__t.html#a41dde1facb7156700d5f7aac869d6e23',1,'GearRatio_t']]],
   ['depth_32',['depth',['../structtu__fifo__t.html#a3dfff98adc95216871ffd2bfb91d36e6',1,'tu_fifo_t::depth()'],['../structosal__queue__def__t.html#ac960793c7ffb0c12b32fd002b7605fa4',1,'osal_queue_def_t::depth()']]],
-  ['desc_33',['desc',['../struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a2bb84f8a130f319c39dc6c9c54fc2bc9',1,'TU_ATTR_PACKED']]],
+  ['desc_33',['desc',['../struct_t_u___a_t_t_r___p_a_c_k_e_d.html#af499dc4a9b67a58763554ac484fe965b',1,'TU_ATTR_PACKED']]],
   ['desc_5fconf_34',['desc_conf',['../class_u_s_bdevice.html#a07164c1b8bb4053b9c9a921970b4fc72',1,'USBdevice']]],
   ['desc_5fdevice_35',['desc_device',['../class_u_s_bdevice.html#acbfdde18ad89fac011b4b58eae550430',1,'USBdevice']]],
   ['desc_5flength_36',['desc_length',['../structaudiod__function__t.html#a33130333863daa20890d2bfad09afffc',1,'audiod_function_t']]],

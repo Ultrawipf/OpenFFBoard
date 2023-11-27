@@ -228,6 +228,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a10ca9159f114dc2ef7a3c5ae3c9fb089"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adcd3abe6db4371d20fbb4f39b317658b"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_m_c4671.html#adcd3abe6db4371d20fbb4f39b317658b">getPwmFreq</a> ()</td></tr>
 <tr class="separator:adcd3abe6db4371d20fbb4f39b317658b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2af76ad699171ea7a614102e1cd1268"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_m_c4671.html#ae2af76ad699171ea7a614102e1cd1268">setPwmFreq</a> (float freq)</td></tr>
+<tr class="separator:ae2af76ad699171ea7a614102e1cd1268"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06291f7ba98c6252ba1519afefb05032"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_m_c4671.html#a06291f7ba98c6252ba1519afefb05032">setBBM</a> (uint8_t bbml, uint8_t bbmh)</td></tr>
 <tr class="separator:a06291f7ba98c6252ba1519afefb05032"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a660e8c2b4a95172cbe4b9f8e2ac510b3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_m_c4671.html#a660e8c2b4a95172cbe4b9f8e2ac510b3">timerElapsed</a> (TIM_HandleTypeDef *htim)</td></tr>
@@ -696,6 +698,7 @@ Private Types</h2></td></tr>
 , <a class="el" href="class_t_m_c4671.html#a383a82ab842490e325553e9365028a27a2aec58fa2c9c7e50e8e453cae31bdcae">pidautotune</a>
 , <br />
 &#160;&#160;<a class="el" href="class_t_m_c4671.html#a383a82ab842490e325553e9365028a27a84f578fe2ad2bb2f2e81323b035b5ce9">fluxbrake</a>
+, <a class="el" href="class_t_m_c4671.html#a383a82ab842490e325553e9365028a27ae92b8d7a8bc2d52e63a10661d1fcf8cb">pwmfreq</a>
 <br />
  }</td></tr>
 <tr class="separator:a383a82ab842490e325553e9365028a27"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -708,6 +711,8 @@ Private Member Functions</h2></td></tr>
 <tr class="separator:aa1fc8e976bbe795d9d0737a91ca18613"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac5f3e8203be4d31e920e7e3e75a3cb30"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_m_c4671.html#ac5f3e8203be4d31e920e7e3e75a3cb30">setPwm</a> (<a class="el" href="_t_m_c4671_8h.html#acb6903f48e442bdc6b4f14999ebdf8f1">TMC_PwmMode</a> val)</td></tr>
 <tr class="separator:ac5f3e8203be4d31e920e7e3e75a3cb30"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acabd7583e2b673f4b852e9216d600a97"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_m_c4671.html#acabd7583e2b673f4b852e9216d600a97">setPwmMaxCnt</a> (uint16_t maxcnt)</td></tr>
+<tr class="separator:acabd7583e2b673f4b852e9216d600a97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae4e6d2e4cf2b8104a424e4897bd023c4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_m_c4671.html#ae4e6d2e4cf2b8104a424e4897bd023c4">setSvPwm</a> (bool enable)</td></tr>
 <tr class="separator:ae4e6d2e4cf2b8104a424e4897bd023c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9e4884a65e786a877517cf0e4e0ac876"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_m_c4671.html#a9e4884a65e786a877517cf0e4e0ac876">encInit</a> ()</td></tr>
@@ -931,6 +936,7 @@ Additional Inherited Members</h2></td></tr>
 <tr><td class="fieldname"><a id="a383a82ab842490e325553e9365028a27a66d8266d2d6bf3c321b8391eb02e06d3" name="a383a82ab842490e325553e9365028a27a66d8266d2d6bf3c321b8391eb02e06d3"></a>torqueFilter_q&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a383a82ab842490e325553e9365028a27a2aec58fa2c9c7e50e8e453cae31bdcae" name="a383a82ab842490e325553e9365028a27a2aec58fa2c9c7e50e8e453cae31bdcae"></a>pidautotune&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a383a82ab842490e325553e9365028a27a84f578fe2ad2bb2f2e81323b035b5ce9" name="a383a82ab842490e325553e9365028a27a84f578fe2ad2bb2f2e81323b035b5ce9"></a>fluxbrake&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a383a82ab842490e325553e9365028a27ae92b8d7a8bc2d52e63a10661d1fcf8cb" name="a383a82ab842490e325553e9365028a27ae92b8d7a8bc2d52e63a10661d1fcf8cb"></a>pwmfreq&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 <p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00325">325</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
@@ -1073,7 +1079,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_s_p_i_device.html#a2d39ef1a6af4796a3740f75260c9fe8a">SPIDevice</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02499">2499</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02520">2520</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
 
 </div>
 </div>
@@ -1285,7 +1291,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_command_handler.html#a8d2531d579c03d6672495ccb57f5ffb3">CommandHandler</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02850">2850</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02872">2872</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
 
 </div>
 </div>
@@ -1333,7 +1339,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02575">2575</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02596">2596</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
 
 </div>
 </div>
@@ -1408,7 +1414,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02592">2592</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02613">2613</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
 
 </div>
 </div>
@@ -1436,7 +1442,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02584">2584</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02605">2605</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
 
 </div>
 </div>
@@ -1463,7 +1469,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02566">2566</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02587">2587</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
 
 </div>
 </div>
@@ -1541,7 +1547,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_s_p_i_device.html#a7a16f61efb6990a72f22090c4c98a672">SPIDevice</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02502">2502</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02523">2523</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
 
 </div>
 </div>
@@ -1579,7 +1585,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l03201">3201</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l03231">3231</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
 
 </div>
 </div>
@@ -1599,7 +1605,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p >Moves the rotor and estimates polarity and direction of the encoder Polarity is found by measuring the n pulse. If polarity was found to be reversed during the test direction will be reversed again to account for that </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02259">2259</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02257">2257</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
 
 </div>
 </div>
@@ -1619,7 +1625,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p >Similar to the ABN calibration this moved the motor and measures the encoder direction </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02315">2315</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02313">2313</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
 
 </div>
 </div>
@@ -1668,7 +1674,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_exti_handler.html#a98dad3ef8d41c40d84493e41b1f8c16e">ExtiHandler</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02560">2560</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02581">2581</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
 
 </div>
 </div>
@@ -1731,7 +1737,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p >Returns measured flux </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02436">2436</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02457">2457</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
 
 </div>
 </div>
@@ -1751,7 +1757,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p >Returns measured torque </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02445">2445</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02466">2466</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
 
 </div>
 </div>
@@ -1771,7 +1777,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p >Returns measured flux and torque as a pair Flux is first, torque second item </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02426">2426</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02447">2447</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
 
 </div>
 </div>
@@ -1929,7 +1935,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02044">2044</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02042">2042</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
 
 </div>
 </div>
@@ -1979,7 +1985,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_command_handler.html#a0842b01125770b9be569a29d49080a3f">CommandHandler</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00556">556</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00557">557</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -2029,7 +2035,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02119">2119</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02117">2117</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
 
 </div>
 </div>
@@ -2144,7 +2150,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02071">2071</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02069">2069</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
 
 </div>
 </div>
@@ -2224,7 +2230,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p >Returns the PWM loop frequency in Hz Depends on hardware clock and pwm counter setting. Default 25kHz </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02404">2404</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02402">2402</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
 
 </div>
 </div>
@@ -2377,7 +2383,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02034">2034</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02032">2032</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
 
 </div>
 </div>
@@ -2495,7 +2501,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02409">2409</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02430">2430</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
 
 </div>
 </div>
@@ -2697,7 +2703,7 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02511">2511</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02532">2532</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
 
 </div>
 </div>
@@ -2717,7 +2723,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02453">2453</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02474">2474</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
 
 </div>
 </div>
@@ -2736,7 +2742,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02803">2803</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02824">2824</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
 
 </div>
 </div>
@@ -2756,7 +2762,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02618">2618</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02639">2639</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
 
 </div>
 </div>
@@ -3032,7 +3038,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02373">2373</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02371">2371</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
 
 </div>
 </div>
@@ -3053,7 +3059,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p >Applies a biquad filter to the flux target Set nullptr to disable </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02134">2134</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02132">2132</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
 
 </div>
 </div>
@@ -3074,7 +3080,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p >Applies a biquad filter to the pos target Set nullptr to disable </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02155">2155</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02153">2153</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
 
 </div>
 </div>
@@ -3095,7 +3101,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p >Applies a biquad filter to the torque target Set nullptr to disable </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02197">2197</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02195">2195</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
 
 </div>
 </div>
@@ -3116,7 +3122,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p >Applies a biquad filter to the actual measured velocity Set nullptr to disable </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02176">2176</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02174">2174</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
 
 </div>
 </div>
@@ -3147,7 +3153,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p >Sets the raw brake resistor limits. Centered at 0x7fff Set both 0 to deactivate </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02249">2249</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02247">2247</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
 
 </div>
 </div>
@@ -3310,7 +3316,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02038">2038</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02036">2036</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
 
 </div>
 </div>
@@ -3340,7 +3346,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02047">2047</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02045">2045</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
 
 </div>
 </div>
@@ -3370,7 +3376,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02054">2054</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02052">2052</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
 
 </div>
 </div>
@@ -3433,7 +3439,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p >Sets some constants and features depending on the hardware version of the driver </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02653">2653</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02674">2674</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
 
 </div>
 </div>
@@ -3453,7 +3459,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02108">2108</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02106">2106</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
 
 </div>
 </div>
@@ -3603,7 +3609,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02095">2095</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02093">2093</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
 
 </div>
 </div>
@@ -3623,7 +3629,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02062">2062</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02060">2060</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
 
 </div>
 </div>
@@ -3732,7 +3738,7 @@ Additional Inherited Members</h2></td></tr>
 6 = pwm HS only <br  />
 7 = pwm on centered, FOC mode </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02369">2369</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02367">2367</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
 
 </div>
 </div>
@@ -3782,7 +3788,57 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02380">2380</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02378">2378</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+
+</div>
+</div>
+<a id="ae2af76ad699171ea7a614102e1cd1268" name="ae2af76ad699171ea7a614102e1cd1268"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae2af76ad699171ea7a614102e1cd1268">&#9670;&nbsp;</a></span>setPwmFreq()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TMC4671::setPwmFreq </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>freq</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >Changes the PWM frequency to a desired frequency Possible values depend on the hwclock. At 25MHz the lowest possible frequency is 24.1kHz </p>
+
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02422">2422</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+
+</div>
+</div>
+<a id="acabd7583e2b673f4b852e9216d600a97" name="acabd7583e2b673f4b852e9216d600a97"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acabd7583e2b673f4b852e9216d600a97">&#9670;&nbsp;</a></span>setPwmMaxCnt()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TMC4671::setPwmMaxCnt </td>
+          <td>(</td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>maxcnt</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p >Changes PWM frequency Max value 4095, minimum 255 </p>
+
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02411">2411</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
 
 </div>
 </div>
@@ -3840,7 +3896,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02532">2532</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02553">2553</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
 
 </div>
 </div>
@@ -3860,7 +3916,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02528">2528</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02549">2549</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
 
 </div>
 </div>
@@ -3880,7 +3936,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02520">2520</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02541">2541</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
 
 </div>
 </div>
@@ -3900,7 +3956,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02524">2524</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02545">2545</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
 
 </div>
 </div>
@@ -3929,7 +3985,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p >Enable or disable space vector pwm for 3 phase motors Normally active but should be disabled if the motor has no isolated star point </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02392">2392</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02389">2389</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
 
 </div>
 </div>
@@ -4012,7 +4068,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02028">2028</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02026">2026</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
 
 </div>
 </div>
@@ -4033,7 +4089,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p >Changes the torque biquad filter </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02218">2218</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02216">2216</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
 
 </div>
 </div>
@@ -4053,7 +4109,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02089">2089</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02087">2087</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
 
 </div>
 </div>
@@ -4170,7 +4226,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l03167">3167</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l03197">3197</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
 
 </div>
 </div>
@@ -4251,7 +4307,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p >Limits the PWM value </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02084">2084</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02082">2082</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
 
 </div>
 </div>
@@ -4337,7 +4393,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p >Reads and resets all status flags and executes depending on status flags </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02539">2539</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02560">2560</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
 
 </div>
 </div>
@@ -4387,7 +4443,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l03157">3157</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l03187">3187</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
 
 </div>
 </div>
@@ -4460,7 +4516,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02492">2492</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02513">2513</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
 
 </div>
 </div>
@@ -4487,7 +4543,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00510">510</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00511">511</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -4517,7 +4573,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02467">2467</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02488">2488</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
 
 </div>
 </div>
@@ -4547,7 +4603,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02480">2480</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8cpp_source.html#l02501">2501</a> of file <a class="el" href="_t_m_c4671_8cpp_source.html">TMC4671.cpp</a>.</p>
 
 </div>
 </div>
@@ -4609,7 +4665,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00502">502</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00503">503</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -4633,7 +4689,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00592">592</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00593">593</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -4657,7 +4713,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00593">593</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00594">594</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -4673,7 +4729,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00504">504</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00505">505</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -4697,7 +4753,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00604">604</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00605">605</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -4713,7 +4769,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00547">547</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00548">548</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -4737,7 +4793,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00606">606</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00607">607</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -4753,7 +4809,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00439">439</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00440">440</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -4777,7 +4833,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00601">601</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00602">602</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -4801,7 +4857,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00574">574</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00575">575</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -4841,7 +4897,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00640">640</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00642">642</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -4857,7 +4913,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00492">492</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00493">493</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -4881,7 +4937,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00580">580</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00581">581</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -4897,7 +4953,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00490">490</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00491">491</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -4913,7 +4969,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00432">432</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00433">433</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -4937,7 +4993,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00571">571</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00572">572</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -4961,7 +5017,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00609">609</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00610">610</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -4985,7 +5041,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00610">610</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00611">611</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -5009,7 +5065,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00599">599</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00600">600</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -5033,7 +5089,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00588">588</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00589">589</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -5057,7 +5113,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00595">595</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00596">596</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -5081,7 +5137,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00586">586</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00587">587</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -5105,7 +5161,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00575">575</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00576">576</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -5121,7 +5177,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00433">433</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00434">434</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -5145,7 +5201,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00647">647</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00649">649</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -5169,7 +5225,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00603">603</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00604">604</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -5193,7 +5249,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00646">646</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00648">648</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -5209,7 +5265,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00536">536</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00537">537</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -5225,7 +5281,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00542">542</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00543">543</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -5241,7 +5297,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00442">442</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00443">443</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -5265,7 +5321,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00641">641</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00643">643</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -5289,7 +5345,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00597">597</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00598">598</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -5305,7 +5361,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00503">503</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00504">504</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -5321,7 +5377,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00436">436</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00437">437</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -5345,7 +5401,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00572">572</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00573">573</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -5397,7 +5453,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00590">590</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00591">591</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -5421,7 +5477,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00634">634</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00636">636</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -5445,7 +5501,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00581">581</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00582">582</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -5469,7 +5525,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00578">578</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00579">579</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -5493,7 +5549,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00612">612</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00613">613</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -5517,7 +5573,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00573">573</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00574">574</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -5541,7 +5597,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00635">635</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00637">637</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -5557,7 +5613,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00437">437</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00438">438</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -5581,7 +5637,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00594">594</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00595">595</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -5597,7 +5653,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00435">435</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00436">436</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -5621,7 +5677,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00582">582</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00583">583</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -5645,7 +5701,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00598">598</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00599">599</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -5661,7 +5717,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00500">500</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00501">501</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -5685,7 +5741,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00591">591</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00592">592</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -5709,7 +5765,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00607">607</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00608">608</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -5733,7 +5789,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00579">579</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00580">580</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -5757,7 +5813,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00614">614</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00615">615</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -5781,7 +5837,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00636">636</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00638">638</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -5805,7 +5861,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00584">584</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00585">585</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -5829,7 +5885,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00577">577</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00578">578</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -5845,7 +5901,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00537">537</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00538">538</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -5861,7 +5917,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00538">538</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00539">539</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -5885,7 +5941,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00639">639</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00641">641</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>
@@ -5909,7 +5965,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00596">596</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c4671_8h_source.html#l00597">597</a> of file <a class="el" href="_t_m_c4671_8h_source.html">TMC4671.h</a>.</p>
 
 </div>
 </div>

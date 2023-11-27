@@ -15,6 +15,6 @@ var structncm__interface__t =
     [ "nth_sequence", "structncm__interface__t.html#a1d796c9989e635d811cef49d805a3ef2", null ],
     [ "num_datagrams", "structncm__interface__t.html#af1837a594c3a29390ff8d4edf47fcc31", null ],
     [ "report_pending", "structncm__interface__t.html#ab3ad36a7c4fdd93d7a4186a984278405", null ],
-    [ "report_state", "structncm__interface__t.html#afe0ef618cf826081c2012e5d7e742ce4", null ],
+    [ "report_state", "structncm__interface__t.html#a90dd16bd76e03f9164a4880cb6bc7b49", null ],
     [ "transferring", "structncm__interface__t.html#a1d088fa4dc1325017a48ea533aa75afd", null ]
 ];

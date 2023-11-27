@@ -42,7 +42,8 @@ var class_t_m_c4671 =
       [ "torqueFilter_f", "class_t_m_c4671.html#a383a82ab842490e325553e9365028a27ac77579063a77041b21b719f40be1e474", null ],
       [ "torqueFilter_q", "class_t_m_c4671.html#a383a82ab842490e325553e9365028a27a66d8266d2d6bf3c321b8391eb02e06d3", null ],
       [ "pidautotune", "class_t_m_c4671.html#a383a82ab842490e325553e9365028a27a2aec58fa2c9c7e50e8e453cae31bdcae", null ],
-      [ "fluxbrake", "class_t_m_c4671.html#a383a82ab842490e325553e9365028a27a84f578fe2ad2bb2f2e81323b035b5ce9", null ]
+      [ "fluxbrake", "class_t_m_c4671.html#a383a82ab842490e325553e9365028a27a84f578fe2ad2bb2f2e81323b035b5ce9", null ],
+      [ "pwmfreq", "class_t_m_c4671.html#a383a82ab842490e325553e9365028a27ae92b8d7a8bc2d52e63a10661d1fcf8cb", null ]
     ] ],
     [ "TMC4671", "class_t_m_c4671.html#aff75030b94a5d49cd959c1f53c47be32", null ],
     [ "~TMC4671", "class_t_m_c4671.html#a776fa9a0e9e0f2b15544dfdd4f043138", null ],
@@ -158,6 +159,8 @@ var class_t_m_c4671 =
     [ "setPosSel", "class_t_m_c4671.html#ae2ae074d2c5eca7f1e7aaf2479377175", null ],
     [ "setPwm", "class_t_m_c4671.html#ac5f3e8203be4d31e920e7e3e75a3cb30", null ],
     [ "setPwm", "class_t_m_c4671.html#aa1fc8e976bbe795d9d0737a91ca18613", null ],
+    [ "setPwmFreq", "class_t_m_c4671.html#ae2af76ad699171ea7a614102e1cd1268", null ],
+    [ "setPwmMaxCnt", "class_t_m_c4671.html#acabd7583e2b673f4b852e9216d600a97", null ],
     [ "setSequentialPI", "class_t_m_c4671.html#a867f9fe5e5f9d5b50b96a22c19290c6a", null ],
     [ "setSpiAddr", "class_t_m_c4671.html#a7e24c58fc247cef97c74cc7b22732783", null ],
     [ "setStatusFlags", "class_t_m_c4671.html#afd3251813149c2658f7dbcdc7bbcd9bc", null ],
