@@ -15,6 +15,7 @@ extern IWDG_HandleTypeDef hiwdg; // Watchdog
 
 bool running = true;
 bool mainclassChosen = false;
+volatile bool forceErase = false;
 
 uint16_t main_id = 0;
 
@@ -44,6 +45,10 @@ void cppmain() {
 	// Flash init
 	if(!Flash_Init()){
 		Error_Handler();
+	}
+
+	if(forceErase){
+		Flash_Format();
 	}
 
 //	// Check if flash is initialized
