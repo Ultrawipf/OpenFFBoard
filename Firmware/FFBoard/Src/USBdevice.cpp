@@ -33,8 +33,7 @@ void USBdevice::registerUsb(){
 void USBdevice::Run(){
 	tusb_init();
 	while(1){
-		tud_task();
-		Delay(1);
+		tud_task(); // Run until no usb events left
 	}
 }
 
