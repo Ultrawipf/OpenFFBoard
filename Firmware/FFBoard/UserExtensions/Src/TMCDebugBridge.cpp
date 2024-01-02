@@ -139,6 +139,7 @@ void TMCDebugBridge::cdcRcv(char* Buf, uint32_t *Len){
 			uint8_t rpl[4] = {2,1,0x64,0x94};
 //			tmcReadRegRaw(addr, buf);
 			uint32_t bufI = drv->readReg(addr);
+			bufI = __REV(bufI);
 			memcpy(buf,&bufI,4);
 			std::vector<uint8_t> rx_data;
 
