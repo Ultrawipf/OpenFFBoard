@@ -76,7 +76,7 @@ void brakeCheck(){
 		// Brake resistor active over 5s. Shut down.
 		brake_failure = true;
 		HAL_GPIO_WritePin(DRV_BRAKE_GPIO_Port,DRV_BRAKE_Pin, GPIO_PIN_RESET);
-		// TODO: can not create error here in ISR. may cause faults
+		// can not create error here in ISR
 		ErrorHandler::addError(resError);
 	}else{
 		HAL_GPIO_WritePin(DRV_BRAKE_GPIO_Port,DRV_BRAKE_Pin, braking_flag ? GPIO_PIN_SET:GPIO_PIN_RESET);
