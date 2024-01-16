@@ -2568,7 +2568,8 @@ void TMC4671::statusCheck(){
 
 	if(statusFlags.flags.not_PLL_locked){
 		// Critical error. PLL not locked
-		ErrorHandler::addError(Error(ErrorCode::tmcPLLunlocked, ErrorType::critical, "TMC PLL not locked"));
+		// Creating error object not allowed. Function is called from flag isr! ignore for now.
+		//ErrorHandler::addError(Error(ErrorCode::tmcPLLunlocked, ErrorType::critical, "TMC PLL not locked"));
 	}
 
 
