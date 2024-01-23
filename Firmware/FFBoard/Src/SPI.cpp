@@ -328,9 +328,11 @@ std::pair<uint32_t,float> SPIPort::getClosestPrescaler(float clock,float min,flo
 
 SPIDevice::SPIDevice(SPIPort& port,SPIConfig& spiConfig) : spiPort{port},spiConfig{spiConfig}{
 	spiPort.reserveCsPin(spiConfig.cs);
+	this->spiConfig.peripheral = port.getPortHandle()->Init;
 }
 SPIDevice::SPIDevice(SPIPort& port,OutputPin csPin) : spiPort{port},spiConfig{csPin}{
 	this->spiConfig.cs = csPin;
+	this->spiConfig.peripheral = port.getPortHandle()->Init;
 	spiPort.reserveCsPin(spiConfig.cs);
 }
 SPIDevice::~SPIDevice() {
