@@ -97,6 +97,7 @@ struct TMC4671HardwareTypeConf{
 	uint8_t bbm = 20;
 	float fluxDissipationScaler = 0.5;
 	bool allowFluxDissipationDeactivation = true;
+	bool analogEncoderSkipCal = false;
 	// Todo restrict allowed motor and encoder types
 };
 
@@ -237,7 +238,7 @@ struct TMC4671AENCConf{
 	int16_t AENC0_scale = 256;
 	uint16_t AENC1_offset = 0x7fff;
 	int16_t AENC1_scale = 256;
-	uint16_t AENC2_offset = 20000;
+	uint16_t AENC2_offset = 0x7fff;
 	int16_t AENC2_scale = 256;
 
 	int16_t nMask = 0; // 0x3c & 0xffff0000

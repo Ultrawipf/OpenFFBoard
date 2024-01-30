@@ -651,7 +651,9 @@ void TMC4671::calibrateEncoder(){
 		// Report changes
 		CommandHandler::broadcastCommandReply(CommandReply(abnconf.npol ? 1 : 0), (uint32_t)TMC4671_commands::encpol, CMDtype::get);
 	}else if(conf.motconf.enctype == EncoderType_TMC::sincos || conf.motconf.enctype == EncoderType_TMC::uvw){
-		calibrateAenc();
+		if(!conf.hwconf.analogEncoderSkipCal){
+			calibrateAenc();
+		}
 	}else if(conf.motconf.enctype == EncoderType_TMC::ext){
 		estimateExtEnc();
 	}
@@ -1447,7 +1449,9 @@ void TMC4671::encoderInit(){
 		setPosSel(PosSelection::PhiM_aenc); // Mechanical Angle
 		setVelSel(VelSelection::PhiM_aenc); // Mechanical Angle (RPM)
 		//setup_AENC(aencconf);
-		calibrateAenc();
+		if(!conf.hwconf.analogEncoderSkipCal){
+			calibrateAenc();
+		}
 	}
 
 	// find index
@@ -2707,7 +2711,8 @@ void TMC4671::setHwType(TMC_HW_Ver type){
 			.brakeLimHigh = 50900,
 			.vmScaler = (2.5 / 0x7fff) * ((1.5+71.5)/1.5),
 			.vSenseMult = VOLTAGE_MULT_DEFAULT,
-			.bbm = 50 // DMTH8003SPS need longer deadtime
+			.bbm = 50, // DMTH8003SPS need longer deadtime
+			.analogEncoderSkipCal = false
 		};
 		this->conf.hwconf = newHwConf;
 	break;
@@ -2727,7 +2732,8 @@ void TMC4671::setHwType(TMC_HW_Ver type){
 			.brakeLimHigh = 50900,
 			.vmScaler = (2.5 / 0x7fff) * ((1.5+71.5)/1.5),
 			.vSenseMult = VOLTAGE_MULT_DEFAULT,
-			.bbm = 40
+			.bbm = 40,
+			.analogEncoderSkipCal = false
 		};
 		this->conf.hwconf = newHwConf;
 	break;
@@ -2748,7 +2754,8 @@ void TMC4671::setHwType(TMC_HW_Ver type){
 			.brakeLimHigh = 50900,
 			.vmScaler = (2.5 / 0x7fff) * ((1.5+71.5)/1.5),
 			.vSenseMult = VOLTAGE_MULT_DEFAULT,
-			.bbm = 20
+			.bbm = 20,
+			.analogEncoderSkipCal = false
 		};
 		this->conf.hwconf = newHwConf;
 	break;
@@ -2769,7 +2776,8 @@ void TMC4671::setHwType(TMC_HW_Ver type){
 			.brakeLimHigh = 50900,
 			.vmScaler = (2.5 / 0x7fff) * ((1.5+71.5)/1.5),
 			.vSenseMult = VOLTAGE_MULT_DEFAULT,
-			.bbm = 20
+			.bbm = 20,
+			.analogEncoderSkipCal = false
 		};
 		this->conf.hwconf = newHwConf;
 	break;
@@ -2790,7 +2798,8 @@ void TMC4671::setHwType(TMC_HW_Ver type){
 			.brakeLimHigh = 50900,
 			.vmScaler = (2.5 / 0x7fff) * ((1.5+71.5)/1.5),
 			.vSenseMult = VOLTAGE_MULT_DEFAULT,
-			.bbm = 20
+			.bbm = 20,
+			.analogEncoderSkipCal = false
 		};
 		this->conf.hwconf = newHwConf;
 		// Activates around 60V as last resort failsave. Check offsets from tmc leakage. ~ 1.426V
@@ -2813,7 +2822,8 @@ void TMC4671::setHwType(TMC_HW_Ver type){
 			.brakeLimHigh = 52800,
 			.vmScaler = (2.5 / 0x7fff) * ((1.5+71.5)/1.5),
 			.vSenseMult = VOLTAGE_MULT_DEFAULT,
-			.bbm = 20
+			.bbm = 20,
+			.analogEncoderSkipCal = false
 		};
 		this->conf.hwconf = newHwConf;
 
