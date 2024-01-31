@@ -57,6 +57,6 @@ A unified command system supporting different interfaces is available and recomm
 
 
 ### Copyright notice:
-Some parts of this software may contain source code by ST.
+Some parts of this software may contain third party libraries and source code licenced under different terms.
 The license applying to these files is found in the header of the file.
-For all other parts the LICENSE file applies.
+For all other parts in the `Firmware/FFBoard` folder the LICENSE file applies.
