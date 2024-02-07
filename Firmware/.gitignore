@@ -1,4 +1,4 @@
-/*Debug/
+**/Debug/
 **/Release/
 **/.settings/
 *.launch
@@ -8,4 +8,3 @@
 fixlang
 /build/
 /OpenFFBoard/
-/*Targets/F407VG/*.cfg
