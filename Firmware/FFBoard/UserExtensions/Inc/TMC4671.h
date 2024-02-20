@@ -21,7 +21,7 @@
 #include "ExtiHandler.h"
 #include "SPI.h"
 #include "TimerHandler.h"
-
+#include <span>
 #include "semaphore.hpp"
 #include <GPIOPin.h>
 #include "cpp_target_config.h"
@@ -38,6 +38,20 @@ extern SPI_HandleTypeDef HSPIDRV;
 extern TIM_HandleTypeDef TIM_TMC;
 #endif
 
+#ifndef TMC4671_DEFAULT_CURRENT_SCALER
+#define TMC4671_DEFAULT_CURRENT_SCALER 0
+#endif
+#ifndef TMC4671_DEFAULT_CLOCKFREQ
+#define TMC4671_DEFAULT_CLOCKFREQ 25e6
+#endif
+#ifndef TMC4671_DEFAULT_BBM
+#define TMC4671_DEFAULT_BBM 20
+#endif
+#ifndef TMC4671_DEFAULT_ANALOGENC_SKIPCAL
+#define TMC4671_DEFAULT_ANALOGENC_SKIPCAL 0
+#endif
+
+
 enum class TMC_ControlState : uint32_t {uninitialized,waitPower,Shutdown,Running,EncoderInit,EncoderFinished,HardError,OverTemp,IndexSearch,FullCalibration,ExternalEncoderInit,Pidautotune};
 
 enum class TMC_PwmMode : uint8_t {off = 0,HSlow_LShigh = 1, HShigh_LSlow = 2, res2 = 3, res3 = 4, PWM_LS = 5, PWM_HS = 6, PWM_FOC = 7};
@@ -46,7 +60,7 @@ enum class TMC_StartupType{NONE,coldStart,warmStart};
 
 enum class TMC_GpioMode{DebugSpi,DSAdcClkOut,DSAdcClkIn,Aout_Bin,Ain_Bout,Aout_Bout,Ain_Bin};
 
-enum class MotorType : uint8_t {NONE=0,DC=1,STEPPER=2,BLDC=3,ERR};
+enum class MotorType : uint8_t {NONE=0,DC=1,STEPPER=2,BLDC=3};
 enum class PhiE : uint8_t {ext=1,openloop=2,abn=3,hall=5,aenc=6,aencE=7,NONE,extEncoder};
 enum class MotionMode : uint8_t {stop=0,torque=1,velocity=2,position=3,prbsflux=4,prbstorque=5,prbsvelocity=6,uqudext=8,encminimove=9,NONE};
 enum class FFMode : uint8_t {none=0,velocity=1,torque=2};
@@ -54,18 +68,8 @@ enum class PosSelection : uint8_t {PhiE=0, PhiE_ext=1, PhiE_openloop=2, PhiE_abn
 enum class VelSelection : uint8_t {PhiE=0, PhiE_ext=1, PhiE_openloop=2, PhiE_abn=3, res1=4, PhiE_hal=5, PhiE_aenc=6, PhiA_aenc=7, res2=8, PhiM_abn=9, PhiM_abn2=10, PhiM_aenc=11, PhiM_hal=12};
 enum class EncoderType_TMC : uint8_t {NONE=0,abn=1,sincos=2,uvw=3,hall=4,ext=5}; // max 7
 
-// Hardware versions for identifying different types. 31 versions valid
+//// Hardware versions for identifying different types. 31 versions valid
 enum class TMC_HW_Ver : uint8_t {NONE=0,v1_0,v1_2,v1_2_2,v1_2_2_LEM20,v1_2_2_100mv,v1_3_66mv};
-// Selectable version names to be listed in commands
-const std::vector<std::pair<TMC_HW_Ver,std::string>> tmcHwVersionNames{
-			std::make_pair(TMC_HW_Ver::NONE,"Undefined"), // Do not select. Default but disables some safety features
-			std::make_pair(TMC_HW_Ver::v1_0,"v1.0 AD8417"),
-			std::make_pair(TMC_HW_Ver::v1_2,"v1.2 AD8417"),
-			std::make_pair(TMC_HW_Ver::v1_2_2,"v1.2.2 LEM GO 10 (80mV/A)"),
-			std::make_pair(TMC_HW_Ver::v1_2_2_LEM20,"v1.2.2 LEM GO 20 (40mV/A)"),
-			std::make_pair(TMC_HW_Ver::v1_2_2_100mv,"v1.2/3 100mV/A"),
-			std::make_pair(TMC_HW_Ver::v1_3_66mv,"v1.3 ACS724 30A (66mV/A)")
-};
 
 struct TMC4671MotConf{
 	MotorType motor_type = MotorType::NONE; //saved
@@ -81,24 +85,70 @@ struct TMC4671MotConf{
  * Settings that depend on the hardware version
  */
 struct TMC4671HardwareTypeConf{
-	TMC_HW_Ver hwVersion = TMC_HW_Ver::NONE;
+	const char* name="CUSTOM";
+	uint8_t hwVersion = 0;
 	int adcOffset = 0;
-	float thermistor_R2 = 1500;
-	float thermistor_R = 22000;
-	float thermistor_Beta = 4300;
-	bool temperatureEnabled = false; // Enables temperature readings
-	float temp_limit = 90;
-	float currentScaler = 2.5 / (0x7fff * 60.0 * 0.0015); // Converts from adc counts to current in Amps
-	uint16_t brakeLimLow = 50700;
-	uint16_t brakeLimHigh = 50900;
+
+	struct ThermistorSettings{
+		float thermistor_R2 = 1500;
+		float thermistor_R = 22000;
+		float thermistor_Beta = 4300;
+		float temp_limit = 90;
+		bool temperatureEnabled = false; // Enables temperature readings
+	};
+	ThermistorSettings thermistorSettings;
+
+
+	float currentScaler = TMC4671_DEFAULT_CURRENT_SCALER; // Converts from adc counts to current in Amps
+	uint16_t brakeLimLow = 0;
+	uint16_t brakeLimHigh = 0;
 	float vmScaler = (2.5 / 0x7fff) * ((1.5+71.5)/1.5);
 	float vSenseMult = VOLTAGE_MULT_DEFAULT;
-	float clockfreq = 25e6;
-	uint8_t bbm = 20;
+	float clockfreq = TMC4671_DEFAULT_CLOCKFREQ;
+	uint8_t bbm = TMC4671_DEFAULT_BBM;
 	float fluxDissipationScaler = 0.5;
-	bool allowFluxDissipationDeactivation = true;
-	bool analogEncoderSkipCal = false;
-	// Todo restrict allowed motor and encoder types
+
+	/**
+	 * Flags which features are enabled in this hardware type
+	 */
+	struct SupportedModes_s {
+		uint32_t mot_none: 1 = 1,
+		mot_dc : 1 = 1,
+		mot_bldc: 1 = 1,
+		mot_stepper:1 = 1,
+
+		enc_none:1 = 1,
+		enc_abn:1 = 1,
+		enc_sincos:1 = 1,
+		enc_uvw:1 = 1,
+		enc_hall:1 = 1,
+		enc_ext:1 = 1,
+
+		analog_enc_skip_cal:1 = TMC4671_DEFAULT_ANALOGENC_SKIPCAL,
+
+		allowFluxDissipationDeactivation:1 = 1;
+	};
+	SupportedModes_s flags;
+	bool isEncSupported(EncoderType_TMC type){
+		switch(type){
+		case EncoderType_TMC::NONE: return flags.enc_none;
+		case EncoderType_TMC::abn: return flags.enc_abn;
+		case EncoderType_TMC::ext: return flags.enc_ext;
+		case EncoderType_TMC::sincos: return flags.enc_sincos;
+		case EncoderType_TMC::hall: return flags.enc_hall;
+		case EncoderType_TMC::uvw: return flags.enc_uvw;
+		default: return false;
+		}
+	}
+	bool isMotSupported(MotorType type){
+		switch(type){
+		case MotorType::NONE: return flags.mot_none;
+		case MotorType::DC: return flags.mot_dc;
+		case MotorType::STEPPER: return flags.mot_stepper;
+		case MotorType::BLDC: return flags.mot_bldc;
+		default: return false;
+		}
+	}
 };
 
 
@@ -158,7 +208,6 @@ struct TMC4671MainConfig{
 	uint16_t adc_I1_offset 	= 33415;
 	uint16_t adc_I0_scale	= 256;
 	uint16_t adc_I1_scale	= 256;
-	bool canChangeHwType 	= true; // Allows changing the hardware version by commands
 	bool encoderReversed	= false;
 	bool combineEncoder		= false;
 	bool invertForce		= false;
@@ -347,7 +396,7 @@ public:
 
 	TMC4671(SPIPort& spiport,OutputPin cspin,uint8_t address=1);
 
-	void setHwType(TMC_HW_Ver type);
+	void setHwType(uint8_t type);
 
 	void setAddress(uint8_t address);
 
@@ -571,6 +620,8 @@ protected:
 		TMC4671* tmc;
 	};
 
+	static std::span<const TMC4671HardwareTypeConf> tmc4671_hw_configs; // Can override in external target file
+
 private:
 	OutputPin enablePin = OutputPin(*DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin);
 	const Error indexNotHitError = Error(ErrorCode::encoderIndexMissed,ErrorType::critical,"Encoder index missed");
@@ -601,6 +652,7 @@ private:
 	bool fullCalibrationInProgress = false;
 	bool phiErestored = false;
 	bool encHallRestored = false;
+	bool canChangeHwType 	= true; // Allows changing the hardware version by commands
 	//int32_t phiEOffsetRestored = 0; //-0x8000 to 0x7fff
 	uint8_t calibrationFailCount = 2;
 
@@ -635,6 +687,8 @@ private:
 	void encoderInit();
 	void errorCallback(const Error &error, bool cleared);
 	bool pidAutoTune();
+
+	void replyHardwareVersions(const std::span<const TMC4671HardwareTypeConf>& versions,std::vector<CommandReply>& replies);
 
 	uint32_t initTime = 0;
 	bool manualEncAlign = false;
