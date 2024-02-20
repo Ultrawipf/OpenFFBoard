@@ -9,7 +9,6 @@
 #ifdef TMC4671DRIVER
 #include "ledEffects.h"
 #include "voltagesense.h"
-//#include "stm32f4xx_hal_spi.h"
 #include <math.h>
 #include <assert.h>
 #include "ErrorHandler.h"
@@ -44,6 +43,7 @@ ClassIdentifier TMC4671::info = {
 	.name = "TMC4671" ,
 	.id=CLSID_MOT_TMC0,
 };
+
 
 
 TMC4671::TMC4671(SPIPort& spiport,OutputPin cspin,uint8_t address) :
@@ -347,7 +347,7 @@ bool TMC4671::initialize(){
  * Not calibrated perfectly!
  */
 float TMC4671::getTemp(){
-	if(!this->conf.hwconf.temperatureEnabled){
+	if(!this->conf.hwconf.thermistorSettings.temperatureEnabled){
 		return 0;
 	}
 	TMC4671HardwareTypeConf* hwconf = &conf.hwconf;
@@ -358,10 +358,10 @@ float TMC4671::getTemp(){
 	if(adcval <= 0){
 		return 0.0;
 	}
-	float r = hwconf->thermistor_R2 * (((float)43252 / (float)adcval)); //43252 equivalent ADC count if it was 3.3V and not 2.5V
+	float r = hwconf->thermistorSettings.thermistor_R2 * (((float)43252 / (float)adcval)); //43252 equivalent ADC count if it was 3.3V and not 2.5V
 
 	// Beta
-	r = (1.0 / 298.15) + log(r / hwconf->thermistor_R) / hwconf->thermistor_Beta;
+	r = (1.0 / 298.15) + log(r / hwconf->thermistorSettings.thermistor_R) / hwconf->thermistorSettings.thermistor_Beta;
 	r = 1.0 / r;
 	r -= 273.15;
 	return r;
@@ -549,9 +549,9 @@ void TMC4671::Run(){
 				}
 
 				// Temperature sense
-				if(conf.hwconf.temperatureEnabled){
+				if(conf.hwconf.thermistorSettings.temperatureEnabled){
 					float temp = getTemp();
-					if(temp > conf.hwconf.temp_limit){
+					if(temp > conf.hwconf.thermistorSettings.temp_limit){
 						changeState(TMC_ControlState::OverTemp);
 						pulseErrLed();
 					}
@@ -651,7 +651,7 @@ void TMC4671::calibrateEncoder(){
 		// Report changes
 		CommandHandler::broadcastCommandReply(CommandReply(abnconf.npol ? 1 : 0), (uint32_t)TMC4671_commands::encpol, CMDtype::get);
 	}else if(conf.motconf.enctype == EncoderType_TMC::sincos || conf.motconf.enctype == EncoderType_TMC::uvw){
-		if(!conf.hwconf.analogEncoderSkipCal){
+		if(!conf.hwconf.flags.analog_enc_skip_cal){
 			calibrateAenc();
 		}
 	}else if(conf.motconf.enctype == EncoderType_TMC::ext){
@@ -1364,8 +1364,8 @@ bool TMC4671::calibrateAdcOffset(uint16_t time){
 	uint32_t measurements_idle = 0;
 	uint64_t totalA=0;
 	uint64_t totalB=0;
-	bool allowTemp = conf.hwconf.temperatureEnabled;
-	conf.hwconf.temperatureEnabled = false; // Temp check interrupts adc
+	bool allowTemp = conf.hwconf.thermistorSettings.temperatureEnabled;
+	conf.hwconf.thermistorSettings.temperatureEnabled = false; // Temp check interrupts adc
 	writeReg(0x03, 0); // Read raw adc
 	PhiE lastphie = getPhiEtype();
 	MotionMode lastmode = getMotionMode();
@@ -1404,7 +1404,7 @@ bool TMC4671::calibrateAdcOffset(uint16_t time){
 //		setPwm(TMC_PwmMode::off); //Disable pwm
 //		this->changeState(TMC_ControlState::HardError);
 		adcCalibrated = false;
-		conf.hwconf.temperatureEnabled = allowTemp;
+		conf.hwconf.thermistorSettings.temperatureEnabled = allowTemp;
 		return false; // An adc or shunt amp is likely broken. do not proceed.
 	}
 	conf.adc_I0_offset = offsetAidle;
@@ -1415,7 +1415,7 @@ bool TMC4671::calibrateAdcOffset(uint16_t time){
 	setPhiEtype(lastphie);
 	setMotionMode(lastmode,true);
 	adcCalibrated = true;
-	conf.hwconf.temperatureEnabled = allowTemp;
+	conf.hwconf.thermistorSettings.temperatureEnabled = allowTemp;
 	return true;
 }
 
@@ -1449,7 +1449,7 @@ void TMC4671::encoderInit(){
 		setPosSel(PosSelection::PhiM_aenc); // Mechanical Angle
 		setVelSel(VelSelection::PhiM_aenc); // Mechanical Angle (RPM)
 		//setup_AENC(aencconf);
-		if(!conf.hwconf.analogEncoderSkipCal){
+		if(!conf.hwconf.flags.analog_enc_skip_cal){
 			calibrateAenc();
 		}
 	}
@@ -1516,9 +1516,10 @@ void TMC4671::encoderInit(){
  */
 void TMC4671::setEncoderType(EncoderType_TMC type){
 	// If no external timer is set external encoder is not valid
-	if((!externalEncoderTimer || !externalEncoderAllowed()) && type == EncoderType_TMC::ext){
+	if( !conf.hwconf.isEncSupported(type) || ((!externalEncoderTimer || !externalEncoderAllowed()) && type == EncoderType_TMC::ext)){
 		type = EncoderType_TMC::NONE;
 	}
+
 	this->conf.motconf.enctype = type;
 	this->statusMask.flags.AENC_N = 0;
 	this->statusMask.flags.ENC_N = 0;
@@ -2011,14 +2012,19 @@ bool TMC4671::externalEncoderAllowed(){
 #ifndef TIM_TMC
 	return false;
 #else
-	return allowExternalEncoder;
+	return allowExternalEncoder && conf.hwconf.flags.enc_ext;
 #endif
 }
 
 void TMC4671::setMotorType(MotorType motor,uint16_t poles){
+
+	if(!conf.hwconf.isMotSupported(motor)){
+		motor = MotorType::NONE;
+	}
 	if(motor == MotorType::DC){
 		poles = 1;
 	}
+
 	conf.motconf.motor_type = motor;
 	conf.motconf.pole_pairs = poles;
 	uint32_t mtype = poles | ( ((uint8_t)motor&0xff) << 16);
@@ -2686,167 +2692,47 @@ void TMC4671::restoreEncHallMisc(uint16_t val){
 	this->hallconf.interpolation = (val>>9) & 0x01;
 	this->curPids.sequentialPI = (val>>10) & 0x01;
 
-	setHwType((TMC_HW_Ver)((val >> 11) & 0x1F));
+	setHwType((uint8_t)((val >> 11) & 0x1F));
 
 }
+
+
 
 /**
  * Sets some constants and features depending on the hardware version of the driver
  */
-void TMC4671::setHwType(TMC_HW_Ver type){
-	//TMC4671HardwareTypeConf newHwConf;
-	switch(type){
-	case TMC_HW_Ver::v1_3_66mv:
-		{
-		TMC4671HardwareTypeConf newHwConf = {
-			.hwVersion = TMC_HW_Ver::v1_3_66mv,
-			.adcOffset = 0,
-			.thermistor_R2 = 1500,
-			.thermistor_R = 10000,
-			.thermistor_Beta = 4300,
-			.temperatureEnabled = true,
-			.temp_limit = 90,
-			.currentScaler = 2.5 / (0x7fff * 0.066), // sensor 66mV/A
-			.brakeLimLow = 50700,
-			.brakeLimHigh = 50900,
-			.vmScaler = (2.5 / 0x7fff) * ((1.5+71.5)/1.5),
-			.vSenseMult = VOLTAGE_MULT_DEFAULT,
-			.bbm = 50, // DMTH8003SPS need longer deadtime
-			.analogEncoderSkipCal = false
-		};
-		this->conf.hwconf = newHwConf;
-	break;
-	}
-	case TMC_HW_Ver::v1_2_2_100mv:
-	{
-		TMC4671HardwareTypeConf newHwConf = {
-			.hwVersion = TMC_HW_Ver::v1_2_2_100mv,
-			.adcOffset = 0,
-			.thermistor_R2 = 1500,
-			.thermistor_R = 10000,
-			.thermistor_Beta = 4300,
-			.temperatureEnabled = true,
-			.temp_limit = 90,
-			.currentScaler = 2.5 / (0x7fff * 0.1), // w. TMCS1100A2 sensor 100mV/A
-			.brakeLimLow = 50700,
-			.brakeLimHigh = 50900,
-			.vmScaler = (2.5 / 0x7fff) * ((1.5+71.5)/1.5),
-			.vSenseMult = VOLTAGE_MULT_DEFAULT,
-			.bbm = 40,
-			.analogEncoderSkipCal = false
-		};
-		this->conf.hwconf = newHwConf;
-	break;
-	}
-	case TMC_HW_Ver::v1_2_2_LEM20:
-	{
-		// TODO possibly lower PWM limit because of lower valid sensor range
-		TMC4671HardwareTypeConf newHwConf = {
-			.hwVersion = TMC_HW_Ver::v1_2_2,
-			.adcOffset = 0,
-			.thermistor_R2 = 1500,
-			.thermistor_R = 10000,
-			.thermistor_Beta = 4300,
-			.temperatureEnabled = true,
-			.temp_limit = 90,
-			.currentScaler = 2.5 / (0x7fff * 0.04), // w. LEM 20 sensor 40mV/A
-			.brakeLimLow = 50700,
-			.brakeLimHigh = 50900,
-			.vmScaler = (2.5 / 0x7fff) * ((1.5+71.5)/1.5),
-			.vSenseMult = VOLTAGE_MULT_DEFAULT,
-			.bbm = 20,
-			.analogEncoderSkipCal = false
-		};
-		this->conf.hwconf = newHwConf;
-	break;
-	}
-	case TMC_HW_Ver::v1_2_2:
-	{
-		// TODO possibly lower PWM limit because of lower valid sensor range
-		TMC4671HardwareTypeConf newHwConf = {
-			.hwVersion = TMC_HW_Ver::v1_2_2,
-			.adcOffset = 0,
-			.thermistor_R2 = 1500,
-			.thermistor_R = 10000,
-			.thermistor_Beta = 4300,
-			.temperatureEnabled = true,
-			.temp_limit = 90,
-			.currentScaler = 2.5 / (0x7fff * 0.08), // w. LEM 10 sensor 80mV/A
-			.brakeLimLow = 50700,
-			.brakeLimHigh = 50900,
-			.vmScaler = (2.5 / 0x7fff) * ((1.5+71.5)/1.5),
-			.vSenseMult = VOLTAGE_MULT_DEFAULT,
-			.bbm = 20,
-			.analogEncoderSkipCal = false
-		};
-		this->conf.hwconf = newHwConf;
-	break;
+void TMC4671::setHwType(uint8_t type){
+	// If only one config is valid use this regardless of requested type
+	if(TMC4671::tmc4671_hw_configs.size() == 1){
+		this->conf.hwconf = TMC4671::tmc4671_hw_configs[0];
+	}else{ // Search for config matching requested type
+		for(const TMC4671HardwareTypeConf& newConf : TMC4671::tmc4671_hw_configs){
+			if(type == newConf.hwVersion){
+				this->conf.hwconf = newConf;
+				break;
+			}
+		}
 	}
 
-	case TMC_HW_Ver::v1_2:
-	{
-		TMC4671HardwareTypeConf newHwConf = {
-			.hwVersion = TMC_HW_Ver::v1_2,
-			.adcOffset = 1000,
-			.thermistor_R2 = 1500,
-			.thermistor_R = 22000,
-			.thermistor_Beta = 4300,
-			.temperatureEnabled = true,
-			.temp_limit = 90,
-			.currentScaler = 2.5 / (0x7fff * 60.0 * 0.0015), // w. 60x 1.5mOhm sensor
-			.brakeLimLow = 50700,
-			.brakeLimHigh = 50900,
-			.vmScaler = (2.5 / 0x7fff) * ((1.5+71.5)/1.5),
-			.vSenseMult = VOLTAGE_MULT_DEFAULT,
-			.bbm = 20,
-			.analogEncoderSkipCal = false
-		};
-		this->conf.hwconf = newHwConf;
-		// Activates around 60V as last resort failsave. Check offsets from tmc leakage. ~ 1.426V
-	break;
-	}
-
-
-	case TMC_HW_Ver::v1_0:
-	{
-		TMC4671HardwareTypeConf newHwConf = {
-			.hwVersion = TMC_HW_Ver::v1_0,
-			.adcOffset = 1000,
-			.thermistor_R2 = 0,
-			.thermistor_R = 0,
-			.thermistor_Beta = 0,
-			.temperatureEnabled = false,
-			.temp_limit = 90,
-			.currentScaler = 2.5 / (0x7fff * 60.0 * 0.0015), // w. 60x 1.5mOhm sensor
-			.brakeLimLow = 52400,
-			.brakeLimHigh = 52800,
-			.vmScaler = (2.5 / 0x7fff) * ((1.5+71.5)/1.5),
-			.vSenseMult = VOLTAGE_MULT_DEFAULT,
-			.bbm = 20,
-			.analogEncoderSkipCal = false
-		};
-		this->conf.hwconf = newHwConf;
-
-	break;
-	}
-
-	case TMC_HW_Ver::NONE:
-	{
-	default:
-		TMC4671HardwareTypeConf newHwConf;
-		newHwConf.temperatureEnabled = false;
-		newHwConf.hwVersion = TMC_HW_Ver::NONE;
-		newHwConf.currentScaler = 0;
-		this->conf.hwconf = newHwConf;
-		setBrakeLimits(0,0); // Disables internal brake resistor activation. DANGER!
-		break;
-	}
-	}
 	setVSenseMult(this->conf.hwconf.vSenseMult); // Update vsense multiplier
 	//setupBrakePin(vdiffAct, vdiffDeact, vMax); // TODO if required
 	setBrakeLimits(this->conf.hwconf.brakeLimLow,this->conf.hwconf.brakeLimHigh);
 	setBBM(this->conf.hwconf.bbm,this->conf.hwconf.bbm);
+	// Force changing motor and encoder types to prevent invalid types being selected if new hw type does not support them
+	setMotorType(this->conf.motconf.motor_type, this->conf.motconf.pole_pairs);
+	setEncoderType(this->conf.motconf.enctype);
+}
 
+/**
+ * Appends a formatted reply with currently available hardware version configs
+ */
+void TMC4671::replyHardwareVersions(const std::span<const TMC4671HardwareTypeConf>& versions,std::vector<CommandReply>& replies){
+//	uint8_t idx = 0;
+	for(const TMC4671HardwareTypeConf& c : versions){
+		if(this->canChangeHwType || c.hwVersion == this->conf.hwconf.hwVersion){
+			replies.emplace_back( std::to_string((uint8_t)c.hwVersion) + ":" + c.name,(uint8_t)c.hwVersion);
+		}
+	}
 }
 
 void TMC4671::registerCommands(){
@@ -2933,10 +2819,16 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 	case TMC4671_commands::mtype:
 		if(cmd.type == CMDtype::get){
 			replies.emplace_back((uint8_t)this->conf.motconf.motor_type);
-		}else if(cmd.type == CMDtype::set && (uint8_t)cmd.type < (uint8_t)MotorType::ERR){
+		}else if(cmd.type == CMDtype::set && (uint8_t)cmd.type <= (uint8_t)MotorType::BLDC){
 			this->setMotorType((MotorType)cmd.val, this->conf.motconf.pole_pairs);
 		}else{
-			replies.emplace_back("NONE=0,DC=1,2Ph Stepper=2,3Ph BLDC=3");
+			std::string rplstr = "";
+			TMC4671HardwareTypeConf::SupportedModes_s* confflags = &conf.hwconf.flags;
+			if(confflags->mot_none) rplstr += "NONE=0,";
+			if(confflags->mot_dc) rplstr += "DC=1,";
+			if(confflags->mot_stepper) rplstr += "Stepper 2Ph=2,";
+			if(confflags->mot_bldc) rplstr += "BLDC 3Ph=3";
+			replies.emplace_back(rplstr);
 		}
 		break;
 
@@ -2946,11 +2838,15 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 		}else if(cmd.type == CMDtype::set){
 			this->setEncoderType((EncoderType_TMC)cmd.val);
 		}else{
-			if(externalEncoderAllowed())
-				replies.emplace_back("NONE=0,ABN=1,SinCos=2,Analog UVW=3,Hall=4,External=5");
-			else
-				replies.emplace_back("NONE=0,ABN=1,SinCos=2,Analog UVW=3,Hall=4");
-
+			std::string rplstr = "";
+			TMC4671HardwareTypeConf::SupportedModes_s* confflags = &conf.hwconf.flags;
+			if(confflags->enc_none) rplstr += "NONE=0,";
+			if(confflags->enc_abn) rplstr += "ABN=1,";
+			if(confflags->enc_sincos) rplstr += "SinCos=2,";
+			if(confflags->enc_uvw) rplstr += "UVW=3,";
+			if(confflags->enc_hall) rplstr += "HALL=4,";
+			if(confflags->enc_ext && externalEncoderAllowed()) rplstr += "External=5";
+			replies.emplace_back(rplstr);
 		}
 		break;
 
@@ -2958,16 +2854,11 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 		if(cmd.type == CMDtype::get){
 			replies.push_back((uint8_t)conf.hwconf.hwVersion);
 		}else if(cmd.type == CMDtype::set){
-			if(conf.canChangeHwType)
-				setHwType((TMC_HW_Ver)(cmd.val & 0x1F));
+			if(canChangeHwType)
+				setHwType((uint8_t)(cmd.val & 0x1F));
 		}else{
 			// List known hardware versions
-			for(auto v : tmcHwVersionNames){
-				if(conf.canChangeHwType || v.first == conf.hwconf.hwVersion){
-					replies.emplace_back( std::to_string((uint8_t)v.first) + ":" + v.second,(uint8_t)v.first);
-				}
-
-			}
+			replyHardwareVersions(tmc4671_hw_configs, replies);
 		}
 		break;
 
