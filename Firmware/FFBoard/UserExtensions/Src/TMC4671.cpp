@@ -726,7 +726,7 @@ bool TMC4671::pidAutoTune(){
 			flux = getActualFlux();
 		}
 
-		if(peakflux > (targetflux + ( targetflux * 0.03))) // Overshoot target by 3%
+		if(peakflux > (targetflux + ( targetflux * TMC4671_ITUNE_CUTOFF))) // Overshoot target by 4% default
 		{
 			fluxI -= step_i; // Revert last step
 			break;
