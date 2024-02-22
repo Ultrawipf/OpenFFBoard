@@ -13,7 +13,7 @@
 #include "mutex.hpp"
 #include "ClassIDs.h"
 #include <vector>
-
+#include <span>
 
 #define CMDFLAG_GET	 	0x01
 #define CMDFLAG_SET	 	0x02
@@ -22,6 +22,7 @@
 #define CMDFLAG_SETADR	 	0x20
 #define CMDFLAG_HIDDEN	 0x40
 #define CMDFLAG_DEBUG	 0x80
+#define CMDFLAG_EXTOVERRIDE 0x80000000
 
 #define CMDFLAG_STR_ONLY 0x100
 #define CMDFLAG_HID_ONLY 0x200 // Command not available for string based parsers
@@ -50,8 +51,8 @@ public:
 	  {};
 	const char* cmd = nullptr;
 	const char* helpstring = nullptr;
-	const uint32_t cmdId;
-	const uint32_t flags;
+	uint32_t cmdId;
+	uint32_t flags;
 };
 
 struct CmdHandlerInfo
@@ -260,14 +261,19 @@ public:
 	 */
 	template<typename ID>
 	void registerCommand(const char* cmd,const ID cmdid,const char* help=nullptr,uint32_t flags = 0){
-		for(CmdHandlerCommanddef& cmdDef : registeredCommands){
-			if(cmdDef.cmdId == static_cast<uint32_t>(cmdid))
-				return; //already present
-		}
-
-		this->registeredCommands.emplace_back(cmd, help,static_cast<uint32_t>(cmdid),flags);
-		this->registeredCommands.shrink_to_fit();
+		registerCommand_INT(cmd, static_cast<uint32_t>(cmdid), help, flags);
 	}
+
+
+	virtual void postCmdhandlerInit(){}; // Can implement in external file to override command flags
+	template<typename ID>
+	/**
+	 * Can override command flags to make it read only
+	 */
+	void overrideCommandFlags(const ID cmdid,uint32_t flagmask = 0){
+		overrideCommandFlags_INT(static_cast<uint32_t>(cmdid), flagmask);
+	}
+
 
 
 
@@ -286,6 +292,9 @@ protected:
 	std::vector<CmdHandlerCommanddef> registeredCommands;
 
 	CmdHandlerInfo cmdHandlerInfo;
+
+	void registerCommand_INT(const char* cmd,const uint32_t cmdid,const char* help=nullptr,uint32_t flags = 0);
+	void overrideCommandFlags_INT(const uint32_t cmdid,uint32_t flagmask = CMDFLAG_GET | CMDFLAG_GETADR);
 
 };
 
