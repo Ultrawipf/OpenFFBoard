@@ -50,6 +50,10 @@ extern TIM_HandleTypeDef TIM_TMC;
 #ifndef TMC4671_DEFAULT_ANALOGENC_SKIPCAL
 #define TMC4671_DEFAULT_ANALOGENC_SKIPCAL 0
 #endif
+#ifndef TMC4671_ITUNE_CUTOFF
+#define TMC4671_ITUNE_CUTOFF 0.04
+#endif
+
 
 
 enum class TMC_ControlState : uint32_t {uninitialized,waitPower,Shutdown,Running,EncoderInit,EncoderFinished,HardError,OverTemp,IndexSearch,FullCalibration,ExternalEncoderInit,Pidautotune};
