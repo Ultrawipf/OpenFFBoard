@@ -523,3 +523,39 @@ void CommandHandler::removeCommandHandler(){
 	removeCallbackHandler(getCommandHandlers(), this);
 	//cmdHandlerListMutex.Unlock();
 }
+
+/**
+ * Registers a new command. Called by registerCommand template
+ */
+void CommandHandler::registerCommand_INT(const char* cmd,const uint32_t cmdid,const char* help,uint32_t flags){
+	for(auto it = registeredCommands.begin();it!=registeredCommands.end();++it){
+		CmdHandlerCommanddef& cmdDef = *it;
+		if(cmdDef.cmdId == cmdid){
+			if(cmdDef.flags & CMDFLAG_EXTOVERRIDE){
+				// Override dummy present. Only update other data if not present and honor flag mask
+				flags &= flags | CMDFLAG_EXTOVERRIDE;
+				registeredCommands.erase(it); // Remove old dummy
+				break;
+			}else{
+				return; //already present
+			}
+		}
+	}
+
+	this->registeredCommands.emplace_back(cmd, help,cmdid,flags);
+	this->registeredCommands.shrink_to_fit();
+}
+
+/**
+ * Adds an override dummy or changes flags of a command. Called by template. TODO untested
+ */
+void CommandHandler::overrideCommandFlags_INT(const uint32_t cmdid,uint32_t flagmask){
+	for(CmdHandlerCommanddef& cmdDef : registeredCommands){
+		if(cmdDef.cmdId == static_cast<uint32_t>(cmdid)){
+			cmdDef.flags &= flagmask;
+			cmdDef.flags |= CMDFLAG_EXTOVERRIDE;
+			return; //already present
+		}
+	}
+	this->registeredCommands.emplace_back(nullptr, nullptr,cmdid,flagmask); // Dummy
+}
