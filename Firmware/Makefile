@@ -170,7 +170,7 @@ endif
 # Generate dependency information
 CFLAGS += -MMD -MP -MF"$(@:%.o=%.d)"
 
-CXXFLAGS = $(MCU) $(C_DEFS) $(C_INCLUDES) $(OPTCPP) -Wall -fdata-sections -ffunction-sections -fno-exceptions -fno-use-cxa-atexit -std=gnu++17 -fstack-usage
+CXXFLAGS = $(MCU) $(C_DEFS) $(C_INCLUDES) $(OPTCPP) -Wall -fdata-sections -ffunction-sections -fno-exceptions -fno-use-cxa-atexit -std=gnu++20 -fstack-usage
 
 #######################################
 # LDFLAGS
@@ -190,6 +190,11 @@ LDFLAGS = $(MCU) --specs=standard_c_nano_cpp.specs -u _printf_float -Wl,--start-
 
 # default action: build all
 all: $(BUILD_DIR)/$(TARGET).elf $(OUTPUT_DIR)/$(TARGET).hex $(OUTPUT_DIR)/$(TARGET).bin
+hex: $(OUTPUT_DIR)/$(TARGET).hex
+hexmetadata: $(OUTPUT_DIR)/$(TARGET).hex
+	echo "#METADATA" >> $(OUTPUT_DIR)/$(TARGET).hex
+	echo "#MCU_TARGET $(MCU_TARGET)" >> $(OUTPUT_DIR)/$(TARGET).hex
+	sed -rn -e "s/^#define\s*(\w+)\s*([^\/\*]+)?.*$$/#\1 \2/p" -e "s/:/;/" $(TARGET_DIR)/Core/Inc/target_constants.h >> $(OUTPUT_DIR)/$(TARGET).hex
 
 
 #######################################

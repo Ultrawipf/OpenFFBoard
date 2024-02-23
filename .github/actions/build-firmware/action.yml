@@ -24,7 +24,7 @@ runs:
       id: check_tc
       uses: andstor/file-existence-action@v2
       with:
-        files: "/tmp/armtc,/usr/share/gcc-arm-none-eabi-10.3-2021.10"
+        files: "/tmp/armtc,/usr/share/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi"
         allow_failure: false
 
     - name: Make temp dir
@@ -38,23 +38,23 @@ runs:
       if: steps.check_tc.outputs.files_exists != 'true'
       with:
         path: /tmp/armtc
-        key: 'gcc-arm-none-eabi-10.3-2021.10-x86_64-linux'
+        key: 'arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi'
 
     - name: Download toolchain
       shell: bash
       if: steps.check_tc.outputs.files_exists != 'true' && steps.cache.outputs.cache-hit != 'true'
-      run: wget -q --no-check-certificate -O /tmp/armtc/gcc-arm-none-eabi.tar.bz2 https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2 
+      run: wget -q --no-check-certificate -O /tmp/armtc/gcc-arm-none-eabi.tar.xz https://developer.arm.com/-/media/Files/downloads/gnu/13.2.rel1/binrel/arm-gnu-toolchain-13.2.rel1-x86_64-arm-none-eabi.tar.xz
       
     - name: Setup environment
       if: steps.check_tc.outputs.files_exists != 'true'
       shell: bash
       run: | 
-        sudo tar xjf /tmp/armtc/gcc-arm-none-eabi.tar.bz2 -C /usr/share/
-        sudo ln -s /usr/share/gcc-arm-none-eabi-10.3-2021.10/bin/* /usr/bin/
+        sudo tar xf /tmp/armtc/gcc-arm-none-eabi.tar.xz -C /usr/share/
+        sudo ln -s /usr/share/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin/* /usr/bin/
 
     - name: Build ${{ inputs.target }}
       shell: bash
       run: |
         make -C ${{ inputs.firmwarepath }} clean
-        make -j16 -C ${{ inputs.firmwarepath }} MCU_TARGET=${{ inputs.target }} OUTPUT_DIR=${{ inputs.path }}
+        make hexmetadata -j -C ${{ inputs.firmwarepath }} MCU_TARGET=${{ inputs.target }} OUTPUT_DIR=${{ inputs.path }}
 
