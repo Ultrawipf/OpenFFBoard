@@ -63,6 +63,12 @@ void CanBridge::sendMessage(uint32_t id, uint64_t msg,uint8_t len = 8,bool rtr =
 	txHeader.id = id;
 	txHeader.length = len;
 	txHeader.rtr = rtr;
+	if(id & 1 << 31){
+		txHeader.extId = true;
+		id &= 0x7FFFFFFF;
+	}else{
+		txHeader.extId = false;
+	}
 	if(!this->port->sendMessage(&txHeader, txBuf, &this->txMailbox)){
 		pulseErrLed();
 	}
