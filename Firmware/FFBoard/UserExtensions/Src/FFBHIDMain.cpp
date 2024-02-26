@@ -175,8 +175,12 @@ void FFBHIDMain::send_report(){
 	for(int32_t val : *axes){
 		if(count >= analogAxisCount)
 			break;
+#ifdef HIDAXISRES_32B
+		if(count <= MAX_AXIS) val = val << 16; // Shift up 16 bit to fill 32b value. Primary axis is 32b
+#endif
 		setHidReportAxis(&reportHID,count++,val);
 	}
+
 //	sourcesSem.Give();
 	// Fill rest
 	for(;count<analogAxisCount; count++){

@@ -553,17 +553,21 @@ metric_t* Axis::getMetrics() {
 }
 
 /**
- * Returns position as 16b int scaled to gamepad range
+ * Returns position as int scaled to gamepad range
  */
 int32_t Axis::getLastScaledEnc() {
-	return  clip(metric.current.pos,-0x7fff,0x7fff);
+#if defined(HIDAXISRES_32B)
+	return  clip(metric.current.pos_f * 0x7fffffff,-0x7fffffff,0x7fffffff); // Calc from float pos
+#else
+	return  clip(metric.current.pos_scaled_16b,-0x7fff,0x7fff);
+#endif
 }
 
 /**
  * Changes intensity of idle spring when FFB is off
  */
 int32_t Axis::updateIdleSpringForce() {
-	return clip<int32_t,int32_t>((int32_t)(-metric.current.pos*idlespringscale),-idlespringclip,idlespringclip);
+	return clip<int32_t,int32_t>((int32_t)(-metric.current.pos_scaled_16b*idlespringscale),-idlespringclip,idlespringclip);
 }
 
 /*
@@ -638,7 +642,7 @@ void Axis::setFxRatio(uint8_t val) {
 void Axis::resetMetrics(float new_pos= 0) { // pos is degrees
 	metric.current = metric_t();
 	metric.current.posDegrees = new_pos;
-	std::tie(metric.current.pos,metric.current.pos_f) = scaleEncValue(new_pos, degreesOfRotation);
+	std::tie(metric.current.pos_scaled_16b,metric.current.pos_f) = scaleEncValue(new_pos, degreesOfRotation);
 	metric.previous = metric_t();
 	// Reset filters
 	speedFilter.calcBiquad();
@@ -653,7 +657,7 @@ void Axis::updateMetrics(float new_pos) { // pos is degrees
 	metric.previous = metric.current;
 
 	metric.current.posDegrees = new_pos;
-	std::tie(metric.current.pos,metric.current.pos_f) = scaleEncValue(new_pos, degreesOfRotation);
+	std::tie(metric.current.pos_scaled_16b,metric.current.pos_f) = scaleEncValue(new_pos, degreesOfRotation);
 
 
 	// compute speed and accel from raw instant speed normalized
@@ -692,7 +696,7 @@ float Axis::getTorqueScaler(){
 }
 
 
-int32_t Axis::getTorque() { return metric.current.torque; }
+int32_t Axis::getTorque() { return metric.previous.torque; }
 
 bool Axis::isInverted() {
 	return invertAxis;
@@ -702,7 +706,7 @@ bool Axis::isInverted() {
  * Calculate soft endstop effect
  */
 int16_t Axis::updateEndstop(){
-	int8_t clipdir = cliptest<int32_t,int32_t>(metric.current.pos, -0x7fff, 0x7fff);
+	int8_t clipdir = cliptest<int32_t,int32_t>(metric.current.pos_scaled_16b, -0x7fff, 0x7fff);
 	if(clipdir == 0){
 		return 0;
 	}
@@ -975,16 +979,16 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 		break;
 
 	case Axis_commands::curpos:
-		replies.emplace_back(this->metric.current.pos);
+		replies.emplace_back(this->metric.previous.pos_scaled_16b);
 		break;
 	case Axis_commands::curtorque:
-		replies.emplace_back(this->metric.current.torque);
+		replies.emplace_back(getTorque());
 		break;
 	case Axis_commands::curspd:
-		replies.emplace_back(this->metric.current.speed);
+		replies.emplace_back(this->metric.previous.speed);
 		break;
 	case Axis_commands::curaccel:
-		replies.emplace_back(this->metric.current.accel);
+		replies.emplace_back(this->metric.previous.accel);
 		break;
 
 	case Axis_commands::reductionScaler:

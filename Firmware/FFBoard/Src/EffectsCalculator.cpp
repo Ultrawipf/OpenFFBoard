@@ -313,7 +313,7 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 
 	case FFB_EFFECT_SPRING:
 	{
-		float pos = metrics->pos;
+		float pos = metrics->pos_scaled_16b;
 		result_torque -= calcConditionEffectForce(effect, pos, gain.spring, con_idx, scaler.spring, angle_ratio);
 		break;
 	}
@@ -669,12 +669,12 @@ void EffectsCalculator::logEffectState(uint8_t type,uint8_t state){
 }
 
 
-void EffectsCalculator::calcStatsEffectType(uint8_t type, int16_t force,uint8_t axis){
+void EffectsCalculator::calcStatsEffectType(uint8_t type, int32_t force,uint8_t axis){
 	if(axis >= MAX_AXIS)
 		return;
 	if(type > 0 && type < 13) {
 		uint8_t arrayLocation = type - 1;
-		effects_stats[arrayLocation].current[axis] = clip<int32_t,int16_t>(effects_stats[arrayLocation].current[axis] + force, -0x7fff, 0x7fff);
+		effects_stats[arrayLocation].current[axis] = clip<int32_t,int32_t>(effects_stats[arrayLocation].current[axis] + force, -0x7fff, 0x7fff);
 		effects_stats[arrayLocation].max[axis] = std::max(effects_stats[arrayLocation].max[axis], (int16_t)abs(force));
 	}
 }

@@ -84,7 +84,7 @@ public:
 	uint8_t getGain();
 	void logEffectType(uint8_t type,bool remove = false);
 	//void setDirectionEnableMask(uint8_t mask);
-	void calcStatsEffectType(uint8_t type, int16_t force,uint8_t axis);
+	void calcStatsEffectType(uint8_t type, int32_t force,uint8_t axis);
 	void logEffectState(uint8_t type,uint8_t state);
 	void resetLoggedActiveEffects(bool reinit);
 
