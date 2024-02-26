@@ -27,8 +27,17 @@ __ALIGN_BEGIN const uint8_t hid_2ffb_desc[USB_HID_2FFB_REPORT_DESC_SIZE] __ALIGN
 		    0x81, 0x02,                    //     INPUT (Data,Var,Abs)
 		    0x05, 0x01,                    //     USAGE_PAGE (Generic Desktop)
 		    0x09, HID_USAGE_X,             //     USAGE (X)
+#if defined(HIDAXISRES_32B) && MAX_AXIS == 1
+			HIDDESC_32B_ENTRY(0x01)
+#endif
 		    0x09, HID_USAGE_Y,             //     USAGE (Y)
+#if defined(HIDAXISRES_32B) && MAX_AXIS == 2
+			HIDDESC_32B_ENTRY(0x02)
+#endif
 		    0x09, HID_USAGE_Z,             //     USAGE (Z)
+#if defined(HIDAXISRES_32B) && MAX_AXIS == 3
+			HIDDESC_32B_ENTRY(0x03)
+#endif
 		    0x09, HID_USAGE_RX,            //     USAGE (Rx)
 		    0x09, HID_USAGE_RY,            //     USAGE (Ry)
 			0x09, HID_USAGE_RZ,            //     USAGE (Rz)
@@ -37,7 +46,11 @@ __ALIGN_BEGIN const uint8_t hid_2ffb_desc[USB_HID_2FFB_REPORT_DESC_SIZE] __ALIGN
 		    0x16, 0x01, 0x80,              //     LOGICAL_MINIMUM (-32767)
 		    0x26, 0xff, 0x7f,              //     LOGICAL_MAXIMUM (32767)
 		    0x75, 0x10,                    //     REPORT_SIZE (16)
+#if defined(HIDAXISRES_32B)
+			0x95, 0x08-MAX_AXIS,           //     REPORT_COUNT (8- amount of 32b axes)
+#else
 		    0x95, 0x08,                    //     REPORT_COUNT (8)
+#endif
 		    0x81, 0x02,                    //     INPUT (Data,Var,Abs)
 		    0xc0,                          //   END_COLLECTION
 

@@ -96,15 +96,25 @@
 // Only include these for cpp
 #ifdef __cplusplus
 
-// HID gamepad report
-
 
 struct  __attribute__((__packed__)) reportHID_t {
 		uint8_t id = 1;
 		uint64_t buttons = 0;
+#if defined(HIDAXISRES_32B) && MAX_AXIS >= 1
+		int32_t X = 0;
+#else
 		int16_t X = 0;
+#endif
+#if defined(HIDAXISRES_32B) && MAX_AXIS >= 2
+		int32_t Y = 0;
+#else
 		int16_t Y = 0;
+#endif
+#if defined(HIDAXISRES_32B) && MAX_AXIS >= 3
+		int32_t Z = 0;
+#else
 		int16_t Z = 0;
+#endif
 		int16_t RX = 0;
 		int16_t RY = 0;
 		int16_t RZ = 0;
@@ -115,7 +125,8 @@ struct  __attribute__((__packed__)) reportHID_t {
 /*
  * Helper function to access analog axes in packed HID report struct
  */
-inline void setHidReportAxis(reportHID_t *report, uint8_t idx, int16_t val){
+inline void setHidReportAxis(reportHID_t *report, uint8_t idx, uint32_t val){
+
 	switch(idx){
 	case 0:
 		report->X = val;

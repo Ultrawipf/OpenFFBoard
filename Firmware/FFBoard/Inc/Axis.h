@@ -71,7 +71,7 @@ struct AxisConfig
 struct metric_t {
 	float accel = 0;	// in deg/s²
 	float speed = 0; // in deg/s
-	int32_t pos = 0; // scaled position as 16b int -0x7fff to 0x7fff
+	int32_t pos_scaled_16b = 0; // scaled position as 16b int -0x7fff to 0x7fff matching FFB ranges
 	float pos_f = 0; // scaled position as float. -1 to 1 range
 	float posDegrees = 0; // Position in degrees. Not scaled to selected range
 	int32_t torque = 0; // total of effect + endstop torque
