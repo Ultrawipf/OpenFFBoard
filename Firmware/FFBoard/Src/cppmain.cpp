@@ -8,7 +8,6 @@
 #include "tusb.h"
 
 uint32_t clkmhz = HAL_RCC_GetHCLKFreq() / 100000;
-extern TIM_HandleTypeDef TIM_MICROS;
 
 #ifdef HAL_IWDG_MODULE_ENABLED
 extern IWDG_HandleTypeDef hiwdg; // Watchdog
@@ -70,8 +69,6 @@ void cppmain() {
 
 	// ------------------------
 
-	TIM_MICROS.Instance->CR1 = 1; // Enable microsecond clock
-
 	startADC(); // enable ADC DMA
 
 	// If switch pressed at boot select failsafe implementation
@@ -110,10 +107,23 @@ void refreshWatchdog(){
 }
 
 
-
+/**
+ * TIM_MICROS_HALTICK MUST be reset by the HAL tick OR be the same tick timer to count microseconds since last tick update.
+ * By default ST HAL initializes the tick timer with 1MHz and 1kHz overrun interrupts so TIM_MICROS_HALTICK can be defined as that timer.
+ * Alternatively an actual freerunning 32b can be defined as TIM_MICROS to use its count directly.
+ * Otherwise the cyclecounter is used.
+ */
 uint32_t micros(){
-	//return DWT->CYCCNT / clkmhz;
+#ifdef TIM_MICROS_HALTICK
+	extern TIM_HandleTypeDef TIM_MICROS_HALTICK;
+	return (HAL_GetTick() * 1000) + TIM_MICROS_HALTICK.Instance->CNT;
+#elif defined(TIM_MICROS)
+	extern TIM_HandleTypeDef TIM_MICROS;
 	return TIM_MICROS.Instance->CNT;
+#else
+	return DWT->CYCCNT / clkmhz;
+#endif
+
 }
 
 
@@ -127,6 +137,10 @@ void free(void *p)
     vPortFree(p);
 }
 
+/**
+ * Helper function for RTOS run time measurements
+ * Should return a reasonably accurate and large counter value
+ */
 unsigned long getRunTimeCounterValue(void){
 	return micros();
 }
