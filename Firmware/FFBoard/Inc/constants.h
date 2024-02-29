@@ -80,5 +80,9 @@ static const uint8_t SW_VERSION_INT[3] = {1,15,1}; // Version as array. 8 bit ea
 	#endif
 #endif
 
+#if defined(TIM_MICROS_HALTICK) && defined(TIM_MICROS)
+#error "Only TIM_MICROS_HALTICK OR TIM_MICROS may be defined as a microsecond timebase"
+#endif
+
 
 #endif
