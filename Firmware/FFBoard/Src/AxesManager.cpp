@@ -102,19 +102,25 @@ bool AxesManager::setAxisCount(int8_t count) {
 }
 
 void AxesManager::usbSuspend() {
-		for (auto &axis : axes) {
-			axis->usbSuspend();
-		}
+	for (auto &axis : axes) {
+		axis->usbSuspend();
+	}
 }
 
 void AxesManager::usbResume() {
-		for (auto &axis : axes) {
-			axis->usbResume();
-		}
+	for (auto &axis : axes) {
+		axis->usbResume();
+	}
 }
 
 void AxesManager::resetPosZero() {
-		for (auto &axis : axes) {
-			axis->setPos(0);
-		}
+	for (auto &axis : axes) {
+		axis->setPos(0);
+	}
+}
+
+void AxesManager::updateSamplerate(float newSamplerate){
+	for (auto &axis : axes) {
+		axis->updateSamplerate(newSamplerate);
+	}
 }

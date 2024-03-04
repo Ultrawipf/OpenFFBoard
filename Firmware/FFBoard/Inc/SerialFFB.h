@@ -37,6 +37,7 @@ public:
 	void setMagnitude(uint8_t idx,int16_t magnitude);
 
 	void setEffectState(uint8_t id, bool state);
+	void updateSamplerate(float newSamplerate);
 
 private:
 	static ClassIdentifier info;

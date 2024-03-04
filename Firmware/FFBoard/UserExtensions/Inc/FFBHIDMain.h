@@ -33,7 +33,11 @@
 #include "SelectableInputs.h"
 #include "thread.hpp"
 
-class FFBHIDMain: public FFBoardMain, public cpp_freertos::Thread, PersistentStorage,ExtiHandler,public UsbHidHandler, ErrorHandler, SelectableInputs{
+class FFBHIDMain: public FFBoardMain, public cpp_freertos::Thread, PersistentStorage,ExtiHandler,public UsbHidHandler, ErrorHandler, SelectableInputs
+#ifdef TIM_FFB
+, TimerHandler // Adds timer handler
+#endif
+{
 	enum class FFBWheel_commands : uint32_t{
 		ffbactive,axes,btntypes,lsbtn,addbtn,aintypes,lsain,addain,hidrate,hidsendspd,estop,cfrate
 	};
@@ -74,6 +78,11 @@ public:
 	void errorCallback(const Error &error, bool cleared);
 
 	void systick();
+#ifdef TIM_FFB
+	void timerElapsed(TIM_HandleTypeDef* htim);
+#endif
+
+	float getCurFFBFreq();
 
 protected:
 	std::shared_ptr<EffectsControlItf> ffb;
@@ -91,9 +100,28 @@ private:
 	 * Warning: Report rate initialized by bInterval is overridden by saved speed preset at startup!
 	 */
 	void setReportRate(uint8_t rateidx);
-	uint8_t usb_report_rate = HID_BINTERVAL; //1 = 1000hz, 2 = 500hz, 3 = 333hz 4 = 250hz, 5 = 200hz 6 = 166hz, 8 = 125hz etc...
+	uint8_t usb_report_rate = HID_BINTERVAL; //for FS USB 1 = 1000hz, 2 = 500hz, 3 = 333hz 4 = 250hz, 5 = 200hz 6 = 166hz, 8 = 125hz etc...
 	uint8_t usb_report_rate_idx = 0;
-	const uint8_t usb_report_rates[4] = {1,2,4,8}; // Maps stored hid speed to report rates
+#ifndef TIM_FFB
+	uint8_t ffb_rate_divider = 0;
+#endif
+
+
+	struct FFB_update_rates{
+		struct FFB_update_rate_divider{
+			uint8_t basediv;
+			uint8_t hiddiv;
+		};
+#if TUD_OPT_HIGH_SPEED // divider pair <FFB div, USB div from base>
+		uint32_t basefreq = 8000;
+		std::array<FFB_update_rate_divider,7> dividers = {{{1,1},{2,1},{4,1},{8,1},{16,1},{32,1},{64,1}}}; // 8khz to 125hz
+#else
+		uint32_t basefreq = 1000;
+		std::array<FFB_update_rate_divider,4> dividers = {{{1,1},{2,1},{4,1},{8,1}}}; // 8 entries max. 1khz to 125hz
+#endif
+	};
+	//const uint8_t usb_report_rates[4] = {1,2,4,8}; // Maps stored hid speed to report rates
+	const static FFB_update_rates ffbrates;
 
 	std::string usb_report_rates_names();
 
