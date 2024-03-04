@@ -74,6 +74,15 @@ void EffectsCalculator::setActive(bool active)
 	setClipLed(active);
 }
 
+void EffectsCalculator::updateSamplerate(float newSamplerate){
+	this->calcfrequency = newSamplerate;
+	for(FFB_Effect &effect : this->effects){
+		if(effect.filter[0]){ // Update filters if effect has filters
+			setFilters(&effect);
+		}
+	}
+}
+
 
 /*
 If the metric is less than CP Offset - Dead Band, then the resulting force is given by the following formula:
@@ -1001,12 +1010,12 @@ int32_t EffectsCalculator::find_free_effect(uint8_t type){
  */
 uint32_t EffectsControlItf::getRate(){
 	float periodAvg = fxPeriodAvg.getAverage();
-	if((HAL_GetTick() - lastFxUpdate) > 1000 || periodAvg == 0){
+	if((micros() - lastFxUpdate) > 1000000 || periodAvg == 0){
 		// Reset average
 		fxPeriodAvg.clear();
 		return 0;
 	}else{
-		return (1000.0/periodAvg);
+		return (1000000.0/periodAvg);
 	}
 }
 
@@ -1015,22 +1024,22 @@ uint32_t EffectsControlItf::getRate(){
  */
 uint32_t EffectsControlItf::getConstantForceRate(){
 	float periodAvg = cfUpdatePeriodAvg.getAverage();
-	if((HAL_GetTick() - lastCfUpdate) > 1000 || periodAvg == 0){
+	if((micros() - lastCfUpdate) > 1000000 || periodAvg == 0){
 		// Reset average
 		cfUpdatePeriodAvg.clear();
 		return 0;
 	}else{
-		return (1000.0/periodAvg);
+		return (1000000.0/periodAvg);
 	}
 }
 
 
 void EffectsControlItf::cfUpdateEvent(){
-	cfUpdatePeriodAvg.addValue((uint32_t)(HAL_GetTick() - lastCfUpdate));
-	lastCfUpdate = HAL_GetTick();
+	cfUpdatePeriodAvg.addValue((uint32_t)(micros() - lastCfUpdate));
+	lastCfUpdate = micros();
 }
 
 void EffectsControlItf::fxUpdateEvent(){
-	fxPeriodAvg.addValue((uint32_t)(HAL_GetTick() - lastFxUpdate));
-	lastFxUpdate = HAL_GetTick();
+	fxPeriodAvg.addValue((uint32_t)(micros() - lastFxUpdate));
+	lastFxUpdate = micros();
 }

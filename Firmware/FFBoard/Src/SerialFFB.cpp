@@ -121,6 +121,10 @@ void SerialFFB::setEffectState(uint8_t id, bool state){
 	effects[id].state = state ? 1 : 0;
 }
 
+void SerialFFB::updateSamplerate(float newSamplerate){
+	effects_calc->updateSamplerate(newSamplerate);
+}
+
 CommandStatus SerialFFB::command(const ParsedCommand& cmd,std::vector<CommandReply>& replies){
 	CommandStatus status = CommandStatus::OK;
 	EffectsControlItf::fxUpdateEvent();

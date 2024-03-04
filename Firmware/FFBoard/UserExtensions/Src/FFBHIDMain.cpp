@@ -14,6 +14,14 @@
 #include "cmsis_os.h"
 extern osThreadId_t defaultTaskHandle;
 
+#ifdef TIM_FFB
+extern TIM_HandleTypeDef TIM_FFB;
+#endif
+
+#ifndef OVERRIDE_FFBRATES
+const FFBHIDMain::FFB_update_rates FFBHIDMain::ffbrates; // Default rates
+#endif
+
 //////////////////////////////////////////////
 
 
@@ -76,7 +84,7 @@ void FFBHIDMain::saveFlash(){
 	Flash_Write(ADR_FFBWHEEL_ANALOGCONF,this->ainsources);
 
 	uint8_t conf1 = 0;
-	conf1 |= usb_report_rate_idx & 0x3;
+	conf1 |= usb_report_rate_idx & 0x7;
 	Flash_Write(ADR_FFBWHEEL_CONF1,conf1);
 }
 
@@ -91,8 +99,15 @@ void FFBHIDMain::Run(){
 		lastEstop = HAL_GetTick();
 	}
 #endif
+#ifdef TIM_FFB
+	HAL_TIM_Base_Start_IT(&TIM_FFB); // Start generating updates
+#endif
 	while(true){
+#ifndef TIM_FFB
 		Delay(1);
+#else
+		WaitForNotification();
+#endif
 		updateControl();
 	}
 }
@@ -204,35 +219,72 @@ void FFBHIDMain::send_report(){
 }
 
 /**
+ * Returns current FFB update loop frequency in Hz
+ */
+float FFBHIDMain::getCurFFBFreq(){
+	return ffbrates.basefreq/((uint32_t)ffbrates.dividers[usb_report_rate_idx].basediv);
+}
+
+/**
  * Changes the hid report rate based on the index for usb_report_rates
  */
 void FFBHIDMain::setReportRate(uint8_t rateidx){
-	rateidx = clip<uint8_t,uint8_t>(rateidx, 0,sizeof(usb_report_rates));
+	uint32_t usbrate_base = TUD_OPT_HIGH_SPEED ? 8000 : 1000;
+	if(tud_connected()){ // Get either actual rate or max supported rate if not connected
+		usbrate_base = tud_speed_get() == TUSB_SPEED_HIGH ? 8000 : 1000; // Only FS and HS supported
+	}
+
+	rateidx = clip<uint8_t,uint8_t>(rateidx, 0,ffbrates.dividers.size());
 	usb_report_rate_idx = rateidx;
-	usb_report_rate = usb_report_rates[rateidx]*HID_BINTERVAL;
+
+
+	// Either limit using rate counter or HW timer if present.
+#ifdef TIM_FFB
+	TIM_FFB.Instance->ARR = ((1000000*(uint32_t)ffbrates.dividers[rateidx].basediv)/ffbrates.basefreq); // Assumes 1µs timer steps
+#else
+	ffb_rate_divider = ffbrates.dividers[rateidx].basediv;
+#endif
+	usb_report_rate = ffbrates.dividers[rateidx].hiddiv*HID_BINTERVAL;
+	// Divide report rate down if above actual usb rate
+	while(((ffbrates.basefreq / (uint32_t)ffbrates.dividers[rateidx].basediv) / usb_report_rate)  > usbrate_base){
+		usb_report_rate++;
+	}
+
+	// Pass updated rate to other classes to update filters
+	float newRate = getCurFFBFreq();
+	if(ffb)
+		ffb->updateSamplerate(newRate);
+	if(axes_manager)
+		axes_manager->updateSamplerate(newRate);
 }
 
 /**
  * Generates the speed strings to display to the user
  */
 std::string FFBHIDMain::usb_report_rates_names() {
-		std::string s = "";
-		for(uint8_t i = 0 ; i < sizeof(usb_report_rates);i++){
-			s += std::to_string(1000/(HID_BINTERVAL*usb_report_rates[i])) + "Hz:"+std::to_string(i);
-			if(i < sizeof(usb_report_rates)-1)
-				s += ",";
-		}
-		return s;
+	std::string s = "";
+	uint32_t usbrate_base = TUD_OPT_HIGH_SPEED ? 8000 : 1000;
+	if(tud_connected()){ // Get either actual rate or max supported rate if not connected
+		usbrate_base = tud_speed_get() == TUSB_SPEED_HIGH ? 8000 : 1000; // Only FS and HS supported
 	}
+	for(uint8_t i = 0 ; i < ffbrates.dividers.size();i++){
+		uint32_t updatefreq = ffbrates.basefreq/((uint32_t)ffbrates.dividers[i].basediv);
+		uint32_t hidrate = (HID_BINTERVAL*ffbrates.dividers[i].hiddiv);
+		while((updatefreq/hidrate)  > usbrate_base){ // Fall back if usb rate is still higher than supported
+			hidrate++;
+		}
+		uint32_t hidfreq = updatefreq/hidrate;
+		s += "FFB "+std::to_string(updatefreq) + "Hz\nUSB " + std::to_string(hidfreq) + "Hz:"+std::to_string(i);
+		if(i < ffbrates.dividers.size()-1)
+			s += ",";
+	}
+	return s;
+}
 
 void FFBHIDMain::emergencyStop(bool reset){
 	control.emergency = !reset;
 	axes_manager->emergencyStop(reset);
 }
-
-//void FFBHIDMain::timerElapsed(TIM_HandleTypeDef* htim){
-//
-//}
 
 
 /**
@@ -257,6 +309,7 @@ void FFBHIDMain::usbResume(){
 		control.emergency = false;
 	}
 #endif
+	setReportRate(this->usb_report_rate_idx);
 	control.usb_disabled = false;
 	axes_manager->usbResume();
 }
@@ -304,4 +357,12 @@ void FFBHIDMain::errorCallback(const Error &error, bool cleared){
 		pulseErrLed();
 	}
 }
+
+#ifdef TIM_FFB
+void FFBHIDMain::timerElapsed(TIM_HandleTypeDef* htim){
+	if(htim == &TIM_FFB){
+		NotifyFromISR();
+	}
+}
+#endif
 

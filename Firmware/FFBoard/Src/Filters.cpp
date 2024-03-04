@@ -3,6 +3,8 @@
  *
  *  Created on: Feb 13, 2020
  *      Author: Yannick
+ *
+ *  Based on http://www.earlevel.com/main/2012/11/26/biquad-c-source-code/
  */
 
 #include "Filters.h"

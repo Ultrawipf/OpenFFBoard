@@ -661,9 +661,9 @@ void Axis::updateMetrics(float new_pos) { // pos is degrees
 
 
 	// compute speed and accel from raw instant speed normalized
-	float currentSpeed = (new_pos - metric.previous.posDegrees) * 1000.0; // deg/s
+	float currentSpeed = (new_pos - metric.previous.posDegrees) * this->filter_f; // deg/s
 	metric.current.speed = speedFilter.process(currentSpeed);
-	metric.current.accel = accelFilter.process((currentSpeed - _lastSpeed))* 1000.0; // deg/s/s
+	metric.current.accel = accelFilter.process((currentSpeed - _lastSpeed))* this->filter_f; // deg/s/s
 	_lastSpeed = currentSpeed;
 
 }
@@ -794,6 +794,20 @@ bool Axis::updateTorque(int32_t* totalTorque) {
 
 	*totalTorque = torque;
 	return (torqueChanged);
+}
+
+void Axis::updateSamplerate(float newSamplerate){
+	this->filter_f = newSamplerate;
+	this->updateFilters(this->filterProfileId); // Recalculate filters
+}
+
+void Axis::updateFilters(uint8_t profileId){
+	this->filterProfileId = profileId;
+	speedFilter.setFc(filterSpeedCst[this->filterProfileId].freq / filter_f);
+	speedFilter.setQ(filterSpeedCst[this->filterProfileId].q / 100.0);
+	accelFilter.setFc(filterAccelCst[this->filterProfileId].freq / filter_f);
+	accelFilter.setQ(filterAccelCst[this->filterProfileId].q / 100.0);
+	damperFilter.setFc(filterDamperCst.freq/filter_f);
 }
 
 /**
@@ -1007,11 +1021,7 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 		else if (cmd.type == CMDtype::set)
 		{
 			uint32_t value = clip<uint32_t, uint32_t>(cmd.val, 0, filterSpeedCst.size()-1);
-			this->filterProfileId = value;
-			speedFilter.setFc(filterSpeedCst[this->filterProfileId].freq / filter_f);
-			speedFilter.setQ(filterSpeedCst[this->filterProfileId].q / 100.0);
-			accelFilter.setFc(filterAccelCst[this->filterProfileId].freq / filter_f);
-			accelFilter.setQ(filterAccelCst[this->filterProfileId].q / 100.0);
+			this->updateFilters(value);
 		}
 		break;
 	case Axis_commands::filterSpeed:

@@ -47,6 +47,8 @@ public:
 	void emergencyStop(bool reset);
 	void resetPosZero();
 
+	void updateSamplerate(float newSamplerate);
+
 private:
 	volatile Control_t* control;
 	std::shared_ptr<EffectsCalculator> effects_calc;

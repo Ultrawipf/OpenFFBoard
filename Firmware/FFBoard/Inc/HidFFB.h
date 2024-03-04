@@ -39,6 +39,7 @@ public:
 	
 	void sendStatusReport(uint8_t effect);
 	void setDirectionEnableMask(uint8_t mask);
+	void updateSamplerate(float newSamplerate);
 
 private:
 	// HID

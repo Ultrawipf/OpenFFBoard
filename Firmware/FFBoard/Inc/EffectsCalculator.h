@@ -100,6 +100,8 @@ public:
 	// Thread impl
 	void Run();
 
+	void updateSamplerate(float newSamplerate); // Must be called if update rate is changed to update filters and effects
+
 
 protected:
 
@@ -108,7 +110,7 @@ private:
 	// Filters
 	effect_biquad_t filter[2];		// 0 is the default profile and the custom for CFFilter, CUSTOM_PROFILE_ID is the custom slot
 	uint8_t filterProfileId = 0;
-	const uint32_t calcfrequency = 1000; 		// HID frequency 1khz
+	uint32_t calcfrequency = 1000; 		// HID frequency 1khz
 	const float qfloatScaler = 0.01;
 
 	// Rescale factor for conditional effect to boost or decrease the intensity
@@ -150,10 +152,11 @@ public:
 	virtual void set_gain(uint8_t gain) = 0;
 	virtual void cfUpdateEvent();
 	virtual void fxUpdateEvent();
+	virtual void updateSamplerate(float newSamplerate) = 0; // Should be called when update loop rate is changed
 
 private:
-	FastMovingAverage<float> fxPeriodAvg{20};
-	FastMovingAverage<float> cfUpdatePeriodAvg{20};
+	FastMovingAverage<float> fxPeriodAvg{5};
+	FastMovingAverage<float> cfUpdatePeriodAvg{5};
 
 	uint32_t lastFxUpdate = 0;
 	uint32_t lastCfUpdate = 0;

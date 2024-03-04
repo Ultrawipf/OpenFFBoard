@@ -39,6 +39,10 @@ void HidFFB::setDirectionEnableMask(uint8_t mask){
 	this->directionEnableMask = mask;
 }
 
+void HidFFB::updateSamplerate(float newSamplerate){
+	effects_calc->updateSamplerate(newSamplerate);
+}
+
 
 bool HidFFB::getFfbActive(){
 	return this->ffb_active;
