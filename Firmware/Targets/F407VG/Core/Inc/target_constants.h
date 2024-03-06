@@ -63,7 +63,7 @@
 // Timer 3 is used by the encoder.
 #define TIM_PWM htim1
 
-#define TIM_MICROS htim10
+#define TIM_MICROS_HALTICK htim7 // Micros timer MUST be reset by hal tick timer or isr to count microseconds since last tick
 #define TIM_USER htim9 // Timer with full core clock speed available for the mainclass
 #define TIM_TMC htim6 // Timer running at half clock speed
 #define TIM_TMC_BCLK SystemCoreClock / 2
