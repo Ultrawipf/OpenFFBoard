@@ -4,10 +4,12 @@
  *  Created on: Feb 20, 2024
  *      Author: Yannick
  */
+
 #include "TMC4671.h"
 #include "constants.h"
+#include "span"
 
-#ifndef TMC4671_OVERRIDE_HWCONFS
+#if !defined(TMC4671_OVERRIDE_HWCONFS) && defined(TMC4671DRIVER)
 // Default configs for officially supported hardware
 
 
