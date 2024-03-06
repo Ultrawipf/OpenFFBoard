@@ -188,15 +188,15 @@ int32_t EffectsCalculator::calcNonConditionEffectForce(FFB_Effect *effect) {
 
 	case FFB_EFFECT_RAMP:
 	{
-		uint32_t elapsed_time = HAL_GetTick() - effect->startTime;
+		float elapsed_time = (micros()/1000.0) - (float)effect->startTime;
 		int32_t duration = effect->duration;
-		force_vector = (int32_t)effect->startLevel + ((int32_t)elapsed_time * (effect->endLevel - effect->startLevel)) / duration;
+		force_vector = (int32_t)effect->startLevel + (elapsed_time * (effect->endLevel - effect->startLevel)) / duration;
 		break;
 	}
 
 	case FFB_EFFECT_SQUARE:
 	{
-		uint32_t elapsed_time = HAL_GetTick() - effect->startTime;
+		uint32_t elapsed_time = HAL_GetTick() - effect->startTime; // Square is ms aligned
 		int32_t force = ((elapsed_time + effect->phase) % ((uint32_t)effect->period + 2)) < (uint32_t)(effect->period + 2) / 2 ? -magnitude : magnitude;
 		force_vector = force + effect->offset;
 		break;
@@ -206,16 +206,16 @@ int32_t EffectsCalculator::calcNonConditionEffectForce(FFB_Effect *effect) {
 	{
 		int32_t force = 0;
 		int32_t offset = effect->offset;
-		uint32_t elapsed_time = HAL_GetTick() - effect->startTime;
+		float elapsed_time = micros() - ((float)effect->startTime*1000.0);
 		uint32_t phase = effect->phase;
 		uint32_t period = effect->period;
 		float periodF = period;
 
 		int32_t maxMagnitude = offset + magnitude;
 		int32_t minMagnitude = offset - magnitude;
-		uint32_t phasetime = (phase * period) / 35999;
-		uint32_t timeTemp = elapsed_time + phasetime;
-		float remainder = timeTemp % period;
+		float phasetime = (phase * period) / 35999.0;
+		uint32_t timeTemp = elapsed_time + (phasetime*1000); // timetemp in µs
+		float remainder = (timeTemp % (period*1000)) / 1000;
 		float slope = ((maxMagnitude - minMagnitude) * 2) / periodF;
 		if (remainder > (periodF / 2))
 			force = slope * (periodF - remainder);
@@ -229,16 +229,16 @@ int32_t EffectsCalculator::calcNonConditionEffectForce(FFB_Effect *effect) {
 	case FFB_EFFECT_SAWTOOTHUP:
 	{
 		float offset = effect->offset;
-		uint32_t elapsed_time = HAL_GetTick() - effect->startTime;
+		float elapsed_time = micros() - ((float)effect->startTime*1000.0);
 		uint32_t phase = effect->phase;
 		uint32_t period = effect->period;
 		float periodF = effect->period;
 
 		float maxMagnitude = offset + magnitude;
 		float minMagnitude = offset - magnitude;
-		int32_t phasetime = (phase * period) / 35999;
-		uint32_t timeTemp = elapsed_time + phasetime;
-		float remainder = timeTemp % period;
+		float phasetime = (phase * period) / 35999.0;
+		uint32_t timeTemp = elapsed_time + (phasetime*1000); // timetemp in µs
+		float remainder = (timeTemp % (period*1000)) / 1000;
 		float slope = (maxMagnitude - minMagnitude) / periodF;
 		force_vector = (int32_t)(minMagnitude + slope * (period - remainder));
 		break;
@@ -247,16 +247,16 @@ int32_t EffectsCalculator::calcNonConditionEffectForce(FFB_Effect *effect) {
 	case FFB_EFFECT_SAWTOOTHDOWN:
 	{
 		float offset = effect->offset;
-		uint32_t elapsed_time = HAL_GetTick() - effect->startTime;
+		float elapsed_time = micros() - ((float)effect->startTime*1000.0);
 		float phase = effect->phase;
 		uint32_t period = effect->period;
 		float periodF = effect->period;
 
 		float maxMagnitude = offset + magnitude;
 		float minMagnitude = offset - magnitude;
-		int32_t phasetime = (phase * period) / 35999;
-		uint32_t timeTemp = elapsed_time + phasetime;
-		float remainder = timeTemp % period;
+		float phasetime = (phase * period) / 35999.0;
+		uint32_t timeTemp = elapsed_time + (phasetime*1000); // timetemp in µs
+		float remainder = (timeTemp % (period*1000)) / 1000;
 		float slope = (maxMagnitude - minMagnitude) / periodF;
 		force_vector = (int32_t)(minMagnitude + slope * (remainder)); // reverse time
 		break;
@@ -264,7 +264,7 @@ int32_t EffectsCalculator::calcNonConditionEffectForce(FFB_Effect *effect) {
 
 	case FFB_EFFECT_SINE:
 	{
-		float t = HAL_GetTick() - effect->startTime;
+		float t = (micros()/1000.0) - (float)effect->startTime;
 		float freq = 1.0f / (float)(std::max<uint16_t>(effect->period, 2));
 		float phase = (float)effect->phase / (float)35999; //degrees
 		float sine = sinf(2.0 * M_PI * (t * freq + phase)) * magnitude;
