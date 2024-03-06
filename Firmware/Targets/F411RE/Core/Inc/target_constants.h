@@ -54,11 +54,12 @@
 // Timer 3 is used by the encoder.
 #define TIM_USER htim9
 #define TIM_TMC htim2
+#define TIM_TMC_BCLK SystemCoreClock
 
 extern I2C_HandleTypeDef hi2c3;
 #define I2C_PORT hi2c3
 
-#define TIM_MICROS htim10
+#define TIM_MICROS_HALTICK htim11 // Micros timer MUST be reset by hal tick timer or isr to count microseconds since last tick
 extern UART_HandleTypeDef huart1;
 #define UART_PORT_EXT huart1 // main uart port
 
