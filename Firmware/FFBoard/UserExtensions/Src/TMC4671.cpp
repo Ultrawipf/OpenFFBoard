@@ -180,6 +180,9 @@ void TMC4671::restoreFlash(){
 	if(Flash_Read(flashAddrs.encA, &miscval)){
 		restoreEncHallMisc(miscval);
 		encHallRestored = true;
+	}else{
+		// set first hwconf if we can't restore
+		this->setHwType(TMC4671::tmc4671_hw_configs[0].hwVersion);
 	}
 	uint16_t filterval;
 	if(Flash_Read(flashAddrs.torqueFilter, &filterval)){
@@ -2060,7 +2063,11 @@ void TMC4671::setFluxTorque(int16_t flux, int16_t torque){
 	if(curMotionMode != MotionMode::torque && !emergency){
 		setMotionMode(MotionMode::torque,true);
 	}
+#ifdef TMC4671_TORQUE_USE_ASYNC
+	writeRegAsync(0x64, (flux & 0xffff) | (torque << 16));
+#else
 	writeReg(0x64, (flux & 0xffff) | (torque << 16));
+#endif
 }
 
 void TMC4671::setFluxTorqueFF(int16_t flux, int16_t torque){
@@ -2272,7 +2279,7 @@ void TMC4671::setTorqueFilter(TMC4671Biquad_conf& conf){
 /**
  *  Sets the raw brake resistor limits.
  *  Centered at 0x7fff
- *  Set both 0 to deactivate
+ *  Set both 0xffff to deactivate
  */
 void TMC4671::setBrakeLimits(uint16_t low,uint16_t high){
 	uint32_t val = low | (high << 16);
