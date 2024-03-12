@@ -104,8 +104,8 @@ struct TMC4671HardwareTypeConf{
 
 
 	float currentScaler = TMC4671_DEFAULT_CURRENT_SCALER; // Converts from adc counts to current in Amps
-	uint16_t brakeLimLow = 0;
-	uint16_t brakeLimHigh = 0;
+	uint16_t brakeLimLow = 0xffff;
+	uint16_t brakeLimHigh = 0xffff;
 	float vmScaler = (2.5 / 0x7fff) * ((1.5+71.5)/1.5);
 	float vSenseMult = VOLTAGE_MULT_DEFAULT;
 	float clockfreq = TMC4671_DEFAULT_CLOCKFREQ;
