@@ -12,8 +12,6 @@
 #include "ledEffects.h"
 #include "cdc_device.h"
 
-extern TIM_TypeDef TIM_MICROS;
-
 ClassIdentifier CanBridge::info = {
 		 .name = "CAN Bridge (GVRET)" ,
 		 .id=CLSID_MAIN_CAN,
@@ -63,9 +61,9 @@ void CanBridge::sendMessage(uint32_t id, uint64_t msg,uint8_t len = 8,bool rtr =
 	txHeader.id = id;
 	txHeader.length = len;
 	txHeader.rtr = rtr;
-	if(id & 1 << 31){
+	if(id & 0x80000000){
 		txHeader.extId = true;
-		id &= 0x7FFFFFFF;
+		txHeader.id &= 0x7FFFFFFF;
 	}else{
 		txHeader.extId = false;
 	}
@@ -102,10 +100,9 @@ void CanBridge::update(){
 			CAN_msg_header_rx rxHeader = msg.header;
 			uint32_t time = rxHeader.timestamp;
 			uint32_t id = rxHeader.id;
-//			if(rxHeader.ExtId != 0){
-//				id = rxHeader.ExtId;
-//				id |= 0x80000000;
-//			}
+			if(rxHeader.extId){
+				id |= 0x80000000;
+			}
 			std::vector<char> reply = {
 					0xF1,0,(char)(time & 0xff), (char)((time >> 8) & 0xff), (char)((time >> 16) & 0xff), (char)((time >> 24) & 0xff),
 					(char)(id & 0xff), (char)((id >> 8) & 0xff), (char)((id >> 16) & 0xff), (char)((id >> 24) & 0xff),
