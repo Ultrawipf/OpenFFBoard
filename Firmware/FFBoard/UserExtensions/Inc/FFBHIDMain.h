@@ -101,9 +101,9 @@ private:
 	 */
 	void setReportRate(uint8_t rateidx);
 	uint8_t usb_report_rate = HID_BINTERVAL; //for FS USB 1 = 1000hz, 2 = 500hz, 3 = 333hz 4 = 250hz, 5 = 200hz 6 = 166hz, 8 = 125hz etc...
-	uint8_t usb_report_rate_idx = 0;
+	uint8_t usb_report_rate_idx = ffbrates.defaultmode;
 #ifndef TIM_FFB
-	uint8_t ffb_rate_divider = 0;
+	uint8_t ffb_rate_divider = 0; // TODO support ffb without timers again
 #endif
 
 
@@ -112,15 +112,17 @@ private:
 			uint8_t basediv;
 			uint8_t hiddiv;
 		};
+
 #if TUD_OPT_HIGH_SPEED // divider pair <FFB div, USB div from base>
+		const uint8_t defaultmode = 3;
 		uint32_t basefreq = 8000;
 		std::array<FFB_update_rate_divider,7> dividers = {{{1,1},{2,1},{4,1},{8,1},{16,1},{32,1},{64,1}}}; // 8khz to 125hz
 #else
+		const uint8_t defaultmode = 0;
 		uint32_t basefreq = 1000;
 		std::array<FFB_update_rate_divider,4> dividers = {{{1,1},{2,1},{4,1},{8,1}}}; // 8 entries max. 1khz to 125hz
 #endif
 	};
-	//const uint8_t usb_report_rates[4] = {1,2,4,8}; // Maps stored hid speed to report rates
 	const static FFB_update_rates ffbrates;
 
 	std::string usb_report_rates_names();
