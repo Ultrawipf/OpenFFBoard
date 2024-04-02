@@ -556,11 +556,7 @@ metric_t* Axis::getMetrics() {
  * Returns position as int scaled to gamepad range
  */
 int32_t Axis::getLastScaledEnc() {
-#if defined(HIDAXISRES_32B)
 	return  clip(metric.current.pos_f * 0x7fffffff,-0x7fffffff,0x7fffffff); // Calc from float pos
-#else
-	return  clip(metric.current.pos_scaled_16b,-0x7fff,0x7fff);
-#endif
 }
 
 /**
