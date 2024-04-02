@@ -182,6 +182,9 @@ void FFBHIDMain::send_report(){
 	std::vector<int32_t>* axes = axes_manager->getAxisValues();
 	uint8_t count = 0;
 	for(auto val : *axes){
+#if !defined(HIDAXISRES_32B)
+		val = val >> 16; // Scale to 16b
+#endif
 		setHidReportAxis(&reportHID,count++,val);
 	}
 
