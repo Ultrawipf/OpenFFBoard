@@ -24,6 +24,16 @@ typedef struct usb_string_desc
 	const std::vector<std::string> interfaces;
 } usb_string_desc_t;
 
+/*
+ * Base combined usb config descriptor for HID and CDC composite device
+ */
+#define USB_CONF_DESC_HID_CDC(HIDREPSIZE,EPSIZE) \
+		  /* Config number, interface count, string index, total length, attribute, power in mA*/\
+		  TUD_CONFIG_DESCRIPTOR(1, 3, 0, (TUD_CONFIG_DESC_LEN + TUD_CDC_DESC_LEN + TUD_HID_INOUT_DESC_LEN), TUSB_DESC_CONFIG_ATT_REMOTE_WAKEUP | TUSB_DESC_CONFIG_ATT_SELF_POWERED, 100),\
+		  /* 1st CDC: Interface number, string index, EP notification address and size, EP data address (out, in) and size.*/\
+		  TUD_CDC_DESCRIPTOR(0, 4, 0x82, 8, 0x01, 0x81, EPSIZE),\
+		  /* HID Descriptor. EP 83 and 2*/\
+		  TUD_HID_INOUT_DESCRIPTOR(2, 5, HID_ITF_PROTOCOL_NONE, HIDREPSIZE, 0x83, 0x02,EPSIZE, HID_BINTERVAL)
 
 /*
  * Device descriptors
@@ -42,7 +52,9 @@ extern const uint8_t usb_cdc_hid_conf_1axis[];
 #ifdef AXIS2_FFB_HID_DESC
 extern const uint8_t usb_cdc_hid_conf_2axis[];
 #endif
-
+#ifdef AXIS2_FFB_HID_DESC_32B
+extern const uint8_t usb_cdc_hid_conf_2axis_32b[];
+#endif
 #ifdef FFB_HID_DESC_GAMEPAD
 extern const uint8_t usb_cdc_hid_conf_gamepad[];
 #endif
