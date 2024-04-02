@@ -47,64 +47,38 @@ const tusb_desc_device_t usb_devdesc_ffboard_composite =
 const uint8_t usb_cdc_conf[] =
 {
   // Config number, interface count, string index, total length, attribute, power in mA
-  TUD_CONFIG_DESCRIPTOR(1, 2, 0, (TUD_CONFIG_DESC_LEN + TUD_CDC_DESC_LEN), TUSB_DESC_CONFIG_ATT_REMOTE_WAKEUP, 100),
+  TUD_CONFIG_DESCRIPTOR(1, 2, 0, (TUD_CONFIG_DESC_LEN + TUD_CDC_DESC_LEN), TUSB_DESC_CONFIG_ATT_REMOTE_WAKEUP | TUSB_DESC_CONFIG_ATT_SELF_POWERED, 100),
 
   // 1st CDC: Interface number, string index, EP notification address and size, EP data address (out, in) and size.
-  TUD_CDC_DESCRIPTOR(0, 4, 0x82, 8, 0x01, 0x81, (TUD_OPT_HIGH_SPEED ? 512 : 64)),
+  TUD_CDC_DESCRIPTOR(0, 4, 0x82, 8, 0x01, 0x81, 64),
 };
+
 
 // Composite CDC and HID
 #ifdef AXIS1_FFB_HID_DESC
-const uint8_t usb_cdc_hid_conf_1axis[] =
-{
-  // Config number, interface count, string index, total length, attribute, power in mA
-  TUD_CONFIG_DESCRIPTOR(1, 3, 0, (TUD_CONFIG_DESC_LEN + TUD_CDC_DESC_LEN + TUD_HID_INOUT_DESC_LEN), TUSB_DESC_CONFIG_ATT_REMOTE_WAKEUP, 100),
-
-  // 1st CDC: Interface number, string index, EP notification address and size, EP data address (out, in) and size.
-  TUD_CDC_DESCRIPTOR(0, 4, 0x82, 8, 0x01, 0x81, (TUD_OPT_HIGH_SPEED ? 512 : 64)),
-
-  // HID Descriptor. EP 83 and 2
-  TUD_HID_INOUT_DESCRIPTOR(2, 5, HID_ITF_PROTOCOL_NONE, USB_HID_1FFB_REPORT_DESC_SIZE, 0x83, 0x02, 64, HID_BINTERVAL),
-};
+	const uint8_t usb_cdc_hid_conf_1axis[] ={USB_CONF_DESC_HID_CDC(USB_HID_1FFB_REPORT_DESC_SIZE,64)};
 #endif
 
 // Composite CDC and HID
 #ifdef AXIS2_FFB_HID_DESC
-const uint8_t usb_cdc_hid_conf_2axis[] =
-{
-  // Config number, interface count, string index, total length, attribute, power in mA
-  TUD_CONFIG_DESCRIPTOR(1, 3, 0, (TUD_CONFIG_DESC_LEN + TUD_CDC_DESC_LEN + TUD_HID_INOUT_DESC_LEN), TUSB_DESC_CONFIG_ATT_REMOTE_WAKEUP, 100),
-
-  // 1st CDC: Interface number, string index, EP notification address and size, EP data address (out, in) and size.
-  TUD_CDC_DESCRIPTOR(0, 4, 0x82, 8, 0x01, 0x81, (TUD_OPT_HIGH_SPEED ? 512 : 64)),
-
-  // HID Descriptor. EP 83 and 2
-  TUD_HID_INOUT_DESCRIPTOR(2, 5, HID_ITF_PROTOCOL_NONE, USB_HID_2FFB_REPORT_DESC_SIZE, 0x83, 0x02,64, HID_BINTERVAL),
-};
+	const uint8_t usb_cdc_hid_conf_2axis[] ={USB_CONF_DESC_HID_CDC(USB_HID_2FFB_REPORT_DESC_SIZE,64)};
+#endif
+#ifdef AXIS1_FFB_HID_DESC_32B
+	const uint8_t usb_cdc_hid_conf_2axis_32b[] ={USB_CONF_DESC_HID_CDC(USB_HID_2FFB_REPORT_DESC_32B_SIZE,64)};
 #endif
 
 // Composite CDC and HID
 #ifdef FFB_HID_DESC_GAMEPAD
-const uint8_t usb_cdc_hid_conf_gamepad[] =
-{
-  // Config number, interface count, string index, total length, attribute, power in mA
-  TUD_CONFIG_DESCRIPTOR(1, 3, 0, (TUD_CONFIG_DESC_LEN + TUD_CDC_DESC_LEN + TUD_HID_INOUT_DESC_LEN), TUSB_DESC_CONFIG_ATT_REMOTE_WAKEUP, 100),
-
-  // 1st CDC: Interface number, string index, EP notification address and size, EP data address (out, in) and size.
-  TUD_CDC_DESCRIPTOR(0, 4, 0x82, 8, 0x01, 0x81, (TUD_OPT_HIGH_SPEED ? 512 : 64)),
-
-  // HID Descriptor. EP 83 and 2
-  TUD_HID_INOUT_DESCRIPTOR(2, 5, HID_ITF_PROTOCOL_NONE, USB_HID_GAMEPAD_REPORT_DESC_SIZE, 0x83, 0x02, (TUD_OPT_HIGH_SPEED ? 512 : 64), HID_BINTERVAL),
-};
+	const uint8_t usb_cdc_hid_conf_gamepad[] ={USB_CONF_DESC_HID_CDC(USB_HID_GAMEPAD_REPORT_DESC_SIZE,64)};
 #endif
 
 // Composite CDC and MIDI
 uint8_t const usb_cdc_midi_conf[] =
 {
   // Config number, interface count, string index, total length, attribute, power in mA
-  TUD_CONFIG_DESCRIPTOR(1, 4, 0, TUD_CONFIG_DESC_LEN + TUD_CDC_DESC_LEN + TUD_MIDI_DESC_LEN, TUSB_DESC_CONFIG_ATT_REMOTE_WAKEUP, 100),
+  TUD_CONFIG_DESCRIPTOR(1, 4, 0, TUD_CONFIG_DESC_LEN + TUD_CDC_DESC_LEN + TUD_MIDI_DESC_LEN, TUSB_DESC_CONFIG_ATT_REMOTE_WAKEUP | TUSB_DESC_CONFIG_ATT_SELF_POWERED, 100),
   // 1st CDC: Interface number, string index, EP notification address and size, EP data address (out, in) and size.
-  TUD_CDC_DESCRIPTOR(0, 4, 0x82, 8, 0x01, 0x81, (TUD_OPT_HIGH_SPEED ? 512 : 64)),
+  TUD_CDC_DESCRIPTOR(0, 4, 0x82, 8, 0x01, 0x81, 64),
   // Interface number, string index, EP Out & EP In address, EP size
   TUD_MIDI_DESCRIPTOR(2, 6, 0x02, 0x83, 64)
 };

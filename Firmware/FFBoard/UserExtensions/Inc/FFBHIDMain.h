@@ -43,7 +43,7 @@ class FFBHIDMain: public FFBoardMain, public cpp_freertos::Thread, PersistentSto
 	};
 
 public:
-	FFBHIDMain(uint8_t axisCount);
+	FFBHIDMain(uint8_t axisCount,bool hidAxis32b = false);
 	virtual ~FFBHIDMain();
 	void setFFBEffectsCalc(std::shared_ptr<EffectsControlItf> ffb,std::shared_ptr<EffectsCalculator> effects_calc);
 
@@ -124,6 +124,8 @@ private:
 #endif
 	};
 	const static FFB_update_rates ffbrates;
+
+	const bool hidAxis32b;
 
 	std::string usb_report_rates_names();
 

@@ -28,10 +28,10 @@ const FFBHIDMain::FFB_update_rates FFBHIDMain::ffbrates; // Default rates
 /**
  * setFFBEffectsCalc must be called in constructor of derived class to finish the setup
  */
-FFBHIDMain::FFBHIDMain(uint8_t axisCount) :
+FFBHIDMain::FFBHIDMain(uint8_t axisCount,bool hidAxis32b) :
 		Thread("FFBMAIN", 256, 30),
 		SelectableInputs(ButtonSource::all_buttonsources,AnalogSource::all_analogsources),
-		axisCount(axisCount)
+		axisCount(axisCount),hidAxis32b(hidAxis32b)
 {
 
 	restoreFlashDelayed(); // Load parameters
@@ -182,9 +182,9 @@ void FFBHIDMain::send_report(){
 	std::vector<int32_t>* axes = axes_manager->getAxisValues();
 	uint8_t count = 0;
 	for(auto val : *axes){
-#if !defined(HIDAXISRES_32B)
-		val = val >> 16; // Scale to 16b
-#endif
+		if(!hidAxis32b){
+			val = val >> 16; // Scale to 16b
+		}
 		setHidReportAxis(&reportHID,count++,val);
 	}
 
@@ -193,9 +193,8 @@ void FFBHIDMain::send_report(){
 	for(int32_t val : *axes){
 		if(count >= analogAxisCount)
 			break;
-#ifdef HIDAXISRES_32B
-		if(count <= MAX_AXIS) val = val << 16; // Shift up 16 bit to fill 32b value. Primary axis is 32b
-#endif
+		if(count <= MAX_AXIS && hidAxis32b)
+			val = val << 16; // Shift up 16 bit to fill 32b value. Primary axis is 32b
 		setHidReportAxis(&reportHID,count++,val);
 	}
 
