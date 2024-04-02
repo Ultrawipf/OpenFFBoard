@@ -297,7 +297,7 @@ void HidFFB::set_effect(FFB_SetEffect_t* effect){
 		effect->enableAxis = X_AXIS_ENABLE;
 	}
 
-	bool directionEnable = (effect->enableAxis & this->directionEnableMask);
+	bool directionEnable = true; //Forza motorsport fix! (effect->enableAxis & this->directionEnableMask);
 
 	if(effect_p->useSingleCondition){ // Only allow turning single condition off in case it was overridden by sending multiple conditions previously
 		effect_p->useSingleCondition = directionEnable; // If direction is used only a single parameter block is allowed. Somehow this is still set while 2 conditions are sent...
