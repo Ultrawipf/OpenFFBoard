@@ -312,13 +312,14 @@ void HidFFB::set_effect(FFB_SetEffect_t* effect){
 	}
 
 	float phaseX = M_PI*2.0 * (effect->directionX/36000.0);
-	effect_p->axisMagnitudes[0] = directionEnable ? sin(phaseX) : (effect->enableAxis & X_AXIS_ENABLE ? 1 : 0); // Angular vector if dirEnable used otherwise full or 0 if axis enabled
-	effect_p->axisMagnitudes[1] = directionEnable ? cos(phaseX) : (effect->enableAxis & Y_AXIS_ENABLE ? 1 : 0); // Angular vector if dirEnable used otherwise full or 0 if axis enabled
+	// Angular vector if dirEnable used or axis enabled otherwise 0 if axis disabled
+	effect_p->axisMagnitudes[0] = (directionEnable || (effect->enableAxis & X_AXIS_ENABLE) ? sin(phaseX) : 0);
+	effect_p->axisMagnitudes[1] = (directionEnable || (effect->enableAxis & Y_AXIS_ENABLE) ? cos(phaseX) : 0);
 
 
 #if MAX_AXIS == 3
 	float phaseY = M_PI*2.0 * (effect->directionY/36000.0);
-	effect_p->axisMagnitudes[3] = directionEnable ? sin(phaseY) : (effect->enableAxis & Z_AXIS_ENABLE ? 1 : 0); // Angular vector if dirEnable used otherwise full or 0 if axis enabled
+	effect_p->axisMagnitudes[3] = (directionEnable || (effect->enableAxis & Z_AXIS_ENABLE) ? sin(phaseY) : 0); // Angular vector if dirEnable used otherwise full or 0 if axis enabled
 
 #endif
 	if(effect->duration == 0){ // Fix for games assuming 0 is infinite
