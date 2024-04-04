@@ -33,7 +33,13 @@ FFBHIDMain::FFBHIDMain(uint8_t axisCount,bool hidAxis32b) :
 		SelectableInputs(ButtonSource::all_buttonsources,AnalogSource::all_analogsources),
 		axisCount(axisCount),hidAxis32b(hidAxis32b)
 {
-
+	if(hidAxis32b){
+		reportHID = std::make_unique<HID_GamepadReport<int32_t>>();
+	}else{
+		reportHID = std::make_unique<HID_GamepadReport<int16_t>>();
+	}
+//	reportHID((hidAxis32b ? HID_GamepadReport<int32_t>() : HID_GamepadReport<int16_t>())),
+//	lastReportHID((hidAxis32b ? HID_GamepadReport<int32_t>() : HID_GamepadReport<int16_t>())),
 	restoreFlashDelayed(); // Load parameters
 	registerCommands();
 
@@ -104,7 +110,10 @@ void FFBHIDMain::Run(){
 #endif
 	while(true){
 #ifndef TIM_FFB
-		Delay(1);
+		while(ffb_rate_counter++ < ffb_rate_divider){
+			Delay(1);
+		}
+		ffb_rate_counter = 0;
 #else
 		WaitForNotification();
 #endif
@@ -169,12 +178,11 @@ void FFBHIDMain::send_report(){
 //	if(!sourcesSem.Take(10)){
 //		return;
 //	}
-	// Read buttons
-	reportHID.buttons = 0; // Reset buttons
 
+	// Read buttons
 	uint64_t b = 0;
 	SelectableInputs::getButtonValues(b);
-	reportHID.buttons = b;
+	reportHID->setButtons(b);
 
 	// Encoder
 	//axes_manager->addAxesToReport(analogAxesReport, &count);
@@ -185,7 +193,8 @@ void FFBHIDMain::send_report(){
 		if(!hidAxis32b){
 			val = val >> 16; // Scale to 16b
 		}
-		setHidReportAxis(&reportHID,count++,val);
+		//setHidReportAxis(&reportHID,count++,val);
+		reportHID->setHidReportAxis(count++, val);
 	}
 
 	// Fill remaining values with analog inputs
@@ -193,29 +202,27 @@ void FFBHIDMain::send_report(){
 	for(int32_t val : *axes){
 		if(count >= analogAxisCount)
 			break;
-		if(count <= MAX_AXIS && hidAxis32b)
+		if((count <= MAX_AXIS) && hidAxis32b)
 			val = val << 16; // Shift up 16 bit to fill 32b value. Primary axis is 32b
-		setHidReportAxis(&reportHID,count++,val);
+		reportHID->setHidReportAxis(count++, val);
 	}
 
 //	sourcesSem.Give();
 	// Fill rest
 	for(;count<analogAxisCount; count++){
-		setHidReportAxis(&reportHID,count,0);
+		//setHidReportAxis(&reportHID,count,0);
+		reportHID->setHidReportAxis(count, 0);
 	}
 
 
 	/*
 	 * Only send a new report if actually changed since last time or timeout and hid is ready
 	 */
-	if( (reportSendCounter > 100/usb_report_rate || (memcmp(&lastReportHID,&reportHID,sizeof(reportHID_t)) != 0) ))
+	if( (reportSendCounter > 100/usb_report_rate || reportHID->changed()) )
 	{
-
-
-	tud_hid_report(0, reinterpret_cast<uint8_t*>(&reportHID), sizeof(reportHID_t));
-	lastReportHID = reportHID;
-	reportSendCounter = 0;
-
+		tud_hid_report(0, reportHID->getBuffer(), reportHID->getLength());
+		reportHID->swap(); // Report has changed and was sent. Swap buffers.
+		reportSendCounter = 0;
 	}
 
 }
