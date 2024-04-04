@@ -97,21 +97,22 @@
 #ifdef __cplusplus
 
 
+template<class dtypeaxis>
 struct  __attribute__((__packed__)) reportHID_t {
 		uint8_t id = 1;
 		uint64_t buttons = 0;
-#if defined(HIDAXISRES_32B) && MAX_AXIS >= 1
-		int32_t X = 0;
+#if MAX_AXIS >= 1
+		dtypeaxis X = 0;
 #else
 		int16_t X = 0;
 #endif
-#if defined(HIDAXISRES_32B) && MAX_AXIS >= 2
-		int32_t Y = 0;
+#if MAX_AXIS >= 2
+		dtypeaxis Y = 0;
 #else
 		int16_t Y = 0;
 #endif
-#if defined(HIDAXISRES_32B) && MAX_AXIS >= 3
-		int32_t Z = 0;
+#if MAX_AXIS >= 3
+		dtypeaxis Z = 0;
 #else
 		int16_t Z = 0;
 #endif
@@ -121,41 +122,70 @@ struct  __attribute__((__packed__)) reportHID_t {
 		int16_t Dial = 0;
 		int16_t Slider = 0;
 };
-
-/*
- * Helper function to access analog axes in packed HID report struct
+/**
+ * Helper class for double buffered HID gamepad reports to allow use of different datatypes for main axes
+ * Double buffer allows testing if data has changed before sending
  */
-inline void setHidReportAxis(reportHID_t *report, uint8_t idx, uint32_t val){
+class HID_GamepadReport_base{
+public:
+	virtual void setHidReportAxis(uint8_t idx, uint32_t val) = 0;
+	virtual uint8_t* getBuffer() = 0;
+	virtual uint32_t getLength() = 0;
+	virtual uint64_t getButtons() = 0;
+	virtual void setButtons(uint64_t btn) = 0; //! Must use setter to prevent unaligned access
+	virtual bool changed() = 0;
+	virtual void swap() = 0;
+};
 
-	switch(idx){
-	case 0:
-		report->X = val;
-		break;
-	case 1:
-		report->Y = val;
-		break;
-	case 2:
-		report->Z = val;
-		break;
-	case 3:
-		report->RX = val;
-		break;
-	case 4:
-		report->RY = val;
-		break;
-	case 5:
-		report->RZ = val;
-		break;
-	case 6:
-		report->Dial = val;
-		break;
-	case 7:
-		report->Slider = val;
-		break;
-	default:
-		return;
+template<class dtypeaxis>
+class HID_GamepadReport : public HID_GamepadReport_base{
+private:
+	reportHID_t<dtypeaxis> report1;
+	reportHID_t<dtypeaxis> report2;
+	reportHID_t<dtypeaxis>* report = &report1;
+
+public:
+	uint64_t getButtons() override {return report->buttons;}
+	void setButtons(uint64_t btn) override {report->buttons = btn;}
+
+	void setHidReportAxis(uint8_t idx, uint32_t val) override {
+		switch(idx){
+		case 0:
+			report->X = val;
+			break;
+		case 1:
+			report->Y = val;
+			break;
+		case 2:
+			report->Z = val;
+			break;
+		case 3:
+			report->RX = val;
+			break;
+		case 4:
+			report->RY = val;
+			break;
+		case 5:
+			report->RZ = val;
+			break;
+		case 6:
+			report->Dial = val;
+			break;
+		case 7:
+			report->Slider = val;
+			break;
+		default:
+			return;
+		}
 	}
-}
+	bool changed() override {return memcmp(&report1,&report2,sizeof(reportHID_t<dtypeaxis>)) != 0;}
+	void swap() override {report = (report == &report1 ? &report2 : &report1);} // Swaps report buffers
+
+	uint32_t getLength() override {return sizeof(reportHID_t<dtypeaxis>);}
+	uint8_t* getBuffer() override {return reinterpret_cast<uint8_t*>(this->report);}
+
+};
+
 
 typedef struct
 {
