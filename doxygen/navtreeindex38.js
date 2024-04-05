@@ -1,10 +1,5 @@
 var NAVTREEINDEX38 =
 {
-"usb__hid__2ffb__desc_8c_source.html":[4,0,258],
-"usb__hid__ffb__desc_8h.html":[4,0,226],
-"usb__hid__ffb__desc_8h.html#aa4d5b330bb8c98e152295a9f03ae1305":[4,0,226,0],
-"usb__hid__ffb__desc_8h.html#af2203a063a070c7d68641471587c1a0d":[4,0,226,1],
-"usb__hid__ffb__desc_8h.html#afab92d8c34243f3f8284bb8fd2beec82":[4,0,226,2],
 "usb__hid__ffb__desc_8h_source.html":[4,0,226],
 "usb__hid__gamepad_8c.html":[4,0,259],
 "usb__hid__gamepad_8c.html#ad7c9609d684297385fcf3ad5ddf32b66":[4,0,259,0],
@@ -249,5 +244,10 @@ var NAVTREEINDEX38 =
 "usbtmc__device_8c.html#a045666af2db639d04c8fc2b70e719e20":[4,0,156,4],
 "usbtmc__device_8c.html#a09ad8ab54b2bd5b6516c935421df19fb":[4,0,156,18],
 "usbtmc__device_8c.html#a127cb27488153cc671a38fa86935858e":[4,0,156,5],
-"usbtmc__device_8c.html#a1894598404de628b7ff560a783174d8e":[4,0,156,2]
+"usbtmc__device_8c.html#a1894598404de628b7ff560a783174d8e":[4,0,156,2],
+"usbtmc__device_8c.html#a1894598404de628b7ff560a783174d8ea3eef545337148c057c75d4552552cb13":[4,0,156,2,6],
+"usbtmc__device_8c.html#a1894598404de628b7ff560a783174d8ea50d6be4a0300d2070b449701e23d6eb9":[4,0,156,2,11],
+"usbtmc__device_8c.html#a1894598404de628b7ff560a783174d8ea748ce48c81c7a58c23581af7b6618903":[4,0,156,2,1],
+"usbtmc__device_8c.html#a1894598404de628b7ff560a783174d8eaaade5e53e88cf231292cd1142cce2afe":[4,0,156,2,2],
+"usbtmc__device_8c.html#a1894598404de628b7ff560a783174d8eac0e4fba3902409ccab659367ac1f53a5":[4,0,156,2,9]
 };

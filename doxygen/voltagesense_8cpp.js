@@ -9,6 +9,8 @@ var voltagesense_8cpp =
     [ "brakeActiveTime", "voltagesense_8cpp.html#af5797a4ae03c53b8e9a5b257d58187dd", null ],
     [ "braking_flag", "voltagesense_8cpp.html#a5bff6c9309245b09ffeaaa42ce6baf8c", null ],
     [ "maxVoltage", "voltagesense_8cpp.html#a240e7071858c78211d32efe0e5f2607f", null ],
+    [ "minVoltage", "voltagesense_8cpp.html#aec382efbcd663ab1221211cf7d10a775", null ],
+    [ "resError", "voltagesense_8cpp.html#a0e65706f97e02c01284291c155226308", null ],
     [ "voltageDiffActivate", "voltagesense_8cpp.html#aa5fecc361d00d80323ae0cc22552573a", null ],
     [ "voltageDiffDeactivate", "voltagesense_8cpp.html#aca34a7c9072b83961e288a92a53c43e9", null ],
     [ "vSenseMult", "voltagesense_8cpp.html#acf38394d2feb220b610d8e23521fcd4b", null ]

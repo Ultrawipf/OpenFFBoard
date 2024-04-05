@@ -65,8 +65,8 @@ var searchData=
   ['overflowcallback_62',['overflowCallback',['../class_encoder_local.html#aaabd6d7ad395d54de1e8790214e89e83',1,'EncoderLocal']]],
   ['overflows_63',['overflows',['../class_motor_simplemotion.html#ae741f7d091f6f405133234f2a9dcc80f',1,'MotorSimplemotion']]],
   ['overspeed_64',['overspeed',['../class_mt_encoder_s_p_i.html#ae0673b39fe9e2b9e7921c4bb4d1ea776',1,'MtEncoderSPI']]],
-  ['overtemp_65',['OverTemp',['../_t_m_c4671_8h.html#ad7d50073249f48de7e58d41071064a7ca9cfa39fcf8d4622338bfa04439eeda88',1,'TMC4671.h']]],
-  ['overtemp_66',['overtemp',['../_error_handler_8h.html#a6f3b1ba4fbf4167d3a58b0b331ddcfefa5f70813d126d15d6e3d68ec7ee5f547c',1,'ErrorHandler.h']]],
+  ['overtemp_65',['overtemp',['../_error_handler_8h.html#a6f3b1ba4fbf4167d3a58b0b331ddcfefa5f70813d126d15d6e3d68ec7ee5f547c',1,'ErrorHandler.h']]],
+  ['overtemp_66',['OverTemp',['../_t_m_c4671_8h.html#ad7d50073249f48de7e58d41071064a7ca9cfa39fcf8d4622338bfa04439eeda88',1,'TMC4671.h']]],
   ['overvoltage_67',['overvoltage',['../_error_handler_8h.html#a6f3b1ba4fbf4167d3a58b0b331ddcfefa97586d839fb4db72de3f0f6c3e20464e',1,'ErrorHandler.h']]],
   ['overwritable_68',['overwritable',['../structtu__fifo__t.html#ad05e8eafcf249b93b84cd8e7056d052d',1,'tu_fifo_t']]]
 ];

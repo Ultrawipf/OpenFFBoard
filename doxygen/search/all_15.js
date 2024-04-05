@@ -198,13 +198,12 @@ var searchData=
   ['visible_195',['visible',['../_choosable_class_8h.html#aa3a363b83e4ed5a23cf7398fcf8bae0ca46cf0e59759c9b7f1112ca4b174343ef',1,'ChoosableClass.h']]],
   ['vmscaler_196',['vmScaler',['../struct_t_m_c4671_hardware_type_conf.html#a083a3fdb64f4fbfe1f5cd2a8d0c02834',1,'TMC4671HardwareTypeConf']]],
   ['vmtmc_197',['vmTmc',['../class_t_m_c4671.html#a383a82ab842490e325553e9365028a27aa4c85f6bd07bccc575b078ae00b60ef0',1,'TMC4671']]],
-  ['voltage_198',['voltage',['../class_vesc_c_a_n.html#a979e54dc3e3b0576697ad910546782f5',1,'VescCAN::voltage()'],['../class_motor_simplemotion.html#a04284aedcbd482d8dea7aa2bf631d5b2ae437ba437f4106903e619bb380574954',1,'MotorSimplemotion::voltage()']]],
-  ['voltage_199',['Voltage',['../class_motor_simplemotion.html#a0fa06e9cd5b42ac97ac49ff916ac1c30a4a92fbe41f6463598c39850b8335096c',1,'MotorSimplemotion']]],
-  ['voltage_200',['voltage',['../_vesc_c_a_n_8h.html#a2125c9b686c373137058c5ae8fa4219fae437ba437f4106903e619bb380574954',1,'VescCAN.h']]],
-  ['voltagediffactivate_201',['voltageDiffActivate',['../voltagesense_8cpp.html#aa5fecc361d00d80323ae0cc22552573a',1,'voltagesense.cpp']]],
-  ['voltagediffdeactivate_202',['voltageDiffDeactivate',['../voltagesense_8cpp.html#aca34a7c9072b83961e288a92a53c43e9',1,'voltagesense.cpp']]],
-  ['voltagesense_2ecpp_203',['voltagesense.cpp',['../voltagesense_8cpp.html',1,'']]],
-  ['voltagesense_2eh_204',['voltagesense.h',['../voltagesense_8h.html',1,'']]],
-  ['volume_205',['volume',['../struct_midi_note.html#aee404fdc2846753bb8c7f0d0b9a2c459',1,'MidiNote']]],
-  ['vsensemult_206',['vSenseMult',['../struct_t_m_c4671_hardware_type_conf.html#a042dbabce28906a0c95f704061e217ad',1,'TMC4671HardwareTypeConf::vSenseMult()'],['../voltagesense_8cpp.html#acf38394d2feb220b610d8e23521fcd4b',1,'vSenseMult():&#160;voltagesense.cpp']]]
+  ['voltage_198',['Voltage',['../class_motor_simplemotion.html#a0fa06e9cd5b42ac97ac49ff916ac1c30a4a92fbe41f6463598c39850b8335096c',1,'MotorSimplemotion']]],
+  ['voltage_199',['voltage',['../class_vesc_c_a_n.html#a979e54dc3e3b0576697ad910546782f5',1,'VescCAN::voltage()'],['../class_motor_simplemotion.html#a04284aedcbd482d8dea7aa2bf631d5b2ae437ba437f4106903e619bb380574954',1,'MotorSimplemotion::voltage()'],['../_vesc_c_a_n_8h.html#a2125c9b686c373137058c5ae8fa4219fae437ba437f4106903e619bb380574954',1,'voltage():&#160;VescCAN.h']]],
+  ['voltagediffactivate_200',['voltageDiffActivate',['../voltagesense_8cpp.html#aa5fecc361d00d80323ae0cc22552573a',1,'voltagesense.cpp']]],
+  ['voltagediffdeactivate_201',['voltageDiffDeactivate',['../voltagesense_8cpp.html#aca34a7c9072b83961e288a92a53c43e9',1,'voltagesense.cpp']]],
+  ['voltagesense_2ecpp_202',['voltagesense.cpp',['../voltagesense_8cpp.html',1,'']]],
+  ['voltagesense_2eh_203',['voltagesense.h',['../voltagesense_8h.html',1,'']]],
+  ['volume_204',['volume',['../struct_midi_note.html#aee404fdc2846753bb8c7f0d0b9a2c459',1,'MidiNote']]],
+  ['vsensemult_205',['vSenseMult',['../struct_t_m_c4671_hardware_type_conf.html#a042dbabce28906a0c95f704061e217ad',1,'TMC4671HardwareTypeConf::vSenseMult()'],['../voltagesense_8cpp.html#acf38394d2feb220b610d8e23521fcd4b',1,'vSenseMult():&#160;voltagesense.cpp']]]
 ];

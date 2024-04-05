@@ -270,10 +270,6 @@ Private Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
-<tr class="memitem:add82d62db7eb0ae2b43829f4aa8e94b9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_m_c_debug_bridge.html#add82d62db7eb0ae2b43829f4aa8e94b9">tmcReadRegRaw</a> (uint8_t reg, uint8_t *buf)</td></tr>
-<tr class="separator:add82d62db7eb0ae2b43829f4aa8e94b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac8cbfff143529b17e2c63f58d99a593d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_m_c_debug_bridge.html#ac8cbfff143529b17e2c63f58d99a593d">tmcWriteReg</a> (uint8_t reg, uint32_t dat)</td></tr>
-<tr class="separator:ac8cbfff143529b17e2c63f58d99a593d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5602bb3d59fc2c78e5b8c93267066783"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_m_c_debug_bridge.html#a5602bb3d59fc2c78e5b8c93267066783">checksum</a> (std::vector&lt; uint8_t &gt; *<a class="el" href="midi__device_8h.html#ac8733c58bc671239139641960e2d5dbf">buffer</a>, uint8_t len)</td></tr>
 <tr class="separator:a5602bb3d59fc2c78e5b8c93267066783"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9ed435bc3abb8d0b164197c868a6c2c5"><td class="memItemLeft" align="right" valign="top">HAL_StatusTypeDef&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_m_c_debug_bridge.html#a9ed435bc3abb8d0b164197c868a6c2c5">SPI_transmit_receive</a> (uint8_t *tx_data, uint8_t *rx_data, uint16_t len, uint32_t timeout)</td></tr>
@@ -292,12 +288,6 @@ Private Attributes</h2></td></tr>
 <tr class="separator:a9aefba75fffaf471a074bc979386aea8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc5768c34d861cf954391e3684e34aa1"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="class_t_m_c4671.html">TMC4671</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_m_c_debug_bridge.html#acc5768c34d861cf954391e3684e34aa1">drv</a></td></tr>
 <tr class="separator:acc5768c34d861cf954391e3684e34aa1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a49e06822390cc11f2c55cc25e0adef73"><td class="memItemLeft" align="right" valign="top">SPI_HandleTypeDef *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_m_c_debug_bridge.html#a49e06822390cc11f2c55cc25e0adef73">spi</a> = &amp;<a class="el" href="_t_m_c_debug_bridge_8h.html#a49b76b3df998b61ed9347ac903b9ecf8">HSPIDRV</a></td></tr>
-<tr class="separator:a49e06822390cc11f2c55cc25e0adef73"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9d5d62e7854ec4594d2f27cc09dd404f"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_m_c_debug_bridge.html#a9d5d62e7854ec4594d2f27cc09dd404f">cspin</a> = SPI1_SS1_Pin</td></tr>
-<tr class="separator:a9d5d62e7854ec4594d2f27cc09dd404f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af51e4f7148d7d3e587ddae5a82d8cab1"><td class="memItemLeft" align="right" valign="top">GPIO_TypeDef *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_m_c_debug_bridge.html#af51e4f7148d7d3e587ddae5a82d8cab1">csport</a> = SPI1_SS1_GPIO_Port</td></tr>
-<tr class="separator:af51e4f7148d7d3e587ddae5a82d8cab1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -393,7 +383,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c_debug_bridge_8cpp_source.html#l00228">228</a> of file <a class="el" href="_t_m_c_debug_bridge_8cpp_source.html">TMCDebugBridge.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c_debug_bridge_8cpp_source.html#l00225">225</a> of file <a class="el" href="_t_m_c_debug_bridge_8cpp_source.html">TMCDebugBridge.cpp</a>.</p>
 
 </div>
 </div>
@@ -420,7 +410,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c_debug_bridge_8cpp_source.html#l00246">246</a> of file <a class="el" href="_t_m_c_debug_bridge_8cpp_source.html">TMCDebugBridge.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c_debug_bridge_8cpp_source.html#l00243">243</a> of file <a class="el" href="_t_m_c_debug_bridge_8cpp_source.html">TMCDebugBridge.cpp</a>.</p>
 
 </div>
 </div>
@@ -462,7 +452,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_f_f_board_main.html#a99dceaa3c195d2950ffd2d69c443a335">FFBoardMain</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c_debug_bridge_8cpp_source.html#l00128">128</a> of file <a class="el" href="_t_m_c_debug_bridge_8cpp_source.html">TMCDebugBridge.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c_debug_bridge_8cpp_source.html#l00122">122</a> of file <a class="el" href="_t_m_c_debug_bridge_8cpp_source.html">TMCDebugBridge.cpp</a>.</p>
 
 </div>
 </div>
@@ -547,7 +537,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_f_f_board_main.html#a1ea6dc33d788c968dfa8968f7bd113fd">FFBoardMain</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c_debug_bridge_8cpp_source.html#l00052">52</a> of file <a class="el" href="_t_m_c_debug_bridge_8cpp_source.html">TMCDebugBridge.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c_debug_bridge_8cpp_source.html#l00046">46</a> of file <a class="el" href="_t_m_c_debug_bridge_8cpp_source.html">TMCDebugBridge.cpp</a>.</p>
 
 </div>
 </div>
@@ -690,7 +680,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_m_c_debug_bridge_8cpp_source.html#l00123">123</a> of file <a class="el" href="_t_m_c_debug_bridge_8cpp_source.html">TMCDebugBridge.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_m_c_debug_bridge_8cpp_source.html#l00117">117</a> of file <a class="el" href="_t_m_c_debug_bridge_8cpp_source.html">TMCDebugBridge.cpp</a>.</p>
 
 </div>
 </div>
@@ -742,129 +732,7 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="add82d62db7eb0ae2b43829f4aa8e94b9" name="add82d62db7eb0ae2b43829f4aa8e94b9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#add82d62db7eb0ae2b43829f4aa8e94b9">&#9670;&nbsp;</a></span>tmcReadRegRaw()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void TMCDebugBridge::tmcReadRegRaw </td>
-          <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>reg</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t *&#160;</td>
-          <td class="paramname"><em>buf</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_t_m_c_debug_bridge_8cpp_source.html#l00044">44</a> of file <a class="el" href="_t_m_c_debug_bridge_8cpp_source.html">TMCDebugBridge.cpp</a>.</p>
-
-</div>
-</div>
-<a id="ac8cbfff143529b17e2c63f58d99a593d" name="ac8cbfff143529b17e2c63f58d99a593d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac8cbfff143529b17e2c63f58d99a593d">&#9670;&nbsp;</a></span>tmcWriteReg()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void TMCDebugBridge::tmcWriteReg </td>
-          <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>reg</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>dat</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a9d5d62e7854ec4594d2f27cc09dd404f" name="a9d5d62e7854ec4594d2f27cc09dd404f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9d5d62e7854ec4594d2f27cc09dd404f">&#9670;&nbsp;</a></span>cspin</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint16_t TMCDebugBridge::cspin = SPI1_SS1_Pin</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_t_m_c_debug_bridge_8h_source.html#l00069">69</a> of file <a class="el" href="_t_m_c_debug_bridge_8h_source.html">TMCDebugBridge.h</a>.</p>
-
-</div>
-</div>
-<a id="af51e4f7148d7d3e587ddae5a82d8cab1" name="af51e4f7148d7d3e587ddae5a82d8cab1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af51e4f7148d7d3e587ddae5a82d8cab1">&#9670;&nbsp;</a></span>csport</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">GPIO_TypeDef* TMCDebugBridge::csport = SPI1_SS1_GPIO_Port</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_t_m_c_debug_bridge_8h_source.html#l00070">70</a> of file <a class="el" href="_t_m_c_debug_bridge_8h_source.html">TMCDebugBridge.h</a>.</p>
-
-</div>
-</div>
 <a id="acc5768c34d861cf954391e3684e34aa1" name="acc5768c34d861cf954391e3684e34aa1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acc5768c34d861cf954391e3684e34aa1">&#9670;&nbsp;</a></span>drv</h2>
 
@@ -916,30 +784,6 @@ Additional Inherited Members</h2></td></tr>
 <div class="ttc" id="a_choosable_class_8h_html_aa3a363b83e4ed5a23cf7398fcf8bae0caad42f6697b035b7580e4fef93be20b4d"><div class="ttname"><a href="_choosable_class_8h.html#aa3a363b83e4ed5a23cf7398fcf8bae0caad42f6697b035b7580e4fef93be20b4d">ClassVisibility::debug</a></div><div class="ttdeci">@ debug</div></div>
 </div><!-- fragment -->
 <p class="definition">Definition at line <a class="el" href="_t_m_c_debug_bridge_8h_source.html#l00033">33</a> of file <a class="el" href="_t_m_c_debug_bridge_8h_source.html">TMCDebugBridge.h</a>.</p>
-
-</div>
-</div>
-<a id="a49e06822390cc11f2c55cc25e0adef73" name="a49e06822390cc11f2c55cc25e0adef73"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a49e06822390cc11f2c55cc25e0adef73">&#9670;&nbsp;</a></span>spi</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">SPI_HandleTypeDef* TMCDebugBridge::spi = &amp;<a class="el" href="_t_m_c_debug_bridge_8h.html#a49b76b3df998b61ed9347ac903b9ecf8">HSPIDRV</a></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_t_m_c_debug_bridge_8h_source.html#l00068">68</a> of file <a class="el" href="_t_m_c_debug_bridge_8h_source.html">TMCDebugBridge.h</a>.</p>
 
 </div>
 </div>
