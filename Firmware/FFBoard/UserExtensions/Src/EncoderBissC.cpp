@@ -41,6 +41,7 @@ EncoderBissC::EncoderBissC() :
 }
 
 void EncoderBissC::Run(){
+	bool first = true;
 	while(true){
 		requestNewDataSem.Take(); // Wait until a position is requested
 		waitData = true;
@@ -49,6 +50,10 @@ void EncoderBissC::Run(){
 
 		if(updateFrame()){
 			pos = newPos;
+			if(first){ // Prevent immediate multiturn update
+				lastPos = pos;
+				first = false;
+			}
 			//handle multiturn
 			if(pos-lastPos > 1<<(lenghtDataBit-1)){
 				mtpos--;
