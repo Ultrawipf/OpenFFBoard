@@ -71,7 +71,7 @@ const TMC4671HardwareTypeConf conf1_2_2 = {
 		.bbm = 20,
 };
 const TMC4671HardwareTypeConf conf1_3 = {
-		.name = "v1.2.2 ACS724 (66mV/A)",
+		.name = "v1.3 ACS724 (66mV/A)",
 		.hwVersion = (uint8_t)TMC_HW_Ver::v1_3_66mv,
 		.adcOffset = 0,
 		.thermistorSettings = {
@@ -100,8 +100,6 @@ const TMC4671HardwareTypeConf conf1_3 = {
 			.enc_uvw = 1,
 			.enc_hall = 1,
 			.enc_ext = 1,
-
-			.analog_enc_skip_cal = 0,
 
 			.allowFluxDissipationDeactivation = 1
 		}

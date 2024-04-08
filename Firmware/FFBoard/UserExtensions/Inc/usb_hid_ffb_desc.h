@@ -10,22 +10,10 @@
 #include "constants.h"
 #include "hid.h"
 
-//#if defined(HIDAXISRES_32B)
-//#define USB_HID_1FFB_REPORT_DESC_SIZE 1196 + 16
-//#else
-//#define USB_HID_1FFB_REPORT_DESC_SIZE 1196
-//#endif
-//#ifdef AXIS1_FFB_HID_DESC
-//extern const uint8_t hid_1ffb_desc[USB_HID_1FFB_REPORT_DESC_SIZE];
-//#endif
-
-//#if defined(HIDAXISRES_32B)
-//#define USB_HID_2FFB_REPORT_DESC_SIZE 1215 + 16
-//#else
-//#define USB_HID_2FFB_REPORT_DESC_SIZE 1215
-//#endif
-
-
+/** \defgroup HID Descriptors
+ *  \details Contains definitions of different HID descriptor parts *
+ *  @{
+ */
 
 
 
@@ -774,5 +762,5 @@ extern const uint8_t hid_gamepad_desc[USB_HID_GAMEPAD_REPORT_DESC_SIZE];
 extern const uint8_t hid_gamepad_desc_32b[USB_HID_GAMEPAD_REPORT_DESC_32B_SIZE];
 #endif
 
-
+/** @}*/
 #endif /* USB_INC_USB_HID_FFB_DESC_H_ */
