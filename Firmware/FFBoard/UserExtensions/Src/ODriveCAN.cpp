@@ -171,7 +171,7 @@ void ODriveCAN::Run(){
 			// Odrive is active,
 			// enable torque mode
 			if(odriveCurrentState == ODriveState::AXIS_STATE_CLOSED_LOOP_CONTROL){
-				this->setPos(0);
+				//this->setPos(0);
 				setMode(ODriveControlMode::CONTROL_MODE_TORQUE_CONTROL, ODriveInputMode::INPUT_MODE_PASSTHROUGH);
 			}
 
