@@ -7,7 +7,7 @@
 
 #include "EncoderLocal.h"
 #include "flash_helpers.h"
-
+#ifdef LOCALENCODER
 bool EncoderLocal::inUse = false;
 ClassIdentifier EncoderLocal::info = {
 		 .name = "Local ABN" ,
@@ -144,3 +144,4 @@ CommandStatus EncoderLocal::command(const ParsedCommand& cmd,std::vector<Command
 
 	return CommandStatus::OK;
 }
+#endif
