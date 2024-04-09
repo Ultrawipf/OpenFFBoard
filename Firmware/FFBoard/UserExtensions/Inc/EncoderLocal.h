@@ -16,6 +16,7 @@
 #include "CommandHandler.h"
 #include "PersistentStorage.h"
 
+#ifdef LOCALENCODER
 extern TIM_HandleTypeDef TIM_ENC;
 
 
@@ -64,5 +65,5 @@ private:
 	bool indexHit = false;
 	bool useIndex = false;
 };
-
+#endif
 #endif /* ENCODERLOCAL_H_ */
