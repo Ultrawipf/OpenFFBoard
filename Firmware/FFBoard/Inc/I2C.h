@@ -47,6 +47,8 @@ public:
 	bool readMemIT(I2CDevice* device,const uint16_t devAddr,const uint16_t memAddr,const uint16_t memAddSize,uint8_t* pData,const uint16_t size,bool shiftAddr = true);
 	bool writeMemIT(I2CDevice* device,const uint16_t devAddr,const uint16_t memAddr,const uint16_t memAddSize,uint8_t* pData,const uint16_t size,bool shiftAddr = true);
 
+	bool isDeviceReady(I2CDevice* device,const uint16_t devAddr,const uint32_t trials,uint32_t timeout,bool shiftAddr = true);
+
 	void takeSemaphore();
 	void giveSemaphore();
 	bool isTaken();
