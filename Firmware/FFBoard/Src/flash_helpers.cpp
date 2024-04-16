@@ -107,7 +107,10 @@ bool Flash_ReadWriteDefault(uint16_t adr,uint16_t *buf,uint16_t def){
 uint8_t i2cBufferEeprom[sizeof(uint16_t)] = {0};
 #include "string.h" // Memcpy
 #include "cassert"
-
+#include <array>
+#include "I2C.h"
+I2CDevice i2cdeveeprom;
+extern I2CPort i2cport_int;
 
 bool Flash_Write(uint16_t adr,uint16_t dat){
 	uint16_t dataLength = sizeof(dat);
@@ -120,12 +123,14 @@ bool Flash_Write(uint16_t adr,uint16_t dat){
 	// Do segmented writes
 	bool res = false;
 	while(curAdr < adr+dataLength){
-		while(!HAL_I2C_IsDeviceReady(&I2C_PORT_EEPROM, I2C_EEPROM_ADR, 100, I2C_EEPROM_TIMEOUT) == HAL_OK){
+//		i2cport_int.isDeviceReady(i2cdeveeprom, I2C_EEPROM_ADR, 100, I2C_EEPROM_TIMEOUT,false)
+		while(!i2cport_int.isDeviceReady(&i2cdeveeprom, I2C_EEPROM_ADR, 100, I2C_EEPROM_TIMEOUT,false)){
 			vTaskDelay(1);
 		}
 
 		uint16_t wLen = std::min<uint16_t>(dataLength,I2C_EEPROM_PAGEWRITE_SIZE - (adr % I2C_EEPROM_PAGEWRITE_SIZE));
-		res = HAL_I2C_Mem_Write(&I2C_PORT_EEPROM, I2C_EEPROM_ADR, curAdr, I2C_EEPROM_ADR_SIZE, i2cBufferEeprom, wLen,I2C_EEPROM_TIMEOUT) == HAL_OK;
+		res = i2cport_int.writeMem(&i2cdeveeprom, I2C_EEPROM_ADR, curAdr, I2C_EEPROM_ADR_SIZE, i2cBufferEeprom, wLen, I2C_EEPROM_TIMEOUT, false);
+		//res = HAL_I2C_Mem_Write(&I2C_PORT_EEPROM, I2C_EEPROM_ADR, curAdr, I2C_EEPROM_ADR_SIZE, i2cBufferEeprom, wLen,I2C_EEPROM_TIMEOUT) == HAL_OK;
 		curAdr+=wLen;
 		if(!res){
 			break;
@@ -146,11 +151,12 @@ bool Flash_ReadWriteDefault(uint16_t adr,uint16_t *buf,uint16_t def){
 bool Flash_Read(uint16_t adr,uint16_t *buf, bool checkempty){
 	adr *= sizeof(*buf)/I2C_EEPROM_DATA_SIZE;
 	assert(adr < I2C_EEPROM_SIZE);
-	while(!HAL_I2C_IsDeviceReady(&I2C_PORT_EEPROM, I2C_EEPROM_ADR, 100, I2C_EEPROM_TIMEOUT) == HAL_OK){
-//		HAL_Delay(1);
+	while(!i2cport_int.isDeviceReady(&i2cdeveeprom, I2C_EEPROM_ADR, 100, I2C_EEPROM_TIMEOUT,false)){
 		vTaskDelay(1);
 	}
-	bool res = HAL_I2C_Mem_Read(&I2C_PORT_EEPROM, I2C_EEPROM_ADR, I2C_EEPROM_OFS+adr, I2C_EEPROM_ADR_SIZE, i2cBufferEeprom, 2, I2C_EEPROM_TIMEOUT) == HAL_OK;
+
+	//bool res = HAL_I2C_Mem_Read(&I2C_PORT_EEPROM, I2C_EEPROM_ADR, I2C_EEPROM_OFS+adr, I2C_EEPROM_ADR_SIZE, i2cBufferEeprom, 2, I2C_EEPROM_TIMEOUT) == HAL_OK;
+	bool res = i2cport_int.readMem(&i2cdeveeprom, I2C_EEPROM_ADR, I2C_EEPROM_OFS+adr, I2C_EEPROM_ADR_SIZE, i2cBufferEeprom, 2, I2C_EEPROM_TIMEOUT, false);
 
 	if(checkempty){
 		bool empty = true;
@@ -176,11 +182,12 @@ bool Flash_Format(){
 	eraseBuf.fill(I2C_EEPROM_ERASED);
 	for(uint32_t i=I2C_EEPROM_OFS;i<I2C_EEPROM_SIZE;i+=I2C_EEPROM_PAGEWRITE_SIZE){
 
-		bool res = HAL_I2C_Mem_Write(&I2C_PORT_EEPROM, I2C_EEPROM_ADR, I2C_EEPROM_OFS+i, I2C_EEPROM_ADR_SIZE, eraseBuf.data(), std::min<int>(I2C_EEPROM_PAGEWRITE_SIZE,I2C_EEPROM_SIZE-i),I2C_EEPROM_TIMEOUT) == HAL_OK;
+		//bool res = HAL_I2C_Mem_Write(&I2C_PORT_EEPROM, I2C_EEPROM_ADR, I2C_EEPROM_OFS+i, I2C_EEPROM_ADR_SIZE, eraseBuf.data(), std::min<int>(I2C_EEPROM_PAGEWRITE_SIZE,I2C_EEPROM_SIZE-i),I2C_EEPROM_TIMEOUT) == HAL_OK;
+		bool res = i2cport_int.writeMem(&i2cdeveeprom, I2C_EEPROM_ADR, I2C_EEPROM_OFS+i, I2C_EEPROM_ADR_SIZE,  eraseBuf.data(), std::min<int>(I2C_EEPROM_PAGEWRITE_SIZE,I2C_EEPROM_SIZE-i), I2C_EEPROM_TIMEOUT, false);
 		if(!res){
 			flag = false;
 		}else{
-			while(!HAL_I2C_IsDeviceReady(&I2C_PORT_EEPROM, I2C_EEPROM_ADR, 100, I2C_EEPROM_TIMEOUT) == HAL_OK){
+			while(!i2cport_int.isDeviceReady(&i2cdeveeprom, I2C_EEPROM_ADR, 100, I2C_EEPROM_TIMEOUT,false)){
 				vTaskDelay(1);
 			}
 		}
@@ -188,7 +195,7 @@ bool Flash_Format(){
 	return flag;
 }
 bool Flash_Init(){
-	return HAL_I2C_IsDeviceReady(&I2C_PORT_EEPROM, I2C_EEPROM_ADR, 10, I2C_EEPROM_TIMEOUT) == HAL_OK;
+	return i2cport_int.isDeviceReady(&i2cdeveeprom, I2C_EEPROM_ADR, 50, I2C_EEPROM_TIMEOUT,false);
 }
 
 #else

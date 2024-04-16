@@ -14,24 +14,6 @@ ClassIdentifier I2CPort::info = {
 
 
 
-//static bool operator==(const I2C_InitTypeDef& lhs, const I2C_InitTypeDef& rhs) {
-//	return lhs.AddressingMode == rhs.AddressingMode
-//			&& lhs.ClockSpeed == rhs.ClockSpeed
-//			&& lhs.DualAddressMode == rhs.DualAddressMode
-//			&& lhs.DutyCycle == rhs.DutyCycle
-//			&& lhs.GeneralCallMode == rhs.GeneralCallMode
-//			&& lhs.NoStretchMode == rhs.NoStretchMode
-//			&& lhs.OwnAddress1 == rhs.OwnAddress1
-//			&& lhs.OwnAddress2 == rhs.OwnAddress2;
-//}
-
-//static bool operator==(const I2C_InitTypeDef& lhs, const I2C_InitTypeDef& rhs) {
-//	return memcmp(&lhs,&rhs,sizeof(I2C_InitTypeDef)) == 0;
-//}
-//
-
-
-
 I2CPort::I2CPort(I2C_HandleTypeDef &hi2c,const I2CPortHardwareConfig& presets,uint8_t instance) : CommandHandler("i2c", CLSID_I2CPORT, instance), hi2c(hi2c),presets(presets) {
 	restoreFlashDelayed();
 #ifdef I2C_COMMANDS_DISABLED_IF_NOT_USED

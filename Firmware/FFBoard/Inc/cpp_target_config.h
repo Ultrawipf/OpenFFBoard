@@ -47,4 +47,8 @@ extern const OutputPin debugpin;
 extern const OutputPin gpMotor;
 #endif
 
+#if defined(I2C_PORT_EEPROM)
+extern I2CPort i2cport_int;
+#endif
+
 #endif
