@@ -30,7 +30,7 @@ public:
 	virtual std::vector<int32_t>* getAxes();
 	std::vector<int32_t> buf;
 
-
+	static const std::vector<class_entry<AnalogSource>> all_analogsources;
 
 private:
 
