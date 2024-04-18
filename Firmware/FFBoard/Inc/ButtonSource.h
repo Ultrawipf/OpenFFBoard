@@ -11,7 +11,7 @@
 #include "cppmain.h"
 #include "ChoosableClass.h"
 #include "PersistentStorage.h"
-
+#include "vector"
 
 /**
  * A button source can return up to 64 buttons
@@ -31,6 +31,8 @@ public:
 	static ClassIdentifier info;
 	static bool isCreatable() {return true;};
 	virtual const ClassType getClassType() {return ClassType::Buttonsource;};
+
+	static const std::vector<class_entry<ButtonSource> > all_buttonsources;
 
 protected:
 	uint16_t btnnum = 0; // Amount of active buttons (valid bitfield length) to report

@@ -11,65 +11,18 @@
 #include "tusb.h"
 #include "usb_hid_ffb_desc.h"
 
-#include "SPIButtons.h"
-#include "CanButtons.h"
-#include "LocalButtons.h"
-#include <ShifterAnalog.h>
-#include "PCF8574.h"
-
-#include "LocalAnalog.h"
-#include "CanAnalog.h"
-#include "ADS111X.h"
-
 #include "cmsis_os.h"
 extern osThreadId_t defaultTaskHandle;
 
 //////////////////////////////////////////////
-/*
- * Sources for class choosers here
- */
-// Register possible button sources (id 0-15)
-const std::vector<class_entry<ButtonSource>> button_sources =
-{
-#ifdef LOCALBUTTONS
-		add_class<LocalButtons,ButtonSource>(0),
-#endif
-#ifdef SPIBUTTONS
-		add_class<SPI_Buttons_1,ButtonSource>(1),
-#endif
-#ifdef SPIBUTTONS2
-		add_class<SPI_Buttons_2,ButtonSource>(2),
-#endif
-#ifdef SHIFTERBUTTONS
-		add_class<ShifterAnalog,ButtonSource>(3),
-#endif
-#ifdef PCF8574BUTTONS
-		add_class<PCF8574Buttons,ButtonSource>(4),
-#endif
-#ifdef CANBUTTONS
-		add_class<CanButtons,ButtonSource>(5),
-#endif
-};
 
-// Register possible analog sources (id 0-15)
-const std::vector<class_entry<AnalogSource>> analog_sources =
-{
-#ifdef ANALOGAXES
-		add_class<LocalAnalog,AnalogSource>(0),
-#endif
-#ifdef CANANALOG
-		add_class<CanAnalog<8>,AnalogSource>(1),
-#endif
-#ifdef ADS111XANALOG
-		add_class<ADS111X_AnalogSource,AnalogSource>(2),
-#endif
-};
 
 /**
  * setFFBEffectsCalc must be called in constructor of derived class to finish the setup
  */
 FFBHIDMain::FFBHIDMain(uint8_t axisCount) :
-		Thread("FFBMAIN", 256, 30),axisCount(axisCount),btn_chooser(button_sources),analog_chooser(analog_sources)
+		Thread("FFBMAIN", 256, 30),axisCount(axisCount),
+		btn_chooser(ButtonSource::all_buttonsources),analog_chooser(AnalogSource::all_analogsources)
 {
 
 	restoreFlash(); // Load parameters
