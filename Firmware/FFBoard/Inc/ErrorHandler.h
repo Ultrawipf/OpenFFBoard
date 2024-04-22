@@ -7,10 +7,15 @@
 
 #ifndef SRC_ERRORHANDLER_H_
 #define SRC_ERRORHANDLER_H_
-#include <vector>
+#include <array>
 #include <string>
 #include "thread.hpp"
 #include "CommandHandler.h"
+#include <span>
+
+#ifndef ERRORHANDLER_MAXERRORS
+#define ERRORHANDLER_MAXERRORS 16
+#endif
 
 /*
  * Error code definitions
@@ -49,16 +54,17 @@ enum class ErrorCode : uint32_t{
  * critical errors cause a shutdown or have to be cleared externally
  */
 enum class ErrorType : uint8_t{
-	warning,critical,temporary
+	none,warning,critical,temporary
 };
 
 class Error{
 public:
 	//Error(const Error &e);
+	Error(){}; // No error
 	Error(ErrorCode code, ErrorType type, std::string info) : code(code), type(type), info(info){};
 	ErrorCode code = ErrorCode::none;
-	ErrorType type = ErrorType::warning;
-	std::string info = "";
+	ErrorType type = ErrorType::none;
+	std::string info;
 
 	std::string toString();
 
@@ -66,7 +72,7 @@ public:
 	 * Errors are equivalent if their code and type match
 	 */
 	bool operator ==(const Error &b) const {return (this->code == b.code && this->type == b.type);}
-
+	bool isError() const {return this->code != ErrorCode::none && this->type != ErrorType::none;}
 };
 
 
@@ -86,10 +92,11 @@ public:
 	static void clearTemp();
 	static void clearAll();
 
-	static std::vector<Error>* getErrors(); // Returns a vector of active errors
+	static std::span<Error> getErrors(); // Returns a vector of active errors
 
 protected:
-	static std::vector<Error> errors;
+	static std::array<Error,ERRORHANDLER_MAXERRORS> errors;
+	static void sortErrors();
 };
 
 /*

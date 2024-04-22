@@ -319,8 +319,8 @@ void SystemCommands::replyFlashDump(std::vector<CommandReply>& replies){
  * Prints a formatted list of error conditions
  */
 void SystemCommands::replyErrors(std::vector<CommandReply>& replies){
-	std::vector<Error>* errors = ErrorHandler::getErrors();
-	if(errors->size() == 0){
+	std::span<Error> errors = ErrorHandler::getErrors();
+	if(errors.size() == 0){
 		CommandReply reply;
 		reply.reply += "None";
 		reply.type = CommandReplyType::STRING_OR_INT;
@@ -328,7 +328,7 @@ void SystemCommands::replyErrors(std::vector<CommandReply>& replies){
 		return;
 	}
 
-	for(Error error : *errors){
+	for(Error error : errors){
 		CommandReply reply;
 		reply.reply += error.toString() + "\n";
 		reply.val = (uint32_t)error.code;

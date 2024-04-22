@@ -10,9 +10,11 @@
 #include "FFBoardMain.h"
 #include "cppmain.h"
 #include "critical.hpp"
+#include <span>
 
 std::vector<ErrorHandler*> ErrorHandler::errorHandlers;
-std::vector<Error> ErrorHandler::errors;
+//std::vector<Error> ErrorHandler::errors;
+std::array<Error,ERRORHANDLER_MAXERRORS> ErrorHandler::errors;
 
 
 std::string Error::toString(){
@@ -37,7 +39,7 @@ std::string Error::toString(){
 
 
 ErrorHandler::ErrorHandler(){
-	errors.reserve(10);
+//	errors.reserve(10);
 	addCallbackHandler(errorHandlers,this);
 }
 
@@ -54,7 +56,7 @@ void ErrorHandler::clearAll(){
 		for(Error& error : errors)
 			e->errorCallback(error, true);
 	}
-	errors.clear();
+	errors.fill(Error());
 }
 
 /*
@@ -63,10 +65,12 @@ void ErrorHandler::clearAll(){
 void ErrorHandler::clearTemp(){
 	for (uint8_t i = 0; i < errors.size(); i++){
 		if((errors)[i].type == ErrorType::temporary){
-			errors.erase(errors.begin()+i);
+			//errors.erase(errors.begin()+i);
+			errors[i] = Error(); // Empty
 			break;
 		}
 	}
+	sortErrors();
 }
 
 void ErrorHandler::addError(const Error &error){
@@ -75,7 +79,12 @@ void ErrorHandler::addError(const Error &error){
 			return;
 		}
 	}
-	errors.push_back(error);
+//	errors.push_back(error);
+	auto errIt = std::find_if(errors.begin(), errors.end(), [](const Error& err){return !err.isError();});
+	if(errIt != errors.end()){
+		*errIt = error; // If buffer is full do not store error but still call callbacks.
+	}
+
 
 	// Call all error handler with this error
 	//cpp_freertos::CriticalSection::SuspendScheduler();
@@ -88,7 +97,8 @@ void ErrorHandler::addError(const Error &error){
 void ErrorHandler::clearError(const Error &error){
 	for (uint8_t i = 0; i < errors.size(); i++){
 		if(errors[i] == error){
-			errors.erase(errors.begin()+i);
+//			errors.erase(errors.begin()+i);
+			errors[i] = Error(); // Empty
 			break;
 		}
 	}
@@ -97,6 +107,7 @@ void ErrorHandler::clearError(const Error &error){
 	for(ErrorHandler* e : errorHandlers){
 		e->errorCallback(error, true);
 	}
+	sortErrors();
 }
 
 /*
@@ -105,20 +116,29 @@ void ErrorHandler::clearError(const Error &error){
 void ErrorHandler::clearError(ErrorCode errorcode){
 	for (uint8_t i = 0; i < errors.size(); i++){
 		if(errors[i].code == errorcode){
-			errors.erase(errors.begin()+i);
+//			errors.erase(errors.begin()+i);
+			errors[i] = Error(); // Empty
 			for(ErrorHandler* e : errorHandlers){
 				e->errorCallback(errors[i], true);
 			}
 		}
 	}
+	sortErrors();
 }
 
-std::vector<Error>* ErrorHandler::getErrors(){
-	return &errors;
+std::span<Error> ErrorHandler::getErrors(){
+	return std::span<Error>(errors.begin(), std::find_if(errors.begin(), errors.end(), [](const Error& err){return err.type == ErrorType::none;}));
 }
 
 void ErrorHandler::errorCallback(const Error &error, bool cleared){
 
+}
+
+void ErrorHandler::sortErrors(){
+	auto errSortFun = [](const Error& a, const Error& b){
+		return a.code < b.code;
+	};
+	std::sort(errors.begin(),errors.end(),errSortFun);
 }
 
 
