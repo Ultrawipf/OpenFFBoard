@@ -580,12 +580,12 @@ void TMC4671::Run(){
 			break;
 
 		case TMC_ControlState::EncoderInit:
-			if(powerInitialized && hasPower())
+			if(powerInitialized && hasPower() && conf.motconf.motor_type != MotorType::NONE)
 				encoderInit();
 		break;
 
 		case TMC_ControlState::ExternalEncoderInit:
-			if(powerInitialized && hasPower() && drvEncoder != nullptr)
+			if(powerInitialized && hasPower() && drvEncoder != nullptr && conf.motconf.motor_type != MotorType::NONE)
 				encoderInit();
 			break;
 
@@ -1170,8 +1170,8 @@ int16_t TMC4671::getPhiE_Enc(){
  * Steps the motor a few times to check if the encoder follows correctly
  */
 bool TMC4671::checkEncoder(){
-	if(this->conf.motconf.motor_type != MotorType::STEPPER && this->conf.motconf.motor_type != MotorType::BLDC &&
-			conf.motconf.enctype != EncoderType_TMC::uvw && conf.motconf.enctype != EncoderType_TMC::sincos && conf.motconf.enctype != EncoderType_TMC::abn && conf.motconf.enctype != EncoderType_TMC::ext)
+	if((this->conf.motconf.motor_type != MotorType::STEPPER && this->conf.motconf.motor_type != MotorType::BLDC) || (
+			conf.motconf.enctype != EncoderType_TMC::uvw && conf.motconf.enctype != EncoderType_TMC::sincos && conf.motconf.enctype != EncoderType_TMC::abn && conf.motconf.enctype != EncoderType_TMC::ext))
 	{ // If not stepper or bldc return
 		return true;
 	}
