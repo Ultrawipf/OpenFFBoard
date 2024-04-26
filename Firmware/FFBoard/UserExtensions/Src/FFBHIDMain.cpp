@@ -75,15 +75,6 @@ FFBHIDMain::FFBHIDMain(uint8_t axisCount) :
 	restoreFlash(); // Load parameters
 	registerCommands();
 
-
-#ifdef E_STOP_Pin
-	bool estopState = HAL_GPIO_ReadPin(E_STOP_GPIO_Port, E_STOP_Pin) == GPIO_PIN_RESET;
-	if(estopState){ // Estop pressed at startup
-		emergencyStop(!estopState);
-		lastEstop = HAL_GetTick();
-	}
-#endif
-
 }
 
 /**
@@ -138,6 +129,14 @@ void FFBHIDMain::saveFlash(){
 
 
 void FFBHIDMain::Run(){
+#ifdef E_STOP_Pin
+	bool estopState = HAL_GPIO_ReadPin(E_STOP_GPIO_Port, E_STOP_Pin) == GPIO_PIN_RESET;
+	if(estopState){ // Estop pressed at startup
+		emergencyStop(!estopState);
+//		control.emergency = true; // Immediately enter emergency state but without notifying other classes yet
+		lastEstop = HAL_GetTick();
+	}
+#endif
 	while(true){
 		Delay(1);
 		updateControl();
