@@ -438,7 +438,7 @@ void TMC4671::Run(){
 		case TMC_ControlState::uninitialized:
 			allowStateChange = false;
 			// check communication and write constants
-			if(!pingDriver()){ // driver not available
+			if(!pingDriver() || emergency){ // driver not available or emergency was set before startup
 				initialized = false; // Assume driver is not initialized if we can not detect it
 				Delay(250);
 				break;
@@ -456,7 +456,7 @@ void TMC4671::Run(){
 			pulseClipLed(); // blink led
 			static uint8_t powerCheckCounter = 0;
 			// if powered check ADCs and go to encoder calibration
-			if(!hasPower()){
+			if(!hasPower() || emergency){
 				powerCheckCounter = 0;
 				Delay(250);
 				break;
@@ -634,6 +634,10 @@ void TMC4671::Run(){
 			flagCheckInProgress = false;
 		}
 		Delay(10);
+
+		if(emergency && !motorReady()){
+			this->Suspend(); // we can not safely run. wait until resumed by estop
+		}
 	} // End while
 }
 
@@ -1650,7 +1654,7 @@ void TMC4671::setUdUq(int16_t ud,int16_t uq){
 void TMC4671::stopMotor(){
 	// Stop driver if running
 
-	//enablePin.reset();
+	enablePin.reset();
 	motorEnabledRequested = false;
 	if(state == TMC_ControlState::Running || state == TMC_ControlState::EncoderFinished){
 		setMotionMode(MotionMode::stop,true);
@@ -1660,43 +1664,46 @@ void TMC4671::stopMotor(){
 }
 void TMC4671::startMotor(){
 	motorEnabledRequested = true;
-	if(!initialized || emergency){
-		//initialize();
-		emergency = false;
-//		if(state != TMC_ControlState::Init_wait)
-//			changeState(TMC_ControlState::Init_wait);
-	}
 
 	if(state == TMC_ControlState::Shutdown && initialized && encoderAligned){
 		changeState(TMC_ControlState::Running);
 	}
-	// Start driver if powered
-	if(hasPower()){
+	// Start driver if powered and emergency flag reset
+	if(hasPower() && !emergency){
 		setPwm(TMC_PwmMode::PWM_FOC); // enable foc
+		enablePin.set();
 		setMotionMode(nextMotionMode,true);
 
 	}
-//	else{
-//		changeState(TMC_ControlState::waitPower);
-//	}
+	else{
+		changeState(TMC_ControlState::waitPower);
+	}
 
 }
 
 void TMC4671::emergencyStop(bool reset){
 	if(!reset){
-		setPwm(TMC_PwmMode::HSlow_LShigh); // Short low side for instant stop
+//		setPwm(TMC_PwmMode::HSlow_LShigh); // Short low side for instant stop
 		emergency = true;
 		enablePin.reset(); // Release enable pin to disable the whole driver
 		motorEnabledRequested = false;
 		this->stopMotor();
+
 	}else{
-		enablePin.set();
-		setPwm(TMC_PwmMode::PWM_FOC);
+//		enablePin.set();
+//		writeReg(0x64, 0); // Set flux and torque 0 directly. Make sure motor does not jump
+//		setPwm(TMC_PwmMode::PWM_FOC);
 		emergency = false;
 		motorEnabledRequested = true;
 		//this->changeState(TMC_ControlState::waitPower, true); // Reinit
 		this->startMotor();
-
+		if(!motorReady()){
+			if(inIsr()){
+				ResumeFromISR();
+			}else{
+				Resume();
+			}
+		}
 	}
 }
 
@@ -2043,7 +2050,7 @@ int16_t TMC4671::getFlux(){
 	return readReg(0x64) && 0xffff;
 }
 void TMC4671::setFluxTorque(int16_t flux, int16_t torque){
-	if(curMotionMode != MotionMode::torque){
+	if(curMotionMode != MotionMode::torque && !emergency){
 		setMotionMode(MotionMode::torque,true);
 	}
 	writeReg(0x64, (flux & 0xffff) | (torque << 16));
