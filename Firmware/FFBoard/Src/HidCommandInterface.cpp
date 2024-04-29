@@ -99,7 +99,7 @@ void HID_CommandInterface::sendReplies(const std::vector<CommandResult>& results
 		}
 
 
-		for(const CommandReply reply : replies){
+		for(const CommandReply& reply : replies){
 			if(reply.type == CommandReplyType::STRING){
 				continue; // Ignore string only replies
 			}
