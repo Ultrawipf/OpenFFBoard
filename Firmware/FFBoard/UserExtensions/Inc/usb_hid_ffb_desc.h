@@ -15,20 +15,26 @@
  *  @{
  */
 
-
+#if defined(HIDAXISRES_32B_BITS) && HIDAXISRES_32B_BITS > 2 && HIDAXISRES_32B_BITS < 32
+// 7FFFFFFF for 32
+#define HIDAXISRES_32B_MAXS (1 << (HIDAXISRES_32B_BITS-1))-1
+#else
+#define HIDAXISRES_32B_MAXS 0x7FFFFFFF
+#define HIDAXISRES_32B_BITS 32
+#endif
 
 // HID descriptor building blocks
 #define HIDDESC_32B_ENTRY(count)  /*     LOGICAL_MINIMUM (-7FFFFFFF)*/\
-  0x17, 0x01, 0x00, 0x00, 0x80, \
+  HID_LOGICAL_MIN_N(-HIDAXISRES_32B_MAXS,3), /*0x17, 0x01, 0x00, 0x00, 0x80,*/\
   /*     LOGICAL_MAXIMUM (7FFFFFFF)*/\
-  0x27, 0xff, 0xff, 0xff, 0x7f,\
- /*     REPORT_SIZE (16)*/\
+  HID_LOGICAL_MAX_N(HIDAXISRES_32B_MAXS,3), /*   0x27, 0xff, 0xff, 0xff, 0x7f, */ \
+ /*     REPORT_SIZE (32)*/\
   0x75, 0x20,\
   /* REPORT_COUNT */\
   0x95, count,\
 /*     INPUT (Data,Var,Abs)*/\
   0x81, 0x02,
-#define HIDDESC_32B_ENTRY_SIZE 12 // 12 bytes extra for additional 16b definition 2B count
+#define HIDDESC_32B_ENTRY_SIZE 16 // 16 bytes more for range definition
 
 
 #define HIDDESC_GAMEPAD_16B \
@@ -74,7 +80,7 @@
 #endif
 #if MAX_AXIS == 3
 #define HIDDESC_GPENTRY_32B_3 0x09, HID_USAGE_DESKTOP_Z,             /*     USAGE (Z)*/\
-	HIDDESC_32B_ENTRY(0x02)
+	HIDDESC_32B_ENTRY(0x03)
 #else
 #define HIDDESC_GPENTRY_32B_3 0x09, HID_USAGE_DESKTOP_Z,             /*     USAGE (Z)*/
 #endif
@@ -760,6 +766,10 @@ extern const uint8_t hid_gamepad_desc[USB_HID_GAMEPAD_REPORT_DESC_SIZE];
 #ifdef FFB_HID_DESC_GAMEPAD_32B
 #define USB_HID_GAMEPAD_REPORT_DESC_32B_SIZE HIDDESC_GAMEPAD_32B_SIZE + HIDDESC_CTRL_REPORTS_SIZE + 7
 extern const uint8_t hid_gamepad_desc_32b[USB_HID_GAMEPAD_REPORT_DESC_32B_SIZE];
+#endif
+
+#ifdef HIDAXISRES_USE_32B_DESC
+
 #endif
 
 /** @}*/

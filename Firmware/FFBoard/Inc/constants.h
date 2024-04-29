@@ -31,9 +31,17 @@ static const uint8_t SW_VERSION_INT[3] = {1,16,6}; // Version as array. 8 bit ea
 
 #ifdef FFBWHEEL
 #ifdef FFBWHEEL_USE_1AXIS_DESC
+#ifdef HIDAXISRES_USE_32B_DESC
+#define AXIS1_FFB_HID_DESC_32B
+#else
 #define AXIS1_FFB_HID_DESC
+#endif
+#else
+#ifdef HIDAXISRES_USE_32B_DESC
+#define AXIS2_FFB_HID_DESC_32B
 #else
 #define AXIS2_FFB_HID_DESC
+#endif
 #endif
 #endif
 

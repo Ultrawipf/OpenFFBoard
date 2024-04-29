@@ -59,11 +59,19 @@ const uint8_t usb_cdc_conf[] =
 	const uint8_t usb_cdc_hid_conf_1axis[] ={USB_CONF_DESC_HID_CDC(USB_HID_1FFB_REPORT_DESC_SIZE,64)};
 #endif
 
+#ifdef AXIS1_FFB_HID_DESC_32B
+	const uint8_t usb_cdc_hid_conf_1axis_32b[] ={USB_CONF_DESC_HID_CDC(USB_HID_1FFB_REPORT_DESC_32B_SIZE,64)};
+#if TUD_OPT_HIGH_SPEED
+	const uint8_t usb_cdc_hid_conf_1axis_32b_hs[] ={USB_CONF_DESC_HID_CDC(USB_HID_1FFB_REPORT_DESC_32B_SIZE,512)};
+#endif
+#endif
+
 // Composite CDC and HID
 #ifdef AXIS2_FFB_HID_DESC
 	const uint8_t usb_cdc_hid_conf_2axis[] ={USB_CONF_DESC_HID_CDC(USB_HID_2FFB_REPORT_DESC_SIZE,64)};
 #endif
-#ifdef AXIS1_FFB_HID_DESC_32B
+
+#ifdef AXIS2_FFB_HID_DESC_32B
 	const uint8_t usb_cdc_hid_conf_2axis_32b[] ={USB_CONF_DESC_HID_CDC(USB_HID_2FFB_REPORT_DESC_32B_SIZE,64)};
 #endif
 
