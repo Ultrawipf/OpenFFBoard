@@ -691,7 +691,7 @@ __ALIGN_BEGIN const uint8_t hid_2ffb_desc_32b[USB_HID_2FFB_REPORT_DESC_32B_SIZE]
 		0x05, 0x01,                    /* USAGE_PAGE (Generic Desktop)*/
 			0x09, 0x04,                    /* USAGE (Joystick)*/
 			0xa1, 0x01,                    /* COLLECTION (Application)*/
-		HIDDESC_GAMEPAD_32B,
+			HIDDESC_GAMEPAD_32B,
 
 			HIDDESC_CTRL_REPORTS, // HID command report support
 

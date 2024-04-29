@@ -12,6 +12,12 @@
 
 #include "FFBHIDMain.h"
 
+#ifdef HIDAXISRES_USE_32B_DESC
+#define FFBWHEEL_32B_MODE true
+#else
+#define FFBWHEEL_32B_MODE false
+#endif
+
 class FFBWheel : public FFBHIDMain {
 public:
 	FFBWheel();

@@ -24,7 +24,7 @@ const ClassIdentifier FFBWheel::getInfo(){
 
 
 FFBWheel::FFBWheel() :
-		FFBHIDMain(1)
+		FFBHIDMain(1,FFBWHEEL_32B_MODE)
 {
 	FFBHIDMain::setFFBEffectsCalc(ffb, effects_calc);
 }
@@ -34,17 +34,29 @@ FFBWheel::~FFBWheel() {
 }
 
 
-
 void FFBWheel::usbInit(){
+#ifdef HIDAXISRES_USE_32B_DESC
 #ifdef FFBWHEEL_USE_1AXIS_DESC
-	this->usbdev = std::make_unique<USBdevice>(&usb_devdesc_ffboard_composite,usb_cdc_hid_conf_1axis,&usb_ffboard_strings_default);
-	FFBHIDMain::UsbHidHandler::setHidDesc(hid_1ffb_desc);
-	static_cast<HidFFB*>(ffb.get())->setDirectionEnableMask(0x02);
+const uint8_t* usbconf = usb_cdc_hid_conf_1axis_32b;
+const uint8_t* ffbdesc = hid_1ffb_desc_32b;
 #else
-	this->usbdev = std::make_unique<USBdevice>(&usb_devdesc_ffboard_composite,usb_cdc_hid_conf_2axis,&usb_ffboard_strings_default);
-	FFBHIDMain::UsbHidHandler::setHidDesc(hid_2ffb_desc);
-	static_cast<HidFFB*>(ffb.get())->setDirectionEnableMask(0x04);
+const uint8_t* ffbdesc = hid_2ffb_desc_32b;
+const uint8_t* usbconf = usb_cdc_hid_conf_2axis_32b;
 #endif
+#else // ELSE 32B
+#ifdef FFBWHEEL_USE_1AXIS_DESC
+const uint8_t* usbconf = usb_cdc_hid_conf_1axis;
+const uint8_t* ffbdesc = hid_1ffb_desc;
+#else
+const uint8_t* ffbdesc = hid_2ffb_desc;
+const uint8_t* usbconf = usb_cdc_hid_conf_2axis;
+#endif
+#endif
+
+	this->usbdev = std::make_unique<USBdevice>(&usb_devdesc_ffboard_composite,usbconf,&usb_ffboard_strings_default);
+
+	FFBHIDMain::UsbHidHandler::setHidDesc(ffbdesc);
+	static_cast<HidFFB*>(ffb.get())->setDirectionEnableMask(0x04);
 
 	usbdev->registerUsb();
 }
