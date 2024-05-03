@@ -204,7 +204,7 @@ void FFBHIDMain::send_report(){
 	for(int32_t val : *axes){
 		if(count >= analogAxisCount)
 			break;
-		if((count <= MAX_AXIS) && hidAxis32b)
+		if((count < MAX_AXIS) && hidAxis32b)
 			val = val << (HIDAXISRES_32B_BITS-16); // Shift up 16 bit to fill 32b value. Primary axis is 32b
 		reportHID->setHidReportAxis(count++, val);
 	}
