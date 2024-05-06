@@ -99,7 +99,7 @@ public:
 	 */
 	T* Create(uint16_t id){
 		T* cls = nullptr;
-		for(class_entry<T> e : *class_registry){
+		for(const class_entry<T>& e : *class_registry){
 
 			if(e.selectionId == id && e.isCreatable()){
 				cls = e.create();
@@ -114,7 +114,7 @@ public:
 	 * Checks the isCreatable() function
 	 */
 	bool isCreatable(uint16_t id){
-		for(class_entry<T> e : *class_registry){
+		for(const class_entry<T>& e : *class_registry){
 			if(e.selectionId == id && e.isCreatable()){
 				return true;
 			}
@@ -127,18 +127,18 @@ public:
 	 * Generates replies for the command system listing selectable classes
 	 */
 	void replyAvailableClasses(std::vector<CommandReply>& replies,int16_t ignoredCreatableId = 255){
-		for(class_entry<T> cls : *class_registry){
+		for(const class_entry<T>& cls : *class_registry){
 			if(cls.info.visibility == ClassVisibility::hidden || (cls.info.visibility == ClassVisibility::debug && !SystemCommands::debugMode)){
 				if(ignoredCreatableId != cls.selectionId)
 					continue;
 			}
-			std::string ret;
+//			std::string ret;
 			CommandReply replyObj;
-			ret+= std::to_string(cls.selectionId);
-			ret+= ":";
-			ret+= (cls.isCreatable() || ignoredCreatableId == cls.selectionId) ? "1" : "0";
-			ret+= ":";
-			ret+= cls.info.name;
+			replyObj.reply+= std::to_string(cls.selectionId);
+			replyObj.reply+= ":";
+			replyObj.reply+= (cls.isCreatable() || ignoredCreatableId == cls.selectionId) ? "1" : "0";
+			replyObj.reply+= ":";
+			replyObj.reply+= cls.info.name;
 
 			if(cls.isCreatable()){
 				replyObj.type = CommandReplyType::STRING_OR_DOUBLEINT;
@@ -147,7 +147,7 @@ public:
 			}else{
 				replyObj.type = CommandReplyType::STRING;
 			}
-			replyObj.reply = ret;
+//			replyObj.reply = ret;
 			replies.push_back(replyObj);
 		}
 	}
@@ -157,7 +157,7 @@ public:
 	 * Returns if this id is actually in the list of possible classes
 	 */
 	bool isValidClassId(uint16_t id){
-		for(class_entry<T> cls : *class_registry){
+		for(const class_entry<T>& cls : *class_registry){
 			if(cls.selectionId == id){
 				return true;
 			}
