@@ -18,7 +18,7 @@ var searchData=
   ['canrxheader1_15',['canRxHeader1',['../global__callbacks_8cpp.html#ad4337e13c14b5842fd2ded00f1dab9fd',1,'global_callbacks.cpp']]],
   ['capabilities_16',['capabilities',['../structusbtmc__interface__state__t.html#a888bbc887f247c9e101f72f3a9ab3861',1,'usbtmc_interface_state_t']]],
   ['capabilitydata_17',['CapabilityData',['../struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a5c72ca4c1bb854f80dc5bc1ba1af11ae',1,'TU_ATTR_PACKED']]],
-  ['capacity_18',['capacity',['../structmsch__interface__t.html#a8cf7ad2f744e239500ebfc6965932b98',1,'msch_interface_t']]],
+  ['capacity_18',['capacity',['../structmsch__interface__t.html#a492313d82a3450cb029535dffb3cc6b0',1,'msch_interface_t']]],
   ['cbw_19',['cbw',['../structmscd__interface__t.html#acd398c380989f1e6604fdc827f7c7a75',1,'mscd_interface_t::cbw()'],['../structmsch__interface__t.html#abaf12fee299a0f045ba2e9bcbb06645d',1,'msch_interface_t::cbw()']]],
   ['cdcbuf_20',['cdcbuf',['../class_f_f_board_main.html#a1a03f654a3f374922917af6037deee80',1,'FFBoardMain']]],
   ['cdccmdinterface_21',['cdcCmdInterface',['../class_f_f_board_main.html#a67ab9cf31b367c0deeaa6712e0560968',1,'FFBoardMain']]],

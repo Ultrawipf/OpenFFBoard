@@ -19,6 +19,7 @@ var class_i2_c_port =
     [ "I2cError", "class_i2_c_port.html#a47375c8c677d40c856b1cd40e2535588", null ],
     [ "I2cRxCplt", "class_i2_c_port.html#ab262f14a4d261881226bc5f8e005e0f8", null ],
     [ "I2cTxCplt", "class_i2_c_port.html#a8e8815d3b4da0a036a0eef7c5e81b922", null ],
+    [ "isDeviceReady", "class_i2_c_port.html#a5444c82d64fa915c5e0a748135bd1e2e", null ],
     [ "isTaken", "class_i2_c_port.html#afcd0dd1c260573dd9db94f5bb500f4d4", null ],
     [ "readMem", "class_i2_c_port.html#a73140c910a9fd9027418f182a529c6fb", null ],
     [ "readMemIT", "class_i2_c_port.html#a7b58bbd9b256f70117dab9c732c67b72", null ],

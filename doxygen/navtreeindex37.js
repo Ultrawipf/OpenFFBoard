@@ -1,5 +1,6 @@
 var NAVTREEINDEX37 =
 {
+"structusbh__dev0__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#a88a6b41166803ebac6366db310e5e2f6":[3,0,186,0,1],
 "structusbh__dev0__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#a901cf2528ea69397bf404aa2c5563912":[3,0,186,0,0],
 "structusbh__dev0__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#ae848a6ec4dfc4e11b3d832e4d24fbe4e":[3,0,186,0,3],
 "structusbh__device__t.html":[3,0,187],
@@ -248,6 +249,5 @@ var NAVTREEINDEX37 =
 "usb__hid__2ffb__desc_8c_source.html":[4,0,258],
 "usb__hid__ffb__desc_8h.html":[4,0,226],
 "usb__hid__ffb__desc_8h.html#aa4d5b330bb8c98e152295a9f03ae1305":[4,0,226,0],
-"usb__hid__ffb__desc_8h.html#af2203a063a070c7d68641471587c1a0d":[4,0,226,1],
-"usb__hid__ffb__desc_8h.html#afab92d8c34243f3f8284bb8fd2beec82":[4,0,226,2]
+"usb__hid__ffb__desc_8h.html#af2203a063a070c7d68641471587c1a0d":[4,0,226,1]
 };

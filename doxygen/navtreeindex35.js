@@ -1,10 +1,11 @@
 var NAVTREEINDEX35 =
 {
 "struct_t_u___a_t_t_r___p_a_c_k_e_d_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#af1e3f0c127f6454024f1024ccc88da0c":[1,11,0,0,31],
-"struct_t_u___a_t_t_r___p_a_c_k_e_d_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#af1e3f0c127f6454024f1024ccc88da0c":[1,10,0,0,31],
-"struct_t_u___a_t_t_r___p_a_c_k_e_d_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#af1e3f0c127f6454024f1024ccc88da0c":[1,7,0,0,31],
+"struct_t_u___a_t_t_r___p_a_c_k_e_d_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#af1e3f0c127f6454024f1024ccc88da0c":[1,12,0,0,31],
 "struct_t_u___a_t_t_r___p_a_c_k_e_d_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#af1e3f0c127f6454024f1024ccc88da0c":[1,0,0,0,31],
+"struct_t_u___a_t_t_r___p_a_c_k_e_d_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#af1e3f0c127f6454024f1024ccc88da0c":[1,10,0,0,31],
 "struct_t_u___a_t_t_r___p_a_c_k_e_d_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#af1e3f0c127f6454024f1024ccc88da0c":[1,2,1,0,31],
+"struct_t_u___a_t_t_r___p_a_c_k_e_d_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#af1e3f0c127f6454024f1024ccc88da0c":[1,7,0,0,31],
 "struct_u_s_b___o_t_g___device_type_def.html":[3,0,175],
 "struct_u_s_b___o_t_g___device_type_def.html#a033ac90bbc8ed2442100b2836344ef4e":[3,0,175,13],
 "struct_u_s_b___o_t_g___device_type_def.html#a091e9adaacbe0860ac18eb3792e2e3bb":[3,0,175,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX35 =
 "structhub__interface__t.html#ac2bf6b4c5114a7c1613a5c96eb072844":[3,0,79,3],
 "structhub__interface__t.html#acdf9470be8a5753317485c8e40fa918d":[3,0,79,4],
 "structhub__interface__t.html#af5d4077285949ac91f756e3a734409d9":[3,0,79,0],
-"structhub__port__status__response__t.html":[1,8,1],
-"structhub__port__status__response__t.html#a047303b6710f6a417dc94315d1b76ae4":[1,8,1,10]
+"structhub__port__status__response__t.html":[1,8,1]
 };

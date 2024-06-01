@@ -1,5 +1,6 @@
 var NAVTREEINDEX38 =
 {
+"usb__hid__ffb__desc_8h.html#afab92d8c34243f3f8284bb8fd2beec82":[4,0,226,2],
 "usb__hid__ffb__desc_8h_source.html":[4,0,226],
 "usb__hid__gamepad_8c.html":[4,0,259],
 "usb__hid__gamepad_8c.html#ad7c9609d684297385fcf3ad5ddf32b66":[4,0,259,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX38 =
 "usbtmc__device_8c.html#a1894598404de628b7ff560a783174d8ea3eef545337148c057c75d4552552cb13":[4,0,156,2,6],
 "usbtmc__device_8c.html#a1894598404de628b7ff560a783174d8ea50d6be4a0300d2070b449701e23d6eb9":[4,0,156,2,11],
 "usbtmc__device_8c.html#a1894598404de628b7ff560a783174d8ea748ce48c81c7a58c23581af7b6618903":[4,0,156,2,1],
-"usbtmc__device_8c.html#a1894598404de628b7ff560a783174d8eaaade5e53e88cf231292cd1142cce2afe":[4,0,156,2,2],
-"usbtmc__device_8c.html#a1894598404de628b7ff560a783174d8eac0e4fba3902409ccab659367ac1f53a5":[4,0,156,2,9]
+"usbtmc__device_8c.html#a1894598404de628b7ff560a783174d8eaaade5e53e88cf231292cd1142cce2afe":[4,0,156,2,2]
 };
