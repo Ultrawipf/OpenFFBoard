@@ -98,6 +98,7 @@ void ODriveCAN::registerCommands(){
 	registerCommand("vbus", ODriveCAN_commands::vbus, "ODrive Vbus",CMDFLAG_GET);
 	registerCommand("anticogging", ODriveCAN_commands::anticogging, "Set 1 to start anticogging calibration",CMDFLAG_SET);
 	registerCommand("connected", ODriveCAN_commands::connected, "ODrive connection state",CMDFLAG_GET);
+	registerCommand("storepos", ODriveCAN_commands::storepos, "Store encoder offset",CMDFLAG_GET | CMDFLAG_SET);
 }
 
 void ODriveCAN::restoreFlash(){
@@ -118,6 +119,15 @@ void ODriveCAN::restoreFlash(){
 	uint16_t settings1 = 0;
 	if(Flash_Read(setting1addr, &settings1)){
 		maxTorque = (float)clip(settings1 & 0xfff, 0, 0xfff) / 100.0;
+		uint8_t settings1_2 = (settings1 >> 12) & 0xf;
+		reloadPosAfterStartup = (settings1_2 & 0x1) != 0;
+	}
+
+	if(reloadPosAfterStartup){
+		int16_t posOfs = 0;
+		if(Flash_Read(motorId == 0 ? ADR_ODRIVE_OFS_M0 : ADR_ODRIVE_OFS_M1, (uint16_t*)&posOfs)){
+			posOffset = (float)posOfs / getCpr();
+		}
 	}
 }
 
@@ -139,7 +149,15 @@ void ODriveCAN::saveFlash(){
 	Flash_Write(ADR_ODRIVE_CANID,canIds);
 
 	uint16_t settings1 = ((int32_t)(maxTorque*100) & 0xfff);
+	uint8_t settings1_2 = reloadPosAfterStartup ? 1 : 0; // 4 bits
+	settings1 |= (settings1_2 & 0xf) << 12;
+
 	Flash_Write(setting1addr, settings1);
+
+	if(reloadPosAfterStartup){
+		int32_t posOfs = posOffset * getCpr();
+		Flash_Write(motorId == 0 ? ADR_ODRIVE_OFS_M0 : ADR_ODRIVE_OFS_M1, posOfs);
+	}
 }
 
 void ODriveCAN::Run(){
@@ -171,7 +189,9 @@ void ODriveCAN::Run(){
 			// Odrive is active,
 			// enable torque mode
 			if(odriveCurrentState == ODriveState::AXIS_STATE_CLOSED_LOOP_CONTROL){
-				//this->setPos(0);
+				if(!reloadPosAfterStartup){
+					this->setPos(0); // Assume this as the zero position and let the user correct it
+				}
 				setMode(ODriveControlMode::CONTROL_MODE_TORQUE_CONTROL, ODriveInputMode::INPUT_MODE_PASSTHROUGH);
 			}
 
@@ -365,7 +385,13 @@ CommandStatus ODriveCAN::command(const ParsedCommand& cmd,std::vector<CommandRep
 			replies.emplace_back(connected ? 1 : 0);
 		}
 		break;
-
+	case ODriveCAN_commands::storepos:
+		if(cmd.type == CMDtype::get){
+			replies.emplace_back(reloadPosAfterStartup ? 1 : 0);
+		}else if(cmd.type == CMDtype::set){
+			reloadPosAfterStartup = cmd.val != 0;
+		}
+		break;
 	default:
 		return CommandStatus::NOT_FOUND;
 	}
