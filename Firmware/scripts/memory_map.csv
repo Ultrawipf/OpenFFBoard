@@ -129,6 +129,8 @@ Section comment,Name,Value,Comment on key,VirtAddVarTab,exportableFlashAddresses
 ,ADR_ODRIVE_CANID,0x3D0,"//0-6 ID M0, 7-12 ID M1, 13-15 can speed",1,1
 ,ADR_ODRIVE_SETTING1_M0,0x3D1,,1,1
 ,ADR_ODRIVE_SETTING1_M1,0x3D2,,1,1
+,ADR_ODRIVE_OFS_M0,0x3D3,// Encoder offset position reload,1,1
+,ADR_ODRIVE_OFS_M1,0x3D4,,1,1
 // VESC Section,,,,,
 ,ADR_VESC1_CANID,0x3E0,"//0-7 AxisCanID, 8-16 VescCanId",1,1
 ,ADR_VESC1_DATA,0x3E1,"//0-2 can speed, 3 useVescEncoder",1,1
