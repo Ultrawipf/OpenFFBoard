@@ -81,6 +81,7 @@ const uint16_t VirtAddVarTab[NB_OF_VAR] =
 	ADR_AXIS1_EFFECTS1, // 0-7 idlespring, 8-15 damper
 	ADR_AXIS1_SPEEDACCEL_FILTER, // Speed/Accel filter Lowpass profile
 	ADR_AXIS1_ENC_RATIO, // Accel filter Lowpass
+	ADR_AXIS1_EFFECTS2, // 0-7 Friction, 8-15 Inertia
 // TMC1
 	ADR_TMC1_MOTCONF, // 0-2: MotType 3-5: PhiE source 6-15: Poles
 	ADR_TMC1_CPR,
@@ -105,6 +106,7 @@ const uint16_t VirtAddVarTab[NB_OF_VAR] =
 	ADR_AXIS2_EFFECTS1, // 0-7 idlespring, 8-15 damper
 	ADR_AXIS2_SPEEDACCEL_FILTER, // Speed/Accel filter Lowpass profile
 	ADR_AXIS2_ENC_RATIO, // Store the encoder ratio for an axis
+	ADR_AXIS2_EFFECTS2, // 0-7 Friction, 8-15 Inertia
 // TMC2
 	ADR_TMC2_MOTCONF, // 0-2: MotType 3-5: PhiE source 6-15: Poles
 	ADR_TMC2_CPR,
@@ -129,6 +131,7 @@ const uint16_t VirtAddVarTab[NB_OF_VAR] =
 	ADR_AXIS3_EFFECTS1, // 0-7 idlespring, 8-15 damper
 	ADR_AXIS3_SPEEDACCEL_FILTER, // Speed/Accel filter Lowpass profile
 	ADR_AXIS3_ENC_RATIO, // Store the encoder ratio for an axis
+	ADR_AXIS3_EFFECTS2, // 0-7 Friction, 8-15 Inertia
 // TMC3
 	ADR_TMC3_MOTCONF, // 0-2: MotType 3-5: PhiE source 6-15: Poles
 	ADR_TMC3_CPR,
@@ -264,6 +267,7 @@ const uint16_t exportableFlashAddresses[NB_EXPORTABLE_ADR] =
 	ADR_AXIS1_EFFECTS1, // 0-7 idlespring, 8-15 damper
 	ADR_AXIS1_SPEEDACCEL_FILTER, // Speed/Accel filter Lowpass profile
 	ADR_AXIS1_ENC_RATIO, // Accel filter Lowpass
+	ADR_AXIS1_EFFECTS2, // 0-7 Friction, 8-15 Inertia
 // TMC1
 	ADR_TMC1_MOTCONF, // 0-2: MotType 3-5: PhiE source 6-15: Poles
 	ADR_TMC1_CPR,
@@ -288,6 +292,7 @@ const uint16_t exportableFlashAddresses[NB_EXPORTABLE_ADR] =
 	ADR_AXIS2_EFFECTS1, // 0-7 idlespring, 8-15 damper
 	ADR_AXIS2_SPEEDACCEL_FILTER, // Speed/Accel filter Lowpass profile
 	ADR_AXIS2_ENC_RATIO, // Store the encoder ratio for an axis
+	ADR_AXIS2_EFFECTS2, // 0-7 Friction, 8-15 Inertia
 // TMC2
 	ADR_TMC2_MOTCONF, // 0-2: MotType 3-5: PhiE source 6-15: Poles
 	ADR_TMC2_CPR,
@@ -312,6 +317,7 @@ const uint16_t exportableFlashAddresses[NB_EXPORTABLE_ADR] =
 	ADR_AXIS3_EFFECTS1, // 0-7 idlespring, 8-15 damper
 	ADR_AXIS3_SPEEDACCEL_FILTER, // Speed/Accel filter Lowpass profile
 	ADR_AXIS3_ENC_RATIO, // Store the encoder ratio for an axis
+	ADR_AXIS3_EFFECTS2, // 0-7 Friction, 8-15 Inertia
 // TMC3
 	ADR_TMC3_MOTCONF, // 0-2: MotType 3-5: PhiE source 6-15: Poles
 	ADR_TMC3_CPR,

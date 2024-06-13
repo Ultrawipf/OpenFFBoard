@@ -87,7 +87,7 @@ Axis::Axis(char axis,volatile Control_t* control) :CommandHandler("axis", CLSID_
 		drv_chooser = ClassChooser<MotorDriver>(axis1_drivers);
 		setInstance(0);
 		this->flashAddrs = AxisFlashAddrs({ADR_AXIS1_CONFIG, ADR_AXIS1_MAX_SPEED, ADR_AXIS1_MAX_ACCEL,
-										   ADR_AXIS1_ENDSTOP, ADR_AXIS1_POWER, ADR_AXIS1_DEGREES,ADR_AXIS1_EFFECTS1,ADR_AXIS1_ENC_RATIO,
+										   ADR_AXIS1_ENDSTOP, ADR_AXIS1_POWER, ADR_AXIS1_DEGREES,ADR_AXIS1_EFFECTS1,ADR_AXIS1_EFFECTS2,ADR_AXIS1_ENC_RATIO,
 										   ADR_AXIS1_SPEEDACCEL_FILTER});
 	}
 	else if (axis == 'Y')
@@ -95,14 +95,14 @@ Axis::Axis(char axis,volatile Control_t* control) :CommandHandler("axis", CLSID_
 		drv_chooser = ClassChooser<MotorDriver>(axis2_drivers);
 		setInstance(1);
 		this->flashAddrs = AxisFlashAddrs({ADR_AXIS2_CONFIG, ADR_AXIS2_MAX_SPEED, ADR_AXIS2_MAX_ACCEL,
-										   ADR_AXIS2_ENDSTOP, ADR_AXIS2_POWER, ADR_AXIS2_DEGREES,ADR_AXIS2_EFFECTS1, ADR_AXIS2_ENC_RATIO,
+										   ADR_AXIS2_ENDSTOP, ADR_AXIS2_POWER, ADR_AXIS2_DEGREES,ADR_AXIS2_EFFECTS1,ADR_AXIS2_EFFECTS2, ADR_AXIS2_ENC_RATIO,
 										   ADR_AXIS2_SPEEDACCEL_FILTER});
 	}
 	else if (axis == 'Z')
 	{
 		setInstance(2);
 		this->flashAddrs = AxisFlashAddrs({ADR_AXIS3_CONFIG, ADR_AXIS3_MAX_SPEED, ADR_AXIS3_MAX_ACCEL,
-										   ADR_AXIS3_ENDSTOP, ADR_AXIS3_POWER, ADR_AXIS3_DEGREES,ADR_AXIS3_EFFECTS1,ADR_AXIS3_ENC_RATIO,
+										   ADR_AXIS3_ENDSTOP, ADR_AXIS3_POWER, ADR_AXIS3_DEGREES,ADR_AXIS3_EFFECTS1,ADR_AXIS3_EFFECTS2,ADR_AXIS3_ENC_RATIO,
 										   ADR_AXIS3_SPEEDACCEL_FILTER});
 	}
 
@@ -131,6 +131,8 @@ void Axis::registerCommands(){
 	registerCommand("invert", Axis_commands::invert, "Invert axis",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("idlespring", Axis_commands::idlespring, "Idle spring strength",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("axisdamper", Axis_commands::axisdamper, "Independent damper effect",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("axisfriction", Axis_commands::axisfriction, "Independent friction effect",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("axisinertia", Axis_commands::axisinertia, "Independent inertia effect",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("enctype", Axis_commands::enctype, "Encoder type get/set/list",CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_INFOSTRING);
 	registerCommand("drvtype", Axis_commands::drvtype, "Motor driver type get/set/list",CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_INFOSTRING);
 	registerCommand("pos", Axis_commands::pos, "Encoder position",CMDFLAG_GET);
@@ -200,7 +202,12 @@ void Axis::restoreFlash(){
 	uint16_t effects;
 	if(Flash_Read(flashAddrs.effects1, &effects)){
 		setIdleSpringStrength(effects & 0xff);
-		setDamperStrength((effects >> 8) & 0xff);
+		setFxStrengthAndFilter((effects >> 8) & 0xff,damperIntensity,damperFilter);
+	}
+
+	if(Flash_Read(flashAddrs.effects2, &effects)){
+		setFxStrengthAndFilter(effects & 0xff,frictionIntensity,frictionFilter);
+		setFxStrengthAndFilter((effects >> 8) & 0xff,inertiaIntensity,inertiaFilter);
 	}
 
 	uint16_t ratio;
@@ -231,6 +238,7 @@ void Axis::saveFlash(){
 	Flash_Write(flashAddrs.power, power);
 	Flash_Write(flashAddrs.degrees, (degreesOfRotation & 0x7fff) | (invertAxis << 15));
 	Flash_Write(flashAddrs.effects1, idlespringstrength | (damperIntensity << 8));
+	Flash_Write(flashAddrs.effects2, frictionIntensity | (inertiaIntensity << 8));
 	Flash_Write(flashAddrs.encoderRatio, gearRatio.numerator | (gearRatio.denominator << 8));
 
 	// save CF biquad
@@ -538,13 +546,13 @@ void Axis::setIdleSpringStrength(uint8_t spring){
 }
 
 /**
- * Sets the independent damper intensity
+ * Sets friction, inertia or damper values and resets filter
  */
-void Axis::setDamperStrength(uint8_t damper){
-    if(damperIntensity == 0 && damper != 0)
-        damperFilter.calcBiquad();
+void Axis::setFxStrengthAndFilter(uint8_t val,uint8_t& valToSet, Biquad& filter){
+	if(valToSet == 0 && val != 0)
+		filter.calcBiquad();
 
-    this->damperIntensity = damper;
+	valToSet = val;
 }
 
 /**
@@ -561,8 +569,29 @@ void Axis::calculateAxisEffects(bool ffb_on){
 	// Always active damper
 	if(damperIntensity != 0){
 		float speedFiltered = (metric.current.speed) * (float)damperIntensity * AXIS_DAMPER_RATIO;
-		axisEffectTorque -= damperFilter.process(clip<float, int32_t>(speedFiltered, -damperClip, damperClip));
+		axisEffectTorque -= damperFilter.process(clip<float, int32_t>(speedFiltered, -intFxClip, intFxClip));
 	}
+
+	// Always active inertia
+	if(inertiaIntensity != 0){
+		float accelFiltered = metric.current.accel * (float)inertiaIntensity * AXIS_INERTIA_RATIO;
+		axisEffectTorque -= inertiaFilter.process(clip<float, int32_t>(accelFiltered, -intFxClip, intFxClip));
+	}
+
+	// Always active friction. Based on effectsCalculator implementation
+	if(frictionIntensity != 0){
+		float speed = metric.current.speed * INTERNAL_SCALER_FRICTION;
+		float speedRampupCeil = 4096;
+		float rampupFactor = 1.0;
+		if (fabs (speed) < speedRampupCeil) {								// if speed in the range to rampup we apply a sinus curbe to ramup
+			float phaseRad = M_PI * ((fabs (speed) / speedRampupCeil) - 0.5);// we start to compute the normalized angle (speed / normalizedSpeed@5%) and translate it of -1/2PI to translate sin on 1/2 periode
+			rampupFactor = ( 1 + sin(phaseRad ) ) / 2;						// sin value is -1..1 range, we translate it to 0..2 and we scale it by 2
+		}
+		int8_t sign = speed >= 0 ? 1 : -1;
+		float force = (float)frictionIntensity * rampupFactor * sign * INTERNAL_AXIS_FRICTION_SCALER * 32;
+		axisEffectTorque -= frictionFilter.process(clip<float, int32_t>(force, -intFxClip, intFxClip));
+	}
+
 }
 
 /**
@@ -792,7 +821,29 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 		}
 		else if (cmd.type == CMDtype::set)
 		{
-			setDamperStrength(cmd.val);
+			setFxStrengthAndFilter(cmd.val,this->damperIntensity,this->damperFilter);
+		}
+		break;
+
+	case Axis_commands::axisfriction:
+		if (cmd.type == CMDtype::get)
+		{
+			replies.emplace_back(frictionIntensity);
+		}
+		else if (cmd.type == CMDtype::set)
+		{
+			setFxStrengthAndFilter(cmd.val,this->frictionIntensity,this->frictionFilter);
+		}
+		break;
+
+	case Axis_commands::axisinertia:
+		if (cmd.type == CMDtype::get)
+		{
+			replies.emplace_back(inertiaIntensity);
+		}
+		else if (cmd.type == CMDtype::set)
+		{
+			setFxStrengthAndFilter(cmd.val,this->inertiaIntensity,this->inertiaFilter);
 		}
 		break;
 
