@@ -804,6 +804,8 @@ void Axis::updateFilters(uint8_t profileId){
 	accelFilter.setFc(filterAccelCst[this->filterProfileId].freq / filter_f);
 	accelFilter.setQ(filterAccelCst[this->filterProfileId].q / 100.0);
 	damperFilter.setFc(filterDamperCst.freq/filter_f);
+	inertiaFilter.setFc(filterInertiaCst.freq/filter_f);
+	frictionFilter.setFc(filterFrictionCst.freq/filter_f);
 }
 
 /**
