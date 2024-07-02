@@ -8,8 +8,14 @@
  * For more settings see target_constants.h in a target specific folder
  */
 
-static const uint8_t SW_VERSION_INT[3] = {1,14,4}; // Version as array. 8 bit each!
+static const uint8_t SW_VERSION_INT[3] = {1,15,0}; // Version as array. 8 bit each!
+#ifndef MAX_AXIS
 #define MAX_AXIS 2 // ONLY USE 2 for now else screws HID Reports
+#endif
+#if !(MAX_AXIS > 0 && MAX_AXIS <= 3)
+#error "MAX_AXIS must be between 1 and 3"
+#endif
+
 #define FLASH_VERSION 0 // Counter to increase whenever a full flash erase is required.
 
 //#define DEBUGLOG // Uncomment to enable some debug printouts

@@ -29,7 +29,7 @@ enum class ODriveEncoderFlags : uint32_t {ERROR_NONE = 0,ERROR_UNSTABLE_GAIN = 0
 enum class ODriveAxisError : uint32_t {AXIS_ERROR_NONE = 0x00000000,AXIS_ERROR_INVALID_STATE  = 0x00000001, AXIS_ERROR_WATCHDOG_TIMER_EXPIRED = 0x00000800,AXIS_ERROR_MIN_ENDSTOP_PRESSED = 0x00001000, AXIS_ERROR_MAX_ENDSTOP_PRESSED = 0x00002000,AXIS_ERROR_ESTOP_REQUESTED = 0x00004000,AXIS_ERROR_HOMING_WITHOUT_ENDSTOP = 0x00020000,AXIS_ERROR_OVER_TEMP = 0x00040000,AXIS_ERROR_UNKNOWN_POSITION = 0x00080000};
 
 enum class ODriveCAN_commands : uint32_t{
-	canid,canspd,errors,state,maxtorque,vbus,anticogging,connected
+	canid,canspd,errors,state,maxtorque,vbus,anticogging,connected,storepos
 };
 
 class ODriveCAN : public MotorDriver,public PersistentStorage, public Encoder, public CanHandler, public CommandHandler, cpp_freertos::Thread{
@@ -106,6 +106,7 @@ private:
 
 	uint32_t lastPosTime = 0;
 	bool posWaiting = false;
+	bool reloadPosAfterStartup = false;
 
 	int8_t nodeId = 0; // 6 bits can ID
 	int8_t motorId = 0;

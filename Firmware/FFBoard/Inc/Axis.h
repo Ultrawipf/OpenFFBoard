@@ -26,6 +26,8 @@
 #include "FastAvg.h"
 
 #define INTERNAL_AXIS_DAMPER_SCALER 0.7
+#define INTERNAL_AXIS_FRICTION_SCALER 0.7
+#define INTERNAL_AXIS_INERTIA_SCALER 0.7
 
 
 struct Control_t {
@@ -48,6 +50,7 @@ struct AxisFlashAddrs
 	uint16_t power = ADR_AXIS1_POWER;
 	uint16_t degrees = ADR_AXIS1_DEGREES;
 	uint16_t effects1 = ADR_AXIS1_EFFECTS1;
+	uint16_t effects2 = ADR_AXIS1_EFFECTS2;
 	uint16_t encoderRatio = ADR_AXIS1_ENC_RATIO;
 
 	uint16_t speedAccelFilter = ADR_AXIS1_SPEEDACCEL_FILTER;
@@ -84,7 +87,7 @@ struct GearRatio_t{
 enum class Axis_commands : uint32_t{
 	power=0x00,degrees=0x01,esgain,zeroenc,invert,idlespring,axisdamper,enctype,drvtype,
 	pos,maxspeed,maxtorquerate,fxratio,curtorque,curpos,curspd,curaccel,reductionScaler,
-	filterSpeed, filterAccel, filterProfileId,cpr
+	filterSpeed, filterAccel, filterProfileId,cpr,axisfriction,axisinertia
 };
 
 class Axis : public PersistentStorage, public CommandHandler, public ErrorHandler
@@ -146,7 +149,7 @@ public:
 	void updateMetrics(float new_pos);
 	int32_t updateIdleSpringForce();
 	void setIdleSpringStrength(uint8_t spring);
-	void setDamperStrength(uint8_t damper);
+	void setFxStrengthAndFilter(uint8_t val,uint8_t& valToSet, Biquad& filter);
 	void calculateAxisEffects(bool ffb_on);
 	int32_t getTorque(); // current torque scaled as a 32 bit signed value
 	int16_t updateEndstop();
@@ -164,6 +167,7 @@ public:
 private:
 	// Axis damper is lower than default scale of HID Damper
 	const float AXIS_DAMPER_RATIO = INTERNAL_SCALER_DAMPER * INTERNAL_AXIS_DAMPER_SCALER / 255.0;
+	const float AXIS_INERTIA_RATIO = INTERNAL_SCALER_INERTIA * INTERNAL_AXIS_INERTIA_SCALER / 255.0;
 
 	AxisFlashAddrs flashAddrs;
 	volatile Control_t* control;
@@ -254,15 +258,23 @@ private:
 	const biquad_constant_t filterSpeedCst[4] = {{ 30, 55 }, { 60, 55 }, { 120, 55 }, {120, 55}};
 	const biquad_constant_t filterAccelCst[4] = {{ 40, 30 }, { 55, 30 }, { 70, 30 }, {120, 55}};
 	const biquad_constant_t filterDamperCst = {60, 55};
+	const biquad_constant_t filterFrictionCst = {50, 20};
+	const biquad_constant_t filterInertiaCst = {20, 20};
 	uint8_t filterProfileId = 1; // Default medium (1) as this is the most common encoder resolution and users can go lower or higher if required.
 	const float filter_f = 1000; // 1khz
-	const int32_t damperClip = 20000;
+	const int32_t intFxClip = 20000;
 	uint8_t damperIntensity = 30;
 	FastAvg<float,5> spdlimiterAvg;
+
+	uint8_t frictionIntensity = 0;
+	uint8_t inertiaIntensity = 0;
 
 	Biquad speedFilter = Biquad(BiquadType::lowpass, filterSpeedCst[filterProfileId].freq/filter_f, filterSpeedCst[filterProfileId].q/100.0, 0.0);
 	Biquad accelFilter = Biquad(BiquadType::lowpass, filterAccelCst[filterProfileId].freq/filter_f, filterAccelCst[filterProfileId].q/100.0, 0.0);
 	Biquad damperFilter = Biquad(BiquadType::lowpass, filterDamperCst.freq/filter_f, filterDamperCst.q / 100.0, 0.0); // enable on class constructor
+	Biquad frictionFilter = Biquad(BiquadType::lowpass, filterFrictionCst.freq/filter_f, filterFrictionCst.q / 100.0, 0.0); // enable on class constructor
+	Biquad inertiaFilter = Biquad(BiquadType::lowpass, filterInertiaCst.freq/filter_f, filterInertiaCst.q / 100.0, 0.0); // enable on class constructor
+
 
 	void setFxRatio(uint8_t val);
 	void updateTorqueScaler();
