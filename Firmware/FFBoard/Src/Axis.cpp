@@ -632,7 +632,6 @@ void Axis::updateMetrics(float new_pos) { // pos is degrees
 	metric.current.accel = accelFilter.process((currentSpeed - _lastSpeed))* 1000.0; // deg/s/s
 	_lastSpeed = currentSpeed;
 
-	metric.current.torque = 0;
 }
 
 
