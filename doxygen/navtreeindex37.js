@@ -1,5 +1,17 @@
 var NAVTREEINDEX37 =
 {
+"structusbh__control__xfer__t.html":[3,0,185],
+"structusbh__control__xfer__t.html#a3f532b0e2c485a0b8916f92c63925c92":[3,0,185,3],
+"structusbh__control__xfer__t.html#a4203ae297a46087e90511dea52dc3d03":[3,0,185,1],
+"structusbh__control__xfer__t.html#a593c32e6d69336f5af0010e323a1b633":[3,0,185,2],
+"structusbh__control__xfer__t.html#a7e62270a783f4cf07a9826b855ed4131":[3,0,185,0],
+"structusbh__dev0__t.html":[3,0,186],
+"structusbh__dev0__t.html#a3bf98b3c04a6f1a24fb6ac93c909da5d":[3,0,186,1],
+"structusbh__dev0__t.html#ab22bdff37171c0ca49a8b81de6e1bfc8":[3,0,186,3],
+"structusbh__dev0__t.html#ae7506ae404aff00947a6a77de9904452":[3,0,186,2],
+"structusbh__dev0__t.html#ae99d9971b003dbdde0e60d84336d202a":[3,0,186,4],
+"structusbh__dev0__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html":[3,0,186,0],
+"structusbh__dev0__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#a4ed7e14265257b0a18d5da195da74504":[3,0,186,0,2],
 "structusbh__dev0__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#a88a6b41166803ebac6366db310e5e2f6":[3,0,186,0,1],
 "structusbh__dev0__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#a901cf2528ea69397bf404aa2c5563912":[3,0,186,0,0],
 "structusbh__dev0__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#ae848a6ec4dfc4e11b3d832e4d24fbe4e":[3,0,186,0,3],
@@ -237,17 +249,5 @@ var NAVTREEINDEX37 =
 "usb__descriptors_8h.html#a316d73bcf949dffa39046c1c46012a17":[4,0,225,5],
 "usb__descriptors_8h.html#a32c474290d48c1c9c318da572f026f73":[4,0,225,6],
 "usb__descriptors_8h.html#a5326deb6f2a777b2b259bfa41f321613":[4,0,225,7],
-"usb__descriptors_8h.html#a61aa6e284babe00b49ff18a946fada25":[4,0,225,1],
-"usb__descriptors_8h.html#ab00f7433f77df99361d1f9a2eb78b6ac":[4,0,225,8],
-"usb__descriptors_8h.html#ae8b38ca40dbc1587e257f64bfe8fdc63":[4,0,225,3],
-"usb__descriptors_8h_source.html":[4,0,225],
-"usb__hid__1ffb__desc_8c.html":[4,0,257],
-"usb__hid__1ffb__desc_8c.html#ae001755801df9635ff98deb8edf38239":[4,0,257,0],
-"usb__hid__1ffb__desc_8c_source.html":[4,0,257],
-"usb__hid__2ffb__desc_8c.html":[4,0,258],
-"usb__hid__2ffb__desc_8c.html#a2aea198ff10f5464ae06b319b7f5f56b":[4,0,258,0],
-"usb__hid__2ffb__desc_8c_source.html":[4,0,258],
-"usb__hid__ffb__desc_8h.html":[4,0,226],
-"usb__hid__ffb__desc_8h.html#aa4d5b330bb8c98e152295a9f03ae1305":[4,0,226,0],
-"usb__hid__ffb__desc_8h.html#af2203a063a070c7d68641471587c1a0d":[4,0,226,1]
+"usb__descriptors_8h.html#a61aa6e284babe00b49ff18a946fada25":[4,0,225,1]
 };

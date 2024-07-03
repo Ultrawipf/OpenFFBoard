@@ -1,5 +1,15 @@
 var NAVTREEINDEX8 =
 {
+"class_local_analog.html#ac7239a3fd603a07c99699c872e7c4cc1":[3,0,87,2],
+"class_local_buttons.html":[3,0,89],
+"class_local_buttons.html#a33175e0eb91f439dc228859c92266b91":[3,0,89,18],
+"class_local_buttons.html#a4079bc8e1bdb9a36f0c7614d42b203cb":[3,0,89,0],
+"class_local_buttons.html#a4079bc8e1bdb9a36f0c7614d42b203cba02a8dc4cf01fed584c6423f577c0b0d7":[3,0,89,0,4],
+"class_local_buttons.html#a4079bc8e1bdb9a36f0c7614d42b203cbabf26cfe05f05fa0ee79497b6441582b9":[3,0,89,0,1],
+"class_local_buttons.html#a4079bc8e1bdb9a36f0c7614d42b203cbad3226782744ce122d789ea8e03d32f53":[3,0,89,0,2],
+"class_local_buttons.html#a4079bc8e1bdb9a36f0c7614d42b203cbaf09cc7ee3a9a93273f4b80601cafb00c":[3,0,89,0,3],
+"class_local_buttons.html#a4079bc8e1bdb9a36f0c7614d42b203cbaf2ce11ebf110993621bedd8e747d7b1b":[3,0,89,0,0],
+"class_local_buttons.html#a5158abf411bccd1fb6fba5cd8bbc4f1c":[3,0,89,22],
 "class_local_buttons.html#a67662b819cb6ab815e64cbd274cb3bd2":[3,0,89,4],
 "class_local_buttons.html#a694a8f21ace9151feebbbc978296f686":[3,0,89,20],
 "class_local_buttons.html#a74bc45bea2f205c8550cb89f5f35a2c7":[3,0,89,6],
@@ -239,15 +249,5 @@ var NAVTREEINDEX8 =
 "class_motor_simplemotion1.html#acf95152874bcfa81c557652895984887":[3,0,100,1],
 "class_motor_simplemotion2.html":[3,0,101],
 "class_motor_simplemotion2.html#a0ad3281e1bbbf2abfa82fe0ee8aef8db":[3,0,101,3],
-"class_motor_simplemotion2.html#a11fc51d5efbc1163266c3b4a7cfe15d9":[3,0,101,1],
-"class_motor_simplemotion2.html#a4530a79329f6ab19e9d92abde82f34a8":[3,0,101,2],
-"class_motor_simplemotion2.html#a48ff9a66f4aba7c982545e5e6cc87bdb":[3,0,101,5],
-"class_motor_simplemotion2.html#a9fae6c35abed3ecda4161d1c29d5447c":[3,0,101,4],
-"class_motor_simplemotion2.html#abc5f1c679b849ec40f440a5884dc08d7":[3,0,101,0],
-"class_mt_encoder_s_p_i.html":[3,0,104],
-"class_mt_encoder_s_p_i.html#a02dbbbe5a1f26a3d2c07bae5f4f884d0":[3,0,104,7],
-"class_mt_encoder_s_p_i.html#a11d3c1af8564db6226f8dadc00b2a1ba":[3,0,104,2],
-"class_mt_encoder_s_p_i.html#a186f9709311bd3d40f6b347c491298ac":[3,0,104,10],
-"class_mt_encoder_s_p_i.html#a200f6fec5384001c0b2912955274d100":[3,0,104,36],
-"class_mt_encoder_s_p_i.html#a25ff175f56e5e90ba4366b22f10069b5":[3,0,104,33]
+"class_motor_simplemotion2.html#a11fc51d5efbc1163266c3b4a7cfe15d9":[3,0,101,1]
 };

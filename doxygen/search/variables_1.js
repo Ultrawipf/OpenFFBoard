@@ -92,9 +92,10 @@ var searchData=
   ['axis2_5fdrivers_89',['axis2_drivers',['../class_axis.html#a6eda8d6db56d3bd14c7f25fb4b2cf62a',1,'Axis']]],
   ['axis_5fcount_90',['axis_count',['../class_axes_manager.html#a86f9e09050bcca91a88a41fe67791a20',1,'AxesManager']]],
   ['axis_5fdamper_5fratio_91',['AXIS_DAMPER_RATIO',['../class_axis.html#ae0e7adc106cabb620bb96145ba040ee7',1,'Axis']]],
-  ['axisamount_92',['axisAmount',['../class_analog_axis_processing.html#a3328cefb7ff8a2346b6c83d6d2816124',1,'AnalogAxisProcessing']]],
-  ['axiscount_93',['axisCount',['../class_hid_f_f_b.html#aeea1a38399a4d9c1b7255c2c056551c4',1,'HidFFB::axisCount()'],['../class_f_f_b_h_i_d_main.html#a51b39a7900e9c7c5028fc2f4123cb6ed',1,'FFBHIDMain::axisCount()']]],
-  ['axiseffecttorque_94',['axisEffectTorque',['../class_axis.html#aac41c655ce3d273b10d4625e25688751',1,'Axis']]],
-  ['axismagnitudes_95',['axisMagnitudes',['../struct_f_f_b___effect.html#a7e731071953bc2eab778eea9abb9b4b7',1,'FFB_Effect']]],
-  ['axisvalues_96',['axisValues',['../class_axes_manager.html#a5c34d70cfb0875f991d2e4077ad7aa5f',1,'AxesManager']]]
+  ['axis_5finertia_5fratio_92',['AXIS_INERTIA_RATIO',['../class_axis.html#af152ec7c0132f63a411874098742fdbd',1,'Axis']]],
+  ['axisamount_93',['axisAmount',['../class_analog_axis_processing.html#a3328cefb7ff8a2346b6c83d6d2816124',1,'AnalogAxisProcessing']]],
+  ['axiscount_94',['axisCount',['../class_f_f_b_h_i_d_main.html#a51b39a7900e9c7c5028fc2f4123cb6ed',1,'FFBHIDMain::axisCount()'],['../class_hid_f_f_b.html#aeea1a38399a4d9c1b7255c2c056551c4',1,'HidFFB::axisCount()']]],
+  ['axiseffecttorque_95',['axisEffectTorque',['../class_axis.html#aac41c655ce3d273b10d4625e25688751',1,'Axis']]],
+  ['axismagnitudes_96',['axisMagnitudes',['../struct_f_f_b___effect.html#a7e731071953bc2eab778eea9abb9b4b7',1,'FFB_Effect']]],
+  ['axisvalues_97',['axisValues',['../class_axes_manager.html#a5c34d70cfb0875f991d2e4077ad7aa5f',1,'AxesManager']]]
 ];

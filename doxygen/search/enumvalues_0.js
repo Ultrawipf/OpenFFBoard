@@ -379,5 +379,7 @@ var searchData=
   ['axis_5fstate_5fstartup_5fsequence_376',['AXIS_STATE_STARTUP_SEQUENCE',['../_o_drive_c_a_n_8h.html#aae12006ef57f334ef7abc1aea7edaa69a43c340cfaa5bac4a352f8e4b769f11d0',1,'ODriveCAN.h']]],
   ['axis_5fstate_5fundefined_377',['AXIS_STATE_UNDEFINED',['../_o_drive_c_a_n_8h.html#aae12006ef57f334ef7abc1aea7edaa69af734c08884bce3cd48883bf7913da870',1,'ODriveCAN.h']]],
   ['axisdamper_378',['axisdamper',['../_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715a4f01d24ef3842b84dea0b4592582a19f',1,'Axis.h']]],
-  ['axisoutofrange_379',['axisOutOfRange',['../_error_handler_8h.html#a6f3b1ba4fbf4167d3a58b0b331ddcfefa30ebab90be35958a8cb1987ba7ec5ff4',1,'ErrorHandler.h']]]
+  ['axisfriction_379',['axisfriction',['../_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715a508205b2d1782519cf35adece5beb6b5',1,'Axis.h']]],
+  ['axisinertia_380',['axisinertia',['../_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715a24df21182655186dcbbf137d7992688e',1,'Axis.h']]],
+  ['axisoutofrange_381',['axisOutOfRange',['../_error_handler_8h.html#a6f3b1ba4fbf4167d3a58b0b331ddcfefa30ebab90be35958a8cb1987ba7ec5ff4',1,'ErrorHandler.h']]]
 ];

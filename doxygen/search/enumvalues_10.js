@@ -39,7 +39,7 @@ var searchData=
   ['sincos16_36',['Sincos16',['../class_motor_simplemotion.html#a9d66cfb00f58d00cfc42b343079211aaad45113dce26cd60af24b286de6dfdfb5',1,'MotorSimplemotion']]],
   ['sincos256_37',['Sincos256',['../class_motor_simplemotion.html#a9d66cfb00f58d00cfc42b343079211aaa3c8df97ea730aedfb32c554e4cb5d265',1,'MotorSimplemotion']]],
   ['sincos64_38',['Sincos64',['../class_motor_simplemotion.html#a9d66cfb00f58d00cfc42b343079211aaa6b1ca832d4c16a46cc628636df7a8417',1,'MotorSimplemotion']]],
-  ['speed_39',['speed',['../class_c_a_n_port.html#a5b851cfc207f4822440f3f5be11d3241ace4ef3ec98443ed10da505114b58f153',1,'CANPort::speed()'],['../class_i2_c_port.html#ae373f3015ebf578a7382e709e1e2b28eace4ef3ec98443ed10da505114b58f153',1,'I2CPort::speed()'],['../class_i2_c_port.html#a7017cd843e8e75a194a7fd61acec6c4bace4ef3ec98443ed10da505114b58f153',1,'I2CPort::speed()'],['../class_encoder_biss_c.html#ab6486bfbbaa89e76f2918f15595e668bace4ef3ec98443ed10da505114b58f153',1,'EncoderBissC::speed()'],['../class_encoder_s_s_i.html#aa783624a9453d065cf854152d2520db2ace4ef3ec98443ed10da505114b58f153',1,'EncoderSSI::speed()'],['../class_p_c_f8574_buttons.html#a4968701182a9f51430d9c750d6375b70ace4ef3ec98443ed10da505114b58f153',1,'PCF8574Buttons::speed()']]],
+  ['speed_39',['speed',['../class_i2_c_port.html#ae373f3015ebf578a7382e709e1e2b28eace4ef3ec98443ed10da505114b58f153',1,'I2CPort::speed()'],['../class_c_a_n_port.html#a5b851cfc207f4822440f3f5be11d3241ace4ef3ec98443ed10da505114b58f153',1,'CANPort::speed()'],['../class_i2_c_port.html#a7017cd843e8e75a194a7fd61acec6c4bace4ef3ec98443ed10da505114b58f153',1,'I2CPort::speed()'],['../class_encoder_biss_c.html#ab6486bfbbaa89e76f2918f15595e668bace4ef3ec98443ed10da505114b58f153',1,'EncoderBissC::speed()'],['../class_encoder_s_s_i.html#aa783624a9453d065cf854152d2520db2ace4ef3ec98443ed10da505114b58f153',1,'EncoderSSI::speed()'],['../class_p_c_f8574_buttons.html#a4968701182a9f51430d9c750d6375b70ace4ef3ec98443ed10da505114b58f153',1,'PCF8574Buttons::speed()']]],
   ['spispeed_40',['spispeed',['../class_s_p_i___buttons.html#aa31ff80673aee01a5b3303316c9a47d0ad26e9a04169ae9ce1cd2393035b764f2',1,'SPI_Buttons']]],
   ['spring_41',['spring',['../_effects_calculator_8h.html#a8c1e274c9ae0e228a7e0a406bec8a694a2a2d595e6ed9a0b24f027f2b63b134d6',1,'EffectsCalculator.h']]],
   ['stage_5fack_42',['STAGE_ACK',['../usbh__control_8c.html#a550cb4231d535863c55643bbd2d3c6baa4292c200b6ead76b04df94b215267165',1,'usbh_control.c']]],
@@ -63,11 +63,12 @@ var searchData=
   ['status_60',['status',['../class_motor_simplemotion.html#a04284aedcbd482d8dea7aa2bf631d5b2a9acb44549b41563697bb490144ec6258',1,'MotorSimplemotion::status()'],['../class_motor_simplemotion.html#af0d962f0eb34d875e30872890e8dfc51a9acb44549b41563697bb490144ec6258',1,'MotorSimplemotion::status()'],['../class_motor_simplemotion.html#a0fa06e9cd5b42ac97ac49ff916ac1c30a9acb44549b41563697bb490144ec6258',1,'MotorSimplemotion::status()']]],
   ['stepper_61',['STEPPER',['../_t_m_c4671_8h.html#a582234b0c15ab7ba48e3ddd16e7a41d2a12135d9b0d6cf0300c25c0e544a466cc',1,'TMC4671.h']]],
   ['stop_62',['stop',['../_t_m_c4671_8h.html#a1b04aa8e350271255d351486d3720741aef399b2d446bb37b7c32ad2cc1b6045b',1,'TMC4671.h']]],
-  ['string_63',['STRING',['../_command_handler_8h.html#a9c4555f6fe97545f2480f26071a2935fa63b588d5559f64f89a416e656880b949',1,'CommandHandler.h']]],
-  ['string_5for_5fdoubleint_64',['STRING_OR_DOUBLEINT',['../_command_handler_8h.html#a9c4555f6fe97545f2480f26071a2935fa6e8ac824da9888bd4beebe876e0e4ec7',1,'CommandHandler.h']]],
-  ['string_5for_5fint_65',['STRING_OR_INT',['../_command_handler_8h.html#a9c4555f6fe97545f2480f26071a2935fa11f3bb213887c0c8e35ab1dbbc839b79',1,'CommandHandler.h']]],
-  ['svpwm_66',['svpwm',['../class_t_m_c4671.html#a383a82ab842490e325553e9365028a27a192988907ef6fc9e44d78d653cf76640',1,'TMC4671']]],
-  ['swver_67',['swver',['../_system_commands_8h.html#a4a42a50bc0a826d5ab6d847950749d07acdd21ef24d8c08e6760125d47fcb7de0',1,'SystemCommands.h']]],
-  ['systemcontrol_68',['systemcontrol',['../class_motor_simplemotion.html#a0fa06e9cd5b42ac97ac49ff916ac1c30a8dd8e12d07c8be2ef3f9772799e4e9f2',1,'MotorSimplemotion']]],
-  ['systemerror_69',['systemError',['../_error_handler_8h.html#a6f3b1ba4fbf4167d3a58b0b331ddcfefa300e14bbcaa3119ad2b82320a8a1e9c3',1,'ErrorHandler.h']]]
+  ['storepos_63',['storepos',['../_o_drive_c_a_n_8h.html#a539f13973573e98e043ff32d1b899068a8283beb694765c49faae3b6155772b32',1,'ODriveCAN.h']]],
+  ['string_64',['STRING',['../_command_handler_8h.html#a9c4555f6fe97545f2480f26071a2935fa63b588d5559f64f89a416e656880b949',1,'CommandHandler.h']]],
+  ['string_5for_5fdoubleint_65',['STRING_OR_DOUBLEINT',['../_command_handler_8h.html#a9c4555f6fe97545f2480f26071a2935fa6e8ac824da9888bd4beebe876e0e4ec7',1,'CommandHandler.h']]],
+  ['string_5for_5fint_66',['STRING_OR_INT',['../_command_handler_8h.html#a9c4555f6fe97545f2480f26071a2935fa11f3bb213887c0c8e35ab1dbbc839b79',1,'CommandHandler.h']]],
+  ['svpwm_67',['svpwm',['../class_t_m_c4671.html#a383a82ab842490e325553e9365028a27a192988907ef6fc9e44d78d653cf76640',1,'TMC4671']]],
+  ['swver_68',['swver',['../_system_commands_8h.html#a4a42a50bc0a826d5ab6d847950749d07acdd21ef24d8c08e6760125d47fcb7de0',1,'SystemCommands.h']]],
+  ['systemcontrol_69',['systemcontrol',['../class_motor_simplemotion.html#a0fa06e9cd5b42ac97ac49ff916ac1c30a8dd8e12d07c8be2ef3f9772799e4e9f2',1,'MotorSimplemotion']]],
+  ['systemerror_70',['systemError',['../_error_handler_8h.html#a6f3b1ba4fbf4167d3a58b0b331ddcfefa300e14bbcaa3119ad2b82320a8a1e9c3',1,'ErrorHandler.h']]]
 ];

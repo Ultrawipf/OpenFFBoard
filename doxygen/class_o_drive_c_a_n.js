@@ -52,6 +52,7 @@ var class_o_drive_c_a_n =
     [ "port", "class_o_drive_c_a_n.html#a7103ed2e8be0eb5167cdae98182cd420", null ],
     [ "posOffset", "class_o_drive_c_a_n.html#a4baab55dfa6ffd3ef3dc7b4948d5ab43", null ],
     [ "posWaiting", "class_o_drive_c_a_n.html#abc32713b918be209b489f1d6edcd10fd", null ],
+    [ "reloadPosAfterStartup", "class_o_drive_c_a_n.html#ab018ceb789435d95422e90946aa6d3b7", null ],
     [ "state", "class_o_drive_c_a_n.html#a35edaf845ad49346fbf4f21d10de63dc", null ],
     [ "waitReady", "class_o_drive_c_a_n.html#abe3a9835011833c6535f5dca16a89973", null ]
 ];

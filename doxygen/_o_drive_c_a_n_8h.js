@@ -22,7 +22,8 @@ var _o_drive_c_a_n_8h =
       [ "maxtorque", "_o_drive_c_a_n_8h.html#a539f13973573e98e043ff32d1b899068a0f49d893c80f4b1732e5c8a744d04e39", null ],
       [ "vbus", "_o_drive_c_a_n_8h.html#a539f13973573e98e043ff32d1b899068aa6836846042d32ab49d028e4908a505b", null ],
       [ "anticogging", "_o_drive_c_a_n_8h.html#a539f13973573e98e043ff32d1b899068ab72d6d56ec1607f414cd5de03914aa87", null ],
-      [ "connected", "_o_drive_c_a_n_8h.html#a539f13973573e98e043ff32d1b899068a06aa6fa8bdc2078e7e1bd903e70c8f6a", null ]
+      [ "connected", "_o_drive_c_a_n_8h.html#a539f13973573e98e043ff32d1b899068a06aa6fa8bdc2078e7e1bd903e70c8f6a", null ],
+      [ "storepos", "_o_drive_c_a_n_8h.html#a539f13973573e98e043ff32d1b899068a8283beb694765c49faae3b6155772b32", null ]
     ] ],
     [ "ODriveControlMode", "_o_drive_c_a_n_8h.html#afbb352e995053f25fb271f45cd99b930", [
       [ "CONTROL_MODE_VOLTAGE_CONTROL", "_o_drive_c_a_n_8h.html#afbb352e995053f25fb271f45cd99b930a28445e9544349ceb74627c54e350ac68", null ],
