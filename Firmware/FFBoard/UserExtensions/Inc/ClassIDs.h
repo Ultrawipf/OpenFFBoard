@@ -44,6 +44,7 @@ enum class ClassType : uint16_t {
 #define CLSID_MAIN_MIDI 	0xD
 #define CLSID_SYSTEM		0x10 // sys main command thread
 #define CLSID_ERRORS		0x11
+#define CLSID_FFBSHIFTER_FX	0x12
 
 
 // Button sources for gamepad
