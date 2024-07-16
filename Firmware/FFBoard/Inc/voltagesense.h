@@ -9,8 +9,8 @@
 #define VOLTAGESENSE_H_
 #include "target_constants.h"
 
-uint16_t getIntV();
-uint16_t getExtV();
+int32_t getIntV();
+int32_t getExtV();
 void brakeCheck();
 
 /*
