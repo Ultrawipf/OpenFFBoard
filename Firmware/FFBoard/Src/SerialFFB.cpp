@@ -74,7 +74,7 @@ void SerialFFB::set_gain(uint8_t gain){
  * Returns the index where the effect was created or -1 if it can not be created
  */
 int32_t SerialFFB::newEffect(uint8_t effectType){
-	uint32_t idx = this->effects_calc->find_free_effect(effectType);
+	int32_t idx = this->effects_calc->find_free_effect(effectType);
 	if(idx >= 0){
 		// Allocate effect
 		effects[idx].type = effectType;

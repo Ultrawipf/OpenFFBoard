@@ -41,11 +41,11 @@ void setupBrakePin(uint32_t vdiffAct,uint32_t vdiffDeact,uint32_t vMax){
 	voltageDiffDeactivate = vdiffDeact;
 }
 
-uint16_t getIntV(){
+int32_t getIntV(){
 	return VSENSE_ADC_BUF[ADC_CHAN_VINT] * vSenseMult;
 }
 
-uint16_t getExtV(){
+int32_t getExtV(){
 	return VSENSE_ADC_BUF[ADC_CHAN_VEXT] * vSenseMult;
 }
 
@@ -53,8 +53,8 @@ void brakeCheck(){
 	if(maxVoltage == 0 || brake_failure){
 		return;
 	}
-	uint16_t vint = getIntV();
-	uint16_t vext = getExtV();
+	int32_t vint = getIntV();
+	int32_t vext = getExtV();
 
 	if(vint < minVoltage && vext < minVoltage){
 		return; // Do not enable if device is unpowered (just measuring usb leakage)
