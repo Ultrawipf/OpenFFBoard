@@ -186,7 +186,7 @@ void TMC4671::restoreFlash(){
 }
 
 bool TMC4671::hasPower(){
-	uint16_t intV = getIntV();
+	int32_t intV = getIntV();
 	return (intV > 10000) && (getExtV() > 10000) && (intV < 78000);
 }
 
