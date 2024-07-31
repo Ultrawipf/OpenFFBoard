@@ -9,7 +9,7 @@
 #include <math.h>
 #include "EffectsCalculator.h"
 #include "Axis.h"
-
+#include "ledEffects.h"
 
 
 #define EFFECT_STATE_INACTIVE 0
@@ -71,6 +71,7 @@ void EffectsCalculator::setActive(bool active)
 		effects_stats[i].current = {0}; // Reset active effect forces
 		effects_statslast[i].current = {0};
 	}
+	setClipLed(active);
 }
 
 
