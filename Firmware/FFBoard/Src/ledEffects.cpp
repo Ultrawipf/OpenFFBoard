@@ -8,13 +8,13 @@
 #include "main.h"
 
 Ledstruct_t sysled{
-	0,0,0,LED_SYS_GPIO_Port,LED_SYS_Pin
+	0,0,0,LED_SYS_GPIO_Port,LED_SYS_Pin,0
 };
 Ledstruct_t errled{
-	0,0,0,LED_ERR_GPIO_Port,LED_ERR_Pin
+	0,0,0,LED_ERR_GPIO_Port,LED_ERR_Pin,0
 };
 Ledstruct_t clipled{
-	0,0,0,LED_CLIP_GPIO_Port,LED_CLIP_Pin
+	0,0,0,LED_CLIP_GPIO_Port,LED_CLIP_Pin,0
 };
 
 /**
@@ -27,12 +27,12 @@ void blinkLed(Ledstruct* led,uint16_t period,uint16_t blinks){
 	if(period == 0 && blinks == 0){
 		led->blinks = 0;
 		led->period = 0;
-		HAL_GPIO_WritePin(led->port, led->pin, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(led->port, led->pin, led->state ? GPIO_PIN_SET : GPIO_PIN_RESET);
 	}else{
 		led->blinks = (blinks * 2) -1;
 		led->period = period;
 		led->tick = HAL_GetTick();
-		HAL_GPIO_WritePin(led->port, led->pin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(led->port, led->pin, led->state ? GPIO_PIN_RESET : GPIO_PIN_SET);
 	}
 }
 
@@ -62,12 +62,29 @@ void blinkClipLed(uint16_t period,uint16_t blinks){
 	blinkLed(&clipled, period, blinks);
 }
 
+void setLed(Ledstruct_t* led,uint8_t on){
+	led->state = on;
+	HAL_GPIO_WritePin(led->port, led->pin, led->state ? GPIO_PIN_SET : GPIO_PIN_RESET);
+}
+
+void setClipLed(uint8_t on){
+	setLed(&clipled,on);
+}
+
+void setErrLed(uint8_t on){
+	setLed(&errled,on);
+}
+
+void setSysLed(uint8_t on){
+	setLed(&sysled,on);
+}
+
 
 void updateLed(Ledstruct* led){
 	// If led has an effect (period != 0) and time is up do something
 	if(led->period != 0 && HAL_GetTick() > led->tick+led->period){
 		if(led->blinks == 0){ // No blinks left. turn off
-			HAL_GPIO_WritePin(led->port, led->pin, GPIO_PIN_RESET);
+			HAL_GPIO_WritePin(led->port, led->pin, led->state ? GPIO_PIN_SET : GPIO_PIN_RESET);
 			led->period = 0;
 		}else{
 			led->tick = HAL_GetTick();
