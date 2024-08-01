@@ -839,7 +839,7 @@ bool TMC4671::findEncoderIndex(int32_t speed, uint16_t power,bool offsetPhiM,boo
 
 	//uint32_t mposStart = readReg(0x2A);
 	int32_t timeout = 1000; // 10s
-	for(int16_t flux = 0; flux <= power; flux+=10){
+	for(int16_t flux = 0; flux <= power; flux+=1+power/250){
 		setFluxTorque(flux, 0);
 		Delay(3);
 	}
@@ -987,7 +987,7 @@ void TMC4671::bangInitEnc(int16_t power){
 	setPhiE_ext(phiEpos);
 	setPhiEtype(PhiE::ext);
 	// Ramp up flux
-	for(int16_t flux = 0; flux <= power; flux+=10){
+	for(int16_t flux = 0; flux <= power; flux+=1+power/250){
 		setFluxTorque(flux, 0);
 		Delay(3);
 	}
@@ -1062,7 +1062,7 @@ void TMC4671::calibrateAenc(){
 	setMotionMode(MotionMode::torque,true);
 
 	if(this->conf.motconf.motor_type == MotorType::STEPPER || this->conf.motconf.motor_type == MotorType::BLDC){
-		for(int16_t flux = 0; flux <= bangInitPower; flux+=10){
+		for(int16_t flux = 0; flux <= bangInitPower; flux+=1+bangInitPower / 200){
 			setFluxTorque(flux, 0);
 			Delay(5);
 		}
@@ -1188,7 +1188,7 @@ bool TMC4671::checkEncoder(){
 
 	setPhiE_ext(startAngle);
 	// Ramp up flux
-	for(int16_t flux = 0; flux <= 2*bangInitPower/3; flux+=20){
+	for(int16_t flux = 0; flux <= 2*bangInitPower/3; flux+=1+bangInitPower/250){
 		setFluxTorque(flux, 0);
 		Delay(2);
 	}
@@ -2272,7 +2272,7 @@ void TMC4671::estimateABNparams(){
 	setPhiEtype(PhiE::ext);
 	setFluxTorque(0, 0);
 	setMotionMode(MotionMode::torque,true);
-	for(int16_t flux = 0; flux <= bangInitPower; flux+=10){
+	for(int16_t flux = 0; flux <= bangInitPower; flux+=1+bangInitPower/200){
 		setFluxTorque(flux, 0);
 		Delay(5);
 	}
@@ -2327,7 +2327,7 @@ void TMC4671::estimateExtEnc(){
 	setPhiEtype(PhiE::ext);
 	setFluxTorque(0, 0);
 	setMotionMode(MotionMode::torque,true);
-	for(int16_t flux = 0; flux <= bangInitPower; flux+=10){
+	for(int16_t flux = 0; flux <= bangInitPower; flux+=1+bangInitPower/200){
 		setFluxTorque(flux, 0);
 		Delay(5);
 	}
