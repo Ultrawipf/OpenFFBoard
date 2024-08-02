@@ -458,6 +458,8 @@ public:
 	int32_t getActualFlux();
 	int32_t getActualTorque();
 
+	void rampFlux(uint16_t target,uint16_t time_ms);
+
 	bool checkAdc();
 
 	float getTemp();
