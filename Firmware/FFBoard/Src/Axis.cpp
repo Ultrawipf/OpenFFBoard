@@ -261,6 +261,7 @@ uint8_t Axis::getEncType(){
 
 void Axis::setPos(uint16_t val)
 {
+	startForceFadeIn(0.25,0.5);
 	if(this->drv != nullptr){
 		drv->getEncoder()->setPos(val);
 	}
@@ -317,6 +318,13 @@ void Axis::prepareForUpdate(){
 		outOfBounds = false;
 		//ErrorHandler::clearError(outOfBoundsError);
 	}
+
+	// On first change to ready start a fade
+	if(motorWasNotReady && drv->motorReady()){
+		motorWasNotReady = false;
+		startForceFadeIn(0, 1.0);
+	}
+
 
 	this->updateMetrics(angle);
 
@@ -489,6 +497,9 @@ void Axis::emergencyStop(bool reset){
 	drv->turn(0); // Send 0 torque first
 	drv->emergencyStop(reset);
 	//drv->stopMotor();
+	if(reset){
+		startForceFadeIn();
+	}
 	control->emergency = !reset;
 }
 
@@ -506,6 +517,7 @@ void Axis::usbSuspend(){
  * Enables motor driver
  */
 void Axis::usbResume(){
+	startForceFadeIn();
 	if (drv != nullptr){
 		drv->startMotor();
 	}
@@ -725,6 +737,12 @@ bool Axis::updateTorque(int32_t* totalTorque) {
 		torque = 0;
 	}
 
+	// Fade in
+	if(forceFadeCurMult < 1){
+		torque = torque * forceFadeCurMult;
+		forceFadeCurMult += forceFadeTime / this->filter_f; // Fade time
+	}
+
 	// Torque calculated. Now sending to driver
 	torque = (invertAxis) ? -torque : torque;
 	metric.current.torque = torque;
@@ -739,6 +757,15 @@ bool Axis::updateTorque(int32_t* totalTorque) {
 	*totalTorque = torque;
 	return (torqueChanged);
 }
+
+/**
+ * Starts fading in force from start to 1 over fadeTime
+ */
+void Axis::startForceFadeIn(float start,float fadeTime){
+	this->forceFadeTime = fadeTime;
+	this->forceFadeCurMult = clip<float>(start, 0, 1);
+}
+
 
 /**
  * Changes gamepad range in degrees for effect scaling

@@ -154,6 +154,8 @@ public:
 	int32_t getTorque(); // current torque scaled as a 32 bit signed value
 	int16_t updateEndstop();
 
+	void startForceFadeIn(float start = 0,float fadeTime = 0.5);
+
 	metric_t* getMetrics();
 
 	void setEffectTorque(int32_t torque);
@@ -184,6 +186,9 @@ private:
 	static uint16_t encodeConfToInt(AxisConfig conf);
 
 	const Error outOfBoundsError = Error(ErrorCode::axisOutOfRange,ErrorType::warning,"Axis out of bounds");
+
+	float forceFadeTime = 1.0;
+	float forceFadeCurMult = 1.0;
 
 #ifdef TMC4671DRIVER
 	TMC4671Limits tmclimits = TMC4671Limits({.pid_torque_flux_ddt = 32767,
@@ -253,6 +258,7 @@ private:
 	int16_t idlespringclip = 0;
 	float idlespringscale = 0;
 	bool idle_center = false;
+	bool motorWasNotReady = true;
 
 	// TODO tune these and check if it is really stable and beneficial to the FFB. index 4 placeholder
 	const biquad_constant_t filterSpeedCst[4] = {{ 30, 55 }, { 60, 55 }, { 120, 55 }, {120, 55}};
