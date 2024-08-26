@@ -16,11 +16,30 @@
 #include <GPIOPin.h>
 #include "PersistentStorage.h"
 #include "CommandHandler.h"
+#include <span>
 
 #ifdef STM32F4
 #include "stm32f4xx_hal_can.h"
 #define CAN_MAILBOXES 3
 #endif
+
+class CANPort;
+class CANPortHardwareConfig{
+	friend CANPort;
+public:
+	struct PresetEntry{// Helper for preset entries
+		I2C_InitTypeDef init;
+		const char* name;
+	};
+	constexpr CANPortHardwareConfig(const bool canChangeSpeed,std::span<const PresetEntry> presets_list)
+	: canChangeSpeed(canChangeSpeed),presets(presets_list){}
+
+	// Values
+	const bool canChangeSpeed;
+	PresetEntry getPreset(uint8_t idx) const {return PresetEntry(presets[std::min<uint8_t>(idx,presets.size())]);}
+protected:
+	const std::span<const PresetEntry> presets; // Name for listing and init types for setup
+};
 
 typedef struct{
 	uint8_t data[8] = {0};
