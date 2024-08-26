@@ -14,7 +14,7 @@
 
 ClassIdentifier FFBoardMain::info ={.name = "Basic (Failsafe)" ,.id=0};
 
-char FFBoardMain::cdcbuf[64];
+char FFBoardMain::cdcbuf[(TUD_OPT_HIGH_SPEED ? 512 : 64)];
 
 
 

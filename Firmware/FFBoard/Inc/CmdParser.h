@@ -17,7 +17,9 @@
 #include "CommandHandler.h"
 #include "ringbufferwrapper.h"
 
+#ifndef CMDPARSER_MAX_VALID_CAPACITY
 #define CMDPARSER_MAX_VALID_CAPACITY 2048
+#endif
 
 class CommandHandler;
 class CommandInterface;

@@ -155,8 +155,8 @@ bool CmdParser::parse(std::vector<ParsedCommand>& commands){
 						// Check if conversion is even possible
 						bool validPqm = (pqm != std::string::npos && (std::isdigit(word[pqm+1]) || (std::isdigit(word[pqm+2]) && (word[pqm+1] == '-' || word[pqm+1] == '+')) || ( std::isxdigit(word[pqm+2]) && word[pqm+1] == 'x')));
 						bool validPeq = (peq != std::string::npos && (std::isdigit(word[peq+1]) || (std::isdigit(word[peq+2]) && (word[peq+1] == '-' || word[peq+1] == '+')) || ( std::isxdigit(word[peq+2]) && word[peq+1] == 'x')));
-
-						if(validPqm && validPeq && peq < pqm && (abs(pqm - peq) > 1)){ // <cmd>=<int>?<int>
+						int32_t pqm_peq_dist = (pqm - peq);
+						if(validPqm && validPeq && peq < pqm && (abs(pqm_peq_dist) > 1)){ // <cmd>=<int>?<int>
 							// Dual
 							int64_t val;
 							int64_t val2;
@@ -167,9 +167,9 @@ bool CmdParser::parse(std::vector<ParsedCommand>& commands){
 							}
 
 							if(word[peq+1] == 'x'){
-								val = (int64_t)std::strtoll(word.substr(peq+2, pqm-peq).c_str(),0,16);
+								val = (int64_t)std::strtoll(word.substr(peq+2, pqm_peq_dist).c_str(),0,16);
 							}else{
-								val = (int64_t)std::strtoll(word.substr(peq+1, pqm-peq).c_str(),0,10);
+								val = (int64_t)std::strtoll(word.substr(peq+1, pqm_peq_dist).c_str(),0,10);
 							}
 
 							cmdstring = word.substr(cmd_start, peq-cmd_start);
