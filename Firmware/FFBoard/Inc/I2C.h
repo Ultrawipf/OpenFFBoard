@@ -8,19 +8,42 @@
 #ifndef SRC_I2C_H_
 #define SRC_I2C_H_
 
+#include "constants.h"
+#ifdef I2CBUS
 #include "semaphore.hpp"
 #include "cppmain.h"
 #include "I2CHandler.h"
 #include "PersistentStorage.h"
 #include "CommandHandler.h"
+#include <array>
+//#define I2C_COMMANDS_DISABLED_IF_NOT_USED
+#include <span>
+/**
+ * Helper class for hardware dependent config presets
+ */
+class I2CPort;
+class I2CPortHardwareConfig{
+	friend I2CPort;
+public:
+	struct I2CPortHardwareConfig_preset{// Helper for preset entries
+		I2C_InitTypeDef init;
+		const char* name;
+	};
+	constexpr I2CPortHardwareConfig(const bool canChangeSpeed,std::span<const I2CPortHardwareConfig_preset> presets_list)
+	: canChangeSpeed(canChangeSpeed),presets(presets_list){}
 
-#define I2C_COMMANDS_DISABLED_IF_NOT_USED
+	// Values
+	const bool canChangeSpeed;
+	I2CPortHardwareConfig_preset getPreset(uint8_t idx) const {return I2CPortHardwareConfig_preset(presets[std::min<uint8_t>(idx,presets.size())]);}
+protected:
+	const std::span<const I2CPortHardwareConfig_preset> presets; // Name for listing and init types for setup
+};
 
 class I2CDevice;
 class I2CPort : public I2CHandler, public CommandHandler, public PersistentStorage{
 	enum class I2CPort_commands : uint32_t {speed};
 public:
-	I2CPort(I2C_HandleTypeDef &hi2c);
+	I2CPort(I2C_HandleTypeDef &hi2c,const I2CPortHardwareConfig& presets,uint8_t instance = 0);
 	virtual ~I2CPort();
 
 
@@ -66,7 +89,6 @@ public:
 	static ClassIdentifier info;
 	const ClassIdentifier getInfo(){return this->info;}
 	const ClassType getClassType() override {return ClassType::Port;};
-	const std::vector<std::string> SpeedNames = {"100kb/s (Standard)","400kb/s (Fast mode)"};
 
 
 private:
@@ -77,6 +99,7 @@ private:
 	int32_t portUsers = 0;
 	uint8_t speedPreset = 0;
 	I2C_InitTypeDef config;
+	const I2CPortHardwareConfig& presets;
 };
 
 
@@ -95,5 +118,6 @@ public:
 //protected:
 //	I2CDevice* port = nullptr;
 };
+#endif
 
 #endif /* SRC_I2C_H_ */

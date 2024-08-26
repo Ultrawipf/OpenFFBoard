@@ -6,7 +6,7 @@
  */
 
 #include <I2C.h>
-
+#ifdef I2CBUS
 ClassIdentifier I2CPort::info = {
 	.name = "I2C port",
 	.id = CLSID_I2CPORT,
@@ -14,22 +14,26 @@ ClassIdentifier I2CPort::info = {
 
 
 
-static bool operator==(const I2C_InitTypeDef& lhs, const I2C_InitTypeDef& rhs) {
-	return lhs.AddressingMode == rhs.AddressingMode
-			&& lhs.ClockSpeed == rhs.ClockSpeed
-			&& lhs.DualAddressMode == rhs.DualAddressMode
-			&& lhs.DutyCycle == rhs.DutyCycle
-			&& lhs.GeneralCallMode == rhs.GeneralCallMode
-			&& lhs.NoStretchMode == rhs.NoStretchMode
-			&& lhs.OwnAddress1 == rhs.OwnAddress1
-			&& lhs.OwnAddress2 == rhs.OwnAddress2;
-}
+//static bool operator==(const I2C_InitTypeDef& lhs, const I2C_InitTypeDef& rhs) {
+//	return lhs.AddressingMode == rhs.AddressingMode
+//			&& lhs.ClockSpeed == rhs.ClockSpeed
+//			&& lhs.DualAddressMode == rhs.DualAddressMode
+//			&& lhs.DutyCycle == rhs.DutyCycle
+//			&& lhs.GeneralCallMode == rhs.GeneralCallMode
+//			&& lhs.NoStretchMode == rhs.NoStretchMode
+//			&& lhs.OwnAddress1 == rhs.OwnAddress1
+//			&& lhs.OwnAddress2 == rhs.OwnAddress2;
+//}
+
+//static bool operator==(const I2C_InitTypeDef& lhs, const I2C_InitTypeDef& rhs) {
+//	return memcmp(&lhs,&rhs,sizeof(I2C_InitTypeDef)) == 0;
+//}
+//
 
 
 
-
-I2CPort::I2CPort(I2C_HandleTypeDef &hi2c) : CommandHandler("i2c", CLSID_I2CPORT, 0), hi2c(hi2c) {
-	restoreFlash();
+I2CPort::I2CPort(I2C_HandleTypeDef &hi2c,const I2CPortHardwareConfig& presets,uint8_t instance) : CommandHandler("i2c", CLSID_I2CPORT, instance), hi2c(hi2c),presets(presets) {
+	restoreFlashDelayed();
 #ifdef I2C_COMMANDS_DISABLED_IF_NOT_USED
 	this->setCommandsEnabled(false);
 #endif
@@ -59,20 +63,10 @@ void I2CPort::restoreFlash(){
 }
 
 void I2CPort::setSpeedPreset(uint8_t preset){
-	uint32_t speed;
-	switch(preset){
-	case 0:
-		speed = 100000;
-		break;
-	case 1:
-		speed = 400000;
-		break;
-	default:
-		return;
-	}
-	speedPreset = preset;
-	config = hi2c.Init;
-	config.ClockSpeed = speed;
+
+	speedPreset = std::min<uint8_t>(preset,presets.presets.size());
+	config = presets.getPreset(speedPreset).init;
+
 	if(portUsers)
 		configurePort(&config);
 }
@@ -83,7 +77,7 @@ uint8_t I2CPort::getSpeedPreset(){
 
 void I2CPort::registerCommands(){
 	CommandHandler::registerCommands();
-	registerCommand("speed", I2CPort_commands::speed, "I2C speed preset (0:100k;1:400k)", CMDFLAG_GET|CMDFLAG_SET|CMDFLAG_INFOSTRING);
+	registerCommand("speed", I2CPort_commands::speed, "I2C speed preset", CMDFLAG_GET|CMDFLAG_SET|CMDFLAG_INFOSTRING);
 }
 
 CommandStatus I2CPort::command(const ParsedCommand& cmd,std::vector<CommandReply>& replies){
@@ -93,11 +87,11 @@ CommandStatus I2CPort::command(const ParsedCommand& cmd,std::vector<CommandReply
 	case I2CPort_commands::speed:
 		if(cmd.type == CMDtype::get){
 			replies.emplace_back(this->speedPreset);
-		}else if(cmd.type == CMDtype::set){
+		}else if(cmd.type == CMDtype::set && presets.canChangeSpeed){
 			setSpeedPreset(cmd.val);
 		}else if(cmd.type == CMDtype::info){
-			for(uint8_t i = 0; i<SpeedNames.size();i++){
-				replies.emplace_back(SpeedNames[i]  + ":" + std::to_string(i));
+			for(uint8_t i = 0; i<presets.presets.size();i++){
+				replies.emplace_back(std::string(presets.presets[i].name)  + ":" + std::to_string(i));
 			}
 		}
 	break;
@@ -334,3 +328,4 @@ void I2CDevice::i2cRxCompleted(I2CPort* port){
 void I2CDevice::i2cError(I2CPort* port){
 	port->resetPort();
 }
+#endif
