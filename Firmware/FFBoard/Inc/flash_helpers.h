@@ -23,6 +23,7 @@ extern "C" {
 
 #include <tuple>
 #include <vector>
+#include <span>
 
 bool Flash_Init();
 bool Flash_Write(uint16_t adr,uint16_t dat); // Writes or updates only if changed or missing
@@ -57,5 +58,8 @@ inline std::tuple<uint8_t, uint8_t> unpack(uint16_t v) {
 #define I2C_EEPROM_TIMEOUT 100
 
 #endif
+
+extern const std::span<const std::pair<uint16_t,uint16_t>> flash_factory_defaults; // address,value pair
+void Flash_Write_Defaults();
 
 #endif /* FLASH_HELPERS_H_ */

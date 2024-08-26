@@ -49,6 +49,7 @@ void cppmain() {
 
 	if(forceErase){
 		Flash_Format();
+		Flash_Write_Defaults();
 	}
 
 //	// Check if flash is initialized
@@ -64,11 +65,13 @@ void cppmain() {
 	// Check if flash is initialized
 	uint16_t lastFlashVersion = 0;
 	if(!Flash_Read(ADR_FLASH_VERSION, &lastFlashVersion)){ // Version never written
+		Flash_Write_Defaults();
 		Flash_Write(ADR_FLASH_VERSION, FLASH_VERSION);
 	}
 	Flash_Read(ADR_FLASH_VERSION,&lastFlashVersion);
 	if(lastFlashVersion != FLASH_VERSION){
 		Flash_Format(); // Major version changed or could not write initial value. force a format
+		Flash_Write_Defaults();
 		Flash_Write(ADR_FLASH_VERSION, FLASH_VERSION);
 	}
 
