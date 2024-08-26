@@ -49,10 +49,13 @@
 #define __EEPROM_H
 
 /* Includes ------------------------------------------------------------------*/
-#include "stm32f4xx_hal.h"
-#include "target_constants.h"
+#include "constants.h"
 //#include "eeprom_addresses.h"
+#ifdef USE_EEPROM_EMULATION
 
+#ifdef STM32F4
+#include "stm32f4xx_hal.h"
+#endif
 /* Exported constants --------------------------------------------------------*/
 /* EEPROM emulation firmware error codes */
 #define EE_OK      (uint32_t)HAL_OK
@@ -117,7 +120,7 @@ uint16_t EE_Init(void);
 uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data);
 uint16_t EE_WriteVariable(uint16_t VirtAddress, uint16_t Data);
 HAL_StatusTypeDef EE_Format();
-
+#endif
 #endif /* __EEPROM_H */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -55,6 +55,16 @@ static const uint8_t SW_VERSION_INT[3] = {1,15,1}; // Version as array. 8 bit ea
 #define GPIO_MOTOR // See cpp_target_config.cpp for pin
 #endif
 
+#if defined(I2C_PORT_EEPROM) && defined(I2C_EEPROM_ADR)
+#define USE_I2C_EEPROM
+#else
+#if defined(EEPROM_START_ADDRESS)
+#define USE_EEPROM_EMULATION
+#endif
+#endif
 
+#if defined(PCF8574BUTTONS) || defined(I2C_PORT)
+#define I2CBUS
+#endif
 
 #endif

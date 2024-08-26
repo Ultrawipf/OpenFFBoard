@@ -9,6 +9,7 @@
 #include "global_callbacks.h"
 
 //std::vector<PersistentStorage*> PersistentStorage::flashHandlers;
+bool PersistentStorage::startupComplete = false;
 
 PersistentStorage::PersistentStorage() {
 	addCallbackHandler(getFlashHandlers(), this);
@@ -26,10 +27,37 @@ void PersistentStorage::saveFlash(){
 
 }
 /**
- * Should be used to restore settings at startup.
+ * Should be implemented to restore settings.
  * This is not automatically called and should be called when appropriate.
- * Normally this is done in the constructor of the class
  */
 void PersistentStorage::restoreFlash(){
 
+}
+
+/**
+ * Should be used to restore settings after startup if class is created before startup finished.
+ * This is preferred to calling restoreFlash directly and calls restoreFlash after startup is finished
+ * This is not automatically called and should be called when appropriate.
+ * Normally this is done in the constructor of the class
+ */
+void PersistentStorage::restoreFlashDelayed(){
+	if(PersistentStorage::startupComplete){
+		restoreFlash();
+	}else{
+		this->restoreDelayedFlag = true;
+	}
+}
+
+/**
+ * Called after storage has been initialized
+ * Will call restoreFlash on any storage handler that is currently waiting
+ */
+void PersistentStorage::restoreFlashStartupCb(){
+	PersistentStorage::startupComplete = true;
+	for(PersistentStorage* cls : getFlashHandlers()){
+		if(cls->restoreDelayedFlag){
+			cls->restoreFlash();
+			cls->restoreDelayedFlag = false;
+		}
+	}
 }

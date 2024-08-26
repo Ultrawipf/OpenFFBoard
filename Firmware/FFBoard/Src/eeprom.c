@@ -49,6 +49,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "eeprom.h"
 #include "eeprom_addresses.h"
+#ifdef USE_EEPROM_EMULATION
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
@@ -733,5 +734,5 @@ static uint16_t EE_PageTransfer(uint16_t VirtAddress, uint16_t Data)
 /**
   * @}
   */ 
-
+#endif
 /******************* (C) COPYRIGHT 2017 STMicroelectronics *****END OF FILE****/

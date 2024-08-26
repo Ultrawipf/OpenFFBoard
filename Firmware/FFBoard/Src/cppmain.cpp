@@ -5,8 +5,6 @@
 #include "global_callbacks.h"
 #include "cpp_target_config.h"
 #include "cmsis_os.h"
-#include "stm32f4xx_hal_flash.h"
-
 #include "tusb.h"
 
 uint32_t clkmhz = HAL_RCC_GetHCLKFreq() / 100000;
@@ -21,7 +19,7 @@ bool mainclassChosen = false;
 
 uint16_t main_id = 0;
 
-FFBoardMain* mainclass __attribute__((section (".ccmram")));
+FFBoardMain* mainclass __attribute__((section (CCRAM_SEC)));
 ClassChooser<FFBoardMain> mainchooser(class_registry);
 
 
@@ -45,19 +43,10 @@ void cppmain() {
 #endif
 
 	// Flash init
-	// TODO verify why or if flash does not erase or initialize correctly on some new chips
-	HAL_FLASH_Unlock();
-	// Clear all the error flags
-	__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_EOP);
-	__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_OPERR);
-	__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_WRPERR);
-	__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_PGAERR);
-	__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_PGPERR);
-	__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_PGSERR);
-
-	if( EE_Init() != EE_OK){
+	if(!Flash_Init()){
 		Error_Handler();
 	}
+
 //	// Check if flash is initialized
 //	uint16_t lastVersion = 0;
 //	if(!Flash_Read(ADR_SW_VERSION, &lastVersion)){ // Version never written
@@ -75,11 +64,10 @@ void cppmain() {
 	}
 	Flash_Read(ADR_FLASH_VERSION,&lastFlashVersion);
 	if(lastFlashVersion != FLASH_VERSION){
-		EE_Format(); // Major version changed or could not write initial value. force a format
+		Flash_Format(); // Major version changed or could not write initial value. force a format
 		Flash_Write(ADR_FLASH_VERSION, FLASH_VERSION);
 	}
 
-	HAL_FLASH_Lock();
 	// ------------------------
 
 	TIM_MICROS.Instance->CR1 = 1; // Enable microsecond clock
@@ -96,6 +84,7 @@ void cppmain() {
 		Error_Handler();
 	}
 
+	PersistentStorage::restoreFlashStartupCb(); // Flash is initialized. allow restoring now
 
 	mainclass = mainchooser.Create(main_id);
 	if(mainclass == nullptr){ // invalid id
