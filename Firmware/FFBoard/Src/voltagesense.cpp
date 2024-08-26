@@ -9,6 +9,7 @@
 #include "constants.h"
 #include "voltagesense.h"
 #include "ErrorHandler.h"
+#include "AdcHandler.h"
 
 bool braking_flag = false;
 uint32_t maxVoltage = 65000; // Force braking
