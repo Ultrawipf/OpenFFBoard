@@ -60,7 +60,7 @@ protected:
 	CmdParser parser; // String parser
 };
 
-
+#define CDC_CMD_BUFFER_SIZE (TUD_OPT_HIGH_SPEED ? 4096 : 1024)
 //receives bytes from mainclass. calls its own parser instance, calls global parser thread, passes replies  back to cdc port.
 class CDC_CommandInterface : public StringCommandInterface,public cpp_freertos::Thread{
 public:
@@ -83,7 +83,7 @@ private:
 	bool nextFormat = false;
 	std::string sendBuffer;
 	uint32_t bufferLength = 0;
-	const uint32_t maxSendBuffer = 1024; // Max buffered command size before sending immediately
+	const uint32_t maxSendBuffer = CDC_CMD_BUFFER_SIZE; // Max buffered command size before sending immediately
 };
 
 
