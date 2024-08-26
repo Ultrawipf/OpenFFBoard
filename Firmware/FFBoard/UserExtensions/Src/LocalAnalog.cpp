@@ -9,6 +9,7 @@
 #include "global_callbacks.h"
 #include "flash_helpers.h"
 #include "eeprom_addresses.h"
+#include "AdcHandler.h"
 
 ClassIdentifier LocalAnalog::info = {
 	 .name = "AIN-Pins" ,
@@ -28,6 +29,10 @@ const std::array<std::pair<uint16_t,uint16_t>,8> minMaxValAddr = {
 };
 
 LocalAnalog::LocalAnalog() : CommandHandler("apin",CLSID_ANALOG_LOCAL,0),AnalogAxisProcessing(ADC_PINS,this,this, true,true,true,true) {
+	// Determine resolution
+	uint8_t bits = AdcHandler::getAdcResolutionBits(&AIN_HADC);
+	mask = (1 << bits) -1;
+	bitshift = std::max(0,16-bits);
 	this->restoreFlash();
 
 	CommandHandler::registerCommands();
@@ -72,7 +77,7 @@ std::vector<int32_t>* LocalAnalog::getAxes(){
 	uint8_t axes = std::min<uint8_t>(chans-ADC_CHAN_FPIN,numPins);
 
 	for(uint8_t i = 0;i<axes;i++){
-		int32_t val = ((adcbuf[i+ADC_CHAN_FPIN] & 0xFFF) << 4)-0x7fff;
+		int32_t val = ((adcbuf[i+ADC_CHAN_FPIN] & mask) << bitshift)-0x7fff;
 		if(!(aconf.analogmask & 0x01 << i))
 			continue;
 

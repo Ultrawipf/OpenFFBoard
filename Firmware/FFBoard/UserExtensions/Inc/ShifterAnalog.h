@@ -79,15 +79,17 @@ private:
 	uint8_t cs_pin_num{1};
 
 	// H-Shifter axis values (Measured for G29)
-	uint16_t X_12{1600};
-	uint16_t X_56{2500};
-	uint16_t Y_135{3200};
-	uint16_t Y_246{850};
+	uint16_t X_12{25600};
+	uint16_t X_56{40000};
+	uint16_t Y_135{51200};
+	uint16_t Y_246{13600};
 
 	uint16_t x_val{0};
 	uint16_t y_val{0};
 	bool reverseButtonState{false};
 	uint8_t gear{0};
+
+	uint8_t bitshift = 0;
 
 	std::unique_ptr<G27ShifterButtonClient> g27ShifterButtonClient;
 

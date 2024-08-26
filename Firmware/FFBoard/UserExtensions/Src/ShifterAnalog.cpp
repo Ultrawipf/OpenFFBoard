@@ -11,6 +11,7 @@
 #include "ShifterAnalog.h"
 #include "global_callbacks.h"
 #include "cpp_target_config.h"
+#include "AdcHandler.h"
 
 ClassIdentifier ShifterAnalog::info = {
 		 .name = "Shifter Analog" ,
@@ -21,6 +22,9 @@ const ClassIdentifier ShifterAnalog::getInfo(){
 }
 
 ShifterAnalog::ShifterAnalog() : CommandHandler("shifter", CLSID_BTN_SHIFTER) {
+	uint8_t bits = AdcHandler::getAdcResolutionBits(&AIN_HADC);
+	bitshift = std::max(0,16-bits);
+
 	this->restoreFlash();
 	this->registerCommands();
 }
@@ -48,8 +52,8 @@ void ShifterAnalog::registerCommands(){
 void ShifterAnalog::updateAdc(){
 	uint8_t chans = 0;
 	volatile uint32_t* buf = getAnalogBuffer(&AIN_HADC,&chans);
-	x_val = buf[ADC_CHAN_FPIN+x_chan-1];
-	y_val = buf[ADC_CHAN_FPIN+y_chan-1];
+	x_val = buf[ADC_CHAN_FPIN+x_chan-1] << bitshift; // Make 16 bit
+	y_val = buf[ADC_CHAN_FPIN+y_chan-1] << bitshift;
 }
 
 void ShifterAnalog::calculateGear() {
