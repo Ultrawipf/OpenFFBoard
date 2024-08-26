@@ -2,9 +2,6 @@
 # ------------------------------------------------
 # Generic Makefile (based on gcc)
 #
-# ChangeLog :
-#	2017-02-10 - Several enhancements + project update mode
-#   2015-07-22 - first version
 # ------------------------------------------------
 
 
@@ -174,7 +171,7 @@ endif
 # Generate dependency information
 CFLAGS += -MMD -MP -MF"$(@:%.o=%.d)"
 
-CXXFLAGS = $(MCU) $(C_DEFS) $(C_INCLUDES) $(OPTCPP) -Wall -fdata-sections -ffunction-sections -fno-exceptions -fno-use-cxa-atexit -std=gnu++20 -fstack-usage
+CXXFLAGS = $(MCU) $(C_DEFS) $(C_INCLUDES) $(OPTCPP) -Wall -fdata-sections -ffunction-sections -fno-exceptions -fno-use-cxa-atexit -std=gnu++20 -fstack-usage -Wno-volatile
 
 #######################################
 # LDFLAGS
