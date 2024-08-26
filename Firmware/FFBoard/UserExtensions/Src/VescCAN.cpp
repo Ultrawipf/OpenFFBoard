@@ -11,7 +11,7 @@
 #include "CRC.h"
 
 bool VescCAN::crcTableInitialized = false;
-std::array<uint16_t,256> VescCAN::crc16_tab __attribute__((section (".ccmram"))); // Generate in ram to save some flash (512B)
+std::array<uint16_t,256> VescCAN::crc16_tab __attribute__((section (CCRAM_SEC))); // Generate in ram to save some flash (512B)
 
 // *****    static initializer for the VESC_1 instance (extend VESC_CAN) *****
 
