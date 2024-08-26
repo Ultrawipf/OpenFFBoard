@@ -38,10 +38,4 @@
 			<locationURI>PARENT-2-PROJECT_LOC/FFBoard</locationURI>
 		</link>
 	</linkedResources>
-	<variableList>
-		<variable>
-			<name>copy_PARENT</name>
-			<value>$%7BPARENT-1-PROJECT_LOC%7D/OpenFFBoard/Firmware</value>
-		</variable>
-	</variableList>
 </projectDescription>
