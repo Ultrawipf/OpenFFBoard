@@ -279,6 +279,7 @@ CommandStatus SystemCommands::internalCommand(const ParsedCommand& cmd,std::vect
 			if(cmd.type == CMDtype::set && cmd.val==1){
 
 				if(Flash_Format()){
+					Flash_Write_Defaults(); // Restore default values if present
 					flag = CommandStatus::OK;
 				}else{
 					flag = CommandStatus::ERR;

@@ -8,6 +8,7 @@
 #include "eeprom_addresses.h"
 #include <vector>
 #include "mutex.hpp"
+#include <span>
 
 cpp_freertos::MutexStandard flashMutex;
 // Flash helpers
@@ -291,3 +292,22 @@ __weak bool OTP_Read(uint16_t adroffset,uint64_t* dat){
 }
 
 #endif
+
+#ifndef FLASH_FACTORY_DEFAULTS_OVERRIDE
+ /**
+  * To define factory defaults create a span/array in a core folder defined for example as
+  * const auto flash_defaults = std::to_array<const std::pair<uint16_t,uint16_t>>({ {ADR_CURRENT_CONFIG,1} }); // ADR,VALUE pairs
+  * const std::span<const std::pair<uint16_t,uint16_t>> flash_factory_defaults = flash_defaults;
+  */
+const std::array<const std::pair<uint16_t,uint16_t>,0> empty_flash_defaults; // Empty
+const std::span<const std::pair<uint16_t,uint16_t>> flash_factory_defaults = empty_flash_defaults;
+#endif
+
+/**
+ * Writes factory default values to flash. Does nothing if no defaults are defined
+ */
+void Flash_Write_Defaults(){
+	for(const std::pair<uint16_t,uint16_t> &kv : flash_factory_defaults){
+		Flash_Write(kv.first, kv.second); // Try to write values
+	}
+}
