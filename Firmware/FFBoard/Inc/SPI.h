@@ -12,8 +12,6 @@
 #include <vector>
 #include "cppmain.h"
 
-#include "stm32f4xx_hal.h"
-
 #include "SpiHandler.h"
 #include "semaphore.hpp"
 
