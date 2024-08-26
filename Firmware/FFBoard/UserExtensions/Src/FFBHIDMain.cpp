@@ -25,7 +25,7 @@ FFBHIDMain::FFBHIDMain(uint8_t axisCount) :
 		btn_chooser(ButtonSource::all_buttonsources),analog_chooser(AnalogSource::all_analogsources)
 {
 
-	restoreFlash(); // Load parameters
+	restoreFlashDelayed(); // Load parameters
 	registerCommands();
 
 }
@@ -211,7 +211,7 @@ bool FFBHIDMain::getFfbActive(){
  */
 void FFBHIDMain::send_report(){
 	// Check if HID command interface wants to send something and allow that if we did not skip too many reports
-	if(!tud_hid_n_ready(0) ||  (reportSendCounter++ < usb_report_rate*2 && this->hidCommands->waitingToSend())){
+	if(!tud_hid_n_ready(0) ||  ((reportSendCounter++ < usb_report_rate*2) && this->hidCommands->waitingToSend())){
 		return;
 	}
 	//Try semaphore

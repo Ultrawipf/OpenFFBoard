@@ -127,6 +127,7 @@ extern const uint32_t canSpeedBTR_preset[];
 /* EEPROM start address in Flash
  * PAGE_ID sectors 1 and 2!
  * */
+#define USE_EEPROM_EMULATION
 #define PAGE0_ID               FLASH_SECTOR_1
 #define PAGE1_ID               FLASH_SECTOR_2
 #define EEPROM_START_ADDRESS  ((uint32_t)0x08004000) /* EEPROM emulation start address: from sector1*/
@@ -137,5 +138,6 @@ extern const uint32_t canSpeedBTR_preset[];
 // BKPSRAM positions
 #define DFU_JUMP_MAGIC_ADR BKPSRAM_BASE + 0
 
+#define CCRAM_SEC ".ccmram"
 
 #endif /* INC_TARGET_CONSTANTS_H_ */
