@@ -664,7 +664,7 @@ float Axis::getTorqueScaler(){
 int32_t Axis::getTorque() { return metric.current.torque; }
 
 bool Axis::isInverted() {
-	return invertAxis; // TODO store in flash
+	return invertAxis;
 }
 
 /**
@@ -895,11 +895,12 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 	case Axis_commands::pos:
 		if (cmd.type == CMDtype::get && this->drv->getEncoder() != nullptr)
 		{
-			replies.emplace_back(this->drv->getEncoder()->getPos());
+			int32_t pos = this->drv->getEncoder()->getPos();
+			replies.emplace_back(isInverted() ? -pos : pos);
 		}
 		else if (cmd.type == CMDtype::set && this->drv->getEncoder() != nullptr)
 		{
-			this->drv->getEncoder()->setPos(cmd.val);
+			this->drv->getEncoder()->setPos(isInverted() ? -cmd.val : cmd.val);
 		}
 		else
 		{

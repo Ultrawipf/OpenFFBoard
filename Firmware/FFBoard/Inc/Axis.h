@@ -249,7 +249,7 @@ private:
 	uint16_t power = 5000;
 	float torqueScaler = 0; // power * fx_ratio as a ratio between 0 & 1
 	float effect_margin_scaler = 0;
-	bool invertAxis = false;
+	bool invertAxis = true; // By default most motors and encoders count up CCW while gamepads are counting up CW.
 	uint8_t endstopStrength = 127; // Sets how much extra torque per count above endstop is added. High = stiff endstop. Low = softer
 	const float endstopGain = 25; // Overall max endstop intensity
 
@@ -257,7 +257,7 @@ private:
 	uint8_t idlespringstrength = 127;
 	int16_t idlespringclip = 0;
 	float idlespringscale = 0;
-	bool idle_center = false;
+	bool idle_center = true;
 	bool motorWasNotReady = true;
 
 	// TODO tune these and check if it is really stable and beneficial to the FFB. index 4 placeholder
