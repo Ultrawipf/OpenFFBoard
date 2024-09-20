@@ -12,12 +12,10 @@
 #include "ChoosableClass.h"
 
 /*
- * Info about used ids:
- * 0: none
- * 1: tmc reserved
- * 2: local/tmc1
- * 3: tmc3
- * 4: mt encoder
+ * Note:
+ * Encoders should count UP when turned counterclockwise
+ * This is not the default gamepad direction but matches most motors
+ * If direction is not fixed the encoder class should provide a reverse option
  */
 
 /*
