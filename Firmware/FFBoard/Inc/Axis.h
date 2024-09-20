@@ -257,7 +257,6 @@ private:
 	uint8_t idlespringstrength = 127;
 	int16_t idlespringclip = 0;
 	float idlespringscale = 0;
-	bool idle_center = true;
 	bool motorWasNotReady = true;
 
 	// TODO tune these and check if it is really stable and beneficial to the FFB. index 4 placeholder
