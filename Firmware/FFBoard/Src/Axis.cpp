@@ -203,6 +203,8 @@ void Axis::restoreFlash(){
 	if(Flash_Read(flashAddrs.effects1, &effects)){
 		setIdleSpringStrength(effects & 0xff);
 		setFxStrengthAndFilter((effects >> 8) & 0xff,damperIntensity,damperFilter);
+	}else{
+		setIdleSpringStrength(idlespringstrength); // Use default
 	}
 
 	if(Flash_Read(flashAddrs.effects2, &effects)){
@@ -547,11 +549,6 @@ int32_t Axis::updateIdleSpringForce() {
  */
 void Axis::setIdleSpringStrength(uint8_t spring){
 	idlespringstrength = spring;
-	if(spring == 0){
-		idle_center = false;
-	}else{
-		idle_center = true;
-	}
 	idlespringclip = clip<int32_t,int32_t>((int32_t)spring*35,0,10000);
 	idlespringscale = 0.5f + ((float)spring * 0.01f);
 }
