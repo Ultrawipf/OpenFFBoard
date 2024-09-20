@@ -42,7 +42,7 @@ public:
 
 	void Run();
 
-	enum class EncoderBissC_commands {bits,cs,speed,errors};
+	enum class EncoderBissC_commands {bits,cs,speed,errors,direction};
 
 	CommandStatus command(const ParsedCommand& cmd,std::vector<CommandReply>& replies);
 
@@ -59,6 +59,7 @@ private:
 	int lenghtDataBit = 22;
 	int spiSpeed = 3;
 	bool waitData = false;
+	bool invertDirection = true; // Most biss-c encoders count UP clockwise while standard motor direction is usually CCW
 
 	uint32_t lastUpdateTick = 0;
 

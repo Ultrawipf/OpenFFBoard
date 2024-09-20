@@ -49,7 +49,7 @@ void EncoderBissC::Run(){
 		this->WaitForNotification();  // Wait until DMA is finished
 
 		if(updateFrame()){
-			pos = newPos;
+			pos = invertDirection ? -newPos : newPos;
 			if(first){ // Prevent immediate multiturn update
 				lastPos = pos;
 				first = false;
@@ -79,6 +79,7 @@ void EncoderBissC::restoreFlash(){
 	if(Flash_Read(ADR_BISSENC_CONF1, &buf)){
 		this->lenghtDataBit = (buf & 0x1F)+1; // up to 32 bit. 5 bits
 		this->spiSpeed = ((buf >> 5) & 0x3) +1;
+		this->invertDirection =  ((buf >> 7) & 1);
 	}
 	posOffset = Flash_ReadDefault(ADR_BISSENC_OFS, 0)<<std::max(0,(lenghtDataBit-16));
 
@@ -87,6 +88,7 @@ void EncoderBissC::restoreFlash(){
 void EncoderBissC::saveFlash(){
 	uint16_t buf = std::max((this->lenghtDataBit-1),0) & 0x1F;
 	buf |= ((this->spiSpeed-1) & 0x3) << 5;
+	buf |= (this->invertDirection & 1) << 7;
 	Flash_Write(ADR_BISSENC_CONF1, buf);
 	Flash_Write(ADR_BISSENC_OFS, posOffset >> std::max(0,(lenghtDataBit-16)));
 }
@@ -227,6 +229,7 @@ void EncoderBissC::registerCommands(){
 	registerCommand("bits", EncoderBissC_commands::bits, "Bits of resolution",CMDFLAG_GET|CMDFLAG_SET);
 	registerCommand("speed", EncoderBissC_commands::speed, "SPI speed preset 1-3",CMDFLAG_GET|CMDFLAG_SET);
 	registerCommand("errors", EncoderBissC_commands::errors, "CRC error count",CMDFLAG_GET);
+	registerCommand("dir", EncoderBissC_commands::direction, "Invert direction",CMDFLAG_GET|CMDFLAG_SET);
 }
 
 CommandStatus EncoderBissC::command(const ParsedCommand& cmd,std::vector<CommandReply>& replies){
@@ -246,6 +249,10 @@ CommandStatus EncoderBissC::command(const ParsedCommand& cmd,std::vector<Command
 		if(cmd.type == CMDtype::set){
 			configSPI();
 		}
+		break;
+
+	case EncoderBissC_commands::direction:
+		handleGetSet(cmd, replies, this->invertDirection);
 		break;
 	default:
 		return CommandStatus::NOT_FOUND;
