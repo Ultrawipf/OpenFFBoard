@@ -49,15 +49,17 @@ void EncoderBissC::Run(){
 		this->WaitForNotification();  // Wait until DMA is finished
 
 		if(updateFrame()){
-			pos = invertDirection ? -newPos : newPos;
+			int32_t halfres = 1<<(lenghtDataBit-1);
+			pos = newPos;
 			if(first){ // Prevent immediate multiturn update
-				lastPos = pos;
+				lastPos = posOffset;
 				first = false;
+				// If offset from current pos is more than half rotation add a multiturn count by setting previous position to the reloaded offset
 			}
 			//handle multiturn
-			if(pos-lastPos > 1<<(lenghtDataBit-1)){
+			if(pos-lastPos > halfres){
 				mtpos--;
-			}else if(lastPos-pos > 1<<(lenghtDataBit-1)){
+			}else if(lastPos-pos > halfres){
 				mtpos++;
 			}
 
@@ -81,8 +83,8 @@ void EncoderBissC::restoreFlash(){
 		this->spiSpeed = ((buf >> 5) & 0x3) +1;
 		this->invertDirection =  ((buf >> 7) & 1);
 	}
-	posOffset = Flash_ReadDefault(ADR_BISSENC_OFS, 0)<<std::max(0,(lenghtDataBit-16));
-
+	uint16_t restoredOffset = ( (uint16_t)(Flash_ReadDefault(ADR_BISSENC_OFS, 0) ));
+	posOffset = static_cast<int32_t>(restoredOffset) << std::max(0,(lenghtDataBit-16));
 }
 
 void EncoderBissC::saveFlash(){
@@ -90,7 +92,8 @@ void EncoderBissC::saveFlash(){
 	buf |= ((this->spiSpeed-1) & 0x3) << 5;
 	buf |= (this->invertDirection & 1) << 7;
 	Flash_Write(ADR_BISSENC_CONF1, buf);
-	Flash_Write(ADR_BISSENC_OFS, posOffset >> std::max(0,(lenghtDataBit-16)));
+	int32_t scaledOfs = posOffset >> std::max(0,(lenghtDataBit-16));
+	Flash_Write(ADR_BISSENC_OFS, (uint16_t)(scaledOfs) );
 }
 
 void EncoderBissC::configSPI() {
@@ -206,16 +209,27 @@ int32_t EncoderBissC::getPosAbs(){
 		if(useWaitSem && HAL_GetTick() - lastUpdateTick > waitThresh)
 			waitForUpdateSem.Take(waitThresh); // Wait a bit
 	}
-	return pos + mtpos * getCpr();
+	int32_t curpos = pos + mtpos * getCpr();
+	return invertDirection ? -curpos : curpos;
 }
 
 int32_t EncoderBissC::getPos(){
-	return getPosAbs()-posOffset;
+	if(invertDirection){
+		return getPosAbs()+posOffset;
+	}else{
+		return getPosAbs()-posOffset;
+	}
+
 }
 
 void EncoderBissC::setPos(int32_t newpos){
+	if(invertDirection){
+		newpos = -newpos;
+	}
+	int32_t diff = ( pos - newpos);
+	mtpos = newpos / getCpr(); // Multiturn should be reset
 
-	posOffset = pos - newpos;
+	posOffset = diff % getCpr(); // Always positive
 }
 
 
