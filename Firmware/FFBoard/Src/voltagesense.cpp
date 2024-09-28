@@ -7,6 +7,9 @@
 
 #include "global_callbacks.h"
 #include "constants.h"
+
+#ifdef TMC4671DRIVER
+
 #include "voltagesense.h"
 #include "ErrorHandler.h"
 
@@ -81,3 +84,5 @@ void brakeCheck(){
 	}
 
 }
+
+#endif /* TMC4671DRIVER */

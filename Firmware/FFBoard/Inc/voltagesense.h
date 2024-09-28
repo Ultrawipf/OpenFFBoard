@@ -9,6 +9,8 @@
 #define VOLTAGESENSE_H_
 #include "target_constants.h"
 
+#ifdef TMC4671DRIVER
+
 uint16_t getIntV();
 uint16_t getExtV();
 void brakeCheck();
@@ -26,5 +28,7 @@ void setVSenseMult(float vSenseMultiplier);
  *
  */
 void setupBrakePin(uint32_t vdiffAct,uint32_t vdiffDeact,uint32_t vMax);
+
+#endif /* TMC4671DRIVER */
 
 #endif /* VOLTAGESENSE_H_ */
