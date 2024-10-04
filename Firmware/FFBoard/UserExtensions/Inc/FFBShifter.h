@@ -70,6 +70,8 @@ public:
 	int32_t springEffect(int32_t position,int32_t offset,float coefficient,int32_t negativeSaturation=0x7fff,int32_t positiveSaturation=0x7fff,int32_t deadBand=0);
 
 	ShifterEffectParams params;
+
+	void updateSamplerate(float newSamplerate);
 };
 
 class FFBShifter : public FFBHIDMain{
@@ -93,7 +95,7 @@ public:
 //	uint8_t updateAnalog() override;
 //	uint8_t updateButtons(uint8_t initialShift = 0) override;
 	uint8_t readInternalButtons(uint64_t* btn);
-	void updateButtons(reportHID_t& reportHID) override;
+	void updateButtons(std::unique_ptr<HID_GamepadReport_base>& reportHID) override;
 
 private:
 	std::shared_ptr<FFBShifterEffects> effects_calc = std::make_shared<FFBShifterEffects>();
