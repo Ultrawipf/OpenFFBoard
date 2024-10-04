@@ -45,6 +45,21 @@ uint8_t FFBShifter::readInternalButtons(uint64_t* btn){
 	return btnsrc->readButtons(btn);
 }
 
+void FFBShifter::updateButtons(reportHID_t& reportHID){
+	// Read buttons
+	uint64_t tbtn = 0;
+	uint8_t shift = readInternalButtons(&tbtn);
+	reportHID.buttons = tbtn; // Reset buttons
+	if(btns.size() != 0){
+		for(auto &btn : btns){
+			uint64_t buf = 0;
+			uint8_t amount = btn->readButtons(&buf);
+			reportHID.buttons |= buf << shift;
+			shift += amount;
+		}
+	}
+}
+
 // Shifter effects. Create the snappy positions here
 
 FFBShifterEffects::FFBShifterEffects():CommandHandler("shifterfx",CLSID_FFBSHIFTER_FX,0) {
