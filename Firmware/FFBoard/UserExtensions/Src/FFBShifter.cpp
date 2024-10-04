@@ -45,19 +45,19 @@ uint8_t FFBShifter::readInternalButtons(uint64_t* btn){
 	return btnsrc->readButtons(btn);
 }
 
-void FFBShifter::updateButtons(reportHID_t& reportHID){
+void FFBShifter::updateButtons(std::unique_ptr<HID_GamepadReport_base>& reportHID){
 	// Read buttons
 	uint64_t tbtn = 0;
 	uint8_t shift = readInternalButtons(&tbtn);
-	reportHID.buttons = tbtn; // Reset buttons
 	if(btns.size() != 0){
 		for(auto &btn : btns){
 			uint64_t buf = 0;
 			uint8_t amount = btn->readButtons(&buf);
-			reportHID.buttons |= buf << shift;
+			tbtn |= buf << shift;
 			shift += amount;
 		}
 	}
+	reportHID->setButtons(tbtn); // Update buttons
 }
 
 // Shifter effects. Create the snappy positions here
@@ -94,6 +94,10 @@ void FFBShifterEffects::setActive(bool active){
 	this->active = active;
 }
 
+void FFBShifterEffects::updateSamplerate(float newSamplerate){
+	// TODO Implement samplerate for shifter
+}
+
 /**
  * A general spring effect
  */
@@ -119,8 +123,8 @@ void FFBShifterEffects::calculateShifterEffect(metric_t* metricsX,metric_t* metr
 	if(!metricsX || !metricsY){
 		return;
 	}
-	int32_t posY = metricsY->pos;
-	int32_t posX = metricsX->pos;
+	int32_t posY = metricsY->pos_scaled_16b;
+	int32_t posX = metricsX->pos_scaled_16b;
 	float pos_fY = metricsY->pos_f;
 	float pos_fX = metricsX->pos_f;
 	float rangeY = params.range;
