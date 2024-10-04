@@ -167,24 +167,14 @@ bool FFBHIDMain::getFfbActive(){
 	return this->effects_calc->isActive();
 }
 
-/**
- * Sends periodic gamepad reports of buttons and analog axes
- */
-void FFBHIDMain::send_report(){
-	// Check if HID command interface wants to send something and allow that if we did not skip too many reports
-	if(!tud_hid_n_ready(0) ||  ((reportSendCounter++ < usb_report_rate*2) && this->hidCommands->waitingToSend())){
-		return;
-	}
-	//Try semaphore
-//	if(!sourcesSem.Take(10)){
-//		return;
-//	}
-
+void FFBHIDMain::updateButtons(std::unique_ptr<HID_GamepadReport_base>& reportHID){
 	// Read buttons
 	uint64_t b = 0;
 	SelectableInputs::getButtonValues(b);
 	reportHID->setButtons(b);
+}
 
+void FFBHIDMain::updateAxes(std::unique_ptr<HID_GamepadReport_base>& reportHID){
 	// Encoder
 	//axes_manager->addAxesToReport(analogAxesReport, &count);
 
@@ -210,13 +200,30 @@ void FFBHIDMain::send_report(){
 		reportHID->setHidReportAxis(count++, val);
 	}
 
-//	sourcesSem.Give();
+
 	// Fill rest
 	for(;count<analogAxisCount; count++){
 		//setHidReportAxis(&reportHID,count,0);
 		reportHID->setHidReportAxis(count, 0);
 	}
+}
 
+/**
+ * Sends periodic gamepad reports of buttons and analog axes
+ */
+void FFBHIDMain::send_report(){
+	// Check if HID command interface wants to send something and allow that if we did not skip too many reports
+	if(!tud_hid_n_ready(0) ||  ((reportSendCounter++ < usb_report_rate*2) && this->hidCommands->waitingToSend())){
+		return;
+	}
+	//Try semaphore
+//	if(!sourcesSem.Take(10)){
+//		return;
+//	}
+
+	updateButtons(reportHID);
+	updateAxes(reportHID);
+	//	sourcesSem.Give();
 
 	/*
 	 * Only send a new report if actually changed since last time or timeout and hid is ready

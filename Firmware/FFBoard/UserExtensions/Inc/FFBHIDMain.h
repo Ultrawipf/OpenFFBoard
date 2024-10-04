@@ -84,12 +84,15 @@ public:
 
 	float getCurFFBFreq();
 
+	virtual void updateButtons(std::unique_ptr<HID_GamepadReport_base>& reportHID);
+	virtual void updateAxes(std::unique_ptr<HID_GamepadReport_base>& reportHID);
+
 protected:
 	std::shared_ptr<EffectsControlItf> ffb;
 	std::shared_ptr<EffectsCalculatorItf> effects_calc;
 	uint8_t axisCount=0;
 
-private:
+
 	volatile Control_t control;
 	void send_report();
 	const bool allowEstopReset = true; // Resets the Estop when the pin is released
