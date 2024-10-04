@@ -93,6 +93,7 @@ public:
 //	uint8_t updateAnalog() override;
 //	uint8_t updateButtons(uint8_t initialShift = 0) override;
 	uint8_t readInternalButtons(uint64_t* btn);
+	void updateButtons(reportHID_t& reportHID) override;
 
 private:
 	std::shared_ptr<FFBShifterEffects> effects_calc = std::make_shared<FFBShifterEffects>();
