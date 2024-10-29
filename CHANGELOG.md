@@ -1,5 +1,5 @@
 ### Changes this version:
-- Added independend friction and inertia effects to axis
-- ODrive class can save encoder position offset
-- Reverted the forza fix for 2 axis setups. 
-  - TODO: test and report if behaviour works for all games with the angle always being used for 1 axis modes (Games must send 90° on X axis effects instead of 0°).
+- Fixed BISS-C encoder sometimes overflowing one rotation at startup
+- Added BISS-C direction inversion function (Default true). Most BISS-C encoders count CW while most others and TMC count CCW.
+- Standardized encoder counting direction counting up in CCW direction as a more common industrial standard
+- Fixed idle spring effect not working before first save
