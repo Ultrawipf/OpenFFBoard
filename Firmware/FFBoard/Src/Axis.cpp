@@ -705,9 +705,9 @@ bool Axis::updateTorque(int32_t* totalTorque) {
 
 		float torqueSign = torque > 0 ? 1 : -1; // Used to prevent metrics against the force to go into the limiter
 		// Speed. Mostly tuned...
-		spdlimiterAvg.addValue(metric.current.speed);
-		float speedreducer = (float)((spdlimiterAvg.getAverage()*torqueSign) - (float)maxSpeedDegS) *  ((float)0x7FFF / maxSpeedDegS);
-		spdlimitreducerI = clip<float,int32_t>( spdlimitreducerI + ((speedreducer * 0.015) * torqueScaler),0,power);
+		//spdlimiterAvg.addValue(metric.current.speed);
+		float speedreducer = (float)((metric.current.speed*torqueSign) - (float)maxSpeedDegS) *  ((float)0x7FFF / maxSpeedDegS);
+		spdlimitreducerI = clip<float,int32_t>( spdlimitreducerI + ((speedreducer * speedLimiterI) * torqueScaler),0,power);
 
 		// Accel limit. Not really useful. Maybe replace with torque slew rate limit?
 //		float accreducer = (float)((metric.current.accel*torqueSign) - (float)maxAccelDegSS) * getAccelScalerNormalized();
@@ -949,7 +949,7 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 		}
 		else if (cmd.type == CMDtype::set)
 		{
-			uint32_t value = clip<uint32_t, uint32_t>(cmd.val, 0, 2);
+			uint32_t value = clip<uint32_t, uint32_t>(cmd.val, 0, filterSpeedCst.size()-1);
 			this->filterProfileId = value;
 			speedFilter.setFc(filterSpeedCst[this->filterProfileId].freq / filter_f);
 			speedFilter.setQ(filterSpeedCst[this->filterProfileId].q / 100.0);

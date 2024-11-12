@@ -23,11 +23,16 @@
 #include "ClassChooser.h"
 #include "ExtiHandler.h"
 #include "EffectsCalculator.h"
-#include "FastAvg.h"
 
 #define INTERNAL_AXIS_DAMPER_SCALER 0.7
 #define INTERNAL_AXIS_FRICTION_SCALER 0.7
 #define INTERNAL_AXIS_INERTIA_SCALER 0.7
+#ifndef AXIS_SPEEDLIMITER_P
+#define AXIS_SPEEDLIMITER_P 0.3
+#endif
+#ifndef AXIS_SPEEDLIMITER_I
+#define AXIS_SPEEDLIMITER_I 0.03
+#endif
 
 
 struct Control_t {
@@ -226,7 +231,8 @@ private:
 	uint16_t maxSpeedDegS  = 0; // Set to non zero to enable. example 1000. 8b * 10?
 	//float	 maxAccelDegSS = 0;
 	uint32_t maxTorqueRateMS = 0; // 8b * 128?
-	const float speedLimiterP = 0.2;
+	float speedLimiterP = AXIS_SPEEDLIMITER_P;
+	float speedLimiterI = AXIS_SPEEDLIMITER_I;
 
 	float spdlimitreducerI = 0;
 	//float acclimitreducerI = 0;
@@ -260,8 +266,8 @@ private:
 	bool motorWasNotReady = true;
 
 	// TODO tune these and check if it is really stable and beneficial to the FFB. index 4 placeholder
-	const biquad_constant_t filterSpeedCst[4] = {{ 30, 55 }, { 60, 55 }, { 120, 55 }, {120, 55}};
-	const biquad_constant_t filterAccelCst[4] = {{ 40, 30 }, { 55, 30 }, { 70, 30 }, {120, 55}};
+	const std::array<biquad_constant_t,4> filterSpeedCst = { {{ 40, 55 }, { 70, 55 }, { 120, 55 }, {180, 55}} };
+	const std::array<biquad_constant_t,4> filterAccelCst = { {{ 40, 30 }, { 55, 30 }, { 70, 30 }, {120, 55}} };
 	const biquad_constant_t filterDamperCst = {60, 55};
 	const biquad_constant_t filterFrictionCst = {50, 20};
 	const biquad_constant_t filterInertiaCst = {20, 20};
@@ -269,7 +275,6 @@ private:
 	const float filter_f = 1000; // 1khz
 	const int32_t intFxClip = 20000;
 	uint8_t damperIntensity = 30;
-	FastAvg<float,5> spdlimiterAvg;
 
 	uint8_t frictionIntensity = 0;
 	uint8_t inertiaIntensity = 0;
