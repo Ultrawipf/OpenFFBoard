@@ -1,8 +1,8 @@
 var voltagesense_8cpp =
 [
     [ "brakeCheck", "voltagesense_8cpp.html#a0df0dfb8468434f7937158b2ebc378a2", null ],
-    [ "getExtV", "voltagesense_8cpp.html#a916180288084b350127d45d8cc34f295", null ],
-    [ "getIntV", "voltagesense_8cpp.html#af2ea7ebc1960250d249f887479684a2a", null ],
+    [ "getExtV", "voltagesense_8cpp.html#a590638f994a134e82ff3bb6053ba67de", null ],
+    [ "getIntV", "voltagesense_8cpp.html#a378fe4daa3d9a8e7a574f7b70b812e69", null ],
     [ "setupBrakePin", "voltagesense_8cpp.html#a76b3bff6033f75f12be8db5d9e5a4bf6", null ],
     [ "setVSenseMult", "voltagesense_8cpp.html#a6c426752ab8435a2b65ae7ee41539ea6", null ],
     [ "brake_failure", "voltagesense_8cpp.html#a7d1e65d3667a60131f5d69134c79c898", null ],

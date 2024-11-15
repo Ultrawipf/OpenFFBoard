@@ -1,5 +1,16 @@
 var NAVTREEINDEX9 =
 {
+"class_motor_simplemotion.html#af91e8a7e992a1ade1f25296a806f8368":[3,0,99,17],
+"class_motor_simplemotion1.html":[3,0,100],
+"class_motor_simplemotion1.html#a1b9d0463202aa1c7ca988f60b90d44e0":[3,0,100,4],
+"class_motor_simplemotion1.html#a858931971bc14d9aa2620d5a5a570f8d":[3,0,100,0],
+"class_motor_simplemotion1.html#aa8a5aa152f67e54ae2b3c356f49e6c4b":[3,0,100,5],
+"class_motor_simplemotion1.html#ab531375938f0fa29a5eaccb5f2cf7d12":[3,0,100,3],
+"class_motor_simplemotion1.html#accf91a92c6fb35878ba588ddde04502d":[3,0,100,2],
+"class_motor_simplemotion1.html#acf95152874bcfa81c557652895984887":[3,0,100,1],
+"class_motor_simplemotion2.html":[3,0,101],
+"class_motor_simplemotion2.html#a0ad3281e1bbbf2abfa82fe0ee8aef8db":[3,0,101,3],
+"class_motor_simplemotion2.html#a11fc51d5efbc1163266c3b4a7cfe15d9":[3,0,101,1],
 "class_motor_simplemotion2.html#a4530a79329f6ab19e9d92abde82f34a8":[3,0,101,2],
 "class_motor_simplemotion2.html#a48ff9a66f4aba7c982545e5e6cc87bdb":[3,0,101,5],
 "class_motor_simplemotion2.html#a9fae6c35abed3ecda4161d1c29d5447c":[3,0,101,4],
@@ -238,16 +249,5 @@ var NAVTREEINDEX9 =
 "class_s_p_i___buttons__2.html#a475db72f9512403cdd00336ddea55076":[3,0,135,3],
 "class_s_p_i___buttons__2.html#abe3ab7788de4b8fab7b307234e2d6596":[3,0,135,2],
 "class_s_p_i___buttons__2.html#ae51ed498a7d9fe4b417ca10cdb5132c4":[3,0,135,1],
-"class_s_p_i_device.html":[3,0,137],
-"class_s_p_i_device.html#a0e7d0a7113d7948b8d1db9fe54a27c3e":[3,0,137,13],
-"class_s_p_i_device.html#a1e73b78c5520e56b2786132a2537ba20":[3,0,137,15],
-"class_s_p_i_device.html#a2d39ef1a6af4796a3740f75260c9fe8a":[3,0,137,4],
-"class_s_p_i_device.html#a3271b77b6ef851e2b6e11d0c1c057347":[3,0,137,0],
-"class_s_p_i_device.html#a4026a0ad0b2f3a70b663a7f29b7e29a4":[3,0,137,2],
-"class_s_p_i_device.html#a4a2f9e5ed0582020a8ac40bd6db82c0b":[3,0,137,3],
-"class_s_p_i_device.html#a56dd6e4bc113a66dd87fec6f23a77521":[3,0,137,11],
-"class_s_p_i_device.html#a5f2c7c2dd837a8c4c8934aa56d0d8c25":[3,0,137,7],
-"class_s_p_i_device.html#a79b9943ccf8eff5cf883f1e4af351277":[3,0,137,5],
-"class_s_p_i_device.html#a7a16f61efb6990a72f22090c4c98a672":[3,0,137,6],
-"class_s_p_i_device.html#aaa895255e7199bedc48a3db0214c8b02":[3,0,137,14]
+"class_s_p_i_device.html":[3,0,137]
 };

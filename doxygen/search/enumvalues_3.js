@@ -29,7 +29,7 @@ var searchData=
   ['device_5fcapability_5fwireless_5fusb_26',['DEVICE_CAPABILITY_WIRELESS_USB',['../group___u_s_b_def___type.html#ggae8dad3738b9ff604cc3cdedf28cf2245a60db753171132ed3c95c2722f56397c2',1,'tusb_types.h']]],
   ['device_5fcapability_5fwireless_5fusb_5fext_27',['DEVICE_CAPABILITY_WIRELESS_USB_EXT',['../group___u_s_b_def___type.html#ggae8dad3738b9ff604cc3cdedf28cf2245ace9e35870832817b01358acfe9b43357',1,'tusb_types.h']]],
   ['devid_28',['devid',['../_system_commands_8h.html#a4a42a50bc0a826d5ab6d847950749d07a8c265dc4382bd9bc7eab5ee768585c65',1,'SystemCommands.h']]],
-  ['devtype_29',['devtype',['../class_motor_simplemotion.html#a0fa06e9cd5b42ac97ac49ff916ac1c30ac547eb5408f3798446675c4e40409fa0',1,'MotorSimplemotion::devtype()'],['../class_motor_simplemotion.html#a04284aedcbd482d8dea7aa2bf631d5b2ac547eb5408f3798446675c4e40409fa0',1,'MotorSimplemotion::devtype()']]],
+  ['devtype_29',['devtype',['../class_motor_simplemotion.html#a04284aedcbd482d8dea7aa2bf631d5b2ac547eb5408f3798446675c4e40409fa0',1,'MotorSimplemotion::devtype()'],['../class_motor_simplemotion.html#a0fa06e9cd5b42ac97ac49ff916ac1c30ac547eb5408f3798446675c4e40409fa0',1,'MotorSimplemotion::devtype()']]],
   ['dfu_30',['dfu',['../_system_commands_8h.html#a4a42a50bc0a826d5ab6d847950749d07afa4f4d80f554c6845daf73511d75e6bc',1,'SystemCommands.h']]],
   ['dfu_5fdesc_5ffunctional_31',['DFU_DESC_FUNCTIONAL',['../dfu_8h.html#a37c9cfb22efe8e280af662ace4330a3ea104febb2c4ae0a2bdd3a326681489f29',1,'dfu.h']]],
   ['dfu_5fdnbusy_32',['DFU_DNBUSY',['../dfu_8h.html#a187dfde3b0fa8047e6c97b2317bce21fa6c7e0d5ef61f350a4719b0d637dae263',1,'dfu.h']]],
@@ -66,9 +66,10 @@ var searchData=
   ['dfu_5fupload_5fidle_63',['DFU_UPLOAD_IDLE',['../dfu_8h.html#a187dfde3b0fa8047e6c97b2317bce21faf56d835eb6704702c3ddf5134402f82a',1,'dfu.h']]],
   ['differential_64',['differential',['../class_a_d_s111_x___analog_source.html#a490bc0d1001e76501ad1a83c6a9d776cab7130ec05739e60e37f9bd6c56829122',1,'ADS111X_AnalogSource']]],
   ['dir_65',['dir',['../class_motor_p_w_m.html#a200f16b29b4a31cfd1bbc75219b3c80aa736007832d2167baaae763fd3a3f3cf1',1,'MotorPWM']]],
-  ['doubleints_66',['DOUBLEINTS',['../_command_handler_8h.html#a9c4555f6fe97545f2480f26071a2935fa03d44b87916b4ed53affc13f79dbc459',1,'CommandHandler.h']]],
-  ['drvid_5finvalid_67',['DRVID_INVALID',['../usbd_8c.html#a1fb9092bcdeada2d206bdc74afbbe122a06827fb1b800dd4df84c46e3db632cf7',1,'DRVID_INVALID():&#160;usbd.c'],['../usbh_8c.html#a8628933cde20921c453a6d2607bdad62a06827fb1b800dd4df84c46e3db632cf7',1,'DRVID_INVALID():&#160;usbh.c']]],
-  ['drvtype_68',['drvtype',['../_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715a37befb8449cef2f5f638fd7612fda2df',1,'Axis.h']]],
-  ['dsadcclkin_69',['DSAdcClkIn',['../_t_m_c4671_8h.html#aacd749e72feab7582be13cd7f4d414a6a68fe401a9c6bbcdf302bfcaabb5e9480',1,'TMC4671.h']]],
-  ['dsadcclkout_70',['DSAdcClkOut',['../_t_m_c4671_8h.html#aacd749e72feab7582be13cd7f4d414a6a6352d2cd0dd6eaa5bd26c4dae7b6107d',1,'TMC4671.h']]]
+  ['direction_66',['direction',['../class_encoder_biss_c.html#ab6486bfbbaa89e76f2918f15595e668baef72c37be9d1b9e6e5bbd6ef09448abe',1,'EncoderBissC']]],
+  ['doubleints_67',['DOUBLEINTS',['../_command_handler_8h.html#a9c4555f6fe97545f2480f26071a2935fa03d44b87916b4ed53affc13f79dbc459',1,'CommandHandler.h']]],
+  ['drvid_5finvalid_68',['DRVID_INVALID',['../usbd_8c.html#a1fb9092bcdeada2d206bdc74afbbe122a06827fb1b800dd4df84c46e3db632cf7',1,'DRVID_INVALID():&#160;usbd.c'],['../usbh_8c.html#af8654c714018c6241d9ebd01f3fb5a26a06827fb1b800dd4df84c46e3db632cf7',1,'DRVID_INVALID():&#160;usbh.c']]],
+  ['drvtype_69',['drvtype',['../_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715a37befb8449cef2f5f638fd7612fda2df',1,'Axis.h']]],
+  ['dsadcclkin_70',['DSAdcClkIn',['../_t_m_c4671_8h.html#aacd749e72feab7582be13cd7f4d414a6a68fe401a9c6bbcdf302bfcaabb5e9480',1,'TMC4671.h']]],
+  ['dsadcclkout_71',['DSAdcClkOut',['../_t_m_c4671_8h.html#aacd749e72feab7582be13cd7f4d414a6a6352d2cd0dd6eaa5bd26c4dae7b6107d',1,'TMC4671.h']]]
 ];

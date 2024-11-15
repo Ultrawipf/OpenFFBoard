@@ -158,6 +158,8 @@ Public Attributes</h2></td></tr>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:a36f83df111f5723b5a11af207fcefc36"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="struct_class_identifier.html">ClassIdentifier</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_analog_source.html#a36f83df111f5723b5a11af207fcefc36">info</a></td></tr>
 <tr class="separator:a36f83df111f5723b5a11af207fcefc36"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2a634f81fb2266fd54a9ea5fde566eb"><td class="memItemLeft" align="right" valign="top">static const std::vector&lt; <a class="el" href="structclass__entry.html">class_entry</a>&lt; <a class="el" href="class_analog_source.html">AnalogSource</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_analog_source.html#ac2a634f81fb2266fd54a9ea5fde566eb">all_analogsources</a></td></tr>
+<tr class="separator:ac2a634f81fb2266fd54a9ea5fde566eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_attribs_class_choosable_class"><td colspan="2" onclick="javascript:toggleInherit('pub_static_attribs_class_choosable_class')"><img src="closed.png" alt="-"/>&#160;Static Public Attributes inherited from <a class="el" href="class_choosable_class.html">ChoosableClass</a></td></tr>
 <tr class="memitem:a13914185ad8fcd65474c4e7e981d4c2b inherit pub_static_attribs_class_choosable_class"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="struct_class_identifier.html">ClassIdentifier</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_choosable_class.html#a13914185ad8fcd65474c4e7e981d4c2b">info</a></td></tr>
 <tr class="separator:a13914185ad8fcd65474c4e7e981d4c2b inherit pub_static_attribs_class_choosable_class"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -340,6 +342,43 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="ac2a634f81fb2266fd54a9ea5fde566eb" name="ac2a634f81fb2266fd54a9ea5fde566eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2a634f81fb2266fd54a9ea5fde566eb">&#9670;&nbsp;</a></span>all_analogsources</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::vector&lt; <a class="el" href="structclass__entry.html">class_entry</a>&lt; <a class="el" href="class_analog_source.html">AnalogSource</a> &gt; &gt; AnalogSource::all_analogsources</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">{</div>
+<div class="line"><span class="preprocessor">#ifdef ANALOGAXES</span></div>
+<div class="line">        add_class&lt;LocalAnalog,AnalogSource&gt;(0),</div>
+<div class="line"><span class="preprocessor">#endif</span></div>
+<div class="line"><span class="preprocessor">#ifdef CANANALOG</span></div>
+<div class="line">        add_class&lt;CanAnalog&lt;8&gt;,<a class="code hl_class" href="class_analog_source.html">AnalogSource</a>&gt;(1),</div>
+<div class="line">#endif</div>
+<div class="line">#ifdef ADS111XANALOG</div>
+<div class="line">        add_class&lt;ADS111X_AnalogSource,AnalogSource&gt;(2),</div>
+<div class="line"><span class="preprocessor">#endif</span></div>
+<div class="line"><span class="preprocessor">}</span></div>
+<div class="ttc" id="aclass_analog_source_html"><div class="ttname"><a href="class_analog_source.html">AnalogSource</a></div><div class="ttdef"><b>Definition:</b> <a href="_analog_source_8h_source.html#l00019">AnalogSource.h:19</a></div></div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="_analog_source_8h_source.html#l00033">33</a> of file <a class="el" href="_analog_source_8h_source.html">AnalogSource.h</a>.</p>
+
+</div>
+</div>
 <a id="a1178f347f32e5e87b21d8113e1e87645" name="a1178f347f32e5e87b21d8113e1e87645"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1178f347f32e5e87b21d8113e1e87645">&#9670;&nbsp;</a></span>buf</h2>
 
@@ -389,6 +428,7 @@ Additional Inherited Members</h2></td></tr>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li><a class="el" href="_analog_source_8h_source.html">AnalogSource.h</a></li>
 <li><a class="el" href="_analog_source_8cpp_source.html">AnalogSource.cpp</a></li>
+<li><a class="el" href="_analog_sources_8cpp_source.html">AnalogSources.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

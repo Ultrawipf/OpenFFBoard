@@ -115,6 +115,7 @@ var class_t_m_c4671 =
     [ "pidAutoTune", "class_t_m_c4671.html#a0b152793efe8b12d97ef0159d2e4a0b8", null ],
     [ "pingDriver", "class_t_m_c4671.html#a78f2f1e72c9cd1eca1cc062db601075a", null ],
     [ "posToEnc", "class_t_m_c4671.html#ad39175477b1007cc9ce5576f7866d435", null ],
+    [ "rampFlux", "class_t_m_c4671.html#a9c54dffe76d1ba122a71ea56faade97e", null ],
     [ "reachedPosition", "class_t_m_c4671.html#a355e2fec628b4480084724bcee003049", null ],
     [ "readFlags", "class_t_m_c4671.html#ad5697bdafc3ae2e1d4a0dccbf7ed51e6", null ],
     [ "readReg", "class_t_m_c4671.html#af11f8cba5111e5f4d502adab3698d467", null ],

@@ -4,7 +4,8 @@ var class_encoder_biss_c =
       [ "bits", "class_encoder_biss_c.html#ab6486bfbbaa89e76f2918f15595e668bacc411e6c13670e52124629b8ac83f7d0", null ],
       [ "cs", "class_encoder_biss_c.html#ab6486bfbbaa89e76f2918f15595e668ba95cc64dd2825f9df13ec4ad683ecf339", null ],
       [ "speed", "class_encoder_biss_c.html#ab6486bfbbaa89e76f2918f15595e668bace4ef3ec98443ed10da505114b58f153", null ],
-      [ "errors", "class_encoder_biss_c.html#ab6486bfbbaa89e76f2918f15595e668ba07213a0161f52846ab198be103b5ab43", null ]
+      [ "errors", "class_encoder_biss_c.html#ab6486bfbbaa89e76f2918f15595e668ba07213a0161f52846ab198be103b5ab43", null ],
+      [ "direction", "class_encoder_biss_c.html#ab6486bfbbaa89e76f2918f15595e668baef72c37be9d1b9e6e5bbd6ef09448abe", null ]
     ] ],
     [ "EncoderBissC", "class_encoder_biss_c.html#a63d7959311ccaaa6a480d15e9ea37b97", null ],
     [ "~EncoderBissC", "class_encoder_biss_c.html#a981c21d677bfd2e12709fc3eb0112ecc", null ],
@@ -30,6 +31,7 @@ var class_encoder_biss_c =
     [ "decod_buf", "class_encoder_biss_c.html#ae265f8696b443c7ded92f0a703e1586a", null ],
     [ "info", "class_encoder_biss_c.html#a0f0ba198d699852f5783953c764fc41c", null ],
     [ "inUse", "class_encoder_biss_c.html#abfb02cda26c1ab5b7d33342e1abf28ae", null ],
+    [ "invertDirection", "class_encoder_biss_c.html#ab39f52d8ca3c4a35e885fcbd00e42eda", null ],
     [ "lastPos", "class_encoder_biss_c.html#a0b516aa9de6938eb75bde9154c4860a4", null ],
     [ "lastUpdateTick", "class_encoder_biss_c.html#a7d646c7b0fccbebc0f001bab27bcc43f", null ],
     [ "lenghtDataBit", "class_encoder_biss_c.html#a5d9500dd24f392ba3e862e3cb458fe1d", null ],
