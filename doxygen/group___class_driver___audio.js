@@ -141,7 +141,7 @@ var group___class_driver___audio =
       [ "bmaControls", "struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a7ee42a16c83dc680abaa03a9655b665e", null ],
       [ "bmAttributes", "struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a601c6645688288a10492023fac13ddc9", null ],
       [ "bmAttributes", "struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a4f0385d8fcc327c98d332a2d045c5706", null ],
-      [ "bmAttributes", "struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a76c48c4d4298bcfbb88a8a76dffb3018", null ],
+      [ "bmAttributes", "struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a42dfb6696c02aa0dfa77278e2be95dde", null ],
       [ "bMaxNumberOfRefFramesPlus1", "struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a9648c0cfb8bb67e1941146d82262fe3d", null ],
       [ "bMaxPacketSize0", "struct_t_u___a_t_t_r___p_a_c_k_e_d.html#abd04d355c316d64d63b65d5e8d694915", null ],
       [ "bMaxPower", "struct_t_u___a_t_t_r___p_a_c_k_e_d.html#ab394267e44ae1a020e091248fa271fc6", null ],
