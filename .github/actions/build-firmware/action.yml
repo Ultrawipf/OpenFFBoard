@@ -22,10 +22,9 @@ runs:
     #- uses: actions/checkout@v2
     - name: "Check toolchain exists"
       id: check_tc
-      uses: andstor/file-existence-action@v2
+      uses: andstor/file-existence-action@v3
       with:
         files: "/tmp/armtc,/usr/share/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi"
-        allow_failure: false
 
     - name: Make temp dir
       if: steps.check_tc.outputs.files_exists != 'true'
@@ -33,7 +32,7 @@ runs:
       run: mkdir -p /tmp/armtc # make temp directory
 
     # Setup toolchain
-    - uses: actions/cache@v2
+    - uses: actions/cache@v4
       id: cache
       if: steps.check_tc.outputs.files_exists != 'true'
       with:
