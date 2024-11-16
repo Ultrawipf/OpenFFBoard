@@ -68,7 +68,7 @@ var searchData=
   ['dir_65',['dir',['../class_motor_p_w_m.html#a200f16b29b4a31cfd1bbc75219b3c80aa736007832d2167baaae763fd3a3f3cf1',1,'MotorPWM']]],
   ['direction_66',['direction',['../class_encoder_biss_c.html#ab6486bfbbaa89e76f2918f15595e668baef72c37be9d1b9e6e5bbd6ef09448abe',1,'EncoderBissC']]],
   ['doubleints_67',['DOUBLEINTS',['../_command_handler_8h.html#a9c4555f6fe97545f2480f26071a2935fa03d44b87916b4ed53affc13f79dbc459',1,'CommandHandler.h']]],
-  ['drvid_5finvalid_68',['DRVID_INVALID',['../usbd_8c.html#a1fb9092bcdeada2d206bdc74afbbe122a06827fb1b800dd4df84c46e3db632cf7',1,'DRVID_INVALID():&#160;usbd.c'],['../usbh_8c.html#a8628933cde20921c453a6d2607bdad62a06827fb1b800dd4df84c46e3db632cf7',1,'DRVID_INVALID():&#160;usbh.c']]],
+  ['drvid_5finvalid_68',['DRVID_INVALID',['../usbd_8c.html#a1fb9092bcdeada2d206bdc74afbbe122a06827fb1b800dd4df84c46e3db632cf7',1,'DRVID_INVALID():&#160;usbd.c'],['../usbh_8c.html#af8654c714018c6241d9ebd01f3fb5a26a06827fb1b800dd4df84c46e3db632cf7',1,'DRVID_INVALID():&#160;usbh.c']]],
   ['drvtype_69',['drvtype',['../_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715a37befb8449cef2f5f638fd7612fda2df',1,'Axis.h']]],
   ['dsadcclkin_70',['DSAdcClkIn',['../_t_m_c4671_8h.html#aacd749e72feab7582be13cd7f4d414a6a68fe401a9c6bbcdf302bfcaabb5e9480',1,'TMC4671.h']]],
   ['dsadcclkout_71',['DSAdcClkOut',['../_t_m_c4671_8h.html#aacd749e72feab7582be13cd7f4d414a6a6352d2cd0dd6eaa5bd26c4dae7b6107d',1,'TMC4671.h']]]
