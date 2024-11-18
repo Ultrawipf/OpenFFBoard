@@ -299,7 +299,7 @@ void tud_cdc_tx_complete_cb(uint8_t itf){
  * HID Out and Set Feature
  */
 void tud_hid_set_report_cb(uint8_t itf, uint8_t report_id, hid_report_type_t report_type, uint8_t const* buffer, uint16_t bufsize){
-	if(report_type == HID_REPORT_TYPE_INVALID && report_id == 0){
+	if((report_type == HID_REPORT_TYPE_INVALID || report_type == HID_REPORT_TYPE_OUTPUT) && report_id == 0){
 		report_id = *buffer;
 	}
 
