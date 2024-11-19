@@ -66,7 +66,10 @@ C_SOURCES += $(wildcard FFBoard/USB/common/*.c)
 C_SOURCES += $(wildcard FFBoard/USB/device/*.c)
 C_SOURCES += $(wildcard FFBoard/USB/host/*.c)
 C_SOURCES += $(wildcard FFBoard/USB/portable/st/stm32_fsdev/*.c)
-C_SOURCES += $(wildcard FFBoard/USB/portable/st/synopsys/*.c)
+C_SOURCES += $(wildcard FFBoard/USB/portable/synopsys/dwc2/*.c)
+C_SOURCES += $(wildcard FFBoard/USB/portable/template/*.c)
+C_SOURCES += $(wildcard FFBoard/USB/portable/ehci/*.c)
+C_SOURCES += $(wildcard FFBoard/USB/portable/ohci/*.c)
 C_SOURCES += $(wildcard FFBoard/UserExtensions/Src/*.c)
 
 CPP_SOURCES = $(wildcard FFBoard/Src/*.cpp)
@@ -90,6 +93,7 @@ FFBoard/Inc \
 FFBoard/USB \
 FFBoard/UserExtensions/Inc \
 FFBoard/USB/device \
+FFBoard/USB/portable/synopsys/dwc2/ \
 FFBoard/USB/class/cdc \
 FFBoard/USB/class/midi \
 FFBoard/USB/class/hid \
