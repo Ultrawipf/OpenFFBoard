@@ -66,13 +66,15 @@ extern UART_HandleTypeDef huart1;
 
 extern ADC_HandleTypeDef hadc1;
 // ADC Channels
-#define ADC1_CHANNELS 9 	// how many analog input values to be read by dma
+#define ADC1_CHANNELS 10 	// how many analog input values to be read by dma
 
 #define VSENSE_HADC hadc1
 #define ADC_CHAN_VINT 7	// adc buffer index of internal voltage sense
 #define ADC_CHAN_VEXT 6 // adc buffer index of supply voltage sense
 extern volatile uint32_t ADC1_BUF[ADC1_CHANNELS]; // Buffer
 #define VSENSE_ADC_BUF ADC1_BUF
+#define TEMPSENSOR_ADC_VAL ADC1_BUF[8] // ADC1 ch 7
+#define TEMPSENSOR_ADC_INTREF_VAL ADC1_BUF[9] // ADC1 ch 8.
 
 #define AIN_HADC hadc1	// main adc for analog pins
 #define ADC_PINS 6	// Amount of analog channel pins
@@ -95,4 +97,5 @@ extern SPI_HandleTypeDef HSPI2;
 #define EEPROM_START_ADDRESS  ((uint32_t)0x08004000) /* EEPROM emulation start address: from sector1*/
 #define PAGE_SIZE             (uint32_t)0x4000  /* Page size = 16KByte */
 
+#define CCRAM_SEC ".data" // Has no ccmram
 #endif /* INC_TARGET_CONSTANTS_H_ */
