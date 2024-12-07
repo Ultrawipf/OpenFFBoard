@@ -13,11 +13,11 @@
 
 #include "main.h"
 // Change this to the amount of currently registered variables
-#define NB_OF_VAR 153
+#define NB_OF_VAR 159
 extern const uint16_t VirtAddVarTab[NB_OF_VAR];
 
 // Amount of variables in exportable list
-#define NB_EXPORTABLE_ADR 138
+#define NB_EXPORTABLE_ADR 144
 extern const uint16_t exportableFlashAddresses[NB_EXPORTABLE_ADR];
 
 
@@ -164,6 +164,13 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_TMC3_FLUX_I 0x3AA
 #define ADR_TMC3_PHIE_OFS 0x3AB
 #define ADR_TMC3_TRQ_FILT 0x3AC
+// RMD CAN Motor
+#define ADR_RMD1_DATA1 0x3C0 //0-4 CAN ID
+#define ADR_RMD1_TORQUE 0x3C1 //Maximum current
+#define ADR_RMD1_OFFSET 0x3C2 //Position offset
+#define ADR_RMD2_DATA1 0x3C3
+#define ADR_RMD2_TORQUE 0x3C4
+#define ADR_RMD2_OFFSET 0x3C5
 // Odrive
 #define ADR_ODRIVE_CANID 0x3D0 //0-6 ID M0, 7-12 ID M1, 13-15 can speed
 #define ADR_ODRIVE_SETTING1_M0 0x3D1
