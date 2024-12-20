@@ -1713,6 +1713,7 @@ int16_t TMC4671::controlFluxDissipate(){
 		// Reaches limit at +5v if scaler is 1
 		return(clip<int32_t,int32_t>(vDiff * conf.hwconf.fluxDissipationScaler * curLimits.pid_torque_flux * 0.0002,0,curLimits.pid_torque_flux));
 	}
+	return 0;
 }
 
 /**
