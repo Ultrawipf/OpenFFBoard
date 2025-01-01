@@ -13,12 +13,12 @@
 #include "FastAvg.h"
 
 bool braking_flag = false;
-uint32_t maxVoltage = 65000; // Force braking
-uint32_t voltageDiffActivate = 5000;
-uint32_t voltageDiffDeactivate = 4000;
+int32_t maxVoltage = 65000; // Force braking
+int32_t voltageDiffActivate = 5000;
+int32_t voltageDiffDeactivate = 4000;
 float vSenseMult = VOLTAGE_MULT_DEFAULT;
 bool brake_failure = false;
-uint32_t minVoltage = 6500;
+int32_t minVoltage = 6500;
 
 uint32_t brakeActiveTime = 0;
 const Error resError = Error(ErrorCode::brakeResistorFailure, ErrorType::critical, "Brake resistor stuck on");
@@ -37,7 +37,7 @@ void setVSenseMult(float vSenseMultiplier){
  * Set vMax = 0 to completely deactivate the brake resistor function. DANGEROUS
  *
  */
-void setupBrakePin(uint32_t vdiffAct,uint32_t vdiffDeact,uint32_t vMax){
+void setupBrakePin(int32_t vdiffAct,int32_t vdiffDeact,int32_t vMax){
 	maxVoltage = vMax;
 	voltageDiffActivate = vdiffAct;
 	voltageDiffDeactivate = vdiffDeact;
