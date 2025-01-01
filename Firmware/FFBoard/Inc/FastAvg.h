@@ -62,7 +62,7 @@ private:
 template <class T>
 class FastMovingAverage{
 public:
-	FastMovingAverage(uint32_t len = 0) : fixedLen(len!=0), count(len ? len : 0){};
+	FastMovingAverage(uint32_t len = 0) : fixedLen(len), count(0){};
 	~FastMovingAverage(){};
 
 	void clear(){
@@ -89,14 +89,14 @@ public:
 	 * Adds a value and returns current average
 	 */
 	T addValue(T v){
-		if(!fixedLen)
+		if(!fixedLen || count < fixedLen)
 			count++;
 		curAvg += (v/count) - (curAvg/count);
 		return curAvg;
 	}
 private:
 	T curAvg = 0;
-	const bool fixedLen;
+	const uint32_t fixedLen;
 	uint32_t count = 0;
 };
 
