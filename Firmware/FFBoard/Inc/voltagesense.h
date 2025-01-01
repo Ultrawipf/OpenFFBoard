@@ -25,7 +25,7 @@ void setVSenseMult(float vSenseMultiplier);
  * Set vMax = 0 to completely deactivate the brake resistor function. DANGEROUS
  *
  */
-void setupBrakePin(uint32_t vdiffAct,uint32_t vdiffDeact,uint32_t vMax);
+void setupBrakePin(uint32_t vdiffAct,int32_t vdiffDeact,int32_t vMax);
 
 /**
  * Helper function implementation for getting the chip temperature if read via internal ADC channel
