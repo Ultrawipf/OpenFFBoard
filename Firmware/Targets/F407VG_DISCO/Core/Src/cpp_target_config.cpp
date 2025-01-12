@@ -4,17 +4,17 @@
 extern SPI_HandleTypeDef hspi2;
 
 static const std::vector<OutputPin> external_spi_cspins{OutputPin(*SPI2_NSS_GPIO_Port, SPI2_NSS_Pin), OutputPin(*SPI2_SS2_GPIO_Port, SPI2_SS2_Pin),OutputPin(*SPI2_SS3_GPIO_Port, SPI2_SS3_Pin)};
-SPIPort external_spi{hspi2,external_spi_cspins,48000000,true};
+SPIPort external_spi{hspi2,external_spi_cspins,42000000,true};
 
 
 //static const std::vector<OutputPin> motor_spi_cspins{OutputPin(*SPI1_SS1_GPIO_Port, SPI1_SS1_Pin), OutputPin(*SPI1_SS2_GPIO_Port, SPI1_SS2_Pin),OutputPin(*SPI1_SS3_GPIO_Port, SPI1_SS3_Pin)};
 //extern SPI_HandleTypeDef hspi1;
-//SPIPort motor_spi{hspi1,motor_spi_cspins,96000000,false};
+//SPIPort motor_spi{hspi1,motor_spi_cspins,84000000,false};
 
 #ifdef EXT3_SPI_PORT
 static const std::vector<OutputPin> ext3_spi_cspins{OutputPin(*SPI3_SS1_GPIO_Port, SPI3_SS1_Pin), OutputPin(*SPI3_SS2_GPIO_Port, SPI3_SS2_Pin),OutputPin(*SPI3_SS3_GPIO_Port, SPI3_SS3_Pin)};
 extern SPI_HandleTypeDef EXT3_SPI_PORT;
-SPIPort ext3_spi{hspi3,ext3_spi_cspins,48000000,true};
+SPIPort ext3_spi{hspi3,ext3_spi_cspins,42000000,true};
 #endif
 
 #ifdef UART_PORT_MOTOR
