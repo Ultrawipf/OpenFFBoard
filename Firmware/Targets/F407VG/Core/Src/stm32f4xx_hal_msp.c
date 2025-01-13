@@ -793,6 +793,20 @@ void HAL_TIM_Base_MspInit(TIM_HandleTypeDef* htim_base)
 
   /* USER CODE END TIM6_MspInit 1 */
   }
+  else if(htim_base->Instance==TIM8)
+  {
+  /* USER CODE BEGIN TIM8_MspInit 0 */
+
+  /* USER CODE END TIM8_MspInit 0 */
+    /* Peripheral clock enable */
+    __HAL_RCC_TIM8_CLK_ENABLE();
+    /* TIM8 interrupt Init */
+    HAL_NVIC_SetPriority(TIM8_UP_TIM13_IRQn, 12, 0);
+    HAL_NVIC_EnableIRQ(TIM8_UP_TIM13_IRQn);
+  /* USER CODE BEGIN TIM8_MspInit 1 */
+
+  /* USER CODE END TIM8_MspInit 1 */
+  }
   else if(htim_base->Instance==TIM9)
   {
   /* USER CODE BEGIN TIM9_MspInit 0 */
@@ -944,9 +958,6 @@ void HAL_TIM_Base_MspDeInit(TIM_HandleTypeDef* htim_base)
   /* USER CODE END TIM4_MspDeInit 0 */
     /* Peripheral clock disable */
     __HAL_RCC_TIM4_CLK_DISABLE();
-
-    /* TIM4 interrupt DeInit */
-    HAL_NVIC_DisableIRQ(TIM4_IRQn);
   /* USER CODE BEGIN TIM4_MspDeInit 1 */
 
   /* USER CODE END TIM4_MspDeInit 1 */
@@ -984,6 +995,27 @@ void HAL_TIM_Base_MspDeInit(TIM_HandleTypeDef* htim_base)
 
   /* USER CODE END TIM6_MspDeInit 1 */
   }
+  else if(htim_base->Instance==TIM8)
+  {
+  /* USER CODE BEGIN TIM8_MspDeInit 0 */
+
+  /* USER CODE END TIM8_MspDeInit 0 */
+    /* Peripheral clock disable */
+    __HAL_RCC_TIM8_CLK_DISABLE();
+
+    /* TIM8 interrupt DeInit */
+  /* USER CODE BEGIN TIM8:TIM8_UP_TIM13_IRQn disable */
+    /**
+    * Uncomment the line below to disable the "TIM8_UP_TIM13_IRQn" interrupt
+    * Be aware, disabling shared interrupt may affect other IPs
+    */
+    /* HAL_NVIC_DisableIRQ(TIM8_UP_TIM13_IRQn); */
+  /* USER CODE END TIM8:TIM8_UP_TIM13_IRQn disable */
+
+  /* USER CODE BEGIN TIM8_MspDeInit 1 */
+
+  /* USER CODE END TIM8_MspDeInit 1 */
+  }
   else if(htim_base->Instance==TIM9)
   {
   /* USER CODE BEGIN TIM9_MspDeInit 0 */
@@ -1014,7 +1046,14 @@ void HAL_TIM_Base_MspDeInit(TIM_HandleTypeDef* htim_base)
     __HAL_RCC_TIM13_CLK_DISABLE();
 
     /* TIM13 interrupt DeInit */
-    HAL_NVIC_DisableIRQ(TIM8_UP_TIM13_IRQn);
+  /* USER CODE BEGIN TIM13:TIM8_UP_TIM13_IRQn disable */
+    /**
+    * Uncomment the line below to disable the "TIM8_UP_TIM13_IRQn" interrupt
+    * Be aware, disabling shared interrupt may affect other IPs
+    */
+    /* HAL_NVIC_DisableIRQ(TIM8_UP_TIM13_IRQn); */
+  /* USER CODE END TIM13:TIM8_UP_TIM13_IRQn disable */
+
   /* USER CODE BEGIN TIM13_MspDeInit 1 */
 
   /* USER CODE END TIM13_MspDeInit 1 */
