@@ -54,6 +54,7 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
 
 /* Exported functions prototypes ---------------------------------------------*/
 void Error_Handler(void);
+void MX_USB_OTG_FS_PCD_Init(void);
 
 /* USER CODE BEGIN EFP */
 void RebootDFU();
@@ -175,7 +176,7 @@ void ExitDFU();
 #define LED_CLIP_GPIO_Port GPIOE
 #define LED_ERR_Pin GPIO_PIN_1
 #define LED_ERR_GPIO_Port GPIOE
-void   MX_USB_OTG_FS_PCD_Init(void);
+
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
