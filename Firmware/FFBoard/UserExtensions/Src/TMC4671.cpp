@@ -3199,6 +3199,9 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 
 #ifdef TIM_TMC
 	void TMC4671::timerElapsed(TIM_HandleTypeDef* htim){
+		if(htim != this->externalEncoderTimer){
+			return;
+		}
 		// Read encoder and send to tmc
 		if(usingExternalEncoder() && externalEncoderAllowed() && this->conf.motconf.phiEsource == PhiE::extEncoder && extEncUpdater != nullptr){
 			//setPhiE_ext(getPhiEfromExternalEncoder());
