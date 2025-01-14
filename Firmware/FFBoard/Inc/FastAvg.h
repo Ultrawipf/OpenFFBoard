@@ -91,7 +91,7 @@ public:
 	T addValue(T v){
 		if(!fixedLen || count < fixedLen)
 			count++;
-		curAvg += (v/count) - (curAvg/count);
+		curAvg += (v - curAvg)/count;
 		return curAvg;
 	}
 private:
