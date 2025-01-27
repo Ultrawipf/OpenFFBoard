@@ -272,11 +272,10 @@ int32_t CANPort_2B::addCanFilter(CAN_filter filter){
 	sFilterConfig.FilterMaskIdHigh = ((filter.filter_mask << 5)  | (filter.filter_mask >> (32 - 5))) & 0xFFFF;
 	sFilterConfig.FilterMaskIdLow = (filter.filter_mask >> (11 - 3)) & 0xFFF8;
 
-	sFilterConfig.FilterMaskIdLow |= 0x4; // Add IDE bit
+
 	if(filter.extid){
 		sFilterConfig.FilterIdLow |= 0x04;
-	}else{
-		sFilterConfig.FilterIdLow &= ~0x04; // Clear IDE
+		sFilterConfig.FilterMaskIdLow |= 0x4; // Add IDE bit
 	}
 
 	configSem.Take();
