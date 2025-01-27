@@ -9,14 +9,16 @@
 #include "constants.h"
 #include "voltagesense.h"
 #include "ErrorHandler.h"
+#include "AdcHandler.h"
+#include "FastAvg.h"
 
 bool braking_flag = false;
-uint32_t maxVoltage = 65000; // Force braking
-uint32_t voltageDiffActivate = 5000;
-uint32_t voltageDiffDeactivate = 4000;
+int32_t maxVoltage = 65000; // Force braking
+int32_t voltageDiffActivate = 5000;
+int32_t voltageDiffDeactivate = 4000;
 float vSenseMult = VOLTAGE_MULT_DEFAULT;
 bool brake_failure = false;
-uint32_t minVoltage = 6500;
+int32_t minVoltage = 6500;
 
 uint32_t brakeActiveTime = 0;
 const Error resError = Error(ErrorCode::brakeResistorFailure, ErrorType::critical, "Brake resistor stuck on");
@@ -35,18 +37,26 @@ void setVSenseMult(float vSenseMultiplier){
  * Set vMax = 0 to completely deactivate the brake resistor function. DANGEROUS
  *
  */
-void setupBrakePin(uint32_t vdiffAct,uint32_t vdiffDeact,uint32_t vMax){
+void setupBrakePin(int32_t vdiffAct,int32_t vdiffDeact,int32_t vMax){
 	maxVoltage = vMax;
 	voltageDiffActivate = vdiffAct;
 	voltageDiffDeactivate = vdiffDeact;
 }
 
+float adcValToVoltage(uint32_t adcval){
+	if(ADC_INTREF_VOL == 0){
+		return 0; // Divbyzero
+	}
+	return __LL_ADC_CALC_DATA_TO_VOLTAGE(ADC_INTREF_VOL,adcval,VSENSE_ADC_RES);
+}
+
 int32_t getIntV(){
-	return VSENSE_ADC_BUF[ADC_CHAN_VINT] * vSenseMult;
+	return adcValToVoltage(VSENSE_ADC_BUF[ADC_CHAN_VINT]) * vSenseMult;
+
 }
 
 int32_t getExtV(){
-	return VSENSE_ADC_BUF[ADC_CHAN_VEXT] * vSenseMult;
+	return adcValToVoltage(VSENSE_ADC_BUF[ADC_CHAN_VEXT]) * vSenseMult;
 }
 
 void brakeCheck(){
@@ -74,10 +84,23 @@ void brakeCheck(){
 		// Brake resistor active over 5s. Shut down.
 		brake_failure = true;
 		HAL_GPIO_WritePin(DRV_BRAKE_GPIO_Port,DRV_BRAKE_Pin, GPIO_PIN_RESET);
-		// TODO: can not create error here in ISR. may cause faults
-		ErrorHandler::addError(resError);
+		// can not create error here in ISR
+		//ErrorHandler::addError(resError);
 	}else{
 		HAL_GPIO_WritePin(DRV_BRAKE_GPIO_Port,DRV_BRAKE_Pin, braking_flag ? GPIO_PIN_SET:GPIO_PIN_RESET);
 	}
+
+}
+
+FastMovingAverage<int32_t>chipTempAvg{5};
+__weak int32_t getChipTemp(){
+#if !defined(TEMPSENSOR_ADC_VAL) || !defined(__LL_ADC_CALC_TEMPERATURE)
+	return 0;
+#else
+	if(!TEMPSENSOR_ADC_VAL || !ADC_INTREF_VOL){
+		return 0; // divby0 risk
+	}
+	return chipTempAvg.addValue(__LL_ADC_CALC_TEMPERATURE(ADC_INTREF_VOL,TEMPSENSOR_ADC_VAL,TEMPSENSOR_ADC_RES));
+#endif
 
 }

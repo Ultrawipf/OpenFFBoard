@@ -28,6 +28,7 @@
 
 #ifdef CANBUS
 #include "CanHandler.h"
+#include "CAN.h"
 #endif
 
 #ifdef MIDI
@@ -69,6 +70,7 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc){
 	for(AdcHandler* c : AdcHandler::adcHandlers){
 		c->adcUpd(buf,chans,hadc);
 	}
+
 }
 
 /**
@@ -108,78 +110,87 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart){
 
 #ifdef CANBUS
 // CAN
-
-uint8_t canRxBuf0[8];
-CAN_RxHeaderTypeDef canRxHeader0; // Receive header 0
-uint8_t canRxBuf1[8];
-CAN_RxHeaderTypeDef canRxHeader1; // Receive header 1
+#ifdef CANTYPE_CAN2B
 // RX
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan){
+	CANPort* portInst = CANPort::handleToPort(hcan);
 	for(uint8_t i = 0; i < HAL_CAN_GetRxFifoFillLevel(hcan, CAN_RX_FIFO0); i++){
-		if(HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &canRxHeader0, canRxBuf0) == HAL_OK){
+		CAN_rx_msg msg;
+		CAN_RxHeaderTypeDef canRxHeader; // Receive header 0
+		if(HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &canRxHeader, msg.data) == HAL_OK){
+			msg.header = CAN_msg_header_rx(&canRxHeader);
+			msg.fifo = 0;
 			for(CanHandler* c : CanHandler::getCANHandlers()){
-				c->canRxPendCallback(hcan,canRxBuf0,&canRxHeader0,CAN_RX_FIFO0);
+				c->canRxPendCallback(portInst,msg);
 			}
 		}
 	}
 }
 void HAL_CAN_RxFifo1MsgPendingCallback(CAN_HandleTypeDef *hcan){
+	CANPort* portInst = CANPort::handleToPort(hcan);
 	for(uint8_t i = 0; i < HAL_CAN_GetRxFifoFillLevel(hcan, CAN_RX_FIFO1); i++){
-		if(HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO1, &canRxHeader1, canRxBuf1) == HAL_OK){
+		CAN_rx_msg msg;
+		CAN_RxHeaderTypeDef canRxHeader; // Receive header 1
+		if(HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO1, &canRxHeader, msg.data) == HAL_OK){
+			msg.header = CAN_msg_header_rx(&canRxHeader);
+			msg.fifo = 1;
 			for(CanHandler* c : CanHandler::getCANHandlers()){
-				c->canRxPendCallback(hcan,canRxBuf1,&canRxHeader1,CAN_RX_FIFO1);
+				c->canRxPendCallback(portInst,msg);
 			}
 		}
 	}
 }
+
 void HAL_CAN_RxFifo0FullCallback(CAN_HandleTypeDef *hcan){
 	for(CanHandler* c : CanHandler::getCANHandlers()){
-		c->canRxFullCallback(hcan,CAN_RX_FIFO0);
+		c->canRxFullCallback(CANPort::handleToPort(hcan),0);
 	}
 }
 void HAL_CAN_RxFifo1FullCallback(CAN_HandleTypeDef *hcan){
 	for(CanHandler* c : CanHandler::getCANHandlers()){
-		c->canRxFullCallback(hcan,CAN_RX_FIFO1);
+		c->canRxFullCallback(CANPort::handleToPort(hcan),1);
 	}
 }
-// TX
+//// TX
 void HAL_CAN_TxMailbox0CompleteCallback(CAN_HandleTypeDef *hcan){
 	for(CanHandler* c : CanHandler::getCANHandlers()){
-		c->canTxCpltCallback(hcan,CAN_TX_MAILBOX0);
+		c->canTxCpltCallback(CANPort::handleToPort(hcan),0);
 	}
 }
 void HAL_CAN_TxMailbox1CompleteCallback(CAN_HandleTypeDef *hcan){
 	for(CanHandler* c : CanHandler::getCANHandlers()){
-		c->canTxCpltCallback(hcan,CAN_TX_MAILBOX1);
+		c->canTxCpltCallback(CANPort::handleToPort(hcan),1);
 	}
 }
 void HAL_CAN_TxMailbox2CompleteCallback(CAN_HandleTypeDef *hcan){
 	for(CanHandler* c : CanHandler::getCANHandlers()){
-		c->canTxCpltCallback(hcan,CAN_TX_MAILBOX2);
+		c->canTxCpltCallback(CANPort::handleToPort(hcan),2);
 	}
 }
 void HAL_CAN_TxMailbox0AbortCallback(CAN_HandleTypeDef *hcan){
 	for(CanHandler* c : CanHandler::getCANHandlers()){
-		c->canTxAbortCallback(hcan,CAN_TX_MAILBOX0);
+		c->canTxAbortCallback(CANPort::handleToPort(hcan),0);
 	}
 }
 void HAL_CAN_TxMailbox1AbortCallback(CAN_HandleTypeDef *hcan){
 	for(CanHandler* c : CanHandler::getCANHandlers()){
-		c->canTxAbortCallback(hcan,CAN_TX_MAILBOX1);
+		c->canTxAbortCallback(CANPort::handleToPort(hcan),1);
 	}
 }
 void HAL_CAN_TxMailbox2AbortCallback(CAN_HandleTypeDef *hcan){
 	for(CanHandler* c : CanHandler::getCANHandlers()){
-		c->canTxAbortCallback(hcan,CAN_TX_MAILBOX2);
+		c->canTxAbortCallback(CANPort::handleToPort(hcan),2);
 	}
 }
 
 void HAL_CAN_ErrorCallback(CAN_HandleTypeDef *hcan){
 	for(CanHandler* c : CanHandler::getCANHandlers()){
-		c->canErrorCallback(hcan);
+		c->canErrorCallback(CANPort::handleToPort(hcan),hcan->ErrorCode);
 	}
 	hcan->ErrorCode = 0; // Clear errors
 }
+#endif
+
 #endif
 
 // SPI
@@ -299,7 +310,7 @@ void tud_cdc_tx_complete_cb(uint8_t itf){
  * HID Out and Set Feature
  */
 void tud_hid_set_report_cb(uint8_t itf, uint8_t report_id, hid_report_type_t report_type, uint8_t const* buffer, uint16_t bufsize){
-	if(report_type == HID_REPORT_TYPE_INVALID && report_id == 0){
+	if((report_type == HID_REPORT_TYPE_INVALID || report_type == HID_REPORT_TYPE_OUTPUT) && report_id == 0){
 		report_id = *buffer;
 	}
 

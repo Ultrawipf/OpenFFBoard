@@ -152,8 +152,8 @@ public:
 	virtual void fxUpdateEvent();
 
 private:
-	FastAvg<float,20> fxPeriodAvg;
-	FastAvg<float,20> cfUpdatePeriodAvg;
+	FastMovingAverage<float> fxPeriodAvg{20};
+	FastMovingAverage<float> cfUpdatePeriodAvg{20};
 
 	uint32_t lastFxUpdate = 0;
 	uint32_t lastCfUpdate = 0;

@@ -11,7 +11,7 @@
 #include "CRC.h"
 
 bool VescCAN::crcTableInitialized = false;
-std::array<uint16_t,256> VescCAN::crc16_tab __attribute__((section (".ccmram"))); // Generate in ram to save some flash (512B)
+std::array<uint16_t,256> VescCAN::crc16_tab __attribute__((section (CCRAM_SEC))); // Generate in ram to save some flash (512B)
 
 // *****    static initializer for the VESC_1 instance (extend VESC_CAN) *****
 
@@ -62,20 +62,13 @@ VescCAN::VescCAN(uint8_t address) :
 	restoreFlash();
 
 	// Set up a filter to receive vesc commands
-	CAN_FilterTypeDef sFilterConfig;
-	sFilterConfig.FilterBank = 0;
-	sFilterConfig.FilterMode = CAN_FILTERMODE_IDMASK;
-	sFilterConfig.FilterScale = CAN_FILTERSCALE_32BIT;
-	sFilterConfig.FilterIdHigh = 0x0000;
-	sFilterConfig.FilterIdLow = 0x0000;
-	sFilterConfig.FilterMaskIdHigh = 0x0000;
-	sFilterConfig.FilterMaskIdLow = 0x0000;
-	sFilterConfig.FilterFIFOAssignment = CAN_RX_FIFO0;
-	sFilterConfig.FilterActivation = ENABLE;
-	sFilterConfig.SlaveStartFilterBank = 14;
-	this->filterId = this->port->addCanFilter(sFilterConfig);
+	CAN_filter filterConf;
+	filterConf.extid = true;
+	filterConf.buffer = 0;
+	filterConf.filter_id = 0;
+	filterConf.filter_mask =  0;
+	this->filterId = this->port->addCanFilter(filterConf); // Receive all
 
-	//this->setCanRate(this->baudrate);
 	if(port->getSpeedPreset() < 3){
 		port->setSpeedPreset(3); // Minimum 250k
 	}
@@ -227,7 +220,7 @@ void VescCAN::registerCommands() {
 	CommandHandler::registerCommands();
 	registerCommand("offbcanid", VescCAN_commands::offbcanid, "CAN id of OpenFFBoard Axis", CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("vesccanid", VescCAN_commands::vesccanid, "CAN id of VESC", CMDFLAG_GET | CMDFLAG_SET);
-	registerCommand("canspd", VescCAN_commands::canspd, "CAN baud (3=250k 4=500k 5=1M)", CMDFLAG_GET | CMDFLAG_SET); // Kept for backwards compatibility. Remove in the future
+	registerCommand("canspd", VescCAN_commands::canspd, "CAN baud ! for info", CMDFLAG_GET | CMDFLAG_SET); // Kept for backwards compatibility. Remove in the future
 	registerCommand("errorflags", VescCAN_commands::errorflags, "VESC error state", CMDFLAG_GET);
 	registerCommand("vescstate", VescCAN_commands::vescstate, "VESC state", CMDFLAG_GET);
 	registerCommand("voltage", VescCAN_commands::voltage, "VESC supply voltage (mV)", CMDFLAG_GET);
@@ -369,10 +362,6 @@ void VescCAN::Run() {
  * 										CAN SECTION
  */
 
-//void VescCAN::setCanRate(uint8_t canRate) {
-//	this->baudrate = clip<uint8_t, uint8_t>(canRate, 3, 5);
-//	this->port->setSpeedPreset(baudrate);
-//}
 
 /**
  * Get the firmware vesc information
@@ -470,10 +459,10 @@ void VescCAN::decodeEncoderPosition(const float newPos) {
 void VescCAN::sendMsg(uint8_t cmd, uint8_t *buffer, uint8_t len) {
 	CAN_tx_msg msg;
 	memcpy(&msg.data, buffer, len);
-	msg.header.RTR = CAN_RTR_DATA;
-	msg.header.DLC = len;
-	msg.header.IDE = CAN_ID_EXT;
-	msg.header.ExtId = this->VESC_can_Id | (cmd << 8);
+	msg.header.rtr = false;
+	msg.header.length = len;
+	msg.header.extId = true;
+	msg.header.id = this->VESC_can_Id | (cmd << 8);
 	port->sendMessage(msg);
 }
 
@@ -574,17 +563,17 @@ void VescCAN::decode_buffer(uint8_t *buffer, uint8_t len) {
  *	uint8_t[0]..uint8_t[3] : uint32 f_pos / 10000
  *
  */
-void VescCAN::canRxPendCallback(CAN_HandleTypeDef *hcan, uint8_t *rxBuf,
-		CAN_RxHeaderTypeDef *rxHeader, uint32_t fifo) {
+void VescCAN::canRxPendCallback(CANPort* port,CAN_rx_msg& msg) {
 
 	// we record the last time respond to check if vesc is OK
 	lastVescResponse = HAL_GetTick();
 
 	// Check if message is for the openFFBoard
-	uint16_t destCanID = rxHeader->ExtId & 0xFF;
+	uint16_t destCanID = msg.header.id & 0xFF;
+	uint8_t *rxBuf = msg.data;
 
 	// Extract the command encoded in the ExtId
-	VescCANMsg cmd = (VescCANMsg) (rxHeader->ExtId >> 8);
+	VescCANMsg cmd = (VescCANMsg) (msg.header.id >> 8);
 
 	bool messageIsForThisVescAxis = destCanID == this->OFFB_can_Id;
 	messageIsForThisVescAxis |= (cmd == VescCANMsg::CAN_PACKET_POLL_ROTOR_POS) &&	// if it's a encoder position message
@@ -601,7 +590,7 @@ void VescCAN::canRxPendCallback(CAN_HandleTypeDef *hcan, uint8_t *rxBuf,
 	switch (cmd) {
 
 	case VescCANMsg::CAN_PACKET_FILL_RX_BUFFER: {
-		memcpy(buffer_rx + rxBuf[0], rxBuf + 1, rxHeader->DLC - 1);
+		memcpy(buffer_rx + rxBuf[0], rxBuf + 1, msg.header.length - 1);
 		break;
 	}
 
@@ -609,7 +598,7 @@ void VescCAN::canRxPendCallback(CAN_HandleTypeDef *hcan, uint8_t *rxBuf,
 		uint32_t rxbuf_ind = (unsigned int) rxBuf[0] << 8;
 		rxbuf_ind |= rxBuf[1];
 		if (rxbuf_ind < BUFFER_RX_SIZE) {
-			memcpy(buffer_rx + rxbuf_ind, rxBuf + 2, rxHeader->DLC - 2);
+			memcpy(buffer_rx + rxbuf_ind, rxBuf + 2, msg.header.length - 2);
 		}
 		break;
 	}
@@ -642,7 +631,7 @@ void VescCAN::canRxPendCallback(CAN_HandleTypeDef *hcan, uint8_t *rxBuf,
 	case VescCANMsg::CAN_PACKET_PROCESS_SHORT_BUFFER: {
 
 		// remove 2 first byte to exclude "can emitter id" and the "send bool" flag from buffer
-		this->decode_buffer(rxBuf + 2, rxHeader->DLC - 2);
+		this->decode_buffer(rxBuf + 2, msg.header.length - 2);
 
 		break;
 	}

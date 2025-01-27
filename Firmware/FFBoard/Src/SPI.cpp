@@ -3,19 +3,10 @@
 #include "SPI.h"
 #include "semaphore.hpp"
 #include "cppmain.h"
+#include "math.h"
 
 static bool operator==(const SPI_InitTypeDef& lhs, const SPI_InitTypeDef& rhs) {
-	return lhs.BaudRatePrescaler == rhs.BaudRatePrescaler
-		&& lhs.CLKPhase == rhs.CLKPhase
-		&& lhs.CLKPolarity == rhs.CLKPolarity
-		&& lhs.CRCCalculation == rhs.CRCCalculation
-		&& lhs.CRCPolynomial == rhs.CRCPolynomial
-		&& lhs.DataSize == rhs.DataSize
-		&& lhs.Direction == rhs.Direction
-		&& lhs.FirstBit == rhs.FirstBit
-		&& lhs.Mode == rhs.Mode
-		&& lhs.NSS == rhs.NSS
-		&& lhs.TIMode == rhs.TIMode;
+	return memcmp(&lhs,&rhs,sizeof(SPI_InitTypeDef)) == 0;
 }
 
 
@@ -84,6 +75,10 @@ void SPIPort::configurePort(SPI_InitTypeDef* config){
 	}
 	hspi.Init = *config;
 	HAL_SPI_Init(&hspi);
+}
+
+SPI_HandleTypeDef* SPIPort::getPortHandle(){
+	return &hspi;
 }
 
 // ----------------------------------
@@ -287,6 +282,48 @@ void SPIPort::SpiError(SPI_HandleTypeDef *hspi) {
 	current_device->spiRequestError(this);
 
 	current_device = nullptr;
+}
+
+/**
+ * Calculates the closest possible clock achievable with the current base clock and prescalers
+ * Returns a pair of {prescaler,actual_clock}
+ */
+std::pair<uint32_t,float> SPIPort::getClosestPrescaler(float clock){
+	std::vector<std::pair<uint32_t,float>> distances;
+#if defined(SPI_BAUDRATEPRESCALER_2)
+	distances.push_back({SPI_BAUDRATEPRESCALER_2,(baseclk/2.0)});
+#endif
+#if defined(SPI_BAUDRATEPRESCALER_4)
+	distances.push_back({SPI_BAUDRATEPRESCALER_4,(baseclk/4.0)});
+#endif
+#if defined(SPI_BAUDRATEPRESCALER_8)
+	distances.push_back({SPI_BAUDRATEPRESCALER_8,(baseclk/8.0)});
+#endif
+#if defined(SPI_BAUDRATEPRESCALER_16)
+	distances.push_back({SPI_BAUDRATEPRESCALER_16,(baseclk/16.0)});
+#endif
+#if defined(SPI_BAUDRATEPRESCALER_32)
+	distances.push_back({SPI_BAUDRATEPRESCALER_32,(baseclk/32.0)});
+#endif
+#if defined(SPI_BAUDRATEPRESCALER_64)
+	distances.push_back({SPI_BAUDRATEPRESCALER_64,(baseclk/64.0)});
+#endif
+#if defined(SPI_BAUDRATEPRESCALER_128)
+	distances.push_back({SPI_BAUDRATEPRESCALER_128,(baseclk/128.0)});
+#endif
+#if defined(SPI_BAUDRATEPRESCALER_256)
+	distances.push_back({SPI_BAUDRATEPRESCALER_256,(baseclk/256.0)});
+#endif
+	// Calc distances
+	std::pair<uint32_t,float> bestVal = distances[0];
+	float bestDist = INFINITY;
+	for(auto& val : distances){
+		if(std::abs(clock-val.second) < bestDist){
+			bestDist = abs(clock-val.second);
+			bestVal = val;
+		}
+	}
+	return bestVal;
 }
 
 SPIDevice::SPIDevice(SPIPort& port,SPIConfig& spiConfig) : spiPort{port},spiConfig{spiConfig}{

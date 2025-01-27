@@ -468,7 +468,7 @@ void EffectsCalculator::setFilters(FFB_Effect *effect){
 	switch (effect->type)
 	{
 	case FFB_EFFECT_DAMPER:
-		fnptr = [=](std::unique_ptr<Biquad> &filter){
+		fnptr = [=, this](std::unique_ptr<Biquad> &filter){
 			if (filter != nullptr)
 				filter->setBiquad(BiquadType::lowpass, this->filter[filterProfileId].damper.freq/ (float)calcfrequency, this->filter[filterProfileId].damper.q * qfloatScaler , (float)0.0);
 			else
@@ -476,7 +476,7 @@ void EffectsCalculator::setFilters(FFB_Effect *effect){
 		};
 		break;
 	case FFB_EFFECT_FRICTION:
-		fnptr = [=](std::unique_ptr<Biquad> &filter){
+		fnptr = [=, this](std::unique_ptr<Biquad> &filter){
 			if (filter != nullptr)
 				filter->setBiquad(BiquadType::lowpass, this->filter[filterProfileId].friction.freq / (float)calcfrequency, this->filter[filterProfileId].friction.q * qfloatScaler, (float)0.0);
 			else
@@ -484,7 +484,7 @@ void EffectsCalculator::setFilters(FFB_Effect *effect){
 		};
 		break;
 	case FFB_EFFECT_INERTIA:
-		fnptr = [=](std::unique_ptr<Biquad> &filter){
+		fnptr = [=, this](std::unique_ptr<Biquad> &filter){
 			if (filter != nullptr)
 				filter->setBiquad(BiquadType::lowpass, this->filter[filterProfileId].inertia.freq / (float)calcfrequency, this->filter[filterProfileId].inertia.q * qfloatScaler, (float)0.0);
 			else
@@ -492,7 +492,7 @@ void EffectsCalculator::setFilters(FFB_Effect *effect){
 		};
 		break;
 	case FFB_EFFECT_CONSTANT:
-		fnptr = [=](std::unique_ptr<Biquad> &filter){
+		fnptr = [=, this](std::unique_ptr<Biquad> &filter){
 			if (filter != nullptr)
 				filter->setBiquad(BiquadType::lowpass, this->filter[0].constant.freq / (float)calcfrequency, this->filter[0].constant.q * qfloatScaler, (float)0.0);
 			else

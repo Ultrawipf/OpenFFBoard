@@ -52,9 +52,9 @@ public:
 	void sendMsg(uint8_t cmd,T value){
 		CAN_tx_msg msg;
 		memcpy(&msg.data,&value,sizeof(T));
-		msg.header.RTR = CAN_RTR_DATA;
-		msg.header.DLC = sizeof(T);
-		msg.header.StdId = cmd | (nodeId << 5);
+		msg.header.rtr = false;
+		msg.header.length = sizeof(T);
+		msg.header.id = cmd | (nodeId << 5);
 		if(!port->sendMessage(msg)){
 			// Nothing
 		}
@@ -69,8 +69,8 @@ public:
 
 	void setTorque(float torque);
 
-	void canRxPendCallback(CAN_HandleTypeDef *hcan,uint8_t* rxBuf,CAN_RxHeaderTypeDef* rxHeader,uint32_t fifo) override;
-	void canErrorCallback(CAN_HandleTypeDef *hcan);
+	void canRxPendCallback(CANPort* port,CAN_rx_msg& msg) override;
+	void canErrorCallback(CANPort* port,uint32_t errcode);
 
 
 	float getPos_f() override;
@@ -126,8 +126,6 @@ private:
 	int32_t filterId = 0;
 	volatile ODriveLocalState state = ODriveLocalState::IDLE;
 	bool connected = false;
-
-	uint8_t baudrate = CANSPEEDPRESET_500; // 250000, 500000, 1M
 };
 
 /**

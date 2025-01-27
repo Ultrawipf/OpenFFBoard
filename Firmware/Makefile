@@ -2,9 +2,6 @@
 # ------------------------------------------------
 # Generic Makefile (based on gcc)
 #
-# ChangeLog :
-#	2017-02-10 - Several enhancements + project update mode
-#   2015-07-22 - first version
 # ------------------------------------------------
 
 
@@ -66,7 +63,10 @@ C_SOURCES += $(wildcard FFBoard/USB/common/*.c)
 C_SOURCES += $(wildcard FFBoard/USB/device/*.c)
 C_SOURCES += $(wildcard FFBoard/USB/host/*.c)
 C_SOURCES += $(wildcard FFBoard/USB/portable/st/stm32_fsdev/*.c)
-C_SOURCES += $(wildcard FFBoard/USB/portable/st/synopsys/*.c)
+C_SOURCES += $(wildcard FFBoard/USB/portable/synopsys/dwc2/*.c)
+C_SOURCES += $(wildcard FFBoard/USB/portable/template/*.c)
+C_SOURCES += $(wildcard FFBoard/USB/portable/ehci/*.c)
+C_SOURCES += $(wildcard FFBoard/USB/portable/ohci/*.c)
 C_SOURCES += $(wildcard FFBoard/UserExtensions/Src/*.c)
 
 CPP_SOURCES = $(wildcard FFBoard/Src/*.cpp)
@@ -90,6 +90,7 @@ FFBoard/Inc \
 FFBoard/USB \
 FFBoard/UserExtensions/Inc \
 FFBoard/USB/device \
+FFBoard/USB/portable/synopsys/dwc2/ \
 FFBoard/USB/class/cdc \
 FFBoard/USB/class/midi \
 FFBoard/USB/class/hid \
@@ -170,7 +171,7 @@ endif
 # Generate dependency information
 CFLAGS += -MMD -MP -MF"$(@:%.o=%.d)"
 
-CXXFLAGS = $(MCU) $(C_DEFS) $(C_INCLUDES) $(OPTCPP) -Wall -fdata-sections -ffunction-sections -fno-exceptions -fno-use-cxa-atexit -std=gnu++20 -fstack-usage
+CXXFLAGS = $(MCU) $(C_DEFS) $(C_INCLUDES) $(OPTCPP) -Wall -fdata-sections -ffunction-sections -fno-exceptions -fno-use-cxa-atexit -std=gnu++20 -fstack-usage -Wno-volatile
 
 #######################################
 # LDFLAGS

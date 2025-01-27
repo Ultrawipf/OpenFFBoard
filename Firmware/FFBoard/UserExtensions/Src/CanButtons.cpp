@@ -32,18 +32,24 @@ void CanButtons::setupCanPort(){
 	if(filterId != -1){
 		this->port->removeCanFilter(filterId);
 	}
-	CAN_FilterTypeDef sFilterConfig;
-	sFilterConfig.FilterBank = 0;
-	sFilterConfig.FilterMode = CAN_FILTERMODE_IDMASK;
-	sFilterConfig.FilterScale = CAN_FILTERSCALE_32BIT;
-	sFilterConfig.FilterIdHigh = (canId << 5); // Just one ID
-	sFilterConfig.FilterIdLow = 0x0000;
-	sFilterConfig.FilterMaskIdHigh = 0xFFFF;
-	sFilterConfig.FilterMaskIdLow = 0x0000;
-	sFilterConfig.FilterFIFOAssignment = CAN_RX_FIFO0;
-	sFilterConfig.FilterActivation = ENABLE;
-	sFilterConfig.SlaveStartFilterBank = 14;
-	this->filterId = this->port->addCanFilter(sFilterConfig);
+//	CAN_FilterTypeDef sFilterConfig;
+//	sFilterConfig.FilterBank = 0;
+//	sFilterConfig.FilterMode = CAN_FILTERMODE_IDMASK;
+//	sFilterConfig.FilterScale = CAN_FILTERSCALE_32BIT;
+//	sFilterConfig.FilterIdHigh = (canId << 5); // Just one ID
+//	sFilterConfig.FilterIdLow = 0x0000;
+//	sFilterConfig.FilterMaskIdHigh = 0xFFFF;
+//	sFilterConfig.FilterMaskIdLow = 0x0000;
+//	sFilterConfig.FilterFIFOAssignment = CAN_RX_FIFO0;
+//	sFilterConfig.FilterActivation = ENABLE;
+//	sFilterConfig.SlaveStartFilterBank = 14;
+
+	CAN_filter filterConf;
+	filterConf.buffer = 0;
+	filterConf.filter_id = canId;
+	filterConf.filter_mask =  0xFFFF;
+
+	this->filterId = this->port->addCanFilter(filterConf);
 
 	//this->port->setSpeedPreset(CANSPEEDPRESET_500); // default speed used
 	this->port->start();
@@ -126,15 +132,15 @@ CommandStatus CanButtons::command(const ParsedCommand& cmd,std::vector<CommandRe
 	return CommandStatus::OK;
 }
 
-void CanButtons::canRxPendCallback(CAN_HandleTypeDef *hcan,uint8_t* rxBuf,CAN_RxHeaderTypeDef* rxHeader,uint32_t fifo){
+void CanButtons::canRxPendCallback(CANPort* port,CAN_rx_msg& msg){
 
-	uint32_t id = (rxHeader->StdId) & 0x7FF;
+	uint32_t id = (msg.header.id) & 0x7FF;
 	pulseClipLed();
-	if(id != this->canId || rxHeader->RTR != CAN_RTR_DATA || rxHeader->DLC != 8){
+	if(id != this->canId || msg.header.rtr || msg.header.length != 8){
 		return;
 	}
 
-	currentButtons = *reinterpret_cast<uint64_t*>(rxBuf);
+	currentButtons = *reinterpret_cast<uint64_t*>(msg.data);
 }
 
 

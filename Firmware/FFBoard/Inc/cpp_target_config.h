@@ -28,7 +28,7 @@ extern UARTPort external_uart;
 #endif
 
 #ifdef CANBUS
-extern CANPort canport;
+extern CANPort& canport;
 #endif
 
 #ifdef PWMDRIVER

@@ -54,11 +54,12 @@
 // Timer 3 is used by the encoder.
 #define TIM_USER htim9
 #define TIM_TMC htim2
+#define TIM_TMC_BCLK SystemCoreClock
 
 extern I2C_HandleTypeDef hi2c3;
 #define I2C_PORT hi2c3
 
-#define TIM_MICROS htim10
+#define TIM_MICROS_HALTICK htim11 // Micros timer MUST be reset by hal tick timer or isr to count microseconds since last tick
 extern UART_HandleTypeDef huart1;
 #define UART_PORT_EXT huart1 // main uart port
 
@@ -66,18 +67,20 @@ extern UART_HandleTypeDef huart1;
 
 extern ADC_HandleTypeDef hadc1;
 // ADC Channels
-#define ADC1_CHANNELS 9 	// how many analog input values to be read by dma
+#define ADC1_CHANNELS 10 	// how many analog input values to be read by dma
 
 #define VSENSE_HADC hadc1
 #define ADC_CHAN_VINT 7	// adc buffer index of internal voltage sense
 #define ADC_CHAN_VEXT 6 // adc buffer index of supply voltage sense
 extern volatile uint32_t ADC1_BUF[ADC1_CHANNELS]; // Buffer
 #define VSENSE_ADC_BUF ADC1_BUF
+#define TEMPSENSOR_ADC_VAL ADC1_BUF[8] // ADC1 ch 7
+#define TEMPSENSOR_ADC_INTREF_VAL ADC1_BUF[9] // ADC1 ch 8.
 
 #define AIN_HADC hadc1	// main adc for analog pins
 #define ADC_PINS 6	// Amount of analog channel pins
 #define ADC_CHAN_FPIN 0 // First analog channel pin
-#define VOLTAGE_MULT_DEFAULT 24.6 // Voltage in mV = adc*VOLTAGE_MULT (24.6 for 976k/33k divider)
+#define VOLTAGE_MULT_DEFAULT 30.12 // mV adc * scaler = voltage //(30.12 for 976k/33k divider)
 
 #define BUTTON_PINS 8
 
@@ -89,9 +92,11 @@ extern SPI_HandleTypeDef HSPIDRV;
 extern SPI_HandleTypeDef HSPI2;
 
 // Flash. 2 pages used
+#define USE_EEPROM_EMULATION
 #define PAGE0_ID               FLASH_SECTOR_1
 #define PAGE1_ID               FLASH_SECTOR_2
 #define EEPROM_START_ADDRESS  ((uint32_t)0x08004000) /* EEPROM emulation start address: from sector1*/
 #define PAGE_SIZE             (uint32_t)0x4000  /* Page size = 16KByte */
 
+#define CCRAM_SEC ".data" // Has no ccmram
 #endif /* INC_TARGET_CONSTANTS_H_ */

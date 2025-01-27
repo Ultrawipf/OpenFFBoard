@@ -17,6 +17,7 @@ extern ClassChooser<FFBoardMain> mainchooser;
 extern FFBoardMain* mainclass;
 //extern static const uint8_t SW_VERSION_INT[3];
 
+
 bool SystemCommands::debugMode = false;
 bool SystemCommands::errorPrintingEnabled = true;
 SystemCommands* SystemCommands::systemCommandsInstance = nullptr;
@@ -69,6 +70,7 @@ void SystemCommands::registerCommands(){
 	CommandHandler::registerCommand("name", CommandHandlerCommands::name, "name of class",CMDFLAG_GET|CMDFLAG_STR_ONLY);
 	CommandHandler::registerCommand("cmdinfo", CommandHandlerCommands::cmdinfo, "Flags of a command id (adr). -1 if cmd id invalid",CMDFLAG_GETADR);
 	CommandHandler::registerCommand("uid", FFBoardMain_commands::uid, "Get 96b chip uid. Adr0-2 sel blk",CMDFLAG_GET | CMDFLAG_GETADR);
+	CommandHandler::registerCommand("temp", FFBoardMain_commands::temp, "Chip temperature in C",CMDFLAG_GET);
 }
 
 // Choose lower optimize level because the compiler likes to blow up this function
@@ -257,13 +259,13 @@ CommandStatus SystemCommands::internalCommand(const ParsedCommand& cmd,std::vect
 		}
 		case FFBoardMain_commands::format:
 			if(cmd.type == CMDtype::set && cmd.val==1){
-				HAL_FLASH_Unlock();
-				if(EE_Format() == HAL_OK){
+
+				if(Flash_Format()){
 					flag = CommandStatus::OK;
 				}else{
 					flag = CommandStatus::ERR;
 				}
-				HAL_FLASH_Lock();
+
 			}
 		break;
 		case FFBoardMain_commands::uid:
@@ -279,6 +281,11 @@ CommandStatus SystemCommands::internalCommand(const ParsedCommand& cmd,std::vect
 				}
 			}
 			break;
+		case FFBoardMain_commands::temp:
+			{
+				replies.emplace_back(getChipTemp());
+				break;
+			}
 
 
 		default:
@@ -312,8 +319,8 @@ void SystemCommands::replyFlashDump(std::vector<CommandReply>& replies){
  * Prints a formatted list of error conditions
  */
 void SystemCommands::replyErrors(std::vector<CommandReply>& replies){
-	std::vector<Error>* errors = ErrorHandler::getErrors();
-	if(errors->size() == 0){
+	std::span<Error> errors = ErrorHandler::getErrors();
+	if(errors.size() == 0){
 		CommandReply reply;
 		reply.reply += "None";
 		reply.type = CommandReplyType::STRING_OR_INT;
@@ -321,7 +328,7 @@ void SystemCommands::replyErrors(std::vector<CommandReply>& replies){
 		return;
 	}
 
-	for(Error error : *errors){
+	for(Error error : errors){
 		CommandReply reply;
 		reply.reply += error.toString() + "\n";
 		reply.val = (uint32_t)error.code;

@@ -51,6 +51,7 @@ extern "C" {
 
 /* Exported functions prototypes ---------------------------------------------*/
 void Error_Handler(void);
+void MX_USB_OTG_FS_PCD_Init(void);
 
 /* USER CODE BEGIN EFP */
 void RebootDFU();
@@ -134,7 +135,7 @@ void RebootDFU();
 #define DIN4_GPIO_Port GPIOB
 #define DIN3_Pin GPIO_PIN_9
 #define DIN3_GPIO_Port GPIOB
-void   MX_USB_OTG_FS_PCD_Init(void);
+
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */

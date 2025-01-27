@@ -4,8 +4,8 @@
  *  Created on: 30.12.2020
  *      Author: willson556
  */
+#include "cppmain.h"
 
-#include "stm32f4xx_hal.h"
 #ifndef GPIOPIN_H_
 #define GPIOPIN_H_
 /// For now this class only works with pre-configured output pins but it could be

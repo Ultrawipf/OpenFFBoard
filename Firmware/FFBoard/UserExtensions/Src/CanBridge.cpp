@@ -28,26 +28,12 @@ CanBridge::CanBridge() {
 	this->port  = &canport;
 
 	// Set up a filter to receive everything
-	CAN_FilterTypeDef sFilterConfig;
-	sFilterConfig.FilterBank = 0;
-	sFilterConfig.FilterMode = CAN_FILTERMODE_IDMASK;
-	sFilterConfig.FilterScale = CAN_FILTERSCALE_32BIT;
-	sFilterConfig.FilterIdHigh = 0x0000;
-	sFilterConfig.FilterIdLow = 0x0000;
-	sFilterConfig.FilterMaskIdHigh = 0x0000;
-	sFilterConfig.FilterMaskIdLow = 0x0000;
-	sFilterConfig.FilterFIFOAssignment = rxfifo;
-	sFilterConfig.FilterActivation = ENABLE;
-	sFilterConfig.SlaveStartFilterBank = 14;
+	CAN_filter filterConf;
+	filterConf.buffer = 0;
+	filterConf.filter_id = 0;
+	filterConf.filter_mask =  0;
 
-	txHeader.StdId = 12;
-	txHeader.ExtId = 0;
-	txHeader.RTR = CAN_RTR_DATA;
-	txHeader.IDE = CAN_ID_STD;	//Use std id
-	txHeader.DLC = 8;	// 8 bytes
-	txHeader.TransmitGlobalTime = DISABLE;
-
-	this->filterId = this->port->addCanFilter(sFilterConfig);
+	this->filterId = this->port->addCanFilter(filterConf);
 	conf1.enabled = true;
 
 	//CommandHandler::registerCommands();
@@ -66,29 +52,34 @@ CanBridge::~CanBridge() {
 
 
 
-void CanBridge::canErrorCallback(CAN_HandleTypeDef *hcan){
-	if(hcan == CanHandle){
+void CanBridge::canErrorCallback(CANPort* port, uint32_t error){
+	if(port == this->port){
 		pulseErrLed();
 	}
 }
 
 void CanBridge::sendMessage(uint32_t id, uint64_t msg,uint8_t len = 8,bool rtr = false){
 	memcpy(txBuf,&msg,8);
-	txHeader.StdId = id;
-	txHeader.DLC = len;
-	txHeader.RTR = rtr ? CAN_RTR_REMOTE : CAN_RTR_DATA;
+	txHeader.id = id;
+	txHeader.length = len;
+	txHeader.rtr = rtr;
+	if(id & 1 << 31){
+		txHeader.extId = true;
+		id &= 0x7FFFFFFF;
+	}else{
+		txHeader.extId = false;
+	}
 	if(!this->port->sendMessage(&txHeader, txBuf, &this->txMailbox)){
 		pulseErrLed();
 	}
 }
 
 // Can only send and receive 32bit for now
-void CanBridge::canRxPendCallback(CAN_HandleTypeDef *hcan,uint8_t* rxBuf,CAN_RxHeaderTypeDef* rxHeader,uint32_t fifo){
+void CanBridge::canRxPendCallback(CANPort* port,CAN_rx_msg& msg){
 
-	if(fifo == rxfifo){
+	if(msg.fifo == rxfifo){
 
-		memcpy(&lastmsg.data,rxBuf,8);
-		lastmsg.header = *rxHeader;
+		lastmsg = msg;
 		pulseSysLed();
 
 		replyPending = true;
@@ -98,7 +89,7 @@ void CanBridge::canRxPendCallback(CAN_HandleTypeDef *hcan,uint8_t* rxBuf,CAN_RxH
 std::string CanBridge::messageToString(CAN_rx_msg msg){
 	std::string buf;
 	buf = "CAN:";
-	buf += std::to_string(msg.header.StdId);
+	buf += std::to_string(msg.header.id);
 	buf += ":";
 	buf += std::to_string(*(int64_t*)msg.data);
 	return buf;
@@ -108,20 +99,20 @@ void CanBridge::update(){
 	if(replyPending){
 		CAN_rx_msg msg = lastmsg;
 		if(gvretMode){
-			CAN_RxHeaderTypeDef rxHeader = msg.header;
-			uint32_t time = rxHeader.Timestamp;
-			uint32_t id = rxHeader.StdId;
-			if(rxHeader.ExtId != 0){
-				id = rxHeader.ExtId;
-				id |= 0x80000000;
-			}
+			CAN_msg_header_rx rxHeader = msg.header;
+			uint32_t time = rxHeader.timestamp;
+			uint32_t id = rxHeader.id;
+//			if(rxHeader.ExtId != 0){
+//				id = rxHeader.ExtId;
+//				id |= 0x80000000;
+//			}
 			std::vector<char> reply = {
 					0xF1,0,(char)(time & 0xff), (char)((time >> 8) & 0xff), (char)((time >> 16) & 0xff), (char)((time >> 24) & 0xff),
 					(char)(id & 0xff), (char)((id >> 8) & 0xff), (char)((id >> 16) & 0xff), (char)((id >> 24) & 0xff),
-					(char)((rxHeader.DLC & 0xf) | (1 >> 4))
+					(char)((rxHeader.length & 0xf) | (1 >> 4))
 			};
 
-			for(uint8_t i = 0; i< rxHeader.DLC; i++){
+			for(uint8_t i = 0; i< rxHeader.length; i++){
 				reply.push_back(msg.data[i]);
 			}
 
@@ -302,7 +293,7 @@ CommandStatus CanBridge::command(const ParsedCommand& cmd,std::vector<CommandRep
 	switch(static_cast<CanBridge_commands>(cmd.cmdId)){
 	case CanBridge_commands::can:
 		if(cmd.type == CMDtype::get){
-			replies.emplace_back(*(int64_t*)lastmsg.data,lastmsg.header.StdId);
+			replies.emplace_back(*(int64_t*)lastmsg.data,lastmsg.header.id);
 		}else if(cmd.type == CMDtype::setat){
 			sendMessage(cmd.adr,cmd.val);
 		}else{
@@ -313,7 +304,7 @@ CommandStatus CanBridge::command(const ParsedCommand& cmd,std::vector<CommandRep
 
 	case CanBridge_commands::canrtr:
 		if(cmd.type == CMDtype::get){
-			replies.emplace_back(*(int64_t*)lastmsg.data,lastmsg.header.StdId);
+			replies.emplace_back(*(int64_t*)lastmsg.data,lastmsg.header.id);
 		}else if(cmd.type == CMDtype::set){
 			sendMessage(cmd.val,0,8,true); // msg with rtr bit
 		}else{

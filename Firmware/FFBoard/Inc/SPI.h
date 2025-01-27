@@ -12,8 +12,6 @@
 #include <vector>
 #include "cppmain.h"
 
-#include "stm32f4xx_hal.h"
-
 #include "SpiHandler.h"
 #include "semaphore.hpp"
 
@@ -79,6 +77,9 @@ public:
 	bool hasFreePins();
 
 	uint32_t getBaseClk();
+	std::pair<uint32_t,float> getClosestPrescaler(float clock);
+
+	SPI_HandleTypeDef* getPortHandle();
 
 private:
 	void beginTransfer(SPIConfig* config);

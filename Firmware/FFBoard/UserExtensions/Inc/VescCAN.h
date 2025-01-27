@@ -95,8 +95,7 @@ public:
 	void setPos(int32_t pos) override;
 
 	// CanHandler impl
-	void canRxPendCallback(CAN_HandleTypeDef *hcan, uint8_t *rxBuf,
-			CAN_RxHeaderTypeDef *rxHeader, uint32_t fifo) override;
+	void canRxPendCallback(CANPort* port,CAN_rx_msg& msg) override;
 
 	// CommandHandler impl
 	CommandStatus command(const ParsedCommand& cmd,std::vector<CommandReply>& replies);
@@ -136,7 +135,6 @@ private:
 
 	CANPort *port = &canport;
 	int32_t filterId = 0;
-	//uint8_t baudrate = CANSPEEDPRESET_500; 	// 250000, 500000, 1M
 	uint8_t OFFB_can_Id = 0x40; 			// Default OpenFFBoard CAN ID
 	uint8_t VESC_can_Id = 0xFF;				// Default VESC CAN id
 	uint8_t buffer_rx[BUFFER_RX_SIZE];		// Used to store multi-frame can message

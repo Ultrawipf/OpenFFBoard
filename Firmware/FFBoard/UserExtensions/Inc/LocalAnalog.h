@@ -45,7 +45,8 @@ public:
 
 private:
 	const uint8_t numPins = ADC_PINS;
-
+	uint8_t bitshift = 0;
+	uint16_t mask = 0xffff;
 	LocalAnalogConfig aconf;
 };
 

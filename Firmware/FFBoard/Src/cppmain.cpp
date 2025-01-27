@@ -5,12 +5,9 @@
 #include "global_callbacks.h"
 #include "cpp_target_config.h"
 #include "cmsis_os.h"
-#include "stm32f4xx_hal_flash.h"
-
 #include "tusb.h"
 
 uint32_t clkmhz = HAL_RCC_GetHCLKFreq() / 100000;
-extern TIM_HandleTypeDef TIM_MICROS;
 
 #ifdef HAL_IWDG_MODULE_ENABLED
 extern IWDG_HandleTypeDef hiwdg; // Watchdog
@@ -21,7 +18,7 @@ bool mainclassChosen = false;
 
 uint16_t main_id = 0;
 
-FFBoardMain* mainclass __attribute__((section (".ccmram")));
+FFBoardMain* mainclass __attribute__((section (CCRAM_SEC)));
 ClassChooser<FFBoardMain> mainchooser(class_registry);
 
 
@@ -45,19 +42,10 @@ void cppmain() {
 #endif
 
 	// Flash init
-	// TODO verify why or if flash does not erase or initialize correctly on some new chips
-	HAL_FLASH_Unlock();
-	// Clear all the error flags
-	__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_EOP);
-	__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_OPERR);
-	__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_WRPERR);
-	__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_PGAERR);
-	__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_PGPERR);
-	__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_PGSERR);
-
-	if( EE_Init() != EE_OK){
+	if(!Flash_Init()){
 		Error_Handler();
 	}
+
 //	// Check if flash is initialized
 //	uint16_t lastVersion = 0;
 //	if(!Flash_Read(ADR_SW_VERSION, &lastVersion)){ // Version never written
@@ -75,14 +63,11 @@ void cppmain() {
 	}
 	Flash_Read(ADR_FLASH_VERSION,&lastFlashVersion);
 	if(lastFlashVersion != FLASH_VERSION){
-		EE_Format(); // Major version changed or could not write initial value. force a format
+		Flash_Format(); // Major version changed or could not write initial value. force a format
 		Flash_Write(ADR_FLASH_VERSION, FLASH_VERSION);
 	}
 
-	HAL_FLASH_Lock();
 	// ------------------------
-
-	TIM_MICROS.Instance->CR1 = 1; // Enable microsecond clock
 
 	startADC(); // enable ADC DMA
 
@@ -96,6 +81,7 @@ void cppmain() {
 		Error_Handler();
 	}
 
+	PersistentStorage::restoreFlashStartupCb(); // Flash is initialized. allow restoring now
 
 	mainclass = mainchooser.Create(main_id);
 	if(mainclass == nullptr){ // invalid id
@@ -121,10 +107,23 @@ void refreshWatchdog(){
 }
 
 
-
+/**
+ * TIM_MICROS_HALTICK MUST be reset by the HAL tick OR be the same tick timer to count microseconds since last tick update.
+ * By default ST HAL initializes the tick timer with 1MHz and 1kHz overrun interrupts so TIM_MICROS_HALTICK can be defined as that timer.
+ * Alternatively an actual freerunning 32b can be defined as TIM_MICROS to use its count directly.
+ * Otherwise the cyclecounter is used.
+ */
 uint32_t micros(){
-	//return DWT->CYCCNT / clkmhz;
+#ifdef TIM_MICROS_HALTICK
+	extern TIM_HandleTypeDef TIM_MICROS_HALTICK;
+	return (HAL_GetTick() * 1000) + TIM_MICROS_HALTICK.Instance->CNT;
+#elif defined(TIM_MICROS)
+	extern TIM_HandleTypeDef TIM_MICROS;
 	return TIM_MICROS.Instance->CNT;
+#else
+	return DWT->CYCCNT / clkmhz;
+#endif
+
 }
 
 
@@ -138,6 +137,10 @@ void free(void *p)
     vPortFree(p);
 }
 
+/**
+ * Helper function for RTOS run time measurements
+ * Should return a reasonably accurate and large counter value
+ */
 unsigned long getRunTimeCounterValue(void){
 	return micros();
 }

@@ -20,11 +20,18 @@ public:
 
 	virtual void saveFlash(); 		// Write to flash here
 	virtual void restoreFlash();	// Load from flash
+	void restoreFlashDelayed();	// Load from flash after startup
 
 	static std::vector<PersistentStorage*>& getFlashHandlers() {
 		static std::vector<PersistentStorage*> flashHandlers{};
 		return flashHandlers;
 	}
+
+	static void restoreFlashStartupCb();
+
+protected:
+	bool restoreDelayedFlag = false;
+	static bool startupComplete;
 };
 
 #endif /* PERSISTENTSTORAGE_H_ */
