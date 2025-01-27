@@ -124,9 +124,10 @@ void CanAnalogBase::canRxPendCallback(CAN_HandleTypeDef *hcan,uint8_t* rxBuf,CAN
 		if(id != this->canId+packet){
 			continue;
 		}
-		for(uint8_t i = 0; i< axes-(packet*4) ; i++){
-			this->buf[i+(packet*4)] = rxBuf[i*2] | (rxBuf[i*2+1] << 8);
+		for(uint8_t i = 0; i < 4 && (i + packet*4) < axes; i++) {
+    	this->buf[i + packet*4] = rxBuf[i*2] | (rxBuf[i*2+1] << 8);
 		}
+
 	}
 }
 
