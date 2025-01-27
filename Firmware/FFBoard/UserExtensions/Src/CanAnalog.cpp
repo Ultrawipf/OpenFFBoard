@@ -127,8 +127,8 @@ void CanAnalogBase::canRxPendCallback(CANPort* port,CAN_rx_msg& msg){
 		if(id != this->canId+packet){
 			continue;
 		}
-		for(uint8_t i = 0; i< axes-(packet*4) ; i++){
-			this->buf[i+(packet*4)] = msg.data[i*2] | (msg.data[i*2+1] << 8);
+		for(uint8_t i = 0; i < 4 && (i + packet*4) < axes; i++) {
+    	this->buf[i + packet*4] = msg.data[i*2] | (msg.data[i*2+1] << 8);
 		}
 	}
 }
