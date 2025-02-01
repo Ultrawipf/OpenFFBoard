@@ -1,8 +1,14 @@
-### Changes this version:
-- Fixed BISS-C encoder sometimes overflowing one rotation at startup
-- Added BISS-C direction inversion function (Default true). Most BISS-C encoders count CW while most others and TMC count CCW.
-- Standardized encoder counting direction counting up in CCW direction as a more common industrial standard
-- Fixed idle spring effect not working before first save
-- Retuned speed limiter function. Removed averaging. Should be more stable for high resolution encoders if high bandwidth speed filter preset is selected
-- Force ramps up slowly on potential sharp position changes such as recentering
-- FFB led now shows FFB state. On when FFB actuators enabled. Still blinks on clipping
+### Changes this version from 1.16 to 1.15:
+- Added MyActuator RMD CAN support class.
+  - Temporary implementation until CAN protocol changes. Usable but might be improved in the future
+- Fixed issues in CAN analog class for packet 2. Allow shorter frames
+- F407: ADC now triggered by timer to reduce interrupt frequency
+- Using analog VREF for voltage sensing (better accuracy with unstable 3.3V)
+- Added chip temperature readout
+
+Internal changes:
+- CAN port interfaces rewritten
+- HAL updated
+- Migrated to CPP20
+- Upgraded to tinyusb 0.17
+- Improved microsecond counter implementation
