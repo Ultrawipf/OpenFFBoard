@@ -14,12 +14,12 @@ Conditional effects (spring,damper,inertia,friction) do not use magnitude but a 
 
 effects = []
 
-def readData(cmdtype,cls,instance,cmd,val,addr):
+def readData(cmdtype,cls,inst,cmd,val,addr):
     if cls == FX_MANAGER and cmd == 2:
         effects.append(val)
         print("Got new effect at index",val)
         
-    print(f"Type: {cmdtype}, Class: {cls}.{instance}: cmd: {cmd}, val: {val}, addr: {addr}")
+    print(f"Type: {cmdtype}, Class: {cls}.{inst}: cmd: {cmd}, val: {val}, addr: {addr}")
 
 dev = OpenFFBoard(OpenFFBoard.findDevices()[0])
 dev.open()
