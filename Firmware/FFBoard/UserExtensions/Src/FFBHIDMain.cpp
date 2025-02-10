@@ -110,7 +110,7 @@ void FFBHIDMain::Run(){
 #endif
 	while(true){
 #ifndef TIM_FFB
-		while(ffb_rate_counter++ < ffb_rate_divider){
+		while(ffb_rate_counter++ <= ffb_rate_divider){
 			Delay(1);
 		}
 		ffb_rate_counter = 0;
