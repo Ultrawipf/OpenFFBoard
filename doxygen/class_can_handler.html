@@ -99,17 +99,20 @@ Inheritance diagram for CanHandler:</div>
  <div class="center">
   <img src="class_can_handler.png" usemap="#CanHandler_map" alt=""/>
   <map id="CanHandler_map" name="CanHandler_map">
-<area href="class_c_a_n_port.html" alt="CANPort" shape="rect" coords="0,56,153,80"/>
+<area href="class_c_a_n_port__2_b.html" alt="CANPort_2B" shape="rect" coords="0,56,153,80"/>
 <area href="class_can_analog_base.html" alt="CanAnalogBase" shape="rect" coords="163,56,316,80"/>
 <area href="class_can_bridge.html" alt="CanBridge" shape="rect" coords="326,56,479,80"/>
 <area href="class_can_buttons.html" alt="CanButtons" shape="rect" coords="489,56,642,80"/>
 <area href="class_o_drive_c_a_n.html" alt="ODriveCAN" shape="rect" coords="652,56,805,80"/>
-<area href="class_vesc_c_a_n.html" alt="VescCAN" shape="rect" coords="978,56,1131,80"/>
+<area href="class_rmd_motor_c_a_n.html" alt="RmdMotorCAN" shape="rect" coords="978,56,1131,80"/>
+<area href="class_vesc_c_a_n.html" alt="VescCAN" shape="rect" coords="1304,56,1457,80"/>
 <area href="class_can_analog.html" alt="CanAnalog&lt; AMOUNT &gt;" shape="rect" coords="163,112,316,136"/>
 <area href="class_o_drive_c_a_n1.html" alt="ODriveCAN1" shape="rect" coords="570,112,723,136"/>
 <area href="class_o_drive_c_a_n2.html" alt="ODriveCAN2" shape="rect" coords="733,112,886,136"/>
-<area href="class_v_e_s_c__1.html" alt="VESC_1" shape="rect" coords="896,112,1049,136"/>
-<area href="class_v_e_s_c__2.html" alt="VESC_2" shape="rect" coords="1059,112,1212,136"/>
+<area href="class_rmd_motor_c_a_n1.html" alt="RmdMotorCAN1" shape="rect" coords="896,112,1049,136"/>
+<area href="class_rmd_motor_c_a_n2.html" alt="RmdMotorCAN2" shape="rect" coords="1059,112,1212,136"/>
+<area href="class_v_e_s_c__1.html" alt="VESC_1" shape="rect" coords="1222,112,1375,136"/>
+<area href="class_v_e_s_c__2.html" alt="VESC_2" shape="rect" coords="1385,112,1538,136"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -119,16 +122,16 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a3f2604934604f431dc0f48a84ee60f22"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a562a01205e76ff9d5b0f554cee1a446b"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_handler.html#a562a01205e76ff9d5b0f554cee1a446b">~CanHandler</a> ()</td></tr>
 <tr class="separator:a562a01205e76ff9d5b0f554cee1a446b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a53651a4aa1e88f3e442c054aae0a33d7"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_handler.html#a53651a4aa1e88f3e442c054aae0a33d7">canRxPendCallback</a> (CAN_HandleTypeDef *hcan, uint8_t *rxBuf, CAN_RxHeaderTypeDef *rxHeader, uint32_t fifo)</td></tr>
-<tr class="separator:a53651a4aa1e88f3e442c054aae0a33d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbcdeeb42119dc4f9e844e40f7e777d5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_handler.html#afbcdeeb42119dc4f9e844e40f7e777d5">canErrorCallback</a> (CAN_HandleTypeDef *hcan)</td></tr>
-<tr class="separator:afbcdeeb42119dc4f9e844e40f7e777d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a40cb9e6af6a482920327d741d4b423f5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_handler.html#a40cb9e6af6a482920327d741d4b423f5">canRxFullCallback</a> (CAN_HandleTypeDef *hcan, uint32_t fifo)</td></tr>
-<tr class="separator:a40cb9e6af6a482920327d741d4b423f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a12401bc2ece26ccb4adf12ec833276c8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_handler.html#a12401bc2ece26ccb4adf12ec833276c8">canTxCpltCallback</a> (CAN_HandleTypeDef *hcan, uint32_t mailbox)</td></tr>
-<tr class="separator:a12401bc2ece26ccb4adf12ec833276c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0e2267410edc1d3f36bf8cb228ff458b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_handler.html#a0e2267410edc1d3f36bf8cb228ff458b">canTxAbortCallback</a> (CAN_HandleTypeDef *hcan, uint32_t mailbox)</td></tr>
-<tr class="separator:a0e2267410edc1d3f36bf8cb228ff458b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf8690763a1e1c57d369dc41162732bd"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_handler.html#aaf8690763a1e1c57d369dc41162732bd">canRxPendCallback</a> (<a class="el" href="class_c_a_n_port.html">CANPort</a> *port, <a class="el" href="struct_c_a_n__rx__msg.html">CAN_rx_msg</a> &amp;msg)</td></tr>
+<tr class="separator:aaf8690763a1e1c57d369dc41162732bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87cbd1ffa351f398cd092624034c53de"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_handler.html#a87cbd1ffa351f398cd092624034c53de">canErrorCallback</a> (<a class="el" href="class_c_a_n_port.html">CANPort</a> *port, uint32_t errcode)</td></tr>
+<tr class="separator:a87cbd1ffa351f398cd092624034c53de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c2378e74f74a6aeb1d78b8016617e7d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_handler.html#a7c2378e74f74a6aeb1d78b8016617e7d">canRxFullCallback</a> (<a class="el" href="class_c_a_n_port.html">CANPort</a> *port, uint32_t fifo)</td></tr>
+<tr class="separator:a7c2378e74f74a6aeb1d78b8016617e7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85e19cebbab39ad65a5a837b78984545"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_handler.html#a85e19cebbab39ad65a5a837b78984545">canTxCpltCallback</a> (<a class="el" href="class_c_a_n_port.html">CANPort</a> *port, uint32_t mailbox)</td></tr>
+<tr class="separator:a85e19cebbab39ad65a5a837b78984545"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9f23009ef5f97846cba05d2e66eb962"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_handler.html#ab9f23009ef5f97846cba05d2e66eb962">canTxAbortCallback</a> (<a class="el" href="class_c_a_n_port.html">CANPort</a> *port, uint32_t mailbox)</td></tr>
+<tr class="separator:ab9f23009ef5f97846cba05d2e66eb962"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -137,7 +140,7 @@ Static Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_can_handler_8h_source.html#l00016">16</a> of file <a class="el" href="_can_handler_8h_source.html">CanHandler.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_can_handler_8h_source.html#l00027">27</a> of file <a class="el" href="_can_handler_8h_source.html">CanHandler.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a3f2604934604f431dc0f48a84ee60f22" name="a3f2604934604f431dc0f48a84ee60f22"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3f2604934604f431dc0f48a84ee60f22">&#9670;&nbsp;</a></span>CanHandler()</h2>
@@ -186,8 +189,8 @@ Static Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="afbcdeeb42119dc4f9e844e40f7e777d5" name="afbcdeeb42119dc4f9e844e40f7e777d5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afbcdeeb42119dc4f9e844e40f7e777d5">&#9670;&nbsp;</a></span>canErrorCallback()</h2>
+<a id="a87cbd1ffa351f398cd092624034c53de" name="a87cbd1ffa351f398cd092624034c53de"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a87cbd1ffa351f398cd092624034c53de">&#9670;&nbsp;</a></span>canErrorCallback()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -198,9 +201,19 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">void CanHandler::canErrorCallback </td>
           <td>(</td>
-          <td class="paramtype">CAN_HandleTypeDef *&#160;</td>
-          <td class="paramname"><em>hcan</em></td><td>)</td>
+          <td class="paramtype"><a class="el" href="class_c_a_n_port.html">CANPort</a> *&#160;</td>
+          <td class="paramname"><em>port</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>errcode</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -211,14 +224,14 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p ><a class="el" href="class_error.html">Error</a> during can transfer </p>
 
-<p>Reimplemented in <a class="el" href="class_c_a_n_port.html#a9d3d3027cc83927ae0fdd6ffc7e9f101">CANPort</a>, <a class="el" href="class_can_bridge.html#a2e93f005127cd16fd3a1133cca2e27c6">CanBridge</a>, and <a class="el" href="class_o_drive_c_a_n.html#a2bb257db85a8e4f4916bef31f1a3f81d">ODriveCAN</a>.</p>
+<p>Reimplemented in <a class="el" href="class_c_a_n_port__2_b.html#a26911f105ff55dca7028f2cc6efad1e5">CANPort_2B</a>, <a class="el" href="class_o_drive_c_a_n.html#a861dc04714644be767c8b33c9260dcb7">ODriveCAN</a>, and <a class="el" href="class_can_bridge.html#afa03de25a7c8dd14eba5bcc3ee94fedd">CanBridge</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="_can_handler_8cpp_source.html#l00038">38</a> of file <a class="el" href="_can_handler_8cpp_source.html">CanHandler.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a40cb9e6af6a482920327d741d4b423f5" name="a40cb9e6af6a482920327d741d4b423f5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a40cb9e6af6a482920327d741d4b423f5">&#9670;&nbsp;</a></span>canRxFullCallback()</h2>
+<a id="a7c2378e74f74a6aeb1d78b8016617e7d" name="a7c2378e74f74a6aeb1d78b8016617e7d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c2378e74f74a6aeb1d78b8016617e7d">&#9670;&nbsp;</a></span>canRxFullCallback()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -229,8 +242,8 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">void CanHandler::canRxFullCallback </td>
           <td>(</td>
-          <td class="paramtype">CAN_HandleTypeDef *&#160;</td>
-          <td class="paramname"><em>hcan</em>, </td>
+          <td class="paramtype"><a class="el" href="class_c_a_n_port.html">CANPort</a> *&#160;</td>
+          <td class="paramname"><em>port</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -256,8 +269,8 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a53651a4aa1e88f3e442c054aae0a33d7" name="a53651a4aa1e88f3e442c054aae0a33d7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a53651a4aa1e88f3e442c054aae0a33d7">&#9670;&nbsp;</a></span>canRxPendCallback()</h2>
+<a id="aaf8690763a1e1c57d369dc41162732bd" name="aaf8690763a1e1c57d369dc41162732bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaf8690763a1e1c57d369dc41162732bd">&#9670;&nbsp;</a></span>canRxPendCallback()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -268,26 +281,14 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">void CanHandler::canRxPendCallback </td>
           <td>(</td>
-          <td class="paramtype">CAN_HandleTypeDef *&#160;</td>
-          <td class="paramname"><em>hcan</em>, </td>
+          <td class="paramtype"><a class="el" href="class_c_a_n_port.html">CANPort</a> *&#160;</td>
+          <td class="paramname"><em>port</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint8_t *&#160;</td>
-          <td class="paramname"><em>rxBuf</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">CAN_RxHeaderTypeDef *&#160;</td>
-          <td class="paramname"><em>rxHeader</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>fifo</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="struct_c_a_n__rx__msg.html">CAN_rx_msg</a> &amp;&#160;</td>
+          <td class="paramname"><em>msg</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -303,14 +304,14 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p >New message received in fifo number </p>
 
-<p>Reimplemented in <a class="el" href="class_can_bridge.html#aa982e0d9856e19be48c5cc858d753599">CanBridge</a>, <a class="el" href="class_can_analog_base.html#a2ae95012c167c29c38d8b25d1d6462e9">CanAnalogBase</a>, <a class="el" href="class_can_buttons.html#ad19d252668e7e91f14ede2b2b33d0383">CanButtons</a>, <a class="el" href="class_o_drive_c_a_n.html#a42656b61d844150c463b53fdfde72e9b">ODriveCAN</a>, and <a class="el" href="class_vesc_c_a_n.html#add739e6410daa262f13cf483e1160c7e">VescCAN</a>.</p>
+<p>Reimplemented in <a class="el" href="class_can_analog_base.html#a9ff12eff5fb3fcb29c5a478eb680bbc9">CanAnalogBase</a>, <a class="el" href="class_can_bridge.html#a871c99620b472fb90b09a4a8fe7b7bec">CanBridge</a>, <a class="el" href="class_can_buttons.html#abb8b745c88ea4546d1666def9defbabd">CanButtons</a>, <a class="el" href="class_o_drive_c_a_n.html#a140bf2b0a5c42ce1a9b1009c5bcc111b">ODriveCAN</a>, <a class="el" href="class_rmd_motor_c_a_n.html#a962ab79db2b7b847a3c5d96df9c6bbbf">RmdMotorCAN</a>, and <a class="el" href="class_vesc_c_a_n.html#af4b43bce9852b7c6c0e0fb749f036dc3">VescCAN</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="_can_handler_8cpp_source.html#l00031">31</a> of file <a class="el" href="_can_handler_8cpp_source.html">CanHandler.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a0e2267410edc1d3f36bf8cb228ff458b" name="a0e2267410edc1d3f36bf8cb228ff458b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0e2267410edc1d3f36bf8cb228ff458b">&#9670;&nbsp;</a></span>canTxAbortCallback()</h2>
+<a id="ab9f23009ef5f97846cba05d2e66eb962" name="ab9f23009ef5f97846cba05d2e66eb962"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab9f23009ef5f97846cba05d2e66eb962">&#9670;&nbsp;</a></span>canTxAbortCallback()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -321,8 +322,8 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">void CanHandler::canTxAbortCallback </td>
           <td>(</td>
-          <td class="paramtype">CAN_HandleTypeDef *&#160;</td>
-          <td class="paramname"><em>hcan</em>, </td>
+          <td class="paramtype"><a class="el" href="class_c_a_n_port.html">CANPort</a> *&#160;</td>
+          <td class="paramname"><em>port</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -344,14 +345,14 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p >CAN transmission aborted </p>
 
-<p>Reimplemented in <a class="el" href="class_c_a_n_port.html#a15971a0ae68ffebfc3968578c3b24897">CANPort</a>.</p>
+<p>Reimplemented in <a class="el" href="class_c_a_n_port__2_b.html#a8f117a320bdc1869fca27ad678d007fa">CANPort_2B</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="_can_handler_8cpp_source.html#l00052">52</a> of file <a class="el" href="_can_handler_8cpp_source.html">CanHandler.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a12401bc2ece26ccb4adf12ec833276c8" name="a12401bc2ece26ccb4adf12ec833276c8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a12401bc2ece26ccb4adf12ec833276c8">&#9670;&nbsp;</a></span>canTxCpltCallback()</h2>
+<a id="a85e19cebbab39ad65a5a837b78984545" name="a85e19cebbab39ad65a5a837b78984545"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a85e19cebbab39ad65a5a837b78984545">&#9670;&nbsp;</a></span>canTxCpltCallback()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -362,8 +363,8 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">void CanHandler::canTxCpltCallback </td>
           <td>(</td>
-          <td class="paramtype">CAN_HandleTypeDef *&#160;</td>
-          <td class="paramname"><em>hcan</em>, </td>
+          <td class="paramtype"><a class="el" href="class_c_a_n_port.html">CANPort</a> *&#160;</td>
+          <td class="paramname"><em>port</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -385,7 +386,7 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p >CAN transmission complete </p>
 
-<p>Reimplemented in <a class="el" href="class_c_a_n_port.html#a7d06609e307f98cc14a030efee41b7a0">CANPort</a>.</p>
+<p>Reimplemented in <a class="el" href="class_c_a_n_port__2_b.html#adc286c14c192a177370b7dfc05499ac1">CANPort_2B</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="_can_handler_8cpp_source.html#l00045">45</a> of file <a class="el" href="_can_handler_8cpp_source.html">CanHandler.cpp</a>.</p>
 
@@ -414,7 +415,7 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_can_handler_8h_source.html#l00032">32</a> of file <a class="el" href="_can_handler_8h_source.html">CanHandler.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_can_handler_8h_source.html#l00055">55</a> of file <a class="el" href="_can_handler_8h_source.html">CanHandler.h</a>.</p>
 
 </div>
 </div>

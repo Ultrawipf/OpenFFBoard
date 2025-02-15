@@ -97,9 +97,9 @@ $(document).ready(function(){initNavTree('msc__device_8h.html',''); initResizabl
 Functions</h2></td></tr>
 <tr class="memitem:a4fe9764da024511a8593a3eeb957d1cb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msc__device_8h.html#a4fe9764da024511a8593a3eeb957d1cb">tud_msc_set_sense</a> (uint8_t lun, uint8_t sense_key, uint8_t add_sense_code, uint8_t add_sense_qualifier)</td></tr>
 <tr class="separator:a4fe9764da024511a8593a3eeb957d1cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a148e0153ce23f6ffd6305fb0e0fc4dfd"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msc__device_8h.html#a148e0153ce23f6ffd6305fb0e0fc4dfd">tud_msc_read10_cb</a> (uint8_t lun, uint32_t lba, uint32_t offset, void *<a class="el" href="midi__device_8h.html#ac8733c58bc671239139641960e2d5dbf">buffer</a>, uint32_t <a class="el" href="midi__device_8h.html#aca9aaceac98612802d20cb6983f7669c">bufsize</a>)</td></tr>
+<tr class="memitem:a148e0153ce23f6ffd6305fb0e0fc4dfd"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msc__device_8h.html#a148e0153ce23f6ffd6305fb0e0fc4dfd">tud_msc_read10_cb</a> (uint8_t lun, uint32_t lba, uint32_t offset, void *<a class="el" href="usbh_8c.html#a56ed84df35de10bdb65e72b184309497">buffer</a>, uint32_t <a class="el" href="midi__device_8h.html#aca9aaceac98612802d20cb6983f7669c">bufsize</a>)</td></tr>
 <tr class="separator:a148e0153ce23f6ffd6305fb0e0fc4dfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a375a5cc4f5760603edf955765eca41a8"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msc__device_8h.html#a375a5cc4f5760603edf955765eca41a8">tud_msc_write10_cb</a> (uint8_t lun, uint32_t lba, uint32_t offset, uint8_t *<a class="el" href="midi__device_8h.html#ac8733c58bc671239139641960e2d5dbf">buffer</a>, uint32_t <a class="el" href="midi__device_8h.html#aca9aaceac98612802d20cb6983f7669c">bufsize</a>)</td></tr>
+<tr class="memitem:a375a5cc4f5760603edf955765eca41a8"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msc__device_8h.html#a375a5cc4f5760603edf955765eca41a8">tud_msc_write10_cb</a> (uint8_t lun, uint32_t lba, uint32_t offset, uint8_t *<a class="el" href="usbh_8c.html#a56ed84df35de10bdb65e72b184309497">buffer</a>, uint32_t <a class="el" href="midi__device_8h.html#aca9aaceac98612802d20cb6983f7669c">bufsize</a>)</td></tr>
 <tr class="separator:a375a5cc4f5760603edf955765eca41a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae2aefd1e5c3d470f440cd8f07dce9991"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msc__device_8h.html#ae2aefd1e5c3d470f440cd8f07dce9991">tud_msc_inquiry_cb</a> (uint8_t lun, uint8_t vendor_id[8], uint8_t product_id[16], uint8_t product_rev[4])</td></tr>
 <tr class="separator:ae2aefd1e5c3d470f440cd8f07dce9991"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -107,13 +107,15 @@ Functions</h2></td></tr>
 <tr class="separator:abbb293c273679cadfae2b360ccd5e437"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac721126f20ec8c7358cc89ba971f6065"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msc__device_8h.html#ac721126f20ec8c7358cc89ba971f6065">tud_msc_capacity_cb</a> (uint8_t lun, uint32_t *block_count, uint16_t *block_size)</td></tr>
 <tr class="separator:ac721126f20ec8c7358cc89ba971f6065"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8f5dcb9aacaba9e9932f2c941d4639e3"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msc__device_8h.html#a8f5dcb9aacaba9e9932f2c941d4639e3">tud_msc_scsi_cb</a> (uint8_t lun, uint8_t const scsi_cmd[16], void *<a class="el" href="midi__device_8h.html#ac8733c58bc671239139641960e2d5dbf">buffer</a>, uint16_t <a class="el" href="midi__device_8h.html#aca9aaceac98612802d20cb6983f7669c">bufsize</a>)</td></tr>
+<tr class="memitem:a8f5dcb9aacaba9e9932f2c941d4639e3"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msc__device_8h.html#a8f5dcb9aacaba9e9932f2c941d4639e3">tud_msc_scsi_cb</a> (uint8_t lun, uint8_t const scsi_cmd[16], void *<a class="el" href="usbh_8c.html#a56ed84df35de10bdb65e72b184309497">buffer</a>, uint16_t <a class="el" href="midi__device_8h.html#aca9aaceac98612802d20cb6983f7669c">bufsize</a>)</td></tr>
 <tr class="separator:a8f5dcb9aacaba9e9932f2c941d4639e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab35b143912036b41c18fa29c486e0c3a"><td class="memItemLeft" align="right" valign="top">TU_ATTR_WEAK uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msc__device_8h.html#ab35b143912036b41c18fa29c486e0c3a">tud_msc_get_maxlun_cb</a> (void)</td></tr>
 <tr class="separator:ab35b143912036b41c18fa29c486e0c3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aadcddfc7c9e78af14d9350829d53e07a"><td class="memItemLeft" align="right" valign="top">TU_ATTR_WEAK bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msc__device_8h.html#aadcddfc7c9e78af14d9350829d53e07a">tud_msc_start_stop_cb</a> (uint8_t lun, uint8_t power_condition, bool start, bool load_eject)</td></tr>
 <tr class="separator:aadcddfc7c9e78af14d9350829d53e07a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a751b530ef36a86aca1267ea5210c9bf1"><td class="memItemLeft" align="right" valign="top">TU_ATTR_WEAK int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msc__device_8h.html#a751b530ef36a86aca1267ea5210c9bf1">tud_msc_request_sense_cb</a> (uint8_t lun, void *<a class="el" href="midi__device_8h.html#ac8733c58bc671239139641960e2d5dbf">buffer</a>, uint16_t <a class="el" href="midi__device_8h.html#aca9aaceac98612802d20cb6983f7669c">bufsize</a>)</td></tr>
+<tr class="memitem:ae9f0192d756de6c450756db9ac9edb8d"><td class="memItemLeft" align="right" valign="top">TU_ATTR_WEAK bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msc__device_8h.html#ae9f0192d756de6c450756db9ac9edb8d">tud_msc_prevent_allow_medium_removal_cb</a> (uint8_t lun, uint8_t prohibit_removal, uint8_t control)</td></tr>
+<tr class="separator:ae9f0192d756de6c450756db9ac9edb8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a751b530ef36a86aca1267ea5210c9bf1"><td class="memItemLeft" align="right" valign="top">TU_ATTR_WEAK int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msc__device_8h.html#a751b530ef36a86aca1267ea5210c9bf1">tud_msc_request_sense_cb</a> (uint8_t lun, void *<a class="el" href="usbh_8c.html#a56ed84df35de10bdb65e72b184309497">buffer</a>, uint16_t <a class="el" href="midi__device_8h.html#aca9aaceac98612802d20cb6983f7669c">bufsize</a>)</td></tr>
 <tr class="separator:a751b530ef36a86aca1267ea5210c9bf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a605c7bc2eb5598adb94926142bf82886"><td class="memItemLeft" align="right" valign="top">TU_ATTR_WEAK void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msc__device_8h.html#a605c7bc2eb5598adb94926142bf82886">tud_msc_read10_complete_cb</a> (uint8_t lun)</td></tr>
 <tr class="separator:a605c7bc2eb5598adb94926142bf82886"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -125,13 +127,15 @@ Functions</h2></td></tr>
 <tr class="separator:a59855b3113a2cb20b9f0b0d9cc2ca7d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf4981315a4d70a7057edd4064fd90ce"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msc__device_8h.html#aaf4981315a4d70a7057edd4064fd90ce">mscd_init</a> (void)</td></tr>
 <tr class="separator:aaf4981315a4d70a7057edd4064fd90ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70d56238db44bce4d77c8297211e7e27"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msc__device_8h.html#a70d56238db44bce4d77c8297211e7e27">mscd_deinit</a> (void)</td></tr>
+<tr class="separator:a70d56238db44bce4d77c8297211e7e27"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2b8d7cd18e5e49f3378e1f5bdd7bf196"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msc__device_8h.html#a2b8d7cd18e5e49f3378e1f5bdd7bf196">mscd_reset</a> (uint8_t rhport)</td></tr>
 <tr class="separator:a2b8d7cd18e5e49f3378e1f5bdd7bf196"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a88c3deff8b6784aa3c5b273c3f34deb0"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msc__device_8h.html#a88c3deff8b6784aa3c5b273c3f34deb0">mscd_open</a> (uint8_t rhport, <a class="el" href="group___u_s_b_def___type.html#gac4415f9c56f80b658137e35c14b58096">tusb_desc_interface_t</a> const *itf_desc, uint16_t max_len)</td></tr>
+<tr class="memitem:a88c3deff8b6784aa3c5b273c3f34deb0"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msc__device_8h.html#a88c3deff8b6784aa3c5b273c3f34deb0">mscd_open</a> (uint8_t rhport, <a class="el" href="tusb__types_8h.html#ac4415f9c56f80b658137e35c14b58096">tusb_desc_interface_t</a> const *itf_desc, uint16_t max_len)</td></tr>
 <tr class="separator:a88c3deff8b6784aa3c5b273c3f34deb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adc18d9c97fcbd636c71dab72302fa6b3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msc__device_8h.html#adc18d9c97fcbd636c71dab72302fa6b3">mscd_control_xfer_cb</a> (uint8_t rhport, uint8_t stage, <a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *p_request)</td></tr>
+<tr class="memitem:adc18d9c97fcbd636c71dab72302fa6b3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msc__device_8h.html#adc18d9c97fcbd636c71dab72302fa6b3">mscd_control_xfer_cb</a> (uint8_t rhport, uint8_t <a class="el" href="usbh_8c.html#a8efea5b2da521d9d454f141866ab68cb">stage</a>, <a class="el" href="tusb__types_8h.html#a2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *p_request)</td></tr>
 <tr class="separator:adc18d9c97fcbd636c71dab72302fa6b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0a30469f504fc9d9add41321908d4988"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msc__device_8h.html#a0a30469f504fc9d9add41321908d4988">mscd_xfer_cb</a> (uint8_t rhport, uint8_t ep_addr, <a class="el" href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a> event, uint32_t xferred_bytes)</td></tr>
+<tr class="memitem:a0a30469f504fc9d9add41321908d4988"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msc__device_8h.html#a0a30469f504fc9d9add41321908d4988">mscd_xfer_cb</a> (uint8_t rhport, uint8_t ep_addr, <a class="el" href="tusb__types_8h.html#a6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a> event, uint32_t xferred_bytes)</td></tr>
 <tr class="separator:a0a30469f504fc9d9add41321908d4988"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
@@ -161,7 +165,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *&#160;</td>
+          <td class="paramtype"><a class="el" href="tusb__types_8h.html#a2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *&#160;</td>
           <td class="paramname"><em>p_request</em>&#160;</td>
         </tr>
         <tr>
@@ -172,7 +176,27 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="msc__device_8c_source.html#l00301">301</a> of file <a class="el" href="msc__device_8c_source.html">msc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="msc__device_8c_source.html#l00308">308</a> of file <a class="el" href="msc__device_8c_source.html">msc_device.c</a>.</p>
+
+</div>
+</div>
+<a id="a70d56238db44bce4d77c8297211e7e27" name="a70d56238db44bce4d77c8297211e7e27"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a70d56238db44bce4d77c8297211e7e27">&#9670;&nbsp;</a></span>mscd_deinit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mscd_deinit </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="msc__device_8c_source.html#l00258">258</a> of file <a class="el" href="msc__device_8c_source.html">msc_device.c</a>.</p>
 
 </div>
 </div>
@@ -192,7 +216,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="msc__device_8c_source.html#l00251">251</a> of file <a class="el" href="msc__device_8c_source.html">msc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="msc__device_8c_source.html#l00254">254</a> of file <a class="el" href="msc__device_8c_source.html">msc_device.c</a>.</p>
 
 </div>
 </div>
@@ -211,7 +235,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#gac4415f9c56f80b658137e35c14b58096">tusb_desc_interface_t</a> const *&#160;</td>
+          <td class="paramtype"><a class="el" href="tusb__types_8h.html#ac4415f9c56f80b658137e35c14b58096">tusb_desc_interface_t</a> const *&#160;</td>
           <td class="paramname"><em>itf_desc</em>, </td>
         </tr>
         <tr>
@@ -228,7 +252,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="msc__device_8c_source.html#l00262">262</a> of file <a class="el" href="msc__device_8c_source.html">msc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="msc__device_8c_source.html#l00269">269</a> of file <a class="el" href="msc__device_8c_source.html">msc_device.c</a>.</p>
 
 </div>
 </div>
@@ -248,7 +272,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="msc__device_8c_source.html#l00256">256</a> of file <a class="el" href="msc__device_8c_source.html">msc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="msc__device_8c_source.html#l00263">263</a> of file <a class="el" href="msc__device_8c_source.html">msc_device.c</a>.</p>
 
 </div>
 </div>
@@ -273,7 +297,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="tusb__types_8h.html#a6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a>&#160;</td>
           <td class="paramname"><em>event</em>, </td>
         </tr>
         <tr>
@@ -290,7 +314,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="msc__device_8c_source.html#l00386">386</a> of file <a class="el" href="msc__device_8c_source.html">msc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="msc__device_8c_source.html#l00393">393</a> of file <a class="el" href="msc__device_8c_source.html">msc_device.c</a>.</p>
 
 </div>
 </div>
@@ -398,6 +422,40 @@ Variables</h2></td></tr>
           <td class="paramtype">uint8_t&#160;</td>
           <td class="paramname"><em>lun</em></td><td>)</td>
           <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae9f0192d756de6c450756db9ac9edb8d" name="ae9f0192d756de6c450756db9ac9edb8d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9f0192d756de6c450756db9ac9edb8d">&#9670;&nbsp;</a></span>tud_msc_prevent_allow_medium_removal_cb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TU_ATTR_WEAK bool tud_msc_prevent_allow_medium_removal_cb </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>lun</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>prohibit_removal</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>control</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -632,7 +690,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="msc__device_8c_source.html#l00231">231</a> of file <a class="el" href="msc__device_8c_source.html">msc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="msc__device_8c_source.html#l00234">234</a> of file <a class="el" href="msc__device_8c_source.html">msc_device.c</a>.</p>
 
 </div>
 </div>

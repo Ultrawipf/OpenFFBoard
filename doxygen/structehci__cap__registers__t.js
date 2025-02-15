@@ -1,0 +1,25 @@
+var structehci__cap__registers__t =
+[
+    [ "addr_64bit", "structehci__cap__registers__t.html#a5bcb16afa377fc86204b7bff3518d3e7", null ],
+    [ "async_park_cap", "structehci__cap__registers__t.html#a85a044c1f37f7b8e6b2bfbde90e30d66", null ],
+    [ "caplength", "structehci__cap__registers__t.html#a059dcf73feb1bb8e8df7a631f605c43a", null ],
+    [ "eecp", "structehci__cap__registers__t.html#ab5ca77c2f5c5d107aa8c31a5fe48e64a", null ],
+    [ "hccparams", "structehci__cap__registers__t.html#abaf10f1a93238a8bd02c00dfb6aaa218", null ],
+    [ "hccparams_bm", "structehci__cap__registers__t.html#ad2684b0ce92a7384c859362c7e9d6715", null ],
+    [ "hciversion", "structehci__cap__registers__t.html#acdec864b5ea18c1dffc6e995391e1dfe", null ],
+    [ "hcsp_portroute", "structehci__cap__registers__t.html#a9f979aa0ec2f9273789b08453abffff0", null ],
+    [ "hcsparams", "structehci__cap__registers__t.html#aebce4f2a8a76c463408b46b46af10234", null ],
+    [ "hcsparams_bm", "structehci__cap__registers__t.html#a78d633c0eec2d384799fc0c0187b7766", null ],
+    [ "iso_schedule_threshold", "structehci__cap__registers__t.html#aee9911f2fc37caf567a9813255b895af", null ],
+    [ "n_cc", "structehci__cap__registers__t.html#a924a42a9c31b7cabdcccb74153adf720", null ],
+    [ "n_pcc", "structehci__cap__registers__t.html#a86e8d2af41e4f36db3ac20a0752149f8", null ],
+    [ "n_ptt", "structehci__cap__registers__t.html#a7eae2b7c9e45f9ed9c0a8e70e20d61da", null ],
+    [ "n_tt", "structehci__cap__registers__t.html#a4de1594a333df3bf6b79d294af6afda1", null ],
+    [ "num_ports", "structehci__cap__registers__t.html#a88e1f43122b412ee958165869f96039e", null ],
+    [ "port_ind", "structehci__cap__registers__t.html#a1882adc7f964f0c85bd5107fb13a80d2", null ],
+    [ "port_power_control", "structehci__cap__registers__t.html#ab31c10b3dada0ceefb730835d09eaf71", null ],
+    [ "port_route_rule", "structehci__cap__registers__t.html#a4b4a40ae47acd460ce3abcd8d006f764", null ],
+    [ "programmable_frame_list_flag", "structehci__cap__registers__t.html#a0b08fe6809268f6bf2a85bc792e95390", null ],
+    [ "TU_RESERVED", "structehci__cap__registers__t.html#a6a686eff4e16f638209ac9aeade05a60", null ],
+    [ "TU_RESERVED", "structehci__cap__registers__t.html#a7cf265e8328f55b970b32febb0701499", null ]
+];

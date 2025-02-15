@@ -19,6 +19,7 @@ var audio_8h =
     [ "audio_desc_input_terminal_t", "group___class_driver___audio.html#ga36d7e7c7c2f1264b61bfdd5f4cce06f1", null ],
     [ "audio_desc_output_terminal_t", "group___class_driver___audio.html#ga133291522174e930f5ce9bc9b2c335fc", null ],
     [ "audio_desc_type_I_format_t", "group___class_driver___audio.html#ga0b030afdfe4f3e86aa02775a0a3faa9a", null ],
+    [ "audio_interrupt_data_t", "group___class_driver___audio.html#ga4958ff43c2fde67884e660bbc67ba7d8", null ],
     [ "audio_AC3_decoder_control_selector_t", "group___class_driver___audio.html#ga1ff3afc97c965e16cd012337bf52b1c4", [
       [ "AUDIO_AD_CTRL_UNDEF", "group___class_driver___audio.html#gga1ff3afc97c965e16cd012337bf52b1c4a6f5b22e869c0c4d598cd03c4e35c2c0a", null ],
       [ "AUDIO_AD_CTRL_MODE", "group___class_driver___audio.html#gga1ff3afc97c965e16cd012337bf52b1c4a9169cc2e6be5a054079615c90e229e3d", null ],

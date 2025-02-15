@@ -89,7 +89,9 @@ $(document).ready(function(){initNavTree('class_motor_p_w_m.html',''); initResiz
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#pri-types">Private Types</a> &#124;
+<a href="#pri-static-methods">Static Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
+<a href="#pri-static-attribs">Static Private Attributes</a> &#124;
 <a href="class_motor_p_w_m-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">MotorPWM Class Reference</div></div>
 </div><!--header-->
@@ -208,6 +210,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a0f6d37b59d3ce8deedb1862db79fd356 inherit pub_methods_class_persistent_storage"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1cf470862b87d0a1b91548c24dedc4f8 inherit pub_methods_class_persistent_storage"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_persistent_storage.html#a1cf470862b87d0a1b91548c24dedc4f8">~PersistentStorage</a> ()</td></tr>
 <tr class="separator:a1cf470862b87d0a1b91548c24dedc4f8 inherit pub_methods_class_persistent_storage"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5a3b2fe8e28d265bb818d084fa82039 inherit pub_methods_class_persistent_storage"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_persistent_storage.html#ad5a3b2fe8e28d265bb818d084fa82039">restoreFlashDelayed</a> ()</td></tr>
+<tr class="separator:ad5a3b2fe8e28d265bb818d084fa82039 inherit pub_methods_class_persistent_storage"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -262,6 +266,8 @@ Static Public Member Functions</h2></td></tr>
 <tr class="inherit_header pub_static_methods_class_persistent_storage"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_class_persistent_storage')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="class_persistent_storage.html">PersistentStorage</a></td></tr>
 <tr class="memitem:a14700f8511d8aaea5d5b29632b371eb9 inherit pub_static_methods_class_persistent_storage"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; <a class="el" href="class_persistent_storage.html">PersistentStorage</a> * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_persistent_storage.html#a14700f8511d8aaea5d5b29632b371eb9">getFlashHandlers</a> ()</td></tr>
 <tr class="separator:a14700f8511d8aaea5d5b29632b371eb9 inherit pub_static_methods_class_persistent_storage"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a234d2bb4384efe326c4f83b3c372e565 inherit pub_static_methods_class_persistent_storage"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_persistent_storage.html#a234d2bb4384efe326c4f83b3c372e565">restoreFlashStartupCb</a> ()</td></tr>
+<tr class="separator:a234d2bb4384efe326c4f83b3c372e565 inherit pub_static_methods_class_persistent_storage"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -269,6 +275,8 @@ Static Public Attributes</h2></td></tr>
 <tr class="separator:a85b1eade8c4b946dbc7db293a631ed2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2d0ce8a3c755709f8f965355b0d4f8c6"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_motor_p_w_m.html#a2d0ce8a3c755709f8f965355b0d4f8c6">pwmDriverInUse</a> = false</td></tr>
 <tr class="separator:a2d0ce8a3c755709f8f965355b0d4f8c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a902f8614303cd972edd2adca7180f0c2"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="struct_p_w_m_config.html">PWMConfig</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_motor_p_w_m.html#a902f8614303cd972edd2adca7180f0c2">config</a></td></tr>
+<tr class="separator:a902f8614303cd972edd2adca7180f0c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_attribs_class_motor_driver"><td colspan="2" onclick="javascript:toggleInherit('pub_static_attribs_class_motor_driver')"><img src="closed.png" alt="-"/>&#160;Static Public Attributes inherited from <a class="el" href="class_motor_driver.html">MotorDriver</a></td></tr>
 <tr class="memitem:aa8dafac3a66d9703ae42e2aa3b876347 inherit pub_static_attribs_class_motor_driver"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="struct_class_identifier.html">ClassIdentifier</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_motor_driver.html#aa8dafac3a66d9703ae42e2aa3b876347">info</a> ={.<a class="el" href="_command_handler_8h.html#a13a18e5b49561a2f007205dc0afeea14ab068931cc450442b63f5b3d276ea4297">name</a> = &quot;None&quot; , .id=CLSID_MOT_NONE, .visibility = <a class="el" href="_choosable_class_8h.html#aa3a363b83e4ed5a23cf7398fcf8bae0ca46cf0e59759c9b7f1112ca4b174343ef">ClassVisibility::visible</a>}</td></tr>
 <tr class="separator:aa8dafac3a66d9703ae42e2aa3b876347 inherit pub_static_attribs_class_motor_driver"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -289,6 +297,11 @@ Private Types</h2></td></tr>
  }</td></tr>
 <tr class="separator:a200f16b29b4a31cfd1bbc75219b3c80a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-static-methods" name="pri-static-methods"></a>
+Static Private Member Functions</h2></td></tr>
+<tr class="memitem:a7eb4913581badcd7ed3eae75900133ed"><td class="memItemLeft" align="right" valign="top">static std::pair&lt; uint16_t, uint16_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_motor_p_w_m.html#a7eb4913581badcd7ed3eae75900133ed">freqToPeriodPsc</a> (uint32_t freq)</td></tr>
+<tr class="separator:a7eb4913581badcd7ed3eae75900133ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr class="memitem:a8e41b09dbe0371952a803f7c604675b9"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_motor_p_w_m.html#a8e41b09dbe0371952a803f7c604675b9">tFreq</a> = 1</td></tr>
@@ -305,7 +318,10 @@ Private Attributes</h2></td></tr>
 <tr class="separator:a5c4c33d2ea083febdc499d04fb3ecef9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adfbe735571cef59c87ef0324f0f90fa3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_motor_p_w_m.html#adfbe735571cef59c87ef0324f0f90fa3">active</a> = false</td></tr>
 <tr class="separator:adfbe735571cef59c87ef0324f0f90fa3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2ef88d3690251a1ebe0e7c7f648fa93d"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="struct_p_w_m_config.html">PWMConfig</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_motor_p_w_m.html#a2ef88d3690251a1ebe0e7c7f648fa93d">timerConfig</a></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-static-attribs" name="pri-static-attribs"></a>
+Static Private Attributes</h2></td></tr>
+<tr class="memitem:a2ef88d3690251a1ebe0e7c7f648fa93d"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="struct_p_w_m_config.html">PWMConfig</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_motor_p_w_m.html#a2ef88d3690251a1ebe0e7c7f648fa93d">timerConfig</a></td></tr>
 <tr class="separator:a2ef88d3690251a1ebe0e7c7f648fa93d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
@@ -334,6 +350,12 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:a3f584d2a8b93c309c2feaa538a1ed36d inherit pro_attribs_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7421ca437044e8588b3fdf748ace166b inherit pro_attribs_class_command_handler"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_cmd_handler_info.html">CmdHandlerInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a7421ca437044e8588b3fdf748ace166b">cmdHandlerInfo</a></td></tr>
 <tr class="separator:a7421ca437044e8588b3fdf748ace166b inherit pro_attribs_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_class_persistent_storage"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_class_persistent_storage')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="class_persistent_storage.html">PersistentStorage</a></td></tr>
+<tr class="memitem:a5c85ad9b726cba837b9c100d6752a8b6 inherit pro_attribs_class_persistent_storage"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_persistent_storage.html#a5c85ad9b726cba837b9c100d6752a8b6">restoreDelayedFlag</a> = false</td></tr>
+<tr class="separator:a5c85ad9b726cba837b9c100d6752a8b6 inherit pro_attribs_class_persistent_storage"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_static_attribs_class_persistent_storage"><td colspan="2" onclick="javascript:toggleInherit('pro_static_attribs_class_persistent_storage')"><img src="closed.png" alt="-"/>&#160;Static Protected Attributes inherited from <a class="el" href="class_persistent_storage.html">PersistentStorage</a></td></tr>
+<tr class="memitem:a8d98e194842128a2af817341eba58292 inherit pro_static_attribs_class_persistent_storage"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_persistent_storage.html#a8d98e194842128a2af817341eba58292">startupComplete</a> = false</td></tr>
+<tr class="separator:a8d98e194842128a2af817341eba58292 inherit pro_static_attribs_class_persistent_storage"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Contains motor drivers methods based on PWM generation.</p>
@@ -461,7 +483,36 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_command_handler.html#a8d2531d579c03d6672495ccb57f5ffb3">CommandHandler</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_motor_p_w_m_8cpp_source.html#l00242">242</a> of file <a class="el" href="_motor_p_w_m_8cpp_source.html">MotorPWM.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_motor_p_w_m_8cpp_source.html#l00248">248</a> of file <a class="el" href="_motor_p_w_m_8cpp_source.html">MotorPWM.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a7eb4913581badcd7ed3eae75900133ed" name="a7eb4913581badcd7ed3eae75900133ed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7eb4913581badcd7ed3eae75900133ed">&#9670;&nbsp;</a></span>freqToPeriodPsc()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::pair&lt; uint16_t, uint16_t &gt; MotorPWM::freqToPeriodPsc </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>freq</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p >Calculates period and prescaler for a timer based on frequency </p>
+
+<p class="definition">Definition at line <a class="el" href="_motor_p_w_m_8cpp_source.html#l00113">113</a> of file <a class="el" href="_motor_p_w_m_8cpp_source.html">MotorPWM.cpp</a>.</p>
 
 </div>
 </div>
@@ -541,7 +592,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_motor_p_w_m_8cpp_source.html#l00236">236</a> of file <a class="el" href="_motor_p_w_m_8cpp_source.html">MotorPWM.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_motor_p_w_m_8cpp_source.html#l00242">242</a> of file <a class="el" href="_motor_p_w_m_8cpp_source.html">MotorPWM.cpp</a>.</p>
 
 </div>
 </div>
@@ -560,7 +611,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_motor_p_w_m_8cpp_source.html#l00191">191</a> of file <a class="el" href="_motor_p_w_m_8cpp_source.html">MotorPWM.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_motor_p_w_m_8cpp_source.html#l00197">197</a> of file <a class="el" href="_motor_p_w_m_8cpp_source.html">MotorPWM.cpp</a>.</p>
 
 </div>
 </div>
@@ -613,11 +664,11 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p >Should be used to restore settings at startup. This is not automatically called and should be called when appropriate. Normally this is done in the constructor of the class </p>
+<p >Should be implemented to restore settings. This is not automatically called and should be called when appropriate. </p>
 
 <p>Reimplemented from <a class="el" href="class_persistent_storage.html#aa8187136adfa89fca9ddee2578f6eb68">PersistentStorage</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_motor_p_w_m_8cpp_source.html#l00206">206</a> of file <a class="el" href="_motor_p_w_m_8cpp_source.html">MotorPWM.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_motor_p_w_m_8cpp_source.html#l00212">212</a> of file <a class="el" href="_motor_p_w_m_8cpp_source.html">MotorPWM.cpp</a>.</p>
 
 </div>
 </div>
@@ -647,7 +698,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_persistent_storage.html#a105599e99ab0e4244a531c2286f2ffa2">PersistentStorage</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_motor_p_w_m_8cpp_source.html#l00198">198</a> of file <a class="el" href="_motor_p_w_m_8cpp_source.html">MotorPWM.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_motor_p_w_m_8cpp_source.html#l00204">204</a> of file <a class="el" href="_motor_p_w_m_8cpp_source.html">MotorPWM.cpp</a>.</p>
 
 </div>
 </div>
@@ -667,7 +718,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_motor_p_w_m_8cpp_source.html#l00231">231</a> of file <a class="el" href="_motor_p_w_m_8cpp_source.html">MotorPWM.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_motor_p_w_m_8cpp_source.html#l00237">237</a> of file <a class="el" href="_motor_p_w_m_8cpp_source.html">MotorPWM.cpp</a>.</p>
 
 </div>
 </div>
@@ -698,7 +749,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p >Updates pwm pulse length </p>
 
-<p class="definition">Definition at line <a class="el" href="_motor_p_w_m_8cpp_source.html#l00178">178</a> of file <a class="el" href="_motor_p_w_m_8cpp_source.html">MotorPWM.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_motor_p_w_m_8cpp_source.html#l00184">184</a> of file <a class="el" href="_motor_p_w_m_8cpp_source.html">MotorPWM.cpp</a>.</p>
 
 </div>
 </div>
@@ -719,7 +770,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p >Setup the timer for different frequency presets. </p>
 
-<p class="definition">Definition at line <a class="el" href="_motor_p_w_m_8cpp_source.html#l00113">113</a> of file <a class="el" href="_motor_p_w_m_8cpp_source.html">MotorPWM.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_motor_p_w_m_8cpp_source.html#l00123">123</a> of file <a class="el" href="_motor_p_w_m_8cpp_source.html">MotorPWM.cpp</a>.</p>
 
 </div>
 </div>
@@ -749,7 +800,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_motor_driver.html#aa7de17ce2e32f58c9d3ab2d379c636a9">MotorDriver</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_motor_p_w_m_8cpp_source.html#l00220">220</a> of file <a class="el" href="_motor_p_w_m_8cpp_source.html">MotorPWM.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_motor_p_w_m_8cpp_source.html#l00226">226</a> of file <a class="el" href="_motor_p_w_m_8cpp_source.html">MotorPWM.cpp</a>.</p>
 
 </div>
 </div>
@@ -779,7 +830,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_motor_driver.html#aef624f5da2b1644823052cc80ac218bd">MotorDriver</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_motor_p_w_m_8cpp_source.html#l00225">225</a> of file <a class="el" href="_motor_p_w_m_8cpp_source.html">MotorPWM.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_motor_p_w_m_8cpp_source.html#l00231">231</a> of file <a class="el" href="_motor_p_w_m_8cpp_source.html">MotorPWM.cpp</a>.</p>
 
 </div>
 </div>
@@ -835,7 +886,31 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_motor_p_w_m_8h_source.html#l00096">96</a> of file <a class="el" href="_motor_p_w_m_8h_source.html">MotorPWM.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_motor_p_w_m_8h_source.html#l00097">97</a> of file <a class="el" href="_motor_p_w_m_8h_source.html">MotorPWM.h</a>.</p>
+
+</div>
+</div>
+<a id="a902f8614303cd972edd2adca7180f0c2" name="a902f8614303cd972edd2adca7180f0c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a902f8614303cd972edd2adca7180f0c2">&#9670;&nbsp;</a></span>config</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_p_w_m_config.html">PWMConfig</a>&amp; MotorPWM::config</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_motor_p_w_m_8h_source.html#l00086">86</a> of file <a class="el" href="_motor_p_w_m_8h_source.html">MotorPWM.h</a>.</p>
 
 </div>
 </div>
@@ -887,7 +962,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_motor_p_w_m_8h_source.html#l00091">91</a> of file <a class="el" href="_motor_p_w_m_8h_source.html">MotorPWM.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_motor_p_w_m_8h_source.html#l00092">92</a> of file <a class="el" href="_motor_p_w_m_8h_source.html">MotorPWM.h</a>.</p>
 
 </div>
 </div>
@@ -911,7 +986,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_motor_p_w_m_8h_source.html#l00095">95</a> of file <a class="el" href="_motor_p_w_m_8h_source.html">MotorPWM.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_motor_p_w_m_8h_source.html#l00096">96</a> of file <a class="el" href="_motor_p_w_m_8h_source.html">MotorPWM.h</a>.</p>
 
 </div>
 </div>
@@ -935,7 +1010,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_motor_p_w_m_8h_source.html#l00088">88</a> of file <a class="el" href="_motor_p_w_m_8h_source.html">MotorPWM.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_motor_p_w_m_8h_source.html#l00089">89</a> of file <a class="el" href="_motor_p_w_m_8h_source.html">MotorPWM.h</a>.</p>
 
 </div>
 </div>
@@ -959,7 +1034,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_motor_p_w_m_8h_source.html#l00089">89</a> of file <a class="el" href="_motor_p_w_m_8h_source.html">MotorPWM.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_motor_p_w_m_8h_source.html#l00090">90</a> of file <a class="el" href="_motor_p_w_m_8h_source.html">MotorPWM.h</a>.</p>
 
 </div>
 </div>
@@ -1007,7 +1082,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_motor_p_w_m_8h_source.html#l00094">94</a> of file <a class="el" href="_motor_p_w_m_8h_source.html">MotorPWM.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_motor_p_w_m_8h_source.html#l00095">95</a> of file <a class="el" href="_motor_p_w_m_8h_source.html">MotorPWM.h</a>.</p>
 
 </div>
 </div>
@@ -1031,7 +1106,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_motor_p_w_m_8h_source.html#l00087">87</a> of file <a class="el" href="_motor_p_w_m_8h_source.html">MotorPWM.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_motor_p_w_m_8h_source.html#l00088">88</a> of file <a class="el" href="_motor_p_w_m_8h_source.html">MotorPWM.h</a>.</p>
 
 </div>
 </div>
@@ -1050,13 +1125,13 @@ Additional Inherited Members</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 <p >The timer channels are mapped in the cpp_target_config files </p>
 
-<p class="definition">Definition at line <a class="el" href="_motor_p_w_m_8h_source.html#l00101">101</a> of file <a class="el" href="_motor_p_w_m_8h_source.html">MotorPWM.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_motor_p_w_m_8h_source.html#l00102">102</a> of file <a class="el" href="_motor_p_w_m_8h_source.html">MotorPWM.h</a>.</p>
 
 </div>
 </div>

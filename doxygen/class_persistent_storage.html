@@ -87,6 +87,8 @@ $(document).ready(function(){initNavTree('class_persistent_storage.html',''); in
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="#pro-static-attribs">Static Protected Attributes</a> &#124;
 <a href="class_persistent_storage-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">PersistentStorage Class Reference</div></div>
 </div><!--header-->
@@ -112,8 +114,9 @@ Inheritance diagram for PersistentStorage:</div>
 <area href="class_motor_p_w_m.html" alt="MotorPWM" shape="rect" coords="121,616,232,640"/>
 <area href="class_mt_encoder_s_p_i.html" alt="MtEncoderSPI" shape="rect" coords="121,672,232,696"/>
 <area href="class_o_drive_c_a_n.html" alt="ODriveCAN" shape="rect" coords="121,728,232,752"/>
-<area href="class_t_m_c4671.html" alt="TMC4671" shape="rect" coords="121,784,232,808"/>
-<area href="class_vesc_c_a_n.html" alt="VescCAN" shape="rect" coords="121,840,232,864"/>
+<area href="class_rmd_motor_c_a_n.html" alt="RmdMotorCAN" shape="rect" coords="121,784,232,808"/>
+<area href="class_t_m_c4671.html" alt="TMC4671" shape="rect" coords="121,840,232,864"/>
+<area href="class_vesc_c_a_n.html" alt="VescCAN" shape="rect" coords="121,896,232,920"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -127,11 +130,25 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a105599e99ab0e4244a531c2286f2ffa2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa8187136adfa89fca9ddee2578f6eb68"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_persistent_storage.html#aa8187136adfa89fca9ddee2578f6eb68">restoreFlash</a> ()</td></tr>
 <tr class="separator:aa8187136adfa89fca9ddee2578f6eb68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5a3b2fe8e28d265bb818d084fa82039"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_persistent_storage.html#ad5a3b2fe8e28d265bb818d084fa82039">restoreFlashDelayed</a> ()</td></tr>
+<tr class="separator:ad5a3b2fe8e28d265bb818d084fa82039"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a14700f8511d8aaea5d5b29632b371eb9"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; <a class="el" href="class_persistent_storage.html">PersistentStorage</a> * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_persistent_storage.html#a14700f8511d8aaea5d5b29632b371eb9">getFlashHandlers</a> ()</td></tr>
 <tr class="separator:a14700f8511d8aaea5d5b29632b371eb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a234d2bb4384efe326c4f83b3c372e565"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_persistent_storage.html#a234d2bb4384efe326c4f83b3c372e565">restoreFlashStartupCb</a> ()</td></tr>
+<tr class="separator:a234d2bb4384efe326c4f83b3c372e565"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:a5c85ad9b726cba837b9c100d6752a8b6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_persistent_storage.html#a5c85ad9b726cba837b9c100d6752a8b6">restoreDelayedFlag</a> = false</td></tr>
+<tr class="separator:a5c85ad9b726cba837b9c100d6752a8b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-static-attribs" name="pro-static-attribs"></a>
+Static Protected Attributes</h2></td></tr>
+<tr class="memitem:a8d98e194842128a2af817341eba58292"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_persistent_storage.html#a8d98e194842128a2af817341eba58292">startupComplete</a> = false</td></tr>
+<tr class="separator:a8d98e194842128a2af817341eba58292"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
@@ -152,7 +169,7 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_persistent_storage_8cpp_source.html#l00013">13</a> of file <a class="el" href="_persistent_storage_8cpp_source.html">PersistentStorage.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_persistent_storage_8cpp_source.html#l00014">14</a> of file <a class="el" href="_persistent_storage_8cpp_source.html">PersistentStorage.cpp</a>.</p>
 
 </div>
 </div>
@@ -179,7 +196,7 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_persistent_storage_8cpp_source.html#l00017">17</a> of file <a class="el" href="_persistent_storage_8cpp_source.html">PersistentStorage.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_persistent_storage_8cpp_source.html#l00018">18</a> of file <a class="el" href="_persistent_storage_8cpp_source.html">PersistentStorage.cpp</a>.</p>
 
 </div>
 </div>
@@ -207,7 +224,7 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_persistent_storage_8h_source.html#l00024">24</a> of file <a class="el" href="_persistent_storage_8h_source.html">PersistentStorage.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_persistent_storage_8h_source.html#l00025">25</a> of file <a class="el" href="_persistent_storage_8h_source.html">PersistentStorage.h</a>.</p>
 
 </div>
 </div>
@@ -233,11 +250,59 @@ Static Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p >Should be used to restore settings at startup. This is not automatically called and should be called when appropriate. Normally this is done in the constructor of the class </p>
+<p >Should be implemented to restore settings. This is not automatically called and should be called when appropriate. </p>
 
-<p>Reimplemented in <a class="el" href="class_c_a_n_port.html#a3d97cc00a18929b887ac61f28c88f92d">CANPort</a>, <a class="el" href="class_effects_calculator.html#a89c4cb3439872f6030bd03b4600b5a0a">EffectsCalculator</a>, <a class="el" href="class_i2_c_port.html#a6d7dd9ff23ccc59229984b0ac17a437f">I2CPort</a>, <a class="el" href="class_a_d_s111_x___analog_source.html#ac5a9bced77e40a6ee5c5d3bedea2fc7e">ADS111X_AnalogSource</a>, <a class="el" href="class_can_analog_base.html#a3b43d24e29b3b1059d010a7d51f3cc1c">CanAnalogBase</a>, <a class="el" href="class_can_buttons.html#aa79c962be1573257c102e7722a7df933">CanButtons</a>, <a class="el" href="class_encoder_biss_c.html#a852b7bb31e041e48956aaa27ab8fd98b">EncoderBissC</a>, <a class="el" href="class_encoder_local.html#a77168441d0b76395cad8f92fb9d4c2b2">EncoderLocal</a>, <a class="el" href="class_encoder_s_s_i.html#a1b37a695c6b391ec85bff8dd2948c512">EncoderSSI</a>, <a class="el" href="class_f_f_b_h_i_d_main.html#a4a379eef5d58f75707298247a666c203">FFBHIDMain</a>, <a class="el" href="class_local_analog.html#a2c641aa5bf0c6b6039701c9119c6bad2">LocalAnalog</a>, <a class="el" href="class_local_buttons.html#ab10f9bafb1ca5cc86fa3870bbc5e2fcf">LocalButtons</a>, <a class="el" href="class_motor_p_w_m.html#aaf0cc2539ce79092664de60e986a148b">MotorPWM</a>, <a class="el" href="class_p_c_f8574_buttons.html#ae4b3e868079dc5917d678f11b7018fb7">PCF8574Buttons</a>, <a class="el" href="class_s_p_i___buttons.html#a2b6fe19a8c4e3599d27d7bb19c48bc9e">SPI_Buttons</a>, <a class="el" href="class_axis.html#ab2dbd413253ba787703ac30302ec4836">Axis</a>, <a class="el" href="class_mt_encoder_s_p_i.html#a7821c6c4c045feaaafca2d9d3fc34e18">MtEncoderSPI</a>, <a class="el" href="class_o_drive_c_a_n.html#a8140f2dbbc205daa5a6907d372ac973b">ODriveCAN</a>, <a class="el" href="class_shifter_analog.html#aa08395c06b55358bd7773a1c6a45c126">ShifterAnalog</a>, <a class="el" href="class_t_m_c4671.html#ac81b6254ae21facd0f505dfe2103fa12">TMC4671</a>, and <a class="el" href="class_vesc_c_a_n.html#abea5fd4570317b34da5e79ad3a95d577">VescCAN</a>.</p>
+<p>Reimplemented in <a class="el" href="class_c_a_n_port__2_b.html#a4452c5e77a16dbe896b080ca4b0c8b33">CANPort_2B</a>, <a class="el" href="class_effects_calculator.html#a89c4cb3439872f6030bd03b4600b5a0a">EffectsCalculator</a>, <a class="el" href="class_i2_c_port.html#a6d7dd9ff23ccc59229984b0ac17a437f">I2CPort</a>, <a class="el" href="class_a_d_s111_x___analog_source.html#ac5a9bced77e40a6ee5c5d3bedea2fc7e">ADS111X_AnalogSource</a>, <a class="el" href="class_can_analog_base.html#a3b43d24e29b3b1059d010a7d51f3cc1c">CanAnalogBase</a>, <a class="el" href="class_can_buttons.html#aa79c962be1573257c102e7722a7df933">CanButtons</a>, <a class="el" href="class_encoder_biss_c.html#a852b7bb31e041e48956aaa27ab8fd98b">EncoderBissC</a>, <a class="el" href="class_encoder_local.html#a77168441d0b76395cad8f92fb9d4c2b2">EncoderLocal</a>, <a class="el" href="class_encoder_s_s_i.html#a1b37a695c6b391ec85bff8dd2948c512">EncoderSSI</a>, <a class="el" href="class_f_f_b_h_i_d_main.html#a4a379eef5d58f75707298247a666c203">FFBHIDMain</a>, <a class="el" href="class_local_analog.html#a2c641aa5bf0c6b6039701c9119c6bad2">LocalAnalog</a>, <a class="el" href="class_local_buttons.html#ab10f9bafb1ca5cc86fa3870bbc5e2fcf">LocalButtons</a>, <a class="el" href="class_motor_p_w_m.html#aaf0cc2539ce79092664de60e986a148b">MotorPWM</a>, <a class="el" href="class_p_c_f8574_buttons.html#ae4b3e868079dc5917d678f11b7018fb7">PCF8574Buttons</a>, <a class="el" href="class_s_p_i___buttons.html#a2b6fe19a8c4e3599d27d7bb19c48bc9e">SPI_Buttons</a>, <a class="el" href="class_axis.html#ab2dbd413253ba787703ac30302ec4836">Axis</a>, <a class="el" href="class_mt_encoder_s_p_i.html#a7821c6c4c045feaaafca2d9d3fc34e18">MtEncoderSPI</a>, <a class="el" href="class_o_drive_c_a_n.html#a8140f2dbbc205daa5a6907d372ac973b">ODriveCAN</a>, <a class="el" href="class_rmd_motor_c_a_n.html#af5ddadb208be53da492009e56e69cd8e">RmdMotorCAN</a>, <a class="el" href="class_shifter_analog.html#aa08395c06b55358bd7773a1c6a45c126">ShifterAnalog</a>, <a class="el" href="class_t_m_c4671.html#ac81b6254ae21facd0f505dfe2103fa12">TMC4671</a>, and <a class="el" href="class_vesc_c_a_n.html#abea5fd4570317b34da5e79ad3a95d577">VescCAN</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="_persistent_storage_8cpp_source.html#l00033">33</a> of file <a class="el" href="_persistent_storage_8cpp_source.html">PersistentStorage.cpp</a>.</p>
+
+</div>
+</div>
+<a id="ad5a3b2fe8e28d265bb818d084fa82039" name="ad5a3b2fe8e28d265bb818d084fa82039"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad5a3b2fe8e28d265bb818d084fa82039">&#9670;&nbsp;</a></span>restoreFlashDelayed()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void PersistentStorage::restoreFlashDelayed </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >Should be used to restore settings after startup if class is created before startup finished. This is preferred to calling restoreFlash directly and calls restoreFlash after startup is finished This is not automatically called and should be called when appropriate. Normally this is done in the constructor of the class </p>
+
+<p class="definition">Definition at line <a class="el" href="_persistent_storage_8cpp_source.html#l00043">43</a> of file <a class="el" href="_persistent_storage_8cpp_source.html">PersistentStorage.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a234d2bb4384efe326c4f83b3c372e565" name="a234d2bb4384efe326c4f83b3c372e565"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a234d2bb4384efe326c4f83b3c372e565">&#9670;&nbsp;</a></span>restoreFlashStartupCb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void PersistentStorage::restoreFlashStartupCb </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p >Called after storage has been initialized Will call restoreFlash on any storage handler that is currently waiting </p>
+
+<p class="definition">Definition at line <a class="el" href="_persistent_storage_8cpp_source.html#l00055">55</a> of file <a class="el" href="_persistent_storage_8cpp_source.html">PersistentStorage.cpp</a>.</p>
 
 </div>
 </div>
@@ -265,9 +330,58 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p >Called when the user uses the "save" command and presses the save button in the configurator Automatically called by the command parser thread for every class that inherits from <a class="el" href="class_persistent_storage.html">PersistentStorage</a> </p>
 
-<p>Reimplemented in <a class="el" href="class_c_a_n_port.html#a4c4f33ab2fedd391e42371f05af938f4">CANPort</a>, <a class="el" href="class_effects_calculator.html#ae11b5eebae3f30eb9e16053d958a8ce8">EffectsCalculator</a>, <a class="el" href="class_i2_c_port.html#a81baec7ecd74758f252633b99447c719">I2CPort</a>, <a class="el" href="class_a_d_s111_x___analog_source.html#aa669069023a13fb24b4b33c1dc1e6a11">ADS111X_AnalogSource</a>, <a class="el" href="class_can_analog_base.html#ac200e7ccbf1df548882c68967c6b322f">CanAnalogBase</a>, <a class="el" href="class_can_buttons.html#aefeebc22ec38c16eda74c10fa9bcce9e">CanButtons</a>, <a class="el" href="class_encoder_biss_c.html#ad5300491676926bc0b5020763ff1a93e">EncoderBissC</a>, <a class="el" href="class_encoder_local.html#a70014faf65d51ca9133ae560387f3f87">EncoderLocal</a>, <a class="el" href="class_encoder_s_s_i.html#ae56bc43c2e1a116bb70be0b0550e754a">EncoderSSI</a>, <a class="el" href="class_f_f_b_h_i_d_main.html#a67845b58c4622372147c1532400a35b9">FFBHIDMain</a>, <a class="el" href="class_local_analog.html#a6212f3a5cdc8209c0cc6b7c7dde7fe1c">LocalAnalog</a>, <a class="el" href="class_local_buttons.html#a83177d23aeea9bfe8a90d75eee957449">LocalButtons</a>, <a class="el" href="class_motor_p_w_m.html#a04d925329fb425185f5d12c972e395e9">MotorPWM</a>, <a class="el" href="class_p_c_f8574_buttons.html#a9e838968aea70f12a3c7e9a4e613986d">PCF8574Buttons</a>, <a class="el" href="class_s_p_i___buttons.html#aad159b15367d850ec9d33f911cab9a04">SPI_Buttons</a>, <a class="el" href="class_axis.html#ad0bdf4a78c80f7b82293be9a540846ed">Axis</a>, <a class="el" href="class_mt_encoder_s_p_i.html#a3f277a29d31711a8f5e02729d8c3aa67">MtEncoderSPI</a>, <a class="el" href="class_o_drive_c_a_n.html#a6e7835f8f6d70262cbf64cb25f987bae">ODriveCAN</a>, <a class="el" href="class_shifter_analog.html#a5db074133ff37fc881451bc0c715c363">ShifterAnalog</a>, <a class="el" href="class_t_m_c4671.html#a05e1e801cf5920c600e99dd9c4ad3e4a">TMC4671</a>, and <a class="el" href="class_vesc_c_a_n.html#aaf3479d84911a8245774054321fc1730">VescCAN</a>.</p>
+<p>Reimplemented in <a class="el" href="class_c_a_n_port__2_b.html#a3020a4d686a7863f696a7cfff7ea6273">CANPort_2B</a>, <a class="el" href="class_effects_calculator.html#ae11b5eebae3f30eb9e16053d958a8ce8">EffectsCalculator</a>, <a class="el" href="class_i2_c_port.html#a81baec7ecd74758f252633b99447c719">I2CPort</a>, <a class="el" href="class_a_d_s111_x___analog_source.html#aa669069023a13fb24b4b33c1dc1e6a11">ADS111X_AnalogSource</a>, <a class="el" href="class_can_analog_base.html#ac200e7ccbf1df548882c68967c6b322f">CanAnalogBase</a>, <a class="el" href="class_can_buttons.html#aefeebc22ec38c16eda74c10fa9bcce9e">CanButtons</a>, <a class="el" href="class_encoder_biss_c.html#ad5300491676926bc0b5020763ff1a93e">EncoderBissC</a>, <a class="el" href="class_encoder_local.html#a70014faf65d51ca9133ae560387f3f87">EncoderLocal</a>, <a class="el" href="class_encoder_s_s_i.html#ae56bc43c2e1a116bb70be0b0550e754a">EncoderSSI</a>, <a class="el" href="class_f_f_b_h_i_d_main.html#a67845b58c4622372147c1532400a35b9">FFBHIDMain</a>, <a class="el" href="class_local_analog.html#a6212f3a5cdc8209c0cc6b7c7dde7fe1c">LocalAnalog</a>, <a class="el" href="class_local_buttons.html#a83177d23aeea9bfe8a90d75eee957449">LocalButtons</a>, <a class="el" href="class_motor_p_w_m.html#a04d925329fb425185f5d12c972e395e9">MotorPWM</a>, <a class="el" href="class_p_c_f8574_buttons.html#a9e838968aea70f12a3c7e9a4e613986d">PCF8574Buttons</a>, <a class="el" href="class_s_p_i___buttons.html#aad159b15367d850ec9d33f911cab9a04">SPI_Buttons</a>, <a class="el" href="class_axis.html#ad0bdf4a78c80f7b82293be9a540846ed">Axis</a>, <a class="el" href="class_mt_encoder_s_p_i.html#a3f277a29d31711a8f5e02729d8c3aa67">MtEncoderSPI</a>, <a class="el" href="class_o_drive_c_a_n.html#a6e7835f8f6d70262cbf64cb25f987bae">ODriveCAN</a>, <a class="el" href="class_rmd_motor_c_a_n.html#aad5b77d32f2932af4d6ebf0006ed10b6">RmdMotorCAN</a>, <a class="el" href="class_shifter_analog.html#a5db074133ff37fc881451bc0c715c363">ShifterAnalog</a>, <a class="el" href="class_t_m_c4671.html#a05e1e801cf5920c600e99dd9c4ad3e4a">TMC4671</a>, and <a class="el" href="class_vesc_c_a_n.html#aaf3479d84911a8245774054321fc1730">VescCAN</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_persistent_storage_8cpp_source.html#l00025">25</a> of file <a class="el" href="_persistent_storage_8cpp_source.html">PersistentStorage.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_persistent_storage_8cpp_source.html#l00026">26</a> of file <a class="el" href="_persistent_storage_8cpp_source.html">PersistentStorage.cpp</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a5c85ad9b726cba837b9c100d6752a8b6" name="a5c85ad9b726cba837b9c100d6752a8b6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c85ad9b726cba837b9c100d6752a8b6">&#9670;&nbsp;</a></span>restoreDelayedFlag</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool PersistentStorage::restoreDelayedFlag = false</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_persistent_storage_8h_source.html#l00033">33</a> of file <a class="el" href="_persistent_storage_8h_source.html">PersistentStorage.h</a>.</p>
+
+</div>
+</div>
+<a id="a8d98e194842128a2af817341eba58292" name="a8d98e194842128a2af817341eba58292"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d98e194842128a2af817341eba58292">&#9670;&nbsp;</a></span>startupComplete</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool PersistentStorage::startupComplete = false</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_persistent_storage_8h_source.html#l00034">34</a> of file <a class="el" href="_persistent_storage_8h_source.html">PersistentStorage.h</a>.</p>
 
 </div>
 </div>

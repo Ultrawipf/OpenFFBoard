@@ -6,7 +6,7 @@ var class_i2_c_port =
     [ "I2CPort_commands", "class_i2_c_port.html#ae373f3015ebf578a7382e709e1e2b28e", [
       [ "speed", "class_i2_c_port.html#ae373f3015ebf578a7382e709e1e2b28eace4ef3ec98443ed10da505114b58f153", null ]
     ] ],
-    [ "I2CPort", "class_i2_c_port.html#a8c091b5055b58928811e2e92937f73a2", null ],
+    [ "I2CPort", "class_i2_c_port.html#a7d6d8f37d4c8772ff1cdf8c742e3c863", null ],
     [ "~I2CPort", "class_i2_c_port.html#a4094094c9813774ff3d9abbc7c5a56b6", null ],
     [ "command", "class_i2_c_port.html#a1c5421353dd5243c2a5131e96677e006", null ],
     [ "configurePort", "class_i2_c_port.html#ab86e2baf52498bc5d698a6a7c2422a00", null ],
@@ -43,7 +43,7 @@ var class_i2_c_port =
     [ "hi2c", "class_i2_c_port.html#a5601fdc48b774f5a3f0073e5bc823ab4", null ],
     [ "info", "class_i2_c_port.html#ab50370f3951942f113e619974974359e", null ],
     [ "portUsers", "class_i2_c_port.html#a6d876aed08bca0ce38d985312f92146b", null ],
+    [ "presets", "class_i2_c_port.html#a3a3f292830b442cd50d67c79712a6ec5", null ],
     [ "semaphore", "class_i2_c_port.html#a1521ed55303e4f80e96ecc02ea0710d1", null ],
-    [ "SpeedNames", "class_i2_c_port.html#ace8cd2c78c01be56871bdc3211f7d12d", null ],
     [ "speedPreset", "class_i2_c_port.html#a0f3535b11e1dee08d618c40fac97f065", null ]
 ];

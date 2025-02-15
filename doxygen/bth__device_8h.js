@@ -2,6 +2,7 @@ var bth__device_8h =
 [
     [ "bt_hci_cmd_t", "bth__device_8h.html#a2c62fc9473e98bd4863a1abacc52f497", null ],
     [ "btd_control_xfer_cb", "bth__device_8h.html#a3ffed698b5afe18aa95c5b0f96cdcd64", null ],
+    [ "btd_deinit", "bth__device_8h.html#aa728b26d7ecef58f9e664da9be44a339", null ],
     [ "btd_init", "bth__device_8h.html#a34173a613bd4ee7c2bb58a118ca13514", null ],
     [ "btd_open", "bth__device_8h.html#a822abc760633e0817742baeec1d07a8a", null ],
     [ "btd_reset", "bth__device_8h.html#a38ee1e9886bb66988d2ece13c0ba1019", null ],

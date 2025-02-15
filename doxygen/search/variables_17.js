@@ -1,13 +1,27 @@
 var searchData=
 [
-  ['x_0',['x',['../struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a90e84bccebcec62c021d5b878c983377',1,'TU_ATTR_PACKED']]],
+  ['x_0',['x',['../struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a53b60b77520b9a34be7e011bf84433cc',1,'TU_ATTR_PACKED::x()'],['../struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a90e84bccebcec62c021d5b878c983377',1,'TU_ATTR_PACKED::x()']]],
   ['x_5f12_1',['X_12',['../class_shifter_analog.html#a792816a41cf3256f2eb0e8805bd80084',1,'ShifterAnalog']]],
   ['x_5f56_2',['X_56',['../class_shifter_analog.html#a08bd488e68171a34a33d4b50e1276184',1,'ShifterAnalog']]],
   ['x_5fchan_3',['x_chan',['../class_shifter_analog.html#aaaaa4bc1df8d4917768d5a2b8a8caaf4',1,'ShifterAnalog']]],
   ['x_5fval_4',['x_val',['../class_shifter_analog.html#a09720ce759c3567d6f8fb3b4859d3baa',1,'ShifterAnalog']]],
-  ['xfer_5',['xfer',['../struct_t_u___a_t_t_r___p_a_c_k_e_d_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#af1e3f0c127f6454024f1024ccc88da0c',1,'TU_ATTR_PACKED::TU_ATTR_PACKED']]],
-  ['xfer_5fcomplete_6',['xfer_complete',['../structhcd__event__t.html#ad46de65ea7a70bfeff89eb8092ae0ad1',1,'hcd_event_t']]],
-  ['xfer_5fctl_5ft_7',['xfer_ctl_t',['../dcd__synopsys_8c.html#a5e0b1319e252f52cc6998b472378c97f',1,'dcd_synopsys.c']]],
-  ['xfer_5fstatus_8',['xfer_status',['../dcd__stm32__fsdev_8c.html#a97c9abbb3fa3d893776583ab79b15897',1,'xfer_status():&#160;dcd_stm32_fsdev.c'],['../dcd__synopsys_8c.html#a733a62db333be5e5861d2bae7f7c34ec',1,'xfer_status():&#160;dcd_synopsys.c']]],
-  ['xferred_5flen_9',['xferred_len',['../structmscd__interface__t.html#af4211c7fe4ab5b3b6fa0b9a393ffcfa4',1,'mscd_interface_t']]]
+  ['xact_5ferr_5',['xact_err',['../structdcd__qtd__t.html#a27cddc2e01b365a98740fc31085fea87',1,'dcd_qtd_t::xact_err()'],['../structehci__qtd__t.html#acfadbe987a97f2e9720d90948da3ae03',1,'ehci_qtd_t::xact_err()']]],
+  ['xact_5fpos_6',['xact_pos',['../struct_t_u___a_t_t_r___p_a_c_k_e_d.html#ad786fa6d9c1d01264c61d726e57ebb62',1,'TU_ATTR_PACKED']]],
+  ['xfer_7',['xfer',['../dcd__nrf5x_8c.html#a61552eb9d109cd6dcca7786fdfc12335',1,'xfer():&#160;dcd_nrf5x.c'],['../dcd__ch32__usbfs_8c.html#a9eafbb4eda749d62e013e595ae04f4a0',1,'xfer():&#160;dcd_ch32_usbfs.c'],['../struct_t_u___a_t_t_r___p_a_c_k_e_d.html#ac40f5f26e8291f7b55b95d9c254a19d4',1,'TU_ATTR_PACKED::xfer()'],['../struct_t_u___a_t_t_r___p_a_c_k_e_d_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#af1e3f0c127f6454024f1024ccc88da0c',1,'TU_ATTR_PACKED::TU_ATTR_PACKED::xfer()'],['../structhcd__data__t.html#acb6ce58c970b15ffb1cbb68486b16a44',1,'hcd_data_t::xfer()']]],
+  ['xfer_5fcb_8',['xfer_cb',['../structusbd__class__driver__t.html#aae583a8d514c7663d7829cb6e03d3d03',1,'usbd_class_driver_t::xfer_cb()'],['../structusbh__class__driver__t.html#aef282d53160a9165922acbe4a9251e44',1,'usbh_class_driver_t::xfer_cb()']]],
+  ['xfer_5fcomplete_9',['xfer_complete',['../structhcd__event__t.html#a042736a4a1b41549f24331e9e8371717',1,'hcd_event_t::xfer_complete()'],['../struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a70300909c8489ce5ac2432aba7967b34',1,'TU_ATTR_PACKED::xfer_complete()']]],
+  ['xfer_5fctl_5ft_10',['xfer_ctl_t',['../dcd__dwc2_8c.html#a5e0b1319e252f52cc6998b472378c97f',1,'dcd_dwc2.c']]],
+  ['xfer_5fsize_11',['xfer_size',['../struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a9ba554f6113a626689da63674d04fde4',1,'TU_ATTR_PACKED']]],
+  ['xfer_5fsize_5fwidth_12',['xfer_size_width',['../struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a932c5d21dfc077cc54aa2a2f71f4c2af',1,'TU_ATTR_PACKED']]],
+  ['xfer_5fstatus_13',['xfer_status',['../dcd__ch32__usbhs_8c.html#a733a62db333be5e5861d2bae7f7c34ec',1,'xfer_status():&#160;dcd_ch32_usbhs.c'],['../dcd__da146xx_8c.html#a733a62db333be5e5861d2bae7f7c34ec',1,'xfer_status():&#160;dcd_da146xx.c'],['../dcd__esp32sx_8c.html#a733a62db333be5e5861d2bae7f7c34ec',1,'xfer_status():&#160;dcd_esp32sx.c'],['../dcd__pic32mz_8c.html#a733a62db333be5e5861d2bae7f7c34ec',1,'xfer_status():&#160;dcd_pic32mz.c'],['../dcd__samx7x_8c.html#a9e11072f1f60d2945471df897715c8d6',1,'xfer_status():&#160;dcd_samx7x.c'],['../dcd__stm32__fsdev_8c.html#a042f40406a2ce6735f55ff684798cbec',1,'xfer_status():&#160;dcd_stm32_fsdev.c'],['../dcd__dwc2_8c.html#adcce4182363bd3d77794ceefc4150982',1,'xfer_status():&#160;dcd_dwc2.c'],['../dcd__msp430x5xx_8c.html#a63c9ba4c0b029c7d615c8695b086bc29',1,'xfer_status():&#160;dcd_msp430x5xx.c']]],
+  ['xfer_5ftable_14',['xfer_table',['../dcd__nuc120_8c.html#a10f6de1c2201a9d4a4240277fad26876',1,'xfer_table():&#160;dcd_nuc120.c'],['../dcd__nuc121_8c.html#a10f6de1c2201a9d4a4240277fad26876',1,'xfer_table():&#160;dcd_nuc121.c'],['../dcd__nuc505_8c.html#a10f6de1c2201a9d4a4240277fad26876',1,'xfer_table():&#160;dcd_nuc505.c']]],
+  ['xferred_5fbytes_15',['xferred_bytes',['../struct_t_u___a_t_t_r___p_a_c_k_e_d.html#aea8ce9ebe828dffda722cc80fdbc7bb7',1,'TU_ATTR_PACKED::xferred_bytes()'],['../structhcd__xfer__t.html#a7a3a50c62454171ef14755db3303edc7',1,'hcd_xfer_t::xferred_bytes()'],['../structxfer__dma__t.html#a501953db1c80884001792add8d86daac',1,'xfer_dma_t::xferred_bytes()']]],
+  ['xferred_5flen_16',['xferred_len',['../structhw__endpoint.html#a6e26a28d86d160ed17a9d8b7007b3ead',1,'hw_endpoint::xferred_len()'],['../structmax3421__ep__t.html#a3c42632b69e01ed1bb2fb17aac42149c',1,'max3421_ep_t::xferred_len()'],['../structmscd__interface__t.html#af4211c7fe4ab5b3b6fa0b9a393ffcfa4',1,'mscd_interface_t::xferred_len()']]],
+  ['xmit_5ffree_5fntb_17',['xmit_free_ntb',['../structncm__interface__t.html#a868bfdf5e85148f870096751ce7c61ba',1,'ncm_interface_t']]],
+  ['xmit_5fglue_5fntb_18',['xmit_glue_ntb',['../structncm__interface__t.html#af593b3aa96a7e3d59e955d0a6eb1bc0b',1,'ncm_interface_t']]],
+  ['xmit_5fglue_5fntb_5fdatagram_5fndx_19',['xmit_glue_ntb_datagram_ndx',['../structncm__interface__t.html#a6d1e3bcfeed216d687a6ad9078689652',1,'ncm_interface_t']]],
+  ['xmit_5fntb_20',['xmit_ntb',['../structncm__interface__t.html#ac76fb328c09b240c5e5204367a0fb0e0',1,'ncm_interface_t']]],
+  ['xmit_5fready_5fntb_21',['xmit_ready_ntb',['../structncm__interface__t.html#a141690970684d0ad925fc0fe4fa99cde',1,'ncm_interface_t']]],
+  ['xmit_5fsequence_22',['xmit_sequence',['../structncm__interface__t.html#a2cfeee5f723ad1541e4adbf5b52385f3',1,'ncm_interface_t']]],
+  ['xmit_5ftinyusb_5fntb_23',['xmit_tinyusb_ntb',['../structncm__interface__t.html#aac56bd27a860f89835be9e45fc0a2a84',1,'ncm_interface_t']]]
 ];

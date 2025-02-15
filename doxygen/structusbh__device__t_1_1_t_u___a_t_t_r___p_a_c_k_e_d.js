@@ -1,10 +1,7 @@
 var structusbh__device__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d =
 [
-    [ "addressed", "structusbh__device__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#ae0da2821cfdea2c02982d4c2f01abd6a", null ],
-    [ "busy", "structusbh__device__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#a3cc573d55c8b935195ec333574ffd9d2", null ],
-    [ "claimed", "structusbh__device__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#a49cd758d5e58906a80e87ea3a71ec3af", null ],
-    [ "configured", "structusbh__device__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#aa99483ed29909297788bcfc39ea0fa59", null ],
-    [ "connected", "structusbh__device__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#a026627477450fa8bd821309a903c6fd6", null ],
-    [ "stalled", "structusbh__device__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#a499a85207f98afe0b44a1dd3e9b01426", null ],
-    [ "suspended", "structusbh__device__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#a33f43dc5154cfcbc849b363095d008e3", null ]
+    [ "addressed", "structusbh__device__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#af205c0121882dcc8b32342797d76488e", null ],
+    [ "configured", "structusbh__device__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#a34f1f8845c32653b20e994b291d17895", null ],
+    [ "connected", "structusbh__device__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#a0406ec385370444b90836441c608887d", null ],
+    [ "suspended", "structusbh__device__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#aeda8646aff17224cb774d11d4438c30e", null ]
 ];

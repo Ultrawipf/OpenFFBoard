@@ -12,7 +12,6 @@ var searchData=
   ['spibuttons_2eh_9',['SPIButtons.h',['../_s_p_i_buttons_8h.html',1,'']]],
   ['spihandler_2ecpp_10',['SpiHandler.cpp',['../_spi_handler_8cpp.html',1,'']]],
   ['spihandler_2eh_11',['SpiHandler.h',['../_spi_handler_8h.html',1,'']]],
-  ['synopsys_5fcommon_2eh_12',['synopsys_common.h',['../synopsys__common_8h.html',1,'']]],
-  ['systemcommands_2ecpp_13',['SystemCommands.cpp',['../_system_commands_8cpp.html',1,'']]],
-  ['systemcommands_2eh_14',['SystemCommands.h',['../_system_commands_8h.html',1,'']]]
+  ['systemcommands_2ecpp_12',['SystemCommands.cpp',['../_system_commands_8cpp.html',1,'']]],
+  ['systemcommands_2eh_13',['SystemCommands.h',['../_system_commands_8h.html',1,'']]]
 ];

@@ -1,5 +1,5 @@
 var struct_c_a_n__tx__msg =
 [
-    [ "data", "struct_c_a_n__tx__msg.html#ab56d8852f46ea7eb55ba748ddfc3a683", null ],
-    [ "header", "struct_c_a_n__tx__msg.html#a42a9cca998d377254cbc9ffd2618c837", null ]
+    [ "data", "struct_c_a_n__tx__msg.html#a48dc6ac6f12176950e68aad5456099e4", null ],
+    [ "header", "struct_c_a_n__tx__msg.html#a089f46014bef277954d05ba9fd31bcc6", null ]
 ];

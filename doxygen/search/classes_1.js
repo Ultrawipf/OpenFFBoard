@@ -7,10 +7,11 @@ var searchData=
   ['analogprocessingconfig_4',['AnalogProcessingConfig',['../struct_analog_processing_config.html',1,'']]],
   ['analogprocessingmode_5',['AnalogProcessingMode',['../struct_analog_axis_processing_1_1_analog_processing_mode.html',1,'AnalogAxisProcessing']]],
   ['analogsource_6',['AnalogSource',['../class_analog_source.html',1,'']]],
-  ['audiod_5ffunction_5ft_7',['audiod_function_t',['../structaudiod__function__t.html',1,'']]],
-  ['axesmanager_8',['AxesManager',['../class_axes_manager.html',1,'']]],
-  ['axis_9',['Axis',['../class_axis.html',1,'']]],
-  ['axis_5fmetric_5ft_10',['axis_metric_t',['../structaxis__metric__t.html',1,'']]],
-  ['axisconfig_11',['AxisConfig',['../struct_axis_config.html',1,'']]],
-  ['axisflashaddrs_12',['AxisFlashAddrs',['../struct_axis_flash_addrs.html',1,'']]]
+  ['audio_5ffeedback_5fparams_5ft_7',['audio_feedback_params_t',['../structaudio__feedback__params__t.html',1,'']]],
+  ['audiod_5ffunction_5ft_8',['audiod_function_t',['../structaudiod__function__t.html',1,'']]],
+  ['axesmanager_9',['AxesManager',['../class_axes_manager.html',1,'']]],
+  ['axis_10',['Axis',['../class_axis.html',1,'']]],
+  ['axis_5fmetric_5ft_11',['axis_metric_t',['../structaxis__metric__t.html',1,'']]],
+  ['axisconfig_12',['AxisConfig',['../struct_axis_config.html',1,'']]],
+  ['axisflashaddrs_13',['AxisFlashAddrs',['../struct_axis_flash_addrs.html',1,'']]]
 ];

@@ -87,7 +87,9 @@ $(document).ready(function(){initNavTree('globals_func_c.html',''); initResizabl
 &#160;
 
 <h3><a id="index_c" name="index_c"></a>- c -</h3><ul>
-<li>calc_rx_ff_size()&#160;:&#160;<a class="el" href="dcd__synopsys_8c.html#a0d6d30eb891edc112140d33ba1c3d17f">dcd_synopsys.c</a></li>
+<li>cal_next_pid()&#160;:&#160;<a class="el" href="hcd__dwc2_8c.html#afc6479b600a4544eb4270b33256aa571">hcd_dwc2.c</a></li>
+<li>cal_packet_count()&#160;:&#160;<a class="el" href="hcd__dwc2_8c.html#aa25b10f67d08b492eabda6795d7864bc">hcd_dwc2.c</a></li>
+<li>calc_device_grxfsiz()&#160;:&#160;<a class="el" href="dcd__dwc2_8c.html#a76f85cd7a486965bb129a102bb3e904b">dcd_dwc2.c</a></li>
 <li>calculateCrc16_8()&#160;:&#160;<a class="el" href="_c_r_c_8h.html#ae847a04c59119ba5dd6f9d8ab2cb9650">CRC.h</a>, <a class="el" href="_c_r_c_8cpp.html#ac3bde14f13b059f842e824f6eb1822df">CRC.cpp</a></li>
 <li>calculateCrc16_8_rev()&#160;:&#160;<a class="el" href="_c_r_c_8h.html#a786b11b922e6e5591e33ddafe9e0b564">CRC.h</a>, <a class="el" href="_c_r_c_8cpp.html#a78da394a530fd32b3e71aac0271ab7e1">CRC.cpp</a></li>
 <li>calculateCrc8()&#160;:&#160;<a class="el" href="_c_r_c_8h.html#a9bffce7854aeb0380af83f09966418e2">CRC.h</a>, <a class="el" href="_c_r_c_8cpp.html#a5db2ccb15c89999d77ded84aea20196e">CRC.cpp</a></li>
@@ -96,39 +98,81 @@ $(document).ready(function(){initNavTree('globals_func_c.html',''); initResizabl
 <li>CDC_Finished()&#160;:&#160;<a class="el" href="global__callbacks_8h.html#a6f72c499381cc45ba1c40c1bd0dd556a">global_callbacks.h</a></li>
 <li>cdc_functional_desc_typeof()&#160;:&#160;<a class="el" href="group___class_driver___c_d_c.html#gade837ca5a3595c03ce64204ab78b8f28">cdc.h</a></li>
 <li>cdcd_control_xfer_cb()&#160;:&#160;<a class="el" href="cdc__device_8c.html#a89fc99d2107ec64712fe630691e89281">cdc_device.c</a>, <a class="el" href="cdc__device_8h.html#a89fc99d2107ec64712fe630691e89281">cdc_device.h</a></li>
+<li>cdcd_deinit()&#160;:&#160;<a class="el" href="cdc__device_8h.html#a47a09e6df07bb519719aa1c013e24778">cdc_device.h</a>, <a class="el" href="cdc__device_8c.html#a47a09e6df07bb519719aa1c013e24778">cdc_device.c</a></li>
 <li>cdcd_init()&#160;:&#160;<a class="el" href="cdc__device_8c.html#a6f0120f84ea5e8dc536b173b7b859e2c">cdc_device.c</a>, <a class="el" href="cdc__device_8h.html#a6f0120f84ea5e8dc536b173b7b859e2c">cdc_device.h</a></li>
-<li>cdcd_open()&#160;:&#160;<a class="el" href="cdc__device_8h.html#a21eb9e0af7f0faf4f6aed7678830bc88">cdc_device.h</a>, <a class="el" href="cdc__device_8c.html#a21eb9e0af7f0faf4f6aed7678830bc88">cdc_device.c</a></li>
+<li>cdcd_open()&#160;:&#160;<a class="el" href="cdc__device_8c.html#a21eb9e0af7f0faf4f6aed7678830bc88">cdc_device.c</a>, <a class="el" href="cdc__device_8h.html#a21eb9e0af7f0faf4f6aed7678830bc88">cdc_device.h</a></li>
 <li>cdcd_reset()&#160;:&#160;<a class="el" href="cdc__device_8c.html#a5205506dcd48ae5e820e724c5bb171b7">cdc_device.c</a>, <a class="el" href="cdc__device_8h.html#a5205506dcd48ae5e820e724c5bb171b7">cdc_device.h</a></li>
 <li>cdcd_xfer_cb()&#160;:&#160;<a class="el" href="cdc__device_8c.html#ab0de4758188ef0bdfaf1c11d5be091a7">cdc_device.c</a>, <a class="el" href="cdc__device_8h.html#ab0de4758188ef0bdfaf1c11d5be091a7">cdc_device.h</a></li>
-<li>cdch_close()&#160;:&#160;<a class="el" href="cdc__host_8c.html#a0eb1cad53666d126d9f1f2c589934cb4">cdc_host.c</a>, <a class="el" href="cdc__host_8h.html#a0eb1cad53666d126d9f1f2c589934cb4">cdc_host.h</a></li>
-<li>cdch_init()&#160;:&#160;<a class="el" href="cdc__host_8c.html#a0ad2c710279205a3a355d85a3475de99">cdc_host.c</a>, <a class="el" href="cdc__host_8h.html#a0ad2c710279205a3a355d85a3475de99">cdc_host.h</a></li>
-<li>cdch_open()&#160;:&#160;<a class="el" href="cdc__host_8c.html#a0cd733f9db9e519ecc3c21aa3c806f42">cdc_host.c</a>, <a class="el" href="cdc__host_8h.html#a0cd733f9db9e519ecc3c21aa3c806f42">cdc_host.h</a></li>
+<li>cdch_close()&#160;:&#160;<a class="el" href="cdc__host_8c.html#aad867c9e09c18352d7cb26b4cc5767d5">cdc_host.c</a>, <a class="el" href="cdc__host_8h.html#a0eb1cad53666d126d9f1f2c589934cb4">cdc_host.h</a></li>
+<li>cdch_deinit()&#160;:&#160;<a class="el" href="cdc__host_8h.html#ae72186bc5d99370433c799311ad0f837">cdc_host.h</a>, <a class="el" href="cdc__host_8c.html#ae72186bc5d99370433c799311ad0f837">cdc_host.c</a></li>
+<li>cdch_init()&#160;:&#160;<a class="el" href="cdc__host_8c.html#ad88a8956a1aefb83f32d5c3513407dfd">cdc_host.c</a>, <a class="el" href="cdc__host_8h.html#ad88a8956a1aefb83f32d5c3513407dfd">cdc_host.h</a></li>
+<li>cdch_internal_control_complete()&#160;:&#160;<a class="el" href="cdc__host_8c.html#a9943d054b4ad69925c65fdb101c02a1a">cdc_host.c</a></li>
+<li>cdch_open()&#160;:&#160;<a class="el" href="cdc__host_8c.html#a10d19b6458f143c7369f15ce8833f110">cdc_host.c</a>, <a class="el" href="cdc__host_8h.html#a0cd733f9db9e519ecc3c21aa3c806f42">cdc_host.h</a></li>
 <li>cdch_rndis_task()&#160;:&#160;<a class="el" href="cdc__rndis__host_8c.html#a3e730569fdef16bea1f798cb0d6e7da1">cdc_rndis_host.c</a></li>
-<li>cdch_set_config()&#160;:&#160;<a class="el" href="cdc__host_8c.html#a79799a90074a6cbaa3f51775433398ed">cdc_host.c</a>, <a class="el" href="cdc__host_8h.html#a79799a90074a6cbaa3f51775433398ed">cdc_host.h</a></li>
-<li>cdch_xfer_cb()&#160;:&#160;<a class="el" href="cdc__host_8c.html#a7eef9fd395ec24d48d55d2ec1609a2bf">cdc_host.c</a>, <a class="el" href="cdc__host_8h.html#a7eef9fd395ec24d48d55d2ec1609a2bf">cdc_host.h</a></li>
-<li>CFG_TUSB_DEBUG_PRINTF()&#160;:&#160;<a class="el" href="tusb__common_8h.html#aefd271edc3be7f12e20531c756c9dffa">tusb_common.h</a></li>
-<li>clear_istr_bits()&#160;:&#160;<a class="el" href="dcd__stm32__fsdev_8c.html#aa577538816c05fdffa137769b465954d">dcd_stm32_fsdev.c</a></li>
+<li>cdch_set_config()&#160;:&#160;<a class="el" href="cdc__host_8c.html#a3b0fb04f3ab681a8ceb8ba4fea5c793f">cdc_host.c</a>, <a class="el" href="cdc__host_8h.html#a79799a90074a6cbaa3f51775433398ed">cdc_host.h</a></li>
+<li>cdch_xfer_cb()&#160;:&#160;<a class="el" href="cdc__host_8c.html#ac57bfb535f164034a409b7ce66be43b6">cdc_host.c</a>, <a class="el" href="cdc__host_8h.html#a7eef9fd395ec24d48d55d2ec1609a2bf">cdc_host.h</a></li>
+<li>CFG_TUSB_DEBUG_PRINTF()&#160;:&#160;<a class="el" href="tusb__debug_8h.html#aefd271edc3be7f12e20531c756c9dffa">tusb_debug.h</a></li>
+<li>ch34x_control_complete()&#160;:&#160;<a class="el" href="cdc__host_8c.html#ab4e2c7cbff852048056fea676924a228">cdc_host.c</a></li>
+<li>ch34x_control_in()&#160;:&#160;<a class="el" href="cdc__host_8c.html#a11d86396969dfec86e2d47075a116675">cdc_host.c</a></li>
+<li>ch34x_control_out()&#160;:&#160;<a class="el" href="cdc__host_8c.html#a700feb0624bf40a1b6e5753df67f95de">cdc_host.c</a></li>
+<li>ch34x_get_divisor_prescaler()&#160;:&#160;<a class="el" href="cdc__host_8c.html#acc6c12d5f71c6f81c0a31050d4c6da1b">cdc_host.c</a></li>
+<li>ch34x_get_lcr()&#160;:&#160;<a class="el" href="cdc__host_8c.html#ab555d08df93155cb9e30dfcfae393f40">cdc_host.c</a></li>
+<li>ch34x_open()&#160;:&#160;<a class="el" href="cdc__host_8c.html#af45e36da046cbf186aec8027a6ce9514">cdc_host.c</a></li>
+<li>ch34x_process_config()&#160;:&#160;<a class="el" href="cdc__host_8c.html#af95606ae6251e001407e3fcc3cb1cb15">cdc_host.c</a></li>
+<li>ch34x_set_baudrate()&#160;:&#160;<a class="el" href="cdc__host_8c.html#ab24460554af62aaa58245e8f44325e9c">cdc_host.c</a></li>
+<li>ch34x_set_data_format()&#160;:&#160;<a class="el" href="cdc__host_8c.html#ae0b2b92372c5c0388ab871ca3f21aac6">cdc_host.c</a></li>
+<li>ch34x_set_line_coding()&#160;:&#160;<a class="el" href="cdc__host_8c.html#a44a86473cedb155d918b5cb5c29ea5cd">cdc_host.c</a></li>
+<li>ch34x_set_line_coding_stage1_complete()&#160;:&#160;<a class="el" href="cdc__host_8c.html#a96a16cb641faf4699c5a67c48ddcaf94">cdc_host.c</a></li>
+<li>ch34x_set_modem_ctrl()&#160;:&#160;<a class="el" href="cdc__host_8c.html#a12fb579f60afe7d99ce717cf4229808e">cdc_host.c</a></li>
+<li>ch34x_set_request()&#160;:&#160;<a class="el" href="cdc__host_8c.html#aee68bcb40c2d46fd33991ba8adfbb655">cdc_host.c</a></li>
+<li>ch34x_write_reg()&#160;:&#160;<a class="el" href="cdc__host_8c.html#aee1c0b1d8d7f6a1a3519ec199bc546c9">cdc_host.c</a></li>
+<li>ch34x_write_reg_baudrate()&#160;:&#160;<a class="el" href="cdc__host_8c.html#ad1b4674b31c91a02b28faccd1d702385">cdc_host.c</a></li>
+<li>channel_alloc()&#160;:&#160;<a class="el" href="hcd__dwc2_8c.html#a25f6941f71b3a1e2ef71f266e31cf585">hcd_dwc2.c</a></li>
+<li>channel_dealloc()&#160;:&#160;<a class="el" href="hcd__dwc2_8c.html#acfd7d928acee0ce63db0dc2282ac42a3">hcd_dwc2.c</a></li>
+<li>channel_disable()&#160;:&#160;<a class="el" href="hcd__dwc2_8c.html#a2d7b46593c4b7c724abc56f24ea7cb75">hcd_dwc2.c</a></li>
+<li>channel_find_enabled()&#160;:&#160;<a class="el" href="hcd__dwc2_8c.html#a25617193f10c604a1efeceab617e554f">hcd_dwc2.c</a></li>
+<li>channel_send_in_token()&#160;:&#160;<a class="el" href="hcd__dwc2_8c.html#a39a9cfe055abbc603cf80c0039c1ba7a">hcd_dwc2.c</a></li>
+<li>channel_xfer_in_retry()&#160;:&#160;<a class="el" href="hcd__dwc2_8c.html#adde50db0939604755dd065dfa0f36326">hcd_dwc2.c</a></li>
+<li>channel_xfer_out_wrapup()&#160;:&#160;<a class="el" href="hcd__dwc2_8c.html#a5ed06629789e38dfe86ca2aaf5344ef3">hcd_dwc2.c</a></li>
+<li>channel_xfer_start()&#160;:&#160;<a class="el" href="hcd__dwc2_8c.html#a057127cf40ba25e2b00d036b522f85f3">hcd_dwc2.c</a></li>
+<li>check_dwc2()&#160;:&#160;<a class="el" href="dwc2__common_8c.html#ac3de79ef0502cbab0c3ecdfb40e705ee">dwc2_common.c</a></li>
+<li>check_reset_end()&#160;:&#160;<a class="el" href="dcd__da146xx_8c.html#a58363218f5e3bed5f242690d5ca56100">dcd_da146xx.c</a></li>
+<li>CI_HS_REG()&#160;:&#160;<a class="el" href="ci__hs__mcx_8h.html#a5caa682f1e50749ba2f4685d491f5d5a">ci_hs_mcx.h</a></li>
+<li>CleanInValidateCache()&#160;:&#160;<a class="el" href="dcd__samx7x_8c.html#ab13fd6e12ee23984d5fcbdf65df09757">dcd_samx7x.c</a></li>
+<li>clear_device()&#160;:&#160;<a class="el" href="usbh_8c.html#a774eeb02a8934e1aba2d2f09be63ff29">usbh.c</a></li>
 <li>clip()&#160;:&#160;<a class="el" href="cppmain_8h.html#a0388bb70cb554fe28f373ed831be762e">cppmain.h</a></li>
 <li>cliptest()&#160;:&#160;<a class="el" href="cppmain_8h.html#a7f27b0ab2e9f8751c4f06e4d7b4abf43">cppmain.h</a></li>
-<li>config_driver_mount_complete()&#160;:&#160;<a class="el" href="hid__host_8c.html#a86fb3ccb4ec6e3d2da4f4acf1de90576">hid_host.c</a></li>
-<li>config_get_maxlun_complete()&#160;:&#160;<a class="el" href="msc__host_8c.html#afeab172ab2e6b4e0c3d188c9b2ded49f">msc_host.c</a></li>
-<li>config_get_report_desc()&#160;:&#160;<a class="el" href="hid__host_8c.html#ad1069c03ba83911fceacede332868c8f">hid_host.c</a></li>
-<li>config_get_report_desc_complete()&#160;:&#160;<a class="el" href="hid__host_8c.html#a7745dcf12fb50777ff248a040559101b">hid_host.c</a></li>
-<li>config_port_power_complete()&#160;:&#160;<a class="el" href="hub_8c.html#abb3650ac82ee63c51fa8bd8055f0fab8">hub.c</a></li>
-<li>config_read_capacity_complete()&#160;:&#160;<a class="el" href="msc__host_8c.html#a5ade05cd7f70906457585a5328f6765c">msc_host.c</a></li>
-<li>config_request_sense_complete()&#160;:&#160;<a class="el" href="msc__host_8c.html#a053acb4d725dbbc98499e873434196c7">msc_host.c</a></li>
-<li>config_set_port_power()&#160;:&#160;<a class="el" href="hub_8c.html#a1eb651310385651387ee4bccdffc1db6">hub.c</a></li>
-<li>config_set_protocol()&#160;:&#160;<a class="el" href="hid__host_8c.html#a9ae972eb239b499a9623b09c6bcf9727">hid_host.c</a></li>
-<li>config_test_unit_ready_complete()&#160;:&#160;<a class="el" href="msc__host_8c.html#a096209d281ca1d5b7a288a527a15019d">msc_host.c</a></li>
+<li>config_driver_mount_complete()&#160;:&#160;<a class="el" href="hid__host_8c.html#a4b099917235037dfaf45c53909927a9f">hid_host.c</a></li>
+<li>config_get_maxlun_complete()&#160;:&#160;<a class="el" href="msc__host_8c.html#ac0f28fce5399a2496df8e8342c6a954c">msc_host.c</a></li>
+<li>config_port_power_complete()&#160;:&#160;<a class="el" href="hub_8c.html#a57758be14d9545dd6812bfbd840def49">hub.c</a></li>
+<li>config_read_capacity_complete()&#160;:&#160;<a class="el" href="msc__host_8c.html#af1c516a46c0e2149b8756a357f29f17d">msc_host.c</a></li>
+<li>config_request_sense_complete()&#160;:&#160;<a class="el" href="msc__host_8c.html#a9f7237432ff4277b1abdf6ea02b4eb2c">msc_host.c</a></li>
+<li>config_set_port_power()&#160;:&#160;<a class="el" href="hub_8c.html#a9c02446250c39d6fa11a3cc73655cac5">hub.c</a></li>
+<li>config_test_unit_ready_complete()&#160;:&#160;<a class="el" href="msc__host_8c.html#a7d4c28e5c743a0ea51cfe761ac1abc95">msc_host.c</a></li>
 <li>configuration_reset()&#160;:&#160;<a class="el" href="usbd_8c.html#a2a6ea57fe5270ca741a75f8215273503">usbd.c</a></li>
-<li>connection_clear_conn_change_complete()&#160;:&#160;<a class="el" href="hub_8c.html#aec26216ccf48aecc7d675bca9dc67857">hub.c</a></li>
-<li>connection_get_status_complete()&#160;:&#160;<a class="el" href="hub_8c.html#ad3353900dd5abb17daaec7783d6ba401">hub.c</a></li>
-<li>connection_port_reset_complete()&#160;:&#160;<a class="el" href="hub_8c.html#abcd4e5a4b2369be02072617e947aa645">hub.c</a></li>
-<li>cppmain()&#160;:&#160;<a class="el" href="cppmain_8h.html#a128a29499985fe63f8e67a47b9ae7fa1">cppmain.h</a>, <a class="el" href="cppmain_8cpp.html#a128a29499985fe63f8e67a47b9ae7fa1">cppmain.cpp</a></li>
+<li>connection_clear_conn_change_complete()&#160;:&#160;<a class="el" href="hub_8c.html#a30c645ffb5869bf03cbc368ae9c38502">hub.c</a></li>
+<li>connection_port_reset_complete()&#160;:&#160;<a class="el" href="hub_8c.html#a2eb21488624ea165e0f2dfc5a57d9049">hub.c</a></li>
+<li>continue_transfer()&#160;:&#160;<a class="el" href="hcd__khci_8c.html#ada19f78b428e40ad47b42159e37f7602">hcd_khci.c</a></li>
+<li>control_ep_read()&#160;:&#160;<a class="el" href="dcd__lpc17__40_8c.html#a6764f64f0f57e6c4d64de747ff2e0040">dcd_lpc17_40.c</a></li>
+<li>control_ep_write()&#160;:&#160;<a class="el" href="dcd__lpc17__40_8c.html#a79680d55a7f2ed77a85b67b1d57c49d2">dcd_lpc17_40.c</a></li>
+<li>control_xact()&#160;:&#160;<a class="el" href="dcd__lpc17__40_8c.html#a2da3ab0da0c69c6c4d95a724bc33fde8">dcd_lpc17_40.c</a></li>
+<li>control_xfer_isr()&#160;:&#160;<a class="el" href="dcd__lpc17__40_8c.html#aec717a52595de99f9ad3f9b757c29fef">dcd_lpc17_40.c</a></li>
+<li>cp210x_ifc_enable()&#160;:&#160;<a class="el" href="cdc__host_8c.html#a58819fda4338e2f290f94762edfba0b6">cdc_host.c</a></li>
+<li>cp210x_open()&#160;:&#160;<a class="el" href="cdc__host_8c.html#a91875b0712b448b2478a6180835e8c78">cdc_host.c</a></li>
+<li>cp210x_process_config()&#160;:&#160;<a class="el" href="cdc__host_8c.html#afa575fc303c2152b71820fd7eca2be0a">cdc_host.c</a></li>
+<li>cp210x_set_baudrate()&#160;:&#160;<a class="el" href="cdc__host_8c.html#a2d067a8a3f0d9275694d34edf5c93afb">cdc_host.c</a></li>
+<li>cp210x_set_data_format()&#160;:&#160;<a class="el" href="cdc__host_8c.html#aba14063ae04b92f0bdec79218b461d6e">cdc_host.c</a></li>
+<li>cp210x_set_line_coding()&#160;:&#160;<a class="el" href="cdc__host_8c.html#a7cf96cb41a005b595e8624e73057f2d3">cdc_host.c</a></li>
+<li>cp210x_set_modem_ctrl()&#160;:&#160;<a class="el" href="cdc__host_8c.html#a48640d48170df395071842293a2e68d6">cdc_host.c</a></li>
+<li>cp210x_set_request()&#160;:&#160;<a class="el" href="cdc__host_8c.html#ac4d2b67077032788754470e9887668f7">cdc_host.c</a></li>
+<li>cppmain()&#160;:&#160;<a class="el" href="cppmain_8cpp.html#a128a29499985fe63f8e67a47b9ae7fa1">cppmain.cpp</a>, <a class="el" href="cppmain_8h.html#a128a29499985fe63f8e67a47b9ae7fa1">cppmain.h</a></li>
+<li>csr_clear()&#160;:&#160;<a class="el" href="dcd__samg_8c.html#a03a2cc2eab4cad35555e8fcc3f6a45f6">dcd_samg.c</a></li>
+<li>csr_set()&#160;:&#160;<a class="el" href="dcd__samg_8c.html#a34a61c7731740ac6ce5216dfcf3361dd">dcd_samg.c</a></li>
+<li>csr_write()&#160;:&#160;<a class="el" href="dcd__samg_8c.html#aa990ae58708e1dc7ae7032bc0de9afef">dcd_samg.c</a></li>
 <li>cush_close()&#160;:&#160;<a class="el" href="vendor__host_8c.html#af434910826b1167c7e612245622a84c6">vendor_host.c</a>, <a class="el" href="vendor__host_8h.html#af434910826b1167c7e612245622a84c6">vendor_host.h</a></li>
 <li>cush_init()&#160;:&#160;<a class="el" href="vendor__host_8c.html#a2721a2838b4c2517ec78347c860aaa10">vendor_host.c</a>, <a class="el" href="vendor__host_8h.html#a2721a2838b4c2517ec78347c860aaa10">vendor_host.h</a></li>
 <li>cush_isr()&#160;:&#160;<a class="el" href="vendor__host_8c.html#a291bd7f2731bb0da60b4acb0ab312513">vendor_host.c</a>, <a class="el" href="vendor__host_8h.html#a291bd7f2731bb0da60b4acb0ab312513">vendor_host.h</a></li>
-<li>cush_open_subtask()&#160;:&#160;<a class="el" href="vendor__host_8c.html#a9b36d6665274b2f91b5dd603bb50082b">vendor_host.c</a>, <a class="el" href="vendor__host_8h.html#a9b36d6665274b2f91b5dd603bb50082b">vendor_host.h</a></li>
+<li>cush_open_subtask()&#160;:&#160;<a class="el" href="vendor__host_8c.html#a9b36d6665274b2f91b5dd603bb50082b">vendor_host.c</a>, <a class="el" href="vendor__host_8h.html#a7aaf905240ef80893cc26175054e49af">vendor_host.h</a></li>
 <li>cush_validate_paras()&#160;:&#160;<a class="el" href="vendor__host_8c.html#a7fa23b3737c3ae7725ccaba4839af110">vendor_host.c</a></li>
 </ul>
 </div><!-- contents -->

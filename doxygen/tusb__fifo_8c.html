@@ -103,51 +103,43 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:aef8cb57f4630e23b90b21b5ccc0a644d"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#aef8cb57f4630e23b90b21b5ccc0a644d">_ff_lock</a> (tu_fifo_mutex_t mutex)</td></tr>
-<tr class="separator:aef8cb57f4630e23b90b21b5ccc0a644d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a16be7e6e7ae92aa006c6756e0608cf9e"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#a16be7e6e7ae92aa006c6756e0608cf9e">_ff_unlock</a> (tu_fifo_mutex_t mutex)</td></tr>
-<tr class="separator:a16be7e6e7ae92aa006c6756e0608cf9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4dfb40d48350bdff5c7f47321703d886"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#a4dfb40d48350bdff5c7f47321703d886">tu_fifo_config</a> (<a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *f, void *<a class="el" href="midi__device_8h.html#ac8733c58bc671239139641960e2d5dbf">buffer</a>, uint16_t depth, uint16_t item_size, bool overwritable)</td></tr>
+<tr class="memitem:a19cff3f992f14be430b57537e7ea94e4"><td class="memItemLeft" align="right" valign="top">static TU_ATTR_ALWAYS_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#a19cff3f992f14be430b57537e7ea94e4">_ff_lock</a> (<a class="el" href="osal__freertos_8h.html#aa74df55450633a685e2b6bef57764f47">osal_mutex_t</a> mutex)</td></tr>
+<tr class="separator:a19cff3f992f14be430b57537e7ea94e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac84cad12b456cf451ae1b994773ed8bc"><td class="memItemLeft" align="right" valign="top">static TU_ATTR_ALWAYS_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#ac84cad12b456cf451ae1b994773ed8bc">_ff_unlock</a> (<a class="el" href="osal__freertos_8h.html#aa74df55450633a685e2b6bef57764f47">osal_mutex_t</a> mutex)</td></tr>
+<tr class="separator:ac84cad12b456cf451ae1b994773ed8bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4dfb40d48350bdff5c7f47321703d886"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#a4dfb40d48350bdff5c7f47321703d886">tu_fifo_config</a> (<a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *f, void *<a class="el" href="usbh_8c.html#a56ed84df35de10bdb65e72b184309497">buffer</a>, uint16_t depth, uint16_t item_size, bool overwritable)</td></tr>
 <tr class="separator:a4dfb40d48350bdff5c7f47321703d886"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a16f88c5e195fa5bab54d7bb41e49680a"><td class="memItemLeft" align="right" valign="top">static uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#a16f88c5e195fa5bab54d7bb41e49680a">_ff_mod</a> (uint16_t idx, uint16_t depth)</td></tr>
-<tr class="separator:a16f88c5e195fa5bab54d7bb41e49680a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a251fa32ea894b1981d98d4ecc8e5504c"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#a251fa32ea894b1981d98d4ecc8e5504c">_ff_push_const_addr</a> (uint8_t *ff_buf, const void *app_buf, uint16_t len)</td></tr>
 <tr class="separator:a251fa32ea894b1981d98d4ecc8e5504c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adff22a8668da9252023e7a9ee738095c"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#adff22a8668da9252023e7a9ee738095c">_ff_pull_const_addr</a> (void *app_buf, const uint8_t *ff_buf, uint16_t len)</td></tr>
 <tr class="separator:adff22a8668da9252023e7a9ee738095c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab94411384285eeb57b9c1dad56e53b59"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#ab94411384285eeb57b9c1dad56e53b59">_ff_push</a> (<a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *f, void const *app_buf, uint16_t rel)</td></tr>
 <tr class="separator:ab94411384285eeb57b9c1dad56e53b59"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa4e350f1a97294deee8edd07178c9543"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#aa4e350f1a97294deee8edd07178c9543">_ff_push_n</a> (<a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *f, void const *app_buf, uint16_t n, uint16_t rel, <a class="el" href="tusb__fifo_8c.html#ab97980ef586daab282b6fe7add0ed926">tu_fifo_copy_mode_t</a> copy_mode)</td></tr>
-<tr class="separator:aa4e350f1a97294deee8edd07178c9543"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac3a079c82ccd6a9f2c01ffcc29aaa66"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#aac3a079c82ccd6a9f2c01ffcc29aaa66">_ff_push_n</a> (<a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *f, void const *app_buf, uint16_t n, uint16_t wr_ptr, <a class="el" href="tusb__fifo_8c.html#ab97980ef586daab282b6fe7add0ed926">tu_fifo_copy_mode_t</a> copy_mode)</td></tr>
+<tr class="separator:aac3a079c82ccd6a9f2c01ffcc29aaa66"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7a6c4029290144962cb7b54c7ce352cb"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#a7a6c4029290144962cb7b54c7ce352cb">_ff_pull</a> (<a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *f, void *app_buf, uint16_t rel)</td></tr>
 <tr class="separator:a7a6c4029290144962cb7b54c7ce352cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad31194df4dcb958478c86408d01390e9"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#ad31194df4dcb958478c86408d01390e9">_ff_pull_n</a> (<a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *f, void *app_buf, uint16_t n, uint16_t rel, <a class="el" href="tusb__fifo_8c.html#ab97980ef586daab282b6fe7add0ed926">tu_fifo_copy_mode_t</a> copy_mode)</td></tr>
-<tr class="separator:ad31194df4dcb958478c86408d01390e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6238e2884f42935eafaf654b21cccf8c"><td class="memItemLeft" align="right" valign="top">static uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#a6238e2884f42935eafaf654b21cccf8c">advance_pointer</a> (<a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *f, uint16_t p, uint16_t offset)</td></tr>
-<tr class="separator:a6238e2884f42935eafaf654b21cccf8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad2704c67e4081242844c269033d4047d"><td class="memItemLeft" align="right" valign="top">static uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#ad2704c67e4081242844c269033d4047d">backward_pointer</a> (<a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *f, uint16_t p, uint16_t offset)</td></tr>
-<tr class="separator:ad2704c67e4081242844c269033d4047d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af07f71ebf08806dfc8a17bf0443fe1bd"><td class="memItemLeft" align="right" valign="top">static uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#af07f71ebf08806dfc8a17bf0443fe1bd">get_relative_pointer</a> (<a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *f, uint16_t p)</td></tr>
-<tr class="separator:af07f71ebf08806dfc8a17bf0443fe1bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a58dc9818231b3cfb666f5e9792f293fd"><td class="memItemLeft" align="right" valign="top">static uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#a58dc9818231b3cfb666f5e9792f293fd">_tu_fifo_count</a> (<a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *f, uint16_t wAbs, uint16_t rAbs)</td></tr>
-<tr class="separator:a58dc9818231b3cfb666f5e9792f293fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1b38a5553cd6237e68c88b12b512c9ee"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#a1b38a5553cd6237e68c88b12b512c9ee">_tu_fifo_empty</a> (uint16_t wAbs, uint16_t rAbs)</td></tr>
-<tr class="separator:a1b38a5553cd6237e68c88b12b512c9ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0ec891bed367b59d4a499664d979ce28"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#a0ec891bed367b59d4a499664d979ce28">_tu_fifo_full</a> (<a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *f, uint16_t wAbs, uint16_t rAbs)</td></tr>
-<tr class="separator:a0ec891bed367b59d4a499664d979ce28"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af58208caec1d910ccdece5ab01d13e14"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#af58208caec1d910ccdece5ab01d13e14">_tu_fifo_overflowed</a> (<a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *f, uint16_t wAbs, uint16_t rAbs)</td></tr>
-<tr class="separator:af58208caec1d910ccdece5ab01d13e14"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a74cbf0673049879414cc6a2e650d8452"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#a74cbf0673049879414cc6a2e650d8452">_tu_fifo_correct_read_pointer</a> (<a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *f, uint16_t wAbs)</td></tr>
-<tr class="separator:a74cbf0673049879414cc6a2e650d8452"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae49e46d45c21661f9b348bf022317e11"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#ae49e46d45c21661f9b348bf022317e11">_tu_fifo_peek</a> (<a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *f, void *p_buffer, uint16_t wAbs, uint16_t rAbs)</td></tr>
-<tr class="separator:ae49e46d45c21661f9b348bf022317e11"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aea9dc6c513c6aa93bd3d1446a8c0d19f"><td class="memItemLeft" align="right" valign="top">static uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#aea9dc6c513c6aa93bd3d1446a8c0d19f">_tu_fifo_peek_n</a> (<a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *f, void *p_buffer, uint16_t n, uint16_t wAbs, uint16_t rAbs, <a class="el" href="tusb__fifo_8c.html#ab97980ef586daab282b6fe7add0ed926">tu_fifo_copy_mode_t</a> copy_mode)</td></tr>
-<tr class="separator:aea9dc6c513c6aa93bd3d1446a8c0d19f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6e0b84b18ad98c075c83b3d81c0cf899"><td class="memItemLeft" align="right" valign="top">static uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#a6e0b84b18ad98c075c83b3d81c0cf899">_tu_fifo_remaining</a> (<a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *f, uint16_t wAbs, uint16_t rAbs)</td></tr>
-<tr class="separator:a6e0b84b18ad98c075c83b3d81c0cf899"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a01fc7aa307469911809a2af752bdcfae"><td class="memItemLeft" align="right" valign="top">static uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#a01fc7aa307469911809a2af752bdcfae">_tu_fifo_write_n</a> (<a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *f, const void *data, uint16_t n, <a class="el" href="tusb__fifo_8c.html#ab97980ef586daab282b6fe7add0ed926">tu_fifo_copy_mode_t</a> copy_mode)</td></tr>
+<tr class="memitem:a523f90f6f826ac30c340a705eda4f7ad"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#a523f90f6f826ac30c340a705eda4f7ad">_ff_pull_n</a> (<a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *f, void *app_buf, uint16_t n, uint16_t rd_ptr, <a class="el" href="tusb__fifo_8c.html#ab97980ef586daab282b6fe7add0ed926">tu_fifo_copy_mode_t</a> copy_mode)</td></tr>
+<tr class="separator:a523f90f6f826ac30c340a705eda4f7ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad66c4d2bea1b9eca1c55566c70acdf11"><td class="memItemLeft" align="right" valign="top">static TU_ATTR_ALWAYS_INLINE uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#ad66c4d2bea1b9eca1c55566c70acdf11">_ff_count</a> (uint16_t depth, uint16_t wr_idx, uint16_t rd_idx)</td></tr>
+<tr class="separator:ad66c4d2bea1b9eca1c55566c70acdf11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae55c181b0d610cdcd3547bd72c83ae1b"><td class="memItemLeft" align="right" valign="top">static TU_ATTR_ALWAYS_INLINE uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#ae55c181b0d610cdcd3547bd72c83ae1b">_ff_remaining</a> (uint16_t depth, uint16_t wr_idx, uint16_t rd_idx)</td></tr>
+<tr class="separator:ae55c181b0d610cdcd3547bd72c83ae1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3eb6baaf7f0c34f6b94af20d3616852"><td class="memItemLeft" align="right" valign="top">static uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#aa3eb6baaf7f0c34f6b94af20d3616852">advance_index</a> (uint16_t depth, uint16_t idx, uint16_t offset)</td></tr>
+<tr class="separator:aa3eb6baaf7f0c34f6b94af20d3616852"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a845a6b53851e95ccd16c1f253d52c060"><td class="memItemLeft" align="right" valign="top">static uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#a845a6b53851e95ccd16c1f253d52c060">backward_index</a> (uint16_t depth, uint16_t idx, uint16_t offset)</td></tr>
+<tr class="separator:a845a6b53851e95ccd16c1f253d52c060"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82114cd39cca6427ef50da794fbb131c"><td class="memItemLeft" align="right" valign="top">static TU_ATTR_ALWAYS_INLINE uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#a82114cd39cca6427ef50da794fbb131c">idx2ptr</a> (uint16_t depth, uint16_t idx)</td></tr>
+<tr class="separator:a82114cd39cca6427ef50da794fbb131c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1afa2d4af8f80b5a9e3b58d6e599fd6a"><td class="memItemLeft" align="right" valign="top">static TU_ATTR_ALWAYS_INLINE uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#a1afa2d4af8f80b5a9e3b58d6e599fd6a">_ff_correct_read_index</a> (<a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *f, uint16_t wr_idx)</td></tr>
+<tr class="separator:a1afa2d4af8f80b5a9e3b58d6e599fd6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6036b815833c2269267cb9d039714e73"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#a6036b815833c2269267cb9d039714e73">_tu_fifo_peek</a> (<a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *f, void *p_buffer, uint16_t wr_idx, uint16_t rd_idx)</td></tr>
+<tr class="separator:a6036b815833c2269267cb9d039714e73"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a462580a8bf7bba7d6cc36c2aabf03081"><td class="memItemLeft" align="right" valign="top">static uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#a462580a8bf7bba7d6cc36c2aabf03081">_tu_fifo_peek_n</a> (<a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *f, void *p_buffer, uint16_t n, uint16_t wr_idx, uint16_t rd_idx, <a class="el" href="tusb__fifo_8c.html#ab97980ef586daab282b6fe7add0ed926">tu_fifo_copy_mode_t</a> copy_mode)</td></tr>
+<tr class="separator:a462580a8bf7bba7d6cc36c2aabf03081"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a01fc7aa307469911809a2af752bdcfae"><td class="memItemLeft" align="right" valign="top">static uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#a01fc7aa307469911809a2af752bdcfae">_tu_fifo_write_n</a> (<a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *f, const void *<a class="el" href="dcd__ch32__usbfs_8c.html#a19c9ff40973093edd384bdef417d5599">data</a>, uint16_t n, <a class="el" href="tusb__fifo_8c.html#ab97980ef586daab282b6fe7add0ed926">tu_fifo_copy_mode_t</a> copy_mode)</td></tr>
 <tr class="separator:a01fc7aa307469911809a2af752bdcfae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab0280a87f5c4d029adc834b91c931e5f"><td class="memItemLeft" align="right" valign="top">static uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#ab0280a87f5c4d029adc834b91c931e5f">_tu_fifo_read_n</a> (<a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *f, void *<a class="el" href="midi__device_8h.html#ac8733c58bc671239139641960e2d5dbf">buffer</a>, uint16_t n, <a class="el" href="tusb__fifo_8c.html#ab97980ef586daab282b6fe7add0ed926">tu_fifo_copy_mode_t</a> copy_mode)</td></tr>
+<tr class="memitem:ab0280a87f5c4d029adc834b91c931e5f"><td class="memItemLeft" align="right" valign="top">static uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#ab0280a87f5c4d029adc834b91c931e5f">_tu_fifo_read_n</a> (<a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *f, void *<a class="el" href="usbh_8c.html#a56ed84df35de10bdb65e72b184309497">buffer</a>, uint16_t n, <a class="el" href="tusb__fifo_8c.html#ab97980ef586daab282b6fe7add0ed926">tu_fifo_copy_mode_t</a> copy_mode)</td></tr>
 <tr class="separator:ab0280a87f5c4d029adc834b91c931e5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0653c4e3af5b0b2766ff72264f5836b7"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#a0653c4e3af5b0b2766ff72264f5836b7">tu_fifo_count</a> (<a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *f)</td></tr>
 <tr class="memdesc:a0653c4e3af5b0b2766ff72264f5836b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get number of items in FIFO.  <a href="tusb__fifo_8c.html#a0653c4e3af5b0b2766ff72264f5836b7">More...</a><br /></td></tr>
@@ -166,13 +158,14 @@ Functions</h2></td></tr>
 <tr class="separator:a05fa5f34756ab3cc587d6c0e23958e84"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d6091eaa8ac247eaccd47e9d236a5db"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#a0d6091eaa8ac247eaccd47e9d236a5db">tu_fifo_correct_read_pointer</a> (<a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *f)</td></tr>
 <tr class="separator:a0d6091eaa8ac247eaccd47e9d236a5db"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa3f8cd9f0d43dc686c57ff31aba78a8a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#aa3f8cd9f0d43dc686c57ff31aba78a8a">tu_fifo_read</a> (<a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *f, void *<a class="el" href="midi__device_8h.html#ac8733c58bc671239139641960e2d5dbf">buffer</a>)</td></tr>
+<tr class="memitem:aa3f8cd9f0d43dc686c57ff31aba78a8a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#aa3f8cd9f0d43dc686c57ff31aba78a8a">tu_fifo_read</a> (<a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *f, void *<a class="el" href="usbh_8c.html#a56ed84df35de10bdb65e72b184309497">buffer</a>)</td></tr>
 <tr class="memdesc:aa3f8cd9f0d43dc686c57ff31aba78a8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read one element out of the buffer.  <a href="tusb__fifo_8c.html#aa3f8cd9f0d43dc686c57ff31aba78a8a">More...</a><br /></td></tr>
 <tr class="separator:aa3f8cd9f0d43dc686c57ff31aba78a8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa03647e82d43f46c36c7499051729cb3"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#aa03647e82d43f46c36c7499051729cb3">tu_fifo_read_n</a> (<a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *f, void *<a class="el" href="midi__device_8h.html#ac8733c58bc671239139641960e2d5dbf">buffer</a>, uint16_t n)</td></tr>
+<tr class="memitem:aa03647e82d43f46c36c7499051729cb3"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#aa03647e82d43f46c36c7499051729cb3">tu_fifo_read_n</a> (<a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *f, void *<a class="el" href="usbh_8c.html#a56ed84df35de10bdb65e72b184309497">buffer</a>, uint16_t n)</td></tr>
 <tr class="memdesc:aa03647e82d43f46c36c7499051729cb3"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function will read n elements from the array index specified by the read pointer and increment the read index. This function checks for an overflow and corrects read pointer if required.  <a href="tusb__fifo_8c.html#aa03647e82d43f46c36c7499051729cb3">More...</a><br /></td></tr>
 <tr class="separator:aa03647e82d43f46c36c7499051729cb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a87ddbeef206cfa92454988aa7905f7f7"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#a87ddbeef206cfa92454988aa7905f7f7">tu_fifo_read_n_const_addr_full_words</a> (<a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *f, void *<a class="el" href="midi__device_8h.html#ac8733c58bc671239139641960e2d5dbf">buffer</a>, uint16_t n)</td></tr>
+<tr class="memitem:a87ddbeef206cfa92454988aa7905f7f7"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#a87ddbeef206cfa92454988aa7905f7f7">tu_fifo_read_n_const_addr_full_words</a> (<a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *f, void *<a class="el" href="usbh_8c.html#a56ed84df35de10bdb65e72b184309497">buffer</a>, uint16_t n)</td></tr>
+<tr class="memdesc:a87ddbeef206cfa92454988aa7905f7f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function will read n elements from the array index specified by the read pointer and increment the read index. This function checks for an overflow and corrects read pointer if required. The dest address will not be incremented which is useful for writing to registers.  <a href="tusb__fifo_8c.html#a87ddbeef206cfa92454988aa7905f7f7">More...</a><br /></td></tr>
 <tr class="separator:a87ddbeef206cfa92454988aa7905f7f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7443652109d598ad4fc035c600283476"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#a7443652109d598ad4fc035c600283476">tu_fifo_peek</a> (<a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *f, void *p_buffer)</td></tr>
 <tr class="memdesc:a7443652109d598ad4fc035c600283476"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read one item without removing it from the FIFO. This function checks for an overflow and corrects read pointer if required.  <a href="tusb__fifo_8c.html#a7443652109d598ad4fc035c600283476">More...</a><br /></td></tr>
@@ -180,13 +173,13 @@ Functions</h2></td></tr>
 <tr class="memitem:a6debeaf0ac5629d0e6b7e30c9443a389"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#a6debeaf0ac5629d0e6b7e30c9443a389">tu_fifo_peek_n</a> (<a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *f, void *p_buffer, uint16_t n)</td></tr>
 <tr class="memdesc:a6debeaf0ac5629d0e6b7e30c9443a389"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read n items without removing it from the FIFO This function checks for an overflow and corrects read pointer if required.  <a href="tusb__fifo_8c.html#a6debeaf0ac5629d0e6b7e30c9443a389">More...</a><br /></td></tr>
 <tr class="separator:a6debeaf0ac5629d0e6b7e30c9443a389"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaf31c16bca0e86263bd05a516f772875"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#aaf31c16bca0e86263bd05a516f772875">tu_fifo_write</a> (<a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *f, const void *data)</td></tr>
+<tr class="memitem:aaf31c16bca0e86263bd05a516f772875"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#aaf31c16bca0e86263bd05a516f772875">tu_fifo_write</a> (<a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *f, const void *<a class="el" href="dcd__ch32__usbfs_8c.html#a19c9ff40973093edd384bdef417d5599">data</a>)</td></tr>
 <tr class="memdesc:aaf31c16bca0e86263bd05a516f772875"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write one element into the buffer.  <a href="tusb__fifo_8c.html#aaf31c16bca0e86263bd05a516f772875">More...</a><br /></td></tr>
 <tr class="separator:aaf31c16bca0e86263bd05a516f772875"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a676621c08b487242e117ce526eaed2a5"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#a676621c08b487242e117ce526eaed2a5">tu_fifo_write_n</a> (<a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *f, const void *data, uint16_t n)</td></tr>
+<tr class="memitem:a676621c08b487242e117ce526eaed2a5"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#a676621c08b487242e117ce526eaed2a5">tu_fifo_write_n</a> (<a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *f, const void *<a class="el" href="dcd__ch32__usbfs_8c.html#a19c9ff40973093edd384bdef417d5599">data</a>, uint16_t n)</td></tr>
 <tr class="memdesc:a676621c08b487242e117ce526eaed2a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function will write n elements into the array index specified by the write pointer and increment the write index.  <a href="tusb__fifo_8c.html#a676621c08b487242e117ce526eaed2a5">More...</a><br /></td></tr>
 <tr class="separator:a676621c08b487242e117ce526eaed2a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a15ff7617d186e0663ed91a330c0a97d0"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#a15ff7617d186e0663ed91a330c0a97d0">tu_fifo_write_n_const_addr_full_words</a> (<a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *f, const void *data, uint16_t n)</td></tr>
+<tr class="memitem:a15ff7617d186e0663ed91a330c0a97d0"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#a15ff7617d186e0663ed91a330c0a97d0">tu_fifo_write_n_const_addr_full_words</a> (<a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *f, const void *<a class="el" href="dcd__ch32__usbfs_8c.html#a19c9ff40973093edd384bdef417d5599">data</a>, uint16_t n)</td></tr>
 <tr class="memdesc:a15ff7617d186e0663ed91a330c0a97d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function will write n elements into the array index specified by the write pointer and increment the write index. The source address will not be incremented which is useful for reading from registers.  <a href="tusb__fifo_8c.html#a15ff7617d186e0663ed91a330c0a97d0">More...</a><br /></td></tr>
 <tr class="separator:a15ff7617d186e0663ed91a330c0a97d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af629a02b7f0b2dc380bfdc1d8ca05723"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb__fifo_8c.html#af629a02b7f0b2dc380bfdc1d8ca05723">tu_fifo_clear</a> (<a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *f)</td></tr>
@@ -229,13 +222,13 @@ Functions</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00061">61</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00062">62</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="aef8cb57f4630e23b90b21b5ccc0a644d" name="aef8cb57f4630e23b90b21b5ccc0a644d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aef8cb57f4630e23b90b21b5ccc0a644d">&#9670;&nbsp;</a></span>_ff_lock()</h2>
+<a id="a1afa2d4af8f80b5a9e3b58d6e599fd6a" name="a1afa2d4af8f80b5a9e3b58d6e599fd6a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1afa2d4af8f80b5a9e3b58d6e599fd6a">&#9670;&nbsp;</a></span>_ff_correct_read_index()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -244,44 +237,16 @@ Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static void _ff_lock </td>
+          <td class="memname">static TU_ATTR_ALWAYS_INLINE uint16_t _ff_correct_read_index </td>
           <td>(</td>
-          <td class="paramtype">tu_fifo_mutex_t&#160;</td>
-          <td class="paramname"><em>mutex</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00040">40</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
-
-</div>
-</div>
-<a id="a16f88c5e195fa5bab54d7bb41e49680a" name="a16f88c5e195fa5bab54d7bb41e49680a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a16f88c5e195fa5bab54d7bb41e49680a">&#9670;&nbsp;</a></span>_ff_mod()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static uint16_t _ff_mod </td>
-          <td>(</td>
-          <td class="paramtype">uint16_t&#160;</td>
-          <td class="paramname"><em>idx</em>, </td>
+          <td class="paramtype"><a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint16_t&#160;</td>
-          <td class="paramname"><em>depth</em>&#160;</td>
+          <td class="paramname"><em>wr_idx</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -296,7 +261,79 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00094">94</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00402">402</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
+
+</div>
+</div>
+<a id="ad66c4d2bea1b9eca1c55566c70acdf11" name="ad66c4d2bea1b9eca1c55566c70acdf11"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad66c4d2bea1b9eca1c55566c70acdf11">&#9670;&nbsp;</a></span>_ff_count()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static TU_ATTR_ALWAYS_INLINE uint16_t _ff_count </td>
+          <td>(</td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>depth</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>wr_idx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>rd_idx</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00330">330</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
+
+</div>
+</div>
+<a id="a19cff3f992f14be430b57537e7ea94e4" name="a19cff3f992f14be430b57537e7ea94e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a19cff3f992f14be430b57537e7ea94e4">&#9670;&nbsp;</a></span>_ff_lock()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static TU_ATTR_ALWAYS_INLINE void _ff_lock </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="osal__freertos_8h.html#aa74df55450633a685e2b6bef57764f47">osal_mutex_t</a>&#160;</td>
+          <td class="paramname"><em>mutex</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00041">41</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
 
 </div>
 </div>
@@ -340,7 +377,7 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00234">234</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00237">237</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
 
 </div>
 </div>
@@ -384,12 +421,12 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00126">126</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00124">124</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
 
 </div>
 </div>
-<a id="ad31194df4dcb958478c86408d01390e9" name="ad31194df4dcb958478c86408d01390e9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad31194df4dcb958478c86408d01390e9">&#9670;&nbsp;</a></span>_ff_pull_n()</h2>
+<a id="a523f90f6f826ac30c340a705eda4f7ad" name="a523f90f6f826ac30c340a705eda4f7ad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a523f90f6f826ac30c340a705eda4f7ad">&#9670;&nbsp;</a></span>_ff_pull_n()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -419,7 +456,7 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint16_t&#160;</td>
-          <td class="paramname"><em>rel</em>, </td>
+          <td class="paramname"><em>rd_ptr</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -440,7 +477,7 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00240">240</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00243">243</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
 
 </div>
 </div>
@@ -484,7 +521,7 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00150">150</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00149">149</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
 
 </div>
 </div>
@@ -528,12 +565,12 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00103">103</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00101">101</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
 
 </div>
 </div>
-<a id="aa4e350f1a97294deee8edd07178c9543" name="aa4e350f1a97294deee8edd07178c9543"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa4e350f1a97294deee8edd07178c9543">&#9670;&nbsp;</a></span>_ff_push_n()</h2>
+<a id="aac3a079c82ccd6a9f2c01ffcc29aaa66" name="aac3a079c82ccd6a9f2c01ffcc29aaa66"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac3a079c82ccd6a9f2c01ffcc29aaa66">&#9670;&nbsp;</a></span>_ff_push_n()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -563,7 +600,7 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint16_t&#160;</td>
-          <td class="paramname"><em>rel</em>, </td>
+          <td class="paramname"><em>wr_ptr</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -584,12 +621,12 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00156">156</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00155">155</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
 
 </div>
 </div>
-<a id="a16be7e6e7ae92aa006c6756e0608cf9e" name="a16be7e6e7ae92aa006c6756e0608cf9e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a16be7e6e7ae92aa006c6756e0608cf9e">&#9670;&nbsp;</a></span>_ff_unlock()</h2>
+<a id="ae55c181b0d610cdcd3547bd72c83ae1b" name="ae55c181b0d610cdcd3547bd72c83ae1b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae55c181b0d610cdcd3547bd72c83ae1b">&#9670;&nbsp;</a></span>_ff_remaining()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -598,9 +635,53 @@ Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static void _ff_unlock </td>
+          <td class="memname">static TU_ATTR_ALWAYS_INLINE uint16_t _ff_remaining </td>
           <td>(</td>
-          <td class="paramtype">tu_fifo_mutex_t&#160;</td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>depth</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>wr_idx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>rd_idx</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00344">344</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
+
+</div>
+</div>
+<a id="ac84cad12b456cf451ae1b994773ed8bc" name="ac84cad12b456cf451ae1b994773ed8bc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac84cad12b456cf451ae1b994773ed8bc">&#9670;&nbsp;</a></span>_ff_unlock()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static TU_ATTR_ALWAYS_INLINE void _ff_unlock </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="osal__freertos_8h.html#aa74df55450633a685e2b6bef57764f47">osal_mutex_t</a>&#160;</td>
           <td class="paramname"><em>mutex</em></td><td>)</td>
           <td></td>
         </tr>
@@ -612,220 +693,12 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00045">45</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00046">46</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
 
 </div>
 </div>
-<a id="a74cbf0673049879414cc6a2e650d8452" name="a74cbf0673049879414cc6a2e650d8452"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a74cbf0673049879414cc6a2e650d8452">&#9670;&nbsp;</a></span>_tu_fifo_correct_read_pointer()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void _tu_fifo_correct_read_pointer </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *&#160;</td>
-          <td class="paramname"><em>f</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint16_t&#160;</td>
-          <td class="paramname"><em>wAbs</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00396">396</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
-
-</div>
-</div>
-<a id="a58dc9818231b3cfb666f5e9792f293fd" name="a58dc9818231b3cfb666f5e9792f293fd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a58dc9818231b3cfb666f5e9792f293fd">&#9670;&nbsp;</a></span>_tu_fifo_count()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static uint16_t _tu_fifo_count </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *&#160;</td>
-          <td class="paramname"><em>f</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint16_t&#160;</td>
-          <td class="paramname"><em>wAbs</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint16_t&#160;</td>
-          <td class="paramname"><em>rAbs</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00361">361</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
-
-</div>
-</div>
-<a id="a1b38a5553cd6237e68c88b12b512c9ee" name="a1b38a5553cd6237e68c88b12b512c9ee"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1b38a5553cd6237e68c88b12b512c9ee">&#9670;&nbsp;</a></span>_tu_fifo_empty()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static bool _tu_fifo_empty </td>
-          <td>(</td>
-          <td class="paramtype">uint16_t&#160;</td>
-          <td class="paramname"><em>wAbs</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint16_t&#160;</td>
-          <td class="paramname"><em>rAbs</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00372">372</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
-
-</div>
-</div>
-<a id="a0ec891bed367b59d4a499664d979ce28" name="a0ec891bed367b59d4a499664d979ce28"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0ec891bed367b59d4a499664d979ce28">&#9670;&nbsp;</a></span>_tu_fifo_full()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static bool _tu_fifo_full </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *&#160;</td>
-          <td class="paramname"><em>f</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint16_t&#160;</td>
-          <td class="paramname"><em>wAbs</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint16_t&#160;</td>
-          <td class="paramname"><em>rAbs</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00378">378</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
-
-</div>
-</div>
-<a id="af58208caec1d910ccdece5ab01d13e14" name="af58208caec1d910ccdece5ab01d13e14"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af58208caec1d910ccdece5ab01d13e14">&#9670;&nbsp;</a></span>_tu_fifo_overflowed()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static bool _tu_fifo_overflowed </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *&#160;</td>
-          <td class="paramname"><em>f</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint16_t&#160;</td>
-          <td class="paramname"><em>wAbs</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint16_t&#160;</td>
-          <td class="paramname"><em>rAbs</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00389">389</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
-
-</div>
-</div>
-<a id="ae49e46d45c21661f9b348bf022317e11" name="ae49e46d45c21661f9b348bf022317e11"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae49e46d45c21661f9b348bf022317e11">&#9670;&nbsp;</a></span>_tu_fifo_peek()</h2>
+<a id="a6036b815833c2269267cb9d039714e73" name="a6036b815833c2269267cb9d039714e73"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6036b815833c2269267cb9d039714e73">&#9670;&nbsp;</a></span>_tu_fifo_peek()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -849,13 +722,13 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint16_t&#160;</td>
-          <td class="paramname"><em>wAbs</em>, </td>
+          <td class="paramname"><em>wr_idx</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint16_t&#160;</td>
-          <td class="paramname"><em>rAbs</em>&#160;</td>
+          <td class="paramname"><em>rd_idx</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -870,12 +743,12 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00403">403</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00420">420</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
 
 </div>
 </div>
-<a id="aea9dc6c513c6aa93bd3d1446a8c0d19f" name="aea9dc6c513c6aa93bd3d1446a8c0d19f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aea9dc6c513c6aa93bd3d1446a8c0d19f">&#9670;&nbsp;</a></span>_tu_fifo_peek_n()</h2>
+<a id="a462580a8bf7bba7d6cc36c2aabf03081" name="a462580a8bf7bba7d6cc36c2aabf03081"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a462580a8bf7bba7d6cc36c2aabf03081">&#9670;&nbsp;</a></span>_tu_fifo_peek_n()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -905,13 +778,13 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint16_t&#160;</td>
-          <td class="paramname"><em>wAbs</em>, </td>
+          <td class="paramname"><em>wr_idx</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint16_t&#160;</td>
-          <td class="paramname"><em>rAbs</em>, </td>
+          <td class="paramname"><em>rd_idx</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -932,7 +805,7 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00427">427</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00444">444</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
 
 </div>
 </div>
@@ -982,51 +855,7 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00498">498</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
-
-</div>
-</div>
-<a id="a6e0b84b18ad98c075c83b3d81c0cf899" name="a6e0b84b18ad98c075c83b3d81c0cf899"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6e0b84b18ad98c075c83b3d81c0cf899">&#9670;&nbsp;</a></span>_tu_fifo_remaining()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static uint16_t _tu_fifo_remaining </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *&#160;</td>
-          <td class="paramname"><em>f</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint16_t&#160;</td>
-          <td class="paramname"><em>wAbs</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint16_t&#160;</td>
-          <td class="paramname"><em>rAbs</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00454">454</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00556">556</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
 
 </div>
 </div>
@@ -1076,12 +905,12 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00459">459</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00469">469</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
 
 </div>
 </div>
-<a id="a6238e2884f42935eafaf654b21cccf8c" name="a6238e2884f42935eafaf654b21cccf8c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6238e2884f42935eafaf654b21cccf8c">&#9670;&nbsp;</a></span>advance_pointer()</h2>
+<a id="aa3eb6baaf7f0c34f6b94af20d3616852" name="aa3eb6baaf7f0c34f6b94af20d3616852"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa3eb6baaf7f0c34f6b94af20d3616852">&#9670;&nbsp;</a></span>advance_index()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1090,16 +919,16 @@ Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static uint16_t advance_pointer </td>
+          <td class="memname">static uint16_t advance_index </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *&#160;</td>
-          <td class="paramname"><em>f</em>, </td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>depth</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint16_t&#160;</td>
-          <td class="paramname"><em>p</em>, </td>
+          <td class="paramname"><em>idx</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1120,12 +949,12 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00321">321</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00356">356</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
 
 </div>
 </div>
-<a id="ad2704c67e4081242844c269033d4047d" name="ad2704c67e4081242844c269033d4047d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad2704c67e4081242844c269033d4047d">&#9670;&nbsp;</a></span>backward_pointer()</h2>
+<a id="a845a6b53851e95ccd16c1f253d52c060" name="a845a6b53851e95ccd16c1f253d52c060"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a845a6b53851e95ccd16c1f253d52c060">&#9670;&nbsp;</a></span>backward_index()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1134,16 +963,16 @@ Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static uint16_t backward_pointer </td>
+          <td class="memname">static uint16_t backward_index </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *&#160;</td>
-          <td class="paramname"><em>f</em>, </td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>depth</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint16_t&#160;</td>
-          <td class="paramname"><em>p</em>, </td>
+          <td class="paramname"><em>idx</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1164,12 +993,12 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00338">338</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00373">373</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
 
 </div>
 </div>
-<a id="af07f71ebf08806dfc8a17bf0443fe1bd" name="af07f71ebf08806dfc8a17bf0443fe1bd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af07f71ebf08806dfc8a17bf0443fe1bd">&#9670;&nbsp;</a></span>get_relative_pointer()</h2>
+<a id="a82114cd39cca6427ef50da794fbb131c" name="a82114cd39cca6427ef50da794fbb131c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a82114cd39cca6427ef50da794fbb131c">&#9670;&nbsp;</a></span>idx2ptr()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1178,16 +1007,16 @@ Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static uint16_t get_relative_pointer </td>
+          <td class="memname">static TU_ATTR_ALWAYS_INLINE uint16_t idx2ptr </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *&#160;</td>
-          <td class="paramname"><em>f</em>, </td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>depth</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint16_t&#160;</td>
-          <td class="paramname"><em>p</em>&#160;</td>
+          <td class="paramname"><em>idx</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1197,12 +1026,12 @@ Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00355">355</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00391">391</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
 
 </div>
 </div>
@@ -1233,7 +1062,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Advance read pointer - intended to be used in combination with DMA. It is possible to read from the FIFO by use of a DMA in linear mode. Within DMA ISRs you may update the read pointer to be able to again write into the FIFO. As long as the DMA is the only process reading from the FIFO this is safe to use. </p>
-<p >USE WITH CARE - WE DO NOT CONDUCT SAFTY CHECKS HERE!</p>
+<p >USE WITH CARE - WE DO NOT CONDUCT SAFETY CHECKS HERE!</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>Pointer to the FIFO buffer to manipulate </td></tr>
@@ -1242,7 +1071,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00889">889</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00969">969</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
 
 </div>
 </div>
@@ -1273,7 +1102,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Advance write pointer - intended to be used in combination with DMA. It is possible to fill the FIFO by use of a DMA in circular mode. Within DMA ISRs you may update the write pointer to be able to read from the FIFO. As long as the DMA is the only process writing into the FIFO this is safe to use. </p>
-<p >USE WITH CARE - WE DO NOT CONDUCT SAFTY CHECKS HERE!</p>
+<p >USE WITH CARE - WE DO NOT CONDUCT SAFETY CHECKS HERE!</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>Pointer to the FIFO buffer to manipulate </td></tr>
@@ -1282,7 +1111,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00868">868</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00948">948</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
 
 </div>
 </div>
@@ -1310,7 +1139,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00815">815</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00896">896</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
 
 </div>
 </div>
@@ -1358,7 +1187,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00067">67</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00070">70</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
 
 </div>
 </div>
@@ -1378,7 +1207,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00614">614</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00676">676</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
 
 </div>
 </div>
@@ -1408,7 +1237,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Number of items in FIFO </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00528">528</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00590">590</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
 
 </div>
 </div>
@@ -1438,7 +1267,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Number of items in FIFO </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00546">546</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00608">608</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
 
 </div>
 </div>
@@ -1468,7 +1297,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Number of items in FIFO </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00564">564</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00626">626</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
 
 </div>
 </div>
@@ -1507,7 +1336,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00909">909</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00989">989</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
 
 </div>
 </div>
@@ -1546,7 +1375,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00973">973</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l01057">1057</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
 
 </div>
 </div>
@@ -1577,7 +1406,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if overflow happened </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00608">608</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00670">670</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
 
 </div>
 </div>
@@ -1611,14 +1440,13 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>Pointer to the FIFO buffer to manipulate </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">offset</td><td>Position to read from in the FIFO buffer with respect to read pointer </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">p_buffer</td><td>Pointer to the place holder for data read from the buffer</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>TRUE if the queue is not empty </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00693">693</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00772">772</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
 
 </div>
 </div>
@@ -1665,7 +1493,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Number of bytes written to p_buffer </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00716">716</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00795">795</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
 
 </div>
 </div>
@@ -1706,7 +1534,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>TRUE if the queue is not empty </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00637">637</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00699">699</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
 
 </div>
 </div>
@@ -1753,7 +1581,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>number of items read from the FIFO </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00668">668</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00730">730</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
 
 </div>
 </div>
@@ -1789,7 +1617,18 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00673">673</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
+<p>This function will read n elements from the array index specified by the read pointer and increment the read index. This function checks for an overflow and corrects read pointer if required. The dest address will not be incremented which is useful for writing to registers. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>Pointer to the FIFO buffer to manipulate </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">buffer</td><td>The pointer to data location </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>Number of element that buffer can afford</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>number of items read from the FIFO </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00753">753</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
 
 </div>
 </div>
@@ -1819,7 +1658,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Number of items in FIFO </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00582">582</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00644">644</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
 
 </div>
 </div>
@@ -1858,7 +1697,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00839">839</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00919">919</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
 
 </div>
 </div>
@@ -1899,7 +1738,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>TRUE if the data was written to the FIFO (overwrittable FIFO will always return TRUE) </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00740">740</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00819">819</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
 
 </div>
 </div>
@@ -1946,7 +1785,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Number of written elements </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00782">782</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00861">861</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
 
 </div>
 </div>
@@ -1993,7 +1832,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Number of written elements </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00802">802</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb__fifo_8c_source.html#l00882">882</a> of file <a class="el" href="tusb__fifo_8c_source.html">tusb_fifo.c</a>.</p>
 
 </div>
 </div>

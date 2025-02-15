@@ -87,48 +87,140 @@ $(document).ready(function(){initNavTree('functions_vars_h.html',''); initResiza
 &#160;
 
 <h3><a id="index_h" name="index_h"></a>- h -</h3><ul>
-<li>HAINT&#160;:&#160;<a class="el" href="struct_u_s_b___o_t_g___host_type_def.html#af3c15285d6f2efdf4890ea5b27258aca">USB_OTG_HostTypeDef</a></li>
-<li>HAINTMSK&#160;:&#160;<a class="el" href="struct_u_s_b___o_t_g___host_type_def.html#aa4ec75921a9699f77ee14f377e1b86dc">USB_OTG_HostTypeDef</a></li>
-<li>half_duplex_carrier_control&#160;:&#160;<a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a958336f7acc0a07599b801c22c9a6b86">TU_ATTR_PACKED</a></li>
+<li>haint&#160;:&#160;<a class="el" href="structdwc2__regs__t.html#af05d5f87cf6ed5e9418cba6e4203b15e">dwc2_regs_t</a></li>
+<li>haintmsk&#160;:&#160;<a class="el" href="structdwc2__regs__t.html#a53155e56112e147eb0ccfd09c15b5928">dwc2_regs_t</a></li>
 <li>hallconf&#160;:&#160;<a class="el" href="class_t_m_c4671.html#a87decff0ca4a94eb5ee8e1b10c1c06cc">TMC4671</a></li>
 <li>hallEnabled&#160;:&#160;<a class="el" href="struct_t_m_c4671_h_a_l_l_conf.html#af5ea0dfdd4630b6d55d75ea6518ef360">TMC4671HALLConf</a></li>
+<li>halted&#160;:&#160;<a class="el" href="structdcd__qtd__t.html#a5c05e9b9d9d10d539362a80b9ac10a4d">dcd_qtd_t</a>, <a class="el" href="structehci__qtd__t.html#aa13f83b225547723bb3a306a63a53772">ehci_qtd_t</a></li>
+<li>halted_nyet&#160;:&#160;<a class="el" href="structhcd__xfer__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#aac94764c4df785c94444c457051ca888">hcd_xfer_t::TU_ATTR_PACKED</a></li>
+<li>halted_sof_schedule&#160;:&#160;<a class="el" href="structhcd__xfer__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#a91aed9fe0b07b628e5f4285957d51a7e">hcd_xfer_t::TU_ATTR_PACKED</a></li>
 <li>handle&#160;:&#160;<a class="el" href="classcpp__freertos_1_1_event_group.html#ae4a8e10d12038a774a4facdec1e328da">cpp_freertos::EventGroup</a>, <a class="el" href="classcpp__freertos_1_1_mutex.html#a639327163cdbee7b3847982d49b2fe03">cpp_freertos::Mutex</a>, <a class="el" href="classcpp__freertos_1_1_queue.html#a4b52f88d1cca486036905434f7867a48">cpp_freertos::Queue</a>, <a class="el" href="classcpp__freertos_1_1_semaphore.html#a524cc7b70300cd28d223bfdf9034c09f">cpp_freertos::Semaphore</a>, <a class="el" href="classcpp__freertos_1_1_thread.html#ab3983387b061df971b5571aa1b40c474">cpp_freertos::Thread</a>, <a class="el" href="classcpp__freertos_1_1_timer.html#a4be351aa40d79dd4be252d363cdc0f78">cpp_freertos::Timer</a></li>
 <li>handle_call&#160;:&#160;<a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a4b036fc380d9d6f4e56ca669c1ef0335">TU_ATTR_PACKED</a></li>
 <li>handlerId&#160;:&#160;<a class="el" href="struct_command_result.html#ab94a427697e5def46a501514b042eeaa">CommandResult</a></li>
 <li>hardfault&#160;:&#160;<a class="el" href="class_motor_simplemotion.html#a974ddc1aa0a71fe635c391eabdf5f053">MotorSimplemotion</a></li>
 <li>hat&#160;:&#160;<a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#afc7db7fb23671990522be322b21ffce4">TU_ATTR_PACKED</a></li>
-<li>hcan&#160;:&#160;<a class="el" href="class_c_a_n_port.html#a101c18fab15f6f8b21f6a1516dd98a56">CANPort</a></li>
-<li>HCCHAR&#160;:&#160;<a class="el" href="struct_u_s_b___o_t_g___host_channel_type_def.html#a6f1e046a654010fb0da5eec942fb9a8d">USB_OTG_HostChannelTypeDef</a></li>
-<li>HCDMA&#160;:&#160;<a class="el" href="struct_u_s_b___o_t_g___host_channel_type_def.html#a4204a2dcbc14fb11d371fc45b9f3170f">USB_OTG_HostChannelTypeDef</a></li>
-<li>HCFG&#160;:&#160;<a class="el" href="struct_u_s_b___o_t_g___host_type_def.html#ab44a72e139c005445aac54e866f7750f">USB_OTG_HostTypeDef</a></li>
+<li>hb_rx_en&#160;:&#160;<a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a25c94b2bbea4a5d5de87bce5d1b8794f">TU_ATTR_PACKED</a></li>
+<li>hb_tx_en&#160;:&#160;<a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a47294c126bbd5311cbd763ecb0daf052">TU_ATTR_PACKED</a></li>
+<li>hbst_len&#160;:&#160;<a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#ae36f7ae4d337c7b8c76d9a0bcbf6ba23">TU_ATTR_PACKED</a></li>
+<li>hc_functional_state&#160;:&#160;<a class="el" href="structohci__registers__t.html#ad0640f9d2a71fc8c3f4db6ae7a4de0a6">ohci_registers_t</a></li>
+<li>hc_halted&#160;:&#160;<a class="el" href="structehci__registers__t.html#a9981adb544611207fe43391ce3f667ab">ehci_registers_t</a></li>
+<li>hcan&#160;:&#160;<a class="el" href="class_c_a_n_port__2_b.html#a2eac6d1ac299bc56172c040d5b05fd72">CANPort_2B</a></li>
+<li>hcca&#160;:&#160;<a class="el" href="structohci__registers__t.html#ac032f8d21d514c4ca4e4b54841a285b1">ohci_registers_t</a></li>
+<li>hcchar&#160;:&#160;<a class="el" href="structdwc2__channel__t.html#af3ad01bea2f46081a03efd5847d70fde">dwc2_channel_t</a>, <a class="el" href="structhcd__endpoint__t.html#a583611ee8cdb1f0f1fd3abc26c045aab">hcd_endpoint_t</a></li>
+<li>hcchar_bm&#160;:&#160;<a class="el" href="structdwc2__channel__t.html#a8b36dba4d5e162d16c39b9a847bd3bee">dwc2_channel_t</a>, <a class="el" href="structhcd__endpoint__t.html#a860192c0d0af186c0bf1b9cc78674f56">hcd_endpoint_t</a></li>
+<li>HCCPARAMS&#160;:&#160;<a class="el" href="structci__hs__regs__t.html#aa35892952d74cdf8fafd5441f31292d3">ci_hs_regs_t</a></li>
+<li>hccparams&#160;:&#160;<a class="el" href="structehci__cap__registers__t.html#abaf10f1a93238a8bd02c00dfb6aaa218">ehci_cap_registers_t</a></li>
+<li>hccparams_bm&#160;:&#160;<a class="el" href="structehci__cap__registers__t.html#ad2684b0ce92a7384c859362c7e9d6715">ehci_cap_registers_t</a></li>
+<li>hcdma&#160;:&#160;<a class="el" href="structdwc2__channel__t.html#ae7af7bf7e551bb9fd5e0bcbca1d49af9">dwc2_channel_t</a></li>
+<li>hcdmab&#160;:&#160;<a class="el" href="structdwc2__channel__t.html#a84d048de2a4b2e79195968f78c7b7bea">dwc2_channel_t</a></li>
+<li>hcfg&#160;:&#160;<a class="el" href="structdwc2__regs__t.html#a071795d30d76834ebcaf03ff1a5ad2c1">dwc2_regs_t</a></li>
 <li>hci_cmd&#160;:&#160;<a class="el" href="structbtd__interface__t.html#a93dba2531861a8a3c11f85eca0977f30">btd_interface_t</a></li>
-<li>HCINT&#160;:&#160;<a class="el" href="struct_u_s_b___o_t_g___host_channel_type_def.html#a6735bbd8fbc28f897f1b44df95f52873">USB_OTG_HostChannelTypeDef</a></li>
-<li>HCINTMSK&#160;:&#160;<a class="el" href="struct_u_s_b___o_t_g___host_channel_type_def.html#a8edfae19390d323525449d2444e93984">USB_OTG_HostChannelTypeDef</a></li>
-<li>HCSPLT&#160;:&#160;<a class="el" href="struct_u_s_b___o_t_g___host_channel_type_def.html#a23b3abb27cf5acff0edc709c90e2e5cb">USB_OTG_HostChannelTypeDef</a></li>
-<li>HCTSIZ&#160;:&#160;<a class="el" href="struct_u_s_b___o_t_g___host_channel_type_def.html#a14cb8c8dbbafdef182c82c0493ca48ab">USB_OTG_HostChannelTypeDef</a></li>
-<li>head&#160;:&#160;<a class="el" href="struct_ring_buffer.html#a07aac8351c1fd394e8adf6af447490e3">RingBuffer</a></li>
-<li>header&#160;:&#160;<a class="el" href="struct_c_a_n__rx__msg.html#a1de4b39e8a6e5fc402753eb28af81e17">CAN_rx_msg</a>, <a class="el" href="struct_c_a_n__tx__msg.html#a42a9cca998d377254cbc9ffd2618c837">CAN_tx_msg</a>, <a class="el" href="class_c_a_n_port.html#a5d0039ced03b75ee7244ca0d34bc25af">CANPort</a>, <a class="el" href="structecm__notify__struct.html#a398044a44c44b2c43cdb4192ad359632">ecm_notify_struct</a>, <a class="el" href="struct_motor_simplemotion_1_1_sm2_fast_update.html#a465ab1e3cbafcbea134c32f9cf0ff237">MotorSimplemotion::Sm2FastUpdate</a>, <a class="el" href="struct_motor_simplemotion_1_1_sm2_fast_update__reply.html#a794ab8036e41e5dc230e67fefc118b56">MotorSimplemotion::Sm2FastUpdate_reply</a>, <a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#ab1acf148c96a7f1478d2b48005b2255b">TU_ATTR_PACKED</a></li>
+<li>hcint&#160;:&#160;<a class="el" href="structdwc2__channel__t.html#a159ec555e8f30c2b5c1136f733b5846f">dwc2_channel_t</a></li>
+<li>hcintmsk&#160;:&#160;<a class="el" href="structdwc2__channel__t.html#ab16a252b16e20e1d24754e35a41f86d7">dwc2_channel_t</a></li>
+<li>HCIVERSION&#160;:&#160;<a class="el" href="structci__hs__regs__t.html#aecca4850534123c3174d1973e26071b9">ci_hs_regs_t</a></li>
+<li>hciversion&#160;:&#160;<a class="el" href="structehci__cap__registers__t.html#acdec864b5ea18c1dffc6e995391e1dfe">ehci_cap_registers_t</a></li>
+<li>hcsp_portroute&#160;:&#160;<a class="el" href="structehci__cap__registers__t.html#a9f979aa0ec2f9273789b08453abffff0">ehci_cap_registers_t</a></li>
+<li>HCSPARAMS&#160;:&#160;<a class="el" href="structci__hs__regs__t.html#aa77f3c6d939eae8e9b6564bdb8676ce4">ci_hs_regs_t</a></li>
+<li>hcsparams&#160;:&#160;<a class="el" href="structehci__cap__registers__t.html#aebce4f2a8a76c463408b46b46af10234">ehci_cap_registers_t</a></li>
+<li>hcsparams_bm&#160;:&#160;<a class="el" href="structehci__cap__registers__t.html#a78d633c0eec2d384799fc0c0187b7766">ehci_cap_registers_t</a></li>
+<li>hcsplt&#160;:&#160;<a class="el" href="structdwc2__channel__t.html#a42b0e299eee526ad2e0669bd684c31ea">dwc2_channel_t</a>, <a class="el" href="structhcd__endpoint__t.html#a46f1ed31d4baaed82ca7b9734f7e380a">hcd_endpoint_t</a></li>
+<li>hcsplt_bm&#160;:&#160;<a class="el" href="structdwc2__channel__t.html#ab2516575bc06ee08792b21af895d9854">dwc2_channel_t</a>, <a class="el" href="structhcd__endpoint__t.html#a66e54076b4848039004b59739eb25b01">hcd_endpoint_t</a></li>
+<li>hctsiz&#160;:&#160;<a class="el" href="structdwc2__channel__t.html#a959187f115be1ec82afc5e0ba608a3ea">dwc2_channel_t</a></li>
+<li>hctsiz_bm&#160;:&#160;<a class="el" href="structdwc2__channel__t.html#a063d57e3b4369dd637ac5318986f35bb">dwc2_channel_t</a></li>
+<li>head&#160;:&#160;<a class="el" href="struct_ring_buffer.html#a07aac8351c1fd394e8adf6af447490e3">RingBuffer</a>, <a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#ad6692ede8e1bceacba4c9ff0b4a4170c">TU_ATTR_PACKED</a></li>
+<li>header&#160;:&#160;<a class="el" href="struct_c_a_n__rx__msg.html#aa03e64b358abf149ed47eb9bdc02c667">CAN_rx_msg</a>, <a class="el" href="struct_c_a_n__tx__msg.html#a089f46014bef277954d05ba9fd31bcc6">CAN_tx_msg</a>, <a class="el" href="class_c_a_n_port__2_b.html#a07808d915b63070e4221f5aef72ac743">CANPort_2B</a>, <a class="el" href="structecm__notify__struct.html#a398044a44c44b2c43cdb4192ad359632">ecm_notify_struct</a>, <a class="el" href="struct_motor_simplemotion_1_1_sm2_fast_update.html#a465ab1e3cbafcbea134c32f9cf0ff237">MotorSimplemotion::Sm2FastUpdate</a>, <a class="el" href="struct_motor_simplemotion_1_1_sm2_fast_update__reply.html#a794ab8036e41e5dc230e67fefc118b56">MotorSimplemotion::Sm2FastUpdate_reply</a>, <a class="el" href="structncm__notify__t.html#ad784df38ca58c718a091e6be53317c61">ncm_notify_t</a>, <a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#ab1acf148c96a7f1478d2b48005b2255b">TU_ATTR_PACKED</a></li>
 <li>helpstring&#160;:&#160;<a class="el" href="class_cmd_handler_commanddef.html#a1fc8b537cf7bf38e55170afca2af9536">CmdHandlerCommanddef</a></li>
-<li>HFIR&#160;:&#160;<a class="el" href="struct_u_s_b___o_t_g___host_type_def.html#a509fd299e7540892623954ea4dc1313c">USB_OTG_HostTypeDef</a></li>
-<li>HFNUM&#160;:&#160;<a class="el" href="struct_u_s_b___o_t_g___host_type_def.html#ab4f17f7ef96cf4933e30b1950925c613">USB_OTG_HostTypeDef</a></li>
+<li>hfir&#160;:&#160;<a class="el" href="structdwc2__regs__t.html#a17e11534985e36cc7548a510ace8f7b9">dwc2_regs_t</a></li>
+<li>hflbaddr&#160;:&#160;<a class="el" href="structdwc2__regs__t.html#a0d2c67f01baf24baa74f3d2dcd23a2af">dwc2_regs_t</a></li>
+<li>hfnum&#160;:&#160;<a class="el" href="structdwc2__regs__t.html#a46e23580c4a9a1c8b8cc6e34d322c365">dwc2_regs_t</a></li>
+<li>hfnum_bm&#160;:&#160;<a class="el" href="structdwc2__regs__t.html#a0122e49dba6daf9bba4280a5d1be6913">dwc2_regs_t</a></li>
 <li>hi2c&#160;:&#160;<a class="el" href="class_i2_c_port.html#a5601fdc48b774f5a3f0073e5bc823ab4">I2CPort</a></li>
+<li>hibernation&#160;:&#160;<a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#af4b5b96ee2cbbefed7d2bb9150c571a0">TU_ATTR_PACKED</a></li>
 <li>hid_desc&#160;:&#160;<a class="el" href="class_usb_hid_handler.html#abdde7385ad6bf0a906dbeeba9d4b3ba9">UsbHidHandler</a></li>
 <li>hid_descriptor&#160;:&#160;<a class="el" href="structhidd__interface__t.html#a5e39f081ca6a4c3e8672b31a1d412b62">hidd_interface_t</a></li>
 <li>hidCommands&#160;:&#160;<a class="el" href="class_f_f_b_h_i_d_main.html#ae98362955d482ea648b63e1e2e1d584d">FFBHIDMain</a></li>
+<li>hien&#160;:&#160;<a class="el" href="structmax3421__data__t.html#ab4389e5f5f16fce38e2f4786df5d8484">max3421_data_t</a></li>
 <li>hierarchical_support&#160;:&#160;<a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#ae48e5f7851029335a6d6ed8e49e4f801">TU_ATTR_PACKED</a></li>
 <li>high_speed&#160;:&#160;<a class="el" href="structhub__port__status__response__t.html#af30806a710844e614298b7188c31c1fb">hub_port_status_response_t</a></li>
-<li>Hint&#160;:&#160;<a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#ad7c4fa0e75a3fe01c157a3ade6ef37c2">TU_ATTR_PACKED</a></li>
+<li>highspeed_en&#160;:&#160;<a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#afb05e9c72268e460b1321e6432ee3849">TU_ATTR_PACKED</a></li>
+<li>highspeed_mode&#160;:&#160;<a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a852cf3c98f0f51ddc25fa5ad03f59732">TU_ATTR_PACKED</a></li>
+<li>Hint&#160;:&#160;<a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a521e53c38134459f8fb071fe6b0c0674">TU_ATTR_PACKED</a></li>
+<li>HIRD&#160;:&#160;<a class="el" href="struct__ccrx__evenaccess.html#aa1f466f4b3bf5b7b1303072daacc3352">_ccrx_evenaccess</a></li>
+<li>HIRDMON&#160;:&#160;<a class="el" href="struct__ccrx__evenaccess.html#a3bac62104cea5f73f7acdf0083ac0150">_ccrx_evenaccess</a></li>
+<li>HIRDTHR&#160;:&#160;<a class="el" href="struct__ccrx__evenaccess.html#ad47fb6bde2ed939d324779522b47ab9d">_ccrx_evenaccess</a></li>
+<li>hirq&#160;:&#160;<a class="el" href="structmax3421__data__t.html#a4a233ee20edb5b3725701ed85d38d013">max3421_data_t</a></li>
 <li>hithresh&#160;:&#160;<a class="el" href="class_a_d_s111_x.html#af1c7ebb74b1fc015430ad8f11c2ef3a1">ADS111X</a></li>
-<li>HNPTXSTS&#160;:&#160;<a class="el" href="struct_u_s_b___o_t_g___global_type_def.html#a99c998f37e7a88a26f22defb10a1e83a">USB_OTG_GlobalTypeDef</a></li>
-<li>HPTXFSIZ&#160;:&#160;<a class="el" href="struct_u_s_b___o_t_g___global_type_def.html#ad50445f076f99e6b3d0cfb2643f40fac">USB_OTG_GlobalTypeDef</a></li>
-<li>HPTXSTS&#160;:&#160;<a class="el" href="struct_u_s_b___o_t_g___host_type_def.html#af095d2e3da9e07f63ed7da99276eaaca">USB_OTG_HostTypeDef</a></li>
+<li>HL1CTRL1&#160;:&#160;<a class="el" href="struct__ccrx__evenaccess.html#a19c8f1aa980aaa1b695244b01434ce61">_ccrx_evenaccess</a></li>
+<li>HL1CTRL1_b&#160;:&#160;<a class="el" href="struct__ccrx__evenaccess.html#a04bd8c81433cadef9bc271f4661f1fb6">_ccrx_evenaccess</a></li>
+<li>HL1CTRL2&#160;:&#160;<a class="el" href="struct__ccrx__evenaccess.html#a887c360f1ae98e19d04492fb4618c67a">_ccrx_evenaccess</a></li>
+<li>HL1CTRL2_b&#160;:&#160;<a class="el" href="struct__ccrx__evenaccess.html#a1c2fbb50bea3de540c97ff99fc3b03d2">_ccrx_evenaccess</a></li>
+<li>hng_det&#160;:&#160;<a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#abca7e832b9805da3bdf4f9223addfd22">TU_ATTR_PACKED</a></li>
+<li>hng_scs&#160;:&#160;<a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#aa74a53bb351190bd902adc9ae59e4d72">TU_ATTR_PACKED</a></li>
+<li>hnp_capable&#160;:&#160;<a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#ab4d9b2722605cf61453d9e64a7091b43">TU_ATTR_PACKED</a></li>
+<li>hnp_rq&#160;:&#160;<a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a6389e0402201ff04ae9edd0c88f8438d">TU_ATTR_PACKED</a></li>
+<li>HNPBTOA&#160;:&#160;<a class="el" href="struct__ccrx__evenaccess.html#aae22d503d20bc6846818c5463fd5ba18">_ccrx_evenaccess</a></li>
+<li>hnptxsts&#160;:&#160;<a class="el" href="structdwc2__regs__t.html#a8022cf538a089e1b75715a51ce01fad2">dwc2_regs_t</a></li>
+<li>hnptxsts_bm&#160;:&#160;<a class="el" href="structdwc2__regs__t.html#a9f8d42ea6639c668dc77a8705c47059c">dwc2_regs_t</a></li>
+<li>hns_status_change&#160;:&#160;<a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a86a8dc257f989446dcb81ea040071835">TU_ATTR_PACKED</a></li>
+<li>host_set_hnp_en&#160;:&#160;<a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#af0aa189505320736ec110f1e3e6e0d4c">TU_ATTR_PACKED</a></li>
+<li>hprt&#160;:&#160;<a class="el" href="structdwc2__regs__t.html#a5f23329b5b82a8d5bf53e507390a52f1">dwc2_regs_t</a></li>
+<li>hprt_bm&#160;:&#160;<a class="el" href="structdwc2__regs__t.html#a34269b8666d6e20d0878747b8f2f8e2c">dwc2_regs_t</a></li>
+<li>hptxfsiz&#160;:&#160;<a class="el" href="structdwc2__regs__t.html#a3223581a5043bde56c641a20e39d45ee">dwc2_regs_t</a></li>
+<li>hptxsts&#160;:&#160;<a class="el" href="structdwc2__regs__t.html#a7ea40adab7e108cf219c013ede80c6d9">dwc2_regs_t</a></li>
+<li>hptxsts_bm&#160;:&#160;<a class="el" href="structdwc2__regs__t.html#a088d65c969d941efe9aea34b83cd73a4">dwc2_regs_t</a></li>
+<li>hs_eof1&#160;:&#160;<a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a6dc5ba23e87c064b1e2fffe045d86215">TU_ATTR_PACKED</a></li>
+<li>hs_phy_type&#160;:&#160;<a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#af61c9cef70989d26269a9974533abc90">TU_ATTR_PACKED</a></li>
+<li>HS_PHYC_LDO&#160;:&#160;<a class="el" href="struct_h_s___p_h_y_c___global_type_def.html#a3056ebec0d4a06a2f8db6e6fabc06641">HS_PHYC_GlobalTypeDef</a></li>
+<li>HS_PHYC_PLL&#160;:&#160;<a class="el" href="struct_h_s___p_h_y_c___global_type_def.html#a403e4c900d4b0315dd86b2ab5905195f">HS_PHYC_GlobalTypeDef</a></li>
+<li>HS_PHYC_TUNE&#160;:&#160;<a class="el" href="struct_h_s___p_h_y_c___global_type_def.html#a8dd5aa2ba6384b1ebb55a6c08e4c04b1">HS_PHYC_GlobalTypeDef</a></li>
+<li>hs_timeout_adder&#160;:&#160;<a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a7d0cfc4cb38406e107823c654ac3e1db">TU_ATTR_PACKED</a></li>
+<li>hs_to_utm&#160;:&#160;<a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#af8712c60c508eede52b35a66bea899e5">TU_ATTR_PACKED</a></li>
+<li>HSE&#160;:&#160;<a class="el" href="struct__ccrx__evenaccess.html#a3c9a210ce2d44757f7d4c96b01d2e861">_ccrx_evenaccess</a></li>
+<li>HSEB&#160;:&#160;<a class="el" href="struct__ccrx__evenaccess.html#ad1a74e8ff3b9607f417e3e91934e102d">_ccrx_evenaccess</a></li>
+<li>HSIUP&#160;:&#160;<a class="el" href="struct__ccrx__evenaccess.html#ad6289e21a86bcae6bc78c0325ceb8fa9">_ccrx_evenaccess</a></li>
 <li>hspi&#160;:&#160;<a class="el" href="class_s_p_i_port.html#a1884a8265d1b1d113b2c0c9a33c72584">SPIPort</a></li>
+<li>HSRXENMO&#160;:&#160;<a class="el" href="struct__ccrx__evenaccess.html#a1afce9cc1f0e672fbf296735b57d8787">_ccrx_evenaccess</a></li>
+<li>HSTADDR1&#160;:&#160;<a class="el" href="structdcd__registers__t.html#a387ef1980e6c0bd6d46b43b3441ab8e3">dcd_registers_t</a></li>
+<li>HSTADDR2&#160;:&#160;<a class="el" href="structdcd__registers__t.html#adff0eefdfaa4709d2950be8eed8f43a0">dcd_registers_t</a></li>
+<li>HSTADDR3&#160;:&#160;<a class="el" href="structdcd__registers__t.html#aecd61bdd57f6f56b9040a74c8fe0acbc">dcd_registers_t</a></li>
+<li>HSTCTRL&#160;:&#160;<a class="el" href="structdcd__registers__t.html#aa283756cd976150a063876e2a8a793ef">dcd_registers_t</a></li>
+<li>HSTDMA&#160;:&#160;<a class="el" href="structdcd__registers__t.html#a0f601ccfbe574e0ca1dc97f536cafb8f">dcd_registers_t</a></li>
+<li>HSTDMAADDRESS&#160;:&#160;<a class="el" href="structhstdma__t.html#a54b8c4f1665a3023f98588e4b09c04ac">hstdma_t</a></li>
+<li>HSTDMACONTROL&#160;:&#160;<a class="el" href="structhstdma__t.html#af485d828b523066f25d2b671f4330795">hstdma_t</a></li>
+<li>HSTDMANXTDSC&#160;:&#160;<a class="el" href="structhstdma__t.html#a2892cfe3e25822963722b322910b3d46">hstdma_t</a></li>
+<li>HSTDMASTATUS&#160;:&#160;<a class="el" href="structhstdma__t.html#a4a200d7b5703d8432ed952fd2ab28dbc">hstdma_t</a></li>
+<li>HSTFNUM&#160;:&#160;<a class="el" href="structdcd__registers__t.html#a56ff970be3ecbce0f9e267541449b2f4">dcd_registers_t</a></li>
+<li>HSTICR&#160;:&#160;<a class="el" href="structdcd__registers__t.html#a4b85b81b3604ee8699264756adddb8d4">dcd_registers_t</a></li>
+<li>HSTIDR&#160;:&#160;<a class="el" href="structdcd__registers__t.html#a52a17e5c5a534cdc8e5a9f2c2a7e8f43">dcd_registers_t</a></li>
+<li>HSTIER&#160;:&#160;<a class="el" href="structdcd__registers__t.html#a86ffc01db7b2173a33cba8b4d796990e">dcd_registers_t</a></li>
+<li>HSTIFR&#160;:&#160;<a class="el" href="structdcd__registers__t.html#a7cdd526f7cb84747fabef8bc77dc43d3">dcd_registers_t</a></li>
+<li>HSTIMR&#160;:&#160;<a class="el" href="structdcd__registers__t.html#ace1e428a27784c2c4e5b79425c4ea22a">dcd_registers_t</a></li>
+<li>HSTISR&#160;:&#160;<a class="el" href="structdcd__registers__t.html#ae4942c1fb0917c46839c30ed7fc95e6d">dcd_registers_t</a></li>
+<li>HSTPIP&#160;:&#160;<a class="el" href="structdcd__registers__t.html#a88e965009be752aa3d2711b2001f2353">dcd_registers_t</a></li>
+<li>HSTPIPCFG&#160;:&#160;<a class="el" href="structdcd__registers__t.html#aab4135f6a9b04ca7b72446360aa9787a">dcd_registers_t</a></li>
+<li>HSTPIPERR&#160;:&#160;<a class="el" href="structdcd__registers__t.html#ad46f7e07854c09a12f6f7ab9de4c5236">dcd_registers_t</a></li>
+<li>HSTPIPICR&#160;:&#160;<a class="el" href="structdcd__registers__t.html#ab48b8e1179ff2b99166df12cf3878407">dcd_registers_t</a></li>
+<li>HSTPIPIDR&#160;:&#160;<a class="el" href="structdcd__registers__t.html#ac321143d7c28ddf4e432c92e1b709a4b">dcd_registers_t</a></li>
+<li>HSTPIPIER&#160;:&#160;<a class="el" href="structdcd__registers__t.html#a872b8d28890de4bdeb770aeefca5be09">dcd_registers_t</a></li>
+<li>HSTPIPIFR&#160;:&#160;<a class="el" href="structdcd__registers__t.html#aad958436d9fe7bfcff7721f7a33b4224">dcd_registers_t</a></li>
+<li>HSTPIPIMR&#160;:&#160;<a class="el" href="structdcd__registers__t.html#a58f03dc78f523d317a993da5e813f553">dcd_registers_t</a></li>
+<li>HSTPIPINRQ&#160;:&#160;<a class="el" href="structdcd__registers__t.html#a85b00d4de891e476cfd27ecc81b36003">dcd_registers_t</a></li>
+<li>HSTPIPISR&#160;:&#160;<a class="el" href="structdcd__registers__t.html#affafeb0500a173abc6633ed84c71a432">dcd_registers_t</a></li>
+<li>HTACT&#160;:&#160;<a class="el" href="struct__ccrx__evenaccess.html#a0fa8fe4e07f947829384eb56e96651a1">_ccrx_evenaccess</a></li>
 <li>htim&#160;:&#160;<a class="el" href="class_encoder_local.html#a8b3c43e615ff71f96771cbde3584e2a4">EncoderLocal</a></li>
 <li>huart&#160;:&#160;<a class="el" href="class_u_a_r_t_port.html#a35dc13980ccd36126820625ea853be97">UARTPort</a></li>
-<li>hub_addr&#160;:&#160;<a class="el" href="structhcd__devtree__info__t.html#a764346a82da56b55cf2cafd1a9c84fb0">hcd_devtree_info_t</a>, <a class="el" href="structhcd__event__t.html#a5b930e759c251e453ffc467386bc0641">hcd_event_t</a>, <a class="el" href="structusbh__dev0__t.html#a3bf98b3c04a6f1a24fb6ac93c909da5d">usbh_dev0_t</a>, <a class="el" href="structusbh__device__t.html#aff4c319439d17d6861501a95eda35d2b">usbh_device_t</a></li>
-<li>hub_port&#160;:&#160;<a class="el" href="structhcd__devtree__info__t.html#a39d0711e87a23235bb08166fca601e13">hcd_devtree_info_t</a>, <a class="el" href="structhcd__event__t.html#a402ed40fc9b86b0510e76d4842eaf6dc">hcd_event_t</a>, <a class="el" href="structusbh__dev0__t.html#ae7506ae404aff00947a6a77de9904452">usbh_dev0_t</a>, <a class="el" href="structusbh__device__t.html#adc65ad567f363e65563059a701cbf8ce">usbh_device_t</a></li>
+<li>hub_addr&#160;:&#160;<a class="el" href="structhcd__devtree__info__t.html#a764346a82da56b55cf2cafd1a9c84fb0">hcd_devtree_info_t</a>, <a class="el" href="structhcd__event__t.html#a5b930e759c251e453ffc467386bc0641">hcd_event_t</a>, <a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a5b7c20685a689da134522785349c3cef">TU_ATTR_PACKED</a>, <a class="el" href="structusbh__dev0__t.html#a3bf98b3c04a6f1a24fb6ac93c909da5d">usbh_dev0_t</a>, <a class="el" href="structusbh__device__t.html#aff4c319439d17d6861501a95eda35d2b">usbh_device_t</a></li>
+<li>hub_port&#160;:&#160;<a class="el" href="structhcd__devtree__info__t.html#a39d0711e87a23235bb08166fca601e13">hcd_devtree_info_t</a>, <a class="el" href="structhcd__event__t.html#a402ed40fc9b86b0510e76d4842eaf6dc">hcd_event_t</a>, <a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#ac83047a35506ed6e213f3ecb67557bb5">TU_ATTR_PACKED</a>, <a class="el" href="structusbh__dev0__t.html#ae7506ae404aff00947a6a77de9904452">usbh_dev0_t</a>, <a class="el" href="structusbh__device__t.html#adc65ad567f363e65563059a701cbf8ce">usbh_device_t</a></li>
+<li>hub_status&#160;:&#160;<a class="el" href="structhub__interface__t.html#aec0ba56af51e4364976ad71261580d1d">hub_interface_t</a></li>
+<li>HUBPORT&#160;:&#160;<a class="el" href="struct__ccrx__evenaccess.html#ad49774951a30b1f474f39b617292d7a8">_ccrx_evenaccess</a></li>
+<li>hw_data_buf&#160;:&#160;<a class="el" href="structhw__endpoint.html#a61ab124bf9a6cde1b1fb1e6943daff89">hw_endpoint</a></li>
 <li>hwconf&#160;:&#160;<a class="el" href="struct_t_m_c4671_main_config.html#a6ed867e2405bb2091e9a4c5bd7a32eb9">TMC4671MainConfig</a></li>
+<li>HWUPM&#160;:&#160;<a class="el" href="struct__ccrx__evenaccess.html#ae5c561562f4bfcf41e507c70a807b9b0">_ccrx_evenaccess</a></li>
+<li>hwvers&#160;:&#160;<a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#aaaca6ddf2dabbef9f9a1635c6505a1bb">TU_ATTR_PACKED</a></li>
+<li>hwvers_bit&#160;:&#160;<a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a40391aef29eb652bf3630e9f0a8cbcd1">TU_ATTR_PACKED</a></li>
 <li>hwVersion&#160;:&#160;<a class="el" href="struct_t_m_c4671_hardware_type_conf.html#abf7034af3f8cc520a81922b183d4436c">TMC4671HardwareTypeConf</a></li>
+<li>hxfr&#160;:&#160;<a class="el" href="structmax3421__data__t.html#a74a76bfcc12d384654a115246e22d57f">max3421_data_t</a>, <a class="el" href="structmax3421__ep__t.html#a675a7ca3700958f339aa42056817dc41">max3421_ep_t</a></li>
+<li>hxfr_bm&#160;:&#160;<a class="el" href="structmax3421__data__t.html#a4401e2f2427962f10752f943cbeefae4">max3421_data_t</a>, <a class="el" href="structmax3421__ep__t.html#ab2ac0e46f3575f3cdbf0566269a2465f">max3421_ep_t</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

@@ -95,44 +95,44 @@ $(document).ready(function(){initNavTree('struct_c_a_n__tx__msg.html',''); initR
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:ab56d8852f46ea7eb55ba748ddfc3a683"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_c_a_n__tx__msg.html#ab56d8852f46ea7eb55ba748ddfc3a683">data</a> [8] = {0}</td></tr>
-<tr class="separator:ab56d8852f46ea7eb55ba748ddfc3a683"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a42a9cca998d377254cbc9ffd2618c837"><td class="memItemLeft" align="right" valign="top">CAN_TxHeaderTypeDef&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_c_a_n__tx__msg.html#a42a9cca998d377254cbc9ffd2618c837">header</a> = {0,0,0,CAN_RTR_DATA,8,(FunctionalState)0}</td></tr>
-<tr class="separator:a42a9cca998d377254cbc9ffd2618c837"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48dc6ac6f12176950e68aad5456099e4"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_c_a_n__tx__msg.html#a48dc6ac6f12176950e68aad5456099e4">data</a> [CAN_MSGBUFSIZE] = {0}</td></tr>
+<tr class="separator:a48dc6ac6f12176950e68aad5456099e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a089f46014bef277954d05ba9fd31bcc6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_c_a_n__msg__header__tx.html">CAN_msg_header_tx</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_c_a_n__tx__msg.html#a089f46014bef277954d05ba9fd31bcc6">header</a></td></tr>
+<tr class="separator:a089f46014bef277954d05ba9fd31bcc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00025">25</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00089">89</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
-<a id="ab56d8852f46ea7eb55ba748ddfc3a683" name="ab56d8852f46ea7eb55ba748ddfc3a683"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab56d8852f46ea7eb55ba748ddfc3a683">&#9670;&nbsp;</a></span>data</h2>
+<a id="a48dc6ac6f12176950e68aad5456099e4" name="a48dc6ac6f12176950e68aad5456099e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a48dc6ac6f12176950e68aad5456099e4">&#9670;&nbsp;</a></span>data</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint8_t CAN_tx_msg::data[8] = {0}</td>
+          <td class="memname">uint8_t CAN_tx_msg::data[CAN_MSGBUFSIZE] = {0}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00026">26</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00090">90</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
 
 </div>
 </div>
-<a id="a42a9cca998d377254cbc9ffd2618c837" name="a42a9cca998d377254cbc9ffd2618c837"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a42a9cca998d377254cbc9ffd2618c837">&#9670;&nbsp;</a></span>header</h2>
+<a id="a089f46014bef277954d05ba9fd31bcc6" name="a089f46014bef277954d05ba9fd31bcc6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a089f46014bef277954d05ba9fd31bcc6">&#9670;&nbsp;</a></span>header</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">CAN_TxHeaderTypeDef CAN_tx_msg::header = {0,0,0,CAN_RTR_DATA,8,(FunctionalState)0}</td>
+          <td class="memname"><a class="el" href="struct_c_a_n__msg__header__tx.html">CAN_msg_header_tx</a> CAN_tx_msg::header</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00027">27</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00092">92</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
 
 </div>
 </div>

@@ -1,9 +1,28 @@
 var structxfer__ctl__t =
 [
-    [ "buffer", "structxfer__ctl__t.html#ac1572cf519977050a46fffd18ecc2629", null ],
-    [ "max_packet_size", "structxfer__ctl__t.html#a57727c184084b8c5bb175cfe7220b51f", null ],
-    [ "pma_alloc_size", "structxfer__ctl__t.html#abd54773d2c9d9421c13c50495fbb03bb", null ],
-    [ "pma_ptr", "structxfer__ctl__t.html#ac0918127e2c7daf9f89ad13b4ff91bb1", null ],
+    [ "buffer", "structxfer__ctl__t.html#afa29332b805e4c6fab9d402d415449f3", null ],
+    [ "data1", "structxfer__ctl__t.html#a602db07d75154eaf4b7f0afc00e5e5be", null ],
+    [ "data_ptr", "structxfer__ctl__t.html#a1c773231a66950f583c8ee1e0dc2213d", null ],
+    [ "dma_requested", "structxfer__ctl__t.html#ae04a77bccb3817996fe49a8558e447f4", null ],
+    [ "ep_addr", "structxfer__ctl__t.html#ab1be027510c04b2b20294f72bf15ae34", null ],
+    [ "ep_idx", "structxfer__ctl__t.html#afa0e54dcb3bc56a79b874085fb414265", null ],
+    [ "ff", "structxfer__ctl__t.html#aa6faf24da8566e7d7502da7e76a581d2", null ],
+    [ "fifo", "structxfer__ctl__t.html#a095ae94f932d16ea278ddba721db078f", null ],
+    [ "fifo_size", "structxfer__ctl__t.html#af9c8c4fc09f577b80d72d1db8f31a49c", null ],
+    [ "in_remaining_bytes", "structxfer__ctl__t.html#aa00a75604c67e858da15335081a1ae54", null ],
+    [ "interval", "structxfer__ctl__t.html#a6c99d2ec0c6a77ff89267bd0a42356dd", null ],
+    [ "is_iso", "structxfer__ctl__t.html#adab9990474c38dbd7db3aa8de45f7cc4", null ],
+    [ "is_last_packet", "structxfer__ctl__t.html#a5d78f30944cc186adcc9da244f4d8a7d", null ],
+    [ "iso", "structxfer__ctl__t.html#af75604e397f5ccded33d385fcba7b2bb", null ],
+    [ "iso_in_sending", "structxfer__ctl__t.html#a7f42c2528ba22a2d2a9e73d5da8fe485", null ],
+    [ "last_packet_size", "structxfer__ctl__t.html#a072c1482d5cab96c58f96fa68d44cd37", null ],
+    [ "max_packet_size", "structxfer__ctl__t.html#ad55bd8442978bd3ae25e477abe5afd83", null ],
+    [ "max_size", "structxfer__ctl__t.html#a380d9d31e9431d169c1bc170321a7ad8", null ],
+    [ "out_bytes_so_far", "structxfer__ctl__t.html#a7e2e65369d8f375cf646eba1d2b6d7e0", null ],
     [ "queued_len", "structxfer__ctl__t.html#a4114fd57ccb3414a1e512cfe467dc920", null ],
-    [ "total_len", "structxfer__ctl__t.html#a77b3c6fef265b24a3dcc31f6c1c7a0c8", null ]
+    [ "short_packet", "structxfer__ctl__t.html#a8552da7b1156a9e0d8729a8db44792de", null ],
+    [ "stall", "structxfer__ctl__t.html#af08b91b7f9ce29d2616626c733d8130c", null ],
+    [ "total_bytes", "structxfer__ctl__t.html#a5ad10c10d03a6f5004025bab91dde3ac", null ],
+    [ "total_len", "structxfer__ctl__t.html#a77b3c6fef265b24a3dcc31f6c1c7a0c8", null ],
+    [ "transferred", "structxfer__ctl__t.html#a52511ce01218d2b86f7d66f96970b742", null ]
 ];

@@ -3,7 +3,7 @@ var searchData=
   ['ads111x_5fanalogsource_5fcommands_0',['ADS111X_AnalogSource_commands',['../class_a_d_s111_x___analog_source.html#a490bc0d1001e76501ad1a83c6a9d776c',1,'ADS111X_AnalogSource']]],
   ['ads111x_5fanalogsource_5fstate_1',['ADS111X_AnalogSource_state',['../class_a_d_s111_x___analog_source.html#acc763a68b2c4b26af2b09ca20690676d',1,'ADS111X_AnalogSource']]],
   ['analogaxisprocessing_5fcommands_2',['AnalogAxisProcessing_commands',['../class_analog_axis_processing.html#ae42fdc69ac6559919a33cf1f419a1565',1,'AnalogAxisProcessing']]],
-  ['app_5fsubclass_5ftype_5ft_3',['app_subclass_type_t',['../group___u_s_b_def___type.html#gafcb8687b2ccbc3b5c207701a15568c18',1,'tusb_types.h']]],
+  ['app_5fsubclass_5ftype_5ft_3',['app_subclass_type_t',['../tusb__types_8h.html#afcb8687b2ccbc3b5c207701a15568c18',1,'tusb_types.h']]],
   ['audio_5fac3_5fdecoder_5fcontrol_5fselector_5ft_4',['audio_AC3_decoder_control_selector_t',['../group___class_driver___audio.html#ga1ff3afc97c965e16cd012337bf52b1c4',1,'audio.h']]],
   ['audio_5faudiostreaming_5finterface_5fcontrol_5fselector_5ft_5',['audio_audiostreaming_interface_control_selector_t',['../group___class_driver___audio.html#ga83d68d4301df669d371ddd8525431278',1,'audio.h']]],
   ['audio_5fchannel_5fconfig_5ft_6',['audio_channel_config_t',['../group___class_driver___audio.html#gae37557c5995a3b95d32b8919d38c7237',1,'audio.h']]],

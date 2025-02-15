@@ -101,49 +101,55 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ae877b140d54118e337eaf9d46a364361"><td class="memItemLeft" align="right" valign="top">CFG_TUSB_MEM_SECTION&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hub_8c.html#ae877b140d54118e337eaf9d46a364361">TU_ATTR_ALIGNED</a> (4)</td></tr>
-<tr class="separator:ae877b140d54118e337eaf9d46a364361"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga69e9606b3d30c89152c5e09aede419ba"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___class_driver___hub.html#ga69e9606b3d30c89152c5e09aede419ba">hub_port_clear_feature</a> (uint8_t hub_addr, uint8_t hub_port, uint8_t feature, tuh_control_complete_cb_t complete_cb)</td></tr>
-<tr class="separator:ga69e9606b3d30c89152c5e09aede419ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gafa4d5ade3194b1711bcb0bc2facbd447"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___class_driver___hub.html#gafa4d5ade3194b1711bcb0bc2facbd447">hub_port_set_feature</a> (uint8_t hub_addr, uint8_t hub_port, uint8_t feature, tuh_control_complete_cb_t complete_cb)</td></tr>
-<tr class="separator:gafa4d5ade3194b1711bcb0bc2facbd447"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac2857fdae6a808e974b601e665b0bca5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___class_driver___hub.html#gac2857fdae6a808e974b601e665b0bca5">hub_port_reset</a> (uint8_t hub_addr, uint8_t hub_port, tuh_control_complete_cb_t complete_cb)</td></tr>
-<tr class="separator:gac2857fdae6a808e974b601e665b0bca5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gabfc161145fbaabd251c8d705f2ece0ba"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___class_driver___hub.html#gabfc161145fbaabd251c8d705f2ece0ba">hub_port_get_status</a> (uint8_t hub_addr, uint8_t hub_port, void *resp, tuh_control_complete_cb_t complete_cb)</td></tr>
-<tr class="separator:gabfc161145fbaabd251c8d705f2ece0ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa95d3f2f2a0b0b6e1fec2788482ccf05"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___class_driver___hub.html#gaa95d3f2f2a0b0b6e1fec2788482ccf05">hub_init</a> (void)</td></tr>
-<tr class="separator:gaa95d3f2f2a0b0b6e1fec2788482ccf05"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga1dd2487a962064d886fb69ef9a7ab9f2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___class_driver___hub.html#ga1dd2487a962064d886fb69ef9a7ab9f2">hub_open</a> (uint8_t rhport, uint8_t dev_addr, <a class="el" href="group___u_s_b_def___type.html#gac4415f9c56f80b658137e35c14b58096">tusb_desc_interface_t</a> const *itf_desc, uint16_t max_len)</td></tr>
+<tr class="memitem:a854481cddbfa65a3381ccc304af11591"><td class="memItemLeft" align="right" valign="top">static TU_ATTR_ALWAYS_INLINE <a class="el" href="structhub__interface__t.html">hub_interface_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hub_8c.html#a854481cddbfa65a3381ccc304af11591">get_itf</a> (uint8_t <a class="el" href="dcd__pic32mz_8c.html#a1997a5306d6d04a9ce867303d1a6d9e1">dev_addr</a>)</td></tr>
+<tr class="separator:a854481cddbfa65a3381ccc304af11591"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga444d833546684e754f27b97e686e2f97"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___class_driver___hub.html#ga444d833546684e754f27b97e686e2f97">hub_port_clear_feature</a> (uint8_t hub_addr, uint8_t hub_port, uint8_t feature, <a class="el" href="usbh_8h.html#a6afac62f5a9ed2a11cd2f344dfeb78c9">tuh_xfer_cb_t</a> <a class="el" href="usbh_8c.html#aced436bc81b8106734ed911ab38294bd">complete_cb</a>, uintptr_t <a class="el" href="usbh_8c.html#a8aacece57d8e33f7f2eb9bee4a99d2bf">user_data</a>)</td></tr>
+<tr class="separator:ga444d833546684e754f27b97e686e2f97"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab38214b258b4d4eb23e2982e1bde4b1f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___class_driver___hub.html#gab38214b258b4d4eb23e2982e1bde4b1f">hub_port_set_feature</a> (uint8_t hub_addr, uint8_t hub_port, uint8_t feature, <a class="el" href="usbh_8h.html#a6afac62f5a9ed2a11cd2f344dfeb78c9">tuh_xfer_cb_t</a> <a class="el" href="usbh_8c.html#aced436bc81b8106734ed911ab38294bd">complete_cb</a>, uintptr_t <a class="el" href="usbh_8c.html#a8aacece57d8e33f7f2eb9bee4a99d2bf">user_data</a>)</td></tr>
+<tr class="separator:gab38214b258b4d4eb23e2982e1bde4b1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga03022201e4319a739b489efe027f0bcf"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___class_driver___hub.html#ga03022201e4319a739b489efe027f0bcf">hub_port_get_status</a> (uint8_t hub_addr, uint8_t hub_port, void *resp, <a class="el" href="usbh_8h.html#a6afac62f5a9ed2a11cd2f344dfeb78c9">tuh_xfer_cb_t</a> <a class="el" href="usbh_8c.html#aced436bc81b8106734ed911ab38294bd">complete_cb</a>, uintptr_t <a class="el" href="usbh_8c.html#a8aacece57d8e33f7f2eb9bee4a99d2bf">user_data</a>)</td></tr>
+<tr class="separator:ga03022201e4319a739b489efe027f0bcf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga988f70e9f1b79843cf319a7599e35fc5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___class_driver___hub.html#ga988f70e9f1b79843cf319a7599e35fc5">hub_init</a> (void)</td></tr>
+<tr class="separator:ga988f70e9f1b79843cf319a7599e35fc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga66bf513d96e5f6f59a3f4703361a121f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___class_driver___hub.html#ga66bf513d96e5f6f59a3f4703361a121f">hub_deinit</a> (void)</td></tr>
+<tr class="separator:ga66bf513d96e5f6f59a3f4703361a121f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1dd2487a962064d886fb69ef9a7ab9f2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___class_driver___hub.html#ga1dd2487a962064d886fb69ef9a7ab9f2">hub_open</a> (uint8_t rhport, uint8_t <a class="el" href="dcd__pic32mz_8c.html#a1997a5306d6d04a9ce867303d1a6d9e1">dev_addr</a>, <a class="el" href="tusb__types_8h.html#ac4415f9c56f80b658137e35c14b58096">tusb_desc_interface_t</a> const *itf_desc, uint16_t max_len)</td></tr>
 <tr class="separator:ga1dd2487a962064d886fb69ef9a7ab9f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga1b03ea6225f3dc0e651d7851e0e230a5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___class_driver___hub.html#ga1b03ea6225f3dc0e651d7851e0e230a5">hub_close</a> (uint8_t dev_addr)</td></tr>
+<tr class="memitem:ga1b03ea6225f3dc0e651d7851e0e230a5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___class_driver___hub.html#ga1b03ea6225f3dc0e651d7851e0e230a5">hub_close</a> (uint8_t <a class="el" href="dcd__pic32mz_8c.html#a1997a5306d6d04a9ce867303d1a6d9e1">dev_addr</a>)</td></tr>
 <tr class="separator:ga1b03ea6225f3dc0e651d7851e0e230a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa31fc52733096d5cc6d9790139c89318"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___class_driver___hub.html#gaa31fc52733096d5cc6d9790139c89318">hub_status_pipe_queue</a> (uint8_t dev_addr)</td></tr>
-<tr class="separator:gaa31fc52733096d5cc6d9790139c89318"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1eb651310385651387ee4bccdffc1db6"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hub_8c.html#a1eb651310385651387ee4bccdffc1db6">config_set_port_power</a> (uint8_t dev_addr, <a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *request, <a class="el" href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a> result)</td></tr>
-<tr class="separator:a1eb651310385651387ee4bccdffc1db6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abb3650ac82ee63c51fa8bd8055f0fab8"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hub_8c.html#abb3650ac82ee63c51fa8bd8055f0fab8">config_port_power_complete</a> (uint8_t dev_addr, <a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *request, <a class="el" href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a> result)</td></tr>
-<tr class="separator:abb3650ac82ee63c51fa8bd8055f0fab8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gabea74b5e5819665f051099e3322ae5a9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___class_driver___hub.html#gabea74b5e5819665f051099e3322ae5a9">hub_set_config</a> (uint8_t dev_addr, uint8_t itf_num)</td></tr>
+<tr class="memitem:ga8510defea3a978448834a5020bdacd68"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___class_driver___hub.html#ga8510defea3a978448834a5020bdacd68">hub_edpt_status_xfer</a> (uint8_t <a class="el" href="dcd__pic32mz_8c.html#a1997a5306d6d04a9ce867303d1a6d9e1">dev_addr</a>)</td></tr>
+<tr class="separator:ga8510defea3a978448834a5020bdacd68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c02446250c39d6fa11a3cc73655cac5"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hub_8c.html#a9c02446250c39d6fa11a3cc73655cac5">config_set_port_power</a> (<a class="el" href="usbh_8h.html#a44e03e25e2eb1fd099b08a1e7fef2f89">tuh_xfer_t</a> *<a class="el" href="dcd__ch32__usbfs_8c.html#a9eafbb4eda749d62e013e595ae04f4a0">xfer</a>)</td></tr>
+<tr class="separator:a9c02446250c39d6fa11a3cc73655cac5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57758be14d9545dd6812bfbd840def49"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hub_8c.html#a57758be14d9545dd6812bfbd840def49">config_port_power_complete</a> (<a class="el" href="usbh_8h.html#a44e03e25e2eb1fd099b08a1e7fef2f89">tuh_xfer_t</a> *<a class="el" href="dcd__ch32__usbfs_8c.html#a9eafbb4eda749d62e013e595ae04f4a0">xfer</a>)</td></tr>
+<tr class="separator:a57758be14d9545dd6812bfbd840def49"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabea74b5e5819665f051099e3322ae5a9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___class_driver___hub.html#gabea74b5e5819665f051099e3322ae5a9">hub_set_config</a> (uint8_t <a class="el" href="dcd__pic32mz_8c.html#a1997a5306d6d04a9ce867303d1a6d9e1">dev_addr</a>, uint8_t itf_num)</td></tr>
 <tr class="separator:gabea74b5e5819665f051099e3322ae5a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad3353900dd5abb17daaec7783d6ba401"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hub_8c.html#ad3353900dd5abb17daaec7783d6ba401">connection_get_status_complete</a> (uint8_t dev_addr, <a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *request, <a class="el" href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a> result)</td></tr>
-<tr class="separator:ad3353900dd5abb17daaec7783d6ba401"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec26216ccf48aecc7d675bca9dc67857"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hub_8c.html#aec26216ccf48aecc7d675bca9dc67857">connection_clear_conn_change_complete</a> (uint8_t dev_addr, <a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *request, <a class="el" href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a> result)</td></tr>
-<tr class="separator:aec26216ccf48aecc7d675bca9dc67857"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abcd4e5a4b2369be02072617e947aa645"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hub_8c.html#abcd4e5a4b2369be02072617e947aa645">connection_port_reset_complete</a> (uint8_t dev_addr, <a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *request, <a class="el" href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a> result)</td></tr>
-<tr class="separator:abcd4e5a4b2369be02072617e947aa645"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga78697e4e754fe78972dc163d56422d91"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___class_driver___hub.html#ga78697e4e754fe78972dc163d56422d91">hub_xfer_cb</a> (uint8_t dev_addr, uint8_t ep_addr, <a class="el" href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a> result, uint32_t xferred_bytes)</td></tr>
+<tr class="memitem:a0660254a83343a798244a2ed0fbfddc2"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hub_8c.html#a0660254a83343a798244a2ed0fbfddc2">hub_port_get_status_complete</a> (<a class="el" href="usbh_8h.html#a44e03e25e2eb1fd099b08a1e7fef2f89">tuh_xfer_t</a> *<a class="el" href="dcd__ch32__usbfs_8c.html#a9eafbb4eda749d62e013e595ae04f4a0">xfer</a>)</td></tr>
+<tr class="separator:a0660254a83343a798244a2ed0fbfddc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a645879e868b876a964cd9119cf2a42f8"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hub_8c.html#a645879e868b876a964cd9119cf2a42f8">hub_get_status_complete</a> (<a class="el" href="usbh_8h.html#a44e03e25e2eb1fd099b08a1e7fef2f89">tuh_xfer_t</a> *<a class="el" href="dcd__ch32__usbfs_8c.html#a9eafbb4eda749d62e013e595ae04f4a0">xfer</a>)</td></tr>
+<tr class="separator:a645879e868b876a964cd9119cf2a42f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30c645ffb5869bf03cbc368ae9c38502"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hub_8c.html#a30c645ffb5869bf03cbc368ae9c38502">connection_clear_conn_change_complete</a> (<a class="el" href="usbh_8h.html#a44e03e25e2eb1fd099b08a1e7fef2f89">tuh_xfer_t</a> *<a class="el" href="dcd__ch32__usbfs_8c.html#a9eafbb4eda749d62e013e595ae04f4a0">xfer</a>)</td></tr>
+<tr class="separator:a30c645ffb5869bf03cbc368ae9c38502"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2eb21488624ea165e0f2dfc5a57d9049"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hub_8c.html#a2eb21488624ea165e0f2dfc5a57d9049">connection_port_reset_complete</a> (<a class="el" href="usbh_8h.html#a44e03e25e2eb1fd099b08a1e7fef2f89">tuh_xfer_t</a> *<a class="el" href="dcd__ch32__usbfs_8c.html#a9eafbb4eda749d62e013e595ae04f4a0">xfer</a>)</td></tr>
+<tr class="separator:a2eb21488624ea165e0f2dfc5a57d9049"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga78697e4e754fe78972dc163d56422d91"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___class_driver___hub.html#ga78697e4e754fe78972dc163d56422d91">hub_xfer_cb</a> (uint8_t <a class="el" href="dcd__pic32mz_8c.html#a1997a5306d6d04a9ce867303d1a6d9e1">dev_addr</a>, uint8_t ep_addr, <a class="el" href="tusb__types_8h.html#a6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a> result, uint32_t xferred_bytes)</td></tr>
 <tr class="separator:ga78697e4e754fe78972dc163d56422d91"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e0539d267f1eaeb0748bd92510e2b10"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hub_8c.html#a1e0539d267f1eaeb0748bd92510e2b10">hub_clear_feature_complete_stub</a> (<a class="el" href="usbh_8h.html#a44e03e25e2eb1fd099b08a1e7fef2f89">tuh_xfer_t</a> *<a class="el" href="dcd__ch32__usbfs_8c.html#a9eafbb4eda749d62e013e595ae04f4a0">xfer</a>)</td></tr>
+<tr class="separator:a1e0539d267f1eaeb0748bd92510e2b10"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:afed595dae43bcaccba024e932c0847d3"><td class="memItemLeft" align="right" valign="top">static CFG_TUSB_MEM_SECTION <a class="el" href="structhub__interface__t.html">hub_interface_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hub_8c.html#afed595dae43bcaccba024e932c0847d3">hub_data</a> [CFG_TUH_HUB]</td></tr>
-<tr class="separator:afed595dae43bcaccba024e932c0847d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8993799690cf4625fbcac393ea78de8c"><td class="memItemLeft" align="right" valign="top">static CFG_TUH_MEM_SECTION <a class="el" href="structhub__interface__t.html">hub_interface_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hub_8c.html#a8993799690cf4625fbcac393ea78de8c">hub_data</a> [CFG_TUH_HUB]</td></tr>
+<tr class="separator:a8993799690cf4625fbcac393ea78de8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1b1f80505c0be8f52f40e06b29b166e"><td class="memItemLeft" align="right" valign="top">CFG_TUH_MEM_SECTION static CFG_TUH_MEM_ALIGN uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hub_8c.html#ae1b1f80505c0be8f52f40e06b29b166e">_hub_buffer</a> [sizeof(descriptor_hub_desc_t)]</td></tr>
+<tr class="separator:ae1b1f80505c0be8f52f40e06b29b166e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a953f046f9fc06585f72ab123096f3c48"><td class="memItemLeft" align="right" valign="top">static char const  *const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hub_8c.html#a953f046f9fc06585f72ab123096f3c48">_hub_feature_str</a> []</td></tr>
 <tr class="separator:a953f046f9fc06585f72ab123096f3c48"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="abb3650ac82ee63c51fa8bd8055f0fab8" name="abb3650ac82ee63c51fa8bd8055f0fab8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abb3650ac82ee63c51fa8bd8055f0fab8">&#9670;&nbsp;</a></span>config_port_power_complete()</h2>
+<a id="a57758be14d9545dd6812bfbd840def49" name="a57758be14d9545dd6812bfbd840def49"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a57758be14d9545dd6812bfbd840def49">&#9670;&nbsp;</a></span>config_port_power_complete()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -152,27 +158,11 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static bool config_port_power_complete </td>
+          <td class="memname">static void config_port_power_complete </td>
           <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>dev_addr</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype"><a class="el" href="usbh_8h.html#a44e03e25e2eb1fd099b08a1e7fef2f89">tuh_xfer_t</a> *&#160;</td>
+          <td class="paramname"><em>xfer</em></td><td>)</td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *&#160;</td>
-          <td class="paramname"><em>request</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a>&#160;</td>
-          <td class="paramname"><em>result</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -182,12 +172,12 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hub_8c_source.html#l00249">249</a> of file <a class="el" href="hub_8c_source.html">hub.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hub_8c_source.html#l00302">302</a> of file <a class="el" href="hub_8c_source.html">hub.c</a>.</p>
 
 </div>
 </div>
-<a id="a1eb651310385651387ee4bccdffc1db6" name="a1eb651310385651387ee4bccdffc1db6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1eb651310385651387ee4bccdffc1db6">&#9670;&nbsp;</a></span>config_set_port_power()</h2>
+<a id="a9c02446250c39d6fa11a3cc73655cac5" name="a9c02446250c39d6fa11a3cc73655cac5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c02446250c39d6fa11a3cc73655cac5">&#9670;&nbsp;</a></span>config_set_port_power()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -196,27 +186,11 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static bool config_set_port_power </td>
+          <td class="memname">static void config_set_port_power </td>
           <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>dev_addr</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype"><a class="el" href="usbh_8h.html#a44e03e25e2eb1fd099b08a1e7fef2f89">tuh_xfer_t</a> *&#160;</td>
+          <td class="paramname"><em>xfer</em></td><td>)</td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *&#160;</td>
-          <td class="paramname"><em>request</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a>&#160;</td>
-          <td class="paramname"><em>result</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -226,12 +200,12 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hub_8c_source.html#l00231">231</a> of file <a class="el" href="hub_8c_source.html">hub.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hub_8c_source.html#l00284">284</a> of file <a class="el" href="hub_8c_source.html">hub.c</a>.</p>
 
 </div>
 </div>
-<a id="aec26216ccf48aecc7d675bca9dc67857" name="aec26216ccf48aecc7d675bca9dc67857"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aec26216ccf48aecc7d675bca9dc67857">&#9670;&nbsp;</a></span>connection_clear_conn_change_complete()</h2>
+<a id="a30c645ffb5869bf03cbc368ae9c38502" name="a30c645ffb5869bf03cbc368ae9c38502"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a30c645ffb5869bf03cbc368ae9c38502">&#9670;&nbsp;</a></span>connection_clear_conn_change_complete()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -240,27 +214,11 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static bool connection_clear_conn_change_complete </td>
+          <td class="memname">static void connection_clear_conn_change_complete </td>
           <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>dev_addr</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype"><a class="el" href="usbh_8h.html#a44e03e25e2eb1fd099b08a1e7fef2f89">tuh_xfer_t</a> *&#160;</td>
+          <td class="paramname"><em>xfer</em></td><td>)</td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *&#160;</td>
-          <td class="paramname"><em>request</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a>&#160;</td>
-          <td class="paramname"><em>result</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -270,12 +228,12 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hub_8c_source.html#l00333">333</a> of file <a class="el" href="hub_8c_source.html">hub.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hub_8c_source.html#l00451">451</a> of file <a class="el" href="hub_8c_source.html">hub.c</a>.</p>
 
 </div>
 </div>
-<a id="ad3353900dd5abb17daaec7783d6ba401" name="ad3353900dd5abb17daaec7783d6ba401"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad3353900dd5abb17daaec7783d6ba401">&#9670;&nbsp;</a></span>connection_get_status_complete()</h2>
+<a id="a2eb21488624ea165e0f2dfc5a57d9049" name="a2eb21488624ea165e0f2dfc5a57d9049"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2eb21488624ea165e0f2dfc5a57d9049">&#9670;&nbsp;</a></span>connection_port_reset_complete()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -284,27 +242,11 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static bool connection_get_status_complete </td>
+          <td class="memname">static void connection_port_reset_complete </td>
           <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>dev_addr</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype"><a class="el" href="usbh_8h.html#a44e03e25e2eb1fd099b08a1e7fef2f89">tuh_xfer_t</a> *&#160;</td>
+          <td class="paramname"><em>xfer</em></td><td>)</td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *&#160;</td>
-          <td class="paramname"><em>request</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a>&#160;</td>
-          <td class="paramname"><em>result</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -314,12 +256,12 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hub_8c_source.html#l00305">305</a> of file <a class="el" href="hub_8c_source.html">hub.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hub_8c_source.html#l00481">481</a> of file <a class="el" href="hub_8c_source.html">hub.c</a>.</p>
 
 </div>
 </div>
-<a id="abcd4e5a4b2369be02072617e947aa645" name="abcd4e5a4b2369be02072617e947aa645"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abcd4e5a4b2369be02072617e947aa645">&#9670;&nbsp;</a></span>connection_port_reset_complete()</h2>
+<a id="a854481cddbfa65a3381ccc304af11591" name="a854481cddbfa65a3381ccc304af11591"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a854481cddbfa65a3381ccc304af11591">&#9670;&nbsp;</a></span>get_itf()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -328,27 +270,39 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static bool connection_port_reset_complete </td>
+          <td class="memname">static TU_ATTR_ALWAYS_INLINE <a class="el" href="structhub__interface__t.html">hub_interface_t</a> * get_itf </td>
           <td>(</td>
           <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>dev_addr</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"><em>dev_addr</em></td><td>)</td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *&#160;</td>
-          <td class="paramname"><em>request</em>, </td>
         </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="hub_8c_source.html#l00058">58</a> of file <a class="el" href="hub_8c_source.html">hub.c</a>.</p>
+
+</div>
+</div>
+<a id="a1e0539d267f1eaeb0748bd92510e2b10" name="a1e0539d267f1eaeb0748bd92510e2b10"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e0539d267f1eaeb0748bd92510e2b10">&#9670;&nbsp;</a></span>hub_clear_feature_complete_stub()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
         <tr>
-          <td class="paramkey"></td>
+          <td class="memname">static void hub_clear_feature_complete_stub </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="usbh_8h.html#a44e03e25e2eb1fd099b08a1e7fef2f89">tuh_xfer_t</a> *&#160;</td>
+          <td class="paramname"><em>xfer</em></td><td>)</td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a>&#160;</td>
-          <td class="paramname"><em>result</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -358,31 +312,91 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hub_8c_source.html#l00364">364</a> of file <a class="el" href="hub_8c_source.html">hub.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hub_8c_source.html#l00375">375</a> of file <a class="el" href="hub_8c_source.html">hub.c</a>.</p>
 
 </div>
 </div>
-<a id="ae877b140d54118e337eaf9d46a364361" name="ae877b140d54118e337eaf9d46a364361"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae877b140d54118e337eaf9d46a364361">&#9670;&nbsp;</a></span>TU_ATTR_ALIGNED()</h2>
+<a id="a645879e868b876a964cd9119cf2a42f8" name="a645879e868b876a964cd9119cf2a42f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a645879e868b876a964cd9119cf2a42f8">&#9670;&nbsp;</a></span>hub_get_status_complete()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">CFG_TUSB_MEM_SECTION TU_ATTR_ALIGNED </td>
+          <td class="memname">static void hub_get_status_complete </td>
           <td>(</td>
-          <td class="paramtype">4&#160;</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype"><a class="el" href="usbh_8h.html#a44e03e25e2eb1fd099b08a1e7fef2f89">tuh_xfer_t</a> *&#160;</td>
+          <td class="paramname"><em>xfer</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hub_8c_source.html#l00049">49</a> of file <a class="el" href="hub_8c_source.html">hub.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hub_8c_source.html#l00381">381</a> of file <a class="el" href="hub_8c_source.html">hub.c</a>.</p>
+
+</div>
+</div>
+<a id="a0660254a83343a798244a2ed0fbfddc2" name="a0660254a83343a798244a2ed0fbfddc2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0660254a83343a798244a2ed0fbfddc2">&#9670;&nbsp;</a></span>hub_port_get_status_complete()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void hub_port_get_status_complete </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="usbh_8h.html#a44e03e25e2eb1fd099b08a1e7fef2f89">tuh_xfer_t</a> *&#160;</td>
+          <td class="paramname"><em>xfer</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="hub_8c_source.html#l00404">404</a> of file <a class="el" href="hub_8c_source.html">hub.c</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
+<a id="ae1b1f80505c0be8f52f40e06b29b166e" name="ae1b1f80505c0be8f52f40e06b29b166e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1b1f80505c0be8f52f40e06b29b166e">&#9670;&nbsp;</a></span>_hub_buffer</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">CFG_TUH_MEM_SECTION static CFG_TUH_MEM_ALIGN uint8_t _hub_buffer[sizeof(descriptor_hub_desc_t)]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="hub_8c_source.html#l00055">55</a> of file <a class="el" href="hub_8c_source.html">hub.c</a>.</p>
+
+</div>
+</div>
 <a id="a953f046f9fc06585f72ab123096f3c48" name="a953f046f9fc06585f72ab123096f3c48"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a953f046f9fc06585f72ab123096f3c48">&#9670;&nbsp;</a></span>_hub_feature_str</h2>
 
@@ -404,42 +418,42 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">=</div>
 <div class="line">{</div>
-<div class="line">  [<a class="code hl_enumvalue" href="group___class_driver___hub.html#ggaa156d1cebb38c8a65846c4d9c006012aa6a892f42689a46266dc33f8df5af5d17">HUB_FEATURE_PORT_CONNECTION</a>          ] = <span class="stringliteral">&quot;PORT_CONNECTION&quot;</span>,</div>
-<div class="line">  [<a class="code hl_enumvalue" href="group___class_driver___hub.html#ggaa156d1cebb38c8a65846c4d9c006012aa7e8fd5093d8fe8512912f337f1669d15">HUB_FEATURE_PORT_ENABLE</a>              ] = <span class="stringliteral">&quot;PORT_ENABLE&quot;</span>,</div>
-<div class="line">  [<a class="code hl_enumvalue" href="group___class_driver___hub.html#ggaa156d1cebb38c8a65846c4d9c006012aad089093a052acd0ec2029a93a11b7039">HUB_FEATURE_PORT_SUSPEND</a>             ] = <span class="stringliteral">&quot;PORT_SUSPEND&quot;</span>,</div>
-<div class="line">  [<a class="code hl_enumvalue" href="group___class_driver___hub.html#ggaa156d1cebb38c8a65846c4d9c006012aa13e3d74c35038d47cc3ce2c2839d81c5">HUB_FEATURE_PORT_OVER_CURRENT</a>        ] = <span class="stringliteral">&quot;PORT_OVER_CURRENT&quot;</span>,</div>
-<div class="line">  [<a class="code hl_enumvalue" href="group___class_driver___hub.html#ggaa156d1cebb38c8a65846c4d9c006012aa9945a5b609a0e40a08513f39f872fd7a">HUB_FEATURE_PORT_RESET</a>               ] = <span class="stringliteral">&quot;PORT_RESET&quot;</span>,</div>
-<div class="line">  [<a class="code hl_enumvalue" href="group___class_driver___hub.html#ggaa156d1cebb38c8a65846c4d9c006012aacb4ffc318c9afa718c0a02156c1c02f5">HUB_FEATURE_PORT_POWER</a>               ] = <span class="stringliteral">&quot;PORT_POWER&quot;</span>,</div>
-<div class="line">  [<a class="code hl_enumvalue" href="group___class_driver___hub.html#ggaa156d1cebb38c8a65846c4d9c006012aa554ae639e11a65a6b76f2a2ce6bf5d60">HUB_FEATURE_PORT_LOW_SPEED</a>           ] = <span class="stringliteral">&quot;PORT_LOW_SPEED&quot;</span>,</div>
-<div class="line">  [<a class="code hl_enumvalue" href="group___class_driver___hub.html#ggaa156d1cebb38c8a65846c4d9c006012aa980e4824f7504391e684ad76ab56e4d6">HUB_FEATURE_PORT_CONNECTION_CHANGE</a>   ] = <span class="stringliteral">&quot;PORT_CONNECTION_CHANGE&quot;</span>,</div>
-<div class="line">  [<a class="code hl_enumvalue" href="group___class_driver___hub.html#ggaa156d1cebb38c8a65846c4d9c006012aa8563606b1d50df4b399d80e3cc0f4d4d">HUB_FEATURE_PORT_ENABLE_CHANGE</a>       ] = <span class="stringliteral">&quot;PORT_ENABLE_CHANGE&quot;</span>,</div>
-<div class="line">  [<a class="code hl_enumvalue" href="group___class_driver___hub.html#ggaa156d1cebb38c8a65846c4d9c006012aa1d807f439fef5f4fd27110d2612f4b0a">HUB_FEATURE_PORT_SUSPEND_CHANGE</a>      ] = <span class="stringliteral">&quot;PORT_SUSPEND_CHANGE&quot;</span>,</div>
-<div class="line">  [<a class="code hl_enumvalue" href="group___class_driver___hub.html#ggaa156d1cebb38c8a65846c4d9c006012aafcbc300b19fe125fb56c5a135d553910">HUB_FEATURE_PORT_OVER_CURRENT_CHANGE</a> ] = <span class="stringliteral">&quot;PORT_OVER_CURRENT_CHANGE&quot;</span>,</div>
-<div class="line">  [<a class="code hl_enumvalue" href="group___class_driver___hub.html#ggaa156d1cebb38c8a65846c4d9c006012aa18f841a2cb3de11a3853cfbb30b577f3">HUB_FEATURE_PORT_RESET_CHANGE</a>        ] = <span class="stringliteral">&quot;PORT_RESET_CHANGE&quot;</span>,</div>
-<div class="line">  [<a class="code hl_enumvalue" href="group___class_driver___hub.html#ggaa156d1cebb38c8a65846c4d9c006012aa903412d1f30bfe8bc85fca002bf922db">HUB_FEATURE_PORT_TEST</a>                ] = <span class="stringliteral">&quot;PORT_TEST&quot;</span>,</div>
-<div class="line">  [<a class="code hl_enumvalue" href="group___class_driver___hub.html#ggaa156d1cebb38c8a65846c4d9c006012aafdac6381c84199c983ffea747107b604">HUB_FEATURE_PORT_INDICATOR</a>           ] = <span class="stringliteral">&quot;PORT_INDICATOR&quot;</span>,</div>
+<div class="line">  [<a class="code hl_enumvalue" href="group___class_driver___hub.html#gga4f126a0a9b1d8c6a8f46a051ef8830bba6a892f42689a46266dc33f8df5af5d17">HUB_FEATURE_PORT_CONNECTION</a>          ] = <span class="stringliteral">&quot;PORT_CONNECTION&quot;</span>,</div>
+<div class="line">  [<a class="code hl_enumvalue" href="group___class_driver___hub.html#gga4f126a0a9b1d8c6a8f46a051ef8830bba7e8fd5093d8fe8512912f337f1669d15">HUB_FEATURE_PORT_ENABLE</a>              ] = <span class="stringliteral">&quot;PORT_ENABLE&quot;</span>,</div>
+<div class="line">  [<a class="code hl_enumvalue" href="group___class_driver___hub.html#gga4f126a0a9b1d8c6a8f46a051ef8830bbad089093a052acd0ec2029a93a11b7039">HUB_FEATURE_PORT_SUSPEND</a>             ] = <span class="stringliteral">&quot;PORT_SUSPEND&quot;</span>,</div>
+<div class="line">  [<a class="code hl_enumvalue" href="group___class_driver___hub.html#gga4f126a0a9b1d8c6a8f46a051ef8830bba13e3d74c35038d47cc3ce2c2839d81c5">HUB_FEATURE_PORT_OVER_CURRENT</a>        ] = <span class="stringliteral">&quot;PORT_OVER_CURRENT&quot;</span>,</div>
+<div class="line">  [<a class="code hl_enumvalue" href="group___class_driver___hub.html#gga4f126a0a9b1d8c6a8f46a051ef8830bba9945a5b609a0e40a08513f39f872fd7a">HUB_FEATURE_PORT_RESET</a>               ] = <span class="stringliteral">&quot;PORT_RESET&quot;</span>,</div>
+<div class="line">  [<a class="code hl_enumvalue" href="group___class_driver___hub.html#gga4f126a0a9b1d8c6a8f46a051ef8830bbacb4ffc318c9afa718c0a02156c1c02f5">HUB_FEATURE_PORT_POWER</a>               ] = <span class="stringliteral">&quot;PORT_POWER&quot;</span>,</div>
+<div class="line">  [<a class="code hl_enumvalue" href="group___class_driver___hub.html#gga4f126a0a9b1d8c6a8f46a051ef8830bba554ae639e11a65a6b76f2a2ce6bf5d60">HUB_FEATURE_PORT_LOW_SPEED</a>           ] = <span class="stringliteral">&quot;PORT_LOW_SPEED&quot;</span>,</div>
+<div class="line">  [<a class="code hl_enumvalue" href="group___class_driver___hub.html#gga4f126a0a9b1d8c6a8f46a051ef8830bba980e4824f7504391e684ad76ab56e4d6">HUB_FEATURE_PORT_CONNECTION_CHANGE</a>   ] = <span class="stringliteral">&quot;PORT_CONNECTION_CHANGE&quot;</span>,</div>
+<div class="line">  [<a class="code hl_enumvalue" href="group___class_driver___hub.html#gga4f126a0a9b1d8c6a8f46a051ef8830bba8563606b1d50df4b399d80e3cc0f4d4d">HUB_FEATURE_PORT_ENABLE_CHANGE</a>       ] = <span class="stringliteral">&quot;PORT_ENABLE_CHANGE&quot;</span>,</div>
+<div class="line">  [<a class="code hl_enumvalue" href="group___class_driver___hub.html#gga4f126a0a9b1d8c6a8f46a051ef8830bba1d807f439fef5f4fd27110d2612f4b0a">HUB_FEATURE_PORT_SUSPEND_CHANGE</a>      ] = <span class="stringliteral">&quot;PORT_SUSPEND_CHANGE&quot;</span>,</div>
+<div class="line">  [<a class="code hl_enumvalue" href="group___class_driver___hub.html#gga4f126a0a9b1d8c6a8f46a051ef8830bbafcbc300b19fe125fb56c5a135d553910">HUB_FEATURE_PORT_OVER_CURRENT_CHANGE</a> ] = <span class="stringliteral">&quot;PORT_OVER_CURRENT_CHANGE&quot;</span>,</div>
+<div class="line">  [<a class="code hl_enumvalue" href="group___class_driver___hub.html#gga4f126a0a9b1d8c6a8f46a051ef8830bba18f841a2cb3de11a3853cfbb30b577f3">HUB_FEATURE_PORT_RESET_CHANGE</a>        ] = <span class="stringliteral">&quot;PORT_RESET_CHANGE&quot;</span>,</div>
+<div class="line">  [<a class="code hl_enumvalue" href="group___class_driver___hub.html#gga4f126a0a9b1d8c6a8f46a051ef8830bba903412d1f30bfe8bc85fca002bf922db">HUB_FEATURE_PORT_TEST</a>                ] = <span class="stringliteral">&quot;PORT_TEST&quot;</span>,</div>
+<div class="line">  [<a class="code hl_enumvalue" href="group___class_driver___hub.html#gga4f126a0a9b1d8c6a8f46a051ef8830bbafdac6381c84199c983ffea747107b604">HUB_FEATURE_PORT_INDICATOR</a>           ] = <span class="stringliteral">&quot;PORT_INDICATOR&quot;</span>,</div>
 <div class="line">}</div>
-<div class="ttc" id="agroup___class_driver___hub_html_ggaa156d1cebb38c8a65846c4d9c006012aa13e3d74c35038d47cc3ce2c2839d81c5"><div class="ttname"><a href="group___class_driver___hub.html#ggaa156d1cebb38c8a65846c4d9c006012aa13e3d74c35038d47cc3ce2c2839d81c5">HUB_FEATURE_PORT_OVER_CURRENT</a></div><div class="ttdeci">@ HUB_FEATURE_PORT_OVER_CURRENT</div><div class="ttdef"><b>Definition:</b> <a href="hub_8h_source.html#l00119">hub.h:119</a></div></div>
-<div class="ttc" id="agroup___class_driver___hub_html_ggaa156d1cebb38c8a65846c4d9c006012aa18f841a2cb3de11a3853cfbb30b577f3"><div class="ttname"><a href="group___class_driver___hub.html#ggaa156d1cebb38c8a65846c4d9c006012aa18f841a2cb3de11a3853cfbb30b577f3">HUB_FEATURE_PORT_RESET_CHANGE</a></div><div class="ttdeci">@ HUB_FEATURE_PORT_RESET_CHANGE</div><div class="ttdef"><b>Definition:</b> <a href="hub_8h_source.html#l00129">hub.h:129</a></div></div>
-<div class="ttc" id="agroup___class_driver___hub_html_ggaa156d1cebb38c8a65846c4d9c006012aa1d807f439fef5f4fd27110d2612f4b0a"><div class="ttname"><a href="group___class_driver___hub.html#ggaa156d1cebb38c8a65846c4d9c006012aa1d807f439fef5f4fd27110d2612f4b0a">HUB_FEATURE_PORT_SUSPEND_CHANGE</a></div><div class="ttdeci">@ HUB_FEATURE_PORT_SUSPEND_CHANGE</div><div class="ttdef"><b>Definition:</b> <a href="hub_8h_source.html#l00127">hub.h:127</a></div></div>
-<div class="ttc" id="agroup___class_driver___hub_html_ggaa156d1cebb38c8a65846c4d9c006012aa554ae639e11a65a6b76f2a2ce6bf5d60"><div class="ttname"><a href="group___class_driver___hub.html#ggaa156d1cebb38c8a65846c4d9c006012aa554ae639e11a65a6b76f2a2ce6bf5d60">HUB_FEATURE_PORT_LOW_SPEED</a></div><div class="ttdeci">@ HUB_FEATURE_PORT_LOW_SPEED</div><div class="ttdef"><b>Definition:</b> <a href="hub_8h_source.html#l00123">hub.h:123</a></div></div>
-<div class="ttc" id="agroup___class_driver___hub_html_ggaa156d1cebb38c8a65846c4d9c006012aa6a892f42689a46266dc33f8df5af5d17"><div class="ttname"><a href="group___class_driver___hub.html#ggaa156d1cebb38c8a65846c4d9c006012aa6a892f42689a46266dc33f8df5af5d17">HUB_FEATURE_PORT_CONNECTION</a></div><div class="ttdeci">@ HUB_FEATURE_PORT_CONNECTION</div><div class="ttdef"><b>Definition:</b> <a href="hub_8h_source.html#l00116">hub.h:116</a></div></div>
-<div class="ttc" id="agroup___class_driver___hub_html_ggaa156d1cebb38c8a65846c4d9c006012aa7e8fd5093d8fe8512912f337f1669d15"><div class="ttname"><a href="group___class_driver___hub.html#ggaa156d1cebb38c8a65846c4d9c006012aa7e8fd5093d8fe8512912f337f1669d15">HUB_FEATURE_PORT_ENABLE</a></div><div class="ttdeci">@ HUB_FEATURE_PORT_ENABLE</div><div class="ttdef"><b>Definition:</b> <a href="hub_8h_source.html#l00117">hub.h:117</a></div></div>
-<div class="ttc" id="agroup___class_driver___hub_html_ggaa156d1cebb38c8a65846c4d9c006012aa8563606b1d50df4b399d80e3cc0f4d4d"><div class="ttname"><a href="group___class_driver___hub.html#ggaa156d1cebb38c8a65846c4d9c006012aa8563606b1d50df4b399d80e3cc0f4d4d">HUB_FEATURE_PORT_ENABLE_CHANGE</a></div><div class="ttdeci">@ HUB_FEATURE_PORT_ENABLE_CHANGE</div><div class="ttdef"><b>Definition:</b> <a href="hub_8h_source.html#l00126">hub.h:126</a></div></div>
-<div class="ttc" id="agroup___class_driver___hub_html_ggaa156d1cebb38c8a65846c4d9c006012aa903412d1f30bfe8bc85fca002bf922db"><div class="ttname"><a href="group___class_driver___hub.html#ggaa156d1cebb38c8a65846c4d9c006012aa903412d1f30bfe8bc85fca002bf922db">HUB_FEATURE_PORT_TEST</a></div><div class="ttdeci">@ HUB_FEATURE_PORT_TEST</div><div class="ttdef"><b>Definition:</b> <a href="hub_8h_source.html#l00130">hub.h:130</a></div></div>
-<div class="ttc" id="agroup___class_driver___hub_html_ggaa156d1cebb38c8a65846c4d9c006012aa980e4824f7504391e684ad76ab56e4d6"><div class="ttname"><a href="group___class_driver___hub.html#ggaa156d1cebb38c8a65846c4d9c006012aa980e4824f7504391e684ad76ab56e4d6">HUB_FEATURE_PORT_CONNECTION_CHANGE</a></div><div class="ttdeci">@ HUB_FEATURE_PORT_CONNECTION_CHANGE</div><div class="ttdef"><b>Definition:</b> <a href="hub_8h_source.html#l00125">hub.h:125</a></div></div>
-<div class="ttc" id="agroup___class_driver___hub_html_ggaa156d1cebb38c8a65846c4d9c006012aa9945a5b609a0e40a08513f39f872fd7a"><div class="ttname"><a href="group___class_driver___hub.html#ggaa156d1cebb38c8a65846c4d9c006012aa9945a5b609a0e40a08513f39f872fd7a">HUB_FEATURE_PORT_RESET</a></div><div class="ttdeci">@ HUB_FEATURE_PORT_RESET</div><div class="ttdef"><b>Definition:</b> <a href="hub_8h_source.html#l00120">hub.h:120</a></div></div>
-<div class="ttc" id="agroup___class_driver___hub_html_ggaa156d1cebb38c8a65846c4d9c006012aacb4ffc318c9afa718c0a02156c1c02f5"><div class="ttname"><a href="group___class_driver___hub.html#ggaa156d1cebb38c8a65846c4d9c006012aacb4ffc318c9afa718c0a02156c1c02f5">HUB_FEATURE_PORT_POWER</a></div><div class="ttdeci">@ HUB_FEATURE_PORT_POWER</div><div class="ttdef"><b>Definition:</b> <a href="hub_8h_source.html#l00122">hub.h:122</a></div></div>
-<div class="ttc" id="agroup___class_driver___hub_html_ggaa156d1cebb38c8a65846c4d9c006012aad089093a052acd0ec2029a93a11b7039"><div class="ttname"><a href="group___class_driver___hub.html#ggaa156d1cebb38c8a65846c4d9c006012aad089093a052acd0ec2029a93a11b7039">HUB_FEATURE_PORT_SUSPEND</a></div><div class="ttdeci">@ HUB_FEATURE_PORT_SUSPEND</div><div class="ttdef"><b>Definition:</b> <a href="hub_8h_source.html#l00118">hub.h:118</a></div></div>
-<div class="ttc" id="agroup___class_driver___hub_html_ggaa156d1cebb38c8a65846c4d9c006012aafcbc300b19fe125fb56c5a135d553910"><div class="ttname"><a href="group___class_driver___hub.html#ggaa156d1cebb38c8a65846c4d9c006012aafcbc300b19fe125fb56c5a135d553910">HUB_FEATURE_PORT_OVER_CURRENT_CHANGE</a></div><div class="ttdeci">@ HUB_FEATURE_PORT_OVER_CURRENT_CHANGE</div><div class="ttdef"><b>Definition:</b> <a href="hub_8h_source.html#l00128">hub.h:128</a></div></div>
-<div class="ttc" id="agroup___class_driver___hub_html_ggaa156d1cebb38c8a65846c4d9c006012aafdac6381c84199c983ffea747107b604"><div class="ttname"><a href="group___class_driver___hub.html#ggaa156d1cebb38c8a65846c4d9c006012aafdac6381c84199c983ffea747107b604">HUB_FEATURE_PORT_INDICATOR</a></div><div class="ttdeci">@ HUB_FEATURE_PORT_INDICATOR</div><div class="ttdef"><b>Definition:</b> <a href="hub_8h_source.html#l00132">hub.h:131</a></div></div>
+<div class="ttc" id="agroup___class_driver___hub_html_gga4f126a0a9b1d8c6a8f46a051ef8830bba13e3d74c35038d47cc3ce2c2839d81c5"><div class="ttname"><a href="group___class_driver___hub.html#gga4f126a0a9b1d8c6a8f46a051ef8830bba13e3d74c35038d47cc3ce2c2839d81c5">HUB_FEATURE_PORT_OVER_CURRENT</a></div><div class="ttdeci">@ HUB_FEATURE_PORT_OVER_CURRENT</div><div class="ttdef"><b>Definition:</b> <a href="hub_8h_source.html#l00119">hub.h:119</a></div></div>
+<div class="ttc" id="agroup___class_driver___hub_html_gga4f126a0a9b1d8c6a8f46a051ef8830bba18f841a2cb3de11a3853cfbb30b577f3"><div class="ttname"><a href="group___class_driver___hub.html#gga4f126a0a9b1d8c6a8f46a051ef8830bba18f841a2cb3de11a3853cfbb30b577f3">HUB_FEATURE_PORT_RESET_CHANGE</a></div><div class="ttdeci">@ HUB_FEATURE_PORT_RESET_CHANGE</div><div class="ttdef"><b>Definition:</b> <a href="hub_8h_source.html#l00129">hub.h:129</a></div></div>
+<div class="ttc" id="agroup___class_driver___hub_html_gga4f126a0a9b1d8c6a8f46a051ef8830bba1d807f439fef5f4fd27110d2612f4b0a"><div class="ttname"><a href="group___class_driver___hub.html#gga4f126a0a9b1d8c6a8f46a051ef8830bba1d807f439fef5f4fd27110d2612f4b0a">HUB_FEATURE_PORT_SUSPEND_CHANGE</a></div><div class="ttdeci">@ HUB_FEATURE_PORT_SUSPEND_CHANGE</div><div class="ttdef"><b>Definition:</b> <a href="hub_8h_source.html#l00127">hub.h:127</a></div></div>
+<div class="ttc" id="agroup___class_driver___hub_html_gga4f126a0a9b1d8c6a8f46a051ef8830bba554ae639e11a65a6b76f2a2ce6bf5d60"><div class="ttname"><a href="group___class_driver___hub.html#gga4f126a0a9b1d8c6a8f46a051ef8830bba554ae639e11a65a6b76f2a2ce6bf5d60">HUB_FEATURE_PORT_LOW_SPEED</a></div><div class="ttdeci">@ HUB_FEATURE_PORT_LOW_SPEED</div><div class="ttdef"><b>Definition:</b> <a href="hub_8h_source.html#l00123">hub.h:123</a></div></div>
+<div class="ttc" id="agroup___class_driver___hub_html_gga4f126a0a9b1d8c6a8f46a051ef8830bba6a892f42689a46266dc33f8df5af5d17"><div class="ttname"><a href="group___class_driver___hub.html#gga4f126a0a9b1d8c6a8f46a051ef8830bba6a892f42689a46266dc33f8df5af5d17">HUB_FEATURE_PORT_CONNECTION</a></div><div class="ttdeci">@ HUB_FEATURE_PORT_CONNECTION</div><div class="ttdef"><b>Definition:</b> <a href="hub_8h_source.html#l00116">hub.h:116</a></div></div>
+<div class="ttc" id="agroup___class_driver___hub_html_gga4f126a0a9b1d8c6a8f46a051ef8830bba7e8fd5093d8fe8512912f337f1669d15"><div class="ttname"><a href="group___class_driver___hub.html#gga4f126a0a9b1d8c6a8f46a051ef8830bba7e8fd5093d8fe8512912f337f1669d15">HUB_FEATURE_PORT_ENABLE</a></div><div class="ttdeci">@ HUB_FEATURE_PORT_ENABLE</div><div class="ttdef"><b>Definition:</b> <a href="hub_8h_source.html#l00117">hub.h:117</a></div></div>
+<div class="ttc" id="agroup___class_driver___hub_html_gga4f126a0a9b1d8c6a8f46a051ef8830bba8563606b1d50df4b399d80e3cc0f4d4d"><div class="ttname"><a href="group___class_driver___hub.html#gga4f126a0a9b1d8c6a8f46a051ef8830bba8563606b1d50df4b399d80e3cc0f4d4d">HUB_FEATURE_PORT_ENABLE_CHANGE</a></div><div class="ttdeci">@ HUB_FEATURE_PORT_ENABLE_CHANGE</div><div class="ttdef"><b>Definition:</b> <a href="hub_8h_source.html#l00126">hub.h:126</a></div></div>
+<div class="ttc" id="agroup___class_driver___hub_html_gga4f126a0a9b1d8c6a8f46a051ef8830bba903412d1f30bfe8bc85fca002bf922db"><div class="ttname"><a href="group___class_driver___hub.html#gga4f126a0a9b1d8c6a8f46a051ef8830bba903412d1f30bfe8bc85fca002bf922db">HUB_FEATURE_PORT_TEST</a></div><div class="ttdeci">@ HUB_FEATURE_PORT_TEST</div><div class="ttdef"><b>Definition:</b> <a href="hub_8h_source.html#l00130">hub.h:130</a></div></div>
+<div class="ttc" id="agroup___class_driver___hub_html_gga4f126a0a9b1d8c6a8f46a051ef8830bba980e4824f7504391e684ad76ab56e4d6"><div class="ttname"><a href="group___class_driver___hub.html#gga4f126a0a9b1d8c6a8f46a051ef8830bba980e4824f7504391e684ad76ab56e4d6">HUB_FEATURE_PORT_CONNECTION_CHANGE</a></div><div class="ttdeci">@ HUB_FEATURE_PORT_CONNECTION_CHANGE</div><div class="ttdef"><b>Definition:</b> <a href="hub_8h_source.html#l00125">hub.h:125</a></div></div>
+<div class="ttc" id="agroup___class_driver___hub_html_gga4f126a0a9b1d8c6a8f46a051ef8830bba9945a5b609a0e40a08513f39f872fd7a"><div class="ttname"><a href="group___class_driver___hub.html#gga4f126a0a9b1d8c6a8f46a051ef8830bba9945a5b609a0e40a08513f39f872fd7a">HUB_FEATURE_PORT_RESET</a></div><div class="ttdeci">@ HUB_FEATURE_PORT_RESET</div><div class="ttdef"><b>Definition:</b> <a href="hub_8h_source.html#l00120">hub.h:120</a></div></div>
+<div class="ttc" id="agroup___class_driver___hub_html_gga4f126a0a9b1d8c6a8f46a051ef8830bbacb4ffc318c9afa718c0a02156c1c02f5"><div class="ttname"><a href="group___class_driver___hub.html#gga4f126a0a9b1d8c6a8f46a051ef8830bbacb4ffc318c9afa718c0a02156c1c02f5">HUB_FEATURE_PORT_POWER</a></div><div class="ttdeci">@ HUB_FEATURE_PORT_POWER</div><div class="ttdef"><b>Definition:</b> <a href="hub_8h_source.html#l00122">hub.h:122</a></div></div>
+<div class="ttc" id="agroup___class_driver___hub_html_gga4f126a0a9b1d8c6a8f46a051ef8830bbad089093a052acd0ec2029a93a11b7039"><div class="ttname"><a href="group___class_driver___hub.html#gga4f126a0a9b1d8c6a8f46a051ef8830bbad089093a052acd0ec2029a93a11b7039">HUB_FEATURE_PORT_SUSPEND</a></div><div class="ttdeci">@ HUB_FEATURE_PORT_SUSPEND</div><div class="ttdef"><b>Definition:</b> <a href="hub_8h_source.html#l00118">hub.h:118</a></div></div>
+<div class="ttc" id="agroup___class_driver___hub_html_gga4f126a0a9b1d8c6a8f46a051ef8830bbafcbc300b19fe125fb56c5a135d553910"><div class="ttname"><a href="group___class_driver___hub.html#gga4f126a0a9b1d8c6a8f46a051ef8830bbafcbc300b19fe125fb56c5a135d553910">HUB_FEATURE_PORT_OVER_CURRENT_CHANGE</a></div><div class="ttdeci">@ HUB_FEATURE_PORT_OVER_CURRENT_CHANGE</div><div class="ttdef"><b>Definition:</b> <a href="hub_8h_source.html#l00128">hub.h:128</a></div></div>
+<div class="ttc" id="agroup___class_driver___hub_html_gga4f126a0a9b1d8c6a8f46a051ef8830bbafdac6381c84199c983ffea747107b604"><div class="ttname"><a href="group___class_driver___hub.html#gga4f126a0a9b1d8c6a8f46a051ef8830bbafdac6381c84199c983ffea747107b604">HUB_FEATURE_PORT_INDICATOR</a></div><div class="ttdeci">@ HUB_FEATURE_PORT_INDICATOR</div><div class="ttdef"><b>Definition:</b> <a href="hub_8h_source.html#l00132">hub.h:131</a></div></div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="hub_8c_source.html#l00058">58</a> of file <a class="el" href="hub_8c_source.html">hub.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hub_8c_source.html#l00064">64</a> of file <a class="el" href="hub_8c_source.html">hub.c</a>.</p>
 
 </div>
 </div>
-<a id="afed595dae43bcaccba024e932c0847d3" name="afed595dae43bcaccba024e932c0847d3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afed595dae43bcaccba024e932c0847d3">&#9670;&nbsp;</a></span>hub_data</h2>
+<a id="a8993799690cf4625fbcac393ea78de8c" name="a8993799690cf4625fbcac393ea78de8c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8993799690cf4625fbcac393ea78de8c">&#9670;&nbsp;</a></span>hub_data</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -448,7 +462,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">CFG_TUSB_MEM_SECTION <a class="el" href="structhub__interface__t.html">hub_interface_t</a> hub_data[CFG_TUH_HUB]</td>
+          <td class="memname">CFG_TUH_MEM_SECTION <a class="el" href="structhub__interface__t.html">hub_interface_t</a> hub_data[CFG_TUH_HUB]</td>
         </tr>
       </table>
   </td>
@@ -458,7 +472,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hub_8c_source.html#l00048">48</a> of file <a class="el" href="hub_8c_source.html">hub.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hub_8c_source.html#l00054">54</a> of file <a class="el" href="hub_8c_source.html">hub.c</a>.</p>
 
 </div>
 </div>

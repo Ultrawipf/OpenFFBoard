@@ -1,0 +1,25 @@
+var osal__rtx4_8h =
+[
+    [ "osal_queue_def_t", "structosal__queue__def__t.html", "structosal__queue__def__t" ],
+    [ "osal_mutex_def_t", "osal__rtx4_8h.html#a2e96ac8128b16473de6707a7de74df82", null ],
+    [ "osal_mutex_t", "osal__rtx4_8h.html#a76c8d0f9370b0e5106bb4046b384b0f4", null ],
+    [ "osal_queue_t", "osal__rtx4_8h.html#a706d03b81145044e675a3e5730483ebf", null ],
+    [ "osal_semaphore_def_t", "osal__rtx4_8h.html#a0fd05bdacf6f0998422d325343885846", null ],
+    [ "osal_semaphore_t", "osal__rtx4_8h.html#aab70ddc17a54790d3a3762100b477b3b", null ],
+    [ "msec2wait", "osal__rtx4_8h.html#a4ad56f62f4f09671fc5aa9dc8079c6dd", null ],
+    [ "osal_mutex_create", "osal__rtx4_8h.html#af4997ee28b43c7b4ff6a2e492548d729", null ],
+    [ "osal_mutex_delete", "osal__rtx4_8h.html#a834e9085d4fa9bf6142adfc27f272a9c", null ],
+    [ "osal_mutex_lock", "osal__rtx4_8h.html#a5f810a4be5b3d0182c0d0571e1cad76f", null ],
+    [ "osal_mutex_unlock", "osal__rtx4_8h.html#a7ce96e29be9cf569befc4748fc3b46a5", null ],
+    [ "osal_queue_create", "osal__rtx4_8h.html#a4c34449b83cef48e4c10556d25139a45", null ],
+    [ "osal_queue_delete", "osal__rtx4_8h.html#a900036dc2eb545f7e40a0016ce4c8ac8", null ],
+    [ "osal_queue_empty", "osal__rtx4_8h.html#a27fef714d3e1e51e72b50e84463cb280", null ],
+    [ "osal_queue_receive", "osal__rtx4_8h.html#a89c8b40be086151786a85acd21632cf7", null ],
+    [ "osal_queue_send", "osal__rtx4_8h.html#a6b8eeefd57f41171eaaa78de393b18bf", null ],
+    [ "osal_semaphore_create", "osal__rtx4_8h.html#a6e6d4071c3660d283d6f371a25f6af2f", null ],
+    [ "osal_semaphore_delete", "osal__rtx4_8h.html#a2ddb6e127fbe0d8a4e465c4c0e791df6", null ],
+    [ "osal_semaphore_post", "osal__rtx4_8h.html#a883dcc089aa9c120c7076a3e17db9878", null ],
+    [ "osal_semaphore_reset", "osal__rtx4_8h.html#a90787669c8f4f7983f5bbb0b9a2699c1", null ],
+    [ "osal_semaphore_wait", "osal__rtx4_8h.html#a464434887cb8d9bdc2767c36b2a568b6", null ],
+    [ "osal_task_delay", "osal__rtx4_8h.html#a615803e194831533d2ff2dd7801d0ebf", null ]
+];

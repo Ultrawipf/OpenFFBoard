@@ -1,5 +1,6 @@
 var structhidd__interface__t =
 [
+    [ "ctrl_buf", "structhidd__interface__t.html#a489b87be37a2792f967cace2ba8889fd", null ],
     [ "ep_in", "structhidd__interface__t.html#adaeefa004a74c8e13d5dfd0242d18d65", null ],
     [ "ep_out", "structhidd__interface__t.html#a3f0184822946bac6a9822bdd7745c777", null ],
     [ "epin_buf", "structhidd__interface__t.html#a9211b15924afadea592af2e58db6d3ec", null ],

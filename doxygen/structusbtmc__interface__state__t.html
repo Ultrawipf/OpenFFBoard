@@ -105,10 +105,16 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a8934877ec541133aec4eb3ef2410ebd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a36c2187e53b35316088cd880150f7ae6"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structusbtmc__interface__state__t.html#a36c2187e53b35316088cd880150f7ae6">ep_int_in</a></td></tr>
 <tr class="separator:a36c2187e53b35316088cd880150f7ae6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab5b813534fd1c8b3564194acfdc7b239"><td class="memItemLeft" align="right" valign="top">CFG_TUSB_MEM_ALIGN uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structusbtmc__interface__state__t.html#ab5b813534fd1c8b3564194acfdc7b239">ep_bulk_in_buf</a> [USBTMCD_MAX_PACKET_SIZE]</td></tr>
-<tr class="separator:ab5b813534fd1c8b3564194acfdc7b239"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a486c513bc314234fc1217524660d0558"><td class="memItemLeft" align="right" valign="top">CFG_TUSB_MEM_ALIGN uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structusbtmc__interface__state__t.html#a486c513bc314234fc1217524660d0558">ep_bulk_out_buf</a> [USBTMCD_MAX_PACKET_SIZE]</td></tr>
-<tr class="separator:a486c513bc314234fc1217524660d0558"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09ec5c0ef1858a55e9dab4e397558bb2"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structusbtmc__interface__state__t.html#a09ec5c0ef1858a55e9dab4e397558bb2">ep_bulk_in_wMaxPacketSize</a></td></tr>
+<tr class="separator:a09ec5c0ef1858a55e9dab4e397558bb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f9a94b061366b28903e5dded008ac3d"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structusbtmc__interface__state__t.html#a2f9a94b061366b28903e5dded008ac3d">ep_bulk_out_wMaxPacketSize</a></td></tr>
+<tr class="separator:a2f9a94b061366b28903e5dded008ac3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21c26451af97de82a9e6ba4159cb520c"><td class="memItemLeft" align="right" valign="top">CFG_TUSB_MEM_ALIGN uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structusbtmc__interface__state__t.html#a21c26451af97de82a9e6ba4159cb520c">ep_bulk_in_buf</a> [USBTMCD_BUFFER_SIZE]</td></tr>
+<tr class="separator:a21c26451af97de82a9e6ba4159cb520c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae983743a5773fce2105eb8c8bf5156b0"><td class="memItemLeft" align="right" valign="top">CFG_TUSB_MEM_ALIGN uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structusbtmc__interface__state__t.html#ae983743a5773fce2105eb8c8bf5156b0">ep_bulk_out_buf</a> [USBTMCD_BUFFER_SIZE]</td></tr>
+<tr class="separator:ae983743a5773fce2105eb8c8bf5156b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f8583d4604e28f0ba3febef1d86bbbf"><td class="memItemLeft" align="right" valign="top">CFG_TUSB_MEM_ALIGN uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structusbtmc__interface__state__t.html#a4f8583d4604e28f0ba3febef1d86bbbf">ep_int_in_buf</a> [CFG_TUD_USBTMC_INT_EP_SIZE]</td></tr>
+<tr class="separator:a4f8583d4604e28f0ba3febef1d86bbbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab8c0362fd5b2544013f8648896691d63"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structusbtmc__interface__state__t.html#ab8c0362fd5b2544013f8648896691d63">transfer_size_remaining</a></td></tr>
 <tr class="separator:ab8c0362fd5b2544013f8648896691d63"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adcd7b13a419a63f85570e5066ff56939"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structusbtmc__interface__state__t.html#adcd7b13a419a63f85570e5066ff56939">transfer_size_sent</a></td></tr>
@@ -124,7 +130,7 @@ Public Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="usbtmc__device_8c_source.html#l00112">112</a> of file <a class="el" href="usbtmc__device_8c_source.html">usbtmc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbtmc__device_8c_source.html#l00123">123</a> of file <a class="el" href="usbtmc__device_8c_source.html">usbtmc_device.c</a>.</p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
 <a id="a888bbc887f247c9e101f72f3a9ab3861" name="a888bbc887f247c9e101f72f3a9ab3861"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a888bbc887f247c9e101f72f3a9ab3861">&#9670;&nbsp;</a></span>capabilities</h2>
@@ -138,7 +144,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbtmc__device_8c_source.html#l00134">134</a> of file <a class="el" href="usbtmc__device_8c_source.html">usbtmc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbtmc__device_8c_source.html#l00150">150</a> of file <a class="el" href="usbtmc__device_8c_source.html">usbtmc_device.c</a>.</p>
 
 </div>
 </div>
@@ -154,7 +160,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbtmc__device_8c_source.html#l00132">132</a> of file <a class="el" href="usbtmc__device_8c_source.html">usbtmc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbtmc__device_8c_source.html#l00148">148</a> of file <a class="el" href="usbtmc__device_8c_source.html">usbtmc_device.c</a>.</p>
 
 </div>
 </div>
@@ -170,23 +176,39 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbtmc__device_8c_source.html#l00118">118</a> of file <a class="el" href="usbtmc__device_8c_source.html">usbtmc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbtmc__device_8c_source.html#l00129">129</a> of file <a class="el" href="usbtmc__device_8c_source.html">usbtmc_device.c</a>.</p>
 
 </div>
 </div>
-<a id="ab5b813534fd1c8b3564194acfdc7b239" name="ab5b813534fd1c8b3564194acfdc7b239"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab5b813534fd1c8b3564194acfdc7b239">&#9670;&nbsp;</a></span>ep_bulk_in_buf</h2>
+<a id="a21c26451af97de82a9e6ba4159cb520c" name="a21c26451af97de82a9e6ba4159cb520c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a21c26451af97de82a9e6ba4159cb520c">&#9670;&nbsp;</a></span>ep_bulk_in_buf</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">CFG_TUSB_MEM_ALIGN uint8_t usbtmc_interface_state_t::ep_bulk_in_buf[USBTMCD_MAX_PACKET_SIZE]</td>
+          <td class="memname">CFG_TUSB_MEM_ALIGN uint8_t usbtmc_interface_state_t::ep_bulk_in_buf[USBTMCD_BUFFER_SIZE]</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbtmc__device_8c_source.html#l00123">123</a> of file <a class="el" href="usbtmc__device_8c_source.html">usbtmc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbtmc__device_8c_source.html#l00136">136</a> of file <a class="el" href="usbtmc__device_8c_source.html">usbtmc_device.c</a>.</p>
+
+</div>
+</div>
+<a id="a09ec5c0ef1858a55e9dab4e397558bb2" name="a09ec5c0ef1858a55e9dab4e397558bb2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a09ec5c0ef1858a55e9dab4e397558bb2">&#9670;&nbsp;</a></span>ep_bulk_in_wMaxPacketSize</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t usbtmc_interface_state_t::ep_bulk_in_wMaxPacketSize</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbtmc__device_8c_source.html#l00132">132</a> of file <a class="el" href="usbtmc__device_8c_source.html">usbtmc_device.c</a>.</p>
 
 </div>
 </div>
@@ -202,23 +224,39 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbtmc__device_8c_source.html#l00119">119</a> of file <a class="el" href="usbtmc__device_8c_source.html">usbtmc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbtmc__device_8c_source.html#l00130">130</a> of file <a class="el" href="usbtmc__device_8c_source.html">usbtmc_device.c</a>.</p>
 
 </div>
 </div>
-<a id="a486c513bc314234fc1217524660d0558" name="a486c513bc314234fc1217524660d0558"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a486c513bc314234fc1217524660d0558">&#9670;&nbsp;</a></span>ep_bulk_out_buf</h2>
+<a id="ae983743a5773fce2105eb8c8bf5156b0" name="ae983743a5773fce2105eb8c8bf5156b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae983743a5773fce2105eb8c8bf5156b0">&#9670;&nbsp;</a></span>ep_bulk_out_buf</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">CFG_TUSB_MEM_ALIGN uint8_t usbtmc_interface_state_t::ep_bulk_out_buf[USBTMCD_MAX_PACKET_SIZE]</td>
+          <td class="memname">CFG_TUSB_MEM_ALIGN uint8_t usbtmc_interface_state_t::ep_bulk_out_buf[USBTMCD_BUFFER_SIZE]</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbtmc__device_8c_source.html#l00125">125</a> of file <a class="el" href="usbtmc__device_8c_source.html">usbtmc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbtmc__device_8c_source.html#l00138">138</a> of file <a class="el" href="usbtmc__device_8c_source.html">usbtmc_device.c</a>.</p>
+
+</div>
+</div>
+<a id="a2f9a94b061366b28903e5dded008ac3d" name="a2f9a94b061366b28903e5dded008ac3d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2f9a94b061366b28903e5dded008ac3d">&#9670;&nbsp;</a></span>ep_bulk_out_wMaxPacketSize</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t usbtmc_interface_state_t::ep_bulk_out_wMaxPacketSize</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbtmc__device_8c_source.html#l00133">133</a> of file <a class="el" href="usbtmc__device_8c_source.html">usbtmc_device.c</a>.</p>
 
 </div>
 </div>
@@ -234,7 +272,23 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbtmc__device_8c_source.html#l00120">120</a> of file <a class="el" href="usbtmc__device_8c_source.html">usbtmc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbtmc__device_8c_source.html#l00131">131</a> of file <a class="el" href="usbtmc__device_8c_source.html">usbtmc_device.c</a>.</p>
+
+</div>
+</div>
+<a id="a4f8583d4604e28f0ba3febef1d86bbbf" name="a4f8583d4604e28f0ba3febef1d86bbbf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4f8583d4604e28f0ba3febef1d86bbbf">&#9670;&nbsp;</a></span>ep_int_in_buf</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">CFG_TUSB_MEM_ALIGN uint8_t usbtmc_interface_state_t::ep_int_in_buf[CFG_TUD_USBTMC_INT_EP_SIZE]</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbtmc__device_8c_source.html#l00140">140</a> of file <a class="el" href="usbtmc__device_8c_source.html">usbtmc_device.c</a>.</p>
 
 </div>
 </div>
@@ -250,7 +304,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbtmc__device_8c_source.html#l00116">116</a> of file <a class="el" href="usbtmc__device_8c_source.html">usbtmc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbtmc__device_8c_source.html#l00127">127</a> of file <a class="el" href="usbtmc__device_8c_source.html">usbtmc_device.c</a>.</p>
 
 </div>
 </div>
@@ -266,7 +320,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbtmc__device_8c_source.html#l00130">130</a> of file <a class="el" href="usbtmc__device_8c_source.html">usbtmc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbtmc__device_8c_source.html#l00146">146</a> of file <a class="el" href="usbtmc__device_8c_source.html">usbtmc_device.c</a>.</p>
 
 </div>
 </div>
@@ -282,7 +336,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbtmc__device_8c_source.html#l00129">129</a> of file <a class="el" href="usbtmc__device_8c_source.html">usbtmc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbtmc__device_8c_source.html#l00145">145</a> of file <a class="el" href="usbtmc__device_8c_source.html">usbtmc_device.c</a>.</p>
 
 </div>
 </div>
@@ -298,7 +352,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbtmc__device_8c_source.html#l00117">117</a> of file <a class="el" href="usbtmc__device_8c_source.html">usbtmc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbtmc__device_8c_source.html#l00128">128</a> of file <a class="el" href="usbtmc__device_8c_source.html">usbtmc_device.c</a>.</p>
 
 </div>
 </div>
@@ -314,7 +368,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbtmc__device_8c_source.html#l00114">114</a> of file <a class="el" href="usbtmc__device_8c_source.html">usbtmc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbtmc__device_8c_source.html#l00125">125</a> of file <a class="el" href="usbtmc__device_8c_source.html">usbtmc_device.c</a>.</p>
 
 </div>
 </div>
@@ -330,7 +384,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbtmc__device_8c_source.html#l00126">126</a> of file <a class="el" href="usbtmc__device_8c_source.html">usbtmc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbtmc__device_8c_source.html#l00142">142</a> of file <a class="el" href="usbtmc__device_8c_source.html">usbtmc_device.c</a>.</p>
 
 </div>
 </div>
@@ -346,7 +400,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbtmc__device_8c_source.html#l00127">127</a> of file <a class="el" href="usbtmc__device_8c_source.html">usbtmc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbtmc__device_8c_source.html#l00143">143</a> of file <a class="el" href="usbtmc__device_8c_source.html">usbtmc_device.c</a>.</p>
 
 </div>
 </div>

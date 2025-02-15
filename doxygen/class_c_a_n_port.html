@@ -87,12 +87,11 @@ $(document).ready(function(){initNavTree('class_c_a_n_port.html',''); initResiza
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
-<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
-<a href="#pri-types">Private Types</a> &#124;
-<a href="#pri-attribs">Private Attributes</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="#pri-static-attribs">Static Private Attributes</a> &#124;
 <a href="class_c_a_n_port-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">CANPort Class Reference</div></div>
+  <div class="headertitle"><div class="title">CANPort Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -103,292 +102,118 @@ Inheritance diagram for CANPort:</div>
  <div class="center">
   <img src="class_c_a_n_port.png" usemap="#CANPort_map" alt=""/>
   <map id="CANPort_map" name="CANPort_map">
-<area href="class_command_handler.html" alt="CommandHandler" shape="rect" coords="0,0,112,24"/>
-<area href="class_persistent_storage.html" alt="PersistentStorage" shape="rect" coords="122,0,234,24"/>
-<area href="class_can_handler.html" alt="CanHandler" shape="rect" coords="244,0,356,24"/>
+<area href="class_persistent_storage.html" alt="PersistentStorage" shape="rect" coords="0,0,111,24"/>
+<area href="class_c_a_n_port__2_b.html" alt="CANPort_2B" shape="rect" coords="0,112,111,136"/>
   </map>
 </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a1fea1acd455f3b13f1cfd2ce676318cc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#a1fea1acd455f3b13f1cfd2ce676318cc">CANPort</a> (CAN_HandleTypeDef &amp;<a class="el" href="class_c_a_n_port.html#a101c18fab15f6f8b21f6a1516dd98a56">hcan</a>)</td></tr>
-<tr class="separator:a1fea1acd455f3b13f1cfd2ce676318cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4ed6f5de6ac22d3c52c4e6a41c973a48"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#a4ed6f5de6ac22d3c52c4e6a41c973a48">CANPort</a> (CAN_HandleTypeDef &amp;<a class="el" href="class_c_a_n_port.html#a101c18fab15f6f8b21f6a1516dd98a56">hcan</a>, const <a class="el" href="class_output_pin.html">OutputPin</a> *<a class="el" href="class_c_a_n_port.html#a9acfc64f63cfefb13b396ef9fd792629">silentPin</a>)</td></tr>
-<tr class="separator:a4ed6f5de6ac22d3c52c4e6a41c973a48"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a97801bad4868b3175124f196086090ec"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#a97801bad4868b3175124f196086090ec">CANPort</a> (const <a class="el" href="class_c_a_n_port_hardware_config.html">CANPortHardwareConfig</a> &amp;<a class="el" href="class_c_a_n_port.html#a8f4d6b6091bae3d82129463ab387bc11">presets</a>, uint8_t <a class="el" href="_command_handler_8h.html#a13a18e5b49561a2f007205dc0afeea14a7123a699d77db6479a1d8ece2c4f1c16">instance</a>=0)</td></tr>
+<tr class="separator:a97801bad4868b3175124f196086090ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a21e19467ca0028944ce5f6bcae8bd857"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#a21e19467ca0028944ce5f6bcae8bd857">~CANPort</a> ()</td></tr>
 <tr class="separator:a21e19467ca0028944ce5f6bcae8bd857"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a19b2687d43a45e46bb387fe3f82cd027"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#a19b2687d43a45e46bb387fe3f82cd027">start</a> ()</td></tr>
-<tr class="separator:a19b2687d43a45e46bb387fe3f82cd027"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a42a0326a7a5be12d16bc36180a610dba"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#a42a0326a7a5be12d16bc36180a610dba">stop</a> ()</td></tr>
-<tr class="separator:a42a0326a7a5be12d16bc36180a610dba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0beff1d53a9065ff33455811b5c495f5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#a0beff1d53a9065ff33455811b5c495f5">takePort</a> ()</td></tr>
-<tr class="separator:a0beff1d53a9065ff33455811b5c495f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3760a7620954fc2a5a3fac8365bdc483"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#a3760a7620954fc2a5a3fac8365bdc483">freePort</a> ()</td></tr>
-<tr class="separator:a3760a7620954fc2a5a3fac8365bdc483"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af0a1c094c7431aeebbd869075b81b45b"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#af0a1c094c7431aeebbd869075b81b45b">getPortUsers</a> ()</td></tr>
-<tr class="separator:af0a1c094c7431aeebbd869075b81b45b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab49f533210d669e8f994cf77a3c7a34f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#ab49f533210d669e8f994cf77a3c7a34f">sendMessage</a> (<a class="el" href="struct_c_a_n__tx__msg.html">CAN_tx_msg</a> &amp;msg)</td></tr>
-<tr class="separator:ab49f533210d669e8f994cf77a3c7a34f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab53e7d805b1ec3a6f7544fb639fbca80"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#ab53e7d805b1ec3a6f7544fb639fbca80">sendMessage</a> (CAN_TxHeaderTypeDef *pHeader, uint8_t aData[], uint32_t *pTxMailbox=nullptr)</td></tr>
-<tr class="separator:ab53e7d805b1ec3a6f7544fb639fbca80"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae74a8c4b837a163a005b850c6c4a8ef9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#ae74a8c4b837a163a005b850c6c4a8ef9">abortTxRequests</a> ()</td></tr>
-<tr class="separator:ae74a8c4b837a163a005b850c6c4a8ef9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3ab8b5e4190bee6160b5d1a2eb1778a9"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#a3ab8b5e4190bee6160b5d1a2eb1778a9">addCanFilter</a> (CAN_FilterTypeDef sFilterConfig)</td></tr>
-<tr class="separator:a3ab8b5e4190bee6160b5d1a2eb1778a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a99de92134ef744aa006be6027b954099"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#a99de92134ef744aa006be6027b954099">removeCanFilter</a> (uint8_t filterId)</td></tr>
-<tr class="separator:a99de92134ef744aa006be6027b954099"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae9eb0b0c8fb9b7df692b13177e156d97"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#ae9eb0b0c8fb9b7df692b13177e156d97">setSpeed</a> (uint32_t speed)</td></tr>
-<tr class="separator:ae9eb0b0c8fb9b7df692b13177e156d97"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a819cdefc5c8098eb5aa85c5358bc8772"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#a819cdefc5c8098eb5aa85c5358bc8772">setSpeedPreset</a> (uint8_t preset)</td></tr>
-<tr class="separator:a819cdefc5c8098eb5aa85c5358bc8772"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7139a714f033aca9676d6ef101cd3a88"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#a7139a714f033aca9676d6ef101cd3a88">getSpeed</a> ()</td></tr>
-<tr class="separator:a7139a714f033aca9676d6ef101cd3a88"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab0ac86f6557a081022363dd14f4ad9d6"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#ab0ac86f6557a081022363dd14f4ad9d6">getSpeedPreset</a> ()</td></tr>
-<tr class="separator:ab0ac86f6557a081022363dd14f4ad9d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1b5be52564d6de5af058e78e0eda0b3a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#a1b5be52564d6de5af058e78e0eda0b3a">giveSemaphore</a> ()</td></tr>
-<tr class="separator:a1b5be52564d6de5af058e78e0eda0b3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a690007b3eaa6451c92666adb82b255df"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#a690007b3eaa6451c92666adb82b255df">takeSemaphore</a> (uint32_t delay=portMAX_DELAY)</td></tr>
-<tr class="separator:a690007b3eaa6451c92666adb82b255df"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afb9ab4dfdf4c3956800c4248f2000968"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#afb9ab4dfdf4c3956800c4248f2000968">setSilentMode</a> (bool <a class="el" href="class_c_a_n_port.html#aea22a7073611a2cc39433e19f2a63bad">silent</a>)</td></tr>
-<tr class="separator:afb9ab4dfdf4c3956800c4248f2000968"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7d06609e307f98cc14a030efee41b7a0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#a7d06609e307f98cc14a030efee41b7a0">canTxCpltCallback</a> (CAN_HandleTypeDef *<a class="el" href="class_c_a_n_port.html#a101c18fab15f6f8b21f6a1516dd98a56">hcan</a>, uint32_t mailbox)</td></tr>
-<tr class="separator:a7d06609e307f98cc14a030efee41b7a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a15971a0ae68ffebfc3968578c3b24897"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#a15971a0ae68ffebfc3968578c3b24897">canTxAbortCallback</a> (CAN_HandleTypeDef *<a class="el" href="class_c_a_n_port.html#a101c18fab15f6f8b21f6a1516dd98a56">hcan</a>, uint32_t mailbox)</td></tr>
-<tr class="separator:a15971a0ae68ffebfc3968578c3b24897"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9d3d3027cc83927ae0fdd6ffc7e9f101"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#a9d3d3027cc83927ae0fdd6ffc7e9f101">canErrorCallback</a> (CAN_HandleTypeDef *<a class="el" href="class_c_a_n_port.html#a101c18fab15f6f8b21f6a1516dd98a56">hcan</a>)</td></tr>
-<tr class="separator:a9d3d3027cc83927ae0fdd6ffc7e9f101"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af90cdc484941f6cf2cda7b217c5aefee"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_command_handler_8h.html#aefaf83fec6a7da1d02ae7e912dd9a6d5">CommandStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#af90cdc484941f6cf2cda7b217c5aefee">command</a> (const <a class="el" href="struct_parsed_command.html">ParsedCommand</a> &amp;cmd, std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;replies)</td></tr>
-<tr class="separator:af90cdc484941f6cf2cda7b217c5aefee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4764905f8f0e22f2b9ead5dfcd155ce5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#a4764905f8f0e22f2b9ead5dfcd155ce5">registerCommands</a> ()</td></tr>
-<tr class="separator:a4764905f8f0e22f2b9ead5dfcd155ce5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4c4f33ab2fedd391e42371f05af938f4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#a4c4f33ab2fedd391e42371f05af938f4">saveFlash</a> ()</td></tr>
-<tr class="separator:a4c4f33ab2fedd391e42371f05af938f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3d97cc00a18929b887ac61f28c88f92d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#a3d97cc00a18929b887ac61f28c88f92d">restoreFlash</a> ()</td></tr>
-<tr class="separator:a3d97cc00a18929b887ac61f28c88f92d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7e53af7b848b65b11c221dcd5043e698"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="struct_class_identifier.html">ClassIdentifier</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#a7e53af7b848b65b11c221dcd5043e698">getInfo</a> ()</td></tr>
-<tr class="memdesc:a7e53af7b848b65b11c221dcd5043e698"><td class="mdescLeft">&#160;</td><td class="mdescRight">Command handlers always have class infos. Works well with <a class="el" href="class_choosable_class.html">ChoosableClass</a>.  <a href="class_c_a_n_port.html#a7e53af7b848b65b11c221dcd5043e698">More...</a><br /></td></tr>
-<tr class="separator:a7e53af7b848b65b11c221dcd5043e698"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a77644684b44dd171743d14cf3a1f2738"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="_class_i_ds_8h.html#a79467dc849dd02adbaa4373bbd7aba75">ClassType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#a77644684b44dd171743d14cf3a1f2738">getClassType</a> () override</td></tr>
-<tr class="separator:a77644684b44dd171743d14cf3a1f2738"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_class_command_handler"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_command_handler')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_command_handler.html">CommandHandler</a></td></tr>
-<tr class="memitem:af331bf7b73ad45951226b30251f270f4 inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#af331bf7b73ad45951226b30251f270f4">CommandHandler</a> (const char *clsname, uint16_t clsid, uint8_t <a class="el" href="_command_handler_8h.html#a13a18e5b49561a2f007205dc0afeea14a7123a699d77db6479a1d8ece2c4f1c16">instance</a>=0)</td></tr>
-<tr class="separator:af331bf7b73ad45951226b30251f270f4 inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a774109b82ae7c2556d781f457f3974c7 inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a774109b82ae7c2556d781f457f3974c7">~CommandHandler</a> ()</td></tr>
-<tr class="separator:a774109b82ae7c2556d781f457f3974c7 inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5a34e3eee961ca48e61eee9011062842 inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a5a34e3eee961ca48e61eee9011062842">hasCommands</a> ()</td></tr>
-<tr class="separator:a5a34e3eee961ca48e61eee9011062842 inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a45979fba8f86796394ad7e22896fc33f inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a45979fba8f86796394ad7e22896fc33f">setCommandsEnabled</a> (bool enable)</td></tr>
-<tr class="separator:a45979fba8f86796394ad7e22896fc33f inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a09e6c7b1db8de3631ffbc1e4c1336676 inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a09e6c7b1db8de3631ffbc1e4c1336676">registerCommands</a> ()</td></tr>
-<tr class="separator:a09e6c7b1db8de3631ffbc1e4c1336676 inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6a533be5d0625557f6e1f194f70dc0d5 inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="_command_handler_8h.html#aefaf83fec6a7da1d02ae7e912dd9a6d5">CommandStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a6a533be5d0625557f6e1f194f70dc0d5">internalCommand</a> (const <a class="el" href="struct_parsed_command.html">ParsedCommand</a> &amp;cmd, std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;replies)</td></tr>
-<tr class="separator:a6a533be5d0625557f6e1f194f70dc0d5 inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0842b01125770b9be569a29d49080a3f inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a0842b01125770b9be569a29d49080a3f">getHelpstring</a> ()</td></tr>
-<tr class="separator:a0842b01125770b9be569a29d49080a3f inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acd8e021f6a407115dba838d7b16930bb inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#acd8e021f6a407115dba838d7b16930bb">getCommandsHelpstring</a> ()</td></tr>
-<tr class="separator:acd8e021f6a407115dba838d7b16930bb inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af6efec263bc372a1ca57add26dd93a97 inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#af6efec263bc372a1ca57add26dd93a97">getCsvHelpstring</a> ()</td></tr>
-<tr class="separator:af6efec263bc372a1ca57add26dd93a97 inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2628ee7f333010e15ad70b9bcffc433d inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">virtual uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a2628ee7f333010e15ad70b9bcffc433d">getCommandHandlerInstance</a> ()</td></tr>
-<tr class="separator:a2628ee7f333010e15ad70b9bcffc433d inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad67013c18a56f13ff7159883dfce665e inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#ad67013c18a56f13ff7159883dfce665e">broadcastCommandReply</a> (<a class="el" href="class_command_reply.html">CommandReply</a> reply, uint32_t cmdId, <a class="el" href="_command_handler_8h.html#aec46f6cc23a395b611fbc7c7239b9c41">CMDtype</a> type)</td></tr>
-<tr class="separator:ad67013c18a56f13ff7159883dfce665e inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab23b77c2282380e1e713b0173530416c inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#ab23b77c2282380e1e713b0173530416c">sendCommandReplyAsync</a> (<a class="el" href="class_command_reply.html">CommandReply</a> reply, uint32_t cmdId, <a class="el" href="_command_handler_8h.html#aec46f6cc23a395b611fbc7c7239b9c41">CMDtype</a> type, <a class="el" href="class_command_interface.html">CommandInterface</a> *interface=nullptr)</td></tr>
-<tr class="separator:ab23b77c2282380e1e713b0173530416c inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d6e4cd233e9221df2cf1ff3c1468385 inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">virtual uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a5d6e4cd233e9221df2cf1ff3c1468385">getCommandHandlerID</a> ()</td></tr>
-<tr class="separator:a5d6e4cd233e9221df2cf1ff3c1468385 inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad9d9d0fd0bd0a58cfd8b6199081403a9 inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="struct_cmd_handler_info.html">CmdHandlerInfo</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#ad9d9d0fd0bd0a58cfd8b6199081403a9">getCommandHandlerInfo</a> ()</td></tr>
-<tr class="separator:ad9d9d0fd0bd0a58cfd8b6199081403a9 inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af658c15ccbac468224ed2c5997e06f91 inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#af658c15ccbac468224ed2c5997e06f91">isValidCommandId</a> (uint32_t cmdid, uint32_t ignoredFlags=0, uint32_t requiredFlag=0)</td></tr>
-<tr class="separator:af658c15ccbac468224ed2c5997e06f91 inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac5417a6284e8066c67776301c7d25d72 inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_cmd_handler_commanddef.html">CmdHandlerCommanddef</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#ac5417a6284e8066c67776301c7d25d72">getCommandFromName</a> (const std::string &amp;cmd, uint32_t ignoredFlags=0)</td></tr>
-<tr class="separator:ac5417a6284e8066c67776301c7d25d72 inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a406a0e915a9373f5c1992711b167f7f9 inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_cmd_handler_commanddef.html">CmdHandlerCommanddef</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a406a0e915a9373f5c1992711b167f7f9">getCommandFromId</a> (const uint32_t <a class="el" href="_command_handler_8h.html#a13a18e5b49561a2f007205dc0afeea14ab80bb7740288fda1f201890375a60c8f">id</a>, uint32_t ignoredFlags=0)</td></tr>
-<tr class="separator:a406a0e915a9373f5c1992711b167f7f9 inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a26d4fbfbb1106d0465716e1968150a7d inherit pub_methods_class_command_handler"><td class="memTemplParams" colspan="2">template&lt;typename ID &gt; </td></tr>
-<tr class="memitem:a26d4fbfbb1106d0465716e1968150a7d inherit pub_methods_class_command_handler"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a26d4fbfbb1106d0465716e1968150a7d">registerCommand</a> (const char *cmd, const ID cmdid, const char *<a class="el" href="_command_handler_8h.html#a13a18e5b49561a2f007205dc0afeea14a657f8b8da628ef83cf69101b6817150a">help</a>=nullptr, uint32_t flags=0)</td></tr>
-<tr class="separator:a26d4fbfbb1106d0465716e1968150a7d inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3bdcf666110f0485b84f04977a248e0e"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#a3bdcf666110f0485b84f04977a248e0e">start</a> ()=0</td></tr>
+<tr class="separator:a3bdcf666110f0485b84f04977a248e0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac72edd22f1dc69e82cd7e9ec54f9c559"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#ac72edd22f1dc69e82cd7e9ec54f9c559">stop</a> ()=0</td></tr>
+<tr class="separator:ac72edd22f1dc69e82cd7e9ec54f9c559"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa94d97e71bdb4408339db8a03dab8d3"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#aaa94d97e71bdb4408339db8a03dab8d3">sendMessage</a> (<a class="el" href="struct_c_a_n__tx__msg.html">CAN_tx_msg</a> &amp;msg)=0</td></tr>
+<tr class="separator:aaa94d97e71bdb4408339db8a03dab8d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0dc0a0abf987199f83e5ffec8031481"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#af0dc0a0abf987199f83e5ffec8031481">sendMessage</a> (<a class="el" href="struct_c_a_n__msg__header__tx.html">CAN_msg_header_tx</a> *pHeader, uint8_t aData[], uint32_t *pTxMailbox=nullptr)=0</td></tr>
+<tr class="separator:af0dc0a0abf987199f83e5ffec8031481"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae25d3bf17fa3af35dfce86649004f6bf"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#ae25d3bf17fa3af35dfce86649004f6bf">abortTxRequests</a> ()=0</td></tr>
+<tr class="separator:ae25d3bf17fa3af35dfce86649004f6bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa781b7e89a281285e982bc0d1583a6b"><td class="memItemLeft" align="right" valign="top">virtual int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#aaa781b7e89a281285e982bc0d1583a6b">addCanFilter</a> (<a class="el" href="struct_c_a_n__filter.html">CAN_filter</a> filter)=0</td></tr>
+<tr class="separator:aaa781b7e89a281285e982bc0d1583a6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0474cd1f09755dbd2dd4883703bd696"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#af0474cd1f09755dbd2dd4883703bd696">removeCanFilter</a> (uint8_t filterId)=0</td></tr>
+<tr class="separator:af0474cd1f09755dbd2dd4883703bd696"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaeb628e4c5bedecf22581ed2d31697b5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#aaeb628e4c5bedecf22581ed2d31697b5">setSpeed</a> (uint32_t speed)=0</td></tr>
+<tr class="separator:aaeb628e4c5bedecf22581ed2d31697b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a624d33b6405c609c437162e8dcf59ebb"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#a624d33b6405c609c437162e8dcf59ebb">setSpeedPreset</a> (uint8_t preset)=0</td></tr>
+<tr class="separator:a624d33b6405c609c437162e8dcf59ebb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92f4a2697ee6bfe642ab5ad68616e067"><td class="memItemLeft" align="right" valign="top">virtual uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#a92f4a2697ee6bfe642ab5ad68616e067">getSpeed</a> ()=0</td></tr>
+<tr class="separator:a92f4a2697ee6bfe642ab5ad68616e067"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2492f60561901ac7d3807010bc01b478"><td class="memItemLeft" align="right" valign="top">virtual uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#a2492f60561901ac7d3807010bc01b478">getSpeedPreset</a> ()=0</td></tr>
+<tr class="separator:a2492f60561901ac7d3807010bc01b478"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4ad84b76f50a16c4f766779ffb5a65e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#af4ad84b76f50a16c4f766779ffb5a65e">setSilentMode</a> (bool silent)=0</td></tr>
+<tr class="separator:af4ad84b76f50a16c4f766779ffb5a65e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f09abe145e136ad4ea7eddf33dc3527"><td class="memItemLeft" align="right" valign="top">virtual int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#a6f09abe145e136ad4ea7eddf33dc3527">getPortUsers</a> ()</td></tr>
+<tr class="separator:a6f09abe145e136ad4ea7eddf33dc3527"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3302e9909b169a5d67c4d7ba867c5a3c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#a3302e9909b169a5d67c4d7ba867c5a3c">takePort</a> ()</td></tr>
+<tr class="separator:a3302e9909b169a5d67c4d7ba867c5a3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22d159c7a136bc3ac2683603bbdf2df7"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#a22d159c7a136bc3ac2683603bbdf2df7">freePort</a> ()</td></tr>
+<tr class="separator:a22d159c7a136bc3ac2683603bbdf2df7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e5fc1083c1b26325ea1e38570c98f3c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#a1e5fc1083c1b26325ea1e38570c98f3c">giveSemaphore</a> ()</td></tr>
+<tr class="separator:a1e5fc1083c1b26325ea1e38570c98f3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f407d0759b58c917135f8cd6e09b48d"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#a2f407d0759b58c917135f8cd6e09b48d">takeSemaphore</a> (uint32_t delay=portMAX_DELAY)</td></tr>
+<tr class="separator:a2f407d0759b58c917135f8cd6e09b48d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21885606a2a557a3fbf10151b81a7052"><td class="memItemLeft" align="right" valign="top">virtual uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#a21885606a2a557a3fbf10151b81a7052">speedToPreset</a> (uint32_t speed)</td></tr>
+<tr class="memdesc:a21885606a2a557a3fbf10151b81a7052"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets preset index for a speed.  <a href="class_c_a_n_port.html#a21885606a2a557a3fbf10151b81a7052">More...</a><br /></td></tr>
+<tr class="separator:a21885606a2a557a3fbf10151b81a7052"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae51530dc123a367cb79ddf9c47c85747"><td class="memItemLeft" align="right" valign="top">virtual uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#ae51530dc123a367cb79ddf9c47c85747">presetToSpeed</a> (uint8_t preset)</td></tr>
+<tr class="memdesc:ae51530dc123a367cb79ddf9c47c85747"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets speed for a preset index.  <a href="class_c_a_n_port.html#ae51530dc123a367cb79ddf9c47c85747">More...</a><br /></td></tr>
+<tr class="separator:ae51530dc123a367cb79ddf9c47c85747"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_persistent_storage"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_persistent_storage')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_persistent_storage.html">PersistentStorage</a></td></tr>
 <tr class="memitem:a0f6d37b59d3ce8deedb1862db79fd356 inherit pub_methods_class_persistent_storage"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_persistent_storage.html#a0f6d37b59d3ce8deedb1862db79fd356">PersistentStorage</a> ()</td></tr>
 <tr class="separator:a0f6d37b59d3ce8deedb1862db79fd356 inherit pub_methods_class_persistent_storage"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1cf470862b87d0a1b91548c24dedc4f8 inherit pub_methods_class_persistent_storage"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_persistent_storage.html#a1cf470862b87d0a1b91548c24dedc4f8">~PersistentStorage</a> ()</td></tr>
 <tr class="separator:a1cf470862b87d0a1b91548c24dedc4f8 inherit pub_methods_class_persistent_storage"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_class_can_handler"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_can_handler')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_can_handler.html">CanHandler</a></td></tr>
-<tr class="memitem:a3f2604934604f431dc0f48a84ee60f22 inherit pub_methods_class_can_handler"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_handler.html#a3f2604934604f431dc0f48a84ee60f22">CanHandler</a> ()</td></tr>
-<tr class="separator:a3f2604934604f431dc0f48a84ee60f22 inherit pub_methods_class_can_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a562a01205e76ff9d5b0f554cee1a446b inherit pub_methods_class_can_handler"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_handler.html#a562a01205e76ff9d5b0f554cee1a446b">~CanHandler</a> ()</td></tr>
-<tr class="separator:a562a01205e76ff9d5b0f554cee1a446b inherit pub_methods_class_can_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a53651a4aa1e88f3e442c054aae0a33d7 inherit pub_methods_class_can_handler"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_handler.html#a53651a4aa1e88f3e442c054aae0a33d7">canRxPendCallback</a> (CAN_HandleTypeDef *hcan, uint8_t *rxBuf, CAN_RxHeaderTypeDef *rxHeader, uint32_t fifo)</td></tr>
-<tr class="separator:a53651a4aa1e88f3e442c054aae0a33d7 inherit pub_methods_class_can_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a40cb9e6af6a482920327d741d4b423f5 inherit pub_methods_class_can_handler"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_handler.html#a40cb9e6af6a482920327d741d4b423f5">canRxFullCallback</a> (CAN_HandleTypeDef *hcan, uint32_t fifo)</td></tr>
-<tr class="separator:a40cb9e6af6a482920327d741d4b423f5 inherit pub_methods_class_can_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a105599e99ab0e4244a531c2286f2ffa2 inherit pub_methods_class_persistent_storage"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_persistent_storage.html#a105599e99ab0e4244a531c2286f2ffa2">saveFlash</a> ()</td></tr>
+<tr class="separator:a105599e99ab0e4244a531c2286f2ffa2 inherit pub_methods_class_persistent_storage"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8187136adfa89fca9ddee2578f6eb68 inherit pub_methods_class_persistent_storage"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_persistent_storage.html#aa8187136adfa89fca9ddee2578f6eb68">restoreFlash</a> ()</td></tr>
+<tr class="separator:aa8187136adfa89fca9ddee2578f6eb68 inherit pub_methods_class_persistent_storage"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5a3b2fe8e28d265bb818d084fa82039 inherit pub_methods_class_persistent_storage"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_persistent_storage.html#ad5a3b2fe8e28d265bb818d084fa82039">restoreFlashDelayed</a> ()</td></tr>
+<tr class="separator:ad5a3b2fe8e28d265bb818d084fa82039 inherit pub_methods_class_persistent_storage"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:adb39aafe38e2216e27539cd23978ff81"><td class="memItemLeft" align="right" valign="top">static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#adb39aafe38e2216e27539cd23978ff81">speedToPreset</a> (uint32_t speed)</td></tr>
-<tr class="separator:adb39aafe38e2216e27539cd23978ff81"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2e9cfe119f7581e24230c66839afc33b"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#a2e9cfe119f7581e24230c66839afc33b">presetToSpeed</a> (uint8_t preset)</td></tr>
-<tr class="separator:a2e9cfe119f7581e24230c66839afc33b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_static_methods_class_command_handler"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_class_command_handler')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="class_command_handler.html">CommandHandler</a></td></tr>
-<tr class="memitem:a2f1846340caca33036391050a3bfa785 inherit pub_static_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a2f1846340caca33036391050a3bfa785">logSerial</a> (std::string string)</td></tr>
-<tr class="memdesc:a2f1846340caca33036391050a3bfa785 inherit pub_static_methods_class_command_handler"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a log formatted sequence.  <a href="class_command_handler.html#a2f1846340caca33036391050a3bfa785">More...</a><br /></td></tr>
-<tr class="separator:a2f1846340caca33036391050a3bfa785 inherit pub_static_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7c81b3587ae6b875e4f9ec2b12c898f0 inherit pub_static_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a7c81b3587ae6b875e4f9ec2b12c898f0">logSerialDebug</a> (std::string string)</td></tr>
-<tr class="memdesc:a7c81b3587ae6b875e4f9ec2b12c898f0 inherit pub_static_methods_class_command_handler"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a log formatted sequence if debug is on.  <a href="class_command_handler.html#a7c81b3587ae6b875e4f9ec2b12c898f0">More...</a><br /></td></tr>
-<tr class="separator:a7c81b3587ae6b875e4f9ec2b12c898f0 inherit pub_static_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0ad3a15342dfe6bd3bc86527195ea54a inherit pub_static_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a0ad3a15342dfe6bd3bc86527195ea54a">logsEnabled</a> ()</td></tr>
-<tr class="separator:a0ad3a15342dfe6bd3bc86527195ea54a inherit pub_static_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a459fc5dbbc8c19107b5081ab640f8c33 inherit pub_static_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a459fc5dbbc8c19107b5081ab640f8c33">setLogsEnabled</a> (bool enabled)</td></tr>
-<tr class="separator:a459fc5dbbc8c19107b5081ab640f8c33 inherit pub_static_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af262ab189be012be1177f35d274daeab inherit pub_static_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#af262ab189be012be1177f35d274daeab">getClassIdFromName</a> (const char *<a class="el" href="_command_handler_8h.html#a13a18e5b49561a2f007205dc0afeea14ab068931cc450442b63f5b3d276ea4297">name</a>)</td></tr>
-<tr class="separator:af262ab189be012be1177f35d274daeab inherit pub_static_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a51521039233992858489e6adb18e1201 inherit pub_static_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">static const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a51521039233992858489e6adb18e1201">getClassNameFromId</a> (const uint32_t <a class="el" href="_command_handler_8h.html#a13a18e5b49561a2f007205dc0afeea14ab80bb7740288fda1f201890375a60c8f">id</a>)</td></tr>
-<tr class="separator:a51521039233992858489e6adb18e1201 inherit pub_static_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a92dfd54be6bd4837aba4fc9a955b6728 inherit pub_static_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_command_handler.html">CommandHandler</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a92dfd54be6bd4837aba4fc9a955b6728">getHandlerFromHandlerId</a> (const uint16_t cmdhandlerID)</td></tr>
-<tr class="separator:a92dfd54be6bd4837aba4fc9a955b6728 inherit pub_static_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae24b57ff98c8669ec3209d7ac2b4a8bc inherit pub_static_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_command_handler.html">CommandHandler</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#ae24b57ff98c8669ec3209d7ac2b4a8bc">getHandlerFromId</a> (const uint16_t <a class="el" href="_command_handler_8h.html#a13a18e5b49561a2f007205dc0afeea14ab80bb7740288fda1f201890375a60c8f">id</a>, const uint8_t <a class="el" href="_command_handler_8h.html#a13a18e5b49561a2f007205dc0afeea14a7123a699d77db6479a1d8ece2c4f1c16">instance</a>=0xFF)</td></tr>
-<tr class="separator:ae24b57ff98c8669ec3209d7ac2b4a8bc inherit pub_static_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6fd83685167b1a1e17e18cdcb4592eac inherit pub_static_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_command_handler.html">CommandHandler</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a6fd83685167b1a1e17e18cdcb4592eac">getHandlerFromClassName</a> (const char *<a class="el" href="_command_handler_8h.html#a13a18e5b49561a2f007205dc0afeea14ab068931cc450442b63f5b3d276ea4297">name</a>, const uint8_t <a class="el" href="_command_handler_8h.html#a13a18e5b49561a2f007205dc0afeea14a7123a699d77db6479a1d8ece2c4f1c16">instance</a>=0xFF)</td></tr>
-<tr class="separator:a6fd83685167b1a1e17e18cdcb4592eac inherit pub_static_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a107ec1d0a9489c6e5601e1227161e017 inherit pub_static_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; <a class="el" href="class_command_handler.html">CommandHandler</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a107ec1d0a9489c6e5601e1227161e017">getHandlersFromClassName</a> (const char *<a class="el" href="_command_handler_8h.html#a13a18e5b49561a2f007205dc0afeea14ab068931cc450442b63f5b3d276ea4297">name</a>)</td></tr>
-<tr class="separator:a107ec1d0a9489c6e5601e1227161e017 inherit pub_static_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aef887429e777b6fa4cdf45165c7fde91 inherit pub_static_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; <a class="el" href="class_command_handler.html">CommandHandler</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#aef887429e777b6fa4cdf45165c7fde91">getHandlersFromId</a> (const uint16_t <a class="el" href="_command_handler_8h.html#a13a18e5b49561a2f007205dc0afeea14ab80bb7740288fda1f201890375a60c8f">id</a>)</td></tr>
-<tr class="separator:aef887429e777b6fa4cdf45165c7fde91 inherit pub_static_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a563efae94fc4c4cd910a0feefb681df3 inherit pub_static_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a563efae94fc4c4cd910a0feefb681df3">isInHandlerList</a> (<a class="el" href="class_command_handler.html">CommandHandler</a> *handler)</td></tr>
-<tr class="separator:a563efae94fc4c4cd910a0feefb681df3 inherit pub_static_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adb22b24f51c53110d1275157b5d82fde inherit pub_static_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">static std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#adb22b24f51c53110d1275157b5d82fde">getAllHelpstrings</a> ()</td></tr>
-<tr class="separator:adb22b24f51c53110d1275157b5d82fde inherit pub_static_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af5a52ada34bde17d66b072d41aa96769 inherit pub_static_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; <a class="el" href="class_command_handler.html">CommandHandler</a> * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#af5a52ada34bde17d66b072d41aa96769">getCommandHandlers</a> ()</td></tr>
-<tr class="separator:af5a52ada34bde17d66b072d41aa96769 inherit pub_static_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5deca916348f55b7a6aaffc598d28c0b inherit pub_static_methods_class_command_handler"><td class="memTemplParams" colspan="2">template&lt;typename TVal &gt; </td></tr>
-<tr class="memitem:a5deca916348f55b7a6aaffc598d28c0b inherit pub_static_methods_class_command_handler"><td class="memTemplItemLeft" align="right" valign="top">static <a class="el" href="_command_handler_8h.html#aefaf83fec6a7da1d02ae7e912dd9a6d5">CommandStatus</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a5deca916348f55b7a6aaffc598d28c0b">handleGetSet</a> (const <a class="el" href="struct_parsed_command.html">ParsedCommand</a> &amp;cmd, std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;replies, TVal &amp;value)</td></tr>
-<tr class="separator:a5deca916348f55b7a6aaffc598d28c0b inherit pub_static_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acdb27df68d3ab32e1c47360930656ca1 inherit pub_static_methods_class_command_handler"><td class="memTemplParams" colspan="2">template&lt;typename TVal , class cls , class cls1 &gt; </td></tr>
-<tr class="memitem:acdb27df68d3ab32e1c47360930656ca1 inherit pub_static_methods_class_command_handler"><td class="memTemplItemLeft" align="right" valign="top">static <a class="el" href="_command_handler_8h.html#aefaf83fec6a7da1d02ae7e912dd9a6d5">CommandStatus</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_command_handler.html#acdb27df68d3ab32e1c47360930656ca1">handleGetSetFunc</a> (const <a class="el" href="struct_parsed_command.html">ParsedCommand</a> &amp;cmd, std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;replies, TVal &amp;value, void(cls1::*setfunc)(TVal), cls *obj)</td></tr>
-<tr class="separator:acdb27df68d3ab32e1c47360930656ca1 inherit pub_static_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a07d24bd9ab3d2d37c4541da554338c20 inherit pub_static_methods_class_command_handler"><td class="memTemplParams" colspan="2">template&lt;typename TVal , class cls , class cls1 , class cls2 &gt; </td></tr>
-<tr class="memitem:a07d24bd9ab3d2d37c4541da554338c20 inherit pub_static_methods_class_command_handler"><td class="memTemplItemLeft" align="right" valign="top">static <a class="el" href="_command_handler_8h.html#aefaf83fec6a7da1d02ae7e912dd9a6d5">CommandStatus</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a07d24bd9ab3d2d37c4541da554338c20">handleGetFuncSetFunc</a> (const <a class="el" href="struct_parsed_command.html">ParsedCommand</a> &amp;cmd, std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;replies, TVal(cls1::*getfunc)(), void(cls2::*setfunc)(TVal), cls *obj)</td></tr>
-<tr class="separator:a07d24bd9ab3d2d37c4541da554338c20 inherit pub_static_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae9a0eb7259f402ad1668908d9f8e2cb8 inherit pub_static_methods_class_command_handler"><td class="memTemplParams" colspan="2">template&lt;typename TVal , class cls , class cls1 &gt; </td></tr>
-<tr class="memitem:ae9a0eb7259f402ad1668908d9f8e2cb8 inherit pub_static_methods_class_command_handler"><td class="memTemplItemLeft" align="right" valign="top">static <a class="el" href="_command_handler_8h.html#aefaf83fec6a7da1d02ae7e912dd9a6d5">CommandStatus</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_command_handler.html#ae9a0eb7259f402ad1668908d9f8e2cb8">handleGetFuncSet</a> (const <a class="el" href="struct_parsed_command.html">ParsedCommand</a> &amp;cmd, std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;replies, TVal &amp;value, TVal(cls1::*getfunc)(), cls *obj)</td></tr>
-<tr class="separator:ae9a0eb7259f402ad1668908d9f8e2cb8 inherit pub_static_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2eac9b53112abf05bbf3f72966e764a8"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_c_a_n_port.html">CANPort</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#a2eac9b53112abf05bbf3f72966e764a8">handleToPort</a> (void *handle)</td></tr>
+<tr class="separator:a2eac9b53112abf05bbf3f72966e764a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_methods_class_persistent_storage"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_class_persistent_storage')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="class_persistent_storage.html">PersistentStorage</a></td></tr>
 <tr class="memitem:a14700f8511d8aaea5d5b29632b371eb9 inherit pub_static_methods_class_persistent_storage"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; <a class="el" href="class_persistent_storage.html">PersistentStorage</a> * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_persistent_storage.html#a14700f8511d8aaea5d5b29632b371eb9">getFlashHandlers</a> ()</td></tr>
 <tr class="separator:a14700f8511d8aaea5d5b29632b371eb9 inherit pub_static_methods_class_persistent_storage"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_static_methods_class_can_handler"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_class_can_handler')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="class_can_handler.html">CanHandler</a></td></tr>
-<tr class="memitem:a8ed97e1ea01b2899296ae4d702abb95b inherit pub_static_methods_class_can_handler"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; <a class="el" href="class_can_handler.html">CanHandler</a> * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_handler.html#a8ed97e1ea01b2899296ae4d702abb95b">getCANHandlers</a> ()</td></tr>
-<tr class="separator:a8ed97e1ea01b2899296ae4d702abb95b inherit pub_static_methods_class_can_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a234d2bb4384efe326c4f83b3c372e565 inherit pub_static_methods_class_persistent_storage"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_persistent_storage.html#a234d2bb4384efe326c4f83b3c372e565">restoreFlashStartupCb</a> ()</td></tr>
+<tr class="separator:a234d2bb4384efe326c4f83b3c372e565 inherit pub_static_methods_class_persistent_storage"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
-Static Public Attributes</h2></td></tr>
-<tr class="memitem:a6ae616d4ae83f93a87eba7d95feea721"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#a6ae616d4ae83f93a87eba7d95feea721">slaveFilterStart</a> = 14</td></tr>
-<tr class="separator:a6ae616d4ae83f93a87eba7d95feea721"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af32b50ed81078180d87c9d993ff42690"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="struct_class_identifier.html">ClassIdentifier</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#af32b50ed81078180d87c9d993ff42690">info</a></td></tr>
-<tr class="separator:af32b50ed81078180d87c9d993ff42690"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_static_attribs_class_command_handler"><td colspan="2" onclick="javascript:toggleInherit('pub_static_attribs_class_command_handler')"><img src="closed.png" alt="-"/>&#160;Static Public Attributes inherited from <a class="el" href="class_command_handler.html">CommandHandler</a></td></tr>
-<tr class="memitem:a9029c76e98bec126216b0e6e35c0c88a inherit pub_static_attribs_class_command_handler"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a9029c76e98bec126216b0e6e35c0c88a">logEnabled</a> = true</td></tr>
-<tr class="separator:a9029c76e98bec126216b0e6e35c0c88a inherit pub_static_attribs_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a0d7885c9eb135721c454e249670ac198"><td class="memItemLeft" align="right" valign="top">virtual void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#a0d7885c9eb135721c454e249670ac198">getHandle</a> ()=0</td></tr>
+<tr class="separator:a0d7885c9eb135721c454e249670ac198"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-types" name="pri-types"></a>
-Private Types</h2></td></tr>
-<tr class="memitem:a5b851cfc207f4822440f3f5be11d3241"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#a5b851cfc207f4822440f3f5be11d3241">CanPort_commands</a> : uint32_t { <a class="el" href="class_c_a_n_port.html#a5b851cfc207f4822440f3f5be11d3241ace4ef3ec98443ed10da505114b58f153">speed</a>
-, <a class="el" href="class_c_a_n_port.html#a5b851cfc207f4822440f3f5be11d3241a2541d938b0a58946090d7abdde0d3890">send</a>
-, <a class="el" href="class_c_a_n_port.html#a5b851cfc207f4822440f3f5be11d3241af5a8e923f8cd24b56b3bab32358cc58a">len</a>
- }</td></tr>
-<tr class="separator:a5b851cfc207f4822440f3f5be11d3241"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
-<tr class="memitem:ab5be5e68694818224fdc5f190977c97e"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#ab5be5e68694818224fdc5f190977c97e">speedPreset</a> = CANSPEEDPRESET_500</td></tr>
-<tr class="separator:ab5be5e68694818224fdc5f190977c97e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a101c18fab15f6f8b21f6a1516dd98a56"><td class="memItemLeft" align="right" valign="top">CAN_HandleTypeDef *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#a101c18fab15f6f8b21f6a1516dd98a56">hcan</a> = nullptr</td></tr>
-<tr class="separator:a101c18fab15f6f8b21f6a1516dd98a56"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad9d782daa3be39d4f4291ac4eba4608f"><td class="memItemLeft" align="right" valign="top">std::vector&lt; CAN_FilterTypeDef &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#ad9d782daa3be39d4f4291ac4eba4608f">canFilters</a></td></tr>
-<tr class="separator:ad9d782daa3be39d4f4291ac4eba4608f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a500ca459755cc2c8be248b24f10af5ae"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#a500ca459755cc2c8be248b24f10af5ae">txMailboxes</a> = 0</td></tr>
-<tr class="separator:a500ca459755cc2c8be248b24f10af5ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
 <tr class="memitem:a8c57c45de27614276918a25af743198e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classcpp__freertos_1_1_binary_semaphore.html">cpp_freertos::BinarySemaphore</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#a8c57c45de27614276918a25af743198e">semaphore</a> = <a class="el" href="classcpp__freertos_1_1_binary_semaphore.html">cpp_freertos::BinarySemaphore</a>(true)</td></tr>
 <tr class="separator:a8c57c45de27614276918a25af743198e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a25f236673b45afc6fb7ef267e99b2b79"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classcpp__freertos_1_1_binary_semaphore.html">cpp_freertos::BinarySemaphore</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#a25f236673b45afc6fb7ef267e99b2b79">configSem</a> = <a class="el" href="classcpp__freertos_1_1_binary_semaphore.html">cpp_freertos::BinarySemaphore</a>(true)</td></tr>
 <tr class="separator:a25f236673b45afc6fb7ef267e99b2b79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f4d6b6091bae3d82129463ab387bc11"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="class_c_a_n_port_hardware_config.html">CANPortHardwareConfig</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#a8f4d6b6091bae3d82129463ab387bc11">presets</a></td></tr>
+<tr class="memdesc:a8f4d6b6091bae3d82129463ab387bc11"><td class="mdescLeft">&#160;</td><td class="mdescRight">CAN port presets for different speeds. Hardware dependent.  <a href="class_c_a_n_port.html#a8f4d6b6091bae3d82129463ab387bc11">More...</a><br /></td></tr>
+<tr class="separator:a8f4d6b6091bae3d82129463ab387bc11"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9a02e93f7f522630b8fda9322b3691a9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#a9a02e93f7f522630b8fda9322b3691a9">isWaitingFlag</a> = false</td></tr>
 <tr class="separator:a9a02e93f7f522630b8fda9322b3691a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9acfc64f63cfefb13b396ef9fd792629"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="class_output_pin.html">OutputPin</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#a9acfc64f63cfefb13b396ef9fd792629">silentPin</a></td></tr>
-<tr class="separator:a9acfc64f63cfefb13b396ef9fd792629"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aea22a7073611a2cc39433e19f2a63bad"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#aea22a7073611a2cc39433e19f2a63bad">silent</a> = true</td></tr>
-<tr class="separator:aea22a7073611a2cc39433e19f2a63bad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a21bfc825e44a1eb82751abce3bfe7d8d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#a21bfc825e44a1eb82751abce3bfe7d8d">active</a> = false</td></tr>
-<tr class="separator:a21bfc825e44a1eb82751abce3bfe7d8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af642c5ba8293a4af7b75d4b953b3df48"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#af642c5ba8293a4af7b75d4b953b3df48">lastSentTime</a> = 0</td></tr>
-<tr class="separator:af642c5ba8293a4af7b75d4b953b3df48"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac5144ef8f20eecafd6fa44786a89be18"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#ac5144ef8f20eecafd6fa44786a89be18">portUsers</a> = 0</td></tr>
 <tr class="separator:ac5144ef8f20eecafd6fa44786a89be18"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d0039ced03b75ee7244ca0d34bc25af"><td class="memItemLeft" align="right" valign="top">CAN_TxHeaderTypeDef&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#a5d0039ced03b75ee7244ca0d34bc25af">header</a> = {0,0,0,CAN_RTR_DATA,8,(FunctionalState)0}</td></tr>
-<tr class="separator:a5d0039ced03b75ee7244ca0d34bc25af"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abbe3fb6c04a245bcb19ca277e96c7479"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#abbe3fb6c04a245bcb19ca277e96c7479">SpeedNames</a> = {&quot;50k&quot;,&quot;100k&quot;,&quot;125k&quot;,&quot;250k&quot;,&quot;500k&quot;,&quot;1000k&quot;}</td></tr>
-<tr class="separator:abbe3fb6c04a245bcb19ca277e96c7479"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_class_persistent_storage"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_class_persistent_storage')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="class_persistent_storage.html">PersistentStorage</a></td></tr>
+<tr class="memitem:a5c85ad9b726cba837b9c100d6752a8b6 inherit pro_attribs_class_persistent_storage"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_persistent_storage.html#a5c85ad9b726cba837b9c100d6752a8b6">restoreDelayedFlag</a> = false</td></tr>
+<tr class="separator:a5c85ad9b726cba837b9c100d6752a8b6 inherit pro_attribs_class_persistent_storage"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-static-attribs" name="pri-static-attribs"></a>
 Static Private Attributes</h2></td></tr>
-<tr class="memitem:a3329da21ae9197db38cdcce0f2e95180"><td class="memItemLeft" align="right" valign="top">static const uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#a3329da21ae9197db38cdcce0f2e95180">sendTimeout</a> = 20</td></tr>
-<tr class="separator:a3329da21ae9197db38cdcce0f2e95180"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0df1b5a12dda5dc98b2cda2bc93fd68"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; <a class="el" href="class_c_a_n_port.html">CANPort</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_n_port.html#ae0df1b5a12dda5dc98b2cda2bc93fd68">canPorts</a></td></tr>
+<tr class="separator:ae0df1b5a12dda5dc98b2cda2bc93fd68"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pro_methods_class_command_handler"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_class_command_handler')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="class_command_handler.html">CommandHandler</a></td></tr>
-<tr class="memitem:a6b21c926cfce2d16e63fe12f442f390e inherit pro_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a6b21c926cfce2d16e63fe12f442f390e">setInstance</a> (uint8_t <a class="el" href="_command_handler_8h.html#a13a18e5b49561a2f007205dc0afeea14a7123a699d77db6479a1d8ece2c4f1c16">instance</a>)</td></tr>
-<tr class="separator:a6b21c926cfce2d16e63fe12f442f390e inherit pro_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3de5a97bb00981074ef6ea85caea8093 inherit pro_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a3de5a97bb00981074ef6ea85caea8093">addCommandHandler</a> ()</td></tr>
-<tr class="separator:a3de5a97bb00981074ef6ea85caea8093 inherit pro_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adc82292657521596a2e77756886f95aa inherit pro_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#adc82292657521596a2e77756886f95aa">removeCommandHandler</a> ()</td></tr>
-<tr class="separator:adc82292657521596a2e77756886f95aa inherit pro_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_static_methods_class_command_handler"><td colspan="2" onclick="javascript:toggleInherit('pro_static_methods_class_command_handler')"><img src="closed.png" alt="-"/>&#160;Static Protected Member Functions inherited from <a class="el" href="class_command_handler.html">CommandHandler</a></td></tr>
-<tr class="memitem:a123585937cc70b6d4e77c024e138019f inherit pro_static_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; uint16_t &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a123585937cc70b6d4e77c024e138019f">getCommandHandlerIds</a> ()</td></tr>
-<tr class="separator:a123585937cc70b6d4e77c024e138019f inherit pro_static_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_attribs_class_command_handler"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_class_command_handler')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="class_command_handler.html">CommandHandler</a></td></tr>
-<tr class="memitem:a516d2f479602386f947b2ec00cb7d467 inherit pro_attribs_class_command_handler"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a516d2f479602386f947b2ec00cb7d467">commandsEnabled</a> = true</td></tr>
-<tr class="separator:a516d2f479602386f947b2ec00cb7d467 inherit pro_attribs_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3f584d2a8b93c309c2feaa538a1ed36d inherit pro_attribs_class_command_handler"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="class_cmd_handler_commanddef.html">CmdHandlerCommanddef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a3f584d2a8b93c309c2feaa538a1ed36d">registeredCommands</a></td></tr>
-<tr class="separator:a3f584d2a8b93c309c2feaa538a1ed36d inherit pro_attribs_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7421ca437044e8588b3fdf748ace166b inherit pro_attribs_class_command_handler"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_cmd_handler_info.html">CmdHandlerInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a7421ca437044e8588b3fdf748ace166b">cmdHandlerInfo</a></td></tr>
-<tr class="separator:a7421ca437044e8588b3fdf748ace166b inherit pro_attribs_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_static_attribs_class_persistent_storage"><td colspan="2" onclick="javascript:toggleInherit('pro_static_attribs_class_persistent_storage')"><img src="closed.png" alt="-"/>&#160;Static Protected Attributes inherited from <a class="el" href="class_persistent_storage.html">PersistentStorage</a></td></tr>
+<tr class="memitem:a8d98e194842128a2af817341eba58292 inherit pro_static_attribs_class_persistent_storage"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_persistent_storage.html#a8d98e194842128a2af817341eba58292">startupComplete</a> = false</td></tr>
+<tr class="separator:a8d98e194842128a2af817341eba58292 inherit pro_static_attribs_class_persistent_storage"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00036">36</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
-</div><h2 class="groupheader">Member Enumeration Documentation</h2>
-<a id="a5b851cfc207f4822440f3f5be11d3241" name="a5b851cfc207f4822440f3f5be11d3241"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5b851cfc207f4822440f3f5be11d3241">&#9670;&nbsp;</a></span>CanPort_commands</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum class <a class="el" href="class_c_a_n_port.html#a5b851cfc207f4822440f3f5be11d3241">CANPort::CanPort_commands</a> : uint32_t</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">strong</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a5b851cfc207f4822440f3f5be11d3241ace4ef3ec98443ed10da505114b58f153" name="a5b851cfc207f4822440f3f5be11d3241ace4ef3ec98443ed10da505114b58f153"></a>speed&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a5b851cfc207f4822440f3f5be11d3241a2541d938b0a58946090d7abdde0d3890" name="a5b851cfc207f4822440f3f5be11d3241a2541d938b0a58946090d7abdde0d3890"></a>send&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a5b851cfc207f4822440f3f5be11d3241af5a8e923f8cd24b56b3bab32358cc58a" name="a5b851cfc207f4822440f3f5be11d3241af5a8e923f8cd24b56b3bab32358cc58a"></a>len&#160;</td><td class="fielddoc"></td></tr>
-</table>
-
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00037">37</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a1fea1acd455f3b13f1cfd2ce676318cc" name="a1fea1acd455f3b13f1cfd2ce676318cc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1fea1acd455f3b13f1cfd2ce676318cc">&#9670;&nbsp;</a></span>CANPort() <span class="overload">[1/2]</span></h2>
+<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00119">119</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a97801bad4868b3175124f196086090ec" name="a97801bad4868b3175124f196086090ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a97801bad4868b3175124f196086090ec">&#9670;&nbsp;</a></span>CANPort()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -396,34 +221,14 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="memname">CANPort::CANPort </td>
           <td>(</td>
-          <td class="paramtype">CAN_HandleTypeDef &amp;&#160;</td>
-          <td class="paramname"><em>hcan</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8cpp_source.html#l00018">18</a> of file <a class="el" href="_c_a_n_8cpp_source.html">CAN.cpp</a>.</p>
-
-</div>
-</div>
-<a id="a4ed6f5de6ac22d3c52c4e6a41c973a48" name="a4ed6f5de6ac22d3c52c4e6a41c973a48"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4ed6f5de6ac22d3c52c4e6a41c973a48">&#9670;&nbsp;</a></span>CANPort() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">CANPort::CANPort </td>
-          <td>(</td>
-          <td class="paramtype">CAN_HandleTypeDef &amp;&#160;</td>
-          <td class="paramname"><em>hcan</em>, </td>
+          <td class="paramtype">const <a class="el" href="class_c_a_n_port_hardware_config.html">CANPortHardwareConfig</a> &amp;&#160;</td>
+          <td class="paramname"><em>presets</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="class_output_pin.html">OutputPin</a> *&#160;</td>
-          <td class="paramname"><em>silentPin</em>&#160;</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>instance</em> = <code>0</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -433,7 +238,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8cpp_source.html#l00026">26</a> of file <a class="el" href="_c_a_n_8cpp_source.html">CAN.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_c_a_n_8cpp_source.html#l00016">16</a> of file <a class="el" href="_c_a_n_8cpp_source.html">CAN.cpp</a>.</p>
 
 </div>
 </div>
@@ -460,53 +265,13 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8cpp_source.html#l00058">58</a> of file <a class="el" href="_c_a_n_8cpp_source.html">CAN.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_c_a_n_8cpp_source.html#l00019">19</a> of file <a class="el" href="_c_a_n_8cpp_source.html">CAN.cpp</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ae74a8c4b837a163a005b850c6c4a8ef9" name="ae74a8c4b837a163a005b850c6c4a8ef9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae74a8c4b837a163a005b850c6c4a8ef9">&#9670;&nbsp;</a></span>abortTxRequests()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void CANPort::abortTxRequests </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8cpp_source.html#l00268">268</a> of file <a class="el" href="_c_a_n_8cpp_source.html">CAN.cpp</a>.</p>
-
-</div>
-</div>
-<a id="a3ab8b5e4190bee6160b5d1a2eb1778a9" name="a3ab8b5e4190bee6160b5d1a2eb1778a9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3ab8b5e4190bee6160b5d1a2eb1778a9">&#9670;&nbsp;</a></span>addCanFilter()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int32_t CANPort::addCanFilter </td>
-          <td>(</td>
-          <td class="paramtype">CAN_FilterTypeDef&#160;</td>
-          <td class="paramname"><em>sFilterConfig</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >Adds a filter to the can handle Returns a free bank id if successfull and -1 if all banks are full Use the returned id to disable the filter again </p>
-
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8cpp_source.html#l00343">343</a> of file <a class="el" href="_c_a_n_8cpp_source.html">CAN.cpp</a>.</p>
-
-</div>
-</div>
-<a id="a9d3d3027cc83927ae0fdd6ffc7e9f101" name="a9d3d3027cc83927ae0fdd6ffc7e9f101"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9d3d3027cc83927ae0fdd6ffc7e9f101">&#9670;&nbsp;</a></span>canErrorCallback()</h2>
+<a id="ae25d3bf17fa3af35dfce86649004f6bf" name="ae25d3bf17fa3af35dfce86649004f6bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae25d3bf17fa3af35dfce86649004f6bf">&#9670;&nbsp;</a></span>abortTxRequests()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -515,187 +280,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void CANPort::canErrorCallback </td>
-          <td>(</td>
-          <td class="paramtype">CAN_HandleTypeDef *&#160;</td>
-          <td class="paramname"><em>hcan</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p ><a class="el" href="class_error.html">Error</a> during can transfer </p>
-
-<p>Reimplemented from <a class="el" href="class_can_handler.html#afbcdeeb42119dc4f9e844e40f7e777d5">CanHandler</a>.</p>
-
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8cpp_source.html#l00328">328</a> of file <a class="el" href="_c_a_n_8cpp_source.html">CAN.cpp</a>.</p>
-
-</div>
-</div>
-<a id="a15971a0ae68ffebfc3968578c3b24897" name="a15971a0ae68ffebfc3968578c3b24897"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a15971a0ae68ffebfc3968578c3b24897">&#9670;&nbsp;</a></span>canTxAbortCallback()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void CANPort::canTxAbortCallback </td>
-          <td>(</td>
-          <td class="paramtype">CAN_HandleTypeDef *&#160;</td>
-          <td class="paramname"><em>hcan</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>mailbox</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p >CAN transmission aborted </p>
-
-<p>Reimplemented from <a class="el" href="class_can_handler.html#a0e2267410edc1d3f36bf8cb228ff458b">CanHandler</a>.</p>
-
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8cpp_source.html#l00320">320</a> of file <a class="el" href="_c_a_n_8cpp_source.html">CAN.cpp</a>.</p>
-
-</div>
-</div>
-<a id="a7d06609e307f98cc14a030efee41b7a0" name="a7d06609e307f98cc14a030efee41b7a0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7d06609e307f98cc14a030efee41b7a0">&#9670;&nbsp;</a></span>canTxCpltCallback()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void CANPort::canTxCpltCallback </td>
-          <td>(</td>
-          <td class="paramtype">CAN_HandleTypeDef *&#160;</td>
-          <td class="paramname"><em>hcan</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>mailbox</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p >CAN transmission complete </p>
-
-<p>Reimplemented from <a class="el" href="class_can_handler.html#a12401bc2ece26ccb4adf12ec833276c8">CanHandler</a>.</p>
-
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8cpp_source.html#l00311">311</a> of file <a class="el" href="_c_a_n_8cpp_source.html">CAN.cpp</a>.</p>
-
-</div>
-</div>
-<a id="af90cdc484941f6cf2cda7b217c5aefee" name="af90cdc484941f6cf2cda7b217c5aefee"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af90cdc484941f6cf2cda7b217c5aefee">&#9670;&nbsp;</a></span>command()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="_command_handler_8h.html#aefaf83fec6a7da1d02ae7e912dd9a6d5">CommandStatus</a> CANPort::command </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="struct_parsed_command.html">ParsedCommand</a> &amp;&#160;</td>
-          <td class="paramname"><em>cmd</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;&#160;</td>
-          <td class="paramname"><em>replies</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">cmd</td><td>The parsed command to be executed. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">replies</td><td>A vector to return one or multiple reply objects into. Replies to the interface will be generated based on the reply objects. A string reply may not contain start, end and separation markers: [,],| Other characters are allowed. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Reimplemented from <a class="el" href="class_command_handler.html#a8d2531d579c03d6672495ccb57f5ffb3">CommandHandler</a>.</p>
-
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8cpp_source.html#l00397">397</a> of file <a class="el" href="_c_a_n_8cpp_source.html">CAN.cpp</a>.</p>
-
-</div>
-</div>
-<a id="a3760a7620954fc2a5a3fac8365bdc483" name="a3760a7620954fc2a5a3fac8365bdc483"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3760a7620954fc2a5a3fac8365bdc483">&#9670;&nbsp;</a></span>freePort()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void CANPort::freePort </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >Signals that the port is not needed anymore. Decrements the user counter </p>
-
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8cpp_source.html#l00085">85</a> of file <a class="el" href="_c_a_n_8cpp_source.html">CAN.cpp</a>.</p>
-
-</div>
-</div>
-<a id="a77644684b44dd171743d14cf3a1f2738" name="a77644684b44dd171743d14cf3a1f2738"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a77644684b44dd171743d14cf3a1f2738">&#9670;&nbsp;</a></span>getClassType()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="_class_i_ds_8h.html#a79467dc849dd02adbaa4373bbd7aba75">ClassType</a> CANPort::getClassType </td>
+          <td class="memname">virtual void CANPort::abortTxRequests </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -703,20 +288,18 @@ Additional Inherited Members</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
-<p >Type of this class. Mainclass, motordriver... Should be implemented by the parent class so it is not in the info struct </p>
+<p >Stops and clears pending requests if port is stuck </p>
 
-<p>Reimplemented from <a class="el" href="class_command_handler.html#a59474bca13e1cc8a8e0e58c47cdce539">CommandHandler</a>.</p>
-
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00084">84</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
+<p>Implemented in <a class="el" href="class_c_a_n_port__2_b.html#af685c0016985e3102068d155291f841c">CANPort_2B</a>.</p>
 
 </div>
 </div>
-<a id="a7e53af7b848b65b11c221dcd5043e698" name="a7e53af7b848b65b11c221dcd5043e698"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7e53af7b848b65b11c221dcd5043e698">&#9670;&nbsp;</a></span>getInfo()</h2>
+<a id="aaa781b7e89a281285e982bc0d1583a6b" name="aaa781b7e89a281285e982bc0d1583a6b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa781b7e89a281285e982bc0d1583a6b">&#9670;&nbsp;</a></span>addCanFilter()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -725,7 +308,35 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="struct_class_identifier.html">ClassIdentifier</a> CANPort::getInfo </td>
+          <td class="memname">virtual int32_t CANPort::addCanFilter </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_c_a_n__filter.html">CAN_filter</a>&#160;</td>
+          <td class="paramname"><em>filter</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implemented in <a class="el" href="class_c_a_n_port__2_b.html#a7784fa845483a38e6b6becd1b55aa211">CANPort_2B</a>.</p>
+
+</div>
+</div>
+<a id="a22d159c7a136bc3ac2683603bbdf2df7" name="a22d159c7a136bc3ac2683603bbdf2df7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a22d159c7a136bc3ac2683603bbdf2df7">&#9670;&nbsp;</a></span>freePort()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void CANPort::freePort </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -738,16 +349,12 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Command handlers always have class infos. Works well with <a class="el" href="class_choosable_class.html">ChoosableClass</a>. </p>
-
-<p>Implements <a class="el" href="class_command_handler.html#a6d4dd2900284fea12f53ca1e513be856">CommandHandler</a>.</p>
-
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00083">83</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00164">164</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
 
 </div>
 </div>
-<a id="af0a1c094c7431aeebbd869075b81b45b" name="af0a1c094c7431aeebbd869075b81b45b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af0a1c094c7431aeebbd869075b81b45b">&#9670;&nbsp;</a></span>getPortUsers()</h2>
+<a id="a0d7885c9eb135721c454e249670ac198" name="a0d7885c9eb135721c454e249670ac198"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0d7885c9eb135721c454e249670ac198">&#9670;&nbsp;</a></span>getHandle()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -756,7 +363,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int32_t CANPort::getPortUsers </td>
+          <td class="memname">virtual void * CANPort::getHandle </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -764,74 +371,17 @@ Additional Inherited Members</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">pure virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00048">48</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
+<p>Implemented in <a class="el" href="class_c_a_n_port__2_b.html#a3bdf48243821baa546cddf03f6af0969">CANPort_2B</a>.</p>
 
 </div>
 </div>
-<a id="a7139a714f033aca9676d6ef101cd3a88" name="a7139a714f033aca9676d6ef101cd3a88"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7139a714f033aca9676d6ef101cd3a88">&#9670;&nbsp;</a></span>getSpeed()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint32_t CANPort::getSpeed </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8cpp_source.html#l00123">123</a> of file <a class="el" href="_c_a_n_8cpp_source.html">CAN.cpp</a>.</p>
-
-</div>
-</div>
-<a id="ab0ac86f6557a081022363dd14f4ad9d6" name="ab0ac86f6557a081022363dd14f4ad9d6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab0ac86f6557a081022363dd14f4ad9d6">&#9670;&nbsp;</a></span>getSpeedPreset()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint8_t CANPort::getSpeedPreset </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8cpp_source.html#l00127">127</a> of file <a class="el" href="_c_a_n_8cpp_source.html">CAN.cpp</a>.</p>
-
-</div>
-</div>
-<a id="a1b5be52564d6de5af058e78e0eda0b3a" name="a1b5be52564d6de5af058e78e0eda0b3a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1b5be52564d6de5af058e78e0eda0b3a">&#9670;&nbsp;</a></span>giveSemaphore()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void CANPort::giveSemaphore </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8cpp_source.html#l00239">239</a> of file <a class="el" href="_c_a_n_8cpp_source.html">CAN.cpp</a>.</p>
-
-</div>
-</div>
-<a id="a2e9cfe119f7581e24230c66839afc33b" name="a2e9cfe119f7581e24230c66839afc33b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2e9cfe119f7581e24230c66839afc33b">&#9670;&nbsp;</a></span>presetToSpeed()</h2>
+<a id="a6f09abe145e136ad4ea7eddf33dc3527" name="a6f09abe145e136ad4ea7eddf33dc3527"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f09abe145e136ad4ea7eddf33dc3527">&#9670;&nbsp;</a></span>getPortUsers()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -840,10 +390,118 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">uint32_t CANPort::presetToSpeed </td>
+          <td class="memname">virtual int32_t CANPort::getPortUsers </td>
           <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>preset</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00158">158</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
+
+</div>
+</div>
+<a id="a92f4a2697ee6bfe642ab5ad68616e067" name="a92f4a2697ee6bfe642ab5ad68616e067"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a92f4a2697ee6bfe642ab5ad68616e067">&#9670;&nbsp;</a></span>getSpeed()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual uint32_t CANPort::getSpeed </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implemented in <a class="el" href="class_c_a_n_port__2_b.html#abac85ba6058ca0f3470b6ea2abb4ffe9">CANPort_2B</a>.</p>
+
+</div>
+</div>
+<a id="a2492f60561901ac7d3807010bc01b478" name="a2492f60561901ac7d3807010bc01b478"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2492f60561901ac7d3807010bc01b478">&#9670;&nbsp;</a></span>getSpeedPreset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual uint8_t CANPort::getSpeedPreset </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implemented in <a class="el" href="class_c_a_n_port__2_b.html#ac437a119de043e73eedb7f64d9aa2301">CANPort_2B</a>.</p>
+
+</div>
+</div>
+<a id="a1e5fc1083c1b26325ea1e38570c98f3c" name="a1e5fc1083c1b26325ea1e38570c98f3c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e5fc1083c1b26325ea1e38570c98f3c">&#9670;&nbsp;</a></span>giveSemaphore()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void CANPort::giveSemaphore </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00173">173</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
+
+</div>
+</div>
+<a id="a2eac9b53112abf05bbf3f72966e764a8" name="a2eac9b53112abf05bbf3f72966e764a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2eac9b53112abf05bbf3f72966e764a8">&#9670;&nbsp;</a></span>handleToPort()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_c_a_n_port.html">CANPort</a> * CANPort::handleToPort </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>handle</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -853,54 +511,71 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p >Converts a preset to bits/s </p>
 
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8cpp_source.html#l00171">171</a> of file <a class="el" href="_c_a_n_8cpp_source.html">CAN.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_c_a_n_8cpp_source.html#l00023">23</a> of file <a class="el" href="_c_a_n_8cpp_source.html">CAN.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a4764905f8f0e22f2b9ead5dfcd155ce5" name="a4764905f8f0e22f2b9ead5dfcd155ce5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4764905f8f0e22f2b9ead5dfcd155ce5">&#9670;&nbsp;</a></span>registerCommands()</h2>
+<a id="ae51530dc123a367cb79ddf9c47c85747" name="ae51530dc123a367cb79ddf9c47c85747"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae51530dc123a367cb79ddf9c47c85747">&#9670;&nbsp;</a></span>presetToSpeed()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void CANPort::registerCommands </td>
+          <td class="memname">virtual uint32_t CANPort::presetToSpeed </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>preset</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8cpp_source.html#l00032">32</a> of file <a class="el" href="_c_a_n_8cpp_source.html">CAN.cpp</a>.</p>
+<p>Gets speed for a preset index. </p>
+
+<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00198">198</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
 
 </div>
 </div>
-<a id="a99de92134ef744aa006be6027b954099" name="a99de92134ef744aa006be6027b954099"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a99de92134ef744aa006be6027b954099">&#9670;&nbsp;</a></span>removeCanFilter()</h2>
+<a id="af0474cd1f09755dbd2dd4883703bd696" name="af0474cd1f09755dbd2dd4883703bd696"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af0474cd1f09755dbd2dd4883703bd696">&#9670;&nbsp;</a></span>removeCanFilter()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void CANPort::removeCanFilter </td>
+          <td class="memname">virtual void CANPort::removeCanFilter </td>
           <td>(</td>
           <td class="paramtype">uint8_t&#160;</td>
           <td class="paramname"><em>filterId</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
-<p >Disables a can filter Use the id returned by the addCanFilter function </p>
 
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8cpp_source.html#l00383">383</a> of file <a class="el" href="_c_a_n_8cpp_source.html">CAN.cpp</a>.</p>
+<p>Implemented in <a class="el" href="class_c_a_n_port__2_b.html#af6292c7ec0801ebfb0c5f742249488c3">CANPort_2B</a>.</p>
 
 </div>
 </div>
-<a id="a3d97cc00a18929b887ac61f28c88f92d" name="a3d97cc00a18929b887ac61f28c88f92d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3d97cc00a18929b887ac61f28c88f92d">&#9670;&nbsp;</a></span>restoreFlash()</h2>
+<a id="af0dc0a0abf987199f83e5ffec8031481" name="af0dc0a0abf987199f83e5ffec8031481"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af0dc0a0abf987199f83e5ffec8031481">&#9670;&nbsp;</a></span>sendMessage() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -909,87 +584,9 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void CANPort::restoreFlash </td>
+          <td class="memname">virtual bool CANPort::sendMessage </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p >Should be used to restore settings at startup. This is not automatically called and should be called when appropriate. Normally this is done in the constructor of the class </p>
-
-<p>Reimplemented from <a class="el" href="class_persistent_storage.html#aa8187136adfa89fca9ddee2578f6eb68">PersistentStorage</a>.</p>
-
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8cpp_source.html#l00047">47</a> of file <a class="el" href="_c_a_n_8cpp_source.html">CAN.cpp</a>.</p>
-
-</div>
-</div>
-<a id="a4c4f33ab2fedd391e42371f05af938f4" name="a4c4f33ab2fedd391e42371f05af938f4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4c4f33ab2fedd391e42371f05af938f4">&#9670;&nbsp;</a></span>saveFlash()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void CANPort::saveFlash </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p >Called when the user uses the "save" command and presses the save button in the configurator Automatically called by the command parser thread for every class that inherits from <a class="el" href="class_persistent_storage.html">PersistentStorage</a> </p>
-
-<p>Reimplemented from <a class="el" href="class_persistent_storage.html#a105599e99ab0e4244a531c2286f2ffa2">PersistentStorage</a>.</p>
-
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8cpp_source.html#l00039">39</a> of file <a class="el" href="_c_a_n_8cpp_source.html">CAN.cpp</a>.</p>
-
-</div>
-</div>
-<a id="ab49f533210d669e8f994cf77a3c7a34f" name="ab49f533210d669e8f994cf77a3c7a34f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab49f533210d669e8f994cf77a3c7a34f">&#9670;&nbsp;</a></span>sendMessage() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool CANPort::sendMessage </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="struct_c_a_n__tx__msg.html">CAN_tx_msg</a> &amp;&#160;</td>
-          <td class="paramname"><em>msg</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >Transmits a CAN frame on this port Wraps the internal transmit function </p>
-
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8cpp_source.html#l00264">264</a> of file <a class="el" href="_c_a_n_8cpp_source.html">CAN.cpp</a>.</p>
-
-</div>
-</div>
-<a id="ab53e7d805b1ec3a6f7544fb639fbca80" name="ab53e7d805b1ec3a6f7544fb639fbca80"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab53e7d805b1ec3a6f7544fb639fbca80">&#9670;&nbsp;</a></span>sendMessage() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool CANPort::sendMessage </td>
-          <td>(</td>
-          <td class="paramtype">CAN_TxHeaderTypeDef *&#160;</td>
+          <td class="paramtype"><a class="el" href="struct_c_a_n__msg__header__tx.html">CAN_msg_header_tx</a> *&#160;</td>
           <td class="paramname"><em>pHeader</em>, </td>
         </tr>
         <tr>
@@ -1010,78 +607,131 @@ Additional Inherited Members</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
-<p >Transmits a CAN frame with separate data and header settings </p>
 
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8cpp_source.html#l00275">275</a> of file <a class="el" href="_c_a_n_8cpp_source.html">CAN.cpp</a>.</p>
+<p>Implemented in <a class="el" href="class_c_a_n_port__2_b.html#abdb8ffc44b4b4f2942657d008ab5bd12">CANPort_2B</a>.</p>
 
 </div>
 </div>
-<a id="afb9ab4dfdf4c3956800c4248f2000968" name="afb9ab4dfdf4c3956800c4248f2000968"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afb9ab4dfdf4c3956800c4248f2000968">&#9670;&nbsp;</a></span>setSilentMode()</h2>
+<a id="aaa94d97e71bdb4408339db8a03dab8d3" name="aaa94d97e71bdb4408339db8a03dab8d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa94d97e71bdb4408339db8a03dab8d3">&#9670;&nbsp;</a></span>sendMessage() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void CANPort::setSilentMode </td>
+          <td class="memname">virtual bool CANPort::sendMessage </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_c_a_n__tx__msg.html">CAN_tx_msg</a> &amp;&#160;</td>
+          <td class="paramname"><em>msg</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implemented in <a class="el" href="class_c_a_n_port__2_b.html#a14b73375163705177c7e9d9d3adecd26">CANPort_2B</a>.</p>
+
+</div>
+</div>
+<a id="af4ad84b76f50a16c4f766779ffb5a65e" name="af4ad84b76f50a16c4f766779ffb5a65e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af4ad84b76f50a16c4f766779ffb5a65e">&#9670;&nbsp;</a></span>setSilentMode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void CANPort::setSilentMode </td>
           <td>(</td>
           <td class="paramtype">bool&#160;</td>
           <td class="paramname"><em>silent</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
-<p >Sets the can port passive if a transceiver with silent mode is available </p>
 
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8cpp_source.html#l00253">253</a> of file <a class="el" href="_c_a_n_8cpp_source.html">CAN.cpp</a>.</p>
+<p>Implemented in <a class="el" href="class_c_a_n_port__2_b.html#a9653e144e300f5364509c2354042d605">CANPort_2B</a>.</p>
 
 </div>
 </div>
-<a id="ae9eb0b0c8fb9b7df692b13177e156d97" name="ae9eb0b0c8fb9b7df692b13177e156d97"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae9eb0b0c8fb9b7df692b13177e156d97">&#9670;&nbsp;</a></span>setSpeed()</h2>
+<a id="aaeb628e4c5bedecf22581ed2d31697b5" name="aaeb628e4c5bedecf22581ed2d31697b5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaeb628e4c5bedecf22581ed2d31697b5">&#9670;&nbsp;</a></span>setSpeed()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void CANPort::setSpeed </td>
+          <td class="memname">virtual void CANPort::setSpeed </td>
           <td>(</td>
           <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>speed</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
-<p >Changes the speed of the CAN port in bits/s Must match a preset speed </p>
 
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8cpp_source.html#l00220">220</a> of file <a class="el" href="_c_a_n_8cpp_source.html">CAN.cpp</a>.</p>
+<p>Implemented in <a class="el" href="class_c_a_n_port__2_b.html#ac1f213836aadf6c8f2f6166cb44dc90a">CANPort_2B</a>.</p>
 
 </div>
 </div>
-<a id="a819cdefc5c8098eb5aa85c5358bc8772" name="a819cdefc5c8098eb5aa85c5358bc8772"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a819cdefc5c8098eb5aa85c5358bc8772">&#9670;&nbsp;</a></span>setSpeedPreset()</h2>
+<a id="a624d33b6405c609c437162e8dcf59ebb" name="a624d33b6405c609c437162e8dcf59ebb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a624d33b6405c609c437162e8dcf59ebb">&#9670;&nbsp;</a></span>setSpeedPreset()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void CANPort::setSpeedPreset </td>
+          <td class="memname">virtual void CANPort::setSpeedPreset </td>
           <td>(</td>
           <td class="paramtype">uint8_t&#160;</td>
           <td class="paramname"><em>preset</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
-<p >Changes the speed of the CAN port to a preset </p>
 
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8cpp_source.html#l00201">201</a> of file <a class="el" href="_c_a_n_8cpp_source.html">CAN.cpp</a>.</p>
+<p>Implemented in <a class="el" href="class_c_a_n_port__2_b.html#a4750b04df05a02552c468ecd47ca5f53">CANPort_2B</a>.</p>
 
 </div>
 </div>
-<a id="adb39aafe38e2216e27539cd23978ff81" name="adb39aafe38e2216e27539cd23978ff81"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adb39aafe38e2216e27539cd23978ff81">&#9670;&nbsp;</a></span>speedToPreset()</h2>
+<a id="a21885606a2a557a3fbf10151b81a7052" name="a21885606a2a557a3fbf10151b81a7052"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a21885606a2a557a3fbf10151b81a7052">&#9670;&nbsp;</a></span>speedToPreset()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1090,7 +740,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">uint8_t CANPort::speedToPreset </td>
+          <td class="memname">virtual uint8_t CANPort::speedToPreset </td>
           <td>(</td>
           <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>speed</em></td><td>)</td>
@@ -1099,99 +749,131 @@ Additional Inherited Members</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
-<p >Converts a numeric speed in bits/s to the matching preset ID </p>
 
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8cpp_source.html#l00134">134</a> of file <a class="el" href="_c_a_n_8cpp_source.html">CAN.cpp</a>.</p>
+<p>Gets preset index for a speed. </p>
+
+<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00197">197</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
 
 </div>
 </div>
-<a id="a19b2687d43a45e46bb387fe3f82cd027" name="a19b2687d43a45e46bb387fe3f82cd027"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a19b2687d43a45e46bb387fe3f82cd027">&#9670;&nbsp;</a></span>start()</h2>
+<a id="a3bdcf666110f0485b84f04977a248e0e" name="a3bdcf666110f0485b84f04977a248e0e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3bdcf666110f0485b84f04977a248e0e">&#9670;&nbsp;</a></span>start()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool CANPort::start </td>
+          <td class="memname">virtual bool CANPort::start </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
-<p >Enables the can port </p>
+<p >Sets up and starts the CAN port </p>
 
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8cpp_source.html#l00098">98</a> of file <a class="el" href="_c_a_n_8cpp_source.html">CAN.cpp</a>.</p>
+<p>Implemented in <a class="el" href="class_c_a_n_port__2_b.html#a1a77fe43092355cfbe2375acf8f66016">CANPort_2B</a>.</p>
 
 </div>
 </div>
-<a id="a42a0326a7a5be12d16bc36180a610dba" name="a42a0326a7a5be12d16bc36180a610dba"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a42a0326a7a5be12d16bc36180a610dba">&#9670;&nbsp;</a></span>stop()</h2>
+<a id="ac72edd22f1dc69e82cd7e9ec54f9c559" name="ac72edd22f1dc69e82cd7e9ec54f9c559"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac72edd22f1dc69e82cd7e9ec54f9c559">&#9670;&nbsp;</a></span>stop()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool CANPort::stop </td>
+          <td class="memname">virtual bool CANPort::stop </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
-<p >Disables the can port </p>
+<p >Stops the can port and releases the bus </p>
 
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8cpp_source.html#l00113">113</a> of file <a class="el" href="_c_a_n_8cpp_source.html">CAN.cpp</a>.</p>
+<p>Implemented in <a class="el" href="class_c_a_n_port__2_b.html#a17fe16c56e618277c94c0e806ba1c8a7">CANPort_2B</a>.</p>
 
 </div>
 </div>
-<a id="a0beff1d53a9065ff33455811b5c495f5" name="a0beff1d53a9065ff33455811b5c495f5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0beff1d53a9065ff33455811b5c495f5">&#9670;&nbsp;</a></span>takePort()</h2>
+<a id="a3302e9909b169a5d67c4d7ba867c5a3c" name="a3302e9909b169a5d67c4d7ba867c5a3c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3302e9909b169a5d67c4d7ba867c5a3c">&#9670;&nbsp;</a></span>takePort()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void CANPort::takePort </td>
+          <td class="memname">virtual void CANPort::takePort </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
-<p >Signals that this port is being used. Increments the user counter </p>
 
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8cpp_source.html#l00075">75</a> of file <a class="el" href="_c_a_n_8cpp_source.html">CAN.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00159">159</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
 
 </div>
 </div>
-<a id="a690007b3eaa6451c92666adb82b255df" name="a690007b3eaa6451c92666adb82b255df"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a690007b3eaa6451c92666adb82b255df">&#9670;&nbsp;</a></span>takeSemaphore()</h2>
+<a id="a2f407d0759b58c917135f8cd6e09b48d" name="a2f407d0759b58c917135f8cd6e09b48d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2f407d0759b58c917135f8cd6e09b48d">&#9670;&nbsp;</a></span>takeSemaphore()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool CANPort::takeSemaphore </td>
+          <td class="memname">virtual bool CANPort::takeSemaphore </td>
           <td>(</td>
           <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>delay</em> = <code>portMAX_DELAY</code></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8cpp_source.html#l00225">225</a> of file <a class="el" href="_c_a_n_8cpp_source.html">CAN.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00183">183</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a21bfc825e44a1eb82751abce3bfe7d8d" name="a21bfc825e44a1eb82751abce3bfe7d8d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a21bfc825e44a1eb82751abce3bfe7d8d">&#9670;&nbsp;</a></span>active</h2>
+<a id="ae0df1b5a12dda5dc98b2cda2bc93fd68" name="ae0df1b5a12dda5dc98b2cda2bc93fd68"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae0df1b5a12dda5dc98b2cda2bc93fd68">&#9670;&nbsp;</a></span>canPorts</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1200,41 +882,17 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool CANPort::active = false</td>
+          <td class="memname">std::vector&lt; <a class="el" href="class_c_a_n_port.html">CANPort</a> * &gt; CANPort::canPorts</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00097">97</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
-
-</div>
-</div>
-<a id="ad9d782daa3be39d4f4291ac4eba4608f" name="ad9d782daa3be39d4f4291ac4eba4608f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad9d782daa3be39d4f4291ac4eba4608f">&#9670;&nbsp;</a></span>canFilters</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt;CAN_FilterTypeDef&gt; CANPort::canFilters</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00089">89</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00120">120</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
 
 </div>
 </div>
@@ -1253,89 +911,12 @@ Additional Inherited Members</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00093">93</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
-
-</div>
-</div>
-<a id="a101c18fab15f6f8b21f6a1516dd98a56" name="a101c18fab15f6f8b21f6a1516dd98a56"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a101c18fab15f6f8b21f6a1516dd98a56">&#9670;&nbsp;</a></span>hcan</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">CAN_HandleTypeDef* CANPort::hcan = nullptr</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00088">88</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
-
-</div>
-</div>
-<a id="a5d0039ced03b75ee7244ca0d34bc25af" name="a5d0039ced03b75ee7244ca0d34bc25af"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5d0039ced03b75ee7244ca0d34bc25af">&#9670;&nbsp;</a></span>header</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">CAN_TxHeaderTypeDef CANPort::header = {0,0,0,CAN_RTR_DATA,8,(FunctionalState)0}</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00104">104</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
-
-</div>
-</div>
-<a id="af32b50ed81078180d87c9d993ff42690" name="af32b50ed81078180d87c9d993ff42690"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af32b50ed81078180d87c9d993ff42690">&#9670;&nbsp;</a></span>info</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="struct_class_identifier.html">ClassIdentifier</a> CANPort::info</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= {</div>
-<div class="line">    .name = <span class="stringliteral">&quot;Can port&quot;</span>,</div>
-<div class="line">    .id = CLSID_CANPORT,</div>
-<div class="line">    .visibility = <a class="code hl_enumvalue" href="_choosable_class_8h.html#aa3a363b83e4ed5a23cf7398fcf8bae0ca46cf0e59759c9b7f1112ca4b174343ef">ClassVisibility::visible</a>}</div>
-<div class="ttc" id="a_choosable_class_8h_html_aa3a363b83e4ed5a23cf7398fcf8bae0ca46cf0e59759c9b7f1112ca4b174343ef"><div class="ttname"><a href="_choosable_class_8h.html#aa3a363b83e4ed5a23cf7398fcf8bae0ca46cf0e59759c9b7f1112ca4b174343ef">ClassVisibility::visible</a></div><div class="ttdeci">@ visible</div></div>
-</div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00082">82</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00202">202</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
 
 </div>
 </div>
@@ -1354,36 +935,12 @@ Additional Inherited Members</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00094">94</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
-
-</div>
-</div>
-<a id="af642c5ba8293a4af7b75d4b953b3df48" name="af642c5ba8293a4af7b75d4b953b3df48"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af642c5ba8293a4af7b75d4b953b3df48">&#9670;&nbsp;</a></span>lastSentTime</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint32_t CANPort::lastSentTime = 0</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00099">99</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00204">204</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
 
 </div>
 </div>
@@ -1402,12 +959,38 @@ Additional Inherited Members</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00100">100</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00205">205</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
+
+</div>
+</div>
+<a id="a8f4d6b6091bae3d82129463ab387bc11" name="a8f4d6b6091bae3d82129463ab387bc11"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8f4d6b6091bae3d82129463ab387bc11">&#9670;&nbsp;</a></span>presets</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="class_c_a_n_port_hardware_config.html">CANPortHardwareConfig</a>&amp; CANPort::presets</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>CAN port presets for different speeds. Hardware dependent. </p>
+
+<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00203">203</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
 
 </div>
 </div>
@@ -1426,180 +1009,12 @@ Additional Inherited Members</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00092">92</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
-
-</div>
-</div>
-<a id="a3329da21ae9197db38cdcce0f2e95180" name="a3329da21ae9197db38cdcce0f2e95180"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3329da21ae9197db38cdcce0f2e95180">&#9670;&nbsp;</a></span>sendTimeout</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const uint32_t CANPort::sendTimeout = 20</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00102">102</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
-
-</div>
-</div>
-<a id="aea22a7073611a2cc39433e19f2a63bad" name="aea22a7073611a2cc39433e19f2a63bad"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aea22a7073611a2cc39433e19f2a63bad">&#9670;&nbsp;</a></span>silent</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool CANPort::silent = true</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00096">96</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
-
-</div>
-</div>
-<a id="a9acfc64f63cfefb13b396ef9fd792629" name="a9acfc64f63cfefb13b396ef9fd792629"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9acfc64f63cfefb13b396ef9fd792629">&#9670;&nbsp;</a></span>silentPin</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="class_output_pin.html">OutputPin</a>* CANPort::silentPin</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00095">95</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
-
-</div>
-</div>
-<a id="a6ae616d4ae83f93a87eba7d95feea721" name="a6ae616d4ae83f93a87eba7d95feea721"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6ae616d4ae83f93a87eba7d95feea721">&#9670;&nbsp;</a></span>slaveFilterStart</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const uint8_t CANPort::slaveFilterStart = 14</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00067">67</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
-
-</div>
-</div>
-<a id="abbe3fb6c04a245bcb19ca277e96c7479" name="abbe3fb6c04a245bcb19ca277e96c7479"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abbe3fb6c04a245bcb19ca277e96c7479">&#9670;&nbsp;</a></span>SpeedNames</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const std::vector&lt;std::string&gt; CANPort::SpeedNames = {&quot;50k&quot;,&quot;100k&quot;,&quot;125k&quot;,&quot;250k&quot;,&quot;500k&quot;,&quot;1000k&quot;}</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00106">106</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
-
-</div>
-</div>
-<a id="ab5be5e68694818224fdc5f190977c97e" name="ab5be5e68694818224fdc5f190977c97e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab5be5e68694818224fdc5f190977c97e">&#9670;&nbsp;</a></span>speedPreset</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint8_t CANPort::speedPreset = CANSPEEDPRESET_500</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00087">87</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
-
-</div>
-</div>
-<a id="a500ca459755cc2c8be248b24f10af5ae" name="a500ca459755cc2c8be248b24f10af5ae"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a500ca459755cc2c8be248b24f10af5ae">&#9670;&nbsp;</a></span>txMailboxes</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint32_t CANPort::txMailboxes = 0</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00090">90</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00201">201</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
 
 </div>
 </div>

@@ -1,5 +1,12 @@
 var ncm_8h =
 [
+    [ "ncm_notify_t", "structncm__notify__t.html", "structncm__notify__t" ],
+    [ "ndp16_datagram_t", "ncm_8h.html#a02a880f1387ffc519ff996cc0a0b01da", null ],
+    [ "ndp16_t", "ncm_8h.html#aa6132c618a4a4e2f2e6095796d282881", null ],
+    [ "ntb_parameters_t", "ncm_8h.html#a5a955dbfb50443a372b96581a109d931", null ],
+    [ "nth16_t", "ncm_8h.html#af49ffaa0b2d0a9aebc58939aaccfd963", null ],
+    [ "recv_ntb_t", "ncm_8h.html#a1c07af3af22d1daa408ac4186e5b2336", null ],
+    [ "xmit_ntb_t", "ncm_8h.html#a9043619ab5e982bd9fe0ec34c5866b96", null ],
     [ "ncm_request_code_t", "ncm_8h.html#ab21175e0f6ed055ffc578453fe52fe5c", [
       [ "NCM_SET_ETHERNET_MULTICAST_FILTERS", "ncm_8h.html#ab21175e0f6ed055ffc578453fe52fe5ca85451d7addc2d520c08ed3e7af1eb6fb", null ],
       [ "NCM_SET_ETHERNET_POWER_MANAGEMENT_PATTERN_FILTER", "ncm_8h.html#ab21175e0f6ed055ffc578453fe52fe5cae4e06de0c9fa04f0d4af7056b4e8ef31", null ],
@@ -17,6 +24,5 @@ var ncm_8h =
       [ "NCM_SET_MAX_DATAGRAM_SIZE", "ncm_8h.html#ab21175e0f6ed055ffc578453fe52fe5ca8b4d92ac16c1479351fbab7a04d9b371", null ],
       [ "NCM_GET_CRC_MODE", "ncm_8h.html#ab21175e0f6ed055ffc578453fe52fe5cae04ea42eb79363e8311c53e0b7d10da4", null ],
       [ "NCM_SET_CRC_MODE", "ncm_8h.html#ab21175e0f6ed055ffc578453fe52fe5ca1ba1e58f85cad39b3750dd3e6c2c9647", null ]
-    ] ],
-    [ "C", "ncm_8h.html#aaa53ca0b650dfd85c4f59fa156f7a2cc", null ]
+    ] ]
 ];

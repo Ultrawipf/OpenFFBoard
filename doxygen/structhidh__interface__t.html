@@ -93,12 +93,16 @@ $(document).ready(function(){initNavTree('structhidh__interface__t.html',''); in
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
+<tr class="memitem:a201011f6251d9e189b8c7c4fefeec484"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structhidh__interface__t.html#a201011f6251d9e189b8c7c4fefeec484">daddr</a></td></tr>
+<tr class="separator:a201011f6251d9e189b8c7c4fefeec484"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afc24f03c7aff7c1bc4e274c6ec5fdced"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structhidh__interface__t.html#afc24f03c7aff7c1bc4e274c6ec5fdced">itf_num</a></td></tr>
 <tr class="separator:afc24f03c7aff7c1bc4e274c6ec5fdced"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0872f4cd66041a397c18cd2c5d8547c5"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structhidh__interface__t.html#a0872f4cd66041a397c18cd2c5d8547c5">ep_in</a></td></tr>
 <tr class="separator:a0872f4cd66041a397c18cd2c5d8547c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afc6341e137ac41d34a94d74abb38d452"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structhidh__interface__t.html#afc6341e137ac41d34a94d74abb38d452">ep_out</a></td></tr>
 <tr class="separator:afc6341e137ac41d34a94d74abb38d452"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e0c7743e3d8ae7582d0ca6cd3f798ca"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structhidh__interface__t.html#a1e0c7743e3d8ae7582d0ca6cd3f798ca">mounted</a></td></tr>
+<tr class="separator:a1e0c7743e3d8ae7582d0ca6cd3f798ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a25db691d7d7e5574ca80390c616d9c03"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structhidh__interface__t.html#a25db691d7d7e5574ca80390c616d9c03">itf_protocol</a></td></tr>
 <tr class="separator:a25db691d7d7e5574ca80390c616d9c03"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a70ec360b05af2d245c9bf0cb553cc5aa"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structhidh__interface__t.html#a70ec360b05af2d245c9bf0cb553cc5aa">protocol_mode</a></td></tr>
@@ -111,15 +115,31 @@ Public Attributes</h2></td></tr>
 <tr class="separator:aaeea57a75f677430aec957bce84a7b6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a88a8a5de83362257dfa9d691dd4d5426"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structhidh__interface__t.html#a88a8a5de83362257dfa9d691dd4d5426">epout_size</a></td></tr>
 <tr class="separator:a88a8a5de83362257dfa9d691dd4d5426"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7d006642cced97914f0d8acf342a1d3a"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structhidh__interface__t.html#a7d006642cced97914f0d8acf342a1d3a">epin_buf</a> [CFG_TUH_HID_EPIN_BUFSIZE]</td></tr>
-<tr class="separator:a7d006642cced97914f0d8acf342a1d3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afaf7cd02259569daecd109b39613faa2"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structhidh__interface__t.html#afaf7cd02259569daecd109b39613faa2">epout_buf</a> [CFG_TUH_HID_EPOUT_BUFSIZE]</td></tr>
-<tr class="separator:afaf7cd02259569daecd109b39613faa2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adbbaa6de6d79b059a08d76487b043bb8"><td class="memItemLeft" align="right" valign="top">CFG_TUH_MEM_ALIGN uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structhidh__interface__t.html#adbbaa6de6d79b059a08d76487b043bb8">epin_buf</a> [CFG_TUH_HID_EPIN_BUFSIZE]</td></tr>
+<tr class="separator:adbbaa6de6d79b059a08d76487b043bb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d64eea70bd26a0af93d04613e9e3062"><td class="memItemLeft" align="right" valign="top">CFG_TUH_MEM_ALIGN uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structhidh__interface__t.html#a3d64eea70bd26a0af93d04613e9e3062">epout_buf</a> [CFG_TUH_HID_EPOUT_BUFSIZE]</td></tr>
+<tr class="separator:a3d64eea70bd26a0af93d04613e9e3062"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="hid__host_8c_source.html#l00040">40</a> of file <a class="el" href="hid__host_8c_source.html">hid_host.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hid__host_8c_source.html#l00046">46</a> of file <a class="el" href="hid__host_8c_source.html">hid_host.c</a>.</p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
+<a id="a201011f6251d9e189b8c7c4fefeec484" name="a201011f6251d9e189b8c7c4fefeec484"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a201011f6251d9e189b8c7c4fefeec484">&#9670;&nbsp;</a></span>daddr</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t hidh_interface_t::daddr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="hid__host_8c_source.html#l00047">47</a> of file <a class="el" href="hid__host_8c_source.html">hid_host.c</a>.</p>
+
+</div>
+</div>
 <a id="a0872f4cd66041a397c18cd2c5d8547c5" name="a0872f4cd66041a397c18cd2c5d8547c5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0872f4cd66041a397c18cd2c5d8547c5">&#9670;&nbsp;</a></span>ep_in</h2>
 
@@ -132,7 +152,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hid__host_8c_source.html#l00043">43</a> of file <a class="el" href="hid__host_8c_source.html">hid_host.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hid__host_8c_source.html#l00050">50</a> of file <a class="el" href="hid__host_8c_source.html">hid_host.c</a>.</p>
 
 </div>
 </div>
@@ -148,23 +168,23 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hid__host_8c_source.html#l00044">44</a> of file <a class="el" href="hid__host_8c_source.html">hid_host.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hid__host_8c_source.html#l00051">51</a> of file <a class="el" href="hid__host_8c_source.html">hid_host.c</a>.</p>
 
 </div>
 </div>
-<a id="a7d006642cced97914f0d8acf342a1d3a" name="a7d006642cced97914f0d8acf342a1d3a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7d006642cced97914f0d8acf342a1d3a">&#9670;&nbsp;</a></span>epin_buf</h2>
+<a id="adbbaa6de6d79b059a08d76487b043bb8" name="adbbaa6de6d79b059a08d76487b043bb8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adbbaa6de6d79b059a08d76487b043bb8">&#9670;&nbsp;</a></span>epin_buf</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint8_t hidh_interface_t::epin_buf[CFG_TUH_HID_EPIN_BUFSIZE]</td>
+          <td class="memname">CFG_TUH_MEM_ALIGN uint8_t hidh_interface_t::epin_buf[CFG_TUH_HID_EPIN_BUFSIZE]</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hid__host_8c_source.html#l00055">55</a> of file <a class="el" href="hid__host_8c_source.html">hid_host.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hid__host_8c_source.html#l00063">63</a> of file <a class="el" href="hid__host_8c_source.html">hid_host.c</a>.</p>
 
 </div>
 </div>
@@ -180,23 +200,23 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hid__host_8c_source.html#l00052">52</a> of file <a class="el" href="hid__host_8c_source.html">hid_host.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hid__host_8c_source.html#l00060">60</a> of file <a class="el" href="hid__host_8c_source.html">hid_host.c</a>.</p>
 
 </div>
 </div>
-<a id="afaf7cd02259569daecd109b39613faa2" name="afaf7cd02259569daecd109b39613faa2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afaf7cd02259569daecd109b39613faa2">&#9670;&nbsp;</a></span>epout_buf</h2>
+<a id="a3d64eea70bd26a0af93d04613e9e3062" name="a3d64eea70bd26a0af93d04613e9e3062"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d64eea70bd26a0af93d04613e9e3062">&#9670;&nbsp;</a></span>epout_buf</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint8_t hidh_interface_t::epout_buf[CFG_TUH_HID_EPOUT_BUFSIZE]</td>
+          <td class="memname">CFG_TUH_MEM_ALIGN uint8_t hidh_interface_t::epout_buf[CFG_TUH_HID_EPOUT_BUFSIZE]</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hid__host_8c_source.html#l00056">56</a> of file <a class="el" href="hid__host_8c_source.html">hid_host.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hid__host_8c_source.html#l00064">64</a> of file <a class="el" href="hid__host_8c_source.html">hid_host.c</a>.</p>
 
 </div>
 </div>
@@ -212,7 +232,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hid__host_8c_source.html#l00053">53</a> of file <a class="el" href="hid__host_8c_source.html">hid_host.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hid__host_8c_source.html#l00061">61</a> of file <a class="el" href="hid__host_8c_source.html">hid_host.c</a>.</p>
 
 </div>
 </div>
@@ -228,7 +248,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hid__host_8c_source.html#l00042">42</a> of file <a class="el" href="hid__host_8c_source.html">hid_host.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hid__host_8c_source.html#l00049">49</a> of file <a class="el" href="hid__host_8c_source.html">hid_host.c</a>.</p>
 
 </div>
 </div>
@@ -244,7 +264,23 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hid__host_8c_source.html#l00046">46</a> of file <a class="el" href="hid__host_8c_source.html">hid_host.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hid__host_8c_source.html#l00054">54</a> of file <a class="el" href="hid__host_8c_source.html">hid_host.c</a>.</p>
+
+</div>
+</div>
+<a id="a1e0c7743e3d8ae7582d0ca6cd3f798ca" name="a1e0c7743e3d8ae7582d0ca6cd3f798ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e0c7743e3d8ae7582d0ca6cd3f798ca">&#9670;&nbsp;</a></span>mounted</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool hidh_interface_t::mounted</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="hid__host_8c_source.html#l00052">52</a> of file <a class="el" href="hid__host_8c_source.html">hid_host.c</a>.</p>
 
 </div>
 </div>
@@ -260,7 +296,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hid__host_8c_source.html#l00047">47</a> of file <a class="el" href="hid__host_8c_source.html">hid_host.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hid__host_8c_source.html#l00055">55</a> of file <a class="el" href="hid__host_8c_source.html">hid_host.c</a>.</p>
 
 </div>
 </div>
@@ -276,7 +312,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hid__host_8c_source.html#l00050">50</a> of file <a class="el" href="hid__host_8c_source.html">hid_host.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hid__host_8c_source.html#l00058">58</a> of file <a class="el" href="hid__host_8c_source.html">hid_host.c</a>.</p>
 
 </div>
 </div>
@@ -292,7 +328,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hid__host_8c_source.html#l00049">49</a> of file <a class="el" href="hid__host_8c_source.html">hid_host.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hid__host_8c_source.html#l00057">57</a> of file <a class="el" href="hid__host_8c_source.html">hid_host.c</a>.</p>
 
 </div>
 </div>

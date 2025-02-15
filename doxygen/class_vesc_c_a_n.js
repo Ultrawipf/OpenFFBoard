@@ -12,7 +12,7 @@ var class_vesc_c_a_n =
     [ "buffer_get_int16", "class_vesc_c_a_n.html#a6f0c0c62dc3b1be3aa2239e8f2ab904d", null ],
     [ "buffer_get_int32", "class_vesc_c_a_n.html#a403c3ae5686af343c0b147e8849d63ed", null ],
     [ "buffer_get_uint32", "class_vesc_c_a_n.html#a77a29b7f91710461785b8aba6f8e28b6", null ],
-    [ "canRxPendCallback", "class_vesc_c_a_n.html#add739e6410daa262f13cf483e1160c7e", null ],
+    [ "canRxPendCallback", "class_vesc_c_a_n.html#af4b43bce9852b7c6c0e0fb749f036dc3", null ],
     [ "command", "class_vesc_c_a_n.html#ac330bde8005a94343810fae8aec8bf35", null ],
     [ "decode_buffer", "class_vesc_c_a_n.html#a4f1de0f52d567e2f13db44a0bd5257e4", null ],
     [ "decodeEncoderPosition", "class_vesc_c_a_n.html#a175375bac8493a4e861f71c3dad69ae9", null ],

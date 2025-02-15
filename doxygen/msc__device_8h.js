@@ -1,6 +1,7 @@
 var msc__device_8h =
 [
     [ "mscd_control_xfer_cb", "msc__device_8h.html#adc18d9c97fcbd636c71dab72302fa6b3", null ],
+    [ "mscd_deinit", "msc__device_8h.html#a70d56238db44bce4d77c8297211e7e27", null ],
     [ "mscd_init", "msc__device_8h.html#aaf4981315a4d70a7057edd4064fd90ce", null ],
     [ "mscd_open", "msc__device_8h.html#a88c3deff8b6784aa3c5b273c3f34deb0", null ],
     [ "mscd_reset", "msc__device_8h.html#a2b8d7cd18e5e49f3378e1f5bdd7bf196", null ],
@@ -9,6 +10,7 @@ var msc__device_8h =
     [ "tud_msc_get_maxlun_cb", "msc__device_8h.html#ab35b143912036b41c18fa29c486e0c3a", null ],
     [ "tud_msc_inquiry_cb", "msc__device_8h.html#ae2aefd1e5c3d470f440cd8f07dce9991", null ],
     [ "tud_msc_is_writable_cb", "msc__device_8h.html#a59855b3113a2cb20b9f0b0d9cc2ca7d1", null ],
+    [ "tud_msc_prevent_allow_medium_removal_cb", "msc__device_8h.html#ae9f0192d756de6c450756db9ac9edb8d", null ],
     [ "tud_msc_read10_cb", "msc__device_8h.html#a148e0153ce23f6ffd6305fb0e0fc4dfd", null ],
     [ "tud_msc_read10_complete_cb", "msc__device_8h.html#a605c7bc2eb5598adb94926142bf82886", null ],
     [ "tud_msc_request_sense_cb", "msc__device_8h.html#a751b530ef36a86aca1267ea5210c9bf1", null ],

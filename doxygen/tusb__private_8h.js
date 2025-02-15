@@ -1,0 +1,27 @@
+var tusb__private_8h =
+[
+    [ "tu_edpt_stream_t", "structtu__edpt__stream__t.html", "structtu__edpt__stream__t" ],
+    [ "tu_edpt_stream_t::TU_ATTR_PACKED", "structtu__edpt__stream__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html", "structtu__edpt__stream__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d" ],
+    [ "tu_edpt_state_t", "tusb__private_8h.html#a86a515d7c7869f48ddd2f36d5486278f", null ],
+    [ "tu_desc_get_interface_total_len", "tusb__private_8h.html#aa3630792d467fc5621f36e3c63329711", null ],
+    [ "tu_edpt_bind_driver", "tusb__private_8h.html#ab1a53c192ba0c6e4b4dd3e70aef6d176", null ],
+    [ "tu_edpt_claim", "tusb__private_8h.html#a1370e240d5d74d54fc6fec447962a980", null ],
+    [ "tu_edpt_release", "tusb__private_8h.html#aa17ceac3b2b7ebd3356b7157738673c5", null ],
+    [ "tu_edpt_stream_clear", "tusb__private_8h.html#a1fc6cadd20b4aeae6a3f3dab46996a85", null ],
+    [ "tu_edpt_stream_close", "tusb__private_8h.html#a2cd9a122db44aec4d8e86e22e751b3e6", null ],
+    [ "tu_edpt_stream_deinit", "tusb__private_8h.html#ad21fac62dca7857162942884b2898d30", null ],
+    [ "tu_edpt_stream_init", "tusb__private_8h.html#aa5ae12abbee8f3ef29785bae649b9c83", null ],
+    [ "tu_edpt_stream_open", "tusb__private_8h.html#a9c56fa0f38c73e6feb76ddf73ef13eeb", null ],
+    [ "tu_edpt_stream_peek", "tusb__private_8h.html#a347da001f98feca819b19fd4dbad99f4", null ],
+    [ "tu_edpt_stream_read", "tusb__private_8h.html#a71bbb00dfc6f0becb6e83af881322544", null ],
+    [ "tu_edpt_stream_read_available", "tusb__private_8h.html#a364d1339c0386462f5bbeec08fa4bd3d", null ],
+    [ "tu_edpt_stream_read_xfer", "tusb__private_8h.html#a5899d1373d6857ef304575cae5eca789", null ],
+    [ "tu_edpt_stream_read_xfer_complete", "tusb__private_8h.html#a9b381195cbc60b2627a338b12d5910a9", null ],
+    [ "tu_edpt_stream_read_xfer_complete_offset", "tusb__private_8h.html#a205e43dd76b24201a6926f4be975aec7", null ],
+    [ "tu_edpt_stream_write", "tusb__private_8h.html#a7b817145493d07d21ea86442a9d9e0a4", null ],
+    [ "tu_edpt_stream_write_available", "tusb__private_8h.html#a72eeac7df2b11be0c9d5cc5af750ad94", null ],
+    [ "tu_edpt_stream_write_xfer", "tusb__private_8h.html#a7b1e6f694795ff5931583a330e2cb53d", null ],
+    [ "tu_edpt_stream_write_zlp_if_needed", "tusb__private_8h.html#a1210a6733a470d9bf85f1bca1031d3d8", null ],
+    [ "tu_edpt_validate", "tusb__private_8h.html#a0e71ebb871b1ae98ca6c382b8e576b52", null ],
+    [ "C", "tusb__private_8h.html#aaa53ca0b650dfd85c4f59fa156f7a2cc", null ]
+];

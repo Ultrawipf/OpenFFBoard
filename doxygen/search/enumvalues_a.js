@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['len_0',['len',['../class_c_a_n_port.html#a5b851cfc207f4822440f3f5be11d3241af5a8e923f8cd24b56b3bab32358cc58a',1,'CANPort']]],
+  ['len_0',['len',['../class_c_a_n_port__2_b.html#ab0652ea987af8b746686504c39822937af5a8e923f8cd24b56b3bab32358cc58a',1,'CANPort_2B']]],
   ['low_1',['LOW',['../_motor_p_w_m_8h.html#a4680e7bc26b98178cf175364454369b1a41bc94cbd8eebea13ce0491b2ac11b88',1,'MotorPWM.h']]],
   ['lowpass_2',['lowpass',['../_filters_8h.html#afba124be8dd4fe063cbff46434ee8610af4264a824899ff8f0fc5962ff60b9cef',1,'lowpass():&#160;Filters.h'],['../_t_m_c4671_8h.html#a90c81de5684b1e1186ca6013a2d8a989af4264a824899ff8f0fc5962ff60b9cef',1,'lowpass():&#160;TMC4671.h']]],
   ['lowshelf_3',['lowshelf',['../_filters_8h.html#afba124be8dd4fe063cbff46434ee8610ac927f1e915d8d037101a56d8de17cccb',1,'Filters.h']]],

@@ -85,6 +85,7 @@ $(document).ready(function(){initNavTree('struct_c_a_n__rx__msg.html',''); initR
 
 <div class="header">
   <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="struct_c_a_n__rx__msg-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">CAN_rx_msg Struct Reference</div></div>
@@ -93,46 +94,97 @@ $(document).ready(function(){initNavTree('struct_c_a_n__rx__msg.html',''); initR
 
 <p><code>#include &lt;<a class="el" href="_c_a_n_8h_source.html">CAN.h</a>&gt;</code></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a86212c775d36ae08f6af1e5de240d892"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_c_a_n__rx__msg.html#a86212c775d36ae08f6af1e5de240d892">size</a> ()</td></tr>
+<tr class="separator:a86212c775d36ae08f6af1e5de240d892"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a81fc39a7a1e5a5661d0c6a9c3fde3738"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_c_a_n__rx__msg.html#a81fc39a7a1e5a5661d0c6a9c3fde3738">data</a> [8] = {0}</td></tr>
-<tr class="separator:a81fc39a7a1e5a5661d0c6a9c3fde3738"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1de4b39e8a6e5fc402753eb28af81e17"><td class="memItemLeft" align="right" valign="top">CAN_RxHeaderTypeDef&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_c_a_n__rx__msg.html#a1de4b39e8a6e5fc402753eb28af81e17">header</a> = {0,0,0,0,0,0}</td></tr>
-<tr class="separator:a1de4b39e8a6e5fc402753eb28af81e17"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ea1a8979ac049bf36d37ddc5803b2f9"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_c_a_n__rx__msg.html#a9ea1a8979ac049bf36d37ddc5803b2f9">data</a> [CAN_MSGBUFSIZE] = {0}</td></tr>
+<tr class="separator:a9ea1a8979ac049bf36d37ddc5803b2f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa03e64b358abf149ed47eb9bdc02c667"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_c_a_n__msg__header__rx.html">CAN_msg_header_rx</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_c_a_n__rx__msg.html#aa03e64b358abf149ed47eb9bdc02c667">header</a></td></tr>
+<tr class="separator:aa03e64b358abf149ed47eb9bdc02c667"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a35bf4f3f51ad224be098e3ea63e4e34d"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_c_a_n__rx__msg.html#a35bf4f3f51ad224be098e3ea63e4e34d">fifo</a> = 0</td></tr>
+<tr class="separator:a35bf4f3f51ad224be098e3ea63e4e34d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00030">30</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
-</div><h2 class="groupheader">Member Data Documentation</h2>
-<a id="a81fc39a7a1e5a5661d0c6a9c3fde3738" name="a81fc39a7a1e5a5661d0c6a9c3fde3738"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a81fc39a7a1e5a5661d0c6a9c3fde3738">&#9670;&nbsp;</a></span>data</h2>
+<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00096">96</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a86212c775d36ae08f6af1e5de240d892" name="a86212c775d36ae08f6af1e5de240d892"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a86212c775d36ae08f6af1e5de240d892">&#9670;&nbsp;</a></span>size()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t CAN_rx_msg::size </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00101">101</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a9ea1a8979ac049bf36d37ddc5803b2f9" name="a9ea1a8979ac049bf36d37ddc5803b2f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ea1a8979ac049bf36d37ddc5803b2f9">&#9670;&nbsp;</a></span>data</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint8_t CAN_rx_msg::data[8] = {0}</td>
+          <td class="memname">uint8_t CAN_rx_msg::data[CAN_MSGBUFSIZE] = {0}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00031">31</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00097">97</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
 
 </div>
 </div>
-<a id="a1de4b39e8a6e5fc402753eb28af81e17" name="a1de4b39e8a6e5fc402753eb28af81e17"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1de4b39e8a6e5fc402753eb28af81e17">&#9670;&nbsp;</a></span>header</h2>
+<a id="a35bf4f3f51ad224be098e3ea63e4e34d" name="a35bf4f3f51ad224be098e3ea63e4e34d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a35bf4f3f51ad224be098e3ea63e4e34d">&#9670;&nbsp;</a></span>fifo</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">CAN_RxHeaderTypeDef CAN_rx_msg::header = {0,0,0,0,0,0}</td>
+          <td class="memname">uint8_t CAN_rx_msg::fifo = 0</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00032">32</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00100">100</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
+
+</div>
+</div>
+<a id="aa03e64b358abf149ed47eb9bdc02c667" name="aa03e64b358abf149ed47eb9bdc02c667"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa03e64b358abf149ed47eb9bdc02c667">&#9670;&nbsp;</a></span>header</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_c_a_n__msg__header__rx.html">CAN_msg_header_rx</a> CAN_rx_msg::header</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00099">99</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
 
 </div>
 </div>

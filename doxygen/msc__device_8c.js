@@ -4,6 +4,7 @@ var msc__device_8c =
     [ "fail_scsi_op", "msc__device_8c.html#af191c983fdf655fc0aace4aab732475b", null ],
     [ "is_data_in", "msc__device_8c.html#a0e5e6abb2b921f5008a4cbec0bb35a65", null ],
     [ "mscd_control_xfer_cb", "msc__device_8c.html#a46d4a53f4b05b233200357bcff684feb", null ],
+    [ "mscd_deinit", "msc__device_8c.html#a70d56238db44bce4d77c8297211e7e27", null ],
     [ "mscd_init", "msc__device_8c.html#aaf4981315a4d70a7057edd4064fd90ce", null ],
     [ "mscd_open", "msc__device_8c.html#a88c3deff8b6784aa3c5b273c3f34deb0", null ],
     [ "mscd_reset", "msc__device_8c.html#a2b8d7cd18e5e49f3378e1f5bdd7bf196", null ],
@@ -21,8 +22,8 @@ var msc__device_8c =
     [ "send_csw", "msc__device_8c.html#ac286d28e9920b0d652cab43ed92e9dae", null ],
     [ "set_sense_medium_not_present", "msc__device_8c.html#a93f76b74bcb88b62b3ee7fd959e527ad", null ],
     [ "tud_msc_set_sense", "msc__device_8c.html#a4fe9764da024511a8593a3eeb957d1cb", null ],
-    [ "_msc_scsi_cmd_lookup", "msc__device_8c.html#abff3dd5583e9253b6b19e110accb9481", null ],
-    [ "_msc_scsi_cmd_table", "msc__device_8c.html#a576f1b0d1a24f014c022a5eb61f8562b", null ],
-    [ "_mscd_buf", "msc__device_8c.html#ad468bfc3149d2829f9562525d9ac46e3", null ],
-    [ "_mscd_itf", "msc__device_8c.html#a0f3852b3b7799ede4a700d23fa54f00c", null ]
+    [ "_msc_scsi_cmd_lookup", "msc__device_8c.html#a523c31d3c303c326ace48d838bcfcb0a", null ],
+    [ "_msc_scsi_cmd_table", "msc__device_8c.html#ada42fc17b41fa23f9dd3f27b8a3ac765", null ],
+    [ "_mscd_buf", "msc__device_8c.html#aeed7a5ca79a8267e389acf5e3a05e17c", null ],
+    [ "_mscd_itf", "msc__device_8c.html#ab66b4eac5d6394c7fbfe4559333a51cf", null ]
 ];

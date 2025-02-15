@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['hid_5fgamepad_5freport_5ft_0',['hid_gamepad_report_t',['../group___class_driver___h_i_d___gamepad.html#ga936dca8ffdf92dad2bb1c69bd14cb178',1,'hid.h']]],
-  ['hid_5fkeyboard_5freport_5ft_1',['hid_keyboard_report_t',['../group___class_driver___h_i_d___keyboard.html#gaabc57b935435b1a2b38f4560d24afc77',1,'hid.h']]],
-  ['hid_5fmouse_5freport_5ft_2',['hid_mouse_report_t',['../group___class_driver___h_i_d___mouse.html#gac0cad0fc2de7d2c740b28d0ecc2b7210',1,'hid.h']]]
+  ['endpoint_5fstate_5ft_0',['endpoint_state_t',['../dcd__ci__fs_8c.html#a35e48213863f0eacb6fb886dbda0e1bd',1,'endpoint_state_t():&#160;dcd_ci_fs.c'],['../dcd__pic_8c.html#a35e48213863f0eacb6fb886dbda0e1bd',1,'endpoint_state_t():&#160;dcd_pic.c'],['../dcd__mm32f327x__otg_8c.html#a35e48213863f0eacb6fb886dbda0e1bd',1,'endpoint_state_t():&#160;dcd_mm32f327x_otg.c'],['../dcd__khci_8c.html#a35e48213863f0eacb6fb886dbda0e1bd',1,'endpoint_state_t():&#160;dcd_khci.c'],['../hcd__khci_8c.html#a35e48213863f0eacb6fb886dbda0e1bd',1,'endpoint_state_t():&#160;hcd_khci.c']]],
+  ['ep_5fcmd_5fsts_5ft_1',['ep_cmd_sts_t',['../dcd__lpc__ip3511_8c.html#aec4a9c8069f3d6fbd2b45451d43573cf',1,'dcd_lpc_ip3511.c']]],
+  ['ep_5fregs_5ft_2',['ep_regs_t',['../dcd__msp430x5xx_8c.html#a7157de0854aac58a5b260a1f1d17c95e',1,'dcd_msp430x5xx.c']]]
 ];

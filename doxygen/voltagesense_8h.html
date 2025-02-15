@@ -102,10 +102,35 @@ Functions</h2></td></tr>
 <tr class="separator:a0df0dfb8468434f7937158b2ebc378a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6c426752ab8435a2b65ae7ee41539ea6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="voltagesense_8h.html#a6c426752ab8435a2b65ae7ee41539ea6">setVSenseMult</a> (float vSenseMultiplier)</td></tr>
 <tr class="separator:a6c426752ab8435a2b65ae7ee41539ea6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a76b3bff6033f75f12be8db5d9e5a4bf6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="voltagesense_8h.html#a76b3bff6033f75f12be8db5d9e5a4bf6">setupBrakePin</a> (uint32_t vdiffAct, uint32_t vdiffDeact, uint32_t vMax)</td></tr>
-<tr class="separator:a76b3bff6033f75f12be8db5d9e5a4bf6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41c2b89af773d062f06a99dca91e4c9b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="voltagesense_8h.html#a41c2b89af773d062f06a99dca91e4c9b">setupBrakePin</a> (uint32_t vdiffAct, int32_t vdiffDeact, int32_t vMax)</td></tr>
+<tr class="separator:a41c2b89af773d062f06a99dca91e4c9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a6885c34bc79730b3be526aaf673850"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="voltagesense_8h.html#a4a6885c34bc79730b3be526aaf673850">adcValToVoltage</a> (uint32_t adcval)</td></tr>
+<tr class="separator:a4a6885c34bc79730b3be526aaf673850"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d397d73109ec02463eee6bdd9ff3efd"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="voltagesense_8h.html#a1d397d73109ec02463eee6bdd9ff3efd">getChipTemp</a> ()</td></tr>
+<tr class="separator:a1d397d73109ec02463eee6bdd9ff3efd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="a4a6885c34bc79730b3be526aaf673850" name="a4a6885c34bc79730b3be526aaf673850"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4a6885c34bc79730b3be526aaf673850">&#9670;&nbsp;</a></span>adcValToVoltage()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float adcValToVoltage </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>adcval</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >Converts an adc reading to millivolts using the internal calibration and reference voltage Requires ADC_INTREF_VOL and VSENSE_ADC_RES </p>
+
+<p class="definition">Definition at line <a class="el" href="voltagesense_8cpp_source.html#l00046">46</a> of file <a class="el" href="voltagesense_8cpp_source.html">voltagesense.cpp</a>.</p>
+
+</div>
+</div>
 <a id="a0df0dfb8468434f7937158b2ebc378a2" name="a0df0dfb8468434f7937158b2ebc378a2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0df0dfb8468434f7937158b2ebc378a2">&#9670;&nbsp;</a></span>brakeCheck()</h2>
 
@@ -121,7 +146,27 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="voltagesense_8cpp_source.html#l00052">52</a> of file <a class="el" href="voltagesense_8cpp_source.html">voltagesense.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="voltagesense_8cpp_source.html#l00062">62</a> of file <a class="el" href="voltagesense_8cpp_source.html">voltagesense.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a1d397d73109ec02463eee6bdd9ff3efd" name="a1d397d73109ec02463eee6bdd9ff3efd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1d397d73109ec02463eee6bdd9ff3efd">&#9670;&nbsp;</a></span>getChipTemp()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int32_t getChipTemp </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >Helper function implementation for getting the chip temperature if read via internal ADC channel __weak defined and can be overridden in chip dependent code </p>
+
+<p class="definition">Definition at line <a class="el" href="voltagesense_8cpp_source.html#l00096">96</a> of file <a class="el" href="voltagesense_8cpp_source.html">voltagesense.cpp</a>.</p>
 
 </div>
 </div>
@@ -140,7 +185,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="voltagesense_8cpp_source.html#l00048">48</a> of file <a class="el" href="voltagesense_8cpp_source.html">voltagesense.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="voltagesense_8cpp_source.html#l00058">58</a> of file <a class="el" href="voltagesense_8cpp_source.html">voltagesense.cpp</a>.</p>
 
 </div>
 </div>
@@ -159,12 +204,12 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="voltagesense_8cpp_source.html#l00044">44</a> of file <a class="el" href="voltagesense_8cpp_source.html">voltagesense.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="voltagesense_8cpp_source.html#l00053">53</a> of file <a class="el" href="voltagesense_8cpp_source.html">voltagesense.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a76b3bff6033f75f12be8db5d9e5a4bf6" name="a76b3bff6033f75f12be8db5d9e5a4bf6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a76b3bff6033f75f12be8db5d9e5a4bf6">&#9670;&nbsp;</a></span>setupBrakePin()</h2>
+<a id="a41c2b89af773d062f06a99dca91e4c9b" name="a41c2b89af773d062f06a99dca91e4c9b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a41c2b89af773d062f06a99dca91e4c9b">&#9670;&nbsp;</a></span>setupBrakePin()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -178,13 +223,13 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramtype">int32_t&#160;</td>
           <td class="paramname"><em>vdiffDeact</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramtype">int32_t&#160;</td>
           <td class="paramname"><em>vMax</em>&#160;</td>
         </tr>
         <tr>
@@ -194,8 +239,6 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="voltagesense_8cpp_source.html#l00038">38</a> of file <a class="el" href="voltagesense_8cpp_source.html">voltagesense.cpp</a>.</p>
 
 </div>
 </div>
@@ -215,7 +258,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="voltagesense_8cpp_source.html#l00027">27</a> of file <a class="el" href="voltagesense_8cpp_source.html">voltagesense.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="voltagesense_8cpp_source.html#l00029">29</a> of file <a class="el" href="voltagesense_8cpp_source.html">voltagesense.cpp</a>.</p>
 
 </div>
 </div>

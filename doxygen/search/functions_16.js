@@ -1,4 +1,30 @@
 var searchData=
 [
-  ['xfer_5fctl_5fptr_0',['xfer_ctl_ptr',['../dcd__stm32__fsdev_8c.html#a74893631e7648796c85b20006321de1a',1,'dcd_stm32_fsdev.c']]]
+  ['xact_5fep_5fread_0',['xact_ep_read',['../dcd__samg_8c.html#a9b85a80a3e26710517383c9e10a036cb',1,'dcd_samg.c']]],
+  ['xact_5fep_5fwrite_1',['xact_ep_write',['../dcd__samg_8c.html#a7b43852c017019edd425a5814f5cd634',1,'dcd_samg.c']]],
+  ['xact_5fgeneric_2',['xact_generic',['../hcd__max3421_8c.html#af28a3703d9a33a2c63f0dc5bd94363ab',1,'hcd_max3421.c']]],
+  ['xact_5fin_3',['xact_in',['../hcd__max3421_8c.html#a09aa2edf4bb4509add7ef99820f88314',1,'hcd_max3421.c']]],
+  ['xact_5fin_5fdma_4',['xact_in_dma',['../dcd__nrf5x_8c.html#a9f8c40a1ab1bbe00a0f8d5d3cc2d97ad',1,'dcd_nrf5x.c']]],
+  ['xact_5fout_5',['xact_out',['../hcd__max3421_8c.html#a838d395e379ff2fdfaface17fa406be4',1,'hcd_max3421.c']]],
+  ['xact_5fout_5fdma_6',['xact_out_dma',['../dcd__nrf5x_8c.html#aea0c0cd866734a45a07b25f3f84b06ae',1,'dcd_nrf5x.c']]],
+  ['xact_5fout_5fdma_5fwrapper_7',['xact_out_dma_wrapper',['../dcd__nrf5x_8c.html#ad6f916bb3e6d0736be8dc6d5a4ebccf0',1,'dcd_nrf5x.c']]],
+  ['xact_5fsetup_8',['xact_setup',['../hcd__max3421_8c.html#a9795cb1ff06de842ead558780a36e26d',1,'hcd_max3421.c']]],
+  ['xfer_5fbegin_9',['xfer_begin',['../dcd__samg_8c.html#a4e6a87899e9d93595706da6f649506d8',1,'dcd_samg.c']]],
+  ['xfer_5fcomplete_10',['xfer_complete',['../dcd__pic32mz_8c.html#a3c43b871dc4a7fe703ad0d1051032c46',1,'dcd_pic32mz.c']]],
+  ['xfer_5fcomplete_5fisr_11',['xfer_complete_isr',['../hcd__max3421_8c.html#acdf7339143b4d8da8b6a0479b68a0a8e',1,'hcd_max3421.c']]],
+  ['xfer_5fctl_5fptr_12',['xfer_ctl_ptr',['../dcd__stm32__fsdev_8c.html#a6f7b6d27a9465ec2bfb427ed48837dc3',1,'dcd_stm32_fsdev.c']]],
+  ['xfer_5fdata_5fpacket_13',['xfer_data_packet',['../dcd__ch32__usbhs_8c.html#a3733b6f9efb9f3cff73ccc21247f09d7',1,'dcd_ch32_usbhs.c']]],
+  ['xfer_5fend_14',['xfer_end',['../dcd__samg_8c.html#a63906405b71afd29dfbf3d8cd48ebdd5',1,'dcd_samg.c']]],
+  ['xfer_5fepsize_5fset_15',['xfer_epsize_set',['../dcd__samg_8c.html#aab3c2a821115b6c03e3bdad6cdf6bd87',1,'dcd_samg.c']]],
+  ['xfer_5flog_5fappend_16',['xfer_log_append',['../dcd__eptri_8c.html#a32f3a97faee42e6e53a42d99570d7ed7',1,'dcd_eptri.c']]],
+  ['xfer_5fpacket_5fdone_17',['xfer_packet_done',['../dcd__samg_8c.html#ab5d0cf61fb9167b7298c85fe33b79ac5',1,'dcd_samg.c']]],
+  ['xfer_5fpacket_5flen_18',['xfer_packet_len',['../dcd__samg_8c.html#a58ad6a7287aa42609b9a59b64bcb7e99',1,'dcd_samg.c']]],
+  ['xmit_5fget_5ffree_5fntb_19',['xmit_get_free_ntb',['../ncm__device_8c.html#ac43c3d9d2a7d9f3abcdd64bf65e7a41d',1,'ncm_device.c']]],
+  ['xmit_5fget_5fnext_5fready_5fntb_20',['xmit_get_next_ready_ntb',['../ncm__device_8c.html#a8eb1cf6b769e09790e5c7a26b55b609b',1,'ncm_device.c']]],
+  ['xmit_5finsert_5frequired_5fzlp_21',['xmit_insert_required_zlp',['../ncm__device_8c.html#a4e289aaf86d4a1c7ba0090c4012fa2fb',1,'ncm_device.c']]],
+  ['xmit_5fput_5fntb_5finto_5ffree_5flist_22',['xmit_put_ntb_into_free_list',['../ncm__device_8c.html#ae7007d1b92a91c494976648cc707bd59',1,'ncm_device.c']]],
+  ['xmit_5fput_5fntb_5finto_5fready_5flist_23',['xmit_put_ntb_into_ready_list',['../ncm__device_8c.html#a68f3438153b0852942df230041cbfdfa',1,'ncm_device.c']]],
+  ['xmit_5frequested_5fdatagram_5ffits_5finto_5fcurrent_5fntb_24',['xmit_requested_datagram_fits_into_current_ntb',['../ncm__device_8c.html#a1a48fda12bd50a6fba5623488c611f97',1,'ncm_device.c']]],
+  ['xmit_5fsetup_5fnext_5fglue_5fntb_25',['xmit_setup_next_glue_ntb',['../ncm__device_8c.html#ada80288ae2bdd9c07c73731e00d26128',1,'ncm_device.c']]],
+  ['xmit_5fstart_5fif_5fpossible_26',['xmit_start_if_possible',['../ncm__device_8c.html#ae41d399923f2fae530a4d515eeca7724',1,'ncm_device.c']]]
 ];

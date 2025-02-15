@@ -45,7 +45,7 @@ var class_t_m_c4671 =
       [ "fluxbrake", "class_t_m_c4671.html#a383a82ab842490e325553e9365028a27a84f578fe2ad2bb2f2e81323b035b5ce9", null ],
       [ "pwmfreq", "class_t_m_c4671.html#a383a82ab842490e325553e9365028a27ae92b8d7a8bc2d52e63a10661d1fcf8cb", null ]
     ] ],
-    [ "TMC4671", "class_t_m_c4671.html#aff75030b94a5d49cd959c1f53c47be32", null ],
+    [ "TMC4671", "class_t_m_c4671.html#ac6ab6bcc9dc3c8eb9c6f1730cb08215e", null ],
     [ "~TMC4671", "class_t_m_c4671.html#a776fa9a0e9e0f2b15544dfdd4f043138", null ],
     [ "autohome", "class_t_m_c4671.html#a1773c150e154369cceb4c02cab6297ef", null ],
     [ "bangInitEnc", "class_t_m_c4671.html#a3549a94f67b67c91a42730542970b613", null ],

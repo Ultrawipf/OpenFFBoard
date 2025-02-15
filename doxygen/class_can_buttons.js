@@ -7,7 +7,7 @@ var class_can_buttons =
     ] ],
     [ "CanButtons", "class_can_buttons.html#a0e6dc37491d1dd34612e5f404993fde3", null ],
     [ "~CanButtons", "class_can_buttons.html#a4b69a8544012e9ce4b11225d71ef18d7", null ],
-    [ "canRxPendCallback", "class_can_buttons.html#ad19d252668e7e91f14ede2b2b33d0383", null ],
+    [ "canRxPendCallback", "class_can_buttons.html#abb8b745c88ea4546d1666def9defbabd", null ],
     [ "command", "class_can_buttons.html#a82222bcdaad5cc9944e9e1e0c6c5d2ca", null ],
     [ "getInfo", "class_can_buttons.html#a8425e943d62f59d122ce8402a0ea7009", null ],
     [ "readButtons", "class_can_buttons.html#a7e8cad9854656b6b65c4d2adc077aa66", null ],

@@ -1,6 +1,7 @@
 var dfu__device_8h =
 [
     [ "dfu_moded_control_xfer_cb", "dfu__device_8h.html#a8552e4d75829bc1d17396fdb366700d5", null ],
+    [ "dfu_moded_deinit", "dfu__device_8h.html#a249acad61a84a358f39a85fede31444f", null ],
     [ "dfu_moded_init", "dfu__device_8h.html#a13ac6f2fc92134810fc2951863d53ab4", null ],
     [ "dfu_moded_open", "dfu__device_8h.html#a41ff443c18ccdf797f42f8554c7ff81b", null ],
     [ "dfu_moded_reset", "dfu__device_8h.html#ab9aa435deba190df6116ba37fc31ff96", null ],

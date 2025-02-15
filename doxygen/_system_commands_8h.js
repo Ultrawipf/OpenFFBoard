@@ -23,6 +23,7 @@ var _system_commands_8h =
       [ "taskstats", "_system_commands_8h.html#a4a42a50bc0a826d5ab6d847950749d07a7d357e992ef2465823ddf3382e06fdfb", null ],
       [ "debug", "_system_commands_8h.html#a4a42a50bc0a826d5ab6d847950749d07aad42f6697b035b7580e4fef93be20b4d", null ],
       [ "devid", "_system_commands_8h.html#a4a42a50bc0a826d5ab6d847950749d07a8c265dc4382bd9bc7eab5ee768585c65", null ],
-      [ "uid", "_system_commands_8h.html#a4a42a50bc0a826d5ab6d847950749d07a9871d3a2c554b27151cacf1422eec048", null ]
+      [ "uid", "_system_commands_8h.html#a4a42a50bc0a826d5ab6d847950749d07a9871d3a2c554b27151cacf1422eec048", null ],
+      [ "temp", "_system_commands_8h.html#a4a42a50bc0a826d5ab6d847950749d07a3d801aa532c1cec3ee82d87a99fdf63f", null ]
     ] ]
 ];

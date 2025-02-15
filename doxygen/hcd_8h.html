@@ -86,7 +86,6 @@ $(document).ready(function(){initNavTree('hcd_8h.html',''); initResizable(); });
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">hcd.h File Reference</div></div>
@@ -102,19 +101,22 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structhcd__devtree__info__t.html">hcd_devtree_info_t</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
-Enumerations</h2></td></tr>
-<tr class="memitem:a7cc2e4244ca368f68e5746185eda6c4a"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <a class="el" href="hcd_8h.html#a7cc2e4244ca368f68e5746185eda6c4aa51e209e23b136ec7cbe4fcb341d6a570">HCD_MAX_ENDPOINT</a> = CFG_TUH_DEVICE_MAX*(CFG_TUH_HUB + CFG_TUH_HID*2 + CFG_TUH_MSC*2 + CFG_TUH_CDC*3)
-, <a class="el" href="hcd_8h.html#a7cc2e4244ca368f68e5746185eda6c4aa13517cb32e54e1b0ea77bb23a2fd07bc">HCD_MAX_XFER</a> = HCD_MAX_ENDPOINT*2
- }</td></tr>
-<tr class="separator:a7cc2e4244ca368f68e5746185eda6c4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a5010f02a821fb6277b179b7db71fa397"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hcd_8h.html#a5010f02a821fb6277b179b7db71fa397">hcd_init</a> (uint8_t rhport)</td></tr>
-<tr class="separator:a5010f02a821fb6277b179b7db71fa397"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5c5ff767126e5d660118bae5613cf36f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hcd_8h.html#a5c5ff767126e5d660118bae5613cf36f">hcd_int_handler</a> (uint8_t rhport)</td></tr>
-<tr class="separator:a5c5ff767126e5d660118bae5613cf36f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60dc42f4793b200be0b0797c11a6f06c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hcd_8h.html#a60dc42f4793b200be0b0797c11a6f06c">hcd_dcache_clean</a> (void const *addr, uint32_t data_size) TU_ATTR_WEAK</td></tr>
+<tr class="separator:a60dc42f4793b200be0b0797c11a6f06c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04dab2bd19c7484d1dcccb063d31dcb0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hcd_8h.html#a04dab2bd19c7484d1dcccb063d31dcb0">hcd_dcache_invalidate</a> (void const *addr, uint32_t data_size) TU_ATTR_WEAK</td></tr>
+<tr class="separator:a04dab2bd19c7484d1dcccb063d31dcb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e97b1d0c9caa4f450faf7791ca1d869"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hcd_8h.html#a3e97b1d0c9caa4f450faf7791ca1d869">hcd_dcache_clean_invalidate</a> (void const *addr, uint32_t data_size) TU_ATTR_WEAK</td></tr>
+<tr class="separator:a3e97b1d0c9caa4f450faf7791ca1d869"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a249b0d5c754c74a8decc21d4b4f34171"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hcd_8h.html#a249b0d5c754c74a8decc21d4b4f34171">hcd_configure</a> (uint8_t rhport, uint32_t cfg_id, const void *cfg_param)</td></tr>
+<tr class="separator:a249b0d5c754c74a8decc21d4b4f34171"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade0002606c124ab5e2843218efe91db3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hcd_8h.html#ade0002606c124ab5e2843218efe91db3">hcd_init</a> (uint8_t rhport, const <a class="el" href="structtusb__rhport__init__t.html">tusb_rhport_init_t</a> *rh_init)</td></tr>
+<tr class="separator:ade0002606c124ab5e2843218efe91db3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64788b6d71cd242935b9237bab83a019"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hcd_8h.html#a64788b6d71cd242935b9237bab83a019">hcd_deinit</a> (uint8_t rhport)</td></tr>
+<tr class="separator:a64788b6d71cd242935b9237bab83a019"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3a4994f1d0b371330c4176cabebfbdd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hcd_8h.html#ad3a4994f1d0b371330c4176cabebfbdd">hcd_int_handler</a> (uint8_t rhport, bool <a class="el" href="dcd__msp430x5xx_8c.html#a75c7dcc996a49b19a8500fbe8ceed04b">in_isr</a>)</td></tr>
+<tr class="separator:ad3a4994f1d0b371330c4176cabebfbdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a69bc2917c5933edb2c1b0a3cb67e3815"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hcd_8h.html#a69bc2917c5933edb2c1b0a3cb67e3815">hcd_int_enable</a> (uint8_t rhport)</td></tr>
 <tr class="separator:a69bc2917c5933edb2c1b0a3cb67e3815"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a197a56f3a9dce3d87a16641afd7b0dc5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hcd_8h.html#a197a56f3a9dce3d87a16641afd7b0dc5">hcd_int_disable</a> (uint8_t rhport)</td></tr>
@@ -127,56 +129,183 @@ Functions</h2></td></tr>
 <tr class="separator:a99c3d7d6b9e394bd514ed52d3ffd2d77"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8a9ca5a02aadd9c52a5cda1036e0463d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hcd_8h.html#a8a9ca5a02aadd9c52a5cda1036e0463d">hcd_port_reset_end</a> (uint8_t rhport)</td></tr>
 <tr class="separator:a8a9ca5a02aadd9c52a5cda1036e0463d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aca7cfcd3b59d9bb5895feb9266381ba8"><td class="memItemLeft" align="right" valign="top">tusb_speed_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hcd_8h.html#aca7cfcd3b59d9bb5895feb9266381ba8">hcd_port_speed_get</a> (uint8_t rhport)</td></tr>
+<tr class="memitem:aca7cfcd3b59d9bb5895feb9266381ba8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="tusb__types_8h.html#a13298e8a91e362e9b4ed452d86f4671b">tusb_speed_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hcd_8h.html#aca7cfcd3b59d9bb5895feb9266381ba8">hcd_port_speed_get</a> (uint8_t rhport)</td></tr>
 <tr class="separator:aca7cfcd3b59d9bb5895feb9266381ba8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7c6ccf51f41f13d0e273f83dd4194abd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hcd_8h.html#a7c6ccf51f41f13d0e273f83dd4194abd">hcd_device_close</a> (uint8_t rhport, uint8_t dev_addr)</td></tr>
+<tr class="memitem:a7c6ccf51f41f13d0e273f83dd4194abd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hcd_8h.html#a7c6ccf51f41f13d0e273f83dd4194abd">hcd_device_close</a> (uint8_t rhport, uint8_t <a class="el" href="dcd__pic32mz_8c.html#a1997a5306d6d04a9ce867303d1a6d9e1">dev_addr</a>)</td></tr>
 <tr class="separator:a7c6ccf51f41f13d0e273f83dd4194abd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a035c3854e11cd8797f9014c2f61e84be"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hcd_8h.html#a035c3854e11cd8797f9014c2f61e84be">hcd_setup_send</a> (uint8_t rhport, uint8_t dev_addr, uint8_t const setup_packet[8])</td></tr>
-<tr class="separator:a035c3854e11cd8797f9014c2f61e84be"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae01e3b9ed2d02feff70687438c329e00"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hcd_8h.html#ae01e3b9ed2d02feff70687438c329e00">hcd_edpt_open</a> (uint8_t rhport, uint8_t dev_addr, <a class="el" href="group___u_s_b_def___type.html#ga95906f860c391cedba638b1946669694">tusb_desc_endpoint_t</a> const *ep_desc)</td></tr>
-<tr class="separator:ae01e3b9ed2d02feff70687438c329e00"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a742697381d3ad79ac1f5cbdb8ef64d53"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hcd_8h.html#a742697381d3ad79ac1f5cbdb8ef64d53">hcd_edpt_xfer</a> (uint8_t rhport, uint8_t dev_addr, uint8_t ep_addr, uint8_t *<a class="el" href="midi__device_8h.html#ac8733c58bc671239139641960e2d5dbf">buffer</a>, uint16_t buflen)</td></tr>
-<tr class="separator:a742697381d3ad79ac1f5cbdb8ef64d53"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac90cfc9317bb1d14e2d45d3e64b6d3d0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hcd_8h.html#ac90cfc9317bb1d14e2d45d3e64b6d3d0">hcd_edpt_clear_stall</a> (uint8_t dev_addr, uint8_t ep_addr)</td></tr>
-<tr class="separator:ac90cfc9317bb1d14e2d45d3e64b6d3d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8a0c33dc0e9cc1ec7689eae385a66fb4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hcd_8h.html#a8a0c33dc0e9cc1ec7689eae385a66fb4">hcd_devtree_get_info</a> (uint8_t dev_addr, <a class="el" href="structhcd__devtree__info__t.html">hcd_devtree_info_t</a> *devtree_info)</td></tr>
+<tr class="memitem:a52eb4ede911badb42372c86c8e49011a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hcd_8h.html#a52eb4ede911badb42372c86c8e49011a">hcd_edpt_open</a> (uint8_t rhport, uint8_t <a class="el" href="usbh_8c.html#a796e92f0d162a415f6b2098cd9008bab">daddr</a>, <a class="el" href="tusb__types_8h.html#a95906f860c391cedba638b1946669694">tusb_desc_endpoint_t</a> const *ep_desc)</td></tr>
+<tr class="separator:a52eb4ede911badb42372c86c8e49011a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd617861f05a463b3b6b478053aedc71"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hcd_8h.html#acd617861f05a463b3b6b478053aedc71">hcd_edpt_xfer</a> (uint8_t rhport, uint8_t <a class="el" href="usbh_8c.html#a796e92f0d162a415f6b2098cd9008bab">daddr</a>, uint8_t ep_addr, uint8_t *<a class="el" href="usbh_8c.html#a56ed84df35de10bdb65e72b184309497">buffer</a>, uint16_t buflen)</td></tr>
+<tr class="separator:acd617861f05a463b3b6b478053aedc71"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d264533c0b641a7f9349b588a04c683"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hcd_8h.html#a7d264533c0b641a7f9349b588a04c683">hcd_edpt_abort_xfer</a> (uint8_t rhport, uint8_t <a class="el" href="dcd__pic32mz_8c.html#a1997a5306d6d04a9ce867303d1a6d9e1">dev_addr</a>, uint8_t ep_addr)</td></tr>
+<tr class="separator:a7d264533c0b641a7f9349b588a04c683"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a94a31a31eb7d6ba76975a8816712220e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hcd_8h.html#a94a31a31eb7d6ba76975a8816712220e">hcd_setup_send</a> (uint8_t rhport, uint8_t <a class="el" href="usbh_8c.html#a796e92f0d162a415f6b2098cd9008bab">daddr</a>, uint8_t const setup_packet[8])</td></tr>
+<tr class="separator:a94a31a31eb7d6ba76975a8816712220e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a641f368a59881446fdb841a252e6f117"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hcd_8h.html#a641f368a59881446fdb841a252e6f117">hcd_edpt_clear_stall</a> (uint8_t rhport, uint8_t <a class="el" href="dcd__pic32mz_8c.html#a1997a5306d6d04a9ce867303d1a6d9e1">dev_addr</a>, uint8_t ep_addr)</td></tr>
+<tr class="separator:a641f368a59881446fdb841a252e6f117"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a0c33dc0e9cc1ec7689eae385a66fb4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hcd_8h.html#a8a0c33dc0e9cc1ec7689eae385a66fb4">hcd_devtree_get_info</a> (uint8_t <a class="el" href="dcd__pic32mz_8c.html#a1997a5306d6d04a9ce867303d1a6d9e1">dev_addr</a>, <a class="el" href="structhcd__devtree__info__t.html">hcd_devtree_info_t</a> *devtree_info)</td></tr>
 <tr class="separator:a8a0c33dc0e9cc1ec7689eae385a66fb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8f36b6f1ecc776dddd271e7c4607f0b2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hcd_8h.html#a8f36b6f1ecc776dddd271e7c4607f0b2">hcd_event_handler</a> (<a class="el" href="structhcd__event__t.html">hcd_event_t</a> const *event, bool in_isr)</td></tr>
+<tr class="memitem:a8f36b6f1ecc776dddd271e7c4607f0b2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hcd_8h.html#a8f36b6f1ecc776dddd271e7c4607f0b2">hcd_event_handler</a> (<a class="el" href="structhcd__event__t.html">hcd_event_t</a> const *event, bool <a class="el" href="dcd__msp430x5xx_8c.html#a75c7dcc996a49b19a8500fbe8ceed04b">in_isr</a>)</td></tr>
 <tr class="separator:a8f36b6f1ecc776dddd271e7c4607f0b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aece588a83ad525b717113525b24b9a02"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hcd_8h.html#aece588a83ad525b717113525b24b9a02">hcd_event_device_attach</a> (uint8_t rhport, bool in_isr)</td></tr>
-<tr class="separator:aece588a83ad525b717113525b24b9a02"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac619a022e4ccfc07f658cf9c8ec4ea0f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hcd_8h.html#ac619a022e4ccfc07f658cf9c8ec4ea0f">hcd_event_device_remove</a> (uint8_t rhport, bool in_isr)</td></tr>
-<tr class="separator:ac619a022e4ccfc07f658cf9c8ec4ea0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acdabc4ab32fb9593c5463e58224ddd9e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hcd_8h.html#acdabc4ab32fb9593c5463e58224ddd9e">hcd_event_xfer_complete</a> (uint8_t dev_addr, uint8_t ep_addr, uint32_t xferred_bytes, <a class="el" href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a> result, bool in_isr)</td></tr>
-<tr class="separator:acdabc4ab32fb9593c5463e58224ddd9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86f57462bb1a79d65ea174a2e0eeac6e"><td class="memItemLeft" align="right" valign="top">static TU_ATTR_ALWAYS_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hcd_8h.html#a86f57462bb1a79d65ea174a2e0eeac6e">hcd_event_device_attach</a> (uint8_t rhport, bool <a class="el" href="dcd__msp430x5xx_8c.html#a75c7dcc996a49b19a8500fbe8ceed04b">in_isr</a>)</td></tr>
+<tr class="separator:a86f57462bb1a79d65ea174a2e0eeac6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09ee3bfb1b74e65ef800237ace0e8f25"><td class="memItemLeft" align="right" valign="top">static TU_ATTR_ALWAYS_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hcd_8h.html#a09ee3bfb1b74e65ef800237ace0e8f25">hcd_event_device_remove</a> (uint8_t rhport, bool <a class="el" href="dcd__msp430x5xx_8c.html#a75c7dcc996a49b19a8500fbe8ceed04b">in_isr</a>)</td></tr>
+<tr class="separator:a09ee3bfb1b74e65ef800237ace0e8f25"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a169465bb1c2a250ac8081df59e9af8eb"><td class="memItemLeft" align="right" valign="top">static TU_ATTR_ALWAYS_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hcd_8h.html#a169465bb1c2a250ac8081df59e9af8eb">hcd_event_xfer_complete</a> (uint8_t <a class="el" href="dcd__pic32mz_8c.html#a1997a5306d6d04a9ce867303d1a6d9e1">dev_addr</a>, uint8_t ep_addr, uint32_t xferred_bytes, <a class="el" href="tusb__types_8h.html#a6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a> result, bool <a class="el" href="dcd__msp430x5xx_8c.html#a75c7dcc996a49b19a8500fbe8ceed04b">in_isr</a>)</td></tr>
+<tr class="separator:a169465bb1c2a250ac8081df59e9af8eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:aaa53ca0b650dfd85c4f59fa156f7a2cc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hcd_8h.html#aaa53ca0b650dfd85c4f59fa156f7a2cc">C</a></td></tr>
 <tr class="separator:aaa53ca0b650dfd85c4f59fa156f7a2cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Enumeration Type Documentation</h2>
-<a id="a7cc2e4244ca368f68e5746185eda6c4a" name="a7cc2e4244ca368f68e5746185eda6c4a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7cc2e4244ca368f68e5746185eda6c4a">&#9670;&nbsp;</a></span>anonymous enum</h2>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="a249b0d5c754c74a8decc21d4b4f34171" name="a249b0d5c754c74a8decc21d4b4f34171"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a249b0d5c754c74a8decc21d4b4f34171">&#9670;&nbsp;</a></span>hcd_configure()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">anonymous enum</td>
+          <td class="memname">bool hcd_configure </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>rhport</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>cfg_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const void *&#160;</td>
+          <td class="paramname"><em>cfg_param</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a7cc2e4244ca368f68e5746185eda6c4aa51e209e23b136ec7cbe4fcb341d6a570" name="a7cc2e4244ca368f68e5746185eda6c4aa51e209e23b136ec7cbe4fcb341d6a570"></a>HCD_MAX_ENDPOINT&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a7cc2e4244ca368f68e5746185eda6c4aa13517cb32e54e1b0ea77bb23a2fd07bc" name="a7cc2e4244ca368f68e5746185eda6c4aa13517cb32e54e1b0ea77bb23a2fd07bc"></a>HCD_MAX_XFER&#160;</td><td class="fielddoc"></td></tr>
-</table>
 
-<p class="definition">Definition at line <a class="el" href="hcd_8h_source.html#l00087">87</a> of file <a class="el" href="hcd_8h_source.html">hcd.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00055">55</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
 
 </div>
 </div>
-<h2 class="groupheader">Function Documentation</h2>
+<a id="a60dc42f4793b200be0b0797c11a6f06c" name="a60dc42f4793b200be0b0797c11a6f06c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a60dc42f4793b200be0b0797c11a6f06c">&#9670;&nbsp;</a></span>hcd_dcache_clean()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool hcd_dcache_clean </td>
+          <td>(</td>
+          <td class="paramtype">void const *&#160;</td>
+          <td class="paramname"><em>addr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>data_size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="hcd__ci__hs_8c_source.html#l00045">45</a> of file <a class="el" href="hcd__ci__hs_8c_source.html">hcd_ci_hs.c</a>.</p>
+
+</div>
+</div>
+<a id="a3e97b1d0c9caa4f450faf7791ca1d869" name="a3e97b1d0c9caa4f450faf7791ca1d869"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e97b1d0c9caa4f450faf7791ca1d869">&#9670;&nbsp;</a></span>hcd_dcache_clean_invalidate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool hcd_dcache_clean_invalidate </td>
+          <td>(</td>
+          <td class="paramtype">void const *&#160;</td>
+          <td class="paramname"><em>addr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>data_size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="hcd__ci__hs_8c_source.html#l00053">53</a> of file <a class="el" href="hcd__ci__hs_8c_source.html">hcd_ci_hs.c</a>.</p>
+
+</div>
+</div>
+<a id="a04dab2bd19c7484d1dcccb063d31dcb0" name="a04dab2bd19c7484d1dcccb063d31dcb0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a04dab2bd19c7484d1dcccb063d31dcb0">&#9670;&nbsp;</a></span>hcd_dcache_invalidate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool hcd_dcache_invalidate </td>
+          <td>(</td>
+          <td class="paramtype">void const *&#160;</td>
+          <td class="paramname"><em>addr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>data_size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="hcd__ci__hs_8c_source.html#l00049">49</a> of file <a class="el" href="hcd__ci__hs_8c_source.html">hcd_ci_hs.c</a>.</p>
+
+</div>
+</div>
+<a id="a64788b6d71cd242935b9237bab83a019" name="a64788b6d71cd242935b9237bab83a019"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a64788b6d71cd242935b9237bab83a019">&#9670;&nbsp;</a></span>hcd_deinit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool hcd_deinit </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>rhport</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00050">50</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+
+</div>
+</div>
 <a id="a7c6ccf51f41f13d0e273f83dd4194abd" name="a7c6ccf51f41f13d0e273f83dd4194abd"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7c6ccf51f41f13d0e273f83dd4194abd">&#9670;&nbsp;</a></span>hcd_device_close()</h2>
 
@@ -202,6 +331,8 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="hcd__max3421_8c_source.html#l00615">615</a> of file <a class="el" href="hcd__max3421_8c_source.html">hcd_max3421.c</a>.</p>
 
 </div>
 </div>
@@ -231,19 +362,25 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00441">441</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00949">949</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
 
 </div>
 </div>
-<a id="ac90cfc9317bb1d14e2d45d3e64b6d3d0" name="ac90cfc9317bb1d14e2d45d3e64b6d3d0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac90cfc9317bb1d14e2d45d3e64b6d3d0">&#9670;&nbsp;</a></span>hcd_edpt_clear_stall()</h2>
+<a id="a7d264533c0b641a7f9349b588a04c683" name="a7d264533c0b641a7f9349b588a04c683"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d264533c0b641a7f9349b588a04c683">&#9670;&nbsp;</a></span>hcd_edpt_abort_xfer()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool hcd_edpt_clear_stall </td>
+          <td class="memname">bool hcd_edpt_abort_xfer </td>
           <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>rhport</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">uint8_t&#160;</td>
           <td class="paramname"><em>dev_addr</em>, </td>
         </tr>
@@ -261,10 +398,48 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p class="definition">Definition at line <a class="el" href="hcd__max3421_8c_source.html#l00759">759</a> of file <a class="el" href="hcd__max3421_8c_source.html">hcd_max3421.c</a>.</p>
+
 </div>
 </div>
-<a id="ae01e3b9ed2d02feff70687438c329e00" name="ae01e3b9ed2d02feff70687438c329e00"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae01e3b9ed2d02feff70687438c329e00">&#9670;&nbsp;</a></span>hcd_edpt_open()</h2>
+<a id="a641f368a59881446fdb841a252e6f117" name="a641f368a59881446fdb841a252e6f117"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a641f368a59881446fdb841a252e6f117">&#9670;&nbsp;</a></span>hcd_edpt_clear_stall()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool hcd_edpt_clear_stall </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>rhport</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>dev_addr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>ep_addr</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="hcd__max3421_8c_source.html#l00797">797</a> of file <a class="el" href="hcd__max3421_8c_source.html">hcd_max3421.c</a>.</p>
+
+</div>
+</div>
+<a id="a52eb4ede911badb42372c86c8e49011a" name="a52eb4ede911badb42372c86c8e49011a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a52eb4ede911badb42372c86c8e49011a">&#9670;&nbsp;</a></span>hcd_edpt_open()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -279,12 +454,12 @@ Variables</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>dev_addr</em>, </td>
+          <td class="paramname"><em>daddr</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga95906f860c391cedba638b1946669694">tusb_desc_endpoint_t</a> const *&#160;</td>
+          <td class="paramtype"><a class="el" href="tusb__types_8h.html#a95906f860c391cedba638b1946669694">tusb_desc_endpoint_t</a> const *&#160;</td>
           <td class="paramname"><em>ep_desc</em>&#160;</td>
         </tr>
         <tr>
@@ -295,10 +470,12 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p class="definition">Definition at line <a class="el" href="hcd__max3421_8c_source.html#l00625">625</a> of file <a class="el" href="hcd__max3421_8c_source.html">hcd_max3421.c</a>.</p>
+
 </div>
 </div>
-<a id="a742697381d3ad79ac1f5cbdb8ef64d53" name="a742697381d3ad79ac1f5cbdb8ef64d53"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a742697381d3ad79ac1f5cbdb8ef64d53">&#9670;&nbsp;</a></span>hcd_edpt_xfer()</h2>
+<a id="acd617861f05a463b3b6b478053aedc71" name="acd617861f05a463b3b6b478053aedc71"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acd617861f05a463b3b6b478053aedc71">&#9670;&nbsp;</a></span>hcd_edpt_xfer()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -313,7 +490,7 @@ Variables</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>dev_addr</em>, </td>
+          <td class="paramname"><em>daddr</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -341,16 +518,21 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p class="definition">Definition at line <a class="el" href="hcd__max3421_8c_source.html#l00733">733</a> of file <a class="el" href="hcd__max3421_8c_source.html">hcd_max3421.c</a>.</p>
+
 </div>
 </div>
-<a id="aece588a83ad525b717113525b24b9a02" name="aece588a83ad525b717113525b24b9a02"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aece588a83ad525b717113525b24b9a02">&#9670;&nbsp;</a></span>hcd_event_device_attach()</h2>
+<a id="a86f57462bb1a79d65ea174a2e0eeac6e" name="a86f57462bb1a79d65ea174a2e0eeac6e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a86f57462bb1a79d65ea174a2e0eeac6e">&#9670;&nbsp;</a></span>hcd_event_device_attach()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void hcd_event_device_attach </td>
+          <td class="memname">static TU_ATTR_ALWAYS_INLINE void hcd_event_device_attach </td>
           <td>(</td>
           <td class="paramtype">uint8_t&#160;</td>
           <td class="paramname"><em>rhport</em>, </td>
@@ -367,20 +549,28 @@ Variables</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00488">488</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hcd_8h_source.html#l00197">197</a> of file <a class="el" href="hcd_8h_source.html">hcd.h</a>.</p>
 
 </div>
 </div>
-<a id="ac619a022e4ccfc07f658cf9c8ec4ea0f" name="ac619a022e4ccfc07f658cf9c8ec4ea0f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac619a022e4ccfc07f658cf9c8ec4ea0f">&#9670;&nbsp;</a></span>hcd_event_device_remove()</h2>
+<a id="a09ee3bfb1b74e65ef800237ace0e8f25" name="a09ee3bfb1b74e65ef800237ace0e8f25"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a09ee3bfb1b74e65ef800237ace0e8f25">&#9670;&nbsp;</a></span>hcd_event_device_remove()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void hcd_event_device_remove </td>
+          <td class="memname">static TU_ATTR_ALWAYS_INLINE void hcd_event_device_remove </td>
           <td>(</td>
           <td class="paramtype">uint8_t&#160;</td>
           <td class="paramname"><em>rhport</em>, </td>
@@ -397,9 +587,14 @@ Variables</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00502">502</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hcd_8h_source.html#l00209">209</a> of file <a class="el" href="hcd_8h_source.html">hcd.h</a>.</p>
 
 </div>
 </div>
@@ -429,18 +624,21 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00460">460</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00964">964</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
 
 </div>
 </div>
-<a id="acdabc4ab32fb9593c5463e58224ddd9e" name="acdabc4ab32fb9593c5463e58224ddd9e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acdabc4ab32fb9593c5463e58224ddd9e">&#9670;&nbsp;</a></span>hcd_event_xfer_complete()</h2>
+<a id="a169465bb1c2a250ac8081df59e9af8eb" name="a169465bb1c2a250ac8081df59e9af8eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a169465bb1c2a250ac8081df59e9af8eb">&#9670;&nbsp;</a></span>hcd_event_xfer_complete()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void hcd_event_xfer_complete </td>
+          <td class="memname">static TU_ATTR_ALWAYS_INLINE void hcd_event_xfer_complete </td>
           <td>(</td>
           <td class="paramtype">uint8_t&#160;</td>
           <td class="paramname"><em>dev_addr</em>, </td>
@@ -460,7 +658,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="tusb__types_8h.html#a6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a>&#160;</td>
           <td class="paramname"><em>result</em>, </td>
         </tr>
         <tr>
@@ -475,9 +673,14 @@ Variables</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00470">470</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hcd_8h_source.html#l00221">221</a> of file <a class="el" href="hcd_8h_source.html">hcd.h</a>.</p>
 
 </div>
 </div>
@@ -497,10 +700,12 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p class="definition">Definition at line <a class="el" href="hcd__max3421_8c_source.html#l00582">582</a> of file <a class="el" href="hcd__max3421_8c_source.html">hcd_max3421.c</a>.</p>
+
 </div>
 </div>
-<a id="a5010f02a821fb6277b179b7db71fa397" name="a5010f02a821fb6277b179b7db71fa397"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5010f02a821fb6277b179b7db71fa397">&#9670;&nbsp;</a></span>hcd_init()</h2>
+<a id="ade0002606c124ab5e2843218efe91db3" name="ade0002606c124ab5e2843218efe91db3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ade0002606c124ab5e2843218efe91db3">&#9670;&nbsp;</a></span>hcd_init()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -509,11 +714,23 @@ Variables</h2></td></tr>
           <td class="memname">bool hcd_init </td>
           <td>(</td>
           <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>rhport</em></td><td>)</td>
+          <td class="paramname"><em>rhport</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const <a class="el" href="structtusb__rhport__init__t.html">tusb_rhport_init_t</a> *&#160;</td>
+          <td class="paramname"><em>rh_init</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="hcd__max3421_8c_source.html#l00497">497</a> of file <a class="el" href="hcd__max3421_8c_source.html">hcd_max3421.c</a>.</p>
 
 </div>
 </div>
@@ -533,6 +750,8 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p class="definition">Definition at line <a class="el" href="hcd__max3421_8c_source.html#l00577">577</a> of file <a class="el" href="hcd__max3421_8c_source.html">hcd_max3421.c</a>.</p>
+
 </div>
 </div>
 <a id="a69bc2917c5933edb2c1b0a3cb67e3815" name="a69bc2917c5933edb2c1b0a3cb67e3815"></a>
@@ -551,10 +770,12 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p class="definition">Definition at line <a class="el" href="hcd__max3421_8c_source.html#l00571">571</a> of file <a class="el" href="hcd__max3421_8c_source.html">hcd_max3421.c</a>.</p>
+
 </div>
 </div>
-<a id="a5c5ff767126e5d660118bae5613cf36f" name="a5c5ff767126e5d660118bae5613cf36f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5c5ff767126e5d660118bae5613cf36f">&#9670;&nbsp;</a></span>hcd_int_handler()</h2>
+<a id="ad3a4994f1d0b371330c4176cabebfbdd" name="ad3a4994f1d0b371330c4176cabebfbdd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3a4994f1d0b371330c4176cabebfbdd">&#9670;&nbsp;</a></span>hcd_int_handler()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -563,11 +784,23 @@ Variables</h2></td></tr>
           <td class="memname">void hcd_int_handler </td>
           <td>(</td>
           <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>rhport</em></td><td>)</td>
+          <td class="paramname"><em>rhport</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>in_isr</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="hcd__max3421_8c_source.html#l01002">1002</a> of file <a class="el" href="hcd__max3421_8c_source.html">hcd_max3421.c</a>.</p>
 
 </div>
 </div>
@@ -587,6 +820,8 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p class="definition">Definition at line <a class="el" href="hcd__max3421_8c_source.html#l00592">592</a> of file <a class="el" href="hcd__max3421_8c_source.html">hcd_max3421.c</a>.</p>
+
 </div>
 </div>
 <a id="a99c3d7d6b9e394bd514ed52d3ffd2d77" name="a99c3d7d6b9e394bd514ed52d3ffd2d77"></a>
@@ -604,6 +839,8 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="hcd__max3421_8c_source.html#l00599">599</a> of file <a class="el" href="hcd__max3421_8c_source.html">hcd_max3421.c</a>.</p>
 
 </div>
 </div>
@@ -623,6 +860,8 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p class="definition">Definition at line <a class="el" href="hcd__max3421_8c_source.html#l00604">604</a> of file <a class="el" href="hcd__max3421_8c_source.html">hcd_max3421.c</a>.</p>
+
 </div>
 </div>
 <a id="aca7cfcd3b59d9bb5895feb9266381ba8" name="aca7cfcd3b59d9bb5895feb9266381ba8"></a>
@@ -632,7 +871,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">tusb_speed_t hcd_port_speed_get </td>
+          <td class="memname"><a class="el" href="tusb__types_8h.html#a13298e8a91e362e9b4ed452d86f4671b">tusb_speed_t</a> hcd_port_speed_get </td>
           <td>(</td>
           <td class="paramtype">uint8_t&#160;</td>
           <td class="paramname"><em>rhport</em></td><td>)</td>
@@ -641,10 +880,12 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p class="definition">Definition at line <a class="el" href="hcd__max3421_8c_source.html#l00609">609</a> of file <a class="el" href="hcd__max3421_8c_source.html">hcd_max3421.c</a>.</p>
+
 </div>
 </div>
-<a id="a035c3854e11cd8797f9014c2f61e84be" name="a035c3854e11cd8797f9014c2f61e84be"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a035c3854e11cd8797f9014c2f61e84be">&#9670;&nbsp;</a></span>hcd_setup_send()</h2>
+<a id="a94a31a31eb7d6ba76975a8816712220e" name="a94a31a31eb7d6ba76975a8816712220e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a94a31a31eb7d6ba76975a8816712220e">&#9670;&nbsp;</a></span>hcd_setup_send()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -659,7 +900,7 @@ Variables</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>dev_addr</em>, </td>
+          <td class="paramname"><em>daddr</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -674,6 +915,8 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="hcd__max3421_8c_source.html#l00775">775</a> of file <a class="el" href="hcd__max3421_8c_source.html">hcd_max3421.c</a>.</p>
 
 </div>
 </div>
@@ -703,15 +946,27 @@ Variables</h2></td></tr>
 <div class="line"> </div>
 <div class="line"> </div>
 <div class="line"> </div>
-<div class="line"><span class="keyword">typedef</span> <span class="keyword">enum</span></div>
-<div class="line">{</div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor">#ifndef CFG_TUH_ENDPOINT_MAX</span></div>
+<div class="line"><span class="preprocessor">  #define CFG_TUH_ENDPOINT_MAX   16</span></div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor">#endif</span></div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">typedef</span> <span class="keyword">enum</span> {</div>
 <div class="line">  HCD_EVENT_DEVICE_ATTACH,</div>
 <div class="line">  HCD_EVENT_DEVICE_REMOVE,</div>
 <div class="line">  HCD_EVENT_XFER_COMPLETE,</div>
 <div class="line"> </div>
-<div class="line">  </div>
-<div class="line">  USBH_EVENT_FUNC_CALL,</div>
-<div class="line"> </div>
+<div class="line">  USBH_EVENT_FUNC_CALL, </div>
 <div class="line">  HCD_EVENT_COUNT</div>
 <div class="line">} hcd_eventid_t</div>
 </div><!-- fragment -->

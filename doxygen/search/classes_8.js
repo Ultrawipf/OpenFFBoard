@@ -1,13 +1,19 @@
 var searchData=
 [
-  ['hcd_5fdevtree_5finfo_5ft_0',['hcd_devtree_info_t',['../structhcd__devtree__info__t.html',1,'']]],
-  ['hcd_5fevent_5ft_1',['hcd_event_t',['../structhcd__event__t.html',1,'']]],
-  ['hid_5fcommandinterface_2',['HID_CommandInterface',['../class_h_i_d___command_interface.html',1,'']]],
-  ['hidd_5finterface_5ft_3',['hidd_interface_t',['../structhidd__interface__t.html',1,'']]],
-  ['hidffb_4',['HidFFB',['../class_hid_f_f_b.html',1,'']]],
-  ['hidh_5fdevice_5ft_5',['hidh_device_t',['../structhidh__device__t.html',1,'']]],
-  ['hidh_5finterface_5ft_6',['hidh_interface_t',['../structhidh__interface__t.html',1,'']]],
-  ['hub_5finterface_5ft_7',['hub_interface_t',['../structhub__interface__t.html',1,'']]],
-  ['hub_5fport_5fstatus_5fresponse_5ft_8',['hub_port_status_response_t',['../structhub__port__status__response__t.html',1,'']]],
-  ['hub_5fstatus_5fresponse_5ft_9',['hub_status_response_t',['../structhub__status__response__t.html',1,'']]]
+  ['hcd_5fdata_5ft_0',['hcd_data_t',['../structhcd__data__t.html',1,'']]],
+  ['hcd_5fdevtree_5finfo_5ft_1',['hcd_devtree_info_t',['../structhcd__devtree__info__t.html',1,'']]],
+  ['hcd_5fendpoint_5ft_2',['hcd_endpoint_t',['../structhcd__endpoint__t.html',1,'']]],
+  ['hcd_5fevent_5ft_3',['hcd_event_t',['../structhcd__event__t.html',1,'']]],
+  ['hcd_5fxfer_5ft_4',['hcd_xfer_t',['../structhcd__xfer__t.html',1,'']]],
+  ['hid_5fcommandinterface_5',['HID_CommandInterface',['../class_h_i_d___command_interface.html',1,'']]],
+  ['hidd_5finterface_5ft_6',['hidd_interface_t',['../structhidd__interface__t.html',1,'']]],
+  ['hidffb_7',['HidFFB',['../class_hid_f_f_b.html',1,'']]],
+  ['hidh_5finterface_5ft_8',['hidh_interface_t',['../structhidh__interface__t.html',1,'']]],
+  ['hs_5fphyc_5fglobaltypedef_9',['HS_PHYC_GlobalTypeDef',['../struct_h_s___p_h_y_c___global_type_def.html',1,'']]],
+  ['hstdma_5ft_10',['hstdma_t',['../structhstdma__t.html',1,'']]],
+  ['hub_5finterface_5ft_11',['hub_interface_t',['../structhub__interface__t.html',1,'']]],
+  ['hub_5fport_5fstatus_5fresponse_5ft_12',['hub_port_status_response_t',['../structhub__port__status__response__t.html',1,'']]],
+  ['hub_5fstatus_5fresponse_5ft_13',['hub_status_response_t',['../structhub__status__response__t.html',1,'']]],
+  ['hw_5fendpoint_14',['hw_endpoint',['../structhw__endpoint.html',1,'']]],
+  ['hw_5ffifo_5ft_15',['hw_fifo_t',['../unionhw__fifo__t.html',1,'']]]
 ];

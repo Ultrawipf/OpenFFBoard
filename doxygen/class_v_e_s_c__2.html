@@ -154,8 +154,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a17751aa63d09860404c6b29c844d4123 inherit pub_methods_class_vesc_c_a_n"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad604f2b98471a252ce160fc21f117576 inherit pub_methods_class_vesc_c_a_n"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_vesc_c_a_n.html#ad604f2b98471a252ce160fc21f117576">setPos</a> (int32_t <a class="el" href="_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715a5e0bdcbddccca4d66d74ba8c1cee1a68">pos</a>) override</td></tr>
 <tr class="separator:ad604f2b98471a252ce160fc21f117576 inherit pub_methods_class_vesc_c_a_n"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:add739e6410daa262f13cf483e1160c7e inherit pub_methods_class_vesc_c_a_n"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_vesc_c_a_n.html#add739e6410daa262f13cf483e1160c7e">canRxPendCallback</a> (CAN_HandleTypeDef *hcan, uint8_t *rxBuf, CAN_RxHeaderTypeDef *rxHeader, uint32_t fifo) override</td></tr>
-<tr class="separator:add739e6410daa262f13cf483e1160c7e inherit pub_methods_class_vesc_c_a_n"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4b43bce9852b7c6c0e0fb749f036dc3 inherit pub_methods_class_vesc_c_a_n"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_vesc_c_a_n.html#af4b43bce9852b7c6c0e0fb749f036dc3">canRxPendCallback</a> (<a class="el" href="class_c_a_n_port.html">CANPort</a> *<a class="el" href="class_vesc_c_a_n.html#aeb1912ec30578673b821d051a1581b14">port</a>, <a class="el" href="struct_c_a_n__rx__msg.html">CAN_rx_msg</a> &amp;msg) override</td></tr>
+<tr class="separator:af4b43bce9852b7c6c0e0fb749f036dc3 inherit pub_methods_class_vesc_c_a_n"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac330bde8005a94343810fae8aec8bf35 inherit pub_methods_class_vesc_c_a_n"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_command_handler_8h.html#aefaf83fec6a7da1d02ae7e912dd9a6d5">CommandStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_vesc_c_a_n.html#ac330bde8005a94343810fae8aec8bf35">command</a> (const <a class="el" href="struct_parsed_command.html">ParsedCommand</a> &amp;cmd, std::vector&lt; <a class="el" href="class_command_reply.html">CommandReply</a> &gt; &amp;replies)</td></tr>
 <tr class="separator:ac330bde8005a94343810fae8aec8bf35 inherit pub_methods_class_vesc_c_a_n"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad54cb5847901d40c636d002606241bd0 inherit pub_methods_class_vesc_c_a_n"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_vesc_c_a_n.html#ad54cb5847901d40c636d002606241bd0">registerCommands</a> ()</td></tr>
@@ -186,6 +186,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a0f6d37b59d3ce8deedb1862db79fd356 inherit pub_methods_class_persistent_storage"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1cf470862b87d0a1b91548c24dedc4f8 inherit pub_methods_class_persistent_storage"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_persistent_storage.html#a1cf470862b87d0a1b91548c24dedc4f8">~PersistentStorage</a> ()</td></tr>
 <tr class="separator:a1cf470862b87d0a1b91548c24dedc4f8 inherit pub_methods_class_persistent_storage"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5a3b2fe8e28d265bb818d084fa82039 inherit pub_methods_class_persistent_storage"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_persistent_storage.html#ad5a3b2fe8e28d265bb818d084fa82039">restoreFlashDelayed</a> ()</td></tr>
+<tr class="separator:ad5a3b2fe8e28d265bb818d084fa82039 inherit pub_methods_class_persistent_storage"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_encoder"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_encoder')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_encoder.html">Encoder</a></td></tr>
 <tr class="memitem:ab5d9324930644abeb150da7a7747ffe3 inherit pub_methods_class_encoder"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_encoder.html#ab5d9324930644abeb150da7a7747ffe3">Encoder</a> ()</td></tr>
 <tr class="separator:ab5d9324930644abeb150da7a7747ffe3 inherit pub_methods_class_encoder"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -203,14 +205,14 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a3f2604934604f431dc0f48a84ee60f22 inherit pub_methods_class_can_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a562a01205e76ff9d5b0f554cee1a446b inherit pub_methods_class_can_handler"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_handler.html#a562a01205e76ff9d5b0f554cee1a446b">~CanHandler</a> ()</td></tr>
 <tr class="separator:a562a01205e76ff9d5b0f554cee1a446b inherit pub_methods_class_can_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbcdeeb42119dc4f9e844e40f7e777d5 inherit pub_methods_class_can_handler"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_handler.html#afbcdeeb42119dc4f9e844e40f7e777d5">canErrorCallback</a> (CAN_HandleTypeDef *hcan)</td></tr>
-<tr class="separator:afbcdeeb42119dc4f9e844e40f7e777d5 inherit pub_methods_class_can_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a40cb9e6af6a482920327d741d4b423f5 inherit pub_methods_class_can_handler"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_handler.html#a40cb9e6af6a482920327d741d4b423f5">canRxFullCallback</a> (CAN_HandleTypeDef *hcan, uint32_t fifo)</td></tr>
-<tr class="separator:a40cb9e6af6a482920327d741d4b423f5 inherit pub_methods_class_can_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a12401bc2ece26ccb4adf12ec833276c8 inherit pub_methods_class_can_handler"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_handler.html#a12401bc2ece26ccb4adf12ec833276c8">canTxCpltCallback</a> (CAN_HandleTypeDef *hcan, uint32_t mailbox)</td></tr>
-<tr class="separator:a12401bc2ece26ccb4adf12ec833276c8 inherit pub_methods_class_can_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0e2267410edc1d3f36bf8cb228ff458b inherit pub_methods_class_can_handler"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_handler.html#a0e2267410edc1d3f36bf8cb228ff458b">canTxAbortCallback</a> (CAN_HandleTypeDef *hcan, uint32_t mailbox)</td></tr>
-<tr class="separator:a0e2267410edc1d3f36bf8cb228ff458b inherit pub_methods_class_can_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87cbd1ffa351f398cd092624034c53de inherit pub_methods_class_can_handler"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_handler.html#a87cbd1ffa351f398cd092624034c53de">canErrorCallback</a> (<a class="el" href="class_c_a_n_port.html">CANPort</a> *port, uint32_t errcode)</td></tr>
+<tr class="separator:a87cbd1ffa351f398cd092624034c53de inherit pub_methods_class_can_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c2378e74f74a6aeb1d78b8016617e7d inherit pub_methods_class_can_handler"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_handler.html#a7c2378e74f74a6aeb1d78b8016617e7d">canRxFullCallback</a> (<a class="el" href="class_c_a_n_port.html">CANPort</a> *port, uint32_t fifo)</td></tr>
+<tr class="separator:a7c2378e74f74a6aeb1d78b8016617e7d inherit pub_methods_class_can_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85e19cebbab39ad65a5a837b78984545 inherit pub_methods_class_can_handler"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_handler.html#a85e19cebbab39ad65a5a837b78984545">canTxCpltCallback</a> (<a class="el" href="class_c_a_n_port.html">CANPort</a> *port, uint32_t mailbox)</td></tr>
+<tr class="separator:a85e19cebbab39ad65a5a837b78984545 inherit pub_methods_class_can_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9f23009ef5f97846cba05d2e66eb962 inherit pub_methods_class_can_handler"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_handler.html#ab9f23009ef5f97846cba05d2e66eb962">canTxAbortCallback</a> (<a class="el" href="class_c_a_n_port.html">CANPort</a> *port, uint32_t mailbox)</td></tr>
+<tr class="separator:ab9f23009ef5f97846cba05d2e66eb962 inherit pub_methods_class_can_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_command_handler"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_command_handler')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_command_handler.html">CommandHandler</a></td></tr>
 <tr class="memitem:a59474bca13e1cc8a8e0e58c47cdce539 inherit pub_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="_class_i_ds_8h.html#a79467dc849dd02adbaa4373bbd7aba75">ClassType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a59474bca13e1cc8a8e0e58c47cdce539">getClassType</a> ()</td></tr>
 <tr class="separator:a59474bca13e1cc8a8e0e58c47cdce539 inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -260,6 +262,8 @@ Static Public Member Functions</h2></td></tr>
 <tr class="inherit_header pub_static_methods_class_persistent_storage"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_class_persistent_storage')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="class_persistent_storage.html">PersistentStorage</a></td></tr>
 <tr class="memitem:a14700f8511d8aaea5d5b29632b371eb9 inherit pub_static_methods_class_persistent_storage"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; <a class="el" href="class_persistent_storage.html">PersistentStorage</a> * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_persistent_storage.html#a14700f8511d8aaea5d5b29632b371eb9">getFlashHandlers</a> ()</td></tr>
 <tr class="separator:a14700f8511d8aaea5d5b29632b371eb9 inherit pub_static_methods_class_persistent_storage"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a234d2bb4384efe326c4f83b3c372e565 inherit pub_static_methods_class_persistent_storage"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_persistent_storage.html#a234d2bb4384efe326c4f83b3c372e565">restoreFlashStartupCb</a> ()</td></tr>
+<tr class="separator:a234d2bb4384efe326c4f83b3c372e565 inherit pub_static_methods_class_persistent_storage"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_methods_class_can_handler"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_class_can_handler')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="class_can_handler.html">CanHandler</a></td></tr>
 <tr class="memitem:a8ed97e1ea01b2899296ae4d702abb95b inherit pub_static_methods_class_can_handler"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; <a class="el" href="class_can_handler.html">CanHandler</a> * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_handler.html#a8ed97e1ea01b2899296ae4d702abb95b">getCANHandlers</a> ()</td></tr>
 <tr class="separator:a8ed97e1ea01b2899296ae4d702abb95b inherit pub_static_methods_class_can_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -349,6 +353,9 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:a7b2fa7906bfe4a9081c168a1da1d460a inherit pro_attribs_class_choosable_class"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_choosable_class.html#a7b2fa7906bfe4a9081c168a1da1d460a">selectionId</a></td></tr>
 <tr class="memdesc:a7b2fa7906bfe4a9081c168a1da1d460a inherit pro_attribs_class_choosable_class"><td class="mdescLeft">&#160;</td><td class="mdescRight">Should only be written by <a class="el" href="class_class_chooser.html">ClassChooser</a> during creation.  <a href="class_choosable_class.html#a7b2fa7906bfe4a9081c168a1da1d460a">More...</a><br /></td></tr>
 <tr class="separator:a7b2fa7906bfe4a9081c168a1da1d460a inherit pro_attribs_class_choosable_class"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_class_persistent_storage"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_class_persistent_storage')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="class_persistent_storage.html">PersistentStorage</a></td></tr>
+<tr class="memitem:a5c85ad9b726cba837b9c100d6752a8b6 inherit pro_attribs_class_persistent_storage"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_persistent_storage.html#a5c85ad9b726cba837b9c100d6752a8b6">restoreDelayedFlag</a> = false</td></tr>
+<tr class="separator:a5c85ad9b726cba837b9c100d6752a8b6 inherit pro_attribs_class_persistent_storage"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_class_encoder"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_class_encoder')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="class_encoder.html">Encoder</a></td></tr>
 <tr class="memitem:aba57ae0de8a7c2adabb47445d9c845c8 inherit pro_attribs_class_encoder"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_encoder.html#aba57ae0de8a7c2adabb47445d9c845c8">cpr</a> = 0</td></tr>
 <tr class="separator:aba57ae0de8a7c2adabb47445d9c845c8 inherit pro_attribs_class_encoder"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -359,10 +366,13 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:a3f584d2a8b93c309c2feaa538a1ed36d inherit pro_attribs_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7421ca437044e8588b3fdf748ace166b inherit pro_attribs_class_command_handler"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_cmd_handler_info.html">CmdHandlerInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a7421ca437044e8588b3fdf748ace166b">cmdHandlerInfo</a></td></tr>
 <tr class="separator:a7421ca437044e8588b3fdf748ace166b inherit pro_attribs_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_static_attribs_class_persistent_storage"><td colspan="2" onclick="javascript:toggleInherit('pro_static_attribs_class_persistent_storage')"><img src="closed.png" alt="-"/>&#160;Static Protected Attributes inherited from <a class="el" href="class_persistent_storage.html">PersistentStorage</a></td></tr>
+<tr class="memitem:a8d98e194842128a2af817341eba58292 inherit pro_static_attribs_class_persistent_storage"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_persistent_storage.html#a8d98e194842128a2af817341eba58292">startupComplete</a> = false</td></tr>
+<tr class="separator:a8d98e194842128a2af817341eba58292 inherit pro_static_attribs_class_persistent_storage"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8h_source.html#l00184">184</a> of file <a class="el" href="_vesc_c_a_n_8h_source.html">VescCAN.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8h_source.html#l00182">182</a> of file <a class="el" href="_vesc_c_a_n_8h_source.html">VescCAN.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a86ee8463b50bec66a0482a09c803aa08" name="a86ee8463b50bec66a0482a09c803aa08"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a86ee8463b50bec66a0482a09c803aa08">&#9670;&nbsp;</a></span>VESC_2()</h2>
@@ -387,7 +397,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8h_source.html#l00186">186</a> of file <a class="el" href="_vesc_c_a_n_8h_source.html">VescCAN.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8h_source.html#l00184">184</a> of file <a class="el" href="_vesc_c_a_n_8h_source.html">VescCAN.h</a>.</p>
 
 </div>
 </div>
@@ -414,7 +424,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8h_source.html#l00187">187</a> of file <a class="el" href="_vesc_c_a_n_8h_source.html">VescCAN.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8h_source.html#l00185">185</a> of file <a class="el" href="_vesc_c_a_n_8h_source.html">VescCAN.h</a>.</p>
 
 </div>
 </div>
@@ -502,7 +512,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line">     .id=CLSID_MOT_VESC1</div>
 <div class="line">}</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8h_source.html#l00189">189</a> of file <a class="el" href="_vesc_c_a_n_8h_source.html">VescCAN.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8h_source.html#l00187">187</a> of file <a class="el" href="_vesc_c_a_n_8h_source.html">VescCAN.h</a>.</p>
 
 </div>
 </div>
@@ -526,7 +536,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8h_source.html#l00190">190</a> of file <a class="el" href="_vesc_c_a_n_8h_source.html">VescCAN.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_vesc_c_a_n_8h_source.html#l00188">188</a> of file <a class="el" href="_vesc_c_a_n_8h_source.html">VescCAN.h</a>.</p>
 
 </div>
 </div>

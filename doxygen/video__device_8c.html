@@ -106,6 +106,14 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html">TU_ATTR_PACKED</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">AUDIO Channel Cluster Descriptor (4.1)  <a href="struct_t_u___a_t_t_r___p_a_c_k_e_d.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="uniontusb__desc__cs__video__fmt__t.html">tusb_desc_cs_video_fmt_t</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtusb__desc__cs__video__fmt__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html">tusb_desc_cs_video_fmt_t::TU_ATTR_PACKED</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="uniontusb__desc__cs__video__frm__t.html">tusb_desc_cs_video_frm_t</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtusb__desc__cs__video__frm__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html">tusb_desc_cs_video_frm_t::TU_ATTR_PACKED</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -118,9 +126,9 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ac5c99a083b908612905317c22a19b1fc"><td class="memItemLeft" align="right" valign="top">static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#ac5c99a083b908612905317c22a19b1fc">_desc_itfnum</a> (void const *desc)</td></tr>
+<tr class="memitem:ac5c99a083b908612905317c22a19b1fc"><td class="memItemLeft" align="right" valign="top">static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#ac5c99a083b908612905317c22a19b1fc">_desc_itfnum</a> (void const *<a class="el" href="dcd__pio__usb_8c.html#a20177559c29bb329ed93cc5aa719176c">desc</a>)</td></tr>
 <tr class="separator:ac5c99a083b908612905317c22a19b1fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad445e22580d592be58a9b7bb6f8d03a5"><td class="memItemLeft" align="right" valign="top">static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#ad445e22580d592be58a9b7bb6f8d03a5">_desc_ep_addr</a> (void const *desc)</td></tr>
+<tr class="memitem:ad445e22580d592be58a9b7bb6f8d03a5"><td class="memItemLeft" align="right" valign="top">static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#ad445e22580d592be58a9b7bb6f8d03a5">_desc_ep_addr</a> (void const *<a class="el" href="dcd__pio__usb_8c.html#a20177559c29bb329ed93cc5aa719176c">desc</a>)</td></tr>
 <tr class="separator:ad445e22580d592be58a9b7bb6f8d03a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac9fde5fcf4a40e4df55a7ebf55fabd97"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="video__device_8c.html#aab9881c1fd5352a2e305137fdcf0ee1f">videod_streaming_interface_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#ac9fde5fcf4a40e4df55a7ebf55fabd97">_get_instance_streaming</a> (uint_fast8_t ctl_idx, uint_fast8_t stm_idx)</td></tr>
 <tr class="separator:ac9fde5fcf4a40e4df55a7ebf55fabd97"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -130,22 +138,26 @@ Functions</h2></td></tr>
 <tr class="separator:ad8757e5eb18e1c93bfb9948744a4df02"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ade1bceee499c88ca2964117795cc5d3c"><td class="memItemLeft" align="right" valign="top">static void const *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#ade1bceee499c88ca2964117795cc5d3c">_find_desc</a> (void const *beg, void const *end, uint_fast8_t desc_type)</td></tr>
 <tr class="separator:ade1bceee499c88ca2964117795cc5d3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92fc0f948ca96af626d00d813eddf179"><td class="memItemLeft" align="right" valign="top">static void const *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#a92fc0f948ca96af626d00d813eddf179">_find_desc_2_type</a> (void const *beg, void const *end, uint_fast8_t desc_type_0, uint_fast8_t desc_type_1)</td></tr>
+<tr class="separator:a92fc0f948ca96af626d00d813eddf179"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a64b2b75660db03879d4b16fc42f25705"><td class="memItemLeft" align="right" valign="top">static void const *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#a64b2b75660db03879d4b16fc42f25705">_find_desc_3</a> (void const *beg, void const *end, uint_fast8_t desc_type, uint_fast8_t element_0, uint_fast8_t element_1)</td></tr>
 <tr class="separator:a64b2b75660db03879d4b16fc42f25705"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c2d919a02486bf9170dd93d58ed5c00"><td class="memItemLeft" align="right" valign="top">static void const *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#a1c2d919a02486bf9170dd93d58ed5c00">_next_desc_itf</a> (void const *beg, void const *end)</td></tr>
 <tr class="separator:a1c2d919a02486bf9170dd93d58ed5c00"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac11e12421bb15e5113081801adfa6719"><td class="memItemLeft" align="right" valign="top">static void const *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#ac11e12421bb15e5113081801adfa6719">_find_desc_itf</a> (void const *beg, void const *end, uint_fast8_t itfnum, uint_fast8_t altnum)</td></tr>
-<tr class="separator:ac11e12421bb15e5113081801adfa6719"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a825d2d15ceb1961a56758158102b46b3"><td class="memItemLeft" align="right" valign="top">static uint8_t const *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#a825d2d15ceb1961a56758158102b46b3">_find_desc_itf</a> (void const *beg, void const *end, uint_fast8_t itfnum, uint_fast8_t altnum)</td></tr>
+<tr class="separator:a825d2d15ceb1961a56758158102b46b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab01adffc1b464b90d23ee80f0c51e9fc"><td class="memItemLeft" align="right" valign="top">static void const *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#ab01adffc1b464b90d23ee80f0c51e9fc">_find_desc_ep</a> (void const *beg, void const *end)</td></tr>
 <tr class="separator:ab01adffc1b464b90d23ee80f0c51e9fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a08d30394040c92ecd5a2048dc48eb8ef"><td class="memItemLeft" align="right" valign="top">static void const *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#a08d30394040c92ecd5a2048dc48eb8ef">_find_desc_entity</a> (void const *desc, uint_fast8_t entityid)</td></tr>
+<tr class="memitem:ad00ef7f3b312a3f6bd2ab4627ad70707"><td class="memItemLeft" align="right" valign="top">static void const *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#ad00ef7f3b312a3f6bd2ab4627ad70707">_end_of_control_descriptor</a> (void const *<a class="el" href="dcd__pio__usb_8c.html#a20177559c29bb329ed93cc5aa719176c">desc</a>)</td></tr>
+<tr class="separator:ad00ef7f3b312a3f6bd2ab4627ad70707"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a08d30394040c92ecd5a2048dc48eb8ef"><td class="memItemLeft" align="right" valign="top">static void const *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#a08d30394040c92ecd5a2048dc48eb8ef">_find_desc_entity</a> (void const *<a class="el" href="dcd__pio__usb_8c.html#a20177559c29bb329ed93cc5aa719176c">desc</a>, uint_fast8_t entityid)</td></tr>
 <tr class="separator:a08d30394040c92ecd5a2048dc48eb8ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a578cb26dac3df7c64ae39372afe644be"><td class="memItemLeft" align="right" valign="top">static void const *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#a578cb26dac3df7c64ae39372afe644be">_end_of_streaming_descriptor</a> (void const *desc)</td></tr>
+<tr class="memitem:a578cb26dac3df7c64ae39372afe644be"><td class="memItemLeft" align="right" valign="top">static void const *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#a578cb26dac3df7c64ae39372afe644be">_end_of_streaming_descriptor</a> (void const *<a class="el" href="dcd__pio__usb_8c.html#a20177559c29bb329ed93cc5aa719176c">desc</a>)</td></tr>
 <tr class="separator:a578cb26dac3df7c64ae39372afe644be"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac86d2ac3e2c2cbc3093e1f611da9e58e"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="video_8h.html#a8173d89400d968c723b682c69dab9cf2">tusb_desc_cs_video_fmt_uncompressed_t</a> const *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#ac86d2ac3e2c2cbc3093e1f611da9e58e">_find_desc_format</a> (void const *beg, void const *end, uint_fast8_t fmtnum)</td></tr>
-<tr class="separator:ac86d2ac3e2c2cbc3093e1f611da9e58e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec095c40bb9173e8922112e34b5f3005"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="video_8h.html#af18752ba314f497d4473ab439d0f4cf1">tusb_desc_cs_video_frm_uncompressed_t</a> const *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#aec095c40bb9173e8922112e34b5f3005">_find_desc_frame</a> (void const *beg, void const *end, uint_fast8_t frmnum)</td></tr>
-<tr class="separator:aec095c40bb9173e8922112e34b5f3005"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acadb5f04f2a60a592fede7f91677697a"><td class="memItemLeft" align="right" valign="top">static void const *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#acadb5f04f2a60a592fede7f91677697a">_find_desc_format</a> (void const *beg, void const *end, uint_fast8_t fmtnum)</td></tr>
+<tr class="separator:acadb5f04f2a60a592fede7f91677697a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a35a7a617eddedc502f667af155cb0675"><td class="memItemLeft" align="right" valign="top">static void const *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#a35a7a617eddedc502f667af155cb0675">_find_desc_frame</a> (void const *beg, void const *end, uint_fast8_t frmnum)</td></tr>
+<tr class="separator:a35a7a617eddedc502f667af155cb0675"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2932664bcb54475ad2629c538639ed7a"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#a2932664bcb54475ad2629c538639ed7a">_update_streaming_parameters</a> (<a class="el" href="video__device_8c.html#aab9881c1fd5352a2e305137fdcf0ee1f">videod_streaming_interface_t</a> const *stm, <a class="el" href="video_8h.html#a91d6481368e1415f68ad562935472b1a">video_probe_and_commit_control_t</a> *param)</td></tr>
 <tr class="separator:a2932664bcb54475ad2629c538639ed7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a95d6f5adae590232c81fde649d0ee3b3"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#a95d6f5adae590232c81fde649d0ee3b3">_negotiate_streaming_parameters</a> (<a class="el" href="video__device_8c.html#aab9881c1fd5352a2e305137fdcf0ee1f">videod_streaming_interface_t</a> const *stm, uint_fast8_t request, <a class="el" href="video_8h.html#a91d6481368e1415f68ad562935472b1a">video_probe_and_commit_control_t</a> *param)</td></tr>
@@ -154,49 +166,61 @@ Functions</h2></td></tr>
 <tr class="separator:a053bc58bc335eb51a92fa755b5ce7997"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a50b30f40efbc54772cf904ec011f5d67"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#a50b30f40efbc54772cf904ec011f5d67">_open_vc_itf</a> (uint8_t rhport, <a class="el" href="video__device_8c.html#a1c03410c6ce5eddb159a9df527b83944">videod_interface_t</a> *self, uint_fast8_t altnum)</td></tr>
 <tr class="separator:a50b30f40efbc54772cf904ec011f5d67"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e291020256738c454c54713c459ece0"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#a5e291020256738c454c54713c459ece0">_init_vs_configuration</a> (<a class="el" href="video__device_8c.html#aab9881c1fd5352a2e305137fdcf0ee1f">videod_streaming_interface_t</a> *stm)</td></tr>
+<tr class="separator:a5e291020256738c454c54713c459ece0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a49a41a082c9ef20d90b7bcda4392077c"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#a49a41a082c9ef20d90b7bcda4392077c">_open_vs_itf</a> (uint8_t rhport, <a class="el" href="video__device_8c.html#aab9881c1fd5352a2e305137fdcf0ee1f">videod_streaming_interface_t</a> *stm, uint_fast8_t altnum)</td></tr>
 <tr class="separator:a49a41a082c9ef20d90b7bcda4392077c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aadb4ae265747704a312cc13773fa348c"><td class="memItemLeft" align="right" valign="top">static uint_fast16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#aadb4ae265747704a312cc13773fa348c">_prepare_in_payload</a> (<a class="el" href="video__device_8c.html#aab9881c1fd5352a2e305137fdcf0ee1f">videod_streaming_interface_t</a> *stm)</td></tr>
 <tr class="separator:aadb4ae265747704a312cc13773fa348c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af913c32a4d3feda8a5da2fa847874b42"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#af913c32a4d3feda8a5da2fa847874b42">handle_video_ctl_std_req</a> (uint8_t rhport, uint8_t stage, <a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *request, uint_fast8_t ctl_idx)</td></tr>
+<tr class="memitem:af913c32a4d3feda8a5da2fa847874b42"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#af913c32a4d3feda8a5da2fa847874b42">handle_video_ctl_std_req</a> (uint8_t rhport, uint8_t <a class="el" href="usbh_8c.html#a8efea5b2da521d9d454f141866ab68cb">stage</a>, <a class="el" href="tusb__types_8h.html#a2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *request, uint_fast8_t ctl_idx)</td></tr>
 <tr class="separator:af913c32a4d3feda8a5da2fa847874b42"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acf9138481918683b77e5807dec9a3abb"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#acf9138481918683b77e5807dec9a3abb">handle_video_ctl_cs_req</a> (uint8_t rhport, uint8_t stage, <a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *request, uint_fast8_t ctl_idx)</td></tr>
+<tr class="memitem:acf9138481918683b77e5807dec9a3abb"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#acf9138481918683b77e5807dec9a3abb">handle_video_ctl_cs_req</a> (uint8_t rhport, uint8_t <a class="el" href="usbh_8c.html#a8efea5b2da521d9d454f141866ab68cb">stage</a>, <a class="el" href="tusb__types_8h.html#a2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *request, uint_fast8_t ctl_idx)</td></tr>
 <tr class="separator:acf9138481918683b77e5807dec9a3abb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a10a5d74a9eed1ed4d7e088cd2b70f0d4"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#a10a5d74a9eed1ed4d7e088cd2b70f0d4">handle_video_ctl_req</a> (uint8_t rhport, uint8_t stage, <a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *request, uint_fast8_t ctl_idx)</td></tr>
+<tr class="memitem:a10a5d74a9eed1ed4d7e088cd2b70f0d4"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#a10a5d74a9eed1ed4d7e088cd2b70f0d4">handle_video_ctl_req</a> (uint8_t rhport, uint8_t <a class="el" href="usbh_8c.html#a8efea5b2da521d9d454f141866ab68cb">stage</a>, <a class="el" href="tusb__types_8h.html#a2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *request, uint_fast8_t ctl_idx)</td></tr>
 <tr class="separator:a10a5d74a9eed1ed4d7e088cd2b70f0d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a900e4a3714eb4d844e02ce59b1a40fb3"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#a900e4a3714eb4d844e02ce59b1a40fb3">handle_video_stm_std_req</a> (uint8_t rhport, uint8_t stage, <a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *request, uint_fast8_t stm_idx)</td></tr>
+<tr class="memitem:a900e4a3714eb4d844e02ce59b1a40fb3"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#a900e4a3714eb4d844e02ce59b1a40fb3">handle_video_stm_std_req</a> (uint8_t rhport, uint8_t <a class="el" href="usbh_8c.html#a8efea5b2da521d9d454f141866ab68cb">stage</a>, <a class="el" href="tusb__types_8h.html#a2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *request, uint_fast8_t stm_idx)</td></tr>
 <tr class="separator:a900e4a3714eb4d844e02ce59b1a40fb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab39d705af5693a4fbd83a35cb62b22d5"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#ab39d705af5693a4fbd83a35cb62b22d5">handle_video_stm_cs_req</a> (uint8_t rhport, uint8_t stage, <a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *request, uint_fast8_t stm_idx)</td></tr>
+<tr class="memitem:ab39d705af5693a4fbd83a35cb62b22d5"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#ab39d705af5693a4fbd83a35cb62b22d5">handle_video_stm_cs_req</a> (uint8_t rhport, uint8_t <a class="el" href="usbh_8c.html#a8efea5b2da521d9d454f141866ab68cb">stage</a>, <a class="el" href="tusb__types_8h.html#a2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *request, uint_fast8_t stm_idx)</td></tr>
 <tr class="separator:ab39d705af5693a4fbd83a35cb62b22d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad875407c9100f777401d52f9141c7ad2"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#ad875407c9100f777401d52f9141c7ad2">handle_video_stm_req</a> (uint8_t rhport, uint8_t stage, <a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *request, uint_fast8_t stm_idx)</td></tr>
+<tr class="memitem:ad875407c9100f777401d52f9141c7ad2"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#ad875407c9100f777401d52f9141c7ad2">handle_video_stm_req</a> (uint8_t rhport, uint8_t <a class="el" href="usbh_8c.html#a8efea5b2da521d9d454f141866ab68cb">stage</a>, <a class="el" href="tusb__types_8h.html#a2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *request, uint_fast8_t stm_idx)</td></tr>
 <tr class="separator:ad875407c9100f777401d52f9141c7ad2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa5e718e50e54fa70163e273c25e0eea0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#aa5e718e50e54fa70163e273c25e0eea0">tud_video_n_connected</a> (uint_fast8_t ctl_idx)</td></tr>
 <tr class="separator:aa5e718e50e54fa70163e273c25e0eea0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2047ae7a17899c8eaba5c9c2b5338134"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#a2047ae7a17899c8eaba5c9c2b5338134">tud_video_n_streaming</a> (uint_fast8_t ctl_idx, uint_fast8_t stm_idx)</td></tr>
 <tr class="separator:a2047ae7a17899c8eaba5c9c2b5338134"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6f11f00d6907dc88b04c2933fc77f50c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#a6f11f00d6907dc88b04c2933fc77f50c">tud_video_n_frame_xfer</a> (uint_fast8_t ctl_idx, uint_fast8_t stm_idx, void *<a class="el" href="midi__device_8h.html#ac8733c58bc671239139641960e2d5dbf">buffer</a>, size_t <a class="el" href="midi__device_8h.html#aca9aaceac98612802d20cb6983f7669c">bufsize</a>)</td></tr>
+<tr class="memitem:a6f11f00d6907dc88b04c2933fc77f50c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#a6f11f00d6907dc88b04c2933fc77f50c">tud_video_n_frame_xfer</a> (uint_fast8_t ctl_idx, uint_fast8_t stm_idx, void *<a class="el" href="usbh_8c.html#a56ed84df35de10bdb65e72b184309497">buffer</a>, size_t <a class="el" href="midi__device_8h.html#aca9aaceac98612802d20cb6983f7669c">bufsize</a>)</td></tr>
 <tr class="separator:a6f11f00d6907dc88b04c2933fc77f50c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a22071af54ce6544863ee275b88e3ef0e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#a22071af54ce6544863ee275b88e3ef0e">videod_init</a> (void)</td></tr>
 <tr class="separator:a22071af54ce6544863ee275b88e3ef0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab35b11b4672508e4271b1aff7bbc5b8e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#ab35b11b4672508e4271b1aff7bbc5b8e">videod_deinit</a> (void)</td></tr>
+<tr class="separator:ab35b11b4672508e4271b1aff7bbc5b8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5bd389bd3bd943c01d5c6c10722a6a7f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#a5bd389bd3bd943c01d5c6c10722a6a7f">videod_reset</a> (uint8_t rhport)</td></tr>
 <tr class="separator:a5bd389bd3bd943c01d5c6c10722a6a7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a600797709aac0eedf26ed3805a86d254"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#a600797709aac0eedf26ed3805a86d254">videod_open</a> (uint8_t rhport, <a class="el" href="group___u_s_b_def___type.html#gac4415f9c56f80b658137e35c14b58096">tusb_desc_interface_t</a> const *itf_desc, uint16_t max_len)</td></tr>
+<tr class="memitem:a600797709aac0eedf26ed3805a86d254"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#a600797709aac0eedf26ed3805a86d254">videod_open</a> (uint8_t rhport, <a class="el" href="tusb__types_8h.html#ac4415f9c56f80b658137e35c14b58096">tusb_desc_interface_t</a> const *itf_desc, uint16_t max_len)</td></tr>
 <tr class="separator:a600797709aac0eedf26ed3805a86d254"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3e41ca42594390e09807d13be5734769"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#a3e41ca42594390e09807d13be5734769">videod_control_xfer_cb</a> (uint8_t rhport, uint8_t stage, <a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *request)</td></tr>
+<tr class="memitem:a3e41ca42594390e09807d13be5734769"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#a3e41ca42594390e09807d13be5734769">videod_control_xfer_cb</a> (uint8_t rhport, uint8_t <a class="el" href="usbh_8c.html#a8efea5b2da521d9d454f141866ab68cb">stage</a>, <a class="el" href="tusb__types_8h.html#a2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *request)</td></tr>
 <tr class="separator:a3e41ca42594390e09807d13be5734769"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a62475055ab27462b3ad4f78af851d91e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#a62475055ab27462b3ad4f78af851d91e">videod_xfer_cb</a> (uint8_t rhport, uint8_t ep_addr, <a class="el" href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a> result, uint32_t xferred_bytes)</td></tr>
+<tr class="memitem:a62475055ab27462b3ad4f78af851d91e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#a62475055ab27462b3ad4f78af851d91e">videod_xfer_cb</a> (uint8_t rhport, uint8_t ep_addr, <a class="el" href="tusb__types_8h.html#a6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a> result, uint32_t xferred_bytes)</td></tr>
 <tr class="separator:a62475055ab27462b3ad4f78af851d91e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a2b915c802a46da38f919af395d10736b"><td class="memItemLeft" align="right" valign="top">static CFG_TUSB_MEM_SECTION <a class="el" href="video__device_8c.html#a1c03410c6ce5eddb159a9df527b83944">videod_interface_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#a2b915c802a46da38f919af395d10736b">_videod_itf</a> [CFG_TUD_VIDEO]</td></tr>
-<tr class="separator:a2b915c802a46da38f919af395d10736b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a07a46103b4f470a209c22d3406892913"><td class="memItemLeft" align="right" valign="top">static CFG_TUSB_MEM_SECTION <a class="el" href="video__device_8c.html#aab9881c1fd5352a2e305137fdcf0ee1f">videod_streaming_interface_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#a07a46103b4f470a209c22d3406892913">_videod_streaming_itf</a> [CFG_TUD_VIDEO_STREAMING]</td></tr>
-<tr class="separator:a07a46103b4f470a209c22d3406892913"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5e143be4c74af50601a1cef7a2c2f6a3"><td class="memItemLeft" align="right" valign="top">static uint8_t const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#a5e143be4c74af50601a1cef7a2c2f6a3">_cap_get</a> = 0x1u</td></tr>
-<tr class="separator:a5e143be4c74af50601a1cef7a2c2f6a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad469dbaa375c5582fac666c0e677c3b4"><td class="memItemLeft" align="right" valign="top">static uint8_t const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#ad469dbaa375c5582fac666c0e677c3b4">_cap_get_set</a> = 0x3u</td></tr>
-<tr class="separator:ad469dbaa375c5582fac666c0e677c3b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95821c72280283583253fa4fc4483c98"><td class="memItemLeft" align="right" valign="top">CFG_TUD_MEM_SECTION tu_static <a class="el" href="video__device_8c.html#a1c03410c6ce5eddb159a9df527b83944">videod_interface_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#a95821c72280283583253fa4fc4483c98">_videod_itf</a> [CFG_TUD_VIDEO]</td></tr>
+<tr class="separator:a95821c72280283583253fa4fc4483c98"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a297ae8f2f1bfd669f6c979ea6c5bd4fe"><td class="memItemLeft" align="right" valign="top">CFG_TUD_MEM_SECTION tu_static <a class="el" href="video__device_8c.html#aab9881c1fd5352a2e305137fdcf0ee1f">videod_streaming_interface_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#a297ae8f2f1bfd669f6c979ea6c5bd4fe">_videod_streaming_itf</a> [CFG_TUD_VIDEO_STREAMING]</td></tr>
+<tr class="separator:a297ae8f2f1bfd669f6c979ea6c5bd4fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae027f73ed8b17b63910d3dc9ab79db9f"><td class="memItemLeft" align="right" valign="top">tu_static uint8_t const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#ae027f73ed8b17b63910d3dc9ab79db9f">_cap_get</a> = 0x1u</td></tr>
+<tr class="separator:ae027f73ed8b17b63910d3dc9ab79db9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9312cd7cb7be58c85b7de861872d7348"><td class="memItemLeft" align="right" valign="top">tu_static uint8_t const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#a9312cd7cb7be58c85b7de861872d7348">_cap_get_set</a> = 0x3u</td></tr>
+<tr class="separator:a9312cd7cb7be58c85b7de861872d7348"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f594a71941c2602188bd4c1b68883d8"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structtu__lookup__entry__t.html">tu_lookup_entry_t</a> const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#a0f594a71941c2602188bd4c1b68883d8">tu_lookup_video_request</a> []</td></tr>
+<tr class="separator:a0f594a71941c2602188bd4c1b68883d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a615d78ea377d8374904ad879c8455cf3"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structtu__lookup__table__t.html">tu_lookup_table_t</a> const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#a615d78ea377d8374904ad879c8455cf3">tu_table_video_request</a></td></tr>
+<tr class="separator:a615d78ea377d8374904ad879c8455cf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f5d8e783e83335cf70770b8c2fe1d91"><td class="memItemLeft" align="right" valign="top">static char const  *const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#a2f5d8e783e83335cf70770b8c2fe1d91">tu_str_video_vc_control_selector</a> []</td></tr>
+<tr class="separator:a2f5d8e783e83335cf70770b8c2fe1d91"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7453cd1b607bf0969cb9595b215e56cf"><td class="memItemLeft" align="right" valign="top">static char const  *const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__device_8c.html#a7453cd1b607bf0969cb9595b215e56cf">tu_str_video_vs_control_selector</a> []</td></tr>
+<tr class="separator:a7453cd1b607bf0969cb9595b215e56cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="a1d755fd2997e6f2ddcd1d22d9cef05b4" name="a1d755fd2997e6f2ddcd1d22d9cef05b4"></a>
@@ -284,7 +308,7 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00482">482</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00678">678</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
 
 </div>
 </div>
@@ -320,7 +344,7 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>bEndpointAddress </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00121">121</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00215">215</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
 
 </div>
 </div>
@@ -356,7 +380,36 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>bInterfaceNumber </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00111">111</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00206">206</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
+
+</div>
+</div>
+<a id="ad00ef7f3b312a3f6bd2ab4627ad70707" name="ad00ef7f3b312a3f6bd2ab4627ad70707"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad00ef7f3b312a3f6bd2ab4627ad70707">&#9670;&nbsp;</a></span>_end_of_control_descriptor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void const  * _end_of_control_descriptor </td>
+          <td>(</td>
+          <td class="paramtype">void const *&#160;</td>
+          <td class="paramname"><em>desc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p >Return the end of the video control descriptor. </p>
+
+<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00356">356</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
 
 </div>
 </div>
@@ -385,7 +438,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p >Return the end of the video streaming descriptor. </p>
 
-<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00272">272</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00386">386</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
 
 </div>
 </div>
@@ -445,7 +498,74 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00161">161</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00251">251</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
+
+</div>
+</div>
+<a id="a92fc0f948ca96af626d00d813eddf179" name="a92fc0f948ca96af626d00d813eddf179"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a92fc0f948ca96af626d00d813eddf179">&#9670;&nbsp;</a></span>_find_desc_2_type()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void const  * _find_desc_2_type </td>
+          <td>(</td>
+          <td class="paramtype">void const *&#160;</td>
+          <td class="paramname"><em>beg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void const *&#160;</td>
+          <td class="paramname"><em>end</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint_fast8_t&#160;</td>
+          <td class="paramname"><em>desc_type_0</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint_fast8_t&#160;</td>
+          <td class="paramname"><em>desc_type_1</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p >Find the first descriptor of two given types</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">beg</td><td>The head of descriptor byte array. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">end</td><td>The tail of descriptor byte array. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">desc_type_0</td><td>The first target descriptor type. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">desc_type_1</td><td>The second target descriptor type.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The pointer for interface descriptor. </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">end</td><td>did not found interface descriptor </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00268">268</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
 
 </div>
 </div>
@@ -519,7 +639,7 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00180">180</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00287">287</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
 
 </div>
 </div>
@@ -572,7 +692,7 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00254">254</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00370">370</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
 
 </div>
 </div>
@@ -626,12 +746,12 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00236">236</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00345">345</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
 
 </div>
 </div>
-<a id="ac86d2ac3e2c2cbc3093e1f611da9e58e" name="ac86d2ac3e2c2cbc3093e1f611da9e58e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac86d2ac3e2c2cbc3093e1f611da9e58e">&#9670;&nbsp;</a></span>_find_desc_format()</h2>
+<a id="acadb5f04f2a60a592fede7f91677697a" name="acadb5f04f2a60a592fede7f91677697a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acadb5f04f2a60a592fede7f91677697a">&#9670;&nbsp;</a></span>_find_desc_format()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -640,7 +760,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static <a class="el" href="video_8h.html#a8173d89400d968c723b682c69dab9cf2">tusb_desc_cs_video_fmt_uncompressed_t</a> const  * _find_desc_format </td>
+          <td class="memname">static void const  * _find_desc_format </td>
           <td>(</td>
           <td class="paramtype">void const *&#160;</td>
           <td class="paramname"><em>beg</em>, </td>
@@ -671,12 +791,12 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p >Find the first format descriptor with the specified format number. </p>
 
-<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00279">279</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00393">393</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
 
 </div>
 </div>
-<a id="aec095c40bb9173e8922112e34b5f3005" name="aec095c40bb9173e8922112e34b5f3005"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aec095c40bb9173e8922112e34b5f3005">&#9670;&nbsp;</a></span>_find_desc_frame()</h2>
+<a id="a35a7a617eddedc502f667af155cb0675" name="a35a7a617eddedc502f667af155cb0675"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a35a7a617eddedc502f667af155cb0675">&#9670;&nbsp;</a></span>_find_desc_frame()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -685,7 +805,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static <a class="el" href="video_8h.html#af18752ba314f497d4473ab439d0f4cf1">tusb_desc_cs_video_frm_uncompressed_t</a> const  * _find_desc_frame </td>
+          <td class="memname">static void const  * _find_desc_frame </td>
           <td>(</td>
           <td class="paramtype">void const *&#160;</td>
           <td class="paramname"><em>beg</em>, </td>
@@ -716,12 +836,12 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p >Find the first frame descriptor with the specified format number. </p>
 
-<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00286">286</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00411">411</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
 
 </div>
 </div>
-<a id="ac11e12421bb15e5113081801adfa6719" name="ac11e12421bb15e5113081801adfa6719"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac11e12421bb15e5113081801adfa6719">&#9670;&nbsp;</a></span>_find_desc_itf()</h2>
+<a id="a825d2d15ceb1961a56758158102b46b3" name="a825d2d15ceb1961a56758158102b46b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a825d2d15ceb1961a56758158102b46b3">&#9670;&nbsp;</a></span>_find_desc_itf()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -730,7 +850,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static void const  * _find_desc_itf </td>
+          <td class="memname">static uint8_t const  * _find_desc_itf </td>
           <td>(</td>
           <td class="paramtype">void const *&#160;</td>
           <td class="paramname"><em>beg</em>, </td>
@@ -783,7 +903,7 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00222">222</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00331">331</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
 
 </div>
 </div>
@@ -811,7 +931,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00141">141</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00233">233</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
 
 </div>
 </div>
@@ -839,7 +959,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00146">146</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00237">237</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
 
 </div>
 </div>
@@ -886,7 +1006,35 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>instance </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00132">132</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00225">225</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
+
+</div>
+</div>
+<a id="a5e291020256738c454c54713c459ece0" name="a5e291020256738c454c54713c459ece0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5e291020256738c454c54713c459ece0">&#9670;&nbsp;</a></span>_init_vs_configuration()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool _init_vs_configuration </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="video__device_8c.html#aab9881c1fd5352a2e305137fdcf0ee1f">videod_streaming_interface_t</a> *&#160;</td>
+          <td class="paramname"><em>stm</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00739">739</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
 
 </div>
 </div>
@@ -938,7 +1086,7 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00362">362</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00522">522</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
 
 </div>
 </div>
@@ -975,7 +1123,7 @@ Variables</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p >Return the next interface descriptor which has another interface number.</p>
+<p >Return the next interface descriptor which has another interface number. If there are multiple VC interfaces, there will be an IAD descriptor before the next interface descriptor. Check both the IAD descriptor and the interface descriptor. 3.1 Descriptor Layout Overview</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">beg</td><td>The head of descriptor byte array. </td></tr>
@@ -991,7 +1139,7 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00202">202</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00312">312</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
 
 </div>
 </div>
@@ -1043,7 +1191,7 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00504">504</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00702">702</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
 
 </div>
 </div>
@@ -1095,7 +1243,7 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00543">543</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00752">752</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
 
 </div>
 </div>
@@ -1124,7 +1272,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p >Prepare the next packet payload. </p>
 
-<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00609">609</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00819">819</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
 
 </div>
 </div>
@@ -1169,7 +1317,7 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00295">295</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00430">430</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
 
 </div>
 </div>
@@ -1197,7 +1345,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *&#160;</td>
+          <td class="paramtype"><a class="el" href="tusb__types_8h.html#a2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *&#160;</td>
           <td class="paramname"><em>request</em>, </td>
         </tr>
         <tr>
@@ -1219,7 +1367,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00663">663</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00875">875</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
 
 </div>
 </div>
@@ -1247,7 +1395,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *&#160;</td>
+          <td class="paramtype"><a class="el" href="tusb__types_8h.html#a2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *&#160;</td>
           <td class="paramname"><em>request</em>, </td>
         </tr>
         <tr>
@@ -1269,7 +1417,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00730">730</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00945">945</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
 
 </div>
 </div>
@@ -1297,7 +1445,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *&#160;</td>
+          <td class="paramtype"><a class="el" href="tusb__types_8h.html#a2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *&#160;</td>
           <td class="paramname"><em>request</em>, </td>
         </tr>
         <tr>
@@ -1320,7 +1468,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p >Handle a standard request to the video control interface. </p>
 
-<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00629">629</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00840">840</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
 
 </div>
 </div>
@@ -1348,7 +1496,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *&#160;</td>
+          <td class="paramtype"><a class="el" href="tusb__types_8h.html#a2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *&#160;</td>
           <td class="paramname"><em>request</em>, </td>
         </tr>
         <tr>
@@ -1370,7 +1518,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00785">785</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l01000">1000</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
 
 </div>
 </div>
@@ -1398,7 +1546,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *&#160;</td>
+          <td class="paramtype"><a class="el" href="tusb__types_8h.html#a2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *&#160;</td>
           <td class="paramname"><em>request</em>, </td>
         </tr>
         <tr>
@@ -1420,7 +1568,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00931">931</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l01154">1154</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
 
 </div>
 </div>
@@ -1448,7 +1596,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *&#160;</td>
+          <td class="paramtype"><a class="el" href="tusb__types_8h.html#a2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *&#160;</td>
           <td class="paramname"><em>request</em>, </td>
         </tr>
         <tr>
@@ -1470,7 +1618,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00753">753</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00968">968</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
 
 </div>
 </div>
@@ -1490,7 +1638,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00952">952</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l01174">1174</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
 
 </div>
 </div>
@@ -1542,7 +1690,7 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00969">969</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l01202">1202</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
 
 </div>
 </div>
@@ -1580,7 +1728,7 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00960">960</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l01182">1182</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
 
 </div>
 </div>
@@ -1605,7 +1753,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *&#160;</td>
+          <td class="paramtype"><a class="el" href="tusb__types_8h.html#a2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *&#160;</td>
           <td class="paramname"><em>request</em>&#160;</td>
         </tr>
         <tr>
@@ -1616,7 +1764,27 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l01077">1077</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l01342">1342</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
+
+</div>
+</div>
+<a id="ab35b11b4672508e4271b1aff7bbc5b8e" name="ab35b11b4672508e4271b1aff7bbc5b8e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab35b11b4672508e4271b1aff7bbc5b8e">&#9670;&nbsp;</a></span>videod_deinit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool videod_deinit </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l01249">1249</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
 
 </div>
 </div>
@@ -1636,7 +1804,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l01004">1004</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l01238">1238</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
 
 </div>
 </div>
@@ -1655,7 +1823,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#gac4415f9c56f80b658137e35c14b58096">tusb_desc_interface_t</a> const *&#160;</td>
+          <td class="paramtype"><a class="el" href="tusb__types_8h.html#ac4415f9c56f80b658137e35c14b58096">tusb_desc_interface_t</a> const *&#160;</td>
           <td class="paramname"><em>itf_desc</em>, </td>
         </tr>
         <tr>
@@ -1672,7 +1840,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l01029">1029</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l01265">1265</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
 
 </div>
 </div>
@@ -1692,7 +1860,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l01016">1016</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l01253">1253</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
 
 </div>
 </div>
@@ -1717,7 +1885,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="tusb__types_8h.html#a6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a>&#160;</td>
           <td class="paramname"><em>result</em>, </td>
         </tr>
         <tr>
@@ -1734,13 +1902,77 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l01115">1115</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l01380">1380</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
-<a id="a5e143be4c74af50601a1cef7a2c2f6a3" name="a5e143be4c74af50601a1cef7a2c2f6a3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5e143be4c74af50601a1cef7a2c2f6a3">&#9670;&nbsp;</a></span>_cap_get</h2>
+<a id="ae027f73ed8b17b63910d3dc9ab79db9f" name="ae027f73ed8b17b63910d3dc9ab79db9f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae027f73ed8b17b63910d3dc9ab79db9f">&#9670;&nbsp;</a></span>_cap_get</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">tu_static uint8_t const _cap_get = 0x1u</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00145">145</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
+
+</div>
+</div>
+<a id="a9312cd7cb7be58c85b7de861872d7348" name="a9312cd7cb7be58c85b7de861872d7348"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9312cd7cb7be58c85b7de861872d7348">&#9670;&nbsp;</a></span>_cap_get_set</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">tu_static uint8_t const _cap_get_set = 0x3u</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00146">146</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
+
+</div>
+</div>
+<a id="a95821c72280283583253fa4fc4483c98" name="a95821c72280283583253fa4fc4483c98"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a95821c72280283583253fa4fc4483c98">&#9670;&nbsp;</a></span>_videod_itf</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">CFG_TUD_MEM_SECTION tu_static <a class="el" href="video__device_8c.html#a1c03410c6ce5eddb159a9df527b83944">videod_interface_t</a> _videod_itf[CFG_TUD_VIDEO]</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00142">142</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
+
+</div>
+</div>
+<a id="a297ae8f2f1bfd669f6c979ea6c5bd4fe" name="a297ae8f2f1bfd669f6c979ea6c5bd4fe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a297ae8f2f1bfd669f6c979ea6c5bd4fe">&#9670;&nbsp;</a></span>_videod_streaming_itf</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">CFG_TUD_MEM_SECTION tu_static <a class="el" href="video__device_8c.html#aab9881c1fd5352a2e305137fdcf0ee1f">videod_streaming_interface_t</a> _videod_streaming_itf[CFG_TUD_VIDEO_STREAMING]</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00143">143</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
+
+</div>
+</div>
+<a id="a0f594a71941c2602188bd4c1b68883d8" name="a0f594a71941c2602188bd4c1b68883d8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f594a71941c2602188bd4c1b68883d8">&#9670;&nbsp;</a></span>tu_lookup_video_request</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1749,7 +1981,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">uint8_t const _cap_get = 0x1u</td>
+          <td class="memname"><a class="el" href="structtu__lookup__entry__t.html">tu_lookup_entry_t</a> const tu_lookup_video_request[]</td>
         </tr>
       </table>
   </td>
@@ -1758,13 +1990,45 @@ Variables</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00103">103</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
+<b>Initial value:</b><div class="fragment"><div class="line">= {</div>
+<div class="line">    {.key = <a class="code hl_enumvalue" href="video_8h.html#a984722234b784ac910b7e11c140a3b97a4330ff6f0319d8bc7dae038f239ee503">VIDEO_REQUEST_UNDEFINED</a>, .data = <span class="stringliteral">&quot;Undefined&quot;</span>},</div>
+<div class="line">    {.key = <a class="code hl_enumvalue" href="video_8h.html#a984722234b784ac910b7e11c140a3b97aa057d6743a4e5aeb3fc7b09d5bab3faf">VIDEO_REQUEST_SET_CUR</a>, .data = <span class="stringliteral">&quot;SetCur&quot;</span>},</div>
+<div class="line">    {.key = <a class="code hl_enumvalue" href="video_8h.html#a984722234b784ac910b7e11c140a3b97a0d8500866780598801c67b99deb403e8">VIDEO_REQUEST_SET_CUR_ALL</a>, .data = <span class="stringliteral">&quot;SetCurAll&quot;</span>},</div>
+<div class="line">    {.key = <a class="code hl_enumvalue" href="video_8h.html#a984722234b784ac910b7e11c140a3b97ab41c50d7c1f991417f4630ce4b964346">VIDEO_REQUEST_GET_CUR</a>, .data = <span class="stringliteral">&quot;GetCur&quot;</span>},</div>
+<div class="line">    {.key = <a class="code hl_enumvalue" href="video_8h.html#a984722234b784ac910b7e11c140a3b97a729aba17be1759145570a27ab841eaec">VIDEO_REQUEST_GET_MIN</a>, .data = <span class="stringliteral">&quot;GetMin&quot;</span>},</div>
+<div class="line">    {.key = <a class="code hl_enumvalue" href="video_8h.html#a984722234b784ac910b7e11c140a3b97acd2bcce169f8fc109fca37838549cf79">VIDEO_REQUEST_GET_MAX</a>, .data = <span class="stringliteral">&quot;GetMax&quot;</span>},</div>
+<div class="line">    {.key = <a class="code hl_enumvalue" href="video_8h.html#a984722234b784ac910b7e11c140a3b97a80a44122bedd9b80dc158dad2fbe29ea">VIDEO_REQUEST_GET_RES</a>, .data = <span class="stringliteral">&quot;GetRes&quot;</span>},</div>
+<div class="line">    {.key = <a class="code hl_enumvalue" href="video_8h.html#a984722234b784ac910b7e11c140a3b97a4d6e976b0b54c9bbdead6f9c3d50ba01">VIDEO_REQUEST_GET_LEN</a>, .data = <span class="stringliteral">&quot;GetLen&quot;</span>},</div>
+<div class="line">    {.key = <a class="code hl_enumvalue" href="video_8h.html#a984722234b784ac910b7e11c140a3b97a10bfb9325b6fb021b68089be298fe0d7">VIDEO_REQUEST_GET_INFO</a>, .data = <span class="stringliteral">&quot;GetInfo&quot;</span>},</div>
+<div class="line">    {.key = <a class="code hl_enumvalue" href="video_8h.html#a984722234b784ac910b7e11c140a3b97a53b4f0835ad838ee04b29349a663e329">VIDEO_REQUEST_GET_DEF</a>, .data = <span class="stringliteral">&quot;GetDef&quot;</span>},</div>
+<div class="line">    {.key = <a class="code hl_enumvalue" href="video_8h.html#a984722234b784ac910b7e11c140a3b97a58d40f5e0982fabb5a9d1a75f003edee">VIDEO_REQUEST_GET_CUR_ALL</a>, .data = <span class="stringliteral">&quot;GetCurAll&quot;</span>},</div>
+<div class="line">    {.key = <a class="code hl_enumvalue" href="video_8h.html#a984722234b784ac910b7e11c140a3b97a9a28190e8260c768e9499384768a2256">VIDEO_REQUEST_GET_MIN_ALL</a>, .data = <span class="stringliteral">&quot;GetMinAll&quot;</span>},</div>
+<div class="line">    {.key = <a class="code hl_enumvalue" href="video_8h.html#a984722234b784ac910b7e11c140a3b97af12726f1b02634c49b27f78bcc25db7d">VIDEO_REQUEST_GET_MAX_ALL</a>, .data = <span class="stringliteral">&quot;GetMaxAll&quot;</span>},</div>
+<div class="line">    {.key = <a class="code hl_enumvalue" href="video_8h.html#a984722234b784ac910b7e11c140a3b97ae5c8ada98c9eb7f8abf4305bde60be56">VIDEO_REQUEST_GET_RES_ALL</a>, .data = <span class="stringliteral">&quot;GetResAll&quot;</span>},</div>
+<div class="line">    {.key = <a class="code hl_enumvalue" href="video_8h.html#a984722234b784ac910b7e11c140a3b97a2a1f5c0683ddfc9ab2b4174e09709cd3">VIDEO_REQUEST_GET_DEF_ALL</a>, .data = <span class="stringliteral">&quot;GetDefAll&quot;</span>},</div>
+<div class="line">}</div>
+<div class="ttc" id="avideo_8h_html_a984722234b784ac910b7e11c140a3b97a0d8500866780598801c67b99deb403e8"><div class="ttname"><a href="video_8h.html#a984722234b784ac910b7e11c140a3b97a0d8500866780598801c67b99deb403e8">VIDEO_REQUEST_SET_CUR_ALL</a></div><div class="ttdeci">@ VIDEO_REQUEST_SET_CUR_ALL</div><div class="ttdef"><b>Definition:</b> <a href="video_8h_source.html#l00145">video.h:145</a></div></div>
+<div class="ttc" id="avideo_8h_html_a984722234b784ac910b7e11c140a3b97a10bfb9325b6fb021b68089be298fe0d7"><div class="ttname"><a href="video_8h.html#a984722234b784ac910b7e11c140a3b97a10bfb9325b6fb021b68089be298fe0d7">VIDEO_REQUEST_GET_INFO</a></div><div class="ttdeci">@ VIDEO_REQUEST_GET_INFO</div><div class="ttdef"><b>Definition:</b> <a href="video_8h_source.html#l00151">video.h:151</a></div></div>
+<div class="ttc" id="avideo_8h_html_a984722234b784ac910b7e11c140a3b97a2a1f5c0683ddfc9ab2b4174e09709cd3"><div class="ttname"><a href="video_8h.html#a984722234b784ac910b7e11c140a3b97a2a1f5c0683ddfc9ab2b4174e09709cd3">VIDEO_REQUEST_GET_DEF_ALL</a></div><div class="ttdeci">@ VIDEO_REQUEST_GET_DEF_ALL</div><div class="ttdef"><b>Definition:</b> <a href="video_8h_source.html#l00158">video.h:157</a></div></div>
+<div class="ttc" id="avideo_8h_html_a984722234b784ac910b7e11c140a3b97a4330ff6f0319d8bc7dae038f239ee503"><div class="ttname"><a href="video_8h.html#a984722234b784ac910b7e11c140a3b97a4330ff6f0319d8bc7dae038f239ee503">VIDEO_REQUEST_UNDEFINED</a></div><div class="ttdeci">@ VIDEO_REQUEST_UNDEFINED</div><div class="ttdef"><b>Definition:</b> <a href="video_8h_source.html#l00143">video.h:143</a></div></div>
+<div class="ttc" id="avideo_8h_html_a984722234b784ac910b7e11c140a3b97a4d6e976b0b54c9bbdead6f9c3d50ba01"><div class="ttname"><a href="video_8h.html#a984722234b784ac910b7e11c140a3b97a4d6e976b0b54c9bbdead6f9c3d50ba01">VIDEO_REQUEST_GET_LEN</a></div><div class="ttdeci">@ VIDEO_REQUEST_GET_LEN</div><div class="ttdef"><b>Definition:</b> <a href="video_8h_source.html#l00150">video.h:150</a></div></div>
+<div class="ttc" id="avideo_8h_html_a984722234b784ac910b7e11c140a3b97a53b4f0835ad838ee04b29349a663e329"><div class="ttname"><a href="video_8h.html#a984722234b784ac910b7e11c140a3b97a53b4f0835ad838ee04b29349a663e329">VIDEO_REQUEST_GET_DEF</a></div><div class="ttdeci">@ VIDEO_REQUEST_GET_DEF</div><div class="ttdef"><b>Definition:</b> <a href="video_8h_source.html#l00152">video.h:152</a></div></div>
+<div class="ttc" id="avideo_8h_html_a984722234b784ac910b7e11c140a3b97a58d40f5e0982fabb5a9d1a75f003edee"><div class="ttname"><a href="video_8h.html#a984722234b784ac910b7e11c140a3b97a58d40f5e0982fabb5a9d1a75f003edee">VIDEO_REQUEST_GET_CUR_ALL</a></div><div class="ttdeci">@ VIDEO_REQUEST_GET_CUR_ALL</div><div class="ttdef"><b>Definition:</b> <a href="video_8h_source.html#l00153">video.h:153</a></div></div>
+<div class="ttc" id="avideo_8h_html_a984722234b784ac910b7e11c140a3b97a729aba17be1759145570a27ab841eaec"><div class="ttname"><a href="video_8h.html#a984722234b784ac910b7e11c140a3b97a729aba17be1759145570a27ab841eaec">VIDEO_REQUEST_GET_MIN</a></div><div class="ttdeci">@ VIDEO_REQUEST_GET_MIN</div><div class="ttdef"><b>Definition:</b> <a href="video_8h_source.html#l00147">video.h:147</a></div></div>
+<div class="ttc" id="avideo_8h_html_a984722234b784ac910b7e11c140a3b97a80a44122bedd9b80dc158dad2fbe29ea"><div class="ttname"><a href="video_8h.html#a984722234b784ac910b7e11c140a3b97a80a44122bedd9b80dc158dad2fbe29ea">VIDEO_REQUEST_GET_RES</a></div><div class="ttdeci">@ VIDEO_REQUEST_GET_RES</div><div class="ttdef"><b>Definition:</b> <a href="video_8h_source.html#l00149">video.h:149</a></div></div>
+<div class="ttc" id="avideo_8h_html_a984722234b784ac910b7e11c140a3b97a9a28190e8260c768e9499384768a2256"><div class="ttname"><a href="video_8h.html#a984722234b784ac910b7e11c140a3b97a9a28190e8260c768e9499384768a2256">VIDEO_REQUEST_GET_MIN_ALL</a></div><div class="ttdeci">@ VIDEO_REQUEST_GET_MIN_ALL</div><div class="ttdef"><b>Definition:</b> <a href="video_8h_source.html#l00154">video.h:154</a></div></div>
+<div class="ttc" id="avideo_8h_html_a984722234b784ac910b7e11c140a3b97aa057d6743a4e5aeb3fc7b09d5bab3faf"><div class="ttname"><a href="video_8h.html#a984722234b784ac910b7e11c140a3b97aa057d6743a4e5aeb3fc7b09d5bab3faf">VIDEO_REQUEST_SET_CUR</a></div><div class="ttdeci">@ VIDEO_REQUEST_SET_CUR</div><div class="ttdef"><b>Definition:</b> <a href="video_8h_source.html#l00144">video.h:144</a></div></div>
+<div class="ttc" id="avideo_8h_html_a984722234b784ac910b7e11c140a3b97ab41c50d7c1f991417f4630ce4b964346"><div class="ttname"><a href="video_8h.html#a984722234b784ac910b7e11c140a3b97ab41c50d7c1f991417f4630ce4b964346">VIDEO_REQUEST_GET_CUR</a></div><div class="ttdeci">@ VIDEO_REQUEST_GET_CUR</div><div class="ttdef"><b>Definition:</b> <a href="video_8h_source.html#l00146">video.h:146</a></div></div>
+<div class="ttc" id="avideo_8h_html_a984722234b784ac910b7e11c140a3b97acd2bcce169f8fc109fca37838549cf79"><div class="ttname"><a href="video_8h.html#a984722234b784ac910b7e11c140a3b97acd2bcce169f8fc109fca37838549cf79">VIDEO_REQUEST_GET_MAX</a></div><div class="ttdeci">@ VIDEO_REQUEST_GET_MAX</div><div class="ttdef"><b>Definition:</b> <a href="video_8h_source.html#l00148">video.h:148</a></div></div>
+<div class="ttc" id="avideo_8h_html_a984722234b784ac910b7e11c140a3b97ae5c8ada98c9eb7f8abf4305bde60be56"><div class="ttname"><a href="video_8h.html#a984722234b784ac910b7e11c140a3b97ae5c8ada98c9eb7f8abf4305bde60be56">VIDEO_REQUEST_GET_RES_ALL</a></div><div class="ttdeci">@ VIDEO_REQUEST_GET_RES_ALL</div><div class="ttdef"><b>Definition:</b> <a href="video_8h_source.html#l00156">video.h:156</a></div></div>
+<div class="ttc" id="avideo_8h_html_a984722234b784ac910b7e11c140a3b97af12726f1b02634c49b27f78bcc25db7d"><div class="ttname"><a href="video_8h.html#a984722234b784ac910b7e11c140a3b97af12726f1b02634c49b27f78bcc25db7d">VIDEO_REQUEST_GET_MAX_ALL</a></div><div class="ttdeci">@ VIDEO_REQUEST_GET_MAX_ALL</div><div class="ttdef"><b>Definition:</b> <a href="video_8h_source.html#l00155">video.h:155</a></div></div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00153">153</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
 
 </div>
 </div>
-<a id="ad469dbaa375c5582fac666c0e677c3b4" name="ad469dbaa375c5582fac666c0e677c3b4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad469dbaa375c5582fac666c0e677c3b4">&#9670;&nbsp;</a></span>_cap_get_set</h2>
+<a id="a2f5d8e783e83335cf70770b8c2fe1d91" name="a2f5d8e783e83335cf70770b8c2fe1d91"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2f5d8e783e83335cf70770b8c2fe1d91">&#9670;&nbsp;</a></span>tu_str_video_vc_control_selector</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1773,7 +2037,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">uint8_t const _cap_get_set = 0x3u</td>
+          <td class="memname">char const* const tu_str_video_vc_control_selector[]</td>
         </tr>
       </table>
   </td>
@@ -1782,13 +2046,18 @@ Variables</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00104">104</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
+<b>Initial value:</b><div class="fragment"><div class="line">= {</div>
+<div class="line">    <span class="stringliteral">&quot;Undefined&quot;</span>,</div>
+<div class="line">    <span class="stringliteral">&quot;Video Power Mode&quot;</span>,</div>
+<div class="line">    <span class="stringliteral">&quot;Request Error Code&quot;</span>,</div>
+<div class="line">}</div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00176">176</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
 
 </div>
 </div>
-<a id="a2b915c802a46da38f919af395d10736b" name="a2b915c802a46da38f919af395d10736b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2b915c802a46da38f919af395d10736b">&#9670;&nbsp;</a></span>_videod_itf</h2>
+<a id="a7453cd1b607bf0969cb9595b215e56cf" name="a7453cd1b607bf0969cb9595b215e56cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7453cd1b607bf0969cb9595b215e56cf">&#9670;&nbsp;</a></span>tu_str_video_vs_control_selector</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1797,7 +2066,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">CFG_TUSB_MEM_SECTION <a class="el" href="video__device_8c.html#a1c03410c6ce5eddb159a9df527b83944">videod_interface_t</a> _videod_itf[CFG_TUD_VIDEO]</td>
+          <td class="memname">char const* const tu_str_video_vs_control_selector[]</td>
         </tr>
       </table>
   </td>
@@ -1806,13 +2075,25 @@ Variables</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00100">100</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
+<b>Initial value:</b><div class="fragment"><div class="line">= {</div>
+<div class="line">    <span class="stringliteral">&quot;Undefined&quot;</span>,</div>
+<div class="line">    <span class="stringliteral">&quot;Probe&quot;</span>,</div>
+<div class="line">    <span class="stringliteral">&quot;Commit&quot;</span>,</div>
+<div class="line">    <span class="stringliteral">&quot;Still Probe&quot;</span>,</div>
+<div class="line">    <span class="stringliteral">&quot;Still Commit&quot;</span>,</div>
+<div class="line">    <span class="stringliteral">&quot;Still Image Trigger&quot;</span>,</div>
+<div class="line">    <span class="stringliteral">&quot;Stream Error Code&quot;</span>,</div>
+<div class="line">    <span class="stringliteral">&quot;Generate Key Frame&quot;</span>,</div>
+<div class="line">    <span class="stringliteral">&quot;Update Frame Segment&quot;</span>,</div>
+<div class="line">    <span class="stringliteral">&quot;Sync Delay&quot;</span>,</div>
+<div class="line">}</div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00182">182</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
 
 </div>
 </div>
-<a id="a07a46103b4f470a209c22d3406892913" name="a07a46103b4f470a209c22d3406892913"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a07a46103b4f470a209c22d3406892913">&#9670;&nbsp;</a></span>_videod_streaming_itf</h2>
+<a id="a615d78ea377d8374904ad879c8455cf3" name="a615d78ea377d8374904ad879c8455cf3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a615d78ea377d8374904ad879c8455cf3">&#9670;&nbsp;</a></span>tu_table_video_request</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1821,7 +2102,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">CFG_TUSB_MEM_SECTION <a class="el" href="video__device_8c.html#aab9881c1fd5352a2e305137fdcf0ee1f">videod_streaming_interface_t</a> _videod_streaming_itf[CFG_TUD_VIDEO_STREAMING]</td>
+          <td class="memname"><a class="el" href="structtu__lookup__table__t.html">tu_lookup_table_t</a> const tu_table_video_request</td>
         </tr>
       </table>
   </td>
@@ -1830,8 +2111,13 @@ Variables</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00101">101</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
+<b>Initial value:</b><div class="fragment"><div class="line">= {</div>
+<div class="line">    .count = TU_ARRAY_SIZE(<a class="code hl_variable" href="video__device_8c.html#a0f594a71941c2602188bd4c1b68883d8">tu_lookup_video_request</a>),</div>
+<div class="line">    .items = <a class="code hl_variable" href="video__device_8c.html#a0f594a71941c2602188bd4c1b68883d8">tu_lookup_video_request</a></div>
+<div class="line">}</div>
+<div class="ttc" id="avideo__device_8c_html_a0f594a71941c2602188bd4c1b68883d8"><div class="ttname"><a href="video__device_8c.html#a0f594a71941c2602188bd4c1b68883d8">tu_lookup_video_request</a></div><div class="ttdeci">static tu_lookup_entry_t const tu_lookup_video_request[]</div><div class="ttdef"><b>Definition:</b> <a href="video__device_8c_source.html#l00153">video_device.c:153</a></div></div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="video__device_8c_source.html#l00171">171</a> of file <a class="el" href="video__device_8c_source.html">video_device.c</a>.</p>
 
 </div>
 </div>

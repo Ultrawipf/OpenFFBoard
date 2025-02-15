@@ -1,12 +1,12 @@
 var searchData=
 [
-  ['microsoft_5fos_5f20_5ftype_5ft_0',['microsoft_os_20_type_t',['../group___u_s_b_def___type.html#gaeb2f72368db30eb42854ed359c37ef2d',1,'tusb_types.h']]],
+  ['microsoft_5fos_5f20_5ftype_5ft_0',['microsoft_os_20_type_t',['../tusb__types_8h.html#aeb2f72368db30eb42854ed359c37ef2d',1,'tusb_types.h']]],
   ['midi_5fcode_5findex_5fnumber_5ft_1',['midi_code_index_number_t',['../group___class_driver___c_d_c.html#gaaff14066c85f32d293dc602e188e354b',1,'midi.h']]],
   ['midi_5fcs_5fendpoint_5fsubtype_5ft_2',['midi_cs_endpoint_subtype_t',['../group___class_driver___c_d_c.html#ga756176d791688adb26d5e3db6ceccf93',1,'midi.h']]],
   ['midi_5fjack_5ftype_5ft_3',['midi_jack_type_t',['../group___class_driver___c_d_c.html#ga9d46601df0e30cdb102f29eae0e8e60d',1,'midi.h']]],
   ['midimain_5fcommands_4',['MidiMain_commands',['../class_midi_main.html#a4b0c3afca1fb736faebb4cb8da5cda92',1,'MidiMain']]],
-  ['misc_5fprotocol_5ftype_5ft_5',['misc_protocol_type_t',['../group___u_s_b_def___type.html#ga5724637351ad72f54af87503067e713c',1,'tusb_types.h']]],
-  ['misc_5fsubclass_5ftype_5ft_6',['misc_subclass_type_t',['../group___u_s_b_def___type.html#ga0203a5979a4fc3e98387db53acb0511c',1,'tusb_types.h']]],
+  ['misc_5fprotocol_5ftype_5ft_5',['misc_protocol_type_t',['../tusb__types_8h.html#a5724637351ad72f54af87503067e713c',1,'tusb_types.h']]],
+  ['misc_5fsubclass_5ftype_5ft_6',['misc_subclass_type_t',['../tusb__types_8h.html#a0203a5979a4fc3e98387db53acb0511c',1,'tusb_types.h']]],
   ['modepwm_5fdrv_7',['ModePWM_DRV',['../_motor_p_w_m_8h.html#ac7c5d62ef76b553182cae611031ae8bc',1,'MotorPWM.h']]],
   ['motionmode_8',['MotionMode',['../_t_m_c4671_8h.html#a1b04aa8e350271255d351486d3720741',1,'TMC4671.h']]],
   ['motorpwm_5fcommands_9',['MotorPWM_commands',['../class_motor_p_w_m.html#a200f16b29b4a31cfd1bbc75219b3c80a',1,'MotorPWM']]],

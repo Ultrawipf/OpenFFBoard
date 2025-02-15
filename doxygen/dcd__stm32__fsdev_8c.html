@@ -98,160 +98,83 @@ $(document).ready(function(){initNavTree('dcd__stm32__fsdev_8c.html',''); initRe
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structxfer__ctl__t.html">xfer_ctl_t</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structep__alloc__t.html">ep_alloc_t</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:aadd7f46c34372292ed9eb383133b6a1f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#aadd7f46c34372292ed9eb383133b6a1f">TU_VERIFY_STATIC</a> ((MAX_EP_COUNT)&lt;=STFSDEV_EP_COUNT, &quot;Only 8 endpoints supported on the hardware&quot;)</td></tr>
-<tr class="separator:aadd7f46c34372292ed9eb383133b6a1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00a571f5b411fc0060f185e3deb1d0c7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#a00a571f5b411fc0060f185e3deb1d0c7">TU_VERIFY_STATIC</a> (((DCD_STM32_BTABLE_BASE)+(DCD_STM32_BTABLE_LENGTH))&lt;=(PMA_LENGTH), &quot;BTABLE does not fit in PMA RAM&quot;)</td></tr>
-<tr class="separator:a00a571f5b411fc0060f185e3deb1d0c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4a8b7a67982111654fe04c0fa04c0735"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#a4a8b7a67982111654fe04c0fa04c0735">TU_VERIFY_STATIC</a> (((DCD_STM32_BTABLE_BASE) % 8)==0, &quot;BTABLE base must be aligned to 8 bytes&quot;)</td></tr>
-<tr class="separator:a4a8b7a67982111654fe04c0fa04c0735"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a74893631e7648796c85b20006321de1a"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structxfer__ctl__t.html">xfer_ctl_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#a74893631e7648796c85b20006321de1a">xfer_ctl_ptr</a> (uint32_t epnum, uint32_t dir)</td></tr>
-<tr class="separator:a74893631e7648796c85b20006321de1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7b985e38ff144cddca1a574ec73f9500"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#a7b985e38ff144cddca1a574ec73f9500">TU_ATTR_ALIGNED</a> (4)</td></tr>
-<tr class="separator:a7b985e38ff144cddca1a574ec73f9500"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa577538816c05fdffa137769b465954d"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#aa577538816c05fdffa137769b465954d">clear_istr_bits</a> (uint16_t mask)</td></tr>
-<tr class="separator:aa577538816c05fdffa137769b465954d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a462def231fd49be0acfd1eb4657675a3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#a462def231fd49be0acfd1eb4657675a3">dcd_init</a> (uint8_t rhport)</td></tr>
-<tr class="separator:a462def231fd49be0acfd1eb4657675a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5b4ffa0dab4e5425d14394f7b9979386"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#a5b4ffa0dab4e5425d14394f7b9979386">dcd_disconnect</a> (uint8_t rhport)</td></tr>
-<tr class="separator:a5b4ffa0dab4e5425d14394f7b9979386"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa425374a6ca69de3aae1d1b7caea9099"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#aa425374a6ca69de3aae1d1b7caea9099">dcd_connect</a> (uint8_t rhport)</td></tr>
-<tr class="separator:aa425374a6ca69de3aae1d1b7caea9099"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af2434e784da26939bb42d610d2a7dc7e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#af2434e784da26939bb42d610d2a7dc7e">dcd_int_enable</a> (uint8_t rhport)</td></tr>
-<tr class="separator:af2434e784da26939bb42d610d2a7dc7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7cb59e599703b7e84e2afb632efbfdc2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#a7cb59e599703b7e84e2afb632efbfdc2">dcd_int_disable</a> (uint8_t rhport)</td></tr>
-<tr class="separator:a7cb59e599703b7e84e2afb632efbfdc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acaa0da4545f1c5627429a7884b3c9847"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#acaa0da4545f1c5627429a7884b3c9847">dcd_set_address</a> (uint8_t rhport, uint8_t dev_addr)</td></tr>
+<tr class="memitem:aa83ae0ea9993c23a84bc2713b28209fa"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#aa83ae0ea9993c23a84bc2713b28209fa">handle_bus_reset</a> (uint8_t rhport)</td></tr>
+<tr class="separator:aa83ae0ea9993c23a84bc2713b28209fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7aefe4e20d31c87266dcc2ded6b88927"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#a7aefe4e20d31c87266dcc2ded6b88927">dcd_transmit_packet</a> (<a class="el" href="structxfer__ctl__t.html">xfer_ctl_t</a> *<a class="el" href="dcd__ch32__usbfs_8c.html#a9eafbb4eda749d62e013e595ae04f4a0">xfer</a>, uint16_t ep_ix)</td></tr>
+<tr class="separator:a7aefe4e20d31c87266dcc2ded6b88927"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0facd4ea6f813d5acaa060797c3d4341"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#a0facd4ea6f813d5acaa060797c3d4341">edpt_xfer</a> (uint8_t rhport, uint8_t ep_num, <a class="el" href="tusb__types_8h.html#a0c1b25b161b272f5f39e4ba49478289c">tusb_dir_t</a> dir)</td></tr>
+<tr class="separator:a0facd4ea6f813d5acaa060797c3d4341"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af08f884dc8d5bd2352af23ada3600370"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#af08f884dc8d5bd2352af23ada3600370">dcd_pma_alloc</a> (uint16_t len, bool dbuf)</td></tr>
+<tr class="separator:af08f884dc8d5bd2352af23ada3600370"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1556cdc08618c9db4f41d52830f9502"><td class="memItemLeft" align="right" valign="top">static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#aa1556cdc08618c9db4f41d52830f9502">dcd_ep_alloc</a> (uint8_t ep_addr, uint8_t ep_type)</td></tr>
+<tr class="separator:aa1556cdc08618c9db4f41d52830f9502"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17c80327a5f2d5d76ed3bac8e010cd2b"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#a17c80327a5f2d5d76ed3bac8e010cd2b">dcd_write_packet_memory</a> (uint16_t dst, const void *__restrict src, uint16_t nbytes)</td></tr>
+<tr class="separator:a17c80327a5f2d5d76ed3bac8e010cd2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f23a9d0b4ba178da059742596459b4d"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#a8f23a9d0b4ba178da059742596459b4d">dcd_read_packet_memory</a> (void *__restrict dst, uint16_t src, uint16_t nbytes)</td></tr>
+<tr class="separator:a8f23a9d0b4ba178da059742596459b4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00d20ec57d33c9d27a05c182a38f5b4a"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#a00d20ec57d33c9d27a05c182a38f5b4a">dcd_write_packet_memory_ff</a> (<a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *ff, uint16_t dst, uint16_t wNBytes)</td></tr>
+<tr class="separator:a00d20ec57d33c9d27a05c182a38f5b4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3bd910033ca670a278cfb9abe127373c"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#a3bd910033ca670a278cfb9abe127373c">dcd_read_packet_memory_ff</a> (<a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *ff, uint16_t src, uint16_t wNBytes)</td></tr>
+<tr class="separator:a3bd910033ca670a278cfb9abe127373c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a831d9ca2f65e15833ebdfdcb0a5c3a66"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#a831d9ca2f65e15833ebdfdcb0a5c3a66">edpt0_open</a> (uint8_t rhport)</td></tr>
+<tr class="separator:a831d9ca2f65e15833ebdfdcb0a5c3a66"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3536a5958c85b035b48f890cd55dd8b9"><td class="memItemLeft" align="right" valign="top">static TU_ATTR_ALWAYS_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#a3536a5958c85b035b48f890cd55dd8b9">edpt0_prepare_setup</a> (void)</td></tr>
+<tr class="separator:a3536a5958c85b035b48f890cd55dd8b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f7b6d27a9465ec2bfb427ed48837dc3"><td class="memItemLeft" align="right" valign="top">static TU_ATTR_ALWAYS_INLINE <a class="el" href="structxfer__ctl__t.html">xfer_ctl_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#a6f7b6d27a9465ec2bfb427ed48837dc3">xfer_ctl_ptr</a> (uint8_t epnum, uint8_t dir)</td></tr>
+<tr class="separator:a6f7b6d27a9465ec2bfb427ed48837dc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5fa7d4d4015fdd3f64a1fce0374dfff"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#ad5fa7d4d4015fdd3f64a1fce0374dfff">dcd_init</a> (uint8_t rhport, const <a class="el" href="structtusb__rhport__init__t.html">tusb_rhport_init_t</a> *rh_init)</td></tr>
+<tr class="separator:ad5fa7d4d4015fdd3f64a1fce0374dfff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af92b9d4cae9282fd8273d5c3a72d0a3d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#af92b9d4cae9282fd8273d5c3a72d0a3d">dcd_sof_enable</a> (uint8_t rhport, bool en)</td></tr>
+<tr class="separator:af92b9d4cae9282fd8273d5c3a72d0a3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acaa0da4545f1c5627429a7884b3c9847"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#acaa0da4545f1c5627429a7884b3c9847">dcd_set_address</a> (uint8_t rhport, uint8_t <a class="el" href="dcd__pic32mz_8c.html#a1997a5306d6d04a9ce867303d1a6d9e1">dev_addr</a>)</td></tr>
 <tr class="separator:acaa0da4545f1c5627429a7884b3c9847"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af44c10b75ea56feeb04b3351ede5687f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#af44c10b75ea56feeb04b3351ede5687f">dcd_remote_wakeup</a> (uint8_t rhport)</td></tr>
 <tr class="separator:af44c10b75ea56feeb04b3351ede5687f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6d53b1875abdf278a6f779897230b2c5"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#a6d53b1875abdf278a6f779897230b2c5">dcd_handle_bus_reset</a> (void)</td></tr>
-<tr class="separator:a6d53b1875abdf278a6f779897230b2c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a86dd60c0afc86d58dfde8ffd6c8da912"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#a86dd60c0afc86d58dfde8ffd6c8da912">dcd_ep_ctr_tx_handler</a> (uint32_t wIstr)</td></tr>
-<tr class="separator:a86dd60c0afc86d58dfde8ffd6c8da912"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9f4c2a24014cac4471fc46dabc693076"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#a9f4c2a24014cac4471fc46dabc693076">dcd_ep_ctr_rx_handler</a> (uint32_t wIstr)</td></tr>
-<tr class="separator:a9f4c2a24014cac4471fc46dabc693076"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3fea561dc4f805eac0dcc375c2c66fd8"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#a3fea561dc4f805eac0dcc375c2c66fd8">dcd_ep_ctr_handler</a> (void)</td></tr>
-<tr class="separator:a3fea561dc4f805eac0dcc375c2c66fd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a906b44a96804251d685ed025bc9181f7"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#a906b44a96804251d685ed025bc9181f7">handle_ctr_tx</a> (uint32_t ep_id)</td></tr>
+<tr class="separator:a906b44a96804251d685ed025bc9181f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7504770083dede2d899a265d4eabf48c"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#a7504770083dede2d899a265d4eabf48c">handle_ctr_setup</a> (uint32_t ep_id)</td></tr>
+<tr class="separator:a7504770083dede2d899a265d4eabf48c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa26da4f4e3222c47b3a6fbdb6649d06e"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#aa26da4f4e3222c47b3a6fbdb6649d06e">handle_ctr_rx</a> (uint32_t ep_id)</td></tr>
+<tr class="separator:aa26da4f4e3222c47b3a6fbdb6649d06e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a54ac8fe997f0ff525e65f4619e802a34"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#a54ac8fe997f0ff525e65f4619e802a34">dcd_int_handler</a> (uint8_t rhport)</td></tr>
 <tr class="separator:a54ac8fe997f0ff525e65f4619e802a34"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abac3e95182d779ef9bf2071a0607481b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#abac3e95182d779ef9bf2071a0607481b">dcd_edpt0_status_complete</a> (uint8_t rhport, <a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *request)</td></tr>
+<tr class="memitem:abac3e95182d779ef9bf2071a0607481b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#abac3e95182d779ef9bf2071a0607481b">dcd_edpt0_status_complete</a> (uint8_t rhport, <a class="el" href="tusb__types_8h.html#a2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *request)</td></tr>
 <tr class="separator:abac3e95182d779ef9bf2071a0607481b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a324c46690ebbf0820abb717417f08f0f"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#a324c46690ebbf0820abb717417f08f0f">dcd_pma_alloc_reset</a> (void)</td></tr>
-<tr class="separator:a324c46690ebbf0820abb717417f08f0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a072ca0cc1c2bad7b0b687523e9a641b5"><td class="memItemLeft" align="right" valign="top">static uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#a072ca0cc1c2bad7b0b687523e9a641b5">dcd_pma_alloc</a> (uint8_t ep_addr, size_t length)</td></tr>
-<tr class="separator:a072ca0cc1c2bad7b0b687523e9a641b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a741f25d0bcefbce26397e8f441bfcab7"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#a741f25d0bcefbce26397e8f441bfcab7">dcd_pma_free</a> (uint8_t ep_addr)</td></tr>
-<tr class="separator:a741f25d0bcefbce26397e8f441bfcab7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8130fe447f74050156a455d64af97e6b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#a8130fe447f74050156a455d64af97e6b">dcd_edpt_open</a> (uint8_t rhport, <a class="el" href="group___u_s_b_def___type.html#ga95906f860c391cedba638b1946669694">tusb_desc_endpoint_t</a> const *p_endpoint_desc)</td></tr>
-<tr class="separator:a8130fe447f74050156a455d64af97e6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd4b682570a749e606586e4c1d8695f3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#afd4b682570a749e606586e4c1d8695f3">dcd_edpt_open</a> (uint8_t rhport, <a class="el" href="tusb__types_8h.html#a95906f860c391cedba638b1946669694">tusb_desc_endpoint_t</a> const *desc_ep)</td></tr>
+<tr class="separator:afd4b682570a749e606586e4c1d8695f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a739465661a72a0cd626ffc41048f46ea"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#a739465661a72a0cd626ffc41048f46ea">dcd_edpt_close_all</a> (uint8_t rhport)</td></tr>
 <tr class="separator:a739465661a72a0cd626ffc41048f46ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3b17fdbdbe51c71d1ec1e9c21f7f0481"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#a3b17fdbdbe51c71d1ec1e9c21f7f0481">dcd_edpt_close</a> (uint8_t rhport, uint8_t ep_addr)</td></tr>
-<tr class="separator:a3b17fdbdbe51c71d1ec1e9c21f7f0481"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7aefe4e20d31c87266dcc2ded6b88927"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#a7aefe4e20d31c87266dcc2ded6b88927">dcd_transmit_packet</a> (<a class="el" href="structxfer__ctl__t.html">xfer_ctl_t</a> *xfer, uint16_t ep_ix)</td></tr>
-<tr class="separator:a7aefe4e20d31c87266dcc2ded6b88927"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaa4e229b17459d87c2dda8d5c7a5e648"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#aaa4e229b17459d87c2dda8d5c7a5e648">dcd_edpt_xfer</a> (uint8_t rhport, uint8_t ep_addr, uint8_t *<a class="el" href="midi__device_8h.html#ac8733c58bc671239139641960e2d5dbf">buffer</a>, uint16_t total_bytes)</td></tr>
+<tr class="memitem:aebacdc43db7c1da7d5afaeb5ddd4449f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#aebacdc43db7c1da7d5afaeb5ddd4449f">dcd_edpt_iso_alloc</a> (uint8_t rhport, uint8_t ep_addr, uint16_t largest_packet_size)</td></tr>
+<tr class="separator:aebacdc43db7c1da7d5afaeb5ddd4449f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a036946fc5314d726b4f9d8bde30b97e3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#a036946fc5314d726b4f9d8bde30b97e3">dcd_edpt_iso_activate</a> (uint8_t rhport, <a class="el" href="tusb__types_8h.html#a95906f860c391cedba638b1946669694">tusb_desc_endpoint_t</a> const *desc_ep)</td></tr>
+<tr class="separator:a036946fc5314d726b4f9d8bde30b97e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa4e229b17459d87c2dda8d5c7a5e648"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#aaa4e229b17459d87c2dda8d5c7a5e648">dcd_edpt_xfer</a> (uint8_t rhport, uint8_t ep_addr, uint8_t *<a class="el" href="usbh_8c.html#a56ed84df35de10bdb65e72b184309497">buffer</a>, uint16_t <a class="el" href="dcd__nuc505_8c.html#a944ab463097040317fe221165f6607d1">total_bytes</a>)</td></tr>
 <tr class="separator:aaa4e229b17459d87c2dda8d5c7a5e648"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0df1a9b595a89821d0c3990080b31234"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#a0df1a9b595a89821d0c3990080b31234">dcd_edpt_xfer_fifo</a> (uint8_t rhport, uint8_t ep_addr, <a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *ff, uint16_t total_bytes)</td></tr>
+<tr class="memitem:a0df1a9b595a89821d0c3990080b31234"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#a0df1a9b595a89821d0c3990080b31234">dcd_edpt_xfer_fifo</a> (uint8_t rhport, uint8_t ep_addr, <a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *ff, uint16_t <a class="el" href="dcd__nuc505_8c.html#a944ab463097040317fe221165f6607d1">total_bytes</a>)</td></tr>
 <tr class="separator:a0df1a9b595a89821d0c3990080b31234"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a361d8cf98f6428fefad8b32e2f87668a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#a361d8cf98f6428fefad8b32e2f87668a">dcd_edpt_stall</a> (uint8_t rhport, uint8_t ep_addr)</td></tr>
 <tr class="separator:a361d8cf98f6428fefad8b32e2f87668a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a930adaee00f0c2679beef9684fa72cb7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#a930adaee00f0c2679beef9684fa72cb7">dcd_edpt_clear_stall</a> (uint8_t rhport, uint8_t ep_addr)</td></tr>
 <tr class="separator:a930adaee00f0c2679beef9684fa72cb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3fdd12a7d97dd63077cf4989f5fefe4b"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#a3fdd12a7d97dd63077cf4989f5fefe4b">dcd_write_packet_memory</a> (uint16_t dst, const void *__restrict src, size_t wNBytes)</td></tr>
-<tr class="memdesc:a3fdd12a7d97dd63077cf4989f5fefe4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy a buffer from user memory area to packet memory area (PMA). This uses byte-access for user memory (so support non-aligned buffers) and 16-bit access for packet memory.  <a href="dcd__stm32__fsdev_8c.html#a3fdd12a7d97dd63077cf4989f5fefe4b">More...</a><br /></td></tr>
-<tr class="separator:a3fdd12a7d97dd63077cf4989f5fefe4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00d20ec57d33c9d27a05c182a38f5b4a"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#a00d20ec57d33c9d27a05c182a38f5b4a">dcd_write_packet_memory_ff</a> (<a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *ff, uint16_t dst, uint16_t wNBytes)</td></tr>
-<tr class="memdesc:a00d20ec57d33c9d27a05c182a38f5b4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy from FIFO to packet memory area (PMA). Uses byte-access of system memory and 16-bit access of packet memory.  <a href="dcd__stm32__fsdev_8c.html#a00d20ec57d33c9d27a05c182a38f5b4a">More...</a><br /></td></tr>
-<tr class="separator:a00d20ec57d33c9d27a05c182a38f5b4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af8e679d52a36fe830dc48af89f552523"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#af8e679d52a36fe830dc48af89f552523">dcd_read_packet_memory</a> (void *__restrict dst, uint16_t src, size_t wNBytes)</td></tr>
-<tr class="memdesc:af8e679d52a36fe830dc48af89f552523"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy a buffer from packet memory area (PMA) to user memory area. Uses byte-access of system memory and 16-bit access of packet memory.  <a href="dcd__stm32__fsdev_8c.html#af8e679d52a36fe830dc48af89f552523">More...</a><br /></td></tr>
-<tr class="separator:af8e679d52a36fe830dc48af89f552523"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3bd910033ca670a278cfb9abe127373c"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#a3bd910033ca670a278cfb9abe127373c">dcd_read_packet_memory_ff</a> (<a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> *ff, uint16_t src, uint16_t wNBytes)</td></tr>
-<tr class="memdesc:a3bd910033ca670a278cfb9abe127373c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy a buffer from user packet memory area (PMA) to FIFO. Uses byte-access of system memory and 16-bit access of packet memory.  <a href="dcd__stm32__fsdev_8c.html#a3bd910033ca670a278cfb9abe127373c">More...</a><br /></td></tr>
-<tr class="separator:a3bd910033ca670a278cfb9abe127373c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a97c9abbb3fa3d893776583ab79b15897"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structxfer__ctl__t.html">xfer_ctl_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#a97c9abbb3fa3d893776583ab79b15897">xfer_status</a> [MAX_EP_COUNT][2]</td></tr>
-<tr class="separator:a97c9abbb3fa3d893776583ab79b15897"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab6fec04ed7e7e0f947ec951bda284ce9"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="group___u_s_b_def___type.html#ga95906f860c391cedba638b1946669694">tusb_desc_endpoint_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#ab6fec04ed7e7e0f947ec951bda284ce9">ep0OUT_desc</a></td></tr>
-<tr class="separator:ab6fec04ed7e7e0f947ec951bda284ce9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a92c86380fe85ba12c72f8188209dda6f"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="group___u_s_b_def___type.html#ga95906f860c391cedba638b1946669694">tusb_desc_endpoint_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#a92c86380fe85ba12c72f8188209dda6f">ep0IN_desc</a></td></tr>
-<tr class="separator:a92c86380fe85ba12c72f8188209dda6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a042f40406a2ce6735f55ff684798cbec"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structxfer__ctl__t.html">xfer_ctl_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#a042f40406a2ce6735f55ff684798cbec">xfer_status</a> [CFG_TUD_ENDPPOINT_MAX][2]</td></tr>
+<tr class="separator:a042f40406a2ce6735f55ff684798cbec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0de88c4bfa25173c771fe8c10dabc4f"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structep__alloc__t.html">ep_alloc_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#ae0de88c4bfa25173c771fe8c10dabc4f">ep_alloc_status</a> [FSDEV_EP_COUNT]</td></tr>
+<tr class="separator:ae0de88c4bfa25173c771fe8c10dabc4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20df7f135471f1ec694d5731f986d8bc"><td class="memItemLeft" align="right" valign="top">static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#a20df7f135471f1ec694d5731f986d8bc">remoteWakeCountdown</a></td></tr>
+<tr class="separator:a20df7f135471f1ec694d5731f986d8bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae97d428d558ccef4198a9a08d25fda87"><td class="memItemLeft" align="right" valign="top">static uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dcd__stm32__fsdev_8c.html#ae97d428d558ccef4198a9a08d25fda87">ep_buf_ptr</a></td></tr>
+<tr class="memdesc:ae97d428d558ccef4198a9a08d25fda87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Points to first free memory location.  <a href="dcd__stm32__fsdev_8c.html#ae97d428d558ccef4198a9a08d25fda87">More...</a><br /></td></tr>
+<tr class="separator:ae97d428d558ccef4198a9a08d25fda87"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="aa577538816c05fdffa137769b465954d" name="aa577538816c05fdffa137769b465954d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa577538816c05fdffa137769b465954d">&#9670;&nbsp;</a></span>clear_istr_bits()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void clear_istr_bits </td>
-          <td>(</td>
-          <td class="paramtype">uint16_t&#160;</td>
-          <td class="paramname"><em>mask</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00209">209</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
-
-</div>
-</div>
-<a id="aa425374a6ca69de3aae1d1b7caea9099" name="aa425374a6ca69de3aae1d1b7caea9099"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa425374a6ca69de3aae1d1b7caea9099">&#9670;&nbsp;</a></span>dcd_connect()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void dcd_connect </td>
-          <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>rhport</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00268">268</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
-
-</div>
-</div>
-<a id="a5b4ffa0dab4e5425d14394f7b9979386" name="a5b4ffa0dab4e5425d14394f7b9979386"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5b4ffa0dab4e5425d14394f7b9979386">&#9670;&nbsp;</a></span>dcd_disconnect()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void dcd_disconnect </td>
-          <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>rhport</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00261">261</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
-
-</div>
-</div>
 <a id="abac3e95182d779ef9bf2071a0607481b" name="abac3e95182d779ef9bf2071a0607481b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abac3e95182d779ef9bf2071a0607481b">&#9670;&nbsp;</a></span>dcd_edpt0_status_complete()</h2>
 
@@ -267,7 +190,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *&#160;</td>
+          <td class="paramtype"><a class="el" href="tusb__types_8h.html#a2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *&#160;</td>
           <td class="paramname"><em>request</em>&#160;</td>
         </tr>
         <tr>
@@ -278,7 +201,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00652">652</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00474">474</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
 
 </div>
 </div>
@@ -308,40 +231,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00957">957</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
-
-</div>
-</div>
-<a id="a3b17fdbdbe51c71d1ec1e9c21f7f0481" name="a3b17fdbdbe51c71d1ec1e9c21f7f0481"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3b17fdbdbe51c71d1ec1e9c21f7f0481">&#9670;&nbsp;</a></span>dcd_edpt_close()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void dcd_edpt_close </td>
-          <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>rhport</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>ep_addr</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >Close an endpoint.</p>
-<p >This function may be called with interrupts enabled or disabled.</p>
-<p >This also clears transfers in progress, should there be any. </p>
-
-<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00827">827</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00796">796</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
 
 </div>
 </div>
@@ -361,12 +251,78 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00814">814</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00628">628</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
 
 </div>
 </div>
-<a id="a8130fe447f74050156a455d64af97e6b" name="a8130fe447f74050156a455d64af97e6b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8130fe447f74050156a455d64af97e6b">&#9670;&nbsp;</a></span>dcd_edpt_open()</h2>
+<a id="a036946fc5314d726b4f9d8bde30b97e3" name="a036946fc5314d726b4f9d8bde30b97e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a036946fc5314d726b4f9d8bde30b97e3">&#9670;&nbsp;</a></span>dcd_edpt_iso_activate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool dcd_edpt_iso_activate </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>rhport</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="tusb__types_8h.html#a95906f860c391cedba638b1946669694">tusb_desc_endpoint_t</a> const *&#160;</td>
+          <td class="paramname"><em>desc_ep</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00673">673</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
+
+</div>
+</div>
+<a id="aebacdc43db7c1da7d5afaeb5ddd4449f" name="aebacdc43db7c1da7d5afaeb5ddd4449f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aebacdc43db7c1da7d5afaeb5ddd4449f">&#9670;&nbsp;</a></span>dcd_edpt_iso_alloc()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool dcd_edpt_iso_alloc </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>rhport</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>ep_addr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>largest_packet_size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00647">647</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
+
+</div>
+</div>
+<a id="afd4b682570a749e606586e4c1d8695f3" name="afd4b682570a749e606586e4c1d8695f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd4b682570a749e606586e4c1d8695f3">&#9670;&nbsp;</a></span>dcd_edpt_open()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -380,8 +336,8 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga95906f860c391cedba638b1946669694">tusb_desc_endpoint_t</a> const *&#160;</td>
-          <td class="paramname"><em>p_endpoint_desc</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="tusb__types_8h.html#a95906f860c391cedba638b1946669694">tusb_desc_endpoint_t</a> const *&#160;</td>
+          <td class="paramname"><em>desc_ep</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -391,7 +347,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00750">750</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00579">579</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
 
 </div>
 </div>
@@ -421,7 +377,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00943">943</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00782">782</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
 
 </div>
 </div>
@@ -463,7 +419,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00873">873</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00756">756</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
 
 </div>
 </div>
@@ -505,12 +461,12 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00911">911</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00769">769</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
 
 </div>
 </div>
-<a id="a3fea561dc4f805eac0dcc375c2c66fd8" name="a3fea561dc4f805eac0dcc375c2c66fd8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3fea561dc4f805eac0dcc375c2c66fd8">&#9670;&nbsp;</a></span>dcd_ep_ctr_handler()</h2>
+<a id="aa1556cdc08618c9db4f41d52830f9502" name="aa1556cdc08618c9db4f41d52830f9502"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa1556cdc08618c9db4f41d52830f9502">&#9670;&nbsp;</a></span>dcd_ep_alloc()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -519,165 +475,61 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static void dcd_ep_ctr_handler </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00557">557</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
-
-</div>
-</div>
-<a id="a9f4c2a24014cac4471fc46dabc693076" name="a9f4c2a24014cac4471fc46dabc693076"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9f4c2a24014cac4471fc46dabc693076">&#9670;&nbsp;</a></span>dcd_ep_ctr_rx_handler()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void dcd_ep_ctr_rx_handler </td>
-          <td>(</td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>wIstr</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00473">473</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
-
-</div>
-</div>
-<a id="a86dd60c0afc86d58dfde8ffd6c8da912" name="a86dd60c0afc86d58dfde8ffd6c8da912"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a86dd60c0afc86d58dfde8ffd6c8da912">&#9670;&nbsp;</a></span>dcd_ep_ctr_tx_handler()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void dcd_ep_ctr_tx_handler </td>
-          <td>(</td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>wIstr</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00444">444</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
-
-</div>
-</div>
-<a id="a6d53b1875abdf278a6f779897230b2c5" name="a6d53b1875abdf278a6f779897230b2c5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6d53b1875abdf278a6f779897230b2c5">&#9670;&nbsp;</a></span>dcd_handle_bus_reset()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void dcd_handle_bus_reset </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00423">423</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
-
-</div>
-</div>
-<a id="a462def231fd49be0acfd1eb4657675a3" name="a462def231fd49be0acfd1eb4657675a3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a462def231fd49be0acfd1eb4657675a3">&#9670;&nbsp;</a></span>dcd_init()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void dcd_init </td>
+          <td class="memname">static uint8_t dcd_ep_alloc </td>
           <td>(</td>
           <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>rhport</em></td><td>)</td>
+          <td class="paramname"><em>ep_addr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>ep_type</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00213">213</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00516">516</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
 
 </div>
 </div>
-<a id="a7cb59e599703b7e84e2afb632efbfdc2" name="a7cb59e599703b7e84e2afb632efbfdc2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7cb59e599703b7e84e2afb632efbfdc2">&#9670;&nbsp;</a></span>dcd_int_disable()</h2>
+<a id="ad5fa7d4d4015fdd3f64a1fce0374dfff" name="ad5fa7d4d4015fdd3f64a1fce0374dfff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad5fa7d4d4015fdd3f64a1fce0374dfff">&#9670;&nbsp;</a></span>dcd_init()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void dcd_int_disable </td>
+          <td class="memname">bool dcd_init </td>
           <td>(</td>
           <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>rhport</em></td><td>)</td>
-          <td></td>
+          <td class="paramname"><em>rhport</em>, </td>
         </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00337">337</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
-
-</div>
-</div>
-<a id="af2434e784da26939bb42d610d2a7dc7e" name="af2434e784da26939bb42d610d2a7dc7e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af2434e784da26939bb42d610d2a7dc7e">&#9670;&nbsp;</a></span>dcd_int_enable()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
         <tr>
-          <td class="memname">void dcd_int_enable </td>
-          <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>rhport</em></td><td>)</td>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const <a class="el" href="structtusb__rhport__init__t.html">tusb_rhport_init_t</a> *&#160;</td>
+          <td class="paramname"><em>rh_init</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00291">291</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00187">187</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
 
 </div>
 </div>
@@ -697,12 +549,12 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00576">576</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00371">371</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
 
 </div>
 </div>
-<a id="a072ca0cc1c2bad7b0b687523e9a641b5" name="a072ca0cc1c2bad7b0b687523e9a641b5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a072ca0cc1c2bad7b0b687523e9a641b5">&#9670;&nbsp;</a></span>dcd_pma_alloc()</h2>
+<a id="af08f884dc8d5bd2352af23ada3600370" name="af08f884dc8d5bd2352af23ada3600370"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af08f884dc8d5bd2352af23ada3600370">&#9670;&nbsp;</a></span>dcd_pma_alloc()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -711,16 +563,16 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static uint16_t dcd_pma_alloc </td>
+          <td class="memname">static uint32_t dcd_pma_alloc </td>
           <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>ep_addr</em>, </td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>len</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>length</em>&#160;</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>dbuf</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -735,68 +587,12 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00690">690</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00492">492</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
 
 </div>
 </div>
-<a id="a324c46690ebbf0820abb717417f08f0f" name="a324c46690ebbf0820abb717417f08f0f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a324c46690ebbf0820abb717417f08f0f">&#9670;&nbsp;</a></span>dcd_pma_alloc_reset()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void dcd_pma_alloc_reset </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00668">668</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
-
-</div>
-</div>
-<a id="a741f25d0bcefbce26397e8f441bfcab7" name="a741f25d0bcefbce26397e8f441bfcab7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a741f25d0bcefbce26397e8f441bfcab7">&#9670;&nbsp;</a></span>dcd_pma_free()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void dcd_pma_free </td>
-          <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>ep_addr</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00720">720</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
-
-</div>
-</div>
-<a id="af8e679d52a36fe830dc48af89f552523" name="af8e679d52a36fe830dc48af89f552523"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af8e679d52a36fe830dc48af89f552523">&#9670;&nbsp;</a></span>dcd_read_packet_memory()</h2>
+<a id="a8f23a9d0b4ba178da059742596459b4d" name="a8f23a9d0b4ba178da059742596459b4d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8f23a9d0b4ba178da059742596459b4d">&#9670;&nbsp;</a></span>dcd_read_packet_memory()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -819,8 +615,8 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>wNBytes</em>&#160;</td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>nbytes</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -835,21 +631,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Copy a buffer from packet memory area (PMA) to user memory area. Uses byte-access of system memory and 16-bit access of packet memory. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">wNBytes</td><td>no. of bytes to be copied. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname">None</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l01069">1069</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00850">850</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
 
 </div>
 </div>
@@ -893,21 +675,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Copy a buffer from user packet memory area (PMA) to FIFO. Uses byte-access of system memory and 16-bit access of packet memory. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">wNBytes</td><td>no. of bytes to be copied. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname">None</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l01108">1108</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00926">926</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
 
 </div>
 </div>
@@ -927,7 +695,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00393">393</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00252">252</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
 
 </div>
 </div>
@@ -957,7 +725,37 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00381">381</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00242">242</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
+
+</div>
+</div>
+<a id="af92b9d4cae9282fd8273d5c3a72d0a3d" name="af92b9d4cae9282fd8273d5c3a72d0a3d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af92b9d4cae9282fd8273d5c3a72d0a3d">&#9670;&nbsp;</a></span>dcd_sof_enable()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void dcd_sof_enable </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>rhport</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>en</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00231">231</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
 
 </div>
 </div>
@@ -995,12 +793,12 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00847">847</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00697">697</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
 
 </div>
 </div>
-<a id="a3fdd12a7d97dd63077cf4989f5fefe4b" name="a3fdd12a7d97dd63077cf4989f5fefe4b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3fdd12a7d97dd63077cf4989f5fefe4b">&#9670;&nbsp;</a></span>dcd_write_packet_memory()</h2>
+<a id="a17c80327a5f2d5d76ed3bac8e010cd2b" name="a17c80327a5f2d5d76ed3bac8e010cd2b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a17c80327a5f2d5d76ed3bac8e010cd2b">&#9670;&nbsp;</a></span>dcd_write_packet_memory()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1023,8 +821,8 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>wNBytes</em>&#160;</td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>nbytes</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1039,24 +837,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Copy a buffer from user memory area to packet memory area (PMA). This uses byte-access for user memory (so support non-aligned buffers) and 16-bit access for packet memory. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">dst,byte</td><td>address in PMA; must be 16-bit aligned </td></tr>
-    <tr><td class="paramname">src</td><td>pointer to user memory area. </td></tr>
-    <tr><td class="paramname">wPMABufAddr</td><td>address into PMA. </td></tr>
-    <tr><td class="paramname">wNBytes</td><td>no. of bytes to be copied. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname">None</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00990">990</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00821">821</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
 
 </div>
 </div>
@@ -1100,26 +881,12 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Copy from FIFO to packet memory area (PMA). Uses byte-access of system memory and 16-bit access of packet memory. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">wNBytes</td><td>no. of bytes to be copied. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname">None</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l01026">1026</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00877">877</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
 
 </div>
 </div>
-<a id="a7b985e38ff144cddca1a574ec73f9500" name="a7b985e38ff144cddca1a574ec73f9500"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7b985e38ff144cddca1a574ec73f9500">&#9670;&nbsp;</a></span>TU_ATTR_ALIGNED()</h2>
+<a id="a831d9ca2f65e15833ebdfdcb0a5c3a66" name="a831d9ca2f65e15833ebdfdcb0a5c3a66"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a831d9ca2f65e15833ebdfdcb0a5c3a66">&#9670;&nbsp;</a></span>edpt0_open()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1128,10 +895,10 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static TU_ATTR_ALIGNED </td>
+          <td class="memname">void edpt0_open </td>
           <td>(</td>
-          <td class="paramtype">4&#160;</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>rhport</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -1142,96 +909,12 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00181">181</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00551">551</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
 
 </div>
 </div>
-<a id="a4a8b7a67982111654fe04c0fa04c0735" name="a4a8b7a67982111654fe04c0fa04c0735"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4a8b7a67982111654fe04c0fa04c0735">&#9670;&nbsp;</a></span>TU_VERIFY_STATIC() <span class="overload">[1/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">TU_VERIFY_STATIC </td>
-          <td>(</td>
-          <td class="paramtype">((DCD_STM32_BTABLE_BASE) % 8)&#160;</td>
-          <td class="paramname"> = <code>=0</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&quot;BTABLE base must be aligned to 8 bytes&quot;&#160;</td>
-          <td class="paramname">&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a00a571f5b411fc0060f185e3deb1d0c7" name="a00a571f5b411fc0060f185e3deb1d0c7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a00a571f5b411fc0060f185e3deb1d0c7">&#9670;&nbsp;</a></span>TU_VERIFY_STATIC() <span class="overload">[2/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">TU_VERIFY_STATIC </td>
-          <td>(</td>
-          <td class="paramtype">((DCD_STM32_BTABLE_BASE)+(DCD_STM32_BTABLE_LENGTH))&lt;=(PMA_LENGTH)&#160;</td>
-          <td class="paramname">, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&quot;BTABLE does not fit in PMA RAM&quot;&#160;</td>
-          <td class="paramname">&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="aadd7f46c34372292ed9eb383133b6a1f" name="aadd7f46c34372292ed9eb383133b6a1f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aadd7f46c34372292ed9eb383133b6a1f">&#9670;&nbsp;</a></span>TU_VERIFY_STATIC() <span class="overload">[3/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">TU_VERIFY_STATIC </td>
-          <td>(</td>
-          <td class="paramtype">(MAX_EP_COUNT)&lt;=&#160;</td>
-          <td class="paramname"><em>STFSDEV_EP_COUNT</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&quot;Only 8 endpoints supported on the hardware&quot;&#160;</td>
-          <td class="paramname">&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a74893631e7648796c85b20006321de1a" name="a74893631e7648796c85b20006321de1a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a74893631e7648796c85b20006321de1a">&#9670;&nbsp;</a></span>xfer_ctl_ptr()</h2>
+<a id="a3536a5958c85b035b48f890cd55dd8b9" name="a3536a5958c85b035b48f890cd55dd8b9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3536a5958c85b035b48f890cd55dd8b9">&#9670;&nbsp;</a></span>edpt0_prepare_setup()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1240,15 +923,199 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static <a class="el" href="structxfer__ctl__t.html">xfer_ctl_t</a> * xfer_ctl_ptr </td>
+          <td class="memname">static TU_ATTR_ALWAYS_INLINE void edpt0_prepare_setup </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00172">172</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
+
+</div>
+</div>
+<a id="a0facd4ea6f813d5acaa060797c3d4341" name="a0facd4ea6f813d5acaa060797c3d4341"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0facd4ea6f813d5acaa060797c3d4341">&#9670;&nbsp;</a></span>edpt_xfer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool edpt_xfer </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>rhport</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>ep_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="tusb__types_8h.html#a0c1b25b161b272f5f39e4ba49478289c">tusb_dir_t</a>&#160;</td>
+          <td class="paramname"><em>dir</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00728">728</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
+
+</div>
+</div>
+<a id="aa83ae0ea9993c23a84bc2713b28209fa" name="aa83ae0ea9993c23a84bc2713b28209fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa83ae0ea9993c23a84bc2713b28209fa">&#9670;&nbsp;</a></span>handle_bus_reset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void handle_bus_reset </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>rhport</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00259">259</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
+
+</div>
+</div>
+<a id="aa26da4f4e3222c47b3a6fbdb6649d06e" name="aa26da4f4e3222c47b3a6fbdb6649d06e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa26da4f4e3222c47b3a6fbdb6649d06e">&#9670;&nbsp;</a></span>handle_ctr_rx()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void handle_ctr_rx </td>
           <td>(</td>
           <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>ep_id</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00326">326</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
+
+</div>
+</div>
+<a id="a7504770083dede2d899a265d4eabf48c" name="a7504770083dede2d899a265d4eabf48c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7504770083dede2d899a265d4eabf48c">&#9670;&nbsp;</a></span>handle_ctr_setup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void handle_ctr_setup </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>ep_id</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00304">304</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
+
+</div>
+</div>
+<a id="a906b44a96804251d685ed025bc9181f7" name="a906b44a96804251d685ed025bc9181f7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a906b44a96804251d685ed025bc9181f7">&#9670;&nbsp;</a></span>handle_ctr_tx()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void handle_ctr_tx </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>ep_id</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00279">279</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
+
+</div>
+</div>
+<a id="a6f7b6d27a9465ec2bfb427ed48837dc3" name="a6f7b6d27a9465ec2bfb427ed48837dc3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f7b6d27a9465ec2bfb427ed48837dc3">&#9670;&nbsp;</a></span>xfer_ctl_ptr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static TU_ATTR_ALWAYS_INLINE <a class="el" href="structxfer__ctl__t.html">xfer_ctl_t</a> * xfer_ctl_ptr </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
           <td class="paramname"><em>epnum</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramtype">uint8_t&#160;</td>
           <td class="paramname"><em>dir</em>&#160;</td>
         </tr>
         <tr>
@@ -1264,13 +1131,13 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00176">176</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00180">180</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
-<a id="a92c86380fe85ba12c72f8188209dda6f" name="a92c86380fe85ba12c72f8188209dda6f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a92c86380fe85ba12c72f8188209dda6f">&#9670;&nbsp;</a></span>ep0IN_desc</h2>
+<a id="ae0de88c4bfa25173c771fe8c10dabc4f" name="ae0de88c4bfa25173c771fe8c10dabc4f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae0de88c4bfa25173c771fe8c10dabc4f">&#9670;&nbsp;</a></span>ep_alloc_status</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1279,78 +1146,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="group___u_s_b_def___type.html#ga95906f860c391cedba638b1946669694">tusb_desc_endpoint_t</a> ep0IN_desc</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">=</div>
-<div class="line">{</div>
-<div class="line">  .bLength          = <span class="keyword">sizeof</span>(<a class="code hl_typedef" href="group___u_s_b_def___type.html#ga95906f860c391cedba638b1946669694">tusb_desc_endpoint_t</a>),</div>
-<div class="line">  .bDescriptorType  = <a class="code hl_enumvalue" href="group___u_s_b_def___type.html#ggacb5e6c763fa4283e1be386759d1dfc13abab5f4629d2d2bf0fb2bd3189c1f02f3">TUSB_DESC_ENDPOINT</a>,</div>
-<div class="line"> </div>
-<div class="line">  .bEndpointAddress = 0x80,</div>
-<div class="line">  .bmAttributes     = { .xfer = <a class="code hl_enumvalue" href="group___u_s_b_def___type.html#gga8c13f148c474fa734f69772ebfd102b7a409c358ada50d3f5f2be91dedb7bec74">TUSB_XFER_CONTROL</a> },</div>
-<div class="line">  .wMaxPacketSize   = CFG_TUD_ENDPOINT0_SIZE,</div>
-<div class="line">  .bInterval        = 0</div>
-<div class="line">}</div>
-<div class="ttc" id="agroup___u_s_b_def___type_html_ga95906f860c391cedba638b1946669694"><div class="ttname"><a href="group___u_s_b_def___type.html#ga95906f860c391cedba638b1946669694">tusb_desc_endpoint_t</a></div><div class="ttdeci">struct TU_ATTR_PACKED tusb_desc_endpoint_t</div><div class="ttdoc">USB Endpoint Descriptor.</div></div>
-<div class="ttc" id="agroup___u_s_b_def___type_html_gga8c13f148c474fa734f69772ebfd102b7a409c358ada50d3f5f2be91dedb7bec74"><div class="ttname"><a href="group___u_s_b_def___type.html#gga8c13f148c474fa734f69772ebfd102b7a409c358ada50d3f5f2be91dedb7bec74">TUSB_XFER_CONTROL</a></div><div class="ttdeci">@ TUSB_XFER_CONTROL</div><div class="ttdef"><b>Definition:</b> <a href="tusb__types_8h_source.html#l00058">tusb_types.h:58</a></div></div>
-<div class="ttc" id="agroup___u_s_b_def___type_html_ggacb5e6c763fa4283e1be386759d1dfc13abab5f4629d2d2bf0fb2bd3189c1f02f3"><div class="ttname"><a href="group___u_s_b_def___type.html#ggacb5e6c763fa4283e1be386759d1dfc13abab5f4629d2d2bf0fb2bd3189c1f02f3">TUSB_DESC_ENDPOINT</a></div><div class="ttdeci">@ TUSB_DESC_ENDPOINT</div><div class="ttdef"><b>Definition:</b> <a href="tusb__types_8h_source.html#l00091">tusb_types.h:91</a></div></div>
-</div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00412">412</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
-
-</div>
-</div>
-<a id="ab6fec04ed7e7e0f947ec951bda284ce9" name="ab6fec04ed7e7e0f947ec951bda284ce9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab6fec04ed7e7e0f947ec951bda284ce9">&#9670;&nbsp;</a></span>ep0OUT_desc</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="group___u_s_b_def___type.html#ga95906f860c391cedba638b1946669694">tusb_desc_endpoint_t</a> ep0OUT_desc</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">=</div>
-<div class="line">{</div>
-<div class="line">  .bLength          = <span class="keyword">sizeof</span>(<a class="code hl_typedef" href="group___u_s_b_def___type.html#ga95906f860c391cedba638b1946669694">tusb_desc_endpoint_t</a>),</div>
-<div class="line">  .bDescriptorType  = <a class="code hl_enumvalue" href="group___u_s_b_def___type.html#ggacb5e6c763fa4283e1be386759d1dfc13abab5f4629d2d2bf0fb2bd3189c1f02f3">TUSB_DESC_ENDPOINT</a>,</div>
-<div class="line"> </div>
-<div class="line">  .bEndpointAddress = 0x00,</div>
-<div class="line">  .bmAttributes     = { .xfer = <a class="code hl_enumvalue" href="group___u_s_b_def___type.html#gga8c13f148c474fa734f69772ebfd102b7a409c358ada50d3f5f2be91dedb7bec74">TUSB_XFER_CONTROL</a> },</div>
-<div class="line">  .wMaxPacketSize   = CFG_TUD_ENDPOINT0_SIZE,</div>
-<div class="line">  .bInterval        = 0</div>
-<div class="line">}</div>
-</div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00401">401</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
-
-</div>
-</div>
-<a id="a97c9abbb3fa3d893776583ab79b15897" name="a97c9abbb3fa3d893776583ab79b15897"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a97c9abbb3fa3d893776583ab79b15897">&#9670;&nbsp;</a></span>xfer_status</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structxfer__ctl__t.html">xfer_ctl_t</a> xfer_status[MAX_EP_COUNT][2]</td>
+          <td class="memname"><a class="el" href="structep__alloc__t.html">ep_alloc_t</a> ep_alloc_status[FSDEV_EP_COUNT]</td>
         </tr>
       </table>
   </td>
@@ -1360,7 +1156,81 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00174">174</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00148">148</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
+
+</div>
+</div>
+<a id="ae97d428d558ccef4198a9a08d25fda87" name="ae97d428d558ccef4198a9a08d25fda87"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae97d428d558ccef4198a9a08d25fda87">&#9670;&nbsp;</a></span>ep_buf_ptr</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint16_t ep_buf_ptr</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Points to first free memory location. </p>
+
+<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00161">161</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
+
+</div>
+</div>
+<a id="a20df7f135471f1ec694d5731f986d8bc" name="a20df7f135471f1ec694d5731f986d8bc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a20df7f135471f1ec694d5731f986d8bc">&#9670;&nbsp;</a></span>remoteWakeCountdown</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t remoteWakeCountdown</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00149">149</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
+
+</div>
+</div>
+<a id="a042f40406a2ce6735f55ff684798cbec" name="a042f40406a2ce6735f55ff684798cbec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a042f40406a2ce6735f55ff684798cbec">&#9670;&nbsp;</a></span>xfer_status</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structxfer__ctl__t.html">xfer_ctl_t</a> xfer_status[CFG_TUD_ENDPPOINT_MAX][2]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="dcd__stm32__fsdev_8c_source.html#l00147">147</a> of file <a class="el" href="dcd__stm32__fsdev_8c_source.html">dcd_stm32_fsdev.c</a>.</p>
 
 </div>
 </div>

@@ -88,6 +88,7 @@ $(document).ready(function(){initNavTree('class_error_handler.html',''); initRes
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
+<a href="#pro-static-methods">Static Protected Member Functions</a> &#124;
 <a href="#pro-static-attribs">Static Protected Attributes</a> &#124;
 <a href="class_error_handler-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">ErrorHandler Class Reference</div></div>
@@ -131,22 +132,27 @@ Static Public Member Functions</h2></td></tr>
 <tr class="separator:a2447e48321458444c4b3d79380f74f65"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad9bf00bc45f36bf2a09ae9f2fcd393a3"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_error_handler.html#ad9bf00bc45f36bf2a09ae9f2fcd393a3">clearAll</a> ()</td></tr>
 <tr class="separator:ad9bf00bc45f36bf2a09ae9f2fcd393a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7489b7af0d4691473781ea6db1d9ce0f"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; <a class="el" href="class_error.html">Error</a> &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_error_handler.html#a7489b7af0d4691473781ea6db1d9ce0f">getErrors</a> ()</td></tr>
-<tr class="separator:a7489b7af0d4691473781ea6db1d9ce0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a070665028d53fd900b8f9a76ef443e4a"><td class="memItemLeft" align="right" valign="top">static std::span&lt; <a class="el" href="class_error.html">Error</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_error_handler.html#a070665028d53fd900b8f9a76ef443e4a">getErrors</a> ()</td></tr>
+<tr class="separator:a070665028d53fd900b8f9a76ef443e4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:ab5494eba227861b24fa0fed4978b59ea"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; <a class="el" href="class_error_handler.html">ErrorHandler</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_error_handler.html#ab5494eba227861b24fa0fed4978b59ea">errorHandlers</a></td></tr>
 <tr class="separator:ab5494eba227861b24fa0fed4978b59ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-static-methods" name="pro-static-methods"></a>
+Static Protected Member Functions</h2></td></tr>
+<tr class="memitem:a0fe38afeabef016ecb97e7466e336146"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_error_handler.html#a0fe38afeabef016ecb97e7466e336146">sortErrors</a> ()</td></tr>
+<tr class="separator:a0fe38afeabef016ecb97e7466e336146"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-static-attribs" name="pro-static-attribs"></a>
 Static Protected Attributes</h2></td></tr>
-<tr class="memitem:acb7611550d54d1ba27a613bf3c101df4"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; <a class="el" href="class_error.html">Error</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_error_handler.html#acb7611550d54d1ba27a613bf3c101df4">errors</a></td></tr>
-<tr class="separator:acb7611550d54d1ba27a613bf3c101df4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a125e55440c08910b65e6bb8f22449f19"><td class="memItemLeft" align="right" valign="top">static std::array&lt; <a class="el" href="class_error.html">Error</a>, ERRORHANDLER_MAXERRORS &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_error_handler.html#a125e55440c08910b65e6bb8f22449f19">errors</a></td></tr>
+<tr class="separator:a125e55440c08910b65e6bb8f22449f19"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_error_handler_8h_source.html#l00075">75</a> of file <a class="el" href="_error_handler_8h_source.html">ErrorHandler.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_error_handler_8h_source.html#l00081">81</a> of file <a class="el" href="_error_handler_8h_source.html">ErrorHandler.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a7e5f379bd231442b898cef94556b2107" name="a7e5f379bd231442b898cef94556b2107"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7e5f379bd231442b898cef94556b2107">&#9670;&nbsp;</a></span>ErrorHandler()</h2>
@@ -163,7 +169,7 @@ Static Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_error_handler_8cpp_source.html#l00039">39</a> of file <a class="el" href="_error_handler_8cpp_source.html">ErrorHandler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_error_handler_8cpp_source.html#l00041">41</a> of file <a class="el" href="_error_handler_8cpp_source.html">ErrorHandler.cpp</a>.</p>
 
 </div>
 </div>
@@ -190,7 +196,7 @@ Static Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_error_handler_8cpp_source.html#l00044">44</a> of file <a class="el" href="_error_handler_8cpp_source.html">ErrorHandler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_error_handler_8cpp_source.html#l00046">46</a> of file <a class="el" href="_error_handler_8cpp_source.html">ErrorHandler.cpp</a>.</p>
 
 </div>
 </div>
@@ -219,7 +225,7 @@ Static Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_error_handler_8cpp_source.html#l00072">72</a> of file <a class="el" href="_error_handler_8cpp_source.html">ErrorHandler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_error_handler_8cpp_source.html#l00076">76</a> of file <a class="el" href="_error_handler_8cpp_source.html">ErrorHandler.cpp</a>.</p>
 
 </div>
 </div>
@@ -246,7 +252,7 @@ Static Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_error_handler_8cpp_source.html#l00051">51</a> of file <a class="el" href="_error_handler_8cpp_source.html">ErrorHandler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_error_handler_8cpp_source.html#l00053">53</a> of file <a class="el" href="_error_handler_8cpp_source.html">ErrorHandler.cpp</a>.</p>
 
 </div>
 </div>
@@ -274,7 +280,7 @@ Static Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_error_handler_8cpp_source.html#l00088">88</a> of file <a class="el" href="_error_handler_8cpp_source.html">ErrorHandler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_error_handler_8cpp_source.html#l00097">97</a> of file <a class="el" href="_error_handler_8cpp_source.html">ErrorHandler.cpp</a>.</p>
 
 </div>
 </div>
@@ -302,7 +308,7 @@ Static Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_error_handler_8cpp_source.html#l00105">105</a> of file <a class="el" href="_error_handler_8cpp_source.html">ErrorHandler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_error_handler_8cpp_source.html#l00116">116</a> of file <a class="el" href="_error_handler_8cpp_source.html">ErrorHandler.cpp</a>.</p>
 
 </div>
 </div>
@@ -329,7 +335,7 @@ Static Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_error_handler_8cpp_source.html#l00063">63</a> of file <a class="el" href="_error_handler_8cpp_source.html">ErrorHandler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_error_handler_8cpp_source.html#l00065">65</a> of file <a class="el" href="_error_handler_8cpp_source.html">ErrorHandler.cpp</a>.</p>
 
 </div>
 </div>
@@ -369,12 +375,12 @@ Static Protected Attributes</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="class_error_printer.html#a485362d5d83c2bbe7faf8c7ea14a1b86">ErrorPrinter</a>, <a class="el" href="class_f_f_b_h_i_d_main.html#ae04a969ad65a045d978135d058a17235">FFBHIDMain</a>, and <a class="el" href="class_axis.html#a04a9e80f52900bf09963687077bb799c">Axis</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_error_handler_8cpp_source.html#l00120">120</a> of file <a class="el" href="_error_handler_8cpp_source.html">ErrorHandler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_error_handler_8cpp_source.html#l00133">133</a> of file <a class="el" href="_error_handler_8cpp_source.html">ErrorHandler.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a7489b7af0d4691473781ea6db1d9ce0f" name="a7489b7af0d4691473781ea6db1d9ce0f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7489b7af0d4691473781ea6db1d9ce0f">&#9670;&nbsp;</a></span>getErrors()</h2>
+<a id="a070665028d53fd900b8f9a76ef443e4a" name="a070665028d53fd900b8f9a76ef443e4a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a070665028d53fd900b8f9a76ef443e4a">&#9670;&nbsp;</a></span>getErrors()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -383,7 +389,7 @@ Static Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt; <a class="el" href="class_error.html">Error</a> &gt; * ErrorHandler::getErrors </td>
+          <td class="memname">std::span&lt; <a class="el" href="class_error.html">Error</a> &gt; ErrorHandler::getErrors </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -396,7 +402,34 @@ Static Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_error_handler_8cpp_source.html#l00116">116</a> of file <a class="el" href="_error_handler_8cpp_source.html">ErrorHandler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_error_handler_8cpp_source.html#l00129">129</a> of file <a class="el" href="_error_handler_8cpp_source.html">ErrorHandler.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a0fe38afeabef016ecb97e7466e336146" name="a0fe38afeabef016ecb97e7466e336146"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0fe38afeabef016ecb97e7466e336146">&#9670;&nbsp;</a></span>sortErrors()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ErrorHandler::sortErrors </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_error_handler_8cpp_source.html#l00137">137</a> of file <a class="el" href="_error_handler_8cpp_source.html">ErrorHandler.cpp</a>.</p>
 
 </div>
 </div>
@@ -421,12 +454,12 @@ Static Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_error_handler_8h_source.html#l00077">77</a> of file <a class="el" href="_error_handler_8h_source.html">ErrorHandler.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_error_handler_8h_source.html#l00083">83</a> of file <a class="el" href="_error_handler_8h_source.html">ErrorHandler.h</a>.</p>
 
 </div>
 </div>
-<a id="acb7611550d54d1ba27a613bf3c101df4" name="acb7611550d54d1ba27a613bf3c101df4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acb7611550d54d1ba27a613bf3c101df4">&#9670;&nbsp;</a></span>errors</h2>
+<a id="a125e55440c08910b65e6bb8f22449f19" name="a125e55440c08910b65e6bb8f22449f19"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a125e55440c08910b65e6bb8f22449f19">&#9670;&nbsp;</a></span>errors</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -435,7 +468,7 @@ Static Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt; <a class="el" href="class_error.html">Error</a> &gt; ErrorHandler::errors</td>
+          <td class="memname">std::array&lt; <a class="el" href="class_error.html">Error</a>, ERRORHANDLER_MAXERRORS &gt; ErrorHandler::errors</td>
         </tr>
       </table>
   </td>
@@ -445,7 +478,7 @@ Static Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_error_handler_8h_source.html#l00092">92</a> of file <a class="el" href="_error_handler_8h_source.html">ErrorHandler.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_error_handler_8h_source.html#l00098">98</a> of file <a class="el" href="_error_handler_8h_source.html">ErrorHandler.h</a>.</p>
 
 </div>
 </div>

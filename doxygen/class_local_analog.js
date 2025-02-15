@@ -17,6 +17,8 @@ var class_local_analog =
     [ "saveFlash", "class_local_analog.html#a6212f3a5cdc8209c0cc6b7c7dde7fe1c", null ],
     [ "setAutorange", "class_local_analog.html#ac43d61acc2d4934c23aef2ab5707f2b1", null ],
     [ "aconf", "class_local_analog.html#a6d6ac5da9a23d7ed3c03123cec182cc5", null ],
+    [ "bitshift", "class_local_analog.html#a7a86937b1aff99e2afd2723b9691815a", null ],
     [ "info", "class_local_analog.html#a1a40059d364e50c78aeae104c99ebe96", null ],
+    [ "mask", "class_local_analog.html#af76b5af8572df1f144b25817af0917e2", null ],
     [ "numPins", "class_local_analog.html#a22806dfe2336d7eba07f52f74882e9e5", null ]
 ];

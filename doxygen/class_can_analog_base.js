@@ -7,7 +7,7 @@ var class_can_analog_base =
     ] ],
     [ "CanAnalogBase", "class_can_analog_base.html#af73f9db8d0d2679a7423d8c4cc1dec91", null ],
     [ "~CanAnalogBase", "class_can_analog_base.html#a577394888c18490643519e313a22060f", null ],
-    [ "canRxPendCallback", "class_can_analog_base.html#a2ae95012c167c29c38d8b25d1d6462e9", null ],
+    [ "canRxPendCallback", "class_can_analog_base.html#a9ff12eff5fb3fcb29c5a478eb680bbc9", null ],
     [ "command", "class_can_analog_base.html#adaf3e627115b7f4ac09718de5f4fb93c", null ],
     [ "getHelpstring", "class_can_analog_base.html#a50add8bce80db7d65da284d41e1cbd20", null ],
     [ "getInfo", "class_can_analog_base.html#a776dddbfd60f064b327ed6a16bf77f21", null ],

@@ -103,16 +103,18 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a7ac04dbc0e57299c0a7f45009bd4df3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a97667c454b360721b71ec3dc63a6cfb0"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structusbd__device__t.html#a97667c454b360721b71ec3dc63a6cfb0">speed</a></td></tr>
 <tr class="separator:a97667c454b360721b71ec3dc63a6cfb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab01028fd7d9ff09b8ae693b42764d723"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structusbd__device__t.html#ab01028fd7d9ff09b8ae693b42764d723">itf2drv</a> [16]</td></tr>
-<tr class="separator:ab01028fd7d9ff09b8ae693b42764d723"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81cf03387a03809539b856f1ff7bf885"><td class="memItemLeft" align="right" valign="top">volatile uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structusbd__device__t.html#a81cf03387a03809539b856f1ff7bf885">sof_consumer</a></td></tr>
+<tr class="separator:a81cf03387a03809539b856f1ff7bf885"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6823fcca81bc810897712b8c12ecbefd"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structusbd__device__t.html#a6823fcca81bc810897712b8c12ecbefd">itf2drv</a> [CFG_TUD_INTERFACE_MAX]</td></tr>
+<tr class="separator:a6823fcca81bc810897712b8c12ecbefd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a26ed1b64483a8b2db6023af3eb80aaab"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structusbd__device__t.html#a26ed1b64483a8b2db6023af3eb80aaab">ep2drv</a> [CFG_TUD_ENDPPOINT_MAX][2]</td></tr>
 <tr class="separator:a26ed1b64483a8b2db6023af3eb80aaab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a988a289e235e4f1b7789e229e313a1ce"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structusbd__device__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html">usbd_device_t::TU_ATTR_PACKED</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structusbd__device__t.html#a988a289e235e4f1b7789e229e313a1ce">ep_status</a> [CFG_TUD_ENDPPOINT_MAX][2]</td></tr>
-<tr class="separator:a988a289e235e4f1b7789e229e313a1ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c766ac1dc0d87b144ba4dac5f31e5c5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="tusb__private_8h.html#a86a515d7c7869f48ddd2f36d5486278f">tu_edpt_state_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structusbd__device__t.html#a3c766ac1dc0d87b144ba4dac5f31e5c5">ep_status</a> [CFG_TUD_ENDPPOINT_MAX][2]</td></tr>
+<tr class="separator:a3c766ac1dc0d87b144ba4dac5f31e5c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00054">54</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00111">111</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
 <a id="a7ac04dbc0e57299c0a7f45009bd4df3f" name="a7ac04dbc0e57299c0a7f45009bd4df3f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7ac04dbc0e57299c0a7f45009bd4df3f">&#9670;&nbsp;</a></span>cfg_num</h2>
@@ -126,7 +128,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00067">67</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00121">121</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 
 </div>
 </div>
@@ -142,37 +144,55 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00071">71</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00126">126</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 
 </div>
 </div>
-<a id="a988a289e235e4f1b7789e229e313a1ce" name="a988a289e235e4f1b7789e229e313a1ce"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a988a289e235e4f1b7789e229e313a1ce">&#9670;&nbsp;</a></span>ep_status</h2>
+<a id="a3c766ac1dc0d87b144ba4dac5f31e5c5" name="a3c766ac1dc0d87b144ba4dac5f31e5c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c766ac1dc0d87b144ba4dac5f31e5c5">&#9670;&nbsp;</a></span>ep_status</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct <a class="el" href="structusbd__device__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html">usbd_device_t::TU_ATTR_PACKED</a> usbd_device_t::ep_status[CFG_TUD_ENDPPOINT_MAX][2]</td>
+          <td class="memname"><a class="el" href="tusb__private_8h.html#a86a515d7c7869f48ddd2f36d5486278f">tu_edpt_state_t</a> usbd_device_t::ep_status[CFG_TUD_ENDPPOINT_MAX][2]</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00128">128</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+
 </div>
 </div>
-<a id="ab01028fd7d9ff09b8ae693b42764d723" name="ab01028fd7d9ff09b8ae693b42764d723"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab01028fd7d9ff09b8ae693b42764d723">&#9670;&nbsp;</a></span>itf2drv</h2>
+<a id="a6823fcca81bc810897712b8c12ecbefd" name="a6823fcca81bc810897712b8c12ecbefd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6823fcca81bc810897712b8c12ecbefd">&#9670;&nbsp;</a></span>itf2drv</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint8_t usbd_device_t::itf2drv[16]</td>
+          <td class="memname">uint8_t usbd_device_t::itf2drv[CFG_TUD_INTERFACE_MAX]</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00070">70</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00125">125</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+
+</div>
+</div>
+<a id="a81cf03387a03809539b856f1ff7bf885" name="a81cf03387a03809539b856f1ff7bf885"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a81cf03387a03809539b856f1ff7bf885">&#9670;&nbsp;</a></span>sof_consumer</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">volatile uint8_t usbd_device_t::sof_consumer</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00123">123</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 
 </div>
 </div>
@@ -188,7 +208,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00068">68</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbd_8c_source.html#l00122">122</a> of file <a class="el" href="usbd_8c_source.html">usbd.c</a>.</p>
 
 </div>
 </div>

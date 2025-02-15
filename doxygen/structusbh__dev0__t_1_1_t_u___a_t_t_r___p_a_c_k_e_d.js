@@ -1,7 +1,6 @@
 var structusbh__dev0__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d =
 [
-    [ "addressed", "structusbh__dev0__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#a901cf2528ea69397bf404aa2c5563912", null ],
-    [ "configured", "structusbh__dev0__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#a88a6b41166803ebac6366db310e5e2f6", null ],
-    [ "connected", "structusbh__dev0__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#a4ed7e14265257b0a18d5da195da74504", null ],
-    [ "suspended", "structusbh__dev0__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#ae848a6ec4dfc4e11b3d832e4d24fbe4e", null ]
+    [ "enumerating", "structusbh__dev0__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#a2fa7a2a2018aa92e2def4fa5a7ae169a", null ],
+    [ "speed", "structusbh__dev0__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#a845327c47a930041b67151e3a3b9dc8f", null ],
+    [ "TU_RESERVED", "structusbh__dev0__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#a27fb21f6536f0c2f0873faf10789637a", null ]
 ];

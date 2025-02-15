@@ -40,6 +40,7 @@ var class_shifter_analog =
     [ "setMode", "class_shifter_analog.html#af47832b6636a405cf3a3290aaeadc264", null ],
     [ "updateAdc", "class_shifter_analog.html#aa66559eae0386b2a774eeacf036589db", null ],
     [ "updateReverseState", "class_shifter_analog.html#a57e8fcf34449580aaefad0cf2eb4e7c3", null ],
+    [ "bitshift", "class_shifter_analog.html#a2f87edc70481ddfb76de65a05aa488c4", null ],
     [ "cs_pin_num", "class_shifter_analog.html#a1d5da6a3078dcfa3f4675305136b0617", null ],
     [ "g27ShifterButtonClient", "class_shifter_analog.html#a048ceb3072aec253f0fe1c207c3207a2", null ],
     [ "gear", "class_shifter_analog.html#ad2f0d12125a0448eab86716e3547db46", null ],

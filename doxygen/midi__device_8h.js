@@ -1,6 +1,7 @@
 var midi__device_8h =
 [
     [ "midid_control_xfer_cb", "midi__device_8h.html#af909f14053ada6d6142e28ad2a03fc77", null ],
+    [ "midid_deinit", "midi__device_8h.html#af2e0fcd81f7e0fcb60904a01739e0be4", null ],
     [ "midid_init", "midi__device_8h.html#a5807ad9ef77b35341944e974045cab9f", null ],
     [ "midid_open", "midi__device_8h.html#a0efa0e418902a5af4343bd6a634cb3b0", null ],
     [ "midid_reset", "midi__device_8h.html#ae2fe979f84a64ca2ab1341ac3bb24c56", null ],

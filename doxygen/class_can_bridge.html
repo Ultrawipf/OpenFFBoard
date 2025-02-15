@@ -124,10 +124,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a7d04c6de9bf46beab5d4c1fb4d53423c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a48f7fb996e9e5feee83dba7f585e6da3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_bridge.html#a48f7fb996e9e5feee83dba7f585e6da3">sendMessage</a> ()</td></tr>
 <tr class="separator:a48f7fb996e9e5feee83dba7f585e6da3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa982e0d9856e19be48c5cc858d753599"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_bridge.html#aa982e0d9856e19be48c5cc858d753599">canRxPendCallback</a> (CAN_HandleTypeDef *hcan, uint8_t *rxBuf, CAN_RxHeaderTypeDef *rxHeader, uint32_t fifo)</td></tr>
-<tr class="separator:aa982e0d9856e19be48c5cc858d753599"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2e93f005127cd16fd3a1133cca2e27c6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_bridge.html#a2e93f005127cd16fd3a1133cca2e27c6">canErrorCallback</a> (CAN_HandleTypeDef *hcan)</td></tr>
-<tr class="separator:a2e93f005127cd16fd3a1133cca2e27c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a871c99620b472fb90b09a4a8fe7b7bec"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_bridge.html#a871c99620b472fb90b09a4a8fe7b7bec">canRxPendCallback</a> (<a class="el" href="class_c_a_n_port.html">CANPort</a> *<a class="el" href="class_can_bridge.html#a718e51780859be6df3654e9b7a15fe42">port</a>, <a class="el" href="struct_c_a_n__rx__msg.html">CAN_rx_msg</a> &amp;msg) override</td></tr>
+<tr class="separator:a871c99620b472fb90b09a4a8fe7b7bec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa03de25a7c8dd14eba5bcc3ee94fedd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_bridge.html#afa03de25a7c8dd14eba5bcc3ee94fedd">canErrorCallback</a> (<a class="el" href="class_c_a_n_port.html">CANPort</a> *<a class="el" href="class_can_bridge.html#a718e51780859be6df3654e9b7a15fe42">port</a>, uint32_t error)</td></tr>
+<tr class="separator:afa03de25a7c8dd14eba5bcc3ee94fedd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a438f901525c810f0fc66493779660616"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_bridge.html#a438f901525c810f0fc66493779660616">cdcRcv</a> (char *Buf, uint32_t *Len) override</td></tr>
 <tr class="separator:a438f901525c810f0fc66493779660616"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4ec526793fb3a60a9f8daa611f2a3a73"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_bridge.html#a4ec526793fb3a60a9f8daa611f2a3a73">messageToString</a> (<a class="el" href="struct_c_a_n__rx__msg.html">CAN_rx_msg</a> msg)</td></tr>
@@ -200,12 +200,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a3f2604934604f431dc0f48a84ee60f22 inherit pub_methods_class_can_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a562a01205e76ff9d5b0f554cee1a446b inherit pub_methods_class_can_handler"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_handler.html#a562a01205e76ff9d5b0f554cee1a446b">~CanHandler</a> ()</td></tr>
 <tr class="separator:a562a01205e76ff9d5b0f554cee1a446b inherit pub_methods_class_can_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a40cb9e6af6a482920327d741d4b423f5 inherit pub_methods_class_can_handler"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_handler.html#a40cb9e6af6a482920327d741d4b423f5">canRxFullCallback</a> (CAN_HandleTypeDef *hcan, uint32_t fifo)</td></tr>
-<tr class="separator:a40cb9e6af6a482920327d741d4b423f5 inherit pub_methods_class_can_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a12401bc2ece26ccb4adf12ec833276c8 inherit pub_methods_class_can_handler"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_handler.html#a12401bc2ece26ccb4adf12ec833276c8">canTxCpltCallback</a> (CAN_HandleTypeDef *hcan, uint32_t mailbox)</td></tr>
-<tr class="separator:a12401bc2ece26ccb4adf12ec833276c8 inherit pub_methods_class_can_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0e2267410edc1d3f36bf8cb228ff458b inherit pub_methods_class_can_handler"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_handler.html#a0e2267410edc1d3f36bf8cb228ff458b">canTxAbortCallback</a> (CAN_HandleTypeDef *hcan, uint32_t mailbox)</td></tr>
-<tr class="separator:a0e2267410edc1d3f36bf8cb228ff458b inherit pub_methods_class_can_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c2378e74f74a6aeb1d78b8016617e7d inherit pub_methods_class_can_handler"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_handler.html#a7c2378e74f74a6aeb1d78b8016617e7d">canRxFullCallback</a> (<a class="el" href="class_c_a_n_port.html">CANPort</a> *port, uint32_t fifo)</td></tr>
+<tr class="separator:a7c2378e74f74a6aeb1d78b8016617e7d inherit pub_methods_class_can_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85e19cebbab39ad65a5a837b78984545 inherit pub_methods_class_can_handler"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_handler.html#a85e19cebbab39ad65a5a837b78984545">canTxCpltCallback</a> (<a class="el" href="class_c_a_n_port.html">CANPort</a> *port, uint32_t mailbox)</td></tr>
+<tr class="separator:a85e19cebbab39ad65a5a837b78984545 inherit pub_methods_class_can_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9f23009ef5f97846cba05d2e66eb962 inherit pub_methods_class_can_handler"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_handler.html#ab9f23009ef5f97846cba05d2e66eb962">canTxAbortCallback</a> (<a class="el" href="class_c_a_n_port.html">CANPort</a> *port, uint32_t mailbox)</td></tr>
+<tr class="separator:ab9f23009ef5f97846cba05d2e66eb962 inherit pub_methods_class_can_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -266,8 +266,6 @@ Static Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a7c87c8fbfc40f9427aed1be90a29c7b3"><td class="memItemLeft" align="right" valign="top">CAN_HandleTypeDef *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_bridge.html#a7c87c8fbfc40f9427aed1be90a29c7b3">CanHandle</a> = &amp;CANPORT</td></tr>
-<tr class="separator:a7c87c8fbfc40f9427aed1be90a29c7b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4fb8eea4dc7340fc80439a422dd4fdf7"><td class="memItemLeft" align="right" valign="top">volatile bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_bridge.html#a4fb8eea4dc7340fc80439a422dd4fdf7">replyPending</a> = false</td></tr>
 <tr class="separator:a4fb8eea4dc7340fc80439a422dd4fdf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_attribs_class_f_f_board_main"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_class_f_f_board_main')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="class_f_f_board_main.html">FFBoardMain</a></td></tr>
@@ -307,7 +305,7 @@ Private Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr class="memitem:a718e51780859be6df3654e9b7a15fe42"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_c_a_n_port.html">CANPort</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_bridge.html#a718e51780859be6df3654e9b7a15fe42">port</a> = &amp;<a class="el" href="cpp__target__config_8h.html#a442c4e234a8d155f33220ff3a0bf6a0f">canport</a></td></tr>
+<tr class="memitem:a718e51780859be6df3654e9b7a15fe42"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_c_a_n_port.html">CANPort</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_bridge.html#a718e51780859be6df3654e9b7a15fe42">port</a> = &amp;<a class="el" href="cpp__target__config_8h.html#a38ba677d530e0c535919853f0b5884fe">canport</a></td></tr>
 <tr class="separator:a718e51780859be6df3654e9b7a15fe42"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8010863cc54842b85981665eb03fa000"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="struct_c_a_n__rx__msg.html">CAN_rx_msg</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_bridge.html#a8010863cc54842b85981665eb03fa000">rxmessages</a></td></tr>
 <tr class="separator:a8010863cc54842b85981665eb03fa000"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -317,13 +315,13 @@ Private Attributes</h2></td></tr>
 <tr class="separator:a701d9fdbc4c1e00fd7bd5ba703b895a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab855d3e094e5669ea721e875e8ad2228"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_bridge.html#ab855d3e094e5669ea721e875e8ad2228">numBuses</a> = 1</td></tr>
 <tr class="separator:ab855d3e094e5669ea721e875e8ad2228"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad8395ab0c8325a97c2ac84738ccf3e50"><td class="memItemLeft" align="right" valign="top">CAN_TxHeaderTypeDef&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_bridge.html#ad8395ab0c8325a97c2ac84738ccf3e50">txHeader</a></td></tr>
-<tr class="separator:ad8395ab0c8325a97c2ac84738ccf3e50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3b5bc19702fa6849b9fed6efdbf987c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_c_a_n__msg__header__tx.html">CAN_msg_header_tx</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_bridge.html#aa3b5bc19702fa6849b9fed6efdbf987c">txHeader</a></td></tr>
+<tr class="separator:aa3b5bc19702fa6849b9fed6efdbf987c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a32dc06961fd21f562f583e75dc5bd5"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_bridge.html#a5a32dc06961fd21f562f583e75dc5bd5">txBuf</a> [8] = {0}</td></tr>
 <tr class="separator:a5a32dc06961fd21f562f583e75dc5bd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab05a906efa14f738793c351f44bb520b"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_bridge.html#ab05a906efa14f738793c351f44bb520b">txMailbox</a></td></tr>
 <tr class="separator:ab05a906efa14f738793c351f44bb520b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa0446a836de7c4c86df707cda926fc04"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_bridge.html#aa0446a836de7c4c86df707cda926fc04">rxfifo</a> = CAN_RX_FIFO0</td></tr>
+<tr class="memitem:aa0446a836de7c4c86df707cda926fc04"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_bridge.html#aa0446a836de7c4c86df707cda926fc04">rxfifo</a> = 0</td></tr>
 <tr class="separator:aa0446a836de7c4c86df707cda926fc04"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7967625a6aec24be93ac640c6ee0c6b7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_c_a_n___config__t.html">CAN_Config_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_can_bridge.html#a7967625a6aec24be93ac640c6ee0c6b7">conf1</a></td></tr>
 <tr class="separator:a7967625a6aec24be93ac640c6ee0c6b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -441,13 +439,13 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_can_bridge_8cpp_source.html#l00062">62</a> of file <a class="el" href="_can_bridge_8cpp_source.html">CanBridge.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_can_bridge_8cpp_source.html#l00048">48</a> of file <a class="el" href="_can_bridge_8cpp_source.html">CanBridge.cpp</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a2e93f005127cd16fd3a1133cca2e27c6" name="a2e93f005127cd16fd3a1133cca2e27c6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2e93f005127cd16fd3a1133cca2e27c6">&#9670;&nbsp;</a></span>canErrorCallback()</h2>
+<a id="afa03de25a7c8dd14eba5bcc3ee94fedd" name="afa03de25a7c8dd14eba5bcc3ee94fedd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afa03de25a7c8dd14eba5bcc3ee94fedd">&#9670;&nbsp;</a></span>canErrorCallback()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -458,57 +456,14 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="memname">void CanBridge::canErrorCallback </td>
           <td>(</td>
-          <td class="paramtype">CAN_HandleTypeDef *&#160;</td>
-          <td class="paramname"><em>hcan</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p ><a class="el" href="class_error.html">Error</a> during can transfer </p>
-
-<p>Reimplemented from <a class="el" href="class_can_handler.html#afbcdeeb42119dc4f9e844e40f7e777d5">CanHandler</a>.</p>
-
-<p class="definition">Definition at line <a class="el" href="_can_bridge_8cpp_source.html#l00069">69</a> of file <a class="el" href="_can_bridge_8cpp_source.html">CanBridge.cpp</a>.</p>
-
-</div>
-</div>
-<a id="aa982e0d9856e19be48c5cc858d753599" name="aa982e0d9856e19be48c5cc858d753599"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa982e0d9856e19be48c5cc858d753599">&#9670;&nbsp;</a></span>canRxPendCallback()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void CanBridge::canRxPendCallback </td>
-          <td>(</td>
-          <td class="paramtype">CAN_HandleTypeDef *&#160;</td>
-          <td class="paramname"><em>hcan</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t *&#160;</td>
-          <td class="paramname"><em>rxBuf</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">CAN_RxHeaderTypeDef *&#160;</td>
-          <td class="paramname"><em>rxHeader</em>, </td>
+          <td class="paramtype"><a class="el" href="class_c_a_n_port.html">CANPort</a> *&#160;</td>
+          <td class="paramname"><em>port</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>fifo</em>&#160;</td>
+          <td class="paramname"><em>errcode</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -522,11 +477,52 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p ><a class="el" href="class_error.html">Error</a> during can transfer </p>
+
+<p>Reimplemented from <a class="el" href="class_can_handler.html#a87cbd1ffa351f398cd092624034c53de">CanHandler</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="_can_bridge_8cpp_source.html#l00055">55</a> of file <a class="el" href="_can_bridge_8cpp_source.html">CanBridge.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a871c99620b472fb90b09a4a8fe7b7bec" name="a871c99620b472fb90b09a4a8fe7b7bec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a871c99620b472fb90b09a4a8fe7b7bec">&#9670;&nbsp;</a></span>canRxPendCallback()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void CanBridge::canRxPendCallback </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_c_a_n_port.html">CANPort</a> *&#160;</td>
+          <td class="paramname"><em>port</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_c_a_n__rx__msg.html">CAN_rx_msg</a> &amp;&#160;</td>
+          <td class="paramname"><em>msg</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 <p >New message received in fifo number </p>
 
-<p>Reimplemented from <a class="el" href="class_can_handler.html#a53651a4aa1e88f3e442c054aae0a33d7">CanHandler</a>.</p>
+<p>Reimplemented from <a class="el" href="class_can_handler.html#aaf8690763a1e1c57d369dc41162732bd">CanHandler</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_can_bridge_8cpp_source.html#l00086">86</a> of file <a class="el" href="_can_bridge_8cpp_source.html">CanBridge.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_can_bridge_8cpp_source.html#l00078">78</a> of file <a class="el" href="_can_bridge_8cpp_source.html">CanBridge.cpp</a>.</p>
 
 </div>
 </div>
@@ -567,7 +563,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_f_f_board_main.html#a99dceaa3c195d2950ffd2d69c443a335">FFBoardMain</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_can_bridge_8cpp_source.html#l00147">147</a> of file <a class="el" href="_can_bridge_8cpp_source.html">CanBridge.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_can_bridge_8cpp_source.html#l00138">138</a> of file <a class="el" href="_can_bridge_8cpp_source.html">CanBridge.cpp</a>.</p>
 
 </div>
 </div>
@@ -614,7 +610,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_f_f_board_main.html#a1ea6dc33d788c968dfa8968f7bd113fd">FFBoardMain</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_can_bridge_8cpp_source.html#l00300">300</a> of file <a class="el" href="_can_bridge_8cpp_source.html">CanBridge.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_can_bridge_8cpp_source.html#l00291">291</a> of file <a class="el" href="_can_bridge_8cpp_source.html">CanBridge.cpp</a>.</p>
 
 </div>
 </div>
@@ -720,7 +716,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_can_bridge_8cpp_source.html#l00098">98</a> of file <a class="el" href="_can_bridge_8cpp_source.html">CanBridge.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_can_bridge_8cpp_source.html#l00089">89</a> of file <a class="el" href="_can_bridge_8cpp_source.html">CanBridge.cpp</a>.</p>
 
 </div>
 </div>
@@ -796,7 +792,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_can_bridge_8cpp_source.html#l00075">75</a> of file <a class="el" href="_can_bridge_8cpp_source.html">CanBridge.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_can_bridge_8cpp_source.html#l00061">61</a> of file <a class="el" href="_can_bridge_8cpp_source.html">CanBridge.cpp</a>.</p>
 
 </div>
 </div>
@@ -826,27 +822,11 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_f_f_board_main.html#a14549edbd09efde0a95caeabd7772000">FFBoardMain</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_can_bridge_8cpp_source.html#l00107">107</a> of file <a class="el" href="_can_bridge_8cpp_source.html">CanBridge.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_can_bridge_8cpp_source.html#l00098">98</a> of file <a class="el" href="_can_bridge_8cpp_source.html">CanBridge.cpp</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a7c87c8fbfc40f9427aed1be90a29c7b3" name="a7c87c8fbfc40f9427aed1be90a29c7b3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7c87c8fbfc40f9427aed1be90a29c7b3">&#9670;&nbsp;</a></span>CanHandle</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">CAN_HandleTypeDef* CanBridge::CanHandle = &amp;CANPORT</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_can_bridge_8h_source.html#l00054">54</a> of file <a class="el" href="_can_bridge_8h_source.html">CanBridge.h</a>.</p>
-
-</div>
-</div>
 <a id="a7967625a6aec24be93ac640c6ee0c6b7" name="a7967625a6aec24be93ac640c6ee0c6b7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7967625a6aec24be93ac640c6ee0c6b7">&#9670;&nbsp;</a></span>conf1</h2>
 
@@ -1055,7 +1035,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_c_a_n_port.html">CANPort</a>* CanBridge::port = &amp;<a class="el" href="cpp__target__config_8h.html#a442c4e234a8d155f33220ff3a0bf6a0f">canport</a></td>
+          <td class="memname"><a class="el" href="class_c_a_n_port.html">CANPort</a>* CanBridge::port = &amp;<a class="el" href="cpp__target__config_8h.html#a38ba677d530e0c535919853f0b5884fe">canport</a></td>
         </tr>
       </table>
   </td>
@@ -1095,7 +1075,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">uint32_t CanBridge::rxfifo = CAN_RX_FIFO0</td>
+          <td class="memname">uint32_t CanBridge::rxfifo = 0</td>
         </tr>
       </table>
   </td>
@@ -1157,8 +1137,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="ad8395ab0c8325a97c2ac84738ccf3e50" name="ad8395ab0c8325a97c2ac84738ccf3e50"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad8395ab0c8325a97c2ac84738ccf3e50">&#9670;&nbsp;</a></span>txHeader</h2>
+<a id="aa3b5bc19702fa6849b9fed6efdbf987c" name="aa3b5bc19702fa6849b9fed6efdbf987c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa3b5bc19702fa6849b9fed6efdbf987c">&#9670;&nbsp;</a></span>txHeader</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1167,7 +1147,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">CAN_TxHeaderTypeDef CanBridge::txHeader</td>
+          <td class="memname"><a class="el" href="struct_c_a_n__msg__header__tx.html">CAN_msg_header_tx</a> CanBridge::txHeader</td>
         </tr>
       </table>
   </td>

@@ -101,23 +101,41 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a3f0184822946bac6a9822bdd7745c777"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a55c15113cccf9610a80ffd35c7d417a5"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structhidd__interface__t.html#a55c15113cccf9610a80ffd35c7d417a5">itf_protocol</a></td></tr>
 <tr class="separator:a55c15113cccf9610a80ffd35c7d417a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b408f07468cffc1ab5eec173182e147"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structhidd__interface__t.html#a8b408f07468cffc1ab5eec173182e147">report_desc_len</a></td></tr>
+<tr class="separator:a8b408f07468cffc1ab5eec173182e147"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3ab41b7b4931222188b7ef0d3f5d8ea3"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structhidd__interface__t.html#a3ab41b7b4931222188b7ef0d3f5d8ea3">protocol_mode</a></td></tr>
 <tr class="separator:a3ab41b7b4931222188b7ef0d3f5d8ea3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a43f432928adfb9db32a670751259f231"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structhidd__interface__t.html#a43f432928adfb9db32a670751259f231">idle_rate</a></td></tr>
 <tr class="separator:a43f432928adfb9db32a670751259f231"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8b408f07468cffc1ab5eec173182e147"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structhidd__interface__t.html#a8b408f07468cffc1ab5eec173182e147">report_desc_len</a></td></tr>
-<tr class="separator:a8b408f07468cffc1ab5eec173182e147"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e39f081ca6a4c3e8672b31a1d412b62"><td class="memItemLeft" align="right" valign="top">tusb_hid_descriptor_hid_t const  *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structhidd__interface__t.html#a5e39f081ca6a4c3e8672b31a1d412b62">hid_descriptor</a></td></tr>
+<tr class="separator:a5e39f081ca6a4c3e8672b31a1d412b62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a489b87be37a2792f967cace2ba8889fd"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structhidd__interface__t.html#a489b87be37a2792f967cace2ba8889fd">ctrl_buf</a> [CFG_TUD_HID_EP_BUFSIZE]</td></tr>
+<tr class="separator:a489b87be37a2792f967cace2ba8889fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9211b15924afadea592af2e58db6d3ec"><td class="memItemLeft" align="right" valign="top">CFG_TUSB_MEM_ALIGN uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structhidd__interface__t.html#a9211b15924afadea592af2e58db6d3ec">epin_buf</a> [CFG_TUD_HID_EP_BUFSIZE]</td></tr>
 <tr class="separator:a9211b15924afadea592af2e58db6d3ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af88846fa879054b1f316779a55b3cb81"><td class="memItemLeft" align="right" valign="top">CFG_TUSB_MEM_ALIGN uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structhidd__interface__t.html#af88846fa879054b1f316779a55b3cb81">epout_buf</a> [CFG_TUD_HID_EP_BUFSIZE]</td></tr>
 <tr class="separator:af88846fa879054b1f316779a55b3cb81"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5e39f081ca6a4c3e8672b31a1d412b62"><td class="memItemLeft" align="right" valign="top">tusb_hid_descriptor_hid_t const  *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structhidd__interface__t.html#a5e39f081ca6a4c3e8672b31a1d412b62">hid_descriptor</a></td></tr>
-<tr class="separator:a5e39f081ca6a4c3e8672b31a1d412b62"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
 <p class="definition">Definition at line <a class="el" href="hid__device_8c_source.html#l00042">42</a> of file <a class="el" href="hid__device_8c_source.html">hid_device.c</a>.</p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
+<a id="a489b87be37a2792f967cace2ba8889fd" name="a489b87be37a2792f967cace2ba8889fd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a489b87be37a2792f967cace2ba8889fd">&#9670;&nbsp;</a></span>ctrl_buf</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t hidd_interface_t::ctrl_buf[CFG_TUD_HID_EP_BUFSIZE]</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="hid__device_8c_source.html#l00056">56</a> of file <a class="el" href="hid__device_8c_source.html">hid_device.c</a>.</p>
+
+</div>
+</div>
 <a id="adaeefa004a74c8e13d5dfd0242d18d65" name="adaeefa004a74c8e13d5dfd0242d18d65"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#adaeefa004a74c8e13d5dfd0242d18d65">&#9670;&nbsp;</a></span>ep_in</h2>
 
@@ -130,7 +148,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hid__device_8c_source.html#l00045">45</a> of file <a class="el" href="hid__device_8c_source.html">hid_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hid__device_8c_source.html#l00044">44</a> of file <a class="el" href="hid__device_8c_source.html">hid_device.c</a>.</p>
 
 </div>
 </div>
@@ -146,7 +164,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hid__device_8c_source.html#l00046">46</a> of file <a class="el" href="hid__device_8c_source.html">hid_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hid__device_8c_source.html#l00045">45</a> of file <a class="el" href="hid__device_8c_source.html">hid_device.c</a>.</p>
 
 </div>
 </div>
@@ -162,7 +180,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hid__device_8c_source.html#l00053">53</a> of file <a class="el" href="hid__device_8c_source.html">hid_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hid__device_8c_source.html#l00057">57</a> of file <a class="el" href="hid__device_8c_source.html">hid_device.c</a>.</p>
 
 </div>
 </div>
@@ -178,7 +196,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hid__device_8c_source.html#l00054">54</a> of file <a class="el" href="hid__device_8c_source.html">hid_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hid__device_8c_source.html#l00058">58</a> of file <a class="el" href="hid__device_8c_source.html">hid_device.c</a>.</p>
 
 </div>
 </div>
@@ -194,7 +212,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hid__device_8c_source.html#l00058">58</a> of file <a class="el" href="hid__device_8c_source.html">hid_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hid__device_8c_source.html#l00054">54</a> of file <a class="el" href="hid__device_8c_source.html">hid_device.c</a>.</p>
 
 </div>
 </div>
@@ -226,7 +244,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hid__device_8c_source.html#l00044">44</a> of file <a class="el" href="hid__device_8c_source.html">hid_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hid__device_8c_source.html#l00043">43</a> of file <a class="el" href="hid__device_8c_source.html">hid_device.c</a>.</p>
 
 </div>
 </div>
@@ -242,7 +260,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hid__device_8c_source.html#l00047">47</a> of file <a class="el" href="hid__device_8c_source.html">hid_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hid__device_8c_source.html#l00046">46</a> of file <a class="el" href="hid__device_8c_source.html">hid_device.c</a>.</p>
 
 </div>
 </div>
@@ -274,7 +292,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hid__device_8c_source.html#l00051">51</a> of file <a class="el" href="hid__device_8c_source.html">hid_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hid__device_8c_source.html#l00048">48</a> of file <a class="el" href="hid__device_8c_source.html">hid_device.c</a>.</p>
 
 </div>
 </div>

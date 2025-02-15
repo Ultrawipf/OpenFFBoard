@@ -101,55 +101,55 @@ Public Attributes</h2></td></tr>
 <tr class="separator:ae0b27f98f9ea659166be6ca91e4fd21f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad60257e01a8ddd467f1e181f9d4c21eb"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structhcd__event__t.html#ad60257e01a8ddd467f1e181f9d4c21eb">dev_addr</a></td></tr>
 <tr class="separator:ad60257e01a8ddd467f1e181f9d4c21eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a96059e0e2d8591be0b5e38be5a546c67"><td class="memItemLeft" >union {</td></tr>
-<tr class="memitem:a051f4584f1257121730df97b229a3570"><td class="memItemLeft" >&#160;&#160;&#160;struct {</td></tr>
-<tr class="memitem:a3e1d754da6a1ffec76f3ab7c01ab6543"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="structhcd__event__t.html#a5b930e759c251e453ffc467386bc0641">hub_addr</a></td></tr>
-<tr class="separator:a3e1d754da6a1ffec76f3ab7c01ab6543"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a48debcc9a389ebcc32bc59491a79c707"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="structhcd__event__t.html#a402ed40fc9b86b0510e76d4842eaf6dc">hub_port</a></td></tr>
-<tr class="separator:a48debcc9a389ebcc32bc59491a79c707"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9af7435cdb7c190ac0fdf9c5d7f4abec"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="structhcd__event__t.html#a356013f1c3c385f97c99477aa5217b89">speed</a></td></tr>
-<tr class="separator:a9af7435cdb7c190ac0fdf9c5d7f4abec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a051f4584f1257121730df97b229a3570"><td class="memItemLeft" valign="top">&#160;&#160;&#160;}&#160;&#160;&#160;<a class="el" href="structhcd__event__t.html#a973228ffbbd1140db1515671e2c4b910">connection</a></td></tr>
-<tr class="separator:a051f4584f1257121730df97b229a3570"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a80db070be937d6069c72d1c61adfd0a3"><td class="memItemLeft" >&#160;&#160;&#160;struct {</td></tr>
-<tr class="memitem:a0868addeb4b3f74888d97b3af06b1070"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="structhcd__event__t.html#a322c00e84336ba097ce129c6c9b1a5df">ep_addr</a></td></tr>
-<tr class="separator:a0868addeb4b3f74888d97b3af06b1070"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af9dd564166496f3a03d5ed98cc8f2c15"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="structhcd__event__t.html#ac2f509497de671a9fb9d3cb1e7fb5cd7">result</a></td></tr>
-<tr class="separator:af9dd564166496f3a03d5ed98cc8f2c15"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a40442204bfb0b57df1db5ffea800380d"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structhcd__event__t.html#ab1b0ac3a2ec6d7c17c829dabf84eb064">len</a></td></tr>
-<tr class="separator:a40442204bfb0b57df1db5ffea800380d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a80db070be937d6069c72d1c61adfd0a3"><td class="memItemLeft" valign="top">&#160;&#160;&#160;}&#160;&#160;&#160;<a class="el" href="structhcd__event__t.html#ad46de65ea7a70bfeff89eb8092ae0ad1">xfer_complete</a></td></tr>
-<tr class="separator:a80db070be937d6069c72d1c61adfd0a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae6f204c4e47fa7c87dfedef5664d9023"><td class="memItemLeft" >&#160;&#160;&#160;struct {</td></tr>
-<tr class="memitem:ab31549e98602672a43b635efd36a0b40"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;void(*&#160;&#160;&#160;<a class="el" href="structhcd__event__t.html#a9d9de0e3ad07ee56f34040a8bfca6137">func</a> )(void *)</td></tr>
-<tr class="separator:ab31549e98602672a43b635efd36a0b40"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab637bb4a3cea5916d673a338c21209c9"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;void *&#160;&#160;&#160;<a class="el" href="structhcd__event__t.html#a2b9934c37d40fa6b14689ece0b597c4b">param</a></td></tr>
-<tr class="separator:ab637bb4a3cea5916d673a338c21209c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae6f204c4e47fa7c87dfedef5664d9023"><td class="memItemLeft" valign="top">&#160;&#160;&#160;}&#160;&#160;&#160;<a class="el" href="structhcd__event__t.html#a57d81a55cb3cf832975cad12466013bd">func_call</a></td></tr>
-<tr class="separator:ae6f204c4e47fa7c87dfedef5664d9023"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a96059e0e2d8591be0b5e38be5a546c67"><td class="memItemLeft" valign="top">};&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
-<tr class="separator:a96059e0e2d8591be0b5e38be5a546c67"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a71b8b3a31c653e391661a39e4a728ffc"><td class="memItemLeft" >union {</td></tr>
+<tr class="memitem:af4ef4829eb59504fca671272171b5952"><td class="memItemLeft" >&#160;&#160;&#160;struct {</td></tr>
+<tr class="memitem:a0729b035d4d8e49ef1e8f82f1ec9c39d"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="structhcd__event__t.html#a5b930e759c251e453ffc467386bc0641">hub_addr</a></td></tr>
+<tr class="separator:a0729b035d4d8e49ef1e8f82f1ec9c39d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab8ce6b04a97d46d06f7b79b4d254db42"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="structhcd__event__t.html#a402ed40fc9b86b0510e76d4842eaf6dc">hub_port</a></td></tr>
+<tr class="separator:ab8ce6b04a97d46d06f7b79b4d254db42"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab209f2aacc0bdc2deb88607aca9ed8b0"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="structhcd__event__t.html#a356013f1c3c385f97c99477aa5217b89">speed</a></td></tr>
+<tr class="separator:ab209f2aacc0bdc2deb88607aca9ed8b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4ef4829eb59504fca671272171b5952"><td class="memItemLeft" valign="top">&#160;&#160;&#160;}&#160;&#160;&#160;<a class="el" href="structhcd__event__t.html#a6bf8cd0696571b28ae0f3512d6f95354">connection</a></td></tr>
+<tr class="separator:af4ef4829eb59504fca671272171b5952"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e47c42898b8af04d459f36af7d7993d"><td class="memItemLeft" >&#160;&#160;&#160;struct {</td></tr>
+<tr class="memitem:a93d9d6f63e9f6144cda179219561fe4c"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="structhcd__event__t.html#a322c00e84336ba097ce129c6c9b1a5df">ep_addr</a></td></tr>
+<tr class="separator:a93d9d6f63e9f6144cda179219561fe4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1fc42c0d6e04c1f9fd861ea1890f569b"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="structhcd__event__t.html#ac2f509497de671a9fb9d3cb1e7fb5cd7">result</a></td></tr>
+<tr class="separator:a1fc42c0d6e04c1f9fd861ea1890f569b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a692249c2dcc6f0f9bd3fd9832b91dbd7"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structhcd__event__t.html#ab1b0ac3a2ec6d7c17c829dabf84eb064">len</a></td></tr>
+<tr class="separator:a692249c2dcc6f0f9bd3fd9832b91dbd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e47c42898b8af04d459f36af7d7993d"><td class="memItemLeft" valign="top">&#160;&#160;&#160;}&#160;&#160;&#160;<a class="el" href="structhcd__event__t.html#a042736a4a1b41549f24331e9e8371717">xfer_complete</a></td></tr>
+<tr class="separator:a8e47c42898b8af04d459f36af7d7993d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaeea3cca8d30804dc5364c3c3bd8566d"><td class="memItemLeft" >&#160;&#160;&#160;struct {</td></tr>
+<tr class="memitem:a8314566d242ad91a47da42faad6d815e"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;void(*&#160;&#160;&#160;<a class="el" href="structhcd__event__t.html#a9d9de0e3ad07ee56f34040a8bfca6137">func</a> )(void *)</td></tr>
+<tr class="separator:a8314566d242ad91a47da42faad6d815e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13e097ea5aab703aec8c248296a8c57e"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;void *&#160;&#160;&#160;<a class="el" href="structhcd__event__t.html#a2b9934c37d40fa6b14689ece0b597c4b">param</a></td></tr>
+<tr class="separator:a13e097ea5aab703aec8c248296a8c57e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaeea3cca8d30804dc5364c3c3bd8566d"><td class="memItemLeft" valign="top">&#160;&#160;&#160;}&#160;&#160;&#160;<a class="el" href="structhcd__event__t.html#a8107b294a51b9e8011cbdd248b1ebb59">func_call</a></td></tr>
+<tr class="separator:aaeea3cca8d30804dc5364c3c3bd8566d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a71b8b3a31c653e391661a39e4a728ffc"><td class="memItemLeft" valign="top">};&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a71b8b3a31c653e391661a39e4a728ffc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="hcd_8h_source.html#l00054">54</a> of file <a class="el" href="hcd_8h_source.html">hcd.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hcd_8h_source.html#l00065">65</a> of file <a class="el" href="hcd_8h_source.html">hcd.h</a>.</p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
-<a id="a96059e0e2d8591be0b5e38be5a546c67" name="a96059e0e2d8591be0b5e38be5a546c67"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a96059e0e2d8591be0b5e38be5a546c67">&#9670;&nbsp;</a></span></h2>
+<a id="a71b8b3a31c653e391661a39e4a728ffc" name="a71b8b3a31c653e391661a39e4a728ffc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a71b8b3a31c653e391661a39e4a728ffc">&#9670;&nbsp;</a></span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">union  { ... }  hcd_event_t::@54</td>
+          <td class="memname">union  { ... }  hcd_event_t::@84</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a973228ffbbd1140db1515671e2c4b910" name="a973228ffbbd1140db1515671e2c4b910"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a973228ffbbd1140db1515671e2c4b910">&#9670;&nbsp;</a></span></h2>
+<a id="a6bf8cd0696571b28ae0f3512d6f95354" name="a6bf8cd0696571b28ae0f3512d6f95354"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6bf8cd0696571b28ae0f3512d6f95354">&#9670;&nbsp;</a></span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -174,7 +174,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hcd_8h_source.html#l00058">58</a> of file <a class="el" href="hcd_8h_source.html">hcd.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hcd_8h_source.html#l00068">68</a> of file <a class="el" href="hcd_8h_source.html">hcd.h</a>.</p>
 
 </div>
 </div>
@@ -190,7 +190,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hcd_8h_source.html#l00071">71</a> of file <a class="el" href="hcd_8h_source.html">hcd.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hcd_8h_source.html#l00080">80</a> of file <a class="el" href="hcd_8h_source.html">hcd.h</a>.</p>
 
 </div>
 </div>
@@ -206,7 +206,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hcd_8h_source.html#l00057">57</a> of file <a class="el" href="hcd_8h_source.html">hcd.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hcd_8h_source.html#l00067">67</a> of file <a class="el" href="hcd_8h_source.html">hcd.h</a>.</p>
 
 </div>
 </div>
@@ -222,12 +222,12 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hcd_8h_source.html#l00078">78</a> of file <a class="el" href="hcd_8h_source.html">hcd.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hcd_8h_source.html#l00087">87</a> of file <a class="el" href="hcd_8h_source.html">hcd.h</a>.</p>
 
 </div>
 </div>
-<a id="a57d81a55cb3cf832975cad12466013bd" name="a57d81a55cb3cf832975cad12466013bd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a57d81a55cb3cf832975cad12466013bd">&#9670;&nbsp;</a></span></h2>
+<a id="a8107b294a51b9e8011cbdd248b1ebb59" name="a8107b294a51b9e8011cbdd248b1ebb59"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8107b294a51b9e8011cbdd248b1ebb59">&#9670;&nbsp;</a></span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -252,7 +252,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hcd_8h_source.html#l00064">64</a> of file <a class="el" href="hcd_8h_source.html">hcd.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hcd_8h_source.html#l00073">73</a> of file <a class="el" href="hcd_8h_source.html">hcd.h</a>.</p>
 
 </div>
 </div>
@@ -268,7 +268,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hcd_8h_source.html#l00065">65</a> of file <a class="el" href="hcd_8h_source.html">hcd.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hcd_8h_source.html#l00074">74</a> of file <a class="el" href="hcd_8h_source.html">hcd.h</a>.</p>
 
 </div>
 </div>
@@ -284,7 +284,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hcd_8h_source.html#l00073">73</a> of file <a class="el" href="hcd_8h_source.html">hcd.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hcd_8h_source.html#l00082">82</a> of file <a class="el" href="hcd_8h_source.html">hcd.h</a>.</p>
 
 </div>
 </div>
@@ -300,7 +300,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hcd_8h_source.html#l00079">79</a> of file <a class="el" href="hcd_8h_source.html">hcd.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hcd_8h_source.html#l00088">88</a> of file <a class="el" href="hcd_8h_source.html">hcd.h</a>.</p>
 
 </div>
 </div>
@@ -316,7 +316,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hcd_8h_source.html#l00072">72</a> of file <a class="el" href="hcd_8h_source.html">hcd.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hcd_8h_source.html#l00081">81</a> of file <a class="el" href="hcd_8h_source.html">hcd.h</a>.</p>
 
 </div>
 </div>
@@ -332,7 +332,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hcd_8h_source.html#l00056">56</a> of file <a class="el" href="hcd_8h_source.html">hcd.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hcd_8h_source.html#l00066">66</a> of file <a class="el" href="hcd_8h_source.html">hcd.h</a>.</p>
 
 </div>
 </div>
@@ -348,12 +348,12 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hcd_8h_source.html#l00066">66</a> of file <a class="el" href="hcd_8h_source.html">hcd.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hcd_8h_source.html#l00075">75</a> of file <a class="el" href="hcd_8h_source.html">hcd.h</a>.</p>
 
 </div>
 </div>
-<a id="ad46de65ea7a70bfeff89eb8092ae0ad1" name="ad46de65ea7a70bfeff89eb8092ae0ad1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad46de65ea7a70bfeff89eb8092ae0ad1">&#9670;&nbsp;</a></span></h2>
+<a id="a042736a4a1b41549f24331e9e8371717" name="a042736a4a1b41549f24331e9e8371717"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a042736a4a1b41549f24331e9e8371717">&#9670;&nbsp;</a></span></h2>
 
 <div class="memitem">
 <div class="memproto">

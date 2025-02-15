@@ -23,5 +23,9 @@ var searchData=
   ['msc_5fhost_2eh_20',['msc_host.h',['../msc__host_8h.html',1,'']]],
   ['mtencoderspi_2ecpp_21',['MtEncoderSPI.cpp',['../_mt_encoder_s_p_i_8cpp.html',1,'']]],
   ['mtencoderspi_2eh_22',['MtEncoderSPI.h',['../_mt_encoder_s_p_i_8h.html',1,'']]],
-  ['mutex_2ehpp_23',['mutex.hpp',['../mutex_8hpp.html',1,'']]]
+  ['musb_5fdef_2eh_23',['musb_def.h',['../musb__def_8h.html',1,'']]],
+  ['musb_5fmax32_2eh_24',['musb_max32.h',['../musb__max32_8h.html',1,'']]],
+  ['musb_5fti_2eh_25',['musb_ti.h',['../musb__ti_8h.html',1,'']]],
+  ['musb_5ftype_2eh_26',['musb_type.h',['../musb__type_8h.html',1,'']]],
+  ['mutex_2ehpp_27',['mutex.hpp',['../mutex_8hpp.html',1,'']]]
 ];

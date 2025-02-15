@@ -1,21 +1,10 @@
 var searchData=
 [
-  ['usb_5ffifo_5ft_0',['usb_fifo_t',['../dcd__synopsys_8c.html#a683236b33b36750301e2b1579fcaf24c',1,'dcd_synopsys.c']]],
-  ['usb_5fstring_5fdesc_5ft_1',['usb_string_desc_t',['../usb__descriptors_8h.html#a61aa6e284babe00b49ff18a946fada25',1,'usb_descriptors.h']]],
-  ['usbd_5fcontrol_5fxfer_5fcb_5ft_2',['usbd_control_xfer_cb_t',['../usbd__pvt_8h.html#aef6dd2f07415e20f21b651f2de8aae30',1,'usbd_pvt.h']]],
-  ['usbtmc_5fcapabilities_5fspecific_5ft_3',['usbtmc_capabilities_specific_t',['../usbtmc__device_8c.html#af84dba1aed47f11c8a113ee76050990d',1,'usbtmc_device.c']]],
-  ['usbtmc_5fcheck_5fabort_5fbulk_5frsp_5ft_4',['usbtmc_check_abort_bulk_rsp_t',['../usbtmc_8h.html#a011229ce9a70138a5e3a42737b5fcdab',1,'usbtmc.h']]],
-  ['usbtmc_5fget_5fclear_5fstatus_5frsp_5ft_5',['usbtmc_get_clear_status_rsp_t',['../usbtmc_8h.html#ad44589e7bd250ca6afd6d9cb7e22ae7a',1,'usbtmc.h']]],
-  ['usbtmc_5finitiate_5fabort_5frsp_5ft_6',['usbtmc_initiate_abort_rsp_t',['../usbtmc_8h.html#ab4f9acbe134ebf07bd877441b07911be',1,'usbtmc.h']]],
-  ['usbtmc_5fmsg_5fdev_5fdep_5fmsg_5fin_5fheader_5ft_7',['usbtmc_msg_dev_dep_msg_in_header_t',['../usbtmc_8h.html#a0204b04f64f07f2771fdf1d77710d775',1,'usbtmc.h']]],
-  ['usbtmc_5fmsg_5fgeneric_5ft_8',['usbtmc_msg_generic_t',['../usbtmc_8h.html#a9e4e35a2c885b53be748fff1b8c652c3',1,'usbtmc.h']]],
-  ['usbtmc_5fmsg_5fheader_5ft_9',['usbtmc_msg_header_t',['../usbtmc_8h.html#a4e3ffd3ce4d2b4f05090c2665900c286',1,'usbtmc.h']]],
-  ['usbtmc_5fmsg_5frequest_5fdev_5fdep_5fin_10',['usbtmc_msg_request_dev_dep_in',['../usbtmc_8h.html#a03a416c27453dd63b4e846970c99119c',1,'usbtmc.h']]],
-  ['usbtmc_5fmsg_5frequest_5fdev_5fdep_5fout_11',['usbtmc_msg_request_dev_dep_out',['../usbtmc_8h.html#a7cab1ec8250b4fbff0a5181f4aadce37',1,'usbtmc.h']]],
-  ['usbtmc_5fmsg_5frequest_5fvendor_5fspecific_5fin_12',['usbtmc_msg_request_vendor_specific_in',['../usbtmc_8h.html#a473ca75642adc56bd944138f59fe900d',1,'usbtmc.h']]],
-  ['usbtmc_5fmsg_5frequest_5fvendor_5fspecific_5fout_13',['usbtmc_msg_request_vendor_specific_out',['../usbtmc_8h.html#ae210ee34f53d1623e2ec2c16ad88d544',1,'usbtmc.h']]],
-  ['usbtmc_5fread_5fstb_5finterrupt_5f488_5ft_14',['usbtmc_read_stb_interrupt_488_t',['../usbtmc_8h.html#a75ede2bf8847d9e8f8365f9b2292647a',1,'usbtmc.h']]],
-  ['usbtmc_5fread_5fstb_5frsp_5f488_5ft_15',['usbtmc_read_stb_rsp_488_t',['../usbtmc_8h.html#adeb9ef984a33d8917d601ee252b49382',1,'usbtmc.h']]],
-  ['usbtmc_5fresponse_5fcapabilities_5f488_5ft_16',['usbtmc_response_capabilities_488_t',['../usbtmc_8h.html#a0aec921f44c49e5471962b931ee120ad',1,'usbtmc.h']]],
-  ['usbtmc_5fresponse_5fcapabilities_5ft_17',['usbtmc_response_capabilities_t',['../usbtmc_8h.html#a15718f8039acacbc949f8a62450a7ad1',1,'usbtmc.h']]]
+  ['recv_5fntb_5ft_0',['recv_ntb_t',['../ncm_8h.html#a1c07af3af22d1daa408ac4186e5b2336',1,'ncm.h']]],
+  ['reg_5fpipetre_5ft_1',['reg_pipetre_t',['../rusb2__type_8h.html#a2bf12db57b68458f7fa674590801ab97',1,'rusb2_type.h']]],
+  ['rndis_5fmsg_5fhalt_5ft_2',['rndis_msg_halt_t',['../group___c_d_c___r_n_d_i_s___common.html#ga899ba89d6bfac948b6a0a5933949aa94',1,'cdc_rndis.h']]],
+  ['rndis_5fmsg_5fkeep_5falive_5fcmplt_5ft_3',['rndis_msg_keep_alive_cmplt_t',['../group___c_d_c___r_n_d_i_s___common.html#ga563eb854b069918e5c1b38a01073b178',1,'cdc_rndis.h']]],
+  ['rndis_5fmsg_5fper_5fpacket_5finfo_5ft_4',['rndis_msg_per_packet_info_t',['../group___c_d_c___r_n_d_i_s___common.html#ga049f1d8503e05854aaef4c44074c23d3',1,'cdc_rndis.h']]],
+  ['rndis_5fmsg_5fset_5ft_5',['rndis_msg_set_t',['../group___c_d_c___r_n_d_i_s___common.html#ga08ca37dc8c760cc6e2331fe8304f2652',1,'cdc_rndis.h']]],
+  ['rusb2_5freg_5ft_6',['rusb2_reg_t',['../rusb2__type_8h.html#a36c6c43e78e5472cd29a6786955f4cc3',1,'rusb2_type.h']]]
 ];

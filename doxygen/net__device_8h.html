@@ -85,6 +85,7 @@ $(document).ready(function(){initNavTree('net__device_8h.html',''); initResizabl
 
 <div class="header">
   <div class="summary">
+<a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">net_device.h File Reference</div></div>
@@ -93,6 +94,12 @@ $(document).ready(function(){initNavTree('net__device_8h.html',''); initResizabl
 
 <p><a href="net__device_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:a497ff51696dfbe323f89e9b46e1b76d8"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="net__device_8h.html#a497ff51696dfbe323f89e9b46e1b76d8">ncm_data_interface_protocol_code_t</a> { <a class="el" href="net__device_8h.html#a497ff51696dfbe323f89e9b46e1b76d8a2fbdb28fcba72987bf76ca3b219fc3cd">NCM_DATA_PROTOCOL_NETWORK_TRANSFER_BLOCK</a> = 0x01
+ }</td></tr>
+<tr class="separator:a497ff51696dfbe323f89e9b46e1b76d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:afb5f2372478f1f78e6f631e0905c50a5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="net__device_8h.html#afb5f2372478f1f78e6f631e0905c50a5">tud_network_can_xmit</a> (uint16_t size)</td></tr>
@@ -105,17 +112,17 @@ Functions</h2></td></tr>
 <tr class="separator:aa353e66dc2d0cb2ac6de72ff08d551fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a81e532d0240ca8b8b93a23686a462c6e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="net__device_8h.html#a81e532d0240ca8b8b93a23686a462c6e">tud_network_init_cb</a> (void)</td></tr>
 <tr class="separator:a81e532d0240ca8b8b93a23686a462c6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae2bb9d374d8d0e3f0b5ff327e7268a29"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="net__device_8h.html#ae2bb9d374d8d0e3f0b5ff327e7268a29">tud_network_link_state_cb</a> (bool state)</td></tr>
-<tr class="separator:ae2bb9d374d8d0e3f0b5ff327e7268a29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae1fea52c8fbf454cc2f763933c0abe1a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="net__device_8h.html#ae1fea52c8fbf454cc2f763933c0abe1a">netd_init</a> (void)</td></tr>
 <tr class="separator:ae1fea52c8fbf454cc2f763933c0abe1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab56b6c8dc91870cfb13ae88f5f367ef1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="net__device_8h.html#ab56b6c8dc91870cfb13ae88f5f367ef1">netd_deinit</a> (void)</td></tr>
+<tr class="separator:ab56b6c8dc91870cfb13ae88f5f367ef1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1fb654b91cf992b7133466b087379a2a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="net__device_8h.html#a1fb654b91cf992b7133466b087379a2a">netd_reset</a> (uint8_t rhport)</td></tr>
 <tr class="separator:a1fb654b91cf992b7133466b087379a2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4fd03d6861be41d9150a8bdaf0ed968c"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="net__device_8h.html#a4fd03d6861be41d9150a8bdaf0ed968c">netd_open</a> (uint8_t rhport, <a class="el" href="group___u_s_b_def___type.html#gac4415f9c56f80b658137e35c14b58096">tusb_desc_interface_t</a> const *itf_desc, uint16_t max_len)</td></tr>
+<tr class="memitem:a4fd03d6861be41d9150a8bdaf0ed968c"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="net__device_8h.html#a4fd03d6861be41d9150a8bdaf0ed968c">netd_open</a> (uint8_t rhport, <a class="el" href="tusb__types_8h.html#ac4415f9c56f80b658137e35c14b58096">tusb_desc_interface_t</a> const *itf_desc, uint16_t max_len)</td></tr>
 <tr class="separator:a4fd03d6861be41d9150a8bdaf0ed968c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa66ec99d3304f74913aff9df6621a37e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="net__device_8h.html#aa66ec99d3304f74913aff9df6621a37e">netd_control_xfer_cb</a> (uint8_t rhport, uint8_t stage, <a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *request)</td></tr>
+<tr class="memitem:aa66ec99d3304f74913aff9df6621a37e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="net__device_8h.html#aa66ec99d3304f74913aff9df6621a37e">netd_control_xfer_cb</a> (uint8_t rhport, uint8_t <a class="el" href="usbh_8c.html#a8efea5b2da521d9d454f141866ab68cb">stage</a>, <a class="el" href="tusb__types_8h.html#a2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *request)</td></tr>
 <tr class="separator:aa66ec99d3304f74913aff9df6621a37e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a52dcbed4165e3549a95b84f7985d5e1c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="net__device_8h.html#a52dcbed4165e3549a95b84f7985d5e1c">netd_xfer_cb</a> (uint8_t rhport, uint8_t ep_addr, <a class="el" href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a> result, uint32_t xferred_bytes)</td></tr>
+<tr class="memitem:a52dcbed4165e3549a95b84f7985d5e1c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="net__device_8h.html#a52dcbed4165e3549a95b84f7985d5e1c">netd_xfer_cb</a> (uint8_t rhport, uint8_t ep_addr, <a class="el" href="tusb__types_8h.html#a6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a> result, uint32_t xferred_bytes)</td></tr>
 <tr class="separator:a52dcbed4165e3549a95b84f7985d5e1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3a0e380bdf409df52b3ce9fa1fabf16e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="net__device_8h.html#a3a0e380bdf409df52b3ce9fa1fabf16e">netd_report</a> (uint8_t *buf, uint16_t len)</td></tr>
 <tr class="separator:a3a0e380bdf409df52b3ce9fa1fabf16e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -124,9 +131,29 @@ Functions</h2></td></tr>
 Variables</h2></td></tr>
 <tr class="memitem:aaa53ca0b650dfd85c4f59fa156f7a2cc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="net__device_8h.html#aaa53ca0b650dfd85c4f59fa156f7a2cc">C</a></td></tr>
 <tr class="separator:aaa53ca0b650dfd85c4f59fa156f7a2cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adda5ca6e10f35df33408a109324e3632"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="net__device_8h.html#adda5ca6e10f35df33408a109324e3632">tud_network_mac_address</a> [6]</td></tr>
-<tr class="separator:adda5ca6e10f35df33408a109324e3632"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af38bfa83922878f21fbc937cf9aed868"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="net__device_8h.html#af38bfa83922878f21fbc937cf9aed868">tud_network_mac_address</a> [6]</td></tr>
+<tr class="separator:af38bfa83922878f21fbc937cf9aed868"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="a497ff51696dfbe323f89e9b46e1b76d8" name="a497ff51696dfbe323f89e9b46e1b76d8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a497ff51696dfbe323f89e9b46e1b76d8">&#9670;&nbsp;</a></span>ncm_data_interface_protocol_code_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="net__device_8h.html#a497ff51696dfbe323f89e9b46e1b76d8">ncm_data_interface_protocol_code_t</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a497ff51696dfbe323f89e9b46e1b76d8a2fbdb28fcba72987bf76ca3b219fc3cd" name="a497ff51696dfbe323f89e9b46e1b76d8a2fbdb28fcba72987bf76ca3b219fc3cd"></a>NCM_DATA_PROTOCOL_NETWORK_TRANSFER_BLOCK&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="net__device_8h_source.html#l00048">48</a> of file <a class="el" href="net__device_8h_source.html">net_device.h</a>.</p>
+
+</div>
+</div>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="aa66ec99d3304f74913aff9df6621a37e" name="aa66ec99d3304f74913aff9df6621a37e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa66ec99d3304f74913aff9df6621a37e">&#9670;&nbsp;</a></span>netd_control_xfer_cb()</h2>
@@ -149,7 +176,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *&#160;</td>
+          <td class="paramtype"><a class="el" href="tusb__types_8h.html#a2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *&#160;</td>
           <td class="paramname"><em>request</em>&#160;</td>
         </tr>
         <tr>
@@ -159,8 +186,30 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p >Respond to TinyUSB control requests. At startup transmission of notification packets are done here. </p>
 
-<p class="definition">Definition at line <a class="el" href="ecm__rndis__device_8c_source.html#l00237">237</a> of file <a class="el" href="ecm__rndis__device_8c_source.html">ecm_rndis_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ecm__rndis__device_8c_source.html#l00245">245</a> of file <a class="el" href="ecm__rndis__device_8c_source.html">ecm_rndis_device.c</a>.</p>
+
+</div>
+</div>
+<a id="ab56b6c8dc91870cfb13ae88f5f367ef1" name="ab56b6c8dc91870cfb13ae88f5f367ef1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab56b6c8dc91870cfb13ae88f5f367ef1">&#9670;&nbsp;</a></span>netd_deinit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool netd_deinit </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >Deinit driver </p>
+
+<p class="definition">Definition at line <a class="el" href="ecm__rndis__device_8c_source.html#l00139">139</a> of file <a class="el" href="ecm__rndis__device_8c_source.html">ecm_rndis_device.c</a>.</p>
 
 </div>
 </div>
@@ -179,8 +228,9 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p >Initialize the driver data structures. Might be called several times. </p>
 
-<p class="definition">Definition at line <a class="el" href="ecm__rndis__device_8c_source.html#l00130">130</a> of file <a class="el" href="ecm__rndis__device_8c_source.html">ecm_rndis_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ecm__rndis__device_8c_source.html#l00135">135</a> of file <a class="el" href="ecm__rndis__device_8c_source.html">ecm_rndis_device.c</a>.</p>
 
 </div>
 </div>
@@ -199,7 +249,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#gac4415f9c56f80b658137e35c14b58096">tusb_desc_interface_t</a> const *&#160;</td>
+          <td class="paramtype"><a class="el" href="tusb__types_8h.html#ac4415f9c56f80b658137e35c14b58096">tusb_desc_interface_t</a> const *&#160;</td>
           <td class="paramname"><em>itf_desc</em>, </td>
         </tr>
         <tr>
@@ -215,8 +265,19 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p >Open the USB interface.</p><ul>
+<li>parse the USB descriptor <em>TUD_CDC_NCM_DESCRIPTOR</em> for itfnum and endpoints</li>
+<li>a specific order of elements in the descriptor is tested.</li>
+</ul>
+<dl class="section note"><dt>Note</dt><dd>Actually all of the information could be read directly from <em>itf_desc</em>, because the structure and the values are well known. But we do it this way.</dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd><ul>
+<li><em>itf_num</em> set</li>
+<li><em>ep_notif</em>, <em>ep_in</em> and <em>ep_out</em> are set</li>
+<li>USB interface is open </li>
+</ul>
+</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ecm__rndis__device_8c_source.html#l00142">142</a> of file <a class="el" href="ecm__rndis__device_8c_source.html">ecm_rndis_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ecm__rndis__device_8c_source.html#l00150">150</a> of file <a class="el" href="ecm__rndis__device_8c_source.html">ecm_rndis_device.c</a>.</p>
 
 </div>
 </div>
@@ -246,7 +307,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ecm__rndis__device_8c_source.html#l00120">120</a> of file <a class="el" href="ecm__rndis__device_8c_source.html">ecm_rndis_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ecm__rndis__device_8c_source.html#l00123">123</a> of file <a class="el" href="ecm__rndis__device_8c_source.html">ecm_rndis_device.c</a>.</p>
 
 </div>
 </div>
@@ -265,8 +326,9 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p >Resets the port. In this driver this is the same as <a class="el" href="ncm__device_8c.html#ae1fea52c8fbf454cc2f763933c0abe1a">netd_init()</a> </p>
 
-<p class="definition">Definition at line <a class="el" href="ecm__rndis__device_8c_source.html#l00135">135</a> of file <a class="el" href="ecm__rndis__device_8c_source.html">ecm_rndis_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ecm__rndis__device_8c_source.html#l00143">143</a> of file <a class="el" href="ecm__rndis__device_8c_source.html">ecm_rndis_device.c</a>.</p>
 
 </div>
 </div>
@@ -291,7 +353,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="tusb__types_8h.html#a6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a>&#160;</td>
           <td class="paramname"><em>result</em>, </td>
         </tr>
         <tr>
@@ -307,8 +369,9 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p >Handle TinyUSB requests to process transfer events. </p>
 
-<p class="definition">Definition at line <a class="el" href="ecm__rndis__device_8c_source.html#l00377">377</a> of file <a class="el" href="ecm__rndis__device_8c_source.html">ecm_rndis_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ecm__rndis__device_8c_source.html#l00385">385</a> of file <a class="el" href="ecm__rndis__device_8c_source.html">ecm_rndis_device.c</a>.</p>
 
 </div>
 </div>
@@ -327,8 +390,9 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p >Check if the glue logic is allowed to call <a class="el" href="ncm__device_8c.html#a5fe0197cd74412db45b2388bf268df72">tud_network_xmit()</a>. This function also fetches a next buffer if required, so that <a class="el" href="ncm__device_8c.html#a5fe0197cd74412db45b2388bf268df72">tud_network_xmit()</a> is ready for copy and transmission operation. </p>
 
-<p class="definition">Definition at line <a class="el" href="ecm__rndis__device_8c_source.html#l00412">412</a> of file <a class="el" href="ecm__rndis__device_8c_source.html">ecm_rndis_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ecm__rndis__device_8c_source.html#l00420">420</a> of file <a class="el" href="ecm__rndis__device_8c_source.html">ecm_rndis_device.c</a>.</p>
 
 </div>
 </div>
@@ -347,26 +411,6 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
-</div>
-</div>
-<a id="ae2bb9d374d8d0e3f0b5ff327e7268a29" name="ae2bb9d374d8d0e3f0b5ff327e7268a29"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae2bb9d374d8d0e3f0b5ff327e7268a29">&#9670;&nbsp;</a></span>tud_network_link_state_cb()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void tud_network_link_state_cb </td>
-          <td>(</td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>state</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="ncm__device_8c_source.html#l00332">332</a> of file <a class="el" href="ncm__device_8c_source.html">ncm_device.c</a>.</p>
 
 </div>
 </div>
@@ -423,8 +467,9 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p >Put a datagram into a waiting NTB. If currently no transmission is started, then initiate transmission. </p>
 
-<p class="definition">Definition at line <a class="el" href="ecm__rndis__device_8c_source.html#l00419">419</a> of file <a class="el" href="ecm__rndis__device_8c_source.html">ecm_rndis_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ecm__rndis__device_8c_source.html#l00427">427</a> of file <a class="el" href="ecm__rndis__device_8c_source.html">ecm_rndis_device.c</a>.</p>
 
 </div>
 </div>
@@ -491,12 +536,12 @@ Variables</h2></td></tr>
 <div class="line"> </div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">void</span> <a class="code hl_function" href="ecm__rndis__device_8c.html#a9f9edfa76cf9cca539286012225fdd01">tud_network_recv_renew</a>(<span class="keywordtype">void</span>)</div>
-<div class="ttc" id="aecm__rndis__device_8c_html_a9f9edfa76cf9cca539286012225fdd01"><div class="ttname"><a href="ecm__rndis__device_8c.html#a9f9edfa76cf9cca539286012225fdd01">tud_network_recv_renew</a></div><div class="ttdeci">void tud_network_recv_renew(void)</div><div class="ttdef"><b>Definition:</b> <a href="ecm__rndis__device_8c_source.html#l00109">ecm_rndis_device.c:109</a></div></div>
+<div class="ttc" id="aecm__rndis__device_8c_html_a9f9edfa76cf9cca539286012225fdd01"><div class="ttname"><a href="ecm__rndis__device_8c.html#a9f9edfa76cf9cca539286012225fdd01">tud_network_recv_renew</a></div><div class="ttdeci">void tud_network_recv_renew(void)</div><div class="ttdef"><b>Definition:</b> <a href="ecm__rndis__device_8c_source.html#l00112">ecm_rndis_device.c:112</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="adda5ca6e10f35df33408a109324e3632" name="adda5ca6e10f35df33408a109324e3632"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adda5ca6e10f35df33408a109324e3632">&#9670;&nbsp;</a></span>tud_network_mac_address</h2>
+<a id="af38bfa83922878f21fbc937cf9aed868" name="af38bfa83922878f21fbc937cf9aed868"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af38bfa83922878f21fbc937cf9aed868">&#9670;&nbsp;</a></span>tud_network_mac_address</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -505,7 +550,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const uint8_t tud_network_mac_address[6]</td>
+          <td class="memname">uint8_t tud_network_mac_address[6]</td>
         </tr>
       </table>
   </td>

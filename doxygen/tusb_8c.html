@@ -95,16 +95,52 @@ $(document).ready(function(){initNavTree('tusb_8c.html',''); initResizable(); })
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a8803da64217c7948ebbef4e5f2d6b8a9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb_8c.html#a8803da64217c7948ebbef4e5f2d6b8a9">tusb_init</a> (void)</td></tr>
-<tr class="separator:a8803da64217c7948ebbef4e5f2d6b8a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb7d823bb2d72e4156150a5288478561"><td class="memItemLeft" align="right" valign="top">TU_ATTR_WEAK void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb_8c.html#afb7d823bb2d72e4156150a5288478561">tusb_time_delay_ms_api</a> (uint32_t ms)</td></tr>
+<tr class="separator:afb7d823bb2d72e4156150a5288478561"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae67e4916ff82e8c3934694b4b0994d65"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb_8c.html#ae67e4916ff82e8c3934694b4b0994d65">tusb_rhport_init</a> (uint8_t rhport, const <a class="el" href="structtusb__rhport__init__t.html">tusb_rhport_init_t</a> *rh_init)</td></tr>
+<tr class="separator:ae67e4916ff82e8c3934694b4b0994d65"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af94a415a201deda582ef2e30a810d34a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb_8c.html#af94a415a201deda582ef2e30a810d34a">tusb_inited</a> (void)</td></tr>
 <tr class="separator:af94a415a201deda582ef2e30a810d34a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0e71ebb871b1ae98ca6c382b8e576b52"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb_8c.html#a0e71ebb871b1ae98ca6c382b8e576b52">tu_edpt_validate</a> (<a class="el" href="group___u_s_b_def___type.html#ga95906f860c391cedba638b1946669694">tusb_desc_endpoint_t</a> const *desc_ep, tusb_speed_t speed)</td></tr>
+<tr class="memitem:a562ee7188f1d503a452ff7b4559cf494"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb_8c.html#a562ee7188f1d503a452ff7b4559cf494">tusb_int_handler</a> (uint8_t rhport, bool <a class="el" href="dcd__msp430x5xx_8c.html#a75c7dcc996a49b19a8500fbe8ceed04b">in_isr</a>)</td></tr>
+<tr class="separator:a562ee7188f1d503a452ff7b4559cf494"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a07e54339770448aff4cf277eb46adca8"><td class="memItemLeft" align="right" valign="top">uint8_t const *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb_8c.html#a07e54339770448aff4cf277eb46adca8">tu_desc_find</a> (uint8_t const *<a class="el" href="dcd__pio__usb_8c.html#a20177559c29bb329ed93cc5aa719176c">desc</a>, uint8_t const *end, uint8_t byte1)</td></tr>
+<tr class="separator:a07e54339770448aff4cf277eb46adca8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f3515fc19cfd641bba3c7ef75cd0cb6"><td class="memItemLeft" align="right" valign="top">uint8_t const *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb_8c.html#a0f3515fc19cfd641bba3c7ef75cd0cb6">tu_desc_find2</a> (uint8_t const *<a class="el" href="dcd__pio__usb_8c.html#a20177559c29bb329ed93cc5aa719176c">desc</a>, uint8_t const *end, uint8_t byte1, uint8_t byte2)</td></tr>
+<tr class="separator:a0f3515fc19cfd641bba3c7ef75cd0cb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0fa75f1c803c3fce9f410d603f262162"><td class="memItemLeft" align="right" valign="top">uint8_t const *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb_8c.html#a0fa75f1c803c3fce9f410d603f262162">tu_desc_find3</a> (uint8_t const *<a class="el" href="dcd__pio__usb_8c.html#a20177559c29bb329ed93cc5aa719176c">desc</a>, uint8_t const *end, uint8_t byte1, uint8_t byte2, uint8_t byte3)</td></tr>
+<tr class="separator:a0fa75f1c803c3fce9f410d603f262162"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1370e240d5d74d54fc6fec447962a980"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb_8c.html#a1370e240d5d74d54fc6fec447962a980">tu_edpt_claim</a> (<a class="el" href="tusb__private_8h.html#a86a515d7c7869f48ddd2f36d5486278f">tu_edpt_state_t</a> *ep_state, <a class="el" href="osal__freertos_8h.html#aa74df55450633a685e2b6bef57764f47">osal_mutex_t</a> mutex)</td></tr>
+<tr class="separator:a1370e240d5d74d54fc6fec447962a980"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa17ceac3b2b7ebd3356b7157738673c5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb_8c.html#aa17ceac3b2b7ebd3356b7157738673c5">tu_edpt_release</a> (<a class="el" href="tusb__private_8h.html#a86a515d7c7869f48ddd2f36d5486278f">tu_edpt_state_t</a> *ep_state, <a class="el" href="osal__freertos_8h.html#aa74df55450633a685e2b6bef57764f47">osal_mutex_t</a> mutex)</td></tr>
+<tr class="separator:aa17ceac3b2b7ebd3356b7157738673c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e71ebb871b1ae98ca6c382b8e576b52"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb_8c.html#a0e71ebb871b1ae98ca6c382b8e576b52">tu_edpt_validate</a> (<a class="el" href="tusb__types_8h.html#a95906f860c391cedba638b1946669694">tusb_desc_endpoint_t</a> const *desc_ep, <a class="el" href="tusb__types_8h.html#a13298e8a91e362e9b4ed452d86f4671b">tusb_speed_t</a> speed)</td></tr>
 <tr class="separator:a0e71ebb871b1ae98ca6c382b8e576b52"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1e2c0ea8940195eb4a21f587410b5cd0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb_8c.html#a1e2c0ea8940195eb4a21f587410b5cd0">tu_edpt_bind_driver</a> (uint8_t ep2drv[][2], <a class="el" href="group___u_s_b_def___type.html#gac4415f9c56f80b658137e35c14b58096">tusb_desc_interface_t</a> const *desc_itf, uint16_t desc_len, uint8_t driver_id)</td></tr>
+<tr class="memitem:a1e2c0ea8940195eb4a21f587410b5cd0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb_8c.html#a1e2c0ea8940195eb4a21f587410b5cd0">tu_edpt_bind_driver</a> (uint8_t ep2drv[][2], <a class="el" href="tusb__types_8h.html#ac4415f9c56f80b658137e35c14b58096">tusb_desc_interface_t</a> const *desc_itf, uint16_t desc_len, uint8_t driver_id)</td></tr>
 <tr class="separator:a1e2c0ea8940195eb4a21f587410b5cd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa3630792d467fc5621f36e3c63329711"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb_8c.html#aa3630792d467fc5621f36e3c63329711">tu_desc_get_interface_total_len</a> (<a class="el" href="group___u_s_b_def___type.html#gac4415f9c56f80b658137e35c14b58096">tusb_desc_interface_t</a> const *desc_itf, uint8_t itf_count, uint16_t max_len)</td></tr>
+<tr class="memitem:aa3630792d467fc5621f36e3c63329711"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb_8c.html#aa3630792d467fc5621f36e3c63329711">tu_desc_get_interface_total_len</a> (<a class="el" href="tusb__types_8h.html#ac4415f9c56f80b658137e35c14b58096">tusb_desc_interface_t</a> const *desc_itf, uint8_t itf_count, uint16_t max_len)</td></tr>
 <tr class="separator:aa3630792d467fc5621f36e3c63329711"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5ae12abbee8f3ef29785bae649b9c83"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb_8c.html#aa5ae12abbee8f3ef29785bae649b9c83">tu_edpt_stream_init</a> (<a class="el" href="structtu__edpt__stream__t.html">tu_edpt_stream_t</a> *s, bool is_host, bool is_tx, bool overwritable, void *ff_buf, uint16_t ff_bufsize, uint8_t *ep_buf, uint16_t ep_bufsize)</td></tr>
+<tr class="separator:aa5ae12abbee8f3ef29785bae649b9c83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad21fac62dca7857162942884b2898d30"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb_8c.html#ad21fac62dca7857162942884b2898d30">tu_edpt_stream_deinit</a> (<a class="el" href="structtu__edpt__stream__t.html">tu_edpt_stream_t</a> *s)</td></tr>
+<tr class="separator:ad21fac62dca7857162942884b2898d30"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c97e7e7c49c06dbd41813a511e0255a"><td class="memItemLeft" align="right" valign="top">static TU_ATTR_ALWAYS_INLINE bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb_8c.html#a5c97e7e7c49c06dbd41813a511e0255a">stream_claim</a> (uint8_t hwid, <a class="el" href="structtu__edpt__stream__t.html">tu_edpt_stream_t</a> *s)</td></tr>
+<tr class="separator:a5c97e7e7c49c06dbd41813a511e0255a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a550374b4f46f5e2a9b57be1155034acc"><td class="memItemLeft" align="right" valign="top">static TU_ATTR_ALWAYS_INLINE bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb_8c.html#a550374b4f46f5e2a9b57be1155034acc">stream_xfer</a> (uint8_t hwid, <a class="el" href="structtu__edpt__stream__t.html">tu_edpt_stream_t</a> *s, uint16_t count)</td></tr>
+<tr class="separator:a550374b4f46f5e2a9b57be1155034acc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abdd302134b0007c0c6a137e783518e78"><td class="memItemLeft" align="right" valign="top">static TU_ATTR_ALWAYS_INLINE bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb_8c.html#abdd302134b0007c0c6a137e783518e78">stream_release</a> (uint8_t hwid, <a class="el" href="structtu__edpt__stream__t.html">tu_edpt_stream_t</a> *s)</td></tr>
+<tr class="separator:abdd302134b0007c0c6a137e783518e78"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1210a6733a470d9bf85f1bca1031d3d8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb_8c.html#a1210a6733a470d9bf85f1bca1031d3d8">tu_edpt_stream_write_zlp_if_needed</a> (uint8_t hwid, <a class="el" href="structtu__edpt__stream__t.html">tu_edpt_stream_t</a> *s, uint32_t last_xferred_bytes)</td></tr>
+<tr class="separator:a1210a6733a470d9bf85f1bca1031d3d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b1e6f694795ff5931583a330e2cb53d"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb_8c.html#a7b1e6f694795ff5931583a330e2cb53d">tu_edpt_stream_write_xfer</a> (uint8_t hwid, <a class="el" href="structtu__edpt__stream__t.html">tu_edpt_stream_t</a> *s)</td></tr>
+<tr class="separator:a7b1e6f694795ff5931583a330e2cb53d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b817145493d07d21ea86442a9d9e0a4"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb_8c.html#a7b817145493d07d21ea86442a9d9e0a4">tu_edpt_stream_write</a> (uint8_t hwid, <a class="el" href="structtu__edpt__stream__t.html">tu_edpt_stream_t</a> *s, void const *<a class="el" href="usbh_8c.html#a56ed84df35de10bdb65e72b184309497">buffer</a>, uint32_t <a class="el" href="midi__device_8h.html#aca9aaceac98612802d20cb6983f7669c">bufsize</a>)</td></tr>
+<tr class="separator:a7b817145493d07d21ea86442a9d9e0a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72eeac7df2b11be0c9d5cc5af750ad94"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb_8c.html#a72eeac7df2b11be0c9d5cc5af750ad94">tu_edpt_stream_write_available</a> (uint8_t hwid, <a class="el" href="structtu__edpt__stream__t.html">tu_edpt_stream_t</a> *s)</td></tr>
+<tr class="separator:a72eeac7df2b11be0c9d5cc5af750ad94"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5899d1373d6857ef304575cae5eca789"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb_8c.html#a5899d1373d6857ef304575cae5eca789">tu_edpt_stream_read_xfer</a> (uint8_t hwid, <a class="el" href="structtu__edpt__stream__t.html">tu_edpt_stream_t</a> *s)</td></tr>
+<tr class="separator:a5899d1373d6857ef304575cae5eca789"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a71bbb00dfc6f0becb6e83af881322544"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb_8c.html#a71bbb00dfc6f0becb6e83af881322544">tu_edpt_stream_read</a> (uint8_t hwid, <a class="el" href="structtu__edpt__stream__t.html">tu_edpt_stream_t</a> *s, void *<a class="el" href="usbh_8c.html#a56ed84df35de10bdb65e72b184309497">buffer</a>, uint32_t <a class="el" href="midi__device_8h.html#aca9aaceac98612802d20cb6983f7669c">bufsize</a>)</td></tr>
+<tr class="separator:a71bbb00dfc6f0becb6e83af881322544"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a38c87e2269e3194bed4452605b151aae"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb_8c.html#a38c87e2269e3194bed4452605b151aae">dump_str_line</a> (uint8_t const *buf, uint16_t count)</td></tr>
 <tr class="separator:a38c87e2269e3194bed4452605b151aae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8e4f1745549a6b5fd08cae9a3faece2e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb_8c.html#a8e4f1745549a6b5fd08cae9a3faece2e">tu_print_mem</a> (void const *buf, uint32_t count, uint8_t indent)</td></tr>
@@ -112,9 +148,14 @@ Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:gaacf502da165393860e63ca5b209b9ea0"><td class="memItemLeft" align="right" valign="top">char const  *const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___group___error.html#gaacf502da165393860e63ca5b209b9ea0">tusb_strerr</a> [TUSB_ERROR_COUNT] = { ERROR_TABLE(ERROR_STRING) }</td></tr>
-<tr class="memdesc:gaacf502da165393860e63ca5b209b9ea0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enum to String for debugging purposes. Only available if CFG_TUSB_DEBUG &gt; 0.  <a href="group___group___error.html#gaacf502da165393860e63ca5b209b9ea0">More...</a><br /></td></tr>
-<tr class="separator:gaacf502da165393860e63ca5b209b9ea0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0cc5e43990e2512b26c8eaf0e29b1d6f"><td class="memItemLeft" align="right" valign="top">tusb_role_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb_8c.html#a0cc5e43990e2512b26c8eaf0e29b1d6f">_tusb_rhport_role</a> [TUP_USBIP_CONTROLLER_NUM] = { TUSB_ROLE_INVALID }</td></tr>
+<tr class="separator:a0cc5e43990e2512b26c8eaf0e29b1d6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5200b83ee41e937f846b6d5a284c6c78"><td class="memItemLeft" align="right" valign="top">char const  *const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb_8c.html#a5200b83ee41e937f846b6d5a284c6c78">tu_str_speed</a> [] = {&quot;Full&quot;, &quot;Low&quot;, &quot;High&quot;}</td></tr>
+<tr class="separator:a5200b83ee41e937f846b6d5a284c6c78"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a614759ef5d48072378739c11b15258db"><td class="memItemLeft" align="right" valign="top">char const  *const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb_8c.html#a614759ef5d48072378739c11b15258db">tu_str_std_request</a> []</td></tr>
+<tr class="separator:a614759ef5d48072378739c11b15258db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99a9ad731bb7cc36a1c24caa13cab220"><td class="memItemLeft" align="right" valign="top">char const  *const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tusb_8c.html#a99a9ad731bb7cc36a1c24caa13cab220">tu_str_xfer_result</a> []</td></tr>
+<tr class="separator:a99a9ad731bb7cc36a1c24caa13cab220"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="a38c87e2269e3194bed4452605b151aae" name="a38c87e2269e3194bed4452605b151aae"></a>
@@ -151,7 +192,253 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tusb_8c_source.html#l00166">166</a> of file <a class="el" href="tusb_8c_source.html">tusb.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb_8c_source.html#l00497">497</a> of file <a class="el" href="tusb_8c_source.html">tusb.c</a>.</p>
+
+</div>
+</div>
+<a id="a5c97e7e7c49c06dbd41813a511e0255a" name="a5c97e7e7c49c06dbd41813a511e0255a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c97e7e7c49c06dbd41813a511e0255a">&#9670;&nbsp;</a></span>stream_claim()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static TU_ATTR_ALWAYS_INLINE bool stream_claim </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>hwid</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structtu__edpt__stream__t.html">tu_edpt_stream_t</a> *&#160;</td>
+          <td class="paramname"><em>s</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tusb_8c_source.html#l00311">311</a> of file <a class="el" href="tusb_8c_source.html">tusb.c</a>.</p>
+
+</div>
+</div>
+<a id="abdd302134b0007c0c6a137e783518e78" name="abdd302134b0007c0c6a137e783518e78"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abdd302134b0007c0c6a137e783518e78">&#9670;&nbsp;</a></span>stream_release()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static TU_ATTR_ALWAYS_INLINE bool stream_release </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>hwid</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structtu__edpt__stream__t.html">tu_edpt_stream_t</a> *&#160;</td>
+          <td class="paramname"><em>s</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tusb_8c_source.html#l00337">337</a> of file <a class="el" href="tusb_8c_source.html">tusb.c</a>.</p>
+
+</div>
+</div>
+<a id="a550374b4f46f5e2a9b57be1155034acc" name="a550374b4f46f5e2a9b57be1155034acc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a550374b4f46f5e2a9b57be1155034acc">&#9670;&nbsp;</a></span>stream_xfer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static TU_ATTR_ALWAYS_INLINE bool stream_xfer </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>hwid</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structtu__edpt__stream__t.html">tu_edpt_stream_t</a> *&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>count</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tusb_8c_source.html#l00324">324</a> of file <a class="el" href="tusb_8c_source.html">tusb.c</a>.</p>
+
+</div>
+</div>
+<a id="a07e54339770448aff4cf277eb46adca8" name="a07e54339770448aff4cf277eb46adca8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a07e54339770448aff4cf277eb46adca8">&#9670;&nbsp;</a></span>tu_desc_find()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t const  * tu_desc_find </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t const *&#160;</td>
+          <td class="paramname"><em>desc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t const *&#160;</td>
+          <td class="paramname"><em>end</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>byte1</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tusb_8c_source.html#l00143">143</a> of file <a class="el" href="tusb_8c_source.html">tusb.c</a>.</p>
+
+</div>
+</div>
+<a id="a0f3515fc19cfd641bba3c7ef75cd0cb6" name="a0f3515fc19cfd641bba3c7ef75cd0cb6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f3515fc19cfd641bba3c7ef75cd0cb6">&#9670;&nbsp;</a></span>tu_desc_find2()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t const  * tu_desc_find2 </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t const *&#160;</td>
+          <td class="paramname"><em>desc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t const *&#160;</td>
+          <td class="paramname"><em>end</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>byte1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>byte2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tusb_8c_source.html#l00151">151</a> of file <a class="el" href="tusb_8c_source.html">tusb.c</a>.</p>
+
+</div>
+</div>
+<a id="a0fa75f1c803c3fce9f410d603f262162" name="a0fa75f1c803c3fce9f410d603f262162"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0fa75f1c803c3fce9f410d603f262162">&#9670;&nbsp;</a></span>tu_desc_find3()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t const  * tu_desc_find3 </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t const *&#160;</td>
+          <td class="paramname"><em>desc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t const *&#160;</td>
+          <td class="paramname"><em>end</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>byte1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>byte2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>byte3</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tusb_8c_source.html#l00159">159</a> of file <a class="el" href="tusb_8c_source.html">tusb.c</a>.</p>
 
 </div>
 </div>
@@ -164,7 +451,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">uint16_t tu_desc_get_interface_total_len </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#gac4415f9c56f80b658137e35c14b58096">tusb_desc_interface_t</a> const *&#160;</td>
+          <td class="paramtype"><a class="el" href="tusb__types_8h.html#ac4415f9c56f80b658137e35c14b58096">tusb_desc_interface_t</a> const *&#160;</td>
           <td class="paramname"><em>desc_itf</em>, </td>
         </tr>
         <tr>
@@ -187,7 +474,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tusb_8c_source.html#l00128">128</a> of file <a class="el" href="tusb_8c_source.html">tusb.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb_8c_source.html#l00251">251</a> of file <a class="el" href="tusb_8c_source.html">tusb.c</a>.</p>
 
 </div>
 </div>
@@ -206,7 +493,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#gac4415f9c56f80b658137e35c14b58096">tusb_desc_interface_t</a> const *&#160;</td>
+          <td class="paramtype"><a class="el" href="tusb__types_8h.html#ac4415f9c56f80b658137e35c14b58096">tusb_desc_interface_t</a> const *&#160;</td>
           <td class="paramname"><em>desc_itf</em>, </td>
         </tr>
         <tr>
@@ -229,7 +516,363 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tusb_8c_source.html#l00109">109</a> of file <a class="el" href="tusb_8c_source.html">tusb.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb_8c_source.html#l00236">236</a> of file <a class="el" href="tusb_8c_source.html">tusb.c</a>.</p>
+
+</div>
+</div>
+<a id="a1370e240d5d74d54fc6fec447962a980" name="a1370e240d5d74d54fc6fec447962a980"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1370e240d5d74d54fc6fec447962a980">&#9670;&nbsp;</a></span>tu_edpt_claim()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool tu_edpt_claim </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="tusb__private_8h.html#a86a515d7c7869f48ddd2f36d5486278f">tu_edpt_state_t</a> *&#160;</td>
+          <td class="paramname"><em>ep_state</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="osal__freertos_8h.html#aa74df55450633a685e2b6bef57764f47">osal_mutex_t</a>&#160;</td>
+          <td class="paramname"><em>mutex</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tusb_8c_source.html#l00171">171</a> of file <a class="el" href="tusb_8c_source.html">tusb.c</a>.</p>
+
+</div>
+</div>
+<a id="aa17ceac3b2b7ebd3356b7157738673c5" name="aa17ceac3b2b7ebd3356b7157738673c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa17ceac3b2b7ebd3356b7157738673c5">&#9670;&nbsp;</a></span>tu_edpt_release()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool tu_edpt_release </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="tusb__private_8h.html#a86a515d7c7869f48ddd2f36d5486278f">tu_edpt_state_t</a> *&#160;</td>
+          <td class="paramname"><em>ep_state</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="osal__freertos_8h.html#aa74df55450633a685e2b6bef57764f47">osal_mutex_t</a>&#160;</td>
+          <td class="paramname"><em>mutex</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tusb_8c_source.html#l00188">188</a> of file <a class="el" href="tusb_8c_source.html">tusb.c</a>.</p>
+
+</div>
+</div>
+<a id="ad21fac62dca7857162942884b2898d30" name="ad21fac62dca7857162942884b2898d30"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad21fac62dca7857162942884b2898d30">&#9670;&nbsp;</a></span>tu_edpt_stream_deinit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool tu_edpt_stream_deinit </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structtu__edpt__stream__t.html">tu_edpt_stream_t</a> *&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tusb_8c_source.html#l00302">302</a> of file <a class="el" href="tusb_8c_source.html">tusb.c</a>.</p>
+
+</div>
+</div>
+<a id="aa5ae12abbee8f3ef29785bae649b9c83" name="aa5ae12abbee8f3ef29785bae649b9c83"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa5ae12abbee8f3ef29785bae649b9c83">&#9670;&nbsp;</a></span>tu_edpt_stream_init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool tu_edpt_stream_init </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structtu__edpt__stream__t.html">tu_edpt_stream_t</a> *&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>is_host</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>is_tx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>overwritable</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>ff_buf</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>ff_bufsize</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>ep_buf</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>ep_bufsize</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tusb_8c_source.html#l00282">282</a> of file <a class="el" href="tusb_8c_source.html">tusb.c</a>.</p>
+
+</div>
+</div>
+<a id="a71bbb00dfc6f0becb6e83af881322544" name="a71bbb00dfc6f0becb6e83af881322544"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a71bbb00dfc6f0becb6e83af881322544">&#9670;&nbsp;</a></span>tu_edpt_stream_read()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t tu_edpt_stream_read </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>hwid</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structtu__edpt__stream__t.html">tu_edpt_stream_t</a> *&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>buffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>bufsize</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tusb_8c_source.html#l00461">461</a> of file <a class="el" href="tusb_8c_source.html">tusb.c</a>.</p>
+
+</div>
+</div>
+<a id="a5899d1373d6857ef304575cae5eca789" name="a5899d1373d6857ef304575cae5eca789"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5899d1373d6857ef304575cae5eca789">&#9670;&nbsp;</a></span>tu_edpt_stream_read_xfer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t tu_edpt_stream_read_xfer </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>hwid</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structtu__edpt__stream__t.html">tu_edpt_stream_t</a> *&#160;</td>
+          <td class="paramname"><em>s</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tusb_8c_source.html#l00426">426</a> of file <a class="el" href="tusb_8c_source.html">tusb.c</a>.</p>
+
+</div>
+</div>
+<a id="a7b817145493d07d21ea86442a9d9e0a4" name="a7b817145493d07d21ea86442a9d9e0a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7b817145493d07d21ea86442a9d9e0a4">&#9670;&nbsp;</a></span>tu_edpt_stream_write()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t tu_edpt_stream_write </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>hwid</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structtu__edpt__stream__t.html">tu_edpt_stream_t</a> *&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void const *&#160;</td>
+          <td class="paramname"><em>buffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>bufsize</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tusb_8c_source.html#l00382">382</a> of file <a class="el" href="tusb_8c_source.html">tusb.c</a>.</p>
+
+</div>
+</div>
+<a id="a72eeac7df2b11be0c9d5cc5af750ad94" name="a72eeac7df2b11be0c9d5cc5af750ad94"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a72eeac7df2b11be0c9d5cc5af750ad94">&#9670;&nbsp;</a></span>tu_edpt_stream_write_available()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t tu_edpt_stream_write_available </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>hwid</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structtu__edpt__stream__t.html">tu_edpt_stream_t</a> *&#160;</td>
+          <td class="paramname"><em>s</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tusb_8c_source.html#l00405">405</a> of file <a class="el" href="tusb_8c_source.html">tusb.c</a>.</p>
+
+</div>
+</div>
+<a id="a7b1e6f694795ff5931583a330e2cb53d" name="a7b1e6f694795ff5931583a330e2cb53d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7b1e6f694795ff5931583a330e2cb53d">&#9670;&nbsp;</a></span>tu_edpt_stream_write_xfer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t tu_edpt_stream_write_xfer </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>hwid</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structtu__edpt__stream__t.html">tu_edpt_stream_t</a> *&#160;</td>
+          <td class="paramname"><em>s</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tusb_8c_source.html#l00362">362</a> of file <a class="el" href="tusb_8c_source.html">tusb.c</a>.</p>
+
+</div>
+</div>
+<a id="a1210a6733a470d9bf85f1bca1031d3d8" name="a1210a6733a470d9bf85f1bca1031d3d8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1210a6733a470d9bf85f1bca1031d3d8">&#9670;&nbsp;</a></span>tu_edpt_stream_write_zlp_if_needed()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool tu_edpt_stream_write_zlp_if_needed </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>hwid</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structtu__edpt__stream__t.html">tu_edpt_stream_t</a> *&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>last_xferred_bytes</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tusb_8c_source.html#l00353">353</a> of file <a class="el" href="tusb_8c_source.html">tusb.c</a>.</p>
 
 </div>
 </div>
@@ -242,13 +885,13 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">bool tu_edpt_validate </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga95906f860c391cedba638b1946669694">tusb_desc_endpoint_t</a> const *&#160;</td>
+          <td class="paramtype"><a class="el" href="tusb__types_8h.html#a95906f860c391cedba638b1946669694">tusb_desc_endpoint_t</a> const *&#160;</td>
           <td class="paramname"><em>desc_ep</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">tusb_speed_t&#160;</td>
+          <td class="paramtype"><a class="el" href="tusb__types_8h.html#a13298e8a91e362e9b4ed452d86f4671b">tusb_speed_t</a>&#160;</td>
           <td class="paramname"><em>speed</em>&#160;</td>
         </tr>
         <tr>
@@ -259,7 +902,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tusb_8c_source.html#l00070">70</a> of file <a class="el" href="tusb_8c_source.html">tusb.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb_8c_source.html#l00202">202</a> of file <a class="el" href="tusb_8c_source.html">tusb.c</a>.</p>
 
 </div>
 </div>
@@ -295,27 +938,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tusb_8c_source.html#l00185">185</a> of file <a class="el" href="tusb_8c_source.html">tusb.c</a>.</p>
-
-</div>
-</div>
-<a id="a8803da64217c7948ebbef4e5f2d6b8a9" name="a8803da64217c7948ebbef4e5f2d6b8a9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8803da64217c7948ebbef4e5f2d6b8a9">&#9670;&nbsp;</a></span>tusb_init()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool tusb_init </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="tusb_8c_source.html#l00038">38</a> of file <a class="el" href="tusb_8c_source.html">tusb.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb_8c_source.html#l00512">512</a> of file <a class="el" href="tusb_8c_source.html">tusb.c</a>.</p>
 
 </div>
 </div>
@@ -335,7 +958,170 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tusb_8c_source.html#l00051">51</a> of file <a class="el" href="tusb_8c_source.html">tusb.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tusb_8c_source.html#l00108">108</a> of file <a class="el" href="tusb_8c_source.html">tusb.c</a>.</p>
+
+</div>
+</div>
+<a id="a562ee7188f1d503a452ff7b4559cf494" name="a562ee7188f1d503a452ff7b4559cf494"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a562ee7188f1d503a452ff7b4559cf494">&#9670;&nbsp;</a></span>tusb_int_handler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void tusb_int_handler </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>rhport</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>in_isr</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tusb_8c_source.html#l00122">122</a> of file <a class="el" href="tusb_8c_source.html">tusb.c</a>.</p>
+
+</div>
+</div>
+<a id="ae67e4916ff82e8c3934694b4b0994d65" name="ae67e4916ff82e8c3934694b4b0994d65"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae67e4916ff82e8c3934694b4b0994d65">&#9670;&nbsp;</a></span>tusb_rhport_init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool tusb_rhport_init </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>rhport</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structtusb__rhport__init__t.html">tusb_rhport_init_t</a> *&#160;</td>
+          <td class="paramname"><em>rh_init</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tusb_8c_source.html#l00061">61</a> of file <a class="el" href="tusb_8c_source.html">tusb.c</a>.</p>
+
+</div>
+</div>
+<a id="afb7d823bb2d72e4156150a5288478561" name="afb7d823bb2d72e4156150a5288478561"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb7d823bb2d72e4156150a5288478561">&#9670;&nbsp;</a></span>tusb_time_delay_ms_api()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TU_ATTR_WEAK void tusb_time_delay_ms_api </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>ms</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tusb_8c_source.html#l00048">48</a> of file <a class="el" href="tusb_8c_source.html">tusb.c</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="a0cc5e43990e2512b26c8eaf0e29b1d6f" name="a0cc5e43990e2512b26c8eaf0e29b1d6f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0cc5e43990e2512b26c8eaf0e29b1d6f">&#9670;&nbsp;</a></span>_tusb_rhport_role</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">tusb_role_t _tusb_rhport_role[TUP_USBIP_CONTROLLER_NUM] = { TUSB_ROLE_INVALID }</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tusb_8c_source.html#l00042">42</a> of file <a class="el" href="tusb_8c_source.html">tusb.c</a>.</p>
+
+</div>
+</div>
+<a id="a5200b83ee41e937f846b6d5a284c6c78" name="a5200b83ee41e937f846b6d5a284c6c78"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5200b83ee41e937f846b6d5a284c6c78">&#9670;&nbsp;</a></span>tu_str_speed</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char const* const tu_str_speed[] = {&quot;Full&quot;, &quot;Low&quot;, &quot;High&quot;}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tusb_8c_source.html#l00475">475</a> of file <a class="el" href="tusb_8c_source.html">tusb.c</a>.</p>
+
+</div>
+</div>
+<a id="a614759ef5d48072378739c11b15258db" name="a614759ef5d48072378739c11b15258db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a614759ef5d48072378739c11b15258db">&#9670;&nbsp;</a></span>tu_str_std_request</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char const* const tu_str_std_request[]</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= {</div>
+<div class="line">    <span class="stringliteral">&quot;Get Status&quot;</span>,</div>
+<div class="line">    <span class="stringliteral">&quot;Clear Feature&quot;</span>,</div>
+<div class="line">    <span class="stringliteral">&quot;Reserved&quot;</span>,</div>
+<div class="line">    <span class="stringliteral">&quot;Set Feature&quot;</span>,</div>
+<div class="line">    <span class="stringliteral">&quot;Reserved&quot;</span>,</div>
+<div class="line">    <span class="stringliteral">&quot;Set Address&quot;</span>,</div>
+<div class="line">    <span class="stringliteral">&quot;Get Descriptor&quot;</span>,</div>
+<div class="line">    <span class="stringliteral">&quot;Set Descriptor&quot;</span>,</div>
+<div class="line">    <span class="stringliteral">&quot;Get Configuration&quot;</span>,</div>
+<div class="line">    <span class="stringliteral">&quot;Set Configuration&quot;</span>,</div>
+<div class="line">    <span class="stringliteral">&quot;Get Interface&quot;</span>,</div>
+<div class="line">    <span class="stringliteral">&quot;Set Interface&quot;</span>,</div>
+<div class="line">    <span class="stringliteral">&quot;Synch Frame&quot;</span></div>
+<div class="line">}</div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="tusb_8c_source.html#l00476">476</a> of file <a class="el" href="tusb_8c_source.html">tusb.c</a>.</p>
+
+</div>
+</div>
+<a id="a99a9ad731bb7cc36a1c24caa13cab220" name="a99a9ad731bb7cc36a1c24caa13cab220"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a99a9ad731bb7cc36a1c24caa13cab220">&#9670;&nbsp;</a></span>tu_str_xfer_result</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char const* const tu_str_xfer_result[]</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= {</div>
+<div class="line">    <span class="stringliteral">&quot;OK&quot;</span>, <span class="stringliteral">&quot;FAILED&quot;</span>, <span class="stringliteral">&quot;STALLED&quot;</span>, <span class="stringliteral">&quot;TIMEOUT&quot;</span></div>
+<div class="line">}</div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="tusb_8c_source.html#l00492">492</a> of file <a class="el" href="tusb_8c_source.html">tusb.c</a>.</p>
 
 </div>
 </div>

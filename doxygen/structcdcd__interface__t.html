@@ -105,28 +105,10 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a3767a64c2de9c037316a97c1c11b1986"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae60b38c71ba427ff5165de61d1ac139a"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcdcd__interface__t.html#ae60b38c71ba427ff5165de61d1ac139a">wanted_char</a></td></tr>
 <tr class="separator:ae60b38c71ba427ff5165de61d1ac139a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a782287a69cd1d9258b827a58fa8b5012"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___class_driver___c_d_c.html#ga9f6723547172ced59af094d65044951d">cdc_line_coding_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcdcd__interface__t.html#a782287a69cd1d9258b827a58fa8b5012">line_coding</a></td></tr>
-<tr class="separator:a782287a69cd1d9258b827a58fa8b5012"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a80916f308d20f32fe6fe29bd0e4c97cf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structtu__fifo__t.html">tu_fifo_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcdcd__interface__t.html#a80916f308d20f32fe6fe29bd0e4c97cf">rx_ff</a></td></tr>
-<tr class="separator:a80916f308d20f32fe6fe29bd0e4c97cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad5ee1758586775363b4c8b1e17ab1346"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structtu__fifo__t.html">tu_fifo_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcdcd__interface__t.html#ad5ee1758586775363b4c8b1e17ab1346">tx_ff</a></td></tr>
-<tr class="separator:ad5ee1758586775363b4c8b1e17ab1346"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a970492ed9dd18797e6ff6c37bc0f33f5"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcdcd__interface__t.html#a970492ed9dd18797e6ff6c37bc0f33f5">rx_ff_buf</a> [CFG_TUD_CDC_RX_BUFSIZE]</td></tr>
-<tr class="separator:a970492ed9dd18797e6ff6c37bc0f33f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af449d9018c91df6021a30e73a23710eb"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcdcd__interface__t.html#af449d9018c91df6021a30e73a23710eb">tx_ff_buf</a> [CFG_TUD_CDC_TX_BUFSIZE]</td></tr>
-<tr class="separator:af449d9018c91df6021a30e73a23710eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:accc74b3962224594fad4694b81cdafe3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="osal__freertos_8h.html#a5930f7a2cc6f2bb374dea58f7256f943">osal_mutex_def_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcdcd__interface__t.html#accc74b3962224594fad4694b81cdafe3">rx_ff_mutex</a></td></tr>
-<tr class="separator:accc74b3962224594fad4694b81cdafe3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a029daa294e0a5167217545a744427eab"><td class="memItemLeft" align="right" valign="top"><a class="el" href="osal__freertos_8h.html#a5930f7a2cc6f2bb374dea58f7256f943">osal_mutex_def_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcdcd__interface__t.html#a029daa294e0a5167217545a744427eab">tx_ff_mutex</a></td></tr>
-<tr class="separator:a029daa294e0a5167217545a744427eab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9b82d9cad3227cdb3ef7bffa8b54de16"><td class="memItemLeft" align="right" valign="top">CFG_TUSB_MEM_ALIGN uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcdcd__interface__t.html#a9b82d9cad3227cdb3ef7bffa8b54de16">epout_buf</a> [CFG_TUD_CDC_EP_BUFSIZE]</td></tr>
-<tr class="separator:a9b82d9cad3227cdb3ef7bffa8b54de16"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a359d18110c1a47ca0d63f6193c8d6016"><td class="memItemLeft" align="right" valign="top">CFG_TUSB_MEM_ALIGN uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcdcd__interface__t.html#a359d18110c1a47ca0d63f6193c8d6016">epin_buf</a> [CFG_TUD_CDC_EP_BUFSIZE]</td></tr>
-<tr class="separator:a359d18110c1a47ca0d63f6193c8d6016"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00044">44</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00048">48</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
 <a id="a0a1ac4dda993d990649791cb899ecd9d" name="a0a1ac4dda993d990649791cb899ecd9d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0a1ac4dda993d990649791cb899ecd9d">&#9670;&nbsp;</a></span>ep_in</h2>
@@ -140,7 +122,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00048">48</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00051">51</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
 
 </div>
 </div>
@@ -156,7 +138,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00047">47</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00050">50</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
 
 </div>
 </div>
@@ -172,39 +154,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00049">49</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
-
-</div>
-</div>
-<a id="a359d18110c1a47ca0d63f6193c8d6016" name="a359d18110c1a47ca0d63f6193c8d6016"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a359d18110c1a47ca0d63f6193c8d6016">&#9670;&nbsp;</a></span>epin_buf</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">CFG_TUSB_MEM_ALIGN uint8_t cdcd_interface_t::epin_buf[CFG_TUD_CDC_EP_BUFSIZE]</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00072">72</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
-
-</div>
-</div>
-<a id="a9b82d9cad3227cdb3ef7bffa8b54de16" name="a9b82d9cad3227cdb3ef7bffa8b54de16"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9b82d9cad3227cdb3ef7bffa8b54de16">&#9670;&nbsp;</a></span>epout_buf</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">CFG_TUSB_MEM_ALIGN uint8_t cdcd_interface_t::epout_buf[CFG_TUD_CDC_EP_BUFSIZE]</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00071">71</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00052">52</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
 
 </div>
 </div>
@@ -220,23 +170,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00046">46</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
-
-</div>
-</div>
-<a id="a782287a69cd1d9258b827a58fa8b5012" name="a782287a69cd1d9258b827a58fa8b5012"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a782287a69cd1d9258b827a58fa8b5012">&#9670;&nbsp;</a></span>line_coding</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="group___class_driver___c_d_c.html#ga9f6723547172ced59af094d65044951d">cdc_line_coding_t</a> cdcd_interface_t::line_coding</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00056">56</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00049">49</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
 
 </div>
 </div>
@@ -252,103 +186,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00052">52</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
-
-</div>
-</div>
-<a id="a80916f308d20f32fe6fe29bd0e4c97cf" name="a80916f308d20f32fe6fe29bd0e4c97cf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a80916f308d20f32fe6fe29bd0e4c97cf">&#9670;&nbsp;</a></span>rx_ff</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> cdcd_interface_t::rx_ff</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00059">59</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
-
-</div>
-</div>
-<a id="a970492ed9dd18797e6ff6c37bc0f33f5" name="a970492ed9dd18797e6ff6c37bc0f33f5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a970492ed9dd18797e6ff6c37bc0f33f5">&#9670;&nbsp;</a></span>rx_ff_buf</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint8_t cdcd_interface_t::rx_ff_buf[CFG_TUD_CDC_RX_BUFSIZE]</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00062">62</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
-
-</div>
-</div>
-<a id="accc74b3962224594fad4694b81cdafe3" name="accc74b3962224594fad4694b81cdafe3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#accc74b3962224594fad4694b81cdafe3">&#9670;&nbsp;</a></span>rx_ff_mutex</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="osal__freertos_8h.html#a5930f7a2cc6f2bb374dea58f7256f943">osal_mutex_def_t</a> cdcd_interface_t::rx_ff_mutex</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00066">66</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
-
-</div>
-</div>
-<a id="ad5ee1758586775363b4c8b1e17ab1346" name="ad5ee1758586775363b4c8b1e17ab1346"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad5ee1758586775363b4c8b1e17ab1346">&#9670;&nbsp;</a></span>tx_ff</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structtu__fifo__t.html">tu_fifo_t</a> cdcd_interface_t::tx_ff</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00060">60</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
-
-</div>
-</div>
-<a id="af449d9018c91df6021a30e73a23710eb" name="af449d9018c91df6021a30e73a23710eb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af449d9018c91df6021a30e73a23710eb">&#9670;&nbsp;</a></span>tx_ff_buf</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint8_t cdcd_interface_t::tx_ff_buf[CFG_TUD_CDC_TX_BUFSIZE]</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00063">63</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
-
-</div>
-</div>
-<a id="a029daa294e0a5167217545a744427eab" name="a029daa294e0a5167217545a744427eab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a029daa294e0a5167217545a744427eab">&#9670;&nbsp;</a></span>tx_ff_mutex</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="osal__freertos_8h.html#a5930f7a2cc6f2bb374dea58f7256f943">osal_mutex_def_t</a> cdcd_interface_t::tx_ff_mutex</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00067">67</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00055">55</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
 
 </div>
 </div>
@@ -364,7 +202,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00055">55</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__device_8c_source.html#l00058">58</a> of file <a class="el" href="cdc__device_8c_source.html">cdc_device.c</a>.</p>
 
 </div>
 </div>

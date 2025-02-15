@@ -1,12 +1,13 @@
 var tusb__fifo_8h =
 [
     [ "tu_fifo_t", "structtu__fifo__t.html", "structtu__fifo__t" ],
+    [ "tu_fifo_t::TU_ATTR_PACKED", "structtu__fifo__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html", "structtu__fifo__t_1_1_t_u___a_t_t_r___p_a_c_k_e_d" ],
     [ "tu_fifo_buffer_info_t", "structtu__fifo__buffer__info__t.html", "structtu__fifo__buffer__info__t" ],
     [ "tu_fifo_advance_read_pointer", "tusb__fifo_8h.html#aa05a92001ed3fd2b9f14e2656bc88e23", null ],
     [ "tu_fifo_advance_write_pointer", "tusb__fifo_8h.html#a87198188f8f33ae6b7feeda5f5bc9d37", null ],
     [ "tu_fifo_clear", "tusb__fifo_8h.html#af629a02b7f0b2dc380bfdc1d8ca05723", null ],
     [ "tu_fifo_config", "tusb__fifo_8h.html#a4dfb40d48350bdff5c7f47321703d886", null ],
-    [ "tu_fifo_config_mutex", "tusb__fifo_8h.html#a0f7de209238345dde57eb81c28630bcd", null ],
+    [ "tu_fifo_config_mutex", "tusb__fifo_8h.html#acf23de62bfadbaf56f8aa497cc88f998", null ],
     [ "tu_fifo_correct_read_pointer", "tusb__fifo_8h.html#a0d6091eaa8ac247eaccd47e9d236a5db", null ],
     [ "tu_fifo_count", "tusb__fifo_8h.html#a0653c4e3af5b0b2766ff72264f5836b7", null ],
     [ "tu_fifo_depth", "tusb__fifo_8h.html#a6f2ec98f4a4af8fee36c20dc4ea1b458", null ],
@@ -17,12 +18,12 @@ var tusb__fifo_8h =
     [ "tu_fifo_overflowed", "tusb__fifo_8h.html#a05fa5f34756ab3cc587d6c0e23958e84", null ],
     [ "tu_fifo_peek", "tusb__fifo_8h.html#a7443652109d598ad4fc035c600283476", null ],
     [ "tu_fifo_peek_n", "tusb__fifo_8h.html#a6debeaf0ac5629d0e6b7e30c9443a389", null ],
-    [ "tu_fifo_read", "tusb__fifo_8h.html#a4040200fcdcc9322efd78ea36c8c59c0", null ],
-    [ "tu_fifo_read_n", "tusb__fifo_8h.html#ab70243a53dc00e19a3be51fc4e98e8f6", null ],
+    [ "tu_fifo_read", "tusb__fifo_8h.html#aa3f8cd9f0d43dc686c57ff31aba78a8a", null ],
+    [ "tu_fifo_read_n", "tusb__fifo_8h.html#aa03647e82d43f46c36c7499051729cb3", null ],
     [ "tu_fifo_read_n_const_addr_full_words", "tusb__fifo_8h.html#a87ddbeef206cfa92454988aa7905f7f7", null ],
     [ "tu_fifo_remaining", "tusb__fifo_8h.html#ad2d0f1eebd7dd8681de575cb3e005368", null ],
     [ "tu_fifo_set_overwritable", "tusb__fifo_8h.html#a65fe88400fba4084c52902af52d6ff24", null ],
-    [ "tu_fifo_write", "tusb__fifo_8h.html#a234020f7be9fd274d264e718f5057a55", null ],
-    [ "tu_fifo_write_n", "tusb__fifo_8h.html#a42e4ac8760d28316adf7b6107e69ea77", null ],
+    [ "tu_fifo_write", "tusb__fifo_8h.html#aaa34ced81e2aed261c7446e77f4a2fb1", null ],
+    [ "tu_fifo_write_n", "tusb__fifo_8h.html#ac7fcb59d1537fde21476016b7c6e1daf", null ],
     [ "tu_fifo_write_n_const_addr_full_words", "tusb__fifo_8h.html#a15ff7617d186e0663ed91a330c0a97d0", null ]
 ];

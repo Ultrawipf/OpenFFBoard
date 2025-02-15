@@ -1,6 +1,6 @@
 var cppmain_8cpp =
 [
-    [ "__attribute__", "cppmain_8cpp.html#a33b093be4c9bd1f8edc95626cae17a1e", null ],
+    [ "__attribute__", "cppmain_8cpp.html#a52ba3690ce79b42f2d0e4047933fe38f", null ],
     [ "cppmain", "cppmain_8cpp.html#a128a29499985fe63f8e67a47b9ae7fa1", null ],
     [ "free", "cppmain_8cpp.html#a9f850d0608418aea291e4c0fdab93826", null ],
     [ "getRunTimeCounterValue", "cppmain_8cpp.html#a531355cea579a1aab91a7a2135024cdc", null ],
@@ -13,7 +13,6 @@ var cppmain_8cpp =
     [ "mainchooser", "cppmain_8cpp.html#a7275ba4c1fa015ab33bd262d377744b9", null ],
     [ "mainclassChosen", "cppmain_8cpp.html#a8ff1004ac17282995315955a6806852e", null ],
     [ "running", "cppmain_8cpp.html#a36f7b6be7108281af77939ceaec42fd6", null ],
-    [ "TIM_MICROS", "cppmain_8cpp.html#a7d6f886e9c7f063d0f76b5950fca5b5d", null ],
     [ "usb_device_stack", "cppmain_8cpp.html#addd91c6ebb3f5b0273a0dda9aeabfbb4", null ],
     [ "usb_device_taskdef", "cppmain_8cpp.html#ad5de8c7b51499e1f23c600717b495711", null ]
 ];

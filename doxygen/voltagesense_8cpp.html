@@ -97,37 +97,64 @@ $(document).ready(function(){initNavTree('voltagesense_8cpp.html',''); initResiz
 Functions</h2></td></tr>
 <tr class="memitem:a6c426752ab8435a2b65ae7ee41539ea6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="voltagesense_8cpp.html#a6c426752ab8435a2b65ae7ee41539ea6">setVSenseMult</a> (float vSenseMultiplier)</td></tr>
 <tr class="separator:a6c426752ab8435a2b65ae7ee41539ea6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a76b3bff6033f75f12be8db5d9e5a4bf6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="voltagesense_8cpp.html#a76b3bff6033f75f12be8db5d9e5a4bf6">setupBrakePin</a> (uint32_t vdiffAct, uint32_t vdiffDeact, uint32_t vMax)</td></tr>
-<tr class="separator:a76b3bff6033f75f12be8db5d9e5a4bf6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2935ff0889c6e7588869b84ee68d1c9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="voltagesense_8cpp.html#ac2935ff0889c6e7588869b84ee68d1c9">setupBrakePin</a> (int32_t vdiffAct, int32_t vdiffDeact, int32_t vMax)</td></tr>
+<tr class="separator:ac2935ff0889c6e7588869b84ee68d1c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a6885c34bc79730b3be526aaf673850"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="voltagesense_8cpp.html#a4a6885c34bc79730b3be526aaf673850">adcValToVoltage</a> (uint32_t adcval)</td></tr>
+<tr class="separator:a4a6885c34bc79730b3be526aaf673850"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a378fe4daa3d9a8e7a574f7b70b812e69"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="voltagesense_8cpp.html#a378fe4daa3d9a8e7a574f7b70b812e69">getIntV</a> ()</td></tr>
 <tr class="separator:a378fe4daa3d9a8e7a574f7b70b812e69"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a590638f994a134e82ff3bb6053ba67de"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="voltagesense_8cpp.html#a590638f994a134e82ff3bb6053ba67de">getExtV</a> ()</td></tr>
 <tr class="separator:a590638f994a134e82ff3bb6053ba67de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0df0dfb8468434f7937158b2ebc378a2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="voltagesense_8cpp.html#a0df0dfb8468434f7937158b2ebc378a2">brakeCheck</a> ()</td></tr>
 <tr class="separator:a0df0dfb8468434f7937158b2ebc378a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a58b4314501fec5f9120029f5ed23e2e8"><td class="memItemLeft" align="right" valign="top">__weak int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="voltagesense_8cpp.html#a58b4314501fec5f9120029f5ed23e2e8">getChipTemp</a> ()</td></tr>
+<tr class="separator:a58b4314501fec5f9120029f5ed23e2e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:a5bff6c9309245b09ffeaaa42ce6baf8c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="voltagesense_8cpp.html#a5bff6c9309245b09ffeaaa42ce6baf8c">braking_flag</a> = false</td></tr>
 <tr class="separator:a5bff6c9309245b09ffeaaa42ce6baf8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a240e7071858c78211d32efe0e5f2607f"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="voltagesense_8cpp.html#a240e7071858c78211d32efe0e5f2607f">maxVoltage</a> = 65000</td></tr>
-<tr class="separator:a240e7071858c78211d32efe0e5f2607f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa5fecc361d00d80323ae0cc22552573a"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="voltagesense_8cpp.html#aa5fecc361d00d80323ae0cc22552573a">voltageDiffActivate</a> = 5000</td></tr>
-<tr class="separator:aa5fecc361d00d80323ae0cc22552573a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aca34a7c9072b83961e288a92a53c43e9"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="voltagesense_8cpp.html#aca34a7c9072b83961e288a92a53c43e9">voltageDiffDeactivate</a> = 4000</td></tr>
-<tr class="separator:aca34a7c9072b83961e288a92a53c43e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad30f64a2acc71490826df31ac002c596"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="voltagesense_8cpp.html#ad30f64a2acc71490826df31ac002c596">maxVoltage</a> = 65000</td></tr>
+<tr class="separator:ad30f64a2acc71490826df31ac002c596"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afeae9cbfaa1b5a383b4edf0bd07c0afd"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="voltagesense_8cpp.html#afeae9cbfaa1b5a383b4edf0bd07c0afd">voltageDiffActivate</a> = 5000</td></tr>
+<tr class="separator:afeae9cbfaa1b5a383b4edf0bd07c0afd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afdddad00dfb7060989004ebf1b827bfc"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="voltagesense_8cpp.html#afdddad00dfb7060989004ebf1b827bfc">voltageDiffDeactivate</a> = 4000</td></tr>
+<tr class="separator:afdddad00dfb7060989004ebf1b827bfc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acf38394d2feb220b610d8e23521fcd4b"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="voltagesense_8cpp.html#acf38394d2feb220b610d8e23521fcd4b">vSenseMult</a> = VOLTAGE_MULT_DEFAULT</td></tr>
 <tr class="separator:acf38394d2feb220b610d8e23521fcd4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7d1e65d3667a60131f5d69134c79c898"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="voltagesense_8cpp.html#a7d1e65d3667a60131f5d69134c79c898">brake_failure</a> = false</td></tr>
 <tr class="separator:a7d1e65d3667a60131f5d69134c79c898"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec382efbcd663ab1221211cf7d10a775"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="voltagesense_8cpp.html#aec382efbcd663ab1221211cf7d10a775">minVoltage</a> = 6500</td></tr>
-<tr class="separator:aec382efbcd663ab1221211cf7d10a775"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af76bd2186fc710961936f2bf6a7349ef"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="voltagesense_8cpp.html#af76bd2186fc710961936f2bf6a7349ef">minVoltage</a> = 6500</td></tr>
+<tr class="separator:af76bd2186fc710961936f2bf6a7349ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af5797a4ae03c53b8e9a5b257d58187dd"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="voltagesense_8cpp.html#af5797a4ae03c53b8e9a5b257d58187dd">brakeActiveTime</a> = 0</td></tr>
 <tr class="separator:af5797a4ae03c53b8e9a5b257d58187dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e65706f97e02c01284291c155226308"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="class_error.html">Error</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="voltagesense_8cpp.html#a0e65706f97e02c01284291c155226308">resError</a> = <a class="el" href="class_error.html">Error</a>(<a class="el" href="_error_handler_8h.html#a6f3b1ba4fbf4167d3a58b0b331ddcfefa1efe903946f4bbf8012a8d8e092427a0">ErrorCode::brakeResistorFailure</a>, <a class="el" href="_error_handler_8h.html#a01775e5fef063175684d0fc8d9c7d301a7e85bcb66fb9a809d5ab4f62a8b8bea8">ErrorType::critical</a>, &quot;Brake resistor stuck on&quot;)</td></tr>
 <tr class="separator:a0e65706f97e02c01284291c155226308"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44c1ac9c9c53949f62ba4c021873cedc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_fast_moving_average.html">FastMovingAverage</a>&lt; int32_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="voltagesense_8cpp.html#a44c1ac9c9c53949f62ba4c021873cedc">chipTempAvg</a> {5}</td></tr>
+<tr class="separator:a44c1ac9c9c53949f62ba4c021873cedc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="a4a6885c34bc79730b3be526aaf673850" name="a4a6885c34bc79730b3be526aaf673850"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4a6885c34bc79730b3be526aaf673850">&#9670;&nbsp;</a></span>adcValToVoltage()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float adcValToVoltage </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>adcval</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >Converts an adc reading to millivolts using the internal calibration and reference voltage Requires ADC_INTREF_VOL and VSENSE_ADC_RES </p>
+
+<p class="definition">Definition at line <a class="el" href="voltagesense_8cpp_source.html#l00046">46</a> of file <a class="el" href="voltagesense_8cpp_source.html">voltagesense.cpp</a>.</p>
+
+</div>
+</div>
 <a id="a0df0dfb8468434f7937158b2ebc378a2" name="a0df0dfb8468434f7937158b2ebc378a2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0df0dfb8468434f7937158b2ebc378a2">&#9670;&nbsp;</a></span>brakeCheck()</h2>
 
@@ -143,7 +170,27 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="voltagesense_8cpp_source.html#l00052">52</a> of file <a class="el" href="voltagesense_8cpp_source.html">voltagesense.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="voltagesense_8cpp_source.html#l00062">62</a> of file <a class="el" href="voltagesense_8cpp_source.html">voltagesense.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a58b4314501fec5f9120029f5ed23e2e8" name="a58b4314501fec5f9120029f5ed23e2e8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a58b4314501fec5f9120029f5ed23e2e8">&#9670;&nbsp;</a></span>getChipTemp()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">__weak int32_t getChipTemp </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >Helper function implementation for getting the chip temperature if read via internal ADC channel __weak defined and can be overridden in chip dependent code </p>
+
+<p class="definition">Definition at line <a class="el" href="voltagesense_8cpp_source.html#l00096">96</a> of file <a class="el" href="voltagesense_8cpp_source.html">voltagesense.cpp</a>.</p>
 
 </div>
 </div>
@@ -162,7 +209,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="voltagesense_8cpp_source.html#l00048">48</a> of file <a class="el" href="voltagesense_8cpp_source.html">voltagesense.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="voltagesense_8cpp_source.html#l00058">58</a> of file <a class="el" href="voltagesense_8cpp_source.html">voltagesense.cpp</a>.</p>
 
 </div>
 </div>
@@ -181,12 +228,12 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="voltagesense_8cpp_source.html#l00044">44</a> of file <a class="el" href="voltagesense_8cpp_source.html">voltagesense.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="voltagesense_8cpp_source.html#l00053">53</a> of file <a class="el" href="voltagesense_8cpp_source.html">voltagesense.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a76b3bff6033f75f12be8db5d9e5a4bf6" name="a76b3bff6033f75f12be8db5d9e5a4bf6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a76b3bff6033f75f12be8db5d9e5a4bf6">&#9670;&nbsp;</a></span>setupBrakePin()</h2>
+<a id="ac2935ff0889c6e7588869b84ee68d1c9" name="ac2935ff0889c6e7588869b84ee68d1c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2935ff0889c6e7588869b84ee68d1c9">&#9670;&nbsp;</a></span>setupBrakePin()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -194,19 +241,19 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">void setupBrakePin </td>
           <td>(</td>
-          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramtype">int32_t&#160;</td>
           <td class="paramname"><em>vdiffAct</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramtype">int32_t&#160;</td>
           <td class="paramname"><em>vdiffDeact</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramtype">int32_t&#160;</td>
           <td class="paramname"><em>vMax</em>&#160;</td>
         </tr>
         <tr>
@@ -217,7 +264,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="voltagesense_8cpp_source.html#l00038">38</a> of file <a class="el" href="voltagesense_8cpp_source.html">voltagesense.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="voltagesense_8cpp_source.html#l00040">40</a> of file <a class="el" href="voltagesense_8cpp_source.html">voltagesense.cpp</a>.</p>
 
 </div>
 </div>
@@ -237,7 +284,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="voltagesense_8cpp_source.html#l00027">27</a> of file <a class="el" href="voltagesense_8cpp_source.html">voltagesense.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="voltagesense_8cpp_source.html#l00029">29</a> of file <a class="el" href="voltagesense_8cpp_source.html">voltagesense.cpp</a>.</p>
 
 </div>
 </div>
@@ -254,7 +301,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="voltagesense_8cpp_source.html#l00018">18</a> of file <a class="el" href="voltagesense_8cpp_source.html">voltagesense.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="voltagesense_8cpp_source.html#l00020">20</a> of file <a class="el" href="voltagesense_8cpp_source.html">voltagesense.cpp</a>.</p>
 
 </div>
 </div>
@@ -270,7 +317,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="voltagesense_8cpp_source.html#l00021">21</a> of file <a class="el" href="voltagesense_8cpp_source.html">voltagesense.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="voltagesense_8cpp_source.html#l00023">23</a> of file <a class="el" href="voltagesense_8cpp_source.html">voltagesense.cpp</a>.</p>
 
 </div>
 </div>
@@ -286,39 +333,55 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="voltagesense_8cpp_source.html#l00013">13</a> of file <a class="el" href="voltagesense_8cpp_source.html">voltagesense.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="voltagesense_8cpp_source.html#l00015">15</a> of file <a class="el" href="voltagesense_8cpp_source.html">voltagesense.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a240e7071858c78211d32efe0e5f2607f" name="a240e7071858c78211d32efe0e5f2607f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a240e7071858c78211d32efe0e5f2607f">&#9670;&nbsp;</a></span>maxVoltage</h2>
+<a id="a44c1ac9c9c53949f62ba4c021873cedc" name="a44c1ac9c9c53949f62ba4c021873cedc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a44c1ac9c9c53949f62ba4c021873cedc">&#9670;&nbsp;</a></span>chipTempAvg</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint32_t maxVoltage = 65000</td>
+          <td class="memname"><a class="el" href="class_fast_moving_average.html">FastMovingAverage</a>&lt;int32_t&gt; chipTempAvg {5}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="voltagesense_8cpp_source.html#l00014">14</a> of file <a class="el" href="voltagesense_8cpp_source.html">voltagesense.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="voltagesense_8cpp_source.html#l00095">95</a> of file <a class="el" href="voltagesense_8cpp_source.html">voltagesense.cpp</a>.</p>
 
 </div>
 </div>
-<a id="aec382efbcd663ab1221211cf7d10a775" name="aec382efbcd663ab1221211cf7d10a775"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aec382efbcd663ab1221211cf7d10a775">&#9670;&nbsp;</a></span>minVoltage</h2>
+<a id="ad30f64a2acc71490826df31ac002c596" name="ad30f64a2acc71490826df31ac002c596"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad30f64a2acc71490826df31ac002c596">&#9670;&nbsp;</a></span>maxVoltage</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint32_t minVoltage = 6500</td>
+          <td class="memname">int32_t maxVoltage = 65000</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="voltagesense_8cpp_source.html#l00019">19</a> of file <a class="el" href="voltagesense_8cpp_source.html">voltagesense.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="voltagesense_8cpp_source.html#l00016">16</a> of file <a class="el" href="voltagesense_8cpp_source.html">voltagesense.cpp</a>.</p>
+
+</div>
+</div>
+<a id="af76bd2186fc710961936f2bf6a7349ef" name="af76bd2186fc710961936f2bf6a7349ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af76bd2186fc710961936f2bf6a7349ef">&#9670;&nbsp;</a></span>minVoltage</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int32_t minVoltage = 6500</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="voltagesense_8cpp_source.html#l00021">21</a> of file <a class="el" href="voltagesense_8cpp_source.html">voltagesense.cpp</a>.</p>
 
 </div>
 </div>
@@ -334,39 +397,39 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="voltagesense_8cpp_source.html#l00022">22</a> of file <a class="el" href="voltagesense_8cpp_source.html">voltagesense.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="voltagesense_8cpp_source.html#l00024">24</a> of file <a class="el" href="voltagesense_8cpp_source.html">voltagesense.cpp</a>.</p>
 
 </div>
 </div>
-<a id="aa5fecc361d00d80323ae0cc22552573a" name="aa5fecc361d00d80323ae0cc22552573a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa5fecc361d00d80323ae0cc22552573a">&#9670;&nbsp;</a></span>voltageDiffActivate</h2>
+<a id="afeae9cbfaa1b5a383b4edf0bd07c0afd" name="afeae9cbfaa1b5a383b4edf0bd07c0afd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afeae9cbfaa1b5a383b4edf0bd07c0afd">&#9670;&nbsp;</a></span>voltageDiffActivate</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint32_t voltageDiffActivate = 5000</td>
+          <td class="memname">int32_t voltageDiffActivate = 5000</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="voltagesense_8cpp_source.html#l00015">15</a> of file <a class="el" href="voltagesense_8cpp_source.html">voltagesense.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="voltagesense_8cpp_source.html#l00017">17</a> of file <a class="el" href="voltagesense_8cpp_source.html">voltagesense.cpp</a>.</p>
 
 </div>
 </div>
-<a id="aca34a7c9072b83961e288a92a53c43e9" name="aca34a7c9072b83961e288a92a53c43e9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aca34a7c9072b83961e288a92a53c43e9">&#9670;&nbsp;</a></span>voltageDiffDeactivate</h2>
+<a id="afdddad00dfb7060989004ebf1b827bfc" name="afdddad00dfb7060989004ebf1b827bfc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afdddad00dfb7060989004ebf1b827bfc">&#9670;&nbsp;</a></span>voltageDiffDeactivate</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint32_t voltageDiffDeactivate = 4000</td>
+          <td class="memname">int32_t voltageDiffDeactivate = 4000</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="voltagesense_8cpp_source.html#l00016">16</a> of file <a class="el" href="voltagesense_8cpp_source.html">voltagesense.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="voltagesense_8cpp_source.html#l00018">18</a> of file <a class="el" href="voltagesense_8cpp_source.html">voltagesense.cpp</a>.</p>
 
 </div>
 </div>
@@ -382,7 +445,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="voltagesense_8cpp_source.html#l00017">17</a> of file <a class="el" href="voltagesense_8cpp_source.html">voltagesense.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="voltagesense_8cpp_source.html#l00019">19</a> of file <a class="el" href="voltagesense_8cpp_source.html">voltagesense.cpp</a>.</p>
 
 </div>
 </div>

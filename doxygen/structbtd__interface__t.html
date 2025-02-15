@@ -99,12 +99,16 @@ Public Attributes</h2></td></tr>
 <tr class="separator:aa5f94b1fe7421e6ec3f24d821f05f318"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a76529d96bd7f87aae5bada8bac2442a8"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structbtd__interface__t.html#a76529d96bd7f87aae5bada8bac2442a8">ep_acl_in</a></td></tr>
 <tr class="separator:a76529d96bd7f87aae5bada8bac2442a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6d9ef49c603b2bd1c77f7e643b850e8"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structbtd__interface__t.html#ab6d9ef49c603b2bd1c77f7e643b850e8">ep_acl_in_pkt_sz</a></td></tr>
+<tr class="separator:ab6d9ef49c603b2bd1c77f7e643b850e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae36ed35621477870c59e98ac3ceefc00"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structbtd__interface__t.html#ae36ed35621477870c59e98ac3ceefc00">ep_acl_out</a></td></tr>
 <tr class="separator:ae36ed35621477870c59e98ac3ceefc00"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2d250d47c3387cabfb6f96bd2e178454"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structbtd__interface__t.html#a2d250d47c3387cabfb6f96bd2e178454">ep_voice</a> [2]</td></tr>
 <tr class="separator:a2d250d47c3387cabfb6f96bd2e178454"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a2c92ae3111889aec2d43a1ec0babcc"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structbtd__interface__t.html#a5a2c92ae3111889aec2d43a1ec0babcc">ep_voice_size</a> [2][CFG_TUD_BTH_ISO_ALT_COUNT]</td></tr>
 <tr class="separator:a5a2c92ae3111889aec2d43a1ec0babcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad85165fcbd3d5de2f1ed8aba64e4c1cb"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structbtd__interface__t.html#ad85165fcbd3d5de2f1ed8aba64e4c1cb">prev_xferred_bytes</a></td></tr>
+<tr class="separator:ad85165fcbd3d5de2f1ed8aba64e4c1cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a93dba2531861a8a3c11f85eca0977f30"><td class="memItemLeft" align="right" valign="top">CFG_TUSB_MEM_ALIGN <a class="el" href="bth__device_8h.html#a2c62fc9473e98bd4863a1abacc52f497">bt_hci_cmd_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structbtd__interface__t.html#a93dba2531861a8a3c11f85eca0977f30">hci_cmd</a></td></tr>
 <tr class="separator:a93dba2531861a8a3c11f85eca0977f30"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aef0c59120f9cd56399c38bad8f457144"><td class="memItemLeft" align="right" valign="top">CFG_TUSB_MEM_ALIGN uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structbtd__interface__t.html#aef0c59120f9cd56399c38bad8f457144">epout_buf</a> [CFG_TUD_BTH_DATA_EPSIZE]</td></tr>
@@ -130,6 +134,22 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="ab6d9ef49c603b2bd1c77f7e643b850e8" name="ab6d9ef49c603b2bd1c77f7e643b850e8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab6d9ef49c603b2bd1c77f7e643b850e8">&#9670;&nbsp;</a></span>ep_acl_in_pkt_sz</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint16_t btd_interface_t::ep_acl_in_pkt_sz</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="bth__device_8c_source.html#l00045">45</a> of file <a class="el" href="bth__device_8c_source.html">bth_device.c</a>.</p>
+
+</div>
+</div>
 <a id="ae36ed35621477870c59e98ac3ceefc00" name="ae36ed35621477870c59e98ac3ceefc00"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae36ed35621477870c59e98ac3ceefc00">&#9670;&nbsp;</a></span>ep_acl_out</h2>
 
@@ -142,7 +162,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="bth__device_8c_source.html#l00045">45</a> of file <a class="el" href="bth__device_8c_source.html">bth_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="bth__device_8c_source.html#l00046">46</a> of file <a class="el" href="bth__device_8c_source.html">bth_device.c</a>.</p>
 
 </div>
 </div>
@@ -174,7 +194,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="bth__device_8c_source.html#l00046">46</a> of file <a class="el" href="bth__device_8c_source.html">bth_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="bth__device_8c_source.html#l00047">47</a> of file <a class="el" href="bth__device_8c_source.html">bth_device.c</a>.</p>
 
 </div>
 </div>
@@ -190,7 +210,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="bth__device_8c_source.html#l00047">47</a> of file <a class="el" href="bth__device_8c_source.html">bth_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="bth__device_8c_source.html#l00048">48</a> of file <a class="el" href="bth__device_8c_source.html">bth_device.c</a>.</p>
 
 </div>
 </div>
@@ -206,7 +226,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="bth__device_8c_source.html#l00051">51</a> of file <a class="el" href="bth__device_8c_source.html">bth_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="bth__device_8c_source.html#l00055">55</a> of file <a class="el" href="bth__device_8c_source.html">bth_device.c</a>.</p>
 
 </div>
 </div>
@@ -222,7 +242,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="bth__device_8c_source.html#l00050">50</a> of file <a class="el" href="bth__device_8c_source.html">bth_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="bth__device_8c_source.html#l00054">54</a> of file <a class="el" href="bth__device_8c_source.html">bth_device.c</a>.</p>
 
 </div>
 </div>
@@ -239,6 +259,22 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="bth__device_8c_source.html#l00042">42</a> of file <a class="el" href="bth__device_8c_source.html">bth_device.c</a>.</p>
+
+</div>
+</div>
+<a id="ad85165fcbd3d5de2f1ed8aba64e4c1cb" name="ad85165fcbd3d5de2f1ed8aba64e4c1cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad85165fcbd3d5de2f1ed8aba64e4c1cb">&#9670;&nbsp;</a></span>prev_xferred_bytes</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t btd_interface_t::prev_xferred_bytes</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="bth__device_8c_source.html#l00051">51</a> of file <a class="el" href="bth__device_8c_source.html">bth_device.c</a>.</p>
 
 </div>
 </div>

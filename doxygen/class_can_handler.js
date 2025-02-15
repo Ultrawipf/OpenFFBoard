@@ -2,10 +2,10 @@ var class_can_handler =
 [
     [ "CanHandler", "class_can_handler.html#a3f2604934604f431dc0f48a84ee60f22", null ],
     [ "~CanHandler", "class_can_handler.html#a562a01205e76ff9d5b0f554cee1a446b", null ],
-    [ "canErrorCallback", "class_can_handler.html#afbcdeeb42119dc4f9e844e40f7e777d5", null ],
-    [ "canRxFullCallback", "class_can_handler.html#a40cb9e6af6a482920327d741d4b423f5", null ],
-    [ "canRxPendCallback", "class_can_handler.html#a53651a4aa1e88f3e442c054aae0a33d7", null ],
-    [ "canTxAbortCallback", "class_can_handler.html#a0e2267410edc1d3f36bf8cb228ff458b", null ],
-    [ "canTxCpltCallback", "class_can_handler.html#a12401bc2ece26ccb4adf12ec833276c8", null ],
+    [ "canErrorCallback", "class_can_handler.html#a87cbd1ffa351f398cd092624034c53de", null ],
+    [ "canRxFullCallback", "class_can_handler.html#a7c2378e74f74a6aeb1d78b8016617e7d", null ],
+    [ "canRxPendCallback", "class_can_handler.html#aaf8690763a1e1c57d369dc41162732bd", null ],
+    [ "canTxAbortCallback", "class_can_handler.html#ab9f23009ef5f97846cba05d2e66eb962", null ],
+    [ "canTxCpltCallback", "class_can_handler.html#a85e19cebbab39ad65a5a837b78984545", null ],
     [ "getCANHandlers", "class_can_handler.html#a8ed97e1ea01b2899296ae4d702abb95b", null ]
 ];

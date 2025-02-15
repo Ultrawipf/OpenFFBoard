@@ -95,27 +95,31 @@ $(document).ready(function(){initNavTree('cdc__rndis__host_8c.html',''); initRes
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ae877b140d54118e337eaf9d46a364361"><td class="memItemLeft" align="right" valign="top">CFG_TUSB_MEM_SECTION&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cdc__rndis__host_8c.html#ae877b140d54118e337eaf9d46a364361">TU_ATTR_ALIGNED</a> (4)</td></tr>
-<tr class="separator:ae877b140d54118e337eaf9d46a364361"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3e730569fdef16bea1f798cb0d6e7da1"><td class="memItemLeft" align="right" valign="top">OSAL_TASK_FUNCTION()&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cdc__rndis__host_8c.html#a3e730569fdef16bea1f798cb0d6e7da1">cdch_rndis_task</a> (void *param;)</td></tr>
-<tr class="separator:a3e730569fdef16bea1f798cb0d6e7da1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae9967dc862d585c937536ca518c5b224"><td class="memItemLeft" align="right" valign="top">static tusb_error_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cdc__rndis__host_8c.html#ae9967dc862d585c937536ca518c5b224">rndis_body_subtask</a> (void)</td></tr>
 <tr class="separator:ae9967dc862d585c937536ca518c5b224"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84d963eddc9641da93cf997bd222da3e"><td class="memItemLeft" align="right" valign="top">static tusb_error_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cdc__rndis__host_8c.html#a84d963eddc9641da93cf997bd222da3e">send_message_get_response_subtask</a> (uint8_t <a class="el" href="dcd__pic32mz_8c.html#a1997a5306d6d04a9ce867303d1a6d9e1">dev_addr</a>, cdch_data_t *p_cdc, uint8_t *p_mess, uint32_t mess_length, uint8_t *p_response)</td></tr>
+<tr class="separator:a84d963eddc9641da93cf997bd222da3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aebe8e1f74d6eb5faa173cbdf69ac40ac"><td class="memItemLeft" align="right" valign="top">tusb_error_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cdc__rndis__host_8c.html#aebe8e1f74d6eb5faa173cbdf69ac40ac">tusbh_cdc_rndis_get_mac_addr</a> (uint8_t <a class="el" href="dcd__pic32mz_8c.html#a1997a5306d6d04a9ce867303d1a6d9e1">dev_addr</a>, uint8_t mac_address[6])</td></tr>
+<tr class="separator:aebe8e1f74d6eb5faa173cbdf69ac40ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e730569fdef16bea1f798cb0d6e7da1"><td class="memItemLeft" align="right" valign="top">OSAL_TASK_FUNCTION()&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cdc__rndis__host_8c.html#a3e730569fdef16bea1f798cb0d6e7da1">cdch_rndis_task</a> (void *param;)</td></tr>
+<tr class="separator:a3e730569fdef16bea1f798cb0d6e7da1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga05576fa25385d9b854f59df0fa80cbfa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___c_d_c___r_n_s_i_d___host.html#ga05576fa25385d9b854f59df0fa80cbfa">rndish_init</a> (void)</td></tr>
 <tr class="separator:ga05576fa25385d9b854f59df0fa80cbfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga0bcef342007999b01c27bd707f0f991a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___c_d_c___r_n_s_i_d___host.html#ga0bcef342007999b01c27bd707f0f991a">rndish_close</a> (uint8_t dev_addr)</td></tr>
+<tr class="memitem:ga0bcef342007999b01c27bd707f0f991a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___c_d_c___r_n_s_i_d___host.html#ga0bcef342007999b01c27bd707f0f991a">rndish_close</a> (uint8_t <a class="el" href="dcd__pic32mz_8c.html#a1997a5306d6d04a9ce867303d1a6d9e1">dev_addr</a>)</td></tr>
 <tr class="separator:ga0bcef342007999b01c27bd707f0f991a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae0def7e8b8d8d09871d03d270f02d594"><td class="memItemLeft" align="right" valign="top">tusb_error_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___c_d_c___r_n_s_i_d___host.html#gae0def7e8b8d8d09871d03d270f02d594">rndish_open_subtask</a> (uint8_t dev_addr, <a class="el" href="structcdch__data__t.html">cdch_data_t</a> *p_cdc)</td></tr>
-<tr class="separator:gae0def7e8b8d8d09871d03d270f02d594"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3686f667d426d091443e9300eb3450e5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___c_d_c___r_n_s_i_d___host.html#ga3686f667d426d091443e9300eb3450e5">rndish_xfer_isr</a> (<a class="el" href="structcdch__data__t.html">cdch_data_t</a> *p_cdc, pipe_handle_t pipe_hdl, <a class="el" href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a> event, uint32_t xferred_bytes)</td></tr>
+<tr class="memitem:ga31153188ce9c458b01856405b2628c1c"><td class="memItemLeft" align="right" valign="top">tusb_error_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___c_d_c___r_n_s_i_d___host.html#ga31153188ce9c458b01856405b2628c1c">rndish_open_subtask</a> (uint8_t <a class="el" href="dcd__pic32mz_8c.html#a1997a5306d6d04a9ce867303d1a6d9e1">dev_addr</a>, cdch_data_t *p_cdc)</td></tr>
+<tr class="separator:ga31153188ce9c458b01856405b2628c1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3686f667d426d091443e9300eb3450e5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___c_d_c___r_n_s_i_d___host.html#ga3686f667d426d091443e9300eb3450e5">rndish_xfer_isr</a> (cdch_data_t *p_cdc, pipe_handle_t pipe_hdl, <a class="el" href="tusb__types_8h.html#a6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a> event, uint32_t xferred_bytes)</td></tr>
 <tr class="separator:ga3686f667d426d091443e9300eb3450e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a84d963eddc9641da93cf997bd222da3e"><td class="memItemLeft" align="right" valign="top">static tusb_error_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cdc__rndis__host_8c.html#a84d963eddc9641da93cf997bd222da3e">send_message_get_response_subtask</a> (uint8_t dev_addr, <a class="el" href="structcdch__data__t.html">cdch_data_t</a> *p_cdc, uint8_t *p_mess, uint32_t mess_length, uint8_t *p_response)</td></tr>
-<tr class="separator:a84d963eddc9641da93cf997bd222da3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a2469b24c9884462f8afd73fe42d1ce13"><td class="memItemLeft" align="right" valign="top">static CFG_TUSB_MEM_SECTION uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cdc__rndis__host_8c.html#a2469b24c9884462f8afd73fe42d1ce13">msg_notification</a> [CFG_TUH_DEVICE_MAX][8]</td></tr>
-<tr class="separator:a2469b24c9884462f8afd73fe42d1ce13"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc310e590906ead8573599ded4151576"><td class="memItemLeft" align="right" valign="top">static CFG_TUH_MEM_SECTION uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cdc__rndis__host_8c.html#adc310e590906ead8573599ded4151576">msg_notification</a> [CFG_TUH_DEVICE_MAX][8]</td></tr>
+<tr class="separator:adc310e590906ead8573599ded4151576"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a0bb35ab41fb9669c10d5a6982058b3"><td class="memItemLeft" align="right" valign="top">CFG_TUH_MEM_SECTION static CFG_TUH_MEM_ALIGN uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cdc__rndis__host_8c.html#a9a0bb35ab41fb9669c10d5a6982058b3">msg_payload</a> [RNDIS_MSG_PAYLOAD_MAX]</td></tr>
+<tr class="separator:a9a0bb35ab41fb9669c10d5a6982058b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5567ce3696a56a70ee0e60684010e17"><td class="memItemLeft" align="right" valign="top">static rndish_data_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cdc__rndis__host_8c.html#aa5567ce3696a56a70ee0e60684010e17">rndish_data</a> [CFG_TUH_DEVICE_MAX]</td></tr>
+<tr class="separator:aa5567ce3696a56a70ee0e60684010e17"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7b4c210ed0e6e26b40038241c238d8b1"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structrndis__msg__initialize__t.html">rndis_msg_initialize_t</a> const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cdc__rndis__host_8c.html#a7b4c210ed0e6e26b40038241c238d8b1">msg_init</a></td></tr>
 <tr class="separator:a7b4c210ed0e6e26b40038241c238d8b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afe35f587e321f61564d5a06ecf909379"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structrndis__msg__query__t.html">rndis_msg_query_t</a> const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cdc__rndis__host_8c.html#afe35f587e321f61564d5a06ecf909379">msg_query_permanent_addr</a></td></tr>
@@ -140,7 +144,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cdc__rndis__host_8c_source.html#l00078">78</a> of file <a class="el" href="cdc__rndis__host_8c_source.html">cdc_rndis_host.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__rndis__host_8c_source.html#l00088">88</a> of file <a class="el" href="cdc__rndis__host_8c_source.html">cdc_rndis_host.c</a>.</p>
 
 </div>
 </div>
@@ -168,7 +172,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cdc__rndis__host_8c_source.html#l00085">85</a> of file <a class="el" href="cdc__rndis__host_8c_source.html">cdc_rndis_host.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__rndis__host_8c_source.html#l00095">95</a> of file <a class="el" href="cdc__rndis__host_8c_source.html">cdc_rndis_host.c</a>.</p>
 
 </div>
 </div>
@@ -190,7 +194,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structcdch__data__t.html">cdch_data_t</a> *&#160;</td>
+          <td class="paramtype">cdch_data_t *&#160;</td>
           <td class="paramname"><em>p_cdc</em>, </td>
         </tr>
         <tr>
@@ -224,27 +228,37 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cdc__rndis__host_8c_source.html#l00224">224</a> of file <a class="el" href="cdc__rndis__host_8c_source.html">cdc_rndis_host.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__rndis__host_8c_source.html#l00234">234</a> of file <a class="el" href="cdc__rndis__host_8c_source.html">cdc_rndis_host.c</a>.</p>
 
 </div>
 </div>
-<a id="ae877b140d54118e337eaf9d46a364361" name="ae877b140d54118e337eaf9d46a364361"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae877b140d54118e337eaf9d46a364361">&#9670;&nbsp;</a></span>TU_ATTR_ALIGNED()</h2>
+<a id="aebe8e1f74d6eb5faa173cbdf69ac40ac" name="aebe8e1f74d6eb5faa173cbdf69ac40ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aebe8e1f74d6eb5faa173cbdf69ac40ac">&#9670;&nbsp;</a></span>tusbh_cdc_rndis_get_mac_addr()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">CFG_TUSB_MEM_SECTION TU_ATTR_ALIGNED </td>
+          <td class="memname">tusb_error_t tusbh_cdc_rndis_get_mac_addr </td>
           <td>(</td>
-          <td class="paramtype">4&#160;</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>dev_addr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>mac_address</em>[6]&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cdc__rndis__host_8c_source.html#l00044">44</a> of file <a class="el" href="cdc__rndis__host_8c_source.html">cdc_rndis_host.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__rndis__host_8c_source.html#l00071">71</a> of file <a class="el" href="cdc__rndis__host_8c_source.html">cdc_rndis_host.c</a>.</p>
 
 </div>
 </div>
@@ -279,12 +293,12 @@ Variables</h2></td></tr>
 <div class="line">}</div>
 <div class="ttc" id="astructrndis__msg__initialize__t_html"><div class="ttname"><a href="structrndis__msg__initialize__t.html">rndis_msg_initialize_t</a></div><div class="ttdoc">Initialize Message.</div><div class="ttdef"><b>Definition:</b> <a href="cdc__rndis_8h_source.html#l00093">cdc_rndis.h:93</a></div></div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="cdc__rndis__host_8c_source.html#l00124">124</a> of file <a class="el" href="cdc__rndis__host_8c_source.html">cdc_rndis_host.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__rndis__host_8c_source.html#l00134">134</a> of file <a class="el" href="cdc__rndis__host_8c_source.html">cdc_rndis_host.c</a>.</p>
 
 </div>
 </div>
-<a id="a2469b24c9884462f8afd73fe42d1ce13" name="a2469b24c9884462f8afd73fe42d1ce13"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2469b24c9884462f8afd73fe42d1ce13">&#9670;&nbsp;</a></span>msg_notification</h2>
+<a id="adc310e590906ead8573599ded4151576" name="adc310e590906ead8573599ded4151576"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adc310e590906ead8573599ded4151576">&#9670;&nbsp;</a></span>msg_notification</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -293,7 +307,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">CFG_TUSB_MEM_SECTION uint8_t msg_notification[CFG_TUH_DEVICE_MAX][8]</td>
+          <td class="memname">CFG_TUH_MEM_SECTION uint8_t msg_notification[CFG_TUH_DEVICE_MAX][8]</td>
         </tr>
       </table>
   </td>
@@ -303,7 +317,31 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cdc__rndis__host_8c_source.html#l00043">43</a> of file <a class="el" href="cdc__rndis__host_8c_source.html">cdc_rndis_host.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__rndis__host_8c_source.html#l00053">53</a> of file <a class="el" href="cdc__rndis__host_8c_source.html">cdc_rndis_host.c</a>.</p>
+
+</div>
+</div>
+<a id="a9a0bb35ab41fb9669c10d5a6982058b3" name="a9a0bb35ab41fb9669c10d5a6982058b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9a0bb35ab41fb9669c10d5a6982058b3">&#9670;&nbsp;</a></span>msg_payload</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">CFG_TUH_MEM_SECTION static CFG_TUH_MEM_ALIGN uint8_t msg_payload[RNDIS_MSG_PAYLOAD_MAX]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="cdc__rndis__host_8c_source.html#l00054">54</a> of file <a class="el" href="cdc__rndis__host_8c_source.html">cdc_rndis_host.c</a>.</p>
 
 </div>
 </div>
@@ -338,7 +376,7 @@ Variables</h2></td></tr>
 <div class="ttc" id="agroup___c_d_c___r_n_d_i_s___common_html_gga1f481916fd3d96784ade7285b72c8e7aacfaa316f73bb2f57dd8063e0f0a40646"><div class="ttname"><a href="group___c_d_c___r_n_d_i_s___common.html#gga1f481916fd3d96784ade7285b72c8e7aacfaa316f73bb2f57dd8063e0f0a40646">RNDIS_OID_802_3_PERMANENT_ADDRESS</a></div><div class="ttdeci">@ RNDIS_OID_802_3_PERMANENT_ADDRESS</div><div class="ttdoc">Permanent station address.</div><div class="ttdef"><b>Definition:</b> <a href="cdc__rndis_8h_source.html#l00270">cdc_rndis.h:270</a></div></div>
 <div class="ttc" id="astructrndis__msg__query__t_html"><div class="ttname"><a href="structrndis__msg__query__t.html">rndis_msg_query_t</a></div><div class="ttdoc">Query Message.</div><div class="ttdef"><b>Definition:</b> <a href="cdc__rndis_8h_source.html#l00122">cdc_rndis.h:122</a></div></div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="cdc__rndis__host_8c_source.html#l00134">134</a> of file <a class="el" href="cdc__rndis__host_8c_source.html">cdc_rndis_host.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__rndis__host_8c_source.html#l00144">144</a> of file <a class="el" href="cdc__rndis__host_8c_source.html">cdc_rndis_host.c</a>.</p>
 
 </div>
 </div>
@@ -373,7 +411,31 @@ Variables</h2></td></tr>
 <div class="ttc" id="agroup___c_d_c___r_n_d_i_s___common_html_ga08ca37dc8c760cc6e2331fe8304f2652"><div class="ttname"><a href="group___c_d_c___r_n_d_i_s___common.html#ga08ca37dc8c760cc6e2331fe8304f2652">rndis_msg_set_t</a></div><div class="ttdeci">struct rndis_msg_query_t rndis_msg_set_t</div></div>
 <div class="ttc" id="agroup___c_d_c___r_n_d_i_s___common_html_gga1f481916fd3d96784ade7285b72c8e7aa0b7edd6d0275c76c9a7360973607263b"><div class="ttname"><a href="group___c_d_c___r_n_d_i_s___common.html#gga1f481916fd3d96784ade7285b72c8e7aa0b7edd6d0275c76c9a7360973607263b">RNDIS_OID_GEN_CURRENT_PACKET_FILTER</a></div><div class="ttdeci">@ RNDIS_OID_GEN_CURRENT_PACKET_FILTER</div><div class="ttdoc">Current packet filter (encoded)</div><div class="ttdef"><b>Definition:</b> <a href="cdc__rndis_8h_source.html#l00252">cdc_rndis.h:252</a></div></div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="cdc__rndis__host_8c_source.html#l00144">144</a> of file <a class="el" href="cdc__rndis__host_8c_source.html">cdc_rndis_host.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cdc__rndis__host_8c_source.html#l00154">154</a> of file <a class="el" href="cdc__rndis__host_8c_source.html">cdc_rndis_host.c</a>.</p>
+
+</div>
+</div>
+<a id="aa5567ce3696a56a70ee0e60684010e17" name="aa5567ce3696a56a70ee0e60684010e17"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa5567ce3696a56a70ee0e60684010e17">&#9670;&nbsp;</a></span>rndish_data</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">rndish_data_t rndish_data[CFG_TUH_DEVICE_MAX]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="cdc__rndis__host_8c_source.html#l00056">56</a> of file <a class="el" href="cdc__rndis__host_8c_source.html">cdc_rndis_host.c</a>.</p>
 
 </div>
 </div>

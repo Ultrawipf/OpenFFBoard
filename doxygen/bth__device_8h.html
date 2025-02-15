@@ -120,13 +120,15 @@ Functions</h2></td></tr>
 <tr class="separator:a9d73fb66adebebabb2753eb62078d423"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a34173a613bd4ee7c2bb58a118ca13514"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="bth__device_8h.html#a34173a613bd4ee7c2bb58a118ca13514">btd_init</a> (void)</td></tr>
 <tr class="separator:a34173a613bd4ee7c2bb58a118ca13514"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa728b26d7ecef58f9e664da9be44a339"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="bth__device_8h.html#aa728b26d7ecef58f9e664da9be44a339">btd_deinit</a> (void)</td></tr>
+<tr class="separator:aa728b26d7ecef58f9e664da9be44a339"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a38ee1e9886bb66988d2ece13c0ba1019"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="bth__device_8h.html#a38ee1e9886bb66988d2ece13c0ba1019">btd_reset</a> (uint8_t rhport)</td></tr>
 <tr class="separator:a38ee1e9886bb66988d2ece13c0ba1019"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a822abc760633e0817742baeec1d07a8a"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="bth__device_8h.html#a822abc760633e0817742baeec1d07a8a">btd_open</a> (uint8_t rhport, <a class="el" href="group___u_s_b_def___type.html#gac4415f9c56f80b658137e35c14b58096">tusb_desc_interface_t</a> const *itf_desc, uint16_t max_len)</td></tr>
+<tr class="memitem:a822abc760633e0817742baeec1d07a8a"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="bth__device_8h.html#a822abc760633e0817742baeec1d07a8a">btd_open</a> (uint8_t rhport, <a class="el" href="tusb__types_8h.html#ac4415f9c56f80b658137e35c14b58096">tusb_desc_interface_t</a> const *itf_desc, uint16_t max_len)</td></tr>
 <tr class="separator:a822abc760633e0817742baeec1d07a8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3ffed698b5afe18aa95c5b0f96cdcd64"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="bth__device_8h.html#a3ffed698b5afe18aa95c5b0f96cdcd64">btd_control_xfer_cb</a> (uint8_t rhport, uint8_t stage, <a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *request)</td></tr>
+<tr class="memitem:a3ffed698b5afe18aa95c5b0f96cdcd64"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="bth__device_8h.html#a3ffed698b5afe18aa95c5b0f96cdcd64">btd_control_xfer_cb</a> (uint8_t rhport, uint8_t <a class="el" href="usbh_8c.html#a8efea5b2da521d9d454f141866ab68cb">stage</a>, <a class="el" href="tusb__types_8h.html#a2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *request)</td></tr>
 <tr class="separator:a3ffed698b5afe18aa95c5b0f96cdcd64"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a523c5941d52f5c9ab894b0c04cb8d047"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="bth__device_8h.html#a523c5941d52f5c9ab894b0c04cb8d047">btd_xfer_cb</a> (uint8_t rhport, uint8_t edpt_addr, <a class="el" href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a> result, uint32_t xferred_bytes)</td></tr>
+<tr class="memitem:a523c5941d52f5c9ab894b0c04cb8d047"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="bth__device_8h.html#a523c5941d52f5c9ab894b0c04cb8d047">btd_xfer_cb</a> (uint8_t rhport, uint8_t edpt_addr, <a class="el" href="tusb__types_8h.html#a6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a> result, uint32_t xferred_bytes)</td></tr>
 <tr class="separator:a523c5941d52f5c9ab894b0c04cb8d047"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
@@ -171,7 +173,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *&#160;</td>
+          <td class="paramtype"><a class="el" href="tusb__types_8h.html#a2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *&#160;</td>
           <td class="paramname"><em>request</em>&#160;</td>
         </tr>
         <tr>
@@ -182,7 +184,27 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="bth__device_8c_source.html#l00195">195</a> of file <a class="el" href="bth__device_8c_source.html">bth_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="bth__device_8c_source.html#l00218">218</a> of file <a class="el" href="bth__device_8c_source.html">bth_device.c</a>.</p>
+
+</div>
+</div>
+<a id="aa728b26d7ecef58f9e664da9be44a339" name="aa728b26d7ecef58f9e664da9be44a339"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa728b26d7ecef58f9e664da9be44a339">&#9670;&nbsp;</a></span>btd_deinit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool btd_deinit </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="bth__device_8c_source.html#l00102">102</a> of file <a class="el" href="bth__device_8c_source.html">bth_device.c</a>.</p>
 
 </div>
 </div>
@@ -202,7 +224,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="bth__device_8c_source.html#l00092">92</a> of file <a class="el" href="bth__device_8c_source.html">bth_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="bth__device_8c_source.html#l00098">98</a> of file <a class="el" href="bth__device_8c_source.html">bth_device.c</a>.</p>
 
 </div>
 </div>
@@ -221,7 +243,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#gac4415f9c56f80b658137e35c14b58096">tusb_desc_interface_t</a> const *&#160;</td>
+          <td class="paramtype"><a class="el" href="tusb__types_8h.html#ac4415f9c56f80b658137e35c14b58096">tusb_desc_interface_t</a> const *&#160;</td>
           <td class="paramname"><em>itf_desc</em>, </td>
         </tr>
         <tr>
@@ -238,7 +260,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="bth__device_8c_source.html#l00102">102</a> of file <a class="el" href="bth__device_8c_source.html">bth_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="bth__device_8c_source.html#l00111">111</a> of file <a class="el" href="bth__device_8c_source.html">bth_device.c</a>.</p>
 
 </div>
 </div>
@@ -258,7 +280,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="bth__device_8c_source.html#l00097">97</a> of file <a class="el" href="bth__device_8c_source.html">bth_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="bth__device_8c_source.html#l00106">106</a> of file <a class="el" href="bth__device_8c_source.html">bth_device.c</a>.</p>
 
 </div>
 </div>
@@ -283,7 +305,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="tusb__types_8h.html#a6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a>&#160;</td>
           <td class="paramname"><em>result</em>, </td>
         </tr>
         <tr>
@@ -300,7 +322,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="bth__device_8c_source.html#l00234">234</a> of file <a class="el" href="bth__device_8c_source.html">bth_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="bth__device_8c_source.html#l00259">259</a> of file <a class="el" href="bth__device_8c_source.html">bth_device.c</a>.</p>
 
 </div>
 </div>
@@ -358,7 +380,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="bth__device_8c_source.html#l00084">84</a> of file <a class="el" href="bth__device_8c_source.html">bth_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="bth__device_8c_source.html#l00090">90</a> of file <a class="el" href="bth__device_8c_source.html">bth_device.c</a>.</p>
 
 </div>
 </div>
@@ -406,7 +428,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="bth__device_8c_source.html#l00079">79</a> of file <a class="el" href="bth__device_8c_source.html">bth_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="bth__device_8c_source.html#l00085">85</a> of file <a class="el" href="bth__device_8c_source.html">bth_device.c</a>.</p>
 
 </div>
 </div>

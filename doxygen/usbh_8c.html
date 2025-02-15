@@ -108,123 +108,215 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:af8654c714018c6241d9ebd01f3fb5a26"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <a class="el" href="usbh_8c.html#af8654c714018c6241d9ebd01f3fb5a26a06827fb1b800dd4df84c46e3db632cf7">DRVID_INVALID</a> = 0xFFu
+<tr class="memitem:adbaf9202177df73e6880eab6e6aab329"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <a class="el" href="usbh_8c.html#adbaf9202177df73e6880eab6e6aab329a684c73c98e0b3538c8e20a083b2b3521">BUILTIN_DRIVER_COUNT</a> = TU_ARRAY_SIZE(usbh_class_drivers)
  }</td></tr>
-<tr class="separator:af8654c714018c6241d9ebd01f3fb5a26"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2f80701c36e79c0640d91c788feee0b3"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <a class="el" href="usbh_8c.html#a2f80701c36e79c0640d91c788feee0b3a156537bd0faf441a451c955e4691af70">ADDR_INVALID</a> = 0xFFu
+<tr class="separator:adbaf9202177df73e6880eab6e6aab329"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7495a48740c9d555f7fbcb48246dbd93"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <a class="el" href="usbh_8c.html#a7495a48740c9d555f7fbcb48246dbd93a9ef96027281cc2b3431239fb6b10cde7">CONFIG_NUM</a> = 1
  }</td></tr>
-<tr class="separator:a2f80701c36e79c0640d91c788feee0b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a531c35e38ede3ea4e5ba5afb24b29493"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <a class="el" href="usbh_8c.html#a531c35e38ede3ea4e5ba5afb24b29493a3d69eab44dbede9d61507ef234aea764">USBH_CLASS_DRIVER_COUNT</a> = TU_ARRAY_SIZE(usbh_class_drivers)
+<tr class="separator:a7495a48740c9d555f7fbcb48246dbd93"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26e1124d33b4acdb532c49f6498df549"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <a class="el" href="usbh_8c.html#a26e1124d33b4acdb532c49f6498df549a515c2c5e00bd4ab9023a6fe87608b0ba">ENUM_RESET_DELAY_MS</a> = 50
+, <a class="el" href="usbh_8c.html#a26e1124d33b4acdb532c49f6498df549a8f8b5016861f47c72f307f48a8e8ef7a">ENUM_DEBOUNCING_DELAY_MS</a> = 450
  }</td></tr>
-<tr class="separator:a531c35e38ede3ea4e5ba5afb24b29493"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9334a5b9057f32da96db9b5c6a045d67"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <a class="el" href="usbh_8c.html#a9334a5b9057f32da96db9b5c6a045d67a255e787af798f103692ae6a228b0600a">RESET_DELAY</a> = 500
+<tr class="separator:a26e1124d33b4acdb532c49f6498df549"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ee8d0f117a79ca7eb1e0076a9182bcb"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <br />
+&#160;&#160;<a class="el" href="usbh_8c.html#a7ee8d0f117a79ca7eb1e0076a9182bcbadf31577fd0b436a739bcfed90e4b21a6">ENUM_IDLE</a>
+, <a class="el" href="usbh_8c.html#a7ee8d0f117a79ca7eb1e0076a9182bcba02d3a81cf935f49c8e87dd58afb40679">ENUM_RESET_1</a>
+, <a class="el" href="usbh_8c.html#a7ee8d0f117a79ca7eb1e0076a9182bcba613f159c5cce223c0aae3101f89e9f11">ENUM_HUB_CLEAR_RESET_1</a>
+, <a class="el" href="usbh_8c.html#a7ee8d0f117a79ca7eb1e0076a9182bcba0242b930bd4a266cdf3c534efe2a468f">ENUM_ADDR0_DEVICE_DESC</a>
+, <br />
+&#160;&#160;<a class="el" href="usbh_8c.html#a7ee8d0f117a79ca7eb1e0076a9182bcba59dfac7466b2a40fc45c33e0e53b14cb">ENUM_RESET_2</a>
+, <a class="el" href="usbh_8c.html#a7ee8d0f117a79ca7eb1e0076a9182bcba3ef4eb09b2f47a55a2fe4ad78533ce29">ENUM_HUB_GET_STATUS_2</a>
+, <a class="el" href="usbh_8c.html#a7ee8d0f117a79ca7eb1e0076a9182bcba1e1ba2988cd0180962a9cdce12bd7b26">ENUM_HUB_CLEAR_RESET_2</a>
+, <a class="el" href="usbh_8c.html#a7ee8d0f117a79ca7eb1e0076a9182bcba26437a2ed2d9aa2807a78ae9e9e9f87d">ENUM_SET_ADDR</a>
+, <br />
+&#160;&#160;<a class="el" href="usbh_8c.html#a7ee8d0f117a79ca7eb1e0076a9182bcbae96ab4e9a98a6ce96247c93e362b1cf4">ENUM_GET_DEVICE_DESC</a>
+, <a class="el" href="usbh_8c.html#a7ee8d0f117a79ca7eb1e0076a9182bcba446bd3c92005224d405f2339dfc347f2">ENUM_GET_9BYTE_CONFIG_DESC</a>
+, <a class="el" href="usbh_8c.html#a7ee8d0f117a79ca7eb1e0076a9182bcbaa98ae12ce4ce20e3c0b97196dd5adf61">ENUM_GET_FULL_CONFIG_DESC</a>
+, <a class="el" href="usbh_8c.html#a7ee8d0f117a79ca7eb1e0076a9182bcba04f3342c0ebc65a11303047adb73cb24">ENUM_SET_CONFIG</a>
+, <br />
+&#160;&#160;<a class="el" href="usbh_8c.html#a7ee8d0f117a79ca7eb1e0076a9182bcba718b24de28a7e48b7204d6cdab18bf88">ENUM_CONFIG_DRIVER</a>
+<br />
  }</td></tr>
-<tr class="separator:a9334a5b9057f32da96db9b5c6a045d67"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8628933cde20921c453a6d2607bdad62"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <a class="el" href="usbh_8c.html#a8628933cde20921c453a6d2607bdad62a9ef96027281cc2b3431239fb6b10cde7">CONFIG_NUM</a> = 1
- }</td></tr>
-<tr class="separator:a8628933cde20921c453a6d2607bdad62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:a7ee8d0f117a79ca7eb1e0076a9182bcb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a658a3f9040ddc34fe61cb611272bb08d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a658a3f9040ddc34fe61cb611272bb08d">OSAL_QUEUE_DEF</a> (OPT_MODE_HOST, _usbh_qdef, CFG_TUH_TASK_QUEUE_SZ, <a class="el" href="structhcd__event__t.html">hcd_event_t</a>)</td></tr>
-<tr class="separator:a658a3f9040ddc34fe61cb611272bb08d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a237e360a729c02a6dbd03df1d4ee1acd"><td class="memItemLeft" align="right" valign="top">static TU_ATTR_ALWAYS_INLINE <a class="el" href="structusbh__device__t.html">usbh_device_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a237e360a729c02a6dbd03df1d4ee1acd">get_device</a> (uint8_t dev_addr)</td></tr>
+<tr class="memitem:a25d2c48b9cd6dfaec840f364598321b2"><td class="memItemLeft" align="right" valign="top">TU_ATTR_WEAK bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a25d2c48b9cd6dfaec840f364598321b2">hcd_deinit</a> (uint8_t rhport)</td></tr>
+<tr class="separator:a25d2c48b9cd6dfaec840f364598321b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb5a8ba96a9d9f7a626768db278c82b4"><td class="memItemLeft" align="right" valign="top">TU_ATTR_WEAK bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#adb5a8ba96a9d9f7a626768db278c82b4">hcd_configure</a> (uint8_t rhport, uint32_t cfg_id, const void *cfg_param)</td></tr>
+<tr class="separator:adb5a8ba96a9d9f7a626768db278c82b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1fd3e14a8e2bbea4832a60118e16889"><td class="memItemLeft" align="right" valign="top">TU_ATTR_WEAK void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#ad1fd3e14a8e2bbea4832a60118e16889">tuh_event_hook_cb</a> (uint8_t rhport, uint32_t eventid, bool <a class="el" href="dcd__msp430x5xx_8c.html#a75c7dcc996a49b19a8500fbe8ceed04b">in_isr</a>)</td></tr>
+<tr class="separator:ad1fd3e14a8e2bbea4832a60118e16889"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf8ff9a9da11706d2917841aecae2804"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structusbh__class__driver__t.html">usbh_class_driver_t</a> const *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#adf8ff9a9da11706d2917841aecae2804">get_driver</a> (uint8_t drv_id)</td></tr>
+<tr class="separator:adf8ff9a9da11706d2917841aecae2804"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53ace1cead216eb8bd433a0e7a8a16e1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a53ace1cead216eb8bd433a0e7a8a16e1">OSAL_QUEUE_DEF</a> (<a class="el" href="usbh__pvt_8h.html#aa6b1dcc1412cdcd269da06e5b7550a09">usbh_int_set</a>, _usbh_qdef, CFG_TUH_TASK_QUEUE_SZ, <a class="el" href="structhcd__event__t.html">hcd_event_t</a>)</td></tr>
+<tr class="separator:a53ace1cead216eb8bd433a0e7a8a16e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a237e360a729c02a6dbd03df1d4ee1acd"><td class="memItemLeft" align="right" valign="top">static TU_ATTR_ALWAYS_INLINE <a class="el" href="structusbh__device__t.html">usbh_device_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a237e360a729c02a6dbd03df1d4ee1acd">get_device</a> (uint8_t <a class="el" href="dcd__pic32mz_8c.html#a1997a5306d6d04a9ce867303d1a6d9e1">dev_addr</a>)</td></tr>
 <tr class="separator:a237e360a729c02a6dbd03df1d4ee1acd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aade9185754f901d1f47712090725e1f7"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#aade9185754f901d1f47712090725e1f7">enum_new_device</a> (<a class="el" href="structhcd__event__t.html">hcd_event_t</a> *event)</td></tr>
 <tr class="separator:aade9185754f901d1f47712090725e1f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad72242ec7f88e9cd7545a69417940890"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#ad72242ec7f88e9cd7545a69417940890">process_device_unplugged</a> (uint8_t rhport, uint8_t hub_addr, uint8_t hub_port)</td></tr>
-<tr class="separator:ad72242ec7f88e9cd7545a69417940890"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a92b05c45a5893c38f71093bad92a2c85"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a92b05c45a5893c38f71093bad92a2c85">usbh_edpt_control_open</a> (uint8_t dev_addr, uint8_t max_packet_size)</td></tr>
+<tr class="memitem:ae3ea0bab12945006ea43d19f372d4269"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#ae3ea0bab12945006ea43d19f372d4269">process_removing_device</a> (uint8_t rhport, uint8_t hub_addr, uint8_t hub_port)</td></tr>
+<tr class="separator:ae3ea0bab12945006ea43d19f372d4269"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92b05c45a5893c38f71093bad92a2c85"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a92b05c45a5893c38f71093bad92a2c85">usbh_edpt_control_open</a> (uint8_t <a class="el" href="dcd__pic32mz_8c.html#a1997a5306d6d04a9ce867303d1a6d9e1">dev_addr</a>, uint8_t max_packet_size)</td></tr>
 <tr class="separator:a92b05c45a5893c38f71093bad92a2c85"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4152f6a0ce38f952c2f4a9fe769cd809"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a4152f6a0ce38f952c2f4a9fe769cd809">usbh_control_xfer_cb</a> (uint8_t dev_addr, uint8_t ep_addr, <a class="el" href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a> result, uint32_t xferred_bytes)</td></tr>
-<tr class="separator:a4152f6a0ce38f952c2f4a9fe769cd809"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac0d2444abd18e692e12049f924649465"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#ac0d2444abd18e692e12049f924649465">tuh_mounted</a> (uint8_t dev_addr)</td></tr>
+<tr class="memitem:a8c5dd2429f8833b8809466560183d7f2"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a8c5dd2429f8833b8809466560183d7f2">usbh_control_xfer_cb</a> (uint8_t <a class="el" href="usbh_8c.html#a796e92f0d162a415f6b2098cd9008bab">daddr</a>, uint8_t ep_addr, <a class="el" href="tusb__types_8h.html#a6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a> result, uint32_t xferred_bytes)</td></tr>
+<tr class="separator:a8c5dd2429f8833b8809466560183d7f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3cc14412f29dc9a2aff7776dbd2b783b"><td class="memItemLeft" align="right" valign="top">static TU_ATTR_ALWAYS_INLINE bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a3cc14412f29dc9a2aff7776dbd2b783b">queue_event</a> (<a class="el" href="structhcd__event__t.html">hcd_event_t</a> const *event, bool <a class="el" href="dcd__msp430x5xx_8c.html#a75c7dcc996a49b19a8500fbe8ceed04b">in_isr</a>)</td></tr>
+<tr class="separator:a3cc14412f29dc9a2aff7776dbd2b783b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0d2444abd18e692e12049f924649465"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#ac0d2444abd18e692e12049f924649465">tuh_mounted</a> (uint8_t <a class="el" href="dcd__pic32mz_8c.html#a1997a5306d6d04a9ce867303d1a6d9e1">dev_addr</a>)</td></tr>
 <tr class="separator:ac0d2444abd18e692e12049f924649465"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1493c5bd441453ff1edf424f2ebe090b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a1493c5bd441453ff1edf424f2ebe090b">tuh_vid_pid_get</a> (uint8_t dev_addr, uint16_t *vid, uint16_t *pid)</td></tr>
+<tr class="memitem:a1493c5bd441453ff1edf424f2ebe090b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a1493c5bd441453ff1edf424f2ebe090b">tuh_vid_pid_get</a> (uint8_t <a class="el" href="dcd__pic32mz_8c.html#a1997a5306d6d04a9ce867303d1a6d9e1">dev_addr</a>, uint16_t *vid, uint16_t *pid)</td></tr>
 <tr class="separator:a1493c5bd441453ff1edf424f2ebe090b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6d08f7c5e00eb62bc7aad512a0de1647"><td class="memItemLeft" align="right" valign="top">tusb_speed_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a6d08f7c5e00eb62bc7aad512a0de1647">tuh_speed_get</a> (uint8_t dev_addr)</td></tr>
+<tr class="memitem:a6d08f7c5e00eb62bc7aad512a0de1647"><td class="memItemLeft" align="right" valign="top"><a class="el" href="tusb__types_8h.html#a13298e8a91e362e9b4ed452d86f4671b">tusb_speed_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a6d08f7c5e00eb62bc7aad512a0de1647">tuh_speed_get</a> (uint8_t <a class="el" href="dcd__pic32mz_8c.html#a1997a5306d6d04a9ce867303d1a6d9e1">dev_addr</a>)</td></tr>
 <tr class="separator:a6d08f7c5e00eb62bc7aad512a0de1647"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a575c7ea04a380d0c02c8b85fcbb63572"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a575c7ea04a380d0c02c8b85fcbb63572">osal_task_delay</a> (uint32_t msec)</td></tr>
-<tr class="separator:a575c7ea04a380d0c02c8b85fcbb63572"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a354d42e66b7b2a94984b952abd9d4b46"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a354d42e66b7b2a94984b952abd9d4b46">tuh_rhport_is_active</a> (uint8_t rhport)</td></tr>
+<tr class="separator:a354d42e66b7b2a94984b952abd9d4b46"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac037c75391751b02b9f4cda80af046cf"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#ac037c75391751b02b9f4cda80af046cf">tuh_rhport_reset_bus</a> (uint8_t rhport, bool active)</td></tr>
+<tr class="separator:ac037c75391751b02b9f4cda80af046cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a76b501e5c2fca1d5ce66d6077eb51545"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a76b501e5c2fca1d5ce66d6077eb51545">tuh_configure</a> (uint8_t rhport, uint32_t cfg_id, const void *cfg_param)</td></tr>
+<tr class="separator:a76b501e5c2fca1d5ce66d6077eb51545"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a774eeb02a8934e1aba2d2f09be63ff29"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a774eeb02a8934e1aba2d2f09be63ff29">clear_device</a> (<a class="el" href="structusbh__device__t.html">usbh_device_t</a> *dev)</td></tr>
+<tr class="separator:a774eeb02a8934e1aba2d2f09be63ff29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8036ee85a26cdaf60d09f21682502e12"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a8036ee85a26cdaf60d09f21682502e12">tuh_inited</a> (void)</td></tr>
 <tr class="separator:a8036ee85a26cdaf60d09f21682502e12"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6d90374898305f88d48b3f2c669a4d48"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a6d90374898305f88d48b3f2c669a4d48">tuh_init</a> (uint8_t rhport)</td></tr>
-<tr class="separator:a6d90374898305f88d48b3f2c669a4d48"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7fe8646e3914ee119f5f1744fcfeafed"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a7fe8646e3914ee119f5f1744fcfeafed">tuh_task</a> (void)</td></tr>
-<tr class="separator:a7fe8646e3914ee119f5f1744fcfeafed"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afee16ad76edfebfe9ae892570356f1f1"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#afee16ad76edfebfe9ae892570356f1f1">usbh_get_rhport</a> (uint8_t dev_addr)</td></tr>
+<tr class="memitem:aa2e9b43185a83fd1f0a7b0744e000a9d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#aa2e9b43185a83fd1f0a7b0744e000a9d">tuh_rhport_init</a> (uint8_t rhport, const <a class="el" href="structtusb__rhport__init__t.html">tusb_rhport_init_t</a> *rh_init)</td></tr>
+<tr class="separator:aa2e9b43185a83fd1f0a7b0744e000a9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7f6ead59bee245ee4589906f17b04e0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#aa7f6ead59bee245ee4589906f17b04e0">tuh_deinit</a> (uint8_t rhport)</td></tr>
+<tr class="separator:aa7f6ead59bee245ee4589906f17b04e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30e76e74d239ceb1575df9baddbfb475"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a30e76e74d239ceb1575df9baddbfb475">tuh_task_event_ready</a> (void)</td></tr>
+<tr class="separator:a30e76e74d239ceb1575df9baddbfb475"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a244be8d1882c4c0a9594d78add05e20d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a244be8d1882c4c0a9594d78add05e20d">tuh_task_ext</a> (uint32_t timeout_ms, bool <a class="el" href="dcd__msp430x5xx_8c.html#a75c7dcc996a49b19a8500fbe8ceed04b">in_isr</a>)</td></tr>
+<tr class="separator:a244be8d1882c4c0a9594d78add05e20d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a01e144a376c8a58008d6b54b9af1360f"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a01e144a376c8a58008d6b54b9af1360f">_control_blocking_complete_cb</a> (<a class="el" href="usbh_8h.html#a44e03e25e2eb1fd099b08a1e7fef2f89">tuh_xfer_t</a> *<a class="el" href="dcd__ch32__usbfs_8c.html#a9eafbb4eda749d62e013e595ae04f4a0">xfer</a>)</td></tr>
+<tr class="separator:a01e144a376c8a58008d6b54b9af1360f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92815be87ea0d0a6115f77c309a529ef"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a92815be87ea0d0a6115f77c309a529ef">tuh_control_xfer</a> (<a class="el" href="usbh_8h.html#a44e03e25e2eb1fd099b08a1e7fef2f89">tuh_xfer_t</a> *<a class="el" href="dcd__ch32__usbfs_8c.html#a9eafbb4eda749d62e013e595ae04f4a0">xfer</a>)</td></tr>
+<tr class="separator:a92815be87ea0d0a6115f77c309a529ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32cbaca65422022a782852f4b1e47a2f"><td class="memItemLeft" align="right" valign="top">static TU_ATTR_ALWAYS_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a32cbaca65422022a782852f4b1e47a2f">_set_control_xfer_stage</a> (uint8_t <a class="el" href="usbh_8c.html#a8efea5b2da521d9d454f141866ab68cb">stage</a>)</td></tr>
+<tr class="separator:a32cbaca65422022a782852f4b1e47a2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79cb160538297008db1a668b8b742f38"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a79cb160538297008db1a668b8b742f38">_control_xfer_complete</a> (uint8_t <a class="el" href="usbh_8c.html#a796e92f0d162a415f6b2098cd9008bab">daddr</a>, <a class="el" href="tusb__types_8h.html#a6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a> result)</td></tr>
+<tr class="separator:a79cb160538297008db1a668b8b742f38"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c78f5c6bab8272867af1b3c9ab6c431"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a1c78f5c6bab8272867af1b3c9ab6c431">tuh_edpt_xfer</a> (<a class="el" href="usbh_8h.html#a44e03e25e2eb1fd099b08a1e7fef2f89">tuh_xfer_t</a> *<a class="el" href="dcd__ch32__usbfs_8c.html#a9eafbb4eda749d62e013e595ae04f4a0">xfer</a>)</td></tr>
+<tr class="separator:a1c78f5c6bab8272867af1b3c9ab6c431"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af442d21752274648c3f2c9abae46b1a7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#af442d21752274648c3f2c9abae46b1a7">tuh_edpt_abort_xfer</a> (uint8_t <a class="el" href="usbh_8c.html#a796e92f0d162a415f6b2098cd9008bab">daddr</a>, uint8_t ep_addr)</td></tr>
+<tr class="separator:af442d21752274648c3f2c9abae46b1a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afee16ad76edfebfe9ae892570356f1f1"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#afee16ad76edfebfe9ae892570356f1f1">usbh_get_rhport</a> (uint8_t <a class="el" href="dcd__pic32mz_8c.html#a1997a5306d6d04a9ce867303d1a6d9e1">dev_addr</a>)</td></tr>
 <tr class="separator:afee16ad76edfebfe9ae892570356f1f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9099e6a715ffc729e29585e71e9e885a"><td class="memItemLeft" align="right" valign="top">uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a9099e6a715ffc729e29585e71e9e885a">usbh_get_enum_buf</a> (void)</td></tr>
 <tr class="separator:a9099e6a715ffc729e29585e71e9e885a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8a0c33dc0e9cc1ec7689eae385a66fb4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a8a0c33dc0e9cc1ec7689eae385a66fb4">hcd_devtree_get_info</a> (uint8_t dev_addr, <a class="el" href="structhcd__devtree__info__t.html">hcd_devtree_info_t</a> *devtree_info)</td></tr>
+<tr class="memitem:aa6b1dcc1412cdcd269da06e5b7550a09"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#aa6b1dcc1412cdcd269da06e5b7550a09">usbh_int_set</a> (bool enabled)</td></tr>
+<tr class="separator:aa6b1dcc1412cdcd269da06e5b7550a09"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8af91f94ce0271f60f29620d248f9ed9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a8af91f94ce0271f60f29620d248f9ed9">usbh_defer_func</a> (osal_task_func_t func, void *param, bool <a class="el" href="dcd__msp430x5xx_8c.html#a75c7dcc996a49b19a8500fbe8ceed04b">in_isr</a>)</td></tr>
+<tr class="separator:a8af91f94ce0271f60f29620d248f9ed9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa97ff8215689250a8dc87fad30c5d4e4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#aa97ff8215689250a8dc87fad30c5d4e4">usbh_edpt_claim</a> (uint8_t <a class="el" href="dcd__pic32mz_8c.html#a1997a5306d6d04a9ce867303d1a6d9e1">dev_addr</a>, uint8_t ep_addr)</td></tr>
+<tr class="separator:aa97ff8215689250a8dc87fad30c5d4e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a595147662cce076eca15f4a4da722e10"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a595147662cce076eca15f4a4da722e10">usbh_edpt_release</a> (uint8_t <a class="el" href="dcd__pic32mz_8c.html#a1997a5306d6d04a9ce867303d1a6d9e1">dev_addr</a>, uint8_t ep_addr)</td></tr>
+<tr class="separator:a595147662cce076eca15f4a4da722e10"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0416609eb3eb8751364916289c98aa24"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a0416609eb3eb8751364916289c98aa24">usbh_edpt_xfer_with_callback</a> (uint8_t <a class="el" href="dcd__pic32mz_8c.html#a1997a5306d6d04a9ce867303d1a6d9e1">dev_addr</a>, uint8_t ep_addr, uint8_t *<a class="el" href="usbh_8c.html#a56ed84df35de10bdb65e72b184309497">buffer</a>, uint16_t <a class="el" href="dcd__nuc505_8c.html#a944ab463097040317fe221165f6607d1">total_bytes</a>, <a class="el" href="usbh_8h.html#a6afac62f5a9ed2a11cd2f344dfeb78c9">tuh_xfer_cb_t</a> <a class="el" href="usbh_8c.html#aced436bc81b8106734ed911ab38294bd">complete_cb</a>, uintptr_t <a class="el" href="usbh_8c.html#a8aacece57d8e33f7f2eb9bee4a99d2bf">user_data</a>)</td></tr>
+<tr class="separator:a0416609eb3eb8751364916289c98aa24"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3b684dc600a8368133ca5f0f3ac32b7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#ad3b684dc600a8368133ca5f0f3ac32b7">tuh_edpt_open</a> (uint8_t <a class="el" href="dcd__pic32mz_8c.html#a1997a5306d6d04a9ce867303d1a6d9e1">dev_addr</a>, <a class="el" href="tusb__types_8h.html#a95906f860c391cedba638b1946669694">tusb_desc_endpoint_t</a> const *desc_ep)</td></tr>
+<tr class="separator:ad3b684dc600a8368133ca5f0f3ac32b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad52a71c68d85f90f5dea17c7f1821f58"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#ad52a71c68d85f90f5dea17c7f1821f58">usbh_edpt_busy</a> (uint8_t <a class="el" href="dcd__pic32mz_8c.html#a1997a5306d6d04a9ce867303d1a6d9e1">dev_addr</a>, uint8_t ep_addr)</td></tr>
+<tr class="separator:ad52a71c68d85f90f5dea17c7f1821f58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a0c33dc0e9cc1ec7689eae385a66fb4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a8a0c33dc0e9cc1ec7689eae385a66fb4">hcd_devtree_get_info</a> (uint8_t <a class="el" href="dcd__pic32mz_8c.html#a1997a5306d6d04a9ce867303d1a6d9e1">dev_addr</a>, <a class="el" href="structhcd__devtree__info__t.html">hcd_devtree_info_t</a> *devtree_info)</td></tr>
 <tr class="separator:a8a0c33dc0e9cc1ec7689eae385a66fb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8f36b6f1ecc776dddd271e7c4607f0b2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a8f36b6f1ecc776dddd271e7c4607f0b2">hcd_event_handler</a> (<a class="el" href="structhcd__event__t.html">hcd_event_t</a> const *event, bool in_isr)</td></tr>
-<tr class="separator:a8f36b6f1ecc776dddd271e7c4607f0b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acdabc4ab32fb9593c5463e58224ddd9e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#acdabc4ab32fb9593c5463e58224ddd9e">hcd_event_xfer_complete</a> (uint8_t dev_addr, uint8_t ep_addr, uint32_t xferred_bytes, <a class="el" href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a> result, bool in_isr)</td></tr>
-<tr class="separator:acdabc4ab32fb9593c5463e58224ddd9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aece588a83ad525b717113525b24b9a02"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#aece588a83ad525b717113525b24b9a02">hcd_event_device_attach</a> (uint8_t rhport, bool in_isr)</td></tr>
-<tr class="separator:aece588a83ad525b717113525b24b9a02"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaec362cb850cd354557545ca2b300680"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#aaec362cb850cd354557545ca2b300680">hcd_event_device_remove</a> (uint8_t hostid, bool in_isr)</td></tr>
-<tr class="separator:aaec362cb850cd354557545ca2b300680"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab4e37bf4f1536c35ba562ddf10d782bf"><td class="memItemLeft" align="right" valign="top">static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#ab4e37bf4f1536c35ba562ddf10d782bf">get_new_address</a> (bool is_hub)</td></tr>
-<tr class="separator:ab4e37bf4f1536c35ba562ddf10d782bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3ac535abe21b09ad34150cb0649d8e09"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a3ac535abe21b09ad34150cb0649d8e09">usbh_driver_set_config_complete</a> (uint8_t dev_addr, uint8_t itf_num)</td></tr>
-<tr class="separator:a3ac535abe21b09ad34150cb0649d8e09"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aafcbada022673b4b52026b6b83620457"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#aafcbada022673b4b52026b6b83620457">enum_request_addr0_device_desc</a> (void)</td></tr>
-<tr class="separator:aafcbada022673b4b52026b6b83620457"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99452aaa1b3eb22274eff8a60efb41fa"><td class="memItemLeft" align="right" valign="top">TU_ATTR_FAST_FUNC void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a99452aaa1b3eb22274eff8a60efb41fa">hcd_event_handler</a> (<a class="el" href="structhcd__event__t.html">hcd_event_t</a> const *event, bool <a class="el" href="dcd__msp430x5xx_8c.html#a75c7dcc996a49b19a8500fbe8ceed04b">in_isr</a>)</td></tr>
+<tr class="separator:a99452aaa1b3eb22274eff8a60efb41fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adbec528b24d66473715d3494293563e9"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#adbec528b24d66473715d3494293563e9">_get_descriptor</a> (uint8_t <a class="el" href="usbh_8c.html#a796e92f0d162a415f6b2098cd9008bab">daddr</a>, uint8_t type, uint8_t index, uint16_t language_id, void *<a class="el" href="usbh_8c.html#a56ed84df35de10bdb65e72b184309497">buffer</a>, uint16_t len, <a class="el" href="usbh_8h.html#a6afac62f5a9ed2a11cd2f344dfeb78c9">tuh_xfer_cb_t</a> <a class="el" href="usbh_8c.html#aced436bc81b8106734ed911ab38294bd">complete_cb</a>, uintptr_t <a class="el" href="usbh_8c.html#a8aacece57d8e33f7f2eb9bee4a99d2bf">user_data</a>)</td></tr>
+<tr class="separator:adbec528b24d66473715d3494293563e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a332136d01a403e6760800d7c536a0de4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a332136d01a403e6760800d7c536a0de4">tuh_descriptor_get</a> (uint8_t <a class="el" href="usbh_8c.html#a796e92f0d162a415f6b2098cd9008bab">daddr</a>, uint8_t type, uint8_t index, void *<a class="el" href="usbh_8c.html#a56ed84df35de10bdb65e72b184309497">buffer</a>, uint16_t len, <a class="el" href="usbh_8h.html#a6afac62f5a9ed2a11cd2f344dfeb78c9">tuh_xfer_cb_t</a> <a class="el" href="usbh_8c.html#aced436bc81b8106734ed911ab38294bd">complete_cb</a>, uintptr_t <a class="el" href="usbh_8c.html#a8aacece57d8e33f7f2eb9bee4a99d2bf">user_data</a>)</td></tr>
+<tr class="separator:a332136d01a403e6760800d7c536a0de4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27a3fb379bdb2ad054203ce370b45d9e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a27a3fb379bdb2ad054203ce370b45d9e">tuh_descriptor_get_device</a> (uint8_t <a class="el" href="usbh_8c.html#a796e92f0d162a415f6b2098cd9008bab">daddr</a>, void *<a class="el" href="usbh_8c.html#a56ed84df35de10bdb65e72b184309497">buffer</a>, uint16_t len, <a class="el" href="usbh_8h.html#a6afac62f5a9ed2a11cd2f344dfeb78c9">tuh_xfer_cb_t</a> <a class="el" href="usbh_8c.html#aced436bc81b8106734ed911ab38294bd">complete_cb</a>, uintptr_t <a class="el" href="usbh_8c.html#a8aacece57d8e33f7f2eb9bee4a99d2bf">user_data</a>)</td></tr>
+<tr class="separator:a27a3fb379bdb2ad054203ce370b45d9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c4c876f44f7d92ebc0666f2473b4d35"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a3c4c876f44f7d92ebc0666f2473b4d35">tuh_descriptor_get_configuration</a> (uint8_t <a class="el" href="usbh_8c.html#a796e92f0d162a415f6b2098cd9008bab">daddr</a>, uint8_t index, void *<a class="el" href="usbh_8c.html#a56ed84df35de10bdb65e72b184309497">buffer</a>, uint16_t len, <a class="el" href="usbh_8h.html#a6afac62f5a9ed2a11cd2f344dfeb78c9">tuh_xfer_cb_t</a> <a class="el" href="usbh_8c.html#aced436bc81b8106734ed911ab38294bd">complete_cb</a>, uintptr_t <a class="el" href="usbh_8c.html#a8aacece57d8e33f7f2eb9bee4a99d2bf">user_data</a>)</td></tr>
+<tr class="separator:a3c4c876f44f7d92ebc0666f2473b4d35"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5eb294943c705b922e67f9cf6c143e3c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a5eb294943c705b922e67f9cf6c143e3c">tuh_descriptor_get_string</a> (uint8_t <a class="el" href="usbh_8c.html#a796e92f0d162a415f6b2098cd9008bab">daddr</a>, uint8_t index, uint16_t language_id, void *<a class="el" href="usbh_8c.html#a56ed84df35de10bdb65e72b184309497">buffer</a>, uint16_t len, <a class="el" href="usbh_8h.html#a6afac62f5a9ed2a11cd2f344dfeb78c9">tuh_xfer_cb_t</a> <a class="el" href="usbh_8c.html#aced436bc81b8106734ed911ab38294bd">complete_cb</a>, uintptr_t <a class="el" href="usbh_8c.html#a8aacece57d8e33f7f2eb9bee4a99d2bf">user_data</a>)</td></tr>
+<tr class="separator:a5eb294943c705b922e67f9cf6c143e3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a174d62aedd157b3121c2be60ddeb8b68"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a174d62aedd157b3121c2be60ddeb8b68">tuh_descriptor_get_manufacturer_string</a> (uint8_t <a class="el" href="usbh_8c.html#a796e92f0d162a415f6b2098cd9008bab">daddr</a>, uint16_t language_id, void *<a class="el" href="usbh_8c.html#a56ed84df35de10bdb65e72b184309497">buffer</a>, uint16_t len, <a class="el" href="usbh_8h.html#a6afac62f5a9ed2a11cd2f344dfeb78c9">tuh_xfer_cb_t</a> <a class="el" href="usbh_8c.html#aced436bc81b8106734ed911ab38294bd">complete_cb</a>, uintptr_t <a class="el" href="usbh_8c.html#a8aacece57d8e33f7f2eb9bee4a99d2bf">user_data</a>)</td></tr>
+<tr class="separator:a174d62aedd157b3121c2be60ddeb8b68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f5d5f55dcf623735130c1913dcf4fb4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a6f5d5f55dcf623735130c1913dcf4fb4">tuh_descriptor_get_product_string</a> (uint8_t <a class="el" href="usbh_8c.html#a796e92f0d162a415f6b2098cd9008bab">daddr</a>, uint16_t language_id, void *<a class="el" href="usbh_8c.html#a56ed84df35de10bdb65e72b184309497">buffer</a>, uint16_t len, <a class="el" href="usbh_8h.html#a6afac62f5a9ed2a11cd2f344dfeb78c9">tuh_xfer_cb_t</a> <a class="el" href="usbh_8c.html#aced436bc81b8106734ed911ab38294bd">complete_cb</a>, uintptr_t <a class="el" href="usbh_8c.html#a8aacece57d8e33f7f2eb9bee4a99d2bf">user_data</a>)</td></tr>
+<tr class="separator:a6f5d5f55dcf623735130c1913dcf4fb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af155f113250e5fb79a9f722e8f7f4b73"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#af155f113250e5fb79a9f722e8f7f4b73">tuh_descriptor_get_serial_string</a> (uint8_t <a class="el" href="usbh_8c.html#a796e92f0d162a415f6b2098cd9008bab">daddr</a>, uint16_t language_id, void *<a class="el" href="usbh_8c.html#a56ed84df35de10bdb65e72b184309497">buffer</a>, uint16_t len, <a class="el" href="usbh_8h.html#a6afac62f5a9ed2a11cd2f344dfeb78c9">tuh_xfer_cb_t</a> <a class="el" href="usbh_8c.html#aced436bc81b8106734ed911ab38294bd">complete_cb</a>, uintptr_t <a class="el" href="usbh_8c.html#a8aacece57d8e33f7f2eb9bee4a99d2bf">user_data</a>)</td></tr>
+<tr class="separator:af155f113250e5fb79a9f722e8f7f4b73"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8cb900bb2436a2b0e2444a37dd77ef8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#ad8cb900bb2436a2b0e2444a37dd77ef8">tuh_descriptor_get_hid_report</a> (uint8_t <a class="el" href="usbh_8c.html#a796e92f0d162a415f6b2098cd9008bab">daddr</a>, uint8_t itf_num, uint8_t desc_type, uint8_t index, void *<a class="el" href="usbh_8c.html#a56ed84df35de10bdb65e72b184309497">buffer</a>, uint16_t len, <a class="el" href="usbh_8h.html#a6afac62f5a9ed2a11cd2f344dfeb78c9">tuh_xfer_cb_t</a> <a class="el" href="usbh_8c.html#aced436bc81b8106734ed911ab38294bd">complete_cb</a>, uintptr_t <a class="el" href="usbh_8c.html#a8aacece57d8e33f7f2eb9bee4a99d2bf">user_data</a>)</td></tr>
+<tr class="separator:ad8cb900bb2436a2b0e2444a37dd77ef8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ab686cd32017e4e718eca8714bc3e7b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a5ab686cd32017e4e718eca8714bc3e7b">tuh_configuration_set</a> (uint8_t <a class="el" href="usbh_8c.html#a796e92f0d162a415f6b2098cd9008bab">daddr</a>, uint8_t config_num, <a class="el" href="usbh_8h.html#a6afac62f5a9ed2a11cd2f344dfeb78c9">tuh_xfer_cb_t</a> <a class="el" href="usbh_8c.html#aced436bc81b8106734ed911ab38294bd">complete_cb</a>, uintptr_t <a class="el" href="usbh_8c.html#a8aacece57d8e33f7f2eb9bee4a99d2bf">user_data</a>)</td></tr>
+<tr class="separator:a5ab686cd32017e4e718eca8714bc3e7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6265e9e7dfe25c028b47ad5c0412cc30"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a6265e9e7dfe25c028b47ad5c0412cc30">tuh_interface_set</a> (uint8_t <a class="el" href="usbh_8c.html#a796e92f0d162a415f6b2098cd9008bab">daddr</a>, uint8_t itf_num, uint8_t itf_alt, <a class="el" href="usbh_8h.html#a6afac62f5a9ed2a11cd2f344dfeb78c9">tuh_xfer_cb_t</a> <a class="el" href="usbh_8c.html#aced436bc81b8106734ed911ab38294bd">complete_cb</a>, uintptr_t <a class="el" href="usbh_8c.html#a8aacece57d8e33f7f2eb9bee4a99d2bf">user_data</a>)</td></tr>
+<tr class="separator:a6265e9e7dfe25c028b47ad5c0412cc30"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acecbf30c1094b8c4360e588913199209"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#acecbf30c1094b8c4360e588913199209">tuh_descriptor_get_sync</a> (uint8_t <a class="el" href="usbh_8c.html#a796e92f0d162a415f6b2098cd9008bab">daddr</a>, uint8_t type, uint8_t index, void *<a class="el" href="usbh_8c.html#a56ed84df35de10bdb65e72b184309497">buffer</a>, uint16_t len)</td></tr>
+<tr class="separator:acecbf30c1094b8c4360e588913199209"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18ad6160d98bdbe5a65d3be041b533fd"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a18ad6160d98bdbe5a65d3be041b533fd">tuh_descriptor_get_device_sync</a> (uint8_t <a class="el" href="usbh_8c.html#a796e92f0d162a415f6b2098cd9008bab">daddr</a>, void *<a class="el" href="usbh_8c.html#a56ed84df35de10bdb65e72b184309497">buffer</a>, uint16_t len)</td></tr>
+<tr class="separator:a18ad6160d98bdbe5a65d3be041b533fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad38f271c16a9669e01794945dddaaffc"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#ad38f271c16a9669e01794945dddaaffc">tuh_descriptor_get_configuration_sync</a> (uint8_t <a class="el" href="usbh_8c.html#a796e92f0d162a415f6b2098cd9008bab">daddr</a>, uint8_t index, void *<a class="el" href="usbh_8c.html#a56ed84df35de10bdb65e72b184309497">buffer</a>, uint16_t len)</td></tr>
+<tr class="separator:ad38f271c16a9669e01794945dddaaffc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5d0b30b0806dcbf48addfaa2a6b7cbb"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#ad5d0b30b0806dcbf48addfaa2a6b7cbb">tuh_descriptor_get_hid_report_sync</a> (uint8_t <a class="el" href="usbh_8c.html#a796e92f0d162a415f6b2098cd9008bab">daddr</a>, uint8_t itf_num, uint8_t desc_type, uint8_t index, void *<a class="el" href="usbh_8c.html#a56ed84df35de10bdb65e72b184309497">buffer</a>, uint16_t len)</td></tr>
+<tr class="separator:ad5d0b30b0806dcbf48addfaa2a6b7cbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6fbe950387b9fbc17a1fa5b1c11307a7"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a6fbe950387b9fbc17a1fa5b1c11307a7">tuh_descriptor_get_string_sync</a> (uint8_t <a class="el" href="usbh_8c.html#a796e92f0d162a415f6b2098cd9008bab">daddr</a>, uint8_t index, uint16_t language_id, void *<a class="el" href="usbh_8c.html#a56ed84df35de10bdb65e72b184309497">buffer</a>, uint16_t len)</td></tr>
+<tr class="separator:a6fbe950387b9fbc17a1fa5b1c11307a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9fe5de50caeb2e37341dd73712b02e7d"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a9fe5de50caeb2e37341dd73712b02e7d">tuh_descriptor_get_manufacturer_string_sync</a> (uint8_t <a class="el" href="usbh_8c.html#a796e92f0d162a415f6b2098cd9008bab">daddr</a>, uint16_t language_id, void *<a class="el" href="usbh_8c.html#a56ed84df35de10bdb65e72b184309497">buffer</a>, uint16_t len)</td></tr>
+<tr class="separator:a9fe5de50caeb2e37341dd73712b02e7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b35d5d92be4e7e8c87dc816e7c4e398"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a6b35d5d92be4e7e8c87dc816e7c4e398">tuh_descriptor_get_product_string_sync</a> (uint8_t <a class="el" href="usbh_8c.html#a796e92f0d162a415f6b2098cd9008bab">daddr</a>, uint16_t language_id, void *<a class="el" href="usbh_8c.html#a56ed84df35de10bdb65e72b184309497">buffer</a>, uint16_t len)</td></tr>
+<tr class="separator:a6b35d5d92be4e7e8c87dc816e7c4e398"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e48c0c13261078f17bdba58fd0ebfdd"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a2e48c0c13261078f17bdba58fd0ebfdd">tuh_descriptor_get_serial_string_sync</a> (uint8_t <a class="el" href="usbh_8c.html#a796e92f0d162a415f6b2098cd9008bab">daddr</a>, uint16_t language_id, void *<a class="el" href="usbh_8c.html#a56ed84df35de10bdb65e72b184309497">buffer</a>, uint16_t len)</td></tr>
+<tr class="separator:a2e48c0c13261078f17bdba58fd0ebfdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afcf7b3b48ac9d67967050510edbdc6f2"><td class="memItemLeft" align="right" valign="top">static TU_ATTR_ALWAYS_INLINE bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#afcf7b3b48ac9d67967050510edbdc6f2">is_hub_addr</a> (uint8_t <a class="el" href="usbh_8c.html#a796e92f0d162a415f6b2098cd9008bab">daddr</a>)</td></tr>
+<tr class="separator:afcf7b3b48ac9d67967050510edbdc6f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeb09797979d854548cad4b5995dd6d76"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#aeb09797979d854548cad4b5995dd6d76">enum_request_set_addr</a> (void)</td></tr>
 <tr class="separator:aeb09797979d854548cad4b5995dd6d76"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac627d3f4ed04b2e70e7574c97630a6bb"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#ac627d3f4ed04b2e70e7574c97630a6bb">enum_get_addr0_device_desc_complete</a> (uint8_t dev_addr, <a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *request, <a class="el" href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a> result)</td></tr>
-<tr class="separator:ac627d3f4ed04b2e70e7574c97630a6bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0d13997bbc90e34fba0bd63b83fc84a7"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a0d13997bbc90e34fba0bd63b83fc84a7">enum_set_address_complete</a> (uint8_t dev_addr, <a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *request, <a class="el" href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a> result)</td></tr>
-<tr class="separator:a0d13997bbc90e34fba0bd63b83fc84a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abd84d776fcec25f2ae31433ec3f6403e"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#abd84d776fcec25f2ae31433ec3f6403e">enum_get_device_desc_complete</a> (uint8_t dev_addr, <a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *request, <a class="el" href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a> result)</td></tr>
-<tr class="separator:abd84d776fcec25f2ae31433ec3f6403e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5575c144314953490a2159dfbcb01fab"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a5575c144314953490a2159dfbcb01fab">enum_get_9byte_config_desc_complete</a> (uint8_t dev_addr, <a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *request, <a class="el" href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a> result)</td></tr>
-<tr class="separator:a5575c144314953490a2159dfbcb01fab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acbc040fe3a88451f1a090a9f56d747a6"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#acbc040fe3a88451f1a090a9f56d747a6">enum_get_config_desc_complete</a> (uint8_t dev_addr, <a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *request, <a class="el" href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a> result)</td></tr>
-<tr class="separator:acbc040fe3a88451f1a090a9f56d747a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a404c5a8647e8b36378fb652ed32801b4"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a404c5a8647e8b36378fb652ed32801b4">enum_set_config_complete</a> (uint8_t dev_addr, <a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *request, <a class="el" href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a> result)</td></tr>
-<tr class="separator:a404c5a8647e8b36378fb652ed32801b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae65ba16bff981ab9e1595873925df26a"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#ae65ba16bff981ab9e1595873925df26a">parse_configuration_descriptor</a> (uint8_t dev_addr, <a class="el" href="group___u_s_b_def___type.html#gae640129e609bf2e7b33828de0e38dd65">tusb_desc_configuration_t</a> const *desc_cfg)</td></tr>
-<tr class="separator:ae65ba16bff981ab9e1595873925df26a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afdc722a911f3740dee31a0aa1f85c392"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#afdc722a911f3740dee31a0aa1f85c392">enum_hub_clear_reset0_complete</a> (uint8_t dev_addr, <a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *request, <a class="el" href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a> result)</td></tr>
-<tr class="separator:afdc722a911f3740dee31a0aa1f85c392"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3b6fad1b780afc790859d4c4255139c9"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a3b6fad1b780afc790859d4c4255139c9">enum_hub_clear_reset1_complete</a> (uint8_t dev_addr, <a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *request, <a class="el" href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a> result)</td></tr>
-<tr class="separator:a3b6fad1b780afc790859d4c4255139c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab5417fd94fe874f6e2bdae77b880d3b7"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#ab5417fd94fe874f6e2bdae77b880d3b7">enum_hub_get_status1_complete</a> (uint8_t dev_addr, <a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *request, <a class="el" href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a> result)</td></tr>
-<tr class="separator:ab5417fd94fe874f6e2bdae77b880d3b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a867b8aa6c42c1d2b482f064ec9b7ff21"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a867b8aa6c42c1d2b482f064ec9b7ff21">enum_hub_get_status0_complete</a> (uint8_t dev_addr, <a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *request, <a class="el" href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a> result)</td></tr>
-<tr class="separator:a867b8aa6c42c1d2b482f064ec9b7ff21"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa97ff8215689250a8dc87fad30c5d4e4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#aa97ff8215689250a8dc87fad30c5d4e4">usbh_edpt_claim</a> (uint8_t dev_addr, uint8_t ep_addr)</td></tr>
-<tr class="separator:aa97ff8215689250a8dc87fad30c5d4e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a595147662cce076eca15f4a4da722e10"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a595147662cce076eca15f4a4da722e10">usbh_edpt_release</a> (uint8_t dev_addr, uint8_t ep_addr)</td></tr>
-<tr class="separator:a595147662cce076eca15f4a4da722e10"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa7a8344d9c59587ca29434d295bc6cb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#afa7a8344d9c59587ca29434d295bc6cb">usbh_edpt_xfer</a> (uint8_t dev_addr, uint8_t ep_addr, uint8_t *<a class="el" href="midi__device_8h.html#ac8733c58bc671239139641960e2d5dbf">buffer</a>, uint16_t total_bytes)</td></tr>
-<tr class="separator:afa7a8344d9c59587ca29434d295bc6cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6ed9881f3ac3f3d62ec341bcd0d40b55"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a6ed9881f3ac3f3d62ec341bcd0d40b55">usbh_edpt_open</a> (uint8_t rhport, uint8_t dev_addr, <a class="el" href="group___u_s_b_def___type.html#ga95906f860c391cedba638b1946669694">tusb_desc_endpoint_t</a> const *desc_ep)</td></tr>
-<tr class="separator:a6ed9881f3ac3f3d62ec341bcd0d40b55"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad52a71c68d85f90f5dea17c7f1821f58"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#ad52a71c68d85f90f5dea17c7f1821f58">usbh_edpt_busy</a> (uint8_t dev_addr, uint8_t ep_addr)</td></tr>
-<tr class="separator:ad52a71c68d85f90f5dea17c7f1821f58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a846e7a9d77323a93fd85bc733f2a7bd4"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a846e7a9d77323a93fd85bc733f2a7bd4">_parse_configuration_descriptor</a> (uint8_t <a class="el" href="dcd__pic32mz_8c.html#a1997a5306d6d04a9ce867303d1a6d9e1">dev_addr</a>, <a class="el" href="tusb__types_8h.html#ae640129e609bf2e7b33828de0e38dd65">tusb_desc_configuration_t</a> const *desc_cfg)</td></tr>
+<tr class="separator:a846e7a9d77323a93fd85bc733f2a7bd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b3b16031cec1f8bc107224cdd495764"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a5b3b16031cec1f8bc107224cdd495764">enum_full_complete</a> (void)</td></tr>
+<tr class="separator:a5b3b16031cec1f8bc107224cdd495764"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac35af6e11af34b5f6e52ebd4f0fab068"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#ac35af6e11af34b5f6e52ebd4f0fab068">process_enumeration</a> (<a class="el" href="usbh_8h.html#a44e03e25e2eb1fd099b08a1e7fef2f89">tuh_xfer_t</a> *<a class="el" href="dcd__ch32__usbfs_8c.html#a9eafbb4eda749d62e013e595ae04f4a0">xfer</a>)</td></tr>
+<tr class="separator:ac35af6e11af34b5f6e52ebd4f0fab068"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4e37bf4f1536c35ba562ddf10d782bf"><td class="memItemLeft" align="right" valign="top">static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#ab4e37bf4f1536c35ba562ddf10d782bf">get_new_address</a> (bool is_hub)</td></tr>
+<tr class="separator:ab4e37bf4f1536c35ba562ddf10d782bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ac535abe21b09ad34150cb0649d8e09"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a3ac535abe21b09ad34150cb0649d8e09">usbh_driver_set_config_complete</a> (uint8_t <a class="el" href="dcd__pic32mz_8c.html#a1997a5306d6d04a9ce867303d1a6d9e1">dev_addr</a>, uint8_t itf_num)</td></tr>
+<tr class="separator:a3ac535abe21b09ad34150cb0649d8e09"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a3a754c682df079789b197e50fc25d98d"><td class="memItemLeft" align="right" valign="top">static usbh_class_driver_t const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a3a754c682df079789b197e50fc25d98d">usbh_class_drivers</a> []</td></tr>
+<tr class="memitem:a3a754c682df079789b197e50fc25d98d"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structusbh__class__driver__t.html">usbh_class_driver_t</a> const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a3a754c682df079789b197e50fc25d98d">usbh_class_drivers</a> []</td></tr>
 <tr class="separator:a3a754c682df079789b197e50fc25d98d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a07213b4033a73192128325e68a26d2e6"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a07213b4033a73192128325e68a26d2e6">_usbh_initialized</a> = false</td></tr>
-<tr class="separator:a07213b4033a73192128325e68a26d2e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a43bb127b5ea196cfaf30a240f045a332"><td class="memItemLeft" align="right" valign="top">tu_static <a class="el" href="structusbh__class__driver__t.html">usbh_class_driver_t</a> const  *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a43bb127b5ea196cfaf30a240f045a332">_app_driver</a> = NULL</td></tr>
+<tr class="separator:a43bb127b5ea196cfaf30a240f045a332"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a791a5cd023ae1637806e87a1b67a431a"><td class="memItemLeft" align="right" valign="top">tu_static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a791a5cd023ae1637806e87a1b67a431a">_app_driver_count</a> = 0</td></tr>
+<tr class="separator:a791a5cd023ae1637806e87a1b67a431a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af57dd6d2ea8427061314fc542bcba26c"><td class="memItemLeft" align="right" valign="top">static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#af57dd6d2ea8427061314fc542bcba26c">_usbh_controller</a> = <a class="el" href="tusb__types_8h.html#ad63240694c6dc2a28c24bfc2db90ad7aae65095938643a98531ef4cf8b178fe57">TUSB_INDEX_INVALID_8</a></td></tr>
+<tr class="separator:af57dd6d2ea8427061314fc542bcba26c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aff60bfaca98833358eefcd1510c428fa"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structusbh__dev0__t.html">usbh_dev0_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#aff60bfaca98833358eefcd1510c428fa">_dev0</a></td></tr>
 <tr class="separator:aff60bfaca98833358eefcd1510c428fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afe59f959ff7017531194ad8d939ffb52"><td class="memItemLeft" align="right" valign="top">CFG_TUSB_MEM_SECTION <a class="el" href="structusbh__device__t.html">usbh_device_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#afe59f959ff7017531194ad8d939ffb52">_usbh_devices</a> [CFG_TUH_DEVICE_MAX+CFG_TUH_HUB]</td></tr>
-<tr class="separator:afe59f959ff7017531194ad8d939ffb52"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60b0b5ba89aa7873746dc08918d96224"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structusbh__device__t.html">usbh_device_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a60b0b5ba89aa7873746dc08918d96224">_usbh_devices</a> [TOTAL_DEVICES]</td></tr>
+<tr class="separator:a60b0b5ba89aa7873746dc08918d96224"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a749675621bcbe73c1613c4fce9726462"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="osal__freertos_8h.html#a54b65d6eaadad2bcd932cc5fd23b64a1">osal_mutex_def_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a749675621bcbe73c1613c4fce9726462">_usbh_mutexdef</a></td></tr>
+<tr class="separator:a749675621bcbe73c1613c4fce9726462"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0c4a33f4eb80b290b75c5198e38ab1d"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="osal__freertos_8h.html#aa74df55450633a685e2b6bef57764f47">osal_mutex_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#aa0c4a33f4eb80b290b75c5198e38ab1d">_usbh_mutex</a></td></tr>
+<tr class="separator:aa0c4a33f4eb80b290b75c5198e38ab1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a64ae1999770afab28fce7486911cab43"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="osal__freertos_8h.html#a5f64e2aab321ebea3838c44d830375c7">osal_queue_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a64ae1999770afab28fce7486911cab43">_usbh_q</a></td></tr>
 <tr class="separator:a64ae1999770afab28fce7486911cab43"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3ed9e86437c6cbd55b8b621a124a6840"><td class="memItemLeft" align="right" valign="top">CFG_TUSB_MEM_SECTION static CFG_TUSB_MEM_ALIGN uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a3ed9e86437c6cbd55b8b621a124a6840">_usbh_ctrl_buf</a> [CFG_TUH_ENUMERATION_BUFSIZE]</td></tr>
-<tr class="separator:a3ed9e86437c6cbd55b8b621a124a6840"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96e9080c1d4ae11ef937618990d7e5e1"><td class="memItemLeft" align="right" valign="top">CFG_TUH_MEM_SECTION static CFG_TUH_MEM_ALIGN uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#a96e9080c1d4ae11ef937618990d7e5e1">_usbh_ctrl_buf</a> [CFG_TUH_ENUMERATION_BUFSIZE]</td></tr>
+<tr class="separator:a96e9080c1d4ae11ef937618990d7e5e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac074be121dece702cc8da9b12f103a9b"><td class="memItemLeft" >struct {</td></tr>
+<tr class="memitem:aa9171d66629d54ca85576054ff05f6b8"><td class="memItemLeft" >&#160;&#160;&#160;CFG_TUH_MEM_ALIGN <a class="el" href="tusb__types_8h.html#a2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a>&#160;&#160;&#160;<a class="el" href="usbh_8c.html#a4c83a13b59895249d66697a831bf8e05">request</a></td></tr>
+<tr class="separator:aa9171d66629d54ca85576054ff05f6b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ad2826b6ad79c06651d0310394fc29b"><td class="memItemLeft" >&#160;&#160;&#160;uint8_t *&#160;&#160;&#160;<a class="el" href="usbh_8c.html#a56ed84df35de10bdb65e72b184309497">buffer</a></td></tr>
+<tr class="separator:a3ad2826b6ad79c06651d0310394fc29b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09b1f2fac6e0bcbd1fa22106fc118812"><td class="memItemLeft" >&#160;&#160;&#160;<a class="el" href="usbh_8h.html#a6afac62f5a9ed2a11cd2f344dfeb78c9">tuh_xfer_cb_t</a>&#160;&#160;&#160;<a class="el" href="usbh_8c.html#aced436bc81b8106734ed911ab38294bd">complete_cb</a></td></tr>
+<tr class="separator:a09b1f2fac6e0bcbd1fa22106fc118812"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7539f413aa8e87cc772c2b27748194d8"><td class="memItemLeft" >&#160;&#160;&#160;uintptr_t&#160;&#160;&#160;<a class="el" href="usbh_8c.html#a8aacece57d8e33f7f2eb9bee4a99d2bf">user_data</a></td></tr>
+<tr class="separator:a7539f413aa8e87cc772c2b27748194d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c616f6ed90c0b731dad58ef7feeb67e"><td class="memItemLeft" >&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="usbh_8c.html#a796e92f0d162a415f6b2098cd9008bab">daddr</a></td></tr>
+<tr class="separator:a5c616f6ed90c0b731dad58ef7feeb67e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af36b0dd32cb815a28946eb40bf074799"><td class="memItemLeft" >&#160;&#160;&#160;volatile uint8_t&#160;&#160;&#160;<a class="el" href="usbh_8c.html#a8efea5b2da521d9d454f141866ab68cb">stage</a></td></tr>
+<tr class="separator:af36b0dd32cb815a28946eb40bf074799"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ab6b2048d3935a3eaca2903cc5462a9"><td class="memItemLeft" >&#160;&#160;&#160;volatile uint16_t&#160;&#160;&#160;<a class="el" href="usbh_8c.html#a2d77456c638a544914b4e90f16a32639">actual_len</a></td></tr>
+<tr class="separator:a1ab6b2048d3935a3eaca2903cc5462a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac074be121dece702cc8da9b12f103a9b"><td class="memItemLeft" valign="top">}&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbh_8c.html#ac074be121dece702cc8da9b12f103a9b">_ctrl_xfer</a></td></tr>
+<tr class="separator:ac074be121dece702cc8da9b12f103a9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
-<a id="af8654c714018c6241d9ebd01f3fb5a26" name="af8654c714018c6241d9ebd01f3fb5a26"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af8654c714018c6241d9ebd01f3fb5a26">&#9670;&nbsp;</a></span>anonymous enum</h2>
+<a id="a26e1124d33b4acdb532c49f6498df549" name="a26e1124d33b4acdb532c49f6498df549"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a26e1124d33b4acdb532c49f6498df549">&#9670;&nbsp;</a></span>anonymous enum</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -235,15 +327,16 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="af8654c714018c6241d9ebd01f3fb5a26a06827fb1b800dd4df84c46e3db632cf7" name="af8654c714018c6241d9ebd01f3fb5a26a06827fb1b800dd4df84c46e3db632cf7"></a>DRVID_INVALID&#160;</td><td class="fielddoc"></td></tr>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a26e1124d33b4acdb532c49f6498df549a515c2c5e00bd4ab9023a6fe87608b0ba" name="a26e1124d33b4acdb532c49f6498df549a515c2c5e00bd4ab9023a6fe87608b0ba"></a>ENUM_RESET_DELAY_MS&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a26e1124d33b4acdb532c49f6498df549a8f8b5016861f47c72f307f48a8e8ef7a" name="a26e1124d33b4acdb532c49f6498df549a8f8b5016861f47c72f307f48a8e8ef7a"></a>ENUM_DEBOUNCING_DELAY_MS&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00130">130</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l01286">1286</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
 
 </div>
 </div>
-<a id="a2f80701c36e79c0640d91c788feee0b3" name="a2f80701c36e79c0640d91c788feee0b3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2f80701c36e79c0640d91c788feee0b3">&#9670;&nbsp;</a></span>anonymous enum</h2>
+<a id="a7ee8d0f117a79ca7eb1e0076a9182bcb" name="a7ee8d0f117a79ca7eb1e0076a9182bcb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ee8d0f117a79ca7eb1e0076a9182bcb">&#9670;&nbsp;</a></span>anonymous enum</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -254,15 +347,27 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a2f80701c36e79c0640d91c788feee0b3a156537bd0faf441a451c955e4691af70" name="a2f80701c36e79c0640d91c788feee0b3a156537bd0faf441a451c955e4691af70"></a>ADDR_INVALID&#160;</td><td class="fielddoc"></td></tr>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a7ee8d0f117a79ca7eb1e0076a9182bcbadf31577fd0b436a739bcfed90e4b21a6" name="a7ee8d0f117a79ca7eb1e0076a9182bcbadf31577fd0b436a739bcfed90e4b21a6"></a>ENUM_IDLE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a7ee8d0f117a79ca7eb1e0076a9182bcba02d3a81cf935f49c8e87dd58afb40679" name="a7ee8d0f117a79ca7eb1e0076a9182bcba02d3a81cf935f49c8e87dd58afb40679"></a>ENUM_RESET_1&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a7ee8d0f117a79ca7eb1e0076a9182bcba613f159c5cce223c0aae3101f89e9f11" name="a7ee8d0f117a79ca7eb1e0076a9182bcba613f159c5cce223c0aae3101f89e9f11"></a>ENUM_HUB_CLEAR_RESET_1&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a7ee8d0f117a79ca7eb1e0076a9182bcba0242b930bd4a266cdf3c534efe2a468f" name="a7ee8d0f117a79ca7eb1e0076a9182bcba0242b930bd4a266cdf3c534efe2a468f"></a>ENUM_ADDR0_DEVICE_DESC&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a7ee8d0f117a79ca7eb1e0076a9182bcba59dfac7466b2a40fc45c33e0e53b14cb" name="a7ee8d0f117a79ca7eb1e0076a9182bcba59dfac7466b2a40fc45c33e0e53b14cb"></a>ENUM_RESET_2&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a7ee8d0f117a79ca7eb1e0076a9182bcba3ef4eb09b2f47a55a2fe4ad78533ce29" name="a7ee8d0f117a79ca7eb1e0076a9182bcba3ef4eb09b2f47a55a2fe4ad78533ce29"></a>ENUM_HUB_GET_STATUS_2&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a7ee8d0f117a79ca7eb1e0076a9182bcba1e1ba2988cd0180962a9cdce12bd7b26" name="a7ee8d0f117a79ca7eb1e0076a9182bcba1e1ba2988cd0180962a9cdce12bd7b26"></a>ENUM_HUB_CLEAR_RESET_2&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a7ee8d0f117a79ca7eb1e0076a9182bcba26437a2ed2d9aa2807a78ae9e9e9f87d" name="a7ee8d0f117a79ca7eb1e0076a9182bcba26437a2ed2d9aa2807a78ae9e9e9f87d"></a>ENUM_SET_ADDR&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a7ee8d0f117a79ca7eb1e0076a9182bcbae96ab4e9a98a6ce96247c93e362b1cf4" name="a7ee8d0f117a79ca7eb1e0076a9182bcbae96ab4e9a98a6ce96247c93e362b1cf4"></a>ENUM_GET_DEVICE_DESC&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a7ee8d0f117a79ca7eb1e0076a9182bcba446bd3c92005224d405f2339dfc347f2" name="a7ee8d0f117a79ca7eb1e0076a9182bcba446bd3c92005224d405f2339dfc347f2"></a>ENUM_GET_9BYTE_CONFIG_DESC&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a7ee8d0f117a79ca7eb1e0076a9182bcbaa98ae12ce4ce20e3c0b97196dd5adf61" name="a7ee8d0f117a79ca7eb1e0076a9182bcbaa98ae12ce4ce20e3c0b97196dd5adf61"></a>ENUM_GET_FULL_CONFIG_DESC&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a7ee8d0f117a79ca7eb1e0076a9182bcba04f3342c0ebc65a11303047adb73cb24" name="a7ee8d0f117a79ca7eb1e0076a9182bcba04f3342c0ebc65a11303047adb73cb24"></a>ENUM_SET_CONFIG&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a7ee8d0f117a79ca7eb1e0076a9182bcba718b24de28a7e48b7204d6cdab18bf88" name="a7ee8d0f117a79ca7eb1e0076a9182bcba718b24de28a7e48b7204d6cdab18bf88"></a>ENUM_CONFIG_DRIVER&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00131">131</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l01292">1292</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
 
 </div>
 </div>
-<a id="a531c35e38ede3ea4e5ba5afb24b29493" name="a531c35e38ede3ea4e5ba5afb24b29493"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a531c35e38ede3ea4e5ba5afb24b29493">&#9670;&nbsp;</a></span>anonymous enum</h2>
+<a id="adbaf9202177df73e6880eab6e6aab329" name="adbaf9202177df73e6880eab6e6aab329"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adbaf9202177df73e6880eab6e6aab329">&#9670;&nbsp;</a></span>anonymous enum</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -273,15 +378,15 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a531c35e38ede3ea4e5ba5afb24b29493a3d69eab44dbede9d61507ef234aea764" name="a531c35e38ede3ea4e5ba5afb24b29493a3d69eab44dbede9d61507ef234aea764"></a>USBH_CLASS_DRIVER_COUNT&#160;</td><td class="fielddoc"></td></tr>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="adbaf9202177df73e6880eab6e6aab329a684c73c98e0b3538c8e20a083b2b3521" name="adbaf9202177df73e6880eab6e6aab329a684c73c98e0b3538c8e20a083b2b3521"></a>BUILTIN_DRIVER_COUNT&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00196">196</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00201">201</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
 
 </div>
 </div>
-<a id="a9334a5b9057f32da96db9b5c6a045d67" name="a9334a5b9057f32da96db9b5c6a045d67"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9334a5b9057f32da96db9b5c6a045d67">&#9670;&nbsp;</a></span>anonymous enum</h2>
+<a id="a7495a48740c9d555f7fbcb48246dbd93" name="a7495a48740c9d555f7fbcb48246dbd93"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7495a48740c9d555f7fbcb48246dbd93">&#9670;&nbsp;</a></span>anonymous enum</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -292,35 +397,16 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a9334a5b9057f32da96db9b5c6a045d67a255e787af798f103692ae6a228b0600a" name="a9334a5b9057f32da96db9b5c6a045d67a255e787af798f103692ae6a228b0600a"></a>RESET_DELAY&#160;</td><td class="fielddoc"></td></tr>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a7495a48740c9d555f7fbcb48246dbd93a9ef96027281cc2b3431239fb6b10cde7" name="a7495a48740c9d555f7fbcb48246dbd93a9ef96027281cc2b3431239fb6b10cde7"></a>CONFIG_NUM&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00198">198</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
-
-</div>
-</div>
-<a id="a8628933cde20921c453a6d2607bdad62" name="a8628933cde20921c453a6d2607bdad62"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8628933cde20921c453a6d2607bdad62">&#9670;&nbsp;</a></span>anonymous enum</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">anonymous enum</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a8628933cde20921c453a6d2607bdad62a9ef96027281cc2b3431239fb6b10cde7" name="a8628933cde20921c453a6d2607bdad62a9ef96027281cc2b3431239fb6b10cde7"></a>CONFIG_NUM&#160;</td><td class="fielddoc"></td></tr>
-</table>
-
-<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00200">200</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00202">202</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a5575c144314953490a2159dfbcb01fab" name="a5575c144314953490a2159dfbcb01fab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5575c144314953490a2159dfbcb01fab">&#9670;&nbsp;</a></span>enum_get_9byte_config_desc_complete()</h2>
+<a id="a01e144a376c8a58008d6b54b9af1360f" name="a01e144a376c8a58008d6b54b9af1360f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a01e144a376c8a58008d6b54b9af1360f">&#9670;&nbsp;</a></span>_control_blocking_complete_cb()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -329,21 +415,43 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static bool enum_get_9byte_config_desc_complete </td>
+          <td class="memname">static void _control_blocking_complete_cb </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="usbh_8h.html#a44e03e25e2eb1fd099b08a1e7fef2f89">tuh_xfer_t</a> *&#160;</td>
+          <td class="paramname"><em>xfer</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00596">596</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+
+</div>
+</div>
+<a id="a79cb160538297008db1a668b8b742f38" name="a79cb160538297008db1a668b8b742f38"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a79cb160538297008db1a668b8b742f38">&#9670;&nbsp;</a></span>_control_xfer_complete()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void _control_xfer_complete </td>
           <td>(</td>
           <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>dev_addr</em>, </td>
+          <td class="paramname"><em>daddr</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *&#160;</td>
-          <td class="paramname"><em>request</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="tusb__types_8h.html#a6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a>&#160;</td>
           <td class="paramname"><em>result</em>&#160;</td>
         </tr>
         <tr>
@@ -359,12 +467,12 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00901">901</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00680">680</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
 
 </div>
 </div>
-<a id="ac627d3f4ed04b2e70e7574c97630a6bb" name="ac627d3f4ed04b2e70e7574c97630a6bb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac627d3f4ed04b2e70e7574c97630a6bb">&#9670;&nbsp;</a></span>enum_get_addr0_device_desc_complete()</h2>
+<a id="adbec528b24d66473715d3494293563e9" name="adbec528b24d66473715d3494293563e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adbec528b24d66473715d3494293563e9">&#9670;&nbsp;</a></span>_get_descriptor()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -373,22 +481,52 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static bool enum_get_addr0_device_desc_complete </td>
+          <td class="memname">static bool _get_descriptor </td>
           <td>(</td>
           <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>dev_addr</em>, </td>
+          <td class="paramname"><em>daddr</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *&#160;</td>
-          <td class="paramname"><em>request</em>, </td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a>&#160;</td>
-          <td class="paramname"><em>result</em>&#160;</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>language_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>buffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>len</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="usbh_8h.html#a6afac62f5a9ed2a11cd2f344dfeb78c9">tuh_xfer_cb_t</a>&#160;</td>
+          <td class="paramname"><em>complete_cb</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uintptr_t&#160;</td>
+          <td class="paramname"><em>user_data</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -403,12 +541,12 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00743">743</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00989">989</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
 
 </div>
 </div>
-<a id="acbc040fe3a88451f1a090a9f56d747a6" name="acbc040fe3a88451f1a090a9f56d747a6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acbc040fe3a88451f1a090a9f56d747a6">&#9670;&nbsp;</a></span>enum_get_config_desc_complete()</h2>
+<a id="a846e7a9d77323a93fd85bc733f2a7bd4" name="a846e7a9d77323a93fd85bc733f2a7bd4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a846e7a9d77323a93fd85bc733f2a7bd4">&#9670;&nbsp;</a></span>_parse_configuration_descriptor()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -417,7 +555,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static bool enum_get_config_desc_complete </td>
+          <td class="memname">static bool _parse_configuration_descriptor </td>
           <td>(</td>
           <td class="paramtype">uint8_t&#160;</td>
           <td class="paramname"><em>dev_addr</em>, </td>
@@ -425,14 +563,8 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *&#160;</td>
-          <td class="paramname"><em>request</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a>&#160;</td>
-          <td class="paramname"><em>result</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="tusb__types_8h.html#ae640129e609bf2e7b33828de0e38dd65">tusb_desc_configuration_t</a> const *&#160;</td>
+          <td class="paramname"><em>desc_cfg</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -447,12 +579,12 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00936">936</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l01631">1631</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
 
 </div>
 </div>
-<a id="abd84d776fcec25f2ae31433ec3f6403e" name="abd84d776fcec25f2ae31433ec3f6403e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abd84d776fcec25f2ae31433ec3f6403e">&#9670;&nbsp;</a></span>enum_get_device_desc_complete()</h2>
+<a id="a32cbaca65422022a782852f4b1e47a2f" name="a32cbaca65422022a782852f4b1e47a2f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a32cbaca65422022a782852f4b1e47a2f">&#9670;&nbsp;</a></span>_set_control_xfer_stage()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -461,27 +593,39 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static bool enum_get_device_desc_complete </td>
+          <td class="memname">static TU_ATTR_ALWAYS_INLINE void _set_control_xfer_stage </td>
           <td>(</td>
           <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>dev_addr</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"><em>stage</em></td><td>)</td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *&#160;</td>
-          <td class="paramname"><em>request</em>, </td>
         </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00674">674</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+
+</div>
+</div>
+<a id="a774eeb02a8934e1aba2d2f09be63ff29" name="a774eeb02a8934e1aba2d2f09be63ff29"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a774eeb02a8934e1aba2d2f09be63ff29">&#9670;&nbsp;</a></span>clear_device()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
         <tr>
-          <td class="paramkey"></td>
+          <td class="memname">static void clear_device </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structusbh__device__t.html">usbh_device_t</a> *&#160;</td>
+          <td class="paramname"><em>dev</em></td><td>)</td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a>&#160;</td>
-          <td class="paramname"><em>result</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -491,12 +635,12 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00865">865</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00336">336</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
 
 </div>
 </div>
-<a id="afdc722a911f3740dee31a0aa1f85c392" name="afdc722a911f3740dee31a0aa1f85c392"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afdc722a911f3740dee31a0aa1f85c392">&#9670;&nbsp;</a></span>enum_hub_clear_reset0_complete()</h2>
+<a id="a5b3b16031cec1f8bc107224cdd495764" name="a5b3b16031cec1f8bc107224cdd495764"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5b3b16031cec1f8bc107224cdd495764">&#9670;&nbsp;</a></span>enum_full_complete()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -505,27 +649,11 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static bool enum_hub_clear_reset0_complete </td>
+          <td class="memname">static void enum_full_complete </td>
           <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>dev_addr</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *&#160;</td>
-          <td class="paramname"><em>request</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a>&#160;</td>
-          <td class="paramname"><em>result</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -535,139 +663,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00619">619</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
-
-</div>
-</div>
-<a id="a3b6fad1b780afc790859d4c4255139c9" name="a3b6fad1b780afc790859d4c4255139c9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3b6fad1b780afc790859d4c4255139c9">&#9670;&nbsp;</a></span>enum_hub_clear_reset1_complete()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static bool enum_hub_clear_reset1_complete </td>
-          <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>dev_addr</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *&#160;</td>
-          <td class="paramname"><em>request</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a>&#160;</td>
-          <td class="paramname"><em>result</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00627">627</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
-
-</div>
-</div>
-<a id="a867b8aa6c42c1d2b482f064ec9b7ff21" name="a867b8aa6c42c1d2b482f064ec9b7ff21"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a867b8aa6c42c1d2b482f064ec9b7ff21">&#9670;&nbsp;</a></span>enum_hub_get_status0_complete()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static bool enum_hub_get_status0_complete </td>
-          <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>dev_addr</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *&#160;</td>
-          <td class="paramname"><em>request</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a>&#160;</td>
-          <td class="paramname"><em>result</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00657">657</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
-
-</div>
-</div>
-<a id="ab5417fd94fe874f6e2bdae77b880d3b7" name="ab5417fd94fe874f6e2bdae77b880d3b7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab5417fd94fe874f6e2bdae77b880d3b7">&#9670;&nbsp;</a></span>enum_hub_get_status1_complete()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static bool enum_hub_get_status1_complete </td>
-          <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>dev_addr</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *&#160;</td>
-          <td class="paramname"><em>request</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a>&#160;</td>
-          <td class="paramname"><em>result</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00640">640</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l01746">1746</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
 
 </div>
 </div>
@@ -695,35 +691,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00684">684</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
-
-</div>
-</div>
-<a id="aafcbada022673b4b52026b6b83620457" name="aafcbada022673b4b52026b6b83620457"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aafcbada022673b4b52026b6b83620457">&#9670;&nbsp;</a></span>enum_request_addr0_device_desc()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static bool enum_request_addr0_device_desc </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00716">716</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l01522">1522</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
 
 </div>
 </div>
@@ -751,95 +719,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00788">788</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
-
-</div>
-</div>
-<a id="a0d13997bbc90e34fba0bd63b83fc84a7" name="a0d13997bbc90e34fba0bd63b83fc84a7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0d13997bbc90e34fba0bd63b83fc84a7">&#9670;&nbsp;</a></span>enum_set_address_complete()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static bool enum_set_address_complete </td>
-          <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>dev_addr</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *&#160;</td>
-          <td class="paramname"><em>request</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a>&#160;</td>
-          <td class="paramname"><em>result</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00828">828</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
-
-</div>
-</div>
-<a id="a404c5a8647e8b36378fb652ed32801b4" name="a404c5a8647e8b36378fb652ed32801b4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a404c5a8647e8b36378fb652ed32801b4">&#9670;&nbsp;</a></span>enum_set_config_complete()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static bool enum_set_config_complete </td>
-          <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>dev_addr</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *&#160;</td>
-          <td class="paramname"><em>request</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a>&#160;</td>
-          <td class="paramname"><em>result</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00965">965</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l01591">1591</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
 
 </div>
 </div>
@@ -867,7 +747,35 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00226">226</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00271">271</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+
+</div>
+</div>
+<a id="adf8ff9a9da11706d2917841aecae2804" name="adf8ff9a9da11706d2917841aecae2804"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf8ff9a9da11706d2917841aecae2804">&#9670;&nbsp;</a></span>get_driver()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="structusbh__class__driver__t.html">usbh_class_driver_t</a> const  * get_driver </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>drv_id</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00210">210</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
 
 </div>
 </div>
@@ -895,7 +803,63 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00559">559</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l01572">1572</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+
+</div>
+</div>
+<a id="adb5a8ba96a9d9f7a626768db278c82b4" name="adb5a8ba96a9d9f7a626768db278c82b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adb5a8ba96a9d9f7a626768db278c82b4">&#9670;&nbsp;</a></span>hcd_configure()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TU_ATTR_WEAK bool hcd_configure </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>rhport</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>cfg_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const void *&#160;</td>
+          <td class="paramname"><em>cfg_param</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00055">55</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+
+</div>
+</div>
+<a id="a25d2c48b9cd6dfaec840f364598321b2" name="a25d2c48b9cd6dfaec840f364598321b2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a25d2c48b9cd6dfaec840f364598321b2">&#9670;&nbsp;</a></span>hcd_deinit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TU_ATTR_WEAK bool hcd_deinit </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>rhport</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00050">50</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
 
 </div>
 </div>
@@ -925,78 +889,18 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00441">441</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00949">949</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
 
 </div>
 </div>
-<a id="aece588a83ad525b717113525b24b9a02" name="aece588a83ad525b717113525b24b9a02"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aece588a83ad525b717113525b24b9a02">&#9670;&nbsp;</a></span>hcd_event_device_attach()</h2>
+<a id="a99452aaa1b3eb22274eff8a60efb41fa" name="a99452aaa1b3eb22274eff8a60efb41fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a99452aaa1b3eb22274eff8a60efb41fa">&#9670;&nbsp;</a></span>hcd_event_handler()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void hcd_event_device_attach </td>
-          <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>rhport</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>in_isr</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00488">488</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
-
-</div>
-</div>
-<a id="aaec362cb850cd354557545ca2b300680" name="aaec362cb850cd354557545ca2b300680"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaec362cb850cd354557545ca2b300680">&#9670;&nbsp;</a></span>hcd_event_device_remove()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void hcd_event_device_remove </td>
-          <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>hostid</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>in_isr</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00502">502</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
-
-</div>
-</div>
-<a id="a8f36b6f1ecc776dddd271e7c4607f0b2" name="a8f36b6f1ecc776dddd271e7c4607f0b2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8f36b6f1ecc776dddd271e7c4607f0b2">&#9670;&nbsp;</a></span>hcd_event_handler()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void hcd_event_handler </td>
+          <td class="memname">TU_ATTR_FAST_FUNC void hcd_event_handler </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structhcd__event__t.html">hcd_event_t</a> const *&#160;</td>
           <td class="paramname"><em>event</em>, </td>
@@ -1015,60 +919,40 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00460">460</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00964">964</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
 
 </div>
 </div>
-<a id="acdabc4ab32fb9593c5463e58224ddd9e" name="acdabc4ab32fb9593c5463e58224ddd9e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acdabc4ab32fb9593c5463e58224ddd9e">&#9670;&nbsp;</a></span>hcd_event_xfer_complete()</h2>
+<a id="afcf7b3b48ac9d67967050510edbdc6f2" name="afcf7b3b48ac9d67967050510edbdc6f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afcf7b3b48ac9d67967050510edbdc6f2">&#9670;&nbsp;</a></span>is_hub_addr()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void hcd_event_xfer_complete </td>
+          <td class="memname">static TU_ATTR_ALWAYS_INLINE bool is_hub_addr </td>
           <td>(</td>
           <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>dev_addr</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"><em>daddr</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>ep_addr</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>xferred_bytes</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a>&#160;</td>
-          <td class="paramname"><em>result</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>in_isr</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00470">470</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l01194">1194</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
 
 </div>
 </div>
-<a id="a658a3f9040ddc34fe61cb611272bb08d" name="a658a3f9040ddc34fe61cb611272bb08d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a658a3f9040ddc34fe61cb611272bb08d">&#9670;&nbsp;</a></span>OSAL_QUEUE_DEF()</h2>
+<a id="a53ace1cead216eb8bd433a0e7a8a16e1" name="a53ace1cead216eb8bd433a0e7a8a16e1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a53ace1cead216eb8bd433a0e7a8a16e1">&#9670;&nbsp;</a></span>OSAL_QUEUE_DEF()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1076,7 +960,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">OSAL_QUEUE_DEF </td>
           <td>(</td>
-          <td class="paramtype">OPT_MODE_HOST&#160;</td>
+          <td class="paramtype"><a class="el" href="usbh__pvt_8h.html#aa6b1dcc1412cdcd269da06e5b7550a09">usbh_int_set</a>&#160;</td>
           <td class="paramname">, </td>
         </tr>
         <tr>
@@ -1107,28 +991,8 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="a575c7ea04a380d0c02c8b85fcbb63572" name="a575c7ea04a380d0c02c8b85fcbb63572"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a575c7ea04a380d0c02c8b85fcbb63572">&#9670;&nbsp;</a></span>osal_task_delay()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void osal_task_delay </td>
-          <td>(</td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>msec</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00267">267</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
-
-</div>
-</div>
-<a id="ae65ba16bff981ab9e1595873925df26a" name="ae65ba16bff981ab9e1595873925df26a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae65ba16bff981ab9e1595873925df26a">&#9670;&nbsp;</a></span>parse_configuration_descriptor()</h2>
+<a id="ac35af6e11af34b5f6e52ebd4f0fab068" name="ac35af6e11af34b5f6e52ebd4f0fab068"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac35af6e11af34b5f6e52ebd4f0fab068">&#9670;&nbsp;</a></span>process_enumeration()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1137,21 +1001,11 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static bool parse_configuration_descriptor </td>
+          <td class="memname">static void process_enumeration </td>
           <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>dev_addr</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype"><a class="el" href="usbh_8h.html#a44e03e25e2eb1fd099b08a1e7fef2f89">tuh_xfer_t</a> *&#160;</td>
+          <td class="paramname"><em>xfer</em></td><td>)</td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#gae640129e609bf2e7b33828de0e38dd65">tusb_desc_configuration_t</a> const *&#160;</td>
-          <td class="paramname"><em>desc_cfg</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -1161,12 +1015,12 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00984">984</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l01315">1315</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
 
 </div>
 </div>
-<a id="ad72242ec7f88e9cd7545a69417940890" name="ad72242ec7f88e9cd7545a69417940890"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad72242ec7f88e9cd7545a69417940890">&#9670;&nbsp;</a></span>process_device_unplugged()</h2>
+<a id="ae3ea0bab12945006ea43d19f372d4269" name="ae3ea0bab12945006ea43d19f372d4269"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae3ea0bab12945006ea43d19f372d4269">&#9670;&nbsp;</a></span>process_removing_device()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1175,7 +1029,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void process_device_unplugged </td>
+          <td class="memname">static void process_removing_device </td>
           <td>(</td>
           <td class="paramtype">uint8_t&#160;</td>
           <td class="paramname"><em>rhport</em>, </td>
@@ -1205,18 +1059,154 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00519">519</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l01219">1219</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
 
 </div>
 </div>
-<a id="a6d90374898305f88d48b3f2c669a4d48" name="a6d90374898305f88d48b3f2c669a4d48"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6d90374898305f88d48b3f2c669a4d48">&#9670;&nbsp;</a></span>tuh_init()</h2>
+<a id="a3cc14412f29dc9a2aff7776dbd2b783b" name="a3cc14412f29dc9a2aff7776dbd2b783b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3cc14412f29dc9a2aff7776dbd2b783b">&#9670;&nbsp;</a></span>queue_event()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static TU_ATTR_ALWAYS_INLINE bool queue_event </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structhcd__event__t.html">hcd_event_t</a> const *&#160;</td>
+          <td class="paramname"><em>event</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>in_isr</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00281">281</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+
+</div>
+</div>
+<a id="a5ab686cd32017e4e718eca8714bc3e7b" name="a5ab686cd32017e4e718eca8714bc3e7b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ab686cd32017e4e718eca8714bc3e7b">&#9670;&nbsp;</a></span>tuh_configuration_set()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool tuh_init </td>
+          <td class="memname">bool tuh_configuration_set </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>daddr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>config_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="usbh_8h.html#a6afac62f5a9ed2a11cd2f344dfeb78c9">tuh_xfer_cb_t</a>&#160;</td>
+          <td class="paramname"><em>complete_cb</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uintptr_t&#160;</td>
+          <td class="paramname"><em>user_data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l01090">1090</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+
+</div>
+</div>
+<a id="a76b501e5c2fca1d5ce66d6077eb51545" name="a76b501e5c2fca1d5ce66d6077eb51545"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a76b501e5c2fca1d5ce66d6077eb51545">&#9670;&nbsp;</a></span>tuh_configure()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool tuh_configure </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>rhport</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>cfg_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const void *&#160;</td>
+          <td class="paramname"><em>cfg_param</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00332">332</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+
+</div>
+</div>
+<a id="a92815be87ea0d0a6115f77c309a529ef" name="a92815be87ea0d0a6115f77c309a529ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a92815be87ea0d0a6115f77c309a529ef">&#9670;&nbsp;</a></span>tuh_control_xfer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool tuh_control_xfer </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="usbh_8h.html#a44e03e25e2eb1fd099b08a1e7fef2f89">tuh_xfer_t</a> *&#160;</td>
+          <td class="paramname"><em>xfer</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00602">602</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+
+</div>
+</div>
+<a id="aa7f6ead59bee245ee4589906f17b04e0" name="aa7f6ead59bee245ee4589906f17b04e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa7f6ead59bee245ee4589906f17b04e0">&#9670;&nbsp;</a></span>tuh_deinit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool tuh_deinit </td>
           <td>(</td>
           <td class="paramtype">uint8_t&#160;</td>
           <td class="paramname"><em>rhport</em></td><td>)</td>
@@ -1225,7 +1215,927 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00285">285</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00405">405</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+
+</div>
+</div>
+<a id="a332136d01a403e6760800d7c536a0de4" name="a332136d01a403e6760800d7c536a0de4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a332136d01a403e6760800d7c536a0de4">&#9670;&nbsp;</a></span>tuh_descriptor_get()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool tuh_descriptor_get </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>daddr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>buffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>len</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="usbh_8h.html#a6afac62f5a9ed2a11cd2f344dfeb78c9">tuh_xfer_cb_t</a>&#160;</td>
+          <td class="paramname"><em>complete_cb</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uintptr_t&#160;</td>
+          <td class="paramname"><em>user_data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l01014">1014</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+
+</div>
+</div>
+<a id="a3c4c876f44f7d92ebc0666f2473b4d35" name="a3c4c876f44f7d92ebc0666f2473b4d35"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c4c876f44f7d92ebc0666f2473b4d35">&#9670;&nbsp;</a></span>tuh_descriptor_get_configuration()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool tuh_descriptor_get_configuration </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>daddr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>buffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>len</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="usbh_8h.html#a6afac62f5a9ed2a11cd2f344dfeb78c9">tuh_xfer_cb_t</a>&#160;</td>
+          <td class="paramname"><em>complete_cb</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uintptr_t&#160;</td>
+          <td class="paramname"><em>user_data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l01025">1025</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+
+</div>
+</div>
+<a id="ad38f271c16a9669e01794945dddaaffc" name="ad38f271c16a9669e01794945dddaaffc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad38f271c16a9669e01794945dddaaffc">&#9670;&nbsp;</a></span>tuh_descriptor_get_configuration_sync()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t tuh_descriptor_get_configuration_sync </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>daddr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>buffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>len</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l01160">1160</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+
+</div>
+</div>
+<a id="a27a3fb379bdb2ad054203ce370b45d9e" name="a27a3fb379bdb2ad054203ce370b45d9e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a27a3fb379bdb2ad054203ce370b45d9e">&#9670;&nbsp;</a></span>tuh_descriptor_get_device()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool tuh_descriptor_get_device </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>daddr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>buffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>len</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="usbh_8h.html#a6afac62f5a9ed2a11cd2f344dfeb78c9">tuh_xfer_cb_t</a>&#160;</td>
+          <td class="paramname"><em>complete_cb</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uintptr_t&#160;</td>
+          <td class="paramname"><em>user_data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l01019">1019</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+
+</div>
+</div>
+<a id="a18ad6160d98bdbe5a65d3be041b533fd" name="a18ad6160d98bdbe5a65d3be041b533fd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18ad6160d98bdbe5a65d3be041b533fd">&#9670;&nbsp;</a></span>tuh_descriptor_get_device_sync()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t tuh_descriptor_get_device_sync </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>daddr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>buffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>len</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l01156">1156</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+
+</div>
+</div>
+<a id="ad8cb900bb2436a2b0e2444a37dd77ef8" name="ad8cb900bb2436a2b0e2444a37dd77ef8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad8cb900bb2436a2b0e2444a37dd77ef8">&#9670;&nbsp;</a></span>tuh_descriptor_get_hid_report()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool tuh_descriptor_get_hid_report </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>daddr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>itf_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>desc_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>buffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>len</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="usbh_8h.html#a6afac62f5a9ed2a11cd2f344dfeb78c9">tuh_xfer_cb_t</a>&#160;</td>
+          <td class="paramname"><em>complete_cb</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uintptr_t&#160;</td>
+          <td class="paramname"><em>user_data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l01064">1064</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+
+</div>
+</div>
+<a id="ad5d0b30b0806dcbf48addfaa2a6b7cbb" name="ad5d0b30b0806dcbf48addfaa2a6b7cbb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad5d0b30b0806dcbf48addfaa2a6b7cbb">&#9670;&nbsp;</a></span>tuh_descriptor_get_hid_report_sync()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t tuh_descriptor_get_hid_report_sync </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>daddr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>itf_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>desc_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>buffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>len</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l01165">1165</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+
+</div>
+</div>
+<a id="a174d62aedd157b3121c2be60ddeb8b68" name="a174d62aedd157b3121c2be60ddeb8b68"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a174d62aedd157b3121c2be60ddeb8b68">&#9670;&nbsp;</a></span>tuh_descriptor_get_manufacturer_string()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool tuh_descriptor_get_manufacturer_string </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>daddr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>language_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>buffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>len</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="usbh_8h.html#a6afac62f5a9ed2a11cd2f344dfeb78c9">tuh_xfer_cb_t</a>&#160;</td>
+          <td class="paramname"><em>complete_cb</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uintptr_t&#160;</td>
+          <td class="paramname"><em>user_data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l01038">1038</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+
+</div>
+</div>
+<a id="a9fe5de50caeb2e37341dd73712b02e7d" name="a9fe5de50caeb2e37341dd73712b02e7d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9fe5de50caeb2e37341dd73712b02e7d">&#9670;&nbsp;</a></span>tuh_descriptor_get_manufacturer_string_sync()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t tuh_descriptor_get_manufacturer_string_sync </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>daddr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>language_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>buffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>len</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l01175">1175</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+
+</div>
+</div>
+<a id="a6f5d5f55dcf623735130c1913dcf4fb4" name="a6f5d5f55dcf623735130c1913dcf4fb4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f5d5f55dcf623735130c1913dcf4fb4">&#9670;&nbsp;</a></span>tuh_descriptor_get_product_string()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool tuh_descriptor_get_product_string </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>daddr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>language_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>buffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>len</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="usbh_8h.html#a6afac62f5a9ed2a11cd2f344dfeb78c9">tuh_xfer_cb_t</a>&#160;</td>
+          <td class="paramname"><em>complete_cb</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uintptr_t&#160;</td>
+          <td class="paramname"><em>user_data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l01047">1047</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+
+</div>
+</div>
+<a id="a6b35d5d92be4e7e8c87dc816e7c4e398" name="a6b35d5d92be4e7e8c87dc816e7c4e398"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6b35d5d92be4e7e8c87dc816e7c4e398">&#9670;&nbsp;</a></span>tuh_descriptor_get_product_string_sync()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t tuh_descriptor_get_product_string_sync </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>daddr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>language_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>buffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>len</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l01180">1180</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+
+</div>
+</div>
+<a id="af155f113250e5fb79a9f722e8f7f4b73" name="af155f113250e5fb79a9f722e8f7f4b73"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af155f113250e5fb79a9f722e8f7f4b73">&#9670;&nbsp;</a></span>tuh_descriptor_get_serial_string()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool tuh_descriptor_get_serial_string </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>daddr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>language_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>buffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>len</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="usbh_8h.html#a6afac62f5a9ed2a11cd2f344dfeb78c9">tuh_xfer_cb_t</a>&#160;</td>
+          <td class="paramname"><em>complete_cb</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uintptr_t&#160;</td>
+          <td class="paramname"><em>user_data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l01055">1055</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+
+</div>
+</div>
+<a id="a2e48c0c13261078f17bdba58fd0ebfdd" name="a2e48c0c13261078f17bdba58fd0ebfdd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e48c0c13261078f17bdba58fd0ebfdd">&#9670;&nbsp;</a></span>tuh_descriptor_get_serial_string_sync()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t tuh_descriptor_get_serial_string_sync </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>daddr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>language_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>buffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>len</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l01185">1185</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+
+</div>
+</div>
+<a id="a5eb294943c705b922e67f9cf6c143e3c" name="a5eb294943c705b922e67f9cf6c143e3c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5eb294943c705b922e67f9cf6c143e3c">&#9670;&nbsp;</a></span>tuh_descriptor_get_string()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool tuh_descriptor_get_string </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>daddr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>language_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>buffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>len</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="usbh_8h.html#a6afac62f5a9ed2a11cd2f344dfeb78c9">tuh_xfer_cb_t</a>&#160;</td>
+          <td class="paramname"><em>complete_cb</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uintptr_t&#160;</td>
+          <td class="paramname"><em>user_data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l01032">1032</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+
+</div>
+</div>
+<a id="a6fbe950387b9fbc17a1fa5b1c11307a7" name="a6fbe950387b9fbc17a1fa5b1c11307a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6fbe950387b9fbc17a1fa5b1c11307a7">&#9670;&nbsp;</a></span>tuh_descriptor_get_string_sync()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t tuh_descriptor_get_string_sync </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>daddr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>language_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>buffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>len</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l01170">1170</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+
+</div>
+</div>
+<a id="acecbf30c1094b8c4360e588913199209" name="acecbf30c1094b8c4360e588913199209"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acecbf30c1094b8c4360e588913199209">&#9670;&nbsp;</a></span>tuh_descriptor_get_sync()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t tuh_descriptor_get_sync </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>daddr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>buffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>len</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l01151">1151</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+
+</div>
+</div>
+<a id="af442d21752274648c3f2c9abae46b1a7" name="af442d21752274648c3f2c9abae46b1a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af442d21752274648c3f2c9abae46b1a7">&#9670;&nbsp;</a></span>tuh_edpt_abort_xfer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool tuh_edpt_abort_xfer </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>daddr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>ep_addr</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00781">781</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+
+</div>
+</div>
+<a id="ad3b684dc600a8368133ca5f0f3ac32b7" name="ad3b684dc600a8368133ca5f0f3ac32b7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3b684dc600a8368133ca5f0f3ac32b7">&#9670;&nbsp;</a></span>tuh_edpt_open()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool tuh_edpt_open </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>dev_addr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="tusb__types_8h.html#a95906f860c391cedba638b1946669694">tusb_desc_endpoint_t</a> const *&#160;</td>
+          <td class="paramname"><em>desc_ep</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00930">930</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+
+</div>
+</div>
+<a id="a1c78f5c6bab8272867af1b3c9ab6c431" name="a1c78f5c6bab8272867af1b3c9ab6c431"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1c78f5c6bab8272867af1b3c9ab6c431">&#9670;&nbsp;</a></span>tuh_edpt_xfer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool tuh_edpt_xfer </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="usbh_8h.html#a44e03e25e2eb1fd099b08a1e7fef2f89">tuh_xfer_t</a> *&#160;</td>
+          <td class="paramname"><em>xfer</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00765">765</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+
+</div>
+</div>
+<a id="ad1fd3e14a8e2bbea4832a60118e16889" name="ad1fd3e14a8e2bbea4832a60118e16889"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad1fd3e14a8e2bbea4832a60118e16889">&#9670;&nbsp;</a></span>tuh_event_hook_cb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TU_ATTR_WEAK void tuh_event_hook_cb </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>rhport</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>eventid</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>in_isr</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00062">62</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
 
 </div>
 </div>
@@ -1245,7 +2155,55 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00280">280</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00342">342</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+
+</div>
+</div>
+<a id="a6265e9e7dfe25c028b47ad5c0412cc30" name="a6265e9e7dfe25c028b47ad5c0412cc30"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6265e9e7dfe25c028b47ad5c0412cc30">&#9670;&nbsp;</a></span>tuh_interface_set()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool tuh_interface_set </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>daddr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>itf_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>itf_alt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="usbh_8h.html#a6afac62f5a9ed2a11cd2f344dfeb78c9">tuh_xfer_cb_t</a>&#160;</td>
+          <td class="paramname"><em>complete_cb</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uintptr_t&#160;</td>
+          <td class="paramname"><em>user_data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l01116">1116</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
 
 </div>
 </div>
@@ -1265,7 +2223,87 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00242">242</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00291">291</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+
+</div>
+</div>
+<a id="aa2e9b43185a83fd1f0a7b0744e000a9d" name="aa2e9b43185a83fd1f0a7b0744e000a9d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa2e9b43185a83fd1f0a7b0744e000a9d">&#9670;&nbsp;</a></span>tuh_rhport_init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool tuh_rhport_init </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>rhport</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structtusb__rhport__init__t.html">tusb_rhport_init_t</a> *&#160;</td>
+          <td class="paramname"><em>rh_init</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00346">346</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+
+</div>
+</div>
+<a id="a354d42e66b7b2a94984b952abd9d4b46" name="a354d42e66b7b2a94984b952abd9d4b46"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a354d42e66b7b2a94984b952abd9d4b46">&#9670;&nbsp;</a></span>tuh_rhport_is_active()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool tuh_rhport_is_active </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>rhport</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00314">314</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+
+</div>
+</div>
+<a id="ac037c75391751b02b9f4cda80af046cf" name="ac037c75391751b02b9f4cda80af046cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac037c75391751b02b9f4cda80af046cf">&#9670;&nbsp;</a></span>tuh_rhport_reset_bus()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool tuh_rhport_reset_bus </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>rhport</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>active</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00318">318</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
 
 </div>
 </div>
@@ -1276,7 +2314,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">tusb_speed_t tuh_speed_get </td>
+          <td class="memname"><a class="el" href="tusb__types_8h.html#a13298e8a91e362e9b4ed452d86f4671b">tusb_speed_t</a> tuh_speed_get </td>
           <td>(</td>
           <td class="paramtype">uint8_t&#160;</td>
           <td class="paramname"><em>dev_addr</em></td><td>)</td>
@@ -1285,18 +2323,18 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00261">261</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00309">309</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
 
 </div>
 </div>
-<a id="a7fe8646e3914ee119f5f1744fcfeafed" name="a7fe8646e3914ee119f5f1744fcfeafed"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7fe8646e3914ee119f5f1744fcfeafed">&#9670;&nbsp;</a></span>tuh_task()</h2>
+<a id="a30e76e74d239ceb1575df9baddbfb475" name="a30e76e74d239ceb1575df9baddbfb475"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a30e76e74d239ceb1575df9baddbfb475">&#9670;&nbsp;</a></span>tuh_task_event_ready()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void tuh_task </td>
+          <td class="memname">bool tuh_task_event_ready </td>
           <td>(</td>
           <td class="paramtype">void&#160;</td>
           <td class="paramname"></td><td>)</td>
@@ -1305,7 +2343,37 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00345">345</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00440">440</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+
+</div>
+</div>
+<a id="a244be8d1882c4c0a9594d78add05e20d" name="a244be8d1882c4c0a9594d78add05e20d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a244be8d1882c4c0a9594d78add05e20d">&#9670;&nbsp;</a></span>tuh_task_ext()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void tuh_task_ext </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>timeout_ms</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>in_isr</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00465">465</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
 
 </div>
 </div>
@@ -1341,21 +2409,24 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00247">247</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00297">297</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
 
 </div>
 </div>
-<a id="a4152f6a0ce38f952c2f4a9fe769cd809" name="a4152f6a0ce38f952c2f4a9fe769cd809"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4152f6a0ce38f952c2f4a9fe769cd809">&#9670;&nbsp;</a></span>usbh_control_xfer_cb()</h2>
+<a id="a8c5dd2429f8833b8809466560183d7f2" name="a8c5dd2429f8833b8809466560183d7f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c5dd2429f8833b8809466560183d7f2">&#9670;&nbsp;</a></span>usbh_control_xfer_cb()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool usbh_control_xfer_cb </td>
+          <td class="memname">static bool usbh_control_xfer_cb </td>
           <td>(</td>
           <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>dev_addr</em>, </td>
+          <td class="paramname"><em>daddr</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1366,7 +2437,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="tusb__types_8h.html#a6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a>&#160;</td>
           <td class="paramname"><em>result</em>, </td>
         </tr>
         <tr>
@@ -1381,9 +2452,50 @@ Variables</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbh__control_8c_source.html#l00085">85</a> of file <a class="el" href="usbh__control_8c_source.html">usbh_control.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00703">703</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+
+</div>
+</div>
+<a id="a8af91f94ce0271f60f29620d248f9ed9" name="a8af91f94ce0271f60f29620d248f9ed9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8af91f94ce0271f60f29620d248f9ed9">&#9670;&nbsp;</a></span>usbh_defer_func()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void usbh_defer_func </td>
+          <td>(</td>
+          <td class="paramtype">osal_task_func_t&#160;</td>
+          <td class="paramname"><em>func</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>param</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>in_isr</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00832">832</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
 
 </div>
 </div>
@@ -1413,7 +2525,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00572">572</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l01717">1717</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
 
 </div>
 </div>
@@ -1443,7 +2555,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l01192">1192</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00935">935</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
 
 </div>
 </div>
@@ -1473,7 +2585,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l01082">1082</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00846">846</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
 
 </div>
 </div>
@@ -1511,43 +2623,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l01167">1167</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
-
-</div>
-</div>
-<a id="a6ed9881f3ac3f3d62ec341bcd0d40b55" name="a6ed9881f3ac3f3d62ec341bcd0d40b55"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6ed9881f3ac3f3d62ec341bcd0d40b55">&#9670;&nbsp;</a></span>usbh_edpt_open()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool usbh_edpt_open </td>
-          <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>rhport</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>dev_addr</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga95906f860c391cedba638b1946669694">tusb_desc_endpoint_t</a> const *&#160;</td>
-          <td class="paramname"><em>desc_ep</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l01184">1184</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00916">916</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
 
 </div>
 </div>
@@ -1577,18 +2653,18 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l01110">1110</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00861">861</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
 
 </div>
 </div>
-<a id="afa7a8344d9c59587ca29434d295bc6cb" name="afa7a8344d9c59587ca29434d295bc6cb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afa7a8344d9c59587ca29434d295bc6cb">&#9670;&nbsp;</a></span>usbh_edpt_xfer()</h2>
+<a id="a0416609eb3eb8751364916289c98aa24" name="a0416609eb3eb8751364916289c98aa24"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0416609eb3eb8751364916289c98aa24">&#9670;&nbsp;</a></span>usbh_edpt_xfer_with_callback()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool usbh_edpt_xfer </td>
+          <td class="memname">bool usbh_edpt_xfer_with_callback </td>
           <td>(</td>
           <td class="paramtype">uint8_t&#160;</td>
           <td class="paramname"><em>dev_addr</em>, </td>
@@ -1609,7 +2685,19 @@ Variables</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint16_t&#160;</td>
-          <td class="paramname"><em>total_bytes</em>&#160;</td>
+          <td class="paramname"><em>total_bytes</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="usbh_8h.html#a6afac62f5a9ed2a11cd2f344dfeb78c9">tuh_xfer_cb_t</a>&#160;</td>
+          <td class="paramname"><em>complete_cb</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uintptr_t&#160;</td>
+          <td class="paramname"><em>user_data</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1619,7 +2707,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l01136">1136</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00877">877</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
 
 </div>
 </div>
@@ -1639,7 +2727,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00432">432</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00819">819</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
 
 </div>
 </div>
@@ -1659,11 +2747,77 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00427">427</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00814">814</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+
+</div>
+</div>
+<a id="aa6b1dcc1412cdcd269da06e5b7550a09" name="aa6b1dcc1412cdcd269da06e5b7550a09"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa6b1dcc1412cdcd269da06e5b7550a09">&#9670;&nbsp;</a></span>usbh_int_set()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void usbh_int_set </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>enabled</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00823">823</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
+<a id="a43bb127b5ea196cfaf30a240f045a332" name="a43bb127b5ea196cfaf30a240f045a332"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a43bb127b5ea196cfaf30a240f045a332">&#9670;&nbsp;</a></span>_app_driver</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">tu_static <a class="el" href="structusbh__class__driver__t.html">usbh_class_driver_t</a> const* _app_driver = NULL</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00205">205</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+
+</div>
+</div>
+<a id="a791a5cd023ae1637806e87a1b67a431a" name="a791a5cd023ae1637806e87a1b67a431a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a791a5cd023ae1637806e87a1b67a431a">&#9670;&nbsp;</a></span>_app_driver_count</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">tu_static uint8_t _app_driver_count = 0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00206">206</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+
+</div>
+</div>
+<a id="ac074be121dece702cc8da9b12f103a9b" name="ac074be121dece702cc8da9b12f103a9b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac074be121dece702cc8da9b12f103a9b">&#9670;&nbsp;</a></span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">CFG_TUH_MEM_SECTION struct  { ... }  _ctrl_xfer</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="aff60bfaca98833358eefcd1510c428fa" name="aff60bfaca98833358eefcd1510c428fa"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aff60bfaca98833358eefcd1510c428fa">&#9670;&nbsp;</a></span>_dev0</h2>
 
@@ -1684,12 +2838,12 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00210">210</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00232">232</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
 
 </div>
 </div>
-<a id="a3ed9e86437c6cbd55b8b621a124a6840" name="a3ed9e86437c6cbd55b8b621a124a6840"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3ed9e86437c6cbd55b8b621a124a6840">&#9670;&nbsp;</a></span>_usbh_ctrl_buf</h2>
+<a id="af57dd6d2ea8427061314fc542bcba26c" name="af57dd6d2ea8427061314fc542bcba26c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af57dd6d2ea8427061314fc542bcba26c">&#9670;&nbsp;</a></span>_usbh_controller</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1698,7 +2852,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">CFG_TUSB_MEM_SECTION static CFG_TUSB_MEM_ALIGN uint8_t _usbh_ctrl_buf[CFG_TUH_ENUMERATION_BUFSIZE]</td>
+          <td class="memname">uint8_t _usbh_controller = <a class="el" href="tusb__types_8h.html#ad63240694c6dc2a28c24bfc2db90ad7aae65095938643a98531ef4cf8b178fe57">TUSB_INDEX_INVALID_8</a></td>
         </tr>
       </table>
   </td>
@@ -1708,28 +2862,12 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00221">221</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00229">229</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
 
 </div>
 </div>
-<a id="afe59f959ff7017531194ad8d939ffb52" name="afe59f959ff7017531194ad8d939ffb52"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afe59f959ff7017531194ad8d939ffb52">&#9670;&nbsp;</a></span>_usbh_devices</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">CFG_TUSB_MEM_SECTION <a class="el" href="structusbh__device__t.html">usbh_device_t</a> _usbh_devices[CFG_TUH_DEVICE_MAX+CFG_TUH_HUB]</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00214">214</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
-
-</div>
-</div>
-<a id="a07213b4033a73192128325e68a26d2e6" name="a07213b4033a73192128325e68a26d2e6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a07213b4033a73192128325e68a26d2e6">&#9670;&nbsp;</a></span>_usbh_initialized</h2>
+<a id="a96e9080c1d4ae11ef937618990d7e5e1" name="a96e9080c1d4ae11ef937618990d7e5e1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96e9080c1d4ae11ef937618990d7e5e1">&#9670;&nbsp;</a></span>_usbh_ctrl_buf</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1738,7 +2876,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool _usbh_initialized = false</td>
+          <td class="memname">CFG_TUH_MEM_SECTION static CFG_TUH_MEM_ALIGN uint8_t _usbh_ctrl_buf[CFG_TUH_ENUMERATION_BUFSIZE]</td>
         </tr>
       </table>
   </td>
@@ -1748,7 +2886,79 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00207">207</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00253">253</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+
+</div>
+</div>
+<a id="a60b0b5ba89aa7873746dc08918d96224" name="a60b0b5ba89aa7873746dc08918d96224"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a60b0b5ba89aa7873746dc08918d96224">&#9670;&nbsp;</a></span>_usbh_devices</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structusbh__device__t.html">usbh_device_t</a> _usbh_devices[TOTAL_DEVICES]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00237">237</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+
+</div>
+</div>
+<a id="aa0c4a33f4eb80b290b75c5198e38ab1d" name="aa0c4a33f4eb80b290b75c5198e38ab1d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0c4a33f4eb80b290b75c5198e38ab1d">&#9670;&nbsp;</a></span>_usbh_mutex</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="osal__freertos_8h.html#aa74df55450633a685e2b6bef57764f47">osal_mutex_t</a> _usbh_mutex</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00242">242</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+
+</div>
+</div>
+<a id="a749675621bcbe73c1613c4fce9726462" name="a749675621bcbe73c1613c4fce9726462"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a749675621bcbe73c1613c4fce9726462">&#9670;&nbsp;</a></span>_usbh_mutexdef</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="osal__freertos_8h.html#a54b65d6eaadad2bcd932cc5fd23b64a1">osal_mutex_def_t</a> _usbh_mutexdef</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00241">241</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
 
 </div>
 </div>
@@ -1772,7 +2982,103 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00219">219</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00250">250</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+
+</div>
+</div>
+<a id="a2d77456c638a544914b4e90f16a32639" name="a2d77456c638a544914b4e90f16a32639"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2d77456c638a544914b4e90f16a32639">&#9670;&nbsp;</a></span>actual_len</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">volatile uint16_t actual_len</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00266">266</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+
+</div>
+</div>
+<a id="a56ed84df35de10bdb65e72b184309497" name="a56ed84df35de10bdb65e72b184309497"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a56ed84df35de10bdb65e72b184309497">&#9670;&nbsp;</a></span>buffer</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t* buffer</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00260">260</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+
+</div>
+</div>
+<a id="aced436bc81b8106734ed911ab38294bd" name="aced436bc81b8106734ed911ab38294bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aced436bc81b8106734ed911ab38294bd">&#9670;&nbsp;</a></span>complete_cb</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="usbh_8h.html#a6afac62f5a9ed2a11cd2f344dfeb78c9">tuh_xfer_cb_t</a> complete_cb</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00261">261</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+
+</div>
+</div>
+<a id="a796e92f0d162a415f6b2098cd9008bab" name="a796e92f0d162a415f6b2098cd9008bab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a796e92f0d162a415f6b2098cd9008bab">&#9670;&nbsp;</a></span>daddr</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t daddr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00264">264</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+
+</div>
+</div>
+<a id="a4c83a13b59895249d66697a831bf8e05" name="a4c83a13b59895249d66697a831bf8e05"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4c83a13b59895249d66697a831bf8e05">&#9670;&nbsp;</a></span>request</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">CFG_TUH_MEM_ALIGN <a class="el" href="tusb__types_8h.html#a2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> request</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00259">259</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+
+</div>
+</div>
+<a id="a8efea5b2da521d9d454f141866ab68cb" name="a8efea5b2da521d9d454f141866ab68cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8efea5b2da521d9d454f141866ab68cb">&#9670;&nbsp;</a></span>stage</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">volatile uint8_t stage</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00265">265</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
 
 </div>
 </div>
@@ -1786,7 +3092,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">usbh_class_driver_t const usbh_class_drivers[]</td>
+          <td class="memname"><a class="el" href="structusbh__class__driver__t.html">usbh_class_driver_t</a> const usbh_class_drivers[]</td>
         </tr>
       </table>
   </td>
@@ -1797,6 +3103,22 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00139">139</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
+
+</div>
+</div>
+<a id="a8aacece57d8e33f7f2eb9bee4a99d2bf" name="a8aacece57d8e33f7f2eb9bee4a99d2bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8aacece57d8e33f7f2eb9bee4a99d2bf">&#9670;&nbsp;</a></span>user_data</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uintptr_t user_data</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbh_8c_source.html#l00262">262</a> of file <a class="el" href="usbh_8c_source.html">usbh.c</a>.</p>
 
 </div>
 </div>

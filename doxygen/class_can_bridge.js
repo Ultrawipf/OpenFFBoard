@@ -7,8 +7,8 @@ var class_can_bridge =
     ] ],
     [ "CanBridge", "class_can_bridge.html#a0f4ac8770d53015508382321f89a05b4", null ],
     [ "~CanBridge", "class_can_bridge.html#a311596205f903d3c7e715218fdd0cab0", null ],
-    [ "canErrorCallback", "class_can_bridge.html#a2e93f005127cd16fd3a1133cca2e27c6", null ],
-    [ "canRxPendCallback", "class_can_bridge.html#aa982e0d9856e19be48c5cc858d753599", null ],
+    [ "canErrorCallback", "class_can_bridge.html#afa03de25a7c8dd14eba5bcc3ee94fedd", null ],
+    [ "canRxPendCallback", "class_can_bridge.html#a871c99620b472fb90b09a4a8fe7b7bec", null ],
     [ "cdcRcv", "class_can_bridge.html#a438f901525c810f0fc66493779660616", null ],
     [ "command", "class_can_bridge.html#a61705bd6ff0e65911c4d32236428d2ae", null ],
     [ "getHelpstring", "class_can_bridge.html#a4ad00d344635c612e77dd3a2f0f1320f", null ],
@@ -19,7 +19,6 @@ var class_can_bridge =
     [ "sendMessage", "class_can_bridge.html#a48f7fb996e9e5feee83dba7f585e6da3", null ],
     [ "sendMessage", "class_can_bridge.html#a7d04c6de9bf46beab5d4c1fb4d53423c", null ],
     [ "update", "class_can_bridge.html#a09665da361c9caa5fd08f13ed45fab15", null ],
-    [ "CanHandle", "class_can_bridge.html#a7c87c8fbfc40f9427aed1be90a29c7b3", null ],
     [ "conf1", "class_can_bridge.html#a7967625a6aec24be93ac640c6ee0c6b7", null ],
     [ "conf2", "class_can_bridge.html#a3edb16846fc17fab015983765eced9de", null ],
     [ "filterId", "class_can_bridge.html#a701d9fdbc4c1e00fd7bd5ba703b895a1", null ],
@@ -33,6 +32,6 @@ var class_can_bridge =
     [ "rxfifo", "class_can_bridge.html#aa0446a836de7c4c86df707cda926fc04", null ],
     [ "rxmessages", "class_can_bridge.html#a8010863cc54842b85981665eb03fa000", null ],
     [ "txBuf", "class_can_bridge.html#a5a32dc06961fd21f562f583e75dc5bd5", null ],
-    [ "txHeader", "class_can_bridge.html#ad8395ab0c8325a97c2ac84738ccf3e50", null ],
+    [ "txHeader", "class_can_bridge.html#aa3b5bc19702fa6849b9fed6efdbf987c", null ],
     [ "txMailbox", "class_can_bridge.html#ab05a906efa14f738793c351f44bb520b", null ]
 ];

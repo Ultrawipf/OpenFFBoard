@@ -20,6 +20,6 @@ var class_a_d_s111_x =
     [ "hithresh", "class_a_d_s111_x.html#af1c7ebb74b1fc015430ad8f11c2ef3a1", null ],
     [ "lothresh", "class_a_d_s111_x.html#ad48f502142fdc0322fc08300af1a8164", null ],
     [ "port", "class_a_d_s111_x.html#aa468224c47d0237db741a82529f995f4", null ],
-    [ "registers", "class_a_d_s111_x.html#a4c7782eb256c927aee9ef3469e55fde0", null ],
+    [ "registers", "class_a_d_s111_x.html#a0142e6e57b81cd2fae16586b9f4a46a5", null ],
     [ "writeItBuffer", "class_a_d_s111_x.html#a63bfef25114e56132cf4d9263a8ab34e", null ]
 ];

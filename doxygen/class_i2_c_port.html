@@ -87,7 +87,6 @@ $(document).ready(function(){initNavTree('class_i2_c_port.html',''); initResizab
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#pri-types">Private Types</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
@@ -117,8 +116,8 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a8c091b5055b58928811e2e92937f73a2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i2_c_port.html#a8c091b5055b58928811e2e92937f73a2">I2CPort</a> (I2C_HandleTypeDef &amp;<a class="el" href="class_i2_c_port.html#a5601fdc48b774f5a3f0073e5bc823ab4">hi2c</a>)</td></tr>
-<tr class="separator:a8c091b5055b58928811e2e92937f73a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d6d8f37d4c8772ff1cdf8c742e3c863"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i2_c_port.html#a7d6d8f37d4c8772ff1cdf8c742e3c863">I2CPort</a> (I2C_HandleTypeDef &amp;<a class="el" href="class_i2_c_port.html#a5601fdc48b774f5a3f0073e5bc823ab4">hi2c</a>, const <a class="el" href="class_i2_c_port_hardware_config.html">I2CPortHardwareConfig</a> &amp;<a class="el" href="class_i2_c_port.html#a3a3f292830b442cd50d67c79712a6ec5">presets</a>, uint8_t <a class="el" href="_command_handler_8h.html#a13a18e5b49561a2f007205dc0afeea14a7123a699d77db6479a1d8ece2c4f1c16">instance</a>=0)</td></tr>
+<tr class="separator:a7d6d8f37d4c8772ff1cdf8c742e3c863"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4094094c9813774ff3d9abbc7c5a56b6"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i2_c_port.html#a4094094c9813774ff3d9abbc7c5a56b6">~I2CPort</a> ()</td></tr>
 <tr class="separator:a4094094c9813774ff3d9abbc7c5a56b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab86e2baf52498bc5d698a6a7c2422a00"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i2_c_port.html#ab86e2baf52498bc5d698a6a7c2422a00">configurePort</a> (I2C_InitTypeDef *<a class="el" href="class_i2_c_port.html#a80039fce40e1563fae45f04f55104451">config</a>)</td></tr>
@@ -230,11 +229,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a0f6d37b59d3ce8deedb1862db79fd356 inherit pub_methods_class_persistent_storage"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1cf470862b87d0a1b91548c24dedc4f8 inherit pub_methods_class_persistent_storage"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_persistent_storage.html#a1cf470862b87d0a1b91548c24dedc4f8">~PersistentStorage</a> ()</td></tr>
 <tr class="separator:a1cf470862b87d0a1b91548c24dedc4f8 inherit pub_methods_class_persistent_storage"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:ace8cd2c78c01be56871bdc3211f7d12d"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i2_c_port.html#ace8cd2c78c01be56871bdc3211f7d12d">SpeedNames</a> = {&quot;100kb/s (Standard)&quot;,&quot;400kb/s (Fast mode)&quot;}</td></tr>
-<tr class="separator:ace8cd2c78c01be56871bdc3211f7d12d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5a3b2fe8e28d265bb818d084fa82039 inherit pub_methods_class_persistent_storage"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_persistent_storage.html#ad5a3b2fe8e28d265bb818d084fa82039">restoreFlashDelayed</a> ()</td></tr>
+<tr class="separator:ad5a3b2fe8e28d265bb818d084fa82039 inherit pub_methods_class_persistent_storage"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -264,6 +260,8 @@ Private Attributes</h2></td></tr>
 <tr class="separator:a0f3535b11e1dee08d618c40fac97f065"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a80039fce40e1563fae45f04f55104451"><td class="memItemLeft" align="right" valign="top">I2C_InitTypeDef&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i2_c_port.html#a80039fce40e1563fae45f04f55104451">config</a></td></tr>
 <tr class="separator:a80039fce40e1563fae45f04f55104451"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a3f292830b442cd50d67c79712a6ec5"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="class_i2_c_port_hardware_config.html">I2CPortHardwareConfig</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i2_c_port.html#a3a3f292830b442cd50d67c79712a6ec5">presets</a></td></tr>
+<tr class="separator:a3a3f292830b442cd50d67c79712a6ec5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -316,6 +314,8 @@ Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pub_static_methods_class_persistent_storage"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_class_persistent_storage')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="class_persistent_storage.html">PersistentStorage</a></td></tr>
 <tr class="memitem:a14700f8511d8aaea5d5b29632b371eb9 inherit pub_static_methods_class_persistent_storage"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; <a class="el" href="class_persistent_storage.html">PersistentStorage</a> * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_persistent_storage.html#a14700f8511d8aaea5d5b29632b371eb9">getFlashHandlers</a> ()</td></tr>
 <tr class="separator:a14700f8511d8aaea5d5b29632b371eb9 inherit pub_static_methods_class_persistent_storage"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a234d2bb4384efe326c4f83b3c372e565 inherit pub_static_methods_class_persistent_storage"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_persistent_storage.html#a234d2bb4384efe326c4f83b3c372e565">restoreFlashStartupCb</a> ()</td></tr>
+<tr class="separator:a234d2bb4384efe326c4f83b3c372e565 inherit pub_static_methods_class_persistent_storage"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_class_command_handler"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_class_command_handler')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="class_command_handler.html">CommandHandler</a></td></tr>
 <tr class="memitem:a6b21c926cfce2d16e63fe12f442f390e inherit pro_methods_class_command_handler"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a6b21c926cfce2d16e63fe12f442f390e">setInstance</a> (uint8_t <a class="el" href="_command_handler_8h.html#a13a18e5b49561a2f007205dc0afeea14a7123a699d77db6479a1d8ece2c4f1c16">instance</a>)</td></tr>
 <tr class="separator:a6b21c926cfce2d16e63fe12f442f390e inherit pro_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -333,10 +333,16 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:a3f584d2a8b93c309c2feaa538a1ed36d inherit pro_attribs_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7421ca437044e8588b3fdf748ace166b inherit pro_attribs_class_command_handler"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_cmd_handler_info.html">CmdHandlerInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a7421ca437044e8588b3fdf748ace166b">cmdHandlerInfo</a></td></tr>
 <tr class="separator:a7421ca437044e8588b3fdf748ace166b inherit pro_attribs_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_class_persistent_storage"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_class_persistent_storage')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="class_persistent_storage.html">PersistentStorage</a></td></tr>
+<tr class="memitem:a5c85ad9b726cba837b9c100d6752a8b6 inherit pro_attribs_class_persistent_storage"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_persistent_storage.html#a5c85ad9b726cba837b9c100d6752a8b6">restoreDelayedFlag</a> = false</td></tr>
+<tr class="separator:a5c85ad9b726cba837b9c100d6752a8b6 inherit pro_attribs_class_persistent_storage"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_static_attribs_class_persistent_storage"><td colspan="2" onclick="javascript:toggleInherit('pro_static_attribs_class_persistent_storage')"><img src="closed.png" alt="-"/>&#160;Static Protected Attributes inherited from <a class="el" href="class_persistent_storage.html">PersistentStorage</a></td></tr>
+<tr class="memitem:a8d98e194842128a2af817341eba58292 inherit pro_static_attribs_class_persistent_storage"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_persistent_storage.html#a8d98e194842128a2af817341eba58292">startupComplete</a> = false</td></tr>
+<tr class="separator:a8d98e194842128a2af817341eba58292 inherit pro_static_attribs_class_persistent_storage"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_i2_c_8h_source.html#l00020">20</a> of file <a class="el" href="_i2_c_8h_source.html">I2C.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i2_c_8h_source.html#l00043">43</a> of file <a class="el" href="_i2_c_8h_source.html">I2C.h</a>.</p>
 </div><h2 class="groupheader">Member Enumeration Documentation</h2>
 <a id="a7017cd843e8e75a194a7fd61acec6c4b" name="a7017cd843e8e75a194a7fd61acec6c4b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7017cd843e8e75a194a7fd61acec6c4b">&#9670;&nbsp;</a></span>CanPort_commands</h2>
@@ -361,7 +367,7 @@ Additional Inherited Members</h2></td></tr>
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a7017cd843e8e75a194a7fd61acec6c4bace4ef3ec98443ed10da505114b58f153" name="a7017cd843e8e75a194a7fd61acec6c4bace4ef3ec98443ed10da505114b58f153"></a>speed&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="_i2_c_8h_source.html#l00061">61</a> of file <a class="el" href="_i2_c_8h_source.html">I2C.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i2_c_8h_source.html#l00084">84</a> of file <a class="el" href="_i2_c_8h_source.html">I2C.h</a>.</p>
 
 </div>
 </div>
@@ -388,13 +394,13 @@ Additional Inherited Members</h2></td></tr>
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ae373f3015ebf578a7382e709e1e2b28eace4ef3ec98443ed10da505114b58f153" name="ae373f3015ebf578a7382e709e1e2b28eace4ef3ec98443ed10da505114b58f153"></a>speed&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="_i2_c_8h_source.html#l00021">21</a> of file <a class="el" href="_i2_c_8h_source.html">I2C.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i2_c_8h_source.html#l00044">44</a> of file <a class="el" href="_i2_c_8h_source.html">I2C.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a8c091b5055b58928811e2e92937f73a2" name="a8c091b5055b58928811e2e92937f73a2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8c091b5055b58928811e2e92937f73a2">&#9670;&nbsp;</a></span>I2CPort()</h2>
+<a id="a7d6d8f37d4c8772ff1cdf8c742e3c863" name="a7d6d8f37d4c8772ff1cdf8c742e3c863"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d6d8f37d4c8772ff1cdf8c742e3c863">&#9670;&nbsp;</a></span>I2CPort()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -403,13 +409,29 @@ Additional Inherited Members</h2></td></tr>
           <td class="memname">I2CPort::I2CPort </td>
           <td>(</td>
           <td class="paramtype">I2C_HandleTypeDef &amp;&#160;</td>
-          <td class="paramname"><em>hi2c</em></td><td>)</td>
+          <td class="paramname"><em>hi2c</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const <a class="el" href="class_i2_c_port_hardware_config.html">I2CPortHardwareConfig</a> &amp;&#160;</td>
+          <td class="paramname"><em>presets</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>instance</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00031">31</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00035">35</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
 
 </div>
 </div>
@@ -436,7 +458,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00039">39</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00043">43</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
 
 </div>
 </div>
@@ -484,7 +506,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_command_handler.html#a8d2531d579c03d6672495ccb57f5ffb3">CommandHandler</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00089">89</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00083">83</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
 
 </div>
 </div>
@@ -504,7 +526,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00156">156</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00150">150</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
 
 </div>
 </div>
@@ -525,7 +547,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p >Signals that the port is not needed anymore. Decrements the user counter </p>
 
-<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00138">138</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00132">132</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
 
 </div>
 </div>
@@ -555,7 +577,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_command_handler.html#a59474bca13e1cc8a8e0e58c47cdce539">CommandHandler</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_i2_c_8h_source.html#l00068">68</a> of file <a class="el" href="_i2_c_8h_source.html">I2C.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i2_c_8h_source.html#l00091">91</a> of file <a class="el" href="_i2_c_8h_source.html">I2C.h</a>.</p>
 
 </div>
 </div>
@@ -586,7 +608,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="class_command_handler.html#a6d4dd2900284fea12f53ca1e513be856">CommandHandler</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_i2_c_8h_source.html#l00067">67</a> of file <a class="el" href="_i2_c_8h_source.html">I2C.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i2_c_8h_source.html#l00090">90</a> of file <a class="el" href="_i2_c_8h_source.html">I2C.h</a>.</p>
 
 </div>
 </div>
@@ -613,7 +635,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_i2_c_8h_source.html#l00032">32</a> of file <a class="el" href="_i2_c_8h_source.html">I2C.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i2_c_8h_source.html#l00055">55</a> of file <a class="el" href="_i2_c_8h_source.html">I2C.h</a>.</p>
 
 </div>
 </div>
@@ -632,7 +654,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00080">80</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00074">74</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
 
 </div>
 </div>
@@ -651,7 +673,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00299">299</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00293">293</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
 
 </div>
 </div>
@@ -681,7 +703,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_i2_c_handler.html#a76ab0f8b0e6375d6dc1956cbfc969762">I2CHandler</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00274">274</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00268">268</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
 
 </div>
 </div>
@@ -711,7 +733,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_i2_c_handler.html#a719e56891931bf9db25b9a9e7712d603">I2CHandler</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00260">260</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00254">254</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
 
 </div>
 </div>
@@ -741,7 +763,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_i2_c_handler.html#a22bbaab1739a71800f2642d6c3da509f">I2CHandler</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00246">246</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00240">240</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
 
 </div>
 </div>
@@ -789,7 +811,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00238">238</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00232">232</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
 
 </div>
 </div>
@@ -808,7 +830,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00282">282</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00276">276</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
 
 </div>
 </div>
@@ -874,7 +896,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00214">214</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00208">208</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
 
 </div>
 </div>
@@ -934,7 +956,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00222">222</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00216">216</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
 
 </div>
 </div>
@@ -988,7 +1010,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00185">185</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00179">179</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
 
 </div>
 </div>
@@ -1036,7 +1058,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00193">193</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00187">187</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
 
 </div>
 </div>
@@ -1084,7 +1106,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00199">199</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00193">193</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
 
 </div>
 </div>
@@ -1103,7 +1125,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00084">84</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00078">78</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
 
 </div>
 </div>
@@ -1123,7 +1145,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p >Forces a reinit </p>
 
-<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00114">114</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00108">108</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
 
 </div>
 </div>
@@ -1149,11 +1171,11 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p >Should be used to restore settings at startup. This is not automatically called and should be called when appropriate. Normally this is done in the constructor of the class </p>
+<p >Should be implemented to restore settings. This is not automatically called and should be called when appropriate. </p>
 
 <p>Reimplemented from <a class="el" href="class_persistent_storage.html#aa8187136adfa89fca9ddee2578f6eb68">PersistentStorage</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00051">51</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00055">55</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
 
 </div>
 </div>
@@ -1183,7 +1205,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_persistent_storage.html#a105599e99ab0e4244a531c2286f2ffa2">PersistentStorage</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00043">43</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00047">47</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
 
 </div>
 </div>
@@ -1203,7 +1225,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00061">61</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00065">65</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
 
 </div>
 </div>
@@ -1224,7 +1246,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p >Signals that this port is being used. Increments the user counter </p>
 
-<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00123">123</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00117">117</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
 
 </div>
 </div>
@@ -1243,7 +1265,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00286">286</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00280">280</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
 
 </div>
 </div>
@@ -1297,7 +1319,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00165">165</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00159">159</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
 
 </div>
 </div>
@@ -1345,7 +1367,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00173">173</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00167">167</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
 
 </div>
 </div>
@@ -1393,7 +1415,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00179">179</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00173">173</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
 
 </div>
 </div>
@@ -1459,7 +1481,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00206">206</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00200">200</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
 
 </div>
 </div>
@@ -1519,7 +1541,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00230">230</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i2_c_8cpp_source.html#l00224">224</a> of file <a class="el" href="_i2_c_8cpp_source.html">I2C.cpp</a>.</p>
 
 </div>
 </div>
@@ -1544,7 +1566,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_i2_c_8h_source.html#l00079">79</a> of file <a class="el" href="_i2_c_8h_source.html">I2C.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i2_c_8h_source.html#l00101">101</a> of file <a class="el" href="_i2_c_8h_source.html">I2C.h</a>.</p>
 
 </div>
 </div>
@@ -1568,7 +1590,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_i2_c_8h_source.html#l00076">76</a> of file <a class="el" href="_i2_c_8h_source.html">I2C.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i2_c_8h_source.html#l00098">98</a> of file <a class="el" href="_i2_c_8h_source.html">I2C.h</a>.</p>
 
 </div>
 </div>
@@ -1592,7 +1614,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_i2_c_8h_source.html#l00075">75</a> of file <a class="el" href="_i2_c_8h_source.html">I2C.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i2_c_8h_source.html#l00097">97</a> of file <a class="el" href="_i2_c_8h_source.html">I2C.h</a>.</p>
 
 </div>
 </div>
@@ -1621,7 +1643,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line">    .visibility = <a class="code hl_enumvalue" href="_choosable_class_8h.html#aa3a363b83e4ed5a23cf7398fcf8bae0ca46cf0e59759c9b7f1112ca4b174343ef">ClassVisibility::visible</a>}</div>
 <div class="ttc" id="a_choosable_class_8h_html_aa3a363b83e4ed5a23cf7398fcf8bae0ca46cf0e59759c9b7f1112ca4b174343ef"><div class="ttname"><a href="_choosable_class_8h.html#aa3a363b83e4ed5a23cf7398fcf8bae0ca46cf0e59759c9b7f1112ca4b174343ef">ClassVisibility::visible</a></div><div class="ttdeci">@ visible</div></div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="_i2_c_8h_source.html#l00066">66</a> of file <a class="el" href="_i2_c_8h_source.html">I2C.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i2_c_8h_source.html#l00089">89</a> of file <a class="el" href="_i2_c_8h_source.html">I2C.h</a>.</p>
 
 </div>
 </div>
@@ -1645,7 +1667,31 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_i2_c_8h_source.html#l00077">77</a> of file <a class="el" href="_i2_c_8h_source.html">I2C.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i2_c_8h_source.html#l00099">99</a> of file <a class="el" href="_i2_c_8h_source.html">I2C.h</a>.</p>
+
+</div>
+</div>
+<a id="a3a3f292830b442cd50d67c79712a6ec5" name="a3a3f292830b442cd50d67c79712a6ec5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a3f292830b442cd50d67c79712a6ec5">&#9670;&nbsp;</a></span>presets</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="class_i2_c_port_hardware_config.html">I2CPortHardwareConfig</a>&amp; I2CPort::presets</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_i2_c_8h_source.html#l00102">102</a> of file <a class="el" href="_i2_c_8h_source.html">I2C.h</a>.</p>
 
 </div>
 </div>
@@ -1669,23 +1715,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_i2_c_8h_source.html#l00073">73</a> of file <a class="el" href="_i2_c_8h_source.html">I2C.h</a>.</p>
-
-</div>
-</div>
-<a id="ace8cd2c78c01be56871bdc3211f7d12d" name="ace8cd2c78c01be56871bdc3211f7d12d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ace8cd2c78c01be56871bdc3211f7d12d">&#9670;&nbsp;</a></span>SpeedNames</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">const std::vector&lt;std::string&gt; I2CPort::SpeedNames = {&quot;100kb/s (Standard)&quot;,&quot;400kb/s (Fast mode)&quot;}</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_i2_c_8h_source.html#l00069">69</a> of file <a class="el" href="_i2_c_8h_source.html">I2C.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i2_c_8h_source.html#l00095">95</a> of file <a class="el" href="_i2_c_8h_source.html">I2C.h</a>.</p>
 
 </div>
 </div>
@@ -1709,7 +1739,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_i2_c_8h_source.html#l00078">78</a> of file <a class="el" href="_i2_c_8h_source.html">I2C.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i2_c_8h_source.html#l00100">100</a> of file <a class="el" href="_i2_c_8h_source.html">I2C.h</a>.</p>
 
 </div>
 </div>

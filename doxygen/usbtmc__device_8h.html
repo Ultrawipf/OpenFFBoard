@@ -100,7 +100,7 @@ Functions</h2></td></tr>
 <tr class="separator:a1406111223c9ce8e9536fa7db2971860"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f1ac40b6b96d4fa18d169d861b9ed7b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbtmc__device_8h.html#a3f1ac40b6b96d4fa18d169d861b9ed7b">tud_usbtmc_msgBulkOut_start_cb</a> (<a class="el" href="usbtmc_8h.html#a7cab1ec8250b4fbff0a5181f4aadce37">usbtmc_msg_request_dev_dep_out</a> const *msgHeader)</td></tr>
 <tr class="separator:a3f1ac40b6b96d4fa18d169d861b9ed7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4f1c6d8878a90d2c8bf24a692b6ec393"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbtmc__device_8h.html#a4f1c6d8878a90d2c8bf24a692b6ec393">tud_usbtmc_msg_data_cb</a> (void *data, size_t len, bool transfer_complete)</td></tr>
+<tr class="memitem:a4f1c6d8878a90d2c8bf24a692b6ec393"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbtmc__device_8h.html#a4f1c6d8878a90d2c8bf24a692b6ec393">tud_usbtmc_msg_data_cb</a> (void *<a class="el" href="dcd__ch32__usbfs_8c.html#a19c9ff40973093edd384bdef417d5599">data</a>, size_t len, bool transfer_complete)</td></tr>
 <tr class="separator:a4f1c6d8878a90d2c8bf24a692b6ec393"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ace35b426e611cb37cb51217690825b98"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbtmc__device_8h.html#ace35b426e611cb37cb51217690825b98">tud_usbtmc_bulkOut_clearFeature_cb</a> (void)</td></tr>
 <tr class="separator:ace35b426e611cb37cb51217690825b98"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -122,26 +122,32 @@ Functions</h2></td></tr>
 <tr class="separator:a5d231ed9d61125f00f42200bf77ae681"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa0852eadb0776b85ca201eab30a6f8a1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbtmc__device_8h.html#aa0852eadb0776b85ca201eab30a6f8a1">tud_usbtmc_check_clear_cb</a> (<a class="el" href="usbtmc_8h.html#ad44589e7bd250ca6afd6d9cb7e22ae7a">usbtmc_get_clear_status_rsp_t</a> *rsp)</td></tr>
 <tr class="separator:aa0852eadb0776b85ca201eab30a6f8a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c89357eaba568a69a750e12e115564d"><td class="memItemLeft" align="right" valign="top">TU_ATTR_WEAK bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbtmc__device_8h.html#a0c89357eaba568a69a750e12e115564d">tud_usbtmc_indicator_pulse_cb</a> (<a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *msg, uint8_t *tmcResult)</td></tr>
+<tr class="memitem:a0e9ff923a34f15fd461c6645fd2af089"><td class="memItemLeft" align="right" valign="top">TU_ATTR_WEAK bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbtmc__device_8h.html#a0e9ff923a34f15fd461c6645fd2af089">tud_usbtmc_notification_complete_cb</a> (void)</td></tr>
+<tr class="separator:a0e9ff923a34f15fd461c6645fd2af089"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c89357eaba568a69a750e12e115564d"><td class="memItemLeft" align="right" valign="top">TU_ATTR_WEAK bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbtmc__device_8h.html#a0c89357eaba568a69a750e12e115564d">tud_usbtmc_indicator_pulse_cb</a> (<a class="el" href="tusb__types_8h.html#a2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *msg, uint8_t *tmcResult)</td></tr>
 <tr class="separator:a0c89357eaba568a69a750e12e115564d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad6f130f84633e45504daf47382d02a9b"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbtmc__device_8h.html#ad6f130f84633e45504daf47382d02a9b">tud_usbtmc_get_stb_cb</a> (uint8_t *tmcResult)</td></tr>
 <tr class="separator:ad6f130f84633e45504daf47382d02a9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5b1da47ee640893961e8b3e5abe04201"><td class="memItemLeft" align="right" valign="top">TU_ATTR_WEAK bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbtmc__device_8h.html#a5b1da47ee640893961e8b3e5abe04201">tud_usbtmc_msg_trigger_cb</a> (<a class="el" href="usbtmc_8h.html#a9e4e35a2c885b53be748fff1b8c652c3">usbtmc_msg_generic_t</a> *msg)</td></tr>
 <tr class="separator:a5b1da47ee640893961e8b3e5abe04201"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a50bb1f6c8d70b61149156aed446e0d21"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbtmc__device_8h.html#a50bb1f6c8d70b61149156aed446e0d21">tud_usbtmc_transmit_dev_msg_data</a> (const void *data, size_t len, bool endOfMessage, bool usingTermChar)</td></tr>
+<tr class="memitem:a50bb1f6c8d70b61149156aed446e0d21"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbtmc__device_8h.html#a50bb1f6c8d70b61149156aed446e0d21">tud_usbtmc_transmit_dev_msg_data</a> (const void *<a class="el" href="dcd__ch32__usbfs_8c.html#a19c9ff40973093edd384bdef417d5599">data</a>, size_t len, bool endOfMessage, bool usingTermChar)</td></tr>
 <tr class="separator:a50bb1f6c8d70b61149156aed446e0d21"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb40343a9343f365eb65cf56bac0b3ef"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbtmc__device_8h.html#acb40343a9343f365eb65cf56bac0b3ef">tud_usbtmc_transmit_notification_data</a> (const void *<a class="el" href="dcd__ch32__usbfs_8c.html#a19c9ff40973093edd384bdef417d5599">data</a>, size_t len)</td></tr>
+<tr class="separator:acb40343a9343f365eb65cf56bac0b3ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af44316790cf3a9446cae0d5c7bb5987c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbtmc__device_8h.html#af44316790cf3a9446cae0d5c7bb5987c">tud_usbtmc_start_bus_read</a> (void)</td></tr>
 <tr class="separator:af44316790cf3a9446cae0d5c7bb5987c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6a0a57c3a531c8a6d99bddce70ea56dc"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbtmc__device_8h.html#a6a0a57c3a531c8a6d99bddce70ea56dc">usbtmcd_open_cb</a> (uint8_t rhport, <a class="el" href="group___u_s_b_def___type.html#gac4415f9c56f80b658137e35c14b58096">tusb_desc_interface_t</a> const *itf_desc, uint16_t max_len)</td></tr>
+<tr class="memitem:a68872b9e1d16822f5f7be8437e60d020"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbtmc__device_8h.html#a68872b9e1d16822f5f7be8437e60d020">usbtmcd_init_cb</a> (void)</td></tr>
+<tr class="separator:a68872b9e1d16822f5f7be8437e60d020"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81d4a5015d2715f9a9491146ffaacc40"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbtmc__device_8h.html#a81d4a5015d2715f9a9491146ffaacc40">usbtmcd_deinit</a> (void)</td></tr>
+<tr class="separator:a81d4a5015d2715f9a9491146ffaacc40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a0a57c3a531c8a6d99bddce70ea56dc"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbtmc__device_8h.html#a6a0a57c3a531c8a6d99bddce70ea56dc">usbtmcd_open_cb</a> (uint8_t rhport, <a class="el" href="tusb__types_8h.html#ac4415f9c56f80b658137e35c14b58096">tusb_desc_interface_t</a> const *itf_desc, uint16_t max_len)</td></tr>
 <tr class="separator:a6a0a57c3a531c8a6d99bddce70ea56dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a93961c1f1560a68d9366b3957e1956a1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbtmc__device_8h.html#a93961c1f1560a68d9366b3957e1956a1">usbtmcd_reset_cb</a> (uint8_t rhport)</td></tr>
 <tr class="separator:a93961c1f1560a68d9366b3957e1956a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2040bfe784e7a5fba339b3301f2c6fe5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbtmc__device_8h.html#a2040bfe784e7a5fba339b3301f2c6fe5">usbtmcd_xfer_cb</a> (uint8_t rhport, uint8_t ep_addr, <a class="el" href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a> result, uint32_t xferred_bytes)</td></tr>
+<tr class="memitem:a2040bfe784e7a5fba339b3301f2c6fe5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbtmc__device_8h.html#a2040bfe784e7a5fba339b3301f2c6fe5">usbtmcd_xfer_cb</a> (uint8_t rhport, uint8_t ep_addr, <a class="el" href="tusb__types_8h.html#a6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a> result, uint32_t xferred_bytes)</td></tr>
 <tr class="separator:a2040bfe784e7a5fba339b3301f2c6fe5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab7d98c32b0f0f55558ddff12fc4babc5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbtmc__device_8h.html#ab7d98c32b0f0f55558ddff12fc4babc5">usbtmcd_control_xfer_cb</a> (uint8_t rhport, uint8_t stage, <a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *request)</td></tr>
+<tr class="memitem:ab7d98c32b0f0f55558ddff12fc4babc5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbtmc__device_8h.html#ab7d98c32b0f0f55558ddff12fc4babc5">usbtmcd_control_xfer_cb</a> (uint8_t rhport, uint8_t <a class="el" href="usbh_8c.html#a8efea5b2da521d9d454f141866ab68cb">stage</a>, <a class="el" href="tusb__types_8h.html#a2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *request)</td></tr>
 <tr class="separator:ab7d98c32b0f0f55558ddff12fc4babc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a68872b9e1d16822f5f7be8437e60d020"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usbtmc__device_8h.html#a68872b9e1d16822f5f7be8437e60d020">usbtmcd_init_cb</a> (void)</td></tr>
-<tr class="separator:a68872b9e1d16822f5f7be8437e60d020"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="a8de1c99832f73652f74f18d2b49e39e3" name="a8de1c99832f73652f74f18d2b49e39e3"></a>
@@ -279,7 +285,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">TU_ATTR_WEAK bool tud_usbtmc_indicator_pulse_cb </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *&#160;</td>
+          <td class="paramtype"><a class="el" href="tusb__types_8h.html#a2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *&#160;</td>
           <td class="paramname"><em>msg</em>, </td>
         </tr>
         <tr>
@@ -458,6 +464,24 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a0e9ff923a34f15fd461c6645fd2af089" name="a0e9ff923a34f15fd461c6645fd2af089"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0e9ff923a34f15fd461c6645fd2af089">&#9670;&nbsp;</a></span>tud_usbtmc_notification_complete_cb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TU_ATTR_WEAK bool tud_usbtmc_notification_complete_cb </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a1406111223c9ce8e9536fa7db2971860" name="a1406111223c9ce8e9536fa7db2971860"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1406111223c9ce8e9536fa7db2971860">&#9670;&nbsp;</a></span>tud_usbtmc_open_cb()</h2>
 
@@ -492,7 +516,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbtmc__device_8c_source.html#l00343">343</a> of file <a class="el" href="usbtmc__device_8c_source.html">usbtmc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbtmc__device_8c_source.html#l00383">383</a> of file <a class="el" href="usbtmc__device_8c_source.html">usbtmc_device.c</a>.</p>
 
 </div>
 </div>
@@ -534,7 +558,37 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbtmc__device_8c_source.html#l00186">186</a> of file <a class="el" href="usbtmc__device_8c_source.html">usbtmc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbtmc__device_8c_source.html#l00203">203</a> of file <a class="el" href="usbtmc__device_8c_source.html">usbtmc_device.c</a>.</p>
+
+</div>
+</div>
+<a id="acb40343a9343f365eb65cf56bac0b3ef" name="acb40343a9343f365eb65cf56bac0b3ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb40343a9343f365eb65cf56bac0b3ef">&#9670;&nbsp;</a></span>tud_usbtmc_transmit_notification_data()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool tud_usbtmc_transmit_notification_data </td>
+          <td>(</td>
+          <td class="paramtype">const void *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>len</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbtmc__device_8c_source.html#l00250">250</a> of file <a class="el" href="usbtmc__device_8c_source.html">usbtmc_device.c</a>.</p>
 
 </div>
 </div>
@@ -559,7 +613,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *&#160;</td>
+          <td class="paramtype"><a class="el" href="tusb__types_8h.html#a2b3bee81c54dd32ba52362b2634f72f4">tusb_control_request_t</a> const *&#160;</td>
           <td class="paramname"><em>request</em>&#160;</td>
         </tr>
         <tr>
@@ -570,7 +624,27 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbtmc__device_8c_source.html#l00575">575</a> of file <a class="el" href="usbtmc__device_8c_source.html">usbtmc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbtmc__device_8c_source.html#l00620">620</a> of file <a class="el" href="usbtmc__device_8c_source.html">usbtmc_device.c</a>.</p>
+
+</div>
+</div>
+<a id="a81d4a5015d2715f9a9491146ffaacc40" name="a81d4a5015d2715f9a9491146ffaacc40"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a81d4a5015d2715f9a9491146ffaacc40">&#9670;&nbsp;</a></span>usbtmcd_deinit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool usbtmcd_deinit </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="usbtmc__device_8c_source.html#l00283">283</a> of file <a class="el" href="usbtmc__device_8c_source.html">usbtmc_device.c</a>.</p>
 
 </div>
 </div>
@@ -590,7 +664,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbtmc__device_8c_source.html#l00233">233</a> of file <a class="el" href="usbtmc__device_8c_source.html">usbtmc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbtmc__device_8c_source.html#l00263">263</a> of file <a class="el" href="usbtmc__device_8c_source.html">usbtmc_device.c</a>.</p>
 
 </div>
 </div>
@@ -609,7 +683,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#gac4415f9c56f80b658137e35c14b58096">tusb_desc_interface_t</a> const *&#160;</td>
+          <td class="paramtype"><a class="el" href="tusb__types_8h.html#ac4415f9c56f80b658137e35c14b58096">tusb_desc_interface_t</a> const *&#160;</td>
           <td class="paramname"><em>itf_desc</em>, </td>
         </tr>
         <tr>
@@ -626,7 +700,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbtmc__device_8c_source.html#l00253">253</a> of file <a class="el" href="usbtmc__device_8c_source.html">usbtmc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbtmc__device_8c_source.html#l00290">290</a> of file <a class="el" href="usbtmc__device_8c_source.html">usbtmc_device.c</a>.</p>
 
 </div>
 </div>
@@ -646,7 +720,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbtmc__device_8c_source.html#l00363">363</a> of file <a class="el" href="usbtmc__device_8c_source.html">usbtmc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbtmc__device_8c_source.html#l00403">403</a> of file <a class="el" href="usbtmc__device_8c_source.html">usbtmc_device.c</a>.</p>
 
 </div>
 </div>
@@ -671,7 +745,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group___u_s_b_def___type.html#ga6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="tusb__types_8h.html#a6a3b3a4d6801fd9b02feb0510c84e5f9">xfer_result_t</a>&#160;</td>
           <td class="paramname"><em>result</em>, </td>
         </tr>
         <tr>
@@ -688,7 +762,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="usbtmc__device_8c_source.html#l00444">444</a> of file <a class="el" href="usbtmc__device_8c_source.html">usbtmc_device.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="usbtmc__device_8c_source.html#l00487">487</a> of file <a class="el" href="usbtmc__device_8c_source.html">usbtmc_device.c</a>.</p>
 
 </div>
 </div>

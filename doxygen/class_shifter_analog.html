@@ -160,6 +160,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a0f6d37b59d3ce8deedb1862db79fd356 inherit pub_methods_class_persistent_storage"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1cf470862b87d0a1b91548c24dedc4f8 inherit pub_methods_class_persistent_storage"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_persistent_storage.html#a1cf470862b87d0a1b91548c24dedc4f8">~PersistentStorage</a> ()</td></tr>
 <tr class="separator:a1cf470862b87d0a1b91548c24dedc4f8 inherit pub_methods_class_persistent_storage"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5a3b2fe8e28d265bb818d084fa82039 inherit pub_methods_class_persistent_storage"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_persistent_storage.html#ad5a3b2fe8e28d265bb818d084fa82039">restoreFlashDelayed</a> ()</td></tr>
+<tr class="separator:ad5a3b2fe8e28d265bb818d084fa82039 inherit pub_methods_class_persistent_storage"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -174,6 +176,8 @@ Static Public Member Functions</h2></td></tr>
 <tr class="inherit_header pub_static_methods_class_persistent_storage"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_class_persistent_storage')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="class_persistent_storage.html">PersistentStorage</a></td></tr>
 <tr class="memitem:a14700f8511d8aaea5d5b29632b371eb9 inherit pub_static_methods_class_persistent_storage"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; <a class="el" href="class_persistent_storage.html">PersistentStorage</a> * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_persistent_storage.html#a14700f8511d8aaea5d5b29632b371eb9">getFlashHandlers</a> ()</td></tr>
 <tr class="separator:a14700f8511d8aaea5d5b29632b371eb9 inherit pub_static_methods_class_persistent_storage"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a234d2bb4384efe326c4f83b3c372e565 inherit pub_static_methods_class_persistent_storage"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_persistent_storage.html#a234d2bb4384efe326c4f83b3c372e565">restoreFlashStartupCb</a> ()</td></tr>
+<tr class="separator:a234d2bb4384efe326c4f83b3c372e565 inherit pub_static_methods_class_persistent_storage"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -344,13 +348,13 @@ Private Attributes</h2></td></tr>
 <tr class="separator:a3599f6bde6e91cc2be67559e6f3e6a5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d5da6a3078dcfa3f4675305136b0617"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shifter_analog.html#a1d5da6a3078dcfa3f4675305136b0617">cs_pin_num</a> {1}</td></tr>
 <tr class="separator:a1d5da6a3078dcfa3f4675305136b0617"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a792816a41cf3256f2eb0e8805bd80084"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shifter_analog.html#a792816a41cf3256f2eb0e8805bd80084">X_12</a> {1600}</td></tr>
+<tr class="memitem:a792816a41cf3256f2eb0e8805bd80084"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shifter_analog.html#a792816a41cf3256f2eb0e8805bd80084">X_12</a> {25600}</td></tr>
 <tr class="separator:a792816a41cf3256f2eb0e8805bd80084"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a08bd488e68171a34a33d4b50e1276184"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shifter_analog.html#a08bd488e68171a34a33d4b50e1276184">X_56</a> {2500}</td></tr>
+<tr class="memitem:a08bd488e68171a34a33d4b50e1276184"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shifter_analog.html#a08bd488e68171a34a33d4b50e1276184">X_56</a> {40000}</td></tr>
 <tr class="separator:a08bd488e68171a34a33d4b50e1276184"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7d8128ae0f3eec3fab5544dcefd7bc45"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shifter_analog.html#a7d8128ae0f3eec3fab5544dcefd7bc45">Y_135</a> {3200}</td></tr>
+<tr class="memitem:a7d8128ae0f3eec3fab5544dcefd7bc45"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shifter_analog.html#a7d8128ae0f3eec3fab5544dcefd7bc45">Y_135</a> {51200}</td></tr>
 <tr class="separator:a7d8128ae0f3eec3fab5544dcefd7bc45"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a23d4355eeae1bff768b006514a88b087"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shifter_analog.html#a23d4355eeae1bff768b006514a88b087">Y_246</a> {850}</td></tr>
+<tr class="memitem:a23d4355eeae1bff768b006514a88b087"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shifter_analog.html#a23d4355eeae1bff768b006514a88b087">Y_246</a> {13600}</td></tr>
 <tr class="separator:a23d4355eeae1bff768b006514a88b087"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a09720ce759c3567d6f8fb3b4859d3baa"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shifter_analog.html#a09720ce759c3567d6f8fb3b4859d3baa">x_val</a> {0}</td></tr>
 <tr class="separator:a09720ce759c3567d6f8fb3b4859d3baa"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -360,6 +364,8 @@ Private Attributes</h2></td></tr>
 <tr class="separator:af3ba74de857752f7234bf02c3538c768"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad2f0d12125a0448eab86716e3547db46"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shifter_analog.html#ad2f0d12125a0448eab86716e3547db46">gear</a> {0}</td></tr>
 <tr class="separator:ad2f0d12125a0448eab86716e3547db46"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f87edc70481ddfb76de65a05aa488c4"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shifter_analog.html#a2f87edc70481ddfb76de65a05aa488c4">bitshift</a> = 0</td></tr>
+<tr class="separator:a2f87edc70481ddfb76de65a05aa488c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a048ceb3072aec253f0fe1c207c3207a2"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="class_shifter_analog_1_1_g27_shifter_button_client.html">G27ShifterButtonClient</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shifter_analog.html#a048ceb3072aec253f0fe1c207c3207a2">g27ShifterButtonClient</a></td></tr>
 <tr class="separator:a048ceb3072aec253f0fe1c207c3207a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_attribs_class_command_handler"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_class_command_handler')"><img src="closed.png" alt="-"/>&#160;Private Attributes inherited from <a class="el" href="class_command_handler.html">CommandHandler</a></td></tr>
@@ -379,6 +385,12 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:a7b2fa7906bfe4a9081c168a1da1d460a inherit pro_attribs_class_choosable_class"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_choosable_class.html#a7b2fa7906bfe4a9081c168a1da1d460a">selectionId</a></td></tr>
 <tr class="memdesc:a7b2fa7906bfe4a9081c168a1da1d460a inherit pro_attribs_class_choosable_class"><td class="mdescLeft">&#160;</td><td class="mdescRight">Should only be written by <a class="el" href="class_class_chooser.html">ClassChooser</a> during creation.  <a href="class_choosable_class.html#a7b2fa7906bfe4a9081c168a1da1d460a">More...</a><br /></td></tr>
 <tr class="separator:a7b2fa7906bfe4a9081c168a1da1d460a inherit pro_attribs_class_choosable_class"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_class_persistent_storage"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_class_persistent_storage')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="class_persistent_storage.html">PersistentStorage</a></td></tr>
+<tr class="memitem:a5c85ad9b726cba837b9c100d6752a8b6 inherit pro_attribs_class_persistent_storage"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_persistent_storage.html#a5c85ad9b726cba837b9c100d6752a8b6">restoreDelayedFlag</a> = false</td></tr>
+<tr class="separator:a5c85ad9b726cba837b9c100d6752a8b6 inherit pro_attribs_class_persistent_storage"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_static_attribs_class_persistent_storage"><td colspan="2" onclick="javascript:toggleInherit('pro_static_attribs_class_persistent_storage')"><img src="closed.png" alt="-"/>&#160;Static Protected Attributes inherited from <a class="el" href="class_persistent_storage.html">PersistentStorage</a></td></tr>
+<tr class="memitem:a8d98e194842128a2af817341eba58292 inherit pro_static_attribs_class_persistent_storage"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_persistent_storage.html#a8d98e194842128a2af817341eba58292">startupComplete</a> = false</td></tr>
+<tr class="separator:a8d98e194842128a2af817341eba58292 inherit pro_static_attribs_class_persistent_storage"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_attribs_class_command_handler"><td colspan="2" onclick="javascript:toggleInherit('pub_static_attribs_class_command_handler')"><img src="closed.png" alt="-"/>&#160;Static Private Attributes inherited from <a class="el" href="class_command_handler.html">CommandHandler</a></td></tr>
 <tr class="memitem:a9029c76e98bec126216b0e6e35c0c88a inherit pub_static_attribs_class_command_handler"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a9029c76e98bec126216b0e6e35c0c88a">logEnabled</a> = true</td></tr>
 <tr class="separator:a9029c76e98bec126216b0e6e35c0c88a inherit pub_static_attribs_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -472,7 +484,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_shifter_analog_8cpp_source.html#l00023">23</a> of file <a class="el" href="_shifter_analog_8cpp_source.html">ShifterAnalog.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shifter_analog_8cpp_source.html#l00024">24</a> of file <a class="el" href="_shifter_analog_8cpp_source.html">ShifterAnalog.cpp</a>.</p>
 
 </div>
 </div>
@@ -499,7 +511,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_shifter_analog_8cpp_source.html#l00028">28</a> of file <a class="el" href="_shifter_analog_8cpp_source.html">ShifterAnalog.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shifter_analog_8cpp_source.html#l00032">32</a> of file <a class="el" href="_shifter_analog_8cpp_source.html">ShifterAnalog.cpp</a>.</p>
 
 </div>
 </div>
@@ -527,7 +539,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_shifter_analog_8cpp_source.html#l00055">55</a> of file <a class="el" href="_shifter_analog_8cpp_source.html">ShifterAnalog.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shifter_analog_8cpp_source.html#l00059">59</a> of file <a class="el" href="_shifter_analog_8cpp_source.html">ShifterAnalog.cpp</a>.</p>
 
 </div>
 </div>
@@ -574,7 +586,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_command_handler.html#a8d2531d579c03d6672495ccb57f5ffb3">CommandHandler</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_shifter_analog_8cpp_source.html#l00214">214</a> of file <a class="el" href="_shifter_analog_8cpp_source.html">ShifterAnalog.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shifter_analog_8cpp_source.html#l00218">218</a> of file <a class="el" href="_shifter_analog_8cpp_source.html">ShifterAnalog.cpp</a>.</p>
 
 </div>
 </div>
@@ -603,7 +615,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_button_source.html#a720d1040bb379a0353b2f21c0b8204a1">ButtonSource</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_shifter_analog_8cpp_source.html#l00135">135</a> of file <a class="el" href="_shifter_analog_8cpp_source.html">ShifterAnalog.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shifter_analog_8cpp_source.html#l00139">139</a> of file <a class="el" href="_shifter_analog_8cpp_source.html">ShifterAnalog.cpp</a>.</p>
 
 </div>
 </div>
@@ -694,7 +706,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="class_button_source.html#a3260ac96b3bd002ebc882665eaa0078d">ButtonSource</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_shifter_analog_8cpp_source.html#l00019">19</a> of file <a class="el" href="_shifter_analog_8cpp_source.html">ShifterAnalog.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shifter_analog_8cpp_source.html#l00020">20</a> of file <a class="el" href="_shifter_analog_8cpp_source.html">ShifterAnalog.cpp</a>.</p>
 
 </div>
 </div>
@@ -722,7 +734,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_shifter_analog_8cpp_source.html#l00108">108</a> of file <a class="el" href="_shifter_analog_8cpp_source.html">ShifterAnalog.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shifter_analog_8cpp_source.html#l00112">112</a> of file <a class="el" href="_shifter_analog_8cpp_source.html">ShifterAnalog.cpp</a>.</p>
 
 </div>
 </div>
@@ -777,7 +789,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_shifter_analog_8cpp_source.html#l00184">184</a> of file <a class="el" href="_shifter_analog_8cpp_source.html">ShifterAnalog.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shifter_analog_8cpp_source.html#l00188">188</a> of file <a class="el" href="_shifter_analog_8cpp_source.html">ShifterAnalog.cpp</a>.</p>
 
 </div>
 </div>
@@ -796,7 +808,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_shifter_analog_8cpp_source.html#l00176">176</a> of file <a class="el" href="_shifter_analog_8cpp_source.html">ShifterAnalog.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shifter_analog_8cpp_source.html#l00180">180</a> of file <a class="el" href="_shifter_analog_8cpp_source.html">ShifterAnalog.cpp</a>.</p>
 
 </div>
 </div>
@@ -827,7 +839,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="class_button_source.html#a95a2fa76c98f3e065aadc8a278287586">ButtonSource</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_shifter_analog_8cpp_source.html#l00117">117</a> of file <a class="el" href="_shifter_analog_8cpp_source.html">ShifterAnalog.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shifter_analog_8cpp_source.html#l00121">121</a> of file <a class="el" href="_shifter_analog_8cpp_source.html">ShifterAnalog.cpp</a>.</p>
 
 </div>
 </div>
@@ -846,7 +858,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_shifter_analog_8cpp_source.html#l00032">32</a> of file <a class="el" href="_shifter_analog_8cpp_source.html">ShifterAnalog.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shifter_analog_8cpp_source.html#l00036">36</a> of file <a class="el" href="_shifter_analog_8cpp_source.html">ShifterAnalog.cpp</a>.</p>
 
 </div>
 </div>
@@ -872,11 +884,11 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p >Should be used to restore settings at startup. This is not automatically called and should be called when appropriate. Normally this is done in the constructor of the class </p>
+<p >Should be implemented to restore settings. This is not automatically called and should be called when appropriate. </p>
 
 <p>Reimplemented from <a class="el" href="class_persistent_storage.html#aa8187136adfa89fca9ddee2578f6eb68">PersistentStorage</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_shifter_analog_8cpp_source.html#l00164">164</a> of file <a class="el" href="_shifter_analog_8cpp_source.html">ShifterAnalog.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shifter_analog_8cpp_source.html#l00168">168</a> of file <a class="el" href="_shifter_analog_8cpp_source.html">ShifterAnalog.cpp</a>.</p>
 
 </div>
 </div>
@@ -906,7 +918,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_persistent_storage.html#a105599e99ab0e4244a531c2286f2ffa2">PersistentStorage</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_shifter_analog_8cpp_source.html#l00153">153</a> of file <a class="el" href="_shifter_analog_8cpp_source.html">ShifterAnalog.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shifter_analog_8cpp_source.html#l00157">157</a> of file <a class="el" href="_shifter_analog_8cpp_source.html">ShifterAnalog.cpp</a>.</p>
 
 </div>
 </div>
@@ -934,7 +946,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_shifter_analog_8cpp_source.html#l00200">200</a> of file <a class="el" href="_shifter_analog_8cpp_source.html">ShifterAnalog.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shifter_analog_8cpp_source.html#l00204">204</a> of file <a class="el" href="_shifter_analog_8cpp_source.html">ShifterAnalog.cpp</a>.</p>
 
 </div>
 </div>
@@ -962,7 +974,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_shifter_analog_8cpp_source.html#l00188">188</a> of file <a class="el" href="_shifter_analog_8cpp_source.html">ShifterAnalog.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shifter_analog_8cpp_source.html#l00192">192</a> of file <a class="el" href="_shifter_analog_8cpp_source.html">ShifterAnalog.cpp</a>.</p>
 
 </div>
 </div>
@@ -989,7 +1001,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_shifter_analog_8cpp_source.html#l00048">48</a> of file <a class="el" href="_shifter_analog_8cpp_source.html">ShifterAnalog.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shifter_analog_8cpp_source.html#l00052">52</a> of file <a class="el" href="_shifter_analog_8cpp_source.html">ShifterAnalog.cpp</a>.</p>
 
 </div>
 </div>
@@ -1016,11 +1028,35 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_shifter_analog_8cpp_source.html#l00100">100</a> of file <a class="el" href="_shifter_analog_8cpp_source.html">ShifterAnalog.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shifter_analog_8cpp_source.html#l00104">104</a> of file <a class="el" href="_shifter_analog_8cpp_source.html">ShifterAnalog.cpp</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="a2f87edc70481ddfb76de65a05aa488c4" name="a2f87edc70481ddfb76de65a05aa488c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2f87edc70481ddfb76de65a05aa488c4">&#9670;&nbsp;</a></span>bitshift</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t ShifterAnalog::bitshift = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_shifter_analog_8h_source.html#l00092">92</a> of file <a class="el" href="_shifter_analog_8h_source.html">ShifterAnalog.h</a>.</p>
+
+</div>
+</div>
 <a id="a1d5da6a3078dcfa3f4675305136b0617" name="a1d5da6a3078dcfa3f4675305136b0617"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1d5da6a3078dcfa3f4675305136b0617">&#9670;&nbsp;</a></span>cs_pin_num</h2>
 
@@ -1065,7 +1101,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_shifter_analog_8h_source.html#l00092">92</a> of file <a class="el" href="_shifter_analog_8h_source.html">ShifterAnalog.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shifter_analog_8h_source.html#l00094">94</a> of file <a class="el" href="_shifter_analog_8h_source.html">ShifterAnalog.h</a>.</p>
 
 </div>
 </div>
@@ -1291,7 +1327,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">uint16_t ShifterAnalog::X_12 {1600}</td>
+          <td class="memname">uint16_t ShifterAnalog::X_12 {25600}</td>
         </tr>
       </table>
   </td>
@@ -1315,7 +1351,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">uint16_t ShifterAnalog::X_56 {2500}</td>
+          <td class="memname">uint16_t ShifterAnalog::X_56 {40000}</td>
         </tr>
       </table>
   </td>
@@ -1387,7 +1423,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">uint16_t ShifterAnalog::Y_135 {3200}</td>
+          <td class="memname">uint16_t ShifterAnalog::Y_135 {51200}</td>
         </tr>
       </table>
   </td>
@@ -1411,7 +1447,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">uint16_t ShifterAnalog::Y_246 {850}</td>
+          <td class="memname">uint16_t ShifterAnalog::Y_246 {13600}</td>
         </tr>
       </table>
   </td>

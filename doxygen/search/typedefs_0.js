@@ -17,5 +17,6 @@ var searchData=
   ['audio_5fdesc_5ffeature_5funit_5ft_14',['audio_desc_feature_unit_t',['../group___class_driver___audio.html#ga59a33bca0fa752e4e7042d9fa867cfd9',1,'audio.h']]],
   ['audio_5fdesc_5finput_5fterminal_5ft_15',['audio_desc_input_terminal_t',['../group___class_driver___audio.html#ga36d7e7c7c2f1264b61bfdd5f4cce06f1',1,'audio.h']]],
   ['audio_5fdesc_5foutput_5fterminal_5ft_16',['audio_desc_output_terminal_t',['../group___class_driver___audio.html#ga133291522174e930f5ce9bc9b2c335fc',1,'audio.h']]],
-  ['audio_5fdesc_5ftype_5fi_5fformat_5ft_17',['audio_desc_type_I_format_t',['../group___class_driver___audio.html#ga0b030afdfe4f3e86aa02775a0a3faa9a',1,'audio.h']]]
+  ['audio_5fdesc_5ftype_5fi_5fformat_5ft_17',['audio_desc_type_I_format_t',['../group___class_driver___audio.html#ga0b030afdfe4f3e86aa02775a0a3faa9a',1,'audio.h']]],
+  ['audio_5finterrupt_5fdata_5ft_18',['audio_interrupt_data_t',['../group___class_driver___audio.html#ga4958ff43c2fde67884e660bbc67ba7d8',1,'audio.h']]]
 ];

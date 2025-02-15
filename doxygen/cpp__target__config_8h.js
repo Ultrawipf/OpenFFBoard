@@ -1,6 +1,6 @@
 var cpp__target__config_8h =
 [
-    [ "canport", "cpp__target__config_8h.html#a442c4e234a8d155f33220ff3a0bf6a0f", null ],
+    [ "canport", "cpp__target__config_8h.html#a38ba677d530e0c535919853f0b5884fe", null ],
     [ "debugpin", "cpp__target__config_8h.html#a23889db535238eab0df11b75ecd77ff4", null ],
     [ "ext3_spi", "cpp__target__config_8h.html#a7582742fcd3b6663de95f7e62eb408ef", null ],
     [ "external_spi", "cpp__target__config_8h.html#a150538f2cab0ebfcc238375cb19eca68", null ],

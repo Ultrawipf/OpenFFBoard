@@ -22,20 +22,9 @@ var cdc_8h =
       [ "CDC_COMM_PROTOCOL_ATCOMMAND_CDMA", "group___class_driver___c_d_c.html#gga8925914b195491f5369642d68482ba8dadcc8abdb42b9b29d0213634b918d5c01", null ],
       [ "CDC_COMM_PROTOCOL_ETHERNET_EMULATION_MODEL", "group___class_driver___c_d_c.html#gga8925914b195491f5369642d68482ba8da4744fd74c5f0487c909600a6f0bd69e6", null ]
     ] ],
-    [ "cdc_comm_sublcass_type_t", "group___class_driver___c_d_c.html#ga48d58906ad33c9e53b2f7d6306ebced2", [
-      [ "CDC_COMM_SUBCLASS_DIRECT_LINE_CONTROL_MODEL", "group___class_driver___c_d_c.html#gga48d58906ad33c9e53b2f7d6306ebced2a53ce6239644f89af12b104b9a99fc866", null ],
-      [ "CDC_COMM_SUBCLASS_ABSTRACT_CONTROL_MODEL", "group___class_driver___c_d_c.html#gga48d58906ad33c9e53b2f7d6306ebced2a53661271012c020a3d2373044f0c319a", null ],
-      [ "CDC_COMM_SUBCLASS_TELEPHONE_CONTROL_MODEL", "group___class_driver___c_d_c.html#gga48d58906ad33c9e53b2f7d6306ebced2a0bf27dc92f1bc15ee28997fb40881933", null ],
-      [ "CDC_COMM_SUBCLASS_MULTICHANNEL_CONTROL_MODEL", "group___class_driver___c_d_c.html#gga48d58906ad33c9e53b2f7d6306ebced2ad26e8899ac487127276b236987258090", null ],
-      [ "CDC_COMM_SUBCLASS_CAPI_CONTROL_MODEL", "group___class_driver___c_d_c.html#gga48d58906ad33c9e53b2f7d6306ebced2a1cce93820d7eeda74a7bfb5e5b7b9175", null ],
-      [ "CDC_COMM_SUBCLASS_ETHERNET_CONTROL_MODEL", "group___class_driver___c_d_c.html#gga48d58906ad33c9e53b2f7d6306ebced2a0280beaef2569fb1216edf933f4e8017", null ],
-      [ "CDC_COMM_SUBCLASS_ATM_NETWORKING_CONTROL_MODEL", "group___class_driver___c_d_c.html#gga48d58906ad33c9e53b2f7d6306ebced2a921e3d4cf79fcdbb2ec3860af22aab63", null ],
-      [ "CDC_COMM_SUBCLASS_WIRELESS_HANDSET_CONTROL_MODEL", "group___class_driver___c_d_c.html#gga48d58906ad33c9e53b2f7d6306ebced2af935820bcb4e595c3ae73ac41f016425", null ],
-      [ "CDC_COMM_SUBCLASS_DEVICE_MANAGEMENT", "group___class_driver___c_d_c.html#gga48d58906ad33c9e53b2f7d6306ebced2a1ab397664d53650924f82bf7f544a022", null ],
-      [ "CDC_COMM_SUBCLASS_MOBILE_DIRECT_LINE_MODEL", "group___class_driver___c_d_c.html#gga48d58906ad33c9e53b2f7d6306ebced2ad7bbd7b736e44f78d01b7d6c5619e02d", null ],
-      [ "CDC_COMM_SUBCLASS_OBEX", "group___class_driver___c_d_c.html#gga48d58906ad33c9e53b2f7d6306ebced2a4f62590243217cb0f179a403294da287", null ],
-      [ "CDC_COMM_SUBCLASS_ETHERNET_EMULATION_MODEL", "group___class_driver___c_d_c.html#gga48d58906ad33c9e53b2f7d6306ebced2ae2377f76c14d05a20d125367a770bf42", null ],
-      [ "CDC_COMM_SUBCLASS_NETWORK_CONTROL_MODEL", "group___class_driver___c_d_c.html#gga48d58906ad33c9e53b2f7d6306ebced2a0c223c461f13203bf8340815ca598e05", null ]
+    [ "cdc_control_line_state_t", "group___class_driver___c_d_c.html#gaf1dece65013c81172926a8bc7b6ea5df", [
+      [ "CDC_CONTROL_LINE_STATE_DTR", "group___class_driver___c_d_c.html#ggaf1dece65013c81172926a8bc7b6ea5dfa37408a134a79d9039287f6c551b0e271", null ],
+      [ "CDC_CONTROL_LINE_STATE_RTS", "group___class_driver___c_d_c.html#ggaf1dece65013c81172926a8bc7b6ea5dfa745fd4469412a007469e3e9680cc85ec", null ]
     ] ],
     [ "cdc_data_protocol_type_t", "group___class_driver___c_d_c.html#ga020ae63208fc27e10bf15c6d06186b33", [
       [ "CDC_DATA_PROTOCOL_ISDN_BRI", "group___class_driver___c_d_c.html#gga020ae63208fc27e10bf15c6d06186b33a8e0ec24598741f079b504d1f34f88018", null ],
@@ -79,6 +68,18 @@ var cdc_8h =
       [ "CDC_FUNC_DESC_TELEPHONE_CONTROL_MODEL", "group___class_driver___c_d_c.html#ggae6a80ac81974bf75a55eeda33f6abfbda1618ae01b07313192ff4aba1225e48a9", null ],
       [ "CDC_FUNC_DESC_OBEX_SERVICE_IDENTIFIER", "group___class_driver___c_d_c.html#ggae6a80ac81974bf75a55eeda33f6abfbda02390b1fea65d825e4e29e011a4d31de", null ],
       [ "CDC_FUNC_DESC_NCM", "group___class_driver___c_d_c.html#ggae6a80ac81974bf75a55eeda33f6abfbdaf2eeabd9f5d31cf328041e424f54794f", null ]
+    ] ],
+    [ "cdc_line_coding_parity_t", "group___class_driver___c_d_c.html#gab27f246d009de4e5066ed76102898aa5", [
+      [ "CDC_LINE_CODING_PARITY_NONE", "group___class_driver___c_d_c.html#ggab27f246d009de4e5066ed76102898aa5af5595352fa15f97e257f38afc6b521e1", null ],
+      [ "CDC_LINE_CODING_PARITY_ODD", "group___class_driver___c_d_c.html#ggab27f246d009de4e5066ed76102898aa5a511cb9cafe2305ce604a83bf0bee451f", null ],
+      [ "CDC_LINE_CODING_PARITY_EVEN", "group___class_driver___c_d_c.html#ggab27f246d009de4e5066ed76102898aa5a77ed70c64ce5463d3ac5943c5243f605", null ],
+      [ "CDC_LINE_CODING_PARITY_MARK", "group___class_driver___c_d_c.html#ggab27f246d009de4e5066ed76102898aa5a30ebba1cfc1e4fcde49a0561a09a4ef6", null ],
+      [ "CDC_LINE_CODING_PARITY_SPACE", "group___class_driver___c_d_c.html#ggab27f246d009de4e5066ed76102898aa5a68da1f3fbc9980d7f6c341df94418718", null ]
+    ] ],
+    [ "cdc_line_coding_stopbits_t", "group___class_driver___c_d_c.html#ga4ae02cf2b7c6778b9813a4e123c95300", [
+      [ "CDC_LINE_CODING_STOP_BITS_1", "group___class_driver___c_d_c.html#gga4ae02cf2b7c6778b9813a4e123c95300a994f6605ef64ab16ddfbed7d36072dde", null ],
+      [ "CDC_LINE_CODING_STOP_BITS_1_5", "group___class_driver___c_d_c.html#gga4ae02cf2b7c6778b9813a4e123c95300acbbba909cc959d4741163e5851441595", null ],
+      [ "CDC_LINE_CODING_STOP_BITS_2", "group___class_driver___c_d_c.html#gga4ae02cf2b7c6778b9813a4e123c95300aea9e8b7b514c67316b5c5942c9b29d13", null ]
     ] ],
     [ "cdc_management_request_t", "group___class_driver___c_d_c.html#ga2a389fb44d9e4275e44370e34303476f", [
       [ "CDC_REQUEST_SEND_ENCAPSULATED_COMMAND", "group___class_driver___c_d_c.html#gga2a389fb44d9e4275e44370e34303476fa8088573b5b7b4c544af1f84f258fb7be", null ],

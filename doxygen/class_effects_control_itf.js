@@ -10,8 +10,8 @@ var class_effects_control_itf =
     [ "set_gain", "class_effects_control_itf.html#a876f74209e2819cab9781c2a1c4f125f", null ],
     [ "start_FFB", "class_effects_control_itf.html#aa9d41a8e64817900d3009af292d8143f", null ],
     [ "stop_FFB", "class_effects_control_itf.html#a16512ebf3b11a80fd3c6c6d6b980c1ab", null ],
-    [ "cfUpdatePeriodAvg", "class_effects_control_itf.html#a44514b4a4d71beb66a541f72d3a81622", null ],
-    [ "fxPeriodAvg", "class_effects_control_itf.html#a621c148989ffc796c12c3ff7d2b9077f", null ],
+    [ "cfUpdatePeriodAvg", "class_effects_control_itf.html#a5739e4e77971ba84a4ec5896e4c9552c", null ],
+    [ "fxPeriodAvg", "class_effects_control_itf.html#a2e3d130a462c0f3a6127231b3d8b4d82", null ],
     [ "lastCfUpdate", "class_effects_control_itf.html#aa1fcf4c2f23a85aca97c5d9a4cd53450", null ],
     [ "lastFxUpdate", "class_effects_control_itf.html#a31adb2a699bbefd5cbe06fc683f13fcc", null ]
 ];
