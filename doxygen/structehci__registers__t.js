@@ -12,7 +12,7 @@ var structehci__registers__t =
     [ "async_park_enable", "structehci__registers__t.html#a85620b06990bd40daa03c7165e8bb89b", null ],
     [ "async_status", "structehci__registers__t.html#a414ce9ae42dbb04c15674cf6ff3f303e", null ],
     [ "command", "structehci__registers__t.html#ad7194d477e9ac2f7f158efe44e9e82e9", null ],
-    [ "command_bm", "structehci__registers__t.html#af296f3b2b80998c8cd93855f1cb9d3e2", null ],
+    [ "command_bm", "structehci__registers__t.html#aa29fc494ddc72d65567528c9cb8a7077", null ],
     [ "config_flag", "structehci__registers__t.html#a13b04f3e43628d90c83e4bc703c3d5f3", null ],
     [ "connect_status_change", "structehci__registers__t.html#a2e1c1b3b5ddb7d78bbb40f4f969e8e41", null ],
     [ "ctrl_ds_seg", "structehci__registers__t.html#a2dee1032a5d5601e1055efc33b2ffac4", null ],

@@ -64,7 +64,7 @@ var structohci__registers__t =
     [ "reserved", "structohci__registers__t.html#aa7dd70a86359be0b2311032075e062c2", null ],
     [ "revision", "structohci__registers__t.html#aa7922807c6ffdbce870d7133481b9834", null ],
     [ "rh_descriptorA", "structohci__registers__t.html#a05b696c0fe2043a1de631a4832d238df", null ],
-    [ "rh_descriptorA_bit", "structohci__registers__t.html#af3ddbc976e92bbb1a2a8b21ddb689617", null ],
+    [ "rh_descriptorA_bit", "structohci__registers__t.html#a11ec2bbd864fbb5917df32644eebf7bb", null ],
     [ "rh_descriptorB", "structohci__registers__t.html#a50e053c12463fde704b01ad23246a18b", null ],
     [ "rh_descriptorB_bit", "structohci__registers__t.html#a285530fea9a8cf7df1764a078c603d7b", null ],
     [ "rh_status", "structohci__registers__t.html#a68eefdc7301b3dc98d4426c2e8fff331", null ],

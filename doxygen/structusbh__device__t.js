@@ -4,7 +4,7 @@ var structusbh__device__t =
     [ "complete_cb", "structusbh__device__t.html#ae235dbc3c20314728a02022f57487fac", null ],
     [ "ep0_size", "structusbh__device__t.html#ad3950e10a11979ab5bf780dd482ef029", null ],
     [ "ep2drv", "structusbh__device__t.html#ae04b86d931a439cdef84a26d671839ec", null ],
-    [ "ep_callback", "structusbh__device__t.html#a45786170420948f5bdb8eda9cbbaa8a1", null ],
+    [ "ep_callback", "structusbh__device__t.html#af42c5b0994e93c96a5cfbe64ee2b28d3", null ],
     [ "ep_status", "structusbh__device__t.html#a8ef6676db35dd74d56760266a81205d8", null ],
     [ "hub_addr", "structusbh__device__t.html#aff4c319439d17d6861501a95eda35d2b", null ],
     [ "hub_port", "structusbh__device__t.html#adc65ad567f363e65563059a701cbf8ce", null ],

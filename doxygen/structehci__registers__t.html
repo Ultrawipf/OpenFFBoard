@@ -95,56 +95,56 @@ $(document).ready(function(){initNavTree('structehci__registers__t.html',''); in
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:acc25da13d11f6a233edbc57223d32fc3"><td class="memItemLeft" >union {</td></tr>
-<tr class="memitem:ab6bafd97adfef7216aa21d97a102a53b"><td class="memItemLeft" >&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#ad7194d477e9ac2f7f158efe44e9e82e9">command</a></td></tr>
-<tr class="separator:ab6bafd97adfef7216aa21d97a102a53b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae2210a840b0f927ec1a81b59213d6230"><td class="memItemLeft" >&#160;&#160;&#160;struct {</td></tr>
-<tr class="memitem:a462d9cdc188ef6a8f2c90b00d228a229"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a697d68390eeaf6857fed722f3bb30eb0">run_stop</a>: 1</td></tr>
-<tr class="memdesc:a462d9cdc188ef6a8f2c90b00d228a229"><td class="mdescLeft">&#160;</td><td class="mdescRight">1=Run. 0=Stop  <a href="structehci__registers__t_1_1_0d162_1_1_0d171.html#a462d9cdc188ef6a8f2c90b00d228a229">More...</a><br /></td></tr>
-<tr class="separator:a462d9cdc188ef6a8f2c90b00d228a229"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6a7e067fcc48f936a21f4bd0beab2d6a"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#aa69311155290a418f945018228c3e9cc">reset</a>: 1</td></tr>
-<tr class="memdesc:a6a7e067fcc48f936a21f4bd0beab2d6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">SW write 1 to reset HC, clear by HC when complete.  <a href="structehci__registers__t_1_1_0d162_1_1_0d171.html#a6a7e067fcc48f936a21f4bd0beab2d6a">More...</a><br /></td></tr>
-<tr class="separator:a6a7e067fcc48f936a21f4bd0beab2d6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acb64ce3f95a67c4e6cd912d03e3289f8"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#ac81707491215c5fe295694bbb6e208e3">framelist_size</a>: 2</td></tr>
-<tr class="memdesc:acb64ce3f95a67c4e6cd912d03e3289f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frame List size 0: 1024, 1: 512, 2: 256.  <a href="structehci__registers__t_1_1_0d162_1_1_0d171.html#acb64ce3f95a67c4e6cd912d03e3289f8">More...</a><br /></td></tr>
-<tr class="separator:acb64ce3f95a67c4e6cd912d03e3289f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a238753f9b561e7b02a5303a908a964c2"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a831126014c87c34e69788af5903389a4">periodic_enable</a>: 1</td></tr>
-<tr class="memdesc:a238753f9b561e7b02a5303a908a964c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">This bit controls whether the host controller skips processing the Periodic Schedule. Values mean: 0b Do not process the Periodic Schedule 1b Use the PERIODICLISTBASE register to access the Periodic Schedule.  <a href="structehci__registers__t_1_1_0d162_1_1_0d171.html#a238753f9b561e7b02a5303a908a964c2">More...</a><br /></td></tr>
-<tr class="separator:a238753f9b561e7b02a5303a908a964c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5473dfbfcce0949d24462dbf411a52b1"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a5dad8c1e8422ad11eabc8594bcdf0294">async_enable</a>: 1</td></tr>
-<tr class="memdesc:a5473dfbfcce0949d24462dbf411a52b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">This bit controls whether the host controller skips processing the Asynchronous Schedule. Values mean: 0b Do not process the Asynchronous Schedule 1b Use the ASYNCLISTADDR register to access the Asynchronous Schedule.  <a href="structehci__registers__t_1_1_0d162_1_1_0d171.html#a5473dfbfcce0949d24462dbf411a52b1">More...</a><br /></td></tr>
-<tr class="separator:a5473dfbfcce0949d24462dbf411a52b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af39fa82b40fdf3af09f73290d4ac7a17"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#ac272bb68160160ffaf90142f815db795">async_adv_doorbell</a>: 1</td></tr>
-<tr class="memdesc:af39fa82b40fdf3af09f73290d4ac7a17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tell HC to interrupt next time it advances async list. Clear by HC.  <a href="structehci__registers__t_1_1_0d162_1_1_0d171.html#af39fa82b40fdf3af09f73290d4ac7a17">More...</a><br /></td></tr>
-<tr class="separator:af39fa82b40fdf3af09f73290d4ac7a17"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acf77a732f3b519a6a294d4dd3eaf2f1f"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#aacddee0291c64d05fc8ca841341536cc">light_reset</a>: 1</td></tr>
-<tr class="memdesc:acf77a732f3b519a6a294d4dd3eaf2f1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset HC without affecting ports state.  <a href="structehci__registers__t_1_1_0d162_1_1_0d171.html#acf77a732f3b519a6a294d4dd3eaf2f1f">More...</a><br /></td></tr>
-<tr class="separator:acf77a732f3b519a6a294d4dd3eaf2f1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a66e7f1a96b96eb20c0e5eba8c1228582"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#ac7e36b328c42d524d5f496c63709413a">async_park_count</a>: 2</td></tr>
-<tr class="memdesc:a66e7f1a96b96eb20c0e5eba8c1228582"><td class="mdescLeft">&#160;</td><td class="mdescRight">not used by tinyusb  <a href="structehci__registers__t_1_1_0d162_1_1_0d171.html#a66e7f1a96b96eb20c0e5eba8c1228582">More...</a><br /></td></tr>
-<tr class="separator:a66e7f1a96b96eb20c0e5eba8c1228582"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a18b6a3f144b4fb68933683c10f0e994b"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#afc0c13f826ac09013f2af27560a70232">__pad0__</a>: 1</td></tr>
-<tr class="separator:a18b6a3f144b4fb68933683c10f0e994b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6061f65380810f433794cad8964c797e"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a85620b06990bd40daa03c7165e8bb89b">async_park_enable</a>: 1</td></tr>
-<tr class="memdesc:a6061f65380810f433794cad8964c797e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable park mode, not used by tinyusb.  <a href="structehci__registers__t_1_1_0d162_1_1_0d171.html#a6061f65380810f433794cad8964c797e">More...</a><br /></td></tr>
-<tr class="separator:a6061f65380810f433794cad8964c797e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2c5532083038f1cae7acdd3603bac25e"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a60f88a2b294fd44255edfd2c4848af6f">__pad1__</a>: 3</td></tr>
-<tr class="separator:a2c5532083038f1cae7acdd3603bac25e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab340e64bfbd3b052ce8515251493bd78"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a32eacdf8fc6fa66c99fcd590ac28fe76">nxp_framelist_size_msb</a>: 1</td></tr>
-<tr class="memdesc:ab340e64bfbd3b052ce8515251493bd78"><td class="mdescLeft">&#160;</td><td class="mdescRight">NXP customized : Bit 2 of the Frame List Size bits <br  />
+<tr class="memitem:a6349f0cd7d6b9131c1e8ec43572197ee"><td class="memItemLeft" >union {</td></tr>
+<tr class="memitem:ad41ec9fff2ead75356754ca5a7cb5093"><td class="memItemLeft" >&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#ad7194d477e9ac2f7f158efe44e9e82e9">command</a></td></tr>
+<tr class="separator:ad41ec9fff2ead75356754ca5a7cb5093"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69133e51b58014c0fca46ed3d75b0875"><td class="memItemLeft" >&#160;&#160;&#160;struct {</td></tr>
+<tr class="memitem:a2164f657afb7e051acf899fe46d5540c"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a697d68390eeaf6857fed722f3bb30eb0">run_stop</a>: 1</td></tr>
+<tr class="memdesc:a2164f657afb7e051acf899fe46d5540c"><td class="mdescLeft">&#160;</td><td class="mdescRight">1=Run. 0=Stop  <a href="structehci__registers__t_1_1_0d163_1_1_0d171.html#a2164f657afb7e051acf899fe46d5540c">More...</a><br /></td></tr>
+<tr class="separator:a2164f657afb7e051acf899fe46d5540c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3aa9c64661e736625b97fadb65311fb8"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#aa69311155290a418f945018228c3e9cc">reset</a>: 1</td></tr>
+<tr class="memdesc:a3aa9c64661e736625b97fadb65311fb8"><td class="mdescLeft">&#160;</td><td class="mdescRight">SW write 1 to reset HC, clear by HC when complete.  <a href="structehci__registers__t_1_1_0d163_1_1_0d171.html#a3aa9c64661e736625b97fadb65311fb8">More...</a><br /></td></tr>
+<tr class="separator:a3aa9c64661e736625b97fadb65311fb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a549cf620d7f8973070cbc0a474e33d5b"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#ac81707491215c5fe295694bbb6e208e3">framelist_size</a>: 2</td></tr>
+<tr class="memdesc:a549cf620d7f8973070cbc0a474e33d5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frame List size 0: 1024, 1: 512, 2: 256.  <a href="structehci__registers__t_1_1_0d163_1_1_0d171.html#a549cf620d7f8973070cbc0a474e33d5b">More...</a><br /></td></tr>
+<tr class="separator:a549cf620d7f8973070cbc0a474e33d5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a565c6340c77f823e3be062d5f75651ae"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a831126014c87c34e69788af5903389a4">periodic_enable</a>: 1</td></tr>
+<tr class="memdesc:a565c6340c77f823e3be062d5f75651ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">This bit controls whether the host controller skips processing the Periodic Schedule. Values mean: 0b Do not process the Periodic Schedule 1b Use the PERIODICLISTBASE register to access the Periodic Schedule.  <a href="structehci__registers__t_1_1_0d163_1_1_0d171.html#a565c6340c77f823e3be062d5f75651ae">More...</a><br /></td></tr>
+<tr class="separator:a565c6340c77f823e3be062d5f75651ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69fc8774643d221f3c16db2aab8fd601"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a5dad8c1e8422ad11eabc8594bcdf0294">async_enable</a>: 1</td></tr>
+<tr class="memdesc:a69fc8774643d221f3c16db2aab8fd601"><td class="mdescLeft">&#160;</td><td class="mdescRight">This bit controls whether the host controller skips processing the Asynchronous Schedule. Values mean: 0b Do not process the Asynchronous Schedule 1b Use the ASYNCLISTADDR register to access the Asynchronous Schedule.  <a href="structehci__registers__t_1_1_0d163_1_1_0d171.html#a69fc8774643d221f3c16db2aab8fd601">More...</a><br /></td></tr>
+<tr class="separator:a69fc8774643d221f3c16db2aab8fd601"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02b6124bf932595878d44fc98f5af710"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#ac272bb68160160ffaf90142f815db795">async_adv_doorbell</a>: 1</td></tr>
+<tr class="memdesc:a02b6124bf932595878d44fc98f5af710"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tell HC to interrupt next time it advances async list. Clear by HC.  <a href="structehci__registers__t_1_1_0d163_1_1_0d171.html#a02b6124bf932595878d44fc98f5af710">More...</a><br /></td></tr>
+<tr class="separator:a02b6124bf932595878d44fc98f5af710"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d9d80d419a8b9bb7a514361f98f322e"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#aacddee0291c64d05fc8ca841341536cc">light_reset</a>: 1</td></tr>
+<tr class="memdesc:a5d9d80d419a8b9bb7a514361f98f322e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset HC without affecting ports state.  <a href="structehci__registers__t_1_1_0d163_1_1_0d171.html#a5d9d80d419a8b9bb7a514361f98f322e">More...</a><br /></td></tr>
+<tr class="separator:a5d9d80d419a8b9bb7a514361f98f322e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a857ecc6e88b19fcf5c6ac432c0a01ca1"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#ac7e36b328c42d524d5f496c63709413a">async_park_count</a>: 2</td></tr>
+<tr class="memdesc:a857ecc6e88b19fcf5c6ac432c0a01ca1"><td class="mdescLeft">&#160;</td><td class="mdescRight">not used by tinyusb  <a href="structehci__registers__t_1_1_0d163_1_1_0d171.html#a857ecc6e88b19fcf5c6ac432c0a01ca1">More...</a><br /></td></tr>
+<tr class="separator:a857ecc6e88b19fcf5c6ac432c0a01ca1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ccf6a9d6086e3aeadc7365aba18c1ad"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#afc0c13f826ac09013f2af27560a70232">__pad0__</a>: 1</td></tr>
+<tr class="separator:a8ccf6a9d6086e3aeadc7365aba18c1ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7eeef834dab07da4467e8645c14b0ef6"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a85620b06990bd40daa03c7165e8bb89b">async_park_enable</a>: 1</td></tr>
+<tr class="memdesc:a7eeef834dab07da4467e8645c14b0ef6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable park mode, not used by tinyusb.  <a href="structehci__registers__t_1_1_0d163_1_1_0d171.html#a7eeef834dab07da4467e8645c14b0ef6">More...</a><br /></td></tr>
+<tr class="separator:a7eeef834dab07da4467e8645c14b0ef6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c308214e44a33761ebe4f01a484c414"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a60f88a2b294fd44255edfd2c4848af6f">__pad1__</a>: 3</td></tr>
+<tr class="separator:a4c308214e44a33761ebe4f01a484c414"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a46def43867535e92a29a66055394663d"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a32eacdf8fc6fa66c99fcd590ac28fe76">nxp_framelist_size_msb</a>: 1</td></tr>
+<tr class="memdesc:a46def43867535e92a29a66055394663d"><td class="mdescLeft">&#160;</td><td class="mdescRight">NXP customized : Bit 2 of the Frame List Size bits <br  />
  011b: 128 elements <br  />
  100b: 64 elements <br  />
  101b: 32 elements <br  />
  110b: 16 elements <br  />
- 111b: 8 elements.  <a href="structehci__registers__t_1_1_0d162_1_1_0d171.html#ab340e64bfbd3b052ce8515251493bd78">More...</a><br /></td></tr>
-<tr class="separator:ab340e64bfbd3b052ce8515251493bd78"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab9eb2a13af480a46decdd3edc6b64005"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a8135b282b78ed5780af1d0b364e80ec1">int_threshold</a>: 8</td></tr>
-<tr class="memdesc:ab9eb2a13af480a46decdd3edc6b64005"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default 08h. Interrupt rate in unit of micro frame.  <a href="structehci__registers__t_1_1_0d162_1_1_0d171.html#ab9eb2a13af480a46decdd3edc6b64005">More...</a><br /></td></tr>
-<tr class="separator:ab9eb2a13af480a46decdd3edc6b64005"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae2210a840b0f927ec1a81b59213d6230"><td class="memItemLeft" valign="top">&#160;&#160;&#160;}&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#af296f3b2b80998c8cd93855f1cb9d3e2">command_bm</a></td></tr>
-<tr class="separator:ae2210a840b0f927ec1a81b59213d6230"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acc25da13d11f6a233edbc57223d32fc3"><td class="memItemLeft" valign="top">};&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
-<tr class="separator:acc25da13d11f6a233edbc57223d32fc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+ 111b: 8 elements.  <a href="structehci__registers__t_1_1_0d163_1_1_0d171.html#a46def43867535e92a29a66055394663d">More...</a><br /></td></tr>
+<tr class="separator:a46def43867535e92a29a66055394663d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d41f39d1f7019ec872c66b6fcfd5be6"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a8135b282b78ed5780af1d0b364e80ec1">int_threshold</a>: 8</td></tr>
+<tr class="memdesc:a5d41f39d1f7019ec872c66b6fcfd5be6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default 08h. Interrupt rate in unit of micro frame.  <a href="structehci__registers__t_1_1_0d163_1_1_0d171.html#a5d41f39d1f7019ec872c66b6fcfd5be6">More...</a><br /></td></tr>
+<tr class="separator:a5d41f39d1f7019ec872c66b6fcfd5be6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69133e51b58014c0fca46ed3d75b0875"><td class="memItemLeft" valign="top">&#160;&#160;&#160;}&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#aa29fc494ddc72d65567528c9cb8a7077">command_bm</a></td></tr>
+<tr class="separator:a69133e51b58014c0fca46ed3d75b0875"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6349f0cd7d6b9131c1e8ec43572197ee"><td class="memItemLeft" valign="top">};&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a6349f0cd7d6b9131c1e8ec43572197ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85b3726a7fff0a0551f280587767f6f2"><td class="memItemLeft" >union {</td></tr>
 <tr class="memitem:a5d007099ef02a278eb4837c0b91ccdeb"><td class="memItemLeft" >&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a0395fc7a84e0b3cfde6cd3cc203a3c9a">status</a></td></tr>
 <tr class="separator:a5d007099ef02a278eb4837c0b91ccdeb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -332,14 +332,14 @@ Public Attributes</h2></td></tr>
 <div class="textblock">
 <p class="definition">Definition at line <a class="el" href="ehci_8h_source.html#l00318">318</a> of file <a class="el" href="ehci_8h_source.html">ehci.h</a>.</p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
-<a id="acc25da13d11f6a233edbc57223d32fc3" name="acc25da13d11f6a233edbc57223d32fc3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acc25da13d11f6a233edbc57223d32fc3">&#9670;&nbsp;</a></span></h2>
+<a id="a6349f0cd7d6b9131c1e8ec43572197ee" name="a6349f0cd7d6b9131c1e8ec43572197ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6349f0cd7d6b9131c1e8ec43572197ee">&#9670;&nbsp;</a></span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">union  { ... }  ehci_registers_t::@163</td>
+          <td class="memname">union  { ... }  ehci_registers_t::@164</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -594,8 +594,8 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="af296f3b2b80998c8cd93855f1cb9d3e2" name="af296f3b2b80998c8cd93855f1cb9d3e2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af296f3b2b80998c8cd93855f1cb9d3e2">&#9670;&nbsp;</a></span></h2>
+<a id="aa29fc494ddc72d65567528c9cb8a7077" name="aa29fc494ddc72d65567528c9cb8a7077"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa29fc494ddc72d65567528c9cb8a7077">&#9670;&nbsp;</a></span></h2>
 
 <div class="memitem">
 <div class="memproto">

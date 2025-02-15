@@ -59,7 +59,7 @@ var searchData=
   ['notetofreq_56',['noteToFreq',['../class_midi_main.html#a12ad5df2b21348819296de44ef86880a',1,'MidiMain']]],
   ['notification_5fxmit_5fis_5frunning_57',['notification_xmit_is_running',['../structncm__interface__t.html#a6d4361d2c3f07fc5baccdd2c1e155429',1,'ncm_interface_t']]],
   ['notification_5fxmit_5fstate_58',['notification_xmit_state',['../structncm__interface__t.html#aed6c300232bc9a34f4552fbd8487edd5',1,'ncm_interface_t']]],
-  ['notify_59',['notify',['../ecm__rndis__device_8c.html#a5ad7fd35edce92d782f2ca823ad3c620',1,'ecm_rndis_device.c']]],
+  ['notify_59',['notify',['../ecm__rndis__device_8c.html#a0677f2ebdc3fcc45e1dac280c814769f',1,'ecm_rndis_device.c']]],
   ['notify_5fall_5fdma_5fwrite_60',['notify_all_dma_write',['../struct_t_u___a_t_t_r___p_a_c_k_e_d.html#ac415552c7dd4a0632aaacffbaef28e72',1,'TU_ATTR_PACKED']]],
   ['npol_61',['npol',['../struct_t_m_c4671_a_b_n_conf.html#a67441caa37389655cad450e642f93f87',1,'TMC4671ABNConf']]],
   ['nptx_5fq_5fdepth_62',['nptx_q_depth',['../struct_t_u___a_t_t_r___p_a_c_k_e_d.html#a702f7a2f693ef1c88e1305835d6a79ec',1,'TU_ATTR_PACKED']]],

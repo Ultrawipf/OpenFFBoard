@@ -72,7 +72,7 @@ var usbh_8c =
     [ "usbh_int_set", "usbh_8c.html#aa6b1dcc1412cdcd269da06e5b7550a09", null ],
     [ "_app_driver", "usbh_8c.html#a43bb127b5ea196cfaf30a240f045a332", null ],
     [ "_app_driver_count", "usbh_8c.html#a791a5cd023ae1637806e87a1b67a431a", null ],
-    [ "_ctrl_xfer", "usbh_8c.html#ac074be121dece702cc8da9b12f103a9b", null ],
+    [ "_ctrl_xfer", "usbh_8c.html#a4b020d93075674d0f760ee9f1b4bf47a", null ],
     [ "_dev0", "usbh_8c.html#aff60bfaca98833358eefcd1510c428fa", null ],
     [ "_usbh_controller", "usbh_8c.html#af57dd6d2ea8427061314fc542bcba26c", null ],
     [ "_usbh_ctrl_buf", "usbh_8c.html#a96e9080c1d4ae11ef937618990d7e5e1", null ],
