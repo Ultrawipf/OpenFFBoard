@@ -290,48 +290,36 @@ void HidFFB::set_effect(FFB_SetEffect_t* effect){
 	effect_p->type = effect->effectType;
 	effect_p->samplePeriod = effect->samplePeriod;
 
-	if(axisCount == 1){
-		/* Compatibility fix. Some games may send a 0° or 90° angle for the first axis.
-		 * If we only have 1 axis defined we ignore any directions and force enable the first axis
-		 */
-		effect->enableAxis = X_AXIS_ENABLE;
-	}
-
 	bool directionEnable = (effect->enableAxis & this->directionEnableMask);
+	bool overridesCondition = false;
 
-	if(effect_p->useSingleCondition){ // Only allow turning single condition off in case it was overridden by sending multiple conditions previously
-		effect_p->useSingleCondition = directionEnable; // If direction is used only a single parameter block is allowed. Somehow this is still set while 2 conditions are sent...
-	}else if(directionEnable){
-		directionEnable = false; // If multiple conditions were previously sent we ignore direction enable and instead activate axes
+//	if(effect_p->useSingleCondition){ // Only allow turning single condition off in case it was overridden by sending multiple conditions previously
+//		effect_p->useSingleCondition = directionEnable; // If direction is used only a single parameter block is allowed. Somehow this is still set while 2 conditions are sent...
+//	}
+	// Conditional effects usually do not use directions
+	if(!effect_p->useSingleCondition && (effect->effectType == FFB_EFFECT_SPRING || effect->effectType == FFB_EFFECT_DAMPER || effect->effectType == FFB_EFFECT_INERTIA || effect->effectType == FFB_EFFECT_FRICTION))
+	{
 		if(effect_p->conditions[0].isActive()){
-			effect->enableAxis |= X_AXIS_ENABLE;
+			effect_p->axisMagnitudes[0] = 1.0f;
+			overridesCondition = true;
 		}
-		if(effect_p->conditions[1].isActive()){
-			effect->enableAxis |= Y_AXIS_ENABLE;
+		if(effect_p->conditions[1].isActive() || effect_p->useSingleCondition){
+			effect_p->axisMagnitudes[1] = 1.0f;
+			overridesCondition = true;
 		}
 	}
 
-	float phaseX = M_PI*2.0 * (effect->directionX/36000.0);
 
-	if(axisCount == 1){
-		/*
-		 * Angular vector if dirEnable used or axis enabled otherwise 0 if axis disabled
-		 * Compatibility fix.
-		 * Some single axis games send no directionEnable but enableAxis but still use phase vectors to scale a single axis effect
-		 */
-		effect_p->axisMagnitudes[0] = (directionEnable || (effect->enableAxis & X_AXIS_ENABLE) ? sin(phaseX) : 0);
-	}else{
-		/*
-		 * Some 2 axis games send no vector and require the axis to be enable via enableAxis
-		 */
-		effect_p->axisMagnitudes[0] = directionEnable ? sin(phaseX) : (effect->enableAxis & X_AXIS_ENABLE ? 1 : 0); // Angular vector if dirEnable used otherwise full or 0 if axis enabled
-		effect_p->axisMagnitudes[1] = directionEnable ? cos(phaseX) : (effect->enableAxis & Y_AXIS_ENABLE ? 1 : 0); // Angular vector if
+	if(!overridesCondition){
+		float phaseX = M_PI*2.0 * (effect->directionX/36000.0f);
+
+		effect_p->axisMagnitudes[0] = directionEnable ? sin(phaseX) : (effect->enableAxis & X_AXIS_ENABLE ? (effect->directionX - 18000.0f) / 18000.0f : 0); // Angular vector if dirEnable used otherwise linear or 0 if axis enabled
+		effect_p->axisMagnitudes[1] = directionEnable ? -cos(phaseX) : (effect->enableAxis & Y_AXIS_ENABLE ? -(effect->directionY - 18000.0f) / 18000.0f : 0);
 	}
 
 #if MAX_AXIS == 3
 	float phaseY = M_PI*2.0 * (effect->directionY/36000.0);
-	effect_p->axisMagnitudes[3] = (directionEnable || (effect->enableAxis & Z_AXIS_ENABLE) ? sin(phaseY) : 0); // Angular vector if dirEnable used otherwise full or 0 if axis enabled
-
+	effect_p->axisMagnitudes[3] = directionEnable ? sin(phaseY) : (effect->enableAxis & Z_AXIS_ENABLE ? (effect->directionZ - 18000.0f) / 18000.0f : 0);
 #endif
 	if(effect->duration == 0){ // Fix for games assuming 0 is infinite
 		effect_p->duration = FFB_EFFECT_DURATION_INFINITE;
@@ -372,20 +360,24 @@ void HidFFB::set_condition(FFB_SetCondition_Data_t *cond){
 	effect->conditions[axis].negativeSaturation = cond->negativeSaturation;
 	effect->conditions[axis].positiveSaturation = cond->positiveSaturation;
 	effect->conditions[axis].deadBand = cond->deadBand;
-	//effect->conditionsCount++;
-	if(effect->conditions[axis].positiveSaturation == 0){
-		effect->conditions[axis].positiveSaturation = 0x7FFF;
+
+//	if(effect->conditions[axis].positiveSaturation == 0){
+//		effect->conditions[axis].positiveSaturation = 0x7FFF;
+//	}
+//	if(effect->conditions[axis].negativeSaturation == 0){
+//		effect->conditions[axis].negativeSaturation = 0x7FFF;
+//	}
+
+	if(axis>0 && axis < MAX_AXIS && effect->conditions[axis].isActive()){ // Workaround when direction enable is set but multiple conditions are defined... Resets direction and uses conditions again
+		effect->useSingleCondition = false;
 	}
-	if(effect->conditions[axis].negativeSaturation == 0){
-		effect->conditions[axis].negativeSaturation = 0x7FFF;
+	if((effect->conditions[axis].isActive() || (axis > 0 && effect->useSingleCondition))  && effect->axisMagnitudes[axis] == 0){
+		effect->axisMagnitudes[axis] = 1.0;
 	}
 
-	if(axis>0){ // Workaround when direction enable is set but multiple conditions are defined... Resets direction and uses conditions again
-		effect->useSingleCondition = false;
-		for(uint8_t i = 0;i<MAX_AXIS;i++){
-			effect->axisMagnitudes[i] = 1.0;
-		}
-	}
+//	for(uint8_t i = 0;i<MAX_AXIS;i++){
+//		effect->axisMagnitudes[i] = 1.0;
+//	}
 }
 
 void HidFFB::set_effect_operation(FFB_EffOp_Data_t* report){
