@@ -3131,7 +3131,7 @@ void TMC4671::setUpExtEncTimer(){
 		extEncUpdater = std::make_unique<TMC_ExternalEncoderUpdateThread>(this);
 	// Setup timer
 	this->externalEncoderTimer = &TIM_TMC;
-	this->externalEncoderTimer->Instance->ARR = 200; // 200 = 5khz = 5 tmc cycles, 250 = 4khz, 240 = 6 tmc cycles
+	this->externalEncoderTimer->Instance->ARR = TIM_TMC_ARR; // 200 = 5khz = 5 tmc cycles, 250 = 4khz, 240 = 6 tmc cycles
 	this->externalEncoderTimer->Instance->PSC = ((TIM_TMC_BCLK)/1000000) +1; // 1µs ticks
 	this->externalEncoderTimer->Instance->CR1 = 1;
 	HAL_TIM_Base_Start_IT(this->externalEncoderTimer);
