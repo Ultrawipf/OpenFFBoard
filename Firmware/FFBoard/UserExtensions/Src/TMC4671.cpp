@@ -1856,7 +1856,9 @@ Encoder* TMC4671::getEncoder(){
 void TMC4671::setEncoder(std::shared_ptr<Encoder>& encoder){
 	MotorDriver::drvEncoder = encoder;
 	if(conf.motconf.enctype == EncoderType_TMC::ext && externalEncoderTimer){
-		// TODO Calibrate and align external encoder
+		if(!extEncUpdater){ // If updater has not been set up because the encoder mode was changed before the external encoder passed force it now
+			setUpExtEncTimer();
+		}
 		changeState(TMC_ControlState::ExternalEncoderInit);
 	}
 }
