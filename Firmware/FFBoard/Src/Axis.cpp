@@ -419,11 +419,11 @@ void Axis::setupTMC4671()
 {
 	TMC4671 *drv = static_cast<TMC4671 *>(this->drv.get());
 //	drv->setAxis(axis);
+	drv->setExternalEncoderAllowed(true);
 	drv->restoreFlash();
 	tmclimits.pid_torque_flux = getPower();
 	drv->setLimits(tmclimits);
 	//drv->setBiquadTorque(TMC4671Biquad(tmcbq_500hz_07q_25k));
-	drv->setExternalEncoderAllowed(true);
 	
 
 	// Enable driver

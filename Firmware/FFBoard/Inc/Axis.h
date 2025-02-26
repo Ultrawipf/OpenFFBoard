@@ -203,24 +203,6 @@ private:
 											 .pid_vel_lim = 2147483647,
 											 .pid_pos_low = -2147483647,
 											 .pid_pos_high = 2147483647});
-
-	// Lowpass 500Hz Q 0.7 @ 25khz
-	const TMC4671Biquad_t tmcbq_500hz_07q_25k = TMC4671Biquad_t(
-			{ .a1 = 979476766,
-			  .a2 = -450370144,
-			  .b0 = 1941073,
-			  .b1 = 3882145,
-			  .b2 = 1941073});
-
-	// Lowpass 1000Hz Q 0.7 @ 25khz
-	const TMC4671Biquad_t tmcbq_1000hz_07q_25k = TMC4671Biquad_t(
-			{ .a1 = 886773302,
-			  .a2 = -378358476,
-			  .b0 = 7114021,
-			  .b1 = 14228043,
-			  .b2 = 7114021});
-
-
 #endif
 	float encoderOffset = 0; // Offset for absolute encoders
 	uint16_t degreesOfRotation = 900;					// How many degrees of range for the full gamepad range
