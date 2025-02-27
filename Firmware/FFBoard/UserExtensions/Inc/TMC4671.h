@@ -368,7 +368,7 @@ public:
 
 	uint32_t readReg(uint8_t reg);
 	void writeReg(uint8_t reg,uint32_t dat);
-	void writeRegDMA(uint8_t reg,uint32_t dat);
+	void writeRegAsync(uint8_t reg,uint32_t dat);
 	void updateReg(uint8_t reg,uint32_t dat,uint32_t mask,uint8_t shift);
 	//void SpiTxCplt(SPI_HandleTypeDef *hspi);
 
