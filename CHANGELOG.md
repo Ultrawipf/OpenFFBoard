@@ -1,4 +1,12 @@
-### Changes this version from 1.16 to 1.15:
+### Changes this version:
+- Inverted Y axis direction vector magnitude
+  - Fixes 2 axis setups in XPforce and DCS and other flight sims
+- Changed 2 axis conditional effects to ignore direction vectors (Fixes DCS)
+- Modified HID 2 axis descriptor, added back second direction for compliance
+
+
+
+### Changes in 1.16:
 - Added MyActuator RMD CAN support class.
   - Temporary implementation until CAN protocol changes. Usable but might be improved in the future
 - Fixed issues in CAN analog class for packet 2. Allow shorter frames
