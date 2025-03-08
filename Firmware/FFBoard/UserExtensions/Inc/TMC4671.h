@@ -150,7 +150,7 @@ struct TMC4671MainConfig{
 	uint8_t bbmL			= 50;
 	uint8_t bbmH			= 50;
 	uint16_t mdecA 			= 660; // 334 default. 331 recommended by datasheet,662 double. 660 lowest noise
-	uint16_t mdecB 			= 660; // Encoder ADC high resolution recommended
+	uint16_t mdecB 			= 331; // Encoder ADC fast rate recommended
 	uint32_t mclkA			= 0x20000000; //0x20000000 default
 	uint32_t mclkB			= 0x20000000; // For AENC
 	uint16_t adc_I0_offset 	= 33415;
