@@ -36,9 +36,10 @@ void TMCDebugBridge::registerCommands(){
 	registerCommand("reg", TMCDebugBridge_commands::reg, "Read or write a TMC register at adr",CMDFLAG_GETADR | CMDFLAG_SETADR);
 	registerCommand("torque", TMCDebugBridge_commands::torque, "Change torque and enter torque mode",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("pos", TMCDebugBridge_commands::pos, "Change pos and enter pos mode",CMDFLAG_GET | CMDFLAG_SET);
-	registerCommand("openloopspeed", TMCDebugBridge_commands::openloopspeed, "Move openloop. adr=strength;val=speed",CMDFLAG_SETADR | CMDFLAG_SET);
+	registerCommand("openloopspeed", TMCDebugBridge_commands::openloopspeed, "Move openloop (current controlled). adr=strength;val=speed",CMDFLAG_SETADR | CMDFLAG_SET);
 	registerCommand("velocity", TMCDebugBridge_commands::velocity, "Change velocity and enter velocity mode",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("mode", TMCDebugBridge_commands::mode, "Change motion mode",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("openloopspeedpwm", TMCDebugBridge_commands::openloopspeedpwm, "Move openloop raw PWM. adr=strength;val=speed",CMDFLAG_SETADR | CMDFLAG_SET);
 }
 
 
@@ -72,7 +73,17 @@ CommandStatus TMCDebugBridge::command(const ParsedCommand& cmd,std::vector<Comma
 		if(cmd.type == CMDtype::set){
 			drv->setOpenLoopSpeedAccel(cmd.val,100);
 		}else if(cmd.type == CMDtype::setat){
-			drv->runOpenLoop(cmd.adr,0,cmd.val,10);
+			drv->runOpenLoop(cmd.adr,0,cmd.val,10,true);
+		}else{
+			return CommandStatus::ERR;
+		}
+		break;
+
+	case TMCDebugBridge_commands::openloopspeedpwm:
+		if(cmd.type == CMDtype::set){
+			drv->setOpenLoopSpeedAccel(cmd.val,100);
+		}else if(cmd.type == CMDtype::setat){
+			drv->runOpenLoop(cmd.adr,0,cmd.val,10,false);
 		}else{
 			return CommandStatus::ERR;
 		}
