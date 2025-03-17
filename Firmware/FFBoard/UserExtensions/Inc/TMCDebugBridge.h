@@ -23,7 +23,7 @@ extern SPI_HandleTypeDef HSPIDRV;
 
 class TMCDebugBridge: public FFBoardMain {
 	enum class TMCDebugBridge_commands : uint32_t{
-		torque,pos,openloopspeed,velocity,mode,reg
+		torque,pos,openloopspeed,velocity,mode,reg,openloopspeedpwm
 	};
 public:
 
