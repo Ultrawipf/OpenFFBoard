@@ -1626,6 +1626,7 @@ void TMC4671::runOpenLoop(uint16_t ud,uint16_t uq,int32_t speed,int32_t accel,bo
 	if(this->conf.motconf.motor_type == MotorType::DC){
 		uq = ud+uq; // dc motor has no flux. add to torque
 	}
+	startMotor();
 	if(torqueMode){
 		if(this->conf.motconf.motor_type == MotorType::DC){
 			uq = ud+uq; // dc motor has no flux. add to torque
@@ -1649,7 +1650,7 @@ void TMC4671::setUdUq(int16_t ud,int16_t uq){
 void TMC4671::stopMotor(){
 	// Stop driver if running
 
-	enablePin.reset();
+//	enablePin.reset();
 	motorEnabledRequested = false;
 	if(state == TMC_ControlState::Running || state == TMC_ControlState::EncoderFinished){
 		setMotionMode(MotionMode::stop,true);
