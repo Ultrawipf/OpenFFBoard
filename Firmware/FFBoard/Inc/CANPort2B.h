@@ -69,7 +69,7 @@ private:
 	static const uint32_t sendTimeout = 20;
 
 	CAN_TxHeaderTypeDef header = {0,0,0,CAN_RTR_DATA,8,(FunctionalState)0};
-
+	uint8_t nextLen = 8;
 
 };
 #endif
