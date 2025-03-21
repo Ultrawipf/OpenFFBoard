@@ -356,6 +356,7 @@ CommandStatus CANPort_2B::command(const ParsedCommand& cmd,std::vector<CommandRe
 			CAN_tx_msg msg;
 			memcpy(msg.data,&cmd.val,8);
 			msg.header.id = cmd.adr;
+			msg.header.length = 8;  //Sqwince:testing fix for FW ver1.16.0 zero length msg defect.
 			sendMessage(msg);
 		}else{
 			return CommandStatus::NOT_FOUND;
