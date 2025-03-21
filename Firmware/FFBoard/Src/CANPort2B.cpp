@@ -356,6 +356,7 @@ CommandStatus CANPort_2B::command(const ParsedCommand& cmd,std::vector<CommandRe
 			CAN_tx_msg msg;
 			memcpy(msg.data,&cmd.val,8);
 			msg.header.id = cmd.adr;
+			msg.header.length = nextLen;
 			sendMessage(msg);
 		}else{
 			return CommandStatus::NOT_FOUND;
@@ -363,8 +364,8 @@ CommandStatus CANPort_2B::command(const ParsedCommand& cmd,std::vector<CommandRe
 		break;
 	}
 	case CanPort_commands::len:
-		handleGetSet(cmd, replies, header.DLC);
-		header.DLC = std::min<uint32_t>(header.DLC,8);
+		handleGetSet(cmd, replies, nextLen);
+		nextLen = std::min<uint32_t>(nextLen,8);
 		break;
 	default:
 		return CommandStatus::NOT_FOUND;
