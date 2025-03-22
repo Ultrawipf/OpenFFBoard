@@ -50,7 +50,7 @@ public:
 	constexpr PresetEntry getPreset(uint8_t idx) const {return PresetEntry(presets[std::min<uint8_t>(idx,presets.size())]);}
 	constexpr uint32_t speedToPreset(uint32_t speed) const {
 		auto it = std::find_if( presets.begin(), presets.end(), [&speed](const PresetEntry &e){return e.speed == speed;});
-		return it == presets.end() ? 255 : std::distance(it, presets.begin());
+		return it == presets.end() ? 255 : std::distance(presets.begin(),it);
 	}
 	constexpr uint32_t presetToSpeed(uint8_t preset) const {return presets[preset].speed;}
 	const std::span<const PresetEntry> presets; // Name for listing and init types for setup
