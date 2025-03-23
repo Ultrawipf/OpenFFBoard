@@ -54,21 +54,20 @@ private:
 };
 
 /**
- * Calculates a moving average of unknown length
+ * Calculates a moving average of variable length
  * Can periodically get and reset a value to average for an unknown amount of data points
  * If len != 0 calculates an exponential moving average with length len.
- * If len = 0 length equals the current amount of samples.
+ * If len = 0 length equals the current amount of samples up to 0x7FFFFFFF.
  */
 template <class T>
 class FastMovingAverage{
 public:
-	FastMovingAverage(int32_t len = 0) : fixedLen(len), count(0){};
+	FastMovingAverage(int32_t len = 0) : fixedLen(len > 0 ? len : INT32_MAX), count(0){};
 	~FastMovingAverage(){};
 
 	void clear(){
 		curAvg = 0;
-		if(!fixedLen)
-			count=0;
+		count=0;
 	}
 	/**
 	 * Gets current average and clears current average and counter
@@ -89,7 +88,7 @@ public:
 	 * Adds a value and returns current average
 	 */
 	T addValue(T v){
-		if(!fixedLen || count < fixedLen)
+		if(count < fixedLen)
 			count++;
 		curAvg += (v - curAvg)/count;
 		return curAvg;
