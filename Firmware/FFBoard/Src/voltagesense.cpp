@@ -92,7 +92,7 @@ void brakeCheck(){
 
 }
 
-FastMovingAverage<int32_t>chipTempAvg{5};
+FastMovingAverage<int32_t>chipTempAvg{3};
 __weak int32_t getChipTemp(){
 #if !defined(TEMPSENSOR_ADC_VAL) || !defined(__LL_ADC_CALC_TEMPERATURE)
 	return 0;
