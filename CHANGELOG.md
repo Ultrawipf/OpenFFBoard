@@ -3,7 +3,10 @@
   - Fixes 2 axis setups in XPforce and DCS and other flight sims
 - Changed 2 axis conditional effects to ignore direction vectors (Fixes DCS)
 - Modified HID 2 axis descriptor, added back second direction for compliance
-
+- Fixed chip temp sometimes glitching
+- TMC debug mode: Changed openloopspeed command to use torque mode instead of raw PWM. Added new openloopspeedpwm to control raw PWM.
+- CAN bus corrected packet length when packet is sent as command
+- Corrected CAN speed preset in can bridge GVRET mode (savvycan works again)
 
 
 ### Changes in 1.16:
