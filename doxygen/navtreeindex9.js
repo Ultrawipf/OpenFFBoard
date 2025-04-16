@@ -1,6 +1,5 @@
 var NAVTREEINDEX9 =
 {
-"class_local_buttons.html#af604fcbe4f6ad8beedbb723174c68d5e":[4,0,174,23],
 "class_midi_handler.html":[4,0,180],
 "class_midi_handler.html#a38eac68ce64889aa4d22d9b339f8e808":[4,0,180,1],
 "class_midi_handler.html#a3f47cc96c950abeefb0b611afa0ce90a":[4,0,180,6],
@@ -249,5 +248,6 @@ var NAVTREEINDEX9 =
 "class_mt_encoder_s_p_i.html#a636526e19e33147232290b3168485480":[4,0,191,23],
 "class_mt_encoder_s_p_i.html#a682c0e4ea005cf268fbebc7719d68d77":[4,0,191,20],
 "class_mt_encoder_s_p_i.html#a6afc99ce064e61b8a72bef96cbc5ba84":[4,0,191,22],
-"class_mt_encoder_s_p_i.html#a71e78bf74a37fa7c23104a8bd2c4ad59":[4,0,191,1]
+"class_mt_encoder_s_p_i.html#a71e78bf74a37fa7c23104a8bd2c4ad59":[4,0,191,1],
+"class_mt_encoder_s_p_i.html#a761680037f1ae414333fd15aad1227ea":[4,0,191,6]
 };

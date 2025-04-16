@@ -107,8 +107,6 @@ var class_axis =
     [ "speedFilter", "class_axis.html#a5e35ae1d6640ec4f32e41bf4fe6d306e", null ],
     [ "speedLimiterI", "class_axis.html#a0cfe5a7e301b58bacb88ab7859bd9a02", null ],
     [ "speedLimiterP", "class_axis.html#a9a83d88795f7ff3099a4285732420dfb", null ],
-    [ "tmcbq_1000hz_07q_25k", "class_axis.html#ab9938ecc3ba60a0692979b05879fb567", null ],
-    [ "tmcbq_500hz_07q_25k", "class_axis.html#a1c969c8821149356c81fbef0aaaef3cb", null ],
     [ "tmclimits", "class_axis.html#ae18282969fa7dc9dc99a70d7d2cf8d20", null ],
     [ "torqueScaler", "class_axis.html#a396e38fa71d534284f77161a532f9130", null ]
 ];

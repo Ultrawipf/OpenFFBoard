@@ -6,7 +6,8 @@ var class_t_m_c_debug_bridge =
       [ "openloopspeed", "class_t_m_c_debug_bridge.html#af27c0ce5f4df3232b543806a8247fcd8a8ce6fb50513bcd5716de76c40a09df11", null ],
       [ "velocity", "class_t_m_c_debug_bridge.html#af27c0ce5f4df3232b543806a8247fcd8aac1a453d0cdc1f19d9479ccfaa8b082c", null ],
       [ "mode", "class_t_m_c_debug_bridge.html#af27c0ce5f4df3232b543806a8247fcd8a15d61712450a686a7f365adf4fef581f", null ],
-      [ "reg", "class_t_m_c_debug_bridge.html#af27c0ce5f4df3232b543806a8247fcd8a33c0ee425e2c0efe834afc1aa1e33a4c", null ]
+      [ "reg", "class_t_m_c_debug_bridge.html#af27c0ce5f4df3232b543806a8247fcd8a33c0ee425e2c0efe834afc1aa1e33a4c", null ],
+      [ "openloopspeedpwm", "class_t_m_c_debug_bridge.html#af27c0ce5f4df3232b543806a8247fcd8ac989a78d9f66500273ea80a07f78f3e3", null ]
     ] ],
     [ "TMCDebugBridge", "class_t_m_c_debug_bridge.html#a53280f253a9ade4d2faa02b3b40e08ff", null ],
     [ "~TMCDebugBridge", "class_t_m_c_debug_bridge.html#a022d6c420bb9471ad037e49564493bd4", null ],

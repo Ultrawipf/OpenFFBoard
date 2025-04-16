@@ -16,14 +16,13 @@ var searchData=
   ['tusb_2eh_13',['tusb.h',['../tusb_8h.html',1,'']]],
   ['tusb_5fcommon_2eh_14',['tusb_common.h',['../tusb__common_8h.html',1,'']]],
   ['tusb_5fcompiler_2eh_15',['tusb_compiler.h',['../tusb__compiler_8h.html',1,'']]],
-  ['tusb_5fconfig_2eh_16',['tusb_config.h',['../tusb__config_8h.html',1,'']]],
-  ['tusb_5fdebug_2eh_17',['tusb_debug.h',['../tusb__debug_8h.html',1,'']]],
-  ['tusb_5ffifo_2ec_18',['tusb_fifo.c',['../tusb__fifo_8c.html',1,'']]],
-  ['tusb_5ffifo_2eh_19',['tusb_fifo.h',['../tusb__fifo_8h.html',1,'']]],
-  ['tusb_5fmcu_2eh_20',['tusb_mcu.h',['../tusb__mcu_8h.html',1,'']]],
-  ['tusb_5foption_2eh_21',['tusb_option.h',['../tusb__option_8h.html',1,'']]],
-  ['tusb_5fprivate_2eh_22',['tusb_private.h',['../tusb__private_8h.html',1,'']]],
-  ['tusb_5ftypes_2eh_23',['tusb_types.h',['../tusb__types_8h.html',1,'']]],
-  ['tusb_5fverify_2eh_24',['tusb_verify.h',['../tusb__verify_8h.html',1,'']]],
-  ['typec_5fstm32_2ec_25',['typec_stm32.c',['../typec__stm32_8c.html',1,'']]]
+  ['tusb_5fdebug_2eh_16',['tusb_debug.h',['../tusb__debug_8h.html',1,'']]],
+  ['tusb_5ffifo_2ec_17',['tusb_fifo.c',['../tusb__fifo_8c.html',1,'']]],
+  ['tusb_5ffifo_2eh_18',['tusb_fifo.h',['../tusb__fifo_8h.html',1,'']]],
+  ['tusb_5fmcu_2eh_19',['tusb_mcu.h',['../tusb__mcu_8h.html',1,'']]],
+  ['tusb_5foption_2eh_20',['tusb_option.h',['../tusb__option_8h.html',1,'']]],
+  ['tusb_5fprivate_2eh_21',['tusb_private.h',['../tusb__private_8h.html',1,'']]],
+  ['tusb_5ftypes_2eh_22',['tusb_types.h',['../tusb__types_8h.html',1,'']]],
+  ['tusb_5fverify_2eh_23',['tusb_verify.h',['../tusb__verify_8h.html',1,'']]],
+  ['typec_5fstm32_2ec_24',['typec_stm32.c',['../typec__stm32_8c.html',1,'']]]
 ];

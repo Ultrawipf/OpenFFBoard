@@ -1,6 +1,5 @@
 var NAVTREEINDEX8 =
 {
-"class_f_f_b_joystick.html#a3e08a712105745d56a1d4ed88cd4cbb1":[4,0,138,5],
 "class_f_f_b_joystick.html#a4abdc731d5415af9ba17356c5553dc49":[4,0,138,2],
 "class_f_f_b_joystick.html#a505aa5ff0990cf50d0fea13bcacd573a":[4,0,138,3],
 "class_f_f_b_joystick.html#a7c307964b774bc19577ad62cb4d75bdd":[4,0,138,1],
@@ -61,12 +60,12 @@ var NAVTREEINDEX8 =
 "class_fast_avg.html#aa8af7022d445c049b1f313c3e84f6553":[4,0,132,5],
 "class_fast_avg.html#aae7319a915ab6c4a34cb441e2b8014b1":[4,0,132,0],
 "class_fast_moving_average.html":[4,0,133],
-"class_fast_moving_average.html#a002bb5abc38e9b7a7ec3f003cde459dd":[4,0,133,8],
 "class_fast_moving_average.html#a04383e78a929b9efdea4fb75d30990c0":[4,0,133,3],
-"class_fast_moving_average.html#a3322890e0f1ce61dde930010d72f61ba":[4,0,133,0],
-"class_fast_moving_average.html#a6ee68031629e0f2fec7414d5e4c0a062":[4,0,133,6],
+"class_fast_moving_average.html#a3bf4ddc9020f290521712c15ba26e5fc":[4,0,133,0],
+"class_fast_moving_average.html#a47ce1963dc5f0b08c97c5d0bbb785ea0":[4,0,133,8],
 "class_fast_moving_average.html#a72f496c56a222bd1fd9d732419025757":[4,0,133,7],
 "class_fast_moving_average.html#a9e2e54d73ae4f441a49521c3031205f4":[4,0,133,1],
+"class_fast_moving_average.html#aaca32dcc944d97bb0202053317b498b0":[4,0,133,6],
 "class_fast_moving_average.html#ac091ed5846e4c542519a94b377c3bcb5":[4,0,133,5],
 "class_fast_moving_average.html#acd90b7bc0056db6dcc3a30ab6f798a0d":[4,0,133,2],
 "class_fast_moving_average.html#adc92a23db653136319055e9169a4a0c2":[4,0,133,4],
@@ -249,5 +248,6 @@ var NAVTREEINDEX8 =
 "class_local_buttons.html#ad3ecc8ebac6a501c873264c68b9736a7":[4,0,174,7],
 "class_local_buttons.html#ad7a8ef46dfba6a1ddd3f8f3ca9ce4c67":[4,0,174,1],
 "class_local_buttons.html#adbcfb18197602c45d3923a0c83aabb73":[4,0,174,19],
-"class_local_buttons.html#ae269f0b70e980655a6e1a2222fdcabfe":[4,0,174,5]
+"class_local_buttons.html#ae269f0b70e980655a6e1a2222fdcabfe":[4,0,174,5],
+"class_local_buttons.html#af604fcbe4f6ad8beedbb723174c68d5e":[4,0,174,23]
 };

@@ -96,8 +96,8 @@ $(document).ready(function(){initNavTree('class_fast_moving_average.html',''); i
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a3322890e0f1ce61dde930010d72f61ba"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_fast_moving_average.html#a3322890e0f1ce61dde930010d72f61ba">FastMovingAverage</a> (uint32_t len=0)</td></tr>
-<tr class="separator:a3322890e0f1ce61dde930010d72f61ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3bf4ddc9020f290521712c15ba26e5fc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_fast_moving_average.html#a3bf4ddc9020f290521712c15ba26e5fc">FastMovingAverage</a> (int32_t len=0)</td></tr>
+<tr class="separator:a3bf4ddc9020f290521712c15ba26e5fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9e2e54d73ae4f441a49521c3031205f4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_fast_moving_average.html#a9e2e54d73ae4f441a49521c3031205f4">~FastMovingAverage</a> ()</td></tr>
 <tr class="separator:a9e2e54d73ae4f441a49521c3031205f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a04383e78a929b9efdea4fb75d30990c0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_fast_moving_average.html#a04383e78a929b9efdea4fb75d30990c0">clear</a> ()</td></tr>
@@ -113,19 +113,19 @@ Public Member Functions</h2></td></tr>
 Private Attributes</h2></td></tr>
 <tr class="memitem:a72f496c56a222bd1fd9d732419025757"><td class="memItemLeft" align="right" valign="top">T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_fast_moving_average.html#a72f496c56a222bd1fd9d732419025757">curAvg</a> = 0</td></tr>
 <tr class="separator:a72f496c56a222bd1fd9d732419025757"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a002bb5abc38e9b7a7ec3f003cde459dd"><td class="memItemLeft" align="right" valign="top">const uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_fast_moving_average.html#a002bb5abc38e9b7a7ec3f003cde459dd">fixedLen</a></td></tr>
-<tr class="separator:a002bb5abc38e9b7a7ec3f003cde459dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6ee68031629e0f2fec7414d5e4c0a062"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_fast_moving_average.html#a6ee68031629e0f2fec7414d5e4c0a062">count</a> = 0</td></tr>
-<tr class="separator:a6ee68031629e0f2fec7414d5e4c0a062"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a47ce1963dc5f0b08c97c5d0bbb785ea0"><td class="memItemLeft" align="right" valign="top">const int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_fast_moving_average.html#a47ce1963dc5f0b08c97c5d0bbb785ea0">fixedLen</a></td></tr>
+<tr class="separator:a47ce1963dc5f0b08c97c5d0bbb785ea0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaca32dcc944d97bb0202053317b498b0"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_fast_moving_average.html#aaca32dcc944d97bb0202053317b498b0">count</a> = 0</td></tr>
+<tr class="separator:aaca32dcc944d97bb0202053317b498b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;class T&gt;<br />
-class FastMovingAverage&lt; T &gt;</div><p >Calculates a moving average of unknown length Can periodically get and reset a value to average for an unknown amount of data points If len != 0 calculates an exponential moving average with length len. If len = 0 length equals the current amount of samples. </p>
+class FastMovingAverage&lt; T &gt;</div><p >Calculates a moving average of variable length Can periodically get and reset a value to average for an unknown amount of data points If len != 0 calculates an exponential moving average with length len. If len = 0 length equals the current amount of samples up to 0x7FFFFFFF. </p>
 
 <p class="definition">Definition at line <a class="el" href="_fast_avg_8h_source.html#l00063">63</a> of file <a class="el" href="_fast_avg_8h_source.html">FastAvg.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a3322890e0f1ce61dde930010d72f61ba" name="a3322890e0f1ce61dde930010d72f61ba"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3322890e0f1ce61dde930010d72f61ba">&#9670;&nbsp;</a></span>FastMovingAverage()</h2>
+<a id="a3bf4ddc9020f290521712c15ba26e5fc" name="a3bf4ddc9020f290521712c15ba26e5fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3bf4ddc9020f290521712c15ba26e5fc">&#9670;&nbsp;</a></span>FastMovingAverage()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -138,7 +138,7 @@ template&lt;class T &gt; </div>
         <tr>
           <td class="memname"><a class="el" href="class_fast_moving_average.html">FastMovingAverage</a>&lt; T &gt;::<a class="el" href="class_fast_moving_average.html">FastMovingAverage</a> </td>
           <td>(</td>
-          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramtype">int32_t&#160;</td>
           <td class="paramname"><em>len</em> = <code>0</code></td><td>)</td>
           <td></td>
         </tr>
@@ -211,7 +211,7 @@ template&lt;class T &gt; </div>
 </div><div class="memdoc">
 <p >Adds a value and returns current average </p>
 
-<p class="definition">Definition at line <a class="el" href="_fast_avg_8h_source.html#l00091">91</a> of file <a class="el" href="_fast_avg_8h_source.html">FastAvg.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_fast_avg_8h_source.html#l00090">90</a> of file <a class="el" href="_fast_avg_8h_source.html">FastAvg.h</a>.</p>
 
 </div>
 </div>
@@ -270,7 +270,7 @@ template&lt;class T &gt; </div>
 </div><div class="memdoc">
 <p >Gets current average and clears current average and counter </p>
 
-<p class="definition">Definition at line <a class="el" href="_fast_avg_8h_source.html#l00076">76</a> of file <a class="el" href="_fast_avg_8h_source.html">FastAvg.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_fast_avg_8h_source.html#l00075">75</a> of file <a class="el" href="_fast_avg_8h_source.html">FastAvg.h</a>.</p>
 
 </div>
 </div>
@@ -300,13 +300,13 @@ template&lt;class T &gt; </div>
 </div><div class="memdoc">
 <p >Gets current average without resetting </p>
 
-<p class="definition">Definition at line <a class="el" href="_fast_avg_8h_source.html#l00085">85</a> of file <a class="el" href="_fast_avg_8h_source.html">FastAvg.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_fast_avg_8h_source.html#l00084">84</a> of file <a class="el" href="_fast_avg_8h_source.html">FastAvg.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a6ee68031629e0f2fec7414d5e4c0a062" name="a6ee68031629e0f2fec7414d5e4c0a062"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6ee68031629e0f2fec7414d5e4c0a062">&#9670;&nbsp;</a></span>count</h2>
+<a id="aaca32dcc944d97bb0202053317b498b0" name="aaca32dcc944d97bb0202053317b498b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaca32dcc944d97bb0202053317b498b0">&#9670;&nbsp;</a></span>count</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -317,7 +317,7 @@ template&lt;class T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">uint32_t <a class="el" href="class_fast_moving_average.html">FastMovingAverage</a>&lt; T &gt;::count = 0</td>
+          <td class="memname">int32_t <a class="el" href="class_fast_moving_average.html">FastMovingAverage</a>&lt; T &gt;::count = 0</td>
         </tr>
       </table>
   </td>
@@ -327,7 +327,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_fast_avg_8h_source.html#l00100">100</a> of file <a class="el" href="_fast_avg_8h_source.html">FastAvg.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_fast_avg_8h_source.html#l00099">99</a> of file <a class="el" href="_fast_avg_8h_source.html">FastAvg.h</a>.</p>
 
 </div>
 </div>
@@ -353,12 +353,12 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_fast_avg_8h_source.html#l00098">98</a> of file <a class="el" href="_fast_avg_8h_source.html">FastAvg.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_fast_avg_8h_source.html#l00097">97</a> of file <a class="el" href="_fast_avg_8h_source.html">FastAvg.h</a>.</p>
 
 </div>
 </div>
-<a id="a002bb5abc38e9b7a7ec3f003cde459dd" name="a002bb5abc38e9b7a7ec3f003cde459dd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a002bb5abc38e9b7a7ec3f003cde459dd">&#9670;&nbsp;</a></span>fixedLen</h2>
+<a id="a47ce1963dc5f0b08c97c5d0bbb785ea0" name="a47ce1963dc5f0b08c97c5d0bbb785ea0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a47ce1963dc5f0b08c97c5d0bbb785ea0">&#9670;&nbsp;</a></span>fixedLen</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -369,7 +369,7 @@ template&lt;class T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const uint32_t <a class="el" href="class_fast_moving_average.html">FastMovingAverage</a>&lt; T &gt;::fixedLen</td>
+          <td class="memname">const int32_t <a class="el" href="class_fast_moving_average.html">FastMovingAverage</a>&lt; T &gt;::fixedLen</td>
         </tr>
       </table>
   </td>
@@ -379,7 +379,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_fast_avg_8h_source.html#l00099">99</a> of file <a class="el" href="_fast_avg_8h_source.html">FastAvg.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_fast_avg_8h_source.html#l00098">98</a> of file <a class="el" href="_fast_avg_8h_source.html">FastAvg.h</a>.</p>
 
 </div>
 </div>

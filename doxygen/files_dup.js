@@ -409,7 +409,6 @@ var files_dup =
     [ "dcd_ch32_usbhs.c", "dcd__ch32__usbhs_8c.html", "dcd__ch32__usbhs_8c" ],
     [ "tusb.c", "tusb_8c.html", "tusb_8c" ],
     [ "tusb.h", "tusb_8h.html", "tusb_8h" ],
-    [ "tusb_config.h", "tusb__config_8h.html", null ],
     [ "tusb_option.h", "tusb__option_8h.html", "tusb__option_8h" ],
     [ "pd_types.h", "pd__types_8h.html", "pd__types_8h" ],
     [ "tcd.h", "tcd_8h.html", "tcd_8h" ],

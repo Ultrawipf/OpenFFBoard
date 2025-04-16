@@ -1,5 +1,6 @@
 var NAVTREEINDEX57 =
 {
+"structrndis__msg__initialize__cmplt__t.html#adc169555086cc6fce1b88a3326fd7ed5":[2,2,0,0,1,5],
 "structrndis__msg__initialize__t.html":[2,2,0,0,0],
 "structrndis__msg__initialize__t.html#a0c6f32c93476dc2cded2d9b14291c92f":[2,2,0,0,0,2],
 "structrndis__msg__initialize__t.html#a128ecc89e384998c8361eacbea4e6542":[2,2,0,0,0,4],
@@ -248,6 +249,5 @@ var NAVTREEINDEX57 =
 "structusbtmc__interface__state__t.html#adcd7b13a419a63f85570e5066ff56939":[4,0,293,16],
 "structusbtmc__interface__state__t.html#ae983743a5773fce2105eb8c8bf5156b0":[4,0,293,6],
 "structusbtmc__interface__state__t.html#aff05f2d5e9b3e4609907dd748b91d5c3":[4,0,293,14],
-"structvendord__interface__t.html":[4,0,294],
-"structvendord__interface__t.html#a0778812f990f45a381f95e50a204144a":[4,0,294,4]
+"structvendord__interface__t.html":[4,0,294]
 };

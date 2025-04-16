@@ -10,6 +10,7 @@ var struct____attribute____ =
     [ "data", "struct____attribute____.html#a81ed27f4606846a789c4b5cc1d984d87", null ],
     [ "deadBand", "struct____attribute____.html#ace679de8738bbb2748e4e89e022139a2", null ],
     [ "directionX", "struct____attribute____.html#a6e38d32cc6c2555286aac92e92717bd4", null ],
+    [ "directionY", "struct____attribute____.html#ada7dae3a9911c3bee36cd3f7bc6df6e6", null ],
     [ "duration", "struct____attribute____.html#a1a7cf4ac29fd4bb497c953529b75158a", null ],
     [ "effectBlockIndex", "struct____attribute____.html#a2585bd879f02593456153add89a4c3ba", null ],
     [ "effectType", "struct____attribute____.html#a558615e7f25bc910ab0c6a9373ca8d04", null ],

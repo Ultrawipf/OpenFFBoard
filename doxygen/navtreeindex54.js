@@ -1,5 +1,6 @@
 var NAVTREEINDEX54 =
 {
+"structdcd__registers__t.html#a53aab211798b426fbff513bd43ddbb73":[4,0,102,7],
 "structdcd__registers__t.html#a56ff970be3ecbce0f9e267541449b2f4":[4,0,102,30],
 "structdcd__registers__t.html#a57f29e707620061b43e2b87a7e9a9005":[4,0,102,70],
 "structdcd__registers__t.html#a58f03dc78f523d317a993da5e813f553":[4,0,102,44],
@@ -231,23 +232,22 @@ var NAVTREEINDEX54 =
 "structehci__cap__registers__t.html#a059dcf73feb1bb8e8df7a631f605c43a":[4,0,118,2],
 "structehci__cap__registers__t.html#a0b08fe6809268f6bf2a85bc792e95390":[4,0,118,19],
 "structehci__cap__registers__t.html#a1882adc7f964f0c85bd5107fb13a80d2":[4,0,118,16],
-"structehci__cap__registers__t.html#a38b8bdd0eeb683fe916b7a5c2c38dcc7":[4,0,118,9],
+"structehci__cap__registers__t.html#a49ec6d0c6c675968473b3a0d74396fe3":[4,0,118,9],
 "structehci__cap__registers__t.html#a4b4a40ae47acd460ce3abcd8d006f764":[4,0,118,18],
 "structehci__cap__registers__t.html#a4de1594a333df3bf6b79d294af6afda1":[4,0,118,14],
 "structehci__cap__registers__t.html#a5bcb16afa377fc86204b7bff3518d3e7":[4,0,118,0],
 "structehci__cap__registers__t.html#a6a686eff4e16f638209ac9aeade05a60":[4,0,118,20],
-"structehci__cap__registers__t.html#a73c68199241b68d8de081b82d7d43452":[4,0,118,5],
 "structehci__cap__registers__t.html#a7cf265e8328f55b970b32febb0701499":[4,0,118,21],
 "structehci__cap__registers__t.html#a7eae2b7c9e45f9ed9c0a8e70e20d61da":[4,0,118,13],
 "structehci__cap__registers__t.html#a85a044c1f37f7b8e6b2bfbde90e30d66":[4,0,118,1],
 "structehci__cap__registers__t.html#a86e8d2af41e4f36db3ac20a0752149f8":[4,0,118,12],
 "structehci__cap__registers__t.html#a88e1f43122b412ee958165869f96039e":[4,0,118,15],
+"structehci__cap__registers__t.html#a8e96a278e40bc29d428a7ac8b7445b68":[4,0,118,5],
 "structehci__cap__registers__t.html#a924a42a9c31b7cabdcccb74153adf720":[4,0,118,11],
 "structehci__cap__registers__t.html#a9f979aa0ec2f9273789b08453abffff0":[4,0,118,7],
 "structehci__cap__registers__t.html#ab31c10b3dada0ceefb730835d09eaf71":[4,0,118,17],
 "structehci__cap__registers__t.html#ab5ca77c2f5c5d107aa8c31a5fe48e64a":[4,0,118,3],
 "structehci__cap__registers__t.html#abaf10f1a93238a8bd02c00dfb6aaa218":[4,0,118,4],
 "structehci__cap__registers__t.html#acdec864b5ea18c1dffc6e995391e1dfe":[4,0,118,6],
-"structehci__cap__registers__t.html#aebce4f2a8a76c463408b46b46af10234":[4,0,118,8],
-"structehci__cap__registers__t.html#aee9911f2fc37caf567a9813255b895af":[4,0,118,10]
+"structehci__cap__registers__t.html#aebce4f2a8a76c463408b46b46af10234":[4,0,118,8]
 };

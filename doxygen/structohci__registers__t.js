@@ -64,13 +64,13 @@ var structohci__registers__t =
     [ "reserved", "structohci__registers__t.html#aa7dd70a86359be0b2311032075e062c2", null ],
     [ "revision", "structohci__registers__t.html#aa7922807c6ffdbce870d7133481b9834", null ],
     [ "rh_descriptorA", "structohci__registers__t.html#a05b696c0fe2043a1de631a4832d238df", null ],
-    [ "rh_descriptorA_bit", "structohci__registers__t.html#a11ec2bbd864fbb5917df32644eebf7bb", null ],
+    [ "rh_descriptorA_bit", "structohci__registers__t.html#ae11aefc221aa74172483e87ac34d6143", null ],
     [ "rh_descriptorB", "structohci__registers__t.html#a50e053c12463fde704b01ad23246a18b", null ],
-    [ "rh_descriptorB_bit", "structohci__registers__t.html#a285530fea9a8cf7df1764a078c603d7b", null ],
+    [ "rh_descriptorB_bit", "structohci__registers__t.html#af1f52f678a45408f37c589581318ca20", null ],
     [ "rh_status", "structohci__registers__t.html#a68eefdc7301b3dc98d4426c2e8fff331", null ],
-    [ "rh_status_bit", "structohci__registers__t.html#a7b4e902b467549461378ca8ee2d906c9", null ],
+    [ "rh_status_bit", "structohci__registers__t.html#a44e0548b5bf9a3cc9bcbe224ee2d508b", null ],
     [ "rhport_status", "structohci__registers__t.html#ab5e8f5c00b7d9eb24b8c0942d5fc6ff8", null ],
-    [ "rhport_status_bit", "structohci__registers__t.html#a97142c4e4cf9f37779e75b21d4807f56", null ],
+    [ "rhport_status_bit", "structohci__registers__t.html#a1ab03e82c1ab704078794432642e6240", null ],
     [ "scheduling_overrun_count", "structohci__registers__t.html#a9f697464969dd2e07a1172e2b69cd741", null ],
     [ "TU_RESERVED", "structohci__registers__t.html#adf518801eb293d1c952afef38fdbace3", null ]
 ];

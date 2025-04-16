@@ -1,6 +1,5 @@
 var NAVTREEINDEX6 =
 {
-"class_can_bridge.html#a1e769d597c60a89da9622e69398e1e2e":[4,0,70,8],
 "class_can_bridge.html#a2fd550deb97afd825848e8c0f7b87ff5":[4,0,70,19],
 "class_can_bridge.html#a311596205f903d3c7e715218fdd0cab0":[4,0,70,2],
 "class_can_bridge.html#a3edb16846fc17fab015983765eced9de":[4,0,70,16],
@@ -249,5 +248,6 @@ var NAVTREEINDEX6 =
 "class_encoder.html#a794431a3a9eefb32696c10adb1caf432":[4,0,123,5],
 "class_encoder.html#a7ea557d2536d6c2c0a05f0c34a2003a9":[4,0,123,3],
 "class_encoder.html#a87cc8067c98c0ab2134dee3822e3b250":[4,0,123,1],
-"class_encoder.html#a99e71d386d47f62b67988142d6fb133c":[4,0,123,7]
+"class_encoder.html#a99e71d386d47f62b67988142d6fb133c":[4,0,123,7],
+"class_encoder.html#aacf98b034fee3e2fd70cc443a784a5e0":[4,0,123,10]
 };

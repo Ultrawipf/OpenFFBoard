@@ -192,7 +192,7 @@ var class_t_m_c4671 =
     [ "updateReg", "class_t_m_c4671.html#ac89e2eb4e9e57fad1310452b8a75db3c", null ],
     [ "usingExternalEncoder", "class_t_m_c4671.html#a43e350251ae8bb6e2b369dad7f15afa7", null ],
     [ "writeReg", "class_t_m_c4671.html#a007ee36f6bc20dad75e5ff372ce75ee5", null ],
-    [ "writeRegDMA", "class_t_m_c4671.html#aeeb78b76676f4dc951ac789fe7b13f5b", null ],
+    [ "writeRegAsync", "class_t_m_c4671.html#ae30d7c6256ce66c873e68dc5522ef7d2", null ],
     [ "zeroAbnUsingPhiM", "class_t_m_c4671.html#a832e590d5c733b07f39171a522831ab0", null ],
     [ "TMCDebugBridge", "class_t_m_c4671.html#a683e8540cc3b2521f30acf38d754cf3c", null ],
     [ "abnconf", "class_t_m_c4671.html#a406aed05ca8f1d9ba996c631d4164fe3", null ],

@@ -19,7 +19,7 @@ var structaudiod__function__t =
     [ "ep_out_ff", "structaudiod__function__t.html#a1c77228b7d861a0f1faff27a631f4195", null ],
     [ "ep_out_sz", "structaudiod__function__t.html#a242e9bf8039f4934418d156d5434f828", null ],
     [ "feedback", "structaudiod__function__t.html#a104f5657a20592ade7e7c06b3d3477fb", null ],
-    [ "fifo_count", "structaudiod__function__t.html#a727ffbd90236322a04dc7411a9ee1880", null ],
+    [ "fifo_count", "structaudiod__function__t.html#a3126fdac2ff788452201cceefe0abfb8", null ],
     [ "fifo_lvl_avg", "structaudiod__function__t.html#ac32aca48359444d4adde9a55f6d65b35", null ],
     [ "fifo_lvl_thr", "structaudiod__function__t.html#aa024d58f2005801a695e9e8e176d2d98", null ],
     [ "fixed", "structaudiod__function__t.html#a2e8ad1d933a1e3612bb158fc28aaa67b", null ],

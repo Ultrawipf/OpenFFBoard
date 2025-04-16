@@ -35,6 +35,7 @@ var class_c_a_n_port__2_b =
     [ "header", "class_c_a_n_port__2_b.html#a07808d915b63070e4221f5aef72ac743", null ],
     [ "info", "class_c_a_n_port__2_b.html#aa8ff06ce76dc4c1bc2242398bd2c3203", null ],
     [ "lastSentTime", "class_c_a_n_port__2_b.html#aa908bd9b02e80bc9b4540efe58a53e86", null ],
+    [ "nextLen", "class_c_a_n_port__2_b.html#a52a96a6e5cbf97eeb33d7c0238aaefbd", null ],
     [ "sendTimeout", "class_c_a_n_port__2_b.html#a0a21df884235e236eb972bd600b036cb", null ],
     [ "silent", "class_c_a_n_port__2_b.html#ad14225b87f6c150f85d1556c5f85af6e", null ],
     [ "silentPin", "class_c_a_n_port__2_b.html#a2da98d3fa92b391c2d7e5fededfe92ac", null ],
