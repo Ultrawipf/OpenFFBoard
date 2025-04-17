@@ -7,6 +7,7 @@
 - TMC debug mode: Changed openloopspeed command to use torque mode instead of raw PWM. Added new openloopspeedpwm to control raw PWM.
 - CAN bus corrected packet length when packet is sent as command
 - Corrected CAN speed preset in can bridge GVRET mode (savvycan works again)
+- Using interrupt transfer for TMC4671 encoder forwarding (Fixed again)
 
 
 ### Changes in 1.16:
