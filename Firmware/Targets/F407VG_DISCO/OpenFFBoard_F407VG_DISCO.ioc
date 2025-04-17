@@ -322,6 +322,7 @@ NVIC.NonMaskableInt_IRQn=true\:0\:0\:false\:false\:true\:false\:false\:false\:fa
 NVIC.OTG_FS_IRQn=true\:14\:0\:true\:false\:true\:true\:true\:false\:true
 NVIC.PendSV_IRQn=true\:15\:0\:false\:false\:false\:true\:false\:false\:false
 NVIC.PriorityGroup=NVIC_PRIORITYGROUP_4
+NVIC.SPI1_IRQn=true\:5\:0\:false\:false\:true\:true\:true\:true\:true
 NVIC.SPI3_IRQn=true\:8\:0\:true\:false\:true\:true\:true\:true\:true
 NVIC.SVCall_IRQn=true\:0\:0\:false\:false\:false\:false\:false\:false\:false
 NVIC.SavedPendsvIrqHandlerGenerated=true
