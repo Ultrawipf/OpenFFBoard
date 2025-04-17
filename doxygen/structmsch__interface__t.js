@@ -3,7 +3,7 @@ var structmsch__interface__t =
     [ "block_count", "structmsch__interface__t.html#a04ebfa7aa1c470d35ca63b25922ade80", null ],
     [ "block_size", "structmsch__interface__t.html#a237bffeb9103579f67ab30f0b681e4ae", null ],
     [ "buffer", "structmsch__interface__t.html#a32cab0afe9d818f264d807f00655b7e1", null ],
-    [ "capacity", "structmsch__interface__t.html#a95adfeaea4a4e0e062f48235c3a7693c", null ],
+    [ "capacity", "structmsch__interface__t.html#a2ffac8c73312123941d2be80586b3ad7", null ],
     [ "cbw", "structmsch__interface__t.html#a0271a5d5b84cf8631c3d957037b1f005", null ],
     [ "complete_arg", "structmsch__interface__t.html#a1f2e880625b0a46c5dfea8231a16aa89", null ],
     [ "complete_cb", "structmsch__interface__t.html#a03575f95bf24bda8495f06e4bd076fce", null ],

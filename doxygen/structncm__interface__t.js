@@ -6,7 +6,7 @@ var structncm__interface__t =
     [ "itf_data_alt", "structncm__interface__t.html#aa4c08d41752dd62f63618fa7d6f0ecfb", null ],
     [ "itf_num", "structncm__interface__t.html#ad179fcf751833d370c46a1b90c043f75", null ],
     [ "notification_xmit_is_running", "structncm__interface__t.html#a6d4361d2c3f07fc5baccdd2c1e155429", null ],
-    [ "notification_xmit_state", "structncm__interface__t.html#aabee89a888b1c3832cbd46d138d11381", null ],
+    [ "notification_xmit_state", "structncm__interface__t.html#aed6c300232bc9a34f4552fbd8487edd5", null ],
     [ "recv_free_ntb", "structncm__interface__t.html#a1e730811f1d58df0e77bc3bcdc95d18e", null ],
     [ "recv_glue_ntb", "structncm__interface__t.html#ad131d20a142bd527dbb7a61b4cac9afe", null ],
     [ "recv_glue_ntb_datagram_ndx", "structncm__interface__t.html#a72f1445611d4c270cdaa52f26edd703e", null ],

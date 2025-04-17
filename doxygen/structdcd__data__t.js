@@ -10,7 +10,7 @@ var structdcd__data__t =
     [ "bda", "structdcd__data__t.html#a20a7716d24d70d21b1f596316baf7ab8", null ],
     [ "bda", "structdcd__data__t.html#a8591145c829014319b39734950228183", null ],
     [ "bdt", "structdcd__data__t.html#a0ef69abdf489018d88a97ac5953c1c98", null ],
-    [ "control", "structdcd__data__t.html#a64b46f9864f619e89bc87aa8a2e10434", null ],
+    [ "control", "structdcd__data__t.html#a0fa0da7a870bf75bdd459681f248702f", null ],
     [ "dd", "structdcd__data__t.html#a6b3cd8435803b8fac894829b30a96cae", null ],
     [ "dma", "structdcd__data__t.html#abf81de7ed2977e5ff879ef457555b344", null ],
     [ "ep", "structdcd__data__t.html#aab253218dfe16098358afd930d9feb91", null ],

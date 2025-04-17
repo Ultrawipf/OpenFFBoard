@@ -40,7 +40,7 @@ var dcd__da146xx_8c =
     [ "try_allocate_dma", "dcd__da146xx_8c.html#a14ebb67b122be0786e72a3d8108d09cb", null ],
     [ "TU_ATTR_ALIGNED", "dcd__da146xx_8c.html#a7b985e38ff144cddca1a574ec73f9500", null ],
     [ "tusb_vbus_changed", "dcd__da146xx_8c.html#a7a181e02cfd2808cdafe17ced1e97110", null ],
-    [ "_dcd", "dcd__da146xx_8c.html#ac3f20e353c35de727902205f4638f162", null ],
+    [ "_dcd", "dcd__da146xx_8c.html#a852f3d1883cc0f11a82f67110f196ad7", null ],
     [ "dma_ep", "dcd__da146xx_8c.html#abdc82cbdbd3eef5eedefd93c796160a3", null ],
     [ "ep0IN_desc", "dcd__da146xx_8c.html#a92c86380fe85ba12c72f8188209dda6f", null ],
     [ "ep0OUT_desc", "dcd__da146xx_8c.html#ab6fec04ed7e7e0f947ec951bda284ce9", null ],

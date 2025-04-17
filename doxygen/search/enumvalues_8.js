@@ -35,6 +35,6 @@ var searchData=
   ['intr_5fusb_32',['INTR_USB',['../dcd__ci__hs_8c.html#a85c7862086c1f92e4fb4108e176d8140af91bef7c3405bbd07cbe778d6cd01a1d',1,'dcd_ci_hs.c']]],
   ['invert_33',['invert',['../class_can_buttons.html#a754ffff3064b81506b96e59d93099e19a20e57f32ba12b9cd13ebe9ef5e32d949',1,'CanButtons::invert()'],['../_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715a20e57f32ba12b9cd13ebe9ef5e32d949',1,'invert():&#160;Axis.h'],['../class_p_c_f8574_buttons.html#a4968701182a9f51430d9c750d6375b70a20e57f32ba12b9cd13ebe9ef5e32d949',1,'PCF8574Buttons::invert()']]],
   ['invertforce_34',['invertForce',['../class_t_m_c4671.html#a383a82ab842490e325553e9365028a27ab4f0f19e27f41a19f5a95695d51f43be',1,'TMC4671']]],
-  ['iopins1_5faddr_35',['IOPINS1_ADDR',['../hcd__max3421_8c.html#a7ee8d0f117a79ca7eb1e0076a9182bcba46bcaa704aa401fbbe0a5f9896be68b4',1,'hcd_max3421.c']]],
-  ['iopins2_5faddr_36',['IOPINS2_ADDR',['../hcd__max3421_8c.html#a7ee8d0f117a79ca7eb1e0076a9182bcba81fc9a6c7f3d5673e115151be2fff402',1,'hcd_max3421.c']]]
+  ['iopins1_5faddr_35',['IOPINS1_ADDR',['../hcd__max3421_8c.html#a10e74d65d7876276a8f6061c71dcf469a46bcaa704aa401fbbe0a5f9896be68b4',1,'hcd_max3421.c']]],
+  ['iopins2_5faddr_36',['IOPINS2_ADDR',['../hcd__max3421_8c.html#a10e74d65d7876276a8f6061c71dcf469a81fc9a6c7f3d5673e115151be2fff402',1,'hcd_max3421.c']]]
 ];

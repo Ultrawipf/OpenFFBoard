@@ -324,11 +324,11 @@ $(document).ready(function(){initNavTree('dcd__da146xx_8c_source.html',''); init
 <div class="line"><a id="l00235" name="l00235"></a><span class="lineno"><a class="line" href="dcd__da146xx_8c.html#a733a62db333be5e5861d2bae7f7c34ec">  235</a></span>  <a class="code hl_struct" href="structxfer__ctl__t.html">xfer_ctl_t</a> <a class="code hl_variable" href="dcd__da146xx_8c.html#a733a62db333be5e5861d2bae7f7c34ec">xfer_status</a>[EP_MAX][2];</div>
 <div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>  <span class="comment">// Endpoints that use DMA, one for each direction</span></div>
 <div class="line"><a id="l00237" name="l00237"></a><span class="lineno"><a class="line" href="dcd__da146xx_8c.html#abdc82cbdbd3eef5eedefd93c796160a3">  237</a></span>  uint8_t <a class="code hl_variable" href="dcd__da146xx_8c.html#abdc82cbdbd3eef5eedefd93c796160a3">dma_ep</a>[2];</div>
-<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>} <a class="code hl_variable" href="dcd__da146xx_8c.html#ac3f20e353c35de727902205f4638f162">_dcd</a> =</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>} <a class="code hl_variable" href="dcd__da146xx_8c.html#a852f3d1883cc0f11a82f67110f196ad7">_dcd</a> =</div>
 <div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>{</div>
 <div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>  .vbus_present = <span class="keyword">false</span>,</div>
 <div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>  .init_called = <span class="keyword">false</span>,</div>
-<div class="line"><a id="l00242" name="l00242"></a><span class="lineno"><a class="line" href="dcd__da146xx_8c.html#ac3f20e353c35de727902205f4638f162">  242</a></span>};</div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno"><a class="line" href="dcd__da146xx_8c.html#a852f3d1883cc0f11a82f67110f196ad7">  242</a></span>};</div>
 <div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span> </div>
 <div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span><span class="comment">// Converts xfer pointer to epnum (0,1,2,3) regardless of xfer direction</span></div>
 <div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span><span class="preprocessor">#define XFER_EPNUM(xfer)      ((xfer - &amp;_dcd.xfer_status[0][0]) &gt;&gt; 1)</span></div>
@@ -364,7 +364,7 @@ $(document).ready(function(){initNavTree('dcd__da146xx_8c_source.html',''); init
 <div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span> </div>
 <div class="line"><a id="l00276" name="l00276"></a><span class="lineno"><a class="line" href="dcd__da146xx_8c.html#adc530f59874b397002d3029dfea09b2e">  276</a></span><span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code hl_function" href="dcd__da146xx_8c.html#adc530f59874b397002d3029dfea09b2e">set_nfsr</a>(uint8_t val)</div>
 <div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>{</div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>  <a class="code hl_variable" href="dcd__da146xx_8c.html#ac3f20e353c35de727902205f4638f162">_dcd</a>.nfsr = val;</div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>  <a class="code hl_variable" href="dcd__da146xx_8c.html#a852f3d1883cc0f11a82f67110f196ad7">_dcd</a>.nfsr = val;</div>
 <div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>  <span class="comment">// Write only lower 2 bits to register, higher bits are used</span></div>
 <div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>  <span class="comment">// to count down till OPERATIONAL state can be entered when</span></div>
 <div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>  <span class="comment">// remote wakeup activated.</span></div>
@@ -415,9 +415,9 @@ $(document).ready(function(){initNavTree('dcd__da146xx_8c_source.html',''); init
 <div class="line"><a id="l00326" name="l00326"></a><span class="lineno"><a class="line" href="dcd__da146xx_8c.html#a14ebb67b122be0786e72a3d8108d09cb">  326</a></span><span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="dcd__da146xx_8c.html#a14ebb67b122be0786e72a3d8108d09cb">try_allocate_dma</a>(uint8_t epnum, uint8_t dir)</div>
 <div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>{</div>
 <div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>  <span class="comment">// TODO: Disable interrupts while checking</span></div>
-<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="dcd__da146xx_8c.html#ac3f20e353c35de727902205f4638f162">_dcd</a>.dma_ep[dir] == 0)</div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="dcd__da146xx_8c.html#a852f3d1883cc0f11a82f67110f196ad7">_dcd</a>.dma_ep[dir] == 0)</div>
 <div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>  {</div>
-<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>    <a class="code hl_variable" href="dcd__da146xx_8c.html#ac3f20e353c35de727902205f4638f162">_dcd</a>.dma_ep[dir] = epnum;</div>
+<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>    <a class="code hl_variable" href="dcd__da146xx_8c.html#a852f3d1883cc0f11a82f67110f196ad7">_dcd</a>.dma_ep[dir] = epnum;</div>
 <div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>    <span class="keywordflow">if</span> (dir == <a class="code hl_enumvalue" href="tusb__types_8h.html#a0c1b25b161b272f5f39e4ba49478289ca96d25fd7f8e59bc00cdfd0cbeaa285ae">TUSB_DIR_OUT</a>)</div>
 <div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>      USB-&gt;USB_DMA_CTRL_REG = (USB-&gt;USB_DMA_CTRL_REG &amp; ~USB_USB_DMA_CTRL_REG_USB_DMA_RX_Msk) |</div>
 <div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>        ((epnum - 1) &lt;&lt; USB_USB_DMA_CTRL_REG_USB_DMA_RX_Pos);</div>
@@ -426,7 +426,7 @@ $(document).ready(function(){initNavTree('dcd__da146xx_8c_source.html',''); init
 <div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>        ((epnum - 1) &lt;&lt; USB_USB_DMA_CTRL_REG_USB_DMA_TX_Pos);</div>
 <div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>    USB-&gt;USB_DMA_CTRL_REG |= USB_USB_DMA_CTRL_REG_USB_DMA_EN_Msk;</div>
 <div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>  }</div>
-<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="dcd__da146xx_8c.html#ac3f20e353c35de727902205f4638f162">_dcd</a>.dma_ep[dir] == epnum;</div>
+<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="dcd__da146xx_8c.html#a852f3d1883cc0f11a82f67110f196ad7">_dcd</a>.dma_ep[dir] == epnum;</div>
 <div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>}</div>
 <div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span> </div>
 <div class="line"><a id="l00343" name="l00343"></a><span class="lineno"><a class="line" href="dcd__da146xx_8c.html#a822959c46febdc3b1614a0a8ba7e7dab">  343</a></span><span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code hl_function" href="dcd__da146xx_8c.html#a822959c46febdc3b1614a0a8ba7e7dab">start_rx_dma</a>(<span class="keyword">volatile</span> <span class="keywordtype">void</span> *src, <span class="keywordtype">void</span> *dst, uint16_t size)</div>
@@ -627,7 +627,7 @@ $(document).ready(function(){initNavTree('dcd__da146xx_8c_source.html',''); init
 <div class="line"><a id="l00538" name="l00538"></a><span class="lineno">  538</span>    {</div>
 <div class="line"><a id="l00539" name="l00539"></a><span class="lineno">  539</span>      regs-&gt;rxc |= USB_USB_RXC1_REG_USB_FLUSH_Msk;</div>
 <div class="line"><a id="l00540" name="l00540"></a><span class="lineno">  540</span>      <a class="code hl_variable" href="dcd__nrf5x_8c.html#a61552eb9d109cd6dcca7786fdfc12335">xfer</a>-&gt;last_packet_size = 0;</div>
-<div class="line"><a id="l00541" name="l00541"></a><span class="lineno">  541</span>      <span class="keywordflow">if</span> (<a class="code hl_variable" href="dcd__da146xx_8c.html#ac3f20e353c35de727902205f4638f162">_dcd</a>.dma_ep[<a class="code hl_enumvalue" href="tusb__types_8h.html#a0c1b25b161b272f5f39e4ba49478289ca96d25fd7f8e59bc00cdfd0cbeaa285ae">TUSB_DIR_OUT</a>] == ep)</div>
+<div class="line"><a id="l00541" name="l00541"></a><span class="lineno">  541</span>      <span class="keywordflow">if</span> (<a class="code hl_variable" href="dcd__da146xx_8c.html#a852f3d1883cc0f11a82f67110f196ad7">_dcd</a>.dma_ep[<a class="code hl_enumvalue" href="tusb__types_8h.html#a0c1b25b161b272f5f39e4ba49478289ca96d25fd7f8e59bc00cdfd0cbeaa285ae">TUSB_DIR_OUT</a>] == ep)</div>
 <div class="line"><a id="l00542" name="l00542"></a><span class="lineno">  542</span>      {</div>
 <div class="line"><a id="l00543" name="l00543"></a><span class="lineno">  543</span>        <span class="comment">// Stop DMA</span></div>
 <div class="line"><a id="l00544" name="l00544"></a><span class="lineno">  544</span>        RX_DMA_REGS-&gt;DMAx_CTRL_REG &amp;= ~DMA_DMA0_CTRL_REG_DMA_ON_Msk;</div>
@@ -638,7 +638,7 @@ $(document).ready(function(){initNavTree('dcd__da146xx_8c_source.html',''); init
 <div class="line"><a id="l00549" name="l00549"></a><span class="lineno">  549</span>    }</div>
 <div class="line"><a id="l00550" name="l00550"></a><span class="lineno">  550</span>    <span class="keywordflow">else</span></div>
 <div class="line"><a id="l00551" name="l00551"></a><span class="lineno">  551</span>    {</div>
-<div class="line"><a id="l00552" name="l00552"></a><span class="lineno">  552</span>      <span class="keywordflow">if</span> (<a class="code hl_variable" href="dcd__da146xx_8c.html#ac3f20e353c35de727902205f4638f162">_dcd</a>.dma_ep[<a class="code hl_enumvalue" href="tusb__types_8h.html#a0c1b25b161b272f5f39e4ba49478289ca96d25fd7f8e59bc00cdfd0cbeaa285ae">TUSB_DIR_OUT</a>] == ep)</div>
+<div class="line"><a id="l00552" name="l00552"></a><span class="lineno">  552</span>      <span class="keywordflow">if</span> (<a class="code hl_variable" href="dcd__da146xx_8c.html#a852f3d1883cc0f11a82f67110f196ad7">_dcd</a>.dma_ep[<a class="code hl_enumvalue" href="tusb__types_8h.html#a0c1b25b161b272f5f39e4ba49478289ca96d25fd7f8e59bc00cdfd0cbeaa285ae">TUSB_DIR_OUT</a>] == ep)</div>
 <div class="line"><a id="l00553" name="l00553"></a><span class="lineno">  553</span>      {</div>
 <div class="line"><a id="l00554" name="l00554"></a><span class="lineno">  554</span>        <span class="comment">// Disable DMA and update last_packet_size with what DMA reported.</span></div>
 <div class="line"><a id="l00555" name="l00555"></a><span class="lineno">  555</span>        RX_DMA_REGS-&gt;DMAx_CTRL_REG &amp;= ~DMA_DMA0_CTRL_REG_DMA_ON_Msk;</div>
@@ -647,7 +647,7 @@ $(document).ready(function(){initNavTree('dcd__da146xx_8c_source.html',''); init
 <div class="line"><a id="l00558" name="l00558"></a><span class="lineno">  558</span>        <span class="comment">// When DMA finished value in DMAx_IDX_REG is one less then actual number of transmitted bytes.</span></div>
 <div class="line"><a id="l00559" name="l00559"></a><span class="lineno">  559</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="dcd__nrf5x_8c.html#a61552eb9d109cd6dcca7786fdfc12335">xfer</a>-&gt;last_packet_size == RX_DMA_REGS-&gt;DMAx_LEN_REG) <a class="code hl_variable" href="dcd__nrf5x_8c.html#a61552eb9d109cd6dcca7786fdfc12335">xfer</a>-&gt;last_packet_size++;</div>
 <div class="line"><a id="l00560" name="l00560"></a><span class="lineno">  560</span>        <span class="comment">// Release DMA to use by other endpoints.</span></div>
-<div class="line"><a id="l00561" name="l00561"></a><span class="lineno">  561</span>        <a class="code hl_variable" href="dcd__da146xx_8c.html#ac3f20e353c35de727902205f4638f162">_dcd</a>.dma_ep[<a class="code hl_enumvalue" href="tusb__types_8h.html#a0c1b25b161b272f5f39e4ba49478289ca96d25fd7f8e59bc00cdfd0cbeaa285ae">TUSB_DIR_OUT</a>] = 0;</div>
+<div class="line"><a id="l00561" name="l00561"></a><span class="lineno">  561</span>        <a class="code hl_variable" href="dcd__da146xx_8c.html#a852f3d1883cc0f11a82f67110f196ad7">_dcd</a>.dma_ep[<a class="code hl_enumvalue" href="tusb__types_8h.html#a0c1b25b161b272f5f39e4ba49478289ca96d25fd7f8e59bc00cdfd0cbeaa285ae">TUSB_DIR_OUT</a>] = 0;</div>
 <div class="line"><a id="l00562" name="l00562"></a><span class="lineno">  562</span>      }</div>
 <div class="line"><a id="l00563" name="l00563"></a><span class="lineno">  563</span>      fifo_bytes = GET_BIT(rxs, USB_USB_RXS1_REG_USB_RXCOUNT);</div>
 <div class="line"><a id="l00564" name="l00564"></a><span class="lineno">  564</span>      <span class="comment">// FIFO maybe empty if DMA read it before or it&#39;s final iteration and function already read all that was to read.</span></div>
@@ -709,13 +709,13 @@ $(document).ready(function(){initNavTree('dcd__da146xx_8c_source.html',''); init
 <div class="line"><a id="l00620" name="l00620"></a><span class="lineno">  620</span> </div>
 <div class="line"><a id="l00621" name="l00621"></a><span class="lineno">  621</span>  <span class="keywordflow">if</span> (GET_BIT(txs, USB_USB_TXS1_REG_USB_TX_DONE))</div>
 <div class="line"><a id="l00622" name="l00622"></a><span class="lineno">  622</span>  {</div>
-<div class="line"><a id="l00623" name="l00623"></a><span class="lineno">  623</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="dcd__da146xx_8c.html#ac3f20e353c35de727902205f4638f162">_dcd</a>.dma_ep[<a class="code hl_enumvalue" href="tusb__types_8h.html#a0c1b25b161b272f5f39e4ba49478289ca29e402c2558d1a97a08294c5d1837444">TUSB_DIR_IN</a>] == epnum)</div>
+<div class="line"><a id="l00623" name="l00623"></a><span class="lineno">  623</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="dcd__da146xx_8c.html#a852f3d1883cc0f11a82f67110f196ad7">_dcd</a>.dma_ep[<a class="code hl_enumvalue" href="tusb__types_8h.html#a0c1b25b161b272f5f39e4ba49478289ca29e402c2558d1a97a08294c5d1837444">TUSB_DIR_IN</a>] == epnum)</div>
 <div class="line"><a id="l00624" name="l00624"></a><span class="lineno">  624</span>    {</div>
 <div class="line"><a id="l00625" name="l00625"></a><span class="lineno">  625</span>      <span class="comment">// Disable DMA and update last_packet_size with what DMA reported.</span></div>
 <div class="line"><a id="l00626" name="l00626"></a><span class="lineno">  626</span>      TX_DMA_REGS-&gt;DMAx_CTRL_REG &amp;= ~DMA_DMA1_CTRL_REG_DMA_ON_Msk;</div>
 <div class="line"><a id="l00627" name="l00627"></a><span class="lineno">  627</span>      <a class="code hl_variable" href="dcd__nrf5x_8c.html#a61552eb9d109cd6dcca7786fdfc12335">xfer</a>-&gt;last_packet_size = TX_DMA_REGS-&gt;DMAx_IDX_REG + 1;</div>
 <div class="line"><a id="l00628" name="l00628"></a><span class="lineno">  628</span>      <span class="comment">// Release DMA to used by other endpoints.</span></div>
-<div class="line"><a id="l00629" name="l00629"></a><span class="lineno">  629</span>      <a class="code hl_variable" href="dcd__da146xx_8c.html#ac3f20e353c35de727902205f4638f162">_dcd</a>.dma_ep[<a class="code hl_enumvalue" href="tusb__types_8h.html#a0c1b25b161b272f5f39e4ba49478289ca29e402c2558d1a97a08294c5d1837444">TUSB_DIR_IN</a>] = 0;</div>
+<div class="line"><a id="l00629" name="l00629"></a><span class="lineno">  629</span>      <a class="code hl_variable" href="dcd__da146xx_8c.html#a852f3d1883cc0f11a82f67110f196ad7">_dcd</a>.dma_ep[<a class="code hl_enumvalue" href="tusb__types_8h.html#a0c1b25b161b272f5f39e4ba49478289ca29e402c2558d1a97a08294c5d1837444">TUSB_DIR_IN</a>] = 0;</div>
 <div class="line"><a id="l00630" name="l00630"></a><span class="lineno">  630</span>    }</div>
 <div class="line"><a id="l00631" name="l00631"></a><span class="lineno">  631</span>    <span class="keywordflow">if</span> (GET_BIT(txs, USB_USB_TXS1_REG_USB_ACK_STAT))</div>
 <div class="line"><a id="l00632" name="l00632"></a><span class="lineno">  632</span>    {</div>
@@ -758,7 +758,7 @@ $(document).ready(function(){initNavTree('dcd__da146xx_8c_source.html',''); init
 <div class="line"><a id="l00669" name="l00669"></a><span class="lineno">  669</span> </div>
 <div class="line"><a id="l00670" name="l00670"></a><span class="lineno"><a class="line" href="dcd__da146xx_8c.html#a58363218f5e3bed5f242690d5ca56100">  670</a></span><span class="keyword">static</span> uint32_t <a class="code hl_function" href="dcd__da146xx_8c.html#a58363218f5e3bed5f242690d5ca56100">check_reset_end</a>(uint32_t alt_ev)</div>
 <div class="line"><a id="l00671" name="l00671"></a><span class="lineno">  671</span>{</div>
-<div class="line"><a id="l00672" name="l00672"></a><span class="lineno">  672</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="dcd__da146xx_8c.html#ac3f20e353c35de727902205f4638f162">_dcd</a>.nfsr == NFSR_NODE_RESET)</div>
+<div class="line"><a id="l00672" name="l00672"></a><span class="lineno">  672</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="dcd__da146xx_8c.html#a852f3d1883cc0f11a82f67110f196ad7">_dcd</a>.nfsr == NFSR_NODE_RESET)</div>
 <div class="line"><a id="l00673" name="l00673"></a><span class="lineno">  673</span>  {</div>
 <div class="line"><a id="l00674" name="l00674"></a><span class="lineno">  674</span>    <span class="keywordflow">if</span> (GET_BIT(alt_ev, USB_USB_ALTEV_REG_USB_RESET))</div>
 <div class="line"><a id="l00675" name="l00675"></a><span class="lineno">  675</span>    {</div>
@@ -811,7 +811,7 @@ $(document).ready(function(){initNavTree('dcd__da146xx_8c_source.html',''); init
 <div class="line"><a id="l00722" name="l00722"></a><span class="lineno">  722</span>  uint32_t alt_ev = USB-&gt;USB_ALTEV_REG;</div>
 <div class="line"><a id="l00723" name="l00723"></a><span class="lineno">  723</span> </div>
 <div class="line"><a id="l00724" name="l00724"></a><span class="lineno">  724</span>  alt_ev = <a class="code hl_function" href="dcd__da146xx_8c.html#a58363218f5e3bed5f242690d5ca56100">check_reset_end</a>(alt_ev);</div>
-<div class="line"><a id="l00725" name="l00725"></a><span class="lineno">  725</span>  <span class="keywordflow">if</span> (GET_BIT(alt_ev, USB_USB_ALTEV_REG_USB_RESET) &amp;&amp; <a class="code hl_variable" href="dcd__da146xx_8c.html#ac3f20e353c35de727902205f4638f162">_dcd</a>.nfsr != NFSR_NODE_RESET)</div>
+<div class="line"><a id="l00725" name="l00725"></a><span class="lineno">  725</span>  <span class="keywordflow">if</span> (GET_BIT(alt_ev, USB_USB_ALTEV_REG_USB_RESET) &amp;&amp; <a class="code hl_variable" href="dcd__da146xx_8c.html#a852f3d1883cc0f11a82f67110f196ad7">_dcd</a>.nfsr != NFSR_NODE_RESET)</div>
 <div class="line"><a id="l00726" name="l00726"></a><span class="lineno">  726</span>  {</div>
 <div class="line"><a id="l00727" name="l00727"></a><span class="lineno">  727</span>    <a class="code hl_function" href="dcd__da146xx_8c.html#a55c74e1b8aedb968897e5619348f6055">handle_bus_reset</a>();</div>
 <div class="line"><a id="l00728" name="l00728"></a><span class="lineno">  728</span>  }</div>
@@ -897,8 +897,8 @@ $(document).ready(function(){initNavTree('dcd__da146xx_8c_source.html',''); init
 <div class="line"><a id="l00808" name="l00808"></a><span class="lineno">  808</span>  (void) rhport;</div>
 <div class="line"><a id="l00809" name="l00809"></a><span class="lineno">  809</span>  (void) rh_init;</div>
 <div class="line"><a id="l00810" name="l00810"></a><span class="lineno">  810</span> </div>
-<div class="line"><a id="l00811" name="l00811"></a><span class="lineno">  811</span>  <a class="code hl_variable" href="dcd__da146xx_8c.html#ac3f20e353c35de727902205f4638f162">_dcd</a>.init_called = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00812" name="l00812"></a><span class="lineno">  812</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="dcd__da146xx_8c.html#ac3f20e353c35de727902205f4638f162">_dcd</a>.vbus_present) {</div>
+<div class="line"><a id="l00811" name="l00811"></a><span class="lineno">  811</span>  <a class="code hl_variable" href="dcd__da146xx_8c.html#a852f3d1883cc0f11a82f67110f196ad7">_dcd</a>.init_called = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00812" name="l00812"></a><span class="lineno">  812</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="dcd__da146xx_8c.html#a852f3d1883cc0f11a82f67110f196ad7">_dcd</a>.vbus_present) {</div>
 <div class="line"><a id="l00813" name="l00813"></a><span class="lineno">  813</span>    <a class="code hl_function" href="dcd__da146xx_8c.html#aa425374a6ca69de3aae1d1b7caea9099">dcd_connect</a>(rhport);</div>
 <div class="line"><a id="l00814" name="l00814"></a><span class="lineno">  814</span>  }</div>
 <div class="line"><a id="l00815" name="l00815"></a><span class="lineno">  815</span> </div>
@@ -932,7 +932,7 @@ $(document).ready(function(){initNavTree('dcd__da146xx_8c_source.html',''); init
 <div class="line"><a id="l00843" name="l00843"></a><span class="lineno"><a class="line" href="dcd__da146xx_8c.html#af44c10b75ea56feeb04b3351ede5687f">  843</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="dcd__da146xx_8c.html#af44c10b75ea56feeb04b3351ede5687f">dcd_remote_wakeup</a>(uint8_t rhport)</div>
 <div class="line"><a id="l00844" name="l00844"></a><span class="lineno">  844</span>{</div>
 <div class="line"><a id="l00845" name="l00845"></a><span class="lineno">  845</span>  (void)rhport;</div>
-<div class="line"><a id="l00846" name="l00846"></a><span class="lineno">  846</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="dcd__da146xx_8c.html#ac3f20e353c35de727902205f4638f162">_dcd</a>.nfsr == NFSR_NODE_SUSPEND)</div>
+<div class="line"><a id="l00846" name="l00846"></a><span class="lineno">  846</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="dcd__da146xx_8c.html#a852f3d1883cc0f11a82f67110f196ad7">_dcd</a>.nfsr == NFSR_NODE_SUSPEND)</div>
 <div class="line"><a id="l00847" name="l00847"></a><span class="lineno">  847</span>  {</div>
 <div class="line"><a id="l00848" name="l00848"></a><span class="lineno">  848</span>    <span class="comment">// Enter fake state that will use FRAME interrupt to wait before going operational.</span></div>
 <div class="line"><a id="l00849" name="l00849"></a><span class="lineno">  849</span>    <a class="code hl_function" href="dcd__da146xx_8c.html#adc530f59874b397002d3029dfea09b2e">set_nfsr</a>(NFSR_NODE_WAKING);</div>
@@ -987,19 +987,19 @@ $(document).ready(function(){initNavTree('dcd__da146xx_8c_source.html',''); init
 <div class="line"><a id="l00898" name="l00898"></a><span class="lineno">  898</span> </div>
 <div class="line"><a id="l00899" name="l00899"></a><span class="lineno"><a class="line" href="dcd__da146xx_8c.html#a7a181e02cfd2808cdafe17ced1e97110">  899</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="dcd__da146xx_8c.html#a7a181e02cfd2808cdafe17ced1e97110">tusb_vbus_changed</a>(<span class="keywordtype">bool</span> present)</div>
 <div class="line"><a id="l00900" name="l00900"></a><span class="lineno">  900</span>{</div>
-<div class="line"><a id="l00901" name="l00901"></a><span class="lineno">  901</span>  <span class="keywordflow">if</span> (present &amp;&amp; !<a class="code hl_variable" href="dcd__da146xx_8c.html#ac3f20e353c35de727902205f4638f162">_dcd</a>.vbus_present)</div>
+<div class="line"><a id="l00901" name="l00901"></a><span class="lineno">  901</span>  <span class="keywordflow">if</span> (present &amp;&amp; !<a class="code hl_variable" href="dcd__da146xx_8c.html#a852f3d1883cc0f11a82f67110f196ad7">_dcd</a>.vbus_present)</div>
 <div class="line"><a id="l00902" name="l00902"></a><span class="lineno">  902</span>  {</div>
-<div class="line"><a id="l00903" name="l00903"></a><span class="lineno">  903</span>    <a class="code hl_variable" href="dcd__da146xx_8c.html#ac3f20e353c35de727902205f4638f162">_dcd</a>.vbus_present = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00903" name="l00903"></a><span class="lineno">  903</span>    <a class="code hl_variable" href="dcd__da146xx_8c.html#a852f3d1883cc0f11a82f67110f196ad7">_dcd</a>.vbus_present = <span class="keyword">true</span>;</div>
 <div class="line"><a id="l00904" name="l00904"></a><span class="lineno">  904</span>    <span class="comment">// If power event happened before USB started, delay dcd_connect</span></div>
 <div class="line"><a id="l00905" name="l00905"></a><span class="lineno">  905</span>    <span class="comment">// until dcd_init is called.</span></div>
-<div class="line"><a id="l00906" name="l00906"></a><span class="lineno">  906</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="dcd__da146xx_8c.html#ac3f20e353c35de727902205f4638f162">_dcd</a>.init_called)</div>
+<div class="line"><a id="l00906" name="l00906"></a><span class="lineno">  906</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="dcd__da146xx_8c.html#a852f3d1883cc0f11a82f67110f196ad7">_dcd</a>.init_called)</div>
 <div class="line"><a id="l00907" name="l00907"></a><span class="lineno">  907</span>    {</div>
 <div class="line"><a id="l00908" name="l00908"></a><span class="lineno">  908</span>      <a class="code hl_function" href="dcd__da146xx_8c.html#aa425374a6ca69de3aae1d1b7caea9099">dcd_connect</a>(0);</div>
 <div class="line"><a id="l00909" name="l00909"></a><span class="lineno">  909</span>    }</div>
 <div class="line"><a id="l00910" name="l00910"></a><span class="lineno">  910</span>  }</div>
-<div class="line"><a id="l00911" name="l00911"></a><span class="lineno">  911</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!present &amp;&amp; <a class="code hl_variable" href="dcd__da146xx_8c.html#ac3f20e353c35de727902205f4638f162">_dcd</a>.vbus_present)</div>
+<div class="line"><a id="l00911" name="l00911"></a><span class="lineno">  911</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!present &amp;&amp; <a class="code hl_variable" href="dcd__da146xx_8c.html#a852f3d1883cc0f11a82f67110f196ad7">_dcd</a>.vbus_present)</div>
 <div class="line"><a id="l00912" name="l00912"></a><span class="lineno">  912</span>  {</div>
-<div class="line"><a id="l00913" name="l00913"></a><span class="lineno">  913</span>    <a class="code hl_variable" href="dcd__da146xx_8c.html#ac3f20e353c35de727902205f4638f162">_dcd</a>.vbus_present = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00913" name="l00913"></a><span class="lineno">  913</span>    <a class="code hl_variable" href="dcd__da146xx_8c.html#a852f3d1883cc0f11a82f67110f196ad7">_dcd</a>.vbus_present = <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00914" name="l00914"></a><span class="lineno">  914</span>    USB-&gt;USB_MCTRL_REG = 0;</div>
 <div class="line"><a id="l00915" name="l00915"></a><span class="lineno">  915</span>    <a class="code hl_function" href="dcd_8h.html#a15aa79336e47b0b8ee75555857a44d71">dcd_event_bus_signal</a>(0, DCD_EVENT_UNPLUGGED, <a class="code hl_function" href="dcd__da146xx_8c.html#a73ef7e5170d5c5e7fa08a8fc9c1a3e6f">is_in_isr</a>());</div>
 <div class="line"><a id="l00916" name="l00916"></a><span class="lineno">  916</span>  }</div>
@@ -1091,10 +1091,10 @@ $(document).ready(function(){initNavTree('dcd__da146xx_8c_source.html',''); init
 <div class="line"><a id="l01002" name="l01002"></a><span class="lineno"> 1002</span>      regs-&gt;epc_out = 0;</div>
 <div class="line"><a id="l01003" name="l01003"></a><span class="lineno"> 1003</span>      USB-&gt;USB_RXMSK_REG &amp;= ~(0x11 &lt;&lt; (epnum - 1));</div>
 <div class="line"><a id="l01004" name="l01004"></a><span class="lineno"> 1004</span>      <span class="comment">// Release DMA if needed</span></div>
-<div class="line"><a id="l01005" name="l01005"></a><span class="lineno"> 1005</span>      <span class="keywordflow">if</span> (<a class="code hl_variable" href="dcd__da146xx_8c.html#ac3f20e353c35de727902205f4638f162">_dcd</a>.dma_ep[<a class="code hl_enumvalue" href="tusb__types_8h.html#a0c1b25b161b272f5f39e4ba49478289ca96d25fd7f8e59bc00cdfd0cbeaa285ae">TUSB_DIR_OUT</a>] == epnum)</div>
+<div class="line"><a id="l01005" name="l01005"></a><span class="lineno"> 1005</span>      <span class="keywordflow">if</span> (<a class="code hl_variable" href="dcd__da146xx_8c.html#a852f3d1883cc0f11a82f67110f196ad7">_dcd</a>.dma_ep[<a class="code hl_enumvalue" href="tusb__types_8h.html#a0c1b25b161b272f5f39e4ba49478289ca96d25fd7f8e59bc00cdfd0cbeaa285ae">TUSB_DIR_OUT</a>] == epnum)</div>
 <div class="line"><a id="l01006" name="l01006"></a><span class="lineno"> 1006</span>      {</div>
 <div class="line"><a id="l01007" name="l01007"></a><span class="lineno"> 1007</span>        RX_DMA_REGS-&gt;DMAx_CTRL_REG &amp;= ~DMA_DMA0_CTRL_REG_DMA_ON_Msk;</div>
-<div class="line"><a id="l01008" name="l01008"></a><span class="lineno"> 1008</span>        <a class="code hl_variable" href="dcd__da146xx_8c.html#ac3f20e353c35de727902205f4638f162">_dcd</a>.dma_ep[<a class="code hl_enumvalue" href="tusb__types_8h.html#a0c1b25b161b272f5f39e4ba49478289ca96d25fd7f8e59bc00cdfd0cbeaa285ae">TUSB_DIR_OUT</a>] = 0;</div>
+<div class="line"><a id="l01008" name="l01008"></a><span class="lineno"> 1008</span>        <a class="code hl_variable" href="dcd__da146xx_8c.html#a852f3d1883cc0f11a82f67110f196ad7">_dcd</a>.dma_ep[<a class="code hl_enumvalue" href="tusb__types_8h.html#a0c1b25b161b272f5f39e4ba49478289ca96d25fd7f8e59bc00cdfd0cbeaa285ae">TUSB_DIR_OUT</a>] = 0;</div>
 <div class="line"><a id="l01009" name="l01009"></a><span class="lineno"> 1009</span>      }</div>
 <div class="line"><a id="l01010" name="l01010"></a><span class="lineno"> 1010</span>    }</div>
 <div class="line"><a id="l01011" name="l01011"></a><span class="lineno"> 1011</span>    <span class="keywordflow">else</span></div>
@@ -1103,10 +1103,10 @@ $(document).ready(function(){initNavTree('dcd__da146xx_8c_source.html',''); init
 <div class="line"><a id="l01014" name="l01014"></a><span class="lineno"> 1014</span>      regs-&gt;epc_in = 0;</div>
 <div class="line"><a id="l01015" name="l01015"></a><span class="lineno"> 1015</span>      USB-&gt;USB_TXMSK_REG &amp;= ~(0x11 &lt;&lt; (epnum - 1));</div>
 <div class="line"><a id="l01016" name="l01016"></a><span class="lineno"> 1016</span>      <span class="comment">// Release DMA if needed</span></div>
-<div class="line"><a id="l01017" name="l01017"></a><span class="lineno"> 1017</span>      <span class="keywordflow">if</span> (<a class="code hl_variable" href="dcd__da146xx_8c.html#ac3f20e353c35de727902205f4638f162">_dcd</a>.dma_ep[<a class="code hl_enumvalue" href="tusb__types_8h.html#a0c1b25b161b272f5f39e4ba49478289ca29e402c2558d1a97a08294c5d1837444">TUSB_DIR_IN</a>] == epnum)</div>
+<div class="line"><a id="l01017" name="l01017"></a><span class="lineno"> 1017</span>      <span class="keywordflow">if</span> (<a class="code hl_variable" href="dcd__da146xx_8c.html#a852f3d1883cc0f11a82f67110f196ad7">_dcd</a>.dma_ep[<a class="code hl_enumvalue" href="tusb__types_8h.html#a0c1b25b161b272f5f39e4ba49478289ca29e402c2558d1a97a08294c5d1837444">TUSB_DIR_IN</a>] == epnum)</div>
 <div class="line"><a id="l01018" name="l01018"></a><span class="lineno"> 1018</span>      {</div>
 <div class="line"><a id="l01019" name="l01019"></a><span class="lineno"> 1019</span>        TX_DMA_REGS-&gt;DMAx_CTRL_REG &amp;= ~DMA_DMA1_CTRL_REG_DMA_ON_Msk;</div>
-<div class="line"><a id="l01020" name="l01020"></a><span class="lineno"> 1020</span>        <a class="code hl_variable" href="dcd__da146xx_8c.html#ac3f20e353c35de727902205f4638f162">_dcd</a>.dma_ep[<a class="code hl_enumvalue" href="tusb__types_8h.html#a0c1b25b161b272f5f39e4ba49478289ca29e402c2558d1a97a08294c5d1837444">TUSB_DIR_IN</a>] = 0;</div>
+<div class="line"><a id="l01020" name="l01020"></a><span class="lineno"> 1020</span>        <a class="code hl_variable" href="dcd__da146xx_8c.html#a852f3d1883cc0f11a82f67110f196ad7">_dcd</a>.dma_ep[<a class="code hl_enumvalue" href="tusb__types_8h.html#a0c1b25b161b272f5f39e4ba49478289ca29e402c2558d1a97a08294c5d1837444">TUSB_DIR_IN</a>] = 0;</div>
 <div class="line"><a id="l01021" name="l01021"></a><span class="lineno"> 1021</span>      }</div>
 <div class="line"><a id="l01022" name="l01022"></a><span class="lineno"> 1022</span>    }</div>
 <div class="line"><a id="l01023" name="l01023"></a><span class="lineno"> 1023</span>  }</div>
@@ -1262,7 +1262,7 @@ $(document).ready(function(){initNavTree('dcd__da146xx_8c_source.html',''); init
 <div class="line"><a id="l01173" name="l01173"></a><span class="lineno"> 1173</span> </div>
 <div class="line"><a id="l01174" name="l01174"></a><span class="lineno"> 1174</span>  <span class="keywordflow">if</span> (GET_BIT(int_status, USB_USB_MAEV_REG_USB_FRAME))</div>
 <div class="line"><a id="l01175" name="l01175"></a><span class="lineno"> 1175</span>  {</div>
-<div class="line"><a id="l01176" name="l01176"></a><span class="lineno"> 1176</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="dcd__da146xx_8c.html#ac3f20e353c35de727902205f4638f162">_dcd</a>.nfsr == NFSR_NODE_RESET)</div>
+<div class="line"><a id="l01176" name="l01176"></a><span class="lineno"> 1176</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="dcd__da146xx_8c.html#a852f3d1883cc0f11a82f67110f196ad7">_dcd</a>.nfsr == NFSR_NODE_RESET)</div>
 <div class="line"><a id="l01177" name="l01177"></a><span class="lineno"> 1177</span>    {</div>
 <div class="line"><a id="l01178" name="l01178"></a><span class="lineno"> 1178</span>      <span class="comment">// During reset FRAME interrupt is enabled to periodically</span></div>
 <div class="line"><a id="l01179" name="l01179"></a><span class="lineno"> 1179</span>      <span class="comment">// check when reset state ends.</span></div>
@@ -1270,17 +1270,17 @@ $(document).ready(function(){initNavTree('dcd__da146xx_8c_source.html',''); init
 <div class="line"><a id="l01181" name="l01181"></a><span class="lineno"> 1181</span>      <span class="comment">// actual SOF.</span></div>
 <div class="line"><a id="l01182" name="l01182"></a><span class="lineno"> 1182</span>      <a class="code hl_function" href="dcd__da146xx_8c.html#a58363218f5e3bed5f242690d5ca56100">check_reset_end</a>(USB_USB_ALTEV_REG_USB_RESET_Msk);</div>
 <div class="line"><a id="l01183" name="l01183"></a><span class="lineno"> 1183</span>    }</div>
-<div class="line"><a id="l01184" name="l01184"></a><span class="lineno"> 1184</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_variable" href="dcd__da146xx_8c.html#ac3f20e353c35de727902205f4638f162">_dcd</a>.nfsr == NFSR_NODE_WAKING)</div>
+<div class="line"><a id="l01184" name="l01184"></a><span class="lineno"> 1184</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_variable" href="dcd__da146xx_8c.html#a852f3d1883cc0f11a82f67110f196ad7">_dcd</a>.nfsr == NFSR_NODE_WAKING)</div>
 <div class="line"><a id="l01185" name="l01185"></a><span class="lineno"> 1185</span>    {</div>
 <div class="line"><a id="l01186" name="l01186"></a><span class="lineno"> 1186</span>      <span class="comment">// No need to call set_nfsr, just set state</span></div>
-<div class="line"><a id="l01187" name="l01187"></a><span class="lineno"> 1187</span>      <a class="code hl_variable" href="dcd__da146xx_8c.html#ac3f20e353c35de727902205f4638f162">_dcd</a>.nfsr = NFSR_NODE_WAKING2;</div>
+<div class="line"><a id="l01187" name="l01187"></a><span class="lineno"> 1187</span>      <a class="code hl_variable" href="dcd__da146xx_8c.html#a852f3d1883cc0f11a82f67110f196ad7">_dcd</a>.nfsr = NFSR_NODE_WAKING2;</div>
 <div class="line"><a id="l01188" name="l01188"></a><span class="lineno"> 1188</span>    }</div>
-<div class="line"><a id="l01189" name="l01189"></a><span class="lineno"> 1189</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_variable" href="dcd__da146xx_8c.html#ac3f20e353c35de727902205f4638f162">_dcd</a>.nfsr == NFSR_NODE_WAKING2)</div>
+<div class="line"><a id="l01189" name="l01189"></a><span class="lineno"> 1189</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_variable" href="dcd__da146xx_8c.html#a852f3d1883cc0f11a82f67110f196ad7">_dcd</a>.nfsr == NFSR_NODE_WAKING2)</div>
 <div class="line"><a id="l01190" name="l01190"></a><span class="lineno"> 1190</span>    {</div>
 <div class="line"><a id="l01191" name="l01191"></a><span class="lineno"> 1191</span>      <span class="comment">// No need to call set_nfsr, just set state</span></div>
-<div class="line"><a id="l01192" name="l01192"></a><span class="lineno"> 1192</span>      <a class="code hl_variable" href="dcd__da146xx_8c.html#ac3f20e353c35de727902205f4638f162">_dcd</a>.nfsr = NFSR_NODE_RESUME;</div>
+<div class="line"><a id="l01192" name="l01192"></a><span class="lineno"> 1192</span>      <a class="code hl_variable" href="dcd__da146xx_8c.html#a852f3d1883cc0f11a82f67110f196ad7">_dcd</a>.nfsr = NFSR_NODE_RESUME;</div>
 <div class="line"><a id="l01193" name="l01193"></a><span class="lineno"> 1193</span>    }</div>
-<div class="line"><a id="l01194" name="l01194"></a><span class="lineno"> 1194</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_variable" href="dcd__da146xx_8c.html#ac3f20e353c35de727902205f4638f162">_dcd</a>.nfsr == NFSR_NODE_RESUME)</div>
+<div class="line"><a id="l01194" name="l01194"></a><span class="lineno"> 1194</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_variable" href="dcd__da146xx_8c.html#a852f3d1883cc0f11a82f67110f196ad7">_dcd</a>.nfsr == NFSR_NODE_RESUME)</div>
 <div class="line"><a id="l01195" name="l01195"></a><span class="lineno"> 1195</span>    {</div>
 <div class="line"><a id="l01196" name="l01196"></a><span class="lineno"> 1196</span>      <a class="code hl_function" href="dcd__da146xx_8c.html#adc530f59874b397002d3029dfea09b2e">set_nfsr</a>(NFSR_NODE_OPERATIONAL);</div>
 <div class="line"><a id="l01197" name="l01197"></a><span class="lineno"> 1197</span>    }</div>
@@ -1342,6 +1342,7 @@ $(document).ready(function(){initNavTree('dcd__da146xx_8c_source.html',''); init
 <div class="ttc" id="adcd__da146xx_8c_html_a7cb59e599703b7e84e2afb632efbfdc2"><div class="ttname"><a href="dcd__da146xx_8c.html#a7cb59e599703b7e84e2afb632efbfdc2">dcd_int_disable</a></div><div class="ttdeci">void dcd_int_disable(uint8_t rhport)</div><div class="ttdef"><b>Definition:</b> <a href="dcd__da146xx_8c_source.html#l00826">dcd_da146xx.c:826</a></div></div>
 <div class="ttc" id="adcd__da146xx_8c_html_a822959c46febdc3b1614a0a8ba7e7dab"><div class="ttname"><a href="dcd__da146xx_8c.html#a822959c46febdc3b1614a0a8ba7e7dab">start_rx_dma</a></div><div class="ttdeci">static void start_rx_dma(volatile void *src, void *dst, uint16_t size)</div><div class="ttdef"><b>Definition:</b> <a href="dcd__da146xx_8c_source.html#l00343">dcd_da146xx.c:343</a></div></div>
 <div class="ttc" id="adcd__da146xx_8c_html_a825b09d5034fee80695c7ae6d32d4d32"><div class="ttname"><a href="dcd__da146xx_8c.html#a825b09d5034fee80695c7ae6d32d4d32">start_rx_packet</a></div><div class="ttdeci">static void start_rx_packet(xfer_ctl_t *xfer)</div><div class="ttdef"><b>Definition:</b> <a href="dcd__da146xx_8c_source.html#l00354">dcd_da146xx.c:354</a></div></div>
+<div class="ttc" id="adcd__da146xx_8c_html_a852f3d1883cc0f11a82f67110f196ad7"><div class="ttname"><a href="dcd__da146xx_8c.html#a852f3d1883cc0f11a82f67110f196ad7">_dcd</a></div><div class="ttdeci">static struct @149 _dcd</div></div>
 <div class="ttc" id="adcd__da146xx_8c_html_a92c86380fe85ba12c72f8188209dda6f"><div class="ttname"><a href="dcd__da146xx_8c.html#a92c86380fe85ba12c72f8188209dda6f">ep0IN_desc</a></div><div class="ttdeci">static const tusb_desc_endpoint_t ep0IN_desc</div><div class="ttdef"><b>Definition:</b> <a href="dcd__da146xx_8c_source.html#l00263">dcd_da146xx.c:263</a></div></div>
 <div class="ttc" id="adcd__da146xx_8c_html_a930adaee00f0c2679beef9684fa72cb7"><div class="ttname"><a href="dcd__da146xx_8c.html#a930adaee00f0c2679beef9684fa72cb7">dcd_edpt_clear_stall</a></div><div class="ttdeci">void dcd_edpt_clear_stall(uint8_t rhport, uint8_t ep_addr)</div><div class="ttdef"><b>Definition:</b> <a href="dcd__da146xx_8c_source.html#l01100">dcd_da146xx.c:1100</a></div></div>
 <div class="ttc" id="adcd__da146xx_8c_html_a95f3047f5cec3597ab481e57a36f8c82"><div class="ttname"><a href="dcd__da146xx_8c.html#a95f3047f5cec3597ab481e57a36f8c82">start_tx_packet</a></div><div class="ttdeci">static void start_tx_packet(xfer_ctl_t *xfer)</div><div class="ttdef"><b>Definition:</b> <a href="dcd__da146xx_8c_source.html#l00397">dcd_da146xx.c:397</a></div></div>
@@ -1350,7 +1351,6 @@ $(document).ready(function(){initNavTree('dcd__da146xx_8c_source.html',''); init
 <div class="ttc" id="adcd__da146xx_8c_html_aaa4e229b17459d87c2dda8d5c7a5e648"><div class="ttname"><a href="dcd__da146xx_8c.html#aaa4e229b17459d87c2dda8d5c7a5e648">dcd_edpt_xfer</a></div><div class="ttdeci">bool dcd_edpt_xfer(uint8_t rhport, uint8_t ep_addr, uint8_t *buffer, uint16_t total_bytes)</div><div class="ttdef"><b>Definition:</b> <a href="dcd__da146xx_8c_source.html#l01027">dcd_da146xx.c:1027</a></div></div>
 <div class="ttc" id="adcd__da146xx_8c_html_ab6fec04ed7e7e0f947ec951bda284ce9"><div class="ttname"><a href="dcd__da146xx_8c.html#ab6fec04ed7e7e0f947ec951bda284ce9">ep0OUT_desc</a></div><div class="ttdeci">static const tusb_desc_endpoint_t ep0OUT_desc</div><div class="ttdef"><b>Definition:</b> <a href="dcd__da146xx_8c_source.html#l00252">dcd_da146xx.c:252</a></div></div>
 <div class="ttc" id="adcd__da146xx_8c_html_abdc82cbdbd3eef5eedefd93c796160a3"><div class="ttname"><a href="dcd__da146xx_8c.html#abdc82cbdbd3eef5eedefd93c796160a3">dma_ep</a></div><div class="ttdeci">uint8_t dma_ep[2]</div><div class="ttdef"><b>Definition:</b> <a href="dcd__da146xx_8c_source.html#l00237">dcd_da146xx.c:237</a></div></div>
-<div class="ttc" id="adcd__da146xx_8c_html_ac3f20e353c35de727902205f4638f162"><div class="ttname"><a href="dcd__da146xx_8c.html#ac3f20e353c35de727902205f4638f162">_dcd</a></div><div class="ttdeci">static struct @151 _dcd</div></div>
 <div class="ttc" id="adcd__da146xx_8c_html_acaa0da4545f1c5627429a7884b3c9847"><div class="ttname"><a href="dcd__da146xx_8c.html#acaa0da4545f1c5627429a7884b3c9847">dcd_set_address</a></div><div class="ttdeci">void dcd_set_address(uint8_t rhport, uint8_t dev_addr)</div><div class="ttdef"><b>Definition:</b> <a href="dcd__da146xx_8c_source.html#l00833">dcd_da146xx.c:833</a></div></div>
 <div class="ttc" id="adcd__da146xx_8c_html_acc7e0efbe7e4e6031c6fb5bbddd6c126"><div class="ttname"><a href="dcd__da146xx_8c.html#acc7e0efbe7e4e6031c6fb5bbddd6c126">vbus_present</a></div><div class="ttdeci">bool vbus_present</div><div class="ttdef"><b>Definition:</b> <a href="dcd__da146xx_8c_source.html#l00232">dcd_da146xx.c:232</a></div></div>
 <div class="ttc" id="adcd__da146xx_8c_html_ad5fa7d4d4015fdd3f64a1fce0374dfff"><div class="ttname"><a href="dcd__da146xx_8c.html#ad5fa7d4d4015fdd3f64a1fce0374dfff">dcd_init</a></div><div class="ttdeci">bool dcd_init(uint8_t rhport, const tusb_rhport_init_t *rh_init)</div><div class="ttdef"><b>Definition:</b> <a href="dcd__da146xx_8c_source.html#l00807">dcd_da146xx.c:807</a></div></div>
