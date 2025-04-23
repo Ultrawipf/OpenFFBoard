@@ -29,13 +29,15 @@ struct ButtonSourceConfig{
 	SPI_BtnMode mode=SPI_BtnMode::TM; // Mode preset
 	uint8_t cs_num = 0;
 	uint8_t spi_speed = 1; // Medium
+	bool debounce_enabled = true; // 默认开启消抖
+	uint16_t debounce_time = 20; // 默认20ms消抖时间
 };
 
 
 class SPI_Buttons: public ButtonSource,public CommandHandler,public SPIDevice {
 
 	enum class SPIButtons_commands : uint32_t {
-		mode,btncut,btnpol,btnnum,cs,spispeed
+		mode,btncut,btnpol,btnnum,cs,spispeed,debounceen,debouncetime
 	};
 
 public:
@@ -62,6 +64,11 @@ public:
 
 	void setSpiSpeed(uint8_t speedPreset);
 
+	void setDebounceEnabled(bool enabled);
+	void setDebounceTime(uint16_t time_ms);
+	bool isDebounceEnabled() { return conf.debounce_enabled; }
+	uint16_t getDebounceTime() { return conf.debounce_time; }
+
 protected:
 	SPI_Buttons(uint16_t configuration_address, uint16_t configuration_address_2);
 
@@ -77,6 +84,11 @@ private:
 	uint8_t offset = 0;
 
 	ButtonSourceConfig conf;
+	
+	// Button debouncing variables
+	uint64_t last_button_state = 0; // Last button state for debounce detection
+	uint64_t debounced_state = 0;   // Current stable debounced button state
+	uint32_t last_debounce_time = 0; // Timestamp of last button state change
 
 	uint8_t spi_buf[4] = {0};
 
