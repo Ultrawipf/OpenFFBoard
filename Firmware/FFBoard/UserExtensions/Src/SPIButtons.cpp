@@ -84,6 +84,8 @@ void SPI_Buttons::registerCommands(){
 	registerCommand("btnnum", SPIButtons_commands::btnnum, "Number of buttons",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("cs", SPIButtons_commands::cs, "SPI CS pin",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("spispeed", SPIButtons_commands::spispeed, "SPI speed preset",CMDFLAG_INFOSTRING | CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("debounceen", SPIButtons_commands::debounceen, "Debounce enabled",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("debouncetime", SPIButtons_commands::debouncetime, "Debounce time ms",CMDFLAG_GET | CMDFLAG_SET);
 }
 
 /**
@@ -177,10 +179,37 @@ void SPI_Buttons::process(uint64_t* buf){
 	*buf = *buf  & mask;
 }
 
+void SPI_Buttons::setDebounceEnabled(bool enabled) {
+	this->conf.debounce_enabled = enabled;
+}
+
+void SPI_Buttons::setDebounceTime(uint16_t time_ms) {
+	this->conf.debounce_time = time_ms;
+}
+
 __attribute__((optimize("-Ofast")))
 uint8_t SPI_Buttons::readButtons(uint64_t* buf){
 	memcpy(buf,this->spi_buf,std::min<uint8_t>(this->bytes,8));
 	process(buf); // give back last buffer
+
+	// Apply debouncing if enabled
+	if (conf.debounce_enabled) {
+		uint32_t current_time = HAL_GetTick();
+		
+		// If button state has changed
+		if (*buf != last_button_state) {
+			last_debounce_time = current_time;
+			last_button_state = *buf;
+		}
+		
+		// If time elapsed exceeds debounce time, update stable state
+		if ((current_time - last_debounce_time) > conf.debounce_time) {
+			debounced_state = last_button_state;
+		}
+		
+		// Use debounced state
+		*buf = debounced_state;
+	}
 
 	if(spiPort.isTaken() || !ready)
 		return this->btnnum;	// Don't wait.
@@ -265,6 +294,26 @@ CommandStatus SPI_Buttons::command(const ParsedCommand& cmd,std::vector<CommandR
 		}
 		break;
 
+	case SPIButtons_commands::debounceen:
+		if(cmd.type == CMDtype::set){
+			setDebounceEnabled(cmd.val != 0);
+		}else if(cmd.type == CMDtype::get){
+			replies.emplace_back(isDebounceEnabled() ? 1 : 0);
+		}else{
+			return CommandStatus::ERR;
+		}
+		break;
+
+	case SPIButtons_commands::debouncetime:
+		if(cmd.type == CMDtype::set){
+			setDebounceTime(cmd.val);
+		}else if(cmd.type == CMDtype::get){
+			replies.emplace_back(getDebounceTime());
+		}else{
+			return CommandStatus::ERR;
+		}
+		break;
+
 	default:
 		return CommandStatus::NOT_FOUND;
 	}
@@ -280,6 +329,9 @@ static ButtonSourceConfig decodeIntToConf(uint16_t config_int, uint16_t config_i
 	c.mode = SPI_BtnMode(config_int >> 8);
 	c.cs_num = (config_int_2 & 0x3);
 	c.spi_speed = (config_int_2 >> 3) & 0x3;
+	// Decode debounce settings
+	c.debounce_enabled = (config_int_2 >> 5) & 0x1;
+	c.debounce_time = ((config_int_2 >> 6) & 0x3FF) * 5; // Store in 5ms units, range 0-5115ms
 	return c;
 }
 static std::tuple<uint16_t, uint16_t> encodeConfToInt(ButtonSourceConfig* c){
@@ -289,7 +341,10 @@ static std::tuple<uint16_t, uint16_t> encodeConfToInt(ButtonSourceConfig* c){
 	val |= (uint16_t)c->mode << 8;
 	uint16_t val2 = c->cs_num & 0x3;
 	val2 |= (c->spi_speed & 0x3) << 3;
-
+	// Encode debounce settings
+	val2 |= (c->debounce_enabled ? 1 : 0) << 5;
+	val2 |= (std::min<uint16_t>(c->debounce_time / 5, 0x3FF)) << 6; // Store in 5ms units, max about 5 seconds
+	
 	return { val, val2 };
 }
 
