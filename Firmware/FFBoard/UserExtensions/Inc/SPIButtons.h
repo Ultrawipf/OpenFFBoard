@@ -29,8 +29,8 @@ struct ButtonSourceConfig{
 	SPI_BtnMode mode=SPI_BtnMode::TM; // Mode preset
 	uint8_t cs_num = 0;
 	uint8_t spi_speed = 1; // Medium
-	bool debounce_enabled = true; // 默认开启消抖
-	uint16_t debounce_time = 20; // 默认20ms消抖时间
+	bool debounce_enabled = false;
+	uint16_t debounce_time = 0; // in ms
 };
 
 
