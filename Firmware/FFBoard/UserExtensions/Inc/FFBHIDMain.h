@@ -30,10 +30,10 @@
 #include "ErrorHandler.h"
 #include "memory"
 #include "HidCommandInterface.h"
-
+#include "SelectableInputs.h"
 #include "thread.hpp"
 
-class FFBHIDMain: public FFBoardMain, public cpp_freertos::Thread, PersistentStorage,ExtiHandler,public UsbHidHandler, ErrorHandler{
+class FFBHIDMain: public FFBoardMain, public cpp_freertos::Thread, PersistentStorage,ExtiHandler,public UsbHidHandler, ErrorHandler, SelectableInputs{
 	enum class FFBWheel_commands : uint32_t{
 		ffbactive,axes,btntypes,lsbtn,addbtn,aintypes,lsain,addain,hidrate,hidsendspd,estop,cfrate
 	};
@@ -52,13 +52,6 @@ public:
 	virtual std::string getHelpstring(){
 		return "Force feedback HID game controller";
 	}
-	void setBtnTypes(uint16_t btntypes);
-	void addBtnType(uint16_t id);
-	void clearBtnTypes();
-
-	void setAinTypes(uint16_t aintypes);
-	void addAinType(uint16_t id);
-	void clearAinTypes();
 
 
 	virtual void usbInit() = 0; // initialize a composite usb device
@@ -116,19 +109,11 @@ private:
 	reportHID_t lastReportHID;
 	uint8_t reportSendCounter = 0;
 
-	const uint8_t analogAxisCount = 8;
-	uint16_t btnsources = 0; // Disabled by default
-	uint16_t ainsources = 0;
-
-
-	ClassChooser<ButtonSource> btn_chooser;
-	ClassChooser<AnalogSource> analog_chooser;
 
 	//HID_CommandInterface hidCommands; // Enables full HID control
 	std::unique_ptr<HID_CommandInterface> hidCommands = std::make_unique<HID_CommandInterface>();
 
 	uint32_t lastUsbReportTick = 0;
-	cpp_freertos::BinarySemaphore sourcesSem = cpp_freertos::BinarySemaphore(true);
 
 	volatile uint32_t lastEstop = 0;
 };

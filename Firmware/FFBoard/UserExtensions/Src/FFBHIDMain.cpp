@@ -21,8 +21,9 @@ extern osThreadId_t defaultTaskHandle;
  * setFFBEffectsCalc must be called in constructor of derived class to finish the setup
  */
 FFBHIDMain::FFBHIDMain(uint8_t axisCount) :
-		Thread("FFBMAIN", 256, 30),axisCount(axisCount),
-		btn_chooser(ButtonSource::all_buttonsources),analog_chooser(AnalogSource::all_analogsources)
+		Thread("FFBMAIN", 256, 30),
+		SelectableInputs(ButtonSource::all_buttonsources,AnalogSource::all_analogsources),
+		axisCount(axisCount)
 {
 
 	restoreFlashDelayed(); // Load parameters
@@ -133,71 +134,6 @@ void FFBHIDMain::updateControl(){
 }
 
 
-// Buttons
-void FFBHIDMain::clearBtnTypes(){
-	// Destruct all button sources
-
-	this->btns.clear();
-}
-
-void FFBHIDMain::setBtnTypes(uint16_t btntypes){
-	sourcesSem.Take();
-	this->btnsources = btntypes;
-	clearBtnTypes();
-	for(uint8_t id = 0;id<16;id++){
-		if((btntypes >> id) & 0x1){
-			// Matching flag
-			ButtonSource* btn = btn_chooser.Create(id);
-			if(btn!=nullptr)
-				this->btns.push_back(std::unique_ptr<ButtonSource>(btn));
-		}
-	}
-	sourcesSem.Give();
-}
-
-void FFBHIDMain::addBtnType(uint16_t id){
-	for(auto &btn : this->btns){
-		if(btn->getInfo().id == id){
-			return;
-		}
-	}
-	ButtonSource* btn = btn_chooser.Create(id);
-	if(btn!=nullptr)
-		this->btns.push_back(std::unique_ptr<ButtonSource>(btn));
-}
-
-// Analog
-void FFBHIDMain::clearAinTypes(){
-	// Destruct all button sources
-
-	this->analog_inputs.clear();
-}
-
-void FFBHIDMain::setAinTypes(uint16_t aintypes){
-	sourcesSem.Take();
-	this->ainsources = aintypes;
-	clearAinTypes();
-	for(uint8_t id = 0;id<16;id++){
-		if((aintypes >> id) & 0x1){
-			// Matching flag
-			AnalogSource* ain = analog_chooser.Create(id);
-			if(ain!=nullptr)
-				this->analog_inputs.push_back(std::unique_ptr<AnalogSource>(ain));
-		}
-	}
-	sourcesSem.Give();
-}
-void FFBHIDMain::addAinType(uint16_t id){
-	for(auto &ain : this->analog_inputs){
-		if(ain->getInfo().id == id){
-			return;
-		}
-	}
-	AnalogSource* ain = analog_chooser.Create(id);
-	if(ain!=nullptr)
-		this->analog_inputs.push_back(std::unique_ptr<AnalogSource>(ain));
-}
-
 uint32_t FFBHIDMain::getRate() {
 	return this->ffb->getRate();
 }
@@ -215,21 +151,15 @@ void FFBHIDMain::send_report(){
 		return;
 	}
 	//Try semaphore
-	if(!sourcesSem.Take(10)){
-		return;
-	}
+//	if(!sourcesSem.Take(10)){
+//		return;
+//	}
 	// Read buttons
 	reportHID.buttons = 0; // Reset buttons
-	uint8_t shift = 0;
-	if(btns.size() != 0){
-		for(auto &btn : btns){
-			uint64_t buf = 0;
-			uint8_t amount = btn->readButtons(&buf);
-			reportHID.buttons |= buf << shift;
-			shift += amount;
-		}
-	}
 
+	uint64_t b = 0;
+	SelectableInputs::getButtonValues(b);
+	reportHID.buttons = b;
 
 	// Encoder
 	//axes_manager->addAxesToReport(analogAxesReport, &count);
@@ -241,15 +171,13 @@ void FFBHIDMain::send_report(){
 	}
 
 	// Fill remaining values with analog inputs
-	for(auto &ain : analog_inputs){
-		std::vector<int32_t>* axes = ain->getAxes();
-		for(int32_t val : *axes){
-			if(count >= analogAxisCount)
-				break;
-			setHidReportAxis(&reportHID,count++,val);
-		}
+	axes = SelectableInputs::getAnalogValues();
+	for(int32_t val : *axes){
+		if(count >= analogAxisCount)
+			break;
+		setHidReportAxis(&reportHID,count++,val);
 	}
-	sourcesSem.Give();
+//	sourcesSem.Give();
 	// Fill rest
 	for(;count<analogAxisCount; count++){
 		setHidReportAxis(&reportHID,count,0);
