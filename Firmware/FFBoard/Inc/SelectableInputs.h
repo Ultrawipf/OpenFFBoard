@@ -37,7 +37,6 @@ protected:
 
 	cpp_freertos::BinarySemaphore sourcesSem = cpp_freertos::BinarySemaphore(true);
 
-	const uint8_t analogAxisCount = 8;
 	uint16_t btnsources = 0; // Disabled by default
 	uint16_t ainsources = 0;
 

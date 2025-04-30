@@ -109,7 +109,7 @@ private:
 	reportHID_t lastReportHID;
 	uint8_t reportSendCounter = 0;
 
-
+	const uint8_t analogAxisCount = 8;
 	//HID_CommandInterface hidCommands; // Enables full HID control
 	std::unique_ptr<HID_CommandInterface> hidCommands = std::make_unique<HID_CommandInterface>();
 
