@@ -11,6 +11,9 @@ Section comment,Name,Value,Comment on key,VirtAddVarTab,exportableFlashAddresses
 ,ADR_FFBWHEEL_BUTTONCONF,0x101,,1,1
 ,ADR_FFBWHEEL_ANALOGCONF,0x102,,1,1
 ,ADR_FFBWHEEL_CONF1,0x103,,1,1
+// CAN remote,,,,,
+,ADR_CANREMOTE_CONF1,0x120,,1,1
+,ADR_CANREMOTE_CONF2,0x121,,1,1
 // Button Sources:,,,,,
 ,ADR_SPI_BTN_1_CONF,0x201,,1,1
 ,ADR_SHIFTERANALOG_CONF,0x202,,1,1

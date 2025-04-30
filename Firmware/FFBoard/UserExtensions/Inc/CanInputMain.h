@@ -20,7 +20,7 @@
 
 class CANInputMain : public FFBoardMain, public PersistentStorage, public SelectableInputs, public cpp_freertos::Thread {
 	enum class CANInput_commands : uint32_t{
-		caniddigital,canidanalog,btntypes,lsbtn,addbtn,aintypes,lsain,addain
+		caniddigital,canidanalog,btntypes,lsbtn,addbtn,aintypes,lsain,addain,rate
 	};
 public:
 	CANInputMain();
@@ -47,13 +47,16 @@ public:
 	void updateControl();
 	void sendReport();
 
+	void setReportRate(uint8_t rateidx);
+	std::string report_rates_names();
+
 
 protected:
 	uint16_t btnsources = 0; // Disabled by default
 	uint16_t ainsources = 0;
 
 	uint32_t report_rate_cnt = 0;
-	uint32_t report_rate;
+	uint32_t report_rate = 1;
 
 	std::vector<int32_t> analogBuffer;
 	uint64_t digitalBuffer;
@@ -62,8 +65,9 @@ protected:
 
 	uint32_t buttons_id = 100;
 	uint32_t analog_id = 110;
-//	ClassChooser<ButtonSource> btn_chooser;
-//	ClassChooser<AnalogSource> analog_chooser;
+
+	uint8_t rate_idx = 0;
+	const std::array<uint8_t,7> report_rates = {1,2,4,8,10,16,32}; // Maps speed preset to report rates
 
 
 };

@@ -59,12 +59,15 @@ void CANInputMain::restoreFlash(){
 	Flash_Read(ADR_FFBWHEEL_ANALOGCONF, &this->ainsources);
 	setAinTypes(this->ainsources);
 
-	// TODO: Save CAN ids and variable update rate
-//	uint16_t conf1 = 0;
-//	if(Flash_Read(ADR_FFBWHEEL_CONF1,&conf1)){
-//		uint8_t rateidx = conf1 & 0x3;
-//		setReportRate(rateidx);
-//	}
+	uint16_t conf1;
+	if(Flash_Read(ADR_CANREMOTE_CONF1,&conf1)){
+		buttons_id = conf1 & 0x7ff; // 11b
+		uint8_t rateidx = (conf1 >> 11) & 0x7;
+		setReportRate(rateidx);
+	}
+	if(Flash_Read(ADR_CANREMOTE_CONF2,&conf1)){
+		analog_id = conf1 & 0x7ff; // 11b
+	}
 
 }
 /**
@@ -75,9 +78,12 @@ void CANInputMain::saveFlash(){
 	Flash_Write(ADR_FFBWHEEL_BUTTONCONF,this->btnsources);
 	Flash_Write(ADR_FFBWHEEL_ANALOGCONF,this->ainsources);
 
-//	uint8_t conf1 = 0;
-//	conf1 |= usb_report_rate_idx & 0x3;
-//	Flash_Write(ADR_FFBWHEEL_CONF1,conf1);
+	uint16_t conf;
+	conf = buttons_id & 0x7ff;
+	conf |= (rate_idx & 0x7) << 11;
+	Flash_Write(ADR_CANREMOTE_CONF1,conf);
+	conf = analog_id & 0x7ff;
+	Flash_Write(ADR_CANREMOTE_CONF2,conf);
 }
 
 
@@ -147,6 +153,28 @@ void CANInputMain::sendReport(){
 	analogBuffer = *analogValues; // Copy values
 }
 
+/**
+ * Changes the report rate based on the index for report_rates
+ */
+void CANInputMain::setReportRate(uint8_t rateidx){
+	rateidx = clip<uint8_t,uint8_t>(rateidx, 0,report_rates.size());
+	rate_idx = rateidx;
+	report_rate = report_rates[rateidx];
+}
+
+/**
+ * Generates the speed strings to display to the user
+ */
+std::string CANInputMain::report_rates_names() {
+	std::string s = "";
+	for(uint8_t i = 0 ; i < report_rates.size();i++){
+		s += std::to_string(1000/(report_rates[i])) + "Hz:"+std::to_string(i);
+		if(i < sizeof(report_rates)-1)
+			s += ",";
+	}
+	return s;
+}
+
 
 void CANInputMain::registerCommands(){
 	// CAN speed controlled by CAN port commands directly
@@ -160,6 +188,8 @@ void CANInputMain::registerCommands(){
 	registerCommand("aintypes", CANInput_commands::aintypes, "Enabled analog sources",CMDFLAG_GET|CMDFLAG_SET);
 	registerCommand("lsain", CANInput_commands::lsain, "Get available analog sources",CMDFLAG_GET|CMDFLAG_STR_ONLY);
 	registerCommand("addain", CANInput_commands::addain, "Enable analog source",CMDFLAG_SET);
+
+	registerCommand("rate", CANInput_commands::rate, "CAN interval rate",CMDFLAG_GET|CMDFLAG_SET|CMDFLAG_INFOSTRING);
 }
 
 CommandStatus CANInputMain::command(const ParsedCommand& cmd,std::vector<CommandReply>& replies){
@@ -201,8 +231,21 @@ CommandStatus CANInputMain::command(const ParsedCommand& cmd,std::vector<Command
 			this->addAinType(cmd.val);
 		}
 		break;
-	}
 
+	case CANInput_commands::rate:
+		if(cmd.type == CMDtype::get){
+			replies.emplace_back(rate_idx);
+		}else if(cmd.type == CMDtype::set){
+			setReportRate(cmd.val);
+		}else if(cmd.type == CMDtype::info){
+			replies.emplace_back(report_rates_names());
+		}
+		break;
+
+	default:
+		return CommandStatus::NOT_FOUND;
+	}
+	return CommandStatus::OK;
 }
 
 
