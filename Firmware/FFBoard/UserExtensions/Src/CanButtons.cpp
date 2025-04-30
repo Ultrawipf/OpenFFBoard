@@ -135,7 +135,6 @@ CommandStatus CanButtons::command(const ParsedCommand& cmd,std::vector<CommandRe
 void CanButtons::canRxPendCallback(CANPort* port,CAN_rx_msg& msg){
 
 	uint32_t id = (msg.header.id) & 0x7FF;
-	pulseClipLed();
 	if(id != this->canId || msg.header.rtr || msg.header.length != 8){
 		return;
 	}
