@@ -10,7 +10,7 @@
 SelectableInputs::SelectableInputs(const ClassChooser<ButtonSource>& btn_chooser,const ClassChooser<AnalogSource>& analog_chooser)
 : btn_chooser(btn_chooser), analog_chooser(analog_chooser)
 {
-	analogsources_buf.reserve(6);
+	analogsources_buf.reserve(8);
 }
 
 SelectableInputs::~SelectableInputs() {
