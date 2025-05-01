@@ -8,7 +8,7 @@
  * For more settings see target_constants.h in a target specific folder
  */
 
-static const uint8_t SW_VERSION_INT[3] = {1,16,2}; // Version as array. 8 bit each!
+static const uint8_t SW_VERSION_INT[3] = {1,16,3}; // Version as array. 8 bit each!
 #ifndef MAX_AXIS
 #define MAX_AXIS 2 // ONLY USE 2 for now else screws HID Reports
 #endif
@@ -24,6 +24,8 @@ static const uint8_t SW_VERSION_INT[3] = {1,16,2}; // Version as array. 8 bit ea
 #undef ODRIVE
 #undef CANBUTTONS
 #undef VESC
+#undef CANBRIDGE
+#undef CANINPUTMAIN
 #endif
 
 
