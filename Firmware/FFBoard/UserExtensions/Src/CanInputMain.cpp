@@ -190,6 +190,9 @@ void CANInputMain::registerCommands(){
 	registerCommand("addain", CANInput_commands::addain, "Enable analog source",CMDFLAG_SET);
 
 	registerCommand("rate", CANInput_commands::rate, "CAN interval rate",CMDFLAG_GET|CMDFLAG_SET|CMDFLAG_INFOSTRING);
+
+	registerCommand("dvals", CANInput_commands::dvals, "Current digital outputs",CMDFLAG_GET);
+	registerCommand("avals", CANInput_commands::avals, "Current analog outputs",CMDFLAG_GET);
 }
 
 CommandStatus CANInputMain::command(const ParsedCommand& cmd,std::vector<CommandReply>& replies){
@@ -241,6 +244,21 @@ CommandStatus CANInputMain::command(const ParsedCommand& cmd,std::vector<Command
 			replies.emplace_back(report_rates_names());
 		}
 		break;
+
+	case CANInput_commands::dvals:
+		if(cmd.type == CMDtype::get){
+			replies.emplace_back(digitalBuffer,0);
+		}
+		break;
+
+	case CANInput_commands::avals:
+		if(cmd.type == CMDtype::get){
+			for(uint8_t i = 0;i<analogBuffer.size();i++){
+				replies.emplace_back(analogBuffer[i],i);
+			}
+		}
+		break;
+
 
 	default:
 		return CommandStatus::NOT_FOUND;
