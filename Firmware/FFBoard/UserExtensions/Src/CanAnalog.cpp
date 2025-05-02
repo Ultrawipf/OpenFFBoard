@@ -117,7 +117,7 @@ void CanAnalogBase::canRxPendCallback(CANPort* port,CAN_rx_msg& msg){
 			continue;
 		}
 		for(uint8_t i = 0; i < 4 && (i + packet*4) < axes && (i*2+1) < msg.header.length; i++) {
-			this->buf[i + packet*4] = msg.data[i*2] | (msg.data[i*2+1] << 8);
+			this->buf[i + packet*4] = (int16_t)(msg.data[i*2] | (msg.data[i*2+1] << 8));
 		}
 	}
 }
