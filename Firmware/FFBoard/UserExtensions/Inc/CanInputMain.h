@@ -20,7 +20,7 @@
 
 class CANInputMain : public FFBoardMain, public PersistentStorage, public SelectableInputs, public cpp_freertos::Thread {
 	enum class CANInput_commands : uint32_t{
-		caniddigital,canidanalog,btntypes,lsbtn,addbtn,aintypes,lsain,addain,rate
+		caniddigital,canidanalog,btntypes,lsbtn,addbtn,aintypes,lsain,addain,rate,dvals,avals
 	};
 public:
 	CANInputMain();
