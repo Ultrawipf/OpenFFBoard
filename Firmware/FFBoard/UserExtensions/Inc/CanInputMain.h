@@ -52,9 +52,6 @@ public:
 
 
 protected:
-	uint16_t btnsources = 0; // Disabled by default
-	uint16_t ainsources = 0;
-
 	uint32_t report_rate_cnt = 0;
 	uint32_t report_rate = 1;
 
