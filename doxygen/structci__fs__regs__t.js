@@ -11,7 +11,7 @@ var structci__fs__regs__t =
     [ "CLK_RECOVER_IRC_EN", "structci__fs__regs__t.html#a840fb567ace7adb36c46e968dcc17fd0", null ],
     [ "CONTROL", "structci__fs__regs__t.html#aaaea7db1fe6041fb0cddf71cf4e8d209", null ],
     [ "CTL", "structci__fs__regs__t.html#a9ae8a0085a54c812c154b57b992bb5d3", null ],
-    [ "EP", "structci__fs__regs__t.html#a1404ba68705406a81e110e2847da7c0e", null ],
+    [ "EP", "structci__fs__regs__t.html#a5a8c3511e127e7f47a9c32e5c3c53caa", null ],
     [ "ERR_ENB", "structci__fs__regs__t.html#a4e8e0800167daeaa2377129dcb9e2159", null ],
     [ "ERR_STAT", "structci__fs__regs__t.html#addb9b7a2537d2c1eae2346348607b35a", null ],
     [ "FRM_NUMH", "structci__fs__regs__t.html#ac2344040161a207b93517871c1ac538b", null ],

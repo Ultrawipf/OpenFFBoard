@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['q_0',['Q',['../class_biquad.html#ac2e118b4a02e9adb7b37290b37e0dfe6',1,'Biquad']]],
-  ['q_1',['q',['../structbiquad__constant__t.html#af34dbe718370c37a5922997e8aba55f7',1,'biquad_constant_t']]],
+  ['q_0',['q',['../structbiquad__constant__t.html#af34dbe718370c37a5922997e8aba55f7',1,'biquad_constant_t']]],
+  ['q_1',['Q',['../class_biquad.html#ac2e118b4a02e9adb7b37290b37e0dfe6',1,'Biquad']]],
   ['qfloatscaler_2',['qfloatScaler',['../class_effects_calculator.html#a6d420fa45ffcc6df35772e92b256b703',1,'EffectsCalculator']]],
   ['qhd_3',['qhd',['../structehci__data__t.html#ad1ef27522f366806bdc8aad6117e1f24',1,'ehci_data_t']]],
   ['qhd_5fattach_5fqtd_4',['qhd_attach_qtd',['../ehci_8c.html#a57c7dd57956430e1661d661ccfdcae9a',1,'ehci.c']]],

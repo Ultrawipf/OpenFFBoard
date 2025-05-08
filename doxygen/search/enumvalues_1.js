@@ -15,7 +15,7 @@ var searchData=
   ['btncut_12',['btncut',['../class_s_p_i___buttons.html#aa31ff80673aee01a5b3303316c9a47d0a114ddfde19eb73d52d91a4a6f4d66adf',1,'SPI_Buttons']]],
   ['btnnum_13',['btnnum',['../class_s_p_i___buttons.html#aa31ff80673aee01a5b3303316c9a47d0a8f6247b8c4167035329ce85cb34db93f',1,'SPI_Buttons::btnnum()'],['../class_p_c_f8574_buttons.html#a4968701182a9f51430d9c750d6375b70a8f6247b8c4167035329ce85cb34db93f',1,'PCF8574Buttons::btnnum()'],['../class_can_buttons.html#a754ffff3064b81506b96e59d93099e19a8f6247b8c4167035329ce85cb34db93f',1,'CanButtons::btnnum()']]],
   ['btnpol_14',['btnpol',['../class_s_p_i___buttons.html#aa31ff80673aee01a5b3303316c9a47d0a12083ead688b2c4ad360ff56c0f3122e',1,'SPI_Buttons']]],
-  ['btntypes_15',['btntypes',['../class_f_f_b_h_i_d_main.html#a632f99d11cc2d6623e7341d704d641ada71b1503bb73853056d1ec2788927b6e9',1,'FFBHIDMain']]],
-  ['builtin_5fdriver_5fcount_16',['BUILTIN_DRIVER_COUNT',['../usbd_8c.html#a79e9f285d34216706a748fd7ba8941b7a684c73c98e0b3538c8e20a083b2b3521',1,'BUILTIN_DRIVER_COUNT():&#160;usbd.c'],['../usbh_8c.html#a0b887f38fa71033f0904f8e2330b6815a684c73c98e0b3538c8e20a083b2b3521',1,'BUILTIN_DRIVER_COUNT():&#160;usbh.c']]],
+  ['btntypes_15',['btntypes',['../class_c_a_n_input_main.html#add66e6c51e63b4205ed637cd36b15d26a71b1503bb73853056d1ec2788927b6e9',1,'CANInputMain::btntypes()'],['../class_f_f_b_h_i_d_main.html#a632f99d11cc2d6623e7341d704d641ada71b1503bb73853056d1ec2788927b6e9',1,'FFBHIDMain::btntypes()']]],
+  ['builtin_5fdriver_5fcount_16',['BUILTIN_DRIVER_COUNT',['../usbd_8c.html#a79e9f285d34216706a748fd7ba8941b7a684c73c98e0b3538c8e20a083b2b3521',1,'BUILTIN_DRIVER_COUNT():&#160;usbd.c'],['../usbh_8c.html#adbaf9202177df73e6880eab6e6aab329a684c73c98e0b3538c8e20a083b2b3521',1,'BUILTIN_DRIVER_COUNT():&#160;usbh.c']]],
   ['buttonsource_17',['Buttonsource',['../_class_i_ds_8h.html#a79467dc849dd02adbaa4373bbd7aba75ac8621e9a8a655af5ea5ef7c99fee794d',1,'ClassIDs.h']]]
 ];

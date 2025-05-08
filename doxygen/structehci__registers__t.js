@@ -51,7 +51,7 @@ var structehci__registers__t =
     [ "port_reset", "structehci__registers__t.html#a31f3a7a30448cd4bae59917f1f53e41a", null ],
     [ "port_test_control", "structehci__registers__t.html#a7116bb109538635b6d3ef3d909dd1a27", null ],
     [ "portsc", "structehci__registers__t.html#adb7cac7ca7fb6ac4875cb76d9eaa32b9", null ],
-    [ "portsc_bm", "structehci__registers__t.html#a33218bdf71afdc37d24414c09035f35a", null ],
+    [ "portsc_bm", "structehci__registers__t.html#a43411a6d6a5080b2239b4844ecc2bf21", null ],
     [ "reclamation", "structehci__registers__t.html#a16fca4c7c75d996513ecc4a1db0f443b", null ],
     [ "reserved", "structehci__registers__t.html#a76ce33ef1ed4159040c946939700348b", null ],
     [ "reset", "structehci__registers__t.html#aa69311155290a418f945018228c3e9cc", null ],

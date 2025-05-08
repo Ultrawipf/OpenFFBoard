@@ -124,6 +124,7 @@ var hierarchy =
         [ "VescCAN", "class_vesc_c_a_n.html", null ]
       ] ],
       [ "FFBoardMain", "class_f_f_board_main.html", [
+        [ "CANInputMain", "class_c_a_n_input_main.html", null ],
         [ "CanBridge", "class_can_bridge.html", null ],
         [ "CustomMain", "class_custom_main.html", null ],
         [ "FFBHIDMain", "class_f_f_b_h_i_d_main.html", [
@@ -327,6 +328,7 @@ var hierarchy =
       [ "AnalogSource", "class_analog_source.html", null ],
       [ "Axis", "class_axis.html", null ],
       [ "ButtonSource", "class_button_source.html", null ],
+      [ "CANInputMain", "class_c_a_n_input_main.html", null ],
       [ "CANPort", "class_c_a_n_port.html", [
         [ "CANPort_2B", "class_c_a_n_port__2_b.html", null ]
       ] ],
@@ -369,6 +371,10 @@ var hierarchy =
     [ "rusb2_controller_t", "structrusb2__controller__t.html", null ],
     [ "RUSB2_PIPE_TR_t", "struct_r_u_s_b2___p_i_p_e___t_r__t.html", null ],
     [ "scsi_read_capacity10_resp_t", "structscsi__read__capacity10__resp__t.html", null ],
+    [ "SelectableInputs", "class_selectable_inputs.html", [
+      [ "CANInputMain", "class_c_a_n_input_main.html", null ],
+      [ "FFBHIDMain", "class_f_f_b_h_i_d_main.html", null ]
+    ] ],
     [ "cpp_freertos::Semaphore", "classcpp__freertos_1_1_semaphore.html", [
       [ "cpp_freertos::BinarySemaphore", "classcpp__freertos_1_1_binary_semaphore.html", null ],
       [ "cpp_freertos::CountingSemaphore", "classcpp__freertos_1_1_counting_semaphore.html", null ]
@@ -393,6 +399,7 @@ var hierarchy =
     [ "cpp_freertos::Tasklet", "classcpp__freertos_1_1_tasklet.html", null ],
     [ "cpp_freertos::Thread", "classcpp__freertos_1_1_thread.html", [
       [ "ADS111X_AnalogSource", "class_a_d_s111_x___analog_source.html", null ],
+      [ "CANInputMain", "class_c_a_n_input_main.html", null ],
       [ "CDC_CommandInterface", "class_c_d_c___command_interface.html", null ],
       [ "EffectsCalculator", "class_effects_calculator.html", null ],
       [ "EncoderBissC", "class_encoder_biss_c.html", null ],

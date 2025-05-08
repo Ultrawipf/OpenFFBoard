@@ -229,7 +229,7 @@ var searchData=
   ['port_5ftest_5fmode_226',['port_test_mode',['../structhub__port__status__response__t.html#adf4625e9608f68c57d5b41459e1350c8',1,'hub_port_status_response_t']]],
   ['portsc_227',['portsc',['../structehci__registers__t.html#adb7cac7ca7fb6ac4875cb76d9eaa32b9',1,'ehci_registers_t']]],
   ['portsc1_228',['PORTSC1',['../structci__hs__regs__t.html#a021a527b12c19ca7ebb9009a06cb1daf',1,'ci_hs_regs_t']]],
-  ['portsc_5fbm_229',['portsc_bm',['../structehci__registers__t.html#a33218bdf71afdc37d24414c09035f35a',1,'ehci_registers_t']]],
+  ['portsc_5fbm_229',['portsc_bm',['../structehci__registers__t.html#a43411a6d6a5080b2239b4844ecc2bf21',1,'ehci_registers_t']]],
   ['portusers_230',['portUsers',['../class_c_a_n_port.html#ac5144ef8f20eecafd6fa44786a89be18',1,'CANPort::portUsers()'],['../class_i2_c_port.html#a6d876aed08bca0ce38d985312f92146b',1,'I2CPort::portUsers()']]],
   ['pos_231',['pos',['../class_encoder_biss_c.html#aae0f96d86fbeb7b699d5871b98616f9f',1,'EncoderBissC::pos()'],['../struct_t_m_c4671_biquad_filters.html#a3a8646b643bc4c442af4da6918b9b1fb',1,'TMC4671BiquadFilters::pos()'],['../class_encoder_local.html#af51f795087edfd5f505aec81fed47bc6',1,'EncoderLocal::pos()'],['../structmetric__t.html#a54387188e555c5a4cfa28ea5c6bb97d2',1,'metric_t::pos()'],['../class_encoder_s_s_i.html#a098c07b8d74ef71917df85c9b54416e2',1,'EncoderSSI::pos()']]],
   ['pos0_232',['pos0',['../struct_t_m_c4671_h_a_l_l_conf.html#aadbd2817f9252e55dcb7d5a811b332a5',1,'TMC4671HALLConf']]],

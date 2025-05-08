@@ -129,6 +129,9 @@ var files_dup =
     [ "ringbufferwrapper.h", "ringbufferwrapper_8h.html", [
       [ "RingBufferWrapper", "class_ring_buffer_wrapper.html", "class_ring_buffer_wrapper" ]
     ] ],
+    [ "SelectableInputs.h", "_selectable_inputs_8h.html", [
+      [ "SelectableInputs", "class_selectable_inputs.html", "class_selectable_inputs" ]
+    ] ],
     [ "semaphore.hpp", "semaphore_8hpp.html", [
       [ "cpp_freertos::SemaphoreCreateException", "classcpp__freertos_1_1_semaphore_create_exception.html", "classcpp__freertos_1_1_semaphore_create_exception" ],
       [ "cpp_freertos::Semaphore", "classcpp__freertos_1_1_semaphore.html", "classcpp__freertos_1_1_semaphore" ],
@@ -233,6 +236,7 @@ var files_dup =
     [ "PersistentStorage.cpp", "_persistent_storage_8cpp.html", null ],
     [ "ringbuffer.c", "ringbuffer_8c.html", "ringbuffer_8c" ],
     [ "ringbufferwrapper.cpp", "ringbufferwrapper_8cpp.html", null ],
+    [ "SelectableInputs.cpp", "_selectable_inputs_8cpp.html", null ],
     [ "SerialFFB.cpp", "_serial_f_f_b_8cpp.html", null ],
     [ "SPI.cpp", "_s_p_i_8cpp.html", "_s_p_i_8cpp" ],
     [ "SpiHandler.cpp", "_spi_handler_8cpp.html", null ],
@@ -429,6 +433,9 @@ var files_dup =
     [ "CanButtons.h", "_can_buttons_8h.html", [
       [ "CanButtons", "class_can_buttons.html", "class_can_buttons" ]
     ] ],
+    [ "CanInputMain.h", "_can_input_main_8h.html", [
+      [ "CANInputMain", "class_c_a_n_input_main.html", "class_c_a_n_input_main" ]
+    ] ],
     [ "ClassIDs.h", "_class_i_ds_8h.html", "_class_i_ds_8h" ],
     [ "CustomMain.h", "_custom_main_8h.html", [
       [ "CustomMain", "class_custom_main.html", "class_custom_main" ]
@@ -495,6 +502,7 @@ var files_dup =
     [ "CanAnalog.cpp", "_can_analog_8cpp.html", null ],
     [ "CanBridge.cpp", "_can_bridge_8cpp.html", "_can_bridge_8cpp" ],
     [ "CanButtons.cpp", "_can_buttons_8cpp.html", null ],
+    [ "CanInputMain.cpp", "_can_input_main_8cpp.html", "_can_input_main_8cpp" ],
     [ "CustomMain.cpp", "_custom_main_8cpp.html", null ],
     [ "eeprom_addresses.c", "eeprom__addresses_8c.html", "eeprom__addresses_8c" ],
     [ "EncoderBissC.cpp", "_encoder_biss_c_8cpp.html", "_encoder_biss_c_8cpp" ],
