@@ -95,7 +95,7 @@ Axis::Axis(char axis,volatile Control_t* control) :CommandHandler("axis", CLSID_
 		setInstance(0);
 		this->flashAddrs = AxisFlashAddrs({ADR_AXIS1_CONFIG, ADR_AXIS1_MAX_SPEED, ADR_AXIS1_MAX_ACCEL,
 										   ADR_AXIS1_ENDSTOP, ADR_AXIS1_POWER, ADR_AXIS1_DEGREES,ADR_AXIS1_EFFECTS1,ADR_AXIS1_EFFECTS2,ADR_AXIS1_ENC_RATIO,
-										   ADR_AXIS1_SPEEDACCEL_FILTER});
+										   ADR_AXIS1_SPEEDACCEL_FILTER,ADR_AXIS1_POSTPROCESS1});
 	}
 	else if (axis == 'Y')
 	{
@@ -103,14 +103,14 @@ Axis::Axis(char axis,volatile Control_t* control) :CommandHandler("axis", CLSID_
 		setInstance(1);
 		this->flashAddrs = AxisFlashAddrs({ADR_AXIS2_CONFIG, ADR_AXIS2_MAX_SPEED, ADR_AXIS2_MAX_ACCEL,
 										   ADR_AXIS2_ENDSTOP, ADR_AXIS2_POWER, ADR_AXIS2_DEGREES,ADR_AXIS2_EFFECTS1,ADR_AXIS2_EFFECTS2, ADR_AXIS2_ENC_RATIO,
-										   ADR_AXIS2_SPEEDACCEL_FILTER});
+										   ADR_AXIS2_SPEEDACCEL_FILTER,ADR_AXIS2_POSTPROCESS1});
 	}
 	else if (axis == 'Z')
 	{
 		setInstance(2);
 		this->flashAddrs = AxisFlashAddrs({ADR_AXIS3_CONFIG, ADR_AXIS3_MAX_SPEED, ADR_AXIS3_MAX_ACCEL,
 										   ADR_AXIS3_ENDSTOP, ADR_AXIS3_POWER, ADR_AXIS3_DEGREES,ADR_AXIS3_EFFECTS1,ADR_AXIS3_EFFECTS2,ADR_AXIS3_ENC_RATIO,
-										   ADR_AXIS3_SPEEDACCEL_FILTER});
+										   ADR_AXIS3_SPEEDACCEL_FILTER,ADR_AXIS3_POSTPROCESS1});
 	}
 
 
@@ -157,6 +157,8 @@ void Axis::registerCommands(){
 	registerCommand("filterAccel", Axis_commands::filterAccel, "Biquad filter freq and q*100 for accel", CMDFLAG_GET);
 
 	registerCommand("cpr", Axis_commands::cpr, "Reported encoder CPR",CMDFLAG_GET);
+	registerCommand("expo", Axis_commands::expo, "Exponential curve correction (x^(val/exposcale)+1)", CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("exposcale", Axis_commands::exposcale, "Scaler constant for expo", CMDFLAG_GET);
 }
 
 /*
@@ -235,6 +237,11 @@ void Axis::restoreFlash(){
 		accelFilter.setQ(filterAccelCst[this->filterProfileId].q / 100.0);
 	}
 
+	uint16_t pp1;
+	if(Flash_Read(flashAddrs.postprocess1, &pp1)){
+		setExpo(pp1 & 0xff);
+	}
+
 }
 // Saves parameters to flash.
 void Axis::saveFlash(){
@@ -253,6 +260,10 @@ void Axis::saveFlash(){
 	// save CF biquad
 	uint16_t filterStorage = (uint16_t)this->filterProfileId & 0xFF;
 	Flash_Write(flashAddrs.speedAccelFilter, filterStorage);
+
+	// Postprocessing
+	Flash_Write(flashAddrs.postprocess1, expoValInt & 0xff);
+
 }
 
 
@@ -598,7 +609,7 @@ void Axis::calculateAxisEffects(bool ffb_on){
 		float speed = metric.current.speed * INTERNAL_SCALER_FRICTION;
 		float speedRampupCeil = 4096;
 		float rampupFactor = 1.0;
-		if (fabs (speed) < speedRampupCeil) {								// if speed in the range to rampup we apply a sinus curbe to ramup
+		if (fabs (speed) < speedRampupCeil) {								// if speed in the range to rampup we apply a sine curve
 			float phaseRad = M_PI * ((fabs (speed) / speedRampupCeil) - 0.5);// we start to compute the normalized angle (speed / normalizedSpeed@5%) and translate it of -1/2PI to translate sin on 1/2 periode
 			rampupFactor = ( 1 + sin(phaseRad ) ) / 2;						// sin value is -1..1 range, we translate it to 0..2 and we scale it by 2
 		}
@@ -655,6 +666,18 @@ uint16_t Axis::getPower(){
 	return power;
 }
 
+/**
+ * Calculates an exponential torque correction curve
+ */
+int32_t Axis::calculateExpoTorque(int32_t torque){
+	float torquef = (float)torque / (float)0x7fff; // This down and upscaling may introduce float artifacts. Do this before scaling down.
+	if(torquef < 0){
+		return -powf(-torquef,expo) * 0x7fff;
+	}else{
+		return powf(torquef,expo) * 0x7fff;
+	}
+}
+
 void  Axis::updateTorqueScaler() {
 	effect_margin_scaler = ((float)fx_ratio_i/255.0);
 	torqueScaler = ((float)power / (float)0x7fff);
@@ -702,10 +725,14 @@ bool Axis::updateTorque(int32_t* totalTorque) {
 
 	// Scale effect torque
 	int32_t torque = effectTorque; // Game effects
+	if(expo != 1){
+		torque = calculateExpoTorque(torque);
+	}
 	torque *= effect_margin_scaler;
 	torque += axisEffectTorque; // Independent effects
 	torque += updateEndstop();
 	torque *= torqueScaler; // Scale to power
+
 
 	// TODO speed and accel limiters
 	if(maxSpeedDegS > 0){
@@ -784,6 +811,21 @@ void Axis::setDegrees(uint16_t degrees){
 	}
 }
 
+
+void Axis::setExpo(int val){
+	val = clip(val, -127, 127);
+	expoValInt = val;
+	if(val == 0){
+		expo = 1; // Explicitly force expo off
+		return;
+	}
+	float valF = abs((float)val / expoScaler);
+	if(val < 0){
+		expo = 1.0f/(1.0f+valF);
+	}else{
+		expo = 1+valF;
+	}
+}
 
 CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& replies){
 
@@ -996,6 +1038,14 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 		}else{
 			return CommandStatus::ERR;
 		}
+		break;
+
+	case Axis_commands::expo:
+		handleGetSetFunc(cmd, replies, expoValInt, &Axis::setExpo, this); // need to also provide the expoScaler constant
+		break;
+
+	case Axis_commands::exposcale:
+		handleGetSet(cmd, replies, expoScaler); // need to also provide the expoScaler constant
 		break;
 
 	default:

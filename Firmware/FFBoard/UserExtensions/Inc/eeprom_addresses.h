@@ -13,11 +13,11 @@
 
 #include "main.h"
 // Change this to the amount of currently registered variables
-#define NB_OF_VAR 161
+#define NB_OF_VAR 164
 extern const uint16_t VirtAddVarTab[NB_OF_VAR];
 
 // Amount of variables in exportable list
-#define NB_EXPORTABLE_ADR 146
+#define NB_EXPORTABLE_ADR 149
 extern const uint16_t exportableFlashAddresses[NB_EXPORTABLE_ADR];
 
 
@@ -103,6 +103,7 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_AXIS1_SPEEDACCEL_FILTER 0x309 // Speed/Accel filter Lowpass profile
 #define ADR_AXIS1_ENC_RATIO 0x30A // Accel filter Lowpass
 #define ADR_AXIS1_EFFECTS2 0x30B // 0-7 Friction, 8-15 Inertia
+#define ADR_AXIS1_POSTPROCESS1 0x30C // 0-7 expo curve
 // TMC1
 #define ADR_TMC1_MOTCONF 0x320 // 0-2: MotType 3-5: PhiE source 6-15: Poles
 #define ADR_TMC1_CPR 0x321
@@ -128,6 +129,7 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_AXIS2_SPEEDACCEL_FILTER 0x349 // Speed/Accel filter Lowpass profile
 #define ADR_AXIS2_ENC_RATIO 0x34A // Store the encoder ratio for an axis
 #define ADR_AXIS2_EFFECTS2 0x34B // 0-7 Friction, 8-15 Inertia
+#define ADR_AXIS2_POSTPROCESS1 0x34C // 0-7 expo curve
 // TMC2
 #define ADR_TMC2_MOTCONF 0x360 // 0-2: MotType 3-5: PhiE source 6-15: Poles
 #define ADR_TMC2_CPR 0x361
@@ -153,6 +155,7 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_AXIS3_SPEEDACCEL_FILTER 0x389 // Speed/Accel filter Lowpass profile
 #define ADR_AXIS3_ENC_RATIO 0x38A // Store the encoder ratio for an axis
 #define ADR_AXIS3_EFFECTS2 0x38B // 0-7 Friction, 8-15 Inertia
+#define ADR_AXIS3_POSTPROCESS1 0x38C // 0-7 expo curve
 // TMC3
 #define ADR_TMC3_MOTCONF 0x3A0 // 0-2: MotType 3-5: PhiE source 6-15: Poles
 #define ADR_TMC3_CPR 0x3A1
@@ -216,6 +219,7 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_LOCALANALOG_MAX_6 0x50D
 #define ADR_LOCALANALOG_MIN_7 0x50E
 #define ADR_LOCALANALOG_MAX_7 0x50F
+// ADS111X
 #define ADR_ADS111X_MIN_0 0x510
 #define ADR_ADS111X_MAX_0 0x511
 #define ADR_ADS111X_MIN_1 0x512

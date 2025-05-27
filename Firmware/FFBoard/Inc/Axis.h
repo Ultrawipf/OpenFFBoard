@@ -59,6 +59,7 @@ struct AxisFlashAddrs
 	uint16_t encoderRatio = ADR_AXIS1_ENC_RATIO;
 
 	uint16_t speedAccelFilter = ADR_AXIS1_SPEEDACCEL_FILTER;
+	uint16_t postprocess1 = ADR_AXIS1_POSTPROCESS1;
 };
 
 struct AxisConfig
@@ -92,7 +93,8 @@ struct GearRatio_t{
 enum class Axis_commands : uint32_t{
 	power=0x00,degrees=0x01,esgain,zeroenc,invert,idlespring,axisdamper,enctype,drvtype,
 	pos,maxspeed,maxtorquerate,fxratio,curtorque,curpos,curspd,curaccel,reductionScaler,
-	filterSpeed, filterAccel, filterProfileId,cpr,axisfriction,axisinertia
+	filterSpeed, filterAccel, filterProfileId,cpr,axisfriction,axisinertia,
+	expo,exposcale
 };
 
 class Axis : public PersistentStorage, public CommandHandler, public ErrorHandler
@@ -159,12 +161,15 @@ public:
 	int32_t getTorque(); // current torque scaled as a 32 bit signed value
 	int16_t updateEndstop();
 
+	int32_t calculateExpoTorque(int32_t torque);
+
 	void startForceFadeIn(float start = 0,float fadeTime = 0.5);
 
 	metric_t* getMetrics();
 
 	void setEffectTorque(int32_t torque);
 	bool updateTorque(int32_t* totalTorque);
+
 
 	void setGearRatio(uint8_t numerator,uint8_t denominator);
 
@@ -271,8 +276,14 @@ private:
 	void setFxRatio(uint8_t val);
 	void updateTorqueScaler();
 
+	void setExpo(int val);
+
 
 	GearRatio_t gearRatio;
+
+	int expoValInt = 0; // expo v = val*2 => v<0 ? 1/-v : v
+	float expo = 1;
+	float expoScaler = 50; // 0.28 to 3.54
 
 };
 
