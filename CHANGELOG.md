@@ -1,5 +1,5 @@
 ### Changes this version:
-- Added remote CAN button/analog source mainclass
+- Added exponential torque postprocessing for game effects
 
 ### Changes in 1.16:
 
@@ -15,3 +15,4 @@ Internal changes:
 - F407: ADC now triggered by timer to reduce interrupt frequency
 - Using analog VREF for voltage sensing (better accuracy with unstable 3.3V)
 - Added chip temperature readout
+- Added remote CAN button/analog source mainclass
