@@ -239,7 +239,7 @@ void Axis::restoreFlash(){
 
 	uint16_t pp1;
 	if(Flash_Read(flashAddrs.postprocess1, &pp1)){
-		setExpo(pp1 & 0xff);
+		setExpo((int8_t)(pp1 & 0xff));
 	}
 
 }
