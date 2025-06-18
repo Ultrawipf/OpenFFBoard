@@ -41,6 +41,7 @@ public:
 		const CAN_INITTYPE init;
 		const uint32_t speed;
 		const char* name;
+		constexpr PresetEntry(const CAN_INITTYPE init,const uint32_t speed,const char* name):init(init),speed(speed),name(name){}
 	};
 	constexpr CANPortHardwareConfig(const bool canChangeSpeed,std::span<const PresetEntry> presets_list)
 	: canChangeSpeed(canChangeSpeed),presets(presets_list){}
