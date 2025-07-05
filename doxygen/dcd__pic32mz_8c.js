@@ -44,7 +44,7 @@ var dcd__pic32mz_8c =
     [ "rx_fifo_read", "dcd__pic32mz_8c.html#a22030ee09d2d0dabd52b3344f67583a4", null ],
     [ "tx_fifo_write", "dcd__pic32mz_8c.html#ac5c3e737252984a3174af61bd9ca89a9", null ],
     [ "xfer_complete", "dcd__pic32mz_8c.html#a3c43b871dc4a7fe703ad0d1051032c46", null ],
-    [ "_dcd", "dcd__pic32mz_8c.html#a65cb10beb48a9086b604913974dcca40", null ],
+    [ "_dcd", "dcd__pic32mz_8c.html#abe5c241b6d108302f9e004c74a9a27b0", null ],
     [ "dev_addr", "dcd__pic32mz_8c.html#a1997a5306d6d04a9ce867303d1a6d9e1", null ],
     [ "ep0_stage", "dcd__pic32mz_8c.html#a778a09df46b2c45edbf0b9471f2bc43a", null ],
     [ "ep0IN_desc", "dcd__pic32mz_8c.html#ac8adbde7452034fd0d2bd083d9767a27", null ],

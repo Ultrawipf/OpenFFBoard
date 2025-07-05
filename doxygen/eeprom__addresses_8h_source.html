@@ -102,11 +102,11 @@ $(document).ready(function(){initNavTree('eeprom__addresses_8h_source.html','');
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &quot;main.h&quot;</span></div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment">// Change this to the amount of currently registered variables</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#define NB_OF_VAR 161</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#define NB_OF_VAR 164</span></div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="keyword">extern</span> <span class="keyword">const</span> uint16_t <a class="code hl_variable" href="eeprom__addresses_8h.html#a27d99716228bbb05cff8443e2ab0ebcb">VirtAddVarTab</a>[NB_OF_VAR];</div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment">// Amount of variables in exportable list</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#define NB_EXPORTABLE_ADR 146</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#define NB_EXPORTABLE_ADR 149</span></div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="keyword">extern</span> <span class="keyword">const</span> uint16_t <a class="code hl_variable" href="eeprom__addresses_8h.html#ab97cf75868cb1d0bbe370e27346a4e5e">exportableFlashAddresses</a>[NB_EXPORTABLE_ADR];</div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
@@ -192,130 +192,134 @@ $(document).ready(function(){initNavTree('eeprom__addresses_8h_source.html','');
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span><span class="preprocessor">#define ADR_AXIS1_SPEEDACCEL_FILTER 0x309 </span><span class="comment">// Speed/Accel filter Lowpass profile</span></div>
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span><span class="preprocessor">#define ADR_AXIS1_ENC_RATIO 0x30A </span><span class="comment">// Accel filter Lowpass</span></div>
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span><span class="preprocessor">#define ADR_AXIS1_EFFECTS2 0x30B </span><span class="comment">// 0-7 Friction, 8-15 Inertia</span></div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span><span class="comment">// TMC1</span></div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span><span class="preprocessor">#define ADR_TMC1_MOTCONF 0x320 </span><span class="comment">// 0-2: MotType 3-5: PhiE source 6-15: Poles</span></div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span><span class="preprocessor">#define ADR_TMC1_CPR 0x321</span></div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span><span class="preprocessor">#define ADR_TMC1_ENCA 0x322 </span><span class="comment">// Misc</span></div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span><span class="preprocessor">#define ADR_TMC1_ADC_I0_OFS 0x323</span></div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span><span class="preprocessor">#define ADR_TMC1_ADC_I1_OFS 0x324</span></div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span><span class="preprocessor">#define ADR_TMC1_ENC_OFFSET 0x325</span></div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span><span class="preprocessor">#define ADR_TMC1_OFFSETFLUX 0x326</span></div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span><span class="preprocessor">#define ADR_TMC1_TORQUE_P 0x327</span></div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span><span class="preprocessor">#define ADR_TMC1_TORQUE_I 0x328</span></div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span><span class="preprocessor">#define ADR_TMC1_FLUX_P 0x329</span></div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span><span class="preprocessor">#define ADR_TMC1_FLUX_I 0x32A</span></div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span><span class="preprocessor">#define ADR_TMC1_PHIE_OFS 0x32B</span></div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span><span class="preprocessor">#define ADR_TMC1_TRQ_FILT 0x32C</span></div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span><span class="comment">// AXIS2</span></div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span><span class="preprocessor">#define ADR_AXIS2_CONFIG 0x341 </span><span class="comment">// 0-2 ENC, 3-5 DRV</span></div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span><span class="preprocessor">#define ADR_AXIS2_POWER 0x342</span></div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span><span class="preprocessor">#define ADR_AXIS2_DEGREES 0x343</span></div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span><span class="preprocessor">#define ADR_AXIS2_MAX_SPEED 0x344 </span><span class="comment">// Store the max speed</span></div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span><span class="preprocessor">#define ADR_AXIS2_MAX_ACCEL 0x345 </span><span class="comment">// Store the max accel</span></div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span><span class="preprocessor">#define ADR_AXIS2_ENDSTOP 0x347 </span><span class="comment">// 0-7 endstop margin, 8-15 endstop stiffness</span></div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span><span class="preprocessor">#define ADR_AXIS2_EFFECTS1 0x348 </span><span class="comment">// 0-7 idlespring, 8-15 damper</span></div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span><span class="preprocessor">#define ADR_AXIS2_SPEEDACCEL_FILTER 0x349 </span><span class="comment">// Speed/Accel filter Lowpass profile</span></div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span><span class="preprocessor">#define ADR_AXIS2_ENC_RATIO 0x34A </span><span class="comment">// Store the encoder ratio for an axis</span></div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span><span class="preprocessor">#define ADR_AXIS2_EFFECTS2 0x34B </span><span class="comment">// 0-7 Friction, 8-15 Inertia</span></div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span><span class="comment">// TMC2</span></div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span><span class="preprocessor">#define ADR_TMC2_MOTCONF 0x360 </span><span class="comment">// 0-2: MotType 3-5: PhiE source 6-15: Poles</span></div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span><span class="preprocessor">#define ADR_TMC2_CPR 0x361</span></div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span><span class="preprocessor">#define ADR_TMC2_ENCA 0x362 </span><span class="comment">// Misc</span></div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span><span class="preprocessor">#define ADR_TMC2_ADC_I0_OFS 0x363</span></div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span><span class="preprocessor">#define ADR_TMC2_ADC_I1_OFS 0x364</span></div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span><span class="preprocessor">#define ADR_TMC2_ENC_OFFSET 0x365</span></div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span><span class="preprocessor">#define ADR_TMC2_OFFSETFLUX 0x366</span></div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span><span class="preprocessor">#define ADR_TMC2_TORQUE_P 0x367</span></div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span><span class="preprocessor">#define ADR_TMC2_TORQUE_I 0x368</span></div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span><span class="preprocessor">#define ADR_TMC2_FLUX_P 0x369</span></div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span><span class="preprocessor">#define ADR_TMC2_FLUX_I 0x36A</span></div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span><span class="preprocessor">#define ADR_TMC2_PHIE_OFS 0x36B</span></div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span><span class="preprocessor">#define ADR_TMC2_TRQ_FILT 0x36C</span></div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span><span class="comment">// AXIS3</span></div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span><span class="preprocessor">#define ADR_AXIS3_CONFIG 0x381 </span><span class="comment">// 0-2 ENC, 3-5 DRV</span></div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span><span class="preprocessor">#define ADR_AXIS3_POWER 0x382</span></div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span><span class="preprocessor">#define ADR_AXIS3_DEGREES 0x383</span></div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span><span class="preprocessor">#define ADR_AXIS3_MAX_SPEED 0x384 </span><span class="comment">// Store the max speed</span></div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span><span class="preprocessor">#define ADR_AXIS3_MAX_ACCEL 0x385 </span><span class="comment">// Store the max accel</span></div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span><span class="preprocessor">#define ADR_AXIS3_ENDSTOP 0x387 </span><span class="comment">// 0-7 endstop margin, 8-15 endstop stiffness</span></div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span><span class="preprocessor">#define ADR_AXIS3_EFFECTS1 0x388 </span><span class="comment">// 0-7 idlespring, 8-15 damper</span></div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span><span class="preprocessor">#define ADR_AXIS3_SPEEDACCEL_FILTER 0x389 </span><span class="comment">// Speed/Accel filter Lowpass profile</span></div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span><span class="preprocessor">#define ADR_AXIS3_ENC_RATIO 0x38A </span><span class="comment">// Store the encoder ratio for an axis</span></div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span><span class="preprocessor">#define ADR_AXIS3_EFFECTS2 0x38B </span><span class="comment">// 0-7 Friction, 8-15 Inertia</span></div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span><span class="comment">// TMC3</span></div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span><span class="preprocessor">#define ADR_TMC3_MOTCONF 0x3A0 </span><span class="comment">// 0-2: MotType 3-5: PhiE source 6-15: Poles</span></div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span><span class="preprocessor">#define ADR_TMC3_CPR 0x3A1</span></div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span><span class="preprocessor">#define ADR_TMC3_ENCA 0x3A2 </span><span class="comment">// Misc</span></div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span><span class="preprocessor">#define ADR_TMC3_ADC_I0_OFS 0x3A3</span></div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span><span class="preprocessor">#define ADR_TMC3_ADC_I1_OFS 0x3A4</span></div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span><span class="preprocessor">#define ADR_TMC3_ENC_OFFSET 0x3A5</span></div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span><span class="preprocessor">#define ADR_TMC3_OFFSETFLUX 0x3A6</span></div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span><span class="preprocessor">#define ADR_TMC3_TORQUE_P 0x3A7</span></div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span><span class="preprocessor">#define ADR_TMC3_TORQUE_I 0x3A8</span></div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span><span class="preprocessor">#define ADR_TMC3_FLUX_P 0x3A9</span></div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span><span class="preprocessor">#define ADR_TMC3_FLUX_I 0x3AA</span></div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span><span class="preprocessor">#define ADR_TMC3_PHIE_OFS 0x3AB</span></div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span><span class="preprocessor">#define ADR_TMC3_TRQ_FILT 0x3AC</span></div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span><span class="comment">// RMD CAN Motor</span></div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span><span class="preprocessor">#define ADR_RMD1_DATA1 0x3C0 </span><span class="comment">//0-4 CAN ID</span></div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span><span class="preprocessor">#define ADR_RMD1_TORQUE 0x3C1 </span><span class="comment">//Maximum current</span></div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span><span class="preprocessor">#define ADR_RMD1_OFFSET 0x3C2 </span><span class="comment">//Position offset</span></div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span><span class="preprocessor">#define ADR_RMD2_DATA1 0x3C3</span></div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span><span class="preprocessor">#define ADR_RMD2_TORQUE 0x3C4</span></div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span><span class="preprocessor">#define ADR_RMD2_OFFSET 0x3C5</span></div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span><span class="comment">// Odrive</span></div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span><span class="preprocessor">#define ADR_ODRIVE_CANID 0x3D0 </span><span class="comment">//0-6 ID M0, 7-12 ID M1, 13-15 can speed</span></div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span><span class="preprocessor">#define ADR_ODRIVE_SETTING1_M0 0x3D1</span></div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span><span class="preprocessor">#define ADR_ODRIVE_SETTING1_M1 0x3D2</span></div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span><span class="preprocessor">#define ADR_ODRIVE_OFS_M0 0x3D3 </span><span class="comment">// Encoder offset position reload</span></div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span><span class="preprocessor">#define ADR_ODRIVE_OFS_M1 0x3D4</span></div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span><span class="comment">// VESC Section</span></div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span><span class="preprocessor">#define ADR_VESC1_CANID 0x3E0 </span><span class="comment">//0-7 AxisCanID, 8-16 VescCanId</span></div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span><span class="preprocessor">#define ADR_VESC1_DATA 0x3E1 </span><span class="comment">//0-2 can speed, 3 useVescEncoder</span></div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span><span class="preprocessor">#define ADR_VESC1_OFFSET 0x3E2 </span><span class="comment">//16b offset</span></div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span><span class="preprocessor">#define ADR_VESC2_CANID 0x3E3 </span><span class="comment">//0-8 AxisCanID, 8-16 VescCanId</span></div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span><span class="preprocessor">#define ADR_VESC2_DATA 0x3E4 </span><span class="comment">//0-2 can speed, 3 useVescEncoder</span></div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span><span class="preprocessor">#define ADR_VESC2_OFFSET 0x3E5 </span><span class="comment">//16b offset</span></div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span><span class="preprocessor">#define ADR_VESC3_CANID 0x3E6 </span><span class="comment">//0-8 AxisCanID, 8-16 VescCanId</span></div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span><span class="preprocessor">#define ADR_VESC3_DATA 0x3E7 </span><span class="comment">//0-2 can speed, 3 useVescEncoder</span></div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span><span class="preprocessor">#define ADR_VESC3_OFFSET 0x3E8 </span><span class="comment">//16b offset</span></div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span><span class="comment">//MT Encoder</span></div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span><span class="preprocessor">#define ADR_MTENC_OFS 0x400</span></div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span><span class="preprocessor">#define ADR_MTENC_CONF1 0x401</span></div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span><span class="comment">// Biss-C</span></div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span><span class="preprocessor">#define ADR_BISSENC_CONF1 0x410</span></div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span><span class="preprocessor">#define ADR_BISSENC_OFS 0x411</span></div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span><span class="comment">// SSI</span></div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span><span class="preprocessor">#define ADR_SSI_CONF1 0x413</span></div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span><span class="preprocessor">#define ADR_SSI_OFS 0x414</span></div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span><span class="comment">// Analog min/max calibrations</span></div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span><span class="preprocessor">#define ADR_LOCALANALOG_MIN_0 0x500</span></div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span><span class="preprocessor">#define ADR_LOCALANALOG_MAX_0 0x501</span></div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span><span class="preprocessor">#define ADR_LOCALANALOG_MIN_1 0x502</span></div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span><span class="preprocessor">#define ADR_LOCALANALOG_MAX_1 0x503</span></div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span><span class="preprocessor">#define ADR_LOCALANALOG_MIN_2 0x504</span></div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span><span class="preprocessor">#define ADR_LOCALANALOG_MAX_2 0x505</span></div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span><span class="preprocessor">#define ADR_LOCALANALOG_MIN_3 0x506</span></div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span><span class="preprocessor">#define ADR_LOCALANALOG_MAX_3 0x507</span></div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span><span class="preprocessor">#define ADR_LOCALANALOG_MIN_4 0x508</span></div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span><span class="preprocessor">#define ADR_LOCALANALOG_MAX_4 0x509</span></div>
-<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span><span class="preprocessor">#define ADR_LOCALANALOG_MIN_5 0x50A</span></div>
-<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span><span class="preprocessor">#define ADR_LOCALANALOG_MAX_5 0x50B</span></div>
-<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span><span class="preprocessor">#define ADR_LOCALANALOG_MIN_6 0x50C</span></div>
-<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span><span class="preprocessor">#define ADR_LOCALANALOG_MAX_6 0x50D</span></div>
-<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span><span class="preprocessor">#define ADR_LOCALANALOG_MIN_7 0x50E</span></div>
-<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span><span class="preprocessor">#define ADR_LOCALANALOG_MAX_7 0x50F</span></div>
-<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span><span class="preprocessor">#define ADR_ADS111X_MIN_0 0x510</span></div>
-<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span><span class="preprocessor">#define ADR_ADS111X_MAX_0 0x511</span></div>
-<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span><span class="preprocessor">#define ADR_ADS111X_MIN_1 0x512</span></div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span><span class="preprocessor">#define ADR_ADS111X_MAX_1 0x513</span></div>
-<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span><span class="preprocessor">#define ADR_ADS111X_MIN_2 0x514</span></div>
-<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span><span class="preprocessor">#define ADR_ADS111X_MAX_2 0x515</span></div>
-<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span><span class="preprocessor">#define ADR_ADS111X_MIN_3 0x516</span></div>
-<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span><span class="preprocessor">#define ADR_ADS111X_MAX_3 0x517</span></div>
-<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span><span class="preprocessor">#endif </span><span class="comment">/* EEPROM_ADDRESSES_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span><span class="preprocessor">#define ADR_AXIS1_POSTPROCESS1 0x30C </span><span class="comment">// 0-7 expo curve</span></div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span><span class="comment">// TMC1</span></div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span><span class="preprocessor">#define ADR_TMC1_MOTCONF 0x320 </span><span class="comment">// 0-2: MotType 3-5: PhiE source 6-15: Poles</span></div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span><span class="preprocessor">#define ADR_TMC1_CPR 0x321</span></div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span><span class="preprocessor">#define ADR_TMC1_ENCA 0x322 </span><span class="comment">// Misc</span></div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span><span class="preprocessor">#define ADR_TMC1_ADC_I0_OFS 0x323</span></div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span><span class="preprocessor">#define ADR_TMC1_ADC_I1_OFS 0x324</span></div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span><span class="preprocessor">#define ADR_TMC1_ENC_OFFSET 0x325</span></div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span><span class="preprocessor">#define ADR_TMC1_OFFSETFLUX 0x326</span></div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span><span class="preprocessor">#define ADR_TMC1_TORQUE_P 0x327</span></div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span><span class="preprocessor">#define ADR_TMC1_TORQUE_I 0x328</span></div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span><span class="preprocessor">#define ADR_TMC1_FLUX_P 0x329</span></div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span><span class="preprocessor">#define ADR_TMC1_FLUX_I 0x32A</span></div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span><span class="preprocessor">#define ADR_TMC1_PHIE_OFS 0x32B</span></div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span><span class="preprocessor">#define ADR_TMC1_TRQ_FILT 0x32C</span></div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span><span class="comment">// AXIS2</span></div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span><span class="preprocessor">#define ADR_AXIS2_CONFIG 0x341 </span><span class="comment">// 0-2 ENC, 3-5 DRV</span></div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span><span class="preprocessor">#define ADR_AXIS2_POWER 0x342</span></div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span><span class="preprocessor">#define ADR_AXIS2_DEGREES 0x343</span></div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span><span class="preprocessor">#define ADR_AXIS2_MAX_SPEED 0x344 </span><span class="comment">// Store the max speed</span></div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span><span class="preprocessor">#define ADR_AXIS2_MAX_ACCEL 0x345 </span><span class="comment">// Store the max accel</span></div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span><span class="preprocessor">#define ADR_AXIS2_ENDSTOP 0x347 </span><span class="comment">// 0-7 endstop margin, 8-15 endstop stiffness</span></div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span><span class="preprocessor">#define ADR_AXIS2_EFFECTS1 0x348 </span><span class="comment">// 0-7 idlespring, 8-15 damper</span></div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span><span class="preprocessor">#define ADR_AXIS2_SPEEDACCEL_FILTER 0x349 </span><span class="comment">// Speed/Accel filter Lowpass profile</span></div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span><span class="preprocessor">#define ADR_AXIS2_ENC_RATIO 0x34A </span><span class="comment">// Store the encoder ratio for an axis</span></div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span><span class="preprocessor">#define ADR_AXIS2_EFFECTS2 0x34B </span><span class="comment">// 0-7 Friction, 8-15 Inertia</span></div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span><span class="preprocessor">#define ADR_AXIS2_POSTPROCESS1 0x34C </span><span class="comment">// 0-7 expo curve</span></div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span><span class="comment">// TMC2</span></div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span><span class="preprocessor">#define ADR_TMC2_MOTCONF 0x360 </span><span class="comment">// 0-2: MotType 3-5: PhiE source 6-15: Poles</span></div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span><span class="preprocessor">#define ADR_TMC2_CPR 0x361</span></div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span><span class="preprocessor">#define ADR_TMC2_ENCA 0x362 </span><span class="comment">// Misc</span></div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span><span class="preprocessor">#define ADR_TMC2_ADC_I0_OFS 0x363</span></div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span><span class="preprocessor">#define ADR_TMC2_ADC_I1_OFS 0x364</span></div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span><span class="preprocessor">#define ADR_TMC2_ENC_OFFSET 0x365</span></div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span><span class="preprocessor">#define ADR_TMC2_OFFSETFLUX 0x366</span></div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span><span class="preprocessor">#define ADR_TMC2_TORQUE_P 0x367</span></div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span><span class="preprocessor">#define ADR_TMC2_TORQUE_I 0x368</span></div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span><span class="preprocessor">#define ADR_TMC2_FLUX_P 0x369</span></div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span><span class="preprocessor">#define ADR_TMC2_FLUX_I 0x36A</span></div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span><span class="preprocessor">#define ADR_TMC2_PHIE_OFS 0x36B</span></div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span><span class="preprocessor">#define ADR_TMC2_TRQ_FILT 0x36C</span></div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span><span class="comment">// AXIS3</span></div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span><span class="preprocessor">#define ADR_AXIS3_CONFIG 0x381 </span><span class="comment">// 0-2 ENC, 3-5 DRV</span></div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span><span class="preprocessor">#define ADR_AXIS3_POWER 0x382</span></div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span><span class="preprocessor">#define ADR_AXIS3_DEGREES 0x383</span></div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span><span class="preprocessor">#define ADR_AXIS3_MAX_SPEED 0x384 </span><span class="comment">// Store the max speed</span></div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span><span class="preprocessor">#define ADR_AXIS3_MAX_ACCEL 0x385 </span><span class="comment">// Store the max accel</span></div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span><span class="preprocessor">#define ADR_AXIS3_ENDSTOP 0x387 </span><span class="comment">// 0-7 endstop margin, 8-15 endstop stiffness</span></div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span><span class="preprocessor">#define ADR_AXIS3_EFFECTS1 0x388 </span><span class="comment">// 0-7 idlespring, 8-15 damper</span></div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span><span class="preprocessor">#define ADR_AXIS3_SPEEDACCEL_FILTER 0x389 </span><span class="comment">// Speed/Accel filter Lowpass profile</span></div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span><span class="preprocessor">#define ADR_AXIS3_ENC_RATIO 0x38A </span><span class="comment">// Store the encoder ratio for an axis</span></div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span><span class="preprocessor">#define ADR_AXIS3_EFFECTS2 0x38B </span><span class="comment">// 0-7 Friction, 8-15 Inertia</span></div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span><span class="preprocessor">#define ADR_AXIS3_POSTPROCESS1 0x38C </span><span class="comment">// 0-7 expo curve</span></div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span><span class="comment">// TMC3</span></div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span><span class="preprocessor">#define ADR_TMC3_MOTCONF 0x3A0 </span><span class="comment">// 0-2: MotType 3-5: PhiE source 6-15: Poles</span></div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span><span class="preprocessor">#define ADR_TMC3_CPR 0x3A1</span></div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span><span class="preprocessor">#define ADR_TMC3_ENCA 0x3A2 </span><span class="comment">// Misc</span></div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span><span class="preprocessor">#define ADR_TMC3_ADC_I0_OFS 0x3A3</span></div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span><span class="preprocessor">#define ADR_TMC3_ADC_I1_OFS 0x3A4</span></div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span><span class="preprocessor">#define ADR_TMC3_ENC_OFFSET 0x3A5</span></div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span><span class="preprocessor">#define ADR_TMC3_OFFSETFLUX 0x3A6</span></div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span><span class="preprocessor">#define ADR_TMC3_TORQUE_P 0x3A7</span></div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span><span class="preprocessor">#define ADR_TMC3_TORQUE_I 0x3A8</span></div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span><span class="preprocessor">#define ADR_TMC3_FLUX_P 0x3A9</span></div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span><span class="preprocessor">#define ADR_TMC3_FLUX_I 0x3AA</span></div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span><span class="preprocessor">#define ADR_TMC3_PHIE_OFS 0x3AB</span></div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span><span class="preprocessor">#define ADR_TMC3_TRQ_FILT 0x3AC</span></div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span><span class="comment">// RMD CAN Motor</span></div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span><span class="preprocessor">#define ADR_RMD1_DATA1 0x3C0 </span><span class="comment">//0-4 CAN ID</span></div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span><span class="preprocessor">#define ADR_RMD1_TORQUE 0x3C1 </span><span class="comment">//Maximum current</span></div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span><span class="preprocessor">#define ADR_RMD1_OFFSET 0x3C2 </span><span class="comment">//Position offset</span></div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span><span class="preprocessor">#define ADR_RMD2_DATA1 0x3C3</span></div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span><span class="preprocessor">#define ADR_RMD2_TORQUE 0x3C4</span></div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span><span class="preprocessor">#define ADR_RMD2_OFFSET 0x3C5</span></div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span><span class="comment">// Odrive</span></div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span><span class="preprocessor">#define ADR_ODRIVE_CANID 0x3D0 </span><span class="comment">//0-6 ID M0, 7-12 ID M1, 13-15 can speed</span></div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span><span class="preprocessor">#define ADR_ODRIVE_SETTING1_M0 0x3D1</span></div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span><span class="preprocessor">#define ADR_ODRIVE_SETTING1_M1 0x3D2</span></div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span><span class="preprocessor">#define ADR_ODRIVE_OFS_M0 0x3D3 </span><span class="comment">// Encoder offset position reload</span></div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span><span class="preprocessor">#define ADR_ODRIVE_OFS_M1 0x3D4</span></div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span><span class="comment">// VESC Section</span></div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span><span class="preprocessor">#define ADR_VESC1_CANID 0x3E0 </span><span class="comment">//0-7 AxisCanID, 8-16 VescCanId</span></div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span><span class="preprocessor">#define ADR_VESC1_DATA 0x3E1 </span><span class="comment">//0-2 can speed, 3 useVescEncoder</span></div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span><span class="preprocessor">#define ADR_VESC1_OFFSET 0x3E2 </span><span class="comment">//16b offset</span></div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span><span class="preprocessor">#define ADR_VESC2_CANID 0x3E3 </span><span class="comment">//0-8 AxisCanID, 8-16 VescCanId</span></div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span><span class="preprocessor">#define ADR_VESC2_DATA 0x3E4 </span><span class="comment">//0-2 can speed, 3 useVescEncoder</span></div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span><span class="preprocessor">#define ADR_VESC2_OFFSET 0x3E5 </span><span class="comment">//16b offset</span></div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span><span class="preprocessor">#define ADR_VESC3_CANID 0x3E6 </span><span class="comment">//0-8 AxisCanID, 8-16 VescCanId</span></div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span><span class="preprocessor">#define ADR_VESC3_DATA 0x3E7 </span><span class="comment">//0-2 can speed, 3 useVescEncoder</span></div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span><span class="preprocessor">#define ADR_VESC3_OFFSET 0x3E8 </span><span class="comment">//16b offset</span></div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span><span class="comment">//MT Encoder</span></div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span><span class="preprocessor">#define ADR_MTENC_OFS 0x400</span></div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span><span class="preprocessor">#define ADR_MTENC_CONF1 0x401</span></div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span><span class="comment">// Biss-C</span></div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span><span class="preprocessor">#define ADR_BISSENC_CONF1 0x410</span></div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span><span class="preprocessor">#define ADR_BISSENC_OFS 0x411</span></div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span><span class="comment">// SSI</span></div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span><span class="preprocessor">#define ADR_SSI_CONF1 0x413</span></div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span><span class="preprocessor">#define ADR_SSI_OFS 0x414</span></div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span><span class="comment">// Analog min/max calibrations</span></div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span><span class="preprocessor">#define ADR_LOCALANALOG_MIN_0 0x500</span></div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span><span class="preprocessor">#define ADR_LOCALANALOG_MAX_0 0x501</span></div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span><span class="preprocessor">#define ADR_LOCALANALOG_MIN_1 0x502</span></div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span><span class="preprocessor">#define ADR_LOCALANALOG_MAX_1 0x503</span></div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span><span class="preprocessor">#define ADR_LOCALANALOG_MIN_2 0x504</span></div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span><span class="preprocessor">#define ADR_LOCALANALOG_MAX_2 0x505</span></div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span><span class="preprocessor">#define ADR_LOCALANALOG_MIN_3 0x506</span></div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span><span class="preprocessor">#define ADR_LOCALANALOG_MAX_3 0x507</span></div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span><span class="preprocessor">#define ADR_LOCALANALOG_MIN_4 0x508</span></div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span><span class="preprocessor">#define ADR_LOCALANALOG_MAX_4 0x509</span></div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span><span class="preprocessor">#define ADR_LOCALANALOG_MIN_5 0x50A</span></div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span><span class="preprocessor">#define ADR_LOCALANALOG_MAX_5 0x50B</span></div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span><span class="preprocessor">#define ADR_LOCALANALOG_MIN_6 0x50C</span></div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span><span class="preprocessor">#define ADR_LOCALANALOG_MAX_6 0x50D</span></div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span><span class="preprocessor">#define ADR_LOCALANALOG_MIN_7 0x50E</span></div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span><span class="preprocessor">#define ADR_LOCALANALOG_MAX_7 0x50F</span></div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span><span class="comment">// ADS111X</span></div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span><span class="preprocessor">#define ADR_ADS111X_MIN_0 0x510</span></div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span><span class="preprocessor">#define ADR_ADS111X_MAX_0 0x511</span></div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span><span class="preprocessor">#define ADR_ADS111X_MIN_1 0x512</span></div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span><span class="preprocessor">#define ADR_ADS111X_MAX_1 0x513</span></div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span><span class="preprocessor">#define ADR_ADS111X_MIN_2 0x514</span></div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span><span class="preprocessor">#define ADR_ADS111X_MAX_2 0x515</span></div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span><span class="preprocessor">#define ADR_ADS111X_MIN_3 0x516</span></div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span><span class="preprocessor">#define ADR_ADS111X_MAX_3 0x517</span></div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span><span class="preprocessor">#endif </span><span class="comment">/* EEPROM_ADDRESSES_H_ */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="aeeprom__addresses_8h_html_a27d99716228bbb05cff8443e2ab0ebcb"><div class="ttname"><a href="eeprom__addresses_8h.html#a27d99716228bbb05cff8443e2ab0ebcb">VirtAddVarTab</a></div><div class="ttdeci">const uint16_t VirtAddVarTab[NB_OF_VAR]</div><div class="ttdef"><b>Definition:</b> <a href="eeprom__addresses_8c_source.html#l00018">eeprom_addresses.c:18</a></div></div>
-<div class="ttc" id="aeeprom__addresses_8h_html_ab97cf75868cb1d0bbe370e27346a4e5e"><div class="ttname"><a href="eeprom__addresses_8h.html#ab97cf75868cb1d0bbe370e27346a4e5e">exportableFlashAddresses</a></div><div class="ttdeci">const uint16_t exportableFlashAddresses[NB_EXPORTABLE_ADR]</div><div class="ttdef"><b>Definition:</b> <a href="eeprom__addresses_8c_source.html#l00211">eeprom_addresses.c:211</a></div></div>
+<div class="ttc" id="aeeprom__addresses_8h_html_ab97cf75868cb1d0bbe370e27346a4e5e"><div class="ttname"><a href="eeprom__addresses_8h.html#ab97cf75868cb1d0bbe370e27346a4e5e">exportableFlashAddresses</a></div><div class="ttdeci">const uint16_t exportableFlashAddresses[NB_EXPORTABLE_ADR]</div><div class="ttdef"><b>Definition:</b> <a href="eeprom__addresses_8c_source.html#l00218">eeprom_addresses.c:218</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

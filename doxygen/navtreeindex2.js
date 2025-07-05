@@ -1,5 +1,7 @@
 var NAVTREEINDEX2 =
 {
+"_s_p_i_8h.html":[5,0,52],
+"_s_p_i_8h_source.html":[5,0,52],
 "_s_p_i_buttons_8cpp.html":[5,0,352],
 "_s_p_i_buttons_8cpp.html#a9fa3945a0dbce41ff83a49064dee08d9":[5,0,352,1],
 "_s_p_i_buttons_8cpp.html#aba7b4e25cf0f787f1f1d27fca7797a56":[5,0,352,2],
@@ -247,7 +249,5 @@ var NAVTREEINDEX2 =
 "_vesc_c_a_n_8h.html#ade8aa0c8682cb29483f2d2b58786989fac62513ac3d8a268c40130929f12d471d":[5,0,321,6,2],
 "_vesc_c_a_n_8h_source.html":[5,0,321],
 "annotated.html":[4,0],
-"audio_8h.html":[5,0,124],
-"audio_8h_source.html":[5,0,124],
-"audio__device_8c.html":[5,0,125]
+"audio_8h.html":[5,0,124]
 };

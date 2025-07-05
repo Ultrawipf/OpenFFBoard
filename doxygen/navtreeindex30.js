@@ -1,5 +1,12 @@
 var NAVTREEINDEX30 =
 {
+"msc__host_8c.html#aa7c9c5d34f0c193ccde36a41579a5bf7":[5,0,156,15],
+"msc__host_8c.html#aaaf6484eec89377adf95ef8bc2c8e6b1":[5,0,156,24],
+"msc__host_8c.html#ab48125df2757c2cb90a546e35f8d2309":[5,0,156,25],
+"msc__host_8c.html#ac0f28fce5399a2496df8e8342c6a954c":[5,0,156,2],
+"msc__host_8c.html#ac392a4b41053182db71518212216a75c":[5,0,156,18],
+"msc__host_8c.html#add7ece891c1c8c649487b20570321eb3":[5,0,156,22],
+"msc__host_8c.html#af1c516a46c0e2149b8756a357f29f17d":[5,0,156,3],
 "msc__host_8c.html#af39352bf31c77f3baac73211435fe242":[5,0,156,8],
 "msc__host_8c.html#af56760efb9f625521e4cf30721e15405":[5,0,156,17],
 "msc__host_8c.html#af5da4d9fe9224723b75c55971dcbb120":[5,0,156,23],
@@ -242,12 +249,5 @@ var NAVTREEINDEX30 =
 "osal__mynewt_8h.html#adc33b0e260e9e22b9300b9dd43baea23":[5,0,194,1],
 "osal__mynewt_8h.html#aeef8a60c0f1ab8b880c5acc3747e9c4d":[5,0,194,13],
 "osal__mynewt_8h.html#af4997ee28b43c7b4ff6a2e492548d729":[5,0,194,5],
-"osal__mynewt_8h_source.html":[5,0,194],
-"osal__none_8h.html":[5,0,195],
-"osal__none_8h.html#a196a7c014b40d220e1902257fe2bc3c5":[5,0,195,2],
-"osal__none_8h.html#a27fef714d3e1e51e72b50e84463cb280":[5,0,195,14],
-"osal__none_8h.html#a2ddb6e127fbe0d8a4e465c4c0e791df6":[5,0,195,18],
-"osal__none_8h.html#a33d136801df3fc0bd27aebbdf0d8e8b5":[5,0,195,6],
-"osal__none_8h.html#a464434887cb8d9bdc2767c36b2a568b6":[5,0,195,21],
-"osal__none_8h.html#a4c34449b83cef48e4c10556d25139a45":[5,0,195,12]
+"osal__mynewt_8h_source.html":[5,0,194]
 };

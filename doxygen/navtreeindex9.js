@@ -1,5 +1,12 @@
 var NAVTREEINDEX9 =
 {
+"class_local_analog.html#a2c641aa5bf0c6b6039701c9119c6bad2":[4,0,173,9],
+"class_local_analog.html#a30b986fab162314cc57de1f8e1cbf03f":[4,0,173,4],
+"class_local_analog.html#a6212f3a5cdc8209c0cc6b7c7dde7fe1c":[4,0,173,10],
+"class_local_analog.html#a6d6ac5da9a23d7ed3c03123cec182cc5":[4,0,173,12],
+"class_local_analog.html#a72dbec2d2bd89a4fd44803e2b77ce515":[4,0,173,3],
+"class_local_analog.html#a7a86937b1aff99e2afd2723b9691815a":[4,0,173,13],
+"class_local_analog.html#a8a119ddf35bde39c528c0d384ec95226":[4,0,173,0],
 "class_local_analog.html#a8a119ddf35bde39c528c0d384ec95226ad3226782744ce122d789ea8e03d32f53":[4,0,173,0,1],
 "class_local_analog.html#a8a119ddf35bde39c528c0d384ec95226ae8afad92175e4e5034e1b25de0a7c8bf":[4,0,173,0,0],
 "class_local_analog.html#a8a119ddf35bde39c528c0d384ec95226af09cc7ee3a9a93273f4b80601cafb00c":[4,0,173,0,2],
@@ -242,12 +249,5 @@ var NAVTREEINDEX9 =
 "class_motor_simplemotion.html#af0d962f0eb34d875e30872890e8dfc51":[4,0,187,2],
 "class_motor_simplemotion.html#af0d962f0eb34d875e30872890e8dfc51a295eae6f9cfc8a8470875c847f7d36cc":[4,0,187,2,1],
 "class_motor_simplemotion.html#af0d962f0eb34d875e30872890e8dfc51a334c4a4c42fdb79d7ebc3e73b517e6f8":[4,0,187,2,4],
-"class_motor_simplemotion.html#af0d962f0eb34d875e30872890e8dfc51a74e85349d47071b598a1e1a5efecac2f":[4,0,187,2,0],
-"class_motor_simplemotion.html#af0d962f0eb34d875e30872890e8dfc51a9acb44549b41563697bb490144ec6258":[4,0,187,2,3],
-"class_motor_simplemotion.html#af0d962f0eb34d875e30872890e8dfc51ae4b7e0aee76ee8c8483a4d99b020fe01":[4,0,187,2,2],
-"class_motor_simplemotion.html#af277dacb7ebc980038ab26e2b7004a85":[4,0,187,65],
-"class_motor_simplemotion.html#af77a710a0d98902cb36d5f7c26587f46":[4,0,187,34],
-"class_motor_simplemotion.html#af91e8a7e992a1ade1f25296a806f8368":[4,0,187,17],
-"class_motor_simplemotion1.html":[4,0,188],
-"class_motor_simplemotion1.html#a1b9d0463202aa1c7ca988f60b90d44e0":[4,0,188,4]
+"class_motor_simplemotion.html#af0d962f0eb34d875e30872890e8dfc51a74e85349d47071b598a1e1a5efecac2f":[4,0,187,2,0]
 };

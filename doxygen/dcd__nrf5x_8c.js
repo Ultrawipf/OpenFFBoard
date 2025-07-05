@@ -31,7 +31,7 @@ var dcd__nrf5x_8c =
     [ "xact_in_dma", "dcd__nrf5x_8c.html#a9f8c40a1ab1bbe00a0f8d5d3cc2d97ad", null ],
     [ "xact_out_dma", "dcd__nrf5x_8c.html#aea0c0cd866734a45a07b25f3f84b06ae", null ],
     [ "xact_out_dma_wrapper", "dcd__nrf5x_8c.html#ad6f916bb3e6d0736be8dc6d5a4ebccf0", null ],
-    [ "_dcd", "dcd__nrf5x_8c.html#af191d4376f02efc89b4501eb5a13c1e0", null ],
+    [ "_dcd", "dcd__nrf5x_8c.html#ae8414d5721674b86b73b354ed8bd5182", null ],
     [ "dma_running", "dcd__nrf5x_8c.html#a19fde7594c9e8bd742604cee62000ff1", null ],
     [ "sof_enabled", "dcd__nrf5x_8c.html#ad738a93d6fe61a220658b3d3c25799ed", null ],
     [ "xfer", "dcd__nrf5x_8c.html#a61552eb9d109cd6dcca7786fdfc12335", null ]

@@ -56,7 +56,7 @@ var dcd__nuc505_8c =
     [ "usb_detach", "dcd__nuc505_8c.html#a3c7feebfa80b76754f0ca07a99c770a4", null ],
     [ "assigned_address", "dcd__nuc505_8c.html#ac68080035e928946865fec972f10180e", null ],
     [ "bufseg_addr", "dcd__nuc505_8c.html#abf3ef7002539e97eb9463bf59cc261c3", null ],
-    [ "ctrl_in_xfer", "dcd__nuc505_8c.html#a136c5e0c856d197cafec25e480ed2dc4", null ],
+    [ "ctrl_in_xfer", "dcd__nuc505_8c.html#a03d9b149c29668fd7a56e2a936e6c483", null ],
     [ "current_dma_xfer", "dcd__nuc505_8c.html#a7dec092806d3a59d74bb21fde8c1d951", null ],
     [ "data_ptr", "dcd__nuc505_8c.html#a6166cef59cbe432be35512925debeae6", null ],
     [ "enabled_irqs", "dcd__nuc505_8c.html#ab6821bc4183105b53f36f5645452ab0b", null ],

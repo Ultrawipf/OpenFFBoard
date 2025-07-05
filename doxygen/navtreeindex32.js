@@ -1,5 +1,12 @@
 var NAVTREEINDEX32 =
 {
+"rusb2__type_8h.html#ac141794f33ed3b753dce5bf08c22f1ba":[5,0,252,37],
+"rusb2__type_8h.html#ac5f251aa8cfd80a44ad51b0f8d29d108":[5,0,252,51],
+"rusb2__type_8h.html#acf651dd4750dc91ff9384cb8d50c4dff":[5,0,252,60],
+"rusb2__type_8h.html#ad68518c5266b24defab135d1ecb74253":[5,0,252,39],
+"rusb2__type_8h.html#ad8eb1b11df582db7a797a1f6382b4aad":[5,0,252,36],
+"rusb2__type_8h.html#adb38c15382d99f824396136b679c24ba":[5,0,252,18],
+"rusb2__type_8h.html#ade6dec13cc5eee51fea6f7448c1aacf6":[5,0,252,7],
 "rusb2__type_8h.html#ae67c35eaa6e8b0d5c7bad1d2ab726f25":[5,0,252,68],
 "rusb2__type_8h.html#ae83e1002f881afc333e0720819f0edf2":[5,0,252,10],
 "rusb2__type_8h.html#aeeb19c2a161ae25726a8945e0add3251":[5,0,252,20],
@@ -38,8 +45,8 @@ var NAVTREEINDEX32 =
 "struct____attribute____.html#a566ce96ab44885ff1a7a3701b365a4b5":[4,0,2,31],
 "struct____attribute____.html#a567db21f585a142ec6fadca7ef62e631":[4,0,2,42],
 "struct____attribute____.html#a570e221bb51c305732701485966d2fc8":[4,0,2,44],
-"struct____attribute____.html#a59a963eab533908f7a9860e6075a951b":[4,0,2,37],
 "struct____attribute____.html#a59a963eab533908f7a9860e6075a951b":[4,0,2,36],
+"struct____attribute____.html#a59a963eab533908f7a9860e6075a951b":[4,0,2,37],
 "struct____attribute____.html#a626340db63bd3ed89614ab41cb44469a":[4,0,2,2],
 "struct____attribute____.html#a62828bf9dacca91412eaa7dd342ec5f2":[4,0,2,4],
 "struct____attribute____.html#a63031257ee009f16f8ef1c12a105227d":[4,0,2,28],
@@ -242,12 +249,5 @@ var NAVTREEINDEX32 =
 "struct__ccrx__evenaccess.html#a600553b49c285040557fcba52b8b966a":[4,0,43,151],
 "struct__ccrx__evenaccess.html#a60aa075de3c9a866f55b7c15a88e366a":[4,0,43,55],
 "struct__ccrx__evenaccess.html#a60bd7829d24881573f2a33e87fd45825":[4,0,43,40],
-"struct__ccrx__evenaccess.html#a6153a769230290ae949cead314ec25b0":[4,0,43,408],
-"struct__ccrx__evenaccess.html#a61b8499ead3c97e3a614e7abebbc4850":[4,0,43,228],
-"struct__ccrx__evenaccess.html#a6325d04ebaeed6588fb9a3ddf5fbec06":[4,0,43,225],
-"struct__ccrx__evenaccess.html#a63923ee85eb8805572579219eb5db5bc":[4,0,43,163],
-"struct__ccrx__evenaccess.html#a63b38944bdec34c0f1c391b8467288c1":[4,0,43,216],
-"struct__ccrx__evenaccess.html#a6406bcc04f0d73cc96d6c121225cd8c3":[4,0,43,79],
-"struct__ccrx__evenaccess.html#a6441a2d959223791653b3dddd62fe325":[4,0,43,389],
-"struct__ccrx__evenaccess.html#a64645167082044acd4e196f2e1890e2e":[4,0,43,283]
+"struct__ccrx__evenaccess.html#a6153a769230290ae949cead314ec25b0":[4,0,43,408]
 };

@@ -95,111 +95,111 @@ $(document).ready(function(){initNavTree('structehci__registers__t.html',''); in
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a6349f0cd7d6b9131c1e8ec43572197ee"><td class="memItemLeft" >union {</td></tr>
-<tr class="memitem:ad41ec9fff2ead75356754ca5a7cb5093"><td class="memItemLeft" >&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#ad7194d477e9ac2f7f158efe44e9e82e9">command</a></td></tr>
-<tr class="separator:ad41ec9fff2ead75356754ca5a7cb5093"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a69133e51b58014c0fca46ed3d75b0875"><td class="memItemLeft" >&#160;&#160;&#160;struct {</td></tr>
-<tr class="memitem:a2164f657afb7e051acf899fe46d5540c"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a697d68390eeaf6857fed722f3bb30eb0">run_stop</a>: 1</td></tr>
-<tr class="memdesc:a2164f657afb7e051acf899fe46d5540c"><td class="mdescLeft">&#160;</td><td class="mdescRight">1=Run. 0=Stop  <a href="structehci__registers__t_1_1_0d163_1_1_0d171.html#a2164f657afb7e051acf899fe46d5540c">More...</a><br /></td></tr>
-<tr class="separator:a2164f657afb7e051acf899fe46d5540c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3aa9c64661e736625b97fadb65311fb8"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#aa69311155290a418f945018228c3e9cc">reset</a>: 1</td></tr>
-<tr class="memdesc:a3aa9c64661e736625b97fadb65311fb8"><td class="mdescLeft">&#160;</td><td class="mdescRight">SW write 1 to reset HC, clear by HC when complete.  <a href="structehci__registers__t_1_1_0d163_1_1_0d171.html#a3aa9c64661e736625b97fadb65311fb8">More...</a><br /></td></tr>
-<tr class="separator:a3aa9c64661e736625b97fadb65311fb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a549cf620d7f8973070cbc0a474e33d5b"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#ac81707491215c5fe295694bbb6e208e3">framelist_size</a>: 2</td></tr>
-<tr class="memdesc:a549cf620d7f8973070cbc0a474e33d5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frame List size 0: 1024, 1: 512, 2: 256.  <a href="structehci__registers__t_1_1_0d163_1_1_0d171.html#a549cf620d7f8973070cbc0a474e33d5b">More...</a><br /></td></tr>
-<tr class="separator:a549cf620d7f8973070cbc0a474e33d5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a565c6340c77f823e3be062d5f75651ae"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a831126014c87c34e69788af5903389a4">periodic_enable</a>: 1</td></tr>
-<tr class="memdesc:a565c6340c77f823e3be062d5f75651ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">This bit controls whether the host controller skips processing the Periodic Schedule. Values mean: 0b Do not process the Periodic Schedule 1b Use the PERIODICLISTBASE register to access the Periodic Schedule.  <a href="structehci__registers__t_1_1_0d163_1_1_0d171.html#a565c6340c77f823e3be062d5f75651ae">More...</a><br /></td></tr>
-<tr class="separator:a565c6340c77f823e3be062d5f75651ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a69fc8774643d221f3c16db2aab8fd601"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a5dad8c1e8422ad11eabc8594bcdf0294">async_enable</a>: 1</td></tr>
-<tr class="memdesc:a69fc8774643d221f3c16db2aab8fd601"><td class="mdescLeft">&#160;</td><td class="mdescRight">This bit controls whether the host controller skips processing the Asynchronous Schedule. Values mean: 0b Do not process the Asynchronous Schedule 1b Use the ASYNCLISTADDR register to access the Asynchronous Schedule.  <a href="structehci__registers__t_1_1_0d163_1_1_0d171.html#a69fc8774643d221f3c16db2aab8fd601">More...</a><br /></td></tr>
-<tr class="separator:a69fc8774643d221f3c16db2aab8fd601"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a02b6124bf932595878d44fc98f5af710"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#ac272bb68160160ffaf90142f815db795">async_adv_doorbell</a>: 1</td></tr>
-<tr class="memdesc:a02b6124bf932595878d44fc98f5af710"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tell HC to interrupt next time it advances async list. Clear by HC.  <a href="structehci__registers__t_1_1_0d163_1_1_0d171.html#a02b6124bf932595878d44fc98f5af710">More...</a><br /></td></tr>
-<tr class="separator:a02b6124bf932595878d44fc98f5af710"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d9d80d419a8b9bb7a514361f98f322e"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#aacddee0291c64d05fc8ca841341536cc">light_reset</a>: 1</td></tr>
-<tr class="memdesc:a5d9d80d419a8b9bb7a514361f98f322e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset HC without affecting ports state.  <a href="structehci__registers__t_1_1_0d163_1_1_0d171.html#a5d9d80d419a8b9bb7a514361f98f322e">More...</a><br /></td></tr>
-<tr class="separator:a5d9d80d419a8b9bb7a514361f98f322e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a857ecc6e88b19fcf5c6ac432c0a01ca1"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#ac7e36b328c42d524d5f496c63709413a">async_park_count</a>: 2</td></tr>
-<tr class="memdesc:a857ecc6e88b19fcf5c6ac432c0a01ca1"><td class="mdescLeft">&#160;</td><td class="mdescRight">not used by tinyusb  <a href="structehci__registers__t_1_1_0d163_1_1_0d171.html#a857ecc6e88b19fcf5c6ac432c0a01ca1">More...</a><br /></td></tr>
-<tr class="separator:a857ecc6e88b19fcf5c6ac432c0a01ca1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8ccf6a9d6086e3aeadc7365aba18c1ad"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#afc0c13f826ac09013f2af27560a70232">__pad0__</a>: 1</td></tr>
-<tr class="separator:a8ccf6a9d6086e3aeadc7365aba18c1ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7eeef834dab07da4467e8645c14b0ef6"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a85620b06990bd40daa03c7165e8bb89b">async_park_enable</a>: 1</td></tr>
-<tr class="memdesc:a7eeef834dab07da4467e8645c14b0ef6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable park mode, not used by tinyusb.  <a href="structehci__registers__t_1_1_0d163_1_1_0d171.html#a7eeef834dab07da4467e8645c14b0ef6">More...</a><br /></td></tr>
-<tr class="separator:a7eeef834dab07da4467e8645c14b0ef6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4c308214e44a33761ebe4f01a484c414"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a60f88a2b294fd44255edfd2c4848af6f">__pad1__</a>: 3</td></tr>
-<tr class="separator:a4c308214e44a33761ebe4f01a484c414"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a46def43867535e92a29a66055394663d"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a32eacdf8fc6fa66c99fcd590ac28fe76">nxp_framelist_size_msb</a>: 1</td></tr>
-<tr class="memdesc:a46def43867535e92a29a66055394663d"><td class="mdescLeft">&#160;</td><td class="mdescRight">NXP customized : Bit 2 of the Frame List Size bits <br  />
+<tr class="memitem:acc25da13d11f6a233edbc57223d32fc3"><td class="memItemLeft" >union {</td></tr>
+<tr class="memitem:ab6bafd97adfef7216aa21d97a102a53b"><td class="memItemLeft" >&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#ad7194d477e9ac2f7f158efe44e9e82e9">command</a></td></tr>
+<tr class="separator:ab6bafd97adfef7216aa21d97a102a53b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2210a840b0f927ec1a81b59213d6230"><td class="memItemLeft" >&#160;&#160;&#160;struct {</td></tr>
+<tr class="memitem:a462d9cdc188ef6a8f2c90b00d228a229"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a697d68390eeaf6857fed722f3bb30eb0">run_stop</a>: 1</td></tr>
+<tr class="memdesc:a462d9cdc188ef6a8f2c90b00d228a229"><td class="mdescLeft">&#160;</td><td class="mdescRight">1=Run. 0=Stop  <a href="structehci__registers__t_1_1_0d162_1_1_0d171.html#a462d9cdc188ef6a8f2c90b00d228a229">More...</a><br /></td></tr>
+<tr class="separator:a462d9cdc188ef6a8f2c90b00d228a229"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a7e067fcc48f936a21f4bd0beab2d6a"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#aa69311155290a418f945018228c3e9cc">reset</a>: 1</td></tr>
+<tr class="memdesc:a6a7e067fcc48f936a21f4bd0beab2d6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">SW write 1 to reset HC, clear by HC when complete.  <a href="structehci__registers__t_1_1_0d162_1_1_0d171.html#a6a7e067fcc48f936a21f4bd0beab2d6a">More...</a><br /></td></tr>
+<tr class="separator:a6a7e067fcc48f936a21f4bd0beab2d6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb64ce3f95a67c4e6cd912d03e3289f8"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#ac81707491215c5fe295694bbb6e208e3">framelist_size</a>: 2</td></tr>
+<tr class="memdesc:acb64ce3f95a67c4e6cd912d03e3289f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frame List size 0: 1024, 1: 512, 2: 256.  <a href="structehci__registers__t_1_1_0d162_1_1_0d171.html#acb64ce3f95a67c4e6cd912d03e3289f8">More...</a><br /></td></tr>
+<tr class="separator:acb64ce3f95a67c4e6cd912d03e3289f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a238753f9b561e7b02a5303a908a964c2"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a831126014c87c34e69788af5903389a4">periodic_enable</a>: 1</td></tr>
+<tr class="memdesc:a238753f9b561e7b02a5303a908a964c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">This bit controls whether the host controller skips processing the Periodic Schedule. Values mean: 0b Do not process the Periodic Schedule 1b Use the PERIODICLISTBASE register to access the Periodic Schedule.  <a href="structehci__registers__t_1_1_0d162_1_1_0d171.html#a238753f9b561e7b02a5303a908a964c2">More...</a><br /></td></tr>
+<tr class="separator:a238753f9b561e7b02a5303a908a964c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5473dfbfcce0949d24462dbf411a52b1"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a5dad8c1e8422ad11eabc8594bcdf0294">async_enable</a>: 1</td></tr>
+<tr class="memdesc:a5473dfbfcce0949d24462dbf411a52b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">This bit controls whether the host controller skips processing the Asynchronous Schedule. Values mean: 0b Do not process the Asynchronous Schedule 1b Use the ASYNCLISTADDR register to access the Asynchronous Schedule.  <a href="structehci__registers__t_1_1_0d162_1_1_0d171.html#a5473dfbfcce0949d24462dbf411a52b1">More...</a><br /></td></tr>
+<tr class="separator:a5473dfbfcce0949d24462dbf411a52b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af39fa82b40fdf3af09f73290d4ac7a17"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#ac272bb68160160ffaf90142f815db795">async_adv_doorbell</a>: 1</td></tr>
+<tr class="memdesc:af39fa82b40fdf3af09f73290d4ac7a17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tell HC to interrupt next time it advances async list. Clear by HC.  <a href="structehci__registers__t_1_1_0d162_1_1_0d171.html#af39fa82b40fdf3af09f73290d4ac7a17">More...</a><br /></td></tr>
+<tr class="separator:af39fa82b40fdf3af09f73290d4ac7a17"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf77a732f3b519a6a294d4dd3eaf2f1f"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#aacddee0291c64d05fc8ca841341536cc">light_reset</a>: 1</td></tr>
+<tr class="memdesc:acf77a732f3b519a6a294d4dd3eaf2f1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset HC without affecting ports state.  <a href="structehci__registers__t_1_1_0d162_1_1_0d171.html#acf77a732f3b519a6a294d4dd3eaf2f1f">More...</a><br /></td></tr>
+<tr class="separator:acf77a732f3b519a6a294d4dd3eaf2f1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66e7f1a96b96eb20c0e5eba8c1228582"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#ac7e36b328c42d524d5f496c63709413a">async_park_count</a>: 2</td></tr>
+<tr class="memdesc:a66e7f1a96b96eb20c0e5eba8c1228582"><td class="mdescLeft">&#160;</td><td class="mdescRight">not used by tinyusb  <a href="structehci__registers__t_1_1_0d162_1_1_0d171.html#a66e7f1a96b96eb20c0e5eba8c1228582">More...</a><br /></td></tr>
+<tr class="separator:a66e7f1a96b96eb20c0e5eba8c1228582"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18b6a3f144b4fb68933683c10f0e994b"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#afc0c13f826ac09013f2af27560a70232">__pad0__</a>: 1</td></tr>
+<tr class="separator:a18b6a3f144b4fb68933683c10f0e994b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6061f65380810f433794cad8964c797e"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a85620b06990bd40daa03c7165e8bb89b">async_park_enable</a>: 1</td></tr>
+<tr class="memdesc:a6061f65380810f433794cad8964c797e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable park mode, not used by tinyusb.  <a href="structehci__registers__t_1_1_0d162_1_1_0d171.html#a6061f65380810f433794cad8964c797e">More...</a><br /></td></tr>
+<tr class="separator:a6061f65380810f433794cad8964c797e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c5532083038f1cae7acdd3603bac25e"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a60f88a2b294fd44255edfd2c4848af6f">__pad1__</a>: 3</td></tr>
+<tr class="separator:a2c5532083038f1cae7acdd3603bac25e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab340e64bfbd3b052ce8515251493bd78"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a32eacdf8fc6fa66c99fcd590ac28fe76">nxp_framelist_size_msb</a>: 1</td></tr>
+<tr class="memdesc:ab340e64bfbd3b052ce8515251493bd78"><td class="mdescLeft">&#160;</td><td class="mdescRight">NXP customized : Bit 2 of the Frame List Size bits <br  />
  011b: 128 elements <br  />
  100b: 64 elements <br  />
  101b: 32 elements <br  />
  110b: 16 elements <br  />
- 111b: 8 elements.  <a href="structehci__registers__t_1_1_0d163_1_1_0d171.html#a46def43867535e92a29a66055394663d">More...</a><br /></td></tr>
-<tr class="separator:a46def43867535e92a29a66055394663d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d41f39d1f7019ec872c66b6fcfd5be6"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a8135b282b78ed5780af1d0b364e80ec1">int_threshold</a>: 8</td></tr>
-<tr class="memdesc:a5d41f39d1f7019ec872c66b6fcfd5be6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default 08h. Interrupt rate in unit of micro frame.  <a href="structehci__registers__t_1_1_0d163_1_1_0d171.html#a5d41f39d1f7019ec872c66b6fcfd5be6">More...</a><br /></td></tr>
-<tr class="separator:a5d41f39d1f7019ec872c66b6fcfd5be6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a69133e51b58014c0fca46ed3d75b0875"><td class="memItemLeft" valign="top">&#160;&#160;&#160;}&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#aa29fc494ddc72d65567528c9cb8a7077">command_bm</a></td></tr>
-<tr class="separator:a69133e51b58014c0fca46ed3d75b0875"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6349f0cd7d6b9131c1e8ec43572197ee"><td class="memItemLeft" valign="top">};&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
-<tr class="separator:a6349f0cd7d6b9131c1e8ec43572197ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a85b3726a7fff0a0551f280587767f6f2"><td class="memItemLeft" >union {</td></tr>
-<tr class="memitem:a5d007099ef02a278eb4837c0b91ccdeb"><td class="memItemLeft" >&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a0395fc7a84e0b3cfde6cd3cc203a3c9a">status</a></td></tr>
-<tr class="separator:a5d007099ef02a278eb4837c0b91ccdeb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a90b57f5052d7c9f9496153c44b20ee9f"><td class="memItemLeft" >&#160;&#160;&#160;struct {</td></tr>
-<tr class="memitem:af6a3b18cb12dc43c0773cb3c4afa6ad6"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a44d322f0400d267b70608a38419a7feb">usb</a>: 1</td></tr>
-<tr class="memdesc:af6a3b18cb12dc43c0773cb3c4afa6ad6"><td class="mdescLeft">&#160;</td><td class="mdescRight">qTD with IOC is retired  <a href="structehci__registers__t_1_1_0d165_1_1_0d172.html#af6a3b18cb12dc43c0773cb3c4afa6ad6">More...</a><br /></td></tr>
-<tr class="separator:af6a3b18cb12dc43c0773cb3c4afa6ad6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a96d9c6247221b8c2c5a34908dbecdcb6"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#ac7929dcd388ea1010dcd37fd765872b8">usb_error</a>: 1</td></tr>
-<tr class="memdesc:a96d9c6247221b8c2c5a34908dbecdcb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">qTD retired due to error  <a href="structehci__registers__t_1_1_0d165_1_1_0d172.html#a96d9c6247221b8c2c5a34908dbecdcb6">More...</a><br /></td></tr>
-<tr class="separator:a96d9c6247221b8c2c5a34908dbecdcb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3468e7b96477ec30961a14a37b8b9751"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#afbe7bcd85bfad77d50bdbe1c25714e4b">port_change_detect</a>: 1</td></tr>
-<tr class="memdesc:a3468e7b96477ec30961a14a37b8b9751"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set when PortOwner or ForcePortResume change from 0 -&gt; 1.  <a href="structehci__registers__t_1_1_0d165_1_1_0d172.html#a3468e7b96477ec30961a14a37b8b9751">More...</a><br /></td></tr>
-<tr class="separator:a3468e7b96477ec30961a14a37b8b9751"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adfc30ea9084e459c8d22f0786d265dc1"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#aa74c32e3db4a95ddfe232bd131f37f02">framelist_rollover</a>: 1</td></tr>
-<tr class="memdesc:adfc30ea9084e459c8d22f0786d265dc1"><td class="mdescLeft">&#160;</td><td class="mdescRight">R/WC The Host Controller sets this bit to a one when the Frame List Index(see Section 2.3.4) rolls over from its maximum value to zero. The exact value at which the rollover occurs depends on the frame list size. For example, if the frame list size (as programmed in the Frame List Sizefield of the USBCMD register) is 1024, the Frame Index Registerrolls over every time FRINDEX[13] toggles. Similarly, if the size is 512, the Host Controller sets this bit to a one every time FRINDEX[12] toggles.  <a href="structehci__registers__t_1_1_0d165_1_1_0d172.html#adfc30ea9084e459c8d22f0786d265dc1">More...</a><br /></td></tr>
-<tr class="separator:adfc30ea9084e459c8d22f0786d265dc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae0be6c22bd76aece39cb42720001128f"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#ade561f6923cd1fb9e4d21a0eb9fb0010">pci_host_system_error</a>: 1</td></tr>
-<tr class="memdesc:ae0be6c22bd76aece39cb42720001128f"><td class="mdescLeft">&#160;</td><td class="mdescRight">R/WC (not used by NXP) The Host Controller sets this bit to 1 when a serious error occurs during a host system access involving the Host Controller module. In a PCI system, conditions that set this bit to 1 include PCI Parity error, PCI Master Abort, and PCI Target Abort. When this error occurs, the Host Controller clears the Run/Stop bit in the Command register to prevent further execution of the scheduled TDs.  <a href="structehci__registers__t_1_1_0d165_1_1_0d172.html#ae0be6c22bd76aece39cb42720001128f">More...</a><br /></td></tr>
-<tr class="separator:ae0be6c22bd76aece39cb42720001128f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a59b40d6113c7a763cec64471fe93c642"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#aafdc15f9d00a039bef2a44c404447175">async_adv</a>: 1</td></tr>
-<tr class="memdesc:a59b40d6113c7a763cec64471fe93c642"><td class="mdescLeft">&#160;</td><td class="mdescRight">Async Advance interrupt.  <a href="structehci__registers__t_1_1_0d165_1_1_0d172.html#a59b40d6113c7a763cec64471fe93c642">More...</a><br /></td></tr>
-<tr class="separator:a59b40d6113c7a763cec64471fe93c642"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1fd508fde60027bbdc7bade4a103a581"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#afc0c13f826ac09013f2af27560a70232">__pad0__</a>: 1</td></tr>
-<tr class="separator:a1fd508fde60027bbdc7bade4a103a581"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a455166ea68e541c0d0956d5628b417bd"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#aeb7cc7a5fbd905fd15ce7f3c8a91de88">nxp_int_sof</a>: 1</td></tr>
-<tr class="memdesc:a455166ea68e541c0d0956d5628b417bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">NXP customized: this bit will be set every 125us and can be used by host controller driver as a time base.  <a href="structehci__registers__t_1_1_0d165_1_1_0d172.html#a455166ea68e541c0d0956d5628b417bd">More...</a><br /></td></tr>
-<tr class="separator:a455166ea68e541c0d0956d5628b417bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3b51f522cd34e3c05f5af94e7f96de1c"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a60f88a2b294fd44255edfd2c4848af6f">__pad1__</a>: 4</td></tr>
-<tr class="separator:a3b51f522cd34e3c05f5af94e7f96de1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a612240e8beb332f0440f32037fec83e3"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a9981adb544611207fe43391ce3f667ab">hc_halted</a>: 1</td></tr>
-<tr class="memdesc:a612240e8beb332f0440f32037fec83e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opposite value to run_stop bit.  <a href="structehci__registers__t_1_1_0d165_1_1_0d172.html#a612240e8beb332f0440f32037fec83e3">More...</a><br /></td></tr>
-<tr class="separator:a612240e8beb332f0440f32037fec83e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abd5f6189c2faed17eb673d7d21fbbf3a"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a16fca4c7c75d996513ecc4a1db0f443b">reclamation</a>: 1</td></tr>
-<tr class="memdesc:abd5f6189c2faed17eb673d7d21fbbf3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to detect empty async shecudle.  <a href="structehci__registers__t_1_1_0d165_1_1_0d172.html#abd5f6189c2faed17eb673d7d21fbbf3a">More...</a><br /></td></tr>
-<tr class="separator:abd5f6189c2faed17eb673d7d21fbbf3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7ccffce2bf547d624cc9c19755f82d30"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#aacf23d716eb8914114b5d5f084324361">periodic_status</a>: 1</td></tr>
-<tr class="memdesc:a7ccffce2bf547d624cc9c19755f82d30"><td class="mdescLeft">&#160;</td><td class="mdescRight">Periodic schedule status.  <a href="structehci__registers__t_1_1_0d165_1_1_0d172.html#a7ccffce2bf547d624cc9c19755f82d30">More...</a><br /></td></tr>
-<tr class="separator:a7ccffce2bf547d624cc9c19755f82d30"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a58a2ed55e8205fbf060a1dae7f808bb4"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a414ce9ae42dbb04c15674cf6ff3f303e">async_status</a>: 1</td></tr>
-<tr class="memdesc:a58a2ed55e8205fbf060a1dae7f808bb4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Async schedule status.  <a href="structehci__registers__t_1_1_0d165_1_1_0d172.html#a58a2ed55e8205fbf060a1dae7f808bb4">More...</a><br /></td></tr>
-<tr class="separator:a58a2ed55e8205fbf060a1dae7f808bb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00c6340ad18b98ffc7976cc49dda928a"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#abe1663f0c724af809ff7542a2227d3e0">__pad2__</a>: 2</td></tr>
-<tr class="separator:a00c6340ad18b98ffc7976cc49dda928a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4cd3490bb40362cce83a70adb8d584de"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a335b414dcffb495c50ea82a884c5ef46">nxp_int_async</a>: 1</td></tr>
-<tr class="memdesc:a4cd3490bb40362cce83a70adb8d584de"><td class="mdescLeft">&#160;</td><td class="mdescRight">NXP customized: This bit is set by the Host Controller when the cause of an interrupt is a completion of a USB transaction where the Transfer Descriptor (TD) has an interrupt on complete (IOC) bit set and the TD was from the asynchronous schedule. This bit is also set by the Host when a short packet is detected and the packet is on the asynchronous schedule.  <a href="structehci__registers__t_1_1_0d165_1_1_0d172.html#a4cd3490bb40362cce83a70adb8d584de">More...</a><br /></td></tr>
-<tr class="separator:a4cd3490bb40362cce83a70adb8d584de"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a554e981a9e104946d91f4afa5d354f1e"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a133a75da3deab180aba3bbeb0265b035">nxp_int_period</a>: 1</td></tr>
-<tr class="memdesc:a554e981a9e104946d91f4afa5d354f1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">NXP customized: This bit is set by the Host Controller when the cause of an interrupt is a completion of a USB transaction where the Transfer Descriptor (TD) has an interrupt on complete (IOC) bit set and the TD was from the periodic schedule.  <a href="structehci__registers__t_1_1_0d165_1_1_0d172.html#a554e981a9e104946d91f4afa5d354f1e">More...</a><br /></td></tr>
-<tr class="separator:a554e981a9e104946d91f4afa5d354f1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab497b537eed1f5196ab6aefb65f6f747"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a35f4a73c5a5217858a9d5fb85d271ce0">__pad3__</a>: 12</td></tr>
-<tr class="separator:ab497b537eed1f5196ab6aefb65f6f747"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a90b57f5052d7c9f9496153c44b20ee9f"><td class="memItemLeft" valign="top">&#160;&#160;&#160;}&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#abfc72ae5f6d2936b633049657c348287">status_bm</a></td></tr>
-<tr class="separator:a90b57f5052d7c9f9496153c44b20ee9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a85b3726a7fff0a0551f280587767f6f2"><td class="memItemLeft" valign="top">};&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
-<tr class="separator:a85b3726a7fff0a0551f280587767f6f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+ 111b: 8 elements.  <a href="structehci__registers__t_1_1_0d162_1_1_0d171.html#ab340e64bfbd3b052ce8515251493bd78">More...</a><br /></td></tr>
+<tr class="separator:ab340e64bfbd3b052ce8515251493bd78"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9eb2a13af480a46decdd3edc6b64005"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a8135b282b78ed5780af1d0b364e80ec1">int_threshold</a>: 8</td></tr>
+<tr class="memdesc:ab9eb2a13af480a46decdd3edc6b64005"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default 08h. Interrupt rate in unit of micro frame.  <a href="structehci__registers__t_1_1_0d162_1_1_0d171.html#ab9eb2a13af480a46decdd3edc6b64005">More...</a><br /></td></tr>
+<tr class="separator:ab9eb2a13af480a46decdd3edc6b64005"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2210a840b0f927ec1a81b59213d6230"><td class="memItemLeft" valign="top">&#160;&#160;&#160;}&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#af296f3b2b80998c8cd93855f1cb9d3e2">command_bm</a></td></tr>
+<tr class="separator:ae2210a840b0f927ec1a81b59213d6230"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc25da13d11f6a233edbc57223d32fc3"><td class="memItemLeft" valign="top">};&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:acc25da13d11f6a233edbc57223d32fc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02892cbd978624c714310378c070a696"><td class="memItemLeft" >union {</td></tr>
+<tr class="memitem:a1f22bec113b1a2680281ee23c08f427d"><td class="memItemLeft" >&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a0395fc7a84e0b3cfde6cd3cc203a3c9a">status</a></td></tr>
+<tr class="separator:a1f22bec113b1a2680281ee23c08f427d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a353b5c74509570c77c97c37310e95fc6"><td class="memItemLeft" >&#160;&#160;&#160;struct {</td></tr>
+<tr class="memitem:adfbc882b6289031ff153356a128e6f65"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a44d322f0400d267b70608a38419a7feb">usb</a>: 1</td></tr>
+<tr class="memdesc:adfbc882b6289031ff153356a128e6f65"><td class="mdescLeft">&#160;</td><td class="mdescRight">qTD with IOC is retired  <a href="structehci__registers__t_1_1_0d164_1_1_0d172.html#adfbc882b6289031ff153356a128e6f65">More...</a><br /></td></tr>
+<tr class="separator:adfbc882b6289031ff153356a128e6f65"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acbb95042d712ed6a8ad6c6be06b190e1"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#ac7929dcd388ea1010dcd37fd765872b8">usb_error</a>: 1</td></tr>
+<tr class="memdesc:acbb95042d712ed6a8ad6c6be06b190e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">qTD retired due to error  <a href="structehci__registers__t_1_1_0d164_1_1_0d172.html#acbb95042d712ed6a8ad6c6be06b190e1">More...</a><br /></td></tr>
+<tr class="separator:acbb95042d712ed6a8ad6c6be06b190e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac316bf23857a64666dd6dcb7e06dc2d"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#afbe7bcd85bfad77d50bdbe1c25714e4b">port_change_detect</a>: 1</td></tr>
+<tr class="memdesc:aac316bf23857a64666dd6dcb7e06dc2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set when PortOwner or ForcePortResume change from 0 -&gt; 1.  <a href="structehci__registers__t_1_1_0d164_1_1_0d172.html#aac316bf23857a64666dd6dcb7e06dc2d">More...</a><br /></td></tr>
+<tr class="separator:aac316bf23857a64666dd6dcb7e06dc2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5447b853d5956acea01e8d28bd37a5e4"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#aa74c32e3db4a95ddfe232bd131f37f02">framelist_rollover</a>: 1</td></tr>
+<tr class="memdesc:a5447b853d5956acea01e8d28bd37a5e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">R/WC The Host Controller sets this bit to a one when the Frame List Index(see Section 2.3.4) rolls over from its maximum value to zero. The exact value at which the rollover occurs depends on the frame list size. For example, if the frame list size (as programmed in the Frame List Sizefield of the USBCMD register) is 1024, the Frame Index Registerrolls over every time FRINDEX[13] toggles. Similarly, if the size is 512, the Host Controller sets this bit to a one every time FRINDEX[12] toggles.  <a href="structehci__registers__t_1_1_0d164_1_1_0d172.html#a5447b853d5956acea01e8d28bd37a5e4">More...</a><br /></td></tr>
+<tr class="separator:a5447b853d5956acea01e8d28bd37a5e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a83ce091c536ba89c2b89f540b6184b"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#ade561f6923cd1fb9e4d21a0eb9fb0010">pci_host_system_error</a>: 1</td></tr>
+<tr class="memdesc:a8a83ce091c536ba89c2b89f540b6184b"><td class="mdescLeft">&#160;</td><td class="mdescRight">R/WC (not used by NXP) The Host Controller sets this bit to 1 when a serious error occurs during a host system access involving the Host Controller module. In a PCI system, conditions that set this bit to 1 include PCI Parity error, PCI Master Abort, and PCI Target Abort. When this error occurs, the Host Controller clears the Run/Stop bit in the Command register to prevent further execution of the scheduled TDs.  <a href="structehci__registers__t_1_1_0d164_1_1_0d172.html#a8a83ce091c536ba89c2b89f540b6184b">More...</a><br /></td></tr>
+<tr class="separator:a8a83ce091c536ba89c2b89f540b6184b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af67967d17bbe70b6f8cf95134d9dcb00"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#aafdc15f9d00a039bef2a44c404447175">async_adv</a>: 1</td></tr>
+<tr class="memdesc:af67967d17bbe70b6f8cf95134d9dcb00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Async Advance interrupt.  <a href="structehci__registers__t_1_1_0d164_1_1_0d172.html#af67967d17bbe70b6f8cf95134d9dcb00">More...</a><br /></td></tr>
+<tr class="separator:af67967d17bbe70b6f8cf95134d9dcb00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c928f4e221ddd255d6b0df56a08489b"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#afc0c13f826ac09013f2af27560a70232">__pad0__</a>: 1</td></tr>
+<tr class="separator:a2c928f4e221ddd255d6b0df56a08489b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d19a9bad8b7ee392e40513bd6e2e9d0"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#aeb7cc7a5fbd905fd15ce7f3c8a91de88">nxp_int_sof</a>: 1</td></tr>
+<tr class="memdesc:a0d19a9bad8b7ee392e40513bd6e2e9d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">NXP customized: this bit will be set every 125us and can be used by host controller driver as a time base.  <a href="structehci__registers__t_1_1_0d164_1_1_0d172.html#a0d19a9bad8b7ee392e40513bd6e2e9d0">More...</a><br /></td></tr>
+<tr class="separator:a0d19a9bad8b7ee392e40513bd6e2e9d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3adf4b607428898512091f9cca1b9ee"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a60f88a2b294fd44255edfd2c4848af6f">__pad1__</a>: 4</td></tr>
+<tr class="separator:ac3adf4b607428898512091f9cca1b9ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf01a8800908e66de05caa71717f5cd4"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a9981adb544611207fe43391ce3f667ab">hc_halted</a>: 1</td></tr>
+<tr class="memdesc:abf01a8800908e66de05caa71717f5cd4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opposite value to run_stop bit.  <a href="structehci__registers__t_1_1_0d164_1_1_0d172.html#abf01a8800908e66de05caa71717f5cd4">More...</a><br /></td></tr>
+<tr class="separator:abf01a8800908e66de05caa71717f5cd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af27bbf2fad99f7e9212099ec10b15bbe"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a16fca4c7c75d996513ecc4a1db0f443b">reclamation</a>: 1</td></tr>
+<tr class="memdesc:af27bbf2fad99f7e9212099ec10b15bbe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to detect empty async shecudle.  <a href="structehci__registers__t_1_1_0d164_1_1_0d172.html#af27bbf2fad99f7e9212099ec10b15bbe">More...</a><br /></td></tr>
+<tr class="separator:af27bbf2fad99f7e9212099ec10b15bbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7cd857e58371f1925a1275f23af0ecd6"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#aacf23d716eb8914114b5d5f084324361">periodic_status</a>: 1</td></tr>
+<tr class="memdesc:a7cd857e58371f1925a1275f23af0ecd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Periodic schedule status.  <a href="structehci__registers__t_1_1_0d164_1_1_0d172.html#a7cd857e58371f1925a1275f23af0ecd6">More...</a><br /></td></tr>
+<tr class="separator:a7cd857e58371f1925a1275f23af0ecd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a07f9e246e63f264e2459e861d66abdbd"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a414ce9ae42dbb04c15674cf6ff3f303e">async_status</a>: 1</td></tr>
+<tr class="memdesc:a07f9e246e63f264e2459e861d66abdbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Async schedule status.  <a href="structehci__registers__t_1_1_0d164_1_1_0d172.html#a07f9e246e63f264e2459e861d66abdbd">More...</a><br /></td></tr>
+<tr class="separator:a07f9e246e63f264e2459e861d66abdbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e13e340f5f7f4cdd6e9c910e99b0372"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#abe1663f0c724af809ff7542a2227d3e0">__pad2__</a>: 2</td></tr>
+<tr class="separator:a5e13e340f5f7f4cdd6e9c910e99b0372"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b6e915d1a085a3354ea03c9139fd793"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a335b414dcffb495c50ea82a884c5ef46">nxp_int_async</a>: 1</td></tr>
+<tr class="memdesc:a2b6e915d1a085a3354ea03c9139fd793"><td class="mdescLeft">&#160;</td><td class="mdescRight">NXP customized: This bit is set by the Host Controller when the cause of an interrupt is a completion of a USB transaction where the Transfer Descriptor (TD) has an interrupt on complete (IOC) bit set and the TD was from the asynchronous schedule. This bit is also set by the Host when a short packet is detected and the packet is on the asynchronous schedule.  <a href="structehci__registers__t_1_1_0d164_1_1_0d172.html#a2b6e915d1a085a3354ea03c9139fd793">More...</a><br /></td></tr>
+<tr class="separator:a2b6e915d1a085a3354ea03c9139fd793"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a651a15bff8364bd3b5539dee09e7818d"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a133a75da3deab180aba3bbeb0265b035">nxp_int_period</a>: 1</td></tr>
+<tr class="memdesc:a651a15bff8364bd3b5539dee09e7818d"><td class="mdescLeft">&#160;</td><td class="mdescRight">NXP customized: This bit is set by the Host Controller when the cause of an interrupt is a completion of a USB transaction where the Transfer Descriptor (TD) has an interrupt on complete (IOC) bit set and the TD was from the periodic schedule.  <a href="structehci__registers__t_1_1_0d164_1_1_0d172.html#a651a15bff8364bd3b5539dee09e7818d">More...</a><br /></td></tr>
+<tr class="separator:a651a15bff8364bd3b5539dee09e7818d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6712d2e81c2856ed88923b49c3c6a9a9"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a35f4a73c5a5217858a9d5fb85d271ce0">__pad3__</a>: 12</td></tr>
+<tr class="separator:a6712d2e81c2856ed88923b49c3c6a9a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a353b5c74509570c77c97c37310e95fc6"><td class="memItemLeft" valign="top">&#160;&#160;&#160;}&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a91217dc983126fc363703ba1ee600387">status_bm</a></td></tr>
+<tr class="separator:a353b5c74509570c77c97c37310e95fc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02892cbd978624c714310378c070a696"><td class="memItemLeft" valign="top">};&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a02892cbd978624c714310378c070a696"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6898b371134173360cce8642af5375c6"><td class="memItemLeft" >union {</td></tr>
 <tr class="memitem:abab12299405c05cc9cc9b5c6538ffa0d"><td class="memItemLeft" >&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#af3f7962511e55a1f9356708352df025a">inten</a></td></tr>
 <tr class="separator:abab12299405c05cc9cc9b5c6538ffa0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -256,75 +256,75 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:ab170d36bfd9a95a6a340814ee661aef3"><td class="memItemLeft" >&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#adb7cac7ca7fb6ac4875cb76d9eaa32b9">portsc</a></td></tr>
 <tr class="memdesc:ab170d36bfd9a95a6a340814ee661aef3"><td class="mdescLeft">&#160;</td><td class="mdescRight">0x44 port status and control  <a href="unionehci__registers__t_1_1_0d169.html#ab170d36bfd9a95a6a340814ee661aef3">More...</a><br /></td></tr>
 <tr class="separator:ab170d36bfd9a95a6a340814ee661aef3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa0a5290da9eafe88ce7aed5c294c1f79"><td class="memItemLeft" >&#160;&#160;&#160;struct {</td></tr>
-<tr class="memitem:a7bd2de2e3c1f03ffa50559c8b3882d36"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#abffefd9e6b6539445dacb0c5d240cf66">current_connect_status</a>: 1</td></tr>
-<tr class="memdesc:a7bd2de2e3c1f03ffa50559c8b3882d36"><td class="mdescLeft">&#160;</td><td class="mdescRight">00: 0: No device, 1: Device is present on port  <a href="structehci__registers__t_1_1_0d169_1_1_0d175.html#a7bd2de2e3c1f03ffa50559c8b3882d36">More...</a><br /></td></tr>
-<tr class="separator:a7bd2de2e3c1f03ffa50559c8b3882d36"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2767bffca2de504a88f8e68a91c0652d"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a2e1c1b3b5ddb7d78bbb40f4f969e8e41">connect_status_change</a>: 1</td></tr>
-<tr class="memdesc:a2767bffca2de504a88f8e68a91c0652d"><td class="mdescLeft">&#160;</td><td class="mdescRight">01: [R/WC] Change in Current Connect Status  <a href="structehci__registers__t_1_1_0d169_1_1_0d175.html#a2767bffca2de504a88f8e68a91c0652d">More...</a><br /></td></tr>
-<tr class="separator:a2767bffca2de504a88f8e68a91c0652d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac167c61beb707e392420113e265c73cd"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a58db14f04b373bccaa12a9c5215539b6">port_enabled</a>: 1</td></tr>
-<tr class="memdesc:ac167c61beb707e392420113e265c73cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">02: Ports can only be enabled by HC as a part of the reset and enable. SW can write 0 to disable  <a href="structehci__registers__t_1_1_0d169_1_1_0d175.html#ac167c61beb707e392420113e265c73cd">More...</a><br /></td></tr>
-<tr class="separator:ac167c61beb707e392420113e265c73cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad3e667a18cc1531ad182943c16fc19c9"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a7b52c4fb76469b09d89bed709e896a03">port_enable_change</a>: 1</td></tr>
-<tr class="memdesc:ad3e667a18cc1531ad182943c16fc19c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">03: [R/WC] Port Enabled has changed  <a href="structehci__registers__t_1_1_0d169_1_1_0d175.html#ad3e667a18cc1531ad182943c16fc19c9">More...</a><br /></td></tr>
-<tr class="separator:ad3e667a18cc1531ad182943c16fc19c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3984c9f5211a5c5bf26ddb38175b3809"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a882cf3fb41dee8fcee3b4acdde7720e1">over_current_active</a>: 1</td></tr>
-<tr class="memdesc:a3984c9f5211a5c5bf26ddb38175b3809"><td class="mdescLeft">&#160;</td><td class="mdescRight">04: Port has an over-current condition  <a href="structehci__registers__t_1_1_0d169_1_1_0d175.html#a3984c9f5211a5c5bf26ddb38175b3809">More...</a><br /></td></tr>
-<tr class="separator:a3984c9f5211a5c5bf26ddb38175b3809"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a01320de430e037c01f387ad05440a97c"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a79a4ac941318765690d7d0010c763b0d">over_current_change</a>: 1</td></tr>
-<tr class="memdesc:a01320de430e037c01f387ad05440a97c"><td class="mdescLeft">&#160;</td><td class="mdescRight">05: [R/WC] Change to Over-current Active  <a href="structehci__registers__t_1_1_0d169_1_1_0d175.html#a01320de430e037c01f387ad05440a97c">More...</a><br /></td></tr>
-<tr class="separator:a01320de430e037c01f387ad05440a97c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a39c003bcfbff85a6e449e335c42ab7ac"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a7704aecdf9e596e962b3b97ca1958eb6">force_port_resume</a>: 1</td></tr>
-<tr class="memdesc:a39c003bcfbff85a6e449e335c42ab7ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">06: Resume detected/driven on port. This functionality defined for manipulating this bit depends on the value of the Suspend bit.  <a href="structehci__registers__t_1_1_0d169_1_1_0d175.html#a39c003bcfbff85a6e449e335c42ab7ac">More...</a><br /></td></tr>
-<tr class="separator:a39c003bcfbff85a6e449e335c42ab7ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a35c928b4515874f34d6f3d4dac614656"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a69c6b66dd00748e542843b2892dd11eb">suspend</a>: 1</td></tr>
-<tr class="memdesc:a35c928b4515874f34d6f3d4dac614656"><td class="mdescLeft">&#160;</td><td class="mdescRight">07: Port in suspend state  <a href="structehci__registers__t_1_1_0d169_1_1_0d175.html#a35c928b4515874f34d6f3d4dac614656">More...</a><br /></td></tr>
-<tr class="separator:a35c928b4515874f34d6f3d4dac614656"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a071b7f1d61c59094fd2db0543596e090"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a31f3a7a30448cd4bae59917f1f53e41a">port_reset</a>: 1</td></tr>
-<tr class="memdesc:a071b7f1d61c59094fd2db0543596e090"><td class="mdescLeft">&#160;</td><td class="mdescRight">08: 1=Port is in Reset. 0=Port is not in Reset  <a href="structehci__registers__t_1_1_0d169_1_1_0d175.html#a071b7f1d61c59094fd2db0543596e090">More...</a><br /></td></tr>
-<tr class="separator:a071b7f1d61c59094fd2db0543596e090"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1d9e678a73eff3abf32a6c48ae037b34"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#ad5152aef94107977a93ee468ab7a3d9c">nxp_highspeed_status</a>: 1</td></tr>
-<tr class="memdesc:a1d9e678a73eff3abf32a6c48ae037b34"><td class="mdescLeft">&#160;</td><td class="mdescRight">09: NXP customized: 0=connected to the port is not in High-speed mode, 1=connected to the port is in High-speed mode  <a href="structehci__registers__t_1_1_0d169_1_1_0d175.html#a1d9e678a73eff3abf32a6c48ae037b34">More...</a><br /></td></tr>
-<tr class="separator:a1d9e678a73eff3abf32a6c48ae037b34"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adbe0fe76a6bb597efb68aacbfc21ca64"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a93e730ae30c9477630c3615058283dcd">line_status</a>: 2</td></tr>
-<tr class="memdesc:adbe0fe76a6bb597efb68aacbfc21ca64"><td class="mdescLeft">&#160;</td><td class="mdescRight">10-11: D+/D- state: 00: SE0, 10: J-state, 01: K-state  <a href="structehci__registers__t_1_1_0d169_1_1_0d175.html#adbe0fe76a6bb597efb68aacbfc21ca64">More...</a><br /></td></tr>
-<tr class="separator:adbe0fe76a6bb597efb68aacbfc21ca64"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a785fa1d5d55c1c15802e907c78298b72"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a27978dd7a6034e622055b7932883ce0d">port_power</a>: 1</td></tr>
-<tr class="memdesc:a785fa1d5d55c1c15802e907c78298b72"><td class="mdescLeft">&#160;</td><td class="mdescRight">12: 0= power off, 1= power on  <a href="structehci__registers__t_1_1_0d169_1_1_0d175.html#a785fa1d5d55c1c15802e907c78298b72">More...</a><br /></td></tr>
-<tr class="separator:a785fa1d5d55c1c15802e907c78298b72"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aab94ef5c0aac66da1de4a2fd53e0fea4"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a19071b377c1da3ed9772dfd627a2a8eb">port_owner</a>: 1</td></tr>
-<tr class="memdesc:aab94ef5c0aac66da1de4a2fd53e0fea4"><td class="mdescLeft">&#160;</td><td class="mdescRight">13: not used by NXP  <a href="structehci__registers__t_1_1_0d169_1_1_0d175.html#aab94ef5c0aac66da1de4a2fd53e0fea4">More...</a><br /></td></tr>
-<tr class="separator:aab94ef5c0aac66da1de4a2fd53e0fea4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad0bb6bfd3dabbae6b8fbe37fff2dff7c"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a1a8425a8d0fb78a4d98a8e2efc8b49f1">port_indicator_control</a>: 2</td></tr>
-<tr class="memdesc:ad0bb6bfd3dabbae6b8fbe37fff2dff7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">14-15: 00b: off, 01b: Amber, 10b: green, 11b: undefined  <a href="structehci__registers__t_1_1_0d169_1_1_0d175.html#ad0bb6bfd3dabbae6b8fbe37fff2dff7c">More...</a><br /></td></tr>
-<tr class="separator:ad0bb6bfd3dabbae6b8fbe37fff2dff7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad84c7989c2e93cf3cb7c64b4dc71e9cf"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a7116bb109538635b6d3ef3d909dd1a27">port_test_control</a>: 4</td></tr>
-<tr class="memdesc:ad84c7989c2e93cf3cb7c64b4dc71e9cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">16-19: Port test mode, not used by tinyusb  <a href="structehci__registers__t_1_1_0d169_1_1_0d175.html#ad84c7989c2e93cf3cb7c64b4dc71e9cf">More...</a><br /></td></tr>
-<tr class="separator:ad84c7989c2e93cf3cb7c64b4dc71e9cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a10113c76d4e65d1d1fca4b2e4f11b8bb"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#aa787dea729c5322636ae02efb81be522">wake_on_connect_enable</a>: 1</td></tr>
-<tr class="memdesc:a10113c76d4e65d1d1fca4b2e4f11b8bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">20: Enables device connects as wake-up events  <a href="structehci__registers__t_1_1_0d169_1_1_0d175.html#a10113c76d4e65d1d1fca4b2e4f11b8bb">More...</a><br /></td></tr>
-<tr class="separator:a10113c76d4e65d1d1fca4b2e4f11b8bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a13e50b32561d3799f82eabcc7f4f5429"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a3df9403a420b5bf10aa3105d27108a05">wake_on_disconnect_enable</a>: 1</td></tr>
-<tr class="memdesc:a13e50b32561d3799f82eabcc7f4f5429"><td class="mdescLeft">&#160;</td><td class="mdescRight">21: Enables device disconnects as wake-up events  <a href="structehci__registers__t_1_1_0d169_1_1_0d175.html#a13e50b32561d3799f82eabcc7f4f5429">More...</a><br /></td></tr>
-<tr class="separator:a13e50b32561d3799f82eabcc7f4f5429"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad6f3d78c4f643f72b42fca3d66693b8e"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#ad829d38b0174465abd642c244eefca5a">wake_on_over_current_enable</a>: 1</td></tr>
-<tr class="memdesc:ad6f3d78c4f643f72b42fca3d66693b8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">22: Enables over-current conditions as wake-up events  <a href="structehci__registers__t_1_1_0d169_1_1_0d175.html#ad6f3d78c4f643f72b42fca3d66693b8e">More...</a><br /></td></tr>
-<tr class="separator:ad6f3d78c4f643f72b42fca3d66693b8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3f66e195afc616b4a1691dacd9a6d162"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a1d51ce7a4a58d2d0bbc0a75a32bde419">nxp_phy_clock_disable</a>: 1</td></tr>
-<tr class="memdesc:a3f66e195afc616b4a1691dacd9a6d162"><td class="mdescLeft">&#160;</td><td class="mdescRight">23: NXP customized: the PHY can be put into Low Power Suspend – Clock Disable when the downstream device has been put into suspend mode or when no downstream device is connected. Low power suspend is completely under the control of software. 0: enable PHY clock, 1: disable PHY clock  <a href="structehci__registers__t_1_1_0d169_1_1_0d175.html#a3f66e195afc616b4a1691dacd9a6d162">More...</a><br /></td></tr>
-<tr class="separator:a3f66e195afc616b4a1691dacd9a6d162"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:addee281c4495d27f0131d5e7ab786ef6"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#af77781e2faa1847ed81af7fa1bf7a2bd">nxp_port_force_fullspeed</a>: 1</td></tr>
-<tr class="memdesc:addee281c4495d27f0131d5e7ab786ef6"><td class="mdescLeft">&#160;</td><td class="mdescRight">24: NXP customized: Writing this bit to a 1 will force the port to only connect at Full Speed. It disables the chirp sequence that allowsthe port to identify itself as High Speed. This is useful for testing FS configurations with a HS host, hub or device.  <a href="structehci__registers__t_1_1_0d169_1_1_0d175.html#addee281c4495d27f0131d5e7ab786ef6">More...</a><br /></td></tr>
-<tr class="separator:addee281c4495d27f0131d5e7ab786ef6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0216509452aa6e208a4bcd8b4b56b6f7"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#ac82f54e09a9f1be9963c03f9bf46a1db">TU_RESERVED</a>: 1</td></tr>
-<tr class="memdesc:a0216509452aa6e208a4bcd8b4b56b6f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">25  <a href="structehci__registers__t_1_1_0d169_1_1_0d175.html#a0216509452aa6e208a4bcd8b4b56b6f7">More...</a><br /></td></tr>
-<tr class="separator:a0216509452aa6e208a4bcd8b4b56b6f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3ff15d48fdc75c76d9134ba7c0849813"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a3beb327d268412901fa904cf4b1d751c">nxp_port_speed</a>: 2</td></tr>
-<tr class="memdesc:a3ff15d48fdc75c76d9134ba7c0849813"><td class="mdescLeft">&#160;</td><td class="mdescRight">26-27: NXP customized: This register field indicates the speed atwhich the port is operating. For HS mode operation in the host controllerand HS/FS operation in the device controller the port routing steers data to the Protocol engine. For FS and LS mode operation in the host controller, the port routing steers data to the Protocol Engine w/ Embedded Transaction Translator. 0x0: Fullspeed, 0x1: Lowspeed, 0x2: Highspeed  <a href="structehci__registers__t_1_1_0d169_1_1_0d175.html#a3ff15d48fdc75c76d9134ba7c0849813">More...</a><br /></td></tr>
-<tr class="separator:a3ff15d48fdc75c76d9134ba7c0849813"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa0a5290da9eafe88ce7aed5c294c1f79"><td class="memItemLeft" valign="top">&#160;&#160;&#160;}&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a43411a6d6a5080b2239b4844ecc2bf21">portsc_bm</a></td></tr>
-<tr class="separator:aa0a5290da9eafe88ce7aed5c294c1f79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae17cd433aba48c029193b8b7f513b0e"><td class="memItemLeft" >&#160;&#160;&#160;struct {</td></tr>
+<tr class="memitem:a281d82d854ed24aba94456f97516cdf4"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#abffefd9e6b6539445dacb0c5d240cf66">current_connect_status</a>: 1</td></tr>
+<tr class="memdesc:a281d82d854ed24aba94456f97516cdf4"><td class="mdescLeft">&#160;</td><td class="mdescRight">00: 0: No device, 1: Device is present on port  <a href="structehci__registers__t_1_1_0d169_1_1_0d174.html#a281d82d854ed24aba94456f97516cdf4">More...</a><br /></td></tr>
+<tr class="separator:a281d82d854ed24aba94456f97516cdf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26c1485aa640780114da4c2cd24464da"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a2e1c1b3b5ddb7d78bbb40f4f969e8e41">connect_status_change</a>: 1</td></tr>
+<tr class="memdesc:a26c1485aa640780114da4c2cd24464da"><td class="mdescLeft">&#160;</td><td class="mdescRight">01: [R/WC] Change in Current Connect Status  <a href="structehci__registers__t_1_1_0d169_1_1_0d174.html#a26c1485aa640780114da4c2cd24464da">More...</a><br /></td></tr>
+<tr class="separator:a26c1485aa640780114da4c2cd24464da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ea768d2dde253593e7d6669832d7a4e"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a58db14f04b373bccaa12a9c5215539b6">port_enabled</a>: 1</td></tr>
+<tr class="memdesc:a0ea768d2dde253593e7d6669832d7a4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">02: Ports can only be enabled by HC as a part of the reset and enable. SW can write 0 to disable  <a href="structehci__registers__t_1_1_0d169_1_1_0d174.html#a0ea768d2dde253593e7d6669832d7a4e">More...</a><br /></td></tr>
+<tr class="separator:a0ea768d2dde253593e7d6669832d7a4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a763e7163b6aaed8bf30e292b3d9cf32b"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a7b52c4fb76469b09d89bed709e896a03">port_enable_change</a>: 1</td></tr>
+<tr class="memdesc:a763e7163b6aaed8bf30e292b3d9cf32b"><td class="mdescLeft">&#160;</td><td class="mdescRight">03: [R/WC] Port Enabled has changed  <a href="structehci__registers__t_1_1_0d169_1_1_0d174.html#a763e7163b6aaed8bf30e292b3d9cf32b">More...</a><br /></td></tr>
+<tr class="separator:a763e7163b6aaed8bf30e292b3d9cf32b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4ecc3c152f8c6a9766af3381d621bbd"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a882cf3fb41dee8fcee3b4acdde7720e1">over_current_active</a>: 1</td></tr>
+<tr class="memdesc:af4ecc3c152f8c6a9766af3381d621bbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">04: Port has an over-current condition  <a href="structehci__registers__t_1_1_0d169_1_1_0d174.html#af4ecc3c152f8c6a9766af3381d621bbd">More...</a><br /></td></tr>
+<tr class="separator:af4ecc3c152f8c6a9766af3381d621bbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa689f6b21b51cd4807950d31749e1e7"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a79a4ac941318765690d7d0010c763b0d">over_current_change</a>: 1</td></tr>
+<tr class="memdesc:aaa689f6b21b51cd4807950d31749e1e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">05: [R/WC] Change to Over-current Active  <a href="structehci__registers__t_1_1_0d169_1_1_0d174.html#aaa689f6b21b51cd4807950d31749e1e7">More...</a><br /></td></tr>
+<tr class="separator:aaa689f6b21b51cd4807950d31749e1e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e53c3610f294f8e33fa4d10dfafe4b8"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a7704aecdf9e596e962b3b97ca1958eb6">force_port_resume</a>: 1</td></tr>
+<tr class="memdesc:a3e53c3610f294f8e33fa4d10dfafe4b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">06: Resume detected/driven on port. This functionality defined for manipulating this bit depends on the value of the Suspend bit.  <a href="structehci__registers__t_1_1_0d169_1_1_0d174.html#a3e53c3610f294f8e33fa4d10dfafe4b8">More...</a><br /></td></tr>
+<tr class="separator:a3e53c3610f294f8e33fa4d10dfafe4b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a320a7cf43a4209f55085c878419bc2b7"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a69c6b66dd00748e542843b2892dd11eb">suspend</a>: 1</td></tr>
+<tr class="memdesc:a320a7cf43a4209f55085c878419bc2b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">07: Port in suspend state  <a href="structehci__registers__t_1_1_0d169_1_1_0d174.html#a320a7cf43a4209f55085c878419bc2b7">More...</a><br /></td></tr>
+<tr class="separator:a320a7cf43a4209f55085c878419bc2b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0162bc407ddf9d29f55fe6404dad6296"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a31f3a7a30448cd4bae59917f1f53e41a">port_reset</a>: 1</td></tr>
+<tr class="memdesc:a0162bc407ddf9d29f55fe6404dad6296"><td class="mdescLeft">&#160;</td><td class="mdescRight">08: 1=Port is in Reset. 0=Port is not in Reset  <a href="structehci__registers__t_1_1_0d169_1_1_0d174.html#a0162bc407ddf9d29f55fe6404dad6296">More...</a><br /></td></tr>
+<tr class="separator:a0162bc407ddf9d29f55fe6404dad6296"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d18c806d329250681f9bfb48df9997c"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#ad5152aef94107977a93ee468ab7a3d9c">nxp_highspeed_status</a>: 1</td></tr>
+<tr class="memdesc:a1d18c806d329250681f9bfb48df9997c"><td class="mdescLeft">&#160;</td><td class="mdescRight">09: NXP customized: 0=connected to the port is not in High-speed mode, 1=connected to the port is in High-speed mode  <a href="structehci__registers__t_1_1_0d169_1_1_0d174.html#a1d18c806d329250681f9bfb48df9997c">More...</a><br /></td></tr>
+<tr class="separator:a1d18c806d329250681f9bfb48df9997c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae69b2dece1e0b1080ee0d5c2437adfbf"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a93e730ae30c9477630c3615058283dcd">line_status</a>: 2</td></tr>
+<tr class="memdesc:ae69b2dece1e0b1080ee0d5c2437adfbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">10-11: D+/D- state: 00: SE0, 10: J-state, 01: K-state  <a href="structehci__registers__t_1_1_0d169_1_1_0d174.html#ae69b2dece1e0b1080ee0d5c2437adfbf">More...</a><br /></td></tr>
+<tr class="separator:ae69b2dece1e0b1080ee0d5c2437adfbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30df749705d6e1662d3d66b6a6d6f5f9"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a27978dd7a6034e622055b7932883ce0d">port_power</a>: 1</td></tr>
+<tr class="memdesc:a30df749705d6e1662d3d66b6a6d6f5f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">12: 0= power off, 1= power on  <a href="structehci__registers__t_1_1_0d169_1_1_0d174.html#a30df749705d6e1662d3d66b6a6d6f5f9">More...</a><br /></td></tr>
+<tr class="separator:a30df749705d6e1662d3d66b6a6d6f5f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab34367aa0528bcc9f71171a7745a261d"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a19071b377c1da3ed9772dfd627a2a8eb">port_owner</a>: 1</td></tr>
+<tr class="memdesc:ab34367aa0528bcc9f71171a7745a261d"><td class="mdescLeft">&#160;</td><td class="mdescRight">13: not used by NXP  <a href="structehci__registers__t_1_1_0d169_1_1_0d174.html#ab34367aa0528bcc9f71171a7745a261d">More...</a><br /></td></tr>
+<tr class="separator:ab34367aa0528bcc9f71171a7745a261d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aebd8a654b15be5a89e32d4bb195b0f26"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a1a8425a8d0fb78a4d98a8e2efc8b49f1">port_indicator_control</a>: 2</td></tr>
+<tr class="memdesc:aebd8a654b15be5a89e32d4bb195b0f26"><td class="mdescLeft">&#160;</td><td class="mdescRight">14-15: 00b: off, 01b: Amber, 10b: green, 11b: undefined  <a href="structehci__registers__t_1_1_0d169_1_1_0d174.html#aebd8a654b15be5a89e32d4bb195b0f26">More...</a><br /></td></tr>
+<tr class="separator:aebd8a654b15be5a89e32d4bb195b0f26"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a388d74a8c151ae1a6040a3e57f536d5a"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a7116bb109538635b6d3ef3d909dd1a27">port_test_control</a>: 4</td></tr>
+<tr class="memdesc:a388d74a8c151ae1a6040a3e57f536d5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">16-19: Port test mode, not used by tinyusb  <a href="structehci__registers__t_1_1_0d169_1_1_0d174.html#a388d74a8c151ae1a6040a3e57f536d5a">More...</a><br /></td></tr>
+<tr class="separator:a388d74a8c151ae1a6040a3e57f536d5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf86cb45b842dae280f0c53e3e008d25"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#aa787dea729c5322636ae02efb81be522">wake_on_connect_enable</a>: 1</td></tr>
+<tr class="memdesc:aaf86cb45b842dae280f0c53e3e008d25"><td class="mdescLeft">&#160;</td><td class="mdescRight">20: Enables device connects as wake-up events  <a href="structehci__registers__t_1_1_0d169_1_1_0d174.html#aaf86cb45b842dae280f0c53e3e008d25">More...</a><br /></td></tr>
+<tr class="separator:aaf86cb45b842dae280f0c53e3e008d25"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa574459373bbd9965438ff66af26ad55"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a3df9403a420b5bf10aa3105d27108a05">wake_on_disconnect_enable</a>: 1</td></tr>
+<tr class="memdesc:aa574459373bbd9965438ff66af26ad55"><td class="mdescLeft">&#160;</td><td class="mdescRight">21: Enables device disconnects as wake-up events  <a href="structehci__registers__t_1_1_0d169_1_1_0d174.html#aa574459373bbd9965438ff66af26ad55">More...</a><br /></td></tr>
+<tr class="separator:aa574459373bbd9965438ff66af26ad55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96d4210c1435a85a013e58f0e77c26d6"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#ad829d38b0174465abd642c244eefca5a">wake_on_over_current_enable</a>: 1</td></tr>
+<tr class="memdesc:a96d4210c1435a85a013e58f0e77c26d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">22: Enables over-current conditions as wake-up events  <a href="structehci__registers__t_1_1_0d169_1_1_0d174.html#a96d4210c1435a85a013e58f0e77c26d6">More...</a><br /></td></tr>
+<tr class="separator:a96d4210c1435a85a013e58f0e77c26d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a988c26687a06b45c46af436aee7f3c8c"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a1d51ce7a4a58d2d0bbc0a75a32bde419">nxp_phy_clock_disable</a>: 1</td></tr>
+<tr class="memdesc:a988c26687a06b45c46af436aee7f3c8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">23: NXP customized: the PHY can be put into Low Power Suspend – Clock Disable when the downstream device has been put into suspend mode or when no downstream device is connected. Low power suspend is completely under the control of software. 0: enable PHY clock, 1: disable PHY clock  <a href="structehci__registers__t_1_1_0d169_1_1_0d174.html#a988c26687a06b45c46af436aee7f3c8c">More...</a><br /></td></tr>
+<tr class="separator:a988c26687a06b45c46af436aee7f3c8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a588bb1fefccfc5e09d2e2c02385fe18d"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#af77781e2faa1847ed81af7fa1bf7a2bd">nxp_port_force_fullspeed</a>: 1</td></tr>
+<tr class="memdesc:a588bb1fefccfc5e09d2e2c02385fe18d"><td class="mdescLeft">&#160;</td><td class="mdescRight">24: NXP customized: Writing this bit to a 1 will force the port to only connect at Full Speed. It disables the chirp sequence that allowsthe port to identify itself as High Speed. This is useful for testing FS configurations with a HS host, hub or device.  <a href="structehci__registers__t_1_1_0d169_1_1_0d174.html#a588bb1fefccfc5e09d2e2c02385fe18d">More...</a><br /></td></tr>
+<tr class="separator:a588bb1fefccfc5e09d2e2c02385fe18d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:addcccde362d7effce3c9c9f3402ae12c"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#ac82f54e09a9f1be9963c03f9bf46a1db">TU_RESERVED</a>: 1</td></tr>
+<tr class="memdesc:addcccde362d7effce3c9c9f3402ae12c"><td class="mdescLeft">&#160;</td><td class="mdescRight">25  <a href="structehci__registers__t_1_1_0d169_1_1_0d174.html#addcccde362d7effce3c9c9f3402ae12c">More...</a><br /></td></tr>
+<tr class="separator:addcccde362d7effce3c9c9f3402ae12c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5a1b26344227de44db98777516bc2ee"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a3beb327d268412901fa904cf4b1d751c">nxp_port_speed</a>: 2</td></tr>
+<tr class="memdesc:ae5a1b26344227de44db98777516bc2ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">26-27: NXP customized: This register field indicates the speed atwhich the port is operating. For HS mode operation in the host controllerand HS/FS operation in the device controller the port routing steers data to the Protocol engine. For FS and LS mode operation in the host controller, the port routing steers data to the Protocol Engine w/ Embedded Transaction Translator. 0x0: Fullspeed, 0x1: Lowspeed, 0x2: Highspeed  <a href="structehci__registers__t_1_1_0d169_1_1_0d174.html#ae5a1b26344227de44db98777516bc2ee">More...</a><br /></td></tr>
+<tr class="separator:ae5a1b26344227de44db98777516bc2ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae17cd433aba48c029193b8b7f513b0e"><td class="memItemLeft" valign="top">&#160;&#160;&#160;}&#160;&#160;&#160;<a class="el" href="structehci__registers__t.html#a33218bdf71afdc37d24414c09035f35a">portsc_bm</a></td></tr>
+<tr class="separator:aae17cd433aba48c029193b8b7f513b0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a88d981023f3cb5267bcc9093f7aa3437"><td class="memItemLeft" valign="top">};&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
 <tr class="separator:a88d981023f3cb5267bcc9093f7aa3437"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -332,28 +332,28 @@ Public Attributes</h2></td></tr>
 <div class="textblock">
 <p class="definition">Definition at line <a class="el" href="ehci_8h_source.html#l00318">318</a> of file <a class="el" href="ehci_8h_source.html">ehci.h</a>.</p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
-<a id="a6349f0cd7d6b9131c1e8ec43572197ee" name="a6349f0cd7d6b9131c1e8ec43572197ee"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6349f0cd7d6b9131c1e8ec43572197ee">&#9670;&nbsp;</a></span></h2>
+<a id="acc25da13d11f6a233edbc57223d32fc3" name="acc25da13d11f6a233edbc57223d32fc3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc25da13d11f6a233edbc57223d32fc3">&#9670;&nbsp;</a></span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">union  { ... }  ehci_registers_t::@164</td>
+          <td class="memname">union  { ... }  ehci_registers_t::@163</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a85b3726a7fff0a0551f280587767f6f2" name="a85b3726a7fff0a0551f280587767f6f2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a85b3726a7fff0a0551f280587767f6f2">&#9670;&nbsp;</a></span></h2>
+<a id="a02892cbd978624c714310378c070a696" name="a02892cbd978624c714310378c070a696"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a02892cbd978624c714310378c070a696">&#9670;&nbsp;</a></span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">union  { ... }  ehci_registers_t::@166</td>
+          <td class="memname">union  { ... }  ehci_registers_t::@165</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -594,8 +594,8 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="aa29fc494ddc72d65567528c9cb8a7077" name="aa29fc494ddc72d65567528c9cb8a7077"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa29fc494ddc72d65567528c9cb8a7077">&#9670;&nbsp;</a></span></h2>
+<a id="af296f3b2b80998c8cd93855f1cb9d3e2" name="af296f3b2b80998c8cd93855f1cb9d3e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af296f3b2b80998c8cd93855f1cb9d3e2">&#9670;&nbsp;</a></span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1291,8 +1291,8 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a43411a6d6a5080b2239b4844ecc2bf21" name="a43411a6d6a5080b2239b4844ecc2bf21"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a43411a6d6a5080b2239b4844ecc2bf21">&#9670;&nbsp;</a></span></h2>
+<a id="a33218bdf71afdc37d24414c09035f35a" name="a33218bdf71afdc37d24414c09035f35a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a33218bdf71afdc37d24414c09035f35a">&#9670;&nbsp;</a></span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1391,8 +1391,8 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="abfc72ae5f6d2936b633049657c348287" name="abfc72ae5f6d2936b633049657c348287"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abfc72ae5f6d2936b633049657c348287">&#9670;&nbsp;</a></span></h2>
+<a id="a91217dc983126fc363703ba1ee600387" name="a91217dc983126fc363703ba1ee600387"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a91217dc983126fc363703ba1ee600387">&#9670;&nbsp;</a></span></h2>
 
 <div class="memitem">
 <div class="memproto">

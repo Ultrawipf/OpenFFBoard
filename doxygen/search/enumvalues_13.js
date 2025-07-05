@@ -22,7 +22,7 @@ var searchData=
   ['vesccanid_19',['vesccanid',['../_vesc_c_a_n_8h.html#a2125c9b686c373137058c5ae8fa4219faee973bc6cd6b5e260016f490825bb309',1,'VescCAN.h']]],
   ['vescstate_20',['vescstate',['../_vesc_c_a_n_8h.html#a2125c9b686c373137058c5ae8fa4219fa55864dd8b4439f5dec78d95eeb3c97c5',1,'VescCAN.h']]],
   ['vext_21',['vext',['../_system_commands_8h.html#a4a42a50bc0a826d5ab6d847950749d07ac3c806bd38dbc93a851c53851c4fbc5f',1,'SystemCommands.h']]],
-  ['video_5fbcd_5f1_5f50_22',['VIDEO_BCD_1_50',['../video_8h.html#a1be3860693af99a6c1da72580097294ca452b0c6c996112d94439555bd64b10a5',1,'video.h']]],
+  ['video_5fbcd_5f1_5f50_22',['VIDEO_BCD_1_50',['../video_8h.html#a900dca9b26de42491763226e12dcd47ba452b0c6c996112d94439555bd64b10a5',1,'video.h']]],
   ['video_5fcolor_5fcoef_5fbt470_5f2bg_23',['VIDEO_COLOR_COEF_BT470_2BG',['../video_8h.html#a8436453e32c90314732218480f2dc138ad353504aecd77f5a7761d1d6ad1f6355',1,'video.h']]],
   ['video_5fcolor_5fcoef_5fbt709_24',['VIDEO_COLOR_COEF_BT709',['../video_8h.html#a8436453e32c90314732218480f2dc138ad3d730f70e4914d2e5c360dfc1b13b7a',1,'video.h']]],
   ['video_5fcolor_5fcoef_5ffcc_25',['VIDEO_COLOR_COEF_FCC',['../video_8h.html#a8436453e32c90314732218480f2dc138ae13c72b0ef6836ae40055aaa58a23c5c',1,'video.h']]],
@@ -135,6 +135,6 @@ var searchData=
   ['vint_132',['vint',['../_system_commands_8h.html#a4a42a50bc0a826d5ab6d847950749d07a7a48b6e7efa8475f61dc5ecd419fda73',1,'SystemCommands.h']]],
   ['visible_133',['visible',['../_choosable_class_8h.html#aa3a363b83e4ed5a23cf7398fcf8bae0ca46cf0e59759c9b7f1112ca4b174343ef',1,'ChoosableClass.h']]],
   ['vmtmc_134',['vmTmc',['../class_t_m_c4671.html#a383a82ab842490e325553e9365028a27aa4c85f6bd07bccc575b078ae00b60ef0',1,'TMC4671']]],
-  ['voltage_135',['voltage',['../class_motor_simplemotion.html#a04284aedcbd482d8dea7aa2bf631d5b2ae437ba437f4106903e619bb380574954',1,'MotorSimplemotion::voltage()'],['../_vesc_c_a_n_8h.html#a2125c9b686c373137058c5ae8fa4219fae437ba437f4106903e619bb380574954',1,'voltage():&#160;VescCAN.h'],['../_rmd_motor_c_a_n_8h.html#a0df8996e5a9739e2a4112d9a39bea4b8ae437ba437f4106903e619bb380574954',1,'voltage():&#160;RmdMotorCAN.h']]],
-  ['voltage_136',['Voltage',['../class_motor_simplemotion.html#a0fa06e9cd5b42ac97ac49ff916ac1c30a4a92fbe41f6463598c39850b8335096c',1,'MotorSimplemotion']]]
+  ['voltage_135',['Voltage',['../class_motor_simplemotion.html#a0fa06e9cd5b42ac97ac49ff916ac1c30a4a92fbe41f6463598c39850b8335096c',1,'MotorSimplemotion']]],
+  ['voltage_136',['voltage',['../_vesc_c_a_n_8h.html#a2125c9b686c373137058c5ae8fa4219fae437ba437f4106903e619bb380574954',1,'voltage():&#160;VescCAN.h'],['../_rmd_motor_c_a_n_8h.html#a0df8996e5a9739e2a4112d9a39bea4b8ae437ba437f4106903e619bb380574954',1,'voltage():&#160;RmdMotorCAN.h'],['../class_motor_simplemotion.html#a04284aedcbd482d8dea7aa2bf631d5b2ae437ba437f4106903e619bb380574954',1,'MotorSimplemotion::voltage()']]]
 ];

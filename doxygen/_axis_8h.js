@@ -31,6 +31,8 @@ var _axis_8h =
       [ "filterProfileId", "_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715a7d34441f5e8fb727be2791f4661a5439", null ],
       [ "cpr", "_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715a293a5b816a2fade15a3c7b02d660198b", null ],
       [ "axisfriction", "_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715a508205b2d1782519cf35adece5beb6b5", null ],
-      [ "axisinertia", "_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715a24df21182655186dcbbf137d7992688e", null ]
+      [ "axisinertia", "_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715a24df21182655186dcbbf137d7992688e", null ],
+      [ "expo", "_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715a44ca7efd814e428097af4d5e75b1cdf5", null ],
+      [ "exposcale", "_axis_8h.html#ad3ecb30741dcdb99ec2fc80ca6fff715a83ef61791be443263c353c5bcb09df8e", null ]
     ] ]
 ];

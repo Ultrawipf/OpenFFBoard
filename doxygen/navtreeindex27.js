@@ -1,5 +1,12 @@
 var NAVTREEINDEX27 =
 {
+"group___class_driver___h_i_d___keyboard.html#gga267dfef61bb13db0254ac75246ace393ae2312b1713c1e7a5e30fcdeba30ea588":[2,9,3,1],
+"group___class_driver___h_i_d___keyboard.html#gga7cef2aea3178da2aa5fe0d4bf298c5b7a08aeef4be7cedcb39ae600e60e9ca56a":[2,9,2,1],
+"group___class_driver___h_i_d___keyboard.html#gga7cef2aea3178da2aa5fe0d4bf298c5b7a0acd73324bf3a3e846176e8086c0c42b":[2,9,2,4],
+"group___class_driver___h_i_d___keyboard.html#gga7cef2aea3178da2aa5fe0d4bf298c5b7a6caf03695f69ca241058b5c24a6f6658":[2,9,2,2],
+"group___class_driver___h_i_d___keyboard.html#gga7cef2aea3178da2aa5fe0d4bf298c5b7a83cb33ad101242024227d6305a8aebd7":[2,9,2,3],
+"group___class_driver___h_i_d___keyboard.html#gga7cef2aea3178da2aa5fe0d4bf298c5b7ab146281c88fca97cf36501b8edf33e67":[2,9,2,0],
+"group___class_driver___h_i_d___mouse.html":[2,8],
 "group___class_driver___h_i_d___mouse.html#ga5de0ee36ed20ebe67678bc64aa63eb73":[2,8,1],
 "group___class_driver___h_i_d___mouse.html#ga67fa26a659c18a393d7a83e807560929":[2,8,3],
 "group___class_driver___h_i_d___mouse.html#gac0cad0fc2de7d2c740b28d0ecc2b7210":[2,8,2],
@@ -242,12 +249,5 @@ var NAVTREEINDEX27 =
 "hcd__musb_8c.html#a197a56f3a9dce3d87a16641afd7b0dc5":[5,0,217,24],
 "hcd__musb_8c.html#a22e47facadfd7c480dbe88560ef0c634":[5,0,217,15],
 "hcd__musb_8c.html#a3071986c46a56d9781bb925e9048c6ac":[5,0,217,38],
-"hcd__musb_8c.html#a382d6c22ec3a0d86efacd5de58d21b71":[5,0,217,39],
-"hcd__musb_8c.html#a4a26a97211c0cc09c09f35211919b8f8":[5,0,217,33],
-"hcd__musb_8c.html#a4f5e89a7eedd53bba7453f04ca9f7d34":[5,0,217,13],
-"hcd__musb_8c.html#a641f368a59881446fdb841a252e6f117":[5,0,217,19],
-"hcd__musb_8c.html#a69bc2917c5933edb2c1b0a3cb67e3815":[5,0,217,25],
-"hcd__musb_8c.html#a6ae0ecb48ee00f4f3ef37e186705a5f5":[5,0,217,11],
-"hcd__musb_8c.html#a6b372341c5dff8b6b730ea7176bba2a8":[5,0,217,12],
-"hcd__musb_8c.html#a6fe58843409be83c2961a1c4c7c8fab5":[5,0,217,5]
+"hcd__musb_8c.html#a382d6c22ec3a0d86efacd5de58d21b71":[5,0,217,39]
 };
