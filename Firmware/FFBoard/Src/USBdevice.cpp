@@ -41,7 +41,9 @@ void USBdevice::Run(){
  *  Generates a unique id string from the hardware id
  */
 std::string USBdevice::getUsbSerial(){
-	std::string serial = std::to_string(HAL_GetUIDw0()) + std::to_string(HAL_GetUIDw1()) + std::to_string(HAL_GetUIDw2());
+	char buf[25];
+	std::snprintf(buf,25,"%08lx%08lx%08lx",HAL_GetUIDw2(),HAL_GetUIDw1(),HAL_GetUIDw0()); // Print as hex string
+	std::string serial{buf}; //std::to_string(HAL_GetUIDw0()) + std::to_string(HAL_GetUIDw1()) + std::to_string(HAL_GetUIDw2());
 
 	return serial;
 }
@@ -76,7 +78,7 @@ uint16_t* USBdevice::getUsbStringDesc(uint8_t index,uint16_t langid){
 			field = string_desc->interfaces[index-4];
 			if(appendSerial){
 				field += "(";
-				field.append(getUsbSerial().substr(0, appendSerial));
+				field.append(std::to_string(HAL_GetUIDw0()).substr(0, appendSerial));
 				field += ")";
 			}
 		}else{
