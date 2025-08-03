@@ -69,7 +69,7 @@ void SystemCommands::registerCommands(){
 	CommandHandler::registerCommand("devid", FFBoardMain_commands::devid, "Get chip dev id and rev id",CMDFLAG_GET);
 	CommandHandler::registerCommand("name", CommandHandlerCommands::name, "name of class",CMDFLAG_GET|CMDFLAG_STR_ONLY);
 	CommandHandler::registerCommand("cmdinfo", CommandHandlerCommands::cmdinfo, "Flags of a command id (adr). -1 if cmd id invalid",CMDFLAG_GETADR);
-	CommandHandler::registerCommand("uid", FFBoardMain_commands::uid, "Get 96b chip uid. Adr0-2 sel blk",CMDFLAG_GET | CMDFLAG_GETADR);
+	CommandHandler::registerCommand("uid", FFBoardMain_commands::uid, "Get 96b chip uid. Adr0-2 sel blk",CMDFLAG_GET | CMDFLAG_GETADR | CMDFLAG_INFOSTRING);
 	CommandHandler::registerCommand("temp", FFBoardMain_commands::temp, "Chip temperature in C",CMDFLAG_GET);
 }
 
@@ -279,6 +279,10 @@ CommandStatus SystemCommands::internalCommand(const ParsedCommand& cmd,std::vect
 				}else if(cmd.adr == 2){
 					replies.emplace_back(HAL_GetUIDw2());
 				}
+			}else if(cmd.type == CMDtype::info){
+				char buf[32];
+				std::snprintf(buf,32,"0x%08lx%08lx%08lx",HAL_GetUIDw2(),HAL_GetUIDw1(),HAL_GetUIDw0()); // Print as hex string
+				replies.emplace_back(std::string(buf));
 			}
 			break;
 		case FFBoardMain_commands::temp:
