@@ -8,7 +8,7 @@
  * For more settings see target_constants.h in a target specific folder
  */
 
-static const uint8_t SW_VERSION_INT[3] = {1,16,4}; // Version as array. 8 bit each!
+static const uint8_t SW_VERSION_INT[3] = {1,16,5}; // Version as array. 8 bit each!
 #ifndef MAX_AXIS
 #define MAX_AXIS 2 // ONLY USE 2 for now else screws HID Reports
 #endif
@@ -97,6 +97,15 @@ static const uint8_t SW_VERSION_INT[3] = {1,16,4}; // Version as array. 8 bit ea
 
 #if defined(TIM_MICROS_HALTICK) && defined(TIM_MICROS)
 #error "Only TIM_MICROS_HALTICK OR TIM_MICROS may be defined as a microsecond timebase"
+#endif
+
+#ifndef SIGNATURELEN
+#define SIGNATURELEN 8
+#define SIGNATURE
+#endif
+
+#if defined(FLASH_OTP_BASE) && defined(FLASH_OTP_END)
+#define OTPMEMORY
 #endif
 
 

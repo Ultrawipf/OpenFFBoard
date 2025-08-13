@@ -233,3 +233,53 @@ void Flash_Dump(std::vector<std::tuple<uint16_t,uint16_t>> *result,bool includeA
 
 	}
 }
+
+
+/*
+ * OTP Helper functions.
+ * Some chips have internal OTP sections, others may need custom implementations
+ * Page size and address required
+ */
+#if defined(FLASH_OTP_BASE) && defined(FLASH_OTP_END) && defined(OTPMEMORY)
+// This chip has an OTP section in main flash.
+
+__weak bool OTP_Write(uint16_t adroffset,uint64_t dat){
+//	FLASH_OTP_BASE
+//	FLASH_OTP_END
+	uint32_t adr = (FLASH_OTP_BASE+adroffset*sizeof(uint64_t));
+	if(adr > FLASH_OTP_END){
+		return false; // Error
+	}
+	uint64_t curval = *(uint64_t*)adr;
+	if(curval != 0xffffffffffffffff){
+		return false;
+	}
+	if(HAL_FLASH_Unlock()!=HAL_OK) return false;
+	//bool success = HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, adr, dat) == HAL_OK;
+	bool success = HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, adr, (uint32_t)(dat)) == HAL_OK;
+	success = HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, adr+4, (uint32_t)(dat >> 32)) == HAL_OK && success;
+	HAL_FLASH_Lock();
+	return success;
+}
+
+
+__weak bool OTP_Read(uint16_t adroffset,uint64_t* dat){
+	uint32_t adr = (FLASH_OTP_BASE+adroffset*sizeof(uint64_t));
+	if(adr > FLASH_OTP_END){
+		return false; // Error
+	}
+	uint64_t curval = *(uint64_t*)adr;
+	*dat = curval;
+	return true;
+}
+#else
+__weak bool OTP_Write(uint16_t adroffset,uint64_t dat){
+	return false;
+}
+
+
+__weak bool OTP_Read(uint16_t adroffset,uint64_t* dat){
+	return false;
+}
+
+#endif

@@ -71,6 +71,12 @@ void SystemCommands::registerCommands(){
 	CommandHandler::registerCommand("cmdinfo", CommandHandlerCommands::cmdinfo, "Flags of a command id (adr). -1 if cmd id invalid",CMDFLAG_GETADR);
 	CommandHandler::registerCommand("uid", FFBoardMain_commands::uid, "Get 96b chip uid. Adr0-2 sel blk",CMDFLAG_GET | CMDFLAG_GETADR | CMDFLAG_INFOSTRING);
 	CommandHandler::registerCommand("temp", FFBoardMain_commands::temp, "Chip temperature in C",CMDFLAG_GET);
+#if defined(OTPMEMORY)
+	CommandHandler::registerCommand("otp", FFBoardMain_commands::otp, "Access OTP memory",CMDFLAG_GETADR | CMDFLAG_SETADR | CMDFLAG_DEBUG);
+#endif
+#if defined(SIGNATURE)
+	CommandHandler::registerCommand("signature", FFBoardMain_commands::signature, "Chip signature in OTP. setadr to write data. set=1 to lock",CMDFLAG_GETADR | CMDFLAG_SETADR | CMDFLAG_GET | CMDFLAG_INFOSTRING);
+#endif
 }
 
 // Choose lower optimize level because the compiler likes to blow up this function
@@ -290,6 +296,70 @@ CommandStatus SystemCommands::internalCommand(const ParsedCommand& cmd,std::vect
 				replies.emplace_back(getChipTemp());
 				break;
 			}
+#if defined(OTPMEMORY)
+		case FFBoardMain_commands::otp:
+			if(cmd.type == CMDtype::setat){
+				bool success = OTP_Write(cmd.adr, cmd.val);
+				if(!success){
+					flag = CommandStatus::ERR;
+				}
+			}else if(cmd.type == CMDtype::getat){
+				CommandReply reply;
+				reply.type = CommandReplyType::INT;
+				uint64_t val;
+				if(OTP_Read(cmd.adr,&val)){
+					reply.val=val;
+				}else{
+					flag = CommandStatus::ERR;
+				}
+				replies.push_back(reply);
+			}
+			break;
+#endif
+#if defined(SIGNATURE)
+		case FFBoardMain_commands::signature:
+#if defined(SIGNATURELEN) && defined(SIGBNATUREBASEADR)
+			if(cmd.type == CMDtype::info){
+				char buf[(SIGNATURELEN * 16) + 1];
+				uint64_t dat;
+				for(uint8_t i = 0;i<SIGNATURELEN;i++){
+					OTP_Read(SIGBNATUREBASEADR+i, &dat);
+					std::snprintf(buf+i*16,17,"%016llx",dat); // Print as hex string
+				}
+				replies.emplace_back(std::string(buf));
+			}else if(cmd.type == CMDtype::get){
+				for(uint8_t i = 0;i<SIGNATURELEN;i++){
+					uint64_t dat;
+					OTP_Read(SIGBNATUREBASEADR+i, &dat);
+					replies.emplace_back(dat,i);
+				}
+			}else if(cmd.type == CMDtype::getat){
+				if(cmd.adr >= SIGNATURELEN || cmd.adr < 0){
+					flag = CommandStatus::ERR;
+				}else{
+					uint64_t dat;
+					OTP_Read(SIGBNATUREBASEADR+cmd.adr, &dat);
+					replies.emplace_back(dat,cmd.adr);
+				}
+			}else if(cmd.type == CMDtype::setat){
+				bool success = OTP_Write(cmd.adr+SIGBNATUREBASEADR, cmd.val);
+				if(!success){
+					flag = CommandStatus::ERR;
+				}
+			}else{
+				flag = CommandStatus::ERR;
+			}
+#else
+			if(cmd.type == CMDtype::info){
+				replies.emplace_back("0");
+			}else if(cmd.type == CMDtype::get || cmd.type == CMDtype::getat){
+				replies.emplace_back(0);
+			}else{
+				flag = CommandStatus::ERR;
+			}
+#endif
+#endif
+			break;
 
 
 		default:

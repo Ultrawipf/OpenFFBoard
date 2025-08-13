@@ -23,7 +23,7 @@ const tusb_desc_device_t usb_devdesc_ffboard_composite =
     .bcdUSB             = 0x0200,
 
     // As required by USB Specs IAD's subclass must be common class (2) and protocol must be IAD (1)
-    .bDeviceClass       = TUSB_CLASS_MISC,
+    .bDeviceClass       = TUSB_CLASS_UNSPECIFIED,
     .bDeviceSubClass    = MISC_SUBCLASS_COMMON,
     .bDeviceProtocol    = MISC_PROTOCOL_IAD,
     .bMaxPacketSize0    = CFG_TUD_ENDPOINT0_SIZE,
@@ -118,7 +118,7 @@ uint8_t const usb_cdc_midi_conf[] =
 const usb_string_desc_t usb_ffboard_strings_default = {
 	.langId = 0x0409,
 	.manufacturer = "Open FFBoard",
-	.product = "FFBoard",
+	.product = "FFBoard " HW_TYPE,
 	// Interfaces start at index 4
 	.interfaces = {"FFBoard CDC", "FFBoard HID","FFBoard MIDI"}
 };

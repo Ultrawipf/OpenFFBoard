@@ -138,4 +138,6 @@ extern CAN_HandleTypeDef hcan1;
 
 #define CCRAM_SEC ".ccmram"
 
+#define SIGBNATUREBASEADR 0 // First block in OTP
+
 #endif /* INC_TARGET_CONSTANTS_H_ */
