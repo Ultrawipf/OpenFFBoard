@@ -1,5 +1,7 @@
 ### Changes this version:
-- Added exponential torque postprocessing for game effects
+- Reformatted USB serial string as hex and added command to request UID as hex string
+- Added device name to USB Product name
+- Added support for F407 OTP section
 
 ### Changes in 1.16:
 
@@ -16,3 +18,4 @@ Internal changes:
 - Using analog VREF for voltage sensing (better accuracy with unstable 3.3V)
 - Added chip temperature readout
 - Added remote CAN button/analog source mainclass
+- Added exponential torque postprocessing for game effects
