@@ -16,11 +16,13 @@
 #include "CommandHandler.h"
 #include "thread.hpp"
 
-#define MAGNTEK_READ 0x80
 
 class MtEncoderSPI: public Encoder, public SPIDevice, public PersistentStorage, public CommandHandler,cpp_freertos::Thread{
 	enum class MtEncoderSPI_commands : uint32_t{
-		cspin,pos,errors
+		cspin,pos,errors,mode
+	};
+	enum class MtEncoderSPI_mode : uint8_t{
+		mt6825,mt6835
 	};
 public:
 	MtEncoderSPI();
@@ -51,11 +53,13 @@ public:
 	CommandStatus command(const ParsedCommand& cmd,std::vector<CommandReply>& replies);
 	void setCsPin(uint8_t cspin);
 
+	void setMode(MtEncoderSPI_mode mode);
+
 	//bool useDMA = false; // if true uses DMA for angle updates instead of polling SPI. TODO when used with tmc external encoder using DMA will hang the interrupt randomly
 
 private:
-	uint8_t readSpi(uint8_t addr);
-	void writeSpi(uint8_t addr,uint8_t data);
+	uint8_t readSpi(uint16_t addr);
+	void writeSpi(uint16_t addr,uint8_t data);
 	void spiTxRxCompleted(SPIPort* port);
 
 
@@ -71,11 +75,16 @@ private:
 	uint32_t errors = 0;
 
 
-	uint8_t txbuf[4] = {0x03 | MAGNTEK_READ,0,0,0};
-	uint8_t rxbuf[4] = {0,0,0,0};
-	uint8_t rxbuf_t[4] = {0,0,0,0};
+	uint8_t txbuf[6] = {0};
+	uint8_t rxbuf[6] = {0};
+	uint8_t rxbuf_t[6] = {0};
 	cpp_freertos::BinarySemaphore requestNewDataSem = cpp_freertos::BinarySemaphore(false);
 	cpp_freertos::BinarySemaphore waitForUpdateSem = cpp_freertos::BinarySemaphore(false);
+
+	MtEncoderSPI_mode mode = MtEncoderSPI_mode::mt6825;
+
+	static std::array<uint8_t,256> tableCRC;
+	const uint8_t POLY = 0x07;
 };
 
 #endif /* USEREXTENSIONS_SRC_MTENCODERSPI_H_ */
