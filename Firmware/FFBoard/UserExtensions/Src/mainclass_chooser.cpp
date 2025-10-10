@@ -66,7 +66,9 @@ const std::vector<class_entry<FFBoardMain>> class_registry =
 		add_class<CANInputMain,FFBoardMain>(),
 #endif
 
-		add_class<CustomMain,FFBoardMain>()
+#ifdef CUSTOMMAINNAME
+		add_class<CUSTOMMAINNAME,FFBoardMain>()
+#endif
 };
 #endif
 
