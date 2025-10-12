@@ -1,6 +1,6 @@
 var hcd__pio__usb_8c =
 [
-    [ "handle_endpoint_irq", "hcd__pio__usb_8c.html#a15dac66c795521bc1db05ebbb855e236", null ],
+    [ "handle_endpoint_irq", "hcd__pio__usb_8c.html#aac1249dad60617e54730c44b527aea3b", null ],
     [ "hcd_configure", "hcd__pio__usb_8c.html#a249b0d5c754c74a8decc21d4b4f34171", null ],
     [ "hcd_device_close", "hcd__pio__usb_8c.html#a7c6ccf51f41f13d0e273f83dd4194abd", null ],
     [ "hcd_edpt_abort_xfer", "hcd__pio__usb_8c.html#a7d264533c0b641a7f9349b588a04c683", null ],
@@ -16,6 +16,6 @@ var hcd__pio__usb_8c =
     [ "hcd_port_reset_end", "hcd__pio__usb_8c.html#a8a9ca5a02aadd9c52a5cda1036e0463d", null ],
     [ "hcd_port_speed_get", "hcd__pio__usb_8c.html#aca7cfcd3b59d9bb5895feb9266381ba8", null ],
     [ "hcd_setup_send", "hcd__pio__usb_8c.html#a035c3854e11cd8797f9014c2f61e84be", null ],
-    [ "pio_usb_host_irq_handler", "hcd__pio__usb_8c.html#a0f73422130b4dd1fbf514a460b652a84", null ],
+    [ "pio_usb_host_irq_handler", "hcd__pio__usb_8c.html#a2ab449a998239a742d90413282c9b86d", null ],
     [ "pio_host_cfg", "hcd__pio__usb_8c.html#acf29211ba659faa9c7d6883f4f67b433", null ]
 ];

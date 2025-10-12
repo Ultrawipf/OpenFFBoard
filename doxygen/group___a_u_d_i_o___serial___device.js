@@ -1,15 +1,15 @@
 var group___a_u_d_i_o___serial___device =
 [
     [ "audio_feedback_params_t", "structaudio__feedback__params__t.html", [
-      [ "frequency", "structaudio__feedback__params__t.html#a758e5c205a63c54350896eb2d96db712", null ],
+      [ "frequency", "structaudio__feedback__params__t.html#a9c79436df9ced6f9b2ab4aead9e0167d", null ],
       [ "mclk_freq", "structaudio__feedback__params__t.html#a8154c52c20b26c0d1c7225234cf38705", null ],
       [ "method", "structaudio__feedback__params__t.html#aba704b831e7d856abf13bd1129b5c048", null ],
       [ "sample_freq", "structaudio__feedback__params__t.html#aa113aa7a4fe03cc12aff5697bd94bd08", null ],
-      [ "AUDIO_FEEDBACK_METHOD_DISABLED", "group___a_u_d_i_o___serial___device.html#gga06fc87d81c62e9abb8790b6e5713c55ba6b5e284049302b6be2242c9608071f49", null ],
-      [ "AUDIO_FEEDBACK_METHOD_FREQUENCY_FIXED", "group___a_u_d_i_o___serial___device.html#gga06fc87d81c62e9abb8790b6e5713c55ba2ac099f16cafffc23c2c811d62a4b18e", null ],
-      [ "AUDIO_FEEDBACK_METHOD_FREQUENCY_FLOAT", "group___a_u_d_i_o___serial___device.html#gga06fc87d81c62e9abb8790b6e5713c55bae5cff3934bbb40b71306bd54c7140644", null ],
-      [ "AUDIO_FEEDBACK_METHOD_FREQUENCY_POWER_OF_2", "group___a_u_d_i_o___serial___device.html#gga06fc87d81c62e9abb8790b6e5713c55bab978a249ee7580a37f4a8c144c6df61c", null ],
-      [ "AUDIO_FEEDBACK_METHOD_FIFO_COUNT", "group___a_u_d_i_o___serial___device.html#gga06fc87d81c62e9abb8790b6e5713c55ba28d401d42acb2bfc4b1f475c31cd3eb5", null ]
+      [ "AUDIO_FEEDBACK_METHOD_DISABLED", "group___a_u_d_i_o___serial___device.html#ggac902054f25bcf6b626bc3043cc385aa5a6b5e284049302b6be2242c9608071f49", null ],
+      [ "AUDIO_FEEDBACK_METHOD_FREQUENCY_FIXED", "group___a_u_d_i_o___serial___device.html#ggac902054f25bcf6b626bc3043cc385aa5a2ac099f16cafffc23c2c811d62a4b18e", null ],
+      [ "AUDIO_FEEDBACK_METHOD_FREQUENCY_FLOAT", "group___a_u_d_i_o___serial___device.html#ggac902054f25bcf6b626bc3043cc385aa5ae5cff3934bbb40b71306bd54c7140644", null ],
+      [ "AUDIO_FEEDBACK_METHOD_FREQUENCY_POWER_OF_2", "group___a_u_d_i_o___serial___device.html#ggac902054f25bcf6b626bc3043cc385aa5ab978a249ee7580a37f4a8c144c6df61c", null ],
+      [ "AUDIO_FEEDBACK_METHOD_FIFO_COUNT", "group___a_u_d_i_o___serial___device.html#ggac902054f25bcf6b626bc3043cc385aa5a28d401d42acb2bfc4b1f475c31cd3eb5", null ]
     ] ],
     [ "audiod_control_xfer_cb", "group___a_u_d_i_o___serial___device.html#ga203ac09097d03c0e5669883120698746", null ],
     [ "audiod_deinit", "group___a_u_d_i_o___serial___device.html#ga6b1f479dddacbab1d2b2c7f050e358d9", null ],

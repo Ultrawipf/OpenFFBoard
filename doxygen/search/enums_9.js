@@ -18,5 +18,6 @@ var searchData=
   ['msc_5fcsw_5fstatus_5ft_15',['msc_csw_status_t',['../msc_8h.html#ab78ea3586ce0c7a8bb2680d7fbcca3ae',1,'msc.h']]],
   ['msc_5fprotocol_5ftype_5ft_16',['msc_protocol_type_t',['../msc_8h.html#a09dab9a66502b8e228c8640678f97867',1,'msc.h']]],
   ['msc_5frequest_5ftype_5ft_17',['msc_request_type_t',['../msc_8h.html#af0f486b972468c53352266648012bf2f',1,'msc.h']]],
-  ['mtencoderspi_5fcommands_18',['MtEncoderSPI_commands',['../class_mt_encoder_s_p_i.html#a329693332cff2b8e297684ec86053206',1,'MtEncoderSPI']]]
+  ['mtencoderspi_5fcommands_18',['MtEncoderSPI_commands',['../class_mt_encoder_s_p_i.html#a329693332cff2b8e297684ec86053206',1,'MtEncoderSPI']]],
+  ['mtencoderspi_5fmode_19',['MtEncoderSPI_mode',['../class_mt_encoder_s_p_i.html#a25ca4345caf7fe00d647dbb288785061',1,'MtEncoderSPI']]]
 ];

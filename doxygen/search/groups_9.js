@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['serial_0',['Serial',['../group___a_u_d_i_o___serial.html',1,'']]]
+  ['network_20driver_20interface_20specification_20rndis_0',['Remote Network Driver Interface Specification (RNDIS)',['../group___c_d_c___r_n_d_i_s.html',1,'']]]
 ];

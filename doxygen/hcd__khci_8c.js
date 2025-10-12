@@ -1,7 +1,6 @@
 var hcd__khci_8c =
 [
     [ "hcd_data_t", "structhcd__data__t.html", "structhcd__data__t" ],
-    [ "buffer_descriptor_t", "hcd__khci_8c.html#acd04fe2a26eb738dacddf3146fb42e44", null ],
     [ "endpoint_state_t", "hcd__khci_8c.html#a35e48213863f0eacb6fb886dbda0e1bd", null ],
     [ "pipe_state_t", "hcd__khci_8c.html#a11e033155385d50df1d0d6638ae20d7d", null ],
     [ "continue_transfer", "hcd__khci_8c.html#ada19f78b428e40ad47b42159e37f7602", null ],

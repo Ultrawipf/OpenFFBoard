@@ -20,5 +20,5 @@ var searchData=
   ['writeregit_17',['writeRegIT',['../class_a_d_s111_x.html#a7db1f7bf807f4920a09acffddb80fadb',1,'ADS111X']]],
   ['writerlock_18',['WriterLock',['../classcpp__freertos_1_1_read_write_lock.html#a399370c41c10fb27caceb93ecaea62b5',1,'cpp_freertos::ReadWriteLock::WriterLock()'],['../classcpp__freertos_1_1_read_write_lock_prefer_reader.html#a120177712ba0377cabbe79768106b8af',1,'cpp_freertos::ReadWriteLockPreferReader::WriterLock()'],['../classcpp__freertos_1_1_read_write_lock_prefer_writer.html#afb3ac19f3df1fccf51e76c37b0f3f767',1,'cpp_freertos::ReadWriteLockPreferWriter::WriterLock()']]],
   ['writerunlock_19',['WriterUnlock',['../classcpp__freertos_1_1_read_write_lock.html#a6b31619582053cff11b070a8d9c7e004',1,'cpp_freertos::ReadWriteLock::WriterUnlock()'],['../classcpp__freertos_1_1_read_write_lock_prefer_reader.html#abe36acbc0b404d268cba7b205c1773be',1,'cpp_freertos::ReadWriteLockPreferReader::WriterUnlock()'],['../classcpp__freertos_1_1_read_write_lock_prefer_writer.html#aa6627a4dd7920c93c2470cbfaafb5088',1,'cpp_freertos::ReadWriteLockPreferWriter::WriterUnlock()']]],
-  ['writespi_20',['writeSpi',['../class_mt_encoder_s_p_i.html#a682c0e4ea005cf268fbebc7719d68d77',1,'MtEncoderSPI']]]
+  ['writespi_20',['writeSpi',['../class_mt_encoder_s_p_i.html#a5f923b385a9f6af9f8b1747d67cd3cf5',1,'MtEncoderSPI']]]
 ];

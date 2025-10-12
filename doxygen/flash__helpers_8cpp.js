@@ -7,6 +7,8 @@ var flash__helpers_8cpp =
     [ "Flash_Read", "flash__helpers_8cpp.html#a05a11a3edfa79193cbeff8a18c2a59d7", null ],
     [ "Flash_ReadWriteDefault", "flash__helpers_8cpp.html#a366baca16e358e78f207d2b4870b8c56", null ],
     [ "Flash_Write", "flash__helpers_8cpp.html#a549dcc0553f49f57e77bb36940db828a", null ],
+    [ "OTP_Read", "flash__helpers_8cpp.html#a6cf6d7a5ce3db70ee9cc4ba3aa388af5", null ],
+    [ "OTP_Write", "flash__helpers_8cpp.html#aed8fdbc24b53be3a4ac3f7b664bc4f2e", null ],
     [ "flashMutex", "flash__helpers_8cpp.html#ad39d61b2409b00c03d956caf423bb2ad", null ],
     [ "i2cBufferEeprom", "flash__helpers_8cpp.html#abd41907cb8a7881dec8175b401d9951e", null ]
 ];

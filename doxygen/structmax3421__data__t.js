@@ -12,6 +12,6 @@ var structmax3421__data__t =
     [ "mode", "structmax3421__data__t.html#ac143e162ef89fcd7796a51dbe64daeed", null ],
     [ "peraddr", "structmax3421__data__t.html#affe559f1a7524c50dd4eb1bd37cbcdc6", null ],
     [ "sndbc", "structmax3421__data__t.html#aa51112c2916d8d998e73f17ca4455628", null ],
-    [ "sndfifo_owner", "structmax3421__data__t.html#af32cdaa780fa2373a13a6ffe62b53263", null ],
+    [ "sndfifo_owner", "structmax3421__data__t.html#abc656d1fc17fb5951e5ae245777678d7", null ],
     [ "spi_mutex", "structmax3421__data__t.html#aaecbdd7be36bcd42d6e83395d65d4bb0", null ]
 ];

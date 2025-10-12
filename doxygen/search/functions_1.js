@@ -12,7 +12,7 @@ var searchData=
   ['acquireposition_9',['acquirePosition',['../class_encoder_biss_c.html#a7dbfb71119ca2a77f58629aa49ea083f',1,'EncoderBissC']]],
   ['adchandler_10',['AdcHandler',['../class_adc_handler.html#a2b25bd6a3c78865504f62b3c58192ff5',1,'AdcHandler']]],
   ['adcupd_11',['adcUpd',['../class_adc_handler.html#aeb222fef89b27262339b4a4fdeb4775b',1,'AdcHandler']]],
-  ['adcvaltovoltage_12',['adcValToVoltage',['../voltagesense_8cpp.html#a4a6885c34bc79730b3be526aaf673850',1,'adcValToVoltage(uint32_t adcval):&#160;voltagesense.cpp'],['../voltagesense_8h.html#a4a6885c34bc79730b3be526aaf673850',1,'adcValToVoltage(uint32_t adcval):&#160;voltagesense.cpp']]],
+  ['adcvaltovoltage_12',['adcValToVoltage',['../voltagesense_8h.html#a4a6885c34bc79730b3be526aaf673850',1,'adcValToVoltage(uint32_t adcval):&#160;voltagesense.cpp'],['../voltagesense_8cpp.html#a4a6885c34bc79730b3be526aaf673850',1,'adcValToVoltage(uint32_t adcval):&#160;voltagesense.cpp']]],
   ['add_13',['add',['../class_cmd_parser.html#aded3ab32751f8ce700b6d40b0d0a8a4b',1,'CmdParser']]],
   ['add_5fclass_14',['add_class',['../_class_chooser_8h.html#a7f10ddeb0edbb8d09129fa66ee8e9e02',1,'ClassChooser.h']]],
   ['add_5fclass_5fref_15',['add_class_ref',['../_class_chooser_8h.html#a887c59bcfcfaa88bc4aea58cc7ec24c4',1,'ClassChooser.h']]],

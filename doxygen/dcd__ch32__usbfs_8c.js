@@ -19,7 +19,7 @@ var dcd__ch32__usbfs_8c =
     [ "dcd_sof_enable", "dcd__ch32__usbfs_8c.html#af92b9d4cae9282fd8273d5c3a72d0a3d", null ],
     [ "update_in", "dcd__ch32__usbfs_8c.html#a6021d21b90297750b626eef1a3288a8d", null ],
     [ "update_out", "dcd__ch32__usbfs_8c.html#a1e51ea08ca22196fd047fb8c1ca37af2", null ],
-    [ "data", "dcd__ch32__usbfs_8c.html#a19c9ff40973093edd384bdef417d5599", null ],
+    [ "data", "dcd__ch32__usbfs_8c.html#ad096f08dd211c7af767c69b9d137acee", null ],
     [ "ep0_tog", "dcd__ch32__usbfs_8c.html#a5131e76708ebe74cc75d99835b2263dd", null ],
     [ "ep3_buffer", "dcd__ch32__usbfs_8c.html#a7b3f78b0e4d54c10375df568aba5f784", null ],
     [ "isochronous", "dcd__ch32__usbfs_8c.html#a7421cd67d0fd3ead0f8e83a75e034c73", null ],

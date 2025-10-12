@@ -24,6 +24,8 @@ var _system_commands_8h =
       [ "debug", "_system_commands_8h.html#a4a42a50bc0a826d5ab6d847950749d07aad42f6697b035b7580e4fef93be20b4d", null ],
       [ "devid", "_system_commands_8h.html#a4a42a50bc0a826d5ab6d847950749d07a8c265dc4382bd9bc7eab5ee768585c65", null ],
       [ "uid", "_system_commands_8h.html#a4a42a50bc0a826d5ab6d847950749d07a9871d3a2c554b27151cacf1422eec048", null ],
-      [ "temp", "_system_commands_8h.html#a4a42a50bc0a826d5ab6d847950749d07a3d801aa532c1cec3ee82d87a99fdf63f", null ]
+      [ "temp", "_system_commands_8h.html#a4a42a50bc0a826d5ab6d847950749d07a3d801aa532c1cec3ee82d87a99fdf63f", null ],
+      [ "otp", "_system_commands_8h.html#a4a42a50bc0a826d5ab6d847950749d07ad2270e7120a93c8b0a6a34760e654c7d", null ],
+      [ "signature", "_system_commands_8h.html#a4a42a50bc0a826d5ab6d847950749d07aac201fd270c3b96beab24f2829780ab2", null ]
     ] ]
 ];

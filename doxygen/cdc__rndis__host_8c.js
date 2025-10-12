@@ -1,6 +1,6 @@
 var cdc__rndis__host_8c =
 [
-    [ "cdch_rndis_task", "cdc__rndis__host_8c.html#a3e730569fdef16bea1f798cb0d6e7da1", null ],
+    [ "cdch_rndis_task", "cdc__rndis__host_8c.html#a08a5742dc7f6ea8446a9e1d7e1abe4ab", null ],
     [ "rndis_body_subtask", "cdc__rndis__host_8c.html#ae9967dc862d585c937536ca518c5b224", null ],
     [ "rndish_close", "group___c_d_c___r_n_s_i_d___host.html#ga0bcef342007999b01c27bd707f0f991a", null ],
     [ "rndish_init", "group___c_d_c___r_n_s_i_d___host.html#ga05576fa25385d9b854f59df0fa80cbfa", null ],

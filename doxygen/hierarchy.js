@@ -225,9 +225,7 @@ var hierarchy =
     [ "ErrorHandler", "class_error_handler.html", [
       [ "Axis", "class_axis.html", null ],
       [ "ErrorPrinter", "class_error_printer.html", null ],
-      [ "FFBHIDMain", "class_f_f_b_h_i_d_main.html", null ]
-    ] ],
-    [ "ErrorHandlerifdef TIM_TMC", null, [
+      [ "FFBHIDMain", "class_f_f_b_h_i_d_main.html", null ],
       [ "TMC4671", "class_t_m_c4671.html", null ]
     ] ],
     [ "RmdMotorCAN::ErrorStatus::ErrorStatur_s", "struct_rmd_motor_c_a_n_1_1_error_status_1_1_error_statur__s.html", null ],
@@ -423,9 +421,7 @@ var hierarchy =
     [ "cpp_freertos::Timer", "classcpp__freertos_1_1_timer.html", null ],
     [ "TimerHandler", "class_timer_handler.html", [
       [ "EncoderLocal", "class_encoder_local.html", null ],
-      [ "MidiMain", "class_midi_main.html", null ]
-    ] ],
-    [ "TimerHandlerendif", null, [
+      [ "MidiMain", "class_midi_main.html", null ],
       [ "TMC4671", "class_t_m_c4671.html", null ]
     ] ],
     [ "TMC4671ABNConf", "struct_t_m_c4671_a_b_n_conf.html", null ],

@@ -1,8 +1,6 @@
 var dcd__mm32f327x__otg_8c =
 [
     [ "dcd_data_t", "structdcd__data__t.html", "structdcd__data__t" ],
-    [ "buffer_descriptor_t", "dcd__mm32f327x__otg_8c.html#acd04fe2a26eb738dacddf3146fb42e44", null ],
-    [ "endpoint_state_t", "dcd__mm32f327x__otg_8c.html#a35e48213863f0eacb6fb886dbda0e1bd", null ],
     [ "dcd_connect", "dcd__mm32f327x__otg_8c.html#aa425374a6ca69de3aae1d1b7caea9099", null ],
     [ "dcd_disconnect", "dcd__mm32f327x__otg_8c.html#a5b4ffa0dab4e5425d14394f7b9979386", null ],
     [ "dcd_edpt_clear_stall", "dcd__mm32f327x__otg_8c.html#a930adaee00f0c2679beef9684fa72cb7", null ],

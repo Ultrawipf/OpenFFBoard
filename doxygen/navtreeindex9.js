@@ -1,5 +1,8 @@
 var NAVTREEINDEX9 =
 {
+"class_local_analog.html#a1a40059d364e50c78aeae104c99ebe96":[4,0,173,14],
+"class_local_analog.html#a1e34c24dea22bc068be80ca0d190de7b":[4,0,173,7],
+"class_local_analog.html#a22806dfe2336d7eba07f52f74882e9e5":[4,0,173,16],
 "class_local_analog.html#a2c641aa5bf0c6b6039701c9119c6bad2":[4,0,173,9],
 "class_local_analog.html#a30b986fab162314cc57de1f8e1cbf03f":[4,0,173,4],
 "class_local_analog.html#a6212f3a5cdc8209c0cc6b7c7dde7fe1c":[4,0,173,10],
@@ -200,7 +203,7 @@ var NAVTREEINDEX9 =
 "class_motor_simplemotion.html#a801f9561a97177db66e17f42ff2da45e":[4,0,187,26],
 "class_motor_simplemotion.html#a8174e1f796ca60a71d5cdfdf0ccb1532":[4,0,187,80],
 "class_motor_simplemotion.html#a83bf3c2575375abfd55ae7dadf8d370e":[4,0,187,59],
-"class_motor_simplemotion.html#a8955692ba3c7e7546a87f5d08d56cfbb":[4,0,187,8],
+"class_motor_simplemotion.html#a8955692ba3c7e7546a87f5d08d56cfbb":[4,0,187,9],
 "class_motor_simplemotion.html#a89a71c4e84bf1b83c13fb3ccbc5a7f0f":[4,0,187,55],
 "class_motor_simplemotion.html#a8c7ae1246193332b255b4ac5bb985d90":[4,0,187,20],
 "class_motor_simplemotion.html#a9245ea40d9879634725ee1b6e719c3f9":[4,0,187,43],
@@ -225,7 +228,7 @@ var NAVTREEINDEX9 =
 "class_motor_simplemotion.html#aa46828acd09b4606173a0ad2f4feac37":[4,0,187,70],
 "class_motor_simplemotion.html#aaa6dd384fe6b4f6699841078386c894f":[4,0,187,41],
 "class_motor_simplemotion.html#aaf53bd8846eb462dabf5068632d88d3e":[4,0,187,18],
-"class_motor_simplemotion.html#ab612ef76ba271b440b1651cb98c0afca":[4,0,187,9],
+"class_motor_simplemotion.html#ab612ef76ba271b440b1651cb98c0afca":[4,0,187,8],
 "class_motor_simplemotion.html#ab971149c27c3383e7275a0634550dc18":[4,0,187,69],
 "class_motor_simplemotion.html#aba8a97283a8df6a2bda7a768378f087f":[4,0,187,22],
 "class_motor_simplemotion.html#abb26ff2835292a320bc3f3c12ab98aa1":[4,0,187,15],
@@ -246,8 +249,5 @@ var NAVTREEINDEX9 =
 "class_motor_simplemotion.html#ae448839e7738455c738f8d999de93382":[4,0,187,85],
 "class_motor_simplemotion.html#ae741f7d091f6f405133234f2a9dcc80f":[4,0,187,62],
 "class_motor_simplemotion.html#aebb4a14e382598652d419889753e0eb3":[4,0,187,35],
-"class_motor_simplemotion.html#af0d962f0eb34d875e30872890e8dfc51":[4,0,187,2],
-"class_motor_simplemotion.html#af0d962f0eb34d875e30872890e8dfc51a295eae6f9cfc8a8470875c847f7d36cc":[4,0,187,2,1],
-"class_motor_simplemotion.html#af0d962f0eb34d875e30872890e8dfc51a334c4a4c42fdb79d7ebc3e73b517e6f8":[4,0,187,2,4],
-"class_motor_simplemotion.html#af0d962f0eb34d875e30872890e8dfc51a74e85349d47071b598a1e1a5efecac2f":[4,0,187,2,0]
+"class_motor_simplemotion.html#af0d962f0eb34d875e30872890e8dfc51":[4,0,187,2]
 };

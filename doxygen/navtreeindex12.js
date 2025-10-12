@@ -1,5 +1,16 @@
 var NAVTREEINDEX12 =
 {
+"class_singleton.html":[4,0,231],
+"class_singleton.html#a0ab1f8eeb75db0decbf7a1426efa2118":[4,0,231,6],
+"class_singleton.html#a23b2407170cc04f6746874704b928044":[4,0,231,2],
+"class_singleton.html#a3a924c986029211d675f0707816fa25e":[4,0,231,4],
+"class_singleton.html#a923b995920da9c06590adb170ab2f890":[4,0,231,0],
+"class_singleton.html#ac4f6fb6cd3e873ea41e642f24f45a96f":[4,0,231,7],
+"class_singleton.html#ac6e7af82cba33f561bd64e5e0243e7f8":[4,0,231,1],
+"class_singleton.html#adb8a5fa1307802df267e0ab3497f0a0c":[4,0,231,3],
+"class_singleton.html#afaeece572828c10525122e8e9c7f9efa":[4,0,231,5],
+"class_spi_handler.html":[4,0,237],
+"class_spi_handler.html#a0fc4a2bd7aca7120d31c3cedf0706db3":[4,0,237,1],
 "class_spi_handler.html#a11aab1cf5e67fac7c4f513317eedc712":[4,0,237,7],
 "class_spi_handler.html#a280291936f841d31da404e9bfda7efee":[4,0,237,0],
 "class_spi_handler.html#a3b266d024ae729cb4a50e5de45145127":[4,0,237,5],
@@ -238,16 +249,5 @@ var NAVTREEINDEX12 =
 "class_t_m_c4671.html#aca3e240315904328689ca9aad45a0c3d":[4,0,243,83],
 "class_t_m_c4671.html#acabd7583e2b673f4b852e9216d600a97":[4,0,243,118],
 "class_t_m_c4671.html#acb633bc2a829599a72ef3b70acfeb9c0":[4,0,243,176],
-"class_t_m_c4671.html#acc8cdc2e503ea1f8ae3eddf0e37da10b":[4,0,243,92],
-"class_t_m_c4671.html#acdf9e395332356e9659cfe9a6caf1556":[4,0,243,143],
-"class_t_m_c4671.html#acef72eea0e058d4548446e0da84b1301":[4,0,243,161],
-"class_t_m_c4671.html#ad0edd178d5a193fad3897d26a6128bab":[4,0,243,53],
-"class_t_m_c4671.html#ad10578c48222dfec6074b8784b2e8363":[4,0,243,89],
-"class_t_m_c4671.html#ad2e3b30fccb4b034d490837b9085fda4":[4,0,243,202],
-"class_t_m_c4671.html#ad38ed54f1de59602984525f2a96e5d52":[4,0,243,87],
-"class_t_m_c4671.html#ad39175477b1007cc9ce5576f7866d435":[4,0,243,71],
-"class_t_m_c4671.html#ad4f53e7722f511fbeeb18ef58d6edb88":[4,0,243,79],
-"class_t_m_c4671.html#ad5697bdafc3ae2e1d4a0dccbf7ed51e6":[4,0,243,74],
-"class_t_m_c4671.html#ad66883874db0ea5f6609839060f81d45":[4,0,243,139],
-"class_t_m_c4671.html#ad9527741176a77e8e0d17ff4b92ab521":[4,0,243,58]
+"class_t_m_c4671.html#acc8cdc2e503ea1f8ae3eddf0e37da10b":[4,0,243,92]
 };

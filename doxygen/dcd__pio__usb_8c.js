@@ -12,8 +12,8 @@ var dcd__pio__usb_8c =
     [ "dcd_int_enable", "dcd__pio__usb_8c.html#af2434e784da26939bb42d610d2a7dc7e", null ],
     [ "dcd_remote_wakeup", "dcd__pio__usb_8c.html#af44c10b75ea56feeb04b3351ede5687f", null ],
     [ "dcd_set_address", "dcd__pio__usb_8c.html#acaa0da4545f1c5627429a7884b3c9847", null ],
-    [ "handle_endpoint_irq", "dcd__pio__usb_8c.html#aea183a7c38ab6d941931675e9d027c66", null ],
-    [ "pio_usb_device_irq_handler", "dcd__pio__usb_8c.html#a87331d2fd0d6997444724dc48161249f", null ],
+    [ "handle_endpoint_irq", "dcd__pio__usb_8c.html#aa6152dea2a5b5129d01992f87b0326c0", null ],
+    [ "pio_usb_device_irq_handler", "dcd__pio__usb_8c.html#a27835e66f042a491641730f79fcf537b", null ],
     [ "desc", "dcd__pio__usb_8c.html#a20177559c29bb329ed93cc5aa719176c", null ],
     [ "usb_device", "dcd__pio__usb_8c.html#ac1763f66af3e981260704d4b4d09113f", null ]
 ];

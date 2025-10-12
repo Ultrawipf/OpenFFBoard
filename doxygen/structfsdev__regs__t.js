@@ -4,7 +4,7 @@ var structfsdev__regs__t =
     [ "BTABLE", "structfsdev__regs__t.html#a714d20a42643acf48d650ab0f8e4bb12", null ],
     [ "CNTR", "structfsdev__regs__t.html#a4ef094e33033bbb5bd12ddcdb6beead8", null ],
     [ "DADDR", "structfsdev__regs__t.html#a9c0df36b1917a690a14a812f3e30dd76", null ],
-    [ "ep", "structfsdev__regs__t.html#a9b40e03f31b66cda1cf278095389e137", null ],
+    [ "ep", "structfsdev__regs__t.html#a4213738a9c83f1ee2c8d244fef374092", null ],
     [ "FNR", "structfsdev__regs__t.html#a93352fdd7af0b1cff4d63ea9ed4f3de6", null ],
     [ "ISTR", "structfsdev__regs__t.html#afbd8a66ac05833ac92762d6ea731ea24", null ],
     [ "LPMCSR", "structfsdev__regs__t.html#a33c24bd098f8fac754020150f797364c", null ],

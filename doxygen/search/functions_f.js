@@ -16,7 +16,7 @@ var searchData=
   ['queue_5fevent_13',['queue_event',['../usbd_8c.html#a790c27613d62b65c6e8617a9f024d314',1,'queue_event(dcd_event_t const *event, bool in_isr):&#160;usbd.c'],['../usbh_8c.html#a3cc14412f29dc9a2aff7776dbd2b783b',1,'queue_event(hcd_event_t const *event, bool in_isr):&#160;usbh.c']]],
   ['queue_5flog_5fappend_14',['queue_log_append',['../dcd__eptri_8c.html#afff233acc79b887e4dcf629fa3ab178e',1,'dcd_eptri.c']]],
   ['queuecommand_15',['queueCommand',['../class_motor_simplemotion.html#a801f9561a97177db66e17f42ff2da45e',1,'MotorSimplemotion']]],
-  ['queuecreateexception_16',['QueueCreateException',['../classcpp__freertos_1_1_queue_create_exception.html#a226e7f2c0ca938deba9347601a2b19dd',1,'cpp_freertos::QueueCreateException::QueueCreateException(const char *info)'],['../classcpp__freertos_1_1_queue_create_exception.html#a7b8093a60f00c6847106efa181a26930',1,'cpp_freertos::QueueCreateException::QueueCreateException()']]],
+  ['queuecreateexception_16',['QueueCreateException',['../classcpp__freertos_1_1_queue_create_exception.html#a7b8093a60f00c6847106efa181a26930',1,'cpp_freertos::QueueCreateException::QueueCreateException()'],['../classcpp__freertos_1_1_queue_create_exception.html#a226e7f2c0ca938deba9347601a2b19dd',1,'cpp_freertos::QueueCreateException::QueueCreateException(const char *info)']]],
   ['queuereplyvalues_17',['queueReplyValues',['../class_h_i_d___command_interface.html#a13031739d485175d52dfad89a1a3b5d1',1,'HID_CommandInterface']]],
   ['queuework_18',['QueueWork',['../classcpp__freertos_1_1_work_queue.html#a910c0f04137a2778af6653bdb40c12e7',1,'cpp_freertos::WorkQueue']]]
 ];
