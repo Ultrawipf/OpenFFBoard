@@ -10,6 +10,7 @@
 #include "FFBoardMain.h"
 #include "cppmain.h"
 #include "critical.hpp"
+#include <algorithm>
 #include <span>
 
 std::vector<ErrorHandler*> ErrorHandler::errorHandlers;

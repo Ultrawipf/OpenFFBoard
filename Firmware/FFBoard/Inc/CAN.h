@@ -11,6 +11,7 @@
 #ifdef CANBUS
 //#include "CanHandler.h"
 #include "main.h"
+#include <algorithm>
 #include <vector>
 #include "semaphore.hpp"
 #include <GPIOPin.h>

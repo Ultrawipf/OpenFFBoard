@@ -12,6 +12,7 @@
 #include "CDCcomm.h"
 //#include <set>
 #include "ChoosableClass.h"
+#include <algorithm>
 
 //std::vector<CommandHandler*> CommandHandler::cmdHandlers;
 //std::set<uint16_t> CommandHandler::cmdHandlerIDs;
