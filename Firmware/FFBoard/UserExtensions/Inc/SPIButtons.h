@@ -55,6 +55,7 @@ public:
 
 	const uint8_t maxButtons = 64;
 	std::string printModes(const std::vector<std::string>& names);
+	std::string printSpeeds(const std::vector<std::string>& names);
 
 	void setMode(SPI_BtnMode mode);
 	void initSPI();

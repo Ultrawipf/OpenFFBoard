@@ -193,8 +193,18 @@ uint8_t SPI_Buttons::readButtons(uint64_t* buf){
 
 std::string SPI_Buttons::printModes(const std::vector<std::string>& names){
 	std::string reply;
-	for(uint8_t i = 0; i<names.size();i++){
-		reply+=  names[i]  + ":" + std::to_string(i)+"\n";
+	for(uint8_t i = 0; i < names.size(); ++i){
+		reply += names[i] + ": " + std::to_string(i) + "\n";
+	}
+	return reply;
+}
+
+std::string SPI_Buttons::printSpeeds(const std::vector<std::string>& names){
+	std::string reply;
+	for(uint8_t i = 0; i < names.size(); ++i){
+	  reply += names[i] + ": " +
+	    std::to_string(this->speedPresets[i]) + " (" +
+	    std::to_string(spiPort.getBaseClk() / (double)this->speedPresets[i]) + " Hz)\n";
 	}
 	return reply;
 }
@@ -253,7 +263,7 @@ CommandStatus SPI_Buttons::command(const ParsedCommand& cmd,std::vector<CommandR
 		}else if(cmd.type == CMDtype::get){
 			replies.emplace_back((uint8_t)this->conf.spi_speed);
 		}else if(cmd.type == CMDtype::info){
-			replies.emplace_back(printModes(this->speed_names));
+			replies.emplace_back(printSpeeds(this->speed_names));
 		}else{
 			return CommandStatus::ERR;
 		}
