@@ -26,7 +26,7 @@ BUILD_DIR = build
 ######################################
 
 # Choose your board mcu F407VG or F411RE
-MCU_TARGET=F407VG
+MCU_TARGET ?= F407VG
 # The directory of mcu target
 TARGET_DIR = Targets/$(MCU_TARGET)
 
@@ -36,7 +36,7 @@ TARGET_DIR = Targets/$(MCU_TARGET)
 TARGET = OpenFFBoard_$(MCU_TARGET)
 
 # Output directory for hex/bin files
-OUTPUT_DIR = $(BUILD_DIR)
+OUTPUT_DIR ?= $(BUILD_DIR)
 
 # C sources
 C_SOURCES = $(wildcard $(TARGET_DIR)/Core/Src/*.c)
@@ -229,15 +229,15 @@ $(BUILD_DIR)/$(TARGET).elf: $(OBJECTS) Makefile
 
 $(OUTPUT_DIR)/%.hex: $(BUILD_DIR)/%.elf | $(OUTPUT_DIR)
 	$(HEX) $< $@
-	
+
 $(OUTPUT_DIR)/%.bin: $(BUILD_DIR)/%.elf | $(OUTPUT_DIR)
-	$(BIN) $< $@	
-	
+	$(BIN) $< $@
+
 $(BUILD_DIR):
-	-mkdir $@	
-	
+	-mkdir -p $@
+
 $(OUTPUT_DIR): $(BUILD_DIR)
-	-mkdir $@
+	-mkdir -p $@
 
 #######################################
 # clean up
