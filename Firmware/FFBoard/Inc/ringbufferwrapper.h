@@ -57,7 +57,7 @@ T RingBufferWrapper::peek_as(bool* ok) noexcept
    T data;
    // Only POD types can be trivially copied from
    // the ring buffer.
-   if (!std::is_pod<T>::value) {
+   if (!std::is_standard_layout<T>::value && !std::is_trivial<T>::value) {
       *ok = false;
       return data;
    }
