@@ -7,6 +7,7 @@
 
 #include <stdint.h>
 #include <math.h>
+#include "arm_math.h"
 #include "EffectsCalculator.h"
 #include "Axis.h"
 #include "ledEffects.h"
@@ -103,67 +104,60 @@ An inertia condition uses axis acceleration as the metric.
  */
 void EffectsCalculator::calculateEffects(std::vector<std::unique_ptr<Axis>> &axes)
 {
-	for (auto &axis : axes) {
-		axis->setEffectTorque(0);
-		axis->calculateAxisEffects(isActive());
-	}
-
-	if(!isActive()){
-		return;
-	}
-
-	int32_t force = 0;
 	int axisCount = axes.size();
-	int32_t forces[MAX_AXIS] = {0};
+	int64_t forces[MAX_AXIS] = {0};
 
-	for (uint8_t i = 0; i < effects_stats.size(); i++)
-	{
-		effects_stats[i].current = {0}; // Reset active effect forces
-	}
+	if(isActive()){
+		int32_t force = 0;
+		for (uint8_t i = 0; i < effects_stats.size(); i++)
+		{
+			effects_stats[i].current = {0}; // Reset active effect forces
+		}
 
-	for (uint8_t fxi = 0; fxi < MAX_EFFECTS; fxi++)
-	{
-		FFB_Effect *effect = &effects[fxi];
+		for (uint8_t fxi = 0; fxi < MAX_EFFECTS; fxi++)
+		{
+			FFB_Effect *effect = &effects[fxi];
 
-		// Effect activated and not infinite (0 or 0xffff)
-		if (effect->state != EFFECT_STATE_INACTIVE && effect->duration != FFB_EFFECT_DURATION_INFINITE && effect->duration != 0){
-			// Start delay not yet reached
-			if(HAL_GetTick() < effect->startTime){
+			// Effect activated and not infinite (0 or 0xffff)
+			if (effect->state != EFFECT_STATE_INACTIVE && effect->duration != FFB_EFFECT_DURATION_INFINITE && effect->duration != 0){
+				// Start delay not yet reached
+				if(HAL_GetTick() < effect->startTime){
+					continue;
+				}
+				// If effect has expired make inactive
+				if (HAL_GetTick() - effect->startTime > effect->duration)
+				{
+					effect->state = EFFECT_STATE_INACTIVE;
+					for(uint8_t axis=0 ; axis < axisCount ; axis++)
+						calcStatsEffectType(effect->type, 0,axis); // record a 0 on the ended force
+				}
+			}
+
+			// Filter out inactive effects
+			if (effect->state == EFFECT_STATE_INACTIVE)
+			{
 				continue;
 			}
-			// If effect has expired make inactive
-			if (HAL_GetTick() - effect->startTime > effect->duration)
+
+			force = calcNonConditionEffectForce(effect);
+
+			for(uint8_t axis=0 ; axis < axisCount ; axis++) // Calculate effects for all axes
 			{
-				effect->state = EFFECT_STATE_INACTIVE;
-				for(uint8_t axis=0 ; axis < axisCount ; axis++)
-					calcStatsEffectType(effect->type, 0,axis); // record a 0 on the ended force
+				int32_t axisforce = calculateEffectForceOnAxis(effect, force, axes, axis);
+				calcStatsEffectType(effect->type, axisforce,axis);
+				forces[axis] += axisforce; // Do not clip yet to allow effects to subtract force correctly. Will not overflow as maxeffects * 0x7fff is less than int32 range
 			}
 		}
-
-		// Filter out inactive effects
-		if (effect->state == EFFECT_STATE_INACTIVE)
-		{
-			continue;
-		}
-
-		force = calcNonConditionEffectForce(effect);
-
-		for(uint8_t axis=0 ; axis < axisCount ; axis++) // Calculate effects for all axes
-		{
-			int32_t axisforce = calcComponentForce(effect, force, axes, axis);
-			calcStatsEffectType(effect->type, axisforce,axis);
-			forces[axis] += axisforce; // Do not clip yet to allow effects to subtract force correctly. Will not overflow as maxeffects * 0x7fff is less than int32 range
-		}
+		effects_statslast = effects_stats;
 	}
+
 
 	// Apply summed force to axes
 	for(uint8_t i=0 ; i < axisCount ; i++)
 	{
-		int32_t force = clip<int32_t, int32_t>(forces[i], -0x7fff, 0x7fff); // Clip
-		axes[i]->setEffectTorque(force);
+		axes[i]->calculateMechanicalEffects(isActive());
+		axes[i]->setFfbEffectTorque(forces[i]);
 	}
-
-	effects_statslast = effects_stats;
 }
 
 /**
@@ -267,7 +261,7 @@ int32_t EffectsCalculator::calcNonConditionEffectForce(FFB_Effect *effect) {
 		float t = (micros()/1000.0) - (float)effect->startTime;
 		float freq = 1.0f / (float)(std::max<uint16_t>(effect->period, 2));
 		float phase = (float)effect->phase / (float)35999; //degrees
-		float sine = sinf(2.0 * M_PI * (t * freq + phase)) * magnitude;
+		float sine = arm_sin_f32(2.0f * PI * (t * freq + phase)) * magnitude;
 		force_vector = (int32_t)(effect->offset + sine);
 		break;
 	}
@@ -282,10 +276,15 @@ int32_t EffectsCalculator::calcNonConditionEffectForce(FFB_Effect *effect) {
 
 
 /**
- * Calculates the force of an effect
+ * @brief Calculates the final force of a single effect on a specific axis.
+ * It applies directional scaling and computes conditional effects (spring, damper, etc.) based on the axis's metrics.
+ * @param effect The effect to calculate.
+ * @param forceVector The base force from a non-conditional calculation (e.g., sine wave value).
+ * @param axes The list of all axes.
+ * @param axis The index of the axis to calculate the force for.
+ * @return The calculated torque for the axis.
  */
-
-int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceVector, std::vector<std::unique_ptr<Axis>> &axes, uint8_t axis)
+int32_t EffectsCalculator::calculateEffectForceOnAxis(FFB_Effect *effect, int32_t forceVector, std::vector<std::unique_ptr<Axis>> &axes, uint8_t axis)
 {
 	int32_t result_torque = 0;
 //	uint16_t direction;
@@ -360,8 +359,8 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 			float rampupFactor = 1.0;
 			if (fabs (speed) < speedRampupCeil) {								// if speed in the range to rampup we apply a sinus curbe to ramup
 
-				float phaseRad = M_PI * ((fabs (speed) / speedRampupCeil) - 0.5);// we start to compute the normalized angle (speed / normalizedSpeed@5%) and translate it of -1/2PI to translate sin on 1/2 periode
-				rampupFactor = ( 1 + sin(phaseRad ) ) / 2;						// sin value is -1..1 range, we translate it to 0..2 and we scale it by 2
+				float phaseRad = PI * ((fabsf (speed) / speedRampupCeil) - 0.5f);// we start to compute the normalized angle (speed / normalizedSpeed@5%) and translate it of -1/2PI to translate sin on 1/2 periode
+				rampupFactor = ( 1.0f + arm_sin_f32(phaseRad ) ) / 2.0f;			// sin value is -1..1 range, we translate it to 0..2 and we scale it by 2
 
 			}
 

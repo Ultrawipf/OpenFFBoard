@@ -13,11 +13,11 @@
 
 #include "main.h"
 // Change this to the amount of currently registered variables
-#define NB_OF_VAR 164
+#define NB_OF_VAR 185
 extern const uint16_t VirtAddVarTab[NB_OF_VAR];
 
 // Amount of variables in exportable list
-#define NB_EXPORTABLE_ADR 149
+#define NB_EXPORTABLE_ADR 170
 extern const uint16_t exportableFlashAddresses[NB_EXPORTABLE_ADR];
 
 
@@ -104,6 +104,11 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_AXIS1_ENC_RATIO 0x30A // Accel filter Lowpass
 #define ADR_AXIS1_EFFECTS2 0x30B // 0-7 Friction, 8-15 Inertia
 #define ADR_AXIS1_POSTPROCESS1 0x30C // 0-7 expo curve
+#define ADR_AXIS1_EQ1 0x30D // Equalizer band 1,2 gains
+#define ADR_AXIS1_EQ2 0x30E // Equalizer band 3,4 gains
+#define ADR_AXIS1_EQ3 0x30F // Equalizer band 5 gain
+#define ADR_AXIS1_HANDSOFF_CONF 0x310 // Hands-off config
+#define ADR_AXIS1_HANDSOFF_ACCEL 0x311 // Hands-off accel threshold
 // TMC1
 #define ADR_TMC1_MOTCONF 0x320 // 0-2: MotType 3-5: PhiE source 6-15: Poles
 #define ADR_TMC1_CPR 0x321
@@ -118,6 +123,8 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_TMC1_FLUX_I 0x32A
 #define ADR_TMC1_PHIE_OFS 0x32B
 #define ADR_TMC1_TRQ_FILT 0x32C
+#define ADR_TMC1_COGGING_CAL 0x32D
+#define ADR_TMC1_MAXSLEWRATE 0x32E
 // AXIS2
 #define ADR_AXIS2_CONFIG 0x341 // 0-2 ENC, 3-5 DRV
 #define ADR_AXIS2_POWER 0x342
@@ -130,6 +137,11 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_AXIS2_ENC_RATIO 0x34A // Store the encoder ratio for an axis
 #define ADR_AXIS2_EFFECTS2 0x34B // 0-7 Friction, 8-15 Inertia
 #define ADR_AXIS2_POSTPROCESS1 0x34C // 0-7 expo curve
+#define ADR_AXIS2_EQ1 0x34D // Equalizer band 1,2 gains
+#define ADR_AXIS2_EQ2 0x34E // Equalizer band 3,4 gains
+#define ADR_AXIS2_EQ3 0x34F // Equalizer band 5 gain
+#define ADR_AXIS2_HANDSOFF_CONF 0x350 // Hands-off config
+#define ADR_AXIS2_HANDSOFF_ACCEL 0x351 // Hands-off accel threshold
 // TMC2
 #define ADR_TMC2_MOTCONF 0x360 // 0-2: MotType 3-5: PhiE source 6-15: Poles
 #define ADR_TMC2_CPR 0x361
@@ -144,6 +156,8 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_TMC2_FLUX_I 0x36A
 #define ADR_TMC2_PHIE_OFS 0x36B
 #define ADR_TMC2_TRQ_FILT 0x36C
+#define ADR_TMC2_COGGING_CAL 0x36D
+#define ADR_TMC2_MAXSLEWRATE 0x36E
 // AXIS3
 #define ADR_AXIS3_CONFIG 0x381 // 0-2 ENC, 3-5 DRV
 #define ADR_AXIS3_POWER 0x382
@@ -156,6 +170,11 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_AXIS3_ENC_RATIO 0x38A // Store the encoder ratio for an axis
 #define ADR_AXIS3_EFFECTS2 0x38B // 0-7 Friction, 8-15 Inertia
 #define ADR_AXIS3_POSTPROCESS1 0x38C // 0-7 expo curve
+#define ADR_AXIS3_EQ1 0x38D // Equalizer band 1,2 gains
+#define ADR_AXIS3_EQ2 0x38E // Equalizer band 3,4 gains
+#define ADR_AXIS3_EQ3 0x38F // Equalizer band 5 gain
+#define ADR_AXIS3_HANDSOFF_CONF 0x390 // Hands-off config
+#define ADR_AXIS3_HANDSOFF_ACCEL 0x391 // Hands-off accel threshold
 // TMC3
 #define ADR_TMC3_MOTCONF 0x3A0 // 0-2: MotType 3-5: PhiE source 6-15: Poles
 #define ADR_TMC3_CPR 0x3A1
@@ -170,6 +189,8 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_TMC3_FLUX_I 0x3AA
 #define ADR_TMC3_PHIE_OFS 0x3AB
 #define ADR_TMC3_TRQ_FILT 0x3AC
+#define ADR_TMC3_COGGING_CAL 0x3AD
+#define ADR_TMC3_MAXSLEWRATE 0x3AE
 // RMD CAN Motor
 #define ADR_RMD1_DATA1 0x3C0 //0-4 CAN ID
 #define ADR_RMD1_TORQUE 0x3C1 //Maximum current

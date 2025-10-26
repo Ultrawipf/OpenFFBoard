@@ -2,7 +2,7 @@
  * TMC4671.h
  *
  *  Created on: Feb 1, 2020
- *      Author: Yannick
+ *      Author: Yannick, Vincent
  */
 
 #ifndef TMC4671_H_
@@ -29,8 +29,11 @@
 
 #define SPITIMEOUT 500
 #define TMC_THREAD_MEM 256
-#define TMC_THREAD_PRIO 25 // Must be higher than main thread
-#define TMC_ADCOFFSETFAIL 5000 // How much offset from 0x7fff to allow before a calibration is failed
+#define TMC_THREAD_PRIO 25 		// Must be higher than main thread
+#define TMC_ADCOFFSETFAIL 5000 	// How much offset from 0x7fff to allow before a calibration is failed
+
+// --- Constants for anti-cogging calibration ---
+#define CALIB_SPEED 50 	 	    // Slow speed in RPM used for calibration.
 
 extern SPI_HandleTypeDef HSPIDRV;
 
@@ -57,8 +60,7 @@ extern TIM_HandleTypeDef TIM_TMC;
 #define TIM_TMC_ARR 200
 #endif
 
-
-enum class TMC_ControlState : uint32_t {uninitialized,waitPower,Shutdown,Running,EncoderInit,EncoderFinished,HardError,OverTemp,IndexSearch,FullCalibration,ExternalEncoderInit,Pidautotune};
+enum class TMC_ControlState : uint32_t {uninitialized,waitPower,Shutdown,Running,EncoderInit,EncoderFinished,HardError,OverTemp,IndexSearch,FullCalibration,ExternalEncoderInit,Pidautotune,CoggingCalibration,SlewRateCalibration};
 
 enum class TMC_PwmMode : uint8_t {off = 0,HSlow_LShigh = 1, HShigh_LSlow = 2, res2 = 3, res3 = 4, PWM_LS = 5, PWM_HS = 6, PWM_FOC = 7};
 
@@ -235,7 +237,7 @@ struct TMC4671PIDConf{
 struct TMC4671Limits{
 	uint16_t pid_torque_flux_ddt	= 32767;
 	uint16_t pid_uq_ud				= 30000;
-	uint16_t pid_torque_flux		= 32767;
+	uint16_t pid_torque_flux		= 30000;
 	uint32_t pid_acc_lim			= 2147483647;
 	uint32_t pid_vel_lim			= 2147483647;
 	int32_t pid_pos_low				= -2147483647;
@@ -265,6 +267,8 @@ struct TMC4671FlashAddrs{
 	uint16_t encOffset = ADR_TMC1_ENC_OFFSET;
 	uint16_t phieOffset = ADR_TMC1_PHIE_OFS;
 	uint16_t torqueFilter = ADR_TMC1_TRQ_FILT;
+	uint16_t coggingEnable = ADR_TMC1_COGGING_CAL;
+	uint16_t maxSlewRate = ADR_TMC1_MAXSLEWRATE;
 };
 
 struct TMC4671ABNConf{
@@ -345,12 +349,14 @@ public:
 	}
 	TMC4671Biquad(const TMC4671Biquad_t bq) : params(bq){}
 	TMC4671Biquad(const Biquad& bq,bool enable = true){
-		// Note: trinamic swapped the naming of b and a from the regular convention in the datasheet and a and b are possibly inverse to b in our filter class
-		this->params.a1 = -(int32_t)(bq.b1 * (float)(1 << 29));
-		this->params.a2 = -(int32_t)(bq.b2 * (float)(1 << 29));
-		this->params.b0 = (int32_t)(bq.a0 * (float)(1 << 29));
-		this->params.b1 = (int32_t)(bq.a1 * (float)(1 << 29));
-		this->params.b2 = (int32_t)(bq.a2 * (float)(1 << 29));
+		const float* coeffs = bq.getCoeffs();
+		// coeffs is in order {b0, b1, b2, -a1, -a2}
+		// TMC expects {b0, b1, b2, a1, a2} with a1 and a2 negated
+		this->params.b0 = (int32_t)(coeffs[0] * (float)(1 << 29));
+		this->params.b1 = (int32_t)(coeffs[1] * (float)(1 << 29));
+		this->params.b2 = (int32_t)(coeffs[2] * (float)(1 << 29));
+		this->params.a1 = (int32_t)(coeffs[3] * (float)(1 << 29));
+		this->params.a2 = (int32_t)(coeffs[4] * (float)(1 << 29));
 		this->params.enable = bq.getFc() > 0 ? enable : false;
 	}
 	void enable(bool enable){
@@ -383,7 +389,8 @@ class TMC4671 :
 		torqueP,torqueI,fluxP,fluxI,velocityP,velocityI,posP,posI,
 		tmctype,pidPrec,phiesrc,fluxoffset,seqpi,tmcIscale,encdir,temp,reg,
 		svpwm,fullCalibration,calibrated,abnindexenabled,findIndex,getState,encpol,combineEncoder,invertForce,vmTmc,
-		extphie,torqueFilter_mode,torqueFilter_f,torqueFilter_q,pidautotune,fluxbrake,pwmfreq
+		extphie,torqueFilter_mode,torqueFilter_f,torqueFilter_q,pidautotune,fluxbrake,pwmfreq,
+		cogging,calibrateCogging, coggingTable,measureMaxSlewRate
 	};
 
 #ifdef TMCDEBUG
@@ -444,6 +451,7 @@ public:
 	bool checkEncoder();
 	void calibrateAenc();
 	void calibrateEncoder();
+	void calibrateCogging();
 
 	void setEncoderType(EncoderType_TMC type);
 	uint32_t getEncCpr();
@@ -475,6 +483,7 @@ public:
 
 	void setBBM(uint8_t bbml,uint8_t bbmh);
 
+	uint16_t getMaxSlewRate();
 
 #ifdef TIM_TMC
 	void timerElapsed(TIM_HandleTypeDef* htim);
@@ -485,10 +494,13 @@ public:
 	void stopMotor();
 	void startMotor();
 
+	void setPowerLimit(uint16_t power) override;
+
 	void emergencyStop(bool reset);
 	bool emergency = false;
 	bool estopTriggered = false;
 	void turn(int16_t power);
+	int16_t getVelocityControllerTorque();
 	int16_t nextFlux = 0;
 	int16_t idleFlux = 0;
 	uint16_t maxOffsetFlux = 0;
@@ -617,7 +629,7 @@ public:
 protected:
 	class TMC_ExternalEncoderUpdateThread : public cpp_freertos::Thread{
 	public:
-		TMC_ExternalEncoderUpdateThread(TMC4671* tmc);
+	TMC_ExternalEncoderUpdateThread(TMC4671* tmc);
 		//~TMC_ExternalEncoderUpdateThread();
 		void Run();
 		void updateFromIsr();
@@ -629,6 +641,7 @@ protected:
 	static std::span<const TMC4671HardwareTypeConf> tmc4671_hw_configs; // Can override in external target file
 
 private:
+	uint8_t drv_address = 0;
 	OutputPin enablePin = OutputPin(*DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin);
 	const Error indexNotHitError = Error(ErrorCode::encoderIndexMissed,ErrorType::critical,"Encoder index missed");
 	const Error lowVoltageError = Error(ErrorCode::undervoltage,ErrorType::warning,"Low motor voltage");
@@ -674,6 +687,15 @@ private:
 	uint32_t lastStatTime = 0;
 
 	uint8_t spi_buf[5] = {0};
+
+	// Cogging Calibration
+	int16_t data_cogging[CALIB_MAP_SIZE] = {0};
+	bool cogging_enabled = false;
+	void saveCoggingTable();
+	void clearCoggingTable();
+
+	uint16_t maxSlewRate = 65535; // in mA/ms
+	void measureMaxSlewRate();
 
 	void initAdc(uint16_t mdecA, uint16_t mdecB,uint32_t mclkA,uint32_t mclkB);
 	void setPwm(uint8_t val,uint16_t maxcnt,uint8_t bbmL,uint8_t bbmH);// 100MHz/maxcnt+1
@@ -737,5 +759,3 @@ public:
 };
 #endif
 #endif /* TMC4671_H_ */
-
-

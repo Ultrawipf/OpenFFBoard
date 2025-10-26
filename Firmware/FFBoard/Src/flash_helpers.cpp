@@ -2,13 +2,14 @@
  * flash_helpers.cpp
  *
  *  Created on: 31.01.2020
- *      Author: Yannick
+ *      Author: Yannick, Vincent
  */
 #include "flash_helpers.h"
 #include "eeprom_addresses.h"
 #include <vector>
 #include "mutex.hpp"
 #include <span>
+#include <cstring>
 
 cpp_freertos::MutexStandard flashMutex;
 // Flash helpers
@@ -216,6 +217,76 @@ __weak bool Flash_Format(){
 }
 __weak bool Flash_Init(){
 	return true;
+}
+
+#endif
+#if defined(COGGING_TABLE_FLASH_START_ADDRESS)
+
+// Statically allocated buffer to prevent heap allocation errors on memory constrained devices.
+static uint8_t cogging_flash_buffer[32 * 1024];
+
+/**
+ * @brief Writes a single cogging table to flash using a safe read-modify-write procedure.
+ * @param table_idx Index of the table to write (0 to MAX_COGGING_TABLES-1).
+ * @param data Pointer to the table data to be written.
+ * @return true on success, false on failure.
+ */
+bool Flash_WriteCoggingTable(uint8_t table_idx, int16_t* data) {
+    if (table_idx >= MAX_COGGING_TABLES) {
+        return false;
+    }
+
+    // Use a statically allocated buffer to avoid stack overflow and heap allocation errors.
+    const uint32_t region_size = sizeof(cogging_flash_buffer);
+    uint8_t* temp_buffer = cogging_flash_buffer;
+
+    // 1. Read the entire existing region from flash into the buffer
+    memcpy(temp_buffer, (void*)COGGING_TABLE_FLASH_START_ADDRESS, region_size);
+
+    // 2. Copy the new table data into the buffer at the correct offset
+    uint32_t offset = table_idx * COGGING_TABLE_SIZE;
+    memcpy(temp_buffer + offset, data, COGGING_TABLE_SIZE);
+
+    // 3. Erase the flash sector
+    HAL_FLASH_Unlock();
+    FLASH_EraseInitTypeDef pEraseInit;
+    pEraseInit.TypeErase = FLASH_TYPEERASE_SECTORS;
+    pEraseInit.Sector = FLASH_SECTOR_11; // The reserved 32k region is within this sector
+    pEraseInit.NbSectors = 1;
+    pEraseInit.VoltageRange = VOLTAGE_RANGE_3;
+    uint32_t SectorError = 0;
+    if (HAL_FLASHEx_Erase(&pEraseInit, &SectorError) != HAL_OK) {
+        HAL_FLASH_Lock();
+        return false;
+    }
+
+    // 4. Write the entire modified buffer back to flash, word by word for efficiency
+    for (uint32_t i = 0; i < region_size / sizeof(uint32_t); ++i) {
+        uint32_t write_address = COGGING_TABLE_FLASH_START_ADDRESS + i * sizeof(uint32_t);
+        uint32_t word_to_write = ((uint32_t*)temp_buffer)[i];
+        if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, write_address, word_to_write) != HAL_OK) {
+            HAL_FLASH_Lock();
+            return false;
+        }
+    }
+
+    HAL_FLASH_Lock();
+    return true;
+}
+
+/**
+ * @brief Reads a single cogging table from its dedicated flash area.
+ * @param table_idx Index of the table to read (0 to MAX_COGGING_TABLES-1).
+ * @param data Pointer to a buffer where the table data will be stored.
+ * @return true on success, false on failure.
+ */
+bool Flash_ReadCoggingTable(uint8_t table_idx, int16_t* data) {
+    if (table_idx >= MAX_COGGING_TABLES) {
+        return false;
+    }
+    uint32_t address = COGGING_TABLE_FLASH_START_ADDRESS + (table_idx * COGGING_TABLE_SIZE);
+    memcpy(data, (void*)address, COGGING_TABLE_SIZE);
+    return true;
 }
 #endif
 /*

@@ -2,7 +2,7 @@
  * MotorDriver.h
  *
  *  Created on: Feb 1, 2020
- *      Author: Yannick
+ *      Author: Yannick, Vincent
  */
 
 #ifndef MOTORDRIVER_H_
@@ -29,6 +29,9 @@ public:
 	virtual void stopMotor();
 	virtual void startMotor();
 	virtual void emergencyStop(bool reset = false);
+
+	virtual void setPowerLimit(uint16_t power){}; // specific motor driver manager power, this is used to send powerLimit to the driver, like TMC4671.
+	virtual uint16_t getMaxSlewRate() { return 65535; };
 
 	virtual bool motorReady(); // Returns true if the driver is active and ready to receive commands
 

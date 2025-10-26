@@ -11,6 +11,7 @@
 #include "hid_device.h"
 #include "cppmain.h"
 #include <math.h>
+#include "arm_math.h"
 
 HidFFB::HidFFB(std::shared_ptr<EffectsCalculator> ec,uint8_t axisCount) : effects_calc(ec), effects(ec->effects),axisCount(axisCount)
 {
@@ -315,10 +316,10 @@ void HidFFB::set_effect(FFB_SetEffect_t* effect){
 
 
 	if(!overridesCondition){
-		float phaseX = M_PI*2.0 * (effect->directionX/36000.0f);
+		float phaseX = PI*2.0f * (effect->directionX/36000.0f);
 
-		effect_p->axisMagnitudes[0] = directionEnable ? sin(phaseX) : (effect->enableAxis & X_AXIS_ENABLE ? (effect->directionX - 18000.0f) / 18000.0f : 0); // Angular vector if dirEnable used otherwise linear or 0 if axis enabled
-		effect_p->axisMagnitudes[1] = directionEnable ? -cos(phaseX) : (effect->enableAxis & Y_AXIS_ENABLE ? -(effect->directionY - 18000.0f) / 18000.0f : 0);
+		effect_p->axisMagnitudes[0] = directionEnable ? arm_sin_f32(phaseX) : (effect->enableAxis & X_AXIS_ENABLE ? (effect->directionX - 18000.0f) / 18000.0f : 0); // Angular vector if dirEnable used otherwise linear or 0 if axis enabled
+		effect_p->axisMagnitudes[1] = directionEnable ? -arm_cos_f32(phaseX) : (effect->enableAxis & Y_AXIS_ENABLE ? -(effect->directionY - 18000.0f) / 18000.0f : 0);
 	}
 
 #if MAX_AXIS == 3
