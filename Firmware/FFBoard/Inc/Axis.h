@@ -410,6 +410,8 @@ private:
 	 * @param val The new expo value.
 	 */
 	void setExpo(int val);
+
+	int32_t calculateExpoTorque(int32_t torque);
 	/**
 	 * @brief Applies the speed limiter PI controller to the torque.
 	 * @param torque A reference to the torque value to be modified.

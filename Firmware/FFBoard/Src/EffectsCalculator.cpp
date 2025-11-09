@@ -792,8 +792,8 @@ void EffectsCalculator::restoreFlash()
 	}
 
 	// Read reconstruction parameters
-	if(Flash_Read(ADR_FFB_RECONSTRUCTION_FILTER, &reconFilterMode)){
-		reconFilterMode = effects & 0x03;
+	if(Flash_Read(ADR_FFB_RECONSTRUCTION_FILTER, &effects)){
+		reconFilterMode = (ReconFilterMode)(effects & 0x03);
 	}
 
 }
@@ -837,7 +837,8 @@ void EffectsCalculator::saveFlash()
 	Flash_Write(ADR_FFB_EFFECTS3, effects);
 
 	// Save reconstruction parameters
-	Flash_Write(ADR_FFB_RECONSTRUCTION_FILTER, reconFilterMode);
+	effects = (uint16_t)(reconFilterMode);
+	Flash_Write(ADR_FFB_RECONSTRUCTION_FILTER, effects);
 }
 
 void EffectsCalculator::checkFilterCoeff(biquad_constant_t *filter, uint32_t freq,uint8_t q)

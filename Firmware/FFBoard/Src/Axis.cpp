@@ -137,9 +137,9 @@ Axis::Axis(char axis,volatile Control_t* control) :CommandHandler("axis", CLSID_
 	}
 
 	// Initialize equalizer filters
-	for (uint8_t idx = 0; idx < num_eq_bands; idx++) {
+	/*for (uint8_t idx = 0; idx < num_eq_bands; idx++) {
 		eqFilters[idx].setBiquad(BiquadType::peak, eq_frequencies[idx] / filter_f, 1.0, 0.0);
-	}
+	}*/
 
 	CommandHandler::registerCommands(); // Internal commands
 	registerCommands();
@@ -272,7 +272,7 @@ void Axis::restoreFlash(){
 	}
 
 	uint16_t pp1;
-	if(Flash_Read(flashAddrs.postprocess1, &pp1)){
+	if(Flash_Read(flashAddresses.postprocess1, &pp1)){
 		setExpo((int8_t)(pp1 & 0xff));
 	}
 
@@ -297,7 +297,7 @@ void Axis::saveFlash(){
 	Flash_Write(flashAddresses.speedAccelFilter, filterStorage);
 
 	// Postprocessing
-	Flash_Write(flashAddrs.postprocess1, expoValInt & 0xff);
+	Flash_Write(flashAddresses.postprocess1, expoValue & 0xff);
 
 }
 
@@ -384,7 +384,7 @@ void Axis::prepareForUpdate(){
 
 
 	this->updateMetrics(angle);
-	this->updateHandsOffState();
+	//this->updateHandsOffState();
 
 }
 
@@ -696,6 +696,10 @@ int32_t Axis::calculateExpoTorque(int32_t torque){
 	}
 }
 
+int64_t Axis::calculateFFBTorque() {
+
+	int64_t torque = this->ffbEffectTorque;
+
 	// Compute scaler
 	torque *= effectRatioScaler;
 
@@ -746,7 +750,8 @@ bool Axis::updateTorque(int32_t* totalTorque) {
 	applyTorqueSlewRateLimiter(torque);		// Torque Slew Rate Limiter: 
 
 	// Cut torque if the encoder is out of bounds (safety) or hands are off.
-	if(outOfBounds || handsOff){
+	//if(outOfBounds || handsOff){
+	if(outOfBounds){
 		torque = 0;
 	}
 
@@ -1132,7 +1137,7 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 		break;
 
 	case Axis_commands::expo:
-		handleGetSetFunc(cmd, replies, expoValInt, &Axis::setExpo, this); // need to also provide the expoScaler constant
+		handleGetSetFunc(cmd, replies, expoValue, &Axis::setExpo, this); // need to also provide the expoScaler constant
 		break;
 
 	case Axis_commands::exposcale:
