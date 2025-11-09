@@ -119,6 +119,9 @@ extern CAN_HandleTypeDef hcan1;
 #define CANPORT hcan1
 #endif
 
+// DEFINE DSP FUNCTION USAGE
+#define USE_DSP_FUNCTIONS
+
 #define DEBUGPIN // GP1 pin. see cpp target constants
 
 //Flash. 2 pages used

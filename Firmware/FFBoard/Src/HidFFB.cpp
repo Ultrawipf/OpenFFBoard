@@ -12,6 +12,10 @@
 #include "cppmain.h"
 #include <math.h>
 
+#ifdef USE_DSP_FUNCTIONS
+#include "arm_math.h"
+#endif
+
 HidFFB::HidFFB(std::shared_ptr<EffectsCalculator> ec,uint8_t axisCount) : effects_calc(ec), effects(ec->effects),axisCount(axisCount)
 {
 	directionEnableMask = 1 << axisCount; // Direction enable bit is last bit after axis enable bits
@@ -235,7 +239,8 @@ void HidFFB::set_constant_effect(FFB_SetConstantForce_Data_t* data){
 	cfUpdateEvent();
 	FFB_Effect& effect_p = effects[data->effectBlockIndex-1];
 
-	effect_p.magnitude = data->magnitude;
+	//effect_p.magnitude = data->magnitude;
+	effects_calc->pushReconFilterValue(&effect_p, (float)data->magnitude, 0.0f, false);
 //	if(effect_p.state == 0){
 //		effect_p.state = 1; // Force start effect
 //	}
@@ -315,10 +320,16 @@ void HidFFB::set_effect(FFB_SetEffect_t* effect){
 
 
 	if(!overridesCondition){
-		float phaseX = M_PI*2.0 * (effect->directionX/36000.0f);
+#ifdef USE_DSP_FUNCTIONS
+		float phaseX = PI*2.0f * (effect->directionX/36000.0f);
 
+		effect_p->axisMagnitudes[0] = directionEnable ? arm_sin_f32(phaseX) : (effect->enableAxis & X_AXIS_ENABLE ? (effect->directionX - 18000.0f) / 18000.0f : 0); // Angular vector if dirEnable used otherwise linear or 0 if axis enabled
+		effect_p->axisMagnitudes[1] = directionEnable ? -arm_cos_f32(phaseX) : (effect->enableAxis & Y_AXIS_ENABLE ? -(effect->directionY - 18000.0f) / 18000.0f : 0);
+#else
+		float phaseX = M_PI*2.0f * (effect->directionX/36000.0);
 		effect_p->axisMagnitudes[0] = directionEnable ? sin(phaseX) : (effect->enableAxis & X_AXIS_ENABLE ? (effect->directionX - 18000.0f) / 18000.0f : 0); // Angular vector if dirEnable used otherwise linear or 0 if axis enabled
 		effect_p->axisMagnitudes[1] = directionEnable ? -cos(phaseX) : (effect->enableAxis & Y_AXIS_ENABLE ? -(effect->directionY - 18000.0f) / 18000.0f : 0);
+#endif
 	}
 
 #if MAX_AXIS == 3
@@ -453,9 +464,11 @@ void HidFFB::set_periodic(FFB_SetPeriodic_Data_t* report){
 	FFB_Effect* effect = &effects[report->effectBlockIndex-1];
 
 	effect->period = clip<uint32_t,uint32_t>(report->period,1,0x7fff); // Period is never 0
-	effect->magnitude = report->magnitude;
-	effect->offset = report->offset;
 	effect->phase = report->phase;
+
+	effects_calc->pushReconFilterValue(effect, (float)report->magnitude, (float)report->offset, true);
+	//effect->magnitude = report->magnitude;
+	//effect->offset = report->offset;
 	//effect->counter = 0;
 }
 

@@ -2,12 +2,16 @@
  * Filters.h
  *
  *  Created on: Feb 13, 2020
- *      Author: Yannick
+ *      Author: Yannick, Vincent
  */
 
 #ifndef FILTERS_H_
 #define FILTERS_H_
 #include "cppmain.h"
+
+#ifdef USE_DSP_FUNCTIONS
+#include "arm_math.h"
+#endif
 
 #ifdef __cplusplus
 
@@ -40,14 +44,27 @@ public:
     float getFc() const;
     void setQ(float Q);
     float getQ() const;
+    void setPeakGain(float peakGainDB);
     void calcBiquad(void);
 
-protected:
+#ifdef USE_DSP_FUNCTIONS
+    const float* getCoeffs() const { return pCoeffs; }
+#endif
 
+protected:
     BiquadType type;
-    float a0, a1, a2, b1, b2;
     float Fc, Q, peakGain;
+
+#ifdef USE_DSP_FUNCTIONS
+    // CMSIS-DSP instance
+    arm_biquad_casd_df1_inst_f32 S;
+    float32_t pCoeffs[5];
+    float32_t pState[4]; // For a single biquad stage (DF1 float requires 4 states)
+#else
     float z1, z2;
+    float a0, a1, a2, b1, b2;
+#endif
+
 };
 
 

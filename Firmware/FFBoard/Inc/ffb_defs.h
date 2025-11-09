@@ -195,7 +195,21 @@ typedef struct
 
 } __attribute__((packed)) reportFFB_status_t;
 
-
+/**
+ * @brief Contient l'état et les tampons pour
+ * l'interpolation d'un seul paramètre (ex: magnitude ou offset).
+ */
+typedef struct
+{
+	float spline_x[4] = {0}; 		// Tampon de temps (en us)
+	float spline_y[4] = {0}; 		// Tampon de valeurs
+	float spline_y2[4] = {0};    	// Tampon de travail pour Spline Naturel
+	float spline_scratch[4] = {0}; 	// Tampon de travail pour Spline Naturel
+#ifdef USE_DSP_FUNCTIONS
+	arm_spline_instance_f32 spline_instance; // Instance pour CMSIS-DSP
+#endif
+	bool isSplineReady = false;	// Le tampon est-il plein ?
+} ReconFilterState;
 
 typedef struct
 	{
@@ -333,6 +347,9 @@ typedef struct
 	uint16_t samplePeriod = 0;
 	bool useEnvelope = false;
 	bool useSingleCondition = true;
+
+	ReconFilterState recon_magnitude; // State pour Magnitude (ou Amplitude)
+    ReconFilterState recon_offset;    // State pour Offset (périodiques)
 } FFB_Effect;
 
 

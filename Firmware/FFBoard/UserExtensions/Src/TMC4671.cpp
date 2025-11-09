@@ -2,7 +2,7 @@
  * TMC4671.cpp
  *
  *  Created on: Feb 1, 2020
- *      Author: Yannick
+ *      Author: Yannick, Vincent
  */
 
 #include "TMC4671.h"
@@ -49,6 +49,7 @@ ClassIdentifier TMC4671::info = {
 TMC4671::TMC4671(SPIPort& spiport,OutputPin cspin,uint8_t address) :
 		CommandHandler("tmc", CLSID_MOT_TMC0,address-1), SPIDevice{motor_spi,cspin},Thread("TMC", TMC_THREAD_MEM, TMC_THREAD_PRIO)
 {
+	this->drv_address = address;
 	CommandHandler::setCommandsEnabled(false);
 	setAddress(address);
 	registerCommands();
@@ -1674,6 +1675,13 @@ void TMC4671::startMotor(){
 	}
 	// Start driver if powered and emergency flag reset
 	if(hasPower() && !emergency){
+		// Configuration specific to TMC4671 upon starting the motor
+		// The power limit is set by the Axis class via setPowerLimit during initialization.
+		// We call setLimits() here to ensure all other limits (velocity, acceleration, etc.) are applied from the defaults.
+		setExternalEncoderAllowed(true);
+		setLimits(curLimits);
+		setMotionMode(MotionMode::torque);
+		
 		setPwm(TMC_PwmMode::PWM_FOC); // enable foc
 		enablePin.set();
 		setMotionMode(nextMotionMode,true);
@@ -2046,8 +2054,11 @@ void TMC4671::setTorque(int16_t torque){
 	if(curMotionMode != MotionMode::torque){
 		setMotionMode(MotionMode::torque,true);
 	}
-	updateReg(0x64,torque,0xffff,16);
+
+	// Update main torque setpoint
+	updateReg(0x64, torque, 0xffff, 16);
 }
+
 int16_t TMC4671::getTorque(){
 	return readReg(0x64) >> 16;
 }
@@ -2068,8 +2079,14 @@ void TMC4671::setFluxTorque(int16_t flux, int16_t torque){
 #ifdef TMC4671_TORQUE_USE_ASYNC
 	writeRegAsync(0x64, (flux & 0xffff) | (torque << 16));
 #else
+	// Update main flux and torque setpoints
 	writeReg(0x64, (flux & 0xffff) | (torque << 16));
 #endif
+}
+
+int16_t TMC4671::getVelocityControllerTorque(){
+    writeReg(0x6F, 4); // INTERIM_ADDR = 4 for PIDOUT_TARGET_TORQUE
+    return (int16_t)readReg(0x6E); // Read from INTERIM_DATA
 }
 
 void TMC4671::setFluxTorqueFF(int16_t flux, int16_t torque){
@@ -2121,6 +2138,11 @@ TMC4671PIDConf TMC4671::getPids(){
 void TMC4671::setUqUdLimit(uint16_t limit){
 	this->curLimits.pid_uq_ud = limit;
 	writeReg(0x5D, limit);
+}
+
+void TMC4671::setPowerLimit(uint16_t power) {
+	maxPowerAxis = power;
+	setTorqueLimit(power);
 }
 
 void TMC4671::setTorqueLimit(uint16_t limit){
@@ -3105,7 +3127,6 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 	default:
 		return CommandStatus::NOT_FOUND;
 	}
-
 	return status;
 
 
