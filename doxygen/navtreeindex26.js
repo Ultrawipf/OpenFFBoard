@@ -1,5 +1,12 @@
 var NAVTREEINDEX26 =
 {
+"group___class_driver___c_d_c.html#ga1f1cbb9b6df240ce5645f04dfa09f1d9":[2,2,30],
+"group___class_driver___c_d_c.html#ga2a389fb44d9e4275e44370e34303476f":[2,2,24],
+"group___class_driver___c_d_c.html#ga2aab42e09a46860135203c84eab780e5":[2,2,11],
+"group___class_driver___c_d_c.html#ga317a36afafa7b889be7fcb751653658f":[2,2,31],
+"group___class_driver___c_d_c.html#ga38fc1ac4c3565bad2243225cf19442ed":[2,2,15],
+"group___class_driver___c_d_c.html#ga3a7c83544ea027d21bbbd515a3b08e32":[2,2,2],
+"group___class_driver___c_d_c.html#ga481dd61a34b5d619f6b1e0b3689ac5e1":[2,2,8],
 "group___class_driver___c_d_c.html#ga4ae02cf2b7c6778b9813a4e123c95300":[2,2,23],
 "group___class_driver___c_d_c.html#ga578759e6090c0c573a41e90073f8325c":[2,2,6],
 "group___class_driver___c_d_c.html#ga59282995261886b9ffa9663bf2707208":[2,2,14],
@@ -242,12 +249,5 @@ var NAVTREEINDEX26 =
 "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8a89b3575c8c9f74de3d99d6a60b661957":[2,7,2,19],
 "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8a8e1258ec6d371e3a659218132989192c":[2,7,2,1],
 "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8a916d90088bc431b8da6fdf05e41bf383":[2,7,2,8],
-"group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8a93bd3a9cc1f87b0d51edc2f19e473e90":[2,7,2,2],
-"group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8a988b03e24f94b3f84beadcd2dd50a51e":[2,7,2,14],
-"group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8aa14ce9d6fa149d629acd9331a5ca59dd":[2,7,2,6],
-"group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8aa2d857f1a9a6c30121546ec5cf9bba25":[2,7,2,30],
-"group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8aa65fc471261b2623b9067e0f809ea6b8":[2,7,2,3],
-"group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8aaef4cc2ef03009ae146f5b2300f37f4e":[2,7,2,7],
-"group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8ab009cf28b9ceb656709560fd096707b8":[2,7,2,20],
-"group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8ab64183faa24752d390a25a8c675d2fbb":[2,7,2,26]
+"group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8a93bd3a9cc1f87b0d51edc2f19e473e90":[2,7,2,2]
 };

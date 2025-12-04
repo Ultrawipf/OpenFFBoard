@@ -163,7 +163,7 @@ $(function(){initNavTree('ringbufferwrapper_8h_source.html',''); initResizable(t
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>   T <a class="code hl_variable" href="dcd__ch32__usbfs_8c.html#ad096f08dd211c7af767c69b9d137acee">data</a>;</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>   <span class="comment">// Only POD types can be trivially copied from</span></div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>   <span class="comment">// the ring buffer.</span></div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>   <span class="keywordflow">if</span> (!std::is_pod&lt;T&gt;::value) {</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>   <span class="keywordflow">if</span> (!std::is_standard_layout&lt;T&gt;::value &amp;&amp; !std::is_trivial&lt;T&gt;::value) {</div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>      *ok = <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>      <span class="keywordflow">return</span> <a class="code hl_variable" href="dcd__ch32__usbfs_8c.html#ad096f08dd211c7af767c69b9d137acee">data</a>;</div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>   }</div>

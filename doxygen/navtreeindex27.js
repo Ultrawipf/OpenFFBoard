@@ -1,5 +1,12 @@
 var NAVTREEINDEX27 =
 {
+"group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8a988b03e24f94b3f84beadcd2dd50a51e":[2,7,2,14],
+"group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8aa14ce9d6fa149d629acd9331a5ca59dd":[2,7,2,6],
+"group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8aa2d857f1a9a6c30121546ec5cf9bba25":[2,7,2,30],
+"group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8aa65fc471261b2623b9067e0f809ea6b8":[2,7,2,3],
+"group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8aaef4cc2ef03009ae146f5b2300f37f4e":[2,7,2,7],
+"group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8ab009cf28b9ceb656709560fd096707b8":[2,7,2,20],
+"group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8ab64183faa24752d390a25a8c675d2fbb":[2,7,2,26],
 "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8ac2e3c12e45c11490ae46338f3644083a":[2,7,2,15],
 "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8acb6ef9e169140ddc132f72672a232309":[2,7,2,10],
 "group___class_driver___h_i_d___gamepad.html#gga480ab1ef985bd92da8d53e3761950cb8ad5fd53a472e5ff0d691714584e223597":[2,7,2,31],
@@ -242,12 +249,5 @@ var NAVTREEINDEX27 =
 "hcd__max3421_8c.html#a838d395e379ff2fdfaface17fa406be4":[5,0,0,0,2,5,0,0,0,51],
 "hcd__max3421_8c.html#a8a9ca5a02aadd9c52a5cda1036e0463d":[5,0,0,0,2,5,0,0,0,25],
 "hcd__max3421_8c.html#a8c0e5dbef6f924a986971846c9b2763d":[5,0,0,0,2,5,0,0,0,33],
-"hcd__max3421_8c.html#a94a31a31eb7d6ba76975a8816712220e":[5,0,0,0,2,5,0,0,0,27],
-"hcd__max3421_8c.html#a95965d90498a4fb4d87acd41261fb532":[5,0,0,0,2,5,0,0,0,29],
-"hcd__max3421_8c.html#a9795cb1ff06de842ead558780a36e26d":[5,0,0,0,2,5,0,0,0,52],
-"hcd__max3421_8c.html#a99c3d7d6b9e394bd514ed52d3ffd2d77":[5,0,0,0,2,5,0,0,0,24],
-"hcd__max3421_8c.html#a9f441b2808a399d617aabf532a574f0a":[5,0,0,0,2,5,0,0,0,23],
-"hcd__max3421_8c.html#aa31576a57e6e8c6743b874e7e4b842c5":[5,0,0,0,2,5,0,0,0,43],
-"hcd__max3421_8c.html#aadc483e18c98dcc5a5a635d52b65ab23":[5,0,0,0,2,5,0,0,0,38],
-"hcd__max3421_8c.html#ab48635c6290a6cf9140050703362a829":[5,0,0,0,2,5,0,0,0,42]
+"hcd__max3421_8c.html#a94a31a31eb7d6ba76975a8816712220e":[5,0,0,0,2,5,0,0,0,27]
 };

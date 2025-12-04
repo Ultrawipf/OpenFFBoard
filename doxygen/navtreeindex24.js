@@ -1,5 +1,12 @@
 var NAVTREEINDEX24 =
 {
+"group___a_u_d_i_o___serial___device.html#gaaaf9f1dc44fffca2dff06153380f58c0":[2,1,0,19],
+"group___a_u_d_i_o___serial___device.html#gab551257977fefc7256fd6231162b9c89":[2,1,0,20],
+"group___a_u_d_i_o___serial___device.html#gab7e8d6c6eee252e4d867f5a9f3f27dc3":[2,1,0,13],
+"group___a_u_d_i_o___serial___device.html#gaba705facfaa34ffd88f20b7452e4ca30":[2,1,0,44],
+"group___a_u_d_i_o___serial___device.html#gabb1f66593bec351aff3509e13d943792":[2,1,0,12],
+"group___a_u_d_i_o___serial___device.html#gabc9eeebeffdb0f315c5d4a8a77284684":[2,1,0,17],
+"group___a_u_d_i_o___serial___device.html#gac02b051352214ff36b6071c45a42d2ba":[2,1,0,24],
 "group___a_u_d_i_o___serial___device.html#gacb68567b1d7debb5868c26b864b3e2b6":[2,1,0,57],
 "group___a_u_d_i_o___serial___device.html#gacf4a9d7587554b63c3d5284a63da0c61":[2,1,0,11],
 "group___a_u_d_i_o___serial___device.html#gad0e7e9a5a216e1121b15cf04244c2ec3":[2,1,0,38],
@@ -242,12 +249,5 @@ var NAVTREEINDEX24 =
 "group___class_driver___audio.html#gga32a64f6a946669fed071b3ba687c9cd2adfaab4223bb6b305956c9fd69794ebe1":[2,0,40,1],
 "group___class_driver___audio.html#gga399d8128f671009a379468ae3daf8693a0cfbaf6a9ffc5e9e72bb7b34a4de1365":[2,0,66,4],
 "group___class_driver___audio.html#gga399d8128f671009a379468ae3daf8693a1d0dcd422c33ebae547e79d43fcabf71":[2,0,66,5],
-"group___class_driver___audio.html#gga399d8128f671009a379468ae3daf8693a5202b85539cd237f7162ec83180c9e53":[2,0,66,6],
-"group___class_driver___audio.html#gga399d8128f671009a379468ae3daf8693a8ba06892526979cafab8d2978563db33":[2,0,66,0],
-"group___class_driver___audio.html#gga399d8128f671009a379468ae3daf8693ab5831beedca67c31cae5423f67227609":[2,0,66,2],
-"group___class_driver___audio.html#gga399d8128f671009a379468ae3daf8693ae5317570bcbbf2726d4d56ba8c7dc68d":[2,0,66,1],
-"group___class_driver___audio.html#gga399d8128f671009a379468ae3daf8693af11d111ea7d8cd11a1679ac2141ac660":[2,0,66,3],
-"group___class_driver___audio.html#gga39ec96b5b5a319d053bcbe591e435738a347925fb1df7ca8547e6182ad6c2f2b8":[2,0,61,0],
-"group___class_driver___audio.html#gga39ec96b5b5a319d053bcbe591e435738abc61d50688440cd8eba657cf0e1d8b1e":[2,0,61,1],
-"group___class_driver___audio.html#gga39ec96b5b5a319d053bcbe591e435738af447a2424edc8111a592b690188ae6b7":[2,0,61,2]
+"group___class_driver___audio.html#gga399d8128f671009a379468ae3daf8693a5202b85539cd237f7162ec83180c9e53":[2,0,66,6]
 };

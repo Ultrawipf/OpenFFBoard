@@ -1,5 +1,12 @@
 var NAVTREEINDEX32 =
 {
+"rusb2__type_8h.html#a4eca9f99da6cafee310657f8f28153d4":[5,0,0,0,2,5,14,0,5,48],
+"rusb2__type_8h.html#a52f8f9bee4677e0883f815dac3da9dfd":[5,0,0,0,2,5,14,0,5,61],
+"rusb2__type_8h.html#a53e28d82c051248178145fed5c8a7802":[5,0,0,0,2,5,14,0,5,40],
+"rusb2__type_8h.html#a54d5e42778501749fab723cc4ae5d335":[5,0,0,0,2,5,14,0,5,30],
+"rusb2__type_8h.html#a56c03ba20818ee7914dc29fcfd7362f3":[5,0,0,0,2,5,14,0,5,59],
+"rusb2__type_8h.html#a589cf3c16888ad501a0f1efb3ee869b8":[5,0,0,0,2,5,14,0,5,11],
+"rusb2__type_8h.html#a5e95be46440baeedb5c38cc907695755":[5,0,0,0,2,5,14,0,5,67],
 "rusb2__type_8h.html#a674fafe16a33a12bce7be7d263911210":[5,0,0,0,2,5,14,0,5,13],
 "rusb2__type_8h.html#a69625e36b8c22e36f59458b7e62bcdf1":[5,0,0,0,2,5,14,0,5,66],
 "rusb2__type_8h.html#a698e694c0c4273d072a9715001462ed5":[5,0,0,0,2,5,14,0,5,32],
@@ -242,12 +249,5 @@ var NAVTREEINDEX32 =
 "struct__ccrx__evenaccess.html#a4d7acf46e23c9f5df50a5696210dfebd":[4,0,43,440],
 "struct__ccrx__evenaccess.html#a4df6463cdac01b2dd7b58f88ee2ff45e":[4,0,43,44],
 "struct__ccrx__evenaccess.html#a4f28f989e6745880ce82750859d02d25":[4,0,43,54],
-"struct__ccrx__evenaccess.html#a50139e789594da4fe1a324f4d47b82a3":[4,0,43,80],
-"struct__ccrx__evenaccess.html#a51b774f20579881d4597fe2251a30ac9":[4,0,43,350],
-"struct__ccrx__evenaccess.html#a51d9523f4de51990803ab638232475c8":[4,0,43,81],
-"struct__ccrx__evenaccess.html#a529cd88f17346596c992dae68120c273":[4,0,43,201],
-"struct__ccrx__evenaccess.html#a52a01f1c2f8749462d5e7e89a952a079":[4,0,43,136],
-"struct__ccrx__evenaccess.html#a5375c6e9db637e4528a2ecdc06042a7d":[4,0,43,348],
-"struct__ccrx__evenaccess.html#a53e22bec2f4da0e1b0670389761f800e":[4,0,43,268],
-"struct__ccrx__evenaccess.html#a547a884fbfc29b7798cdced6b91f7dfa":[4,0,43,312]
+"struct__ccrx__evenaccess.html#a50139e789594da4fe1a324f4d47b82a3":[4,0,43,80]
 };

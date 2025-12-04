@@ -4,7 +4,10 @@ var class_mt_encoder_s_p_i =
       [ "cspin", "class_mt_encoder_s_p_i.html#a329693332cff2b8e297684ec86053206aed6e177ce34c42177d8faa5a15d65dd0", null ],
       [ "pos", "class_mt_encoder_s_p_i.html#a329693332cff2b8e297684ec86053206a5e0bdcbddccca4d66d74ba8c1cee1a68", null ],
       [ "errors", "class_mt_encoder_s_p_i.html#a329693332cff2b8e297684ec86053206a07213a0161f52846ab198be103b5ab43", null ],
-      [ "mode", "class_mt_encoder_s_p_i.html#a329693332cff2b8e297684ec86053206a15d61712450a686a7f365adf4fef581f", null ]
+      [ "mode", "class_mt_encoder_s_p_i.html#a329693332cff2b8e297684ec86053206a15d61712450a686a7f365adf4fef581f", null ],
+      [ "speed", "class_mt_encoder_s_p_i.html#a329693332cff2b8e297684ec86053206ace4ef3ec98443ed10da505114b58f153", null ],
+      [ "reg", "class_mt_encoder_s_p_i.html#a329693332cff2b8e297684ec86053206a33c0ee425e2c0efe834afc1aa1e33a4c", null ],
+      [ "save", "class_mt_encoder_s_p_i.html#a329693332cff2b8e297684ec86053206a43781db5c40ecc39fd718685594f0956", null ]
     ] ],
     [ "MtEncoderSPI_mode", "class_mt_encoder_s_p_i.html#a25ca4345caf7fe00d647dbb288785061", [
       [ "mt6825", "class_mt_encoder_s_p_i.html#a25ca4345caf7fe00d647dbb288785061acbf9fbf255a9e881e815b3468a89cde7", null ],
@@ -23,10 +26,12 @@ var class_mt_encoder_s_p_i =
     [ "readSpi", "class_mt_encoder_s_p_i.html#a4435946792ad2811a95830617f9e7150", null ],
     [ "restoreFlash", "class_mt_encoder_s_p_i.html#a7821c6c4c045feaaafca2d9d3fc34e18", null ],
     [ "Run", "class_mt_encoder_s_p_i.html#a437998795b732300394e10bea3b309f0", null ],
+    [ "saveEeprom", "class_mt_encoder_s_p_i.html#adcb73245a23fb4b94488b645d3c84906", null ],
     [ "saveFlash", "class_mt_encoder_s_p_i.html#a3f277a29d31711a8f5e02729d8c3aa67", null ],
     [ "setCsPin", "class_mt_encoder_s_p_i.html#addcc0f0ec61500fc50c96ab157d881b8", null ],
     [ "setMode", "class_mt_encoder_s_p_i.html#a6998cf1e28e373b623a3d5b0e7444d01", null ],
     [ "setPos", "class_mt_encoder_s_p_i.html#a5a5463200a5ccb7fc1a8b145e967212a", null ],
+    [ "setSpiSpeed", "class_mt_encoder_s_p_i.html#a74c21e98005ca1aa7db2162b8db775aa", null ],
     [ "spiTxRxCompleted", "class_mt_encoder_s_p_i.html#aa865cc761325ee6c2848c71129eb38fa", null ],
     [ "updateAngleStatus", "class_mt_encoder_s_p_i.html#a804408907eeef3713f9ada5c8dda9f3d", null ],
     [ "updateAngleStatusCb", "class_mt_encoder_s_p_i.html#ada5f6eed95bbf70ba081621ca0a16a0d", null ],
@@ -47,6 +52,8 @@ var class_mt_encoder_s_p_i =
     [ "rotations", "class_mt_encoder_s_p_i.html#a8d65c1e7f6871c3af05ef2ac75f48e5c", null ],
     [ "rxbuf", "class_mt_encoder_s_p_i.html#a34b7f712ff0bf819725d269506df0ecf", null ],
     [ "rxbuf_t", "class_mt_encoder_s_p_i.html#a345195851e0b894872cb86b81019f08a", null ],
+    [ "spiSpeedPreset", "class_mt_encoder_s_p_i.html#acccd8b13c587fcb90ba38a6411c80493", null ],
+    [ "spispeeds", "class_mt_encoder_s_p_i.html#a4c7d1e74ee59cd219068aab183c1a896", null ],
     [ "tableCRC", "class_mt_encoder_s_p_i.html#af9417551aa867d73d10cfdc6b13ad124", null ],
     [ "txbuf", "class_mt_encoder_s_p_i.html#ae75960701e4f0b68ce0d5954a818fc65", null ],
     [ "updateInProgress", "class_mt_encoder_s_p_i.html#a200f6fec5384001c0b2912955274d100", null ],
