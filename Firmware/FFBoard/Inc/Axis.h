@@ -239,6 +239,7 @@ private:
 	int32_t effectTorque = 0;
 	int32_t axisEffectTorque = 0;
 	uint8_t fx_ratio_i = 204; // Reduce effects to a certain ratio of the total power to have a margin for the endstop. 80% = 204
+	uint16_t timeSincePosChange = 1;
 	uint16_t power = 5000;
 	float torqueScaler = 0; // power * fx_ratio as a ratio between 0 & 1
 	float effect_margin_scaler = 0;
