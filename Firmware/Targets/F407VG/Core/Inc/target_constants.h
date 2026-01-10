@@ -69,6 +69,7 @@
 #define TIM_USER htim9 // Timer with full core clock speed available for the mainclass
 #define TIM_TMC htim6 // Timer running at half clock speed
 #define TIM_TMC_BCLK SystemCoreClock / 2
+#define TIM_FFB htim13
 
 extern UART_HandleTypeDef huart1;
 #define UART_PORT_EXT huart1 // main uart port
