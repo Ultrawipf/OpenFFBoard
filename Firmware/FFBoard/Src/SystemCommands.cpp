@@ -244,18 +244,22 @@ CommandStatus SystemCommands::internalCommand(const ParsedCommand& cmd,std::vect
 #if ( ( configGENERATE_RUN_TIME_STATS == 1 ) && ( configUSE_STATS_FORMATTING_FUNCTIONS > 0 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) )
 		case FFBoardMain_commands::taskstats:
 		{
-			char repl[uxTaskGetNumberOfTasks()*64];
-			vTaskGetRunTimeStats(repl);
-			replies.emplace_back("\n"+std::string(repl));
+			std::string repl;
+			repl.resize(uxTaskGetNumberOfTasks()*64,'\0');
+			vTaskGetRunTimeStats(repl.data());
+			repl.resize(repl.find_first_of('\0')); // Cut
+			replies.emplace_back("\n"+(repl));
 			break;
 		}
 #endif
 #if ( ( configUSE_TRACE_FACILITY == 1 ) && ( configUSE_STATS_FORMATTING_FUNCTIONS > 0 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) )
 		case FFBoardMain_commands::tasklist:
 		{
-			char repl[uxTaskGetNumberOfTasks()*64];
-			vTaskList(repl);
-			replies.emplace_back("\n"+std::string(repl));
+			std::string repl;
+			repl.resize(uxTaskGetNumberOfTasks()*64,'\0');
+			vTaskList(repl.data());
+			repl.resize(repl.find_first_of('\0')); // Cut
+			replies.emplace_back("\n"+(repl));
 			break;
 		}
 #endif
