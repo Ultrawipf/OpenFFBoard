@@ -51,13 +51,6 @@ SPI_Buttons::SPI_Buttons(uint16_t configuration_address, uint16_t configuration_
 	this->configuration_address_2 = configuration_address_2;
 	restoreFlash();
 
-	this->spiConfig.peripheral.BaudRatePrescaler = speedPresets[this->conf.spi_speed];
-	this->spiConfig.peripheral.FirstBit = SPI_FIRSTBIT_LSB;
-	this->spiConfig.peripheral.CLKPhase = SPI_PHASE_1EDGE;
-	this->spiConfig.peripheral.CLKPolarity = SPI_POLARITY_LOW;
-
-	initSPI();
-
 	registerCommands();
 	this->setCommandsEnabled(true);
 	ready  = true;
@@ -109,18 +102,17 @@ void SPI_Buttons::setConfig(ButtonSourceConfig config){
 	if(conf.mode == SPI_BtnMode::TM){
 		this->spiConfig.cspol = true;
 		this->conf.cutRight = true;
-		this->spiConfig.peripheral.CLKPolarity = SPI_POLARITY_LOW;
+		this->spiConfig.peripheral.FirstBit = SPI_FIRSTBIT_LSB;
 		this->spiConfig.peripheral.CLKPhase = SPI_PHASE_1EDGE;
-
+		this->spiConfig.peripheral.CLKPolarity = SPI_POLARITY_LOW;
 	}else if(conf.mode == SPI_BtnMode::PISOSR){
 		this->spiConfig.cspol = false;
 		this->conf.cutRight = false;
+		this->spiConfig.peripheral.FirstBit = SPI_FIRSTBIT_LSB;
 		this->spiConfig.peripheral.CLKPhase = SPI_PHASE_2EDGE;
 		this->spiConfig.peripheral.CLKPolarity = SPI_POLARITY_HIGH; // its actually shifting on the rising edge but 165 will have the first output set even before clocking. First clock cycle is actually second bit so we sample at the falling edge and skip the first bit with that.
 	}
-//	spiPort.takeSemaphore();
-//	spiPort.configurePort(&this->spiConfig.peripheral);
-//	spiPort.giveSemaphore();
+	this->spiConfig.peripheral.BaudRatePrescaler = speedPresets[this->conf.spi_speed];
 	initSPI();
 	if(config.numButtons == 64){ // Special case
 			mask = 0xffffffffffffffff;
