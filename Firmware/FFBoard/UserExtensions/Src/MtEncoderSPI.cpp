@@ -52,21 +52,32 @@ MtEncoderSPI::~MtEncoderSPI() {
 }
 
 void MtEncoderSPI::restoreFlash(){
+
 	uint16_t conf_int = Flash_ReadDefault(ADR_MTENC_CONF1, 0);
-	offset = Flash_ReadDefault(ADR_MTENC_OFS, 0) << 2;
+
 	uint8_t cspin = conf_int & 0x3;
 	MtEncoderSPI_mode mode = static_cast<MtEncoderSPI_mode>(conf_int >> 8);
+
+	uint8_t offsetShift = 2;
+	if(mode == MtEncoderSPI_mode::mt6835){
+		offsetShift = 5;
+	}
+	offset = Flash_ReadDefault(ADR_MTENC_OFS, 0) << offsetShift;
 	setMode(mode);
 	setCsPin(cspin);
 	setSpiSpeed((conf_int >> 2) & 0x3);
 }
 
 void MtEncoderSPI::saveFlash(){
+	uint8_t offsetShift = 2;
+	if(mode == MtEncoderSPI_mode::mt6835){
+		offsetShift = 5;
+	}
 	uint16_t conf_int = this->cspin & 0x3;
 	conf_int |= (this->spiSpeedPreset & 0x3) << 2;
 	conf_int |= ((uint8_t)mode & 0xf) << 8;
 	Flash_Write(ADR_MTENC_CONF1, conf_int);
-	Flash_Write(ADR_MTENC_OFS, offset >> 2);
+	Flash_Write(ADR_MTENC_OFS, offset >> offsetShift);
 }
 
 
