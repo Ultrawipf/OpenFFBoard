@@ -15,11 +15,12 @@
 #include "FFBHIDMain.h"
 #include "EffectsCalculator.h"
 #include "CommandHandler.h"
+#include "PersistentStorage.h"
 
 #ifdef FFBSHIFTER
 
 class FFBShifterEffects : public EffectsCalculatorItf , public EffectsControlItf, public CommandHandler, public ButtonSource{
-	enum class FFBShifterEffectMode : uint8_t {sequential,h_sym};
+	enum class FFBShifterEffectMode : uint8_t {sequential=0,h_sym=1};
 	enum class FFBShifterEffect_commands {active,invert,mode,rangeX,rangeY,lockGear};
 	struct ShifterEffectParams{
 		float gainYseq = 2;
@@ -40,7 +41,7 @@ class FFBShifterEffects : public EffectsCalculatorItf , public EffectsControlItf
 	};
 private:
 	bool active = true;
-	bool invertAxes = true;
+	bool invertAxes = false;
 	FFBShifterEffectMode mode = FFBShifterEffectMode::h_sym;
 	uint64_t buttons = 0;
 	uint32_t lockedGears = 0; // Bit mask locking out certain gears
@@ -62,6 +63,9 @@ public:
 	void reset_ffb(){}; // Called when usb disconnected
 
 	CommandStatus command(const ParsedCommand& cmd,std::vector<CommandReply>& replies);
+
+	void restoreFlash() override;
+	void saveFlash() override;
 
 	std::string getHelpstring(){return "2 Axis FFB shifter effects";};
 	const ClassIdentifier getInfo();

@@ -75,6 +75,7 @@ FFBShifterEffects::FFBShifterEffects():CommandHandler("shifterfx",CLSID_FFBSHIFT
 //	registerCommand("values", LocalButtons_commands::values, "pin values",CMDFLAG_GET);
 
 	setMode(this->mode); // Confirm mode
+	restoreFlash();
 }
 
 FFBShifterEffects::~FFBShifterEffects(){
@@ -87,6 +88,28 @@ ClassIdentifier FFBShifterEffects::info = {
 };
 const ClassIdentifier FFBShifterEffects::getInfo(){
 	return info;
+}
+
+void FFBShifterEffects::restoreFlash(){
+	uint16_t conf1;
+	if(Flash_Read(ADR_FFBSHIFTER_CONF1,&conf1)){
+		// mode3b ,flip
+		switch(conf1 & 0b111){
+			case (uint8_t)FFBShifterEffectMode::sequential: mode = FFBShifterEffectMode::sequential; break;
+			case (uint8_t)FFBShifterEffectMode::h_sym: mode = FFBShifterEffectMode::h_sym; break;
+			default: break;
+		}
+		invertAxes = (conf1 & 0x08) != 0;
+	}
+
+}
+
+void FFBShifterEffects::saveFlash(){
+	uint16_t conf1 = 0;
+	conf1 = (uint8_t)mode & 0b111;
+	conf1 |= invertAxes ? 0x08 : 0;
+	Flash_Write(ADR_FFBSHIFTER_CONF1, conf1);
+
 }
 
 

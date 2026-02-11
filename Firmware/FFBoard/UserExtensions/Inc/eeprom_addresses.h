@@ -13,11 +13,11 @@
 
 #include "main.h"
 // Change this to the amount of currently registered variables
-#define NB_OF_VAR 164
+#define NB_OF_VAR 166
 extern const uint16_t VirtAddVarTab[NB_OF_VAR];
 
 // Amount of variables in exportable list
-#define NB_EXPORTABLE_ADR 149
+#define NB_EXPORTABLE_ADR 151
 extern const uint16_t exportableFlashAddresses[NB_EXPORTABLE_ADR];
 
 
@@ -50,6 +50,9 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 // CAN remote
 #define ADR_CANREMOTE_CONF1 0x120
 #define ADR_CANREMOTE_CONF2 0x121
+// FFB Shifter
+#define ADR_FFBSHIFTER_CONF1 0x130
+#define ADR_FFBSHIFTER_CONF2 0x131
 // Button Sources:
 #define ADR_SPI_BTN_1_CONF 0x201
 #define ADR_SHIFTERANALOG_CONF 0x202
