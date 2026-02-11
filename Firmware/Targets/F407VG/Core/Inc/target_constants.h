@@ -30,6 +30,7 @@
 #define FFBHIDEXT
 #define RMDCAN
 #define CANINPUTMAIN
+#define FFBSHIFTER
 
 /*
  * FFBWheel uses 2 FFB axis descriptor instead of 1 axis.
