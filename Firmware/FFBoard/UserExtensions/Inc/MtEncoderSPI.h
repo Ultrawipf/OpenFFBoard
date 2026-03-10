@@ -91,6 +91,8 @@ private:
 	const uint8_t POLY = 0x07;
 
 	uint8_t spiSpeedPreset = 0;
+	static const uint32_t waitThresh = 2; // If last sample older than x ms use wait semaphore. Else skip and use last value to speed up processing
+	uint32_t lastUpdateTick = 0;
 };
 
 #endif /* USEREXTENSIONS_SRC_MTENCODERSPI_H_ */
