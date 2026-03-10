@@ -54,7 +54,7 @@ extern TIM_HandleTypeDef TIM_TMC;
 #define TMC4671_ITUNE_CUTOFF 0.04
 #endif
 #ifndef TIM_TMC_ARR
-#define TIM_TMC_ARR 200
+#define TIM_TMC_ARR 250
 #endif
 
 
