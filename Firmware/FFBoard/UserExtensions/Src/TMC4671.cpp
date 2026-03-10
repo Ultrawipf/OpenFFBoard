@@ -1737,7 +1737,7 @@ void TMC4671::turn(int16_t power){
 	// Flux offset for field weakening
 
 	flux = idleFlux-clip<int32_t,int16_t>(abs(power),0,maxOffsetFlux);
-	if((this->conf.encoderReversed && conf.motconf.enctype == EncoderType_TMC::ext) ^ conf.invertForce){
+	if((this->conf.encoderReversed && conf.motconf.enctype == EncoderType_TMC::ext) || conf.invertForce){
 		power = -power; // Encoder does not match
 	}
 
