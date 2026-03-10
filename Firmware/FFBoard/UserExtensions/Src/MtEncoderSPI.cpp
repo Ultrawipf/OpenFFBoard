@@ -102,6 +102,7 @@ void MtEncoderSPI::Run(){
 		}else{
 			errors++;
 		}
+		lastUpdateTick = HAL_GetTick();
 		waitForUpdateSem.Give();
 		updateInProgress = false;
 	}
@@ -264,7 +265,8 @@ int32_t MtEncoderSPI::getPosAbs(){
 	}
 	updateInProgress = true;
 	requestNewDataSem.Give(); // Start transfer
-	waitForUpdateSem.Take(10); // Wait a bit
+	if(HAL_GetTick() - lastUpdateTick > waitThresh)
+		waitForUpdateSem.Take(waitThresh); // Wait a bit
 
 	return curPos;
 }
