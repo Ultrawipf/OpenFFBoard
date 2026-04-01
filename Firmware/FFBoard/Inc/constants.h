@@ -112,7 +112,7 @@ static const uint8_t SW_VERSION_INT[3] = {1,17,0}; // Version as array. 8 bit ea
 #define SIGNATURE
 #endif
 
-#if defined(FLASH_OTP_BASE) && defined(FLASH_OTP_END)
+#if (defined(FLASH_OTP_BASE) && defined(FLASH_OTP_END)) || (defined(I2C_EEPROM_OTP_ADR) && defined(I2C_PORT_EEPROM))
 #define OTPMEMORY
 #endif
 
