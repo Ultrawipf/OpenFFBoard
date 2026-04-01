@@ -82,7 +82,7 @@ jobs:
           echo -e "### Firmware changes\n" > /tmp/CHANGELOG.md
           perl -0777 -ne 'print "$1\n$2" if /^(#+.+)\n((?:[^#\n]+\n)+)/m; exit' ${{ github.workspace }}/CHANGELOG.md >> /tmp/CHANGELOG.md
           echo -e "\n### Configurator changes\n" >> /tmp/CHANGELOG.md
-          perl -0777 -ne 'print "$1\n$2" if /^(#+.+)\n((?:[^#\n]+\n)+)/m; exit' ${{ github.workspace }}/Configurator/CHANGELOG.md >> /tmp/CHANGELOG
+          perl -0777 -ne 'print "$1\n$2" if /^(#+.+)\n((?:[^#\n]+\n)+)/m; exit' ${{ github.workspace }}/Configurator/CHANGELOG.md >> /tmp/CHANGELOG.md
 
 
       # Create release
