@@ -103,7 +103,7 @@ private:
 	uint8_t usb_report_rate = HID_BINTERVAL; //for FS USB 1 = 1000hz, 2 = 500hz, 3 = 333hz 4 = 250hz, 5 = 200hz 6 = 166hz, 8 = 125hz etc...
 	uint8_t usb_report_rate_idx = ffbrates.defaultmode;
 #ifndef TIM_FFB
-	uint8_t ffb_rate_divider = 0;
+	uint8_t ffb_rate_divider = 1;
 	uint8_t ffb_rate_counter = 0;
 #endif
 
