@@ -78,6 +78,8 @@ void FFBHIDMain::restoreFlash(){
 	if(Flash_Read(ADR_FFBWHEEL_CONF1,&conf1)){
 		uint8_t rateidx = conf1 & 0x3;
 		setReportRate(rateidx);
+	}else{
+		setReportRate(0); // default
 	}
 
 }
