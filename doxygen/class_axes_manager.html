@@ -135,6 +135,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a3bcacfe0af397f94c0c9e1ae8e56c10a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85deee4d6fc31189f60729b3fcaff971" id="r_a85deee4d6fc31189f60729b3fcaff971"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a85deee4d6fc31189f60729b3fcaff971">resetPosZero</a> ()</td></tr>
 <tr class="separator:a85deee4d6fc31189f60729b3fcaff971"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6d6463537a3769eec549d8731b7f95d" id="r_ab6d6463537a3769eec549d8731b7f95d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab6d6463537a3769eec549d8731b7f95d">updateSamplerate</a> (float newSamplerate)</td></tr>
+<tr class="separator:ab6d6463537a3769eec549d8731b7f95d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -145,10 +147,6 @@ Private Member Functions</h2></td></tr>
 Private Attributes</h2></td></tr>
 <tr class="memitem:a62188d3b1e6eaa67b56b4dd3f1924a0c" id="r_a62188d3b1e6eaa67b56b4dd3f1924a0c"><td class="memItemLeft" align="right" valign="top">volatile <a class="el" href="struct_control__t.html">Control_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a62188d3b1e6eaa67b56b4dd3f1924a0c">control</a></td></tr>
 <tr class="separator:a62188d3b1e6eaa67b56b4dd3f1924a0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aebbbe7aed6d7b689685bd656702a4b42" id="r_aebbbe7aed6d7b689685bd656702a4b42"><td class="memItemLeft" align="right" valign="top">volatile bool *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aebbbe7aed6d7b689685bd656702a4b42">p_usb_disabled</a></td></tr>
-<tr class="separator:aebbbe7aed6d7b689685bd656702a4b42"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5131e878dd8a49afed6f184ef4a330a2" id="r_a5131e878dd8a49afed6f184ef4a330a2"><td class="memItemLeft" align="right" valign="top">volatile bool *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5131e878dd8a49afed6f184ef4a330a2">p_emergency</a></td></tr>
-<tr class="separator:a5131e878dd8a49afed6f184ef4a330a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2c65fc516ea5efc2eacb3cc44197fb6e" id="r_a2c65fc516ea5efc2eacb3cc44197fb6e"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="class_effects_calculator.html">EffectsCalculator</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2c65fc516ea5efc2eacb3cc44197fb6e">effects_calc</a></td></tr>
 <tr class="separator:a2c65fc516ea5efc2eacb3cc44197fb6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a86f9e09050bcca91a88a41fe67791a20" id="r_a86f9e09050bcca91a88a41fe67791a20"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a86f9e09050bcca91a88a41fe67791a20">axis_count</a> = 0</td></tr>
@@ -354,6 +352,25 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="ab6d6463537a3769eec549d8731b7f95d" name="ab6d6463537a3769eec549d8731b7f95d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab6d6463537a3769eec549d8731b7f95d">&#9670;&#160;</a></span>updateSamplerate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void AxesManager::updateSamplerate </td>
+          <td>(</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>newSamplerate</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_axes_manager_8cpp_source.html#l00122">122</a> of file <a class="el" href="_axes_manager_8cpp_source.html">AxesManager.cpp</a>.</p>
+
+</div>
+</div>
 <a id="a07d5c429881bd1129d91a1027f1bc315" name="a07d5c429881bd1129d91a1027f1bc315"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a07d5c429881bd1129d91a1027f1bc315">&#9670;&#160;</a></span>updateTorque()</h2>
 
@@ -523,7 +540,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_axes_manager_8h_source.html#l00051">51</a> of file <a class="el" href="_axes_manager_8h_source.html">AxesManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_axes_manager_8h_source.html#l00053">53</a> of file <a class="el" href="_axes_manager_8h_source.html">AxesManager.h</a>.</p>
 
 </div>
 </div>
@@ -548,54 +565,6 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="_axes_manager_8h_source.html#l00054">54</a> of file <a class="el" href="_axes_manager_8h_source.html">AxesManager.h</a>.</p>
-
-</div>
-</div>
-<a id="a5131e878dd8a49afed6f184ef4a330a2" name="a5131e878dd8a49afed6f184ef4a330a2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5131e878dd8a49afed6f184ef4a330a2">&#9670;&#160;</a></span>p_emergency</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">volatile bool* AxesManager::p_emergency</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_axes_manager_8h_source.html#l00053">53</a> of file <a class="el" href="_axes_manager_8h_source.html">AxesManager.h</a>.</p>
-
-</div>
-</div>
-<a id="aebbbe7aed6d7b689685bd656702a4b42" name="aebbbe7aed6d7b689685bd656702a4b42"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aebbbe7aed6d7b689685bd656702a4b42">&#9670;&#160;</a></span>p_usb_disabled</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">volatile bool* AxesManager::p_usb_disabled</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_axes_manager_8h_source.html#l00052">52</a> of file <a class="el" href="_axes_manager_8h_source.html">AxesManager.h</a>.</p>
 
 </div>
 </div>

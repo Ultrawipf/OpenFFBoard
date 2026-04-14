@@ -140,12 +140,14 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a2133cb5cabe34ccafd60d49ede3a2f1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a05c4af3e6b912bf5b08f3fec832de96e" id="r_a05c4af3e6b912bf5b08f3fec832de96e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a05c4af3e6b912bf5b08f3fec832de96e">fxUpdateEvent</a> ()</td></tr>
 <tr class="separator:a05c4af3e6b912bf5b08f3fec832de96e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7154cc2df571a71d04281495d9715732" id="r_a7154cc2df571a71d04281495d9715732"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7154cc2df571a71d04281495d9715732">updateSamplerate</a> (float newSamplerate)=0</td></tr>
+<tr class="separator:a7154cc2df571a71d04281495d9715732"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr class="memitem:a2e3d130a462c0f3a6127231b3d8b4d82" id="r_a2e3d130a462c0f3a6127231b3d8b4d82"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_fast_moving_average.html">FastMovingAverage</a>&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2e3d130a462c0f3a6127231b3d8b4d82">fxPeriodAvg</a> {20}</td></tr>
+<tr class="memitem:a2e3d130a462c0f3a6127231b3d8b4d82" id="r_a2e3d130a462c0f3a6127231b3d8b4d82"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_fast_moving_average.html">FastMovingAverage</a>&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2e3d130a462c0f3a6127231b3d8b4d82">fxPeriodAvg</a> {5}</td></tr>
 <tr class="separator:a2e3d130a462c0f3a6127231b3d8b4d82"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5739e4e77971ba84a4ec5896e4c9552c" id="r_a5739e4e77971ba84a4ec5896e4c9552c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_fast_moving_average.html">FastMovingAverage</a>&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5739e4e77971ba84a4ec5896e4c9552c">cfUpdatePeriodAvg</a> {20}</td></tr>
+<tr class="memitem:a5739e4e77971ba84a4ec5896e4c9552c" id="r_a5739e4e77971ba84a4ec5896e4c9552c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_fast_moving_average.html">FastMovingAverage</a>&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5739e4e77971ba84a4ec5896e4c9552c">cfUpdatePeriodAvg</a> {5}</td></tr>
 <tr class="separator:a5739e4e77971ba84a4ec5896e4c9552c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a31adb2a699bbefd5cbe06fc683f13fcc" id="r_a31adb2a699bbefd5cbe06fc683f13fcc"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a31adb2a699bbefd5cbe06fc683f13fcc">lastFxUpdate</a> = 0</td></tr>
 <tr class="separator:a31adb2a699bbefd5cbe06fc683f13fcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -155,7 +157,7 @@ Private Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Helper interface class for common effects calculator related control functions </p>
 
-<p class="definition">Definition at line <a class="el" href="_effects_calculator_8h_source.html#l00141">141</a> of file <a class="el" href="_effects_calculator_8h_source.html">EffectsCalculator.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_effects_calculator_8h_source.html#l00143">143</a> of file <a class="el" href="_effects_calculator_8h_source.html">EffectsCalculator.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a2133cb5cabe34ccafd60d49ede3a2f1f" name="a2133cb5cabe34ccafd60d49ede3a2f1f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2133cb5cabe34ccafd60d49ede3a2f1f">&#9670;&#160;</a></span>cfUpdateEvent()</h2>
@@ -180,7 +182,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_effects_calculator_8cpp_source.html#l01028">1028</a> of file <a class="el" href="_effects_calculator_8cpp_source.html">EffectsCalculator.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_effects_calculator_8cpp_source.html#l01037">1037</a> of file <a class="el" href="_effects_calculator_8cpp_source.html">EffectsCalculator.cpp</a>.</p>
 
 </div>
 </div>
@@ -207,7 +209,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_effects_calculator_8cpp_source.html#l01033">1033</a> of file <a class="el" href="_effects_calculator_8cpp_source.html">EffectsCalculator.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_effects_calculator_8cpp_source.html#l01042">1042</a> of file <a class="el" href="_effects_calculator_8cpp_source.html">EffectsCalculator.cpp</a>.</p>
 
 </div>
 </div>
@@ -235,7 +237,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Calculates the frequency of the CF effect only </p>
 
-<p class="definition">Definition at line <a class="el" href="_effects_calculator_8cpp_source.html#l01016">1016</a> of file <a class="el" href="_effects_calculator_8cpp_source.html">EffectsCalculator.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_effects_calculator_8cpp_source.html#l01025">1025</a> of file <a class="el" href="_effects_calculator_8cpp_source.html">EffectsCalculator.cpp</a>.</p>
 
 </div>
 </div>
@@ -290,7 +292,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Calculates the frequency of hid out reports </p>
 
-<p class="definition">Definition at line <a class="el" href="_effects_calculator_8cpp_source.html#l01002">1002</a> of file <a class="el" href="_effects_calculator_8cpp_source.html">EffectsCalculator.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_effects_calculator_8cpp_source.html#l01011">1011</a> of file <a class="el" href="_effects_calculator_8cpp_source.html">EffectsCalculator.cpp</a>.</p>
 
 </div>
 </div>
@@ -400,7 +402,7 @@ Private Attributes</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="class_hid_f_f_b.html#a208283b8a09e8cb67461f47c491b8ad5">HidFFB</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_effects_calculator_8h_source.html#l00145">145</a> of file <a class="el" href="_effects_calculator_8h_source.html">EffectsCalculator.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_effects_calculator_8h_source.html#l00147">147</a> of file <a class="el" href="_effects_calculator_8h_source.html">EffectsCalculator.h</a>.</p>
 
 </div>
 </div>
@@ -429,7 +431,34 @@ Private Attributes</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="class_hid_f_f_b.html#ae9eac7111c117c02442c8381e908d57d">HidFFB</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_effects_calculator_8h_source.html#l00144">144</a> of file <a class="el" href="_effects_calculator_8h_source.html">EffectsCalculator.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_effects_calculator_8h_source.html#l00146">146</a> of file <a class="el" href="_effects_calculator_8h_source.html">EffectsCalculator.h</a>.</p>
+
+</div>
+</div>
+<a id="a7154cc2df571a71d04281495d9715732" name="a7154cc2df571a71d04281495d9715732"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7154cc2df571a71d04281495d9715732">&#9670;&#160;</a></span>updateSamplerate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void EffectsControlItf::updateSamplerate </td>
+          <td>(</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>newSamplerate</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel pure-virtual">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implemented in <a class="el" href="class_hid_f_f_b.html#a34a41c9029c36cf7f7cf035257712c69">HidFFB</a>, and <a class="el" href="class_serial_f_f_b.html#a5c0072bdbaeccef1a12836f12b6126bb">SerialFFB</a>.</p>
 
 </div>
 </div>
@@ -444,7 +473,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_fast_moving_average.html">FastMovingAverage</a>&lt;float&gt; EffectsControlItf::cfUpdatePeriodAvg {20}</td>
+          <td class="memname"><a class="el" href="class_fast_moving_average.html">FastMovingAverage</a>&lt;float&gt; EffectsControlItf::cfUpdatePeriodAvg {5}</td>
         </tr>
       </table>
   </td>
@@ -454,7 +483,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_effects_calculator_8h_source.html#l00156">156</a> of file <a class="el" href="_effects_calculator_8h_source.html">EffectsCalculator.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_effects_calculator_8h_source.html#l00159">159</a> of file <a class="el" href="_effects_calculator_8h_source.html">EffectsCalculator.h</a>.</p>
 
 </div>
 </div>
@@ -468,7 +497,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_fast_moving_average.html">FastMovingAverage</a>&lt;float&gt; EffectsControlItf::fxPeriodAvg {20}</td>
+          <td class="memname"><a class="el" href="class_fast_moving_average.html">FastMovingAverage</a>&lt;float&gt; EffectsControlItf::fxPeriodAvg {5}</td>
         </tr>
       </table>
   </td>
@@ -478,7 +507,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_effects_calculator_8h_source.html#l00155">155</a> of file <a class="el" href="_effects_calculator_8h_source.html">EffectsCalculator.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_effects_calculator_8h_source.html#l00158">158</a> of file <a class="el" href="_effects_calculator_8h_source.html">EffectsCalculator.h</a>.</p>
 
 </div>
 </div>
@@ -502,7 +531,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_effects_calculator_8h_source.html#l00159">159</a> of file <a class="el" href="_effects_calculator_8h_source.html">EffectsCalculator.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_effects_calculator_8h_source.html#l00162">162</a> of file <a class="el" href="_effects_calculator_8h_source.html">EffectsCalculator.h</a>.</p>
 
 </div>
 </div>
@@ -526,7 +555,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_effects_calculator_8h_source.html#l00158">158</a> of file <a class="el" href="_effects_calculator_8h_source.html">EffectsCalculator.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_effects_calculator_8h_source.html#l00161">161</a> of file <a class="el" href="_effects_calculator_8h_source.html">EffectsCalculator.h</a>.</p>
 
 </div>
 </div>

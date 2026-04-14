@@ -108,22 +108,33 @@ $(function(){initNavTree('usb__hid__gamepad_8c.html',''); initResizable(true); }
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:ad7c9609d684297385fcf3ad5ddf32b66" id="r_ad7c9609d684297385fcf3ad5ddf32b66"><td class="memItemLeft" align="right" valign="top">__ALIGN_BEGIN const uint8_t <a class="el" href="usb__hid__ffb__desc_8h.html#afab92d8c34243f3f8284bb8fd2beec82">hid_gamepad_desc</a>[USB_HID_GAMEPAD_REPORT_DESC_SIZE]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad7c9609d684297385fcf3ad5ddf32b66">__ALIGN_END</a></td></tr>
-<tr class="separator:ad7c9609d684297385fcf3ad5ddf32b66"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d5478d0309e911ccb6f65cc2a402f22" id="r_a5d5478d0309e911ccb6f65cc2a402f22"><td class="memItemLeft" align="right" valign="top">__ALIGN_BEGIN const uint8_t <a class="el" href="group___h_i_d.html#gafab92d8c34243f3f8284bb8fd2beec82">hid_gamepad_desc</a>[USB_HID_GAMEPAD_REPORT_DESC_SIZE]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5d5478d0309e911ccb6f65cc2a402f22">__ALIGN_END</a></td></tr>
+<tr class="separator:a5d5478d0309e911ccb6f65cc2a402f22"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Variable Documentation</h2>
-<a id="ad7c9609d684297385fcf3ad5ddf32b66" name="ad7c9609d684297385fcf3ad5ddf32b66"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad7c9609d684297385fcf3ad5ddf32b66">&#9670;&#160;</a></span>__ALIGN_END</h2>
+<a id="a5d5478d0309e911ccb6f65cc2a402f22" name="a5d5478d0309e911ccb6f65cc2a402f22"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5d5478d0309e911ccb6f65cc2a402f22">&#9670;&#160;</a></span>__ALIGN_END</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">__ALIGN_BEGIN const uint8_t <a class="el" href="usb__hid__ffb__desc_8h.html#afab92d8c34243f3f8284bb8fd2beec82">hid_gamepad_desc</a> [USB_HID_GAMEPAD_REPORT_DESC_SIZE] __ALIGN_END</td>
+          <td class="memname">__ALIGN_BEGIN const uint8_t <a class="el" href="group___h_i_d.html#gaf490a1336f7c026effad1195be3daed0">hid_gamepad_desc_32b</a> [USB_HID_GAMEPAD_REPORT_DESC_32B_SIZE] __ALIGN_END</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>USB HID descriptor containing a gamepad definition and the vendor defined reports but no PID FFB </p>
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">{</div>
+<div class="line">        0x05, 0x01,                    </div>
+<div class="line">            0x09, 0x04,                    </div>
+<div class="line">            0xa1, 0x01,                    </div>
+<div class="line">        HIDDESC_GAMEPAD_16B,</div>
+<div class="line"> </div>
+<div class="line">        HIDDESC_CTRL_REPORTS, </div>
+<div class="line"> </div>
+<div class="line">  0xC0    </div>
+<div class="line">}</div>
+</div><!-- fragment --><p>USB HID descriptor containing a gamepad definition and the vendor defined reports but no PID FFB </p>
 
 <p class="definition">Definition at line <a class="el" href="usb__hid__gamepad_8c_source.html#l00017">17</a> of file <a class="el" href="usb__hid__gamepad_8c_source.html">usb_hid_gamepad.c</a>.</p>
 

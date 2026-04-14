@@ -145,6 +145,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a09ab80b7d2b7362941f033ca550c173f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a91123c1f1d3ba01f1d0f9b852141e1a0" id="r_a91123c1f1d3ba01f1d0f9b852141e1a0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a91123c1f1d3ba01f1d0f9b852141e1a0">setEffectState</a> (uint8_t <a class="el" href="_command_handler_8h.html#a13a18e5b49561a2f007205dc0afeea14ab80bb7740288fda1f201890375a60c8f">id</a>, bool <a class="el" href="_o_drive_c_a_n_8h.html#a539f13973573e98e043ff32d1b899068a9ed39e2ea931586b6a985a6942ef573e">state</a>)</td></tr>
 <tr class="separator:a91123c1f1d3ba01f1d0f9b852141e1a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c0072bdbaeccef1a12836f12b6126bb" id="r_a5c0072bdbaeccef1a12836f12b6126bb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5c0072bdbaeccef1a12836f12b6126bb">updateSamplerate</a> (float newSamplerate)</td></tr>
+<tr class="separator:a5c0072bdbaeccef1a12836f12b6126bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_command_handler"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_class_command_handler')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_command_handler.html">CommandHandler</a></td></tr>
 <tr class="memitem:a59474bca13e1cc8a8e0e58c47cdce539 inherit pub_methods_class_command_handler" id="r_a59474bca13e1cc8a8e0e58c47cdce539"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="_class_i_ds_8h.html#a79467dc849dd02adbaa4373bbd7aba75">ClassType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a59474bca13e1cc8a8e0e58c47cdce539">getClassType</a> ()</td></tr>
 <tr class="separator:a59474bca13e1cc8a8e0e58c47cdce539 inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -185,6 +187,11 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a26d4fbfbb1106d0465716e1968150a7d inherit pub_methods_class_command_handler" id="r_a26d4fbfbb1106d0465716e1968150a7d"><td class="memTemplParams" colspan="2">template&lt;typename ID&gt; </td></tr>
 <tr class="memitem:a26d4fbfbb1106d0465716e1968150a7d inherit pub_methods_class_command_handler"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a26d4fbfbb1106d0465716e1968150a7d">registerCommand</a> (const char *cmd, const ID cmdid, const char *<a class="el" href="_command_handler_8h.html#a13a18e5b49561a2f007205dc0afeea14a657f8b8da628ef83cf69101b6817150a">help</a>=nullptr, uint32_t flags=0)</td></tr>
 <tr class="separator:a26d4fbfbb1106d0465716e1968150a7d inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3bbde9a416fcef01e230c47891a8548 inherit pub_methods_class_command_handler" id="r_ae3bbde9a416fcef01e230c47891a8548"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#ae3bbde9a416fcef01e230c47891a8548">postCmdhandlerInit</a> ()</td></tr>
+<tr class="separator:ae3bbde9a416fcef01e230c47891a8548 inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c992dc58e0186a7edbb6a78fa5f4cd9 inherit pub_methods_class_command_handler" id="r_a9c992dc58e0186a7edbb6a78fa5f4cd9"><td class="memTemplParams" colspan="2">template&lt;typename ID&gt; </td></tr>
+<tr class="memitem:a9c992dc58e0186a7edbb6a78fa5f4cd9 inherit pub_methods_class_command_handler"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a9c992dc58e0186a7edbb6a78fa5f4cd9">overrideCommandFlags</a> (const ID cmdid, uint32_t flagmask=0)</td></tr>
+<tr class="separator:a9c992dc58e0186a7edbb6a78fa5f4cd9 inherit pub_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_effects_control_itf"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_class_effects_control_itf')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_effects_control_itf.html">EffectsControlItf</a></td></tr>
 <tr class="memitem:a16512ebf3b11a80fd3c6c6d6b980c1ab inherit pub_methods_class_effects_control_itf" id="r_a16512ebf3b11a80fd3c6c6d6b980c1ab"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_effects_control_itf.html#a16512ebf3b11a80fd3c6c6d6b980c1ab">stop_FFB</a> ()</td></tr>
 <tr class="separator:a16512ebf3b11a80fd3c6c6d6b980c1ab inherit pub_methods_class_effects_control_itf"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -291,6 +298,10 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:a3de5a97bb00981074ef6ea85caea8093 inherit pro_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adc82292657521596a2e77756886f95aa inherit pro_methods_class_command_handler" id="r_adc82292657521596a2e77756886f95aa"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#adc82292657521596a2e77756886f95aa">removeCommandHandler</a> ()</td></tr>
 <tr class="separator:adc82292657521596a2e77756886f95aa inherit pro_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99dfe40f3e98b45b23d2664f304d92a5 inherit pro_methods_class_command_handler" id="r_a99dfe40f3e98b45b23d2664f304d92a5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a99dfe40f3e98b45b23d2664f304d92a5">registerCommand_INT</a> (const char *cmd, const uint32_t cmdid, const char *<a class="el" href="_command_handler_8h.html#a13a18e5b49561a2f007205dc0afeea14a657f8b8da628ef83cf69101b6817150a">help</a>=nullptr, uint32_t flags=0)</td></tr>
+<tr class="separator:a99dfe40f3e98b45b23d2664f304d92a5 inherit pro_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf5336373748a51843bbc57404718c44 inherit pro_methods_class_command_handler" id="r_aaf5336373748a51843bbc57404718c44"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#aaf5336373748a51843bbc57404718c44">overrideCommandFlags_INT</a> (const uint32_t cmdid, uint32_t flagmask=CMDFLAG_GET|CMDFLAG_GETADR)</td></tr>
+<tr class="separator:aaf5336373748a51843bbc57404718c44 inherit pro_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_static_methods_class_command_handler"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_static_methods_class_command_handler')"><img src="closed.png" alt="-"/>&#160;Static Protected Member Functions inherited from <a class="el" href="class_command_handler.html">CommandHandler</a></td></tr>
 <tr class="memitem:a123585937cc70b6d4e77c024e138019f inherit pro_static_methods_class_command_handler" id="r_a123585937cc70b6d4e77c024e138019f"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; uint16_t &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_handler.html#a123585937cc70b6d4e77c024e138019f">getCommandHandlerIds</a> ()</td></tr>
 <tr class="separator:a123585937cc70b6d4e77c024e138019f inherit pro_static_methods_class_command_handler"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -435,7 +446,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_command_handler.html#a8d2531d579c03d6672495ccb57f5ffb3">CommandHandler</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_serial_f_f_b_8cpp_source.html#l00124">124</a> of file <a class="el" href="_serial_f_f_b_8cpp_source.html">SerialFFB.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_serial_f_f_b_8cpp_source.html#l00128">128</a> of file <a class="el" href="_serial_f_f_b_8cpp_source.html">SerialFFB.cpp</a>.</p>
 
 </div>
 </div>
@@ -657,6 +668,35 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a id="a5c0072bdbaeccef1a12836f12b6126bb" name="a5c0072bdbaeccef1a12836f12b6126bb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c0072bdbaeccef1a12836f12b6126bb">&#9670;&#160;</a></span>updateSamplerate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SerialFFB::updateSamplerate </td>
+          <td>(</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>newSamplerate</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="class_effects_control_itf.html#a7154cc2df571a71d04281495d9715732">EffectsControlItf</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="_serial_f_f_b_8cpp_source.html#l00124">124</a> of file <a class="el" href="_serial_f_f_b_8cpp_source.html">SerialFFB.cpp</a>.</p>
+
+</div>
+</div>
 <h2 class="groupheader">Member Data Documentation</h2>
 <a id="ab4d6859073d288f061353e92cba0b25f" name="ab4d6859073d288f061353e92cba0b25f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab4d6859073d288f061353e92cba0b25f">&#9670;&#160;</a></span>defaultCond</h2>
@@ -686,7 +726,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line">            .deadBand = 0</div>
 <div class="line">    }</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="_serial_f_f_b_8h_source.html#l00046">46</a> of file <a class="el" href="_serial_f_f_b_8h_source.html">SerialFFB.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_serial_f_f_b_8h_source.html#l00047">47</a> of file <a class="el" href="_serial_f_f_b_8h_source.html">SerialFFB.h</a>.</p>
 
 </div>
 </div>
@@ -710,7 +750,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_serial_f_f_b_8h_source.html#l00044">44</a> of file <a class="el" href="_serial_f_f_b_8h_source.html">SerialFFB.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_serial_f_f_b_8h_source.html#l00045">45</a> of file <a class="el" href="_serial_f_f_b_8h_source.html">SerialFFB.h</a>.</p>
 
 </div>
 </div>
@@ -734,7 +774,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_serial_f_f_b_8h_source.html#l00043">43</a> of file <a class="el" href="_serial_f_f_b_8h_source.html">SerialFFB.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_serial_f_f_b_8h_source.html#l00044">44</a> of file <a class="el" href="_serial_f_f_b_8h_source.html">SerialFFB.h</a>.</p>
 
 </div>
 </div>

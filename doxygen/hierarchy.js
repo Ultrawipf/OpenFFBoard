@@ -251,6 +251,8 @@ var hierarchy =
     [ "FastMovingAverage< T >", "class_fast_moving_average.html", null ],
     [ "FFB_Effect", "struct_f_f_b___effect.html", null ],
     [ "FFB_Effect_Condition", "struct_f_f_b___effect___condition.html", null ],
+    [ "FFBHIDMain::FFB_update_rates::FFB_update_rate_divider", "struct_f_f_b_h_i_d_main_1_1_f_f_b__update__rates_1_1_f_f_b__update__rate__divider.html", null ],
+    [ "FFBHIDMain::FFB_update_rates", "struct_f_f_b_h_i_d_main_1_1_f_f_b__update__rates.html", null ],
     [ "free_block_t", "structfree__block__t.html", null ],
     [ "fsdev_btable_t", "unionfsdev__btable__t.html", null ],
     [ "fsdev_pma_buf_t", "structfsdev__pma__buf__t.html", null ],
@@ -267,6 +269,9 @@ var hierarchy =
     [ "hcd_endpoint_t", "structhcd__endpoint__t.html", null ],
     [ "hcd_event_t", "structhcd__event__t.html", null ],
     [ "hcd_xfer_t", "structhcd__xfer__t.html", null ],
+    [ "HID_GamepadReport_base", "class_h_i_d___gamepad_report__base.html", [
+      [ "HID_GamepadReport< dtypeaxis >", "class_h_i_d___gamepad_report.html", null ]
+    ] ],
     [ "hidd_interface_t", "structhidd__interface__t.html", null ],
     [ "hidh_interface_t", "structhidh__interface__t.html", null ],
     [ "HS_PHYC_GlobalTypeDef", "struct_h_s___p_h_y_c___global_type_def.html", null ],
@@ -394,7 +399,9 @@ var hierarchy =
     ] ],
     [ "StatusFlags", "union_status_flags.html", null ],
     [ "StatusFlags::StatusFlags_s", "struct_status_flags_1_1_status_flags__s.html", null ],
+    [ "TMC4671HardwareTypeConf::SupportedModes_s", "struct_t_m_c4671_hardware_type_conf_1_1_supported_modes__s.html", null ],
     [ "cpp_freertos::Tasklet", "classcpp__freertos_1_1_tasklet.html", null ],
+    [ "TMC4671HardwareTypeConf::ThermistorSettings", "struct_t_m_c4671_hardware_type_conf_1_1_thermistor_settings.html", null ],
     [ "cpp_freertos::Thread", "classcpp__freertos_1_1_thread.html", [
       [ "ADS111X_AnalogSource", "class_a_d_s111_x___analog_source.html", null ],
       [ "CANInputMain", "class_c_a_n_input_main.html", null ],
@@ -421,6 +428,7 @@ var hierarchy =
     [ "cpp_freertos::Timer", "classcpp__freertos_1_1_timer.html", null ],
     [ "TimerHandler", "class_timer_handler.html", [
       [ "EncoderLocal", "class_encoder_local.html", null ],
+      [ "FFBHIDMain", "class_f_f_b_h_i_d_main.html", null ],
       [ "MidiMain", "class_midi_main.html", null ],
       [ "TMC4671", "class_t_m_c4671.html", null ]
     ] ],

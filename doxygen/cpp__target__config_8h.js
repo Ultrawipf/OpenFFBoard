@@ -7,6 +7,7 @@ var cpp__target__config_8h =
     [ "external_uart", "cpp__target__config_8h.html#a85b202aba491472645391eddc2a15d42", null ],
     [ "gpMotor", "cpp__target__config_8h.html#ac489e2c42975d3a05486db06e9cb7e2e", null ],
     [ "i2cport", "cpp__target__config_8h.html#a4986d434e5f0ed8e5eff4a72c70f4804", null ],
+    [ "i2cport_int", "cpp__target__config_8h.html#af61cf40d4023eee4d16bcacc33d8c60e", null ],
     [ "motor_spi", "cpp__target__config_8h.html#ae65e27c16ce21de250f16e866e58dc09", null ],
     [ "motor_uart", "cpp__target__config_8h.html#ad86bd52d9a16db5303a59ac4b8a31985", null ],
     [ "pwmTimerConfig", "cpp__target__config_8h.html#a1837acde2c31efc0800df1764660172c", null ]

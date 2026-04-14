@@ -9,6 +9,7 @@ var class_axes_manager =
     [ "resetPosZero", "class_axes_manager.html#a85deee4d6fc31189f60729b3fcaff971", null ],
     [ "setAxisCount", "class_axes_manager.html#a4ffcf69cd10bb9b52b7b2e8f5c82714f", null ],
     [ "update", "class_axes_manager.html#ad9b154e66a586a76b996ee52d101ffaa", null ],
+    [ "updateSamplerate", "class_axes_manager.html#ab6d6463537a3769eec549d8731b7f95d", null ],
     [ "updateTorque", "class_axes_manager.html#a07d5c429881bd1129d91a1027f1bc315", null ],
     [ "usbResume", "class_axes_manager.html#a01bdad06bd629fafc7cf2141b3a10e95", null ],
     [ "usbSuspend", "class_axes_manager.html#a5e7e609d4b4fc5a2a5da107c393b57fc", null ],
@@ -17,7 +18,5 @@ var class_axes_manager =
     [ "axis_count", "class_axes_manager.html#a86f9e09050bcca91a88a41fe67791a20", null ],
     [ "axisValues", "class_axes_manager.html#a5c34d70cfb0875f991d2e4077ad7aa5f", null ],
     [ "control", "class_axes_manager.html#a62188d3b1e6eaa67b56b4dd3f1924a0c", null ],
-    [ "effects_calc", "class_axes_manager.html#a2c65fc516ea5efc2eacb3cc44197fb6e", null ],
-    [ "p_emergency", "class_axes_manager.html#a5131e878dd8a49afed6f184ef4a330a2", null ],
-    [ "p_usb_disabled", "class_axes_manager.html#aebbbe7aed6d7b689685bd656702a4b42", null ]
+    [ "effects_calc", "class_axes_manager.html#a2c65fc516ea5efc2eacb3cc44197fb6e", null ]
 ];

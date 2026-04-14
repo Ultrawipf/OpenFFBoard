@@ -19,5 +19,6 @@ var searchData=
   ['statusflags_16',['StatusFlags',['../union_status_flags.html',1,'']]],
   ['statusflags_5fs_17',['StatusFlags_s',['../struct_status_flags_1_1_status_flags__s.html',1,'StatusFlags']]],
   ['stringcommandinterface_18',['StringCommandInterface',['../class_string_command_interface.html',1,'']]],
-  ['systemcommands_19',['SystemCommands',['../class_system_commands.html',1,'']]]
+  ['supportedmodes_5fs_19',['SupportedModes_s',['../struct_t_m_c4671_hardware_type_conf_1_1_supported_modes__s.html',1,'TMC4671HardwareTypeConf']]],
+  ['systemcommands_20',['SystemCommands',['../class_system_commands.html',1,'']]]
 ];

@@ -6,7 +6,6 @@ var struct_t_m_c4671_main_config =
     [ "adc_I1_scale", "struct_t_m_c4671_main_config.html#aa792e46b7a759a8fa1ff9762f73e49b3", null ],
     [ "bbmH", "struct_t_m_c4671_main_config.html#a2aa34ba1c07809d93f390f2bf2bab957", null ],
     [ "bbmL", "struct_t_m_c4671_main_config.html#a62059ee4315cf85d3dbceef6b4ee9cbb", null ],
-    [ "canChangeHwType", "struct_t_m_c4671_main_config.html#a011f435c88e8b235f96b4d2559f8d065", null ],
     [ "combineEncoder", "struct_t_m_c4671_main_config.html#a9e4776d8b0581e130c4a1153b2125faf", null ],
     [ "enableFluxDissipation", "struct_t_m_c4671_main_config.html#ab36c021f6e1ada5483cfa04f5d636e3b", null ],
     [ "encoderReversed", "struct_t_m_c4671_main_config.html#ad5b89e3cd5bf8d2b62dba825acf0cad0", null ],

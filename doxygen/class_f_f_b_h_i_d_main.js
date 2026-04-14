@@ -1,5 +1,6 @@
 var class_f_f_b_h_i_d_main =
 [
+    [ "FFB_update_rates", "struct_f_f_b_h_i_d_main_1_1_f_f_b__update__rates.html", "struct_f_f_b_h_i_d_main_1_1_f_f_b__update__rates" ],
     [ "FFBWheel_commands", "class_f_f_b_h_i_d_main.html#a632f99d11cc2d6623e7341d704d641ad", [
       [ "ffbactive", "class_f_f_b_h_i_d_main.html#a632f99d11cc2d6623e7341d704d641ada849a1e676206d4b8a6f4d45c9e6b7818", null ],
       [ "axes", "class_f_f_b_h_i_d_main.html#a632f99d11cc2d6623e7341d704d641ada42b47eed53099988e3cb7be539eb92e0", null ],
@@ -14,12 +15,13 @@ var class_f_f_b_h_i_d_main =
       [ "estop", "class_f_f_b_h_i_d_main.html#a632f99d11cc2d6623e7341d704d641adaf63923b9ae1d431929e82c8d9d77900d", null ],
       [ "cfrate", "class_f_f_b_h_i_d_main.html#a632f99d11cc2d6623e7341d704d641adaa9986b4f7deaf212691871359a4873bd", null ]
     ] ],
-    [ "FFBHIDMain", "class_f_f_b_h_i_d_main.html#a9bfbfd9b46787bf1a43d96df154a4c53", null ],
+    [ "FFBHIDMain", "class_f_f_b_h_i_d_main.html#a9a2bbc16d320bfc4e130a8caa9a588ac", null ],
     [ "~FFBHIDMain", "class_f_f_b_h_i_d_main.html#a9f4b27c7527cce4a523d83b7dd59ae68", null ],
     [ "command", "class_f_f_b_h_i_d_main.html#a468649202f64eb3d79d6449835ef5804", null ],
     [ "emergencyStop", "class_f_f_b_h_i_d_main.html#ae5aa1309bde9df143c3524bce4634807", null ],
     [ "errorCallback", "class_f_f_b_h_i_d_main.html#ae04a969ad65a045d978135d058a17235", null ],
     [ "exti", "class_f_f_b_h_i_d_main.html#a333dbe1e937effcd4ff7e373f44d8108", null ],
+    [ "getCurFFBFreq", "class_f_f_b_h_i_d_main.html#ae58762bc5bfbaf235fbddda793298a48", null ],
     [ "getFfbActive", "class_f_f_b_h_i_d_main.html#a95aa0ace532581839c41936dea556823", null ],
     [ "getHelpstring", "class_f_f_b_h_i_d_main.html#a76305da3f18a5c6972921c9f7c880e99", null ],
     [ "getInfo", "class_f_f_b_h_i_d_main.html#adb3512c65b9285454d8784b5e3aca82a", null ],
@@ -33,6 +35,7 @@ var class_f_f_b_h_i_d_main =
     [ "setFFBEffectsCalc", "class_f_f_b_h_i_d_main.html#a812cfca603a079393c331d7177b5062d", null ],
     [ "setReportRate", "class_f_f_b_h_i_d_main.html#a0524abcf2977295fab7f7d4376db5c29", null ],
     [ "systick", "class_f_f_b_h_i_d_main.html#a48f014f85fc724f756431627a8d23a5a", null ],
+    [ "timerElapsed", "class_f_f_b_h_i_d_main.html#a8ab9c0de548457dc93c1ea375abb6934", null ],
     [ "updateControl", "class_f_f_b_h_i_d_main.html#acd1f6f2ffb44f7d938f3d61c9ba9146d", null ],
     [ "usb_report_rates_names", "class_f_f_b_h_i_d_main.html#a2fd3b67c9e7d6de6ed4d10c4e2b5b687", null ],
     [ "usbInit", "class_f_f_b_h_i_d_main.html#af1113099c527732f29c34800af27da29", null ],
@@ -48,14 +51,16 @@ var class_f_f_b_h_i_d_main =
     [ "effects_calc", "class_f_f_b_h_i_d_main.html#abc2387e35a52e0525c478ba3889e254b", null ],
     [ "estopError", "class_f_f_b_h_i_d_main.html#a4b759d54e1c2c4e1b70cd09a12694678", null ],
     [ "ffb", "class_f_f_b_h_i_d_main.html#a015377c7ec93573e6dff76da4d278ba0", null ],
+    [ "ffb_rate_counter", "class_f_f_b_h_i_d_main.html#a039d7eadb540b718d3050b746629084a", null ],
+    [ "ffb_rate_divider", "class_f_f_b_h_i_d_main.html#a40d2a8a9d5e83f4418d8f5d09f1fb7d2", null ],
+    [ "ffbrates", "class_f_f_b_h_i_d_main.html#a67411ec457af7e7e87fc450d70521a9b", null ],
+    [ "hidAxis32b", "class_f_f_b_h_i_d_main.html#a4c4af06b27983df091742e6e92a445f6", null ],
     [ "hidCommands", "class_f_f_b_h_i_d_main.html#ae98362955d482ea648b63e1e2e1d584d", null ],
     [ "lastEstop", "class_f_f_b_h_i_d_main.html#a73624c363c9fb99879b04dbb7ccf5393", null ],
-    [ "lastReportHID", "class_f_f_b_h_i_d_main.html#a56cf7db48c8fca3c06c7cd14c7a82c0a", null ],
     [ "lastUsbReportTick", "class_f_f_b_h_i_d_main.html#aead7f6f147e200da0a16230b7e4971fc", null ],
     [ "report_rate_cnt", "class_f_f_b_h_i_d_main.html#abc67f84e801a7189aad6acd7a4fa418b", null ],
-    [ "reportHID", "class_f_f_b_h_i_d_main.html#a9bf4918f555396c595924fb75890eec4", null ],
+    [ "reportHID", "class_f_f_b_h_i_d_main.html#aca297d0310525e09be59f2e2ce5e2f49", null ],
     [ "reportSendCounter", "class_f_f_b_h_i_d_main.html#af23c0409733d23807ef2831db89349f6", null ],
     [ "usb_report_rate", "class_f_f_b_h_i_d_main.html#a49db94928a0ca96f4a14d706dc327e68", null ],
-    [ "usb_report_rate_idx", "class_f_f_b_h_i_d_main.html#a74222973945db78067cdc834f188e4a6", null ],
-    [ "usb_report_rates", "class_f_f_b_h_i_d_main.html#ae7da24104d70c4c57eb122f371de338c", null ]
+    [ "usb_report_rate_idx", "class_f_f_b_h_i_d_main.html#a74222973945db78067cdc834f188e4a6", null ]
 ];

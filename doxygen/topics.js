@@ -6,6 +6,7 @@ var topics =
     [ "Human Interface Device (HID)", "group___class_driver___h_i_d.html", "group___class_driver___h_i_d" ],
     [ "Compiler", "group___group___compiler.html", null ],
     [ "Hub (Host only)", "group___class_driver___hub.html", "group___class_driver___hub" ],
+    [ "Descriptors", "group___h_i_d.html", "group___h_i_d" ],
     [ "EEPROM_Emulation", "group___e_e_p_r_o_m___emulation.html", "group___e_e_p_r_o_m___emulation" ],
     [ "Gamepad", "group___class_driver___h_i_d___gamepad.html", "group___class_driver___h_i_d___gamepad" ],
     [ "Mouse", "group___class_driver___h_i_d___mouse.html", "group___class_driver___h_i_d___mouse" ],

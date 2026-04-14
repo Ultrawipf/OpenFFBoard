@@ -2,6 +2,8 @@ var _t_m_c4671_8h =
 [
     [ "TMC4671MotConf", "struct_t_m_c4671_mot_conf.html", "struct_t_m_c4671_mot_conf" ],
     [ "TMC4671HardwareTypeConf", "struct_t_m_c4671_hardware_type_conf.html", "struct_t_m_c4671_hardware_type_conf" ],
+    [ "TMC4671HardwareTypeConf::ThermistorSettings", "struct_t_m_c4671_hardware_type_conf_1_1_thermistor_settings.html", "struct_t_m_c4671_hardware_type_conf_1_1_thermistor_settings" ],
+    [ "TMC4671HardwareTypeConf::SupportedModes_s", "struct_t_m_c4671_hardware_type_conf_1_1_supported_modes__s.html", "struct_t_m_c4671_hardware_type_conf_1_1_supported_modes__s" ],
     [ "StatusFlags", "union_status_flags.html", "union_status_flags" ],
     [ "StatusFlags::StatusFlags_s", "struct_status_flags_1_1_status_flags__s.html", "struct_status_flags_1_1_status_flags__s" ],
     [ "TMC4671MainConfig", "struct_t_m_c4671_main_config.html", "struct_t_m_c4671_main_config" ],
@@ -49,8 +51,7 @@ var _t_m_c4671_8h =
       [ "NONE", "_t_m_c4671_8h.html#a582234b0c15ab7ba48e3ddd16e7a41d2ab50339a10e1de285ac99d4c3990b8693", null ],
       [ "DC", "_t_m_c4671_8h.html#a582234b0c15ab7ba48e3ddd16e7a41d2acf75e54791dd1f49f918345fdfe2430b", null ],
       [ "STEPPER", "_t_m_c4671_8h.html#a582234b0c15ab7ba48e3ddd16e7a41d2a12135d9b0d6cf0300c25c0e544a466cc", null ],
-      [ "BLDC", "_t_m_c4671_8h.html#a582234b0c15ab7ba48e3ddd16e7a41d2a6bfc66b02fa7655fdac422fadf0560e1", null ],
-      [ "ERR", "_t_m_c4671_8h.html#a582234b0c15ab7ba48e3ddd16e7a41d2acd22bad976363fdd1bfbf6759fede482", null ]
+      [ "BLDC", "_t_m_c4671_8h.html#a582234b0c15ab7ba48e3ddd16e7a41d2a6bfc66b02fa7655fdac422fadf0560e1", null ]
     ] ],
     [ "PhiE", "_t_m_c4671_8h.html#addb917dd45972d75a9b40bab2ce78492", [
       [ "ext", "_t_m_c4671_8h.html#addb917dd45972d75a9b40bab2ce78492aabf77184f55403d75b9d51d79162a7ca", null ],
@@ -146,6 +147,5 @@ var _t_m_c4671_8h =
       [ "PhiM_hal", "_t_m_c4671_8h.html#a864ad6319d56116bc88bb51ae28cd2b2a64a253130010448551e8eb7520f4a18f", null ]
     ] ],
     [ "HSPIDRV", "_t_m_c4671_8h.html#a49b76b3df998b61ed9347ac903b9ecf8", null ],
-    [ "TIM_TMC", "_t_m_c4671_8h.html#ac8a5bdef22bd816f2a4d22b60fe61432", null ],
-    [ "tmcHwVersionNames", "_t_m_c4671_8h.html#acecaf14b1bbf948db2c59ade57598a68", null ]
+    [ "TIM_TMC", "_t_m_c4671_8h.html#ac8a5bdef22bd816f2a4d22b60fe61432", null ]
 ];

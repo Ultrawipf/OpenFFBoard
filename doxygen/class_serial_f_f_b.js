@@ -26,6 +26,7 @@ var class_serial_f_f_b =
     [ "set_gain", "class_serial_f_f_b.html#a96af9c32bd29321455ad1e88eb37e90c", null ],
     [ "setEffectState", "class_serial_f_f_b.html#a91123c1f1d3ba01f1d0f9b852141e1a0", null ],
     [ "setMagnitude", "class_serial_f_f_b.html#a09ab80b7d2b7362941f033ca550c173f", null ],
+    [ "updateSamplerate", "class_serial_f_f_b.html#a5c0072bdbaeccef1a12836f12b6126bb", null ],
     [ "defaultCond", "class_serial_f_f_b.html#ab4d6859073d288f061353e92cba0b25f", null ],
     [ "effects", "class_serial_f_f_b.html#a3f77d136e444a813770478cfddfb072f", null ],
     [ "effects_calc", "class_serial_f_f_b.html#af385315c2343480edeb555a0969cb256", null ],

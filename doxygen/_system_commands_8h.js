@@ -26,6 +26,7 @@ var _system_commands_8h =
       [ "uid", "_system_commands_8h.html#a4a42a50bc0a826d5ab6d847950749d07a9871d3a2c554b27151cacf1422eec048", null ],
       [ "temp", "_system_commands_8h.html#a4a42a50bc0a826d5ab6d847950749d07a3d801aa532c1cec3ee82d87a99fdf63f", null ],
       [ "otp", "_system_commands_8h.html#a4a42a50bc0a826d5ab6d847950749d07ad2270e7120a93c8b0a6a34760e654c7d", null ],
-      [ "signature", "_system_commands_8h.html#a4a42a50bc0a826d5ab6d847950749d07aac201fd270c3b96beab24f2829780ab2", null ]
+      [ "signature", "_system_commands_8h.html#a4a42a50bc0a826d5ab6d847950749d07aac201fd270c3b96beab24f2829780ab2", null ],
+      [ "tasklist", "_system_commands_8h.html#a4a42a50bc0a826d5ab6d847950749d07a6e0ad8e44cff1b5d2901e1c7d166a2a4", null ]
     ] ]
 ];

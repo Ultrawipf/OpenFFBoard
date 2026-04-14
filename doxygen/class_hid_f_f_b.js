@@ -24,6 +24,7 @@ var class_hid_f_f_b =
     [ "setDirectionEnableMask", "class_hid_f_f_b.html#a4046770f7257df9086d7341875f640d8", null ],
     [ "start_FFB", "class_hid_f_f_b.html#a208283b8a09e8cb67461f47c491b8ad5", null ],
     [ "stop_FFB", "class_hid_f_f_b.html#ae9eac7111c117c02442c8381e908d57d", null ],
+    [ "updateSamplerate", "class_hid_f_f_b.html#a34a41c9029c36cf7f7cf035257712c69", null ],
     [ "axisCount", "class_hid_f_f_b.html#aeea1a38399a4d9c1b7255c2c056551c4", null ],
     [ "blockLoad_report", "class_hid_f_f_b.html#a39c09c6462c03d8e2665ffd3c7345acd", null ],
     [ "directionEnableMask", "class_hid_f_f_b.html#a7c6d421d8642381070260d8e8a03320d", null ],

@@ -8,6 +8,7 @@ var cppmain_8cpp =
     [ "micros", "cppmain_8cpp.html#a2b97cb2cd2661deade2d301d38c4ebe8", null ],
     [ "refreshWatchdog", "cppmain_8cpp.html#a50f798129589248b20010681d780ed50", null ],
     [ "clkmhz", "cppmain_8cpp.html#a2b654f11fddc1285ec8a0dbb9891fd9c", null ],
+    [ "forceErase", "cppmain_8cpp.html#a46184eb4249ed3af3eea6303ef2dc972", null ],
     [ "hiwdg", "cppmain_8cpp.html#a80f055e38f52ca3c57e183fc685ea477", null ],
     [ "main_id", "cppmain_8cpp.html#a46809d157ef4736d4bd4563ec8728502", null ],
     [ "mainchooser", "cppmain_8cpp.html#a7275ba4c1fa015ab33bd262d377744b9", null ],

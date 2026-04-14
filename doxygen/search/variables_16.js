@@ -9,7 +9,7 @@ var searchData=
   ['waitingreply_6',['waitingReply',['../class_motor_simplemotion.html#a2b0a56e45d12de7f5b1ec26ce571304d',1,'MotorSimplemotion']]],
   ['waitlist_7',['WaitList',['../classcpp__freertos_1_1_condition_variable.html#a6f1f045948cbf5a9c807a142666bcc95',1,'cpp_freertos::ConditionVariable']]],
   ['waitready_8',['waitReady',['../class_o_drive_c_a_n.html#abe3a9835011833c6535f5dca16a89973',1,'ODriveCAN']]],
-  ['waitthresh_9',['waitThresh',['../class_encoder_biss_c.html#a7a5c076b8d78a6ca9d119c070121548b',1,'EncoderBissC']]],
+  ['waitthresh_9',['waitThresh',['../class_encoder_biss_c.html#a7a5c076b8d78a6ca9d119c070121548b',1,'EncoderBissC::waitThresh'],['../class_mt_encoder_s_p_i.html#a1a53325506c8c23ed29ff7b05ba90803',1,'MtEncoderSPI::waitThresh']]],
   ['wake_5fon_5fconnect_5fenable_10',['wake_on_connect_enable',['../structehci__registers__t.html#aa787dea729c5322636ae02efb81be522',1,'ehci_registers_t']]],
   ['wake_5fon_5fdisconnect_5fenable_11',['wake_on_disconnect_enable',['../structehci__registers__t.html#a3df9403a420b5bf10aa3105d27108a05',1,'ehci_registers_t']]],
   ['wake_5fon_5fover_5fcurrent_5fenable_12',['wake_on_over_current_enable',['../structehci__registers__t.html#ad829d38b0174465abd642c244eefca5a',1,'ehci_registers_t']]],

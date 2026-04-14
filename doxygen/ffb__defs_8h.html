@@ -109,6 +109,10 @@ $(function(){initNavTree('ffb__defs_8h.html',''); initResizable(true); });
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_i_d___gamepad_report__base.html">HID_GamepadReport_base</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_i_d___gamepad_report.html">HID_GamepadReport&lt; dtypeaxis &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct____attribute____.html">__attribute__</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_f_f_b___effect___condition.html">FFB_Effect_Condition</a></td></tr>
@@ -118,17 +122,18 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ae4b2a0318e7cf7379b95b2bf7e443d36" id="r_ae4b2a0318e7cf7379b95b2bf7e443d36"><td class="memItemLeft" align="right" valign="top">struct&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae4b2a0318e7cf7379b95b2bf7e443d36">__attribute__</a> ((__packed__)) reportHID_t</td></tr>
-<tr class="separator:ae4b2a0318e7cf7379b95b2bf7e443d36"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac2597a2502aef7f87a4cea64600a311c" id="r_ac2597a2502aef7f87a4cea64600a311c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac2597a2502aef7f87a4cea64600a311c">setHidReportAxis</a> (reportHID_t *report, uint8_t idx, int16_t val)</td></tr>
-<tr class="separator:ac2597a2502aef7f87a4cea64600a311c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae8cfa38d68ade582641c16a61be62877" id="r_ae8cfa38d68ade582641c16a61be62877"><td class="memTemplParams" colspan="2">template&lt;class dtypeaxis&gt; </td></tr>
+<tr class="memitem:ae8cfa38d68ade582641c16a61be62877"><td class="memTemplItemLeft" align="right" valign="top">struct&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ae8cfa38d68ade582641c16a61be62877">__attribute__</a> ((__packed__)) reportHID_t</td></tr>
+<tr class="separator:ae8cfa38d68ade582641c16a61be62877"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="ae4b2a0318e7cf7379b95b2bf7e443d36" name="ae4b2a0318e7cf7379b95b2bf7e443d36"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae4b2a0318e7cf7379b95b2bf7e443d36">&#9670;&#160;</a></span>__attribute__()</h2>
+<a id="ae8cfa38d68ade582641c16a61be62877" name="ae8cfa38d68ade582641c16a61be62877"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae8cfa38d68ade582641c16a61be62877">&#9670;&#160;</a></span>__attribute__()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;class dtypeaxis&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">struct __attribute__ </td>
@@ -140,42 +145,6 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="ffb__defs_8h_source.html#l00001">1</a> of file <a class="el" href="ffb__defs_8h_source.html">ffb_defs.h</a>.</p>
-
-</div>
-</div>
-<a id="ac2597a2502aef7f87a4cea64600a311c" name="ac2597a2502aef7f87a4cea64600a311c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac2597a2502aef7f87a4cea64600a311c">&#9670;&#160;</a></span>setHidReportAxis()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void setHidReportAxis </td>
-          <td>(</td>
-          <td class="paramtype">reportHID_t *</td>          <td class="paramname"><span class="paramname"><em>report</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>idx</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int16_t</td>          <td class="paramname"><span class="paramname"><em>val</em></span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="ffb__defs_8h_source.html#l00118">118</a> of file <a class="el" href="ffb__defs_8h_source.html">ffb_defs.h</a>.</p>
 
 </div>
 </div>

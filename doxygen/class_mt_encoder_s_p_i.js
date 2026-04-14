@@ -43,6 +43,7 @@ var class_mt_encoder_s_p_i =
     [ "info", "class_mt_encoder_s_p_i.html#ae74a8cd925c2426d332a536f6ff11039", null ],
     [ "inUse", "class_mt_encoder_s_p_i.html#a4108e5f3c452821897dc31b714eb95ba", null ],
     [ "lastAngleInt", "class_mt_encoder_s_p_i.html#aa11a7cd7f6b1792f0dbd11472ce21a12", null ],
+    [ "lastUpdateTick", "class_mt_encoder_s_p_i.html#a15ee713fd3926f4a5c2b5737bc3f25b1", null ],
     [ "mode", "class_mt_encoder_s_p_i.html#a12f74a6c7cc8fd72b7c84111cb05892e", null ],
     [ "nomag", "class_mt_encoder_s_p_i.html#a9ec78fb169727dbead97c532b60d5518", null ],
     [ "offset", "class_mt_encoder_s_p_i.html#abed9baeee41e342e8f4bd8c2102be00d", null ],
@@ -57,5 +58,6 @@ var class_mt_encoder_s_p_i =
     [ "tableCRC", "class_mt_encoder_s_p_i.html#af9417551aa867d73d10cfdc6b13ad124", null ],
     [ "txbuf", "class_mt_encoder_s_p_i.html#ae75960701e4f0b68ce0d5954a818fc65", null ],
     [ "updateInProgress", "class_mt_encoder_s_p_i.html#a200f6fec5384001c0b2912955274d100", null ],
-    [ "waitForUpdateSem", "class_mt_encoder_s_p_i.html#a434788641cf0ecae1fdf61b029cdc5f8", null ]
+    [ "waitForUpdateSem", "class_mt_encoder_s_p_i.html#a434788641cf0ecae1fdf61b029cdc5f8", null ],
+    [ "waitThresh", "class_mt_encoder_s_p_i.html#a1a53325506c8c23ed29ff7b05ba90803", null ]
 ];

@@ -195,6 +195,8 @@ var annotated_dup =
     [ "hcd_event_t", "structhcd__event__t.html", "structhcd__event__t" ],
     [ "hcd_xfer_t", "structhcd__xfer__t.html", "structhcd__xfer__t" ],
     [ "HID_CommandInterface", "class_h_i_d___command_interface.html", "class_h_i_d___command_interface" ],
+    [ "HID_GamepadReport", "class_h_i_d___gamepad_report.html", "class_h_i_d___gamepad_report" ],
+    [ "HID_GamepadReport_base", "class_h_i_d___gamepad_report__base.html", "class_h_i_d___gamepad_report__base" ],
     [ "hidd_interface_t", "structhidd__interface__t.html", "structhidd__interface__t" ],
     [ "HidFFB", "class_hid_f_f_b.html", "class_hid_f_f_b" ],
     [ "hidh_interface_t", "structhidh__interface__t.html", "structhidh__interface__t" ],

@@ -27,5 +27,7 @@ var searchData=
   ['otp_5fread_24',['OTP_Read',['../flash__helpers_8h.html#a6cf6d7a5ce3db70ee9cc4ba3aa388af5',1,'OTP_Read(uint16_t adroffset, uint64_t *dat):&#160;flash_helpers.cpp'],['../flash__helpers_8cpp.html#a6cf6d7a5ce3db70ee9cc4ba3aa388af5',1,'OTP_Read(uint16_t adroffset, uint64_t *dat):&#160;flash_helpers.cpp']]],
   ['otp_5fwrite_25',['OTP_Write',['../flash__helpers_8h.html#aed8fdbc24b53be3a4ac3f7b664bc4f2e',1,'OTP_Write(uint16_t adroffset, uint64_t dat):&#160;flash_helpers.cpp'],['../flash__helpers_8cpp.html#aed8fdbc24b53be3a4ac3f7b664bc4f2e',1,'OTP_Write(uint16_t adroffset, uint64_t dat):&#160;flash_helpers.cpp']]],
   ['outputpin_26',['OutputPin',['../class_output_pin.html#a7d18d38ee55bfaab59d1e7863a5d0d7e',1,'OutputPin']]],
-  ['overflowcallback_27',['overflowCallback',['../class_encoder_local.html#aaabd6d7ad395d54de1e8790214e89e83',1,'EncoderLocal']]]
+  ['overflowcallback_27',['overflowCallback',['../class_encoder_local.html#aaabd6d7ad395d54de1e8790214e89e83',1,'EncoderLocal']]],
+  ['overridecommandflags_28',['overrideCommandFlags',['../class_command_handler.html#a9c992dc58e0186a7edbb6a78fa5f4cd9',1,'CommandHandler']]],
+  ['overridecommandflags_5fint_29',['overrideCommandFlags_INT',['../class_command_handler.html#aaf5336373748a51843bbc57404718c44',1,'CommandHandler']]]
 ];

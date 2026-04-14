@@ -120,6 +120,7 @@ var class_t_m_c4671 =
     [ "readFlags", "class_t_m_c4671.html#ad5697bdafc3ae2e1d4a0dccbf7ed51e6", null ],
     [ "readReg", "class_t_m_c4671.html#af11f8cba5111e5f4d502adab3698d467", null ],
     [ "registerCommands", "class_t_m_c4671.html#ac4b1ca58781c31f1e6ea94708e6d0317", null ],
+    [ "replyHardwareVersions", "class_t_m_c4671.html#a4e64260e7c079f35e2c52041f376796d", null ],
     [ "restoreEncHallMisc", "class_t_m_c4671.html#a71ecd1ec04f36bb49a5fa5ec0ee0d63b", null ],
     [ "restoreFlash", "class_t_m_c4671.html#ac81b6254ae21facd0f505dfe2103fa12", null ],
     [ "Run", "class_t_m_c4671.html#ad4f53e7722f511fbeeb18ef58d6edb88", null ],
@@ -146,7 +147,7 @@ var class_t_m_c4671 =
     [ "setFluxTorqueFF", "class_t_m_c4671.html#a6df9ff74d7a1730e54781f9cb515332f", null ],
     [ "setGpioMode", "class_t_m_c4671.html#aa54ddec2620f250c0a651c01bc2d67cb", null ],
     [ "setGpioPins", "class_t_m_c4671.html#a8e00d9a6f338dd64d8ad4da4bbde179a", null ],
-    [ "setHwType", "class_t_m_c4671.html#ab1488d5afbfc9de2b86790df82ff14be", null ],
+    [ "setHwType", "class_t_m_c4671.html#ae129defa945ab410b8e43bd9287363a2", null ],
     [ "setLimits", "class_t_m_c4671.html#a1d69dea3ed950d5fb421f4b824d42217", null ],
     [ "setMotionMode", "class_t_m_c4671.html#a93ac5b9254764ebc689d2bf8351583f2", null ],
     [ "setMotorType", "class_t_m_c4671.html#a99212a9eeb31fab29cb000bda0feca94", null ],
@@ -204,6 +205,7 @@ var class_t_m_c4671 =
     [ "allowStateChange", "class_t_m_c4671.html#ae2fcb177fe1cf9c33367a7ce9e469896", null ],
     [ "bangInitPower", "class_t_m_c4671.html#a0311d36995adab2cf7e60a1d2407caa3", null ],
     [ "calibrationFailCount", "class_t_m_c4671.html#a2a256badf76bb7767b67bf3f38bcb9b5", null ],
+    [ "canChangeHwType", "class_t_m_c4671.html#a6f26fd517970e1176eeada111ef0f8bb", null ],
     [ "communicationError", "class_t_m_c4671.html#acef72eea0e058d4548446e0da84b1301", null ],
     [ "conf", "class_t_m_c4671.html#a71f292d9a5ce7fc529ba29bd2fd22fc5", null ],
     [ "curFilters", "class_t_m_c4671.html#a5567c0219b5d670982793f7988787195", null ],
@@ -254,6 +256,7 @@ var class_t_m_c4671 =
     [ "state", "class_t_m_c4671.html#a1f5d314bdba9754a990756fdb48e4f00", null ],
     [ "statusFlags", "class_t_m_c4671.html#af6b660da50146922ae2b88c0d4e3a27a", null ],
     [ "statusMask", "class_t_m_c4671.html#a471950ecb00ccabbba69804acaf349a4", null ],
+    [ "tmc4671_hw_configs", "class_t_m_c4671.html#a320ea7cb601e3d15682c4ec91c44c847", null ],
     [ "torqueFilterConf", "class_t_m_c4671.html#ae29b39e8ef5b5f9bb6b0ddc38d89f1ae", null ],
     [ "zeroEncoderOnIndexHit", "class_t_m_c4671.html#a31e6fa64ceaaec22a58006b5635e80bf", null ]
 ];
