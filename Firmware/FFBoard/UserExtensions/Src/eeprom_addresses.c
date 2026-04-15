@@ -1,21 +1,21 @@
-/*		
- * eeprom_addresses.c		
- *		
- *  Created on: 24.01.2020		
- *  Author: Yannick		
- *		
- *	/!\ Generated from the file memory_map.csv 
-   / ! \ DO NOT EDIT THIS DIRECTLY !!!	
- */		
-		
-#include "eeprom_addresses.h"		
+/*
+ * eeprom_addresses.c
+ *
+ *  Created on: 24.01.2020
+ *  Author: Yannick
+ *
+ *	/!\ Generated from the file memory_map.csv
+   / ! \ DO NOT EDIT THIS DIRECTLY !!!
+ */
 
-/*		
-Add all used addresses to the VirtAddVarTab[] array. This is important for the eeprom emulation to correctly transfer between pages.		
-This ensures that addresses that were once used are not copied again in a page transfer if they are not in this array.		
-*/		
-		
-const uint16_t VirtAddVarTab[NB_OF_VAR] =		
+#include "eeprom_addresses.h"
+
+/*
+Add all used addresses to the VirtAddVarTab[] array. This is important for the eeprom emulation to correctly transfer between pages.
+This ensures that addresses that were once used are not copied again in a page transfer if they are not in this array.
+*/
+
+const uint16_t VirtAddVarTab[NB_OF_VAR] =
 {
 // System variables
 	ADR_HW_VERSION,
@@ -40,6 +40,8 @@ const uint16_t VirtAddVarTab[NB_OF_VAR] =
 	ADR_SPI_BTN_2_CONF,
 	ADR_SPI_BTN_1_CONF_2,
 	ADR_SPI_BTN_2_CONF_2,
+	ADR_SPI_BTN_3_CONF,
+	ADR_SPI_BTN_3_CONF_2,
 	ADR_LOCAL_BTN_CONF_3, // Pulse mask
 // Local encoder
 	ADR_ENCLOCAL_CPR,
@@ -212,10 +214,10 @@ const uint16_t VirtAddVarTab[NB_OF_VAR] =
 	ADR_ADS111X_MAX_3,
 };
 
-/**		
- * Variables to be included in a flash dump		
- */		
-const uint16_t exportableFlashAddresses[NB_EXPORTABLE_ADR] =		
+/**
+ * Variables to be included in a flash dump
+ */
+const uint16_t exportableFlashAddresses[NB_EXPORTABLE_ADR] =
 {
 // System variables
 //	ADR_HW_VERSION,
@@ -240,6 +242,8 @@ const uint16_t exportableFlashAddresses[NB_EXPORTABLE_ADR] =
 	ADR_SPI_BTN_2_CONF,
 	ADR_SPI_BTN_1_CONF_2,
 	ADR_SPI_BTN_2_CONF_2,
+	ADR_SPI_BTN_3_CONF,
+	ADR_SPI_BTN_3_CONF_2,
 	ADR_LOCAL_BTN_CONF_3, // Pulse mask
 // Local encoder
 	ADR_ENCLOCAL_CPR,

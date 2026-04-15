@@ -63,11 +63,14 @@ private:
 		G27ShifterButtonClient(OutputPin& csPin);
 
 		static constexpr int numUserButtons{12};
+		static constexpr int bytesToRead{2}; // 16 buttons = 2 bytes (same as SPI Buttons with 16 buttons)
 
 		uint16_t getUserButtons();
 		bool getReverseButton();
-	private:
-		uint16_t buttonStates{0};
+		void startRead(); // Start a new DMA read (like SPI_Buttons does)
+		void spiRxCompleted(SPIPort* port) override; // Called when DMA completes
+
+		uint8_t spi_buf[2]{0}; // Buffer for SPI read (2 bytes for 16 buttons) - DMA writes directly here
 
 	};
 

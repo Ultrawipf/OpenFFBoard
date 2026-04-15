@@ -30,6 +30,11 @@ bool SPI_Buttons_1::isCreatable(){
 	return (external_spi.hasFreePins());
 }
 
+SPI_Buttons_1::SPI_Buttons_1()
+	: SPI_Buttons{ADR_SPI_BTN_1_CONF, ADR_SPI_BTN_1_CONF_2, &external_spi, 0} {
+	restoreFlash(); // Call base class version (SPI_Buttons_1 doesn't override)
+}
+
 ClassIdentifier SPI_Buttons_2::info = {
 		 .name = "SPI Buttons 2" ,
 		 .id=CLSID_BTN_SPI,
@@ -42,14 +47,99 @@ bool SPI_Buttons_2::isCreatable(){
 	return false;//(external_spi.hasFreePins();
 }
 
+SPI_Buttons_2::SPI_Buttons_2()
+	: SPI_Buttons{ADR_SPI_BTN_2_CONF, ADR_SPI_BTN_2_CONF_2, &external_spi, 1} {
+	restoreFlash(); // Call base class version (SPI_Buttons_2 doesn't override)
+}
+
+ClassIdentifier SPI_Buttons_3::info = {
+		 .name = "SPI Buttons 3" ,
+		 .id=CLSID_BTN_SPI,
+ };
+const ClassIdentifier SPI_Buttons_3::getInfo(){
+	return info;
+}
+
+bool SPI_Buttons_3::isCreatable(){
+#ifdef EXT3_SPI_PORT
+	return (ext3_spi.hasFreePins());
+#else
+	return false;
+#endif
+}
+
+SPI_Buttons_3::SPI_Buttons_3()
+	: SPI_Buttons{ADR_SPI_BTN_3_CONF, ADR_SPI_BTN_3_CONF_2, &ext3_spi, 2} {
+	// Constructor body runs AFTER base class is fully constructed
+	// Now we can safely call our overridden restoreFlash()
+	SPI_Buttons_3::restoreFlash(); // Explicitly call our version, not virtual dispatch
+}
+
+void SPI_Buttons_3::restoreFlash(){
+	// Always apply G27 wheel rim defaults for SPI_Buttons_3 (hardcoded)
+	// Force these values every time, regardless of flash contents
+	ButtonSourceConfig config;
+	config.numButtons = 8;        // 8 buttons on wheel rim - HARDCODED
+	config.mode = SPI_BtnMode::PISOSR; // 74xx165 mode - HARDCODED
+	config.cs_num = 1;            // CS pin 1 (PA15 - SPI3_SS1) - HARDCODED
+	config.spi_speed = 2;         // Slow speed (prescaler 64) - HARDCODED
+	config.invert = false;
+	config.cutRight = false;
+
+	// Always apply hardcoded configuration
+	setConfig(config);
+
+	// Force CS to correct value after setConfig
+	this->conf.cs_num = 1;
+
+	// Explicitly ensure btnnum is set (multiple attempts for debug)
+	this->btnnum = 8;
+	ButtonSource::btnnum = 8;
+}
+
+// SPI_Buttons_3 uses synchronous read because DMA has timing issues with SPI3
+uint8_t SPI_Buttons_3::readButtons(uint64_t* buf){
+	// Copy last buffer to output
+	memcpy(buf, this->spi_buf, std::min<uint8_t>(this->bytes, 8));
+	process(buf);
+
+	// Check if SPI is available
+	if(spiPort.isTaken())
+		return this->conf.numButtons;
+
+	// Use direct HAL_SPI_Receive which works correctly for SPI3
+	SPI_HandleTypeDef* hspi = spiPort.getPortHandle();
+
+	// Get CS pin for this device (cs_num is 1-indexed, array is 0-indexed)
+	OutputPin* cs_pin = spiPort.getCsPin(this->conf.cs_num > 0 ? this->conf.cs_num - 1 : 0);
+
+	if(cs_pin != nullptr) {
+		// Pulse CS low then high to latch data into 74HC165
+		cs_pin->write(false);  // CS LOW - load parallel data
+		// Small delay for latch
+		for(volatile int i = 0; i < 10; i++) {}
+		cs_pin->write(true);   // CS HIGH - enable shift
+	}
+
+	// Read data via SPI
+	HAL_SPI_Receive(hspi, spi_buf, bytes, 10);
+
+	return this->conf.numButtons;
+}
+
 
 // TODO check if pin is free
-SPI_Buttons::SPI_Buttons(uint16_t configuration_address, uint16_t configuration_address_2)
-	: CommandHandler("spibtn",CLSID_BTN_SPI,0), SPIDevice(external_spi,external_spi.getFreeCsPins()[0]){
+SPI_Buttons::SPI_Buttons(uint16_t configuration_address, uint16_t configuration_address_2, SPIPort* spiPort, uint8_t instance)
+	: CommandHandler("spibtn",CLSID_BTN_SPI,instance), SPIDevice(*spiPort,spiPort->getFreeCsPins()[0]){
 
 	this->configuration_address = configuration_address;
 	this->configuration_address_2 = configuration_address_2;
-	restoreFlash();
+	// NOTE: restoreFlash() is NOT called here - it must be called by derived class constructors
+	// This is because calling virtual functions in base class constructor doesn't dispatch to derived class
+
+	// Initialize with default settings - will be overwritten by restoreFlash() in derived class
+	this->spiConfig.peripheral.BaudRatePrescaler = speedPresets[1]; // Medium speed default
+	this->spiConfig.peripheral.FirstBit = SPI_FIRSTBIT_LSB;
 
 	registerCommands();
 	this->setCommandsEnabled(true);
@@ -77,6 +167,8 @@ void SPI_Buttons::registerCommands(){
 	registerCommand("btnnum", SPIButtons_commands::btnnum, "Number of buttons",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("cs", SPIButtons_commands::cs, "SPI CS pin",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("spispeed", SPIButtons_commands::spispeed, "SPI speed preset",CMDFLAG_INFOSTRING | CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("debug", SPIButtons_commands::debug, "Debug raw SPI data",CMDFLAG_GET);
+	registerCommand("syncread", SPIButtons_commands::syncread, "Test synchronous read",CMDFLAG_GET);
 }
 
 /**
@@ -95,31 +187,41 @@ void SPI_Buttons::setConfig(ButtonSourceConfig config){
 	OutputPin* newPin = spiPort.getCsPin(config.cs_num-1); // TODO update internal pin number if requested pin is blocked
 	if(newPin != nullptr){
 		this->spiConfig.cs = *newPin;
-
+		spiPort.reserveCsPin(this->spiConfig.cs);
+	}else{
+		// CS pin not found - this is an error condition
+		// Try to use first free pin as fallback
+		auto& freePins = spiPort.getFreeCsPins();
+		if(!freePins.empty()){
+			this->spiConfig.cs = freePins[0];
+			spiPort.reserveCsPin(this->spiConfig.cs);
+		}
 	}
-	spiPort.reserveCsPin(this->spiConfig.cs);
 	// Setup presets
 	if(conf.mode == SPI_BtnMode::TM){
 		this->spiConfig.cspol = true;
 		this->conf.cutRight = true;
-		this->spiConfig.peripheral.FirstBit = SPI_FIRSTBIT_LSB;
-		this->spiConfig.peripheral.CLKPhase = SPI_PHASE_1EDGE;
 		this->spiConfig.peripheral.CLKPolarity = SPI_POLARITY_LOW;
+		this->spiConfig.peripheral.CLKPhase = SPI_PHASE_1EDGE;
+
 	}else if(conf.mode == SPI_BtnMode::PISOSR){
 		this->spiConfig.cspol = false;
 		this->conf.cutRight = false;
-		this->spiConfig.peripheral.FirstBit = SPI_FIRSTBIT_LSB;
 		this->spiConfig.peripheral.CLKPhase = SPI_PHASE_2EDGE;
 		this->spiConfig.peripheral.CLKPolarity = SPI_POLARITY_HIGH; // its actually shifting on the rising edge but 165 will have the first output set even before clocking. First clock cycle is actually second bit so we sample at the falling edge and skip the first bit with that.
 	}
-	this->spiConfig.peripheral.BaudRatePrescaler = speedPresets[this->conf.spi_speed];
+//	spiPort.takeSemaphore();
+//	spiPort.configurePort(&this->spiConfig.peripheral);
+//	spiPort.giveSemaphore();
 	initSPI();
 	if(config.numButtons == 64){ // Special case
 			mask = 0xffffffffffffffff;
 	}else{
 		mask = (uint64_t)pow<uint64_t>(2,config.numButtons)-(uint64_t)1; // Must be done completely in 64 bit!
 	}
-	offset = 8 - (config.numButtons % 8);
+	// Calculate offset: if numButtons is multiple of 8, offset is 0
+	// Otherwise, offset is 8 - (numButtons % 8)
+	offset = (config.numButtons % 8 == 0) ? 0 : (8 - (config.numButtons % 8));
 
 	// Thrustmaster uses extra bits for IDs
 	if(config.mode == SPI_BtnMode::TM){
@@ -128,11 +230,18 @@ void SPI_Buttons::setConfig(ButtonSourceConfig config){
 		bytes = 1+((config.numButtons-1)/8);
 	}
 
+	// Update ButtonSource::btnnum so getBtnNum() returns correct value
 	this->btnnum = config.numButtons;
 }
 
 ButtonSourceConfig* SPI_Buttons::getConfig(){
 	return &this->conf;
+}
+
+uint16_t SPI_Buttons::getBtnNum(){
+	// Always return conf.numButtons as the source of truth
+	// btnnum inheritance issue causes it to not update correctly
+	return this->conf.numButtons;
 }
 
 void SPI_Buttons::setSpiSpeed(uint8_t speedPreset){
@@ -175,12 +284,12 @@ uint8_t SPI_Buttons::readButtons(uint64_t* buf){
 	process(buf); // give back last buffer
 
 	if(spiPort.isTaken() || !ready)
-		return this->btnnum;	// Don't wait.
+		return this->conf.numButtons;	// Return conf.numButtons instead of btnnum
 
 	// CS pin and semaphore managed by spi port
 	spiPort.receive_DMA(spi_buf, bytes, this);
 
-	return this->btnnum;
+	return this->conf.numButtons;	// Return conf.numButtons instead of btnnum
 }
 
 std::string SPI_Buttons::printModes(const std::vector<std::string>& names){
@@ -199,6 +308,7 @@ CommandStatus SPI_Buttons::command(const ParsedCommand& cmd,std::vector<CommandR
 			ButtonSourceConfig* c = this->getConfig();
 			c->numButtons = cmd.val;
 			this->setConfig(*c);
+			this->saveFlash(); // Save to flash immediately
 		}else if(cmd.type == CMDtype::get){
 			replies.emplace_back(this->getBtnNum());
 		}else{
@@ -230,6 +340,7 @@ CommandStatus SPI_Buttons::command(const ParsedCommand& cmd,std::vector<CommandR
 	case SPIButtons_commands::mode:
 		if(cmd.type == CMDtype::set){
 			setMode((SPI_BtnMode)cmd.val);
+			this->saveFlash(); // Save to flash immediately
 		}else if(cmd.type == CMDtype::get){
 			replies.emplace_back((uint8_t)this->conf.mode);
 		}else if(cmd.type == CMDtype::info){
@@ -242,6 +353,7 @@ CommandStatus SPI_Buttons::command(const ParsedCommand& cmd,std::vector<CommandR
 	case SPIButtons_commands::spispeed:
 		if(cmd.type == CMDtype::set){
 			setSpiSpeed(cmd.val);
+			this->saveFlash(); // Save to flash immediately
 		}else if(cmd.type == CMDtype::get){
 			replies.emplace_back((uint8_t)this->conf.spi_speed);
 		}else if(cmd.type == CMDtype::info){
@@ -254,6 +366,59 @@ CommandStatus SPI_Buttons::command(const ParsedCommand& cmd,std::vector<CommandR
 	case SPIButtons_commands::cs:
 		if (handleGetSet(cmd, replies, this->conf.cs_num) == CommandStatus::OK ) {
 			setConfig(this->conf);
+			this->saveFlash(); // Save to flash immediately
+		}
+		break;
+
+	case SPIButtons_commands::debug:
+		if(cmd.type == CMDtype::get){
+			// Return raw SPI buffer data in hex format for debugging
+			std::string debug_data = "Raw:";
+			for(uint8_t i = 0; i < this->bytes; i++){
+				char hex[4];
+				sprintf(hex, "%02X", this->spi_buf[i]);
+				debug_data += hex;
+				if(i < this->bytes - 1) debug_data += " ";
+			}
+			debug_data += " offset:" + std::to_string(this->offset);
+			debug_data += " mask:0x" + std::to_string(this->mask);
+			debug_data += " inv:" + std::to_string(this->conf.invert);
+			debug_data += " cut:" + std::to_string(this->conf.cutRight);
+			replies.emplace_back(debug_data);
+		}else{
+			return CommandStatus::ERR;
+		}
+		break;
+
+	case SPIButtons_commands::syncread:
+		if(cmd.type == CMDtype::get){
+			// Detailed diagnostic of SPI communication
+			std::string result = "";
+
+			// Show which SPI port is being used
+			SPI_HandleTypeDef* hspi = spiPort.getPortHandle();
+			if(hspi->Instance == SPI2) result += "SPI2 ";
+			else if(hspi->Instance == SPI3) result += "SPI3 ";
+			else result += "SPI? ";
+
+			// Show CS pin info
+			result += "CS:" + std::to_string(this->conf.cs_num) + " ";
+
+			// Force a synchronous read
+			uint8_t test_buf[4] = {0xAA, 0xAA, 0xAA, 0xAA}; // Pre-fill with known pattern
+			HAL_StatusTypeDef status = HAL_SPI_Receive(hspi, test_buf, this->bytes, 100);
+
+			result += "HAL:" + std::to_string(status) + " ";
+			result += "Data:";
+			for(uint8_t i = 0; i < this->bytes; i++){
+				char hex[4];
+				sprintf(hex, "%02X", test_buf[i]);
+				result += hex;
+				if(i < this->bytes - 1) result += " ";
+			}
+			replies.emplace_back(result);
+		}else{
+			return CommandStatus::ERR;
 		}
 		break;
 

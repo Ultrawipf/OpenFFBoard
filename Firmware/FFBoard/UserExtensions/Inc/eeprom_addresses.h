@@ -1,13 +1,13 @@
-/*		
- * eeprom_addresses.h		
- *		
- *  Created on: 24.01.2020		
- *  Author: Yannick		
- *		
- *	/!\ Generated from the file memory_map.csv 
-   / ! \ DO NOT EDIT THIS DIRECTLY !!!	
- */			
-		
+/*
+ * eeprom_addresses.h
+ *
+ *  Created on: 24.01.2020
+ *  Author: Yannick
+ *
+ *	/!\ Generated from the file memory_map.csv
+   / ! \ DO NOT EDIT THIS DIRECTLY !!!
+ */
+
 #ifndef EEPROM_ADDRESSES_H_
 #define EEPROM_ADDRESSES_H_
 
@@ -21,19 +21,19 @@ extern const uint16_t VirtAddVarTab[NB_OF_VAR];
 extern const uint16_t exportableFlashAddresses[NB_EXPORTABLE_ADR];
 
 
-		
-/* Add your addresses here. 0xffff is invalid as it marks an erased field.		
-Anything below 0x00ff is reserved for system variables.		
-		
-Use ranges that are clear to distinguish between configurations. Address ranges can have gaps.		
-Label the names clearly.		
-Example: 0x0100 - 0x01ff for one class and 0x0200-0x02ff for another class would be reasonable even if they each need only 3 variables		
-		
-		
-Important: Add your variable to the VirtAddVarTab[NB_OF_VAR] array in eeprom_addresses.c!		
-		
-Tip to check if a cell is intialized:		
-uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if the address is not found or 0 if it was found.		
+
+/* Add your addresses here. 0xffff is invalid as it marks an erased field.
+Anything below 0x00ff is reserved for system variables.
+
+Use ranges that are clear to distinguish between configurations. Address ranges can have gaps.
+Label the names clearly.
+Example: 0x0100 - 0x01ff for one class and 0x0200-0x02ff for another class would be reasonable even if they each need only 3 variables
+
+
+Important: Add your variable to the VirtAddVarTab[NB_OF_VAR] array in eeprom_addresses.c!
+
+Tip to check if a cell is intialized:
+uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if the address is not found or 0 if it was found.
 */
 // System variables
 #define ADR_HW_VERSION 1
@@ -58,6 +58,8 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_SPI_BTN_2_CONF 0x205
 #define ADR_SPI_BTN_1_CONF_2 0x206
 #define ADR_SPI_BTN_2_CONF_2 0x207
+#define ADR_SPI_BTN_3_CONF 0x209
+#define ADR_SPI_BTN_3_CONF_2 0x20A
 #define ADR_LOCAL_BTN_CONF_3 0x208 // Pulse mask
 // Local encoder
 #define ADR_ENCLOCAL_CPR 0x210
