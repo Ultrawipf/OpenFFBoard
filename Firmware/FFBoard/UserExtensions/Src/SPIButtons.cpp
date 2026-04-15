@@ -15,7 +15,7 @@
 static ButtonSourceConfig decodeIntToConf(uint16_t config, uint16_t config_int_2);
 static std::tuple<uint16_t, uint16_t> encodeConfToInt(ButtonSourceConfig* c);
 
-const std::vector<std::string> SPI_Buttons::mode_names = {"Thrustmaster/HEF4021BT","74xx165"};
+const std::vector<std::string> SPI_Buttons::mode_names = {"Thrustmaster/HEF4021BT","74xx165","RP2040"};
 const std::vector<std::string> SPI_Buttons::speed_names = {"Fast","Medium","Slow"};
 
 ClassIdentifier SPI_Buttons_1::info = {
@@ -111,6 +111,12 @@ void SPI_Buttons::setConfig(ButtonSourceConfig config){
 		this->spiConfig.peripheral.FirstBit = SPI_FIRSTBIT_LSB;
 		this->spiConfig.peripheral.CLKPhase = SPI_PHASE_2EDGE;
 		this->spiConfig.peripheral.CLKPolarity = SPI_POLARITY_HIGH; // its actually shifting on the rising edge but 165 will have the first output set even before clocking. First clock cycle is actually second bit so we sample at the falling edge and skip the first bit with that.
+	}else if(conf.mode == SPI_BtnMode::RP2040){
+		this->conf.cutRight = false;
+		this->spiConfig.cspol = true;
+		this->spiConfig.peripheral.FirstBit = SPI_FIRSTBIT_MSB;
+		this->spiConfig.peripheral.CLKPhase = SPI_PHASE_1EDGE;
+		this->spiConfig.peripheral.CLKPolarity = SPI_POLARITY_LOW;
 	}
 	this->spiConfig.peripheral.BaudRatePrescaler = speedPresets[this->conf.spi_speed];
 	initSPI();
