@@ -193,7 +193,7 @@ void HID_CommandInterface::hidCmdCallback(HID_CMD_Data_t* data){
 		for(CommandHandler* handler : handlers){
 			ParsedCommand newCmd = cmd;
 			newCmd.target = handler;
-			if(newCmd.target == nullptr || !(cmd.target->isValidCommandId(cmd.cmdId, CMDFLAG_STR_ONLY))){
+			if(newCmd.target == nullptr || !(newCmd.target->isValidCommandId(cmd.cmdId, CMDFLAG_STR_ONLY))){
 				data->type = HidCmdType::notFound;
 				//sendHidCmd(data); // Send back error
 				this->outBuffer.push_back(*data);
