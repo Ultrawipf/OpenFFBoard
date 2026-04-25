@@ -104,6 +104,7 @@ $(TARGET_DIR)/Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F \
 $(TARGET_DIR)/Drivers/CMSIS/Device/ST/STM32F4xx/Include \
 $(TARGET_DIR)/Drivers/CMSIS/Include 
 
+C_INCLUDES += $(TARGET_DIR)/Middlewares/ST/ARM/DSP/Inc
 
 C_INCLUDES := $(addprefix -I, $(C_INCLUDES))
 
@@ -158,6 +159,9 @@ else
 C_DEFS += -DSTM32F407xx
 endif
 
+#add arm math files
+C_DEFS += -DARM_MATH_CM4
+
 # compile gcc flags
 ASFLAGS = $(MCU) $(AS_DEFS) $(AS_INCLUDES) $(OPT) -Wall -fdata-sections -ffunction-sections
 
@@ -188,6 +192,10 @@ LIBS = -lc -lm -lnosys
 LIBDIR = 
 LDFLAGS = $(MCU) --specs=standard_c_nano_cpp.specs -u _printf_float -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group -T$(LDSCRIPT) $(LIBDIR) $(LIBS) -Wl,-Map=$(BUILD_DIR)/$(TARGET).map,--cref -Wl,--gc-sections -static
 # -mcpu=cortex-m4 -T"C:\Users\zhouli\Desktop\my-openffb\OpenFFBoard\Firmware\Targets\F407VG\STM32F407VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="OpenFFBoard_F407VG.map" -Wl,--cref -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+
+#include arm math
+LIBDIR += -L$(TARGET_DIR)/Middlewares/ST/ARM/DSP/Lib
+LIBS += -larm_cortexM4lf_math
 
 # default action: build all
 all: $(BUILD_DIR)/$(TARGET).elf $(OUTPUT_DIR)/$(TARGET).hex $(OUTPUT_DIR)/$(TARGET).bin
