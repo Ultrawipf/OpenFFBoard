@@ -49,6 +49,8 @@
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.includepaths.1392609053" name="Include paths (-I)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.includepaths" useByScannerDiscovery="false" valueType="includePath">
 									<listOptionValue builtIn="false" value="../Core/Inc"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/OpenFFBoard/Libraries/CMSIS-DSP/Include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/OpenFFBoard/Libraries/CMSIS-DSP/PrivateInclude}&quot;"/>
 									<listOptionValue builtIn="false" value="../../../FFBoard/UserExtensions/Inc"/>
 									<listOptionValue builtIn="false" value="../../../FFBoard/Inc"/>
 									<listOptionValue builtIn="false" value="../Drivers/STM32F4xx_HAL_Driver/Inc"/>
@@ -85,6 +87,8 @@
 									<listOptionValue builtIn="false" value="../Middlewares/Third_Party/FreeRTOS/Source/include"/>
 									<listOptionValue builtIn="false" value="../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F"/>
 									<listOptionValue builtIn="false" value="../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/OpenFFBoard/Libraries/CMSIS-DSP/Include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/OpenFFBoard/Libraries/CMSIS-DSP/PrivateInclude}&quot;"/>
 									<listOptionValue builtIn="false" value="../../../FFBoard/USB"/>
 									<listOptionValue builtIn="false" value="../../../FFBoard/USB/class/cdc"/>
 									<listOptionValue builtIn="false" value="../../../FFBoard/USB/class"/>
