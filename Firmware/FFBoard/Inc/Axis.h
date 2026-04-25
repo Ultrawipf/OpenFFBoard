@@ -3,6 +3,8 @@
  *
  *  Created on: 21.01.2021
  *      Author: Yannick / Lidders / Vincent
+ * 
+ *  Release 27.10.25: Vincent, add reconstruction filter, equalizer, slew rate.
  */
 
 #ifndef SRC_AXIS_H_
@@ -23,6 +25,10 @@
 #include "ExtiHandler.h"
 #include "EffectsCalculator.h"
 
+#ifdef USE_DSP_FUNCTIONS
+#include "arm_math.h"
+#endif
+
 #define INTERNAL_AXIS_DAMPER_SCALER 0.7
 #define INTERNAL_AXIS_FRICTION_SCALER 0.7
 #define INTERNAL_AXIS_INERTIA_SCALER 0.7
@@ -37,13 +43,13 @@
  * @brief Global control flags for all axes.
  */
 struct Control_t {
-	bool emergency = false;                         //!< Emergency stop is active.
-	bool usb_disabled = true;                       //!< FFB is disabled by USB.
-	bool update_disabled = true;            //!< FFB updates are disabled.
+	bool emergency = false;				//!< Emergency stop is active.
+	bool usb_disabled = true;			//!< FFB is disabled by USB.
+	bool update_disabled = true;		//!< FFB updates are disabled.
 	bool request_update_disabled = false; //!< A request to disable FFB updates is pending.
 //	bool usb_update_flag = false;
 //	bool update_flag = false;
-	bool resetEncoder = false;                      //!< A request to reset the encoder is pending.
+	bool resetEncoder = false;			//!< A request to reset the encoder is pending.
 };
 
 /**
@@ -72,21 +78,21 @@ struct AxisFlashAddresses
  */
 struct AxisConfig
 {
-	uint8_t enctype = 0; //!< Encoder type ID.
 	uint8_t drvtype = 0; //!< Motor driver type ID.
+	uint8_t enctype = 0; //!< Encoder type ID.
 };
-
 /**
  * @brief Holds the physical metrics of an axis at a point in time.
  */
 struct metric_t {
-	float accel = 0;          //!< Acceleration in deg/s².
-	float speed = 0;          //!< Speed in deg/s.
-	int32_t pos_scaled_16b = 0;       //!< Scaled position as a 16-bit integer (-0x7fff to 0x7fff).
-	float pos_f = 0;          //!< Scaled position as a float (-1.0 to 1.0).
+	float accel = 0;	  //!< Acceleration in deg/s².
+	float speed = 0;	  //!< Speed in deg/s.
+	int32_t pos_scaled_16b = 0;	  //!< Scaled position as a 16-bit integer (-0x7fff to 0x7fff).
+	float pos_f = 0;	  //!< Scaled position as a float (-1.0 to 1.0).
 	float posDegrees = 0; //!< Position in degrees, not scaled to the selected range.
-	int32_t torque = 0;       //!< Total torque applied to the axis.
+	int32_t torque = 0;	  //!< Total torque applied to the axis.
 };
+
 
 /**
  * @brief Holds the current and previous metrics for an axis, used for calculating derivatives.
@@ -135,8 +141,7 @@ public:
 	const ClassIdentifier getInfo();
 	const ClassType getClassType() override {return ClassType::Axis;};
 
-	virtual std::string getHelpstring() { return "FFB axis" ;}
-
+	virtual std::string getHelpstring() { return "FFB axis"	;}
 	// Dynamic classes
 	/**
 	 * @brief Sets the motor driver type.
@@ -243,7 +248,7 @@ public:
 	 * @param enc A pointer to the encoder.
 	 * @return The angle in degrees.
 	 */
-	float   getEncAngle(Encoder *enc);
+	float 	getEncAngle(Encoder *enc);
 
 	/**
 	 * @brief Sets the maximum power (torque) of the motor.
@@ -314,9 +319,11 @@ public:
 	void setFxStrengthAndFilter(uint8_t val,uint8_t& valToSet, Biquad& filter);
 
 	/**
-	 * @brief Called before HID effects are calculated.
+	 * @brief Calculates the mechanical effects (damper, friction, inertia) that are always active.
+	 * These are separate from the HID FFB effects sent by the game.
+	 * @param ffb_on A flag indicating if FFB is on.
 	 */
-	void calculateAxisEffects(bool ffb_on);
+	void calculateMechanicalEffects(bool ffb_on);
 
 	/**
 	 * @brief Gets the current torque.
@@ -325,9 +332,16 @@ public:
 	int32_t getTorque();
 
 	/**
-	 * @brief Calculate soft endstop effect.
+	 * @brief Calculates the endstop torque.
+	 * @return The calculated endstop torque.
 	 */
-	int16_t updateEndstop();
+	int32_t calculateEndstopTorque();
+
+	/**
+	 * @brief Calculates the FFB torque exponential torque, from the input torque and apply expo and scaler
+	 * @return The calculated exponential torque.
+	 */
+	int64_t calculateFFBTorque();
 
 	/**
 	 * @brief Starts a force fade-in.
@@ -339,10 +353,10 @@ public:
 	metric_t* getMetrics();
 
 	/**
-	 * @brief Sets the HID FFB effect torque.
-	 * @param torque The new FFB effect torque.
+	 * @brief Sets the FFB effect torque.
+	 * @param torque The new FFB effect torque from the EffectsCalculator.
 	 */
-	void setEffectTorque(int32_t torque);
+	void setFfbEffectTorque(int64_t torque);
 
 	/**
 	 * @brief Updates the total torque.
@@ -386,15 +400,11 @@ private:
 	 * @return The torque scaler value.
 	 */
 	bool isInverted();
-
-	void updateTorqueScaler();
-	float getTorqueScaler();
-
 	/**
-	 * @brief Sets the ratio between game effects and endstop force.
+	 * @brief Sets the ratio between game effects and endstop force and updates the internal torque scaler based on power and fx_ratio
 	 * @param val The new ratio value (0-255).
 	 */
-	void setFxRatio(uint8_t val);
+	void setEffectRatio(uint8_t val);
 	/**
 	 * @brief Sets the exponential torque curve.
 	 * @param val The new expo value.
@@ -402,13 +412,17 @@ private:
 	void setExpo(int val);
 
 	int32_t calculateExpoTorque(int32_t torque);
-
+	/**
+	 * @brief Applies the speed limiter PI controller to the torque.
+	 * @param torque A reference to the torque value to be modified.
+	 * @return torque update to apply to reduced de speed.
+	 */
+	int64_t applySpeedLimiterTorque(int64_t& torque);
 	/**
 	 * @brief Applies the torque slew rate limiter to the torque.
 	 * @param torque A reference to the torque value to be modified.
 	 */
 	void applyTorqueSlewRateLimiter(int64_t& torque);
-
 	/**
 	 * @brief Decodes the axis configuration from a 16-bit integer stored in flash.
 	 * @param val The 16-bit encoded configuration value.
@@ -421,60 +435,66 @@ private:
 	 */
 	static uint16_t encodeConfToInt(AxisConfig conf);
 
+
+
 	// Member variables
-	AxisFlashAddresses flashAddresses;                      //!< Flash memory addresses for this axis.
-	volatile Control_t* control;            //!< Pointer to the global control structure.
-	AxisConfig conf;                                        //!< Configuration for this axis (driver and encoder types).
-	char axis;                                                      //!< Axis identifier ('X', 'Y', 'Z').
+	AxisFlashAddresses flashAddresses;			//!< Flash memory addresses for this axis.
+	volatile Control_t* control;		//!< Pointer to the global control structure.
+	AxisConfig conf;					//!< Configuration for this axis (driver and encoder types).
+	char axis;							//!< Axis identifier ('X', 'Y', 'Z').
 
 	std::unique_ptr<MotorDriver> drv = std::make_unique<MotorDriver>(); //!< Unique pointer to the active motor driver.
-	std::shared_ptr<Encoder> enc = nullptr; //!< Shared pointer to the active encoder.
+	std::shared_ptr<Encoder> enc = nullptr;	//!< Shared pointer to the active encoder.
 
-	bool outOfBounds = false;                       //!< Flag indicating if the axis is out of its valid range.
+	bool outOfBounds = false;			//!< Flag indicating if the axis is out of its valid range.
 	const Error outOfBoundsError = Error(ErrorCode::axisOutOfRange,ErrorType::warning,"Axis out of bounds"); //!< Error object for out-of-bounds condition.
 
 	// Force fade-in effect
-	float forceFadeTime = 1.0;                      //!< Duration of the force fade-in in seconds.
-	float forceFadeCurMult = 1.0;                //!< Current multiplier for the force fade-in.
+	float forceFadeDuration = 1.0;			//!< Duration of the force fade-in in seconds.
+	float forceFadeMultiplier = 1.0;		//!< Current multiplier for the force fade-in.
 
-	uint16_t degreesOfRotation = 900;               //!< Current degrees of rotation.
-	uint16_t lastdegreesOfRotation = degreesOfRotation; //!< Previous degrees of rotation (for smooth transitions).
+	float encoderOffset = 0; //!< Offset for absolute encoders.
+	uint16_t degreesOfRotation = 900;		//!< Current degrees of rotation.
+	uint16_t previousDegreesOfRotation = degreesOfRotation; //!< Previous degrees of rotation (for smooth transitions).
 	uint16_t nextDegreesOfRotation = degreesOfRotation; //!< Target degrees of rotation.
 
 	// Limiters
-	uint16_t maxSlewRate_Driver = MAX_SLEW_RATE;            //!< Maximum slew rate as measured by the driver (in units/ms).
-	uint16_t maxSpeedDegS  = 0;             //!< Maximum speed in degrees per second. 0 to disable.
-	uint32_t maxTorqueRateMS = 0;           //!< Maximum torque rate of change per millisecond. 0 to disable.
+	uint16_t maxSlewRate_Driver = MAX_SLEW_RATE;		//!< Maximum slew rate as measured by the driver (in units/ms).
+	uint16_t maxSpeedDegS  = 0;		//!< Maximum speed in degrees per second. 0 to disable.
+	uint32_t maxTorqueRateMS = 0;		//!< Maximum torque rate of change per millisecond. 0 to disable.
 
 	float speedLimiterP = AXIS_SPEEDLIMITER_P; //!< Proportional term for the speed limiter.
 	float speedLimiterI = AXIS_SPEEDLIMITER_I; //!< Integral term for the speed limiter.
-
+#ifdef USE_DSP_FUNCTIONS
+	arm_pid_instance_f32 speedLimiterPID; //!< PID instance for the speed limiter.
+#else
 	// Speed limiter PID
-	float spdlimitreducerI = 0;
+	float speedLimitReducerI = 0;
+#endif
 
 	// Axis metrics
-	axis_metric_t metric;                   //!< Current and previous physical metrics of the axis.
-	float _lastSpeed = 0;                   //!< Instantaneous speed from the last cycle.
+	axis_metric_t metric;			//!< Current and previous physical metrics of the axis.
+	float previousFrameSpeed = 0;			//!< Instantaneous speed from the last cycle, used for acceleration calculation.
 
 	// Torque components
-	int32_t effectTorque = 0;            //!< Torque from HID FFB effects.
-	int32_t axisEffectTorque = 0;     //!< Torque from mechanical effects.
+	int64_t ffbEffectTorque = 0;		//!< Torque from HID FFB effects.
+	int32_t mechanicalEffectTorque = 0;	//!< Torque from mechanical effects (damper, friction, inertia).
 
 	// Power and scaling
-	uint16_t power = 5000;                  //!< Maximum motor power/torque.
-	uint8_t fx_ratio_i = 204;              //!< Ratio of HID effects vs. endstop effects (0-255).
-	float effect_margin_scaler = 0;    //!< Scaler for HID effects based on effectRatio.
-	float torqueScaler = 0;                 //!< Final torque scaler based on power.
+	uint16_t power = 5000;			//!< Maximum motor power/torque.
+	uint8_t effectRatio = 204;		//!< Ratio of HID effects vs. endstop effects (0-255).
+	float effectRatioScaler = 0;	//!< Scaler for HID effects based on effectRatio.
+	float torqueScaler = 0;			//!< Final torque scaler based on power.
 
 	// Axis configuration
-	bool invertAxis = true;                 //!< Invert axis direction.
-	uint8_t endstopStrength = 127;  //!< Stiffness of the endstop effect.
-	const float endstopGain = 25;   //!< Overall maximum endstop intensity.
+	bool invertAxis = true;			//!< Invert axis direction.
+	uint8_t endstopStrength = 127;	//!< Stiffness of the endstop effect.
+	const float endstopGain = 25;	//!< Overall maximum endstop intensity.
 
 	// Idle spring effect
-	uint8_t idlespringstrength = 127; //!< Strength of the idle spring.
-	int16_t idlespringclip = 0;       //!< Maximum force for the idle spring.
-	float idlespringscale = 0;        //!< Scaler for the idle spring force.
+	uint8_t idleSpringStrength = 127; //!< Strength of the idle spring.
+	int16_t idleSpringClip = 0;       //!< Maximum force for the idle spring.
+	float idleSpringScale = 0;        //!< Scaler for the idle spring force.
 	bool motorWasNotReady = true;     //!< Flag to detect motor readiness transition.
 
 	// Slew rate calibration tracking: true when Axis requested a calibration and
@@ -490,12 +510,12 @@ private:
 	const biquad_constant_t filterInertiaCst = {20, 20};    //!< Inertia filter constants.
 	uint8_t filterProfileId = 1; //!< Currently selected filter profile ID.
 	float filter_f = 1000.0; // 1khz
-	const int32_t intFxClip = 20000; //!< Clipping value for internal effects.
+	const int32_t internalFxClip = 20000; //!< Clipping value for internal effects.
 
 	// Internal effects intensity
-	uint8_t damperIntensity = 30;   //!< Intensity of the internal damper effect.
-	uint8_t frictionIntensity = 0;  //!< Intensity of the internal friction effect.
-	uint8_t inertiaIntensity = 0;   //!< Intensity of the internal inertia effect.
+	uint8_t damperIntensity = 30;	//!< Intensity of the internal damper effect.
+	uint8_t frictionIntensity = 0;	//!< Intensity of the internal friction effect.
+	uint8_t inertiaIntensity = 0;	//!< Intensity of the internal inertia effect.
 
 	// Biquad filter instances
 	Biquad speedFilter = Biquad(BiquadType::lowpass, filterSpeedCst[filterProfileId].freq/filter_f, filterSpeedCst[filterProfileId].q/100.0, 0.0);
@@ -505,10 +525,10 @@ private:
 	Biquad inertiaFilter = Biquad(BiquadType::lowpass, filterInertiaCst.freq/filter_f, filterInertiaCst.q / 100.0, 0.0);
 
 	// Post-processing
-	GearRatio_t gearRatio;  //!< Gear ratio between encoder and axis.
-	int expoValInt = 0;              //!< Raw integer value for the expo curve.
-	float expo = 1;                 //!< Calculated exponent for the torque curve.
-	float expoScaler = 50;  //!< Scaler for the expo calculation : 0.28 to 3.54
+	GearRatio_t gearRatio;	//!< Gear ratio between encoder and axis.
+	int expoValue = 0;		//!< Raw integer value for the expo curve. Formula: v = val*2 => v<0 ? 1/-v : v
+	float expo = 1;			//!< Calculated exponent for the torque curve.
+	float expoScaler = 50;	//!< Scaler for the expo calculation : 0.28 to 3.54
 };
 
 #endif /* SRC_AXIS_H_ */

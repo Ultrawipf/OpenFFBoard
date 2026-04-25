@@ -103,6 +103,14 @@ const std::vector<class_entry<MotorDriver>> Axis::axis2_drivers =
  */
 Axis::Axis(char axis,volatile Control_t* control) :CommandHandler("axis", CLSID_AXIS), driverChooser(MotorDriver::all_drivers),encoderChooser{Encoder::all_encoders}
 {
+
+#ifdef USE_DSP_FUNCTIONS
+	speedLimiterPID.Kp = speedLimiterP;
+	speedLimiterPID.Ki = speedLimiterI;
+	speedLimiterPID.Kd = 0.0f;
+	arm_pid_init_f32(&speedLimiterPID, 1);
+#endif
+
 	this->axis = axis;
 	this->control = control;
 	if (axis == 'X')
@@ -128,6 +136,11 @@ Axis::Axis(char axis,volatile Control_t* control) :CommandHandler("axis", CLSID_
 										   ADR_AXIS3_ENDSTOP, ADR_AXIS3_POWER, ADR_AXIS3_DEGREES,ADR_AXIS3_EFFECTS1,ADR_AXIS3_EFFECTS2,ADR_AXIS3_ENC_RATIO,
 										   ADR_AXIS3_SPEEDACCEL_FILTER,ADR_AXIS3_POSTPROCESS1});
 	}
+
+	// Initialize equalizer filters
+	/*for (uint8_t idx = 0; idx < num_eq_bands; idx++) {
+		eqFilters[idx].setBiquad(BiquadType::peak, eq_frequencies[idx] / filter_f, 1.0, 0.0);
+	}*/
 
 	CommandHandler::registerCommands(); // Internal commands
 	registerCommands();
@@ -613,8 +626,13 @@ void Axis::calculateMechanicalEffects(bool ffb_on){
 		float speedRampupCeil = 4096;
 		float rampupFactor = 1.0;
 		if (fabs (speed) < speedRampupCeil) {								// if speed in the range to rampup we apply a sine curve
+#ifdef USE_DSP_FUNCTIONS
+			float phaseRad = PI * ((fabsf (speed) / speedRampupCeil) - 0.5f);// we start to compute the normalized angle (speed / normalizedSpeed@5%) and translate it of -1/2PI to translate sin on 1/2 periode
+			rampupFactor = ( 1.0f + arm_sin_f32(phaseRad ) ) / 2.0f;			// sin value is -1..1 range, we translate it to 0..2 and we scale it by 2
+#else
 			float phaseRad = M_PI * ((fabsf (speed) / speedRampupCeil) - 0.5f);// we start to compute the normalized angle (speed / normalizedSpeed@5%) and translate it of -1/2PI to translate sin on 1/2 periode
 			rampupFactor = ( 1.0f + sinf(phaseRad ) ) / 2.0f;			// sin value is -1..1 range, we translate it to 0..2 and we scale it by 2
+#endif
 		}
 		int8_t sign = speed >= 0 ? 1 : -1;
 		float force = (float)frictionIntensity * rampupFactor * sign * INTERNAL_AXIS_FRICTION_SCALER * 32;
@@ -642,6 +660,10 @@ void Axis::resetMetrics(float new_pos= 0) { // pos is degrees
 	// Reset filters
 	speedFilter.calcBiquad();
 	accelFilter.calcBiquad();
+
+#ifdef USE_DSP_FUNCTIONS
+	arm_pid_reset_f32(&speedLimiterPID);	// reset the PID limit
+#endif
 }
 
 /**
@@ -703,7 +725,7 @@ int64_t Axis::calculateFFBTorque() {
 	return torque;
 }
 
-int32_t Axis::getTorque() { return metric.current.torque; }
+int32_t Axis::getTorque() { return metric.current.torque; } // Fix: move from previous to current
 
 bool Axis::isInverted() {
 	return invertAxis;
@@ -805,7 +827,7 @@ void Axis::applyTorqueSlewRateLimiter(int64_t& torque)
 
 	// The torque is clipped to be within the range of [previous torque - limit, previous torque + limit].
 	torque = clip<int64_t>(torque, previousTorque - maxTorqueChange, previousTorque + maxTorqueChange);
-}
+		}
 
 int64_t Axis::applySpeedLimiterTorque(int64_t& torque){
 	// Speed Limiter: A PI controller to reduce torque when speed exceeds maxSpeedDegS.
@@ -818,6 +840,29 @@ int64_t Axis::applySpeedLimiterTorque(int64_t& torque){
 
 	int64_t resultTorque = 0;
 
+#ifdef USE_DSP_FUNCTIONS
+	float effectiveSpeed = metric.current.speed * (torque > 0 ? 1.0f : -1.0f);
+	if (effectiveSpeed > maxSpeedDegS)
+	{
+		// --- PI Controller Logic ---
+		// 1. Calculate the error term (how much we are over the speed limit).
+		float speedError = effectiveSpeed - maxSpeedDegS;
+
+		// 2. Calculate the total reduction amount using the PID controller.
+		float reductionAmount = arm_pid_f32(&speedLimiterPID, speedError);
+
+		// 3. Apply the reduction to the main torque.
+		// We must only reduce the magnitude of the torque, not invert it.
+		reductionAmount = clip(reductionAmount, 0.0f, fabsf((float)torque));
+		if(torque > 0) {
+			resultTorque = reductionAmount;
+		} else {
+			resultTorque = -reductionAmount;
+		}
+	} else {
+		arm_pid_reset_f32(&speedLimiterPID); // Reset PID if not active
+	}
+#else
 	float torqueSign = torque > 0 ? 1 : -1; // Used to prevent metrics against the force to go into the limiter
 	// Speed. Mostly tuned...
 	//spdlimiterAvg.addValue(metric.current.speed);
@@ -831,6 +876,7 @@ int64_t Axis::applySpeedLimiterTorque(int64_t& torque){
 	}else{
 		resultTorque = clip<float,int64_t>(-torqueReduction,torque,0);
 	}
+#endif
 
 	return resultTorque;
 }
@@ -1109,6 +1155,14 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 			if(this->getEncoder() != nullptr){
 				cpr = this->getEncoder()->getCpr();
 			}
+			// TODO: For TMC4671 drivers, CPR reporting might be inconsistent. Investigate if a prescale is needed or if the UI should handle the readout correction.
+//#ifdef TMC4671DRIVER // CPR should be consistent with position. Maybe change TMC to prescale to encoder count or correct readout in UI
+//			TMC4671 *tmcdrv = dynamic_cast<TMC4671 *>(this->drv.get()); // Special case for TMC. Get the actual encoder resolution
+//			if (tmcdrv && tmcdrv->hasIntegratedEncoder())
+//			{
+//				cpr = tmcdrv->getEncCpr();
+//			}
+//#endif
 			replies.emplace_back(cpr);
 		}else{
 			return CommandStatus::ERR;
