@@ -54,6 +54,7 @@ struct AxisFlashAddresses
 	uint16_t config = ADR_AXIS1_CONFIG;
 	uint16_t maxSpeed = ADR_AXIS1_MAX_SPEED;
 	uint16_t maxAccel = ADR_AXIS1_MAX_ACCEL;
+	uint16_t maxSlewRateDrv = ADR_AXIS1_MAX_SLEWRATE_DRV;
 
 	uint16_t endstop = ADR_AXIS1_ENDSTOP;
 	uint16_t power = ADR_AXIS1_POWER;
@@ -109,7 +110,9 @@ enum class Axis_commands : uint32_t{
 	pos,curtorque,curpos,curspd,curaccel,
 	fxratio,reductionScaler,
 	filterSpeed, filterAccel, filterProfileId,cpr,axisfriction,axisinertia,
-	maxspeed, maxtorquerate,
+	maxspeed,slewrate,
+	calibrate_maxSlewRateDrv,
+	maxSlewRateDrv,
 	expo,exposcale
 };
 
@@ -401,6 +404,12 @@ private:
 	int32_t calculateExpoTorque(int32_t torque);
 
 	/**
+	 * @brief Applies the torque slew rate limiter to the torque.
+	 * @param torque A reference to the torque value to be modified.
+	 */
+	void applyTorqueSlewRateLimiter(int64_t& torque);
+
+	/**
 	 * @brief Decodes the axis configuration from a 16-bit integer stored in flash.
 	 * @param val The 16-bit encoded configuration value.
 	 */
@@ -433,6 +442,7 @@ private:
 	uint16_t nextDegreesOfRotation = degreesOfRotation; //!< Target degrees of rotation.
 
 	// Limiters
+	uint16_t maxSlewRate_Driver = MAX_SLEW_RATE;            //!< Maximum slew rate as measured by the driver (in units/ms).
 	uint16_t maxSpeedDegS  = 0;             //!< Maximum speed in degrees per second. 0 to disable.
 	uint32_t maxTorqueRateMS = 0;           //!< Maximum torque rate of change per millisecond. 0 to disable.
 
@@ -466,6 +476,10 @@ private:
 	int16_t idlespringclip = 0;       //!< Maximum force for the idle spring.
 	float idlespringscale = 0;        //!< Scaler for the idle spring force.
 	bool motorWasNotReady = true;     //!< Flag to detect motor readiness transition.
+
+	// Slew rate calibration tracking: true when Axis requested a calibration and
+	// is waiting for the driver to finish measuring the max slew rate.
+	bool awaitingSlewCalibration = false;
 
 	// Filters
 	// TODO tune these and check if it is really stable and beneficial to the FFB. index 4 placeholder

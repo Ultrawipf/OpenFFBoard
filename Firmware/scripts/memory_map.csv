@@ -62,6 +62,7 @@ Section comment,Name,Value,Comment on key,VirtAddVarTab,exportableFlashAddresses
 ,ADR_AXIS1_DEGREES,0x303,,1,1
 ,ADR_AXIS1_MAX_SPEED,0x304,// Store the max speed,1,1
 ,ADR_AXIS1_MAX_ACCEL,0x305,// Store the max accel,1,1
+,ADR_AXIS1_MAX_SLEWRATE_DRV,0x306,// Max slew rate for drv,1,1
 ,ADR_AXIS1_ENDSTOP,0x307,"// 0-7 endstop margin, 8-15 endstop stiffness",1,1
 ,ADR_AXIS1_EFFECTS1,0x308,"// 0-7 idlespring, 8-15 damper",1,1
 ,ADR_AXIS1_SPEEDACCEL_FILTER,0x309,// Speed/Accel filter Lowpass profile,1,1
@@ -88,18 +89,13 @@ Section comment,Name,Value,Comment on key,VirtAddVarTab,exportableFlashAddresses
 ,ADR_AXIS2_DEGREES,0x343,,1,1
 ,ADR_AXIS2_MAX_SPEED,0x344,// Store the max speed,1,1
 ,ADR_AXIS2_MAX_ACCEL,0x345,// Store the max accel,1,1
+,ADR_AXIS2_MAX_SLEWRATE_DRV,0x346,// Max slew rate for drv,1,1
 ,ADR_AXIS2_ENDSTOP,0x347,"// 0-7 endstop margin, 8-15 endstop stiffness",1,1
 ,ADR_AXIS2_EFFECTS1,0x348,"// 0-7 idlespring, 8-15 damper",1,1
 ,ADR_AXIS2_SPEEDACCEL_FILTER,0x349,// Speed/Accel filter Lowpass profile,1,1
 ,ADR_AXIS2_ENC_RATIO,0x34A,// Store the encoder ratio for an axis,1,1
 ,ADR_AXIS2_EFFECTS2,0x34B,"// 0-7 Friction, 8-15 Inertia",1,1
 ,ADR_AXIS2_POSTPROCESS1,0x34C,// 0-7 expo curve,1,1
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
 // TMC2,,,,,
 ,ADR_TMC2_MOTCONF,0x360,// 0-2: MotType 3-5: PhiE source 6-15: Poles,1,1
 ,ADR_TMC2_CPR,0x361,,1,1
@@ -120,14 +116,13 @@ Section comment,Name,Value,Comment on key,VirtAddVarTab,exportableFlashAddresses
 ,ADR_AXIS3_DEGREES,0x383,,1,1
 ,ADR_AXIS3_MAX_SPEED,0x384,// Store the max speed,1,1
 ,ADR_AXIS3_MAX_ACCEL,0x385,// Store the max accel,1,1
+,ADR_AXIS3_MAX_SLEWRATE_DRV,0x386,// Max slew rate for drv,1,1
 ,ADR_AXIS3_ENDSTOP,0x387,"// 0-7 endstop margin, 8-15 endstop stiffness",1,1
 ,ADR_AXIS3_EFFECTS1,0x388,"// 0-7 idlespring, 8-15 damper",1,1
 ,ADR_AXIS3_SPEEDACCEL_FILTER,0x389,// Speed/Accel filter Lowpass profile,1,1
 ,ADR_AXIS3_ENC_RATIO,0x38A,// Store the encoder ratio for an axis,1,1
 ,ADR_AXIS3_EFFECTS2,0x38B,"// 0-7 Friction, 8-15 Inertia",1,1
 ,ADR_AXIS3_POSTPROCESS1,0x38C,// 0-7 expo curve,1,1
-,,,,,
-,,,,,
 // TMC3,,,,,
 ,ADR_TMC3_MOTCONF,0x3A0,// 0-2: MotType 3-5: PhiE source 6-15: Poles,1,1
 ,ADR_TMC3_CPR,0x3A1,,1,1
