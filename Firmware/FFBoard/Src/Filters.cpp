@@ -11,7 +11,7 @@
 #include <math.h>
 
 #ifdef USE_DSP_FUNCTIONS
-#include "arm_math.h"
+#include "dsp/fast_math_functions.h"
 #endif
 
 Biquad::Biquad(){
