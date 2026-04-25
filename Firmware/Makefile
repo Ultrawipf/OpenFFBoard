@@ -104,7 +104,6 @@ $(TARGET_DIR)/Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F \
 $(TARGET_DIR)/Drivers/CMSIS/Device/ST/STM32F4xx/Include \
 $(TARGET_DIR)/Drivers/CMSIS/Include 
 
-
 C_INCLUDES := $(addprefix -I, $(C_INCLUDES))
 
 #######################################
@@ -152,10 +151,29 @@ AS_DEFS =
 C_DEFS =  \
 -DSTM32_THREAD_SAFE_STRATEGY=4 \
 -DUSE_HAL_DRIVER 
+
 ifeq ($(MCU_TARGET),F411RE)
-C_DEFS += -DSTM32F411xE
+C_DEFS += -DSTM32F411xE -DUSE_DSP_FUNCTIONS
 else
-C_DEFS += -DSTM32F407xx
+C_DEFS += -DSTM32F407xx -DUSE_DSP_FUNCTIONS
+endif
+
+# DSP library configuration
+ifneq (,$(filter -DUSE_DSP_FUNCTIONS,$(C_DEFS)))
+DSP_LIB_PATH = Libraries/CMSIS-DSP
+C_INCLUDES += -I$(DSP_LIB_PATH)/Include -I$(DSP_LIB_PATH)/PrivateInclude
+C_DEFS += -DARM_MATH_LOOPUNROLL -DARM_MATH_CORTEX_M4
+
+# Add required CMSIS-DSP source modules
+C_SOURCES += $(wildcard $(DSP_LIB_PATH)/Source/BasicMathFunctions/arm_*.c) \
+             $(wildcard $(DSP_LIB_PATH)/Source/CommonTables/arm_*.c) \
+             $(wildcard $(DSP_LIB_PATH)/Source/FastMathFunctions/arm_*.c) \
+             $(wildcard $(DSP_LIB_PATH)/Source/FilteringFunctions/arm_*.c) \
+             $(wildcard $(DSP_LIB_PATH)/Source/ControllerFunctions/arm_*.c) \
+             $(wildcard $(DSP_LIB_PATH)/Source/InterpolationFunctions/arm_*.c)
+
+# Filter out unnecessary or incompatible files
+C_SOURCES := $(filter-out %_f16.c %_f64.c %_mve.c, $(C_SOURCES))
 endif
 
 # compile gcc flags
