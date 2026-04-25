@@ -86,30 +86,30 @@ const std::vector<class_entry<MotorDriver>> Axis::axis2_drivers =
 /**
  * Axis class manages motor drivers and passes effect torque to the motor drivers
  */
-Axis::Axis(char axis,volatile Control_t* control) :CommandHandler("axis", CLSID_AXIS), drv_chooser(MotorDriver::all_drivers),enc_chooser{Encoder::all_encoders}
+Axis::Axis(char axis,volatile Control_t* control) :CommandHandler("axis", CLSID_AXIS), driverChooser(MotorDriver::all_drivers),encoderChooser{Encoder::all_encoders}
 {
 	this->axis = axis;
 	this->control = control;
 	if (axis == 'X')
 	{
-		drv_chooser = ClassChooser<MotorDriver>(axis1_drivers);
+		driverChooser = ClassChooser<MotorDriver>(axis1_drivers);
 		setInstance(0);
-		this->flashAddrs = AxisFlashAddrs({ADR_AXIS1_CONFIG, ADR_AXIS1_MAX_SPEED, ADR_AXIS1_MAX_ACCEL,
+		this->flashAddresses = AxisFlashAddresses({ADR_AXIS1_CONFIG, ADR_AXIS1_MAX_SPEED, ADR_AXIS1_MAX_ACCEL,
 										   ADR_AXIS1_ENDSTOP, ADR_AXIS1_POWER, ADR_AXIS1_DEGREES,ADR_AXIS1_EFFECTS1,ADR_AXIS1_EFFECTS2,ADR_AXIS1_ENC_RATIO,
 										   ADR_AXIS1_SPEEDACCEL_FILTER,ADR_AXIS1_POSTPROCESS1});
 	}
 	else if (axis == 'Y')
 	{
-		drv_chooser = ClassChooser<MotorDriver>(axis2_drivers);
+		driverChooser = ClassChooser<MotorDriver>(axis2_drivers);
 		setInstance(1);
-		this->flashAddrs = AxisFlashAddrs({ADR_AXIS2_CONFIG, ADR_AXIS2_MAX_SPEED, ADR_AXIS2_MAX_ACCEL,
+		this->flashAddresses = AxisFlashAddresses({ADR_AXIS2_CONFIG, ADR_AXIS2_MAX_SPEED, ADR_AXIS2_MAX_ACCEL,
 										   ADR_AXIS2_ENDSTOP, ADR_AXIS2_POWER, ADR_AXIS2_DEGREES,ADR_AXIS2_EFFECTS1,ADR_AXIS2_EFFECTS2, ADR_AXIS2_ENC_RATIO,
 										   ADR_AXIS2_SPEEDACCEL_FILTER,ADR_AXIS2_POSTPROCESS1});
 	}
 	else if (axis == 'Z')
 	{
 		setInstance(2);
-		this->flashAddrs = AxisFlashAddrs({ADR_AXIS3_CONFIG, ADR_AXIS3_MAX_SPEED, ADR_AXIS3_MAX_ACCEL,
+		this->flashAddresses = AxisFlashAddresses({ADR_AXIS3_CONFIG, ADR_AXIS3_MAX_SPEED, ADR_AXIS3_MAX_ACCEL,
 										   ADR_AXIS3_ENDSTOP, ADR_AXIS3_POWER, ADR_AXIS3_DEGREES,ADR_AXIS3_EFFECTS1,ADR_AXIS3_EFFECTS2,ADR_AXIS3_ENC_RATIO,
 										   ADR_AXIS3_SPEEDACCEL_FILTER,ADR_AXIS3_POSTPROCESS1});
 	}
@@ -166,10 +166,10 @@ void Axis::registerCommands(){
  * Read parameters from flash and restore settings
  */
 void Axis::restoreFlash(){
-	//NormalizedAxis::restoreFlash();
+	// TODO: This seems to be a remnant of a previous architecture (NormalizedAxis). Confirm and remove.
 	// read all constants
 	uint16_t value;
-	if (Flash_Read(flashAddrs.config, &value)){
+	if (Flash_Read(flashAddresses.config, &value)){
 		this->conf = Axis::decodeConfFromInt(value);
 	}else{
 		pulseErrLed();
@@ -178,31 +178,31 @@ void Axis::restoreFlash(){
 	setDrvType(this->conf.drvtype);
 	setEncType(this->conf.enctype);
 
-	if (Flash_Read(flashAddrs.maxSpeed, &value)){
+	if (Flash_Read(flashAddresses.maxSpeed, &value)){
 		this->maxSpeedDegS = value;
 	}else{
 		pulseErrLed();
 	}
-//
-//	if (Flash_Read(flashAddrs.maxAccel, &value)){
-//		this->maxTorqueRateMS = value;
-//	}else{
-//		pulseErrLed();
-//	}
+
+	if (Flash_Read(flashAddresses.maxAccel, &value)){
+		this->maxTorqueRateMS = value;
+	}else{
+		pulseErrLed();
+	}
 
 
 	uint16_t esval, power;
-	if(Flash_Read(flashAddrs.endstop, &esval)) {
+	if(Flash_Read(flashAddresses.endstop, &esval)) {
 		fx_ratio_i = esval & 0xff;
 		endstopStrength = (esval >> 8) & 0xff;
 	}
 
 
-	if(Flash_Read(flashAddrs.power, &power)){
+	if(Flash_Read(flashAddresses.power, &power)){
 		setPower(power);
 	}
 	uint16_t deg_t;
-	if(Flash_Read(flashAddrs.degrees, &deg_t)){
+	if(Flash_Read(flashAddresses.degrees, &deg_t)){
 		this->degreesOfRotation = deg_t & 0x7fff;
 		this->invertAxis = (deg_t >> 15) & 0x1;
 		setDegrees(degreesOfRotation);
@@ -210,25 +210,25 @@ void Axis::restoreFlash(){
 
 
 	uint16_t effects;
-	if(Flash_Read(flashAddrs.effects1, &effects)){
+	if(Flash_Read(flashAddresses.effects1, &effects)){
 		setIdleSpringStrength(effects & 0xff);
 		setFxStrengthAndFilter((effects >> 8) & 0xff,damperIntensity,damperFilter);
 	}else{
 		setIdleSpringStrength(idlespringstrength); // Use default
 	}
 
-	if(Flash_Read(flashAddrs.effects2, &effects)){
+	if(Flash_Read(flashAddresses.effects2, &effects)){
 		setFxStrengthAndFilter(effects & 0xff,frictionIntensity,frictionFilter);
 		setFxStrengthAndFilter((effects >> 8) & 0xff,inertiaIntensity,inertiaFilter);
 	}
 
 	uint16_t ratio;
-	if(Flash_Read(flashAddrs.encoderRatio, &ratio)){
+	if(Flash_Read(flashAddresses.encoderRatio, &ratio)){
 		setGearRatio(ratio & 0xff, (ratio >> 8) & 0xff);
 	}
 
 	uint16_t filterStorage;
-	if (Flash_Read(flashAddrs.speedAccelFilter, &filterStorage))
+	if (Flash_Read(flashAddresses.speedAccelFilter, &filterStorage))
 	{
 		uint8_t profile = filterStorage & 0xFF;
 		this->filterProfileId = profile;
@@ -239,31 +239,31 @@ void Axis::restoreFlash(){
 	}
 
 	uint16_t pp1;
-	if(Flash_Read(flashAddrs.postprocess1, &pp1)){
+	if(Flash_Read(flashAddresses.postprocess1, &pp1)){
 		setExpo((int8_t)(pp1 & 0xff));
 	}
 
 }
 // Saves parameters to flash.
 void Axis::saveFlash(){
-	//NormalizedAxis::saveFlash();
-	Flash_Write(flashAddrs.config, Axis::encodeConfToInt(this->conf));
-	Flash_Write(flashAddrs.maxSpeed, this->maxSpeedDegS);
-//	Flash_Write(flashAddrs.maxAccel, (uint16_t)(this->maxTorqueRateMS));
+	// TODO: This seems to be a remnant of a previous architecture (NormalizedAxis). Confirm and remove.
+	Flash_Write(flashAddresses.config, Axis::encodeConfToInt(this->conf));
+	Flash_Write(flashAddresses.maxSpeed, this->maxSpeedDegS);
+	Flash_Write(flashAddresses.maxAccel, (uint16_t)(this->maxTorqueRateMS));
 
-	Flash_Write(flashAddrs.endstop, fx_ratio_i | (endstopStrength << 8));
-	Flash_Write(flashAddrs.power, power);
-	Flash_Write(flashAddrs.degrees, (degreesOfRotation & 0x7fff) | (invertAxis << 15));
-	Flash_Write(flashAddrs.effects1, idlespringstrength | (damperIntensity << 8));
-	Flash_Write(flashAddrs.effects2, frictionIntensity | (inertiaIntensity << 8));
-	Flash_Write(flashAddrs.encoderRatio, gearRatio.numerator | (gearRatio.denominator << 8));
+	Flash_Write(flashAddresses.endstop, fx_ratio_i | (endstopStrength << 8));
+	Flash_Write(flashAddresses.power, power);
+	Flash_Write(flashAddresses.degrees, (degreesOfRotation & 0x7fff) | (invertAxis << 15));
+	Flash_Write(flashAddresses.effects1, idlespringstrength | (damperIntensity << 8));
+	Flash_Write(flashAddresses.effects2, frictionIntensity | (inertiaIntensity << 8));
+	Flash_Write(flashAddresses.encoderRatio, gearRatio.numerator | (gearRatio.denominator << 8));
 
 	// save CF biquad
 	uint16_t filterStorage = (uint16_t)this->filterProfileId & 0xFF;
-	Flash_Write(flashAddrs.speedAccelFilter, filterStorage);
+	Flash_Write(flashAddresses.speedAccelFilter, filterStorage);
 
 	// Postprocessing
-	Flash_Write(flashAddrs.postprocess1, expoValInt & 0xff);
+	Flash_Write(flashAddresses.postprocess1, expoValInt & 0xff);
 
 }
 
@@ -375,16 +375,6 @@ void Axis::setPower(uint16_t power)
 {
 	this->power = power;
 	updateTorqueScaler();
-#ifdef TMC4671DRIVER
-	// Update hardware limits for TMC for safety
-	TMC4671 *drv = dynamic_cast<TMC4671 *>(this->drv.get());
-	if (drv != nullptr)
-	{
-		//tmclimits.pid_uq_ud = power;
-		//tmclimits.pid_torque_flux = power;
-		drv->setTorqueLimit(power);
-	}
-#endif
 }
 
 
@@ -393,12 +383,13 @@ void Axis::setPower(uint16_t power)
  */
 void Axis::setDrvType(uint8_t drvtype)
 {
-	if (!drv_chooser.isValidClassId(drvtype))
+	if (!driverChooser.isValidClassId(drvtype))
 	{
 		return;
 	}
 	cpp_freertos::CriticalSection::Enter();
-	this->drv.reset(drv_chooser.Create((uint16_t)drvtype));
+	MotorDriver* drv = driverChooser.Create((uint16_t)drvtype);
+	this->drv.reset(drv);
 	if (drv == nullptr)
 	{
 		cpp_freertos::CriticalSection::Exit();
@@ -410,12 +401,7 @@ void Axis::setDrvType(uint8_t drvtype)
 	if(!this->drv->hasIntegratedEncoder()){
 		this->drv->setEncoder(this->enc);
 	}
-#ifdef TMC4671DRIVER
-	if (dynamic_cast<TMC4671 *>(drv.get()))
-	{
-		setupTMC4671();
-	}
-#endif
+
 	if (!tud_connected())
 	{
 		control->usb_disabled = false;
@@ -428,25 +414,6 @@ void Axis::setDrvType(uint8_t drvtype)
 	cpp_freertos::CriticalSection::Exit();
 }
 
-#ifdef TMC4671DRIVER
-// Special tmc setup methods
-void Axis::setupTMC4671()
-{
-	TMC4671 *drv = static_cast<TMC4671 *>(this->drv.get());
-//	drv->setAxis(axis);
-	drv->setExternalEncoderAllowed(true);
-	drv->restoreFlash();
-	tmclimits.pid_torque_flux = getPower();
-	drv->setLimits(tmclimits);
-	//drv->setBiquadTorque(TMC4671Biquad(tmcbq_500hz_07q_25k));
-	
-
-	// Enable driver
-
-	drv->setMotionMode(MotionMode::torque);
-	drv->Start(); // Start thread
-}
-#endif
 
 
 /**
@@ -454,11 +421,11 @@ void Axis::setupTMC4671()
  */
 void Axis::setEncType(uint8_t enctype)
 {
-	if (enc_chooser.isValidClassId(enctype) && !drv->hasIntegratedEncoder())
+	if (encoderChooser.isValidClassId(enctype) && !drv->hasIntegratedEncoder())
 	{
 
 		this->conf.enctype = (enctype);
-		this->enc = std::shared_ptr<Encoder>(enc_chooser.Create(enctype)); // Make new encoder
+		this->enc = std::shared_ptr<Encoder>(encoderChooser.Create(enctype)); // Make new encoder
 		if(drv && !drv->hasIntegratedEncoder())
 			this->drv->setEncoder(this->enc);
 	}else{
@@ -747,11 +714,6 @@ bool Axis::updateTorque(int32_t* totalTorque) {
 		float speedreducer = (float)((metric.current.speed*torqueSign) - (float)maxSpeedDegS) *  ((float)0x7FFF / maxSpeedDegS);
 		spdlimitreducerI = clip<float,int32_t>( spdlimitreducerI + ((speedreducer * speedLimiterI) * torqueScaler),0,power);
 
-		// Accel limit. Not really useful. Maybe replace with torque slew rate limit?
-//		float accreducer = (float)((metric.current.accel*torqueSign) - (float)maxAccelDegSS) * getAccelScalerNormalized();
-//		acclimitreducerI = clip<float,int32_t>( acclimitreducerI + ((accreducer * 0.02) * torqueScaler),0,power);
-
-
 		// Only reduce torque. Don't invert it to prevent oscillation
 		float torqueReduction = speedreducer * speedLimiterP + spdlimitreducerI;// accreducer * 0.025 + acclimitreducerI
 		if(torque > 0){
@@ -764,9 +726,9 @@ bool Axis::updateTorque(int32_t* totalTorque) {
 	}
 	// Torque slew rate limiter
 	if(maxTorqueRateMS > 0){
-		torque = clip<int32_t,int32_t>(torque, metric.previous.torque - maxTorqueRateMS,metric.previous.torque + maxTorqueRateMS);
+		torque = clip<int32_t,int32_t>(torque, metric.previous.torque - (int32_t)maxTorqueRateMS,metric.previous.torque + (int32_t)maxTorqueRateMS);
 	}
-//	if(torque - metric.previous.torque)
+
 	if(outOfBounds){
 		torque = 0;
 	}
@@ -864,14 +826,6 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 
 	case Axis_commands::degrees:
 		handleGetSetFunc(cmd, replies, degreesOfRotation, &Axis::setDegrees,this);
-//		if (cmd.type == CMDtype::get)
-//		{
-//			replies.emplace_back(degreesOfRotation);
-//		}
-//		else if (cmd.type == CMDtype::set)
-//		{
-//			setDegrees(cmd.val);
-//		}
 		break;
 
 	case Axis_commands::esgain:
@@ -940,7 +894,7 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 
 	case Axis_commands::enctype:
 		if(cmd.type == CMDtype::info){
-			enc_chooser.replyAvailableClasses(replies,this->getEncType());
+			encoderChooser.replyAvailableClasses(replies,this->getEncType());
 		}else if(cmd.type == CMDtype::get){
 			replies.emplace_back(this->getEncType());
 		}else if(cmd.type == CMDtype::set){
@@ -950,7 +904,7 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 
 	case Axis_commands::drvtype:
 		if(cmd.type == CMDtype::info){
-			drv_chooser.replyAvailableClasses(replies,this->getDrvType());
+			driverChooser.replyAvailableClasses(replies,this->getDrvType());
 		}else if(cmd.type == CMDtype::get){
 			replies.emplace_back(this->getDrvType());
 		}else if(cmd.type == CMDtype::set){
@@ -1043,13 +997,6 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 			if(this->getEncoder() != nullptr){
 				cpr = this->getEncoder()->getCpr();
 			}
-//#ifdef TMC4671DRIVER // CPR should be consistent with position. Maybe change TMC to prescale to encoder count or correct readout in UI
-//			TMC4671 *tmcdrv = dynamic_cast<TMC4671 *>(this->drv.get()); // Special case for TMC. Get the actual encoder resolution
-//			if (tmcdrv && tmcdrv->hasIntegratedEncoder())
-//			{
-//				cpr = tmcdrv->getEncCpr();
-//			}
-//#endif
 			replies.emplace_back(cpr);
 		}else{
 			return CommandStatus::ERR;

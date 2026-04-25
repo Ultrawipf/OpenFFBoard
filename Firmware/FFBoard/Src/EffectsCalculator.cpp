@@ -104,11 +104,13 @@ An inertia condition uses axis acceleration as the metric.
 void EffectsCalculator::calculateEffects(std::vector<std::unique_ptr<Axis>> &axes)
 {
 	for (auto &axis : axes) {
-		axis->setEffectTorque(0);
 		axis->calculateAxisEffects(isActive());
 	}
 
 	if(!isActive()){
+		for (auto &axis : axes) {
+			axis->setEffectTorque(0);
+		}
 		return;
 	}
 
@@ -159,8 +161,8 @@ void EffectsCalculator::calculateEffects(std::vector<std::unique_ptr<Axis>> &axe
 	// Apply summed force to axes
 	for(uint8_t i=0 ; i < axisCount ; i++)
 	{
-		int32_t force = clip<int32_t, int32_t>(forces[i], -0x7fff, 0x7fff); // Clip
-		axes[i]->setEffectTorque(force);
+		forces[i] = clip<int32_t, int32_t>(forces[i], -0x7fff, 0x7fff); // Clip at effects summ
+		axes[i]->setEffectTorque(forces[i]);
 	}
 
 	effects_statslast = effects_stats;
@@ -715,7 +717,7 @@ std::string EffectsCalculator::listEffectsUsed(bool details,uint8_t axis){
 	} else {
 
 		bool firstItem = true;
-		for (int i=0;i < 12; i++) {
+		for (int i=0; i< 12; i++) {
 			if (!firstItem) effects_list += ", ";
 			effects_list += "{\"max\":" + std::to_string(effects_stats[i].max[axis]);
 			effects_list += ", \"curr\":" + std::to_string(effects_stats[i].current[axis]);
