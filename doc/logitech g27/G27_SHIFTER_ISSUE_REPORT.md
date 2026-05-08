@@ -13,12 +13,14 @@ The **G27 Shifter buttons did not work** when using the official **ShifterAnalog
 | SCK | PB13 | SPI2 Clock |
 | MISO | PB14 | SPI2 Data In |
 | CS/Latch | PB12 | SPI2_SS1 (Shifter Chip Select) |
+| X Axis | PC0 | Analog 6 (configurable) |
+| Y Axis | PC1 | Analog 5 (configurable) |
 | VCC | 3.3V | Power |
 | GND | GND | Ground |
 
 The G27 shifter contains:
 - **2x 74HC165** shift registers (16 buttons total)
-- **Analog axes** for X/Y position (gear detection)
+- **Analog axes** for X/Y position (gear detection via PC0/PC1)
 
 ---
 

@@ -95,7 +95,7 @@ See [G27_COMPLETE_WIRING_GUIDE.md](G27_COMPLETE_WIRING_GUIDE.md) for detailed pi
 | Motor | PWM | PE9, PE11 |
 | Encoder | ABN | PA0, PA1 |
 | Pedals | Analog | PA2, PA3, PC3 |
-| Shifter | SPI2 | PB12, PB13, PB14 |
+| Shifter | SPI2 + Analog | PB12, PB13, PB14, PC0, PC1 |
 | Wheel Rim | SPI3 | PA15, PC10, PC11 |
 
 ### 3. Configure / Configurar

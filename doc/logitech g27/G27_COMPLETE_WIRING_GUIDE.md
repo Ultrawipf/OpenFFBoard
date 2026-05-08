@@ -204,13 +204,15 @@ The G27 shifter has:
 | SCK | PB13 | 2 | SPI Clock |
 | MISO | PB14 | 4 | SPI Data |
 | CS/Latch | PB12 | 6 | Chip Select (SPI2_SS1) |
-| X Axis | Analog In | 7 | Analog X position |
-| Y Axis | Analog In | 3 | Analog Y position |
+| X Axis | PC0 (Analog 6) | 7 | Analog X position |
+| Y Axis | PC1 (Analog 5) | 3 | Analog Y position |
 | GND | GND | 9 | Ground |
 
 #### Configuration / Configuração
 - Mode: **G27 Shifter H-pattern** (ShifterAnalog mode 2)
 - CS Pin: **1** (PB12)
+- X Channel: **6** (PC0) - configurable via `shifter.xchan`
+- Y Channel: **5** (PC1) - configurable via `shifter.ychan`
 
 ### PT - Ligação do Câmbio
 
@@ -224,9 +226,15 @@ O câmbio G27 tem:
 | SCK | PB13 | 2 | Clock SPI |
 | MISO | PB14 | 4 | Dados SPI |
 | CS/Latch | PB12 | 6 | Chip Select (SPI2_SS1) |
-| Eixo X | Analog In | 7 | Posição analógica X |
-| Eixo Y | Analog In | 3 | Posição analógica Y |
+| Eixo X | PC0 (Analog 6) | 7 | Posição analógica X |
+| Eixo Y | PC1 (Analog 5) | 3 | Posição analógica Y |
 | GND | GND | 9 | Terra |
+
+#### Configuração
+- Modo: **G27 Shifter H-pattern** (ShifterAnalog modo 2)
+- CS Pin: **1** (PB12)
+- X Channel: **6** (PC0) - configurável via `shifter.xchan`
+- Y Channel: **5** (PC1) - configurável via `shifter.ychan`
 
 ---
 
@@ -314,12 +322,12 @@ O registrador 74HC165 **não tem saída tri-state**. Quando dois 74HC165 compart
 │  ├── VCC ────────── 3.3V                                    │
 │  └── GND ────────── GND                                     │
 │                                                             │
-│  SHIFTER (SPI2)                                             │
+│  SHIFTER (SPI2 + Analog)                                    │
 │  ├── SCK ────────── PB13                                    │
 │  ├── MISO ───────── PB14                                    │
 │  ├── CS ─────────── PB12 (SPI2_SS1)                        │
-│  ├── X Axis ─────── Analog Input                            │
-│  ├── Y Axis ─────── Analog Input                            │
+│  ├── X Axis ─────── PC0 (Analog 6)                          │
+│  ├── Y Axis ─────── PC1 (Analog 5)                          │
 │  ├── VCC ────────── 3.3V                                    │
 │  └── GND ────────── GND                                     │
 │                                                             │
@@ -342,7 +350,7 @@ O registrador 74HC165 **não tem saída tri-state**. Quando dois 74HC165 compart
 | Encoder (Original) | Quadrature | PA0, PA1 | 5V | ABN type, CPR 2400 |
 | Encoder (MT6835) | Quadrature | PA0, PA1 | 5V | ABN type, CPR 65535, ratio 11:180 ⭐ |
 | Pedals | Analog | PA2, PA3, PC3 | 3.3V | Standard wiki connection |
-| Shifter | SPI2 | PB13, PB14, PB12 | 3.3V | G27 mode |
+| Shifter | SPI2 + Analog | PB13, PB14, PB12, PC0, PC1 | 3.3V | G27 mode, X/Y analog axes |
 | Wheel Rim | SPI3 | PC10, PC11, PA15 | 3.3V | Custom firmware required |
 
 ---
