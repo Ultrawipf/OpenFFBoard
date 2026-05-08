@@ -163,7 +163,7 @@ The G27 pedals use **3 potentiometers** for throttle, brake, and clutch. This co
 |----------|-----------------|----------------|-------|
 | Throttle | Analog 1 (PA2) | - | Accelerator pedal |
 | Brake | Analog 2 (PA3) | - | Brake pedal |
-| Clutch | Analog 3 (PA6) | - | Clutch pedal |
+| Clutch | Analog 3 (PC3) | - | Clutch pedal |
 | VCC | 3.3V | Red | Potentiometer power |
 | GND | GND | Black | Ground |
 
@@ -182,7 +182,7 @@ Os pedais do G27 usam **3 potenciômetros** para acelerador, freio e embreagem. 
 |--------|------------------|---------------|-------|
 | Acelerador | Analog 1 (PA2) | - | Pedal do acelerador |
 | Freio | Analog 2 (PA3) | - | Pedal do freio |
-| Embreagem | Analog 3 (PA6) | - | Pedal da embreagem |
+| Embreagem | Analog 3 (PC3) | - | Pedal da embreagem |
 | VCC | 3.3V | Vermelho | Alimentação dos potenciômetros |
 | GND | GND | Preto | Terra |
 
@@ -310,7 +310,7 @@ O registrador 74HC165 **não tem saída tri-state**. Quando dois 74HC165 compart
 │  PEDALS (Standard Wiki Connection)                          │
 │  ├── Throttle ───── PA2 (Analog 1)                          │
 │  ├── Brake ──────── PA3 (Analog 2)                          │
-│  ├── Clutch ─────── PA6 (Analog 3)                          │
+│  ├── Clutch ─────── PC3 (Analog 3)                          │
 │  ├── VCC ────────── 3.3V                                    │
 │  └── GND ────────── GND                                     │
 │                                                             │
@@ -341,7 +341,7 @@ O registrador 74HC165 **não tem saída tri-state**. Quando dois 74HC165 compart
 | Motor | PWM | PE11 | External PSU | H-bridge required, torque curve 0.60-0.70 |
 | Encoder (Original) | Quadrature | PA0, PA1 | 5V | ABN type, CPR 2400 |
 | Encoder (MT6835) | Quadrature | PA0, PA1 | 5V | ABN type, CPR 65535, ratio 11:180 ⭐ |
-| Pedals | Analog | PA2, PA3, PA6 | 3.3V | Standard wiki connection |
+| Pedals | Analog | PA2, PA3, PC3 | 3.3V | Standard wiki connection |
 | Shifter | SPI2 | PB13, PB14, PB12 | 3.3V | G27 mode |
 | Wheel Rim | SPI3 | PC10, PC11, PA15 | 3.3V | Custom firmware required |
 
