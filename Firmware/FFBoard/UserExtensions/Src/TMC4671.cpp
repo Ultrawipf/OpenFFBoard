@@ -3746,9 +3746,10 @@ void TMC4671::handleStateCoggingCalibration() {
 				CommandHandler::broadcastCommandReply(CommandReply("Cogging calibration successful", 1), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 
 				// --- 4. RETURN TO CENTER (Unwinding multi-turn) ---
-				CommandHandler::broadcastCommandReply(CommandReply("Returning to center...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
-				
 				float current_abs_pos = getFilteredPosition();
+				snprintf(dbg_buf, sizeof(dbg_buf), "Return to center: Start pos = %.3f turns", current_abs_pos);
+				CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+				
 				float return_target = current_abs_pos;
 				float return_speed_rps = (TARGET_RPM * 2.0f) / 60.0f; // Return at 16 RPM
 				int return_dir = (current_abs_pos > 0.0f) ? -1 : 1;
@@ -3759,6 +3760,7 @@ void TMC4671::handleStateCoggingCalibration() {
 				
 				uint32_t return_start = HAL_GetTick();
 				uint32_t next_tick = micros();
+				uint32_t last_log = 0;
 				
 				while (fabs(current_abs_pos) > 0.001f && !emergency && hasPower()) {
 					next_tick += 1000; // 1kHz loop
@@ -3779,8 +3781,17 @@ void TMC4671::handleStateCoggingCalibration() {
 					iq_cmd = clip<float,float>(iq_cmd, -max_test_torque, max_test_torque);
 					applySafeTorque(iq_cmd);
 					
+					if (HAL_GetTick() - last_log > 500) {
+						last_log = HAL_GetTick();
+						snprintf(dbg_buf, sizeof(dbg_buf), "Unwinding: Pos=%.3f Target=%.3f Iq=%d", current_abs_pos, return_target, (int)iq_cmd);
+						CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+					}
+
 					refreshWatchdog();
-					if (HAL_GetTick() - return_start > 15000) break; // 15s safety timeout
+					if (HAL_GetTick() - return_start > 15000) {
+						CommandHandler::broadcastCommandReply(CommandReply("Return to center timeout", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+						break; // 15s safety timeout
+					}
 					while ((micros() - next_tick) & 0x80000000) { }
 				}
 				applySafeTorque(0);
