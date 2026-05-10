@@ -32,6 +32,11 @@ bool Flash_ReadWriteDefault(uint16_t adr,uint16_t *buf,uint16_t def); // returns
 void Flash_Dump(std::vector<std::tuple<uint16_t,uint16_t>> *result,bool includeAll = false);
 bool Flash_Format();
 
+#ifdef COGGING_TABLE_FLASH_START_ADDRESS
+bool Flash_WriteCoggingTable(uint8_t table_idx, int16_t* data);
+bool Flash_ReadCoggingTable(uint8_t table_idx, int16_t* data);
+#endif
+
 bool OTP_Write(uint16_t adroffset,uint64_t dat);
 bool OTP_Read(uint16_t adroffset,uint64_t* dat);
 

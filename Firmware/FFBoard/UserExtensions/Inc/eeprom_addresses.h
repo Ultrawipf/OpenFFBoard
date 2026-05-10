@@ -13,11 +13,11 @@
 
 #include "main.h"
 // Change this to the amount of currently registered variables
-#define NB_OF_VAR 183
+#define NB_OF_VAR 186
 extern const uint16_t VirtAddVarTab[NB_OF_VAR];
 
 // Amount of variables in exportable list
-#define NB_EXPORTABLE_ADR 168
+#define NB_EXPORTABLE_ADR 171
 extern const uint16_t exportableFlashAddresses[NB_EXPORTABLE_ADR];
 
 
@@ -125,6 +125,7 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_TMC1_FLUX_I 0x32A
 #define ADR_TMC1_PHIE_OFS 0x32B
 #define ADR_TMC1_TRQ_FILT 0x32C
+#define ADR_TMC1_COGGING_CAL 0x32D
 // AXIS2
 #define ADR_AXIS2_CONFIG 0x341 // 0-2 ENC, 3-5 DRV
 #define ADR_AXIS2_POWER 0x342
@@ -157,6 +158,7 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_TMC2_FLUX_I 0x36A
 #define ADR_TMC2_PHIE_OFS 0x36B
 #define ADR_TMC2_TRQ_FILT 0x36C
+#define ADR_TMC2_COGGING_CAL 0x36D
 // AXIS3
 #define ADR_AXIS3_CONFIG 0x381 // 0-2 ENC, 3-5 DRV
 #define ADR_AXIS3_POWER 0x382
@@ -189,6 +191,7 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_TMC3_FLUX_I 0x3AA
 #define ADR_TMC3_PHIE_OFS 0x3AB
 #define ADR_TMC3_TRQ_FILT 0x3AC
+#define ADR_TMC3_COGGING_CAL 0x3AD
 // RMD CAN Motor
 #define ADR_RMD1_DATA1 0x3C0 //0-4 CAN ID
 #define ADR_RMD1_TORQUE 0x3C1 //Maximum current
