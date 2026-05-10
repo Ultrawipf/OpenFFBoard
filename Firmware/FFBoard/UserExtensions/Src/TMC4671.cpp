@@ -3534,8 +3534,8 @@ void TMC4671::handleStateCoggingCalibration() {
 			CommandHandler::broadcastCommandReply(CommandReply("Validating & Fine-Tuning PID...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 			
 			float current_target_err = INITIAL_ERROR_LIMIT_DEG / 360.0f;
-			float best_err_val = 1e9f;
-			float best_Kp = pid_soft.Kp, best_Ki = pid_soft.Ki, best_Kd = pid_soft.Kd;
+			best_err_val = 1e9f;
+			best_Kp = pid_soft.Kp; best_Ki = pid_soft.Ki; best_Kd = pid_soft.Kd;
 
 			for (int attempt = 1; attempt <= VAL_MAX_ATTEMPTS; attempt++) {
 				float max_err_val = 0.0f;
@@ -3747,22 +3747,21 @@ void TMC4671::handleStateCoggingCalibration() {
 
 				// --- 4. RETURN TO CENTER (Unwinding multi-turn) ---
 				float current_abs_pos = getFilteredPosition();
-				snprintf(dbg_buf, sizeof(dbg_buf), "Return to center: Start pos = %.3f turns", current_abs_pos);
+				snprintf(dbg_buf, sizeof(dbg_buf), "Return to center: Start pos = %.3f turns (Gains: P:%d I:%d)", current_abs_pos, (int)best_Kp, (int)best_Ki);
 				CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 				
 				float return_target = current_abs_pos;
 				float return_speed_rps = (TARGET_RPM * 2.0f) / 60.0f; // Return at 16 RPM
 				int return_dir = (current_abs_pos > 0.0f) ? -1 : 1;
 				
-				// Reset PID for absolute tracking using best gains
-				pid_soft.Kp = best_Kp; pid_soft.Ki = best_Ki; pid_soft.Kd = best_Kd;
-				arm_pid_init_f32(&pid_soft, 1);
+				// Use a simple Proportional controller for returning to zero (more robust than stateful PID here)
+				float return_Kp = best_Kp;
 				
 				uint32_t return_start = HAL_GetTick();
 				uint32_t next_tick = micros();
 				uint32_t last_log = 0;
 				
-				while (fabs(current_abs_pos) > 0.001f && !emergency && hasPower()) {
+				while (fabs(current_abs_pos) > 0.002f && !emergency && hasPower()) {
 					next_tick += 1000; // 1kHz loop
 					
 					// Ramp target towards zero
@@ -3777,13 +3776,16 @@ void TMC4671::handleStateCoggingCalibration() {
 					current_abs_pos = getFilteredPosition();
 					float abs_err = return_target - current_abs_pos; // Absolute error (no wrapping)
 					
-					float iq_cmd = arm_pid_f32(&pid_soft, abs_err);
+					// Manual P calculation to avoid any arm_pid_f32 issues in this phase
+					float iq_cmd = return_Kp * abs_err;
+					
 					iq_cmd = clip<float,float>(iq_cmd, -max_test_torque, max_test_torque);
 					applySafeTorque(iq_cmd);
 					
-					if (HAL_GetTick() - last_log > 500) {
+					if (HAL_GetTick() - last_log > 1000) {
 						last_log = HAL_GetTick();
-						snprintf(dbg_buf, sizeof(dbg_buf), "Unwinding: Pos=%.3f Target=%.3f Iq=%d", current_abs_pos, return_target, (int)iq_cmd);
+						snprintf(dbg_buf, sizeof(dbg_buf), "Unwinding: Pos=%.3f Target=%.3f Err=%.3f Iq=%d", 
+								 current_abs_pos, return_target, abs_err, (int)iq_cmd);
 						CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 					}
 
