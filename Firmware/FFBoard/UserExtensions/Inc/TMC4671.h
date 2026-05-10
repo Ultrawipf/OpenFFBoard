@@ -73,8 +73,6 @@ enum class TMC_PwmMode : uint8_t {off = 0,HSlow_LShigh = 1, HShigh_LSlow = 2, re
 
 enum class TMC_StartupType{NONE,coldStart,warmStart};
 
-enum class CoggingState : uint8_t { Init, ForwardWait, ForwardMeasure, ForwardCompute, BackwardWait, BackwardMeasure, Compute };
-
 struct CoggingCalibData {
 	int32_t temp[CALIB_MAP_SIZE];
 	uint16_t counts[CALIB_MAP_SIZE];
@@ -733,7 +731,6 @@ private:
 	void saveCoggingTable();
 	void clearCoggingTable();
 
-	CoggingState coggingCalibState = CoggingState::Init;
 	std::unique_ptr<CoggingCalibData> coggingData = nullptr;
 	uint32_t calibStartTime = 0;
 	MotionMode prevCalibMode = MotionMode::stop;

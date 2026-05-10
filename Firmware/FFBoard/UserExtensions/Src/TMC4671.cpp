@@ -3355,6 +3355,8 @@ void TMC4671::handleStateCoggingCalibration() {
 				data_cogging[i] = (coggingData->counts[i] > 0) ? coggingData->temp[i] / coggingData->counts[i] : 0;
 			}
 		}
+		setTargetVelocity(0);
+		Delay(200);
 
 		// 3. BACKWARD PASS
 		if (!emergency && hasPower()) {
@@ -3378,6 +3380,7 @@ void TMC4671::handleStateCoggingCalibration() {
 				Delay(1);
 			}
 		}
+		setTargetVelocity(0);
 
 		// 4. FINAL COMPUTE
 		if (!emergency && hasPower()) {
@@ -3421,9 +3424,7 @@ void TMC4671::handleStateCoggingCalibration() {
 	}
 	
 	if (coggingData) coggingData.reset();
-	setTargetVelocity(0);
 	setMotionMode(prevCalibMode, true);
-	coggingCalibState = CoggingState::Init;
 	allowStateChange = true;
 	changeState(laststate, false);
 }
