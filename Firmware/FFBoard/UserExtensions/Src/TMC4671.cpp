@@ -3052,8 +3052,19 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 	
 	case TMC4671_commands::calibrateCogging:
 		if(cmd.type == CMDtype::get){
-			changeState(TMC_ControlState::CoggingCalibration);
-			return CommandStatus::NO_REPLY;
+			if (!hasPower()) {
+				replies.emplace_back("Calibration aborted: Power lost", 0);
+			} else if (emergency) {
+				replies.emplace_back("Calibration aborted: Emergency stop engaged", 0);
+			} else if (!allowStateChange) {
+				replies.emplace_back("Calibration aborted: Driver busy or initializing", 0);
+			} else if (conf.motconf.motor_type == MotorType::NONE) {
+				replies.emplace_back("Calibration aborted: No motor type set", 0);
+			} else {
+				changeState(TMC_ControlState::CoggingCalibration);
+				return CommandStatus::NO_REPLY;
+			}
+			return CommandStatus::OK;
 		} else {
 			status = CommandStatus::ERR;
 		}
