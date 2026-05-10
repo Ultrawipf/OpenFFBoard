@@ -19,6 +19,9 @@ The system uses a **Continuous Discrete Fourier Transform (DFT)** integration. I
     *   **Continuous Mathematical Wrapping**: The system uses `floorf`-based modulo arithmetic for position wrapping ($pos - \lfloor pos \rfloor$) on both target and actual positions, ensuring robust tracking across multiple revolutions without conditional branch penalties.
     *   **Actual Current Feedback**: The system integrates the **actual currents (Iq/Id)** read from the TMC hardware registers, rather than the controller's command. This captures the real physical interaction between the motor and the magnetic cogging.
     *   **Complex Rotation Optimization**: Uses recursive complex multiplication ($e^{i(k+1)\theta} = e^{ik\theta} \cdot e^{i\theta}$) to calculate 128 harmonics with only one trigonometric call per sample.
+3.  **Post-Acquisition Homing & Re-alignment**: After successful analysis, the system ensures the motor returns to a known hardware state.
+    *   **Multi-turn Unwinding**: Using the best-found PID gains, the motor performs a controlled ramp-down to the absolute `0.0` position at **16 RPM**. This "unwinds" any revolutions accumulated during the acquisition or retry phases.
+    *   **Encoder Re-Zeroing**: Upon reaching the origin, the driver is automatically switched to the `EncoderInit` state. This triggers a hardware re-alignment (`bangInitEnc`) and resets the encoder position registers to zero, ensuring a perfectly calibrated and centered baseline for immediate use.
 
 ## 2. Technical Specifications
 

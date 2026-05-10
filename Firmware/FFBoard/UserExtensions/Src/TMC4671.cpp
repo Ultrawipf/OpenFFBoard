@@ -3741,6 +3741,52 @@ void TMC4671::handleStateCoggingCalibration() {
 				saveCoggingTable();
 				cogging_enabled = true;
 				CommandHandler::broadcastCommandReply(CommandReply("Cogging calibration successful", 1), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+
+				// --- 4. RETURN TO CENTER (Unwinding multi-turn) ---
+				CommandHandler::broadcastCommandReply(CommandReply("Returning to center...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+				
+				float current_abs_pos = getFilteredPosition();
+				float return_target = current_abs_pos;
+				float return_speed_rps = (TARGET_RPM * 2.0f) / 60.0f; // Return at 16 RPM
+				int return_dir = (current_abs_pos > 0.0f) ? -1 : 1;
+				
+				// Reset PID for absolute tracking using best gains
+				pid_soft.Kp = best_Kp; pid_soft.Ki = best_Ki; pid_soft.Kd = best_Kd;
+				arm_pid_init_f32(&pid_soft, 1);
+				
+				uint32_t return_start = HAL_GetTick();
+				uint32_t next_tick = micros();
+				
+				while (fabs(current_abs_pos) > 0.001f && !emergency && hasPower()) {
+					next_tick += 1000; // 1kHz loop
+					
+					// Ramp target towards zero
+					if (return_dir == -1) {
+						return_target -= return_speed_rps * 0.001f;
+						if (return_target < 0.0f) return_target = 0.0f;
+					} else {
+						return_target += return_speed_rps * 0.001f;
+						if (return_target > 0.0f) return_target = 0.0f;
+					}
+
+					current_abs_pos = getFilteredPosition();
+					float abs_err = return_target - current_abs_pos; // Absolute error (no wrapping)
+					
+					float iq_cmd = arm_pid_f32(&pid_soft, abs_err);
+					iq_cmd = clip<float,float>(iq_cmd, -max_test_torque, max_test_torque);
+					applySafeTorque(iq_cmd);
+					
+					refreshWatchdog();
+					if (HAL_GetTick() - return_start > 15000) break; // 15s safety timeout
+					while ((micros() - next_tick) & 0x80000000) { }
+				}
+				applySafeTorque(0);
+				CommandHandler::broadcastCommandReply(CommandReply("Centering done. Re-aligning encoder...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+				
+				// Instead of Jumping to Running, go through EncoderInit to re-zero and re-align everything
+				allowStateChange = true;
+				changeState(TMC_ControlState::EncoderInit);
+				return; // Exit handleStateCoggingCalibration cleanly
 			} else {
 				errorMessage = "Abort: Memory fail (candidates)";
 			}
