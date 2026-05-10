@@ -780,36 +780,34 @@ uint16_t Axis::getPower(){
 /**
  * Calculates an exponential torque correction curve and scale for FFBEffect
  */
-int64_t Axis::calculateFFBTorque(){
+int32_t Axis::calculateFFBTorque(){
 
-	// Apply equalizer
-	float filtered_torque =  this->ffbEffectTorque;
+	// 1. Initial conversion and normalization
+	// Convert to float and move to [-1.0, 1.0] range immediately.
+	float torque = (float)this->ffbEffectTorque * (1.0f / 32767.0f);
 
-	if(equalizerEnabled){
-		for (uint8_t i = 0; i < num_eq_bands; ++i) {
-			filtered_torque = eqFilters[i].process(filtered_torque);
-		}
-	}
-
-	// Game effects. Down and up-scaling may introduce float artifacts. Do this before scaling down.
-	float torque = (float)filtered_torque / (float)0x7fff;
-
-	// 1. Game Clipping detection
-	// If the game sends more than the theoretical maximum (+/- 32767), the signal is clipped at the source.
-	if(abs(torque) >= 0x7fff){
+	// 2. Game Clipping detection
+	// Performed on normalized value for consistency.
+	if(fabsf(torque) >= 1.0f){
 		pulseClipLed(); // Visual alert: game signal is clipping
 	}
 
-	// 2. Apply Expo (Linearization or sensation curve)
-	if(expo != 1){
+	// 3. Apply equalizer
+	// Standardized DSP processing on [-1.0, 1.0] range.
+	if(equalizerEnabled){
+		for (uint8_t i = 0; i < num_eq_bands; ++i) {
+			torque = eqFilters[i].process(torque);
+		}
+	}
+
+	// 4. Apply Expo (Linearization or sensation curve)
+	if(expo != 1.0f){
 		torque = calculateExpoTorque(torque);
 	}
 
-	// 3. Game specific gain (effectRatioScaler)
-	// Scale the FFB from game only (allows lowering game effects without lowering endstops)
-	torque = (int64_t)((float)torque * effectRatioScaler);
-
-	return torque;
+	// 5. Final scaling and single conversion back to integer
+	// Apply both the FFB range and the effect ratio in one final step.
+	return (int32_t)(torque * 32767.0f * effectRatioScaler);
 }
 
 int32_t Axis::getTorque() { return metric.current.torque; } // Fix: move from previous to current
@@ -834,7 +832,7 @@ int32_t Axis::calculateEndstopTorque(){
 	return clip<int32_t,int32_t>(endstopTorque,-0x7fff,0x7fff);
 }
 
-void Axis::setFfbEffectTorque(int64_t torque) {
+void Axis::setFfbEffectTorque(int32_t torque) {
 	this->ffbEffectTorque = torque;
 }
 
@@ -846,7 +844,7 @@ bool Axis::updateTorque(int32_t* totalTorque) {
 
 	// STEP 1: Process FFB torque from the game (via helper function)
 	// (Reconstructed by CMSIS Spline, Expo applied, and scaled by FFB ratio)
-	int64_t torque = calculateFFBTorque();
+	int32_t torque = calculateFFBTorque();
 
 	// STEP 2: Mix in local mechanical effects
 	// (Damper, Friction, Inertia generated locally at high frequency)
@@ -859,7 +857,7 @@ bool Axis::updateTorque(int32_t* totalTorque) {
 
 	// STEP 4: Master Volume Scaling
 	// Map the virtual signal (+/- 32767) to the physical power limit ("power")
-	torque = (int64_t)((float)torque * torqueScaler);
+	torque = (int32_t)((float)torque * torqueScaler);
 
 	// STEP 5: Safety limits (Fade-in, Out of bounds)
 	// Applied BEFORE dynamic limiters so that abrupt cuts are smoothed by the Slew Rate.
@@ -870,7 +868,7 @@ bool Axis::updateTorque(int32_t* totalTorque) {
 	// Apply a fade-in effect for a smooth force ramp-up on startup or recovery.
 	// Increases forceFadeMultiplier progressively based on forceFadeDuration and sample rate.
 	if(forceFadeMultiplier < 1.0f){
-		torque = (int64_t)((float)torque * forceFadeMultiplier);
+		torque = (int32_t)((float)torque * forceFadeMultiplier);
 		forceFadeMultiplier += forceFadeDuration / this->filter_f;
 	}
 
@@ -904,7 +902,7 @@ bool Axis::updateTorque(int32_t* totalTorque) {
 }
 
 
-void Axis::applyTorqueSlewRateLimiter(int64_t& torque)
+void Axis::applyTorqueSlewRateLimiter(int32_t& torque)
 {
 	// Limits the rate of change of the torque (slew rate), to smooths out sudden changes in torque.
 	// Essential for a natural feel and to prevent "clanking" noises.
@@ -913,14 +911,14 @@ void Axis::applyTorqueSlewRateLimiter(int64_t& torque)
 	}
 
 	// This prevents sudden torque jumps, resulting in a smoother feel.
-	const int64_t previousTorque = metric.previous.torque;
-	const int64_t maxTorqueChange = maxTorqueRateMS;
+	const int32_t previousTorque = metric.previous.torque;
+	const int32_t maxTorqueChange = maxTorqueRateMS;
 
 	// The torque is clipped to be within the range of [previous torque - limit, previous torque + limit].
-	torque = clip<int64_t>(torque, previousTorque - maxTorqueChange, previousTorque + maxTorqueChange);
+	torque = clip<int32_t>(torque, previousTorque - maxTorqueChange, previousTorque + maxTorqueChange);
 }
 
-int64_t Axis::applySpeedLimiterTorque(int64_t& torque){
+int32_t Axis::applySpeedLimiterTorque(int32_t& torque){
 	// Speed Limiter: A PI controller to reduce torque when speed exceeds maxSpeedDegS.
 	// The limiter only acts when torque is applied in the direction of movement.
 
@@ -929,7 +927,7 @@ int64_t Axis::applySpeedLimiterTorque(int64_t& torque){
 		return 0;
 	}
 
-	int64_t resultTorque = 0;
+	int32_t resultTorque = 0;
 
 #ifdef USE_DSP_FUNCTIONS
 	float effectiveSpeed = metric.current.speed * (torque > 0 ? 1.0f : -1.0f);
@@ -946,9 +944,9 @@ int64_t Axis::applySpeedLimiterTorque(int64_t& torque){
 		// We must only reduce the magnitude of the torque, not invert it.
 		reductionAmount = clip(reductionAmount, 0.0f, fabsf((float)torque));
 		if(torque > 0) {
-			resultTorque = reductionAmount;
+			resultTorque = (int32_t)reductionAmount;
 		} else {
-			resultTorque = -reductionAmount;
+			resultTorque = (int32_t)-reductionAmount;
 		}
 	} else {
 		arm_pid_reset_f32(&speedLimiterPID); // Reset PID if not active
@@ -963,9 +961,9 @@ int64_t Axis::applySpeedLimiterTorque(int64_t& torque){
 	// Only reduce torque. Don't invert it to prevent oscillation
 	float torqueReduction = speedreducer * speedLimiterP + speedLimitReducerI;// accreducer * 0.025 + acclimitreducerI
 	if(torque > 0){
-		resultTorque = clip<float,int64_t>(torqueReduction,0,torque);
+		resultTorque = (int32_t)clip<float,int32_t>(torqueReduction,0,torque);
 	}else{
-		resultTorque = clip<float,int64_t>(-torqueReduction,torque,0);
+		resultTorque = (int32_t)clip<float,int32_t>(-torqueReduction,torque,0);
 	}
 #endif
 

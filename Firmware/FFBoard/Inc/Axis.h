@@ -349,7 +349,7 @@ public:
 	 * @brief Calculates the FFB torque exponential torque, from the input torque and apply expo and scaler
 	 * @return The calculated exponential torque.
 	 */
-	int64_t calculateFFBTorque();
+	int32_t calculateFFBTorque();
 
 	/**
 	 * @brief Starts a force fade-in.
@@ -364,7 +364,7 @@ public:
 	 * @brief Sets the FFB effect torque.
 	 * @param torque The new FFB effect torque from the EffectsCalculator.
 	 */
-	void setFfbEffectTorque(int64_t torque);
+	void setFfbEffectTorque(int32_t torque);
 
 	/**
 	 * @brief Updates the total torque.
@@ -431,12 +431,12 @@ private:
 	 * @param torque A reference to the torque value to be modified.
 	 * @return torque update to apply to reduced de speed.
 	 */
-	int64_t applySpeedLimiterTorque(int64_t& torque);
+	int32_t applySpeedLimiterTorque(int32_t& torque);
 	/**
 	 * @brief Applies the torque slew rate limiter to the torque.
 	 * @param torque A reference to the torque value to be modified.
 	 */
-	void applyTorqueSlewRateLimiter(int64_t& torque);
+	void applyTorqueSlewRateLimiter(int32_t& torque);
 	/**
 	 * @brief Decodes the axis configuration from a 16-bit integer stored in flash.
 	 * @param val The 16-bit encoded configuration value.
@@ -495,7 +495,7 @@ private:
 	float previousFrameSpeed = 0;			//!< Instantaneous speed from the last cycle, used for acceleration calculation.
 
 	// Torque components
-	int64_t ffbEffectTorque = 0;		//!< Torque from HID FFB effects.
+	int32_t ffbEffectTorque = 0;		//!< Torque from HID FFB effects.
 	int32_t mechanicalEffectTorque = 0;	//!< Torque from mechanical effects (damper, friction, inertia).
 
 	// Power and scaling

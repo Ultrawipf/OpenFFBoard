@@ -108,7 +108,7 @@ An inertia condition uses axis acceleration as the metric.
 void EffectsCalculator::calculateEffects(std::vector<std::unique_ptr<Axis>> &axes)
 {
 	int axisCount = axes.size();
-	int64_t forces[MAX_AXIS] = {0};
+	int32_t forces[MAX_AXIS] = {0};
 
 	if(isActive()){
 		int32_t force = 0;
