@@ -722,6 +722,7 @@ private:
 	static constexpr uint8_t ENC_RETRY_MAX = 3;
 
 	uint32_t lastStatTime = 0;
+	int32_t cached_pos = 0;
 
 	uint8_t spi_buf[5] = {0};
 

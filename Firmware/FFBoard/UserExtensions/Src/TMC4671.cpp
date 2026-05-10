@@ -1629,6 +1629,34 @@ void TMC4671::turn(int16_t power){
 		return;
 	int32_t flux = 0;
 
+	// Anticogging id enable in firmware
+#ifdef COGGING_TABLE_FLASH_START_ADDRESS
+	if (cogging_enabled) {
+		float pos_f;
+		if (usingExternalEncoder() && drvEncoder != nullptr) {
+			pos_f = drvEncoder->getPos_f();
+		} else {
+			pos_f = (float)this->cached_pos / (float)this->getCpr();
+		}
+
+		float fraction_tour = fmodf(pos_f, 1.0f);
+		if (fraction_tour < 0.0f) fraction_tour += 1.0f;
+		uint16_t pos_mechanical = (uint16_t)(fraction_tour * 65536.0f);
+		
+		uint32_t total_pos = (uint32_t)pos_mechanical * CALIB_MAP_SIZE;
+		uint16_t current_index = total_pos >> 16;
+		uint16_t fraction = total_pos & 0xFFFF;
+
+		if (current_index < CALIB_MAP_SIZE) {
+			uint16_t next_index = (current_index + 1) % CALIB_MAP_SIZE;
+			int32_t val1 = data_cogging[current_index];
+			int32_t val2 = data_cogging[next_index];
+			int32_t interpolated_torque = val1 + (((val2 - val1) * (int32_t)fraction) >> 16);
+			power -= (int16_t)interpolated_torque;
+		}
+	}
+#endif
+
 	// Flux offset for field weakening
 
 	flux = idleFlux-clip<int32_t,int16_t>(abs(power),0,maxOffsetFlux);
@@ -1792,6 +1820,7 @@ void TMC4671::setTmcPos(int32_t pos){
 int32_t TMC4671::getPos(){
 
 	int32_t pos = (int32_t)readReg(0x6B);
+	this->cached_pos = pos;
 	return pos;
 }
 
@@ -3207,35 +3236,6 @@ void TMC4671::handleStateWaitPower() {
 }
 
 void TMC4671::handleStateRunning() {
-#ifdef COGGING_TABLE_FLASH_START_ADDRESS
-	// Update anti-cogging compensation with linear interpolation
-	if (cogging_enabled) {
-		uint16_t pos_mechanical = (uint16_t)getPos(); // Mechanical position 0-65535
-		
-		// Calculate precise index and fractional part
-		uint32_t total_pos = (uint32_t)pos_mechanical * CALIB_MAP_SIZE;
-		uint16_t current_index = total_pos >> 16;      // Equivalent to / 65536
-		uint16_t fraction = total_pos & 0xFFFF;       // Fractional part (0-65535)
-
-		if (current_index < CALIB_MAP_SIZE) {
-			uint16_t next_index = (current_index + 1) % CALIB_MAP_SIZE; // Wrap-around circular table
-			
-			int32_t val1 = data_cogging[current_index];
-			int32_t val2 = data_cogging[next_index];
-			
-			// Linear interpolation: val1 + (val2 - val1) * (fraction / 65536)
-			int32_t interpolated_torque = val1 + (((val2 - val1) * (int32_t)fraction) >> 16);
-			
-			const int16_t compensation_torque = -(int16_t)interpolated_torque;
-			
-			// Write to PID_TORQUE_OFFSET (register 0x65)
-			updateReg(0x65, compensation_torque, 0xffff, 16);
-		} else {
-			// Safety: index out of bounds
-			updateReg(0x65, 0, 0xffff, 16);
-		}
-	}
-#endif
 
 	// Check status, Temps, Everything alright?
 	uint32_t tick = HAL_GetTick();
@@ -3260,11 +3260,7 @@ void TMC4671::handleStateRunning() {
 			}
 		}
 	}
-#ifdef COGGING_TABLE_FLASH_START_ADDRESS
-	Delay(1); // Update anticogging at ~1khz
-#else
 	Delay(200);
-#endif
 }
 
 void TMC4671::handleStateFullCalibration() {
