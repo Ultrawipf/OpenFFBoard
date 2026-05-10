@@ -7,11 +7,14 @@ This document describes the implementation of the harmonic-based anti-cogging co
 The system uses a **Continuous Discrete Fourier Transform (DFT)** integration. It eliminates lookup tables and fixed-size buffers, making it memory-safe for all supported microcontrollers (F407 and F411).
 
 1.  **Software PID & Auto-Tuning**: Before acquisition, the system performs a dynamic auto-tuning of a software PID controller (using CMSIS-DSP). It identifies the motor's static friction and uses the **Relay Feedback method** ([reference](https://en.wikipedia.org/wiki/Relay_feedback_test)) and **Ziegler-Nichols method** ([reference](https://en.wikipedia.org/wiki/Ziegler%E2%80%93Nichols_method)) to calculate optimal gains.
-2.  **Deterministic Dual-Pass Acquisition**: The motor rotates at a constant speed defined by **COGGING_CALIB_TIME_PER_REV_S** (default: 8 seconds per revolution) in both directions.
-3.  **1kHz Strict Integration**: Acquisition is strictly clocked at 1kHz. For an 8-second tour, exactly **8,000 samples** are integrated. This ensures perfect spatial alignment and mathematical precision for the DFT.
-4.  **Friction Feed-Forward**: The breakaway friction torque discovered during auto-tuning is applied as a **Feed-Forward** ([reference](https://en.wikipedia.org/wiki/Feed_forward_(control))) base torque. This allows the motor to reach a constant velocity instantly, eliminating start-up transients in the DFT data.
-5.  **Actual Current Feedback**: The system integrates the **actual currents (Iq/Id)** read from the TMC hardware registers, rather than the controller's command. This captures the real physical interaction between the motor and the magnetic cogging.
-6.  **Complex Rotation Optimization**: Uses recursive complex multiplication ($e^{i(k+1)\theta} = e^{ik\theta} \cdot e^{i\theta}$) to calculate 128 harmonics with only one trigonometric call per sample.
+    *   **Initial Capture**: The system starts oscillating to determine the base PID parameters for the velocity controller.
+    *   **Dynamic Profiling**: The system analyzes the oscillation period ($T_u$) to automatically differentiate between **Small/Low-Inertia motors** (NEMA17, Gimbal) and **Large/High-Inertia motors** (MiGE 130ST). It applies specific gain scalers to ensure stability and high-bandwidth response across the entire motor range.
+    *   **Validation & Elastic Fine-Tuning**: A high-precision verification phase (aiming for **0.1 degree** of tracking error) is performed. The system runs a 600ms test rotation; if the target precision isn't met, it iteratively "boosts" the PID stiffness (up to 5 attempts) while adaptively relaxing the tolerance if the mechanical setup limits precision.
+1.  **Torque Response Capture (Deterministic Dual-Pass Acquisition)**: The motor rotates at a constant speed defined by **COGGING_CALIB_TIME_PER_REV_S** (default: 8 seconds per revolution) in both directions.
+    *   **1kHz Strict Integration**: Acquisition is strictly clocked at 1kHz. For an 8-second tour, exactly **8,000 samples** are integrated. This ensures perfect spatial alignment and mathematical precision for the DFT (detailed below).
+    *   **Friction Feed-Forward**: The breakaway friction torque discovered during auto-tuning is applied as a **Feed-Forward** ([reference](https://en.wikipedia.org/wiki/Feed_forward_(control))) base torque. This allows the motor to reach a constant velocity instantly, eliminating start-up transients in the DFT data.
+    *   **Actual Current Feedback**: The system integrates the **actual currents (Iq/Id)** read from the TMC hardware registers, rather than the controller's command. This captures the real physical interaction between the motor and the magnetic cogging.
+    *   **Complex Rotation Optimization**: Uses recursive complex multiplication ($e^{i(k+1)\theta} = e^{ik\theta} \cdot e^{i\theta}$) to calculate 128 harmonics with only one trigonometric call per sample.
 
 ## 2. Technical Specifications
 

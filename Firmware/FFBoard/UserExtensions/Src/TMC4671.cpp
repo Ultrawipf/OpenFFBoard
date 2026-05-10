@@ -3503,33 +3503,115 @@ void TMC4671::handleStateCoggingCalibration() {
 			applySafeTorque(0);
 			Delay(250);
 
-			float dt = 0.001f; // 1kHz = 1ms
-			char dbg_buf[128];
-			snprintf(dbg_buf, sizeof(dbg_buf), "Tune Diag -> Cross:%d Amp(x10k):%d Fric:%d", 
-					(int)cross_count, (int)(max_amplitude * 10000.0f), (int)friction_broken);
-			CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+            // --- GAIN CALCULATION (WITH Tu OPTIMIZATION: NEMA vs MiGE) ---
+            float dt = 0.001f; // 1kHz = 1ms
+            char dbg_buf[128];
+            if (cross_count > 4 && max_amplitude > 0.0001f && friction_broken) {
+                float Tu = ((float)period_sum / (cross_count - 1)) * 2.0f / 1000000.0f;
+                float Ku = (4.0f * relay_torque) / (PI * max_amplitude);
 
-			if (cross_count > 4 && max_amplitude > 0.0001f && friction_broken) {
-				float Tu = ((float)period_sum / (cross_count - 1)) * 2.0f / 1000000.0f;
-				float Ku = (4.0f * relay_torque) / (PI * max_amplitude);
+                // Base calculation (Ziegler-Nichols method: https://en.wikipedia.org/wiki/Ziegler%E2%80%93Nichols_method)
+                float Kp_base = 0.45f * Ku;
+                float Ki_base = (0.54f * Ku / Tu) * dt;
+                float Kd_base = (0.15f * Ku * Tu) / dt;
 
-				pid_soft.Kp = 0.45f * Ku;      
-				pid_soft.Ki = (0.54f * Ku / Tu) * dt * 0.05f; 
-				pid_soft.Kd = (0.15f * Ku * Tu) / dt;
-				
-				arm_pid_init_f32(&pid_soft, 1);
-				
-				snprintf(dbg_buf, sizeof(dbg_buf), "Tuned -> Kp:%d Ki:%d Kd:%d Amp(x10k):%d Trq:%d", 
-						(int)pid_soft.Kp, (int)pid_soft.Ki, (int)pid_soft.Kd, (int)(max_amplitude * 10000.0f), (int)relay_torque);
-				CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
-			} else {
-				pid_soft.Kp = 25000.0f;
-				pid_soft.Ki = 0.0f;
-				pid_soft.Kd = 800.0f / dt; 
-				arm_pid_init_f32(&pid_soft, 1);
-				CommandHandler::broadcastCommandReply(CommandReply("Auto-tune failed, using robust failsafe", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
-			}
-			
+                if (Tu > 0.045f) {
+                    // LARGE MOTOR Profile (High Inertia, e.g., MiGE 130ST)
+                    pid_soft.Kp = Kp_base * 1.2f;
+                    pid_soft.Ki = Ki_base * 8.0f; 
+                    pid_soft.Kd = Kd_base * 0.15f; 
+                } else {
+                    // SMALL MOTOR Profile (Low Inertia, e.g., NEMA17/Gimbal)
+                    pid_soft.Kp = Kp_base * 0.6f;
+                    pid_soft.Ki = Ki_base * 0.4f;
+                    pid_soft.Kd = Kd_base * 0.05f; 
+                }
+                
+                arm_pid_init_f32(&pid_soft, 1);
+                
+                snprintf(dbg_buf, sizeof(dbg_buf), "Tuned -> Tu:%dms Kp:%d Ki:%d Kd:%d", 
+                        (int)(Tu * 1000.0f), (int)pid_soft.Kp, (int)pid_soft.Ki, (int)pid_soft.Kd);
+                CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+            } else {
+                pid_soft.Kp = 25000.0f;
+                pid_soft.Ki = 0.0f;
+                pid_soft.Kd = 800.0f / dt; 
+                arm_pid_init_f32(&pid_soft, 1);
+                CommandHandler::broadcastCommandReply(CommandReply("Auto-tune failed, using robust failsafe", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+            }
+            
+            // --- 1.5 VALIDATION & FINE-TUNING PHASE (High Precision) ---
+            CommandHandler::broadcastCommandReply(CommandReply("Validating & Fine-Tuning PID...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+            
+            bool validation_passed = false;
+            float current_target_err = 0.00028f; // Initial target: ~0.1 degree
+            const int MAX_ATTEMPTS = 5;
+            
+            for (int attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+                float max_err_val = 0.0f;
+                arm_pid_init_f32(&pid_soft, 1); // Reset integrator for the test
+                
+                float val_target_rpm = 8.0f;
+                filtered_pos_f = (usingExternalEncoder() && drvEncoder != nullptr) ? drvEncoder->getPos_f() : (float)this->getPos() / (float)this->getCpr();
+                float val_target_pos_f = filtered_pos_f;
+                
+                uint32_t val_start = HAL_GetTick();
+                uint32_t period_us = 1000;
+                uint32_t next_tick = micros();
+                
+                // Test rotation for 600 ms
+                while (HAL_GetTick() - val_start < 600 && !emergency && hasPower()) {
+                    next_tick += period_us;
+                    
+                    val_target_pos_f += (val_target_rpm / 60.0f) * (period_us / 1000000.0f);
+                    if (val_target_pos_f >= 1.0f) val_target_pos_f -= 1.0f;
+                    if (val_target_pos_f < 0.0f) val_target_pos_f += 1.0f;
+                    
+                    float val_actual_pos = getFilteredPosition();
+                    float err = getWrappedError(val_target_pos_f, val_actual_pos);
+                    
+                    if (fabs(err) > max_err_val) max_err_val = fabs(err);
+                    
+                    float iq_cmd = arm_pid_f32(&pid_soft, err);
+                    if(iq_cmd > max_test_torque) iq_cmd = max_test_torque;
+                    if(iq_cmd < -max_test_torque) iq_cmd = -max_test_torque;
+                    
+                    applySafeTorque(iq_cmd);
+                    
+                    while ((micros() - next_tick) & 0x80000000) { }
+                }
+                applySafeTorque(0);
+                
+                // Evaluate test results
+                float err_deg = max_err_val * 360.0f;
+                float target_deg = current_target_err * 360.0f;
+                
+                if (max_err_val < current_target_err) {
+                    validation_passed = true;
+                    snprintf(dbg_buf, sizeof(dbg_buf), "Validation OK: %.2f deg (Limit: %.2f)", err_deg, target_deg);
+                    CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+                    break; // Success! Exit the loop.
+                } else if (attempt < MAX_ATTEMPTS) {
+                    // Test failed: Error too high. Stiffen the PID.
+                    pid_soft.Kp *= 1.30f; // +30% stiffness
+                    pid_soft.Ki *= 1.25f; // +25% force accumulation
+                    pid_soft.Kd *= 0.90f; // Slight decrease in damping to avoid vibrations
+                    
+                    snprintf(dbg_buf, sizeof(dbg_buf), "Retry %d (Err: %.2f deg) -> Boost PID", attempt, err_deg);
+                    CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+                    
+                    // If mechanics cannot achieve this precision, start relaxing the target
+                    if (attempt >= 2) {
+                        current_target_err *= 1.5f; // +50% tolerance on accepted error
+                    }
+                    Delay(300); // Allow motor to stabilize before next attempt
+                } else {
+                    snprintf(dbg_buf, sizeof(dbg_buf), "Val Limit Reached (Err: %.2f deg). Proceeding.", err_deg);
+                    CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+                }
+            }
+            Delay(250);
+
 			// --- 2. ACQUISITION DFT A VITESSE CONSTANTE ---
 			int8_t dirs[2] = {1, -1};
 			
