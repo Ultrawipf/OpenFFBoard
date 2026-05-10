@@ -3527,10 +3527,13 @@ void TMC4671::handleStateCoggingCalibration() {
 				goto cleanup;
 			}
 			
-			// --- 1.5 VALIDATION & FINE-TUNING (Elastic Tolerance) ---
+			// --- 1.5 VALIDATION & FINE-TUNING (Elastic Tolerance + Stability Check) ---
 			CommandHandler::broadcastCommandReply(CommandReply("Validating & Fine-Tuning PID...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 			
 			float current_target_err = INITIAL_ERROR_LIMIT_DEG / 360.0f;
+			float best_err_val = 1e9f;
+			float best_Kp = pid_soft.Kp, best_Ki = pid_soft.Ki, best_Kd = pid_soft.Kd;
+
 			for (int attempt = 1; attempt <= VAL_MAX_ATTEMPTS; attempt++) {
 				float max_err_val = 0.0f;
 				arm_pid_init_f32(&pid_soft, 1); // Reset integrator
@@ -3562,12 +3565,30 @@ void TMC4671::handleStateCoggingCalibration() {
 				
 				float err_deg = max_err_val * 360.0f;
 				float target_deg = current_target_err * 360.0f;
+
+				// Track best performance
+				if (max_err_val < best_err_val) {
+					best_err_val = max_err_val;
+					best_Kp = pid_soft.Kp;
+					best_Ki = pid_soft.Ki;
+					best_Kd = pid_soft.Kd;
+				}
 				
 				if (max_err_val < current_target_err) {
 					snprintf(dbg_buf, sizeof(dbg_buf), "Validation OK: %.2f deg (Limit: %.2f)", err_deg, target_deg);
 					CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 					break; 
-				} else if (attempt < VAL_MAX_ATTEMPTS) {
+				} 
+
+				// Instability detector: If error is 2x worse than the best found, we are oscillating
+				if (max_err_val > best_err_val * 2.0f && attempt > 2) {
+					snprintf(dbg_buf, sizeof(dbg_buf), "Instability detected (%.2f deg). Reverting to best (%.2f deg).", err_deg, best_err_val * 360.0f);
+					CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+					pid_soft.Kp = best_Kp; pid_soft.Ki = best_Ki; pid_soft.Kd = best_Kd;
+					break;
+				}
+
+				if (attempt < VAL_MAX_ATTEMPTS) {
 					// Test failed: Error too high. Stiffen the PID.
 					pid_soft.Kp *= 1.30f; 
 					pid_soft.Ki *= 1.25f; 
@@ -3581,10 +3602,11 @@ void TMC4671::handleStateCoggingCalibration() {
 					}
 					Delay(VAL_RETRY_PAUSE_MS);
 				} else {
-					snprintf(dbg_buf, sizeof(dbg_buf), "Val Limit Reached (Err: %.2f deg). Aborting.", err_deg);
+					// Last attempt failed, restore best anyway
+					pid_soft.Kp = best_Kp; pid_soft.Ki = best_Ki; pid_soft.Kd = best_Kd;
+					snprintf(dbg_buf, sizeof(dbg_buf), "Val Limit Reached. Using best attempt: %.2f deg.", best_err_val * 360.0f);
 					CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
-					errorMessage = "Abort: PID Fine-Tuning Failed";
-					goto cleanup;
+					break;
 				}
 			}
 			Delay(250);
