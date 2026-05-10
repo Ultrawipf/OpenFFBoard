@@ -13,11 +13,11 @@
 
 #include "main.h"
 // Change this to the amount of currently registered variables
-#define NB_OF_VAR 168
+#define NB_OF_VAR 183
 extern const uint16_t VirtAddVarTab[NB_OF_VAR];
 
 // Amount of variables in exportable list
-#define NB_EXPORTABLE_ADR 153
+#define NB_EXPORTABLE_ADR 168
 extern const uint16_t exportableFlashAddresses[NB_EXPORTABLE_ADR];
 
 
@@ -106,6 +106,11 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_AXIS1_ENC_RATIO 0x30A // Accel filter Lowpass
 #define ADR_AXIS1_EFFECTS2 0x30B // 0-7 Friction, 8-15 Inertia
 #define ADR_AXIS1_POSTPROCESS1 0x30C // 0-7 expo curve
+#define ADR_AXIS1_EQ1 0x30D // Equalizer band 1,2 gains
+#define ADR_AXIS1_EQ2 0x30E // Equalizer band 3,4 gains
+#define ADR_AXIS1_EQ3 0x30F // Equalizer band 5 gain
+#define ADR_AXIS1_HANDSOFF_CONF 0x310 // Hands-off config
+#define ADR_AXIS1_HANDSOFF_ACCEL 0x311 // Hands-off accel threshold
 // TMC1
 #define ADR_TMC1_MOTCONF 0x320 // 0-2: MotType 3-5: PhiE source 6-15: Poles
 #define ADR_TMC1_CPR 0x321
@@ -133,6 +138,11 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_AXIS2_ENC_RATIO 0x34A // Store the encoder ratio for an axis
 #define ADR_AXIS2_EFFECTS2 0x34B // 0-7 Friction, 8-15 Inertia
 #define ADR_AXIS2_POSTPROCESS1 0x34C // 0-7 expo curve
+#define ADR_AXIS2_EQ1 0x34D // Equalizer band 1,2 gains
+#define ADR_AXIS2_EQ2 0x34E // Equalizer band 3,4 gains
+#define ADR_AXIS2_EQ3 0x34F // Equalizer band 5 gain
+#define ADR_AXIS2_HANDSOFF_CONF 0x350 // Hands-off config
+#define ADR_AXIS2_HANDSOFF_ACCEL 0x351 // Hands-off accel threshold
 // TMC2
 #define ADR_TMC2_MOTCONF 0x360 // 0-2: MotType 3-5: PhiE source 6-15: Poles
 #define ADR_TMC2_CPR 0x361
@@ -160,6 +170,11 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_AXIS3_ENC_RATIO 0x38A // Store the encoder ratio for an axis
 #define ADR_AXIS3_EFFECTS2 0x38B // 0-7 Friction, 8-15 Inertia
 #define ADR_AXIS3_POSTPROCESS1 0x38C // 0-7 expo curve
+#define ADR_AXIS3_EQ1 0x38D // Equalizer band 1,2 gains
+#define ADR_AXIS3_EQ2 0x38E // Equalizer band 3,4 gains
+#define ADR_AXIS3_EQ3 0x38F // Equalizer band 5 gain
+#define ADR_AXIS3_HANDSOFF_CONF 0x390 // Hands-off config
+#define ADR_AXIS3_HANDSOFF_ACCEL 0x391 // Hands-off accel threshold
 // TMC3
 #define ADR_TMC3_MOTCONF 0x3A0 // 0-2: MotType 3-5: PhiE source 6-15: Poles
 #define ADR_TMC3_CPR 0x3A1
