@@ -3410,7 +3410,7 @@ void TMC4671::handleStateCoggingCalibration() {
 					calibStartTime = HAL_GetTick();
 					while (HAL_GetTick() - calibStartTime < revolution_time_ms && !emergency && hasPower()) {
 						float pos_f = (usingExternalEncoder() && drvEncoder != nullptr) ? drvEncoder->getPos_f() : (float)this->getPos() / (float)this->getCpr();
-						float iq = (float)getVelocityControllerTorque() * p; 
+						float iq = -(float)getVelocityControllerTorque(); 
 #ifdef COGGING_CALIB_ENABLE_ID_DIAG
 						float id = (float)getActualFlux();
 #endif
@@ -3453,7 +3453,7 @@ void TMC4671::handleStateCoggingCalibration() {
 					float re = iq_acc_cos[k] * norm;
 					float im = iq_acc_sin[k] * norm;
 					candidates[k].mag = sqrtf(re*re + im*im);
-					candidates[k].phase = atan2f(im, re);
+					candidates[k].phase = atan2f(re, im);
 					candidates[k].k = k;
 				}
 
