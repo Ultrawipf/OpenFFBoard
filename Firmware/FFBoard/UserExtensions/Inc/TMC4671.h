@@ -28,7 +28,7 @@
 #include "Filters.h"
 
 #define SPITIMEOUT 500
-#define TMC_THREAD_MEM 384
+#define TMC_THREAD_MEM 1024
 #define TMC_THREAD_PRIO 25 		// Must be higher than main thread
 #define TMC_ADCOFFSETFAIL 5000 	// How much offset from 0x7fff to allow before a calibration is failed
 
