@@ -32,6 +32,11 @@
 #define TMC_THREAD_PRIO 25 		// Must be higher than main thread
 #define TMC_ADCOFFSETFAIL 5000 	// How much offset from 0x7fff to allow before a calibration is failed
 
+#ifdef COGGING_TABLE_FLASH_START_ADDRESS
+// --- Constants for anti-cogging calibration ---
+#define CALIB_SPEED 50 	 	    // Slow speed in RPM used for calibration.
+#endif
+
 extern SPI_HandleTypeDef HSPIDRV;
 
 #ifdef TIM_TMC
@@ -57,13 +62,25 @@ extern TIM_HandleTypeDef TIM_TMC;
 #define TIM_TMC_ARR 250
 #endif
 
-enum class TMC_ControlState : uint32_t {uninitialized,waitPower,Shutdown,Running,EncoderInit,EncoderFinished,HardError,OverTemp,IndexSearch,FullCalibration,ExternalEncoderInit,Pidautotune, NONE
+enum class TMC_ControlState : uint32_t {uninitialized,waitPower,Shutdown,Running,EncoderInit,EncoderFinished,HardError,OverTemp,IndexSearch,FullCalibration,ExternalEncoderInit,Pidautotune
+#ifdef COGGING_TABLE_FLASH_START_ADDRESS
+	,CoggingCalibration
+#endif
+	,SlewRateCalibration, NONE
 };
 
 enum class TMC_PwmMode : uint8_t {off = 0,HSlow_LShigh = 1, HShigh_LSlow = 2, res2 = 3, res3 = 4, PWM_LS = 5, PWM_HS = 6, PWM_FOC = 7};
 
 enum class TMC_StartupType{NONE,coldStart,warmStart};
 
+enum class CoggingState : uint8_t { Init, ForwardWait, ForwardMeasure, BackwardWait, BackwardMeasure, Compute };
+
+struct CoggingCalibData {
+	int32_t temp_fw[CALIB_MAP_SIZE] = {0};
+	int32_t temp_bw[CALIB_MAP_SIZE] = {0};
+	uint16_t counts_fw[CALIB_MAP_SIZE] = {0};
+	uint16_t counts_bw[CALIB_MAP_SIZE] = {0};
+};
 
 enum class TMC_GpioMode{DebugSpi,DSAdcClkOut,DSAdcClkIn,Aout_Bin,Ain_Bout,Aout_Bout,Ain_Bin};
 enum class MotorType : uint8_t {NONE=0,DC=1,STEPPER=2,BLDC=3};
@@ -265,6 +282,9 @@ struct TMC4671FlashAddrs{
 	uint16_t encOffset = ADR_TMC1_ENC_OFFSET;
 	uint16_t phieOffset = ADR_TMC1_PHIE_OFS;
 	uint16_t torqueFilter = ADR_TMC1_TRQ_FILT;
+#ifdef COGGING_TABLE_FLASH_START_ADDRESS
+	uint16_t coggingEnable = ADR_TMC1_COGGING_CAL;
+#endif
 };
 
 struct TMC4671ABNConf{
@@ -395,7 +415,10 @@ class TMC4671 :
 		torqueP,torqueI,fluxP,fluxI,velocityP,velocityI,posP,posI,
 		tmctype,pidPrec,phiesrc,fluxoffset,seqpi,tmcIscale,encdir,temp,reg,
 		svpwm,fullCalibration,calibrated,abnindexenabled,findIndex,getState,encpol,combineEncoder,invertForce,vmTmc,
-		extphie,torqueFilter_mode,torqueFilter_f,torqueFilter_q,pidautotune,fluxbrake,pwmfreq
+		extphie,torqueFilter_mode,torqueFilter_f,torqueFilter_q,pidautotune,fluxbrake,pwmfreq,
+#ifdef COGGING_TABLE_FLASH_START_ADDRESS
+		cogging,calibrateCogging, coggingTable
+#endif
 	};
 
 #ifdef TMCDEBUG
@@ -457,6 +480,9 @@ public:
 	bool checkEncoder();
 	void calibrateAenc();
 	void calibrateEncoder();
+#ifdef COGGING_TABLE_FLASH_START_ADDRESS
+	void calibrateCogging();
+#endif
 
 	void setEncoderType(EncoderType_TMC type);
 	uint32_t getEncCpr();
@@ -488,6 +514,11 @@ public:
 
 	void setBBM(uint8_t bbml,uint8_t bbmh);
 
+	
+	// Slew rate calibration control
+	uint16_t getDrvSlewRate();
+	bool startSlewRateCalibration();
+	bool isSlewRateCalibrationInProgress();
 
 #ifdef TIM_TMC
 	void timerElapsed(TIM_HandleTypeDef* htim);
@@ -695,6 +726,23 @@ private:
 	uint32_t lastStatTime = 0;
 
 	uint8_t spi_buf[5] = {0};
+
+#ifdef COGGING_TABLE_FLASH_START_ADDRESS
+	// Cogging Calibration
+	int16_t data_cogging[CALIB_MAP_SIZE] = {0};
+	bool cogging_enabled = false;
+	void saveCoggingTable();
+	void clearCoggingTable();
+
+	CoggingState coggingCalibState = CoggingState::Init;
+	std::unique_ptr<CoggingCalibData> coggingData = nullptr;
+	uint32_t calibStartTime = 0;
+	MotionMode prevCalibMode = MotionMode::stop;
+	void handleStateCoggingCalibration();
+#endif
+
+	uint16_t maxSlewRate = MAX_SLEW_RATE; // in mA/ms
+	void measureMaxSlewRate();
 
 	enum class PidTuneState : uint8_t { Init, RampFluxP, TuneFluxI_Pulse, TuneFluxI_Measure, Done };
 	PidTuneState pidTuneState = PidTuneState::Init;

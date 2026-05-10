@@ -93,13 +93,25 @@ const ClassIdentifier TMC4671::getInfo() {
 
 void TMC4671::setAddress(uint8_t address){
 	if (address == 1){
-		this->flashAddrs = TMC4671FlashAddrs({ADR_TMC1_MOTCONF, ADR_TMC1_CPR, ADR_TMC1_ENCA, ADR_TMC1_OFFSETFLUX, ADR_TMC1_TORQUE_P, ADR_TMC1_TORQUE_I, ADR_TMC1_FLUX_P, ADR_TMC1_FLUX_I,ADR_TMC1_ADC_I0_OFS,ADR_TMC1_ADC_I1_OFS,ADR_TMC1_ENC_OFFSET,ADR_TMC1_PHIE_OFS,ADR_TMC1_TRQ_FILT});
+		this->flashAddrs = TMC4671FlashAddrs({ADR_TMC1_MOTCONF, ADR_TMC1_CPR, ADR_TMC1_ENCA, ADR_TMC1_OFFSETFLUX, ADR_TMC1_TORQUE_P, ADR_TMC1_TORQUE_I, ADR_TMC1_FLUX_P, ADR_TMC1_FLUX_I,ADR_TMC1_ADC_I0_OFS,ADR_TMC1_ADC_I1_OFS,ADR_TMC1_ENC_OFFSET,ADR_TMC1_PHIE_OFS,ADR_TMC1_TRQ_FILT
+#ifdef COGGING_TABLE_FLASH_START_ADDRESS
+			,ADR_TMC1_COGGING_CAL
+#endif
+			});
 	}else if (address == 2)
 	{
-		this->flashAddrs = TMC4671FlashAddrs({ADR_TMC2_MOTCONF, ADR_TMC2_CPR, ADR_TMC2_ENCA, ADR_TMC2_OFFSETFLUX, ADR_TMC2_TORQUE_P, ADR_TMC2_TORQUE_I, ADR_TMC2_FLUX_P, ADR_TMC2_FLUX_I,ADR_TMC2_ADC_I0_OFS,ADR_TMC2_ADC_I1_OFS,ADR_TMC2_ENC_OFFSET,ADR_TMC2_PHIE_OFS,ADR_TMC2_TRQ_FILT});
+		this->flashAddrs = TMC4671FlashAddrs({ADR_TMC2_MOTCONF, ADR_TMC2_CPR, ADR_TMC2_ENCA, ADR_TMC2_OFFSETFLUX, ADR_TMC2_TORQUE_P, ADR_TMC2_TORQUE_I, ADR_TMC2_FLUX_P, ADR_TMC2_FLUX_I,ADR_TMC2_ADC_I0_OFS,ADR_TMC2_ADC_I1_OFS,ADR_TMC2_ENC_OFFSET,ADR_TMC2_PHIE_OFS,ADR_TMC2_TRQ_FILT
+#ifdef COGGING_TABLE_FLASH_START_ADDRESS
+	,ADR_TMC2_COGGING_CAL
+#endif
+		});
 	}else if (address == 3)
 	{
-		this->flashAddrs = TMC4671FlashAddrs({ADR_TMC3_MOTCONF, ADR_TMC3_CPR, ADR_TMC3_ENCA, ADR_TMC3_OFFSETFLUX, ADR_TMC3_TORQUE_P, ADR_TMC3_TORQUE_I, ADR_TMC3_FLUX_P, ADR_TMC3_FLUX_I,ADR_TMC3_ADC_I0_OFS,ADR_TMC3_ADC_I1_OFS,ADR_TMC3_ENC_OFFSET,ADR_TMC3_PHIE_OFS,ADR_TMC3_TRQ_FILT});
+		this->flashAddrs = TMC4671FlashAddrs({ADR_TMC3_MOTCONF, ADR_TMC3_CPR, ADR_TMC3_ENCA, ADR_TMC3_OFFSETFLUX, ADR_TMC3_TORQUE_P, ADR_TMC3_TORQUE_I, ADR_TMC3_FLUX_P, ADR_TMC3_FLUX_I,ADR_TMC3_ADC_I0_OFS,ADR_TMC3_ADC_I1_OFS,ADR_TMC3_ENC_OFFSET,ADR_TMC3_PHIE_OFS,ADR_TMC3_TRQ_FILT
+#ifdef COGGING_TABLE_FLASH_START_ADDRESS			
+	,ADR_TMC3_COGGING_CAL
+#endif
+		});
 	}
 	//this->setAxis((char)('W'+address));
 }
@@ -128,6 +140,10 @@ void TMC4671::saveFlash(){
 	uint16_t filterval = (torqueFilterConf.params.freq & 0x1fff) | ((uint8_t)(torqueFilterConf.mode) << 13);
 	Flash_Write(flashAddrs.torqueFilter, filterval);
 
+#ifdef COGGING_TABLE_FLASH_START_ADDRESS
+	// Save cogging state
+	Flash_Write(flashAddrs.coggingEnable, cogging_enabled ? 1:0);
+#endif
 }
 
 /**
@@ -139,6 +155,17 @@ void TMC4671::saveAdcParams(){
 	adcSettingsStored = true;
 }
 
+#ifdef COGGING_TABLE_FLASH_START_ADDRESS
+void TMC4671::saveCoggingTable(){
+	Flash_WriteCoggingTable(this->drv_address - 1, this->data_cogging);
+}
+
+void TMC4671::clearCoggingTable(){
+	memset(data_cogging, 0, sizeof(data_cogging));
+	cogging_enabled = false;
+	saveCoggingTable();
+}
+#endif
 
 /**
  * Restores saved parameters
@@ -192,6 +219,16 @@ void TMC4671::restoreFlash(){
 		torqueFilterConf.mode = static_cast<TMCbiquadpreset>((filterval >> 13) & 0x7);
 	}
 
+#ifdef COGGING_TABLE_FLASH_START_ADDRESS
+	uint16_t cogging = 0; // Initialize to avoid random stack data
+	if(Flash_Read(flashAddrs.coggingEnable, &cogging)) {
+		cogging_enabled = cogging & 0x01;
+	} else {
+		cogging_enabled = false;
+	}
+
+	Flash_ReadCoggingTable(this->drv_address - 1, this->data_cogging);
+#endif
 }
 
 bool TMC4671::hasPower(){
@@ -278,7 +315,7 @@ bool TMC4671::initialize(){
 		 */
 		pulseClipLed();
 
-		this->spiConfig.peripheral.BaudRatePrescaler = spiPort.getClosestPrescaler(1e6,0,2e6).first; // 1MHz target
+		this->spiConfig.peripheral.BaudRatePrescaler = spiPort.getClosestPrescaler(1e6).first; // 1MHz target
 		spiPort.configurePort(&this->spiConfig.peripheral);
 		ES_TMCdetected = true;
 	}
@@ -483,6 +520,11 @@ void TMC4671::Run(){
 			handleStatePidAutoTune();
 			break;
 
+#ifdef COGGING_TABLE_FLASH_START_ADDRESS
+		case TMC_ControlState::CoggingCalibration:
+			handleStateCoggingCalibration();
+			break;
+#endif
 		case TMC_ControlState::IndexSearch:
 			autohome();
 			changeState(laststate);
@@ -541,14 +583,7 @@ void TMC4671::Run(){
 
 			if(fullCalibrationInProgress){
 				Flash_Write(flashAddrs.encA,encodeEncHallMisc()); // Save encoder settings
-				fullCalibrationInProgress = false;
-				if(motorEnabledRequested && isSetUp()){
-					startMotor();
-					changeState(TMC_ControlState::Running);
-				}else{
-					stopMotor();
-					laststate = TMC_ControlState::Running; // Go to running when starting again
-				}
+				changeState(TMC_ControlState::SlewRateCalibration);
 			}
 
 
@@ -558,6 +593,30 @@ void TMC4671::Run(){
 
 		break;
 
+		case TMC_ControlState::SlewRateCalibration:
+			{
+				if(!hasPower()){
+					this->postPowerState = TMC_ControlState::SlewRateCalibration;
+					changeState(TMC_ControlState::waitPower);
+					break;
+				}
+				allowStateChange = false;
+				measureMaxSlewRate();
+				allowStateChange = true;
+				if(fullCalibrationInProgress){
+					fullCalibrationInProgress = false;
+					if(motorEnabledRequested && isSetUp()){
+						startMotor();
+						changeState(TMC_ControlState::Running);
+					}else{
+						stopMotor();
+						laststate = TMC_ControlState::Running; // Go to running when starting again
+					}
+				}else{
+					changeState(laststate,false);
+				}
+				break;
+			}
 		}
 
 
@@ -1160,7 +1219,7 @@ void TMC4671::setup_AENC(TMC4671AENCConf encconf){
 
 	writeReg(0x40,encconf.cpr);
 	writeReg(0x3e,(uint16_t)encconf.phiAoffset);
-	writeReg(0x45,(uint16_t)phiEoffset | ((uint16_t)phiMoffset << 16));
+	writeReg(0x45,(uint16_t)encconf.phiEoffset | ((uint16_t)encconf.phiMoffset << 16));
 	writeReg(0x3c,(uint16_t)encconf.nThreshold | ((uint16_t)encconf.nMask << 16));
 
 	uint32_t mode = encconf.uvwmode & 0x1;
@@ -1580,7 +1639,7 @@ void TMC4671::turn(int16_t power){
 	/*
 	 * If flux dissipation is on prefer this over the resistor.
 	 * Warning: The axis only calls this function when active and if torque changed.
-	 * It may update during sustained force and still cause overvoltage conditions.
+	 * It may not update during sustained force and still cause overvoltage conditions.
 	 * TODO periodically check and update if driver is on but no torque update is sent
 	 */
 	if(conf.hwconf.fluxDissipationScaler && conf.enableFluxDissipation){
@@ -2639,6 +2698,11 @@ void TMC4671::registerCommands(){
 	registerCommand("pidautotune", TMC4671_commands::pidautotune, "Start PID autoruning",CMDFLAG_GET);
 	registerCommand("fluxbrake", TMC4671_commands::fluxbrake, "Prefer energy dissipation in motor",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("pwmfreq", TMC4671_commands::pwmfreq, "Get/set pwm frequency",CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_DEBUG);
+#ifdef COGGING_TABLE_FLASH_START_ADDRESS
+	registerCommand("cogging", TMC4671_commands::cogging, "Get/Set the cogging compensation",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("calibrateCogging", TMC4671_commands::calibrateCogging, "Start cogging calibration (get)",CMDFLAG_GET);
+	registerCommand("coggingTable", TMC4671_commands::coggingTable, "Get the cogging table, or clear table (set 0)",CMDFLAG_GET | CMDFLAG_SET);
+#endif
 }
 
 
@@ -2951,6 +3015,52 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 				replies.emplace_back(getPwmFreq());
 			}
 		break;
+		
+#ifdef COGGING_TABLE_FLASH_START_ADDRESS
+	case TMC4671_commands::cogging:
+		handleGetSet(cmd, replies, cogging_enabled);
+		break;
+	
+	case TMC4671_commands::calibrateCogging:
+		if(cmd.type == CMDtype::get){
+			changeState(TMC_ControlState::CoggingCalibration);
+			return CommandStatus::NO_REPLY;
+		} else {
+			status = CommandStatus::ERR;
+		}
+		break;
+	
+	case TMC4671_commands::coggingTable:
+		if(cmd.type == CMDtype::get){
+			std::string s;
+			s.reserve(512);
+			s = "item:0,data:(";
+
+			for (uint16_t i = 0; i < CALIB_MAP_SIZE; i++) {
+				s.append(std::to_string(data_cogging[i]));
+
+				if (s.length() >= 500) { // send data by string cut at 500 items
+					s.append(")");
+					CommandHandler::broadcastCommandReply(CommandReply(s,0), (uint32_t)TMC4671_commands::coggingTable, CMDtype::get);
+					s.clear();
+					s = "item:" + std::to_string(i+1) + ",data:(";
+				} else {
+					if (i < CALIB_MAP_SIZE - 1) {
+						s.append(",");
+					}
+				}
+			}
+
+			s.append(")");
+			CommandHandler::broadcastCommandReply(CommandReply(s,0), (uint32_t)TMC4671_commands::coggingTable, CMDtype::get);
+			return CommandStatus::NO_REPLY;
+		} else if(cmd.type == CMDtype::set && cmd.val == 0) {
+			clearCoggingTable();
+		} else {
+			status = CommandStatus::ERR;
+		}
+		break;
+#endif
 
 		default:
 			return CommandStatus::NOT_FOUND;
@@ -3016,6 +3126,57 @@ void TMC4671::errorCallback(const Error &error, bool cleared){
 	}
 }
 
+uint16_t TMC4671::getDrvSlewRate(){
+	return this->maxSlewRate;
+}
+
+bool TMC4671::startSlewRateCalibration(){
+	// Request the TMC internal state machine to run the slew rate calibration.
+	// changeState will schedule the calibration state in the driver's thread.
+	this->changeState(TMC_ControlState::SlewRateCalibration);
+	return true;
+}
+
+bool TMC4671::isSlewRateCalibrationInProgress(){
+	return (this->state == TMC_ControlState::SlewRateCalibration);
+}
+
+void TMC4671::measureMaxSlewRate(){
+	MotionMode lastmode = getMotionMode();
+	PhiE lastphie = getPhiEtype();
+
+	// Setup
+	setPhiE_ext(getPhiE());
+	setPhiEtype(PhiE::ext); // Fixed phase
+	setMotionMode(MotionMode::torque, true);
+	setFluxTorque(0, 0);
+
+	int32_t start_flux = getActualFlux();
+	uint32_t start_time = micros();
+	setFluxTorque(maxPowerAxis,0); // Apply max flux
+
+	uint32_t elapsed_time = 0;
+	int32_t max_slew_rate = 0;
+
+	while(elapsed_time < 3000){ // measure for 3ms
+		int32_t current_flux = getActualFlux();
+		uint32_t current_time = micros();
+		elapsed_time = current_time - start_time;
+
+		if(elapsed_time > 0){
+			int32_t slew_rate = (current_flux - start_flux) * 1000 / elapsed_time; // Pn/ms (Power normalized/ms)
+			if(slew_rate > max_slew_rate){
+				max_slew_rate = slew_rate;
+			}
+		}
+	}
+	setFluxTorque(0,0);
+	this->maxSlewRate = clip<int32_t>(max_slew_rate, 0, MAX_SLEW_RATE);
+
+	// Restore
+	setPhiEtype(lastphie);
+	setMotionMode(lastmode,true);
+}
 
 void TMC4671::handleStateWaitPower() {
 	allowStateChange = false;
@@ -3046,6 +3207,23 @@ void TMC4671::handleStateWaitPower() {
 }
 
 void TMC4671::handleStateRunning() {
+#ifdef COGGING_TABLE_FLASH_START_ADDRESS
+	// Update anti-cogging compensation
+	if (cogging_enabled) {
+		uint16_t pos_mechanical = (uint16_t)getPos(); // Mechanical position 0-65535
+		const uint16_t current_index = (uint32_t)pos_mechanical * CALIB_MAP_SIZE / 65536;
+
+		if (current_index < CALIB_MAP_SIZE) {
+			// Apply compensation torque equal to the measured cogging torque
+			const int16_t compensation_torque = -data_cogging[current_index];
+			// Write to PID_TORQUE_OFFSET (register 0x65)
+			updateReg(0x65, compensation_torque, 0xffff, 16);
+		} else {
+			// If the index is out of bounds, ensure the offset is zero
+			updateReg(0x65, 0, 0xffff, 16);
+		}
+	}
+#endif
 
 	// Check status, Temps, Everything alright?
 	uint32_t tick = HAL_GetTick();
@@ -3070,7 +3248,11 @@ void TMC4671::handleStateRunning() {
 			}
 		}
 	}
+#ifdef COGGING_TABLE_FLASH_START_ADDRESS
+	Delay(1); // Update anticogging at ~1khz
+#else
 	Delay(200);
+#endif
 }
 
 void TMC4671::handleStateFullCalibration() {
@@ -3103,6 +3285,134 @@ void TMC4671::handleStateFullCalibration() {
 	setBiquadFlux(curFilters.flux);
 }
 
+#ifdef COGGING_TABLE_FLASH_START_ADDRESS
+/**
+ * Calculates a detent torque compensation map (anti-cogging) for the motor.
+ * The process is as follows:
+ * 1. Rotates the motor forward at a slow speed and measures the commanded torque for each mechanical position.
+ * 2. Rotates the motor backward at a slow speed and measures the commanded torque for each mechanical position.
+ * 3. Averages the two measurements to isolate the detent torque from the friction torque.
+ * 4. Centers the compensation map around zero.
+ */
+void TMC4671::handleStateCoggingCalibration() {
+	// 1. Error and power loss management
+	if (!hasPower() || emergency) {
+		if (coggingData) coggingData.reset(); // Immediate memory release
+		coggingCalibState = CoggingState::Init;
+		this->postPowerState = TMC_ControlState::CoggingCalibration;
+		changeState(TMC_ControlState::waitPower);
+		return;
+	}
+
+	uint32_t revolution_time_ms = (60000 / CALIB_SPEED) * 1.5;
+
+	// 2. Calibration State Machine
+	switch(coggingCalibState) {
+		case CoggingState::Init:
+			allowStateChange = false; // Lock external changes
+			coggingData = std::make_unique<CoggingCalibData>(); // Heap allocation (34KB) to avoid stack overflow
+			if(!coggingData) {
+				// Allocation error (RAM full) -> Abort
+				allowStateChange = true;
+				changeState(laststate);
+				break;
+			}
+			prevCalibMode = getMotionMode();
+			setMotionMode(MotionMode::velocity, true);
+
+			// *** 1- Forward capture ***
+			setTargetVelocity(CALIB_SPEED);
+			calibStartTime = HAL_GetTick();
+			coggingCalibState = CoggingState::ForwardWait;
+			break;
+
+		case CoggingState::ForwardWait:
+			if(HAL_GetTick() - calibStartTime > 500) { // Wait for speed to stabilize
+				calibStartTime = HAL_GetTick();
+				coggingCalibState = CoggingState::ForwardMeasure;
+			}
+			break;
+
+		case CoggingState::ForwardMeasure:
+			{
+				uint16_t pos_mechanical = (uint16_t)getPos();
+				uint16_t current_index = (uint32_t)pos_mechanical * CALIB_MAP_SIZE / 65536;
+				if(current_index < CALIB_MAP_SIZE){
+					coggingData->temp_fw[current_index] += getVelocityControllerTorque();
+					coggingData->counts_fw[current_index]++;
+				}
+				
+				if(HAL_GetTick() - calibStartTime >= revolution_time_ms) {
+					// *** 2- Backward capture ***
+					setTargetVelocity(-CALIB_SPEED);
+					calibStartTime = HAL_GetTick();
+					coggingCalibState = CoggingState::BackwardWait;
+				}
+			}
+			break;
+
+		case CoggingState::BackwardWait:
+			if(HAL_GetTick() - calibStartTime > 500) { // Wait for stabilization
+				calibStartTime = HAL_GetTick();
+				coggingCalibState = CoggingState::BackwardMeasure;
+			}
+			break;
+
+		case CoggingState::BackwardMeasure:
+			{
+				uint16_t pos_mechanical = (uint16_t)getPos();
+				uint16_t current_index = (uint32_t)pos_mechanical * CALIB_MAP_SIZE / 65536;
+				if(current_index < CALIB_MAP_SIZE){
+					coggingData->temp_bw[current_index] += getVelocityControllerTorque();
+					coggingData->counts_bw[current_index]++;
+				}
+				
+				if(HAL_GetTick() - calibStartTime >= revolution_time_ms) {
+					setTargetVelocity(0);
+					coggingCalibState = CoggingState::Compute;
+				}
+			}
+			break;
+
+		case CoggingState::Compute:
+			{
+				// *** 3- Averaging and isolating detent torque ***
+				// T_fw = T_friction + T_cogging
+				// T_bw = -T_friction + T_cogging
+				// T_cogging = (T_fw + T_bw) / 2
+				long sum_torque = 0;
+				for (uint16_t i=0; i < CALIB_MAP_SIZE ; i++) {
+					int32_t avg_fw = (coggingData->counts_fw[i] > 0) ? coggingData->temp_fw[i] / coggingData->counts_fw[i] : 0;
+					int32_t avg_bw = (coggingData->counts_bw[i] > 0) ? coggingData->temp_bw[i] / coggingData->counts_bw[i] : 0;
+
+					// If one of the measurements is missing, use the other
+					if(coggingData->counts_fw[i] == 0 && coggingData->counts_bw[i] > 0) avg_fw = -avg_bw;
+					if(coggingData->counts_bw[i] == 0 && coggingData->counts_fw[i] > 0) avg_bw = -avg_fw;
+
+					data_cogging[i] = (avg_fw + avg_bw) / 2;
+					sum_torque += data_cogging[i];
+				}
+
+				// *** 4- Centering the compensation table around zero ***
+				const long torque_offset = sum_torque / CALIB_MAP_SIZE;
+				for (uint16_t i=0; i < CALIB_MAP_SIZE ; i++) {
+					data_cogging[i] -= torque_offset;
+				}
+				
+				saveCoggingTable();
+				
+				// Cleanup and completion
+				coggingData.reset(); // Free 34KB of RAM
+				setMotionMode(prevCalibMode, true);
+				coggingCalibState = CoggingState::Init;
+				allowStateChange = true;
+				changeState(laststate, false);
+				CommandHandler::broadcastCommandReply(CommandReply("Cogging map read success",1), (uint32_t)TMC4671_commands::cogging, CMDtype::get);
+			}
+			break;
+	}
+}
+#endif
 
 /**
  * Iterative tuning function for tuning the torque mode PI values (Asynchronous version)
