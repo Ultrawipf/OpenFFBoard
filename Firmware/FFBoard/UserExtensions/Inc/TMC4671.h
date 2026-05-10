@@ -28,7 +28,7 @@
 #include "Filters.h"
 
 #define SPITIMEOUT 500
-#define TMC_THREAD_MEM 256
+#define TMC_THREAD_MEM 1024
 #define TMC_THREAD_PRIO 25 		// Must be higher than main thread
 #define TMC_ADCOFFSETFAIL 5000 	// How much offset from 0x7fff to allow before a calibration is failed
 
@@ -76,8 +76,8 @@ enum class TMC_StartupType{NONE,coldStart,warmStart};
 enum class CoggingState : uint8_t { Init, ForwardWait, ForwardMeasure, ForwardCompute, BackwardWait, BackwardMeasure, Compute };
 
 struct CoggingCalibData {
-	int32_t temp[CALIB_MAP_SIZE] = {0};
-	uint16_t counts[CALIB_MAP_SIZE] = {0};
+	int32_t temp[CALIB_MAP_SIZE];
+	uint16_t counts[CALIB_MAP_SIZE];
 };
 
 enum class TMC_GpioMode{DebugSpi,DSAdcClkOut,DSAdcClkIn,Aout_Bin,Ain_Bout,Aout_Bout,Ain_Bin};
@@ -414,9 +414,9 @@ class TMC4671 :
 		tmctype,pidPrec,phiesrc,fluxoffset,seqpi,tmcIscale,encdir,temp,reg,
 		svpwm,fullCalibration,calibrated,abnindexenabled,findIndex,getState,encpol,combineEncoder,invertForce,vmTmc,
 		extphie,torqueFilter_mode,torqueFilter_f,torqueFilter_q,pidautotune,fluxbrake,pwmfreq,
-#ifdef COGGING_TABLE_FLASH_START_ADDRESS
+/*#ifdef COGGING_TABLE_FLASH_START_ADDRESS
 		cogging,calibrateCogging, coggingTable
-#endif
+#endif*/
 	};
 
 #ifdef TMCDEBUG
