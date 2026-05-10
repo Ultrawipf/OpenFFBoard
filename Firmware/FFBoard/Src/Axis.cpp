@@ -364,7 +364,7 @@ void Axis::prepareForUpdate(){
 	int32_t scaledEnc;
 	std::tie(scaledEnc,std::ignore) = scaleEncValue(angle, degreesOfRotation);
 
-	if (abs(scaledEnc) > 0xffff && drv->motorReady()){
+	if (abs(scaledEnc) > 0xffff && drv->motorReady() && !drv->isCalibrationInProgress()){
 		// We are way off. Shut down
 		drv->stopMotor();
 		pulseErrLed();
