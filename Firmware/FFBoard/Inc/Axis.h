@@ -72,6 +72,12 @@ struct AxisFlashAddresses
 
 	uint16_t speedAccelFilter = ADR_AXIS1_SPEEDACCEL_FILTER;
 	uint16_t postprocess1 = ADR_AXIS1_POSTPROCESS1;
+	// NOTE: The following addresses must be defined in constants.h
+	uint16_t equalizer1 = ADR_AXIS1_EQ1;
+	uint16_t equalizer2 = ADR_AXIS1_EQ2;
+	uint16_t equalizer3 = ADR_AXIS1_EQ3;
+	uint16_t handsOffConfig = ADR_AXIS1_HANDSOFF_CONF;
+	uint16_t handsOffAccel = ADR_AXIS1_HANDSOFF_ACCEL;
 };
 
 /**
@@ -120,7 +126,9 @@ enum class Axis_commands : uint32_t{
 	maxspeed,slewrate,
 	calibrate_maxSlewRateDrv,
 	maxSlewRateDrv,
-	expo,exposcale
+	expo,exposcale,
+	equalizer,eqb1,eqb2,eqb3,eqb4,eqb5,eqb6,
+	handsoff, handsoff_speed, handsoff_accel
 };
 
 /**
@@ -387,6 +395,12 @@ private:
 
 	// Private methods
 	/**
+	 * @brief Sets the gain for a specific equalizer band.
+	 * @param band The equalizer band index (0-4).
+	 * @param gain The gain in 0.1 dB steps (-120 to 120).
+	 */
+	void setEqGain(uint8_t band, int8_t gain);
+	/**
 	 * @brief Sets the degrees of rotation for the axis.
 	 * @param degrees The new range of rotation.
 	 */
@@ -412,7 +426,7 @@ private:
 	 */
 	void setExpo(int val);
 
-	int32_t calculateExpoTorque(int32_t torque);
+	float calculateExpoTorque(float torque);
 	/**
 	 * @brief Applies the speed limiter PI controller to the torque.
 	 * @param torque A reference to the torque value to be modified.
@@ -436,6 +450,10 @@ private:
 	 */
 	static uint16_t encodeConfToInt(AxisConfig conf);
 
+	/**
+	 * @brief Checks if the user has let go of the wheel and updates the torque accordingly.
+	 */
+	void updateHandsOffState();
 
 
 	// Member variables
@@ -525,11 +543,27 @@ private:
 	Biquad frictionFilter = Biquad(BiquadType::lowpass, filterFrictionCst.freq/filter_f, filterFrictionCst.q / 100.0, 0.0);
 	Biquad inertiaFilter = Biquad(BiquadType::lowpass, filterInertiaCst.freq/filter_f, filterInertiaCst.q / 100.0, 0.0);
 
+	// Equalizer
+	static const uint8_t num_eq_bands = 6;
+	const std::array<uint16_t, num_eq_bands> eq_frequencies = {10, 15, 25, 40, 60, 100};
+	std::array<Biquad, num_eq_bands> eqFilters;
+	std::array<int8_t, num_eq_bands> eqGains = {0,0,0,0,0}; // Gains from -120 to 120, represents gain in dB * 10
+	bool equalizerEnabled = false; //!< Enable/disable the equalizer.
+
 	// Post-processing
 	GearRatio_t gearRatio;	//!< Gear ratio between encoder and axis.
 	int expoValue = 0;		//!< Raw integer value for the expo curve. Formula: v = val*2 => v<0 ? 1/-v : v
 	float expo = 1;			//!< Calculated exponent for the torque curve.
 	float expoScaler = 50;	//!< Scaler for the expo calculation : 0.28 to 3.54
+
+	// Hands-off detection
+	bool handsOffCheckEnabled = false;
+	float handsOffAccelThreshold = 0.1;
+	uint16_t handsOffSpeedThreshold = 720; // deg/s
+	bool handsOff = false;
+	float accel_buffer[16] = {0};
+	uint8_t accel_buffer_idx = 0;
+	uint32_t handsOffTimer = 0;
 };
 
 #endif /* SRC_AXIS_H_ */
