@@ -3596,8 +3596,7 @@ void TMC4671::handleStateCoggingCalibration() {
 				CommandHandler::broadcastCommandReply(CommandReply(p == 1 ? "Forward integration..." : "Backward integration...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 				
 				float target_rpm = (p == 1) ? TARGET_RPM : -TARGET_RPM;
-				filtered_pos_f = (usingExternalEncoder() && drvEncoder != nullptr) ? drvEncoder->getPos_f() : (float)this->getPos() / (float)this->getCpr();
-				float target_pos_f = filtered_pos_f;
+				float target_pos_f = getFilteredPosition();
 				
 				// Trackers statistiques post-mortem
 				float max_iq_cmd_used = 0.0f;
