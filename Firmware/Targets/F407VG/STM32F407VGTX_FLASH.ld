@@ -45,8 +45,12 @@ MEMORY
       
     EMULATED_EEPROM (rwx)   : ORIGIN = ORIGIN(FLASH_BOOT) + LENGTH(FLASH_BOOT), 
                               LENGTH = 32k 
+    
     FLASH (rx)              : ORIGIN = ORIGIN(EMULATED_EEPROM) + LENGTH(EMULATED_EEPROM),
-                              LENGTH = 1024k - LENGTH(FLASH_BOOT) - LENGTH(EMULATED_EEPROM)
+                              LENGTH = 1024k - LENGTH(FLASH_BOOT) - LENGTH(EMULATED_EEPROM) - 32k
+    
+    COGGING_TABLES (rwx)    : ORIGIN = 0x080F8000, /* Last 32k of Flash */
+                              LENGTH = 32k
 }
 
 /* Sections */
