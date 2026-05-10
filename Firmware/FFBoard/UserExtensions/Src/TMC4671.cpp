@@ -3208,18 +3208,30 @@ void TMC4671::handleStateWaitPower() {
 
 void TMC4671::handleStateRunning() {
 #ifdef COGGING_TABLE_FLASH_START_ADDRESS
-	// Update anti-cogging compensation
+	// Update anti-cogging compensation with linear interpolation
 	if (cogging_enabled) {
 		uint16_t pos_mechanical = (uint16_t)getPos(); // Mechanical position 0-65535
-		const uint16_t current_index = (uint32_t)pos_mechanical * CALIB_MAP_SIZE / 65536;
+		
+		// Calculate precise index and fractional part
+		uint32_t total_pos = (uint32_t)pos_mechanical * CALIB_MAP_SIZE;
+		uint16_t current_index = total_pos >> 16;      // Equivalent to / 65536
+		uint16_t fraction = total_pos & 0xFFFF;       // Fractional part (0-65535)
 
 		if (current_index < CALIB_MAP_SIZE) {
-			// Apply compensation torque equal to the measured cogging torque
-			const int16_t compensation_torque = -data_cogging[current_index];
+			uint16_t next_index = (current_index + 1) % CALIB_MAP_SIZE; // Wrap-around circular table
+			
+			int32_t val1 = data_cogging[current_index];
+			int32_t val2 = data_cogging[next_index];
+			
+			// Linear interpolation: val1 + (val2 - val1) * (fraction / 65536)
+			int32_t interpolated_torque = val1 + (((val2 - val1) * (int32_t)fraction) >> 16);
+			
+			const int16_t compensation_torque = -(int16_t)interpolated_torque;
+			
 			// Write to PID_TORQUE_OFFSET (register 0x65)
 			updateReg(0x65, compensation_torque, 0xffff, 16);
 		} else {
-			// If the index is out of bounds, ensure the offset is zero
+			// Safety: index out of bounds
 			updateReg(0x65, 0, 0xffff, 16);
 		}
 	}
