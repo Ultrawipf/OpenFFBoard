@@ -29,8 +29,13 @@
 
 #define SPITIMEOUT 500
 #define TMC_THREAD_MEM 256
-#define TMC_THREAD_PRIO 25 // Must be higher than main thread
-#define TMC_ADCOFFSETFAIL 5000 // How much offset from 0x7fff to allow before a calibration is failed
+#define TMC_THREAD_PRIO 25 		// Must be higher than main thread
+#define TMC_ADCOFFSETFAIL 5000 	// How much offset from 0x7fff to allow before a calibration is failed
+
+#ifdef COGGING_TABLE_FLASH_START_ADDRESS
+// --- Constants for anti-cogging calibration ---
+#define CALIB_SPEED 50 	 	    // Slow speed in RPM used for calibration.
+#endif
 
 extern SPI_HandleTypeDef HSPIDRV;
 
@@ -57,15 +62,27 @@ extern TIM_HandleTypeDef TIM_TMC;
 #define TIM_TMC_ARR 250
 #endif
 
-
-enum class TMC_ControlState : uint32_t {uninitialized,waitPower,Shutdown,Running,EncoderInit,EncoderFinished,HardError,OverTemp,IndexSearch,FullCalibration,ExternalEncoderInit,Pidautotune};
+enum class TMC_ControlState : uint32_t {uninitialized,waitPower,Shutdown,Running,EncoderInit,EncoderFinished,HardError,OverTemp,IndexSearch,FullCalibration,ExternalEncoderInit,Pidautotune
+#ifdef COGGING_TABLE_FLASH_START_ADDRESS
+	,CoggingCalibration
+#endif
+	,SlewRateCalibration, NONE
+};
 
 enum class TMC_PwmMode : uint8_t {off = 0,HSlow_LShigh = 1, HShigh_LSlow = 2, res2 = 3, res3 = 4, PWM_LS = 5, PWM_HS = 6, PWM_FOC = 7};
 
 enum class TMC_StartupType{NONE,coldStart,warmStart};
 
-enum class TMC_GpioMode{DebugSpi,DSAdcClkOut,DSAdcClkIn,Aout_Bin,Ain_Bout,Aout_Bout,Ain_Bin};
+enum class CoggingState : uint8_t { Init, ForwardWait, ForwardMeasure, BackwardWait, BackwardMeasure, Compute };
 
+struct CoggingCalibData {
+	int32_t temp_fw[CALIB_MAP_SIZE] = {0};
+	int32_t temp_bw[CALIB_MAP_SIZE] = {0};
+	uint16_t counts_fw[CALIB_MAP_SIZE] = {0};
+	uint16_t counts_bw[CALIB_MAP_SIZE] = {0};
+};
+
+enum class TMC_GpioMode{DebugSpi,DSAdcClkOut,DSAdcClkIn,Aout_Bin,Ain_Bout,Aout_Bout,Ain_Bin};
 enum class MotorType : uint8_t {NONE=0,DC=1,STEPPER=2,BLDC=3};
 enum class PhiE : uint8_t {ext=1,openloop=2,abn=3,hall=5,aenc=6,aencE=7,NONE,extEncoder};
 enum class MotionMode : uint8_t {stop=0,torque=1,velocity=2,position=3,prbsflux=4,prbstorque=5,prbsvelocity=6,uqudext=8,encminimove=9,NONE};
@@ -265,6 +282,9 @@ struct TMC4671FlashAddrs{
 	uint16_t encOffset = ADR_TMC1_ENC_OFFSET;
 	uint16_t phieOffset = ADR_TMC1_PHIE_OFS;
 	uint16_t torqueFilter = ADR_TMC1_TRQ_FILT;
+#ifdef COGGING_TABLE_FLASH_START_ADDRESS
+	uint16_t coggingEnable = ADR_TMC1_COGGING_CAL;
+#endif
 };
 
 struct TMC4671ABNConf{
@@ -382,7 +402,10 @@ class TMC4671 :
 		torqueP,torqueI,fluxP,fluxI,velocityP,velocityI,posP,posI,
 		tmctype,pidPrec,phiesrc,fluxoffset,seqpi,tmcIscale,encdir,temp,reg,
 		svpwm,fullCalibration,calibrated,abnindexenabled,findIndex,getState,encpol,combineEncoder,invertForce,vmTmc,
-		extphie,torqueFilter_mode,torqueFilter_f,torqueFilter_q,pidautotune,fluxbrake,pwmfreq
+		extphie,torqueFilter_mode,torqueFilter_f,torqueFilter_q,pidautotune,fluxbrake,pwmfreq,
+#ifdef COGGING_TABLE_FLASH_START_ADDRESS
+		cogging,calibrateCogging, coggingTable
+#endif
 	};
 
 #ifdef TMCDEBUG
@@ -444,6 +467,9 @@ public:
 	bool checkEncoder();
 	void calibrateAenc();
 	void calibrateEncoder();
+#ifdef COGGING_TABLE_FLASH_START_ADDRESS
+	void calibrateCogging();
+#endif
 
 	void setEncoderType(EncoderType_TMC type);
 	uint32_t getEncCpr();
@@ -475,6 +501,11 @@ public:
 
 	void setBBM(uint8_t bbml,uint8_t bbmh);
 
+	
+	// Slew rate calibration control
+	uint16_t getDrvSlewRate();
+	bool startSlewRateCalibration();
+	bool isSlewRateCalibrationInProgress();
 
 #ifdef TIM_TMC
 	void timerElapsed(TIM_HandleTypeDef* htim);
@@ -500,7 +531,7 @@ public:
 	uint16_t maxPowerAxis = 0;
 
 	int16_t controlFluxDissipate();
-	const float fluxDissipationLimit = 1000;
+	static constexpr float FLUX_DISSIPATION_LIMIT = 1000.0f;
 
 	void setTorque(int16_t torque);
 
@@ -621,7 +652,7 @@ public:
 protected:
 	class TMC_ExternalEncoderUpdateThread : public cpp_freertos::Thread{
 	public:
-		TMC_ExternalEncoderUpdateThread(TMC4671* tmc);
+	TMC_ExternalEncoderUpdateThread(TMC4671* tmc);
 		//~TMC_ExternalEncoderUpdateThread();
 		void Run();
 		void updateFromIsr();
@@ -635,14 +666,15 @@ protected:
 private:
 	uint8_t drv_address = 0;
 	OutputPin enablePin = OutputPin(*DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin);
-	const Error indexNotHitError = Error(ErrorCode::encoderIndexMissed,ErrorType::critical,"Encoder index missed");
-	const Error lowVoltageError = Error(ErrorCode::undervoltage,ErrorType::warning,"Low motor voltage");
-	const Error communicationError = Error(ErrorCode::tmcCommunicationError, ErrorType::warning, "TMC not responding");
-	const Error estopError = Error(ErrorCode::emergencyStop, ErrorType::critical, "TMC emergency stop triggered");
+	const Error INDEX_NOT_HIT_ERROR = Error(ErrorCode::encoderIndexMissed,ErrorType::critical,"Encoder index missed");
+	const Error LOW_VOLTAGE_ERROR = Error(ErrorCode::undervoltage,ErrorType::warning,"Low motor voltage");
+	const Error COMMUNICATION_ERROR = Error(ErrorCode::tmcCommunicationError, ErrorType::warning, "TMC not responding");
+	const Error ESTOP_ERROR = Error(ErrorCode::emergencyStop, ErrorType::critical, "TMC emergency stop triggered");
 
 	TMC_ControlState state = TMC_ControlState::uninitialized;
 	TMC_ControlState laststate = TMC_ControlState::uninitialized;
 	TMC_ControlState requestedState = TMC_ControlState::Shutdown;
+	TMC_ControlState postPowerState = TMC_ControlState::NONE;
 	MotionMode curMotionMode = MotionMode::stop;
 	MotionMode lastMotionMode = MotionMode::stop;
 	MotionMode nextMotionMode = MotionMode::stop;
@@ -665,6 +697,7 @@ private:
 	bool encHallRestored = false;
 	bool canChangeHwType 	= true; // Allows changing the hardware version by commands
 	//int32_t phiEOffsetRestored = 0; //-0x8000 to 0x7fff
+	uint8_t powerCheckCounter = 0;
 	uint8_t calibrationFailCount = 2;
 
 	int16_t externalEncoderPhieOffset = 0; // PhiE offset for external encoders
@@ -674,11 +707,38 @@ private:
 	bool recalibrationRequired = false;
 
 	uint8_t enc_retry = 0;
-	uint8_t enc_retry_max = 3;
+	static constexpr uint8_t ENC_RETRY_MAX = 3;
 
 	uint32_t lastStatTime = 0;
 
 	uint8_t spi_buf[5] = {0};
+
+#ifdef COGGING_TABLE_FLASH_START_ADDRESS
+	// Cogging Calibration
+	int16_t data_cogging[CALIB_MAP_SIZE] = {0};
+	bool cogging_enabled = false;
+	void saveCoggingTable();
+	void clearCoggingTable();
+
+	CoggingState coggingCalibState = CoggingState::Init;
+	std::unique_ptr<CoggingCalibData> coggingData = nullptr;
+	uint32_t calibStartTime = 0;
+	MotionMode prevCalibMode = MotionMode::stop;
+	void handleStateCoggingCalibration();
+#endif
+
+	uint16_t maxSlewRate = MAX_SLEW_RATE; // in mA/ms
+	void measureMaxSlewRate();
+
+	enum class PidTuneState : uint8_t { Init, RampFluxP, TuneFluxI_Pulse, TuneFluxI_Measure, Done };
+	PidTuneState pidTuneState = PidTuneState::Init;
+	uint32_t pidTuneStartTime = 0;
+	uint16_t tuneFluxI = 0, tuneFluxP = 100;
+	int32_t tuneMeasurePeak = 0;
+	PhiE lastPidTunePhiE = PhiE::NONE;
+	MotionMode lastPidTuneMode = MotionMode::stop;
+	TMC4671PIDConf pidTuneNewPids;
+	void handleStatePidAutoTune();
 
 	void initAdc(uint16_t mdecA, uint16_t mdecB,uint32_t mclkA,uint32_t mclkB);
 	void setPwm(uint8_t val,uint16_t maxcnt,uint8_t bbmL,uint8_t bbmH);// 100MHz/maxcnt+1
@@ -695,6 +755,10 @@ private:
 //	void ABN_init();
 //	void AENC_init();
 
+	void handleStateWaitPower();
+	void handleStateRunning();
+	void handleStateFullCalibration();
+
 	void encoderInit();
 	void errorCallback(const Error &error, bool cleared);
 	bool pidAutoTune();
@@ -708,7 +772,7 @@ private:
 
 	TMC4671Biquad_conf torqueFilterConf;
 	TMC4671BiquadFilters curFilters;
-	const float fluxFilterFreq = 350.0;
+	static constexpr float FLUX_FILTER_FREQ = 350.0f;
 
 	// External encoder timer fires interrupts to trigger a new commutation position update
 #ifdef TIM_TMC
