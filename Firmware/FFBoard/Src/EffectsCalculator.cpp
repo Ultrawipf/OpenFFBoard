@@ -11,6 +11,9 @@
 #include "Axis.h"
 #include "ledEffects.h"
 
+#ifdef USE_DSP_FUNCTIONS
+#include "arm_math.h"
+#endif
 
 #define EFFECT_STATE_INACTIVE 0
 
@@ -49,6 +52,7 @@ EffectsCalculator::EffectsCalculator() : CommandHandler("fx", CLSID_EFFECTSCALC)
 	registerCommand("filterProfile_id", EffectsCalculator_commands::filterProfileId, "Conditional effects filter profile: 0 default; 1 custom", CMDFLAG_GET | CMDFLAG_SET);
 
 	registerCommand("frictionPctSpeedToRampup", EffectsCalculator_commands::frictionPctSpeedToRampup, "% of max speed for gradual increase", CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("reconFilterMode", EffectsCalculator_commands::reconFilterMode, "Recon. filter: 0=None, 1=Linear, 2=CubicNatural, 3=CubicHermite", CMDFLAG_GET | CMDFLAG_SET);
 
 	//this->Start(); // Enable if we want to periodically monitor
 }
@@ -103,67 +107,59 @@ An inertia condition uses axis acceleration as the metric.
  */
 void EffectsCalculator::calculateEffects(std::vector<std::unique_ptr<Axis>> &axes)
 {
-	for (auto &axis : axes) {
-		axis->setEffectTorque(0);
-		axis->calculateAxisEffects(isActive());
-	}
-
-	if(!isActive()){
-		return;
-	}
-
-	int32_t force = 0;
 	int axisCount = axes.size();
-	int32_t forces[MAX_AXIS] = {0};
+	int64_t forces[MAX_AXIS] = {0};
 
-	for (uint8_t i = 0; i < effects_stats.size(); i++)
-	{
-		effects_stats[i].current = {0}; // Reset active effect forces
-	}
+	if(isActive()){
+		int32_t force = 0;
+		for (uint8_t i = 0; i < effects_stats.size(); i++)
+		{
+			effects_stats[i].current = {0}; // Reset active effect forces
+		}
 
-	for (uint8_t fxi = 0; fxi < MAX_EFFECTS; fxi++)
-	{
-		FFB_Effect *effect = &effects[fxi];
+		for (uint8_t fxi = 0; fxi < MAX_EFFECTS; fxi++)
+		{
+			FFB_Effect *effect = &effects[fxi];
 
-		// Effect activated and not infinite (0 or 0xffff)
-		if (effect->state != EFFECT_STATE_INACTIVE && effect->duration != FFB_EFFECT_DURATION_INFINITE && effect->duration != 0){
-			// Start delay not yet reached
-			if(HAL_GetTick() < effect->startTime){
+			// Effect activated and not infinite (0 or 0xffff)
+			if (effect->state != EFFECT_STATE_INACTIVE && effect->duration != FFB_EFFECT_DURATION_INFINITE && effect->duration != 0){
+				// Start delay not yet reached
+				if(HAL_GetTick() < effect->startTime){
+					continue;
+				}
+				// If effect has expired make inactive
+				if (HAL_GetTick() - effect->startTime > effect->duration)
+				{
+					effect->state = EFFECT_STATE_INACTIVE;
+					for(uint8_t axis=0 ; axis < axisCount ; axis++)
+						calcStatsEffectType(effect->type, 0,axis); // record a 0 on the ended force
+				}
+			}
+
+			// Filter out inactive effects
+			if (effect->state == EFFECT_STATE_INACTIVE)
+			{
 				continue;
 			}
-			// If effect has expired make inactive
-			if (HAL_GetTick() - effect->startTime > effect->duration)
+
+			force = calcNonConditionEffectForce(effect);	// Compute the effect force
+
+			for(uint8_t axis=0 ; axis < axisCount ; axis++) // Calculate effects for all axes
 			{
-				effect->state = EFFECT_STATE_INACTIVE;
-				for(uint8_t axis=0 ; axis < axisCount ; axis++)
-					calcStatsEffectType(effect->type, 0,axis); // record a 0 on the ended force
+				int32_t axisforce = calculateEffectForceOnAxis(effect, force, axes, axis);
+				calcStatsEffectType(effect->type, axisforce,axis);
+				forces[axis] += axisforce; // Do not clip yet to allow effects to subtract force correctly. Will not overflow as maxeffects * 0x7fff is less than int32 range
 			}
 		}
-
-		// Filter out inactive effects
-		if (effect->state == EFFECT_STATE_INACTIVE)
-		{
-			continue;
-		}
-
-		force = calcNonConditionEffectForce(effect);
-
-		for(uint8_t axis=0 ; axis < axisCount ; axis++) // Calculate effects for all axes
-		{
-			int32_t axisforce = calcComponentForce(effect, force, axes, axis);
-			calcStatsEffectType(effect->type, axisforce,axis);
-			forces[axis] += axisforce; // Do not clip yet to allow effects to subtract force correctly. Will not overflow as maxeffects * 0x7fff is less than int32 range
-		}
+		effects_statslast = effects_stats;
 	}
 
 	// Apply summed force to axes
 	for(uint8_t i=0 ; i < axisCount ; i++)
 	{
-		int32_t force = clip<int32_t, int32_t>(forces[i], -0x7fff, 0x7fff); // Clip
-		axes[i]->setEffectTorque(force);
+		axes[i]->calculateMechanicalEffects(isActive());
+		axes[i]->setFfbEffectTorque(forces[i]);
 	}
-
-	effects_statslast = effects_stats;
 }
 
 /**
@@ -171,13 +167,40 @@ void EffectsCalculator::calculateEffects(std::vector<std::unique_ptr<Axis>> &axe
  * Periodic and constant effects
  */
 int32_t EffectsCalculator::calcNonConditionEffectForce(FFB_Effect *effect) {
-	int32_t force_vector = 0;
-	int32_t magnitude = effect->magnitude;
 
-	// If using an envelope modulate the magnitude based on time
-	if(effect->useEnvelope){
-		magnitude = getEnvelopeMagnitude(effect);
+	// Sanity check effect type must be non-conditional
+	// Avoid calculating reconstructed forces for conditional effects here
+	if (effect->type == FFB_EFFECT_SPRING ||
+		effect->type == FFB_EFFECT_DAMPER ||
+		effect->type == FFB_EFFECT_FRICTION ||
+		effect->type == FFB_EFFECT_INERTIA) {
+		return 0;
 	}
+
+	int32_t force_vector = 0;
+	
+	// Get interpolated magnitude (or amplitude)
+	float interpolated_magnitude = evaluateReconstructionFilter(
+        &effect->recon_magnitude,    // Use the new structure
+        (float)effect->magnitude     // Fallback value (for NONE mode)
+    );
+
+    // Get interpolated offset
+    float interpolated_offset_float = evaluateReconstructionFilter(
+        &effect->recon_offset,       // Use the new structure
+        (float)effect->offset		 // Fallback value (for NONE mode)
+    );
+    int32_t offset_lrf = (int32_t)interpolated_offset_float;
+
+	// Magnitude with envelope if used
+    int32_t magnitude; 
+	if(effect->useEnvelope){
+        magnitude = getEnvelopeMagnitude(effect, (int32_t)interpolated_magnitude);
+	} else {
+        magnitude = (int32_t)interpolated_magnitude;
+    }
+
+
 	switch (effect->type){
 
 	case FFB_EFFECT_CONSTANT:
@@ -198,14 +221,14 @@ int32_t EffectsCalculator::calcNonConditionEffectForce(FFB_Effect *effect) {
 	{
 		uint32_t elapsed_time = HAL_GetTick() - effect->startTime; // Square is ms aligned
 		int32_t force = ((elapsed_time + effect->phase) % ((uint32_t)effect->period + 2)) < (uint32_t)(effect->period + 2) / 2 ? -magnitude : magnitude;
-		force_vector = force + effect->offset;
+		force_vector = force + offset_lrf;
 		break;
 	}
 
 	case FFB_EFFECT_TRIANGLE:
 	{
 		int32_t force = 0;
-		int32_t offset = effect->offset;
+		int32_t offset = offset_lrf;
 		float elapsed_time = micros() - ((float)effect->startTime*1000.0);
 		uint32_t phase = effect->phase;
 		uint32_t period = effect->period;
@@ -228,7 +251,7 @@ int32_t EffectsCalculator::calcNonConditionEffectForce(FFB_Effect *effect) {
 
 	case FFB_EFFECT_SAWTOOTHUP:
 	{
-		float offset = effect->offset;
+		float offset = offset_lrf;
 		float elapsed_time = micros() - ((float)effect->startTime*1000.0);
 		uint32_t phase = effect->phase;
 		uint32_t period = effect->period;
@@ -246,7 +269,7 @@ int32_t EffectsCalculator::calcNonConditionEffectForce(FFB_Effect *effect) {
 
 	case FFB_EFFECT_SAWTOOTHDOWN:
 	{
-		float offset = effect->offset;
+		float offset = offset_lrf;
 		float elapsed_time = micros() - ((float)effect->startTime*1000.0);
 		float phase = effect->phase;
 		uint32_t period = effect->period;
@@ -267,8 +290,12 @@ int32_t EffectsCalculator::calcNonConditionEffectForce(FFB_Effect *effect) {
 		float t = (micros()/1000.0) - (float)effect->startTime;
 		float freq = 1.0f / (float)(std::max<uint16_t>(effect->period, 2));
 		float phase = (float)effect->phase / (float)35999; //degrees
-		float sine = sinf(2.0 * M_PI * (t * freq + phase)) * magnitude;
-		force_vector = (int32_t)(effect->offset + sine);
+#ifdef USE_DSP_FUNCTIONS
+		float sine = arm_sin_f32(2.0f * PI * (t * freq + phase)) * magnitude;
+#else
+		float sine = sinf(2.0f * M_PI * (t * freq + phase)) * magnitude;
+#endif
+		force_vector = (int32_t)(offset_lrf + sine);
 		break;
 	}
 	default:
@@ -282,10 +309,15 @@ int32_t EffectsCalculator::calcNonConditionEffectForce(FFB_Effect *effect) {
 
 
 /**
- * Calculates the force of an effect
+ * @brief Calculates the final force of a single effect on a specific axis.
+ * It applies directional scaling and computes conditional effects (spring, damper, etc.) based on the axis's metrics.
+ * @param effect The effect to calculate.
+ * @param forceVector The base force from a non-conditional calculation (e.g., sine wave value).
+ * @param axes The list of all axes.
+ * @param axis The index of the axis to calculate the force for.
+ * @return The calculated torque for the axis.
  */
-
-int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceVector, std::vector<std::unique_ptr<Axis>> &axes, uint8_t axis)
+int32_t EffectsCalculator::calculateEffectForceOnAxis(FFB_Effect *effect, int32_t forceVector, std::vector<std::unique_ptr<Axis>> &axes, uint8_t axis)
 {
 	int32_t result_torque = 0;
 //	uint16_t direction;
@@ -360,9 +392,13 @@ int32_t EffectsCalculator::calcComponentForce(FFB_Effect *effect, int32_t forceV
 			float rampupFactor = 1.0;
 			if (fabs (speed) < speedRampupCeil) {								// if speed in the range to rampup we apply a sinus curbe to ramup
 
-				float phaseRad = M_PI * ((fabs (speed) / speedRampupCeil) - 0.5);// we start to compute the normalized angle (speed / normalizedSpeed@5%) and translate it of -1/2PI to translate sin on 1/2 periode
-				rampupFactor = ( 1 + sin(phaseRad ) ) / 2;						// sin value is -1..1 range, we translate it to 0..2 and we scale it by 2
-
+#ifdef USE_DSP_FUNCTIONS
+				float phaseRad = PI * ((fabsf (speed) / speedRampupCeil) - 0.5f);// we start to compute the normalized angle (speed / normalizedSpeed@5%) and translate it of -1/2PI to translate sin on 1/2 periode
+				rampupFactor = ( 1.0f + arm_sin_f32(phaseRad ) ) / 2.0f;			// sin value is -1..1 range, we translate it to 0..2 and we scale it by 2
+#else
+				float phaseRad = M_PI * ((fabsf (speed) / speedRampupCeil) - 0.5f);// we start to compute the normalized angle (speed / normalizedSpeed@5%) and translate it of -1/2PI to translate sin on 1/2 periode
+				rampupFactor = ( 1.0f + sinf(phaseRad ) ) / 2.0f;			// sin value is -1..1 range, we translate it to 0..2 and we scale it by 2
+#endif
 			}
 
 			int8_t sign = speed >= 0 ? 1 : -1;
@@ -447,12 +483,12 @@ int32_t EffectsCalculator::calcConditionEffectForce(FFB_Effect *effect, float  m
  * until the fade time where the strength changes to the fade level until the stop time of the effect.
  * Infinite effects can't have an envelope and return the normal magnitude.
  */
-int32_t EffectsCalculator::getEnvelopeMagnitude(FFB_Effect *effect)
+int32_t EffectsCalculator::getEnvelopeMagnitude(FFB_Effect *effect, int32_t baseMagnitude)
 {
 	if(effect->duration == FFB_EFFECT_DURATION_INFINITE || effect->duration == 0){
 		return effect->magnitude; // Effect is infinite. envelope is invalid
 	}
-	int32_t scaler = abs(effect->magnitude);
+	int32_t scaler = abs(baseMagnitude);
 	uint32_t elapsed_time = HAL_GetTick() - effect->startTime;
 	if (elapsed_time < effect->attackTime && effect->attackTime != 0)
 	{
@@ -466,7 +502,7 @@ int32_t EffectsCalculator::getEnvelopeMagnitude(FFB_Effect *effect)
 		scaler /= (int32_t)effect->fadeTime;
 		scaler += effect->fadeLevel;
 	}
-	scaler = signbit(effect->magnitude) ? -scaler : scaler; // Follow original sign of magnitude because envelope has no sign (important for constant force)
+	scaler = signbit(baseMagnitude) ? -scaler : scaler; // Follow original sign of magnitude because envelope has no sign (important for constant force)
 	return scaler;
 }
 
@@ -516,6 +552,199 @@ void EffectsCalculator::setFilters(FFB_Effect *effect){
 	}
 }
 
+// ==============================================================================
+// --- Reconstruction Filter ---
+// ==============================================================================
+
+void EffectsCalculator::updateEffectReconstruction(FFB_Effect* effect, float new_magnitude, float new_offset, bool is_periodic)
+{
+	// Update target variables (for NONE mode and fallback)
+    effect->magnitude = (int16_t)new_magnitude;
+
+    // Push new magnitude into recon structure
+    pushReconstructionSample(&effect->recon_magnitude, new_magnitude);
+
+    // Push new offset into recon structure if periodic
+    if (is_periodic) {
+        effect->offset = (int16_t)new_offset;
+        pushReconstructionSample(&effect->recon_offset, new_offset);
+    }
+}
+
+void EffectsCalculator::pushReconstructionSample(ReconFilterState* state, float newValue)
+{
+    uint32_t now_us = micros();
+
+    // Shift the spline points
+    for (int i = 0; i < 3; ++i) {
+        state->spline_x[i] = state->spline_x[i + 1];
+        state->spline_y[i] = state->spline_y[i + 1];
+    }
+
+    // Add the new point
+    state->spline_x[3] = (float)now_us;
+    state->spline_y[3] = newValue;
+
+    // FIll in initial points if not ready yet at 60Hz, so 16.66ms intervals
+    if (!state->isSplineReady) {
+        float fake_time_step = 16666.0f; // 60Hz
+        state->spline_x[0] = state->spline_x[3] - 3.0f * fake_time_step;
+        state->spline_y[0] = state->spline_y[3];
+        state->spline_x[1] = state->spline_x[3] - 2.0f * fake_time_step;
+        state->spline_y[1] = state->spline_y[3];
+        state->spline_x[2] = state->spline_x[3] - 1.0f * fake_time_step;
+        state->spline_y[2] = state->spline_y[3];
+        state->isSplineReady = true; // Ready after first fill
+    }
+
+    // Initialize spline if needed
+    if (reconFilterMode == ReconFilterMode::SPLINE_CUBIC_NATURAL) {
+#ifdef USE_DSP_FUNCTIONS
+        arm_spline_init_f32(
+            &state->spline_instance,
+            ARM_SPLINE_NATURAL,
+            state->spline_x,
+            state->spline_y,
+            4,
+            state->spline_y2,
+            state->spline_scratch
+        );
+
+		state->spline_arm_initialized = true;
+		
+#endif
+    }
+}
+
+float EffectsCalculator::evaluateReconstructionFilter(ReconFilterState* state, float fallbackValue)
+{
+    // 'reconFilterMode' is a member variable of the class
+
+    float resulting_value = fallbackValue; // Default value, "NONE"
+    uint32_t now_us = micros();
+    float last_known_time = state->spline_x[3]; // The most recent point
+
+    // 50ms timeout (if the game is paused, etc.)
+    if (!state->isSplineReady || (now_us > last_known_time + 50000)) {
+        return state->spline_y[3]; // Maintain the last value
+    }
+
+    switch(reconFilterMode) {
+        case ReconFilterMode::NO_RECONSTRUCTION:
+            resulting_value = state->spline_y[3]; // The most recent (no filter)
+            break;
+
+        case ReconFilterMode::LINEAR_INTERPOLATION:
+        {
+			// "Safe" Linear Interpolation (Delayed by 1 sample)
+			// To absolutely guarantee NO OVERSHOOT, we must not extrapolate.
+			// We accept a strictly defined transport delay of 1 sample.
+			//
+			// Logic: We are currently at time 'now_us', which is AFTER the latest update 't1'.
+			// We don't know the future, so we replay the ramp from V0 to V1, but we start it NOW.
+			// We use the previous interval duration (t1 - t0) as our best guess for when the
+			// NEXT packet (t2) will arrive, ensuring we reach V1 exactly when t2 is expected.
+
+			float t0 = state->spline_x[2]; // Time of penultimate sample (T-1)
+			float t1 = state->spline_x[3]; // Time of latest sample (T)
+			float v0 = state->spline_y[2]; // Value of penultimate sample (V0)
+			float v1 = state->spline_y[3]; // Value of latest sample (V1)
+
+			// Estimate the expected duration until the next packet arrives.
+			float expected_interval = t1 - t0;
+
+			// Sanity check: avoid division by zero if updates are too fast (e.g. double-send bugs)
+			if (expected_interval < 1.0f) {
+				resulting_value = v1;
+				break;
+			}
+
+			// Calculate progress based on time elapsed SINCE t1.
+			float time_since_t1 = (float)(now_us - t1);
+			float progress = time_since_t1 / expected_interval;
+
+			// Clamp progress to [0.0, 1.0] to eliminate ANY overshoot.
+			progress = clip<float>(progress, 0.0f, 1.0f);
+
+			// Interpolate between the two KNOWN, SAFE past values.
+			resulting_value = v0 + progress * (v1 - v0);
+			break;
+        }
+
+#ifdef USE_DSP_FUNCTIONS
+        // if DSP is enabled we have SPLINE available, else use Hermite
+        case ReconFilterMode::SPLINE_CUBIC_NATURAL:
+        {
+        	//	 If spline is not ready, return last known value
+			if (!state->spline_arm_initialized) {
+				 resulting_value = state->spline_y[3];
+				 break;
+			}
+
+			float32_t interpolated_torque_f = 0.0f;
+			float32_t now_f = (float)now_us;
+
+			// Clamp time to known range to avoid extrapolation
+            float32_t interp_time = clip<float32_t>(now_f, state->spline_x[0], state->spline_x[3]);
+
+			// Perform the spline interpolation using CMSIS-DSP
+            arm_spline_f32(&state->spline_instance, &interp_time, &interpolated_torque_f, 1);
+
+			// Return the interpolated value
+            resulting_value = interpolated_torque_f;
+            break;
+        }
+#endif
+
+        case ReconFilterMode::SPLINE_CUBIC_HERMITE:
+#ifndef USE_DSP_FUNCTIONS
+        // if the DSP is not available, we use Hermite for spline
+        case ReconFilterMode::SPLINE_CUBIC_NATURAL:
+#endif
+        {
+            // Hermite interpolation is made between P1 (idx 1) and P2 (idx 2)
+            const float p1 = state->spline_y[1];
+            const float p2 = state->spline_y[2];
+            const float t1 = state->spline_x[1];
+            const float t2 = state->spline_x[2];
+
+			// sanity check to not divide by zero and clamp for not overshoot
+            float interval = t2 - t1;
+            if (interval <= 0) {
+                resulting_value = p1;
+                break;
+            }
+            float t = ((float)now_us - t1) / interval;
+            t = clip<float>(t, 0.0f, 1.0f);
+
+            // Tangents (Catmull-Rom)
+            float m1, m2;
+            float dt_m1 = state->spline_x[2] - state->spline_x[0];
+            float dt_m2 = state->spline_x[3] - state->spline_x[1];
+
+			// Compute tangents safely
+            if (dt_m1 > 0) m1 = (state->spline_y[2] - state->spline_y[0]) / dt_m1; else m1 = 0;
+            if (dt_m2 > 0) m2 = (state->spline_y[3] - state->spline_y[1]) / dt_m2; else m2 = 0;
+
+			// Scale tangents by interval
+            m1 *= interval;
+            m2 *= interval;
+
+			// Hermite basis functions
+            float tSq = t * t;
+            float tCub = tSq * t;
+            float h_00 = 2*tCub - 3*tSq + 1;
+            float h_10 = tCub - 2*tSq + t;
+            float h_01 = -2*tCub + 3*tSq;
+            float h_11 = tCub - tSq;
+
+			// Final interpolation
+            resulting_value = h_00 * p1 + h_10 * m1 + h_01 * p2 + h_11 * m2;
+            break;
+        }
+    }
+    return resulting_value;
+}
 
 void EffectsCalculator::setGain(uint8_t gain)
 {
@@ -523,8 +752,6 @@ void EffectsCalculator::setGain(uint8_t gain)
 }
 
 uint8_t EffectsCalculator::getGain() { return global_gain; }
-
-
 
 /*
  * Read parameters from flash and restore settings
@@ -578,6 +805,11 @@ void EffectsCalculator::restoreFlash()
 		frictionPctSpeedToRampup = (effects & 0xff);
 	}
 
+	// Read reconstruction parameters
+	if(Flash_Read(ADR_FFB_RECONSTRUCTION_FILTER, &effects)){
+		reconFilterMode = (ReconFilterMode)(effects & 0x03);
+	}
+
 }
 
 // Saves parameters to flash
@@ -618,6 +850,9 @@ void EffectsCalculator::saveFlash()
 	effects = frictionPctSpeedToRampup | (filterProfileId << 8);
 	Flash_Write(ADR_FFB_EFFECTS3, effects);
 
+	// Save reconstruction parameters
+	effects = (uint16_t)(reconFilterMode);
+	Flash_Write(ADR_FFB_RECONSTRUCTION_FILTER, effects);
 }
 
 void EffectsCalculator::checkFilterCoeff(biquad_constant_t *filter, uint32_t freq,uint8_t q)
@@ -942,6 +1177,15 @@ CommandStatus EffectsCalculator::command(const ParsedCommand& cmd,std::vector<Co
 			isMonitorEffect = clip<uint8_t, uint8_t>(cmd.val, 0, 1);
 		}
 		break;
+
+	case EffectsCalculator_commands::reconFilterMode:
+        if (cmd.type == CMDtype::get) {
+            replies.emplace_back((uint32_t)reconFilterMode);
+        } else if (cmd.type == CMDtype::set) {
+            uint32_t mode = clip<uint32_t, uint32_t>(cmd.val, 0, 3);
+            reconFilterMode = (ReconFilterMode)mode;
+        }
+        break;
 
 	default:
 		return CommandStatus::NOT_FOUND;

@@ -37,5 +37,10 @@
 			<type>2</type>
 			<locationURI>PARENT-2-PROJECT_LOC/FFBoard</locationURI>
 		</link>
+		<link>
+			<name>DSP_Source</name>
+			<type>2</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Libraries/CMSIS-DSP/Source</locationURI>
+		</link>
 	</linkedResources>
 </projectDescription>

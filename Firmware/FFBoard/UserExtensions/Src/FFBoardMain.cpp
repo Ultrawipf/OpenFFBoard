@@ -2,7 +2,7 @@
  * FFBoardMain.cpp
  *
  *  Created on: 23.01.2020
- *      Author: Yannick
+ *      Author: Yannick, Vincent
  */
 
 #include "FFBoardMain.h"
