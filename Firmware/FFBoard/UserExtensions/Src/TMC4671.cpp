@@ -3375,8 +3375,6 @@ void TMC4671::handleStateCoggingCalibration() {
 	
 	allowStateChange = false;
 
-
-
 	// Set temporary robust PIDs for velocity control during calibration
 	calibPids.velocityP = 1000;
 	calibPids.velocityI = 100;
@@ -3386,7 +3384,6 @@ void TMC4671::handleStateCoggingCalibration() {
 	curFilters.flux.params.enable = false;
 	setBiquadFlux(curFilters.flux);
 	
-	// 1. ALLOCATE ACCUMULATORS (Single precision to use hardware FPU and save stack)
 	// 1. ALLOCATE ACCUMULATORS (Single precision to use hardware FPU and save stack)
 	// Discrete Fourier Transform (DFT): https://en.wikipedia.org/wiki/Discrete_Fourier_transform
 	iq_acc_cos = (float*)pvPortMalloc(COGGING_CALIB_DFT_HARMONICS * sizeof(float));
@@ -3415,6 +3412,7 @@ void TMC4671::handleStateCoggingCalibration() {
 	// 2. CALIBRATION PROCESS AND ANALYSIS
 	{
 		uint32_t total_samples = 0;
+		float relay_torque = bangInitPower > 0 ? (float)bangInitPower * 0.15f : 300.0f; 
 
 		if (!hasPower()) {
 			// --- DEBUG SIMULATION MODE ---
@@ -3455,7 +3453,6 @@ void TMC4671::handleStateCoggingCalibration() {
 			CommandHandler::broadcastCommandReply(CommandReply("Auto-tuning software PID...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 
 			float start_pos = getFilteredPosition();
-			float relay_torque = bangInitPower > 0 ? (float)bangInitPower * 0.15f : 300.0f; 
 			float max_test_torque = bangInitPower > 0 ? (float)bangInitPower * 0.8f : 2000.0f; 
 			bool friction_broken = false;
 
@@ -3568,7 +3565,7 @@ void TMC4671::handleStateCoggingCalibration() {
 					float err = getWrappedError(val_target_pos_f, getFilteredPosition());
 
 					// Ignore startup transient (warmup)
-					if (HAL_GetTick() - val_start > VAL_WARMUP_MS) {
+					if (HAL_GetTick() - val_start > COGGING_WARMUP_MS) {
 						if (fabs(err) > max_err_val) max_err_val = fabs(err);
 					}
 					float iq_cmd = arm_pid_f32(&pid_soft, err);
@@ -3690,7 +3687,7 @@ void TMC4671::handleStateCoggingCalibration() {
 						float iq_cmd = arm_pid_f32(&pid_soft, error);
 						
 						// Tracking stats (Ignore startup transient)
-						if (HAL_GetTick() - calibStartTime > ACQ_WARMUP_MS) {
+						if (HAL_GetTick() - calibStartTime > COGGING_WARMUP_MS) {
 							if (fabs(error) > max_err_seen) max_err_seen = fabs(error);
 							if (fabs(iq_cmd) > max_iq_cmd_used) max_iq_cmd_used = fabs(iq_cmd);
 						}
@@ -3701,8 +3698,8 @@ void TMC4671::handleStateCoggingCalibration() {
 						
 						// --- DISPLACEMENT-BASED ACQUISITION SECURITY ---
 						// Only integrate into DFT if we haven't completed one full revolution (360°)
-						// Wait at least ACQ_WARMUP_MS for the PID to stabilize the speed before starting data collection
-						if (integrated_distance < 1.0f && (HAL_GetTick() - calibStartTime > ACQ_WARMUP_MS)) {
+						// Wait at least COGGING_WARMUP_MS for the PID to stabilize the speed before starting data collection
+						if (integrated_distance < 1.0f && (HAL_GetTick() - calibStartTime > COGGING_WARMUP_MS)) {
 							float iq = iq_cmd; 
 #ifdef COGGING_CALIB_ENABLE_ID_DIAG
 							float id = (float)getActualFlux();
