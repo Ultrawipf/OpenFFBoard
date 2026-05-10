@@ -28,7 +28,7 @@
 #include "Filters.h"
 
 #define SPITIMEOUT 500
-#define TMC_THREAD_MEM 1024
+#define TMC_THREAD_MEM 384
 #define TMC_THREAD_PRIO 25 		// Must be higher than main thread
 #define TMC_ADCOFFSETFAIL 5000 	// How much offset from 0x7fff to allow before a calibration is failed
 
@@ -414,9 +414,9 @@ class TMC4671 :
 		tmctype,pidPrec,phiesrc,fluxoffset,seqpi,tmcIscale,encdir,temp,reg,
 		svpwm,fullCalibration,calibrated,abnindexenabled,findIndex,getState,encpol,combineEncoder,invertForce,vmTmc,
 		extphie,torqueFilter_mode,torqueFilter_f,torqueFilter_q,pidautotune,fluxbrake,pwmfreq,
-/*#ifdef COGGING_TABLE_FLASH_START_ADDRESS
+#ifdef COGGING_TABLE_FLASH_START_ADDRESS
 		cogging,calibrateCogging, coggingTable
-#endif*/
+#endif
 	};
 
 #ifdef TMCDEBUG

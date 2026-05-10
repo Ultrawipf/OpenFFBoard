@@ -2728,11 +2728,11 @@ void TMC4671::registerCommands(){
 	registerCommand("pidautotune", TMC4671_commands::pidautotune, "Start PID autoruning",CMDFLAG_GET);
 	registerCommand("fluxbrake", TMC4671_commands::fluxbrake, "Prefer energy dissipation in motor",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("pwmfreq", TMC4671_commands::pwmfreq, "Get/set pwm frequency",CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_DEBUG);
-/*#ifdef COGGING_TABLE_FLASH_START_ADDRESS
+#ifdef COGGING_TABLE_FLASH_START_ADDRESS
 	registerCommand("cogging", TMC4671_commands::cogging, "Get/Set the cogging compensation",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("calibrateCogging", TMC4671_commands::calibrateCogging, "Start cogging calibration (get)",CMDFLAG_GET);
 	registerCommand("coggingTable", TMC4671_commands::coggingTable, "Get the cogging table, or clear table (set 0)",CMDFLAG_GET | CMDFLAG_SET);
-#endif*/
+#endif
 }
 
 
@@ -2772,7 +2772,7 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 	case TMC4671_commands::mtype:
 		if(cmd.type == CMDtype::get){
 			replies.emplace_back((uint8_t)this->conf.motconf.motor_type);
-		}else if(cmd.type == CMDtype::set && (uint8_t)cmd.type <= (uint8_t)MotorType::BLDC){
+		}else if(cmd.type == CMDtype::set && (uint8_t)cmd.val <= (uint8_t)MotorType::BLDC){
 			this->setMotorType((MotorType)cmd.val, this->conf.motconf.pole_pairs);
 		}else{
 			std::string rplstr = "";
@@ -3045,7 +3045,7 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 				replies.emplace_back(getPwmFreq());
 			}
 		break;
-		/*
+
 #ifdef COGGING_TABLE_FLASH_START_ADDRESS
 	case TMC4671_commands::cogging:
 		handleGetSet(cmd, replies, cogging_enabled);
@@ -3102,7 +3102,7 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 		}
 		break;
 #endif
-*/
+
 		default:
 			return CommandStatus::NOT_FOUND;
 	}
@@ -3330,7 +3330,7 @@ void TMC4671::handleStateCoggingCalibration() {
 	if (errorMessage == nullptr) {
 		switch(coggingCalibState) {
 			case CoggingState::Init:
-				// VMACommandHandler::broadcastCommandReply(CommandReply("Starting calibration: Allocating memory...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+				CommandHandler::broadcastCommandReply(CommandReply("Starting calibration: Allocating memory...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 				prevCalibMode = getMotionMode(); // Store the mode to restore it later
 				allowStateChange = false;
 				
@@ -3344,7 +3344,7 @@ void TMC4671::handleStateCoggingCalibration() {
 					memset(coggingData->temp, 0, sizeof(coggingData->temp));
 					memset(coggingData->counts, 0, sizeof(coggingData->counts));
 					
-					// VMA CommandHandler::broadcastCommandReply(CommandReply("Memory allocated. Starting forward pass...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+					CommandHandler::broadcastCommandReply(CommandReply("Memory allocated. Starting forward pass...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 					setMotionMode(MotionMode::velocity, true);
 					setTargetVelocity(CALIB_SPEED);
 					calibStartTime = HAL_GetTick();
@@ -3401,7 +3401,7 @@ void TMC4671::handleStateCoggingCalibration() {
 				break;
 
 			case CoggingState::ForwardCompute:
-				// VMA CommandHandler::broadcastCommandReply(CommandReply("Forward pass finished. Resetting for backward pass...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+				CommandHandler::broadcastCommandReply(CommandReply("Forward pass finished. Resetting for backward pass...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 				// Store forward averages in data_cogging and reset buffers for backward pass
 				for (uint16_t i=0; i < CALIB_MAP_SIZE ; i++) {
 					data_cogging[i] = (coggingData->counts[i] > 0) ? coggingData->temp[i] / coggingData->counts[i] : 0;
@@ -3412,11 +3412,11 @@ void TMC4671::handleStateCoggingCalibration() {
 				setTargetVelocity(-CALIB_SPEED);
 				calibStartTime = HAL_GetTick();
 				coggingCalibState = CoggingState::BackwardWait;
-				// VMACommandHandler::broadcastCommandReply(CommandReply("Starting backward pass...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+				CommandHandler::broadcastCommandReply(CommandReply("Starting backward pass...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 				break;
 
 			case CoggingState::Compute:
-				// VMACommandHandler::broadcastCommandReply(CommandReply("Backward pass finished. Computing final table...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+				CommandHandler::broadcastCommandReply(CommandReply("Backward pass finished. Computing final table...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 				{
 					bool hasData = false;
 					long sum_torque = 0;
@@ -3453,9 +3453,9 @@ void TMC4671::handleStateCoggingCalibration() {
 	// 3. Unified Finalization: Cleanup, Messaging and State Restoration
 	if (errorMessage != nullptr || successMessage != nullptr) {
 		if (errorMessage != nullptr) {
-			// VMACommandHandler::broadcastCommandReply(CommandReply(errorMessage, 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+			CommandHandler::broadcastCommandReply(CommandReply(errorMessage, 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 		} else {
-			// VMACommandHandler::broadcastCommandReply(CommandReply(successMessage, 1), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+			CommandHandler::broadcastCommandReply(CommandReply(successMessage, 1), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 		}
 		
 		if (coggingData) coggingData.reset();
