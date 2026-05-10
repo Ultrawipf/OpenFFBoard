@@ -3411,53 +3411,83 @@ void TMC4671::handleStateCoggingCalibration() {
 			startMotor();
 			setMotionMode(MotionMode::torque, true);
 
-			// PID Controller: https://en.wikipedia.org/wiki/Proportional%E2%80%93integral%E2%80%93derivative_controller
 			arm_pid_instance_f32 pid_soft;
 			
-			// --- 1. SOFTWARE PID AUTO-TUNING (Friction discovery + Relay method) ---
+			auto applySafeTorque = [&](float torque_cmd) {
+				int16_t pwr = (int16_t)torque_cmd;
+				if ((this->conf.encoderReversed && conf.motconf.enctype == EncoderType_TMC::ext) || conf.invertForce) {
+					pwr = -pwr;
+				}
+				int32_t flux_cmd = idleFlux - clip<int32_t,int16_t>(abs(pwr), 0, maxOffsetFlux);
+				setFluxTorque(flux_cmd, pwr);
+			};
+
+			auto getWrappedError = [](float target, float actual) {
+				target = target - floorf(target); 
+				actual = actual - floorf(actual); 
+				float err = target - actual;
+				if (err > 0.5f) err -= 1.0f;
+				if (err < -0.5f) err += 1.0f;
+				return err;
+			};
+
+			const float SIGNIFICANT_MOVE_THRESHOLD = 0.001f / 360.0f; 
+			const float EMA_ALPHA = 0.3f; 
+			float filtered_pos_f = (usingExternalEncoder() && drvEncoder != nullptr) ? drvEncoder->getPos_f() : (float)this->getPos() / (float)this->getCpr();
+
+			auto getFilteredPosition = [&]() {
+				float raw_pos_f = (usingExternalEncoder() && drvEncoder != nullptr) ? drvEncoder->getPos_f() : (float)this->getPos() / (float)this->getCpr();
+				float delta = raw_pos_f - filtered_pos_f;
+				
+				if (delta > 0.5f) delta -= 1.0f;
+				if (delta < -0.5f) delta += 1.0f;
+
+				if (fabs(delta) > SIGNIFICANT_MOVE_THRESHOLD) {
+					filtered_pos_f += EMA_ALPHA * delta;
+					if (filtered_pos_f >= 1.0f) filtered_pos_f -= 1.0f;
+					if (filtered_pos_f < 0.0f) filtered_pos_f += 1.0f;
+				}
+				return filtered_pos_f;
+			};
+
+			// --- 1. AUTO-TUNING DU PID LOGICIEL ---
 			CommandHandler::broadcastCommandReply(CommandReply("Auto-tuning software PID...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 
-			float start_pos = (usingExternalEncoder() && drvEncoder != nullptr) ? drvEncoder->getPos_f() : (float)this->getPos() / (float)this->getCpr();
-			float relay_torque = 100.0f; 
-			float max_test_torque = 3500.0f; 
-			float friction_torque = 0.0f;
+			float start_pos = getFilteredPosition();
+			float relay_torque = bangInitPower > 0 ? (float)bangInitPower * 0.15f : 300.0f; 
+			float max_test_torque = bangInitPower > 0 ? (float)bangInitPower * 0.8f : 2000.0f; 
 			bool friction_broken = false;
 
-			// Search for static friction (breakaway torque)
 			while (!friction_broken && relay_torque < max_test_torque && !emergency) {
-				setTorque((int16_t)relay_torque);
+				applySafeTorque(relay_torque);
 				Delay(50); 
-				float actual_pos = (usingExternalEncoder() && drvEncoder != nullptr) ? drvEncoder->getPos_f() : (float)this->getPos() / (float)this->getCpr();
+				float actual_pos = getFilteredPosition();
 				
-				if (fabs(actual_pos - start_pos) > 0.005f) {
+				if (fabs(getWrappedError(start_pos, actual_pos)) > 0.005f) {
 					friction_broken = true;
-					friction_torque = relay_torque; // Store breakaway torque as base
-					relay_torque *= 1.2f; // Safety margin for PID oscillation
+					relay_torque *= 1.2f; 
 				} else {
 					relay_torque += 100.0f; 
 				}
 			}
-			setTorque(0);
+			applySafeTorque(0);
 			Delay(250); 
 
-			// Oscillation phase for Ziegler-Nichols tuning: https://en.wikipedia.org/wiki/Ziegler%E2%80%93Nichols_method
 			uint32_t tune_start = HAL_GetTick();
 			uint32_t last_cross_time = micros();
 			uint32_t period_sum = 0;
 			uint16_t cross_count = 0;
 			float max_amplitude = 0.0f;
-			start_pos = (usingExternalEncoder() && drvEncoder != nullptr) ? drvEncoder->getPos_f() : (float)this->getPos() / (float)this->getCpr();
+			start_pos = getFilteredPosition();
 
 			while (HAL_GetTick() - tune_start < 600 && !emergency && friction_broken) {
-				float actual_pos = (usingExternalEncoder() && drvEncoder != nullptr) ? drvEncoder->getPos_f() : (float)this->getPos() / (float)this->getCpr();
-				float error = start_pos - actual_pos;
-				if (error > 0.5f) error -= 1.0f;
-				if (error < -0.5f) error += 1.0f;
-
+				float actual_pos = getFilteredPosition();
+				
+				float error = getWrappedError(start_pos, actual_pos);
 				if (fabs(error) > max_amplitude) max_amplitude = fabs(error);
 
-				if (error > 0) setTorque((int16_t)relay_torque);
-				else setTorque((int16_t)-relay_torque);
+				if (error > 0) applySafeTorque(relay_torque);
+				else applySafeTorque(-relay_torque);
 
 				static bool was_positive = true;
 				bool is_positive = (error > 0);
@@ -3470,82 +3500,87 @@ void TMC4671::handleStateCoggingCalibration() {
 				}
 				Delay(1);
 			}
-			setTorque(0);
+			applySafeTorque(0);
+			Delay(250);
 
-			// Calculate PID gains from oscillation data
+			float dt = 0.001f; // 1kHz = 1ms
+			char dbg_buf[128];
+			snprintf(dbg_buf, sizeof(dbg_buf), "Tune Diag -> Cross:%d Amp(x10k):%d Fric:%d", 
+					(int)cross_count, (int)(max_amplitude * 10000.0f), (int)friction_broken);
+			CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+
 			if (cross_count > 4 && max_amplitude > 0.0001f && friction_broken) {
 				float Tu = ((float)period_sum / (cross_count - 1)) * 2.0f / 1000000.0f;
 				float Ku = (4.0f * relay_torque) / (PI * max_amplitude);
 
 				pid_soft.Kp = 0.45f * Ku;      
-				pid_soft.Ki = (0.54f * Ku / Tu) * 0.05f; 
-				pid_soft.Kd = 0.15f * Ku * Tu;
+				pid_soft.Ki = (0.54f * Ku / Tu) * dt * 0.05f; 
+				pid_soft.Kd = (0.15f * Ku * Tu) / dt;
+				
 				arm_pid_init_f32(&pid_soft, 1);
-				CommandHandler::broadcastCommandReply(CommandReply("Soft PID Tuned dynamically", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+				
+				snprintf(dbg_buf, sizeof(dbg_buf), "Tuned -> Kp:%d Ki:%d Kd:%d Amp(x10k):%d Trq:%d", 
+						(int)pid_soft.Kp, (int)pid_soft.Ki, (int)pid_soft.Kd, (int)(max_amplitude * 10000.0f), (int)relay_torque);
+				CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 			} else {
 				pid_soft.Kp = 25000.0f;
 				pid_soft.Ki = 0.0f;
-				pid_soft.Kd = 800.0f;
+				pid_soft.Kd = 800.0f / dt; 
 				arm_pid_init_f32(&pid_soft, 1);
-				CommandHandler::broadcastCommandReply(CommandReply("Auto-tune failed, using failsafe", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
-				friction_torque = 500.0f; // Failsafe base torque
+				CommandHandler::broadcastCommandReply(CommandReply("Auto-tune failed, using robust failsafe", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 			}
-			Delay(250);
-
-			// --- 2. CONSTANT VELOCITY DFT ACQUISITION ---
+			
+			// --- 2. ACQUISITION DFT A VITESSE CONSTANTE ---
 			int8_t dirs[2] = {1, -1};
-			float target_rpm_abs = 60.0f / COGGING_CALIB_TIME_PER_REV_S;
 			
 			for (int8_t p : dirs) {
 				CommandHandler::broadcastCommandReply(CommandReply(p == 1 ? "Forward integration..." : "Backward integration...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 				
-				float target_rpm = (p == 1) ? target_rpm_abs : -target_rpm_abs;
-				float target_pos_f = (usingExternalEncoder() && drvEncoder != nullptr) ? drvEncoder->getPos_f() : (float)this->getPos() / (float)this->getCpr();
+				float target_rpm = (p == 1) ? 8.0f : -8.0f;
+				filtered_pos_f = (usingExternalEncoder() && drvEncoder != nullptr) ? drvEncoder->getPos_f() : (float)this->getPos() / (float)this->getCpr();
+				float target_pos_f = filtered_pos_f;
 				
-				// Reset PID for new movement
+				// Trackers statistiques post-mortem
+				float max_iq_cmd_used = 0.0f;
+				float max_err_seen = 0.0f;
+
 				arm_pid_init_f32(&pid_soft, 1);
 
-				// Increase stabilization time (2 seconds)
 				uint32_t waitStart = HAL_GetTick();
-				while(HAL_GetTick() - waitStart < 2000 && !emergency && hasPower()) { 
+				while(HAL_GetTick() - waitStart < 500 && !emergency && hasPower()) { 
 					refreshWatchdog();
 					Delay(10); 
 				}
 
 				if (!emergency && hasPower()) {
-					uint32_t period_us = 1000; // Strict 1kHz sampling
+					calibStartTime = HAL_GetTick();
+					uint32_t period_us = 1000;
 					uint32_t next_tick = micros();
-					uint32_t num_samples_rev = COGGING_CALIB_TIME_PER_REV_S * 1000;
-
-					for (uint32_t s = 0; s < num_samples_rev && !emergency && hasPower(); s++) {
+					
+					while (HAL_GetTick() - calibStartTime < revolution_time_ms && !emergency && hasPower()) {
 						next_tick += period_us;
 						
-						// 1. Synchronous reading of position and actual currents
-						float actual_pos_f = (usingExternalEncoder() && drvEncoder != nullptr) ? drvEncoder->getPos_f() : (float)this->getPos() / (float)this->getCpr();
-						std::pair<int32_t, int32_t> currents = getActualTorqueFlux(); // Reads Iq and Id in a single SPI transfer
-
-						// 2. Target update (trajectory for next ms)
 						target_pos_f += (target_rpm / 60.0f) * (period_us / 1000000.0f);
 						if (target_pos_f >= 1.0f) target_pos_f -= 1.0f;
 						if (target_pos_f < 0.0f) target_pos_f += 1.0f;
 
-						float error = target_pos_f - actual_pos_f;
-						if (error > 0.5f) error -= 1.0f;
-						if (error < -0.5f) error += 1.0f;
+						float actual_pos_f = getFilteredPosition();
 						
-						// PID corrects tracking error, Feed-Forward cancels base friction
-						float iq_cmd = arm_pid_f32(&pid_soft, error) + (p * friction_torque);
+						float error = getWrappedError(target_pos_f, actual_pos_f);
+						float iq_cmd = arm_pid_f32(&pid_soft, error);
 						
-						if(iq_cmd > 3000.0f) iq_cmd = 3000.0f;
-						if(iq_cmd < -3000.0f) iq_cmd = -3000.0f;
+						// Tracking stats
+						if (fabs(error) > max_err_seen) max_err_seen = fabs(error);
+						if (fabs(iq_cmd) > max_iq_cmd_used) max_iq_cmd_used = fabs(iq_cmd);
 						
-						setTorque((int16_t)iq_cmd);
+						if(iq_cmd > max_test_torque) iq_cmd = max_test_torque;
+						if(iq_cmd < -max_test_torque) iq_cmd = -max_test_torque;
 						
-						// 3. DFT Integration (using values measured at loop start)
-						// Inverting actual torque to map the disturbance (cogging torque)
-						float iq = -(float)currents.second; 
+						applySafeTorque(iq_cmd);
+						
+						float iq = iq_cmd; 
 #ifdef COGGING_CALIB_ENABLE_ID_DIAG
-						float id = (float)currents.first;
+						float id = (float)getActualFlux();
 #endif
 						float s1, c1;
 						arm_sin_cos_f32(actual_pos_f * 360.0f, &s1, &c1);
@@ -3565,13 +3600,15 @@ void TMC4671::handleStateCoggingCalibration() {
 						total_samples++;
 						refreshWatchdog();
 						
-						// Active wait loop for precise 1kHz timing
-						while ((micros() - next_tick) & 0x80000000) {
-							// Wait
-						}
+						while ((micros() - next_tick) & 0x80000000) { }
 					}
 				}
-				setTorque(0);
+				applySafeTorque(0);
+
+				// Message de résumé de la passe d'acquisition
+				snprintf(dbg_buf, sizeof(dbg_buf), "Acq %s Done -> MaxErr(x10k):%d MaxIq:%d", 
+						 (p == 1) ? "FWD" : "BWD", (int)(max_err_seen * 10000.0f), (int)max_iq_cmd_used);
+				CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 			}
 		}
 
