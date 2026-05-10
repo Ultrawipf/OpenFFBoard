@@ -3787,9 +3787,8 @@ void TMC4671::handleStateCoggingCalibration() {
 					// Read the raw absolute position
 					actual_pos_f = (usingExternalEncoder() && drvEncoder != nullptr) ? drvEncoder->getPos_f() : (float)this->getPos() / (float)this->getCpr();
 					
-					// Calculate wrapped error (shortest distance on the circle)
-					// This stabilizes the PID when crossing turn boundaries (e.g. 1.0 -> 0.0)
-					float error = getWrappedError(target_pos_f, actual_pos_f);
+					// Get raw error
+					float error = target_pos_f - actual_pos_f;
 					
 					// Calculate torque via the CMSIS PID
 					float iq_cmd = arm_pid_f32(&pid_soft, error);
@@ -3798,13 +3797,6 @@ void TMC4671::handleStateCoggingCalibration() {
 					iq_cmd = clip<float,float>(iq_cmd, -max_test_torque, max_test_torque);
 					applySafeTorque(iq_cmd);
 					
-					// Log every second
-					if (HAL_GetTick() - last_log > 1000) {
-						last_log = HAL_GetTick();
-						snprintf(dbg_buf, sizeof(dbg_buf), "Unwinding: Pos=%.3f Target=%.3f Err=%.3f Iq=%d", 
-								 actual_pos_f, target_pos_f, error, (int)iq_cmd);
-						CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
-					}
 
 					refreshWatchdog();
 					if (HAL_GetTick() - return_start > 30000) {
