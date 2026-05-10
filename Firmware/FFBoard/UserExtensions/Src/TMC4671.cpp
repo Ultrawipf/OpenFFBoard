@@ -3408,15 +3408,14 @@ void TMC4671::handleStateCoggingCalibration() {
 			}
 		} else {
 			// --- TUNABLE CALIBRATION CONSTANTS (English) ---
-			const uint32_t TUNE_OSCILLATION_MS = 600;	// Duration of the relay oscillation test
+			const uint32_t TUNE_OSCILLATION_MS = 600;    // Duration of the relay oscillation test
 			const uint32_t VAL_TOTAL_DURATION_MS = 2000; // Total duration of each validation run
-			const uint32_t VAL_WARMUP_MS = 1000;		 // Time to ignore at start (transient/stiction)
-			const uint32_t VAL_RETRY_PAUSE_MS = 500;	 // Pause between validation attempts
-			const int	  VAL_MAX_ATTEMPTS = 10;		// Number of fine-tuning tries before abort
-
+			const uint32_t VAL_WARMUP_MS = 1000;         // Time to ignore at start (transient/stiction)
+			const uint32_t VAL_RETRY_PAUSE_MS = 500;     // Pause between validation attempts
+			const int      VAL_MAX_ATTEMPTS = 20;        // Number of fine-tuning tries before abort
 			// Calculate RPM dynamically: 60 seconds / Time per revolution
             const float    TARGET_RPM = 60.0f / (float)COGGING_CALIB_TIME_PER_REV_S; 
-            const float    INITIAL_ERROR_LIMIT_DEG = 0.1f; // Initial strict accuracy target
+			const float    INITIAL_ERROR_LIMIT_DEG = 0.1f; // Initial strict accuracy target
 
 			// --- REAL ACQUISITION SETUP ---
 			startMotor();
@@ -3424,7 +3423,7 @@ void TMC4671::handleStateCoggingCalibration() {
 
 			arm_pid_instance_f32 pid_soft;
 			char dbg_buf[128];
-			
+
 			// Helper: Apply torque safely considering encoder direction and flux
 			auto applySafeTorque = [&](float torque_cmd) {
 				int16_t pwr = (int16_t)torque_cmd;
@@ -3445,23 +3444,9 @@ void TMC4671::handleStateCoggingCalibration() {
 				return err;
 			};
 
-			// Encoder noise filtering (Exponential Moving Average)
-			const float SIGNIFICANT_MOVE_THRESHOLD = 0.001f / 360.0f; 
-			const float EMA_ALPHA = 0.3f; 
-			float filtered_pos_f = (usingExternalEncoder() && drvEncoder != nullptr) ? drvEncoder->getPos_f() : (float)this->getPos() / (float)this->getCpr();
-
+			// Simplified position access (Direct reading to avoid phase lag)
 			auto getFilteredPosition = [&]() {
-				float raw_pos_f = (usingExternalEncoder() && drvEncoder != nullptr) ? drvEncoder->getPos_f() : (float)this->getPos() / (float)this->getCpr();
-				float delta = raw_pos_f - filtered_pos_f;
-				if (delta > 0.5f) delta -= 1.0f;
-				if (delta < -0.5f) delta += 1.0f;
-
-				if (fabs(delta) > SIGNIFICANT_MOVE_THRESHOLD) {
-					filtered_pos_f += EMA_ALPHA * delta;
-					if (filtered_pos_f >= 1.0f) filtered_pos_f -= 1.0f;
-					if (filtered_pos_f < 0.0f) filtered_pos_f += 1.0f;
-				}
-				return filtered_pos_f;
+			    return (usingExternalEncoder() && drvEncoder != nullptr) ? drvEncoder->getPos_f() : (float)this->getPos() / (float)this->getCpr();
 			};
 
 			// --- 1. SOFTWARE PID AUTO-TUNING (Relay Method) ---
@@ -3556,8 +3541,12 @@ void TMC4671::handleStateCoggingCalibration() {
 				// Test rotation
 				while (HAL_GetTick() - val_start < VAL_TOTAL_DURATION_MS && !emergency && hasPower()) {
 					next_tick += 1000; // 1ms
+
 					val_target_pos_f += (TARGET_RPM / 60.0f) * 0.001f;
+					if (val_target_pos_f >= 1.0f) val_target_pos_f -= 1.0f;
+                    if (val_target_pos_f < 0.0f) val_target_pos_f += 1.0f;
 					float err = getWrappedError(val_target_pos_f, getFilteredPosition());
+
 					// Ignore startup transient (warmup)
 					if (HAL_GetTick() - val_start > VAL_WARMUP_MS) {
 						if (fabs(err) > max_err_val) max_err_val = fabs(err);
