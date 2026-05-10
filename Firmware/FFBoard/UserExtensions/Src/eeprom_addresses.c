@@ -88,6 +88,11 @@ const uint16_t VirtAddVarTab[NB_OF_VAR] =
 	ADR_AXIS1_ENC_RATIO, // Accel filter Lowpass
 	ADR_AXIS1_EFFECTS2, // 0-7 Friction, 8-15 Inertia
 	ADR_AXIS1_POSTPROCESS1, // 0-7 expo curve
+	ADR_AXIS1_EQ1, // Equalizer band 1,2 gains
+	ADR_AXIS1_EQ2, // Equalizer band 3,4 gains
+	ADR_AXIS1_EQ3, // Equalizer band 5 gain
+	ADR_AXIS1_HANDSOFF_CONF, // Hands-off config
+	ADR_AXIS1_HANDSOFF_ACCEL, // Hands-off accel threshold
 // TMC1
 	ADR_TMC1_MOTCONF, // 0-2: MotType 3-5: PhiE source 6-15: Poles
 	ADR_TMC1_CPR,
@@ -115,6 +120,11 @@ const uint16_t VirtAddVarTab[NB_OF_VAR] =
 	ADR_AXIS2_ENC_RATIO, // Store the encoder ratio for an axis
 	ADR_AXIS2_EFFECTS2, // 0-7 Friction, 8-15 Inertia
 	ADR_AXIS2_POSTPROCESS1, // 0-7 expo curve
+	ADR_AXIS2_EQ1, // Equalizer band 1,2 gains
+	ADR_AXIS2_EQ2, // Equalizer band 3,4 gains
+	ADR_AXIS2_EQ3, // Equalizer band 5 gain
+	ADR_AXIS2_HANDSOFF_CONF, // Hands-off config
+	ADR_AXIS2_HANDSOFF_ACCEL, // Hands-off accel threshold
 // TMC2
 	ADR_TMC2_MOTCONF, // 0-2: MotType 3-5: PhiE source 6-15: Poles
 	ADR_TMC2_CPR,
@@ -142,6 +152,11 @@ const uint16_t VirtAddVarTab[NB_OF_VAR] =
 	ADR_AXIS3_ENC_RATIO, // Store the encoder ratio for an axis
 	ADR_AXIS3_EFFECTS2, // 0-7 Friction, 8-15 Inertia
 	ADR_AXIS3_POSTPROCESS1, // 0-7 expo curve
+	ADR_AXIS3_EQ1, // Equalizer band 1,2 gains
+	ADR_AXIS3_EQ2, // Equalizer band 3,4 gains
+	ADR_AXIS3_EQ3, // Equalizer band 5 gain
+	ADR_AXIS3_HANDSOFF_CONF, // Hands-off config
+	ADR_AXIS3_HANDSOFF_ACCEL, // Hands-off accel threshold
 // TMC3
 	ADR_TMC3_MOTCONF, // 0-2: MotType 3-5: PhiE source 6-15: Poles
 	ADR_TMC3_CPR,
@@ -292,6 +307,11 @@ const uint16_t exportableFlashAddresses[NB_EXPORTABLE_ADR] =
 	ADR_AXIS1_ENC_RATIO, // Accel filter Lowpass
 	ADR_AXIS1_EFFECTS2, // 0-7 Friction, 8-15 Inertia
 	ADR_AXIS1_POSTPROCESS1, // 0-7 expo curve
+	ADR_AXIS1_EQ1, // Equalizer band 1,2 gains
+	ADR_AXIS1_EQ2, // Equalizer band 3,4 gains
+	ADR_AXIS1_EQ3, // Equalizer band 5 gain
+	ADR_AXIS1_HANDSOFF_CONF, // Hands-off config
+	ADR_AXIS1_HANDSOFF_ACCEL, // Hands-off accel threshold
 // TMC1
 	ADR_TMC1_MOTCONF, // 0-2: MotType 3-5: PhiE source 6-15: Poles
 	ADR_TMC1_CPR,
@@ -319,6 +339,11 @@ const uint16_t exportableFlashAddresses[NB_EXPORTABLE_ADR] =
 	ADR_AXIS2_ENC_RATIO, // Store the encoder ratio for an axis
 	ADR_AXIS2_EFFECTS2, // 0-7 Friction, 8-15 Inertia
 	ADR_AXIS2_POSTPROCESS1, // 0-7 expo curve
+	ADR_AXIS2_EQ1, // Equalizer band 1,2 gains
+	ADR_AXIS2_EQ2, // Equalizer band 3,4 gains
+	ADR_AXIS2_EQ3, // Equalizer band 5 gain
+	ADR_AXIS2_HANDSOFF_CONF, // Hands-off config
+	ADR_AXIS2_HANDSOFF_ACCEL, // Hands-off accel threshold
 // TMC2
 	ADR_TMC2_MOTCONF, // 0-2: MotType 3-5: PhiE source 6-15: Poles
 	ADR_TMC2_CPR,
@@ -346,6 +371,11 @@ const uint16_t exportableFlashAddresses[NB_EXPORTABLE_ADR] =
 	ADR_AXIS3_ENC_RATIO, // Store the encoder ratio for an axis
 	ADR_AXIS3_EFFECTS2, // 0-7 Friction, 8-15 Inertia
 	ADR_AXIS3_POSTPROCESS1, // 0-7 expo curve
+	ADR_AXIS3_EQ1, // Equalizer band 1,2 gains
+	ADR_AXIS3_EQ2, // Equalizer band 3,4 gains
+	ADR_AXIS3_EQ3, // Equalizer band 5 gain
+	ADR_AXIS3_HANDSOFF_CONF, // Hands-off config
+	ADR_AXIS3_HANDSOFF_ACCEL, // Hands-off accel threshold
 // TMC3
 	ADR_TMC3_MOTCONF, // 0-2: MotType 3-5: PhiE source 6-15: Poles
 	ADR_TMC3_CPR,
