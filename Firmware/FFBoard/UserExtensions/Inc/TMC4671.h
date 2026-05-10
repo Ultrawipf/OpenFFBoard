@@ -66,9 +66,9 @@ extern TIM_HandleTypeDef TIM_TMC;
 #endif
 
 struct Harmonic {
-	float32_t amplitude = 0.0f;
-	float32_t phase = 0.0f;
-	uint16_t order = 0;
+	float32_t amplitude;
+	float32_t phase;
+	uint16_t order;
 };
 
 struct CoggingCalibData {

@@ -158,7 +158,7 @@ void TMC4671::saveAdcParams(){
 
 #ifdef COGGING_TABLE_FLASH_START_ADDRESS
 void TMC4671::saveCoggingTable(){
-	Flash_WriteCoggingTable(this->drv_address - 1, (int16_t*)this->cogging_harmonics);
+	Flash_WriteCoggingTable(this->drv_address - 1, (void*)this->cogging_harmonics);
 }
 
 void TMC4671::clearCoggingTable(){
