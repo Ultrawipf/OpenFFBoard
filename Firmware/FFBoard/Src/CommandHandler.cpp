@@ -57,36 +57,38 @@ std::string CommandHandler::getCommandsHelpstring(){
 	}
 
 	if(registeredCommands.empty()){
-		helpstring += "No commands.";
+		helpstring.append("No commands.");
 	}else{
-		helpstring += "cmd\tflags\tdescription\n\n";
+		helpstring.append("cmd\tflags\tdescription\n\n");
 		for(CmdHandlerCommanddef& cmd : registeredCommands){
 			if(cmd.helpstring != nullptr && cmd.cmd != nullptr){
-				helpstring += std::string(cmd.cmd);
-				helpstring += "\t(";
+				helpstring.append(cmd.cmd);
+				helpstring.append("\t(");
 
 				if(cmd.flags & CMDFLAG_GET){
-					helpstring+= " R";
+					helpstring.append(" R");
 				}
 				if(cmd.flags & CMDFLAG_SET){
-					helpstring+= " W";
+					helpstring.append(" W");
 				}
 				if(cmd.flags & CMDFLAG_SETADR){
-					helpstring+= " WA";
+					helpstring.append(" WA");
 				}
 				if(cmd.flags & CMDFLAG_GETADR){
-					helpstring+= " RA";
+					helpstring.append(" RA");
 				}
 				if(cmd.flags & CMDFLAG_INFOSTRING){
-					helpstring+= " I";
+					helpstring.append(" I");
 				}
 				if(cmd.flags & CMDFLAG_STR_ONLY){
-					helpstring+= " STR";
+					helpstring.append(" STR");
 				}
 				if(cmd.flags & CMDFLAG_DEBUG){
-					helpstring+= " DBG";
+					helpstring.append(" DBG");
 				}
-				helpstring.append(" )\t").append(std::string(cmd.helpstring)).append("\n");
+				helpstring.append(" )\t");
+				helpstring.append(cmd.helpstring);
+				helpstring.append("\n");
 			}
 
 		}
@@ -543,7 +545,6 @@ void CommandHandler::registerCommand_INT(const char* cmd,const uint32_t cmdid,co
 	}
 
 	this->registeredCommands.emplace_back(cmd, help,cmdid,flags);
-	this->registeredCommands.shrink_to_fit();
 }
 
 /**

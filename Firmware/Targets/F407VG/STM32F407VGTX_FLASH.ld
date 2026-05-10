@@ -42,15 +42,13 @@ MEMORY
   RAM    (xrw)    : ORIGIN = 0x20000000,   LENGTH = 128K
   FLASH_BOOT (rx)         : ORIGIN = 0x8000000,
                               LENGTH = 16k
-      
+
     EMULATED_EEPROM (rwx)   : ORIGIN = ORIGIN(FLASH_BOOT) + LENGTH(FLASH_BOOT), 
                               LENGTH = 32k 
-    
-    FLASH (rx)              : ORIGIN = ORIGIN(EMULATED_EEPROM) + LENGTH(EMULATED_EEPROM),
-                              LENGTH = 1024k - LENGTH(FLASH_BOOT) - LENGTH(EMULATED_EEPROM) - 32k
-    
-    COGGING_TABLES (rwx)    : ORIGIN = 0x080F8000, /* Last 32k of Flash */
-                              LENGTH = 32k
+    COGGING_TABLES (rwx)    : ORIGIN = 0x08010000, /* Sector 4 (64k) */
+                              LENGTH = 64k
+    FLASH (rx)              : ORIGIN = 0x08020000, /* Sectors 5-11 (7x128k) */
+                              LENGTH = 896k
 }
 
 /* Sections */
