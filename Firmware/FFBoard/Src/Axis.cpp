@@ -787,16 +787,20 @@ bool Axis::updateTorque(int32_t* totalTorque) {
 		forceFadeMultiplier += forceFadeDuration / this->filter_f;
 	}
 
-	// STEP 6: Dynamic limiters (Speed & Slew Rate)
-	// CRITICAL: Slew Rate compares the target value with "metric.previous.torque"
-	// (which is the clipped physical torque from the previous cycle).
-	// It MUST be applied on the final scaled torque!
+	// STEP 6: Dynamic limiters (Speed)
+	// Must be applied while torque is still in the Game Coordinate System (matching current.speed).
 	torque -= applySpeedLimiterTorque(torque);
-	applyTorqueSlewRateLimiter(torque);
 
-	// STEP 7: Axis inversion and final hardware clipping
+	// STEP 7: Axis inversion and Slew Rate Limiter
+	// Axis inversion must be done BEFORE Slew Rate because previous.torque is in hardware CS.
 	torque = (invertAxis) ? -torque : torque;
 
+	// CRITICAL: Slew Rate compares the target value with "metric.previous.torque"
+	// (which is the clipped physical torque from the previous cycle).
+	// It MUST be applied on the final physical torque after inversion!
+	applyTorqueSlewRateLimiter(torque);
+
+	// STEP 8: Final hardware clipping
 	int32_t torqueAfterClipping = clip<int32_t, int32_t>((int32_t)torque, -power, power);
 	
 	if (torqueAfterClipping != torque){
