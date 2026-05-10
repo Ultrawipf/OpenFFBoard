@@ -73,13 +73,11 @@ enum class TMC_PwmMode : uint8_t {off = 0,HSlow_LShigh = 1, HShigh_LSlow = 2, re
 
 enum class TMC_StartupType{NONE,coldStart,warmStart};
 
-enum class CoggingState : uint8_t { Init, ForwardWait, ForwardMeasure, BackwardWait, BackwardMeasure, Compute };
+enum class CoggingState : uint8_t { Init, ForwardWait, ForwardMeasure, ForwardCompute, BackwardWait, BackwardMeasure, Compute };
 
 struct CoggingCalibData {
-	int32_t temp_fw[CALIB_MAP_SIZE] = {0};
-	int32_t temp_bw[CALIB_MAP_SIZE] = {0};
-	uint16_t counts_fw[CALIB_MAP_SIZE] = {0};
-	uint16_t counts_bw[CALIB_MAP_SIZE] = {0};
+	int32_t temp[CALIB_MAP_SIZE] = {0};
+	uint16_t counts[CALIB_MAP_SIZE] = {0};
 };
 
 enum class TMC_GpioMode{DebugSpi,DSAdcClkOut,DSAdcClkIn,Aout_Bin,Ain_Bout,Aout_Bout,Ain_Bin};

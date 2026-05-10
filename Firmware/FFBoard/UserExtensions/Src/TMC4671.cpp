@@ -3338,16 +3338,30 @@ void TMC4671::handleStateCoggingCalibration() {
 				uint16_t pos_mechanical = (uint16_t)getPos();
 				uint16_t current_index = (uint32_t)pos_mechanical * CALIB_MAP_SIZE / 65536;
 				if(current_index < CALIB_MAP_SIZE){
-					coggingData->temp_fw[current_index] += getVelocityControllerTorque();
-					coggingData->counts_fw[current_index]++;
+					coggingData->temp[current_index] += getVelocityControllerTorque();
+					coggingData->counts[current_index]++;
 				}
 				
 				if(HAL_GetTick() - calibStartTime >= revolution_time_ms) {
-					// *** 2- Backward capture ***
-					setTargetVelocity(-CALIB_SPEED);
-					calibStartTime = HAL_GetTick();
-					coggingCalibState = CoggingState::BackwardWait;
+					coggingCalibState = CoggingState::ForwardCompute;
 				}
+			}
+			break;
+
+		case CoggingState::ForwardCompute:
+			{
+				// Store forward averages in the final table temporarily to reuse RAM
+				for (uint16_t i=0; i < CALIB_MAP_SIZE ; i++) {
+					data_cogging[i] = (coggingData->counts[i] > 0) ? coggingData->temp[i] / coggingData->counts[i] : 0;
+				}
+				// Clear temporary buffers for backward pass
+				memset(coggingData->temp, 0, sizeof(coggingData->temp));
+				memset(coggingData->counts, 0, sizeof(coggingData->counts));
+
+				// *** 2- Backward capture ***
+				setTargetVelocity(-CALIB_SPEED);
+				calibStartTime = HAL_GetTick();
+				coggingCalibState = CoggingState::BackwardWait;
 			}
 			break;
 
@@ -3363,8 +3377,8 @@ void TMC4671::handleStateCoggingCalibration() {
 				uint16_t pos_mechanical = (uint16_t)getPos();
 				uint16_t current_index = (uint32_t)pos_mechanical * CALIB_MAP_SIZE / 65536;
 				if(current_index < CALIB_MAP_SIZE){
-					coggingData->temp_bw[current_index] += getVelocityControllerTorque();
-					coggingData->counts_bw[current_index]++;
+					coggingData->temp[current_index] += getVelocityControllerTorque();
+					coggingData->counts[current_index]++;
 				}
 				
 				if(HAL_GetTick() - calibStartTime >= revolution_time_ms) {
@@ -3377,37 +3391,40 @@ void TMC4671::handleStateCoggingCalibration() {
 		case CoggingState::Compute:
 			{
 				// *** 3- Averaging and isolating detent torque ***
-				// T_fw = T_friction + T_cogging
-				// T_bw = -T_friction + T_cogging
-				// T_cogging = (T_fw + T_bw) / 2
+				bool hasData = false;
 				long sum_torque = 0;
 				for (uint16_t i=0; i < CALIB_MAP_SIZE ; i++) {
-					int32_t avg_fw = (coggingData->counts_fw[i] > 0) ? coggingData->temp_fw[i] / coggingData->counts_fw[i] : 0;
-					int32_t avg_bw = (coggingData->counts_bw[i] > 0) ? coggingData->temp_bw[i] / coggingData->counts_bw[i] : 0;
+					int32_t avg_fw = data_cogging[i];
+					int32_t avg_bw = (coggingData->counts[i] > 0) ? coggingData->temp[i] / coggingData->counts[i] : 0;
 
-					// If one of the measurements is missing, use the other
-					if(coggingData->counts_fw[i] == 0 && coggingData->counts_bw[i] > 0) avg_fw = -avg_bw;
-					if(coggingData->counts_bw[i] == 0 && coggingData->counts_fw[i] > 0) avg_bw = -avg_fw;
+					if (avg_fw != 0 || avg_bw != 0) hasData = true;
+
+					// If one of the measurements is missing, estimate the other based on symmetry
+					if(avg_fw == 0 && avg_bw != 0) avg_fw = -avg_bw;
+					if(avg_bw == 0 && avg_fw != 0) avg_bw = -avg_fw;
 
 					data_cogging[i] = (avg_fw + avg_bw) / 2;
 					sum_torque += data_cogging[i];
 				}
 
-				// *** 4- Centering the compensation table around zero ***
-				const long torque_offset = sum_torque / CALIB_MAP_SIZE;
-				for (uint16_t i=0; i < CALIB_MAP_SIZE ; i++) {
-					data_cogging[i] -= torque_offset;
+				if (hasData) {
+					// *** 4- Centering the compensation table around zero ***
+					const long torque_offset = sum_torque / CALIB_MAP_SIZE;
+					for (uint16_t i=0; i < CALIB_MAP_SIZE ; i++) {
+						data_cogging[i] -= torque_offset;
+					}
+					saveCoggingTable();
+					CommandHandler::broadcastCommandReply(CommandReply("Cogging map read success", 1), (uint32_t)TMC4671_commands::cogging, CMDtype::get);
+				} else {
+					CommandHandler::broadcastCommandReply(CommandReply("Cogging calibration aborted: No data collected", 0), (uint32_t)TMC4671_commands::cogging, CMDtype::get);
 				}
 				
-				saveCoggingTable();
-				
 				// Cleanup and completion
-				coggingData.reset(); // Free 34KB of RAM
+				coggingData.reset(); // Free memory
 				setMotionMode(prevCalibMode, true);
 				coggingCalibState = CoggingState::Init;
 				allowStateChange = true;
 				changeState(laststate, false);
-				CommandHandler::broadcastCommandReply(CommandReply("Cogging map read success",1), (uint32_t)TMC4671_commands::cogging, CMDtype::get);
 			}
 			break;
 	}
