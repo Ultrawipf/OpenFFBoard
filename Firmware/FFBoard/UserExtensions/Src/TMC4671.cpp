@@ -3356,7 +3356,6 @@ void TMC4671::handleStateCoggingCalibration() {
 	const uint32_t VAL_TOTAL_DURATION_MS = 2000; // Total duration of each validation run
 	const uint32_t VAL_WARMUP_MS = 1000;         // Time to ignore at start (transient/stiction)
 	const uint32_t VAL_RETRY_PAUSE_MS = 500;     // Pause between validation attempts
-	const int      VAL_MAX_ATTEMPTS = 20;        // Number of fine-tuning tries before abort
 	// Calculate RPM dynamically: 60 seconds / Time per revolution
 	const float    TARGET_RPM = 60.0f / (float)COGGING_CALIB_TIME_PER_REV_S; 
 	const float    INITIAL_ERROR_LIMIT_DEG = 0.1f; // Initial strict accuracy target
@@ -3413,7 +3412,7 @@ void TMC4671::handleStateCoggingCalibration() {
 	memset(id_acc_sin, 0, COGGING_CALIB_DFT_HARMONICS * sizeof(float));
 #endif
 
-	// 2. CONTINUOUS ACQUISITION
+	// 2. CALIBRATION PROCESS AND ANALYSIS
 	{
 		uint32_t total_samples = 0;
 
@@ -3534,10 +3533,15 @@ void TMC4671::handleStateCoggingCalibration() {
 			CommandHandler::broadcastCommandReply(CommandReply("Validating & Fine-Tuning PID...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 			
 			float current_target_err = INITIAL_ERROR_LIMIT_DEG / 360.0f;
+			const float MAX_TOLERANCE_DEG = 3.0f;
+			const int   VAL_MAX_ATTEMPTS = 50;        // Number of fine-tuning tries before abort
 			best_err_val = 1e9f;
 			best_Kp = pid_soft.Kp; best_Ki = pid_soft.Ki; best_Kd = pid_soft.Kd;
 
-			for (int attempt = 1; attempt <= VAL_MAX_ATTEMPTS; attempt++) {
+			int attempt = 1;
+			bool validation_success = false;
+
+			while (attempt <= VAL_MAX_ATTEMPTS && !emergency && hasPower()) {
 				float max_err_val = 0.0f;
 				arm_pid_init_f32(&pid_soft, 1); // Reset integrator
 				float val_target_pos_f = getFilteredPosition();
@@ -3602,7 +3606,12 @@ void TMC4671::handleStateCoggingCalibration() {
 					
 					if (attempt >= 3) {
 						current_target_err *= 1.5f; // Start relaxing target after 3 fails
+						// Do not go avec 3°
+						if (current_target_err > MAX_TOLERANCE_DEG) {
+							current_target_err = MAX_TOLERANCE_DEG;
+        }
 					}
+					attempt++;
 					Delay(VAL_RETRY_PAUSE_MS);
 				} else {
 					// Last attempt failed, restore best anyway
@@ -3611,6 +3620,16 @@ void TMC4671::handleStateCoggingCalibration() {
 					CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 					break;
 				}
+			}
+
+			// --- MANAGE FAIL PID Calibration
+			if (!validation_success) {
+				// restaure the value
+				pid_soft.Kp = best_Kp; pid_soft.Ki = best_Ki; pid_soft.Kd = best_Kd;
+				
+				// if error occurs, we go to eroor management
+				errorMessage = "Abort: Impossible to stabilize rotation with error below 3°.";
+				goto cleanup; 
 			}
 			Delay(250);
 
