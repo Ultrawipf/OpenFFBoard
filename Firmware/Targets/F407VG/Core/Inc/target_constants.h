@@ -134,6 +134,11 @@ extern CAN_HandleTypeDef hcan1;
 #define EEPROM_START_ADDRESS  ((uint32_t)0x08004000) /* EEPROM emulation start address: from sector1*/
 #define PAGE_SIZE             (uint32_t)0x4000  /* Page size = 16KByte */
 
+// Cogging tables in flash
+#define CALIB_MAP_SIZE 2880 	// Size of the compensation table. Must be large enough for good resolution.
+#define COGGING_TABLE_FLASH_START_ADDRESS ((uint32_t)0x080F8000)
+#define COGGING_TABLE_SIZE                (CALIB_MAP_SIZE * sizeof(int16_t)) // 5760 bytes
+#define MAX_COGGING_TABLES                3
 
 // System
 // BKPSRAM positions
