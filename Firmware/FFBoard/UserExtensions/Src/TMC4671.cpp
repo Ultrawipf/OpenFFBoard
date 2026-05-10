@@ -3524,6 +3524,10 @@ void TMC4671::handleStateCoggingCalibration() {
 				arm_pid_init_f32(&pid_soft, 1);
 				snprintf(dbg_buf, sizeof(dbg_buf), "Tuned -> Tu:%dms Kp:%d Ki:%d Kd:%d", (int)(Tu * 1000.0f), (int)pid_soft.Kp, (int)pid_soft.Ki, (int)pid_soft.Kd);
 				CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+
+				if (Tu*1000>80) {
+					CommandHandler::broadcastCommandReply(CommandReply("WARNING : INERTIA IS BIG ! Anticogging wiil be failed, check if shaft is clear", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+				}
 			} else {
 				errorMessage = "Abort: Initial Auto-Tune failed";
 				goto cleanup;
@@ -3541,6 +3545,7 @@ void TMC4671::handleStateCoggingCalibration() {
 			int attempt = 1;
 			bool validation_success = false;
 
+			// Try to detect best pid, shifften the PID each loop until motor become instable 
 			while (attempt <= VAL_MAX_ATTEMPTS && !emergency && hasPower()) {
 				float max_err_val = 0.0f;
 				arm_pid_init_f32(&pid_soft, 1); // Reset integrator
@@ -3548,7 +3553,7 @@ void TMC4671::handleStateCoggingCalibration() {
 				uint32_t val_start = HAL_GetTick();
 				uint32_t next_tick = micros();
 				
-				// Test rotation
+				// Test rotation and catch the max during the rotation
 				while (HAL_GetTick() - val_start < VAL_TOTAL_DURATION_MS && !emergency && hasPower()) {
 					next_tick += 1000; // 1ms
 
@@ -3582,6 +3587,7 @@ void TMC4671::handleStateCoggingCalibration() {
 				}
 				
 				if (max_err_val < current_target_err) {
+					validation_success = true;
 					snprintf(dbg_buf, sizeof(dbg_buf), "Validation OK: %.2f deg (Limit: %.2f)", err_deg, target_deg);
 					CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 					break; 
@@ -3589,6 +3595,7 @@ void TMC4671::handleStateCoggingCalibration() {
 
 				// Instability detector: If error is 2x worse than the best found, we are oscillating
 				if (max_err_val > best_err_val * 2.0f && attempt > 2) {
+					validation_success = true;
 					snprintf(dbg_buf, sizeof(dbg_buf), "Instability detected (%.2f deg). Reverting to best (%.2f deg).", err_deg, best_err_val * 360.0f);
 					CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 					pid_soft.Kp = best_Kp; pid_soft.Ki = best_Ki; pid_soft.Kd = best_Kd;
@@ -3609,7 +3616,7 @@ void TMC4671::handleStateCoggingCalibration() {
 						// Do not go avec 3°
 						if (current_target_err > MAX_TOLERANCE_DEG) {
 							current_target_err = MAX_TOLERANCE_DEG;
-        }
+        				}
 					}
 					attempt++;
 					Delay(VAL_RETRY_PAUSE_MS);
