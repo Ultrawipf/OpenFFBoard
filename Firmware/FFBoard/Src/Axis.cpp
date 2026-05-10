@@ -780,44 +780,34 @@ uint16_t Axis::getPower(){
 /**
  * Calculates an exponential torque correction curve and scale for FFBEffect
  */
-int32_t Axis::calculateExpoTorque(int32_t torque){
-	float torquef = (float)torque / (float)0x7fff; // This down and upscaling may introduce float artifacts. Do this before scaling down.
-	if(torquef < 0){
-		return -powf(-torquef,expo) * 0x7fff;
-	}else{
-		return powf(torquef,expo) * 0x7fff;
-	}
-}
+int32_t Axis::calculateFFBTorque(){
 
-int32_t Axis::calculateFFBTorque() {
+	// 1. Initial conversion and normalization
+	// Convert to float and move to [-1.0, 1.0] range immediately.
+	float torque = (float)this->ffbEffectTorque * (1.0f / 32767.0f);
 
-	// Apply equalizer
-	float filtered_torque = this->ffbEffectTorque;
-
-	if(equalizerEnabled){
-		for (uint8_t i = 0; i < num_eq_bands; ++i) {
-			filtered_torque = eqFilters[i].process(filtered_torque);
-		}
-	}
-
-	int32_t torque = (int32_t)filtered_torque;
-
-	// 1. Game Clipping detection
-	// If the game sends more than the theoretical maximum (+/- 32767), the signal is clipped at the source.
-	if(abs(torque) >= 0x7fff){
+	// 2. Game Clipping detection
+	// Performed on normalized value for consistency.
+	if(fabsf(torque) >= 1.0f){
 		pulseClipLed(); // Visual alert: game signal is clipping
 	}
 
-	// 2. Apply Expo (Linearization or sensation curve)
-	if(expo != 1){
+	// 3. Apply equalizer
+	// Standardized DSP processing on [-1.0, 1.0] range.
+	if(equalizerEnabled){
+		for (uint8_t i = 0; i < num_eq_bands; ++i) {
+			torque = eqFilters[i].process(torque);
+		}
+	}
+
+	// 4. Apply Expo (Linearization or sensation curve)
+	if(expo != 1.0f){
 		torque = calculateExpoTorque(torque);
 	}
 
-	// 3. Game specific gain (effectRatioScaler)
-	// Scale the FFB from game only (allows lowering game effects without lowering endstops)
-	torque = (int32_t)((float)torque * effectRatioScaler);
-
-	return torque;
+	// 5. Final scaling and single conversion back to integer
+	// Apply both the FFB range and the effect ratio in one final step.
+	return (int32_t)(torque * 32767.0f * effectRatioScaler);
 }
 
 int32_t Axis::getTorque() { return metric.current.torque; } // Fix: move from previous to current
@@ -938,6 +928,7 @@ int32_t Axis::applySpeedLimiterTorque(int32_t& torque){
 	}
 
 	int32_t resultTorque = 0;
+
 	float effectiveSpeed = metric.current.speed * (torque > 0 ? 1.0f : -1.0f);
 
 	if (effectiveSpeed > maxSpeedDegS)
@@ -959,9 +950,9 @@ int32_t Axis::applySpeedLimiterTorque(int32_t& torque){
 		// We must only reduce the magnitude of the torque, not invert it.
 		reductionAmount = clip(reductionAmount, 0.0f, fabsf((float)torque));
 		if(torque > 0) {
-			resultTorque = reductionAmount;
+			resultTorque = (int32_t)reductionAmount;
 		} else {
-			resultTorque = -reductionAmount;
+			resultTorque = (int32_t)-reductionAmount;
 		}
 	} else {
 #ifdef USE_DSP_FUNCTIONS
