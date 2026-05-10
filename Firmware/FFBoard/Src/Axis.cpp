@@ -429,23 +429,36 @@ void Axis::setDrvType(uint8_t drvtype)
 	{
 		return;
 	}
-	cpp_freertos::CriticalSection::Enter();
-	MotorDriver* drv = driverChooser.Create((uint16_t)drvtype);
-	this->drv.reset(drv);
-	if (drv == nullptr)
+
+	// Create the driver outside of the critical section to avoid FreeRTOS issues (semaphore take with interrupts disabled)
+	MotorDriver* drv_new = driverChooser.Create((uint16_t)drvtype);
+	
+	if (drv_new == nullptr)
 	{
-		cpp_freertos::CriticalSection::Exit();
 		return;
 	}
-	this->conf.drvtype = drvtype;
-	this->maxTorqueRateMS = drv->getDrvSlewRate();
 
-	// Pass encoder to driver again
-	if(!this->drv->hasIntegratedEncoder()){
-		this->drv->setEncoder(this->enc);
+	// Pre-initialization outside of critical section
+	if(!drv_new->hasIntegratedEncoder()){
+		drv_new->setEncoder(this->enc);
+	}
+	drv_new->setupDriver();
+
+	// Use critical section only for atomic replacement of the driver pointer
+	MotorDriver* old_drv_ptr = nullptr;
+	cpp_freertos::CriticalSection::Enter();
+	old_drv_ptr = this->drv.release(); // Detach the old driver safely
+	this->drv.reset(drv_new);          // Attach the new driver
+	this->conf.drvtype = drvtype;
+	this->maxTorqueRateMS = drv_new->getDrvSlewRate();
+	cpp_freertos::CriticalSection::Exit();
+
+	// Delete the old driver outside of the critical section to avoid blocking destructors or FreeRTOS issues
+	if (old_drv_ptr != nullptr) {
+		delete old_drv_ptr;
 	}
 
-	drv->setupDriver();
+	// Perform SPI communications (start/suspend) outside of the critical section
 	if (!tud_connected())
 	{
 		control->usb_disabled = false;
@@ -453,9 +466,8 @@ void Axis::setDrvType(uint8_t drvtype)
 	}
 	else
 	{
-		drv->startMotor();
+		drv_new->startMotor();
 	}
-	cpp_freertos::CriticalSection::Exit();
 }
 
 
