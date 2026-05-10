@@ -3303,138 +3303,142 @@ void TMC4671::handleStateFullCalibration() {
  * 4. Centers the compensation map around zero.
  */
 void TMC4671::handleStateCoggingCalibration() {
-	// 1. Error and power loss management
-	if (!hasPower() || emergency) {
-		if (coggingData) coggingData.reset(); // Immediate memory release
-		coggingCalibState = CoggingState::Init;
-		this->postPowerState = TMC_ControlState::CoggingCalibration;
-		changeState(TMC_ControlState::waitPower);
-		return;
-	}
-
+	const char* errorMessage = nullptr;
+	const char* successMessage = nullptr;
 	uint32_t revolution_time_ms = (60000 / CALIB_SPEED) * 1.5;
 
+	// 1. Pre-checks: Power and Emergency
+	if (!hasPower()) {
+		errorMessage = "Calibration aborted: Power lost";
+	} else if (emergency) {
+		errorMessage = "Calibration aborted: Emergency stop engaged";
+	}
+
 	// 2. Calibration State Machine
-	switch(coggingCalibState) {
-		case CoggingState::Init:
-			allowStateChange = false; // Lock external changes
-			coggingData = std::make_unique<CoggingCalibData>(); // Heap allocation (34KB) to avoid stack overflow
-			if(!coggingData) {
-				// Allocation error (RAM full) -> Abort
-				allowStateChange = true;
-				changeState(laststate);
+	if (errorMessage == nullptr) {
+		switch(coggingCalibState) {
+			case CoggingState::Init:
+				prevCalibMode = getMotionMode(); // Store the mode to restore it later
+				allowStateChange = false;
+				coggingData = std::make_unique<CoggingCalibData>();
+				if(!coggingData) {
+					errorMessage = "Calibration aborted: Memory allocation failed";
+				} else {
+					setMotionMode(MotionMode::velocity, true);
+					setTargetVelocity(CALIB_SPEED);
+					calibStartTime = HAL_GetTick();
+					coggingCalibState = CoggingState::ForwardWait;
+				}
 				break;
-			}
-			prevCalibMode = getMotionMode();
-			setMotionMode(MotionMode::velocity, true);
 
-			// *** 1- Forward capture ***
-			setTargetVelocity(CALIB_SPEED);
-			calibStartTime = HAL_GetTick();
-			coggingCalibState = CoggingState::ForwardWait;
-			break;
-
-		case CoggingState::ForwardWait:
-			if(HAL_GetTick() - calibStartTime > 500) { // Wait for speed to stabilize
-				calibStartTime = HAL_GetTick();
-				coggingCalibState = CoggingState::ForwardMeasure;
-			}
-			break;
-
-		case CoggingState::ForwardMeasure:
-			{
-				uint16_t pos_mechanical = (uint16_t)getPos();
-				uint16_t current_index = (uint32_t)pos_mechanical * CALIB_MAP_SIZE / 65536;
-				if(current_index < CALIB_MAP_SIZE){
-					coggingData->temp[current_index] += getVelocityControllerTorque();
-					coggingData->counts[current_index]++;
+			case CoggingState::ForwardWait:
+			case CoggingState::BackwardWait:
+				if(HAL_GetTick() - calibStartTime > 2000) { // Wait for stabilization (2s)
+					calibStartTime = HAL_GetTick();
+					coggingCalibState = (coggingCalibState == CoggingState::ForwardWait) ? 
+										CoggingState::ForwardMeasure : CoggingState::BackwardMeasure;
 				}
-				
-				if(HAL_GetTick() - calibStartTime >= revolution_time_ms) {
-					coggingCalibState = CoggingState::ForwardCompute;
-				}
-			}
-			break;
+				break;
 
-		case CoggingState::ForwardCompute:
-			{
-				// Store forward averages in the final table temporarily to reuse RAM
+			case CoggingState::ForwardMeasure:
+			case CoggingState::BackwardMeasure:
+				{
+					uint16_t pos_mechanical = (uint16_t)getPos();
+					uint32_t current_index = (uint32_t)pos_mechanical * CALIB_MAP_SIZE / 65536;
+					
+					// Validation: Array bounds and accumulation overflow protection
+					if(current_index >= CALIB_MAP_SIZE){
+						errorMessage = "Calibration aborted: Index out of bounds";
+					} else if (coggingData->counts[current_index] >= 65535 || 
+							   abs(coggingData->temp[current_index]) > (2147483647 - 32768)) {
+						errorMessage = "Calibration aborted: Buffer overflow detected";
+					} else {
+						coggingData->temp[current_index] += getVelocityControllerTorque();
+						coggingData->counts[current_index]++;
+					}
+					
+					// Check for completion of the capture period
+					if(!errorMessage && (HAL_GetTick() - calibStartTime >= revolution_time_ms)) {
+						// Rotation check: at least 50% of the table must have data
+						uint32_t visited = 0;
+						for (uint16_t i=0; i < CALIB_MAP_SIZE; i++) {
+							if (coggingData->counts[i] > 0) visited++;
+						}
+						
+						if (visited < (CALIB_MAP_SIZE / 2)) {
+							errorMessage = "Calibration aborted: Motor is not rotating";
+						} else {
+							if (coggingCalibState == CoggingState::ForwardMeasure) {
+								coggingCalibState = CoggingState::ForwardCompute;
+							} else {
+								setTargetVelocity(0);
+								coggingCalibState = CoggingState::Compute;
+							}
+						}
+					}
+				}
+				break;
+
+			case CoggingState::ForwardCompute:
+				// Store forward averages in data_cogging and reset buffers for backward pass
 				for (uint16_t i=0; i < CALIB_MAP_SIZE ; i++) {
 					data_cogging[i] = (coggingData->counts[i] > 0) ? coggingData->temp[i] / coggingData->counts[i] : 0;
 				}
-				// Clear temporary buffers for backward pass
 				memset(coggingData->temp, 0, sizeof(coggingData->temp));
 				memset(coggingData->counts, 0, sizeof(coggingData->counts));
 
-				// *** 2- Backward capture ***
 				setTargetVelocity(-CALIB_SPEED);
 				calibStartTime = HAL_GetTick();
 				coggingCalibState = CoggingState::BackwardWait;
-			}
-			break;
+				break;
 
-		case CoggingState::BackwardWait:
-			if(HAL_GetTick() - calibStartTime > 500) { // Wait for stabilization
-				calibStartTime = HAL_GetTick();
-				coggingCalibState = CoggingState::BackwardMeasure;
-			}
-			break;
-
-		case CoggingState::BackwardMeasure:
-			{
-				uint16_t pos_mechanical = (uint16_t)getPos();
-				uint16_t current_index = (uint32_t)pos_mechanical * CALIB_MAP_SIZE / 65536;
-				if(current_index < CALIB_MAP_SIZE){
-					coggingData->temp[current_index] += getVelocityControllerTorque();
-					coggingData->counts[current_index]++;
-				}
-				
-				if(HAL_GetTick() - calibStartTime >= revolution_time_ms) {
-					setTargetVelocity(0);
-					coggingCalibState = CoggingState::Compute;
-				}
-			}
-			break;
-
-		case CoggingState::Compute:
-			{
-				// *** 3- Averaging and isolating detent torque ***
-				bool hasData = false;
-				long sum_torque = 0;
-				for (uint16_t i=0; i < CALIB_MAP_SIZE ; i++) {
-					int32_t avg_fw = data_cogging[i];
-					int32_t avg_bw = (coggingData->counts[i] > 0) ? coggingData->temp[i] / coggingData->counts[i] : 0;
-
-					if (avg_fw != 0 || avg_bw != 0) hasData = true;
-
-					// If one of the measurements is missing, estimate the other based on symmetry
-					if(avg_fw == 0 && avg_bw != 0) avg_fw = -avg_bw;
-					if(avg_bw == 0 && avg_fw != 0) avg_bw = -avg_fw;
-
-					data_cogging[i] = (avg_fw + avg_bw) / 2;
-					sum_torque += data_cogging[i];
-				}
-
-				if (hasData) {
-					// *** 4- Centering the compensation table around zero ***
-					const long torque_offset = sum_torque / CALIB_MAP_SIZE;
+			case CoggingState::Compute:
+				{
+					bool hasData = false;
+					long sum_torque = 0;
 					for (uint16_t i=0; i < CALIB_MAP_SIZE ; i++) {
-						data_cogging[i] -= torque_offset;
+						int32_t avg_fw = data_cogging[i];
+						int32_t avg_bw = (coggingData->counts[i] > 0) ? coggingData->temp[i] / coggingData->counts[i] : 0;
+
+						if (avg_fw != 0 || avg_bw != 0) hasData = true;
+
+						// Symmetrization
+						if(avg_fw == 0 && avg_bw != 0) avg_fw = -avg_bw;
+						if(avg_bw == 0 && avg_fw != 0) avg_bw = -avg_fw;
+
+						data_cogging[i] = (avg_fw + avg_bw) / 2;
+						sum_torque += data_cogging[i];
 					}
-					saveCoggingTable();
-					CommandHandler::broadcastCommandReply(CommandReply("Cogging map read success", 1), (uint32_t)TMC4671_commands::cogging, CMDtype::get);
-				} else {
-					CommandHandler::broadcastCommandReply(CommandReply("Cogging calibration aborted: No data collected", 0), (uint32_t)TMC4671_commands::cogging, CMDtype::get);
+
+					if (hasData) {
+						// Center map around zero
+						const long torque_offset = sum_torque / CALIB_MAP_SIZE;
+						for (uint16_t i=0; i < CALIB_MAP_SIZE ; i++) {
+							data_cogging[i] -= torque_offset;
+						}
+						saveCoggingTable();
+						successMessage = "Cogging map read success";
+					} else {
+						errorMessage = "Cogging calibration aborted: No data collected";
+					}
 				}
-				
-				// Cleanup and completion
-				coggingData.reset(); // Free memory
-				setMotionMode(prevCalibMode, true);
-				coggingCalibState = CoggingState::Init;
-				allowStateChange = true;
-				changeState(laststate, false);
-			}
-			break;
+				break;
+		}
+	}
+
+	// 3. Unified Finalization: Cleanup, Messaging and State Restoration
+	if (errorMessage != nullptr || successMessage != nullptr) {
+		if (errorMessage != nullptr) {
+			CommandHandler::broadcastCommandReply(CommandReply(errorMessage, 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+		} else {
+			CommandHandler::broadcastCommandReply(CommandReply(successMessage, 1), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+		}
+		
+		if (coggingData) coggingData.reset();
+		setMotionMode(prevCalibMode, true);
+		coggingCalibState = CoggingState::Init;
+		allowStateChange = true;
+		changeState(laststate, false);
 	}
 }
 #endif

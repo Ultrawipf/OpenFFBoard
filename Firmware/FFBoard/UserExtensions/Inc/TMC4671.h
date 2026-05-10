@@ -34,7 +34,7 @@
 
 #ifdef COGGING_TABLE_FLASH_START_ADDRESS
 // --- Constants for anti-cogging calibration ---
-#define CALIB_SPEED 50 	 	    // Slow speed in RPM used for calibration.
+#define CALIB_SPEED 8 	 	    // Slow speed in RPM used for calibration. (1 rev / 7.5s)
 #endif
 
 extern SPI_HandleTypeDef HSPIDRV;
