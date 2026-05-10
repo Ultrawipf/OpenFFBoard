@@ -34,8 +34,10 @@
 
 #ifdef COGGING_TABLE_FLASH_START_ADDRESS
 // --- Constants for anti-cogging calibration ---
-#define CALIB_MAP_SIZE 2880 	// Resolution for legacy protocol communication
-#define CALIB_SPEED 8 	 	    // Slow speed in RPM used for calibration. (1 rev / 7.5s)
+#define COGGING_CALIB_LUT_RESOLUTION    2880 	// Resolution for legacy protocol communication
+#define COGGING_CALIB_SPEED_RPM         8 	 	// Slow speed in RPM used for calibration. (1 rev / 7.5s)
+#define COGGING_CALIB_DFT_HARMONICS      128     // Number of harmonics to analyze during calibration
+#define COGGING_CALIB_ENABLE_ID_DIAG            // Enable Point 1 diagnostic (Id axis analysis)
 #endif
 
 extern SPI_HandleTypeDef HSPIDRV;
