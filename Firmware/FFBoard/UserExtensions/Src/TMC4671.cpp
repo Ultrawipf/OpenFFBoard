@@ -3622,6 +3622,7 @@ void TMC4671::handleStateCoggingCalibration() {
 				
 				float target_rpm = (p == 1) ? TARGET_RPM : -TARGET_RPM;
 				float target_pos_f = getFilteredPosition();
+				float integrated_distance = 0.0f; // Track total integrated displacement (0.0 to 1.0)
 				
 				// Trackers statistiques post-mortem
 				float max_iq_cmd_used = 0.0f;
@@ -3643,7 +3644,8 @@ void TMC4671::handleStateCoggingCalibration() {
 					while (HAL_GetTick() - calibStartTime < revolution_time_ms && !emergency && hasPower()) {
 						next_tick += period_us;
 						
-						target_pos_f += (target_rpm / 60.0f) * (period_us / 1000000.0f);
+						float step = (target_rpm / 60.0f) * (period_us / 1000000.0f);
+						target_pos_f += step;
 						if (target_pos_f >= 1.0f) target_pos_f -= 1.0f;
 						if (target_pos_f < 0.0f) target_pos_f += 1.0f;
 
@@ -3694,8 +3696,8 @@ void TMC4671::handleStateCoggingCalibration() {
 				applySafeTorque(0);
 
 				// Message de résumé de la passe d'acquisition
-				snprintf(dbg_buf, sizeof(dbg_buf), "Acq %s Done -> MaxErr: %.2f deg MaxIq:%d", 
-						 (p == 1) ? "FWD" : "BWD", (max_err_seen * 360.0f), (int)max_iq_cmd_used);
+				snprintf(dbg_buf, sizeof(dbg_buf), "Acq %s Done -> Dist:%.2f MaxErr: %.2f deg", 
+						 (p == 1) ? "FWD" : "BWD", integrated_distance, (max_err_seen * 360.0f));
 				CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 			}
 		}
@@ -3751,14 +3753,14 @@ void TMC4671::handleStateCoggingCalibration() {
 				CommandHandler::broadcastCommandReply(CommandReply("Cogging calibration successful", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 
 				// --- 4. RETURN TO CENTER (Unwinding multi-turn) ---
-
+				
 				// Get the raw absolute position (no modulo 1.0 wrapping)
 				float actual_pos_f = (usingExternalEncoder() && drvEncoder != nullptr) ? drvEncoder->getPos_f() : (float)this->getPos() / (float)this->getCpr();
 				
 				snprintf(dbg_buf, sizeof(dbg_buf), "Return to center: Start pos = %.3f turns", actual_pos_f);
 				CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 				
-				// Reuse the proven CMSIS-DSP PID from the DFT acquisition phase
+				// USE THE FULL TUNED GAINS
 				pid_soft.Kp = best_Kp;
 				pid_soft.Ki = best_Ki;
 				pid_soft.Kd = best_Kd;
@@ -3778,19 +3780,21 @@ void TMC4671::handleStateCoggingCalibration() {
 					// Absolute ramp generation towards 0.0
 					target_pos_f += (target_rpm / 60.0f) * (period_us / 1000000.0f);
 
-					// Clamp at zero to avoid overshoot/oscillation
+					// Clamp at zero
 					if (target_rpm < 0 && target_pos_f < 0.0f) target_pos_f = 0.0f;
 					if (target_rpm > 0 && target_pos_f > 0.0f) target_pos_f = 0.0f;
 
 					// Read the raw absolute position
 					actual_pos_f = (usingExternalEncoder() && drvEncoder != nullptr) ? drvEncoder->getPos_f() : (float)this->getPos() / (float)this->getCpr();
 					
-					// Calculate absolute error (Raw position, no EMA lag)
-					float error = target_pos_f - actual_pos_f;
+					// Calculate wrapped error (shortest distance on the circle)
+					// This stabilizes the PID when crossing turn boundaries (e.g. 1.0 -> 0.0)
+					float error = getWrappedError(target_pos_f, actual_pos_f);
 					
 					// Calculate torque via the CMSIS PID
 					float iq_cmd = arm_pid_f32(&pid_soft, error);
 					
+					// Use full test torque limit
 					iq_cmd = clip<float,float>(iq_cmd, -max_test_torque, max_test_torque);
 					applySafeTorque(iq_cmd);
 					
@@ -3803,9 +3807,9 @@ void TMC4671::handleStateCoggingCalibration() {
 					}
 
 					refreshWatchdog();
-					if (HAL_GetTick() - return_start > 15000) {
+					if (HAL_GetTick() - return_start > 30000) {
 						CommandHandler::broadcastCommandReply(CommandReply("Return to center timeout", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
-						break; // 15s safety timeout
+						break; // 30s safety timeout
 					}
 					while ((micros() - next_tick) & 0x80000000) { }
 				}
