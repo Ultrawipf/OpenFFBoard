@@ -3318,143 +3318,127 @@ void TMC4671::handleStateCoggingCalibration() {
 	const char* errorMessage = nullptr;
 	uint32_t revolution_time_ms = (60000 / CALIB_SPEED) * 1.5;
 
-	CommandHandler::broadcastCommandReply(CommandReply("Starting Cogging Calibration: Allocating memory...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+	CommandHandler::broadcastCommandReply(CommandReply("Starting Cogging Calibration: Preparing buffers...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 	prevCalibMode = getMotionMode();
 	allowStateChange = false;
 	
-	// Dynamic allocation of temporary buffers (approx 10KB total)
-	float32_t* iq_sums = new (std::nothrow) float32_t[1024];
-	float32_t* id_sums = new (std::nothrow) float32_t[1024];
-	uint16_t* counts = new (std::nothrow) uint16_t[1024];
+	// Use standard static buffers (placed in BSS, not on Stack)
+	// This is portable (F407/F411) and avoids heap fragmentation and stack overflows.
+	// Total memory: ~16KB (well within the 31KB we recently freed).
+	static float32_t iq_sums[1024];
+	static float32_t id_sums[1024];
+	static float32_t fft_out[1024];
+	static float32_t magnitudes[513]; // Moved from stack to static to avoid overflow
+	static uint16_t counts[1024];
 	
-	if(!iq_sums || !id_sums || !counts) {
-		errorMessage = "Calibration aborted: Memory allocation failed";
-		if(iq_sums) delete[] iq_sums;
-		if(id_sums) delete[] id_sums;
-		if(counts) delete[] counts;
-	} else {
-		memset(iq_sums, 0, 1024 * sizeof(float32_t));
-		memset(id_sums, 0, 1024 * sizeof(float32_t));
-		memset(counts, 0, 1024 * sizeof(uint16_t));
+	// Reset buffers
+	memset(iq_sums, 0, sizeof(iq_sums));
+	memset(id_sums, 0, sizeof(id_sums));
+	memset(counts, 0, sizeof(counts));
 
-		// 2. DUAL PASS ACQUISITION (FORWARD & BACKWARD)
-		setMotionMode(MotionMode::velocity, true);
-		int8_t directions[2] = {1, -1};
-		const char* passNames[2] = {"forward pass", "backward pass"};
+	// 2. DUAL PASS ACQUISITION (FORWARD & BACKWARD)
+	setMotionMode(MotionMode::velocity, true);
+	int8_t directions[2] = {1, -1};
+	const char* passNames[2] = {"forward pass", "backward pass"};
 
-		for (uint8_t p = 0; p < 2; p++) {
-			CommandHandler::broadcastCommandReply(CommandReply(std::string("Starting ") + passNames[p] + "...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
-			setTargetVelocity(directions[p] * CALIB_SPEED);
-			
-			uint32_t waitStart = HAL_GetTick();
-			while(HAL_GetTick() - waitStart < 2000 && !emergency && hasPower()) { Delay(10); }
-
-			if (!emergency && hasPower()) {
-				calibStartTime = HAL_GetTick();
-				while (HAL_GetTick() - calibStartTime < revolution_time_ms && !emergency && hasPower()) {
-					float pos_f;
-					if (usingExternalEncoder() && drvEncoder != nullptr) {
-						pos_f = drvEncoder->getPos_f();
-					} else {
-						pos_f = (float)this->getPos() / (float)this->getCpr();
-					}
-					
-					uint32_t idx = (uint32_t)(pos_f * 1024.0f) % 1024;
-					
-					// IQ target (for Cogging Point 4 and Eccentricity Point 2)
-					iq_sums[idx] += (float)getVelocityControllerTorque() * directions[p]; // directions[p] to align phases
-					
-					// ID actual (for Electrical faults Point 1)
-					id_sums[idx] += (float)getActualFlux();
-					
-					counts[idx]++;
-					// High frequency sampling limited by SPI/CPU
-				}
-			}
-		}
-		setTargetVelocity(0);
-
-		// 3. FFT ANALYSIS
-		if (!emergency && hasPower()) {
-			CommandHandler::broadcastCommandReply(CommandReply("Analyzing harmonics...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
-			
-			// Compute averages and prepare for FFT
-			for (int i = 0; i < 1024; i++) {
-				if (counts[i] > 0) {
-					iq_sums[i] /= (float)counts[i];
-					id_sums[i] /= (float)counts[i];
-				}
-			}
-
-			arm_rfft_fast_instance_f32 fft_inst;
-			arm_rfft_fast_init_f32(&fft_inst, 1024);
-			
-			float32_t* fft_out = new (std::nothrow) float32_t[1024]; // reuse or alloc
-			if(fft_out) {
-				// --- Point 2 & 4: Analysis of Iq (Torque) ---
-				arm_rfft_fast_f32(&fft_inst, iq_sums, fft_out, 0);
-				
-				// FFT output format: [R0, R512, R1, I1, R2, I2, ...]
-				float32_t magnitudes[513];
-				magnitudes[0] = fabsf(fft_out[0]);
-				magnitudes[512] = fabsf(fft_out[1]);
-				for(int k=1; k<512; k++) {
-					arm_cmplx_mag_f32(&fft_out[2*k], &magnitudes[k], 1);
-				}
-
-				// Point 2: Eccentricity check (H1)
-				float h1_mag = magnitudes[1] * 2.0f / 1024.0f;
-				if (h1_mag > 5000.0f) { // Threshold example
-					CommandHandler::broadcastCommandReply(CommandReply("Warning: High motor eccentricity detected", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
-				}
-
-				// Point 4: Cogging extraction (Top 20 orders > 10)
-				memset(cogging_harmonics, 0, sizeof(cogging_harmonics));
-				for (uint8_t n = 0; n < COGGING_HARMONICS_COUNT; n++) {
-					float32_t max_mag = 0;
-					uint16_t best_k = 0;
-					for (uint16_t k = 11; k < 512; k++) { // Order > 10 to ignore steering wheel imbalance
-						if (magnitudes[k] > max_mag) {
-							bool already_taken = false;
-							for(int j=0; j<n; j++) if(cogging_harmonics[j].order == k) already_taken = true;
-							if(!already_taken) {
-								max_mag = magnitudes[k];
-								best_k = k;
-							}
-						}
-					}
-					if (best_k > 0) {
-						cogging_harmonics[n].order = best_k;
-						cogging_harmonics[n].amplitude = max_mag * 2.0f / 1024.0f;
-						cogging_harmonics[n].phase = atan2f(fft_out[2*best_k+1], fft_out[2*best_k]);
-					}
-				}
-
-				// --- Point 1: Analysis of Id (Flux) for Electrical Faults ---
-				arm_rfft_fast_f32(&fft_inst, id_sums, fft_out, 0);
-				magnitudes[0] = fabsf(fft_out[0]);
-				for(int k=1; k<512; k++) {
-					arm_cmplx_mag_f32(&fft_out[2*k], &magnitudes[k], 1);
-				}
-				// Check H3/H6 (normalized by DC offset magnitudes[0])
-				if (magnitudes[3] * magnitudes[0] > 0.1f || magnitudes[6] * magnitudes[0] > 0.1f) {
-					CommandHandler::broadcastCommandReply(CommandReply("Warning: Potential electrical phase imbalance detected", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
-				}
-
-				saveCoggingTable(); // This now saves harmonics
-				cogging_enabled = true;
-				CommandHandler::broadcastCommandReply(CommandReply("Cogging calibration successful (Fourier method)", 1), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
-				delete[] fft_out;
-			} else {
-				errorMessage = "Calibration aborted: FFT buffer allocation failed";
-			}
-		} else {
-			errorMessage = "Calibration aborted: Power lost or Emergency";
-		}
+	for (uint8_t p = 0; p < 2; p++) {
+		CommandHandler::broadcastCommandReply(CommandReply(std::string("Starting ") + passNames[p] + "...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+		setTargetVelocity(directions[p] * CALIB_SPEED);
 		
-		delete[] iq_sums;
-		delete[] id_sums;
-		delete[] counts;
+		uint32_t waitStart = HAL_GetTick();
+		while(HAL_GetTick() - waitStart < 2000 && !emergency && hasPower()) { Delay(10); }
+
+		if (!emergency && hasPower()) {
+			calibStartTime = HAL_GetTick();
+			while (HAL_GetTick() - calibStartTime < revolution_time_ms && !emergency && hasPower()) {
+				float pos_f;
+				if (usingExternalEncoder() && drvEncoder != nullptr) {
+					pos_f = drvEncoder->getPos_f();
+				} else {
+					pos_f = (float)this->getPos() / (float)this->getCpr();
+				}
+				
+				uint32_t idx = (uint32_t)(pos_f * 1024.0f) % 1024;
+				
+				// IQ target (for Cogging Point 4 and Eccentricity Point 2)
+				iq_sums[idx] += (float)getVelocityControllerTorque() * directions[p]; 
+				// ID actual (for Electrical faults Point 1)
+				id_sums[idx] += (float)getActualFlux();
+				
+				counts[idx]++;
+			}
+		}
+	}
+	setTargetVelocity(0);
+
+	// 3. FFT ANALYSIS
+	if (!emergency && hasPower()) {
+		CommandHandler::broadcastCommandReply(CommandReply("Analyzing harmonics...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+		
+		for (int i = 0; i < 1024; i++) {
+			if (counts[i] > 0) {
+				iq_sums[i] /= (float)counts[i];
+				id_sums[i] /= (float)counts[i];
+			}
+		}
+
+		arm_rfft_fast_instance_f32 fft_inst;
+		arm_rfft_fast_init_f32(&fft_inst, 1024);
+		
+		// --- Point 2 & 4: Analysis of Iq (Torque) ---
+		arm_rfft_fast_f32(&fft_inst, iq_sums, fft_out, 0);
+		
+		magnitudes[0] = fabsf(fft_out[0]);
+		magnitudes[512] = fabsf(fft_out[1]);
+		for(int k=1; k<512; k++) {
+			arm_cmplx_mag_f32(&fft_out[2*k], &magnitudes[k], 1);
+		}
+
+		// Point 2: Eccentricity check (H1)
+		float h1_mag = magnitudes[1] * 2.0f / 1024.0f;
+		if (h1_mag > 5000.0f) { 
+			CommandHandler::broadcastCommandReply(CommandReply("Warning: High motor eccentricity detected", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+		}
+
+		// Point 4: Cogging extraction (Orders > 10)
+		memset(cogging_harmonics, 0, sizeof(cogging_harmonics));
+		for (uint8_t n = 0; n < COGGING_HARMONICS_COUNT; n++) {
+			float32_t max_mag = 0;
+			uint16_t best_k = 0;
+			for (uint16_t k = 11; k < 512; k++) { 
+				if (magnitudes[k] > max_mag) {
+					bool already_taken = false;
+					for(int j=0; j<n; j++) if(cogging_harmonics[j].order == k) already_taken = true;
+					if(!already_taken) {
+						max_mag = magnitudes[k];
+						best_k = k;
+					}
+				}
+			}
+			if (best_k > 0) {
+				cogging_harmonics[n].order = best_k;
+				cogging_harmonics[n].amplitude = max_mag * 2.0f / 1024.0f;
+				cogging_harmonics[n].phase = atan2f(fft_out[2*best_k+1], fft_out[2*best_k]);
+			}
+		}
+
+		// --- Point 1: Analysis of Id (Flux) for Electrical Faults ---
+		arm_rfft_fast_f32(&fft_inst, id_sums, fft_out, 0);
+		magnitudes[0] = fabsf(fft_out[0]); // DC Offset
+		for(int k=1; k<512; k++) {
+			arm_cmplx_mag_f32(&fft_out[2*k], &magnitudes[k], 1);
+		}
+		// If H3 or H6 are more than 10% of the DC offset, signal a warning
+		if (magnitudes[3] > magnitudes[0]*0.10f || magnitudes[6] > magnitudes[0]*0.10f) {
+			CommandHandler::broadcastCommandReply(CommandReply("Warning: Potential electrical phase imbalance detected", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+		}
+
+		saveCoggingTable();
+		cogging_enabled = true;
+		CommandHandler::broadcastCommandReply(CommandReply("Cogging calibration successful (Fourier method)", 1), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+
+	} else {
+		errorMessage = "Calibration aborted: Power lost or Emergency";
 	}
 
 	if (errorMessage != nullptr) {
