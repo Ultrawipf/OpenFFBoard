@@ -3558,15 +3558,15 @@ void TMC4671::handleStateCoggingCalibration() {
 					next_tick += 1000; // 1ms
 					val_target_pos_f += (TARGET_RPM / 60.0f) * 0.001f;
 					float err = getWrappedError(val_target_pos_f, getFilteredPosition());
-					
 					// Ignore startup transient (warmup)
 					if (HAL_GetTick() - val_start > VAL_WARMUP_MS) {
 						if (fabs(err) > max_err_val) max_err_val = fabs(err);
 					}
-					
 					float iq_cmd = arm_pid_f32(&pid_soft, err);
 					iq_cmd = clip<float,float>(iq_cmd, -max_test_torque, max_test_torque);
 					applySafeTorque(iq_cmd);
+					
+					refreshWatchdog();
 					while ((micros() - next_tick) & 0x80000000) { }
 				}
 				applySafeTorque(0);
