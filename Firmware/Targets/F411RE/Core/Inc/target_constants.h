@@ -98,5 +98,12 @@ extern SPI_HandleTypeDef HSPI2;
 #define EEPROM_START_ADDRESS  ((uint32_t)0x08004000) /* EEPROM emulation start address: from sector1*/
 #define PAGE_SIZE             (uint32_t)0x4000  /* Page size = 16KByte */
 
+// Cogging tables in flash
+#define CALIB_MAP_SIZE 1440 	// Size of the compensation table. Reduced for F411 RAM constraints.
+#define COGGING_TABLE_FLASH_START_ADDRESS ((uint32_t)0x08010000)
+#define COGGING_TABLE_SIZE                (CALIB_MAP_SIZE * sizeof(int16_t))
+#define MAX_COGGING_TABLES                3
+#define COGGING_TABLE_FLASH_SECTOR        FLASH_SECTOR_4
+
 #define CCRAM_SEC ".data" // Has no ccmram
 #endif /* INC_TARGET_CONSTANTS_H_ */

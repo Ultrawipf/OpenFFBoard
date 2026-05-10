@@ -276,7 +276,7 @@ bool Flash_WriteCoggingTable(uint8_t table_idx, int16_t* data) {
     HAL_FLASH_Unlock();
     FLASH_EraseInitTypeDef pEraseInit;
     pEraseInit.TypeErase = FLASH_TYPEERASE_SECTORS;
-    pEraseInit.Sector = FLASH_SECTOR_11; // The reserved 32k region is within this sector
+    pEraseInit.Sector = COGGING_TABLE_FLASH_SECTOR; // The reserved region is within this sector
     pEraseInit.NbSectors = 1;
     pEraseInit.VoltageRange = VOLTAGE_RANGE_3;
     uint32_t SectorError = 0;
