@@ -2,13 +2,14 @@
  * flash_helpers.cpp
  *
  *  Created on: 31.01.2020
- *      Author: Yannick
+ *      Author: Yannick, Vincent
  */
 #include "flash_helpers.h"
 #include "eeprom_addresses.h"
 #include <vector>
 #include "mutex.hpp"
 #include <span>
+#include <cstring>
 
 cpp_freertos::MutexStandard flashMutex;
 // Flash helpers
@@ -152,7 +153,7 @@ bool I2C_EEPROM_Write16(uint16_t devAdr,uint16_t adr, uint16_t dat){
 /**
  * Helper function to read 16b data from i2c eeproms with different block sizes
  */
-bool I2C_EEPROM_Read16(uint16_t devAdr,uint16_t adr,uint16_t *buf, bool checkempty){
+bool I2C_EEPROM_Read16(uint16_t devAdr,uint16_t adr, uint16_t *buf, bool checkempty){
 	uint32_t adrAbs = (adr * sizeof(*buf)/I2C_EEPROM_DATA_SIZE);
 	assert(adrAbs < I2C_EEPROM_SIZE);
 	while(!i2cport_int.isDeviceReady(&i2cdeveeprom, devAdr, 100, I2C_EEPROM_TIMEOUT,false)){
@@ -242,7 +243,9 @@ __weak bool Flash_Format(){
 __weak bool Flash_Init(){
 	return true;
 }
+
 #endif
+
 /*
  * Dumps all set variables from flash to a vector
  * does by default not include certain calibration constants that could break something if imported on a different board

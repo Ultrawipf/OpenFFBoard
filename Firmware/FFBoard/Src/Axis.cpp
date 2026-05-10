@@ -117,7 +117,7 @@ Axis::Axis(char axis,volatile Control_t* control) :CommandHandler("axis", CLSID_
 	{
 		driverChooser = ClassChooser<MotorDriver>(axis1_drivers);
 		setInstance(0);
-		this->flashAddresses = AxisFlashAddresses({ADR_AXIS1_CONFIG, ADR_AXIS1_MAX_SPEED, ADR_AXIS1_MAX_ACCEL, ADR_AXIS1_MAX_SLEWRATE_DRV,
+		this->flashAddresses = AxisFlashAddresses({ADR_AXIS1_CONFIG, ADR_AXIS1_MAX_SPEED, ADR_AXIS1_MAX_ACCEL,
 										   ADR_AXIS1_ENDSTOP, ADR_AXIS1_POWER, ADR_AXIS1_DEGREES,ADR_AXIS1_EFFECTS1,ADR_AXIS1_EFFECTS2,ADR_AXIS1_ENC_RATIO,
 										   ADR_AXIS1_SPEEDACCEL_FILTER,ADR_AXIS1_POSTPROCESS1,
 										   ADR_AXIS1_EQ1,ADR_AXIS1_EQ2,ADR_AXIS1_EQ3,
@@ -128,7 +128,7 @@ Axis::Axis(char axis,volatile Control_t* control) :CommandHandler("axis", CLSID_
 	{
 		driverChooser = ClassChooser<MotorDriver>(axis2_drivers);
 		setInstance(1);
-		this->flashAddresses = AxisFlashAddresses({ADR_AXIS2_CONFIG, ADR_AXIS2_MAX_SPEED, ADR_AXIS2_MAX_ACCEL, ADR_AXIS2_MAX_SLEWRATE_DRV,
+		this->flashAddresses = AxisFlashAddresses({ADR_AXIS2_CONFIG, ADR_AXIS2_MAX_SPEED, ADR_AXIS2_MAX_ACCEL,
 										   ADR_AXIS2_ENDSTOP, ADR_AXIS2_POWER, ADR_AXIS2_DEGREES,ADR_AXIS2_EFFECTS1,ADR_AXIS2_EFFECTS2, ADR_AXIS2_ENC_RATIO,
 										   ADR_AXIS2_SPEEDACCEL_FILTER,ADR_AXIS2_POSTPROCESS1,
 										   ADR_AXIS2_EQ1,ADR_AXIS2_EQ2,ADR_AXIS2_EQ3,
@@ -138,7 +138,7 @@ Axis::Axis(char axis,volatile Control_t* control) :CommandHandler("axis", CLSID_
 	else if (axis == 'Z')
 	{
 		setInstance(2);
-	this->flashAddresses = AxisFlashAddresses({ADR_AXIS3_CONFIG, ADR_AXIS3_MAX_SPEED, ADR_AXIS3_MAX_ACCEL, ADR_AXIS3_MAX_SLEWRATE_DRV,
+	this->flashAddresses = AxisFlashAddresses({ADR_AXIS3_CONFIG, ADR_AXIS3_MAX_SPEED, ADR_AXIS3_MAX_ACCEL,
 										   ADR_AXIS3_ENDSTOP, ADR_AXIS3_POWER, ADR_AXIS3_DEGREES,ADR_AXIS3_EFFECTS1,ADR_AXIS3_EFFECTS2,ADR_AXIS3_ENC_RATIO,
 										   ADR_AXIS3_SPEEDACCEL_FILTER,ADR_AXIS3_POSTPROCESS1,
 										   ADR_AXIS3_EQ1,ADR_AXIS3_EQ2,ADR_AXIS3_EQ3,
@@ -207,9 +207,6 @@ void Axis::registerCommands(){
 	registerCommand("handsoff", Axis_commands::handsoff, "Hands-off enable", CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("handsoff_speed", Axis_commands::handsoff_speed, "Hoff speed thrld (deg/s)", CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("handsoff_accel", Axis_commands::handsoff_accel, "Hoff accel std dev thrld (float, val/1000)", CMDFLAG_GET | CMDFLAG_SET);
-
-	registerCommand("maxSlewRateDrv", Axis_commands::maxSlewRateDrv, "Max driver torque in counts/ms",CMDFLAG_GET);
-	registerCommand("calibrate_maxSlewRateDrv", Axis_commands::calibrate_maxSlewRateDrv, "Start driver slewRate calib", CMDFLAG_GET);
 }
 
 /*
@@ -237,13 +234,6 @@ void Axis::restoreFlash(){
 	// save the max torque for the slew rate
 	if (Flash_Read(flashAddresses.maxAccel, &value)){
 		this->maxTorqueRateMS = value;
-	}else{
-		pulseErrLed();
-	}
-
-	// save the max torque for the slew rate
-	if (Flash_Read(flashAddresses.maxSlewRateDrv, &value)){
-		this->maxSlewRate_Driver = value;
 	}else{
 		pulseErrLed();
 	}
@@ -332,7 +322,6 @@ void Axis::saveFlash(){
 	Flash_Write(flashAddresses.config, Axis::encodeConfToInt(this->conf));
 	Flash_Write(flashAddresses.maxSpeed, this->maxSpeedDegS);
 	Flash_Write(flashAddresses.maxAccel, (uint16_t)(this->maxTorqueRateMS));
-	Flash_Write(flashAddresses.maxSlewRateDrv, (uint16_t)(this->maxSlewRate_Driver));
 
 	Flash_Write(flashAddresses.endstop, effectRatio | (endstopStrength << 8));
 	Flash_Write(flashAddresses.power, power);
@@ -446,29 +435,6 @@ void Axis::prepareForUpdate(){
 		startForceFadeIn(0, 1.0);
 	}
 
-	// Check for pending slew rate calibration result
-	if(this->awaitingSlewCalibration){
-		// If driver reports calibration finished, retrieve measured value and persist
-		if(!drv->isSlewRateCalibrationInProgress()){
-			// Get value from drv
-			this->maxSlewRate_Driver =  drv->getDrvSlewRate();
-
-			// If the driver's max slew rate is lowest thant current max flew rate, cap the value and send the new value to the UI
-			if (this->maxSlewRate_Driver < this->maxTorqueRateMS) {
-				this->maxTorqueRateMS = this->maxSlewRate_Driver;
-				CommandHandler::broadcastCommandReply(CommandReply(this->maxTorqueRateMS), (uint32_t)Axis_commands::slewrate, CMDtype::get);
-			}
-			
-			// Broadcast a friendly completion message and the numeric value
-			CommandHandler::broadcastCommandReply(CommandReply("Slew rate calibration complete",0), (uint32_t)Axis_commands::calibrate_maxSlewRateDrv, CMDtype::get);
-			CommandHandler::broadcastCommandReply(CommandReply(this->maxSlewRate_Driver), (uint32_t)Axis_commands::maxSlewRateDrv, CMDtype::get);
-
-			
-			this->awaitingSlewCalibration = false;
-		}
-	}
-
-
 	this->updateMetrics(angle);
 	this->updateHandsOffState();
 
@@ -512,23 +478,35 @@ void Axis::setDrvType(uint8_t drvtype)
 	{
 		return;
 	}
-	cpp_freertos::CriticalSection::Enter();
-	MotorDriver* drv = driverChooser.Create((uint16_t)drvtype);
-	this->drv.reset(drv);
-	if (drv == nullptr)
+
+	// Create the driver outside of the critical section to avoid FreeRTOS issues (semaphore take with interrupts disabled)
+	MotorDriver* drv_new = driverChooser.Create((uint16_t)drvtype);
+	
+	if (drv_new == nullptr)
 	{
-		cpp_freertos::CriticalSection::Exit();
 		return;
 	}
-	this->conf.drvtype = drvtype;
-	this->maxTorqueRateMS = drv->getDrvSlewRate();
 
-	// Pass encoder to driver again
-	if(!this->drv->hasIntegratedEncoder()){
-		this->drv->setEncoder(this->enc);
+	// Pre-initialization outside of critical section
+	if(!drv_new->hasIntegratedEncoder()){
+		drv_new->setEncoder(this->enc);
+	}
+	drv_new->setupDriver();
+
+	// Use critical section only for atomic replacement of the driver pointer
+	MotorDriver* old_drv_ptr = nullptr;
+	cpp_freertos::CriticalSection::Enter();
+	old_drv_ptr = this->drv.release(); // Detach the old driver safely
+	this->drv.reset(drv_new);          // Attach the new driver
+	this->conf.drvtype = drvtype;
+	cpp_freertos::CriticalSection::Exit();
+
+	// Delete the old driver outside of the critical section to avoid blocking destructors or FreeRTOS issues
+	if (old_drv_ptr != nullptr) {
+		delete old_drv_ptr;
 	}
 
-	drv->setupDriver();
+	// Perform SPI communications (start/suspend) outside of the critical section
 	if (!tud_connected())
 	{
 		control->usb_disabled = false;
@@ -536,9 +514,8 @@ void Axis::setDrvType(uint8_t drvtype)
 	}
 	else
 	{
-		drv->startMotor();
+		drv_new->startMotor();
 	}
-	cpp_freertos::CriticalSection::Exit();
 }
 
 
@@ -694,13 +671,13 @@ void Axis::calculateMechanicalEffects(bool ffb_on){
 	// Always active damper
 	if(damperIntensity != 0){
 		float speedFiltered = (metric.current.speed) * (float)damperIntensity * AXIS_DAMPER_RATIO;
-		mechanicalEffectTorque -= damperFilter.process(clip<float, int32_t>(speedFiltered, -internalFxClip, internalFxClip));
+		mechanicalEffectTorque -= damperFilter.process(clip<float, int32_t>(speedFiltered, -INTERNAL_FX_CLIP, INTERNAL_FX_CLIP));
 	}
 
 	// Always active inertia
 	if(inertiaIntensity != 0){
 		float accelFiltered = metric.current.accel * (float)inertiaIntensity * AXIS_INERTIA_RATIO;
-		mechanicalEffectTorque -= inertiaFilter.process(clip<float, int32_t>(accelFiltered, -internalFxClip, internalFxClip));
+		mechanicalEffectTorque -= inertiaFilter.process(clip<float, int32_t>(accelFiltered, -INTERNAL_FX_CLIP, INTERNAL_FX_CLIP));
 	}
 
 	// Always active friction. Based on effectsCalculator implementation
@@ -719,7 +696,7 @@ void Axis::calculateMechanicalEffects(bool ffb_on){
 		}
 		int8_t sign = speed >= 0 ? 1 : -1;
 		float force = (float)frictionIntensity * rampupFactor * sign * INTERNAL_AXIS_FRICTION_SCALER * 32;
-		mechanicalEffectTorque -= frictionFilter.process(clip<float, int32_t>(force, -internalFxClip, internalFxClip));
+		mechanicalEffectTorque -= frictionFilter.process(clip<float, int32_t>(force, -INTERNAL_FX_CLIP, INTERNAL_FX_CLIP));
 	}
 
 }
@@ -826,7 +803,7 @@ int32_t Axis::calculateEndstopTorque(){
 		return 0;
 	}
 	float endstopTorque = clipDirection*metric.current.posDegrees - (float)this->degreesOfRotation/2.0; // degress of rotation counts total range so multiply by 2
-	endstopTorque *= (float)endstopStrength * endstopGain; // Apply endstop gain for stiffness.
+	endstopTorque *= (float)endstopStrength * ENDSTOP_GAIN; // Apply endstop gain for stiffness.
 	endstopTorque *= -clipDirection;
 
 	return clip<int32_t,int32_t>(endstopTorque,-0x7fff,0x7fff);
@@ -1157,35 +1134,10 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 	case Axis_commands::slewrate:
 		{
 			if(cmd.type == CMDtype::get){
-				// If driver has a more restrictive calibrated value, update the axis limit
-				if(maxSlewRate_Driver < this->maxTorqueRateMS) {
-					this->maxTorqueRateMS = maxSlewRate_Driver;
-				}
 				replies.emplace_back(this->maxTorqueRateMS);
 			}else if(cmd.type == CMDtype::set){
-				this->maxTorqueRateMS = clip<uint32_t,uint32_t>(cmd.val, 0, maxSlewRate_Driver);
+				this->maxTorqueRateMS = cmd.val;
 			}
-		}
-		break;
-
-	case Axis_commands::calibrate_maxSlewRateDrv:
-		{
-			if(cmd.type == CMDtype::get){
-				// Start calibration on driver and set awaiting flag if start is OK
-				if (drv->startSlewRateCalibration()) {
-					this->awaitingSlewCalibration = true;
-				} else {
-					// Inform user that calibration can't started
-					CommandHandler::broadcastCommandReply(CommandReply("Slew rate calibration unsupported",1), (uint32_t)Axis_commands::calibrate_maxSlewRateDrv, CMDtype::get);
-				}
-				replies.emplace_back(1); // ack
-			}
-			break;
-		}
-
-	case Axis_commands::maxSlewRateDrv:
-		if (cmd.type == CMDtype::get) {
-			replies.emplace_back(maxSlewRate_Driver);
 		}
 		break;
 
@@ -1250,14 +1202,6 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 			if(this->getEncoder() != nullptr){
 				cpr = this->getEncoder()->getCpr();
 			}
-			// TODO: For TMC4671 drivers, CPR reporting might be inconsistent. Investigate if a prescale is needed or if the UI should handle the readout correction.
-//#ifdef TMC4671DRIVER // CPR should be consistent with position. Maybe change TMC to prescale to encoder count or correct readout in UI
-//			TMC4671 *tmcdrv = dynamic_cast<TMC4671 *>(this->drv.get()); // Special case for TMC. Get the actual encoder resolution
-//			if (tmcdrv && tmcdrv->hasIntegratedEncoder())
-//			{
-//				cpr = tmcdrv->getEncCpr();
-//			}
-//#endif
 			replies.emplace_back(cpr);
 		}else{
 			return CommandStatus::ERR;

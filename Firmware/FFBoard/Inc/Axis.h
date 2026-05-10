@@ -60,7 +60,6 @@ struct AxisFlashAddresses
 	uint16_t config = ADR_AXIS1_CONFIG;
 	uint16_t maxSpeed = ADR_AXIS1_MAX_SPEED;
 	uint16_t maxAccel = ADR_AXIS1_MAX_ACCEL;
-	uint16_t maxSlewRateDrv = ADR_AXIS1_MAX_SLEWRATE_DRV;
 
 	uint16_t endstop = ADR_AXIS1_ENDSTOP;
 	uint16_t power = ADR_AXIS1_POWER;
@@ -123,8 +122,6 @@ enum class Axis_commands : uint32_t{
 	fxratio,reductionScaler,
 	filterSpeed, filterAccel, filterProfileId,cpr,axisfriction,axisinertia,
 	maxspeed,slewrate,
-	calibrate_maxSlewRateDrv,
-	maxSlewRateDrv,
 	expo,exposcale,
 	equalizer,eqb1,eqb2,eqb3,eqb4,eqb5,eqb6,
 	handsoff, handsoff_speed, handsoff_accel
@@ -477,7 +474,6 @@ private:
 	uint16_t nextDegreesOfRotation = degreesOfRotation; //!< Target degrees of rotation.
 
 	// Limiters
-	uint16_t maxSlewRate_Driver = MAX_SLEW_RATE;		//!< Maximum slew rate as measured by the driver (in units/ms).
 	uint16_t maxSpeedDegS  = 0;		//!< Maximum speed in degrees per second. 0 to disable.
 	uint32_t maxTorqueRateMS = 0;		//!< Maximum torque rate of change per millisecond. 0 to disable.
 
@@ -507,7 +503,7 @@ private:
 	// Axis configuration
 	bool invertAxis = true;			//!< Invert axis direction.
 	uint8_t endstopStrength = 127;	//!< Stiffness of the endstop effect.
-	const float endstopGain = 25;	//!< Overall maximum endstop intensity.
+	static constexpr float ENDSTOP_GAIN = 25.0f;	//!< Overall maximum endstop intensity.
 
 	// Idle spring effect
 	uint8_t idleSpringStrength = 127; //!< Strength of the idle spring.
@@ -515,9 +511,6 @@ private:
 	float idleSpringScale = 0;        //!< Scaler for the idle spring force.
 	bool motorWasNotReady = true;     //!< Flag to detect motor readiness transition.
 
-	// Slew rate calibration tracking: true when Axis requested a calibration and
-	// is waiting for the driver to finish measuring the max slew rate.
-	bool awaitingSlewCalibration = false;
 
 	// Filters
 	// TODO tune these and check if it is really stable and beneficial to the FFB. index 4 placeholder
@@ -528,7 +521,7 @@ private:
 	const biquad_constant_t filterInertiaCst = {20, 20};    //!< Inertia filter constants.
 	uint8_t filterProfileId = 1; //!< Currently selected filter profile ID.
 	float filter_f = 1000.0; // 1khz
-	const int32_t internalFxClip = 20000; //!< Clipping value for internal effects.
+	static constexpr int32_t INTERNAL_FX_CLIP = 20000; //!< Clipping value for internal effects.
 
 	// Internal effects intensity
 	uint8_t damperIntensity = 30;	//!< Intensity of the internal damper effect.
