@@ -3742,67 +3742,64 @@ void TMC4671::handleStateCoggingCalibration() {
 #endif
 				vPortFree(candidates);
 				saveCoggingTable();
-				cogging_enabled = true;
-				CommandHandler::broadcastCommandReply(CommandReply("Cogging calibration successful", 1), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+				CommandHandler::broadcastCommandReply(CommandReply("Cogging calibration successful", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 
 				// --- 4. RETURN TO CENTER (Unwinding multi-turn) ---
 				const float EMA_ALPHA = 0.2f;
 
 				// Get the raw absolute position (no modulo 1.0 wrapping)
-				float current_abs_pos = (usingExternalEncoder() && drvEncoder != nullptr) ? drvEncoder->getPos_f() : (float)this->getPos() / (float)this->getCpr();
+				float actual_pos_f = (usingExternalEncoder() && drvEncoder != nullptr) ? drvEncoder->getPos_f() : (float)this->getPos() / (float)this->getCpr();
 				
-				snprintf(dbg_buf, sizeof(dbg_buf), "Return to center: Start pos = %.3f turns", current_abs_pos);
+				snprintf(dbg_buf, sizeof(dbg_buf), "Return to center: Start pos = %.3f turns", actual_pos_f);
 				CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 				
-				// Reuse the proven CMSIS-DSP PID
-				// Soften the gains by 50% for a very smooth return without aggressiveness
-				pid_soft.Kp = best_Kp * 0.5f;
-				pid_soft.Ki = best_Ki * 0.5f;
-				pid_soft.Kd = best_Kd * 0.5f;
+				// Reuse the proven CMSIS-DSP PID from the DFT acquisition phase
+				pid_soft.Kp = best_Kp;
+				pid_soft.Ki = best_Ki;
+				pid_soft.Kd = best_Kd;
 				arm_pid_init_f32(&pid_soft, 1);
 				
-				float return_target = current_abs_pos;
-				float return_speed_rps = (TARGET_RPM * 2.0f) / 60.0f; // Slightly faster return
-				int return_dir = (current_abs_pos > 0.0f) ? -1 : 1;
+				float target_pos_f = actual_pos_f;
+				uint32_t period_us = 1000; // 1kHz loop
+				float target_rpm = (actual_pos_f > 0.0f) ? -TARGET_RPM : TARGET_RPM;
 				
 				uint32_t return_start = HAL_GetTick();
 				uint32_t next_tick = micros();
 				uint32_t last_log = 0;
 				
 				// Independent EMA filter for the absolute position
-				float smoothed_abs_pos = current_abs_pos;
+				float smoothed_pos_f = actual_pos_f;
 				
-				while (fabs(current_abs_pos) > 0.005f && !emergency && hasPower()) {
-					next_tick += 1000; // 1kHz loop
+				while (fabs(actual_pos_f) > 0.005f && !emergency && hasPower()) {
+					next_tick += period_us;
 					
 					// Absolute ramp generation towards 0.0
-					if (return_dir == -1) {
-						return_target -= return_speed_rps * 0.001f;
-						if (return_target < 0.0f) return_target = 0.0f;
-					} else {
-						return_target += return_speed_rps * 0.001f;
-						if (return_target > 0.0f) return_target = 0.0f;
-					}
+					target_pos_f += (target_rpm / 60.0f) * (period_us / 1000000.0f);
+
+					// Clamp at zero to avoid overshoot/oscillation
+					if (target_rpm < 0 && target_pos_f < 0.0f) target_pos_f = 0.0f;
+					if (target_rpm > 0 && target_pos_f > 0.0f) target_pos_f = 0.0f;
 
 					// Read the raw absolute position
-					current_abs_pos = (usingExternalEncoder() && drvEncoder != nullptr) ? drvEncoder->getPos_f() : (float)this->getPos() / (float)this->getCpr();
+					actual_pos_f = (usingExternalEncoder() && drvEncoder != nullptr) ? drvEncoder->getPos_f() : (float)this->getPos() / (float)this->getCpr();
 					
 					// Simple EMA smoothing (no wrapping) to protect the PID derivative term
-					smoothed_abs_pos += EMA_ALPHA * (current_abs_pos - smoothed_abs_pos);
+					smoothed_pos_f += EMA_ALPHA * (actual_pos_f - smoothed_pos_f);
 					
 					// Calculate absolute error
-					float abs_err = return_target - smoothed_abs_pos;
+					float error = target_pos_f - smoothed_pos_f;
 					
 					// Calculate torque via the CMSIS PID
-				float iq_cmd = arm_pid_f32(&pid_soft, abs_err);
+					float iq_cmd = arm_pid_f32(&pid_soft, error);
 					
 					iq_cmd = clip<float,float>(iq_cmd, -max_test_torque, max_test_torque);
 					applySafeTorque(iq_cmd);
 					
+					//TODO logger to remove
 					if (HAL_GetTick() - last_log > 1000) {
 						last_log = HAL_GetTick();
 						snprintf(dbg_buf, sizeof(dbg_buf), "Unwinding: Pos=%.3f Target=%.3f Err=%.3f Iq=%d", 
-								 smoothed_abs_pos, return_target, abs_err, (int)iq_cmd);
+								 smoothed_pos_f, target_pos_f, error, (int)iq_cmd);
 						CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 					}
 
@@ -3827,9 +3824,9 @@ void TMC4671::handleStateCoggingCalibration() {
 
 cleanup:
 	if (errorMessage) {
-		CommandHandler::broadcastCommandReply(CommandReply(errorMessage, 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+		CommandHandler::broadcastCommandReply(CommandReply(errorMessage, 1), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 	} else {
-		CommandHandler::broadcastCommandReply(CommandReply("Cogging detection finished", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+		CommandHandler::broadcastCommandReply(CommandReply("Cogging detection finished", 1), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 	}
 	
 	setTargetVelocity(0); // Ensure motor stops
