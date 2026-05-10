@@ -3764,12 +3764,9 @@ void TMC4671::handleStateCoggingCalibration() {
 				float target_rpm = (actual_pos_f > 0.0f) ? -TARGET_RPM : TARGET_RPM;
 				
 				uint32_t return_start = HAL_GetTick();
-				uint32_t next_tick = micros();
 				uint32_t last_log = 0;
 				
-				// Independent EMA filter for the absolute position
-				float smoothed_pos_f = actual_pos_f;
-				
+				uint32_t next_tick = micros();
 				while (fabs(actual_pos_f) > 0.005f && !emergency && hasPower()) {
 					next_tick += period_us;
 					
@@ -3783,11 +3780,8 @@ void TMC4671::handleStateCoggingCalibration() {
 					// Read the raw absolute position
 					actual_pos_f = (usingExternalEncoder() && drvEncoder != nullptr) ? drvEncoder->getPos_f() : (float)this->getPos() / (float)this->getCpr();
 					
-					// Simple EMA smoothing (no wrapping) to protect the PID derivative term
-					smoothed_pos_f += EMA_ALPHA * (actual_pos_f - smoothed_pos_f);
-					
-					// Calculate absolute error
-					float error = target_pos_f - smoothed_pos_f;
+					// Calculate absolute error (Raw position, no EMA lag)
+					float error = target_pos_f - actual_pos_f;
 					
 					// Calculate torque via the CMSIS PID
 					float iq_cmd = arm_pid_f32(&pid_soft, error);
@@ -3795,11 +3789,11 @@ void TMC4671::handleStateCoggingCalibration() {
 					iq_cmd = clip<float,float>(iq_cmd, -max_test_torque, max_test_torque);
 					applySafeTorque(iq_cmd);
 					
-					//TODO logger to remove
+					// Log every second
 					if (HAL_GetTick() - last_log > 1000) {
 						last_log = HAL_GetTick();
 						snprintf(dbg_buf, sizeof(dbg_buf), "Unwinding: Pos=%.3f Target=%.3f Err=%.3f Iq=%d", 
-								 smoothed_pos_f, target_pos_f, error, (int)iq_cmd);
+								 actual_pos_f, target_pos_f, error, (int)iq_cmd);
 						CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 					}
 
