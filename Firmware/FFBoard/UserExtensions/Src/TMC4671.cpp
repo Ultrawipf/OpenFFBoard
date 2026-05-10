@@ -3353,8 +3353,8 @@ void TMC4671::handleStateCoggingCalibration() {
 
 	// --- TUNABLE CALIBRATION CONSTANTS (English) ---
 	const uint32_t TUNE_OSCILLATION_MS = 600;    // Duration of the relay oscillation test
-	const uint32_t VAL_TOTAL_DURATION_MS = 2000; // Total duration of each validation run
-	const uint32_t VAL_WARMUP_MS = 1000;         // Time to ignore at start (transient/stiction)
+	const uint32_t VAL_TOTAL_DURATION_MS = 2500; // Total duration of each validation run (Warmup + 1s useful)
+	const uint32_t COGGING_WARMUP_MS = 1500;     // Stabilization delay (transient/stiction)
 	const uint32_t VAL_RETRY_PAUSE_MS = 500;     // Pause between validation attempts
 	// Calculate RPM dynamically: 60 seconds / Time per revolution
 	const float    TARGET_RPM = 60.0f / (float)COGGING_CALIB_TIME_PER_REV_S; 
@@ -3549,6 +3549,11 @@ void TMC4671::handleStateCoggingCalibration() {
 			while (attempt <= VAL_MAX_ATTEMPTS && !emergency && hasPower()) {
 				float max_err_val = 0.0f;
 				arm_pid_init_f32(&pid_soft, 1); // Reset integrator
+
+				// Warmup to break friction before starting validation
+				applySafeTorque(relay_torque * 0.7f);
+				Delay(150);
+
 				float val_target_pos_f = getFilteredPosition();
 				uint32_t val_start = HAL_GetTick();
 				uint32_t next_tick = micros();
@@ -3663,6 +3668,10 @@ void TMC4671::handleStateCoggingCalibration() {
 				}
 
 				if (!emergency && hasPower()) {
+					// Warmup to break friction before acquisition pass
+					applySafeTorque(target_rpm > 0 ? relay_torque * 0.7f : -relay_torque * 0.7f);
+					Delay(150);
+
 					calibStartTime = HAL_GetTick();
 					uint32_t period_us = 1000;
 					uint32_t next_tick = micros();
@@ -3680,9 +3689,11 @@ void TMC4671::handleStateCoggingCalibration() {
 						float error = getWrappedError(target_pos_f, actual_pos_f);
 						float iq_cmd = arm_pid_f32(&pid_soft, error);
 						
-						// Tracking stats
-						if (fabs(error) > max_err_seen) max_err_seen = fabs(error);
-						if (fabs(iq_cmd) > max_iq_cmd_used) max_iq_cmd_used = fabs(iq_cmd);
+						// Tracking stats (Ignore startup transient)
+						if (HAL_GetTick() - calibStartTime > ACQ_WARMUP_MS) {
+							if (fabs(error) > max_err_seen) max_err_seen = fabs(error);
+							if (fabs(iq_cmd) > max_iq_cmd_used) max_iq_cmd_used = fabs(iq_cmd);
+						}
 						
 						iq_cmd = clip<float,float>(iq_cmd, -max_test_torque, max_test_torque);
 						
@@ -3690,7 +3701,8 @@ void TMC4671::handleStateCoggingCalibration() {
 						
 						// --- DISPLACEMENT-BASED ACQUISITION SECURITY ---
 						// Only integrate into DFT if we haven't completed one full revolution (360°)
-						if (integrated_distance < 1.0f) {
+						// Wait at least ACQ_WARMUP_MS for the PID to stabilize the speed before starting data collection
+						if (integrated_distance < 1.0f && (HAL_GetTick() - calibStartTime > ACQ_WARMUP_MS)) {
 							float iq = iq_cmd; 
 #ifdef COGGING_CALIB_ENABLE_ID_DIAG
 							float id = (float)getActualFlux();
@@ -3791,14 +3803,22 @@ void TMC4671::handleStateCoggingCalibration() {
 				pid_soft.Ki = best_Ki;
 				pid_soft.Kd = best_Kd;
 				arm_pid_init_f32(&pid_soft, 1);
+
+				// sending an initial torque helps overcome static friction
+				// before the PID control starts, which prevents initial oscillations.
+				if (fabs(actual_pos_f) > 0.05f) {
+					CommandHandler::broadcastCommandReply(CommandReply("Return: Breaking static friction...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+					float warmup_torque = relay_torque * 0.70f;
+					applySafeTorque(actual_pos_f > 0.0f ? -warmup_torque : warmup_torque);
+					Delay(150);
+					// The PID loop below will take over immediately after this delay.
+				}
 				
 				float target_pos_f = actual_pos_f;
 				uint32_t period_us = 1000; // 1kHz loop
 				float target_rpm = (actual_pos_f > 0.0f) ? -TARGET_RPM : TARGET_RPM;
 				
 				uint32_t return_start = HAL_GetTick();
-				uint32_t last_log = 0;
-				
 				uint32_t next_tick = micros();
 				while (fabs(actual_pos_f) > 0.005f && !emergency && hasPower()) {
 					next_tick += period_us;
@@ -3813,13 +3833,13 @@ void TMC4671::handleStateCoggingCalibration() {
 					// Read the raw absolute position
 					actual_pos_f = (usingExternalEncoder() && drvEncoder != nullptr) ? drvEncoder->getPos_f() : (float)this->getPos() / (float)this->getCpr();
 					
-					// Get raw error
+					// Get raw error towards 0
 					float error = target_pos_f - actual_pos_f;
 					
 					// Calculate torque via the CMSIS PID
 					float iq_cmd = arm_pid_f32(&pid_soft, error);
 					
-					// Use full test torque limit
+					// Use full test torque limit (standard for all phases)
 					iq_cmd = clip<float,float>(iq_cmd, -max_test_torque, max_test_torque);
 					applySafeTorque(iq_cmd);
 					

@@ -40,11 +40,29 @@ The system uses a **Continuous Discrete Fourier Transform (DFT)** integration. I
 
 ### Internal Tuning Constants
 *   `TUNE_OSCILLATION_MS` (600ms): Duration of the relay feedback test.
-*   `VAL_TOTAL_DURATION_MS` (2000ms): Duration of each PID validation run.
-*   `VAL_WARMUP_MS` (1000ms): Stabilization window ignored during measurement.
+*   `VAL_TOTAL_DURATION_MS` (2500ms): Duration of each PID validation run (Warmup + 1s measurement).
+*   `COGGING_WARMUP_MS` (1500ms): Stabilization window ignored during measurement and integration.
 *   `VAL_MAX_ATTEMPTS` (50): Maximum number of iterative PID tuning passes.
 *   `MAX_TOLERANCE_DEG` (3.0°): Absolute maximum error limit allowed after target relaxation.
 *   `TARGET_RPM` (8.0): The constant rotation speed for calibration.
+
+## 3. Calibration Phase Summary (Steps & Timings)
+
+The following table summarizes the sequence of operations, their durations, and the torque strategies used to ensure stability.
+
+| Phase | Sub-Step | Duration | Torque / Control Strategy | Goal |
+| :--- | :--- | :--- | :--- | :--- |
+| **1. Auto-PID** | Relay Test | 600ms | Bang-Bang (`±relay_torque`) | Measure $T_u$ and $K_u$ |
+| | Calculation | - | Ziegler-Nichols + Inertia Profiling | Set base soft PID gains |
+| **2. Validation** | Warmup Pulse | 150ms | **70% relay torque** | Break stiction before PID |
+| | Stability Check | 2500ms | PID Control (Ignore first 1500ms) | Fine-tune PID stiffness |
+| | Retry Pause | 500ms | Zero Torque | Reset system for next attempt |
+| **3. Acquisition** | Setup | 1000ms | Zero Torque | Settle motor at rest |
+| | Warmup Pulse | 150ms | **70% relay torque** (Directional) | Movement start before DFT |
+| | DFT Integration | ~10.5s | PID Control (Wait 1500ms before DFT) | Capture 360° of cogging Iq/Id |
+| **4. Return** | Warmup Pulse | 150ms | **70% relay torque** (Towards Zero) | Break stiction before homing |
+| | Centering | Variable | PID Control (Position Ramp to 0.0) | Unwind motor revolutions |
+| | Final Align | - | `EncoderInit` State (`bangInitEnc`) | Reset hardware alignment |
 
 ### Configuration Macros
 *   `COGGING_CALIB_LUT_RESOLUTION`: Standardized at 2880 points for communication protocol compatibility.
@@ -52,7 +70,7 @@ The system uses a **Continuous Discrete Fourier Transform (DFT)** integration. I
 *   `COGGING_CALIB_DFT_HARMONICS`: Number of analyzed harmonics (128).
 *   `COGGING_CALIB_ENABLE_ID_DIAG`: Macro to enable electrical phase analysis on the Id axis.
 
-## 3. Design Choices & Timing Analysis
+## 4. Design Choices & Timing Analysis
 
 ### Why 8 Seconds per Revolution?
 This speed (**7.5 RPM**) is carefully selected as a "Physical Sweet Spot":
