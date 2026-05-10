@@ -3369,12 +3369,14 @@ void TMC4671::handleStateCoggingCalibration() {
 			total_samples = 2000;
 			for (uint32_t i = 0; i < total_samples; i++) {
 				float pos_f = (float)i / (float)total_samples;
-				// Simulate some harmonics (e.g. 13th and 36th)
-				float iq = 1500.0f * arm_sin_f32(pos_f * 360.0f * 13.0f) + 800.0f * arm_sin_f32(pos_f * 360.0f * 36.0f + 90.0f);
+				float angle_rad = pos_f * 2.0f * PI;
+				// Simulate some harmonics (e.g. 13th and 36th). arm_sin_f32 uses RADIANS.
+				float iq = 1500.0f * arm_sin_f32(angle_rad * 13.0f) + 800.0f * arm_sin_f32(angle_rad * 36.0f + (PI/2.0f));
 #ifdef COGGING_CALIB_ENABLE_ID_DIAG
 				float id = 100.0f;
 #endif
 				float s1, c1;
+				// arm_sin_cos_f32 uses DEGREES.
 				arm_sin_cos_f32(pos_f * 360.0f, &s1, &c1);
 
 				float cur_s = s1, cur_c = c1;
@@ -3389,6 +3391,7 @@ void TMC4671::handleStateCoggingCalibration() {
 					float next_s = cur_c * s1 + cur_s * c1;
 					cur_c = next_c; cur_s = next_s;
 				}
+				if(i % 100 == 0) refreshWatchdog();
 			}
 		} else {
 			// --- REAL ACQUISITION ---
@@ -3398,20 +3401,23 @@ void TMC4671::handleStateCoggingCalibration() {
 				CommandHandler::broadcastCommandReply(CommandReply(p == 1 ? "Forward integration..." : "Backward integration...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 				setTargetVelocity(p * COGGING_CALIB_SPEED_RPM);
 				uint32_t waitStart = HAL_GetTick();
-				while(HAL_GetTick() - waitStart < 2000 && !emergency && hasPower()) { Delay(10); }
+				while(HAL_GetTick() - waitStart < 2000 && !emergency && hasPower()) { 
+					refreshWatchdog();
+					Delay(10); 
+				}
 
 				if (!emergency && hasPower()) {
 					calibStartTime = HAL_GetTick();
 					while (HAL_GetTick() - calibStartTime < revolution_time_ms && !emergency && hasPower()) {
 						float pos_f = (usingExternalEncoder() && drvEncoder != nullptr) ? drvEncoder->getPos_f() : (float)this->getPos() / (float)this->getCpr();
-						float angle_rad = pos_f * 2.0f * PI;
 						float iq = (float)getVelocityControllerTorque() * p; 
 #ifdef COGGING_CALIB_ENABLE_ID_DIAG
 						float id = (float)getActualFlux();
 #endif
 						
 						float s1, c1;
-						arm_sin_cos_f32(angle_rad * 180.0f / PI, &s1, &c1);
+						// arm_sin_cos_f32 uses DEGREES.
+						arm_sin_cos_f32(pos_f * 360.0f, &s1, &c1);
 
 						float cur_s = s1, cur_c = c1;
 						for (int k = 1; k < COGGING_CALIB_DFT_HARMONICS; k++) {
@@ -3426,6 +3432,8 @@ void TMC4671::handleStateCoggingCalibration() {
 							cur_c = next_c; cur_s = next_s;
 						}
 						total_samples++;
+						refreshWatchdog();
+						//TODO VMA use TR to read Delay(1);
 					}
 				}
 			}
