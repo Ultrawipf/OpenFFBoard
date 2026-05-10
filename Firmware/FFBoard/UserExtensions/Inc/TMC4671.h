@@ -779,6 +779,11 @@ private:
 	void handleStateRunning();
 	void handleStateFullCalibration();
 
+	// Calibration helpers
+	void applySafeTorque(float torque_cmd);
+	float getWrappedError(float target, float actual);
+	float getFilteredPosition();
+
 	void encoderInit();
 	void errorCallback(const Error &error, bool cleared);
 	bool pidAutoTune();

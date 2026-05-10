@@ -3308,6 +3308,31 @@ void TMC4671::handleStateFullCalibration() {
 }
 
 #ifdef COGGING_TABLE_FLASH_START_ADDRESS
+// Helper: Apply torque safely considering encoder direction and flux
+void TMC4671::applySafeTorque(float torque_cmd) {
+	int16_t pwr = (int16_t)torque_cmd;
+	if ((this->conf.encoderReversed && conf.motconf.enctype == EncoderType_TMC::ext) || conf.invertForce) {
+		pwr = -pwr;
+	}
+	int32_t flux_cmd = idleFlux - clip<int32_t,int16_t>(abs(pwr), 0, maxOffsetFlux);
+	setFluxTorque(flux_cmd, pwr);
+}
+
+// Helper: Calculate wrapped error between 0 and 1 turn
+float TMC4671::getWrappedError(float target, float actual) {
+	target = target - floorf(target); 
+	actual = actual - floorf(actual); 
+	float err = target - actual;
+	if (err > 0.5f) err -= 1.0f;
+	if (err < -0.5f) err += 1.0f;
+	return err;
+}
+
+// Simplified position access (Direct reading to avoid phase lag)
+float TMC4671::getFilteredPosition() {
+	return (usingExternalEncoder() && drvEncoder != nullptr) ? drvEncoder->getPos_f() : (float)this->getPos() / (float)this->getCpr();
+}
+
 /**
  * Calculates a detent torque compensation map (anti-cogging) for the motor.
  * This function is now ATOMIC: it blocks the TMC thread to perform high-frequency sampling.
@@ -3325,6 +3350,22 @@ void TMC4671::handleStateCoggingCalibration() {
 	TMC4671PIDConf prevPids = curPids;
 	TMC4671PIDConf calibPids = curPids;
 	uint32_t revolution_time_ms = COGGING_CALIB_TIME_PER_REV_S * 1000;
+
+	// --- TUNABLE CALIBRATION CONSTANTS (English) ---
+	const uint32_t TUNE_OSCILLATION_MS = 600;    // Duration of the relay oscillation test
+	const uint32_t VAL_TOTAL_DURATION_MS = 2000; // Total duration of each validation run
+	const uint32_t VAL_WARMUP_MS = 1000;         // Time to ignore at start (transient/stiction)
+	const uint32_t VAL_RETRY_PAUSE_MS = 500;     // Pause between validation attempts
+	const int      VAL_MAX_ATTEMPTS = 20;        // Number of fine-tuning tries before abort
+	// Calculate RPM dynamically: 60 seconds / Time per revolution
+	const float    TARGET_RPM = 60.0f / (float)COGGING_CALIB_TIME_PER_REV_S; 
+	const float    INITIAL_ERROR_LIMIT_DEG = 0.1f; // Initial strict accuracy target
+
+	arm_pid_instance_f32 pid_soft;
+	char dbg_buf[128];
+	float best_err_val = 1e9f;
+	float best_Kp = 0, best_Ki = 0, best_Kd = 0;
+	float max_test_torque = bangInitPower > 0 ? (float)bangInitPower * 0.8f : 2000.0f; 
 
 	CommandHandler::broadcastCommandReply(CommandReply("Starting Cogging Calibration: Continuous DFT...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 	
@@ -3407,47 +3448,9 @@ void TMC4671::handleStateCoggingCalibration() {
 				if(i % 100 == 0) refreshWatchdog();
 			}
 		} else {
-			// --- TUNABLE CALIBRATION CONSTANTS (English) ---
-			const uint32_t TUNE_OSCILLATION_MS = 600;    // Duration of the relay oscillation test
-			const uint32_t VAL_TOTAL_DURATION_MS = 2000; // Total duration of each validation run
-			const uint32_t VAL_WARMUP_MS = 1000;         // Time to ignore at start (transient/stiction)
-			const uint32_t VAL_RETRY_PAUSE_MS = 500;     // Pause between validation attempts
-			const int      VAL_MAX_ATTEMPTS = 20;        // Number of fine-tuning tries before abort
-			// Calculate RPM dynamically: 60 seconds / Time per revolution
-            const float    TARGET_RPM = 60.0f / (float)COGGING_CALIB_TIME_PER_REV_S; 
-			const float    INITIAL_ERROR_LIMIT_DEG = 0.1f; // Initial strict accuracy target
-
 			// --- REAL ACQUISITION SETUP ---
 			startMotor();
 			setMotionMode(MotionMode::torque, true);
-
-			arm_pid_instance_f32 pid_soft;
-			char dbg_buf[128];
-
-			// Helper: Apply torque safely considering encoder direction and flux
-			auto applySafeTorque = [&](float torque_cmd) {
-				int16_t pwr = (int16_t)torque_cmd;
-				if ((this->conf.encoderReversed && conf.motconf.enctype == EncoderType_TMC::ext) || conf.invertForce) {
-					pwr = -pwr;
-				}
-				int32_t flux_cmd = idleFlux - clip<int32_t,int16_t>(abs(pwr), 0, maxOffsetFlux);
-				setFluxTorque(flux_cmd, pwr);
-			};
-
-			// Helper: Calculate wrapped error between 0 and 1 turn
-			auto getWrappedError = [](float target, float actual) {
-				target = target - floorf(target); 
-				actual = actual - floorf(actual); 
-				float err = target - actual;
-				if (err > 0.5f) err -= 1.0f;
-				if (err < -0.5f) err += 1.0f;
-				return err;
-			};
-
-			// Simplified position access (Direct reading to avoid phase lag)
-			auto getFilteredPosition = [&]() {
-			    return (usingExternalEncoder() && drvEncoder != nullptr) ? drvEncoder->getPos_f() : (float)this->getPos() / (float)this->getCpr();
-			};
 
 			// --- 1. SOFTWARE PID AUTO-TUNING (Relay Method) ---
 			CommandHandler::broadcastCommandReply(CommandReply("Auto-tuning software PID...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
