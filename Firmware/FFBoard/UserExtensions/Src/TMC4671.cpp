@@ -3746,27 +3746,36 @@ void TMC4671::handleStateCoggingCalibration() {
 				CommandHandler::broadcastCommandReply(CommandReply("Cogging calibration successful", 1), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 
 				// --- 4. RETURN TO CENTER (Unwinding multi-turn) ---
-				float current_abs_pos = getFilteredPosition();
-				snprintf(dbg_buf, sizeof(dbg_buf), "Return to center: Start pos = %.3f turns (Gains: P:%d D:%d)", current_abs_pos, (int)best_Kp, (int)best_Kd);
+				const float EMA_ALPHA = 0.2f;
+
+				// Get the raw absolute position (no modulo 1.0 wrapping)
+				float current_abs_pos = (usingExternalEncoder() && drvEncoder != nullptr) ? drvEncoder->getPos_f() : (float)this->getPos() / (float)this->getCpr();
+				
+				snprintf(dbg_buf, sizeof(dbg_buf), "Return to center: Start pos = %.3f turns", current_abs_pos);
 				CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 				
-				float return_target = current_abs_pos;
-				float return_speed_rps = (TARGET_RPM * 2.0f) / 60.0f; // Return at 16 RPM
-				int return_dir = (current_abs_pos > 0.0f) ? -1 : 1;
+				// Reuse the proven CMSIS-DSP PID
+				// Soften the gains by 50% for a very smooth return without aggressiveness
+				pid_soft.Kp = best_Kp * 0.5f;
+				pid_soft.Ki = best_Ki * 0.5f;
+				pid_soft.Kd = best_Kd * 0.5f;
+				arm_pid_init_f32(&pid_soft, 1);
 				
-				// Use "Soft" PD controller for returning (15% of P, 50% of D for damping)
-				float return_Kp = best_Kp * 0.15f;
-				float return_Kd = best_Kd * 0.50f;
-				float last_err = 0;
+				float return_target = current_abs_pos;
+				float return_speed_rps = (TARGET_RPM * 2.0f) / 60.0f; // Slightly faster return
+				int return_dir = (current_abs_pos > 0.0f) ? -1 : 1;
 				
 				uint32_t return_start = HAL_GetTick();
 				uint32_t next_tick = micros();
 				uint32_t last_log = 0;
 				
-				while (fabs(current_abs_pos) > 0.002f && !emergency && hasPower()) {
+				// Independent EMA filter for the absolute position
+				float smoothed_abs_pos = current_abs_pos;
+				
+				while (fabs(current_abs_pos) > 0.005f && !emergency && hasPower()) {
 					next_tick += 1000; // 1kHz loop
 					
-					// Ramp target towards zero
+					// Absolute ramp generation towards 0.0
 					if (return_dir == -1) {
 						return_target -= return_speed_rps * 0.001f;
 						if (return_target < 0.0f) return_target = 0.0f;
@@ -3775,12 +3784,17 @@ void TMC4671::handleStateCoggingCalibration() {
 						if (return_target > 0.0f) return_target = 0.0f;
 					}
 
-					current_abs_pos = getFilteredPosition();
-					float abs_err = return_target - current_abs_pos; // Absolute error (no wrapping)
+					// Read the raw absolute position
+					current_abs_pos = (usingExternalEncoder() && drvEncoder != nullptr) ? drvEncoder->getPos_f() : (float)this->getPos() / (float)this->getCpr();
 					
-					// PD calculation (manual to ensure absolute tracking stability)
-					float iq_cmd = (return_Kp * abs_err) + (return_Kd * (abs_err - last_err) * 1000.0f);
-					last_err = abs_err;
+					// Simple EMA smoothing (no wrapping) to protect the PID derivative term
+					smoothed_abs_pos += EMA_ALPHA * (current_abs_pos - smoothed_abs_pos);
+					
+					// Calculate absolute error
+					float abs_err = return_target - smoothed_abs_pos;
+					
+					// Calculate torque via the CMSIS PID
+				float iq_cmd = arm_pid_f32(&pid_soft, abs_err);
 					
 					iq_cmd = clip<float,float>(iq_cmd, -max_test_torque, max_test_torque);
 					applySafeTorque(iq_cmd);
@@ -3788,7 +3802,7 @@ void TMC4671::handleStateCoggingCalibration() {
 					if (HAL_GetTick() - last_log > 1000) {
 						last_log = HAL_GetTick();
 						snprintf(dbg_buf, sizeof(dbg_buf), "Unwinding: Pos=%.3f Target=%.3f Err=%.3f Iq=%d", 
-								 current_abs_pos, return_target, abs_err, (int)iq_cmd);
+								 smoothed_abs_pos, return_target, abs_err, (int)iq_cmd);
 						CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 					}
 
@@ -3802,10 +3816,9 @@ void TMC4671::handleStateCoggingCalibration() {
 				applySafeTorque(0);
 				CommandHandler::broadcastCommandReply(CommandReply("Centering done. Re-aligning encoder...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 				
-				// Instead of Jumping to Running, go through EncoderInit to re-zero and re-align everything
 				allowStateChange = true;
 				changeState(TMC_ControlState::EncoderInit);
-				return; // Exit handleStateCoggingCalibration cleanly
+				return; // Exit cleanly
 			} else {
 				errorMessage = "Abort: Memory fail (candidates)";
 			}
