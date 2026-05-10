@@ -3321,6 +3321,9 @@ void TMC4671::handleStateCoggingCalibration() {
 	float* id_acc_sin = nullptr;
 #endif
 
+	prevCalibMode = getMotionMode();
+	TMC4671PIDConf prevPids = curPids;
+	TMC4671PIDConf calibPids = curPids;
 	uint32_t revolution_time_ms = (60000 / COGGING_CALIB_SPEED_RPM) * 1.5;
 
 	CommandHandler::broadcastCommandReply(CommandReply("Starting Cogging Calibration: Continuous DFT...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
@@ -3330,8 +3333,14 @@ void TMC4671::handleStateCoggingCalibration() {
 		goto cleanup; 
 	}
 	
-	prevCalibMode = getMotionMode();
 	allowStateChange = false;
+
+
+
+	// Set temporary robust PIDs for velocity control during calibration
+	calibPids.velocityP = 1000;
+	calibPids.velocityI = 100;
+	setPids(calibPids);
 
 	// Disable flux filter during calibration (match FullCalibration logic)
 	curFilters.flux.params.enable = false;
@@ -3397,11 +3406,20 @@ void TMC4671::handleStateCoggingCalibration() {
 			}
 		} else {
 			// --- REAL ACQUISITION ---
-			setMotionMode(MotionMode::velocity, true);
+			// Enable PWM and start motor
+			startMotor();
+			//setMotionMode(MotionMode::velocity, true);
 			int8_t dirs[2] = {1, -1};
+			
+			// Speed conversion: RPM to TMC velocity units
+			// Mode 0: v = RPM * CPR / (60 * f_sample) where f_sample approx 4369Hz
+			// For 8 RPM and 16-bit encoder: 8 * 65536 / (60 * 4369) = 1.99 -> approx 2.
+			int32_t tmc_velocity = (COGGING_CALIB_SPEED_RPM * 65536) / (60 * 4369);
+			if (tmc_velocity == 0) tmc_velocity = 2; // Minimal move
+
 			for (int8_t p : dirs) {
 				CommandHandler::broadcastCommandReply(CommandReply(p == 1 ? "Forward integration..." : "Backward integration...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
-				setTargetVelocity(p * COGGING_CALIB_SPEED_RPM);
+				setTargetVelocity(p * tmc_velocity);
 				uint32_t waitStart = HAL_GetTick();
 				while(HAL_GetTick() - waitStart < 2000 && !emergency && hasPower()) { 
 					refreshWatchdog();
@@ -3505,6 +3523,8 @@ cleanup:
 		CommandHandler::broadcastCommandReply(CommandReply("Cogging detection finished", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 	}
 	
+	setTargetVelocity(0); // Ensure motor stops
+
 	if(iq_acc_cos) vPortFree(iq_acc_cos);
 	if(iq_acc_sin) vPortFree(iq_acc_sin);
 #ifdef COGGING_CALIB_ENABLE_ID_DIAG
@@ -3513,6 +3533,7 @@ cleanup:
 #endif
 
 	// Restore hardware state (match FullCalibration logic)
+	setPids(prevPids);
 	curFilters.flux.params.enable = true;
 	setBiquadFlux(curFilters.flux);
 	setMotionMode(prevCalibMode, true);
