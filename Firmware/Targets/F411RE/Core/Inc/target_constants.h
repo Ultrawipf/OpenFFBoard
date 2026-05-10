@@ -99,9 +99,9 @@ extern SPI_HandleTypeDef HSPI2;
 #define PAGE_SIZE             (uint32_t)0x4000  /* Page size = 16KByte */
 
 // Cogging tables in flash
-#define CALIB_MAP_SIZE 1440 	// Size of the compensation table. Reduced for F411 RAM constraints.
+#define COGGING_HARMONICS_COUNT           20
 #define COGGING_TABLE_FLASH_START_ADDRESS ((uint32_t)0x08010000)
-#define COGGING_TABLE_SIZE                (CALIB_MAP_SIZE * sizeof(int16_t))
+#define COGGING_TABLE_SIZE                (COGGING_HARMONICS_COUNT * 12) 
 #define MAX_COGGING_TABLES                3
 #define COGGING_TABLE_FLASH_SECTOR        FLASH_SECTOR_4
 

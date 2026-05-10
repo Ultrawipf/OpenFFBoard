@@ -247,16 +247,16 @@ __weak bool Flash_Init(){
 #endif
 #if defined(COGGING_TABLE_FLASH_START_ADDRESS)
 
-// Statically allocated buffer to prevent heap allocation errors on memory constrained devices.
-static uint8_t cogging_flash_buffer[32 * 1024];
+// Statically allocated buffer for the cogging region (approx 1KB for 3 tables of harmonics)
+static uint8_t cogging_flash_buffer[1024];
 
 /**
  * @brief Writes a single cogging table to flash using a safe read-modify-write procedure.
  * @param table_idx Index of the table to write (0 to MAX_COGGING_TABLES-1).
- * @param data Pointer to the table data to be written.
+ * @param data Pointer to the harmonic data to be written.
  * @return true on success, false on failure.
  */
-bool Flash_WriteCoggingTable(uint8_t table_idx, int16_t* data) {
+bool Flash_WriteCoggingTable(uint8_t table_idx, void* data) {
     if (table_idx >= MAX_COGGING_TABLES) {
         return false;
     }
@@ -270,13 +270,15 @@ bool Flash_WriteCoggingTable(uint8_t table_idx, int16_t* data) {
 
     // 2. Copy the new table data into the buffer at the correct offset
     uint32_t offset = table_idx * COGGING_TABLE_SIZE;
+    if (offset + COGGING_TABLE_SIZE > region_size) return false;
+    
     memcpy(temp_buffer + offset, data, COGGING_TABLE_SIZE);
 
     // 3. Erase the flash sector
     HAL_FLASH_Unlock();
     FLASH_EraseInitTypeDef pEraseInit;
     pEraseInit.TypeErase = FLASH_TYPEERASE_SECTORS;
-    pEraseInit.Sector = COGGING_TABLE_FLASH_SECTOR; // The reserved region is within this sector
+    pEraseInit.Sector = COGGING_TABLE_FLASH_SECTOR; 
     pEraseInit.NbSectors = 1;
     pEraseInit.VoltageRange = VOLTAGE_RANGE_3;
     uint32_t SectorError = 0;
@@ -285,7 +287,7 @@ bool Flash_WriteCoggingTable(uint8_t table_idx, int16_t* data) {
         return false;
     }
 
-    // 4. Write the entire modified buffer back to flash, word by word for efficiency
+    // 4. Write the modified buffer back to flash
     for (uint32_t i = 0; i < region_size / sizeof(uint32_t); ++i) {
         uint32_t write_address = COGGING_TABLE_FLASH_START_ADDRESS + i * sizeof(uint32_t);
         uint32_t word_to_write = ((uint32_t*)temp_buffer)[i];
@@ -302,10 +304,10 @@ bool Flash_WriteCoggingTable(uint8_t table_idx, int16_t* data) {
 /**
  * @brief Reads a single cogging table from its dedicated flash area.
  * @param table_idx Index of the table to read (0 to MAX_COGGING_TABLES-1).
- * @param data Pointer to a buffer where the table data will be stored.
+ * @param data Pointer to a buffer where the harmonic data will be stored.
  * @return true on success, false on failure.
  */
-bool Flash_ReadCoggingTable(uint8_t table_idx, int16_t* data) {
+bool Flash_ReadCoggingTable(uint8_t table_idx, void* data) {
     if (table_idx >= MAX_COGGING_TABLES) {
         return false;
     }

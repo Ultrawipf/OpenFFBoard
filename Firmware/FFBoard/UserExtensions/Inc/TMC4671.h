@@ -34,6 +34,7 @@
 
 #ifdef COGGING_TABLE_FLASH_START_ADDRESS
 // --- Constants for anti-cogging calibration ---
+#define CALIB_MAP_SIZE 2880 	// Resolution for legacy protocol communication
 #define CALIB_SPEED 8 	 	    // Slow speed in RPM used for calibration. (1 rev / 7.5s)
 #endif
 
@@ -62,6 +63,18 @@ extern TIM_HandleTypeDef TIM_TMC;
 #define TIM_TMC_ARR 250
 #endif
 
+struct Harmonic {
+	float32_t amplitude = 0.0f;
+	float32_t phase = 0.0f;
+	uint16_t order = 0;
+};
+
+struct CoggingCalibData {
+	float32_t iq_sums[1024];
+	float32_t id_sums[1024];
+	uint16_t counts[1024];
+};
+
 enum class TMC_ControlState : uint32_t {uninitialized,waitPower,Shutdown,Running,EncoderInit,EncoderFinished,HardError,OverTemp,IndexSearch,FullCalibration,ExternalEncoderInit,Pidautotune
 #ifdef COGGING_TABLE_FLASH_START_ADDRESS
 	,CoggingCalibration
@@ -72,11 +85,6 @@ enum class TMC_ControlState : uint32_t {uninitialized,waitPower,Shutdown,Running
 enum class TMC_PwmMode : uint8_t {off = 0,HSlow_LShigh = 1, HShigh_LSlow = 2, res2 = 3, res3 = 4, PWM_LS = 5, PWM_HS = 6, PWM_FOC = 7};
 
 enum class TMC_StartupType{NONE,coldStart,warmStart};
-
-struct CoggingCalibData {
-	int32_t temp[CALIB_MAP_SIZE];
-	uint16_t counts[CALIB_MAP_SIZE];
-};
 
 enum class TMC_GpioMode{DebugSpi,DSAdcClkOut,DSAdcClkIn,Aout_Bin,Ain_Bout,Aout_Bout,Ain_Bin};
 enum class MotorType : uint8_t {NONE=0,DC=1,STEPPER=2,BLDC=3};
@@ -726,7 +734,7 @@ private:
 
 #ifdef COGGING_TABLE_FLASH_START_ADDRESS
 	// Cogging Calibration
-	int16_t data_cogging[CALIB_MAP_SIZE] = {0};
+	Harmonic cogging_harmonics[COGGING_HARMONICS_COUNT];
 	bool cogging_enabled = false;
 	void saveCoggingTable();
 	void clearCoggingTable();
