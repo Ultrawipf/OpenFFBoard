@@ -6,39 +6,45 @@ This document describes the implementation of the harmonic-based anti-cogging co
 
 The system uses a **Continuous Discrete Fourier Transform (DFT)** integration. It eliminates lookup tables and fixed-size buffers, making it memory-safe for all supported microcontrollers (F407 and F411).
 
-1.  **Software PID & Auto-Tuning**: Before acquisition, the system performs a dynamic auto-tuning of a software PID controller (using CMSIS-DSP). It identifies the motor's static friction and uses the **Relay Feedback method** ([reference](https://en.wikipedia.org/wiki/Relay_feedback_test)) and **Ziegler-Nichols method** ([reference](https://en.wikipedia.org/wiki/Ziegler%E2%80%93Nichols_method)) to calculate optimal gains.
-    *   **Initial Capture**: The system starts oscillating to determine the base PID parameters for the velocity controller.
-    *   **Dynamic Profiling**: The system analyzes the oscillation period ($T_u$) to automatically differentiate between **Small/Low-Inertia motors** (NEMA17, Gimbal) and **Large/High-Inertia motors** (MiGE 130ST). It applies specific gain scalers to ensure stability and high-bandwidth response across the entire motor range.
-    *   **Validation & Stability-Aware Fine-Tuning**: A high-precision verification phase (aiming for **0.1 degree** of tracking error) is performed with up to **20 attempts**. 
+1.  **Software PID & Auto-Tuning**: Before acquisition, the system performs a dynamic auto-tuning of a software PID controller (using CMSIS-DSP). It identifies the motor's static friction and uses the **Relay Feedback method** and **Ziegler-Nichols method** ([reference](https://en.wikipedia.org/wiki/Ziegler%E2%80%93Nichols_method)) to calculate optimal gains.
+    *   **Base Gain Calculation (Standard Ziegler-Nichols)**:
+        *   $K_{p\_base} = 0.60 \times K_u$ (60% of Ultimate Gain)
+        *   $K_{i\_base} = (1.20 \times K_u / T_u) \times dt$
+        *   $K_{d\_base} = (0.075 \times K_u \times T_u) / dt$
+        *   *Note: $dt = 0.001s$ (1kHz loop).*
+    *   **Dynamic Inertia Profiling**: The system analyzes the oscillation period ($T_u$) to automatically differentiate between motor classes:
+        *   **Small Motors ($T_u \le 45ms$)**: Applied scalers are $K_p \times 1.0$, $K_i \times 1.5$, $K_d \times 0.2$. Optimized for high-bandwidth response on low-mass rotors.
+        *   **Large Motors ($T_u > 45ms$)**: Applied scalers are $K_p \times 2.0$, $K_i \times 8.0$, $K_d \times 0.5$. Optimized for high-torque Direct Drive motors requiring significant force to overcome magnetic stiction.
+    *   **Validation & Stability-Aware Fine-Tuning**: A high-precision verification phase (aiming for **0.1 degree** of tracking error) is performed with up to **50 attempts**. 
         *   **Warmup Window**: It ignores the first 1000ms of each 2000ms test rotation to eliminate startup transients and stiction effects.
-        *   **Adaptive Relaxation**: After the 3rd failed attempt, the system iteratively relaxes the error target by 50% to accommodate mechanical setups with high friction or low resolution.
-        *   **Instability Detection & Backtracking**: The system tracks the "Best PID" configuration found so far. If an attempt results in a significant increase in tracking error (detecting oscillation/instability), it stops boosting gains and **reverts to the best-known parameters** for the final acquisition phase.
+        *   **Iterative "Boost PID"**: If error is too high, the system stiffens the controller for the next retry: $K_p \times 1.30$, $K_i \times 1.25$, and $K_d \times 0.90$.
+        *   **Adaptive Relaxation**: After the 3rd failed attempt, the system iteratively relaxes the error target by 50% per attempt, capped at a strict **3.0 degrees** (Unit-corrected limit).
+        *   **Instability Detection & Backtracking**: The system tracks the "Best PID" configuration. If an attempt results in a significant increase in tracking error (detecting oscillation), it stops boosting and **reverts to the best-known parameters**.
 2.  **Torque Response Capture (Deterministic Dual-Pass Acquisition)**: The motor rotates at a constant speed defined by **TARGET_RPM** (default: 8 RPM) in both directions.
-    *   **1kHz Strict Integration**: Acquisition is strictly clocked at 1kHz. For an 8-second tour, exactly **8,000 samples** are integrated. This ensures perfect spatial alignment and mathematical precision for the DFT (detailed below).
-    *   **Friction Feed-Forward**: The breakaway friction torque discovered during auto-tuning is applied as a **Feed-Forward** ([reference](https://en.wikipedia.org/wiki/Feed_forward_(control))) base torque. This allows the motor to reach a constant velocity instantly, eliminating start-up transients in the DFT data.
-    *   **Continuous Mathematical Wrapping**: The system uses `floorf`-based modulo arithmetic for position wrapping ($pos - \lfloor pos \rfloor$) on both target and actual positions, ensuring robust tracking across multiple revolutions without conditional branch penalties.
-    *   **Actual Current Feedback**: The system integrates the **actual currents (Iq/Id)** read from the TMC hardware registers, rather than the controller's command. This captures the real physical interaction between the motor and the magnetic cogging.
+    *   **1kHz Strict Integration**: Acquisition is strictly clocked at 1kHz. For an 8-second tour, exactly **8,000 samples** are integrated. This ensures perfect spatial alignment and mathematical precision for the DFT.
+    *   **Friction Feed-Forward**: The breakaway friction torque discovered during auto-tuning is applied as a **Feed-Forward** base torque. This allows the motor to reach a constant velocity instantly, eliminating start-up transients in the DFT data.
+    *   **Continuous Mathematical Wrapping**: The system uses `floorf`-based modulo arithmetic for position wrapping ($pos - \lfloor pos \rfloor$) on both target and actual positions, ensuring robust tracking across multiple revolutions.
+    *   **Actual Current Feedback**: The system integrates the **actual currents (Iq/Id)** read from the TMC hardware registers, capturing the real physical interaction between the motor and the magnetic cogging.
     *   **Complex Rotation Optimization**: Uses recursive complex multiplication ($e^{i(k+1)\theta} = e^{ik\theta} \cdot e^{i\theta}$) to calculate 128 harmonics with only one trigonometric call per sample.
 3.  **Post-Acquisition Homing & Re-alignment**: After successful analysis, the system ensures the motor returns to a known hardware state.
-    *   **Multi-turn Unwinding**: Using the best-found PID gains, the motor performs a controlled ramp-down to the absolute `0.0` position at **16 RPM**. This "unwinds" any revolutions accumulated during the acquisition or retry phases.
-    *   **Encoder Re-Zeroing**: Upon reaching the origin, the driver is automatically switched to the `EncoderInit` state. This triggers a hardware re-alignment (`bangInitEnc`) and resets the encoder position registers to zero, ensuring a perfectly calibrated and centered baseline for immediate use.
+    *   **Multi-turn Unwinding**: Using the best-found PID gains, the motor performs a controlled ramp-down to the absolute `0.0` position. This "unwinds" any revolutions accumulated during the acquisition or retry phases.
+    *   **Encoder Re-Zeroing**: Upon reaching the origin, the driver is automatically switched to the `EncoderInit` state. This triggers a hardware re-alignment (`bangInitEnc`) and resets the encoder position registers to zero.
 
 ## 2. Technical Specifications
 
 ### Memory Efficiency (The Zero-Buffer Goal)
-*   **Accumulators**: Uses 128 pairs of `float` (32-bit) values to leverage the hardware FPU for high-performance integration.
+*   **Accumulators**: Uses 128 pairs of `float` (32-bit) values to leverage the hardware FPU.
 *   **Peak RAM**: Approximately **2 KB** on the FreeRTOS heap during calibration.
 *   **Permanent RAM**: Only **240 bytes** (20 saved harmonics).
 *   **Compatibility**: Fully portable between F407 and F411.
 
 ### Internal Tuning Constants
-These constants define the calibration behavior and can be adjusted in `TMC4671.cpp`:
 *   `TUNE_OSCILLATION_MS` (600ms): Duration of the relay feedback test.
 *   `VAL_TOTAL_DURATION_MS` (2000ms): Duration of each PID validation run.
-*   `VAL_WARMUP_MS` (1000ms): Stabilization window ignored during error measurement.
-*   `VAL_MAX_ATTEMPTS` (20): Maximum number of iterative PID tuning passes.
-*   `INITIAL_ERROR_LIMIT_DEG` (0.1°): The initial strict accuracy target.
-*   `TARGET_RPM` (8.0): The constant rotation speed for calibration and testing.
+*   `VAL_WARMUP_MS` (1000ms): Stabilization window ignored during measurement.
+*   `VAL_MAX_ATTEMPTS` (50): Maximum number of iterative PID tuning passes.
+*   `MAX_TOLERANCE_DEG` (3.0°): Absolute maximum error limit allowed after target relaxation.
+*   `TARGET_RPM` (8.0): The constant rotation speed for calibration.
 
 ### Configuration Macros
 *   `COGGING_CALIB_LUT_RESOLUTION`: Standardized at 2880 points for communication protocol compatibility.
@@ -50,7 +56,7 @@ These constants define the calibration behavior and can be adjusted in `TMC4671.
 
 ### Why 8 Seconds per Revolution?
 This speed (**7.5 RPM**) is carefully selected as a "Physical Sweet Spot":
-*   **Avoiding Stick-Slip**: It is fast enough to ensure the motor remains in the "viscous friction" regime, avoiding the jerky "stick-slip" motion caused by static friction at extremely low speeds.
+*   **Avoiding Stick-Slip**: It is fast enough to ensure the motor remains in the "viscous friction" regime, avoiding the jerky "stick-slip" motion caused by static friction.
 *   **Negligible Dynamics**: It is slow enough that Back-EMF, rotor inertia, and phase lag are negligible. The torque measured is almost purely the sum of friction and cogging.
 
 ### Why 1kHz Sampling & Control?
@@ -77,11 +83,11 @@ While a 4kHz PID loop would theoretically offer higher control bandwidth, it was
 ### Point 4: Harmonic Anti-Cogging
 *   The system scans all 128 harmonics.
 *   It selects the **Top 20 peaks** with an **Order > 10**.
-*   This captures the high-frequency magnetic "detent" while ignoring the low-frequency gravitational imbalance of asymmetric (GT/Formula) steering wheels.
+*   This captures the high-frequency magnetic "detent" while ignoring the low-frequency gravitational imbalance of asymmetric steering wheels.
 
 ## 5. Real-Time Compensation Formula
 
 Implemented in the `turn()` method for zero latency:
 
 $$T_{comp}(\theta) = \sum_{n=1}^{20} A_n \cdot \sin(Order_n \cdot \theta + \Phi_n)$$
-$$T_{final} = T_{requested} - T_{comp}(\theta)$$
+$$T_{final} = T_{requested} + T_{comp}(\theta)$$

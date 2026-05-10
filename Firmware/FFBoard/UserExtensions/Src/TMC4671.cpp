@@ -3508,25 +3508,25 @@ void TMC4671::handleStateCoggingCalibration() {
 			if (cross_count > 4 && max_amplitude > 0.0001f && friction_broken) {
 				float Tu = ((float)period_sum / (cross_count - 1)) * 2.0f / 1000000.0f;
 				float Ku = (4.0f * relay_torque) / (PI * max_amplitude);
-				float Kp_base = 0.45f * Ku;
-				float Ki_base = (0.54f * Ku / Tu) * dt;
-				float Kd_base = (0.15f * Ku * Tu) / dt;
+				float Kp_base = 0.60f * Ku;
+				float Ki_base = (1.20f * Ku / Tu) * dt;
+				float Kd_base = (0.075f * Ku * Tu) / dt;
 
 				if (Tu > 0.045f) { // Large motor profile (e.g. MiGE)
-					pid_soft.Kp = Kp_base * 1.2f;
-					pid_soft.Ki = Ki_base * 8.0f; 
-					pid_soft.Kd = Kd_base * 0.15f; 
+					pid_soft.Kp = Kp_base * 2.0f; // Boosted
+					pid_soft.Ki = Ki_base * 8.0f; // Boosted
+					pid_soft.Kd = Kd_base * 0.5f;
 				} else { // Small motor profile (e.g. NEMA17)
-					pid_soft.Kp = Kp_base * 0.6f;
-					pid_soft.Ki = Ki_base * 0.4f;
-					pid_soft.Kd = Kd_base * 0.05f; 
+					pid_soft.Kp = Kp_base * 1.0f;
+					pid_soft.Ki = Ki_base * 1.5f;
+					pid_soft.Kd = Kd_base * 0.2f;
 				}
 				arm_pid_init_f32(&pid_soft, 1);
 				snprintf(dbg_buf, sizeof(dbg_buf), "Tuned -> Tu:%dms Kp:%d Ki:%d Kd:%d", (int)(Tu * 1000.0f), (int)pid_soft.Kp, (int)pid_soft.Ki, (int)pid_soft.Kd);
 				CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 
 				if (Tu*1000>80) {
-					CommandHandler::broadcastCommandReply(CommandReply("WARNING : INERTIA IS BIG ! Anticogging wiil be failed, check if shaft is clear", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+					CommandHandler::broadcastCommandReply(CommandReply("WARNING : INERTIA IS BIG ! Anticogging may be less accurate, check if shaft is clear", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 				}
 			} else {
 				errorMessage = "Abort: Initial Auto-Tune failed";
@@ -3535,7 +3535,7 @@ void TMC4671::handleStateCoggingCalibration() {
 			
 			// --- 1.5 VALIDATION & FINE-TUNING (Elastic Tolerance + Stability Check) ---
 			CommandHandler::broadcastCommandReply(CommandReply("Validating & Fine-Tuning PID...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
-			
+
 			float current_target_err = INITIAL_ERROR_LIMIT_DEG / 360.0f;
 			const float MAX_TOLERANCE_DEG = 3.0f;
 			const int   VAL_MAX_ATTEMPTS = 50;        // Number of fine-tuning tries before abort
@@ -3559,7 +3559,7 @@ void TMC4671::handleStateCoggingCalibration() {
 
 					val_target_pos_f += (TARGET_RPM / 60.0f) * 0.001f;
 					if (val_target_pos_f >= 1.0f) val_target_pos_f -= 1.0f;
-                    if (val_target_pos_f < 0.0f) val_target_pos_f += 1.0f;
+					if (val_target_pos_f < 0.0f) val_target_pos_f += 1.0f;
 					float err = getWrappedError(val_target_pos_f, getFilteredPosition());
 
 					// Ignore startup transient (warmup)
@@ -3569,12 +3569,12 @@ void TMC4671::handleStateCoggingCalibration() {
 					float iq_cmd = arm_pid_f32(&pid_soft, err);
 					iq_cmd = clip<float,float>(iq_cmd, -max_test_torque, max_test_torque);
 					applySafeTorque(iq_cmd);
-					
+
 					refreshWatchdog();
 					while ((micros() - next_tick) & 0x80000000) { }
 				}
 				applySafeTorque(0);
-				
+
 				float err_deg = max_err_val * 360.0f;
 				float target_deg = current_target_err * 360.0f;
 
@@ -3585,7 +3585,7 @@ void TMC4671::handleStateCoggingCalibration() {
 					best_Ki = pid_soft.Ki;
 					best_Kd = pid_soft.Kd;
 				}
-				
+
 				if (max_err_val < current_target_err) {
 					validation_success = true;
 					snprintf(dbg_buf, sizeof(dbg_buf), "Validation OK: %.2f deg (Limit: %.2f)", err_deg, target_deg);
@@ -3604,19 +3604,19 @@ void TMC4671::handleStateCoggingCalibration() {
 
 				if (attempt < VAL_MAX_ATTEMPTS) {
 					// Test failed: Error too high. Stiffen the PID.
-					pid_soft.Kp *= 1.30f; 
-					pid_soft.Ki *= 1.25f; 
-					pid_soft.Kd *= 0.90f; 
-					
+					pid_soft.Kp *= 1.30f;
+					pid_soft.Ki *= 1.25f;
+					pid_soft.Kd *= 0.90f;
+
 					snprintf(dbg_buf, sizeof(dbg_buf), "Retry %d (Err: %.2f deg) -> Boost PID", attempt, err_deg);
 					CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
-					
+
 					if (attempt >= 3) {
 						current_target_err *= 1.5f; // Start relaxing target after 3 fails
 						// Do not go avec 3°
-						if (current_target_err > MAX_TOLERANCE_DEG) {
-							current_target_err = MAX_TOLERANCE_DEG;
-        				}
+						if (current_target_err > MAX_TOLERANCE_DEG / 360.0f) {
+							current_target_err = MAX_TOLERANCE_DEG / 360.0f;
+						}
 					}
 					attempt++;
 					Delay(VAL_RETRY_PAUSE_MS);
