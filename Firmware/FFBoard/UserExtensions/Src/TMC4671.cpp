@@ -3054,9 +3054,11 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 			replies.emplace_back("Calibration aborted: No motor type set", 0);
 		} else {
 			changeState(TMC_ControlState::CoggingCalibration);
+			return CommandStatus::NO_REPLY;
 		}
 
 		break;
+
 
 	case TMC4671_commands::coggingTable:
 		if(cmd.type == CMDtype::get){
@@ -3532,8 +3534,6 @@ void TMC4671::handleStatePidAutoTune() {
 		return;
 	}
 
-	CommandHandler::broadcastCommandReply(CommandReply("Starting PID Autotune...", 0), (uint32_t)TMC4671_commands::pidautotune, CMDtype::get);
-
 	// 1. Initial Setup
 	allowStateChange = false;
 	curFilters.flux.params.enable = false;
@@ -3553,7 +3553,6 @@ void TMC4671::handleStatePidAutoTune() {
 	writeReg(0x54, tuneFluxI | (tuneFluxP << 16));
 	
 	// 2. Atomic P-Gain Tuning (Ramp)
-	CommandHandler::broadcastCommandReply(CommandReply("Tuning P-Gain...", 0), (uint32_t)TMC4671_commands::pidautotune, CMDtype::get);
 	while (tuneFluxP < 20000 && !emergency && hasPower()) {
 		setFluxTorque(targetflux, 0);
 		Delay(50); // Stabilization delay
@@ -3566,7 +3565,6 @@ void TMC4671::handleStatePidAutoTune() {
 	}
 	
 	// 3. Atomic I-Gain Tuning (Overshoot detection)
-	CommandHandler::broadcastCommandReply(CommandReply("Tuning I-Gain...", 0), (uint32_t)TMC4671_commands::pidautotune, CMDtype::get);
 	tuneFluxI = 100;
 	while (tuneFluxI < 20000 && !emergency && hasPower()) {
 		setFluxTorque(0, 0);
