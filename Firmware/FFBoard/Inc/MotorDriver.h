@@ -52,6 +52,11 @@ public:
 	 * @return 
 	 */
 	virtual uint16_t getDrvSlewRate() { return MAX_SLEW_RATE; };
+
+	/**
+	 * Check if any calibration process is currently active.
+	 */
+	virtual bool isCalibrationInProgress() { return false; };
 	
 	virtual bool motorReady(); // Returns true if the driver is active and ready to receive commands
 
