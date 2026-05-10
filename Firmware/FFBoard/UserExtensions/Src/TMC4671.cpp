@@ -3349,7 +3349,7 @@ void TMC4671::handleStateCoggingCalibration() {
 	prevCalibMode = getMotionMode();
 	TMC4671PIDConf prevPids = curPids;
 	TMC4671PIDConf calibPids = curPids;
-	uint32_t revolution_time_ms = COGGING_CALIB_TIME_PER_REV_S * 1000;
+	uint32_t revolution_time_ms = COGGING_CALIB_TIME_PER_REV_S * 1500;
 
 	// --- TUNABLE CALIBRATION CONSTANTS (English) ---
 	const uint32_t TUNE_OSCILLATION_MS = 600;    // Duration of the relay oscillation test
@@ -3630,7 +3630,7 @@ void TMC4671::handleStateCoggingCalibration() {
 				arm_pid_init_f32(&pid_soft, 1);
 
 				uint32_t waitStart = HAL_GetTick();
-				while(HAL_GetTick() - waitStart < 500 && !emergency && hasPower()) { 
+				while(HAL_GetTick() - waitStart < 1000 && !emergency && hasPower()) { 
 					refreshWatchdog();
 					Delay(10); 
 				}
@@ -3660,26 +3660,32 @@ void TMC4671::handleStateCoggingCalibration() {
 						
 						applySafeTorque(iq_cmd);
 						
-						float iq = iq_cmd; 
+						// --- DISPLACEMENT-BASED ACQUISITION SECURITY ---
+						// Only integrate into DFT if we haven't completed one full revolution (360°)
+						if (integrated_distance < 1.0f) {
+							float iq = iq_cmd; 
 #ifdef COGGING_CALIB_ENABLE_ID_DIAG
-						float id = (float)getActualFlux();
+							float id = (float)getActualFlux();
 #endif
-						float s1, c1;
-						arm_sin_cos_f32(actual_pos_f * 360.0f, &s1, &c1);
+							float s1, c1;
+							arm_sin_cos_f32(actual_pos_f * 360.0f, &s1, &c1);
 
-						float cur_s = s1, cur_c = c1;
-						for (int k = 1; k < COGGING_CALIB_DFT_HARMONICS; k++) {
-							iq_acc_cos[k] += (iq * cur_c);
-							iq_acc_sin[k] += (iq * cur_s);
+							float cur_s = s1, cur_c = c1;
+							for (int k = 1; k < COGGING_CALIB_DFT_HARMONICS; k++) {
+								iq_acc_cos[k] += (iq * cur_c);
+								iq_acc_sin[k] += (iq * cur_s);
 #ifdef COGGING_CALIB_ENABLE_ID_DIAG
-							id_acc_cos[k] += (id * cur_c);
-							id_acc_sin[k] += (id * cur_s);
+								id_acc_cos[k] += (id * cur_c);
+								id_acc_sin[k] += (id * cur_s);
 #endif
-							float next_c = cur_c * c1 - cur_s * s1;
-							float next_s = cur_c * s1 + cur_s * c1;
-							cur_c = next_c; cur_s = next_s;
+								float next_c = cur_c * c1 - cur_s * s1;
+								float next_s = cur_c * s1 + cur_s * c1;
+								cur_c = next_c; cur_s = next_s;
+							}
+							total_samples++;
+							integrated_distance += fabs(step);
 						}
-						total_samples++;
+
 						refreshWatchdog();
 						
 						while ((micros() - next_tick) & 0x80000000) { }
@@ -3745,7 +3751,6 @@ void TMC4671::handleStateCoggingCalibration() {
 				CommandHandler::broadcastCommandReply(CommandReply("Cogging calibration successful", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 
 				// --- 4. RETURN TO CENTER (Unwinding multi-turn) ---
-				const float EMA_ALPHA = 0.2f;
 
 				// Get the raw absolute position (no modulo 1.0 wrapping)
 				float actual_pos_f = (usingExternalEncoder() && drvEncoder != nullptr) ? drvEncoder->getPos_f() : (float)this->getPos() / (float)this->getCpr();
