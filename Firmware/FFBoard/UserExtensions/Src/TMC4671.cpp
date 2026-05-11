@@ -3181,6 +3181,18 @@ bool TMC4671::isSlewRateCalibrationInProgress(){
 	return (this->state == TMC_ControlState::SlewRateCalibration);
 }
 
+bool TMC4671::isCalibrationInProgress() {
+	return (state == TMC_ControlState::FullCalibration || 
+#ifdef COGGING_TABLE_FLASH_START_ADDRESS
+			state == TMC_ControlState::CoggingCalibration || 
+#endif
+			state == TMC_ControlState::Pidautotune || 
+			state == TMC_ControlState::IndexSearch ||
+			state == TMC_ControlState::EncoderInit ||
+			state == TMC_ControlState::ExternalEncoderInit ||
+			state == TMC_ControlState::SlewRateCalibration);
+}
+
 void TMC4671::measureMaxSlewRate(){
 	MotionMode lastmode = getMotionMode();
 	PhiE lastphie = getPhiEtype();

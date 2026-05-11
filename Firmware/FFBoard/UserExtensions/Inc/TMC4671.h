@@ -525,6 +525,7 @@ public:
 	uint16_t getDrvSlewRate();
 	bool startSlewRateCalibration();
 	bool isSlewRateCalibrationInProgress();
+	bool isCalibrationInProgress() override;
 
 #ifdef TIM_TMC
 	void timerElapsed(TIM_HandleTypeDef* htim);
