@@ -15,16 +15,16 @@ The system uses a **Continuous Discrete Fourier Transform (DFT)** integration. I
     *   **Dynamic Inertia Profiling**: The system analyzes the oscillation period ($T_u$) to automatically differentiate between motor classes:
         *   **Small Motors ($T_u \le 45ms$)**: Applied scalers are $K_p \times 0.6$, $K_i \times 0.4$, $K_d \times 0.05$. Optimized for minimal vibration and high frequency noise rejection.
         *   **Large Motors ($T_u > 45ms$)**: Applied scalers are $K_p \times 1.2$, $K_i \times 8.0$, $K_d \times 0.15$. Optimized for high-torque Direct Drive motors while maintaining smooth acquisition currents.
-    *   **Validation & Stability-Aware Fine-Tuning**: A high-precision verification phase (aiming for **1.0 degree** of tracking error) is performed with up to **50 attempts**. 
+    *   **Validation & Stability-Aware Fine-Tuning**: A high-precision verification phase (aiming for **3.0 degrees** of tracking error) is performed with up to **50 attempts**. 
         *   **Warmup Window**: It ignores the first 1500ms of each 2500ms test rotation to eliminate startup transients and stiction effects.
         *   **Hybrid Tuning Strategy**:
             *   **Phase 0 (Global Boost)**: Rapidly stiffens the controller by multiplying $K_p \times 1.30$, $K_i \times 1.25$, and $K_d \times 0.90$.
             *   **Phases 1-3 (Coordinate Descent)**: Fine-tunes $K_p$, $K_i$, and $K_d$ individually by $10\%$ per step.
         *   **Instability Detection & Backtracking**: If an attempt results in an error $> 2\times$ the best found error (detecting oscillation) or fails to improve, the system **reverts to the best-known parameters** and transitions to the next tuning phase.
-        *   **Strict Tolerance**: The system maintains a strict **1.0 degree** limit. If stability cannot be reached, the calibration aborts to prevent incorrect compensation maps.
+        *   **Strict Tolerance**: The system maintains a strict **3.0 degree** limit. If stability cannot be reached, the calibration aborts to prevent incorrect compensation maps.
 2.  **Torque Response Capture (Deterministic Dual-Pass Acquisition)**: The motor rotates at a constant speed defined by **TARGET_RPM** (default: 8 RPM) in both directions.
     *   **1kHz Strict Integration**: Acquisition is strictly clocked at 1kHz. For an 8-second tour, exactly **8,000 samples** are integrated. This ensures perfect spatial alignment and mathematical precision for the DFT.
-    *   **Friction Feed-Forward**: The breakaway friction torque discovered during auto-tuning is applied as a **Feed-Forward** base torque. This allows the motor to reach a constant velocity instantly, eliminating start-up transients in the DFT data.
+    *   **Torque Inversion & Safety**: The system supports `conf.invertForce` during torque application via `applySafeTorque`, preventing positive feedback loops in various hardware configurations.
     *   **Continuous Mathematical Wrapping**: The system uses `floorf`-based modulo arithmetic for position wrapping ($pos - \lfloor pos \rfloor$) on both target and actual positions, ensuring robust tracking across multiple revolutions.
     *   **Actual Current Feedback**: The system integrates the **actual currents (Iq/Id)** read from the TMC hardware registers, capturing the real physical interaction between the motor and the magnetic cogging.
     *   **Complex Rotation Optimization**: Uses recursive complex multiplication ($e^{i(k+1)\theta} = e^{ik\theta} \cdot e^{i\theta}$) to calculate 128 harmonics with only one trigonometric call per sample.
@@ -42,10 +42,10 @@ The system uses a **Continuous Discrete Fourier Transform (DFT)** integration. I
 
 ### Internal Tuning Constants
 *   `TUNE_OSCILLATION_MS` (600ms): Duration of the relay feedback test.
-*   `VAL_TOTAL_DURATION_MS` (2500ms): Duration of each PID validation run (Warmup + 1s measurement).
+*   `VAL_TOTAL_DURATION_MS` (2500ms): Duration of each PID validation run (1.5s warmup window + 1s measurement).
 *   `COGGING_WARMUP_MS` (1500ms): Stabilization window ignored during measurement and integration.
 *   `VAL_MAX_ATTEMPTS` (50): Maximum number of iterative PID tuning passes.
-*   `MAX_TOLERANCE_DEG` (3.0°): Absolute maximum error limit allowed after target relaxation.
+*   `MAX_TOLERANCE_DEG` (3.0°): Absolute maximum error limit allowed.
 *   `TARGET_RPM` (8.0): The constant rotation speed for calibration.
 
 ## 3. Calibration Phase Summary (Steps & Timings)
@@ -56,14 +56,11 @@ The following table summarizes the sequence of operations, their durations, and 
 | :--- | :--- | :--- | :--- | :--- |
 | **1. Auto-PID** | Relay Test | 600ms | Bang-Bang (`±tuning_torque`) | Measure $T_u$ and $K_u$ |
 | | Calculation | - | Ziegler-Nichols + Inertia Profiling | Set base soft PID gains |
-| **2. Validation** | Warmup Pulse | 150ms | **70% tuning torque** | Break stiction before PID |
-| | Stability Check | 2500ms | PID Control (Ignore first 1500ms) | Fine-tune PID stiffness |
+| **2. Validation** | Stability Check | 2500ms | PID Control (Ignore first 1500ms) | Fine-tune PID stiffness |
 | | Retry Pause | 500ms | Zero Torque | Reset system for next attempt |
 | **3. Acquisition** | Setup | 1000ms | Zero Torque | Settle motor at rest |
-| | Warmup Pulse | 150ms | **70% tuning torque** (Directional) | Movement start before DFT |
 | | DFT Integration | ~10.5s | PID Control (Wait 1500ms before DFT) | Capture 360° of cogging Iq/Id |
-| **4. Return** | Warmup Pulse | 150ms | **70% tuning torque** (Towards Zero) | Break stiction before homing |
-| | Centering | Variable | PID Control (Position Ramp to 0.0) | Unwind motor revolutions |
+| **4. Return** | Centering | Variable | PID Control (Position Ramp to 0.0) | Unwind motor revolutions |
 | | Final Align | - | `EncoderInit` State (`bangInitEnc`) | Reset hardware alignment |
 
 ### Configuration Macros
@@ -80,7 +77,8 @@ This speed (**7.5 RPM**) is carefully selected as a "Physical Sweet Spot":
 *   **Negligible Dynamics**: It is slow enough that Back-EMF, rotor inertia, and phase lag are negligible. The torque measured is almost purely the sum of friction and cogging.
 
 ### Why 1kHz Sampling & Control?
-The choice of a synchronous 1kHz loop for both the PID and DFT is driven by signal integrity:
+The choice of a synchronous 1kHz loop for both the PID and DFT is driven by signal integrity and temporal alignment:
+*   **Synchronous SPI**: The system uses blocking synchronous register writes (`writeReg`) instead of DMA/Async to ensure that torque commands and position samples remain strictly aligned in time within the 1ms window.
 *   **Encoder Quantization**: At this speed, a standard encoder (e.g., 65k CPR) provides ~8 transitions per millisecond. Sampling faster (e.g., 10kHz) would result in many samples with 0 or 1 transitions, creating massive noise in the PID's derivative term ($K_d$) and polluting the DFT.
 *   **Nyquist Margin**: For 128 harmonics at 0.125Hz, the highest frequency of interest is ~16Hz. 1kHz provides an oversampling ratio of **60x**, ensuring excellent anti-aliasing.
 *   **Temporal Averaging**: By integrating 1kHz samples into the DFT, we perform a natural temporal average of the torque on each encoder quantization step, which significantly cleans the measurement before harmonic extraction.

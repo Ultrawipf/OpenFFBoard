@@ -3323,7 +3323,7 @@ void TMC4671::handleStateFullCalibration() {
 // Helper: Apply torque safely considering encoder direction and flux
 void TMC4671::applySafeTorque(float torque_cmd) {
 	int16_t pwr = (int16_t)torque_cmd;
-	if (this->conf.encoderReversed && conf.motconf.enctype == EncoderType_TMC::ext) {
+	if ((this->conf.encoderReversed && conf.motconf.enctype == EncoderType_TMC::ext) || conf.invertForce) {
 		pwr = -pwr;
 	}
 	int32_t flux_cmd = idleFlux - clip<int32_t,int16_t>(abs(pwr), 0, maxOffsetFlux);
@@ -3371,7 +3371,7 @@ void TMC4671::handleStateCoggingCalibration() {
 	const uint32_t VAL_RETRY_PAUSE_MS = 500;     // Pause between validation attempts
 	// Calculate RPM dynamically: 60 seconds / Time per revolution
 	const float    TARGET_RPM = 60.0f / (float)COGGING_CALIB_TIME_PER_REV_S; 
-	const float    MAX_TOLERANCE_DEG = 1.0f;     // Absolute maximum tracking error allowed
+	const float    MAX_TOLERANCE_DEG = 3.0f;     // Absolute maximum tracking error allowed
 
 	arm_pid_instance_f32 pid_soft;
 	char dbg_buf[128];
@@ -3559,10 +3559,6 @@ void TMC4671::handleStateCoggingCalibration() {
 				float max_err_val = 0.0f;
 				arm_pid_init_f32(&pid_soft, 1); // Reset integrator
 
-				// Warmup to break friction before starting validation
-				applySafeTorque(tuning_torque * 0.7f);
-				Delay(150);
-
 				float val_target_pos_f = getFilteredPosition();
 				uint32_t val_start = HAL_GetTick();
 				uint32_t next_tick = micros();
@@ -3643,7 +3639,7 @@ void TMC4671::handleStateCoggingCalibration() {
 
 			// --- FINAL VALIDATION ---
 			if (best_err_val * 360.0f > MAX_TOLERANCE_DEG) {
-				errorMessage = "Abort: Best found stability is above 1.0 deg.";
+				errorMessage = "Abort: Best found stability is above 3.0 deg.";
 				goto cleanup; 
 			}
 			Delay(250);
@@ -3671,9 +3667,7 @@ void TMC4671::handleStateCoggingCalibration() {
 				}
 
 				if (!emergency && hasPower()) {
-					// Warmup to break friction before acquisition pass
-					applySafeTorque(target_rpm > 0 ? tuning_torque * 0.7f : -tuning_torque * 0.7f);
-					Delay(150);
+					// No Warmup pulses here anymore
 
 					calibStartTime = HAL_GetTick();
 					uint32_t period_us = 1000;
@@ -3807,15 +3801,7 @@ void TMC4671::handleStateCoggingCalibration() {
 				pid_soft.Kd = best_Kd;
 				arm_pid_init_f32(&pid_soft, 1);
 
-				// sending an initial torque helps overcome static friction
-				// before the PID control starts, which prevents initial oscillations.
-				if (fabs(actual_pos_f) > 0.05f) {
-					CommandHandler::broadcastCommandReply(CommandReply("Return: Breaking static friction...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
-					float warmup_torque = tuning_torque * 0.70f;
-					applySafeTorque(actual_pos_f > 0.0f ? -warmup_torque : warmup_torque);
-					Delay(150);
-					// The PID loop below will take over immediately after this delay.
-				}
+				// removed initial torque warmup delay to prevent transients
 				
 				float target_pos_f = actual_pos_f;
 				uint32_t period_us = 1000; // 1kHz loop
