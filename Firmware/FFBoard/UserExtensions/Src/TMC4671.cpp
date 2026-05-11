@@ -1628,7 +1628,9 @@ int16_t TMC4671::controlFluxDissipate(){
 void TMC4671::turn(int16_t power){
 	if(!(this->motorReady() && motorEnabledRequested))
 		return;
+
 	int32_t flux = 0;
+	int32_t endPower = 0;
 
 	// Anticogging id enable in firmware
 #ifdef COGGING_TABLE_FLASH_START_ADDRESS
@@ -1649,7 +1651,8 @@ void TMC4671::turn(int16_t power){
 				compensation += cogging_harmonics[i].amplitude * arm_sin_f32(angle_rad * cogging_harmonics[i].order + cogging_harmonics[i].phase);
 			}
 		}
-		power += (int16_t)compensation;
+		float cogging_scale = 0.25f;
+		endPower += (int16_t)(cogging_scale * compensation);
 	}
 #endif
 
@@ -1657,7 +1660,9 @@ void TMC4671::turn(int16_t power){
 
 	flux = idleFlux-clip<int32_t,int16_t>(abs(power),0,maxOffsetFlux);
 	if((this->conf.encoderReversed && conf.motconf.enctype == EncoderType_TMC::ext) || conf.invertForce){
-		power = -power; // Encoder does not match
+		endPower = endPower - power;
+	}else{
+		endPower = endPower + power;
 	}
 
 	/*
@@ -3067,17 +3072,18 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 			s = "item:0,data:(";
 
 			for (uint16_t i = 0; i < COGGING_CALIB_LUT_RESOLUTION; i++) {
-				float pos_f = (float)i / (float)COGGING_CALIB_LUT_RESOLUTION;
-				float angle_rad = pos_f * 2.0f * PI;
-				float compensation = 0;
-				
-				for (uint8_t n = 0; n < COGGING_HARMONICS_COUNT; n++) {
-					if (cogging_harmonics[n].amplitude > 0.0f) {
-						compensation += cogging_harmonics[n].amplitude * arm_sin_f32(angle_rad * cogging_harmonics[n].order + cogging_harmonics[n].phase);
+				int16_t val = 0;
+				if (i % 20 == 0) {
+					uint16_t order = i / 20;
+					for (uint8_t n = 0; n < COGGING_HARMONICS_COUNT; n++) {
+						if (cogging_harmonics[n].order == order && cogging_harmonics[n].amplitude > 0.0f) {
+							val = (int16_t)cogging_harmonics[n].amplitude;
+							break;
+						}
 					}
 				}
 
-				s.append(std::to_string((int16_t)compensation));
+				s.append(std::to_string(val));
 
 				if (s.length() >= 500) { // send data by string cut at 500 items
 					s.append(")");
@@ -3372,6 +3378,7 @@ void TMC4671::handleStateCoggingCalibration() {
 	// Calculate RPM dynamically: 60 seconds / Time per revolution
 	const float    TARGET_RPM = 60.0f / (float)COGGING_CALIB_TIME_PER_REV_S; 
 	const float    MAX_TOLERANCE_DEG = 3.0f;     // Absolute maximum tracking error allowed
+	const float    TARGET_TOLERANCE_DEG = 1.5f;  // Ideal tracking error for clean DFT
 
 	arm_pid_instance_f32 pid_soft;
 	char dbg_buf[128];
@@ -3525,11 +3532,11 @@ void TMC4671::handleStateCoggingCalibration() {
 				if (Tu > 0.045f) { // Large motor profile (e.g. MiGE)
 					pid_soft.Kp = Kp_base * 1.2f;
 					pid_soft.Ki = Ki_base * 8.0f;
-					pid_soft.Kd = Kd_base * 0.15f;
+					pid_soft.Kd = 0.0f;
 				} else { // Small motor profile (e.g. NEMA17)
 					pid_soft.Kp = Kp_base * 0.6f;
 					pid_soft.Ki = Ki_base * 0.4f;
-					pid_soft.Kd = Kd_base * 0.05f;
+					pid_soft.Kd = 0.0f;
 				}
 				arm_pid_init_f32(&pid_soft, 1);
 				snprintf(dbg_buf, sizeof(dbg_buf), "Tuned -> Tu:%dms Kp:%d Ki:%d Kd:%d", (int)(Tu * 1000.0f), (int)pid_soft.Kp, (int)pid_soft.Ki, (int)pid_soft.Kd);
@@ -3557,6 +3564,8 @@ void TMC4671::handleStateCoggingCalibration() {
 			// Sequential optimizer: Search for absolute best PID gains
 			while (!tune_finished && (attempt <= VAL_MAX_ATTEMPTS) && !emergency && hasPower()) {
 				float max_err_val = 0.0f;
+				float iq_chatter_sum = 0.0f;
+				float last_iq_cmd = 0.0f;
 				arm_pid_init_f32(&pid_soft, 1); // Reset integrator
 
 				float val_target_pos_f = getFilteredPosition();
@@ -3571,12 +3580,15 @@ void TMC4671::handleStateCoggingCalibration() {
 					if (val_target_pos_f < 0.0f) val_target_pos_f += 1.0f;
 					float err = getWrappedError(val_target_pos_f, getFilteredPosition());
 
+					float iq_cmd = arm_pid_f32(&pid_soft, err);
+					iq_cmd = clip<float,float>(iq_cmd, -max_test_torque, max_test_torque);
+
 					// Ignore startup transient (warmup)
 					if (HAL_GetTick() - val_start > COGGING_WARMUP_MS) {
 						if (fabs(err) > max_err_val) max_err_val = fabs(err);
+						iq_chatter_sum += fabs(iq_cmd - last_iq_cmd);
 					}
-					float iq_cmd = arm_pid_f32(&pid_soft, err);
-					iq_cmd = clip<float,float>(iq_cmd, -max_test_torque, max_test_torque);
+					last_iq_cmd = iq_cmd;
 					applySafeTorque(iq_cmd);
 
 					refreshWatchdog();
@@ -3586,42 +3598,52 @@ void TMC4671::handleStateCoggingCalibration() {
 
 				float err_deg = max_err_val * 360.0f;
 				bool improved = false;
-				bool instability = (max_err_val > best_err_val * 2.0f && attempt > 1);
+				
+				// Enhanced instability detection
+				bool instability = (err_deg > 5.0f) || (max_err_val > best_err_val * 1.5f && attempt > 1) || (iq_chatter_sum > 50000.0f);
 
-				// 1. Update best known performance
-				if (max_err_val < best_err_val && !instability) {
+				// Target satisfaction (Early exit)
+				if (err_deg <= TARGET_TOLERANCE_DEG && !instability) {
 					best_err_val = max_err_val;
 					best_Kp = pid_soft.Kp; best_Ki = pid_soft.Ki; best_Kd = pid_soft.Kd;
-					improved = true;
-				}
-
-				// 2. Check for phase transition (if no improvement, move to next phase)
-				if (instability || !improved) {
-					pid_soft.Kp = best_Kp; pid_soft.Ki = best_Ki; pid_soft.Kd = best_Kd;
-					
-					if (instability) {
-						snprintf(dbg_buf, sizeof(dbg_buf), "Instability (%.2f deg). Transitioning phase.", err_deg);
-						CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+					snprintf(dbg_buf, sizeof(dbg_buf), "Target tolerance met (%.2f deg). Stopping tune.", err_deg);
+					CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+					tune_finished = true;
+				} else {
+					// 1. Update best known performance
+					if (max_err_val < best_err_val && !instability) {
+						best_err_val = max_err_val;
+						best_Kp = pid_soft.Kp; best_Ki = pid_soft.Ki; best_Kd = pid_soft.Kd;
+						improved = true;
 					}
-					
-					tune_phase++;
-					tune_finished = (tune_phase > 3);
 
-					if (tune_finished) {
-						snprintf(dbg_buf, sizeof(dbg_buf), "Auto-tune completed. Best: %.2f deg", best_err_val * 360.0f);
-						CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+					// 2. Check for phase transition (if no improvement, move to next phase)
+					if (instability || !improved) {
+						pid_soft.Kp = best_Kp; pid_soft.Ki = best_Ki; pid_soft.Kd = best_Kd;
+						
+						if (instability) {
+							snprintf(dbg_buf, sizeof(dbg_buf), "Instability (Err: %.2f deg, Chatter: %d). Transitioning phase.", err_deg, (int)iq_chatter_sum);
+							CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+						}
+						
+						tune_phase++;
+						tune_finished = (tune_phase > 2); // Only Kp and Ki phases (Skip Kd)
+
+						if (tune_finished) {
+							snprintf(dbg_buf, sizeof(dbg_buf), "Auto-tune completed. Best: %.2f deg", best_err_val * 360.0f);
+							CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+						}
 					}
 				}
 
 				if (!tune_finished) {
 					if (attempt < VAL_MAX_ATTEMPTS) {
 						if (tune_phase == 0) { // Global Boost
-							pid_soft.Kp *= 1.30f; pid_soft.Ki *= 1.25f; pid_soft.Kd *= 0.90f;
+							pid_soft.Kp *= 1.30f; pid_soft.Ki *= 1.25f;
 						} else if (tune_phase == 1) pid_soft.Kp *= 1.10f; // Fine Kp
 						else if (tune_phase == 2) pid_soft.Ki *= 1.10f; // Fine Ki
-						else if (tune_phase == 3) pid_soft.Kd *= 1.10f; // Fine Kd
 
-						const char* phase_name = (tune_phase == 0) ? "Global Boost" : (tune_phase == 1) ? "Fine Kp" : (tune_phase == 2) ? "Fine Ki" : "Fine Kd";
+						const char* phase_name = (tune_phase == 0) ? "Global Boost" : (tune_phase == 1) ? "Fine Kp" : "Fine Ki";
 						snprintf(dbg_buf, sizeof(dbg_buf), "Retry %d (Err: %.2f deg) -> %s", attempt, err_deg, phase_name);
 						CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 
