@@ -616,6 +616,10 @@ void Axis::setFxStrengthAndFilter(uint8_t val,uint8_t& valToSet, Biquad& filter)
 void Axis::calculateMechanicalEffects(bool ffb_on){
 	mechanicalEffectTorque = 0;
 
+	if (outOfBounds || drv->isCalibrationInProgress() || !drv->motorReady()) {
+		return;
+	}
+
 	if(!ffb_on){
 		mechanicalEffectTorque += updateIdleSpringForce();
 	}
