@@ -3311,7 +3311,7 @@ void TMC4671::handleStateFullCalibration() {
 // Helper: Apply torque safely considering encoder direction and flux
 void TMC4671::applySafeTorque(float torque_cmd) {
 	int16_t pwr = (int16_t)torque_cmd;
-	if ((this->conf.encoderReversed && conf.motconf.enctype == EncoderType_TMC::ext) || conf.invertForce) {
+	if (this->conf.encoderReversed && conf.motconf.enctype == EncoderType_TMC::ext) {
 		pwr = -pwr;
 	}
 	int32_t flux_cmd = idleFlux - clip<int32_t,int16_t>(abs(pwr), 0, maxOffsetFlux);
@@ -3539,7 +3539,7 @@ void TMC4671::handleStateCoggingCalibration() {
 			best_Kp = pid_soft.Kp; best_Ki = pid_soft.Ki; best_Kd = pid_soft.Kd;
 
 			int attempt = 1;
-			uint8_t tune_phase = 0; // 0: Kp, 1: Ki, 2: Kd
+			uint8_t tune_phase = 0; // 0: Global Boost, 1: Kp, 2: Ki, 3: Kd
 			bool tune_finished = false;
 
 			// Sequential optimizer: Search for absolute best PID gains
@@ -3557,8 +3557,7 @@ void TMC4671::handleStateCoggingCalibration() {
 				
 				// Test rotation and catch the max during the rotation
 				while (HAL_GetTick() - val_start < VAL_TOTAL_DURATION_MS && !emergency && hasPower()) {
-					next_tick += 1000; // 1ms
-
+					next_tick += 1000;
 					val_target_pos_f += (TARGET_RPM / 60.0f) * 0.001f;
 					if (val_target_pos_f >= 1.0f) val_target_pos_f -= 1.0f;
 					if (val_target_pos_f < 0.0f) val_target_pos_f += 1.0f;
@@ -3579,36 +3578,43 @@ void TMC4671::handleStateCoggingCalibration() {
 
 				float err_deg = max_err_val * 360.0f;
 				bool improved = false;
+				bool instability = (max_err_val > best_err_val * 2.0f && attempt > 1);
 
 				// 1. Update best known performance
-				if (max_err_val < best_err_val) {
+				if (max_err_val < best_err_val && !instability) {
 					best_err_val = max_err_val;
 					best_Kp = pid_soft.Kp; best_Ki = pid_soft.Ki; best_Kd = pid_soft.Kd;
 					improved = true;
 				}
 
 				// 2. Check for phase transition (if no improvement, move to next phase)
-				if (!improved && attempt > 1) {
+				if (instability || !improved) {
 					pid_soft.Kp = best_Kp; pid_soft.Ki = best_Ki; pid_soft.Kd = best_Kd;
-					tune_phase++;
-					tune_finished = (tune_phase > 2);
 					
+					if (instability) {
+						snprintf(dbg_buf, sizeof(dbg_buf), "Instability (%.2f deg). Transitioning phase.", err_deg);
+						CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+					}
+					
+					tune_phase++;
+					tune_finished = (tune_phase > 3);
+
 					if (tune_finished) {
 						snprintf(dbg_buf, sizeof(dbg_buf), "Auto-tune completed. Best: %.2f deg", best_err_val * 360.0f);
 						CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 					}
 				}
 
-				// 3. Apply boost or handle loop termination
 				if (!tune_finished) {
 					if (attempt < VAL_MAX_ATTEMPTS) {
-						// Boost current phase parameter
-						if (tune_phase == 0) pid_soft.Kp *= 1.20f;
-						else if (tune_phase == 1) pid_soft.Ki *= 1.20f;
-						else if (tune_phase == 2) pid_soft.Kd *= 1.20f;
+						if (tune_phase == 0) { // Global Boost
+							pid_soft.Kp *= 1.30f; pid_soft.Ki *= 1.25f; pid_soft.Kd *= 0.90f;
+						} else if (tune_phase == 1) pid_soft.Kp *= 1.10f; // Fine Kp
+						else if (tune_phase == 2) pid_soft.Ki *= 1.10f; // Fine Ki
+						else if (tune_phase == 3) pid_soft.Kd *= 1.10f; // Fine Kd
 
-						const char* phase_name = (tune_phase == 0) ? "Kp" : (tune_phase == 1) ? "Ki" : "Kd";
-						snprintf(dbg_buf, sizeof(dbg_buf), "Retry %d (Err: %.2f deg) -> Tuning %s", attempt, err_deg, phase_name);
+						const char* phase_name = (tune_phase == 0) ? "Global Boost" : (tune_phase == 1) ? "Fine Kp" : (tune_phase == 2) ? "Fine Ki" : "Fine Kd";
+						snprintf(dbg_buf, sizeof(dbg_buf), "Retry %d (Err: %.2f deg) -> %s", attempt, err_deg, phase_name);
 						CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 
 						attempt++;

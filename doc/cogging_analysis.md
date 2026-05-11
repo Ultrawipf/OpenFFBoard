@@ -15,11 +15,13 @@ The system uses a **Continuous Discrete Fourier Transform (DFT)** integration. I
     *   **Dynamic Inertia Profiling**: The system analyzes the oscillation period ($T_u$) to automatically differentiate between motor classes:
         *   **Small Motors ($T_u \le 45ms$)**: Applied scalers are $K_p \times 0.6$, $K_i \times 0.4$, $K_d \times 0.05$. Optimized for minimal vibration and high frequency noise rejection.
         *   **Large Motors ($T_u > 45ms$)**: Applied scalers are $K_p \times 1.2$, $K_i \times 8.0$, $K_d \times 0.15$. Optimized for high-torque Direct Drive motors while maintaining smooth acquisition currents.
-    *   **Validation & Stability-Aware Fine-Tuning**: A high-precision verification phase (aiming for **0.1 degree** of tracking error) is performed with up to **50 attempts**. 
-        *   **Warmup Window**: It ignores the first 1000ms of each 2000ms test rotation to eliminate startup transients and stiction effects.
-        *   **Iterative "Boost PID"**: If error is too high, the system stiffens the controller for the next retry: $K_p \times 1.30$, $K_i \times 1.25$, and $K_d \times 0.90$.
-        *   **Adaptive Relaxation**: After the 3rd failed attempt, the system iteratively relaxes the error target by 50% per attempt, capped at a strict **3.0 degrees** (Unit-corrected limit).
-        *   **Instability Detection & Backtracking**: The system tracks the "Best PID" configuration. If an attempt results in a significant increase in tracking error (detecting oscillation), it stops boosting and **reverts to the best-known parameters**.
+    *   **Validation & Stability-Aware Fine-Tuning**: A high-precision verification phase (aiming for **1.0 degree** of tracking error) is performed with up to **50 attempts**. 
+        *   **Warmup Window**: It ignores the first 1500ms of each 2500ms test rotation to eliminate startup transients and stiction effects.
+        *   **Hybrid Tuning Strategy**:
+            *   **Phase 0 (Global Boost)**: Rapidly stiffens the controller by multiplying $K_p \times 1.30$, $K_i \times 1.25$, and $K_d \times 0.90$.
+            *   **Phases 1-3 (Coordinate Descent)**: Fine-tunes $K_p$, $K_i$, and $K_d$ individually by $10\%$ per step.
+        *   **Instability Detection & Backtracking**: If an attempt results in an error $> 2\times$ the best found error (detecting oscillation) or fails to improve, the system **reverts to the best-known parameters** and transitions to the next tuning phase.
+        *   **Strict Tolerance**: The system maintains a strict **1.0 degree** limit. If stability cannot be reached, the calibration aborts to prevent incorrect compensation maps.
 2.  **Torque Response Capture (Deterministic Dual-Pass Acquisition)**: The motor rotates at a constant speed defined by **TARGET_RPM** (default: 8 RPM) in both directions.
     *   **1kHz Strict Integration**: Acquisition is strictly clocked at 1kHz. For an 8-second tour, exactly **8,000 samples** are integrated. This ensures perfect spatial alignment and mathematical precision for the DFT.
     *   **Friction Feed-Forward**: The breakaway friction torque discovered during auto-tuning is applied as a **Feed-Forward** base torque. This allows the motor to reach a constant velocity instantly, eliminating start-up transients in the DFT data.
