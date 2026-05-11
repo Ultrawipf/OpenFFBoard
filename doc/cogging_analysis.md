@@ -7,14 +7,14 @@ This document describes the implementation of the harmonic-based anti-cogging co
 The system uses a **Continuous Discrete Fourier Transform (DFT)** integration. It eliminates lookup tables and fixed-size buffers, making it memory-safe for all supported microcontrollers (F407 and F411).
 
 1.  **Software PID & Auto-Tuning**: Before acquisition, the system performs a dynamic auto-tuning of a software PID controller (using CMSIS-DSP). It identifies the motor's static friction and uses the **Relay Feedback method** and **Ziegler-Nichols method** ([reference](https://en.wikipedia.org/wiki/Ziegler%E2%80%93Nichols_method)) to calculate optimal gains.
-    *   **Base Gain Calculation (Standard Ziegler-Nichols)**:
-        *   $K_{p\_base} = 0.60 \times K_u$ (60% of Ultimate Gain)
-        *   $K_{i\_base} = (1.20 \times K_u / T_u) \times dt$
-        *   $K_{d\_base} = (0.075 \times K_u \times T_u) / dt$
+    *   **Base Gain Calculation (Stable Ziegler-Nichols)**:
+        *   $K_{p\_base} = 0.45 \times K_u$ (45% of Ultimate Gain)
+        *   $K_{i\_base} = (0.54 \times K_u / T_u) \times dt$
+        *   $K_{d\_base} = (0.15 \times K_u \times T_u) / dt$
         *   *Note: $dt = 0.001s$ (1kHz loop).*
     *   **Dynamic Inertia Profiling**: The system analyzes the oscillation period ($T_u$) to automatically differentiate between motor classes:
-        *   **Small Motors ($T_u \le 45ms$)**: Applied scalers are $K_p \times 1.0$, $K_i \times 1.5$, $K_d \times 0.2$. Optimized for high-bandwidth response on low-mass rotors.
-        *   **Large Motors ($T_u > 45ms$)**: Applied scalers are $K_p \times 2.0$, $K_i \times 8.0$, $K_d \times 0.5$. Optimized for high-torque Direct Drive motors requiring significant force to overcome magnetic stiction.
+        *   **Small Motors ($T_u \le 45ms$)**: Applied scalers are $K_p \times 0.6$, $K_i \times 0.4$, $K_d \times 0.05$. Optimized for minimal vibration and high frequency noise rejection.
+        *   **Large Motors ($T_u > 45ms$)**: Applied scalers are $K_p \times 1.2$, $K_i \times 8.0$, $K_d \times 0.15$. Optimized for high-torque Direct Drive motors while maintaining smooth acquisition currents.
     *   **Validation & Stability-Aware Fine-Tuning**: A high-precision verification phase (aiming for **0.1 degree** of tracking error) is performed with up to **50 attempts**. 
         *   **Warmup Window**: It ignores the first 1000ms of each 2000ms test rotation to eliminate startup transients and stiction effects.
         *   **Iterative "Boost PID"**: If error is too high, the system stiffens the controller for the next retry: $K_p \times 1.30$, $K_i \times 1.25$, and $K_d \times 0.90$.
@@ -52,15 +52,15 @@ The following table summarizes the sequence of operations, their durations, and 
 
 | Phase | Sub-Step | Duration | Torque / Control Strategy | Goal |
 | :--- | :--- | :--- | :--- | :--- |
-| **1. Auto-PID** | Relay Test | 600ms | Bang-Bang (`±relay_torque`) | Measure $T_u$ and $K_u$ |
+| **1. Auto-PID** | Relay Test | 600ms | Bang-Bang (`±tuning_torque`) | Measure $T_u$ and $K_u$ |
 | | Calculation | - | Ziegler-Nichols + Inertia Profiling | Set base soft PID gains |
-| **2. Validation** | Warmup Pulse | 150ms | **70% relay torque** | Break stiction before PID |
+| **2. Validation** | Warmup Pulse | 150ms | **70% tuning torque** | Break stiction before PID |
 | | Stability Check | 2500ms | PID Control (Ignore first 1500ms) | Fine-tune PID stiffness |
 | | Retry Pause | 500ms | Zero Torque | Reset system for next attempt |
 | **3. Acquisition** | Setup | 1000ms | Zero Torque | Settle motor at rest |
-| | Warmup Pulse | 150ms | **70% relay torque** (Directional) | Movement start before DFT |
+| | Warmup Pulse | 150ms | **70% tuning torque** (Directional) | Movement start before DFT |
 | | DFT Integration | ~10.5s | PID Control (Wait 1500ms before DFT) | Capture 360° of cogging Iq/Id |
-| **4. Return** | Warmup Pulse | 150ms | **70% relay torque** (Towards Zero) | Break stiction before homing |
+| **4. Return** | Warmup Pulse | 150ms | **70% tuning torque** (Towards Zero) | Break stiction before homing |
 | | Centering | Variable | PID Control (Position Ramp to 0.0) | Unwind motor revolutions |
 | | Final Align | - | `EncoderInit` State (`bangInitEnc`) | Reset hardware alignment |
 

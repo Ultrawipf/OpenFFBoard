@@ -3330,7 +3330,8 @@ float TMC4671::getWrappedError(float target, float actual) {
 
 // Simplified position access (Direct reading to avoid phase lag)
 float TMC4671::getFilteredPosition() {
-	return (usingExternalEncoder() && drvEncoder != nullptr) ? drvEncoder->getPos_f() : (float)this->getPos() / (float)this->getCpr();
+	float pos = (usingExternalEncoder() && drvEncoder != nullptr) ? drvEncoder->getPos_f() : (float)this->getPos() / (float)this->getCpr();
+	return pos - floorf(pos);
 }
 
 /**
@@ -3349,16 +3350,16 @@ void TMC4671::handleStateCoggingCalibration() {
 	prevCalibMode = getMotionMode();
 	TMC4671PIDConf prevPids = curPids;
 	TMC4671PIDConf calibPids = curPids;
-	uint32_t revolution_time_ms = COGGING_CALIB_TIME_PER_REV_S * 1500;
-
+	
 	// --- TUNABLE CALIBRATION CONSTANTS (English) ---
+	const uint32_t REVOLUTION_TIME_MS = COGGING_CALIB_TIME_PER_REV_S * 1500;
 	const uint32_t TUNE_OSCILLATION_MS = 600;    // Duration of the relay oscillation test
 	const uint32_t VAL_TOTAL_DURATION_MS = 2500; // Total duration of each validation run (Warmup + 1s useful)
 	const uint32_t COGGING_WARMUP_MS = 1500;     // Stabilization delay (transient/stiction)
 	const uint32_t VAL_RETRY_PAUSE_MS = 500;     // Pause between validation attempts
 	// Calculate RPM dynamically: 60 seconds / Time per revolution
 	const float    TARGET_RPM = 60.0f / (float)COGGING_CALIB_TIME_PER_REV_S; 
-	const float    INITIAL_ERROR_LIMIT_DEG = 0.1f; // Initial strict accuracy target
+	const float    MAX_TOLERANCE_DEG = 1.0f;     // Absolute maximum tracking error allowed
 
 	arm_pid_instance_f32 pid_soft;
 	char dbg_buf[128];
@@ -3412,7 +3413,7 @@ void TMC4671::handleStateCoggingCalibration() {
 	// 2. CALIBRATION PROCESS AND ANALYSIS
 	{
 		uint32_t total_samples = 0;
-		float relay_torque = bangInitPower > 0 ? (float)bangInitPower * 0.15f : 300.0f; 
+		float tuning_torque = bangInitPower > 0 ? (float)bangInitPower * 0.15f : 300.0f; 
 
 		if (!hasPower()) {
 			// --- DEBUG SIMULATION MODE ---
@@ -3457,14 +3458,14 @@ void TMC4671::handleStateCoggingCalibration() {
 			bool friction_broken = false;
 
 			// Phase A: Break static friction
-			while (!friction_broken && relay_torque < max_test_torque && !emergency) {
-				applySafeTorque(relay_torque);
+			while (!friction_broken && tuning_torque < max_test_torque && !emergency) {
+				applySafeTorque(tuning_torque);
 				Delay(50); 
 				if (fabs(getWrappedError(start_pos, getFilteredPosition())) > 0.005f) {
 					friction_broken = true;
-					relay_torque *= 1.2f; 
+					tuning_torque *= 1.2f; 
 				} else {
-					relay_torque += 100.0f; 
+					tuning_torque += 100.0f; 
 				}
 			}
 			applySafeTorque(0);
@@ -3483,8 +3484,8 @@ void TMC4671::handleStateCoggingCalibration() {
 				float error = getWrappedError(start_pos, actual_pos);
 				if (fabs(error) > max_amplitude) max_amplitude = fabs(error);
 
-				if (error > 0) applySafeTorque(relay_torque);
-				else applySafeTorque(-relay_torque);
+				if (error > 0) applySafeTorque(tuning_torque);
+				else applySafeTorque(-tuning_torque);
 
 				static bool was_positive = true;
 				bool is_positive = (error > 0);
@@ -3504,19 +3505,19 @@ void TMC4671::handleStateCoggingCalibration() {
 			float dt = 0.001f; // 1kHz loop
 			if (cross_count > 4 && max_amplitude > 0.0001f && friction_broken) {
 				float Tu = ((float)period_sum / (cross_count - 1)) * 2.0f / 1000000.0f;
-				float Ku = (4.0f * relay_torque) / (PI * max_amplitude);
-				float Kp_base = 0.60f * Ku;
-				float Ki_base = (1.20f * Ku / Tu) * dt;
-				float Kd_base = (0.075f * Ku * Tu) / dt;
+				float Ku = (4.0f * tuning_torque) / (PI * max_amplitude);
+				float Kp_base = 0.45f * Ku;
+				float Ki_base = (0.54f * Ku / Tu) * dt;
+				float Kd_base = (0.15f * Ku * Tu) / dt;
 
 				if (Tu > 0.045f) { // Large motor profile (e.g. MiGE)
-					pid_soft.Kp = Kp_base * 2.0f; // Boosted
-					pid_soft.Ki = Ki_base * 8.0f; // Boosted
-					pid_soft.Kd = Kd_base * 0.5f;
+					pid_soft.Kp = Kp_base * 1.2f;
+					pid_soft.Ki = Ki_base * 8.0f;
+					pid_soft.Kd = Kd_base * 0.15f;
 				} else { // Small motor profile (e.g. NEMA17)
-					pid_soft.Kp = Kp_base * 1.0f;
-					pid_soft.Ki = Ki_base * 1.5f;
-					pid_soft.Kd = Kd_base * 0.2f;
+					pid_soft.Kp = Kp_base * 0.6f;
+					pid_soft.Ki = Ki_base * 0.4f;
+					pid_soft.Kd = Kd_base * 0.05f;
 				}
 				arm_pid_init_f32(&pid_soft, 1);
 				snprintf(dbg_buf, sizeof(dbg_buf), "Tuned -> Tu:%dms Kp:%d Ki:%d Kd:%d", (int)(Tu * 1000.0f), (int)pid_soft.Kp, (int)pid_soft.Ki, (int)pid_soft.Kd);
@@ -3530,25 +3531,24 @@ void TMC4671::handleStateCoggingCalibration() {
 				goto cleanup;
 			}
 			
-			// --- 1.5 VALIDATION & FINE-TUNING (Elastic Tolerance + Stability Check) ---
+			// --- 1.5 VALIDATION & FINE-TUNING (Coordinate Descent Optimizer) ---
 			CommandHandler::broadcastCommandReply(CommandReply("Validating & Fine-Tuning PID...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 
-			float current_target_err = INITIAL_ERROR_LIMIT_DEG / 360.0f;
-			const float MAX_TOLERANCE_DEG = 3.0f;
-			const int   VAL_MAX_ATTEMPTS = 50;        // Number of fine-tuning tries before abort
+			const int VAL_MAX_ATTEMPTS = 50;
 			best_err_val = 1e9f;
 			best_Kp = pid_soft.Kp; best_Ki = pid_soft.Ki; best_Kd = pid_soft.Kd;
 
 			int attempt = 1;
-			bool validation_success = false;
+			uint8_t tune_phase = 0; // 0: Kp, 1: Ki, 2: Kd
+			bool tune_finished = false;
 
-			// Try to detect best pid, shifften the PID each loop until motor become instable 
-			while (attempt <= VAL_MAX_ATTEMPTS && !emergency && hasPower()) {
+			// Sequential optimizer: Search for absolute best PID gains
+			while (!tune_finished && (attempt <= VAL_MAX_ATTEMPTS) && !emergency && hasPower()) {
 				float max_err_val = 0.0f;
 				arm_pid_init_f32(&pid_soft, 1); // Reset integrator
 
 				// Warmup to break friction before starting validation
-				applySafeTorque(relay_torque * 0.7f);
+				applySafeTorque(tuning_torque * 0.7f);
 				Delay(150);
 
 				float val_target_pos_f = getFilteredPosition();
@@ -3578,66 +3578,54 @@ void TMC4671::handleStateCoggingCalibration() {
 				applySafeTorque(0);
 
 				float err_deg = max_err_val * 360.0f;
-				float target_deg = current_target_err * 360.0f;
+				bool improved = false;
 
-				// Track best performance
+				// 1. Update best known performance
 				if (max_err_val < best_err_val) {
 					best_err_val = max_err_val;
-					best_Kp = pid_soft.Kp;
-					best_Ki = pid_soft.Ki;
-					best_Kd = pid_soft.Kd;
+					best_Kp = pid_soft.Kp; best_Ki = pid_soft.Ki; best_Kd = pid_soft.Kd;
+					improved = true;
 				}
 
-				if (max_err_val < current_target_err) {
-					validation_success = true;
-					snprintf(dbg_buf, sizeof(dbg_buf), "Validation OK: %.2f deg (Limit: %.2f)", err_deg, target_deg);
-					CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
-					break; 
-				} 
-
-				// Instability detector: If error is 2x worse than the best found, we are oscillating
-				if (max_err_val > best_err_val * 2.0f && attempt > 2) {
-					validation_success = true;
-					snprintf(dbg_buf, sizeof(dbg_buf), "Instability detected (%.2f deg). Reverting to best (%.2f deg).", err_deg, best_err_val * 360.0f);
-					CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+				// 2. Check for phase transition (if no improvement, move to next phase)
+				if (!improved && attempt > 1) {
 					pid_soft.Kp = best_Kp; pid_soft.Ki = best_Ki; pid_soft.Kd = best_Kd;
-					break;
-				}
-
-				if (attempt < VAL_MAX_ATTEMPTS) {
-					// Test failed: Error too high. Stiffen the PID.
-					pid_soft.Kp *= 1.30f;
-					pid_soft.Ki *= 1.25f;
-					pid_soft.Kd *= 0.90f;
-
-					snprintf(dbg_buf, sizeof(dbg_buf), "Retry %d (Err: %.2f deg) -> Boost PID", attempt, err_deg);
-					CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
-
-					if (attempt >= 3) {
-						current_target_err *= 1.5f; // Start relaxing target after 3 fails
-						// Do not go avec 3°
-						if (current_target_err > MAX_TOLERANCE_DEG / 360.0f) {
-							current_target_err = MAX_TOLERANCE_DEG / 360.0f;
-						}
+					tune_phase++;
+					tune_finished = (tune_phase > 2);
+					
+					if (tune_finished) {
+						snprintf(dbg_buf, sizeof(dbg_buf), "Auto-tune completed. Best: %.2f deg", best_err_val * 360.0f);
+						CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 					}
-					attempt++;
-					Delay(VAL_RETRY_PAUSE_MS);
-				} else {
-					// Last attempt failed, restore best anyway
-					pid_soft.Kp = best_Kp; pid_soft.Ki = best_Ki; pid_soft.Kd = best_Kd;
-					snprintf(dbg_buf, sizeof(dbg_buf), "Val Limit Reached. Using best attempt: %.2f deg.", best_err_val * 360.0f);
-					CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
-					break;
+				}
+
+				// 3. Apply boost or handle loop termination
+				if (!tune_finished) {
+					if (attempt < VAL_MAX_ATTEMPTS) {
+						// Boost current phase parameter
+						if (tune_phase == 0) pid_soft.Kp *= 1.20f;
+						else if (tune_phase == 1) pid_soft.Ki *= 1.20f;
+						else if (tune_phase == 2) pid_soft.Kd *= 1.20f;
+
+						const char* phase_name = (tune_phase == 0) ? "Kp" : (tune_phase == 1) ? "Ki" : "Kd";
+						snprintf(dbg_buf, sizeof(dbg_buf), "Retry %d (Err: %.2f deg) -> Tuning %s", attempt, err_deg, phase_name);
+						CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+
+						attempt++;
+						Delay(VAL_RETRY_PAUSE_MS);
+					} else {
+						// Absolute maximum attempts reached
+						pid_soft.Kp = best_Kp; pid_soft.Ki = best_Ki; pid_soft.Kd = best_Kd;
+						snprintf(dbg_buf, sizeof(dbg_buf), "Val Limit Reached. Best found: %.2f deg.", best_err_val * 360.0f);
+						CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+						tune_finished = true;
+					}
 				}
 			}
 
-			// --- MANAGE FAIL PID Calibration
-			if (!validation_success) {
-				// restaure the value
-				pid_soft.Kp = best_Kp; pid_soft.Ki = best_Ki; pid_soft.Kd = best_Kd;
-				
-				// if error occurs, we go to eroor management
-				errorMessage = "Abort: Impossible to stabilize rotation with error below 3°.";
+			// --- FINAL VALIDATION ---
+			if (best_err_val * 360.0f > MAX_TOLERANCE_DEG) {
+				errorMessage = "Abort: Best found stability is above 1.0 deg.";
 				goto cleanup; 
 			}
 			Delay(250);
@@ -3666,14 +3654,14 @@ void TMC4671::handleStateCoggingCalibration() {
 
 				if (!emergency && hasPower()) {
 					// Warmup to break friction before acquisition pass
-					applySafeTorque(target_rpm > 0 ? relay_torque * 0.7f : -relay_torque * 0.7f);
+					applySafeTorque(target_rpm > 0 ? tuning_torque * 0.7f : -tuning_torque * 0.7f);
 					Delay(150);
 
 					calibStartTime = HAL_GetTick();
 					uint32_t period_us = 1000;
 					uint32_t next_tick = micros();
 					
-					while (HAL_GetTick() - calibStartTime < revolution_time_ms && !emergency && hasPower()) {
+					while (HAL_GetTick() - calibStartTime < REVOLUTION_TIME_MS && !emergency && hasPower()) {
 						next_tick += period_us;
 						
 						float step = (target_rpm / 60.0f) * (period_us / 1000000.0f);
@@ -3805,7 +3793,7 @@ void TMC4671::handleStateCoggingCalibration() {
 				// before the PID control starts, which prevents initial oscillations.
 				if (fabs(actual_pos_f) > 0.05f) {
 					CommandHandler::broadcastCommandReply(CommandReply("Return: Breaking static friction...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
-					float warmup_torque = relay_torque * 0.70f;
+					float warmup_torque = tuning_torque * 0.70f;
 					applySafeTorque(actual_pos_f > 0.0f ? -warmup_torque : warmup_torque);
 					Delay(150);
 					// The PID loop below will take over immediately after this delay.
