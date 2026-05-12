@@ -1630,7 +1630,7 @@ void TMC4671::turn(int16_t power){
 		return;
 
 	int32_t flux = 0;
-	int32_t endPower = 0;
+	int32_t totalPower = power;
 
 	// Anticogging id enable in firmware
 #ifdef COGGING_TABLE_FLASH_START_ADDRESS
@@ -1651,19 +1651,18 @@ void TMC4671::turn(int16_t power){
 				compensation += cogging_harmonics[i].amplitude * arm_sin_f32(angle_rad * cogging_harmonics[i].order + cogging_harmonics[i].phase);
 			}
 		}
-		float cogging_scale = 0.25f;
-		endPower += (int16_t)(cogging_scale * compensation);
+		float cogging_scale = 0.5f;
+		totalPower += (int32_t)(cogging_scale * compensation);
 	}
 #endif
 
-	// Flux offset for field weakening
-
-	flux = idleFlux-clip<int32_t,int16_t>(abs(power),0,maxOffsetFlux);
+	// Inversion if encoder is reversed (ext) or force inversion is requested
 	if((this->conf.encoderReversed && conf.motconf.enctype == EncoderType_TMC::ext) || conf.invertForce){
-		endPower = endPower - power;
-	}else{
-		endPower = endPower + power;
+		totalPower = -totalPower;
 	}
+
+	// Flux offset for field weakening
+	flux = idleFlux-clip<int32_t,int16_t>(abs(power),0,maxOffsetFlux);
 
 	/*
 	 * If flux dissipation is on prefer this over the resistor.
@@ -1678,7 +1677,7 @@ void TMC4671::turn(int16_t power){
 		}
 	}
 
-	setFluxTorque(flux, power);
+	setFluxTorque(flux, clip<int32_t, int16_t>(totalPower, -32768, 32767));
 }
 
 /**
