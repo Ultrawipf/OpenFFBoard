@@ -423,7 +423,7 @@ class TMC4671 :
 		svpwm,fullCalibration,calibrated,abnindexenabled,findIndex,getState,encpol,combineEncoder,invertForce,vmTmc,
 		extphie,torqueFilter_mode,torqueFilter_f,torqueFilter_q,pidautotune,fluxbrake,pwmfreq,
 #ifdef COGGING_TABLE_FLASH_START_ADDRESS
-		cogging,calibrateCogging, coggingTable
+		cogging,calibrateCogging, coggingTable, coggingScale
 #endif
 	};
 
@@ -739,6 +739,7 @@ private:
 	// Cogging Calibration
 	Harmonic cogging_harmonics[COGGING_HARMONICS_COUNT];
 	bool cogging_enabled = false;
+	float cogging_scale = 0.5f;
 	void saveCoggingTable();
 	void clearCoggingTable();
 

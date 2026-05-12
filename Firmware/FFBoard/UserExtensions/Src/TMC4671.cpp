@@ -143,7 +143,8 @@ void TMC4671::saveFlash(){
 
 #ifdef COGGING_TABLE_FLASH_START_ADDRESS
 	// Save cogging state
-	Flash_Write(flashAddrs.coggingEnable, cogging_enabled ? 1:0);
+	uint16_t coggingFlash = (cogging_enabled ? 1 : 0) | ((uint16_t)clip<float>(this->cogging_scale * 100.0f, 0, 100) << 1);
+	Flash_Write(flashAddrs.coggingEnable, coggingFlash);
 #endif
 }
 
@@ -224,8 +225,12 @@ void TMC4671::restoreFlash(){
 	uint16_t cogging = 0; // Initialize to avoid random stack data
 	if(Flash_Read(flashAddrs.coggingEnable, &cogging)) {
 		cogging_enabled = cogging & 0x01;
+		uint16_t scale = (cogging >> 1) & 0x7F;
+		if (scale == 0 && cogging_enabled) scale = 50; // Default if restored as 0 but was enabled (compatibility)
+		this->cogging_scale = (float)scale / 100.0f;
 	} else {
 		cogging_enabled = false;
+		this->cogging_scale = 0.5f;
 	}
 
 	Flash_ReadCoggingTable(this->drv_address - 1, (int16_t*)this->cogging_harmonics);
@@ -1651,8 +1656,7 @@ void TMC4671::turn(int16_t power){
 				compensation += cogging_harmonics[i].amplitude * arm_sin_f32(angle_rad * cogging_harmonics[i].order + cogging_harmonics[i].phase);
 			}
 		}
-		float cogging_scale = 0.5f;
-		totalPower += (int32_t)(cogging_scale * compensation);
+		totalPower += (int32_t)(this->cogging_scale * compensation);
 	}
 #endif
 
@@ -2731,6 +2735,7 @@ void TMC4671::registerCommands(){
 	registerCommand("cogging", TMC4671_commands::cogging, "Get/Set the cogging compensation",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("calibrateCogging", TMC4671_commands::calibrateCogging, "Cogging calibration",CMDFLAG_GET);
 	registerCommand("coggingTable", TMC4671_commands::coggingTable, "Get the cogging table, or clear table (set 0)",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("coggingScale", TMC4671_commands::coggingScale, "Cogging compensation scale (0-100)",CMDFLAG_GET | CMDFLAG_SET);
 #endif
 }
 
@@ -3101,6 +3106,14 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 			clearCoggingTable();
 		} else {
 			status = CommandStatus::ERR;
+		}
+		break;
+
+	case TMC4671_commands::coggingScale:
+		if (cmd.type == CMDtype::get) {
+			replies.emplace_back((uint16_t)(this->cogging_scale * 100.0f));
+		} else if (cmd.type == CMDtype::set) {
+			this->cogging_scale = (float)cmd.val / 100.0f;
 		}
 		break;
 #endif
