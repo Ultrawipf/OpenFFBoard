@@ -3070,15 +3070,13 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 			s.reserve(512);
 			s = "item:0,data:(";
 
-			for (uint16_t i = 0; i < COGGING_CALIB_LUT_RESOLUTION; i++) {
+			for (uint16_t order = 0; order < COGGING_CALIB_DFT_HARMONICS; order++) {
+				
 				int16_t val = 0;
-				if (i % 20 == 0) {
-					uint16_t order = i / 20;
-					for (uint8_t n = 0; n < COGGING_HARMONICS_COUNT; n++) {
-						if (cogging_harmonics[n].order == order && cogging_harmonics[n].amplitude > 0.0f) {
-							val = (int16_t)cogging_harmonics[n].amplitude;
-							break;
-						}
+				for (uint8_t n = 0; n < COGGING_HARMONICS_COUNT; n++) {
+					if (cogging_harmonics[n].order == order && cogging_harmonics[n].amplitude > 0.0f) {
+						val = (int16_t)cogging_harmonics[n].amplitude;
+						break;
 					}
 				}
 
@@ -3088,9 +3086,9 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 					s.append(")");
 					CommandHandler::broadcastCommandReply(CommandReply(s,0), (uint32_t)TMC4671_commands::coggingTable, CMDtype::get);
 					s.clear();
-					s = "item:" + std::to_string(i+1) + ",data:(";
+					s = "item:" + std::to_string(order+1) + ",data:(";
 				} else {
-					if (i < COGGING_CALIB_LUT_RESOLUTION - 1) {
+					if (order < COGGING_CALIB_DFT_HARMONICS - 1) {
 						s.append(",");
 					}
 				}
