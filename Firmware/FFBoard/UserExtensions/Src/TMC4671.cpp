@@ -1656,7 +1656,7 @@ void TMC4671::turn(int16_t power){
 				compensation += cogging_harmonics[i].amplitude * arm_sin_f32(angle_rad * cogging_harmonics[i].order + cogging_harmonics[i].phase);
 			}
 		}
-		totalPower += (int32_t)(this->cogging_scale * compensation);
+		totalPower -= (int32_t)(this->cogging_scale * compensation);
 	}
 #endif
 
