@@ -3479,14 +3479,15 @@ void TMC4671::handleStateCoggingCalibration() {
 			startMotor();
 			setMotionMode(MotionMode::torque, true);
 
-			// --- 1. SOFTWARE PID AUTO-TUNING (Relay Method) ---
-			CommandHandler::broadcastCommandReply(CommandReply("Auto-tuning software PID...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+			// --- STEP 1/3: SOFTWARE PID AUTO-TUNING (Relay Method) ---
+			CommandHandler::broadcastCommandReply(CommandReply("STEP 1/3: Software PID Auto-Tuning...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 
 			float start_pos = getFilteredPosition();
 			float max_test_torque = bangInitPower > 0 ? (float)bangInitPower * 0.8f : 2000.0f; 
 			bool friction_broken = false;
 
 			// Phase A: Break static friction
+			CommandHandler::broadcastCommandReply(CommandReply("Step 1.1: Breaking static friction...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 			while (!friction_broken && tuning_torque < max_test_torque && !emergency) {
 				applySafeTorque(tuning_torque);
 				Delay(50); 
@@ -3500,7 +3501,11 @@ void TMC4671::handleStateCoggingCalibration() {
 			applySafeTorque(0);
 			Delay(250); 
 
+			snprintf(dbg_buf, sizeof(dbg_buf), "Step 1.1: Friction broken ? End with %d at %d torque.", (int)friction_broken ,(int)tuning_torque);
+			CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+
 			// Phase B: Measure Period (Tu) and Ultimate Gain (Ku)
+			CommandHandler::broadcastCommandReply(CommandReply("Step 1.2: Measuring oscillation period (Tu)...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 			uint32_t tune_start = HAL_GetTick();
 			uint32_t last_cross_time = micros();
 			uint32_t period_sum = 0;
@@ -3549,7 +3554,11 @@ void TMC4671::handleStateCoggingCalibration() {
 					pid_soft.Kd = 0.0f;
 				}
 				arm_pid_init_f32(&pid_soft, 1);
-				snprintf(dbg_buf, sizeof(dbg_buf), "Tuned -> Tu:%dms Kp:%d Ki:%d Kd:%d", (int)(Tu * 1000.0f), (int)pid_soft.Kp, (int)pid_soft.Ki, (int)pid_soft.Kd);
+				
+				snprintf(dbg_buf, sizeof(dbg_buf), "Step 1.3: Motor react in %dms to run at %.1frpm with a torque %d", (int)(Tu * 1000.0f), TARGET_RPM, (int)tuning_torque);
+				CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+
+				snprintf(dbg_buf, sizeof(dbg_buf), "Tuned -> Tu:%dms Kp:%d Ki:%d Kd:%d (Range: %d/%d)", (int)(Tu * 1000.0f), (int)pid_soft.Kp, (int)pid_soft.Ki, (int)pid_soft.Kd, (int)tuning_torque, (int)max_test_torque);
 				CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 
 				if (Tu*1000>80) {
@@ -3677,6 +3686,7 @@ void TMC4671::handleStateCoggingCalibration() {
 			Delay(250);
 
 			// --- 2. ACQUISITION DFT AT CONSTANT SPEED ---
+			CommandHandler::broadcastCommandReply(CommandReply("STEP 2/3: Acquisition DFT at constant speed...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 			int8_t dirs[2] = {1, -1};
 			
 			for (int8_t p : dirs) {
@@ -3771,7 +3781,7 @@ void TMC4671::handleStateCoggingCalibration() {
 
 		// 3. POST-PROCESSING
 		if (!emergency && (total_samples > 0)) {
-			CommandHandler::broadcastCommandReply(CommandReply("Analyzing harmonics...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+			CommandHandler::broadcastCommandReply(CommandReply("STEP 3/3: Post-Processing & Harmonics Extraction...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 			
 			float norm = 2.0f / (float)total_samples;
 			struct TempHarmonic { float32_t mag; uint16_t k; float32_t phase; };
