@@ -783,6 +783,7 @@ private:
 
 	// Calibration helpers
 	void applySafeTorque(float torque_cmd);
+	float getAbsolutePosition();
 	float getWrappedError(float target, float actual);
 	float getFilteredPosition();
 

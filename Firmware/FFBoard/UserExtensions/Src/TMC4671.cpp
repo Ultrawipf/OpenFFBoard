@@ -3339,9 +3339,9 @@ void TMC4671::handleStateFullCalibration() {
 // Helper: Apply torque safely considering encoder direction and flux
 void TMC4671::applySafeTorque(float torque_cmd) {
 	int16_t pwr = (int16_t)torque_cmd;
-	if ((this->conf.encoderReversed && conf.motconf.enctype == EncoderType_TMC::ext) ^ conf.invertForce) {
+	/*if ((this->conf.encoderReversed && conf.motconf.enctype == EncoderType_TMC::ext) ^ conf.invertForce) {
 		pwr = -pwr;
-	}
+	}*/
 	int32_t flux_cmd = idleFlux - clip<int32_t,int16_t>(abs(pwr), 0, maxOffsetFlux);
 	setFluxTorque(flux_cmd, pwr);
 }
@@ -3356,9 +3356,18 @@ float TMC4671::getWrappedError(float target, float actual) {
 	return err;
 }
 
+float TMC4671::getAbsolutePosition() {
+    // Ne pas utiliser floorf() ici. On garde les multi-tours.
+    if (usingExternalEncoder() && drvEncoder != nullptr) {
+        return drvEncoder->getPos_f();
+    } else {
+        return (float)this->getPos() / (float)this->getCpr();
+    }
+}
+
 // Simplified position access (Direct reading to avoid phase lag)
 float TMC4671::getFilteredPosition() {
-	float pos = (usingExternalEncoder() && drvEncoder != nullptr) ? drvEncoder->getPos_f() : (float)this->getPos() / (float)this->getCpr();
+	float pos = this->getAbsolutePosition();
 	return pos - floorf(pos);
 }
 
@@ -3540,7 +3549,14 @@ void TMC4671::handleStateCoggingCalibration() {
 			float dt = 0.001f; // 1kHz loop
 			if (cross_count > 4 && max_amplitude > 0.0001f && friction_broken) {
 				float Tu = ((float)period_sum / (cross_count - 1)) * 2.0f / 1000000.0f;
-				float Ku = (4.0f * tuning_torque) / (PI * max_amplitude);
+
+				// 
+				float safe_amplitude = max_amplitude;
+				if (safe_amplitude < 0.02f) {
+					safe_amplitude = 0.02f; 
+				}
+
+				float Ku = (4.0f * tuning_torque) / (PI * safe_amplitude);
 				float Kp_base = 0.45f * Ku;
 				float Ki_base = (0.54f * Ku / Tu) * dt;
 				float Kd_base = (0.15f * Ku * Tu) / dt;
@@ -3583,17 +3599,17 @@ void TMC4671::handleStateCoggingCalibration() {
 			int attempt = 1;
 			uint8_t tune_phase = 0; // 0: Global Boost, 1: Kp, 2: Ki
 			bool tune_finished = false;
+			float chatter_threshold = 1000.0f * (max_test_torque * 0.05f); // 1000 samples * (5% max torque per iteration)
 
 			// Sequential optimizer: Search for absolute best PID gains
 			while (!tune_finished && (attempt <= VAL_MAX_ATTEMPTS) && !emergency && hasPower()) {
 				float max_err_val = 0.0f;
 				float iq_chatter_sum = 0.0f;
-				float pos_chatter_sum = 0.0f;
 				float last_iq_cmd = 0.0f;
-				float last_err = 0.0f;
+
 				arm_pid_init_f32(&pid_soft, 1); // Reset integrator
 
-				float val_target_pos_f = getFilteredPosition();
+				float val_target_pos_f = getAbsolutePosition();
 				uint32_t val_start = HAL_GetTick();
 				uint32_t next_tick = micros();
 				
@@ -3601,9 +3617,12 @@ void TMC4671::handleStateCoggingCalibration() {
 				while (HAL_GetTick() - val_start < VAL_TOTAL_DURATION_MS && !emergency && hasPower()) {
 					next_tick += 1000;
 					val_target_pos_f += (TARGET_RPM / 60.0f) * 0.001f;
-					if (val_target_pos_f >= 1.0f) val_target_pos_f -= 1.0f;
-					if (val_target_pos_f < 0.0f) val_target_pos_f += 1.0f;
-					float err = getWrappedError(val_target_pos_f, getFilteredPosition());
+					float actual_pos = getAbsolutePosition();
+					float err = val_target_pos_f - actual_pos;
+
+					// Anti Wind-up, limit the pid to try to fix more than 1/4 turn, optional but can improve
+					if (err > 0.25f) err = 0.25f;   
+    				if (err < -0.25f) err = -0.25f;
 
 					float iq_cmd = arm_pid_f32(&pid_soft, err);
 					iq_cmd = clip<float,float>(iq_cmd, -max_test_torque, max_test_torque);
@@ -3612,15 +3631,9 @@ void TMC4671::handleStateCoggingCalibration() {
 					if (HAL_GetTick() - val_start > COGGING_WARMUP_MS) {
 						if (fabs(err) > max_err_val) max_err_val = fabs(err);
 						iq_chatter_sum += fabs(iq_cmd - last_iq_cmd);
-
-						float delta_err = err - last_err;
-                        if (delta_err > 0.5f) delta_err -= 1.0f;
-                        if (delta_err < -0.5f) delta_err += 1.0f;
-                        pos_chatter_sum += fabs(delta_err);
 					}
 
 					last_iq_cmd = iq_cmd;
-					last_err = err;
 					applySafeTorque(iq_cmd);
 
 					refreshWatchdog();
@@ -3632,9 +3645,8 @@ void TMC4671::handleStateCoggingCalibration() {
 				bool improved = false;
 				
 				// Chatter guardrails: prevents the PID from becoming too "nervous"
-				// Iq chatter threshold: sum of absolute differences > 60000 (approx 60 units/ms avg)
-				// Pos chatter threshold: sum of absolute differences > 0.5 (scaled to 1.0 turn, approx 180 deg cumulative jitter)
-				bool high_chatter = (iq_chatter_sum > 60000.0f) || (pos_chatter_sum > 0.5f);
+				// Iq chatter threshold: sum of absolute differences > chatter_threshold 
+				bool high_chatter = (iq_chatter_sum > chatter_threshold);
 
 				if (err_deg >= 0.8f && err_deg <= TARGET_TOLERANCE_DEG && !high_chatter) {
 					// TOTAL SUCCESS: The PID is perfectly balanced
@@ -3647,33 +3659,32 @@ void TMC4671::handleStateCoggingCalibration() {
 					
 				} else {
 					if (high_chatter) {
-						// CASE 1: Motor vibrates or chatters -> Kp is to blame (too stiff)
+						// CASE 0: Motor vibrates or chatters -> Kp is to blame (too stiff)
 						// Severely slash Kp, barely touch Ki to maintain speed
-						pid_soft.Kp *= 0.70f; 
-						pid_soft.Ki *= 0.95f; 
-						snprintf(dbg_buf, sizeof(dbg_buf), "Retry %d (Err: %.2f) -> Chatter (%.2f/%.3f)! Slashing Kp (new %.2f)...", attempt, err_deg, iq_chatter_sum, pos_chatter_sum, pid_soft.Kp);
+						pid_soft.Kp *= 0.60f; 
+						pid_soft.Ki *= 0.50f; 
+						snprintf(dbg_buf, sizeof(dbg_buf), "Retry %d (Err: %.2f) -> Chatter (%.2f)! Slashing Kp (new %.2f)...", attempt, err_deg, iq_chatter_sum, pid_soft.Kp);
 					} 
 					else if (err_deg > 5.0f) {
-                        // CAS 0 : Heavy position error (Major Lag / Stall Motor)
+                        // CAS 1 : Heavy position error (Major Lag / Stall Motor)
                         // Emergency is to compensate the lag by boosting the integral to catch the position (Ki).
+                        pid_soft.Kp *= 1.10f; 
                         pid_soft.Ki *= 1.40f; 
-                        // we allow a quick Kp boost if there is no vibration on the shaft.
-                        if (!high_chatter) pid_soft.Kp *= 1.10f; 
-                        snprintf(dbg_buf, sizeof(dbg_buf), "Retry %d (Err: %.2f) -> Heavy lag! Forcing Ki (new %.2f) with a Chatter (%.2f/%.3f)...", attempt, err_deg, pid_soft.Ki, iq_chatter_sum, pos_chatter_sum);
+                        snprintf(dbg_buf, sizeof(dbg_buf), "Retry %d (Err: %.2f) -> Heavy lag! Forcing Ki (new %.2f) with a Chatter (%.2f)...", attempt, err_deg, pid_soft.Ki, iq_chatter_sum);
                     }
 					else if (err_deg < 0.8f) {
 						// CASE 2: Tracking is too perfect (erasing the magnet feel), without vibrating
 						// Relax the spring to let the motor "breathe" over the magnetic notches
-						pid_soft.Kp *= 0.85f; 
 						// Keep Ki mostly intact to keep moving smoothly
+						pid_soft.Kp *= 0.85f; 
 						pid_soft.Ki *= 0.95f; 
 						snprintf(dbg_buf, sizeof(dbg_buf), "Retry %d (Err: %.2f) -> Too rigid, softening Kp (new %.2f)...", attempt, err_deg, pid_soft.Kp);
 					} 
 					else {
 						// CASE 3: err_deg > 1.5f -> Motor is lagging behind
 						// Needs much more continuous muscle (Ki) to overcome notches/friction
-						pid_soft.Kp *= 1.10f; // Slight boost to proportional spring
-						pid_soft.Ki *= 1.30f; // Massive boost to integral
+						pid_soft.Kp *= 1.05f; // Slight boost to proportional spring
+						pid_soft.Ki *= 1.15f; // Massive boost to integral
 						snprintf(dbg_buf, sizeof(dbg_buf), "Retry %d (Err: %.2f) -> Lagging, boosting Kp/Ki (new %.2f/%.2f)...", attempt, err_deg, pid_soft.Kp, pid_soft.Ki);
 					}
 					
@@ -3883,7 +3894,7 @@ void TMC4671::handleStateCoggingCalibration() {
 					if (target_rpm > 0 && target_pos_f > 0.0f) target_pos_f = 0.0f;
 
 					// Read the raw absolute position
-					actual_pos_f = (usingExternalEncoder() && drvEncoder != nullptr) ? drvEncoder->getPos_f() : (float)this->getPos() / (float)this->getCpr();
+					actual_pos_f = getAbsolutePosition();
 					
 					// Get raw error towards 0
 					float error = target_pos_f - actual_pos_f;
