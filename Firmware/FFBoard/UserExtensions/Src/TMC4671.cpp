@@ -3557,6 +3557,9 @@ void TMC4671::handleStateCoggingCalibration() {
 				}
 
 				float Ku = (4.0f * tuning_torque) / (PI * safe_amplitude);
+				float Ku_limit = max_test_torque * 3.0f;
+				if (Ku > Ku_limit) Ku = 15000.0f; // add security on large motor
+
 				float Kp_base = 0.45f * Ku;
 				float Ki_base = (0.54f * Ku / Tu) * dt;
 				float Kd_base = (0.15f * Ku * Tu) / dt;
@@ -3599,7 +3602,7 @@ void TMC4671::handleStateCoggingCalibration() {
 			int attempt = 1;
 			uint8_t tune_phase = 0; // 0: Global Boost, 1: Kp, 2: Ki
 			bool tune_finished = false;
-			float chatter_threshold = 1000.0f * (max_test_torque * 0.05f); // 1000 samples * (5% max torque per iteration)
+			float chatter_threshold = 1000.0f * (max_test_torque * 0.01f); // 1000 samples * (1% max torque per iteration)
 
 			// Sequential optimizer: Search for absolute best PID gains
 			while (!tune_finished && (attempt <= VAL_MAX_ATTEMPTS) && !emergency && hasPower()) {
