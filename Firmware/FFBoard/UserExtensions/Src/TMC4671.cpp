@@ -3592,7 +3592,7 @@ void TMC4671::handleStateCoggingCalibration() {
 				goto cleanup;
 			}
 			
-			// --- 1.5 VALIDATION & FINE-TUNING (Coordinate Descent Optimizer) ---
+			// --- 1.5 VALIDATION & FINE-TUNING (Sequential Optimizer) ---
 			CommandHandler::broadcastCommandReply(CommandReply("Validating & Fine-Tuning PID...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 
 			const int VAL_MAX_ATTEMPTS = 50;
@@ -3602,41 +3602,49 @@ void TMC4671::handleStateCoggingCalibration() {
 			int attempt = 1;
 			uint8_t tune_phase = 0; // 0: Global Boost, 1: Kp, 2: Ki
 			bool tune_finished = false;
-			float chatter_threshold = 1000.0f * (max_test_torque * 0.01f); // 1000 samples * (1% max torque per iteration)
 
-			// Sequential optimizer: Search for absolute best PID gains
 			while (!tune_finished && (attempt <= VAL_MAX_ATTEMPTS) && !emergency && hasPower()) {
 				float max_err_val = 0.0f;
-				float iq_chatter_sum = 0.0f;
-				float last_iq_cmd = 0.0f;
+				float max_delta_err = 0.0f; // Tracks the largest instantaneous error jump (derivative)
+				float last_err = 0.0f;
+				
+				float integral_acc = 0.0f; // Core of the custom Anti-Windup PI controller
 
-				arm_pid_init_f32(&pid_soft, 1); // Reset integrator
-
+				// Continuous Absolute Position (No modulo wrapping)
 				float val_target_pos_f = getAbsolutePosition();
 				uint32_t val_start = HAL_GetTick();
 				uint32_t next_tick = micros();
 				
-				// Test rotation and catch the max during the rotation
+				// Test rotation
 				while (HAL_GetTick() - val_start < VAL_TOTAL_DURATION_MS && !emergency && hasPower()) {
 					next_tick += 1000;
+					
+					// Continuous target increment WITHOUT wrapping to 0.0
 					val_target_pos_f += (TARGET_RPM / 60.0f) * 0.001f;
+					
 					float actual_pos = getAbsolutePosition();
 					float err = val_target_pos_f - actual_pos;
 
-					// Anti Wind-up, limit the pid to try to fix more than 1/4 turn, optional but can improve
-					if (err > 0.25f) err = 0.25f;   
-    				if (err < -0.25f) err = -0.25f;
-
-					float iq_cmd = arm_pid_f32(&pid_soft, err);
+					// --- CUSTOM PI WITH STRICT ANTI-WINDUP ---
+					integral_acc += pid_soft.Ki * err;
+					
+					// The integral can no longer exceed the torque limit! Prevents stalling wind-up.
+					integral_acc = clip<float,float>(integral_acc, -max_test_torque, max_test_torque);
+					
+					float iq_cmd = (pid_soft.Kp * err) + integral_acc;
 					iq_cmd = clip<float,float>(iq_cmd, -max_test_torque, max_test_torque);
+					// ------------------------------------------
 
-					// Ignore startup transient (warmup)
+					// Stats: Ignore the starting transient spike (warmup)
 					if (HAL_GetTick() - val_start > COGGING_WARMUP_MS) {
 						if (fabs(err) > max_err_val) max_err_val = fabs(err);
-						iq_chatter_sum += fabs(iq_cmd - last_iq_cmd);
+						
+						// Peak instantaneous error jump (Vibration detection)
+						float delta_err = fabs(err - last_err);
+						if (delta_err > max_delta_err) max_delta_err = delta_err;
 					}
 
-					last_iq_cmd = iq_cmd;
+					last_err = err; // Save for the next iteration
 					applySafeTorque(iq_cmd);
 
 					refreshWatchdog();
@@ -3645,69 +3653,72 @@ void TMC4671::handleStateCoggingCalibration() {
 				applySafeTorque(0);
 
 				float err_deg = max_err_val * 360.0f;
+				float delta_err_deg = max_delta_err * 360.0f;
 				bool improved = false;
 				
-				// Chatter guardrails: prevents the PID from becoming too "nervous"
-				// Iq chatter threshold: sum of absolute differences > chatter_threshold 
-				bool high_chatter = (iq_chatter_sum > chatter_threshold);
+				// --- INSTABILITY DETECTION ---
+				// A jump of > 0.5 degrees in 1ms indicates a harsh mechanical vibration (kickback)
+				bool instability = (err_deg > 5.0f) || 
+								   (max_err_val > best_err_val * 1.5f && attempt > 1) || 
+								   (delta_err_deg > 0.5f);
 
-				if (err_deg >= 0.8f && err_deg <= TARGET_TOLERANCE_DEG && !high_chatter) {
-					// TOTAL SUCCESS: The PID is perfectly balanced
+				// Target satisfaction (Early exit)
+				if (err_deg <= TARGET_TOLERANCE_DEG && !instability) {
 					best_err_val = max_err_val;
 					best_Kp = pid_soft.Kp; best_Ki = pid_soft.Ki; best_Kd = pid_soft.Kd;
-					
-					snprintf(dbg_buf, sizeof(dbg_buf), "Sweet spot reached (%.2f deg). Tune finished.", err_deg);
+					snprintf(dbg_buf, sizeof(dbg_buf), "Target tolerance met (%.2f deg). Stopping tune.", err_deg);
 					CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 					tune_finished = true;
-					
 				} else {
-					if (high_chatter) {
-						// CASE 0: Motor vibrates or chatters -> Kp is to blame (too stiff)
-						// Severely slash Kp, barely touch Ki to maintain speed
-						pid_soft.Kp *= 0.60f; 
-						pid_soft.Ki *= 0.50f; 
-						snprintf(dbg_buf, sizeof(dbg_buf), "Retry %d (Err: %.2f) -> Chatter (%.2f)! Slashing Kp (new %.2f)...", attempt, err_deg, iq_chatter_sum, pid_soft.Kp);
-					} 
-					else if (err_deg > 5.0f) {
-                        // CAS 1 : Heavy position error (Major Lag / Stall Motor)
-                        // Emergency is to compensate the lag by boosting the integral to catch the position (Ki).
-                        pid_soft.Kp *= 1.10f; 
-                        pid_soft.Ki *= 1.40f; 
-                        snprintf(dbg_buf, sizeof(dbg_buf), "Retry %d (Err: %.2f) -> Heavy lag! Forcing Ki (new %.2f) with a Chatter (%.2f)...", attempt, err_deg, pid_soft.Ki, iq_chatter_sum);
-                    }
-					else if (err_deg < 0.8f) {
-						// CASE 2: Tracking is too perfect (erasing the magnet feel), without vibrating
-						// Relax the spring to let the motor "breathe" over the magnetic notches
-						// Keep Ki mostly intact to keep moving smoothly
-						pid_soft.Kp *= 0.85f; 
-						pid_soft.Ki *= 0.95f; 
-						snprintf(dbg_buf, sizeof(dbg_buf), "Retry %d (Err: %.2f) -> Too rigid, softening Kp (new %.2f)...", attempt, err_deg, pid_soft.Kp);
-					} 
-					else {
-						// CASE 3: err_deg > 1.5f -> Motor is lagging behind
-						// Needs much more continuous muscle (Ki) to overcome notches/friction
-						pid_soft.Kp *= 1.05f; // Slight boost to proportional spring
-						pid_soft.Ki *= 1.15f; // Massive boost to integral
-						snprintf(dbg_buf, sizeof(dbg_buf), "Retry %d (Err: %.2f) -> Lagging, boosting Kp/Ki (new %.2f/%.2f)...", attempt, err_deg, pid_soft.Kp, pid_soft.Ki);
-					}
-					
-					CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
-
-					// Save the best compromise found so far (safety fallback)
-					if (err_deg < best_err_val * 360.0f && !high_chatter) {
+					// 1. Update best known performance
+					if (max_err_val < best_err_val && !instability) {
 						best_err_val = max_err_val;
 						best_Kp = pid_soft.Kp; best_Ki = pid_soft.Ki; best_Kd = pid_soft.Kd;
+						improved = true;
 					}
 
-					attempt++;
-					if (attempt > VAL_MAX_ATTEMPTS) {
-						tune_finished = true;
-						// Restore the best compromise found
+					// 2. Check for phase transition (if no improvement or unstable, move to next phase)
+					if (instability || !improved) {
+						// Restore the last known stable gains
 						pid_soft.Kp = best_Kp; pid_soft.Ki = best_Ki; pid_soft.Kd = best_Kd;
-						snprintf(dbg_buf, sizeof(dbg_buf), "Val Limit Reached. Best fallback: %.2f deg.", best_err_val * 360.0f);
+						
+						if (instability) {
+							snprintf(dbg_buf, sizeof(dbg_buf), "Instability (Err: %.2f, Jump: %.3f/ms). Transitioning phase.", err_deg, delta_err_deg);
+							CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+						}
+						
+						tune_phase++;
+						tune_finished = (tune_phase > 2); // Only Kp and Ki phases (Skip Kd)
+
+						if (tune_finished) {
+							snprintf(dbg_buf, sizeof(dbg_buf), "Auto-tune completed. Best: %.2f deg", best_err_val * 360.0f);
+							CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+						}
+					}
+				}
+
+				if (!tune_finished) {
+					if (attempt < VAL_MAX_ATTEMPTS) {
+						if (tune_phase == 0) { // Global Boost
+							pid_soft.Kp *= 1.30f; pid_soft.Ki *= 1.25f;
+						} else if (tune_phase == 1) { // Fine Kp
+							pid_soft.Kp *= 1.10f; 
+						} else if (tune_phase == 2) { // Fine Ki
+							pid_soft.Ki *= 1.10f; 
+						}
+
+						const char* phase_name = (tune_phase == 0) ? "Global Boost" : (tune_phase == 1) ? "Fine Kp" : "Fine Ki";
+						snprintf(dbg_buf, sizeof(dbg_buf), "Retry %d (Err: %.2f deg) -> %s", attempt, err_deg, phase_name);
 						CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
-					} else {
+
+						attempt++;
 						Delay(VAL_RETRY_PAUSE_MS);
+					} else {
+						// Absolute maximum attempts reached
+						pid_soft.Kp = best_Kp; pid_soft.Ki = best_Ki; pid_soft.Kd = best_Kd;
+						snprintf(dbg_buf, sizeof(dbg_buf), "Val Limit Reached. Best found: %.2f deg.", best_err_val * 360.0f);
+						CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+						tune_finished = true;
 					}
 				}
 			}
