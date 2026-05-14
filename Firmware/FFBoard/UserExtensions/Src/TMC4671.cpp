@@ -3646,21 +3646,21 @@ void TMC4671::handleStateCoggingCalibration() {
 					tune_finished = true;
 					
 				} else {
-					if (err_deg > 5.0f) {
-                        // CAS 0 : Heavy position error (Major Lag / Stall Motor)
-                        // Emergency is to compensate the lag by boosting the integral to catch the position (Ki).
-                        pid_soft.Ki *= 1.40f; 
-                        // we allow a quick Kp boost if there is no vibration on the shaft.
-                        if (!high_chatter) pid_soft.Kp *= 1.10f; 
-                        snprintf(dbg_buf, sizeof(dbg_buf), "Retry %d (Err: %.2f) -> Heavy lag! Forcing Ki (new %.2f) with a Chatter (%.2f/%.3f)...", attempt, err_deg, pid_soft.Kp, iq_chatter_sum, pos_chatter_sum);
-                    }
-                    else if (high_chatter) {
+					if (high_chatter) {
 						// CASE 1: Motor vibrates or chatters -> Kp is to blame (too stiff)
 						// Severely slash Kp, barely touch Ki to maintain speed
 						pid_soft.Kp *= 0.70f; 
 						pid_soft.Ki *= 0.95f; 
 						snprintf(dbg_buf, sizeof(dbg_buf), "Retry %d (Err: %.2f) -> Chatter (%.2f/%.3f)! Slashing Kp (new %.2f)...", attempt, err_deg, iq_chatter_sum, pos_chatter_sum, pid_soft.Kp);
 					} 
+					else if (err_deg > 5.0f) {
+                        // CAS 0 : Heavy position error (Major Lag / Stall Motor)
+                        // Emergency is to compensate the lag by boosting the integral to catch the position (Ki).
+                        pid_soft.Ki *= 1.40f; 
+                        // we allow a quick Kp boost if there is no vibration on the shaft.
+                        if (!high_chatter) pid_soft.Kp *= 1.10f; 
+                        snprintf(dbg_buf, sizeof(dbg_buf), "Retry %d (Err: %.2f) -> Heavy lag! Forcing Ki (new %.2f) with a Chatter (%.2f/%.3f)...", attempt, err_deg, pid_soft.Ki, iq_chatter_sum, pos_chatter_sum);
+                    }
 					else if (err_deg < 0.8f) {
 						// CASE 2: Tracking is too perfect (erasing the magnet feel), without vibrating
 						// Relax the spring to let the motor "breathe" over the magnetic notches
