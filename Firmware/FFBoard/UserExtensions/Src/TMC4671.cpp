@@ -3612,8 +3612,13 @@ void TMC4671::handleStateCoggingCalibration() {
 					if (HAL_GetTick() - val_start > COGGING_WARMUP_MS) {
 						if (fabs(err) > max_err_val) max_err_val = fabs(err);
 						iq_chatter_sum += fabs(iq_cmd - last_iq_cmd);
-						pos_chatter_sum += fabs(err - last_err);
+
+						float delta_err = err - last_err;
+                        if (delta_err > 0.5f) delta_err -= 1.0f;
+                        if (delta_err < -0.5f) delta_err += 1.0f;
+                        pos_chatter_sum += fabs(delta_err);
 					}
+
 					last_iq_cmd = iq_cmd;
 					last_err = err;
 					applySafeTorque(iq_cmd);
@@ -3641,8 +3646,15 @@ void TMC4671::handleStateCoggingCalibration() {
 					tune_finished = true;
 					
 				} else {
-					// SURGICAL GAIN ADJUSTMENT
-					if (high_chatter) {
+					if (err_deg > 5.0f) {
+                        // CAS 0 : Heavy position error (Major Lag / Stall Motor)
+                        // Emergency is to compensate the lag by boosting the integral to catch the position (Ki).
+                        pid_soft.Ki *= 1.40f; 
+                        // we allow a quick Kp boost if there is no vibration on the shaft.
+                        if (!high_chatter) pid_soft.Kp *= 1.10f; 
+                        snprintf(dbg_buf, sizeof(dbg_buf), "Retry %d (Err: %.2f) -> Heavy lag! Forcing Ki (new %.2f) with a Chatter (%.2f/%.3f)...", attempt, err_deg, pid_soft.Kp, iq_chatter_sum, pos_chatter_sum);
+                    }
+                    else if (high_chatter) {
 						// CASE 1: Motor vibrates or chatters -> Kp is to blame (too stiff)
 						// Severely slash Kp, barely touch Ki to maintain speed
 						pid_soft.Kp *= 0.70f; 
