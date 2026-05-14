@@ -3545,7 +3545,7 @@ void TMC4671::handleStateCoggingCalibration() {
 				float Ki_base = (0.54f * Ku / Tu) * dt;
 				float Kd_base = (0.15f * Ku * Tu) / dt;
 
-				if (Tu > 0.045f) { // Large motor profile (e.g. MiGE)
+				/*if (Tu > 0.045f) { // Large motor profile (e.g. MiGE)
 					pid_soft.Kp = Kp_base * 1.2f;
 					pid_soft.Ki = Ki_base * 8.0f;
 					pid_soft.Kd = 0.0f;
@@ -3553,7 +3553,10 @@ void TMC4671::handleStateCoggingCalibration() {
 					pid_soft.Kp = Kp_base * 0.6f;
 					pid_soft.Ki = Ki_base * 0.4f;
 					pid_soft.Kd = 0.0f;
-				}
+				}*/
+				pid_soft.Kp = Kp_base * 0.4f;
+                pid_soft.Ki = Ki_base * 0.4f;
+                pid_soft.Kd = 0.0f;
 				arm_pid_init_f32(&pid_soft, 1);
 				
 				snprintf(dbg_buf, sizeof(dbg_buf), "Step 1.3: Motor react in %dms to run at %.1frpm with a torque %d", (int)(Tu * 1000.0f), TARGET_RPM, (int)tuning_torque);
@@ -3644,7 +3647,7 @@ void TMC4671::handleStateCoggingCalibration() {
 						// Severely slash Kp, barely touch Ki to maintain speed
 						pid_soft.Kp *= 0.70f; 
 						pid_soft.Ki *= 0.95f; 
-						snprintf(dbg_buf, sizeof(dbg_buf), "Retry %d (Err: %.2f) -> Chatter! Slashing Kp...", attempt, err_deg);
+						snprintf(dbg_buf, sizeof(dbg_buf), "Retry %d (Err: %.2f) -> Chatter (%.2f/%.3f)! Slashing Kp (new %.2f)...", attempt, err_deg, iq_chatter_sum, pos_chatter_sum, pid_soft.Kp);
 					} 
 					else if (err_deg < 0.8f) {
 						// CASE 2: Tracking is too perfect (erasing the magnet feel), without vibrating
@@ -3652,14 +3655,14 @@ void TMC4671::handleStateCoggingCalibration() {
 						pid_soft.Kp *= 0.85f; 
 						// Keep Ki mostly intact to keep moving smoothly
 						pid_soft.Ki *= 0.95f; 
-						snprintf(dbg_buf, sizeof(dbg_buf), "Retry %d (Err: %.2f) -> Too rigid, softening Kp...", attempt, err_deg);
+						snprintf(dbg_buf, sizeof(dbg_buf), "Retry %d (Err: %.2f) -> Too rigid, softening Kp (new %.2f)...", attempt, err_deg, pid_soft.Kp);
 					} 
 					else {
 						// CASE 3: err_deg > 1.5f -> Motor is lagging behind
 						// Needs much more continuous muscle (Ki) to overcome notches/friction
-						pid_soft.Ki *= 1.30f; // Massive boost to integral
 						pid_soft.Kp *= 1.10f; // Slight boost to proportional spring
-						snprintf(dbg_buf, sizeof(dbg_buf), "Retry %d (Err: %.2f) -> Lagging, boosting Ki...", attempt, err_deg);
+						pid_soft.Ki *= 1.30f; // Massive boost to integral
+						snprintf(dbg_buf, sizeof(dbg_buf), "Retry %d (Err: %.2f) -> Lagging, boosting Kp/Ki (new %.2f/%.2f)...", attempt, err_deg, pid_soft.Kp, pid_soft.Ki);
 					}
 					
 					CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
