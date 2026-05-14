@@ -1661,7 +1661,7 @@ void TMC4671::turn(int16_t power){
 #endif
 
 	// Inversion if encoder is reversed (ext) or force inversion is requested
-	if((this->conf.encoderReversed && conf.motconf.enctype == EncoderType_TMC::ext) || conf.invertForce){
+	if((this->conf.encoderReversed && conf.motconf.enctype == EncoderType_TMC::ext) ^ conf.invertForce){
 		totalPower = -totalPower;
 	}
 
@@ -3339,7 +3339,7 @@ void TMC4671::handleStateFullCalibration() {
 // Helper: Apply torque safely considering encoder direction and flux
 void TMC4671::applySafeTorque(float torque_cmd) {
 	int16_t pwr = (int16_t)torque_cmd;
-	if ((this->conf.encoderReversed && conf.motconf.enctype == EncoderType_TMC::ext) || conf.invertForce) {
+	if ((this->conf.encoderReversed && conf.motconf.enctype == EncoderType_TMC::ext) ^ conf.invertForce) {
 		pwr = -pwr;
 	}
 	int32_t flux_cmd = idleFlux - clip<int32_t,int16_t>(abs(pwr), 0, maxOffsetFlux);
@@ -3513,6 +3513,7 @@ void TMC4671::handleStateCoggingCalibration() {
 			uint16_t cross_count = 0;
 			float max_amplitude = 0.0f;
 			start_pos = getFilteredPosition();
+			bool was_positive = true;
 
 			while (HAL_GetTick() - tune_start < TUNE_OSCILLATION_MS && !emergency && friction_broken) {
 				float actual_pos = getFilteredPosition();
@@ -3522,7 +3523,6 @@ void TMC4671::handleStateCoggingCalibration() {
 				if (error > 0) applySafeTorque(tuning_torque);
 				else applySafeTorque(-tuning_torque);
 
-				static bool was_positive = true;
 				bool is_positive = (error > 0);
 				if (is_positive != was_positive) {
 					uint32_t now = micros();
