@@ -3707,6 +3707,7 @@ void TMC4671::handleStateCoggingCalibration() {
 						if (instability) {
 							snprintf(dbg_buf, sizeof(dbg_buf), "Instability detected (Jump: %.3f/ms, Regress: %d). Transitioning phase.", delta_err_deg, regression);
 							CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+							
 						}
 						
 						// Advance phase
@@ -3758,7 +3759,7 @@ void TMC4671::handleStateCoggingCalibration() {
 					}
 
 					// Complete debug telemetry
-					snprintf(dbg_buf, sizeof(dbg_buf), "Retry %d [Err:%.2f Jump:%.2f VChat:%d Lag:%d Regr:%d] -> %s (Kp:%.0f Ki:%.0f)", 
+					snprintf(dbg_buf, sizeof(dbg_buf), "Retry %d (Err:%.2f Jump:%.2f VChat:%d Lag:%d Regr:%d) -> %s (Kp:%.0f Ki:%.0f)", 
 							 attempt, err_deg, delta_err_deg, violent_chatter, stick_slip_lag, regression, action_name, pid_soft.Kp, pid_soft.Ki);
 					CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 
