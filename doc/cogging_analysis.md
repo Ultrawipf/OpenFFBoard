@@ -22,10 +22,17 @@ The system uses a **Continuous Discrete Fourier Transform (DFT)** integration. I
         *   **Hybrid Tuning Strategy**:
             *   **Phase 0 (Global Boost)**: Rapidly stiffens the controller by multiplying $K_p \times 1.30$ and $K_i \times 1.25$.
             *   **Phases 1-2 (Coordinate Descent)**: Fine-tunes $K_p$ and $K_i$ individually by $10\%$ per step. (Kd tuning is skipped).
-        *   **Advanced Instability Detection**: An attempt is flagged as unstable if:
-            1.  The tracking error exceeds **5.0 degrees**.
-            2.  The error is $> 1.5\times$ the best found error.
-            3.  **High-Frequency Chatter**: The Iq torque command exhibits excessive noise (chatter detector).
+        *   **Advanced Instability Detection**: The algorithm monitors performance at the end of each test to select the next action. The following table summarizes the possible scenarios:
+
+| Detection State | Condition (Criteria) | Execution Action (Kp/Ki Modifiers) | Memory Action (`best_Kp/Ki`) |
+| :--- | :--- | :--- | :--- |
+| **Target Met** | Error $\le 1.5^\circ$ AND no instability | **Stop Tuning**: Early exit. | Best gains are kept and locked. |
+| **Panic Reset** | (Chatter OR Regression OR Divergence) AND no stable base found yet (`never_stable = true`) | **Emergency Reset**: Halve the currently active gains ($Kp \times 0.5$, $Ki \times 0.5$). | Erase memory. Force the new halved gains as the new baseline. |
+| **Rescue Boost** | Motor is stuck/lagging (Error $> 5.0^\circ$) AND no chatter detected | **Stiction Break**: Agressively boost gains ($Kp \times 1.25$, $Ki \times 1.40$) to force movement. | Wait. If the boost improves the error, record these new boosted gains. |
+| **Phase Transition (Regression)** | Max error $> 1.5\times$ best historical error (Slow safety limit) | **Rollback**: Restore the best known stable gains and move to the next tuning phase. | No update. Reverts to previous best. |
+| **Phase Transition (Divergence)** | Max error $> 1.2\times$ previous attempt error AND error $> 2.0^\circ$ (Fast safety) | **Rollback**: Restore the best known stable gains and move to the next tuning phase. | No update. Reverts to previous best. |
+| **Normal Improvement** | Error is lower than the best historical error AND no instability | **Continue**: Apply the current phase's multipliers (e.g., $Kp \times 0.85$ in Phase 0). | Save current gains as the new best baseline. |
+
         *   **Backtracking**: Upon detecting instability or lack of improvement, the system **reverts to the best-known parameters** and transitions to the next tuning phase.
         *   **Strict Tolerance**: If the best found error remains above **3.0 degrees**, the calibration aborts to prevent incorrect compensation maps.
 2.  **Torque Response Capture (Deterministic Dual-Pass Acquisition)**: The motor rotates at a constant speed defined by **TARGET_RPM** (default: 8 RPM) in both directions.
