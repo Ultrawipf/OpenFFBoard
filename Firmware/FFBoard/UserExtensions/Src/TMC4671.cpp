@@ -3605,6 +3605,7 @@ void TMC4671::handleStateCoggingCalibration() {
 			
 			// Tracks if the motor has successfully completed at least one stable pass
 			bool never_stable = true; 
+			float last_attempt_err = 1e9f;
 
 			while (!tune_finished && (attempt <= VAL_MAX_ATTEMPTS) && !emergency && hasPower()) {
 				float max_err_val = 0.0f;
@@ -3656,11 +3657,16 @@ void TMC4671::handleStateCoggingCalibration() {
 				float err_deg = max_err_val * 360.0f;
 				float delta_err_deg = max_delta_err * 360.0f;
 				
-				bool violent_chatter = (delta_err_deg > 0.5f);
+				// VChat: Only if jump is large AND error is small (prevents panic during catch-up)
+				bool violent_chatter = (delta_err_deg > 1.5f) && (err_deg < 10.0f);
 				bool stick_slip_lag = (err_deg > 5.0f) && !violent_chatter;
-				bool regression = (max_err_val > best_err_val * 1.5f && attempt > 1);
 				
-				bool instability = violent_chatter || regression;
+				// Regression: Comparison with absolute BEST record (Slow safety)
+				bool regression = (max_err_val > best_err_val * 1.5f && attempt > 1);
+				// Divergence: Comparison with PREVIOUS attempt (Fast safety to stop bad tuning early)
+				bool divergence = (max_err_val > last_attempt_err * 1.20f && attempt > 1) && (err_deg > 2.0f);
+				
+				bool instability = violent_chatter || regression || divergence;
 				bool target_met = (err_deg <= TARGET_TOLERANCE_DEG && !instability);
 				
 				bool do_panic_reset = (instability && never_stable);
@@ -3668,15 +3674,22 @@ void TMC4671::handleStateCoggingCalibration() {
 				bool improved = (max_err_val < best_err_val && !instability);
 
 				// ==========================================================
-				// 2. RECORD UPDATE (Save best performance if normal run)
+				// 2. RECORD UPDATE (Save best performance)
 				// ==========================================================
-				if (!do_panic_reset && !do_rescue_mode && improved) {
+				if (!do_panic_reset && improved) {
 					best_err_val = max_err_val;
 					best_Kp = pid_soft.Kp; 
 					best_Ki = pid_soft.Ki; 
 					best_Kd = pid_soft.Kd;
-					never_stable = false; // We found a stable baseline!
+					
+					// We only consider the system "Stable" (stopping Panic mode) 
+					// if we are not in Rescue (error is small enough)
+					if (!do_rescue_mode) {
+						never_stable = false; 
+					}
 				}
+
+				last_attempt_err = max_err_val; // Memory for divergence detection
 
 				// ==========================================================
 				// 3. DECISION ROUTER (Flat logic to choose the next action)
@@ -3730,9 +3743,9 @@ void TMC4671::handleStateCoggingCalibration() {
 
 					switch (current_action) {
 						case -1: 
-							// CRITICAL: Bad starting gains (Baseline * 0.5)
-							best_Kp *= 0.50f; best_Ki *= 0.50f;
-							pid_soft.Kp = best_Kp; pid_soft.Ki = best_Ki;
+							// CRITICAL: Halve current gains that caused chatter
+							pid_soft.Kp *= 0.50f; pid_soft.Ki *= 0.50f;
+							best_Kp = pid_soft.Kp; best_Ki = pid_soft.Ki;
 							action_name = "Panic Reset"; 
 							break;
 						case -2: 
