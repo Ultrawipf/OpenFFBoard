@@ -58,8 +58,6 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_SPI_BTN_2_CONF 0x205
 #define ADR_SPI_BTN_1_CONF_2 0x206
 #define ADR_SPI_BTN_2_CONF_2 0x207
-#define ADR_SPI_BTN_3_CONF 0x209
-#define ADR_SPI_BTN_3_CONF_2 0x20A
 #define ADR_LOCAL_BTN_CONF_3 0x208 // Pulse mask
 // Local encoder
 #define ADR_ENCLOCAL_CPR 0x210

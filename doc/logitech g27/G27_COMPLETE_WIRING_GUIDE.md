@@ -240,13 +240,29 @@ O câmbio G27 tem:
 
 ## Wheel Rim Buttons / Botões do Aro
 
+> **Upstream PR vs Fork note:**
+> - **PR #182 (upstream):** Contains only the ShifterAnalog G27 H-pattern fix. Wheel rim via SPI2 CS2 is the preferred upstream approach, but requires a **tri-state buffer** on MISO because the stock G27 74HC165 has no tri-state output.
+> - **Tag `g27-full-working` (fork):** Contains SPI3 support for the wheel rim. Use this tag to build and flash firmware if you need both shifter + wheel rim working on stock G27 hardware today.
+
 ### EN - Wheel Rim Wiring
 
 The G27 wheel rim has:
 - **1x 74HC165** for 8 buttons
 - **1x HC595AG** for LEDs (optional, not implemented)
 
-> **Important:** The wheel rim buttons **cannot share the same SPI bus** with the shifter because the 74HC165 lacks tri-state output. A **separate SPI port (SPI3)** must be used.
+> **Important:** The wheel rim buttons **cannot share the same SPI bus** with the shifter because the **stock G27 74HC165 lacks tri-state output**. The upstream preferred approach (SPI2 CS2) requires adding a tri-state buffer (e.g. 74HC125) on the MISO line. The fork workaround uses a **separate SPI port (SPI3)** — available in tag `g27-full-working`.
+
+#### Option A: Upstream approach (SPI2 CS2, requires tri-state buffer)
+
+| Function | OpenFFBoard Pin | Notes |
+|----------|-----------------|-------|
+| SCK | PB13 | Shared with shifter |
+| MISO | PB14 | Via 74HC125 tri-state buffer |
+| CS/Latch | PD8 | SPI2_SS2 |
+| VCC | 3.3V | Power |
+| GND | GND | Ground |
+
+#### Option B: Fork workaround (SPI3, tag `g27-full-working`)
 
 | Function | OpenFFBoard Pin | Wheel Rim Pin | Notes |
 |----------|-----------------|---------------|-------|
@@ -258,37 +274,27 @@ The G27 wheel rim has:
 | MOSI | - | 3 | For LEDs (not used) |
 | LED Latch | - | 5 | For LEDs (not used) |
 
-#### Why SPI3? / Por que SPI3?
+#### Why the conflict? / Por que há conflito?
 
-The 74HC165 shift register does **not have tri-state output**. When two 74HC165 chips share the same MISO line, they create electrical contention - both try to drive the line simultaneously. Using a separate SPI bus (SPI3) avoids this problem.
+The 74HC165 shift register does **not have tri-state output**. When two 74HC165 chips share the same MISO line, they create electrical contention - both try to drive the line simultaneously. The upstream solution requires a buffer IC; the fork solution uses a separate SPI bus.
 
-#### Configuration / Configuração
-- Class: **SPI Buttons 3** (custom, uses SPI3)
+#### Configuration for Option B / Configuração para Opção B
+- Class: **SPI Buttons 3** (fork only, uses SPI3)
 - Buttons: **8**
 - Mode: **74HC165** (PISOSR)
 - CS Pin: **1** (PA15)
 
 ### PT - Ligação dos Botões do Aro
 
+> **PR upstream vs Fork:**
+> - **PR #182 (upstream):** Contém apenas o fix do câmbio ShifterAnalog. Aro via SPI2 CS2 é a abordagem preferida upstream, mas exige **buffer tri-state** no MISO porque o G27 stock não tem saída tri-state.
+> - **Tag `g27-full-working` (fork):** Contém suporte a SPI3 para o aro. Use essa tag para compilar e gravar se precisar de câmbio + aro funcionando no hardware G27 stock hoje.
+
 O aro do G27 tem:
 - **1x 74HC165** para 8 botões
 - **1x HC595AG** para LEDs (opcional, não implementado)
 
-> **Importante:** Os botões do aro **não podem compartilhar o mesmo barramento SPI** com o câmbio porque o 74HC165 não tem saída tri-state. Um **porta SPI separada (SPI3)** deve ser usada.
-
-| Função | Pino OpenFFBoard | Pino do Aro | Notas |
-|--------|------------------|-------------|-------|
-| VCC | 3.3V | 1 | Alimentação (3.3V!) |
-| SCK | PC10 | 4 | Clock SPI3 |
-| MISO | PC11 | 6 | Dados SPI3 |
-| CS/Latch | PA15 | 2 | SPI3_SS1 |
-| GND | GND | 7 | Terra |
-| MOSI | - | 3 | Para LEDs (não usado) |
-| LED Latch | - | 5 | Para LEDs (não usado) |
-
-#### Por que SPI3?
-
-O registrador 74HC165 **não tem saída tri-state**. Quando dois 74HC165 compartilham a mesma linha MISO, eles criam conflito elétrico - ambos tentam controlar a linha simultaneamente. Usar um barramento SPI separado (SPI3) evita esse problema.
+> **Importante:** Os botões do aro **não podem compartilhar o mesmo barramento SPI** com o câmbio porque o **G27 stock 74HC165 não tem saída tri-state**. A abordagem upstream (SPI2 CS2) requer adicionar um buffer tri-state (ex: 74HC125). O workaround fork usa **SPI3** — disponível na tag `g27-full-working`.
 
 ---
 
@@ -422,7 +428,7 @@ O registrador 74HC165 **não tem saída tri-state**. Quando dois 74HC165 compart
 1. **PA9 Resistor (STM32F407VET6)**: A **10kΩ pull-up resistor between PA9 and 5V is required** for the F407VG firmware to boot on generic STM32F407VET6 boards. Without it, only the DISCO firmware works.
 2. **Voltage**: The shifter and wheel rim electronics work with **3.3V**. Do not apply 5V!
 3. **SPI Bus Separation**: The wheel rim **must** use a separate SPI bus (SPI3) due to 74HC165 limitations.
-4. **Firmware**: The wheel rim buttons require custom firmware modifications (SPI_Buttons_3 class).
+4. **Firmware**: Wheel rim buttons via SPI3 require the fork firmware (tag `g27-full-working`). The upstream PR includes only the ShifterAnalog fix.
 
 ### PT - Avisos Importantes
 

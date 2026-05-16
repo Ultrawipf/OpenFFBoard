@@ -52,9 +52,9 @@ Esta pasta contém documentação e guias para integrar um **Volante Logitech G2
 
 ### Wheel Rim + Shifter Together
 
-> **EN:** The G27 wheel rim and shifter both use 74HC165 shift registers which **cannot share the same SPI bus** due to lack of tri-state output. This fork adds **SPI3 support** to allow both to work simultaneously.
+> **EN:** The G27 wheel rim and shifter both use 74HC165 shift registers which **cannot share the same SPI bus** due to lack of tri-state output. **PR #182 (upstream)** includes only the G27 shifter fix in ShifterAnalog. The wheel rim via SPI3 is a fork-only workaround available in tag **`g27-full-working`** — use it to flash if you need both shifter + wheel rim working today.
 >
-> **PT:** O aro e o câmbio do G27 usam 74HC165 que **não podem compartilhar o mesmo barramento SPI** devido à falta de saída tri-state. Este fork adiciona **suporte a SPI3** para ambos funcionarem simultaneamente.
+> **PT:** O aro e o câmbio do G27 usam 74HC165 que **não podem compartilhar o mesmo barramento SPI** devido à falta de saída tri-state. **O PR #182 (upstream)** inclui apenas o fix do câmbio no ShifterAnalog. O aro via SPI3 é um workaround de fork disponível na tag **`g27-full-working`** — use-a para gravar se você precisa do câmbio + aro funcionando hoje.
 
 ---
 
@@ -71,7 +71,7 @@ Esta pasta contém documentação e guias para integrar um **Volante Logitech G2
 | Document | Description |
 |----------|-------------|
 | [**G27_SHIFTER_ISSUE_REPORT.md**](G27_SHIFTER_ISSUE_REPORT.md) | Analysis of ShifterAnalog bugs and fixes / Análise dos bugs do câmbio |
-| [**G27_WHEEL_RIM_BUTTONS_REPORT.md**](G27_WHEEL_RIM_BUTTONS_REPORT.md) | SPI bus conflict analysis and SPI3 solution / Conflito SPI e solução |
+| [**G27_WHEEL_RIM_BUTTONS_REPORT.md**](G27_WHEEL_RIM_BUTTONS_REPORT.md) | SPI bus conflict analysis and SPI3 workaround (fork/tag `g27-full-working` only) |
 
 ---
 
@@ -96,7 +96,7 @@ See [G27_COMPLETE_WIRING_GUIDE.md](G27_COMPLETE_WIRING_GUIDE.md) for detailed pi
 | Encoder | ABN | PA0, PA1 |
 | Pedals | Analog | PA2, PA3, PC3 |
 | Shifter | SPI2 + Analog | PB12, PB13, PB14, PC0, PC1 |
-| Wheel Rim | SPI3 | PA15, PC10, PC11 |
+| Wheel Rim | SPI3 (fork/tag `g27-full-working` only) | PA15, PC10, PC11 |
 
 ### 3. Configure / Configurar
 
@@ -106,7 +106,7 @@ Using OpenFFBoard Configurator:
 2. **Encoder**: Local ABN, CPR 2400 (or 65535 for MT6835)
 3. **Analog**: 3 axes for pedals
 4. **Shifter**: ShifterAnalog, Mode G27 H-pattern
-5. **Wheel Rim**: SPI Buttons 3, 8 buttons, Mode 74HC165
+5. **Wheel Rim**: SPI Buttons 3, 8 buttons, Mode 74HC165 *(fork/tag `g27-full-working` only)*
 
 ---
 

@@ -24,9 +24,6 @@ const std::vector<class_entry<ButtonSource>> ButtonSource::all_buttonsources =
 #ifdef SPIBUTTONS2
 		add_class<SPI_Buttons_2,ButtonSource>(2),
 #endif
-#ifdef SPIBUTTONS3
-		add_class<SPI_Buttons_3,ButtonSource>(6),
-#endif
 #ifdef SHIFTERBUTTONS
 		add_class<ShifterAnalog,ButtonSource>(3),
 #endif

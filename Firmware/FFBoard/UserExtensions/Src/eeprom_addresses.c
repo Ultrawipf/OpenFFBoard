@@ -40,8 +40,6 @@ const uint16_t VirtAddVarTab[NB_OF_VAR] =
 	ADR_SPI_BTN_2_CONF,
 	ADR_SPI_BTN_1_CONF_2,
 	ADR_SPI_BTN_2_CONF_2,
-	ADR_SPI_BTN_3_CONF,
-	ADR_SPI_BTN_3_CONF_2,
 	ADR_LOCAL_BTN_CONF_3, // Pulse mask
 // Local encoder
 	ADR_ENCLOCAL_CPR,
@@ -238,12 +236,8 @@ const uint16_t exportableFlashAddresses[NB_EXPORTABLE_ADR] =
 	ADR_SPI_BTN_1_CONF,
 	ADR_SHIFTERANALOG_CONF,
 	ADR_LOCAL_BTN_CONF, // Pin mask
-	ADR_LOCAL_BTN_CONF_2, // Misc settings
-	ADR_SPI_BTN_2_CONF,
 	ADR_SPI_BTN_1_CONF_2,
 	ADR_SPI_BTN_2_CONF_2,
-	ADR_SPI_BTN_3_CONF,
-	ADR_SPI_BTN_3_CONF_2,
 	ADR_LOCAL_BTN_CONF_3, // Pulse mask
 // Local encoder
 	ADR_ENCLOCAL_CPR,

@@ -103,17 +103,4 @@ public:
 	static bool isCreatable();
 };
 
-class SPI_Buttons_3 : public SPI_Buttons {
-public:
-	SPI_Buttons_3();
-
-	const ClassIdentifier getInfo() override;
-	static ClassIdentifier info;
-	static bool isCreatable();
-
-	void restoreFlash() override; // Override to set default values
-	uint8_t readButtons(uint64_t* buf) override; // Override to use synchronous read for SPI3
-	std::string getHelpstring() override {return "SPI 3 Button (SPI3)";}
-};
-
 #endif /* SPIBUTTONS_H_ */

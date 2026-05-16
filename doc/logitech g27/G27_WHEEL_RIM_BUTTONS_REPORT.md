@@ -1,8 +1,10 @@
 # G27 Wheel Rim Buttons - SPI Bus Conflict Report & Solution
 
+> **Upstream PR note:** The upstream maintainer prefers using **SPI2 with a second CS pin** (e.g. PD8) for the wheel rim, which is the correct approach when a tri-state buffer is present on the MISO line. The **stock G27 wheel rim has no tri-state output**, so SPI2 CS2 fails when both devices are connected simultaneously. The SPI3 workaround documented here is available in the tag **`g27-full-working`** (fork only). **PR #182 contains only the ShifterAnalog fix** — the SPI3 wheel rim code is not included upstream.
+
 ## 🎯 Summary
 
-The **G27 steering wheel rim buttons** (8 buttons via 74HC165) worked correctly when used **alone** on SPI2, but **failed when used simultaneously** with the G27 shifter on the same SPI bus. This document explains the root cause and the solution implemented using a separate SPI port.
+The **G27 steering wheel rim buttons** (8 buttons via 74HC165) worked correctly when used **alone** on SPI2, but **failed when used simultaneously** with the G27 shifter on the same SPI bus. This document explains the root cause and the workaround implemented using a separate SPI port (SPI3, fork/tag only).
 
 ---
 
