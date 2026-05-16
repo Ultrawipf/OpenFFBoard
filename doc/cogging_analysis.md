@@ -6,35 +6,16 @@ This document describes the implementation of the harmonic-based anti-cogging co
 
 The system uses a **Continuous Discrete Fourier Transform (DFT)** integration. It eliminates lookup tables and fixed-size buffers, making it memory-safe for all supported microcontrollers (F407 and F411).
 
-1.  **Software PID & Auto-Tuning**: Before acquisition, the system performs a dynamic auto-tuning of a software PID controller (using CMSIS-DSP). It identifies the motor's static friction and uses the **Relay Feedback method** and **Ziegler-Nichols method** ([reference](https://en.wikipedia.org/wiki/Ziegler%E2%80%93Nichols_method)) to calculate optimal gains.
-    *   **Base Gain Calculation (Stable Ziegler-Nichols)**:
-        *   $K_{p\_base} = 0.45 \times K_u$ (45% of Ultimate Gain)
-        *   $K_{i\_base} = (0.54 \times K_u / T_u) \times dt$
-        *   $K_{d\_base} = (0.15 \times K_u \times T_u) / dt$
-        *   *Note: $dt = 0.001s$ (1kHz loop).*
-    *   **Dynamic Inertia Profiling**: The system analyzes the oscillation period ($T_u$) to automatically differentiate between motor classes:
-        *   **Small Motors ($T_u \le 45ms$)**: Applied scalers are $K_p \times 0.6$, $K_i \times 0.4$, $K_d = 0$. Optimized for minimal vibration and high frequency noise rejection.
-        *   **Large Motors ($T_u > 45ms$)**: Applied scalers are $K_p \times 1.2$, $K_i \times 8.0$, $K_d = 0$. Optimized for high-torque Direct Drive motors while maintaining smooth acquisition currents.
-        *   *Note: $K_d$ is forced to zero in all profiles to ensure long-term stability and prevent high-frequency jitter during acquisition.*
-    *   **Validation & Stability-Aware Fine-Tuning**: A high-precision verification phase is performed with up to **50 attempts**. 
-        *   **Target vs Max Tolerance**: The system aims for an ideal **1.5 degrees** of tracking error for early exit (`TARGET_TOLERANCE_DEG`), but maintains an absolute strict limit of **3.0 degrees** (`MAX_TOLERANCE_DEG`).
-        *   **Warmup Window**: It ignores the first 1500ms of each 2500ms test rotation to eliminate startup transients and stiction effects.
-        *   **Hybrid Tuning Strategy**:
-            *   **Phase 0 (Global Boost)**: Rapidly stiffens the controller by multiplying $K_p \times 1.30$ and $K_i \times 1.25$.
-            *   **Phases 1-2 (Coordinate Descent)**: Fine-tunes $K_p$ and $K_i$ individually by $10\%$ per step. (Kd tuning is skipped).
-        *   **Advanced Instability Detection**: The algorithm monitors performance at the end of each test to select the next action. The following table summarizes the possible scenarios:
+1.  **Software PID & System Identification**: Before acquisition, the system performs a deterministic identification of the motor's physical parameters to calculate ideal PID gains (using CMSIS-DSP). It avoids heuristic trial-and-error by measuring the actual hardware:
+    *   **Static Friction (Breakout)**: Identifies the minimum torque required to overcome stiction.
+    *   **Mechanical Inertia ($J$)**: Measures angular acceleration ($\alpha$) resulting from a constant torque pulse ($\tau$). $J = \tau / \alpha$.
+    *   **Viscous Friction ($B$)**: Measures the steady-state torque required to maintain a constant moderate speed ($\omega$). $B = \tau / \omega$.
+    *   **Deterministic Gain Calculation (Pole Placement / IMC)**: Instead of Ziegler-Nichols, the system uses exact physics-based formulas to guarantee a **critically damped response** ($\zeta = 1.0$) at a target control bandwidth ($\omega_n$).
+        *   $K_p = 2 \cdot \zeta \cdot \omega_n \cdot J - B$
+        *   $K_i = \omega_n^2 \cdot J$
+        *   $K_d = 0$ (Forced to zero for maximum stability at low speed).
+    *   **Validation Rotation**: A single 2.5s test rotation at **TARGET_RPM** is performed to verify tracking stability. If the error exceeds 5.0°, calibration aborts.
 
-| Detection State | Condition (Criteria) | Execution Action (Kp/Ki Modifiers) | Memory Action (`best_Kp/Ki`) |
-| :--- | :--- | :--- | :--- |
-| **Target Met** | Error $\le 1.5^\circ$ AND no instability | **Stop Tuning**: Early exit. | Best gains are kept and locked. |
-| **Panic Reset** | (Chatter OR Regression OR Divergence) AND no stable base found yet (`never_stable = true`) | **Emergency Reset**: Halve the currently active gains ($Kp \times 0.5$, $Ki \times 0.5$). | Erase memory. Force the new halved gains as the new baseline. |
-| **Rescue Boost** | Motor is stuck/lagging (Error $> 5.0^\circ$) AND no chatter detected | **Stiction Break**: Agressively boost gains ($Kp \times 1.25$, $Ki \times 1.40$) to force movement. | Wait. If the boost improves the error, record these new boosted gains. |
-| **Phase Transition (Regression)** | Max error $> 1.5\times$ best historical error (Slow safety limit) | **Rollback**: Restore the best known stable gains and move to the next tuning phase. | No update. Reverts to previous best. |
-| **Phase Transition (Divergence)** | Max error $> 1.2\times$ previous attempt error AND error $> 2.0^\circ$ (Fast safety) | **Rollback**: Restore the best known stable gains and move to the next tuning phase. | No update. Reverts to previous best. |
-| **Normal Improvement** | Error is lower than the best historical error AND no instability | **Continue**: Apply the current phase's multipliers (e.g., $Kp \times 0.85$ in Phase 0). | Save current gains as the new best baseline. |
-
-        *   **Backtracking**: Upon detecting instability or lack of improvement, the system **reverts to the best-known parameters** and transitions to the next tuning phase.
-        *   **Strict Tolerance**: If the best found error remains above **3.0 degrees**, the calibration aborts to prevent incorrect compensation maps.
 2.  **Torque Response Capture (Deterministic Dual-Pass Acquisition)**: The motor rotates at a constant speed defined by **TARGET_RPM** (default: 8 RPM) in both directions.
     *   **1kHz Strict Integration**: Acquisition is strictly clocked at 1kHz. For an 8-second tour, exactly **8,000 samples** are integrated. This ensures perfect spatial alignment and mathematical precision for the DFT.
     *   **Torque Inversion & Safety**: The system supports `conf.invertForce` during torque application via `applySafeTorque`, preventing positive feedback loops in various hardware configurations.
@@ -54,12 +35,10 @@ The system uses a **Continuous Discrete Fourier Transform (DFT)** integration. I
 *   **Compatibility**: Fully portable between F407 and F411.
 
 ### Internal Tuning Constants
-*   `TUNE_OSCILLATION_MS` (600ms): Duration of the relay feedback test.
-*   `VAL_TOTAL_DURATION_MS` (2500ms): Duration of each PID validation run (1.5s warmup window + 1s measurement).
+*   `TARGET_RPM` (7.5): The constant rotation speed for calibration.
+*   `MAX_TOLERANCE_DEG` (3.0°): Absolute maximum error limit allowed during DFT.
+*   `VAL_TOTAL_DURATION_MS` (2500ms): Duration of the PID validation check.
 *   `COGGING_WARMUP_MS` (1500ms): Stabilization window ignored during measurement and integration.
-*   `VAL_MAX_ATTEMPTS` (50): Maximum number of iterative PID tuning passes.
-*   `MAX_TOLERANCE_DEG` (3.0°): Absolute maximum error limit allowed.
-*   `TARGET_RPM` (8.0): The constant rotation speed for calibration.
 
 ## 3. Calibration Phase Summary (Steps & Timings)
 
@@ -67,10 +46,14 @@ The following table summarizes the sequence of operations, their durations, and 
 
 | Phase | Sub-Step | Duration | Torque / Control Strategy | Goal |
 | :--- | :--- | :--- | :--- | :--- |
-| **1. Auto-PID** | Relay Test | 600ms | Bang-Bang (`±tuning_torque`) | Measure $T_u$ and $K_u$ |
-| | Calculation | - | Ziegler-Nichols + Inertia Profiling | Set base soft PID gains |
-| **2. Validation** | Stability Check | 2500ms | PID Control (Ignore first 1500ms) | Fine-tune PID stiffness |
-| | Retry Pause | 500ms | Zero Torque | Reset system for next attempt |
+| **1. SysID** | Breakout | Variable | Ramp-up | Measure static friction |
+| | Inertia ($J$) | 150ms | Constant Pulse | Measure rotor mass |
+| | Friction ($B$) | 2000ms | Velocity P-Loop | Measure dynamic drag |
+| **2. Validation** | Sanity Check | 2500ms | PID Control (Calculated Gains) | Verify tracking stability |
+| **3. Acquisition** | DFT Integration | ~10.5s | PID Control (Wait 1500ms before DFT) | Capture 360° of cogging Iq/Id |
+| **4. Return** | Centering | Variable | PID Control (Position Ramp to 0.0) | Unwind motor revolutions |
+| | Final Align | - | `EncoderInit` State (`bangInitEnc`) | Reset hardware alignment |
+
 | **3. Acquisition** | Setup | 1000ms | Zero Torque | Settle motor at rest |
 | | DFT Integration | ~10.5s | PID Control (Wait 1500ms before DFT) | Capture 360° of cogging Iq/Id |
 | **4. Return** | Centering | Variable | PID Control (Position Ramp to 0.0) | Unwind motor revolutions |
