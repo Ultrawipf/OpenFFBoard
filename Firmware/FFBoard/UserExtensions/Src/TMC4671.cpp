@@ -3520,15 +3520,19 @@ void TMC4671::handleStateCoggingCalibration() {
 			applySafeTorque(0);
 			
 			float dt_j = (float)(j_end_us - j_start_us) / 1000000.0f;
-			float d_pos = fabs(getWrappedError(start_pos, end_pos));
-			// Physics Formula: J = (Torque * dt^2) / (2 * delta_pos)
-			float J = (j_torque * dt_j * dt_j) / (2.0f * d_pos);
+			float d_pos_turns = fabs(getWrappedError(start_pos, end_pos));
+			float d_pos_rad = d_pos_turns * 2.0f * PI; 
+			
+			// Physics Formula: J = (Torque * dt^2) / (2 * delta_pos_rad)
+			// Scale by 100 to map physical J to the abstract TMC integer units
+			float J = ((j_torque * dt_j * dt_j) / (2.0f * d_pos_rad)) * 100.0f;
 			Delay(500);
 
 			// Step 1.3: Measure Viscous Friction (B)
 			CommandHandler::broadcastCommandReply(CommandReply("Step 1.3: Measuring Viscous Friction (B)...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 			float test_rpm = 30.0f;
-			float b_target_vel = test_rpm / 60.0f; 
+			float b_target_vel_turns = test_rpm / 60.0f; 
+			float b_target_vel_rad = b_target_vel_turns * 2.0f * PI;
 			float b_pos = getAbsolutePosition();
 			float b_sum_torque = 0.0f;
 			uint32_t b_samples = 0;
@@ -3538,7 +3542,7 @@ void TMC4671::handleStateCoggingCalibration() {
 			float kp_vel = j_torque * 5.0f; 
 			while (HAL_GetTick() - b_start < SYSID_B_DURATION_MS && !emergency) {
 				next_tick += 1000;
-				b_pos += b_target_vel * 0.001f;
+				b_pos += b_target_vel_turns * 0.001f;
 				float err = b_pos - getAbsolutePosition();
 				float cmd = err * kp_vel;
 				cmd = clip<float,float>(cmd, -max_test_torque, max_test_torque);
@@ -3552,7 +3556,8 @@ void TMC4671::handleStateCoggingCalibration() {
 				while ((micros() - next_tick) & 0x80000000) {}
 			}
 			applySafeTorque(0);
-			float B = (b_sum_torque / (float)b_samples) / b_target_vel;
+			// Scale by 100 to map physical B to the abstract TMC integer units
+			float B = ((b_sum_torque / (float)b_samples) / b_target_vel_rad) * 100.0f;
 			Delay(500);
 
 			// Step 1.4: IMC Pole Placement Calculation
