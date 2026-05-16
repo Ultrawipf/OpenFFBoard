@@ -1374,15 +1374,18 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(SPI1_SS1_GPIO_Port, SPI1_SS1_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, SPI1_SS2_Pin|SPI1_SS3_Pin|SPI2_NSS_Pin, GPIO_PIN_RESET);
+  // SPI CS pins initialized HIGH (inactive) - important for 74HC165 shift registers
+  HAL_GPIO_WritePin(SPI2_NSS_GPIO_Port, SPI2_NSS_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOB, SPI1_SS2_Pin|SPI1_SS3_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOE, DRV_ENABLE_Pin|DRV_BRAKE_Pin|DRV_GP1_Pin|LED_CLIP_Pin
                           |LED_ERR_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOD, SPI2_SS2_Pin|SPI2_SS3_Pin|SPI3_SS2_Pin|SPI3_SS3_Pin
-                          |CAN_S_Pin|GP1_Pin|LED_SYS_Pin, GPIO_PIN_RESET);
+  // SPI2 CS pins initialized HIGH (inactive) - required for correct SPI_Buttons operation
+  HAL_GPIO_WritePin(GPIOD, SPI2_SS2_Pin|SPI2_SS3_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOD, SPI3_SS2_Pin|SPI3_SS3_Pin|CAN_S_Pin|GP1_Pin|LED_SYS_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(SPI3_SS1_GPIO_Port, SPI3_SS1_Pin, GPIO_PIN_RESET);

@@ -40,6 +40,7 @@
 // Extra features
 #define LOCALBUTTONS
 #define SPIBUTTONS
+#define SPIBUTTONS2
 #define SHIFTERBUTTONS
 #define PCF8574BUTTONS // Requires I2C
 #define ANALOGAXES
