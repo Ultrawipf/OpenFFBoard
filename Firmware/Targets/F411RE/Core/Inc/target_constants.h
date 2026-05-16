@@ -52,7 +52,10 @@
 
 #define TIM_ENC htim3
 // Timer 3 is used by the encoder.
+// htim9 is shared: used as TIM_USER (e.g. MidiMain) and TIM_CALIBRATION (TMC4671).
+// As these two features are mutually exclusive at runtime, sharing htim9 is safe.
 #define TIM_USER htim9
+#define TIM_CALIBRATION htim9
 #define TIM_TMC htim2
 #define TIM_TMC_BCLK SystemCoreClock
 
