@@ -3548,7 +3548,8 @@ void TMC4671::handleStateCoggingCalibration() {
 				cmd = clip<float,float>(cmd, -max_test_torque, max_test_torque);
 				applySafeTorque(cmd);
 				
-				if (HAL_GetTick() - b_start > (SYSID_B_DURATION_MS / 2)) { // Steady state
+				// WARMUP: Only integrate torque after half the duration to ensure steady-state velocity
+				if (HAL_GetTick() - b_start > (SYSID_B_DURATION_MS / 2)) { 
 					b_sum_torque += cmd;
 					b_samples++;
 				}
@@ -3561,7 +3562,8 @@ void TMC4671::handleStateCoggingCalibration() {
 			Delay(500);
 
 			// Step 1.4: IMC Pole Placement Calculation
-			float f_bw = (J > 500000.0f) ? 8.0f : 15.0f; 
+			// Threshold 5000 matches the new J scaling (K52G ~ 700, MiGE ~ 5000+)
+			float f_bw = (J > 5000.0f) ? 8.0f : 15.0f; 
 			float wn = 2.0f * PI * f_bw;
 			
 			pid_soft.Kp = 2.0f * 1.0f * wn * J - B;
@@ -3581,7 +3583,6 @@ void TMC4671::handleStateCoggingCalibration() {
 			float val_target_pos = getAbsolutePosition();
 			float max_err_deg = 0.0f;
 			uint32_t val_start = HAL_GetTick();
-			float integral_acc = 0.0f;
 			next_tick = micros();
 
 			while (HAL_GetTick() - val_start < VAL_TOTAL_DURATION_MS && !emergency) {
@@ -3589,9 +3590,14 @@ void TMC4671::handleStateCoggingCalibration() {
 				val_target_pos += (TARGET_RPM / 60.0f) * 0.001f;
 				float err = val_target_pos - getAbsolutePosition();
 				
-				integral_acc += pid_soft.Ki * err;
-				integral_acc = clip<float,float>(integral_acc, -max_test_torque, max_test_torque);
-				float cmd = (pid_soft.Kp * err) + integral_acc;
+				// Calculate base torque from tuned PID
+				float iq_pid = arm_pid_f32(&pid_soft, err);
+				
+				// FRICTION FEED-FORWARD: Overcome stiction using measured breakout torque
+				float iq_ff = (TARGET_RPM > 0) ? tuning_torque : -tuning_torque;
+				
+				float cmd = iq_pid + iq_ff;
+				cmd = clip<float,float>(cmd, -max_test_torque, max_test_torque);
 				applySafeTorque(cmd);
 
 				if (HAL_GetTick() - val_start > COGGING_WARMUP_MS) {
