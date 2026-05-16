@@ -35,7 +35,7 @@
 #ifdef COGGING_TABLE_FLASH_START_ADDRESS
 // --- Constants for anti-cogging calibration ---
 #define COGGING_CALIB_LUT_RESOLUTION    2880 	// Resolution for legacy protocol communication
-#define COGGING_CALIB_TIME_PER_REV_S    8 	 	// Time in seconds to complete one revolution (8s = 7.5 RPM)
+#define COGGING_CALIB_TIME_PER_REV_S    20 	 	// Time in seconds to complete one revolution (8s = 7.5 RPM)
 #define COGGING_CALIB_DFT_HARMONICS      128     // Number of harmonics to analyze during calibration
 #define COGGING_CALIB_ENABLE_ID_DIAG            // Enable Point 1 diagnostic (Id axis analysis)
 #endif
@@ -44,6 +44,11 @@ extern SPI_HandleTypeDef HSPIDRV;
 
 #ifdef TIM_TMC
 extern TIM_HandleTypeDef TIM_TMC;
+#endif
+
+#ifdef TIM_CALIBRATION
+// Hardware timer configuration used for non-blocking anticogging torque calibration.
+extern TIM_HandleTypeDef TIM_CALIBRATION;
 #endif
 
 #ifndef TMC4671_DEFAULT_CURRENT_SCALER
@@ -290,6 +295,7 @@ struct TMC4671FlashAddrs{
 	uint16_t torqueFilter = ADR_TMC1_TRQ_FILT;
 #ifdef COGGING_TABLE_FLASH_START_ADDRESS
 	uint16_t coggingEnable = ADR_TMC1_COGGING_CAL;
+	uint16_t coggingScale = ADR_TMC1_COGGING_SCALE;
 #endif
 };
 
@@ -398,7 +404,8 @@ struct TMC4671BiquadFilters{
 class TMC4671 :
 		public MotorDriver, public PersistentStorage, public Encoder,
 		public CommandHandler, public SPIDevice, public ExtiHandler, public cpp_freertos::Thread,ErrorHandler
-#ifdef TIM_TMC
+#if defined(TIM_TMC) || defined(TIM_CALIBRATION)
+		// Inherit from TimerHandler to receive hardware timer elapsed interrupts
 		,public TimerHandler
 #endif
 {
@@ -514,7 +521,8 @@ public:
 	bool isSlewRateCalibrationInProgress();
 	bool isCalibrationInProgress() override;
 
-#ifdef TIM_TMC
+#if defined(TIM_TMC) || defined(TIM_CALIBRATION)
+	// Callback triggered when a hardware timer expires
 	void timerElapsed(TIM_HandleTypeDef* htim);
 #endif
 
@@ -553,6 +561,7 @@ public:
 	void setFluxTorque(int16_t flux, int16_t torque);
 	void setFluxTorqueFF(int16_t flux, int16_t torque);
 	std::pair<int32_t,int32_t> getActualTorqueFlux();
+
 	int32_t getActualFlux();
 	int32_t getActualTorque();
 
@@ -726,6 +735,7 @@ private:
 	Harmonic cogging_harmonics[COGGING_HARMONICS_COUNT];
 	bool cogging_enabled = false;
 	float cogging_scale = 0.5f;
+	int32_t last_anticogging_torque = 0;
 	void saveCoggingTable();
 	void clearCoggingTable();
 
@@ -788,15 +798,55 @@ private:
 	TMC4671BiquadFilters curFilters;
 	static constexpr float FLUX_FILTER_FREQ = 350.0f;
 
-	// External encoder timer fires interrupts to trigger a new commutation position update
+	// --- Calibration & External Encoder Timing Variables ---
+	
+	// Utility: Timer driving the external encoder updater thread. When using an external encoder, 
+	// this timer must continue running unaffected to avoid desynchronizing the encoder.
+	// Pacing of the calibration is then synchronized to this timer via tick counting.
+	// Expected Value: Points to &TIM_TMC (typically htim6, configured with TIM_TMC_ARR) or nullptr.
+	TIM_HandleTypeDef* externalEncoderTimer = 
 #ifdef TIM_TMC
-
-	TIM_HandleTypeDef* externalEncoderTimer = &TIM_TMC;
-	std::unique_ptr<TMC_ExternalEncoderUpdateThread> extEncUpdater = nullptr;
+		&TIM_TMC;
 #else
-	TIM_HandleTypeDef* externalEncoderTimer = nullptr;
+		nullptr;
 #endif
+
+	// Utility: Dedicated FreeRTOS helper thread to write external encoder positions to the TMC4671 
+	// register 0x1C asynchronously over SPI, keeping long SPI transfers out of the ISR.
+	// Expected Value: Valid std::unique_ptr when usingExternalEncoder() is true, or nullptr.
+	std::unique_ptr<TMC_ExternalEncoderUpdateThread> extEncUpdater = nullptr;
+
+	// Utility: Timer used for pacing the calibration loops when no external encoder is used.
+	// Shared with TIM_USER (MidiMain) and reconfigured dynamically during calibration.
+	// Expected Value: Points to &TIM_CALIBRATION (typically htim9) or nullptr if not defined/available.
+	TIM_HandleTypeDef* calibTimer = 
+#ifdef TIM_CALIBRATION
+		&TIM_CALIBRATION;
+#else
+		nullptr;
+#endif
+
+	// Utility: Active tick counter incremented inside the external encoder timer (TIM_TMC) ISR.
+	// Used only when calibration pacing is driven by the external encoder timer.
+	// Expected Value / Range: Increments from 0 up to (calibTicksTarget - 1).
+	volatile uint32_t calibTicksCount = 0;
+
+	// Utility: The target tick threshold from TIM_TMC that corresponds to the requested calibration period.
+	// Set to 0 when tick-based pacing is inactive.
+	// Expected Value: Typically 1 for fast calibration loops (e.g., 250 us loop / 250 us ARR)
+	// and 4 for slow calibration loops (e.g., 1000 us loop / 250 us ARR). Value is 0 when inactive.
+	volatile uint32_t calibTicksTarget = 0;
+
 	void setUpExtEncTimer();
+
+	// Configures and starts the calibration hardware timer with the specified period (in microseconds).
+	void startCalibTimers(uint32_t period_us);
+
+	// Stops the calibration hardware timer and restores default external encoder timer behavior if needed.
+	void stopCalibTimers();
+
+	// Returns the actual calibration period in microseconds based on the active timer pacing source.
+	uint32_t getActualCalibPeriod(uint32_t target_period_us);
 };
 
 

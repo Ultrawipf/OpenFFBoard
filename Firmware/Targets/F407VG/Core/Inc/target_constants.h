@@ -66,7 +66,10 @@
 #define TIM_PWM htim1
 
 #define TIM_MICROS_HALTICK htim7 // Micros timer MUST be reset by hal tick timer or isr to count microseconds since last tick
-#define TIM_USER htim9 // Timer with full core clock speed available for the mainclass
+// htim9 is shared: used as TIM_USER (e.g. MidiMain) and TIM_CALIBRATION (TMC4671).
+// As these two features are mutually exclusive at runtime, sharing htim9 is safe.
+#define TIM_USER htim9
+#define TIM_CALIBRATION htim9
 #define TIM_TMC htim6 // Timer running at half clock speed
 #define TIM_TMC_BCLK SystemCoreClock / 2
 #define TIM_TMC_ARR 250 // 4khz
