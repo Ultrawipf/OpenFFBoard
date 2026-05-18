@@ -3338,7 +3338,14 @@ void TMC4671::handleStateFullCalibration() {
 #ifdef COGGING_TABLE_FLASH_START_ADDRESS
 // Helper: Apply torque with zero flux for pure cogging measurement
 void TMC4671::applySafeTorque(float torque_cmd) {
-	int16_t pwr = (int16_t)torque_cmd;
+	float totalPower = torque_cmd;
+
+	// Respect inversion settings
+	if ((this->conf.encoderReversed && conf.motconf.enctype == EncoderType_TMC::ext) ^ conf.invertForce) {
+		totalPower = -totalPower;
+	}
+
+	int16_t pwr = (int16_t)clip<float, float>(totalPower, -32768, 32767);
 	// Use zero flux (Id = 0) to ensure measured current is 100% dedicated to torque (Iq)
 	setFluxTorque(0, pwr);
 }
@@ -3448,6 +3455,7 @@ void TMC4671::handleStateCoggingCalibration() {
 		uint32_t total_samples = 0;
 		float starting_torque = bangInitPower > 0 ? (float)bangInitPower * 0.15f : 300.0f; 
 		float tuning_torque = starting_torque;
+		float dynamic_friction = 0.0f;
 
 		if (!hasPower()) {
 			// --- DEBUG SIMULATION MODE ---
@@ -3558,23 +3566,26 @@ void TMC4671::handleStateCoggingCalibration() {
 			}
 			applySafeTorque(0);
 			// Scale by 100 to map physical B to the abstract TMC integer units
-			float B = ((b_sum_torque / (float)b_samples) / b_target_vel_rad) * 100.0f;
+			// Subtract Coulomb friction (breakout torque) to isolate true viscous damping
+			dynamic_friction = b_sum_torque / (float)b_samples;
+			float B = (dynamic_friction / b_target_vel_rad) * 100.0f;
+			B = clip<float, float>(B, 0.0f, 100000.0f); // Ensure B is positive
 			Delay(500);
 
 			// Step 1.4: IMC Pole Placement Calculation
-			// Threshold 5000 matches the new J scaling (K52G ~ 700, MiGE ~ 5000+)
-			float f_bw = (J > 5000.0f) ? 8.0f : 15.0f; 
+			// Threshold 500 matches the J scaling for medium/large motors (K52G ~ 700, MiGE ~ 2000-5000+)
+			float f_bw = (J > 500.0f) ? 12.0f : 15.0f; 
 			float wn = 2.0f * PI * f_bw;
 			
 			pid_soft.Kp = 2.0f * 1.0f * wn * J - B;
-			pid_soft.Ki = wn * wn * J * 0.001f; 
+			pid_soft.Ki = wn * wn * J * ((J > 500.0f) ? 0.0006f : 0.001f); 
 			pid_soft.Kd = 0.0f;
 			
 			pid_soft.Kp = clip<float,float>(pid_soft.Kp, 100.0f, 1000000.0f);
 			pid_soft.Ki = clip<float,float>(pid_soft.Ki, 1.0f, 100000.0f);
 			arm_pid_init_f32(&pid_soft, 1);
 
-			snprintf(dbg_buf, sizeof(dbg_buf), "System Identified -> J:%.0f B:%.0f | Gains -> Kp:%.0f Ki:%.0f", J, B, pid_soft.Kp, pid_soft.Ki);
+			snprintf(dbg_buf, sizeof(dbg_buf), "System Identified -> J:%.0f B:%.0f (torque %.2f, range (%.2f..%.2f)) | Gains -> Kp:%.0f Ki:%.0f", J, B, tuning_torque, starting_torque, max_test_torque, pid_soft.Kp, pid_soft.Ki);
 			CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 
 			// --- 1.5 FINAL SANITY CHECK ROTATION ---
@@ -3593,8 +3604,8 @@ void TMC4671::handleStateCoggingCalibration() {
 				// Calculate base torque from tuned PID
 				float iq_pid = arm_pid_f32(&pid_soft, err);
 				
-				// FRICTION FEED-FORWARD: Overcome stiction using measured breakout torque
-				float iq_ff = (TARGET_RPM > 0) ? tuning_torque : -tuning_torque;
+				// FRICTION FEED-FORWARD: take the dynamic friction read at step 1.3
+				float iq_ff = dynamic_friction;
 				
 				float cmd = iq_pid + iq_ff;
 				cmd = clip<float,float>(cmd, -max_test_torque, max_test_torque);
@@ -3656,8 +3667,12 @@ void TMC4671::handleStateCoggingCalibration() {
 						float actual_pos_f = getFilteredPosition();
 						
 						float error = getWrappedError(target_pos_f, actual_pos_f);
-						float iq_cmd = arm_pid_f32(&pid_soft, error);
+						float iq_pid = arm_pid_f32(&pid_soft, error);
 						
+						// FRICTION FEED-FORWARD: Pre-compensate friction so PID only fights cogging
+						float iq_ff = (target_rpm > 0) ? dynamic_friction : -dynamic_friction;
+						float iq_cmd = iq_pid + iq_ff;
+
 						// Tracking stats (Ignore startup transient)
 						if (HAL_GetTick() - calibStartTime > COGGING_WARMUP_MS) {
 							if (fabs(error) > max_err_seen) max_err_seen = fabs(error);
@@ -3795,7 +3810,9 @@ void TMC4671::handleStateCoggingCalibration() {
 					float error = target_pos_f - actual_pos_f;
 					
 					// Calculate torque via the CMSIS PID
-					float iq_cmd = arm_pid_f32(&pid_soft, error);
+					float iq_pid = arm_pid_f32(&pid_soft, error);
+					float iq_ff = (target_rpm > 0) ? dynamic_friction : -dynamic_friction;
+					float iq_cmd = iq_pid + iq_ff;
 					
 					// Use full test torque limit (standard for all phases)
 					iq_cmd = clip<float,float>(iq_cmd, -max_test_torque, max_test_torque);
