@@ -3573,15 +3573,28 @@ void TMC4671::handleStateCoggingCalibration() {
 			Delay(500);
 
 			// Step 1.4: IMC Pole Placement Calculation
-			// Threshold 500 matches the J scaling for medium/large motors (K52G ~ 700, MiGE ~ 2000-5000+)
-			float f_bw = (J > 500.0f) ? 12.0f : 15.0f; 
+			float f_bw = 15.0f;
+			float ki_scale = 0.001f;
+
+			if (J > 1000.0f) {
+				// Try to catch the K52G (Low Inertia > 1000)
+				// We reduce the brandwith to reduce Kp and reduce oscillation
+				f_bw = 6.0f; 
+				ki_scale = 0.0002f;
+			} else if (J > 500.0f) {
+				// Mige (Middle Inertie ~630)
+				f_bw = 13.5f;
+				ki_scale = 0.0005f;
+			}
+			
 			float wn = 2.0f * PI * f_bw;
 			
 			pid_soft.Kp = 2.0f * 1.0f * wn * J - B;
-			pid_soft.Ki = wn * wn * J * ((J > 500.0f) ? 0.0006f : 0.001f); 
+			pid_soft.Ki = wn * wn * J * ki_scale; 
 			pid_soft.Kd = 0.0f;
 			
-			pid_soft.Kp = clip<float,float>(pid_soft.Kp, 100.0f, 1000000.0f);
+			// Overall security : clip Kp 120 000 to reduce resonnance.
+			pid_soft.Kp = clip<float,float>(pid_soft.Kp, 100.0f, 120000.0f);
 			pid_soft.Ki = clip<float,float>(pid_soft.Ki, 1.0f, 100000.0f);
 			arm_pid_init_f32(&pid_soft, 1);
 
