@@ -131,4 +131,11 @@ extern CAN_HandleTypeDef hcan1;
 // System
 #define CCRAM_SEC ".ccmram"
 
+// Cogging tables in flash
+#define COGGING_HARMONICS_COUNT           20
+#define COGGING_TABLE_FLASH_START_ADDRESS ((uint32_t)0x08010000)
+#define COGGING_TABLE_SIZE                (COGGING_HARMONICS_COUNT * 12) 
+#define MAX_COGGING_TABLES                3
+#define COGGING_TABLE_FLASH_SECTOR        FLASH_SECTOR_4
+
 #endif /* INC_TARGET_CONSTANTS_H_ */

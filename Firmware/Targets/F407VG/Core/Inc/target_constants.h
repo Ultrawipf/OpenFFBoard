@@ -133,6 +133,12 @@ extern CAN_HandleTypeDef hcan1;
 #define EEPROM_START_ADDRESS  ((uint32_t)0x08004000) /* EEPROM emulation start address: from sector1*/
 #define PAGE_SIZE             (uint32_t)0x4000  /* Page size = 16KByte */
 
+// Cogging tables in flash
+#define COGGING_HARMONICS_COUNT           20
+#define COGGING_TABLE_FLASH_START_ADDRESS ((uint32_t)0x08010000)
+#define COGGING_TABLE_SIZE                (COGGING_HARMONICS_COUNT * 12) 
+#define MAX_COGGING_TABLES                3
+#define COGGING_TABLE_FLASH_SECTOR        FLASH_SECTOR_4
 
 // System
 // BKPSRAM positions

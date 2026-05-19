@@ -2,10 +2,11 @@
  * TMC4671.cpp
  *
  *  Created on: Feb 1, 2020
- *      Author: Yannick
+ *	  Author: Yannick, Vincent
  */
 
 #include "TMC4671.h"
+#include <new>
 #ifdef TMC4671DRIVER
 #include "ledEffects.h"
 #include "voltagesense.h"
@@ -49,6 +50,7 @@ ClassIdentifier TMC4671::info = {
 TMC4671::TMC4671(SPIPort& spiport,OutputPin cspin,uint8_t address) :
 		CommandHandler("tmc", CLSID_MOT_TMC0,address-1), SPIDevice{motor_spi,cspin},Thread("TMC", TMC_THREAD_MEM, TMC_THREAD_PRIO)
 {
+	this->drv_address = address;
 	CommandHandler::setCommandsEnabled(false);
 	setAddress(address);
 	registerCommands();
@@ -92,13 +94,25 @@ const ClassIdentifier TMC4671::getInfo() {
 
 void TMC4671::setAddress(uint8_t address){
 	if (address == 1){
-		this->flashAddrs = TMC4671FlashAddrs({ADR_TMC1_MOTCONF, ADR_TMC1_CPR, ADR_TMC1_ENCA, ADR_TMC1_OFFSETFLUX, ADR_TMC1_TORQUE_P, ADR_TMC1_TORQUE_I, ADR_TMC1_FLUX_P, ADR_TMC1_FLUX_I,ADR_TMC1_ADC_I0_OFS,ADR_TMC1_ADC_I1_OFS,ADR_TMC1_ENC_OFFSET,ADR_TMC1_PHIE_OFS,ADR_TMC1_TRQ_FILT});
+		this->flashAddrs = TMC4671FlashAddrs({ADR_TMC1_MOTCONF, ADR_TMC1_CPR, ADR_TMC1_ENCA, ADR_TMC1_OFFSETFLUX, ADR_TMC1_TORQUE_P, ADR_TMC1_TORQUE_I, ADR_TMC1_FLUX_P, ADR_TMC1_FLUX_I,ADR_TMC1_ADC_I0_OFS,ADR_TMC1_ADC_I1_OFS,ADR_TMC1_ENC_OFFSET,ADR_TMC1_PHIE_OFS,ADR_TMC1_TRQ_FILT
+#ifdef COGGING_TABLE_FLASH_START_ADDRESS
+			,ADR_TMC1_COGGING_CAL
+#endif
+			});
 	}else if (address == 2)
 	{
-		this->flashAddrs = TMC4671FlashAddrs({ADR_TMC2_MOTCONF, ADR_TMC2_CPR, ADR_TMC2_ENCA, ADR_TMC2_OFFSETFLUX, ADR_TMC2_TORQUE_P, ADR_TMC2_TORQUE_I, ADR_TMC2_FLUX_P, ADR_TMC2_FLUX_I,ADR_TMC2_ADC_I0_OFS,ADR_TMC2_ADC_I1_OFS,ADR_TMC2_ENC_OFFSET,ADR_TMC2_PHIE_OFS,ADR_TMC2_TRQ_FILT});
+		this->flashAddrs = TMC4671FlashAddrs({ADR_TMC2_MOTCONF, ADR_TMC2_CPR, ADR_TMC2_ENCA, ADR_TMC2_OFFSETFLUX, ADR_TMC2_TORQUE_P, ADR_TMC2_TORQUE_I, ADR_TMC2_FLUX_P, ADR_TMC2_FLUX_I,ADR_TMC2_ADC_I0_OFS,ADR_TMC2_ADC_I1_OFS,ADR_TMC2_ENC_OFFSET,ADR_TMC2_PHIE_OFS,ADR_TMC2_TRQ_FILT
+#ifdef COGGING_TABLE_FLASH_START_ADDRESS
+	,ADR_TMC2_COGGING_CAL
+#endif
+		});
 	}else if (address == 3)
 	{
-		this->flashAddrs = TMC4671FlashAddrs({ADR_TMC3_MOTCONF, ADR_TMC3_CPR, ADR_TMC3_ENCA, ADR_TMC3_OFFSETFLUX, ADR_TMC3_TORQUE_P, ADR_TMC3_TORQUE_I, ADR_TMC3_FLUX_P, ADR_TMC3_FLUX_I,ADR_TMC3_ADC_I0_OFS,ADR_TMC3_ADC_I1_OFS,ADR_TMC3_ENC_OFFSET,ADR_TMC3_PHIE_OFS,ADR_TMC3_TRQ_FILT});
+		this->flashAddrs = TMC4671FlashAddrs({ADR_TMC3_MOTCONF, ADR_TMC3_CPR, ADR_TMC3_ENCA, ADR_TMC3_OFFSETFLUX, ADR_TMC3_TORQUE_P, ADR_TMC3_TORQUE_I, ADR_TMC3_FLUX_P, ADR_TMC3_FLUX_I,ADR_TMC3_ADC_I0_OFS,ADR_TMC3_ADC_I1_OFS,ADR_TMC3_ENC_OFFSET,ADR_TMC3_PHIE_OFS,ADR_TMC3_TRQ_FILT
+#ifdef COGGING_TABLE_FLASH_START_ADDRESS			
+	,ADR_TMC3_COGGING_CAL
+#endif
+		});
 	}
 	//this->setAxis((char)('W'+address));
 }
@@ -127,6 +141,12 @@ void TMC4671::saveFlash(){
 	uint16_t filterval = (torqueFilterConf.params.freq & 0x1fff) | ((uint8_t)(torqueFilterConf.mode) << 13);
 	Flash_Write(flashAddrs.torqueFilter, filterval);
 
+#ifdef COGGING_TABLE_FLASH_START_ADDRESS
+	// Save cogging state
+	int8_t scale_int = clip<float>(this->cogging_scale * 100.0f, -127, 127);
+	uint16_t coggingFlash = (cogging_enabled ? 1 : 0) | ((uint8_t)scale_int << 1);
+	Flash_Write(flashAddrs.coggingEnable, coggingFlash);
+#endif
 }
 
 /**
@@ -137,6 +157,18 @@ void TMC4671::saveAdcParams(){
 	Flash_Write(flashAddrs.ADC_i1_ofs, conf.adc_I1_offset);
 	adcSettingsStored = true;
 }
+
+#ifdef COGGING_TABLE_FLASH_START_ADDRESS
+void TMC4671::saveCoggingTable(){
+	Flash_WriteCoggingTable(this->drv_address - 1, (void*)this->cogging_harmonics);
+}
+
+void TMC4671::clearCoggingTable(){
+	memset(cogging_harmonics, 0, sizeof(cogging_harmonics));
+	cogging_enabled = false;
+	saveCoggingTable();
+}
+#endif
 
 /**
  * Restores saved parameters
@@ -190,6 +222,20 @@ void TMC4671::restoreFlash(){
 		torqueFilterConf.mode = static_cast<TMCbiquadpreset>((filterval >> 13) & 0x7);
 	}
 
+#ifdef COGGING_TABLE_FLASH_START_ADDRESS
+	uint16_t cogging = 0; // Initialize to avoid random stack data
+	if(Flash_Read(flashAddrs.coggingEnable, &cogging)) {
+		cogging_enabled = cogging & 0x01;
+		int8_t scale_int = (cogging >> 1) & 0xFF;
+		if (scale_int == 0 && cogging_enabled) scale_int = 50; // Default if restored as 0 but was enabled (compatibility)
+		this->cogging_scale = (float)scale_int / 100.0f;
+	} else {
+		cogging_enabled = false;
+		this->cogging_scale = 0.5f;
+	}
+
+	Flash_ReadCoggingTable(this->drv_address - 1, (int16_t*)this->cogging_harmonics);
+#endif
 }
 
 bool TMC4671::hasPower(){
@@ -239,6 +285,18 @@ int32_t TMC4671::getTmcVM(){
 	return ((float)agpiA_VM * conf.hwconf.vmScaler) * 1000;
 }
 
+void TMC4671::setupDriver() {
+	// Configuration specific to TMC4671 upon starting the motor
+	// The power limit is set by the Axis class via setPowerLimit during initialization.
+
+	this->setExternalEncoderAllowed(true);
+	this->restoreFlash();
+	this->setLimits(curLimits);
+
+	// Start driver
+	this->setMotionMode(MotionMode::torque);
+	this->Start(); // Start thread
+}
 
 /**
  * Sets all parameters of the driver at startup. Only has to be called once when the driver is detected
@@ -251,7 +309,7 @@ bool TMC4671::initialize(){
 //	}
 	// Check if a TMC4671 is active and replies correctly
 	if(!pingDriver()){
-		ErrorHandler::addError(communicationError);
+		ErrorHandler::addError(COMMUNICATION_ERROR);
 		return false;
 	}
 
@@ -294,7 +352,7 @@ bool TMC4671::initialize(){
 	setAdcOffset(conf.adc_I0_offset, conf.adc_I1_offset);
 	setAdcScale(conf.adc_I0_scale, conf.adc_I1_scale);
 	setTorqueFilter(torqueFilterConf);
-	setBiquadFlux(TMC4671Biquad(Biquad(BiquadType::lowpass, fluxFilterFreq / getPwmFreq(), 0.7,0.0), true)); // Create flux filter
+	setBiquadFlux(TMC4671Biquad(Biquad(BiquadType::lowpass, FLUX_FILTER_FREQ / getPwmFreq(), 0.7,0.0), true)); // Create flux filter
 
 	// Initial adc calibration and check without PWM if power off to get basic offsets. PWM is off!
 	if(!hasPower()){
@@ -458,76 +516,22 @@ void TMC4671::Run(){
 			break;
 
 		case TMC_ControlState::waitPower:
-		{
-			allowStateChange = false;
-			pulseClipLed(); // blink led
-			static uint8_t powerCheckCounter = 0;
-			// if powered check ADCs and go to encoder calibration
-			if(!hasPower() || emergency){
-				powerCheckCounter = 0;
-				Delay(250);
-				break;
-			}
-			if(++powerCheckCounter > 5 && !powerInitialized){
-				initializeWithPower();
-			}
-			if(powerInitialized){
-				allowStateChange = true;
-			}
-			Delay(100);
+			handleStateWaitPower();
 			break;
-		}
 
 		case TMC_ControlState::FullCalibration:
-		{
-			fullCalibrationInProgress = true;
-			/*
-			 * Wait for power (OK)
-			 * Calibrate ADC offsets (OK)
-			 * Measure motor response
-			 * depending on encoder do encoder parameter estimation
-			 * align and store phiE for single phase AENC or indexed ABN enc
-			 *
-			 * If at any point external movement is detected abort
-			 */
-			 // Wait for Power
-			while(!hasPower()){
-				Delay(100);
-			}
-			curFilters.flux.params.enable = false;
-			setBiquadFlux(curFilters.flux);
-			// Calibrate ADC
-			enablePin.set();
-			setPwm(TMC_PwmMode::PWM_FOC); // enable foc to calibrate adc
-			Delay(50);
-			if(calibrateAdcOffset(500)){
-				saveAdcParams();
-			}else{
-				calibFailCb();
-				break;
-			}
-
-			// Encoder
-			calibrateEncoder();
-			setEncoderType(conf.motconf.enctype);
-			recalibrationRequired = false;
-			curFilters.flux.params.enable = true;
-			setBiquadFlux(curFilters.flux);
+			handleStateFullCalibration();
 			break;
-		}
-		case TMC_ControlState::Pidautotune:
-			{
-				allowStateChange = false;
-				 // Wait for Power
-				while(!hasPower()){
-					Delay(100);
-				}
-				pidAutoTune();
-				allowStateChange = true;
-				changeState(laststate,false);
-				break;
-			}
 
+		case TMC_ControlState::Pidautotune:
+			handleStatePidAutoTune();
+			break;
+
+#ifdef COGGING_TABLE_FLASH_START_ADDRESS
+		case TMC_ControlState::CoggingCalibration:
+			handleStateCoggingCalibration();
+			break;
+#endif
 		case TMC_ControlState::IndexSearch:
 			autohome();
 			changeState(laststate);
@@ -535,35 +539,8 @@ void TMC4671::Run(){
 			break;
 
 		case TMC_ControlState::Running:
-		{
-			// Check status, Temps, Everything alright?
-			uint32_t tick = HAL_GetTick();
-			if(tick - lastStatTime > 2000){ // Every 2s
-				lastStatTime = tick;
-				statusCheck();
-				// Get enable input. If tmc does not reply the result will read 0 or 0xffffffff (not possible normally)
-				uint32_t pins = readReg(0x76);
-				bool tmc_en = ((pins >> 15) & 0x01) && pins != 0xffffffff;
-				if(!tmc_en && motorEnabledRequested){ // Hardware emergency.
-					this->estopTriggered = true;
-					this->emergencyStop(false);
-					ErrorHandler::addError(estopError);
-					//changeState(TMC_ControlState::HardError);
-				}
-
-				// Temperature sense
-				if(conf.hwconf.thermistorSettings.temperatureEnabled){
-					float temp = getTemp();
-					if(temp > conf.hwconf.thermistorSettings.temp_limit){
-						changeState(TMC_ControlState::OverTemp);
-						pulseErrLed();
-					}
-				}
-
-			}
-			Delay(200);
-		}
-		break;
+			handleStateRunning();
+			break;
 
 		case TMC_ControlState::Shutdown:
 			Delay(100);
@@ -572,7 +549,7 @@ void TMC4671::Run(){
 				bool tmc_en = ((pins >> 15) & 0x01) && pins != 0xffffffff;
 				if(tmc_en){
 					// Emergency stop reset
-					ErrorHandler::clearError(estopError);
+					ErrorHandler::clearError(ESTOP_ERROR);
 					this->estopTriggered = false; // TODO resume correctly
 					changeState(TMC_ControlState::uninitialized,true);
 				}
@@ -612,8 +589,8 @@ void TMC4671::Run(){
 			}
 
 			if(fullCalibrationInProgress){
-				fullCalibrationInProgress = false;
 				Flash_Write(flashAddrs.encA,encodeEncHallMisc()); // Save encoder settings
+				changeState(TMC_ControlState::SlewRateCalibration);
 			}
 
 
@@ -622,15 +599,40 @@ void TMC4671::Run(){
 		default:
 
 		break;
+
+		case TMC_ControlState::SlewRateCalibration:
+			{
+				if(!hasPower()){
+					this->postPowerState = TMC_ControlState::SlewRateCalibration;
+					changeState(TMC_ControlState::waitPower);
+					break;
+				}
+				allowStateChange = false;
+				measureMaxSlewRate();
+				allowStateChange = true;
+				if(fullCalibrationInProgress){
+					fullCalibrationInProgress = false;
+					if(motorEnabledRequested && isSetUp()){
+						startMotor();
+						changeState(TMC_ControlState::Running);
+					}else{
+						stopMotor();
+						laststate = TMC_ControlState::Running; // Go to running when starting again
+					}
+				}else{
+					changeState(laststate,false);
+				}
+				break;
+			}
 		}
 
 
 		// Optional update methods for safety
 
-		if(!hasPower() && state != TMC_ControlState::waitPower && initialized && powerInitialized){ // low voltage or overvoltage
+		if(!hasPower() && state != TMC_ControlState::waitPower && state != TMC_ControlState::CoggingCalibration && initialized && powerInitialized){ // low voltage or overvoltage
 
 			requestedState = state;
-			ErrorHandler::addError(lowVoltageError);
+			ErrorHandler::addError(LOW_VOLTAGE_ERROR);
 			setMotionMode(MotionMode::stop,true); // Disable tmc
 			changeState(TMC_ControlState::waitPower,true);
 			allowStateChange = false;
@@ -647,7 +649,6 @@ void TMC4671::Run(){
 		}
 	} // End while
 }
-
 void TMC4671::calibrateEncoder(){
 	if(conf.motconf.enctype == EncoderType_TMC::abn) {
 		estimateABNparams();
@@ -663,105 +664,6 @@ void TMC4671::calibrateEncoder(){
 	changeState(TMC_ControlState::EncoderInit);
 
 
-}
-
-/**
- * Iterative tuning function for tuning the torque mode PI values
- */
-bool TMC4671::pidAutoTune(){
-	/**
-	 * Enter phieExt & torque mode
-	 * Zero I, default P
-	 * Ramp up flux P until 50% of target, then lower increments until targetflux_p is reached
-	 * Increase I until oscillation is found. Back off a bit
-	 */
-	curFilters.flux.params.enable = false;
-	setBiquadFlux(curFilters.flux);
-	PhiE lastphie = getPhiEtype();
-	MotionMode lastmode = getMotionMode();
-	setPhiE_ext(getPhiE());
-	setPhiEtype(PhiE::ext); // Fixed phase
-	setMotionMode(MotionMode::torque, true);
-	setFluxTorque(0, 0);
-	TMC4671PIDConf newpids = curPids;
-	int16_t targetflux = std::min<int16_t>(this->curLimits.pid_torque_flux,bangInitPower); // Respect limits
-	int16_t targetflux_p = targetflux * 0.75;
-
-	uint16_t fluxI = 0,fluxP = 100; // Startvalues
-	writeReg(0x54, fluxI | (fluxP << 16));
-	int32_t flux = 0;
-	setFluxTorque(targetflux, 0); // Start flux step
-	while(fluxP < 20000){
-		writeReg(0x54, fluxI | (fluxP << 16)); // Update P
-		Delay(50); // Wait a bit. not critical
-		flux = getActualFlux();
-		if(flux > targetflux_p){
-			break;
-		}else if(flux > targetflux * 0.5){
-			// Reduce steps when we are close
-			fluxP+=10;
-		}else{
-			fluxP+=100;
-		}
-	}
-	setFluxTorque(0, 0);
-	Delay(100); // Let the current settle down
-
-	// Tune I. This is more difficult because we need to take overshoot into account
-	uint32_t measuretime = 50; // ms to wait per measurement
-	uint16_t step_i = 64;
-	fluxI = 100;
-	flux = 0;
-	while(fluxI < 20000){
-		writeReg(0x54, fluxI | (fluxP << 16));
-		uint32_t tick = HAL_GetTick();//micros();
-		int32_t peakflux = 0;
-		setFluxTorque(targetflux, 0);
-
-		while(HAL_GetTick() - tick < measuretime){ // Measure current for this pulse
-			flux = getActualFlux();
-			peakflux = std::max<int32_t>(peakflux, flux);
-		}
-		setFluxTorque(0, 0);
-		uint8_t timeout = 100;  // Let the current settle down
-		while(timeout-- && flux > 10){
-			Delay(1);
-			flux = getActualFlux();
-		}
-
-		if(peakflux > (targetflux + ( targetflux * TMC4671_ITUNE_CUTOFF))) // Overshoot target by 4% default
-		{
-			fluxI -= step_i; // Revert last step
-			break;
-		}
-		if(peakflux < targetflux*0.95){ // Do larger steps if we don't even reach near the target within the time.
-			step_i = 100;
-		}else{
-			step_i = 10;
-		}
-		fluxI += step_i;
-
-	}
-	curFilters.flux.params.enable = true;
-	setBiquadFlux(curFilters.flux);
-
-	if(fluxP && fluxP < 20000 && fluxI && fluxI < 20000){
-			newpids.fluxP = fluxP;
-			newpids.torqueP = fluxP;
-			newpids.fluxI = fluxI;
-			newpids.torqueI = fluxI;
-	}else{
-		CommandHandler::broadcastCommandReply(CommandReply("PID Autotune failed",0), (uint32_t)TMC4671_commands::pidautotune, CMDtype::get);
-		setPhiEtype(lastphie);
-		setMotionMode(lastmode,true);
-		return false;
-	}
-
-	setPids(newpids); // Apply new values
-	CommandHandler::broadcastCommandReply(CommandReply("PID Autotune success",1), (uint32_t)TMC4671_commands::pidautotune, CMDtype::get);
-	setPhiEtype(lastphie);
-	setMotionMode(lastmode,true);
-	return true;
 }
 
 bool TMC4671::autohome(){
@@ -858,7 +760,7 @@ bool TMC4671::findEncoderIndex(int32_t speed, uint16_t power,bool offsetPhiM,boo
 	runOpenLoop(0, 0, 0, 10, true);
 	if(!encoderIndexHitFlag){
 		pulseErrLed();
-		ErrorHandler::addError(indexNotHitError);
+		ErrorHandler::addError(INDEX_NOT_HIT_ERROR);
 	}
 
 	// If zero count on index write a phiM offset so that phiM is 0 on index and we don't need to change the raw encoder count (possible timing danger)
@@ -1473,7 +1375,7 @@ void TMC4671::encoderInit(){
 
 	// Check encoder
 	if(!checkEncoder()){
-		if(++enc_retry > enc_retry_max){
+		if(++enc_retry > ENC_RETRY_MAX){
 			encoderAligned = false;
 			Error err = Error(ErrorCode::encoderAlignmentFailed,ErrorType::critical,"Encoder alignment failed");
 			ErrorHandler::addError(err);
@@ -1718,7 +1620,7 @@ void TMC4671::emergencyStop(bool reset){
 int16_t TMC4671::controlFluxDissipate(){
 
 	int32_t vDiff = getIntV() - getExtV();
-	if(vDiff > fluxDissipationLimit){
+	if(vDiff > FLUX_DISSIPATION_LIMIT){
 		// Reaches limit at +5v if scaler is 1
 		return(clip<int32_t,int32_t>(vDiff * conf.hwconf.fluxDissipationScaler * curLimits.pid_torque_flux * 0.0002,0,curLimits.pid_torque_flux));
 	}
@@ -1732,14 +1634,40 @@ int16_t TMC4671::controlFluxDissipate(){
 void TMC4671::turn(int16_t power){
 	if(!(this->motorReady() && motorEnabledRequested))
 		return;
+
 	int32_t flux = 0;
+	int32_t totalPower = power;
+
+	// Anticogging id enable in firmware
+#ifdef COGGING_TABLE_FLASH_START_ADDRESS
+	if (cogging_enabled) {
+		float pos_f;
+		if (usingExternalEncoder() && drvEncoder != nullptr) {
+			pos_f = drvEncoder->getPos_f();
+		} else {
+			pos_f = (float)this->getPos() / (float)this->getCpr();
+		}
+
+		// Fourier series compensation: Sum(A_k * sin(k * theta + phi_k))
+		float compensation = 0;
+		float angle_rad = pos_f * 2.0f * PI;
+		
+		for (uint8_t i = 0; i < COGGING_HARMONICS_COUNT; i++) {
+			if (cogging_harmonics[i].amplitude > 0.0f) {
+				compensation += cogging_harmonics[i].amplitude * arm_sin_f32(angle_rad * cogging_harmonics[i].order + cogging_harmonics[i].phase);
+			}
+		}
+		totalPower += (int32_t)(this->cogging_scale * compensation);
+	}
+#endif
+
+	// Inversion if encoder is reversed (ext) or force inversion is requested
+	if((this->conf.encoderReversed && conf.motconf.enctype == EncoderType_TMC::ext) ^ conf.invertForce){
+		totalPower = -totalPower;
+	}
 
 	// Flux offset for field weakening
-
 	flux = idleFlux-clip<int32_t,int16_t>(abs(power),0,maxOffsetFlux);
-	if((this->conf.encoderReversed && conf.motconf.enctype == EncoderType_TMC::ext) || conf.invertForce){
-		power = -power; // Encoder does not match
-	}
 
 	/*
 	 * If flux dissipation is on prefer this over the resistor.
@@ -1754,7 +1682,7 @@ void TMC4671::turn(int16_t power){
 		}
 	}
 
-	setFluxTorque(flux, power);
+	setFluxTorque(flux, clip<int32_t, int16_t>(totalPower, -32768, 32767));
 }
 
 /**
@@ -1897,6 +1825,7 @@ void TMC4671::setTmcPos(int32_t pos){
 int32_t TMC4671::getPos(){
 
 	int32_t pos = (int32_t)readReg(0x6B);
+	this->cached_pos = pos;
 	return pos;
 }
 
@@ -2046,8 +1975,11 @@ void TMC4671::setTorque(int16_t torque){
 	if(curMotionMode != MotionMode::torque){
 		setMotionMode(MotionMode::torque,true);
 	}
-	updateReg(0x64,torque,0xffff,16);
+
+	// Update main torque setpoint
+	updateReg(0x64, torque, 0xffff, 16);
 }
+
 int16_t TMC4671::getTorque(){
 	return readReg(0x64) >> 16;
 }
@@ -2068,8 +2000,14 @@ void TMC4671::setFluxTorque(int16_t flux, int16_t torque){
 #ifdef TMC4671_TORQUE_USE_ASYNC
 	writeRegAsync(0x64, (flux & 0xffff) | (torque << 16));
 #else
+	// Update main flux and torque setpoints
 	writeReg(0x64, (flux & 0xffff) | (torque << 16));
 #endif
+}
+
+int16_t TMC4671::getVelocityControllerTorque(){
+	writeReg(0x6F, 4); // INTERIM_ADDR = 4 for PIDOUT_TARGET_TORQUE
+	return (int16_t)readReg(0x6E); // Read from INTERIM_DATA
 }
 
 void TMC4671::setFluxTorqueFF(int16_t flux, int16_t torque){
@@ -2121,6 +2059,11 @@ TMC4671PIDConf TMC4671::getPids(){
 void TMC4671::setUqUdLimit(uint16_t limit){
 	this->curLimits.pid_uq_ud = limit;
 	writeReg(0x5D, limit);
+}
+
+void TMC4671::setPowerLimit(uint16_t power) {
+	maxPowerAxis = power;
+	setTorqueLimit(power);
 }
 
 void TMC4671::setTorqueLimit(uint16_t limit){
@@ -2789,6 +2732,12 @@ void TMC4671::registerCommands(){
 	registerCommand("pidautotune", TMC4671_commands::pidautotune, "Start PID autoruning",CMDFLAG_GET);
 	registerCommand("fluxbrake", TMC4671_commands::fluxbrake, "Prefer energy dissipation in motor",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("pwmfreq", TMC4671_commands::pwmfreq, "Get/set pwm frequency",CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_DEBUG);
+#ifdef COGGING_TABLE_FLASH_START_ADDRESS
+	registerCommand("cogging", TMC4671_commands::cogging, "Get/Set the cogging compensation",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("calibrateCogging", TMC4671_commands::calibrateCogging, "Cogging calibration",CMDFLAG_GET);
+	registerCommand("coggingTable", TMC4671_commands::coggingTable, "Get the cogging table, or clear table (set 0)",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("coggingScale", TMC4671_commands::coggingScale, "Cogging compensation scale (0-100)",CMDFLAG_GET | CMDFLAG_SET);
+#endif
 }
 
 
@@ -2828,7 +2777,7 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 	case TMC4671_commands::mtype:
 		if(cmd.type == CMDtype::get){
 			replies.emplace_back((uint8_t)this->conf.motconf.motor_type);
-		}else if(cmd.type == CMDtype::set && (uint8_t)cmd.type <= (uint8_t)MotorType::BLDC){
+		}else if(cmd.type == CMDtype::set && (uint8_t)cmd.val <= (uint8_t)MotorType::BLDC){
 			this->setMotorType((MotorType)cmd.val, this->conf.motconf.pole_pairs);
 		}else{
 			std::string rplstr = "";
@@ -3102,10 +3051,77 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 			}
 		break;
 
-	default:
-		return CommandStatus::NOT_FOUND;
-	}
+#ifdef COGGING_TABLE_FLASH_START_ADDRESS
+	case TMC4671_commands::cogging:
+		handleGetSet(cmd, replies, cogging_enabled);
+		break;
+	
+	case TMC4671_commands::calibrateCogging:
 
+		if (emergency && hasPower()) {
+			replies.emplace_back("Calibration aborted: Emergency stop engaged", 0);
+		} else if (conf.motconf.motor_type == MotorType::NONE) {
+			replies.emplace_back("Calibration aborted: No motor type set", 0);
+		} else {
+			changeState(TMC_ControlState::CoggingCalibration);
+			return CommandStatus::NO_REPLY;
+		}
+
+		break;
+
+
+	case TMC4671_commands::coggingTable:
+		if(cmd.type == CMDtype::get){
+			std::string s;
+			s.reserve(512);
+			s = "item:0,data:(";
+
+			for (uint16_t order = 0; order < COGGING_CALIB_DFT_HARMONICS; order++) {
+				
+				int16_t val = 0;
+				for (uint8_t n = 0; n < COGGING_HARMONICS_COUNT; n++) {
+					if (cogging_harmonics[n].order == order && cogging_harmonics[n].amplitude > 0.0f) {
+						val = (int16_t)cogging_harmonics[n].amplitude;
+						break;
+					}
+				}
+
+				s.append(std::to_string(val));
+
+				if (s.length() >= 500) { // send data by string cut at 500 items
+					s.append(")");
+					CommandHandler::broadcastCommandReply(CommandReply(s,0), (uint32_t)TMC4671_commands::coggingTable, CMDtype::get);
+					s.clear();
+					s = "item:" + std::to_string(order+1) + ",data:(";
+				} else {
+					if (order < COGGING_CALIB_DFT_HARMONICS - 1) {
+						s.append(",");
+					}
+				}
+			}
+
+			s.append(")");
+			CommandHandler::broadcastCommandReply(CommandReply(s,0), (uint32_t)TMC4671_commands::coggingTable, CMDtype::get);
+			return CommandStatus::NO_REPLY;
+		} else if(cmd.type == CMDtype::set && cmd.val == 0) {
+			clearCoggingTable();
+		} else {
+			status = CommandStatus::ERR;
+		}
+		break;
+
+	case TMC4671_commands::coggingScale:
+		if (cmd.type == CMDtype::get) {
+			replies.emplace_back((uint16_t)(this->cogging_scale * 100.0f));
+		} else if (cmd.type == CMDtype::set) {
+			this->cogging_scale = (float)cmd.val / 100.0f;
+		}
+		break;
+#endif
+
+		default:
+			return CommandStatus::NOT_FOUND;
+	}
 	return status;
 
 
@@ -3166,4 +3182,900 @@ void TMC4671::errorCallback(const Error &error, bool cleared){
 		this->changeState(TMC_ControlState::HardError, true);
 	}
 }
+
+uint16_t TMC4671::getDrvSlewRate(){
+	return this->maxSlewRate;
+}
+
+bool TMC4671::startSlewRateCalibration(){
+	// Request the TMC internal state machine to run the slew rate calibration.
+	// changeState will schedule the calibration state in the driver's thread.
+	this->changeState(TMC_ControlState::SlewRateCalibration);
+	return true;
+}
+
+bool TMC4671::isSlewRateCalibrationInProgress(){
+	return (this->state == TMC_ControlState::SlewRateCalibration);
+}
+
+bool TMC4671::isCalibrationInProgress() {
+	return (state == TMC_ControlState::FullCalibration || 
+#ifdef COGGING_TABLE_FLASH_START_ADDRESS
+			state == TMC_ControlState::CoggingCalibration || 
+#endif
+			state == TMC_ControlState::Pidautotune || 
+			state == TMC_ControlState::IndexSearch ||
+			state == TMC_ControlState::EncoderInit ||
+			state == TMC_ControlState::ExternalEncoderInit ||
+			state == TMC_ControlState::SlewRateCalibration);
+}
+
+void TMC4671::measureMaxSlewRate(){
+	MotionMode lastmode = getMotionMode();
+	PhiE lastphie = getPhiEtype();
+
+	// Setup
+	setPhiE_ext(getPhiE());
+	setPhiEtype(PhiE::ext); // Fixed phase
+	setMotionMode(MotionMode::torque, true);
+	setFluxTorque(0, 0);
+
+	int32_t start_flux = getActualFlux();
+	uint32_t start_time = micros();
+	setFluxTorque(maxPowerAxis,0); // Apply max flux
+
+	uint32_t elapsed_time = 0;
+	int32_t max_slew_rate = 0;
+
+	while(elapsed_time < 3000){ // measure for 3ms
+		int32_t current_flux = getActualFlux();
+		uint32_t current_time = micros();
+		elapsed_time = current_time - start_time;
+
+		if(elapsed_time > 0){
+			int32_t slew_rate = (current_flux - start_flux) * 1000 / elapsed_time; // Pn/ms (Power normalized/ms)
+			if(slew_rate > max_slew_rate){
+				max_slew_rate = slew_rate;
+			}
+		}
+	}
+	setFluxTorque(0,0);
+	this->maxSlewRate = clip<int32_t>(max_slew_rate, 0, MAX_SLEW_RATE);
+
+	// Restore
+	setPhiEtype(lastphie);
+	setMotionMode(lastmode,true);
+}
+
+void TMC4671::handleStateWaitPower() {
+	allowStateChange = false;
+	pulseClipLed(); // blink led
+
+	if (!hasPower() || emergency) {
+		this->powerCheckCounter = 0;
+		// Special case: Allow CoggingCalibration simulation even without power
+		if (requestedState == TMC_ControlState::CoggingCalibration) {
+			allowStateChange = true;
+		}
+		Delay(250);
+		return;
+	}
+
+	if (++this->powerCheckCounter > 5) {
+		if (!powerInitialized) {
+			initializeWithPower();
+		}
+		allowStateChange = true;
+
+		// If a calibration was pending power, go there now
+		if (this->postPowerState != TMC_ControlState::NONE) {
+			changeState(this->postPowerState);
+			this->postPowerState = TMC_ControlState::NONE;
+		} else if (encoderAligned) {
+			// Normal flow if encoder is already aligned
+			changeState(requestedState);
+		}
+	}
+	Delay(100);
+}
+
+void TMC4671::handleStateRunning() {
+
+	// Check status, Temps, Everything alright?
+	uint32_t tick = HAL_GetTick();
+	if (tick - lastStatTime > 2000) { // Every 2s
+		lastStatTime = tick;
+		statusCheck();
+		// Get enable input. If tmc does not reply the result will read 0 or 0xffffffff (not possible normally)
+		uint32_t pins = readReg(0x76);
+		bool tmc_en = ((pins >> 15) & 0x01) && pins != 0xffffffff;
+		if (!tmc_en && motorEnabledRequested) { // Hardware emergency.
+			this->estopTriggered = true;
+			this->emergencyStop(false);
+			ErrorHandler::addError(ESTOP_ERROR);
+		}
+
+		// Temperature sense
+		if (conf.hwconf.thermistorSettings.temperatureEnabled) {
+			float temp = getTemp();
+			if (temp > conf.hwconf.thermistorSettings.temp_limit) {
+				changeState(TMC_ControlState::OverTemp);
+				pulseErrLed();
+			}
+		}
+	}
+}
+
+void TMC4671::handleStateFullCalibration() {
+	if (!hasPower()) {
+		this->postPowerState = TMC_ControlState::FullCalibration;
+		changeState(TMC_ControlState::waitPower);
+		return;
+	}
+
+	fullCalibrationInProgress = true;
+	curFilters.flux.params.enable = false;
+	setBiquadFlux(curFilters.flux);
+	
+	// Calibrate ADC
+	enablePin.set();
+	setPwm(TMC_PwmMode::PWM_FOC); // enable foc to calibrate adc
+	Delay(50);
+	if (calibrateAdcOffset(500)) {
+		saveAdcParams();
+	} else {
+		calibFailCb();
+		return;
+	}
+
+	// Encoder
+	calibrateEncoder();
+	setEncoderType(conf.motconf.enctype);
+	recalibrationRequired = false;
+	curFilters.flux.params.enable = true;
+	setBiquadFlux(curFilters.flux);
+}
+
+#ifdef COGGING_TABLE_FLASH_START_ADDRESS
+// Helper: Apply torque with zero flux for pure cogging measurement
+void TMC4671::applySafeTorque(float torque_cmd) {
+	float totalPower = torque_cmd;
+
+	// Respect inversion settings
+	if ((this->conf.encoderReversed && conf.motconf.enctype == EncoderType_TMC::ext) ^ conf.invertForce) {
+		totalPower = -totalPower;
+	}
+
+	int16_t pwr = (int16_t)clip<float, float>(totalPower, -32768, 32767);
+	// Use zero flux (Id = 0) to ensure measured current is 100% dedicated to torque (Iq)
+	setFluxTorque(0, pwr);
+}
+
+// Helper: Calculate wrapped error between 0 and 1 turn
+float TMC4671::getWrappedError(float target, float actual) {
+	target = target - floorf(target); 
+	actual = actual - floorf(actual); 
+	float err = target - actual;
+	if (err > 0.5f) err -= 1.0f;
+	if (err < -0.5f) err += 1.0f;
+	return err;
+}
+
+float TMC4671::getAbsolutePosition() {
+	// Ne pas utiliser floorf() ici. On garde les multi-tours.
+	if (usingExternalEncoder() && drvEncoder != nullptr) {
+		return drvEncoder->getPos_f();
+	} else {
+		return (float)this->getPos() / (float)this->getCpr();
+	}
+}
+
+// Simplified position access (Direct reading to avoid phase lag)
+float TMC4671::getFilteredPosition() {
+	float pos = this->getAbsolutePosition();
+	return pos - floorf(pos);
+}
+
+/**
+ * Calculates a detent torque compensation map (anti-cogging) for the motor.
+ * This function is now ATOMIC: it blocks the TMC thread to perform high-frequency sampling.
+ */
+void TMC4671::handleStateCoggingCalibration() {
+	const char* errorMessage = nullptr;
+	float* iq_acc_cos = nullptr;
+	float* iq_acc_sin = nullptr;
+#ifdef COGGING_CALIB_ENABLE_ID_DIAG
+	float* id_acc_cos = nullptr;
+	float* id_acc_sin = nullptr;
+#endif
+
+	prevCalibMode = getMotionMode();
+	TMC4671PIDConf prevPids = curPids;
+	TMC4671PIDConf calibPids = curPids;
+	
+	// --- TUNABLE CALIBRATION CONSTANTS ---
+	const uint32_t REVOLUTION_TIME_MS = COGGING_CALIB_TIME_PER_REV_S * 1500;
+	const uint32_t BREAKOUT_STEP_MS = 50;
+	const uint32_t SYSID_J_PULSE_MS = 150;
+	const uint32_t SYSID_B_DURATION_MS = 2000;
+	const uint32_t VAL_TOTAL_DURATION_MS = 2500; 
+	const uint32_t COGGING_WARMUP_MS = 1500;	 
+	const uint32_t VAL_RETRY_PAUSE_MS = 500;	 
+	const float	TARGET_RPM = 60.0f / (float)COGGING_CALIB_TIME_PER_REV_S; 
+	const float	MAX_TOLERANCE_DEG = 3.0f;	 
+	const float	TARGET_TOLERANCE_DEG = 1.5f;  
+
+	arm_pid_instance_f32 pid_soft;
+	char dbg_buf[128];
+	float max_test_torque = bangInitPower > 0 ? (float)bangInitPower * 0.8f : 2000.0f; 
+
+	CommandHandler::broadcastCommandReply(CommandReply("Starting Cogging Calibration: Continuous DFT...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+	
+	if (this->getCpr() == 0) { 
+		errorMessage = "Abort: CPR is 0"; 
+		goto cleanup; 
+	}
+	
+	allowStateChange = false;
+
+	// Set temporary robust PIDs for velocity control during calibration
+	calibPids.velocityP = 1000;
+	calibPids.velocityI = 100;
+	setPids(calibPids);
+
+	// Disable flux filter during calibration (match FullCalibration logic)
+	curFilters.flux.params.enable = false;
+	setBiquadFlux(curFilters.flux);
+	
+	// 1. ALLOCATE ACCUMULATORS
+	iq_acc_cos = (float*)pvPortMalloc(COGGING_CALIB_DFT_HARMONICS * sizeof(float));
+	iq_acc_sin = (float*)pvPortMalloc(COGGING_CALIB_DFT_HARMONICS * sizeof(float));
+#ifdef COGGING_CALIB_ENABLE_ID_DIAG
+	id_acc_cos = (float*)pvPortMalloc(COGGING_CALIB_DFT_HARMONICS * sizeof(float));
+	id_acc_sin = (float*)pvPortMalloc(COGGING_CALIB_DFT_HARMONICS * sizeof(float));
+#endif
+	
+	if(!iq_acc_cos || !iq_acc_sin 
+#ifdef COGGING_CALIB_ENABLE_ID_DIAG
+		|| !id_acc_cos || !id_acc_sin
+#endif
+	) {
+		errorMessage = "Abort: Memory fail (Heap)";
+		goto cleanup;
+	}
+
+	memset(iq_acc_cos, 0, COGGING_CALIB_DFT_HARMONICS * sizeof(float));
+	memset(iq_acc_sin, 0, COGGING_CALIB_DFT_HARMONICS * sizeof(float));
+#ifdef COGGING_CALIB_ENABLE_ID_DIAG
+	memset(id_acc_cos, 0, COGGING_CALIB_DFT_HARMONICS * sizeof(float));
+	memset(id_acc_sin, 0, COGGING_CALIB_DFT_HARMONICS * sizeof(float));
+#endif
+
+	// 2. CALIBRATION PROCESS AND ANALYSIS
+	{
+		uint32_t total_samples = 0;
+		float starting_torque = bangInitPower > 0 ? (float)bangInitPower * 0.15f : 300.0f; 
+		float tuning_torque = starting_torque;
+		float dynamic_friction = 0.0f;
+
+		if (!hasPower()) {
+			// --- DEBUG SIMULATION MODE ---
+			CommandHandler::broadcastCommandReply(CommandReply( "Simulating acquisition (No power detected)...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+			total_samples = 2000;
+			for (uint32_t i = 0; i < total_samples; i++) {
+				float pos_f = (float)i / (float)total_samples;
+				float angle_rad = pos_f * 2.0f * PI;
+				float iq = 1500.0f * arm_sin_f32(angle_rad * 13.0f) + 800.0f * arm_sin_f32(angle_rad * 36.0f + (PI/2.0f));
+#ifdef COGGING_CALIB_ENABLE_ID_DIAG
+				float id = 100.0f;
+#endif
+				float s1, c1;
+				arm_sin_cos_f32(pos_f * 360.0f, &s1, &c1);
+
+				float cur_s = s1, cur_c = c1;
+				for (int k = 1; k < COGGING_CALIB_DFT_HARMONICS; k++) {
+					iq_acc_cos[k] += (iq * cur_c);
+					iq_acc_sin[k] += (iq * cur_s);
+#ifdef COGGING_CALIB_ENABLE_ID_DIAG
+					id_acc_cos[k] += (id * cur_c);
+					id_acc_sin[k] += (id * cur_s);
+#endif
+					float next_c = cur_c * c1 - cur_s * s1;
+					float next_s = cur_c * s1 + cur_s * c1;
+					cur_c = next_c; cur_s = next_s;
+				}
+				if(i % 100 == 0) refreshWatchdog();
+			}
+		} else {
+			// --- REAL ACQUISITION SETUP ---
+			startMotor();
+			setMotionMode(MotionMode::torque, true);
+
+			// --- STEP 1/2: SYSTEM IDENTIFICATION (J & B) ---
+			CommandHandler::broadcastCommandReply(CommandReply("STEP 1/2: Physical System Identification...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+
+			float start_pos = getAbsolutePosition();
+			bool friction_broken = false;
+
+			// Step 1.1: Break static friction
+			CommandHandler::broadcastCommandReply(CommandReply("Step 1.1: Breaking static friction...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+			while (!friction_broken && tuning_torque < max_test_torque && !emergency) {
+				applySafeTorque(tuning_torque);
+				Delay(BREAKOUT_STEP_MS); 
+				if (fabs(getWrappedError(start_pos, getAbsolutePosition())) > 0.005f) {
+					friction_broken = true;
+					tuning_torque *= 1.1f; 
+				} else {
+					tuning_torque += 100.0f; 
+				}
+			}
+			applySafeTorque(0);
+			Delay(500); 
+
+			// Step 1.2: Measure Inertia (J) using a precise torque pulse
+			CommandHandler::broadcastCommandReply(CommandReply("Step 1.2: Measuring Mechanical Inertia (J)...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+			float j_torque = tuning_torque;
+			start_pos = getAbsolutePosition();
+			uint32_t j_start_us = micros();
+			uint32_t j_target_us = j_start_us + (SYSID_J_PULSE_MS * 1000);
+			
+			applySafeTorque(j_torque);
+			// Strict timing loop: Busy-wait to guarantee precise pulse duration
+			while (((micros() - j_target_us) & 0x80000000) && !emergency) {
+				refreshWatchdog();
+			}
+			uint32_t j_end_us = micros();
+			float end_pos = getAbsolutePosition();
+			applySafeTorque(0);
+			
+			float dt_j = (float)(j_end_us - j_start_us) / 1000000.0f;
+			float d_pos_turns = fabs(getWrappedError(start_pos, end_pos));
+			float d_pos_rad = d_pos_turns * 2.0f * PI; 
+			
+			// Physics Formula: J = (Torque * dt^2) / (2 * delta_pos_rad)
+			// Scale by 100 to map physical J to the abstract TMC integer units
+			float J = ((j_torque * dt_j * dt_j) / (2.0f * d_pos_rad)) * 100.0f;
+			Delay(500);
+
+			// Step 1.3: Measure Viscous Friction (B)
+			CommandHandler::broadcastCommandReply(CommandReply("Step 1.3: Measuring Viscous Friction (B)...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+			float test_rpm = 30.0f;
+			float b_target_vel_turns = test_rpm / 60.0f; 
+			float b_target_vel_rad = b_target_vel_turns * 2.0f * PI;
+			float b_pos = getAbsolutePosition();
+			float b_sum_torque = 0.0f;
+			uint32_t b_samples = 0;
+			uint32_t b_start = HAL_GetTick();
+			uint32_t next_tick = micros();
+			
+			float kp_vel = j_torque * 5.0f; 
+			while (HAL_GetTick() - b_start < SYSID_B_DURATION_MS && !emergency) {
+				next_tick += 1000;
+				b_pos += b_target_vel_turns * 0.001f;
+				float err = b_pos - getAbsolutePosition();
+				float cmd = err * kp_vel;
+				cmd = clip<float,float>(cmd, -max_test_torque, max_test_torque);
+				applySafeTorque(cmd);
+				
+				// WARMUP: Only integrate torque after half the duration to ensure steady-state velocity
+				if (HAL_GetTick() - b_start > (SYSID_B_DURATION_MS / 2)) { 
+					b_sum_torque += cmd;
+					b_samples++;
+				}
+				refreshWatchdog();
+				while ((micros() - next_tick) & 0x80000000) {}
+			}
+			applySafeTorque(0);
+			// Scale by 100 to map physical B to the abstract TMC integer units
+			// Subtract Coulomb friction (breakout torque) to isolate true viscous damping
+			dynamic_friction = b_sum_torque / (float)b_samples;
+			float B = (dynamic_friction / b_target_vel_rad) * 100.0f;
+			B = clip<float, float>(B, 0.0f, 100000.0f); // Ensure B is positive
+			Delay(500);
+
+			// Step 1.4: IMC (Internal Model Control) Pole Placement Calculation
+			
+			/* * 1. Continuous Bandwidth (f_bw) Calculation
+			 * Instead of hardcoded steps, we linearly degrade the bandwidth based on inertia (J).
+			 * - Low inertia (e.g., K52G, J ~ 100): High bandwidth (clamped to 15.0 Hz) for maximum responsiveness.
+			 * - High inertia (e.g., Mige, J ~ 630): Lower bandwidth (~13.5 Hz) to prevent Kp saturation and resonance.
+			 * - Extreme/Error inertia (J > 2000): Safe mode bandwidth (clamped to 6.0 Hz) to ensure stability.
+			 * The equation f_bw = 16.5 - 0.0047*J smoothly links these desired targets.
+			 */
+			float f_bw = clip<float>(16.5f - (0.0047f * J), 6.0f, 15.0f);
+			
+			/* * 2. Continuous Integral Scale (ki_scale) Calculation
+			 * To prevent Integral Windup during the slow ascent of magnetic cogging bumps, 
+			 * the integral gain must be restricted for heavy motors (scaling continuous time to discrete MCU time).
+			 * By making ki_scale inversely proportional to J (0.3 / J), the resulting Ki 
+			 * (which is calculated as wn^2 * J * ki_scale) cancels out J entirely.
+			 * This creates a mathematically stable, auto-adapting integral gain regardless of the motor's mass.
+			 */
+			float ki_scale = clip<float>(0.3f / J, 0.0002f, 0.001f);
+			
+			float wn = 2.0f * PI * f_bw;
+			
+			pid_soft.Kp = 2.0f * 1.0f * wn * J - B;
+			pid_soft.Ki = wn * wn * J * ki_scale; 
+			pid_soft.Kd = 0.0f;
+			
+			// Overall security : clip Kp 120 000 to reduce resonnance.
+			pid_soft.Kp = clip<float,float>(pid_soft.Kp, 100.0f, 120000.0f);
+			pid_soft.Ki = clip<float,float>(pid_soft.Ki, 1.0f, 100000.0f);
+			arm_pid_init_f32(&pid_soft, 1);
+
+			snprintf(dbg_buf, sizeof(dbg_buf), "System Identified -> J:%.0f B:%.0f (torque %.2f, range (%.2f..%.2f)) | Gains -> Kp:%.0f Ki:%.0f", J, B, tuning_torque, starting_torque, max_test_torque, pid_soft.Kp, pid_soft.Ki);
+			CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+
+			// --- 1.5 FINAL SANITY CHECK ROTATION ---
+			CommandHandler::broadcastCommandReply(CommandReply("Final validation rotation...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+
+			float val_target_pos = getAbsolutePosition();
+			float max_err_deg = 0.0f;
+			uint32_t val_start = HAL_GetTick();
+			next_tick = micros();
+
+			while (HAL_GetTick() - val_start < VAL_TOTAL_DURATION_MS && !emergency) {
+				next_tick += 1000;
+				val_target_pos += (TARGET_RPM / 60.0f) * 0.001f;
+				float err = val_target_pos - getAbsolutePosition();
+				
+				// Calculate base torque from tuned PID
+				float iq_pid = arm_pid_f32(&pid_soft, err);
+				
+				// FRICTION FEED-FORWARD: take the dynamic friction read at step 1.3
+				float iq_ff = dynamic_friction;
+				
+				float cmd = iq_pid + iq_ff;
+				cmd = clip<float,float>(cmd, -max_test_torque, max_test_torque);
+				applySafeTorque(cmd);
+
+				if (HAL_GetTick() - val_start > COGGING_WARMUP_MS) {
+					if (fabs(err) * 360.0f > max_err_deg) max_err_deg = fabs(err) * 360.0f;
+				}
+				refreshWatchdog();
+				while ((micros() - next_tick) & 0x80000000) {}
+			}
+			applySafeTorque(0);
+
+			if (max_err_deg > 5.0f) {
+				snprintf(dbg_buf, sizeof(dbg_buf), "Abort: Stability check failed (%.2f deg > 5.0 deg)", max_err_deg);
+				errorMessage = dbg_buf;
+				goto cleanup;
+			}
+			Delay(250);
+
+			// --- STEP 2/2: ACQUISITION DFT AT CONSTANT SPEED ---
+			CommandHandler::broadcastCommandReply(CommandReply("STEP 2/3: Acquisition DFT at constant speed...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+			int8_t dirs[2] = {1, -1};
+			
+			for (int8_t p : dirs) {
+				CommandHandler::broadcastCommandReply(CommandReply(p == 1 ? "Forward integration..." : "Backward integration...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+				
+				float target_rpm = (p == 1) ? TARGET_RPM : -TARGET_RPM;
+				float target_pos_f = getFilteredPosition();
+				float integrated_distance = 0.0f; // Track total integrated displacement (0.0 to 1.0)
+				
+				// Statistical trackers
+				float max_iq_cmd_used = 0.0f;
+				float max_err_seen = 0.0f;
+
+				arm_pid_init_f32(&pid_soft, 1);
+
+				uint32_t waitStart = HAL_GetTick();
+				while(HAL_GetTick() - waitStart < 1000 && !emergency && hasPower()) { 
+					refreshWatchdog();
+					Delay(10); 
+				}
+
+				if (!emergency && hasPower()) {
+					// No Warmup pulses here anymore
+
+					calibStartTime = HAL_GetTick();
+					uint32_t period_us = 1000;
+					uint32_t next_tick = micros();
+					
+					while (HAL_GetTick() - calibStartTime < REVOLUTION_TIME_MS && !emergency && hasPower()) {
+						next_tick += period_us;
+						
+						float step = (target_rpm / 60.0f) * (period_us / 1000000.0f);
+						target_pos_f += step;
+						if (target_pos_f >= 1.0f) target_pos_f -= 1.0f;
+						if (target_pos_f < 0.0f) target_pos_f += 1.0f;
+
+						float actual_pos_f = getFilteredPosition();
+						
+						float error = getWrappedError(target_pos_f, actual_pos_f);
+						float iq_pid = arm_pid_f32(&pid_soft, error);
+						
+						// FRICTION FEED-FORWARD: Pre-compensate friction so PID only fights cogging
+						float iq_ff = (target_rpm > 0) ? dynamic_friction : -dynamic_friction;
+						float iq_cmd = iq_pid + iq_ff;
+
+						// Tracking stats (Ignore startup transient)
+						if (HAL_GetTick() - calibStartTime > COGGING_WARMUP_MS) {
+							if (fabs(error) > max_err_seen) max_err_seen = fabs(error);
+							if (fabs(iq_cmd) > max_iq_cmd_used) max_iq_cmd_used = fabs(iq_cmd);
+						}
+						
+						iq_cmd = clip<float,float>(iq_cmd, -max_test_torque, max_test_torque);
+						
+						applySafeTorque(iq_cmd);
+						
+						// --- DISPLACEMENT-BASED ACQUISITION SECURITY ---
+						// Only integrate into DFT if we haven't completed one full revolution (360°)
+						// Wait at least COGGING_WARMUP_MS for the PID to stabilize the speed before starting data collection
+						if (integrated_distance < 1.0f && (HAL_GetTick() - calibStartTime > COGGING_WARMUP_MS)) {
+							float iq = iq_cmd; 
+#ifdef COGGING_CALIB_ENABLE_ID_DIAG
+							float id = (float)getActualFlux();
+#endif
+							float s1, c1;
+							arm_sin_cos_f32(actual_pos_f * 360.0f, &s1, &c1);
+
+							float cur_s = s1, cur_c = c1;
+							for (int k = 1; k < COGGING_CALIB_DFT_HARMONICS; k++) {
+								iq_acc_cos[k] += (iq * cur_c);
+								iq_acc_sin[k] += (iq * cur_s);
+#ifdef COGGING_CALIB_ENABLE_ID_DIAG
+								id_acc_cos[k] += (id * cur_c);
+								id_acc_sin[k] += (id * cur_s);
+#endif
+								float next_c = cur_c * c1 - cur_s * s1;
+								float next_s = cur_c * s1 + cur_s * c1;
+								cur_c = next_c; cur_s = next_s;
+							}
+							total_samples++;
+							integrated_distance += fabs(step);
+						}
+
+						refreshWatchdog();
+						
+						while ((micros() - next_tick) & 0x80000000) { }
+					}
+				}
+				applySafeTorque(0);
+
+				// Summary message for the acquisition pass
+				snprintf(dbg_buf, sizeof(dbg_buf), "Acq %s Done -> Dist:%.2f MaxErr: %.2f deg", 
+						 (p == 1) ? "FWD" : "BWD", integrated_distance, (max_err_seen * 360.0f));
+				CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+			}
+		}
+
+		// 3. POST-PROCESSING
+		if (!emergency && (total_samples > 0)) {
+			CommandHandler::broadcastCommandReply(CommandReply("STEP 3/3: Post-Processing & Harmonics Extraction...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+			
+			float norm = 2.0f / (float)total_samples;
+			struct TempHarmonic { float32_t mag; uint16_t k; float32_t phase; };
+			TempHarmonic* candidates = (TempHarmonic*)pvPortMalloc(COGGING_CALIB_DFT_HARMONICS * sizeof(TempHarmonic));
+			
+			if (candidates) {
+				for (int k = 1; k < COGGING_CALIB_DFT_HARMONICS; k++) {
+					float re = iq_acc_cos[k] * norm;
+					float im = iq_acc_sin[k] * norm;
+					candidates[k].mag = sqrtf(re*re + im*im);
+					candidates[k].phase = atan2f(re, im);
+					candidates[k].k = k;
+				}
+
+				// Point 2: Eccentricity
+				if (candidates[1].mag > 5000.0f) {
+					CommandHandler::broadcastCommandReply(CommandReply("Warning: High motor eccentricity detected", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+				}
+
+				// Point 4: Cogging extraction
+				memset(cogging_harmonics, 0, sizeof(cogging_harmonics));
+				for (int n = 0; n < COGGING_HARMONICS_COUNT; n++) {
+					float max_m = 0; int best_idx = -1;
+					for (int k = 11; k < COGGING_CALIB_DFT_HARMONICS; k++) {
+						bool taken = false;
+						for (int j=0; j<n; j++) if(cogging_harmonics[j].order == candidates[k].k) taken = true;
+						if (!taken && candidates[k].mag > max_m) { max_m = candidates[k].mag; best_idx = k; }
+					}
+					if (best_idx != -1) {
+						cogging_harmonics[n].order = candidates[best_idx].k;
+						cogging_harmonics[n].amplitude = candidates[best_idx].mag;
+						cogging_harmonics[n].phase = candidates[best_idx].phase;
+					}
+				}
+
+#ifdef COGGING_CALIB_ENABLE_ID_DIAG
+				// Point 1: Electrical check (Id axis)
+				float h3_id = sqrtf(powf(id_acc_cos[3]*norm,2) + powf(id_acc_sin[3]*norm,2));
+				float h6_id = sqrtf(powf(id_acc_cos[6]*norm,2) + powf(id_acc_sin[6]*norm,2));
+				if (h3_id > 500.0f || h6_id > 500.0f) {
+					CommandHandler::broadcastCommandReply(CommandReply("Warning: Potential electrical phase imbalance", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+				}
+#endif
+				vPortFree(candidates);
+				saveCoggingTable();
+				CommandHandler::broadcastCommandReply(CommandReply("Cogging calibration successful", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+
+				// --- 3.5 SCALE CALIBRATION (Dichotomy) ---
+				// Get the raw absolute position (no modulo 1.0 wrapping)
+				float actual_pos_f = (usingExternalEncoder() && drvEncoder != nullptr) ? drvEncoder->getPos_f() : (float)this->getPos() / (float)this->getCpr();
+				float target_rpm = (actual_pos_f > 0.0f) ? -TARGET_RPM : TARGET_RPM;
+
+				int main_h = -1;
+				float max_amp = 0;
+				for(int n=0; n<COGGING_HARMONICS_COUNT; n++){
+					if(cogging_harmonics[n].amplitude > max_amp){
+						max_amp = cogging_harmonics[n].amplitude;
+						main_h = n;
+					}
+				}
+
+				if (main_h != -1) {
+					snprintf(dbg_buf, sizeof(dbg_buf), "STEP 3.5/3: Fine-tuning Cogging Scale (Main harmonic: %d, Amplitude: %.1f)", cogging_harmonics[main_h].order, cogging_harmonics[main_h].amplitude);
+					CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+					
+					float low_scale = -1.5f, high_scale = 1.5f;
+					float best_scale = this->cogging_scale; 
+					arm_pid_init_f32(&pid_soft, 1);
+
+					for (int iter = 0; iter < 8; iter++) {
+						float test_scale = (low_scale + high_scale) / 2.0f;
+						this->cogging_scale = test_scale;
+						
+						float target_pos_move = actual_pos_f;
+						float segment_dist = 0.0f;
+						
+						// Calculate distance to cover an exact integer number of cogging periods (at least ~0.3 turns)
+						// This prevents "spectral leakage" which destroys the dot product calculation.
+						float periods = ceilf(0.3f * (float)cogging_harmonics[main_h].order);
+						float segment_target = periods / (float)cogging_harmonics[main_h].order;
+						
+						float acc_re = 0, acc_im = 0;
+						uint32_t samples = 0;
+						
+						uint32_t next_tick = micros();
+						uint32_t iter_start_tick = HAL_GetTick();
+						while (segment_dist < segment_target && !emergency && hasPower()) {
+							next_tick += 1000;
+							float step = (target_rpm / 60.0f) * 0.001f;
+							target_pos_move += step;
+							actual_pos_f = getAbsolutePosition();
+							float error = target_pos_move - actual_pos_f;
+							
+							float iq_pid = arm_pid_f32(&pid_soft, error);
+							float iq_ff = (target_rpm > 0) ? dynamic_friction : -dynamic_friction;
+							float iq_cmd = iq_pid + iq_ff;
+							
+							float angle_rad = actual_pos_f * 2.0f * PI;
+							float compensation = 0;
+							for (uint8_t i = 0; i < COGGING_HARMONICS_COUNT; i++) {
+								if (cogging_harmonics[i].amplitude > 0.0f) {
+									compensation += cogging_harmonics[i].amplitude * arm_sin_f32(angle_rad * cogging_harmonics[i].order + cogging_harmonics[i].phase);
+								}
+							}
+							applySafeTorque(iq_cmd + (this->cogging_scale * compensation));
+							
+							// Only accumulate data after 200ms of warmup to let PID stabilize on the ramp
+							if (HAL_GetTick() - iter_start_tick > 200) {
+								float s, c;
+								arm_sin_cos_f32(actual_pos_f * 360.0f * cogging_harmonics[main_h].order, &s, &c);
+								acc_re += iq_cmd * c;
+								acc_im += iq_cmd * s;
+								
+								samples++;
+								segment_dist += fabs(step);
+							}
+							
+							refreshWatchdog();
+							while ((micros() - next_tick) & 0x80000000) {}
+						}
+						
+						float re = acc_re / (float)samples;
+						float im = acc_im / (float)samples;
+						// Dot product between residual PID torque and the expected cogging shape.
+						// If dot > 0, the PID is still "fighting" cogging in its original phase -> Under-compensated.
+						// If dot < 0, the PID is fighting the compensation itself -> Over-compensated.
+						// Since we search from -1.5 to 1.5, this naturally finds the correct sign (direction).
+						float dot = re * sinf(cogging_harmonics[main_h].phase) + im * cosf(cogging_harmonics[main_h].phase);
+						
+						if (dot > 0) {
+							snprintf(dbg_buf, sizeof(dbg_buf), "Iteration %d/8: Scale %.3f -> Error %.2f Iq counts: Under-compensated, increasing", iter + 1, test_scale, dot);
+							low_scale = this->cogging_scale; 
+						} else {
+							snprintf(dbg_buf, sizeof(dbg_buf), "Iteration %d/8: Scale %.3f -> Error %.2f Iq counts: Over-compensated, decreasing", iter + 1, test_scale, dot);
+							high_scale = this->cogging_scale; 
+						}
+						CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+					}
+					best_scale = (low_scale + high_scale) / 2.0f;
+					this->cogging_scale = best_scale;
+					this->cogging_enabled = true;
+					
+					// Persist the new optimal scale (signed 8-bit)
+					int8_t scale_int = clip<float>(this->cogging_scale * 100.0f, -127, 127);
+					uint16_t coggingFlash = (cogging_enabled ? 1 : 0) | ((uint8_t)scale_int << 1);
+					Flash_Write(flashAddrs.coggingEnable, coggingFlash);
+
+					snprintf(dbg_buf, sizeof(dbg_buf), "Optimal cogging scale identified: %.2f", best_scale);
+					CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+				}
+
+				// --- 4. RETURN TO CENTER (Unwinding multi-turn) ---
+				
+				// Get current position after fine-tuning
+				actual_pos_f = getAbsolutePosition();
+				
+				snprintf(dbg_buf, sizeof(dbg_buf), "Return to center: Start pos = %.3f turns", actual_pos_f);
+				CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+				
+				// USE THE FULL TUNED GAINS
+				arm_pid_init_f32(&pid_soft, 1);
+
+				// removed initial torque warmup delay to prevent transients
+				
+				float target_pos_f = actual_pos_f;
+				uint32_t period_us = 1000; // 1kHz loop
+				target_rpm = (actual_pos_f > 0.0f) ? -TARGET_RPM : TARGET_RPM;
+				
+				uint32_t return_start = HAL_GetTick();
+				uint32_t next_tick = micros();
+				while (fabs(actual_pos_f) > 0.005f && !emergency && hasPower()) {
+					next_tick += period_us;
+					
+					// Absolute ramp generation towards 0.0
+					target_pos_f += (target_rpm / 60.0f) * (period_us / 1000000.0f);
+
+					// Clamp at zero
+					if (target_rpm < 0 && target_pos_f < 0.0f) target_pos_f = 0.0f;
+					if (target_rpm > 0 && target_pos_f > 0.0f) target_pos_f = 0.0f;
+
+					// Read the raw absolute position
+					actual_pos_f = getAbsolutePosition();
+					
+					// Get raw error towards 0
+					float error = target_pos_f - actual_pos_f;
+					
+					// Calculate torque via the CMSIS PID
+					float iq_pid = arm_pid_f32(&pid_soft, error);
+					float iq_ff = (target_rpm > 0) ? dynamic_friction : -dynamic_friction;
+					float iq_cmd = iq_pid + iq_ff;
+					
+					// Use full test torque limit (standard for all phases)
+					iq_cmd = clip<float,float>(iq_cmd, -max_test_torque, max_test_torque);
+					applySafeTorque(iq_cmd);
+					
+
+					refreshWatchdog();
+					if (HAL_GetTick() - return_start > 30000) {
+						CommandHandler::broadcastCommandReply(CommandReply("Return to center timeout", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+						break; // 30s safety timeout
+					}
+					while ((micros() - next_tick) & 0x80000000) { }
+				}
+				applySafeTorque(0);
+				CommandHandler::broadcastCommandReply(CommandReply("Centering done. Re-aligning encoder...", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+				
+				allowStateChange = true;
+				changeState(TMC_ControlState::EncoderInit);
+				return; // Exit cleanly
+			} else {
+				errorMessage = "Abort: Memory fail (candidates)";
+			}
+		}
+	}
+
+cleanup:
+	if (errorMessage) {
+		CommandHandler::broadcastCommandReply(CommandReply(errorMessage, 1), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+	} else {
+		CommandHandler::broadcastCommandReply(CommandReply("Cogging detection finished", 1), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+	}
+	
+	setTargetVelocity(0); // Ensure motor stops
+
+	if(iq_acc_cos) vPortFree(iq_acc_cos);
+	if(iq_acc_sin) vPortFree(iq_acc_sin);
+#ifdef COGGING_CALIB_ENABLE_ID_DIAG
+	if(id_acc_cos) vPortFree(id_acc_cos);
+	if(id_acc_sin) vPortFree(id_acc_sin);
+#endif
+
+	// Restore hardware state (match FullCalibration logic)
+	setPids(prevPids);
+	curFilters.flux.params.enable = true;
+	setBiquadFlux(curFilters.flux);
+	setMotionMode(prevCalibMode, true);
+
+	allowStateChange = true;
+	// Transition to a stable state instead of potentially jumping to uninitialized
+	changeState(hasPower() ? TMC_ControlState::Running : TMC_ControlState::waitPower);
+}
+#endif
+
+/**
+ * Iterative tuning function for tuning the torque mode PI values (Asynchronous version)
+ */
+void TMC4671::handleStatePidAutoTune() {
+	if (!hasPower() || emergency) {
+		pidTuneState = PidTuneState::Init;
+		this->postPowerState = TMC_ControlState::Pidautotune;
+		changeState(TMC_ControlState::waitPower);
+		return;
+	}
+
+	// 1. Initial Setup
+	allowStateChange = false;
+	curFilters.flux.params.enable = false;
+	setBiquadFlux(curFilters.flux);
+	lastPidTunePhiE = getPhiEtype();
+	lastPidTuneMode = getMotionMode();
+	setPhiE_ext(getPhiE());
+	setPhiEtype(PhiE::ext); // Fixed phase for testing flux response
+	setMotionMode(MotionMode::torque, true);
+	setFluxTorque(0, 0);
+	
+	int16_t targetflux = std::min<int16_t>(this->curLimits.pid_torque_flux, bangInitPower);
+	int16_t targetflux_p = targetflux * 0.75;
+	
+	tuneFluxI = 0;
+	tuneFluxP = 100;
+	writeReg(0x54, tuneFluxI | (tuneFluxP << 16));
+	
+	// 2. Atomic P-Gain Tuning (Ramp)
+	while (tuneFluxP < 20000 && !emergency && hasPower()) {
+		setFluxTorque(targetflux, 0);
+		Delay(50); // Stabilization delay
+		int32_t flux = getActualFlux();
+		if (flux > targetflux_p) break;
+		
+		// Adaptive steps
+		tuneFluxP += (flux > targetflux * 0.5) ? 50 : 250; 
+		writeReg(0x54, tuneFluxI | (tuneFluxP << 16));
+	}
+	
+	// 3. Atomic I-Gain Tuning (Overshoot detection)
+	tuneFluxI = 100;
+	while (tuneFluxI < 20000 && !emergency && hasPower()) {
+		setFluxTorque(0, 0);
+		Delay(100); // Settle current to zero
+		
+		tuneMeasurePeak = 0;
+		writeReg(0x54, tuneFluxI | (tuneFluxP << 16));
+		setFluxTorque(targetflux, 0); // Pulse
+		
+		// Ultra-fast sampling loop for peak detection (Atomic)
+		uint32_t start = HAL_GetTick();
+		while(HAL_GetTick() - start < 50) {
+			tuneMeasurePeak = std::max<int32_t>(tuneMeasurePeak, getActualFlux());
+		}
+		
+		// Check for overshoot target (default 4%)
+		if (tuneMeasurePeak > (targetflux + (targetflux * TMC4671_ITUNE_CUTOFF))) {
+			if (tuneMeasurePeak > targetflux) tuneFluxI -= (tuneFluxI > 20) ? 20 : 0; // Back off
+			break;
+		}
+		
+		tuneFluxI += (tuneMeasurePeak < targetflux * 0.95) ? 150 : 25;
+	}
+
+	// 4. Finalization & Cleanup
+	curFilters.flux.params.enable = true;
+	setBiquadFlux(curFilters.flux);
+	
+	if (tuneFluxP < 20000 && tuneFluxI < 20000 && hasPower() && !emergency) {
+		pidTuneNewPids = curPids;
+		pidTuneNewPids.fluxP = tuneFluxP;
+		pidTuneNewPids.torqueP = tuneFluxP;
+		pidTuneNewPids.fluxI = tuneFluxI;
+		pidTuneNewPids.torqueI = tuneFluxI;
+		setPids(pidTuneNewPids);
+		CommandHandler::broadcastCommandReply(CommandReply("PID Autotune successful", 1), (uint32_t)TMC4671_commands::pidautotune, CMDtype::get);
+	} else {
+		CommandHandler::broadcastCommandReply(CommandReply("PID Autotune failed or interrupted", 0), (uint32_t)TMC4671_commands::pidautotune, CMDtype::get);
+	}
+	
+	setPhiEtype(lastPidTunePhiE);
+	setMotionMode(lastPidTuneMode, true);
+	allowStateChange = true;
+	pidTuneState = PidTuneState::Init;
+	changeState(laststate, false);
+}
+
 #endif

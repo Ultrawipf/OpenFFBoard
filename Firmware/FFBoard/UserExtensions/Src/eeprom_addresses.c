@@ -70,6 +70,7 @@ const uint16_t VirtAddVarTab[NB_OF_VAR] =
 	ADR_FFB_EFFECTS1, // 0-7 inertia, 8-15 friction
 	ADR_FFB_EFFECTS2, // 0-7 spring, 8-15 damper
 	ADR_FFB_EFFECTS3, // 0-7 friction ramp up zone, 8-9 filterProfile
+	ADR_FFB_RECONSTRUCTION_FILTER, // 0-1 recon filter mode
 // Button Sources:
 	ADR_ADS111X_CONF1,
 // How many axis configured 1-3
@@ -80,12 +81,18 @@ const uint16_t VirtAddVarTab[NB_OF_VAR] =
 	ADR_AXIS1_DEGREES,
 	ADR_AXIS1_MAX_SPEED, // Store the max speed
 	ADR_AXIS1_MAX_ACCEL, // Store the max accel
+	ADR_AXIS1_MAX_SLEWRATE_DRV, // Max slew rate for drv
 	ADR_AXIS1_ENDSTOP, // 0-7 endstop margin, 8-15 endstop stiffness
 	ADR_AXIS1_EFFECTS1, // 0-7 idlespring, 8-15 damper
 	ADR_AXIS1_SPEEDACCEL_FILTER, // Speed/Accel filter Lowpass profile
 	ADR_AXIS1_ENC_RATIO, // Accel filter Lowpass
 	ADR_AXIS1_EFFECTS2, // 0-7 Friction, 8-15 Inertia
 	ADR_AXIS1_POSTPROCESS1, // 0-7 expo curve
+	ADR_AXIS1_EQ1, // Equalizer band 1,2 gains
+	ADR_AXIS1_EQ2, // Equalizer band 3,4 gains
+	ADR_AXIS1_EQ3, // Equalizer band 5 gain
+	ADR_AXIS1_HANDSOFF_CONF, // Hands-off config
+	ADR_AXIS1_HANDSOFF_ACCEL, // Hands-off accel threshold
 // TMC1
 	ADR_TMC1_MOTCONF, // 0-2: MotType 3-5: PhiE source 6-15: Poles
 	ADR_TMC1_CPR,
@@ -100,18 +107,25 @@ const uint16_t VirtAddVarTab[NB_OF_VAR] =
 	ADR_TMC1_FLUX_I,
 	ADR_TMC1_PHIE_OFS,
 	ADR_TMC1_TRQ_FILT,
+	ADR_TMC1_COGGING_CAL,
 // AXIS2
 	ADR_AXIS2_CONFIG, // 0-2 ENC, 3-5 DRV
 	ADR_AXIS2_POWER,
 	ADR_AXIS2_DEGREES,
 	ADR_AXIS2_MAX_SPEED, // Store the max speed
 	ADR_AXIS2_MAX_ACCEL, // Store the max accel
+	ADR_AXIS2_MAX_SLEWRATE_DRV, // Max slew rate for drv
 	ADR_AXIS2_ENDSTOP, // 0-7 endstop margin, 8-15 endstop stiffness
 	ADR_AXIS2_EFFECTS1, // 0-7 idlespring, 8-15 damper
 	ADR_AXIS2_SPEEDACCEL_FILTER, // Speed/Accel filter Lowpass profile
 	ADR_AXIS2_ENC_RATIO, // Store the encoder ratio for an axis
 	ADR_AXIS2_EFFECTS2, // 0-7 Friction, 8-15 Inertia
 	ADR_AXIS2_POSTPROCESS1, // 0-7 expo curve
+	ADR_AXIS2_EQ1, // Equalizer band 1,2 gains
+	ADR_AXIS2_EQ2, // Equalizer band 3,4 gains
+	ADR_AXIS2_EQ3, // Equalizer band 5 gain
+	ADR_AXIS2_HANDSOFF_CONF, // Hands-off config
+	ADR_AXIS2_HANDSOFF_ACCEL, // Hands-off accel threshold
 // TMC2
 	ADR_TMC2_MOTCONF, // 0-2: MotType 3-5: PhiE source 6-15: Poles
 	ADR_TMC2_CPR,
@@ -126,18 +140,25 @@ const uint16_t VirtAddVarTab[NB_OF_VAR] =
 	ADR_TMC2_FLUX_I,
 	ADR_TMC2_PHIE_OFS,
 	ADR_TMC2_TRQ_FILT,
+	ADR_TMC2_COGGING_CAL,
 // AXIS3
 	ADR_AXIS3_CONFIG, // 0-2 ENC, 3-5 DRV
 	ADR_AXIS3_POWER,
 	ADR_AXIS3_DEGREES,
 	ADR_AXIS3_MAX_SPEED, // Store the max speed
 	ADR_AXIS3_MAX_ACCEL, // Store the max accel
+	ADR_AXIS3_MAX_SLEWRATE_DRV, // Max slew rate for drv
 	ADR_AXIS3_ENDSTOP, // 0-7 endstop margin, 8-15 endstop stiffness
 	ADR_AXIS3_EFFECTS1, // 0-7 idlespring, 8-15 damper
 	ADR_AXIS3_SPEEDACCEL_FILTER, // Speed/Accel filter Lowpass profile
 	ADR_AXIS3_ENC_RATIO, // Store the encoder ratio for an axis
 	ADR_AXIS3_EFFECTS2, // 0-7 Friction, 8-15 Inertia
 	ADR_AXIS3_POSTPROCESS1, // 0-7 expo curve
+	ADR_AXIS3_EQ1, // Equalizer band 1,2 gains
+	ADR_AXIS3_EQ2, // Equalizer band 3,4 gains
+	ADR_AXIS3_EQ3, // Equalizer band 5 gain
+	ADR_AXIS3_HANDSOFF_CONF, // Hands-off config
+	ADR_AXIS3_HANDSOFF_ACCEL, // Hands-off accel threshold
 // TMC3
 	ADR_TMC3_MOTCONF, // 0-2: MotType 3-5: PhiE source 6-15: Poles
 	ADR_TMC3_CPR,
@@ -152,6 +173,7 @@ const uint16_t VirtAddVarTab[NB_OF_VAR] =
 	ADR_TMC3_FLUX_I,
 	ADR_TMC3_PHIE_OFS,
 	ADR_TMC3_TRQ_FILT,
+	ADR_TMC3_COGGING_CAL,
 // RMD CAN Motor
 	ADR_RMD1_DATA1, //0-4 CAN ID
 	ADR_RMD1_TORQUE, //Maximum current
@@ -270,6 +292,7 @@ const uint16_t exportableFlashAddresses[NB_EXPORTABLE_ADR] =
 	ADR_FFB_EFFECTS1, // 0-7 inertia, 8-15 friction
 	ADR_FFB_EFFECTS2, // 0-7 spring, 8-15 damper
 	ADR_FFB_EFFECTS3, // 0-7 friction ramp up zone, 8-9 filterProfile
+	ADR_FFB_RECONSTRUCTION_FILTER, // 0-1 recon filter mode
 // Button Sources:
 	ADR_ADS111X_CONF1,
 // How many axis configured 1-3
@@ -280,12 +303,18 @@ const uint16_t exportableFlashAddresses[NB_EXPORTABLE_ADR] =
 	ADR_AXIS1_DEGREES,
 	ADR_AXIS1_MAX_SPEED, // Store the max speed
 	ADR_AXIS1_MAX_ACCEL, // Store the max accel
+	ADR_AXIS1_MAX_SLEWRATE_DRV, // Max slew rate for drv
 	ADR_AXIS1_ENDSTOP, // 0-7 endstop margin, 8-15 endstop stiffness
 	ADR_AXIS1_EFFECTS1, // 0-7 idlespring, 8-15 damper
 	ADR_AXIS1_SPEEDACCEL_FILTER, // Speed/Accel filter Lowpass profile
 	ADR_AXIS1_ENC_RATIO, // Accel filter Lowpass
 	ADR_AXIS1_EFFECTS2, // 0-7 Friction, 8-15 Inertia
 	ADR_AXIS1_POSTPROCESS1, // 0-7 expo curve
+	ADR_AXIS1_EQ1, // Equalizer band 1,2 gains
+	ADR_AXIS1_EQ2, // Equalizer band 3,4 gains
+	ADR_AXIS1_EQ3, // Equalizer band 5 gain
+	ADR_AXIS1_HANDSOFF_CONF, // Hands-off config
+	ADR_AXIS1_HANDSOFF_ACCEL, // Hands-off accel threshold
 // TMC1
 	ADR_TMC1_MOTCONF, // 0-2: MotType 3-5: PhiE source 6-15: Poles
 	ADR_TMC1_CPR,
@@ -300,18 +329,25 @@ const uint16_t exportableFlashAddresses[NB_EXPORTABLE_ADR] =
 	ADR_TMC1_FLUX_I,
 //	ADR_TMC1_PHIE_OFS,
 	ADR_TMC1_TRQ_FILT,
+	ADR_TMC1_COGGING_CAL,
 // AXIS2
 	ADR_AXIS2_CONFIG, // 0-2 ENC, 3-5 DRV
 	ADR_AXIS2_POWER,
 	ADR_AXIS2_DEGREES,
 	ADR_AXIS2_MAX_SPEED, // Store the max speed
 	ADR_AXIS2_MAX_ACCEL, // Store the max accel
+	ADR_AXIS2_MAX_SLEWRATE_DRV, // Max slew rate for drv
 	ADR_AXIS2_ENDSTOP, // 0-7 endstop margin, 8-15 endstop stiffness
 	ADR_AXIS2_EFFECTS1, // 0-7 idlespring, 8-15 damper
 	ADR_AXIS2_SPEEDACCEL_FILTER, // Speed/Accel filter Lowpass profile
 	ADR_AXIS2_ENC_RATIO, // Store the encoder ratio for an axis
 	ADR_AXIS2_EFFECTS2, // 0-7 Friction, 8-15 Inertia
 	ADR_AXIS2_POSTPROCESS1, // 0-7 expo curve
+	ADR_AXIS2_EQ1, // Equalizer band 1,2 gains
+	ADR_AXIS2_EQ2, // Equalizer band 3,4 gains
+	ADR_AXIS2_EQ3, // Equalizer band 5 gain
+	ADR_AXIS2_HANDSOFF_CONF, // Hands-off config
+	ADR_AXIS2_HANDSOFF_ACCEL, // Hands-off accel threshold
 // TMC2
 	ADR_TMC2_MOTCONF, // 0-2: MotType 3-5: PhiE source 6-15: Poles
 	ADR_TMC2_CPR,
@@ -326,18 +362,25 @@ const uint16_t exportableFlashAddresses[NB_EXPORTABLE_ADR] =
 	ADR_TMC2_FLUX_I,
 //	ADR_TMC2_PHIE_OFS,
 	ADR_TMC2_TRQ_FILT,
+	ADR_TMC2_COGGING_CAL,
 // AXIS3
 	ADR_AXIS3_CONFIG, // 0-2 ENC, 3-5 DRV
 	ADR_AXIS3_POWER,
 	ADR_AXIS3_DEGREES,
 	ADR_AXIS3_MAX_SPEED, // Store the max speed
 	ADR_AXIS3_MAX_ACCEL, // Store the max accel
+	ADR_AXIS3_MAX_SLEWRATE_DRV, // Max slew rate for drv
 	ADR_AXIS3_ENDSTOP, // 0-7 endstop margin, 8-15 endstop stiffness
 	ADR_AXIS3_EFFECTS1, // 0-7 idlespring, 8-15 damper
 	ADR_AXIS3_SPEEDACCEL_FILTER, // Speed/Accel filter Lowpass profile
 	ADR_AXIS3_ENC_RATIO, // Store the encoder ratio for an axis
 	ADR_AXIS3_EFFECTS2, // 0-7 Friction, 8-15 Inertia
 	ADR_AXIS3_POSTPROCESS1, // 0-7 expo curve
+	ADR_AXIS3_EQ1, // Equalizer band 1,2 gains
+	ADR_AXIS3_EQ2, // Equalizer band 3,4 gains
+	ADR_AXIS3_EQ3, // Equalizer band 5 gain
+	ADR_AXIS3_HANDSOFF_CONF, // Hands-off config
+	ADR_AXIS3_HANDSOFF_ACCEL, // Hands-off accel threshold
 // TMC3
 	ADR_TMC3_MOTCONF, // 0-2: MotType 3-5: PhiE source 6-15: Poles
 	ADR_TMC3_CPR,
@@ -352,6 +395,7 @@ const uint16_t exportableFlashAddresses[NB_EXPORTABLE_ADR] =
 	ADR_TMC3_FLUX_I,
 //	ADR_TMC3_PHIE_OFS,
 	ADR_TMC3_TRQ_FILT,
+	ADR_TMC3_COGGING_CAL,
 // RMD CAN Motor
 	ADR_RMD1_DATA1, //0-4 CAN ID
 	ADR_RMD1_TORQUE, //Maximum current
