@@ -103,4 +103,4 @@ While a 4kHz PID loop would theoretically offer higher control bandwidth, it was
 Implemented in the `turn()` method for zero latency:
 
 $$T_{comp}(\theta) = \sum_{n=1}^{20} A_n \cdot \sin(Order_n \cdot \theta + \Phi_n)$$
-$$T_{final} = T_{requested} - \left( Scale \cdot T_{comp}(\theta) \right)$$
+$$T_{final} = T_{requested} + \left( Scale \cdot T_{comp}(\theta) \right)$$

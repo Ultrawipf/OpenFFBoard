@@ -143,7 +143,8 @@ void TMC4671::saveFlash(){
 
 #ifdef COGGING_TABLE_FLASH_START_ADDRESS
 	// Save cogging state
-	uint16_t coggingFlash = (cogging_enabled ? 1 : 0) | ((uint16_t)clip<float>(this->cogging_scale * 100.0f, 0, 100) << 1);
+	int8_t scale_int = clip<float>(this->cogging_scale * 100.0f, -127, 127);
+	uint16_t coggingFlash = (cogging_enabled ? 1 : 0) | ((uint8_t)scale_int << 1);
 	Flash_Write(flashAddrs.coggingEnable, coggingFlash);
 #endif
 }
@@ -225,9 +226,9 @@ void TMC4671::restoreFlash(){
 	uint16_t cogging = 0; // Initialize to avoid random stack data
 	if(Flash_Read(flashAddrs.coggingEnable, &cogging)) {
 		cogging_enabled = cogging & 0x01;
-		uint16_t scale = (cogging >> 1) & 0x7F;
-		if (scale == 0 && cogging_enabled) scale = 50; // Default if restored as 0 but was enabled (compatibility)
-		this->cogging_scale = (float)scale / 100.0f;
+		int8_t scale_int = (cogging >> 1) & 0xFF;
+		if (scale_int == 0 && cogging_enabled) scale_int = 50; // Default if restored as 0 but was enabled (compatibility)
+		this->cogging_scale = (float)scale_int / 100.0f;
 	} else {
 		cogging_enabled = false;
 		this->cogging_scale = 0.5f;
@@ -1656,7 +1657,7 @@ void TMC4671::turn(int16_t power){
 				compensation += cogging_harmonics[i].amplitude * arm_sin_f32(angle_rad * cogging_harmonics[i].order + cogging_harmonics[i].phase);
 			}
 		}
-		totalPower -= (int32_t)(this->cogging_scale * compensation);
+		totalPower += (int32_t)(this->cogging_scale * compensation);
 	}
 #endif
 
@@ -3792,10 +3793,114 @@ void TMC4671::handleStateCoggingCalibration() {
 				saveCoggingTable();
 				CommandHandler::broadcastCommandReply(CommandReply("Cogging calibration successful", 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 
-				// --- 4. RETURN TO CENTER (Unwinding multi-turn) ---
-				
+				// --- 3.5 SCALE CALIBRATION (Dichotomy) ---
 				// Get the raw absolute position (no modulo 1.0 wrapping)
 				float actual_pos_f = (usingExternalEncoder() && drvEncoder != nullptr) ? drvEncoder->getPos_f() : (float)this->getPos() / (float)this->getCpr();
+				float target_rpm = (actual_pos_f > 0.0f) ? -TARGET_RPM : TARGET_RPM;
+
+				int main_h = -1;
+				float max_amp = 0;
+				for(int n=0; n<COGGING_HARMONICS_COUNT; n++){
+					if(cogging_harmonics[n].amplitude > max_amp){
+						max_amp = cogging_harmonics[n].amplitude;
+						main_h = n;
+					}
+				}
+
+				if (main_h != -1) {
+					snprintf(dbg_buf, sizeof(dbg_buf), "STEP 3.5/3: Fine-tuning Cogging Scale (Main harmonic: %d, Amplitude: %.1f)", cogging_harmonics[main_h].order, cogging_harmonics[main_h].amplitude);
+					CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+					
+					float low_scale = -1.5f, high_scale = 1.5f;
+					float best_scale = this->cogging_scale; 
+					arm_pid_init_f32(&pid_soft, 1);
+
+					for (int iter = 0; iter < 8; iter++) {
+						float test_scale = (low_scale + high_scale) / 2.0f;
+						this->cogging_scale = test_scale;
+						
+						float target_pos_move = actual_pos_f;
+						float segment_dist = 0.0f;
+						
+						// Calculate distance to cover an exact integer number of cogging periods (at least ~0.3 turns)
+						// This prevents "spectral leakage" which destroys the dot product calculation.
+						float periods = ceilf(0.3f * (float)cogging_harmonics[main_h].order);
+						float segment_target = periods / (float)cogging_harmonics[main_h].order;
+						
+						float acc_re = 0, acc_im = 0;
+						uint32_t samples = 0;
+						
+						uint32_t next_tick = micros();
+						uint32_t iter_start_tick = HAL_GetTick();
+						while (segment_dist < segment_target && !emergency && hasPower()) {
+							next_tick += 1000;
+							float step = (target_rpm / 60.0f) * 0.001f;
+							target_pos_move += step;
+							actual_pos_f = getAbsolutePosition();
+							float error = target_pos_move - actual_pos_f;
+							
+							float iq_pid = arm_pid_f32(&pid_soft, error);
+							float iq_ff = (target_rpm > 0) ? dynamic_friction : -dynamic_friction;
+							float iq_cmd = iq_pid + iq_ff;
+							
+							float angle_rad = actual_pos_f * 2.0f * PI;
+							float compensation = 0;
+							for (uint8_t i = 0; i < COGGING_HARMONICS_COUNT; i++) {
+								if (cogging_harmonics[i].amplitude > 0.0f) {
+									compensation += cogging_harmonics[i].amplitude * arm_sin_f32(angle_rad * cogging_harmonics[i].order + cogging_harmonics[i].phase);
+								}
+							}
+							applySafeTorque(iq_cmd + (this->cogging_scale * compensation));
+							
+							// Only accumulate data after 200ms of warmup to let PID stabilize on the ramp
+							if (HAL_GetTick() - iter_start_tick > 200) {
+								float s, c;
+								arm_sin_cos_f32(actual_pos_f * 360.0f * cogging_harmonics[main_h].order, &s, &c);
+								acc_re += iq_cmd * c;
+								acc_im += iq_cmd * s;
+								
+								samples++;
+								segment_dist += fabs(step);
+							}
+							
+							refreshWatchdog();
+							while ((micros() - next_tick) & 0x80000000) {}
+						}
+						
+						float re = acc_re / (float)samples;
+						float im = acc_im / (float)samples;
+						// Dot product between residual PID torque and the expected cogging shape.
+						// If dot > 0, the PID is still "fighting" cogging in its original phase -> Under-compensated.
+						// If dot < 0, the PID is fighting the compensation itself -> Over-compensated.
+						// Since we search from -1.5 to 1.5, this naturally finds the correct sign (direction).
+						float dot = re * sinf(cogging_harmonics[main_h].phase) + im * cosf(cogging_harmonics[main_h].phase);
+						
+						if (dot > 0) {
+							snprintf(dbg_buf, sizeof(dbg_buf), "Iteration %d/8: Scale %.3f -> Error %.2f Iq counts: Under-compensated, increasing", iter + 1, test_scale, dot);
+							low_scale = this->cogging_scale; 
+						} else {
+							snprintf(dbg_buf, sizeof(dbg_buf), "Iteration %d/8: Scale %.3f -> Error %.2f Iq counts: Over-compensated, decreasing", iter + 1, test_scale, dot);
+							high_scale = this->cogging_scale; 
+						}
+						CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+					}
+					best_scale = (low_scale + high_scale) / 2.0f;
+					this->cogging_scale = best_scale;
+					this->cogging_enabled = true;
+					
+					// Persist the new optimal scale (signed 8-bit)
+					int8_t scale_int = clip<float>(this->cogging_scale * 100.0f, -127, 127);
+					uint16_t coggingFlash = (cogging_enabled ? 1 : 0) | ((uint8_t)scale_int << 1);
+					Flash_Write(flashAddrs.coggingEnable, coggingFlash);
+
+					snprintf(dbg_buf, sizeof(dbg_buf), "Optimal cogging scale identified: %.2f", best_scale);
+					CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
+				}
+
+				// --- 4. RETURN TO CENTER (Unwinding multi-turn) ---
+				
+				// Get current position after fine-tuning
+				actual_pos_f = getAbsolutePosition();
 				
 				snprintf(dbg_buf, sizeof(dbg_buf), "Return to center: Start pos = %.3f turns", actual_pos_f);
 				CommandHandler::broadcastCommandReply(CommandReply(std::string(dbg_buf), 0), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
@@ -3807,7 +3912,7 @@ void TMC4671::handleStateCoggingCalibration() {
 				
 				float target_pos_f = actual_pos_f;
 				uint32_t period_us = 1000; // 1kHz loop
-				float target_rpm = (actual_pos_f > 0.0f) ? -TARGET_RPM : TARGET_RPM;
+				target_rpm = (actual_pos_f > 0.0f) ? -TARGET_RPM : TARGET_RPM;
 				
 				uint32_t return_start = HAL_GetTick();
 				uint32_t next_tick = micros();
