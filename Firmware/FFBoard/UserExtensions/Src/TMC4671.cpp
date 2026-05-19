@@ -3361,12 +3361,12 @@ float TMC4671::getWrappedError(float target, float actual) {
 }
 
 float TMC4671::getAbsolutePosition() {
-    // Ne pas utiliser floorf() ici. On garde les multi-tours.
-    if (usingExternalEncoder() && drvEncoder != nullptr) {
-        return drvEncoder->getPos_f();
-    } else {
-        return (float)this->getPos() / (float)this->getCpr();
-    }
+	// Ne pas utiliser floorf() ici. On garde les multi-tours.
+	if (usingExternalEncoder() && drvEncoder != nullptr) {
+		return drvEncoder->getPos_f();
+	} else {
+		return (float)this->getPos() / (float)this->getCpr();
+	}
 }
 
 // Simplified position access (Direct reading to avoid phase lag)
@@ -3572,20 +3572,25 @@ void TMC4671::handleStateCoggingCalibration() {
 			B = clip<float, float>(B, 0.0f, 100000.0f); // Ensure B is positive
 			Delay(500);
 
-			// Step 1.4: IMC Pole Placement Calculation
-			float f_bw = 15.0f;
-			float ki_scale = 0.001f;
-
-			if (J > 1000.0f) {
-				// Try to catch the K52G (Low Inertia > 1000)
-				// We reduce the brandwith to reduce Kp and reduce oscillation
-				f_bw = 6.0f; 
-				ki_scale = 0.0002f;
-			} else if (J > 500.0f) {
-				// Mige (Middle Inertie ~630)
-				f_bw = 13.5f;
-				ki_scale = 0.0005f;
-			}
+			// Step 1.4: IMC (Internal Model Control) Pole Placement Calculation
+			
+			/* * 1. Continuous Bandwidth (f_bw) Calculation
+			 * Instead of hardcoded steps, we linearly degrade the bandwidth based on inertia (J).
+			 * - Low inertia (e.g., K52G, J ~ 100): High bandwidth (clamped to 15.0 Hz) for maximum responsiveness.
+			 * - High inertia (e.g., Mige, J ~ 630): Lower bandwidth (~13.5 Hz) to prevent Kp saturation and resonance.
+			 * - Extreme/Error inertia (J > 2000): Safe mode bandwidth (clamped to 6.0 Hz) to ensure stability.
+			 * The equation f_bw = 16.5 - 0.0047*J smoothly links these desired targets.
+			 */
+			float f_bw = clip<float>(16.5f - (0.0047f * J), 6.0f, 15.0f);
+			
+			/* * 2. Continuous Integral Scale (ki_scale) Calculation
+			 * To prevent Integral Windup during the slow ascent of magnetic cogging bumps, 
+			 * the integral gain must be restricted for heavy motors (scaling continuous time to discrete MCU time).
+			 * By making ki_scale inversely proportional to J (0.3 / J), the resulting Ki 
+			 * (which is calculated as wn^2 * J * ki_scale) cancels out J entirely.
+			 * This creates a mathematically stable, auto-adapting integral gain regardless of the motor's mass.
+			 */
+			float ki_scale = clip<float>(0.3f / J, 0.0002f, 0.001f);
 			
 			float wn = 2.0f * PI * f_bw;
 			

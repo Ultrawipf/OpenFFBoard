@@ -10,21 +10,24 @@ The system uses a **Continuous Discrete Fourier Transform (DFT)** integration. I
     *   **Static Friction (Breakout)**: Identifies the minimum torque required to overcome stiction.
     *   **Mechanical Inertia ($J$)**: Measures angular acceleration ($\alpha$) resulting from a constant torque pulse ($\tau$). $J = \tau / \alpha$.
     *   **Viscous Friction ($B$)**: Measures the steady-state torque required to maintain a constant moderate speed ($\omega$). $B = \tau / \omega$.
-    *   **Deterministic Gain Calculation (Pole Placement / IMC)**: Instead of Ziegler-Nichols, the system uses exact physics-based formulas to guarantee a **critically damped response** ($\zeta = 1.0$) at a target control bandwidth ($\omega_n$).
-        *   $K_p = 2 \cdot \zeta \cdot \omega_n \cdot J - B$
-        *   $K_i = \omega_n^2 \cdot J$
+    *   **Deterministic Gain Calculation (Pole Placement / IMC)**: Instead of Ziegler-Nichols, the system uses exact physics-based formulas to guarantee a **critically damped response** ($\zeta = 1.0$) at a target control bandwidth ($f_{bw}$).
+        *   **Bandwidth ($f_{bw}$)**: Linearly degraded based on inertia ($J$). Low inertia gives high bandwidth (up to 15Hz), high inertia gives lower bandwidth (down to 6Hz) to prevent $K_p$ saturation. Formula: $f_{bw} = 16.5 - 0.0047 \cdot J$.
+        *   **Integral Scale ($ki_{scale}$)**: Inversely proportional to $J$ ($0.3 / J$) to prevent integral windup on heavy motors.
+        *   $K_p = 2 \cdot \zeta \cdot (2\pi \cdot f_{bw}) \cdot J - B$
+        *   $K_i = (2\pi \cdot f_{bw})^2 \cdot J \cdot ki_{scale}$
         *   $K_d = 0$ (Forced to zero for maximum stability at low speed).
     *   **Validation Rotation**: A single 2.5s test rotation at **TARGET_RPM** is performed to verify tracking stability. If the error exceeds 5.0°, calibration aborts.
 
-2.  **Torque Response Capture (Deterministic Dual-Pass Acquisition)**: The motor rotates at a constant speed defined by **TARGET_RPM** (default: 8 RPM) in both directions.
-    *   **1kHz Strict Integration**: Acquisition is strictly clocked at 1kHz. For an 8-second tour, exactly **8,000 samples** are integrated. This ensures perfect spatial alignment and mathematical precision for the DFT.
+2.  **Torque Response Capture (Deterministic Dual-Pass Acquisition)**: The motor rotates at a constant speed defined by **TARGET_RPM** (default: 7.5 RPM) in both directions.
+    *   **1kHz Strict Integration**: Acquisition is strictly clocked at 1kHz. The system waits for a stabilization period (`COGGING_WARMUP_MS`) and then perfectly integrates the torque over exactly 360° of displacement (`integrated_distance < 1.0f`). A 1.5x time limit (`REVOLUTION_TIME_MS`) guarantees completion even with minor speed variations.
     *   **Torque Inversion & Safety**: The system supports `conf.invertForce` during torque application via `applySafeTorque`, preventing positive feedback loops in various hardware configurations.
     *   **Continuous Mathematical Wrapping**: The system uses `floorf`-based modulo arithmetic for position wrapping ($pos - \lfloor pos \rfloor$) on both target and actual positions, ensuring robust tracking across multiple revolutions.
     *   **Actual Current Feedback**: The system integrates the **actual currents (Iq/Id)** read from the TMC hardware registers, capturing the real physical interaction between the motor and the magnetic cogging.
     *   **Complex Rotation Optimization**: Uses recursive complex multiplication ($e^{i(k+1)\theta} = e^{ik\theta} \cdot e^{i\theta}$) to calculate 128 harmonics with only one trigonometric call per sample.
+
 3.  **Post-Acquisition Homing & Re-alignment**: After successful analysis, the system ensures the motor returns to a known hardware state.
-    *   **Multi-turn Unwinding**: Using the best-found PID gains, the motor performs a controlled ramp-down to the absolute `0.0` position. This "unwinds" any revolutions accumulated during the acquisition or retry phases.
-    *   **Encoder Re-Zeroing**: Upon reaching the origin, the driver is automatically switched to the `EncoderInit` state. This triggers a hardware re-alignment (`bangInitEnc`) and resets the encoder position registers to zero.
+    *   **Multi-turn Unwinding**: Using the full tuned PID gains, the motor performs a controlled absolute position ramp towards `0.0`. This "unwinds" any revolutions accumulated during the acquisition or retry phases.
+    *   **Encoder Re-Zeroing**: Upon reaching the origin, the driver is automatically switched to the `EncoderInit` state. This triggers a hardware re-alignment and resets the encoder position registers.
 
 ## 2. Technical Specifications
 
@@ -50,14 +53,10 @@ The following table summarizes the sequence of operations, their durations, and 
 | | Inertia ($J$) | 150ms | Constant Pulse | Measure rotor mass |
 | | Friction ($B$) | 2000ms | Velocity P-Loop | Measure dynamic drag |
 | **2. Validation** | Sanity Check | 2500ms | PID Control (Calculated Gains) | Verify tracking stability |
-| **3. Acquisition** | DFT Integration | ~10.5s | PID Control (Wait 1500ms before DFT) | Capture 360° of cogging Iq/Id |
-| **4. Return** | Centering | Variable | PID Control (Position Ramp to 0.0) | Unwind motor revolutions |
-| | Final Align | - | `EncoderInit` State (`bangInitEnc`) | Reset hardware alignment |
-
 | **3. Acquisition** | Setup | 1000ms | Zero Torque | Settle motor at rest |
-| | DFT Integration | ~10.5s | PID Control (Wait 1500ms before DFT) | Capture 360° of cogging Iq/Id |
-| **4. Return** | Centering | Variable | PID Control (Position Ramp to 0.0) | Unwind motor revolutions |
-| | Final Align | - | `EncoderInit` State (`bangInitEnc`) | Reset hardware alignment |
+| | DFT Integration | ~12.0s (Max) | PID Control (Wait 1500ms before DFT) | Capture exactly 360° of cogging Iq/Id |
+| **4. Return** | Centering | Variable | PID Control (Absolute Ramp to 0.0) | Unwind motor revolutions |
+| | Final Align | - | `EncoderInit` State | Reset hardware alignment |
 
 ### Configuration Macros
 *   `COGGING_CALIB_LUT_RESOLUTION`: Standardized at 2880 points for communication protocol compatibility.
@@ -84,7 +83,7 @@ While a 4kHz PID loop would theoretically offer higher control bandwidth, it was
 1.  **Encoder Noise**: At 7.5 RPM, the increased bandwidth would mostly react to encoder quantization noise rather than actual cogging.
 2.  **System Load**: 4kHz would quadruple the SPI bus traffic and CPU interrupts, potentially impacting USB HID latency or other real-time tasks, with no measurable gain in calibration accuracy.
 
-## 4. Diagnostics & Engineering Points
+## 5. Diagnostics & Engineering Points
 
 ### Point 1: Electrical Diagnostic (`COGGING_CALIB_ENABLE_ID_DIAG`)
 *   Analyzes the **Id axis** (Flux).
@@ -94,14 +93,14 @@ While a 4kHz PID loop would theoretically offer higher control bandwidth, it was
 *   Analyzes the **H1** magnitude on the Iq axis.
 *   A high H1 magnitude signals rotor eccentricity, a bent shaft, or encoder misalignment.
 
-### Point 4: Harmonic Anti-Cogging
+### Point 3: Harmonic Anti-Cogging
 *   The system scans all 128 harmonics.
 *   It selects the **Top 20 peaks** with an **Order > 10**.
 *   This captures the high-frequency magnetic "detent" while ignoring the low-frequency gravitational imbalance of asymmetric steering wheels.
 
-## 5. Real-Time Compensation Formula
+## 6. Real-Time Compensation Formula
 
 Implemented in the `turn()` method for zero latency:
 
 $$T_{comp}(\theta) = \sum_{n=1}^{20} A_n \cdot \sin(Order_n \cdot \theta + \Phi_n)$$
-$$T_{final} = T_{requested} + T_{comp}(\theta)$$
+$$T_{final} = T_{requested} - \left( Scale \cdot T_{comp}(\theta) \right)$$
