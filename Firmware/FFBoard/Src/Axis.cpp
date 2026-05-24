@@ -148,7 +148,10 @@ Axis::Axis(char axis,volatile Control_t* control) :CommandHandler("axis", CLSID_
 
 	// Initialize equalizer filters
 	for (uint8_t idx = 0; idx < num_eq_bands; idx++) {
-		eqFilters[idx].setBiquad(BiquadType::peak, eq_frequencies[idx] / filter_f, 1.0, 0.0);
+		BiquadType type = BiquadType::peak;
+		if (idx == 0) type = BiquadType::lowshelf;
+		else if (idx == num_eq_bands - 1) type = BiquadType::highshelf;
+		eqFilters[idx].setBiquad(type, eq_frequencies[idx] / filter_f, 2.14f, 0.0);
 	}
 
 	CommandHandler::registerCommands(); // Internal commands
