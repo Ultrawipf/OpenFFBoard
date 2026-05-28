@@ -23,6 +23,11 @@
 #include "TimerHandler.h"
 #include <span>
 #include "semaphore.hpp"
+
+#ifdef USE_DSP_FUNCTIONS
+#include "dsp/controller_functions.h"
+#include "dsp/fast_math_functions.h"
+#endif
 #include <GPIOPin.h>
 #include "cpp_target_config.h"
 #include "Filters.h"
