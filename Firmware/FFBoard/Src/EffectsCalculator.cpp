@@ -184,25 +184,30 @@ int32_t EffectsCalculator::calcNonConditionEffectForce(FFB_Effect *effect) {
 
 	int32_t force_vector = 0;
 	
-	// Get interpolated magnitude (or amplitude)
-	float interpolated_magnitude = evaluateReconstructionFilter(
-        &effect->recon_magnitude,    // Use the new structure
-        (float)effect->magnitude     // Fallback value (for NONE mode)
-    );
+    int32_t magnitude = 0;
+    int32_t offset_lrf = 0;
 
-    // Get interpolated offset
-    float interpolated_offset_float = evaluateReconstructionFilter(
-        &effect->recon_offset,       // Use the new structure
-        (float)effect->offset		 // Fallback value (for NONE mode)
-    );
-    int32_t offset_lrf = (int32_t)interpolated_offset_float;
+    // Only calculate reconstruction and envelope if the effect actually uses them
+    if (effect->type != FFB_EFFECT_RAMP) {
+        // Get interpolated magnitude (or amplitude)
+        float interpolated_magnitude = evaluateReconstructionFilter(
+            &effect->recon_magnitude,    // Use the new structure
+            (float)effect->magnitude     // Fallback value (for NONE mode)
+        );
 
-	// Magnitude with envelope if used
-    int32_t magnitude; 
-	if(effect->useEnvelope){
-        magnitude = getEnvelopeMagnitude(effect, (int32_t)interpolated_magnitude);
-	} else {
-        magnitude = (int32_t)interpolated_magnitude;
+        // Get interpolated offset
+        float interpolated_offset_float = evaluateReconstructionFilter(
+            &effect->recon_offset,       // Use the new structure
+            (float)effect->offset		 // Fallback value (for NONE mode)
+        );
+        offset_lrf = (int32_t)interpolated_offset_float;
+
+        // Magnitude with envelope if used
+        if(effect->useEnvelope){
+            magnitude = getEnvelopeMagnitude(effect, (int32_t)interpolated_magnitude);
+        } else {
+            magnitude = (int32_t)interpolated_magnitude;
+        }
     }
 
 
