@@ -345,25 +345,12 @@ public:
 	}
 	TMC4671Biquad(const TMC4671Biquad_t bq) : params(bq){}
 	TMC4671Biquad(const Biquad& bq,bool enable = true){
-#ifdef USE_DSP_FUNCTIONS
-		const float* coeffs = bq.getCoeffs();
-		// coeffs is in order {b0, b1, b2, -a1, -a2}
-		// TMC expects {b0, b1, b2, a1, a2} with a1 and a2 negated
-		this->params.b0 = (int32_t)(coeffs[0] * (float)(1 << 29));
-		this->params.b1 = (int32_t)(coeffs[1] * (float)(1 << 29));
-		this->params.b2 = (int32_t)(coeffs[2] * (float)(1 << 29));
-		this->params.a1 = (int32_t)(coeffs[3] * (float)(1 << 29));
-		this->params.a2 = (int32_t)(coeffs[4] * (float)(1 << 29));
-		this->params.enable = bq.getFc() > 0 ? enable : false;
-#else
-		// Note: trinamic swapped the naming of b and a from the regular convention in the datasheet and a and b are possibly inverse to b in our filter class
-		this->params.a1 = -(int32_t)(bq.b1 * (float)(1 << 29));
-		this->params.a2 = -(int32_t)(bq.b2 * (float)(1 << 29));
 		this->params.b0 = (int32_t)(bq.a0 * (float)(1 << 29));
 		this->params.b1 = (int32_t)(bq.a1 * (float)(1 << 29));
 		this->params.b2 = (int32_t)(bq.a2 * (float)(1 << 29));
+		this->params.a1 = (int32_t)(bq.b1 * (float)(1 << 29));
+		this->params.a2 = (int32_t)(bq.b2 * (float)(1 << 29));
 		this->params.enable = bq.getFc() > 0 ? enable : false;
-#endif
 	}
 	void enable(bool enable){
 		params.enable = enable;
@@ -505,7 +492,6 @@ public:
 	bool estopTriggered = false;
 	void turn(int16_t power);
 
-	int16_t getVelocityControllerTorque();
 	int16_t nextFlux = 0;
 	int16_t idleFlux = 0;
 	uint16_t maxOffsetFlux = 0;
