@@ -190,7 +190,7 @@ public:
 	void free_effect(uint16_t idx);
 
 	/**
-     * @brief Met à jour les tampons d'interpolation pour un effet non-conditionnel.
+     * @brief Updates interpolation buffers for unconditional effect.
      * Appelé par le handler HID (ex: 60Hz).
      * @param effect Pointeur vers l'effet à modifier.
      * @param new_magnitude Nouvelle magnitude/amplitude cible.

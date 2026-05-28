@@ -47,22 +47,25 @@ public:
     void setPeakGain(float peakGainDB);
     void calcBiquad(void);
 
-#ifdef USE_DSP_FUNCTIONS
     const float* getCoeffs() const { return pCoeffs; }
-#endif
 
 protected:
     BiquadType type;
     float Fc, Q, peakGain;
 
+    union {
+        float pCoeffs[5];
+        struct {
+            float a0, a1, a2, b1, b2;
+        };
+    };
+
 #ifdef USE_DSP_FUNCTIONS
     // CMSIS-DSP instance
     arm_biquad_casd_df1_inst_f32 S;
-    float32_t pCoeffs[5];
     float32_t pState[4]; // For a single biquad stage (DF1 float requires 4 states)
 #else
     float z1, z2;
-    float a0, a1, a2, b1, b2;
 #endif
 
 };
