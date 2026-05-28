@@ -616,8 +616,13 @@ float EffectsCalculator::evaluateReconstructionFilter(ReconFilterState* state, f
     uint32_t now_us = micros();
     float last_known_time = state->spline_x[3]; // The most recent point
 
+    // If no samples were pushed (e.g. SerialFFB or simple test mode), use fallback
+    if (!state->isSplineReady) {
+        return fallbackValue;
+    }
+
     // 50ms timeout (if the game is paused, etc.)
-    if (!state->isSplineReady || (now_us > last_known_time + 50000)) {
+    if (now_us > last_known_time + 50000) {
         return state->spline_y[3]; // Maintain the last value
     }
 
