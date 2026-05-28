@@ -843,17 +843,22 @@ int64_t Axis::applySpeedLimiterTorque(int64_t& torque){
 	}
 
 	int64_t resultTorque = 0;
-
-#ifdef USE_DSP_FUNCTIONS
 	float effectiveSpeed = metric.current.speed * (torque > 0 ? 1.0f : -1.0f);
+
 	if (effectiveSpeed > maxSpeedDegS)
 	{
-		// --- PI Controller Logic ---
 		// 1. Calculate the error term (how much we are over the speed limit).
 		float speedError = effectiveSpeed - maxSpeedDegS;
+		float reductionAmount = 0.0f;
 
-		// 2. Calculate the total reduction amount using the PID controller.
-		float reductionAmount = arm_pid_f32(&speedLimiterPID, speedError);
+		// 2. Calculate the total reduction amount using the PI controller.
+#ifdef USE_DSP_FUNCTIONS
+		reductionAmount = arm_pid_f32(&speedLimiterPID, speedError);
+#else
+		float speedreducer = speedError * ((float)0x7FFF / maxSpeedDegS);
+		speedLimitReducerI = clip<float,int32_t>( speedLimitReducerI + ((speedreducer * speedLimiterI) * torqueScaler),0,power);
+		reductionAmount = speedreducer * speedLimiterP + speedLimitReducerI;
+#endif
 
 		// 3. Apply the reduction to the main torque.
 		// We must only reduce the magnitude of the torque, not invert it.
@@ -864,23 +869,12 @@ int64_t Axis::applySpeedLimiterTorque(int64_t& torque){
 			resultTorque = -reductionAmount;
 		}
 	} else {
+#ifdef USE_DSP_FUNCTIONS
 		arm_pid_reset_f32(&speedLimiterPID); // Reset PID if not active
-	}
 #else
-	float torqueSign = torque > 0 ? 1 : -1; // Used to prevent metrics against the force to go into the limiter
-	// Speed. Mostly tuned...
-	//spdlimiterAvg.addValue(metric.current.speed);
-	float speedreducer = (float)((metric.current.speed*torqueSign) - (float)maxSpeedDegS) *  ((float)0x7FFF / maxSpeedDegS);
-	speedLimitReducerI = clip<float,int32_t>( speedLimitReducerI + ((speedreducer * speedLimiterI) * torqueScaler),0,power);
-
-	// Only reduce torque. Don't invert it to prevent oscillation
-	float torqueReduction = speedreducer * speedLimiterP + speedLimitReducerI;// accreducer * 0.025 + acclimitreducerI
-	if(torque > 0){
-		resultTorque = clip<float,int64_t>(torqueReduction,0,torque);
-	}else{
-		resultTorque = clip<float,int64_t>(-torqueReduction,torque,0);
-	}
+		speedLimitReducerI = 0; // Reset I term if not active
 #endif
+	}
 
 	return resultTorque;
 }
