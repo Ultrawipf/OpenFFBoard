@@ -703,9 +703,9 @@ int32_t Axis::calculateExpoTorque(int32_t torque){
 	}
 }
 
-int64_t Axis::calculateFFBTorque() {
+int32_t Axis::calculateFFBTorque() {
 
-	int64_t torque = this->ffbEffectTorque;
+	int32_t torque = this->ffbEffectTorque;
 
 	// 1. Game Clipping detection
 	// If the game sends more than the theoretical maximum (+/- 32767), the signal is clipped at the source.
@@ -720,7 +720,7 @@ int64_t Axis::calculateFFBTorque() {
 
 	// 3. Game specific gain (effectRatioScaler)
 	// Scale the FFB from game only (allows lowering game effects without lowering endstops)
-	torque = (int64_t)((float)torque * effectRatioScaler);
+	torque = (int32_t)((float)torque * effectRatioScaler);
 
 	return torque;
 }
@@ -747,7 +747,7 @@ int32_t Axis::calculateEndstopTorque(){
 	return clip<int32_t,int32_t>(endstopTorque,-0x7fff,0x7fff);
 }
 
-void Axis::setFfbEffectTorque(int64_t torque) {
+void Axis::setFfbEffectTorque(int32_t torque) {
 	this->ffbEffectTorque = torque;
 }
 
@@ -759,7 +759,7 @@ bool Axis::updateTorque(int32_t* totalTorque) {
 
 	// STEP 1: Process FFB torque from the game (via helper function)
 	// (Reconstructed by CMSIS Spline, Expo applied, and scaled by FFB ratio)
-	int64_t torque = calculateFFBTorque();
+	int32_t torque = calculateFFBTorque();
 
 	// STEP 2: Mix in local mechanical effects
 	// (Damper, Friction, Inertia generated locally at high frequency)
@@ -772,7 +772,7 @@ bool Axis::updateTorque(int32_t* totalTorque) {
 
 	// STEP 4: Master Volume Scaling
 	// Map the virtual signal (+/- 32767) to the physical power limit ("power")
-	torque = (int64_t)((float)torque * torqueScaler);
+	torque = (int32_t)((float)torque * torqueScaler);
 
 	// STEP 5: Safety limits (Fade-in, Out of bounds)
 	// Applied BEFORE dynamic limiters so that abrupt cuts are smoothed by the Slew Rate.
@@ -783,7 +783,7 @@ bool Axis::updateTorque(int32_t* totalTorque) {
 	// Apply a fade-in effect for a smooth force ramp-up on startup or recovery.
 	// Increases forceFadeMultiplier progressively based on forceFadeDuration and sample rate.
 	if(forceFadeMultiplier < 1.0f){
-		torque = (int64_t)((float)torque * forceFadeMultiplier);
+		torque = (int32_t)((float)torque * forceFadeMultiplier);
 		forceFadeMultiplier += forceFadeDuration / this->filter_f;
 	}
 
@@ -817,7 +817,7 @@ bool Axis::updateTorque(int32_t* totalTorque) {
 }
 
 
-void Axis::applyTorqueSlewRateLimiter(int64_t& torque)
+void Axis::applyTorqueSlewRateLimiter(int32_t& torque)
 {
 	// Limits the rate of change of the torque (slew rate), to smooths out sudden changes in torque.
 	// Essential for a natural feel and to prevent "clanking" noises.
@@ -826,14 +826,14 @@ void Axis::applyTorqueSlewRateLimiter(int64_t& torque)
 	}
 
 	// This prevents sudden torque jumps, resulting in a smoother feel.
-	const int64_t previousTorque = metric.previous.torque;
-	const int64_t maxTorqueChange = maxTorqueRateMS;
+	const int32_t previousTorque = metric.previous.torque;
+	const int32_t maxTorqueChange = maxTorqueRateMS;
 
 	// The torque is clipped to be within the range of [previous torque - limit, previous torque + limit].
-	torque = clip<int64_t>(torque, previousTorque - maxTorqueChange, previousTorque + maxTorqueChange);
+	torque = clip<int32_t>(torque, previousTorque - maxTorqueChange, previousTorque + maxTorqueChange);
 		}
 
-int64_t Axis::applySpeedLimiterTorque(int64_t& torque){
+int32_t Axis::applySpeedLimiterTorque(int32_t& torque){
 	// Speed Limiter: A PI controller to reduce torque when speed exceeds maxSpeedDegS.
 	// The limiter only acts when torque is applied in the direction of movement.
 
@@ -842,7 +842,7 @@ int64_t Axis::applySpeedLimiterTorque(int64_t& torque){
 		return 0;
 	}
 
-	int64_t resultTorque = 0;
+	int32_t resultTorque = 0;
 	float effectiveSpeed = metric.current.speed * (torque > 0 ? 1.0f : -1.0f);
 
 	if (effectiveSpeed > maxSpeedDegS)
