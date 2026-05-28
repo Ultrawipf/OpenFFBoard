@@ -58,7 +58,7 @@ extern TIM_HandleTypeDef TIM_TMC;
 #endif
 
 
-enum class TMC_ControlState : uint32_t {uninitialized,waitPower,Shutdown,Running,EncoderInit,EncoderFinished,HardError,OverTemp,IndexSearch,FullCalibration,ExternalEncoderInit,Pidautotune};
+enum class TMC_ControlState : uint32_t {uninitialized,waitPower,Shutdown,Running,EncoderInit,EncoderFinished,HardError,OverTemp,IndexSearch,FullCalibration,ExternalEncoderInit,Pidautotune,SlewRateCalibration};
 
 enum class TMC_PwmMode : uint8_t {off = 0,HSlow_LShigh = 1, HShigh_LSlow = 2, res2 = 3, res3 = 4, PWM_LS = 5, PWM_HS = 6, PWM_FOC = 7};
 
@@ -474,6 +474,13 @@ public:
 	void setPwmFreq(float freq);
 
 	void setBBM(uint8_t bbml,uint8_t bbmh);
+
+	// Slew rate calibration control
+	uint16_t getDrvSlewRate();
+	bool startSlewRateCalibration();
+	bool isSlewRateCalibrationInProgress();
+	uint16_t maxSlewRate = 65535; // in mA/ms (MAX_SLEW_RATE)
+	void measureMaxSlewRate();
 
 
 #ifdef TIM_TMC
