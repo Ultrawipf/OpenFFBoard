@@ -2,7 +2,7 @@
  * TMC4671.h
  *
  *  Created on: Feb 1, 2020
- *      Author: Yannick
+ *      Author: Yannick, Vincent
  */
 
 #ifndef TMC4671_H_
@@ -235,7 +235,7 @@ struct TMC4671PIDConf{
 struct TMC4671Limits{
 	uint16_t pid_torque_flux_ddt	= 32767;
 	uint16_t pid_uq_ud				= 30000;
-	uint16_t pid_torque_flux		= 32767;
+	uint16_t pid_torque_flux		= 30000;
 	uint32_t pid_acc_lim			= 2147483647;
 	uint32_t pid_vel_lim			= 2147483647;
 	int32_t pid_pos_low				= -2147483647;
@@ -345,12 +345,11 @@ public:
 	}
 	TMC4671Biquad(const TMC4671Biquad_t bq) : params(bq){}
 	TMC4671Biquad(const Biquad& bq,bool enable = true){
-		// Note: trinamic swapped the naming of b and a from the regular convention in the datasheet and a and b are possibly inverse to b in our filter class
-		this->params.a1 = -(int32_t)(bq.b1 * (float)(1 << 29));
-		this->params.a2 = -(int32_t)(bq.b2 * (float)(1 << 29));
 		this->params.b0 = (int32_t)(bq.a0 * (float)(1 << 29));
 		this->params.b1 = (int32_t)(bq.a1 * (float)(1 << 29));
 		this->params.b2 = (int32_t)(bq.a2 * (float)(1 << 29));
+		this->params.a1 = (int32_t)(bq.b1 * (float)(1 << 29));
+		this->params.a2 = (int32_t)(bq.b2 * (float)(1 << 29));
 		this->params.enable = bq.getFc() > 0 ? enable : false;
 	}
 	void enable(bool enable){
@@ -412,6 +411,7 @@ public:
 
 	TMC4671MainConfig conf;
 
+	void setupDriver();
 	bool initialize();
 	void initializeWithPower();
 
@@ -485,15 +485,19 @@ public:
 	void stopMotor();
 	void startMotor();
 
+	void setPowerLimit(uint16_t power) override;
+
 	void emergencyStop(bool reset);
 	bool emergency = false;
 	bool estopTriggered = false;
 	void turn(int16_t power);
+
 	int16_t nextFlux = 0;
 	int16_t idleFlux = 0;
 	uint16_t maxOffsetFlux = 0;
 
 	int16_t bangInitPower = 5000; // Default current in setup routines
+	uint16_t maxPowerAxis = 0;
 
 	int16_t controlFluxDissipate();
 	const float fluxDissipationLimit = 1000;
@@ -629,6 +633,7 @@ protected:
 	static std::span<const TMC4671HardwareTypeConf> tmc4671_hw_configs; // Can override in external target file
 
 private:
+	uint8_t drv_address = 0;
 	OutputPin enablePin = OutputPin(*DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin);
 	const Error indexNotHitError = Error(ErrorCode::encoderIndexMissed,ErrorType::critical,"Encoder index missed");
 	const Error lowVoltageError = Error(ErrorCode::undervoltage,ErrorType::warning,"Low motor voltage");
@@ -737,5 +742,3 @@ public:
 };
 #endif
 #endif /* TMC4671_H_ */
-
-

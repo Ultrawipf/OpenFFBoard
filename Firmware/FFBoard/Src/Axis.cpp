@@ -2,17 +2,32 @@
  * Axis.cpp
  *
  *  Created on: 31.01.2020
- *      Author: Yannick
+ *      Author: Yannick, Vincent
+ * 		
  */
 
 #include "Axis.h"
 #include "voltagesense.h"
+
+// Load the driver is they are declared in targer_constants.h
+#ifdef TMC4671DRIVER
 #include "TMC4671.h"
+#endif
+#ifdef PWMDRIVER
 #include "MotorPWM.h"
-#include "VescCAN.h"
+#endif
+#ifdef ODRIVE
 #include "ODriveCAN.h"
+#endif
+#ifdef VESC
+#include "VescCAN.h"
+#endif
+#ifdef SIMPLEMOTION
 #include "MotorSimplemotion.h"
+#endif
+#ifdef RMDCAN
 #include "RmdMotorCAN.h"
+#endif
 #include "critical.hpp"
 
 //////////////////////////////////////////////
@@ -86,39 +101,50 @@ const std::vector<class_entry<MotorDriver>> Axis::axis2_drivers =
 /**
  * Axis class manages motor drivers and passes effect torque to the motor drivers
  */
-Axis::Axis(char axis,volatile Control_t* control) :CommandHandler("axis", CLSID_AXIS), drv_chooser(MotorDriver::all_drivers),enc_chooser{Encoder::all_encoders}
+Axis::Axis(char axis,volatile Control_t* control) :CommandHandler("axis", CLSID_AXIS), driverChooser(MotorDriver::all_drivers),encoderChooser{Encoder::all_encoders}
 {
+
+#ifdef USE_DSP_FUNCTIONS
+	speedLimiterPID.Kp = speedLimiterP;
+	speedLimiterPID.Ki = speedLimiterI;
+	speedLimiterPID.Kd = 0.0f;
+	arm_pid_init_f32(&speedLimiterPID, 1);
+#endif
+
 	this->axis = axis;
 	this->control = control;
 	if (axis == 'X')
 	{
-		drv_chooser = ClassChooser<MotorDriver>(axis1_drivers);
+		driverChooser = ClassChooser<MotorDriver>(axis1_drivers);
 		setInstance(0);
-		this->flashAddrs = AxisFlashAddrs({ADR_AXIS1_CONFIG, ADR_AXIS1_MAX_SPEED, ADR_AXIS1_MAX_ACCEL,
+		this->flashAddresses = AxisFlashAddresses({ADR_AXIS1_CONFIG, ADR_AXIS1_MAX_SPEED, ADR_AXIS1_MAX_ACCEL, ADR_AXIS1_MAX_SLEWRATE_DRV,
 										   ADR_AXIS1_ENDSTOP, ADR_AXIS1_POWER, ADR_AXIS1_DEGREES,ADR_AXIS1_EFFECTS1,ADR_AXIS1_EFFECTS2,ADR_AXIS1_ENC_RATIO,
 										   ADR_AXIS1_SPEEDACCEL_FILTER,ADR_AXIS1_POSTPROCESS1});
 	}
 	else if (axis == 'Y')
 	{
-		drv_chooser = ClassChooser<MotorDriver>(axis2_drivers);
+		driverChooser = ClassChooser<MotorDriver>(axis2_drivers);
 		setInstance(1);
-		this->flashAddrs = AxisFlashAddrs({ADR_AXIS2_CONFIG, ADR_AXIS2_MAX_SPEED, ADR_AXIS2_MAX_ACCEL,
+		this->flashAddresses = AxisFlashAddresses({ADR_AXIS2_CONFIG, ADR_AXIS2_MAX_SPEED, ADR_AXIS2_MAX_ACCEL, ADR_AXIS2_MAX_SLEWRATE_DRV,
 										   ADR_AXIS2_ENDSTOP, ADR_AXIS2_POWER, ADR_AXIS2_DEGREES,ADR_AXIS2_EFFECTS1,ADR_AXIS2_EFFECTS2, ADR_AXIS2_ENC_RATIO,
 										   ADR_AXIS2_SPEEDACCEL_FILTER,ADR_AXIS2_POSTPROCESS1});
 	}
 	else if (axis == 'Z')
 	{
 		setInstance(2);
-		this->flashAddrs = AxisFlashAddrs({ADR_AXIS3_CONFIG, ADR_AXIS3_MAX_SPEED, ADR_AXIS3_MAX_ACCEL,
+	this->flashAddresses = AxisFlashAddresses({ADR_AXIS3_CONFIG, ADR_AXIS3_MAX_SPEED, ADR_AXIS3_MAX_ACCEL, ADR_AXIS3_MAX_SLEWRATE_DRV,
 										   ADR_AXIS3_ENDSTOP, ADR_AXIS3_POWER, ADR_AXIS3_DEGREES,ADR_AXIS3_EFFECTS1,ADR_AXIS3_EFFECTS2,ADR_AXIS3_ENC_RATIO,
 										   ADR_AXIS3_SPEEDACCEL_FILTER,ADR_AXIS3_POSTPROCESS1});
 	}
 
+	// Initialize equalizer filters
+	/*for (uint8_t idx = 0; idx < num_eq_bands; idx++) {
+		eqFilters[idx].setBiquad(BiquadType::peak, eq_frequencies[idx] / filter_f, 1.0, 0.0);
+	}*/
 
-	restoreFlash(); // Load parameters
 	CommandHandler::registerCommands(); // Internal commands
 	registerCommands();
-	updateTorqueScaler(); // In case no flash setting has been loaded yet
+	restoreFlash(); // Load parameters
 }
 
 Axis::~Axis()
@@ -145,7 +171,7 @@ void Axis::registerCommands(){
 	registerCommand("drvtype", Axis_commands::drvtype, "Motor driver type get/set/list",CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_INFOSTRING);
 	registerCommand("pos", Axis_commands::pos, "Encoder position",CMDFLAG_GET);
 	registerCommand("maxspeed", Axis_commands::maxspeed, "Speed limit in deg/s",CMDFLAG_GET | CMDFLAG_SET);
-	registerCommand("maxtorquerate", Axis_commands::maxtorquerate, "Torque rate limit in counts/ms",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("slewrate", Axis_commands::slewrate, "Torque rate limit in counts/ms",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("fxratio", Axis_commands::fxratio, "Effect ratio. Reduces game effects excluding endstop. 255=100%",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("curtorque", Axis_commands::curtorque, "Axis torque",CMDFLAG_GET);
 	registerCommand("curpos", Axis_commands::curpos, "Axis position",CMDFLAG_GET);
@@ -166,10 +192,10 @@ void Axis::registerCommands(){
  * Read parameters from flash and restore settings
  */
 void Axis::restoreFlash(){
-	//NormalizedAxis::restoreFlash();
+	// TODO: This seems to be a remnant of a previous architecture (NormalizedAxis). Confirm and remove.
 	// read all constants
 	uint16_t value;
-	if (Flash_Read(flashAddrs.config, &value)){
+	if (Flash_Read(flashAddresses.config, &value)){
 		this->conf = Axis::decodeConfFromInt(value);
 	}else{
 		pulseErrLed();
@@ -178,57 +204,65 @@ void Axis::restoreFlash(){
 	setDrvType(this->conf.drvtype);
 	setEncType(this->conf.enctype);
 
-	if (Flash_Read(flashAddrs.maxSpeed, &value)){
+	if (Flash_Read(flashAddresses.maxSpeed, &value)){
 		this->maxSpeedDegS = value;
 	}else{
 		pulseErrLed();
 	}
-//
-//	if (Flash_Read(flashAddrs.maxAccel, &value)){
-//		this->maxTorqueRateMS = value;
-//	}else{
-//		pulseErrLed();
-//	}
 
+	// save the max torque for the slew rate
+	if (Flash_Read(flashAddresses.maxAccel, &value)){
+		this->maxTorqueRateMS = value;
+	}else{
+		pulseErrLed();
+	}
 
-	uint16_t esval, power;
-	if(Flash_Read(flashAddrs.endstop, &esval)) {
-		fx_ratio_i = esval & 0xff;
-		endstopStrength = (esval >> 8) & 0xff;
+	// save the max torque for the slew rate
+	if (Flash_Read(flashAddresses.maxSlewRateDrv, &value)){
+		this->maxSlewRate_Driver = value;
+	}else{
+		pulseErrLed();
 	}
 
 
-	if(Flash_Read(flashAddrs.power, &power)){
+	uint16_t endstopRawValue, power;
+	if(Flash_Read(flashAddresses.endstop, &endstopRawValue)) {
+		setEffectRatio(endstopRawValue & 0xff);
+		endstopStrength = (endstopRawValue >> 8) & 0xff;
+	}
+
+
+	if(Flash_Read(flashAddresses.power, &power)){
 		setPower(power);
 	}
-	uint16_t deg_t;
-	if(Flash_Read(flashAddrs.degrees, &deg_t)){
-		this->degreesOfRotation = deg_t & 0x7fff;
-		this->invertAxis = (deg_t >> 15) & 0x1;
+	uint16_t degreesRawValue;
+	if(Flash_Read(flashAddresses.degrees, &degreesRawValue)){
+		this->degreesOfRotation = degreesRawValue & 0x7fff;
+		this->invertAxis = (degreesRawValue >> 15) & 0x1;
 		setDegrees(degreesOfRotation);
 	}
 
 
 	uint16_t effects;
-	if(Flash_Read(flashAddrs.effects1, &effects)){
+	if(Flash_Read(flashAddresses.effects1, &effects)){
 		setIdleSpringStrength(effects & 0xff);
 		setFxStrengthAndFilter((effects >> 8) & 0xff,damperIntensity,damperFilter);
 	}else{
-		setIdleSpringStrength(idlespringstrength); // Use default
+		setIdleSpringStrength(idleSpringStrength); // Use default
 	}
 
-	if(Flash_Read(flashAddrs.effects2, &effects)){
+	if(Flash_Read(flashAddresses.effects2, &effects)){
 		setFxStrengthAndFilter(effects & 0xff,frictionIntensity,frictionFilter);
 		setFxStrengthAndFilter((effects >> 8) & 0xff,inertiaIntensity,inertiaFilter);
 	}
 
 	uint16_t ratio;
-	if(Flash_Read(flashAddrs.encoderRatio, &ratio)){
+	if(Flash_Read(flashAddresses.encoderRatio, &ratio)){
 		setGearRatio(ratio & 0xff, (ratio >> 8) & 0xff);
 	}
 
 	uint16_t filterStorage;
-	if (Flash_Read(flashAddrs.speedAccelFilter, &filterStorage))
+	if (Flash_Read(flashAddresses.speedAccelFilter, &filterStorage))
 	{
 		uint8_t profile = filterStorage & 0xFF;
 		this->filterProfileId = profile;
@@ -239,31 +273,32 @@ void Axis::restoreFlash(){
 	}
 
 	uint16_t pp1;
-	if(Flash_Read(flashAddrs.postprocess1, &pp1)){
+	if(Flash_Read(flashAddresses.postprocess1, &pp1)){
 		setExpo((int8_t)(pp1 & 0xff));
 	}
 
 }
 // Saves parameters to flash.
 void Axis::saveFlash(){
-	//NormalizedAxis::saveFlash();
-	Flash_Write(flashAddrs.config, Axis::encodeConfToInt(this->conf));
-	Flash_Write(flashAddrs.maxSpeed, this->maxSpeedDegS);
-//	Flash_Write(flashAddrs.maxAccel, (uint16_t)(this->maxTorqueRateMS));
+	// TODO: This seems to be a remnant of a previous architecture (NormalizedAxis). Confirm and remove.
+	Flash_Write(flashAddresses.config, Axis::encodeConfToInt(this->conf));
+	Flash_Write(flashAddresses.maxSpeed, this->maxSpeedDegS);
+	Flash_Write(flashAddresses.maxAccel, (uint16_t)(this->maxTorqueRateMS));
+	Flash_Write(flashAddresses.maxSlewRateDrv, (uint16_t)(this->maxSlewRate_Driver));
 
-	Flash_Write(flashAddrs.endstop, fx_ratio_i | (endstopStrength << 8));
-	Flash_Write(flashAddrs.power, power);
-	Flash_Write(flashAddrs.degrees, (degreesOfRotation & 0x7fff) | (invertAxis << 15));
-	Flash_Write(flashAddrs.effects1, idlespringstrength | (damperIntensity << 8));
-	Flash_Write(flashAddrs.effects2, frictionIntensity | (inertiaIntensity << 8));
-	Flash_Write(flashAddrs.encoderRatio, gearRatio.numerator | (gearRatio.denominator << 8));
+	Flash_Write(flashAddresses.endstop, effectRatio | (endstopStrength << 8));
+	Flash_Write(flashAddresses.power, power);
+	Flash_Write(flashAddresses.degrees, (degreesOfRotation & 0x7fff) | (invertAxis << 15));
+	Flash_Write(flashAddresses.effects1, idleSpringStrength | (damperIntensity << 8));
+	Flash_Write(flashAddresses.effects2, frictionIntensity | (inertiaIntensity << 8));
+	Flash_Write(flashAddresses.encoderRatio, gearRatio.numerator | (gearRatio.denominator << 8));
 
 	// save CF biquad
 	uint16_t filterStorage = (uint16_t)this->filterProfileId & 0xFF;
-	Flash_Write(flashAddrs.speedAccelFilter, filterStorage);
+	Flash_Write(flashAddresses.speedAccelFilter, filterStorage);
 
 	// Postprocessing
-	Flash_Write(flashAddrs.postprocess1, expoValInt & 0xff);
+	Flash_Write(flashAddresses.postprocess1, expoValue & 0xff);
 
 }
 
@@ -307,6 +342,7 @@ void Axis::prepareForUpdate(){
 		return;
 	}
 
+	// TODO: The motorReady() check was commented out. Review if this is still the desired behavior or if it should be restored.
 	//if (!drv->motorReady()) return;
 
 	float angle = getEncAngle(getEncoder());
@@ -339,6 +375,7 @@ void Axis::prepareForUpdate(){
 
 	}else if(abs(scaledEnc) <= 0x7fff) {
 		outOfBounds = false;
+		// TODO: This error clearing seems to have been moved to the errorCallback. Confirm this is correct and remove this line.
 		//ErrorHandler::clearError(outOfBoundsError);
 	}
 
@@ -350,6 +387,7 @@ void Axis::prepareForUpdate(){
 
 
 	this->updateMetrics(angle);
+	//this->updateHandsOffState();
 
 }
 
@@ -374,17 +412,11 @@ void Axis::updateDriveTorque(){
 void Axis::setPower(uint16_t power)
 {
 	this->power = power;
-	updateTorqueScaler();
-#ifdef TMC4671DRIVER
-	// Update hardware limits for TMC for safety
-	TMC4671 *drv = dynamic_cast<TMC4671 *>(this->drv.get());
+	torqueScaler = ((float)power / (float)0x7fff);
 	if (drv != nullptr)
 	{
-		//tmclimits.pid_uq_ud = power;
-		//tmclimits.pid_torque_flux = power;
-		drv->setTorqueLimit(power);
+		drv->setPowerLimit(power);
 	}
-#endif
 }
 
 
@@ -393,29 +425,27 @@ void Axis::setPower(uint16_t power)
  */
 void Axis::setDrvType(uint8_t drvtype)
 {
-	if (!drv_chooser.isValidClassId(drvtype))
+	if (!driverChooser.isValidClassId(drvtype))
 	{
 		return;
 	}
 	cpp_freertos::CriticalSection::Enter();
-	this->drv.reset(drv_chooser.Create((uint16_t)drvtype));
+	MotorDriver* drv = driverChooser.Create((uint16_t)drvtype);
+	this->drv.reset(drv);
 	if (drv == nullptr)
 	{
 		cpp_freertos::CriticalSection::Exit();
 		return;
 	}
 	this->conf.drvtype = drvtype;
+	this->maxTorqueRateMS = drv->getDrvSlewRate();
 
 	// Pass encoder to driver again
 	if(!this->drv->hasIntegratedEncoder()){
 		this->drv->setEncoder(this->enc);
 	}
-#ifdef TMC4671DRIVER
-	if (dynamic_cast<TMC4671 *>(drv.get()))
-	{
-		setupTMC4671();
-	}
-#endif
+
+	drv->setupDriver();
 	if (!tud_connected())
 	{
 		control->usb_disabled = false;
@@ -428,25 +458,6 @@ void Axis::setDrvType(uint8_t drvtype)
 	cpp_freertos::CriticalSection::Exit();
 }
 
-#ifdef TMC4671DRIVER
-// Special tmc setup methods
-void Axis::setupTMC4671()
-{
-	TMC4671 *drv = static_cast<TMC4671 *>(this->drv.get());
-//	drv->setAxis(axis);
-	drv->setExternalEncoderAllowed(true);
-	drv->restoreFlash();
-	tmclimits.pid_torque_flux = getPower();
-	drv->setLimits(tmclimits);
-	//drv->setBiquadTorque(TMC4671Biquad(tmcbq_500hz_07q_25k));
-	
-
-	// Enable driver
-
-	drv->setMotionMode(MotionMode::torque);
-	drv->Start(); // Start thread
-}
-#endif
 
 
 /**
@@ -454,11 +465,11 @@ void Axis::setupTMC4671()
  */
 void Axis::setEncType(uint8_t enctype)
 {
-	if (enc_chooser.isValidClassId(enctype) && !drv->hasIntegratedEncoder())
+	if (encoderChooser.isValidClassId(enctype) && !drv->hasIntegratedEncoder())
 	{
 
 		this->conf.enctype = (enctype);
-		this->enc = std::shared_ptr<Encoder>(enc_chooser.Create(enctype)); // Make new encoder
+		this->enc = std::shared_ptr<Encoder>(encoderChooser.Create(enctype)); // Make new encoder
 		if(drv && !drv->hasIntegratedEncoder())
 			this->drv->setEncoder(this->enc);
 	}else{
@@ -563,16 +574,16 @@ int32_t Axis::getLastScaledEnc() {
  * Changes intensity of idle spring when FFB is off
  */
 int32_t Axis::updateIdleSpringForce() {
-	return clip<int32_t,int32_t>((int32_t)(-metric.current.pos_scaled_16b*idlespringscale),-idlespringclip,idlespringclip);
+	return clip<int32_t,int32_t>((int32_t)(-metric.current.pos_scaled_16b*idleSpringScale),-idleSpringClip,idleSpringClip);
 }
 
 /*
  * Set the strength of the spring effect if FFB is disabled
  */
 void Axis::setIdleSpringStrength(uint8_t spring){
-	idlespringstrength = spring;
-	idlespringclip = clip<int32_t,int32_t>((int32_t)spring*35,0,10000);
-	idlespringscale = 0.5f + ((float)spring * 0.01f);
+	idleSpringStrength = spring;
+	idleSpringClip = clip<int32_t,int32_t>((int32_t)spring*35,0,10000);
+	idleSpringScale = 0.5f + ((float)spring * 0.01f);
 }
 
 /**
@@ -586,26 +597,27 @@ void Axis::setFxStrengthAndFilter(uint8_t val,uint8_t& valToSet, Biquad& filter)
 }
 
 /**
- * Called before HID effects are calculated
- * Should calculate always on and idle effects specific to the axis like idlespring and friction
+ * Calculates the internal mechanical effects (damper, friction, inertia) that are always active.
+ * Called before HID effects are calculated.
+ * Also calculates idle spring when FFB is inactive.
  */
-void Axis::calculateAxisEffects(bool ffb_on){
-	axisEffectTorque = 0;
+void Axis::calculateMechanicalEffects(bool ffb_on){
+	mechanicalEffectTorque = 0;
 
 	if(!ffb_on){
-		axisEffectTorque += updateIdleSpringForce();
+		mechanicalEffectTorque += updateIdleSpringForce();
 	}
 
 	// Always active damper
 	if(damperIntensity != 0){
 		float speedFiltered = (metric.current.speed) * (float)damperIntensity * AXIS_DAMPER_RATIO;
-		axisEffectTorque -= damperFilter.process(clip<float, int32_t>(speedFiltered, -intFxClip, intFxClip));
+		mechanicalEffectTorque -= damperFilter.process(clip<float, int32_t>(speedFiltered, -internalFxClip, internalFxClip));
 	}
 
 	// Always active inertia
 	if(inertiaIntensity != 0){
 		float accelFiltered = metric.current.accel * (float)inertiaIntensity * AXIS_INERTIA_RATIO;
-		axisEffectTorque -= inertiaFilter.process(clip<float, int32_t>(accelFiltered, -intFxClip, intFxClip));
+		mechanicalEffectTorque -= inertiaFilter.process(clip<float, int32_t>(accelFiltered, -internalFxClip, internalFxClip));
 	}
 
 	// Always active friction. Based on effectsCalculator implementation
@@ -614,12 +626,17 @@ void Axis::calculateAxisEffects(bool ffb_on){
 		float speedRampupCeil = 4096;
 		float rampupFactor = 1.0;
 		if (fabs (speed) < speedRampupCeil) {								// if speed in the range to rampup we apply a sine curve
-			float phaseRad = M_PI * ((fabs (speed) / speedRampupCeil) - 0.5);// we start to compute the normalized angle (speed / normalizedSpeed@5%) and translate it of -1/2PI to translate sin on 1/2 periode
-			rampupFactor = ( 1 + sin(phaseRad ) ) / 2;						// sin value is -1..1 range, we translate it to 0..2 and we scale it by 2
+#ifdef USE_DSP_FUNCTIONS
+			float phaseRad = PI * ((fabsf (speed) / speedRampupCeil) - 0.5f);// we start to compute the normalized angle (speed / normalizedSpeed@5%) and translate it of -1/2PI to translate sin on 1/2 periode
+			rampupFactor = ( 1.0f + arm_sin_f32(phaseRad ) ) / 2.0f;			// sin value is -1..1 range, we translate it to 0..2 and we scale it by 2
+#else
+			float phaseRad = M_PI * ((fabsf (speed) / speedRampupCeil) - 0.5f);// we start to compute the normalized angle (speed / normalizedSpeed@5%) and translate it of -1/2PI to translate sin on 1/2 periode
+			rampupFactor = ( 1.0f + sinf(phaseRad ) ) / 2.0f;			// sin value is -1..1 range, we translate it to 0..2 and we scale it by 2
+#endif
 		}
 		int8_t sign = speed >= 0 ? 1 : -1;
 		float force = (float)frictionIntensity * rampupFactor * sign * INTERNAL_AXIS_FRICTION_SCALER * 32;
-		axisEffectTorque -= frictionFilter.process(clip<float, int32_t>(force, -intFxClip, intFxClip));
+		mechanicalEffectTorque -= frictionFilter.process(clip<float, int32_t>(force, -internalFxClip, internalFxClip));
 	}
 
 }
@@ -627,9 +644,9 @@ void Axis::calculateAxisEffects(bool ffb_on){
 /**
  * Changes the ratio of effects to endstop strength. 255 = same strength, 0 = no effects
  */
-void Axis::setFxRatio(uint8_t val) {
-	fx_ratio_i = val;
-	updateTorqueScaler();
+void Axis::setEffectRatio(uint8_t val) {
+	effectRatio = val;
+	effectRatioScaler = ((float)effectRatio/255.0);
 }
 
 /**
@@ -643,6 +660,10 @@ void Axis::resetMetrics(float new_pos= 0) { // pos is degrees
 	// Reset filters
 	speedFilter.calcBiquad();
 	accelFilter.calcBiquad();
+
+#ifdef USE_DSP_FUNCTIONS
+	arm_pid_reset_f32(&speedLimiterPID);	// reset the PID limit
+#endif
 }
 
 /**
@@ -659,8 +680,8 @@ void Axis::updateMetrics(float new_pos) { // pos is degrees
 	// compute speed and accel from raw instant speed normalized
 	float currentSpeed = (new_pos - metric.previous.posDegrees) * this->filter_f; // deg/s
 	metric.current.speed = speedFilter.process(currentSpeed);
-	metric.current.accel = accelFilter.process((currentSpeed - _lastSpeed))* this->filter_f; // deg/s/s
-	_lastSpeed = currentSpeed;
+	metric.current.accel = accelFilter.process((currentSpeed - previousFrameSpeed))* this->filter_f; // deg/s/s
+	previousFrameSpeed = currentSpeed;
 
 }
 
@@ -671,7 +692,7 @@ uint16_t Axis::getPower(){
 }
 
 /**
- * Calculates an exponential torque correction curve
+ * Calculates an exponential torque correction curve and scale for FFBEffect
  */
 int32_t Axis::calculateExpoTorque(int32_t torque){
 	float torquef = (float)torque / (float)0x7fff; // This down and upscaling may introduce float artifacts. Do this before scaling down.
@@ -682,17 +703,29 @@ int32_t Axis::calculateExpoTorque(int32_t torque){
 	}
 }
 
-void  Axis::updateTorqueScaler() {
-	effect_margin_scaler = ((float)fx_ratio_i/255.0);
-	torqueScaler = ((float)power / (float)0x7fff);
+int32_t Axis::calculateFFBTorque() {
+
+	int32_t torque = this->ffbEffectTorque;
+
+	// 1. Game Clipping detection
+	// If the game sends more than the theoretical maximum (+/- 32767), the signal is clipped at the source.
+	if(abs(torque) >= 0x7fff){
+		pulseClipLed(); // Visual alert: game signal is clipping
+	}
+
+	// 2. Apply Expo (Linearization or sensation curve)
+	if(expo != 1){
+		torque = calculateExpoTorque(torque);
+	}
+
+	// 3. Game specific gain (effectRatioScaler)
+	// Scale the FFB from game only (allows lowering game effects without lowering endstops)
+	torque = (int32_t)((float)torque * effectRatioScaler);
+
+	return torque;
 }
 
-float Axis::getTorqueScaler(){
-	return torqueScaler;
-}
-
-
-int32_t Axis::getTorque() { return metric.previous.torque; }
+int32_t Axis::getTorque() { return metric.current.torque; } // Fix: move from previous to current
 
 bool Axis::isInverted() {
 	return invertAxis;
@@ -701,20 +734,21 @@ bool Axis::isInverted() {
 /**
  * Calculate soft endstop effect
  */
-int16_t Axis::updateEndstop(){
-	int8_t clipdir = cliptest<int32_t,int32_t>(metric.current.pos_scaled_16b, -0x7fff, 0x7fff);
-	if(clipdir == 0){
+int32_t Axis::calculateEndstopTorque(){
+	// TODO Check the type int8_t and the range clipping is -0x7fff..0x7fff
+	int8_t clipDirection = cliptest<int32_t,int32_t>(metric.current.pos_scaled_16b, -0x7fff, 0x7fff);
+	if(clipDirection == 0){
 		return 0;
 	}
-	float addtorque = clipdir*metric.current.posDegrees - (float)this->degreesOfRotation/2.0; // degress of rotation counts total range so multiply by 2
-	addtorque *= (float)endstopStrength * endstopGain; // Apply endstop gain for stiffness.
-	addtorque *= -clipdir;
+	float endstopTorque = clipDirection*metric.current.posDegrees - (float)this->degreesOfRotation/2.0; // degress of rotation counts total range so multiply by 2
+	endstopTorque *= (float)endstopStrength * endstopGain; // Apply endstop gain for stiffness.
+	endstopTorque *= -clipDirection;
 
-	return clip<int32_t,int32_t>(addtorque,-0x7fff,0x7fff);
+	return clip<int32_t,int32_t>(endstopTorque,-0x7fff,0x7fff);
 }
 
-void Axis::setEffectTorque(int32_t torque) {
-	effectTorque = torque;
+void Axis::setFfbEffectTorque(int32_t torque) {
+	this->ffbEffectTorque = torque;
 }
 
 /** pass in ptr to receive the sum of the effects + endstop torque
@@ -723,73 +757,126 @@ void Axis::setEffectTorque(int32_t torque) {
 
 bool Axis::updateTorque(int32_t* totalTorque) {
 
-	if(abs(effectTorque) >= 0x7fff){
-		pulseClipLed();
-	}
+	// STEP 1: Process FFB torque from the game (via helper function)
+	// (Reconstructed by CMSIS Spline, Expo applied, and scaled by FFB ratio)
+	int32_t torque = calculateFFBTorque();
 
-	// Scale effect torque
-	int32_t torque = effectTorque; // Game effects
-	if(expo != 1){
-		torque = calculateExpoTorque(torque);
-	}
-	torque *= effect_margin_scaler;
-	torque += axisEffectTorque; // Independent effects
-	torque += updateEndstop();
-	torque *= torqueScaler; // Scale to power
+	// STEP 2: Mix in local mechanical effects
+	// (Damper, Friction, Inertia generated locally at high frequency)
+	torque += mechanicalEffectTorque;
+	
+	// STEP 3: Add endstops
+	// Note: Historically endstops are added before the Master Scaler.
+	// If hard endstops (like Simucube) are desired, this should be moved to STEP 5.
+	torque += calculateEndstopTorque();
 
+	// STEP 4: Master Volume Scaling
+	// Map the virtual signal (+/- 32767) to the physical power limit ("power")
+	torque = (int32_t)((float)torque * torqueScaler);
 
-	// TODO speed and accel limiters
-	if(maxSpeedDegS > 0){
-
-		float torqueSign = torque > 0 ? 1 : -1; // Used to prevent metrics against the force to go into the limiter
-		// Speed. Mostly tuned...
-		//spdlimiterAvg.addValue(metric.current.speed);
-		float speedreducer = (float)((metric.current.speed*torqueSign) - (float)maxSpeedDegS) *  ((float)0x7FFF / maxSpeedDegS);
-		spdlimitreducerI = clip<float,int32_t>( spdlimitreducerI + ((speedreducer * speedLimiterI) * torqueScaler),0,power);
-
-		// Accel limit. Not really useful. Maybe replace with torque slew rate limit?
-//		float accreducer = (float)((metric.current.accel*torqueSign) - (float)maxAccelDegSS) * getAccelScalerNormalized();
-//		acclimitreducerI = clip<float,int32_t>( acclimitreducerI + ((accreducer * 0.02) * torqueScaler),0,power);
-
-
-		// Only reduce torque. Don't invert it to prevent oscillation
-		float torqueReduction = speedreducer * speedLimiterP + spdlimitreducerI;// accreducer * 0.025 + acclimitreducerI
-		if(torque > 0){
-			torqueReduction = clip<float,int32_t>(torqueReduction,0,torque);
-		}else{
-			torqueReduction = clip<float,int32_t>(-torqueReduction,torque,0);
-		}
-
-		torque -= torqueReduction;
-	}
-	// Torque slew rate limiter
-	if(maxTorqueRateMS > 0){
-		torque = clip<int32_t,int32_t>(torque, metric.previous.torque - maxTorqueRateMS,metric.previous.torque + maxTorqueRateMS);
-	}
-//	if(torque - metric.previous.torque)
+	// STEP 5: Safety limits (Fade-in, Out of bounds)
+	// Applied BEFORE dynamic limiters so that abrupt cuts are smoothed by the Slew Rate.
 	if(outOfBounds){
 		torque = 0;
 	}
 
-	// Fade in
-	if(forceFadeCurMult < 1){
-		torque = torque * forceFadeCurMult;
-		forceFadeCurMult += forceFadeTime / this->filter_f; // Fade time
+	// Apply a fade-in effect for a smooth force ramp-up on startup or recovery.
+	// Increases forceFadeMultiplier progressively based on forceFadeDuration and sample rate.
+	if(forceFadeMultiplier < 1.0f){
+		torque = (int32_t)((float)torque * forceFadeMultiplier);
+		forceFadeMultiplier += forceFadeDuration / this->filter_f;
 	}
 
-	// Torque calculated. Now sending to driver
+	// STEP 6: Dynamic limiters (Speed)
+	// Must be applied while torque is still in the Game Coordinate System (matching current.speed).
+	torque -= applySpeedLimiterTorque(torque);
+
+	// STEP 7: Axis inversion and Slew Rate Limiter
+	// Axis inversion must be done BEFORE Slew Rate because previous.torque is in hardware CS.
 	torque = (invertAxis) ? -torque : torque;
-	metric.current.torque = torque;
-	torque = clip<int32_t, int32_t>(torque, -power, power);
 
-	bool torqueChanged = metric.current.torque != metric.previous.torque;
+	// CRITICAL: Slew Rate compares the target value with "metric.previous.torque"
+	// (which is the clipped physical torque from the previous cycle).
+	// It MUST be applied on the final physical torque after inversion!
+	applyTorqueSlewRateLimiter(torque);
 
-	if (abs(torque) == power){
-		pulseClipLed();
+	// STEP 8: Final hardware clipping
+	int32_t torqueAfterClipping = clip<int32_t, int32_t>((int32_t)torque, -power, power);
+	
+	if (torqueAfterClipping != torque){
+		pulseClipLed(); // Visual alert: MOTOR cannot provide requested power (Hardware clipping)
 	}
 
-	*totalTorque = torque;
-	return (torqueChanged);
+	// Store the actually applied torque for the next iteration (used by the slew rate limiter).
+	metric.current.torque = torqueAfterClipping; 
+	
+	// return result
+	*totalTorque = torqueAfterClipping;
+	
+	return (metric.current.torque != metric.previous.torque);
+}
+
+
+void Axis::applyTorqueSlewRateLimiter(int32_t& torque)
+{
+	// Limits the rate of change of the torque (slew rate), to smooths out sudden changes in torque.
+	// Essential for a natural feel and to prevent "clanking" noises.
+	if(maxTorqueRateMS == 0) {
+		return; // Limiter is disabled
+	}
+
+	// This prevents sudden torque jumps, resulting in a smoother feel.
+	const int32_t previousTorque = metric.previous.torque;
+	const int32_t maxTorqueChange = maxTorqueRateMS;
+
+	// The torque is clipped to be within the range of [previous torque - limit, previous torque + limit].
+	torque = clip<int32_t>(torque, previousTorque - maxTorqueChange, previousTorque + maxTorqueChange);
+		}
+
+int32_t Axis::applySpeedLimiterTorque(int32_t& torque){
+	// Speed Limiter: A PI controller to reduce torque when speed exceeds maxSpeedDegS.
+	// The limiter only acts when torque is applied in the direction of movement.
+
+	// if limiter is disabled, return
+	if(maxSpeedDegS <= 0) {
+		return 0;
+	}
+
+	int32_t resultTorque = 0;
+	float effectiveSpeed = metric.current.speed * (torque > 0 ? 1.0f : -1.0f);
+
+	if (effectiveSpeed > maxSpeedDegS)
+	{
+		// 1. Calculate the error term (how much we are over the speed limit).
+		float speedError = effectiveSpeed - maxSpeedDegS;
+		float reductionAmount = 0.0f;
+
+		// 2. Calculate the total reduction amount using the PI controller.
+#ifdef USE_DSP_FUNCTIONS
+		reductionAmount = arm_pid_f32(&speedLimiterPID, speedError);
+#else
+		float speedreducer = speedError * ((float)0x7FFF / maxSpeedDegS);
+		speedLimitReducerI = clip<float,int32_t>( speedLimitReducerI + ((speedreducer * speedLimiterI) * torqueScaler),0,power);
+		reductionAmount = speedreducer * speedLimiterP + speedLimitReducerI;
+#endif
+
+		// 3. Apply the reduction to the main torque.
+		// We must only reduce the magnitude of the torque, not invert it.
+		reductionAmount = clip(reductionAmount, 0.0f, fabsf((float)torque));
+		if(torque > 0) {
+			resultTorque = reductionAmount;
+		} else {
+			resultTorque = -reductionAmount;
+		}
+	} else {
+#ifdef USE_DSP_FUNCTIONS
+		arm_pid_reset_f32(&speedLimiterPID); // Reset PID if not active
+#else
+		speedLimitReducerI = 0; // Reset I term if not active
+#endif
+	}
+
+	return resultTorque;
 }
 
 void Axis::updateSamplerate(float newSamplerate){
@@ -812,8 +899,8 @@ void Axis::updateFilters(uint8_t profileId){
  * Starts fading in force from start to 1 over fadeTime
  */
 void Axis::startForceFadeIn(float start,float fadeTime){
-	this->forceFadeTime = fadeTime;
-	this->forceFadeCurMult = clip<float>(start, 0, 1);
+	this->forceFadeDuration = fadeTime;
+	this->forceFadeMultiplier = clip<float>(start, 0, 1);
 }
 
 
@@ -824,9 +911,9 @@ void Axis::setDegrees(uint16_t degrees){
 
 	degrees &= 0x7fff;
 	if(degrees == 0){
-		nextDegreesOfRotation = lastdegreesOfRotation;
+		nextDegreesOfRotation = previousDegreesOfRotation;
 	}else{
-		lastdegreesOfRotation = degreesOfRotation;
+		previousDegreesOfRotation = degreesOfRotation;
 		nextDegreesOfRotation = degrees;
 	}
 }
@@ -834,7 +921,7 @@ void Axis::setDegrees(uint16_t degrees){
 
 void Axis::setExpo(int val){
 	val = clip(val, -127, 127);
-	expoValInt = val;
+	expoValue = val;
 	if(val == 0){
 		expo = 1; // Explicitly force expo off
 		return;
@@ -864,14 +951,6 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 
 	case Axis_commands::degrees:
 		handleGetSetFunc(cmd, replies, degreesOfRotation, &Axis::setDegrees,this);
-//		if (cmd.type == CMDtype::get)
-//		{
-//			replies.emplace_back(degreesOfRotation);
-//		}
-//		else if (cmd.type == CMDtype::set)
-//		{
-//			setDegrees(cmd.val);
-//		}
 		break;
 
 	case Axis_commands::esgain:
@@ -897,7 +976,7 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 	case Axis_commands::idlespring:
 		if (cmd.type == CMDtype::get)
 		{
-			replies.emplace_back(idlespringstrength);
+			replies.emplace_back(idleSpringStrength);
 		}
 		else if (cmd.type == CMDtype::set)
 		{
@@ -940,7 +1019,7 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 
 	case Axis_commands::enctype:
 		if(cmd.type == CMDtype::info){
-			enc_chooser.replyAvailableClasses(replies,this->getEncType());
+			encoderChooser.replyAvailableClasses(replies,this->getEncType());
 		}else if(cmd.type == CMDtype::get){
 			replies.emplace_back(this->getEncType());
 		}else if(cmd.type == CMDtype::set){
@@ -950,7 +1029,7 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 
 	case Axis_commands::drvtype:
 		if(cmd.type == CMDtype::info){
-			drv_chooser.replyAvailableClasses(replies,this->getDrvType());
+			driverChooser.replyAvailableClasses(replies,this->getDrvType());
 		}else if(cmd.type == CMDtype::get){
 			replies.emplace_back(this->getDrvType());
 		}else if(cmd.type == CMDtype::set){
@@ -978,15 +1057,46 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 		handleGetSet(cmd, replies, this->maxSpeedDegS);
 		break;
 
-	case Axis_commands::maxtorquerate:
-		handleGetSet(cmd, replies, this->maxTorqueRateMS);
+	case Axis_commands::slewrate:
+		{
+			if(cmd.type == CMDtype::get){
+				// If driver has a more restrictive calibrated value, update the axis limit
+				if(maxSlewRate_Driver < this->maxTorqueRateMS) {
+					this->maxTorqueRateMS = maxSlewRate_Driver;
+				}
+				replies.emplace_back(this->maxTorqueRateMS);
+			}else if(cmd.type == CMDtype::set){
+				this->maxTorqueRateMS = clip<uint32_t,uint32_t>(cmd.val, 0, maxSlewRate_Driver);
+			}
+		}
+		break;
+
+	case Axis_commands::calibrate_maxSlewRateDrv:
+		{
+			if(cmd.type == CMDtype::get){
+				// Start calibration on driver and set awaiting flag if start is OK
+				if (drv->startSlewRateCalibration()) {
+					this->awaitingSlewCalibration = true;
+				} else {
+					// Inform user that calibration can't started
+					CommandHandler::broadcastCommandReply(CommandReply("Slew rate calibration unsupported",1), (uint32_t)Axis_commands::calibrate_maxSlewRateDrv, CMDtype::get);
+				}
+				replies.emplace_back(1); // ack
+			}
+			break;
+		}
+
+	case Axis_commands::maxSlewRateDrv:
+		if (cmd.type == CMDtype::get) {
+			replies.emplace_back(maxSlewRate_Driver);
+		}
 		break;
 
 	case Axis_commands::fxratio:
 		if(cmd.type == CMDtype::get){
-			replies.emplace_back(this->fx_ratio_i);
+			replies.emplace_back(this->effectRatio);
 		}else if(cmd.type == CMDtype::set){
-			setFxRatio(cmd.val);
+			setEffectRatio(cmd.val);
 		}
 		break;
 
@@ -1043,6 +1153,7 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 			if(this->getEncoder() != nullptr){
 				cpr = this->getEncoder()->getCpr();
 			}
+			// TODO: For TMC4671 drivers, CPR reporting might be inconsistent. Investigate if a prescale is needed or if the UI should handle the readout correction.
 //#ifdef TMC4671DRIVER // CPR should be consistent with position. Maybe change TMC to prescale to encoder count or correct readout in UI
 //			TMC4671 *tmcdrv = dynamic_cast<TMC4671 *>(this->drv.get()); // Special case for TMC. Get the actual encoder resolution
 //			if (tmcdrv && tmcdrv->hasIntegratedEncoder())
@@ -1057,7 +1168,7 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 		break;
 
 	case Axis_commands::expo:
-		handleGetSetFunc(cmd, replies, expoValInt, &Axis::setExpo, this); // need to also provide the expoScaler constant
+		handleGetSetFunc(cmd, replies, expoValue, &Axis::setExpo, this); // need to also provide the expoScaler constant
 		break;
 
 	case Axis_commands::exposcale:
