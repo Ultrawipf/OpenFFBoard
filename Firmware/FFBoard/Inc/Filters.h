@@ -10,7 +10,8 @@
 #include "cppmain.h"
 
 #ifdef USE_DSP_FUNCTIONS
-#include "arm_math.h"
+#include "arm_math_types.h"
+#include "dsp/filtering_functions.h"
 #endif
 
 #ifdef __cplusplus

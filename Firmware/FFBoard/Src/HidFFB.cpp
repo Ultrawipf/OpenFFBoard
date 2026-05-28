@@ -13,7 +13,8 @@
 #include <math.h>
 
 #ifdef USE_DSP_FUNCTIONS
-#include "arm_math.h"
+#include "arm_math_types.h"
+#include "dsp/fast_math_functions.h"
 #define MATH_PI PI
 #define MATH_SIN(x) arm_sin_f32(x)
 #define MATH_COS(x) arm_cos_f32(x)

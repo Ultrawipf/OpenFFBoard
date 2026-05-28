@@ -12,6 +12,11 @@
 #include "Filters.h"
 #include "constants.h" // For #define MAX_AXIS
 
+#ifdef USE_DSP_FUNCTIONS
+#include "arm_math_types.h"
+#include "dsp/interpolation_functions.h"
+#endif
+
 #define FFB_ID_OFFSET 0x00
 #define MAX_EFFECTS 40
 

@@ -26,7 +26,8 @@
 #include "EffectsCalculator.h"
 
 #ifdef USE_DSP_FUNCTIONS
-#include "arm_math.h"
+#include "dsp/controller_functions.h"
+#include "dsp/fast_math_functions.h"
 #endif
 
 #define INTERNAL_AXIS_DAMPER_SCALER 0.7
