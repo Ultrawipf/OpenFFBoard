@@ -202,8 +202,8 @@ typedef struct
 } __attribute__((packed)) reportFFB_status_t;
 
 /**
- * @brief Contient l'état et les tampons pour
- * l'interpolation d'un seul paramètre (ex: magnitude ou offset).
+ * @brief Contains state and buffers for
+ * the interpolation of a single parameter (eg: magnitude or offset).
  */
 typedef struct
 {
@@ -212,13 +212,13 @@ typedef struct
 	float32_t spline_y[4] = {0}; 		// Buffer value
 	float32_t spline_y2[4] = {0};    	// Buffer for Spline Natural
 	float32_t spline_scratch[8] = {0}; 	// Buffer for Spline Natural
-	arm_spline_instance_f32 spline_instance; // Instance pour CMSIS-DSP
+	arm_spline_instance_f32 spline_instance; // Instance for CMSIS-DSP
 	bool spline_arm_initialized = false;	 // CMSIS-DSP initialized ?
 #else
 	float spline_x[4] = {0}; 		// Buffer time(en us)
 	float spline_y[4] = {0}; 		// Buffer value
 #endif
-	bool isSplineReady = false;	// Le tampon est-il plein ?
+	bool isSplineReady = false;	// buffer is full ?
 } ReconFilterState;
 
 typedef struct

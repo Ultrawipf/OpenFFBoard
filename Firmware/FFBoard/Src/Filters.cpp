@@ -76,8 +76,8 @@ float Biquad::process(float in) {
     arm_biquad_cascade_df1_f32(&S, &in, &out, 1);
 #else
 	out = in * a0 + z1;
-    z1 = in * a1 + z2 - b1 * out;
-    z2 = in * a2 - b2 * out;
+    z1 = in * a1 + z2 + b1 * out;
+    z2 = in * a2 + b2 * out;
 #endif
     return out;
 }
@@ -98,7 +98,6 @@ void Biquad::calcBiquad(void) {
     float norm;
     float K, V;
 #ifdef USE_DSP_FUNCTIONS
-    float a0 = 0.0f, a1 = 0.0f, a2 = 0.0f, b1 = 0.0f, b2 = 0.0f;
     V = powf(10, fabsf(peakGain) / 20.0f);
     K = arm_sin_f32(PI * Fc) / arm_cos_f32(PI * Fc);
 #else
@@ -232,15 +231,12 @@ void Biquad::calcBiquad(void) {
             break;
     }
 
-#ifdef USE_DSP_FUNCTIONS
-    // Store coefficients in the format required by CMSIS-DSP: {b0, b1, b2, -a1, -a2}
-    // Note the negated feedback coefficients a1 and a2.
-    pCoeffs[0] = a0;
-    pCoeffs[1] = a1;
-    pCoeffs[2] = a2;
-    pCoeffs[3] = -b1;
-    pCoeffs[4] = -b2;
+    // Invert feedback coefficients to match CMSIS-DSP expected format {-b1, -b2}
+    // and to simplify the TMC configuration.
+    b1 = -b1;
+    b2 = -b2;
 
+#ifdef USE_DSP_FUNCTIONS
 	// Reset state
 	memset(pState, 0, sizeof(pState));
 #endif
