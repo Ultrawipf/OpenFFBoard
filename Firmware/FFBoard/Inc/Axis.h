@@ -28,6 +28,7 @@
 #ifdef USE_DSP_FUNCTIONS
 #include "dsp/controller_functions.h"
 #include "dsp/fast_math_functions.h"
+#include "dsp/statistics_functions.h"
 #endif
 
 #define INTERNAL_AXIS_DAMPER_SCALER 0.7
