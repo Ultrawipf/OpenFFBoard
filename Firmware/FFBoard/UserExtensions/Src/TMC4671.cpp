@@ -2089,11 +2089,6 @@ void TMC4671::setFluxTorque(int16_t flux, int16_t torque){
 #endif
 }
 
-int16_t TMC4671::getVelocityControllerTorque(){
-    writeReg(0x6F, 4); // INTERIM_ADDR = 4 for PIDOUT_TARGET_TORQUE
-    return (int16_t)readReg(0x6E); // Read from INTERIM_DATA
-}
-
 void TMC4671::setFluxTorqueFF(int16_t flux, int16_t torque){
 	if(curMotionMode != MotionMode::torque){
 		setMotionMode(MotionMode::torque,true);

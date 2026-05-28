@@ -492,7 +492,6 @@ public:
 	bool estopTriggered = false;
 	void turn(int16_t power);
 
-	int16_t getVelocityControllerTorque();
 	int16_t nextFlux = 0;
 	int16_t idleFlux = 0;
 	uint16_t maxOffsetFlux = 0;
