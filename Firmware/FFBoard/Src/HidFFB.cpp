@@ -239,7 +239,7 @@ void HidFFB::set_constant_effect(FFB_SetConstantForce_Data_t* data){
 	cfUpdateEvent();
 	FFB_Effect& effect_p = effects[data->effectBlockIndex-1];
 
-	//effect_p.magnitude = data->magnitude;
+	effect_p.magnitude = data->magnitude;
 	effects_calc->updateEffectReconstruction(&effect_p, (float)data->magnitude, 0.0f, false);
 //	if(effect_p.state == 0){
 //		effect_p.state = 1; // Force start effect
@@ -466,10 +466,9 @@ void HidFFB::set_periodic(FFB_SetPeriodic_Data_t* report){
 	effect->period = clip<uint32_t,uint32_t>(report->period,1,0x7fff); // Period is never 0
 	effect->phase = report->phase;
 
+	effect->magnitude = report->magnitude;
+	effect->offset = report->offset;
 	effects_calc->updateEffectReconstruction(effect, (float)report->magnitude, (float)report->offset, true);
-	//effect->magnitude = report->magnitude;
-	//effect->offset = report->offset;
-	//effect->counter = 0;
 }
 
 
