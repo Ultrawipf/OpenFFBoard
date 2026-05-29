@@ -61,7 +61,6 @@ struct AxisFlashAddresses
 	uint16_t config = ADR_AXIS1_CONFIG;
 	uint16_t maxSpeed = ADR_AXIS1_MAX_SPEED;
 	uint16_t maxAccel = ADR_AXIS1_MAX_ACCEL;
-	uint16_t maxSlewRateDrv = ADR_AXIS1_MAX_SLEWRATE_DRV;
 
 	uint16_t endstop = ADR_AXIS1_ENDSTOP;
 	uint16_t power = ADR_AXIS1_POWER;
@@ -114,12 +113,9 @@ struct GearRatio_t{
 
 enum class Axis_commands : uint32_t{
 	power=0x00,degrees=0x01,esgain,zeroenc,invert,idlespring,axisdamper,enctype,drvtype,
-	pos,curtorque,curpos,curspd,curaccel,
-	fxratio,reductionScaler,
+	pos,fxratio,curtorque,curpos,curspd,curaccel,reductionScaler,
 	filterSpeed, filterAccel, filterProfileId,cpr,axisfriction,axisinertia,
-	maxspeed,slewrate,
-	calibrate_maxSlewRateDrv,
-	maxSlewRateDrv,
+	maxspeed,maxtorquerate,
 	expo,exposcale
 };
 
@@ -420,11 +416,6 @@ private:
 	 */
 	int32_t applySpeedLimiterTorque(int32_t& torque);
 	/**
-	 * @brief Applies the torque slew rate limiter to the torque.
-	 * @param torque A reference to the torque value to be modified.
-	 */
-	void applyTorqueSlewRateLimiter(int32_t& torque);
-	/**
 	 * @brief Decodes the axis configuration from a 16-bit integer stored in flash.
 	 * @param val The 16-bit encoded configuration value.
 	 */
@@ -459,8 +450,7 @@ private:
 	uint16_t previousDegreesOfRotation = degreesOfRotation; //!< Previous degrees of rotation (for smooth transitions).
 	uint16_t nextDegreesOfRotation = degreesOfRotation; //!< Target degrees of rotation.
 
-	// Limiters
-	uint16_t maxSlewRate_Driver = MAX_SLEW_RATE;		//!< Maximum slew rate as measured by the driver (in units/ms).
+	// Axis parameters
 	uint16_t maxSpeedDegS  = 0;		//!< Maximum speed in degrees per second. 0 to disable.
 	uint32_t maxTorqueRateMS = 0;		//!< Maximum torque rate of change per millisecond. 0 to disable.
 
@@ -498,9 +488,6 @@ private:
 	float idleSpringScale = 0;        //!< Scaler for the idle spring force.
 	bool motorWasNotReady = true;     //!< Flag to detect motor readiness transition.
 
-	// Slew rate calibration tracking: true when Axis requested a calibration and
-	// is waiting for the driver to finish measuring the max slew rate.
-	bool awaitingSlewCalibration = false;
 
 	// Filters
 	// TODO tune these and check if it is really stable and beneficial to the FFB. index 4 placeholder
