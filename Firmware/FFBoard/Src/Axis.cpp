@@ -117,7 +117,7 @@ Axis::Axis(char axis,volatile Control_t* control) :CommandHandler("axis", CLSID_
 	{
 		driverChooser = ClassChooser<MotorDriver>(axis1_drivers);
 		setInstance(0);
-		this->flashAddresses = AxisFlashAddresses({ADR_AXIS1_CONFIG, ADR_AXIS1_MAX_SPEED, ADR_AXIS1_MAX_ACCEL, ADR_AXIS1_MAX_SLEWRATE_DRV,
+		this->flashAddresses = AxisFlashAddresses({ADR_AXIS1_CONFIG, ADR_AXIS1_MAX_SPEED, ADR_AXIS1_MAX_ACCEL,
 										   ADR_AXIS1_ENDSTOP, ADR_AXIS1_POWER, ADR_AXIS1_DEGREES,ADR_AXIS1_EFFECTS1,ADR_AXIS1_EFFECTS2,ADR_AXIS1_ENC_RATIO,
 										   ADR_AXIS1_SPEEDACCEL_FILTER,ADR_AXIS1_POSTPROCESS1});
 	}
@@ -125,14 +125,14 @@ Axis::Axis(char axis,volatile Control_t* control) :CommandHandler("axis", CLSID_
 	{
 		driverChooser = ClassChooser<MotorDriver>(axis2_drivers);
 		setInstance(1);
-		this->flashAddresses = AxisFlashAddresses({ADR_AXIS2_CONFIG, ADR_AXIS2_MAX_SPEED, ADR_AXIS2_MAX_ACCEL, ADR_AXIS2_MAX_SLEWRATE_DRV,
+		this->flashAddresses = AxisFlashAddresses({ADR_AXIS2_CONFIG, ADR_AXIS2_MAX_SPEED, ADR_AXIS2_MAX_ACCEL,
 										   ADR_AXIS2_ENDSTOP, ADR_AXIS2_POWER, ADR_AXIS2_DEGREES,ADR_AXIS2_EFFECTS1,ADR_AXIS2_EFFECTS2, ADR_AXIS2_ENC_RATIO,
 										   ADR_AXIS2_SPEEDACCEL_FILTER,ADR_AXIS2_POSTPROCESS1});
 	}
 	else if (axis == 'Z')
 	{
 		setInstance(2);
-	this->flashAddresses = AxisFlashAddresses({ADR_AXIS3_CONFIG, ADR_AXIS3_MAX_SPEED, ADR_AXIS3_MAX_ACCEL, ADR_AXIS3_MAX_SLEWRATE_DRV,
+	this->flashAddresses = AxisFlashAddresses({ADR_AXIS3_CONFIG, ADR_AXIS3_MAX_SPEED, ADR_AXIS3_MAX_ACCEL,
 										   ADR_AXIS3_ENDSTOP, ADR_AXIS3_POWER, ADR_AXIS3_DEGREES,ADR_AXIS3_EFFECTS1,ADR_AXIS3_EFFECTS2,ADR_AXIS3_ENC_RATIO,
 										   ADR_AXIS3_SPEEDACCEL_FILTER,ADR_AXIS3_POSTPROCESS1});
 	}
@@ -171,7 +171,7 @@ void Axis::registerCommands(){
 	registerCommand("drvtype", Axis_commands::drvtype, "Motor driver type get/set/list",CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_INFOSTRING);
 	registerCommand("pos", Axis_commands::pos, "Encoder position",CMDFLAG_GET);
 	registerCommand("maxspeed", Axis_commands::maxspeed, "Speed limit in deg/s",CMDFLAG_GET | CMDFLAG_SET);
-	registerCommand("slewrate", Axis_commands::slewrate, "Torque rate limit in counts/ms",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("maxtorquerate", Axis_commands::maxtorquerate, "Torque rate limit in counts/ms",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("fxratio", Axis_commands::fxratio, "Effect ratio. Reduces game effects excluding endstop. 255=100%",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("curtorque", Axis_commands::curtorque, "Axis torque",CMDFLAG_GET);
 	registerCommand("curpos", Axis_commands::curpos, "Axis position",CMDFLAG_GET);
@@ -210,19 +210,13 @@ void Axis::restoreFlash(){
 		pulseErrLed();
 	}
 
-	// save the max torque for the slew rate
 	if (Flash_Read(flashAddresses.maxAccel, &value)){
 		this->maxTorqueRateMS = value;
 	}else{
 		pulseErrLed();
 	}
 
-	// save the max torque for the slew rate
-	if (Flash_Read(flashAddresses.maxSlewRateDrv, &value)){
-		this->maxSlewRate_Driver = value;
-	}else{
-		pulseErrLed();
-	}
+
 
 
 	uint16_t endstopRawValue, power;
@@ -284,8 +278,6 @@ void Axis::saveFlash(){
 	Flash_Write(flashAddresses.config, Axis::encodeConfToInt(this->conf));
 	Flash_Write(flashAddresses.maxSpeed, this->maxSpeedDegS);
 	Flash_Write(flashAddresses.maxAccel, (uint16_t)(this->maxTorqueRateMS));
-	Flash_Write(flashAddresses.maxSlewRateDrv, (uint16_t)(this->maxSlewRate_Driver));
-
 	Flash_Write(flashAddresses.endstop, effectRatio | (endstopStrength << 8));
 	Flash_Write(flashAddresses.power, power);
 	Flash_Write(flashAddresses.degrees, (degreesOfRotation & 0x7fff) | (invertAxis << 15));
@@ -400,9 +392,8 @@ void Axis::errorCallback(const Error &error, bool cleared){
 
 
 void Axis::updateDriveTorque(){
-	// totalTorque = effectTorque + endstopTorque
 	int32_t totalTorque;
-	bool torqueChanged = updateTorque(&totalTorque);
+	updateTorque(&totalTorque);
 	if (drv->motorReady()){
 		// Send to motor driver
 		drv->turn(totalTorque);
@@ -450,7 +441,7 @@ void Axis::setDrvType(uint8_t drvtype)
 	old_drv_ptr = this->drv.release(); // Detach the old driver safely
 	this->drv.reset(drv_new);          // Attach the new driver
 	this->conf.drvtype = drvtype;
-	this->maxTorqueRateMS = drv_new->getDrvSlewRate();
+
 	cpp_freertos::CriticalSection::Exit();
 
 	// Delete the old driver outside of the critical section to avoid blocking destructors or FreeRTOS issues
@@ -796,58 +787,37 @@ bool Axis::updateTorque(int32_t* totalTorque) {
 		torque = 0;
 	}
 
-	// Apply a fade-in effect for a smooth force ramp-up on startup or recovery.
-	// Increases forceFadeMultiplier progressively based on forceFadeDuration and sample rate.
 	if(forceFadeMultiplier < 1.0f){
 		torque = (int32_t)((float)torque * forceFadeMultiplier);
 		forceFadeMultiplier += forceFadeDuration / this->filter_f;
 	}
 
 	// STEP 6: Dynamic limiters (Speed)
-	// Must be applied while torque is still in the Game Coordinate System (matching current.speed).
 	torque -= applySpeedLimiterTorque(torque);
 
-	// STEP 7: Axis inversion and Slew Rate Limiter
-	// Axis inversion must be done BEFORE Slew Rate because previous.torque is in hardware CS.
-	torque = (invertAxis) ? -torque : torque;
+	// Torque slew rate limiter
+	if(maxTorqueRateMS > 0){
+		torque = clip<int32_t,int32_t>(torque, metric.previous.torque - maxTorqueRateMS,metric.previous.torque + maxTorqueRateMS);
+	}
 
-	// CRITICAL: Slew Rate compares the target value with "metric.previous.torque"
-	// (which is the clipped physical torque from the previous cycle).
-	// It MUST be applied on the final physical torque after inversion!
-	applyTorqueSlewRateLimiter(torque);
+	if(invertAxis){
+		torque = -torque;
+	}
 
-	// STEP 8: Final hardware clipping
 	int32_t torqueAfterClipping = clip<int32_t, int32_t>((int32_t)torque, -power, power);
 	
 	if (torqueAfterClipping != torque){
-		pulseClipLed(); // Visual alert: MOTOR cannot provide requested power (Hardware clipping)
+		pulseClipLed(); 
 	}
 
-	// Store the actually applied torque for the next iteration (used by the slew rate limiter).
-	metric.current.torque = torqueAfterClipping; 
+	metric.previous.torque = torqueAfterClipping;
+	metric.current.torque = torqueAfterClipping;  
 	
-	// return result
 	*totalTorque = torqueAfterClipping;
 	
 	return (metric.current.torque != metric.previous.torque);
 }
 
-
-void Axis::applyTorqueSlewRateLimiter(int32_t& torque)
-{
-	// Limits the rate of change of the torque (slew rate), to smooths out sudden changes in torque.
-	// Essential for a natural feel and to prevent "clanking" noises.
-	if(maxTorqueRateMS == 0) {
-		return; // Limiter is disabled
-	}
-
-	// This prevents sudden torque jumps, resulting in a smoother feel.
-	const int32_t previousTorque = metric.previous.torque;
-	const int32_t maxTorqueChange = maxTorqueRateMS;
-
-	// The torque is clipped to be within the range of [previous torque - limit, previous torque + limit].
-	torque = clip<int32_t>(torque, previousTorque - maxTorqueChange, previousTorque + maxTorqueChange);
-		}
 
 int32_t Axis::applySpeedLimiterTorque(int32_t& torque){
 	// Speed Limiter: A PI controller to reduce torque when speed exceeds maxSpeedDegS.
@@ -1073,39 +1043,8 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 		handleGetSet(cmd, replies, this->maxSpeedDegS);
 		break;
 
-	case Axis_commands::slewrate:
-		{
-			if(cmd.type == CMDtype::get){
-				// If driver has a more restrictive calibrated value, update the axis limit
-				if(maxSlewRate_Driver < this->maxTorqueRateMS) {
-					this->maxTorqueRateMS = maxSlewRate_Driver;
-				}
-				replies.emplace_back(this->maxTorqueRateMS);
-			}else if(cmd.type == CMDtype::set){
-				this->maxTorqueRateMS = clip<uint32_t,uint32_t>(cmd.val, 0, maxSlewRate_Driver);
-			}
-		}
-		break;
-
-	case Axis_commands::calibrate_maxSlewRateDrv:
-		{
-			if(cmd.type == CMDtype::get){
-				// Start calibration on driver and set awaiting flag if start is OK
-				if (drv->startSlewRateCalibration()) {
-					this->awaitingSlewCalibration = true;
-				} else {
-					// Inform user that calibration can't started
-					CommandHandler::broadcastCommandReply(CommandReply("Slew rate calibration unsupported",1), (uint32_t)Axis_commands::calibrate_maxSlewRateDrv, CMDtype::get);
-				}
-				replies.emplace_back(1); // ack
-			}
-			break;
-		}
-
-	case Axis_commands::maxSlewRateDrv:
-		if (cmd.type == CMDtype::get) {
-			replies.emplace_back(maxSlewRate_Driver);
-		}
+	case Axis_commands::maxtorquerate:
+		handleGetSet(cmd, replies, this->maxTorqueRateMS);
 		break;
 
 	case Axis_commands::fxratio:

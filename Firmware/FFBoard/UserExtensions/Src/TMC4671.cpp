@@ -597,7 +597,6 @@ void TMC4671::Run(){
 
 			if(fullCalibrationInProgress){
 				Flash_Write(flashAddrs.encA,encodeEncHallMisc()); // Save encoder settings
-				changeState(TMC_ControlState::SlewRateCalibration);
 			}
 
 
@@ -607,30 +606,6 @@ void TMC4671::Run(){
 
 		break;
 
-		case TMC_ControlState::SlewRateCalibration:
-			{
-				if(!hasPower()){
-					this->postPowerState = TMC_ControlState::SlewRateCalibration;
-					changeState(TMC_ControlState::waitPower);
-					break;
-				}
-				allowStateChange = false;
-				measureMaxSlewRate();
-				allowStateChange = true;
-				if(fullCalibrationInProgress){
-					fullCalibrationInProgress = false;
-					if(motorEnabledRequested && isSetUp()){
-						startMotor();
-						changeState(TMC_ControlState::Running);
-					}else{
-						stopMotor();
-						laststate = TMC_ControlState::Running; // Go to running when starting again
-					}
-				}else{
-					changeState(laststate,false);
-				}
-				break;
-			}
 		}
 
 
@@ -3282,21 +3257,6 @@ void TMC4671::errorCallback(const Error &error, bool cleared){
 	}
 }
 
-uint16_t TMC4671::getDrvSlewRate(){
-	return this->maxSlewRate;
-}
-
-bool TMC4671::startSlewRateCalibration(){
-	// Request the TMC internal state machine to run the slew rate calibration.
-	// changeState will schedule the calibration state in the driver's thread.
-	this->changeState(TMC_ControlState::SlewRateCalibration);
-	return true;
-}
-
-bool TMC4671::isSlewRateCalibrationInProgress(){
-	return (this->state == TMC_ControlState::SlewRateCalibration);
-}
-
 bool TMC4671::isCalibrationInProgress() {
 	return (state == TMC_ControlState::FullCalibration || 
 #ifdef COGGING_TABLE_FLASH_START_ADDRESS
@@ -3305,45 +3265,7 @@ bool TMC4671::isCalibrationInProgress() {
 			state == TMC_ControlState::Pidautotune || 
 			state == TMC_ControlState::IndexSearch ||
 			state == TMC_ControlState::EncoderInit ||
-			state == TMC_ControlState::ExternalEncoderInit ||
-			state == TMC_ControlState::SlewRateCalibration);
-}
-
-void TMC4671::measureMaxSlewRate(){
-	MotionMode lastmode = getMotionMode();
-	PhiE lastphie = getPhiEtype();
-
-	// Setup
-	setPhiE_ext(getPhiE());
-	setPhiEtype(PhiE::ext); // Fixed phase
-	setMotionMode(MotionMode::torque, true);
-	setFluxTorque(0, 0);
-
-	int32_t start_flux = getActualFlux();
-	uint32_t start_time = micros();
-	setFluxTorque(maxPowerAxis,0); // Apply max flux
-
-	uint32_t elapsed_time = 0;
-	int32_t max_slew_rate = 0;
-
-	while(elapsed_time < 3000){ // measure for 3ms
-		int32_t current_flux = getActualFlux();
-		uint32_t current_time = micros();
-		elapsed_time = current_time - start_time;
-
-		if(elapsed_time > 0){
-			int32_t slew_rate = (current_flux - start_flux) * 1000 / elapsed_time; // Pn/ms (Power normalized/ms)
-			if(slew_rate > max_slew_rate){
-				max_slew_rate = slew_rate;
-			}
-		}
-	}
-	setFluxTorque(0,0);
-	this->maxSlewRate = clip<int32_t>(max_slew_rate, 0, MAX_SLEW_RATE);
-
-	// Restore
-	setPhiEtype(lastphie);
-	setMotionMode(lastmode,true);
+			state == TMC_ControlState::ExternalEncoderInit);
 }
 
 void TMC4671::handleStateWaitPower() {
