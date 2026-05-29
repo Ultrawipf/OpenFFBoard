@@ -332,37 +332,7 @@ typedef struct
 	uint8_t loopCount;
 } __attribute__((packed)) FFB_EffOp_Data_t;
 
-// Internal struct for storing effects
-typedef struct
-{
-	volatile uint8_t state = 0;
-	uint8_t type = FFB_EFFECT_NONE; // Type
-	int16_t offset = 0;				// Center point
-	uint8_t gain = 255;				// Scaler. often unused
-	int16_t magnitude = 0;			// High res intensity of effect
-	int16_t startLevel = 0;			// Ramp effect
-	int16_t endLevel = 0;			// Ramp effect
-	float axisMagnitudes[MAX_AXIS] = {0}; // 0=0,100%=1
-
-	FFB_Effect_Condition conditions[MAX_AXIS];
-	int16_t phase = 0;
-	uint16_t period = 0;
-	uint32_t duration = FFB_EFFECT_DURATION_INFINITE;					 // Duration in ms
-	uint16_t attackLevel = 0, fadeLevel = 0; // Envelope effect
-	uint32_t attackTime = 0, fadeTime = 0;	 // Envelope effect
-
-	std::unique_ptr<Biquad> filter[MAX_AXIS] = { nullptr };  // Optional filter
-	uint16_t startDelay = 0;
-	uint32_t startTime = 0;	  // Elapsed time in ms before effect starts
-	uint16_t samplePeriod = 0;
-	bool useEnvelope = false;
-	bool useSingleCondition = true;
-
-	ReconFilterState recon_magnitude; // State pour Magnitude (ou Amplitude)
-    ReconFilterState recon_offset;    // State pour Offset (périodiques)
-} FFB_Effect;
-
-
+// Internal struct for storing effects replaced by Effect class hierarchy.
 
 // --------------- Effects------------------------
 typedef struct

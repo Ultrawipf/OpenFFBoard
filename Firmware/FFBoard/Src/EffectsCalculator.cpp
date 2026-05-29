@@ -79,17 +79,17 @@ void EffectsCalculator::setActive(bool active)
 	effects_active = active;
 	for (uint8_t i = 0; i < effects_stats.size(); i++)
 	{
-		effects_stats[i].current = {0}; // Reset active effect forces
-		effects_statslast[i].current = {0};
+		effects_stats[i].current.fill(0); // Reset active effect forces
+		effects_statslast[i].current.fill(0);
 	}
 	setClipLed(active);
 }
 
 void EffectsCalculator::updateSamplerate(float newSamplerate){
 	this->calcfrequency = newSamplerate;
-	for(FFB_Effect &effect : this->effects){
-		if(effect.filter[0]){ // Update filters if effect has filters
-			setFilters(&effect);
+	for(auto& effect : this->effects){
+		if(effect && effect->getFilter(0)){ // Update filters if effect has filters
+			setFilters(effect.get());
 		}
 	}
 }
@@ -118,44 +118,21 @@ void EffectsCalculator::calculateEffects(std::vector<std::unique_ptr<Axis>> &axe
 	int32_t forces[MAX_AXIS] = {0};
 
 	if(isActive()){
-		int32_t force = 0;
 		for (uint8_t i = 0; i < effects_stats.size(); i++)
 		{
-			effects_stats[i].current = {0}; // Reset active effect forces
+			effects_stats[i].current.fill(0); // Reset active effect forces
 		}
 
-		for (uint8_t fxi = 0; fxi < MAX_EFFECTS; fxi++)
+		for (auto& effect : effects)
 		{
-			FFB_Effect *effect = &effects[fxi];
-
-			// Effect activated and not infinite (0 or 0xffff)
-			if (effect->state != EFFECT_STATE_INACTIVE && effect->duration != FFB_EFFECT_DURATION_INFINITE && effect->duration != 0){
-				// Start delay not yet reached
-				if(HAL_GetTick() < effect->startTime){
-					continue;
-				}
-				// If effect has expired make inactive
-				if (HAL_GetTick() - effect->startTime > effect->duration)
+			if (effect && effect->getState() != EFFECT_STATE_INACTIVE)
+			{
+				for(uint8_t axis=0 ; axis < axisCount ; axis++)
 				{
-					effect->state = EFFECT_STATE_INACTIVE;
-					for(uint8_t axis=0 ; axis < axisCount ; axis++)
-						calcStatsEffectType(effect->type, 0,axis); // record a 0 on the ended force
+					int32_t axisforce = effect->processForce(axis, axes[axis]->getMetrics(), global_gain);
+					calcStatsEffectType(effect->getType(), axisforce, axis);
+					forces[axis] += axisforce;
 				}
-			}
-
-			// Filter out inactive effects
-			if (effect->state == EFFECT_STATE_INACTIVE)
-			{
-				continue;
-			}
-
-			force = calcNonConditionEffectForce(effect);	// Compute the effect force
-
-			for(uint8_t axis=0 ; axis < axisCount ; axis++) // Calculate effects for all axes
-			{
-				int32_t axisforce = calculateEffectForceOnAxis(effect, force, axes, axis);
-				calcStatsEffectType(effect->type, axisforce,axis);
-				forces[axis] += axisforce; // Do not clip yet to allow effects to subtract force correctly. Will not overflow as maxeffects * 0x7fff is less than int32 range
 			}
 		}
 		effects_statslast = effects_stats;
@@ -167,587 +144,6 @@ void EffectsCalculator::calculateEffects(std::vector<std::unique_ptr<Axis>> &axe
 		axes[i]->calculateMechanicalEffects(isActive());
 		axes[i]->setFfbEffectTorque(forces[i]);
 	}
-}
-
-/**
- * Calculates forces from a non conditional effect
- * Periodic and constant effects
- */
-int32_t EffectsCalculator::calcNonConditionEffectForce(FFB_Effect *effect) {
-
-	// Sanity check effect type must be non-conditional
-	// Avoid calculating reconstructed forces for conditional effects here
-	if (effect->type == FFB_EFFECT_SPRING ||
-		effect->type == FFB_EFFECT_DAMPER ||
-		effect->type == FFB_EFFECT_FRICTION ||
-		effect->type == FFB_EFFECT_INERTIA) {
-		return 0;
-	}
-
-	int32_t force_vector = 0;
-	
-    int32_t magnitude = 0;
-    int32_t offset_lrf = 0;
-
-    // Only calculate reconstruction and envelope if the effect actually uses them
-    if (effect->type != FFB_EFFECT_RAMP) {
-        // Get interpolated magnitude (or amplitude)
-        float interpolated_magnitude = evaluateReconstructionFilter(
-            &effect->recon_magnitude,    // Use the new structure
-            (float)effect->magnitude     // Fallback value (for NONE mode)
-        );
-
-        // Get interpolated offset
-        float interpolated_offset_float = evaluateReconstructionFilter(
-            &effect->recon_offset,       // Use the new structure
-            (float)effect->offset		 // Fallback value (for NONE mode)
-        );
-        offset_lrf = (int32_t)interpolated_offset_float;
-
-        // Magnitude with envelope if used
-        if(effect->useEnvelope){
-            magnitude = getEnvelopeMagnitude(effect, (int32_t)interpolated_magnitude);
-        } else {
-            magnitude = (int32_t)interpolated_magnitude;
-        }
-    }
-
-
-	switch (effect->type){
-
-	case FFB_EFFECT_CONSTANT:
-	{ // Constant force is just the force
-		force_vector = (int32_t)magnitude;
-		break;
-	}
-
-	case FFB_EFFECT_RAMP:
-	{
-		float elapsed_time = (micros()/1000.0) - (float)effect->startTime;
-		int32_t duration = effect->duration;
-		force_vector = (int32_t)effect->startLevel + (elapsed_time * (effect->endLevel - effect->startLevel)) / duration;
-		break;
-	}
-
-	case FFB_EFFECT_SQUARE:
-	{
-		uint32_t elapsed_time = HAL_GetTick() - effect->startTime; // Square is ms aligned
-		int32_t force = ((elapsed_time + effect->phase) % ((uint32_t)effect->period + 2)) < (uint32_t)(effect->period + 2) / 2 ? -magnitude : magnitude;
-		force_vector = force + offset_lrf;
-		break;
-	}
-
-	case FFB_EFFECT_TRIANGLE:
-	{
-		int32_t force = 0;
-		int32_t offset = offset_lrf;
-		float elapsed_time = micros() - ((float)effect->startTime*1000.0);
-		uint32_t phase = effect->phase;
-		uint32_t period = effect->period;
-		float periodF = period;
-
-		int32_t maxMagnitude = offset + magnitude;
-		int32_t minMagnitude = offset - magnitude;
-		float phasetime = (phase * period) / 35999.0;
-		uint32_t timeTemp = elapsed_time + (phasetime*1000); // timetemp in µs
-		float remainder = (timeTemp % (period*1000)) / 1000;
-		float slope = ((maxMagnitude - minMagnitude) * 2) / periodF;
-		if (remainder > (periodF / 2))
-			force = slope * (periodF - remainder);
-		else
-			force = slope * remainder;
-		force += minMagnitude;
-		force_vector = force;
-		break;
-	}
-
-	case FFB_EFFECT_SAWTOOTHUP:
-	{
-		float offset = offset_lrf;
-		float elapsed_time = micros() - ((float)effect->startTime*1000.0);
-		uint32_t phase = effect->phase;
-		uint32_t period = effect->period;
-		float periodF = effect->period;
-
-		float maxMagnitude = offset + magnitude;
-		float minMagnitude = offset - magnitude;
-		float phasetime = (phase * period) / 35999.0;
-		uint32_t timeTemp = elapsed_time + (phasetime*1000); // timetemp in µs
-		float remainder = (timeTemp % (period*1000)) / 1000;
-		float slope = (maxMagnitude - minMagnitude) / periodF;
-		force_vector = (int32_t)(minMagnitude + slope * (period - remainder));
-		break;
-	}
-
-	case FFB_EFFECT_SAWTOOTHDOWN:
-	{
-		float offset = offset_lrf;
-		float elapsed_time = micros() - ((float)effect->startTime*1000.0);
-		float phase = effect->phase;
-		uint32_t period = effect->period;
-		float periodF = effect->period;
-
-		float maxMagnitude = offset + magnitude;
-		float minMagnitude = offset - magnitude;
-		float phasetime = (phase * period) / 35999.0;
-		uint32_t timeTemp = elapsed_time + (phasetime*1000); // timetemp in µs
-		float remainder = (timeTemp % (period*1000)) / 1000;
-		float slope = (maxMagnitude - minMagnitude) / periodF;
-		force_vector = (int32_t)(minMagnitude + slope * (remainder)); // reverse time
-		break;
-	}
-
-	case FFB_EFFECT_SINE:
-	{
-		float t = (micros()/1000.0) - (float)effect->startTime;
-		float freq = 1.0f / (float)(std::max<uint16_t>(effect->period, 2));
-		float phase = (float)effect->phase / (float)35999; //degrees
-		float sine = MATH_SIN(2.0f * MATH_PI * (t * freq + phase)) * magnitude;
-		force_vector = (int32_t)(offset_lrf + sine);
-		break;
-	}
-	default:
-		return 0;
-		break;
-	}
-
-	return (force_vector * effect->gain) / 255;
-}
-
-
-
-/**
- * @brief Calculates the final force of a single effect on a specific axis.
- * It applies directional scaling and computes conditional effects (spring, damper, etc.) based on the axis's metrics.
- * @param effect The effect to calculate.
- * @param forceVector The base force from a non-conditional calculation (e.g., sine wave value).
- * @param axes The list of all axes.
- * @param axis The index of the axis to calculate the force for.
- * @return The calculated torque for the axis.
- */
-int32_t EffectsCalculator::calculateEffectForceOnAxis(FFB_Effect *effect, int32_t forceVector, std::vector<std::unique_ptr<Axis>> &axes, uint8_t axis)
-{
-	int32_t result_torque = 0;
-//	uint16_t direction;
-	uint8_t con_idx = effect->useSingleCondition? 0 : axis; // condition block index
-
-	metric_t *metrics = axes[axis]->getMetrics();
-
-	float angle_ratio = effect->axisMagnitudes[axis];
-
-	switch (effect->type)
-	{
-	case FFB_EFFECT_CONSTANT:
-	{
-		// Optional filtering to reduce spikes
-		if(effect->filter[axis] != nullptr) {
-			// if the filter is enabled we apply it
-			if (effect->filter[axis]->getFc() < 0.5 && effect->filter[0]->getFc() != 0.0)
-			{
-				forceVector = effect->filter[axis]->process(forceVector);
-			}
-		}
-	}
-	// No break required here. The filter is a special preprocessing case for the constant force effect.
-	case FFB_EFFECT_RAMP:
-	case FFB_EFFECT_SQUARE:
-	case FFB_EFFECT_TRIANGLE:
-	case FFB_EFFECT_SAWTOOTHUP:
-	case FFB_EFFECT_SAWTOOTHDOWN:
-	case FFB_EFFECT_SINE:
-	{
-		result_torque = -forceVector * angle_ratio;
-		break;
-	}
-
-	case FFB_EFFECT_SPRING:
-	{
-		float pos = metrics->pos_scaled_16b;
-		result_torque -= calcConditionEffectForce(effect, pos, gain.spring, con_idx, scaler.spring, angle_ratio);
-		break;
-	}
-
-
-	/** 	      |	  (rampup is from 0..5% of max velocity)
-	 * 			  |	  __________ (after use max coefficient)
-	 * 			  |	 /
-	 *			  |	/
-	 *			  |-
-	 * ------------------------  Velocity
-	 * 			 -|
-	 *			/ |
-	 * 		   /  |
-	 * 	-------   |
-	 * 			  |
-	 */
-	case FFB_EFFECT_FRICTION: // TODO sometimes unstable.
-	{
-		float speed = metrics->speed * INTERNAL_SCALER_FRICTION;
-
-		int16_t offset = effect->conditions[con_idx].cpOffset;
-		int16_t deadBand = effect->conditions[con_idx].deadBand;
-		int32_t force = 0;
-
-		float speedRampupCeil = speedRampupPct();
-
-		// Effect is only active outside deadband + offset
-		if (abs((int32_t)speed - offset) > deadBand){
-
-			// remove offset/deadband from metric to compute force
-			speed -= (offset + (deadBand * (speed < offset ? -1 : 1)) );
-
-			// check if speed is in the 0..x% to rampup, if is this range, apply a sinusoidale function to smooth the torque (slow near 0, slow around the X% rampup
-			float rampupFactor = 1.0;
-			if (fabs (speed) < speedRampupCeil) {								// if speed in the range to rampup we apply a sinus curbe to ramup
-
-				float phaseRad = MATH_PI * ((fabsf (speed) / speedRampupCeil) - 0.5f);// we start to compute the normalized angle (speed / normalizedSpeed@5%) and translate it of -1/2PI to translate sin on 1/2 periode
-				rampupFactor = ( 1.0f + MATH_SIN(phaseRad ) ) / 2.0f;			// sin value is -1..1 range, we translate it to 0..2 and we scale it by 2
-			}
-
-			int8_t sign = speed >= 0 ? 1 : -1;
-			uint16_t coeff = speed < 0 ? effect->conditions[con_idx].negativeCoefficient : effect->conditions[con_idx].positiveCoefficient;
-			force = coeff * rampupFactor * sign;
-
-			//if there is a saturation, used it to clip result
-			if (effect->conditions[con_idx].negativeSaturation !=0 || effect->conditions[con_idx].positiveSaturation !=0) {
-				force = clip<int32_t, int32_t>(force, -effect->conditions[con_idx].negativeSaturation, effect->conditions[con_idx].positiveSaturation);
-			}
-
-			result_torque -= effect->filter[axis]->process( (((gain.friction + 1) * force) >> 8) * angle_ratio * scaler.friction);
-		}
-
-		break;
-	}
-	case FFB_EFFECT_DAMPER:
-	{
-
-		float speed = metrics->speed * INTERNAL_SCALER_DAMPER;
-		result_torque -= effect->filter[axis]->process(calcConditionEffectForce(effect, speed, gain.damper, con_idx, scaler.damper, angle_ratio));
-
-		break;
-	}
-
-	case FFB_EFFECT_INERTIA:
-	{
-		float accel = metrics->accel * INTERNAL_SCALER_INERTIA;
-		result_torque -= effect->filter[axis]->process(calcConditionEffectForce(effect, accel, gain.inertia, con_idx, scaler.inertia, angle_ratio)); // Bump *60 the inertia feedback
-
-		break;
-	}
-
-	default:
-		// Unsupported effect
-		break;
-	}
-	return (result_torque * global_gain) / 255; // Apply global gain
-}
-
-float EffectsCalculator::speedRampupPct() {
-	return (frictionPctSpeedToRampup / 100.0) * 32767;	// compute the normalizedSpeed of pctToRampup factor
-}
-
-
-/**
- * Calculates a conditional effect
- * Takes care of deadband and offsets and scalers
- * Gain of 255 = 1x. Prescale with scale factor
- */
-int32_t EffectsCalculator::calcConditionEffectForce(FFB_Effect *effect, float  metric, uint8_t gain,
-										 uint8_t idx, float scale, float angle_ratio)
-{
-	int16_t offset = effect->conditions[idx].cpOffset;
-	int16_t deadBand = effect->conditions[idx].deadBand;
-	int32_t force = 0;
-	float gainfactor = (float)(gain+1) / 256.0;
-
-	// Effect is only active outside deadband + offset
-	if (abs(metric - offset) > deadBand){
-		float coefficient = effect->conditions[idx].negativeCoefficient;
-		if(metric > offset){
-			coefficient = effect->conditions[idx].positiveCoefficient;
-		}
-		coefficient /= 0x7fff; // rescale the coefficient of effect
-
-		// remove offset/deadband from metric to compute force
-		metric = metric - (offset + (deadBand * (metric < offset ? -1 : 1)) );
-
-		force = clip<int32_t, int32_t>((coefficient * gainfactor * scale * (float)(metric)),
-										-effect->conditions[idx].negativeSaturation,
-										 effect->conditions[idx].positiveSaturation);
-	}
-
-
-	return force * angle_ratio;
-}
-
-/**
- * Modulates the magnitude of an effect based on time and attack/fade levels
- * During attack time the strength changes from the initial attack level to the normal magnitude which is sustained
- * until the fade time where the strength changes to the fade level until the stop time of the effect.
- * Infinite effects can't have an envelope and return the normal magnitude.
- */
-int32_t EffectsCalculator::getEnvelopeMagnitude(FFB_Effect *effect, int32_t baseMagnitude)
-{
-	if(effect->duration == FFB_EFFECT_DURATION_INFINITE || effect->duration == 0){
-		return effect->magnitude; // Effect is infinite. envelope is invalid
-	}
-	int32_t scaler = abs(baseMagnitude);
-	uint32_t elapsed_time = HAL_GetTick() - effect->startTime;
-	if (elapsed_time < effect->attackTime && effect->attackTime != 0)
-	{
-		scaler = (scaler - effect->attackLevel) * elapsed_time;
-		scaler /= (int32_t)effect->attackTime;
-		scaler += effect->attackLevel;
-	}
-	if (elapsed_time > (effect->duration - effect->fadeTime) && effect->fadeTime != 0)
-	{
-		scaler = (scaler - effect->fadeLevel) * (effect->duration - elapsed_time); // Reversed
-		scaler /= (int32_t)effect->fadeTime;
-		scaler += effect->fadeLevel;
-	}
-	scaler = signbit(baseMagnitude) ? -scaler : scaler; // Follow original sign of magnitude because envelope has no sign (important for constant force)
-	return scaler;
-}
-
-void EffectsCalculator::setFilters(FFB_Effect *effect){
-
-	std::function<void(std::unique_ptr<Biquad> &)> fnptr = [=](std::unique_ptr<Biquad> &filter){};
-
-	switch (effect->type)
-	{
-	case FFB_EFFECT_DAMPER:
-		fnptr = [=, this](std::unique_ptr<Biquad> &filter){
-			if (filter != nullptr)
-				filter->setBiquad(BiquadType::lowpass, this->filter[filterProfileId].damper.freq/ (float)calcfrequency, this->filter[filterProfileId].damper.q * qfloatScaler , (float)0.0);
-			else
-				filter = std::make_unique<Biquad>(BiquadType::lowpass, this->filter[filterProfileId].damper.freq / (float)calcfrequency, this->filter[filterProfileId].damper.q * qfloatScaler, (float)0.0);
-		};
-		break;
-	case FFB_EFFECT_FRICTION:
-		fnptr = [=, this](std::unique_ptr<Biquad> &filter){
-			if (filter != nullptr)
-				filter->setBiquad(BiquadType::lowpass, this->filter[filterProfileId].friction.freq / (float)calcfrequency, this->filter[filterProfileId].friction.q * qfloatScaler, (float)0.0);
-			else
-				filter = std::make_unique<Biquad>(BiquadType::lowpass, this->filter[filterProfileId].friction.freq / (float)calcfrequency, this->filter[filterProfileId].friction.q * qfloatScaler, (float)0.0);
-		};
-		break;
-	case FFB_EFFECT_INERTIA:
-		fnptr = [=, this](std::unique_ptr<Biquad> &filter){
-			if (filter != nullptr)
-				filter->setBiquad(BiquadType::lowpass, this->filter[filterProfileId].inertia.freq / (float)calcfrequency, this->filter[filterProfileId].inertia.q * qfloatScaler, (float)0.0);
-			else
-				filter = std::make_unique<Biquad>(BiquadType::lowpass, this->filter[filterProfileId].inertia.freq / (float)calcfrequency, this->filter[filterProfileId].inertia.q * qfloatScaler, (float)0.0);
-		};
-		break;
-	case FFB_EFFECT_CONSTANT:
-		fnptr = [=, this](std::unique_ptr<Biquad> &filter){
-			if (filter != nullptr)
-				filter->setBiquad(BiquadType::lowpass, this->filter[0].constant.freq / (float)calcfrequency, this->filter[0].constant.q * qfloatScaler, (float)0.0);
-			else
-				filter = std::make_unique<Biquad>(BiquadType::lowpass, this->filter[0].constant.freq / (float)calcfrequency, this->filter[0].constant.q * qfloatScaler, (float)0.0);
-		};
-		break;
-	}
-
-
-	for (int i=0; i<MAX_AXIS; i++) {
-		fnptr(effect->filter[i]);
-	}
-}
-
-// ==============================================================================
-// --- Reconstruction Filter ---
-// ==============================================================================
-
-void EffectsCalculator::updateEffectReconstruction(FFB_Effect* effect, float new_magnitude, float new_offset, bool is_periodic)
-{
-    // Push new magnitude into recon structure
-    pushReconstructionSample(&effect->recon_magnitude, new_magnitude);
-
-    // Push new offset into recon structure if periodic
-    if (is_periodic) {
-        pushReconstructionSample(&effect->recon_offset, new_offset);
-    }
-}
-
-void EffectsCalculator::pushReconstructionSample(ReconFilterState* state, float newValue)
-{
-    uint32_t now_us = micros();
-
-    // Shift the spline points
-    for (int i = 0; i < 3; ++i) {
-        state->spline_x[i] = state->spline_x[i + 1];
-        state->spline_y[i] = state->spline_y[i + 1];
-    }
-
-    // Add the new point
-    state->spline_x[3] = (float)now_us;
-    state->spline_y[3] = newValue;
-
-    // FIll in initial points if not ready yet at 60Hz, so 16.66ms intervals
-    if (!state->isSplineReady) {
-        float fake_time_step = 16666.0f; // 60Hz
-        state->spline_x[0] = state->spline_x[3] - 3.0f * fake_time_step;
-        state->spline_y[0] = state->spline_y[3];
-        state->spline_x[1] = state->spline_x[3] - 2.0f * fake_time_step;
-        state->spline_y[1] = state->spline_y[3];
-        state->spline_x[2] = state->spline_x[3] - 1.0f * fake_time_step;
-        state->spline_y[2] = state->spline_y[3];
-        state->isSplineReady = true; // Ready after first fill
-    }
-
-    // Initialize spline if needed
-    if (reconFilterMode == ReconFilterMode::SPLINE_CUBIC_NATURAL) {
-#ifdef USE_DSP_FUNCTIONS
-        arm_spline_init_f32(
-            &state->spline_instance,
-            ARM_SPLINE_NATURAL,
-            state->spline_x,
-            state->spline_y,
-            4,
-            state->spline_y2,
-            state->spline_scratch
-        );
-
-		state->spline_arm_initialized = true;
-		
-#endif
-    }
-}
-
-float EffectsCalculator::evaluateReconstructionFilter(ReconFilterState* state, float fallbackValue)
-{
-    // 'reconFilterMode' is a member variable of the class
-
-    float resulting_value = fallbackValue; // Default value, "NONE"
-    uint32_t now_us = micros();
-    float last_known_time = state->spline_x[3]; // The most recent point
-
-    // If no samples were pushed (e.g. SerialFFB or simple test mode), use fallback
-    if (!state->isSplineReady) {
-        return fallbackValue;
-    }
-
-    // 50ms timeout (if the game is paused, etc.)
-    if (now_us > last_known_time + 50000) {
-        return state->spline_y[3]; // Maintain the last value
-    }
-
-    switch(reconFilterMode) {
-        case ReconFilterMode::NO_RECONSTRUCTION:
-            resulting_value = state->spline_y[3]; // The most recent (no filter)
-            break;
-
-        case ReconFilterMode::LINEAR_INTERPOLATION:
-        {
-			// "Safe" Linear Interpolation (Delayed by 1 sample)
-			// To absolutely guarantee NO OVERSHOOT, we must not extrapolate.
-			// We accept a strictly defined transport delay of 1 sample.
-			//
-			// Logic: We are currently at time 'now_us', which is AFTER the latest update 't1'.
-			// We don't know the future, so we replay the ramp from V0 to V1, but we start it NOW.
-			// We use the previous interval duration (t1 - t0) as our best guess for when the
-			// NEXT packet (t2) will arrive, ensuring we reach V1 exactly when t2 is expected.
-
-			float t0 = state->spline_x[2]; // Time of penultimate sample (T-1)
-			float t1 = state->spline_x[3]; // Time of latest sample (T)
-			float v0 = state->spline_y[2]; // Value of penultimate sample (V0)
-			float v1 = state->spline_y[3]; // Value of latest sample (V1)
-
-			// Estimate the expected duration until the next packet arrives.
-			float expected_interval = t1 - t0;
-
-			// Sanity check: avoid division by zero if updates are too fast (e.g. double-send bugs)
-			if (expected_interval < 1.0f) {
-				resulting_value = v1;
-				break;
-			}
-
-			// Calculate progress based on time elapsed SINCE t1.
-			float time_since_t1 = (float)(now_us - t1);
-			float progress = time_since_t1 / expected_interval;
-
-			// Clamp progress to [0.0, 1.0] to eliminate ANY overshoot.
-			progress = clip<float>(progress, 0.0f, 1.0f);
-
-			// Interpolate between the two KNOWN, SAFE past values.
-			resulting_value = v0 + progress * (v1 - v0);
-			break;
-        }
-
-#ifdef USE_DSP_FUNCTIONS
-        // if DSP is enabled we have SPLINE available, else use Hermite
-        case ReconFilterMode::SPLINE_CUBIC_NATURAL:
-        {
-        	//	 If spline is not ready, return last known value
-			if (!state->spline_arm_initialized) {
-				 resulting_value = state->spline_y[3];
-				 break;
-			}
-
-			float32_t interpolated_torque_f = 0.0f;
-			float32_t now_f = (float)now_us;
-
-			// Clamp time to known range to avoid extrapolation
-            float32_t interp_time = clip<float32_t>(now_f, state->spline_x[0], state->spline_x[3]);
-
-			// Perform the spline interpolation using CMSIS-DSP
-            arm_spline_f32(&state->spline_instance, &interp_time, &interpolated_torque_f, 1);
-
-			// Return the interpolated value
-            resulting_value = interpolated_torque_f;
-            break;
-        }
-#endif
-
-        case ReconFilterMode::SPLINE_CUBIC_HERMITE:
-#ifndef USE_DSP_FUNCTIONS
-        // if the DSP is not available, we use Hermite for spline
-        case ReconFilterMode::SPLINE_CUBIC_NATURAL:
-#endif
-        {
-            // Hermite interpolation is made between P1 (idx 1) and P2 (idx 2)
-            const float p1 = state->spline_y[1];
-            const float p2 = state->spline_y[2];
-            const float t1 = state->spline_x[1];
-            const float t2 = state->spline_x[2];
-
-			// sanity check to not divide by zero and clamp for not overshoot
-            float interval = t2 - t1;
-            if (interval <= 0) {
-                resulting_value = p1;
-                break;
-            }
-            float t = ((float)now_us - t1) / interval;
-            t = clip<float>(t, 0.0f, 1.0f);
-
-            // Tangents (Catmull-Rom)
-            float m1, m2;
-            float dt_m1 = state->spline_x[2] - state->spline_x[0];
-            float dt_m2 = state->spline_x[3] - state->spline_x[1];
-
-			// Compute tangents safely
-            if (dt_m1 > 0) m1 = (state->spline_y[2] - state->spline_y[0]) / dt_m1; else m1 = 0;
-            if (dt_m2 > 0) m2 = (state->spline_y[3] - state->spline_y[1]) / dt_m2; else m2 = 0;
-
-			// Scale tangents by interval
-            m1 *= interval;
-            m2 *= interval;
-
-			// Hermite basis functions
-            float tSq = t * t;
-            float tCub = tSq * t;
-            float h_00 = 2*tCub - 3*tSq + 1;
-            float h_10 = tCub - 2*tSq + t;
-            float h_01 = -2*tCub + 3*tSq;
-            float h_11 = tCub - tSq;
-
-			// Final interpolation
-            resulting_value = h_00 * p1 + h_10 * m1 + h_01 * p2 + h_11 * m2;
-            break;
-        }
-    }
-    return resulting_value;
 }
 
 void EffectsCalculator::setGain(uint8_t gain)
@@ -876,11 +272,11 @@ void EffectsCalculator::checkFilterCoeff(biquad_constant_t *filter, uint32_t fre
 void EffectsCalculator::updateFilterSettingsForEffects(uint8_t type_effect) {
 
 	// loop on all effect in memory and setup new constant filter
-	for (uint8_t i = 0; i < MAX_EFFECTS; i++)
+	for (auto& effect : effects)
 	{
-		if (effects[i].type == type_effect)
+		if (effect && effect->getType() == type_effect)
 		{
-			setFilters(&effects[i]);
+			setFilters(effect.get());
 		}
 	}
 }
@@ -911,7 +307,7 @@ void EffectsCalculator::logEffectState(uint8_t type,uint8_t state){
 	if(type > 0 && type < 32){
 		if(!state){
 			// effects_stats[type-1].max = 0;
-			effects_stats[type-1].current = {0};
+			effects_stats[type-1].current.fill(0);
 		}
 	}
 }
@@ -1225,13 +621,10 @@ void EffectsCalculator::Run() {
  * Resets an effect and marks the effect as free
  */
 void EffectsCalculator::free_effect(uint16_t idx){
-	if(idx < this->effects.size()){
-		logEffectType(effects[idx].type, true); // Effect off
-		effects[idx] = FFB_Effect(); // Reset all settings
-		for(int i=0; i< MAX_AXIS; i++) {
-			if(effects[idx].filter[i] != nullptr){
-				effects[idx].filter[i].reset(nullptr);
-			}
+	if(idx < effects.size()){
+		if(effects[idx]) {
+			logEffectType(effects[idx]->getType(), true); // Effect off
+			effects[idx].reset();
 		}
 	}
 }
@@ -1242,7 +635,7 @@ void EffectsCalculator::free_effect(uint16_t idx){
 int32_t EffectsCalculator::find_free_effect(uint8_t type){
 	if(type > FFB_EFFECT_NONE && type < FFB_EFFECT_CUSTOM+1){ // Check if it is a valid effect type
 		for(uint8_t i=0;i<effects.size();i++){
-			if(effects[i].type == FFB_EFFECT_NONE){
+			if(!effects[i]){
 				return(i);
 			}
 		}
@@ -1290,4 +683,26 @@ void EffectsControlItf::cfUpdateEvent(){
 void EffectsControlItf::fxUpdateEvent(){
 	fxPeriodAvg.addValue((uint32_t)(micros() - lastFxUpdate));
 	lastFxUpdate = micros();
+}
+
+void EffectsCalculator::setFilters(Effect *effect){
+	switch (effect->getType())
+	{
+	case FFB_EFFECT_DAMPER:
+		for (int i=0; i<MAX_AXIS; i++)
+			effect->setFilter(i, this->filter[filterProfileId].damper.freq/ (float)calcfrequency, this->filter[filterProfileId].damper.q * qfloatScaler , 0.0f);
+		break;
+	case FFB_EFFECT_FRICTION:
+		for (int i=0; i<MAX_AXIS; i++)
+			effect->setFilter(i, this->filter[filterProfileId].friction.freq / (float)calcfrequency, this->filter[filterProfileId].friction.q * qfloatScaler, 0.0f);
+		break;
+	case FFB_EFFECT_INERTIA:
+		for (int i=0; i<MAX_AXIS; i++)
+			effect->setFilter(i, this->filter[filterProfileId].inertia.freq / (float)calcfrequency, this->filter[filterProfileId].inertia.q * qfloatScaler, 0.0f);
+		break;
+	case FFB_EFFECT_CONSTANT:
+		for (int i=0; i<MAX_AXIS; i++)
+			effect->setFilter(i, this->filter[0].constant.freq / (float)calcfrequency, this->filter[0].constant.q * qfloatScaler, 0.0f);
+		break;
+	}
 }

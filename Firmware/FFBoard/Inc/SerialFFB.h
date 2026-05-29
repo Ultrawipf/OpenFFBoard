@@ -42,7 +42,7 @@ public:
 private:
 	static ClassIdentifier info;
 	std::shared_ptr<EffectsCalculator> effects_calc;
-	std::array<FFB_Effect,EffectsCalculator::max_effects> &effects; // Direct access to effects calculator effect array
+	std::array<std::unique_ptr<Effect>,EffectsCalculator::max_effects> &effects; // Direct access to effects calculator effect array
 
 	static constexpr FFB_Effect_Condition defaultCond = {
 			.cpOffset = 0,

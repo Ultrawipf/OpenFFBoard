@@ -29,10 +29,10 @@ HidFFB::HidFFB(std::shared_ptr<EffectsCalculator> ec,uint8_t axisCount) : effect
 	directionEnableMask = 1 << axisCount; // Direction enable bit is last bit after axis enable bits
 	// Initialize reports
 	blockLoad_report.effectBlockIndex = 1;
-	blockLoad_report.ramPoolAvailable = (effects.size()-used_effects)*sizeof(FFB_Effect);
+	blockLoad_report.ramPoolAvailable = (effects.size()-used_effects)*sizeof(EffectConstant);
 	blockLoad_report.loadStatus = 1;
 
-	pool_report.ramPoolSize = effects.size()*sizeof(FFB_Effect);
+	pool_report.ramPoolSize = effects.size()*sizeof(EffectConstant);
 	pool_report.maxSimultaneousEffects = effects.size();
 	pool_report.memoryManagement = 1;
 
@@ -213,10 +213,7 @@ void HidFFB::set_gain(uint8_t gain){
 	effects_calc->setGain(gain);
 }
 
-void HidFFB::set_filters(FFB_Effect *effect){
-	assert(effects_calc != nullptr);
-	effects_calc->setFilters(effect);
-}
+
 
 void HidFFB::ffb_control(uint8_t cmd){
 
@@ -245,13 +242,10 @@ void HidFFB::set_constant_effect(FFB_SetConstantForce_Data_t* data){
 		return;
 	}
 	cfUpdateEvent();
-	FFB_Effect& effect_p = effects[data->effectBlockIndex-1];
-
-	effect_p.magnitude = data->magnitude;
-	effects_calc->updateEffectReconstruction(&effect_p, (float)data->magnitude, 0.0f, false);
-//	if(effect_p.state == 0){
-//		effect_p.state = 1; // Force start effect
-//	}
+	auto& effect_p = effects[data->effectBlockIndex-1];
+	if (effect_p) {
+		effect_p->setConstantForce(data);
+	}
 }
 
 void HidFFB::new_effect(FFB_CreateNewEffect_Feature_Data_t* effect){
@@ -265,26 +259,35 @@ void HidFFB::new_effect(FFB_CreateNewEffect_Feature_Data_t* effect){
 #endif
 		return;
 	}
-	FFB_Effect new_effect;
-	new_effect.type = effect->effectType;
+	std::unique_ptr<Effect> new_effect;
+	switch(effect->effectType){
+		case FFB_EFFECT_CONSTANT: new_effect = std::make_unique<EffectConstant>(); break;
+		case FFB_EFFECT_RAMP: new_effect = std::make_unique<EffectRamp>(); break;
+		case FFB_EFFECT_SQUARE: new_effect = std::make_unique<EffectSquare>(); break;
+		case FFB_EFFECT_SINE: new_effect = std::make_unique<EffectSine>(); break;
+		case FFB_EFFECT_TRIANGLE: new_effect = std::make_unique<EffectTriangle>(); break;
+		case FFB_EFFECT_SAWTOOTHUP: new_effect = std::make_unique<EffectSawtoothUp>(); break;
+		case FFB_EFFECT_SAWTOOTHDOWN: new_effect = std::make_unique<EffectSawtoothDown>(); break;
+		case FFB_EFFECT_SPRING: new_effect = std::make_unique<EffectSpring>(); break;
+		case FFB_EFFECT_DAMPER: new_effect = std::make_unique<EffectDamper>(); break;
+		case FFB_EFFECT_INERTIA: new_effect = std::make_unique<EffectInertia>(); break;
+		case FFB_EFFECT_FRICTION: new_effect = std::make_unique<EffectFriction>(); break;
+		default: return; // Type non supporté
+	}
 
 	this->effects_calc->logEffectType(effect->effectType,false);
 #ifdef DEBUGLOG
 	CommandHandler::logSerialDebug("New effect type:" + std::to_string(effect->effectType) + " idx: " + std::to_string(index-1));
 #endif
 
-	set_filters(&new_effect);
-
 	effects[index] = std::move(new_effect);
+	
 	// Set block load report
-	//reportFFBStatus.effectBlockIndex = index;
 	blockLoad_report.effectBlockIndex = index+1;
 	used_effects++;
-	blockLoad_report.ramPoolAvailable = (effects.size()-used_effects)*sizeof(FFB_Effect);
+	blockLoad_report.ramPoolAvailable = (effects.size()-used_effects)*sizeof(EffectConstant); // Approximate size
 	blockLoad_report.loadStatus = 1;
 	sendStatusReport(index+1);
-	
-
 }
 
 /**
@@ -296,32 +299,30 @@ void HidFFB::set_effect(FFB_SetEffect_t* effect){
 	if(index > effects.size() || index == 0)
 		return;
 
-	FFB_Effect* effect_p = &effects[index-1];
+	auto& effect_p = effects[index-1];
+	if(!effect_p) return;
 
-	if (effect_p->type != effect->effectType){
-		effect_p->startTime = 0;
-		set_filters(effect_p);
+	if (effect_p->getType() != effect->effectType){
+		// Unlikely but if type changes, we should recreate. Let's assume it doesn't.
+		effect_p->setStartTime(0);
 	}
 
-	effect_p->gain = effect->gain;
-	effect_p->type = effect->effectType;
-	effect_p->samplePeriod = effect->samplePeriod;
+	effect_p->setGain(effect->gain);
+	effect_p->setSamplePeriod(effect->samplePeriod);
 
 	bool directionEnable = (effect->enableAxis & this->directionEnableMask);
 	bool overridesCondition = false;
 
-//	if(effect_p->useSingleCondition){ // Only allow turning single condition off in case it was overridden by sending multiple conditions previously
-//		effect_p->useSingleCondition = directionEnable; // If direction is used only a single parameter block is allowed. Somehow this is still set while 2 conditions are sent...
-//	}
-	// Conditional effects usually do not use directions
-	if(!effect_p->useSingleCondition && (effect->effectType == FFB_EFFECT_SPRING || effect->effectType == FFB_EFFECT_DAMPER || effect->effectType == FFB_EFFECT_INERTIA || effect->effectType == FFB_EFFECT_FRICTION))
+	if(!effect_p->getUseSingleCondition() && (effect->effectType == FFB_EFFECT_SPRING || effect->effectType == FFB_EFFECT_DAMPER || effect->effectType == FFB_EFFECT_INERTIA || effect->effectType == FFB_EFFECT_FRICTION))
 	{
-		if(effect_p->conditions[0].isActive()){
-			effect_p->axisMagnitudes[0] = 1.0f;
+		FFB_Effect_Condition* cond0 = effect_p->getCondition(0);
+		FFB_Effect_Condition* cond1 = effect_p->getCondition(1);
+		if(cond0 && cond0->isActive()){
+			effect_p->setAxisMagnitude(0, 1.0f);
 			overridesCondition = true;
 		}
-		if(effect_p->conditions[1].isActive() || effect_p->useSingleCondition){
-			effect_p->axisMagnitudes[1] = 1.0f;
+		if((cond1 && cond1->isActive()) || effect_p->getUseSingleCondition()){
+			effect_p->setAxisMagnitude(1, 1.0f);
 			overridesCondition = true;
 		}
 	}
@@ -330,25 +331,24 @@ void HidFFB::set_effect(FFB_SetEffect_t* effect){
 	if(!overridesCondition){
 		float phaseX = MATH_PI*2.0f * (effect->directionX/36000.0f);
 
-		effect_p->axisMagnitudes[0] = directionEnable ? MATH_SIN(phaseX) : (effect->enableAxis & X_AXIS_ENABLE ? (effect->directionX - 18000.0f) / 18000.0f : 0); // Angular vector if dirEnable used otherwise linear or 0 if axis enabled
-		effect_p->axisMagnitudes[1] = directionEnable ? -MATH_COS(phaseX) : (effect->enableAxis & Y_AXIS_ENABLE ? -(effect->directionY - 18000.0f) / 18000.0f : 0);
+		effect_p->setAxisMagnitude(0, directionEnable ? MATH_SIN(phaseX) : (effect->enableAxis & X_AXIS_ENABLE ? (effect->directionX - 18000.0f) / 18000.0f : 0)); 
+		effect_p->setAxisMagnitude(1, directionEnable ? -MATH_COS(phaseX) : (effect->enableAxis & Y_AXIS_ENABLE ? -(effect->directionY - 18000.0f) / 18000.0f : 0));
 	}
 
 #if MAX_AXIS == 3
 	float phaseY = MATH_PI*2.0f * (effect->directionY/36000.0f);
-	effect_p->axisMagnitudes[3] = directionEnable ? MATH_SIN(phaseY) : (effect->enableAxis & Z_AXIS_ENABLE ? (effect->directionZ - 18000.0f) / 18000.0f : 0);
+	effect_p->setAxisMagnitude(2, directionEnable ? MATH_SIN(phaseY) : (effect->enableAxis & Z_AXIS_ENABLE ? (effect->directionZ - 18000.0f) / 18000.0f : 0));
 #endif
-	if(effect->duration == 0){ // Fix for games assuming 0 is infinite
-		effect_p->duration = FFB_EFFECT_DURATION_INFINITE;
+	if(effect->duration == 0){ 
+		effect_p->setDuration(FFB_EFFECT_DURATION_INFINITE);
 	}else{
-		effect_p->duration = effect->duration;
+		effect_p->setDuration(effect->duration);
 	}
-	effect_p->startDelay = effect->startDelay;
+	effect_p->setStartDelay(effect->startDelay);
 	if(!ffb_active)
 		start_FFB();
 
 	sendStatusReport(effect->effectBlockIndex);
-	//CommandHandler::logSerialDebug("Setting Effect: " + std::to_string(effect->effectType) +  " at " + std::to_string(index) + "\n");
 }
 
 /**
@@ -368,33 +368,11 @@ void HidFFB::set_condition(FFB_SetCondition_Data_t *cond){
 	if(cond->effectBlockIndex == 0 || cond->effectBlockIndex > effects.size()){
 		return;
 	}
-	uint8_t axis = std::min(axisCount,cond->parameterBlockOffset);
-
-	FFB_Effect *effect = &effects[cond->effectBlockIndex - 1];
-	effect->conditions[axis].cpOffset = cond->cpOffset;
-	effect->conditions[axis].negativeCoefficient = cond->negativeCoefficient;
-	effect->conditions[axis].positiveCoefficient = cond->positiveCoefficient;
-	effect->conditions[axis].negativeSaturation = cond->negativeSaturation;
-	effect->conditions[axis].positiveSaturation = cond->positiveSaturation;
-	effect->conditions[axis].deadBand = cond->deadBand;
-
-//	if(effect->conditions[axis].positiveSaturation == 0){
-//		effect->conditions[axis].positiveSaturation = 0x7FFF;
-//	}
-//	if(effect->conditions[axis].negativeSaturation == 0){
-//		effect->conditions[axis].negativeSaturation = 0x7FFF;
-//	}
-
-	if(axis>0 && axis < MAX_AXIS && effect->conditions[axis].isActive()){ // Workaround when direction enable is set but multiple conditions are defined... Resets direction and uses conditions again
-		effect->useSingleCondition = false;
+	
+	auto& effect = effects[cond->effectBlockIndex - 1];
+	if (effect) {
+		effect->setCondition(cond);
 	}
-	if((effect->conditions[axis].isActive() || (axis > 0 && effect->useSingleCondition))  && effect->axisMagnitudes[axis] == 0){
-		effect->axisMagnitudes[axis] = 1.0;
-	}
-
-//	for(uint8_t i = 0;i<MAX_AXIS;i++){
-//		effect->axisMagnitudes[i] = 1.0;
-//	}
 }
 
 void HidFFB::set_effect_operation(FFB_EffOp_Data_t* report){
@@ -403,36 +381,25 @@ void HidFFB::set_effect_operation(FFB_EffOp_Data_t* report){
 	}
 	// Start or stop effect
 	uint8_t id = report->effectBlockIndex-1;
-	if(report->state == 3){
-		effects[id].state = 0; //Stop
-#ifdef DEBUGLOG
-		CommandHandler::logSerialDebug("Stop effect: " + std::to_string(id));
-#endif
+	auto& effect = effects[id];
+	if(!effect) return;
 
+	if(report->state == 3){
+		effect->setState(0); //Stop
 	}else{
 
 		// 1 = start, 2 = start solo
 		if(report->state == 2){
-#ifdef DEBUGLOG
-			CommandHandler::logSerialDebug("Start solo: " + std::to_string(id));
-#endif
-			for(FFB_Effect& effect : effects){
-				effect.state = 0; // Stop all other effects
+			for(auto& eff : effects){
+				if(eff) eff->setState(0); // Stop all other effects
 			}
 		}
-		if(effects[id].state != 1){
-			set_filters(&effects[id]);
-		}
-#ifdef DEBUGLOG
-		CommandHandler::logSerialDebug("Start effect: " + std::to_string(id));
-#endif
-		effects[id].startTime = HAL_GetTick() + effects[id].startDelay; // + effects[id].startDelay;
-		effects[id].state = 1; //Start
-
-
+		
+		effect->setStartTime(HAL_GetTick() + effect->getStartDelay());
+		effect->setState(1); //Start
 	}
-	//sendStatusReport(report[1]);
-	this->effects_calc->logEffectState(effects[id].type,effects[id].state);
+	
+	this->effects_calc->logEffectState(effect->getType(), effect->getState());
 }
 
 
@@ -440,37 +407,24 @@ void HidFFB::set_envelope(FFB_SetEnvelope_Data_t *report){
 	if(report->effectBlockIndex == 0 || report->effectBlockIndex > effects.size()){
 		return;
 	}
-	FFB_Effect *effect = &effects[report->effectBlockIndex - 1];
-
-	effect->attackLevel = report->attackLevel;
-	effect->attackTime = report->attackTime;
-	effect->fadeLevel = report->fadeLevel;
-	effect->fadeTime = report->fadeTime;
-	effect->useEnvelope = true;
+	auto& effect = effects[report->effectBlockIndex - 1];
+	if(effect) effect->setEnvelope(report);
 }
 
 void HidFFB::set_ramp(FFB_SetRamp_Data_t *report){
 	if(report->effectBlockIndex == 0 || report->effectBlockIndex > effects.size()){
 		return;
 	}
-	FFB_Effect *effect = &effects[report->effectBlockIndex - 1];
-	effect->magnitude = 0x7fff; // Full magnitude for envelope calculation. This effect does not have a periodic report
-	effect->startLevel = report->startLevel;
-	effect->endLevel = report->endLevel;
+	auto& effect = effects[report->effectBlockIndex - 1];
+	if(effect) effect->setRamp(report);
 }
 
 void HidFFB::set_periodic(FFB_SetPeriodic_Data_t* report){
 	if(report->effectBlockIndex == 0 || report->effectBlockIndex > effects.size()){
 		return;
 	}
-	FFB_Effect* effect = &effects[report->effectBlockIndex-1];
-
-	effect->period = clip<uint32_t,uint32_t>(report->period,1,0x7fff); // Period is never 0
-	effect->phase = report->phase;
-
-	effect->magnitude = report->magnitude;
-	effect->offset = report->offset;
-	effects_calc->updateEffectReconstruction(effect, (float)report->magnitude, (float)report->offset, true);
+	auto& effect = effects[report->effectBlockIndex-1];
+	if(effect) effect->setPeriodic(report);
 }
 
 

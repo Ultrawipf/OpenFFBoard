@@ -10,6 +10,7 @@
 
 //#include "ClassChooser.h"
 #include "ffb_defs.h"
+#include "Effect.h"
 #include "PersistentStorage.h"
 #include "CommandHandler.h"
 #include <vector>
@@ -71,6 +72,7 @@ struct effect_stat_t {
 	std::array<int16_t,MAX_AXIS> current={0}; //!< Current force value.
 	std::array<int16_t,MAX_AXIS> max={0};     //!< Maximum force value since reset.
 	uint16_t nb=0;                           //!< Number of times this effect has been used.
+	uint8_t state=0;                         //!< State of the effect
 };
 
 enum class EffectsCalculator_commands : uint32_t {
@@ -130,11 +132,7 @@ public:
 	 */
 	void calculateEffects(std::vector<std::unique_ptr<Axis>> &axes);
 
-	/**
-	 * @brief Sets the filters for a specific effect.
-	 * @param effect A pointer to the effect.
-	 */
-	virtual void setFilters(FFB_Effect* effect);
+	void setFilters(Effect *effect);
 
 	/**
 	 * @brief Sets the global gain for all effects.
@@ -147,6 +145,8 @@ public:
 	 * @return The current global gain value.
 	 */
 	uint8_t getGain();
+
+	inline static ReconFilterMode reconFilterMode = ReconFilterMode::NO_RECONSTRUCTION;	//!< Current reconstruction filter mode.
 
 	/**
 	 * @brief Logs the usage of an effect type for statistics.
@@ -190,17 +190,6 @@ public:
 	void free_effect(uint16_t idx);
 
 	/**
-     * @brief Updates interpolation buffers for unconditional effect.
-     * Appelé par le handler HID (ex: 60Hz).
-     * @param effect Pointeur vers l'effet à modifier.
-     * @param new_magnitude Nouvelle magnitude/amplitude cible.
-     * @param new_offset Nouvel offset cible (utilisé uniquement si is_periodic est true).
-     * @param is_periodic Si true, met à jour les deux tampons (mag + offset).
-     */
-    void updateEffectReconstruction(FFB_Effect* effect, float new_magnitude, float new_offset, bool is_periodic);
-
-
-	/**
 	 * @brief Handles command line interface commands for the effects calculator.
 	 * @param cmd The parsed command.
 	 * @param replies A vector of replies to be sent back.
@@ -211,7 +200,8 @@ public:
 	virtual std::string getHelpstring() { return "Controls internal FFB effects"; }
 
 	static const uint32_t max_effects = MAX_EFFECTS;
-	std::array<FFB_Effect,max_effects> effects; //!< Main effects storage array.
+	std::array<std::unique_ptr<Effect>,max_effects> effects; //!< Main effects storage array.
+	inline static uint8_t frictionPctSpeedToRampup = 25;	//!< Speed percentage for friction ramp-up.
 
 	/**
 	 * @brief The main loop for the effects calculator thread.
@@ -235,40 +225,12 @@ private:
 	uint8_t global_gain = 0xff;		//!< Global gain for all effects.
 	effect_gain_t gain;				//!< Per-effect type gains.
 	effect_scaler_t scaler;			//!< Per-effect type intensity scalers.
-	uint8_t frictionPctSpeedToRampup = 25;	//!< Speed percentage for friction ramp-up. : define the max value of the range (0..5% of maxspeed) where torque is rampup on friction
-
 	// FFB status
 	bool effects_active = false;	//!< True if FFB is globally active.
 	uint32_t effects_used = 0;		//!< Bitmask of effect types used since reset.
 	std::array<effect_stat_t,12> effects_stats; //!< Statistics for each effect type, [0..12 effect types].
 	std::array<effect_stat_t,12> effects_statslast; //!< Statistics from the previous cycle, [0..12 effect types].
 	bool isMonitorEffect = false;	//!< Flag to enable effect monitoring.
-
-	/**
-	 * @brief Calculates the force for a single component of an effect on a specific axis.
-	 * Dispatches between conditional and non-conditional effects.
-	 */
-	int32_t calculateEffectForceOnAxis(FFB_Effect *effect, int32_t forceVector, std::vector<std::unique_ptr<Axis>> &axes, uint8_t axis);
-
-	/**
-	 * @brief Calculates the base force for non-conditional effects (Constant, Ramp, Periodic).
-	 */
-	int32_t calcNonConditionEffectForce(FFB_Effect* effect);
-
-	/**
-	 * @brief Calculates the speed threshold for friction ramp-up.
-	 */
-	float speedRampupPct();
-
-	/**
-	 * @brief Calculates the force for conditional effects (Spring, Damper, Inertia, Friction).
-	 */
-	int32_t calcConditionEffectForce(FFB_Effect *effect, float metric, uint8_t gain, uint8_t idx, float scale, float angle_ratio);
-
-	/**
-	 * @brief Calculates the magnitude of an effect with an envelope.
-	 */
-	int32_t getEnvelopeMagnitude(FFB_Effect *effect, int32_t baseMagnitude);
 
 	/**
 	 * @brief Generates a string listing the effects used.
@@ -286,22 +248,6 @@ private:
 	void updateFilterSettingsForEffects(uint8_t type_effect);
 
 	// --- Reconstruction Filter ---
-	ReconFilterMode reconFilterMode = ReconFilterMode::NO_RECONSTRUCTION;	//!< Current reconstruction filter mode.
-
-	/**
-	 * @brief Internal method to push a new value into the reconstruction filter.
-	 * @param state Pointer to the reconstruction filter state.
-	 * @param newValue The new value to push into the filter.
-	 */
-	void pushReconstructionSample(ReconFilterState* state, float newValue);
-
-	/**
-	 * @brief Retrieves the interpolated value from the reconstruction filter.
-	 * @param state Pointer to the reconstruction filter state.
-	 * @param fallbackValue Value to return if the filter is not ready.
-	 * @return The interpolated value from the filter.
-	 */
-	float evaluateReconstructionFilter(ReconFilterState* state, float fallbackValue);
 };
 
 /**

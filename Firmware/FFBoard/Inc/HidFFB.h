@@ -121,7 +121,7 @@ public:
 private:
 	// HID processing methods
 	std::shared_ptr<EffectsCalculator> effects_calc; //!< A shared pointer to the EffectsCalculator instance.
-	std::array<FFB_Effect,EffectsCalculator::max_effects>& effects; //!< A reference to the array of FFB effects, managed by EffectsCalculator, Must be passed in constructor.
+	std::array<std::unique_ptr<Effect>,EffectsCalculator::max_effects>& effects; //!< A reference to the array of FFB effects, managed by EffectsCalculator, Must be passed in constructor.
 
 	/**
 	 * @brief Handles the "Create New Effect" HID report. Allocates a new effect.
@@ -183,11 +183,7 @@ private:
 	 */
 	void set_effect_operation(FFB_EffOp_Data_t* report);
 
-	/**
-	 * @brief Sets the default filters for a new effect based on its type.
-	 * @param effect Pointer to the effect to configure.
-	 */
-	void set_filters(FFB_Effect* effect);
+
 
 	uint8_t directionEnableMask; //!< Mask to enable/disable directions for axes. Adjusted based on axis count.
 	uint16_t used_effects = 0; //!< The number of currently active effects.
