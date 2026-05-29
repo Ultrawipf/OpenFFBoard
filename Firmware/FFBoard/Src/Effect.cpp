@@ -71,19 +71,21 @@ void EffectTemporal::setEnvelope(FFB_SetEnvelope_Data_t* report) {
     useEnvelope = true;
 }
 
-void EffectTemporal::setPeriodic(FFB_SetPeriodic_Data_t* report) {
+void EffectPeriodic::setPeriodic(FFB_SetPeriodic_Data_t* report) {
+    updateReconstruction((float)report->magnitude, (float)report->offset);
     period = clip<uint32_t,uint32_t>(report->period,1,0x7fff); // Period is never 0
     phase = report->phase;
     magnitude = report->magnitude;
     offset = report->offset;
-    updateReconstruction((float)report->magnitude, (float)report->offset, true);
 }
 
-void EffectTemporal::updateReconstruction(float new_mag, float new_offset, bool is_periodic) {
+void EffectTemporal::updateReconstruction(float new_mag) {
     pushReconstructionSample(&recon_magnitude, new_mag);
-    if (is_periodic) {
-        pushReconstructionSample(&recon_offset, new_offset);
-    }
+}
+
+void EffectPeriodic::updateReconstruction(float new_mag, float new_offset) {
+    EffectTemporal::updateReconstruction(new_mag);
+    pushReconstructionSample(&recon_offset, new_offset);
 }
 
 void EffectTemporal::pushReconstructionSample(ReconFilterState* state, float newValue) {
@@ -202,11 +204,7 @@ int32_t EffectTemporal::getEnvelopeMagnitude(int32_t baseMagnitude) {
 // =======================================================================
 void EffectConstant::setConstantForce(FFB_SetConstantForce_Data_t* report) {
     magnitude = report->magnitude;
-    updateReconstruction((float)magnitude, 0.0f, false);
-}
-
-void EffectConstant::setFilters(float calcfrequency, uint8_t profileId) {
-    // Left empty for now, or instantiate specific biquad
+    updateReconstruction((float)magnitude);
 }
 
 int32_t EffectConstant::calculateRawForce(uint8_t axis, metric_t* metrics) {
@@ -385,9 +383,6 @@ int32_t EffectSpring::calculateRawForce(uint8_t axis, metric_t* metrics) {
 // =======================================================================
 // EffectDamper
 // =======================================================================
-void EffectDamper::setFilters(float calcfrequency, uint8_t profileId) {
-    // Set specific biquad
-}
 int32_t EffectDamper::calculateRawForce(uint8_t axis, metric_t* metrics) {
     float speed = metrics->speed * INTERNAL_SCALER_DAMPER;
     uint8_t con_idx = useSingleCondition ? 0 : axis;
@@ -397,7 +392,6 @@ int32_t EffectDamper::calculateRawForce(uint8_t axis, metric_t* metrics) {
 // =======================================================================
 // EffectFriction
 // =======================================================================
-void EffectFriction::setFilters(float calcfrequency, uint8_t profileId) {}
 int32_t EffectFriction::calculateRawForce(uint8_t axis, metric_t* metrics) {
     float speed = metrics->speed * INTERNAL_SCALER_FRICTION;
     uint8_t con_idx = useSingleCondition ? 0 : axis;
@@ -430,7 +424,6 @@ int32_t EffectFriction::calculateRawForce(uint8_t axis, metric_t* metrics) {
 // =======================================================================
 // EffectInertia
 // =======================================================================
-void EffectInertia::setFilters(float calcfrequency, uint8_t profileId) {}
 int32_t EffectInertia::calculateRawForce(uint8_t axis, metric_t* metrics) {
     float accel = metrics->accel * INTERNAL_SCALER_INERTIA;
     uint8_t con_idx = useSingleCondition ? 0 : axis;

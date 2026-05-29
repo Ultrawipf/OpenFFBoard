@@ -270,7 +270,6 @@ void EffectsCalculator::checkFilterCoeff(biquad_constant_t *filter, uint32_t fre
 }
 
 void EffectsCalculator::updateFilterSettingsForEffects(uint8_t type_effect) {
-
 	// loop on all effect in memory and setup new constant filter
 	for (auto& effect : effects)
 	{
@@ -686,23 +685,38 @@ void EffectsControlItf::fxUpdateEvent(){
 }
 
 void EffectsCalculator::setFilters(Effect *effect){
+	uint32_t freq = 0;
+	uint8_t q = 0;
+	bool apply = true;
+
 	switch (effect->getType())
 	{
 	case FFB_EFFECT_DAMPER:
-		for (int i=0; i<MAX_AXIS; i++)
-			effect->setFilter(i, this->filter[filterProfileId].damper.freq/ (float)calcfrequency, this->filter[filterProfileId].damper.q * qfloatScaler , 0.0f);
+		freq = this->filter[filterProfileId].damper.freq;
+		q = this->filter[filterProfileId].damper.q;
 		break;
 	case FFB_EFFECT_FRICTION:
-		for (int i=0; i<MAX_AXIS; i++)
-			effect->setFilter(i, this->filter[filterProfileId].friction.freq / (float)calcfrequency, this->filter[filterProfileId].friction.q * qfloatScaler, 0.0f);
+		freq = this->filter[filterProfileId].friction.freq;
+		q = this->filter[filterProfileId].friction.q;
 		break;
 	case FFB_EFFECT_INERTIA:
-		for (int i=0; i<MAX_AXIS; i++)
-			effect->setFilter(i, this->filter[filterProfileId].inertia.freq / (float)calcfrequency, this->filter[filterProfileId].inertia.q * qfloatScaler, 0.0f);
+		freq = this->filter[filterProfileId].inertia.freq;
+		q = this->filter[filterProfileId].inertia.q;
 		break;
 	case FFB_EFFECT_CONSTANT:
-		for (int i=0; i<MAX_AXIS; i++)
-			effect->setFilter(i, this->filter[0].constant.freq / (float)calcfrequency, this->filter[0].constant.q * qfloatScaler, 0.0f);
+		freq = this->filter[0].constant.freq;
+		q = this->filter[0].constant.q;
 		break;
+	default:
+		apply = false;
+		break;
+	}
+
+	if (apply) {
+		float freq_f = freq / (float)calcfrequency;
+		float q_f = q * qfloatScaler;
+		for (int i=0; i<MAX_AXIS; i++) {
+			effect->setFilter(i, freq_f, q_f, 0.0f);
+		}
 	}
 }

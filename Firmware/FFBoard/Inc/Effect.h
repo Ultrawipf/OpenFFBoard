@@ -24,6 +24,14 @@ class Axis;
 
 // =======================================================================
 // BASE CLASS : Effect
+//    Effect (type, state, duration, gain, magnitudes)                                                                                                                                                                                      
+//      ├── EffectConditional (+ useSingleCondition, array de conditions)                                                                                                                                                                   
+//      │    └── Spring, Damper, Friction, Inertia                                                                                                                                                                                          
+//      └── EffectTemporal (+ enveloppe attack/fade, magnitude de base)                                                                                                                                                                     
+//           ├── EffectConstant, EffectRamp                                                                                                                                                                                                 
+//           └── EffectPeriodic (+ phase, period, offset)                                                                                                                                                                                   
+//                └── Sine, Square, Triangle, Sawtooth                                                                                                                                                                                      
+                                                          
 // =======================================================================
 class Effect {
 protected:
@@ -34,8 +42,6 @@ protected:
     uint16_t startDelay = 0;
     uint8_t gain = 255;
     float axisMagnitudes[MAX_AXIS] = {0};
-    bool useSingleCondition = true;
-    uint16_t samplePeriod = 0;
     
     std::unique_ptr<Biquad> filter[MAX_AXIS] = { nullptr };
 
@@ -56,19 +62,17 @@ public:
     void setStartDelay(uint16_t d) { startDelay = d; }
     void setAxisMagnitude(uint8_t axis, float mag) { axisMagnitudes[axis] = mag; }
     float getAxisMagnitude(uint8_t axis) const { return axisMagnitudes[axis]; }
-    void setUseSingleCondition(bool single) { useSingleCondition = single; }
-    bool getUseSingleCondition() const { return useSingleCondition; }
+    
+    virtual void setUseSingleCondition(bool single) {}
+    virtual bool getUseSingleCondition() const { return false; }
 
     void setFilter(uint8_t axis, float freq, float q, float peakGain = 0.0) {
         if (!filter[axis]) filter[axis] = std::make_unique<Biquad>(BiquadType::lowpass, freq, q, peakGain);
         else filter[axis]->setBiquad(BiquadType::lowpass, freq, q, peakGain);
     }
     Biquad* getFilter(uint8_t axis) { return filter[axis].get(); }
-    void setSamplePeriod(uint16_t period) { samplePeriod = period; }
 
     int32_t processForce(uint8_t axis, metric_t* metrics, uint8_t global_gain);
-
-    virtual void setFilters(float calcfrequency, uint8_t profileId) {}
 
     virtual void setEnvelope(FFB_SetEnvelope_Data_t* report) {}
     virtual void setPeriodic(FFB_SetPeriodic_Data_t* report) {}
@@ -93,9 +97,6 @@ public:
 class EffectTemporal : public Effect {
 protected:
     int16_t magnitude = 0;
-    int16_t offset = 0;
-    int16_t phase = 0;
-    uint32_t period = 0;
 
     bool useEnvelope = false;
     uint16_t attackLevel = 0;
@@ -104,7 +105,6 @@ protected:
     uint32_t fadeTime = 0;
 
     ReconFilterState recon_magnitude;
-    ReconFilterState recon_offset;
 
     int32_t getEnvelopeMagnitude(int32_t baseMagnitude);
     float evaluateReconstructionFilter(ReconFilterState* state, float fallbackValue);
@@ -112,11 +112,28 @@ protected:
 
 public:
     void setEnvelope(FFB_SetEnvelope_Data_t* report) override;
-    void setPeriodic(FFB_SetPeriodic_Data_t* report) override;
-    void updateReconstruction(float new_mag, float new_offset, bool is_periodic);
     
     void setMagnitude(int16_t mag) override { magnitude = mag; }
     int16_t getMagnitude() const override { return magnitude; }
+    
+    virtual void updateReconstruction(float new_mag);
+};
+
+// =======================================================================
+// BRANCH 1.5 : EffectPeriodic
+// =======================================================================
+class EffectPeriodic : public EffectTemporal {
+protected:
+    int16_t offset = 0;
+    int16_t phase = 0;
+    uint32_t period = 0;
+
+    ReconFilterState recon_offset;
+
+public:
+    void setPeriodic(FFB_SetPeriodic_Data_t* report) override;
+    void updateReconstruction(float new_mag, float new_offset);
+    
     void setOffset(int16_t off) override { offset = off; }
     int16_t getOffset() const override { return offset; }
     void setPeriod(uint32_t p) override { period = p; }
@@ -127,8 +144,6 @@ class EffectConstant : public EffectTemporal {
 public:
     EffectConstant() { type = FFB_EFFECT_CONSTANT; }
     void setConstantForce(FFB_SetConstantForce_Data_t* report) override;
-    void setFilters(float calcfrequency, uint8_t profileId) override;
-protected:
     int32_t calculateRawForce(uint8_t axis, metric_t* metrics) override;
 };
 
@@ -143,35 +158,35 @@ protected:
     int32_t calculateRawForce(uint8_t axis, metric_t* metrics) override;
 };
 
-class EffectSquare : public EffectTemporal {
+class EffectSquare : public EffectPeriodic {
 public:
     EffectSquare() { type = FFB_EFFECT_SQUARE; }
 protected:
     int32_t calculateRawForce(uint8_t axis, metric_t* metrics) override;
 };
 
-class EffectTriangle : public EffectTemporal {
+class EffectTriangle : public EffectPeriodic {
 public:
     EffectTriangle() { type = FFB_EFFECT_TRIANGLE; }
 protected:
     int32_t calculateRawForce(uint8_t axis, metric_t* metrics) override;
 };
 
-class EffectSawtoothUp : public EffectTemporal {
+class EffectSawtoothUp : public EffectPeriodic {
 public:
     EffectSawtoothUp() { type = FFB_EFFECT_SAWTOOTHUP; }
 protected:
     int32_t calculateRawForce(uint8_t axis, metric_t* metrics) override;
 };
 
-class EffectSawtoothDown : public EffectTemporal {
+class EffectSawtoothDown : public EffectPeriodic {
 public:
     EffectSawtoothDown() { type = FFB_EFFECT_SAWTOOTHDOWN; }
 protected:
     int32_t calculateRawForce(uint8_t axis, metric_t* metrics) override;
 };
 
-class EffectSine : public EffectTemporal {
+class EffectSine : public EffectPeriodic {
 public:
     EffectSine() { type = FFB_EFFECT_SINE; }
 protected:
@@ -185,12 +200,15 @@ protected:
 class EffectConditional : public Effect {
 protected:
     FFB_Effect_Condition conditions[MAX_AXIS];
+    bool useSingleCondition = false;
     int32_t calcConditionEffectForce(float metric, uint8_t idx, float scale);
 
 public:
     EffectConditional() {
-        useSingleCondition = false;
     }
+    
+    void setUseSingleCondition(bool single) override { useSingleCondition = single; }
+    bool getUseSingleCondition() const override { return useSingleCondition; }
     void setCondition(FFB_SetCondition_Data_t* report) override;
     FFB_Effect_Condition* getCondition(uint8_t axis) override {
         if(axis < MAX_AXIS) return &conditions[axis];
@@ -208,7 +226,6 @@ protected:
 class EffectDamper : public EffectConditional {
 public:
     EffectDamper() { type = FFB_EFFECT_DAMPER; }
-    void setFilters(float calcfrequency, uint8_t profileId) override;
 protected:
     int32_t calculateRawForce(uint8_t axis, metric_t* metrics) override;
 };
@@ -216,7 +233,6 @@ protected:
 class EffectFriction : public EffectConditional {
 public:
     EffectFriction() { type = FFB_EFFECT_FRICTION; }
-    void setFilters(float calcfrequency, uint8_t profileId) override;
 protected:
     int32_t calculateRawForce(uint8_t axis, metric_t* metrics) override;
 };
@@ -224,7 +240,6 @@ protected:
 class EffectInertia : public EffectConditional {
 public:
     EffectInertia() { type = FFB_EFFECT_INERTIA; }
-    void setFilters(float calcfrequency, uint8_t profileId) override;
 protected:
     int32_t calculateRawForce(uint8_t axis, metric_t* metrics) override;
 };

@@ -280,6 +280,7 @@ void HidFFB::new_effect(FFB_CreateNewEffect_Feature_Data_t* effect){
 	CommandHandler::logSerialDebug("New effect type:" + std::to_string(effect->effectType) + " idx: " + std::to_string(index-1));
 #endif
 
+	effects_calc->setFilters(new_effect.get()); // Initialize filters correctly before assigning
 	effects[index] = std::move(new_effect);
 	
 	// Set block load report
@@ -308,7 +309,6 @@ void HidFFB::set_effect(FFB_SetEffect_t* effect){
 	}
 
 	effect_p->setGain(effect->gain);
-	effect_p->setSamplePeriod(effect->samplePeriod);
 
 	bool directionEnable = (effect->enableAxis & this->directionEnableMask);
 	bool overridesCondition = false;

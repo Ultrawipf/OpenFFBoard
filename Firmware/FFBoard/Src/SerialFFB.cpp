@@ -99,6 +99,7 @@ int32_t SerialFFB::newEffect(uint8_t effectType){
 		// default cond set zero
 		cond.cpOffset = 0; cond.deadBand = 0; cond.negativeCoefficient = 0; cond.positiveCoefficient = 0; cond.negativeSaturation = 0; cond.positiveSaturation = 0;
 		// Need proper setCondition but for simplicity we will just call it manually later
+		this->effects_calc->setFilters(new_effect.get());
 		this->effects_calc->logEffectType(effectType,false);
 		effects[idx] = std::move(new_effect);
 	}
