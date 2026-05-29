@@ -91,7 +91,7 @@ enum class TMC_ControlState : uint32_t {uninitialized,waitPower,Shutdown,Running
 #ifdef COGGING_TABLE_FLASH_START_ADDRESS
 	,CoggingCalibration
 #endif
-	,SlewRateCalibration, NONE
+	, NONE
 };
 
 enum class TMC_PwmMode : uint8_t {off = 0,HSlow_LShigh = 1, HShigh_LSlow = 2, res2 = 3, res3 = 4, PWM_LS = 5, PWM_HS = 6, PWM_FOC = 7};
@@ -520,10 +520,7 @@ public:
 	void setBBM(uint8_t bbml,uint8_t bbmh);
 
 	
-	// Slew rate calibration control
-	uint16_t getDrvSlewRate();
-	bool startSlewRateCalibration();
-	bool isSlewRateCalibrationInProgress();
+	
 	bool isCalibrationInProgress() override;
 
 #if defined(TIM_TMC) || defined(TIM_CALIBRATION)
@@ -750,9 +747,7 @@ private:
 	void handleStateCoggingCalibration();
 #endif
 
-	uint16_t maxSlewRate = MAX_SLEW_RATE; // in mA/ms
-	void measureMaxSlewRate();
-
+	
 	enum class PidTuneState : uint8_t { Init, RampFluxP, TuneFluxI_Pulse, TuneFluxI_Measure, Done };
 	PidTuneState pidTuneState = PidTuneState::Init;
 	uint32_t pidTuneStartTime = 0;
