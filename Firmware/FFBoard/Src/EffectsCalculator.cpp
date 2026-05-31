@@ -61,6 +61,20 @@ EffectsCalculator::EffectsCalculator() : CommandHandler("fx", CLSID_EFFECTSCALC)
 	registerCommand("frictionPctSpeedToRampup", EffectsCalculator_commands::frictionPctSpeedToRampup, "% of max speed for gradual increase", CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("reconFilterMode", EffectsCalculator_commands::reconFilterMode, "Recon. filter: 0=None, 1=Linear, 2=CubicNatural, 3=CubicHermite", CMDFLAG_GET | CMDFLAG_SET);
 
+	for (uint8_t i = 0; i < MAX_AXIS; i++) {
+		systemDampers[i] = std::make_unique<EffectDamper>();
+		systemFrictions[i] = std::make_unique<EffectFriction>();
+		systemInertias[i] = std::make_unique<EffectInertia>();
+
+		systemDampers[i]->setAxisMagnitude(0, 1.0f);
+		systemFrictions[i]->setAxisMagnitude(0, 1.0f);
+		systemInertias[i]->setAxisMagnitude(0, 1.0f);
+
+		systemDampers[i]->setState(1);
+		systemFrictions[i]->setState(1);
+		systemInertias[i]->setState(1);
+	}
+
 	//this->Start(); // Enable if we want to periodically monitor
 }
 
@@ -92,6 +106,11 @@ void EffectsCalculator::updateSamplerate(float newSamplerate){
 			setFilters(effect.get());
 		}
 	}
+	for(uint8_t i=0; i<MAX_AXIS; i++){
+		if(systemDampers[i]) setFilters(systemDampers[i].get());
+		if(systemFrictions[i]) setFilters(systemFrictions[i].get());
+		if(systemInertias[i]) setFilters(systemInertias[i].get());
+	}
 }
 
 
@@ -115,7 +134,8 @@ An inertia condition uses axis acceleration as the metric.
 void EffectsCalculator::calculateEffects(std::vector<std::unique_ptr<Axis>> &axes)
 {
 	int axisCount = axes.size();
-	int32_t forces[MAX_AXIS] = {0};
+	int32_t hidForces[MAX_AXIS] = {0};
+	int32_t mechanicalForces[MAX_AXIS] = {0};
 
 	if(isActive()){
 		for (uint8_t i = 0; i < effects_stats.size(); i++)
@@ -131,18 +151,67 @@ void EffectsCalculator::calculateEffects(std::vector<std::unique_ptr<Axis>> &axe
 				{
 					int32_t axisforce = effect->processForce(axis, axes[axis]->getMetrics(), global_gain);
 					calcStatsEffectType(effect->getType(), axisforce, axis);
-					forces[axis] += axisforce;
+					hidForces[axis] += axisforce;
 				}
 			}
 		}
 		effects_statslast = effects_stats;
 	}
 
+	// Calculate mechanical effects for each axis
+	for(uint8_t axis=0; axis < axisCount; axis++) {
+		if(!isActive()) {
+			mechanicalForces[axis] += axes[axis]->getIdleSpringForce();
+		}
+		
+		uint8_t damperInt = axes[axis]->getDamperIntensity();
+		if (damperInt != 0 && systemDampers[axis]) {
+			FFB_Effect_Condition* cond = systemDampers[axis]->getCondition(0);
+			if (cond) {
+				cond->positiveCoefficient = (int16_t)((float)damperInt * INTERNAL_AXIS_DAMPER_SCALER / 255.0f * 32767.0f);
+				cond->negativeCoefficient = cond->positiveCoefficient;
+				cond->positiveSaturation = 20000;
+				cond->negativeSaturation = 20000;
+				cond->deadBand = 0;
+				cond->cpOffset = 0;
+			}
+			mechanicalForces[axis] += systemDampers[axis]->processForce(0, axes[axis]->getMetrics(), 255);
+		}
+
+		uint8_t inertiaInt = axes[axis]->getInertiaIntensity();
+		if (inertiaInt != 0 && systemInertias[axis]) {
+			FFB_Effect_Condition* cond = systemInertias[axis]->getCondition(0);
+			if (cond) {
+				cond->positiveCoefficient = (int16_t)((float)inertiaInt * INTERNAL_AXIS_INERTIA_SCALER / 255.0f * 32767.0f);
+				cond->negativeCoefficient = cond->positiveCoefficient;
+				cond->positiveSaturation = 20000;
+				cond->negativeSaturation = 20000;
+				cond->deadBand = 0;
+				cond->cpOffset = 0;
+			}
+			mechanicalForces[axis] += systemInertias[axis]->processForce(0, axes[axis]->getMetrics(), 255);
+		}
+
+		uint8_t frictionInt = axes[axis]->getFrictionIntensity();
+		if (frictionInt != 0 && systemFrictions[axis]) {
+			FFB_Effect_Condition* cond = systemFrictions[axis]->getCondition(0);
+			if (cond) {
+				cond->positiveCoefficient = (int16_t)((float)frictionInt * INTERNAL_AXIS_FRICTION_SCALER * 32.0f);
+				cond->negativeCoefficient = cond->positiveCoefficient;
+				cond->positiveSaturation = 20000;
+				cond->negativeSaturation = 20000;
+				cond->deadBand = 0;
+				cond->cpOffset = 0;
+			}
+			mechanicalForces[axis] += systemFrictions[axis]->processForce(0, axes[axis]->getMetrics(), 255);
+		}
+	}
+
 	// Apply summed force to axes
 	for(uint8_t i=0 ; i < axisCount ; i++)
 	{
-		axes[i]->calculateMechanicalEffects(isActive());
-		axes[i]->setFfbEffectTorque(forces[i]);
+		axes[i]->setFfbEffectTorque(hidForces[i]);
+		axes[i]->setMechanicalEffectTorque(mechanicalForces[i]);
 	}
 }
 
@@ -277,6 +346,12 @@ void EffectsCalculator::updateFilterSettingsForEffects(uint8_t type_effect) {
 		{
 			setFilters(effect.get());
 		}
+	}
+	// Update system effects
+	for (uint8_t i = 0; i < MAX_AXIS; i++) {
+		if (type_effect == FFB_EFFECT_DAMPER && systemDampers[i]) setFilters(systemDampers[i].get());
+		if (type_effect == FFB_EFFECT_FRICTION && systemFrictions[i]) setFilters(systemFrictions[i].get());
+		if (type_effect == FFB_EFFECT_INERTIA && systemInertias[i]) setFilters(systemInertias[i].get());
 	}
 }
 

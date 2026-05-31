@@ -24,6 +24,7 @@
 #include "ClassChooser.h"
 #include "ExtiHandler.h"
 #include "EffectsCalculator.h"
+#include "Effect.h"
 
 #ifdef USE_DSP_FUNCTIONS
 #include "dsp/controller_functions.h"
@@ -320,20 +321,15 @@ public:
 	 */
 	void setIdleSpringStrength(uint8_t spring);
 
-	/**
-	 * @brief Sets the strength and filter for an effect.
-	 * @param val The new strength value.
-	 * @param valToSet A reference to the value to be set.
-	 * @param filter A reference to the biquad filter.
-	 */
-	void setFxStrengthAndFilter(uint8_t val,uint8_t& valToSet, Biquad& filter);
+	uint8_t getDamperIntensity() const { return damperIntensity; }
+	uint8_t getFrictionIntensity() const { return frictionIntensity; }
+	uint8_t getInertiaIntensity() const { return inertiaIntensity; }
+	int32_t getIdleSpringForce() { return updateIdleSpringForce(); }
 
 	/**
-	 * @brief Calculates the mechanical effects (damper, friction, inertia) that are always active.
-	 * These are separate from the HID FFB effects sent by the game.
-	 * @param ffb_on A flag indicating if FFB is on.
+	 * @brief Sets the mechanical effect torque computed by EffectsCalculator.
 	 */
-	void calculateMechanicalEffects(bool ffb_on);
+	void setMechanicalEffectTorque(int32_t torque);
 
 	/**
 	 * @brief Gets the current torque.
@@ -537,12 +533,9 @@ private:
 	uint8_t frictionIntensity = 0;	//!< Intensity of the internal friction effect.
 	uint8_t inertiaIntensity = 0;	//!< Intensity of the internal inertia effect.
 
-	// Biquad filter instances
 	Biquad speedFilter = Biquad(BiquadType::lowpass, filterSpeedCst[filterProfileId].freq/filter_f, filterSpeedCst[filterProfileId].q/100.0, 0.0);
 	Biquad accelFilter = Biquad(BiquadType::lowpass, filterAccelCst[filterProfileId].freq/filter_f, filterAccelCst[filterProfileId].q/100.0, 0.0);
-	Biquad damperFilter = Biquad(BiquadType::lowpass, filterDamperCst.freq/filter_f, filterDamperCst.q / 100.0, 0.0);
-	Biquad frictionFilter = Biquad(BiquadType::lowpass, filterFrictionCst.freq/filter_f, filterFrictionCst.q / 100.0, 0.0);
-	Biquad inertiaFilter = Biquad(BiquadType::lowpass, filterInertiaCst.freq/filter_f, filterInertiaCst.q / 100.0, 0.0);
+
 
 	// Equalizer
 	static const uint8_t num_eq_bands = 6;

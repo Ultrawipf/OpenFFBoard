@@ -201,6 +201,12 @@ public:
 
 	static const uint32_t max_effects = MAX_EFFECTS;
 	std::array<std::unique_ptr<Effect>,max_effects> effects; //!< Main effects storage array.
+
+	// System effects (per-axis mechanical effects)
+	std::array<std::unique_ptr<EffectDamper>, MAX_AXIS> systemDampers;
+	std::array<std::unique_ptr<EffectFriction>, MAX_AXIS> systemFrictions;
+	std::array<std::unique_ptr<EffectInertia>, MAX_AXIS> systemInertias;
+
 	inline static uint8_t frictionPctSpeedToRampup = 25;	//!< Speed percentage for friction ramp-up.
 
 	/**

@@ -131,6 +131,7 @@ protected:
     ReconFilterState recon_offset;
 
 public:
+    using EffectTemporal::updateReconstruction;
     void setPeriodic(FFB_SetPeriodic_Data_t* report) override;
     void updateReconstruction(float new_mag, float new_offset);
     
