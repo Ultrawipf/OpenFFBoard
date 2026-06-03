@@ -4096,6 +4096,11 @@ void TMC4671::handleStateCoggingCalibration() {
 				uint32_t period_us = getActualCalibPeriod(TIM_TMC_ARR); 
 				target_rpm = (actual_pos_f > 0.0f) ? -calib_rpm : calib_rpm;
 				
+				// Dynamic timeout based on the distance to cover
+				float distance_turns = fabs(actual_pos_f);
+				// (distance_turns * 60 sec/min * 1000 ms/sec) / calib_rpm
+				uint32_t dynamic_timeout_ms = (uint32_t)((distance_turns * 60000.0f) / calib_rpm) + 5000;
+
 				uint32_t return_start = HAL_GetTick();
 				uint32_t next_tick = micros();
 				startCalibTimers(TIM_TMC_ARR);
@@ -4126,9 +4131,9 @@ void TMC4671::handleStateCoggingCalibration() {
 					
 
 					refreshWatchdog();
-					if (HAL_GetTick() - return_start > 30000) {
+					if (HAL_GetTick() - return_start > dynamic_timeout_ms) {
 						broadcastCalibLog(0, "Return to center timeout");
-						break; // 30s safety timeout
+						break; // safety timeout
 					}
 #ifdef TIM_CALIBRATION
 					// Yield thread via timer interrupt notifications to avoid busy-waiting, falling back if timer is disabled
