@@ -422,7 +422,7 @@ class TMC4671 :
 		svpwm,fullCalibration,calibrated,abnindexenabled,findIndex,getState,encpol,combineEncoder,invertForce,vmTmc,
 		extphie,torqueFilter_mode,torqueFilter_f,torqueFilter_q,pidautotune,fluxbrake,pwmfreq,
 #ifdef COGGING_TABLE_FLASH_START_ADDRESS
-		cogging,calibrateCogging, coggingTable, coggingScale
+		cogging,calibrateCogging, coggingTable, coggingScale, coggingSpeedP, coggingSpeedI
 #endif
 	};
 
@@ -744,6 +744,8 @@ private:
 	std::unique_ptr<CoggingCalibData> coggingData = nullptr;
 	uint32_t calibStartTime = 0;
 	MotionMode prevCalibMode = MotionMode::stop;
+	float coggingSpeedP = 0.0f;
+	float coggingSpeedI = 0.0f;
 	void handleStateCoggingCalibration();
 #endif
 
