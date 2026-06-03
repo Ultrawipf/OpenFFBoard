@@ -81,6 +81,12 @@ const ClassIdentifier MotorDriver::getInfo(){
 	return info;
 }
 
+/**
+ * Setup driver when is selected
+ */
+void MotorDriver::setupDriver(){
+
+}
 
 /**
  * Turn the motor with positive/negative power.

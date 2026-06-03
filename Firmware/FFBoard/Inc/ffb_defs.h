@@ -11,6 +11,12 @@
 #include "cppmain.h"
 #include "Filters.h"
 #include "constants.h" // For #define MAX_AXIS
+
+#ifdef USE_DSP_FUNCTIONS
+#include "arm_math_types.h"
+#include "dsp/interpolation_functions.h"
+#endif
+
 #define FFB_ID_OFFSET 0x00
 #define MAX_EFFECTS 40
 
@@ -195,7 +201,25 @@ typedef struct
 
 } __attribute__((packed)) reportFFB_status_t;
 
-
+/**
+ * @brief Contains state and buffers for
+ * the interpolation of a single parameter (eg: magnitude or offset).
+ */
+typedef struct
+{
+#ifdef USE_DSP_FUNCTIONS
+	float32_t spline_x[4] = {0}; 		// Buffer time(en us)
+	float32_t spline_y[4] = {0}; 		// Buffer value
+	float32_t spline_y2[4] = {0};    	// Buffer for Spline Natural
+	float32_t spline_scratch[8] = {0}; 	// Buffer for Spline Natural
+	arm_spline_instance_f32 spline_instance; // Instance for CMSIS-DSP
+	bool spline_arm_initialized = false;	 // CMSIS-DSP initialized ?
+#else
+	float spline_x[4] = {0}; 		// Buffer time(en us)
+	float spline_y[4] = {0}; 		// Buffer value
+#endif
+	bool isSplineReady = false;	// buffer is full ?
+} ReconFilterState;
 
 typedef struct
 	{
@@ -333,6 +357,9 @@ typedef struct
 	uint16_t samplePeriod = 0;
 	bool useEnvelope = false;
 	bool useSingleCondition = true;
+
+	ReconFilterState recon_magnitude; // State pour Magnitude (ou Amplitude)
+    ReconFilterState recon_offset;    // State pour Offset (périodiques)
 } FFB_Effect;
 
 

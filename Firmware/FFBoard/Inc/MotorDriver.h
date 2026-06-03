@@ -2,11 +2,13 @@
  * MotorDriver.h
  *
  *  Created on: Feb 1, 2020
- *      Author: Yannick
+ *      Author: Yannick, Vincent
  */
 
 #ifndef MOTORDRIVER_H_
 #define MOTORDRIVER_H_
+
+#define MAX_SLEW_RATE 65535
 
 #include "cppmain.h"
 #include "ChoosableClass.h"
@@ -25,11 +27,19 @@ public:
 	const ClassType getClassType() override {return ClassType::Motordriver;};
 	static const std::vector<class_entry<MotorDriver>> all_drivers;
 
+	virtual void setupDriver();
 	virtual void turn(int16_t power);
 	virtual void stopMotor();
 	virtual void startMotor();
 	virtual void emergencyStop(bool reset = false);
 
+	virtual void setPowerLimit(uint16_t power){}; // specific motor driver manager power, this is used to send powerLimit to the driver, like TMC4671.
+	
+	/**
+	 * Check if any calibration process is currently active.
+	 */
+	virtual bool isCalibrationInProgress() { return false; };
+	
 	virtual bool motorReady(); // Returns true if the driver is active and ready to receive commands
 
 	virtual Encoder* getEncoder(); // Encoder is managed by the motor driver. Must always return an encoder
