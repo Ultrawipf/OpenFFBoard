@@ -358,8 +358,8 @@ typedef struct
 	bool useEnvelope = false;
 	bool useSingleCondition = true;
 
-	ReconFilterState recon_magnitude; // State pour Magnitude (ou Amplitude)
-    ReconFilterState recon_offset;    // State pour Offset (périodiques)
+	ReconFilterState recon_magnitude; // State for Magnitude (or Amplitude)
+    ReconFilterState recon_offset;    // State for Offset (periodic effects)
 } FFB_Effect;
 
 

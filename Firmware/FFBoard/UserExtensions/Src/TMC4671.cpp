@@ -2714,6 +2714,8 @@ void TMC4671::registerCommands(){
 	registerCommand("calibrateCogging", TMC4671_commands::calibrateCogging, "Cogging calibration",CMDFLAG_GET);
 	registerCommand("coggingTable", TMC4671_commands::coggingTable, "Get the cogging table, or clear table (set 0)",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("coggingScale", TMC4671_commands::coggingScale, "Cogging compensation scale (0-100)",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("coggingSpeedP", TMC4671_commands::coggingSpeedP, "Manual speed loop P gain for cogging",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("coggingSpeedI", TMC4671_commands::coggingSpeedI, "Manual speed loop I gain for cogging",CMDFLAG_GET | CMDFLAG_SET);
 #endif
 }
 
@@ -3097,6 +3099,14 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 		} else if (cmd.type == CMDtype::set) {
 			this->cogging_scale = (float)(int16_t)cmd.val / 10000.0f;
 		}
+		break;
+
+	case TMC4671_commands::coggingSpeedP:
+		handleGetSet(cmd, replies, this->coggingSpeedP);
+		break;
+
+	case TMC4671_commands::coggingSpeedI:
+		handleGetSet(cmd, replies, this->coggingSpeedI);
 		break;
 #endif
 
@@ -3530,6 +3540,11 @@ void TMC4671::handleStateCoggingCalibration() {
 				if(i % 100 == 0) refreshWatchdog();
 			}
 		} else {
+			float J = 0.0f;
+			float B = 0.0f;
+			uint32_t next_tick = 0;
+			uint32_t act_period = 0;
+			float dt_sec = 0.0f;
 			// --- REAL ACQUISITION SETUP ---
 			startMotor();
 			setMotionMode(MotionMode::torque, true);
@@ -3556,129 +3571,138 @@ void TMC4671::handleStateCoggingCalibration() {
 
 			float start_pos = getAbsolutePosition();
 			bool friction_broken = false;
-
-			// Step 1.1: Break static friction
-			broadcastCalibLog(0, "Step 1.1: Breaking static friction...");
-			while (!friction_broken && tuning_torque < max_test_torque && !emergency) {
-				applySafeTorque(tuning_torque);
-				Delay(BREAKOUT_STEP_MS); 
-				if (fabs(getWrappedError(start_pos, getAbsolutePosition())) > 0.005f) {
-					friction_broken = true;
-					tuning_torque *= 1.1f; 
-				} else {
-					tuning_torque += 100.0f; 
+			
+			if (coggingSpeedP == 0.0f && coggingSpeedI == 0.0f) {
+				// Step 1.1: Break static friction
+				broadcastCalibLog(0, "Step 1.1: Breaking static friction...");
+				while (!friction_broken && tuning_torque < max_test_torque && !emergency) {
+					applySafeTorque(tuning_torque);
+					Delay(BREAKOUT_STEP_MS); 
+					if (fabs(getWrappedError(start_pos, getAbsolutePosition())) > 0.005f) {
+						friction_broken = true;
+						tuning_torque *= 1.1f; 
+					} else {
+						tuning_torque += 100.0f; 
+					}
 				}
-			}
-			applySafeTorque(0);
-			Delay(500); 
+				applySafeTorque(0);
+				Delay(500); 
 
-			// Step 1.2: Measure Inertia (J) using a precise torque pulse
-			broadcastCalibLog(0, "Step 1.2: Measuring Mechanical Inertia (J)...");
-			float j_torque = tuning_torque;
-			start_pos = getAbsolutePosition();
-			uint32_t j_start_us = micros();
-			uint32_t j_target_us = j_start_us + (SYSID_J_PULSE_MS * 1000);
-			
-			applySafeTorque(j_torque);
-			// Strict timing loop: Busy-wait to guarantee precise pulse duration
-			while (((micros() - j_target_us) & 0x80000000) && !emergency) {
-				refreshWatchdog();
-			}
-			uint32_t j_end_us = micros();
-			float end_pos = getAbsolutePosition();
-			applySafeTorque(0);
-			
-			float dt_j = (float)(j_end_us - j_start_us) / 1000000.0f;
-			float d_pos_turns = fabs(getWrappedError(start_pos, end_pos));
-			float d_pos_rad = d_pos_turns * 2.0f * PI; 
-			
-			if (d_pos_rad < 0.001f) {
-				errorMessage = "Abort: Motor did not move during inertia measurement";
-				goto cleanup;
-			}
-
-			// Physics Formula: J = (Torque * dt^2) / (2 * delta_pos_rad)
-			// Scale by 100 to map physical J to the abstract TMC integer units
-			float J = ((j_torque * dt_j * dt_j) / (2.0f * d_pos_rad)) * 100.0f;
-			Delay(500);
-
-			// Step 1.3: Measure Viscous Friction (B)
-			broadcastCalibLog(0, "Step 1.3: Measuring Viscous Friction (B)...");
-			float test_rpm = 30.0f;
-			float b_target_vel_turns = test_rpm / 60.0f; 
-			float b_target_vel_rad = b_target_vel_turns * 2.0f * PI;
-			float b_pos = getAbsolutePosition();
-			float b_sum_torque = 0.0f;
-			uint32_t b_samples = 0;
-			uint32_t b_start = HAL_GetTick();
-			uint32_t next_tick = micros();
-			
-			float kp_vel = j_torque * 5.0f; 
-			uint32_t act_period = getActualCalibPeriod(1000);
-			float dt_sec = (float)act_period / 1000000.0f;
-			startCalibTimers(1000);
-			while (HAL_GetTick() - b_start < SYSID_B_DURATION_MS && !emergency) {
-				next_tick += act_period;
-				b_pos += b_target_vel_turns * dt_sec;
-				float err = b_pos - getAbsolutePosition();
-				float cmd = err * kp_vel;
-				cmd = clip<float,float>(cmd, -max_test_torque, max_test_torque);
-				applySafeTorque(cmd);
+				// Step 1.2: Measure Inertia (J) using a precise torque pulse
+				broadcastCalibLog(0, "Step 1.2: Measuring Mechanical Inertia (J)...");
+				float j_torque = tuning_torque;
+				start_pos = getAbsolutePosition();
+				uint32_t j_start_us = micros();
+				uint32_t j_target_us = j_start_us + (SYSID_J_PULSE_MS * 1000);
 				
-				// WARMUP: Only integrate torque after half the duration to ensure steady-state velocity
-				if (HAL_GetTick() - b_start > (SYSID_B_DURATION_MS / 2)) { 
-					b_sum_torque += cmd;
-					b_samples++;
+				applySafeTorque(j_torque);
+				// Strict timing loop: Busy-wait to guarantee precise pulse duration
+				while (((micros() - j_target_us) & 0x80000000) && !emergency) {
+					refreshWatchdog();
 				}
-				refreshWatchdog();
+				uint32_t j_end_us = micros();
+				float end_pos = getAbsolutePosition();
+				applySafeTorque(0);
+				
+				float dt_j = (float)(j_end_us - j_start_us) / 1000000.0f;
+				float d_pos_turns = fabs(getWrappedError(start_pos, end_pos));
+				float d_pos_rad = d_pos_turns * 2.0f * PI; 
+				
+				if (d_pos_rad < 0.001f) {
+					errorMessage = "Abort: Motor did not move during inertia measurement";
+					goto cleanup;
+				}
+
+				// Physics Formula: J = (Torque * dt^2) / (2 * delta_pos_rad)
+				// Scale by 100 to map physical J to the abstract TMC integer units
+				J = ((j_torque * dt_j * dt_j) / (2.0f * d_pos_rad)) * 100.0f;
+				Delay(500);
+
+				// Step 1.3: Measure Viscous Friction (B)
+				broadcastCalibLog(0, "Step 1.3: Measuring Viscous Friction (B)...");
+				float test_rpm = 30.0f;
+				float b_target_vel_turns = test_rpm / 60.0f; 
+				float b_target_vel_rad = b_target_vel_turns * 2.0f * PI;
+				float b_pos = getAbsolutePosition();
+				float b_sum_torque = 0.0f;
+				uint32_t b_samples = 0;
+				uint32_t b_start = HAL_GetTick();
+				next_tick = micros();
+				
+				float kp_vel = j_torque * 5.0f; 
+				act_period = getActualCalibPeriod(1000);
+				dt_sec = (float)act_period / 1000000.0f;
+				startCalibTimers(1000);
+				while (HAL_GetTick() - b_start < SYSID_B_DURATION_MS && !emergency) {
+					next_tick += act_period;
+					b_pos += b_target_vel_turns * dt_sec;
+					float err = b_pos - getAbsolutePosition();
+					float cmd = err * kp_vel;
+					cmd = clip<float,float>(cmd, -max_test_torque, max_test_torque);
+					applySafeTorque(cmd);
+					
+					// WARMUP: Only integrate torque after half the duration to ensure steady-state velocity
+					if (HAL_GetTick() - b_start > (SYSID_B_DURATION_MS / 2)) { 
+						b_sum_torque += cmd;
+						b_samples++;
+					}
+					refreshWatchdog();
 #ifdef TIM_CALIBRATION
-				// Yield thread via timer interrupt notifications to avoid busy-waiting, falling back if timer is disabled
-				if (this->calibTimer != nullptr) {
-					this->WaitForNotification();
-				} else
+					// Yield thread via timer interrupt notifications to avoid busy-waiting, falling back if timer is disabled
+					if (this->calibTimer != nullptr) {
+						this->WaitForNotification();
+					} else
 #endif
-				{
-					while ((micros() - next_tick) & 0x80000000) {}
+					{
+						while ((micros() - next_tick) & 0x80000000) {}
+					}
 				}
+				stopCalibTimers();
+				applySafeTorque(0);
+				// Scale by 100 to map physical B to the abstract TMC integer units
+				// Subtract Coulomb friction (breakout torque) to isolate true viscous damping
+				dynamic_friction = b_sum_torque / (float)b_samples;
+				B = (dynamic_friction / b_target_vel_rad) * 100.0f;
+				B = clip<float, float>(B, 0.0f, 100000.0f); // Ensure B is positive
+				Delay(500);
+
+				// Step 1.4: IMC (Internal Model Control) Pole Placement Calculation
+				
+				/* * 1. Continuous Bandwidth (f_bw) Calculation
+				 * Instead of hardcoded steps, we linearly degrade the bandwidth based on inertia (J).
+				 * - Low inertia (e.g., K52G, J ~ 100): High bandwidth (clamped to 15.0 Hz) for maximum responsiveness.
+				 * - High inertia (e.g., Mige, J ~ 630): Lower bandwidth (~13.5 Hz) to prevent Kp saturation and resonance.
+				 * - Extreme/Error inertia (J > 2000): Safe mode bandwidth (clamped to 6.0 Hz) for stability.
+				 */
+				float f_bw = clip<float>(16.5f - (0.0047f * J), 6.0f, 15.0f);
+				
+				/* * 2. Continuous Integral Scale (ki_scale) Calculation
+				 * NOTE: ki_scale is divided by freq_khz because the main loops run at freq_khz instead of 1 kHz.
+				 */
+				float freq_khz = 1000.0f / (float)TIM_TMC_ARR;
+				float ki_scale = clip<float>(0.3f / J, 0.0002f, 0.001f) / freq_khz;
+				
+				float wn = 2.0f * PI * f_bw;
+				
+				pid_soft.Kp = 2.0f * 1.0f * wn * J - B;
+				pid_soft.Ki = wn * wn * J * ki_scale; 
+				pid_soft.Kd = 0.0f;
+				
+				// Higher Kp limit allowed at 5kHz due to lower latency, scale by resolution
+				pid_soft.Kp = pid_soft.Kp * resolution_penalty;
+				pid_soft.Kp = clip<float,float>(pid_soft.Kp, 50.0f, 250000.0f);
+				pid_soft.Ki = clip<float,float>(pid_soft.Ki, 1.0f, 100000.0f);
+
+				broadcastCalibLog(0, "System Identified -> J:%.0f B:%.0f (torque %.2f, range (%.2f..%.2f)) | Gains -> Kp:%.0f Ki:%.0f", J, B, tuning_torque, starting_torque, max_test_torque, pid_soft.Kp, pid_soft.Ki);
+			} else {
+				pid_soft.Kp = coggingSpeedP;
+				pid_soft.Ki = coggingSpeedI;
+				pid_soft.Kd = 0.0f;
+
+				broadcastCalibLog(0, "Manual PID Override -> Gains -> Kp:%.0f Ki:%.0f (torque %.2f, range (%.2f..%.2f)", pid_soft.Kp, pid_soft.Ki, tuning_torque, starting_torque, max_test_torque);
 			}
-			stopCalibTimers();
-			applySafeTorque(0);
-			// Scale by 100 to map physical B to the abstract TMC integer units
-			// Subtract Coulomb friction (breakout torque) to isolate true viscous damping
-			dynamic_friction = b_sum_torque / (float)b_samples;
-			float B = (dynamic_friction / b_target_vel_rad) * 100.0f;
-			B = clip<float, float>(B, 0.0f, 100000.0f); // Ensure B is positive
-			Delay(500);
 
-			// Step 1.4: IMC (Internal Model Control) Pole Placement Calculation
-			
-			/* * 1. Continuous Bandwidth (f_bw) Calculation
-			 * Instead of hardcoded steps, we linearly degrade the bandwidth based on inertia (J).
-			 * - Low inertia (e.g., K52G, J ~ 100): High bandwidth (clamped to 15.0 Hz) for maximum responsiveness.
-			 * - High inertia (e.g., Mige, J ~ 630): Lower bandwidth (~13.5 Hz) to prevent Kp saturation and resonance.
-			 * - Extreme/Error inertia (J > 2000): Safe mode bandwidth (clamped to 6.0 Hz) for stability.
-			 */
-			float f_bw = clip<float>(16.5f - (0.0047f * J), 6.0f, 15.0f);
-			
-			/* * 2. Continuous Integral Scale (ki_scale) Calculation
-			 * NOTE: ki_scale is divided by freq_khz because the main loops run at freq_khz instead of 1 kHz.
-			 */
-			float freq_khz = 1000.0f / (float)TIM_TMC_ARR;
-			float ki_scale = clip<float>(0.3f / J, 0.0002f, 0.001f) / freq_khz;
-			
-			float wn = 2.0f * PI * f_bw;
-			
-			pid_soft.Kp = 2.0f * 1.0f * wn * J - B;
-			pid_soft.Ki = wn * wn * J * ki_scale; 
-			pid_soft.Kd = 0.0f;
-			
-			// Higher Kp limit allowed at 5kHz due to lower latency, scale by resolution
-			pid_soft.Kp = pid_soft.Kp * resolution_penalty;
-			pid_soft.Kp = clip<float,float>(pid_soft.Kp, 50.0f, 250000.0f);
-			pid_soft.Ki = clip<float,float>(pid_soft.Ki, 1.0f, 100000.0f);
 			arm_pid_init_f32(&pid_soft, 1);
-
-			broadcastCalibLog(0, "System Identified -> J:%.0f B:%.0f (torque %.2f, range (%.2f..%.2f)) | Gains -> Kp:%.0f Ki:%.0f", J, B, tuning_torque, starting_torque, max_test_torque, pid_soft.Kp, pid_soft.Ki);
 
 			// --- 1.5 FINAL SANITY CHECK ROTATION ---
 			broadcastCalibLog(0, "Final validation rotation...");

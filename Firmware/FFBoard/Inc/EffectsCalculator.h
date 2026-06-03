@@ -191,11 +191,11 @@ public:
 
 	/**
      * @brief Updates interpolation buffers for unconditional effect.
-     * Appelé par le handler HID (ex: 60Hz).
-     * @param effect Pointeur vers l'effet à modifier.
-     * @param new_magnitude Nouvelle magnitude/amplitude cible.
-     * @param new_offset Nouvel offset cible (utilisé uniquement si is_periodic est true).
-     * @param is_periodic Si true, met à jour les deux tampons (mag + offset).
+     * Called by the HID handler (e.g., 60Hz).
+     * @param effect Pointer to the effect to update.
+     * @param new_magnitude New target magnitude/amplitude.
+     * @param new_offset New target offset (used only if is_periodic is true).
+     * @param is_periodic If true, updates both buffers (mag + offset).
      */
     void updateEffectReconstruction(FFB_Effect* effect, float new_magnitude, float new_offset, bool is_periodic);
 
