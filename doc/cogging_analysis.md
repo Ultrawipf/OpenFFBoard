@@ -17,6 +17,7 @@ The system uses a **Continuous Discrete Fourier Transform (DFT)** integration. I
         *   $K_p = 2 \cdot \zeta \cdot (2\pi \cdot f_{bw}) \cdot J - B$ (Clamped up to 250,000 for high-frequency stiffness).
         *   $K_i = (2\pi \cdot f_{bw})^2 \cdot J \cdot ki_{scale}$
         *   $K_d = 0$ (Forced to zero for maximum stability at low speed).
+    *   **Manual PID Override**: If either `coggingSpeedP` or `coggingSpeedI` is set to a non-zero value, the physical identification phase (Breakout, Inertia $J$, Viscous Friction $B$, and IMC Calculation) is entirely bypassed. The software PID directly uses these manual overrides for $K_p$ and $K_i$. If both are `0.0f` (default), the automatic identification is executed.
     *   **Validation Rotation**: A single 2.5s test rotation at **calib_rpm** is performed to verify tracking stability. If the error exceeds 5.0°, calibration aborts.
 
 2.  **Torque Response Capture (Deterministic Dual-Pass Acquisition)**: The motor rotates at a constant speed defined by **calib_rpm** (default: 7.5 RPM) in both directions.
@@ -118,9 +119,9 @@ Implemented in the `turn()` method for zero latency:
 $$T_{comp}(\theta) = \sum_{n=1}^{20} A_n \cdot \sin(Order_n \cdot \theta + \Phi_n)$$
 $$T_{final} = T_{requested} + \left( Scale \cdot T_{comp}(\theta) \right)$$
 
-## 7. Timer and Pacing Variables Reference
+## 7. Timer, Pacing and Parameter Reference
 
-For developers modifying the driver or timing subsystem, here is a detailed reference of the variables controlling calibration pacing and external encoder synchronization:
+For developers modifying the driver or timing subsystem, here is a detailed reference of the variables controlling calibration pacing, external encoder synchronization, and override parameters:
 
 ### `externalEncoderTimer`
 *   **Type**: `TIM_HandleTypeDef*`
@@ -156,6 +157,11 @@ For developers modifying the driver or timing subsystem, here is a detailed refe
 *   **Type**: `float`
 *   **Utility**: A multiplier applied to the critically damped proportional gain ($K_p$). Running a control loop at a lower decimated rate (e.g. 500Hz instead of 4kHz) reduces the phase margin, making the motor prone to violent high-frequency oscillations if the original stiff 4kHz gain is applied. The penalty mathematically relaxes the stiffness.
 *   **Expected Value**: `1.0f` (High-Res), `0.5f` (Med-Res), or `0.2f` (Low-Res).
+
+### `coggingSpeedP` & `coggingSpeedI`
+*   **Type**: `float`
+*   **Utility**: Optional manual speed loop Proportional ($K_p$) and Integral ($K_i$) gains. If either parameter is non-zero, the system identification steps (measuring $J$, $B$, static friction, and IMC calculation) are bypassed, and these gains are directly injected.
+*   **Expected Value**: `0.0f` (default, to use auto-identification) or manual PID constants.
 
 ## 8. Encoder Precision and Architecture
 
