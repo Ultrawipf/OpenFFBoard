@@ -121,10 +121,11 @@ int32_t EffectConstant::calculateRawForce(uint8_t axis, metric_t* metrics) {
     float interpolated_mag = reconstructionMagnitude.evaluate((float)magnitude, EffectsCalculator::reconFilterMode);
     int32_t current_mag = (int32_t)interpolated_mag; 
     
+    int32_t force = current_mag;
     if (useEnvelope) {
-        return getEnvelopeMagnitude(current_mag);
+        force = getEnvelopeMagnitude(current_mag);
     }
-    return current_mag;
+    return -force;
 }
 
 // =======================================================================
@@ -139,7 +140,8 @@ void EffectRamp::setRamp(FFB_SetRamp_Data_t* report) {
 int32_t EffectRamp::calculateRawForce(uint8_t axis, metric_t* metrics) {
     float elapsed_time = (micros()/1000.0) - (float)startTime;
     int32_t dur = duration;
-    return (int32_t)startLevel + (elapsed_time * (endLevel - startLevel)) / dur;
+    int32_t force = (int32_t)startLevel + (elapsed_time * (endLevel - startLevel)) / dur;
+    return -force;
 }
 
 // =======================================================================
