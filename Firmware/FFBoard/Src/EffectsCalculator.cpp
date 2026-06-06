@@ -62,14 +62,17 @@ EffectsCalculator::EffectsCalculator() : CommandHandler("fx", CLSID_EFFECTSCALC)
 	registerCommand("reconFilterMode", EffectsCalculator_commands::reconFilterMode, "Recon. filter: 0=None, 1=Linear, 2=CubicNatural, 3=CubicHermite", CMDFLAG_GET | CMDFLAG_SET);
 
 	for (uint8_t i = 0; i < MAX_AXIS; i++) {
+		systemSprings[i] = std::make_unique<EffectSpring>();
 		systemDampers[i] = std::make_unique<EffectDamper>();
 		systemFrictions[i] = std::make_unique<EffectFriction>();
 		systemInertias[i] = std::make_unique<EffectInertia>();
 
+		systemSprings[i]->setAxisMagnitude(0, 1.0f);
 		systemDampers[i]->setAxisMagnitude(0, 1.0f);
 		systemFrictions[i]->setAxisMagnitude(0, 1.0f);
 		systemInertias[i]->setAxisMagnitude(0, 1.0f);
 
+		systemSprings[i]->setState(1);
 		systemDampers[i]->setState(1);
 		systemFrictions[i]->setState(1);
 		systemInertias[i]->setState(1);
@@ -107,6 +110,7 @@ void EffectsCalculator::updateSamplerate(float newSamplerate){
 		}
 	}
 	for(uint8_t i=0; i<MAX_AXIS; i++){
+		if(systemSprings[i]) setFilters(systemSprings[i].get());
 		if(systemDampers[i]) setFilters(systemDampers[i].get());
 		if(systemFrictions[i]) setFilters(systemFrictions[i].get());
 		if(systemInertias[i]) setFilters(systemInertias[i].get());
@@ -160,50 +164,38 @@ void EffectsCalculator::calculateEffects(std::vector<std::unique_ptr<Axis>> &axe
 
 	// Calculate mechanical effects for each axis
 	for(uint8_t axis=0; axis < axisCount; axis++) {
-		if(!isActive()) {
-			mechanicalForces[axis] += axes[axis]->getIdleSpringForce();
+		// Idle Spring
+		uint8_t idleSpringIntensity = axes[axis]->getIdleSpringIntensity();
+		if (systemSprings[axis]) {
+			float idleSpringScale = 0.5f + ((float)idleSpringIntensity * 0.01f);
+			int16_t springCoeff = (int16_t)clip<int32_t>((int32_t)(idleSpringScale * 32767.0f), 0, 32767);
+			int32_t idleSpringClip = clip<int32_t, int32_t>((int32_t)idleSpringIntensity * 35, 0, 10000);
+			updateSystemEffectCondition(systemSprings[axis].get(), idleSpringIntensity, lastIntensities[axis].idleSpring, springCoeff, idleSpringClip);
+			mechanicalForces[axis] += processSystemEffectForce(systemSprings[axis].get(), idleSpringIntensity, axes[axis]->getMetrics(), !isActive());
 		}
-		
+
+		// Damper
 		uint8_t damperInt = axes[axis]->getDamperIntensity();
-		if (damperInt != 0 && systemDampers[axis]) {
-			FFB_Effect_Condition* cond = systemDampers[axis]->getCondition(0);
-			if (cond) {
-				cond->positiveCoefficient = (int16_t)((float)damperInt * INTERNAL_AXIS_DAMPER_SCALER / 255.0f * 32767.0f);
-				cond->negativeCoefficient = cond->positiveCoefficient;
-				cond->positiveSaturation = 20000;
-				cond->negativeSaturation = 20000;
-				cond->deadBand = 0;
-				cond->cpOffset = 0;
-			}
-			mechanicalForces[axis] += systemDampers[axis]->processForce(0, axes[axis]->getMetrics(), 255);
+		if (systemDampers[axis]) {
+			int16_t damperCoeff = (int16_t)((float)damperInt * INTERNAL_AXIS_DAMPER_SCALER / 255.0f * 32767.0f);
+			updateSystemEffectCondition(systemDampers[axis].get(), damperInt, lastIntensities[axis].damper, damperCoeff);
+			mechanicalForces[axis] += processSystemEffectForce(systemDampers[axis].get(), damperInt, axes[axis]->getMetrics());
 		}
 
+		// Inertia
 		uint8_t inertiaInt = axes[axis]->getInertiaIntensity();
-		if (inertiaInt != 0 && systemInertias[axis]) {
-			FFB_Effect_Condition* cond = systemInertias[axis]->getCondition(0);
-			if (cond) {
-				cond->positiveCoefficient = (int16_t)((float)inertiaInt * INTERNAL_AXIS_INERTIA_SCALER / 255.0f * 32767.0f);
-				cond->negativeCoefficient = cond->positiveCoefficient;
-				cond->positiveSaturation = 20000;
-				cond->negativeSaturation = 20000;
-				cond->deadBand = 0;
-				cond->cpOffset = 0;
-			}
-			mechanicalForces[axis] += systemInertias[axis]->processForce(0, axes[axis]->getMetrics(), 255);
+		if (systemInertias[axis]) {
+			int16_t inertiaCoeff = (int16_t)((float)inertiaInt * INTERNAL_AXIS_INERTIA_SCALER / 255.0f * 32767.0f);
+			updateSystemEffectCondition(systemInertias[axis].get(), inertiaInt, lastIntensities[axis].inertia, inertiaCoeff);
+			mechanicalForces[axis] += processSystemEffectForce(systemInertias[axis].get(), inertiaInt, axes[axis]->getMetrics());
 		}
 
+		// Friction
 		uint8_t frictionInt = axes[axis]->getFrictionIntensity();
-		if (frictionInt != 0 && systemFrictions[axis]) {
-			FFB_Effect_Condition* cond = systemFrictions[axis]->getCondition(0);
-			if (cond) {
-				cond->positiveCoefficient = (int16_t)((float)frictionInt * INTERNAL_AXIS_FRICTION_SCALER * 32.0f);
-				cond->negativeCoefficient = cond->positiveCoefficient;
-				cond->positiveSaturation = 20000;
-				cond->negativeSaturation = 20000;
-				cond->deadBand = 0;
-				cond->cpOffset = 0;
-			}
-			mechanicalForces[axis] += systemFrictions[axis]->processForce(0, axes[axis]->getMetrics(), 255);
+		if (systemFrictions[axis]) {
+			int16_t frictionCoeff = (int16_t)((float)frictionInt * INTERNAL_AXIS_FRICTION_SCALER * 32.0f);
+			updateSystemEffectCondition(systemFrictions[axis].get(), frictionInt, lastIntensities[axis].friction, frictionCoeff);
+			mechanicalForces[axis] += processSystemEffectForce(systemFrictions[axis].get(), frictionInt, axes[axis]->getMetrics());
 		}
 	}
 
@@ -794,4 +786,28 @@ void EffectsCalculator::setFilters(Effect *effect){
 			effect->setFilter(i, freq_f, q_f, 0.0f);
 		}
 	}
+}
+
+void EffectsCalculator::updateSystemEffectCondition(EffectConditional* effect, uint8_t intensity, uint8_t& cachedIntensity, int16_t coeff, int16_t saturation) {
+	if (intensity != cachedIntensity) {
+		if (effect) {
+			FFB_Effect_Condition* cond = effect->getCondition(0);
+			if (cond) {
+				cond->positiveCoefficient = coeff;
+				cond->negativeCoefficient = coeff;
+				cond->positiveSaturation = saturation;
+				cond->negativeSaturation = saturation;
+				cond->deadBand = 0;
+				cond->cpOffset = 0;
+			}
+		}
+		cachedIntensity = intensity;
+	}
+}
+
+int32_t EffectsCalculator::processSystemEffectForce(EffectConditional* effect, uint8_t intensity, metric_t* metrics, bool runCondition) {
+	if (intensity != 0 && runCondition && effect) {
+		return effect->processForce(0, metrics, 255);
+	}
+	return 0;
 }

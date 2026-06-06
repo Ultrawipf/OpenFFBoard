@@ -75,6 +75,13 @@ struct effect_stat_t {
 	uint8_t state=0;                         //!< State of the effect
 };
 
+struct AxisSystemIntensities {
+	uint8_t idleSpring = 0xFF;
+	uint8_t damper = 0xFF;
+	uint8_t friction = 0xFF;
+	uint8_t inertia = 0xFF;
+};
+
 enum class EffectsCalculator_commands : uint32_t {
 	ffbfiltercf,ffbfiltercf_q,effects,spring,friction,damper,inertia,
 	damper_f, damper_q, friction_f, friction_q, inertia_f, inertia_q, filterProfileId,
@@ -203,6 +210,7 @@ public:
 	std::array<std::unique_ptr<Effect>,max_effects> effects; //!< Main effects storage array.
 
 	// System effects (per-axis mechanical effects)
+	std::array<std::unique_ptr<EffectSpring>, MAX_AXIS> systemSprings;
 	std::array<std::unique_ptr<EffectDamper>, MAX_AXIS> systemDampers;
 	std::array<std::unique_ptr<EffectFriction>, MAX_AXIS> systemFrictions;
 	std::array<std::unique_ptr<EffectInertia>, MAX_AXIS> systemInertias;
@@ -237,6 +245,7 @@ private:
 	std::array<effect_stat_t,12> effects_stats; //!< Statistics for each effect type, [0..12 effect types].
 	std::array<effect_stat_t,12> effects_statslast; //!< Statistics from the previous cycle, [0..12 effect types].
 	bool isMonitorEffect = false;	//!< Flag to enable effect monitoring.
+	std::array<AxisSystemIntensities, MAX_AXIS> lastIntensities;
 
 	/**
 	 * @brief Generates a string listing the effects used.
@@ -252,6 +261,16 @@ private:
 	 * @brief Updates the filters for all active effects of a specific type.
 	 */
 	void updateFilterSettingsForEffects(uint8_t type_effect);
+
+	/**
+	 * @brief Updates the condition of a system mechanical effect if the intensity changed.
+	 */
+	void updateSystemEffectCondition(EffectConditional* effect, uint8_t intensity, uint8_t& cachedIntensity, int16_t coeff, int16_t saturation = 20000);
+
+	/**
+	 * @brief Calculates and processes force for a system mechanical effect if active.
+	 */
+	int32_t processSystemEffectForce(EffectConditional* effect, uint8_t intensity, metric_t* metrics, bool runCondition = true);
 
 	// --- Reconstruction Filter ---
 };

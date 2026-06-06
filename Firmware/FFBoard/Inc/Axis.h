@@ -309,22 +309,12 @@ public:
 	 */
 	void updateMetrics(float new_pos);
 
-	/**
-	 * @brief Updates the idle spring force.
-	 * @return The calculated idle spring force.
-	 */
-	int32_t updateIdleSpringForce();
 
-	/**
-	 * @brief Sets the idle spring strength.
-	 * @param spring The new spring strength.
-	 */
-	void setIdleSpringStrength(uint8_t spring);
 
 	uint8_t getDamperIntensity() const { return damperIntensity; }
 	uint8_t getFrictionIntensity() const { return frictionIntensity; }
 	uint8_t getInertiaIntensity() const { return inertiaIntensity; }
-	int32_t getIdleSpringForce() { return updateIdleSpringForce(); }
+	uint8_t getIdleSpringIntensity() const { return idleSpringIntensity; }
 
 	/**
 	 * @brief Sets the mechanical effect torque computed by EffectsCalculator.
@@ -507,10 +497,6 @@ private:
 	uint8_t endstopStrength = 127;	//!< Stiffness of the endstop effect.
 	const float endstopGain = 25;	//!< Overall maximum endstop intensity.
 
-	// Idle spring effect
-	uint8_t idleSpringStrength = 127; //!< Strength of the idle spring.
-	int16_t idleSpringClip = 0;       //!< Maximum force for the idle spring.
-	float idleSpringScale = 0;        //!< Scaler for the idle spring force.
 	bool motorWasNotReady = true;     //!< Flag to detect motor readiness transition.
 
 	// Slew rate calibration tracking: true when Axis requested a calibration and
@@ -529,6 +515,7 @@ private:
 	const int32_t internalFxClip = 20000; //!< Clipping value for internal effects.
 
 	// Internal effects intensity
+	uint8_t idleSpringIntensity = 127; //!< Intensity of the idle spring.
 	uint8_t damperIntensity = 30;	//!< Intensity of the internal damper effect.
 	uint8_t frictionIntensity = 0;	//!< Intensity of the internal friction effect.
 	uint8_t inertiaIntensity = 0;	//!< Intensity of the internal inertia effect.
