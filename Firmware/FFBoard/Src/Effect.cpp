@@ -80,102 +80,12 @@ void EffectPeriodic::setPeriodic(FFB_SetPeriodic_Data_t* report) {
 }
 
 void EffectTemporal::updateReconstruction(float new_mag) {
-    pushReconstructionSample(&recon_magnitude, new_mag);
+    reconstructionMagnitude.push(new_mag);
 }
 
 void EffectPeriodic::updateReconstruction(float new_mag, float new_offset) {
     EffectTemporal::updateReconstruction(new_mag);
-    pushReconstructionSample(&recon_offset, new_offset);
-}
-
-void EffectTemporal::pushReconstructionSample(ReconFilterState* state, float newValue) {
-    uint32_t now_us = micros();
-    for (int i = 0; i < 3; ++i) {
-        state->spline_x[i] = state->spline_x[i + 1];
-        state->spline_y[i] = state->spline_y[i + 1];
-    }
-    state->spline_x[3] = (float)now_us;
-    state->spline_y[3] = newValue;
-    
-    if (!state->isSplineReady) {
-        float fake_time_step = 16666.0f; // 60Hz
-        state->spline_x[0] = state->spline_x[3] - 3.0f * fake_time_step;
-        state->spline_y[0] = state->spline_y[3];
-        state->spline_x[1] = state->spline_x[3] - 2.0f * fake_time_step;
-        state->spline_y[1] = state->spline_y[3];
-        state->spline_x[2] = state->spline_x[3] - 1.0f * fake_time_step;
-        state->spline_y[2] = state->spline_y[3];
-        state->isSplineReady = true; 
-    }
-}
-
-float EffectTemporal::evaluateReconstructionFilter(ReconFilterState* state, float fallbackValue) {
-    float resulting_value = fallbackValue;
-    uint32_t now_us = micros();
-    float last_known_time = state->spline_x[3];
-
-    if (!state->isSplineReady) return fallbackValue;
-    if (now_us > last_known_time + 50000) return state->spline_y[3];
-
-    switch(EffectsCalculator::reconFilterMode) {
-        case ReconFilterMode::NO_RECONSTRUCTION:
-            resulting_value = state->spline_y[3];
-            break;
-        case ReconFilterMode::LINEAR_INTERPOLATION: {
-            float t0 = state->spline_x[2];
-            float t1 = state->spline_x[3];
-            float v0 = state->spline_y[2];
-            float v1 = state->spline_y[3];
-            float expected_interval = t1 - t0;
-            if (expected_interval < 1.0f) {
-                resulting_value = v1;
-                break;
-            }
-            float time_since_t1 = (float)(now_us - t1);
-            float progress = clip<float>(time_since_t1 / expected_interval, 0.0f, 1.0f);
-            resulting_value = v0 + progress * (v1 - v0);
-            break;
-        }
-#ifdef USE_DSP_FUNCTIONS
-        case ReconFilterMode::SPLINE_CUBIC_NATURAL: {
-            if (!state->spline_arm_initialized) {
-                resulting_value = state->spline_y[3];
-                break;
-            }
-            float32_t interpolated_torque_f = 0.0f;
-            float32_t now_f = (float)now_us;
-            float32_t interp_time = clip<float32_t>(now_f, state->spline_x[0], state->spline_x[3]);
-            arm_spline_f32(&state->spline_instance, &interp_time, &interpolated_torque_f, 1);
-            resulting_value = interpolated_torque_f;
-            break;
-        }
-#endif
-        case ReconFilterMode::SPLINE_CUBIC_HERMITE:
-#ifndef USE_DSP_FUNCTIONS
-        case ReconFilterMode::SPLINE_CUBIC_NATURAL:
-#endif
-        {
-            const float p1 = state->spline_y[1];
-            const float p2 = state->spline_y[2];
-            const float t1 = state->spline_x[1];
-            const float t2 = state->spline_x[2];
-            float interval = t2 - t1;
-            if (interval <= 0) {
-                resulting_value = p1;
-                break;
-            }
-            float t = clip<float>(((float)now_us - t1) / interval, 0.0f, 1.0f);
-            float dt_m1 = state->spline_x[2] - state->spline_x[0];
-            float dt_m2 = state->spline_x[3] - state->spline_x[1];
-            float m1 = (dt_m1 > 0) ? ((state->spline_y[2] - state->spline_y[0]) / dt_m1) * interval : 0;
-            float m2 = (dt_m2 > 0) ? ((state->spline_y[3] - state->spline_y[1]) / dt_m2) * interval : 0;
-            float tSq = t * t;
-            float tCub = tSq * t;
-            resulting_value = (2*tCub - 3*tSq + 1) * p1 + (tCub - 2*tSq + t) * m1 + (-2*tCub + 3*tSq) * p2 + (tCub - tSq) * m2;
-            break;
-        }
-    }
-    return resulting_value;
+    reconstructionOffset.push(new_offset);
 }
 
 int32_t EffectTemporal::getEnvelopeMagnitude(int32_t baseMagnitude) {
@@ -208,7 +118,7 @@ void EffectConstant::setConstantForce(FFB_SetConstantForce_Data_t* report) {
 }
 
 int32_t EffectConstant::calculateRawForce(uint8_t axis, metric_t* metrics) {
-    float interpolated_mag = evaluateReconstructionFilter(&recon_magnitude, (float)magnitude);
+    float interpolated_mag = reconstructionMagnitude.evaluate((float)magnitude, EffectsCalculator::reconFilterMode);
     int32_t current_mag = (int32_t)interpolated_mag; 
     
     if (useEnvelope) {
@@ -237,8 +147,8 @@ int32_t EffectRamp::calculateRawForce(uint8_t axis, metric_t* metrics) {
 // =======================================================================
 int32_t EffectSquare::calculateRawForce(uint8_t axis, metric_t* metrics) {
     uint32_t elapsed_time = HAL_GetTick() - startTime;
-    float interpolated_mag = evaluateReconstructionFilter(&recon_magnitude, (float)magnitude);
-    float interpolated_offset = evaluateReconstructionFilter(&recon_offset, (float)offset);
+    float interpolated_mag = reconstructionMagnitude.evaluate((float)magnitude, EffectsCalculator::reconFilterMode);
+    float interpolated_offset = reconstructionOffset.evaluate((float)offset, EffectsCalculator::reconFilterMode);
     
     int32_t mag = useEnvelope ? getEnvelopeMagnitude((int32_t)interpolated_mag) : (int32_t)interpolated_mag;
     int32_t force = ((elapsed_time + phase) % ((uint32_t)period + 2)) < (uint32_t)(period + 2) / 2 ? -mag : mag;
@@ -249,8 +159,8 @@ int32_t EffectSquare::calculateRawForce(uint8_t axis, metric_t* metrics) {
 // EffectTriangle
 // =======================================================================
 int32_t EffectTriangle::calculateRawForce(uint8_t axis, metric_t* metrics) {
-    float interpolated_mag = evaluateReconstructionFilter(&recon_magnitude, (float)magnitude);
-    float interpolated_offset = evaluateReconstructionFilter(&recon_offset, (float)offset);
+    float interpolated_mag = reconstructionMagnitude.evaluate((float)magnitude, EffectsCalculator::reconFilterMode);
+    float interpolated_offset = reconstructionOffset.evaluate((float)offset, EffectsCalculator::reconFilterMode);
     int32_t mag = useEnvelope ? getEnvelopeMagnitude((int32_t)interpolated_mag) : (int32_t)interpolated_mag;
 
     int32_t force = 0;
@@ -275,8 +185,8 @@ int32_t EffectTriangle::calculateRawForce(uint8_t axis, metric_t* metrics) {
 // EffectSawtoothUp
 // =======================================================================
 int32_t EffectSawtoothUp::calculateRawForce(uint8_t axis, metric_t* metrics) {
-    float interpolated_mag = evaluateReconstructionFilter(&recon_magnitude, (float)magnitude);
-    float interpolated_offset = evaluateReconstructionFilter(&recon_offset, (float)offset);
+    float interpolated_mag = reconstructionMagnitude.evaluate((float)magnitude, EffectsCalculator::reconFilterMode);
+    float interpolated_offset = reconstructionOffset.evaluate((float)offset, EffectsCalculator::reconFilterMode);
     int32_t mag = useEnvelope ? getEnvelopeMagnitude((int32_t)interpolated_mag) : (int32_t)interpolated_mag;
 
     float elapsed_time = micros() - ((float)startTime*1000.0);
@@ -296,8 +206,8 @@ int32_t EffectSawtoothUp::calculateRawForce(uint8_t axis, metric_t* metrics) {
 // EffectSawtoothDown
 // =======================================================================
 int32_t EffectSawtoothDown::calculateRawForce(uint8_t axis, metric_t* metrics) {
-    float interpolated_mag = evaluateReconstructionFilter(&recon_magnitude, (float)magnitude);
-    float interpolated_offset = evaluateReconstructionFilter(&recon_offset, (float)offset);
+    float interpolated_mag = reconstructionMagnitude.evaluate((float)magnitude, EffectsCalculator::reconFilterMode);
+    float interpolated_offset = reconstructionOffset.evaluate((float)offset, EffectsCalculator::reconFilterMode);
     int32_t mag = useEnvelope ? getEnvelopeMagnitude((int32_t)interpolated_mag) : (int32_t)interpolated_mag;
 
     float elapsed_time = micros() - ((float)startTime*1000.0);
@@ -321,8 +231,8 @@ int32_t EffectSine::calculateRawForce(uint8_t axis, metric_t* metrics) {
     float freq = 1.0f / (float)(std::max<uint32_t>(period, 2));
     float ph = (float)phase / (float)35999;
     
-    float interpolated_mag = evaluateReconstructionFilter(&recon_magnitude, (float)magnitude);
-    float interpolated_offset = evaluateReconstructionFilter(&recon_offset, (float)offset);
+    float interpolated_mag = reconstructionMagnitude.evaluate((float)magnitude, EffectsCalculator::reconFilterMode);
+    float interpolated_offset = reconstructionOffset.evaluate((float)offset, EffectsCalculator::reconFilterMode);
     
     int32_t mag = useEnvelope ? getEnvelopeMagnitude((int32_t)interpolated_mag) : (int32_t)interpolated_mag;
     float sine = MATH_SIN(2.0f * MATH_PI * (t * freq + ph)) * mag;

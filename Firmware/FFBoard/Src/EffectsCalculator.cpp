@@ -142,9 +142,9 @@ void EffectsCalculator::calculateEffects(std::vector<std::unique_ptr<Axis>> &axe
 	int32_t mechanicalForces[MAX_AXIS] = {0};
 
 	if(isActive()){
-		for (uint8_t i = 0; i < effects_stats.size(); i++)
+		for (auto& stat : effects_stats)
 		{
-			effects_stats[i].current.fill(0); // Reset active effect forces
+			stat.current.fill(0); // Reset active effect forces
 		}
 
 		for (auto& effect : effects)
@@ -163,7 +163,16 @@ void EffectsCalculator::calculateEffects(std::vector<std::unique_ptr<Axis>> &axe
 	}
 
 	// Calculate mechanical effects for each axis
-	for(uint8_t axis=0; axis < axisCount; axis++) {
+	// Helper lambda to process standard mechanical effects (Damper, Inertia, Friction)
+	auto processMechEffect = [&](auto axis, EffectConditional* effect, uint8_t intensity, uint8_t& cachedIntensity, float coeffFactor) {
+		if (effect) {
+			int16_t coeff = (int16_t)((float)intensity * coeffFactor);
+			updateSystemEffectCondition(effect, intensity, cachedIntensity, coeff);
+			mechanicalForces[axis] += processSystemEffectForce(effect, intensity, axes[axis]->getMetrics());
+		}
+	};
+
+	for(auto axis = 0; axis < axisCount; axis++) {
 		// Idle Spring
 		uint8_t idleSpringIntensity = axes[axis]->getIdleSpringIntensity();
 		if (systemSprings[axis]) {
@@ -175,28 +184,13 @@ void EffectsCalculator::calculateEffects(std::vector<std::unique_ptr<Axis>> &axe
 		}
 
 		// Damper
-		uint8_t damperInt = axes[axis]->getDamperIntensity();
-		if (systemDampers[axis]) {
-			int16_t damperCoeff = (int16_t)((float)damperInt * INTERNAL_AXIS_DAMPER_SCALER / 255.0f * 32767.0f);
-			updateSystemEffectCondition(systemDampers[axis].get(), damperInt, lastIntensities[axis].damper, damperCoeff);
-			mechanicalForces[axis] += processSystemEffectForce(systemDampers[axis].get(), damperInt, axes[axis]->getMetrics());
-		}
+		processMechEffect(axis, systemDampers[axis].get(), axes[axis]->getDamperIntensity(), lastIntensities[axis].damper, (INTERNAL_AXIS_DAMPER_SCALER / 255.0f) * 32767.0f);
 
 		// Inertia
-		uint8_t inertiaInt = axes[axis]->getInertiaIntensity();
-		if (systemInertias[axis]) {
-			int16_t inertiaCoeff = (int16_t)((float)inertiaInt * INTERNAL_AXIS_INERTIA_SCALER / 255.0f * 32767.0f);
-			updateSystemEffectCondition(systemInertias[axis].get(), inertiaInt, lastIntensities[axis].inertia, inertiaCoeff);
-			mechanicalForces[axis] += processSystemEffectForce(systemInertias[axis].get(), inertiaInt, axes[axis]->getMetrics());
-		}
+		processMechEffect(axis, systemInertias[axis].get(), axes[axis]->getInertiaIntensity(), lastIntensities[axis].inertia, (INTERNAL_AXIS_INERTIA_SCALER / 255.0f) * 32767.0f);
 
 		// Friction
-		uint8_t frictionInt = axes[axis]->getFrictionIntensity();
-		if (systemFrictions[axis]) {
-			int16_t frictionCoeff = (int16_t)((float)frictionInt * INTERNAL_AXIS_FRICTION_SCALER * 32.0f);
-			updateSystemEffectCondition(systemFrictions[axis].get(), frictionInt, lastIntensities[axis].friction, frictionCoeff);
-			mechanicalForces[axis] += processSystemEffectForce(systemFrictions[axis].get(), frictionInt, axes[axis]->getMetrics());
-		}
+		processMechEffect(axis, systemFrictions[axis].get(), axes[axis]->getFrictionIntensity(), lastIntensities[axis].friction, INTERNAL_AXIS_FRICTION_SCALER * 32.0f);
 	}
 
 	// Apply summed force to axes

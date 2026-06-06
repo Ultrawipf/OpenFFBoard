@@ -10,6 +10,7 @@
 
 #include "ffb_defs.h"
 #include "Filters.h"
+#include "ReconstructionFilter.h"
 #include <memory>
 #include <algorithm>
 #include <cmath>
@@ -104,11 +105,9 @@ protected:
     uint32_t attackTime = 0;
     uint32_t fadeTime = 0;
 
-    ReconFilterState recon_magnitude;
+    ReconstructionFilter reconstructionMagnitude;
 
     int32_t getEnvelopeMagnitude(int32_t baseMagnitude);
-    float evaluateReconstructionFilter(ReconFilterState* state, float fallbackValue);
-    void pushReconstructionSample(ReconFilterState* state, float newValue);
 
 public:
     void setEnvelope(FFB_SetEnvelope_Data_t* report) override;
@@ -128,7 +127,7 @@ protected:
     int16_t phase = 0;
     uint32_t period = 0;
 
-    ReconFilterState recon_offset;
+    ReconstructionFilter reconstructionOffset;
 
 public:
     using EffectTemporal::updateReconstruction;

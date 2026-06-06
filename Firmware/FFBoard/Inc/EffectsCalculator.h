@@ -28,12 +28,7 @@
 class Axis;
 struct metric_t;
 
-enum class ReconFilterMode : uint8_t {
-	NO_RECONSTRUCTION = 0,
-    LINEAR_INTERPOLATION = 1, 	// More responsive, attempts to match the game's signal precisely. Can feel "grainy" if slew rate is high.
-	SPLINE_CUBIC_NATURAL = 2,	// Highest fidelity, smooth curve through last 4 points. More CPU intensive.
-    SPLINE_CUBIC_HERMITE = 3  	// Mixed solution, good fidelity and optimized timing
-};
+
 
 /**
  * @brief Default gains for conditional effects.
@@ -272,7 +267,6 @@ private:
 	 */
 	int32_t processSystemEffectForce(EffectConditional* effect, uint8_t intensity, metric_t* metrics, bool runCondition = true);
 
-	// --- Reconstruction Filter ---
 };
 
 /**
