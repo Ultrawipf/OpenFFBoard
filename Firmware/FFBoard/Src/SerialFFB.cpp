@@ -82,31 +82,17 @@ int32_t SerialFFB::newEffect(uint8_t effectType){
 		new_effect->setAxisMagnitude(std::min(this->getCommandHandlerInstance(),(uint8_t)MAX_AXIS), 1);
 		new_effect->setUseSingleCondition(false);
 		
-		FFB_Effect_Condition cond;
-		// default cond set zero
-		cond.cpOffset = 0; cond.deadBand = 0; cond.negativeCoefficient = 0; cond.positiveCoefficient = 0; cond.negativeSaturation = 0; cond.positiveSaturation = 0;
+
 		// Need proper setCondition but for simplicity we will just call it manually later
 		this->effects_calc->setFilters(new_effect.get());
+		this->effects_calc->setGainAndScale(new_effect.get());
 		this->effects_calc->logEffectType(effectType,false);
 		effects_calc->storeEffect(idx, std::move(new_effect));
 	}
 	return idx;
 }
 
-/**
- * Changes magnitude of non conditional effects (Constant, ramp, square, triangle, sawtooth)
- */
-void SerialFFB::setMagnitude(uint8_t idx,int16_t magnitude){
-	if(idx >= EffectsCalculator::max_effects || !effects_calc->getEffect(idx)){
-		return;
-	}
-	Effect* effect = effects_calc->getEffect(idx);
-	effect->setMagnitude(magnitude);
 
-	if(effect->getType() == FFB_EFFECT_CONSTANT){
-		EffectsControlItf::cfUpdateEvent();
-	}
-}
 
 /**
  * Enables or disables an effect

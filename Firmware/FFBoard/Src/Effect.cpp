@@ -177,7 +177,7 @@ void EffectPeriodic::updateReconstruction(float new_mag, float new_offset) {
 
 int32_t EffectTemporal::getEnvelopeMagnitude(int32_t baseMagnitude) {
     if(duration == FFB_EFFECT_DURATION_INFINITE || duration == 0) {
-        return magnitude; // Enveloppe ignorée pour un effet infini
+        return baseMagnitude; // Enveloppe ignorée pour un effet infini
     }
     int32_t scaler = std::abs(baseMagnitude);
     uint32_t elapsed_time = HAL_GetTick() - startTime;
@@ -235,12 +235,16 @@ int32_t EffectRamp::calculateRawForce(uint8_t axis, metric_t* metrics) {
 // EffectSquare
 // =======================================================================
 int32_t EffectSquare::calculateRawForce(uint8_t axis, metric_t* metrics) {
-    uint32_t elapsed_time = HAL_GetTick() - startTime;
+    float elapsed_time = micros() - ((float)startTime * 1000.0f);
+    uint32_t period_safe = std::max((uint32_t)1, (uint32_t)period);
+    float periodF = period_safe;
+    float phasetime = (phase * period_safe) / 35999.0f;
+    uint32_t timeTemp = elapsed_time + (phasetime * 1000.0f);
+    float remainder = (timeTemp % (period_safe * 1000)) / 1000.0f;
     float interpolated_mag = reconstructionMagnitude.evaluate((float)magnitude, EffectsCalculator::reconFilterMode);
     float interpolated_offset = reconstructionOffset.evaluate((float)offset, EffectsCalculator::reconFilterMode);
-    
     int32_t mag = useEnvelope ? getEnvelopeMagnitude((int32_t)interpolated_mag) : (int32_t)interpolated_mag;
-    int32_t force = ((elapsed_time + phase) % ((uint32_t)period + 2)) < (uint32_t)(period + 2) / 2 ? -mag : mag;
+    int32_t force = remainder < (periodF / 2.0f) ? -mag : mag;
     return -(force + (int32_t)interpolated_offset);
 }
 
@@ -381,7 +385,7 @@ void EffectConditional::setSimpleCondition(uint8_t axis, int16_t coefficient, in
 }
 
 void EffectConditional::setCondition(FFB_SetCondition_Data_t* report) {
-    uint8_t axis = std::min((uint8_t)MAX_AXIS, report->parameterBlockOffset);
+    uint8_t axis = std::min((uint8_t)(MAX_AXIS - 1), report->parameterBlockOffset);
     conditions[axis].cpOffset = report->cpOffset;
     conditions[axis].negativeCoefficient = report->negativeCoefficient;
     conditions[axis].positiveCoefficient = report->positiveCoefficient;
@@ -397,7 +401,7 @@ void EffectConditional::setCondition(FFB_SetCondition_Data_t* report) {
     }
 }
 
-int32_t EffectConditional::calcConditionEffectForce(float metric, uint8_t idx, float scale) {
+int32_t EffectConditional::calcConditionEffectForce(float metric, uint8_t idx) {
     int16_t off = conditions[idx].cpOffset;
     int16_t deadBand = conditions[idx].deadBand;
     int32_t force = 0;
@@ -407,7 +411,8 @@ int32_t EffectConditional::calcConditionEffectForce(float metric, uint8_t idx, f
         coefficient /= 0x7fff; 
         metric = metric - (off + (deadBand * (metric < off ? -1 : 1)));
         
-        force = (int32_t)(coefficient * scale * metric);
+        float gainfactor = (float)(this->typeGain + 1) / 256.0f;
+        force = (int32_t)(coefficient * gainfactor * this->typeScaler * metric);
         
         if(conditions[idx].positiveSaturation != 0 || conditions[idx].negativeSaturation != 0){
              force = clip<int32_t, int32_t>(force, -(int32_t)conditions[idx].negativeSaturation, (int32_t)conditions[idx].positiveSaturation);
@@ -422,9 +427,7 @@ int32_t EffectConditional::calcConditionEffectForce(float metric, uint8_t idx, f
 int32_t EffectSpring::calculateRawForce(uint8_t axis, metric_t* metrics) {
     float pos = metrics->pos_scaled_16b;
     uint8_t con_idx = useSingleCondition ? 0 : axis;
-    // Note: requires spring gain/scaler
-    float spring_scale = 1.0f; // Replace with proper global
-    return -calcConditionEffectForce(pos, con_idx, spring_scale);
+    return -calcConditionEffectForce(pos, con_idx);
 }
 
 // =======================================================================
@@ -433,7 +436,7 @@ int32_t EffectSpring::calculateRawForce(uint8_t axis, metric_t* metrics) {
 int32_t EffectDamper::calculateRawForce(uint8_t axis, metric_t* metrics) {
     float speed = metrics->speed * INTERNAL_SCALER_DAMPER;
     uint8_t con_idx = useSingleCondition ? 0 : axis;
-    return -calcConditionEffectForce(speed, con_idx, 1.0f);
+    return -calcConditionEffectForce(speed, con_idx);
 }
 
 // =======================================================================
@@ -474,5 +477,5 @@ int32_t EffectFriction::calculateRawForce(uint8_t axis, metric_t* metrics) {
 int32_t EffectInertia::calculateRawForce(uint8_t axis, metric_t* metrics) {
     float accel = metrics->accel * INTERNAL_SCALER_INERTIA;
     uint8_t con_idx = useSingleCondition ? 0 : axis;
-    return -calcConditionEffectForce(accel, con_idx, 1.0f);
+    return -calcConditionEffectForce(accel, con_idx);
 }

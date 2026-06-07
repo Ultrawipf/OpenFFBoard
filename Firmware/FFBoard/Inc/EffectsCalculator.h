@@ -135,6 +135,8 @@ public:
 	void calculateEffects(std::vector<std::unique_ptr<Axis>> &axes);
 
 	void setFilters(Effect *effect);
+	void setGainAndScale(Effect *effect);
+	void updateGainAndScaleForEffects();
 
 	/**
 	 * @brief Sets the global gain for all effects.

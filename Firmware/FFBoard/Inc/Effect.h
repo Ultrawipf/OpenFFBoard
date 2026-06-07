@@ -82,6 +82,7 @@ public:
     
     virtual void setUseSingleCondition(bool single) {}
     virtual bool getUseSingleCondition() const { return false; }
+    virtual void setTypeGainAndScaler(uint8_t g, float s) {}
 
     void setFilter(uint8_t axis, float freq, float q, float peakGain = 0.0) {
         if (!filter[axis]) filter[axis] = std::make_unique<Biquad>(BiquadType::lowpass, freq, q, peakGain);
@@ -223,7 +224,9 @@ class EffectConditional : public Effect {
 protected:
     FFB_Effect_Condition conditions[MAX_AXIS];
     bool useSingleCondition = false;
-    int32_t calcConditionEffectForce(float metric, uint8_t idx, float scale);
+    uint8_t typeGain = 255;
+    float typeScaler = 1.0f;
+    int32_t calcConditionEffectForce(float metric, uint8_t idx);
 
 public:
     EffectConditional() {
@@ -233,6 +236,7 @@ public:
     int32_t getParameter(EffectParameter param, uint8_t axis) const override;
     void setSimpleCondition(uint8_t axis, int16_t coefficient, int16_t saturation);
 
+    void setTypeGainAndScaler(uint8_t g, float s) override { typeGain = g; typeScaler = s; }
     void setUseSingleCondition(bool single) override { useSingleCondition = single; }
     bool getUseSingleCondition() const override { return useSingleCondition; }
     void setCondition(FFB_SetCondition_Data_t* report) override;

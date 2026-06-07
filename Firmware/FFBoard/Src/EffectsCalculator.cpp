@@ -109,11 +109,14 @@ void EffectsCalculator::updateSamplerate(float newSamplerate){
 			setFilters(effect.get());
 		}
 	}
+	float freq_f_damper = 60.0f / calcfrequency;
+	float freq_f_friction = 50.0f / calcfrequency;
+	float freq_f_inertia = 20.0f / calcfrequency;
+
 	for(uint8_t i=0; i<MAX_AXIS; i++){
-		if(systemSprings[i]) setFilters(systemSprings[i].get());
-		if(systemDampers[i]) setFilters(systemDampers[i].get());
-		if(systemFrictions[i]) setFilters(systemFrictions[i].get());
-		if(systemInertias[i]) setFilters(systemInertias[i].get());
+		if(systemDampers[i]) systemDampers[i]->setFilter(0, freq_f_damper, 0.55f);
+		if(systemFrictions[i]) systemFrictions[i]->setFilter(0, freq_f_friction, 0.20f);
+		if(systemInertias[i]) systemInertias[i]->setFilter(0, freq_f_inertia, 0.20f);
 	}
 }
 
@@ -333,12 +336,7 @@ void EffectsCalculator::updateFilterSettingsForEffects(uint8_t type_effect) {
 			setFilters(effect.get());
 		}
 	}
-	// Update system effects
-	for (uint8_t i = 0; i < MAX_AXIS; i++) {
-		if (type_effect == FFB_EFFECT_DAMPER && systemDampers[i]) setFilters(systemDampers[i].get());
-		if (type_effect == FFB_EFFECT_FRICTION && systemFrictions[i]) setFilters(systemFrictions[i].get());
-		if (type_effect == FFB_EFFECT_INERTIA && systemInertias[i]) setFilters(systemInertias[i].get());
-	}
+
 }
 
 
@@ -514,26 +512,38 @@ CommandStatus EffectsCalculator::command(const ParsedCommand& cmd,std::vector<Co
 	case EffectsCalculator_commands::spring:
 		if(cmd.type == CMDtype::info){
 			replies.emplace_back("scale:"+std::to_string(this->scaler.spring));
-		}else
-			return handleGetSet(cmd, replies, this->gain.spring);
+		}else {
+			CommandStatus status = handleGetSet(cmd, replies, this->gain.spring);
+			if (cmd.type == CMDtype::set) updateGainAndScaleForEffects();
+			return status;
+		}
 		break;
 	case EffectsCalculator_commands::friction:
 		if(cmd.type == CMDtype::info){
 			replies.emplace_back("scale:"+std::to_string(this->scaler.friction)+",factor:"+std::to_string(INTERNAL_SCALER_FRICTION));
-		}else
-			return handleGetSet(cmd, replies, this->gain.friction);
+		}else {
+			CommandStatus status = handleGetSet(cmd, replies, this->gain.friction);
+			if (cmd.type == CMDtype::set) updateGainAndScaleForEffects();
+			return status;
+		}
 		break;
 	case EffectsCalculator_commands::damper:
 		if(cmd.type == CMDtype::info){
 			replies.emplace_back("scale:"+std::to_string(this->scaler.damper)+",factor:"+std::to_string(INTERNAL_SCALER_DAMPER));
-		}else
-			return handleGetSet(cmd, replies, this->gain.damper);
+		}else {
+			CommandStatus status = handleGetSet(cmd, replies, this->gain.damper);
+			if (cmd.type == CMDtype::set) updateGainAndScaleForEffects();
+			return status;
+		}
 		break;
 	case EffectsCalculator_commands::inertia:
 		if(cmd.type == CMDtype::info){
 			replies.emplace_back("scale:"+std::to_string(this->scaler.inertia)+",factor:"+std::to_string(INTERNAL_SCALER_INERTIA));
-		}else
-			return handleGetSet(cmd, replies, this->gain.inertia);
+		}else {
+			CommandStatus status = handleGetSet(cmd, replies, this->gain.inertia);
+			if (cmd.type == CMDtype::set) updateGainAndScaleForEffects();
+			return status;
+		}
 		break;
 	case EffectsCalculator_commands::damper_f:
 		if (cmd.type == CMDtype::get)
@@ -796,4 +806,25 @@ int32_t EffectsCalculator::processSystemEffectForce(EffectConditional* effect, u
 		return effect->processForce(0, metrics, 255);
 	}
 	return 0;
+}
+
+void EffectsCalculator::setGainAndScale(Effect* effect) {
+	if(!effect) return;
+	uint8_t typeGain = 255;
+	float typeScaler = 1.0f;
+	switch (effect->getType()) {
+		case FFB_EFFECT_SPRING:   typeGain = gain.spring; typeScaler = scaler.spring; break;
+		case FFB_EFFECT_DAMPER:   typeGain = gain.damper; typeScaler = scaler.damper; break;
+		case FFB_EFFECT_FRICTION: typeGain = gain.friction; typeScaler = scaler.friction; break;
+		case FFB_EFFECT_INERTIA:  typeGain = gain.inertia; typeScaler = scaler.inertia; break;
+	}
+	effect->setTypeGainAndScaler(typeGain, typeScaler);
+}
+
+void EffectsCalculator::updateGainAndScaleForEffects() {
+	for (auto& effect : this->effects) {
+		if (effect) {
+			setGainAndScale(effect.get());
+		}
+	}
 }

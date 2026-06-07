@@ -507,9 +507,7 @@ private:
 	// TODO tune these and check if it is really stable and beneficial to the FFB. index 4 placeholder
 	const std::array<biquad_constant_t,4> filterSpeedCst = { {{ 40, 55 }, { 70, 55 }, { 120, 55 }, {180, 55}} }; //!< Speed filter profiles.
 	const std::array<biquad_constant_t,4> filterAccelCst = { {{ 40, 30 }, { 55, 30 }, { 70, 30 }, {120, 55}} }; //!< Acceleration filter profiles.
-	const biquad_constant_t filterDamperCst = {60, 55};     //!< Damper filter constants.
-	const biquad_constant_t filterFrictionCst = {50, 20};   //!< Friction filter constants.
-	const biquad_constant_t filterInertiaCst = {20, 20};    //!< Inertia filter constants.
+
 	uint8_t filterProfileId = 1; //!< Currently selected filter profile ID.
 	float filter_f = 1000.0; // 1khz
 	const int32_t internalFxClip = 20000; //!< Clipping value for internal effects.

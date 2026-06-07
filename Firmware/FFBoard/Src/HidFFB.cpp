@@ -268,6 +268,7 @@ void HidFFB::new_effect(FFB_CreateNewEffect_Feature_Data_t* effect){
 #endif
 
 	effects_calc->setFilters(new_effect.get()); // Initialize filters correctly before assigning
+	effects_calc->setGainAndScale(new_effect.get());
 	effects_calc->storeEffect(index, std::move(new_effect));
 	
 	// Set block load report
