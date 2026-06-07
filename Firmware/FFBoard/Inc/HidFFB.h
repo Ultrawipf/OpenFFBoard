@@ -121,7 +121,6 @@ public:
 private:
 	// HID processing methods
 	std::shared_ptr<EffectsCalculator> effects_calc; //!< A shared pointer to the EffectsCalculator instance.
-	std::array<std::unique_ptr<Effect>,EffectsCalculator::max_effects>& effects; //!< A reference to the array of FFB effects, managed by EffectsCalculator, Must be passed in constructor.
 
 	/**
 	 * @brief Handles the "Create New Effect" HID report. Allocates a new effect.

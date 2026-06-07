@@ -24,16 +24,16 @@
 #define MATH_COS(x) cosf(x)
 #endif
 
-HidFFB::HidFFB(std::shared_ptr<EffectsCalculator> ec,uint8_t axisCount) : effects_calc(ec), effects(ec->effects),axisCount(axisCount)
+HidFFB::HidFFB(std::shared_ptr<EffectsCalculator> ec,uint8_t axisCount) : effects_calc(ec), axisCount(axisCount)
 {
 	directionEnableMask = 1 << axisCount; // Direction enable bit is last bit after axis enable bits
 	// Initialize reports
 	blockLoad_report.effectBlockIndex = 1;
-	blockLoad_report.ramPoolAvailable = (effects.size()-used_effects)*sizeof(EffectConstant);
+	blockLoad_report.ramPoolAvailable = (EffectsCalculator::max_effects-used_effects)*sizeof(EffectConstant);
 	blockLoad_report.loadStatus = 1;
 
-	pool_report.ramPoolSize = effects.size()*sizeof(EffectConstant);
-	pool_report.maxSimultaneousEffects = effects.size();
+	pool_report.ramPoolSize = EffectsCalculator::max_effects*sizeof(EffectConstant);
+	pool_report.maxSimultaneousEffects = EffectsCalculator::max_effects;
 	pool_report.memoryManagement = 1;
 
 
@@ -79,7 +79,7 @@ void HidFFB::sendStatusReport(uint8_t effect){
 	}else{
 		this->reportFFBStatus.status |= HID_EFFECT_PAUSE;
 	}
-//	if(effect > 0 && effects[effect-1].state == 1)
+//	if(effect > 0 && effects_calc->getEffect(effect-1)->getState() == 1)
 //		this->reportFFBStatus.status |= HID_EFFECT_PLAYING;
 	//printf("Status: %d\n",reportFFBStatus.status);
 	HID_SendReport(reinterpret_cast<uint8_t*>(&this->reportFFBStatus), sizeof(reportFFB_status_t));
@@ -238,11 +238,11 @@ void HidFFB::ffb_control(uint8_t cmd){
 
 
 void HidFFB::set_constant_effect(FFB_SetConstantForce_Data_t* data){
-	if(data->effectBlockIndex == 0 || data->effectBlockIndex > effects.size()){
+	if(data->effectBlockIndex == 0 || data->effectBlockIndex > EffectsCalculator::max_effects){
 		return;
 	}
 	cfUpdateEvent();
-	auto& effect_p = effects[data->effectBlockIndex-1];
+	Effect* effect_p = effects_calc->getEffect(data->effectBlockIndex-1);
 	if (effect_p) {
 		effect_p->setConstantForce(data);
 	}
@@ -281,12 +281,12 @@ void HidFFB::new_effect(FFB_CreateNewEffect_Feature_Data_t* effect){
 #endif
 
 	effects_calc->setFilters(new_effect.get()); // Initialize filters correctly before assigning
-	effects[index] = std::move(new_effect);
+	effects_calc->storeEffect(index, std::move(new_effect));
 	
 	// Set block load report
 	blockLoad_report.effectBlockIndex = index+1;
 	used_effects++;
-	blockLoad_report.ramPoolAvailable = (effects.size()-used_effects)*sizeof(EffectConstant); // Approximate size
+	blockLoad_report.ramPoolAvailable = (EffectsCalculator::max_effects-used_effects)*sizeof(EffectConstant); // Approximate size
 	blockLoad_report.loadStatus = 1;
 	sendStatusReport(index+1);
 }
@@ -297,10 +297,10 @@ void HidFFB::new_effect(FFB_CreateNewEffect_Feature_Data_t* effect){
  */
 void HidFFB::set_effect(FFB_SetEffect_t* effect){
 	uint8_t index = effect->effectBlockIndex;
-	if(index > effects.size() || index == 0)
+	if(index > EffectsCalculator::max_effects || index == 0)
 		return;
 
-	auto& effect_p = effects[index-1];
+	Effect* effect_p = effects_calc->getEffect(index-1);
 	if(!effect_p) return;
 
 	if (effect_p->getType() != effect->effectType){
@@ -365,23 +365,23 @@ void HidFFB::set_effect(FFB_SetEffect_t* effect){
 	have no effect on joystick motion in the northwest-southeast direction.
  */
 void HidFFB::set_condition(FFB_SetCondition_Data_t *cond){
-	if(cond->effectBlockIndex == 0 || cond->effectBlockIndex > effects.size()){
+	if(cond->effectBlockIndex == 0 || cond->effectBlockIndex > EffectsCalculator::max_effects){
 		return;
 	}
 	
-	auto& effect = effects[cond->effectBlockIndex - 1];
+	Effect* effect = effects_calc->getEffect(cond->effectBlockIndex - 1);
 	if (effect) {
 		effect->setCondition(cond);
 	}
 }
 
 void HidFFB::set_effect_operation(FFB_EffOp_Data_t* report){
-	if(report->effectBlockIndex == 0 || report->effectBlockIndex > effects.size()){
+	if(report->effectBlockIndex == 0 || report->effectBlockIndex > EffectsCalculator::max_effects){
 		return; // Invalid ID
 	}
 	// Start or stop effect
 	uint8_t id = report->effectBlockIndex-1;
-	auto& effect = effects[id];
+	Effect* effect = effects_calc->getEffect(id);
 	if(!effect) return;
 
 	if(report->state == 3){
@@ -390,7 +390,8 @@ void HidFFB::set_effect_operation(FFB_EffOp_Data_t* report){
 
 		// 1 = start, 2 = start solo
 		if(report->state == 2){
-			for(auto& eff : effects){
+			for(uint32_t i = 0; i < EffectsCalculator::max_effects; i++){
+				Effect* eff = effects_calc->getEffect(i);
 				if(eff) eff->setState(0); // Stop all other effects
 			}
 		}
@@ -404,32 +405,32 @@ void HidFFB::set_effect_operation(FFB_EffOp_Data_t* report){
 
 
 void HidFFB::set_envelope(FFB_SetEnvelope_Data_t *report){
-	if(report->effectBlockIndex == 0 || report->effectBlockIndex > effects.size()){
+	if(report->effectBlockIndex == 0 || report->effectBlockIndex > EffectsCalculator::max_effects){
 		return;
 	}
-	auto& effect = effects[report->effectBlockIndex - 1];
+	Effect* effect = effects_calc->getEffect(report->effectBlockIndex - 1);
 	if(effect) effect->setEnvelope(report);
 }
 
 void HidFFB::set_ramp(FFB_SetRamp_Data_t *report){
-	if(report->effectBlockIndex == 0 || report->effectBlockIndex > effects.size()){
+	if(report->effectBlockIndex == 0 || report->effectBlockIndex > EffectsCalculator::max_effects){
 		return;
 	}
-	auto& effect = effects[report->effectBlockIndex - 1];
+	Effect* effect = effects_calc->getEffect(report->effectBlockIndex - 1);
 	if(effect) effect->setRamp(report);
 }
 
 void HidFFB::set_periodic(FFB_SetPeriodic_Data_t* report){
-	if(report->effectBlockIndex == 0 || report->effectBlockIndex > effects.size()){
+	if(report->effectBlockIndex == 0 || report->effectBlockIndex > EffectsCalculator::max_effects){
 		return;
 	}
-	auto& effect = effects[report->effectBlockIndex-1];
+	Effect* effect = effects_calc->getEffect(report->effectBlockIndex-1);
 	if(effect) effect->setPeriodic(report);
 }
 
 
 void HidFFB::reset_ffb(){
-	for(uint8_t i=0;i<effects.size();i++){
+	for(uint8_t i=0;i<EffectsCalculator::max_effects;i++){
 		effects_calc->free_effect(i);
 	}
 	//this->reportFFBStatus.effectBlockIndex = 1;

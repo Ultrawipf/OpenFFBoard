@@ -202,13 +202,16 @@ public:
 	virtual std::string getHelpstring() { return "Controls internal FFB effects"; }
 
 	static const uint32_t max_effects = MAX_EFFECTS;
-	std::array<std::unique_ptr<Effect>,max_effects> effects; //!< Main effects storage array.
 
-	// System effects (per-axis mechanical effects)
-	std::array<std::unique_ptr<EffectSpring>, MAX_AXIS> systemSprings;
-	std::array<std::unique_ptr<EffectDamper>, MAX_AXIS> systemDampers;
-	std::array<std::unique_ptr<EffectFriction>, MAX_AXIS> systemFrictions;
-	std::array<std::unique_ptr<EffectInertia>, MAX_AXIS> systemInertias;
+	Effect* getEffect(uint16_t idx) {
+		return (idx < max_effects) ? effects[idx].get() : nullptr;
+	}
+
+	void storeEffect(uint16_t idx, std::unique_ptr<Effect> new_effect) {
+		if (idx < max_effects) {
+			effects[idx] = std::move(new_effect);
+		}
+	}
 
 	inline static uint8_t frictionPctSpeedToRampup = 25;	//!< Speed percentage for friction ramp-up.
 
@@ -224,6 +227,15 @@ public:
 protected:
 
 private:
+	// Effects
+	std::array<std::unique_ptr<Effect>,max_effects> effects; //!< Main effects storage array.
+
+	// System effects (per-axis mechanical effects)
+	std::array<std::unique_ptr<EffectSpring>, MAX_AXIS> systemSprings;
+	std::array<std::unique_ptr<EffectDamper>, MAX_AXIS> systemDampers;
+	std::array<std::unique_ptr<EffectFriction>, MAX_AXIS> systemFrictions;
+	std::array<std::unique_ptr<EffectInertia>, MAX_AXIS> systemInertias;
+
 	// Filters
 	effect_biquad_t filter[2];		//!< Filter coefficients for CFFilter, default (0) and custom (1) profiles.
 	uint8_t filterProfileId = 0;	//!< Currently active filter profile (0 or 1).
