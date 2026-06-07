@@ -28,6 +28,52 @@
 // =======================================================================
 // Classe de base : Effect
 // =======================================================================
+std::unique_ptr<Effect> Effect::create(uint8_t effectType) {
+    switch (effectType) {
+        case FFB_EFFECT_CONSTANT:     return std::make_unique<EffectConstant>();
+        case FFB_EFFECT_RAMP:         return std::make_unique<EffectRamp>();
+        case FFB_EFFECT_SQUARE:       return std::make_unique<EffectSquare>();
+        case FFB_EFFECT_SINE:         return std::make_unique<EffectSine>();
+        case FFB_EFFECT_TRIANGLE:     return std::make_unique<EffectTriangle>();
+        case FFB_EFFECT_SAWTOOTHUP:   return std::make_unique<EffectSawtoothUp>();
+        case FFB_EFFECT_SAWTOOTHDOWN: return std::make_unique<EffectSawtoothDown>();
+        case FFB_EFFECT_SPRING:       return std::make_unique<EffectSpring>();
+        case FFB_EFFECT_DAMPER:       return std::make_unique<EffectDamper>();
+        case FFB_EFFECT_INERTIA:      return std::make_unique<EffectInertia>();
+        case FFB_EFFECT_FRICTION:     return std::make_unique<EffectFriction>();
+        default:                      return nullptr;
+    }
+}
+
+void Effect::setParameter(EffectParameter param, uint8_t axis, int32_t value) {
+    switch (param) {
+        case EffectParameter::Duration:
+            setDuration(value);
+            break;
+        case EffectParameter::AxisGain:
+            if (axis < MAX_AXIS) {
+                setAxisMagnitude(axis, (float)value / 65535.0f);
+            }
+            break;
+        default:
+            break;
+    }
+}
+
+int32_t Effect::getParameter(EffectParameter param, uint8_t axis) const {
+    switch (param) {
+        case EffectParameter::Duration:
+            return getDuration();
+        case EffectParameter::AxisGain:
+            if (axis < MAX_AXIS) {
+                return (int32_t)(getAxisMagnitude(axis) * 65535.0f);
+            }
+            return 0;
+        default:
+            return 0;
+    }
+}
+
 int32_t Effect::processForce(uint8_t axis, metric_t* metrics, uint8_t global_gain) {
     if (state == EFFECT_STATE_INACTIVE) return 0;
     
@@ -63,12 +109,53 @@ int32_t Effect::processForce(uint8_t axis, metric_t* metrics, uint8_t global_gai
 // =======================================================================
 // EffectTemporal
 // =======================================================================
+void EffectTemporal::setParameter(EffectParameter param, uint8_t axis, int32_t value) {
+    if (param == EffectParameter::Magnitude) {
+        setMagnitude(value);
+    } else {
+        Effect::setParameter(param, axis, value);
+    }
+}
+
+int32_t EffectTemporal::getParameter(EffectParameter param, uint8_t axis) const {
+    if (param == EffectParameter::Magnitude) {
+        return getMagnitude();
+    } else {
+        return Effect::getParameter(param, axis);
+    }
+}
+
 void EffectTemporal::setEnvelope(FFB_SetEnvelope_Data_t* report) {
     attackLevel = report->attackLevel;
     attackTime = report->attackTime;
     fadeLevel = report->fadeLevel;
     fadeTime = report->fadeTime;
     useEnvelope = true;
+}
+
+void EffectPeriodic::setParameter(EffectParameter param, uint8_t axis, int32_t value) {
+    switch (param) {
+        case EffectParameter::Period:
+            setPeriod(value);
+            break;
+        case EffectParameter::Offset:
+            setOffset(value);
+            break;
+        default:
+            EffectTemporal::setParameter(param, axis, value);
+            break;
+    }
+}
+
+int32_t EffectPeriodic::getParameter(EffectParameter param, uint8_t axis) const {
+    switch (param) {
+        case EffectParameter::Period:
+            return getPeriod();
+        case EffectParameter::Offset:
+            return getOffset();
+        default:
+            return EffectTemporal::getParameter(param, axis);
+    }
 }
 
 void EffectPeriodic::setPeriodic(FFB_SetPeriodic_Data_t* report) {
@@ -245,6 +332,54 @@ int32_t EffectSine::calculateRawForce(uint8_t axis, metric_t* metrics) {
 // =======================================================================
 // EffectConditional
 // =======================================================================
+void EffectConditional::setParameter(EffectParameter param, uint8_t axis, int32_t value) {
+    if (axis < MAX_AXIS) {
+        switch (param) {
+            case EffectParameter::Deadzone:
+                conditions[axis].deadBand = value;
+                break;
+            case EffectParameter::Saturation:
+                conditions[axis].negativeSaturation = value;
+                conditions[axis].positiveSaturation = value;
+                break;
+            case EffectParameter::Coefficient:
+                conditions[axis].negativeCoefficient = value;
+                conditions[axis].positiveCoefficient = value;
+                break;
+            default:
+                Effect::setParameter(param, axis, value);
+                break;
+        }
+    }
+}
+
+int32_t EffectConditional::getParameter(EffectParameter param, uint8_t axis) const {
+    if (axis < MAX_AXIS) {
+        switch (param) {
+            case EffectParameter::Deadzone:
+                return conditions[axis].deadBand;
+            case EffectParameter::Saturation:
+                return conditions[axis].positiveSaturation;
+            case EffectParameter::Coefficient:
+                return conditions[axis].positiveCoefficient;
+            default:
+                return Effect::getParameter(param, axis);
+        }
+    }
+    return 0;
+}
+
+void EffectConditional::setSimpleCondition(uint8_t axis, int16_t coefficient, int16_t saturation) {
+    if (axis < MAX_AXIS) {
+        conditions[axis].positiveCoefficient = coefficient;
+        conditions[axis].negativeCoefficient = coefficient;
+        conditions[axis].positiveSaturation = saturation;
+        conditions[axis].negativeSaturation = saturation;
+        conditions[axis].deadBand = 0;
+        conditions[axis].cpOffset = 0;
+    }
+}
+
 void EffectConditional::setCondition(FFB_SetCondition_Data_t* report) {
     uint8_t axis = std::min((uint8_t)MAX_AXIS, report->parameterBlockOffset);
     conditions[axis].cpOffset = report->cpOffset;

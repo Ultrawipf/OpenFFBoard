@@ -785,15 +785,7 @@ void EffectsCalculator::setFilters(Effect *effect){
 void EffectsCalculator::updateSystemEffectCondition(EffectConditional* effect, uint8_t intensity, uint8_t& cachedIntensity, int16_t coeff, int16_t saturation) {
 	if (intensity != cachedIntensity) {
 		if (effect) {
-			FFB_Effect_Condition* cond = effect->getCondition(0);
-			if (cond) {
-				cond->positiveCoefficient = coeff;
-				cond->negativeCoefficient = coeff;
-				cond->positiveSaturation = saturation;
-				cond->negativeSaturation = saturation;
-				cond->deadBand = 0;
-				cond->cpOffset = 0;
-			}
+			effect->setSimpleCondition(0, coeff, saturation);
 		}
 		cachedIntensity = intensity;
 	}

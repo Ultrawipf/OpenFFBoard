@@ -76,21 +76,8 @@ void SerialFFB::set_gain(uint8_t gain){
 int32_t SerialFFB::newEffect(uint8_t effectType){
 	int32_t idx = this->effects_calc->find_free_effect(effectType);
 	if(idx >= 0){
-		std::unique_ptr<Effect> new_effect;
-		switch(effectType){
-			case FFB_EFFECT_CONSTANT: new_effect = std::make_unique<EffectConstant>(); break;
-			case FFB_EFFECT_RAMP: new_effect = std::make_unique<EffectRamp>(); break;
-			case FFB_EFFECT_SQUARE: new_effect = std::make_unique<EffectSquare>(); break;
-			case FFB_EFFECT_SINE: new_effect = std::make_unique<EffectSine>(); break;
-			case FFB_EFFECT_TRIANGLE: new_effect = std::make_unique<EffectTriangle>(); break;
-			case FFB_EFFECT_SAWTOOTHUP: new_effect = std::make_unique<EffectSawtoothUp>(); break;
-			case FFB_EFFECT_SAWTOOTHDOWN: new_effect = std::make_unique<EffectSawtoothDown>(); break;
-			case FFB_EFFECT_SPRING: new_effect = std::make_unique<EffectSpring>(); break;
-			case FFB_EFFECT_DAMPER: new_effect = std::make_unique<EffectDamper>(); break;
-			case FFB_EFFECT_INERTIA: new_effect = std::make_unique<EffectInertia>(); break;
-			case FFB_EFFECT_FRICTION: new_effect = std::make_unique<EffectFriction>(); break;
-			default: return -1;
-		}
+		std::unique_ptr<Effect> new_effect = Effect::create(effectType);
+		if(!new_effect) return -1;
 		new_effect->setDuration(FFB_EFFECT_DURATION_INFINITE);
 		new_effect->setAxisMagnitude(std::min(this->getCommandHandlerInstance(),(uint8_t)MAX_AXIS), 1);
 		new_effect->setUseSingleCondition(false);
@@ -165,13 +152,50 @@ CommandStatus SerialFFB::command(const ParsedCommand& cmd,std::vector<CommandRep
 		break;
 
 	case SerialEffects_commands::fxmagnitude:
-		if(cmd.type == CMDtype::setat){
-			setMagnitude(cmd.adr, cmd.val);
-		}else if(cmd.type == CMDtype::getat && cmd.adr < EffectsCalculator::max_effects && effects_calc->getEffect(cmd.adr)){
-			replies.emplace_back(effects_calc->getEffect(cmd.adr)->getMagnitude());
-		}else
+	case SerialEffects_commands::fxperiod:
+	case SerialEffects_commands::fxduration:
+	case SerialEffects_commands::fxoffset:
+	case SerialEffects_commands::fxdeadzone:
+	case SerialEffects_commands::fxaxisgain:
+	case SerialEffects_commands::fxsat:
+	case SerialEffects_commands::fxcoeff: {
+		if (cmd.adr >= EffectsCalculator::max_effects) {
 			return CommandStatus::ERR;
+		}
+		Effect* effect = effects_calc->getEffect(cmd.adr);
+		if (!effect) {
+			return CommandStatus::ERR;
+		}
+
+		EffectParameter param;
+		switch (static_cast<SerialEffects_commands>(cmd.cmdId)) {
+			case SerialEffects_commands::fxmagnitude: param = EffectParameter::Magnitude; break;
+			case SerialEffects_commands::fxperiod:    param = EffectParameter::Period; break;
+			case SerialEffects_commands::fxduration:  param = EffectParameter::Duration; break;
+			case SerialEffects_commands::fxoffset:    param = EffectParameter::Offset; break;
+			case SerialEffects_commands::fxdeadzone:  param = EffectParameter::Deadzone; break;
+			case SerialEffects_commands::fxaxisgain:  param = EffectParameter::AxisGain; break;
+			case SerialEffects_commands::fxsat:       param = EffectParameter::Saturation; break;
+			case SerialEffects_commands::fxcoeff:     param = EffectParameter::Coefficient; break;
+			default: return CommandStatus::ERR;
+		}
+
+		uint8_t axis = getCommandHandlerInstance();
+
+		if (cmd.type == CMDtype::setat) {
+			effect->setParameter(param, axis, cmd.val);
+			if (param == EffectParameter::Magnitude && effect->getType() == FFB_EFFECT_CONSTANT) {
+				EffectsControlItf::cfUpdateEvent();
+			}
+			return CommandStatus::OK;
+		} else if (cmd.type == CMDtype::getat) {
+			replies.emplace_back(effect->getParameter(param, axis));
+			return CommandStatus::OK;
+		} else {
+			return CommandStatus::ERR;
+		}
 		break;
+	}
 
 	case SerialEffects_commands::fxstate:
 		if(cmd.adr < EffectsCalculator::max_effects && effects_calc->getEffect(cmd.adr)){
@@ -188,76 +212,9 @@ CommandStatus SerialFFB::command(const ParsedCommand& cmd,std::vector<CommandRep
 
 		break;
 
-	case SerialEffects_commands::fxperiod:
-		if(cmd.adr < EffectsCalculator::max_effects && effects_calc->getEffect(cmd.adr)) {
-			if(cmd.type == CMDtype::setat) effects_calc->getEffect(cmd.adr)->setPeriod(cmd.val);
-			else if(cmd.type == CMDtype::getat) replies.emplace_back(effects_calc->getEffect(cmd.adr)->getPeriod());
-			return CommandStatus::OK;
-		} else return CommandStatus::ERR;
-
-	case SerialEffects_commands::fxduration:
-		if(cmd.adr < EffectsCalculator::max_effects && effects_calc->getEffect(cmd.adr)) {
-			if(cmd.type == CMDtype::setat) effects_calc->getEffect(cmd.adr)->setDuration(cmd.val);
-			else if(cmd.type == CMDtype::getat) replies.emplace_back(effects_calc->getEffect(cmd.adr)->getDuration());
-			return CommandStatus::OK;
-		} else return CommandStatus::ERR;
-
-	case SerialEffects_commands::fxoffset:
-		if(cmd.adr < EffectsCalculator::max_effects && effects_calc->getEffect(cmd.adr)){ 
-			if(cmd.type == CMDtype::setat) effects_calc->getEffect(cmd.adr)->setOffset(cmd.val);
-			else if(cmd.type == CMDtype::getat) replies.emplace_back(effects_calc->getEffect(cmd.adr)->getOffset());
-			return CommandStatus::OK;
-		}else
-			return CommandStatus::ERR;
-		break;
-
-	case SerialEffects_commands::fxdeadzone:
-		if(cmd.adr < EffectsCalculator::max_effects && effects_calc->getEffect(cmd.adr)){
-			FFB_Effect_Condition* cond = effects_calc->getEffect(cmd.adr)->getCondition(getCommandHandlerInstance());
-			if (cond) {
-				if(cmd.type == CMDtype::setat) cond->deadBand = cmd.val;
-				else if(cmd.type == CMDtype::getat) replies.emplace_back(cond->deadBand);
-			}
-			return CommandStatus::OK;
-		} else return CommandStatus::ERR;
-
-	case SerialEffects_commands::fxaxisgain:
-		if(cmd.adr < EffectsCalculator::max_effects && effects_calc->getEffect(cmd.adr)){
-			if(cmd.type == CMDtype::getat){ 
-				replies.emplace_back(effects_calc->getEffect(cmd.adr)->getAxisMagnitude(getCommandHandlerInstance()) * 0xffff);
-			}else if(cmd.type == CMDtype::setat){
-				effects_calc->getEffect(cmd.adr)->setAxisMagnitude(getCommandHandlerInstance(), (float)cmd.val / 0xffff);
-			}
-		}
-		else
-			return CommandStatus::ERR;
-		break;
-
-	case SerialEffects_commands::fxsat:
-		if(cmd.adr < EffectsCalculator::max_effects && effects_calc->getEffect(cmd.adr)){
-			FFB_Effect_Condition* cond = effects_calc->getEffect(cmd.adr)->getCondition(getCommandHandlerInstance());
-			if(cond){
-				if(cmd.type == CMDtype::setat) { cond->negativeSaturation = cmd.val; cond->positiveSaturation = cmd.val; }
-				else if(cmd.type == CMDtype::getat) replies.emplace_back(cond->positiveSaturation);
-			}
-			return CommandStatus::OK;
-		}else return CommandStatus::ERR;
-
 	case SerialEffects_commands::fxtype:
 		if(cmd.adr < EffectsCalculator::max_effects && cmd.type == CMDtype::getat && effects_calc->getEffect(cmd.adr)){
 			replies.emplace_back(effects_calc->getEffect(cmd.adr)->getType());
-		}else
-			return CommandStatus::ERR;
-		break;
-
-	case SerialEffects_commands::fxcoeff:
-		if(cmd.adr < EffectsCalculator::max_effects && effects_calc->getEffect(cmd.adr)){
-			FFB_Effect_Condition* cond = effects_calc->getEffect(cmd.adr)->getCondition(getCommandHandlerInstance());
-			if (cond) {
-				if(cmd.type == CMDtype::setat) { cond->negativeCoefficient = cmd.val; cond->positiveCoefficient = cmd.val; }
-				else if(cmd.type == CMDtype::getat) replies.emplace_back(cond->positiveCoefficient);
-			}
-			return CommandStatus::OK;
 		}else
 			return CommandStatus::ERR;
 		break;

@@ -259,21 +259,8 @@ void HidFFB::new_effect(FFB_CreateNewEffect_Feature_Data_t* effect){
 #endif
 		return;
 	}
-	std::unique_ptr<Effect> new_effect;
-	switch(effect->effectType){
-		case FFB_EFFECT_CONSTANT: new_effect = std::make_unique<EffectConstant>(); break;
-		case FFB_EFFECT_RAMP: new_effect = std::make_unique<EffectRamp>(); break;
-		case FFB_EFFECT_SQUARE: new_effect = std::make_unique<EffectSquare>(); break;
-		case FFB_EFFECT_SINE: new_effect = std::make_unique<EffectSine>(); break;
-		case FFB_EFFECT_TRIANGLE: new_effect = std::make_unique<EffectTriangle>(); break;
-		case FFB_EFFECT_SAWTOOTHUP: new_effect = std::make_unique<EffectSawtoothUp>(); break;
-		case FFB_EFFECT_SAWTOOTHDOWN: new_effect = std::make_unique<EffectSawtoothDown>(); break;
-		case FFB_EFFECT_SPRING: new_effect = std::make_unique<EffectSpring>(); break;
-		case FFB_EFFECT_DAMPER: new_effect = std::make_unique<EffectDamper>(); break;
-		case FFB_EFFECT_INERTIA: new_effect = std::make_unique<EffectInertia>(); break;
-		case FFB_EFFECT_FRICTION: new_effect = std::make_unique<EffectFriction>(); break;
-		default: return; // Type non supporté
-	}
+	std::unique_ptr<Effect> new_effect = Effect::create(effect->effectType);
+	if (!new_effect) return;
 
 	this->effects_calc->logEffectType(effect->effectType,false);
 #ifdef DEBUGLOG

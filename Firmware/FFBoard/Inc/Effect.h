@@ -23,6 +23,17 @@ struct metric_t;
 // Forward declarations if needed
 class Axis;
 
+enum class EffectParameter : uint8_t {
+    Magnitude,
+    Period,
+    Duration,
+    Offset,
+    Deadzone,
+    Saturation,
+    Coefficient,
+    AxisGain
+};
+
 // =======================================================================
 // BASE CLASS : Effect
 //    Effect (type, state, duration, gain, magnitudes)                                                                                                                                                                                      
@@ -50,6 +61,11 @@ protected:
 
 public:
     virtual ~Effect() = default;
+
+    static std::unique_ptr<Effect> create(uint8_t effectType);
+
+    virtual void setParameter(EffectParameter param, uint8_t axis, int32_t value);
+    virtual int32_t getParameter(EffectParameter param, uint8_t axis) const;
 
     uint8_t getType() const { return type; }
     uint8_t getState() const { return state; }
@@ -112,6 +128,9 @@ protected:
 public:
     void setEnvelope(FFB_SetEnvelope_Data_t* report) override;
     
+    void setParameter(EffectParameter param, uint8_t axis, int32_t value) override;
+    int32_t getParameter(EffectParameter param, uint8_t axis) const override;
+
     void setMagnitude(int16_t mag) override { magnitude = mag; }
     int16_t getMagnitude() const override { return magnitude; }
     
@@ -134,6 +153,9 @@ public:
     void setPeriodic(FFB_SetPeriodic_Data_t* report) override;
     void updateReconstruction(float new_mag, float new_offset);
     
+    void setParameter(EffectParameter param, uint8_t axis, int32_t value) override;
+    int32_t getParameter(EffectParameter param, uint8_t axis) const override;
+
     void setOffset(int16_t off) override { offset = off; }
     int16_t getOffset() const override { return offset; }
     void setPeriod(uint32_t p) override { period = p; }
@@ -207,6 +229,10 @@ public:
     EffectConditional() {
     }
     
+    void setParameter(EffectParameter param, uint8_t axis, int32_t value) override;
+    int32_t getParameter(EffectParameter param, uint8_t axis) const override;
+    void setSimpleCondition(uint8_t axis, int16_t coefficient, int16_t saturation);
+
     void setUseSingleCondition(bool single) override { useSingleCondition = single; }
     bool getUseSingleCondition() const override { return useSingleCondition; }
     void setCondition(FFB_SetCondition_Data_t* report) override;
