@@ -646,21 +646,21 @@ void Axis::usbResume(){
 
 
 metric_t* Axis::getMetrics() {
-	return &metric.current;
+	return &metric;
 }
 
 /**
  * Returns position as int scaled to gamepad range
  */
 int32_t Axis::getLastScaledEnc() {
-	return  clip(metric.current.pos_f * 0x7fffffff,-0x7fffffff,0x7fffffff); // Calc from float pos
+	return  clip(metric.pos_f * 0x7fffffff,-0x7fffffff,0x7fffffff); // Calc from float pos
 }
 
 /**
  * Changes intensity of idle spring when FFB is off
  */
 int32_t Axis::updateIdleSpringForce() {
-	return clip<int32_t,int32_t>((int32_t)(-metric.current.pos_scaled_16b*idleSpringScale),-idleSpringClip,idleSpringClip);
+	return clip<int32_t,int32_t>((int32_t)(-metric.pos_scaled_16b*idleSpringScale),-idleSpringClip,idleSpringClip);
 }
 
 /*
@@ -696,19 +696,19 @@ void Axis::calculateMechanicalEffects(bool ffb_on){
 
 	// Always active damper
 	if(damperIntensity != 0){
-		float speedFiltered = (metric.current.speed) * (float)damperIntensity * AXIS_DAMPER_RATIO;
+		float speedFiltered = (metric.speed) * (float)damperIntensity * AXIS_DAMPER_RATIO;
 		mechanicalEffectTorque -= damperFilter.process(clip<float, int32_t>(speedFiltered, -internalFxClip, internalFxClip));
 	}
 
 	// Always active inertia
 	if(inertiaIntensity != 0){
-		float accelFiltered = metric.current.accel * (float)inertiaIntensity * AXIS_INERTIA_RATIO;
+		float accelFiltered = metric.accel * (float)inertiaIntensity * AXIS_INERTIA_RATIO;
 		mechanicalEffectTorque -= inertiaFilter.process(clip<float, int32_t>(accelFiltered, -internalFxClip, internalFxClip));
 	}
 
 	// Always active friction. Based on effectsCalculator implementation
 	if(frictionIntensity != 0){
-		float speed = metric.current.speed * INTERNAL_SCALER_FRICTION;
+		float speed = metric.speed * INTERNAL_SCALER_FRICTION;
 		float speedRampupCeil = 4096;
 		float rampupFactor = 1.0;
 		if (fabs (speed) < speedRampupCeil) {								// if speed in the range to rampup we apply a sine curve
@@ -739,10 +739,10 @@ void Axis::setEffectRatio(uint8_t val) {
  * Resets the metrics and filters
  */
 void Axis::resetMetrics(float new_pos= 0) { // pos is degrees
-	metric.current = metric_t();
-	metric.current.posDegrees = new_pos;
-	std::tie(metric.current.pos_scaled_16b,metric.current.pos_f) = scaleEncValue(new_pos, degreesOfRotation);
-	metric.previous = metric_t();
+	metric = metric_t();
+	metric.posDegrees = new_pos;
+	std::tie(metric.pos_scaled_16b,metric.pos_f) = scaleEncValue(new_pos, degreesOfRotation);
+	last_torque = 0;
 	// Reset filters - Commented out since speed and acceleration filters are replaced by the Kalman filter in updateMetrics
 	// speedFilter.calcBiquad();
 	// accelFilter.calcBiquad();
@@ -756,9 +756,8 @@ void Axis::resetMetrics(float new_pos= 0) { // pos is degrees
  * Updates metrics
  */
 void Axis::updateMetrics(float new_pos) { // pos is degrees
-    metric.previous = metric.current;
-    metric.current.posDegrees = new_pos;
-    std::tie(metric.current.pos_scaled_16b,metric.current.pos_f) = scaleEncValue(new_pos, degreesOfRotation);
+    metric.posDegrees = new_pos;
+    std::tie(metric.pos_scaled_16b,metric.pos_f) = scaleEncValue(new_pos, degreesOfRotation);
 
     Encoder* encoder = getEncoder();
     if (encoder != nullptr) {
@@ -768,15 +767,15 @@ void Axis::updateMetrics(float new_pos) { // pos is degrees
             speed = -speed;
             accel = -accel;
         }
-        metric.current.speed = speed;
-        metric.current.accel = accel;
+        metric.speed = speed;
+        metric.accel = accel;
     } else {
-        metric.current.speed = 0.0f;
-        metric.current.accel = 0.0f;
+        metric.speed = 0.0f;
+        metric.accel = 0.0f;
     }
 
 	// Update hands-off detection buffer
-	accel_buffer[accel_buffer_idx] = metric.current.accel;
+	accel_buffer[accel_buffer_idx] = metric.accel;
 	accel_buffer_idx = (accel_buffer_idx + 1) % (sizeof(accel_buffer) / sizeof(accel_buffer[0]));
 }
 
@@ -819,7 +818,7 @@ int32_t Axis::calculateFFBTorque(){
 	return (int32_t)(torque * 32767.0f * effectRatioScaler);
 }
 
-int32_t Axis::getTorque() { return metric.current.torque; } // Fix: move from previous to current
+int32_t Axis::getTorque() { return metric.torque; } // Fix: move from previous to current
 
 bool Axis::isInverted() {
 	return invertAxis;
@@ -830,11 +829,11 @@ bool Axis::isInverted() {
  */
 int32_t Axis::calculateEndstopTorque(){
 	// TODO Check the type int8_t and the range clipping is -0x7fff..0x7fff
-	int8_t clipDirection = cliptest<int32_t,int32_t>(metric.current.pos_scaled_16b, -0x7fff, 0x7fff);
+	int8_t clipDirection = cliptest<int32_t,int32_t>(metric.pos_scaled_16b, -0x7fff, 0x7fff);
 	if(clipDirection == 0){
 		return 0;
 	}
-	float endstopTorque = clipDirection*metric.current.posDegrees - (float)this->degreesOfRotation/2.0; // degress of rotation counts total range so multiply by 2
+	float endstopTorque = clipDirection*metric.posDegrees - (float)this->degreesOfRotation/2.0; // degress of rotation counts total range so multiply by 2
 	endstopTorque *= (float)endstopStrength * endstopGain; // Apply endstop gain for stiffness.
 	endstopTorque *= -clipDirection;
 
@@ -886,7 +885,7 @@ bool Axis::updateTorque(int32_t* totalTorque) {
 	torque -= applySpeedLimiterTorque(torque);
 
 	// STEP 7: Axis inversion and Slew Rate Limiter
-	// Axis inversion must be done BEFORE Slew Rate because previous.torque is in hardware CS.
+	// Axis inversion must be done BEFORE Slew Rate because last_torque is in hardware CS.
 	torque = (invertAxis) ? -torque : torque;
 
 	// CRITICAL: Slew Rate compares the target value with "metric.previous.torque"
@@ -902,12 +901,14 @@ bool Axis::updateTorque(int32_t* totalTorque) {
 	}
 
 	// Store the actually applied torque for the next iteration (used by the slew rate limiter).
-	metric.current.torque = torqueAfterClipping; 
+	bool changed = (torqueAfterClipping != last_torque);
+	last_torque = torqueAfterClipping;
+	metric.torque = torqueAfterClipping;
 	
 	// return result
 	*totalTorque = torqueAfterClipping;
 	
-	return (metric.current.torque != metric.previous.torque);
+	return changed;
 }
 
 
@@ -920,7 +921,7 @@ void Axis::applyTorqueSlewRateLimiter(int32_t& torque)
 	}
 
 	// This prevents sudden torque jumps, resulting in a smoother feel.
-	const int32_t previousTorque = metric.previous.torque;
+	const int32_t previousTorque = last_torque;
 	const int32_t maxTorqueChange = maxTorqueRateMS;
 
 	// The torque is clipped to be within the range of [previous torque - limit, previous torque + limit].
@@ -937,8 +938,7 @@ int32_t Axis::applySpeedLimiterTorque(int32_t& torque){
 	}
 
 	int32_t resultTorque = 0;
-
-	float effectiveSpeed = metric.current.speed * (torque > 0 ? 1.0f : -1.0f);
+	float effectiveSpeed = metric.speed * (torque > 0 ? 1.0f : -1.0f);
 
 	if (effectiveSpeed > maxSpeedDegS)
 	{
@@ -1078,7 +1078,7 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 		else if (cmd.type == CMDtype::set)
 		{
 			invertAxis = cmd.val >= 1 ? true : false;
-			resetMetrics(-metric.current.posDegrees);
+			resetMetrics(-metric.posDegrees);
 		}
 		break;
 
@@ -1210,16 +1210,16 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 		break;
 
 	case Axis_commands::curpos:
-		replies.emplace_back(this->metric.previous.pos_scaled_16b);
+		replies.emplace_back(this->metric.pos_scaled_16b);
 		break;
 	case Axis_commands::curtorque:
 		replies.emplace_back(getTorque());
 		break;
 	case Axis_commands::curspd:
-		replies.emplace_back(this->metric.previous.speed);
+		replies.emplace_back(this->metric.speed);
 		break;
 	case Axis_commands::curaccel:
-		replies.emplace_back(this->metric.previous.accel);
+		replies.emplace_back(this->metric.accel);
 		break;
 
 	case Axis_commands::reductionScaler:
@@ -1350,7 +1350,7 @@ void Axis::updateHandsOffState() {
 
 
     // Safety override: if speed is very high, cut torque
-    if (abs(metric.current.speed) > handsOffSpeedThreshold) {
+    if (abs(metric.speed) > handsOffSpeedThreshold) {
         handsOff = true;
         return;
     }

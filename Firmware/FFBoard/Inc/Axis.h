@@ -102,13 +102,6 @@ struct metric_t {
 };
 
 
-/**
- * @brief Holds the current and previous metrics for an axis, used for calculating derivatives.
- */
-struct axis_metric_t {
-	metric_t current;  //!< Current metrics.
-	metric_t previous; //!< Metrics from the previous update cycle.
-};
 
 /**
  * @brief Represents a gear ratio for scaling encoder values.
@@ -493,7 +486,8 @@ private:
 #endif
 
 	// Axis metrics
-	axis_metric_t metric;			//!< Current and previous physical metrics of the axis.
+	metric_t metric;			//!< Current physical metrics of the axis.
+	int32_t last_torque = 0;
 	float previousFrameSpeed = 0;			//!< Instantaneous speed from the last cycle, used for acceleration calculation.
 
 	// Torque components
