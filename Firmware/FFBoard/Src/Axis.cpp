@@ -743,9 +743,9 @@ void Axis::resetMetrics(float new_pos= 0) { // pos is degrees
 	metric.current.posDegrees = new_pos;
 	std::tie(metric.current.pos_scaled_16b,metric.current.pos_f) = scaleEncValue(new_pos, degreesOfRotation);
 	metric.previous = metric_t();
-	// Reset filters
-	speedFilter.calcBiquad();
-	accelFilter.calcBiquad();
+	// Reset filters - Commented out since speed and acceleration filters are replaced by the Kalman filter in updateMetrics
+	// speedFilter.calcBiquad();
+	// accelFilter.calcBiquad();
 
 #ifdef USE_DSP_FUNCTIONS
 	arm_pid_reset_f32(&speedLimiterPID);	// reset the PID limit
@@ -756,18 +756,24 @@ void Axis::resetMetrics(float new_pos= 0) { // pos is degrees
  * Updates metrics
  */
 void Axis::updateMetrics(float new_pos) { // pos is degrees
-	// store old value for next metric's computing
-	metric.previous = metric.current;
+    metric.previous = metric.current;
+    metric.current.posDegrees = new_pos;
+    std::tie(metric.current.pos_scaled_16b,metric.current.pos_f) = scaleEncValue(new_pos, degreesOfRotation);
 
-	metric.current.posDegrees = new_pos;
-	std::tie(metric.current.pos_scaled_16b,metric.current.pos_f) = scaleEncValue(new_pos, degreesOfRotation);
-
-
-	// compute speed and accel from raw instant speed normalized
-	float currentSpeed = (new_pos - metric.previous.posDegrees) * this->filter_f; // deg/s
-	metric.current.speed = speedFilter.process(currentSpeed);
-	metric.current.accel = accelFilter.process((currentSpeed - previousFrameSpeed))* this->filter_f; // deg/s/s
-	previousFrameSpeed = currentSpeed;
+    Encoder* encoder = getEncoder();
+    if (encoder != nullptr) {
+        float speed = 360.0f * encoder->getSpeed() * gearRatio.gearRatio;
+        float accel = 360.0f * encoder->getAccel() * gearRatio.gearRatio;
+        if (isInverted()) {
+            speed = -speed;
+            accel = -accel;
+        }
+        metric.current.speed = speed;
+        metric.current.accel = accel;
+    } else {
+        metric.current.speed = 0.0f;
+        metric.current.accel = 0.0f;
+    }
 
 	// Update hands-off detection buffer
 	accel_buffer[accel_buffer_idx] = metric.current.accel;

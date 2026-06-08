@@ -60,6 +60,7 @@ protected:
 	KinematicKalman kalman;
 	uint32_t last_cpr = 0;
 	float r_var = 0.0001f;
+	uint32_t last_update_time = 0;
 };
 
 class EncoderNone : public Encoder {

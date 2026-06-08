@@ -130,6 +130,10 @@ uint32_t EncoderLocal::getCpr() {
 	return this->cpr;
 }
 
+uint32_t EncoderLocal::getScaler() {
+	return 10; // 1 kHz polling frequency
+}
+
 void EncoderLocal::setCpr(uint32_t cpr){
 	this->cpr = cpr;
 }

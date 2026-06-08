@@ -21,6 +21,7 @@
 #include "ExtiHandler.h"
 #include "SPI.h"
 #include "TimerHandler.h"
+#include "ExternalEncoderAdapter.h"
 #include <span>
 #include "semaphore.hpp"
 #include <GPIOPin.h>
@@ -486,6 +487,7 @@ public:
 	void startMotor();
 
 	void setPowerLimit(uint16_t power) override;
+	void setExternalPhiE(float phiE) override;
 
 	void emergencyStop(bool reset);
 	bool emergency = false;
@@ -619,16 +621,6 @@ public:
 	virtual std::string getHelpstring(){return "TMC4671 interface";}
 
 protected:
-	class TMC_ExternalEncoderUpdateThread : public cpp_freertos::Thread{
-	public:
-		TMC_ExternalEncoderUpdateThread(TMC4671* tmc);
-		//~TMC_ExternalEncoderUpdateThread();
-		void Run();
-		void updateFromIsr();
-
-	private:
-		TMC4671* tmc;
-	};
 
 	static std::span<const TMC4671HardwareTypeConf> tmc4671_hw_configs; // Can override in external target file
 
@@ -714,7 +706,7 @@ private:
 #ifdef TIM_TMC
 
 	TIM_HandleTypeDef* externalEncoderTimer = &TIM_TMC;
-	std::unique_ptr<TMC_ExternalEncoderUpdateThread> extEncUpdater = nullptr;
+	std::unique_ptr<ExternalEncoderAdapter> extEncAdapter = nullptr;
 #else
 	TIM_HandleTypeDef* externalEncoderTimer = nullptr;
 #endif

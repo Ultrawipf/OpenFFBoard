@@ -50,6 +50,7 @@ public:
 
 	uint32_t getCpr() override;
 	void setCpr(uint32_t cpr);	// Encoder counts per rotation
+	uint32_t getScaler() override;
 
 	CommandStatus command(const ParsedCommand& cmd,std::vector<CommandReply>& replies);
 	std::string getHelpstring(){return "Local ABN encoder\n";}

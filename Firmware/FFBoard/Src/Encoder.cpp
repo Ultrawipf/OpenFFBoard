@@ -7,6 +7,7 @@
 
 #include "Encoder.h"
 #include "ClassChooser.h"
+#include "EncoderManager.h"
 
 ClassIdentifier Encoder::info ={.name = "None" , .id=CLSID_ENCODER_NONE, .visibility = ClassVisibility::visible};
 ClassIdentifier EncoderNone::info ={.name = "None" , .id=CLSID_ENCODER_NONE, .visibility = ClassVisibility::visible};
@@ -17,11 +18,12 @@ const ClassIdentifier Encoder::getInfo(){
 }
 
 Encoder::Encoder() {
-
+	EncoderManager::getInstance().registerEncoder(this);
+	last_update_time = micros();
 }
 
 Encoder::~Encoder() {
-
+	EncoderManager::getInstance().deregisterEncoder(this);
 }
 
 /**
@@ -81,11 +83,11 @@ void Encoder::setPos(int32_t pos){
 }
 
 float Encoder::getSpeed() {
-	return kalman.getOmega();
+    return kalman.getOmega() / (2.0f * 3.14159265f); // rad/s -> rot/s
 }
 
 float Encoder::getAccel() {
-	return kalman.getAlpha();
+    return kalman.getAlpha() / (2.0f * 3.14159265f); // rad/s^2 -> rot/s^2
 }
 
 uint32_t Encoder::getScaler() {
@@ -93,22 +95,29 @@ uint32_t Encoder::getScaler() {
 }
 
 void Encoder::triggerRead() {
-
+    uint32_t now = micros();
+    uint32_t dt_us = now - last_update_time;
+    if (dt_us == 0) return;
+    float dt = (float)dt_us * 1e-6f;
+    last_update_time = now;
+    
+    updateState(getPos_f(), dt);
 }
 
-void Encoder::updateState(float new_pos, float dt) {
-	kalman.predict(dt);
-	uint32_t current_cpr = getCpr();
-	if (current_cpr != last_cpr) {
-		last_cpr = current_cpr;
-		if (current_cpr > 0) {
-			float step = 2.0f * 3.14159265f / (float)current_cpr;
-			r_var = (step * step) / 12.0f;
-		} else {
-			r_var = 0.0001f;
-		}
-	}
-	kalman.update(new_pos, r_var);
+void Encoder::updateState(float new_pos_rot, float dt) {
+    kalman.predict(dt);
+    uint32_t current_cpr = getCpr();
+    if (current_cpr != last_cpr) {
+        last_cpr = current_cpr;
+        if (current_cpr > 0) {
+            float step = 2.0f * 3.14159265f / (float)current_cpr;
+            r_var = (step * step) / 12.0f;
+        } else {
+            r_var = 0.0001f;
+        }
+    }
+    float new_pos_rad = new_pos_rot * 2.0f * 3.14159265f;
+    kalman.update(new_pos_rad, r_var);
 }
 
 

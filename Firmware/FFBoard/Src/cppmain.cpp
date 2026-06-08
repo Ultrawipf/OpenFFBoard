@@ -6,6 +6,7 @@
 #include "cpp_target_config.h"
 #include "cmsis_os.h"
 #include "tusb.h"
+#include "EncoderManager.h"
 
 uint32_t clkmhz = HAL_RCC_GetHCLKFreq() / 100000;
 
@@ -78,6 +79,7 @@ void cppmain() {
 	// ------------------------
 
 	startADC(); // enable ADC DMA
+	EncoderManager::getInstance().init();
 
 	// If switch pressed at boot select failsafe implementation
 #ifdef BTNFAILSAFE

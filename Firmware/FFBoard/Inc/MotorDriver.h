@@ -34,6 +34,7 @@ public:
 	virtual void emergencyStop(bool reset = false);
 
 	virtual void setPowerLimit(uint16_t power){}; // specific motor driver manager power, this is used to send powerLimit to the driver, like TMC4671.
+	virtual void setExternalPhiE(float phiE) {}
 	
 	// 
 	/**

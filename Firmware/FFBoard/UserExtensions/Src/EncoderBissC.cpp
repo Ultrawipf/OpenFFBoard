@@ -64,6 +64,14 @@ void EncoderBissC::Run(){
 			}
 
 			lastPos = pos;
+			
+			uint32_t now = micros();
+			uint32_t dt_us = now - last_update_time;
+			if (dt_us > 0) {
+				float dt = (float)dt_us * 1e-6f;
+				last_update_time = now;
+				updateState(getPos_f(), dt);
+			}
 		}else{
 			numErrors++;
 		}
@@ -236,6 +244,19 @@ void EncoderBissC::setPos(int32_t newpos){
 
 uint32_t EncoderBissC::getCpr(){
 	return 1<<lenghtDataBit;
+}
+
+void EncoderBissC::triggerRead() {
+    if (!waitData) {
+        bool isIsr = inIsr();
+        if (isIsr) {
+            BaseType_t taskWoken = 0;
+            requestNewDataSem.GiveFromISR(&taskWoken);
+            portYIELD_FROM_ISR(taskWoken);
+        } else {
+            requestNewDataSem.Give();
+        }
+    }
 }
 
 void EncoderBissC::registerCommands(){
