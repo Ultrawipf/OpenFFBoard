@@ -15,7 +15,7 @@ void ExternalEncoderAdapter::timerElapsed(TIM_HandleTypeDef* htim) {
     if (htim == &TIM_TMC && motor != nullptr && encoder != nullptr) {
         static uint32_t ticks = 0;
         ticks++;
-        if (ticks >= 10) { // Limit to 1 kHz
+        if (ticks >= 2) { // 5kHz is the sweet spot between SPI/CPU context switch overhead and TMC position latency
             ticks = 0;
             this->NotifyFromISR();
         }
