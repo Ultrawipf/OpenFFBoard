@@ -138,6 +138,7 @@ uint8_t MtEncoderSPI::readSpi(uint16_t addr){
 		spiPort.transmitReceive(txbuf, rxbuf, 3, this,100);
 		return rxbuf[2];
 	}
+	return 0;
 }
 
 void MtEncoderSPI::writeSpi(uint16_t addr,uint8_t data){

@@ -202,6 +202,7 @@ bool EncoderBissC::updateFrame(){
 	uint8_t crcRx = rxData64 & 0x3F; 									 //extract last 6-bit digits to get CRC
 	uint32_t dataRx = (rxData64 >> 6) & ((1<<(lenghtDataBit + 2)) - 1);  //Shift out CRC, AND with 24-bit mask to get raw data (position, error, warning)
 	uint8_t errorWarning = (dataRx & 0x3); // Error and warning are lowest 2 bits now
+	(void)errorWarning; // Suppress compiler warning, reserved for future use
 	newPos = (dataRx >> 2) & ((1<<lenghtDataBit) - 1); 			//Shift out error and warning, AND with 22-bit mask to get position
 
 

@@ -197,7 +197,7 @@ private:
 
 		if(waitingReply){
 			uartErrorOccured = true;
-			uarterrors++;
+			uarterrors = uarterrors + 1;
 			//uartport->abortReceive();
 			// resetBuffer();
 
@@ -239,7 +239,7 @@ private:
 
 		if(waitingReply){
 			uartErrorOccured = true;
-			uarterrors++;
+			uarterrors = uarterrors + 1;
 			//uartport->abortReceive();
 			waitingReply = false;
 			return false;

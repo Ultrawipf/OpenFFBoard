@@ -486,7 +486,7 @@ void VescCAN::decodeEncoderPosition(const float newPos) {
 	lastPos = (newPos / 360.0) + mtPos; // normalize the position
 	prevPos360 = newPos;
 
-	encCount++;
+	encCount = encCount + 1;
 }
 
 /**
