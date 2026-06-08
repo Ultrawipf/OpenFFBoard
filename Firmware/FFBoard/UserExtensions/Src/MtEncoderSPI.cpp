@@ -282,6 +282,15 @@ uint32_t MtEncoderSPI::getCpr(){
 	}
 }
 
+/**
+ * @brief Returns the polling scaler.
+ * MagnTek encoders operate at up to 16MHz SPI clocks. A scaler of 1 (10kHz) 
+ * easily fits within the SPI bandwidth constraints.
+ */
+uint32_t MtEncoderSPI::getScaler() {
+	return 1; // 10 kHz polling frequency
+}
+
 void MtEncoderSPI::setMode(MtEncoderSPI::MtEncoderSPI_mode mode){
 	this->mode = mode;
 	// Reset variables

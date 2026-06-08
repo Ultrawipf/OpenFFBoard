@@ -61,20 +61,8 @@ void EncoderSSI::saveFlash(){
 void EncoderSSI::configSPI() {
 
 	uint32_t prescale;
-	switch (spiSpeed) {
-		case 0 :
-			prescale = SPI_BAUDRATEPRESCALER_32;
-			break;
-		case 1 :
-			prescale = SPI_BAUDRATEPRESCALER_16;
-			break;
-		case 2 :
-			prescale = SPI_BAUDRATEPRESCALER_8;
-			break;
-		default :
-			prescale = SPI_BAUDRATEPRESCALER_32;
-			break;
-	}
+	uint32_t target_baudrate = (spiSpeed == 0) ? 2500000 : (spiSpeed == 1) ? 5000000 : 10000000;
+	prescale = spiPort.getClosestPrescaler(target_baudrate).first;
 
 	SPIConfig* config =  this->getSpiConfig();
 
@@ -177,6 +165,15 @@ void EncoderSSI::setPos(int32_t newpos){
 
 uint32_t EncoderSSI::getCpr(){
 	return 1<<lenghtDataBit;
+}
+
+/**
+ * @brief Returns the polling scaler.
+ * Set to 1 (10kHz sampling) as SSI frame lengths are short enough to prevent 
+ * SPI bus saturation during rapid updates.
+ */
+uint32_t EncoderSSI::getScaler() {
+	return 1; // 10 kHz polling frequency
 }
 
 void EncoderSSI::registerCommands(){

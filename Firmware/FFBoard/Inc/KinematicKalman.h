@@ -4,6 +4,15 @@
 /**
  * @brief A 3-state Kinematic Kalman Filter for real-time motor shaft tracking.
  * Establishes states for Position (theta), Velocity (omega), and Acceleration (alpha).
+ * 
+ * @details
+ * System characteristics:
+ * - Sample-rate independent: The filter uses the exact elapsed time (dt measured via micros()) passed to predict(dt) instead of a fixed frequency. This ensures perfect kinematic calculation, whether the encoder is polled at 10kHz or slowed down to 1kHz by its Scaler.
+ * - Resolution-aware: R (Measurement Noise) is not just calculated via (step^2)/12, but makes the filter "Resolution-aware" in real-time. A low CPR will give a high R (more aggressive smoothing), while a high CPR will reduce R (maximum trust in the sensor and minimum latency).
+ * 
+ * Constant choices:
+ * - q_var (Process Noise): Set very high (e.g., 1000000.0f) to tolerate enormous Jerk typical in Force Feedback applications.
+ * - Integration constants (0.5 and 0.25): Found in the source code, these are not adjustable parameters but mathematical constants for discrete integration (Discrete White Noise Acceleration model: 1/2*a*t^2 for position, and 1/4*a^2*t^4 for covariance).
  */
 class KinematicKalman {
 public:

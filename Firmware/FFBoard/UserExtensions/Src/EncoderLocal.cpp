@@ -131,7 +131,16 @@ uint32_t EncoderLocal::getCpr() {
 }
 
 uint32_t EncoderLocal::getScaler() {
-	return 10; // 1 kHz polling frequency
+	if (this->cpr == 0) return 10; // Safety against div by 0
+	
+	// Dynamic scaler based on CPR to target ~7.5 RPM quantization noise at 5 deg/s
+	uint32_t optimal_scaler = 80000 / this->cpr;
+	
+	// Clamp scaler between 1 (10 kHz) and 10 (1 kHz)
+	if (optimal_scaler < 1) optimal_scaler = 1;
+	if (optimal_scaler > 10) optimal_scaler = 10;
+	
+	return optimal_scaler;
 }
 
 void EncoderLocal::setCpr(uint32_t cpr){

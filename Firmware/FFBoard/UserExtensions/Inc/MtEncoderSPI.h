@@ -42,6 +42,7 @@ public:
 
 	int32_t getPos() override;
 	uint32_t getCpr() override; // Encoder counts per rotation
+	uint32_t getScaler() override;
 
 	int32_t getPosAbs() override;
 

@@ -253,6 +253,15 @@ uint32_t EncoderBissC::getCpr(){
 	return 1<<lenghtDataBit;
 }
 
+/**
+ * @brief Returns the polling scaler.
+ * A scaler of 1 enables 10kHz sampling. The high SPI bandwidth of BiSS-C ensures 
+ * this won't saturate the SPI bus even in dual encoder configurations.
+ */
+uint32_t EncoderBissC::getScaler() {
+	return 1; // 10 kHz polling frequency
+}
+
 void EncoderBissC::triggerRead() {
     if (!waitData) {
         // Trigger a new BiSS-C read cycle.
