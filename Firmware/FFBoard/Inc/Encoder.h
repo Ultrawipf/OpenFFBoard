@@ -10,6 +10,7 @@
 
 #include "FFBoardMain.h"
 #include "ChoosableClass.h"
+#include "KinematicKalman.h"
 
 /*
  * Note:
@@ -35,7 +36,7 @@ public:
 
 	virtual EncoderType getEncoderType();
 
-	virtual int32_t getPos();
+	virtual int32_t getPos() = 0;
 	virtual float getPos_f();
 
 	virtual int32_t getPosAbs();
@@ -43,15 +44,33 @@ public:
 
 	virtual void setPos(int32_t pos);
 
-	virtual uint32_t getCpr(); // Encoder counts per rotation
+	virtual uint32_t getCpr() = 0; // Encoder counts per rotation
 
+	virtual float getSpeed();
+	virtual float getAccel();
+	virtual uint32_t getScaler();
+	virtual void triggerRead();
+	void updateState(float new_pos, float dt);
 
 	static const std::vector<class_entry<Encoder> > all_encoders;
 	virtual const ClassType getClassType() override {return ClassType::Encoder;};
 
 protected:
 	uint32_t cpr = 0;
+	KinematicKalman kalman;
+	uint32_t last_cpr = 0;
+	float r_var = 0.0001f;
 };
 
+class EncoderNone : public Encoder {
+public:
+	EncoderNone() : Encoder() {}
+	~EncoderNone() override = default;
+	static ClassIdentifier info;
+	const ClassIdentifier getInfo() override { return info; }
+	int32_t getPos() override { return 0; }
+	uint32_t getCpr() override { return 0; }
+	EncoderType getEncoderType() override { return EncoderType::NONE; }
+};
 
 #endif /* ENCODER_H_ */

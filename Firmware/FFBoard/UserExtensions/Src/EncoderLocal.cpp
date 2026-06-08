@@ -126,6 +126,10 @@ void EncoderLocal::overflowCallback(){
 	}
 }
 
+uint32_t EncoderLocal::getCpr() {
+	return this->cpr;
+}
+
 void EncoderLocal::setCpr(uint32_t cpr){
 	this->cpr = cpr;
 }

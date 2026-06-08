@@ -48,6 +48,7 @@ public:
 
 	int32_t getTimerCount();
 
+	uint32_t getCpr() override;
 	void setCpr(uint32_t cpr);	// Encoder counts per rotation
 
 	CommandStatus command(const ParsedCommand& cmd,std::vector<CommandReply>& replies);

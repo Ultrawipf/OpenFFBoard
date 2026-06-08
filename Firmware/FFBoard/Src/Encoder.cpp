@@ -9,6 +9,7 @@
 #include "ClassChooser.h"
 
 ClassIdentifier Encoder::info ={.name = "None" , .id=CLSID_ENCODER_NONE, .visibility = ClassVisibility::visible};
+ClassIdentifier EncoderNone::info ={.name = "None" , .id=CLSID_ENCODER_NONE, .visibility = ClassVisibility::visible};
 
 
 const ClassIdentifier Encoder::getInfo(){
@@ -77,6 +78,37 @@ float Encoder::getPos_f(){
  */
 void Encoder::setPos(int32_t pos){
 
+}
+
+float Encoder::getSpeed() {
+	return kalman.getOmega();
+}
+
+float Encoder::getAccel() {
+	return kalman.getAlpha();
+}
+
+uint32_t Encoder::getScaler() {
+	return 1;
+}
+
+void Encoder::triggerRead() {
+
+}
+
+void Encoder::updateState(float new_pos, float dt) {
+	kalman.predict(dt);
+	uint32_t current_cpr = getCpr();
+	if (current_cpr != last_cpr) {
+		last_cpr = current_cpr;
+		if (current_cpr > 0) {
+			float step = 2.0f * 3.14159265f / (float)current_cpr;
+			r_var = (step * step) / 12.0f;
+		} else {
+			r_var = 0.0001f;
+		}
+	}
+	kalman.update(new_pos, r_var);
 }
 
 

@@ -15,7 +15,7 @@
 #ifndef ENCODERSOURCES_DEFAULT_OVERRIDE
 std::vector<class_entry<Encoder>> const Encoder::all_encoders =
 	{
-		add_class<Encoder, Encoder>(0),
+		add_class<EncoderNone, Encoder>(0),
 
 #ifdef LOCALENCODER
 		add_class<EncoderLocal, Encoder>(2),
