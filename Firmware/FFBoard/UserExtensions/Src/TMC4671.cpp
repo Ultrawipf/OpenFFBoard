@@ -1859,7 +1859,7 @@ std::pair<uint32_t,std::string> TMC4671::getTmcType(){
 }
 
 Encoder* TMC4671::getEncoder(){
-	if((conf.motconf.enctype == EncoderType_TMC::ext && externalEncoderTimer) || conf.combineEncoder){
+	if((conf.motconf.enctype == EncoderType_TMC::ext || conf.combineEncoder) && MotorDriver::drvEncoder != nullptr){
 		return MotorDriver::drvEncoder.get();
 	}else{
 		return static_cast<Encoder*>(this);

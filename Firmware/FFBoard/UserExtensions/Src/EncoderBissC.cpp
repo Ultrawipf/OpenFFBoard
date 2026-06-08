@@ -65,11 +65,18 @@ void EncoderBissC::Run(){
 
 			lastPos = pos;
 			
+			// NOTE: We update the Kalman filter here in the Run loop instead of inside triggerRead().
+			// Because BiSS-C uses an asynchronous SPI DMA transfer, triggerRead() only requests the transfer
+			// and does not have the new position yet. Doing the update here ensures we use the fresh position 
+			// measurement immediately after the DMA completion, and calculates the exact time step (dt) 
+			// at the moment of actual physical data arrival, eliminating time-jitter and phase errors.
 			uint32_t now = micros();
 			uint32_t dt_us = now - last_update_time;
 			if (dt_us > 0) {
-				float dt = (float)dt_us * 1e-6f;
+				float dt = (float)dt_us * 1e-6f; // Convert to seconds
 				last_update_time = now;
+				
+				// Update the Kalman filter with the new absolute decoded position
 				updateState(getPos_f(), dt);
 			}
 		}else{
@@ -248,11 +255,14 @@ uint32_t EncoderBissC::getCpr(){
 
 void EncoderBissC::triggerRead() {
     if (!waitData) {
+        // Trigger a new BiSS-C read cycle.
+        // Instead of executing a blocking SPI transfer inside the 10 kHz basic timer ISR,
+        // we release the requestNewDataSem semaphore to wake up the worker thread.
         bool isIsr = inIsr();
         if (isIsr) {
             BaseType_t taskWoken = 0;
-            requestNewDataSem.GiveFromISR(&taskWoken);
-            portYIELD_FROM_ISR(taskWoken);
+            requestNewDataSem.GiveFromISR(&taskWoken); // Non-blocking FreeRTOS ISR call
+            portYIELD_FROM_ISR(taskWoken); // Force context yield if the worker task has higher priority
         } else {
             requestNewDataSem.Give();
         }
