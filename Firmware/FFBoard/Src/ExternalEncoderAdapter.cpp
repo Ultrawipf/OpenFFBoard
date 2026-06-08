@@ -1,8 +1,8 @@
 #include "ExternalEncoderAdapter.h"
 #include "cppmain.h"
 
-#ifdef TIM_TMC
-extern TIM_HandleTypeDef TIM_TMC;
+#ifdef TIM_ENC
+extern TIM_HandleTypeDef TIM_ENC;
 #endif
 
 ExternalEncoderAdapter::ExternalEncoderAdapter(MotorDriver* motor, Encoder* encoder)
@@ -11,8 +11,8 @@ ExternalEncoderAdapter::ExternalEncoderAdapter(MotorDriver* motor, Encoder* enco
 }
 
 void ExternalEncoderAdapter::timerElapsed(TIM_HandleTypeDef* htim) {
-#ifdef TIM_TMC
-    if (htim == &TIM_TMC && motor != nullptr && encoder != nullptr) {
+#ifdef TIM_ENC
+    if (htim == &TIM_ENC && motor != nullptr && encoder != nullptr) {
         static uint32_t ticks = 0;
         ticks++;
         if (ticks >= 2) { // 5kHz is the sweet spot between SPI/CPU context switch overhead and TMC position latency

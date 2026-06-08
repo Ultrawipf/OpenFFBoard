@@ -35,8 +35,8 @@
 
 extern SPI_HandleTypeDef HSPIDRV;
 
-#ifdef TIM_TMC
-extern TIM_HandleTypeDef TIM_TMC;
+#ifdef TIM_ENC
+extern TIM_HandleTypeDef TIM_ENC;
 #endif
 
 #ifndef TMC4671_DEFAULT_CURRENT_SCALER
@@ -54,8 +54,8 @@ extern TIM_HandleTypeDef TIM_TMC;
 #ifndef TMC4671_ITUNE_CUTOFF
 #define TMC4671_ITUNE_CUTOFF 0.04
 #endif
-#ifndef TIM_TMC_ARR
-#define TIM_TMC_ARR 250
+#ifndef TIM_ENC_ARR
+#define TIM_ENC_ARR 100
 #endif
 
 
@@ -703,9 +703,8 @@ private:
 	const float fluxFilterFreq = 350.0;
 
 	// External encoder timer fires interrupts to trigger a new commutation position update
-#ifdef TIM_TMC
-
-	TIM_HandleTypeDef* externalEncoderTimer = &TIM_TMC;
+#ifdef TIM_ENC
+	TIM_HandleTypeDef* externalEncoderTimer = &TIM_ENC;
 	std::unique_ptr<ExternalEncoderAdapter> extEncAdapter = nullptr;
 #else
 	TIM_HandleTypeDef* externalEncoderTimer = nullptr;

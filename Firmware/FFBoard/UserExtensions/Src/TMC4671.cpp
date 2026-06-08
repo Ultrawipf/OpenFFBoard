@@ -2014,7 +2014,7 @@ void TMC4671::setSequentialPI(bool sequential){
 }
 
 void TMC4671::setExternalEncoderAllowed(bool allow){
-#ifndef TIM_TMC
+#ifndef TIM_ENC
 	allowExternalEncoder = false;
 #else
 	bool lastAllowed = allowExternalEncoder;
@@ -2027,7 +2027,7 @@ void TMC4671::setExternalEncoderAllowed(bool allow){
 }
 
 bool TMC4671::externalEncoderAllowed(){
-#ifndef TIM_TMC
+#ifndef TIM_ENC
 	return false;
 #else
 	return allowExternalEncoder && conf.hwconf.flags.enc_ext;
@@ -3132,7 +3132,7 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 
 }
 
-#ifdef TIM_TMC
+#ifdef TIM_ENC
 	void TMC4671::timerElapsed(TIM_HandleTypeDef* htim){
 		if(htim != this->externalEncoderTimer){
 			return;
@@ -3141,11 +3141,11 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 #endif
 
 void TMC4671::setUpExtEncTimer() {
-#ifdef TIM_TMC
+#ifdef TIM_ENC
     if (extEncAdapter == nullptr) {
         extEncAdapter = std::make_unique<ExternalEncoderAdapter>(this, drvEncoder.get());
     }
-    this->externalEncoderTimer = &TIM_TMC;
+    this->externalEncoderTimer = &TIM_ENC;
 #endif
 }
 

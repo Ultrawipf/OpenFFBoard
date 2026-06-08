@@ -20,7 +20,7 @@ const ClassIdentifier EncoderLocal::getInfo(){
 EncoderLocal::EncoderLocal() : CommandHandler("localenc",CLSID_ENCODER_LOCAL) {
 	EncoderLocal::inUse = true;
 	this->restoreFlash();
-	this->htim = &TIM_ENC;
+	this->htim = &TIM_ENC_ABN_HW;
 	HAL_TIM_Base_Start_IT(htim); // May immediately call overflow. Initialize count again
 	this->htim->Instance->CNT = 0x7fff;
 	pos = 0;

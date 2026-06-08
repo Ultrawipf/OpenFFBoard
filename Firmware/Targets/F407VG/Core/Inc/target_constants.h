@@ -62,15 +62,15 @@
 //----------------------
 #define BTNFAILSAFE // Use user button to force board into failsafe mainclass
 
-#define TIM_ENC htim3
+#define TIM_ENC_ABN_HW htim3
 // Timer 3 is used by the encoder.
 #define TIM_PWM htim1
 
 #define TIM_MICROS_HALTICK htim7 // Micros timer MUST be reset by hal tick timer or isr to count microseconds since last tick
 #define TIM_USER htim9 // Timer with full core clock speed available for the mainclass
-#define TIM_TMC htim6 // Timer running at half clock speed
-#define TIM_TMC_BCLK SystemCoreClock / 2
-#define TIM_TMC_ARR 250 // 4khz
+#define TIM_ENC htim6 // Timer running at half clock speed
+#define TIM_ENC_BCLK SystemCoreClock / 2
+#define TIM_ENC_ARR 100 // 10khz
 #define TIM_FFB htim13
 
 extern UART_HandleTypeDef huart1;

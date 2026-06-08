@@ -17,7 +17,7 @@
 #include "PersistentStorage.h"
 
 #ifdef LOCALENCODER
-extern TIM_HandleTypeDef TIM_ENC;
+extern TIM_HandleTypeDef TIM_ENC_ABN_HW;
 
 
 

@@ -60,13 +60,14 @@
 //----------------------
 
 
-#define TIM_ENC htim2
+#define TIM_ENC_ABN_HW htim2
 // Timer 2 is used by the encoder.
 #define TIM_PWM htim1
 
 #define TIM_MICROS_HALTICK htim7 // Micros timer MUST be reset by hal tick timer or isr to count microseconds since last tick
 #define TIM_USER htim9 // Timer with full core clock speed available for the mainclass
-#define TIM_TMC htim6 // Timer running at half clock speed
+#define TIM_ENC htim6 // Timer running at half clock speed
+#define TIM_ENC_ARR 100 // 10khz
 
 extern UART_HandleTypeDef huart1;
 #define UART_PORT_EXT huart1 // main uart port

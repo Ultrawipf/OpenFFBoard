@@ -1,8 +1,8 @@
 #include "EncoderManager.h"
 #include "cppmain.h"
 
-#ifdef TIM_TMC
-extern TIM_HandleTypeDef TIM_TMC;
+#ifdef TIM_ENC
+extern TIM_HandleTypeDef TIM_ENC;
 #endif
 
 EncoderManager::EncoderManager() : TimerHandler() {
@@ -16,15 +16,15 @@ EncoderManager& EncoderManager::getInstance() {
 void EncoderManager::init() {
     if (initialized) return;
 
-#ifdef TIM_TMC
-    TIM_HandleTypeDef* timer = &TIM_TMC;
+#ifdef TIM_ENC
+    TIM_HandleTypeDef* timer = &TIM_ENC;
     
     // Stop first to prevent race conditions during reconfiguration
     HAL_TIM_Base_Stop_IT(timer);
 
     // PSC counts microseconds (1 MHz frequency)
-#ifdef TIM_TMC_BCLK
-    timer->Instance->PSC = ((TIM_TMC_BCLK) / 1000000) - 1;
+#ifdef TIM_ENC_BCLK
+    timer->Instance->PSC = ((TIM_ENC_BCLK) / 1000000) - 1;
 #else
     timer->Instance->PSC = (SystemCoreClock / 2 / 1000000) - 1;
 #endif
@@ -67,8 +67,8 @@ void EncoderManager::deregisterEncoder(Encoder* encoder) {
 }
 
 void EncoderManager::timerElapsed(TIM_HandleTypeDef* htim) {
-#ifdef TIM_TMC
-    if (htim == &TIM_TMC) {
+#ifdef TIM_ENC
+    if (htim == &TIM_ENC) {
         tick_count++;
         for (int i = 0; i < MAX_ENCODERS; ++i) {
             Encoder* enc = active_encoders[i];
