@@ -22,17 +22,17 @@ void KinematicKalman::setQ(float q) {
 }
 
 // Retrieves estimated position (theta)
-float KinematicKalman::getPosition() const {
+float KinematicKalman::getTheta() const {
     return x[0];
 }
 
 // Retrieves estimated velocity (omega)
-float KinematicKalman::getVelocity() const {
+float KinematicKalman::getOmega() const {
     return x[1];
 }
 
 // Retrieves estimated acceleration (alpha)
-float KinematicKalman::getAcceleration() const {
+float KinematicKalman::getAlpha() const {
     return x[2];
 }
 
