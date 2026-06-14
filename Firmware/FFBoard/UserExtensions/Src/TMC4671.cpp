@@ -1872,8 +1872,10 @@ Encoder* TMC4671::getEncoder(){
 	}
 }
 
-void TMC4671::setEncoder(std::shared_ptr<Encoder>& encoder){
-	MotorDriver::drvEncoder = encoder;
+void TMC4671::setEncoder(std::shared_ptr<Encoder>& enc){
+	__HAL_TIM_DISABLE_IT(&TIM_TMC, TIM_IT_UPDATE);
+	MotorDriver::drvEncoder = enc;
+	__HAL_TIM_ENABLE_IT(&TIM_TMC, TIM_IT_UPDATE);
 	if(conf.motconf.enctype == EncoderType_TMC::ext && externalEncoderTimer){
 		if(extEncAdapter){
 			extEncAdapter.reset(); // Safely destroy the old thread and timer handler

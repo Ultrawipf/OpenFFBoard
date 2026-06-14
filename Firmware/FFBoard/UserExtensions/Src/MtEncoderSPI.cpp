@@ -86,7 +86,14 @@ void MtEncoderSPI::Run(){
 		requestNewDataSem.Take(); // Wait until a position is requested
 		//spiPort.receive_DMA(spi_buf, bytes, this); // Receive next frame
 		updateAngleStatus();
-		this->WaitForNotification();  // Wait until DMA is finished
+		if (this->WaitForNotification(20) == 0) {  // Wait until SPI transfer is finished or 20ms timeout
+			spiPort.abortTransfer(this);
+			errors++;
+			lastUpdateTick = HAL_GetTick();
+			waitForUpdateSem.Give();
+			updateInProgress = false;
+			continue;
+		}
 
 		if(updateAngleStatusCb()){
 			int overflowLim = getCpr() >> 1;
@@ -110,8 +117,19 @@ void MtEncoderSPI::Run(){
 
 void MtEncoderSPI::setCsPin(uint8_t cspin){
 	spiPort.freeCsPin(this->spiConfig.cs);
-	this->cspin = std::min<uint8_t>(spiPort.getCsPins().size(), cspin);
-	this->spiConfig.cs = *spiPort.getCsPin(this->cspin);
+	
+	OutputPin* newPin = spiPort.getCsPin(cspin);
+	if(newPin != nullptr){
+		this->cspin = cspin;
+		this->spiConfig.cs = *newPin;
+	}else{
+		this->cspin = 0;
+		newPin = spiPort.getCsPin(0);
+		if(newPin != nullptr){
+			this->spiConfig.cs = *newPin;
+		}
+	}
+	
 	initSPI();
 	spiPort.reserveCsPin(this->spiConfig.cs);
 }
@@ -175,9 +193,13 @@ void MtEncoderSPI::setPos(int32_t pos){
 void MtEncoderSPI::spiTxRxCompleted(SPIPort* port){
 
 	if(updateInProgress){
-		NotifyFromISR();
-		//updateAngleStatusCb();
 		memcpy(rxbuf,rxbuf_t,sizeof(rxbuf));
+		
+		if(inIsr()){
+			NotifyFromISR();
+		}else{
+			Notify();
+		}
 	}
 }
 
@@ -187,14 +209,17 @@ void MtEncoderSPI::spiTxRxCompleted(SPIPort* port){
  */
 void MtEncoderSPI::updateAngleStatus(){
 
+	// Note: Using IT (Interrupts) instead of DMA for SPI transfers. 
+	// High-frequency polling (e.g. 1kHz via TMC4671 External mode) 
+	// causes DMA stream lockups and Watchdog resets.
 	if(mode == MtEncoderSPI_mode::mt6825){
 		uint8_t txbufNew[5] = {0x03 | 0x80,0,0,0,0};
 		memcpy(this->txbuf,txbufNew,5);
-		spiPort.transmitReceive_DMA(txbuf, rxbuf_t, 4, this);
+		spiPort.transmitReceive_IT(txbuf, rxbuf_t, 4, this);
 	}else if(mode == MtEncoderSPI_mode::mt6835){
 		uint8_t txbufNew[6] = {0xA0,0x03,0,0,0,0};
 		memcpy(this->txbuf,txbufNew,6);
-		spiPort.transmitReceive_DMA(txbuf, rxbuf_t, 6, this);
+		spiPort.transmitReceive_IT(txbuf, rxbuf_t, 6, this);
 	}
 
 
@@ -264,9 +289,15 @@ int32_t MtEncoderSPI::getPosAbs(){
 		return curPos;
 	}
 	updateInProgress = true;
-	requestNewDataSem.Give(); // Start transfer
-	if(HAL_GetTick() - lastUpdateTick > waitThresh)
-		waitForUpdateSem.Take(waitThresh); // Wait a bit
+
+	if(inIsr()){
+		BaseType_t taskWoken = pdFALSE;
+		requestNewDataSem.GiveFromISR(&taskWoken);
+	}else{
+		requestNewDataSem.Give(); // Start transfer
+		if(HAL_GetTick() - lastUpdateTick > waitThresh)
+			waitForUpdateSem.Take(waitThresh); // Wait a bit
+	}
 
 	return curPos;
 }
