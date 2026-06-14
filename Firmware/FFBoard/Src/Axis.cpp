@@ -8,6 +8,7 @@
 
 #include "Axis.h"
 #include "voltagesense.h"
+#include "EncoderManager.h"
 
 // Load the driver is they are declared in targer_constants.h
 #ifdef TMC4671DRIVER
@@ -551,6 +552,9 @@ void Axis::setDrvType(uint8_t drvtype)
  */
 void Axis::setEncType(uint8_t enctype)
 {
+	EncoderManager::getInstance().Suspend();
+	this->enc.reset(); // Destroy old encoder safely before creating the new one
+
 	if (encoderChooser.isValidClassId(enctype) && !drv->hasIntegratedEncoder())
 	{
 
@@ -558,9 +562,14 @@ void Axis::setEncType(uint8_t enctype)
 		this->enc = std::shared_ptr<Encoder>(encoderChooser.Create(enctype)); // Make new encoder
 		if(drv && !drv->hasIntegratedEncoder())
 			this->drv->setEncoder(this->enc);
+
+		if (this->enc) {
+			EncoderManager::getInstance().registerEncoder(this->enc.get());
+		}
 	}else{
 		this->conf.enctype = 0; // None encoder
 	}
+	EncoderManager::getInstance().Resume();
 
 	float angle = getEncAngle(this->getEncoder());
 	//int32_t scaledEnc = scaleEncValue(angle, degreesOfRotation);

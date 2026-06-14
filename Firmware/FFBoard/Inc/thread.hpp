@@ -229,7 +229,7 @@ class Thread {
      */
     inline void NotifyFromISR()
     {
-    	BaseType_t pxHigherPriorityTaskWoken;
+    	BaseType_t pxHigherPriorityTaskWoken = pdFALSE;
     	vTaskNotifyGiveFromISR( GetHandle(), &pxHigherPriorityTaskWoken );
     	portYIELD_FROM_ISR(pxHigherPriorityTaskWoken);
     }

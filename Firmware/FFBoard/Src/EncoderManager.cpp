@@ -5,7 +5,8 @@
 extern TIM_HandleTypeDef TIM_TMC;
 #endif
 
-EncoderManager::EncoderManager() : TimerHandler() {
+EncoderManager::EncoderManager() : TimerHandler(), cpp_freertos::Thread("ENCMGR", 128, 33) {
+    this->Start();
 }
 
 EncoderManager& EncoderManager::getInstance() {
@@ -69,6 +70,14 @@ void EncoderManager::deregisterEncoder(Encoder* encoder) {
 void EncoderManager::timerElapsed(TIM_HandleTypeDef* htim) {
 #ifdef TIM_TMC
     if (htim == &TIM_TMC) {
+        this->NotifyFromISR();
+    }
+#endif
+}
+
+void EncoderManager::Run() {
+    while(true) {
+        this->WaitForNotification();
         tick_count++;
         for (int i = 0; i < MAX_ENCODERS; ++i) {
             Encoder* enc = active_encoders[i];
@@ -82,5 +91,4 @@ void EncoderManager::timerElapsed(TIM_HandleTypeDef* htim) {
             }
         }
     }
-#endif
 }

@@ -46,7 +46,7 @@ void tudThread(void *argument);
 }
 
 static inline bool inIsr(){
-	return (__get_PRIMASK() != 0U) || (__get_IPSR() != 0U);
+	return (__get_IPSR() != 0U);
 }
 
 template<class T,class C>
