@@ -118,7 +118,7 @@ void Encoder::updateState(float new_pos_rot, float dt) {
         last_cpr = current_cpr;
         if (current_cpr > 0) {
             float step = 2.0f * 3.14159265f / (float)current_cpr;
-            r_var = (step * step) / 12.0f;
+            r_var = ((step * step) / 12.0f) + 1e-6f;
         } else {
             r_var = 0.0001f; // Safe default variance
         }

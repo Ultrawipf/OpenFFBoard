@@ -41,9 +41,9 @@ public:
     float getAlpha() const;
 
 private:
-    float x[3]; // State vector: [theta (position), omega (velocity), alpha (acceleration)]
-    float P[3][3]; // Estimation error covariance matrix
-    float q_var; // Acceleration process noise variance (model uncertainty)
+    double x[3]; // State vector: [theta (position), omega (velocity), alpha (acceleration)]
+    double P[3][3]; // Estimation error covariance matrix
+    double q_var; // Acceleration process noise variance (model uncertainty)
     mutable std::atomic<uint32_t> sequence{0}; // SeqLock counter
 };
 
