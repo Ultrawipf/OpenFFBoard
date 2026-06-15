@@ -14,10 +14,8 @@
 #include "Encoder.h"
 #include "PersistentStorage.h"
 #include "CommandHandler.h"
-#include "thread.hpp"
 
-
-class MtEncoderSPI: public Encoder, public SPIDevice, public PersistentStorage, public CommandHandler,cpp_freertos::Thread{
+class MtEncoderSPI: public Encoder, public SPIDevice, public PersistentStorage, public CommandHandler {
 	enum class MtEncoderSPI_commands : uint32_t{
 		cspin,pos,errors,mode,speed,reg,save
 	};
@@ -35,7 +33,6 @@ public:
 	static bool isCreatable() {return ext3_spi.getFreeCsPins().size() > 0 && !inUse;};
 
 	EncoderType getEncoderType(){return EncoderType::absolute;};
-	void Run();
 
 	void restoreFlash() override;
 	void saveFlash() override;
@@ -45,6 +42,7 @@ public:
 	uint32_t getScaler() override;
 
 	int32_t getPosAbs() override;
+	void triggerRead() override;
 
 	void setPos(int32_t pos);
 
@@ -83,8 +81,6 @@ private:
 	uint8_t txbuf[6] = {0};
 	uint8_t rxbuf[6] = {0};
 	uint8_t rxbuf_t[6] = {0};
-	cpp_freertos::BinarySemaphore requestNewDataSem = cpp_freertos::BinarySemaphore(false);
-	cpp_freertos::BinarySemaphore waitForUpdateSem = cpp_freertos::BinarySemaphore(false);
 
 	MtEncoderSPI_mode mode = MtEncoderSPI_mode::mt6825;
 

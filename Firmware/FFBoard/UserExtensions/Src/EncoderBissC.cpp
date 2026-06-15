@@ -25,8 +25,7 @@ std::array<uint8_t,64> EncoderBissC::tableCRC6n __attribute__((section (".ccmram
 
 EncoderBissC::EncoderBissC() :
 		SPIDevice(ENCODER_SPI_PORT, ENCODER_SPI_PORT.getCsPins()[0]),
-		CommandHandler("bissenc",CLSID_ENCODER_BISS,0),
-		cpp_freertos::Thread("BISSENC",128,42) {
+		CommandHandler("bissenc",CLSID_ENCODER_BISS,0) {
 	EncoderBissC::inUse = true;
 
 
@@ -37,54 +36,6 @@ EncoderBissC::EncoderBissC() :
 	this->spiPort.takeExclusive(true);
 	configSPI();
 	registerCommands();
-	this->Start();
-}
-
-void EncoderBissC::Run(){
-	bool first = true;
-	while(true){
-		this->WaitForNotification();  // Wait until IT transfer is finished
-
-		if(updateFrame()){
-			int32_t halfres = 1<<(lenghtDataBit-1);
-			pos = newPos;
-			if(first){ // Prevent immediate multiturn update
-				lastPos = posOffset;
-				first = false;
-				// If offset from current pos is more than half rotation add a multiturn count by setting previous position to the reloaded offset
-			}
-			//handle multiturn
-			if(pos-lastPos > halfres){
-				mtpos--;
-			}else if(lastPos-pos > halfres){
-				mtpos++;
-			}
-
-			lastPos = pos;
-			
-			// NOTE: We update the Kalman filter here in the Run loop instead of inside triggerRead().
-			// Because BiSS-C uses an asynchronous SPI IT transfer, triggerRead() only requests the transfer
-			// and does not have the new position yet. Doing the update here ensures we use the fresh position 
-			// measurement immediately after the IT completion, and calculates the exact time step (dt) 
-			// at the moment of actual physical data arrival, eliminating time-jitter and phase errors.
-			uint32_t now = micros();
-			uint32_t dt_us = now - last_update_time;
-			if (dt_us > 0) {
-				float dt = (float)dt_us * 1e-6f; // Convert to seconds
-				last_update_time = now;
-				
-				// Update the Kalman filter with the new absolute decoded position
-				updateState(getPos_f(), dt);
-			}
-		}else{
-			numErrors++;
-		}
-		waitData = false;
-		lastUpdateTick = HAL_GetTick();
-		if(useWaitSem)
-			waitForUpdateSem.Give();
-
-	}
 }
 
 
@@ -152,8 +103,39 @@ EncoderBissC::~EncoderBissC() {
 
 void EncoderBissC::spiRxCompleted(SPIPort* port) {
 	memcpy(this->decod_buf,this->spi_buf,this->bytes);
-	this->NotifyFromISR();
+	
+	if(updateFrame()){
+		int32_t halfres = 1<<(lenghtDataBit-1);
+		pos = newPos;
+		if(!first_read_done){ // Prevent immediate multiturn update
+			lastPos = posOffset;
+			first_read_done = true;
+			// If offset from current pos is more than half rotation add a multiturn count by setting previous position to the reloaded offset
+		}
+		//handle multiturn
+		if(pos-lastPos > halfres){
+			mtpos--;
+		}else if(lastPos-pos > halfres){
+			mtpos++;
+		}
 
+		lastPos = pos;
+		curPos = pos + mtpos * getCpr();
+		
+		uint32_t now = micros();
+		uint32_t dt_us = now - last_update_time;
+		if (dt_us > 0) {
+			float dt = (float)dt_us * 1e-6f; // Convert to seconds
+			last_update_time = now;
+			
+			// Update the Kalman filter with the new absolute decoded position
+			updateState(getPos_f(), dt);
+		}
+	}else{
+		numErrors++;
+	}
+	waitData = false;
+	lastUpdateTick = HAL_GetTick();
 }
 
 EncoderType EncoderBissC::getEncoderType(){
@@ -208,11 +190,8 @@ bool EncoderBissC::updateFrame(){
 int32_t EncoderBissC::getPosAbs(){
 	if(!waitData){ // If a transfer is still in progress return the last result
 		triggerRead(); // Start transfer directly
-		if(useWaitSem && HAL_GetTick() - lastUpdateTick > waitThresh)
-			waitForUpdateSem.Take(waitThresh); // Wait a bit
 	}
-	int32_t curpos = pos + mtpos * getCpr();
-	return invertDirection ? -curpos : curpos;
+	return invertDirection ? -curPos : curPos;
 }
 
 int32_t EncoderBissC::getPos(){

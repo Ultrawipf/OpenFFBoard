@@ -20,7 +20,7 @@
 #include "semaphore.hpp"
 #include "array"
 
-class EncoderBissC: public Encoder, public SPIDevice , public CommandHandler,cpp_freertos::Thread,public PersistentStorage {
+class EncoderBissC: public Encoder, public SPIDevice , public CommandHandler, public PersistentStorage {
 public:
 
 	static ClassIdentifier info;
@@ -41,8 +41,6 @@ public:
 
 	void saveFlash(); 		// Write to flash here
 	void restoreFlash();	// Load from flash
-
-	void Run();
 
 	enum class EncoderBissC_commands {bits,cs,speed,errors,direction};
 
@@ -66,6 +64,7 @@ private:
 	uint32_t lastUpdateTick = 0;
 
 	int32_t pos = 0, posOffset = 0,lastPos = 0,newPos = 0;
+	int32_t curPos = 0;
 	int32_t mtpos = 0;
 	//bool crc_ok = false;
 	const static uint8_t bytes = 8; // Maybe use higher length to allow higher speeds because the fixed length start timeout wastes more bits at higher rates
@@ -77,8 +76,7 @@ private:
 	static std::array<uint8_t,64> tableCRC6n;
 	int32_t numErrors = 0;
 	static bool inUse;
-	cpp_freertos::BinarySemaphore requestNewDataSem = cpp_freertos::BinarySemaphore(false);
-	cpp_freertos::BinarySemaphore waitForUpdateSem = cpp_freertos::BinarySemaphore(false);
+	bool first_read_done = false;
 };
 
 #endif /* ENCODERBISSC_H_ */

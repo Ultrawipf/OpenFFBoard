@@ -21,7 +21,7 @@ const ClassIdentifier MtEncoderSPI::getInfo(){
 
 std::array<uint8_t,256> MtEncoderSPI::tableCRC __attribute__((section (".ccmram")));
 
-MtEncoderSPI::MtEncoderSPI() : SPIDevice(ENCODER_SPI_PORT,ENCODER_SPI_PORT.getFreeCsPins()[0]), CommandHandler("mtenc",CLSID_ENCODER_MTSPI,0),cpp_freertos::Thread("MTENC",256,42) {
+MtEncoderSPI::MtEncoderSPI() : SPIDevice(ENCODER_SPI_PORT,ENCODER_SPI_PORT.getFreeCsPins()[0]), CommandHandler("mtenc",CLSID_ENCODER_MTSPI,0) {
 	MtEncoderSPI::inUse = true;
 	this->spiConfig.peripheral.BaudRatePrescaler = spiPort.getClosestPrescaler(10e6).first; // 10MHz max
 	this->spiConfig.peripheral.FirstBit = SPI_FIRSTBIT_MSB;
@@ -43,7 +43,6 @@ MtEncoderSPI::MtEncoderSPI() : SPIDevice(ENCODER_SPI_PORT,ENCODER_SPI_PORT.getFr
 	registerCommand("speed", MtEncoderSPI_commands::speed, "SPI speed preset",CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_INFOSTRING);
 	registerCommand("reg", MtEncoderSPI_commands::reg, "Read/Write register",CMDFLAG_GETADR | CMDFLAG_SETADR | CMDFLAG_DEBUG);
 	registerCommand("save", MtEncoderSPI_commands::save, "Save to memory",CMDFLAG_GET | CMDFLAG_DEBUG);
-	this->Start();
 }
 
 MtEncoderSPI::~MtEncoderSPI() {
@@ -82,37 +81,10 @@ void MtEncoderSPI::saveFlash(){
 }
 
 
-void MtEncoderSPI::Run(){
-	while(true){
-		requestNewDataSem.Take(); // Wait until a position is requested
-		//spiPort.receive_DMA(spi_buf, bytes, this); // Receive next frame
+void MtEncoderSPI::triggerRead() {
+	if(!updateInProgress) {
+		updateInProgress = true;
 		updateAngleStatus();
-		if (this->WaitForNotification(20) == 0) {  // Wait until SPI transfer is finished or 20ms timeout
-			spiPort.abortTransfer(this);
-			errors++;
-			lastUpdateTick = HAL_GetTick();
-			waitForUpdateSem.Give();
-			updateInProgress = false;
-			continue;
-		}
-
-		if(updateAngleStatusCb()){
-			int overflowLim = getCpr() >> 1;
-			if(curAngleInt-lastAngleInt > overflowLim){ // Underflowed
-				rotations--;
-			}
-			else if(lastAngleInt-curAngleInt > overflowLim){ // Overflowed
-				rotations++;
-			}
-			lastAngleInt = curAngleInt;
-
-			curPos = rotations * getCpr() + curAngleInt; // Update position
-		}else{
-			errors++;
-		}
-		lastUpdateTick = HAL_GetTick();
-		waitForUpdateSem.Give();
-		updateInProgress = false;
 	}
 }
 
@@ -197,11 +169,22 @@ void MtEncoderSPI::spiTxRxCompleted(SPIPort* port){
 	if(updateInProgress){
 		memcpy(rxbuf,rxbuf_t,sizeof(rxbuf));
 		
-		if(inIsr()){
-			NotifyFromISR();
+		if(updateAngleStatusCb()){
+			int overflowLim = getCpr() >> 1;
+			if(curAngleInt-lastAngleInt > overflowLim){ // Underflowed
+				rotations--;
+			}
+			else if(lastAngleInt-curAngleInt > overflowLim){ // Overflowed
+				rotations++;
+			}
+			lastAngleInt = curAngleInt;
+
+			curPos = rotations * getCpr() + curAngleInt; // Update position
 		}else{
-			Notify();
+			errors++;
 		}
+		lastUpdateTick = HAL_GetTick();
+		updateInProgress = false;
 	}
 }
 
@@ -287,20 +270,6 @@ int32_t MtEncoderSPI::getPos(){
 }
 
 int32_t MtEncoderSPI::getPosAbs(){
-	if(updateInProgress){ // If a transfer is still in progress return the last result
-		return curPos;
-	}
-	updateInProgress = true;
-
-	if(inIsr()){
-		BaseType_t taskWoken = pdFALSE;
-		requestNewDataSem.GiveFromISR(&taskWoken);
-	}else{
-		requestNewDataSem.Give(); // Start transfer
-		if(HAL_GetTick() - lastUpdateTick > waitThresh)
-			waitForUpdateSem.Take(waitThresh); // Wait a bit
-	}
-
 	return curPos;
 }
 
