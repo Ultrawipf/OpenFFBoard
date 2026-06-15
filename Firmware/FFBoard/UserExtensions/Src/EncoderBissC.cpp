@@ -43,7 +43,7 @@ EncoderBissC::EncoderBissC() :
 void EncoderBissC::Run(){
 	bool first = true;
 	while(true){
-		this->WaitForNotification();  // Wait until DMA is finished
+		this->WaitForNotification();  // Wait until IT transfer is finished
 
 		if(updateFrame()){
 			int32_t halfres = 1<<(lenghtDataBit-1);
@@ -63,9 +63,9 @@ void EncoderBissC::Run(){
 			lastPos = pos;
 			
 			// NOTE: We update the Kalman filter here in the Run loop instead of inside triggerRead().
-			// Because BiSS-C uses an asynchronous SPI DMA transfer, triggerRead() only requests the transfer
+			// Because BiSS-C uses an asynchronous SPI IT transfer, triggerRead() only requests the transfer
 			// and does not have the new position yet. Doing the update here ensures we use the fresh position 
-			// measurement immediately after the DMA completion, and calculates the exact time step (dt) 
+			// measurement immediately after the IT completion, and calculates the exact time step (dt) 
 			// at the moment of actual physical data arrival, eliminating time-jitter and phase errors.
 			uint32_t now = micros();
 			uint32_t dt_us = now - last_update_time;

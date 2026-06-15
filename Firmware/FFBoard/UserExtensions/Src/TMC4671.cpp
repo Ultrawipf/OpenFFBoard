@@ -124,11 +124,6 @@ void TMC4671::saveFlash(){
 	Flash_Write(flashAddrs.flux_i, curPids.fluxI);
 	Flash_Write(flashAddrs.encOffset,(uint16_t)abnconf.posOffsetFromIndex);
 
-	// If encoder is ABN and uses index save the last configured offset
-//	if(this->conf.motconf.enctype == EncoderType_TMC::abn && this->abnconf.useIndex && encoderAligned){
-//		Flash_Write(flashAddrs.phieOffset, abnconf.phiEoffset);
-//	}
-
 	uint16_t filterval = (torqueFilterConf.params.freq & 0x1fff) | ((uint8_t)(torqueFilterConf.mode) << 13);
 	Flash_Write(flashAddrs.torqueFilter, filterval);
 
@@ -175,11 +170,6 @@ void TMC4671::restoreFlash(){
 	}else{
 		recalibrationRequired = true; // Never stored
 	}
-
-//	abnconf.phiEoffset = Flash_ReadDefault(flashAddrs.phieOffset,0);
-//	if(abnconf.phiEoffset != 0){
-//		phiErestored = true;
-//	}
 
 	uint16_t miscval;
 	if(Flash_Read(flashAddrs.encA, &miscval)){
@@ -262,10 +252,6 @@ void TMC4671::setupDriver() {
  * restoreFlash() should be called before this to restore settings!
  */
 bool TMC4671::initialize(){
-//	active = true;
-//	if(state == TMC_ControlState::uninitialized){
-//		state = TMC_ControlState::Init_wait;
-//	}
 	// Check if a TMC4671 is active and replies correctly
 	if(!pingDriver()){
 		ErrorHandler::addError(communicationError);
@@ -346,12 +332,6 @@ bool TMC4671::initialize(){
 
 	setPids(curPids); // Write basic pids
 
-//	if(hasPower()){
-//		enablePin.set();
-//		setPwm(TMC_PwmMode::PWM_FOC);
-//		calibrateAdcOffset(400); // Calibrate ADC again with power
-//		motorEnabledRequested = true;
-//	}
 	//setEncoderType(conf.motconf.enctype);
 
 	// Update flags
@@ -853,12 +833,6 @@ bool TMC4671::findEncoderIndex(int32_t speed, uint16_t power,bool offsetPhiM,boo
 	curFilters.flux.params.enable = false;
 	setBiquadFlux(curFilters.flux);
 	setFluxTorque(0, 0);
-//	setPhiE_ext(getPhiE());
-//	setPhiEtype(PhiE::openloop);
-
-//	abnconf.clear_on_N = true;
-//	setup_ABN_Enc(abnconf);
-
 	// Arm encoder signal
 	setEncoderIndexFlagEnabled(true,zeroCount);
 	// Rotate
@@ -883,8 +857,6 @@ bool TMC4671::findEncoderIndex(int32_t speed, uint16_t power,bool offsetPhiM,boo
 		zeroAbnUsingPhiM(false);
 	}
 
-//	abnconf.clear_on_N = false;
-//	setup_ABN_Enc(abnconf);
 	curFilters.flux.params.enable = true;
 	setBiquadFlux(curFilters.flux);
 
@@ -2600,13 +2572,6 @@ void TMC4671::endSpiTransfer(SPIPort* port){
 	port->giveSemaphore();
 }
 
-void TMC4671::spiTxCompleted(SPIPort* port) {
-	// Semaphore is already given by endSpiTransfer
-}
-
-void TMC4671::spiTxRxCompleted(SPIPort* port) {
-	// Semaphore is already given by endSpiTransfer
-}
 
 /**
  * Reads status flags
