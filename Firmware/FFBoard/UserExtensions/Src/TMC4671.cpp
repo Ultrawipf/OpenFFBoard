@@ -1865,7 +1865,7 @@ std::pair<uint32_t,std::string> TMC4671::getTmcType(){
 }
 
 Encoder* TMC4671::getEncoder(){
-	if((conf.motconf.enctype == EncoderType_TMC::ext || conf.combineEncoder) && MotorDriver::drvEncoder != nullptr){
+	if((conf.motconf.enctype == EncoderType_TMC::ext || conf.combineEncoder) && MotorDriver::drvEncoder != nullptr && externalEncoderTimer != nullptr){
 		return MotorDriver::drvEncoder.get();
 	}else{
 		return static_cast<Encoder*>(this);
@@ -1873,14 +1873,19 @@ Encoder* TMC4671::getEncoder(){
 }
 
 void TMC4671::setEncoder(std::shared_ptr<Encoder>& enc){
-	__HAL_TIM_DISABLE_IT(&TIM_TMC, TIM_IT_UPDATE);
-	MotorDriver::drvEncoder = enc;
-	__HAL_TIM_ENABLE_IT(&TIM_TMC, TIM_IT_UPDATE);
+	// 1. Safely destroy the old consumer thread first to prevent race conditions on drvEncoder
 	if(conf.motconf.enctype == EncoderType_TMC::ext && externalEncoderTimer){
 		if(extEncAdapter){
 			extEncAdapter.reset(); // Safely destroy the old thread and timer handler
 		}
-		setUpExtEncTimer(); // Recreate it with the new encoder pointer
+	}
+
+	// 2. Reassign the pointer safely
+	MotorDriver::drvEncoder = enc;
+	
+	// 3. Recreate the adapter with the new encoder pointer if necessary
+	if(conf.motconf.enctype == EncoderType_TMC::ext && externalEncoderTimer){
+		setUpExtEncTimer(); 
 		changeState(TMC_ControlState::ExternalEncoderInit);
 	}
 }
@@ -3166,6 +3171,24 @@ void TMC4671::setUpExtEncTimer() {
 }
 
 void TMC4671::setExternalPhiE(float phiE_rotations) {
+    // 1. Is the external encoder physically present and configured?
+    if (!usingExternalEncoder()) return;
+
+    // 2. Is the hardware officially allowing the external encoder?
+    if (!externalEncoderAllowed()) return;
+
+    // 3. Is the TMC currently using the external encoder for its phase?
+    if (this->conf.motconf.phiEsource != PhiE::extEncoder) return;
+
+    // 4. Do not disturb calibration and initialization steps
+    if (state == TMC_ControlState::FullCalibration || 
+        state == TMC_ControlState::IndexSearch ||
+        state == TMC_ControlState::EncoderInit ||
+        state == TMC_ControlState::ExternalEncoderInit ||
+        state == TMC_ControlState::Pidautotune) {
+        return;
+    }
+
     float phiE_t = phiE_rotations * 65536.0f;
     if (this->conf.encoderReversed) {
         phiE_t = -phiE_t;
