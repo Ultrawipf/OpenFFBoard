@@ -52,15 +52,15 @@ public:
 	void configSPI();
 	void acquirePosition();
 	void spiRxCompleted(SPIPort* port) override;
-	void beginSpiTransfer(SPIPort* port);
-	void endSpiTransfer(SPIPort* port);
+
+
 
 private:
 	static const bool useWaitSem = true; // Wait until data is processed. otherwise returns last value
 	static const uint32_t waitThresh = 2; // If last sample older than x ms use wait semaphore. Else skip and use last value to speed up processing
 	int lenghtDataBit = 22;
 	int spiSpeed = 3;
-	bool waitData = false;
+	volatile bool waitData = false;
 	bool invertDirection = true; // Most biss-c encoders count UP clockwise while standard motor direction is usually CCW
 
 	uint32_t lastUpdateTick = 0;

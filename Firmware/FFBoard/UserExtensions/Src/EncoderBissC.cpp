@@ -26,7 +26,7 @@ std::array<uint8_t,64> EncoderBissC::tableCRC6n __attribute__((section (".ccmram
 EncoderBissC::EncoderBissC() :
 		SPIDevice(ENCODER_SPI_PORT, ENCODER_SPI_PORT.getCsPins()[0]),
 		CommandHandler("bissenc",CLSID_ENCODER_BISS,0),
-		cpp_freertos::Thread("BISSENC",64,42) {
+		cpp_freertos::Thread("BISSENC",128,42) {
 	EncoderBissC::inUse = true;
 
 
@@ -43,9 +43,6 @@ EncoderBissC::EncoderBissC() :
 void EncoderBissC::Run(){
 	bool first = true;
 	while(true){
-		requestNewDataSem.Take(); // Wait until a position is requested
-		waitData = true;
-		spiPort.receive_DMA(spi_buf, bytes, this); // Receive next frame
 		this->WaitForNotification();  // Wait until DMA is finished
 
 		if(updateFrame()){
@@ -158,18 +155,6 @@ void EncoderBissC::spiRxCompleted(SPIPort* port) {
 
 }
 
-void EncoderBissC::beginSpiTransfer(SPIPort* port){
-	//port->takeSemaphore();
-	assertChipSelect();
-}
-
-void EncoderBissC::endSpiTransfer(SPIPort* port){
-	//port->giveSemaphore();
-	clearChipSelect();
-}
-
-
-
 EncoderType EncoderBissC::getEncoderType(){
 	return EncoderType::absolute;
 }
@@ -221,7 +206,7 @@ bool EncoderBissC::updateFrame(){
 
 int32_t EncoderBissC::getPosAbs(){
 	if(!waitData){ // If a transfer is still in progress return the last result
-		requestNewDataSem.Give(); // Start transfer
+		triggerRead(); // Start transfer directly
 		if(useWaitSem && HAL_GetTick() - lastUpdateTick > waitThresh)
 			waitForUpdateSem.Take(waitThresh); // Wait a bit
 	}

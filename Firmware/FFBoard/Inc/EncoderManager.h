@@ -4,7 +4,9 @@
 #include "TimerHandler.h"
 #include "Encoder.h"
 
-class EncoderManager : public TimerHandler {
+#include "thread.hpp"
+
+class EncoderManager : public TimerHandler, public cpp_freertos::Thread {
 public:
     static EncoderManager& getInstance();
 
@@ -16,6 +18,7 @@ public:
     void deregisterEncoder(Encoder* encoder);
 
     void timerElapsed(TIM_HandleTypeDef* htim) override;
+    void Run() override;
 
 private:
     EncoderManager();

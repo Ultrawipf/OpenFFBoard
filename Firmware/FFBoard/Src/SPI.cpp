@@ -181,6 +181,14 @@ void SPIPort::transmitReceive(const uint8_t* txbuf,uint8_t* rxbuf,uint16_t size,
 	HAL_SPI_TransmitReceive(&this->hspi,const_cast<uint8_t*>(txbuf),rxbuf,size,timeout);
 	device->endSpiTransfer(this);
 }
+
+void SPIPort::abortTransfer(SPIDevice* device){
+	HAL_SPI_DMAStop(&this->hspi);
+	if(current_device != nullptr && device == current_device){
+		current_device = nullptr;
+		this->giveSemaphore();
+	}
+}
 // --------------------------------
 
 void SPIPort::takeSemaphore(){
@@ -336,6 +344,7 @@ SPIDevice::SPIDevice(SPIPort& port,OutputPin csPin) : spiPort{port},spiConfig{cs
 	spiPort.reserveCsPin(spiConfig.cs);
 }
 SPIDevice::~SPIDevice() {
+	spiPort.abortTransfer(this);
 	spiPort.freeCsPin(spiConfig.cs);
 }
 

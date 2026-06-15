@@ -67,6 +67,8 @@ public:
 	void receive(uint8_t* buf,uint16_t size,SPIDevice* device,int16_t timeout);
 	void transmitReceive(const uint8_t* txbuf,uint8_t* rxbuf,uint16_t size,SPIDevice* device,uint16_t timeout);
 
+	void abortTransfer(SPIDevice* device);
+
 	void SpiTxCplt(SPI_HandleTypeDef *hspi) override;
 	void SpiRxCplt(SPI_HandleTypeDef *hspi) override;
 	void SpiTxRxCplt(SPI_HandleTypeDef *hspi) override;

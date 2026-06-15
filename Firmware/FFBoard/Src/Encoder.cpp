@@ -18,7 +18,6 @@ const ClassIdentifier Encoder::getInfo(){
 }
 
 Encoder::Encoder() {
-	EncoderManager::getInstance().registerEncoder(this);
 	last_update_time = micros();
 }
 
