@@ -180,6 +180,14 @@ void MtEncoderSPI::spiTxRxCompleted(SPIPort* port){
 			lastAngleInt = curAngleInt;
 
 			curPos = rotations * getCpr() + curAngleInt; // Update position
+			
+			uint32_t now = micros();
+			uint32_t dt_us = now - last_update_time;
+			if (dt_us > 0) {
+				float dt = (float)dt_us * 1e-6f;
+				last_update_time = now;
+				updateState(getPos_f(), dt);
+			}
 		}else{
 			errors++;
 		}

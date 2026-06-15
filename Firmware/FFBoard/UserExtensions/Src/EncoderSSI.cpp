@@ -124,6 +124,14 @@ void EncoderSSI::spiRxCompleted(SPIPort* port) {
 		mtpos++;
 	}
 	waitData = false;
+
+	uint32_t now = micros();
+	uint32_t dt_us = now - last_update_time;
+	if (dt_us > 0) {
+		float dt = (float)dt_us * 1e-6f;
+		last_update_time = now;
+		updateState(getPos_f(), dt);
+	}
 }
 
 void EncoderSSI::beginSpiTransfer(SPIPort* port){

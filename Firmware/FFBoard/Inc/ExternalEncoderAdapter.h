@@ -10,6 +10,7 @@ public:
     ~ExternalEncoderAdapter();
 
     void update();
+    Encoder* getEncoder() const { return encoder; }
 
 private:
     MotorDriver* motor;

@@ -1,6 +1,8 @@
 #ifndef KINEMATICKALMAN_H_
 #define KINEMATICKALMAN_H_
 
+#include <atomic>
+
 /**
  * @brief A 3-state Kinematic Kalman Filter for real-time motor shaft tracking.
  * Establishes states for Position (theta), Velocity (omega), and Acceleration (alpha).
@@ -42,6 +44,7 @@ private:
     float x[3]; // State vector: [theta (position), omega (velocity), alpha (acceleration)]
     float P[3][3]; // Estimation error covariance matrix
     float q_var; // Acceleration process noise variance (model uncertainty)
+    mutable std::atomic<uint32_t> sequence{0}; // SeqLock counter
 };
 
 #endif // KINEMATICKALMAN_H_

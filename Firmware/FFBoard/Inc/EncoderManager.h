@@ -7,6 +7,7 @@
 class ExternalEncoderAdapter;
 
 #include "thread.hpp"
+#include <atomic>
 
 class EncoderManager : public TimerHandler, public cpp_freertos::Thread {
 public:
@@ -21,6 +22,7 @@ public:
 
     void registerAdapter(ExternalEncoderAdapter* adapter);
     void deregisterAdapter(ExternalEncoderAdapter* adapter);
+    void updateAdaptersForEncoder(Encoder* enc);
 
     void timerElapsed(TIM_HandleTypeDef* htim) override;
     void Run() override;
@@ -30,10 +32,10 @@ private:
     ~EncoderManager() override = default;
 
     static constexpr uint8_t MAX_ENCODERS = 8;
-    Encoder* active_encoders[MAX_ENCODERS] = {nullptr};
+    std::atomic<Encoder*> active_encoders[MAX_ENCODERS] = {};
     
     static constexpr uint8_t MAX_ADAPTERS = 3; // Max 3 axes per board, each tied to a single motor driver
-    ExternalEncoderAdapter* active_adapters[MAX_ADAPTERS] = {nullptr};
+    std::atomic<ExternalEncoderAdapter*> active_adapters[MAX_ADAPTERS] = {};
     uint32_t tick_count = 0;
     bool initialized = false;
 };

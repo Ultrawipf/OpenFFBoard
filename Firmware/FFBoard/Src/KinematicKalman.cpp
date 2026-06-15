@@ -23,17 +23,35 @@ void KinematicKalman::setQ(float q) {
 
 // Retrieves estimated position (theta)
 float KinematicKalman::getTheta() const {
-    return x[0];
+    uint32_t seq;
+    float val;
+    do {
+        seq = sequence.load(std::memory_order_acquire);
+        val = x[0];
+    } while ((seq & 1) || sequence.load(std::memory_order_acquire) != seq);
+    return val;
 }
 
 // Retrieves estimated velocity (omega)
 float KinematicKalman::getOmega() const {
-    return x[1];
+    uint32_t seq;
+    float val;
+    do {
+        seq = sequence.load(std::memory_order_acquire);
+        val = x[1];
+    } while ((seq & 1) || sequence.load(std::memory_order_acquire) != seq);
+    return val;
 }
 
 // Retrieves estimated acceleration (alpha)
 float KinematicKalman::getAlpha() const {
-    return x[2];
+    uint32_t seq;
+    float val;
+    do {
+        seq = sequence.load(std::memory_order_acquire);
+        val = x[2];
+    } while ((seq & 1) || sequence.load(std::memory_order_acquire) != seq);
+    return val;
 }
 
 // Predicts state and covariance forward by time step dt using kinematic equations
@@ -46,8 +64,11 @@ void KinematicKalman::predict(float dt) {
     // Predict new position and velocity based on kinematic integration
     float theta = x[0] + x[1] * dt + 0.5f * x[2] * dt * dt;
     float omega = x[1] + x[2] * dt;
+    
+    sequence.fetch_add(1, std::memory_order_release);
     x[0] = theta;
     x[1] = omega;
+    sequence.fetch_add(1, std::memory_order_release);
     // x[2] = x[2] (constant acceleration model)
 
     // Compute helper matrix M = F * P representing the intermediate covariance multiplication
@@ -108,9 +129,15 @@ void KinematicKalman::update(float measurement, float R) {
 
     // Correct the state vector using the measurement error (y = measurement - estimate)
     float y = measurement - x[0];
-    x[0] = x[0] + K0 * y;
-    x[1] = x[1] + K1 * y;
-    x[2] = x[2] + K2 * y;
+    float new_x0 = x[0] + K0 * y;
+    float new_x1 = x[1] + K1 * y;
+    float new_x2 = x[2] + K2 * y;
+
+    sequence.fetch_add(1, std::memory_order_release);
+    x[0] = new_x0;
+    x[1] = new_x1;
+    x[2] = new_x2;
+    sequence.fetch_add(1, std::memory_order_release);
 
     // Cache current covariance values before updating the matrix
     float P00_old = P[0][0];
