@@ -4,6 +4,8 @@
 #include "TimerHandler.h"
 #include "Encoder.h"
 
+class ExternalEncoderAdapter;
+
 #include "thread.hpp"
 
 class EncoderManager : public TimerHandler, public cpp_freertos::Thread {
@@ -17,6 +19,9 @@ public:
     void registerEncoder(Encoder* encoder);
     void deregisterEncoder(Encoder* encoder);
 
+    void registerAdapter(ExternalEncoderAdapter* adapter);
+    void deregisterAdapter(ExternalEncoderAdapter* adapter);
+
     void timerElapsed(TIM_HandleTypeDef* htim) override;
     void Run() override;
 
@@ -26,6 +31,9 @@ private:
 
     static constexpr uint8_t MAX_ENCODERS = 8;
     Encoder* active_encoders[MAX_ENCODERS] = {nullptr};
+    
+    static constexpr uint8_t MAX_ADAPTERS = 3; // Max 3 axes per board, each tied to a single motor driver
+    ExternalEncoderAdapter* active_adapters[MAX_ADAPTERS] = {nullptr};
     uint32_t tick_count = 0;
     bool initialized = false;
 };

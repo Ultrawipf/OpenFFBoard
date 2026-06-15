@@ -144,6 +144,7 @@ bool EncoderBissC::isCreatable(){
 }
 
 EncoderBissC::~EncoderBissC() {
+	this->spiPort.abortTransfer(this);
 	setPos(0);
 	EncoderBissC::inUse = false;
 	this->spiPort.takeExclusive(false);
@@ -251,16 +252,8 @@ uint32_t EncoderBissC::getScaler() {
 void EncoderBissC::triggerRead() {
     if (!waitData) {
         // Trigger a new BiSS-C read cycle.
-        // Instead of executing a blocking SPI transfer inside the 10 kHz basic timer ISR,
-        // we release the requestNewDataSem semaphore to wake up the worker thread.
-        bool isIsr = inIsr();
-        if (isIsr) {
-            BaseType_t taskWoken = 0;
-            requestNewDataSem.GiveFromISR(&taskWoken); // Non-blocking FreeRTOS ISR call
-            portYIELD_FROM_ISR(taskWoken); // Force context yield if the worker task has higher priority
-        } else {
-            requestNewDataSem.Give();
-        }
+        waitData = true;
+        spiPort.receive_IT(spi_buf, bytes, this);
     }
 }
 

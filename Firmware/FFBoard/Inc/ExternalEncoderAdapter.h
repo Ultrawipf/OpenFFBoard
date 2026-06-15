@@ -1,18 +1,15 @@
 #ifndef EXTERNALENCODERADAPTER_H_
 #define EXTERNALENCODERADAPTER_H_
 
-#include "TimerHandler.h"
 #include "MotorDriver.h"
 #include "Encoder.h"
-#include "thread.hpp"
 
-class ExternalEncoderAdapter : public TimerHandler, public cpp_freertos::Thread {
+class ExternalEncoderAdapter {
 public:
     ExternalEncoderAdapter(MotorDriver* motor, Encoder* encoder);
-    ~ExternalEncoderAdapter() override = default;
+    ~ExternalEncoderAdapter();
 
-    void timerElapsed(TIM_HandleTypeDef* htim) override;
-    void Run() override;
+    void update();
 
 private:
     MotorDriver* motor;

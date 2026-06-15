@@ -47,6 +47,7 @@ MtEncoderSPI::MtEncoderSPI() : SPIDevice(ENCODER_SPI_PORT,ENCODER_SPI_PORT.getFr
 }
 
 MtEncoderSPI::~MtEncoderSPI() {
+	this->spiPort.abortTransfer(this);
 	MtEncoderSPI::inUse = false;
 	spiPort.freeCsPin(this->spiConfig.cs);
 }

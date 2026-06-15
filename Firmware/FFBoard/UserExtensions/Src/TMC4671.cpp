@@ -80,6 +80,10 @@ TMC4671::TMC4671(SPIPort& spiport,OutputPin cspin,uint8_t address) :
 
 
 TMC4671::~TMC4671() {
+	if (extEncAdapter) {
+		extEncAdapter.reset();
+	}
+
 	enablePin.reset();
 	//recordSpiAddrUsed(0);
 }

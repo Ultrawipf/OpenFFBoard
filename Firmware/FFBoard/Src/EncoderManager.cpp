@@ -1,4 +1,5 @@
 #include "EncoderManager.h"
+#include "ExternalEncoderAdapter.h"
 #include "cppmain.h"
 
 #ifdef TIM_ENC
@@ -67,6 +68,32 @@ void EncoderManager::deregisterEncoder(Encoder* encoder) {
     }
 }
 
+void EncoderManager::registerAdapter(ExternalEncoderAdapter* adapter) {
+    if (adapter == nullptr) return;
+    int empty_idx = -1;
+    for (int i = 0; i < MAX_ADAPTERS; ++i) {
+        if (active_adapters[i] == adapter) {
+            return; // Already registered
+        }
+        if (active_adapters[i] == nullptr && empty_idx == -1) {
+            empty_idx = i;
+        }
+    }
+    if (empty_idx != -1) {
+        active_adapters[empty_idx] = adapter;
+    }
+}
+
+void EncoderManager::deregisterAdapter(ExternalEncoderAdapter* adapter) {
+    if (adapter == nullptr) return;
+    for (int i = 0; i < MAX_ADAPTERS; ++i) {
+        if (active_adapters[i] == adapter) {
+            active_adapters[i] = nullptr;
+            return;
+        }
+    }
+}
+
 void EncoderManager::timerElapsed(TIM_HandleTypeDef* htim) {
 #ifdef TIM_ENC
     if (htim == &TIM_ENC) {
@@ -88,6 +115,12 @@ void EncoderManager::Run() {
             if (scaler == 0) scaler = 1;
             if ((tick_count % scaler) == 0) {
                 enc->triggerRead();
+            }
+        }
+        
+        for (int i = 0; i < MAX_ADAPTERS; ++i) {
+            if (active_adapters[i] != nullptr) {
+                active_adapters[i]->update();
             }
         }
     }

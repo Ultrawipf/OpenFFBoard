@@ -280,3 +280,41 @@ gantt
 *   Create `ExternalEncoderAdapter` to push the extrapolated angle to the `MotorDriver`.
 *   Remove internal threads/timers from `TMC4671.cpp`.
 *   Remove Biquad instances from `Axis.h` and `Axis.cpp`, point the force feedback directly to `encoder->getSpeed()`.
+
+---
+
+## 7. Gap Analysis: Theory vs. Reality (Post-Implementation)
+
+A comprehensive review of the codebase (from commit `4bee3f7e` onwards) reveals several deviations and architectural adaptations that occurred during implementation, differing from the original theoretical plan.
+
+### 7.1. Deviations from the "Zero-CPU-Cost" Plan
+The original plan aimed for an asynchronous, DMA-driven "Zero-CPU-Cost" architecture at 10 kHz without relying on RTOS threads. Hardware constraints forced practical adjustments:
+*   **SPI Interrupts (IT) instead of DMA:** High-frequency polling (10 kHz) caused DMA stream lockups and Watchdog resets. Consequently, `MtEncoderSPI` and other sensors fell back to using interrupt-based SPI transfers (`transmitReceive_IT`) instead of DMA.
+*   **Threaded EncoderManager:** To avoid locking up the system, `EncoderManager` was implemented as a FreeRTOS thread (`cpp_freertos::Thread`) rather than executing directly within a raw hardware ISR. The timer interrupt only wakes up this thread via `NotifyFromISR()`.
+
+### 7.2. Newly Coded Concepts (Not in Original Doc)
+To ensure thread-safety and hardware stability, several new concepts were introduced:
+*   **Context-Aware Notifications:** Extensive use of `inIsr()` ensures safe context-switching (choosing between `Notify()` and `NotifyFromISR()`) preventing RTOS corruption when dealing with multi-rate callbacks.
+*   **Safe Resource Destruction:** Encoder swapping is now protected. `EncoderManager::getInstance().Suspend()` is used during encoder destruction, and consumer threads (`ExternalEncoderAdapter`) are safely destroyed (`extEncAdapter.reset()`) before pointer reassignments to avoid use-after-free race conditions.
+*   **SPI Fallback Timeouts:** Safety timeouts (e.g., `WaitForNotification(20)`) were implemented to abort SPI transfers if the bus hangs, preventing full Watchdog resets.
+
+### 7.3. Ignored or Unfinished Concepts
+*   **Zero-Lag Injection (Dead-Reckoning):** The physical SPI command pushing the extrapolated FOC angle to the driver (`writeRegAsync(0x1C, phiE_final)`) was temporarily commented out for testing, rendering the external FOC injection currently inactive.
+
+---
+
+## 8. State of the Art Architectural Review (RTOS vs. Bare-Metal)
+
+The current implementation uses a "Ping-Pong" cascade: `Timer ISR -> Thread Manager -> SPI(IT) -> SPI ISR -> Thread Encoder -> Kalman`. While highly modular and object-oriented, this approach introduces critical real-time risks for a 10 kHz control loop.
+
+### 8.1. Context Switching Overhead and Latency Jitter
+On an STM32 MCU, FreeRTOS context switches cost 1.5 - 3 µs. The current cascade requires multiple context switches per 100 µs cycle (10 kHz), consuming up to 15% of the available CPU time solely for scheduling overhead.
+More critically, this architecture subjects the control loop to RTOS **latency jitter**. A Kalman filter relies on a perfectly deterministic $\Delta t$. Jitter introduced by RTOS scheduling creates mathematically unpredictable noise in velocity and acceleration estimators, severely degrading FOC performance.
+
+### 8.2. The IT vs. DMA Anomaly
+Falling back to SPI IT because of DMA lockups is a symptom of priority conflicts, not a flaw in the DMA itself. At 10 kHz, triggering a CPU interrupt for every SPI byte starves the RTOS. Proper DMA usage is mandatory at this frequency. The DMA Watchdog lockup was likely caused by improper ISR priorities or blocking loops within threads.
+
+### 8.3. Future Remediation: Hybrid Bare-Metal Path
+To achieve a true "State of the Art" 10 kHz control loop, the critical path must be extracted from the FreeRTOS scheduler:
+1.  **Bare-Metal Critical Path:** The Timer triggers a DMA SPI transfer entirely via hardware. The DMA Rx Complete ISR (highest priority) runs the Kalman filter and pushes the result to the FOC driver (`setExternalPhiE`). Zero threads, zero context switching, mathematically perfect $\Delta t$.
+2.  **Asynchronous RTOS Path:** Slower tasks (USB reporting, Force Feedback calculations at 1 kHz) remain in FreeRTOS threads, safely reading the variables calculated by the high-priority ISR.
