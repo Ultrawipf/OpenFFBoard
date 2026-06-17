@@ -21,9 +21,22 @@ cpp_freertos::MutexStandard flashMutex;
 /**
  * Formats the eeprom emulation section to delete all data
  */
+/**
+ * Invalidate the ART data cache after flash operations.
+ * The STM32F4 ART accelerator caches flash reads on the D-bus.
+ * After erasing or programming flash, stale cached values would be
+ * returned unless the cache is explicitly reset. (See ST AN3969)
+ */
+static void Flash_InvalidateDataCache(){
+	__HAL_FLASH_DATA_CACHE_DISABLE();
+	__HAL_FLASH_DATA_CACHE_RESET();
+	__HAL_FLASH_DATA_CACHE_ENABLE();
+}
+
 bool Flash_Format(){
 	HAL_FLASH_Unlock();
 	bool res = (EE_Format() == HAL_OK);
+	Flash_InvalidateDataCache();
 	HAL_FLASH_Lock();
 	return res;
 }
@@ -41,6 +54,7 @@ __weak bool Flash_Init(){
 	__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_PGSERR);
 
 	bool state = (EE_Init() == EE_OK);
+	Flash_InvalidateDataCache();
 	HAL_FLASH_Lock();
 	return state;
 }
@@ -61,9 +75,11 @@ bool Flash_Write(uint16_t adr,uint16_t dat){
 		__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_PGAERR);
 		__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_PGPERR);
 		__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_PGSERR);
+		Flash_InvalidateDataCache(); // Invalidate before writing because EE_ReadVariable just cached the flash page
 		if(EE_WriteVariable(adr, dat) == HAL_OK){
 			res = true;
 		}
+		Flash_InvalidateDataCache();
 		HAL_FLASH_Lock();
 
 	}
@@ -97,7 +113,9 @@ bool Flash_ReadWriteDefault(uint16_t adr,uint16_t *buf,uint16_t def){
 		__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_PGAERR);
 		__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_PGPERR);
 		__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_PGSERR);
+		Flash_InvalidateDataCache(); // Invalidate before writing because EE_ReadVariable just cached the flash page
 		EE_WriteVariable(adr, def);
+		Flash_InvalidateDataCache();
 		HAL_FLASH_Lock();
 		return false;
 	}
