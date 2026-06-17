@@ -1,5 +1,6 @@
 var NAVTREEINDEX32 =
 {
+"rp2040__usb_8c.html#a8ab4371bd82032682c390ddaf273f051":[5,0,0,0,2,5,13,1,2,10],
 "rp2040__usb_8c.html#ab1063fadabdd8e45c085a30e274870b8":[5,0,0,0,2,5,13,1,2,6],
 "rp2040__usb_8c.html#ada1b1d377bad507833cbdf55b36e0537":[5,0,0,0,2,5,13,1,2,9],
 "rp2040__usb_8c.html#ae2cb52a41d956a30e3ef37e60f5bf165":[5,0,0,0,2,5,13,1,2,7],
@@ -248,6 +249,5 @@ var NAVTREEINDEX32 =
 "struct__ccrx__evenaccess.html#a2d6bda940848cbf5d35a67d10427bff3":[4,0,43,121],
 "struct__ccrx__evenaccess.html#a2d6f0bff9a838169d327de0c56d6f88f":[4,0,43,327],
 "struct__ccrx__evenaccess.html#a2dd385ec67bdc1dcd0127f313ae46fa6":[4,0,43,39],
-"struct__ccrx__evenaccess.html#a2e2d150885c0098780dc84d89438df3f":[4,0,43,112],
-"struct__ccrx__evenaccess.html#a2e6f32a7064bfe2be9b8b956d0a6ff9b":[4,0,43,96]
+"struct__ccrx__evenaccess.html#a2e2d150885c0098780dc84d89438df3f":[4,0,43,112]
 };

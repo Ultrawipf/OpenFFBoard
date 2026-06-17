@@ -1,5 +1,6 @@
 var NAVTREEINDEX23 =
 {
+"ftdi__sio_8h_source.html":[5,0,0,0,2,0,2,0,2],
 "functions.html":[4,3,0],
 "functions.html":[4,3,0,0],
 "functions_a.html":[4,3,0,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX23 =
 "globals_vars_c.html":[5,1,2,3],
 "globals_vars_d.html":[5,1,2,4],
 "globals_vars_e.html":[5,1,2,5],
-"globals_vars_f.html":[5,1,2,6],
-"globals_vars_g.html":[5,1,2,7]
+"globals_vars_f.html":[5,1,2,6]
 };

@@ -1,5 +1,6 @@
 var NAVTREEINDEX55 =
 {
+"structdfu__state__ctx__t.html#afec81f153e46fd3b7a5c86d443e2ab6f":[4,0,105,1],
 "structdma__desc__t.html":[4,0,106],
 "structdma__desc__t.html#a7162f091b24f29848f5122549d3b81c4":[4,0,106,2],
 "structdma__desc__t.html#a74b36cf42c231b98b0d92826960ea265":[4,0,106,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX55 =
 "structehci__registers__t.html#a76ce33ef1ed4159040c946939700348b":[4,0,123,53],
 "structehci__registers__t.html#a7704aecdf9e596e962b3b97ca1958eb6":[4,0,123,17],
 "structehci__registers__t.html#a79a4ac941318765690d7d0010c763b0d":[4,0,123,37],
-"structehci__registers__t.html#a79c8cfac0e19c1fc5956f92da391c7f8":[4,0,123,51],
-"structehci__registers__t.html#a7b52c4fb76469b09d89bed709e896a03":[4,0,123,43]
+"structehci__registers__t.html#a79c8cfac0e19c1fc5956f92da391c7f8":[4,0,123,51]
 };

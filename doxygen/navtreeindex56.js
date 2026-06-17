@@ -1,5 +1,6 @@
 var NAVTREEINDEX56 =
 {
+"structehci__registers__t.html#a7b52c4fb76469b09d89bed709e896a03":[4,0,123,43],
 "structehci__registers__t.html#a8135b282b78ed5780af1d0b364e80ec1":[4,0,123,22],
 "structehci__registers__t.html#a831126014c87c34e69788af5903389a4":[4,0,123,39],
 "structehci__registers__t.html#a85620b06990bd40daa03c7165e8bb89b":[4,0,123,9],
@@ -248,6 +249,5 @@ var NAVTREEINDEX56 =
 "structmidid__interface__t.html#ac0d12699adb31e2bc352e57a8351ddbc":[4,0,181,6],
 "structmidid__interface__t.html#aec1886d965f60f01d2741447d55e0eda":[4,0,181,11],
 "structmidid__interface__t.html#af4f98317282340aa8c4deeb9f06d4508":[4,0,181,0],
-"structmidid__stream__t.html":[4,0,182],
-"structmidid__stream__t.html#af6643533f6de3ddb93bd48e40286707c":[4,0,182,2]
+"structmidid__stream__t.html":[4,0,182]
 };

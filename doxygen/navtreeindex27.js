@@ -1,5 +1,6 @@
 var NAVTREEINDEX27 =
 {
+"group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79a18cc4f55558dec61f419b1561eb902b0":[2,3,2,20],
 "group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79a1db3a30da7b7688a77b0dcebb1167e42":[2,3,2,17],
 "group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79a2c220138186d821aec0979d4a0114d89":[2,3,2,16],
 "group___class_driver___h_i_d.html#ggafa39696504bdc6891d340b764213be79a3d3d623549dd047b6d7be625589c5eff":[2,3,2,30],
@@ -248,6 +249,5 @@ var NAVTREEINDEX27 =
 "hcd__dwc2_8c.html#afc6479b600a4544eb4270b33256aa571":[5,0,0,0,2,5,18,0,11,5],
 "hcd__dwc2_8c_source.html":[5,0,0,0,2,5,18,0,11],
 "hcd__khci_8c.html":[5,0,0,0,2,5,11,0,1],
-"hcd__khci_8c.html#a035c3854e11cd8797f9014c2f61e84be":[5,0,0,0,2,5,11,0,1,18],
-"hcd__khci_8c.html#a0b8b6f6e7f14e542e49c0cb0ecb285be":[5,0,0,0,2,5,11,0,1,26]
+"hcd__khci_8c.html#a035c3854e11cd8797f9014c2f61e84be":[5,0,0,0,2,5,11,0,1,18]
 };

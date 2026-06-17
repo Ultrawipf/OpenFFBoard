@@ -1,5 +1,6 @@
 var NAVTREEINDEX53 =
 {
+"struct_t_u___a_t_t_r___p_a_c_k_e_d_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#a813cec654218874fed2705223e058df8":[2,9,0,0,14],
 "struct_t_u___a_t_t_r___p_a_c_k_e_d_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#a813cec654218874fed2705223e058df8":[2,10,0,0,14],
 "struct_t_u___a_t_t_r___p_a_c_k_e_d_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#a8795b21a6da9e1548c018f872b0d7eb3":[2,0,0,0,24],
 "struct_t_u___a_t_t_r___p_a_c_k_e_d_1_1_t_u___a_t_t_r___p_a_c_k_e_d.html#a8795b21a6da9e1548c018f872b0d7eb3":[2,2,1,0,24],
@@ -248,6 +249,5 @@ var NAVTREEINDEX53 =
 "structcdch__interface__t.html#aeb0894d786bd83d11339d6ba5f4945ba":[4,0,80,2],
 "structcdch__serial__driver__t.html":[4,0,81],
 "structcdch__serial__driver__t.html#a0a803954a57d89e54b7b4594fd108882":[4,0,81,0],
-"structcdch__serial__driver__t.html#a1e50ada99f71870dd3e2dc7b84dd9e01":[4,0,81,6],
-"structcdch__serial__driver__t.html#a2faef0f508fc199988650402e1674243":[4,0,81,7]
+"structcdch__serial__driver__t.html#a1e50ada99f71870dd3e2dc7b84dd9e01":[4,0,81,6]
 };

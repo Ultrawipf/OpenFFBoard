@@ -1,5 +1,6 @@
 var NAVTREEINDEX54 =
 {
+"structcdch__serial__driver__t.html#a2faef0f508fc199988650402e1674243":[4,0,81,7],
 "structcdch__serial__driver__t.html#a4a083c0b8d26b599737ecd049a679f88":[4,0,81,4],
 "structcdch__serial__driver__t.html#a6e75865f4f15b54c088fd7114c6322a9":[4,0,81,1],
 "structcdch__serial__driver__t.html#a8ca48c5abf5c5e2664ee367c8d39c0da":[4,0,81,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX54 =
 "structdfu__state__ctx__t.html#a7738d64b2ab0c97c9164a96a4599f310":[4,0,105,7],
 "structdfu__state__ctx__t.html#aa55ba64df7032cbecbbe1a9eaaf49831":[4,0,105,0],
 "structdfu__state__ctx__t.html#ab826b474c5eac69df2092810531096c3":[4,0,105,3],
-"structdfu__state__ctx__t.html#ad82f5fe92f5a04fff4104aacfdd97acb":[4,0,105,6],
-"structdfu__state__ctx__t.html#afec81f153e46fd3b7a5c86d443e2ab6f":[4,0,105,1]
+"structdfu__state__ctx__t.html#ad82f5fe92f5a04fff4104aacfdd97acb":[4,0,105,6]
 };

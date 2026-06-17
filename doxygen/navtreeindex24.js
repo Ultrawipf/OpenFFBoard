@@ -1,5 +1,6 @@
 var NAVTREEINDEX24 =
 {
+"globals_vars_g.html":[5,1,2,7],
 "globals_vars_h.html":[5,1,2,8],
 "globals_vars_i.html":[5,1,2,9],
 "globals_vars_l.html":[5,1,2,10],
@@ -248,6 +249,5 @@ var NAVTREEINDEX24 =
 "group___class_driver___audio.html#gga0e3aac1bac115f5250ed1cdabfd3d293acd9dbf4e5805afb17856013365dc7ea0":[2,0,32,12],
 "group___class_driver___audio.html#gga0e3aac1bac115f5250ed1cdabfd3d293ae28585cb0919278d2124007adf620aa1":[2,0,32,11],
 "group___class_driver___audio.html#gga0e3aac1bac115f5250ed1cdabfd3d293aef1bbf9afec804e6e930902d276afed0":[2,0,32,8],
-"group___class_driver___audio.html#gga1f7e5d13e73db6064c7d47f9a6270a88a2c9b9de4616f58ecfdffc1f8feb0e744":[2,0,42,3],
-"group___class_driver___audio.html#gga1f7e5d13e73db6064c7d47f9a6270a88a2d76f7f681b8f9120e39fbaccd700e45":[2,0,42,2]
+"group___class_driver___audio.html#gga1f7e5d13e73db6064c7d47f9a6270a88a2c9b9de4616f58ecfdffc1f8feb0e744":[2,0,42,3]
 };

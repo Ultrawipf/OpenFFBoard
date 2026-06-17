@@ -1,5 +1,6 @@
 var NAVTREEINDEX35 =
 {
+"struct_i2_c_port_hardware_config_1_1_i2_c_port_hardware_config__preset.html":[4,0,172,0],
 "struct_i2_c_port_hardware_config_1_1_i2_c_port_hardware_config__preset.html#a5ad9e9d9d127bb3828fae9dd967c1f28":[4,0,172,0,0],
 "struct_i2_c_port_hardware_config_1_1_i2_c_port_hardware_config__preset.html#ad14d066738d39a389d05aa00c42a78b3":[4,0,172,0,1],
 "struct_ledstruct.html":[4,0,174],
@@ -248,6 +249,5 @@ var NAVTREEINDEX35 =
 "struct_t_m_c4671_main_config.html#a9e4776d8b0581e130c4a1153b2125faf":[4,0,256,6],
 "struct_t_m_c4671_main_config.html#aa5fe41d23d04db6c45debaeb01e2f363":[4,0,256,13],
 "struct_t_m_c4671_main_config.html#aa792e46b7a759a8fa1ff9762f73e49b3":[4,0,256,3],
-"struct_t_m_c4671_main_config.html#aad86f55d7bbf8582b10ba206f6945378":[4,0,256,0],
-"struct_t_m_c4671_main_config.html#ab36c021f6e1ada5483cfa04f5d636e3b":[4,0,256,7]
+"struct_t_m_c4671_main_config.html#aad86f55d7bbf8582b10ba206f6945378":[4,0,256,0]
 };
