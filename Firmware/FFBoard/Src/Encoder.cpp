@@ -128,10 +128,14 @@ void Encoder::updateState(float new_pos_rot, float dt) {
     float new_pos_rad = new_pos_rot * 2.0f * 3.14159265f;
 
     // 4. Correct the Kalman state estimate with the new measurement and noise
-    kalman.update(new_pos_rad, r_var);
+    kalman.updatePosition(new_pos_rad, r_var);
 
     // 5. Trigger FOC update for any attached external adapters (Cascade ISR)
     EncoderManager::getInstance().updateAdaptersForEncoder(this);
+}
+
+void Encoder::updateVelocityAsynchronous(float new_vel, float dt_pulse) {
+    kalman.updateVelocity(new_vel, dt_pulse);
 }
 
 

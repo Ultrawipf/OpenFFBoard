@@ -51,6 +51,7 @@ public:
 	virtual uint32_t getScaler();
 	virtual void triggerRead();
 	void updateState(float new_pos, float dt);
+	void updateVelocityAsynchronous(float new_vel, float dt_pulse);
 
 	static const std::vector<class_entry<Encoder> > all_encoders;
 	virtual const ClassType getClassType() override {return ClassType::Encoder;};

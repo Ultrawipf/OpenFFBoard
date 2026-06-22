@@ -26,7 +26,10 @@ public:
     void predict(float dt);
 
     // Updates the state and covariance estimates using the new position measurement and noise variance R.
-    void update(float measurement, float R);
+    void updatePosition(float z_theta, float R_position);
+
+    // Updates the state and covariance estimates using the new velocity measurement with OOSM and ANC.
+    void updateVelocity(float z_omega, float dt_pulse);
 
     // Sets the acceleration process noise variance (q).
     void setQ(float q);
@@ -41,9 +44,9 @@ public:
     float getAlpha() const;
 
 private:
-    double x[3]; // State vector: [theta (position), omega (velocity), alpha (acceleration)]
-    double P[3][3]; // Estimation error covariance matrix
-    double q_var; // Acceleration process noise variance (model uncertainty)
+    float x[3]; // State vector: [theta (position), omega (velocity), alpha (acceleration)]
+    float P[3][3]; // Estimation error covariance matrix
+    float q_continuous; // Acceleration process noise variance (model uncertainty CWNA)
     mutable std::atomic<uint32_t> sequence{0}; // SeqLock counter
 };
 

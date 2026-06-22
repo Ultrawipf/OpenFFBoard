@@ -16,6 +16,10 @@
 #include "CommandHandler.h"
 #include "PersistentStorage.h"
 
+#ifndef LOCAL_ENCODER_SPEED_MODE
+#define LOCAL_ENCODER_SPEED_MODE 0
+#endif
+
 #ifdef LOCALENCODER
 extern TIM_HandleTypeDef TIM_ENC_ABN_HW;
 
@@ -46,6 +50,8 @@ public:
 	void exti(uint16_t GPIO_Pin) override;
 	void timerElapsed(TIM_HandleTypeDef* htim);
 
+	void triggerRead() override;
+
 	int32_t getTimerCount();
 
 	uint32_t getCpr() override;
@@ -66,6 +72,12 @@ private:
 
 	bool indexHit = false;
 	bool useIndex = false;
+
+#if LOCAL_ENCODER_SPEED_MODE
+	uint32_t last_timestamp = 0;
+	int32_t last_speed_pos = 0;
+	int32_t last_pos_1ms = 0;
+#endif
 };
 #endif
 #endif /* ENCODERLOCAL_H_ */

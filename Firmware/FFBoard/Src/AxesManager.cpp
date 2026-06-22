@@ -120,7 +120,4 @@ void AxesManager::resetPosZero() {
 }
 
 void AxesManager::updateSamplerate(float newSamplerate){
-	for (auto &axis : axes) {
-		axis->updateSamplerate(newSamplerate);
-	}
 }

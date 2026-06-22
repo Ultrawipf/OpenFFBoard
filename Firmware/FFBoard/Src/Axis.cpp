@@ -191,10 +191,6 @@ void Axis::registerCommands(){
 	registerCommand("curspd", Axis_commands::curspd, "Axis speed",CMDFLAG_GET);
 	registerCommand("curaccel", Axis_commands::curaccel, "Axis accel",CMDFLAG_GET);
 	registerCommand("reduction", Axis_commands::reductionScaler, "Encoder to axis gear reduction (val / adr) 1-256",CMDFLAG_GET | CMDFLAG_SETADR);
-	registerCommand("filterProfile_id", Axis_commands::filterProfileId, "Biquad filter profile for speed and accel", CMDFLAG_GET | CMDFLAG_SET);
-	//Can only read exact filter settings
-	registerCommand("filterSpeed", Axis_commands::filterSpeed, "Biquad filter freq and q*100 for speed", CMDFLAG_GET);
-	registerCommand("filterAccel", Axis_commands::filterAccel, "Biquad filter freq and q*100 for accel", CMDFLAG_GET);
 
 	registerCommand("cpr", Axis_commands::cpr, "Reported encoder CPR",CMDFLAG_GET);
 	registerCommand("expo", Axis_commands::expo, "Exponential curve correction (x^(val/exposcale)+1)", CMDFLAG_GET | CMDFLAG_SET);
@@ -289,17 +285,6 @@ void Axis::restoreFlash(){
 		setGearRatio(ratio & 0xff, (ratio >> 8) & 0xff);
 	}
 
-	uint16_t filterStorage;
-	if (Flash_Read(flashAddresses.speedAccelFilter, &filterStorage))
-	{
-		uint8_t profile = filterStorage & 0xFF;
-		this->filterProfileId = profile;
-		speedFilter.setFc(filterSpeedCst[this->filterProfileId].freq / filter_f);
-		speedFilter.setQ(filterSpeedCst[this->filterProfileId].q / 100.0);
-		accelFilter.setFc(filterAccelCst[this->filterProfileId].freq / filter_f);
-		accelFilter.setQ(filterAccelCst[this->filterProfileId].q / 100.0);
-	}
-
 	uint16_t pp1;
 	if(Flash_Read(flashAddresses.postprocess1, &pp1)){
 		setExpo((int8_t)(pp1 & 0xff));
@@ -344,10 +329,6 @@ void Axis::saveFlash(){
 	Flash_Write(flashAddresses.effects1, idleSpringStrength | (damperIntensity << 8));
 	Flash_Write(flashAddresses.effects2, frictionIntensity | (inertiaIntensity << 8));
 	Flash_Write(flashAddresses.encoderRatio, gearRatio.numerator | (gearRatio.denominator << 8));
-
-	// save CF biquad
-	uint16_t filterStorage = (uint16_t)this->filterProfileId & 0xFF;
-	Flash_Write(flashAddresses.speedAccelFilter, filterStorage);
 
 	// Postprocessing
 	uint16_t pp1 = (expoValue & 0xff) | (equalizerEnabled << 8);
@@ -886,7 +867,7 @@ bool Axis::updateTorque(int32_t* totalTorque) {
 	// Increases forceFadeMultiplier progressively based on forceFadeDuration and sample rate.
 	if(forceFadeMultiplier < 1.0f){
 		torque = (int32_t)((float)torque * forceFadeMultiplier);
-		forceFadeMultiplier += forceFadeDuration / this->filter_f;
+		forceFadeMultiplier += forceFadeDuration / 1000.0f;
 	}
 
 	// STEP 6: Dynamic limiters (Speed)
@@ -989,22 +970,13 @@ int32_t Axis::applySpeedLimiterTorque(int32_t& torque){
  */
 void Axis::updateSamplerate(float newSamplerate){
 	this->filter_f = newSamplerate;
-	this->updateFilters(this->filterProfileId); // Recalculate filters
+	damperFilter.setFc(filterDamperCst.freq/filter_f);
+	inertiaFilter.setFc(filterInertiaCst.freq/filter_f);
+	frictionFilter.setFc(filterFrictionCst.freq/filter_f);
 	// Update EQ samplerate
 	for(uint8_t idx = 0; idx < eqFilters.size(); idx++){
 		eqFilters[idx].setFc(eq_frequencies[idx] / filter_f);
 	}
-}
-
-void Axis::updateFilters(uint8_t profileId){
-	this->filterProfileId = profileId;
-	speedFilter.setFc(filterSpeedCst[this->filterProfileId].freq / filter_f);
-	speedFilter.setQ(filterSpeedCst[this->filterProfileId].q / 100.0);
-	accelFilter.setFc(filterAccelCst[this->filterProfileId].freq / filter_f);
-	accelFilter.setQ(filterAccelCst[this->filterProfileId].q / 100.0);
-	damperFilter.setFc(filterDamperCst.freq/filter_f);
-	inertiaFilter.setFc(filterInertiaCst.freq/filter_f);
-	frictionFilter.setFc(filterFrictionCst.freq/filter_f);
 }
 
 /**
@@ -1236,31 +1208,6 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 			replies.emplace_back(gearRatio.numerator+1,gearRatio.denominator+1);
 		}else if(cmd.type == CMDtype::setat){
 			setGearRatio(cmd.val-1,cmd.adr-1);
-		}
-		break;
-
-	case Axis_commands::filterProfileId:
-		if (cmd.type == CMDtype::get)
-		{
-			replies.emplace_back(this->filterProfileId);
-		}
-		else if (cmd.type == CMDtype::set)
-		{
-			uint32_t value = clip<uint32_t, uint32_t>(cmd.val, 0, filterSpeedCst.size()-1);
-			this->updateFilters(value);
-		}
-		break;
-	case Axis_commands::filterSpeed:
-		if (cmd.type == CMDtype::get)
-		{
-			replies.emplace_back(this->filterSpeedCst[this->filterProfileId].freq,this->filterSpeedCst[this->filterProfileId].q);
-		}
-		break;
-
-	case Axis_commands::filterAccel:
-		if (cmd.type == CMDtype::get)
-		{
-			replies.emplace_back(this->filterAccelCst[this->filterProfileId].freq,this->filterAccelCst[this->filterProfileId].q);
 		}
 		break;
 

@@ -116,7 +116,7 @@ enum class Axis_commands : uint32_t{
 	power=0x00,degrees=0x01,esgain,zeroenc,invert,idlespring,axisdamper,enctype,drvtype,
 	pos,curtorque,curpos,curspd,curaccel,
 	fxratio,reductionScaler,
-	filterSpeed, filterAccel, filterProfileId,cpr,axisfriction,axisinertia,
+	cpr,axisfriction,axisinertia,
 	maxspeed,slewrate,
 	calibrate_maxSlewRateDrv,
 	maxSlewRateDrv,
@@ -369,8 +369,7 @@ public:
 	bool updateTorque(int32_t* totalTorque);
 
 
-	void updateSamplerate(float newSamplerate);
-	void updateFilters(uint8_t profileId);
+
 
 	/**
 	 * @brief Sets the gear ratio.
@@ -516,24 +515,17 @@ private:
 	bool awaitingSlewCalibration = false;
 
 	// Filters
-	// TODO tune these and check if it is really stable and beneficial to the FFB. index 4 placeholder
-	const std::array<biquad_constant_t,4> filterSpeedCst = { {{ 40, 55 }, { 70, 55 }, { 120, 55 }, {180, 55}} }; //!< Speed filter profiles.
-	const std::array<biquad_constant_t,4> filterAccelCst = { {{ 40, 30 }, { 55, 30 }, { 70, 30 }, {120, 55}} }; //!< Acceleration filter profiles.
 	const biquad_constant_t filterDamperCst = {60, 55};     //!< Damper filter constants.
 	const biquad_constant_t filterFrictionCst = {50, 20};   //!< Friction filter constants.
 	const biquad_constant_t filterInertiaCst = {20, 20};    //!< Inertia filter constants.
-	uint8_t filterProfileId = 1; //!< Currently selected filter profile ID.
 	float filter_f = 1000.0; // 1khz
 	const int32_t internalFxClip = 20000; //!< Clipping value for internal effects.
-
 	// Internal effects intensity
 	uint8_t damperIntensity = 30;	//!< Intensity of the internal damper effect.
 	uint8_t frictionIntensity = 0;	//!< Intensity of the internal friction effect.
 	uint8_t inertiaIntensity = 0;	//!< Intensity of the internal inertia effect.
 
 	// Biquad filter instances
-	Biquad speedFilter = Biquad(BiquadType::lowpass, filterSpeedCst[filterProfileId].freq/filter_f, filterSpeedCst[filterProfileId].q/100.0, 0.0);
-	Biquad accelFilter = Biquad(BiquadType::lowpass, filterAccelCst[filterProfileId].freq/filter_f, filterAccelCst[filterProfileId].q/100.0, 0.0);
 	Biquad damperFilter = Biquad(BiquadType::lowpass, filterDamperCst.freq/filter_f, filterDamperCst.q / 100.0, 0.0);
 	Biquad frictionFilter = Biquad(BiquadType::lowpass, filterFrictionCst.freq/filter_f, filterFrictionCst.q / 100.0, 0.0);
 	Biquad inertiaFilter = Biquad(BiquadType::lowpass, filterInertiaCst.freq/filter_f, filterInertiaCst.q / 100.0, 0.0);
