@@ -267,16 +267,25 @@ int32_t CANPort_2B::addCanFilter(CAN_filter filter){
 	sFilterConfig.FilterMode = CAN_FILTERMODE_IDMASK;
 	sFilterConfig.FilterScale = CAN_FILTERSCALE_32BIT;
 	sFilterConfig.FilterFIFOAssignment = filter.buffer == 0 ? CAN_RX_FIFO0 : CAN_RX_FIFO1;
-	sFilterConfig.FilterIdHigh = ((filter.filter_id << 5)  | (filter.filter_id >> (32 - 5))) & 0xFFFF;
-	sFilterConfig.FilterIdLow = (filter.filter_id >> (11 - 3)) & 0xFFF8;
-	sFilterConfig.FilterMaskIdHigh = ((filter.filter_mask << 5)  | (filter.filter_mask >> (32 - 5))) & 0xFFFF;
-	sFilterConfig.FilterMaskIdLow = (filter.filter_mask >> (11 - 3)) & 0xFFF8;
 
 
-	if(filter.extid){
-		sFilterConfig.FilterIdLow |= 0x04;
-		sFilterConfig.FilterMaskIdLow |= 0x4; // Add IDE bit
+	if (!filter.extid) {
+	    // Standard 11-bit ID -> bits 31:21
+	    sFilterConfig.FilterIdHigh     = (filter.filter_id << 5) & 0xFFFF;
+	    sFilterConfig.FilterIdLow      = 0;
+	    sFilterConfig.FilterMaskIdHigh = (filter.filter_mask << 5) & 0xFFFF;
+	    sFilterConfig.FilterMaskIdLow  = 0;
+	} else {
+	    // Extended 29-bit ID -> bits 31:3
+	    sFilterConfig.FilterIdHigh     = (filter.filter_id >> 13) & 0xFFFF;
+	    sFilterConfig.FilterIdLow      = (filter.filter_id << 3) & 0xFFF8;
+	    sFilterConfig.FilterMaskIdHigh = (filter.filter_mask >> 13) & 0xFFFF;
+	    sFilterConfig.FilterMaskIdLow  = (filter.filter_mask << 3) & 0xFFF8;
+
+	    sFilterConfig.FilterIdLow     |= 0x04; // IDE = 1
+	    sFilterConfig.FilterMaskIdLow |= 0x04; // force IDE bit to match
 	}
+
 
 	configSem.Take();
 	int32_t lowestId = 0;// sFilterConfig.FilterFIFOAssignment == CAN_RX_FIFO0 ? 0 : slaveFilterStart;
