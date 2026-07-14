@@ -153,6 +153,8 @@ public:
 
 	virtual void setSilentMode(bool silent) = 0;
 
+	virtual bool isWaiting();
+
 
 	// ---------------------------------------------
 

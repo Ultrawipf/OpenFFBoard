@@ -30,6 +30,10 @@ CANPort* CANPort::handleToPort(void* handle){
 	return portInst;
 }
 
+bool CANPort::isWaiting(){
+	return isWaitingFlag;
+}
+
 
 // ------------------------
 
