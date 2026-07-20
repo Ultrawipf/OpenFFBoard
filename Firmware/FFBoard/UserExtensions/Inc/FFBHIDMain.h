@@ -84,6 +84,8 @@ public:
 
 	float getCurFFBFreq();
 
+	void update() override;
+
 protected:
 	std::shared_ptr<EffectsControlItf> ffb;
 	std::shared_ptr<EffectsCalculator> effects_calc;

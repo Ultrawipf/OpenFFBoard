@@ -69,7 +69,7 @@ void FFBoardMain::usbInit(){
  * Can be reimplemented by custom main classes but should not block
  */
 void FFBoardMain::update(){
-
+	vTaskDelay(1); // Wait at least one cycle if not overridden
 }
 
 /**
