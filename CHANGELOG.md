@@ -1,3 +1,8 @@
+### v1.17.1
+- Fixed CAN filters for extended IDs
+- VESC uses CAN filters
+- Reduce PendSV interrupts by delaying the idle loop by default
+
 ### v1.17.0
 - Added SPI speed selector to MagnTek encoders
 - Added "reg" and "save" commands to MagnTek encoder. Allows programming MT6835 encoders (debug=1 mode required!)
