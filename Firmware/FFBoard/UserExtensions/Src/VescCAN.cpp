@@ -61,13 +61,7 @@ VescCAN::VescCAN(uint8_t address) :
 	setAddress(address);
 	restoreFlash();
 
-	// Set up a filter to receive vesc commands
-	CAN_filter filterConf;
-	filterConf.extid = true;
-	filterConf.buffer = 0;
-	filterConf.filter_id = 0;
-	filterConf.filter_mask =  0;
-	this->filterId = this->port->addCanFilter(filterConf); // Receive all
+	setCanFilter();
 
 	if(port->getSpeedPreset() < 3){
 		port->setSpeedPreset(3); // Minimum 250k
@@ -83,6 +77,8 @@ VescCAN::~VescCAN() {
 	this->stopMotor();
 	this->port->freePort();
 	this->state = VescState::VESC_STATE_UNKNOWN;
+	this->port->removeCanFilter(filterId);
+	this->port->removeCanFilter(filterIdVesc);
 }
 
 void VescCAN::setAddress(uint8_t address) {
@@ -95,8 +91,40 @@ void VescCAN::setAddress(uint8_t address) {
 	}
 }
 
+bool VescCAN::setCanFilter(){
+	if(filterId != -1){
+		port->removeCanFilter(filterId);
+		filterId = -1;
+	}
+	// Set up a filter to receive vesc commands
+	CAN_filter filterConf;
+	filterConf.extid = true;
+	filterConf.buffer = 0;
+	filterConf.filter_id = this->OFFB_can_Id;
+	filterConf.filter_mask =  0xff;
+	this->filterId = this->port->addCanFilter(filterConf); // Receive messages for this id
+
+	if(filterIdVesc != -1){
+		filterIdVesc = -1;
+		port->removeCanFilter(filterIdVesc);
+	}
+
+	if(this->filterIdVesc == -1){
+		filterConf.extid = true;
+		filterConf.buffer = 0;
+		filterConf.filter_id = VESC_can_Id == 0xff ? ((uint8_t)VescCANMsg::CAN_PACKET_POLL_ROTOR_POS) << 8 : VESC_can_Id;
+		filterConf.filter_mask =  VESC_can_Id == 0xff ? 0xff00 : 0xff; // Filter pos update or vesc id
+		this->filterIdVesc = this->port->addCanFilter(filterConf);
+	}
+
+	return this->filterId != -1 && this->filterIdVesc != -1;
+}
+
 void VescCAN::turn(int16_t power) {
 	float torque = ((float) power / (float) 0x7fff);
+	if(fabs(torque-lastTorque) > 0.01){
+		pulseErrLed();
+	}
 	lastTorque = torque;
 	this->setTorque(torque);
 }
@@ -238,9 +266,17 @@ CommandStatus VescCAN::command(const ParsedCommand &cmd,
 	switch (static_cast<VescCAN_commands>(cmd.cmdId)) {
 
 	case VescCAN_commands::offbcanid:
-		return handleGetSet(cmd, replies, this->OFFB_can_Id);
+	{
+		CommandStatus status = handleGetSet(cmd, replies, this->OFFB_can_Id);
+		if(!setCanFilter()) status = CommandStatus::ERR;
+		return status;
+	}
 	case VescCAN_commands::vesccanid:
-		return handleGetSet(cmd, replies, this->VESC_can_Id);
+	{
+		CommandStatus status = handleGetSet(cmd, replies, this->VESC_can_Id);
+		if(!setCanFilter()) status = CommandStatus::ERR;
+		return status;
+	}
 	case VescCAN_commands::errorflags:
 		if (cmd.type == CMDtype::get)
 			replies.emplace_back(vescErrorFlag);
@@ -327,7 +363,7 @@ void VescCAN::Run() {
 		}
 
 		// if vesc is compatible, ready or in error => check the status
-		if (state >= VescState::VESC_STATE_COMPATIBLE) {
+		if (state >= VescState::VESC_STATE_COMPATIBLE && !port->isWaiting()) {
 			this->askGetValue();
 			// the return of askGetValue put the state in READY or ERROR is vesc respond to status
 		}
@@ -342,7 +378,7 @@ void VescCAN::Run() {
 		// when motor is active we call vesc each 500ms, to disable the vesc watchdog
 		// (if vesc not received message in 1sec, it cut off motor)
 		if (lastTorque != 0.0 && activeMotor
-				&& state == VescState::VESC_STATE_READY) {
+				&& state == VescState::VESC_STATE_READY && !port->isWaiting()) {
 			this->setTorque(lastTorque);
 		}
 
@@ -583,8 +619,9 @@ void VescCAN::canRxPendCallback(CANPort* port,CAN_rx_msg& msg) {
 			(this->VESC_can_Id != 0xFF) && // and the vescCanId is not the default one
 			(destCanID == this->VESC_can_Id); // we check that emiterId is the vescId for this axis
 
-	if (!messageIsForThisVescAxis)
+	if (!messageIsForThisVescAxis){
 		return;
+	}
 
 	// Process the CAN message received
 	switch (cmd) {

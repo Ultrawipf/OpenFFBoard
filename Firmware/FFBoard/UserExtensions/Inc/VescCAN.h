@@ -107,6 +107,8 @@ public:
 	// Thread impl
 	void Run();
 
+	bool setCanFilter();
+
 private:
 
 	// Vesc interface and motor state
@@ -134,7 +136,8 @@ private:
 	// CAN section
 
 	CANPort *port = &canport;
-	int32_t filterId = 0;
+	int32_t filterId = -1;
+	int32_t filterIdVesc = -1;
 	uint8_t OFFB_can_Id = 0x40; 			// Default OpenFFBoard CAN ID
 	uint8_t VESC_can_Id = 0xFF;				// Default VESC CAN id
 	uint8_t buffer_rx[BUFFER_RX_SIZE];		// Used to store multi-frame can message
