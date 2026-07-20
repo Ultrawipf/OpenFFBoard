@@ -371,6 +371,10 @@ void FFBHIDMain::errorCallback(const Error &error, bool cleared){
 	}
 }
 
+void FFBHIDMain::update(){
+	vTaskDelay(4); // Allow the idle task to run
+}
+
 #ifdef TIM_FFB
 void FFBHIDMain::timerElapsed(TIM_HandleTypeDef* htim){
 	if(htim == &TIM_FFB){
