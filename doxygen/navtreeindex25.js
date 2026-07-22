@@ -1,5 +1,9 @@
 var NAVTREEINDEX25 =
 {
+"group___class_driver___audio.html#gga0e3aac1bac115f5250ed1cdabfd3d293acd9dbf4e5805afb17856013365dc7ea0":[2,0,32,12],
+"group___class_driver___audio.html#gga0e3aac1bac115f5250ed1cdabfd3d293ae28585cb0919278d2124007adf620aa1":[2,0,32,11],
+"group___class_driver___audio.html#gga0e3aac1bac115f5250ed1cdabfd3d293aef1bbf9afec804e6e930902d276afed0":[2,0,32,8],
+"group___class_driver___audio.html#gga1f7e5d13e73db6064c7d47f9a6270a88a2c9b9de4616f58ecfdffc1f8feb0e744":[2,0,42,3],
 "group___class_driver___audio.html#gga1f7e5d13e73db6064c7d47f9a6270a88a2d76f7f681b8f9120e39fbaccd700e45":[2,0,42,2],
 "group___class_driver___audio.html#gga1f7e5d13e73db6064c7d47f9a6270a88a8260538db20905707a27b4e445e65821":[2,0,42,1],
 "group___class_driver___audio.html#gga1f7e5d13e73db6064c7d47f9a6270a88a9ad0e4b20790583dce433069e136f900":[2,0,42,0],
@@ -245,9 +249,5 @@ var NAVTREEINDEX25 =
 "group___class_driver___audio.html#ggae37557c5995a3b95d32b8919d38c7237a2873ae0902125df910243bb5accb551f":[2,0,22,10],
 "group___class_driver___audio.html#ggae37557c5995a3b95d32b8919d38c7237a2aaf6a065e8ba817131581f55cbb258d":[2,0,22,12],
 "group___class_driver___audio.html#ggae37557c5995a3b95d32b8919d38c7237a335128b037e71a6a4742b1a6485efff5":[2,0,22,0],
-"group___class_driver___audio.html#ggae37557c5995a3b95d32b8919d38c7237a33ee814752fb3ce8d11032d1afc876a1":[2,0,22,27],
-"group___class_driver___audio.html#ggae37557c5995a3b95d32b8919d38c7237a40702f15bfda3a842716f1ad7bcb3e8d":[2,0,22,5],
-"group___class_driver___audio.html#ggae37557c5995a3b95d32b8919d38c7237a408335dfd5d3b64681a49744d31b3c92":[2,0,22,8],
-"group___class_driver___audio.html#ggae37557c5995a3b95d32b8919d38c7237a4c9ad6777332bd9afb055fce30c5a672":[2,0,22,6],
-"group___class_driver___audio.html#ggae37557c5995a3b95d32b8919d38c7237a4fcc2a2c8e927aa1cfa973986053be8c":[2,0,22,4]
+"group___class_driver___audio.html#ggae37557c5995a3b95d32b8919d38c7237a33ee814752fb3ce8d11032d1afc876a1":[2,0,22,27]
 };

@@ -151,6 +151,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a2492f60561901ac7d3807010bc01b478"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af4ad84b76f50a16c4f766779ffb5a65e" id="r_af4ad84b76f50a16c4f766779ffb5a65e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af4ad84b76f50a16c4f766779ffb5a65e">setSilentMode</a> (bool silent)=0</td></tr>
 <tr class="separator:af4ad84b76f50a16c4f766779ffb5a65e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5de71d61a1685f873dd892a64dce6924" id="r_a5de71d61a1685f873dd892a64dce6924"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5de71d61a1685f873dd892a64dce6924">isWaiting</a> ()</td></tr>
+<tr class="separator:a5de71d61a1685f873dd892a64dce6924"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6f09abe145e136ad4ea7eddf33dc3527" id="r_a6f09abe145e136ad4ea7eddf33dc3527"><td class="memItemLeft" align="right" valign="top">virtual int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6f09abe145e136ad4ea7eddf33dc3527">getPortUsers</a> ()</td></tr>
 <tr class="separator:a6f09abe145e136ad4ea7eddf33dc3527"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3302e9909b169a5d67c4d7ba867c5a3c" id="r_a3302e9909b169a5d67c4d7ba867c5a3c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3302e9909b169a5d67c4d7ba867c5a3c">takePort</a> ()</td></tr>
@@ -355,7 +357,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00166">166</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00168">168</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
 
 </div>
 </div>
@@ -409,7 +411,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00160">160</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00162">162</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
 
 </div>
 </div>
@@ -490,7 +492,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00175">175</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00177">177</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
 
 </div>
 </div>
@@ -521,6 +523,33 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a id="a5de71d61a1685f873dd892a64dce6924" name="a5de71d61a1685f873dd892a64dce6924"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5de71d61a1685f873dd892a64dce6924">&#9670;&#160;</a></span>isWaiting()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool CANPort::isWaiting </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_c_a_n_8cpp_source.html#l00033">33</a> of file <a class="el" href="_c_a_n_8cpp_source.html">CAN.cpp</a>.</p>
+
+</div>
+</div>
 <a id="ae51530dc123a367cb79ddf9c47c85747" name="ae51530dc123a367cb79ddf9c47c85747"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae51530dc123a367cb79ddf9c47c85747">&#9670;&#160;</a></span>presetToSpeed()</h2>
 
@@ -546,7 +575,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Gets speed for a preset index. </p>
 
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00200">200</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00202">202</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
 
 </div>
 </div>
@@ -746,7 +775,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Gets preset index for a speed. </p>
 
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00199">199</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00201">201</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
 
 </div>
 </div>
@@ -829,7 +858,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00161">161</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00163">163</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
 
 </div>
 </div>
@@ -856,7 +885,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00185">185</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00187">187</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
 
 </div>
 </div>
@@ -905,7 +934,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00204">204</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00206">206</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
 
 </div>
 </div>
@@ -929,7 +958,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00206">206</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00208">208</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
 
 </div>
 </div>
@@ -953,7 +982,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00207">207</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00209">209</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
 
 </div>
 </div>
@@ -979,7 +1008,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>CAN port presets for different speeds. Hardware dependent. </p>
 
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00205">205</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00207">207</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
 
 </div>
 </div>
@@ -1003,7 +1032,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00203">203</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_c_a_n_8h_source.html#l00205">205</a> of file <a class="el" href="_c_a_n_8h_source.html">CAN.h</a>.</p>
 
 </div>
 </div>

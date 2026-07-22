@@ -171,7 +171,7 @@ $(function(){initNavTree('_f_f_board_main_8cpp_source.html',''); initResizable(t
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span></div>
 <div class="foldopen" id="foldopen00071" data-start="{" data-end="}">
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno"><a class="line" href="class_f_f_board_main.html#a14549edbd09efde0a95caeabd7772000">   71</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_f_f_board_main.html#a14549edbd09efde0a95caeabd7772000">FFBoardMain::update</a>(){</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    vTaskDelay(1); <span class="comment">// Wait at least one cycle if not overridden</span></div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>}</div>
 </div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span></div>

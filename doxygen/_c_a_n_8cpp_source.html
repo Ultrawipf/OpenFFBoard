@@ -139,18 +139,26 @@ $(function(){initNavTree('_c_a_n_8cpp_source.html',''); initResizable(true); });
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>}</div>
 </div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="comment">// ------------------------</span></div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
+<div class="foldopen" id="foldopen00033" data-start="{" data-end="}">
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="class_c_a_n_port.html#a5de71d61a1685f873dd892a64dce6924">   33</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="class_c_a_n_port.html#a5de71d61a1685f873dd892a64dce6924">CANPort::isWaiting</a>(){</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="class_c_a_n_port.html#a9a02e93f7f522630b8fda9322b3691a9">isWaitingFlag</a>;</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>}</div>
+</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="comment">// ------------------------</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="a_c_a_n_8h_html"><div class="ttname"><a href="_c_a_n_8h.html">CAN.h</a></div></div>
 <div class="ttc" id="a_command_handler_8h_html_a13a18e5b49561a2f007205dc0afeea14a7123a699d77db6479a1d8ece2c4f1c16"><div class="ttname"><a href="_command_handler_8h.html#a13a18e5b49561a2f007205dc0afeea14a7123a699d77db6479a1d8ece2c4f1c16">CommandHandlerCommands::instance</a></div><div class="ttdeci">@ instance</div><div class="ttdef"><b>Definition</b> <a href="_command_handler_8h_source.html#l00119">CommandHandler.h:119</a></div></div>
 <div class="ttc" id="aclass_c_a_n_port_hardware_config_html"><div class="ttname"><a href="class_c_a_n_port_hardware_config.html">CANPortHardwareConfig</a></div><div class="ttdef"><b>Definition</b> <a href="_c_a_n_8h_source.html#l00039">CAN.h:39</a></div></div>
 <div class="ttc" id="aclass_c_a_n_port_html_a21e19467ca0028944ce5f6bcae8bd857"><div class="ttname"><a href="class_c_a_n_port.html#a21e19467ca0028944ce5f6bcae8bd857">CANPort::~CANPort</a></div><div class="ttdeci">virtual ~CANPort()</div><div class="ttdef"><b>Definition</b> <a href="#l00019">CAN.cpp:19</a></div></div>
 <div class="ttc" id="aclass_c_a_n_port_html_a2eac9b53112abf05bbf3f72966e764a8"><div class="ttname"><a href="class_c_a_n_port.html#a2eac9b53112abf05bbf3f72966e764a8">CANPort::handleToPort</a></div><div class="ttdeci">static CANPort * handleToPort(void *handle)</div><div class="ttdef"><b>Definition</b> <a href="#l00023">CAN.cpp:23</a></div></div>
-<div class="ttc" id="aclass_c_a_n_port_html_a8f4d6b6091bae3d82129463ab387bc11"><div class="ttname"><a href="class_c_a_n_port.html#a8f4d6b6091bae3d82129463ab387bc11">CANPort::presets</a></div><div class="ttdeci">const CANPortHardwareConfig &amp; presets</div><div class="ttdoc">CAN port presets for different speeds. Hardware dependent.</div><div class="ttdef"><b>Definition</b> <a href="_c_a_n_8h_source.html#l00205">CAN.h:205</a></div></div>
+<div class="ttc" id="aclass_c_a_n_port_html_a5de71d61a1685f873dd892a64dce6924"><div class="ttname"><a href="class_c_a_n_port.html#a5de71d61a1685f873dd892a64dce6924">CANPort::isWaiting</a></div><div class="ttdeci">virtual bool isWaiting()</div><div class="ttdef"><b>Definition</b> <a href="#l00033">CAN.cpp:33</a></div></div>
+<div class="ttc" id="aclass_c_a_n_port_html_a8f4d6b6091bae3d82129463ab387bc11"><div class="ttname"><a href="class_c_a_n_port.html#a8f4d6b6091bae3d82129463ab387bc11">CANPort::presets</a></div><div class="ttdeci">const CANPortHardwareConfig &amp; presets</div><div class="ttdoc">CAN port presets for different speeds. Hardware dependent.</div><div class="ttdef"><b>Definition</b> <a href="_c_a_n_8h_source.html#l00207">CAN.h:207</a></div></div>
 <div class="ttc" id="aclass_c_a_n_port_html_a97801bad4868b3175124f196086090ec"><div class="ttname"><a href="class_c_a_n_port.html#a97801bad4868b3175124f196086090ec">CANPort::CANPort</a></div><div class="ttdeci">CANPort(const CANPortHardwareConfig &amp;presets, uint8_t instance=0)</div><div class="ttdef"><b>Definition</b> <a href="#l00016">CAN.cpp:16</a></div></div>
+<div class="ttc" id="aclass_c_a_n_port_html_a9a02e93f7f522630b8fda9322b3691a9"><div class="ttname"><a href="class_c_a_n_port.html#a9a02e93f7f522630b8fda9322b3691a9">CANPort::isWaitingFlag</a></div><div class="ttdeci">bool isWaitingFlag</div><div class="ttdef"><b>Definition</b> <a href="_c_a_n_8h_source.html#l00208">CAN.h:208</a></div></div>
 <div class="ttc" id="aclass_c_a_n_port_html_ae0df1b5a12dda5dc98b2cda2bc93fd68"><div class="ttname"><a href="class_c_a_n_port.html#ae0df1b5a12dda5dc98b2cda2bc93fd68">CANPort::canPorts</a></div><div class="ttdeci">static std::vector&lt; CANPort * &gt; canPorts</div><div class="ttdef"><b>Definition</b> <a href="_c_a_n_8h_source.html#l00122">CAN.h:122</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

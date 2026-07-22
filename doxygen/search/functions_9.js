@@ -57,5 +57,6 @@ var searchData=
   ['istaken_54',['isTaken',['../class_i2_c_port.html#afcd0dd1c260573dd9db94f5bb500f4d4',1,'I2CPort::isTaken()'],['../class_s_p_i_port.html#a8518ed69ff1473e7a866b79267e13065',1,'SPIPort::isTaken()'],['../class_u_a_r_t_port.html#aa7d1095d03b5a62b94279b63bf4e08b2',1,'UARTPort::isTaken()']]],
   ['isvalid_55',['isValid',['../class_ring_buffer_wrapper.html#aeb8c245a901d8069fddede1ea9f14bb4',1,'RingBufferWrapper']]],
   ['isvalidclassid_56',['isValidClassId',['../class_class_chooser.html#a30c3411caeec09731283ce8f493e8d1e',1,'ClassChooser']]],
-  ['isvalidcommandid_57',['isValidCommandId',['../class_command_handler.html#af658c15ccbac468224ed2c5997e06f91',1,'CommandHandler']]]
+  ['isvalidcommandid_57',['isValidCommandId',['../class_command_handler.html#af658c15ccbac468224ed2c5997e06f91',1,'CommandHandler']]],
+  ['iswaiting_58',['isWaiting',['../class_c_a_n_port.html#a5de71d61a1685f873dd892a64dce6924',1,'CANPort']]]
 ];

@@ -1,5 +1,9 @@
 var NAVTREEINDEX57 =
 {
+"structmidid__interface__t.html#ac0d12699adb31e2bc352e57a8351ddbc":[4,0,181,6],
+"structmidid__interface__t.html#aec1886d965f60f01d2741447d55e0eda":[4,0,181,11],
+"structmidid__interface__t.html#af4f98317282340aa8c4deeb9f06d4508":[4,0,181,0],
+"structmidid__stream__t.html":[4,0,182],
 "structmidid__stream__t.html#af6643533f6de3ddb93bd48e40286707c":[4,0,182,2],
 "structmidid__stream__t.html#afa03ded757826496efddc6c4292820ca":[4,0,182,1],
 "structmidid__stream__t.html#afe0fd6f78a130cb11fd35bb0afb25cd8":[4,0,182,0],
@@ -245,9 +249,5 @@ var NAVTREEINDEX57 =
 "structrndis__msg__set__cmplt__t.html#aed57a1422839e258cd690f493746ad7c":[2,2,0,0,7,3],
 "structrusb2__controller__t.html":[4,0,227],
 "structrusb2__controller__t.html#a5fc545c3d4fdf1877da303925a9390c8":[4,0,227,1],
-"structrusb2__controller__t.html#ad1761d860d6462fd6c264a9d85089fcc":[4,0,227,0],
-"structscsi__read__capacity10__resp__t.html":[4,0,229],
-"structscsi__read__capacity10__resp__t.html#a18adc42538b12b9eeb01b33933de0d63":[4,0,229,1],
-"structscsi__read__capacity10__resp__t.html#ab3ea8234a357247faafbfc90e70c162f":[4,0,229,0],
-"structtu__edpt__stream__t.html":[4,0,264]
+"structrusb2__controller__t.html#ad1761d860d6462fd6c264a9d85089fcc":[4,0,227,0]
 };

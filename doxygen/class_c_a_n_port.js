@@ -11,6 +11,7 @@ var class_c_a_n_port =
     [ "getSpeedPreset", "class_c_a_n_port.html#a2492f60561901ac7d3807010bc01b478", null ],
     [ "giveSemaphore", "class_c_a_n_port.html#a1e5fc1083c1b26325ea1e38570c98f3c", null ],
     [ "handleToPort", "class_c_a_n_port.html#a2eac9b53112abf05bbf3f72966e764a8", null ],
+    [ "isWaiting", "class_c_a_n_port.html#a5de71d61a1685f873dd892a64dce6924", null ],
     [ "presetToSpeed", "class_c_a_n_port.html#ae51530dc123a367cb79ddf9c47c85747", null ],
     [ "removeCanFilter", "class_c_a_n_port.html#af0474cd1f09755dbd2dd4883703bd696", null ],
     [ "sendMessage", "class_c_a_n_port.html#af0dc0a0abf987199f83e5ffec8031481", null ],

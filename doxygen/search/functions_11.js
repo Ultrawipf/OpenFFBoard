@@ -71,7 +71,7 @@ var searchData=
   ['setbtnnum_68',['setBtnNum',['../class_can_buttons.html#a365a5ba3c95a67394a6c6f7ab41b1b8c',1,'CanButtons::setBtnNum()'],['../class_p_c_f8574_buttons.html#a66c2ce69151f47f79ee586598037580e',1,'PCF8574Buttons::setBtnNum()']]],
   ['setbtntypes_69',['setBtnTypes',['../class_selectable_inputs.html#a1eb0fe7122dc768fcc7d482a78369582',1,'SelectableInputs']]],
   ['setbuttons_70',['setButtons',['../class_h_i_d___gamepad_report__base.html#a8c3aec2558fbaaf9ee0f60a8a0755d52',1,'HID_GamepadReport_base::setButtons()'],['../class_h_i_d___gamepad_report.html#ab3b8b1cc4b84e67c12ef01bee6f2253d',1,'HID_GamepadReport::setButtons()']]],
-  ['setcanfilter_71',['setCanFilter',['../class_o_drive_c_a_n.html#a71bd2251a9d74449ab13fb28dad8e6bf',1,'ODriveCAN::setCanFilter()'],['../class_rmd_motor_c_a_n.html#ad579cea3eaf5e839b1d86762acb44bd5',1,'RmdMotorCAN::setCanFilter()']]],
+  ['setcanfilter_71',['setCanFilter',['../class_o_drive_c_a_n.html#a71bd2251a9d74449ab13fb28dad8e6bf',1,'ODriveCAN::setCanFilter()'],['../class_rmd_motor_c_a_n.html#ad579cea3eaf5e839b1d86762acb44bd5',1,'RmdMotorCAN::setCanFilter()'],['../class_vesc_c_a_n.html#afe1d97965d38e354b2fa9b325268fefb',1,'VescCAN::setCanFilter()']]],
   ['setclearbuffertimeout_72',['setClearBufferTimeout',['../class_cmd_parser.html#ab9055b89e82e22ee44bd34783314a952',1,'CmdParser']]],
   ['setclipled_73',['setClipLed',['../led_effects_8h.html#ae00fcf69a4374beb23bc83319c2782cf',1,'setClipLed(uint8_t on):&#160;ledEffects.cpp'],['../led_effects_8cpp.html#ae00fcf69a4374beb23bc83319c2782cf',1,'setClipLed(uint8_t on):&#160;ledEffects.cpp']]],
   ['setcommandsenabled_74',['setCommandsEnabled',['../class_command_handler.html#a45979fba8f86796394ad7e22896fc33f',1,'CommandHandler']]],

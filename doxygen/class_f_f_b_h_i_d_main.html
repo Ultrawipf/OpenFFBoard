@@ -184,6 +184,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a8ab9c0de548457dc93c1ea375abb6934"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae58762bc5bfbaf235fbddda793298a48" id="r_ae58762bc5bfbaf235fbddda793298a48"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae58762bc5bfbaf235fbddda793298a48">getCurFFBFreq</a> ()</td></tr>
 <tr class="separator:ae58762bc5bfbaf235fbddda793298a48"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf5201ceae9ccebde1bb6cba3f6329f0" id="r_abf5201ceae9ccebde1bb6cba3f6329f0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abf5201ceae9ccebde1bb6cba3f6329f0">update</a> () override</td></tr>
+<tr class="separator:abf5201ceae9ccebde1bb6cba3f6329f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_f_f_board_main"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_class_f_f_board_main')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_f_f_board_main.html">FFBoardMain</a></td></tr>
 <tr class="memitem:a955c919bc4f2062f9223ef006c659f0a inherit pub_methods_class_f_f_board_main" id="r_a955c919bc4f2062f9223ef006c659f0a"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="_class_i_ds_8h.html#a79467dc849dd02adbaa4373bbd7aba75">ClassType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_f_f_board_main.html#a955c919bc4f2062f9223ef006c659f0a">getClassType</a> () override</td></tr>
 <tr class="memdesc:a955c919bc4f2062f9223ef006c659f0a inherit pub_methods_class_f_f_board_main"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns the used classchooser selection id of this instance  <br /></td></tr>
@@ -192,8 +194,6 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a04d41911fa73b3df17d9d18d4c3eadf0 inherit pub_methods_class_f_f_board_main"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab919aaaedd40d25b04c8bbacb0311ad9 inherit pub_methods_class_f_f_board_main" id="r_ab919aaaedd40d25b04c8bbacb0311ad9"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_f_f_board_main.html#ab919aaaedd40d25b04c8bbacb0311ad9">~FFBoardMain</a> ()</td></tr>
 <tr class="separator:ab919aaaedd40d25b04c8bbacb0311ad9 inherit pub_methods_class_f_f_board_main"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a14549edbd09efde0a95caeabd7772000 inherit pub_methods_class_f_f_board_main" id="r_a14549edbd09efde0a95caeabd7772000"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_f_f_board_main.html#a14549edbd09efde0a95caeabd7772000">update</a> ()</td></tr>
-<tr class="separator:a14549edbd09efde0a95caeabd7772000 inherit pub_methods_class_f_f_board_main"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99dceaa3c195d2950ffd2d69c443a335 inherit pub_methods_class_f_f_board_main" id="r_a99dceaa3c195d2950ffd2d69c443a335"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_f_f_board_main.html#a99dceaa3c195d2950ffd2d69c443a335">cdcRcv</a> (char *Buf, uint32_t *Len)</td></tr>
 <tr class="separator:a99dceaa3c195d2950ffd2d69c443a335 inherit pub_methods_class_f_f_board_main"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9d88c2f8664e14a8c6a697a3439c9aee inherit pub_methods_class_f_f_board_main" id="r_a9d88c2f8664e14a8c6a697a3439c9aee"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_f_f_board_main.html#a9d88c2f8664e14a8c6a697a3439c9aee">cdcRcvReady</a> (uint8_t itf)</td></tr>
@@ -1201,7 +1201,37 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_timer_handler.html#a22b251078df0edfda8ade99324045649">TimerHandler</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html#l00375">375</a> of file <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html">FFBHIDMain.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html#l00379">379</a> of file <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html">FFBHIDMain.cpp</a>.</p>
+
+</div>
+</div>
+<a id="abf5201ceae9ccebde1bb6cba3f6329f0" name="abf5201ceae9ccebde1bb6cba3f6329f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf5201ceae9ccebde1bb6cba3f6329f0">&#9670;&#160;</a></span>update()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void FFBHIDMain::update </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Called in the default thread with no delay Can be reimplemented by custom main classes but should not block </p>
+
+<p>Reimplemented from <a class="el" href="class_f_f_board_main.html#a14549edbd09efde0a95caeabd7772000">FFBoardMain</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html#l00374">374</a> of file <a class="el" href="_f_f_b_h_i_d_main_8cpp_source.html">FFBHIDMain.cpp</a>.</p>
 
 </div>
 </div>
@@ -1364,7 +1394,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00095">95</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00097">97</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
 
 </div>
 </div>
@@ -1388,7 +1418,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00139">139</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00141">141</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
 
 </div>
 </div>
@@ -1412,7 +1442,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00145">145</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00147">147</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
 
 </div>
 </div>
@@ -1436,7 +1466,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00135">135</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00137">137</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
 
 </div>
 </div>
@@ -1460,7 +1490,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00090">90</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00092">92</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
 
 </div>
 </div>
@@ -1484,7 +1514,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00138">138</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00140">140</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
 
 </div>
 </div>
@@ -1508,7 +1538,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00093">93</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00095">95</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
 
 </div>
 </div>
@@ -1532,7 +1562,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00089">89</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00091">91</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
 
 </div>
 </div>
@@ -1556,7 +1586,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00097">97</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00099">99</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
 
 </div>
 </div>
@@ -1580,7 +1610,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00088">88</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00090">90</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
 
 </div>
 </div>
@@ -1604,7 +1634,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00107">107</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00109">109</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
 
 </div>
 </div>
@@ -1628,7 +1658,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00106">106</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00108">108</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
 
 </div>
 </div>
@@ -1652,7 +1682,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00127">127</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00129">129</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
 
 </div>
 </div>
@@ -1676,7 +1706,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00129">129</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00131">131</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
 
 </div>
 </div>
@@ -1700,7 +1730,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00147">147</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00149">149</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
 
 </div>
 </div>
@@ -1724,7 +1754,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00151">151</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00153">153</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
 
 </div>
 </div>
@@ -1748,7 +1778,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00149">149</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00151">151</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
 
 </div>
 </div>
@@ -1772,7 +1802,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00133">133</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00135">135</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
 
 </div>
 </div>
@@ -1796,7 +1826,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00141">141</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00143">143</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
 
 </div>
 </div>
@@ -1820,7 +1850,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00143">143</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00145">145</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
 
 </div>
 </div>
@@ -1844,7 +1874,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00103">103</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00105">105</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
 
 </div>
 </div>
@@ -1868,7 +1898,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00104">104</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_f_f_b_h_i_d_main_8h_source.html#l00106">106</a> of file <a class="el" href="_f_f_b_h_i_d_main_8h_source.html">FFBHIDMain.h</a>.</p>
 
 </div>
 </div>

@@ -1,5 +1,9 @@
 var NAVTREEINDEX22 =
 {
+"dwc2__efm32_8h.html":[5,0,0,0,2,5,18,0,4],
+"dwc2__efm32_8h.html#a889ad6535937bbe828b2e041ae8cf81e":[5,0,0,0,2,5,18,0,4,4],
+"dwc2__efm32_8h.html#aa952c0b8662be86ddee6fb9849298d77":[5,0,0,0,2,5,18,0,4,2],
+"dwc2__efm32_8h.html#aaa53ca0b650dfd85c4f59fa156f7a2cc":[5,0,0,0,2,5,18,0,4,5],
 "dwc2__efm32_8h.html#ad6761bd221c07903c805d4895e1e11ac":[5,0,0,0,2,5,18,0,4,1],
 "dwc2__efm32_8h.html#af3a24daf603325fe945f7f439d6817d4":[5,0,0,0,2,5,18,0,4,3],
 "dwc2__efm32_8h.html#afa8e432dd93299e635807532c1cd4709":[5,0,0,0,2,5,18,0,4,0],
@@ -245,9 +249,5 @@ var NAVTREEINDEX22 =
 "fsdev__type_8h.html#aaaa04b4ea5b9f29a74d1e4c56c0f6e48":[5,0,0,0,2,5,16,0,3,18],
 "fsdev__type_8h.html#ac9fa16f32a053b14a7870875f9ef0720":[5,0,0,0,2,5,16,0,3,10],
 "fsdev__type_8h.html#acd942a858710e39640b3af8bb785374d":[5,0,0,0,2,5,16,0,3,15],
-"fsdev__type_8h.html#ad203611d47a69309c231aea7aa8e91e9":[5,0,0,0,2,5,16,0,3,13],
-"fsdev__type_8h.html#adedb9d58c4eb3e8c1026322db2a522c5":[5,0,0,0,2,5,16,0,3,6],
-"fsdev__type_8h.html#af2fa68d95227197e20f33baf28e9461b":[5,0,0,0,2,5,16,0,3,12],
-"fsdev__type_8h_source.html":[5,0,0,0,2,5,16,0,3],
-"ftdi__sio_8h.html":[5,0,0,0,2,0,2,0,2]
+"fsdev__type_8h.html#ad203611d47a69309c231aea7aa8e91e9":[5,0,0,0,2,5,16,0,3,13]
 };

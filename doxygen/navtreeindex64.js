@@ -1,5 +1,9 @@
 var NAVTREEINDEX64 =
 {
+"video__device_8c.html#a08d30394040c92ecd5a2048dc48eb8ef":[5,0,0,0,2,0,10,1,18],
+"video__device_8c.html#a0f594a71941c2602188bd4c1b68883d8":[5,0,0,0,2,0,10,1,52],
+"video__device_8c.html#a10a5d74a9eed1ed4d7e088cd2b70f0d4":[5,0,0,0,2,0,10,1,34],
+"video__device_8c.html#a1c03410c6ce5eddb159a9df527b83944":[5,0,0,0,2,0,10,1,8],
 "video__device_8c.html#a1c2d919a02486bf9170dd93d58ed5c00":[5,0,0,0,2,0,10,1,28],
 "video__device_8c.html#a1d755fd2997e6f2ddcd1d22d9cef05b4":[5,0,0,0,2,0,10,1,7],
 "video__device_8c.html#a2047ae7a17899c8eaba5c9c2b5338134":[5,0,0,0,2,0,10,1,41],

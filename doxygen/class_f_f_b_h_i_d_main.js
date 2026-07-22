@@ -36,6 +36,7 @@ var class_f_f_b_h_i_d_main =
     [ "setReportRate", "class_f_f_b_h_i_d_main.html#a0524abcf2977295fab7f7d4376db5c29", null ],
     [ "systick", "class_f_f_b_h_i_d_main.html#a48f014f85fc724f756431627a8d23a5a", null ],
     [ "timerElapsed", "class_f_f_b_h_i_d_main.html#a8ab9c0de548457dc93c1ea375abb6934", null ],
+    [ "update", "class_f_f_b_h_i_d_main.html#abf5201ceae9ccebde1bb6cba3f6329f0", null ],
     [ "updateControl", "class_f_f_b_h_i_d_main.html#acd1f6f2ffb44f7d938f3d61c9ba9146d", null ],
     [ "usb_report_rates_names", "class_f_f_b_h_i_d_main.html#a2fd3b67c9e7d6de6ed4d10c4e2b5b687", null ],
     [ "usbInit", "class_f_f_b_h_i_d_main.html#af1113099c527732f29c34800af27da29", null ],

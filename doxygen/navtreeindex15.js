@@ -1,5 +1,9 @@
 var NAVTREEINDEX15 =
 {
+"classcpp__freertos_1_1_mutex_standard.html#aa42d0a64a53ce605d519f87d46fc6d9d":[3,0,0,15,0],
+"classcpp__freertos_1_1_mutex_standard.html#aa42d0a64a53ce605d519f87d46fc6d9d":[4,0,0,15,0],
+"classcpp__freertos_1_1_mutex_standard.html#ac035aaf9134b1be0f03aa748b0e3b289":[3,0,0,15,2],
+"classcpp__freertos_1_1_mutex_standard.html#ac035aaf9134b1be0f03aa748b0e3b289":[4,0,0,15,2],
 "classcpp__freertos_1_1_queue.html":[3,0,0,16],
 "classcpp__freertos_1_1_queue.html":[4,0,0,16],
 "classcpp__freertos_1_1_queue.html#a00d119db8fa3050da37746e82cbcf94f":[3,0,0,16,1],
@@ -245,9 +249,5 @@ var NAVTREEINDEX15 =
 "classcpp__freertos_1_1_tick_hook.html#a4521dcae85c773d230572b290b16c471":[3,0,0,27,4],
 "classcpp__freertos_1_1_tick_hook.html#a4521dcae85c773d230572b290b16c471":[4,0,0,27,4],
 "classcpp__freertos_1_1_tick_hook.html#a619bcbea555984bab3932ab6d4106683":[3,0,0,27,7],
-"classcpp__freertos_1_1_tick_hook.html#a619bcbea555984bab3932ab6d4106683":[4,0,0,27,7],
-"classcpp__freertos_1_1_tick_hook.html#a71d2ae51434f778f25b7807d06994137":[3,0,0,27,6],
-"classcpp__freertos_1_1_tick_hook.html#a71d2ae51434f778f25b7807d06994137":[4,0,0,27,6],
-"classcpp__freertos_1_1_tick_hook.html#ac439b5b8316d1a15d4de93bf509d6618":[3,0,0,27,8],
-"classcpp__freertos_1_1_tick_hook.html#ac439b5b8316d1a15d4de93bf509d6618":[4,0,0,27,8]
+"classcpp__freertos_1_1_tick_hook.html#a619bcbea555984bab3932ab6d4106683":[4,0,0,27,7]
 };

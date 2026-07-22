@@ -1,5 +1,9 @@
 var NAVTREEINDEX23 =
 {
+"fsdev__type_8h.html#adedb9d58c4eb3e8c1026322db2a522c5":[5,0,0,0,2,5,16,0,3,6],
+"fsdev__type_8h.html#af2fa68d95227197e20f33baf28e9461b":[5,0,0,0,2,5,16,0,3,12],
+"fsdev__type_8h_source.html":[5,0,0,0,2,5,16,0,3],
+"ftdi__sio_8h.html":[5,0,0,0,2,0,2,0,2],
 "ftdi__sio_8h_source.html":[5,0,0,0,2,0,2,0,2],
 "functions.html":[4,3,0],
 "functions.html":[4,3,0,0],
@@ -245,9 +249,5 @@ var NAVTREEINDEX23 =
 "globals_vars.html":[5,1,2],
 "globals_vars.html":[5,1,2,0],
 "globals_vars_a.html":[5,1,2,1],
-"globals_vars_b.html":[5,1,2,2],
-"globals_vars_c.html":[5,1,2,3],
-"globals_vars_d.html":[5,1,2,4],
-"globals_vars_e.html":[5,1,2,5],
-"globals_vars_f.html":[5,1,2,6]
+"globals_vars_b.html":[5,1,2,2]
 };

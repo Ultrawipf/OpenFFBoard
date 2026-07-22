@@ -1,5 +1,9 @@
 var NAVTREEINDEX54 =
 {
+"structcdch__interface__t.html#aeb0894d786bd83d11339d6ba5f4945ba":[4,0,80,2],
+"structcdch__serial__driver__t.html":[4,0,81],
+"structcdch__serial__driver__t.html#a0a803954a57d89e54b7b4594fd108882":[4,0,81,0],
+"structcdch__serial__driver__t.html#a1e50ada99f71870dd3e2dc7b84dd9e01":[4,0,81,6],
 "structcdch__serial__driver__t.html#a2faef0f508fc199988650402e1674243":[4,0,81,7],
 "structcdch__serial__driver__t.html#a4a083c0b8d26b599737ecd049a679f88":[4,0,81,4],
 "structcdch__serial__driver__t.html#a6e75865f4f15b54c088fd7114c6322a9":[4,0,81,1],
@@ -245,9 +249,5 @@ var NAVTREEINDEX54 =
 "structdfu__state__ctx__t.html":[4,0,105],
 "structdfu__state__ctx__t.html#a3ebeda69039d1ce19b61b4b4824273df":[4,0,105,4],
 "structdfu__state__ctx__t.html#a58fe343b2fdcd6ee00505859537a128e":[4,0,105,2],
-"structdfu__state__ctx__t.html#a69e25314b560412482f4e24902d6b0b3":[4,0,105,5],
-"structdfu__state__ctx__t.html#a7738d64b2ab0c97c9164a96a4599f310":[4,0,105,7],
-"structdfu__state__ctx__t.html#aa55ba64df7032cbecbbe1a9eaaf49831":[4,0,105,0],
-"structdfu__state__ctx__t.html#ab826b474c5eac69df2092810531096c3":[4,0,105,3],
-"structdfu__state__ctx__t.html#ad82f5fe92f5a04fff4104aacfdd97acb":[4,0,105,6]
+"structdfu__state__ctx__t.html#a69e25314b560412482f4e24902d6b0b3":[4,0,105,5]
 };
