@@ -12,6 +12,11 @@
 #include "usb_descriptors.h"
 #include "cdc_device.h"
 
+#ifdef CANBUS
+#include "CanCommandInterface.h"
+#include "cpp_target_config.h"
+#endif
+
 ClassIdentifier FFBoardMain::info ={.name = "Basic (Failsafe)" ,.id=0};
 
 char FFBoardMain::cdcbuf[(TUD_OPT_HIGH_SPEED ? 512 : 64)];
@@ -20,6 +25,9 @@ char FFBoardMain::cdcbuf[(TUD_OPT_HIGH_SPEED ? 512 : 64)];
 
 FFBoardMain::FFBoardMain() : CommandHandler(CMDCLSTR_MAIN,CMDCLSID_MAIN,0), commandThread(std::make_unique<FFBoardMainCommandThread>(this)){
 	CommandHandler::registerCommands(); // Register the internal system commands. Mainclasses always have these commands and should not call this function anywhere else
+#if defined(CANBUS) && defined(CANCOMMANDS)
+	canCmdInterface = std::make_unique<CAN_CommandInterface>(CAN_CMD_BASE_ID,canport);
+#endif
 }
 
 const ClassIdentifier FFBoardMain::getInfo(){
