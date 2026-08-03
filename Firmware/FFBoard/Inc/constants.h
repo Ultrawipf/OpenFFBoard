@@ -116,5 +116,11 @@ static const uint8_t SW_VERSION_INT[3] = {1,17,1}; // Version as array. 8 bit ea
 #define OTPMEMORY
 #endif
 
+#ifdef CANBUS
+#ifndef CAN_CMD_BASE_ID
+#define CAN_CMD_BASE_ID 0x100 // Base CAN id for the command interface (uses ids CAN_CMD_BASE_ID .. CAN_CMD_BASE_ID+5). Override in target_constants.h if needed.
+#endif
+#endif
+
 
 #endif

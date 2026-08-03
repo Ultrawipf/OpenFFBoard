@@ -70,7 +70,11 @@ void HID_CommandInterface::sendReplies(const std::vector<CommandResult>& results
 		if(result.type == CommandStatus::NO_REPLY) // Normally not possible at this point.
 			continue;
 
-		if( (originalInterface != this && enableBroadcastFromOtherInterfaces) || ( result.type == CommandStatus::OK && replies.empty() ) || (result.type == CommandStatus::ERR && replies.empty()) ){ // Request was sent by a different interface
+		if(originalInterface != this && !enableBroadcastFromOtherInterfaces){
+			continue; // Skip
+		}
+
+		if(( result.type == CommandStatus::OK && replies.empty() ) || (result.type == CommandStatus::ERR && replies.empty()) ){ // Request was sent by a different interface
 			if(this->outBuffer.size() > maxQueuedRepliesBroadcast){
 				continue; // for now we just throw away broadcasts if the buffer contains too many pending replies.
 			}
@@ -145,6 +149,12 @@ void HID_CommandInterface::queueReplyValues(const CommandReply& reply,const Pars
 		// Ignore
 		return;
 
+	}
+	// Async broadcasts (CommandInterface::broadcastCommandReplyAsync) call sendReplies() without checking
+	// readyToSend() first, and Run() can block indefinitely in tud_hid_n_ready() if nothing on the host is
+	// reading the vendor HID report - without this cap outBuffer would grow without bound in that case.
+	if(this->outBuffer.size() >= maxQueuedReplies){
+		return;
 	}
 	this->outBuffer.push_back(hidReply);
 }
