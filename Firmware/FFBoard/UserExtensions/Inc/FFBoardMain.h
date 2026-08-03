@@ -28,6 +28,7 @@ class USBdevice;
 class FFBoardMainCommandThread;
 class CDC_CommandInterface;
 class UART_CommandInterface;
+class CAN_CommandInterface;
 
 class FFBoardMain : public ChoosableClass, public CommandHandler{
 public:
@@ -60,6 +61,10 @@ public:
 
 #ifdef UARTCOMMANDS
 	std::unique_ptr<UART_CommandInterface> uartCmdInterface = std::make_unique<UART_CommandInterface>(115200); // UART command interface
+#endif
+
+#if defined(CANBUS) && defined(CANCOMMANDS)
+	std::unique_ptr<CAN_CommandInterface> canCmdInterface; // CAN command interface
 #endif
 
 protected:
