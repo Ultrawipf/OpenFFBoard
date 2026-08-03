@@ -1692,9 +1692,9 @@ void TMC4671::startMotor(){
 		setMotionMode(nextMotionMode,true);
 
 	}
-	else{
-		changeState(TMC_ControlState::waitPower);
-	}
+//	else{
+//		changeState(TMC_ControlState::waitPower);
+//	}
 
 }
 
