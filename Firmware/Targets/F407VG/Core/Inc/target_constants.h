@@ -57,6 +57,7 @@
 #define ADS111XANALOG // Requires I2C
 #define UARTCOMMANDS
 #define SIMPLEMOTION // Requires motor gpio pin
+#define CANCOMMANDS
 
 //----------------------
 #define BTNFAILSAFE // Use user button to force board into failsafe mainclass
