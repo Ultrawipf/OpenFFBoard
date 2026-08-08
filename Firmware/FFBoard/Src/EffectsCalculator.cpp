@@ -49,6 +49,8 @@ EffectsCalculator::EffectsCalculator() : CommandHandler("fx", CLSID_EFFECTSCALC)
 	registerCommand("filterProfile_id", EffectsCalculator_commands::filterProfileId, "Conditional effects filter profile: 0 default; 1 custom", CMDFLAG_GET | CMDFLAG_SET);
 
 	registerCommand("frictionPctSpeedToRampup", EffectsCalculator_commands::frictionPctSpeedToRampup, "% of max speed for gradual increase", CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("safetyLimit", EffectsCalculator_commands::safetyLimit, "Safety Cutoff Speed (0=Off)", CMDFLAG_GET | CMDFLAG_SET);
+    registerCommand("safetyDamping", EffectsCalculator_commands::safetyDamping, "Safety Damping Factor", CMDFLAG_GET | CMDFLAG_SET);
 
 	//this->Start(); // Enable if we want to periodically monitor
 }
@@ -159,8 +161,35 @@ void EffectsCalculator::calculateEffects(std::vector<std::unique_ptr<Axis>> &axe
 	// Apply summed force to axes
 	for(uint8_t i=0 ; i < axisCount ; i++)
 	{
-		int32_t force = clip<int32_t, int32_t>(forces[i], -0x7fff, 0x7fff); // Clip
-		axes[i]->setEffectTorque(force);
+		int32_t finalForce = forces[i];
+		
+		// --- meadhours CONFIGURABLE HAND SAFETY PATCH START ---
+		
+		// if limit value 0, off
+		if (this->safetySpeedLimit > 0) {
+			
+			float currentVel = 0.0f;
+			metric_t *metrics = axes[i]->getMetrics();
+			
+			if (metrics != nullptr) {
+				currentVel = metrics->speed;
+			}
+
+			// speed control
+			if (abs(currentVel) > this->safetySpeedLimit) {
+				
+				// killswitch
+				finalForce = 0; 
+				
+				// active damping
+				float dampingFactor = (float)this->safetyDamping / 10.0f;
+				float dampingForce = -1.0f * currentVel * dampingFactor;
+				finalForce = (int32_t)dampingForce;
+			}
+		}
+
+		int32_t clippedForce = clip<int32_t, int32_t>(finalForce, -0x7fff, 0x7fff); 
+		axes[i]->setEffectTorque(clippedForce);
 	}
 
 	effects_statslast = effects_stats;
@@ -942,6 +971,22 @@ CommandStatus EffectsCalculator::command(const ParsedCommand& cmd,std::vector<Co
 			isMonitorEffect = clip<uint8_t, uint8_t>(cmd.val, 0, 1);
 		}
 		break;
+
+		case EffectsCalculator_commands::safetyLimit:
+        if (cmd.type == CMDtype::get) {
+            replies.emplace_back(this->safetySpeedLimit);
+        } else if (cmd.type == CMDtype::set) {
+            this->safetySpeedLimit = cmd.val;
+        }
+        break;
+
+    case EffectsCalculator_commands::safetyDamping:
+        if (cmd.type == CMDtype::get) {
+            replies.emplace_back(this->safetyDamping);
+        } else if (cmd.type == CMDtype::set) {
+            this->safetyDamping = clip<uint8_t, uint8_t>(cmd.val, 0, 100);
+        }
+        break;
 
 	default:
 		return CommandStatus::NOT_FOUND;

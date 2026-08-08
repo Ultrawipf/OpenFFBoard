@@ -1,0 +1,11 @@
+[
+  {
+    "name": "GCC for ARM Embedded",
+    "compilers": {
+      "C": "C:/Program Files (x86)/Arm/GNU Toolchain mingw-w64-i686-arm-none-eabi/bin/arm-none-eabi-gcc.exe",
+      "CXX": "C:/Program Files (x86)/Arm/GNU Toolchain mingw-w64-i686-arm-none-eabi/bin/arm-none-eabi-g++.exe"
+    },
+    "isTrusted": true,
+    "keep": true
+  }
+]
