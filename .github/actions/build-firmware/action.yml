@@ -24,7 +24,7 @@ runs:
       id: check_tc
       uses: andstor/file-existence-action@v3
       with:
-        files: "/tmp/armtc,/usr/share/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi"
+        files: "/tmp/armtc,/usr/share/arm-gnu-toolchain-15.3.rel1-x86_64-arm-none-eabi"
 
     - name: Make temp dir
       if: steps.check_tc.outputs.files_exists != 'true'
@@ -37,19 +37,19 @@ runs:
       if: steps.check_tc.outputs.files_exists != 'true'
       with:
         path: /tmp/armtc
-        key: 'arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi'
+        key: 'arm-gnu-toolchain-15.3.rel1-x86_64-arm-none-eabi'
 
     - name: Download toolchain
       shell: bash
       if: steps.check_tc.outputs.files_exists != 'true' && steps.cache.outputs.cache-hit != 'true'
-      run: wget -q --no-check-certificate -O /tmp/armtc/gcc-arm-none-eabi.tar.xz https://developer.arm.com/-/media/Files/downloads/gnu/13.2.rel1/binrel/arm-gnu-toolchain-13.2.rel1-x86_64-arm-none-eabi.tar.xz
+      run: wget -q --no-check-certificate -O /tmp/armtc/gcc-arm-none-eabi.tar.xz https://gitlab.arm.com/api/v4/projects/tooling%2Fgnu-toolchains-for-arm/packages/generic/gnu-toolchain/15.3.rel1/arm-gnu-toolchain-15.3.rel1-x86_64-arm-none-eabi.tar.xz
       
     - name: Setup environment
       if: steps.check_tc.outputs.files_exists != 'true'
       shell: bash
       run: | 
         sudo tar xf /tmp/armtc/gcc-arm-none-eabi.tar.xz -C /usr/share/
-        sudo ln -s /usr/share/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin/* /usr/bin/
+        sudo ln -s /usr/share/arm-gnu-toolchain-15.3.rel1-x86_64-arm-none-eabi/bin/* /usr/bin/
 
     - name: Build ${{ inputs.target }}
       shell: bash
