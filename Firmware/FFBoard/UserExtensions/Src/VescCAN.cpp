@@ -494,7 +494,8 @@ void VescCAN::decodeEncoderPosition(const float newPos) {
  */
 void VescCAN::sendMsg(uint8_t cmd, uint8_t *buffer, uint8_t len) {
 	CAN_tx_msg msg;
-	memcpy(&msg.data, buffer, len);
+	if (buffer)
+		memcpy(&msg.data, buffer, len);
 	msg.header.rtr = false;
 	msg.header.length = len;
 	msg.header.extId = true;
