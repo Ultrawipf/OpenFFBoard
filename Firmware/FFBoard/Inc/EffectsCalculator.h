@@ -60,6 +60,7 @@ enum class EffectsCalculator_commands : uint32_t {
 	damper_f, damper_q, friction_f, friction_q, inertia_f, inertia_q, filterProfileId,
 	frictionPctSpeedToRampup,
 	monitorEffect, effectsDetails, effectsForces,
+	safetyLimit, safetyDamping,
 };
 
 class EffectsCalculator: public PersistentStorage,
@@ -117,7 +118,9 @@ private:
 	uint8_t global_gain = 0xff;
 	effect_gain_t gain;
 	effect_scaler_t scaler;
-	uint8_t frictionPctSpeedToRampup = 25;	// define the max value of the range (0..5% of maxspeed) where torque is rampup on friction
+	uint8_t frictionPctSpeedToRampup = 25;
+	uint16_t safetySpeedLimit = 20000; // default limit 2
+    uint8_t safetyDamping = 5; // default damping 
 
 	// FFB status
 	bool effects_active = false; // If FFB is on
