@@ -13,11 +13,11 @@
 
 #include "main.h"
 // Change this to the amount of currently registered variables
-#define NB_OF_VAR 168
+#define NB_OF_VAR 189
 extern const uint16_t VirtAddVarTab[NB_OF_VAR];
 
 // Amount of variables in exportable list
-#define NB_EXPORTABLE_ADR 153
+#define NB_EXPORTABLE_ADR 174
 extern const uint16_t exportableFlashAddresses[NB_EXPORTABLE_ADR];
 
 
@@ -99,7 +99,6 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_AXIS1_DEGREES 0x303
 #define ADR_AXIS1_MAX_SPEED 0x304 // Store the max speed
 #define ADR_AXIS1_MAX_ACCEL 0x305 // Store the max accel
-#define ADR_AXIS1_MAX_SLEWRATE_DRV 0x306 // Max slew rate for drv
 #define ADR_AXIS1_ENDSTOP 0x307 // 0-7 endstop margin, 8-15 endstop stiffness
 #define ADR_AXIS1_EFFECTS1 0x308 // 0-7 idlespring, 8-15 damper
 #define ADR_AXIS1_SPEEDACCEL_FILTER 0x309 // Speed/Accel filter Lowpass profile
@@ -120,13 +119,14 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_TMC1_FLUX_I 0x32A
 #define ADR_TMC1_PHIE_OFS 0x32B
 #define ADR_TMC1_TRQ_FILT 0x32C
+#define ADR_TMC1_COGGING_CAL 0x32D
+#define ADR_TMC1_COGGING_SCALE 0x32E
 // AXIS2
 #define ADR_AXIS2_CONFIG 0x341 // 0-2 ENC, 3-5 DRV
 #define ADR_AXIS2_POWER 0x342
 #define ADR_AXIS2_DEGREES 0x343
 #define ADR_AXIS2_MAX_SPEED 0x344 // Store the max speed
 #define ADR_AXIS2_MAX_ACCEL 0x345 // Store the max accel
-#define ADR_AXIS2_MAX_SLEWRATE_DRV 0x346 // Max slew rate for drv
 #define ADR_AXIS2_ENDSTOP 0x347 // 0-7 endstop margin, 8-15 endstop stiffness
 #define ADR_AXIS2_EFFECTS1 0x348 // 0-7 idlespring, 8-15 damper
 #define ADR_AXIS2_SPEEDACCEL_FILTER 0x349 // Speed/Accel filter Lowpass profile
@@ -147,13 +147,14 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_TMC2_FLUX_I 0x36A
 #define ADR_TMC2_PHIE_OFS 0x36B
 #define ADR_TMC2_TRQ_FILT 0x36C
+#define ADR_TMC2_COGGING_CAL 0x36D
+#define ADR_TMC2_COGGING_SCALE 0x36E
 // AXIS3
 #define ADR_AXIS3_CONFIG 0x381 // 0-2 ENC, 3-5 DRV
 #define ADR_AXIS3_POWER 0x382
 #define ADR_AXIS3_DEGREES 0x383
 #define ADR_AXIS3_MAX_SPEED 0x384 // Store the max speed
 #define ADR_AXIS3_MAX_ACCEL 0x385 // Store the max accel
-#define ADR_AXIS3_MAX_SLEWRATE_DRV 0x386 // Max slew rate for drv
 #define ADR_AXIS3_ENDSTOP 0x387 // 0-7 endstop margin, 8-15 endstop stiffness
 #define ADR_AXIS3_EFFECTS1 0x388 // 0-7 idlespring, 8-15 damper
 #define ADR_AXIS3_SPEEDACCEL_FILTER 0x389 // Speed/Accel filter Lowpass profile
@@ -174,6 +175,8 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 #define ADR_TMC3_FLUX_I 0x3AA
 #define ADR_TMC3_PHIE_OFS 0x3AB
 #define ADR_TMC3_TRQ_FILT 0x3AC
+#define ADR_TMC3_COGGING_CAL 0x3AD
+#define ADR_TMC3_COGGING_SCALE 0x3AE
 // RMD CAN Motor
 #define ADR_RMD1_DATA1 0x3C0 //0-4 CAN ID
 #define ADR_RMD1_TORQUE 0x3C1 //Maximum current

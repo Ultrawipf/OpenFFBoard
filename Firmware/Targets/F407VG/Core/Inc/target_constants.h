@@ -66,7 +66,10 @@
 #define TIM_PWM htim1
 
 #define TIM_MICROS_HALTICK htim7 // Micros timer MUST be reset by hal tick timer or isr to count microseconds since last tick
-#define TIM_USER htim9 // Timer with full core clock speed available for the mainclass
+// htim9 is shared: used as TIM_USER (e.g. MidiMain) and TIM_CALIBRATION (TMC4671).
+// As these two features are mutually exclusive at runtime, sharing htim9 is safe.
+#define TIM_USER htim9
+#define TIM_CALIBRATION htim9
 #define TIM_TMC htim6 // Timer running at half clock speed
 #define TIM_TMC_BCLK SystemCoreClock / 2
 #define TIM_TMC_ARR 250 // 4khz
@@ -133,6 +136,12 @@ extern CAN_HandleTypeDef hcan1;
 #define EEPROM_START_ADDRESS  ((uint32_t)0x08004000) /* EEPROM emulation start address: from sector1*/
 #define PAGE_SIZE             (uint32_t)0x4000  /* Page size = 16KByte */
 
+// Cogging tables in flash
+#define COGGING_HARMONICS_COUNT           20
+#define COGGING_TABLE_FLASH_START_ADDRESS ((uint32_t)0x08010000)
+#define COGGING_TABLE_SIZE                (COGGING_HARMONICS_COUNT * 12) 
+#define MAX_COGGING_TABLES                3
+#define COGGING_TABLE_FLASH_SECTOR        FLASH_SECTOR_4
 
 // System
 // BKPSRAM positions

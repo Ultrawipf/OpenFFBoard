@@ -30,7 +30,7 @@ Error FFBoardMainCommandThread::cmdExecError = Error(ErrorCode::cmdExecutionErro
 FFBoardMainCommandThread* commandThread;
 
 // Note: allocate enough memory for the command thread to store replies
-FFBoardMainCommandThread::FFBoardMainCommandThread(FFBoardMain* mainclass) : Thread("CMD_MAIN",700, 32) {
+FFBoardMainCommandThread::FFBoardMainCommandThread(FFBoardMain* mainclass) : Thread("CMD_MAIN", 600, 32) {
 	//main = mainclass;
 	commandThread = this;
 	this->Start();
@@ -98,8 +98,8 @@ void FFBoardMainCommandThread::executeCommands(std::vector<ParsedCommand>& comma
 
 		CmdHandlerCommanddef* cmdDef = handler->getCommandFromId(cmd.cmdId);
 		// check flags
-		bool validFlags = cmdDef != nullptr;
-		if(cmdDef->flags & ( CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_INFOSTRING | CMDFLAG_GETADR | CMDFLAG_SETADR) ){
+		bool validFlags = (cmdDef != nullptr);
+		if(validFlags && (cmdDef->flags & ( CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_INFOSTRING | CMDFLAG_GETADR | CMDFLAG_SETADR)) ){
 			// A type flag is preset. check it
 			validFlags = static_cast<uint32_t>(cmd.type) & cmdDef->flags; // type uses the same flag values
 		}

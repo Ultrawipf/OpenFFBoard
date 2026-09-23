@@ -52,7 +52,10 @@
 
 #define TIM_ENC htim3
 // Timer 3 is used by the encoder.
+// htim9 is shared: used as TIM_USER (e.g. MidiMain) and TIM_CALIBRATION (TMC4671).
+// As these two features are mutually exclusive at runtime, sharing htim9 is safe.
 #define TIM_USER htim9
+#define TIM_CALIBRATION htim9
 #define TIM_TMC htim2
 #define TIM_TMC_BCLK SystemCoreClock
 
@@ -97,6 +100,13 @@ extern SPI_HandleTypeDef HSPI2;
 #define PAGE1_ID               FLASH_SECTOR_2
 #define EEPROM_START_ADDRESS  ((uint32_t)0x08004000) /* EEPROM emulation start address: from sector1*/
 #define PAGE_SIZE             (uint32_t)0x4000  /* Page size = 16KByte */
+
+// Cogging tables in flash
+#define COGGING_HARMONICS_COUNT           20
+#define COGGING_TABLE_FLASH_START_ADDRESS ((uint32_t)0x08010000)
+#define COGGING_TABLE_SIZE                (COGGING_HARMONICS_COUNT * 12) 
+#define MAX_COGGING_TABLES                3
+#define COGGING_TABLE_FLASH_SECTOR        FLASH_SECTOR_4
 
 #define CCRAM_SEC ".data" // Has no ccmram
 #endif /* INC_TARGET_CONSTANTS_H_ */

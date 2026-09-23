@@ -81,7 +81,7 @@ const uint16_t VirtAddVarTab[NB_OF_VAR] =
 	ADR_AXIS1_DEGREES,
 	ADR_AXIS1_MAX_SPEED, // Store the max speed
 	ADR_AXIS1_MAX_ACCEL, // Store the max accel
-	ADR_AXIS1_MAX_SLEWRATE_DRV, // Max slew rate for drv
+
 	ADR_AXIS1_ENDSTOP, // 0-7 endstop margin, 8-15 endstop stiffness
 	ADR_AXIS1_EFFECTS1, // 0-7 idlespring, 8-15 damper
 	ADR_AXIS1_SPEEDACCEL_FILTER, // Speed/Accel filter Lowpass profile
@@ -102,13 +102,15 @@ const uint16_t VirtAddVarTab[NB_OF_VAR] =
 	ADR_TMC1_FLUX_I,
 	ADR_TMC1_PHIE_OFS,
 	ADR_TMC1_TRQ_FILT,
+	ADR_TMC1_COGGING_CAL,
+	ADR_TMC1_COGGING_SCALE,
 // AXIS2
 	ADR_AXIS2_CONFIG, // 0-2 ENC, 3-5 DRV
 	ADR_AXIS2_POWER,
 	ADR_AXIS2_DEGREES,
 	ADR_AXIS2_MAX_SPEED, // Store the max speed
 	ADR_AXIS2_MAX_ACCEL, // Store the max accel
-	ADR_AXIS2_MAX_SLEWRATE_DRV, // Max slew rate for drv
+
 	ADR_AXIS2_ENDSTOP, // 0-7 endstop margin, 8-15 endstop stiffness
 	ADR_AXIS2_EFFECTS1, // 0-7 idlespring, 8-15 damper
 	ADR_AXIS2_SPEEDACCEL_FILTER, // Speed/Accel filter Lowpass profile
@@ -129,13 +131,15 @@ const uint16_t VirtAddVarTab[NB_OF_VAR] =
 	ADR_TMC2_FLUX_I,
 	ADR_TMC2_PHIE_OFS,
 	ADR_TMC2_TRQ_FILT,
+	ADR_TMC2_COGGING_CAL,
+	ADR_TMC2_COGGING_SCALE,
 // AXIS3
 	ADR_AXIS3_CONFIG, // 0-2 ENC, 3-5 DRV
 	ADR_AXIS3_POWER,
 	ADR_AXIS3_DEGREES,
 	ADR_AXIS3_MAX_SPEED, // Store the max speed
 	ADR_AXIS3_MAX_ACCEL, // Store the max accel
-	ADR_AXIS3_MAX_SLEWRATE_DRV, // Max slew rate for drv
+
 	ADR_AXIS3_ENDSTOP, // 0-7 endstop margin, 8-15 endstop stiffness
 	ADR_AXIS3_EFFECTS1, // 0-7 idlespring, 8-15 damper
 	ADR_AXIS3_SPEEDACCEL_FILTER, // Speed/Accel filter Lowpass profile
@@ -156,6 +160,8 @@ const uint16_t VirtAddVarTab[NB_OF_VAR] =
 	ADR_TMC3_FLUX_I,
 	ADR_TMC3_PHIE_OFS,
 	ADR_TMC3_TRQ_FILT,
+	ADR_TMC3_COGGING_CAL,
+	ADR_TMC3_COGGING_SCALE,
 // RMD CAN Motor
 	ADR_RMD1_DATA1, //0-4 CAN ID
 	ADR_RMD1_TORQUE, //Maximum current
@@ -285,7 +291,7 @@ const uint16_t exportableFlashAddresses[NB_EXPORTABLE_ADR] =
 	ADR_AXIS1_DEGREES,
 	ADR_AXIS1_MAX_SPEED, // Store the max speed
 	ADR_AXIS1_MAX_ACCEL, // Store the max accel
-	ADR_AXIS1_MAX_SLEWRATE_DRV, // Max slew rate for drv
+
 	ADR_AXIS1_ENDSTOP, // 0-7 endstop margin, 8-15 endstop stiffness
 	ADR_AXIS1_EFFECTS1, // 0-7 idlespring, 8-15 damper
 	ADR_AXIS1_SPEEDACCEL_FILTER, // Speed/Accel filter Lowpass profile
@@ -306,13 +312,15 @@ const uint16_t exportableFlashAddresses[NB_EXPORTABLE_ADR] =
 	ADR_TMC1_FLUX_I,
 //	ADR_TMC1_PHIE_OFS,
 	ADR_TMC1_TRQ_FILT,
+	ADR_TMC1_COGGING_CAL,
+	ADR_TMC1_COGGING_SCALE,
 // AXIS2
 	ADR_AXIS2_CONFIG, // 0-2 ENC, 3-5 DRV
 	ADR_AXIS2_POWER,
 	ADR_AXIS2_DEGREES,
 	ADR_AXIS2_MAX_SPEED, // Store the max speed
 	ADR_AXIS2_MAX_ACCEL, // Store the max accel
-	ADR_AXIS2_MAX_SLEWRATE_DRV, // Max slew rate for drv
+
 	ADR_AXIS2_ENDSTOP, // 0-7 endstop margin, 8-15 endstop stiffness
 	ADR_AXIS2_EFFECTS1, // 0-7 idlespring, 8-15 damper
 	ADR_AXIS2_SPEEDACCEL_FILTER, // Speed/Accel filter Lowpass profile
@@ -333,13 +341,15 @@ const uint16_t exportableFlashAddresses[NB_EXPORTABLE_ADR] =
 	ADR_TMC2_FLUX_I,
 //	ADR_TMC2_PHIE_OFS,
 	ADR_TMC2_TRQ_FILT,
+	ADR_TMC2_COGGING_CAL,
+	ADR_TMC2_COGGING_SCALE,
 // AXIS3
 	ADR_AXIS3_CONFIG, // 0-2 ENC, 3-5 DRV
 	ADR_AXIS3_POWER,
 	ADR_AXIS3_DEGREES,
 	ADR_AXIS3_MAX_SPEED, // Store the max speed
 	ADR_AXIS3_MAX_ACCEL, // Store the max accel
-	ADR_AXIS3_MAX_SLEWRATE_DRV, // Max slew rate for drv
+
 	ADR_AXIS3_ENDSTOP, // 0-7 endstop margin, 8-15 endstop stiffness
 	ADR_AXIS3_EFFECTS1, // 0-7 idlespring, 8-15 damper
 	ADR_AXIS3_SPEEDACCEL_FILTER, // Speed/Accel filter Lowpass profile
@@ -360,6 +370,8 @@ const uint16_t exportableFlashAddresses[NB_EXPORTABLE_ADR] =
 	ADR_TMC3_FLUX_I,
 //	ADR_TMC3_PHIE_OFS,
 	ADR_TMC3_TRQ_FILT,
+	ADR_TMC3_COGGING_CAL,
+	ADR_TMC3_COGGING_SCALE,
 // RMD CAN Motor
 	ADR_RMD1_DATA1, //0-4 CAN ID
 	ADR_RMD1_TORQUE, //Maximum current
