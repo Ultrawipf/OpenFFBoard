@@ -968,9 +968,17 @@ int32_t Axis::applySpeedLimiterTorque(int32_t& torque){
 	return resultTorque;
 }
 
+/**
+ * Called when the update rate changes.
+ * Recalculate all filters.
+ */
 void Axis::updateSamplerate(float newSamplerate){
 	this->filter_f = newSamplerate;
 	this->updateFilters(this->filterProfileId); // Recalculate filters
+	// Update EQ samplerate
+	for(uint8_t idx = 0; idx < eqFilters.size(); idx++){
+		eqFilters[idx].setFc(eq_frequencies[idx] / filter_f);
+	}
 }
 
 void Axis::updateFilters(uint8_t profileId){
