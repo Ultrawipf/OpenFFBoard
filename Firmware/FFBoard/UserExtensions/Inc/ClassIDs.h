@@ -66,6 +66,7 @@ enum class ClassType : uint16_t {
 #define CLSID_ENCODER_MTSPI	0x62
 #define CLSID_ENCODER_BISS	0x63
 #define CLSID_ENCODER_SSI	0x64
+#define CLSID_ENCODER_TW39	0x65
 
 // Motordrivers
 #define CLSID_MOT_NONE		0x80
