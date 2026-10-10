@@ -1,0 +1,42 @@
+{
+	"version": 3,
+	"cmakeMinimumRequired": { "major": 3, "minor": 21, "patch": 0 },
+	"configurePresets": [
+		{
+			"name": "host",
+			"displayName": "Host tests",
+			"description": "Native build. CMSIS-DSP is used if the submodule is checked out",
+			"binaryDir": "${sourceDir}/build"
+		},
+		{
+			"name": "host-mingw",
+			"displayName": "Host tests (Windows, MinGW)",
+			"inherits": "host",
+			"generator": "MinGW Makefiles"
+		},
+		{
+			"name": "host-nodsp",
+			"displayName": "Host tests without CMSIS-DSP",
+			"binaryDir": "${sourceDir}/build-nodsp",
+			"cacheVariables": { "FFB_TESTS_USE_DSP": "OFF" }
+		},
+		{
+			"name": "host-sanitize",
+			"displayName": "Host tests with address and undefined behaviour sanitizers",
+			"binaryDir": "${sourceDir}/build-sanitize",
+			"cacheVariables": { "FFB_TESTS_SANITIZE": "ON" }
+		}
+	],
+	"buildPresets": [
+		{ "name": "host", "configurePreset": "host" },
+		{ "name": "host-mingw", "configurePreset": "host-mingw" },
+		{ "name": "host-nodsp", "configurePreset": "host-nodsp" },
+		{ "name": "host-sanitize", "configurePreset": "host-sanitize" }
+	],
+	"testPresets": [
+		{ "name": "host", "configurePreset": "host", "output": { "outputOnFailure": true } },
+		{ "name": "host-mingw", "configurePreset": "host-mingw", "output": { "outputOnFailure": true } },
+		{ "name": "host-nodsp", "configurePreset": "host-nodsp", "output": { "outputOnFailure": true } },
+		{ "name": "host-sanitize", "configurePreset": "host-sanitize", "output": { "outputOnFailure": true } }
+	]
+}
