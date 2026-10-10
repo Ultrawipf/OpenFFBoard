@@ -108,8 +108,8 @@ bool CmdParser::parse(std::vector<ParsedCommand>& commands){
 				//cmd.rawcmd = word;
 				uint8_t cmd_start = 0;
 
-				uint32_t point1 = word.find('.', 0);
-				uint32_t point2 = word.find('.', point1+1); // if has unique instance char
+				size_t point1 = word.find('.', 0);
+				size_t point2 = word.find('.', point1+1); // if has unique instance char
 
 
 				// cmdstart = <cls>.
@@ -142,8 +142,8 @@ bool CmdParser::parse(std::vector<ParsedCommand>& commands){
 					cmd.type = CMDtype::err;
 
 				}else{
-					uint32_t peq = word.find('=', 0); // set
-					uint32_t pqm = word.find('?', 0); // read with var
+					size_t peq = word.find('=', 0); // set
+					size_t pqm = word.find('?', 0); // read with var
 
 					// <cmd>\n
 					if(pqm == std::string::npos && peq == std::string::npos){
