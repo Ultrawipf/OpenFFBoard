@@ -92,6 +92,7 @@ public:
 
 private:
 	TMC4671& tmc;
+	uint32_t last_en_check_tick = 0; // Per-instance timestamp for periodic TMC4671 ENABLE_IN polling.
 
 	// Shared calibration utilities & immediate E-stop safety
 	void broadcastLog(int val, const char* format, ...);

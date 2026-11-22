@@ -1935,7 +1935,8 @@ void TMC4671::turn(int16_t power){
 		return;
 
 	int32_t flux = 0;
-	int32_t totalPower = power;
+	// Apply Axis-level force inversion only to incoming game torque, not to internal anticogging torque.
+	int32_t totalPower = conf.invertForce ? -(int32_t)power : (int32_t)power;
 
 	// Anticogging & dynamic speed-dependent ripple compensation
 #ifdef COGGING_TABLE_FLASH_START_ADDRESS
@@ -1994,8 +1995,8 @@ void TMC4671::turn(int16_t power){
 	}
 #endif
 
-	// Inversion if encoder is reversed (ext) or force inversion is requested
-	if((this->conf.encoderReversed && conf.motconf.enctype == EncoderType_TMC::ext) ^ conf.invertForce){
+	// Invert total motor torque only when commutating via a reversed external encoder.
+	if(this->conf.encoderReversed && conf.motconf.enctype == EncoderType_TMC::ext){
 		totalPower = -totalPower;
 	}
 
@@ -3446,10 +3447,13 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 	
 	case TMC4671_commands::calibrateCogging:
 
-		if (emergency && hasPower()) {
+		if (isEmergencyActive() && hasPower()) {
 			replies.emplace_back("Calibration aborted: Emergency stop engaged", 0);
 		} else if (conf.motconf.motor_type == MotorType::NONE) {
 			replies.emplace_back("Calibration aborted: No motor type set", 0);
+		} else if (hasPower() && (!encoderAligned || !adcCalibrated || conf.motconf.enctype == EncoderType_TMC::NONE)) {
+			// Prevent powered cogging calibration if encoder or ADC is not yet calibrated and aligned.
+			replies.emplace_back("Calibration aborted: Encoder or ADC not aligned", 0);
 		} else {
 			changeState(TMC_ControlState::CoggingCalibration);
 			return CommandStatus::NO_REPLY;

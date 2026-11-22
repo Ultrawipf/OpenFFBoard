@@ -36,8 +36,8 @@ void TMC4671::applySafeTorque(float torque_cmd) {
 	}
 	float totalPower = torque_cmd;
 
-	// Respect inversion settings
-	if ((this->conf.encoderReversed && conf.motconf.enctype == EncoderType_TMC::ext) ^ conf.invertForce) {
+	// Invert torque only when using a reversed external encoder (never apply Axis-only invertForce).
+	if (this->conf.encoderReversed && conf.motconf.enctype == EncoderType_TMC::ext) {
 		totalPower = -totalPower;
 	}
 
@@ -62,16 +62,31 @@ float TMC4671::getAbsolutePosition() {
 }
 
 float TMC4671::getFilteredPosition() {
-	Encoder* activeEnc = usingExternalEncoder() ? drvEncoder.get() : static_cast<Encoder*>(this);
+	auto normalizeCounts = [](int32_t pos, int32_t cpr) -> float {
+		if (cpr == 0) return 0.0f;
+		int32_t remainder = pos % cpr;
+		if (remainder < 0) remainder += cpr;
+		return (float)remainder / (float)cpr;
+	};
 
-	int32_t cpr = activeEnc->getCpr();
-	if (cpr == 0) return 0.0f;
-
-	// Integer modulo BEFORE float conversion guarantees zero precision loss across unlimited turns
-	int32_t remainder = activeEnc->getPos() % cpr;
-	if (remainder < 0) remainder += cpr;
-
-	return (float)remainder / (float)cpr;
+	if (usingExternalEncoder()) {
+		// Use absolute encoder counts modulo CPR so user centering (zeroenc) never shifts cogging phase.
+		return normalizeCounts(drvEncoder->getPosAbs(), drvEncoder->getCpr());
+	}
+	if (conf.motconf.enctype == EncoderType_TMC::abn && abnconf.cpr > 0) {
+		// Read raw 32-bit ABN counter (0x27) to preserve full >16-bit encoder resolution and zeroenc invariance.
+		uint32_t raw_cnt = readReg(0x27) % abnconf.cpr;
+		float pos_f = ((float)raw_cnt / (float)abnconf.cpr) + ((float)(uint16_t)abnconf.phiMoffset / 65536.0f);
+		return (pos_f >= 1.0f) ? (pos_f - 1.0f) : pos_f;
+	}
+	if (conf.motconf.enctype == EncoderType_TMC::sincos || conf.motconf.enctype == EncoderType_TMC::uvw) {
+		// Read hardware mechanical angle PHI_M_AENC (0x46) so zeroenc on 0x6B never shifts cogging phase.
+		return (float)(uint16_t)(readReg(0x46) & 0xffff) / 65536.0f;
+	}
+	if (conf.motconf.enctype == EncoderType_TMC::hall) {
+		return (float)(uint16_t)(readReg(0x3A) & 0xffff) / 65536.0f;
+	}
+	return normalizeCounts(this->getPos(), this->getCpr());
 }
 
 void TMC4671::handleStateCoggingCalibration() {
@@ -107,12 +122,18 @@ bool TMC4671CoggingCalibrator::isEstopActive() {
 	if (HAL_GPIO_ReadPin(E_STOP_GPIO_Port, E_STOP_Pin) == GPIO_PIN_RESET) {
 		tmc.emergency = true;
 		tmc.motorEnabledRequested = false;
-		tmc.enablePin.reset();
-		tmc.setFluxTorque(0, 0);
-		tmc.setPwm(TMC_PwmMode::off);
+		tmc.disablePowerStage();
 		return true;
 	}
 #endif
+	// Poll external hardware E-stop on TMC4671 ENABLE_IN pin (0x76 bit 15) every 50ms when DRV_ENABLE is high.
+	uint32_t now_tick = HAL_GetTick();
+	if (tmc.hasPower() && (now_tick - last_en_check_tick >= 50)) {
+		last_en_check_tick = now_tick;
+		if (tmc.checkHardwareEstop()) {
+			return true;
+		}
+	}
 	return false;
 }
 
@@ -127,9 +148,16 @@ bool TMC4671CoggingCalibrator::safeDelay(uint32_t ms) {
 }
 
 void TMC4671CoggingCalibrator::waitNextTick(uint32_t next_tick) {
+#ifdef TIM_TMC
+	// Wait for TIM_TMC tick notification with a bounded timeout to prevent watchdog deadlock.
+	if (tmc.usingExternalEncoder() && tmc.externalEncoderTimer != nullptr && tmc.calibTicksTarget > 0) {
+		tmc.WaitForNotification(50);
+		return;
+	}
+#endif
 #ifdef TIM_CALIBRATION
 	if (tmc.calibTimer != nullptr) {
-		tmc.WaitForNotification();
+		tmc.WaitForNotification(50);
 		return;
 	}
 #endif
@@ -151,8 +179,9 @@ void TMC4671CoggingCalibrator::runSimulationDft(CoggingDftBuffers& buf) {
 #ifdef COGGING_CALIB_ENABLE_ID_DIAG
 		float id = 100.0f;
 #endif
-		float s1, c1;
-		arm_sin_cos_f32(pos_f * 360.0f, &s1, &c1);
+		// Compute 24-bit FPU trigonometric seed to avoid table interpolation error accumulation across 127 harmonics.
+		float s1 = sinf(angle_rad);
+		float c1 = cosf(angle_rad);
 
 		float cur_s = s1, cur_c = c1;
 		for (int k = 1; k < COGGING_CALIB_DFT_HARMONICS; k++) {
@@ -542,8 +571,10 @@ bool TMC4671CoggingCalibrator::acquireTier0Dft(const CoggingEncoderProfile& enc,
 #ifdef COGGING_CALIB_ENABLE_ID_DIAG
 					float id = (float)tmc.getActualFlux();
 #endif
-					float s1, c1;
-					arm_sin_cos_f32(actual_pos_f * 360.0f, &s1, &c1);
+					// Compute 24-bit FPU trigonometric seed to preserve full 22-bit encoder precision up to H127.
+					float angle_rad = actual_pos_f * (2.0f * PI);
+					float s1 = sinf(angle_rad);
+					float c1 = cosf(angle_rad);
 
 					float cur_s = s1, cur_c = c1;
 					for (int k = 1; k < COGGING_CALIB_DFT_HARMONICS; k++) {
@@ -906,6 +937,8 @@ bool TMC4671CoggingCalibrator::calibrateScale(const CoggingEncoderProfile& enc, 
 			float step = scale_target_vel * dt_sec;
 			target_pos_move += step;
 			actual_pos_f = tmc.getAbsolutePosition();
+			// Evaluate harmonic phase using getFilteredPosition() to match DFT and turn() phase origin.
+			float filt_pos_f = tmc.getFilteredPosition();
 
 			if (dec_cnt % enc.decimation_ratio == 0) {
 				float error = target_pos_move - actual_pos_f;
@@ -923,7 +956,7 @@ bool TMC4671CoggingCalibrator::calibrateScale(const CoggingEncoderProfile& enc, 
 				float iq_mag_raw = 0.5f * (iq_cmd + prev_iq_cmd) - iq_inertia;
 				iq_mag_filt += scale_ema_alpha * (iq_mag_raw - iq_mag_filt);
 
-				float angle_rad = actual_pos_f * 2.0f * PI;
+				float angle_rad = filt_pos_f * 2.0f * PI;
 				float compensation = 0.0f;
 				for (uint8_t i = 0; i < COGGING_HARMONICS_COUNT; i++) {
 					if (tmc.cogging_harmonics[i].amplitude > 0.0f) {
@@ -936,7 +969,7 @@ bool TMC4671CoggingCalibrator::calibrateScale(const CoggingEncoderProfile& enc, 
 
 			if (HAL_GetTick() - iter_start_tick > 200) {
 				float s, c;
-				arm_sin_cos_f32(actual_pos_f * 360.0f * tmc.cogging_harmonics[main_h].order, &s, &c);
+				arm_sin_cos_f32(filt_pos_f * 360.0f * tmc.cogging_harmonics[main_h].order, &s, &c);
 				acc_re += iq_mag_filt * c;
 				acc_im += iq_mag_filt * s;
 				samples++;
@@ -1026,7 +1059,7 @@ bool TMC4671CoggingCalibrator::returnToCenter(const CoggingEncoderProfile& enc, 
 	tmc.applySafeTorque(0);
 
 	if (isEstopActive()) { *err = "Abort: Emergency stop engaged"; return false; }
-	broadcastLog(0, "Centering done. Re-aligning encoder...");
+	broadcastLog(0, "Centering done.");
 	return true;
 }
 
@@ -1127,22 +1160,16 @@ cleanup:
 	tmc.stopCalibTimers();
 	tmc.setFluxTorque(0, 0);
 	if (isEstopActive()) {
-		tmc.enablePin.reset();
-		tmc.setMotionMode(MotionMode::stop, true);
-		tmc.setPwm(TMC_PwmMode::off);
+		tmc.disablePowerStage();
 		if (!errorMessage) {
 			errorMessage = "Abort: Emergency stop engaged";
 		}
 	}
 
 	if (errorMessage) {
-		broadcastLog(1, errorMessage);
+		broadcastLog(1, "%s", errorMessage);
 	} else {
 		broadcastLog(1, "Cogging detection finished");
-	}
-
-	if (!isEstopActive()) {
-		tmc.setTargetVelocity(0);
 	}
 
 	if (dftBuf.iq_acc_cos) vPortFree(dftBuf.iq_acc_cos);
@@ -1162,14 +1189,18 @@ cleanup:
 	}
 
 	tmc.allowStateChange = true;
+	// Transition directly to Running/Shutdown/waitPower without re-running EncoderInit to preserve phase origin.
 	if (isEstopActive()) {
-		tmc.motorEnabledRequested = false;
-		tmc.changeState(TMC_ControlState::Shutdown, false);
-		tmc.changeState(TMC_ControlState::Shutdown, true);
-	} else if (errorMessage) {
-		tmc.changeState(tmc.hasPower() ? TMC_ControlState::Running : TMC_ControlState::waitPower);
+		tmc.enterShutdown();
+	} else if (!tmc.hasPower()) {
+		tmc.enterWaitPower();
+	} else if (!tmc.encoderAligned) {
+		tmc.changeState(tmc.usingExternalEncoder() ? TMC_ControlState::ExternalEncoderInit : TMC_ControlState::EncoderInit);
+	} else if (tmc.motorEnabledRequested && tmc.isSetUp()) {
+		tmc.changeState(TMC_ControlState::Running);
 	} else {
-		tmc.changeState(TMC_ControlState::EncoderInit);
+		tmc.stopMotor();
+		tmc.changeState(TMC_ControlState::Shutdown);
 	}
 }
 
