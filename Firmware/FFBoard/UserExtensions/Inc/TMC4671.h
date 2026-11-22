@@ -729,7 +729,11 @@ private:
 	uint8_t calibrationFailCount = 2;
 
 	int16_t externalEncoderPhieOffset = 0; // PhiE offset for external encoders
+#ifdef TIM_TMC
+	bool allowExternalEncoder = true;
+#else
 	bool allowExternalEncoder = false;
+#endif
 
 	volatile bool allowStateChange = false;
 	bool recalibrationRequired = false;

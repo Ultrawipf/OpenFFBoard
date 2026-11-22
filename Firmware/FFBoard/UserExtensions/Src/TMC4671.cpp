@@ -1327,7 +1327,8 @@ bool TMC4671::checkEncoder(){
 	}
 
 	// TODO check if we want that
-	if(revCount > maxcount){ // Encoder seems reversed
+	bool reversedDuringCheck = (revCount > maxcount);
+	if(reversedDuringCheck){ // Encoder seems reversed
 		// reverse encoder
 		if(this->conf.motconf.enctype == EncoderType_TMC::abn){
 			this->abnconf.rdir = !this->abnconf.rdir;
@@ -1345,6 +1346,14 @@ bool TMC4671::checkEncoder(){
 	setPhiE_ext(0);
 	setPhiEtype(lastphie);
 	setMotionMode(lastmode,true);
+
+	if(result && reversedDuringCheck){
+		// Re-align electrical phase offset after reversing encoder counting direction.
+		bangInitEnc(bangInitPower);
+		if(!canRunMotor()){
+			return abortCheck();
+		}
+	}
 
 	if(result){
 		encoderAligned = true;
@@ -1663,6 +1672,10 @@ void TMC4671::setEncoderType(EncoderType_TMC type){
 		setUpExtEncTimer();
 		//changeState(TMC_ControlState::Shutdown);
 		changeState(TMC_ControlState::ExternalEncoderInit);
+	}else if(type == EncoderType_TMC::ext){
+		// Keep encoderAligned false while waiting for Axis to attach the external encoder instance.
+		encoderAligned = false;
+		changeState(TMC_ControlState::Shutdown);
 	}else{
 		changeState(TMC_ControlState::Shutdown);
 		encoderAligned = true;
@@ -2105,6 +2118,8 @@ Encoder* TMC4671::getEncoder(){
 void TMC4671::setEncoder(std::shared_ptr<Encoder>& encoder){
 	MotorDriver::drvEncoder = encoder;
 	if(conf.motconf.enctype == EncoderType_TMC::ext && externalEncoderTimer){
+		// Force re-alignment whenever an external encoder instance is attached.
+		encoderAligned = false;
 		if(!extEncUpdater){ // If updater has not been set up because the encoder mode was changed before the external encoder passed force it now
 			setUpExtEncTimer();
 		}
