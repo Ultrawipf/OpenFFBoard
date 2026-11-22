@@ -190,6 +190,15 @@ bool EncoderBissC::updateFrame(){
 int32_t EncoderBissC::getPosAbs(){
 	if(!waitData){ // If a transfer is still in progress return the last result
 		triggerRead(); // Start transfer directly
+	} else {
+		if(HAL_GetTick() - lastUpdateTick > 5){
+			this->spiPort.abortTransfer(this);
+			waitData = false;
+			numErrors++;
+		}
+		if(!waitData){
+			triggerRead();
+		}
 	}
 	return invertDirection ? -curPos : curPos;
 }

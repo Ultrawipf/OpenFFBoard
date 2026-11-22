@@ -90,12 +90,12 @@ void EncoderSSI::spiRxCompleted(SPIPort* port) {
 	{
 		newPos = (uint16_t)(spi_buf[0] & 0x3F) << 8;
 		newPos |= spi_buf[1];
-		newPos >>= std::max(14-lenghtDataBit,0);
 		uint8_t parity = (spi_buf[0] >> 6) & 0x3;
 		for(uint8_t i = 0;i<7;i++){
 			parity ^= (newPos >> (2*i)) & 0x3;
 		}
-		if(parity){
+		if(parity == 3){
+			newPos >>= std::max(14-lenghtDataBit,0);
 			newPos &= ((1<<lenghtDataBit) - 1);
 			pos = newPos - (1<<(lenghtDataBit-1));
 		}else{
@@ -108,8 +108,8 @@ void EncoderSSI::spiRxCompleted(SPIPort* port) {
 
 	case EncoderSSI_modes::rawmsb:
 	{
-		for(uint8_t i = 0;i<bytes;i++){
-			newPos |= spi_buf[i] << bytes;
+		for(uint8_t i = 0;i<transferlen;i++){
+			newPos |= (uint32_t)spi_buf[i] << ((transferlen - 1 - i) * 8);
 		}
 		newPos &= ((1<<lenghtDataBit) - 1);
 		pos = newPos;
