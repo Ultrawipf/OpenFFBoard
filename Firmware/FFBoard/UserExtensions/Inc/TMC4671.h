@@ -76,10 +76,12 @@ extern TIM_HandleTypeDef TIM_CALIBRATION;
 #endif
 
 struct Harmonic {
-	float32_t amplitude;
-	float32_t phase;
-	uint16_t order;
+	float32_t amplitude;   // A_0: Static cogging amplitude at low speed (Iq counts)
+	float32_t phase;       // Phi_0: Static magnetic phase (radians)
+	uint16_t order;        // k: Harmonic spatial order (1..127)
+	int16_t speed_delta;   // Delta A_max: Asymptotic high-speed ripple amplitude delta (Iq counts), uses existing 2B padding
 };
+static_assert(sizeof(Harmonic) == 12, "Harmonic struct must remain 12 bytes to match COGGING_TABLE_SIZE");
 
 struct CoggingCalibData {
 	float32_t iq_sums[1024];
@@ -740,6 +742,11 @@ private:
 	Harmonic cogging_harmonics[COGGING_HARMONICS_COUNT];
 	bool cogging_enabled = false;
 	float cogging_scale = 0.5f;
+	float cogging_phase_lead_time = 0.0008f; // Predictive phase-lead time (seconds) calibrated on high-speed passes
+	static constexpr float COGGING_RIPPLE_CORNER_VEL = 0.6f; // Corner speed (0.6 turns/s = 36 RPM) for RL/PI asymptotic ripple model
+	uint32_t last_turn_us = 0;
+	float last_turn_pos_f = 0.0f;
+	float turn_vel_filtered = 0.0f;
 	int32_t last_anticogging_torque = 0;
 	void saveCoggingTable();
 	void clearCoggingTable();
