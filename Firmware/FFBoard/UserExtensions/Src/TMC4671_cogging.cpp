@@ -30,9 +30,8 @@ namespace {
 
 void TMC4671::applySafeTorque(float torque_cmd) {
 	// Immediate hardware cut-off if E-stop is engaged
-	if (emergency || estopTriggered) {
-		enablePin.reset();
-		setFluxTorque(0, 0);
+	if (isEmergencyActive()) {
+		disablePowerStage();
 		return;
 	}
 	float totalPower = torque_cmd;
@@ -42,7 +41,8 @@ void TMC4671::applySafeTorque(float torque_cmd) {
 		totalPower = -totalPower;
 	}
 
-	int16_t pwr = (int16_t)clip<float, float>(totalPower, -32768, 32767);
+	// Clamp commanded torque to the configured safe driver limit.
+	int16_t pwr = clampTorqueFlux((int32_t)totalPower);
 	// Use zero flux (Id = 0) to ensure measured current is 100% dedicated to torque (Iq)
 	setFluxTorque(0, pwr);
 }

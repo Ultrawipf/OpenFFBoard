@@ -806,6 +806,8 @@ private:
 	inline bool isEmergencyActive() const { return emergency || estopTriggered; }
 	bool canRunMotor();
 	bool enablePowerStageForCalibration(bool requireAdcCalib = true);
+	inline int32_t getSafeTorqueLimit() const { return (curLimits.pid_torque_flux > 0) ? (int32_t)curLimits.pid_torque_flux : 30000; }
+	inline int16_t clampTorqueFlux(int32_t val) const { int32_t lim = getSafeTorqueLimit(); return (int16_t)clip<int32_t, int32_t>(val, -lim, lim); }
 	void disablePowerStage(bool resetEnablePin = true);
 	void enterShutdown();
 	void enterWaitPower();
