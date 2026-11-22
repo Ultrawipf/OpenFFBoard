@@ -194,6 +194,9 @@ Section comment,Name,Value,Comment on key,VirtAddVarTab,exportableFlashAddresses
 // SSI,,,,,
 ,ADR_SSI_CONF1,0x413,,1,1
 ,ADR_SSI_OFS,0x414,,1,1
+// TW39 Encoder,,,,,
+,ADR_ENCTW39_OFS,0x420,,1,1
+,ADR_ENCTW39_CONF1,0x421,,1,1
 // Analog min/max calibrations,,,,,
 ,ADR_LOCALANALOG_MIN_0,0x500,,1,1
 ,ADR_LOCALANALOG_MAX_0,0x501,,1,1

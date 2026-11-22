@@ -13,11 +13,11 @@
 
 #include "main.h"
 // Change this to the amount of currently registered variables
-#define NB_OF_VAR 189
+#define NB_OF_VAR 191
 extern const uint16_t VirtAddVarTab[NB_OF_VAR];
 
 // Amount of variables in exportable list
-#define NB_EXPORTABLE_ADR 174
+#define NB_EXPORTABLE_ADR 176
 extern const uint16_t exportableFlashAddresses[NB_EXPORTABLE_ADR];
 
 
@@ -227,6 +227,9 @@ uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data) will return 1 if 
 // SSI
 #define ADR_SSI_CONF1 0x413
 #define ADR_SSI_OFS 0x414
+// TW39 Encoder
+#define ADR_ENCTW39_OFS 0x420
+#define ADR_ENCTW39_CONF1 0x421
 // Analog min/max calibrations
 #define ADR_LOCALANALOG_MIN_0 0x500
 #define ADR_LOCALANALOG_MAX_0 0x501

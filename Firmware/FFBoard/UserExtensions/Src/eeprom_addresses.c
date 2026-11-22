@@ -209,6 +209,9 @@ const uint16_t VirtAddVarTab[NB_OF_VAR] =
 // SSI
 	ADR_SSI_CONF1,
 	ADR_SSI_OFS,
+// TW39 Encoder
+	ADR_ENCTW39_OFS,
+	ADR_ENCTW39_CONF1,
 // Analog min/max calibrations
 	ADR_LOCALANALOG_MIN_0,
 	ADR_LOCALANALOG_MAX_0,
@@ -434,6 +437,9 @@ const uint16_t exportableFlashAddresses[NB_EXPORTABLE_ADR] =
 // SSI
 	ADR_SSI_CONF1,
 	ADR_SSI_OFS,
+// TW39 Encoder
+	ADR_ENCTW39_OFS,
+	ADR_ENCTW39_CONF1,
 // Analog min/max calibrations
 	ADR_LOCALANALOG_MIN_0,
 	ADR_LOCALANALOG_MAX_0,
