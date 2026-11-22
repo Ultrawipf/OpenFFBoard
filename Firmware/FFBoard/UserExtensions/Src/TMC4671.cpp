@@ -1608,26 +1608,23 @@ void TMC4671::startMotor(){
 
 void TMC4671::emergencyStop(bool reset){
 	if(!reset){
-//		setPwm(TMC_PwmMode::HSlow_LShigh); // Short low side for instant stop
 		emergency = true;
-		enablePin.reset(); // Release enable pin to disable the whole driver
+		enablePin.reset(); // Cut hardware driver enable pin immediately (ISR-safe).
 		motorEnabledRequested = false;
-		this->stopMotor();
-
+		// Defer blocking SPI shutdown commands to the TMC thread when called from an ISR.
+		if(!inIsr()){
+			this->stopMotor();
+		}
 	}else{
-//		enablePin.set();
-//		writeReg(0x64, 0); // Set flux and torque 0 directly. Make sure motor does not jump
-//		setPwm(TMC_PwmMode::PWM_FOC);
 		emergency = false;
 		motorEnabledRequested = true;
-		//this->changeState(TMC_ControlState::waitPower, true); // Reinit
-		this->startMotor();
-		if(!motorReady()){
-			if(inIsr()){
-				ResumeFromISR();
-			}else{
+		if(!inIsr()){
+			this->startMotor();
+			if(!motorReady()){
 				Resume();
 			}
+		}else{
+			ResumeFromISR();
 		}
 	}
 }
@@ -1651,7 +1648,8 @@ int16_t TMC4671::controlFluxDissipate(){
  * For ADC linearity reasons under 25000 is recommended
  */
 void TMC4671::turn(int16_t power){
-	if(!(this->motorReady() && motorEnabledRequested))
+	// Avoid blocking SPI transactions inside an ISR; emergencyStop handles hardware pin cutoff.
+	if(inIsr() || !(this->motorReady() && motorEnabledRequested))
 		return;
 
 	int32_t flux = 0;

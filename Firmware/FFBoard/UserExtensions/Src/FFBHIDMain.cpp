@@ -143,6 +143,14 @@ void FFBHIDMain::updateControl(){
 		axes_manager->resetPosZero();
 	}
 
+#ifdef E_STOP_Pin
+	// Immediately engage emergency stop if hardware E-stop pin is active low.
+	if(!control.emergency && HAL_GPIO_ReadPin(E_STOP_GPIO_Port, E_STOP_Pin) == GPIO_PIN_RESET){
+		lastEstop = HAL_GetTick();
+		emergencyStop(false);
+	}
+#endif
+
 	//debugpin.set();
 	axes_manager->update();
 
@@ -318,8 +326,18 @@ void FFBHIDMain::usbSuspend(){
  */
 void FFBHIDMain::usbResume(){
 #ifdef E_STOP_Pin
-	if(control.emergency && HAL_GPIO_ReadPin(E_STOP_GPIO_Port, E_STOP_Pin) != GPIO_PIN_RESET){ // Reconnected after emergency stop
-		control.emergency = false;
+	if(control.emergency && HAL_GPIO_ReadPin(E_STOP_GPIO_Port, E_STOP_Pin) != GPIO_PIN_RESET){
+		// Re-enable driver emergency state on USB resume only when E-stop is released and no critical errors remain.
+		bool hasCritical = false;
+		for(const Error& err : ErrorHandler::getErrors()){
+			if(err.type == ErrorType::critical){
+				hasCritical = true;
+				break;
+			}
+		}
+		if(!hasCritical){
+			emergencyStop(true);
+		}
 	}
 #endif
 	setReportRate(this->usb_report_rate_idx);
@@ -338,18 +356,18 @@ void FFBHIDMain::exti(uint16_t GPIO_Pin){
 	}
 #ifdef E_STOP_Pin
 	if(GPIO_Pin == E_STOP_Pin){ // Emergency stop. low active
-//		if(HAL_GPIO_ReadPin(E_STOP_GPIO_Port, E_STOP_Pin) == GPIO_PIN_RESET){
 		bool estopPinState = HAL_GPIO_ReadPin(E_STOP_GPIO_Port, E_STOP_Pin) == GPIO_PIN_RESET;
-		if(HAL_GetTick()-lastEstop > 1000 && estopPinState != this->control.emergency){ // Long debounce
+		if(estopPinState){
+			// Engage emergency stop immediately with zero debounce delay and refresh timer on bounce.
 			lastEstop = HAL_GetTick();
-			if(estopPinState){
+			if(!this->control.emergency){
 				emergencyStop(false);
-			}else if(allowEstopReset){
-				emergencyStop(true);
 			}
-
+		}else if(this->control.emergency && allowEstopReset && (HAL_GetTick() - lastEstop > 1000)){
+			// Apply 1000ms debounce delay only when releasing emergency stop.
+			lastEstop = HAL_GetTick();
+			emergencyStop(true);
 		}
-//		}
 	}
 #endif
 }
@@ -360,7 +378,8 @@ void FFBHIDMain::exti(uint16_t GPIO_Pin){
 void FFBHIDMain::errorCallback(const Error &error, bool cleared){
 	if(error.type == ErrorType::critical){
 		if(!cleared){
-			this->emergencyStop(true);
+			// Engage emergency stop when an uncleared critical error occurs.
+			this->emergencyStop(false);
 		}
 	}
 	if(error.code == ErrorCode::emergencyStop){

@@ -544,8 +544,8 @@ public:
 	void setPowerLimit(uint16_t power) override;
 
 	void emergencyStop(bool reset);
-	bool emergency = false;
-	bool estopTriggered = false;
+	volatile bool emergency = false;
+	volatile bool estopTriggered = false;
 	void turn(int16_t power);
 
 	int16_t nextFlux = 0;
@@ -715,7 +715,7 @@ private:
 	bool powerInitialized = false;
 	bool adcCalibrated = false;
 	bool adcSettingsStored = false;
-	bool motorEnabledRequested = false;
+	volatile bool motorEnabledRequested = false;
 	volatile bool encoderIndexHitFlag = false;
 	bool zeroEncoderOnIndexHit = false;
 	bool fullCalibrationInProgress = false;
