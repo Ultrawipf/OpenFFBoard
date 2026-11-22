@@ -696,6 +696,7 @@ private:
 	const Error LOW_VOLTAGE_ERROR = Error(ErrorCode::undervoltage,ErrorType::warning,"Low motor voltage");
 	const Error COMMUNICATION_ERROR = Error(ErrorCode::tmcCommunicationError, ErrorType::warning, "TMC not responding");
 	const Error ESTOP_ERROR = Error(ErrorCode::emergencyStop, ErrorType::critical, "TMC emergency stop triggered");
+	const Error BRAKE_RES_ERROR = Error(ErrorCode::brakeResistorFailure, ErrorType::critical, "Brake resistor stuck on");
 
 	volatile TMC_ControlState state = TMC_ControlState::uninitialized;
 	TMC_ControlState laststate = TMC_ControlState::uninitialized;

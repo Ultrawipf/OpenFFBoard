@@ -504,12 +504,19 @@ bool TMC4671::initializeWithPower(){
 }
 
 bool TMC4671::motorReady(){
-	return initialized && !isEmergencyActive() && conf.motconf.motor_type != MotorType::NONE && this->state == TMC_ControlState::Running && powerInitialized && adcCalibrated && encoderAligned;
+	return initialized && !isEmergencyActive() && !brake_failure && conf.motconf.motor_type != MotorType::NONE && this->state == TMC_ControlState::Running && powerInitialized && adcCalibrated && encoderAligned;
 }
 
 void TMC4671::Run(){
 	// Main state machine
 	while(1){
+
+		// Immediately shut down and latch HardError if the brake resistor protection tripped.
+		if(brake_failure && state != TMC_ControlState::HardError){
+			emergencyStop(false);
+			ErrorHandler::addError(BRAKE_RES_ERROR);
+			enterHardError();
+		}
 
 		if(!initialized && state != TMC_ControlState::HardError){
 			changeState(TMC_ControlState::uninitialized,true);
@@ -567,7 +574,7 @@ void TMC4671::Run(){
 			allowStateChange = false;
 			autohome();
 			allowStateChange = true;
-			if(isEmergencyActive()){
+			if(isEmergencyActive() || brake_failure){
 				enterShutdown();
 			}else if(motorEnabledRequested && isSetUp()){
 				changeState(TMC_ControlState::Running);
@@ -645,7 +652,7 @@ void TMC4671::Run(){
 
 		case TMC_ControlState::SlewRateCalibration:
 			{
-				if(isEmergencyActive()){
+				if(isEmergencyActive() || brake_failure){
 					fullCalibrationInProgress = false;
 					enterShutdown();
 					break;
@@ -658,7 +665,7 @@ void TMC4671::Run(){
 				allowStateChange = false;
 				measureMaxSlewRate();
 				allowStateChange = true;
-				if(isEmergencyActive()){
+				if(isEmergencyActive() || brake_failure){
 					fullCalibrationInProgress = false;
 					enterShutdown();
 				}else if(fullCalibrationInProgress){
@@ -1624,8 +1631,8 @@ void TMC4671::setUdUq(int16_t ud,int16_t uq){
 }
 
 bool TMC4671::canRunMotor(){
-	// Require no emergency stop, no latched HardError, and valid bus power.
-	return !isEmergencyActive() && state != TMC_ControlState::HardError && hasPower();
+	// Require no emergency stop, no brake resistor fault, no latched HardError, and valid bus power.
+	return !isEmergencyActive() && !brake_failure && state != TMC_ControlState::HardError && hasPower();
 }
 
 bool TMC4671::enablePowerStageForCalibration(bool requireAdcCalib){
@@ -1706,7 +1713,7 @@ void TMC4671::stopMotor(){
 }
 void TMC4671::startMotor(){
 	motorEnabledRequested = true;
-	if(isEmergencyActive() || state == TMC_ControlState::HardError || conf.motconf.motor_type == MotorType::NONE){
+	if(isEmergencyActive() || brake_failure || state == TMC_ControlState::HardError || conf.motconf.motor_type == MotorType::NONE){
 		return;
 	}
 
@@ -3460,9 +3467,9 @@ void TMC4671::TMC_ExternalEncoderUpdateThread::updateFromIsr(){
 
 void TMC4671::errorCallback(const Error &error, bool cleared){
 	if(!cleared && error.code == ErrorCode::brakeResistorFailure){
-		// shut down and block.
+		// Shut down power stage and permanently latch HardError.
 		emergencyStop(false);
-		this->changeState(TMC_ControlState::HardError, true);
+		enterHardError();
 	}
 }
 
@@ -3534,10 +3541,10 @@ void TMC4671::handleStateWaitPower() {
 	allowStateChange = false;
 	pulseClipLed(); // blink led
 
-	if (!hasPower() || isEmergencyActive()) {
+	if (!hasPower() || isEmergencyActive() || brake_failure) {
 		this->powerCheckCounter = 0;
 		// Special case: Allow CoggingCalibration simulation even without power when not in emergency.
-		if (!isEmergencyActive() && requestedState == TMC_ControlState::CoggingCalibration) {
+		if (!isEmergencyActive() && !brake_failure && requestedState == TMC_ControlState::CoggingCalibration) {
 			allowStateChange = true;
 		}
 		Delay(250);

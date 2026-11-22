@@ -7,6 +7,7 @@
 
 #include "TMC4671.h"
 #include "TMC4671_cogging.h"
+#include "voltagesense.h"
 #if defined(TMC4671DRIVER) && defined(COGGING_TABLE_FLASH_START_ADDRESS)
 
 #include <cstdarg>
@@ -96,7 +97,12 @@ void TMC4671CoggingCalibrator::broadcastLog(int val, const char* format, ...) {
 }
 
 bool TMC4671CoggingCalibrator::isEstopActive() {
-	if (tmc.emergency || tmc.estopTriggered) return true;
+	if (tmc.isEmergencyActive()) return true;
+	// Immediately abort calibration if brake resistor over-on fault occurred.
+	if (brake_failure) {
+		tmc.emergencyStop(false);
+		return true;
+	}
 #ifdef E_STOP_Pin
 	if (HAL_GPIO_ReadPin(E_STOP_GPIO_Port, E_STOP_Pin) == GPIO_PIN_RESET) {
 		tmc.emergency = true;
