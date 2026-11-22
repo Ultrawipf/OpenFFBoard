@@ -242,6 +242,18 @@ void TMC4671::restoreFlash(){
 	}
 
 	Flash_ReadCoggingTable(this->drv_address - 1, (int16_t*)this->cogging_harmonics);
+	// Sanitize legacy flash tables where the former 2-byte padding (now speed_delta) may contain 0xFFFF (-1) or garbage
+	for (uint8_t i = 0; i < COGGING_HARMONICS_COUNT; i++) {
+		if (!std::isfinite(cogging_harmonics[i].amplitude) || !std::isfinite(cogging_harmonics[i].phase) ||
+			cogging_harmonics[i].amplitude < 0.0f || cogging_harmonics[i].amplitude > 32767.0f ||
+			cogging_harmonics[i].order >= COGGING_CALIB_DFT_HARMONICS) {
+			cogging_harmonics[i] = {0.0f, 0.0f, 0, 0};
+		} else {
+			int32_t max_delta = (int32_t)(cogging_harmonics[i].amplitude * 2.0f);
+			int32_t min_delta = -(int32_t)(cogging_harmonics[i].amplitude * 0.8f);
+			cogging_harmonics[i].speed_delta = (int16_t)clip<int32_t, int32_t>(cogging_harmonics[i].speed_delta, min_delta, max_delta);
+		}
+	}
 #endif
 }
 
@@ -1645,21 +1657,56 @@ void TMC4671::turn(int16_t power){
 	int32_t flux = 0;
 	int32_t totalPower = power;
 
-	// Anticogging id enable in firmware
+	// Anticogging & dynamic speed-dependent ripple compensation
 #ifdef COGGING_TABLE_FLASH_START_ADDRESS
 	if (cogging_enabled && !this->isCalibrationInProgress()) {
 		float pos_f = this->getFilteredPosition();
 
-		// Fourier series compensation: Sum(A_k * sin(k * theta + phi_k))
-		float compensation = 0;
-		float angle_rad = pos_f * 2.0f * PI;
-		
+		// 1. Ultra-fast instantaneous speed estimation (turns/s) from pos_f (0 extra SPI reads)
+		uint32_t now_us = micros();
+		uint32_t dt_us = now_us - last_turn_us;
+		last_turn_us = now_us;
+		if (dt_us > 50 && dt_us < 50000) {
+			float dpos = getWrappedError(pos_f, last_turn_pos_f);
+			float inst_vel = (dpos * 1000000.0f) / (float)dt_us;
+			turn_vel_filtered += 0.25f * (inst_vel - turn_vel_filtered);
+		} else {
+			turn_vel_filtered = 0.0f;
+		}
+		last_turn_pos_f = pos_f;
+
+		float abs_vel = fabsf(turn_vel_filtered);
+
+		// 2. Bounded RL/PI asymptotic speed factor S(w) = |w| / (|w| + w_c) in [0.0 .. 1.0] computed ONCE outside loop
+		float speed_factor = abs_vel / (abs_vel + COGGING_RIPPLE_CORNER_VEL);
+
+		// 3. Predictive phase-lead factored OUTSIDE the harmonic loop (0 extra trig cost inside loop)
+		// Automatically applies delta_phi_k = 2*PI * k * w * tau_lead to every harmonic order k
+		float pred_pos_f = pos_f + (turn_vel_filtered * this->cogging_phase_lead_time);
+		float angle_rad = pred_pos_f * (2.0f * PI);
+
+		// 4. Fourier synthesis with speed-dependent ripple modulation and ZOH anti-aliasing roll-off
+		float compensation = 0.0f;
 		for (uint8_t i = 0; i < COGGING_HARMONICS_COUNT; i++) {
-			if (cogging_harmonics[i].amplitude > 0.0f) {
-				compensation += cogging_harmonics[i].amplitude * arm_sin_f32(angle_rad * cogging_harmonics[i].order + cogging_harmonics[i].phase);
+			float base_amp = cogging_harmonics[i].amplitude;
+			if (base_amp > 0.0f) {
+				uint16_t order = cogging_harmonics[i].order;
+				float harm_freq_hz = (float)order * abs_vel;
+
+				// Soft anti-aliasing cut-off above 200..350 Hz to prevent ZOH phase inversion at high RPM
+				if (harm_freq_hz < 350.0f) {
+					float dyn_amp = base_amp + ((float)cogging_harmonics[i].speed_delta * speed_factor);
+					dyn_amp = clip<float, float>(dyn_amp, 0.0f, base_amp * 3.0f);
+					if (harm_freq_hz > 200.0f) {
+						dyn_amp *= (350.0f - harm_freq_hz) * (1.0f / 150.0f);
+					}
+					compensation += dyn_amp * arm_sin_f32(angle_rad * (float)order + cogging_harmonics[i].phase);
+				}
 			}
 		}
-		this->last_anticogging_torque = (int32_t)(this->cogging_scale * compensation);
+		float scaled_comp = this->cogging_scale * compensation;
+		float comp_limit = (curLimits.pid_torque_flux > 0) ? (float)curLimits.pid_torque_flux : 30000.0f;
+		this->last_anticogging_torque = (int32_t)clip<float, float>(scaled_comp, -comp_limit, comp_limit);
 
 		totalPower += this->last_anticogging_torque;
 	} else {
