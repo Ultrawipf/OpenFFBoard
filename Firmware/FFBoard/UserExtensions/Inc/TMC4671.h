@@ -40,7 +40,7 @@
 #ifdef COGGING_TABLE_FLASH_START_ADDRESS
 // --- Constants for anti-cogging calibration ---
 #define COGGING_CALIB_LUT_RESOLUTION    2880 	// Resolution for legacy protocol communication
-#define COGGING_CALIB_TIME_PER_REV_S    20 	 	// Time in seconds to complete one revolution (8s = 7.5 RPM)
+#define COGGING_CALIB_TIME_PER_REV_S    20 	 	// Time in seconds to complete one revolution (20s = 3.0 RPM)
 #define COGGING_CALIB_DFT_HARMONICS      128     // Number of harmonics to analyze during calibration
 #define COGGING_CALIB_ENABLE_ID_DIAG            // Enable Point 1 diagnostic (Id axis analysis)
 #endif
@@ -430,6 +430,9 @@ class TMC4671 :
 
 #ifdef TMCDEBUG
 friend class TMCDebugBridge;
+#endif
+#ifdef COGGING_TABLE_FLASH_START_ADDRESS
+friend class TMC4671CoggingCalibrator;
 #endif
 
 public:
