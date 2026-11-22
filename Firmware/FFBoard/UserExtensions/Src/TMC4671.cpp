@@ -1858,7 +1858,7 @@ uint32_t TMC4671::getCpr(){
 	if(usingExternalEncoder()){
 		return drvEncoder->getCpr();
 	}
-	return 0xffff;
+	return 0x10000; // TMC4671 internal 16-bit PhiM / pos register (0x6B) wraps at 65536 counts per revolution
 //	}
 
 }
@@ -3583,7 +3583,22 @@ void TMC4671::handleStateCoggingCalibration() {
 		float tuning_torque = starting_torque;
 		float dynamic_friction = 0.0f;
 
-		uint32_t enc_cpr = this->getCpr();
+		// Determine true physical encoder resolution (not the 65536 internal TMC scaling register)
+		uint32_t enc_cpr = this->getEncCpr();
+		const char* enc_type_str = "External";
+		if (!usingExternalEncoder()) {
+			if (conf.motconf.enctype == EncoderType_TMC::abn) {
+				enc_cpr = abnconf.cpr;
+				enc_type_str = "Internal ABN";
+			} else if (conf.motconf.enctype == EncoderType_TMC::sincos || conf.motconf.enctype == EncoderType_TMC::uvw) {
+				// Analog SinCos/UVW encoders are interpolated by TMC4671 internal ADC per period
+				enc_cpr = clip<uint32_t, uint32_t>(aencconf.cpr, 1, 16) * 4096;
+				enc_type_str = "Internal SinCos/UVW";
+			} else {
+				enc_cpr = this->getCpr();
+				enc_type_str = "Internal Other";
+			}
+		}
 		uint32_t enc_decimation_ratio = 1;
 		float resolution_penalty = 1.0f;
 		float calib_rpm = 60.0f / (float)COGGING_CALIB_TIME_PER_REV_S;
@@ -3628,21 +3643,35 @@ void TMC4671::handleStateCoggingCalibration() {
 			setMotionMode(MotionMode::torque, true);
 
 			// --- STEP 1/4: ENCODER IDENTIFICATION ---
-			broadcastCalibLog(0, "STEP 1/4: Encoder Identification...");
-			
-			if (enc_cpr > 0 && enc_cpr < 20000) {
-				enc_decimation_ratio = 8;      // PID runs at 500 Hz
-				resolution_penalty = 0.2f;     // Heavily damp the proportional gain
-				calib_rpm = 12.0f;            // Spin faster to accumulate enough ticks between loops
+			broadcastCalibLog(0, "STEP 1/4: Encoder Identification (%s, physical CPR: %lu)...", enc_type_str, enc_cpr);
+
+			uint32_t base_period_us = std::max<uint32_t>(1, getActualCalibPeriod(TIM_TMC_ARR));
+			float base_loop_hz = 1000000.0f / (float)base_period_us;
+
+			// Adjust calibration RPM on low-res encoders so the decimated PID loop stays >= 250 Hz
+			if (enc_cpr > 0 && enc_cpr < 16384) {
+				calib_rpm = (enc_cpr < 8192) ? 10.0f : 6.0f;
 				enc_perf = "Low-Res";
-			} else if (enc_cpr >= 20000 && enc_cpr < 50000) {
-				enc_decimation_ratio = 4;      // PID runs at 1 kHz
-				resolution_penalty = 0.5f;     // Mildly damp the proportional gain
-				calib_rpm = 6.0f;             // Slightly faster calibration
+			} else if (enc_cpr >= 16384 && enc_cpr < 50000) {
 				enc_perf = "Medium-Res";
 			}
-			
-			broadcastCalibLog(0, "Encoder: %s (CPR: %lu). Decimation: %lu, Pen: %.2f", enc_perf, enc_cpr, enc_decimation_ratio, resolution_penalty);
+
+			// Compute exact decimation ratio to guarantee >= 4 physical encoder ticks per PID/accel step
+			float ticks_per_sec = (float)enc_cpr * (calib_rpm / 60.0f);
+			if (ticks_per_sec > 1.0f) {
+				uint32_t needed_decim = (uint32_t)ceilf((4.0f * base_loop_hz) / ticks_per_sec);
+				enc_decimation_ratio = clip<uint32_t, uint32_t>(needed_decim, 1, 16);
+			} else {
+				enc_decimation_ratio = 16;
+			}
+
+			float pid_hz = base_loop_hz / (float)enc_decimation_ratio;
+			float ticks_per_pid_step = ticks_per_sec / pid_hz;
+			// Scale proportional stiffness penalty smoothly with decimation ratio for discrete phase margin
+			resolution_penalty = clip<float, float>(1.0f / sqrtf((float)enc_decimation_ratio), 0.25f, 1.0f);
+
+			broadcastCalibLog(0, "Enc Class: %s | Loop: %.0fHz / %lu = %.0fHz | RPM: %.1f (%.1f ticks/step, Pen: %.2f)",
+				enc_perf, base_loop_hz, enc_decimation_ratio, pid_hz, calib_rpm, ticks_per_pid_step, resolution_penalty);
 
 			// --- STEP 2/4: SYSTEM IDENTIFICATION (J & B) ---
 			broadcastCalibLog(0, "STEP 2/4: Physical System Identification...");
