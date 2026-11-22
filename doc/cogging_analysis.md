@@ -1,173 +1,162 @@
-# Anti-Cogging and Motor Diagnostic Analysis (Continuous DFT-128 Method)
+# Anti-Cogging, Dynamic Speed-Ripple & Motor Diagnostic Analysis (Continuous Multi-Speed DFT-128 Method)
 
-This document describes the implementation of the harmonic-based anti-cogging compensation and motor diagnostic system for the OpenFFBoard (TMC4671).
+This document describes the physical principles, mathematical design, and firmware implementation of the harmonic-based anti-cogging, dynamic speed-dependent torque ripple compensation, and motor diagnostic system for the OpenFFBoard (TMC4671).
 
-## 1. Process Overview
+---
 
-The system uses a **Continuous Discrete Fourier Transform (DFT)** integration. It eliminates lookup tables and fixed-size buffers, making it memory-safe for all supported microcontrollers (F407 and F411).
+## 1. Motor Typology & Electromechanical Physics
 
-1.  **Software Cascade Controller & System Identification**: Before acquisition, the system performs a deterministic identification of the motor's physical parameters to calculate ideal cascade control gains. It avoids heuristic trial-and-error by measuring the actual hardware:
-    *   **Encoder Identification**: Audits the true physical encoder resolution (`getEncCpr()` / `abnconf.cpr` / interpolated `aencconf.cpr`, not the internal 65536 TMC scaling register) to mathematically calculate `enc_decimation_ratio` guaranteeing at least **4 physical ticks per PID/acceleration step** at the nominal calibration speed (**3.0 RPM** / 20s per rev). For low-resolution encoders (`< 16384 CPR`), the calibration speed is raised (6–10 RPM) so the decimated PID loop stays $\ge 250\text{ Hz}$.
-    *   **Static Friction (Breakout)**: Identifies the minimum torque required to overcome stiction using fine increments (`+50 counts` below `500`) suitable for small low-inertia motors.
-    *   **Two-Speed Friction Separation (Coulomb $T_C$ vs Viscous $B$)**: Measures the mean torque at **15 RPM** and **45 RPM** over the **exact same 90° (0.25 turn) angular sector**. Measuring both speeds on the identical angular sector mathematically cancels local cogging and steering wheel gravitational imbalance, cleanly separating Coulomb dry friction ($T_C$) from true viscous damping ($B_{phys}$).
-    *   **Dual-Direction Mechanical Inertia ($J$)**: Applies a strong torque pulse ($2.2 \times T_{breakout}$) in both `+1` and `-1` directions (canceling local cogging tooth slope) and computes inertia from the **net accelerating torque** $(T_{pulse} - T_C)$: $J_{phys} = \frac{(T_{pulse} - T_C) \cdot \Delta t^2}{2 \cdot \Delta \theta_{rad}}$.
-    *   **Cascade Position + Active Velocity Damping Controller ($K_p, K_v, K_i$)**: Replaces the undamped 3rd-order position PI ($K_d = 0$) with a 2-DOF cascade controller featuring active velocity damping ($K_v$, capped by the discrete Nyquist limit $0.35 \cdot J_{turns} / \Delta t_{dec}$ and EMA-filtered velocity at $3 f_{bw}$) and conditional Anti-Windup clamping on the continuous integral term ($K_i \cdot e \cdot \Delta t_{dec}$). This guarantees stability across both heavy industrial servos (MiGe) and light small motors / steppers.
-    *   **Manual PID Override**: If either `coggingSpeedP` or `coggingSpeedI` is set to a non-zero value, the physical identification phase is bypassed and manual gains are applied.
-    *   **Validation Rotation**: A 2.5s test rotation at **calib_rpm** (unified at `TIM_TMC_ARR`) verifies tracking stability. If the error exceeds 5.0°, calibration aborts cleanly.
+Direct-drive motors used with OpenFFBoard span two orders of magnitude in rotor inertia ($J$) and over an order of magnitude in pole-pair count ($P$). Understanding these physical regimes is essential to tuning the calibration speed loop and harmonic compensation across all hardware:
 
-2.  **Torque Response Capture (4-Tier Multi-Speed DFT Acquisition)**:
-    *   **Tier 0 — Static Cogging DFT (`calib_rpm`, default 3.0 RPM = 20s/rev)**: Dual-pass (Forward + Backward, 1.0 rev each) clocked at `TIM_TMC_ARR` (4kHz/5kHz). Uses **separate FWD/BWD accumulators** to average magnitudes without $\cos(\delta_k)$ phase-lag attenuation and extract the exact static magnetic phase via unit-vector bisection.
-    *   **Causal Real-Time Inertia Subtraction**: Because spatial inertial torque $J \alpha(\theta) = \frac{1}{2}J \frac{d(\omega^2)}{d\theta}$ is an *even* function of velocity (same sign in FWD and BWD), it does not cancel by adding both passes. The algorithm computes real-time angular acceleration and reconstructs pure magnetic torque via a phase-aligned causal combination $\frac{I_{q,cmd}[n] + I_{q,cmd}[n-1]}{2} - J_{phys}\alpha[n]$ filtered by a single shared EMA.
-    *   **Tiers 1, 2, 3 — Multi-Speed Ripple Profiling (12 RPM, 36 RPM, up to 90 RPM)**: Performs 1.0 rev FWD + 1.0 rev BWD (zero net unwinding) at three geometrically spaced speeds on the 20 selected harmonics. A least-squares regression fits the **bounded RL/PI asymptotic ripple amplitude delta** (`int16_t speed_delta`, stored in the existing 2-byte padding of `struct Harmonic`) and identifies the real system **phase-lead latency** ($\tau_{lead}$) across the 0..300 RPM envelope.
+| Physical Characteristic | **Heavy Industrial Servos**<br>*(e.g., MiGe 130ST-M10010 / M15015)* | **Small Direct-Drive / Gimbal / Outrunners**<br>*(e.g., K52G, Hoverboard, 60ST/80ST)* | **Hybrid Stepper Motors**<br>*(e.g., NEMA 23 / NEMA 34)* | **Low-Cogging / Skewed Servos**<br>*(e.g., Kollmorgen AKM, Tamagawa)* |
+| :--- | :--- | :--- | :--- | :--- |
+| **Rotor Inertia ($J$)** | **Very High** ($J_{tmc} \approx 500\text{–}1500$) | **Very Low** ($J_{tmc} \approx 15\text{–}120$) | **Low–Medium** ($J_{tmc} \approx 40\text{–}250$), near-zero viscous damping | **Medium–High** ($J_{tmc} \approx 200\text{–}800$) |
+| **Pole Pairs ($P$) & Slots ($N_s$)** | $P = 4\text{–}5$, $N_s = 12\text{–}15$ | $P = 7\text{–}15$, $N_s = 12\text{–}36$ | **$P = 50$** (100 poles) | $P = 4\text{–}6$, skewed stator/rotor |
+| **Dominant Harmonic Orders ($k$)** | Low spatial orders ($k = 12, 15, 24, 30, 36$) | Mid/High orders ($k = 14, 21, 24, 36, 42, 72$) | Very high orders ($k = 50, 100$) | Low detent cogging; load/speed ripple at $k = 6P, 12P$ |
+| **Cogging Acceleration Ratio ($\frac{T_{cog}}{J}$)** | **Low** — Rotor mass naturally low-pass filters cogging pulses | **Critical ($10\times\text{–}50\times$ higher)** — Each slot tooth induces violent instantaneous acceleration ($\alpha = T_{cog}/J$) | **Critical & Resonant** — Magnetic tooth stiffness ($k \cdot A_k$) creates a mass-spring resonance | **Low** — Dominated by Back-EMF & eddy-current ripple at speed |
+| **Coulomb Friction / Inertia Ratio ($\frac{T_C}{J}$)** | Low to moderate | **Very High** — Bearing/seal stiction dominates the light rotor | **High** + strong magnetic hysteresis | Moderate, linear viscous drag |
 
-3.  **Scale Calibration (Hybrid Secant + Gradient Descent at `TIM_TMC_ARR`)**: Fine-tuning of the compensation amplitude (`cogging_scale`) using the same unified `TIM_TMC_ARR` rate and causal inertia-subtracted residual torque (`iq_mag_filt`).
+### Why Small Motors Require Active Velocity Damping ($K_v$) and Dry/Viscous Friction Separation
+At the nominal slow calibration speed (**3.0 RPM** = 20 s/rev), a light rotor stores negligible kinetic energy. When approaching a magnetic tooth of stiffness $K_{cog} = k \cdot A_k$, the rotor decelerates rapidly toward $0\text{ RPM}$ and locks into **magnetic stick-slip**.
+* A pure position PI controller ($K_d = 0$) driving a double-integrator plant $P_\theta(s) = \frac{1}{J s^2 + B s}$ yields a 3rd-order closed-loop characteristic polynomial $J s^3 + B s^2 + K_p s + K_i = 0$. By the **Routh–Hurwitz criterion**, stability requires $B \cdot K_p > J \cdot K_i$. On low-damping small motors ($B \to 0$), this condition is violated and the rotor oscillates violently.
+* Furthermore, if Coulomb dry friction $T_C$ is not separated from viscous damping $B$, the over-estimated $B$ term subtracted in $K_p = 2\zeta\omega_n J - B$ drives $K_p$ negative (clamping it to the floor) on small motors where $T_C / J$ is large.
+* **Solution**: Separate $T_C$ and $B_{phys}$ across two speeds over the **exact same angular sector**, compute $J_{phys}$ from the **net torque** $(T_{pulse} - T_C)$, and control the motor with a **Cascade Position + Active Velocity Damping ($K_p, K_v, K_i$) controller with conditional Anti-Windup**.
 
-4.  **Post-Acquisition Homing & Re-alignment**: After successful analysis, the system ensures the motor returns to a known hardware state.
-    *   **Multi-turn Unwinding**: Using the full tuned PID gains at the aligned frequency (4kHz or 5kHz), the motor performs a controlled absolute position ramp towards `0.0`. This "unwinds" any revolutions accumulated during the acquisition or retry phases.
-    *   **Encoder Re-Zeroing**: Upon reaching the origin, the driver is automatically switched to the `EncoderInit` state. This triggers a hardware re-alignment and resets the encoder position registers.
+---
 
-## 2. Technical Specifications
+## 2. Process Overview
 
-### Memory Efficiency (The Zero-Buffer Goal)
-*   **Accumulators**: Uses 128 pairs of `float` (32-bit) values to leverage the hardware FPU.
-*   **Peak RAM**: Approximately **2 KB** on the FreeRTOS heap during calibration.
-*   **Permanent RAM**: Only **240 bytes** (20 saved harmonics).
-*   **Compatibility**: Fully portable between F407 and F411.
+The system uses a **Continuous Multi-Speed Discrete Fourier Transform (DFT)** integration. It eliminates lookup tables and large time-domain buffers, making it memory-safe for all supported microcontrollers (F407 and F411). The design follows a **"Thorough Calibration / Ultra-Fast Real-Time Execution"** philosophy: all heavy system identification, multi-speed regression, and phase-lead extraction occur offline during calibration so that `TMC4671::turn()` executes deterministically with minimal CPU cost.
+
+1.  **Step 1 — True Physical Encoder Identification & Dynamic Decimation**:
+    *   Audits the **true physical encoder resolution** (`abnconf.cpr` for internal ABN, ADC-interpolated `clip(aencconf.cpr, 1, 16) * 4096` for SinCos/UVW, or `drvEncoder->getCpr()` for external encoders) rather than the TMC4671's internal 16-bit `0x10000` (65536) scaling register.
+    *   Calculates `enc_decimation_ratio` mathematically to guarantee **$\ge 4$ physical encoder ticks per PID/acceleration evaluation** at `calib_rpm` (default **3.0 RPM** = 20 s/rev):
+        $$\text{enc\_decimation\_ratio} = \text{clip}\left(\left\lceil \frac{4 \cdot f_{timer}}{\text{CPR}_{phys} \cdot (\text{calib\_rpm}/60)} \right\rceil,\ 1,\ 16\right)$$
+    *   For low-resolution encoders (`< 16384 CPR`), `calib_rpm` is automatically raised (6–10 RPM) so the decimated control loop stays $\ge 250\text{ Hz}$.
+    *   Applies a smooth discrete phase-margin stiffness penalty: $\text{resolution\_penalty} = \text{clip}(1 / \sqrt{\text{enc\_decimation\_ratio}},\ 0.25,\ 1.0)$.
+
+2.  **Step 2 — Physical System Identification (SysID) & Cascade Controller Tuning**:
+    *   **Step 2.1 — Fine Static Friction (Breakout)**: Ramps torque from `clip(0.05 * bangInitPower, 50, 250)` in fine `+50 count` increments (below 500) to avoid jolting small low-inertia motors.
+    *   **Step 2.2 — Two-Speed Friction Separation ($T_C$ vs $B_{phys}$) on the Identical 90° Sector**: Measures mean steady-state torque at **15 RPM** and **45 RPM** while traversing the **exact same 0.25-turn angular sector** $[\theta_{start} + 0.05,\ \theta_{start} + 0.30]$. Because both passes integrate over the exact same physical angle, local cogging and asymmetric steering wheel gravitational imbalance cancel out identically in the difference:
+        $$B_{phys} = \text{clip}\left(\frac{\bar{T}_{45} - \bar{T}_{15}}{\omega_{45} - \omega_{15}},\ 0,\ 1000\right), \qquad T_C = \bar{T}_{15} - B_{phys} \cdot \omega_{15}$$
+    *   **Step 2.3 — Dual-Direction Mechanical Inertia ($J_{phys}$)**: Applies a strong torque pulse ($2.2 \times T_{breakout}$, capped at $0.75 \cdot T_{max}$) in both `+1` and `-1` directions (max 120 ms, early-exit at 0.20 turns to prevent Back-EMF saturation on light rotors). Averaging `+1` and `-1` cancels the local cogging tooth slope, and subtracting $T_C$ isolates the net accelerating torque:
+        $$J_{phys} = \frac{(T_{pulse} - T_C) \cdot \Delta t^2}{2 \cdot \Delta \theta_{rad}}$$
+    *   **Step 2.4 — Cascade Pole Placement ($K_p, K_v, K_i$) & Conditional Anti-Windup**:
+        Using homogeneous turn units ($J_{turns} = 2\pi J_{phys}$, $B_{turns} = 2\pi B_{phys}$) and inertia-scaled bandwidth $f_{bw} = \text{clip}(16.5 - 0.0047 \cdot J,\ 6.0,\ 15.0)\text{ Hz}$ ($\omega_n = 2\pi f_{bw}$):
+        *   $K_p = \text{clip}(1.6 \cdot \omega_n^2 \cdot J_{turns} \cdot \text{pen},\ 250,\ 250000)$
+        *   $K_v = \text{clip}((2.2 \cdot \omega_n \cdot J_{turns} - B_{turns}) \cdot \text{pen},\ 0,\ 0.35 \cdot J_{turns} / \Delta t_{dec})$ *(active velocity damping, capped at the discrete Nyquist stability limit with EMA-filtered velocity at $3 f_{bw}$)*
+        *   $K_i = \text{clip}(0.35 \cdot \omega_n^3 \cdot J_{turns} \cdot \text{pen}^2,\ 10,\ 200000)$ *(continuous integral gain multiplied by $\Delta t_{dec}$, invariant to timer rate or decimation, with conditional anti-windup clamping)*
+    *   **Manual PID Override**: If either `coggingSpeedP` or `coggingSpeedI` is non-zero, SysID is bypassed and manual gains are injected.
+    *   **Step 2.5 — Stability Validation Rotation**: A 2.5s tracking check at `calib_rpm` clocked at the unified `TIM_TMC_ARR` frequency. Aborts cleanly if tracking error exceeds `5.0°`.
+
+3.  **Step 3 — Tier 0 Static Cogging DFT (`calib_rpm`, Default 3.0 RPM = 20s/rev)**:
+    *   Clocked strictly at `TIM_TMC_ARR` (4kHz / 250µs or 5kHz / 200µs). Integrates exactly 1.0 revolution Forward and 1.0 revolution Backward after `COGGING_WARMUP_MS`.
+    *   **Separate FWD/BWD Accumulators**: Instead of summing FWD and BWD into a single accumulator (which attenuates amplitude by $\cos(\delta_k)$ when residual phase lag $\delta_k$ exists), FWD (`iq_fwd_cos/sin`) and BWD (`iq_acc_cos/sin`) are accumulated separately. The true unattenuated magnitude is $A_{k,0} = \frac{1}{2}(|\vec{V}_{k,FWD}| + |\vec{V}_{k,BWD}|)$ and the exact static magnetic phase is the unit-vector bisector between FWD and BWD.
+    *   **Causal Real-Time Inertia Subtraction (Why FWD+BWD Addition Cannot Cancel Inertia)**:
+        *   By the chain rule, angular acceleration as a function of spatial angle $\theta$ is $\alpha(\theta) = \frac{d\omega}{dt} = \omega \frac{d\omega}{d\theta} = \frac{1}{2}\frac{d(\omega^2)}{d\theta}$.
+        *   Because $\alpha(\theta)$ depends on $\omega^2$, it is an **even function of velocity**: it has the **exact same spatial sign in both Forward and Backward passes** (unlike friction, which is odd and cancels in FWD+BWD). Thus, adding FWD and BWD *doubles* inertial artifacts instead of canceling them.
+        *   Subtracting $J_{phys} \cdot \alpha$ in real time reconstructs 100% of the pure magnetic torque $-T_{cog}(\theta) = I_{q,cmd} - J_{phys}\alpha - T_{friction}$, even for high-order harmonics beyond the speed controller's bandwidth (and up to 95% of the ripple signal during high-speed passes!).
+        *   **Symmetric Causal Alignment**: To avoid asymmetric phase shift between `iq_cmd` and `iq_inertia`, `iq_cmd` is half-step delayed (`0.5f * (iq_cmd + prev_iq_cmd)`) to align with the centered acceleration derivative, and a **single shared EMA filter** (~150 Hz) is applied to the combined signal `iq_mag_raw = 0.5*(iq_cmd + prev_iq_cmd) - iq_inertia`.
+    *   **Adaptive Harmonic Selection**: Selects the top 20 peaks for orders $k \ge k_{min}$ where $k_{min} = \text{clip}(\text{pole\_pairs},\ 4,\ 11)$, ignoring H1/H2 wheel gravitational imbalance while supporting low-pole-count motors.
+
+4.  **Step 4.2 — Multi-Speed Ripple Profiling (Tiers 1, 2, 3: 12 RPM, 36 RPM, up to 90 RPM)**:
+    *   **Physics of Speed-Dependent Torque Ripple (0..300 RPM)**:
+        *   Non-sinusoidal Back-EMF harmonics ($5, 7, 11, 13$ electrical $\rightarrow$ $6P, 12P$ mechanical) and stator tooth eddy currents generate torque ripple that grows with speed $\omega$ as $k \cdot \omega$ exceeds the TMC4671 internal current PI bandwidth, then **plateaus toward an inductive asymptote** at high speed ($100\text{–}300\text{ RPM}$) where winding reactance $j k \omega L$ limits current ripple ($\Delta I_q \sim \frac{\Delta E_k}{k\omega L} \to \text{const}$).
+        *   Measuring only two close speeds (e.g., 3 and 18 RPM) and linearly extrapolating to 300 RPM would amplify noise by $\sim 20\times$ and diverge past the inductive plateau.
+    *   **Geometrically Spaced 4-Tier Profiling (Zero Net Unwinding)**:
+        *   Performs 1.0 rev FWD + 1.0 rev BWD (returning to 0.0 net turns at each tier, taking only ~17 s total) at **12 RPM**, **36 RPM**, and **$\min(90\text{ RPM},\ 24000 / k_{max})$** (Nyquist-safe cap for high-pole steppers).
+        *   Computes a targeted 20-harmonic DFT on `iq_mag_filt` at each tier and performs a **least-squares regression** onto the bounded RL/PI asymptotic model $S(\omega) = \frac{|\omega|}{|\omega| + \omega_c}$ ($\omega_c = 0.6\text{ turns/s} = 36\text{ RPM}$):
+            $$\Delta A_{i,\max} = \frac{\sum_{m=1}^{3} S_m \cdot (A_i(\omega_m) - A_{i,0})}{\sum_{m=1}^{3} S_m^2}$$
+        *   Stores $\Delta A_{i,\max}$ in `int16_t speed_delta` inside the existing 2-byte tail padding of `struct Harmonic` (keeping `sizeof(Harmonic) == 12` bytes and `COGGING_TABLE_SIZE == 240` bytes unchanged!).
+        *   Directly extracts the real motor+driver **phase-lead latency** $\tau_{lead}$ (`cogging_phase_lead_time`, clamped to `[0.2 ms, 3.0 ms]`) from the FWD/BWD phase difference on the main harmonic at Tiers 2 & 3.
+
+5.  **Step 4.5 — Scale Calibration (Hybrid Secant + Gradient Descent at `TIM_TMC_ARR`)**:
+    *   Runs at the same unified `TIM_TMC_ARR` frequency as Tier 0 and computes the residual dot product on the causal inertia-subtracted torque `iq_mag_filt` (preventing scale bias from rotor inertia), with exact integer-period segments to prevent spectral leakage and an absolute-best safeguard.
+
+6.  **Step 5 — Post-Acquisition Homing & Re-alignment**:
+    *   Uses the full tuned cascade controller at `TIM_TMC_ARR` to unwind back to `0.0`, then transitions to `EncoderInit` for hardware re-alignment.
+
+---
+
+## 3. Technical Specifications
+
+### Memory Efficiency (Zero-Buffer Goal)
+*   **DFT Accumulators**: Separate FWD/BWD 128-float pairs (`iq_acc_cos/sin`, `iq_fwd_cos/sin`, plus optional `id_acc_cos/sin`).
+*   **Peak Heap RAM**: ~3 KB on the FreeRTOS heap during calibration, freed unconditionally in `cleanup:`.
+*   **TMC Thread Stack Usage**: **776 bytes** static stack frame (verified via `-fstack-usage` in `TMC4671.su`), safely within `TMC_THREAD_MEM` (4096 bytes).
+*   **Permanent Flash / RAM**: Exactly **240 bytes** (`20 * 12 bytes`, `static_assert(sizeof(Harmonic) == 12)`). Legacy flash tables are automatically sanitized in `restoreFlash()` against NaN/Inf and out-of-range padding bytes.
+*   **Compatibility**: Verified across **F407VG**, **F407VG_DISCO**, and **F411RE**.
 
 ### Internal Tuning Constants
-*   `MAX_TOLERANCE_DEG` (3.0°): Absolute maximum error limit allowed during DFT.
-*   `VAL_TOTAL_DURATION_MS` (2500ms): Duration of the PID validation check.
-*   `COGGING_WARMUP_MS` (1500ms): Stabilization window ignored during measurement and integration.
+*   `COGGING_CALIB_LUT_RESOLUTION` (2880): Legacy protocol compatibility.
+*   `COGGING_CALIB_TIME_PER_REV_S` (20): Tier 0 revolution duration (**20s = 3.0 RPM**).
+*   `COGGING_CALIB_DFT_HARMONICS` (128): Analyzed harmonic spectrum.
+*   `COGGING_RIPPLE_CORNER_VEL` (0.6f): Corner speed ($0.6\text{ turns/s} = 36\text{ RPM}$) for the bounded RL/PI asymptotic ripple model.
+*   `VAL_TOTAL_DURATION_MS` (2500ms): Duration of the stability validation check.
+*   `COGGING_WARMUP_MS` (1500ms): Stabilization window ignored before Tier 0 DFT integration.
 
-## 3. Calibration Phase Summary (Steps & Timings)
+---
 
-The following table summarizes the sequence of operations, their durations, and the torque strategies used to ensure stability.
+## 4. Calibration Phase Summary (Steps & Timings)
 
-| Phase | Sub-Step | Duration | Torque / Control Strategy | Goal |
+| Phase | Sub-Step | Duration | Control Strategy | Goal |
 | :--- | :--- | :--- | :--- | :--- |
-| **1. Encoder ID** | Profiling | - | Mathematical Decimation | Audit hardware resolution |
-| **2. SysID** | Breakout | Variable | Ramp-up | Measure static friction |
-| | Inertia ($J$) | 150ms | Constant Pulse | Measure rotor mass |
-| | Friction ($B$) | 2000ms | Velocity P-Loop | Measure dynamic drag |
-| **3. Validation** | Sanity Check | 2500ms | PID Control (Calculated Gains) | Verify tracking stability |
-| **4. Acquisition** | Setup | 1000ms | Zero Torque | Settle motor at rest |
-| | DFT Integration | ~12.0s (Max) | PID Control (Wait 1500ms before DFT) @ Aligned Rate (e.g. 4kHz/5kHz) | Capture exactly 360° of pure cogging (inertia subtracted) |
-| **4.5. Scaling**| Hybrid Secant/Gradient | ~15.0s | PID Control @ Aligned Rate (e.g. 4kHz/5kHz) | Mathematical approximation and proportional refinement of `cogging_scale` |
-| **5. Return** | Centering | Variable | PID Control (Absolute Ramp to 0.0) @ Aligned Rate (e.g. 4kHz/5kHz) | Unwind motor revolutions |
-| | Final Align | - | `EncoderInit` State | Reset hardware alignment |
+| **1. Encoder ID** | True CPR Audit | Instant | Mathematical Decimation ($\ge 4\text{ ticks/step}$) | Determine physical CPR (`abnconf.cpr`, SinCos interp, or ext) and `enc_decimation_ratio` |
+| **2. SysID** | 2.1 Breakout | Variable | Fine torque ramp (`+50` / `+100`) | Measure static friction threshold |
+| | 2.2 Two-Speed Friction | ~3.5s | 15 RPM & 45 RPM on identical 90° sector | Separate Coulomb $T_C$ from Viscous $B_{phys}$ without cogging/imbalance bias |
+| | 2.3 Dual-Dir Inertia | ~1.0s | $+1/-1$ pulses ($120\text{ ms}$ or $0.20\text{ tr}$) | Measure true $J_{phys}$ from net torque $(T_{pulse} - T_C)$ |
+| | 2.4 Cascade Tuning | Instant | Pole Placement ($K_p, K_v, K_i$) + Anti-Windup | Guarantee stability on both heavy servos and light small motors |
+| | 2.5 Validation | 2500ms | Cascade Control @ `TIM_TMC_ARR` | Verify tracking error $\le 5.0^\circ$ |
+| **3. Tier 0 DFT** | Static Cogging | ~42s | FWD + BWD (1.0 rev each) @ 3.0 RPM | Capture 128-harmonic static cogging with separated FWD/BWD & causal inertia |
+| **4.2 Ripple Profile** | Tiers 1, 2, 3 | ~17s | FWD + BWD (1.0 rev each) @ 12, 36, 90 RPM | Least-squares fit of asymptotic `speed_delta` and `cogging_phase_lead_time` |
+| **4.5 Scaling** | Secant + Gradient | ~15s | Cascade Control @ `TIM_TMC_ARR` (8 iters) | Refine `cogging_scale` on causal residual `iq_mag_filt` |
+| **5. Return** | Centering & Align | Variable | Cascade Ramp to `0.0` $\rightarrow$ `EncoderInit` | Unwind and re-align hardware encoder |
 
-### Encoder Profiling Constants
-The calibration speed (`calib_rpm`) and PID execution rate are precalculated automatically based on the hardware resolution. This matrix ensures that even 12-bit magnetic encoders can achieve successful calibration without violent torque oscillations:
-
-| Encoder Class | CPR Range | PID Rate (Decimation) | Kp Penalty | Calibration Speed | Justification |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| **High-Res** | > 50,000 | 4kHz/5kHz (Ratio: 1) | 1.0x | 7.5 RPM | Infinite resolution allows full-speed loop and purest gain calculation |
-| **Medium-Res** | 20,000 - 50,000 | 1kHz (Ratio: 4) | 0.5x | 6.0 RPM | Lower execution rate requires slight gain dampening for Nyquist stability |
-| **Low-Res** | < 20,000 | 500Hz (Ratio: 8) | 0.2x | 12.0 RPM | Heavy dampening and faster spin needed to accumulate enough ticks per loop |
-
-### Configuration Macros
-*   `COGGING_CALIB_LUT_RESOLUTION`: Standardized at 2880 points for communication protocol compatibility.
-*   `COGGING_CALIB_TIME_PER_REV_S`: Time in seconds to complete one revolution for Tier 0 static cogging acquisition (Default: **20s = 3.0 RPM**).
-*   `COGGING_CALIB_DFT_HARMONICS`: Number of analyzed harmonics (128).
-*   `COGGING_CALIB_ENABLE_ID_DIAG`: Macro to enable electrical phase analysis on the Id axis.
-
-## 4. Design Choices & Timing Analysis
-
-### Why 20 Seconds per Revolution (3.0 RPM) for Tier 0 + 3 Fast Tiers (12, 36, 90 RPM)?
-*   **Tier 0 (3.0 RPM)**: Ultra-slow acquisition isolates pure static magnetic cogging with negligible Back-EMF and eddy-current distortion, accumulating dense DFT samples (~80,000 samples/rev at 4kHz).
-*   **Tiers 1–3 (12, 36, 90 RPM)**: Geometrically spaced fast passes capture the rise and inductive RL/PI plateau of speed-dependent torque ripple ($6P, 12P$ Back-EMF harmonics and eddy currents) and measure the real phase-lead latency $\tau_{lead}$ without extrapolating noise over 0..300 RPM.
-
-### Why 4kHz/5kHz (High-Frequency) Sampling & Control?
-The system is synchronized directly to the target configuration's `TIM_TMC` rate (typically 4kHz / 250µs or 5kHz / 200µs) for both the PID and DFT to achieve robotic-grade force control:
-*   **Dead-Time Reduction**: A 4kHz/5kHz loop dramatically reduces phase latency between position reading and torque application. This allows the PID proportional gain ($K_p$) to be pushed significantly higher without oscillating, resulting in a much "stiffer" and more accurate tracking of the 7.5 RPM target.
-*   **High-Resolution Accumulation**: Running at this speed provides a dense data set for the continuous Fourier Transform, naturally filtering out high-frequency electrical noise and SPI jitter.
-*   **Inertial Disaggregation**: At 4kHz/5kHz, the discrete derivative of velocity (acceleration) is highly responsive. This enables the calculation of real-time inertial torque ($J \cdot \alpha$), which is subtracted from the PID output before feeding the DFT. This prevents the algorithm from mistakenly compensating for the motor's own mass.
-*   **SPI Feasibility**: A standard TMC4671 SPI read takes ~6µs. At 4kHz/5kHz, communication overhead remains negligible (~3% CPU time), safely allowing the STM32F407 to process the complex math without RTOS deadline violations.
-*   **Dynamic Math Scaling**: All formulas dynamically adapt to the active period (`period_us` read from `TIM_TMC_ARR`). The integration timestep is set via $dt\_sec = period\_us / 1000000.0f$. The continuous integral gain scale $ki\_scale$ is scaled by dividing by the loop frequency in kHz ($freq\_khz = 1000.0f / TIM\_TMC\_ARR$) to prevent windup and guarantee stability regardless of the target's timer speed.
+---
 
 ## 5. Diagnostics & Engineering Points
 
 ### Point 1: Electrical Diagnostic (`COGGING_CALIB_ENABLE_ID_DIAG`)
-*   Analyzes the **Id axis** (Flux).
-*   In a healthy motor, the flux remains DC. Significant energy in **H3** or **H6** indicates a phase imbalance or partial winding short.
+*   Analyzes the **Id axis** (Flux). Significant energy in **H3** or **H6** signals phase imbalance or partial winding short.
 
 ### Point 2: Mechanical Diagnostic (Eccentricity)
-*   Analyzes the **H1** magnitude on the Iq axis.
-*   A high H1 magnitude signals rotor eccentricity, a bent shaft, or encoder misalignment.
+*   Analyzes **H1** magnitude on the Iq axis. High H1 indicates rotor eccentricity, bent shaft, or encoder misalignment.
 
-### Point 3: Harmonic Anti-Cogging
-*   The system scans all 128 harmonics.
-*   It selects the **Top 20 peaks** with an **Order > 10**.
-*   This captures the high-frequency magnetic "detent" while ignoring the low-frequency gravitational imbalance of asymmetric steering wheels.
+### Point 3: Adaptive Harmonic Anti-Cogging
+*   Scans all 128 harmonics and selects the **Top 20 peaks** with order $k \ge \text{clip}(\text{pole\_pairs}, 4, 11)$, rejecting low-order gravitational wheel imbalance while capturing fundamental cogging even on low-pole-pair motors.
 
-## 6. Real-Time Compensation Formula (Dynamic Speed & Phase Lead)
+---
 
-Implemented in the `turn()` method with zero extra SPI reads and phase-lead factored outside the harmonic loop:
+## 6. Real-Time Compensation Formula (`TMC4671::turn()`)
 
-$$S(\omega) = \frac{|\omega|}{|\omega| + \omega_c} \in [0, 1], \qquad \theta_{pred} = \theta + \omega \cdot \tau_{lead}$$
-$$T_{comp}(\theta, \omega) = \sum_{n=1}^{20} G_{ZOH}(Order_n, \omega) \cdot \left(A_n + \Delta A_{n,\max} \cdot S(\omega)\right) \cdot \sin\left(Order_n \cdot \theta_{pred} + \Phi_n\right)$$
-$$T_{final} = T_{requested} + \text{clip}\left( Scale \cdot T_{comp}(\theta, \omega),\ -T_{lim},\ +T_{lim} \right)$$
+Implemented in `turn()` for ultra-fast deterministic execution (zero extra SPI reads, zero dynamic allocation, phase-lead and speed factor hoisted outside the 20-harmonic loop):
+
+1. **Instantaneous Speed Estimation**: Filtered wrapped difference of `pos_f` over `dt_us = micros() - last_turn_us` (guarded by `50 < dt_us < 50000`).
+2. **Bounded RL/PI Asymptotic Speed Factor** *(computed once outside loop)*:
+   $$S(\omega) = \frac{|\omega|}{|\omega| + \omega_c} \in [0, 1]$$
+3. **Predictive Phase-Lead** *(factored once outside loop — automatically applies $\Delta\phi_k = 2\pi k \omega \tau_{lead}$ to every harmonic $k$ at zero extra trigonometric cost)*:
+   $$\theta_{pred} = \theta + \omega \cdot \tau_{lead}$$
+4. **Fourier Synthesis with ZOH Anti-Aliasing Roll-off ($200\text{–}350\text{ Hz}$)**:
+   $$T_{comp}(\theta, \omega) = \sum_{n=1}^{20} G_{ZOH}(Order_n, \omega) \cdot \text{clip}\left(A_n + \Delta A_{n,\max} \cdot S(\omega),\ 0,\ 3 A_n\right) \cdot \sin\left(2\pi \cdot Order_n \cdot \theta_{pred} + \Phi_n\right)$$
+   $$T_{final} = T_{requested} + \text{clip}\left( Scale \cdot T_{comp}(\theta, \omega),\ -T_{lim},\ +T_{lim} \right)$$
+
+---
 
 ## 7. Timer, Pacing and Parameter Reference
 
-For developers modifying the driver or timing subsystem, here is a detailed reference of the variables controlling calibration pacing, external encoder synchronization, and override parameters:
+*   **`externalEncoderTimer`**: `&TIM_TMC` (typically `htim6`, ARR = `TIM_TMC_ARR`). Drives `extEncUpdater` and paces calibration via `calibTicksCount` / `calibTicksTarget` when an external encoder is active.
+*   **`calibTimer`**: `&TIM_CALIBRATION` (typically `htim9`, shared with `TIM_USER`). Dynamically configured to `TIM_TMC_ARR` µs when no external encoder is active.
+*   **`enc_decimation_ratio`**: Computed dynamically from true physical CPR and `calib_rpm` to guarantee $\ge 4$ physical ticks per control/acceleration evaluation.
+*   **`resolution_penalty`**: `clip(1.0f / sqrtf(enc_decimation_ratio), 0.25f, 1.0f)` applied to cascade gains for discrete phase margin.
+*   **`coggingSpeedP` & `coggingSpeedI`**: Optional manual overrides (default `0.0f` enables full automatic SysID).
+*   **`cogging_phase_lead_time`**: Calibrated predictive phase-lead latency $\tau_{lead}$ in seconds (default `0.0008f`, bounded `[0.0002f, 0.0030f]`).
 
-### `externalEncoderTimer`
-*   **Type**: `TIM_HandleTypeDef*`
-*   **Utility**: Points to the hardware timer used to drive the external encoder updater thread (`TIM_TMC`, typically `htim6`). When an external encoder is active, this timer *must* continue running without being stopped or reconfigured to prevent interrupting the position feedback loop. In this scenario, the calibration logic uses this timer as a synchronous pacing clock.
-*   **Expected Value**: `&TIM_TMC` (configured with `TIM_TMC_ARR` defining the tick period in microseconds) or `nullptr` if `TIM_TMC` is not defined.
-
-### `calibTimer`
-*   **Type**: `TIM_HandleTypeDef*`
-*   **Utility**: Points to the hardware timer used for pacing the calibration thread (`TIM_CALIBRATION`, typically `htim9`) when *no* external encoder is used. In this case, `calibTimer` can be reconfigured dynamically to generate interrupts at the exact requested period (e.g., 200/250 microseconds for fast calibration loops, 1000 microseconds for slow calibration loops).
-*   **Expected Value**: `&TIM_CALIBRATION` or `nullptr` if `TIM_CALIBRATION` is not defined.
-
-### `calibTicksCount`
-*   **Type**: `volatile uint32_t`
-*   **Utility**: Active tick accumulator incremented within the `TIM_TMC` ISR. Used only when pacing the calibration via the external encoder timer (i.e. `usingExternalEncoder()` is true).
-*   **Expected Value / Range**: Increments from 0 up to (calibTicksTarget - 1). Resets to 0 once `calibTicksTarget` is reached.
-
-### `calibTicksTarget`
-*   **Type**: `volatile uint32_t`
-*   **Utility**: The threshold number of ticks from the `externalEncoderTimer` needed to match the requested calibration period. For instance, if `TIM_TMC_ARR` is 250 (4 kHz) and a 1000 us (1 kHz) loop step is requested, `calibTicksTarget` is set to `1000 / 250 = 4`. A value of `0` indicates that tick-based pacing is disabled (e.g., calibration is idle or using `calibTimer`).
-*   **Expected Value**: Typically `1` for fast loops, `4` for slow loops (assuming a 250 us timer ARR), or `0` when inactive.
-
-### `extEncUpdater`
-*   **Type**: `std::unique_ptr<TMC_ExternalEncoderUpdateThread>`
-*   **Utility**: Manages a dedicated FreeRTOS helper thread that asynchronously writes the external encoder position to the TMC4671 register `0x1C` via SPI. This thread is notified from the timer ISR to keep SPI writes out of the interrupt context.
-*   **Expected Value**: Valid `std::unique_ptr` instance when an external encoder is configured, or `nullptr` otherwise.
-
-### `enc_decimation_ratio`
-*   **Type**: `uint32_t`
-*   **Utility**: An execution rate divider that decouples the mathematical PID loop from the physical hardware timer. If the SPI loop runs at 4kHz and the ratio is 4, the PID is only evaluated at 1kHz. This is strictly required for encoders with low CPR to prevent severe quantization noise in the acceleration derivative.
-*   **Expected Value**: `1`, `4`, or `8` depending on the initial CPR audit.
-
-### `resolution_penalty`
-*   **Type**: `float`
-*   **Utility**: A multiplier applied to the critically damped proportional gain ($K_p$). Running a control loop at a lower decimated rate (e.g. 500Hz instead of 4kHz) reduces the phase margin, making the motor prone to violent high-frequency oscillations if the original stiff 4kHz gain is applied. The penalty mathematically relaxes the stiffness.
-*   **Expected Value**: `1.0f` (High-Res), `0.5f` (Med-Res), or `0.2f` (Low-Res).
-
-### `coggingSpeedP` & `coggingSpeedI`
-*   **Type**: `float`
-*   **Utility**: Optional manual speed loop Proportional ($K_p$) and Integral ($K_i$) gains. If either parameter is non-zero, the system identification steps (measuring $J$, $B$, static friction, and IMC calculation) are bypassed, and these gains are directly injected.
-*   **Expected Value**: `0.0f` (default, to use auto-identification) or manual PID constants.
+---
 
 ## 8. Encoder Precision and Architecture
 
-### Float Mantissa Truncation (The 24-bit Limit)
-The system requires absolute position tracking across multiple turns for robust calibration and FFB effects. However, storing absolute position directly in a 32-bit `float` introduces severe precision loss. A standard IEEE 754 32-bit float only provides 24 bits of mantissa. High-resolution encoders (e.g., 22-bit BISS-C) inherently use most of this mantissa just for a single fraction of a turn. Accumulating full turns (e.g., `1000.xxxx`) quickly pushes the fractional data out of the 24-bit window, truncating the lower bits of the encoder. This results in devastating quantization noise for the PID and severe phase-drift in the anti-cogging Fourier series over long sessions.
-
-**The Fix**:
-1. **Mathematical Protection in `Encoder::getPos_f()`**: Instead of casting the full 32-bit position integer to float, the system separates the turns from the fraction via integer arithmetic: `turns = pos / cpr; remainder = pos % cpr`. The float is only constructed at the very end (`turns + remainder / cpr`), preserving maximum fractional precision before the hardware limits apply.
-2. **Infinite Precision in `getFilteredPosition()`**: For anti-cogging and harmonic calculations, full turns are mathematically irrelevant. `getFilteredPosition()` performs a strict integer modulo `pos % cpr` *before* any float conversion. This guarantees 100% of the encoder's raw resolution is maintained indefinitely, regardless of how many turns the motor has completed. This protected pure-fractional position is fed directly to the `turn()` method for the Fourier compensation phase (`arm_sin_f32`).
-
-### Polymorphic Encoder Routing (`activeEnc`)
-The firmware supports both internal (TMC4671 native pins) and external (STM32 pins) encoders. Rather than relying on redundant and prone-to-error `if/else` checks, the system unifies encoder access using a polymorphic pointer:
-```cpp
-Encoder* activeEnc = usingExternalEncoder() ? drvEncoder : this;
-```
-Because both `TMC4671` (the driver itself, `this`) and external drivers (e.g., `EncoderBissC`) inherit from the base `Encoder` class, calling `activeEnc->getPos_f()` securely routes the execution to the active hardware while automatically inheriting the mantissa protection logic. Note that the `usingExternalEncoder()` inline function intrinsically validates the `drvEncoder != nullptr` condition, ensuring robust memory safety without redundant checks.
-
-### Low-Resolution Encoder Support (PID Decimation)
-For low-resolution encoders (e.g., < 4000 CPR), the 4kHz/5kHz control loop is too fast: the encoder may not physically tick between two consecutive PID cycles, producing a discrete `delta_pos` of zero, followed by a massive spike. This aggressively amplifies noise in the derivative and acceleration terms (Inertia Feedforward).
-**The Fix**: An `enc_decimation_ratio` dynamically scales the PID execution rate based on the encoder's physical CPR. High-res encoders run at the full 4kHz loop, while low-res encoders execute the PID calculation every N cycles (e.g., 500Hz). This allows enough physical time for the encoder to accumulate ticks, creating a smooth, high-fidelity `delta_pos` signal for the Inertia feedforward, while the main loop continues at maximum frequency to keep the TMC4671 SPI watchdogs satisfied.
+### 16-Bit Internal Wrap-Around (`0x10000` vs `0xffff`) & Float Mantissa Protection
+1. **Exact 65536 Counts/Rev in `TMC4671::getCpr()`**: The TMC4671 internal 16-bit `PhiM` / position register (`0x6B`) wraps at exactly **$2^{16} = 65536$ (`0x10000`)** counts per mechanical revolution. Returning `0x10000` (instead of `0xffff`) eliminates a 1-count-per-turn multi-revolution phase drift ($0.55^\circ$/turn on H100) while preserving exact scaling in `Encoder::getPos_f()` and `Axis.cpp`.
+2. **True Physical CPR Separation**: While `getCpr()` returns the position-register scale (`0x10000` internally or `drvEncoder->getCpr()` externally), calibration queries the physical encoder CPR (`abnconf.cpr`, interpolated `aencconf.cpr`, or external CPR) so internal ABN encoders (e.g., 4,000–10,000 CPR) are properly decimated instead of being misclassified as 65,536 CPR High-Res encoders.
+3. **Zero Mantissa Truncation in `getFilteredPosition()`**: Performs integer modulo `pos % cpr` *before* float conversion, preserving 100% fractional resolution indefinitely regardless of accumulated turns.
+4. **Polymorphic Encoder Routing (`activeEnc`)**: Unifies internal (`this`) and external (`drvEncoder.get()`) access via `Encoder* activeEnc = usingExternalEncoder() ? drvEncoder.get() : static_cast<Encoder*>(this);`.
