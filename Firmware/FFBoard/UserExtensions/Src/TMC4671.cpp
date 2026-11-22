@@ -201,9 +201,10 @@ void TMC4671::restoreFlash(){
 	Flash_Read(flashAddrs.torque_i, &this->curPids.torqueI);
 	Flash_Read(flashAddrs.flux_p, &this->curPids.fluxP);
 	Flash_Read(flashAddrs.flux_i, &this->curPids.fluxI);
-	uint16_t encofs;
-	Flash_Read(flashAddrs.encOffset,&encofs);
-	this->abnconf.posOffsetFromIndex = (int16_t)encofs;
+	uint16_t encofs = 0;
+	if(Flash_Read(flashAddrs.encOffset,&encofs)){
+		this->abnconf.posOffsetFromIndex = (int16_t)encofs;
+	}
 
 	Flash_Read(flashAddrs.offsetFlux, (uint16_t*)&this->maxOffsetFlux);
 
@@ -286,8 +287,11 @@ bool TMC4671::isSetUp(){
 			return false;
 		}
 	}
-	if(this->conf.motconf.phiEsource == PhiE::ext && drvEncoder->getEncoderType() == EncoderType::NONE && !encoderAligned){
-		return false;
+	// Guard external encoder pointer, type, and alignment before reporting ready.
+	if(this->conf.motconf.enctype == EncoderType_TMC::ext || this->conf.motconf.phiEsource == PhiE::extEncoder){
+		if(drvEncoder == nullptr || drvEncoder->getEncoderType() == EncoderType::NONE || !encoderAligned){
+			return false;
+		}
 	}
 
 	return true;
@@ -3128,6 +3132,7 @@ void TMC4671::registerCommands(){
 
 CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply>& replies){
 	CommandStatus status = CommandStatus::OK;
+	const bool calibBusy = isCalibrationInProgress() && !allowStateChange;
 	switch(static_cast<TMC4671_commands>(cmd.cmdId)){
 	case TMC4671_commands::combineEncoder:
 		status = handleGetSet(cmd, replies, this->conf.combineEncoder);
@@ -3138,6 +3143,9 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 		break;
 
 	case TMC4671_commands::cpr:
+		if(cmd.type == CMDtype::set && (calibBusy || state == TMC_ControlState::HardError)){
+			return CommandStatus::ERR;
+		}
 		handleGetFuncSetFunc(cmd, replies, &TMC4671::getEncCpr, &TMC4671::setCpr, this);
 	break;
 
@@ -3150,6 +3158,10 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 		break;
 
 	case TMC4671_commands::fullCalibration:
+		// Reject calibration commands while in HardError, E-stop, active calibration, or without motor type.
+		if(isEmergencyActive() || brake_failure || state == TMC_ControlState::HardError || calibBusy || conf.motconf.motor_type == MotorType::NONE){
+			return CommandStatus::ERR;
+		}
 		calibrationFailCount = 1; // allow 1 fail
 		changeState(TMC_ControlState::FullCalibration);
 		// TODO start full calibration and save in flash
@@ -3163,6 +3175,9 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 		if(cmd.type == CMDtype::get){
 			replies.emplace_back((uint8_t)this->conf.motconf.motor_type);
 		}else if(cmd.type == CMDtype::set && (uint8_t)cmd.val <= (uint8_t)MotorType::BLDC){
+			if(calibBusy || state == TMC_ControlState::HardError){
+				return CommandStatus::ERR;
+			}
 			this->setMotorType((MotorType)cmd.val, this->conf.motconf.pole_pairs);
 		}else{
 			std::string rplstr = "";
@@ -3179,6 +3194,9 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 		if(cmd.type == CMDtype::get){
 			replies.emplace_back((uint8_t)this->conf.motconf.enctype);
 		}else if(cmd.type == CMDtype::set){
+			if(calibBusy || state == TMC_ControlState::HardError){
+				return CommandStatus::ERR;
+			}
 			this->setEncoderType((EncoderType_TMC)cmd.val);
 		}else{
 			std::string rplstr = "";
@@ -3197,6 +3215,9 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 		if(cmd.type == CMDtype::get){
 			replies.push_back((uint8_t)conf.hwconf.hwVersion);
 		}else if(cmd.type == CMDtype::set){
+			if(calibBusy || state == TMC_ControlState::HardError){
+				return CommandStatus::ERR;
+			}
 			if(canChangeHwType)
 				setHwType((uint8_t)(cmd.val & 0x1F));
 		}else{
@@ -3207,6 +3228,9 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 
 	case TMC4671_commands::encalign:
 		if(cmd.type == CMDtype::get){
+			if(isEmergencyActive() || brake_failure || state == TMC_ControlState::HardError || calibBusy || conf.motconf.motor_type == MotorType::NONE){
+				return CommandStatus::ERR;
+			}
 			encoderAligned = false;
 			this->setEncoderType(this->conf.motconf.enctype);
 			manualEncAlign = true;
@@ -3220,6 +3244,9 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 		if(cmd.type == CMDtype::get){
 			replies.emplace_back(this->conf.motconf.pole_pairs);
 		}else if(cmd.type == CMDtype::set){
+			if(calibBusy || state == TMC_ControlState::HardError){
+				return CommandStatus::ERR;
+			}
 			this->setMotorType(this->conf.motconf.motor_type,cmd.val);
 		}
 		break;
@@ -3376,6 +3403,9 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 		break;
 
 	case TMC4671_commands::findIndex:
+		if(isEmergencyActive() || brake_failure || state == TMC_ControlState::HardError || calibBusy || conf.motconf.motor_type == MotorType::NONE){
+			return CommandStatus::ERR;
+		}
 		changeState(TMC_ControlState::IndexSearch);
 		break;
 
@@ -3425,6 +3455,9 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 			}
 		break;
 	case TMC4671_commands::pidautotune:
+		if(isEmergencyActive() || brake_failure || state == TMC_ControlState::HardError || calibBusy || conf.motconf.motor_type == MotorType::NONE){
+			return CommandStatus::ERR;
+		}
 		changeState(TMC_ControlState::Pidautotune);
 		return CommandStatus::NO_REPLY;
 
@@ -3447,8 +3480,10 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 	
 	case TMC4671_commands::calibrateCogging:
 
-		if (isEmergencyActive() && hasPower()) {
+		if ((isEmergencyActive() || brake_failure) && hasPower()) {
 			replies.emplace_back("Calibration aborted: Emergency stop engaged", 0);
+		} else if (state == TMC_ControlState::HardError || calibBusy) {
+			replies.emplace_back("Calibration aborted: Driver busy or in fault", 0);
 		} else if (conf.motconf.motor_type == MotorType::NONE) {
 			replies.emplace_back("Calibration aborted: No motor type set", 0);
 		} else if (hasPower() && (!encoderAligned || !adcCalibrated || conf.motconf.enctype == EncoderType_TMC::NONE)) {
@@ -3506,7 +3541,8 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 		if (cmd.type == CMDtype::get) {
 			replies.emplace_back((int16_t)(this->cogging_scale * 10000.0f));
 		} else if (cmd.type == CMDtype::set) {
-			this->cogging_scale = (float)(int16_t)cmd.val / 10000.0f;
+			// Clamp anticogging scale to prevent unstable over-compensation.
+			this->cogging_scale = clip<float, float>((float)(int16_t)cmd.val / 10000.0f, -1.5f, 1.5f);
 		}
 		break;
 

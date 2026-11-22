@@ -542,7 +542,8 @@ bool TMC4671CoggingCalibrator::acquireTier0Dft(const CoggingEncoderProfile& enc,
 
 				if (dec_cnt % enc.decimation_ratio == 0) {
 					float error = tmc.getWrappedError(target_pos_f, actual_pos_f);
-					float delta_pos = tmc.getWrappedError(prev_actual_pos_f, actual_pos_f);
+					// Compute forward displacement (actual - prev) so velocity damping and inertia have correct sign.
+					float delta_pos = tmc.getWrappedError(actual_pos_f, prev_actual_pos_f);
 					float current_vel_turns = delta_pos / enc.dt_decimated;
 					float current_accel_rad = ((current_vel_turns - prev_vel_turns) / enc.dt_decimated) * 2.0f * PI;
 
@@ -772,7 +773,8 @@ bool TMC4671CoggingCalibrator::profileMultiSpeedRipple(const CoggingEncoderProfi
 				float actual_pos_f = tmc.getFilteredPosition();
 				if (dec_cnt % enc.decimation_ratio == 0) {
 					float pos_err = tmc.getWrappedError(target_pos_f, actual_pos_f);
-					float dpos = tmc.getWrappedError(prev_pos_f, actual_pos_f);
+					// Compute forward displacement (actual - prev) so high-speed velocity damping stays stabilizing.
+					float dpos = tmc.getWrappedError(actual_pos_f, prev_pos_f);
 					float cur_vel = dpos / enc.dt_decimated;
 					float cur_accel_rad = ((cur_vel - prev_vel) / enc.dt_decimated) * 2.0f * PI;
 					prev_pos_f = actual_pos_f;
