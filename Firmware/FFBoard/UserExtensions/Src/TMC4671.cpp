@@ -3510,6 +3510,8 @@ void TMC4671::handleStateCoggingCalibration() {
 	const char* errorMessage = nullptr;
 	float* iq_acc_cos = nullptr;
 	float* iq_acc_sin = nullptr;
+	float* iq_fwd_cos = nullptr;
+	float* iq_fwd_sin = nullptr;
 #ifdef COGGING_CALIB_ENABLE_ID_DIAG
 	float* id_acc_cos = nullptr;
 	float* id_acc_sin = nullptr;
@@ -3583,15 +3585,17 @@ void TMC4671::handleStateCoggingCalibration() {
 	curFilters.flux.params.enable = false;
 	setBiquadFlux(curFilters.flux);
 	
-	// 1. ALLOCATE ACCUMULATORS
+	// 1. ALLOCATE ACCUMULATORS (Separate FWD/BWD buffers prevent cos(delta_phi) amplitude attenuation)
 	iq_acc_cos = (float*)pvPortMalloc(COGGING_CALIB_DFT_HARMONICS * sizeof(float));
 	iq_acc_sin = (float*)pvPortMalloc(COGGING_CALIB_DFT_HARMONICS * sizeof(float));
+	iq_fwd_cos = (float*)pvPortMalloc(COGGING_CALIB_DFT_HARMONICS * sizeof(float));
+	iq_fwd_sin = (float*)pvPortMalloc(COGGING_CALIB_DFT_HARMONICS * sizeof(float));
 #ifdef COGGING_CALIB_ENABLE_ID_DIAG
 	id_acc_cos = (float*)pvPortMalloc(COGGING_CALIB_DFT_HARMONICS * sizeof(float));
 	id_acc_sin = (float*)pvPortMalloc(COGGING_CALIB_DFT_HARMONICS * sizeof(float));
 #endif
 	
-	if(!iq_acc_cos || !iq_acc_sin 
+	if(!iq_acc_cos || !iq_acc_sin || !iq_fwd_cos || !iq_fwd_sin
 #ifdef COGGING_CALIB_ENABLE_ID_DIAG
 		|| !id_acc_cos || !id_acc_sin
 #endif
@@ -3602,6 +3606,8 @@ void TMC4671::handleStateCoggingCalibration() {
 
 	memset(iq_acc_cos, 0, COGGING_CALIB_DFT_HARMONICS * sizeof(float));
 	memset(iq_acc_sin, 0, COGGING_CALIB_DFT_HARMONICS * sizeof(float));
+	memset(iq_fwd_cos, 0, COGGING_CALIB_DFT_HARMONICS * sizeof(float));
+	memset(iq_fwd_sin, 0, COGGING_CALIB_DFT_HARMONICS * sizeof(float));
 #ifdef COGGING_CALIB_ENABLE_ID_DIAG
 	memset(id_acc_cos, 0, COGGING_CALIB_DFT_HARMONICS * sizeof(float));
 	memset(id_acc_sin, 0, COGGING_CALIB_DFT_HARMONICS * sizeof(float));
@@ -3610,6 +3616,9 @@ void TMC4671::handleStateCoggingCalibration() {
 	// 2. CALIBRATION PROCESS AND ANALYSIS
 	{
 		uint32_t total_samples = 0;
+		uint32_t fwd_samples = 0;
+		uint32_t bwd_samples = 0;
+		bool dual_dir_separated = false;
 		float starting_torque = bangInitPower > 0 ? clip<float, float>((float)bangInitPower * 0.05f, 50.0f, 250.0f) : 100.0f; 
 		float tuning_torque = starting_torque;
 		float dynamic_friction = 0.0f;
@@ -3830,7 +3839,8 @@ void TMC4671::handleStateCoggingCalibration() {
 				// Step 2.3: Dual-direction Inertia (J) measurement corrected for Coulomb friction Tc
 				// Averaging +1 and -1 pulses cancels local cogging tooth slope at starting angle
 				broadcastCalibLog(0, "Step 2.3: Measuring Inertia J (dual-dir pulse, net torque = T_pulse - Tc)...");
-				float j_torque = clip<float, float>(breakout_torque * 2.2f, dynamic_friction + 300.0f, max_test_torque * 0.75f);
+				float j_torque_min = std::min<float>(dynamic_friction + 300.0f, max_test_torque * 0.75f);
+				float j_torque = clip<float, float>(breakout_torque * 2.2f, j_torque_min, max_test_torque * 0.75f);
 				float net_j_torque = std::max<float>(100.0f, j_torque - dynamic_friction);
 				float j_sum = 0.0f;
 				int j_valid_cnt = 0;
@@ -3958,12 +3968,13 @@ void TMC4671::handleStateCoggingCalibration() {
 			broadcastCalibLog(0, "Validation OK (Max tracking error: %.2f deg <= 5.0 deg)", max_err_deg);
 			Delay(250);
 
-			// --- STEP 3/4: ACQUISITION DFT AT CONSTANT SPEED ---
-			broadcastCalibLog(0, "STEP 3/4: Acquisition DFT at constant speed...");
+			// --- STEP 3/4: ACQUISITION DFT TIER 0 (STATIC COGGING AT NOMINAL SLOW SPEED) ---
+			broadcastCalibLog(0, "STEP 3/4: Tier 0 Static DFT at %.1f RPM (FWD+BWD separated, causal inertia)...", calib_rpm);
 			int8_t dirs[2] = {1, -1};
+			dual_dir_separated = true;
 			
 			for (int8_t p : dirs) {
-				broadcastCalibLog(0, p == 1 ? "Forward integration..." : "Backward integration...");
+				broadcastCalibLog(0, "Tier 0 %s pass at %.1f RPM (1.0 rev)...", (p == 1) ? "FWD" : "BWD", calib_rpm);
 				
 				float target_rpm = (p == 1) ? calib_rpm : -calib_rpm;
 				float target_pos_f = getFilteredPosition();
@@ -3973,6 +3984,8 @@ void TMC4671::handleStateCoggingCalibration() {
 				float max_iq_cmd_used = 0.0f;
 				float max_err_seen = 0.0f;
 				float target_vel_turns = target_rpm / 60.0f;
+				float* cur_cos_acc = (p == 1) ? iq_fwd_cos : iq_acc_cos;
+				float* cur_sin_acc = (p == 1) ? iq_fwd_sin : iq_acc_sin;
 
 				speed_ctrl.reset(target_vel_turns);
 
@@ -3984,17 +3997,22 @@ void TMC4671::handleStateCoggingCalibration() {
 
 				if (!emergency && hasPower()) {
 					calibStartTime = HAL_GetTick();
-					uint32_t period_us = getActualCalibPeriod(TIM_TMC_ARR); 
+					uint32_t period_us = std::max<uint32_t>(1, getActualCalibPeriod(TIM_TMC_ARR)); 
 					uint32_t next_tick = micros();
 					float dt_sec = (float)period_us / 1000000.0f;
+					float dt_decimated = dt_sec * (float)enc_decimation_ratio;
+					// Symmetric causal EMA (~150 Hz) applied to combined (iq_cmd_delayed - iq_inertia) to preserve zero phase offset
+					float iq_ema_alpha = clip<float, float>((2.0f * PI * 150.0f * dt_decimated) / (1.0f + 2.0f * PI * 150.0f * dt_decimated), 0.1f, 0.9f);
 					
-					// Variables for acceleration tracking
+					// Variables for acceleration tracking & causal alignment
 					float prev_actual_pos_f = getFilteredPosition();
 					float prev_vel_turns = target_vel_turns; 
 					
 					uint32_t enc_decimation_counter = 0;
 					float iq_cmd = 0.0f;
+					float prev_iq_cmd = 0.0f;
 					float iq_inertia = 0.0f;
+					float iq_mag_filt = 0.0f;
 					
 					startCalibTimers(TIM_TMC_ARR);
 					while (HAL_GetTick() - calibStartTime < REVOLUTION_TIME_MS && !emergency && hasPower()) {
@@ -4013,7 +4031,6 @@ void TMC4671::handleStateCoggingCalibration() {
 							
 							// --- REAL-TIME ACCELERATION TRACKING ---
 							float delta_pos = getWrappedError(prev_actual_pos_f, actual_pos_f);
-							float dt_decimated = dt_sec * (float)enc_decimation_ratio;
 							float current_vel_turns = delta_pos / dt_decimated;
 							// Accel in rad/s^2
 							float current_accel_rad = ((current_vel_turns - prev_vel_turns) / dt_decimated) * 2.0f * PI; 
@@ -4027,26 +4044,28 @@ void TMC4671::handleStateCoggingCalibration() {
 							float iq_pid = speed_ctrl.update(error, target_vel_turns, current_vel_turns, dt_decimated, max_test_torque);
 							// FRICTION FEED-FORWARD: Coulomb + Viscous
 							float iq_ff = ((target_rpm > 0) ? dynamic_friction : -dynamic_friction) + (B_phys * 2.0f * PI * target_vel_turns);
-							iq_cmd = iq_pid + iq_ff;
+							prev_iq_cmd = iq_cmd;
+							iq_cmd = clip<float,float>(iq_pid + iq_ff, -max_test_torque, max_test_torque);
+
+							// Causal alignment: half-step delayed iq_cmd matches centered acceleration sample,
+							// then one shared EMA filter keeps both branches strictly phase-aligned
+							float iq_mag_raw = 0.5f * (iq_cmd + prev_iq_cmd) - iq_inertia;
+							iq_mag_filt += iq_ema_alpha * (iq_mag_raw - iq_mag_filt);
 
 							// Tracking stats (Ignore startup transient)
 							if (HAL_GetTick() - calibStartTime > COGGING_WARMUP_MS) {
-								if (fabs(error) > max_err_seen) max_err_seen = fabs(error);
-								if (fabs(iq_cmd) > max_iq_cmd_used) max_iq_cmd_used = fabs(iq_cmd);
+								if (fabsf(error) > max_err_seen) max_err_seen = fabsf(error);
+								if (fabsf(iq_cmd) > max_iq_cmd_used) max_iq_cmd_used = fabsf(iq_cmd);
 							}
 							
-							iq_cmd = clip<float,float>(iq_cmd, -max_test_torque, max_test_torque);
 							applySafeTorque(iq_cmd);
 						}
 						
 						enc_decimation_counter++;
 						
 						// --- DISPLACEMENT-BASED ACQUISITION SECURITY ---
-						// Only integrate into DFT if we haven't completed one full revolution (360°)
-						// Wait at least COGGING_WARMUP_MS for the PID to stabilize the speed before starting data collection
 						if (integrated_distance < 1.0f && (HAL_GetTick() - calibStartTime > COGGING_WARMUP_MS)) {
-							// Reconstruct "pure" cogging by removing inertia artifacts from the PID command
-							float iq = iq_cmd - iq_inertia; 
+							float iq = iq_mag_filt;
 #ifdef COGGING_CALIB_ENABLE_ID_DIAG
 							float id = (float)getActualFlux();
 #endif
@@ -4055,8 +4074,8 @@ void TMC4671::handleStateCoggingCalibration() {
 
 							float cur_s = s1, cur_c = c1;
 							for (int k = 1; k < COGGING_CALIB_DFT_HARMONICS; k++) {
-								iq_acc_cos[k] += (iq * cur_c);
-								iq_acc_sin[k] += (iq * cur_s);
+								cur_cos_acc[k] += (iq * cur_c);
+								cur_sin_acc[k] += (iq * cur_s);
 #ifdef COGGING_CALIB_ENABLE_ID_DIAG
 								id_acc_cos[k] += (id * cur_c);
 								id_acc_sin[k] += (id * cur_s);
@@ -4065,13 +4084,13 @@ void TMC4671::handleStateCoggingCalibration() {
 								float next_s = cur_c * s1 + cur_s * c1;
 								cur_c = next_c; cur_s = next_s;
 							}
+							if (p == 1) fwd_samples++; else bwd_samples++;
 							total_samples++;
-							integrated_distance += fabs(step);
+							integrated_distance += fabsf(step);
 						}
 
 						refreshWatchdog();
 #ifdef TIM_CALIBRATION
-						// Yield thread via timer interrupt notifications to avoid busy-waiting, falling back if timer is disabled
 						if (this->calibTimer != nullptr) {
 							this->WaitForNotification();
 						} else
@@ -4084,9 +4103,8 @@ void TMC4671::handleStateCoggingCalibration() {
 				}
 				applySafeTorque(0);
 
-				// Summary message for the acquisition pass
-				snprintf(dbg_buf, sizeof(dbg_buf), "Acq %s Done -> Dist:%.2f MaxErr: %.2f deg", 
-						 (p == 1) ? "FWD" : "BWD", integrated_distance, (max_err_seen * 360.0f));
+				broadcastCalibLog(0, "Tier 0 %s done -> Dist:%.2f tr | MaxErr:%.2f deg | MaxIq:%.0f",
+					(p == 1) ? "FWD" : "BWD", integrated_distance, (max_err_seen * 360.0f), max_iq_cmd_used);
 			}
 		}
 
@@ -4099,24 +4117,47 @@ void TMC4671::handleStateCoggingCalibration() {
 			TempHarmonic* candidates = (TempHarmonic*)pvPortMalloc(COGGING_CALIB_DFT_HARMONICS * sizeof(TempHarmonic));
 			
 			if (candidates) {
-				for (int k = 1; k < COGGING_CALIB_DFT_HARMONICS; k++) {
-					float re = iq_acc_cos[k] * norm;
-					float im = iq_acc_sin[k] * norm;
-					candidates[k].mag = sqrtf(re*re + im*im);
-					candidates[k].phase = atan2f(re, im);
-					candidates[k].k = k;
+				if (dual_dir_separated && fwd_samples > 0 && bwd_samples > 0) {
+					float norm_f = 2.0f / (float)fwd_samples;
+					float norm_b = 2.0f / (float)bwd_samples;
+					for (int k = 1; k < COGGING_CALIB_DFT_HARMONICS; k++) {
+						float re_f = iq_fwd_cos[k] * norm_f;
+						float im_f = iq_fwd_sin[k] * norm_f;
+						float mag_f = sqrtf(re_f * re_f + im_f * im_f);
+						float re_b = iq_acc_cos[k] * norm_b;
+						float im_b = iq_acc_sin[k] * norm_b;
+						float mag_b = sqrtf(re_b * re_b + im_b * im_b);
+
+						// Separate FWD/BWD magnitude average eliminates cos(delta_phi) phase-lag attenuation
+						candidates[k].mag = 0.5f * (mag_f + mag_b);
+						// Unit-vector bisector gives exact static magnetic phase centered between FWD and BWD
+						float u_re = ((mag_f > 1e-3f) ? (re_f / mag_f) : 0.0f) + ((mag_b > 1e-3f) ? (re_b / mag_b) : 0.0f);
+						float u_im = ((mag_f > 1e-3f) ? (im_f / mag_f) : 0.0f) + ((mag_b > 1e-3f) ? (im_b / mag_b) : 0.0f);
+						candidates[k].phase = atan2f(u_re, u_im);
+						candidates[k].k = k;
+					}
+				} else {
+					for (int k = 1; k < COGGING_CALIB_DFT_HARMONICS; k++) {
+						float re = iq_acc_cos[k] * norm;
+						float im = iq_acc_sin[k] * norm;
+						candidates[k].mag = sqrtf(re*re + im*im);
+						candidates[k].phase = atan2f(re, im);
+						candidates[k].k = k;
+					}
 				}
 
 				// Point 2: Eccentricity
 				if (candidates[1].mag > 5000.0f) {
-					broadcastCalibLog(0, "Warning: High motor eccentricity detected");
+					broadcastCalibLog(0, "Warning: High motor eccentricity detected (H1=%.0f)", candidates[1].mag);
 				}
 
-				// Point 4: Cogging extraction
+				// Point 4: Cogging extraction (adaptive k_min based on pole_pairs to capture low-pole motors while ignoring H1/H2 wheel imbalance)
+				int k_min = clip<int, int>((int)conf.motconf.pole_pairs, 4, 11);
+				broadcastCalibLog(0, "Selecting top %d harmonics (order >= %d, poles=%u)...", COGGING_HARMONICS_COUNT, k_min, conf.motconf.pole_pairs);
 				memset(cogging_harmonics, 0, sizeof(cogging_harmonics));
 				for (int n = 0; n < COGGING_HARMONICS_COUNT; n++) {
 					float max_m = 0; int best_idx = -1;
-					for (int k = 11; k < COGGING_CALIB_DFT_HARMONICS; k++) {
+					for (int k = k_min; k < COGGING_CALIB_DFT_HARMONICS; k++) {
 						bool taken = false;
 						for (int j=0; j<n; j++) if(cogging_harmonics[j].order == candidates[k].k) taken = true;
 						if (!taken && candidates[k].mag > max_m) { max_m = candidates[k].mag; best_idx = k; }
@@ -4125,6 +4166,7 @@ void TMC4671::handleStateCoggingCalibration() {
 						cogging_harmonics[n].order = candidates[best_idx].k;
 						cogging_harmonics[n].amplitude = candidates[best_idx].mag;
 						cogging_harmonics[n].phase = candidates[best_idx].phase;
+						cogging_harmonics[n].speed_delta = 0;
 					}
 				}
 
@@ -4137,65 +4179,226 @@ void TMC4671::handleStateCoggingCalibration() {
 				}
 #endif
 				vPortFree(candidates);
-				saveCoggingTable();
-				broadcastCalibLog(0, "Cogging calibration successful");
-
-				// --- 3.5 SCALE CALIBRATION (Dichotomy) ---
-				// Get the raw absolute position (no modulo 1.0 wrapping)
-				float actual_pos_f = getAbsolutePosition();
-				float target_rpm = (actual_pos_f > 0.0f) ? -calib_rpm : calib_rpm;
 
 				int main_h = -1;
 				float max_amp = 0;
+				uint16_t max_selected_order = 1;
 				for(int n=0; n<COGGING_HARMONICS_COUNT; n++){
 					if(cogging_harmonics[n].amplitude > max_amp){
 						max_amp = cogging_harmonics[n].amplitude;
 						main_h = n;
 					}
+					if(cogging_harmonics[n].amplitude > 0.0f && cogging_harmonics[n].order > max_selected_order){
+						max_selected_order = cogging_harmonics[n].order;
+					}
 				}
 
 				if (main_h != -1) {
-					broadcastCalibLog(0, "STEP 4.5/4: Fine-tuning Cogging Scale (Main harmonic: %d, Amplitude: %.1f)", cogging_harmonics[main_h].order, cogging_harmonics[main_h].amplitude);
+					broadcastCalibLog(0, "Tier 0 Top harmonic: H%u (Amp=%.1f, Phase=%.2f rad, MaxOrder=%u)",
+						cogging_harmonics[main_h].order, cogging_harmonics[main_h].amplitude, cogging_harmonics[main_h].phase, max_selected_order);
+				}
+
+				// --- STEP 4.2: MULTI-SPEED RIPPLE PROFILING (Tiers 1, 2, 3: 12, 36, 90 RPM) ---
+				// Measures asymptotic speed-dependent torque ripple (Back-EMF / Eddy currents / PI bandwidth)
+				// and identifies system phase-lead latency across the 0..300 RPM envelope with zero net unwinding.
+				if (hasPower() && !emergency && main_h != -1) {
+					float tier3_rpm_cap = std::min<float>(90.0f, 24000.0f / (float)std::max<uint16_t>(1, max_selected_order));
+					tier3_rpm_cap = std::max<float>(45.0f, tier3_rpm_cap);
+					const float tier_rpms[3] = {12.0f, 36.0f, tier3_rpm_cap};
+					broadcastCalibLog(0, "STEP 4.2/4: Multi-Speed Ripple Profiling (Tiers: %.0f, %.0f, %.0f RPM)...",
+						tier_rpms[0], tier_rpms[1], tier_rpms[2]);
+
+					float reg_num[COGGING_HARMONICS_COUNT] = {0.0f};
+					float reg_den = 0.0f;
+					float tau_lead_sum = 0.0f;
+					int tau_lead_cnt = 0;
+					uint32_t tier_period_us = std::max<uint32_t>(1, getActualCalibPeriod(TIM_TMC_ARR));
+					float tier_dt_sec = (float)tier_period_us / 1000000.0f;
+					float tier_dt_dec = tier_dt_sec * (float)enc_decimation_ratio;
+					float tier_ema_alpha = clip<float, float>((2.0f * PI * 180.0f * tier_dt_dec) / (1.0f + 2.0f * PI * 180.0f * tier_dt_dec), 0.15f, 0.9f);
+
+					for (int t = 0; t < 3 && !emergency && hasPower(); t++) {
+						float cur_tier_rpm = tier_rpms[t];
+						float cur_tier_vel = cur_tier_rpm / 60.0f; // turns/s
+						float tier_amps_dir[2][COGGING_HARMONICS_COUNT];
+						float tier_phase_main[2] = {0.0f, 0.0f};
+						bool dir_ok[2] = {false, false};
+						memset(tier_amps_dir, 0, sizeof(tier_amps_dir));
+
+						int8_t t_dirs[2] = {1, -1};
+						for (int d = 0; d < 2 && !emergency && hasPower(); d++) {
+							float signed_vel = (t_dirs[d] == 1) ? cur_tier_vel : -cur_tier_vel;
+							float target_pos_f = getFilteredPosition();
+							float prev_pos_f = target_pos_f;
+							float prev_vel = signed_vel;
+							float integrated_dist = 0.0f;
+							uint32_t t_samples = 0;
+							float acc_c[COGGING_HARMONICS_COUNT] = {0.0f};
+							float acc_s[COGGING_HARMONICS_COUNT] = {0.0f};
+
+							speed_ctrl.reset(signed_vel);
+							uint32_t t_start = HAL_GetTick();
+							uint32_t t_warmup = (t == 0) ? 700 : 400;
+							uint32_t t_timeout = (uint32_t)(120000.0f / cur_tier_rpm) + t_warmup + 1500;
+							uint32_t next_tick = micros();
+							uint32_t dec_cnt = 0;
+							float iq_cmd = 0.0f;
+							float prev_iq_cmd = 0.0f;
+							float iq_mag_filt = 0.0f;
+
+							startCalibTimers(TIM_TMC_ARR);
+							while (integrated_dist < 1.0f && (HAL_GetTick() - t_start) < t_timeout && !emergency && hasPower()) {
+								next_tick += tier_period_us;
+								float step = signed_vel * tier_dt_sec;
+								target_pos_f += step;
+								if (target_pos_f >= 1.0f) target_pos_f -= 1.0f;
+								if (target_pos_f < 0.0f) target_pos_f += 1.0f;
+
+								float actual_pos_f = getFilteredPosition();
+								if (dec_cnt % enc_decimation_ratio == 0) {
+									float err = getWrappedError(target_pos_f, actual_pos_f);
+									float dpos = getWrappedError(prev_pos_f, actual_pos_f);
+									float cur_vel = dpos / tier_dt_dec;
+									float cur_accel_rad = ((cur_vel - prev_vel) / tier_dt_dec) * 2.0f * PI;
+									prev_pos_f = actual_pos_f;
+									prev_vel = cur_vel;
+
+									float iq_inertia = J_phys * cur_accel_rad;
+									float iq_pid = speed_ctrl.update(err, signed_vel, cur_vel, tier_dt_dec, max_test_torque);
+									float iq_ff = ((signed_vel > 0.0f) ? dynamic_friction : -dynamic_friction) + (B_phys * 2.0f * PI * signed_vel);
+									prev_iq_cmd = iq_cmd;
+									iq_cmd = clip<float, float>(iq_pid + iq_ff, -max_test_torque, max_test_torque);
+
+									float iq_mag_raw = 0.5f * (iq_cmd + prev_iq_cmd) - iq_inertia;
+									iq_mag_filt += tier_ema_alpha * (iq_mag_raw - iq_mag_filt);
+									applySafeTorque(iq_cmd);
+								}
+								dec_cnt++;
+
+								if ((HAL_GetTick() - t_start) > t_warmup) {
+									float pos_deg = actual_pos_f * 360.0f;
+									for (uint8_t i = 0; i < COGGING_HARMONICS_COUNT; i++) {
+										if (cogging_harmonics[i].amplitude > 0.0f) {
+											float s_h, c_h;
+											arm_sin_cos_f32(pos_deg * (float)cogging_harmonics[i].order, &s_h, &c_h);
+											acc_c[i] += iq_mag_filt * c_h;
+											acc_s[i] += iq_mag_filt * s_h;
+										}
+									}
+									t_samples++;
+									integrated_dist += fabsf(step);
+								}
+								refreshWatchdog();
+#ifdef TIM_CALIBRATION
+								if (this->calibTimer != nullptr) { this->WaitForNotification(); } else
+#endif
+								{ while ((micros() - next_tick) & 0x80000000) {} }
+							}
+							stopCalibTimers();
+							applySafeTorque(0);
+
+							if (t_samples > 10) {
+								float t_norm = 2.0f / (float)t_samples;
+								for (uint8_t i = 0; i < COGGING_HARMONICS_COUNT; i++) {
+									if (cogging_harmonics[i].amplitude > 0.0f) {
+										float re_i = acc_c[i] * t_norm;
+										float im_i = acc_s[i] * t_norm;
+										tier_amps_dir[d][i] = sqrtf(re_i * re_i + im_i * im_i);
+										if (i == (uint8_t)main_h) {
+											tier_phase_main[d] = atan2f(re_i, im_i);
+										}
+									}
+								}
+								dir_ok[d] = true;
+							}
+							Delay(150);
+						}
+
+						if (dir_ok[0] && dir_ok[1]) {
+							// Asymptotic RL/PI regressor S(w) = w / (w + w_c) in [0, 1]
+							float s_val = cur_tier_vel / (cur_tier_vel + COGGING_RIPPLE_CORNER_VEL);
+							reg_den += s_val * s_val;
+							for (uint8_t i = 0; i < COGGING_HARMONICS_COUNT; i++) {
+								if (cogging_harmonics[i].amplitude > 0.0f) {
+									float amp_tier = 0.5f * (tier_amps_dir[0][i] + tier_amps_dir[1][i]);
+									reg_num[i] += s_val * (amp_tier - cogging_harmonics[i].amplitude);
+								}
+							}
+							// Extract phase lag delta_phi = (phase_BWD - phase_FWD) / 2 on main harmonic for higher tiers
+							if (t >= 1) {
+								float dphi = tier_phase_main[1] - tier_phase_main[0];
+								while (dphi > PI) dphi -= 2.0f * PI;
+								while (dphi < -PI) dphi += 2.0f * PI;
+								float half_dphi = fabsf(0.5f * dphi);
+								float w_k_rad = 2.0f * PI * (float)cogging_harmonics[main_h].order * cur_tier_vel;
+								if (w_k_rad > 1.0f && half_dphi < 1.2f) {
+									tau_lead_sum += (half_dphi / w_k_rad);
+									tau_lead_cnt++;
+								}
+							}
+							float main_amp_tier = 0.5f * (tier_amps_dir[0][main_h] + tier_amps_dir[1][main_h]);
+							broadcastCalibLog(0, "Tier %d (%.0f RPM, S=%.2f) -> H%u Amp: %.1f (base %.1f)",
+								t + 1, cur_tier_rpm, s_val, cogging_harmonics[main_h].order, main_amp_tier, cogging_harmonics[main_h].amplitude);
+						}
+					}
+
+					// Least-squares fit for asymptotic speed_delta on each harmonic
+					if (reg_den > 1e-4f) {
+						for (uint8_t i = 0; i < COGGING_HARMONICS_COUNT; i++) {
+							float base_a = cogging_harmonics[i].amplitude;
+							if (base_a > 0.0f) {
+								float delta_max = reg_num[i] / reg_den;
+								// Clamp asymptotic variation safely to [-80% .. +200%] of base amplitude
+								delta_max = clip<float, float>(delta_max, -base_a * 0.8f, base_a * 2.0f);
+								cogging_harmonics[i].speed_delta = (int16_t)clip<float, float>(delta_max, -15000.0f, 15000.0f);
+							}
+						}
+					}
+					if (tau_lead_cnt > 0) {
+						// Include base FFB loop ZOH (~0.5ms) + measured motor/driver latency, safely clamped to [0.2ms .. 3.0ms]
+						this->cogging_phase_lead_time = clip<float, float>(0.0005f + (tau_lead_sum / (float)tau_lead_cnt), 0.0002f, 0.0030f);
+					}
+					broadcastCalibLog(0, "Ripple fit done -> H%u speed_delta:%d | PhaseLead: %.2f ms",
+						cogging_harmonics[main_h].order, cogging_harmonics[main_h].speed_delta, this->cogging_phase_lead_time * 1000.0f);
+				}
+
+				saveCoggingTable();
+				broadcastCalibLog(0, "Cogging & ripple table saved to flash");
+
+				// --- STEP 4.5: SCALE CALIBRATION (Secant + Gradient Descent at TIM_TMC_ARR with causal inertia) ---
+				float actual_pos_f = getAbsolutePosition();
+				float target_rpm = (actual_pos_f > 0.0f) ? -calib_rpm : calib_rpm;
+
+				if (main_h != -1) {
+					broadcastCalibLog(0, "STEP 4.5/4: Fine-tuning Cogging Scale (Main harmonic: H%u, Amp: %.1f)", cogging_harmonics[main_h].order, cogging_harmonics[main_h].amplitude);
 					
-					float currentTestScale = 0.0f; // Scale being tested in the current iteration
-					float scaleZero = 0.0f;        // S0: Scale at iteration 0 (0.0)
-					float errorAtScaleZero = 0.0f; // E0: Measured error at scale 0.0
-					float scaleOne = 1.0f;         // S1: Scale at iteration 1 (1.0)
-					float errorAtScaleOne = 0.0f;  // E1: Measured error at scale 1.0
-					
-					// gradientLearningRate is dynamically calculated as the inverse slope of the secant line
-					// This acts as a perfect proportional gain for the gradient descent phase
-					float gradientLearningRate = 0.0f; 
-					
-					// Stores the dot product error from the previous iteration to calculate the next step
-					float previousResidualError = 0.0f; 
-					
-					// Safeguard variables to remember the absolute best result across all iterations
+					float currentTestScale = 0.0f;
+					float scaleZero = 0.0f;
+					float errorAtScaleZero = 0.0f;
+					float scaleOne = 1.0f;
+					float errorAtScaleOne = 0.0f;
+					float gradientLearningRate = 0.0f;
+					float previousResidualError = 0.0f;
 					float optimalScaleFound = 0.0f;
 					float lowestAbsoluteError = 9999999.0f;
 					float scale_target_vel = target_rpm / 60.0f;
 					speed_ctrl.reset(scale_target_vel);
 
-					for (int iter = 0; iter < 8; iter++) {
+					for (int iter = 0; iter < 8 && !emergency && hasPower(); iter++) {
 						if (iter == 0) {
-							// Phase 1 - Step 1: Measure at 0% compensation
 							currentTestScale = 0.0f;
 							scaleZero = currentTestScale;
 						} else if (iter == 1) {
-							// Phase 1 - Step 2: Measure at 100% compensation
 							currentTestScale = 1.0f;
 							scaleOne = currentTestScale;
 						} else if (iter == 2) {
-							// Phase 1 - Step 3: Calculate the Secant line to jump to the theoretical optimal target
-							if (fabs(errorAtScaleOne - errorAtScaleZero) > 1.0f) {
-								gradientLearningRate = fabs((scaleOne - scaleZero) / (errorAtScaleOne - errorAtScaleZero));
+							if (fabsf(errorAtScaleOne - errorAtScaleZero) > 1.0f) {
+								gradientLearningRate = fabsf((scaleOne - scaleZero) / (errorAtScaleOne - errorAtScaleZero));
 							} else {
-								gradientLearningRate = 0.0f; // Fallback if no gradient (flat line)
+								gradientLearningRate = 0.0f;
 							}
 							currentTestScale = scaleOne + errorAtScaleOne * gradientLearningRate; 
 						} else {
-							// Phase 2: Fine-tune using Gradient Descent
-							// The learning rate is halved (* 0.5f) to ensure stability and prevent oscillations
 							currentTestScale = currentTestScale + previousResidualError * (gradientLearningRate * 0.5f);
 						}
 						
@@ -4204,41 +4407,49 @@ void TMC4671::handleStateCoggingCalibration() {
 						
 						float target_pos_move = actual_pos_f;
 						float segment_dist = 0.0f;
-						
-						// Calculate distance to cover an exact integer number of cogging periods (at least ~0.3 turns)
-						// This prevents "spectral leakage" which destroys the dot product calculation.
 						float periods = ceilf(0.3f * (float)cogging_harmonics[main_h].order);
 						float segment_target = periods / (float)cogging_harmonics[main_h].order;
 						
 						float acc_re = 0, acc_im = 0;
 						uint32_t samples = 0;
 						
-						uint32_t act_period = getActualCalibPeriod(1000);
+						uint32_t act_period = std::max<uint32_t>(1, getActualCalibPeriod(TIM_TMC_ARR));
 						float dt_sec = (float)act_period / 1000000.0f;
 						uint32_t next_tick = micros();
 						uint32_t iter_start_tick = HAL_GetTick();
+						uint32_t iter_timeout = (uint32_t)((segment_target * 60000.0f) / calib_rpm) + 3000;
 						
 						uint32_t enc_decimation_counter = 0;
 						float iq_cmd = 0.0f;
+						float prev_iq_cmd = 0.0f;
+						float iq_mag_filt = 0.0f;
 						float scale_prev_pos = actual_pos_f;
+						float scale_prev_vel = scale_target_vel;
 						float dt_scale_dec = dt_sec * (float)enc_decimation_ratio;
+						float scale_ema_alpha = clip<float, float>((2.0f * PI * 150.0f * dt_scale_dec) / (1.0f + 2.0f * PI * 150.0f * dt_scale_dec), 0.1f, 0.9f);
 						
-						startCalibTimers(1000);
-						while (segment_dist < segment_target && !emergency && hasPower()) {
+						startCalibTimers(TIM_TMC_ARR);
+						while (segment_dist < segment_target && (HAL_GetTick() - iter_start_tick) < iter_timeout && !emergency && hasPower()) {
 							next_tick += act_period;
 							float step = scale_target_vel * dt_sec;
 							target_pos_move += step;
 							actual_pos_f = getAbsolutePosition();
 							
-							// Execute cascade controller every N cycles for noise resilience
 							if (enc_decimation_counter % enc_decimation_ratio == 0) {
 								float error = target_pos_move - actual_pos_f;
 								float raw_vel = (actual_pos_f - scale_prev_pos) / dt_scale_dec;
+								float accel_rad = ((raw_vel - scale_prev_vel) / dt_scale_dec) * 2.0f * PI;
 								scale_prev_pos = actual_pos_f;
-								
+								scale_prev_vel = raw_vel;
+
+								float iq_inertia = J_phys * accel_rad;
 								float iq_pid = speed_ctrl.update(error, scale_target_vel, raw_vel, dt_scale_dec, max_test_torque);
 								float iq_ff = ((target_rpm > 0) ? dynamic_friction : -dynamic_friction) + (B_phys * 2.0f * PI * scale_target_vel);
+								prev_iq_cmd = iq_cmd;
 								iq_cmd = clip<float, float>(iq_pid + iq_ff, -max_test_torque, max_test_torque);
+
+								float iq_mag_raw = 0.5f * (iq_cmd + prev_iq_cmd) - iq_inertia;
+								iq_mag_filt += scale_ema_alpha * (iq_mag_raw - iq_mag_filt);
 								
 								float angle_rad = actual_pos_f * 2.0f * PI;
 								float compensation = 0;
@@ -4247,24 +4458,22 @@ void TMC4671::handleStateCoggingCalibration() {
 										compensation += cogging_harmonics[i].amplitude * arm_sin_f32(angle_rad * cogging_harmonics[i].order + cogging_harmonics[i].phase);
 									}
 								}
-								applySafeTorque(iq_cmd + (this->cogging_scale * compensation));
+								applySafeTorque(clip<float, float>(iq_cmd + (this->cogging_scale * compensation), -max_test_torque, max_test_torque));
 							}
 							enc_decimation_counter++;
 							
-							// Only accumulate data after 200ms of warmup to let PID stabilize on the ramp
 							if (HAL_GetTick() - iter_start_tick > 200) {
 								float s, c;
 								arm_sin_cos_f32(actual_pos_f * 360.0f * cogging_harmonics[main_h].order, &s, &c);
-								acc_re += iq_cmd * c;
-								acc_im += iq_cmd * s;
+								acc_re += iq_mag_filt * c;
+								acc_im += iq_mag_filt * s;
 								
 								samples++;
-								segment_dist += fabs(step);
+								segment_dist += fabsf(step);
 							}
 							
 							refreshWatchdog();
 #ifdef TIM_CALIBRATION
-							// Yield thread via timer interrupt notifications to avoid busy-waiting, falling back if timer is disabled
 							if (this->calibTimer != nullptr) {
 								this->WaitForNotification();
 							} else
@@ -4274,28 +4483,24 @@ void TMC4671::handleStateCoggingCalibration() {
 							}
 						}
 						stopCalibTimers();
+						if (samples == 0) break;
 						
 						float re = acc_re / (float)samples;
 						float im = acc_im / (float)samples;
-						// Dot product between residual PID torque and the expected cogging shape.
-						// If dot > 0, the PID is still "fighting" cogging in its original phase -> Under-compensated.
-						// If dot < 0, the PID is fighting the compensation itself -> Over-compensated.
 						float dot = re * sinf(cogging_harmonics[main_h].phase) + im * cosf(cogging_harmonics[main_h].phase);
 						previousResidualError = dot;
 						
-						// Safeguard: Record the scale if it produces the lowest absolute error seen so far
-						if (fabs(dot) < lowestAbsoluteError) {
-							lowestAbsoluteError = fabs(dot);
+						if (fabsf(dot) < lowestAbsoluteError) {
+							lowestAbsoluteError = fabsf(dot);
 							optimalScaleFound = currentTestScale;
 						}
 						
 						if (iter == 0) errorAtScaleZero = dot;
 						if (iter == 1) errorAtScaleOne = dot;
 						
-						broadcastCalibLog(0, "Iteration %d/8: Scale %.4f -> Error %.2f Iq counts", iter + 1, currentTestScale, dot);
+						broadcastCalibLog(0, "Scale Iter %d/8: Scale %.4f -> Residual %.2f Iq", iter + 1, currentTestScale, dot);
 					}
 					
-					// Apply the best scale found during the calibration
 					this->cogging_scale = optimalScaleFound;
 					this->cogging_enabled = true;
 
@@ -4391,6 +4596,8 @@ cleanup:
 
 	if(iq_acc_cos) vPortFree(iq_acc_cos);
 	if(iq_acc_sin) vPortFree(iq_acc_sin);
+	if(iq_fwd_cos) vPortFree(iq_fwd_cos);
+	if(iq_fwd_sin) vPortFree(iq_fwd_sin);
 #ifdef COGGING_CALIB_ENABLE_ID_DIAG
 	if(id_acc_cos) vPortFree(id_acc_cos);
 	if(id_acc_sin) vPortFree(id_acc_sin);
