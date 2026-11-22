@@ -368,8 +368,11 @@ public:
 	 */
 	bool updateTorque(int32_t* totalTorque);
 
-
-
+	/**
+	 * @brief Updates the sample rate for axis filters.
+	 * @param newSamplerate The new sample rate in Hz.
+	 */
+	void updateSamplerate(float newSamplerate);
 
 	/**
 	 * @brief Sets the gear ratio.
