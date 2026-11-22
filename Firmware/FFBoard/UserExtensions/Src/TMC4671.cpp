@@ -786,8 +786,12 @@ bool TMC4671::reachedPosition(uint16_t tolerance){
 }
 
 void TMC4671::zeroAbnUsingPhiM(bool offsetPhiE){
+	// Guard against zero CPR and use 64-bit scaling to avoid integer overflow on high-CPR encoders.
+	if(abnconf.cpr == 0){
+		return;
+	}
 	int32_t npos = (int32_t)readReg(0x28); // raw encoder counts at index hit
-	int32_t npos_M = (npos * 0xffff) / abnconf.cpr; // Scaled encoder angle at index
+	int32_t npos_M = (int32_t)(((int64_t)npos * 0xffff) / (int64_t)abnconf.cpr); // Scaled encoder angle at index
 	abnconf.phiMoffset = -npos_M;
 	if(offsetPhiE){
 		abnconf.phiEoffset += npos_M*conf.motconf.pole_pairs;
@@ -923,11 +927,19 @@ void TMC4671::setPhiE_ext(int16_t phiE){
 }
 
 int16_t TMC4671::getPhiEfromExternalEncoder(){
+	// Guard against null external encoder or zero CPR to prevent division-by-zero HardFault.
+	if(drvEncoder == nullptr){
+		return 0;
+	}
+	uint32_t ext_cpr = drvEncoder->getCpr();
+	if(ext_cpr == 0){
+		return 0;
+	}
 	int64_t phiE_t = (int64_t)drvEncoder->getPosAbs() * 0xffff;
 	if(this->conf.encoderReversed){
 		phiE_t = -phiE_t;
 	}
-	int32_t phiE = (phiE_t / (int64_t)drvEncoder->getCpr());
+	int32_t phiE = (int32_t)(phiE_t / (int64_t)ext_cpr);
 	phiE = (phiE * conf.motconf.pole_pairs) & 0xffff; // scale to pole pairs
 	//int16_t phiE = (drvEncoder->getPosAbs_f() * (float)0xffff) * conf.motconf.pole_pairs + externalEncoderPhieOffset;
 	return(phiE+externalEncoderPhieOffset);
@@ -1067,22 +1079,27 @@ void TMC4671::calibrateAenc(){
 	uint8_t stage = 0;
 	int32_t poles = conf.motconf.pole_pairs;
 	int32_t initialDirPos = 0;
+	auto applyAencOffsetScale = [&](uint32_t s0, uint32_t s1, uint32_t s2) {
+		aencconf.AENC0_offset = (maxVal_0 + minVal_0) / 2;
+		aencconf.AENC0_scale = (int16_t)clip<uint32_t, uint32_t>(0xF6FF00 / s0, 1, 32767);
+		if(conf.motconf.enctype == EncoderType_TMC::uvw){
+			aencconf.AENC1_offset = (maxVal_1 + minVal_1) / 2;
+			aencconf.AENC1_scale = (int16_t)clip<uint32_t, uint32_t>(0xF6FF00 / s1, 1, 32767);
+		}
+		aencconf.AENC2_offset = (maxVal_2 + minVal_2) / 2;
+		aencconf.AENC2_scale = (int16_t)clip<uint32_t, uint32_t>(0xF6FF00 / s2, 1, 32767);
+	};
 	while(stage != 3){
 		Delay(2);
 		if(getPos() > maxpos*poles && stage == 0){
 			runOpenLoop(bangInitPower, 0, -speed, 100,true);
 			stage = 1;
 		}else if(getPos() < minpos*poles && stage == 1){
-			// Scale might still be wrong... maxVal-minVal is too high. In theory its 0xffff range and scaler /256. Leave some room to prevent clipping
-			aencconf.AENC0_offset = ((maxVal_0 + minVal_0) / 2);
-			aencconf.AENC0_scale = 0xF6FF00 / (maxVal_0 - minVal_0);
-			if(conf.motconf.enctype == EncoderType_TMC::uvw){
-				aencconf.AENC1_offset = ((maxVal_1 + minVal_1) / 2);
-				aencconf.AENC1_scale = 0xF6FF00 / (maxVal_1 - minVal_1);
-			}
-
-			aencconf.AENC2_offset = ((maxVal_2 + minVal_2) / 2);
-			aencconf.AENC2_scale = 0xF6FF00 / (maxVal_2 - minVal_2);
+			// Clamp AENC span to prevent division-by-zero or int16 overflow on low/missing signals.
+			uint32_t span0 = std::max<uint32_t>(500, (maxVal_0 > minVal_0) ? (maxVal_0 - minVal_0) : 500);
+			uint32_t span1 = std::max<uint32_t>(500, (maxVal_1 > minVal_1) ? (maxVal_1 - minVal_1) : 500);
+			uint32_t span2 = std::max<uint32_t>(500, (maxVal_2 > minVal_2) ? (maxVal_2 - minVal_2) : 500);
+			applyAencOffsetScale(span0, span1, span2);
 			aencconf.rdir = false;
 			setup_AENC(aencconf);
 			rampFlux(0, 100);
@@ -1114,15 +1131,19 @@ void TMC4671::calibrateAenc(){
 		maxVal_1 = std::max(maxVal_1,aencVN);
 		maxVal_2 = std::max(maxVal_2,aencWY);
 	}
-	// Scale is not actually important. but offset must be perfect
-	aencconf.AENC0_offset = ((maxVal_0 + minVal_0) / 2);
-	aencconf.AENC0_scale = 0xF6FF00 / (maxVal_0 - minVal_0);
-	if(conf.motconf.enctype == EncoderType_TMC::uvw){
-		aencconf.AENC1_offset = ((maxVal_1 + minVal_1) / 2);
-		aencconf.AENC1_scale = 0xF6FF00 / (maxVal_1 - minVal_1);
+	// Abort if analog encoder signal amplitude is too low or disconnected.
+	uint32_t finalSpan0 = (maxVal_0 > minVal_0) ? (maxVal_0 - minVal_0) : 0;
+	uint32_t finalSpan1 = (maxVal_1 > minVal_1) ? (maxVal_1 - minVal_1) : 0;
+	uint32_t finalSpan2 = (maxVal_2 > minVal_2) ? (maxVal_2 - minVal_2) : 0;
+	if(finalSpan0 < 1000 || finalSpan2 < 1000 || (conf.motconf.enctype == EncoderType_TMC::uvw && finalSpan1 < 1000)){
+		setPhiEtype(lastphie);
+		setPosSel(possel);
+		blinkClipLed(0, 0);
+		ErrorHandler::addError(Error(ErrorCode::encoderAlignmentFailed, ErrorType::critical, "Analog encoder signal too low"));
+		enterHardError();
+		return;
 	}
-	aencconf.AENC2_offset = ((maxVal_2 + minVal_2) / 2);
-	aencconf.AENC2_scale = 0xF6FF00 / (maxVal_2 - minVal_2);
+	applyAencOffsetScale(finalSpan0, finalSpan1, finalSpan2);
 	int32_t newDirPos = readReg(0x41);
 	aencconf.rdir =  (initialDirPos - newDirPos) > 0;
 	setup_AENC(aencconf);
@@ -1366,25 +1387,31 @@ bool TMC4671::calibrateAdcOffset(uint16_t time){
 	// Disable drivers and measure many samples of zero current
 	//enablePin.reset();
 	uint32_t tick = HAL_GetTick();
-	while(HAL_GetTick() - tick < measuretime_idle){ // Measure idle
+	while((HAL_GetTick() - tick < measuretime_idle) && !isEmergencyActive() && !brake_failure){ // Measure idle
 		writeReg(0x03, 0); // Read raw adc
 		uint32_t adcraw = readReg(0x02);
 		uint16_t rawA = adcraw & 0xffff;
 		uint16_t rawB = (adcraw >> 16) & 0xffff;
 		// Signflip filter for SPI bug
-		if(abs(lastrawA-rawA) < 10000 && abs(lastrawB-rawB) < 10000){
+		if(abs((int32_t)lastrawA - (int32_t)rawA) < 10000 && abs((int32_t)lastrawB - (int32_t)rawB) < 10000){
 			totalA += rawA;
 			totalB += rawB;
 			measurements_idle++;
 			lastrawA = rawA;
 			lastrawB = rawB;
 		}
-//		uint32_t lastMicros = micros();
-//		while(micros()-lastMicros < 100){} // Wait 100µs at least
 	}
-	//enablePin.set();
-	int32_t offsetAidle = totalA / (measurements_idle);
-	int32_t offsetBidle = totalB / (measurements_idle);
+	// Guard against zero accepted samples to prevent division-by-zero HardFault.
+	if(measurements_idle == 0 || isEmergencyActive() || brake_failure){
+		adcCalibrated = false;
+		conf.hwconf.thermistorSettings.temperatureEnabled = allowTemp;
+		if(!isEmergencyActive() && !brake_failure){
+			ErrorHandler::addError(Error(ErrorCode::adcCalibrationError,ErrorType::critical,"TMC ADC offset calibration failed."));
+		}
+		return false;
+	}
+	int32_t offsetAidle = totalA / measurements_idle;
+	int32_t offsetBidle = totalB / measurements_idle;
 
 	// Check if offsets are in a valid range
 	if(totalA < 100 || totalB < 100 || ((abs(offsetAidle - 0x7fff) > TMC_ADCOFFSETFAIL) || (abs(offsetBidle - 0x7fff) > TMC_ADCOFFSETFAIL)) ){
@@ -2070,10 +2097,14 @@ void TMC4671::setCpr(uint32_t cpr){
  * Converts encoder counts to phiM
  */
 uint32_t TMC4671::encToPos(uint32_t enc){
-	return enc*(0xffff / abnconf.cpr); //*(conf.motconf.pole_pairs)
+	// Use 64-bit scaling and guard against zero CPR to prevent division-by-zero on high-res ABN encoders.
+	if(abnconf.cpr == 0) return 0;
+	return (uint32_t)(((uint64_t)enc * 0xffff) / abnconf.cpr);
 }
 uint32_t TMC4671::posToEnc(uint32_t pos){
-	return pos/((0xffff / abnconf.cpr)) % abnconf.cpr; //(conf.motconf.pole_pairs)
+	// Use 64-bit scaling so CPR > 65535 does not truncate (0xffff / cpr) to zero before division.
+	if(abnconf.cpr == 0) return 0;
+	return (uint32_t)((((uint64_t)pos * abnconf.cpr) / 0xffff) % abnconf.cpr);
 }
 
 EncoderType TMC4671::getEncoderType(){
