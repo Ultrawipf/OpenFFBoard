@@ -3495,6 +3495,12 @@ void TMC4671::handleStateFullCalibration() {
 #ifdef COGGING_TABLE_FLASH_START_ADDRESS
 // Helper: Apply torque with zero flux for pure cogging measurement
 void TMC4671::applySafeTorque(float torque_cmd) {
+	// Immediate hardware cut-off if E-stop is engaged
+	if (emergency || estopTriggered) {
+		enablePin.reset();
+		setFluxTorque(0, 0);
+		return;
+	}
 	float totalPower = torque_cmd;
 
 	// Respect inversion settings
@@ -3555,6 +3561,30 @@ void TMC4671::handleStateCoggingCalibration() {
 		CommandHandler::broadcastCommandReply(CommandReply(std::string(buf)), (uint32_t)TMC4671_commands::calibrateCogging, CMDtype::get);
 	};
 	const char* errorMessage = nullptr;
+	// Helper: Poll both software E-stop flag and hardware E-stop pin (active-low) for immediate abort
+	auto isEstopActive = [this]() -> bool {
+		if (this->emergency || this->estopTriggered) return true;
+#ifdef E_STOP_Pin
+		if (HAL_GPIO_ReadPin(E_STOP_GPIO_Port, E_STOP_Pin) == GPIO_PIN_RESET) {
+			this->emergency = true;
+			this->motorEnabledRequested = false;
+			this->enablePin.reset();
+			this->setFluxTorque(0, 0);
+			this->setPwm(TMC_PwmMode::off);
+			return true;
+		}
+#endif
+		return false;
+	};
+	// Helper: Interruptible delay that aborts immediately if E-stop is pressed
+	auto safeDelay = [&](uint32_t ms) {
+		uint32_t start = HAL_GetTick();
+		while ((HAL_GetTick() - start) < ms) {
+			if (isEstopActive()) return;
+			refreshWatchdog();
+			Delay(5);
+		}
+	};
 	float* iq_acc_cos = nullptr;
 	float* iq_acc_sin = nullptr;
 	float* iq_fwd_cos = nullptr;
@@ -3728,6 +3758,10 @@ void TMC4671::handleStateCoggingCalibration() {
 			uint32_t act_period = 0;
 			float dt_sec = 0.0f;
 			// --- REAL ACQUISITION SETUP ---
+			if (isEstopActive()) {
+				errorMessage = "Abort: Emergency stop engaged";
+				goto cleanup;
+			}
 			startMotor();
 			setMotionMode(MotionMode::torque, true);
 
@@ -3772,9 +3806,10 @@ void TMC4671::handleStateCoggingCalibration() {
 			if (coggingSpeedP == 0.0f && coggingSpeedI == 0.0f) {
 				// Step 2.1: Break static friction with fine steps for small motors
 				broadcastCalibLog(0, "Step 2.1: Finding breakout torque (start: %.0f, max: %.0f)...", starting_torque, max_test_torque);
-				while (!friction_broken && tuning_torque < max_test_torque && !emergency && hasPower()) {
+				while (!friction_broken && tuning_torque < max_test_torque && !isEstopActive() && hasPower()) {
 					applySafeTorque(tuning_torque);
-					Delay(BREAKOUT_STEP_MS); 
+					safeDelay(BREAKOUT_STEP_MS); 
+					if (isEstopActive()) { errorMessage = "Abort: Emergency stop engaged"; goto cleanup; }
 					if (fabsf(getWrappedError(start_pos, getAbsolutePosition())) > 0.005f) {
 						friction_broken = true;
 					} else {
@@ -3783,13 +3818,15 @@ void TMC4671::handleStateCoggingCalibration() {
 					refreshWatchdog();
 				}
 				applySafeTorque(0);
+				if (isEstopActive()) { errorMessage = "Abort: Emergency stop engaged"; goto cleanup; }
 				if (!friction_broken) {
 					errorMessage = "Abort: Motor failed to break static friction";
 					goto cleanup;
 				}
 				float breakout_torque = tuning_torque;
 				broadcastCalibLog(0, "Breakout torque detected: %.0f Iq counts", breakout_torque);
-				Delay(300);
+				safeDelay(300);
+				if (isEstopActive()) { errorMessage = "Abort: Emergency stop engaged"; goto cleanup; }
 
 				// Step 2.2: Two-speed friction separation (Coulomb Tc vs Viscous B) on the EXACT SAME 0.25-turn angular sector
 				// Measuring both speeds over the same sector [sector_start, sector_start + 0.25] cancels local cogging & wheel imbalance!
@@ -3803,7 +3840,7 @@ void TMC4671::handleStateCoggingCalibration() {
 				act_period = base_period_us;
 				dt_sec = (float)act_period / 1000000.0f;
 
-				for (int s_idx = 0; s_idx < 2 && !emergency && hasPower(); s_idx++) {
+				for (int s_idx = 0; s_idx < 2 && !isEstopActive() && hasPower(); s_idx++) {
 					float w_turns = test_rpms[s_idx] / 60.0f;
 					float b_pos = getAbsolutePosition();
 					float b_sum_torque = 0.0f;
@@ -3814,7 +3851,7 @@ void TMC4671::handleStateCoggingCalibration() {
 					bool entered_sector = false;
 
 					startCalibTimers(TIM_TMC_ARR);
-					while ((HAL_GetTick() - b_start) < b_timeout && !emergency && hasPower()) {
+					while ((HAL_GetTick() - b_start) < b_timeout && !isEstopActive() && hasPower()) {
 						next_tick += act_period;
 						b_pos += w_turns * dt_sec;
 						float cur_pos = getAbsolutePosition();
@@ -3842,6 +3879,7 @@ void TMC4671::handleStateCoggingCalibration() {
 					}
 					stopCalibTimers();
 					applySafeTorque(0);
+					if (isEstopActive()) { errorMessage = "Abort: Emergency stop engaged"; goto cleanup; }
 					if (b_samples > 0) {
 						mean_trq_speeds[s_idx] = b_sum_torque / (float)b_samples;
 					} else {
@@ -3849,13 +3887,14 @@ void TMC4671::handleStateCoggingCalibration() {
 					}
 
 					// Return gently to sector_start before next speed measurement so both cover the exact same angle
-					if (s_idx == 0 && !emergency && hasPower()) {
-						Delay(150);
+					if (s_idx == 0 && !isEstopActive() && hasPower()) {
+						safeDelay(150);
+						if (isEstopActive()) { errorMessage = "Abort: Emergency stop engaged"; goto cleanup; }
 						uint32_t ret_start = HAL_GetTick();
 						float ret_pos = getAbsolutePosition();
 						next_tick = micros();
 						startCalibTimers(TIM_TMC_ARR);
-						while (fabsf(getAbsolutePosition() - sector_start) > 0.005f && (HAL_GetTick() - ret_start) < 2500 && !emergency && hasPower()) {
+						while (fabsf(getAbsolutePosition() - sector_start) > 0.005f && (HAL_GetTick() - ret_start) < 2500 && !isEstopActive() && hasPower()) {
 							next_tick += act_period;
 							if (ret_pos > sector_start) ret_pos -= 0.35f * dt_sec;
 							else ret_pos += 0.35f * dt_sec;
@@ -3869,9 +3908,11 @@ void TMC4671::handleStateCoggingCalibration() {
 						}
 						stopCalibTimers();
 						applySafeTorque(0);
-						Delay(200);
+						safeDelay(200);
+						if (isEstopActive()) { errorMessage = "Abort: Emergency stop engaged"; goto cleanup; }
 					}
 				}
+				if (isEstopActive()) { errorMessage = "Abort: Emergency stop engaged"; goto cleanup; }
 
 				float w1_rad = (test_rpms[0] / 60.0f) * 2.0f * PI;
 				float w2_rad = (test_rpms[1] / 60.0f) * 2.0f * PI;
@@ -3881,7 +3922,8 @@ void TMC4671::handleStateCoggingCalibration() {
 
 				broadcastCalibLog(0, "Friction ID -> T@15:%.0f T@45:%.0f => Tc:%.0f B_phys:%.2f",
 					mean_trq_speeds[0], mean_trq_speeds[1], dynamic_friction, B_phys);
-				Delay(300);
+				safeDelay(300);
+				if (isEstopActive()) { errorMessage = "Abort: Emergency stop engaged"; goto cleanup; }
 
 				// Step 2.3: Dual-direction Inertia (J) measurement corrected for Coulomb friction Tc
 				// Averaging +1 and -1 pulses cancels local cogging tooth slope at starting angle
@@ -3892,7 +3934,7 @@ void TMC4671::handleStateCoggingCalibration() {
 				float j_sum = 0.0f;
 				int j_valid_cnt = 0;
 
-				for (int dir = 0; dir < 2 && !emergency && hasPower(); dir++) {
+				for (int dir = 0; dir < 2 && !isEstopActive() && hasPower(); dir++) {
 					float sign = (dir == 0) ? 1.0f : -1.0f;
 					start_pos = getAbsolutePosition();
 					uint32_t j_start_us = micros();
@@ -3900,13 +3942,14 @@ void TMC4671::handleStateCoggingCalibration() {
 
 					applySafeTorque(sign * j_torque);
 					// Stop pulse early if light small motor already moved > 0.20 turns (prevents Back-EMF saturation)
-					while (((micros() - j_target_us) & 0x80000000) && !emergency && hasPower()) {
+					while (((micros() - j_target_us) & 0x80000000) && !isEstopActive() && hasPower()) {
 						if (fabsf(getAbsolutePosition() - start_pos) > 0.20f) break;
 						refreshWatchdog();
 					}
 					uint32_t j_end_us = micros();
 					float end_pos = getAbsolutePosition();
 					applySafeTorque(0);
+					if (isEstopActive()) { errorMessage = "Abort: Emergency stop engaged"; goto cleanup; }
 
 					float dt_j = (float)(j_end_us - j_start_us) / 1000000.0f;
 					float d_pos_rad = fabsf(end_pos - start_pos) * 2.0f * PI;
@@ -3914,8 +3957,9 @@ void TMC4671::handleStateCoggingCalibration() {
 						j_sum += (net_j_torque * dt_j * dt_j) / (2.0f * d_pos_rad);
 						j_valid_cnt++;
 					}
-					Delay(350);
+					safeDelay(350);
 				}
+				if (isEstopActive()) { errorMessage = "Abort: Emergency stop engaged"; goto cleanup; }
 
 				if (j_valid_cnt == 0) {
 					errorMessage = "Abort: Motor did not move during inertia measurement";
@@ -3971,7 +4015,7 @@ void TMC4671::handleStateCoggingCalibration() {
 			float iq_cmd = 0.0f;
 			
 			startCalibTimers(TIM_TMC_ARR);
-			while (HAL_GetTick() - val_start < VAL_TOTAL_DURATION_MS && !emergency && hasPower()) {
+			while (HAL_GetTick() - val_start < VAL_TOTAL_DURATION_MS && !isEstopActive() && hasPower()) {
 				next_tick += act_period;
 				val_target_pos += val_target_vel * dt_sec;
 				
@@ -4005,6 +4049,7 @@ void TMC4671::handleStateCoggingCalibration() {
 			}
 			stopCalibTimers();
 			applySafeTorque(0);
+			if (isEstopActive()) { errorMessage = "Abort: Emergency stop engaged"; goto cleanup; }
 
 			if (max_err_deg > 5.0f) {
 				snprintf(dbg_buf, sizeof(dbg_buf), "Abort: Stability check failed (%.2f deg > 5.0 deg)", max_err_deg);
@@ -4013,7 +4058,8 @@ void TMC4671::handleStateCoggingCalibration() {
 				goto cleanup;
 			}
 			broadcastCalibLog(0, "Validation OK (Max tracking error: %.2f deg <= 5.0 deg)", max_err_deg);
-			Delay(250);
+			safeDelay(250);
+			if (isEstopActive()) { errorMessage = "Abort: Emergency stop engaged"; goto cleanup; }
 
 			// --- STEP 3/4: ACQUISITION DFT TIER 0 (STATIC COGGING AT NOMINAL SLOW SPEED) ---
 			broadcastCalibLog(0, "STEP 3/4: Tier 0 Static DFT at %.1f RPM (FWD+BWD separated, causal inertia)...", calib_rpm);
@@ -4021,6 +4067,7 @@ void TMC4671::handleStateCoggingCalibration() {
 			dual_dir_separated = true;
 			
 			for (int8_t p : dirs) {
+				if (isEstopActive()) { errorMessage = "Abort: Emergency stop engaged"; goto cleanup; }
 				broadcastCalibLog(0, "Tier 0 %s pass at %.1f RPM (1.0 rev)...", (p == 1) ? "FWD" : "BWD", calib_rpm);
 				
 				float target_rpm = (p == 1) ? calib_rpm : -calib_rpm;
@@ -4036,13 +4083,10 @@ void TMC4671::handleStateCoggingCalibration() {
 
 				speed_ctrl.reset(target_vel_turns);
 
-				uint32_t waitStart = HAL_GetTick();
-				while(HAL_GetTick() - waitStart < 1000 && !emergency && hasPower()) { 
-					refreshWatchdog();
-					Delay(10); 
-				}
+				safeDelay(1000);
+				if (isEstopActive()) { errorMessage = "Abort: Emergency stop engaged"; goto cleanup; }
 
-				if (!emergency && hasPower()) {
+				if (!isEstopActive() && hasPower()) {
 					calibStartTime = HAL_GetTick();
 					uint32_t period_us = std::max<uint32_t>(1, getActualCalibPeriod(TIM_TMC_ARR)); 
 					uint32_t next_tick = micros();
@@ -4062,7 +4106,7 @@ void TMC4671::handleStateCoggingCalibration() {
 					float iq_mag_filt = 0.0f;
 					
 					startCalibTimers(TIM_TMC_ARR);
-					while (HAL_GetTick() - calibStartTime < REVOLUTION_TIME_MS && !emergency && hasPower()) {
+					while (HAL_GetTick() - calibStartTime < REVOLUTION_TIME_MS && !isEstopActive() && hasPower()) {
 						next_tick += period_us;
 						
 						float step = target_vel_turns * dt_sec;
@@ -4149,6 +4193,7 @@ void TMC4671::handleStateCoggingCalibration() {
 					stopCalibTimers();
 				}
 				applySafeTorque(0);
+				if (isEstopActive()) { errorMessage = "Abort: Emergency stop engaged"; goto cleanup; }
 
 				broadcastCalibLog(0, "Tier 0 %s done -> Dist:%.2f tr | MaxErr:%.2f deg | MaxIq:%.0f",
 					(p == 1) ? "FWD" : "BWD", integrated_distance, (max_err_seen * 360.0f), max_iq_cmd_used);
@@ -4156,7 +4201,8 @@ void TMC4671::handleStateCoggingCalibration() {
 		}
 
 		// 3. POST-PROCESSING
-		if (!emergency && (total_samples > 0)) {
+		if (isEstopActive()) { errorMessage = "Abort: Emergency stop engaged"; goto cleanup; }
+		if (!isEstopActive() && (total_samples > 0)) {
 			broadcastCalibLog(0, "STEP 4/4: Post-Processing & Harmonics Extraction...");
 			
 			float norm = 2.0f / (float)total_samples;
@@ -4248,7 +4294,7 @@ void TMC4671::handleStateCoggingCalibration() {
 				// --- STEP 4.2: MULTI-SPEED RIPPLE PROFILING (Tiers 1, 2, 3: 12, 36, 90 RPM) ---
 				// Measures asymptotic speed-dependent torque ripple (Back-EMF / Eddy currents / PI bandwidth)
 				// and identifies system phase-lead latency across the 0..300 RPM envelope with zero net unwinding.
-				if (hasPower() && !emergency && main_h != -1) {
+				if (hasPower() && !isEstopActive() && main_h != -1) {
 					float tier3_rpm_cap = std::min<float>(90.0f, 24000.0f / (float)std::max<uint16_t>(1, max_selected_order));
 					tier3_rpm_cap = std::max<float>(45.0f, tier3_rpm_cap);
 					const float tier_rpms[3] = {12.0f, 36.0f, tier3_rpm_cap};
@@ -4264,7 +4310,7 @@ void TMC4671::handleStateCoggingCalibration() {
 					float tier_dt_dec = tier_dt_sec * (float)enc_decimation_ratio;
 					float tier_ema_alpha = clip<float, float>((2.0f * PI * 180.0f * tier_dt_dec) / (1.0f + 2.0f * PI * 180.0f * tier_dt_dec), 0.15f, 0.9f);
 
-					for (int t = 0; t < 3 && !emergency && hasPower(); t++) {
+					for (int t = 0; t < 3 && !isEstopActive() && hasPower(); t++) {
 						float cur_tier_rpm = tier_rpms[t];
 						float cur_tier_vel = cur_tier_rpm / 60.0f; // turns/s
 						float tier_amps_dir[2][COGGING_HARMONICS_COUNT];
@@ -4273,7 +4319,7 @@ void TMC4671::handleStateCoggingCalibration() {
 						memset(tier_amps_dir, 0, sizeof(tier_amps_dir));
 
 						int8_t t_dirs[2] = {1, -1};
-						for (int d = 0; d < 2 && !emergency && hasPower(); d++) {
+						for (int d = 0; d < 2 && !isEstopActive() && hasPower(); d++) {
 							float signed_vel = (t_dirs[d] == 1) ? cur_tier_vel : -cur_tier_vel;
 							float target_pos_f = getFilteredPosition();
 							float prev_pos_f = target_pos_f;
@@ -4294,7 +4340,7 @@ void TMC4671::handleStateCoggingCalibration() {
 							float iq_mag_filt = 0.0f;
 
 							startCalibTimers(TIM_TMC_ARR);
-							while (integrated_dist < 1.0f && (HAL_GetTick() - t_start) < t_timeout && !emergency && hasPower()) {
+							while (integrated_dist < 1.0f && (HAL_GetTick() - t_start) < t_timeout && !isEstopActive() && hasPower()) {
 								next_tick += tier_period_us;
 								float step = signed_vel * tier_dt_sec;
 								target_pos_f += step;
@@ -4343,6 +4389,7 @@ void TMC4671::handleStateCoggingCalibration() {
 							}
 							stopCalibTimers();
 							applySafeTorque(0);
+							if (isEstopActive()) { errorMessage = "Abort: Emergency stop engaged"; goto cleanup; }
 
 							if (t_samples > 10) {
 								float t_norm = 2.0f / (float)t_samples;
@@ -4358,7 +4405,7 @@ void TMC4671::handleStateCoggingCalibration() {
 								}
 								dir_ok[d] = true;
 							}
-							Delay(150);
+							safeDelay(150);
 						}
 
 						if (dir_ok[0] && dir_ok[1]) {
@@ -4408,6 +4455,7 @@ void TMC4671::handleStateCoggingCalibration() {
 					broadcastCalibLog(0, "Ripple fit done -> H%u speed_delta:%d | PhaseLead: %.2f ms",
 						cogging_harmonics[main_h].order, cogging_harmonics[main_h].speed_delta, this->cogging_phase_lead_time * 1000.0f);
 				}
+				if (isEstopActive()) { errorMessage = "Abort: Emergency stop engaged"; goto cleanup; }
 
 				saveCoggingTable();
 				broadcastCalibLog(0, "Cogging & ripple table saved to flash");
@@ -4416,7 +4464,7 @@ void TMC4671::handleStateCoggingCalibration() {
 				float actual_pos_f = getAbsolutePosition();
 				float target_rpm = (actual_pos_f > 0.0f) ? -calib_rpm : calib_rpm;
 
-				if (main_h != -1) {
+				if (main_h != -1 && !isEstopActive()) {
 					broadcastCalibLog(0, "STEP 4.5/4: Fine-tuning Cogging Scale (Main harmonic: H%u, Amp: %.1f)", cogging_harmonics[main_h].order, cogging_harmonics[main_h].amplitude);
 					
 					float currentTestScale = 0.0f;
@@ -4431,7 +4479,7 @@ void TMC4671::handleStateCoggingCalibration() {
 					float scale_target_vel = target_rpm / 60.0f;
 					speed_ctrl.reset(scale_target_vel);
 
-					for (int iter = 0; iter < 8 && !emergency && hasPower(); iter++) {
+					for (int iter = 0; iter < 8 && !isEstopActive() && hasPower(); iter++) {
 						if (iter == 0) {
 							currentTestScale = 0.0f;
 							scaleZero = currentTestScale;
@@ -4476,7 +4524,7 @@ void TMC4671::handleStateCoggingCalibration() {
 						float scale_ema_alpha = clip<float, float>((2.0f * PI * 150.0f * dt_scale_dec) / (1.0f + 2.0f * PI * 150.0f * dt_scale_dec), 0.1f, 0.9f);
 						
 						startCalibTimers(TIM_TMC_ARR);
-						while (segment_dist < segment_target && (HAL_GetTick() - iter_start_tick) < iter_timeout && !emergency && hasPower()) {
+						while (segment_dist < segment_target && (HAL_GetTick() - iter_start_tick) < iter_timeout && !isEstopActive() && hasPower()) {
 							next_tick += act_period;
 							float step = scale_target_vel * dt_sec;
 							target_pos_move += step;
@@ -4530,6 +4578,8 @@ void TMC4671::handleStateCoggingCalibration() {
 							}
 						}
 						stopCalibTimers();
+						applySafeTorque(0);
+						if (isEstopActive()) { errorMessage = "Abort: Emergency stop engaged"; goto cleanup; }
 						if (samples == 0) break;
 						
 						float re = acc_re / (float)samples;
@@ -4580,7 +4630,7 @@ void TMC4671::handleStateCoggingCalibration() {
 				uint32_t return_start = HAL_GetTick();
 				uint32_t next_tick = micros();
 				startCalibTimers(TIM_TMC_ARR);
-				while (fabs(actual_pos_f) > 0.005f && !emergency && hasPower()) {
+				while (fabs(actual_pos_f) > 0.005f && !isEstopActive() && hasPower()) {
 					next_tick += period_us;
 					
 					// Absolute ramp generation towards 0.0
@@ -4623,6 +4673,10 @@ void TMC4671::handleStateCoggingCalibration() {
 				}
 				stopCalibTimers();
 				applySafeTorque(0);
+				if (isEstopActive()) {
+					errorMessage = "Abort: Emergency stop engaged";
+					goto cleanup;
+				}
 				broadcastCalibLog(0, "Centering done. Re-aligning encoder...");
 				
 				goto cleanup;
@@ -4633,13 +4687,27 @@ void TMC4671::handleStateCoggingCalibration() {
 	}
 
 cleanup:
+	stopCalibTimers();
+	// Guarantee immediate motor current cut-off on exit / E-stop
+	setFluxTorque(0, 0);
+	if (isEstopActive()) {
+		enablePin.reset();
+		setMotionMode(MotionMode::stop, true);
+		setPwm(TMC_PwmMode::off);
+		if (!errorMessage) {
+			errorMessage = "Abort: Emergency stop engaged";
+		}
+	}
+
 	if (errorMessage) {
 		broadcastCalibLog(1, errorMessage);
 	} else {
 		broadcastCalibLog(1, "Cogging detection finished");
 	}
 	
-	setTargetVelocity(0); // Ensure motor stops
+	if (!isEstopActive()) {
+		setTargetVelocity(0); // Ensure motor stops
+	}
 
 	if(iq_acc_cos) vPortFree(iq_acc_cos);
 	if(iq_acc_sin) vPortFree(iq_acc_sin);
@@ -4654,11 +4722,18 @@ cleanup:
 	setPids(prevPids);
 	curFilters.flux.params.enable = true;
 	setBiquadFlux(curFilters.flux);
-	setMotionMode(prevCalibMode, true);
+	if (!isEstopActive()) {
+		setMotionMode(prevCalibMode, true);
+	}
 
 	allowStateChange = true;
 	// Transition to a stable state instead of potentially jumping to uninitialized
-	if (errorMessage) {
+	if (isEstopActive()) {
+		this->motorEnabledRequested = false;
+		// Clear both requestedState and state to prevent Run() from re-entering CoggingCalibration
+		changeState(TMC_ControlState::Shutdown, false);
+		changeState(TMC_ControlState::Shutdown, true);
+	} else if (errorMessage) {
 		changeState(hasPower() ? TMC_ControlState::Running : TMC_ControlState::waitPower);
 	} else {
 		changeState(TMC_ControlState::EncoderInit);
