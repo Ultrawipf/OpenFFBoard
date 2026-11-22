@@ -477,7 +477,7 @@ public:
 	void setBBM(uint8_t bbml,uint8_t bbmh);
 
 
-#ifdef TIM_TMC
+#ifdef TIM_ENC
 	void timerElapsed(TIM_HandleTypeDef* htim);
 #endif
 
