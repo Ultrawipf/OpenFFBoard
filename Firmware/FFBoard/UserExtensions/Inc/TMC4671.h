@@ -653,7 +653,8 @@ public:
 	void setStatusFlags(StatusFlags flags);
 	void setEncoderIndexFlagEnabled(bool enabled,bool zeroEncoder = false);
 	void statusCheck();
-	bool flagCheckInProgress = false;
+	volatile bool flagCheckInProgress = false;
+	volatile bool flagCheckPending = false;
 	StatusFlags statusFlags = {0};
 	StatusFlags statusMask = {0};
 

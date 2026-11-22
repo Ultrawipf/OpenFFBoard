@@ -700,6 +700,12 @@ void TMC4671::Run(){
 			allowStateChange = false;
 		}
 
+		if(flagCheckPending && initialized){
+			// Process pending FLAG_Pin status check safely in thread context with SPI semaphore protection.
+			flagCheckPending = false;
+			statusCheck();
+		}
+
 		if(flagCheckInProgress){ // cause some delay until reenabling the status interrupt checking
 			setStatusFlags(0);
 			flagCheckInProgress = false;
@@ -826,6 +832,11 @@ bool TMC4671::findEncoderIndex(int32_t speed, uint16_t power,bool offsetPhiM,boo
 	rampFlux(power, 500);
 	runOpenLoop(power, 0, speed, 10, true);
 	while(!encoderIndexHitFlag && timeout-- > 0){
+		if(flagCheckPending){
+			// Poll latched status flags in thread context when FLAG_Pin interrupt fires.
+			flagCheckPending = false;
+			statusCheck();
+		}
 		Delay(10);
 	}
 	//int32_t speed = 10;
@@ -2743,7 +2754,8 @@ void TMC4671::statusCheck(){
 
 void TMC4671::exti(uint16_t GPIO_Pin){
 	if(GPIO_Pin == FLAG_Pin && !flagCheckInProgress){ // Flag pin went high and flag check is currently not in progress (prevents interrupt flooding)
-		statusCheck(); // In isr!
+		// Defer SPI status register reads from ISR to the TMC thread to prevent SPI bus corruption.
+		flagCheckPending = true;
 	}
 }
 
