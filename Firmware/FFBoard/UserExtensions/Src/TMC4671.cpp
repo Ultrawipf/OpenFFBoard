@@ -376,8 +376,7 @@ bool TMC4671::initialize(){
 	// Initial adc calibration and check without PWM if power off to get basic offsets. PWM is off!
 	if(!hasPower()){
 		if(!calibrateAdcOffset(150)){
-			changeState(TMC_ControlState::HardError); // ADC or shunt amp is broken!
-			enablePin.reset();
+			enterHardError(); // ADC or shunt amp is broken!
 			return false;
 		}
 	}
@@ -462,9 +461,12 @@ bool TMC4671::checkAdc(){
 	return(abs(total / 50) < 100); // Check if average has a low bias
 }
 
-void TMC4671::initializeWithPower(){
+bool TMC4671::initializeWithPower(){
 	if(powerInitialized){
-		return;
+		return true;
+	}
+	if(!canRunMotor()){
+		return false;
 	}
 	powerInitialized = true;
 	// Load ADC settings
@@ -478,30 +480,31 @@ void TMC4671::initializeWithPower(){
 	}else{
 		if(!calibrateAdcOffset(300)){
 			powerInitialized = false;
-			return; // Abort
+			return false; // Abort
 		}
 	}
 
-	// got power long enough. proceed to set up encoder
-	// if encoder not set up
-	enablePin.set();
-	setPwm(TMC_PwmMode::PWM_FOC); // enable foc
+	ErrorHandler::clearError(ErrorCode::undervoltage);
+
+	// Enable power stage only when a motor and encoder are configured and no fault is active.
+	if(conf.motconf.motor_type != MotorType::NONE && conf.motconf.enctype != EncoderType_TMC::NONE && canRunMotor()){
+		setFluxTorque(0, 0);
+		enablePin.set();
+		setPwm(TMC_PwmMode::PWM_FOC); // enable foc
+	}
 	if(!encoderAligned){
 		setEncoderType(conf.motconf.enctype);
-	}else{
+	}else if(canRunMotor()){
 		//last state
-		if(!emergency){
-			allowStateChange = true;
-			changeState(requestedState);
-			setMotionMode(lastMotionMode,true);
-			ErrorHandler::clearError(ErrorCode::undervoltage);
-		}
+		allowStateChange = true;
+		changeState(requestedState);
+		setMotionMode(lastMotionMode,true);
 	}
-
+	return true;
 }
 
 bool TMC4671::motorReady(){
-	return this->state == TMC_ControlState::Running && powerInitialized && adcCalibrated && encoderAligned;
+	return initialized && !isEmergencyActive() && conf.motconf.motor_type != MotorType::NONE && this->state == TMC_ControlState::Running && powerInitialized && adcCalibrated && encoderAligned;
 }
 
 void TMC4671::Run(){
@@ -510,6 +513,11 @@ void TMC4671::Run(){
 
 		if(!initialized && state != TMC_ControlState::HardError){
 			changeState(TMC_ControlState::uninitialized,true);
+		}
+
+		// Force immediate hardware cutoff and Shutdown state whenever emergency stop is active.
+		if(isEmergencyActive() && state != TMC_ControlState::HardError && state != TMC_ControlState::Shutdown){
+			enterShutdown();
 		}
 
 		// check if we are in a privileged state otherwise use requested state as new state
@@ -552,9 +560,21 @@ void TMC4671::Run(){
 			break;
 #endif
 		case TMC_ControlState::IndexSearch:
+			if(!canRunMotor() || conf.motconf.motor_type == MotorType::NONE){
+				changeState(isEmergencyActive() ? TMC_ControlState::Shutdown : laststate);
+				break;
+			}
+			allowStateChange = false;
 			autohome();
-			changeState(laststate);
-
+			allowStateChange = true;
+			if(isEmergencyActive()){
+				enterShutdown();
+			}else if(motorEnabledRequested && isSetUp()){
+				changeState(TMC_ControlState::Running);
+			}else{
+				stopMotor();
+				changeState(TMC_ControlState::Shutdown);
+			}
 			break;
 
 		case TMC_ControlState::Running:
@@ -562,16 +582,24 @@ void TMC4671::Run(){
 			break;
 
 		case TMC_ControlState::Shutdown:
+			// Ensure hardware power stage and FOC PWM remain disabled in Shutdown.
+			if(curMotionMode != MotionMode::stop){
+				disablePowerStage(true);
+			}else{
+				enablePin.reset();
+			}
 			Delay(100);
 			if(estopTriggered){
-				uint32_t pins = readReg(0x76);
-				bool tmc_en = ((pins >> 15) & 0x01) && pins != 0xffffffff;
-				if(tmc_en){
-					// Emergency stop reset
+				if(isHardwareEnableHigh()){
+					// Recover from external hardware enable pin emergency stop when pin is restored.
 					ErrorHandler::clearError(ESTOP_ERROR);
-					this->estopTriggered = false; // TODO resume correctly
+					this->estopTriggered = false;
+					this->emergency = false;
 					changeState(TMC_ControlState::uninitialized,true);
 				}
+			}else if(!emergency && motorEnabledRequested && conf.motconf.motor_type != MotorType::NONE){
+				// Resume motor operation safely from thread context after an ISR E-stop release.
+				startMotor();
 			}
 			break;
 
@@ -586,33 +614,29 @@ void TMC4671::Run(){
 			break;
 
 		case TMC_ControlState::HardError:
-
+			// Unconditionally keep power stage disabled and state locked in HardError.
+			enterHardError();
+			Delay(250);
 		break; // Broken
 
 		case TMC_ControlState::OverTemp:
-			this->stopMotor();
-			changeState(TMC_ControlState::HardError); // Block
+			// Immediately disable power stage and latch HardError on over-temperature fault.
+			enterHardError();
 		break;
 
 		case TMC_ControlState::EncoderFinished: // Startup sequence done
-			//setEncoderIndexFlagEnabled(false); // TODO
-//			curFilters.flux.params.enable = true;
-//			setBiquadFlux(curFilters.flux); // Enable flux filter
 			encoderAligned = true;
-			if(motorEnabledRequested && isSetUp()){
+			if(fullCalibrationInProgress){
+				// Proceed directly to slew-rate calibration before cutting PWM or entering Running.
+				Flash_Write(flashAddrs.encA,encodeEncHallMisc()); // Save encoder settings
+				changeState(TMC_ControlState::SlewRateCalibration);
+			}else if(motorEnabledRequested && isSetUp()){
 				startMotor();
 				changeState(TMC_ControlState::Running);
 			}else{
 				stopMotor();
 				laststate = TMC_ControlState::Running; // Go to running when starting again
 			}
-
-			if(fullCalibrationInProgress){
-				Flash_Write(flashAddrs.encA,encodeEncHallMisc()); // Save encoder settings
-				changeState(TMC_ControlState::SlewRateCalibration);
-			}
-
-
 		break;
 
 		default:
@@ -621,6 +645,11 @@ void TMC4671::Run(){
 
 		case TMC_ControlState::SlewRateCalibration:
 			{
+				if(isEmergencyActive()){
+					fullCalibrationInProgress = false;
+					enterShutdown();
+					break;
+				}
 				if(!hasPower()){
 					this->postPowerState = TMC_ControlState::SlewRateCalibration;
 					changeState(TMC_ControlState::waitPower);
@@ -629,7 +658,10 @@ void TMC4671::Run(){
 				allowStateChange = false;
 				measureMaxSlewRate();
 				allowStateChange = true;
-				if(fullCalibrationInProgress){
+				if(isEmergencyActive()){
+					fullCalibrationInProgress = false;
+					enterShutdown();
+				}else if(fullCalibrationInProgress){
 					fullCalibrationInProgress = false;
 					if(motorEnabledRequested && isSetUp()){
 						startMotor();
@@ -638,8 +670,11 @@ void TMC4671::Run(){
 						stopMotor();
 						laststate = TMC_ControlState::Running; // Go to running when starting again
 					}
+				}else if(motorEnabledRequested && isSetUp()){
+					changeState(TMC_ControlState::Running);
 				}else{
-					changeState(laststate,false);
+					stopMotor();
+					changeState(TMC_ControlState::Shutdown);
 				}
 				break;
 			}
@@ -648,11 +683,12 @@ void TMC4671::Run(){
 
 		// Optional update methods for safety
 
-		if(!hasPower() && state != TMC_ControlState::waitPower && state != TMC_ControlState::CoggingCalibration && initialized && powerInitialized){ // low voltage or overvoltage
+		if(!hasPower() && state != TMC_ControlState::waitPower && state != TMC_ControlState::CoggingCalibration && state != TMC_ControlState::HardError && initialized && powerInitialized){ // low voltage or overvoltage
 
 			requestedState = state;
 			ErrorHandler::addError(LOW_VOLTAGE_ERROR);
-			setMotionMode(MotionMode::stop,true); // Disable tmc
+			// Immediately cut current, PWM, and enable pin on undervoltage or overvoltage.
+			disablePowerStage();
 			changeState(TMC_ControlState::waitPower,true);
 			allowStateChange = false;
 		}
@@ -662,10 +698,6 @@ void TMC4671::Run(){
 			flagCheckInProgress = false;
 		}
 		Delay(10);
-
-		if(emergency && !motorReady()){
-			this->Suspend(); // we can not safely run. wait until resumed by estop
-		}
 	} // End while
 }
 void TMC4671::calibrateEncoder(){
@@ -704,12 +736,27 @@ TMC_ControlState TMC4671::getState(){
 }
 
 void TMC4671::changeState(TMC_ControlState newState,bool force){
+	// Never leave HardError once latched until MCU reset.
+	if(this->state == TMC_ControlState::HardError){
+		return;
+	}
 	if(newState != this->state){
 		this->laststate = this->state; // save last state if new state wants to jump back
+	}
+	if(newState == TMC_ControlState::HardError){
+		// Permanently latch HardError across both state and requestedState to prevent overwriting.
+		this->allowStateChange = false;
+		this->requestedState = TMC_ControlState::HardError;
+		this->state = TMC_ControlState::HardError;
+		return;
 	}
 	if(!force){
 		this->requestedState = newState;
 	}else{
+		// Lock state transitions when forcing privileged boot or power-wait states so requestedState cannot overwrite them.
+		if(newState == TMC_ControlState::uninitialized || newState == TMC_ControlState::waitPower){
+			this->allowStateChange = false;
+		}
 		state = newState;
 	}
 
@@ -748,8 +795,8 @@ void TMC4671::zeroAbnUsingPhiM(bool offsetPhiE){
  */
 bool TMC4671::findEncoderIndex(int32_t speed, uint16_t power,bool offsetPhiM,bool zeroCount){
 
-	if(conf.motconf.enctype != EncoderType_TMC::abn){
-		return false; // Only valid for ABN encoders
+	if(conf.motconf.enctype != EncoderType_TMC::abn || !enablePowerStageForCalibration()){
+		return false; // Only valid for ABN encoders when power stage is safe to energize
 	}
 
 	PhiE lastphie = getPhiEtype();
@@ -1576,34 +1623,116 @@ void TMC4671::setUdUq(int16_t ud,int16_t uq){
 	writeReg(0x24, ud | (uq << 16));
 }
 
-void TMC4671::stopMotor(){
-	// Stop driver if running
+bool TMC4671::canRunMotor(){
+	// Require no emergency stop, no latched HardError, and valid bus power.
+	return !isEmergencyActive() && state != TMC_ControlState::HardError && hasPower();
+}
 
-//	enablePin.reset();
+bool TMC4671::enablePowerStageForCalibration(bool requireAdcCalib){
+	// Safely energize FOC PWM and DRV_ENABLE for privileged alignment/calibration routines.
+	if(!initialized || !canRunMotor() || conf.motconf.motor_type == MotorType::NONE){
+		return false;
+	}
+	if(requireAdcCalib && (!powerInitialized || !adcCalibrated)){
+		return false;
+	}
+	setFluxTorque(0, 0);
+	setPwm(TMC_PwmMode::PWM_FOC);
+	enablePin.set();
+	return true;
+}
+
+void TMC4671::disablePowerStage(bool resetEnablePin){
+	// Disable driver enable pin (optional) and zero hardware torque, motion mode, and FOC PWM.
+	if(resetEnablePin){
+		enablePin.reset();
+	}
+	if(initialized && !inIsr()){
+		setFluxTorque(0, 0);
+		setMotionMode(MotionMode::stop, true);
+		setPwm(TMC_PwmMode::off);
+	}
+}
+
+void TMC4671::enterShutdown(){
+	// Cut power stage and force both active and requested states to Shutdown.
 	motorEnabledRequested = false;
+	disablePowerStage(true);
+	allowStateChange = true;
+	changeState(TMC_ControlState::Shutdown, false);
+	changeState(TMC_ControlState::Shutdown, true);
+}
+
+void TMC4671::enterWaitPower(){
+	// Cut power stage, set a clean post-power target state, and force privileged waitPower.
+	disablePowerStage(true);
+	TMC_ControlState resumeState = (motorEnabledRequested && isSetUp()) ? TMC_ControlState::Running : TMC_ControlState::Shutdown;
+	changeState(resumeState, false);
+	changeState(TMC_ControlState::waitPower, true);
+}
+
+void TMC4671::enterHardError(){
+	// Cut power stage, flag emergency, and permanently latch HardError across all state variables.
+	emergency = true;
+	motorEnabledRequested = false;
+	fullCalibrationInProgress = false;
+	disablePowerStage(true);
+	changeState(TMC_ControlState::HardError, true);
+}
+
+bool TMC4671::isHardwareEnableHigh(){
+	// Read TMC4671 ENABLE_IN bit (0x76 bit 15) while rejecting invalid SPI bus readings.
+	uint32_t pins = readReg(0x76);
+	return ((pins >> 15) & 0x01) && pins != 0xffffffff && pins != 0;
+}
+
+bool TMC4671::checkHardwareEstop(){
+	// Detect external E-stop pulling TMC ENABLE_IN low while MCU drives DRV_ENABLE high.
+	if(HAL_GPIO_ReadPin(DRV_ENABLE_GPIO_Port, DRV_ENABLE_Pin) == GPIO_PIN_SET && !isHardwareEnableHigh()){
+		this->estopTriggered = true;
+		this->emergencyStop(false);
+		return true;
+	}
+	return false;
+}
+
+void TMC4671::stopMotor(){
+	// Always cut torque, motion mode, and FOC PWM regardless of current state.
+	motorEnabledRequested = false;
+	disablePowerStage(false);
 	if(state == TMC_ControlState::Running || state == TMC_ControlState::EncoderFinished){
-		setMotionMode(MotionMode::stop,true);
-		setPwm(TMC_PwmMode::off); // disable foc
 		changeState(TMC_ControlState::Shutdown);
 	}
 }
 void TMC4671::startMotor(){
 	motorEnabledRequested = true;
+	if(isEmergencyActive() || state == TMC_ControlState::HardError || conf.motconf.motor_type == MotorType::NONE){
+		return;
+	}
 
-	if(state == TMC_ControlState::Shutdown && initialized && encoderAligned){
+	if(state == TMC_ControlState::Shutdown){
+		if(!initialized){
+			changeState(TMC_ControlState::uninitialized, true);
+			return;
+		}
+		if(!powerInitialized || !hasPower()){
+			changeState(TMC_ControlState::waitPower, true);
+			return;
+		}
+		if(!encoderAligned){
+			// Trigger encoder alignment before entering Running state.
+			setEncoderType(conf.motconf.enctype);
+			return;
+		}
 		changeState(TMC_ControlState::Running);
 	}
-	// Start driver if powered and emergency flag reset
-	if(hasPower() && !emergency){
+	// Only enable power stage when fully initialized, aligned, powered, and no fault is active.
+	if(initialized && powerInitialized && encoderAligned && canRunMotor()){
+		setFluxTorque(0, 0);
 		setPwm(TMC_PwmMode::PWM_FOC); // enable foc
 		enablePin.set();
 		setMotionMode(nextMotionMode,true);
-
 	}
-//	else{
-//		changeState(TMC_ControlState::waitPower);
-//	}
-
 }
 
 void TMC4671::emergencyStop(bool reset){
@@ -3405,10 +3534,10 @@ void TMC4671::handleStateWaitPower() {
 	allowStateChange = false;
 	pulseClipLed(); // blink led
 
-	if (!hasPower() || emergency) {
+	if (!hasPower() || isEmergencyActive()) {
 		this->powerCheckCounter = 0;
-		// Special case: Allow CoggingCalibration simulation even without power
-		if (requestedState == TMC_ControlState::CoggingCalibration) {
+		// Special case: Allow CoggingCalibration simulation even without power when not in emergency.
+		if (!isEmergencyActive() && requestedState == TMC_ControlState::CoggingCalibration) {
 			allowStateChange = true;
 		}
 		Delay(250);
@@ -3417,7 +3546,28 @@ void TMC4671::handleStateWaitPower() {
 
 	if (++this->powerCheckCounter > 5) {
 		if (!powerInitialized) {
-			initializeWithPower();
+			if (!initializeWithPower()) {
+				// Keep waiting in waitPower when ADC calibration fails instead of leaking state transitions.
+				this->powerCheckCounter = 0;
+				Delay(100);
+				return;
+			}
+		} else if (readReg(0x0A) == 0 || (conf.motconf.motor_type != MotorType::NONE && (readReg(0x1B) & 0xff0000) == 0)) {
+			// Detect hardware brownout reset of TMC4671 registers and force full re-initialization.
+			initialized = false;
+			powerInitialized = false;
+			encoderAligned = false;
+			changeState(TMC_ControlState::uninitialized, true);
+			return;
+		} else {
+			ErrorHandler::clearError(ErrorCode::undervoltage);
+			if (encoderAligned && motorEnabledRequested && canRunMotor()) {
+				// Safely restore power stage after a temporary undervoltage or overvoltage recovery.
+				setFluxTorque(0, 0);
+				enablePin.set();
+				setPwm(TMC_PwmMode::PWM_FOC);
+				setMotionMode(nextMotionMode, true);
+			}
 		}
 		allowStateChange = true;
 
@@ -3437,15 +3587,10 @@ void TMC4671::handleStateRunning() {
 
 	// Check status, Temps, Everything alright?
 	uint32_t tick = HAL_GetTick();
-	if (tick - lastStatTime > 2000) { // Every 2s
+	if (tick - lastStatTime > 200) { // Every 200ms for fast fault detection
 		lastStatTime = tick;
 		statusCheck();
-		// Get enable input. If tmc does not reply the result will read 0 or 0xffffffff (not possible normally)
-		uint32_t pins = readReg(0x76);
-		bool tmc_en = ((pins >> 15) & 0x01) && pins != 0xffffffff;
-		if (!tmc_en && motorEnabledRequested) { // Hardware emergency.
-			this->estopTriggered = true;
-			this->emergencyStop(false);
+		if (motorEnabledRequested && checkHardwareEstop()) {
 			ErrorHandler::addError(ESTOP_ERROR);
 		}
 

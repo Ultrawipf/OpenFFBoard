@@ -459,7 +459,7 @@ public:
 
 	void setupDriver();
 	bool initialize();
-	void initializeWithPower();
+	bool initializeWithPower();
 
 	void Run();
 	bool motorReady();
@@ -697,9 +697,9 @@ private:
 	const Error COMMUNICATION_ERROR = Error(ErrorCode::tmcCommunicationError, ErrorType::warning, "TMC not responding");
 	const Error ESTOP_ERROR = Error(ErrorCode::emergencyStop, ErrorType::critical, "TMC emergency stop triggered");
 
-	TMC_ControlState state = TMC_ControlState::uninitialized;
+	volatile TMC_ControlState state = TMC_ControlState::uninitialized;
 	TMC_ControlState laststate = TMC_ControlState::uninitialized;
-	TMC_ControlState requestedState = TMC_ControlState::Shutdown;
+	volatile TMC_ControlState requestedState = TMC_ControlState::Shutdown;
 	TMC_ControlState postPowerState = TMC_ControlState::NONE;
 	MotionMode curMotionMode = MotionMode::stop;
 	MotionMode lastMotionMode = MotionMode::stop;
@@ -709,11 +709,11 @@ private:
 
 	bool ES_TMCdetected = false; // ES versions are not made anymore and have some critical issues
 
-	bool encoderAligned = false;
+	volatile bool encoderAligned = false;
 	//bool encoderIndexFound = false;
-	bool initialized = false; // Init ran once
-	bool powerInitialized = false;
-	bool adcCalibrated = false;
+	volatile bool initialized = false; // Init ran once
+	volatile bool powerInitialized = false;
+	volatile bool adcCalibrated = false;
 	bool adcSettingsStored = false;
 	volatile bool motorEnabledRequested = false;
 	volatile bool encoderIndexHitFlag = false;
@@ -729,7 +729,7 @@ private:
 	int16_t externalEncoderPhieOffset = 0; // PhiE offset for external encoders
 	bool allowExternalEncoder = false;
 
-	bool allowStateChange = false;
+	volatile bool allowStateChange = false;
 	bool recalibrationRequired = false;
 
 	uint8_t enc_retry = 0;
@@ -799,6 +799,17 @@ private:
 	float getAbsolutePosition();
 	float getWrappedError(float target, float actual);
 	float getFilteredPosition();
+
+	// Safety and power-stage helpers
+	inline bool isEmergencyActive() const { return emergency || estopTriggered; }
+	bool canRunMotor();
+	bool enablePowerStageForCalibration(bool requireAdcCalib = true);
+	void disablePowerStage(bool resetEnablePin = true);
+	void enterShutdown();
+	void enterWaitPower();
+	void enterHardError();
+	bool isHardwareEnableHigh();
+	bool checkHardwareEstop();
 
 	void encoderInit();
 	void errorCallback(const Error &error, bool cleared);
