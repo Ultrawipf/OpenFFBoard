@@ -10,6 +10,7 @@
 
 //#include "ClassChooser.h"
 #include "ffb_defs.h"
+#include "Effect.h"
 #include "PersistentStorage.h"
 #include "CommandHandler.h"
 #include <vector>
@@ -27,12 +28,7 @@
 class Axis;
 struct metric_t;
 
-enum class ReconFilterMode : uint8_t {
-	NO_RECONSTRUCTION = 0,
-    LINEAR_INTERPOLATION = 1, 	// More responsive, attempts to match the game's signal precisely. Can feel "grainy" if slew rate is high.
-	SPLINE_CUBIC_NATURAL = 2,	// Highest fidelity, smooth curve through last 4 points. More CPU intensive.
-    SPLINE_CUBIC_HERMITE = 3  	// Mixed solution, good fidelity and optimized timing
-};
+
 
 /**
  * @brief Default gains for conditional effects.
@@ -71,6 +67,14 @@ struct effect_stat_t {
 	std::array<int16_t,MAX_AXIS> current={0}; //!< Current force value.
 	std::array<int16_t,MAX_AXIS> max={0};     //!< Maximum force value since reset.
 	uint16_t nb=0;                           //!< Number of times this effect has been used.
+	uint8_t state=0;                         //!< State of the effect
+};
+
+struct AxisSystemIntensities {
+	uint8_t idleSpring = 0xFF;
+	uint8_t damper = 0xFF;
+	uint8_t friction = 0xFF;
+	uint8_t inertia = 0xFF;
 };
 
 enum class EffectsCalculator_commands : uint32_t {
@@ -130,11 +134,9 @@ public:
 	 */
 	void calculateEffects(std::vector<std::unique_ptr<Axis>> &axes);
 
-	/**
-	 * @brief Sets the filters for a specific effect.
-	 * @param effect A pointer to the effect.
-	 */
-	virtual void setFilters(FFB_Effect* effect);
+	void setFilters(Effect *effect);
+	void setGainAndScale(Effect *effect);
+	void updateGainAndScaleForEffects();
 
 	/**
 	 * @brief Sets the global gain for all effects.
@@ -147,6 +149,8 @@ public:
 	 * @return The current global gain value.
 	 */
 	uint8_t getGain();
+
+	inline static ReconFilterMode reconFilterMode = ReconFilterMode::NO_RECONSTRUCTION;	//!< Current reconstruction filter mode.
 
 	/**
 	 * @brief Logs the usage of an effect type for statistics.
@@ -190,17 +194,6 @@ public:
 	void free_effect(uint16_t idx);
 
 	/**
-     * @brief Updates interpolation buffers for unconditional effect.
-     * Appelé par le handler HID (ex: 60Hz).
-     * @param effect Pointeur vers l'effet à modifier.
-     * @param new_magnitude Nouvelle magnitude/amplitude cible.
-     * @param new_offset Nouvel offset cible (utilisé uniquement si is_periodic est true).
-     * @param is_periodic Si true, met à jour les deux tampons (mag + offset).
-     */
-    void updateEffectReconstruction(FFB_Effect* effect, float new_magnitude, float new_offset, bool is_periodic);
-
-
-	/**
 	 * @brief Handles command line interface commands for the effects calculator.
 	 * @param cmd The parsed command.
 	 * @param replies A vector of replies to be sent back.
@@ -211,7 +204,18 @@ public:
 	virtual std::string getHelpstring() { return "Controls internal FFB effects"; }
 
 	static const uint32_t max_effects = MAX_EFFECTS;
-	std::array<FFB_Effect,max_effects> effects; //!< Main effects storage array.
+
+	Effect* getEffect(uint16_t idx) {
+		return (idx < max_effects) ? effects[idx].get() : nullptr;
+	}
+
+	void storeEffect(uint16_t idx, std::unique_ptr<Effect> new_effect) {
+		if (idx < max_effects) {
+			effects[idx] = std::move(new_effect);
+		}
+	}
+
+	inline static uint8_t frictionPctSpeedToRampup = 25;	//!< Speed percentage for friction ramp-up.
 
 	/**
 	 * @brief The main loop for the effects calculator thread.
@@ -225,6 +229,15 @@ public:
 protected:
 
 private:
+	// Effects
+	std::array<std::unique_ptr<Effect>,max_effects> effects; //!< Main effects storage array.
+
+	// System effects (per-axis mechanical effects)
+	std::array<std::unique_ptr<EffectSpring>, MAX_AXIS> systemSprings;
+	std::array<std::unique_ptr<EffectDamper>, MAX_AXIS> systemDampers;
+	std::array<std::unique_ptr<EffectFriction>, MAX_AXIS> systemFrictions;
+	std::array<std::unique_ptr<EffectInertia>, MAX_AXIS> systemInertias;
+
 	// Filters
 	effect_biquad_t filter[2];		//!< Filter coefficients for CFFilter, default (0) and custom (1) profiles.
 	uint8_t filterProfileId = 0;	//!< Currently active filter profile (0 or 1).
@@ -235,40 +248,13 @@ private:
 	uint8_t global_gain = 0xff;		//!< Global gain for all effects.
 	effect_gain_t gain;				//!< Per-effect type gains.
 	effect_scaler_t scaler;			//!< Per-effect type intensity scalers.
-	uint8_t frictionPctSpeedToRampup = 25;	//!< Speed percentage for friction ramp-up. : define the max value of the range (0..5% of maxspeed) where torque is rampup on friction
-
 	// FFB status
 	bool effects_active = false;	//!< True if FFB is globally active.
 	uint32_t effects_used = 0;		//!< Bitmask of effect types used since reset.
 	std::array<effect_stat_t,12> effects_stats; //!< Statistics for each effect type, [0..12 effect types].
 	std::array<effect_stat_t,12> effects_statslast; //!< Statistics from the previous cycle, [0..12 effect types].
 	bool isMonitorEffect = false;	//!< Flag to enable effect monitoring.
-
-	/**
-	 * @brief Calculates the force for a single component of an effect on a specific axis.
-	 * Dispatches between conditional and non-conditional effects.
-	 */
-	int32_t calculateEffectForceOnAxis(FFB_Effect *effect, int32_t forceVector, std::vector<std::unique_ptr<Axis>> &axes, uint8_t axis);
-
-	/**
-	 * @brief Calculates the base force for non-conditional effects (Constant, Ramp, Periodic).
-	 */
-	int32_t calcNonConditionEffectForce(FFB_Effect* effect);
-
-	/**
-	 * @brief Calculates the speed threshold for friction ramp-up.
-	 */
-	float speedRampupPct();
-
-	/**
-	 * @brief Calculates the force for conditional effects (Spring, Damper, Inertia, Friction).
-	 */
-	int32_t calcConditionEffectForce(FFB_Effect *effect, float metric, uint8_t gain, uint8_t idx, float scale, float angle_ratio);
-
-	/**
-	 * @brief Calculates the magnitude of an effect with an envelope.
-	 */
-	int32_t getEnvelopeMagnitude(FFB_Effect *effect, int32_t baseMagnitude);
+	std::array<AxisSystemIntensities, MAX_AXIS> lastIntensities;
 
 	/**
 	 * @brief Generates a string listing the effects used.
@@ -285,23 +271,16 @@ private:
 	 */
 	void updateFilterSettingsForEffects(uint8_t type_effect);
 
-	// --- Reconstruction Filter ---
-	ReconFilterMode reconFilterMode = ReconFilterMode::NO_RECONSTRUCTION;	//!< Current reconstruction filter mode.
+	/**
+	 * @brief Updates the condition of a system mechanical effect if the intensity changed.
+	 */
+	void updateSystemEffectCondition(EffectConditional* effect, uint8_t intensity, uint8_t& cachedIntensity, int16_t coeff, int16_t saturation = 20000);
 
 	/**
-	 * @brief Internal method to push a new value into the reconstruction filter.
-	 * @param state Pointer to the reconstruction filter state.
-	 * @param newValue The new value to push into the filter.
+	 * @brief Calculates and processes force for a system mechanical effect if active.
 	 */
-	void pushReconstructionSample(ReconFilterState* state, float newValue);
+	int32_t processSystemEffectForce(EffectConditional* effect, uint8_t intensity, metric_t* metrics, bool runCondition = true);
 
-	/**
-	 * @brief Retrieves the interpolated value from the reconstruction filter.
-	 * @param state Pointer to the reconstruction filter state.
-	 * @param fallbackValue Value to return if the filter is not ready.
-	 * @return The interpolated value from the filter.
-	 */
-	float evaluateReconstructionFilter(ReconFilterState* state, float fallbackValue);
 };
 
 /**

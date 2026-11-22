@@ -175,7 +175,7 @@ void Axis::registerCommands(){
 	registerCommand("esgain", Axis_commands::esgain, "Endstop stiffness",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("zeroenc", Axis_commands::zeroenc, "Zero axis",CMDFLAG_GET);
 	registerCommand("invert", Axis_commands::invert, "Invert axis",CMDFLAG_GET | CMDFLAG_SET);
-	registerCommand("idlespring", Axis_commands::idlespring, "Idle spring strength",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("idlespring", Axis_commands::idlespring, "Idle spring intensity",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("axisdamper", Axis_commands::axisdamper, "Independent damper effect",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("axisfriction", Axis_commands::axisfriction, "Independent friction effect",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("axisinertia", Axis_commands::axisinertia, "Independent inertia effect",CMDFLAG_GET | CMDFLAG_SET);
@@ -272,15 +272,15 @@ void Axis::restoreFlash(){
 
 	uint16_t effects;
 	if(Flash_Read(flashAddresses.effects1, &effects)){
-		setIdleSpringStrength(effects & 0xff);
-		setFxStrengthAndFilter((effects >> 8) & 0xff,damperIntensity,damperFilter);
+		this->idleSpringIntensity = effects & 0xff;
+		this->damperIntensity = (effects >> 8) & 0xff;
 	}else{
-		setIdleSpringStrength(idleSpringStrength); // Use default
+		this->idleSpringIntensity = 127; // Use default
 	}
 
 	if(Flash_Read(flashAddresses.effects2, &effects)){
-		setFxStrengthAndFilter(effects & 0xff,frictionIntensity,frictionFilter);
-		setFxStrengthAndFilter((effects >> 8) & 0xff,inertiaIntensity,inertiaFilter);
+		this->frictionIntensity = effects & 0xff;
+		this->inertiaIntensity = (effects >> 8) & 0xff;
 	}
 
 	uint16_t ratio;
@@ -340,7 +340,7 @@ void Axis::saveFlash(){
 	Flash_Write(flashAddresses.endstop, effectRatio | (endstopStrength << 8));
 	Flash_Write(flashAddresses.power, power);
 	Flash_Write(flashAddresses.degrees, (degreesOfRotation & 0x7fff) | (invertAxis << 15));
-	Flash_Write(flashAddresses.effects1, idleSpringStrength | (damperIntensity << 8));
+	Flash_Write(flashAddresses.effects1, idleSpringIntensity | (damperIntensity << 8));
 	Flash_Write(flashAddresses.effects2, frictionIntensity | (inertiaIntensity << 8));
 	Flash_Write(flashAddresses.encoderRatio, gearRatio.numerator | (gearRatio.denominator << 8));
 
@@ -656,75 +656,13 @@ int32_t Axis::getLastScaledEnc() {
 	return  clip(metric.current.pos_f * 0x7fffffff,-0x7fffffff,0x7fffffff); // Calc from float pos
 }
 
-/**
- * Changes intensity of idle spring when FFB is off
- */
-int32_t Axis::updateIdleSpringForce() {
-	return clip<int32_t,int32_t>((int32_t)(-metric.current.pos_scaled_16b*idleSpringScale),-idleSpringClip,idleSpringClip);
-}
 
-/*
- * Set the strength of the spring effect if FFB is disabled
- */
-void Axis::setIdleSpringStrength(uint8_t spring){
-	idleSpringStrength = spring;
-	idleSpringClip = clip<int32_t,int32_t>((int32_t)spring*35,0,10000);
-	idleSpringScale = 0.5f + ((float)spring * 0.01f);
-}
 
 /**
- * Sets friction, inertia or damper values and resets filter
+ * Sets the mechanical effect torque computed by EffectsCalculator.
  */
-void Axis::setFxStrengthAndFilter(uint8_t val,uint8_t& valToSet, Biquad& filter){
-	if(valToSet == 0 && val != 0)
-		filter.calcBiquad();
-
-	valToSet = val;
-}
-
-/**
- * Calculates the internal mechanical effects (damper, friction, inertia) that are always active.
- * Called before HID effects are calculated.
- * Also calculates idle spring when FFB is inactive.
- */
-void Axis::calculateMechanicalEffects(bool ffb_on){
-	mechanicalEffectTorque = 0;
-
-	if(!ffb_on){
-		mechanicalEffectTorque += updateIdleSpringForce();
-	}
-
-	// Always active damper
-	if(damperIntensity != 0){
-		float speedFiltered = (metric.current.speed) * (float)damperIntensity * AXIS_DAMPER_RATIO;
-		mechanicalEffectTorque -= damperFilter.process(clip<float, int32_t>(speedFiltered, -internalFxClip, internalFxClip));
-	}
-
-	// Always active inertia
-	if(inertiaIntensity != 0){
-		float accelFiltered = metric.current.accel * (float)inertiaIntensity * AXIS_INERTIA_RATIO;
-		mechanicalEffectTorque -= inertiaFilter.process(clip<float, int32_t>(accelFiltered, -internalFxClip, internalFxClip));
-	}
-
-	// Always active friction. Based on effectsCalculator implementation
-	if(frictionIntensity != 0){
-		float speed = metric.current.speed * INTERNAL_SCALER_FRICTION;
-		float speedRampupCeil = 4096;
-		float rampupFactor = 1.0;
-		if (fabs (speed) < speedRampupCeil) {								// if speed in the range to rampup we apply a sine curve
-#ifdef USE_DSP_FUNCTIONS
-			float phaseRad = PI * ((fabsf (speed) / speedRampupCeil) - 0.5f);// we start to compute the normalized angle (speed / normalizedSpeed@5%) and translate it of -1/2PI to translate sin on 1/2 periode
-			rampupFactor = ( 1.0f + arm_sin_f32(phaseRad ) ) / 2.0f;			// sin value is -1..1 range, we translate it to 0..2 and we scale it by 2
-#else
-			float phaseRad = M_PI * ((fabsf (speed) / speedRampupCeil) - 0.5f);// we start to compute the normalized angle (speed / normalizedSpeed@5%) and translate it of -1/2PI to translate sin on 1/2 periode
-			rampupFactor = ( 1.0f + sinf(phaseRad ) ) / 2.0f;			// sin value is -1..1 range, we translate it to 0..2 and we scale it by 2
-#endif
-		}
-		int8_t sign = speed >= 0 ? 1 : -1;
-		float force = (float)frictionIntensity * rampupFactor * sign * INTERNAL_AXIS_FRICTION_SCALER * 32;
-		mechanicalEffectTorque -= frictionFilter.process(clip<float, int32_t>(force, -internalFxClip, internalFxClip));
-	}
-
+void Axis::setMechanicalEffectTorque(int32_t torque) {
+	this->mechanicalEffectTorque = torque;
 }
 
 /**
@@ -987,9 +925,8 @@ void Axis::updateFilters(uint8_t profileId){
 	speedFilter.setQ(filterSpeedCst[this->filterProfileId].q / 100.0);
 	accelFilter.setFc(filterAccelCst[this->filterProfileId].freq / filter_f);
 	accelFilter.setQ(filterAccelCst[this->filterProfileId].q / 100.0);
-	damperFilter.setFc(filterDamperCst.freq/filter_f);
-	inertiaFilter.setFc(filterInertiaCst.freq/filter_f);
-	frictionFilter.setFc(filterFrictionCst.freq/filter_f);
+
+
 }
 
 /**
@@ -1079,11 +1016,11 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 	case Axis_commands::idlespring:
 		if (cmd.type == CMDtype::get)
 		{
-			replies.emplace_back(idleSpringStrength);
+			replies.emplace_back(idleSpringIntensity);
 		}
 		else if (cmd.type == CMDtype::set)
 		{
-			setIdleSpringStrength(cmd.val);
+			this->idleSpringIntensity = clip<int32_t, int32_t>(cmd.val, 0, 255);
 		}
 		break;
 
@@ -1094,7 +1031,7 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 		}
 		else if (cmd.type == CMDtype::set)
 		{
-			setFxStrengthAndFilter(cmd.val,this->damperIntensity,this->damperFilter);
+			this->damperIntensity = clip<int32_t, int32_t>(cmd.val, 0, 255);
 		}
 		break;
 
@@ -1105,7 +1042,7 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 		}
 		else if (cmd.type == CMDtype::set)
 		{
-			setFxStrengthAndFilter(cmd.val,this->frictionIntensity,this->frictionFilter);
+			this->frictionIntensity = clip<int32_t, int32_t>(cmd.val, 0, 255);
 		}
 		break;
 
@@ -1116,7 +1053,7 @@ CommandStatus Axis::command(const ParsedCommand& cmd,std::vector<CommandReply>& 
 		}
 		else if (cmd.type == CMDtype::set)
 		{
-			setFxStrengthAndFilter(cmd.val,this->inertiaIntensity,this->inertiaFilter);
+			this->inertiaIntensity = clip<int32_t, int32_t>(cmd.val, 0, 255);
 		}
 		break;
 

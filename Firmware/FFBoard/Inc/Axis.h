@@ -24,6 +24,7 @@
 #include "ClassChooser.h"
 #include "ExtiHandler.h"
 #include "EffectsCalculator.h"
+#include "Effect.h"
 
 #ifdef USE_DSP_FUNCTIONS
 #include "dsp/controller_functions.h"
@@ -308,32 +309,17 @@ public:
 	 */
 	void updateMetrics(float new_pos);
 
-	/**
-	 * @brief Updates the idle spring force.
-	 * @return The calculated idle spring force.
-	 */
-	int32_t updateIdleSpringForce();
+
+
+	uint8_t getDamperIntensity() const { return damperIntensity; }
+	uint8_t getFrictionIntensity() const { return frictionIntensity; }
+	uint8_t getInertiaIntensity() const { return inertiaIntensity; }
+	uint8_t getIdleSpringIntensity() const { return idleSpringIntensity; }
 
 	/**
-	 * @brief Sets the idle spring strength.
-	 * @param spring The new spring strength.
+	 * @brief Sets the mechanical effect torque computed by EffectsCalculator.
 	 */
-	void setIdleSpringStrength(uint8_t spring);
-
-	/**
-	 * @brief Sets the strength and filter for an effect.
-	 * @param val The new strength value.
-	 * @param valToSet A reference to the value to be set.
-	 * @param filter A reference to the biquad filter.
-	 */
-	void setFxStrengthAndFilter(uint8_t val,uint8_t& valToSet, Biquad& filter);
-
-	/**
-	 * @brief Calculates the mechanical effects (damper, friction, inertia) that are always active.
-	 * These are separate from the HID FFB effects sent by the game.
-	 * @param ffb_on A flag indicating if FFB is on.
-	 */
-	void calculateMechanicalEffects(bool ffb_on);
+	void setMechanicalEffectTorque(int32_t torque);
 
 	/**
 	 * @brief Gets the current torque.
@@ -511,10 +497,6 @@ private:
 	uint8_t endstopStrength = 127;	//!< Stiffness of the endstop effect.
 	const float endstopGain = 25;	//!< Overall maximum endstop intensity.
 
-	// Idle spring effect
-	uint8_t idleSpringStrength = 127; //!< Strength of the idle spring.
-	int16_t idleSpringClip = 0;       //!< Maximum force for the idle spring.
-	float idleSpringScale = 0;        //!< Scaler for the idle spring force.
 	bool motorWasNotReady = true;     //!< Flag to detect motor readiness transition.
 
 	// Slew rate calibration tracking: true when Axis requested a calibration and
@@ -525,24 +507,20 @@ private:
 	// TODO tune these and check if it is really stable and beneficial to the FFB. index 4 placeholder
 	const std::array<biquad_constant_t,4> filterSpeedCst = { {{ 40, 55 }, { 70, 55 }, { 120, 55 }, {180, 55}} }; //!< Speed filter profiles.
 	const std::array<biquad_constant_t,4> filterAccelCst = { {{ 40, 30 }, { 55, 30 }, { 70, 30 }, {120, 55}} }; //!< Acceleration filter profiles.
-	const biquad_constant_t filterDamperCst = {60, 55};     //!< Damper filter constants.
-	const biquad_constant_t filterFrictionCst = {50, 20};   //!< Friction filter constants.
-	const biquad_constant_t filterInertiaCst = {20, 20};    //!< Inertia filter constants.
+
 	uint8_t filterProfileId = 1; //!< Currently selected filter profile ID.
 	float filter_f = 1000.0; // 1khz
 	const int32_t internalFxClip = 20000; //!< Clipping value for internal effects.
 
 	// Internal effects intensity
+	uint8_t idleSpringIntensity = 127; //!< Intensity of the idle spring.
 	uint8_t damperIntensity = 30;	//!< Intensity of the internal damper effect.
 	uint8_t frictionIntensity = 0;	//!< Intensity of the internal friction effect.
 	uint8_t inertiaIntensity = 0;	//!< Intensity of the internal inertia effect.
 
-	// Biquad filter instances
 	Biquad speedFilter = Biquad(BiquadType::lowpass, filterSpeedCst[filterProfileId].freq/filter_f, filterSpeedCst[filterProfileId].q/100.0, 0.0);
 	Biquad accelFilter = Biquad(BiquadType::lowpass, filterAccelCst[filterProfileId].freq/filter_f, filterAccelCst[filterProfileId].q/100.0, 0.0);
-	Biquad damperFilter = Biquad(BiquadType::lowpass, filterDamperCst.freq/filter_f, filterDamperCst.q / 100.0, 0.0);
-	Biquad frictionFilter = Biquad(BiquadType::lowpass, filterFrictionCst.freq/filter_f, filterFrictionCst.q / 100.0, 0.0);
-	Biquad inertiaFilter = Biquad(BiquadType::lowpass, filterInertiaCst.freq/filter_f, filterInertiaCst.q / 100.0, 0.0);
+
 
 	// Equalizer
 	static const uint8_t num_eq_bands = 6;
