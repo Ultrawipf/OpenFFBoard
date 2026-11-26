@@ -97,24 +97,6 @@ void EncoderLocal::setPeriod(uint32_t period){
 }
 
 void EncoderLocal::exti(uint16_t GPIO_Pin){
-#if LOCAL_ENCODER_SPEED_MODE
-	// Ce code suppose qu'une interruption matérielle est activée sur les pins A ou B de l'encodeur.
-	// ATTENTION: Sur un encodeur haute résolution, cela peut surcharger le CPU (trop d'interruptions).
-	// Il est préférable d'utiliser le Timer en Input Capture pour des vitesses élevées.
-	if(GPIO_Pin != ENCODER_Z_Pin) {
-		uint32_t timestamp = DWT->CYCCNT;
-		float dt_pulse = (float)(timestamp - last_timestamp) / (float)SystemCoreClock;
-		last_timestamp = timestamp;
-		
-		int32_t current_pos = getPos();
-		float vel = (float)(current_pos - last_speed_pos) * (2.0f * (float)M_PI / (float)cpr) / dt_pulse;
-		last_speed_pos = current_pos;
-		
-		// Appel de la nouvelle architecture asynchrone (T-Method)
-		updateVelocityAsynchronous(vel, dt_pulse);
-	}
-#endif
-
 	if(GPIO_Pin == ENCODER_Z_Pin){
 		if(HAL_GPIO_ReadPin(ENCODER_Z_GPIO_Port, ENCODER_Z_Pin) == GPIO_PIN_RESET){
 		// Encoder Z pin activated
@@ -146,22 +128,7 @@ void EncoderLocal::overflowCallback(){
 }
 
 void EncoderLocal::triggerRead() {
-#if LOCAL_ENCODER_SPEED_MODE
-	int32_t current_pos = getPos();
-	int32_t delta_ticks = std::abs(current_pos - last_pos_1ms);
-	last_pos_1ms = current_pos;
-
-	// MT-Method : Bascule dynamique
-	// Si on a plus de 2 impulsions dans cette milliseconde, la M-Method (polling) suffit largement.
-	// On coupe l'interruption EXTI pour sauver le CPU. Sinon, on la réactive pour la précision.
-	if (delta_ticks > 2) {
-		EXTI->IMR &= ~(ENCODER_A_Pin | ENCODER_B_Pin); // Masque les interruptions
-	} else {
-		EXTI->IMR |= (ENCODER_A_Pin | ENCODER_B_Pin);  // Active les interruptions
-	}
-#endif
-
-	// On laisse la classe mère s'occuper de la mise à jour classique de la position (M-Method)
+	// Synchronous M-Method read of hardware quadrature counter TIM->CNT (handled by KinematicPLL)
 	Encoder::triggerRead();
 }
 

@@ -1898,11 +1898,31 @@ void TMC4671::setPos(int32_t pos){
 void TMC4671::setTmcPos(int32_t pos){
 
 	writeReg(0x6B, pos);
+	uint32_t cprVal = getCpr();
+	if(cprVal > 0){
+		pll.reanchor((float)pos / (float)cprVal);
+	}
 }
 
 int32_t TMC4671::getPos(){
 
 	int32_t pos = (int32_t)readReg(0x6B);
+	if(hasIntegratedEncoder()){
+		uint32_t now = micros();
+		uint32_t dt_us = now - last_update_time;
+		if(dt_us >= 200){ // Update integrated PLL at Axis 1 kHz cadence without extra SPI transactions
+			float dt = (float)dt_us * 1e-6f;
+			last_update_time = now;
+			uint32_t cprVal = getCpr();
+			if(cprVal > 0){
+				if(last_cpr != cprVal){
+					last_cpr = cprVal;
+					pll.setTuning(80.0f, 1.0f, 55.0f);
+				}
+				pll.update((float)pos / (float)cprVal, dt);
+			}
+		}
+	}
 	return pos;
 }
 
@@ -3169,7 +3189,7 @@ void TMC4671::setExternalPhiE(float phiE_rotations) {
     int16_t phiE_final = (int16_t)phiE + externalEncoderPhieOffset;
     
     if (!spiPort.isTaken()) {
-        //VMA writeRegAsync(0x1C, phiE_final);
+        writeRegAsync(0x1C, (uint16_t)phiE_final);
     }
 }
 

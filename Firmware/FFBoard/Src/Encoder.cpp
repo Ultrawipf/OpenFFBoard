@@ -82,11 +82,11 @@ void Encoder::setPos(int32_t pos){
 }
 
 float Encoder::getSpeed() {
-    return kalman.getOmega() / (2.0f * 3.14159265f); // rad/s -> rot/s
+    return pll.getSpeed(); // rot/s
 }
 
 float Encoder::getAccel() {
-    return kalman.getAlpha() / (2.0f * 3.14159265f); // rad/s^2 -> rot/s^2
+    return pll.getAccel(); // rot/s^2
 }
 
 uint32_t Encoder::getScaler() {
@@ -97,45 +97,34 @@ void Encoder::triggerRead() {
     // Calculate exact microsecond time step (dt) since the last update
     uint32_t now = micros();
     uint32_t dt_us = now - last_update_time;
-    if (dt_us == 0) return; // Prevent zero-time prediction step
+    if (dt_us == 0) return; // Prevent zero-time step
     float dt = (float)dt_us * 1e-6f; // Convert microseconds to seconds (float)
     last_update_time = now;
-    
-    // For synchronous/polling-based encoders (e.g. incremental ABN), 
+
+    // For synchronous/polling-based encoders (e.g. incremental ABN),
     // getPos_f() reads STM32 register counts instantaneously.
-    // Update the Kinematic Kalman filter state with the new position.
     updateState(getPos_f(), dt);
 }
 
 void Encoder::updateState(float new_pos_rot, float dt) {
-    // 1. Predict state transition using current time step dt
-    kalman.predict(dt);
-
-    // 2. Adjust measurement noise covariance R dynamically on CPR transitions.
-    // Quantization noise covariance for uniform distribution: R = (step^2) / 12.
+    // 1. Adapt PLL bandwidth dynamically based on encoder CPR resolution
     uint32_t current_cpr = getCpr();
-    if (current_cpr != last_cpr) {
+    if (current_cpr != last_cpr && current_cpr > 0) {
         last_cpr = current_cpr;
-        if (current_cpr > 0) {
-            float step = 2.0f * 3.14159265f / (float)current_cpr;
-            r_var = ((step * step) / 12.0f) + 1e-6f;
+        if (current_cpr >= 65536) {
+            pll.setTuning(130.0f, 1.0f, 60.0f);
+        } else if (current_cpr >= 16384) {
+            pll.setTuning(90.0f, 1.0f, 60.0f);
         } else {
-            r_var = 0.0001f; // Safe default variance
+            pll.setTuning(60.0f, 1.0f, 50.0f);
         }
     }
 
-    // 3. Convert position from rotations to SI radians
-    float new_pos_rad = new_pos_rot * 2.0f * 3.14159265f;
+    // 2. Update 2nd-order Type-II PLL in continuous rotations
+    pll.update(new_pos_rot, dt);
 
-    // 4. Correct the Kalman state estimate with the new measurement and noise
-    kalman.updatePosition(new_pos_rad, r_var);
-
-    // 5. Trigger FOC update for any attached external adapters (Cascade ISR)
+    // 3. Trigger FOC update for any attached external adapters (Cascade ISR)
     EncoderManager::getInstance().updateAdaptersForEncoder(this);
-}
-
-void Encoder::updateVelocityAsynchronous(float new_vel, float dt_pulse) {
-    kalman.updateVelocity(new_vel, dt_pulse);
 }
 
 

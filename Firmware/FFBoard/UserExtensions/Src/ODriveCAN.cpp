@@ -422,6 +422,13 @@ void ODriveCAN::canRxPendCallback(CANPort* port,CAN_rx_msg& msg){
 		lastPosTime = HAL_GetTick();
 		posWaiting = false;
 
+		uint32_t now = micros();
+		uint32_t dt_us = now - last_update_time;
+		if(dt_us > 0){
+			last_update_time = now;
+			pll.updateFromVelocity(lastSpeed, (float)dt_us * 1e-6f);
+		}
+
 		break;
 	}
 

@@ -115,11 +115,28 @@ int32_t MotorSimplemotion::getPos(){
 	if(HAL_GetTick()-lastUpdateTime>100){
 		this->turn(lastTorque); // Sending torque updates the position
 	}
-	return position - position_offset;
+	int32_t pos = position - position_offset;
+	uint32_t cprVal = this->cpr;
+	if(cprVal > 0){
+		uint32_t now = micros();
+		uint32_t dt_us = now - last_update_time;
+		if(dt_us >= 200){
+			last_update_time = now;
+			if(last_cpr != cprVal){
+				last_cpr = cprVal;
+				pll.setTuning(60.0f, 1.0f, 50.0f);
+			}
+			pll.update((float)pos / (float)cprVal, (float)dt_us * 1e-6f);
+		}
+	}
+	return pos;
 }
 
 void MotorSimplemotion::setPos(int32_t pos){
 	position_offset = position - pos;
+	if(this->cpr > 0){
+		pll.reanchor((float)pos / (float)this->cpr);
+	}
 }
 
 /**

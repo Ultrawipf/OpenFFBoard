@@ -684,35 +684,24 @@ void Axis::calculateMechanicalEffects(bool ffb_on){
 		mechanicalEffectTorque += updateIdleSpringForce();
 	}
 
-	// Always active damper
+	// Always active damper (direct zero-lag injection from KinematicPLL speed)
 	if(damperIntensity != 0){
-		float speedFiltered = (metric.speed) * (float)damperIntensity * AXIS_DAMPER_RATIO;
-		mechanicalEffectTorque -= damperFilter.process(clip<float, int32_t>(speedFiltered, -internalFxClip, internalFxClip));
+		float damperForce = (metric.speed) * (float)damperIntensity * AXIS_DAMPER_RATIO;
+		mechanicalEffectTorque -= clip<float, int32_t>(damperForce, -internalFxClip, internalFxClip);
 	}
 
-	// Always active inertia
+	// Always active inertia (direct injection from decoupled RC-filtered acceleration)
 	if(inertiaIntensity != 0){
-		float accelFiltered = metric.accel * (float)inertiaIntensity * AXIS_INERTIA_RATIO;
-		mechanicalEffectTorque -= inertiaFilter.process(clip<float, int32_t>(accelFiltered, -internalFxClip, internalFxClip));
+		float inertiaForce = metric.accel * (float)inertiaIntensity * AXIS_INERTIA_RATIO;
+		mechanicalEffectTorque -= clip<float, int32_t>(inertiaForce, -internalFxClip, internalFxClip);
 	}
 
-	// Always active friction. Based on effectsCalculator implementation
+	// Always active friction: continuous tanh regularization (eliminates zero-crossing chatter & Biquad phase lag)
 	if(frictionIntensity != 0){
-		float speed = metric.speed * INTERNAL_SCALER_FRICTION;
-		float speedRampupCeil = 4096;
-		float rampupFactor = 1.0;
-		if (fabs (speed) < speedRampupCeil) {								// if speed in the range to rampup we apply a sine curve
-#ifdef USE_DSP_FUNCTIONS
-			float phaseRad = PI * ((fabsf (speed) / speedRampupCeil) - 0.5f);// we start to compute the normalized angle (speed / normalizedSpeed@5%) and translate it of -1/2PI to translate sin on 1/2 periode
-			rampupFactor = ( 1.0f + arm_sin_f32(phaseRad ) ) / 2.0f;			// sin value is -1..1 range, we translate it to 0..2 and we scale it by 2
-#else
-			float phaseRad = M_PI * ((fabsf (speed) / speedRampupCeil) - 0.5f);// we start to compute the normalized angle (speed / normalizedSpeed@5%) and translate it of -1/2PI to translate sin on 1/2 periode
-			rampupFactor = ( 1.0f + sinf(phaseRad ) ) / 2.0f;			// sin value is -1..1 range, we translate it to 0..2 and we scale it by 2
-#endif
-		}
-		int8_t sign = speed >= 0 ? 1 : -1;
-		float force = (float)frictionIntensity * rampupFactor * sign * INTERNAL_AXIS_FRICTION_SCALER * 32;
-		mechanicalEffectTorque -= frictionFilter.process(clip<float, int32_t>(force, -internalFxClip, internalFxClip));
+		// metric.speed is in deg/s; w0 = 3.0 deg/s (~0.052 rad/s) gives smooth continuous Coulomb transition
+		float smoothSign = tanhf(metric.speed / 3.0f);
+		float force = (float)frictionIntensity * smoothSign * INTERNAL_AXIS_FRICTION_SCALER * 32.0f;
+		mechanicalEffectTorque -= clip<float, int32_t>(force, -internalFxClip, internalFxClip);
 	}
 
 }

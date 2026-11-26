@@ -413,7 +413,11 @@ int32_t EffectsCalculator::calculateEffectForceOnAxis(FFB_Effect *effect, int32_
 				force = clip<int32_t, int32_t>(force, -effect->conditions[con_idx].negativeSaturation, effect->conditions[con_idx].positiveSaturation);
 			}
 
-			result_torque -= effect->filter[axis]->process( (((gain.friction + 1) * force) >> 8) * angle_ratio * scaler.friction);
+			float frictionOut = (((gain.friction + 1) * force) >> 8) * angle_ratio * scaler.friction;
+			if (effect->filter[axis] != nullptr && effect->filter[axis]->getFc() < 0.5f && effect->filter[axis]->getFc() > 0.0f) {
+				frictionOut = effect->filter[axis]->process(frictionOut);
+			}
+			result_torque -= frictionOut;
 		}
 
 		break;
@@ -422,7 +426,11 @@ int32_t EffectsCalculator::calculateEffectForceOnAxis(FFB_Effect *effect, int32_
 	{
 
 		float speed = metrics->speed * INTERNAL_SCALER_DAMPER;
-		result_torque -= effect->filter[axis]->process(calcConditionEffectForce(effect, speed, gain.damper, con_idx, scaler.damper, angle_ratio));
+		float damperOut = calcConditionEffectForce(effect, speed, gain.damper, con_idx, scaler.damper, angle_ratio);
+		if (effect->filter[axis] != nullptr && effect->filter[axis]->getFc() < 0.5f && effect->filter[axis]->getFc() > 0.0f) {
+			damperOut = effect->filter[axis]->process(damperOut);
+		}
+		result_torque -= damperOut;
 
 		break;
 	}
@@ -430,7 +438,11 @@ int32_t EffectsCalculator::calculateEffectForceOnAxis(FFB_Effect *effect, int32_
 	case FFB_EFFECT_INERTIA:
 	{
 		float accel = metrics->accel * INTERNAL_SCALER_INERTIA;
-		result_torque -= effect->filter[axis]->process(calcConditionEffectForce(effect, accel, gain.inertia, con_idx, scaler.inertia, angle_ratio)); // Bump *60 the inertia feedback
+		float inertiaOut = calcConditionEffectForce(effect, accel, gain.inertia, con_idx, scaler.inertia, angle_ratio);
+		if (effect->filter[axis] != nullptr && effect->filter[axis]->getFc() < 0.5f && effect->filter[axis]->getFc() > 0.0f) {
+			inertiaOut = effect->filter[axis]->process(inertiaOut);
+		}
+		result_torque -= inertiaOut;
 
 		break;
 	}

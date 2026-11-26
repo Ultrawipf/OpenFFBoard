@@ -10,7 +10,7 @@
 
 #include "FFBoardMain.h"
 #include "ChoosableClass.h"
-#include "KinematicKalman.h"
+#include "KinematicPLL.h"
 
 /*
  * Note:
@@ -51,16 +51,14 @@ public:
 	virtual uint32_t getScaler();
 	virtual void triggerRead();
 	void updateState(float new_pos, float dt);
-	void updateVelocityAsynchronous(float new_vel, float dt_pulse);
 
 	static const std::vector<class_entry<Encoder> > all_encoders;
 	virtual const ClassType getClassType() override {return ClassType::Encoder;};
 
 protected:
 	uint32_t cpr = 0;
-	KinematicKalman kalman;
+	KinematicPLL pll;
 	uint32_t last_cpr = 0;
-	float r_var = 0.0001f;
 	uint32_t last_update_time = 0;
 };
 

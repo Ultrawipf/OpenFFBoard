@@ -14,7 +14,8 @@ ExternalEncoderAdapter::~ExternalEncoderAdapter() {
 
 void ExternalEncoderAdapter::update() {
     if (motor != nullptr && encoder != nullptr) {
-        float theta = encoder->getPos_f();
+        // Use absolute mechanical position (without user centering offset) so setPos(0) never shifts FOC phiE
+        float theta = encoder->getPosAbs_f();
         float omega = encoder->getSpeed();
         float dt_spi = 0.000050f; // 50 us latency compensation
         float theta_extrapolated = theta + omega * dt_spi;
