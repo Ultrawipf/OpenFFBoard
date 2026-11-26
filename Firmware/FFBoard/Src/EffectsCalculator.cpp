@@ -396,17 +396,11 @@ int32_t EffectsCalculator::calculateEffectForceOnAxis(FFB_Effect *effect, int32_
 			// remove offset/deadband from metric to compute force
 			speed -= (offset + (deadBand * (speed < offset ? -1 : 1)) );
 
-			// check if speed is in the 0..x% to rampup, if is this range, apply a sinusoidale function to smooth the torque (slow near 0, slow around the X% rampup
-			float rampupFactor = 1.0;
-			if (fabs (speed) < speedRampupCeil) {								// if speed in the range to rampup we apply a sinus curbe to ramup
-
-				float phaseRad = MATH_PI * ((fabsf (speed) / speedRampupCeil) - 0.5f);// we start to compute the normalized angle (speed / normalizedSpeed@5%) and translate it of -1/2PI to translate sin on 1/2 periode
-				rampupFactor = ( 1.0f + MATH_SIN(phaseRad ) ) / 2.0f;			// sin value is -1..1 range, we translate it to 0..2 and we scale it by 2
-			}
-
-			int8_t sign = speed >= 0 ? 1 : -1;
+			// Continuous tanh regularization around zero speed (replaces piecewise sine rampup to eliminate chatter)
+			float rampupScale = std::max(speedRampupCeil * 0.5f, 1.0f);
+			float smoothSign = tanhf(speed / rampupScale);
 			uint16_t coeff = speed < 0 ? effect->conditions[con_idx].negativeCoefficient : effect->conditions[con_idx].positiveCoefficient;
-			force = coeff * rampupFactor * sign;
+			force = (int32_t)((float)coeff * smoothSign);
 
 			//if there is a saturation, used it to clip result
 			if (effect->conditions[con_idx].negativeSaturation !=0 || effect->conditions[con_idx].positiveSaturation !=0) {

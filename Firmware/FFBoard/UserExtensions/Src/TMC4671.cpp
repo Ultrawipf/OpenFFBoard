@@ -1522,6 +1522,8 @@ void TMC4671::setEncoderType(EncoderType_TMC type){
 
 	if (type != EncoderType_TMC::ext) {
 		if (extEncAdapter) {
+			EncoderManager::getInstance().deregisterAdapter(extEncAdapter.get());
+			vTaskDelay(pdMS_TO_TICKS(2)); // RCU Grace Period
 			extEncAdapter.reset();
 		}
 	}
@@ -1556,13 +1558,14 @@ void TMC4671::setEncoderType(EncoderType_TMC type){
 	}else if(type == EncoderType_TMC::hall){ // Hall sensor. Just trust it
 		changeState(TMC_ControlState::Shutdown);
 		setPosSel(PosSelection::PhiM_hal);
-		setVelSel(VelSelection::PhiM_hal);
+		setVelSel(VelSelection::PhiM_hal, 1); // mode=1: PWM-sync time-difference measurement for low-res Hall
 		encoderAligned = true;
 		setPhiEtype(PhiE::hall);
 		setup_HALL(hallconf);
 
 	}else if(type == EncoderType_TMC::ext && drvEncoder && drvEncoder->getEncoderType() != EncoderType::NONE){
-		// TODO check different encoder type
+		// Ensure external encoder is registered in EncoderManager before attaching FOC adapter
+		EncoderManager::getInstance().registerEncoder(drvEncoder.get());
 		encoderAligned = false;
 		setUpExtEncTimer();
 		//changeState(TMC_ControlState::Shutdown);
@@ -1910,16 +1913,22 @@ int32_t TMC4671::getPos(){
 	if(hasIntegratedEncoder()){
 		uint32_t now = micros();
 		uint32_t dt_us = now - last_update_time;
-		if(dt_us >= 200){ // Update integrated PLL at Axis 1 kHz cadence without extra SPI transactions
+		if(dt_us >= 200){ // Update integrated PLL at Axis 1 kHz cadence
 			float dt = (float)dt_us * 1e-6f;
 			last_update_time = now;
-			uint32_t cprVal = getCpr();
-			if(cprVal > 0){
-				if(last_cpr != cprVal){
-					last_cpr = cprVal;
-					pll.setTuning(80.0f, 1.0f, 55.0f);
+			if(conf.motconf.enctype == EncoderType_TMC::hall){
+				// Low-resolution Hall: use hardware PWM-sync time-difference velocity (0x6A, RPM -> rot/s)
+				float vel_rps = (float)getVelocity() / 60.0f;
+				pll.updateFromVelocity(vel_rps, dt);
+			} else {
+				uint32_t cprVal = getCpr();
+				if(cprVal > 0){
+					if(last_cpr != cprVal){
+						last_cpr = cprVal;
+						pll.setTuning(80.0f, 1.0f, 55.0f);
+					}
+					pll.update((float)pos / (float)cprVal, dt);
 				}
-				pll.update((float)pos / (float)cprVal, dt);
 			}
 		}
 	}
@@ -2834,6 +2843,13 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 		status = handleGetSet(cmd, replies, this->conf.combineEncoder);
 		if(!this->conf.combineEncoder){
 			this->conf.invertForce = false; // Force off
+			// Re-anchor integrated PLL when switching back from external encoder
+			uint32_t cprVal = getCpr();
+			if(cprVal > 0){
+				pll.reanchor((float)(int32_t)readReg(0x6B) / (float)cprVal);
+			}
+		} else if (drvEncoder) {
+			EncoderManager::getInstance().registerEncoder(drvEncoder.get());
 		}
 
 		break;
