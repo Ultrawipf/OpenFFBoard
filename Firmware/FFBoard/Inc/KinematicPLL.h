@@ -34,6 +34,13 @@ public:
 	void setTuning(float fn_hz, float damping = 1.0f, float accel_fc_hz = 35.0f, float vel_fc_hz = 0.0f);
 
 	/**
+	 * @brief Configure velocity saturation limit and independent outlier gating threshold.
+	 * @param max_rps_limit Saturation limit in rot/s (default MAX_RPS = 11.14 rot/s ~ 668 RPM; raise for geared motors).
+	 * @param gating_rps_limit Physical speed bound for outlier gating in rot/s (0 = default 3x max_rps_limit).
+	 */
+	void setVelocityLimits(float max_rps_limit, float gating_rps_limit = 0.0f);
+
+	/**
 	 * @brief Update the PLL with a new continuous multi-turn position measurement.
 	 * @param z_pos_rot Measured multi-turn angle in rotations (continuous, unwrapped).
 	 * @param dt Time step in seconds (e.g. 0.0001f at 10 kHz, 0.001f at 1 kHz).
@@ -64,6 +71,8 @@ private:
 	float ki = 568489.0f;
 	float fn_target = 120.0f;
 	float damping_target = 1.0f;
+	float max_rps = MAX_RPS;
+	float gating_rps = MAX_RPS * 3.0f;
 	float tau_vel = 0.00176839f;   // ~90 Hz
 	float tau_accel = 0.00454728f; // ~35 Hz
 	uint8_t glitch_count = 0;

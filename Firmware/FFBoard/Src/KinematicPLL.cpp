@@ -37,6 +37,11 @@ void KinematicPLL::setTuning(float fn_hz, float damping, float accel_fc_hz, floa
 	tau_accel = 1.0f / (2.0f * PI_F * std::max(accel_fc_hz, 1.0f));
 }
 
+void KinematicPLL::setVelocityLimits(float max_rps_limit, float gating_rps_limit) {
+	max_rps = std::max(max_rps_limit, 1.0f);
+	gating_rps = (gating_rps_limit > 0.0f) ? std::max(gating_rps_limit, max_rps) : (max_rps * 3.0f);
+}
+
 void KinematicPLL::update(float z_pos_rot, float dt) {
 	if (!initialized) {
 		pos_est = z_pos_rot;
@@ -67,8 +72,8 @@ void KinematicPLL::update(float z_pos_rot, float dt) {
 	// 1. Continuous multi-turn tracking error
 	float error = z_pos_rot - pos_est;
 
-	// 2. Time-proportional Outlier Gating (3x physical max displacement over dt)
-	float max_step_rot = std::max(MAX_RPS * dt * 3.0f, 0.004f);
+	// 2. Time-proportional Outlier Gating (decoupled from velocity saturation limit)
+	float max_step_rot = std::max(gating_rps * dt, 0.004f);
 	if (std::fabs(error) > max_step_rot) {
 		if (++glitch_count > 3) {
 			// Persistent step (e.g. explicit setPos() recenter): re-anchor without spike
@@ -96,8 +101,8 @@ void KinematicPLL::update(float z_pos_rot, float dt) {
 		eff_kp = 2.0f * damping_target * wn;
 		eff_ki = wn * wn;
 	}
-	integrator = std::clamp(integrator + eff_ki * error * dt, -MAX_RPS, MAX_RPS);
-	vel_est = std::clamp(eff_kp * error + integrator, -MAX_RPS, MAX_RPS);
+	integrator = std::clamp(integrator + eff_ki * error * dt, -max_rps, max_rps);
+	vel_est = std::clamp(eff_kp * error + integrator, -max_rps, max_rps);
 
 	// 4. Closed-loop position integration (must use full PI vel_est for critical damping)
 	pos_est += vel_est * dt;
@@ -116,7 +121,7 @@ void KinematicPLL::update(float z_pos_rot, float dt) {
 }
 
 void KinematicPLL::updateFromVelocity(float vel_rps, float dt) {
-	float clamped_vel = std::clamp(vel_rps, -MAX_RPS, MAX_RPS);
+	float clamped_vel = std::clamp(vel_rps, -max_rps, max_rps);
 	if (!initialized || dt <= 1e-6f || dt > 0.05f) {
 		vel_prev = clamped_vel;
 		vel_est = clamped_vel;
