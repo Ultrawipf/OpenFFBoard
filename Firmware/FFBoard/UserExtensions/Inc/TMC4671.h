@@ -477,11 +477,6 @@ public:
 
 	void setBBM(uint8_t bbml,uint8_t bbmh);
 
-
-#ifdef TIM_ENC
-	void timerElapsed(TIM_HandleTypeDef* htim);
-#endif
-
 	void setPositionExt(int32_t pos); // External position register (For external encoders. Choose external phiE).
 
 	void stopMotor();

@@ -3188,14 +3188,6 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 
 }
 
-#ifdef TIM_ENC
-	void TMC4671::timerElapsed(TIM_HandleTypeDef* htim){
-		if(htim != this->externalEncoderTimer){
-			return;
-		}
-	}
-#endif
-
 void TMC4671::setUpExtEncTimer() {
 #ifdef TIM_ENC
     if (extEncAdapter == nullptr) {

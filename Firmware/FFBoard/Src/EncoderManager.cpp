@@ -31,7 +31,11 @@ void EncoderManager::init() {
     timer->Instance->PSC = (SystemCoreClock / 2 / 1000000) - 1;
 #endif
 
-    timer->Instance->ARR = 100; // 100 us period = 10 kHz
+#ifdef TIM_ENC_ARR
+    timer->Instance->ARR = TIM_ENC_ARR;
+#else
+    timer->Instance->ARR = 99; // 100 us period = 10 kHz (counts 0..99)
+#endif
     timer->Instance->CNT = 0;
 #endif
 
