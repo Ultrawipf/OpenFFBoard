@@ -33,13 +33,43 @@ void EncoderManager::init() {
 
     timer->Instance->ARR = 100; // 100 us period = 10 kHz
     timer->Instance->CNT = 0;
-    timer->Instance->CR1 = TIM_CR1_CEN; // Enable counter
-
-    // Start timer interrupts
-    HAL_TIM_Base_Start_IT(timer);
 #endif
 
     initialized = true;
+    updateTimerState();
+}
+
+void EncoderManager::updateTimerState() {
+#ifdef TIM_ENC
+    if (!initialized) return;
+    bool hasActive = false;
+    for (int i = 0; i < MAX_ENCODERS; ++i) {
+        Encoder* enc = active_encoders[i].load(std::memory_order_acquire);
+        if (enc != nullptr && enc->getEncoderType() != EncoderType::NONE) {
+            hasActive = true;
+            break;
+        }
+    }
+    if (hasActive && !timerRunning) {
+        TIM_ENC.Instance->CNT = 0;
+        HAL_TIM_Base_Start_IT(&TIM_ENC);
+        timerRunning = true;
+    } else if (!hasActive && timerRunning) {
+        HAL_TIM_Base_Stop_IT(&TIM_ENC);
+        timerRunning = false;
+    }
+#endif
+}
+
+bool EncoderManager::hasAdapterForEncoder(Encoder* enc) const {
+    if (enc == nullptr) return false;
+    for (int i = 0; i < MAX_ADAPTERS; ++i) {
+        ExternalEncoderAdapter* adapter = active_adapters[i].load(std::memory_order_acquire);
+        if (adapter != nullptr && adapter->getEncoder() == enc) {
+            return true;
+        }
+    }
+    return false;
 }
 
 void EncoderManager::registerEncoder(Encoder* encoder) {
@@ -56,6 +86,7 @@ void EncoderManager::registerEncoder(Encoder* encoder) {
     }
     if (empty_idx != -1) {
         active_encoders[empty_idx].store(encoder, std::memory_order_release);
+        updateTimerState();
     }
 }
 
@@ -64,6 +95,7 @@ void EncoderManager::deregisterEncoder(Encoder* encoder) {
     for (int i = 0; i < MAX_ENCODERS; ++i) {
         if (active_encoders[i].load(std::memory_order_acquire) == encoder) {
             active_encoders[i].store(nullptr, std::memory_order_release);
+            updateTimerState();
             return;
         }
     }
@@ -125,6 +157,11 @@ void EncoderManager::Run() {
             }
             uint32_t scaler = enc->getScaler();
             if (scaler == 0) scaler = 1;
+            // Consumer-driven cadence: without an attached FOC adapter, cap polling to 2 kHz (scaler >= 5)
+            // so FFB-only encoders do not burn CPU/SPI bandwidth at 10 kHz.
+            if (!hasAdapterForEncoder(enc) && scaler < 5) {
+                scaler = 5;
+            }
             if ((tick_count % scaler) == 0) {
                 enc->triggerRead();
             }

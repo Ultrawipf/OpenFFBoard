@@ -30,6 +30,8 @@ public:
 private:
     EncoderManager();
     ~EncoderManager() override = default;
+    void updateTimerState();
+    bool hasAdapterForEncoder(Encoder* enc) const;
 
     static constexpr uint8_t MAX_ENCODERS = 8;
     std::atomic<Encoder*> active_encoders[MAX_ENCODERS] = {};
@@ -38,6 +40,7 @@ private:
     std::atomic<ExternalEncoderAdapter*> active_adapters[MAX_ADAPTERS] = {};
     uint32_t tick_count = 0;
     bool initialized = false;
+    bool timerRunning = false;
 };
 
 #endif // ENCODERMANAGER_H_
