@@ -183,10 +183,17 @@ void SPIPort::transmitReceive(const uint8_t* txbuf,uint8_t* rxbuf,uint16_t size,
 }
 
 void SPIPort::abortTransfer(SPIDevice* device){
-	HAL_SPI_DMAStop(&this->hspi);
-	if(current_device != nullptr && device == current_device){
+	// Stop both IT and DMA transfers so no further SPI ISR callback can fire on a destroyed device
+	if(current_device == device || device == nullptr){
 		current_device = nullptr;
-		this->giveSemaphore();
+		HAL_SPI_Abort(&this->hspi);
+		HAL_SPI_DMAStop(&this->hspi);
+		if(device != nullptr){
+			device->clearChipSelect();
+		}
+		if(isTakenFlag){
+			this->giveSemaphore();
+		}
 	}
 }
 // --------------------------------
@@ -257,58 +264,53 @@ uint32_t SPIPort::getBaseClk(){
 
 // interrupt callbacks
 void SPIPort::SpiTxCplt(SPI_HandleTypeDef *hspi) {
-	if (current_device == nullptr) {
-		return;
-	}
-
 	if (hspi->Instance != this->hspi.Instance) {
 		return;
 	}
-	current_device->endSpiTransfer(this);
-	current_device->spiTxCompleted(this);
-
+	SPIDevice* dev = current_device;
+	if (dev == nullptr) {
+		return;
+	}
 	current_device = nullptr;
-
+	dev->endSpiTransfer(this);
+	dev->spiTxCompleted(this);
 }
 void SPIPort::SpiRxCplt(SPI_HandleTypeDef *hspi) {
-	if (current_device == nullptr) {
-		return;
-	}
-
 	if (hspi->Instance != this->hspi.Instance) {
 		return;
 	}
-	current_device->endSpiTransfer(this);
-	current_device->spiRxCompleted(this);
-
+	SPIDevice* dev = current_device;
+	if (dev == nullptr) {
+		return;
+	}
 	current_device = nullptr;
+	dev->endSpiTransfer(this);
+	dev->spiRxCompleted(this);
 }
 void SPIPort::SpiTxRxCplt(SPI_HandleTypeDef *hspi) {
-	if (current_device == nullptr) {
-		return;
-	}
-
 	if (hspi->Instance != this->hspi.Instance) {
 		return;
 	}
-	current_device->endSpiTransfer(this);
-	current_device->spiTxRxCompleted(this);
-
+	SPIDevice* dev = current_device;
+	if (dev == nullptr) {
+		return;
+	}
 	current_device = nullptr;
+	dev->endSpiTransfer(this);
+	dev->spiTxRxCompleted(this);
 }
 
 void SPIPort::SpiError(SPI_HandleTypeDef *hspi) {
-	if (current_device == nullptr) {
-		return;
-	}
-
 	if (hspi->Instance != this->hspi.Instance) {
 		return;
 	}
-	current_device->endSpiTransfer(this);
-	current_device->spiRequestError(this);
-
+	SPIDevice* dev = current_device;
+	if (dev == nullptr) {
+		return;
+	}
 	current_device = nullptr;
+	dev->endSpiTransfer(this);
+	dev->spiRequestError(this);
 }
 
 /**
