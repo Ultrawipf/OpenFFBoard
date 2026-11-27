@@ -17,8 +17,13 @@ void ExternalEncoderAdapter::update() {
         // Use absolute mechanical position (without user centering offset) so setPos(0) never shifts FOC phiE
         float theta = encoder->getPosAbs_f();
         float omega = encoder->getRawSpeed();
-        float dt_spi = 0.000050f; // 50 us latency compensation
-        float theta_extrapolated = theta + omega * dt_spi;
+        // Extrapolate using real sample age plus fixed motor SPI write latency (~15 us)
+        uint32_t age_us = micros() - encoder->getLastUpdateTime();
+        if (age_us > 1000) {
+            age_us = 1000; // Bound extrapolation to 1 ms max on stale/first sample
+        }
+        float dt_extrap = (float)(age_us + 15) * 1e-6f;
+        float theta_extrapolated = theta + omega * dt_extrap;
         motor->setExternalPhiE(theta_extrapolated);
     }
 }

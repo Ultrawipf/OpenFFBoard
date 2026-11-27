@@ -49,6 +49,7 @@ public:
 	virtual float getSpeed();
 	virtual float getRawSpeed();
 	virtual float getAccel();
+	virtual uint32_t getLastUpdateTime() const { return last_update_time; }
 	virtual uint32_t getScaler();
 	virtual void triggerRead();
 	void updateState(float new_pos, float dt);
