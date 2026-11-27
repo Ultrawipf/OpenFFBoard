@@ -704,6 +704,7 @@ private:
 #ifdef TIM_ENC
 	TIM_HandleTypeDef* externalEncoderTimer = &TIM_ENC;
 	std::unique_ptr<ExternalEncoderAdapter> extEncAdapter = nullptr;
+	uint32_t lastExtPhiEUpdateUs = 0; // Rate-limit external phiE SPI writes to 4 kHz (250 us)
 #else
 	TIM_HandleTypeDef* externalEncoderTimer = nullptr;
 #endif

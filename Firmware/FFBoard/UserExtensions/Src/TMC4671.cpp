@@ -3205,6 +3205,13 @@ void TMC4671::setExternalPhiE(float phiE_rotations) {
     int16_t phiE_final = (int16_t)phiE + externalEncoderPhieOffset;
     
     if (!spiPort.isTaken()) {
+#ifdef TIM_ENC
+        uint32_t now = micros();
+        if ((now - lastExtPhiEUpdateUs) < 250) { // Cap SPI phiE writes to 4 kHz to avoid saturating motor_spi
+            return;
+        }
+        lastExtPhiEUpdateUs = now;
+#endif
         writeRegAsync(0x1C, (uint16_t)phiE_final);
     }
 }
