@@ -27,11 +27,12 @@ void KinematicPLL::reanchor(float new_pos_rot) {
 }
 
 void KinematicPLL::setTuning(float fn_hz, float damping, float accel_fc_hz, float vel_fc_hz) {
-	float safe_fn = std::max(fn_hz, 1.0f);
-	float wn = 2.0f * PI_F * safe_fn;
-	kp = 2.0f * damping * wn;
+	fn_target = std::max(fn_hz, 1.0f);
+	damping_target = std::max(damping, 0.1f);
+	float wn = 2.0f * PI_F * fn_target;
+	kp = 2.0f * damping_target * wn;
 	ki = wn * wn;
-	float effective_vel_fc = (vel_fc_hz > 0.0f) ? vel_fc_hz : (0.85f * safe_fn);
+	float effective_vel_fc = (vel_fc_hz > 0.0f) ? vel_fc_hz : (0.85f * fn_target);
 	tau_vel = 1.0f / (2.0f * PI_F * std::max(effective_vel_fc, 1.0f));
 	tau_accel = 1.0f / (2.0f * PI_F * std::max(accel_fc_hz, 1.0f));
 }
@@ -86,9 +87,17 @@ void KinematicPLL::update(float z_pos_rot, float dt) {
 	}
 	glitch_count = 0;
 
-	// 3. Type-II PI Velocity Observer with anti-windup clamping
-	integrator = std::clamp(integrator + ki * error * dt, -MAX_RPS, MAX_RPS);
-	vel_est = std::clamp(kp * error + integrator, -MAX_RPS, MAX_RPS);
+	// 3. Type-II PI Velocity Observer with Euler stability bound (fn <= 0.05 * fs) and anti-windup clamping
+	float eff_kp = kp;
+	float eff_ki = ki;
+	float max_stable_fn = 0.05f / dt; // Guarantees wn * dt <= 0.314 < 0.83 (explicit Euler stability bound)
+	if (fn_target > max_stable_fn) {
+		float wn = 2.0f * PI_F * max_stable_fn;
+		eff_kp = 2.0f * damping_target * wn;
+		eff_ki = wn * wn;
+	}
+	integrator = std::clamp(integrator + eff_ki * error * dt, -MAX_RPS, MAX_RPS);
+	vel_est = std::clamp(eff_kp * error + integrator, -MAX_RPS, MAX_RPS);
 
 	// 4. Closed-loop position integration (must use full PI vel_est for critical damping)
 	pos_est += vel_est * dt;

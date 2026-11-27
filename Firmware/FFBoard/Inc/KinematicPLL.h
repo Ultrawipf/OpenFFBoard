@@ -62,6 +62,8 @@ private:
 
 	float kp = 1507.96f;
 	float ki = 568489.0f;
+	float fn_target = 120.0f;
+	float damping_target = 1.0f;
 	float tau_vel = 0.00176839f;   // ~90 Hz
 	float tau_accel = 0.00454728f; // ~35 Hz
 	uint8_t glitch_count = 0;
