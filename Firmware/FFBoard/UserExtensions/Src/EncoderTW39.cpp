@@ -19,7 +19,7 @@ const ClassIdentifier EncoderTW39::getInfo(){
 }
 
 
-EncoderTW39::EncoderTW39() : SPIDevice(ENCODER_SPI_PORT,ENCODER_SPI_PORT.getFreeCsPins()[0]), CommandHandler("tw39enc",CLSID_ENCODER_TW39,0),cpp_freertos::Thread("TW39",256,42) {
+EncoderTW39::EncoderTW39() : SPIDevice(ENCODER_SPI_PORT,ENCODER_SPI_PORT.getFreeCsPins()[0]), CommandHandler("tw39enc",CLSID_ENCODER_TW39,0) {
 	EncoderTW39::inUse = true;
 	this->spiConfig.peripheral.BaudRatePrescaler = spiPort.getClosestPrescaler(10e6).first; // 20MHz max
 	this->spiConfig.peripheral.FirstBit = SPI_FIRSTBIT_MSB;
@@ -49,10 +49,11 @@ EncoderTW39::EncoderTW39() : SPIDevice(ENCODER_SPI_PORT,ENCODER_SPI_PORT.getFree
 	registerCommand("save", EncoderTW39_commands::save, "Save config to encoder memory",CMDFLAG_GET);
 	registerCommand("reg", EncoderTW39_commands::reg, "Read/Write register",CMDFLAG_GETADR | CMDFLAG_SETADR | CMDFLAG_DEBUG);
 	registerCommand("cmd", EncoderTW39_commands::cmd, "Write command register",CMDFLAG_SET | CMDFLAG_DEBUG);
-	this->Start();
+	readChipInfo();
 }
 
 EncoderTW39::~EncoderTW39() {
+	spiPort.abortTransfer(this);
 	EncoderTW39::inUse = false;
 	spiPort.freeCsPin(this->spiConfig.cs);
 }
@@ -73,36 +74,6 @@ void EncoderTW39::saveFlash(){
 	Flash_Write(ADR_ENCTW39_OFS, offset >> (posBits-16));
 }
 
-
-void EncoderTW39::Run(){
-	Delay(10); // Chip startup time
-	readChipInfo();
-	while(true){
-		requestNewDataSem.Take(); // Wait until a position is requested
-		transferMutex.Lock();
-		updateAngleStatus();
-		this->WaitForNotification();  // Wait until DMA is finished
-		transferMutex.Unlock();
-
-		if(updateAngleStatusCb()){
-			int overflowLim = getCpr() >> 1;
-			if(curAngleInt-lastAngleInt > overflowLim){ // Underflowed
-				rotations--;
-			}
-			else if(lastAngleInt-curAngleInt > overflowLim){ // Overflowed
-				rotations++;
-			}
-			lastAngleInt = curAngleInt;
-
-			curPos = rotations * getCpr() + curAngleInt; // Update position
-		}else{
-			errors++;
-		}
-		lastUpdateTick = HAL_GetTick();
-		waitForUpdateSem.Give();
-		updateInProgress = false;
-	}
-}
 
 void EncoderTW39::setCsPin(uint8_t cspin){
 	spiPort.freeCsPin(this->spiConfig.cs);
@@ -126,8 +97,10 @@ uint16_t EncoderTW39::readReg(uint16_t addr){
 	uint8_t txbufReg[packetLen] = {0x30,0,(uint8_t)(addr >> 8),(uint8_t)(addr & 0xff),0,0,0,0}; // reg=1, rm=4
 	uint8_t rxbufReg[packetLen] = {0};
 	transferMutex.Lock();
+	regAccessInProgress.store(true, std::memory_order_release);
 	spiPort.transmitReceive(txbufReg, rxbufReg, packetLen, this,100);
 	spiPort.transmitReceive(txbuf, rxbufReg, packetLen, this,100);
+	regAccessInProgress.store(false, std::memory_order_release);
 	transferMutex.Unlock();
 	return (rxbufReg[0] << 8) | rxbufReg[1];
 }
@@ -139,7 +112,9 @@ void EncoderTW39::writeReg(uint16_t addr,uint16_t data){
 	uint8_t txbufReg[packetLen] = {0x13,0,(uint8_t)(addr >> 8),(uint8_t)(addr & 0xff),(uint8_t)(data >> 8),(uint8_t)(data & 0xff),0,0}; // rm=4, wm=3
 	uint8_t rxbufReg[packetLen] = {0};
 	transferMutex.Lock();
+	regAccessInProgress.store(true, std::memory_order_release);
 	spiPort.transmitReceive(txbufReg, rxbufReg, packetLen, this,100);
+	regAccessInProgress.store(false, std::memory_order_release);
 	transferMutex.Unlock();
 }
 
@@ -225,17 +200,39 @@ void EncoderTW39::setPos(int32_t pos){
 
 
 void EncoderTW39::spiTxRxCompleted(SPIPort* port){
-
 	if(updateInProgress){
-		memcpy(rxbuf,rxbuf_t,sizeof(rxbuf));
-		NotifyFromISR();
+		memcpy(rxbuf, rxbuf_t, sizeof(rxbuf));
+		if(updateAngleStatusCb()){
+			int overflowLim = getCpr() >> 1;
+			if(curAngleInt - lastAngleInt > overflowLim){ // Underflowed
+				rotations--;
+			}
+			else if(lastAngleInt - curAngleInt > overflowLim){ // Overflowed
+				rotations++;
+			}
+			lastAngleInt = curAngleInt;
+			curPos = rotations * getCpr() + curAngleInt;
+
+			uint32_t now = micros();
+			uint32_t dt_us = now - last_update_time;
+			if (dt_us > 0) {
+				float dt = (float)dt_us * 1e-6f;
+				last_update_time = now;
+				updateState(getPos_f(), dt);
+			}
+		}else{
+			errors++;
+		}
+		lastUpdateTick = HAL_GetTick();
+		updateInProgress = false;
 	}
 }
 
 void EncoderTW39::spiRequestError(SPIPort* port){
 	if(updateInProgress){
 		transferError = true;
-		NotifyFromISR();
+		errors++;
+		updateInProgress = false;
 	}
 }
 
@@ -262,20 +259,23 @@ bool EncoderTW39::updateAngleStatusCb(){
 }
 
 int32_t EncoderTW39::getPos(){
-
 	return getPosAbs() - offset;
 }
 
 int32_t EncoderTW39::getPosAbs(){
-	if(updateInProgress){ // If a transfer is still in progress return the last result
-		return curPos;
-	}
-	updateInProgress = true;
-	requestNewDataSem.Give(); // Start transfer
-	if(HAL_GetTick() - lastUpdateTick > waitThresh)
-		waitForUpdateSem.Take(waitThresh); // Wait a bit
-
+	// Passive read only: SPI DMA transfers are triggered by EncoderManager::triggerRead()
 	return curPos;
+}
+
+void EncoderTW39::triggerRead(){
+	if(!updateInProgress && !regAccessInProgress.load(std::memory_order_acquire) && !spiPort.isTaken()){
+		updateInProgress = true;
+		updateAngleStatus();
+	}
+}
+
+uint32_t EncoderTW39::getScaler(){
+	return 2; // 5 kHz polling frequency (64-bit SPI packet)
 }
 
 uint32_t EncoderTW39::getCpr(){

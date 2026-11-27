@@ -14,11 +14,11 @@
 #include "Encoder.h"
 #include "PersistentStorage.h"
 #include "CommandHandler.h"
-#include "thread.hpp"
 #include "mutex.hpp"
 #include "array"
+#include <atomic>
 
-class EncoderTW39: public Encoder, public SPIDevice, public PersistentStorage, public CommandHandler,cpp_freertos::Thread{
+class EncoderTW39: public Encoder, public SPIDevice, public PersistentStorage, public CommandHandler{
 	enum class EncoderTW39_commands : uint32_t{
 		cspin,speed,pos,errors,chip,serial,status,temp,outmode,ssi,abzres,abzcfg,uvwpairs,calib,save,reg,cmd
 	};
@@ -67,13 +67,14 @@ public:
 	static bool isCreatable() {return ENCODER_SPI_PORT.getFreeCsPins().size() > 0 && !inUse;};
 
 	EncoderType getEncoderType(){return EncoderType::absolute;};
-	void Run();
 
 	void restoreFlash() override;
 	void saveFlash() override;
 
 	int32_t getPos() override;
 	uint32_t getCpr() override; // Encoder counts per rotation
+	uint32_t getScaler() override;
+	void triggerRead() override;
 
 	int32_t getPosAbs() override;
 
@@ -132,12 +133,10 @@ private:
 	const uint8_t txbuf[packetLen] = {0x10,0,0,0,0,0,0,0}; // Position read. rm=4, wm=0
 	uint8_t rxbuf[packetLen] = {0};
 	uint8_t rxbuf_t[packetLen] = {0};
-	cpp_freertos::BinarySemaphore requestNewDataSem = cpp_freertos::BinarySemaphore(false);
-	cpp_freertos::BinarySemaphore waitForUpdateSem = cpp_freertos::BinarySemaphore(false);
 	cpp_freertos::MutexStandard transferMutex; // Prevents position updates between packets of a register access
+	std::atomic<bool> regAccessInProgress{false};
 
 	uint8_t spiSpeedPreset = 0;
-	static const uint32_t waitThresh = 2; // If last sample older than x ms use wait semaphore. Else skip and use last value to speed up processing
 	uint32_t lastUpdateTick = 0;
 };
 
