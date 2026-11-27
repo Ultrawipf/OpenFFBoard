@@ -1527,8 +1527,8 @@ L'inspection de la branche `origin/feat/anticogging` (`TMC4671.cpp` et `TMC4671_
 > **🔎 Révision §3.2**
 > - **`TMC4671` — code mort** : l'héritage `TimerHandler` est conditionné par `#ifdef TIM_TMC` (`TMC4671.h:376`), **macro qui n'est plus définie** sur cette branche ; l'héritage n'est donc pas compilé. Il ne reste qu'un `timerElapsed()` vide sous `#ifdef TIM_ENC` (`TMC4671.cpp:3164-3170`, `TMC4671.h:480-482`), non appelé puisque `TMC4671` n'est pas un `TimerHandler`.
 > - **`TMC4671` (ABN/SinCos/UVW)** : `setPos()` → `setTmcPos()` appelle bien `pll.reanchor()` (`TMC4671.cpp:1906`). C'est le seul chemin où `reanchor()` est correctement câblé, avec `RmdMotorCAN` et `MotorSimplemotion`.
-> - **`TMC4671` tuning** : `pll.setTuning(80 Hz)` à 1 kHz, soit ω_n·T ≈ 0,50. C'est stable mais peu amorti en discret (cf. §5.1 Révision).
-> - **`VescCAN`** : `f_n = 60 Hz` fixe alors que la cadence des trames dépend du polling (`askPositionEncoder()` dans `getPos_f()`). La boucle devient **instable** si les réponses arrivent à moins d'environ 460 Hz (ω_n·T > 0,83). Le statut « Sain » est à requalifier en « **conditionnel à la cadence CAN** ».
+> - **`TMC4671` tuning** : `pll.setTuning(65 Hz, 1.0, 28 Hz, 55 Hz)` à 1 kHz pour ABN/AENC, soit ω_n·T ≈ 0,41 (stable, légèrement sous-amorti en discret, cf. §5.1 Révision), et `pll.setTuning(30 Hz, 1.0, 18 Hz, 32 Hz)` pour Hall (`updateFromVelocity()`).
+> - **`VescCAN`** : `pll.setTuning(30 Hz, 1.0, 18 Hz, 32 Hz)` (comme `ODriveCAN`, `RmdMotorCAN` et `MotorSimplemotion`) alors que la cadence des trames dépend du polling (`askPositionEncoder()` dans `getPos_f()`). La boucle devient **instable** si les réponses arrivent à moins d'environ 230 Hz (ω_n·T > 0,83). Le statut « Sain » est à requalifier en « **conditionnel à la cadence CAN** ».
 > - **`ODriveCAN`** : `updateFromVelocity()` contourne la boucle (vitesse injectée directement). Pas de risque de stabilité, mais l'accélération est dérivée d'une vitesse CAN à cadence variable.
 
 ---
@@ -1565,7 +1565,7 @@ Actuellement : `scaler = clamp(80000 / cpr, 1, 10)` (soit une fréquence d'écha
   - **Recommandation** : découpler le besoin FOC (fréquence minimale 4 kHz si FOC actif) du besoin FFB, et laisser `KinematicPLL` gérer la quantification via son adaptation automatique de $f_n$ en fonction du CPR.
 
 > **🔎 Révision §4.2**
-> - Le scaler n'est jamais connu de la PLL : `f_n` est choisi par seuils de CPR (`Encoder.cpp:112-121`) **indépendamment de `f_s`**. Exemples : `EncoderLocal` 8 000 CPR → scaler 10 → 1 kHz, `f_n = 60 Hz`, ω_n·T ≈ 0,38 (OK). `EncoderLocal` 16 384 CPR → scaler 4 → 2,5 kHz, `f_n = 90 Hz`, ω_n·T ≈ 0,23 (OK). La combinaison actuelle reste dans le domaine stable, mais **par coïncidence**, et non par construction.
+> - Le scaler n'est jamais connu de la PLL : `f_n` est choisi par seuils de CPR (`Encoder.cpp:118-124` : `130/40/90` pour `≥ 65536`, `75/28/55` pour `16384..65535`, `45/22/45` pour `< 16384`) **indépendamment de `f_s`**. Exemples : `EncoderLocal` 8 000 CPR → scaler 10 → 1 kHz, `f_n = 45 Hz`, ω_n·T ≈ 0,28 (OK). `EncoderLocal` 16 384 CPR → scaler 4 → 2,5 kHz, `f_n = 75 Hz`, ω_n·T ≈ 0,19 (OK). La combinaison actuelle reste dans le domaine stable, mais **par coïncidence**, et non par construction.
 > - **Recommandation complémentaire** : `f_n = min(f_n(CPR), k·f_s)` avec k ≈ 0,05 (marge d'amortissement confortable), recalculé à chaque changement de cadence ou de CPR.
 > - Le scaler `cpr == 0 → 10` est cohérent, mais `EncoderLocal::getPos()` doit d'abord devenir atomique (cf. §3.1 Révision).
 
@@ -1586,17 +1586,18 @@ Actuellement : `scaler = clamp(80000 / cpr, 1, 10)` (soit une fréquence d'écha
 > **🔎 Révision §5.1 — `KinematicPLL`**
 > - **Borne de stabilité discrète (non mentionnée)** : la discrétisation Euler explicite utilisée (`vel = kp·e + ∫ki·e·dt`, `pos += vel·dt`, ζ = 1) a pour polynôme caractéristique λ² − (2 − a − b)·λ + (1 − a), avec a = 2ω_n·T et b = (ω_n·T)². Le critère de Jury impose **ω_n·T < 2(√2 − 1) ≈ 0,83**, soit **f_n < 0,13·f_s**. L'amortissement réel se dégrade bien avant : ζ_discret ≈ 0,7 dès ω_n·T ≈ 0,3. « Supporte nativement » est donc vrai **en montée** de fréquence, et **faux en descente**.
 >
->   | Chemin | f_n | f_s | ω_n·T | Verdict |
+>   | Chemin | f_n (vel_fc / accel_fc) | f_s | ω_n·T | Verdict |
 >   | :--- | :--- | :--- | :--- | :--- |
->   | Externe CPR ≥ 65536 | 130 Hz | 9,9 kHz | 0,08 | OK |
->   | Externe CPR ≥ 65536 **à 1 kHz** (reco §4.1) | 130 Hz | 1 kHz | **0,82** | **Limite d'instabilité** |
->   | TMC4671 intégré | 80 Hz | 1 kHz | 0,50 | Stable, sous-amorti |
->   | VescCAN | 60 Hz | ≤ 1 kHz (CAN) | ≥ 0,38 | Instable si f_s < 460 Hz |
+>   | Externe CPR ≥ 65536 | 130 Hz (90 / 40 Hz) | 9,9 kHz | 0,08 | OK |
+>   | Externe CPR ≥ 65536 **à 1 kHz** (reco §4.1) | 130 Hz (90 / 40 Hz) | 1 kHz | **0,82** | **Limite d'instabilité** |
+>   | TMC4671 intégré (ABN/AENC) | 65 Hz (55 / 28 Hz) | 1 kHz | 0,41 | Stable, légèrement sous-amorti |
+>   | TMC4671 intégré (Hall) | 30 Hz (32 / 18 Hz) | 1 kHz | — (`updateFromVelocity`) | OK |
+>   | VescCAN / CAN / SimpleMotion | 30 Hz (32 / 18 Hz) | ≤ 1 kHz (CAN) | ≥ 0,19 | Instable si f_s < 230 Hz |
 >
-> - **`reanchor()` sur `setPos()`** : vrai uniquement pour `TMC4671`, `RmdMotorCAN` et `MotorSimplemotion`. **Faux** pour tous les encodeurs externes (BiSS-C, SSI, MT, TW39, Local). Le recentrage passe par le gating : 3 échantillons en roue libre (`vel *= 0.95`, `accel *= 0.90`), puis ré-ancrage. Un recentrage **inférieur au seuil de gating** (0,004 tour minimum, `KinematicPLL.cpp:61`) est intégré comme un mouvement réel, avec un **pic de vitesse**. À corriger avec un appel `pll.reanchor()` dans chaque `setPos()`, ou un hook commun dans `Encoder`.
+> - **`reanchor()` sur `setPos()`** : vrai uniquement pour `TMC4671`, `RmdMotorCAN` et `MotorSimplemotion`. **Faux** pour tous les encodeurs externes (BiSS-C, SSI, MT, TW39, Local). Le recentrage passe par le gating : 3 échantillons en roue libre (`vel *= 0.95`, `accel *= 0.90`), puis ré-ancrage. Un recentrage **inférieur au seuil de gating** (0,004 tour minimum, `KinematicPLL.cpp:70`) est intégré comme un mouvement réel, avec un **pic de vitesse**. À corriger avec un appel `pll.reanchor()` dans chaque `setPos()`, ou un hook commun dans `Encoder`.
 > - **Gating et saturation couplés** : le seuil `3·MAX_RPS·dt` et la saturation `MAX_RPS = 11,14 rot/s` utilisent la même constante. Au-delà de 668 RPM côté encodeur (cf. UC-12), la PLL décroche, entre en cycle glitch → ré-ancrage, et la vitesse reste figée (cf. §7.5).
 > - **Reset sur `dt > 0.05 s`** : vitesse et accélération remises à 0. Combiné au défaut de `micros()` (§7.1), ce reset se produit en fonctionnement normal.
-> - **Accélération** : la dérivée `(vel_est − vel_prev)/dt` suivie d'un RC est cohérente, mais le RC est appliqué au même `dt` bruité. Avec un `dt` déterministe (§8), le filtre deviendrait à coefficients constants.
+> - **Découplage FOC / FFB et accélération** : la boucle rapide PI (`getRawSpeed()`) alimente l'extrapolation FOC (`ExternalEncoderAdapter`) sans retard `tau_vel`. Pour le FFB (`Axis.cpp`), la vitesse (`getSpeed()`) est filtrée au 3ᵉ ordre depuis l'intégrateur (`tau_vel`, sans sauts `kp·error`), et l'accélération (`getAccel()`) est dérivée de cette vitesse lissée `(vel_ffb − vel_prev)/dt` puis filtrée par un RC (`tau_accel`, 4ᵉ ordre). Le RC reste toutefois appliqué au même `dt` bruité ; avec un `dt` déterministe (§8), le filtre deviendrait à coefficients constants.
 
 #### 5.2 Filtres Biquads (`Axis.cpp` et `EffectsCalculator.cpp`)
 - **Constat actuel** :
@@ -1605,6 +1606,9 @@ Actuellement : `scaler = clamp(80000 / cpr, 1, 10)` (soit une fréquence d'écha
 - **Pertinence** :
   - **Valide à 1 kHz** : la `KinematicPLL` filtrant déjà la vitesse et l'accélération en amont, empiler un second Biquad sur chaque effet ajoutait du déphasage (retard de groupe) et rendait le damper/inertia « mou » ou instable.
   - **Attention si HID > 1 kHz** : si des Biquads restent actifs quelque part (ex. filtre de sortie ou filtre optionnel réactivé), leurs coefficients doivent impérativement être recalculés avec la vraie fréquence `fs` de la boucle HID (et non une constante `1000.0f` codée en dur).
+
+> **🔎 Révision §5.2 — calibrage FFB dans `Axis.cpp`**
+> - `Axis.cpp` consomme `encoder->getSpeed()` (3ᵉ ordre) et `encoder->getAccel()` (4ᵉ ordre), applique un lissage anti-imaging à 1 kHz (`0.43f` sur `metric.speed`, `0.27f` sur `metric.accel`, `Axis.cpp:751-752`), et calibre la friction continue sur `tanhf(metric.speed / 58.0f)` (`Axis.cpp:702`, pente équivalente à l'ancienne rampe sinusoïdale).
 
 ---
 
