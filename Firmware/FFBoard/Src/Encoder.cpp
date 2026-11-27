@@ -82,7 +82,11 @@ void Encoder::setPos(int32_t pos){
 }
 
 float Encoder::getSpeed() {
-    return pll.getSpeed(); // rot/s
+    return pll.getSpeed(); // rot/s (3rd-order low-pass for FFB)
+}
+
+float Encoder::getRawSpeed() {
+    return pll.getRawSpeed(); // rot/s (fast PI loop state for FOC extrapolation)
 }
 
 float Encoder::getAccel() {
@@ -112,11 +116,11 @@ void Encoder::updateState(float new_pos_rot, float dt) {
     if (current_cpr != last_cpr && current_cpr > 0) {
         last_cpr = current_cpr;
         if (current_cpr >= 65536) {
-            pll.setTuning(130.0f, 1.0f, 60.0f);
+            pll.setTuning(130.0f, 1.0f, 40.0f, 90.0f);
         } else if (current_cpr >= 16384) {
-            pll.setTuning(90.0f, 1.0f, 60.0f);
+            pll.setTuning(75.0f, 1.0f, 28.0f, 55.0f);
         } else {
-            pll.setTuning(60.0f, 1.0f, 50.0f);
+            pll.setTuning(45.0f, 1.0f, 22.0f, 45.0f);
         }
     }
 

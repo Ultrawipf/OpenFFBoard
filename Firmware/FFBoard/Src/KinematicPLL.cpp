@@ -4,15 +4,17 @@
 #include <algorithm>
 
 KinematicPLL::KinematicPLL() {
-	setTuning(120.0f, 1.0f, 60.0f);
+	setTuning(120.0f, 1.0f, 35.0f, 90.0f);
 	reset(0.0f);
 }
 
 void KinematicPLL::reset(float initial_pos_rot) {
 	pos_est = initial_pos_rot;
 	vel_est = 0.0f;
+	vel_ffb = 0.0f;
 	vel_prev = 0.0f;
 	integrator = 0.0f;
+	accel_stage1 = 0.0f;
 	accel_est = 0.0f;
 	glitch_count = 0;
 	initialized = false;
@@ -24,10 +26,13 @@ void KinematicPLL::reanchor(float new_pos_rot) {
 	initialized = true;
 }
 
-void KinematicPLL::setTuning(float fn_hz, float damping, float accel_fc_hz) {
-	float wn = 2.0f * PI_F * std::max(fn_hz, 1.0f);
+void KinematicPLL::setTuning(float fn_hz, float damping, float accel_fc_hz, float vel_fc_hz) {
+	float safe_fn = std::max(fn_hz, 1.0f);
+	float wn = 2.0f * PI_F * safe_fn;
 	kp = 2.0f * damping * wn;
 	ki = wn * wn;
+	float effective_vel_fc = (vel_fc_hz > 0.0f) ? vel_fc_hz : (0.85f * safe_fn);
+	tau_vel = 1.0f / (2.0f * PI_F * std::max(effective_vel_fc, 1.0f));
 	tau_accel = 1.0f / (2.0f * PI_F * std::max(accel_fc_hz, 1.0f));
 }
 
@@ -35,8 +40,10 @@ void KinematicPLL::update(float z_pos_rot, float dt) {
 	if (!initialized) {
 		pos_est = z_pos_rot;
 		vel_est = 0.0f;
+		vel_ffb = 0.0f;
 		vel_prev = 0.0f;
 		integrator = 0.0f;
+		accel_stage1 = 0.0f;
 		accel_est = 0.0f;
 		glitch_count = 0;
 		initialized = true;
@@ -47,8 +54,10 @@ void KinematicPLL::update(float z_pos_rot, float dt) {
 		// Reject invalid or stalled RTOS timesteps; re-anchor safely
 		pos_est = z_pos_rot;
 		vel_est = 0.0f;
+		vel_ffb = 0.0f;
 		vel_prev = 0.0f;
 		integrator = 0.0f;
+		accel_stage1 = 0.0f;
 		accel_est = 0.0f;
 		glitch_count = 0;
 		return;
@@ -63,13 +72,15 @@ void KinematicPLL::update(float z_pos_rot, float dt) {
 		if (++glitch_count > 3) {
 			// Persistent step (e.g. explicit setPos() recenter): re-anchor without spike
 			pos_est = z_pos_rot;
-			vel_prev = vel_est;
+			vel_prev = vel_ffb;
 			glitch_count = 0;
 			return;
 		}
 		// Transient EMI/CRC glitch: coast down safely
 		vel_est *= 0.95f;
+		vel_ffb *= 0.95f;
 		pos_est += vel_est * dt;
+		accel_stage1 *= 0.90f;
 		accel_est *= 0.90f;
 		return;
 	}
@@ -77,16 +88,22 @@ void KinematicPLL::update(float z_pos_rot, float dt) {
 
 	// 3. Type-II PI Velocity Observer with anti-windup clamping
 	integrator = std::clamp(integrator + ki * error * dt, -MAX_RPS, MAX_RPS);
-	vel_prev = vel_est;
 	vel_est = std::clamp(kp * error + integrator, -MAX_RPS, MAX_RPS);
 
-	// 4. Closed-loop position integration
+	// 4. Closed-loop position integration (must use full PI vel_est for critical damping)
 	pos_est += vel_est * dt;
 
-	// 5. Decoupled 1st-order RC acceleration estimator (never fed back into pos/vel)
-	float accel_raw = (vel_est - vel_prev) / dt;
-	float alpha_rc = dt / (tau_accel + dt);
-	accel_est = std::clamp(accel_est + alpha_rc * (accel_raw - accel_est), -MAX_ACCEL, MAX_ACCEL);
+	// 5. Decoupled 3rd-order FFB velocity from PLL integrator (eliminates kp * error quantization step)
+	vel_prev = vel_ffb;
+	float alpha_vel = dt / (tau_vel + dt);
+	vel_ffb += alpha_vel * (integrator - vel_ffb);
+
+	// 6. Decoupled 4th-order acceleration estimator from smooth FFB velocity slope
+	// (vel_ffb - vel_prev) / dt == (integrator - vel_prev) / (tau_vel + dt), 3rd-order smooth without kp * error
+	float accel_raw = (vel_ffb - vel_prev) / dt;
+	float alpha_acc = dt / (tau_accel + dt);
+	accel_stage1 += alpha_acc * (accel_raw - accel_stage1);
+	accel_est = std::clamp(accel_stage1, -MAX_ACCEL, MAX_ACCEL);
 }
 
 void KinematicPLL::updateFromVelocity(float vel_rps, float dt) {
@@ -94,15 +111,21 @@ void KinematicPLL::updateFromVelocity(float vel_rps, float dt) {
 	if (!initialized || dt <= 1e-6f || dt > 0.05f) {
 		vel_prev = clamped_vel;
 		vel_est = clamped_vel;
+		vel_ffb = clamped_vel;
 		integrator = clamped_vel;
+		accel_stage1 = 0.0f;
 		accel_est = 0.0f;
 		initialized = true;
 		return;
 	}
-	vel_prev = vel_est;
 	vel_est = clamped_vel;
 	integrator = clamped_vel;
-	float accel_raw = (vel_est - vel_prev) / dt;
-	float alpha_rc = dt / (tau_accel + dt);
-	accel_est = std::clamp(accel_est + alpha_rc * (accel_raw - accel_est), -MAX_ACCEL, MAX_ACCEL);
+	vel_prev = vel_ffb;
+	float alpha_vel = dt / (tau_vel + dt);
+	vel_ffb += alpha_vel * (clamped_vel - vel_ffb);
+
+	float accel_raw = (vel_ffb - vel_prev) / dt;
+	float alpha_acc = dt / (tau_accel + dt);
+	accel_stage1 += alpha_acc * (accel_raw - accel_stage1);
+	accel_est = std::clamp(accel_stage1, -MAX_ACCEL, MAX_ACCEL);
 }

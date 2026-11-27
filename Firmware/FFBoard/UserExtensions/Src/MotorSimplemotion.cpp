@@ -124,7 +124,7 @@ int32_t MotorSimplemotion::getPos(){
 			last_update_time = now;
 			if(last_cpr != cprVal){
 				last_cpr = cprVal;
-				pll.setTuning(60.0f, 1.0f, 50.0f);
+				pll.setTuning(30.0f, 1.0f, 18.0f, 32.0f);
 			}
 			pll.update((float)pos / (float)cprVal, (float)dt_us * 1e-6f);
 		}

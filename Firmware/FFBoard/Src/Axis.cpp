@@ -698,8 +698,8 @@ void Axis::calculateMechanicalEffects(bool ffb_on){
 
 	// Always active friction: continuous tanh regularization (eliminates zero-crossing chatter & Biquad phase lag)
 	if(frictionIntensity != 0){
-		// metric.speed is in deg/s; w0 = 3.0 deg/s (~0.052 rad/s) gives smooth continuous Coulomb transition
-		float smoothSign = tanhf(metric.speed / 3.0f);
+		// metric.speed is in deg/s; w0 = 58.0 deg/s matches legacy sine ramp slope (2 * (4096 / 45) / pi = 57.95 deg/s)
+		float smoothSign = tanhf(metric.speed / 58.0f);
 		float force = (float)frictionIntensity * smoothSign * INTERNAL_AXIS_FRICTION_SCALER * 32.0f;
 		mechanicalEffectTorque -= clip<float, int32_t>(force, -internalFxClip, internalFxClip);
 	}
@@ -746,8 +746,10 @@ void Axis::updateMetrics(float new_pos) { // pos is degrees
             speed = -speed;
             accel = -accel;
         }
-        metric.speed = speed;
-        metric.accel = accel;
+        // 1 kHz anti-imaging 1st-order smoothing (fc_v ~ 120 Hz, fc_a ~ 60 Hz)
+        // Eliminates zero-order-hold staircases from asynchronous/sub-1kHz encoders (e.g. CAN @ 500 Hz)
+        metric.speed += 0.43f * (speed - metric.speed);
+        metric.accel += 0.27f * (accel - metric.accel);
     } else {
         metric.speed = 0.0f;
         metric.accel = 0.0f;

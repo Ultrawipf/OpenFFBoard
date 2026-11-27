@@ -174,7 +174,7 @@ int32_t RmdMotorCAN::getPos(){
 		last_update_time = now;
 		if(last_cpr == 0){
 			last_cpr = getCpr();
-			pll.setTuning(60.0f, 1.0f, 50.0f);
+			pll.setTuning(30.0f, 1.0f, 18.0f, 32.0f);
 		}
 		pll.update((float)pos / (float)getCpr(), (float)dt_us * 1e-6f);
 	}

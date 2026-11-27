@@ -1925,7 +1925,7 @@ int32_t TMC4671::getPos(){
 				if(cprVal > 0){
 					if(last_cpr != cprVal){
 						last_cpr = cprVal;
-						pll.setTuning(80.0f, 1.0f, 55.0f);
+						pll.setTuning(65.0f, 1.0f, 28.0f, 55.0f);
 					}
 					pll.update((float)pos / (float)cprVal, dt);
 				}

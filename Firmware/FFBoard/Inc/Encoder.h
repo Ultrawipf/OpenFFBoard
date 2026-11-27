@@ -47,6 +47,7 @@ public:
 	virtual uint32_t getCpr() = 0; // Encoder counts per rotation
 
 	virtual float getSpeed();
+	virtual float getRawSpeed();
 	virtual float getAccel();
 	virtual uint32_t getScaler();
 	virtual void triggerRead();
