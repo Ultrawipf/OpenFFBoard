@@ -1918,6 +1918,10 @@ int32_t TMC4671::getPos(){
 			last_update_time = now;
 			if(conf.motconf.enctype == EncoderType_TMC::hall){
 				// Low-resolution Hall: use hardware PWM-sync time-difference velocity (0x6A, RPM -> rot/s)
+				if(last_cpr != 1){
+					last_cpr = 1;
+					pll.setTuning(30.0f, 1.0f, 18.0f, 32.0f);
+				}
 				float vel_rps = (float)getVelocity() / 60.0f;
 				pll.updateFromVelocity(vel_rps, dt);
 			} else {
