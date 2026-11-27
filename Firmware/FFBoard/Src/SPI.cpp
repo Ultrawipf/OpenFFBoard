@@ -191,17 +191,36 @@ void SPIPort::abortTransfer(SPIDevice* device){
 }
 // --------------------------------
 
+bool SPIPort::tryTakeSemaphoreFromISR(){
+	if(inIsr()){
+		BaseType_t taskWoken = 0;
+		if(!this->semaphore.TakeFromISR(&taskWoken)){
+			return false;
+		}
+		isTakenFlag = true;
+		portYIELD_FROM_ISR(taskWoken);
+		return true;
+	}
+	if(!this->semaphore.Take(0)){
+		return false;
+	}
+	isTakenFlag = true;
+	return true;
+}
+
 void SPIPort::takeSemaphore(){
 	bool isIsr = inIsr();
 
 	if(isIsr){
 		BaseType_t taskWoken = 0;
-		this->semaphore.TakeFromISR(&taskWoken);
-		portYIELD_FROM_ISR(taskWoken);
+		if(this->semaphore.TakeFromISR(&taskWoken)){
+			isTakenFlag = true;
+			portYIELD_FROM_ISR(taskWoken);
+		}
 	}else{
 		this->semaphore.Take();
+		isTakenFlag = true;
 	}
-	isTakenFlag = true;
 }
 
 void SPIPort::giveSemaphore(){

@@ -75,6 +75,7 @@ public:
 	void SpiError(SPI_HandleTypeDef *hspi) override;
 
 	bool isTaken(); // Returns true if semaphore was taken by another task
+	bool tryTakeSemaphoreFromISR(); // Atomically attempts to acquire the SPI port in ISR context without blocking
 
 	void takeExclusive(bool exclusive);
 	bool hasFreePins();

@@ -22,6 +22,7 @@
 #include "SPI.h"
 #include "TimerHandler.h"
 #include "ExternalEncoderAdapter.h"
+#include <atomic>
 #include <span>
 #include "semaphore.hpp"
 #include <GPIOPin.h>
@@ -708,6 +709,11 @@ private:
 #else
 	TIM_HandleTypeDef* externalEncoderTimer = nullptr;
 #endif
+	// Lock-free mailbox for external phiE updates (published from encoder ISR/task, flushed by SPI bus owner)
+	std::atomic<uint16_t> pendingExtPhiE{0};
+	std::atomic<bool> hasPendingExtPhiE{false};
+	void flushPendingExtPhiE();
+	void writeRegAsyncLocked(uint8_t reg, uint32_t dat);
 	void setUpExtEncTimer();
 };
 

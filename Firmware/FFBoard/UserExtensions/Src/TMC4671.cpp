@@ -2577,20 +2577,37 @@ void TMC4671::writeReg(uint8_t reg,uint32_t dat){
 	spiPort.transmitReceive(spi_buf, spi_buf, 5, this, SPITIMEOUT);
 }
 
-void TMC4671::writeRegAsync(uint8_t reg,uint32_t dat){
-
-	// wait until ready
-	spiPort.takeSemaphore();
+void TMC4671::writeRegAsyncLocked(uint8_t reg,uint32_t dat){
 	spi_buf[0] = (uint8_t)(0x80 | reg);
-	dat =__REV(dat);
+	dat = __REV(dat);
 	memcpy(spi_buf+1,&dat,4);
 
-	// -----
 #ifdef TMC4671_ALLOW_DMA
 	spiPort.transmitReceive_DMA(this->spi_buf, this->spi_buf, 5, this);
 #else
 	spiPort.transmitReceive_IT(this->spi_buf, this->spi_buf, 5, this);
 #endif
+}
+
+void TMC4671::writeRegAsync(uint8_t reg,uint32_t dat){
+	// wait until ready
+	spiPort.takeSemaphore();
+	writeRegAsyncLocked(reg, dat);
+}
+
+void TMC4671::flushPendingExtPhiE(){
+	if (!hasPendingExtPhiE.load(std::memory_order_acquire)) {
+		return;
+	}
+	if (!spiPort.tryTakeSemaphoreFromISR()) {
+		return; // Bus busy; endSpiTransfer() will drain the mailbox when current transfer finishes
+	}
+	if (!hasPendingExtPhiE.exchange(false, std::memory_order_acq_rel)) {
+		spiPort.giveSemaphore();
+		return;
+	}
+	uint16_t phiE_val = pendingExtPhiE.load(std::memory_order_relaxed);
+	writeRegAsyncLocked(0x1C, phiE_val);
 }
 
 void TMC4671::updateReg(uint8_t reg,uint32_t dat,uint32_t mask,uint8_t shift){
@@ -2605,6 +2622,12 @@ void TMC4671::beginSpiTransfer(SPIPort* port){
 }
 void TMC4671::endSpiTransfer(SPIPort* port){
 	clearChipSelect();
+	// If a new external phiE arrived while the motor SPI bus was busy, chain it immediately while holding the bus
+	if (hasPendingExtPhiE.exchange(false, std::memory_order_acq_rel)) {
+		uint16_t phiE_val = pendingExtPhiE.load(std::memory_order_relaxed);
+		writeRegAsyncLocked(0x1C, phiE_val);
+		return;
+	}
 	port->giveSemaphore();
 }
 
@@ -3207,17 +3230,20 @@ void TMC4671::setExternalPhiE(float phiE_rotations) {
     }
     int32_t phiE = ((int32_t)(phiE_t * (float)conf.motconf.pole_pairs)) & 0xffff;
     int16_t phiE_final = (int16_t)phiE + externalEncoderPhieOffset;
-    
-    if (!spiPort.isTaken()) {
+
 #ifdef TIM_ENC
-        uint32_t now = micros();
-        if ((now - lastExtPhiEUpdateUs) < 250) { // Cap SPI phiE writes to 4 kHz to avoid saturating motor_spi
-            return;
-        }
-        lastExtPhiEUpdateUs = now;
-#endif
-        writeRegAsync(0x1C, (uint16_t)phiE_final);
+    uint32_t now = micros();
+    if ((now - lastExtPhiEUpdateUs) < 250) { // Cap SPI phiE writes to 4 kHz to avoid saturating motor_spi
+        return;
     }
+    lastExtPhiEUpdateUs = now;
+#endif
+
+    // Publish to lock-free mailbox; flush immediately only if motor SPI bus is atomically free,
+    // otherwise endSpiTransfer() chains the write as soon as the current transfer completes.
+    pendingExtPhiE.store((uint16_t)phiE_final, std::memory_order_relaxed);
+    hasPendingExtPhiE.store(true, std::memory_order_release);
+    flushPendingExtPhiE();
 }
 
 
