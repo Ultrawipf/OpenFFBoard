@@ -168,8 +168,8 @@ int32_t EncoderSSI::getPos(){
 }
 
 void EncoderSSI::setPos(int32_t newpos){
-
 	posOffset = pos - newpos;
+	pll.reanchor(getPos_f());
 }
 
 

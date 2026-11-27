@@ -161,6 +161,7 @@ bool MtEncoderSPI::saveEeprom(){
 
 void MtEncoderSPI::setPos(int32_t pos){
 	offset = curPos - pos;
+	pll.reanchor(getPos_f());
 }
 
 

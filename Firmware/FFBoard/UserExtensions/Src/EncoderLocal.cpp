@@ -85,6 +85,7 @@ void EncoderLocal::setPos(int32_t pos){
 		int32_t idxpos = ((int32_t)indexpos - (int32_t)0x7fff);
 		offset = ( ( idxpos-cnt-pos ) % this->cpr); // offset is distance to index position (0 = 0x7fff index)
 	}
+	pll.reanchor(getPos_f());
 	//this->pos = pos - cnt;
 	//htim->Instance->CNT = 0x7fff; // Reset //pos+0x7fff;
 

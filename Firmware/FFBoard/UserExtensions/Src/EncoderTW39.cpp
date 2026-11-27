@@ -196,6 +196,7 @@ bool EncoderTW39::saveEeprom(){
 
 void EncoderTW39::setPos(int32_t pos){
 	offset = curPos - pos;
+	pll.reanchor(getPos_f());
 }
 
 

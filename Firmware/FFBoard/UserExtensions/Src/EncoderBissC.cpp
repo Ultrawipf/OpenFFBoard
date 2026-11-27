@@ -209,6 +209,7 @@ void EncoderBissC::setPos(int32_t newpos){
 	mtpos = newpos / getCpr(); // Multiturn should be reset
 
 	posOffset = diff % getCpr(); // Always positive
+	pll.reanchor(getPos_f());
 }
 
 
