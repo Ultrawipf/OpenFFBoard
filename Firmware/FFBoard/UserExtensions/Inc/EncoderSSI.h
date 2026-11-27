@@ -37,6 +37,7 @@ public:
 	void setPos(int32_t pos);
 	uint32_t getCpr();
 	uint32_t getScaler() override;
+	void triggerRead() override;
 
 	void saveFlash(); 		// Write to flash here
 	void restoreFlash();	// Load from flash

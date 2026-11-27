@@ -153,11 +153,14 @@ EncoderType EncoderSSI::getEncoderType(){
 
 
 int32_t EncoderSSI::getPosAbs(){
-	if(!waitData){ // If a transfer is still in progress return the last result
-		spiPort.receive_DMA(spi_buf, transferlen, this); // Receive next frame
-
-	}
+	// Passive read only: SPI transfers are triggered exclusively by EncoderManager::triggerRead()
 	return pos + mtpos * getCpr();
+}
+
+void EncoderSSI::triggerRead(){
+	if(!waitData && !spiPort.isTaken()){
+		spiPort.receive_DMA(spi_buf, transferlen, this);
+	}
 }
 
 int32_t EncoderSSI::getPos(){
