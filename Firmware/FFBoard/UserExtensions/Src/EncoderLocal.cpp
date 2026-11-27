@@ -74,7 +74,14 @@ EncoderType EncoderLocal::getEncoderType(){
 
 
 int32_t EncoderLocal::getPos(){
-	return getTimerCount() + pos;
+	// Double-read loop to guarantee a consistent (pos, CNT) snapshot across timer overflow ISR
+	int32_t p1, p2, cnt;
+	do {
+		p1 = pos;
+		cnt = getTimerCount();
+		p2 = pos;
+	} while (p1 != p2);
+	return cnt + p1;
 }
 
 void EncoderLocal::setPos(int32_t pos){
