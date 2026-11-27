@@ -1722,22 +1722,22 @@ DMA RX complete ISR ◄────┘
 
 ### 9. Priorités révisées *(remplace la priorisation du §6 — révision 27/11/2026)*
 
-| Priorité | Action | Réf. |
-| :--- | :--- | :--- |
-| **P0** | `micros()` monotone, ou `dt` déterministe issu du timer d'échantillonnage | §7.1, §8.1 |
-| **P0** | Supprimer toute prise de sémaphore SPI en ISR : mailbox phiE + envoi par le propriétaire du bus moteur | §7.3, §8.3 |
-| **P0** | Abort réel des transferts IT/DMA et destruction sûre des encodeurs | §7.4, §8.5 |
-| **P1** | `EncoderSSI` : surcharger `triggerRead()`, `getPosAbs()` passif, une seule mise à jour PLL par trame (ancien point 1 du §6) | §3.1 Rév. |
-| **P1** | `EncoderTW39` : supprimer le thread et le sémaphore bloquant, s'aligner sur `triggerRead()` (ancien point 2 du §6) | §3.1 Rév. |
-| **P1** | Borner `f_n ≤ 0,05·f_s` dans `Encoder::updateState()` et les drivers CAN, **avant** toute baisse de cadence | §7.2, §5.1 Rév. |
-| **P1** | `MAX_RPS` paramétrable, gating découplé de la saturation | §7.5 |
-| **P1** | `reanchor()` systématique dans `setPos()` des encodeurs externes | §5.1 Rév., §8.5 |
-| **P2** | Passage SPI IT → DMA, chaîne ISR sans tâche, décimation entière (FOC à 4/5 kHz exacts) | §8.2, §8.4 |
-| **P2** | Cadence pilotée par les consommateurs, timer arrêté sans encodeur (ancien point 3 du §6, désormais conditionné au P1 `f_n`) | §4.1 Rév., §8.4 |
-| **P2** | Lecture atomique `CNT` / overflow dans `EncoderLocal` | §3.1 Rév. |
-| **P2** | Extrapolation phiE basée sur l'âge réel de l'échantillon | §7.7, §8.3 |
-| **P3** | Supprimer le `timerElapsed()` mort de `TMC4671` (l'héritage `TimerHandler` est déjà inactif) ; utiliser `TIM_ENC_ARR` dans `EncoderManager::init()` (ancien point 4 du §6) | §3.2 Rév., §7.7 |
-| **P3** | Vérifier le *high-water mark* de la pile `ENCMGR` (128 mots) | §4.1 Rév. |
+| Priorité | Action | Réf. | Statut / Commit |
+| :--- | :--- | :--- | :--- |
+| **P0** | `micros()` monotone, ou `dt` déterministe issu du timer d'échantillonnage | §7.1, §8.1 | **Fait** (`2a5c9e9`) — lecture atomique `HAL_GetTick()` + `CNT` + `TIM_SR_UIF` dans `cppmain.cpp` |
+| **P0** | Supprimer toute prise de sémaphore SPI en ISR : mailbox phiE + envoi par le propriétaire du bus moteur | §7.3, §8.3 | **Fait** (`56e282e`) — `tryTakeSemaphoreFromISR()` atomique dans `SPIPort` + mailbox sans verrou `pendingExtPhiE`/`hasPendingExtPhiE` chaînée dans `TMC4671::endSpiTransfer()` |
+| **P0** | Abort réel des transferts IT/DMA et destruction sûre des encodeurs | §7.4, §8.5 | **Fait** (`a835da7`) — `HAL_SPI_Abort()` + `HAL_SPI_DMAStop()` et `current_device = nullptr` avant les callbacks dans `SPIPort` |
+| **P1** | `EncoderSSI` : surcharger `triggerRead()`, `getPosAbs()` passif, une seule mise à jour PLL par trame (ancien point 1 du §6) | §3.1 Rév. | **Fait** (`3679442`) — `getPosAbs()` passif + `triggerRead()` surchargé dans `EncoderSSI` |
+| **P1** | `EncoderTW39` : supprimer le thread et le sémaphore bloquant, s'aligner sur `triggerRead()` (ancien point 2 du §6) | §3.1 Rév. | **Fait** (`9904220`) — thread/sémaphores supprimés, `getPosAbs()` passif, `triggerRead()` + `spiTxRxCompleted()` DMA non bloquant + `abortTransfer()` dans le destructeur |
+| **P1** | Borner `f_n ≤ 0,05·f_s` dans `Encoder::updateState()` et les drivers CAN, **avant** toute baisse de cadence | §7.2, §5.1 Rév. | **Fait** (`dd8a41f`) — garde de stabilité Euler `f_n ≤ 0,05 / dt` directement dans `KinematicPLL::update()` (couvre tous les encodeurs et drivers CAN/TMC) |
+| **P1** | `MAX_RPS` paramétrable, gating découplé de la saturation | §7.5 | **Fait** (`2580f62`) — `KinematicPLL::setVelocityLimits(max_rps_limit, gating_rps_limit)` avec `max_rps` et `gating_rps` indépendants |
+| **P1** | `reanchor()` systématique dans `setPos()` des encodeurs externes | §5.1 Rév., §8.5 | **Fait** (`ce6791e`) — `pll.reanchor(getPos_f())` ajouté dans `setPos()` de `EncoderBissC`, `EncoderLocal`, `EncoderSSI`, `EncoderTW39`, `MtEncoderSPI` |
+| **P2** | Passage SPI IT → DMA, chaîne ISR sans tâche, décimation entière (FOC à 4/5 kHz exacts) | §8.2, §8.4 | À faire |
+| **P2** | Cadence pilotée par les consommateurs, timer arrêté sans encodeur (ancien point 3 du §6, désormais conditionné au P1 `f_n`) | §4.1 Rév., §8.4 | **Fait** (`cdba3c7`) — `TIM_ENC` arrêté sans encodeur actif (`updateTimerState()`), plafonnement à 2 kHz (`scaler >= 5`) sans adaptateur FOC externe |
+| **P2** | Lecture atomique `CNT` / overflow dans `EncoderLocal` | §3.1 Rév. | **Fait** (`e3596ec`) — boucle de double lecture cohérente `(pos, CNT)` dans `EncoderLocal::getPos()` |
+| **P2** | Extrapolation phiE basée sur l'âge réel de l'échantillon | §7.7, §8.3 | **Fait** (`7761ef7`) — `Encoder::getLastUpdateTime()` + extrapolation `(micros() - last_update_time + 15 µs)` bornée à 1 ms dans `ExternalEncoderAdapter::update()` |
+| **P3** | Supprimer le `timerElapsed()` mort de `TMC4671` (l'héritage `TimerHandler` est déjà inactif) ; utiliser `TIM_ENC_ARR` dans `EncoderManager::init()` (ancien point 4 du §6) | §3.2 Rév., §7.7 | **Fait** (`1411542`) — `TMC4671::timerElapsed()` supprimé + `TIM_ENC_ARR` (défaut `99` pour 100 µs exacts) dans `EncoderManager::init()` |
+| **P3** | Vérifier le *high-water mark* de la pile `ENCMGR` (128 mots) | §4.1 Rév. | À faire (mesure cible) |
 
 **Validation recommandée** avant et après les correctifs :
 - GPIO toggle dans l'ISR timer, dans l'ISR de fin SPI et à l'écriture `0x1C`, mesurés à l'analyseur logique (cadence et jitter réels) ;
