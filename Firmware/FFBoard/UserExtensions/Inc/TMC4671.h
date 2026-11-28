@@ -83,12 +83,6 @@ struct Harmonic {
 };
 static_assert(sizeof(Harmonic) == 12, "Harmonic struct must remain 12 bytes to match COGGING_TABLE_SIZE");
 
-struct CoggingCalibData {
-	float32_t iq_sums[1024];
-	float32_t id_sums[1024];
-	uint16_t counts[1024];
-};
-
 enum class TMC_ControlState : uint32_t {uninitialized,waitPower,Shutdown,Running,EncoderInit,EncoderFinished,HardError,OverTemp,IndexSearch,FullCalibration,ExternalEncoderInit,Pidautotune
 #ifdef COGGING_TABLE_FLASH_START_ADDRESS
 	,CoggingCalibration
@@ -760,7 +754,6 @@ private:
 	void saveCoggingTable();
 	void clearCoggingTable();
 
-	std::unique_ptr<CoggingCalibData> coggingData = nullptr;
 	uint32_t calibStartTime = 0;
 	MotionMode prevCalibMode = MotionMode::stop;
 	float coggingSpeedP = 0.0f;
@@ -771,9 +764,6 @@ private:
 	uint16_t maxSlewRate = MAX_SLEW_RATE; // in mA/ms
 	void measureMaxSlewRate();
 
-	enum class PidTuneState : uint8_t { Init, RampFluxP, TuneFluxI_Pulse, TuneFluxI_Measure, Done };
-	PidTuneState pidTuneState = PidTuneState::Init;
-	uint32_t pidTuneStartTime = 0;
 	uint16_t tuneFluxI = 0, tuneFluxP = 100;
 	int32_t tuneMeasurePeak = 0;
 	PhiE lastPidTunePhiE = PhiE::NONE;

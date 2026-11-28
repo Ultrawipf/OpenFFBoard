@@ -3928,19 +3928,16 @@ void TMC4671::handleStateFullCalibration() {
  */
 void TMC4671::handleStatePidAutoTune() {
 	if (isEmergencyActive() || brake_failure || state == TMC_ControlState::HardError) {
-		pidTuneState = PidTuneState::Init;
 		if (state != TMC_ControlState::HardError) {
 			enterShutdown();
 		}
 		return;
 	}
 	if (conf.motconf.motor_type == MotorType::NONE || !initialized) {
-		pidTuneState = PidTuneState::Init;
 		changeState(TMC_ControlState::Shutdown);
 		return;
 	}
 	if (!hasPower() || !powerInitialized) {
-		pidTuneState = PidTuneState::Init;
 		this->postPowerState = TMC_ControlState::Pidautotune;
 		changeState(TMC_ControlState::waitPower);
 		return;
@@ -3949,7 +3946,6 @@ void TMC4671::handleStatePidAutoTune() {
 	// 1. Initial Setup
 	allowStateChange = false;
 	if (!enablePowerStageForCalibration()) {
-		pidTuneState = PidTuneState::Init;
 		allowStateChange = true;
 		enterShutdown();
 		return;
@@ -3969,7 +3965,6 @@ void TMC4671::handleStatePidAutoTune() {
 		setBiquadFlux(curFilters.flux);
 		setPhiEtype(lastPidTunePhiE);
 		setMotionMode(lastPidTuneMode, true);
-		pidTuneState = PidTuneState::Init;
 		allowStateChange = true;
 		changeState(TMC_ControlState::Shutdown);
 		return;
@@ -4039,7 +4034,6 @@ void TMC4671::handleStatePidAutoTune() {
 	}
 
 	setPhiEtype(lastPidTunePhiE);
-	pidTuneState = PidTuneState::Init;
 	if (isEmergencyActive() || brake_failure) {
 		enterShutdown();
 	} else if (!hasPower()) {

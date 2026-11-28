@@ -51,8 +51,8 @@ The system is encapsulated in the dedicated `TMC4671CoggingCalibrator` class (`T
 
 3.  **Step 3 — Tier 0 Static Cogging DFT (`calib_rpm`, Default 3.0 RPM = 20s/rev)**:
     *   Clocked strictly at `TIM_TMC_ARR` (4kHz / 250µs or 5kHz / 200µs). Integrates exactly 1.0 revolution Forward and 1.0 revolution Backward after `COGGING_WARMUP_MS`.
-    *   **24-Bit FPU Trigonometric Seed (`sinf` / `cosf`)**: Replaces the 512-entry CMSIS LUT (`arm_sin_cos_f32`) with exact IEEE-754 single-precision `sinf(angle_rad)` / `cosf(angle_rad)` for the fundamental harmonic seed before angle-addition recurrence, preserving full 21/22-bit encoder precision (BiSS-C, MT6835, >16-bit ABN) up to H127 without accumulated LUT interpolation drift.
-    *   **Consistent Forward Velocity Sign**: Computes wrapped displacement as `getWrappedError(actual_pos_f, prev_actual_pos_f)` (`actual - prev`), ensuring stabilizing active velocity damping ($K_v$) and accurate physical sign for causal inertia subtraction in both Tier 0 and multi-speed passes.
+    *   **24-Bit FPU Trigonometric Seed (`sinf` / `cosf`)** *(fix `f7709946`)*: Replaces the 512-entry CMSIS LUT (`arm_sin_cos_f32`) with exact IEEE-754 single-precision `sinf(angle_rad)` / `cosf(angle_rad)` for the fundamental harmonic seed before angle-addition recurrence, preserving full 21/22-bit encoder precision (BiSS-C, MT6835, >16-bit ABN) up to H127 without accumulated LUT interpolation drift.
+    *   **Consistent Forward Velocity Sign** *(fix `ecfe72e9`)*: Computes wrapped displacement as `getWrappedError(actual_pos_f, prev_actual_pos_f)` (`actual - prev`), ensuring stabilizing active velocity damping ($K_v$) and accurate physical sign for causal inertia subtraction in both Tier 0 and multi-speed passes.
     *   **Separate FWD/BWD Accumulators**: Instead of summing FWD and BWD into a single accumulator (which attenuates amplitude by $\cos(\delta_k)$ when residual phase lag $\delta_k$ exists), FWD (`iq_fwd_cos/sin`) and BWD (`iq_acc_cos/sin`) are accumulated separately. The true unattenuated magnitude is $A_{k,0} = \frac{1}{2}(|\vec{V}_{k,FWD}| + |\vec{V}_{k,BWD}|)$ and the exact static magnetic phase is the unit-vector bisector between FWD and BWD.
     *   **Causal Real-Time Inertia Subtraction (Why FWD+BWD Addition Cannot Cancel Inertia)**:
         *   By the chain rule, angular acceleration as a function of spatial angle $\theta$ is $\alpha(\theta) = \frac{d\omega}{dt} = \omega \frac{d\omega}{d\theta} = \frac{1}{2}\frac{d(\omega^2)}{d\theta}$.
@@ -73,11 +73,11 @@ The system is encapsulated in the dedicated `TMC4671CoggingCalibrator` class (`T
         *   Directly extracts the real motor+driver **phase-lead latency** $\tau_{lead}$ (`cogging_phase_lead_time`, clamped to `[0.2 ms, 3.0 ms]`) from the FWD/BWD phase difference on the main harmonic at Tiers 2 & 3 *(kept in RAM; defaults to `0.8 ms` on reboot, while `speed_delta` is persisted in Flash)*.
 
 5.  **Step 4.5 — Scale Calibration (Hybrid Secant + Gradient Descent at `TIM_TMC_ARR`)**:
-    *   Runs at the same unified `TIM_TMC_ARR` frequency as Tier 0, evaluates harmonic synthesis and residual DFT projection on **`getFilteredPosition()`** (matching the exact phase origin of Tier 0 DFT and `TMC4671::turn()`), and computes the residual dot product on the causal inertia-subtracted torque `iq_mag_filt` (preventing scale bias from rotor inertia), with exact integer-period segments to prevent spectral leakage and an absolute-best safeguard.
+    *   Runs at the same unified `TIM_TMC_ARR` frequency as Tier 0, evaluates harmonic synthesis and residual DFT projection on **`getFilteredPosition()`** *(fix `f7709946`)* (matching the exact phase origin of Tier 0 DFT and `TMC4671::turn()`), and computes the residual dot product on the causal inertia-subtracted torque `iq_mag_filt` (preventing scale bias from rotor inertia), with exact integer-period segments to prevent spectral leakage and an absolute-best safeguard.
 
 6.  **Step 5 — Post-Acquisition Homing & Direct Safe Exit**:
-    *   Uses the full tuned cascade controller at `TIM_TMC_ARR` to unwind back to `0.0`.
-    *   Transitions **directly** to `Running`, `Shutdown`, or `waitPower` (via `enterWaitPower()`) without re-running `EncoderInit` (unless `!encoderAligned`) and without injecting a spurious `setTargetVelocity(0)` step, preserving the calibrated magnetic phase origin.
+    *   Uses the full tuned cascade controller at `TIM_TMC_ARR` to unwind back to `0.0` (with dynamic timeout, *fix `e3ae51b4`*).
+    *   Transitions **directly** to `Running`, `Shutdown`, or `waitPower` (via `enterWaitPower()`) without re-running `EncoderInit` (unless `!encoderAligned`) and without injecting a spurious `setTargetVelocity(0)` step, preserving the calibrated magnetic phase origin *(fix `f7709946`)*.
 
 ---
 
@@ -86,7 +86,7 @@ The system is encapsulated in the dedicated `TMC4671CoggingCalibrator` class (`T
 ### Memory Efficiency (Zero-Buffer Goal)
 *   **DFT Accumulators**: Separate FWD/BWD 128-float pairs (`iq_acc_cos/sin`, `iq_fwd_cos/sin`, plus optional `id_acc_cos/sin`).
 *   **Peak Heap RAM**: ~3 KB on the FreeRTOS heap during calibration, freed unconditionally in `cleanup:`.
-*   **TMC Thread Stack Usage**: **776 bytes** static stack frame (verified via `-fstack-usage` in `TMC4671.su`), safely within `TMC_THREAD_MEM` (4096 bytes).
+*   **TMC Thread Stack Usage**: **1,016 bytes** worst-case static call chain (`Run()` → `handleStateCoggingCalibration()` → `TMC4671CoggingCalibrator::run()` [352 B] → `profileMultiSpeedRipple()` [640 B], verified via `-fstack-usage` in `TMC4671.su` and `TMC4671_cogging.su`), safely within `TMC_THREAD_MEM` (4096 bytes).
 *   **Permanent Flash / RAM**: Exactly **240 bytes** (`20 * 12 bytes`, `static_assert(sizeof(Harmonic) == 12)`). Legacy flash tables are automatically sanitized in `restoreFlash()` against NaN/Inf and out-of-range padding bytes.
 *   **Compatibility**: Verified across **F407VG**, **F407VG_DISCO**, and **F411RE**.
 
@@ -142,14 +142,14 @@ Implemented in `turn()` for ultra-fast deterministic execution (zero extra SPI r
 4. **Fourier Synthesis with ZOH Anti-Aliasing Roll-off ($200\text{–}350\text{ Hz}$)**:
    $$T_{comp}(\theta, \omega) = \sum_{n=1}^{20} G_{ZOH}(Order_n, \omega) \cdot \text{clip}\left(A_n + \Delta A_{n,\max} \cdot S(\omega),\ 0,\; 3 A_n\right) \cdot \sin\left(2\pi \cdot Order_n \cdot \theta_{pred} + \Phi_n\right)$$
    $$T_{final} = T_{game\_dir} + \text{clip}\left( Scale \cdot T_{comp}(\theta, \omega),\ -T_{lim},\ +T_{lim} \right)$$
-   * **`invertForce` Decoupling**: Axis-level `conf.invertForce` (used with `combineEncoder`) is applied *only* to the incoming game FFB torque (`T_game_dir = invertForce ? -power : power`), never to internal anticogging compensation or `applySafeTorque()`. Total motor torque is inverted only when commutating through a reversed external encoder (`encoderReversed && enctype == ext`).
-   * **Scale Clamping**: `coggingScale` commands are clamped to `[-1.5, 1.5]` to prevent unstable over-compensation.
+   * **`invertForce` Decoupling** *(fix `f7709946`)*: Axis-level `conf.invertForce` (used with `combineEncoder`) is applied *only* to the incoming game FFB torque (`T_game_dir = invertForce ? -power : power`), never to internal anticogging compensation or `applySafeTorque()`. Total motor torque is inverted only when commutating through a reversed external encoder (`encoderReversed && enctype == ext`).
+   * **Scale Clamping** *(fix `ecfe72e9`)*: `coggingScale` commands are clamped to `[-1.5, 1.5]` to prevent unstable over-compensation.
 
 ---
 
 ## 7. Timer, Pacing and Parameter Reference
 
-*   **`externalEncoderTimer`**: `&TIM_TMC` (typically `htim6`, ARR = `TIM_TMC_ARR`). Drives `extEncUpdater` and paces calibration via `calibTicksCount` / `calibTicksTarget` when an external encoder is active. `waitNextTick()` waits on `TIM_TMC` (or `TIM_CALIBRATION`) with a **bounded 50 ms timeout** (`WaitForNotification(50)`) to prevent watchdog deadlocks if a timer stops.
+*   **`externalEncoderTimer`**: `&TIM_TMC` (typically `htim6`, ARR = `TIM_TMC_ARR`). Drives `extEncUpdater` and paces calibration via `calibTicksCount` / `calibTicksTarget` when an external encoder is active. `waitNextTick()` waits on `TIM_TMC` (or `TIM_CALIBRATION`) with a **bounded 50 ms timeout** (`WaitForNotification(50)`) to prevent watchdog deadlocks if a timer stops *(fix `f7709946`)*.
 *   **`calibTimer`**: `&TIM_CALIBRATION` (typically `htim9`, shared with `TIM_USER`). Dynamically configured to `TIM_TMC_ARR` µs when no external encoder is active.
 *   **`enc_decimation_ratio`**: Computed dynamically from true physical CPR and `calib_rpm` to guarantee $\ge 4$ physical ticks per control/acceleration evaluation.
 *   **`resolution_penalty`**: `clip(1.0f / sqrtf(enc_decimation_ratio), 0.25f, 1.0f)` applied to cascade gains for discrete phase margin.
@@ -161,29 +161,48 @@ Implemented in `turn()` for ultra-fast deterministic execution (zero extra SPI r
 ## 8. Encoder Precision, `zeroenc` Invariance and Architecture
 
 ### 16-Bit Internal Wrap-Around (`0x10000` vs `0xffff`) & Full-Resolution Absolute Anchoring
-1. **Exact 65536 Counts/Rev in `TMC4671::getCpr()`**: The TMC4671 internal 16-bit `PhiM` / position register (`0x6B`) wraps at exactly **$2^{16} = 65536$ (`0x10000`)** counts per mechanical revolution. Returning `0x10000` (instead of `0xffff`) eliminates a 1-count-per-turn multi-revolution phase drift ($0.55^\circ$/turn on H100) while preserving exact scaling in `Encoder::getPos_f()` and `Axis.cpp`.
-2. **True Physical CPR Separation**: While `getCpr()` returns the position-register scale (`0x10000` internally or `drvEncoder->getCpr()` externally), calibration queries the physical encoder CPR (`abnconf.cpr`, interpolated `aencconf.cpr`, or external CPR) so internal ABN encoders (e.g., 4,000–10,000 CPR) are properly decimated instead of being misclassified as 65,536 CPR High-Res encoders.
-3. **Full-Resolution `zeroenc`-Invariant `getFilteredPosition()`**: Anchors cogging phase to the physical mechanical angle so user wheel centering (`zeroenc` / `setPos()`) never shifts cogging phase, while performing integer modulo *before* float conversion to prevent mantissa truncation across unlimited turns:
+1. **Exact 65536 Counts/Rev in `TMC4671::getCpr()`** *(fix `1570bd31`)*: The TMC4671 internal 16-bit `PhiM` / position register (`0x6B`) wraps at exactly **$2^{16} = 65536$ (`0x10000`)** counts per mechanical revolution. Returning `0x10000` (instead of `0xffff`) eliminates a 1-count-per-turn multi-revolution phase drift ($0.55^\circ$/turn on H100) while preserving exact scaling in `Encoder::getPos_f()` and `Axis.cpp`.
+2. **True Physical CPR Separation** *(fix `1570bd31`)*: While `getCpr()` returns the position-register scale (`0x10000` internally or `drvEncoder->getCpr()` externally), calibration queries the physical encoder CPR (`abnconf.cpr`, interpolated `aencconf.cpr`, or external CPR) so internal ABN encoders (e.g., 4,000–10,000 CPR) are properly decimated instead of being misclassified as 65,536 CPR High-Res encoders.
+3. **Full-Resolution `zeroenc`-Invariant `getFilteredPosition()`** *(fix `f7709946`)*: Anchors cogging phase to the physical mechanical angle so user wheel centering (`zeroenc` / `setPos()`) never shifts cogging phase, while performing integer modulo *before* float conversion to prevent mantissa truncation across unlimited turns:
    * **External Encoders** (`BiSS-C`, `MT6825`, `MT6835`, etc.): `drvEncoder->getPosAbs() % drvEncoder->getCpr()` (preserves full 21/22-bit resolution).
    * **Internal ABN**: Raw 32-bit `ABN_DECODER_COUNT` (`0x27`) `% abnconf.cpr` shifted by `abnconf.phiMoffset / 65536.0f` (preserves >16-bit ABN resolution and `zeroenc` invariance).
    * **Internal SinCos / UVW**: Hardware mechanical angle `PHI_M_AENC` (`0x46 & 0xffff`).
    * **Internal Hall**: Hardware mechanical angle `PHI_M_HALL` (`0x3A & 0xffff`).
-4. **External Encoder Boot Preservation**: `allowExternalEncoder` defaults to `true` when `TIM_TMC` is compiled in, preventing boot-time fallback to `EncoderType_TMC::NONE` before `Axis::setEncType()` attaches the external encoder instance.
+4. **External Encoder Boot Preservation** *(fix `cb541de9`)*: `allowExternalEncoder` defaults to `true` when `TIM_TMC` is compiled in, preventing boot-time fallback to `EncoderType_TMC::NONE` before `Axis::setEncType()` attaches the external encoder instance.
 
 ---
 
 ## 9. Safety, E-Stop, and State-Machine Hardening
 
 1. **Calibration Pre-Conditions & Command Guards**:
-   * `calibrateCogging` rejects powered calibration if `emergency`/`estopTriggered`/`brake_failure` is active, `state == HardError`, another calibration is busy (`isCalibrationInProgress() && !allowStateChange`), `motor_type == NONE`, or `!encoderAligned || !adcCalibrated || enctype == NONE`.
-   * Mutating configuration and calibration commands (`cpr`, `mtype`, `encsrc`, `poles`, `tmcHwType`, `fullCalibration`, `encalign`, `findIndex`, `pidautotune`) are rejected while a calibration is actively running or `HardError` is latched.
+   * `calibrateCogging` rejects powered calibration if `emergency`/`estopTriggered`/`brake_failure` is active, `state == HardError`, another calibration is busy (`isCalibrationInProgress() && !allowStateChange`), `motor_type == NONE`, or `!encoderAligned || !adcCalibrated || enctype == NONE` *(fix `f7709946`)*.
+   * Mutating configuration and calibration commands (`cpr`, `mtype`, `encsrc`, `poles`, `tmcHwType`, `fullCalibration`, `encalign`, `findIndex`, `pidautotune`) are rejected while a calibration is actively running or `HardError` is latched *(fix `ecfe72e9`)*.
 2. **Immediate Multi-Layer E-Stop & Brake Resistor Protection**:
-   * **0 ms Hardware E-Stop Engagement**: `FFBHIDMain::exti()` engages E-stop immediately on `E_STOP_Pin` activation (the 1000 ms debounce applies *only* to release) and cuts `DRV_ENABLE` inside the ISR without blocking SPI calls (`inIsr()` guards).
-   * **External `ENABLE_IN` Polling**: During cogging calibration, `isEstopActive()` polls `E_STOP_Pin`, `brake_failure`, and TMC4671 `ENABLE_IN` (`0x76` bit 15) every 50 ms via `checkHardwareEstop()` using a per-instance timestamp (`last_en_check_tick`).
-   * **Brake Resistor Fault (`brake_failure`)**: Exported from `voltagesense.h` and checked in `canRunMotor()`, `motorReady()`, `startMotor()`, `Run()`, and `isEstopActive()` to abort any calibration within milliseconds and permanently latch `HardError`.
-   * **Strict `HardError` Absorption**: Once entered (via `enterHardError()`), `changeState()` and `Run()` refuse all transitions until MCU reset, with `DRV_ENABLE` low, `PWM_FOC` off, and torque zeroed.
+   * **0 ms Hardware E-Stop Engagement** *(fix `cb52dc22`)*: `FFBHIDMain::exti()` engages E-stop immediately on `E_STOP_Pin` activation (the 1000 ms debounce applies *only* to release) and cuts `DRV_ENABLE` inside the ISR without blocking SPI calls (`inIsr()` guards). `FLAG_Pin` `statusCheck()` SPI reads are also deferred from the EXTI ISR to the TMC thread *(fix `bca4590d`)*.
+   * **External `ENABLE_IN` Polling** *(fix `f7709946`, `a9cc36a7`)*: During cogging calibration, `isEstopActive()` polls `E_STOP_Pin`, `brake_failure`, and TMC4671 `ENABLE_IN` (`0x76` bit 15) every 50 ms via `checkHardwareEstop()` using a per-instance timestamp (`last_en_check_tick`).
+   * **Brake Resistor Fault (`brake_failure`)** *(fix `b9a5e0d6`)*: Exported from `voltagesense.h` and checked in `canRunMotor()`, `motorReady()`, `startMotor()`, `Run()`, and `isEstopActive()` to abort any calibration within milliseconds and permanently latch `HardError`.
+   * **Strict `HardError` Absorption** *(fix `a9cc36a7`)*: Once entered (via `enterHardError()`), `changeState()` and `Run()` refuse all transitions until MCU reset, with `DRV_ENABLE` low, `PWM_FOC` off, and torque zeroed.
 3. **Torque Clamping & Deterministic State Transitions**:
-   * `applySafeTorque()` and all TMC4671 torque/flux setters clamp outputs via `clampTorqueFlux()` (`curLimits.pid_torque_flux` or `30000`) and force `0` when E-stop is active.
-   * Centralized helpers (`disablePowerStage()`, `enablePowerStageForCalibration()`, `enterShutdown()`, `enterWaitPower()`, `enterHardError()`) enforce clean power-stage cutoffs and deterministic recovery on power loss, E-stop, or blank flash (`MotorType::NONE`).
-   * `Axis::updateDriveTorque()` zeros accumulated endstop/slew-rate torque during any calibration or unready state, and `Axis::prepareForUpdate()` re-arms the soft force fade-in (`0 -> 1.0`) upon returning to `Running`.
-   * Cross-thread/ISR state and E-stop flags are qualified `volatile`; `~TMC4671()` stops `TIM_TMC`/`TIM_CALIBRATION`, resets `extEncUpdater`, and disables the power stage safely.
+   * `applySafeTorque()` and all TMC4671 torque/flux setters clamp outputs via `clampTorqueFlux()` (`curLimits.pid_torque_flux` or `30000`) and force `0` when E-stop is active *(fix `f8a70a97`)*.
+   * Centralized helpers (`disablePowerStage()`, `enablePowerStageForCalibration()`, `enterShutdown()`, `enterWaitPower()`, `enterHardError()`) enforce clean power-stage cutoffs and deterministic recovery on power loss, E-stop, or blank flash (`MotorType::NONE`) *(fix `a9cc36a7`)*.
+   * `Axis::updateDriveTorque()` zeros accumulated endstop/slew-rate torque during any calibration or unready state, and `Axis::prepareForUpdate()` re-arms the soft force fade-in (`0 -> 1.0`) upon returning to `Running` *(fix `cb541de9`)*.
+   * Cross-thread/ISR state and E-stop flags are qualified `volatile` *(fix `cb52dc22`, `a9cc36a7`)*; `~TMC4671()` stops `TIM_TMC`/`TIM_CALIBRATION`, resets `extEncUpdater`, and disables the power stage safely *(fix `f8a70a97`)*.
+   * Encoder, AENC, and ADC scaling routines guard against division-by-zero, null pointers, and `int16` overflow *(fix `c9db85dc`)*.
+
+---
+
+## 10. Bug-Fix Traceability (`feat/anticogging`)
+
+| Commit | Scope | Fixed Bugs / Hardening |
+| :--- | :--- | :--- |
+| `ecfe72e9` | `TMC4671`, `TMC4671_cogging` | Inverted velocity sign in Tier 0 & multi-speed DFT passes, `isSetUp()` null deref, uninitialized `encofs` on blank flash, missing command guards during calibration/faults, unclamped `coggingScale` |
+| `f7709946` | `TMC4671`, `TMC4671_cogging` | `zeroenc` phase shift & >16-bit precision loss in `getFilteredPosition()`, 512-LUT `arm_sin_cos_f32` DFT drift (replaced with 24-bit FPU `sinf`/`cosf`), `invertForce` flipping anticogging sign, missing `TIM_TMC` pacing / 50 ms timeout / `ENABLE_IN` polling, missing `calibrateCogging` preconditions, unwanted `EncoderInit` on exit |
+| `cb541de9` | `Axis`, `TMC4671` | Boot-time external encoder fallback (`allowExternalEncoder`), premature `encoderAligned=true`, uninitialized Axis power limit on blank flash, endstop torque accumulation & missing fade-in re-arm during calibration, `checkEncoder` missing `bangInitEnc` on reversal |
+| `f8a70a97` | `TMC4671`, `TMC4671_cogging` | E-stop bypass & missing torque clamping (`clampTorqueFlux`), missing `calibrateAenc` 15 s timeout, `AutoPID` leaving `fluxP=20000` on failure, `checkEncoder` wrapping & `enc_retry` bugs, bitwise mask typos, unsafe `~TMC4671()` destructor |
+| `c9db85dc` | `TMC4671` | Division-by-zero and `int16`/32-bit overflow in encoder, AENC, and ADC offset scaling (`zeroAbnUsingPhiM`, `getPhiEfromExternalEncoder`, `encToPos`, `posToEnc`, `calibrateAenc`, `calibrateAdcOffset`) |
+| `bca4590d` | `TMC4671` | Blocking SPI `statusCheck()` executed inside `FLAG_Pin` EXTI ISR (deferred to TMC thread) |
+| `b9a5e0d6` | `voltagesense`, `TMC4671`, `TMC4671_cogging` | `brake_failure` flag ignored by TMC4671 during motor drive and cogging calibration |
+| `a9cc36a7` | `TMC4671` | Power stage left active in fault/stop states, non-absorbing `HardError`, `Shutdown` deadlock via `Suspend()`, `MotorType::NONE` PWM enable, non-volatile state flags |
+| `cb52dc22` | `FFBHIDMain`, `TMC4671` | 1000 ms E-stop engagement delay in `exti()`, `errorCallback()` clearing E-stop on critical errors, blocking SPI in ISR (`inIsr()`), non-volatile E-stop flags |
+| `1570bd31` | `TMC4671` | `getCpr()` returning `0xffff` instead of `0x10000` (1-count/turn phase drift), physical CPR misclassification on internal encoders, dynamic PID decimation |
+| `e3ae51b4` | `TMC4671` | Missing dynamic timeout on post-acquisition return-to-home ramp |
