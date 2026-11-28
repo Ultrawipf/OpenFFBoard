@@ -2,10 +2,12 @@
  * TMC4671.cpp
  *
  *  Created on: Feb 1, 2020
- *      Author: Yannick, Vincent
+ *	  Author: Yannick, Vincent
  */
 
 #include "TMC4671.h"
+#include <cstdarg>
+#include <new>
 #ifdef TMC4671DRIVER
 #include "ledEffects.h"
 #include "voltagesense.h"
@@ -80,8 +82,16 @@ TMC4671::TMC4671(SPIPort& spiport,OutputPin cspin,uint8_t address) :
 
 
 TMC4671::~TMC4671() {
-	enablePin.reset();
-	//recordSpiAddrUsed(0);
+	// Safely stop hardware timers, external encoder thread, PWM, and enable pin before base destruction.
+	allowExternalEncoder = false;
+	stopCalibTimers();
+#ifdef TIM_TMC
+	if(externalEncoderTimer != nullptr){
+		HAL_TIM_Base_Stop_IT(externalEncoderTimer);
+	}
+#endif
+	extEncUpdater.reset();
+	disablePowerStage();
 }
 
 
@@ -93,13 +103,25 @@ const ClassIdentifier TMC4671::getInfo() {
 
 void TMC4671::setAddress(uint8_t address){
 	if (address == 1){
-		this->flashAddrs = TMC4671FlashAddrs({ADR_TMC1_MOTCONF, ADR_TMC1_CPR, ADR_TMC1_ENCA, ADR_TMC1_OFFSETFLUX, ADR_TMC1_TORQUE_P, ADR_TMC1_TORQUE_I, ADR_TMC1_FLUX_P, ADR_TMC1_FLUX_I,ADR_TMC1_ADC_I0_OFS,ADR_TMC1_ADC_I1_OFS,ADR_TMC1_ENC_OFFSET,ADR_TMC1_PHIE_OFS,ADR_TMC1_TRQ_FILT});
+		this->flashAddrs = TMC4671FlashAddrs({ADR_TMC1_MOTCONF, ADR_TMC1_CPR, ADR_TMC1_ENCA, ADR_TMC1_OFFSETFLUX, ADR_TMC1_TORQUE_P, ADR_TMC1_TORQUE_I, ADR_TMC1_FLUX_P, ADR_TMC1_FLUX_I,ADR_TMC1_ADC_I0_OFS,ADR_TMC1_ADC_I1_OFS,ADR_TMC1_ENC_OFFSET,ADR_TMC1_PHIE_OFS,ADR_TMC1_TRQ_FILT
+#ifdef COGGING_TABLE_FLASH_START_ADDRESS
+			,ADR_TMC1_COGGING_CAL
+#endif
+			});
 	}else if (address == 2)
 	{
-		this->flashAddrs = TMC4671FlashAddrs({ADR_TMC2_MOTCONF, ADR_TMC2_CPR, ADR_TMC2_ENCA, ADR_TMC2_OFFSETFLUX, ADR_TMC2_TORQUE_P, ADR_TMC2_TORQUE_I, ADR_TMC2_FLUX_P, ADR_TMC2_FLUX_I,ADR_TMC2_ADC_I0_OFS,ADR_TMC2_ADC_I1_OFS,ADR_TMC2_ENC_OFFSET,ADR_TMC2_PHIE_OFS,ADR_TMC2_TRQ_FILT});
+		this->flashAddrs = TMC4671FlashAddrs({ADR_TMC2_MOTCONF, ADR_TMC2_CPR, ADR_TMC2_ENCA, ADR_TMC2_OFFSETFLUX, ADR_TMC2_TORQUE_P, ADR_TMC2_TORQUE_I, ADR_TMC2_FLUX_P, ADR_TMC2_FLUX_I,ADR_TMC2_ADC_I0_OFS,ADR_TMC2_ADC_I1_OFS,ADR_TMC2_ENC_OFFSET,ADR_TMC2_PHIE_OFS,ADR_TMC2_TRQ_FILT
+#ifdef COGGING_TABLE_FLASH_START_ADDRESS
+	,ADR_TMC2_COGGING_CAL
+#endif
+		});
 	}else if (address == 3)
 	{
-		this->flashAddrs = TMC4671FlashAddrs({ADR_TMC3_MOTCONF, ADR_TMC3_CPR, ADR_TMC3_ENCA, ADR_TMC3_OFFSETFLUX, ADR_TMC3_TORQUE_P, ADR_TMC3_TORQUE_I, ADR_TMC3_FLUX_P, ADR_TMC3_FLUX_I,ADR_TMC3_ADC_I0_OFS,ADR_TMC3_ADC_I1_OFS,ADR_TMC3_ENC_OFFSET,ADR_TMC3_PHIE_OFS,ADR_TMC3_TRQ_FILT});
+		this->flashAddrs = TMC4671FlashAddrs({ADR_TMC3_MOTCONF, ADR_TMC3_CPR, ADR_TMC3_ENCA, ADR_TMC3_OFFSETFLUX, ADR_TMC3_TORQUE_P, ADR_TMC3_TORQUE_I, ADR_TMC3_FLUX_P, ADR_TMC3_FLUX_I,ADR_TMC3_ADC_I0_OFS,ADR_TMC3_ADC_I1_OFS,ADR_TMC3_ENC_OFFSET,ADR_TMC3_PHIE_OFS,ADR_TMC3_TRQ_FILT
+#ifdef COGGING_TABLE_FLASH_START_ADDRESS			
+	,ADR_TMC3_COGGING_CAL
+#endif
+		});
 	}
 	//this->setAxis((char)('W'+address));
 }
@@ -128,6 +150,14 @@ void TMC4671::saveFlash(){
 	uint16_t filterval = (torqueFilterConf.params.freq & 0x1fff) | ((uint8_t)(torqueFilterConf.mode) << 13);
 	Flash_Write(flashAddrs.torqueFilter, filterval);
 
+#ifdef COGGING_TABLE_FLASH_START_ADDRESS
+	// Save cogging state
+	uint16_t coggingFlash = (cogging_enabled ? 1 : 0);
+	Flash_Write(flashAddrs.coggingEnable, coggingFlash);
+	
+	int16_t scale_int = clip<float>(this->cogging_scale * 10000.0f, -32767, 32767);
+	Flash_Write(flashAddrs.coggingScale, (uint16_t)scale_int);
+#endif
 }
 
 /**
@@ -138,6 +168,18 @@ void TMC4671::saveAdcParams(){
 	Flash_Write(flashAddrs.ADC_i1_ofs, conf.adc_I1_offset);
 	adcSettingsStored = true;
 }
+
+#ifdef COGGING_TABLE_FLASH_START_ADDRESS
+void TMC4671::saveCoggingTable(){
+	Flash_WriteCoggingTable(this->drv_address - 1, (void*)this->cogging_harmonics);
+}
+
+void TMC4671::clearCoggingTable(){
+	memset(cogging_harmonics, 0, sizeof(cogging_harmonics));
+	cogging_enabled = false;
+	saveCoggingTable();
+}
+#endif
 
 /**
  * Restores saved parameters
@@ -159,9 +201,10 @@ void TMC4671::restoreFlash(){
 	Flash_Read(flashAddrs.torque_i, &this->curPids.torqueI);
 	Flash_Read(flashAddrs.flux_p, &this->curPids.fluxP);
 	Flash_Read(flashAddrs.flux_i, &this->curPids.fluxI);
-	uint16_t encofs;
-	Flash_Read(flashAddrs.encOffset,&encofs);
-	this->abnconf.posOffsetFromIndex = (int16_t)encofs;
+	uint16_t encofs = 0;
+	if(Flash_Read(flashAddrs.encOffset,&encofs)){
+		this->abnconf.posOffsetFromIndex = (int16_t)encofs;
+	}
 
 	Flash_Read(flashAddrs.offsetFlux, (uint16_t*)&this->maxOffsetFlux);
 
@@ -191,6 +234,36 @@ void TMC4671::restoreFlash(){
 		torqueFilterConf.mode = static_cast<TMCbiquadpreset>((filterval >> 13) & 0x7);
 	}
 
+#ifdef COGGING_TABLE_FLASH_START_ADDRESS
+	uint16_t cogging = 0; // Initialize to avoid random stack data
+	if(Flash_Read(flashAddrs.coggingEnable, &cogging)) {
+		cogging_enabled = cogging & 0x01;
+	} else {
+		cogging_enabled = false;
+	}
+	
+	uint16_t scale_flash = 0;
+	if(Flash_Read(flashAddrs.coggingScale, &scale_flash)) {
+		int16_t scale_int = (int16_t)scale_flash;
+		this->cogging_scale = (float)scale_int / 10000.0f;
+	} else {
+		this->cogging_scale = 0.0f;
+	}
+
+	Flash_ReadCoggingTable(this->drv_address - 1, (int16_t*)this->cogging_harmonics);
+	// Sanitize legacy flash tables where the former 2-byte padding (now speed_delta) may contain 0xFFFF (-1) or garbage
+	for (uint8_t i = 0; i < COGGING_HARMONICS_COUNT; i++) {
+		if (!std::isfinite(cogging_harmonics[i].amplitude) || !std::isfinite(cogging_harmonics[i].phase) ||
+			cogging_harmonics[i].amplitude < 0.0f || cogging_harmonics[i].amplitude > 32767.0f ||
+			cogging_harmonics[i].order >= COGGING_CALIB_DFT_HARMONICS) {
+			cogging_harmonics[i] = {0.0f, 0.0f, 0, 0};
+		} else {
+			int32_t max_delta = (int32_t)(cogging_harmonics[i].amplitude * 2.0f);
+			int32_t min_delta = -(int32_t)(cogging_harmonics[i].amplitude * 0.8f);
+			cogging_harmonics[i].speed_delta = (int16_t)clip<int32_t, int32_t>(cogging_harmonics[i].speed_delta, min_delta, max_delta);
+		}
+	}
+#endif
 }
 
 bool TMC4671::hasPower(){
@@ -214,8 +287,11 @@ bool TMC4671::isSetUp(){
 			return false;
 		}
 	}
-	if(this->conf.motconf.phiEsource == PhiE::ext && drvEncoder->getEncoderType() == EncoderType::NONE && !encoderAligned){
-		return false;
+	// Guard external encoder pointer, type, and alignment before reporting ready.
+	if(this->conf.motconf.enctype == EncoderType_TMC::ext || this->conf.motconf.phiEsource == PhiE::extEncoder){
+		if(drvEncoder == nullptr || drvEncoder->getEncoderType() == EncoderType::NONE || !encoderAligned){
+			return false;
+		}
 	}
 
 	return true;
@@ -264,7 +340,7 @@ bool TMC4671::initialize(){
 //	}
 	// Check if a TMC4671 is active and replies correctly
 	if(!pingDriver()){
-		ErrorHandler::addError(communicationError);
+		ErrorHandler::addError(COMMUNICATION_ERROR);
 		return false;
 	}
 
@@ -307,13 +383,12 @@ bool TMC4671::initialize(){
 	setAdcOffset(conf.adc_I0_offset, conf.adc_I1_offset);
 	setAdcScale(conf.adc_I0_scale, conf.adc_I1_scale);
 	setTorqueFilter(torqueFilterConf);
-	setBiquadFlux(TMC4671Biquad(Biquad(BiquadType::lowpass, fluxFilterFreq / getPwmFreq(), 0.7,0.0), true)); // Create flux filter
+	setBiquadFlux(TMC4671Biquad(Biquad(BiquadType::lowpass, FLUX_FILTER_FREQ / getPwmFreq(), 0.7,0.0), true)); // Create flux filter
 
 	// Initial adc calibration and check without PWM if power off to get basic offsets. PWM is off!
 	if(!hasPower()){
 		if(!calibrateAdcOffset(150)){
-			changeState(TMC_ControlState::HardError); // ADC or shunt amp is broken!
-			enablePin.reset();
+			enterHardError(); // ADC or shunt amp is broken!
 			return false;
 		}
 	}
@@ -398,9 +473,12 @@ bool TMC4671::checkAdc(){
 	return(abs(total / 50) < 100); // Check if average has a low bias
 }
 
-void TMC4671::initializeWithPower(){
+bool TMC4671::initializeWithPower(){
 	if(powerInitialized){
-		return;
+		return true;
+	}
+	if(!canRunMotor()){
+		return false;
 	}
 	powerInitialized = true;
 	// Load ADC settings
@@ -414,38 +492,51 @@ void TMC4671::initializeWithPower(){
 	}else{
 		if(!calibrateAdcOffset(300)){
 			powerInitialized = false;
-			return; // Abort
+			return false; // Abort
 		}
 	}
 
-	// got power long enough. proceed to set up encoder
-	// if encoder not set up
-	enablePin.set();
-	setPwm(TMC_PwmMode::PWM_FOC); // enable foc
+	ErrorHandler::clearError(ErrorCode::undervoltage);
+
+	// Enable power stage only when a motor and encoder are configured and no fault is active.
+	if(conf.motconf.motor_type != MotorType::NONE && conf.motconf.enctype != EncoderType_TMC::NONE && canRunMotor()){
+		setFluxTorque(0, 0);
+		enablePin.set();
+		setPwm(TMC_PwmMode::PWM_FOC); // enable foc
+	}
 	if(!encoderAligned){
 		setEncoderType(conf.motconf.enctype);
-	}else{
+	}else if(canRunMotor()){
 		//last state
-		if(!emergency){
-			allowStateChange = true;
-			changeState(requestedState);
-			setMotionMode(lastMotionMode,true);
-			ErrorHandler::clearError(ErrorCode::undervoltage);
-		}
+		allowStateChange = true;
+		changeState(requestedState);
+		setMotionMode(lastMotionMode,true);
 	}
-
+	return true;
 }
 
 bool TMC4671::motorReady(){
-	return this->state == TMC_ControlState::Running && powerInitialized && adcCalibrated && encoderAligned;
+	return initialized && !isEmergencyActive() && !brake_failure && conf.motconf.motor_type != MotorType::NONE && this->state == TMC_ControlState::Running && powerInitialized && adcCalibrated && encoderAligned;
 }
 
 void TMC4671::Run(){
 	// Main state machine
 	while(1){
 
+		// Immediately shut down and latch HardError if the brake resistor protection tripped.
+		if(brake_failure && state != TMC_ControlState::HardError){
+			emergencyStop(false);
+			ErrorHandler::addError(BRAKE_RES_ERROR);
+			enterHardError();
+		}
+
 		if(!initialized && state != TMC_ControlState::HardError){
 			changeState(TMC_ControlState::uninitialized,true);
+		}
+
+		// Force immediate hardware cutoff and Shutdown state whenever emergency stop is active.
+		if(isEmergencyActive() && state != TMC_ControlState::HardError && state != TMC_ControlState::Shutdown){
+			enterShutdown();
 		}
 
 		// check if we are in a privileged state otherwise use requested state as new state
@@ -471,124 +562,63 @@ void TMC4671::Run(){
 			break;
 
 		case TMC_ControlState::waitPower:
-		{
-			allowStateChange = false;
-			pulseClipLed(); // blink led
-			static uint8_t powerCheckCounter = 0;
-			// if powered check ADCs and go to encoder calibration
-			if(!hasPower() || emergency){
-				powerCheckCounter = 0;
-				Delay(250);
-				break;
-			}
-			if(++powerCheckCounter > 5 && !powerInitialized){
-				initializeWithPower();
-			}
-			if(powerInitialized){
-				allowStateChange = true;
-			}
-			Delay(100);
+			handleStateWaitPower();
 			break;
-		}
 
 		case TMC_ControlState::FullCalibration:
-		{
-			fullCalibrationInProgress = true;
-			/*
-			 * Wait for power (OK)
-			 * Calibrate ADC offsets (OK)
-			 * Measure motor response
-			 * depending on encoder do encoder parameter estimation
-			 * align and store phiE for single phase AENC or indexed ABN enc
-			 *
-			 * If at any point external movement is detected abort
-			 */
-			 // Wait for Power
-			while(!hasPower()){
-				Delay(100);
-			}
-			curFilters.flux.params.enable = false;
-			setBiquadFlux(curFilters.flux);
-			// Calibrate ADC
-			enablePin.set();
-			setPwm(TMC_PwmMode::PWM_FOC); // enable foc to calibrate adc
-			Delay(50);
-			if(calibrateAdcOffset(500)){
-				saveAdcParams();
-			}else{
-				calibFailCb();
-				break;
-			}
-
-			// Encoder
-			calibrateEncoder();
-			setEncoderType(conf.motconf.enctype);
-			recalibrationRequired = false;
-			curFilters.flux.params.enable = true;
-			setBiquadFlux(curFilters.flux);
+			handleStateFullCalibration();
 			break;
-		}
+
 		case TMC_ControlState::Pidautotune:
-			{
-				allowStateChange = false;
-				 // Wait for Power
-				while(!hasPower()){
-					Delay(100);
-				}
-				pidAutoTune();
-				allowStateChange = true;
-				changeState(laststate,false);
+			handleStatePidAutoTune();
+			break;
+
+#ifdef COGGING_TABLE_FLASH_START_ADDRESS
+		case TMC_ControlState::CoggingCalibration:
+			handleStateCoggingCalibration();
+			break;
+#endif
+		case TMC_ControlState::IndexSearch:
+			if(!canRunMotor() || conf.motconf.motor_type == MotorType::NONE){
+				changeState(isEmergencyActive() ? TMC_ControlState::Shutdown : laststate);
 				break;
 			}
-
-		case TMC_ControlState::IndexSearch:
+			allowStateChange = false;
 			autohome();
-			changeState(laststate);
-
+			allowStateChange = true;
+			if(isEmergencyActive() || brake_failure){
+				enterShutdown();
+			}else if(motorEnabledRequested && isSetUp()){
+				changeState(TMC_ControlState::Running);
+			}else{
+				stopMotor();
+				changeState(TMC_ControlState::Shutdown);
+			}
 			break;
 
 		case TMC_ControlState::Running:
-		{
-			// Check status, Temps, Everything alright?
-			uint32_t tick = HAL_GetTick();
-			if(tick - lastStatTime > 2000){ // Every 2s
-				lastStatTime = tick;
-				statusCheck();
-				// Get enable input. If tmc does not reply the result will read 0 or 0xffffffff (not possible normally)
-				uint32_t pins = readReg(0x76);
-				bool tmc_en = ((pins >> 15) & 0x01) && pins != 0xffffffff;
-				if(!tmc_en && motorEnabledRequested){ // Hardware emergency.
-					this->estopTriggered = true;
-					this->emergencyStop(false);
-					ErrorHandler::addError(estopError);
-					//changeState(TMC_ControlState::HardError);
-				}
-
-				// Temperature sense
-				if(conf.hwconf.thermistorSettings.temperatureEnabled){
-					float temp = getTemp();
-					if(temp > conf.hwconf.thermistorSettings.temp_limit){
-						changeState(TMC_ControlState::OverTemp);
-						pulseErrLed();
-					}
-				}
-
-			}
-			Delay(200);
-		}
-		break;
+			handleStateRunning();
+			break;
 
 		case TMC_ControlState::Shutdown:
+			// Ensure hardware power stage and FOC PWM remain disabled in Shutdown.
+			if(curMotionMode != MotionMode::stop){
+				disablePowerStage(true);
+			}else{
+				enablePin.reset();
+			}
 			Delay(100);
 			if(estopTriggered){
-				uint32_t pins = readReg(0x76);
-				bool tmc_en = ((pins >> 15) & 0x01) && pins != 0xffffffff;
-				if(tmc_en){
-					// Emergency stop reset
-					ErrorHandler::clearError(estopError);
-					this->estopTriggered = false; // TODO resume correctly
+				if(isHardwareEnableHigh()){
+					// Recover from external hardware enable pin emergency stop when pin is restored.
+					ErrorHandler::clearError(ESTOP_ERROR);
+					this->estopTriggered = false;
+					this->emergency = false;
 					changeState(TMC_ControlState::uninitialized,true);
 				}
+			}else if(!emergency && motorEnabledRequested && conf.motconf.motor_type != MotorType::NONE){
+				// Resume motor operation safely from thread context after an ISR E-stop release.
+				startMotor();
 			}
 			break;
 
@@ -603,50 +633,89 @@ void TMC4671::Run(){
 			break;
 
 		case TMC_ControlState::HardError:
-
+			// Unconditionally keep power stage disabled and state locked in HardError.
+			enterHardError();
+			Delay(250);
 		break; // Broken
 
 		case TMC_ControlState::OverTemp:
-			this->stopMotor();
-			changeState(TMC_ControlState::HardError); // Block
+			// Immediately disable power stage and latch HardError on over-temperature fault.
+			enterHardError();
 		break;
 
 		case TMC_ControlState::EncoderFinished: // Startup sequence done
-			//setEncoderIndexFlagEnabled(false); // TODO
-//			curFilters.flux.params.enable = true;
-//			setBiquadFlux(curFilters.flux); // Enable flux filter
 			encoderAligned = true;
-			if(motorEnabledRequested && isSetUp()){
+			if(fullCalibrationInProgress){
+				// Proceed directly to slew-rate calibration before cutting PWM or entering Running.
+				Flash_Write(flashAddrs.encA,encodeEncHallMisc()); // Save encoder settings
+				changeState(TMC_ControlState::SlewRateCalibration);
+			}else if(motorEnabledRequested && isSetUp()){
 				startMotor();
 				changeState(TMC_ControlState::Running);
 			}else{
 				stopMotor();
 				laststate = TMC_ControlState::Running; // Go to running when starting again
 			}
-
-			if(fullCalibrationInProgress){
-				fullCalibrationInProgress = false;
-				Flash_Write(flashAddrs.encA,encodeEncHallMisc()); // Save encoder settings
-			}
-
-
 		break;
 
 		default:
 
 		break;
+
+		case TMC_ControlState::SlewRateCalibration:
+			{
+				if(isEmergencyActive() || brake_failure){
+					fullCalibrationInProgress = false;
+					enterShutdown();
+					break;
+				}
+				if(!hasPower()){
+					this->postPowerState = TMC_ControlState::SlewRateCalibration;
+					changeState(TMC_ControlState::waitPower);
+					break;
+				}
+				allowStateChange = false;
+				measureMaxSlewRate();
+				allowStateChange = true;
+				if(isEmergencyActive() || brake_failure){
+					fullCalibrationInProgress = false;
+					enterShutdown();
+				}else if(fullCalibrationInProgress){
+					fullCalibrationInProgress = false;
+					if(motorEnabledRequested && isSetUp()){
+						startMotor();
+						changeState(TMC_ControlState::Running);
+					}else{
+						stopMotor();
+						laststate = TMC_ControlState::Running; // Go to running when starting again
+					}
+				}else if(motorEnabledRequested && isSetUp()){
+					changeState(TMC_ControlState::Running);
+				}else{
+					stopMotor();
+					changeState(TMC_ControlState::Shutdown);
+				}
+				break;
+			}
 		}
 
 
 		// Optional update methods for safety
 
-		if(!hasPower() && state != TMC_ControlState::waitPower && initialized && powerInitialized){ // low voltage or overvoltage
+		if(!hasPower() && state != TMC_ControlState::waitPower && state != TMC_ControlState::CoggingCalibration && state != TMC_ControlState::HardError && initialized && powerInitialized){ // low voltage or overvoltage
 
 			requestedState = state;
-			ErrorHandler::addError(lowVoltageError);
-			setMotionMode(MotionMode::stop,true); // Disable tmc
+			ErrorHandler::addError(LOW_VOLTAGE_ERROR);
+			// Immediately cut current, PWM, and enable pin on undervoltage or overvoltage.
+			disablePowerStage();
 			changeState(TMC_ControlState::waitPower,true);
 			allowStateChange = false;
+		}
+
+		if(flagCheckPending && initialized){
+			// Process pending FLAG_Pin status check safely in thread context with SPI semaphore protection.
+			flagCheckPending = false;
+			statusCheck();
 		}
 
 		if(flagCheckInProgress){ // cause some delay until reenabling the status interrupt checking
@@ -654,14 +723,12 @@ void TMC4671::Run(){
 			flagCheckInProgress = false;
 		}
 		Delay(10);
-
-		if(emergency && !motorReady()){
-			this->Suspend(); // we can not safely run. wait until resumed by estop
-		}
 	} // End while
 }
-
 void TMC4671::calibrateEncoder(){
+	if(!canRunMotor()){
+		return;
+	}
 	if(conf.motconf.enctype == EncoderType_TMC::abn) {
 		estimateABNparams();
 		// Report changes
@@ -673,108 +740,9 @@ void TMC4671::calibrateEncoder(){
 	}else if(conf.motconf.enctype == EncoderType_TMC::ext){
 		estimateExtEnc();
 	}
-	changeState(TMC_ControlState::EncoderInit);
-
-
-}
-
-/**
- * Iterative tuning function for tuning the torque mode PI values
- */
-bool TMC4671::pidAutoTune(){
-	/**
-	 * Enter phieExt & torque mode
-	 * Zero I, default P
-	 * Ramp up flux P until 50% of target, then lower increments until targetflux_p is reached
-	 * Increase I until oscillation is found. Back off a bit
-	 */
-	curFilters.flux.params.enable = false;
-	setBiquadFlux(curFilters.flux);
-	PhiE lastphie = getPhiEtype();
-	MotionMode lastmode = getMotionMode();
-	setPhiE_ext(getPhiE());
-	setPhiEtype(PhiE::ext); // Fixed phase
-	setMotionMode(MotionMode::torque, true);
-	setFluxTorque(0, 0);
-	TMC4671PIDConf newpids = curPids;
-	int16_t targetflux = std::min<int16_t>(this->curLimits.pid_torque_flux,bangInitPower); // Respect limits
-	int16_t targetflux_p = targetflux * 0.75;
-
-	uint16_t fluxI = 0,fluxP = 100; // Startvalues
-	writeReg(0x54, fluxI | (fluxP << 16));
-	int32_t flux = 0;
-	setFluxTorque(targetflux, 0); // Start flux step
-	while(fluxP < 20000){
-		writeReg(0x54, fluxI | (fluxP << 16)); // Update P
-		Delay(50); // Wait a bit. not critical
-		flux = getActualFlux();
-		if(flux > targetflux_p){
-			break;
-		}else if(flux > targetflux * 0.5){
-			// Reduce steps when we are close
-			fluxP+=10;
-		}else{
-			fluxP+=100;
-		}
+	if(canRunMotor()){
+		changeState(conf.motconf.enctype == EncoderType_TMC::ext ? TMC_ControlState::ExternalEncoderInit : TMC_ControlState::EncoderInit);
 	}
-	setFluxTorque(0, 0);
-	Delay(100); // Let the current settle down
-
-	// Tune I. This is more difficult because we need to take overshoot into account
-	uint32_t measuretime = 50; // ms to wait per measurement
-	uint16_t step_i = 64;
-	fluxI = 100;
-	flux = 0;
-	while(fluxI < 20000){
-		writeReg(0x54, fluxI | (fluxP << 16));
-		uint32_t tick = HAL_GetTick();//micros();
-		int32_t peakflux = 0;
-		setFluxTorque(targetflux, 0);
-
-		while(HAL_GetTick() - tick < measuretime){ // Measure current for this pulse
-			flux = getActualFlux();
-			peakflux = std::max<int32_t>(peakflux, flux);
-		}
-		setFluxTorque(0, 0);
-		uint8_t timeout = 100;  // Let the current settle down
-		while(timeout-- && flux > 10){
-			Delay(1);
-			flux = getActualFlux();
-		}
-
-		if(peakflux > (targetflux + ( targetflux * TMC4671_ITUNE_CUTOFF))) // Overshoot target by 4% default
-		{
-			fluxI -= step_i; // Revert last step
-			break;
-		}
-		if(peakflux < targetflux*0.95){ // Do larger steps if we don't even reach near the target within the time.
-			step_i = 100;
-		}else{
-			step_i = 10;
-		}
-		fluxI += step_i;
-
-	}
-	curFilters.flux.params.enable = true;
-	setBiquadFlux(curFilters.flux);
-
-	if(fluxP && fluxP < 20000 && fluxI && fluxI < 20000){
-			newpids.fluxP = fluxP;
-			newpids.torqueP = fluxP;
-			newpids.fluxI = fluxI;
-			newpids.torqueI = fluxI;
-	}else{
-		CommandHandler::broadcastCommandReply(CommandReply("PID Autotune failed",0), (uint32_t)TMC4671_commands::pidautotune, CMDtype::get);
-		setPhiEtype(lastphie);
-		setMotionMode(lastmode,true);
-		return false;
-	}
-
-	setPids(newpids); // Apply new values
-	CommandHandler::broadcastCommandReply(CommandReply("PID Autotune success",1), (uint32_t)TMC4671_commands::pidautotune, CMDtype::get);
-	setPhiEtype(lastphie);
-	setMotionMode(lastmode,true);
-	return true;
 }
 
 bool TMC4671::autohome(){
@@ -795,13 +763,28 @@ TMC_ControlState TMC4671::getState(){
 	return this->state;
 }
 
-inline void TMC4671::changeState(TMC_ControlState newState,bool force){
+void TMC4671::changeState(TMC_ControlState newState,bool force){
+	// Never leave HardError once latched until MCU reset.
+	if(this->state == TMC_ControlState::HardError){
+		return;
+	}
 	if(newState != this->state){
 		this->laststate = this->state; // save last state if new state wants to jump back
+	}
+	if(newState == TMC_ControlState::HardError){
+		// Permanently latch HardError across both state and requestedState to prevent overwriting.
+		this->allowStateChange = false;
+		this->requestedState = TMC_ControlState::HardError;
+		this->state = TMC_ControlState::HardError;
+		return;
 	}
 	if(!force){
 		this->requestedState = newState;
 	}else{
+		// Lock state transitions when forcing privileged boot or power-wait states so requestedState cannot overwrite them.
+		if(newState == TMC_ControlState::uninitialized || newState == TMC_ControlState::waitPower){
+			this->allowStateChange = false;
+		}
 		state = newState;
 	}
 
@@ -818,8 +801,12 @@ bool TMC4671::reachedPosition(uint16_t tolerance){
 }
 
 void TMC4671::zeroAbnUsingPhiM(bool offsetPhiE){
+	// Guard against zero CPR and use 64-bit scaling to avoid integer overflow on high-CPR encoders.
+	if(abnconf.cpr == 0){
+		return;
+	}
 	int32_t npos = (int32_t)readReg(0x28); // raw encoder counts at index hit
-	int32_t npos_M = (npos * 0xffff) / abnconf.cpr; // Scaled encoder angle at index
+	int32_t npos_M = (int32_t)(((int64_t)npos * 0xffff) / (int64_t)abnconf.cpr); // Scaled encoder angle at index
 	abnconf.phiMoffset = -npos_M;
 	if(offsetPhiE){
 		abnconf.phiEoffset += npos_M*conf.motconf.pole_pairs;
@@ -840,8 +827,8 @@ void TMC4671::zeroAbnUsingPhiM(bool offsetPhiE){
  */
 bool TMC4671::findEncoderIndex(int32_t speed, uint16_t power,bool offsetPhiM,bool zeroCount){
 
-	if(conf.motconf.enctype != EncoderType_TMC::abn){
-		return false; // Only valid for ABN encoders
+	if(conf.motconf.enctype != EncoderType_TMC::abn || !enablePowerStageForCalibration()){
+		return false; // Only valid for ABN encoders when power stage is safe to energize
 	}
 
 	PhiE lastphie = getPhiEtype();
@@ -863,15 +850,25 @@ bool TMC4671::findEncoderIndex(int32_t speed, uint16_t power,bool offsetPhiM,boo
 	int32_t timeout = 1000; // 10s
 	rampFlux(power, 500);
 	runOpenLoop(power, 0, speed, 10, true);
-	while(!encoderIndexHitFlag && timeout-- > 0){
+	while(!encoderIndexHitFlag && timeout-- > 0 && canRunMotor()){
+		if(flagCheckPending){
+			// Poll latched status flags in thread context when FLAG_Pin interrupt fires.
+			flagCheckPending = false;
+			statusCheck();
+		}
 		Delay(10);
 	}
 	//int32_t speed = 10;
 	rampFlux(0, 100);
 	runOpenLoop(0, 0, 0, 10, true);
+	if(isEmergencyActive()){
+		setEncoderIndexFlagEnabled(false, false);
+		setFluxTorque(0, 0);
+		return false;
+	}
 	if(!encoderIndexHitFlag){
 		pulseErrLed();
-		ErrorHandler::addError(indexNotHitError);
+		ErrorHandler::addError(INDEX_NOT_HIT_ERROR);
 	}
 
 	// If zero count on index write a phiM offset so that phiM is 0 on index and we don't need to change the raw encoder count (possible timing danger)
@@ -912,6 +909,10 @@ void TMC4671::setEncoderIndexFlagEnabled(bool enabled,bool zeroEncoder){
  * Enables position mode and sets a target position
  */
 void TMC4671::setTargetPos(int32_t pos){
+	// Block position commands when emergency stop is active.
+	if(isEmergencyActive()){
+		return;
+	}
 	if(curMotionMode != MotionMode::position){
 		setMotionMode(MotionMode::position,true);
 		setPhiEtype(this->conf.motconf.phiEsource);
@@ -928,6 +929,10 @@ int32_t TMC4671::getTargetPos(){
  * Enables velocity mode and sets a velocity target
  */
 void TMC4671::setTargetVelocity(int32_t vel){
+	// Block velocity commands when emergency stop is active.
+	if(isEmergencyActive()){
+		return;
+	}
 	if(curMotionMode != MotionMode::velocity){
 		setMotionMode(MotionMode::velocity,true);
 		setPhiEtype(this->conf.motconf.phiEsource);
@@ -950,11 +955,19 @@ void TMC4671::setPhiE_ext(int16_t phiE){
 }
 
 int16_t TMC4671::getPhiEfromExternalEncoder(){
+	// Guard against null external encoder or zero CPR to prevent division-by-zero HardFault.
+	if(drvEncoder == nullptr){
+		return 0;
+	}
+	uint32_t ext_cpr = drvEncoder->getCpr();
+	if(ext_cpr == 0){
+		return 0;
+	}
 	int64_t phiE_t = (int64_t)drvEncoder->getPosAbs() * 0xffff;
 	if(this->conf.encoderReversed){
 		phiE_t = -phiE_t;
 	}
-	int32_t phiE = (phiE_t / (int64_t)drvEncoder->getCpr());
+	int32_t phiE = (int32_t)(phiE_t / (int64_t)ext_cpr);
 	phiE = (phiE * conf.motconf.pole_pairs) & 0xffff; // scale to pole pairs
 	//int16_t phiE = (drvEncoder->getPosAbs_f() * (float)0xffff) * conf.motconf.pole_pairs + externalEncoderPhieOffset;
 	return(phiE+externalEncoderPhieOffset);
@@ -973,7 +986,7 @@ int16_t TMC4671::getPhiE(){
  * @param power Maximum current reached during flux ramp
  */
 void TMC4671::bangInitEnc(int16_t power){
-	if(!hasPower() || (this->conf.motconf.motor_type != MotorType::STEPPER && this->conf.motconf.motor_type != MotorType::BLDC)){ // If not stepper or bldc return
+	if(!canRunMotor() || (this->conf.motconf.motor_type != MotorType::STEPPER && this->conf.motconf.motor_type != MotorType::BLDC)){ // If not stepper or bldc return
 		return;
 	}
 	blinkClipLed(50, 0);
@@ -996,13 +1009,10 @@ void TMC4671::bangInitEnc(int16_t power){
 		return; // Not relevant
 	}
 
-	//setTmcPos(0);
-
-	//setMotionMode(MotionMode::uqudext);
-
-	//Delay(100);
 	int16_t phiEpos = getPhiE();// readReg(phiEreg)>>16; // starts at current encoder position
-	updateReg(phiEoffsetReg, 0, 0xffff, 16); // Set phiE offset to zero
+	if(phiEoffsetReg != 0){
+		updateReg(phiEoffsetReg, 0, 0xffff, 16); // Set phiE offset to zero
+	}
 	setPhiE_ext(phiEpos);
 	setPhiEtype(PhiE::ext);
 	// Ramp up flux
@@ -1013,7 +1023,7 @@ void TMC4671::bangInitEnc(int16_t power){
 	int16_t phiE_abn_old = 0;
 	int16_t c = 0;
 	uint16_t still = 0;
-	while(still < 30 && c++ < 1000){
+	while(still < 30 && c++ < 1000 && canRunMotor()){
 		// Wait for motor to stop moving
 		if(abs(phiE_enc - phiE_abn_old) < 100){
 			still++;
@@ -1028,6 +1038,13 @@ void TMC4671::bangInitEnc(int16_t power){
 		Delay(10);
 	}
 	rampFlux(0, 100);
+	if(!canRunMotor()){
+		setFluxTorque(0, 0);
+		setPhiE_ext(0);
+		setPhiEtype(lastphie);
+		blinkClipLed(0, 0);
+		return;
+	}
 
 	//Write offset
 	//int16_t phiE_abn = readReg(0x2A)>>16;
@@ -1094,22 +1111,29 @@ void TMC4671::calibrateAenc(){
 	uint8_t stage = 0;
 	int32_t poles = conf.motconf.pole_pairs;
 	int32_t initialDirPos = 0;
-	while(stage != 3){
+	uint32_t aencStartTick = HAL_GetTick();
+	auto applyAencOffsetScale = [&](uint32_t s0, uint32_t s1, uint32_t s2) {
+		aencconf.AENC0_offset = (maxVal_0 + minVal_0) / 2;
+		aencconf.AENC0_scale = (int16_t)clip<uint32_t, uint32_t>(0xF6FF00 / s0, 1, 32767);
+		if(conf.motconf.enctype == EncoderType_TMC::uvw){
+			aencconf.AENC1_offset = (maxVal_1 + minVal_1) / 2;
+			aencconf.AENC1_scale = (int16_t)clip<uint32_t, uint32_t>(0xF6FF00 / s1, 1, 32767);
+		}
+		aencconf.AENC2_offset = (maxVal_2 + minVal_2) / 2;
+		aencconf.AENC2_scale = (int16_t)clip<uint32_t, uint32_t>(0xF6FF00 / s2, 1, 32767);
+	};
+	// Enforce a strict 15-second timeout and abort immediately on E-stop or power loss.
+	while(stage != 3 && (HAL_GetTick() - aencStartTick < 15000) && canRunMotor()){
 		Delay(2);
 		if(getPos() > maxpos*poles && stage == 0){
 			runOpenLoop(bangInitPower, 0, -speed, 100,true);
 			stage = 1;
 		}else if(getPos() < minpos*poles && stage == 1){
-			// Scale might still be wrong... maxVal-minVal is too high. In theory its 0xffff range and scaler /256. Leave some room to prevent clipping
-			aencconf.AENC0_offset = ((maxVal_0 + minVal_0) / 2);
-			aencconf.AENC0_scale = 0xF6FF00 / (maxVal_0 - minVal_0);
-			if(conf.motconf.enctype == EncoderType_TMC::uvw){
-				aencconf.AENC1_offset = ((maxVal_1 + minVal_1) / 2);
-				aencconf.AENC1_scale = 0xF6FF00 / (maxVal_1 - minVal_1);
-			}
-
-			aencconf.AENC2_offset = ((maxVal_2 + minVal_2) / 2);
-			aencconf.AENC2_scale = 0xF6FF00 / (maxVal_2 - minVal_2);
+			// Clamp AENC span to prevent division-by-zero or int16 overflow on low/missing signals.
+			uint32_t span0 = std::max<uint32_t>(500, (maxVal_0 > minVal_0) ? (maxVal_0 - minVal_0) : 500);
+			uint32_t span1 = std::max<uint32_t>(500, (maxVal_1 > minVal_1) ? (maxVal_1 - minVal_1) : 500);
+			uint32_t span2 = std::max<uint32_t>(500, (maxVal_2 > minVal_2) ? (maxVal_2 - minVal_2) : 500);
+			applyAencOffsetScale(span0, span1, span2);
 			aencconf.rdir = false;
 			setup_AENC(aencconf);
 			rampFlux(0, 100);
@@ -1141,15 +1165,30 @@ void TMC4671::calibrateAenc(){
 		maxVal_1 = std::max(maxVal_1,aencVN);
 		maxVal_2 = std::max(maxVal_2,aencWY);
 	}
-	// Scale is not actually important. but offset must be perfect
-	aencconf.AENC0_offset = ((maxVal_0 + minVal_0) / 2);
-	aencconf.AENC0_scale = 0xF6FF00 / (maxVal_0 - minVal_0);
-	if(conf.motconf.enctype == EncoderType_TMC::uvw){
-		aencconf.AENC1_offset = ((maxVal_1 + minVal_1) / 2);
-		aencconf.AENC1_scale = 0xF6FF00 / (maxVal_1 - minVal_1);
+	if(stage != 3 || !canRunMotor()){
+		// Cleanly cut open-loop current if AENC calibration timed out or was interrupted by E-stop.
+		rampFlux(0, 50);
+		runOpenLoop(0, 0, 0, 1000, true);
+		setFluxTorque(0, 0);
+		setPhiEtype(lastphie);
+		setMotionMode(MotionMode::stop, true);
+		setPosSel(possel);
+		blinkClipLed(0, 0);
+		return;
 	}
-	aencconf.AENC2_offset = ((maxVal_2 + minVal_2) / 2);
-	aencconf.AENC2_scale = 0xF6FF00 / (maxVal_2 - minVal_2);
+	// Abort if analog encoder signal amplitude is too low or disconnected.
+	uint32_t finalSpan0 = (maxVal_0 > minVal_0) ? (maxVal_0 - minVal_0) : 0;
+	uint32_t finalSpan1 = (maxVal_1 > minVal_1) ? (maxVal_1 - minVal_1) : 0;
+	uint32_t finalSpan2 = (maxVal_2 > minVal_2) ? (maxVal_2 - minVal_2) : 0;
+	if(finalSpan0 < 1000 || finalSpan2 < 1000 || (conf.motconf.enctype == EncoderType_TMC::uvw && finalSpan1 < 1000)){
+		setPhiEtype(lastphie);
+		setPosSel(possel);
+		blinkClipLed(0, 0);
+		ErrorHandler::addError(Error(ErrorCode::encoderAlignmentFailed, ErrorType::critical, "Analog encoder signal too low"));
+		enterHardError();
+		return;
+	}
+	applyAencOffsetScale(finalSpan0, finalSpan1, finalSpan2);
 	int32_t newDirPos = readReg(0x41);
 	aencconf.rdir =  (initialDirPos - newDirPos) > 0;
 	setup_AENC(aencconf);
@@ -1205,22 +1244,30 @@ bool TMC4671::checkEncoder(){
 	// Ramp up flux
 	rampFlux(2*bangInitPower/3, 250);
 
+	auto abortCheck = [&]() {
+		setFluxTorque(0, 0);
+		setPhiE_ext(0);
+		setPhiEtype(lastphie);
+		blinkClipLed(0, 0);
+		return false;
+	};
+
 	//Forward
 	int16_t phiE_enc = 0;
 	uint16_t failcount = 0;
 	int16_t revCount = 0;
-	for(int16_t angle = 0;angle<targetAngle;angle+=0x00ff){
+	for(int16_t angle = 0;angle<targetAngle && canRunMotor();angle+=0x00ff){
 		uint16_t c = 0;
 		setPhiE_ext(angle+startAngle);
 		Delay(5);
 		phiE_enc = getPhiE_Enc() - startAngle;
-		int16_t err = abs(phiE_enc - angle);
-		int16_t nErr = abs(phiE_enc + angle);
+		int16_t err = abs((int16_t)(phiE_enc - angle));
+		int16_t nErr = abs((int16_t)(phiE_enc + angle));
 		// Wait more until encoder settles a bit
-		while(err > 2000 && nErr > 2000 && c++ < 50){
+		while(err > 2000 && nErr > 2000 && c++ < 50 && canRunMotor()){
 			phiE_enc = getPhiE_Enc() - startAngle;
-			err = abs(phiE_enc - angle);
-			nErr = abs(angle - phiE_enc);
+			err = abs((int16_t)(phiE_enc - angle));
+			nErr = abs((int16_t)(phiE_enc + angle));
 			Delay(10);
 		}
 		if(err > nErr){
@@ -1234,6 +1281,9 @@ bool TMC4671::checkEncoder(){
 			}
 		}
 	}
+	if(!canRunMotor()){
+		return abortCheck();
+	}
 	/* If we are still at the start angle the encoder did not move at all.
 	 * Possible issues:
 	 * Encoder connection wrong
@@ -1243,25 +1293,25 @@ bool TMC4671::checkEncoder(){
 	 */
 	if(startAngle == getPhiE_Enc()){
 		ErrorHandler::addError(Error(ErrorCode::encoderAlignmentFailed,ErrorType::critical,"Encoder did not move during alignment"));
-		this->changeState(TMC_ControlState::HardError, true);
+		enterHardError();
 		result = false;
 	}
 
 	// Backward
 
 	if(result){ // Only if not already failed
-		for(int16_t angle = targetAngle;angle>0;angle -= 0x00ff){
+		for(int16_t angle = targetAngle;angle>0 && canRunMotor();angle -= 0x00ff){
 			uint16_t c = 0;
 			setPhiE_ext(angle+startAngle);
 			Delay(5);
 			phiE_enc = getPhiE_Enc() - startAngle;
-			int16_t err = abs(phiE_enc - angle);
-			int16_t nErr = abs(phiE_enc + angle);
+			int16_t err = abs((int16_t)(phiE_enc - angle));
+			int16_t nErr = abs((int16_t)(phiE_enc + angle));
 			// Wait more
-			while(err > 2500 && nErr > 2500 && c++ < 50){
+			while(err > 2500 && nErr > 2500 && c++ < 50 && canRunMotor()){
 				phiE_enc = getPhiE_Enc() - startAngle;
-				err = abs(phiE_enc - angle);
-				nErr = abs(angle - phiE_enc);
+				err = abs((int16_t)(phiE_enc - angle));
+				nErr = abs((int16_t)(phiE_enc + angle));
 				Delay(10);
 			}
 			if(err > nErr){
@@ -1276,9 +1326,13 @@ bool TMC4671::checkEncoder(){
 			}
 		}
 	}
+	if(!canRunMotor()){
+		return abortCheck();
+	}
 
 	// TODO check if we want that
-	if(revCount > maxcount){ // Encoder seems reversed
+	bool reversedDuringCheck = (revCount > maxcount);
+	if(reversedDuringCheck){ // Encoder seems reversed
 		// reverse encoder
 		if(this->conf.motconf.enctype == EncoderType_TMC::abn){
 			this->abnconf.rdir = !this->abnconf.rdir;
@@ -1296,6 +1350,14 @@ bool TMC4671::checkEncoder(){
 	setPhiE_ext(0);
 	setPhiEtype(lastphie);
 	setMotionMode(lastmode,true);
+
+	if(result && reversedDuringCheck){
+		// Re-align electrical phase offset after reversing encoder counting direction.
+		bangInitEnc(bangInitPower);
+		if(!canRunMotor()){
+			return abortCheck();
+		}
+	}
 
 	if(result){
 		encoderAligned = true;
@@ -1393,25 +1455,31 @@ bool TMC4671::calibrateAdcOffset(uint16_t time){
 	// Disable drivers and measure many samples of zero current
 	//enablePin.reset();
 	uint32_t tick = HAL_GetTick();
-	while(HAL_GetTick() - tick < measuretime_idle){ // Measure idle
+	while((HAL_GetTick() - tick < measuretime_idle) && !isEmergencyActive() && !brake_failure){ // Measure idle
 		writeReg(0x03, 0); // Read raw adc
 		uint32_t adcraw = readReg(0x02);
 		uint16_t rawA = adcraw & 0xffff;
 		uint16_t rawB = (adcraw >> 16) & 0xffff;
 		// Signflip filter for SPI bug
-		if(abs(lastrawA-rawA) < 10000 && abs(lastrawB-rawB) < 10000){
+		if(abs((int32_t)lastrawA - (int32_t)rawA) < 10000 && abs((int32_t)lastrawB - (int32_t)rawB) < 10000){
 			totalA += rawA;
 			totalB += rawB;
 			measurements_idle++;
 			lastrawA = rawA;
 			lastrawB = rawB;
 		}
-//		uint32_t lastMicros = micros();
-//		while(micros()-lastMicros < 100){} // Wait 100µs at least
 	}
-	//enablePin.set();
-	int32_t offsetAidle = totalA / (measurements_idle);
-	int32_t offsetBidle = totalB / (measurements_idle);
+	// Guard against zero accepted samples to prevent division-by-zero HardFault.
+	if(measurements_idle == 0 || isEmergencyActive() || brake_failure){
+		adcCalibrated = false;
+		conf.hwconf.thermistorSettings.temperatureEnabled = allowTemp;
+		if(!isEmergencyActive() && !brake_failure){
+			ErrorHandler::addError(Error(ErrorCode::adcCalibrationError,ErrorType::critical,"TMC ADC offset calibration failed."));
+		}
+		return false;
+	}
+	int32_t offsetAidle = totalA / measurements_idle;
+	int32_t offsetBidle = totalB / measurements_idle;
 
 	// Check if offsets are in a valid range
 	if(totalA < 100 || totalB < 100 || ((abs(offsetAidle - 0x7fff) > TMC_ADCOFFSETFAIL) || (abs(offsetBidle - 0x7fff) > TMC_ADCOFFSETFAIL)) ){
@@ -1436,19 +1504,35 @@ bool TMC4671::calibrateAdcOffset(uint16_t time){
 }
 
 void TMC4671::calibFailCb(){
-	if(calibrationFailCount-- != 0){
+	if(canRunMotor() && calibrationFailCount-- != 0){
+		allowStateChange = true;
 		changeState(TMC_ControlState::FullCalibration); // retry
 	}else{
-		Error err = Error(ErrorCode::tmcCalibFail,ErrorType::critical,"TMC calibration failed");
-		ErrorHandler::addError(err);
-		changeState(TMC_ControlState::HardError);
+		fullCalibrationInProgress = false;
+		if(isEmergencyActive() || brake_failure){
+			enterShutdown();
+		}else{
+			Error err = Error(ErrorCode::tmcCalibFail,ErrorType::critical,"TMC calibration failed");
+			ErrorHandler::addError(err);
+			enterHardError();
+		}
 	}
 }
 void TMC4671::encoderInit(){
 
+	if(isEmergencyActive() || brake_failure || state == TMC_ControlState::HardError){
+		return;
+	}
 	if(!powerInitialized || !hasPower()){
-		changeState(TMC_ControlState::waitPower);
-		requestedState = TMC_ControlState::EncoderInit;
+		this->postPowerState = usingExternalEncoder() ? TMC_ControlState::ExternalEncoderInit : TMC_ControlState::EncoderInit;
+		changeState(TMC_ControlState::waitPower, true);
+		return;
+	}
+
+	allowStateChange = false;
+	// Enable power stage safely for alignment even when coming from Shutdown or undervoltage recovery.
+	if(!enablePowerStageForCalibration()){
+		allowStateChange = true;
 		return;
 	}
 
@@ -1456,7 +1540,6 @@ void TMC4671::encoderInit(){
 	if(conf.motconf.enctype == EncoderType_TMC::abn){
 		setPosSel(PosSelection::PhiM_abn); // Mechanical Angle
 		setVelSel(VelSelection::PhiM_abn); // Mechanical Angle (RPM)
-		//setup_ABN_Enc(abnconf);
 		if(!encHallRestored){
 			estimateABNparams(); // If not saved try to estimate parameters
 			recalibrationRequired = true;
@@ -1464,14 +1547,17 @@ void TMC4671::encoderInit(){
 	}else if(conf.motconf.enctype == EncoderType_TMC::sincos || conf.motconf.enctype == EncoderType_TMC::uvw){
 		setPosSel(PosSelection::PhiM_aenc); // Mechanical Angle
 		setVelSel(VelSelection::PhiM_aenc); // Mechanical Angle (RPM)
-		//setup_AENC(aencconf);
 		if(!conf.hwconf.flags.analog_enc_skip_cal){
 			calibrateAenc();
 		}
 	}
 
-	// find index
+	if(!canRunMotor()){
+		if(state != TMC_ControlState::HardError) allowStateChange = true;
+		return;
+	}
 
+	// find index
 	if(conf.motconf.enctype == EncoderType_TMC::abn && abnconf.useIndex && !encoderIndexHitFlag){ // TODO changing direction might invalidate phiE offset because of index pulse width
 		findEncoderIndex(abnconf.posOffsetFromIndex < 0 ? 10 : -10,bangInitPower/2,true,true); // Go to index and zero encoder
 		setPhiEtype(PhiE::openloop); // Openloop used in last step. Use for aligning too
@@ -1480,50 +1566,56 @@ void TMC4671::encoderInit(){
 		setPhiEtype(PhiE::ext);
 	}
 
+	if(!canRunMotor()){
+		if(state != TMC_ControlState::HardError) allowStateChange = true;
+		return;
+	}
+
 	// Align encoder
-	// TODO handle absolute external encoders
 	bangInitEnc(bangInitPower);
+
+	if(!canRunMotor()){
+		if(state != TMC_ControlState::HardError) allowStateChange = true;
+		return;
+	}
 
 	// Check encoder
 	if(!checkEncoder()){
-		if(++enc_retry > enc_retry_max){
+		// Only count alignment retries on actual encoder failures, never on E-stop or power loss.
+		if(canRunMotor() && ++enc_retry > ENC_RETRY_MAX){
 			encoderAligned = false;
 			Error err = Error(ErrorCode::encoderAlignmentFailed,ErrorType::critical,"Encoder alignment failed");
 			ErrorHandler::addError(err);
-			stopMotor();
-			allowStateChange = false;
-			changeState(TMC_ControlState::HardError,true);
+			enterHardError();
 		}
 
 		if(manualEncAlign){
 			manualEncAlign = false;
 			CommandHandler::broadcastCommandReply(CommandReply("Error during check",1), (uint32_t)TMC4671_commands::encalign, CMDtype::get);
 		}
+		if(state != TMC_ControlState::HardError) allowStateChange = true;
 		return;
 	}
+	enc_retry = 0;
 	encoderAligned = true;
-
-
 
 	if(conf.motconf.enctype == EncoderType_TMC::abn && abnconf.useIndex && encoderIndexHitFlag)
 		setTmcPos(getPosAbs() - abnconf.posOffsetFromIndex); // Load stored position
-
-	if(manualEncAlign){
-		manualEncAlign = false;
-		CommandHandler::broadcastCommandReply(CommandReply("Aligned successfully",1), (uint32_t)TMC4671_commands::encalign, CMDtype::get);
-	}
-	changeState(TMC_ControlState::EncoderFinished);
 
 	if(conf.motconf.enctype == EncoderType_TMC::abn){
 		setPhiEtype(PhiE::abn);
 	}else if(conf.motconf.enctype == EncoderType_TMC::sincos || conf.motconf.enctype == EncoderType_TMC::uvw){
 		setPhiEtype(PhiE::aenc);
 	}else if(usingExternalEncoder()){
-//		setPosSel(PosSelection::PhiE_ext);
-//		setVelSel(VelSelection::PhiE_ext); // Mechanical Angle (RPM)
 		setPhiEtype(PhiE::extEncoder);
 	}
 
+	if(manualEncAlign){
+		manualEncAlign = false;
+		CommandHandler::broadcastCommandReply(CommandReply("Aligned successfully",1), (uint32_t)TMC4671_commands::encalign, CMDtype::get);
+	}
+	allowStateChange = true;
+	changeState(TMC_ControlState::EncoderFinished);
 }
 
 /**
@@ -1584,6 +1676,10 @@ void TMC4671::setEncoderType(EncoderType_TMC type){
 		setUpExtEncTimer();
 		//changeState(TMC_ControlState::Shutdown);
 		changeState(TMC_ControlState::ExternalEncoderInit);
+	}else if(type == EncoderType_TMC::ext){
+		// Keep encoderAligned false while waiting for Axis to attach the external encoder instance.
+		encoderAligned = false;
+		changeState(TMC_ControlState::Shutdown);
 	}else{
 		changeState(TMC_ControlState::Shutdown);
 		encoderAligned = true;
@@ -1644,10 +1740,22 @@ void TMC4671::setOpenLoopSpeedAccel(int32_t speed,uint32_t accel){
 
 
 void TMC4671::runOpenLoop(uint16_t ud,uint16_t uq,int32_t speed,int32_t accel,bool torqueMode){
+	// Block open-loop excitation when emergency stop is active unless zeroing output.
+	if(isEmergencyActive() && (ud != 0 || uq != 0 || speed != 0)){
+		setFluxTorque(0, 0);
+		setOpenLoopSpeedAccel(0, accel);
+		return;
+	}
 	if(this->conf.motconf.motor_type == MotorType::DC){
 		uq = ud+uq; // dc motor has no flux. add to torque
 	}
-	startMotor();
+	if(ud != 0 || uq != 0 || speed != 0){
+		if(encoderAligned){
+			startMotor();
+		}else if(!enablePowerStageForCalibration()){
+			return;
+		}
+	}
 	if(torqueMode){
 		if(this->conf.motconf.motor_type == MotorType::DC){
 			uq = ud+uq; // dc motor has no flux. add to torque
@@ -1665,61 +1773,144 @@ void TMC4671::runOpenLoop(uint16_t ud,uint16_t uq,int32_t speed,int32_t accel,bo
 }
 
 void TMC4671::setUdUq(int16_t ud,int16_t uq){
-	writeReg(0x24, ud | (uq << 16));
+	if(isEmergencyActive()){
+		ud = 0;
+		uq = 0;
+	}
+	writeReg(0x24, (ud & 0xffff) | ((uint32_t)(uint16_t)uq << 16));
+}
+
+bool TMC4671::canRunMotor(){
+	// Require no emergency stop, no brake resistor fault, no latched HardError, and valid bus power.
+	return !isEmergencyActive() && !brake_failure && state != TMC_ControlState::HardError && hasPower();
+}
+
+bool TMC4671::enablePowerStageForCalibration(bool requireAdcCalib){
+	// Safely energize FOC PWM and DRV_ENABLE for privileged alignment/calibration routines.
+	if(!initialized || !canRunMotor() || conf.motconf.motor_type == MotorType::NONE){
+		return false;
+	}
+	if(requireAdcCalib && (!powerInitialized || !adcCalibrated)){
+		return false;
+	}
+	setFluxTorque(0, 0);
+	setPwm(TMC_PwmMode::PWM_FOC);
+	enablePin.set();
+	return true;
+}
+
+void TMC4671::disablePowerStage(bool resetEnablePin){
+	// Disable driver enable pin (optional) and zero hardware torque, motion mode, and FOC PWM.
+	if(resetEnablePin){
+		enablePin.reset();
+	}
+	if(initialized && !inIsr()){
+		setFluxTorque(0, 0);
+		setMotionMode(MotionMode::stop, true);
+		setPwm(TMC_PwmMode::off);
+	}
+}
+
+void TMC4671::enterShutdown(){
+	// Cut power stage and force both active and requested states to Shutdown.
+	motorEnabledRequested = false;
+	disablePowerStage(true);
+	allowStateChange = true;
+	changeState(TMC_ControlState::Shutdown, false);
+	changeState(TMC_ControlState::Shutdown, true);
+}
+
+void TMC4671::enterWaitPower(){
+	// Cut power stage, set a clean post-power target state, and force privileged waitPower.
+	disablePowerStage(true);
+	TMC_ControlState resumeState = (motorEnabledRequested && isSetUp()) ? TMC_ControlState::Running : TMC_ControlState::Shutdown;
+	changeState(resumeState, false);
+	changeState(TMC_ControlState::waitPower, true);
+}
+
+void TMC4671::enterHardError(){
+	// Cut power stage, flag emergency, and permanently latch HardError across all state variables.
+	emergency = true;
+	motorEnabledRequested = false;
+	fullCalibrationInProgress = false;
+	disablePowerStage(true);
+	changeState(TMC_ControlState::HardError, true);
+}
+
+bool TMC4671::isHardwareEnableHigh(){
+	// Read TMC4671 ENABLE_IN bit (0x76 bit 15) while rejecting invalid SPI bus readings.
+	uint32_t pins = readReg(0x76);
+	return ((pins >> 15) & 0x01) && pins != 0xffffffff && pins != 0;
+}
+
+bool TMC4671::checkHardwareEstop(){
+	// Detect external E-stop pulling TMC ENABLE_IN low while MCU drives DRV_ENABLE high.
+	if(HAL_GPIO_ReadPin(DRV_ENABLE_GPIO_Port, DRV_ENABLE_Pin) == GPIO_PIN_SET && !isHardwareEnableHigh()){
+		this->estopTriggered = true;
+		this->emergencyStop(false);
+		return true;
+	}
+	return false;
 }
 
 void TMC4671::stopMotor(){
-	// Stop driver if running
-
-//	enablePin.reset();
+	// Always cut torque, motion mode, and FOC PWM regardless of current state.
 	motorEnabledRequested = false;
+	disablePowerStage(false);
 	if(state == TMC_ControlState::Running || state == TMC_ControlState::EncoderFinished){
-		setMotionMode(MotionMode::stop,true);
-		setPwm(TMC_PwmMode::off); // disable foc
 		changeState(TMC_ControlState::Shutdown);
 	}
 }
 void TMC4671::startMotor(){
 	motorEnabledRequested = true;
+	if(isEmergencyActive() || brake_failure || state == TMC_ControlState::HardError || conf.motconf.motor_type == MotorType::NONE){
+		return;
+	}
 
-	if(state == TMC_ControlState::Shutdown && initialized && encoderAligned){
+	if(state == TMC_ControlState::Shutdown){
+		if(!initialized){
+			changeState(TMC_ControlState::uninitialized, true);
+			return;
+		}
+		if(!powerInitialized || !hasPower()){
+			changeState(TMC_ControlState::waitPower, true);
+			return;
+		}
+		if(!encoderAligned){
+			// Trigger encoder alignment before entering Running state.
+			setEncoderType(conf.motconf.enctype);
+			return;
+		}
 		changeState(TMC_ControlState::Running);
 	}
-	// Start driver if powered and emergency flag reset
-	if(hasPower() && !emergency){
+	// Only enable power stage when fully initialized, aligned, powered, and no fault is active.
+	if(initialized && powerInitialized && encoderAligned && canRunMotor()){
+		setFluxTorque(0, 0);
 		setPwm(TMC_PwmMode::PWM_FOC); // enable foc
 		enablePin.set();
 		setMotionMode(nextMotionMode,true);
-
 	}
-//	else{
-//		changeState(TMC_ControlState::waitPower);
-//	}
-
 }
 
 void TMC4671::emergencyStop(bool reset){
 	if(!reset){
-//		setPwm(TMC_PwmMode::HSlow_LShigh); // Short low side for instant stop
 		emergency = true;
-		enablePin.reset(); // Release enable pin to disable the whole driver
+		enablePin.reset(); // Cut hardware driver enable pin immediately (ISR-safe).
 		motorEnabledRequested = false;
-		this->stopMotor();
-
+		// Defer blocking SPI shutdown commands to the TMC thread when called from an ISR.
+		if(!inIsr()){
+			this->stopMotor();
+		}
 	}else{
-//		enablePin.set();
-//		writeReg(0x64, 0); // Set flux and torque 0 directly. Make sure motor does not jump
-//		setPwm(TMC_PwmMode::PWM_FOC);
 		emergency = false;
 		motorEnabledRequested = true;
-		//this->changeState(TMC_ControlState::waitPower, true); // Reinit
-		this->startMotor();
-		if(!motorReady()){
-			if(inIsr()){
-				ResumeFromISR();
-			}else{
+		if(!inIsr()){
+			this->startMotor();
+			if(!motorReady()){
 				Resume();
 			}
+		}else{
+			ResumeFromISR();
 		}
 	}
 }
@@ -1731,7 +1922,7 @@ void TMC4671::emergencyStop(bool reset){
 int16_t TMC4671::controlFluxDissipate(){
 
 	int32_t vDiff = getIntV() - getExtV();
-	if(vDiff > fluxDissipationLimit){
+	if(vDiff > FLUX_DISSIPATION_LIMIT){
 		// Reaches limit at +5v if scaler is 1
 		return(clip<int32_t,int32_t>(vDiff * conf.hwconf.fluxDissipationScaler * curLimits.pid_torque_flux * 0.0002,0,curLimits.pid_torque_flux));
 	}
@@ -1743,16 +1934,78 @@ int16_t TMC4671::controlFluxDissipate(){
  * For ADC linearity reasons under 25000 is recommended
  */
 void TMC4671::turn(int16_t power){
-	if(!(this->motorReady() && motorEnabledRequested))
+	// Avoid blocking SPI transactions inside an ISR; emergencyStop handles hardware pin cutoff.
+	if(inIsr() || !(this->motorReady() && motorEnabledRequested))
 		return;
+
 	int32_t flux = 0;
+	// Apply Axis-level force inversion only to incoming game torque, not to internal anticogging torque.
+	int32_t totalPower = conf.invertForce ? -(int32_t)power : (int32_t)power;
+
+	// Anticogging & dynamic speed-dependent ripple compensation
+#ifdef COGGING_TABLE_FLASH_START_ADDRESS
+	if (cogging_enabled && !this->isCalibrationInProgress()) {
+		float pos_f = this->getFilteredPosition();
+
+		// 1. Ultra-fast instantaneous speed estimation (turns/s) from pos_f (0 extra SPI reads)
+		uint32_t now_us = micros();
+		uint32_t dt_us = now_us - last_turn_us;
+		last_turn_us = now_us;
+		if (dt_us > 50 && dt_us < 50000) {
+			float dpos = getWrappedError(pos_f, last_turn_pos_f);
+			float inst_vel = (dpos * 1000000.0f) / (float)dt_us;
+			turn_vel_filtered += 0.25f * (inst_vel - turn_vel_filtered);
+		} else {
+			turn_vel_filtered = 0.0f;
+		}
+		last_turn_pos_f = pos_f;
+
+		float abs_vel = fabsf(turn_vel_filtered);
+
+		// 2. Bounded RL/PI asymptotic speed factor S(w) = |w| / (|w| + w_c) in [0.0 .. 1.0] computed ONCE outside loop
+		float speed_factor = abs_vel / (abs_vel + COGGING_RIPPLE_CORNER_VEL);
+
+		// 3. Predictive phase-lead factored OUTSIDE the harmonic loop (0 extra trig cost inside loop)
+		// Automatically applies delta_phi_k = 2*PI * k * w * tau_lead to every harmonic order k
+		float pred_pos_f = pos_f + (turn_vel_filtered * this->cogging_phase_lead_time);
+		float angle_rad = pred_pos_f * (2.0f * PI);
+
+		// 4. Fourier synthesis with speed-dependent ripple modulation and ZOH anti-aliasing roll-off
+		float compensation = 0.0f;
+		for (uint8_t i = 0; i < COGGING_HARMONICS_COUNT; i++) {
+			float base_amp = cogging_harmonics[i].amplitude;
+			if (base_amp > 0.0f) {
+				uint16_t order = cogging_harmonics[i].order;
+				float harm_freq_hz = (float)order * abs_vel;
+
+				// Soft anti-aliasing cut-off above 200..350 Hz to prevent ZOH phase inversion at high RPM
+				if (harm_freq_hz < 350.0f) {
+					float dyn_amp = base_amp + ((float)cogging_harmonics[i].speed_delta * speed_factor);
+					dyn_amp = clip<float, float>(dyn_amp, 0.0f, base_amp * 3.0f);
+					if (harm_freq_hz > 200.0f) {
+						dyn_amp *= (350.0f - harm_freq_hz) * (1.0f / 150.0f);
+					}
+					compensation += dyn_amp * arm_sin_f32(angle_rad * (float)order + cogging_harmonics[i].phase);
+				}
+			}
+		}
+		float scaled_comp = this->cogging_scale * compensation;
+		float comp_limit = (curLimits.pid_torque_flux > 0) ? (float)curLimits.pid_torque_flux : 30000.0f;
+		this->last_anticogging_torque = (int32_t)clip<float, float>(scaled_comp, -comp_limit, comp_limit);
+
+		totalPower += this->last_anticogging_torque;
+	} else {
+		this->last_anticogging_torque = 0;
+	}
+#endif
+
+	// Invert total motor torque only when commutating via a reversed external encoder.
+	if(this->conf.encoderReversed && conf.motconf.enctype == EncoderType_TMC::ext){
+		totalPower = -totalPower;
+	}
 
 	// Flux offset for field weakening
-
 	flux = idleFlux-clip<int32_t,int16_t>(abs(power),0,maxOffsetFlux);
-	if((this->conf.encoderReversed && conf.motconf.enctype == EncoderType_TMC::ext) || conf.invertForce){
-		power = -power; // Encoder does not match
-	}
 
 	/*
 	 * If flux dissipation is on prefer this over the resistor.
@@ -1767,7 +2020,7 @@ void TMC4671::turn(int16_t power){
 		}
 	}
 
-	setFluxTorque(flux, power);
+	setFluxTorque(flux, clip<int32_t, int16_t>(totalPower, -32768, 32767));
 }
 
 /**
@@ -1852,7 +2105,8 @@ std::pair<uint32_t,std::string> TMC4671::getTmcType(){
 	writeReg(1, 1);
 	uint32_t versionInt = readReg(0);
 
-	std::string versionstring = std::to_string((versionInt >> 16) && 0xffff) + "." + std::to_string((versionInt) && 0xffff);
+	// Use bitwise mask to extract 16-bit major and minor chip version numbers.
+	std::string versionstring = std::to_string((versionInt >> 16) & 0xffff) + "." + std::to_string((versionInt) & 0xffff);
 
 	reply += "TMC" + namestring + " v" + versionstring;
 	return std::pair<uint32_t,std::string>(versionInt,reply);
@@ -1869,6 +2123,8 @@ Encoder* TMC4671::getEncoder(){
 void TMC4671::setEncoder(std::shared_ptr<Encoder>& encoder){
 	MotorDriver::drvEncoder = encoder;
 	if(conf.motconf.enctype == EncoderType_TMC::ext && externalEncoderTimer){
+		// Force re-alignment whenever an external encoder instance is attached.
+		encoderAligned = false;
 		if(!extEncUpdater){ // If updater has not been set up because the encoder mode was changed before the external encoder passed force it now
 			setUpExtEncTimer();
 		}
@@ -1910,6 +2166,7 @@ void TMC4671::setTmcPos(int32_t pos){
 int32_t TMC4671::getPos(){
 
 	int32_t pos = (int32_t)readReg(0x6B);
+	this->cached_pos = pos;
 	return pos;
 }
 
@@ -1936,7 +2193,7 @@ uint32_t TMC4671::getCpr(){
 	if(usingExternalEncoder()){
 		return drvEncoder->getCpr();
 	}
-	return 0xffff;
+	return 0x10000; // TMC4671 internal 16-bit PhiM / pos register (0x6B) wraps at 65536 counts per revolution
 //	}
 
 }
@@ -1956,10 +2213,14 @@ void TMC4671::setCpr(uint32_t cpr){
  * Converts encoder counts to phiM
  */
 uint32_t TMC4671::encToPos(uint32_t enc){
-	return enc*(0xffff / abnconf.cpr); //*(conf.motconf.pole_pairs)
+	// Use 64-bit scaling and guard against zero CPR to prevent division-by-zero on high-res ABN encoders.
+	if(abnconf.cpr == 0) return 0;
+	return (uint32_t)(((uint64_t)enc * 0xffff) / abnconf.cpr);
 }
 uint32_t TMC4671::posToEnc(uint32_t pos){
-	return pos/((0xffff / abnconf.cpr)) % abnconf.cpr; //(conf.motconf.pole_pairs)
+	// Use 64-bit scaling so CPR > 65535 does not truncate (0xffff / cpr) to zero before division.
+	if(abnconf.cpr == 0) return 0;
+	return (uint32_t)((((uint64_t)pos * abnconf.cpr) / 0xffff) % abnconf.cpr);
 }
 
 EncoderType TMC4671::getEncoderType(){
@@ -2056,12 +2317,15 @@ void TMC4671::setMotorType(MotorType motor,uint16_t poles){
 }
 
 void TMC4671::setTorque(int16_t torque){
-	if(curMotionMode != MotionMode::torque){
+	if(isEmergencyActive()){
+		torque = 0;
+	}else if(curMotionMode != MotionMode::torque){
 		setMotionMode(MotionMode::torque,true);
 	}
+	torque = clampTorqueFlux(torque);
 
 	// Update main torque setpoint
-	updateReg(0x64, torque, 0xffff, 16);
+	updateReg(0x64, (uint16_t)torque, 0xffff, 16);
 }
 
 int16_t TMC4671::getTorque(){
@@ -2069,37 +2333,65 @@ int16_t TMC4671::getTorque(){
 }
 
 void TMC4671::setFlux(int16_t flux){
-	if(curMotionMode != MotionMode::torque){
+	if(isEmergencyActive()){
+		flux = 0;
+	}else if(curMotionMode != MotionMode::torque){
 		setMotionMode(MotionMode::torque,true);
 	}
-	updateReg(0x64,flux,0xffff,0);
+	flux = clampTorqueFlux(flux);
+	updateReg(0x64,(uint16_t)flux,0xffff,0);
 }
 int16_t TMC4671::getFlux(){
-	return readReg(0x64) && 0xffff;
+	// Use bitwise AND to return signed 16-bit flux setpoint from register 0x64.
+	return (int16_t)(readReg(0x64) & 0xffff);
 }
 void TMC4671::setFluxTorque(int16_t flux, int16_t torque){
-	if(curMotionMode != MotionMode::torque && !emergency){
-		setMotionMode(MotionMode::torque,true);
+	// Force zero flux and torque when emergency stop is active while still writing 0 to hardware.
+	if(isEmergencyActive()){
+		flux = 0;
+		torque = 0;
+	}else{
+		flux = clampTorqueFlux(flux);
+		torque = clampTorqueFlux(torque);
+		if(curMotionMode != MotionMode::torque){
+			setMotionMode(MotionMode::torque,true);
+		}
 	}
+	if(inIsr()){
+		return;
+	}
+	uint32_t packed = ((uint16_t)flux & 0xffff) | ((uint32_t)(uint16_t)torque << 16);
 #ifdef TMC4671_TORQUE_USE_ASYNC
-	writeRegAsync(0x64, (flux & 0xffff) | (torque << 16));
+	writeRegAsync(0x64, packed);
 #else
 	// Update main flux and torque setpoints
-	writeReg(0x64, (flux & 0xffff) | (torque << 16));
+	writeReg(0x64, packed);
 #endif
 }
 
+
 void TMC4671::setFluxTorqueFF(int16_t flux, int16_t torque){
-	if(curMotionMode != MotionMode::torque){
-		setMotionMode(MotionMode::torque,true);
+	if(isEmergencyActive()){
+		flux = 0;
+		torque = 0;
+	}else{
+		flux = clampTorqueFlux(flux);
+		torque = clampTorqueFlux(torque);
+		if(curMotionMode != MotionMode::torque){
+			setMotionMode(MotionMode::torque,true);
+		}
 	}
-	writeReg(0x65, (flux & 0xffff) | (torque << 16));
+	writeReg(0x65, ((uint16_t)flux & 0xffff) | ((uint32_t)(uint16_t)torque << 16));
 }
 
 /**
  * Ramps flux from current value to a target value over a specified duration
  */
 void TMC4671::rampFlux(uint16_t target,uint16_t time_ms){
+	if(!canRunMotor()){
+		setFluxTorque(0, 0);
+		return;
+	}
 	uint16_t startFlux = readReg(0x64) & 0xffff;
 	int32_t stepsize = (target - startFlux) / std::max<uint16_t>(1, time_ms/2);
 	if(stepsize == 0){
@@ -2107,6 +2399,11 @@ void TMC4671::rampFlux(uint16_t target,uint16_t time_ms){
 	}
 	uint16_t flux = startFlux;
 	while(abs(target - flux) >= abs(stepsize)){
+		if(!canRunMotor()){
+			// Cut flux immediately if emergency stop or power loss occurs during ramp.
+			setFluxTorque(0, 0);
+			return;
+		}
 		flux+=stepsize;
 		setFluxTorque(std::max<int32_t>(0,flux), 0);
 		Delay(2);
@@ -2334,7 +2631,7 @@ void TMC4671::estimateABNparams(){
 	uint16_t highcount = 0; // Count high state of n pulse for polarity estimation
 
 	// Rotate a bit
-	for(int16_t p = 0;p<0x0fff;p+=0x2f){
+	for(int16_t p = 0;p<0x0fff && canRunMotor();p+=0x2f){
 		setPhiE_ext(p);
 		Delay(10);
 		c++;
@@ -2353,6 +2650,11 @@ void TMC4671::estimateABNparams(){
 	rampFlux(0, 100);
 	setPhiEtype(lastphie);
 	setMotionMode(lastmode,true);
+	if(!canRunMotor() || c == 0){
+		setFluxTorque(0, 0);
+		blinkClipLed(0, 0);
+		return;
+	}
 
 	bool npol = highcount > c/2;
 	abnconf.rdir = rcount > c/2;
@@ -2384,7 +2686,7 @@ void TMC4671::estimateExtEnc(){
 	int16_t rcount=0,c = 0; // Count how often direction was in reverse
 
 	// Rotate a bit
-	for(int16_t p = 0;p<0x0fff;p+=0x2f){
+	for(int16_t p = 0;p<0x0fff && canRunMotor();p+=0x2f){
 		setPhiE_ext(p+oldPhiE);
 		Delay(10);
 		c++;
@@ -2399,6 +2701,11 @@ void TMC4671::estimateExtEnc(){
 	rampFlux(0, 100);
 	setPhiEtype(lastphie);
 	setMotionMode(lastmode,true);
+	if(!canRunMotor() || c == 0){
+		setFluxTorque(0, 0);
+		blinkClipLed(0, 0);
+		return;
+	}
 
 	if(rcount > c/2)
 		conf.encoderReversed = !conf.encoderReversed;
@@ -2503,7 +2810,7 @@ std::pair<int32_t,int32_t> TMC4671::getActualTorqueFlux(){
 	uint32_t tfluxa = readReg(0x69);
 	int16_t af = (tfluxa & 0xffff);
 	int16_t at = (tfluxa >> 16);
-	return std::pair<int16_t,int16_t>(af,at);
+	return std::make_pair((int32_t)af, (int32_t)at);
 }
 
 /**
@@ -2639,7 +2946,8 @@ void TMC4671::statusCheck(){
 
 void TMC4671::exti(uint16_t GPIO_Pin){
 	if(GPIO_Pin == FLAG_Pin && !flagCheckInProgress){ // Flag pin went high and flag check is currently not in progress (prevents interrupt flooding)
-		statusCheck(); // In isr!
+		// Defer SPI status register reads from ISR to the TMC thread to prevent SPI bus corruption.
+		flagCheckPending = true;
 	}
 }
 
@@ -2775,7 +3083,7 @@ void TMC4671::registerCommands(){
 	registerCommand("tmcHwType", TMC4671_commands::tmcHwType, "Version of TMC board",CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_INFOSTRING);
 	registerCommand("encalign", TMC4671_commands::encalign, "Align encoder",CMDFLAG_GET);
 	registerCommand("poles", TMC4671_commands::poles, "Motor pole pairs",CMDFLAG_GET | CMDFLAG_SET);
-	registerCommand("acttrq", TMC4671_commands::acttrq, "Measure torque and flux",CMDFLAG_GET);
+	registerCommand("acttrq", TMC4671_commands::acttrq, "Measure torque, flux, cogging",CMDFLAG_GET);
 	registerCommand("pwmlim", TMC4671_commands::pwmlim, "PWM limit",CMDFLAG_DEBUG | CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("torqueP", TMC4671_commands::torqueP, "Torque P",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("torqueI", TMC4671_commands::torqueI, "Torque I",CMDFLAG_GET | CMDFLAG_SET);
@@ -2811,11 +3119,20 @@ void TMC4671::registerCommands(){
 	registerCommand("pidautotune", TMC4671_commands::pidautotune, "Start PID autoruning",CMDFLAG_GET);
 	registerCommand("fluxbrake", TMC4671_commands::fluxbrake, "Prefer energy dissipation in motor",CMDFLAG_GET | CMDFLAG_SET);
 	registerCommand("pwmfreq", TMC4671_commands::pwmfreq, "Get/set pwm frequency",CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_DEBUG);
+#ifdef COGGING_TABLE_FLASH_START_ADDRESS
+	registerCommand("cogging", TMC4671_commands::cogging, "Get/Set the cogging compensation",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("calibrateCogging", TMC4671_commands::calibrateCogging, "Cogging calibration",CMDFLAG_GET);
+	registerCommand("coggingTable", TMC4671_commands::coggingTable, "Get the cogging table, or clear table (set 0)",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("coggingScale", TMC4671_commands::coggingScale, "Cogging compensation scale (0-100)",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("coggingSpeedP", TMC4671_commands::coggingSpeedP, "Manual speed loop P gain for cogging",CMDFLAG_GET | CMDFLAG_SET);
+	registerCommand("coggingSpeedI", TMC4671_commands::coggingSpeedI, "Manual speed loop I gain for cogging",CMDFLAG_GET | CMDFLAG_SET);
+#endif
 }
 
 
 CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply>& replies){
 	CommandStatus status = CommandStatus::OK;
+	const bool calibBusy = isCalibrationInProgress() && !allowStateChange;
 	switch(static_cast<TMC4671_commands>(cmd.cmdId)){
 	case TMC4671_commands::combineEncoder:
 		status = handleGetSet(cmd, replies, this->conf.combineEncoder);
@@ -2826,6 +3143,9 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 		break;
 
 	case TMC4671_commands::cpr:
+		if(cmd.type == CMDtype::set && (calibBusy || state == TMC_ControlState::HardError)){
+			return CommandStatus::ERR;
+		}
 		handleGetFuncSetFunc(cmd, replies, &TMC4671::getEncCpr, &TMC4671::setCpr, this);
 	break;
 
@@ -2838,6 +3158,10 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 		break;
 
 	case TMC4671_commands::fullCalibration:
+		// Reject calibration commands while in HardError, E-stop, active calibration, or without motor type.
+		if(isEmergencyActive() || brake_failure || state == TMC_ControlState::HardError || calibBusy || conf.motconf.motor_type == MotorType::NONE){
+			return CommandStatus::ERR;
+		}
 		calibrationFailCount = 1; // allow 1 fail
 		changeState(TMC_ControlState::FullCalibration);
 		// TODO start full calibration and save in flash
@@ -2850,7 +3174,10 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 	case TMC4671_commands::mtype:
 		if(cmd.type == CMDtype::get){
 			replies.emplace_back((uint8_t)this->conf.motconf.motor_type);
-		}else if(cmd.type == CMDtype::set && (uint8_t)cmd.type <= (uint8_t)MotorType::BLDC){
+		}else if(cmd.type == CMDtype::set && (uint8_t)cmd.val <= (uint8_t)MotorType::BLDC){
+			if(calibBusy || state == TMC_ControlState::HardError){
+				return CommandStatus::ERR;
+			}
 			this->setMotorType((MotorType)cmd.val, this->conf.motconf.pole_pairs);
 		}else{
 			std::string rplstr = "";
@@ -2867,6 +3194,9 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 		if(cmd.type == CMDtype::get){
 			replies.emplace_back((uint8_t)this->conf.motconf.enctype);
 		}else if(cmd.type == CMDtype::set){
+			if(calibBusy || state == TMC_ControlState::HardError){
+				return CommandStatus::ERR;
+			}
 			this->setEncoderType((EncoderType_TMC)cmd.val);
 		}else{
 			std::string rplstr = "";
@@ -2885,6 +3215,9 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 		if(cmd.type == CMDtype::get){
 			replies.push_back((uint8_t)conf.hwconf.hwVersion);
 		}else if(cmd.type == CMDtype::set){
+			if(calibBusy || state == TMC_ControlState::HardError){
+				return CommandStatus::ERR;
+			}
 			if(canChangeHwType)
 				setHwType((uint8_t)(cmd.val & 0x1F));
 		}else{
@@ -2895,6 +3228,9 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 
 	case TMC4671_commands::encalign:
 		if(cmd.type == CMDtype::get){
+			if(isEmergencyActive() || brake_failure || state == TMC_ControlState::HardError || calibBusy || conf.motconf.motor_type == MotorType::NONE){
+				return CommandStatus::ERR;
+			}
 			encoderAligned = false;
 			this->setEncoderType(this->conf.motconf.enctype);
 			manualEncAlign = true;
@@ -2908,6 +3244,9 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 		if(cmd.type == CMDtype::get){
 			replies.emplace_back(this->conf.motconf.pole_pairs);
 		}else if(cmd.type == CMDtype::set){
+			if(calibBusy || state == TMC_ControlState::HardError){
+				return CommandStatus::ERR;
+			}
 			this->setMotorType(this->conf.motconf.motor_type,cmd.val);
 		}
 		break;
@@ -2915,7 +3254,11 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 	case TMC4671_commands::acttrq:
 		if(cmd.type == CMDtype::get){
 			std::pair<int32_t,int32_t> current = getActualTorqueFlux();
-			replies.emplace_back(current.second,current.first);
+			std::string replyStr = std::to_string(current.second) + ":" + std::to_string(current.first);
+#ifdef COGGING_TABLE_FLASH_START_ADDRESS
+			replyStr += ":" + std::to_string(this->last_anticogging_torque);
+#endif
+			replies.emplace_back(CommandReply(replyStr, current.second, current.first));
 		}
 		break;
 
@@ -3060,6 +3403,9 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 		break;
 
 	case TMC4671_commands::findIndex:
+		if(isEmergencyActive() || brake_failure || state == TMC_ControlState::HardError || calibBusy || conf.motconf.motor_type == MotorType::NONE){
+			return CommandStatus::ERR;
+		}
 		changeState(TMC_ControlState::IndexSearch);
 		break;
 
@@ -3109,6 +3455,9 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 			}
 		break;
 	case TMC4671_commands::pidautotune:
+		if(isEmergencyActive() || brake_failure || state == TMC_ControlState::HardError || calibBusy || conf.motconf.motor_type == MotorType::NONE){
+			return CommandStatus::ERR;
+		}
 		changeState(TMC_ControlState::Pidautotune);
 		return CommandStatus::NO_REPLY;
 
@@ -3124,25 +3473,124 @@ CommandStatus TMC4671::command(const ParsedCommand& cmd,std::vector<CommandReply
 			}
 		break;
 
-	default:
-		return CommandStatus::NOT_FOUND;
+#ifdef COGGING_TABLE_FLASH_START_ADDRESS
+	case TMC4671_commands::cogging:
+		handleGetSet(cmd, replies, cogging_enabled);
+		break;
+	
+	case TMC4671_commands::calibrateCogging:
+
+		if ((isEmergencyActive() || brake_failure) && hasPower()) {
+			replies.emplace_back("Calibration aborted: Emergency stop engaged", 0);
+		} else if (state == TMC_ControlState::HardError || calibBusy) {
+			replies.emplace_back("Calibration aborted: Driver busy or in fault", 0);
+		} else if (conf.motconf.motor_type == MotorType::NONE) {
+			replies.emplace_back("Calibration aborted: No motor type set", 0);
+		} else if (hasPower() && (!encoderAligned || !adcCalibrated || conf.motconf.enctype == EncoderType_TMC::NONE)) {
+			// Prevent powered cogging calibration if encoder or ADC is not yet calibrated and aligned.
+			replies.emplace_back("Calibration aborted: Encoder or ADC not aligned", 0);
+		} else {
+			changeState(TMC_ControlState::CoggingCalibration);
+			return CommandStatus::NO_REPLY;
+		}
+
+		break;
+
+
+	case TMC4671_commands::coggingTable:
+		if(cmd.type == CMDtype::get){
+			std::string s;
+			s.reserve(512);
+			s = "item:0,data:(";
+
+			for (uint16_t order = 0; order < COGGING_CALIB_DFT_HARMONICS; order++) {
+				
+				int16_t val = 0;
+				for (uint8_t n = 0; n < COGGING_HARMONICS_COUNT; n++) {
+					if (cogging_harmonics[n].order == order && cogging_harmonics[n].amplitude > 0.0f) {
+						val = (int16_t)cogging_harmonics[n].amplitude;
+						break;
+					}
+				}
+
+				s.append(std::to_string(val));
+
+				if (s.length() >= 500) { // send data by string cut at 500 items
+					s.append(")");
+					CommandHandler::broadcastCommandReply(CommandReply(s,0), (uint32_t)TMC4671_commands::coggingTable, CMDtype::get);
+					s.clear();
+					s = "item:" + std::to_string(order+1) + ",data:(";
+				} else {
+					if (order < COGGING_CALIB_DFT_HARMONICS - 1) {
+						s.append(",");
+					}
+				}
+			}
+
+			s.append(")");
+			CommandHandler::broadcastCommandReply(CommandReply(s,0), (uint32_t)TMC4671_commands::coggingTable, CMDtype::get);
+			return CommandStatus::NO_REPLY;
+		} else if(cmd.type == CMDtype::set && cmd.val == 0) {
+			clearCoggingTable();
+		} else {
+			status = CommandStatus::ERR;
+		}
+		break;
+
+	case TMC4671_commands::coggingScale:
+		if (cmd.type == CMDtype::get) {
+			replies.emplace_back((int16_t)(this->cogging_scale * 10000.0f));
+		} else if (cmd.type == CMDtype::set) {
+			// Clamp anticogging scale to prevent unstable over-compensation.
+			this->cogging_scale = clip<float, float>((float)(int16_t)cmd.val / 10000.0f, -1.5f, 1.5f);
+		}
+		break;
+
+	case TMC4671_commands::coggingSpeedP:
+		handleGetSet(cmd, replies, this->coggingSpeedP);
+		break;
+
+	case TMC4671_commands::coggingSpeedI:
+		handleGetSet(cmd, replies, this->coggingSpeedI);
+		break;
+#endif
+
+		default:
+			return CommandStatus::NOT_FOUND;
 	}
 	return status;
 
 
 }
 
-#ifdef TIM_TMC
+#if defined(TIM_TMC) || defined(TIM_CALIBRATION)
 	void TMC4671::timerElapsed(TIM_HandleTypeDef* htim){
-		if(htim != this->externalEncoderTimer){
+#ifdef TIM_CALIBRATION
+		// If calibration timer triggered the interrupt, notify the waiting calibration loop thread.
+		if(this->calibTimer != nullptr && htim == this->calibTimer){
+			this->NotifyFromISR();
 			return;
 		}
-		// Read encoder and send to tmc
-		if(usingExternalEncoder() && externalEncoderAllowed() && this->conf.motconf.phiEsource == PhiE::extEncoder && extEncUpdater != nullptr){
-			//setPhiE_ext(getPhiEfromExternalEncoder());
-			// Signal phiE update
-			extEncUpdater->updateFromIsr(); // Use task so that the update is not being done inside an ISR
+#endif
+#ifdef TIM_TMC
+		if(htim == this->externalEncoderTimer){
+			// Read encoder and send to tmc
+			if(usingExternalEncoder() && externalEncoderAllowed() && this->conf.motconf.phiEsource == PhiE::extEncoder && extEncUpdater != nullptr){
+				//setPhiE_ext(getPhiEfromExternalEncoder());
+				// Signal phiE update
+				extEncUpdater->updateFromIsr(); // Use task so that the update is not being done inside an ISR
+			}
+
+			// If we are using the external encoder timer to pace calibration
+			if (usingExternalEncoder() && this->calibTicksTarget > 0) {
+				this->calibTicksCount = this->calibTicksCount + 1;
+				if (this->calibTicksCount >= this->calibTicksTarget) {
+					this->calibTicksCount = 0;
+					this->NotifyFromISR();
+				}
+			}
 		}
+#endif
 	}
 #endif
 
@@ -3160,6 +3608,82 @@ void TMC4671::setUpExtEncTimer(){
 }
 
 /**
+ * Configures and starts the calibration hardware timer, or sets up tick counting
+ * using the external encoder timer if in use, to avoid desynchronization.
+ */
+void TMC4671::startCalibTimers(uint32_t period_us) {
+#ifdef TIM_TMC
+	// If an external encoder is used, we pace the calibration using the existing encoder timer
+	// to avoid stopping, reconfiguring, or desynchronizing it.
+	if (usingExternalEncoder() && this->externalEncoderTimer != nullptr) {
+		uint32_t tmc_period = this->externalEncoderTimer->Instance->ARR;
+		if (tmc_period == 0) {
+			tmc_period = TIM_TMC_ARR;
+		}
+		this->calibTicksTarget = period_us / tmc_period;
+		if (this->calibTicksTarget == 0) {
+			this->calibTicksTarget = 1;
+		}
+		this->calibTicksCount = 0;
+	} else
+#endif
+	{
+		this->calibTicksTarget = 0;
+		this->calibTicksCount = 0;
+#ifdef TIM_CALIBRATION
+		if (this->calibTimer != nullptr) {
+			// Stop the timer before changing configurations
+			HAL_TIM_Base_Stop_IT(this->calibTimer);
+			// Configure the prescaler to count in microseconds (1 MHz frequency)
+			this->calibTimer->Instance->PSC = (SystemCoreClock / 1000000) - 1;
+			// Auto-reload register defines the period in microseconds
+			this->calibTimer->Instance->ARR = period_us;
+			// Pre-charge counter to trigger the first interrupt quickly
+			this->calibTimer->Instance->CNT = period_us - 20;
+			this->calibTimer->Instance->CR1 = 1;
+			HAL_TIM_Base_Start_IT(this->calibTimer);
+		}
+#endif
+	}
+	// Clear any pending thread notifications before starting wait loops
+	this->WaitForNotification(0);
+}
+
+/**
+ * Stops the calibration hardware timer and resets the calibration tick target.
+ */
+void TMC4671::stopCalibTimers() {
+	this->calibTicksTarget = 0;
+	this->calibTicksCount = 0;
+#ifdef TIM_CALIBRATION
+	if (this->calibTimer != nullptr) {
+		HAL_TIM_Base_Stop_IT(this->calibTimer);
+	}
+#endif
+}
+
+/**
+ * Returns the actual calibration period in microseconds based on the active timer pacing source.
+ */
+uint32_t TMC4671::getActualCalibPeriod(uint32_t target_period_us) {
+#ifdef TIM_TMC
+	// If pacing calibration using TIM_TMC, the actual period is a multiple of TIM_TMC's ARR period.
+	if (usingExternalEncoder() && this->externalEncoderTimer != nullptr) {
+		uint32_t tmc_period = this->externalEncoderTimer->Instance->ARR;
+		if (tmc_period == 0) {
+			tmc_period = TIM_TMC_ARR;
+		}
+		uint32_t ticks = target_period_us / tmc_period;
+		if (ticks == 0) {
+			ticks = 1;
+		}
+		return tmc_period * ticks;
+	}
+#endif
+	return target_period_us;
+}
+
+/**
  * Medium priority task to update external encoders
  */
 TMC4671::TMC_ExternalEncoderUpdateThread::TMC_ExternalEncoderUpdateThread(TMC4671* tmc) : cpp_freertos::Thread("TMCENC",80,33),tmc(tmc){
@@ -3169,7 +3693,8 @@ TMC4671::TMC_ExternalEncoderUpdateThread::TMC_ExternalEncoderUpdateThread(TMC467
 void TMC4671::TMC_ExternalEncoderUpdateThread::Run(){
 	while(true){
 		this->WaitForNotification();
-		if(tmc->usingExternalEncoder() && !tmc->spiPort.isTaken()){
+		// Re-verify PhiE source before writing 0x1C so calibration open-loop/fixed phase is never overwritten.
+		if(tmc->usingExternalEncoder() && tmc->externalEncoderAllowed() && tmc->conf.motconf.phiEsource == PhiE::extEncoder && !tmc->spiPort.isTaken()){
 			tmc->writeRegAsync(0x1C, (tmc->getPhiEfromExternalEncoder())); // Write phiE_ext
 		}
 	}
@@ -3182,9 +3707,347 @@ void TMC4671::TMC_ExternalEncoderUpdateThread::updateFromIsr(){
 
 void TMC4671::errorCallback(const Error &error, bool cleared){
 	if(!cleared && error.code == ErrorCode::brakeResistorFailure){
-		// shut down and block.
+		// Shut down power stage and permanently latch HardError.
 		emergencyStop(false);
-		this->changeState(TMC_ControlState::HardError, true);
+		enterHardError();
 	}
 }
+
+uint16_t TMC4671::getDrvSlewRate(){
+	return this->maxSlewRate;
+}
+
+bool TMC4671::startSlewRateCalibration(){
+	// Request the TMC internal state machine to run the slew rate calibration.
+	// changeState will schedule the calibration state in the driver's thread.
+	this->changeState(TMC_ControlState::SlewRateCalibration);
+	return true;
+}
+
+bool TMC4671::isSlewRateCalibrationInProgress(){
+	return (this->state == TMC_ControlState::SlewRateCalibration);
+}
+
+bool TMC4671::isCalibrationInProgress() {
+	return (state == TMC_ControlState::FullCalibration || 
+#ifdef COGGING_TABLE_FLASH_START_ADDRESS
+			state == TMC_ControlState::CoggingCalibration || 
+#endif
+			state == TMC_ControlState::Pidautotune || 
+			state == TMC_ControlState::IndexSearch ||
+			state == TMC_ControlState::EncoderInit ||
+			state == TMC_ControlState::ExternalEncoderInit ||
+			state == TMC_ControlState::SlewRateCalibration);
+}
+
+void TMC4671::measureMaxSlewRate(){
+	if(!enablePowerStageForCalibration()){
+		return;
+	}
+	MotionMode lastmode = getMotionMode();
+	PhiE lastphie = getPhiEtype();
+
+	// Setup
+	setPhiE_ext(getPhiE());
+	setPhiEtype(PhiE::ext); // Fixed phase
+	setMotionMode(MotionMode::torque, true);
+	setFluxTorque(0, 0);
+
+	int32_t start_flux = getActualFlux();
+	uint32_t start_time = micros();
+	setFluxTorque(maxPowerAxis,0); // Apply max flux
+
+	uint32_t elapsed_time = 0;
+	int32_t max_slew_rate = 0;
+
+	while(elapsed_time < 3000 && canRunMotor()){ // measure for 3ms
+		int32_t current_flux = getActualFlux();
+		uint32_t current_time = micros();
+		elapsed_time = current_time - start_time;
+
+		if(elapsed_time > 0){
+			int32_t slew_rate = (current_flux - start_flux) * 1000 / elapsed_time; // Pn/ms (Power normalized/ms)
+			if(slew_rate > max_slew_rate){
+				max_slew_rate = slew_rate;
+			}
+		}
+	}
+	setFluxTorque(0,0);
+	if(canRunMotor()){
+		this->maxSlewRate = clip<int32_t>(max_slew_rate, 0, MAX_SLEW_RATE);
+	}
+
+	// Restore
+	setPhiEtype(lastphie);
+	setMotionMode(lastmode,true);
+}
+
+void TMC4671::handleStateWaitPower() {
+	allowStateChange = false;
+	pulseClipLed(); // blink led
+
+	if (!hasPower() || isEmergencyActive() || brake_failure) {
+		this->powerCheckCounter = 0;
+		// Special case: Allow CoggingCalibration simulation even without power when not in emergency.
+		if (!isEmergencyActive() && !brake_failure && requestedState == TMC_ControlState::CoggingCalibration) {
+			allowStateChange = true;
+		}
+		Delay(250);
+		return;
+	}
+
+	if (++this->powerCheckCounter > 5) {
+		if (!powerInitialized) {
+			if (!initializeWithPower()) {
+				// Keep waiting in waitPower when ADC calibration fails instead of leaking state transitions.
+				this->powerCheckCounter = 0;
+				Delay(100);
+				return;
+			}
+		} else if (readReg(0x0A) == 0 || (conf.motconf.motor_type != MotorType::NONE && (readReg(0x1B) & 0xff0000) == 0)) {
+			// Detect hardware brownout reset of TMC4671 registers and force full re-initialization.
+			initialized = false;
+			powerInitialized = false;
+			encoderAligned = false;
+			changeState(TMC_ControlState::uninitialized, true);
+			return;
+		} else {
+			ErrorHandler::clearError(ErrorCode::undervoltage);
+			if (encoderAligned && motorEnabledRequested && canRunMotor()) {
+				// Safely restore power stage after a temporary undervoltage or overvoltage recovery.
+				setFluxTorque(0, 0);
+				enablePin.set();
+				setPwm(TMC_PwmMode::PWM_FOC);
+				setMotionMode(nextMotionMode, true);
+			}
+		}
+		allowStateChange = true;
+
+		// If a calibration was pending power, go there now
+		if (this->postPowerState != TMC_ControlState::NONE) {
+			changeState(this->postPowerState);
+			this->postPowerState = TMC_ControlState::NONE;
+		} else if (encoderAligned) {
+			// Normal flow if encoder is already aligned
+			changeState(requestedState);
+		}
+	}
+	Delay(100);
+}
+
+void TMC4671::handleStateRunning() {
+
+	// Check status, Temps, Everything alright?
+	uint32_t tick = HAL_GetTick();
+	if (tick - lastStatTime > 200) { // Every 200ms for fast fault detection
+		lastStatTime = tick;
+		statusCheck();
+		if (motorEnabledRequested && checkHardwareEstop()) {
+			ErrorHandler::addError(ESTOP_ERROR);
+		}
+
+		// Temperature sense
+		if (conf.hwconf.thermistorSettings.temperatureEnabled) {
+			float temp = getTemp();
+			if (temp > conf.hwconf.thermistorSettings.temp_limit) {
+				changeState(TMC_ControlState::OverTemp);
+				pulseErrLed();
+			}
+		}
+	}
+}
+
+void TMC4671::handleStateFullCalibration() {
+	if (isEmergencyActive() || brake_failure || state == TMC_ControlState::HardError) {
+		fullCalibrationInProgress = false;
+		if (state != TMC_ControlState::HardError) {
+			enterShutdown();
+		}
+		return;
+	}
+	if (conf.motconf.motor_type == MotorType::NONE) {
+		fullCalibrationInProgress = false;
+		changeState(TMC_ControlState::Shutdown);
+		return;
+	}
+	if (!hasPower()) {
+		this->postPowerState = TMC_ControlState::FullCalibration;
+		changeState(TMC_ControlState::waitPower);
+		return;
+	}
+
+	allowStateChange = false;
+	fullCalibrationInProgress = true;
+	curFilters.flux.params.enable = false;
+	setBiquadFlux(curFilters.flux);
+	
+	// Calibrate ADC with power stage safely enabled.
+	if (!enablePowerStageForCalibration(false)) {
+		curFilters.flux.params.enable = true;
+		setBiquadFlux(curFilters.flux);
+		fullCalibrationInProgress = false;
+		allowStateChange = true;
+		enterShutdown();
+		return;
+	}
+	Delay(50);
+	if (calibrateAdcOffset(500)) {
+		saveAdcParams();
+	} else {
+		curFilters.flux.params.enable = true;
+		setBiquadFlux(curFilters.flux);
+		calibFailCb();
+		return;
+	}
+
+	// Encoder
+	calibrateEncoder();
+	curFilters.flux.params.enable = true;
+	setBiquadFlux(curFilters.flux);
+	if (!canRunMotor()) {
+		// Abort full calibration cleanly on E-stop, power loss, or HardError without marking calibrated.
+		fullCalibrationInProgress = false;
+		if (state != TMC_ControlState::HardError) {
+			if (isEmergencyActive() || brake_failure) {
+				enterShutdown();
+			} else {
+				enterWaitPower();
+			}
+		}
+		return;
+	}
+	allowStateChange = true;
+	setEncoderType(conf.motconf.enctype);
+	recalibrationRequired = false;
+}
+
+// Cogging calibration pipeline moved to TMC4671_cogging.cpp
+
+/**
+ * Iterative tuning function for tuning the torque mode PI values (Asynchronous version)
+ */
+void TMC4671::handleStatePidAutoTune() {
+	if (isEmergencyActive() || brake_failure || state == TMC_ControlState::HardError) {
+		if (state != TMC_ControlState::HardError) {
+			enterShutdown();
+		}
+		return;
+	}
+	if (conf.motconf.motor_type == MotorType::NONE || !initialized) {
+		changeState(TMC_ControlState::Shutdown);
+		return;
+	}
+	if (!hasPower() || !powerInitialized) {
+		this->postPowerState = TMC_ControlState::Pidautotune;
+		changeState(TMC_ControlState::waitPower);
+		return;
+	}
+
+	// 1. Initial Setup
+	allowStateChange = false;
+	if (!enablePowerStageForCalibration()) {
+		allowStateChange = true;
+		enterShutdown();
+		return;
+	}
+	curFilters.flux.params.enable = false;
+	setBiquadFlux(curFilters.flux);
+	lastPidTunePhiE = getPhiEtype();
+	lastPidTuneMode = getMotionMode();
+	setPhiE_ext(getPhiE());
+	setPhiEtype(PhiE::ext); // Fixed phase for testing flux response
+	setMotionMode(MotionMode::torque, true);
+	setFluxTorque(0, 0);
+	
+	int32_t targetflux_i32 = std::min<int32_t>(getSafeTorqueLimit(), bangInitPower);
+	if (targetflux_i32 <= 0) {
+		curFilters.flux.params.enable = true;
+		setBiquadFlux(curFilters.flux);
+		setPhiEtype(lastPidTunePhiE);
+		setMotionMode(lastPidTuneMode, true);
+		allowStateChange = true;
+		changeState(TMC_ControlState::Shutdown);
+		return;
+	}
+	int16_t targetflux = (int16_t)targetflux_i32;
+	int16_t targetflux_p = targetflux * 0.75;
+	
+	tuneFluxI = 0;
+	tuneFluxP = 100;
+	writeReg(0x54, tuneFluxI | (tuneFluxP << 16));
+	
+	// 2. Atomic P-Gain Tuning (Ramp)
+	while (tuneFluxP < 20000 && canRunMotor()) {
+		setFluxTorque(targetflux, 0);
+		Delay(50); // Stabilization delay
+		int32_t flux = getActualFlux();
+		if (flux > targetflux_p) break;
+		
+		// Adaptive steps
+		tuneFluxP += (flux > targetflux * 0.5) ? 50 : 250; 
+		writeReg(0x54, tuneFluxI | (tuneFluxP << 16));
+	}
+	
+	// 3. Atomic I-Gain Tuning (Overshoot detection)
+	tuneFluxI = 100;
+	while (tuneFluxI < 20000 && canRunMotor()) {
+		setFluxTorque(0, 0);
+		Delay(100); // Settle current to zero
+		if (!canRunMotor()) break;
+		
+		tuneMeasurePeak = 0;
+		writeReg(0x54, tuneFluxI | (tuneFluxP << 16));
+		setFluxTorque(targetflux, 0); // Pulse
+		
+		// Ultra-fast sampling loop for peak detection (Atomic)
+		uint32_t start = HAL_GetTick();
+		while(HAL_GetTick() - start < 50 && canRunMotor()) {
+			tuneMeasurePeak = std::max<int32_t>(tuneMeasurePeak, getActualFlux());
+		}
+		
+		// Check for overshoot target (default 4%)
+		if (tuneMeasurePeak > (targetflux + (targetflux * TMC4671_ITUNE_CUTOFF))) {
+			if (tuneMeasurePeak > targetflux) tuneFluxI -= (tuneFluxI > 20) ? 20 : 0; // Back off
+			break;
+		}
+		
+		tuneFluxI += (tuneMeasurePeak < targetflux * 0.95) ? 150 : 25;
+	}
+
+	// 4. Finalization & Cleanup
+	setFluxTorque(0, 0);
+	curFilters.flux.params.enable = true;
+	setBiquadFlux(curFilters.flux);
+	
+	if (tuneFluxP < 20000 && tuneFluxI < 20000 && canRunMotor()) {
+		pidTuneNewPids = curPids;
+		pidTuneNewPids.fluxP = tuneFluxP;
+		pidTuneNewPids.torqueP = tuneFluxP;
+		pidTuneNewPids.fluxI = tuneFluxI;
+		pidTuneNewPids.torqueI = tuneFluxI;
+		setPids(pidTuneNewPids);
+		CommandHandler::broadcastCommandReply(CommandReply("PID Autotune successful", 1), (uint32_t)TMC4671_commands::pidautotune, CMDtype::get);
+	} else {
+		// Always restore previous safe PID gains on failure or interruption to avoid leaving fluxP=20000 active.
+		setPids(curPids);
+		CommandHandler::broadcastCommandReply(CommandReply("PID Autotune failed or interrupted", 0), (uint32_t)TMC4671_commands::pidautotune, CMDtype::get);
+	}
+
+	setPhiEtype(lastPidTunePhiE);
+	if (isEmergencyActive() || brake_failure) {
+		enterShutdown();
+	} else if (!hasPower()) {
+		enterWaitPower();
+	} else {
+		allowStateChange = true;
+		if (motorEnabledRequested && isSetUp()) {
+			setMotionMode(lastPidTuneMode, true);
+			changeState(TMC_ControlState::Running);
+		} else {
+			stopMotor();
+			changeState(TMC_ControlState::Shutdown);
+		}
+	}
+}
+
 #endif

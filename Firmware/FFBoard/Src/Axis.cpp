@@ -261,6 +261,9 @@ void Axis::restoreFlash(){
 
 	if(Flash_Read(flashAddresses.power, &power)){
 		setPower(power);
+	}else{
+		// Ensure driver power limit and axis torque scaler are always initialized even on blank flash.
+		setPower(this->power);
 	}
 	uint16_t degreesRawValue;
 	if(Flash_Read(flashAddresses.degrees, &degreesRawValue)){
@@ -428,7 +431,7 @@ void Axis::prepareForUpdate(){
 	int32_t scaledEnc;
 	std::tie(scaledEnc,std::ignore) = scaleEncValue(angle, degreesOfRotation);
 
-	if (abs(scaledEnc) > 0xffff && drv->motorReady()){
+	if (abs(scaledEnc) > 0xffff && drv->motorReady() && !drv->isCalibrationInProgress()){
 		// We are way off. Shut down
 		drv->stopMotor();
 		pulseErrLed();
@@ -443,8 +446,10 @@ void Axis::prepareForUpdate(){
 		//ErrorHandler::clearError(outOfBoundsError);
 	}
 
-	// On first change to ready start a fade
-	if(motorWasNotReady && drv->motorReady()){
+	// Re-arm force fade-in whenever the motor is not ready or a calibration is active.
+	if(!drv->motorReady() || drv->isCalibrationInProgress()){
+		motorWasNotReady = true;
+	}else if(motorWasNotReady){
 		motorWasNotReady = false;
 		startForceFadeIn(0, 1.0);
 	}
@@ -486,13 +491,17 @@ void Axis::errorCallback(const Error &error, bool cleared){
 
 
 void Axis::updateDriveTorque(){
+	// Do not accumulate endstop or slew-rate torque while the driver is not ready or calibrating.
+	if(!drv || !drv->motorReady() || drv->isCalibrationInProgress()){
+		metric.current.torque = 0;
+		metric.previous.torque = 0;
+		return;
+	}
 	// totalTorque = effectTorque + endstopTorque
 	int32_t totalTorque;
-	bool torqueChanged = updateTorque(&totalTorque);
-	if (torqueChanged && drv->motorReady()){
-		// Send to motor driver
-		drv->turn(totalTorque);
-	}
+	updateTorque(&totalTorque);
+	// Send to motor driver
+	drv->turn(totalTorque);
 }
 
 void Axis::setPower(uint16_t power)
@@ -515,23 +524,38 @@ void Axis::setDrvType(uint8_t drvtype)
 	{
 		return;
 	}
-	cpp_freertos::CriticalSection::Enter();
-	MotorDriver* drv = driverChooser.Create((uint16_t)drvtype);
-	this->drv.reset(drv);
-	if (drv == nullptr)
+
+	// Create the driver outside of the critical section to avoid FreeRTOS issues (semaphore take with interrupts disabled)
+	MotorDriver* drv_new = driverChooser.Create((uint16_t)drvtype);
+	
+	if (drv_new == nullptr)
 	{
-		cpp_freertos::CriticalSection::Exit();
 		return;
 	}
-	this->conf.drvtype = drvtype;
-	this->maxTorqueRateMS = drv->getDrvSlewRate();
 
-	// Pass encoder to driver again
-	if(!this->drv->hasIntegratedEncoder()){
-		this->drv->setEncoder(this->enc);
+	// Pre-initialization outside of critical section
+	if(!drv_new->hasIntegratedEncoder()){
+		drv_new->setEncoder(this->enc);
+	}
+	drv_new->setupDriver();
+	// Apply Axis power limit immediately so runtime driver switches do not use uninitialized or max defaults.
+	drv_new->setPowerLimit(this->power);
+
+	// Use critical section only for atomic replacement of the driver pointer
+	MotorDriver* old_drv_ptr = nullptr;
+	cpp_freertos::CriticalSection::Enter();
+	old_drv_ptr = this->drv.release(); // Detach the old driver safely
+	this->drv.reset(drv_new);          // Attach the new driver
+	this->conf.drvtype = drvtype;
+	this->maxTorqueRateMS = drv_new->getDrvSlewRate();
+	cpp_freertos::CriticalSection::Exit();
+
+	// Delete the old driver outside of the critical section to avoid blocking destructors or FreeRTOS issues
+	if (old_drv_ptr != nullptr) {
+		delete old_drv_ptr;
 	}
 
-	drv->setupDriver();
+	// Perform SPI communications (start/suspend) outside of the critical section
 	if (!tud_connected())
 	{
 		control->usb_disabled = false;
@@ -539,9 +563,8 @@ void Axis::setDrvType(uint8_t drvtype)
 	}
 	else
 	{
-		drv->startMotor();
+		drv_new->startMotor();
 	}
-	cpp_freertos::CriticalSection::Exit();
 }
 
 
@@ -689,6 +712,10 @@ void Axis::setFxStrengthAndFilter(uint8_t val,uint8_t& valToSet, Biquad& filter)
  */
 void Axis::calculateMechanicalEffects(bool ffb_on){
 	mechanicalEffectTorque = 0;
+
+	if (outOfBounds || drv->isCalibrationInProgress() || !drv->motorReady()) {
+		return;
+	}
 
 	if(!ffb_on){
 		mechanicalEffectTorque += updateIdleSpringForce();

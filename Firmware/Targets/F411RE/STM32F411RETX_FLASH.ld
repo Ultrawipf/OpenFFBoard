@@ -66,8 +66,10 @@ MEMORY
       
     EMULATED_EEPROM (rwx)   : ORIGIN = ORIGIN(FLASH_BOOT) + LENGTH(FLASH_BOOT), 
                               LENGTH = 32k 
-    FLASH (rx)              : ORIGIN = ORIGIN(EMULATED_EEPROM) + LENGTH(EMULATED_EEPROM),
-                              LENGTH = 512k - LENGTH(FLASH_BOOT) - LENGTH(EMULATED_EEPROM)
+    COGGING_TABLES (rwx)    : ORIGIN = 0x08010000, /* Sector 4 (64k) */
+                              LENGTH = 64k
+    FLASH (rx)              : ORIGIN = 0x08020000, /* Sectors 5-7 (3x128k) */
+                              LENGTH = 384k
     RAM	(rwx)	: ORIGIN = 0x20000000,	LENGTH = 128K
 }
 

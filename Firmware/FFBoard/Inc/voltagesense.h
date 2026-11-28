@@ -12,6 +12,7 @@
 int32_t getIntV();
 int32_t getExtV();
 void brakeCheck();
+extern bool brake_failure;
 
 /*
  * Multiplier to convert ADC counts to a sensed voltage on the vInt and vExt pins.

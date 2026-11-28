@@ -19,16 +19,18 @@ if ($makeBin -and $gccBin) {
 
     # 4. Add paths to PATH file
     $env:PATH = "$makeBin;$gccBin;" + $env:PATH
+    $jobs = [Environment]::ProcessorCount
+    Write-Host "[OK] Parallel jobs : $jobs" -ForegroundColor Green
 
     Write-Host "--- Launch compilation for all target ---" -ForegroundColor Yellow
     
     # 5. Make all targets
     make MCU_TARGET=F407VG clean
-    make MCU_TARGET=F407VG -j8
+    make MCU_TARGET=F407VG -j$jobs
     make MCU_TARGET=F407VG_DISCO clean
-    make MCU_TARGET=F407VG_DISCO -j8
+    make MCU_TARGET=F407VG_DISCO -j$jobs
     make MCU_TARGET=F411RE clean
-    make MCU_TARGET=F411RE -j8
+    make MCU_TARGET=F411RE -j$jobs
 } else {
     Write-Host "[ERROR] Can't detect make tools. Check than STM32CubeIDE is in directory $stPath" -ForegroundColor Red
 }

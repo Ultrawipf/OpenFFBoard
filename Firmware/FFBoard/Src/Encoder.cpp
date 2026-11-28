@@ -65,10 +65,19 @@ int32_t Encoder::getPosAbs(){
  * Returns a float position in rotations
  */
 float Encoder::getPos_f(){
-	if(getCpr() == 0){
-		return 0.0; // cpr not set.
+	int32_t cpr = this->getCpr();
+	if(cpr == 0){
+		return 0.0f; // cpr not set.
 	}
-	return (float)this->getPos() / (float)this->getCpr();
+	int32_t pos = this->getPos();
+	
+	// Split turns and remainder to prevent 24-bit float mantissa truncation 
+	// when the absolute position becomes very large (e.g., >16-bit encoders after several turns)
+	// The optimisation is unused during simulation (range is 900°), but is recommended for motor
+	// calibration.
+	int32_t turns = pos / cpr;
+	int32_t remainder = pos % cpr;
+	return (float)turns + ((float)remainder / (float)cpr);
 }
 
 /**
