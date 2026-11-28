@@ -6,6 +6,7 @@
 #include "cpp_target_config.h"
 #include "cmsis_os.h"
 #include "tusb.h"
+#include "EncoderManager.h"
 
 uint32_t clkmhz = HAL_RCC_GetHCLKFreq() / 100000;
 
@@ -78,6 +79,7 @@ void cppmain() {
 	// ------------------------
 
 	startADC(); // enable ADC DMA
+	EncoderManager::getInstance().init();
 
 	// If switch pressed at boot select failsafe implementation
 #ifdef BTNFAILSAFE
@@ -124,7 +126,19 @@ void refreshWatchdog(){
 uint32_t micros(){
 #ifdef TIM_MICROS_HALTICK
 	extern TIM_HandleTypeDef TIM_MICROS_HALTICK;
-	return (HAL_GetTick() * 1000) + TIM_MICROS_HALTICK.Instance->CNT;
+	TIM_TypeDef* tim = TIM_MICROS_HALTICK.Instance;
+	uint32_t tick1, tick2, cnt;
+	do {
+		tick1 = HAL_GetTick();
+		cnt = tim->CNT;
+		uint32_t sr = tim->SR;
+		tick2 = HAL_GetTick();
+		if (tick1 == tick2 && (sr & TIM_SR_UIF) && cnt < (tim->ARR / 2U)) {
+			// Counter wrapped while tick IRQ was still pending
+			tick1 += 1U;
+		}
+	} while (tick1 != tick2);
+	return (tick1 * 1000U) + cnt;
 #elif defined(TIM_MICROS)
 	extern TIM_HandleTypeDef TIM_MICROS;
 	return TIM_MICROS.Instance->CNT;

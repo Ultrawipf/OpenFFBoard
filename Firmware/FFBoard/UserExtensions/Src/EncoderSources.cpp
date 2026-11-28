@@ -10,11 +10,12 @@
 #include "MtEncoderSPI.h"
 #include "EncoderBissC.h"
 #include "EncoderSSI.h"
+#include "EncoderTW39.h"
 // 0-63 valid ids
 #ifndef ENCODERSOURCES_DEFAULT_OVERRIDE
 std::vector<class_entry<Encoder>> const Encoder::all_encoders =
 	{
-		add_class<Encoder, Encoder>(0),
+		add_class<EncoderNone, Encoder>(0),
 
 #ifdef LOCALENCODER
 		add_class<EncoderLocal, Encoder>(2),
@@ -28,6 +29,9 @@ std::vector<class_entry<Encoder>> const Encoder::all_encoders =
 #endif
 #ifdef SSIENCODER
 		add_class<EncoderSSI, Encoder>(6),
+#endif
+#ifdef TW39ENCODER
+		add_class<EncoderTW39, Encoder>(7),
 #endif
 };
 #endif

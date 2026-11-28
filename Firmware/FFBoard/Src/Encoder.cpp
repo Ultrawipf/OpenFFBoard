@@ -7,8 +7,10 @@
 
 #include "Encoder.h"
 #include "ClassChooser.h"
+#include "EncoderManager.h"
 
 ClassIdentifier Encoder::info ={.name = "None" , .id=CLSID_ENCODER_NONE, .visibility = ClassVisibility::visible};
+ClassIdentifier EncoderNone::info ={.name = "None" , .id=CLSID_ENCODER_NONE, .visibility = ClassVisibility::visible};
 
 
 const ClassIdentifier Encoder::getInfo(){
@@ -16,11 +18,11 @@ const ClassIdentifier Encoder::getInfo(){
 }
 
 Encoder::Encoder() {
-
+	last_update_time = micros();
 }
 
 Encoder::~Encoder() {
-
+	EncoderManager::getInstance().deregisterEncoder(this);
 }
 
 /**
@@ -77,6 +79,56 @@ float Encoder::getPos_f(){
  */
 void Encoder::setPos(int32_t pos){
 
+}
+
+float Encoder::getSpeed() {
+    return pll.getSpeed(); // rot/s (3rd-order low-pass for FFB)
+}
+
+float Encoder::getRawSpeed() {
+    return pll.getRawSpeed(); // rot/s (fast PI loop state for FOC extrapolation)
+}
+
+float Encoder::getAccel() {
+    return pll.getAccel(); // rot/s^2
+}
+
+uint32_t Encoder::getScaler() {
+	return 1;
+}
+
+void Encoder::triggerRead() {
+    // Calculate exact microsecond time step (dt) since the last update
+    uint32_t now = micros();
+    uint32_t dt_us = now - last_update_time;
+    if (dt_us == 0) return; // Prevent zero-time step
+    float dt = (float)dt_us * 1e-6f; // Convert microseconds to seconds (float)
+    last_update_time = now;
+
+    // For synchronous/polling-based encoders (e.g. incremental ABN),
+    // getPos_f() reads STM32 register counts instantaneously.
+    updateState(getPos_f(), dt);
+}
+
+void Encoder::updateState(float new_pos_rot, float dt) {
+    // 1. Adapt PLL bandwidth dynamically based on encoder CPR resolution
+    uint32_t current_cpr = getCpr();
+    if (current_cpr != last_cpr && current_cpr > 0) {
+        last_cpr = current_cpr;
+        if (current_cpr >= 65536) {
+            pll.setTuning(130.0f, 1.0f, 40.0f, 90.0f);
+        } else if (current_cpr >= 16384) {
+            pll.setTuning(75.0f, 1.0f, 28.0f, 55.0f);
+        } else {
+            pll.setTuning(45.0f, 1.0f, 22.0f, 45.0f);
+        }
+    }
+
+    // 2. Update 2nd-order Type-II PLL in continuous rotations
+    pll.update(new_pos_rot, dt);
+
+    // 3. Trigger FOC update for any attached external adapters (Cascade ISR)
+    EncoderManager::getInstance().updateAdaptersForEncoder(this);
 }
 
 

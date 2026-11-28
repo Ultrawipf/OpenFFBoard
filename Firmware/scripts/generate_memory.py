@@ -8,8 +8,8 @@ CODEHEADER = """/*
  *  Created on: 24.01.2020		
  *  Author: Yannick		
  *		
- *	/!\ Generated from the file memory_map.csv 
-   / ! \ DO NOT EDIT THIS DIRECTLY !!!	
+ *	/!\\ Generated from the file memory_map.csv 
+   / ! \\ DO NOT EDIT THIS DIRECTLY !!!	
  */		
 		
 #include "eeprom_addresses.h"		
@@ -22,8 +22,8 @@ HEADERHEADER = """/*
  *  Created on: 24.01.2020		
  *  Author: Yannick		
  *		
- *	/!\ Generated from the file memory_map.csv 
-   / ! \ DO NOT EDIT THIS DIRECTLY !!!	
+ *	/!\\ Generated from the file memory_map.csv 
+   / ! \\ DO NOT EDIT THIS DIRECTLY !!!	
  */			
 		
 #ifndef EEPROM_ADDRESSES_H_

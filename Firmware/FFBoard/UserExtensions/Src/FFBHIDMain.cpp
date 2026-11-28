@@ -2,7 +2,7 @@
  * FFBWheel.cpp
  *
  *  Created on: 31.01.2020
- *      Author: Yannick / Lidders
+ *      Author: Yannick / Lidders / Vincent
  */
 
 #include <FFBHIDMain.h>
@@ -29,7 +29,7 @@ const FFBHIDMain::FFB_update_rates FFBHIDMain::ffbrates; // Default rates
  * setFFBEffectsCalc must be called in constructor of derived class to finish the setup
  */
 FFBHIDMain::FFBHIDMain(uint8_t axisCount,bool hidAxis32b) :
-		Thread("FFBMAIN", 256, 30),
+		Thread("FFBMAIN", 312, 30),
 		SelectableInputs(ButtonSource::all_buttonsources,AnalogSource::all_analogsources),
 		axisCount(axisCount),hidAxis32b(hidAxis32b)
 {

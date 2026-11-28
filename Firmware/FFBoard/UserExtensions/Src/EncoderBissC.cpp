@@ -25,8 +25,7 @@ std::array<uint8_t,64> EncoderBissC::tableCRC6n __attribute__((section (".ccmram
 
 EncoderBissC::EncoderBissC() :
 		SPIDevice(ENCODER_SPI_PORT, ENCODER_SPI_PORT.getCsPins()[0]),
-		CommandHandler("bissenc",CLSID_ENCODER_BISS,0),
-		cpp_freertos::Thread("BISSENC",64,42) {
+		CommandHandler("bissenc",CLSID_ENCODER_BISS,0) {
 	EncoderBissC::inUse = true;
 
 
@@ -37,42 +36,6 @@ EncoderBissC::EncoderBissC() :
 	this->spiPort.takeExclusive(true);
 	configSPI();
 	registerCommands();
-	this->Start();
-}
-
-void EncoderBissC::Run(){
-	bool first = true;
-	while(true){
-		requestNewDataSem.Take(); // Wait until a position is requested
-		waitData = true;
-		spiPort.receive_DMA(spi_buf, bytes, this); // Receive next frame
-		this->WaitForNotification();  // Wait until DMA is finished
-
-		if(updateFrame()){
-			int32_t halfres = 1<<(lenghtDataBit-1);
-			pos = newPos;
-			if(first){ // Prevent immediate multiturn update
-				lastPos = posOffset;
-				first = false;
-				// If offset from current pos is more than half rotation add a multiturn count by setting previous position to the reloaded offset
-			}
-			//handle multiturn
-			if(pos-lastPos > halfres){
-				mtpos--;
-			}else if(lastPos-pos > halfres){
-				mtpos++;
-			}
-
-			lastPos = pos;
-		}else{
-			numErrors++;
-		}
-		waitData = false;
-		lastUpdateTick = HAL_GetTick();
-		if(useWaitSem)
-			waitForUpdateSem.Give();
-
-	}
 }
 
 
@@ -132,6 +95,7 @@ bool EncoderBissC::isCreatable(){
 }
 
 EncoderBissC::~EncoderBissC() {
+	this->spiPort.abortTransfer(this);
 	setPos(0);
 	EncoderBissC::inUse = false;
 	this->spiPort.takeExclusive(false);
@@ -139,21 +103,40 @@ EncoderBissC::~EncoderBissC() {
 
 void EncoderBissC::spiRxCompleted(SPIPort* port) {
 	memcpy(this->decod_buf,this->spi_buf,this->bytes);
-	this->NotifyFromISR();
+	
+	if(updateFrame()){
+		int32_t halfres = 1<<(lenghtDataBit-1);
+		pos = newPos;
+		if(!first_read_done){ // Prevent immediate multiturn update
+			lastPos = posOffset;
+			first_read_done = true;
+			// If offset from current pos is more than half rotation add a multiturn count by setting previous position to the reloaded offset
+		}
+		//handle multiturn
+		if(pos-lastPos > halfres){
+			mtpos--;
+		}else if(lastPos-pos > halfres){
+			mtpos++;
+		}
 
+		lastPos = pos;
+		curPos = pos + mtpos * getCpr();
+		
+		uint32_t now = micros();
+		uint32_t dt_us = now - last_update_time;
+		if (dt_us > 0) {
+			float dt = (float)dt_us * 1e-6f; // Convert to seconds
+			last_update_time = now;
+			
+			// Update the Kalman filter with the new absolute decoded position
+			updateState(getPos_f(), dt);
+		}
+	}else{
+		numErrors++;
+	}
+	waitData = false;
+	lastUpdateTick = HAL_GetTick();
 }
-
-void EncoderBissC::beginSpiTransfer(SPIPort* port){
-	//port->takeSemaphore();
-	assertChipSelect();
-}
-
-void EncoderBissC::endSpiTransfer(SPIPort* port){
-	//port->giveSemaphore();
-	clearChipSelect();
-}
-
-
 
 EncoderType EncoderBissC::getEncoderType(){
 	return EncoderType::absolute;
@@ -187,6 +170,7 @@ bool EncoderBissC::updateFrame(){
 	uint8_t crcRx = rxData64 & 0x3F; 									 //extract last 6-bit digits to get CRC
 	uint32_t dataRx = (rxData64 >> 6) & ((1<<(lenghtDataBit + 2)) - 1);  //Shift out CRC, AND with 24-bit mask to get raw data (position, error, warning)
 	uint8_t errorWarning = (dataRx & 0x3); // Error and warning are lowest 2 bits now
+	(void)errorWarning; // Suppress compiler warning, reserved for future use
 	newPos = (dataRx >> 2) & ((1<<lenghtDataBit) - 1); 			//Shift out error and warning, AND with 22-bit mask to get position
 
 
@@ -204,13 +188,8 @@ bool EncoderBissC::updateFrame(){
 }
 
 int32_t EncoderBissC::getPosAbs(){
-	if(!waitData){ // If a transfer is still in progress return the last result
-		requestNewDataSem.Give(); // Start transfer
-		if(useWaitSem && HAL_GetTick() - lastUpdateTick > waitThresh)
-			waitForUpdateSem.Take(waitThresh); // Wait a bit
-	}
-	int32_t curpos = pos + mtpos * getCpr();
-	return invertDirection ? -curpos : curpos;
+	// Purely passive read: DMA transfers are driven exclusively by EncoderManager::triggerRead()
+	return invertDirection ? -curPos : curPos;
 }
 
 int32_t EncoderBissC::getPos(){
@@ -230,12 +209,30 @@ void EncoderBissC::setPos(int32_t newpos){
 	mtpos = newpos / getCpr(); // Multiturn should be reset
 
 	posOffset = diff % getCpr(); // Always positive
+	pll.reanchor(getPos_f());
 }
 
 
 
 uint32_t EncoderBissC::getCpr(){
 	return 1<<lenghtDataBit;
+}
+
+/**
+ * @brief Returns the polling scaler.
+ * A scaler of 1 enables 10kHz sampling. The high SPI bandwidth of BiSS-C ensures 
+ * this won't saturate the SPI bus even in dual encoder configurations.
+ */
+uint32_t EncoderBissC::getScaler() {
+	return 1; // 10 kHz polling frequency
+}
+
+void EncoderBissC::triggerRead() {
+    if (!waitData) {
+        // Trigger a new BiSS-C read cycle.
+        waitData = true;
+        spiPort.receive_IT(spi_buf, bytes, this);
+    }
 }
 
 void EncoderBissC::registerCommands(){

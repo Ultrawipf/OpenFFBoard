@@ -21,7 +21,7 @@ const ClassIdentifier MtEncoderSPI::getInfo(){
 
 std::array<uint8_t,256> MtEncoderSPI::tableCRC __attribute__((section (".ccmram")));
 
-MtEncoderSPI::MtEncoderSPI() : SPIDevice(ENCODER_SPI_PORT,ENCODER_SPI_PORT.getFreeCsPins()[0]), CommandHandler("mtenc",CLSID_ENCODER_MTSPI,0),cpp_freertos::Thread("MTENC",256,42) {
+MtEncoderSPI::MtEncoderSPI() : SPIDevice(ENCODER_SPI_PORT,ENCODER_SPI_PORT.getFreeCsPins()[0]), CommandHandler("mtenc",CLSID_ENCODER_MTSPI,0) {
 	MtEncoderSPI::inUse = true;
 	this->spiConfig.peripheral.BaudRatePrescaler = spiPort.getClosestPrescaler(10e6).first; // 10MHz max
 	this->spiConfig.peripheral.FirstBit = SPI_FIRSTBIT_MSB;
@@ -43,10 +43,10 @@ MtEncoderSPI::MtEncoderSPI() : SPIDevice(ENCODER_SPI_PORT,ENCODER_SPI_PORT.getFr
 	registerCommand("speed", MtEncoderSPI_commands::speed, "SPI speed preset",CMDFLAG_GET | CMDFLAG_SET | CMDFLAG_INFOSTRING);
 	registerCommand("reg", MtEncoderSPI_commands::reg, "Read/Write register",CMDFLAG_GETADR | CMDFLAG_SETADR | CMDFLAG_DEBUG);
 	registerCommand("save", MtEncoderSPI_commands::save, "Save to memory",CMDFLAG_GET | CMDFLAG_DEBUG);
-	this->Start();
 }
 
 MtEncoderSPI::~MtEncoderSPI() {
+	this->spiPort.abortTransfer(this);
 	MtEncoderSPI::inUse = false;
 	spiPort.freeCsPin(this->spiConfig.cs);
 }
@@ -81,37 +81,28 @@ void MtEncoderSPI::saveFlash(){
 }
 
 
-void MtEncoderSPI::Run(){
-	while(true){
-		requestNewDataSem.Take(); // Wait until a position is requested
-		//spiPort.receive_DMA(spi_buf, bytes, this); // Receive next frame
+void MtEncoderSPI::triggerRead() {
+	if(!updateInProgress) {
+		updateInProgress = true;
 		updateAngleStatus();
-		this->WaitForNotification();  // Wait until DMA is finished
-
-		if(updateAngleStatusCb()){
-			int overflowLim = getCpr() >> 1;
-			if(curAngleInt-lastAngleInt > overflowLim){ // Underflowed
-				rotations--;
-			}
-			else if(lastAngleInt-curAngleInt > overflowLim){ // Overflowed
-				rotations++;
-			}
-			lastAngleInt = curAngleInt;
-
-			curPos = rotations * getCpr() + curAngleInt; // Update position
-		}else{
-			errors++;
-		}
-		lastUpdateTick = HAL_GetTick();
-		waitForUpdateSem.Give();
-		updateInProgress = false;
 	}
 }
 
 void MtEncoderSPI::setCsPin(uint8_t cspin){
 	spiPort.freeCsPin(this->spiConfig.cs);
-	this->cspin = std::min<uint8_t>(spiPort.getCsPins().size(), cspin);
-	this->spiConfig.cs = *spiPort.getCsPin(this->cspin);
+	
+	OutputPin* newPin = spiPort.getCsPin(cspin);
+	if(newPin != nullptr){
+		this->cspin = cspin;
+		this->spiConfig.cs = *newPin;
+	}else{
+		this->cspin = 0;
+		newPin = spiPort.getCsPin(0);
+		if(newPin != nullptr){
+			this->spiConfig.cs = *newPin;
+		}
+	}
+	
 	initSPI();
 	spiPort.reserveCsPin(this->spiConfig.cs);
 }
@@ -138,6 +129,7 @@ uint8_t MtEncoderSPI::readSpi(uint16_t addr){
 		spiPort.transmitReceive(txbuf, rxbuf, 3, this,100);
 		return rxbuf[2];
 	}
+	return 0;
 }
 
 void MtEncoderSPI::writeSpi(uint16_t addr,uint8_t data){
@@ -169,15 +161,39 @@ bool MtEncoderSPI::saveEeprom(){
 
 void MtEncoderSPI::setPos(int32_t pos){
 	offset = curPos - pos;
+	pll.reanchor(getPos_f());
 }
 
 
 void MtEncoderSPI::spiTxRxCompleted(SPIPort* port){
 
 	if(updateInProgress){
-		NotifyFromISR();
-		//updateAngleStatusCb();
 		memcpy(rxbuf,rxbuf_t,sizeof(rxbuf));
+		
+		if(updateAngleStatusCb()){
+			int overflowLim = getCpr() >> 1;
+			if(curAngleInt-lastAngleInt > overflowLim){ // Underflowed
+				rotations--;
+			}
+			else if(lastAngleInt-curAngleInt > overflowLim){ // Overflowed
+				rotations++;
+			}
+			lastAngleInt = curAngleInt;
+
+			curPos = rotations * getCpr() + curAngleInt; // Update position
+			
+			uint32_t now = micros();
+			uint32_t dt_us = now - last_update_time;
+			if (dt_us > 0) {
+				float dt = (float)dt_us * 1e-6f;
+				last_update_time = now;
+				updateState(getPos_f(), dt);
+			}
+		}else{
+			errors++;
+		}
+		lastUpdateTick = HAL_GetTick();
+		updateInProgress = false;
 	}
 }
 
@@ -187,14 +203,17 @@ void MtEncoderSPI::spiTxRxCompleted(SPIPort* port){
  */
 void MtEncoderSPI::updateAngleStatus(){
 
+	// Note: Using IT (Interrupts) instead of DMA for SPI transfers. 
+	// High-frequency polling (e.g. 1kHz via TMC4671 External mode) 
+	// causes DMA stream lockups and Watchdog resets.
 	if(mode == MtEncoderSPI_mode::mt6825){
 		uint8_t txbufNew[5] = {0x03 | 0x80,0,0,0,0};
 		memcpy(this->txbuf,txbufNew,5);
-		spiPort.transmitReceive_DMA(txbuf, rxbuf_t, 4, this);
+		spiPort.transmitReceive_IT(txbuf, rxbuf_t, 4, this);
 	}else if(mode == MtEncoderSPI_mode::mt6835){
 		uint8_t txbufNew[6] = {0xA0,0x03,0,0,0,0};
 		memcpy(this->txbuf,txbufNew,6);
-		spiPort.transmitReceive_DMA(txbuf, rxbuf_t, 6, this);
+		spiPort.transmitReceive_IT(txbuf, rxbuf_t, 6, this);
 	}
 
 
@@ -260,14 +279,6 @@ int32_t MtEncoderSPI::getPos(){
 }
 
 int32_t MtEncoderSPI::getPosAbs(){
-	if(updateInProgress){ // If a transfer is still in progress return the last result
-		return curPos;
-	}
-	updateInProgress = true;
-	requestNewDataSem.Give(); // Start transfer
-	if(HAL_GetTick() - lastUpdateTick > waitThresh)
-		waitForUpdateSem.Take(waitThresh); // Wait a bit
-
 	return curPos;
 }
 
@@ -280,6 +291,15 @@ uint32_t MtEncoderSPI::getCpr(){
 	default:
 		return 0; // Not possible
 	}
+}
+
+/**
+ * @brief Returns the polling scaler.
+ * MagnTek encoders operate at up to 16MHz SPI clocks. A scaler of 1 (10kHz) 
+ * easily fits within the SPI bandwidth constraints.
+ */
+uint32_t MtEncoderSPI::getScaler() {
+	return 1; // 10 kHz polling frequency
 }
 
 void MtEncoderSPI::setMode(MtEncoderSPI::MtEncoderSPI_mode mode){

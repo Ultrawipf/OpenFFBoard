@@ -486,7 +486,18 @@ void VescCAN::decodeEncoderPosition(const float newPos) {
 	lastPos = (newPos / 360.0) + mtPos; // normalize the position
 	prevPos360 = newPos;
 
-	encCount++;
+	encCount = encCount + 1;
+
+	uint32_t now = micros();
+	uint32_t dt_us = now - last_update_time;
+	if (dt_us > 0) {
+		last_update_time = now;
+		if (last_cpr == 0) {
+			last_cpr = getCpr();
+			pll.setTuning(30.0f, 1.0f, 18.0f, 32.0f);
+		}
+		pll.update(lastPos - posOffset, (float)dt_us * 1e-6f);
+	}
 }
 
 /**

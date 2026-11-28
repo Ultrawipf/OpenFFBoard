@@ -859,6 +859,7 @@ SPI3.Direction=SPI_DIRECTION_2LINES
 SPI3.IPParameters=VirtualType,Mode,Direction,CalculateBaudRate,BaudRatePrescaler
 SPI3.Mode=SPI_MODE_MASTER
 SPI3.VirtualType=VM_MASTER
+
 TIM1.AutoReloadPreload=TIM_AUTORELOAD_PRELOAD_ENABLE
 TIM1.Channel-PWM\ Generation1\ CH1=TIM_CHANNEL_1
 TIM1.Channel-PWM\ Generation2\ CH2=TIM_CHANNEL_2
@@ -942,6 +943,7 @@ VP_FREERTOS_VS_CMSIS_V2.Mode=CMSIS_V2
 VP_FREERTOS_VS_CMSIS_V2.Signal=FREERTOS_VS_CMSIS_V2
 VP_IWDG_VS_IWDG.Mode=IWDG_Activate
 VP_IWDG_VS_IWDG.Signal=IWDG_VS_IWDG
+
 VP_SYS_VS_tim7.Mode=TIM7
 VP_SYS_VS_tim7.Signal=SYS_VS_tim7
 VP_TIM13_VS_ClockSourceINT.Mode=Enable_Timer

@@ -6,3 +6,6 @@
 	path = Hardware
 	url = https://github.com/Ultrawipf/OpenFFBoard-hardware.git
 	branch = master
+[submodule "Firmware/Libraries/CMSIS-DSP"]
+	path = Firmware/Libraries/CMSIS-DSP
+	url = https://github.com/ARM-software/CMSIS-DSP.git

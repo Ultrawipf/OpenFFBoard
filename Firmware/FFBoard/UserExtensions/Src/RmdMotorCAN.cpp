@@ -167,11 +167,23 @@ int32_t RmdMotorCAN::getPos(){
 		// pos outdated. Should be sent without request
 		sendCmd(0x92); // request multiturn pos 0x92, 0x60
 	}
-	return (lastPos * 100) - posOffset;
+	int32_t pos = (lastPos * 100) - posOffset;
+	uint32_t now = micros();
+	uint32_t dt_us = now - last_update_time;
+	if(dt_us >= 200){
+		last_update_time = now;
+		if(last_cpr == 0){
+			last_cpr = getCpr();
+			pll.setTuning(30.0f, 1.0f, 18.0f, 32.0f);
+		}
+		pll.update((float)pos / (float)getCpr(), (float)dt_us * 1e-6f);
+	}
+	return pos;
 }
 
 void RmdMotorCAN::setPos(int32_t pos){
 	posOffset = (lastPos*100) - pos;
+	pll.reanchor((float)pos / (float)getCpr());
 }
 
 void RmdMotorCAN::sendMsg(std::array<uint8_t,8> &data,uint8_t len){

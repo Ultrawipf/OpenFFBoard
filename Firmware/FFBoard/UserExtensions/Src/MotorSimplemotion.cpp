@@ -71,7 +71,7 @@ void MotorSimplemotion::sendFastUpdate(uint16_t val1,uint16_t val2){
 	}
 	if((HAL_GetTick()-lastSentTime>10 && waitingFastUpdate) || (HAL_GetTick() - lastTimeByteReceived > uartErrorTimeout && uartport->isTaken())){
 //		uartport->abortReceive();
-//		uarterrors++;
+//		uarterrors = uarterrors + 1;
 		uartErrorOccured = true;
 		waitingFastUpdate = false;
 //		uartport->giveSemaphore(true); // Force giving semaphore here so we don't cause a block. This may not be ideal
@@ -115,11 +115,28 @@ int32_t MotorSimplemotion::getPos(){
 	if(HAL_GetTick()-lastUpdateTime>100){
 		this->turn(lastTorque); // Sending torque updates the position
 	}
-	return position - position_offset;
+	int32_t pos = position - position_offset;
+	uint32_t cprVal = this->cpr;
+	if(cprVal > 0){
+		uint32_t now = micros();
+		uint32_t dt_us = now - last_update_time;
+		if(dt_us >= 200){
+			last_update_time = now;
+			if(last_cpr != cprVal){
+				last_cpr = cprVal;
+				pll.setTuning(30.0f, 1.0f, 18.0f, 32.0f);
+			}
+			pll.update((float)pos / (float)cprVal, (float)dt_us * 1e-6f);
+		}
+	}
+	return pos;
 }
 
 void MotorSimplemotion::setPos(int32_t pos){
 	position_offset = position - pos;
+	if(this->cpr > 0){
+		pll.reanchor((float)pos / (float)this->cpr);
+	}
 }
 
 /**
@@ -356,10 +373,11 @@ void MotorSimplemotion::uartRcv(char& buf){
 
 	// Append to buffer while not overrun
 	if(rxbuf_i < RXBUF_SIZE && !errorcodes){
-		rxbuf[rxbuf_i++] = buf;
+		rxbuf[rxbuf_i] = buf;
+		rxbuf_i = rxbuf_i + 1;
 	}else{
 		// Overrun
-		uarterrors++;
+		uarterrors = uarterrors + 1;
 		uartErrorOccured = true;
 //		resetBuffer();
 		/* We should actually NOT give back the semaphore immediately because data may still be sent by the device.
@@ -377,7 +395,7 @@ void MotorSimplemotion::uartRcv(char& buf){
 
 		if(calculateCrc8(tableCRC8, (uint8_t*)rxbuf, 6, crc8init) != 0){
 			uartErrorOccured = true;
-			crcerrors++;
+			crcerrors = crcerrors + 1;
 			resetBuffer();
 			return;
 		}
@@ -405,7 +423,7 @@ void MotorSimplemotion::uartRcv(char& buf){
 
 		// check that crc is 0
 		if(calculateCrc16_8_rev(tableCRC16, (uint8_t*)rxbuf, rxbuf_i, 0)){
-			crcerrors++;
+			crcerrors = crcerrors + 1;
 			uartErrorOccured = true;
 			resetBuffer();
 			return;
@@ -423,7 +441,8 @@ void MotorSimplemotion::uartRcv(char& buf){
 			}
 			// Pad leading bits for negative values
 //			val |= ~((1 << (subpacketlen*8))-1); // 8*bytes -1
-			replyvalues[replyidx++] = val;
+			replyvalues[replyidx] = val;
+			replyidx = replyidx + 1;
 			i += subpacketlen;
 		}
 		waitingReply = false;

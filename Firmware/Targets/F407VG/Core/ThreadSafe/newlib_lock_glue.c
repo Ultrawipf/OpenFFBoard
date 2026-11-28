@@ -36,6 +36,8 @@
 /* Includes ------------------------------------------------------------------*/
 #include <cmsis_compiler.h>
 
+/* Private functions prototypes ----------------------------------------------*/
+__WEAK void Error_Handler(void);
 /* Private functions ---------------------------------------------------------*/
 
 /**
@@ -70,6 +72,12 @@ __WEAK void Error_Handler(void)
 /* Private macros ------------------------------------------------------------*/
 /** See struct __lock definition */
 #define STM32_LOCK_PARAMETER(lock) (&(lock)->lock_data)
+
+/* shared variables for bare metal allow lock ------------------------------------------------------*/
+#if defined(STM32_THREAD_SAFE_BAREMETAL_ALLOW_LOCKS) && (STM32_THREAD_SAFE_BAREMETAL_ALLOW_LOCKS != 0)
+uint32_t gflag = 0;
+uint32_t call_counter = 0;
+#endif /* defined(STM32_THREAD_SAFE_BAREMETAL_ALLOW_LOCKS) && (STM32_THREAD_SAFE_BAREMETAL_ALLOW_LOCKS != 0) */
 
 /* Private variables ---------------------------------------------------------*/
 struct __lock
@@ -341,6 +349,10 @@ typedef struct
 /** Mutex used in __cxa_guard_acquire, __cxa_guard_release and __cxa_guard_abort */
 static LockingData_t __cxa_guard_mutex = LOCKING_DATA_INIT;
 
+/* Private functions prototype ---------------------------------------------------------*/
+int __cxa_guard_acquire(CxaGuardObject_t *guard_object);
+void __cxa_guard_abort(CxaGuardObject_t *guard_object);
+void __cxa_guard_release(CxaGuardObject_t *guard_object);
 /* Private functions ---------------------------------------------------------*/
 
 /**

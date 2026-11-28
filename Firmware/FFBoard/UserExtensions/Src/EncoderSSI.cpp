@@ -61,20 +61,8 @@ void EncoderSSI::saveFlash(){
 void EncoderSSI::configSPI() {
 
 	uint32_t prescale;
-	switch (spiSpeed) {
-		case 0 :
-			prescale = SPI_BAUDRATEPRESCALER_32;
-			break;
-		case 1 :
-			prescale = SPI_BAUDRATEPRESCALER_16;
-			break;
-		case 2 :
-			prescale = SPI_BAUDRATEPRESCALER_8;
-			break;
-		default :
-			prescale = SPI_BAUDRATEPRESCALER_32;
-			break;
-	}
+	uint32_t target_baudrate = (spiSpeed == 0) ? 2500000 : (spiSpeed == 1) ? 5000000 : 10000000;
+	prescale = spiPort.getClosestPrescaler(target_baudrate).first;
 
 	SPIConfig* config =  this->getSpiConfig();
 
@@ -102,12 +90,12 @@ void EncoderSSI::spiRxCompleted(SPIPort* port) {
 	{
 		newPos = (uint16_t)(spi_buf[0] & 0x3F) << 8;
 		newPos |= spi_buf[1];
-		newPos >>= std::max(14-lenghtDataBit,0);
 		uint8_t parity = (spi_buf[0] >> 6) & 0x3;
 		for(uint8_t i = 0;i<7;i++){
 			parity ^= (newPos >> (2*i)) & 0x3;
 		}
-		if(parity){
+		if(parity == 3){
+			newPos >>= std::max(14-lenghtDataBit,0);
 			newPos &= ((1<<lenghtDataBit) - 1);
 			pos = newPos - (1<<(lenghtDataBit-1));
 		}else{
@@ -120,8 +108,8 @@ void EncoderSSI::spiRxCompleted(SPIPort* port) {
 
 	case EncoderSSI_modes::rawmsb:
 	{
-		for(uint8_t i = 0;i<bytes;i++){
-			newPos |= spi_buf[i] << bytes;
+		for(uint8_t i = 0;i<transferlen;i++){
+			newPos |= (uint32_t)spi_buf[i] << ((transferlen - 1 - i) * 8);
 		}
 		newPos &= ((1<<lenghtDataBit) - 1);
 		pos = newPos;
@@ -136,6 +124,14 @@ void EncoderSSI::spiRxCompleted(SPIPort* port) {
 		mtpos++;
 	}
 	waitData = false;
+
+	uint32_t now = micros();
+	uint32_t dt_us = now - last_update_time;
+	if (dt_us > 0) {
+		float dt = (float)dt_us * 1e-6f;
+		last_update_time = now;
+		updateState(getPos_f(), dt);
+	}
 }
 
 void EncoderSSI::beginSpiTransfer(SPIPort* port){
@@ -157,11 +153,14 @@ EncoderType EncoderSSI::getEncoderType(){
 
 
 int32_t EncoderSSI::getPosAbs(){
-	if(!waitData){ // If a transfer is still in progress return the last result
-		spiPort.receive_DMA(spi_buf, transferlen, this); // Receive next frame
-
-	}
+	// Passive read only: SPI transfers are triggered exclusively by EncoderManager::triggerRead()
 	return pos + mtpos * getCpr();
+}
+
+void EncoderSSI::triggerRead(){
+	if(!waitData && !spiPort.isTaken()){
+		spiPort.receive_DMA(spi_buf, transferlen, this);
+	}
 }
 
 int32_t EncoderSSI::getPos(){
@@ -169,14 +168,23 @@ int32_t EncoderSSI::getPos(){
 }
 
 void EncoderSSI::setPos(int32_t newpos){
-
 	posOffset = pos - newpos;
+	pll.reanchor(getPos_f());
 }
 
 
 
 uint32_t EncoderSSI::getCpr(){
 	return 1<<lenghtDataBit;
+}
+
+/**
+ * @brief Returns the polling scaler.
+ * Set to 1 (10kHz sampling) as SSI frame lengths are short enough to prevent 
+ * SPI bus saturation during rapid updates.
+ */
+uint32_t EncoderSSI::getScaler() {
+	return 1; // 10 kHz polling frequency
 }
 
 void EncoderSSI::registerCommands(){

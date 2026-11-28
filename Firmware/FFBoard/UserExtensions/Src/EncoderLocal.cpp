@@ -7,6 +7,7 @@
 
 #include "EncoderLocal.h"
 #include "flash_helpers.h"
+#include <cmath>
 #ifdef LOCALENCODER
 bool EncoderLocal::inUse = false;
 ClassIdentifier EncoderLocal::info = {
@@ -20,7 +21,7 @@ const ClassIdentifier EncoderLocal::getInfo(){
 EncoderLocal::EncoderLocal() : CommandHandler("localenc",CLSID_ENCODER_LOCAL) {
 	EncoderLocal::inUse = true;
 	this->restoreFlash();
-	this->htim = &TIM_ENC;
+	this->htim = &TIM_ENC_ABN_HW;
 	HAL_TIM_Base_Start_IT(htim); // May immediately call overflow. Initialize count again
 	this->htim->Instance->CNT = 0x7fff;
 	pos = 0;
@@ -73,7 +74,14 @@ EncoderType EncoderLocal::getEncoderType(){
 
 
 int32_t EncoderLocal::getPos(){
-	return getTimerCount() + pos;
+	// Double-read loop to guarantee a consistent (pos, CNT) snapshot across timer overflow ISR
+	int32_t p1, p2, cnt;
+	do {
+		p1 = pos;
+		cnt = getTimerCount();
+		p2 = pos;
+	} while (p1 != p2);
+	return cnt + p1;
 }
 
 void EncoderLocal::setPos(int32_t pos){
@@ -84,6 +92,7 @@ void EncoderLocal::setPos(int32_t pos){
 		int32_t idxpos = ((int32_t)indexpos - (int32_t)0x7fff);
 		offset = ( ( idxpos-cnt-pos ) % this->cpr); // offset is distance to index position (0 = 0x7fff index)
 	}
+	pll.reanchor(getPos_f());
 	//this->pos = pos - cnt;
 	//htim->Instance->CNT = 0x7fff; // Reset //pos+0x7fff;
 
@@ -124,6 +133,28 @@ void EncoderLocal::overflowCallback(){
 	}else{
 		pos += htim->Instance->ARR+1;
 	}
+}
+
+void EncoderLocal::triggerRead() {
+	// Synchronous M-Method read of hardware quadrature counter TIM->CNT (handled by KinematicPLL)
+	Encoder::triggerRead();
+}
+
+uint32_t EncoderLocal::getCpr() {
+	return this->cpr;
+}
+
+uint32_t EncoderLocal::getScaler() {
+	if (this->cpr == 0) return 10; // Safety against div by 0
+	
+	// Dynamic scaler based on CPR to target ~7.5 RPM quantization noise at 5 deg/s
+	uint32_t optimal_scaler = 80000 / this->cpr;
+	
+	// Clamp scaler between 1 (10 kHz) and 10 (1 kHz)
+	if (optimal_scaler < 1) optimal_scaler = 1;
+	if (optimal_scaler > 10) optimal_scaler = 10;
+	
+	return optimal_scaler;
 }
 
 void EncoderLocal::setCpr(uint32_t cpr){

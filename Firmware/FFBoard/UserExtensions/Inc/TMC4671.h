@@ -2,7 +2,7 @@
  * TMC4671.h
  *
  *  Created on: Feb 1, 2020
- *      Author: Yannick
+ *      Author: Yannick, Vincent
  */
 
 #ifndef TMC4671_H_
@@ -21,6 +21,8 @@
 #include "ExtiHandler.h"
 #include "SPI.h"
 #include "TimerHandler.h"
+#include "ExternalEncoderAdapter.h"
+#include <atomic>
 #include <span>
 #include "semaphore.hpp"
 #include <GPIOPin.h>
@@ -34,8 +36,8 @@
 
 extern SPI_HandleTypeDef HSPIDRV;
 
-#ifdef TIM_TMC
-extern TIM_HandleTypeDef TIM_TMC;
+#ifdef TIM_ENC
+extern TIM_HandleTypeDef TIM_ENC;
 #endif
 
 #ifndef TMC4671_DEFAULT_CURRENT_SCALER
@@ -53,8 +55,8 @@ extern TIM_HandleTypeDef TIM_TMC;
 #ifndef TMC4671_ITUNE_CUTOFF
 #define TMC4671_ITUNE_CUTOFF 0.04
 #endif
-#ifndef TIM_TMC_ARR
-#define TIM_TMC_ARR 250
+#ifndef TIM_ENC_ARR
+#define TIM_ENC_ARR 100
 #endif
 
 
@@ -235,7 +237,7 @@ struct TMC4671PIDConf{
 struct TMC4671Limits{
 	uint16_t pid_torque_flux_ddt	= 32767;
 	uint16_t pid_uq_ud				= 30000;
-	uint16_t pid_torque_flux		= 32767;
+	uint16_t pid_torque_flux		= 30000;
 	uint32_t pid_acc_lim			= 2147483647;
 	uint32_t pid_vel_lim			= 2147483647;
 	int32_t pid_pos_low				= -2147483647;
@@ -345,12 +347,11 @@ public:
 	}
 	TMC4671Biquad(const TMC4671Biquad_t bq) : params(bq){}
 	TMC4671Biquad(const Biquad& bq,bool enable = true){
-		// Note: trinamic swapped the naming of b and a from the regular convention in the datasheet and a and b are possibly inverse to b in our filter class
-		this->params.a1 = -(int32_t)(bq.b1 * (float)(1 << 29));
-		this->params.a2 = -(int32_t)(bq.b2 * (float)(1 << 29));
 		this->params.b0 = (int32_t)(bq.a0 * (float)(1 << 29));
 		this->params.b1 = (int32_t)(bq.a1 * (float)(1 << 29));
 		this->params.b2 = (int32_t)(bq.a2 * (float)(1 << 29));
+		this->params.a1 = (int32_t)(bq.b1 * (float)(1 << 29));
+		this->params.a2 = (int32_t)(bq.b2 * (float)(1 << 29));
 		this->params.enable = bq.getFc() > 0 ? enable : false;
 	}
 	void enable(bool enable){
@@ -412,6 +413,7 @@ public:
 
 	TMC4671MainConfig conf;
 
+	void setupDriver();
 	bool initialize();
 	void initializeWithPower();
 
@@ -475,25 +477,25 @@ public:
 
 	void setBBM(uint8_t bbml,uint8_t bbmh);
 
-
-#ifdef TIM_TMC
-	void timerElapsed(TIM_HandleTypeDef* htim);
-#endif
-
 	void setPositionExt(int32_t pos); // External position register (For external encoders. Choose external phiE).
 
 	void stopMotor();
 	void startMotor();
 
+	void setPowerLimit(uint16_t power) override;
+	void setExternalPhiE(float phiE) override;
+
 	void emergencyStop(bool reset);
 	bool emergency = false;
 	bool estopTriggered = false;
 	void turn(int16_t power);
+
 	int16_t nextFlux = 0;
 	int16_t idleFlux = 0;
 	uint16_t maxOffsetFlux = 0;
 
 	int16_t bangInitPower = 5000; // Default current in setup routines
+	uint16_t maxPowerAxis = 0;
 
 	int16_t controlFluxDissipate();
 	const float fluxDissipationLimit = 1000;
@@ -607,7 +609,7 @@ public:
 
 	void beginSpiTransfer(SPIPort* port);
 	void endSpiTransfer(SPIPort* port);
-	//void spiTxCompleted(SPIPort* port);
+
 
 	CommandStatus command(const ParsedCommand& cmd,std::vector<CommandReply>& replies);
 	void registerCommands();
@@ -615,20 +617,11 @@ public:
 	virtual std::string getHelpstring(){return "TMC4671 interface";}
 
 protected:
-	class TMC_ExternalEncoderUpdateThread : public cpp_freertos::Thread{
-	public:
-		TMC_ExternalEncoderUpdateThread(TMC4671* tmc);
-		//~TMC_ExternalEncoderUpdateThread();
-		void Run();
-		void updateFromIsr();
-
-	private:
-		TMC4671* tmc;
-	};
 
 	static std::span<const TMC4671HardwareTypeConf> tmc4671_hw_configs; // Can override in external target file
 
 private:
+	uint8_t drv_address = 0;
 	OutputPin enablePin = OutputPin(*DRV_ENABLE_GPIO_Port,DRV_ENABLE_Pin);
 	const Error indexNotHitError = Error(ErrorCode::encoderIndexMissed,ErrorType::critical,"Encoder index missed");
 	const Error lowVoltageError = Error(ErrorCode::undervoltage,ErrorType::warning,"Low motor voltage");
@@ -686,9 +679,7 @@ private:
 	void calibFailCb();
 
 
-// state machine
-//	void ABN_init();
-//	void AENC_init();
+
 
 	void encoderInit();
 	void errorCallback(const Error &error, bool cleared);
@@ -706,13 +697,18 @@ private:
 	const float fluxFilterFreq = 350.0;
 
 	// External encoder timer fires interrupts to trigger a new commutation position update
-#ifdef TIM_TMC
-
-	TIM_HandleTypeDef* externalEncoderTimer = &TIM_TMC;
-	std::unique_ptr<TMC_ExternalEncoderUpdateThread> extEncUpdater = nullptr;
+#ifdef TIM_ENC
+	TIM_HandleTypeDef* externalEncoderTimer = &TIM_ENC;
+	std::unique_ptr<ExternalEncoderAdapter> extEncAdapter = nullptr;
+	uint32_t lastExtPhiEUpdateUs = 0; // Rate-limit external phiE SPI writes to 4 kHz (250 us)
 #else
 	TIM_HandleTypeDef* externalEncoderTimer = nullptr;
 #endif
+	// Lock-free mailbox for external phiE updates (published from encoder ISR/task, flushed by SPI bus owner)
+	std::atomic<uint16_t> pendingExtPhiE{0};
+	std::atomic<bool> hasPendingExtPhiE{false};
+	void flushPendingExtPhiE();
+	void writeRegAsyncLocked(uint8_t reg, uint32_t dat);
 	void setUpExtEncTimer();
 };
 
@@ -737,5 +733,3 @@ public:
 };
 #endif
 #endif /* TMC4671_H_ */
-
-

@@ -17,6 +17,13 @@
 #pragma once
 #ifdef __cplusplus
 
+// Forward declaration: CAN.h's inline CANPort::giveSemaphore()/takeSemaphore() call inIsr().
+// FFBoardMain.h (included next) can transitively pull in CAN.h before this header reaches its
+// own inIsr() definition below (this header recursively re-includes FFBoardMain.h, guarded, from
+// inside that chain) - only the declaration needs to be visible that early, the definition further
+// down in this same translation unit satisfies it.
+static inline bool inIsr();
+
 #include "FFBoardMain.h"
 #include "ledEffects.h"
 #include "ClassChooser.h"
@@ -39,7 +46,7 @@ void tudThread(void *argument);
 }
 
 static inline bool inIsr(){
-	return (__get_PRIMASK() != 0U) || (__get_IPSR() != 0U);
+	return (__get_IPSR() != 0U);
 }
 
 template<class T,class C>
