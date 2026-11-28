@@ -9,8 +9,9 @@
 3. [Partie 3 — Expertise DSP : arbitrage Kalman vs KinematicPLL](#partie-3) *(ex-`analyse_dsp_filtrage_encodeurs.md`)*
 4. [Partie 4 — Pourquoi le Kalman 2 états n'a pas été retenu](#partie-4) *(ex-`pourquoi_pas_kalman_2_etats.md`)*
 5. [Partie 5 — Use cases encodeurs, scalers et filtrage (état actuel)](#partie-5) *(ex-`analyse_use_cases_encodeurs.md`)*
+6. [Partie 6 — Plan d'actions restantes : Refactoring Encodeurs & SPI DMA](#partie-6) *(ex-`todo_encodeurs_dma.md`)*
 
-> Ordre de lecture : les parties suivent la chronologie des décisions. La **Partie 5** reflète l'état le plus récent de l'implémentation (`KinematicPLL`, branche `refactor/encoder`).
+> Ordre de lecture : les parties suivent la chronologie des décisions. Les **Parties 5 et 6** reflètent l'état le plus récent de l'implémentation (`KinematicPLL`, branche `refactor/encoder`) et le plan d'actions restantes (chaîne ISR sans tâche et SPI DMA).
 
 
 ---
@@ -1743,6 +1744,68 @@ DMA RX complete ISR ◄────┘
 - GPIO toggle dans l'ISR timer, dans l'ISR de fin SPI et à l'écriture `0x1C`, mesurés à l'analyseur logique (cadence et jitter réels) ;
 - compteur de resets PLL (`dt > 0.05`) et de glitches de gating exposé en commande CDC ;
 - trace SystemView pour la charge IRQ et les changements de contexte.
+
+
+---
+
+<a id="partie-6"></a>
+
+# Partie 6 — Plan d'actions restantes : Refactoring Encodeurs & SPI DMA
+
+*Source d'origine : `doc/todo_encodeurs_dma.md`*
+
+## Plan d'actions restantes — Refactoring Encodeurs & SPI DMA (`refactor/encoder`)
+
+Ce document recense les tâches restant à effectuer sur la branche `refactor/encoder` après l'application des correctifs P0 à P3 (suivis en [Partie 5, §9](#partie-5)), ainsi que l'analyse technique justifiant l'ordre d'implémentation du passage en SPI DMA et de la chaîne ISR sans tâche.
+
+---
+
+### 1. Liste des choses à faire
+
+#### 1.1. Validation cible & mesures (prérequis)
+- [ ] **Compiler et flasher** la branche `refactor/encoder` sur cible STM32 (F407VG).
+- [ ] **Mesurer le *high-water mark* de la pile `ENCMGR`** (actuellement `128` mots / 512 octets) sous charge réelle (BiSS-C / MT6835 + FOC externe).
+- [ ] **Relever une baseline à l'analyseur logique** avant toute refonte DMA / ISR :
+  - GPIO toggle dans l'ISR `TIM_ENC`, dans l'ISR de fin SPI et à l'écriture `0x1C` (`phiE`) pour mesurer cadence et jitter réels.
+  - Compteurs de resets PLL (`dt > 0.05`) et de glitches de gating.
+
+#### 1.2. Chaîne ISR sans tâche (gain principal sur la latence et l'overhead OS)
+- [ ] **Déclencher les transferts SPI non bloquants directement depuis `EncoderManager::timerElapsed()`** (ou via notification légère sans réveil de tâche `ENCMGR` à 10 kHz), conformément à la [Partie 5, §8.2](#partie-5).
+- [ ] Vérifier que les drivers appelés depuis l'ISR (`triggerRead()`) n'utilisent aucune primitive FreeRTOS bloquante (`tryTakeSemaphoreFromISR()` déjà en place via P0-2 `56e282e`).
+- [ ] Mesurer le gain en changements de contexte (SystemView) et en jitter sur `0x1C`.
+
+#### 1.3. Passage optionnel en SPI DMA (réduction de la charge IRQ)
+- [ ] **BiSS-C (`EncoderBissC`)** : ajouter le mode SPI DMA derrière un drapeau de compilation (ex. `ENCODER_BISSC_USE_DMA`), avec tampon de transfert en SRAM (hors CCMRAM).
+- [ ] **MT6835 (`MtEncoderSPI`)** : ajouter le mode SPI DMA derrière un drapeau de compilation (ex. `ENCODER_MT_USE_DMA`), même contrainte mémoire SRAM.
+- [ ] **Conserver TMC4671 (`phiE` / `0x1C`) en SPI IT** (trame de 5 octets ; gain DMA négligeable par rapport au coût de configuration DMA).
+- [ ] **Tests d'endurance sur carte** : valider l'absence de blocage SPI / déclenchement watchdog sur longue durée et sous changements de mode / erreurs de bus.
+
+---
+
+### 2. Explication technique : pourquoi cet ordre (ISR sans tâche puis DMA) ?
+
+#### 2.1. État matériel sur STM32F407VG
+D'après `Firmware/Targets/F407VG/Core/Src/stm32f4xx_hal_msp.c` et `main.c` :
+- Les flux DMA pour **SPI1, SPI2 et SPI3** sont déjà déclarés et mappés sans conflit avec les flux ADC.
+- Les priorités NVIC des interruptions DMA sont $\ge$ `configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY` (`5`), ce qui autorise les appels FreeRTOS `*FromISR`.
+- Le tas FreeRTOS (`ucHeap`) réside en **SRAM** (hors CCMRAM), donc les objets alloués dynamiquement sont accessibles par le contrôleur DMA. (À vérifier si des buffers statiques ou sur pile venaient à être placés en CCMRAM.)
+
+#### 2.2. Enseignements de l'historique Git
+Les commits historiques (`80fecf6`, `0a9f678`, `4d311b0`, `13fb1e1`) montrent plusieurs abandons du SPI DMA par le passé suite à des **blocages SPI et déclenchements du watchdog**, sans benchmark chiffré.
+
+Ces instabilités s'expliquent très probablement par deux bugs structurels de la couche `SPIPort` qui ont été corrigés récemment :
+- **P0-2 (`56e282e`)** : ajout de `SPIPort::tryTakeSemaphoreFromISR()` et d'une mailbox sans verrou `pendingExtPhiE` chaînée dans `TMC4671::endSpiTransfer()`.
+- **P0-3 (`a835da7`)** : appel à `HAL_SPI_Abort()` + `HAL_SPI_DMAStop()` et remise à `nullptr` de `current_device` avant l'exécution des callbacks dans `SPIPort`.
+
+Le passage en DMA redevient donc techniquement viable, mais doit rester **opt-in** (drapeau de compilation) jusqu'à validation d'endurance sur cible.
+
+#### 2.3. Bilan IRQ vs overhead de synchronisation OS
+- **Ce que le DMA apporte** : il divise le nombre d'interruptions SPI par **~4 à 5** sur les encodeurs à trames multi-octets à 10 kHz :
+  - **BiSS-C** : ~160 000 IRQ/s $\rightarrow$ ~30 000 IRQ/s.
+  - **MT6835** : ~120 000 IRQ/s $\rightarrow$ ~30 000 IRQ/s.
+- **Ce que le DMA n'apporte PAS** : il ne supprime pas l'overhead de réveil de la tâche FreeRTOS `ENCMGR` à chaque tick de `TIM_ENC` (`TIM6 ISR` $\rightarrow$ `vTaskNotifyGiveFromISR` $\rightarrow$ changement de contexte `ENCMGR` $\rightarrow$ `triggerRead()`).
+
+C'est pourquoi **la chaîne ISR sans tâche (Partie 5, §8.2) doit être réalisée en premier** : elle supprime le coût de commutation de contexte à 10 kHz et réduit directement le jitter. Le passage en DMA de `EncoderBissC` puis `MtEncoderSPI` vient ensuite réduire la charge CPU purement liée aux IRQ octets SPI.
 
 
 ---
